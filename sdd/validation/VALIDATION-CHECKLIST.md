@@ -673,11 +673,85 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 - [ ] **Labels "Ancestrais:" e "Filhos:"**:
   - [ ] Validar a presença das labels de texto cinza "Ancestrais:" e "Filhos:" nos breadcrumbs correspondentes.
 - [ ] **Seletor de Filhos (Children Breadcrumb)**:
-  - [ ] Validar que, se o elemento selecionado tiver filhos editáveis directos, a lista de filhos é renderizada com o separador `/`.
+  - [ ] Validar que, se o elemento selecionado tiver filhos editáveis directos, a lista de filhos é renderizada com o separador `|` (atualizado de `/`).
   - [ ] Confirmar que o fundo da caixa de filhos é ligeiramente mais claro do que o de ancestrais para diferenciar os contêineres.
   - [ ] Passar o mouse sobre um filho na lista e confirmar que o hover overlay correspondente é acionado.
   - [ ] Clicar em um filho da lista e confirmar que ele é selecionado e os controles são transferidos para ele.
   - [ ] Confirmar que se o elemento selecionado não possui filhos válidos, a barra de filhos fica oculta.
+- [ ] **Destaque de Hover nos Breadcrumbs**:
+  - [ ] Confirmar que passar o mouse sobre os links de Ancestrais ou Filhos no breadcrumb desenha uma borda tracejada roxa (tom da seleção) no elemento físico do iframe.
+  - [ ] Confirmar que tirar o mouse oculta esse destaque roxo.
+  - [ ] Confirmar que o hover normal azul no preview direto com o cursor continua a funcionar.
 - [ ] **Empilhamento Dinâmico**:
   - [ ] Confirmar o empilhamento vertical correto (Ancestrais -> Filhos -> Classes Tailwind) sem sobreposições.
+
+### Evidência de Validação (BATCH-035)
+- [x] Linting estático limpo (2026-06-13): `node --check` OK em `gestor/assets/interface/html-editor.js` e `html-editor-interface.js`.
+- [ ] Testes de interação (toolbar à direita, seletor de filhos, hover roxo, empilhamento) — **pendente com o operador** (runtime no navegador, após `🗃️ Projects - Update => Core`).
+- Arquivos: `gestor/assets/interface/html-editor.js` (todo o escopo do lote) e `html-editor-interface.js` (`sistemaSel` do save). Decisão: [DEC-049](../decisions/DECISION-LOG.md).
+
+---
+## BATCH-036 - Copiar/Colar e Embrulhar Elementos (req-036)
+
+- [ ] **Copiar e Colar (Copy/Paste)**:
+  - [ ] Verificar se os botões "Copiar" e "Colar" estão presentes na barra flutuante.
+  - [ ] Confirmar que o botão Colar fica inativo/invisível por padrão e ativo/visível apenas após copiar um elemento.
+  - [ ] Selecionar um elemento, clicar em Copiar (ou usar o atalho `Ctrl + C`), selecionar outro elemento (alvo), clicar em Colar (ou usar `Ctrl + V`) e confirmar que o clone foi inserido exatamente abaixo (como irmão) do alvo.
+  - [ ] Confirmar que colar o mesmo item múltiplas vezes funciona sem limitações.
+- [ ] **Embrulhar Elemento (Wrap)**:
+  - [ ] Verificar se o botão "Embrulhar" está presente na barra flutuante.
+  - [ ] Clicar nele e verificar se abre um popup com as opções de tag (`div`, `section`, `a`, `p`, `article`, `aside`).
+  - [ ] Selecionar uma tag e confirmar no DOM/Breadcrumbs que o elemento selecionado agora é filho direto do novo elemento embrulho criado.
+  - [ ] Confirmar que o foco da seleção visual se manteve no elemento original (filho), e não no wrapper recém-criado.
+
+### Evidência de Validação (BATCH-036)
+- [x] Linting estático limpo (2026-06-13): `node --check` OK em `gestor/assets/interface/html-editor.js` e `html-editor-visual-controls.js`.
+- [ ] Testes de interação (copiar/colar por botão e atalho; embrulhar com foco preservado) — **pendente com o operador** (runtime no navegador, após `🗃️ Projects - Update => Core`).
+- Arquivos: `gestor/assets/interface/html-editor.js` (clipboard, botões e wrap) e `html-editor-visual-controls.js` (atalhos Ctrl+C/V na janela pai). Decisão: [DEC-050](../decisions/DECISION-LOG.md).
+
+---
+## BATCH-037 - Painel Auxiliar de Formatação Visual (req-037)
+
+- [ ] **Interface de Duas Colunas (Visual UI Helper)**:
+  - [ ] Verificar se `#html-editor-tailwind-styler` é dividido verticalmente em duas colunas (Esquerda: tags/autocomplete; Direita: Visual Helper).
+  - [ ] Validar se o layout se ajusta e se renderiza perfeitamente alinhado.
+  - [ ] **Empilhamento Responsivo**: Selecionar um elemento estreito (ex: `< 400px`) e validar se a interface se ajusta para empilhamento vertical automaticamente. Selecionar um elemento largo e verificar se ela volta ao padrão horizontal.
+- [ ] **Controles de Alinhamento e Espaçamento**:
+
+  - [ ] Clicar nos botões de alinhamento e confirmar que as classes correspondentes (`text-left`, `text-center`, etc.) são aplicadas e as conflitantes são limpas do elemento.
+  - [ ] Clicar nos botões de padding e bordas e confirmar a aplicação correta e remoção de redundâncias.
+- [ ] **Controles de Cores (Texto e Fundo)**:
+  - [ ] Clicar nos botões coloridos de texto e fundo e verificar se as classes `text-[cor]` e `bg-[cor]` são atualizadas corretamente e limpas dos conflitos.
+- [ ] **Sincronização Bidirecional**:
+  - [ ] Confirmar que selecionar um elemento com classes pré-existentes destaca os botões corretos do painel visual.
+  - [ ] Confirmar que cliques no painel visual atualizam instantaneamente a lista de tags da coluna esquerda.
+
+### Evidência de Validação (BATCH-037)
+- [x] Linting estático limpo (2026-06-13): `node --check gestor/assets/interface/html-editor.js` OK.
+- [ ] Testes de interação (2 colunas, empilhamento <400px, grupos exclusivos, paletas de cor sem afetar alinhamento/`bg-cover`, sincronização) — **pendente com o operador** (runtime no navegador, após `🗃️ Projects - Update => Core`).
+- Arquivo: `gestor/assets/interface/html-editor.js`. Decisão: [DEC-051](../decisions/DECISION-LOG.md).
+
+---
+## BATCH-038 - Inversão e Expansão do Painel Auxiliar de Formatação Visual (req-038)
+
+- [ ] **Inversão de Colunas**:
+  - [ ] Verificar se `#html-editor-tailwind-styler` renderiza a coluna de controles visuais (Visual UI Helper) à **esquerda** e a coluna de tags/autocomplete à **direita**.
+  - [ ] Confirmar que no empilhamento vertical (largura < 400px), a coluna visual fica acima das tags.
+- [ ] **Deslocamento da Toolbar na Borda Inferior**:
+  - [ ] Selecionar um elemento encostado no topo da tela (forçando a toolbar a aparecer na borda inferior) e verificar se os overlays inferiores (Ancestrais, Filhos e Styler) são empurrados para baixo da barra flutuante, sem qualquer sobreposição.
+- [ ] **Novas Propriedades Visuais**:
+
+  - [ ] Validar a presença e funcionamento dos novos grupos: tamanho de texto (`text-sm` a `text-xl`), peso de texto (`font-normal` a `font-bold`), margem externa (`m-0` a `m-8`), espessura de borda (`border-0` a `border-4`), paleta de cor de borda (8 cores), opacidade (`opacity-100` a `opacity-25`) e layout/display (`block`, `inline-block`, `flex`, `grid`).
+- [ ] **Limpeza e Sincronização Estendidas**:
+  - [ ] Validar que cliques nos novos botões aplicam a classe correta, removem as concorrentes do mesmo grupo e atualizam as tags do lado direito.
+  - [ ] Confirmar que carregar elementos com estas classes pré-definidas destaca os botões corretos com `.active`.
+
+### Evidência de Validação (BATCH-038)
+- [x] Linting estático limpo (2026-06-13): `node --check gestor/assets/interface/html-editor.js` OK.
+- [ ] Testes de interação (colunas invertidas, empilhamento <400px, toolbar embaixo sem sobrepor, 20 grupos aplicando/sincronizando sem afetar classes de outros grupos) — **pendente com o operador** (runtime no navegador, após `🗃️ Projects - Update => Core`).
+- Expansão criativa autorizada: 20 grupos em 4 seções (Texto/Layout/Caixa/Aparência). Arquivo: `gestor/assets/interface/html-editor.js`. Decisão: [DEC-052](../decisions/DECISION-LOG.md).
+
+
+
+
 

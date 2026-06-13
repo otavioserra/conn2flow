@@ -21,6 +21,8 @@ $(document).ready(function () {
     var ACT = {
         UNDO: 'c2f-he:undo',
         REDO: 'c2f-he:redo',
+        COPY: 'c2f-he:copy',
+        PASTE: 'c2f-he:paste',
         INSERT_ELEMENT: 'c2f-he:insert-element',
         INSERT_WIDGET: 'c2f-he:insert-widget',
         CANCEL_INSERT: 'c2f-he:cancel-insert',
@@ -277,12 +279,30 @@ $(document).ready(function () {
         } else if ((e.ctrlKey || e.metaKey) && (key === 'y' || (key === 'z' && e.shiftKey))) {
             e.preventDefault();
             enviarParaIframe(ACT.REDO);
+        } else if ((e.ctrlKey || e.metaKey) && key === 'c' && !ehDigitando(e.target) && selecaoTextoColapsada()) {
+            // Copiar o elemento selecionado no iframe (preserva a cópia nativa de texto).
+            e.preventDefault();
+            enviarParaIframe(ACT.COPY);
+        } else if ((e.ctrlKey || e.metaKey) && key === 'v' && !ehDigitando(e.target)) {
+            e.preventDefault();
+            enviarParaIframe(ACT.PASTE);
         } else if (key === 'escape') {
             // ESC cancela um modo de inserção em andamento.
             enviarParaIframe(ACT.CANCEL_INSERT);
             fecharPainel();
         }
     });
+
+    function ehDigitando(t) {
+        if (!t) return false;
+        var tag = (t.tagName || '').toLowerCase();
+        return tag === 'input' || tag === 'textarea' || t.isContentEditable;
+    }
+
+    function selecaoTextoColapsada() {
+        var sel = window.getSelection ? window.getSelection() : null;
+        return !sel || sel.isCollapsed || String(sel).length === 0;
+    }
 
     // ===== Redimensionamento do preview (alças + larguras pré-definidas)
 

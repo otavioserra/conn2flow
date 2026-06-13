@@ -1303,6 +1303,7 @@ $(document).ready(function () {
         } else {
             const sistemaSel = '#html-editor-modal,#html-editor-overlay,#html-editor-hover-overlay,' +
                 '#html-editor-selection-overlay,#html-editor-floating-toolbar,#html-editor-selection-breadcrumb,' +
+                '#html-editor-selection-children,#html-editor-breadcrumb-hover-overlay,' +
                 '#html-editor-tailwind-styler,.conn2flow-dnd-placeholder,.ui.dimmer.modals';
             while ($(iframeDoc).find(sistemaSel).length > 0) {
                 $(iframeDoc).find(sistemaSel).remove();

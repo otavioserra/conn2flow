@@ -181,6 +181,60 @@ Refinamentos no Editor HTML Visual (req-035 / BATCH-035). Decisões de design/la
 3. **Labels de Identificação**: Inserir os labels "Ancestrais:" e "Filhos:" nas barras de navegação do DOM correspondentes.
 4. **Visual e Interação**:
    - Usar um fundo mais claro para o contêiner de filhos em relação ao de ancestrais, criando diferenciação visual.
-   - Utilizar a barra `/` como separador na lista de filhos.
+   - Utilizar a barra `|` como separador na lista de filhos (atualização do Engenheiro Chefe Humano em 2026-06-13; o intake original previa `/`).
    - Implementar listeners de hover e clique para destacar/selecionar os filhos diretos editáveis.
+5. **Destaque de Hover nos Breadcrumbs**: Hover sobre um link/item nos breadcrumbs (ancestrais ou filhos) deve desenhar uma caixa tracejada roxa (mesma cor/tom do selection overlay) sobre o elemento físico correspondente para melhorar a visualização e orientação do operador no DOM.
+
+**Notas de execução (BATCH-035)**: implementado integralmente no editor do iframe (`gestor/assets/interface/html-editor.js`); o orquestrador da janela pai não precisou de lógica nova (só o `sistemaSel` do save ganhou os 2 novos ids). O hover roxo usa um overlay dedicado `#html-editor-breadcrumb-hover-overlay` (z-index 999991, acima da seleção), e `onHoverMove()` ganhou uma guarda para não desenhar o hover azul quando o cursor está sobre o próprio chrome do editor (toolbar/breadcrumbs/styler), evitando conflito visual entre o azul direto e o roxo dos breadcrumbs. O empilhamento abaixo do elemento é cumulativo por `offsetHeight` (ancestrais → filhos → styler). Widgets (`.conn2flow-widget-wrapper`) seguem atômicos: o seletor de filhos é suprimido para eles.
+
+## DEC-050 - 2026-06-13 - accepted
+
+Novas Operações Estruturais no Editor HTML Visual (req-036 / BATCH-036). Decisões de design:
+1. **Copiar e Colar (Copy/Paste)**:
+   - Adicionar os botões "Copiar" (`.he-tb-copy`) e "Colar" (`.he-tb-paste`) na toolbar flutuante.
+   - Guardar o nó clonado em `this.clipboardElement` via `cloneNode(true)`.
+   - Colar insere a cópia como irmão adjacente inferior do elemento atualmente selecionado (alvo), tanto por botão quanto por atalho `Ctrl + V`.
+   - Adicionar atalhos globais de teclado `Ctrl + C` e `Ctrl + V` sincronizados no iframe e repassados pelo pai.
+2. **Embrulhar Elemento (Wrap Element)**:
+   - Adicionar o botão "Embrulhar" (`.he-tb-wrap`) na toolbar flutuante.
+   - O clique exibe um menu popup com tags estruturais básicas (`div`, `section`, `a`, `p`, `article`, `aside`).
+   - Ao selecionar a tag, o editor cria o novo elemento pai, substitui o selecionado atual por ele, coloca o selecionado dentro dele como filho, e mantém o foco da seleção visual no elemento original (filho), forçando o recálculo dos breadcrumbs e styler.
+
+**Notas de execução (BATCH-036)**: o botão Colar nasce oculto e só aparece quando `clipboardElement` tem um clone (`updatePasteButton()`); como esse botão muda a largura da toolbar, `copySelected()` chama `updateSelectionUI()` para reancorá-la à direita. Para não quebrar a cópia nativa de texto, o `Ctrl+C` só captura o elemento quando **não há seleção de texto ativa** (`getSelection().isCollapsed`) e o foco não está em input/textarea — tanto no iframe quanto na janela pai (`html-editor-visual-controls.js`, que repassa `c2f-he:copy`/`c2f-he:paste`). O ícone do botão Duplicar mudou de `copy` para `clone` para diferenciá-lo do novo Copiar. O popup `#html-editor-wrap-menu` foi registrado em `isEditorOwned`/`extractUserHtml`/`sistemaSel` e fecha ao clicar fora, ao trocar de seleção, em `hideChrome` e no Esc.
+
+## DEC-051 - 2026-06-13 - accepted
+
+Painel Auxiliar de Formatação Visual (req-037 / BATCH-037). Decisões de design:
+1. **Estrutura de Duas Colunas**: Dividir `#html-editor-tailwind-styler` em duas colunas: a da esquerda mantendo a lista de tags e input autocomplete existentes; a da direita contendo o Visual Helper com botões interativos.
+2. **Propriedades Mapeadas**: O Visual Helper deve gerenciar alinhamento de texto (Esquerda, Centro, Direita, Justificado), espaçamento/padding (Nenhum, Pequeno, Médio, Grande), arredondamento de bordas (Reto, Leve, Médio, Redondo) e paletas de cores rápidas em formato circular para Texto e Fundo.
+3. **Sincronização e Limpeza de Conflitos**:
+   - Cada grupo de controles de formatação visual deve ser mutuamente exclusivo (ex: aplicar `bg-blue-500` limpa outras classes com prefixo `bg-`).
+   - Ao carregar ou atualizar o selecionado, ler as classes vigentes e adicionar a classe `.active` aos botões visuais correspondentes.
+   - Qualquer clique nos controles visuais recalcula as classes aplicadas, atualiza a lista de tags na esquerda e chama `afterDomMutation()`.
+4. **Empilhamento Responsivo**: Se a largura do elemento selecionado for inferior a 400px, o painel do styler muda para o layout vertical `.he-styler-stacked` (`flex-direction: column`) para manter a usabilidade em botões e blocos pequenos.
+
+**Notas de execução (BATCH-037)**: a limpeza de conflitos NÃO usa prefixo cego (`bg-`/`text-`), e sim **lista fechada do grupo + regex específica de cor** — `text-(<cor>)-<shade>|text-white|text-black` e `bg-(<cor>)-<shade>|bg-white|bg-black|bg-transparent`. Isso evita dois falsos positivos: (a) trocar a cor do texto NÃO remove o alinhamento `text-left/center/...` nem o tamanho `text-lg/...`; (b) trocar a cor de fundo NÃO remove utilitários de imagem como `bg-cover`/`bg-center`/`bg-no-repeat`. Os grupos de alinhamento/padding/bordas usam lista fechada (+ regex `^p-\d+$` e `^rounded(-.+)?$` para variantes digitadas pelo operador). O painel (`buildHelperPanelHtml()`) é estático (gerado uma vez de `tailwindHelperConfig()`); `renderStyler()` só alterna `.active` via `syncHelperButtons()`. O botão "Nenhum" do padding mapeia para `p-0` (classe real). Defaults destacados quando nada do grupo está presente: alinhamento→`text-left`, bordas→`rounded-none`, fundo→`bg-transparent`.
+
+## DEC-052 - 2026-06-13 - accepted
+
+Inversão e Expansão do Painel Auxiliar de Formatação Visual (req-038 / BATCH-038). Decisões de design:
+1. **Inversão de Colunas**: Inverter a exibição das colunas do styler `#html-editor-tailwind-styler`. A Coluna Esquerda passa a exibir os controles visuais interativos (Visual Helper), enquanto a Coluna Direita exibe as tags de classes aplicadas e o input autocomplete.
+2. **Propriedades Estendidas**: Adicionar 7 novos grupos ao Visual Helper:
+   - Tamanho do Texto (`text-sm/base/lg/xl`).
+   - Espessura do Texto (`font-normal/medium/bold`).
+   - Margem Externa (`m-0/2/4/8`).
+   - Espessura da Borda (`border-0/border/border-2/border-4`).
+   - Cor de Borda (Paleta circular de 8 cores).
+   - Opacidade (`opacity-100/75/50/25`).
+   - Layout / Display (`block/inline-block/flex/grid`).
+3. **Limpeza e Sincronização Estendidas**:
+   - Ampliar `applyHelperClass()` para remover classes conflitantes do mesmo grupo usando regras específicas (ex: regex para margem `^m-\d+$` ou `^m-[a-z]+$`, cor de borda `^border-(<cor>)-<shade>|border-white|border-black`, e display/font-size/font-weight/opacity por lista fechada).
+   - Estender `syncHelperButtons()` para detectar e destacar o estado ativo para todos os novos grupos.
+4. **Deslocamento da Toolbar na Borda Inferior**: Se a barra flutuante for desenhada na borda inferior do elemento (quando não há espaço no topo), a posição inicial de empilhamento vertical do breadcrumb (`stackTop`) é acrescida da altura da toolbar (`toolbar.offsetHeight + 12`), empurrando os elementos de navegação e formatação para baixo da barra e evitando sobreposições.
+
+**Notas de execução (BATCH-038)**: sob autorização do Engenheiro Chefe Humano para "ser criativo e criar mais ainda", o painel foi expandido para **20 grupos organizados em 4 seções** (`.he-helper-section`): Texto (Alinhamento, Tamanho, Peso, Caixa de texto, Decoração, Cor), Layout (Exibição, Direção flex, Justificar, Alinhar itens, Gap), Caixa (Largura, Padding, Margem), Aparência (Fundo, Cantos, Borda, Cor da borda, Sombra, Opacidade) — os 7 pedidos + 8 extras. O styler ganhou `max-height:72vh` + scroll. A limpeza de conflitos combina três mecanismos em `applyHelperClass()`: lista fechada do grupo (derivada dos botões), `cleanList` (variantes de palavra isolada: displays/sombras/transform/decoração/flex-dir/justify/items/width) e `cleanRe` (cores, `^p-\d+$`, `^m[xytblr]?-\d+$` que preserva `mx-auto`/`min-h-*`, `^gap(-[xy])?-\d+$`, `^opacity-\d+$`, `^border-\d+$`). As cores de borda são renderizadas como **anel** (`.he-helper-bordercolor`, fundo branco + borda 3px) para distingui-las das cores de fundo. As classes de largura com barra (`w-1/2`) funcionam normalmente em `classList`/seletores de atributo.
+
+
+
+
 

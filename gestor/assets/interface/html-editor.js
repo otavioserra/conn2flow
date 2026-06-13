@@ -22,8 +22,12 @@ $(document).ready(function () {
             this.selectionOverlay = null;
             this.toolbar = null;
             this.breadcrumb = null;
+            this.childrenBar = null;            // seletor de filhos (req-035)
+            this.breadcrumbHoverOverlay = null; // hover roxo dos breadcrumbs (req-035)
             this.styler = null;
             this.placeholder = null;
+            this.wrapMenu = null;               // popup de tags para embrulhar (req-036)
+            this.clipboardElement = null;       // área de transferência interna (req-036)
 
             this.hoveredElement = null;   // elemento sob o mouse (hover)
             this.selectedElement = null;  // elemento selecionado (persistente)
@@ -101,21 +105,68 @@ $(document).ready(function () {
                 #html-editor-floating-toolbar .he-tb-btn:hover{background:rgba(255,255,255,0.18);}
                 #html-editor-floating-toolbar .he-tb-btn.he-tb-drag{cursor:move;}
                 #html-editor-floating-toolbar .he-tb-btn.he-tb-del:hover{background:rgba(220,38,38,0.85);}
+                .he-wrap-menu{position:absolute;display:none;z-index:1000000;background:#1f2937;border-radius:6px;
+                    box-shadow:0 2px 10px rgba(0,0,0,0.3);padding:4px;min-width:120px;}
+                .he-wrap-menu .he-wrap-item{padding:5px 10px;color:#e5e7eb;cursor:pointer;border-radius:4px;
+                    font:12px monospace;}
+                .he-wrap-menu .he-wrap-item:hover{background:rgba(255,255,255,0.18);}
                 #html-editor-selection-breadcrumb{position:absolute;display:none;z-index:999998;
                     background:#111827;color:#e5e7eb;font:11px/1.4 monospace;padding:2px 6px;border-radius:0 0 4px 4px;
                     max-width:90vw;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
                 #html-editor-selection-breadcrumb .he-crumb{cursor:pointer;color:#93c5fd;}
                 #html-editor-selection-breadcrumb .he-crumb:hover{color:#fff;text-decoration:underline;}
                 #html-editor-selection-breadcrumb .he-crumb-sep{color:#6b7280;margin:0 3px;}
+                #html-editor-selection-breadcrumb .he-crumb-label,
+                #html-editor-selection-children .he-crumb-label{color:#9ca3af;font-weight:bold;margin-right:5px;}
+                #html-editor-selection-children{position:absolute;display:none;z-index:999998;
+                    background:#1f2937;color:#e5e7eb;font:11px/1.4 monospace;padding:2px 6px;border-radius:0 0 4px 4px;
+                    max-width:90vw;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+                #html-editor-selection-children .he-crumb-child{cursor:pointer;color:#fcd34d;}
+                #html-editor-selection-children .he-crumb-child:hover{color:#fff;text-decoration:underline;}
+                #html-editor-selection-children .he-child-sep{color:#6b7280;margin:0 3px;}
+                #html-editor-breadcrumb-hover-overlay{position:absolute;pointer-events:none;box-sizing:border-box;
+                    display:none;z-index:999991;border-radius:3px;border:2px dashed rgba(124,58,237,0.95);
+                    background:rgba(124,58,237,0.06);}
                 #html-editor-tailwind-styler{position:absolute;display:none;z-index:999998;background:#fff;
                     border:1px solid #d1d5db;border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,0.2);
-                    padding:6px;max-width:420px;}
+                    padding:6px;max-width:560px;max-height:72vh;overflow-y:auto;}
+                #html-editor-tailwind-styler .he-styler-cols{display:flex;gap:10px;align-items:flex-start;}
+                #html-editor-tailwind-styler.he-styler-stacked{max-width:320px;}
+                #html-editor-tailwind-styler.he-styler-stacked .he-styler-cols{flex-direction:column;gap:6px;}
+                #html-editor-tailwind-styler .he-styler-col-visual{flex:0 0 auto;}
+                #html-editor-tailwind-styler .he-styler-col-classes{flex:1 1 190px;min-width:0;
+                    border-left:1px solid #e5e7eb;padding-left:10px;align-self:stretch;}
+                #html-editor-tailwind-styler.he-styler-stacked .he-styler-col-classes{border-left:none;
+                    border-top:1px solid #e5e7eb;padding-left:0;padding-top:6px;width:100%;}
+                #html-editor-tailwind-styler .he-helper-section{font:bold 10px sans-serif;color:#1f2937;
+                    text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px;padding-bottom:2px;
+                    border-bottom:1px solid #e5e7eb;}
+                #html-editor-tailwind-styler .he-helper-section:first-child{margin-top:0;}
                 #html-editor-tailwind-styler .he-tw-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;}
                 #html-editor-tailwind-styler .he-tw-tag{display:inline-flex;align-items:center;gap:4px;
                     background:#eef2ff;color:#3730a3;border-radius:10px;padding:1px 6px;font:11px monospace;}
                 #html-editor-tailwind-styler .he-tw-tag b{cursor:pointer;color:#9333ea;}
                 #html-editor-tailwind-styler input{width:100%;border:1px solid #d1d5db;border-radius:4px;
                     padding:3px 6px;font:12px monospace;outline:none;}
+                #html-editor-tailwind-styler .he-helper-group{margin-bottom:6px;}
+                #html-editor-tailwind-styler .he-helper-title{font:bold 9px sans-serif;color:#6b7280;
+                    text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+                #html-editor-tailwind-styler .he-helper-row{display:flex;gap:4px;flex-wrap:wrap;}
+                #html-editor-tailwind-styler .he-helper-btn{min-width:24px;height:24px;display:inline-flex;
+                    align-items:center;justify-content:center;border:1px solid #d1d5db;border-radius:4px;background:#fff;
+                    cursor:pointer;font:11px sans-serif;color:#374151;padding:0 5px;}
+                #html-editor-tailwind-styler .he-helper-btn:hover{background:#f3f4f6;}
+                #html-editor-tailwind-styler .he-helper-btn.active{border-color:#2563eb;background:#dbeafe;color:#1e40af;}
+                #html-editor-tailwind-styler .he-helper-btn i.icon{margin:0;}
+                #html-editor-tailwind-styler .he-helper-color{width:20px;height:20px;border-radius:50%;
+                    border:1px solid rgba(0,0,0,0.25);cursor:pointer;padding:0;background-clip:padding-box;}
+                #html-editor-tailwind-styler .he-helper-color.he-color-transparent{
+                    background-image:linear-gradient(45deg,#ccc 25%,transparent 25%,transparent 75%,#ccc 75%),
+                    linear-gradient(45deg,#ccc 25%,#fff 25%,#fff 75%,#ccc 75%);
+                    background-size:8px 8px;background-position:0 0,4px 4px;}
+                #html-editor-tailwind-styler .he-helper-color.active{outline:2px solid #2563eb;outline-offset:1px;}
+                #html-editor-tailwind-styler .he-helper-bordercolor{background:#fff !important;border-width:3px;
+                    border-style:solid;}
                 .conn2flow-dnd-placeholder{height:0;border-top:3px dashed #f59e0b;margin:0;padding:0;
                     pointer-events:none;position:relative;z-index:999985;box-shadow:0 0 4px rgba(245,158,11,0.6);}
                 .conn2flow-widget-wrapper{position:relative;border:2px dashed #f59e0b;
@@ -157,6 +208,16 @@ $(document).ready(function () {
             this.breadcrumb = document.createElement('div');
             this.breadcrumb.id = 'html-editor-selection-breadcrumb';
             document.body.appendChild(this.breadcrumb);
+
+            // req-035: seletor de filhos diretos (abaixo do breadcrumb de ancestrais).
+            this.childrenBar = document.createElement('div');
+            this.childrenBar.id = 'html-editor-selection-children';
+            document.body.appendChild(this.childrenBar);
+
+            // req-035: overlay roxo tracejado para o hover sobre itens dos breadcrumbs.
+            this.breadcrumbHoverOverlay = document.createElement('div');
+            this.breadcrumbHoverOverlay.id = 'html-editor-breadcrumb-hover-overlay';
+            document.body.appendChild(this.breadcrumbHoverOverlay);
         }
 
         createToolbar() {
@@ -166,7 +227,13 @@ $(document).ready(function () {
                 <button class="he-tb-btn he-tb-drag" type="button" title="Arrastar / Mover">
                     <i class="arrows alternate icon" style="margin:0"></i></button>
                 <button class="he-tb-btn he-tb-dup" type="button" title="Duplicar">
+                    <i class="clone icon" style="margin:0"></i></button>
+                <button class="he-tb-btn he-tb-copy" type="button" title="Copiar (Ctrl+C)">
                     <i class="copy icon" style="margin:0"></i></button>
+                <button class="he-tb-btn he-tb-paste" type="button" title="Colar (Ctrl+V)" style="display:none">
+                    <i class="paste icon" style="margin:0"></i></button>
+                <button class="he-tb-btn he-tb-wrap" type="button" title="Embrulhar">
+                    <i class="box icon" style="margin:0"></i></button>
                 <button class="he-tb-btn he-tb-edit" type="button" title="Editar">
                     <i class="pencil icon" style="margin:0"></i></button>
                 <button class="he-tb-btn he-tb-del" type="button" title="Deletar">
@@ -175,25 +242,70 @@ $(document).ready(function () {
             document.body.appendChild(tb);
             this.toolbar = tb;
 
+            // req-036: menu de tags para embrulhar (wrap) o elemento selecionado.
+            const wrapMenu = document.createElement('div');
+            wrapMenu.id = 'html-editor-wrap-menu';
+            wrapMenu.className = 'he-wrap-menu';
+            ['div', 'section', 'a', 'p', 'article', 'aside'].forEach((tag) => {
+                const item = document.createElement('div');
+                item.className = 'he-wrap-item';
+                item.setAttribute('data-tag', tag);
+                item.textContent = '<' + tag + '>';
+                wrapMenu.appendChild(item);
+            });
+            document.body.appendChild(wrapMenu);
+            this.wrapMenu = wrapMenu;
+
             // Editor rápido de classes Tailwind (acoplado ao overlay de seleção).
+            // req-037/req-038: duas colunas — ESQUERDA (painel visual) e DIREITA (tags + input).
             const styler = document.createElement('div');
             styler.id = 'html-editor-tailwind-styler';
             styler.innerHTML = `
-                <div class="he-tw-tags"></div>
-                <input type="text" list="html-editor-tw-classes" placeholder="Adicionar classes (espaço/Enter)..." />
+                <div class="he-styler-cols">
+                    <div class="he-styler-col-visual">${this.buildHelperPanelHtml()}</div>
+                    <div class="he-styler-col-classes">
+                        <div class="he-tw-tags"></div>
+                        <input type="text" list="html-editor-tw-classes" placeholder="Adicionar classes (espaço/Enter)..." />
+                    </div>
+                </div>
             `;
             document.body.appendChild(styler);
             this.styler = styler;
 
+            // req-037: cliques nos botões do painel visual de formatação.
+            styler.querySelector('.he-styler-col-visual').addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-helper-group]');
+                if (!btn) return;
+                e.preventDefault(); e.stopPropagation();
+                this.applyHelperClass(btn.getAttribute('data-helper-group'), btn.getAttribute('data-helper-class'));
+            });
+
             // ===== Ações da toolbar
             tb.querySelector('.he-tb-dup').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.duplicateSelected();
+            });
+            tb.querySelector('.he-tb-copy').addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation(); this.copySelected();
+            });
+            tb.querySelector('.he-tb-paste').addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation(); this.pasteSelected();
+            });
+            tb.querySelector('.he-tb-wrap').addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation(); this.toggleWrapMenu();
             });
             tb.querySelector('.he-tb-edit').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.editSelected();
             });
             tb.querySelector('.he-tb-del').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.deleteSelected();
+            });
+            // Itens do menu de embrulhar.
+            wrapMenu.addEventListener('click', (e) => {
+                const item = e.target.closest('.he-wrap-item');
+                if (!item) return;
+                e.preventDefault(); e.stopPropagation();
+                this.wrapSelected(item.getAttribute('data-tag'));
+                this.closeWrapMenu();
             });
             // Drag handle inicia o DnD.
             tb.querySelector('.he-tb-drag').addEventListener('mousedown', (e) => {
@@ -229,11 +341,16 @@ $(document).ready(function () {
                 element.id === 'html-editor-selection-overlay' ||
                 element.id === 'html-editor-floating-toolbar' ||
                 element.id === 'html-editor-selection-breadcrumb' ||
+                element.id === 'html-editor-selection-children' ||
+                element.id === 'html-editor-breadcrumb-hover-overlay' ||
                 element.id === 'html-editor-tailwind-styler' ||
+                element.id === 'html-editor-wrap-menu' ||
                 element.id === 'html-editor-modal')) return true;
             if (typeof element.closest === 'function') {
                 if (element.closest('#html-editor-floating-toolbar')) return true;
                 if (element.closest('#html-editor-selection-breadcrumb')) return true;
+                if (element.closest('#html-editor-selection-children')) return true;
+                if (element.closest('#html-editor-wrap-menu')) return true;
                 if (element.closest('#html-editor-tailwind-styler')) return true;
                 if (element.closest('#html-editor-modal')) return true;
                 if (element.closest('.html-editor-container')) return true;
@@ -342,6 +459,15 @@ $(document).ready(function () {
                 }
             }, true);
 
+            // Fechar o menu de embrulhar ao clicar fora dele (e fora do botão que o abre).
+            document.addEventListener('mousedown', (e) => {
+                if (!this.wrapMenu || this.wrapMenu.style.display !== 'block') return;
+                const t = e.target;
+                if (t && typeof t.closest === 'function' &&
+                    (t.closest('#html-editor-wrap-menu') || t.closest('.he-tb-wrap'))) return;
+                this.closeWrapMenu();
+            }, true);
+
             // Reposicionar overlays em scroll/resize.
             const reposition = () => {
                 if (this.hoveredElement) this.positionOverlay(this.hoverOverlay, this.hoveredElement);
@@ -360,11 +486,23 @@ $(document).ready(function () {
                     e.preventDefault(); this.redo();
                 } else if (key === 'escape') {
                     if (this.insertMode) this.exitInsertMode();
-                    else this.clearSelection();
+                    else { this.closeWrapMenu(); this.clearSelection(); }
                 } else if ((key === 'delete' || key === 'backspace') && this.selectedElement && !this.isTypingTarget(e.target)) {
                     e.preventDefault(); this.deleteSelected();
+                } else if ((e.ctrlKey || e.metaKey) && key === 'c' && this.selectedElement &&
+                    !this.isTypingTarget(e.target) && this.isTextSelectionCollapsed()) {
+                    // Copiar o elemento só quando não há seleção de texto ativa (preserva a cópia nativa).
+                    e.preventDefault(); this.copySelected();
+                } else if ((e.ctrlKey || e.metaKey) && key === 'v' && this.clipboardElement &&
+                    this.selectedElement && !this.isTypingTarget(e.target)) {
+                    e.preventDefault(); this.pasteSelected();
                 }
             });
+        }
+
+        isTextSelectionCollapsed() {
+            const sel = window.getSelection ? window.getSelection() : null;
+            return !sel || sel.isCollapsed || String(sel).length === 0;
         }
 
         isTypingTarget(t) {
@@ -381,6 +519,8 @@ $(document).ready(function () {
                 switch (data.action) {
                     case 'c2f-he:undo': this.undo(); break;
                     case 'c2f-he:redo': this.redo(); break;
+                    case 'c2f-he:copy': this.copySelected(); break;
+                    case 'c2f-he:paste': this.pasteSelected(); break;
                     case 'c2f-he:insert-element':
                         this.enterInsertMode({ kind: 'element', elementType: data.elementType }); break;
                     case 'c2f-he:insert-widget':
@@ -397,6 +537,10 @@ $(document).ready(function () {
         // Hover
         // ===================================================================
         onHoverMove(x, y) {
+            // Se o cursor está sobre o próprio chrome do editor (toolbar/breadcrumbs/styler),
+            // não desenhar o hover azul — o hover roxo dos breadcrumbs é tratado à parte.
+            const top = document.elementFromPoint(x, y);
+            if (top && this.isEditorOwned(top)) { this.hideHover(); return; }
             const el = this.findEditableFromPoint(x, y);
             if (!el) { this.hideHover(); return; }
             if (el === this.selectedElement) { this.hideHover(); return; }
@@ -425,6 +569,7 @@ $(document).ready(function () {
         // ===================================================================
         selectElement(element) {
             if (!element) return;
+            this.closeWrapMenu();
             this.selectedElement = element;
             this.hideHover();
             this.updateSelectionUI();
@@ -436,7 +581,10 @@ $(document).ready(function () {
             if (this.selectionOverlay) this.selectionOverlay.style.display = 'none';
             if (this.toolbar) this.toolbar.style.display = 'none';
             if (this.breadcrumb) this.breadcrumb.style.display = 'none';
+            if (this.childrenBar) this.childrenBar.style.display = 'none';
             if (this.styler) this.styler.style.display = 'none';
+            this.closeWrapMenu();
+            this.hideBreadcrumbHover();
         }
 
         updateSelectionUI() {
@@ -449,29 +597,70 @@ $(document).ready(function () {
             const rect = element.getBoundingClientRect();
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            const left = rect.left + scrollLeft;
 
-            // Toolbar acoplada logo acima do topo do overlay de seleção.
+            // Toolbar acoplada acima do topo do overlay de seleção (ou abaixo, se não couber),
+            // ancorada à BORDA DIREITA do elemento (req-035 §1.1).
             this.toolbar.style.display = 'flex';
+            this.updatePasteButton(); // req-036: o botão Colar entra/sai antes de medir a largura
             const tbTop = rect.top + scrollTop - this.toolbar.offsetHeight - 6;
-            this.toolbar.style.top = (tbTop < scrollTop ? rect.bottom + scrollTop + 6 : tbTop) + 'px';
-            this.toolbar.style.left = (rect.left + scrollLeft) + 'px';
+            const toolbarEmbaixo = tbTop < scrollTop; // sem espaço no topo: vai para baixo do elemento
+            this.toolbar.style.top = (toolbarEmbaixo ? rect.bottom + scrollTop + 6 : tbTop) + 'px';
+            let tbLeft = rect.right + scrollLeft - this.toolbar.offsetWidth;
+            if (tbLeft < scrollLeft) tbLeft = scrollLeft; // não estourar a margem esquerda
+            this.toolbar.style.left = tbLeft + 'px';
 
-            // Breadcrumb na borda inferior do overlay de seleção.
+            // Empilhamento abaixo do elemento (req-035 §1.2): ancestrais -> filhos -> classes Tailwind.
+            // Cada bloco soma sua altura ao topo cumulativo do próximo.
+            // req-038: se a toolbar foi desenhada na borda inferior, empurrar os painéis para baixo dela.
+            let stackTop = rect.bottom + scrollTop;
+            if (toolbarEmbaixo) stackTop += this.toolbar.offsetHeight + 12;
+
+            // 1) Ancestrais (breadcrumb legado, sempre presente quando há seleção).
             this.renderBreadcrumb(element);
             this.breadcrumb.style.display = 'block';
-            this.breadcrumb.style.top = (rect.bottom + scrollTop) + 'px';
-            this.breadcrumb.style.left = (rect.left + scrollLeft) + 'px';
+            this.breadcrumb.style.top = stackTop + 'px';
+            this.breadcrumb.style.left = left + 'px';
+            stackTop += this.breadcrumb.offsetHeight;
 
-            // Tailwind styler logo abaixo do breadcrumb.
+            // 2) Filhos (novo seletor; oculta-se sozinho se não houver filhos editáveis).
+            this.renderChildren(element);
+            if (this.childrenBar.style.display === 'block') {
+                this.childrenBar.style.top = stackTop + 'px';
+                this.childrenBar.style.left = left + 'px';
+                stackTop += this.childrenBar.offsetHeight;
+            }
+
+            // 3) Tailwind styler (se visível para o elemento atual).
             if (this.styler.style.display === 'block') {
-                this.styler.style.top = (rect.bottom + scrollTop + this.breadcrumb.offsetHeight + 2) + 'px';
-                this.styler.style.left = (rect.left + scrollLeft) + 'px';
+                // req-037: empilhar as duas colunas verticalmente em elementos estreitos (<400px).
+                this.styler.classList.toggle('he-styler-stacked', rect.width < 400);
+                this.styler.style.top = (stackTop + 2) + 'px';
+                this.styler.style.left = left + 'px';
             }
         }
 
         // ===================================================================
-        // Breadcrumb
+        // Breadcrumb de ancestrais + seletor de filhos (req-035)
         // ===================================================================
+        formatCrumbLabel(el) {
+            let label = el.tagName.toLowerCase();
+            if (el.id) label += '#' + el.id;
+            else if (el.classList && el.classList.length) label += '.' + el.classList[0];
+            return label;
+        }
+
+        // Hover roxo tracejado (overlay dedicado) acionado ao passar o mouse nos breadcrumbs.
+        showBreadcrumbHover(el) {
+            if (!el || !this.breadcrumbHoverOverlay) return;
+            this.positionOverlay(this.breadcrumbHoverOverlay, el);
+            this.breadcrumbHoverOverlay.style.display = 'block';
+        }
+
+        hideBreadcrumbHover() {
+            if (this.breadcrumbHoverOverlay) this.breadcrumbHoverOverlay.style.display = 'none';
+        }
+
         renderBreadcrumb(element) {
             const path = [];
             let node = element;
@@ -485,6 +674,10 @@ $(document).ready(function () {
                 guard++;
             }
             this.breadcrumb.innerHTML = '';
+            const lbl = document.createElement('span');
+            lbl.className = 'he-crumb-label';
+            lbl.textContent = 'Ancestrais:';
+            this.breadcrumb.appendChild(lbl);
             path.forEach((el, idx) => {
                 if (idx > 0) {
                     const sep = document.createElement('span');
@@ -494,22 +687,55 @@ $(document).ready(function () {
                 }
                 const crumb = document.createElement('span');
                 crumb.className = 'he-crumb';
-                let label = el.tagName.toLowerCase();
-                if (el.id) label += '#' + el.id;
-                else if (el.classList && el.classList.length) label += '.' + el.classList[0];
-                crumb.textContent = label;
-                crumb.addEventListener('mouseenter', () => {
-                    this.hoveredElement = el;
-                    this.positionOverlay(this.hoverOverlay, el);
-                    this.hoverOverlay.style.display = 'block';
-                });
-                crumb.addEventListener('mouseleave', () => { this.hideHover(); });
+                crumb.textContent = this.formatCrumbLabel(el);
+                crumb.addEventListener('mouseenter', () => { this.showBreadcrumbHover(el); });
+                crumb.addEventListener('mouseleave', () => { this.hideBreadcrumbHover(); });
                 crumb.addEventListener('click', (e) => {
                     e.preventDefault(); e.stopPropagation();
                     this.selectElement(el);
                 });
                 this.breadcrumb.appendChild(crumb);
             });
+        }
+
+        renderChildren(element) {
+            this.childrenBar.innerHTML = '';
+            // Widgets são blocos atômicos: não expor seus filhos internos.
+            if (element.classList && element.classList.contains('conn2flow-widget-wrapper')) {
+                this.childrenBar.style.display = 'none';
+                return;
+            }
+            const children = Array.from(element.children || []).filter((c) => {
+                if (this.isEditorOwned(c)) return false;
+                return !this.config.ignoredTags.includes(c.tagName.toLowerCase());
+            });
+            if (!children.length) {
+                this.childrenBar.style.display = 'none';
+                return;
+            }
+            const lbl = document.createElement('span');
+            lbl.className = 'he-crumb-label';
+            lbl.textContent = 'Filhos:';
+            this.childrenBar.appendChild(lbl);
+            children.forEach((el, idx) => {
+                if (idx > 0) {
+                    const sep = document.createElement('span');
+                    sep.className = 'he-child-sep';
+                    sep.textContent = '|';
+                    this.childrenBar.appendChild(sep);
+                }
+                const crumb = document.createElement('span');
+                crumb.className = 'he-crumb-child';
+                crumb.textContent = this.formatCrumbLabel(el);
+                crumb.addEventListener('mouseenter', () => { this.showBreadcrumbHover(el); });
+                crumb.addEventListener('mouseleave', () => { this.hideBreadcrumbHover(); });
+                crumb.addEventListener('click', (e) => {
+                    e.preventDefault(); e.stopPropagation();
+                    this.selectElement(el);
+                });
+                this.childrenBar.appendChild(crumb);
+            });
+            this.childrenBar.style.display = 'block';
         }
 
         // ===================================================================
@@ -532,6 +758,7 @@ $(document).ready(function () {
                 tagsBox.appendChild(tag);
             });
             this.styler.querySelector('input').value = '';
+            this.syncHelperButtons(element);
             this.styler.style.display = 'block';
             this.updateSelectionUI();
         }
@@ -555,6 +782,304 @@ $(document).ready(function () {
             this.afterDomMutation();
         }
 
+        // ===================================================================
+        // Painel visual de formatação (Tailwind UI Helper) — req-037 / req-038
+        // ===================================================================
+        tailwindHelperConfig() {
+            if (this._helperConfig) return this._helperConfig;
+            // Nomes de cor do Tailwind para detectar/limpar classes de cor por regex,
+            // preservando alinhamento (`text-left`), tamanhos (`text-lg`) e utilitários (`bg-cover`).
+            const cn = 'slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose';
+            const textColorRe = new RegExp('^text-(?:' + cn + ')-\\d{2,3}$|^text-(?:white|black)$');
+            const bgColorRe = new RegExp('^bg-(?:' + cn + ')-\\d{2,3}$|^bg-(?:white|black|transparent)$');
+            const borderColorRe = new RegExp('^border-(?:' + cn + ')-\\d{2,3}$|^border-(?:white|black|transparent)$');
+            const fontSizeRe = /^text-(?:xs|sm|base|lg|xl|[2-9]xl)$/;
+            const fontWeightRe = /^font-(?:thin|extralight|light|normal|medium|semibold|bold|extrabold|black)$/;
+            const marginRe = /^m[xytblr]?-\d+$/;            // m-/mx-/my-/mt-/mb-/ml-/mr- + número
+            const borderWidthRe = /^border-\d+$/;            // border-0/2/4/8 (o 'border' fica na lista)
+            const opacityRe = /^opacity-\d+$/;
+            const gapRe = /^gap(?:-[xy])?-\d+$/;
+
+            // Listas estendidas para grupos cujas classes são palavras isoladas (sem número).
+            const displayList = ['block', 'inline-block', 'inline', 'flex', 'inline-flex', 'grid', 'inline-grid', 'hidden', 'table', 'flow-root', 'contents'];
+            const flexDirList = ['flex-row', 'flex-col', 'flex-row-reverse', 'flex-col-reverse'];
+            const justifyList = ['justify-start', 'justify-center', 'justify-end', 'justify-between', 'justify-around', 'justify-evenly'];
+            const itemsList = ['items-start', 'items-center', 'items-end', 'items-stretch', 'items-baseline'];
+            const shadowList = ['shadow-none', 'shadow-sm', 'shadow', 'shadow-md', 'shadow-lg', 'shadow-xl', 'shadow-2xl', 'shadow-inner'];
+            const transformList = ['uppercase', 'lowercase', 'capitalize', 'normal-case'];
+            const decorationList = ['underline', 'line-through', 'no-underline', 'overline'];
+            const widthList = ['w-auto', 'w-full', 'w-screen', 'w-fit', 'w-min', 'w-max', 'w-1/2', 'w-1/3', 'w-2/3', 'w-1/4', 'w-3/4'];
+
+            this._helperConfig = [
+                // ===== Seção: TEXTO
+                {
+                    key: 'align', section: 'Texto', title: 'Alinhamento', kind: 'icon', default: 'text-left',
+                    buttons: [
+                        { cls: 'text-left', icon: 'align left', title: 'Esquerda' },
+                        { cls: 'text-center', icon: 'align center', title: 'Centro' },
+                        { cls: 'text-right', icon: 'align right', title: 'Direita' },
+                        { cls: 'text-justify', icon: 'align justify', title: 'Justificado' }
+                    ]
+                },
+                {
+                    key: 'fontSize', section: 'Texto', title: 'Tamanho', kind: 'text', default: 'text-base', cleanRe: fontSizeRe,
+                    buttons: [
+                        { cls: 'text-sm', label: 'P', title: 'Pequeno' },
+                        { cls: 'text-base', label: 'N', title: 'Normal' },
+                        { cls: 'text-lg', label: 'G', title: 'Grande' },
+                        { cls: 'text-xl', label: 'XG', title: 'Extra grande' }
+                    ]
+                },
+                {
+                    key: 'fontWeight', section: 'Texto', title: 'Peso', kind: 'text', default: 'font-normal', cleanRe: fontWeightRe,
+                    buttons: [
+                        { cls: 'font-normal', label: 'N', title: 'Normal' },
+                        { cls: 'font-medium', label: 'M', title: 'Médio' },
+                        { cls: 'font-bold', label: 'B', title: 'Negrito' }
+                    ]
+                },
+                {
+                    key: 'textTransform', section: 'Texto', title: 'Caixa', kind: 'text', cleanList: transformList,
+                    buttons: [
+                        { cls: 'normal-case', label: 'Aa', title: 'Normal' },
+                        { cls: 'uppercase', label: 'AA', title: 'Maiúsculas' },
+                        { cls: 'lowercase', label: 'aa', title: 'Minúsculas' },
+                        { cls: 'capitalize', label: 'Ab', title: 'Capitalizar' }
+                    ]
+                },
+                {
+                    key: 'textDecoration', section: 'Texto', title: 'Decoração', kind: 'icon', cleanList: decorationList,
+                    buttons: [
+                        { cls: 'no-underline', icon: 'ban', title: 'Nenhuma' },
+                        { cls: 'underline', icon: 'underline', title: 'Sublinhado' },
+                        { cls: 'line-through', icon: 'strikethrough', title: 'Riscado' }
+                    ]
+                },
+                {
+                    key: 'textColor', section: 'Texto', title: 'Cor do texto', kind: 'color', cleanRe: textColorRe,
+                    buttons: [
+                        { cls: 'text-gray-900', color: '#111827', title: 'Preto' },
+                        { cls: 'text-gray-500', color: '#6b7280', title: 'Cinza' },
+                        { cls: 'text-red-600', color: '#dc2626', title: 'Vermelho' },
+                        { cls: 'text-blue-600', color: '#2563eb', title: 'Azul' },
+                        { cls: 'text-green-600', color: '#16a34a', title: 'Verde' },
+                        { cls: 'text-yellow-500', color: '#eab308', title: 'Amarelo' },
+                        { cls: 'text-purple-600', color: '#9333ea', title: 'Roxo' },
+                        { cls: 'text-white', color: '#ffffff', title: 'Branco' }
+                    ]
+                },
+                // ===== Seção: LAYOUT
+                {
+                    key: 'display', section: 'Layout', title: 'Exibição', kind: 'text', cleanList: displayList,
+                    buttons: [
+                        { cls: 'block', label: 'Bloco', title: 'Block' },
+                        { cls: 'inline-block', label: 'Inline', title: 'Inline-block' },
+                        { cls: 'flex', label: 'Flex', title: 'Flex' },
+                        { cls: 'grid', label: 'Grid', title: 'Grid' }
+                    ]
+                },
+                {
+                    key: 'flexDirection', section: 'Layout', title: 'Direção', kind: 'icon', cleanList: flexDirList,
+                    buttons: [
+                        { cls: 'flex-row', icon: 'arrows alternate horizontal', title: 'Linha' },
+                        { cls: 'flex-col', icon: 'arrows alternate vertical', title: 'Coluna' }
+                    ]
+                },
+                {
+                    key: 'justify', section: 'Layout', title: 'Justificar', kind: 'icon', cleanList: justifyList,
+                    buttons: [
+                        { cls: 'justify-start', icon: 'align left', title: 'Início' },
+                        { cls: 'justify-center', icon: 'align center', title: 'Centro' },
+                        { cls: 'justify-between', icon: 'align justify', title: 'Entre' },
+                        { cls: 'justify-end', icon: 'align right', title: 'Fim' }
+                    ]
+                },
+                {
+                    key: 'items', section: 'Layout', title: 'Alinhar itens', kind: 'text', cleanList: itemsList,
+                    buttons: [
+                        { cls: 'items-start', label: 'Topo', title: 'Início' },
+                        { cls: 'items-center', label: 'Meio', title: 'Centro' },
+                        { cls: 'items-end', label: 'Base', title: 'Fim' },
+                        { cls: 'items-stretch', label: 'Esticar', title: 'Esticar' }
+                    ]
+                },
+                {
+                    key: 'gap', section: 'Layout', title: 'Espaço (gap)', kind: 'text', cleanRe: gapRe,
+                    buttons: [
+                        { cls: 'gap-0', label: '0', title: 'Nenhum' },
+                        { cls: 'gap-2', label: 'P', title: 'Pequeno' },
+                        { cls: 'gap-4', label: 'M', title: 'Médio' },
+                        { cls: 'gap-8', label: 'G', title: 'Grande' }
+                    ]
+                },
+                // ===== Seção: CAIXA
+                {
+                    key: 'width', section: 'Caixa', title: 'Largura', kind: 'text', cleanList: widthList,
+                    buttons: [
+                        { cls: 'w-auto', label: 'Auto', title: 'Automática' },
+                        { cls: 'w-1/2', label: '½', title: 'Metade' },
+                        { cls: 'w-full', label: '100%', title: 'Total' }
+                    ]
+                },
+                {
+                    key: 'padding', section: 'Caixa', title: 'Padding', kind: 'text', cleanRe: /^p-\d+$/,
+                    buttons: [
+                        { cls: 'p-0', label: '0', title: 'Nenhum' },
+                        { cls: 'p-2', label: 'P', title: 'Pequeno' },
+                        { cls: 'p-4', label: 'M', title: 'Médio' },
+                        { cls: 'p-8', label: 'G', title: 'Grande' }
+                    ]
+                },
+                {
+                    key: 'margin', section: 'Caixa', title: 'Margem', kind: 'text', cleanRe: marginRe,
+                    buttons: [
+                        { cls: 'm-0', label: '0', title: 'Nenhuma' },
+                        { cls: 'm-2', label: 'P', title: 'Pequena' },
+                        { cls: 'm-4', label: 'M', title: 'Média' },
+                        { cls: 'm-8', label: 'G', title: 'Grande' }
+                    ]
+                },
+                // ===== Seção: APARÊNCIA
+                {
+                    key: 'bgColor', section: 'Aparência', title: 'Fundo', kind: 'color', default: 'bg-transparent', cleanRe: bgColorRe,
+                    buttons: [
+                        { cls: 'bg-transparent', color: 'transparent', title: 'Transparente' },
+                        { cls: 'bg-gray-100', color: '#f3f4f6', title: 'Cinza claro' },
+                        { cls: 'bg-gray-800', color: '#1f2937', title: 'Cinza escuro' },
+                        { cls: 'bg-red-500', color: '#ef4444', title: 'Vermelho' },
+                        { cls: 'bg-blue-500', color: '#3b82f6', title: 'Azul' },
+                        { cls: 'bg-green-500', color: '#22c55e', title: 'Verde' },
+                        { cls: 'bg-yellow-400', color: '#facc15', title: 'Amarelo' },
+                        { cls: 'bg-purple-500', color: '#a855f7', title: 'Roxo' }
+                    ]
+                },
+                {
+                    key: 'rounded', section: 'Aparência', title: 'Cantos', kind: 'text', default: 'rounded-none', cleanRe: /^rounded(-.+)?$/,
+                    buttons: [
+                        { cls: 'rounded-none', label: 'Reto', title: 'Reto' },
+                        { cls: 'rounded-sm', label: 'Leve', title: 'Leve' },
+                        { cls: 'rounded-lg', label: 'Médio', title: 'Médio' },
+                        { cls: 'rounded-full', label: '●', title: 'Redondo' }
+                    ]
+                },
+                {
+                    key: 'borderWidth', section: 'Aparência', title: 'Borda', kind: 'text', default: 'border-0', cleanRe: borderWidthRe,
+                    buttons: [
+                        { cls: 'border-0', label: '0', title: 'Nenhuma' },
+                        { cls: 'border', label: '1', title: 'Fina' },
+                        { cls: 'border-2', label: '2', title: 'Média' },
+                        { cls: 'border-4', label: '4', title: 'Grossa' }
+                    ]
+                },
+                {
+                    key: 'borderColor', section: 'Aparência', title: 'Cor da borda', kind: 'color', colorStyle: 'border',
+                    default: 'border-transparent', cleanRe: borderColorRe,
+                    buttons: [
+                        { cls: 'border-transparent', color: 'transparent', title: 'Transparente' },
+                        { cls: 'border-gray-300', color: '#d1d5db', title: 'Cinza' },
+                        { cls: 'border-red-500', color: '#ef4444', title: 'Vermelho' },
+                        { cls: 'border-blue-500', color: '#3b82f6', title: 'Azul' },
+                        { cls: 'border-green-500', color: '#22c55e', title: 'Verde' },
+                        { cls: 'border-yellow-400', color: '#facc15', title: 'Amarelo' },
+                        { cls: 'border-purple-500', color: '#a855f7', title: 'Roxo' },
+                        { cls: 'border-black', color: '#000000', title: 'Preto' }
+                    ]
+                },
+                {
+                    key: 'shadow', section: 'Aparência', title: 'Sombra', kind: 'text', default: 'shadow-none', cleanList: shadowList,
+                    buttons: [
+                        { cls: 'shadow-none', label: '0', title: 'Nenhuma' },
+                        { cls: 'shadow-sm', label: 'P', title: 'Pequena' },
+                        { cls: 'shadow', label: 'M', title: 'Média' },
+                        { cls: 'shadow-lg', label: 'G', title: 'Grande' },
+                        { cls: 'shadow-xl', label: 'XG', title: 'Extra grande' }
+                    ]
+                },
+                {
+                    key: 'opacity', section: 'Aparência', title: 'Opacidade', kind: 'text', default: 'opacity-100', cleanRe: opacityRe,
+                    buttons: [
+                        { cls: 'opacity-100', label: '100', title: '100%' },
+                        { cls: 'opacity-75', label: '75', title: '75%' },
+                        { cls: 'opacity-50', label: '50', title: '50%' },
+                        { cls: 'opacity-25', label: '25', title: '25%' }
+                    ]
+                }
+            ];
+            // Deriva a lista fechada de classes de cada grupo a partir dos botões.
+            this._helperConfig.forEach((g) => { g.classes = g.buttons.map((b) => b.cls); });
+            return this._helperConfig;
+        }
+
+        buildHelperPanelHtml() {
+            const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            let html = '';
+            let lastSection = null;
+            this.tailwindHelperConfig().forEach((g) => {
+                if (g.section && g.section !== lastSection) {
+                    html += '<div class="he-helper-section">' + esc(g.section) + '</div>';
+                    lastSection = g.section;
+                }
+                html += '<div class="he-helper-group" data-group="' + g.key + '">';
+                html += '<div class="he-helper-title">' + esc(g.title) + '</div>';
+                html += '<div class="he-helper-row">';
+                g.buttons.forEach((b) => {
+                    if (g.kind === 'color') {
+                        const isBorder = g.colorStyle === 'border';
+                        const transp = (b.color === 'transparent');
+                        let cls = 'he-helper-color';
+                        if (isBorder) cls += ' he-helper-bordercolor';
+                        else if (transp) cls += ' he-color-transparent';
+                        const styleAttr = isBorder
+                            ? ('border-color:' + (transp ? '#9ca3af' : b.color))
+                            : ('background-color:' + (transp ? 'transparent' : b.color));
+                        html += '<button type="button" class="' + cls + '" data-helper-group="' + g.key +
+                            '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '" style="' + styleAttr + '"></button>';
+                    } else if (g.kind === 'icon') {
+                        html += '<button type="button" class="he-helper-btn" data-helper-group="' + g.key +
+                            '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '"><i class="' + b.icon + ' icon"></i></button>';
+                    } else {
+                        html += '<button type="button" class="he-helper-btn" data-helper-group="' + g.key +
+                            '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '">' + esc(b.label) + '</button>';
+                    }
+                });
+                html += '</div></div>';
+            });
+            return html;
+        }
+
+        applyHelperClass(groupKey, cls) {
+            const el = this.selectedElement;
+            if (!el || !cls) return;
+            const g = this.tailwindHelperConfig().find((x) => x.key === groupKey);
+            if (!g) return;
+            // 1) Remover as classes da lista fechada (os próprios botões do grupo).
+            g.classes.forEach((c) => el.classList.remove(c));
+            // 2) Remover variantes estendidas (palavras isoladas: displays, sombras, etc.).
+            if (g.cleanList) g.cleanList.forEach((c) => el.classList.remove(c));
+            // 3) Remover por regex (cores, p-/m-/gap-/opacity-/border-width, etc.).
+            if (g.cleanRe) {
+                Array.from(el.classList).forEach((c) => { if (g.cleanRe.test(c)) el.classList.remove(c); });
+            }
+            el.classList.add(cls);
+            this.renderStyler(el);
+            this.afterDomMutation();
+        }
+
+        syncHelperButtons(element) {
+            if (!this.styler) return;
+            const visual = this.styler.querySelector('.he-styler-col-visual');
+            if (!visual) return;
+            const present = new Set(Array.from(element.classList || []));
+            this.tailwindHelperConfig().forEach((g) => {
+                let activeCls = g.classes.find((c) => present.has(c)) || null;
+                if (!activeCls && g.default) activeCls = g.default; // destaca a opção padrão
+                g.buttons.forEach((b) => {
+                    const btn = visual.querySelector('[data-helper-group="' + g.key + '"][data-helper-class="' + b.cls + '"]');
+                    if (btn) btn.classList.toggle('active', b.cls === activeCls);
+                });
+            });
+        }
+
         tailwindSuggestions() {
             const out = [];
             const scale = ['0', '1', '2', '3', '4', '5', '6', '8', '10', '12', '16', '20', '24'];
@@ -576,7 +1101,7 @@ $(document).ready(function () {
         }
 
         // ===================================================================
-        // Ações da toolbar: Duplicar / Editar / Deletar
+        // Ações da toolbar: Duplicar / Copiar / Colar / Embrulhar / Editar / Deletar
         // ===================================================================
         duplicateSelected() {
             const el = this.selectedElement;
@@ -584,6 +1109,64 @@ $(document).ready(function () {
             const clone = el.cloneNode(true);
             el.parentNode.insertBefore(clone, el.nextSibling);
             this.selectElement(clone);
+            this.afterDomMutation();
+        }
+
+        // ===== Copiar / Colar (req-036)
+        copySelected() {
+            const el = this.selectedElement;
+            if (!el) return;
+            this.clipboardElement = el.cloneNode(true);
+            // Re-exibe o botão Colar e reposiciona a toolbar (ancorada à direita).
+            if (this.selectedElement) this.updateSelectionUI();
+            else this.updatePasteButton();
+        }
+
+        pasteSelected() {
+            const el = this.selectedElement;
+            if (!this.clipboardElement || !el || !el.parentNode) return;
+            const clone = this.clipboardElement.cloneNode(true);
+            el.parentNode.insertBefore(clone, el.nextSibling);
+            this.selectElement(clone);
+            this.afterDomMutation();
+        }
+
+        updatePasteButton() {
+            if (!this.toolbar) return;
+            const btn = this.toolbar.querySelector('.he-tb-paste');
+            if (btn) btn.style.display = this.clipboardElement ? 'inline-flex' : 'none';
+        }
+
+        // ===== Embrulhar (wrap) (req-036)
+        toggleWrapMenu() {
+            if (this.wrapMenu && this.wrapMenu.style.display === 'block') this.closeWrapMenu();
+            else this.openWrapMenu();
+        }
+
+        openWrapMenu() {
+            if (!this.wrapMenu || !this.selectedElement) return;
+            const wrapBtn = this.toolbar.querySelector('.he-tb-wrap');
+            const rect = wrapBtn.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            this.wrapMenu.style.display = 'block';
+            this.wrapMenu.style.top = (rect.bottom + scrollTop + 4) + 'px';
+            this.wrapMenu.style.left = (rect.left + scrollLeft) + 'px';
+        }
+
+        closeWrapMenu() {
+            if (this.wrapMenu) this.wrapMenu.style.display = 'none';
+        }
+
+        wrapSelected(tag) {
+            const el = this.selectedElement;
+            const allowed = ['div', 'section', 'a', 'p', 'article', 'aside'];
+            if (!el || !el.parentNode || allowed.indexOf(tag) === -1) return;
+            const wrapper = document.createElement(tag);
+            el.parentNode.replaceChild(wrapper, el);
+            wrapper.appendChild(el);
+            // Mantém a seleção no elemento original (agora filho do novo contêiner).
+            this.selectElement(el);
             this.afterDomMutation();
         }
 
@@ -639,9 +1222,12 @@ $(document).ready(function () {
         // modal de edição do Fomantic está aberto, para não cobri-lo (z-index).
         hideChrome() {
             this.hideHover();
+            this.hideBreadcrumbHover();
+            this.closeWrapMenu();
             if (this.selectionOverlay) this.selectionOverlay.style.display = 'none';
             if (this.toolbar) this.toolbar.style.display = 'none';
             if (this.breadcrumb) this.breadcrumb.style.display = 'none';
+            if (this.childrenBar) this.childrenBar.style.display = 'none';
             if (this.styler) this.styler.style.display = 'none';
         }
 
@@ -1154,7 +1740,8 @@ $(document).ready(function () {
 
             // Limpar quaisquer resíduos de UI no clone.
             container.querySelectorAll('#html-editor-floating-toolbar,#html-editor-hover-overlay,' +
-                '#html-editor-selection-overlay,#html-editor-selection-breadcrumb,#html-editor-tailwind-styler,' +
+                '#html-editor-selection-overlay,#html-editor-selection-breadcrumb,#html-editor-selection-children,' +
+                '#html-editor-breadcrumb-hover-overlay,#html-editor-tailwind-styler,#html-editor-wrap-menu,' +
                 '#html-editor-modal,.conn2flow-dnd-placeholder,.html-editor-container,.ui.dimmer.modals')
                 .forEach((el) => el.remove());
 
