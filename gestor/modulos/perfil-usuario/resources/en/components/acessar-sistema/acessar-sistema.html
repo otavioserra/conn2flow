@@ -32,29 +32,34 @@
                 </div>
                 <!-- bloqueado-mensagem > -->
                 <!-- formulario < -->
+                <!-- login-local < -->
+                #login-method-switch#
+                <input type="hidden" name="login_method" id="login_method" value="#login-method-default#">
                 <div class="ui hidden divider">&nbsp;</div>
                 <div class="ui hidden divider">&nbsp;</div>
                 <div class="field">
                     <label>@[[login-user-label]]@</label>
                     <input type="text" name="usuario" placeholder="@[[login-user-placeholder]]@">
                 </div>
-                <div class="field">
+                <!-- login-senha < -->
+                <div class="field password-login-field">
                     <label>@[[login-password-label]]@</label>
                     <input type="password" name="senha" placeholder="@[[login-password-placeholder]]@">
                 </div>
-                <div class="field">
+                <div class="field password-login-field">
                     <div class="ui checkbox">
                         <input type="checkbox" name="permanecer-logado" value="1">
                         <label>@[[login-keep-logged-in-label]]@</label>
                     </div>
                 </div>
+                <!-- login-senha > -->
                 <div class="ui hidden divider">&nbsp;</div>
                 <div class="ui error message">&nbsp;</div>
                 <div class="field">
-                    <button class="fluid ui button blue">@[[login-button-label]]@</button>
+                    <button class="fluid ui button blue login-submit-button" data-password-label="@[[login-button-label]]@" data-email-label="Send Access Code">@[[login-button-label]]@</button>
                     <div class="ui hidden divider">&nbsp;</div>
                     <div class="ui basic segment center aligned">
-                        <div class="">@[[login-forgot-password-label]]@ <a
+                        <div class="password-login-field">@[[login-forgot-password-label]]@ <a
                                 href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a>
                         </div>
                         <div>@[[login-new-register-label]]@ <a
@@ -64,6 +69,8 @@
                 </div>
                 <input id="_gestor-logar" name="_gestor-logar" type="hidden" value="1">
                 <input id="_gestor-fingerprint" name="_gestor-fingerprint" type="hidden">
+                <!-- login-local > -->
+                #login-social#
                 <!-- formulario > -->
             </form>
         </div>

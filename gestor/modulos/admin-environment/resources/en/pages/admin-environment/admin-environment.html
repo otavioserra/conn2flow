@@ -65,6 +65,9 @@
                     </div>
 
                     <div id="auth-google-section" class="#auth-google-section-class#">
+                        <div class="ui info message">
+                            <p>To configure: Open the <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>, create a project, go to "OAuth consent screen", then "Credentials" -> "Create credentials" -> "OAuth client ID" (Web application). Add the redirect URI below under "Authorized redirect URIs".</p>
+                        </div>
                         <div class="field">
                             <label>Google Client ID</label>
                             <input type="text" id="oauth_google_client_id" name="oauth_google_client_id"
@@ -91,6 +94,9 @@
                     </div>
 
                     <div id="auth-meta-section" class="#auth-meta-section-class#">
+                        <div class="ui info message">
+                            <p>To configure: Open <a href="https://developers.facebook.com/" target="_blank" rel="noopener noreferrer">Meta for Developers</a>, create a "Consumer" app, add the "Facebook Login" product, go to "Facebook Login Settings" and add the redirect URI below under "Valid OAuth Redirect URIs".</p>
+                        </div>
                         <div class="field">
                             <label>Meta App ID</label>
                             <input type="text" id="oauth_meta_app_id" name="oauth_meta_app_id"
@@ -106,6 +112,15 @@
                             <input type="text" id="oauth_meta_redirect_uri" value="#oauth-meta-redirect-uri#" readonly>
                             <small class="ui grey text">Register this exact URI in the Meta Apps dashboard.</small>
                         </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_method_email_active" name="auth_method_email_active"
+                                #auth-method-email-active-checked#>
+                            <label>Enable passwordless login via Email Code</label>
+                        </div>
+                        <small class="ui grey text">Allows users to authenticate with their registered email and a 6-digit access code.</small>
                     </div>
 
                     <!-- ===== Two-Factor Authentication (2FA) ===== -->

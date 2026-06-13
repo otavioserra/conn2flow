@@ -76,6 +76,9 @@
                     </div>
 
                     <div id="auth-google-section" class="#auth-google-section-class#">
+                        <div class="ui info message">
+                            <p>Para configurar: Acesse o <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>, crie um projeto, vá em "Tela de consentimento OAuth", depois em "Credenciais" -> "Criar credenciais" -> "ID do cliente OAuth" (Aplicativo Web). Adicione a URI de redirecionamento abaixo em "URIs de redirecionamento autorizadas".</p>
+                        </div>
                         <div class="field">
                             <label>Google Client ID</label>
                             <input type="text" id="oauth_google_client_id" name="oauth_google_client_id"
@@ -102,6 +105,9 @@
                     </div>
 
                     <div id="auth-meta-section" class="#auth-meta-section-class#">
+                        <div class="ui info message">
+                            <p>Para configurar: Acesse o portal <a href="https://developers.facebook.com/" target="_blank" rel="noopener noreferrer">Meta for Developers</a>, crie um aplicativo do tipo "Consumidor", adicione o produto "Login do Facebook", vá em "Configurações do Login do Facebook" e insira a URI de redirecionamento abaixo em "URIs de redirecionamento do OAuth válidas".</p>
+                        </div>
                         <div class="field">
                             <label>Meta App ID</label>
                             <input type="text" id="oauth_meta_app_id" name="oauth_meta_app_id"
@@ -117,6 +123,15 @@
                             <input type="text" id="oauth_meta_redirect_uri" value="#oauth-meta-redirect-uri#" readonly>
                             <small class="ui grey text">Cadastre esta URI exatamente assim no painel de Apps da Meta.</small>
                         </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="auth_method_email_active" name="auth_method_email_active"
+                                #auth-method-email-active-checked#>
+                            <label>Habilitar login sem senha via Código por E-mail</label>
+                        </div>
+                        <small class="ui grey text">Permite que usuários se autentiquem informando o e-mail cadastrado e recebendo um código de acesso de 6 dígitos.</small>
                     </div>
 
                     <!-- ===== Autenticação de Dois Fatores (2FA) ===== -->

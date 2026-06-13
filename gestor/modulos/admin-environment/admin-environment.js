@@ -48,6 +48,18 @@ $(document).ready(function () {
         }
     });
 
+    function showOauthSection(selector) {
+        $(selector)
+            .removeClass('hidden')
+            .find('.ui.info.message')
+            .addClass('visible')
+            .show();
+    }
+
+    $('#auth-google-section, #auth-meta-section')
+        .find('.ui.info.message')
+        .addClass('visible');
+
     // Checkbox toggle para valores booleanos
     $('.ui.checkbox').checkbox({
         onChecked: function () {
@@ -60,10 +72,10 @@ $(document).ready(function () {
 
             // Mostrar credenciais OAuth quando o método social é ativado
             if ($(this).attr('id') === 'auth_method_google_active') {
-                $('#auth-google-section').removeClass('hidden');
+                showOauthSection('#auth-google-section');
             }
             if ($(this).attr('id') === 'auth_method_meta_active') {
-                $('#auth-meta-section').removeClass('hidden');
+                showOauthSection('#auth-meta-section');
             }
         },
         onUnchecked: function () {
@@ -126,6 +138,7 @@ $(document).ready(function () {
             auth_method_meta_active: $('#auth_method_meta_active').parent().checkbox('is checked') ? 'true' : 'false',
             oauth_meta_app_id: $('#oauth_meta_app_id').val(),
             oauth_meta_app_secret: $('#oauth_meta_app_secret').val(),
+            auth_method_email_active: $('#auth_method_email_active').parent().checkbox('is checked') ? 'true' : 'false',
             auth_2fa_required: $('#auth_2fa_required').parent().checkbox('is checked') ? 'true' : 'false',
             auth_2fa_method_app: $('#auth_2fa_method_app').parent().checkbox('is checked') ? 'true' : 'false',
             auth_2fa_method_email: $('#auth_2fa_method_email').parent().checkbox('is checked') ? 'true' : 'false',

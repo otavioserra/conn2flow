@@ -39,11 +39,11 @@
                 {
                     "name": "Acessar Sistema",
                     "id": "acessar-sistema",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "2b92d284ae88e67b6e5bdc6bf8533c1c",
+                        "html": "7a091bf268e2fa5c62000fef94fdede7",
                         "css": "",
-                        "combined": "2b92d284ae88e67b6e5bdc6bf8533c1c"
+                        "combined": "7a091bf268e2fa5c62000fef94fdede7"
                     },
                     "layout": "layout-pagina-sem-permissao",
                     "path": "signin\/",
@@ -949,11 +949,11 @@
                 {
                     "name": "Access System",
                     "id": "acessar-sistema",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "527e97cdf97b2ca31dc6f2b51ca043ac",
+                        "html": "602bd6fa2af0e5d6fc3c2abc3bd1e236",
                         "css": "",
-                        "combined": "527e97cdf97b2ca31dc6f2b51ca043ac"
+                        "combined": "602bd6fa2af0e5d6fc3c2abc3bd1e236"
                     },
                     "layout": "layout-pagina-sem-permissao",
                     "path": "signin\/",

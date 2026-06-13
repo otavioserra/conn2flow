@@ -46,6 +46,7 @@ function admin_environment_env_read(){
         'AUTH_METHOD_META_ACTIVE' => $_ENV['AUTH_METHOD_META_ACTIVE'] ?? 'false',
         'OAUTH_META_APP_ID' => $_ENV['OAUTH_META_APP_ID'] ?? '',
         'OAUTH_META_APP_SECRET' => $_ENV['OAUTH_META_APP_SECRET'] ?? '',
+        'AUTH_METHOD_EMAIL_ACTIVE' => $_ENV['AUTH_METHOD_EMAIL_ACTIVE'] ?? 'false',
         'AUTH_2FA_REQUIRED' => $_ENV['AUTH_2FA_REQUIRED'] ?? 'false',
         'AUTH_2FA_METHOD_APP' => $_ENV['AUTH_2FA_METHOD_APP'] ?? 'true',
         'AUTH_2FA_METHOD_EMAIL' => $_ENV['AUTH_2FA_METHOD_EMAIL'] ?? 'true',
@@ -307,6 +308,7 @@ function admin_environment_raiz(){
         'auth_method_meta_active' => $envData['AUTH_METHOD_META_ACTIVE'] ?? 'false',
         'oauth_meta_app_id' => $envData['OAUTH_META_APP_ID'] ?? '',
         'oauth_meta_app_secret' => $envData['OAUTH_META_APP_SECRET'] ?? '',
+        'auth_method_email_active' => $envData['AUTH_METHOD_EMAIL_ACTIVE'] ?? 'false',
         'auth_2fa_required' => $envData['AUTH_2FA_REQUIRED'] ?? 'false',
         'auth_2fa_method_app' => $envData['AUTH_2FA_METHOD_APP'] ?? 'true',
         'auth_2fa_method_email' => $envData['AUTH_2FA_METHOD_EMAIL'] ?? 'true',
@@ -410,6 +412,7 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#oauth-meta-app-id#', $dados['oauth_meta_app_id']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#oauth-meta-app-secret#', $dados['oauth_meta_app_secret']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#oauth-meta-redirect-uri#', $dados['oauth_meta_redirect_uri']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-method-email-active-checked#', $dados['auth_method_email_active'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-2fa-required-checked#', $dados['auth_2fa_required'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-2fa-method-app-checked#', $dados['auth_2fa_method_app'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#auth-2fa-method-email-checked#', $dados['auth_2fa_method_email'] === 'true' ? 'checked' : '');
@@ -502,6 +505,7 @@ function admin_environment_ajax_salvar(){
     if(isset($_REQUEST['auth_method_meta_active'])) $data['AUTH_METHOD_META_ACTIVE'] = $_REQUEST['auth_method_meta_active'];
     if(isset($_REQUEST['oauth_meta_app_id'])) $data['OAUTH_META_APP_ID'] = $_REQUEST['oauth_meta_app_id'];
     if(isset($_REQUEST['oauth_meta_app_secret'])) $data['OAUTH_META_APP_SECRET'] = $_REQUEST['oauth_meta_app_secret'];
+    if(isset($_REQUEST['auth_method_email_active'])) $data['AUTH_METHOD_EMAIL_ACTIVE'] = $_REQUEST['auth_method_email_active'];
     if(isset($_REQUEST['auth_2fa_required'])) $data['AUTH_2FA_REQUIRED'] = $_REQUEST['auth_2fa_required'];
     if(isset($_REQUEST['auth_2fa_method_app'])) $data['AUTH_2FA_METHOD_APP'] = $_REQUEST['auth_2fa_method_app'];
     if(isset($_REQUEST['auth_2fa_method_email'])) $data['AUTH_2FA_METHOD_EMAIL'] = $_REQUEST['auth_2fa_method_email'];

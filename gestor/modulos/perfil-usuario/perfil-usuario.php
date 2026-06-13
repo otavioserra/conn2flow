@@ -1283,21 +1283,31 @@ function perfil_usuario_signin(){
 	// ===== Tratar a função logar.
 	
 	if(isset($_REQUEST['_gestor-logar']) && $acesso['permitido']){
+		$emailAtivo = (($_ENV['AUTH_METHOD_EMAIL_ACTIVE'] ?? 'false') === 'true');
+		$senhaAtiva = (($_ENV['AUTH_METHOD_PASSWORD_ACTIVE'] ?? 'true') === 'true');
+		$loginMetodo = isset($_REQUEST['login_method']) ? strtolower($_REQUEST['login_method']) : 'password';
+		$loginMetodo = ($loginMetodo === 'email' && $emailAtivo) ? 'email' : 'password';
+
 		// ===== Validação de campos obrigatórios
-		
+
+		$camposObrigatorios = Array(
+			Array(
+				'regra' => 'texto-obrigatorio',
+				'campo' => 'usuario',
+				'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-label')),
+			),
+		);
+
+		if($loginMetodo === 'password'){
+			$camposObrigatorios[] = Array(
+				'regra' => 'texto-obrigatorio',
+				'campo' => 'senha',
+				'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-password-label')),
+			);
+		}
+
 		interface_validacao_campos_obrigatorios(Array(
-			'campos' => Array(
-				Array(
-					'regra' => 'texto-obrigatorio',
-					'campo' => 'usuario',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-label')),
-				),
-				Array(
-					'regra' => 'texto-obrigatorio',
-					'campo' => 'senha',
-					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-password-label')),
-				),
-			)
+			'campos' => $camposObrigatorios
 		));
 		
 		// ===== Google reCAPTCHA v3
@@ -1342,78 +1352,116 @@ function perfil_usuario_signin(){
 			// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
 			
 			$usuario = banco_escape_field($_REQUEST['usuario']);
-			$senha = banco_escape_field($_REQUEST['senha']);
 			$user_inactive = false;
-			
-			$usuarios = banco_select_name
-			(
-				banco_campos_virgulas(Array(
-					'id_usuarios',
-					'senha',
-					'status',
-				))
-				,
-				"usuarios",
-				"WHERE usuario='".$usuario."'"
-				." AND status!='D'"
-			);
-			
-			// ===== Rotinas de validação de usuário
-			
-			if($usuarios){
-				$senha_hash = $usuarios[0]['senha'];
-				
-				if(password_verify($senha, $senha_hash)){
-					// ===== Verificar se o usuário já está logado, caso esteja, deletar token anterior no banco.
-					
-					if(gestor_permissao_token()){
-						if(isset($_GESTOR['usuario-token-id'])){
-							banco_delete
-							(
-								"usuarios_tokens",
-								"WHERE pubID='".$_GESTOR['usuario-token-id']."'"
-							);
-						}
-					}
-					
-					// ===== Pegar dados do usuário.
-					
-					$status = $usuarios[0]['status'];
-					$id_usuarios = $usuarios[0]['id_usuarios'];
-					
-					if($status == 'A'){
+
+			if($loginMetodo === 'email'){
+				$usuarios = banco_select_name
+				(
+					banco_campos_virgulas(Array(
+						'id_usuarios',
+						'email',
+						'status',
+					))
+					,
+					"usuarios",
+					"WHERE (usuario='".$usuario."' OR email='".$usuario."')"
+					." AND status!='D'"
+				);
+
+				if($usuarios && isset($usuarios[0]['status']) && $usuarios[0]['status'] === 'A'){
+					$id_usuarios = (int)$usuarios[0]['id_usuarios'];
+					$emailUsuario = isset($usuarios[0]['email']) ? $usuarios[0]['email'] : '';
+
+					if($emailUsuario !== ''){
 						$user_invalid = false;
-						
-						// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
 
 						autenticacao_acesso_confirmar(['tipo' => 'login']);
 
-						// ===== Interceptador 2FA (req-030): se o 2FA se aplicar, interrompe o login até a verificação do segundo fator.
+						gestor_incluir_biblioteca('2fa');
+						two_factor_email_send_code($id_usuarios, $emailUsuario);
 
-						if(perfil_usuario_2fa_interceptar($id_usuarios, isset($_REQUEST['permanecer-logado']))){
-							return;
+						gestor_sessao_variavel('pending_2fa_user', $id_usuarios);
+						gestor_sessao_variavel('pending_2fa_keep', 0);
+						gestor_sessao_variavel('pending_2fa_mode', 'verify');
+						gestor_sessao_variavel('pending_2fa_type', 'email');
+
+						gestor_redirecionar('signin-2fa/');
+						return;
+					}
+				}
+			} elseif($senhaAtiva){
+				$senha = banco_escape_field($_REQUEST['senha']);
+
+				$usuarios = banco_select_name
+				(
+					banco_campos_virgulas(Array(
+						'id_usuarios',
+						'senha',
+						'status',
+					))
+					,
+					"usuarios",
+					"WHERE usuario='".$usuario."'"
+					." AND status!='D'"
+				);
+
+				// ===== Rotinas de validação de usuário
+
+				if($usuarios){
+					$senha_hash = $usuarios[0]['senha'];
+
+					if(password_verify($senha, $senha_hash)){
+						// ===== Verificar se o usuário já está logado, caso esteja, deletar token anterior no banco.
+
+						if(gestor_permissao_token()){
+							if(isset($_GESTOR['usuario-token-id'])){
+								banco_delete
+								(
+									"usuarios_tokens",
+									"WHERE pubID='".$_GESTOR['usuario-token-id']."'"
+								);
+							}
 						}
 
-						// ===== Caso o usuário escolher a opção para manter logado, gera token de autenticação com tempo de expiração, senão será expirado assim que o usuário fechar navegador
+						// ===== Pegar dados do usuário.
 
-						if(isset($_REQUEST['permanecer-logado'])){
-							usuario_gerar_token_autorizacao(Array(
-								'id_usuarios' => $id_usuarios,
-							));
+						$status = $usuarios[0]['status'];
+						$id_usuarios = $usuarios[0]['id_usuarios'];
+
+						if($status == 'A'){
+							$user_invalid = false;
+
+							// ===== Incluir a confirmação do acesso para poder remover qualquer limitação de acesso do tipo específico.
+
+							autenticacao_acesso_confirmar(['tipo' => 'login']);
+
+							// ===== Interceptador 2FA (req-030): se o 2FA se aplicar, interrompe o login até a verificação do segundo fator.
+
+							if(perfil_usuario_2fa_interceptar($id_usuarios, isset($_REQUEST['permanecer-logado']))){
+								return;
+							}
+
+							// ===== Caso o usuário escolher a opção para manter logado, gera token de autenticação com tempo de expiração, senão será expirado assim que o usuário fechar navegador
+
+							if(isset($_REQUEST['permanecer-logado'])){
+								usuario_gerar_token_autorizacao(Array(
+									'id_usuarios' => $id_usuarios,
+								));
+							} else {
+								usuario_gerar_token_autorizacao(Array(
+									'id_usuarios' => $id_usuarios,
+									'sessao' => true,
+								));
+							}
+
+							// ===== Registrar marcadores de Session Hijacking (req-030)
+
+							gestor_incluir_biblioteca('seguranca');
+							seguranca_sessao_registrar();
+
 						} else {
-							usuario_gerar_token_autorizacao(Array(
-								'id_usuarios' => $id_usuarios,
-								'sessao' => true,
-							));
+							$user_inactive = true;
 						}
-
-						// ===== Registrar marcadores de Session Hijacking (req-030)
-
-						gestor_incluir_biblioteca('seguranca');
-						seguranca_sessao_registrar();
-
-					} else {
-						$user_inactive = true;
 					}
 				}
 			}
@@ -1499,11 +1547,34 @@ function perfil_usuario_signin(){
 	// ===== Renderização dinâmica dos métodos de login (req-030)
 
 	$senhaAtiva = (($_ENV['AUTH_METHOD_PASSWORD_ACTIVE'] ?? 'true') === 'true');
+	$emailAtivo = (($_ENV['AUTH_METHOD_EMAIL_ACTIVE'] ?? 'false') === 'true');
 	$googleAtivo = (($_ENV['AUTH_METHOD_GOOGLE_ACTIVE'] ?? 'false') === 'true');
 	$metaAtivo = (($_ENV['AUTH_METHOD_META_ACTIVE'] ?? 'false') === 'true');
 
-	if(!$senhaAtiva){
-		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- login-senha < -->', '<!-- login-senha > -->', '');
+	if(!$senhaAtiva && !$emailAtivo){
+		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- login-local < -->', '<!-- login-local > -->', '');
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-method-switch#', '');
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-method-default#', 'password');
+	} else {
+		$loginMethodDefault = $senhaAtiva ? 'password' : 'email';
+		$loginMethodSwitch = '';
+
+		if($senhaAtiva && $emailAtivo){
+			$labelSenha = ($_GESTOR['linguagem-codigo'] === 'en') ? 'Sign in with Password' : 'Entrar com Senha';
+			$labelEmail = ($_GESTOR['linguagem-codigo'] === 'en') ? 'Sign in with Email Code' : 'Entrar com Código por E-mail';
+			$loginMethodSwitch = ''
+				. '<div class="ui two item menu login-method-menu">'
+				. '<a class="item active login-method-toggle" data-method="password"><i class="lock icon"></i> '.$labelSenha.'</a>'
+				. '<a class="item login-method-toggle" data-method="email"><i class="mail icon"></i> '.$labelEmail.'</a>'
+				. '</div>';
+		}
+
+		if(!$senhaAtiva){
+			$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- login-senha < -->', '<!-- login-senha > -->', '');
+		}
+
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-method-switch#', $loginMethodSwitch);
+		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-method-default#', $loginMethodDefault);
 	}
 
 	$social = '';
@@ -1521,12 +1592,14 @@ function perfil_usuario_signin(){
 	// ===== Interface finalizar opções
 
 	$formulario['validacao'] = Array();
-	if($senhaAtiva){
+	if($senhaAtiva || $emailAtivo){
 		$formulario['validacao'][] = Array(
 			'regra' => 'texto-obrigatorio',
 			'campo' => 'usuario',
 			'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-user-label')),
 		);
+	}
+	if($senhaAtiva && !$emailAtivo){
 		$formulario['validacao'][] = Array(
 			'regra' => 'texto-obrigatorio',
 			'campo' => 'senha',

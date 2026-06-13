@@ -67,6 +67,29 @@ $(document).ready(function(){
 		
 		var formSelector2 = '#_gestor-form-logar';
 		var submitBtnClicked = false;
+		var setLoginMethod = function(method){
+			var $form = $(formSelector2);
+			var $senha = $form.find('input[name="senha"]');
+			var $button = $form.find('.login-submit-button');
+			var isEmail = method === 'email';
+
+			$form.find('#login_method').val(isEmail ? 'email' : 'password');
+			$form.find('.login-method-toggle').removeClass('active');
+			$form.find('.login-method-toggle[data-method="' + (isEmail ? 'email' : 'password') + '"]').addClass('active');
+			$form.find('.password-login-field').toggle(!isEmail);
+			$senha.prop('disabled', isEmail);
+
+			if($button.length > 0){
+				$button.text(isEmail ? $button.attr('data-email-label') : $button.attr('data-password-label'));
+			}
+		};
+
+		$(formSelector2).find('.login-method-toggle').on('click', function(e){
+			e.preventDefault();
+			setLoginMethod($(this).attr('data-method') || 'password');
+		});
+
+		setLoginMethod($(formSelector2).find('#login_method').val() || 'password');
 		
 		$(formSelector2)
 			.form({
