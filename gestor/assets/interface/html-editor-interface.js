@@ -1280,50 +1280,40 @@ $(document).ready(function () {
         previewHtml();
     });
 
-    // Botões de mudança do Editor HTML Visual.
-    $(document.body).on('mouseup tap', '.screenPagina', function (e) {
-        if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
-
-        $('.previsualizar.modal').removeClass('longer tiny fullscreen');
-
-        switch ($(this).data('option')) {
-            case 'desktop':
-                $('.previsualizar.modal').addClass('fullscreen');
-                break;
-            case 'tablet':
-                $('.previsualizar.modal').addClass('longer');
-                break;
-            case 'mobile':
-                $('.previsualizar.modal').addClass('tiny');
-                break;
-        }
-    });
+    // req-034: os botões de tela (desktop/tablet/mobile) agora ajustam a LARGURA do frame
+    // interno do preview (`.iframe-preview-frame`), mantendo o modal sempre em fullscreen.
+    // Essa lógica vive em `html-editor-visual-controls.js` (handler `.previsualizar .screenPagina`),
+    // junto às alças de redimensionamento. O modal permanece com a classe `fullscreen` do markup.
 
     $(document.body).on('mouseup tap', '.previsualizarConfirmar, .previsualizarVoltar', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
         const iframe = $('#iframe-preview')[0];
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        const iframeWin = iframe.contentWindow;
         const alvoSave = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
 
-        // Remover elementos de sistema adicionados pelo Fomantic UI ou Tailwind CSS ou Editor HTML
-        // Garantir que todas as ocorrências sejam removidas
-        while ($(iframeDoc).find('#html-editor-modal').length > 0) {
-            $(iframeDoc).find('#html-editor-modal').remove();
-        }
-        while ($(iframeDoc).find('#html-editor-overlay').length > 0) {
-            $(iframeDoc).find('#html-editor-overlay').remove();
-        }
-        while ($(iframeDoc).find('.ui.dimmer.modals').length > 0) {
-            $(iframeDoc).find('.ui.dimmer.modals').remove();
+        // req-034: o editor visual do iframe expõe `htmlEditorGetCleanHtml()`, que remove toda a
+        // UI do editor (overlays de hover/seleção, barra flutuante, breadcrumb, styler, placeholders)
+        // e reconverte os wrappers virtuais de widget em comentários <!-- widgets#...->render(...) -->.
+        // Fallback (editor visual indisponível): limpeza manual dos elementos de sistema.
+        let bodyContent;
+        if (iframeWin && typeof iframeWin.htmlEditorGetCleanHtml === 'function') {
+            bodyContent = iframeWin.htmlEditorGetCleanHtml();
+        } else {
+            const sistemaSel = '#html-editor-modal,#html-editor-overlay,#html-editor-hover-overlay,' +
+                '#html-editor-selection-overlay,#html-editor-floating-toolbar,#html-editor-selection-breadcrumb,' +
+                '#html-editor-tailwind-styler,.conn2flow-dnd-placeholder,.ui.dimmer.modals';
+            while ($(iframeDoc).find(sistemaSel).length > 0) {
+                $(iframeDoc).find(sistemaSel).remove();
+            }
+            bodyContent = $(iframeDoc).find('body')[0].innerHTML;
         }
 
         let updatedHtml;
 
         if (alvoSave === 'layouts') {
             // Para layouts: reconstruir o documento completo com o head original e o body editado
-            const body = $(iframeDoc).find('body');
-            const bodyContent = body[0].innerHTML;
             const cleanBody = cleanCodeString(bodyContent);
 
             // Reconstruir o documento completo com head original (preservado antes de abrir o editor)
@@ -1335,13 +1325,7 @@ $(document).ready(function () {
             updatedHtml = cleanCodeString(updatedHtml);
         } else {
             // Para páginas/componentes: atualizar apenas o conteúdo do body
-            const body = $(iframeDoc).find('body');
-            const bodyElement = body[0];
-
-            updatedHtml = bodyElement.innerHTML;
-
-            // Remover linhas em branco no início e fim do código.
-            updatedHtml = cleanCodeString(updatedHtml);
+            updatedHtml = cleanCodeString(bodyContent);
         }
 
         // Atualizar o CodeMirror com o HTML atualizado.

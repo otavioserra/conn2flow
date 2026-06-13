@@ -275,6 +275,11 @@ function html_editor_componente($params = false){
 	$modalPagina = modelo_var_troca($modalPagina,'#button-back-tooltip#',gestor_variaveis(Array('id' => 'html-editor-button-back-tooltip')));
 	$modalPagina = modelo_var_troca($modalPagina,'#button-back-value#',gestor_variaveis(Array('id' => 'html-editor-button-back-value')));
 
+	// req-034: controles do Editor HTML Visual (inclusão de elementos/widgets + histórico).
+	$modalPagina = modelo_var_troca($modalPagina,'#add-element-tooltip#',gestor_variaveis(Array('id' => 'html-editor-add-element-tooltip')));
+	$modalPagina = modelo_var_troca($modalPagina,'#undo-tooltip#',gestor_variaveis(Array('id' => 'html-editor-undo-tooltip')));
+	$modalPagina = modelo_var_troca($modalPagina,'#redo-tooltip#',gestor_variaveis(Array('id' => 'html-editor-redo-tooltip')));
+
 	$html_editor = modelo_var_troca($html_editor,'#html-editor-visual-modal#',$modalPagina);
 
 	// ===== Modelos de Páginas
@@ -377,6 +382,13 @@ function html_editor_componente($params = false){
     // ===== Incluir script JS Interface do HTML Editor que conecta o mesmo com o Gestor/Modulos
 	gestor_pagina_javascript_incluir('biblioteca',[
 		'caminho' => 'html-editor-interface',
+		'biblioteca' => 'html-editor',
+	]);
+
+	// req-034: controles do Editor HTML Visual na janela pai (botão "+", histórico,
+	// alças de redimensionamento). Arquivo separado para não inflar o html-editor-interface.js.
+	gestor_pagina_javascript_incluir('biblioteca',[
+		'caminho' => 'html-editor-visual-controls',
 		'biblioteca' => 'html-editor',
 	]);
 
@@ -493,7 +505,59 @@ function html_editor_ajax_interface($params = false){
     switch($_GESTOR['ajax-opcao']){
         case 'html-editor-ia-requests': html_editor_ajax_ia_requests(); break;
         case 'html-editor-templates-load': html_editor_ajax_templates_load(); break;
+        case 'html-editor-widgets-list': html_editor_ajax_widgets_list(); break;
 	}
+}
+
+/**
+ * AJAX Widgets List.
+ *
+ * Retorna a lista de widgets ativos (slug + nome) disponíveis para inserção no Editor
+ * HTML Visual (req-034 §5). Consulta as tabelas dos módulos de widget do sistema e devolve
+ * os registros agrupados por módulo para o popup de inclusão da janela pai.
+ *
+ */
+function html_editor_ajax_widgets_list(){
+	global $_GESTOR;
+
+	// Idioma corrente do gestor (mesma referência usada em html_editor_ajax_templates_load).
+	$idioma = $_GESTOR['linguagem-codigo'];
+	$where = "WHERE status = 'A' AND language = '" . banco_escape_field($idioma) . "' ORDER BY name ASC";
+
+	// Mapa tabela do banco => chave de saída no JSON (conforme exemplo do req-034 §5).
+	$mapa = [
+		'menus'                => 'menus',
+		'galleries'            => 'galleries',
+		'publisher_highlights' => 'publisher-highlights',
+		'publisher_index'      => 'publisher-index',
+	];
+
+	$data = [];
+	foreach($mapa as $tabela => $chave){
+		$registros = [];
+
+		$retorno_bd = banco_select([
+			'tabela' => $tabela,
+			'campos' => ['id', 'name'],
+			'extra'  => $where,
+		]);
+
+		if($retorno_bd){
+			foreach($retorno_bd as $registro){
+				$registros[] = [
+					'id'   => $registro['id'],
+					'nome' => $registro['name'],
+				];
+			}
+		}
+
+		$data[$chave] = $registros;
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data'   => $data,
+	);
 }
 
 /**

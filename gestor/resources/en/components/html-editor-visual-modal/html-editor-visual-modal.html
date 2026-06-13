@@ -1,22 +1,45 @@
 <div class="ui modal overlay fullscreen previsualizar">
     <div class="header">#title#</div>
     <div class="scrolling content">
-        <div class="ui buttons" style="margin-bottom: 1rem;">
-            <button class="ui button screenPagina" data-option="desktop">
-                <i class="desktop icon"></i> #desktop#
-            </button>
-            <button class="ui button screenPagina" data-option="tablet">
-                <i class="tablet alternate icon"></i> #tablet#
-            </button>
-            <button class="ui button screenPagina" data-option="mobile">
-                <i class="mobile alternate icon"></i> #mobile#
-            </button>
-        </div>
-        <div style="position: relative;">
-            <iframe id="iframe-preview" style="width:100%;height:calc(100vh - 220px);border:1px solid #ccc;"></iframe>
-            <div class="ui active dimmer">
-                <div class="ui loader"></div>
+        <div class="html-editor-visual-topbar"
+            style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; margin-bottom: 1rem;">
+            <div class="ui buttons">
+                <button class="ui button screenPagina" data-option="desktop" data-width="100%">
+                    <i class="desktop icon"></i> #desktop#
+                </button>
+                <button class="ui button screenPagina" data-option="tablet" data-width="768px">
+                    <i class="tablet alternate icon"></i> #tablet#
+                </button>
+                <button class="ui button screenPagina" data-option="mobile" data-width="375px">
+                    <i class="mobile alternate icon"></i> #mobile#
+                </button>
             </div>
+            <button class="ui green icon button html-editor-add-btn" type="button" data-tooltip="#add-element-tooltip#"
+                data-inverted="" data-position="top center">
+                <i class="plus icon"></i>
+            </button>
+            <div class="ui icon buttons">
+                <button class="ui button html-editor-undo-btn" type="button" data-tooltip="#undo-tooltip#"
+                    data-inverted="" data-position="top center" disabled>
+                    <i class="undo icon"></i>
+                </button>
+                <button class="ui button html-editor-redo-btn" type="button" data-tooltip="#redo-tooltip#"
+                    data-inverted="" data-position="top center" disabled>
+                    <i class="redo icon"></i>
+                </button>
+            </div>
+        </div>
+        <div class="html-editor-preview-stage" style="position: relative; display:flex; justify-content:center;">
+            <div class="iframe-preview-frame" style="position: relative; width: 100%; max-width: 100%;">
+                <div class="iframe-resize-handle iframe-resize-handle-left"></div>
+                <iframe id="iframe-preview"
+                    style="width:100%;height:calc(100vh - 220px);border:1px solid #ccc;"></iframe>
+                <div class="iframe-resize-handle iframe-resize-handle-right"></div>
+                <div class="ui active dimmer">
+                    <div class="ui loader"></div>
+                </div>
+            </div>
+            <div class="iframe-resize-indicator" style="display:none;">0px</div>
         </div>
     </div>
     <div class="actions">

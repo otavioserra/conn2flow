@@ -309,6 +309,21 @@
         "type": "string"
     },
     {
+        "id": "html-editor-add-element-tooltip",
+        "value": "Adicionar novo elemento ou widget",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-undo-tooltip",
+        "value": "Desfazer (Ctrl+Z)",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-redo-tooltip",
+        "value": "Refazer (Ctrl+Y)",
+        "type": "string"
+    },
+    {
         "id": "html-editor-form-css-compiled-tooltip",
         "value": "Clique para abrir o CSS automático gerado pelo sistema.",
         "type": "string"

@@ -506,6 +506,33 @@
     {
         "language": "pt-br",
         "modulo": null,
+        "id": "html-editor-add-element-tooltip",
+        "valor": "Adicionar novo elemento ou widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-undo-tooltip",
+        "valor": "Desfazer (Ctrl+Z)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-redo-tooltip",
+        "valor": "Refazer (Ctrl+Y)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
         "id": "html-editor-form-css-compiled-tooltip",
         "valor": "Clique para abrir o CSS automático gerado pelo sistema.",
         "tipo": "string",
@@ -1327,6 +1354,33 @@
         "modulo": null,
         "id": "html-editor-button-back-value",
         "valor": "Back",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-add-element-tooltip",
+        "valor": "Add new element or widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-undo-tooltip",
+        "valor": "Undo (Ctrl+Z)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-redo-tooltip",
+        "valor": "Redo (Ctrl+Y)",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -658,6 +658,8 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
   - [ ] Confirmar que o salvamento converte as divs de wrapper de volta para os comentários originais de widget no CodeMirror.
 
 ### Evidência de Validação (BATCH-034)
-- [ ] Testes de interação do editor visual (hover, seleção, DnD, duplicação, exclusão e inclusão) validados.
-- [ ] Testes de Undo/Redo, Breadcrumb, Tailwind Styler, Resize Handles e Widget Wrappers validados.
-- [ ] Linting estático (`php -l` e `node --check`) limpo nos arquivos alterados.
+- [x] Linting estático limpo (2026-06-13): `php -l gestor/bibliotecas/html-editor.php` OK; `node --check` OK em `html-editor.js`, `html-editor-interface.js`, `html-editor-visual-controls.js` (novo) e `html-editor-helper.js`; `JSON.parse` OK em `resources/{pt-br,en}/variables.json`.
+- [ ] Testes de interação do editor visual (hover, seleção, DnD, duplicação, exclusão e inclusão) validados — **pendente com o operador** (runtime no navegador).
+- [ ] Testes de Undo/Redo, Breadcrumb, Tailwind Styler, Resize Handles e Widget Wrappers validados — **pendente com o operador**.
+- Arquivos: novo `gestor/assets/interface/html-editor-visual-controls.js`; reescrito `html-editor.js`; `html-editor.php` (rota AJAX `html-editor-widgets-list` + inclusões); `html-editor-interface.js` (handler `.screenPagina` removido + `getCleanHtml()` no save); `html-editor-visual-modal.html` (pt-br/en); `variables.json` (pt-br/en). Decisões: [DEC-047](../decisions/DECISION-LOG.md) (design) e [DEC-048](../decisions/DECISION-LOG.md) (execução).
+- Pendência de deploy: `🗃️ Projects - Update => Core` (sincroniza assets/componentes, compila `VariaveisData.json` a partir do `variables.json`, recalcula checksums).
