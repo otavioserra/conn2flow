@@ -641,7 +641,23 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
   - [ ] Validar que clicar no botão "+" no cabeçalho do visual-modal abre o popup dropdown categorizado.
   - [ ] Confirmar que selecionar uma opção HTML ou Widget (obtendo slugs do backend via AJAX) entra no modo de inclusão e exibe placeholder de drop.
   - [ ] Confirmar que clicar insere o elemento/widget no DOM do iframe.
+- [ ] **Histórico de Estados (Desfazer / Refazer)**:
+  - [ ] Confirmar que o histórico é salvo no stack a cada alteração estrutural no DOM.
+  - [ ] Validar que clicar nas setas de desfazer/refazer restaura o DOM do iframe e o CodeMirror da janela pai perfeitamente.
+  - [ ] Validar que os atalhos de teclado `Ctrl+Z` e `Ctrl+Y` disparam o desfazer/refazer em ambos os contextos (janela pai e iframe).
+  - [ ] Validar que o limite parametrizado `config.undoLimit` (padrão `30`) descarta estados mais antigos quando ultrapassado.
+- [ ] **Breadcrumb DOM e Quick Tailwind Styler**:
+  - [ ] Validar que a trilha horizontal exibe a árvore correta de ancestrais do nó ativo.
+  - [ ] Confirmar que clicar em um item da trilha transfere a seleção para o elemento correspondente.
+  - [ ] Validar que o styler lista as classes do elemento em tags removíveis e que clicar no "x" remove as classes.
+  - [ ] Validar que digitar novas classes no input e pressionar enter aplica as regras ao nó.
+- [ ] **Resize Handles e Widget Wrappers**:
+  - [ ] Confirmar que arrastar as alças laterais do contêiner do iframe redimensiona a largura e exibe a largura em pixels.
+  - [ ] Validar que os comentários de widgets são envelopados na `div.conn2flow-widget-wrapper` com borda tracejada amarela.
+  - [ ] Confirmar que o conteúdo interno do widget é bloqueado de interações individuais e tratado de forma atômica no DOM.
+  - [ ] Confirmar que o salvamento converte as divs de wrapper de volta para os comentários originais de widget no CodeMirror.
 
 ### Evidência de Validação (BATCH-034)
 - [ ] Testes de interação do editor visual (hover, seleção, DnD, duplicação, exclusão e inclusão) validados.
+- [ ] Testes de Undo/Redo, Breadcrumb, Tailwind Styler, Resize Handles e Widget Wrappers validados.
 - [ ] Linting estático (`php -l` e `node --check`) limpo nos arquivos alterados.
