@@ -139,3 +139,12 @@ Login sem Senha por E-mail e Auxílio de Configuração OAuth (req-032 / BATCH-0
 2. **Login Sem Senha via E-mail (Passwordless)**: Em `acessar-sistema.html`, se habilitado o login por e-mail, ocultar o campo de senha caso o login convencional com senha esteja inativo. Se ambos estiverem ativos, apresentar abas ou botões alternadores (toggles) Fomantic UI para escolher o método de autenticação. Ao selecionar o método por e-mail, o formulário oculta o campo de senha.
 3. **Reuso da Infraestrutura 2FA**: Ao submeter o e-mail no login sem senha, o backend valida a existência e status do usuário. Em caso de sucesso, gera o código de uso único, dispara o e-mail pelo helper `two_factor_email_send_code` e salva as variáveis na sessão do gestor (`pending_2fa_user = ID`, `pending_2fa_mode = 'verify'`, `pending_2fa_type = 'email'`), redirecionando-o à rota `signin-2fa/`. Desta forma, a tela de verificação existente resolve a autenticação final e gera o token de autorização sem necessidade de novas páginas.
 
+## DEC-046 - 2026-06-13 - accepted
+
+Segurança no Acesso e Geração de Chaves de API (req-033 / BATCH-033). Decisões de design:
+1. **Nova aba API no admin-environment**: Criar aba "API" no módulo para expor controles e persistir no `.env`: `AUTH_API_ALLOWED_PROFILES` (lista separada por vírgula de perfis autorizados), e toggles de login (senha/e-mail) e 2FA (obrigatório, métodos app/e-mail) para a rota de API.
+2. **Interface Adaptativa de Login da API**: Em `oauth-authenticate`, reaproveitar a interface reativa de login (Senha vs Código por E-mail) dependendo do estado das variáveis de controle ativas no `.env`.
+3. **Interceptador 2FA na API e Holding de Tokens**: Em `perfil_usuario_oauth_authenticate()`, se o usuário logado pertencer a um perfil permitido e se autenticar com sucesso, e se `AUTH_API_2FA_REQUIRED` estiver ativo (ou se o usuário possuir 2FA ativo em sua conta), o backend gera as chaves de resposta OAuth e as armazena temporariamente na sessão (`pending_oauth_tokens`), redirecionando-o para a nova rota `oauth-authenticate-2fa/`.
+4. **Finalização via nova rota `oauth-authenticate-2fa/`**: Essa nova página recebe o código de 6 dígitos. Após validação, recupera `pending_oauth_tokens`, remove as variáveis temporárias da sessão, e conclui emitindo os tokens originais da API (imprimindo JSON ou redirecionando via OAuth).
+
+

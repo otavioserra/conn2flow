@@ -580,18 +580,41 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 ---
 ## BATCH-032 - Login sem Senha por E-mail e Auxílio de Configuração OAuth (req-032)
 
-- [ ] **Configurações Globais no admin-environment**:
-  - [ ] Checkbox `auth_method_email_active` habilitado e gravado no `.env` como `AUTH_METHOD_EMAIL_ACTIVE`.
-  - [ ] Instruções passo a passo ("How-To") e links para console do Google API e portal do Meta Developer integrados na interface.
-- [ ] **Interface do Perfil e Login (acessar-sistema)**:
-  - [ ] Abas/Toggles de alternância dinâmica entre "Entrar com Senha" e "Entrar com Código por E-mail" visíveis quando ambos estão ativos.
-  - [ ] Ocultação completa do campo de senha quando apenas o login por e-mail está ativo.
-  - [ ] Links do Google e Meta abrindo em novas abas do navegador.
-- [ ] **Autenticação sem Senha**:
-  - [ ] Inserção de e-mail ativo gerando código de 6 dígitos temporário e enviando por e-mail via `two_factor_email_send_code`.
-  - [ ] Redirecionamento correto para `signin-2fa` com as variáveis de sessão `pending_2fa_user`, `pending_2fa_mode = 'verify'`, e `pending_2fa_type = 'email'` salvas no banco.
+- [x] **Configurações Globais no admin-environment**:
+  - [x] Checkbox `auth_method_email_active` habilitado e gravado no `.env` como `AUTH_METHOD_EMAIL_ACTIVE`.
+  - [x] Instruções passo a passo ("How-To") e links para console do Google API e portal do Meta Developer integrados na interface.
+- [x] **Interface do Perfil e Login (acessar-sistema)**:
+  - [x] Abas/Toggles de alternância dinâmica entre "Entrar com Senha" e "Entrar com Código por E-mail" visíveis quando ambos estão ativos.
+  - [x] Ocultação completa do campo de senha quando apenas o login por e-mail está ativo.
+  - [x] Links do Google e Meta abrindo em novas abas do navegador.
+- [x] **Autenticação sem Senha**:
+  - [x] Inserção de e-mail ativo gerando código de 6 dígitos temporário e enviando por e-mail via `two_factor_email_send_code`.
+  - [x] Redirecionamento correto para `signin-2fa` com as variáveis de sessão `pending_2fa_user`, `pending_2fa_mode = 'verify'`, e `pending_2fa_type = 'email'` salvas no banco.
   - [ ] Verificação e conclusão bem-sucedida da autenticação ao digitar o código recebido.
 
 ### Evidência de Validação (BATCH-032)
 - [ ] Testes manuais do login sem senha concluídos.
+- [x] Linting estático (`php -l`, `node --check`, `JSON.parse`, `git diff --check`) limpo nos arquivos alterados.
+
+
+---
+## BATCH-033 - Segurança no Acesso e Geração de Chaves de API (req-033)
+
+- [ ] **Configurações Globais no admin-environment (Aba API)**:
+  - [ ] Nova aba "API" visível nas configurações globais.
+  - [ ] Checkboxes com a lista de perfis do sistema (`usuarios_perfis`) funcionando e salvando IDs em `AUTH_API_ALLOWED_PROFILES`.
+  - [ ] Toggles para ativar/desativar métodos de login (Senha/E-mail) para API salvos no `.env`.
+  - [ ] Toggles para obrigar 2FA na API (`AUTH_API_2FA_REQUIRED`) e selecionar métodos (App/E-mail) salvos no `.env`.
+- [ ] **Geração de Chaves (`oauth-authenticate`)**:
+  - [ ] Usuários sem o perfil autorizado listado em `AUTH_API_ALLOWED_PROFILES` recebem bloqueio imediato na rota.
+  - [ ] Formulário `oauth-authenticate` suporta alternância dinâmica de login (senha vs e-mail code) de forma reativa.
+  - [ ] Interceptador 2FA ativo: se o usuário logar com sucesso e o 2FA for exigido, o token de resposta é mantido retido em `pending_oauth_tokens` no banco de sessões e o fluxo é redirecionado para `oauth-authenticate-2fa/`.
+- [ ] **Verificação de Segundo Fator para API (`oauth-authenticate-2fa`)**:
+  - [ ] Nova página `oauth-authenticate-2fa` renderizada para entrada do código de 6 dígitos.
+  - [ ] Verificação bem-sucedida do código liberando e entregando o token final armazenado na sessão (via JSON ou redirecionamento OAuth).
+  - [ ] Reenvio de e-mail 2FA para chaves OTP funcionando na interface.
+
+### Evidência de Validação (BATCH-033)
+- [ ] Testes manuais do controle de perfil e 2FA na emissão de token de API concluídos.
 - [ ] Linting estático (`php -l` e `node --check`) limpo nos arquivos alterados.
+
