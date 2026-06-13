@@ -139,9 +139,18 @@ $(document).ready(function () {
                 #html-editor-tailwind-styler.he-styler-stacked .he-styler-col-classes{border-left:none;
                     border-top:1px solid #e5e7eb;padding-left:0;padding-top:6px;width:100%;}
                 #html-editor-tailwind-styler .he-helper-section{font:bold 10px sans-serif;color:#1f2937;
-                    text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px;padding-bottom:2px;
-                    border-bottom:1px solid #e5e7eb;}
+                    text-transform:uppercase;letter-spacing:.6px;margin:4px 0 0;padding:5px 6px;cursor:pointer;
+                    user-select:none;border:1px solid #e5e7eb;border-radius:4px;background:#f9fafb;
+                    display:flex;align-items:center;gap:5px;}
                 #html-editor-tailwind-styler .he-helper-section:first-child{margin-top:0;}
+                #html-editor-tailwind-styler .he-helper-section:hover{background:#f3f4f6;}
+                #html-editor-tailwind-styler .he-helper-section.active{background:#eff6ff;color:#1e40af;
+                    border-color:#bfdbfe;}
+                #html-editor-tailwind-styler .he-helper-section i.dropdown.icon{margin:0;font-size:11px;
+                    transition:transform .15s;}
+                #html-editor-tailwind-styler .he-helper-section.active i.dropdown.icon{transform:rotate(90deg);}
+                #html-editor-tailwind-styler .he-helper-section-body{display:none;padding:6px 2px 2px;}
+                #html-editor-tailwind-styler .he-helper-section-body.active{display:block;}
                 #html-editor-tailwind-styler .he-tw-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;}
                 #html-editor-tailwind-styler .he-tw-tag{display:inline-flex;align-items:center;gap:4px;
                     background:#eef2ff;color:#3730a3;border-radius:10px;padding:1px 6px;font:11px monospace;}
@@ -272,8 +281,14 @@ $(document).ready(function () {
             document.body.appendChild(styler);
             this.styler = styler;
 
-            // req-037: cliques nos botões do painel visual de formatação.
+            // req-037/req-038: cliques no painel visual — accordion de seções + aplicação de classes.
             styler.querySelector('.he-styler-col-visual').addEventListener('click', (e) => {
+                const sectionHeader = e.target.closest('.he-helper-section');
+                if (sectionHeader) {
+                    e.preventDefault(); e.stopPropagation();
+                    this.toggleHelperSection(sectionHeader);
+                    return;
+                }
                 const btn = e.target.closest('[data-helper-group]');
                 if (!btn) return;
                 e.preventDefault(); e.stopPropagation();
@@ -1012,39 +1027,70 @@ $(document).ready(function () {
 
         buildHelperPanelHtml() {
             const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-            let html = '';
-            let lastSection = null;
+            // Agrupar a config por seção (preservando a ordem) para montar o accordion.
+            const sections = [];
             this.tailwindHelperConfig().forEach((g) => {
-                if (g.section && g.section !== lastSection) {
-                    html += '<div class="he-helper-section">' + esc(g.section) + '</div>';
-                    lastSection = g.section;
-                }
-                html += '<div class="he-helper-group" data-group="' + g.key + '">';
-                html += '<div class="he-helper-title">' + esc(g.title) + '</div>';
-                html += '<div class="he-helper-row">';
-                g.buttons.forEach((b) => {
-                    if (g.kind === 'color') {
-                        const isBorder = g.colorStyle === 'border';
-                        const transp = (b.color === 'transparent');
-                        let cls = 'he-helper-color';
-                        if (isBorder) cls += ' he-helper-bordercolor';
-                        else if (transp) cls += ' he-color-transparent';
-                        const styleAttr = isBorder
-                            ? ('border-color:' + (transp ? '#9ca3af' : b.color))
-                            : ('background-color:' + (transp ? 'transparent' : b.color));
-                        html += '<button type="button" class="' + cls + '" data-helper-group="' + g.key +
-                            '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '" style="' + styleAttr + '"></button>';
-                    } else if (g.kind === 'icon') {
-                        html += '<button type="button" class="he-helper-btn" data-helper-group="' + g.key +
-                            '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '"><i class="' + b.icon + ' icon"></i></button>';
-                    } else {
-                        html += '<button type="button" class="he-helper-btn" data-helper-group="' + g.key +
-                            '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '">' + esc(b.label) + '</button>';
-                    }
-                });
-                html += '</div></div>';
+                const name = g.section || 'Geral';
+                let sec = sections.find((s) => s.name === name);
+                if (!sec) { sec = { name: name, groups: [] }; sections.push(sec); }
+                sec.groups.push(g);
+            });
+
+            let html = '';
+            sections.forEach((sec, idx) => {
+                const active = idx === 0 ? ' active' : ''; // primeira seção aberta por padrão
+                html += '<div class="he-helper-section' + active + '" data-section="' + esc(sec.name) + '">' +
+                    '<i class="dropdown icon"></i>' + esc(sec.name) + '</div>';
+                html += '<div class="he-helper-section-body' + active + '">';
+                sec.groups.forEach((g) => { html += this.buildHelperGroupHtml(g, esc); });
+                html += '</div>';
             });
             return html;
+        }
+
+        buildHelperGroupHtml(g, esc) {
+            let html = '<div class="he-helper-group" data-group="' + g.key + '">';
+            html += '<div class="he-helper-title">' + esc(g.title) + '</div>';
+            html += '<div class="he-helper-row">';
+            g.buttons.forEach((b) => {
+                if (g.kind === 'color') {
+                    const isBorder = g.colorStyle === 'border';
+                    const transp = (b.color === 'transparent');
+                    let cls = 'he-helper-color';
+                    if (isBorder) cls += ' he-helper-bordercolor';
+                    else if (transp) cls += ' he-color-transparent';
+                    const styleAttr = isBorder
+                        ? ('border-color:' + (transp ? '#9ca3af' : b.color))
+                        : ('background-color:' + (transp ? 'transparent' : b.color));
+                    html += '<button type="button" class="' + cls + '" data-helper-group="' + g.key +
+                        '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '" style="' + styleAttr + '"></button>';
+                } else if (g.kind === 'icon') {
+                    html += '<button type="button" class="he-helper-btn" data-helper-group="' + g.key +
+                        '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '"><i class="' + b.icon + ' icon"></i></button>';
+                } else {
+                    html += '<button type="button" class="he-helper-btn" data-helper-group="' + g.key +
+                        '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '">' + esc(b.label) + '</button>';
+                }
+            });
+            html += '</div></div>';
+            return html;
+        }
+
+        // Accordion: abre a seção clicada e fecha as demais (clicar na ativa fecha todas).
+        toggleHelperSection(header) {
+            if (!header || !this.styler) return;
+            const visual = this.styler.querySelector('.he-styler-col-visual');
+            if (!visual) return;
+            const body = header.nextElementSibling; // .he-helper-section-body
+            const wasActive = header.classList.contains('active');
+            visual.querySelectorAll('.he-helper-section.active, .he-helper-section-body.active')
+                .forEach((el) => el.classList.remove('active'));
+            if (!wasActive) {
+                header.classList.add('active');
+                if (body && body.classList.contains('he-helper-section-body')) body.classList.add('active');
+            }
+            // A altura do painel mudou — reposicionar os overlays de suporte.
+            this.updateSelectionUI();
         }
 
         applyHelperClass(groupKey, cls) {
