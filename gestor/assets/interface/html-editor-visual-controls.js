@@ -26,7 +26,9 @@ $(document).ready(function () {
         INSERT_ELEMENT: 'c2f-he:insert-element',
         INSERT_WIDGET: 'c2f-he:insert-widget',
         CANCEL_INSERT: 'c2f-he:cancel-insert',
-        HISTORY: 'c2f-he:history'
+        HISTORY: 'c2f-he:history',
+        WIDGET_RENDER: 'c2f-he:widget-render',
+        WIDGET_RENDERED: 'c2f-he:widget-rendered'
     };
 
     // ===== Elementos HTML disponíveis no painel de inclusão (req-034 §4)
@@ -384,6 +386,29 @@ $(document).ready(function () {
         });
     })();
 
+    // ===== Render de widget (req-039): o iframe pede o HTML do widget; o pai consulta o backend
+    // e devolve o resultado para o iframe popular o wrapper virtual.
+    function renderWidgetParaIframe(signature, wrapperId) {
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            dataType: 'json',
+            data: {
+                opcao: gestor.moduloOpcao,
+                ajax: 'sim',
+                ajaxOpcao: 'html-editor-widget-render',
+                params: { signature: signature }
+            },
+            success: function (resp) {
+                var html = (resp && resp.status === 'Ok' && resp.data) ? (resp.data.html || '') : '';
+                enviarParaIframe(ACT.WIDGET_RENDERED, { wrapperId: wrapperId, signature: signature, html: html });
+            },
+            error: function () {
+                enviarParaIframe(ACT.WIDGET_RENDERED, { wrapperId: wrapperId, signature: signature, html: '' });
+            }
+        });
+    }
+
     // ===== Mensagens recebidas do iframe
 
     window.addEventListener('message', function (e) {
@@ -394,6 +419,9 @@ $(document).ready(function () {
         switch (data.action) {
             case ACT.HISTORY:
                 atualizarBotoesHistorico(!!data.canUndo, !!data.canRedo);
+                break;
+            case ACT.WIDGET_RENDER:
+                renderWidgetParaIframe(String(data.signature || ''), String(data.wrapperId || ''));
                 break;
         }
     });

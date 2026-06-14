@@ -28,6 +28,10 @@ $(document).ready(function () {
             this.placeholder = null;
             this.wrapMenu = null;               // popup de tags para embrulhar (req-036)
             this.clipboardElement = null;       // área de transferência interna (req-036)
+            this.imagePickerTarget = null;      // alvo do ImagePicker: 'background' (req-039)
+            this.parentHighlightOverlay = null; // destaque de contêiner alvo (append) (req-039)
+            this.insertGhost = null;            // elemento fantasma no modo de inserção (req-039)
+            this.widgetSeq = 0;                 // contador de ids de wrapper de widget (req-039)
 
             this.hoveredElement = null;   // elemento sob o mouse (hover)
             this.selectedElement = null;  // elemento selecionado (persistente)
@@ -82,7 +86,7 @@ $(document).ready(function () {
             this.bindMessageBus();
             this.convertWidgetCommentsToWrappers();
             // Estado inicial do histórico.
-            this.undoStack = [this.extractUserHtml(false)];
+            this.undoStack = [this.captureSnapshot()];
             this.redoStack = [];
             this.notifyHistory();
         }
@@ -105,6 +109,9 @@ $(document).ready(function () {
                 #html-editor-floating-toolbar .he-tb-btn:hover{background:rgba(255,255,255,0.18);}
                 #html-editor-floating-toolbar .he-tb-btn.he-tb-drag{cursor:move;}
                 #html-editor-floating-toolbar .he-tb-btn.he-tb-del:hover{background:rgba(220,38,38,0.85);}
+                #html-editor-floating-toolbar .he-tb-btn.he-tb-deselect{color:#fca5a5;margin-left:4px;
+                    border-left:1px solid rgba(255,255,255,0.18);border-radius:0 4px 4px 0;}
+                #html-editor-floating-toolbar .he-tb-btn.he-tb-deselect:hover{background:rgba(220,38,38,0.85);color:#fff;}
                 .he-wrap-menu{position:absolute;display:none;z-index:1000000;background:#1f2937;border-radius:6px;
                     box-shadow:0 2px 10px rgba(0,0,0,0.3);padding:4px;min-width:120px;}
                 .he-wrap-menu .he-wrap-item{padding:5px 10px;color:#e5e7eb;cursor:pointer;border-radius:4px;
@@ -112,7 +119,7 @@ $(document).ready(function () {
                 .he-wrap-menu .he-wrap-item:hover{background:rgba(255,255,255,0.18);}
                 #html-editor-selection-breadcrumb{position:absolute;display:none;z-index:999998;
                     background:#111827;color:#e5e7eb;font:11px/1.4 monospace;padding:2px 6px;border-radius:0 0 4px 4px;
-                    max-width:90vw;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+                    max-width:96vw;white-space:normal;flex-wrap:wrap;align-items:center;}
                 #html-editor-selection-breadcrumb .he-crumb{cursor:pointer;color:#93c5fd;}
                 #html-editor-selection-breadcrumb .he-crumb:hover{color:#fff;text-decoration:underline;}
                 #html-editor-selection-breadcrumb .he-crumb-sep{color:#6b7280;margin:0 3px;}
@@ -120,7 +127,7 @@ $(document).ready(function () {
                 #html-editor-selection-children .he-crumb-label{color:#9ca3af;font-weight:bold;margin-right:5px;}
                 #html-editor-selection-children{position:absolute;display:none;z-index:999998;
                     background:#1f2937;color:#e5e7eb;font:11px/1.4 monospace;padding:2px 6px;border-radius:0 0 4px 4px;
-                    max-width:90vw;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+                    max-width:96vw;white-space:normal;flex-wrap:wrap;align-items:center;}
                 #html-editor-selection-children .he-crumb-child{cursor:pointer;color:#fcd34d;}
                 #html-editor-selection-children .he-crumb-child:hover{color:#fff;text-decoration:underline;}
                 #html-editor-selection-children .he-child-sep{color:#6b7280;margin:0 3px;}
@@ -176,8 +183,20 @@ $(document).ready(function () {
                 #html-editor-tailwind-styler .he-helper-color.active{outline:2px solid #2563eb;outline-offset:1px;}
                 #html-editor-tailwind-styler .he-helper-bordercolor{background:#fff !important;border-width:3px;
                     border-style:solid;}
+                #html-editor-tailwind-styler .he-bgimage-actions{display:flex;gap:4px;align-items:center;}
+                #html-editor-tailwind-styler .he-bgimage-preview{margin-top:4px;}
+                #html-editor-tailwind-styler .he-bgimage-preview img{max-width:120px;max-height:70px;
+                    border:1px solid #d1d5db;border-radius:4px;display:block;}
                 .conn2flow-dnd-placeholder{height:0;border-top:3px dashed #f59e0b;margin:0;padding:0;
                     pointer-events:none;position:relative;z-index:999985;box-shadow:0 0 4px rgba(245,158,11,0.6);}
+                #html-editor-parent-highlight-overlay{position:absolute;pointer-events:none;box-sizing:border-box;
+                    display:none;z-index:999986;border:3px dashed #f59e0b;background:rgba(245,158,11,0.08);
+                    border-radius:4px;}
+                #html-editor-insert-ghost{position:absolute;pointer-events:none;display:none;z-index:1000001;
+                    opacity:0.85;border:1px solid #7c3aed;background:rgba(255,255,255,0.95);border-radius:6px;
+                    padding:6px;max-width:420px;max-height:60vh;overflow:hidden;
+                    box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+                #html-editor-insert-ghost *{pointer-events:none !important;}
                 .conn2flow-widget-wrapper{position:relative;border:2px dashed #f59e0b;
                     background:rgba(245,158,11,0.06);border-radius:4px;padding:18px 4px 4px;margin:4px 0;}
                 .conn2flow-widget-wrapper>.conn2flow-widget-label{position:absolute;top:0;left:0;
@@ -227,6 +246,11 @@ $(document).ready(function () {
             this.breadcrumbHoverOverlay = document.createElement('div');
             this.breadcrumbHoverOverlay.id = 'html-editor-breadcrumb-hover-overlay';
             document.body.appendChild(this.breadcrumbHoverOverlay);
+
+            // req-039: destaque amarelo tracejado de 4 lados para o contêiner alvo (append).
+            this.parentHighlightOverlay = document.createElement('div');
+            this.parentHighlightOverlay.id = 'html-editor-parent-highlight-overlay';
+            document.body.appendChild(this.parentHighlightOverlay);
         }
 
         createToolbar() {
@@ -247,6 +271,8 @@ $(document).ready(function () {
                     <i class="pencil icon" style="margin:0"></i></button>
                 <button class="he-tb-btn he-tb-del" type="button" title="Deletar">
                     <i class="trash icon" style="margin:0"></i></button>
+                <button class="he-tb-btn he-tb-deselect" type="button" title="Deselecionar (Esc)">
+                    <i class="times circle icon" style="margin:0"></i></button>
             `;
             document.body.appendChild(tb);
             this.toolbar = tb;
@@ -289,6 +315,13 @@ $(document).ready(function () {
                     this.toggleHelperSection(sectionHeader);
                     return;
                 }
+                // req-039: controles de imagem de fundo (ImagePicker + limpar).
+                if (e.target.closest('.he-bgimage-pick')) {
+                    e.preventDefault(); e.stopPropagation(); this.requestBackgroundImage(); return;
+                }
+                if (e.target.closest('.he-bgimage-clear')) {
+                    e.preventDefault(); e.stopPropagation(); this.clearBackgroundImage(); return;
+                }
                 const btn = e.target.closest('[data-helper-group]');
                 if (!btn) return;
                 e.preventDefault(); e.stopPropagation();
@@ -313,6 +346,9 @@ $(document).ready(function () {
             });
             tb.querySelector('.he-tb-del').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.deleteSelected();
+            });
+            tb.querySelector('.he-tb-deselect').addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation(); this.clearSelection();
             });
             // Itens do menu de embrulhar.
             wrapMenu.addEventListener('click', (e) => {
@@ -358,6 +394,8 @@ $(document).ready(function () {
                 element.id === 'html-editor-selection-breadcrumb' ||
                 element.id === 'html-editor-selection-children' ||
                 element.id === 'html-editor-breadcrumb-hover-overlay' ||
+                element.id === 'html-editor-parent-highlight-overlay' ||
+                element.id === 'html-editor-insert-ghost' ||
                 element.id === 'html-editor-tailwind-styler' ||
                 element.id === 'html-editor-wrap-menu' ||
                 element.id === 'html-editor-modal')) return true;
@@ -468,7 +506,12 @@ $(document).ready(function () {
                 if (el) {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.selectElement(el);
+                    // req-039: clicar no elemento já selecionado funciona como alternador (deseleciona).
+                    if (el === this.selectedElement) {
+                        this.clearSelection();
+                    } else {
+                        this.selectElement(el);
+                    }
                 } else {
                     this.clearSelection();
                 }
@@ -544,6 +587,18 @@ $(document).ready(function () {
                             widgetSlug: data.widgetSlug, widgetName: data.widgetName
                         }); break;
                     case 'c2f-he:cancel-insert': this.exitInsertMode(); break;
+                    case 'c2f-he:widget-rendered':
+                        this.applyWidgetRender(data.wrapperId, data.html); break;
+                    case 'html-editor-imagepick-selected':
+                        // req-039: quando o alvo do ImagePicker é a imagem de fundo, aplicar no elemento.
+                        if (this.imagePickerTarget === 'background' && data.imageData) {
+                            this.imagePickerTarget = null;
+                            const raiz = (typeof html_editor !== 'undefined' && html_editor.raiz) ? html_editor.raiz : '';
+                            const caminho = data.imageData.caminho || '';
+                            const url = /^https?:\/\//i.test(caminho) ? caminho : (raiz + caminho);
+                            this.applyBackgroundImage(url);
+                        }
+                        break;
                 }
             });
         }
@@ -633,16 +688,16 @@ $(document).ready(function () {
 
             // 1) Ancestrais (breadcrumb legado, sempre presente quando há seleção).
             this.renderBreadcrumb(element);
-            this.breadcrumb.style.display = 'block';
+            this.breadcrumb.style.display = 'flex';
             this.breadcrumb.style.top = stackTop + 'px';
-            this.breadcrumb.style.left = left + 'px';
+            this.breadcrumb.style.left = this.clampLeft(this.breadcrumb, left) + 'px';
             stackTop += this.breadcrumb.offsetHeight;
 
             // 2) Filhos (novo seletor; oculta-se sozinho se não houver filhos editáveis).
             this.renderChildren(element);
-            if (this.childrenBar.style.display === 'block') {
+            if (this.childrenBar.style.display !== 'none') {
                 this.childrenBar.style.top = stackTop + 'px';
-                this.childrenBar.style.left = left + 'px';
+                this.childrenBar.style.left = this.clampLeft(this.childrenBar, left) + 'px';
                 stackTop += this.childrenBar.offsetHeight;
             }
 
@@ -651,8 +706,18 @@ $(document).ready(function () {
                 // req-037: empilhar as duas colunas verticalmente em elementos estreitos (<400px).
                 this.styler.classList.toggle('he-styler-stacked', rect.width < 400);
                 this.styler.style.top = (stackTop + 2) + 'px';
-                this.styler.style.left = left + 'px';
+                this.styler.style.left = this.clampLeft(this.styler, left) + 'px';
             }
+        }
+
+        // req-039: mantém o painel dentro da largura visível do iframe (clamp horizontal).
+        clampLeft(el, leftPx) {
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+            const w = el.offsetWidth || 0;
+            const minLeft = scrollLeft + 4;
+            const maxLeft = scrollLeft + window.innerWidth - w - 4;
+            if (maxLeft < minLeft) return minLeft;
+            return Math.max(minLeft, Math.min(leftPx, maxLeft));
         }
 
         // ===================================================================
@@ -750,7 +815,7 @@ $(document).ready(function () {
                 });
                 this.childrenBar.appendChild(crumb);
             });
-            this.childrenBar.style.display = 'block';
+            this.childrenBar.style.display = 'flex';
         }
 
         // ===================================================================
@@ -956,19 +1021,6 @@ $(document).ready(function () {
                 },
                 // ===== Seção: APARÊNCIA
                 {
-                    key: 'bgColor', section: 'Aparência', title: 'Fundo', kind: 'color', default: 'bg-transparent', cleanRe: bgColorRe,
-                    buttons: [
-                        { cls: 'bg-transparent', color: 'transparent', title: 'Transparente' },
-                        { cls: 'bg-gray-100', color: '#f3f4f6', title: 'Cinza claro' },
-                        { cls: 'bg-gray-800', color: '#1f2937', title: 'Cinza escuro' },
-                        { cls: 'bg-red-500', color: '#ef4444', title: 'Vermelho' },
-                        { cls: 'bg-blue-500', color: '#3b82f6', title: 'Azul' },
-                        { cls: 'bg-green-500', color: '#22c55e', title: 'Verde' },
-                        { cls: 'bg-yellow-400', color: '#facc15', title: 'Amarelo' },
-                        { cls: 'bg-purple-500', color: '#a855f7', title: 'Roxo' }
-                    ]
-                },
-                {
                     key: 'rounded', section: 'Aparência', title: 'Cantos', kind: 'text', default: 'rounded-none', cleanRe: /^rounded(-.+)?$/,
                     buttons: [
                         { cls: 'rounded-none', label: 'Reto', title: 'Reto' },
@@ -1018,6 +1070,52 @@ $(document).ready(function () {
                         { cls: 'opacity-50', label: '50', title: '50%' },
                         { cls: 'opacity-25', label: '25', title: '25%' }
                     ]
+                },
+                // ===== Seção: FUNDO (req-039) — cor de fundo migrada + imagem de fundo
+                {
+                    key: 'bgColor', section: 'Fundo', title: 'Cor de fundo', kind: 'color', default: 'bg-transparent', cleanRe: bgColorRe,
+                    buttons: [
+                        { cls: 'bg-transparent', color: 'transparent', title: 'Transparente' },
+                        { cls: 'bg-gray-100', color: '#f3f4f6', title: 'Cinza claro' },
+                        { cls: 'bg-gray-800', color: '#1f2937', title: 'Cinza escuro' },
+                        { cls: 'bg-red-500', color: '#ef4444', title: 'Vermelho' },
+                        { cls: 'bg-blue-500', color: '#3b82f6', title: 'Azul' },
+                        { cls: 'bg-green-500', color: '#22c55e', title: 'Verde' },
+                        { cls: 'bg-yellow-400', color: '#facc15', title: 'Amarelo' },
+                        { cls: 'bg-purple-500', color: '#a855f7', title: 'Roxo' }
+                    ]
+                },
+                { key: 'bgImage', section: 'Fundo', title: 'Imagem de fundo', kind: 'bgimage', buttons: [] },
+                {
+                    key: 'bgRepeat', section: 'Fundo', title: 'Repetição', kind: 'text',
+                    cleanList: ['bg-repeat', 'bg-no-repeat', 'bg-repeat-x', 'bg-repeat-y', 'bg-repeat-round', 'bg-repeat-space'],
+                    buttons: [
+                        { cls: 'bg-repeat', label: 'Tile', title: 'Repetir' },
+                        { cls: 'bg-no-repeat', label: 'Não', title: 'Não repetir' },
+                        { cls: 'bg-repeat-x', label: 'X', title: 'Repetir horizontal' },
+                        { cls: 'bg-repeat-y', label: 'Y', title: 'Repetir vertical' }
+                    ]
+                },
+                {
+                    key: 'bgSize', section: 'Fundo', title: 'Tamanho', kind: 'text',
+                    cleanList: ['bg-auto', 'bg-cover', 'bg-contain'],
+                    buttons: [
+                        { cls: 'bg-auto', label: 'Auto', title: 'Automático' },
+                        { cls: 'bg-cover', label: 'Cobrir', title: 'Cover' },
+                        { cls: 'bg-contain', label: 'Conter', title: 'Contain' }
+                    ]
+                },
+                {
+                    key: 'bgPosition', section: 'Fundo', title: 'Posição', kind: 'text',
+                    cleanList: ['bg-center', 'bg-top', 'bg-bottom', 'bg-left', 'bg-right',
+                        'bg-left-top', 'bg-left-bottom', 'bg-right-top', 'bg-right-bottom'],
+                    buttons: [
+                        { cls: 'bg-center', label: 'Centro', title: 'Centro' },
+                        { cls: 'bg-top', label: 'Topo', title: 'Topo' },
+                        { cls: 'bg-bottom', label: 'Base', title: 'Base' },
+                        { cls: 'bg-left', label: 'Esq', title: 'Esquerda' },
+                        { cls: 'bg-right', label: 'Dir', title: 'Direita' }
+                    ]
                 }
             ];
             // Deriva a lista fechada de classes de cada grupo a partir dos botões.
@@ -1051,6 +1149,19 @@ $(document).ready(function () {
         buildHelperGroupHtml(g, esc) {
             let html = '<div class="he-helper-group" data-group="' + g.key + '">';
             html += '<div class="he-helper-title">' + esc(g.title) + '</div>';
+            // req-039: controle especial de imagem de fundo (ImagePicker + preview).
+            if (g.kind === 'bgimage') {
+                html += '<div class="he-bgimage">' +
+                    '<div class="he-bgimage-actions">' +
+                    '<button type="button" class="he-helper-btn he-bgimage-pick" title="Selecionar imagem do servidor">' +
+                    '<i class="folder open icon"></i> Imagem</button>' +
+                    '<button type="button" class="he-helper-btn he-bgimage-clear" title="Remover imagem de fundo">' +
+                    '<i class="trash icon"></i></button>' +
+                    '</div>' +
+                    '<div class="he-bgimage-preview" style="display:none"><img alt="" /></div>' +
+                    '</div></div>';
+                return html;
+            }
             html += '<div class="he-helper-row">';
             g.buttons.forEach((b) => {
                 if (g.kind === 'color') {
@@ -1124,6 +1235,56 @@ $(document).ready(function () {
                     if (btn) btn.classList.toggle('active', b.cls === activeCls);
                 });
             });
+            this.syncBgImagePreview(element);
+        }
+
+        // ===== Imagem de fundo (ImagePicker) — req-039
+        requestBackgroundImage() {
+            if (!this.selectedElement) return;
+            const cfg = (typeof html_editor !== 'undefined' && html_editor.imagepick) ? html_editor.imagepick : null;
+            this.imagePickerTarget = 'background';
+            try {
+                window.parent.postMessage(JSON.stringify({ action: 'html-editor-imagepick-open', config: cfg }), '*');
+            } catch (e) { /* noop */ }
+        }
+
+        applyBackgroundImage(url) {
+            const el = this.selectedElement;
+            if (!el || !url) return;
+            el.style.backgroundImage = "url('" + String(url).replace(/'/g, "\\'") + "')";
+            this.syncBgImagePreview(el);
+            this.afterDomMutation();
+        }
+
+        clearBackgroundImage() {
+            const el = this.selectedElement;
+            if (!el) return;
+            el.style.backgroundImage = '';
+            if (el.getAttribute('style') === '') el.removeAttribute('style');
+            this.syncBgImagePreview(el);
+            this.afterDomMutation();
+        }
+
+        currentBackgroundImageUrl(element) {
+            const bg = element && element.style ? element.style.backgroundImage : '';
+            if (!bg || bg === 'none') return '';
+            const m = bg.match(/url\((['"]?)(.*?)\1\)/);
+            return m ? m[2] : '';
+        }
+
+        syncBgImagePreview(element) {
+            if (!this.styler) return;
+            const box = this.styler.querySelector('.he-bgimage-preview');
+            if (!box) return;
+            const url = this.currentBackgroundImageUrl(element);
+            const img = box.querySelector('img');
+            if (url) {
+                if (img) img.src = url;
+                box.style.display = 'block';
+            } else {
+                if (img) img.removeAttribute('src');
+                box.style.display = 'none';
+            }
         }
 
         tailwindSuggestions() {
@@ -1246,8 +1407,13 @@ $(document).ready(function () {
             wrapper.setAttribute('data-widget-signature', type + '->render({"grupo_slug": "' + slug + '"})');
             const label = wrapper.querySelector('.conn2flow-widget-label');
             if (label) label.textContent = 'Widget: ' + type + ' - ' + slug;
+            // req-039: o mockup é descartado ao trocar o slug; re-renderiza o esqueleto.
+            wrapper.setAttribute('data-widget-mockup', '');
+            const inner = wrapper.querySelector('.conn2flow-widget-inner');
+            if (inner) inner.innerHTML = '';
             this.updateSelectionUI();
             this.afterDomMutation();
+            this.requestWidgetRender(wrapper);
         }
 
         // ===================================================================
@@ -1438,8 +1604,50 @@ $(document).ready(function () {
         onDragMove(e) {
             const target = this.computeDropTarget(e.clientX, e.clientY);
             this.dropTarget = target;
-            if (target) this.positionPlaceholder(target);
-            else this.removePlaceholder();
+            this.showDropIndicator(target);
+        }
+
+        // req-039: 'inside' (contêiner) destaca o pai com borda amarela de 4 lados;
+        // 'before'/'after' usam a linha de placeholder.
+        showDropIndicator(target) {
+            if (!target) { this.hideDropIndicators(); return; }
+            if (target.position === 'inside') {
+                this.removePlaceholder();
+                this.showParentHighlight(target.element);
+            } else {
+                this.hideParentHighlight();
+                this.positionPlaceholder(target);
+            }
+        }
+
+        hideDropIndicators() {
+            this.removePlaceholder();
+            this.hideParentHighlight();
+        }
+
+        showParentHighlight(element) {
+            if (!this.parentHighlightOverlay || !element) return;
+            this.positionOverlay(this.parentHighlightOverlay, element);
+            this.parentHighlightOverlay.style.display = 'block';
+        }
+
+        hideParentHighlight() {
+            if (this.parentHighlightOverlay) this.parentHighlightOverlay.style.display = 'none';
+        }
+
+        // Insere um nó conforme o alvo computado (inside/before/after); retorna sucesso.
+        insertAtTarget(node, target) {
+            if (!node || !target || !target.element) return false;
+            if (target.position === 'inside') {
+                target.element.appendChild(node);
+            } else if (target.position === 'before') {
+                if (!target.element.parentNode) return false;
+                target.element.parentNode.insertBefore(node, target.element);
+            } else {
+                if (!target.element.parentNode) return false;
+                target.element.parentNode.insertBefore(node, target.element.nextSibling);
+            }
+            return true;
         }
 
         computeDropTarget(x, y) {
@@ -1488,10 +1696,10 @@ $(document).ready(function () {
             this.dragElement = null;
             this.dropTarget = null;
 
-            if (el && target && this.placeholder.parentNode) {
-                this.placeholder.parentNode.insertBefore(el, this.placeholder);
+            if (el && target) {
+                this.insertAtTarget(el, target);
             }
-            this.removePlaceholder();
+            this.hideDropIndicators();
             // Evitar que o clique residual do mouseup re-selecione outro elemento.
             this.suppressClick = true;
 
@@ -1508,20 +1716,59 @@ $(document).ready(function () {
             this.insertMode = true;
             this.insertPayload = payload;
             document.documentElement.classList.add('he-inserting');
+            this.createInsertGhost(payload);
         }
 
         exitInsertMode() {
             this.insertMode = false;
             this.insertPayload = null;
-            this.removePlaceholder();
+            this.hideDropIndicators();
+            this.removeInsertGhost();
             document.documentElement.classList.remove('he-inserting');
         }
 
+        // req-039: elemento fantasma que segue o cursor representando o item a inserir.
+        createInsertGhost(payload) {
+            this.removeInsertGhost();
+            const ghost = document.createElement('div');
+            ghost.id = 'html-editor-insert-ghost';
+            // req-040: o fantasma mostra o ELEMENTO/WIDGET real a ser inserido (não um rótulo sintético).
+            let node;
+            if (payload.kind === 'widget') {
+                node = this.buildWidgetWrapper(payload);
+            } else {
+                node = this.buildElement(payload.elementType);
+            }
+            ghost.appendChild(node);
+            document.body.appendChild(ghost);
+            this.insertGhost = ghost;
+            // Widget: pedir a renderização do esqueleto para o preview seguir o cursor já renderizado.
+            if (payload.kind === 'widget') {
+                this.requestWidgetRender(node);
+            }
+        }
+
+        removeInsertGhost() {
+            if (this.insertGhost && this.insertGhost.parentNode) {
+                this.insertGhost.parentNode.removeChild(this.insertGhost);
+            }
+            this.insertGhost = null;
+        }
+
+        moveInsertGhost(x, y) {
+            if (!this.insertGhost) return;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+            this.insertGhost.style.display = 'block';
+            this.insertGhost.style.top = (y + scrollTop + 15) + 'px';
+            this.insertGhost.style.left = (x + scrollLeft + 15) + 'px';
+        }
+
         onInsertMove(e) {
+            this.moveInsertGhost(e.clientX, e.clientY);
             const target = this.computeInsertTarget(e.clientX, e.clientY);
             this.dropTarget = target;
-            if (target) this.positionPlaceholder(target);
-            else this.removePlaceholder();
+            this.showDropIndicator(target);
         }
 
         computeInsertTarget(x, y) {
@@ -1551,9 +1798,7 @@ $(document).ready(function () {
                 : this.buildElement(payload.elementType);
             if (!node) { this.exitInsertMode(); return; }
 
-            if (target && this.placeholder.parentNode) {
-                this.placeholder.parentNode.insertBefore(node, this.placeholder);
-            } else {
+            if (!this.insertAtTarget(node, target)) {
                 // fallback (clique sem alvo): inserir antes da UI do editor no body.
                 const ref = document.getElementById('html-editor-modal') ||
                     document.getElementById('html-editor-hover-overlay');
@@ -1563,6 +1808,11 @@ $(document).ready(function () {
             this.exitInsertMode();
             this.selectElement(node);
             this.afterDomMutation();
+
+            // req-039: renderizar o esqueleto do widget recém-inserido.
+            if (payload.kind === 'widget') {
+                this.requestWidgetRender(node);
+            }
 
             // Inserção de imagem abre o ImagePicker imediatamente.
             if (payload.kind === 'element' && payload.elementType === 'img') {
@@ -1613,6 +1863,9 @@ $(document).ready(function () {
             wrapper.setAttribute('data-widget-type', opts.type);
             wrapper.setAttribute('data-widget-slug', opts.slug);
             wrapper.setAttribute('data-widget-signature', opts.signature);
+            // req-039: o mockup original é preservado à parte; o inner pode receber o preview
+            // renderizado (que NÃO deve vazar no save — o save usa o mockup).
+            wrapper.setAttribute('data-widget-mockup', opts.innerHtml || '');
 
             const label = document.createElement('div');
             label.className = 'conn2flow-widget-label';
@@ -1625,6 +1878,34 @@ $(document).ready(function () {
             wrapper.appendChild(inner);
 
             return wrapper;
+        }
+
+        // req-039: pede ao pai o HTML renderizado do widget para preencher o wrapper.
+        requestWidgetRender(wrapper) {
+            if (!wrapper) return;
+            const signature = wrapper.getAttribute('data-widget-signature');
+            const slug = wrapper.getAttribute('data-widget-slug');
+            if (!signature || !slug) return; // sem slug não há o que renderizar
+            let wid = wrapper.getAttribute('data-widget-id');
+            if (!wid) { wid = 'w' + (++this.widgetSeq); wrapper.setAttribute('data-widget-id', wid); }
+            const inner = wrapper.querySelector('.conn2flow-widget-inner');
+            if (inner && !inner.innerHTML.trim()) {
+                inner.innerHTML = '<div style="padding:8px;color:#92400e;font:12px sans-serif">Carregando widget…</div>';
+            }
+            try {
+                window.parent.postMessage(JSON.stringify({
+                    action: 'c2f-he:widget-render', signature: signature, wrapperId: wid
+                }), '*');
+            } catch (e) { /* noop */ }
+        }
+
+        applyWidgetRender(wrapperId, html) {
+            if (!wrapperId) return;
+            const wrapper = document.querySelector('.conn2flow-widget-wrapper[data-widget-id="' + wrapperId + '"]');
+            if (!wrapper) return;
+            const inner = wrapper.querySelector('.conn2flow-widget-inner');
+            if (!inner) return;
+            inner.innerHTML = html || '<div style="padding:8px;color:#9ca3af;font:12px sans-serif">(widget sem conteúdo)</div>';
         }
 
         /**
@@ -1669,9 +1950,16 @@ $(document).ready(function () {
                     inner.appendChild(node);
                     node = next;
                 }
+                // Preservar o mockup original (o que será reescrito entre os comentários no save).
+                wrapper.setAttribute('data-widget-mockup', inner.innerHTML);
                 c.parentNode.insertBefore(wrapper, c);
                 c.parentNode.removeChild(c);
                 if (close.parentNode) close.parentNode.removeChild(close);
+
+                // req-039: se não houver mockup mas houver slug, renderizar o esqueleto do widget.
+                if (!inner.innerHTML.trim() && parsed.slug) {
+                    this.requestWidgetRender(wrapper);
+                }
             }
         }
 
@@ -1700,10 +1988,23 @@ $(document).ready(function () {
             } catch (e) { /* noop */ }
         }
 
+        // req-039: snapshot inclui a rolagem vertical do iframe para restaurar o viewport.
+        captureSnapshot() {
+            return {
+                html: this.extractUserHtml(false),
+                scrollTop: window.pageYOffset || document.documentElement.scrollTop || 0
+            };
+        }
+
+        restoreScroll(top) {
+            try { window.scrollTo(0, top || 0); } catch (e) { /* noop */ }
+        }
+
         pushUndo() {
-            const snapshot = this.extractUserHtml(false);
-            if (this.undoStack.length && this.undoStack[this.undoStack.length - 1] === snapshot) return;
-            this.undoStack.push(snapshot);
+            const snap = this.captureSnapshot();
+            const top = this.undoStack[this.undoStack.length - 1];
+            if (top && top.html === snap.html) return;
+            this.undoStack.push(snap);
             if (this.undoStack.length > this.config.undoLimit + 1) this.undoStack.shift();
             this.redoStack = [];
             this.notifyHistory();
@@ -1714,7 +2015,8 @@ $(document).ready(function () {
             const current = this.undoStack.pop();
             this.redoStack.push(current);
             const prev = this.undoStack[this.undoStack.length - 1];
-            this.applyState(prev);
+            this.applyState(prev.html);
+            this.restoreScroll(prev.scrollTop);
             this.notifyHistory();
         }
 
@@ -1722,7 +2024,8 @@ $(document).ready(function () {
             if (!this.redoStack.length) return;
             const next = this.redoStack.pop();
             this.undoStack.push(next);
-            this.applyState(next);
+            this.applyState(next.html);
+            this.restoreScroll(next.scrollTop);
             this.notifyHistory();
         }
 
@@ -1747,9 +2050,19 @@ $(document).ready(function () {
             tpl.innerHTML = html;
             const ref = document.body.firstChild;
             document.body.insertBefore(tpl.content, ref);
+            // req-039: re-renderizar o esqueleto dos widgets sem mockup (preview não é salvo no snapshot).
+            this.rerenderVisibleWidgets();
             try {
                 window.parent.postMessage(JSON.stringify({ action: 'c2f-he:dom-changed' }), '*');
             } catch (e) { /* noop */ }
+        }
+
+        rerenderVisibleWidgets() {
+            document.querySelectorAll('.conn2flow-widget-wrapper').forEach((w) => {
+                const slug = w.getAttribute('data-widget-slug');
+                const mockup = w.getAttribute('data-widget-mockup') || '';
+                if (slug && !mockup.trim()) this.requestWidgetRender(w);
+            });
         }
 
         // ===================================================================
@@ -1788,6 +2101,7 @@ $(document).ready(function () {
             container.querySelectorAll('#html-editor-floating-toolbar,#html-editor-hover-overlay,' +
                 '#html-editor-selection-overlay,#html-editor-selection-breadcrumb,#html-editor-selection-children,' +
                 '#html-editor-breadcrumb-hover-overlay,#html-editor-tailwind-styler,#html-editor-wrap-menu,' +
+                '#html-editor-parent-highlight-overlay,#html-editor-insert-ghost,' +
                 '#html-editor-modal,.conn2flow-dnd-placeholder,.html-editor-container,.ui.dimmer.modals')
                 .forEach((el) => el.remove());
 
@@ -1796,8 +2110,11 @@ $(document).ready(function () {
                     const signature = wrapper.getAttribute('data-widget-signature') ||
                         ((wrapper.getAttribute('data-widget-type') || '') +
                             '->render({"grupo_slug": "' + (wrapper.getAttribute('data-widget-slug') || '') + '"})');
+                    // req-039: salvar o MOCKUP original (não o preview renderizado que está no inner).
                     const inner = wrapper.querySelector('.conn2flow-widget-inner');
-                    const innerHtml = inner ? inner.innerHTML : '';
+                    const innerHtml = wrapper.hasAttribute('data-widget-mockup')
+                        ? wrapper.getAttribute('data-widget-mockup')
+                        : (inner ? inner.innerHTML : '');
                     const open = document.createComment(' widgets#' + signature + ' < ');
                     const close = document.createComment(' widgets#' + signature + ' > ');
                     const frag = document.createDocumentFragment();

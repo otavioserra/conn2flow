@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.2.2',
+	'versao' => '1.2.5',
 );
 
 // ===== Funções auxiliares
@@ -506,7 +506,47 @@ function html_editor_ajax_interface($params = false){
         case 'html-editor-ia-requests': html_editor_ajax_ia_requests(); break;
         case 'html-editor-templates-load': html_editor_ajax_templates_load(); break;
         case 'html-editor-widgets-list': html_editor_ajax_widgets_list(); break;
+        case 'html-editor-widget-render': html_editor_ajax_widget_render(); break;
 	}
+}
+
+/**
+ * AJAX Widget Render.
+ *
+ * Renderiza o HTML (esqueleto/conteúdo) de um widget a partir da sua assinatura
+ * (`modulo->render({...})`) para preencher o wrapper virtual no Editor HTML Visual (req-039 §1.7).
+ *
+ */
+function html_editor_ajax_widget_render(){
+	global $_GESTOR;
+
+	$signature = $_REQUEST['params']['signature'] ?? $_REQUEST['signature'] ?? '';
+	$signature = trim((string)$signature);
+
+	// Aceita apenas o formato modular `modulo->func({json})` para evitar execução arbitrária.
+	if($signature === '' || !preg_match('/^[a-zA-Z0-9_\-]+->[a-zA-Z0-9_\-]+\(.*\)$/', $signature)){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'error',
+			'message' => 'Assinatura de widget inválida.',
+		);
+		return;
+	}
+
+	gestor_incluir_biblioteca('widgets');
+
+	// Renderizar em modo page-load (HTML estrutural completo do widget), não em modo AJAX.
+	$ajaxAnterior = isset($_GESTOR['ajax']) ? $_GESTOR['ajax'] : false;
+	$_GESTOR['ajax'] = false;
+	$html = widgets_get(Array('id' => $signature));
+	$_GESTOR['ajax'] = $ajaxAnterior;
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data' => Array(
+			'signature' => $signature,
+			'html' => (string)$html,
+		),
+	);
 }
 
 /**

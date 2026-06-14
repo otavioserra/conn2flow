@@ -751,6 +751,50 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 - [ ] Testes de interação (colunas invertidas, empilhamento <400px, toolbar embaixo sem sobrepor, 20 grupos aplicando/sincronizando sem afetar classes de outros grupos) — **pendente com o operador** (runtime no navegador, após `🗃️ Projects - Update => Core`).
 - Expansão criativa autorizada: 20 grupos em 4 seções (Texto/Layout/Caixa/Aparência). Arquivo: `gestor/assets/interface/html-editor.js`. Decisão: [DEC-052](../decisions/DECISION-LOG.md).
 
+---
+## BATCH-039 - Melhorias e Aprimoramentos do Editor HTML Visual (req-039)
+
+- [ ] **Seção "Fundo" (Background)**:
+  - [ ] Verificar se uma nova seção "Fundo" (Background) é criada no visual helper, contendo a cor de fundo (bgColor), seleção de imagem, repeat, size e position.
+  - [ ] Clicar em "Selecionar Imagem" no painel de Fundo e confirmar que o ImagePicker abre, e ao selecionar uma imagem, ela é aplicada como estilo inline `background-image` e o preview de miniatura aparece no styler.
+  - [ ] Clicar em "Limpar" e confirmar que a imagem de fundo inline é removida e a miniatura desaparece.
+  - [ ] Validar a aplicação das classes Tailwind de repetição, tamanho e posição da imagem de fundo.
+- [ ] **Deseleção e Toggle de Seleção**:
+  - [ ] Confirmar que o novo botão "Deselecionar" (classe `.he-tb-deselect`, com visual diferenciado) aparece na barra flutuante. Clicar nele e verificar se a seleção é totalmente limpa (some overlays, toolbar, styler).
+  - [ ] Clicar em um elemento selecionado ativo no editor visual e verificar se ele é deselecionado (toggle).
+- [ ] **Preservação de Rolagem no Histórico (Scroll Sync)**:
+  - [ ] Editar um elemento que exija rolagem (fora do viewport inicial), fazer alterações, rolar o scroll, e dar Ctrl+Z ou Ctrl+Y. Verificar se o scroll vertical do iframe retorna exatamente para onde estava quando o snapshot foi salvo.
+- [ ] **Wrapping de Breadcrumbs**:
+  - [ ] Selecionar um elemento na borda direita do iframe com breadcrumbs longos e confirmar que os breadcrumbs (ancestrais e filhos) quebram linha em vez de sumir da tela, e que a sua coordenada `left` é recalculada para não transbordar à direita.
+- [ ] **Elemento Fantasma (Ghost Element)**:
+  - [ ] Clicar no botão "+" e escolher um elemento ou widget. Mover o cursor sobre o iframe e confirmar que uma réplica fantasma do elemento com opacidade 0.6 e borda tracejada segue o cursor perfeitamente.
+- [ ] **Highlight de Append Completo**:
+  - [ ] Durante arraste ou inserção, posicionar o cursor em áreas de contêiner sem posição em linha clara. Confirmar que o contêiner de destino completo fica realçado por uma borda amarela tracejada de 4 lados.
+- [ ] **Renderização de Widgets Real (AJAX)**:
+  - [ ] Inserir um novo widget (ex: menus ou galleries) e confirmar que o editor visual exibe o esqueleto HTML renderizado real (via endpoint AJAX `html-editor-widget-render` que invoca `widgets_get()`) dentro do `.conn2flow-widget-inner` da div virtual.
+
+### Evidência de Validação (BATCH-039)
+- [x] Linting estático limpo (2026-06-14): `php -l gestor/bibliotecas/html-editor.php` OK; `node --check` OK em `html-editor.js`, `html-editor-interface.js` e `html-editor-visual-controls.js`.
+- [ ] Testes de interação manual no navegador de todas as funcionalidades descritas — **pendente com o operador** (runtime no navegador, após `🗃️ Projects - Update => Core`).
+- Arquivos: `gestor/assets/interface/html-editor.js`, `gestor/assets/interface/html-editor-visual-controls.js`, `gestor/assets/interface/html-editor-interface.js`, `gestor/bibliotecas/html-editor.php`. Decisão: [DEC-053](../decisions/DECISION-LOG.md).
+
+---
+## BATCH-040 - Ajustes Finais no Pré-visualizador de Widgets e Elemento Fantasma do Cursor (req-040)
+
+- [ ] **Renderização de Widgets no Pré-visualizador (`#iframe-visualizacao-pagina`)**:
+  - [ ] Ao clicar no botão "Voltar" (`previsualizarVoltar`) e retornar ao pré-visualizador de página, confirmar se os widgets contidos na página (ex: menus, galerias, destaques) são carregados e renderizados dinamicamente via AJAX no iframe de pré-visualização, mostrando o conteúdo real em vez de marcadores vazios ou ocultos.
+- [ ] **Elemento Real no Cursor Fantasma (`#html-editor-insert-ghost`)**:
+  - [ ] No modo de inserção (após selecionar um elemento ou widget no "+" do modal), confirmar se o contêiner fantasma que segue o cursor renderiza o elemento físico real (como um parágrafo formatado, link `Novo link`, ou imagem padrão) ou o widget completo renderizado via AJAX, acompanhando o cursor do mouse de forma fluida.
+  - [ ] Verificar se o contêiner do cursor fantasma possui visualização limpa e elegante, livre de bordas duras roxas sobrecarregadas ou corte de texto interno (`white-space: nowrap`/`overflow: hidden` desativados).
+
+### Evidência de Validação (BATCH-040)
+- [x] Linting estático limpo (2026-06-14): `node --check` OK em `gestor/assets/interface/html-editor-interface.js` e `html-editor.js`.
+- [ ] Testes de interação manual no navegador de todas as funcionalidades descritas — **pendente com o operador** (runtime no navegador, após `🗃️ Projects - Update => Core`):
+  - Voltar do editor visual e ver os widgets renderizados no pré-visualizador da página.
+  - Modo de inserção: o elemento/widget real renderizado acompanha o cursor numa caixa flutuante.
+- Arquivos: `gestor/assets/interface/html-editor-interface.js`, `gestor/assets/interface/html-editor.js`. Decisão: [DEC-054](../decisions/DECISION-LOG.md).
+
+
 
 
 

@@ -1304,6 +1304,7 @@ $(document).ready(function () {
             const sistemaSel = '#html-editor-modal,#html-editor-overlay,#html-editor-hover-overlay,' +
                 '#html-editor-selection-overlay,#html-editor-floating-toolbar,#html-editor-selection-breadcrumb,' +
                 '#html-editor-selection-children,#html-editor-breadcrumb-hover-overlay,' +
+                '#html-editor-parent-highlight-overlay,#html-editor-insert-ghost,#html-editor-wrap-menu,' +
                 '#html-editor-tailwind-styler,.conn2flow-dnd-placeholder,.ui.dimmer.modals';
             while ($(iframeDoc).find(sistemaSel).length > 0) {
                 $(iframeDoc).find(sistemaSel).remove();
@@ -1451,7 +1452,62 @@ $(document).ready(function () {
     window.previewExternalHtmlConteudo = previewExternalHtmlConteudo; // Expor globalmente para ser usada na pré-visualização fora do editor HTML.
 
     // Função para gerar o conteúdo da página do pré-visualizador.
+    // req-040: rotina autocontida injetada no iframe de pré-visualização (#iframe-visualizacao-pagina).
+    // Varre os comentários de widget (<!-- widgets#sig < --> ... <!-- widgets#sig > -->), substitui o
+    // intervalo por um contêiner neutro e renderiza cada widget via AJAX `html-editor-widget-render`
+    // (rota/credenciais lidas de window.parent.gestor). Injetada via .toString() para preservar as regex.
+    function widgetPreviewBootstrap() {
+        function renderWidgets() {
+            var P = window.parent;
+            if (!P || !P.gestor) return;
+            var g = P.gestor;
+            var url = g.raiz + g.moduloCaminho + '/';
+            var openRe = /^\s*widgets#(.+?)\s*<\s*$/i;
+            var closeRe = /^\s*widgets#\s*(.+?)\s*>\s*$/i;
+            var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_COMMENT, null);
+            var comments = [], n;
+            while ((n = walker.nextNode())) comments.push(n);
+            for (var i = 0; i < comments.length; i++) {
+                var c = comments[i];
+                if (!c.parentNode) continue;
+                var mo = c.data.match(openRe);
+                if (!mo) continue;
+                var signature = mo[1].trim();
+                var close = null;
+                for (var j = i + 1; j < comments.length; j++) {
+                    var mc = comments[j].data.match(closeRe);
+                    if (mc && mc[1].trim() === signature) { close = comments[j]; break; }
+                }
+                if (!close || close.parentNode !== c.parentNode) continue;
+                var box = document.createElement('div');
+                box.className = 'c2f-preview-widget';
+                box.style.display = 'contents';
+                c.parentNode.insertBefore(box, c);
+                var node = c.nextSibling;
+                while (node && node !== close) { var next = node.nextSibling; node.parentNode.removeChild(node); node = next; }
+                c.parentNode.removeChild(c);
+                if (close.parentNode) close.parentNode.removeChild(close);
+                (function (boxEl, sig) {
+                    var jq = window.jQuery || window.$;
+                    var data = { opcao: g.moduloOpcao, ajax: 'sim', ajaxOpcao: 'html-editor-widget-render', params: { signature: sig } };
+                    if (jq) {
+                        jq.ajax({
+                            type: 'POST', url: url, dataType: 'json', data: data,
+                            success: function (resp) { if (resp && resp.status === 'Ok' && resp.data) boxEl.innerHTML = resp.data.html || ''; },
+                            error: function () { }
+                        });
+                    }
+                })(box, signature);
+            }
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderWidgets);
+        else renderWidgets();
+    }
+
     function previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui', extraParams = {}) {
+        // req-040: script que renderiza os widgets (comentários) dentro do pré-visualizador.
+        const widgetPreviewScript = `<script>(${widgetPreviewBootstrap.toString()})();<\/script>`;
+
         // Incluir o CSS do usuário, se existir
         if (cssDoUsuario && cssDoUsuario.length > 0) {
             cssDoUsuario = `<style>${cssDoUsuario}</style>`;
@@ -1530,6 +1586,10 @@ $(document).ready(function () {
             } else if (fullHtml.match(/<\/head>/i)) {
                 fullHtml = fullHtml.replace(/<\/head>/i, layoutIncludes + '</head>');
             }
+            // req-040: renderizar os widgets também no preview do layout.
+            if (fullHtml.match(/<\/body>/i)) {
+                fullHtml = fullHtml.replace(/<\/body>/i, widgetPreviewScript + '\n</body>');
+            }
             return fullHtml;
         }
 
@@ -1548,6 +1608,7 @@ $(document).ready(function () {
 			</head>
 			<body>
 				${htmlDoUsuario}
+				${widgetPreviewScript}
 			</body>
 			</html>
 		`;
