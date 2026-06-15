@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.1",
+    "versao": "1.0.2",
     "bibliotecas": [
         "interface",
         "html",
@@ -109,11 +109,11 @@
                     "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "70321bf8a7b61ebe89b4607f8622495a",
+                        "html": "cef384038c3621f034f12552f4e9fb2e",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "b224abb90063cc8e28e1cae100cde657"
+                        "combined": "97aaf1cc3f48e30f85be5ba46d9b1e9f"
                     }
                 },
                 {
@@ -123,11 +123,11 @@
                     "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "4f77a3685647ac6f87f72445a21b50d7",
+                        "html": "8104620d1cb3f20ddeb1886ceb997df7",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "f6246aecb3f1b19b090bd213074226fe"
+                        "combined": "b0cb8e503d5f8d677edcb3e72cedcc99"
                     }
                 },
                 {
@@ -137,11 +137,11 @@
                     "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "b642bcd6186201e5f8282099563cb4bc",
+                        "html": "4d14a3a071e0a60c259aed99593392d4",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "de0389f7c0c217b39197e770c054590c"
+                        "combined": "de76c83bfa06bdfa96339dafc6483e8b"
                     }
                 }
             ],
@@ -255,11 +255,11 @@
                     "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "1c3ab4e6ac2564aa5b78397c8f609f43",
+                        "html": "b9c9b0e71eb2929563f07b094937e997",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "184cbab135a54971e8115f62f4fbf44d"
+                        "combined": "d36d2939ce88e58293b162cbbc20befe"
                     }
                 },
                 {
@@ -269,11 +269,11 @@
                     "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "ac545e19f8725dd15c3aed7ac281f8ac",
+                        "html": "b717e1fb5077fde3a8453fe62d4273c2",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "4658be36699bfe2545c86789bd7eb571"
+                        "combined": "99c34ce237a30d2fa7c8b81b146ff12f"
                     }
                 },
                 {
@@ -283,11 +283,11 @@
                     "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "4598e5f8a23eb90466f1e6fd6e4e8785",
+                        "html": "a51988bfcaba559cfedb56fbd85ad1af",
                         "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "2a38590faadc9c1706b68faad3e4cc2e"
+                        "combined": "8f23ac00f845b5a910f1ce07d27a467e"
                     }
                 }
             ],

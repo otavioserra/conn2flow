@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.0",
+    "versao": "1.2.1",
     "bibliotecas": [
         "interface",
         "html",
@@ -84,6 +84,30 @@
                         "css": "",
                         "combined": "4da8cf176017af91f386489a49484dee"
                     }
+                },
+                {
+                    "name": "Publicador Índice - Grade com Imagem Destaque",
+                    "id": "publisher-index-grid-imagem",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "651e9b67df4f7aee0b0f8a444ccc5c9b",
+                        "css": "",
+                        "combined": "651e9b67df4f7aee0b0f8a444ccc5c9b"
+                    }
+                },
+                {
+                    "name": "Publicador Índice - Lista com Imagem Destaque",
+                    "id": "publisher-index-lista-imagem",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "dedd66ef369673981164627678af8839",
+                        "css": "",
+                        "combined": "dedd66ef369673981164627678af8839"
+                    }
                 }
             ],
             "pages": [
@@ -109,11 +133,11 @@
                     "path": "publisher-index\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "1b6ca40f55ee63a21f8f9d048ecd69c6",
+                        "html": "608468b1864142b4814b500d02f1dcb7",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "28a15318049269fee49ddaf5969d3033"
+                        "combined": "c9906d7d3d6c860c743367019fd7995a"
                     }
                 },
                 {
@@ -123,11 +147,11 @@
                     "path": "publisher-index\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "ad64ce75c0d9277db1280b25a5d8d54a",
+                        "html": "69518b9dd80d41e8c0b7387fdbc07d42",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "34db5a2ce925e4892060a6e32693c661"
+                        "combined": "349f701b353475cfef93c6b182ce0ddb"
                     }
                 },
                 {
@@ -137,11 +161,11 @@
                     "path": "publisher-index\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "46cf3f6b69665590f4dea04ca7668905",
+                        "html": "db4639d77ea40073a9a930b24a4c54f5",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "caa908f50f8c4369d899b0ef825cb208"
+                        "combined": "9b18583969d8082990ccbe0f43b28a76"
                     }
                 }
             ],
@@ -265,6 +289,30 @@
                         "css": "",
                         "combined": "9b9680b6d92b37faf2a1af8c32c0cd3e"
                     }
+                },
+                {
+                    "name": "Publisher Index - Card Grid with Featured Image",
+                    "id": "publisher-index-grid-imagem",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "04ede763251031de0b5457403ad5d947",
+                        "css": "",
+                        "combined": "04ede763251031de0b5457403ad5d947"
+                    }
+                },
+                {
+                    "name": "Publisher Index - List with Featured Image",
+                    "id": "publisher-index-lista-imagem",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "567f47873e77b1a57ef22baeb383dad7",
+                        "css": "",
+                        "combined": "567f47873e77b1a57ef22baeb383dad7"
+                    }
                 }
             ],
             "pages": [
@@ -290,11 +338,11 @@
                     "path": "publisher-index\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "e370698bdc0ba798f2973cbc61b4690a",
+                        "html": "6bda51c4e4b6c82a82ff13c3a9f18329",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "d4c635d6deb4eab28e474d3f9ac4c6be"
+                        "combined": "d783700c7f3643c7f020fc0cb567cb7d"
                     }
                 },
                 {
@@ -304,11 +352,11 @@
                     "path": "publisher-index\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "e13d0e6dc219b16addff6f20f0a0a0bb",
+                        "html": "fe64f4ee053fa5ec94038771b83698aa",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "dd7579e2ff45a36235c0cc5f31962f43"
+                        "combined": "ff7e174a2fdd6e8a8951b234d4e19ea2"
                     }
                 },
                 {
@@ -318,11 +366,11 @@
                     "path": "publisher-index\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "2b902718b5ff8c1d592a3b42223f81d0",
+                        "html": "29f33cb89f2eade482fc8554d8008fc4",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "8e84f01af1336a958f414cf1fb6ceae5"
+                        "combined": "5e77335f12632ceda22ec2fa1630b36f"
                     }
                 }
             ],

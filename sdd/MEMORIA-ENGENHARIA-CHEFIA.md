@@ -42,6 +42,10 @@
   - O agente no modo planejador/arquiteto atua como Engenheiro Chefe. Ele não deve realizar modificações diretas em arquivos de código-fonte da aplicação (PHP, HTML, JS, CSS).
   - Suas responsabilidades são limitadas a criar e atualizar especificações em `sdd/human-requests/`, documentar decisões técnicas no `DECISION-LOG.md`, gerenciar o `BATCH-INDEX.md` e registrar planos. As alterações de código são papel exclusivo do Engenheiro Executor.
 
+- **Congelamento de Escopo em Execução**:
+  - Uma vez que uma especificação de requisição (`req-XXX.md`) foi liberada para desenvolvimento e o batch correspondente está em andamento (`in-progress`), o Engenheiro Chefe **não** deve modificar este arquivo de especificação ativo.
+  - Isso evita conflitos de versão e de lógica de trabalho durante o ciclo do executor. Novas demandas ou correções surgidas no meio do processo devem ser enfileiradas para o próximo lote (ex: `req-YYY.md`) ou tratadas de forma isolada após o fechamento do lote corrente.
+
 - **Arquivamento Histórico do SDD (Otimização de Contexto)**:
   - Para evitar o crescimento descontrolado dos arquivos do SDD (que resulta em alto consumo de tokens e perda de eficiência no contexto de processamento de IA), adota-se a limpeza periódica.
   - Devem ser mantidos apenas os últimos 10 itens correntes em cada arquivo. Os itens mais antigos serão movidos para subpastas `/archive/` dentro de cada conceito (ex: `sdd/decisions/archive/decisions-001-030.md`).
@@ -98,3 +102,4 @@
 - Adicionada regra sobre escape de aspas em strings propostas para terminal em 12/06/2026.
 - Adicionadas as diretrizes estratégicas de testes (cobertura incremental, blindagem de bugs e caminhos críticos) em 12/06/2026.
 - Adicionado item sobre a estratégia de testes integrados contra MySQL Docker em 15/06/2026.
+- Adicionada a regra de congelamento de escopo ativo do executor em 15/06/2026.

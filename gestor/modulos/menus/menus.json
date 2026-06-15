@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.2",
+    "versao": "1.0.3",
     "bibliotecas": [
         "interface",
         "html",
@@ -133,11 +133,11 @@
                     "path": "menus\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "de922c2730a883cfb8c45462c3f4518a",
+                        "html": "458f22a15c00084c50534d9e71ab2c61",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "c9c0a87af0d6739c16068ad5c9ac6d76"
+                        "combined": "e8e2f561c65d58481c91a747773556cf"
                     }
                 },
                 {
@@ -147,11 +147,11 @@
                     "path": "menus\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "a2aac653992364c352c4910ab3e6a72d",
+                        "html": "1395ce0119723a76580b5cd0e0ed386e",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "2718498b6487d25a0da1e84514eba4cb"
+                        "combined": "53ebcc0624700051442262624383a26a"
                     }
                 },
                 {
@@ -161,11 +161,11 @@
                     "path": "menus\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "c54b02bc44e6743c1a99881f655bc644",
+                        "html": "8dec429d93d312668d20c07c8cf998b3",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "979e5b90330978b772f3f51d40de118d"
+                        "combined": "294bb688ade067deefaf0d541add8e96"
                     }
                 }
             ],
@@ -308,11 +308,11 @@
                     "path": "menus\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "11ac489f0d5581b521fbd4b7a617dc16",
+                        "html": "1e5b5922da21ffa581691dce69d678cb",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "0575d503df83768a367a97ec3a6bcfdf"
+                        "combined": "01dc910b76e2ee9857ea761a4a5fc305"
                     }
                 },
                 {
@@ -322,11 +322,11 @@
                     "path": "menus\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "d3ae4afb71e6e293969cc93e8e3dc333",
+                        "html": "6c5d22d4ce640f929c670fe24ea3428d",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "3277e1ee21d640fe8f05b8b7451840ee"
+                        "combined": "84a9046efc87bc7868b3d4949136f54f"
                     }
                 },
                 {
@@ -336,11 +336,11 @@
                     "path": "menus\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "43c1395324758b982205b43888fe443b",
+                        "html": "2cd092ed0da34f11b54375a53c158878",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "1d279c00a128f5449ebd60ff68995181"
+                        "combined": "e0f5dc527047a0b9b3e18d020980ce1c"
                     }
                 }
             ],

@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.2.5',
+	'versao' => '1.2.6',
 );
 
 // ===== Funções auxiliares

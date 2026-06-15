@@ -91,39 +91,53 @@ final class PublisherIndexWidgetTest extends TestCase
         self::assertStringContainsString('data-metrics="true"', $hidden);
     }
 
+    public function testItemCasaBuscaComparaTituloECamposCustom(): void
+    {
+        $item = [
+            'page_id' => 'p1',
+            'titulo'  => 'Título Normal',
+            'url'     => '/normal',
+            'data'    => '15/06/2026',
+            'resumo'  => 'Acentuação do resumo',
+        ];
+
+        // Casa título (case-insensitive) e campos custom; termo vazio casa qualquer item.
+        self::assertTrue(publisher_index_widget_item_casa_busca($item, 'título'));
+        self::assertTrue(publisher_index_widget_item_casa_busca($item, 'NORMAL'));
+        self::assertTrue(publisher_index_widget_item_casa_busca($item, 'acentua'));
+        self::assertTrue(publisher_index_widget_item_casa_busca($item, ''));
+
+        // Ignora identificador, URL e data formatada; não casa termo ausente.
+        self::assertFalse(publisher_index_widget_item_casa_busca($item, 'inexistente'));
+        self::assertFalse(publisher_index_widget_item_casa_busca($item, '/normal'));
+        self::assertFalse(publisher_index_widget_item_casa_busca($item, '15/06'));
+        self::assertFalse(publisher_index_widget_item_casa_busca($item, 'p1'));
+    }
+
+    public function testPrefixarUrlRaizPreservaAbsolutasEPrefixaRelativas(): void
+    {
+        global $_GESTOR;
+
+        $_GESTOR['url-raiz'] = '/base/';
+        // Relativo (com e sem barra inicial) recebe a raiz, sem duplicar a barra.
+        self::assertSame('/base/arquivos/img.png', publisher_index_widget_prefixar_url_raiz('/arquivos/img.png'));
+        self::assertSame('/base/arquivos/img.png', publisher_index_widget_prefixar_url_raiz('arquivos/img.png'));
+        // Absolutas (http/https/protocol-relative) e data: preservadas.
+        self::assertSame('https://cdn.site.com/a.png', publisher_index_widget_prefixar_url_raiz('https://cdn.site.com/a.png'));
+        self::assertSame('//cdn.site.com/a.png', publisher_index_widget_prefixar_url_raiz('//cdn.site.com/a.png'));
+        self::assertSame('data:image/png;base64,AAAA', publisher_index_widget_prefixar_url_raiz('data:image/png;base64,AAAA'));
+        // Vazio permanece vazio.
+        self::assertSame('', publisher_index_widget_prefixar_url_raiz(''));
+        // Raiz '/' não duplica a barra de um caminho que já começa com '/'.
+        $_GESTOR['url-raiz'] = '/';
+        self::assertSame('/arquivos/img.png', publisher_index_widget_prefixar_url_raiz('/arquivos/img.png'));
+    }
+
     public function testBuscaComMysqlTemFiltroDisjuntivoEInnerJoin(): void
     {
-        if (!filter_var(getenv('CONN2FLOW_RUN_DB_TESTS'), FILTER_VALIDATE_BOOLEAN)) {
-            self::markTestSkipped('Defina CONN2FLOW_RUN_DB_TESTS=1 para executar o teste integrado com MySQL.');
-        }
+        global $_BANCO;
 
-        if (!extension_loaded('mysqli')) {
-            self::markTestSkipped('Extensão mysqli indisponível no PHP CLI.');
-        }
-
-        global $_BANCO, $_GESTOR;
-
-        $database = getenv('CONN2FLOW_DB_DATABASE') ?: ($_BANCO['nome'] ?? '');
-        if ($database !== 'conn2flow_test') {
-            self::markTestSkipped('Teste integrado bloqueado: CONN2FLOW_DB_DATABASE deve ser conn2flow_test.');
-        }
-
-        $host = getenv('CONN2FLOW_DB_HOST') ?: ($_BANCO['host'] ?? '127.0.0.1');
-        $user = getenv('CONN2FLOW_DB_USERNAME') ?: ($_BANCO['usuario'] ?? 'root');
-        $pass = getenv('CONN2FLOW_DB_PASSWORD') ?: ($_BANCO['senha'] ?? '');
-
-        $mysqli = $this->connectMysqlForTest($host, $user, $pass, $database);
-        if (!$mysqli) {
-            self::markTestSkipped('MySQL de teste indisponível ou sem permissão para preparar conn2flow_test.');
-        }
-
-        $_BANCO['tipo'] = 'mysqli';
-        $_BANCO['host'] = $host;
-        $_BANCO['nome'] = $database;
-        $_BANCO['usuario'] = $user;
-        $_BANCO['senha'] = $pass;
-        unset($_BANCO['conexao']);
-        $_GESTOR['linguagem-codigo'] = 'pt-br';
+        $mysqli = $this->prepareMysqlOrSkip();
 
         try {
             $this->resetPublisherIndexTables($mysqli);
@@ -158,6 +172,178 @@ final class PublisherIndexWidgetTest extends TestCase
         }
     }
 
+    public function testCuradoriaManualRespeitaOrdemBuscaEPaginacao(): void
+    {
+        global $_BANCO;
+
+        $mysqli = $this->prepareMysqlOrSkip();
+
+        try {
+            $this->resetPublisherIndexTables($mysqli);
+            $this->seedPublisherIndexRows($mysqli);
+
+            // Ordem de curadoria propositalmente diferente da ordem natural (data/título).
+            $selected = ['pagina-barra', 'pagina-normal', 'pagina-corrompida'];
+
+            // 1) Retorna exatamente na ordem da curadoria, ignorando ORDER BY.
+            $itens = publisher_index_widget_buscar_publicacoes([
+                'publisher_id' => 'noticias',
+                'busca' => '',
+                'offset' => 0,
+                'limit' => 10,
+                'order_by' => 'title_asc',
+                'rule' => 'manual',
+                'selected_items' => $selected,
+            ]);
+            self::assertSame(['pagina-barra', 'pagina-normal', 'pagina-corrompida'], array_column($itens, 'page_id'));
+
+            // 2) IDs sem join (publisher_pages) ou inativos são silenciosamente ignorados.
+            $comInvalidos = publisher_index_widget_buscar_publicacoes([
+                'publisher_id' => 'noticias',
+                'busca' => '',
+                'offset' => 0,
+                'limit' => 10,
+                'order_by' => 'date_desc',
+                'rule' => 'manual',
+                'selected_items' => ['pagina-normal', 'pagina-inativa', 'pagina-sem-publisher-page', 'pagina-barra'],
+            ]);
+            self::assertSame(['pagina-normal', 'pagina-barra'], array_column($comInvalidos, 'page_id'));
+
+            // 3) Paginação em PHP (offset/limit) sobre a lista curada.
+            $paginado = publisher_index_widget_buscar_publicacoes([
+                'publisher_id' => 'noticias',
+                'busca' => '',
+                'offset' => 1,
+                'limit' => 1,
+                'order_by' => 'date_desc',
+                'rule' => 'manual',
+                'selected_items' => $selected,
+            ]);
+            self::assertSame(['pagina-normal'], array_column($paginado, 'page_id'));
+
+            // 4) Busca filtra em PHP por título e campos custom (case-insensitive).
+            $busca = publisher_index_widget_buscar_publicacoes([
+                'publisher_id' => 'noticias',
+                'busca' => 'normal',
+                'offset' => 0,
+                'limit' => 10,
+                'order_by' => 'date_desc',
+                'rule' => 'manual',
+                'selected_items' => $selected,
+            ]);
+            self::assertSame(['pagina-normal'], array_column($busca, 'page_id'));
+
+            // 5) Contagem sem busca = count(selected_items) literal (inclui ids inexistentes).
+            self::assertSame(4, publisher_index_widget_contar_publicacoes([
+                'publisher_id' => 'noticias',
+                'busca' => '',
+                'rule' => 'manual',
+                'selected_items' => ['pagina-barra', 'pagina-normal', 'pagina-corrompida', 'pagina-inexistente'],
+            ]));
+
+            // 6) Contagem com busca = itens curados que casam o termo.
+            self::assertSame(1, publisher_index_widget_contar_publicacoes([
+                'publisher_id' => 'noticias',
+                'busca' => 'normal',
+                'rule' => 'manual',
+                'selected_items' => $selected,
+            ]));
+
+            // 7) selected_items vazio => sem itens e contagem zero.
+            self::assertSame([], publisher_index_widget_buscar_publicacoes([
+                'publisher_id' => 'noticias',
+                'busca' => '',
+                'offset' => 0,
+                'limit' => 10,
+                'order_by' => 'date_desc',
+                'rule' => 'manual',
+                'selected_items' => [],
+            ]));
+            self::assertSame(0, publisher_index_widget_contar_publicacoes([
+                'publisher_id' => 'noticias',
+                'busca' => '',
+                'rule' => 'manual',
+                'selected_items' => [],
+            ]));
+        } finally {
+            $this->resetPublisherIndexTables($mysqli);
+            $mysqli->close();
+            unset($_BANCO['conexao']);
+        }
+    }
+
+    public function testPrefixagemImagemUrlRaizEmCamposDeImagem(): void
+    {
+        global $_BANCO, $_GESTOR;
+
+        $mysqli = $this->prepareMysqlOrSkip();
+        $_GESTOR['url-raiz'] = '/base/';
+
+        try {
+            $this->resetPublisherIndexTables($mysqli);
+            $this->seedPublisherIndexRows($mysqli);
+
+            $itens = publisher_index_widget_buscar_publicacoes([
+                'publisher_id' => 'noticias',
+                'busca' => '',
+                'offset' => 0,
+                'limit' => 10,
+                'order_by' => 'title_asc',
+            ]);
+
+            $porId = [];
+            foreach ($itens as $it) { $porId[$it['page_id']] = $it; }
+
+            // Campo do tipo 'image' com caminho relativo recebe a url-raiz prefixada.
+            self::assertSame('/base/arquivos/normal.png', $porId['pagina-normal']['imagem']);
+            // Campo do tipo 'text' (resumo) NÃO é prefixado.
+            self::assertSame('Acentuação normal', $porId['pagina-normal']['resumo']);
+            // Campo do tipo 'image' já absoluto é preservado (sem prefixo).
+            self::assertSame('https://cdn.site.com/barra.png', $porId['pagina-barra']['imagem']);
+        } finally {
+            $this->resetPublisherIndexTables($mysqli);
+            $mysqli->close();
+            unset($_BANCO['conexao']);
+        }
+    }
+
+    private function prepareMysqlOrSkip(): mysqli
+    {
+        if (!filter_var(getenv('CONN2FLOW_RUN_DB_TESTS'), FILTER_VALIDATE_BOOLEAN)) {
+            self::markTestSkipped('Defina CONN2FLOW_RUN_DB_TESTS=1 para executar o teste integrado com MySQL.');
+        }
+
+        if (!extension_loaded('mysqli')) {
+            self::markTestSkipped('Extensão mysqli indisponível no PHP CLI.');
+        }
+
+        global $_BANCO, $_GESTOR;
+
+        $database = getenv('CONN2FLOW_DB_DATABASE') ?: ($_BANCO['nome'] ?? '');
+        if ($database !== 'conn2flow_test') {
+            self::markTestSkipped('Teste integrado bloqueado: CONN2FLOW_DB_DATABASE deve ser conn2flow_test.');
+        }
+
+        $host = getenv('CONN2FLOW_DB_HOST') ?: ($_BANCO['host'] ?? '127.0.0.1');
+        $user = getenv('CONN2FLOW_DB_USERNAME') ?: ($_BANCO['usuario'] ?? 'root');
+        $pass = getenv('CONN2FLOW_DB_PASSWORD') ?: ($_BANCO['senha'] ?? '');
+
+        $mysqli = $this->connectMysqlForTest($host, $user, $pass, $database);
+        if (!$mysqli) {
+            self::markTestSkipped('MySQL de teste indisponível ou sem permissão para preparar conn2flow_test.');
+        }
+
+        $_BANCO['tipo'] = 'mysqli';
+        $_BANCO['host'] = $host;
+        $_BANCO['nome'] = $database;
+        $_BANCO['usuario'] = $user;
+        $_BANCO['senha'] = $pass;
+        unset($_BANCO['conexao']);
+        $_GESTOR['linguagem-codigo'] = 'pt-br';
+
+        return $mysqli;
+    }
+
     private function connectMysqlForTest(string $host, string $user, string $pass, string $database): ?mysqli
     {
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -180,6 +366,16 @@ final class PublisherIndexWidgetTest extends TestCase
     {
         $mysqli->query('DROP TABLE IF EXISTS publisher_pages');
         $mysqli->query('DROP TABLE IF EXISTS paginas');
+        $mysqli->query('DROP TABLE IF EXISTS publisher');
+        $mysqli->query(
+            'CREATE TABLE publisher (
+                id VARCHAR(190) NOT NULL,
+                language VARCHAR(10) NOT NULL,
+                fields_schema JSON NULL,
+                status CHAR(1) NOT NULL,
+                PRIMARY KEY (id, language)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci'
+        );
         $mysqli->query(
             'CREATE TABLE paginas (
                 id VARCHAR(190) NOT NULL PRIMARY KEY,
@@ -221,9 +417,9 @@ final class PublisherIndexWidgetTest extends TestCase
         $stmt->close();
 
         $publisherRows = [
-            ['pagina-normal', 'pt-br', '[{"id":"resumo","value":"Acentuação normal"}]'],
+            ['pagina-normal', 'pt-br', '[{"id":"resumo","value":"Acentuação normal"},{"id":"imagem","value":"/arquivos/normal.png"}]'],
             ['pagina-corrompida', 'pt-br', '[{"id":"resumo","value":"Acentuau00e7u00e3o corrompida"}]'],
-            ['pagina-barra', 'pt-br', '[{"id":"resumo","value":"Acentua\\\\u00e7\\\\u00e3o com barra"}]'],
+            ['pagina-barra', 'pt-br', '[{"id":"resumo","value":"Acentua\\\\u00e7\\\\u00e3o com barra"},{"id":"imagem","value":"https://cdn.site.com/barra.png"}]'],
             ['pagina-outro-publicador', 'pt-br', '[{"id":"resumo","value":"Outro publicador"}]'],
             ['pagina-inativa', 'pt-br', '[{"id":"resumo","value":"Inativo"}]'],
         ];
@@ -233,6 +429,14 @@ final class PublisherIndexWidgetTest extends TestCase
             $stmt->bind_param('sss', $row[0], $row[1], $row[2]);
             $stmt->execute();
         }
+        $stmt->close();
+
+        // req-043 §6: schema do publicador define os tipos de campo (resumo=text, imagem=image).
+        $schemaNoticias = '{"fields":[{"id":"resumo","type":"text"},{"id":"imagem","type":"image"}]}';
+        $idPub = 'noticias'; $langPub = 'pt-br'; $statusPub = 'A';
+        $stmt = $mysqli->prepare('INSERT INTO publisher (id, language, fields_schema, status) VALUES (?, ?, ?, ?)');
+        $stmt->bind_param('ssss', $idPub, $langPub, $schemaNoticias, $statusPub);
+        $stmt->execute();
         $stmt->close();
     }
 }

@@ -880,7 +880,7 @@ Evidência automatizada em 2026-06-15:
   - [ ] Validar que a ordenação respeita exatamente a ordem em que foram selecionados em `selected_items`.
   - [ ] Validar que buscas textuais são filtradas e paginadas corretamente em PHP.
 - [ ] **4 Novos Modelos com Imagem Destaque**:
-  - [ ] Verificar se os novos templates (`publisher-index-grid-imagem` e `publisher-index-lista-imagem` em `pt-br`/`en`) foram criados e registrados em `publisher-index.json`.
+  - [x] Verificar se os novos templates (`publisher-index-grid-imagem` e `publisher-index-lista-imagem` em `pt-br`/`en`) foram criados e registrados em `publisher-index.json`.
   - [ ] Validar que exibem imagens destaques usando a variável `@[[item#imagem]]@`.
 - [ ] **Variável de Widget no CRUD**:
   - [ ] Acessar os 4 módulos (`publisher-index`, `publisher-highlights`, `menus`, `galleries`) nas 3 telas CRUD (adicionar, editar, clonar, pt-br/en).
@@ -889,8 +889,31 @@ Evidência automatizada em 2026-06-15:
 - [ ] **Suporte a Widgets Inline no Editor e Pré-visualizador**:
   - [ ] No pré-visualizador de página, verificar se widgets adicionados em formato de variável inline `[[widgets#...]]` ou `@[[widgets#...]]@` são devidamente interpretados e renderizados.
   - [ ] No Editor Visual (iframe), verificar se as variáveis de widget inline são convertidas em wrappers visuais operacionais de widget, possibilitando edição visual direta.
+- [ ] **Prefixagem Dinâmica de URL Raiz para Campos de Imagem**:
+  - [x] No `publisher-index`, verificar se campos customizados do tipo `'image'` têm a URL raiz (`$_GESTOR['url-raiz']`) adicionada de forma dinâmica. *(coberto por `testPrefixagemImagemUrlRaizEmCamposDeImagem` + `testPrefixarUrlRaizPreservaAbsolutasEPrefixaRelativas`)*
+  - [ ] No `publisher-highlights`, verificar se campos customizados do tipo `'image'` têm a URL raiz (`$_GESTOR['url-raiz']`) adicionada de forma dinâmica. *(lógica idêntica ao publisher-index; sem teste PHPUnit dedicado — validar em runtime)*
+  - [x] Validar que as consultas à tabela `publisher` utilizam cache estático em memória no PHP para otimização de performance. *(cache `static $cache` por `language|publisher_id` em ambas as helpers)*
+- [ ] **Correção de Stubs no Vitest**:
+  - [x] Validar que os stubs `children()` e `not()` em [jquery-stub.js](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/tests/Unit/JS/helpers/jquery-stub.js) corrigem a quebra nos testes unitários do widget.
+  - [x] Executar `npm run test` e verificar se toda a suíte de testes JS passa sem erros.
+
 
 ### Evidência de Validação (BATCH-043)
+
+Evidência automatizada registrada em 2026-06-15:
+
+- Linting estático:
+  - `php -l gestor/modulos/publisher-index/publisher-index.widget.php` → `No syntax errors detected`.
+  - `php -l tests/Integration/PublisherIndexWidgetTest.php` → `No syntax errors detected`.
+  - `node --check` OK em `publisher-index.js`, `publisher-highlights.js`, `menus.js`, `galleries.js`, `gestor/assets/interface/html-editor-interface.js` e `gestor/assets/interface/html-editor.js`.
+  - `JSON.parse` OK em `publisher-index.json` (1.2.0), `menus.json` (1.0.3), `galleries.json` (1.0.2) e `publisher-highlights.json` (1.2.1).
+- Testes automatizados (host com `mbstring`+`mysqli`, MySQL Docker em `127.0.0.1:3306`):
+  - PHPUnit completo com `CONN2FLOW_RUN_DB_TESTS=1 CONN2FLOW_DB_DATABASE=conn2flow_test` → **40 tests, 132 assertions, 0 falhas** (1 deprecation pré-existente). Inclui `testCuradoriaManualRespeitaOrdemBuscaEPaginacao` (ordem exata da curadoria ignorando ORDER BY; IDs sem join/inativos descartados; `array_slice` de paginação; busca filtrada em PHP; contagem `count(selected_items)` sem busca e filtrada com busca; `selected_items` vazio → `[]`/`0`), `testItemCasaBuscaComparaTituloECamposCustom` (casa título/campos custom case-insensitive; ignora id/URL/data) e — para a §6 — `testPrefixarUrlRaizPreservaAbsolutasEPrefixaRelativas` (puro: relativo→raiz sem barra dupla; http/https/`//`/`data:` preservados) e `testPrefixagemImagemUrlRaizEmCamposDeImagem` (integrado: campo `image` relativo recebe `/base/`; campo `text` `resumo` intacto; campo `image` absoluto preservado).
+  - Vitest (`npm run test`) → **3 tests, 2 files, 0 falhas** (após adicionar `.children()`/`.not()` ao stub jQuery, que estavam ausentes e quebravam `publisher-index.widget.test.js` no baseline).
+- Cobertura de regressão: o teste integrado reutiliza o seed/`tearDown` de `conn2flow_test` (cria/dropa apenas `paginas`+`publisher_pages`+`publisher`), sem tocar o banco real. A tabela `publisher` (com `noticias` → `resumo`=text, `imagem`=image) foi adicionada ao seed porque `montar_itens` passou a consultá-la (§6).
+
+Itens marcados acima refletem o que é verificável estaticamente/por teste automatizado; os itens de runtime em navegador (clipboard real, render do preview, edição visual, exibição da imagem destaque) seguem pendentes com o operador após `🗃️ Projects - Update => Core`.
+
 - [ ] Linting estático limpo (`node --check` / `php -l`).
 - [ ] Testes automatizados executados com sucesso via PHPUnit (`composer test`).
 - [ ] Testes manuais no navegador validados pelo operador.

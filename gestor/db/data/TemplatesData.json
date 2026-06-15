@@ -2576,6 +2576,34 @@
         "checksum": "{\"html\":\"4da8cf176017af91f386489a49484dee\",\"css\":\"\",\"combined\":\"4da8cf176017af91f386489a49484dee\"}"
     },
     {
+        "nome": "Publicador Índice - Grade com Imagem Destaque",
+        "id": "publisher-index-grid-imagem",
+        "target": "publisher-index",
+        "thumbnail": null,
+        "language": "pt-br",
+        "html": "<section class=\"conn2flow-publisher-index font-sans max-w-6xl mx-auto p-4\" data-grupo-slug=\"@[[grupo_slug]]@\" data-publisher-id=\"@[[publisher_id]]@\" data-items-per-page=\"@[[items_per_page]]@\" data-ordenacao=\"@[[ordenacao]]@\" data-page=\"1\">\n    <div class=\"flex flex-col sm:flex-row gap-3 mb-6\">\n        <!-- search-input < -->\n        <div class=\"flex-1\">\n            <input type=\"search\" class=\"publisher-index-search w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500\" placeholder=\"Buscar publicações...\">\n        <\/div>\n        <!-- search-input > -->\n        <!-- sort-select < -->\n        <div>\n            <select class=\"publisher-index-sort w-full sm:w-auto border border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500\">\n                <option value=\"date_desc\">Mais recentes<\/option>\n                <option value=\"date_asc\">Mais antigas<\/option>\n                <option value=\"title_asc\">Título (A-Z)<\/option>\n                <option value=\"title_desc\">Título (Z-A)<\/option>\n            <\/select>\n        <\/div>\n        <!-- sort-select > -->\n    <\/div>\n\n    <!-- metrics < -->\n    <div class=\"publisher-index-metrics text-sm text-gray-500 mb-4\">Exibindo <span data-page-count>@[[page_count]]@<\/span> de <span data-page-total>@[[page_total]]@<\/span><\/div>\n    <!-- metrics > -->\n\n    <div class=\"publisher-index-items grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5\">\n        <!-- item < -->\n        <a href=\"@[[item#url]]@\" class=\"flex flex-col border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow bg-white h-full\">\n            <img src=\"@[[item#imagem]]@\" alt=\"@[[item#titulo]]@\" class=\"w-full h-48 object-cover bg-gray-100\">\n            <div class=\"flex flex-col flex-1 p-5\">\n                <h3 class=\"text-base font-semibold text-gray-900 mb-2 leading-snug\">@[[item#titulo]]@<\/h3>\n                <p class=\"text-sm text-gray-600 mb-3 line-clamp-3\">@[[item#resumo]]@<\/p>\n                <span class=\"text-xs text-gray-500 mt-auto\">@[[item#data]]@<\/span>\n            <\/div>\n        <\/a>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"publisher-index-empty col-span-full text-center text-gray-500 py-10\">Nenhuma publicação encontrada.<\/div>\n        <!-- no-item > -->\n    <\/div>\n\n    <div class=\"text-center mt-8\">\n        <!-- load-more < -->\n        <button type=\"button\" class=\"publisher-index-load-more inline-flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors\">\n            Carregar mais\n        <\/button>\n        <!-- load-more > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"651e9b67df4f7aee0b0f8a444ccc5c9b\",\"css\":\"\",\"combined\":\"651e9b67df4f7aee0b0f8a444ccc5c9b\"}"
+    },
+    {
+        "nome": "Publicador Índice - Lista com Imagem Destaque",
+        "id": "publisher-index-lista-imagem",
+        "target": "publisher-index",
+        "thumbnail": null,
+        "language": "pt-br",
+        "html": "<section class=\"conn2flow-publisher-index font-sans max-w-4xl mx-auto p-4\" data-grupo-slug=\"@[[grupo_slug]]@\" data-publisher-id=\"@[[publisher_id]]@\" data-items-per-page=\"@[[items_per_page]]@\" data-ordenacao=\"@[[ordenacao]]@\" data-page=\"1\">\n    <div class=\"flex flex-col sm:flex-row gap-3 mb-6\">\n        <!-- search-input < -->\n        <div class=\"flex-1\">\n            <input type=\"search\" class=\"publisher-index-search w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500\" placeholder=\"Buscar publicações...\">\n        <\/div>\n        <!-- search-input > -->\n        <!-- sort-select < -->\n        <div>\n            <select class=\"publisher-index-sort w-full sm:w-auto border border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500\">\n                <option value=\"date_desc\">Mais recentes<\/option>\n                <option value=\"date_asc\">Mais antigas<\/option>\n                <option value=\"title_asc\">Título (A-Z)<\/option>\n                <option value=\"title_desc\">Título (Z-A)<\/option>\n            <\/select>\n        <\/div>\n        <!-- sort-select > -->\n    <\/div>\n\n    <!-- metrics < -->\n    <div class=\"publisher-index-metrics text-sm text-gray-500 mb-4\">Exibindo <span data-page-count>@[[page_count]]@<\/span> de <span data-page-total>@[[page_total]]@<\/span><\/div>\n    <!-- metrics > -->\n\n    <div class=\"publisher-index-items flex flex-col gap-4\">\n        <!-- item < -->\n        <a href=\"@[[item#url]]@\" class=\"flex flex-col sm:flex-row gap-4 border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white\">\n            <img src=\"@[[item#imagem]]@\" alt=\"@[[item#titulo]]@\" class=\"w-full sm:w-48 h-40 object-cover bg-gray-100 flex-shrink-0\">\n            <div class=\"flex flex-col flex-1 p-4\">\n                <h3 class=\"text-lg font-semibold text-gray-900 mb-1\">@[[item#titulo]]@<\/h3>\n                <p class=\"text-sm text-gray-600 mb-2 line-clamp-2\">@[[item#resumo]]@<\/p>\n                <span class=\"text-sm text-gray-500 mt-auto\">@[[item#data]]@<\/span>\n            <\/div>\n        <\/a>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"publisher-index-empty text-center text-gray-500 py-10\">Nenhuma publicação encontrada.<\/div>\n        <!-- no-item > -->\n    <\/div>\n\n    <div class=\"text-center mt-6\">\n        <!-- load-more < -->\n        <button type=\"button\" class=\"publisher-index-load-more inline-flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors\">\n            Carregar mais\n        <\/button>\n        <!-- load-more > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"dedd66ef369673981164627678af8839\",\"css\":\"\",\"combined\":\"dedd66ef369673981164627678af8839\"}"
+    },
+    {
         "nome": "Publisher Index - List",
         "id": "publisher-index-lista",
         "target": "publisher-index",
@@ -2630,5 +2658,33 @@
         "versao": 1,
         "file_version": "1.2",
         "checksum": "{\"html\":\"9b9680b6d92b37faf2a1af8c32c0cd3e\",\"css\":\"\",\"combined\":\"9b9680b6d92b37faf2a1af8c32c0cd3e\"}"
+    },
+    {
+        "nome": "Publisher Index - Card Grid with Featured Image",
+        "id": "publisher-index-grid-imagem",
+        "target": "publisher-index",
+        "thumbnail": null,
+        "language": "en",
+        "html": "<section class=\"conn2flow-publisher-index font-sans max-w-6xl mx-auto p-4\" data-grupo-slug=\"@[[grupo_slug]]@\" data-publisher-id=\"@[[publisher_id]]@\" data-items-per-page=\"@[[items_per_page]]@\" data-ordenacao=\"@[[ordenacao]]@\" data-page=\"1\">\n    <div class=\"flex flex-col sm:flex-row gap-3 mb-6\">\n        <!-- search-input < -->\n        <div class=\"flex-1\">\n            <input type=\"search\" class=\"publisher-index-search w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500\" placeholder=\"Search publications...\">\n        <\/div>\n        <!-- search-input > -->\n        <!-- sort-select < -->\n        <div>\n            <select class=\"publisher-index-sort w-full sm:w-auto border border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500\">\n                <option value=\"date_desc\">Newest first<\/option>\n                <option value=\"date_asc\">Oldest first<\/option>\n                <option value=\"title_asc\">Title (A-Z)<\/option>\n                <option value=\"title_desc\">Title (Z-A)<\/option>\n            <\/select>\n        <\/div>\n        <!-- sort-select > -->\n    <\/div>\n\n    <!-- metrics < -->\n    <div class=\"publisher-index-metrics text-sm text-gray-500 mb-4\">Showing <span data-page-count>@[[page_count]]@<\/span> of <span data-page-total>@[[page_total]]@<\/span><\/div>\n    <!-- metrics > -->\n\n    <div class=\"publisher-index-items grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5\">\n        <!-- item < -->\n        <a href=\"@[[item#url]]@\" class=\"flex flex-col border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow bg-white h-full\">\n            <img src=\"@[[item#imagem]]@\" alt=\"@[[item#titulo]]@\" class=\"w-full h-48 object-cover bg-gray-100\">\n            <div class=\"flex flex-col flex-1 p-5\">\n                <h3 class=\"text-base font-semibold text-gray-900 mb-2 leading-snug\">@[[item#titulo]]@<\/h3>\n                <p class=\"text-sm text-gray-600 mb-3 line-clamp-3\">@[[item#resumo]]@<\/p>\n                <span class=\"text-xs text-gray-500 mt-auto\">@[[item#data]]@<\/span>\n            <\/div>\n        <\/a>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"publisher-index-empty col-span-full text-center text-gray-500 py-10\">No publications found.<\/div>\n        <!-- no-item > -->\n    <\/div>\n\n    <div class=\"text-center mt-8\">\n        <!-- load-more < -->\n        <button type=\"button\" class=\"publisher-index-load-more inline-flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors\">\n            Load more\n        <\/button>\n        <!-- load-more > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"04ede763251031de0b5457403ad5d947\",\"css\":\"\",\"combined\":\"04ede763251031de0b5457403ad5d947\"}"
+    },
+    {
+        "nome": "Publisher Index - List with Featured Image",
+        "id": "publisher-index-lista-imagem",
+        "target": "publisher-index",
+        "thumbnail": null,
+        "language": "en",
+        "html": "<section class=\"conn2flow-publisher-index font-sans max-w-4xl mx-auto p-4\" data-grupo-slug=\"@[[grupo_slug]]@\" data-publisher-id=\"@[[publisher_id]]@\" data-items-per-page=\"@[[items_per_page]]@\" data-ordenacao=\"@[[ordenacao]]@\" data-page=\"1\">\n    <div class=\"flex flex-col sm:flex-row gap-3 mb-6\">\n        <!-- search-input < -->\n        <div class=\"flex-1\">\n            <input type=\"search\" class=\"publisher-index-search w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500\" placeholder=\"Search publications...\">\n        <\/div>\n        <!-- search-input > -->\n        <!-- sort-select < -->\n        <div>\n            <select class=\"publisher-index-sort w-full sm:w-auto border border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500\">\n                <option value=\"date_desc\">Newest first<\/option>\n                <option value=\"date_asc\">Oldest first<\/option>\n                <option value=\"title_asc\">Title (A-Z)<\/option>\n                <option value=\"title_desc\">Title (Z-A)<\/option>\n            <\/select>\n        <\/div>\n        <!-- sort-select > -->\n    <\/div>\n\n    <!-- metrics < -->\n    <div class=\"publisher-index-metrics text-sm text-gray-500 mb-4\">Showing <span data-page-count>@[[page_count]]@<\/span> of <span data-page-total>@[[page_total]]@<\/span><\/div>\n    <!-- metrics > -->\n\n    <div class=\"publisher-index-items flex flex-col gap-4\">\n        <!-- item < -->\n        <a href=\"@[[item#url]]@\" class=\"flex flex-col sm:flex-row gap-4 border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white\">\n            <img src=\"@[[item#imagem]]@\" alt=\"@[[item#titulo]]@\" class=\"w-full sm:w-48 h-40 object-cover bg-gray-100 flex-shrink-0\">\n            <div class=\"flex flex-col flex-1 p-4\">\n                <h3 class=\"text-lg font-semibold text-gray-900 mb-1\">@[[item#titulo]]@<\/h3>\n                <p class=\"text-sm text-gray-600 mb-2 line-clamp-2\">@[[item#resumo]]@<\/p>\n                <span class=\"text-sm text-gray-500 mt-auto\">@[[item#data]]@<\/span>\n            <\/div>\n        <\/a>\n        <!-- item > -->\n        <!-- no-item < -->\n        <div class=\"publisher-index-empty text-center text-gray-500 py-10\">No publications found.<\/div>\n        <!-- no-item > -->\n    <\/div>\n\n    <div class=\"text-center mt-6\">\n        <!-- load-more < -->\n        <button type=\"button\" class=\"publisher-index-load-more inline-flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors\">\n            Load more\n        <\/button>\n        <!-- load-more > -->\n    <\/div>\n<\/section>\n",
+        "css": null,
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"567f47873e77b1a57ef22baeb383dad7\",\"css\":\"\",\"combined\":\"567f47873e77b1a57ef22baeb383dad7\"}"
     }
 ]

@@ -46,28 +46,28 @@
         "id": "galleries",
         "language": "pt-br",
         "status": "A",
-        "versao": 3
+        "versao": 4
     },
     {
         "nome": "Galleries",
         "id": "galleries",
         "language": "en",
         "status": "A",
-        "versao": 3
+        "versao": 4
     },
     {
         "nome": "Menus",
         "id": "menus",
         "language": "pt-br",
         "status": "A",
-        "versao": 4
+        "versao": 5
     },
     {
         "nome": "Menus",
         "id": "menus",
         "language": "en",
         "status": "A",
-        "versao": 4
+        "versao": 5
     },
     {
         "nome": "Publicador",
@@ -88,27 +88,27 @@
         "id": "publisher-highlights",
         "language": "pt-br",
         "status": "A",
-        "versao": 10
+        "versao": 11
     },
     {
         "nome": "Publisher Highlights",
         "id": "publisher-highlights",
         "language": "en",
         "status": "A",
-        "versao": 10
+        "versao": 11
     },
     {
         "nome": "Publicador Índice",
         "id": "publisher-index",
         "language": "pt-br",
         "status": "A",
-        "versao": 3
+        "versao": 4
     },
     {
         "nome": "Publisher Index",
         "id": "publisher-index",
         "language": "en",
         "status": "A",
-        "versao": 3
+        "versao": 4
     }
 ]

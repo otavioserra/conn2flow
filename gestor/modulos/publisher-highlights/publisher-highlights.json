@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.0",
+    "versao": "1.2.1",
     "bibliotecas": [
         "interface",
         "html",
@@ -133,11 +133,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "80b4e6a6b282fb3c2160ddb23d443969",
+                        "html": "89ac4cea5aaa9ff0354ffbf0dc2a3bdd",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "ba977fb8c1c22d8ca56b48b6737ea04b"
+                        "combined": "707334ee89625bcffb162263ac04d7d2"
                     }
                 },
                 {
@@ -147,11 +147,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "164fa8077c407ee8a6994cdb5be10aaa",
+                        "html": "672cbca5ebbb7f2870fbc7e3232deaa9",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "6d6b91084b6da4405b7a26033b4dc13b"
+                        "combined": "a6eb9074f5d113429ded97677793281d"
                     }
                 },
                 {
@@ -161,11 +161,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "48ac807e161eac80ccd3c39f54196e97",
+                        "html": "0dc81c76c45a09c5f42643c8f594939c",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "c52a7d7475ef9e6164ce55bc6f565a75"
+                        "combined": "ea0591399a3c6affa7dbfceb75590f7a"
                     }
                 }
             ],
@@ -343,11 +343,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "163078645981b08488adedcd9d335dcf",
+                        "html": "ebab3411bf298ea478495802a19a837f",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "5dda343935d1c7fafddd906990e8b0b2"
+                        "combined": "387bc5f0b8d07c41ee81de70c0dd0c68"
                     }
                 },
                 {
@@ -357,11 +357,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "59703ab9f6f15896dd7f507d89aa28db",
+                        "html": "0b8899343661bf628ca7857ea9f5b134",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "b380a57c53863e9d34316c060407c849"
+                        "combined": "b51d583e42285c633d3de9b5a071d116"
                     }
                 },
                 {
@@ -371,11 +371,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "d1b97f0aa3ce0406e729f2ca6afa0563",
+                        "html": "fe4afd82d3f9db28508e602f65acf805",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "775666c2228f46ac7a0b5ba7d690da0a"
+                        "combined": "84d668724a867626b8efb55fe4bf5adb"
                     }
                 }
             ],

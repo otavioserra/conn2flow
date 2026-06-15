@@ -230,6 +230,9 @@ function publisher_highlights_widget_buscar_publicacoes($params){
 	// Incluir biblioteca de formatação para eventual formatação de campos (ex: data) no futuro.
 	gestor_incluir_biblioteca('formato');
 
+	// req-043 §6: tipos de campo do publicador (para prefixar campos de imagem com a url-raiz).
+	$tipos_campos = publisher_highlights_widget_tipos_campos_publicador($publisher_id);
+
 	$itens = [];
 	foreach($rows as $row){
 		// req-010 item 2: `publisher_pages.fields_values` é gravado como array de objetos
@@ -241,7 +244,13 @@ function publisher_highlights_widget_buscar_publicacoes($params){
 		if(is_array($campos_originais)){
 			foreach($campos_originais as $item_field){
 				if(is_array($item_field) && isset($item_field['id'])){
-					$campos_publisher[$item_field['id']] = $item_field['value'] ?? '';
+					$fid = (string)$item_field['id'];
+					$valor = (string)($item_field['value'] ?? '');
+					// req-043 §6: campos do tipo 'image' recebem a url-raiz prefixada (caminho relativo → a partir da raiz).
+					if($valor !== '' && isset($tipos_campos[$fid]) && $tipos_campos[$fid] === 'image'){
+						$valor = publisher_highlights_widget_prefixar_url_raiz($valor);
+					}
+					$campos_publisher[$fid] = $valor;
 				}
 			}
 		}
@@ -266,4 +275,63 @@ function publisher_highlights_widget_buscar_publicacoes($params){
 	}
 
 	return array_values($itens);
+}
+
+/**
+ * req-043 §6: mapa id_campo => tipo do publicador (lido de publisher.fields_schema), com cache
+ * estático por idioma+publicador para evitar consultas repetidas ao banco no mesmo request.
+ */
+function publisher_highlights_widget_tipos_campos_publicador($publisher_id){
+	global $_GESTOR;
+
+	static $cache = [];
+
+	$publisher_id = (string)$publisher_id;
+	if($publisher_id === '') return [];
+
+	$language = $_GESTOR['linguagem-codigo'];
+	$chave = $language.'|'.$publisher_id;
+	if(array_key_exists($chave, $cache)) return $cache[$chave];
+
+	$tipos = [];
+	$registro = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'publisher',
+		'campos' => Array('fields_schema'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($publisher_id)."'"
+			." AND language='".banco_escape_field($language)."'"
+	));
+
+	if(is_array($registro) && !empty($registro['fields_schema'])){
+		$schema = json_decode($registro['fields_schema'], true);
+		if(is_array($schema) && isset($schema['fields']) && is_array($schema['fields'])){
+			foreach($schema['fields'] as $field){
+				if(is_array($field) && isset($field['id'])){
+					$tipos[(string)$field['id']] = isset($field['type']) ? (string)$field['type'] : '';
+				}
+			}
+		}
+	}
+
+	$cache[$chave] = $tipos;
+	return $tipos;
+}
+
+/**
+ * req-043 §6: prefixa um caminho de imagem relativo com $_GESTOR['url-raiz'], preservando URLs
+ * já absolutas (http/https/protocol-relative/data:) e evitando barra dupla.
+ */
+function publisher_highlights_widget_prefixar_url_raiz($valor){
+	global $_GESTOR;
+
+	$valor = (string)$valor;
+	if($valor === '') return $valor;
+	if(preg_match('#^(https?:)?//#i', $valor) || strpos($valor, 'data:') === 0) return $valor;
+
+	$raiz = (string)($_GESTOR['url-raiz'] ?? '');
+	if($raiz !== '' && substr($raiz, -1) === '/' && substr($valor, 0, 1) === '/'){
+		return $raiz.ltrim($valor, '/');
+	}
+	return $raiz.$valor;
 }

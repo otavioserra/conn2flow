@@ -31,6 +31,15 @@ export function installJQueryStub({ ajax } = {}) {
       return new JQueryCollection(this.elements.flatMap((el) => Array.from(el.querySelectorAll(selector))));
     }
 
+    children(selector) {
+      const kids = this.elements.flatMap((el) => Array.from(el.children));
+      return new JQueryCollection(selector ? kids.filter((el) => el.matches(selector)) : kids);
+    }
+
+    not(selector) {
+      return new JQueryCollection(this.elements.filter((el) => !(el.nodeType === 1 && el.matches(selector))));
+    }
+
     empty() {
       this.elements.forEach((el) => { el.innerHTML = ''; });
       return this;

@@ -1461,6 +1461,13 @@ $(document).ready(function () {
     // (rota/credenciais lidas de window.parent.gestor). Injetada via .toString() para preservar as regex.
     function widgetPreviewBootstrap() {
         function renderWidgets() {
+            // req-043 §4.1: variáveis de widget inline ([[widgets#...]] ou @[[widgets#...]]@) viram
+            // blocos de comentário equivalentes antes da varredura, para serem renderizadas como widgets.
+            var bodyHtml = document.body.innerHTML;
+            var varRe = /@?\[\[widgets#(.+?)\]\]@?/gi;
+            if (varRe.test(bodyHtml)) {
+                document.body.innerHTML = bodyHtml.replace(varRe, '<!-- widgets#$1 < --><!-- widgets#$1 > -->');
+            }
             var P = window.parent;
             if (!P || !P.gestor) return;
             var g = P.gestor;

@@ -908,5 +908,43 @@ $(document).ready(function () {
 
         widgetCodeMirror.getDoc().setValue(wrapper);
         widgetCodeMirror.refresh();
+
+        // req-043 §3.3: variável inline do widget (copiar e colar em páginas/editor visual).
+        $('#hep-widget-val').val('[[widgets#publisher-highlights->render({"grupo_slug": "' + slug + '"})]]');
+    }
+
+    // req-043 §3.3: copiar a variável do widget para a área de transferência (com fallback).
+    $(document).on('click', '#btn-copy-widget-val', function (e) {
+        e.preventDefault();
+        var input = document.getElementById('hep-widget-val');
+        if (!input) return;
+        copyWidgetVarToClipboard(input.value || '', $(this));
+    });
+
+    function copyWidgetVarToClipboard(text, $btn) {
+        function feedback() {
+            if (!$btn || !$btn.length) return;
+            var original = $btn.data('original-html');
+            if (typeof original === 'undefined') { original = $btn.html(); $btn.data('original-html', original); }
+            $btn.html('<i class="check icon"></i> ' + (isPtBr() ? 'Copiado!' : 'Copied!'));
+            setTimeout(function () { $btn.html(original); }, 1500);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(feedback, function () { fallbackCopyWidgetVar(text); feedback(); });
+        } else {
+            fallbackCopyWidgetVar(text); feedback();
+        }
+    }
+
+    function fallbackCopyWidgetVar(text) {
+        var temp = document.createElement('textarea');
+        temp.value = text;
+        temp.setAttribute('readonly', '');
+        temp.style.position = 'absolute';
+        temp.style.left = '-9999px';
+        document.body.appendChild(temp);
+        temp.select();
+        try { document.execCommand('copy'); } catch (err) { }
+        document.body.removeChild(temp);
     }
 });

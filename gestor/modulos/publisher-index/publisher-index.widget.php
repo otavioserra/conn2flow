@@ -131,6 +131,10 @@ function publisher_index_widget_render_inline($params){
 	$show_sort        = publisher_index_widget_bool($schema, 'show_sorting_select', true);
 	$show_load_more   = publisher_index_widget_bool($schema, 'show_load_more_btn', true);
 	$show_metrics     = publisher_index_widget_bool($schema, 'show_metrics', true);
+	// req-043 §1: regra de alimentação e itens curados (curadoria manual).
+	$rule             = $schema['rule'] ?? 'latest';
+	$selected_items   = $schema['selected_items'] ?? [];
+	if(!is_array($selected_items)) $selected_items = [];
 
 	// Primeira página + 1 item extra para detectar se há próxima página.
 	$publicacoes = [];
@@ -138,11 +142,13 @@ function publisher_index_widget_render_inline($params){
 	$total = 0;
 	if(!empty($publisher_id)){
 		$publicacoes = publisher_index_widget_buscar_publicacoes([
-			'publisher_id' => $publisher_id,
-			'busca'        => '',
-			'offset'       => 0,
-			'limit'        => $items_per_page + 1,
-			'order_by'     => $order_by,
+			'publisher_id'   => $publisher_id,
+			'busca'          => '',
+			'offset'         => 0,
+			'limit'          => $items_per_page + 1,
+			'order_by'       => $order_by,
+			'rule'           => $rule,
+			'selected_items' => $selected_items,
 		]);
 		if(count($publicacoes) > $items_per_page){
 			$tem_mais = true;
@@ -150,8 +156,10 @@ function publisher_index_widget_render_inline($params){
 		}
 		// req-041 §1.4: total de publicações casadas (sem paginação) para as métricas.
 		$total = publisher_index_widget_contar_publicacoes([
-			'publisher_id' => $publisher_id,
-			'busca'        => '',
+			'publisher_id'   => $publisher_id,
+			'busca'          => '',
+			'rule'           => $rule,
+			'selected_items' => $selected_items,
 		]);
 	}
 	// req-041 §1.4: itens efetivamente exibidos nesta primeira página (= min(items_per_page, total)).
@@ -254,17 +262,23 @@ function publisher_index_render_ajax($params){
 	$variable_mapping = $schema['variable_mapping'] ?? [];
 	$publisher_id     = $registro['publisher_id'] ?? '';
 	$offset           = ($pagina - 1) * $items_per_page;
+	// req-043 §1: regra de alimentação e itens curados (curadoria manual).
+	$rule             = $schema['rule'] ?? 'latest';
+	$selected_items   = $schema['selected_items'] ?? [];
+	if(!is_array($selected_items)) $selected_items = [];
 
 	$publicacoes = [];
 	$tem_mais = false;
 	$total = 0;
 	if(!empty($publisher_id)){
 		$publicacoes = publisher_index_widget_buscar_publicacoes([
-			'publisher_id' => $publisher_id,
-			'busca'        => $busca,
-			'offset'       => $offset,
-			'limit'        => $items_per_page + 1,
-			'order_by'     => $order_by,
+			'publisher_id'   => $publisher_id,
+			'busca'          => $busca,
+			'offset'         => $offset,
+			'limit'          => $items_per_page + 1,
+			'order_by'       => $order_by,
+			'rule'           => $rule,
+			'selected_items' => $selected_items,
 		]);
 		if(count($publicacoes) > $items_per_page){
 			$tem_mais = true;
@@ -272,8 +286,10 @@ function publisher_index_render_ajax($params){
 		}
 		// req-041 §1.4: total de publicações casadas com a busca atual (para "Exibindo X de Y").
 		$total = publisher_index_widget_contar_publicacoes([
-			'publisher_id' => $publisher_id,
-			'busca'        => $busca,
+			'publisher_id'   => $publisher_id,
+			'busca'          => $busca,
+			'rule'           => $rule,
+			'selected_items' => $selected_items,
 		]);
 	}
 
@@ -428,12 +444,24 @@ function publisher_index_widget_clausula_busca($busca){
 /**
  * req-041 §1.4: conta o total de publicações que casam com o publicador + busca (sem LIMIT),
  * usando o mesmo INNER JOIN restritivo da listagem (§1.3).
+ *
+ * req-043 §1: na curadoria manual, conta sobre selected_items — count(selected_items) sem
+ * busca, ou a quantidade de itens curados que casam com o termo quando há busca.
  */
 function publisher_index_widget_contar_publicacoes($params){
 	global $_GESTOR;
 
 	$publisher_id = $params['publisher_id'] ?? '';
 	if(empty($publisher_id)) return 0;
+
+	// req-043 §1: regra manual.
+	if(($params['rule'] ?? 'latest') === 'manual'){
+		$selected_items = $params['selected_items'] ?? [];
+		if(!is_array($selected_items) || count($selected_items) === 0) return 0;
+		$busca = trim((string)($params['busca'] ?? ''));
+		if($busca === '') return count($selected_items);
+		return count(publisher_index_widget_lista_manual($params));
+	}
 
 	$language = $_GESTOR['linguagem-codigo'];
 
@@ -460,9 +488,20 @@ function publisher_index_widget_contar_publicacoes($params){
  *
  * Cada item inclui campos padrão (page_id, titulo, url, data) + os campos custom
  * presentes em publisher_pages.fields_values.
+ *
+ * req-043 §1: quando rule === 'manual', a curadoria por item assume — a busca dinâmica
+ * é substituída pela lista explícita de selected_items (filtro IN + reordenação + busca +
+ * paginação resolvidos em PHP por publisher_index_widget_lista_manual).
  */
 function publisher_index_widget_buscar_publicacoes($params){
 	global $_GESTOR;
+
+	// req-043 §1.2: regra manual — apenas os itens curados, na ordem de selected_items.
+	if(($params['rule'] ?? 'latest') === 'manual'){
+		$offset = max(0, (int)($params['offset'] ?? 0));
+		$limit  = max(1, (int)($params['limit'] ?? 10));
+		return array_slice(publisher_index_widget_lista_manual($params), $offset, $limit);
+	}
 
 	$publisher_id = $params['publisher_id'] ?? '';
 	$busca        = trim((string)($params['busca'] ?? ''));
@@ -505,9 +544,24 @@ function publisher_index_widget_buscar_publicacoes($params){
 		'extra' => $where.$order.$limitSql
 	));
 
-	if(!is_array($rows)) $rows = [];
+	return publisher_index_widget_montar_itens($rows, $publisher_id);
+}
+
+/**
+ * Converte as linhas cruas da consulta (paginas + publisher_pages) em itens prontos para o
+ * render: campos padrão (page_id, titulo, url, data) + campos custom de fields_values, com
+ * decodificação de Unicode corrompido (req-041 §1.2). Compartilhado pela busca dinâmica e
+ * pela curadoria manual (req-043 §1).
+ */
+function publisher_index_widget_montar_itens($rows, $publisher_id = null){
+	global $_GESTOR;
+
+	if(!is_array($rows)) return [];
 
 	gestor_incluir_biblioteca('formato');
+
+	// req-043 §6: tipos de campo do publicador (para prefixar campos de imagem com a url-raiz).
+	$tipos_campos = !empty($publisher_id) ? publisher_index_widget_tipos_campos_publicador($publisher_id) : [];
 
 	$itens = [];
 	foreach($rows as $row){
@@ -516,8 +570,14 @@ function publisher_index_widget_buscar_publicacoes($params){
 		if(is_array($campos_originais)){
 			foreach($campos_originais as $item_field){
 				if(is_array($item_field) && isset($item_field['id'])){
+					$fid = (string)$item_field['id'];
 					// req-041 §1.2: decodifica Unicode corrompido nos campos custom da publicação.
-					$campos_publisher[$item_field['id']] = publisher_index_widget_corrigir_unicode((string)($item_field['value'] ?? ''));
+					$valor = publisher_index_widget_corrigir_unicode((string)($item_field['value'] ?? ''));
+					// req-043 §6: campos do tipo 'image' recebem a url-raiz prefixada (caminho relativo → a partir da raiz).
+					if($valor !== '' && isset($tipos_campos[$fid]) && $tipos_campos[$fid] === 'image'){
+						$valor = publisher_index_widget_prefixar_url_raiz($valor);
+					}
+					$campos_publisher[$fid] = $valor;
 				}
 			}
 		}
@@ -532,4 +592,143 @@ function publisher_index_widget_buscar_publicacoes($params){
 	}
 
 	return $itens;
+}
+
+/**
+ * req-043 §6: mapa id_campo => tipo do publicador (lido de publisher.fields_schema), com cache
+ * estático por idioma+publicador para evitar consultas repetidas ao banco no mesmo request.
+ */
+function publisher_index_widget_tipos_campos_publicador($publisher_id){
+	global $_GESTOR;
+
+	static $cache = [];
+
+	$publisher_id = (string)$publisher_id;
+	if($publisher_id === '') return [];
+
+	$language = $_GESTOR['linguagem-codigo'];
+	$chave = $language.'|'.$publisher_id;
+	if(array_key_exists($chave, $cache)) return $cache[$chave];
+
+	$tipos = [];
+	$registro = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'publisher',
+		'campos' => Array('fields_schema'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($publisher_id)."'"
+			." AND language='".banco_escape_field($language)."'"
+	));
+
+	if(is_array($registro) && !empty($registro['fields_schema'])){
+		$schema = json_decode($registro['fields_schema'], true);
+		if(is_array($schema) && isset($schema['fields']) && is_array($schema['fields'])){
+			foreach($schema['fields'] as $field){
+				if(is_array($field) && isset($field['id'])){
+					$tipos[(string)$field['id']] = isset($field['type']) ? (string)$field['type'] : '';
+				}
+			}
+		}
+	}
+
+	$cache[$chave] = $tipos;
+	return $tipos;
+}
+
+/**
+ * req-043 §6: prefixa um caminho de imagem relativo com $_GESTOR['url-raiz'], preservando URLs
+ * já absolutas (http/https/protocol-relative/data:) e evitando barra dupla.
+ */
+function publisher_index_widget_prefixar_url_raiz($valor){
+	global $_GESTOR;
+
+	$valor = (string)$valor;
+	if($valor === '') return $valor;
+	if(preg_match('#^(https?:)?//#i', $valor) || strpos($valor, 'data:') === 0) return $valor;
+
+	$raiz = (string)($_GESTOR['url-raiz'] ?? '');
+	if($raiz !== '' && substr($raiz, -1) === '/' && substr($valor, 0, 1) === '/'){
+		return $raiz.ltrim($valor, '/');
+	}
+	return $raiz.$valor;
+}
+
+/**
+ * req-043 §1: monta a lista completa (sem paginação) da curadoria manual — busca os itens
+ * cujos IDs estão em selected_items (filtro IN, sem ORDER/LIMIT no SQL), reordena para respeitar
+ * exatamente a ordem de selected_items e, havendo termo de busca, filtra em PHP (case-insensitive
+ * sobre título e campos custom). A paginação é aplicada por quem consome (array_slice).
+ */
+function publisher_index_widget_lista_manual($params){
+	global $_GESTOR;
+
+	$publisher_id   = $params['publisher_id'] ?? '';
+	$selected_items = $params['selected_items'] ?? [];
+	$busca          = trim((string)($params['busca'] ?? ''));
+
+	if(empty($publisher_id) || !is_array($selected_items) || count($selected_items) === 0) return [];
+
+	$language = $_GESTOR['linguagem-codigo'];
+
+	$ids_escapados = array_map(function($id){
+		return "'".banco_escape_field((string)$id)."'";
+	}, $selected_items);
+
+	$where =
+		"WHERE p.publisher_id='".banco_escape_field($publisher_id)."'"
+		." AND p.status='A'"
+		." AND p.language='".banco_escape_field($language)."'"
+		." AND p.id IN (".implode(',', $ids_escapados).")";
+
+	// Sem ORDER nem LIMIT: a ordem é definida em PHP por selected_items e a paginação é externa.
+	$rows = banco_select(Array(
+		'tabela' => 'paginas AS p INNER JOIN publisher_pages AS pp ON pp.page_id = p.id AND pp.language = p.language',
+		'campos' => Array(
+			'p.id',
+			'p.nome',
+			'p.caminho',
+			'p.data_modificacao',
+			'pp.fields_values',
+		),
+		'extra' => $where
+	));
+
+	$itens = publisher_index_widget_montar_itens($rows, $publisher_id);
+
+	// Mapeia por page_id e reordena para respeitar exatamente a ordem da curadoria.
+	$por_id = [];
+	foreach($itens as $item){
+		$por_id[(string)$item['page_id']] = $item;
+	}
+	$ordenados = [];
+	foreach($selected_items as $sid){
+		$sid = (string)$sid;
+		if(isset($por_id[$sid])) $ordenados[] = $por_id[$sid];
+	}
+
+	// Termo de busca: filtra em PHP (título + campos custom, case-insensitive).
+	if($busca !== ''){
+		$ordenados = array_values(array_filter($ordenados, function($item) use ($busca){
+			return publisher_index_widget_item_casa_busca($item, $busca);
+		}));
+	}
+
+	return $ordenados;
+}
+
+/**
+ * req-043 §1: verifica se um item curado casa com o termo de busca de forma case-insensitive,
+ * comparando o título e os campos custom (ignora identificador, URL e data formatada).
+ */
+function publisher_index_widget_item_casa_busca($item, $busca){
+	if(!is_array($item)) return false;
+	$busca = trim((string)$busca);
+	if($busca === '') return true;
+
+	$reservadas = ['page_id' => true, 'url' => true, 'data' => true];
+	foreach($item as $chave => $valor){
+		if(isset($reservadas[$chave]) || is_array($valor)) continue;
+		if(mb_stripos((string)$valor, $busca, 0, 'UTF-8') !== false) return true;
+	}
+	return false;
 }

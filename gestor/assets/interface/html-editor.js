@@ -1913,6 +1913,13 @@ $(document).ready(function () {
          * em divs .conn2flow-widget-wrapper. Operação cirúrgica via varredura de nós COMMENT.
          */
         convertWidgetCommentsToWrappers() {
+            // req-043 §4.2: variáveis de widget inline ([[widgets#...]] ou @[[widgets#...]]@) viram
+            // blocos de comentário equivalentes antes da varredura, para serem editáveis como wrappers.
+            let bodyHtml = document.body.innerHTML;
+            const varRe = /@?\[\[widgets#(.+?)\]\]@?/gi;
+            if (varRe.test(bodyHtml)) {
+                document.body.innerHTML = bodyHtml.replace(varRe, '<!-- widgets#$1 < --><!-- widgets#$1 > -->');
+            }
             const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_COMMENT, null);
             const comments = [];
             let n;
