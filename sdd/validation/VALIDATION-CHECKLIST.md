@@ -795,7 +795,103 @@ Para manter o checklist de validações leve e eficiente, as validações e evid
 - Arquivos: `gestor/assets/interface/html-editor-interface.js`, `gestor/assets/interface/html-editor.js`. Decisão: [DEC-054](../decisions/DECISION-LOG.md).
 
 
+---
+## BATCH-041 - Correções no Módulo publisher-index (Busca, Acentuação, Duplicações, CRUD e Métricas) (req-041)
 
+- [ ] **Busca Insensível a Acentos no Widget**:
+  - [ ] Pesquisar por "Títu" (com acento) no campo de busca do widget (`.publisher-index-search`) e garantir que a publicação "Título dessa página" seja retornada mesmo se gravada de forma Unicode corrompida.
+- [ ] **Correção de Escape Unicode**:
+  - [ ] Confirmar se textos renderizados no widget que possuíam caracteres corrompidos sem barra (ex: `Tu00edtulo dessa pu00e1gina`) são devidamente exibidos com os acentos corretos (ex: `Título dessa página`).
+- [ ] **Filtragem de Páginas Index / Duplicados**:
+  - [ ] Verificar se apenas registros de publicações reais associados ao publicador são exibidos no widget index (e que a página pai do índice ou páginas comuns sem registros em `publisher_pages` são ignoradas através do `INNER JOIN`).
+- [ ] **Métricas de Paginação**:
+  - [ ] Validar que as variáveis `[[page_count]]` e `[[page_total]]` são resolvidas no widget.
+  - [ ] Validar que ao realizar busca, ordenação ou paginação, os contadores dinâmicos `[data-page-count]` e `[data-page-total]` atualizam seus valores na tela corretamente.
+- [ ] **Limpeza de Campos no CRUD**:
+  - [ ] Acessar as páginas administrativas do `publisher-index` (adicionar, editar, clonar) e confirmar que o campo redundante "Quantidade máxima de itens" foi removido.
+  - [ ] Confirmar que o layout do grid realinhou os campos "Regra de Alimentação" e "Ordenação" em 8 colunas cada, preenchendo a linha de 16 colunas.
+- [ ] **Mover Seletor Manual e Corrigir Typo**:
+  - [ ] Confirmar que o selecionador de itens manuais (`#manual-items-wrapper`) agora aparece dentro da seção de "Regra de Curadoria" (antes de "Controles de Exibição do Índice").
+  - [ ] Verificar que não existem typos de sintaxe (como `div\ class`) na estrutura do DOM do manual items.
+- [ ] **Integração com o Editor HTML Visual**:
+  - [ ] Confirmar que no Editor Visual, as variáveis do tipo `[[item#X]]` são mapeadas corretamente no autocomplete lateral do alvo `publisher-index`.
+  - [ ] Confirmar que o modo de simulação no Editor Visual renderiza a lista de itens com base na quantidade definida em `items_per_page`.
 
+### Evidência de Validação (BATCH-041)
 
+- Validação estática executada em 2026-06-15 (todos OK):
+  - `php -l gestor/modulos/publisher-index/publisher-index.widget.php` → `No syntax errors detected`.
+  - `node --check` OK em `publisher-index.widget.js`, `publisher-index.js` e `gestor/assets/interface/html-editor-interface.js`.
+  - `JSON.parse` OK em `publisher-index.json` (após registro dos 2 novos templates + bumps de versão).
+  - Grep de regressão: nenhuma ocorrência residual de `name="count"`/`id="count"` nas 6 páginas do CRUD, nem do typo `div\ class`/`</div\>`, nem de `four wide field`/`six wide field`.
+- Arquivos alterados:
+  - `gestor/modulos/publisher-index/publisher-index.widget.php` (helpers `publisher_index_widget_unicode_escape`, `publisher_index_widget_corrigir_unicode`, `publisher_index_widget_clausula_busca`, `publisher_index_widget_contar_publicacoes`; INNER JOIN; busca disjuntiva; decodificação Unicode no título/campos; métricas `[[page_count]]`/`[[page_total]]` + `total` no AJAX).
+  - `gestor/modulos/publisher-index/publisher-index.widget.js` (helper `atualizarMetricas` atualizando `[data-page-count]`/`[data-page-total]` ao concluir busca/ordenação/load-more).
+  - `gestor/modulos/publisher-index/publisher-index.js` (remoção da dependência do `#count`: hidratação, listener, submit e preview — `schema.count` mantido como valor seguro).
+  - 6 páginas CRUD (`publisher-index-{adicionar,editar,clonar}` pt-br/en): remoção do `#count`, `rule`/`order_by` em `eight wide field`, `#manual-items-wrapper` movido para dentro da "Regra de Curadoria" e typo `div\ class` corrigido.
+  - 2 templates existentes (`publisher-index-lista`/`-grid` pt-br/en): bloco de métricas "Exibindo X de Y" com `[data-page-count]`/`[data-page-total]`.
+  - `gestor/assets/interface/html-editor-interface.js` (`alvoUsaItemVars` + `backupCallbackMap` + ocultar `.publisher-design-mode-simulation` + branch de simulação por `#items_per_page` + `window.publisher_index_update_target_variables`).
+- Arquivos criados (pedido adicional do Engenheiro Chefe Humano nesta rodada — 2 novos modelos):
+  - `publisher-index-timeline` (Linha do Tempo) pt-br/en — trilho vertical com marcadores.
+  - `publisher-index-agenda` (Agenda) pt-br/en — cartões horizontais com bloco de data em destaque.
+  - Ambos usam apenas variáveis garantidas (`[[item#url]]`/`[[item#titulo]]`/`[[item#data]]`), globais (`[[grupo_slug]]`/`[[publisher_id]]`/`[[items_per_page]]`/`[[ordenacao]]`/`[[page_count]]`/`[[page_total]]`) e os blocos `search-input`/`sort-select`/`item`/`no-item`/`load-more`; registrados em `publisher-index.json` (pt-br/en, `version` 1.0, checksums vazios para o pipeline calcular).
+- Versionamento: `versao` do módulo 1.0.0 → 1.1.0; templates lista/grid e páginas adicionar/editar/clonar 1.1 → 1.2; checksums mantidos (recálculo automático pelo pipeline UPSERT).
+- Decisão registrada: [DEC-055](../decisions/DECISION-LOG.md#dec-055---2026-06-15---accepted) (+ nota de execução sobre os 2 templates extras).
+- [ ] Testes de interação manual no navegador — **pendentes com o operador** (após `🗃️ Projects - Update => Core` que registra os 2 novos templates, recompila as páginas/templates alterados e recalcula checksums):
+  - [ ] Busca acentuada ("Títu") retorna publicações com Unicode corrompido no banco; títulos/campos exibidos com acentos corretos.
+  - [ ] INNER JOIN remove a própria página de índice e páginas comuns sem registro em `publisher_pages`.
+  - [ ] Métricas "Exibindo X de Y" atualizam em busca/ordenação/"Carregar mais".
+  - [ ] CRUD sem o campo "Quantidade máxima de itens"; `rule`/`order_by` ocupando 8+8 colunas; `#manual-items-wrapper` na seção de Regra de Curadoria.
+  - [ ] Editor Visual: autocomplete `[[item#X]]` do alvo `publisher-index` e simulação multiplicando por `items_per_page`.
+  - [ ] Novos modelos "Linha do Tempo" e "Agenda" disponíveis no dropdown de modelos e renderizando corretamente no preview e no site.
+
+---
+## BATCH-042 - Controle de Métricas no Módulo publisher-index e Suíte de Testes (req-042)
+
+- [x] **Controle show_metrics no Schema e CRUD**:
+  - [x] Validar que o campo `show_metrics` foi adicionado ao `fields_schema` do módulo.
+  - [x] Verificar nos arquivos de CRUD (`adicionar.html`, `editar.html`, `clonar.html` em `pt-br`/`en`) a presença do checkbox `#show_metrics` com o label correspondente.
+  - [x] Validar que `publisher-index.js` carrega e salva o valor do checkbox corretamente na serialização de dados.
+- [x] **Condicional de Métricas no Widget**:
+  - [x] Garantir que o bloco `<!-- metrics < --> ... <!-- metrics > -->` em torno das métricas é ocultado/exibido no widget renderizado conforme o estado do toggle `show_metrics`.
+  - [x] Verificar nos templates físicos (lista, grid, timeline, agenda em ambos os idiomas) que a div `.publisher-index-metrics` está envolvida adequadamente pelos delimitadores de bloco condicional.
+- [x] **Suíte de Testes Unitários e de Integração**:
+  - [x] Executar os testes unitários em `tests/Integration/PublisherIndexWidgetTest.php` e validar a cobertura para `publisher_index_widget_unicode_escape()` e `publisher_index_widget_corrigir_unicode()`.
+  - [x] Confirmar o funcionamento dos testes integrados conectando-se ao banco de dados temporário `conn2flow_test` no Docker, validando a busca disjuntiva, INNER JOIN e contagens sem interferir no banco de desenvolvimento real.
+
+### Evidência de Validação (BATCH-042)
+- [x] Linting estático limpo (`node --check` / `php -l`).
+- [x] Testes automatizados executados com sucesso via PHPUnit (`composer test`).
+- [ ] Testes manuais no navegador validados pelo operador.
+
+Evidência automatizada em 2026-06-15:
+- `php -l gestor/modulos/publisher-index/publisher-index.php` → `No syntax errors detected`.
+- `php -l gestor/modulos/publisher-index/publisher-index.widget.php` → `No syntax errors detected`.
+- `php -l tests/Integration/PublisherIndexWidgetTest.php` → `No syntax errors detected`.
+- `node --check gestor/modulos/publisher-index/publisher-index.js` → OK.
+- `composer test` → OK (`36 tests`, `97 assertions`, `2 skipped`).
+- Teste integrado MySQL dedicado com `CONN2FLOW_DB_DATABASE=conn2flow_test` → OK (`1 test`, `8 assertions`).
+
+---
+## BATCH-043 - Curadoria Manual no Módulo publisher-index, Novos Templates e Variáveis de Widget Inline (req-043)
+
+- [ ] **Curadoria Manual no publisher-index**:
+  - [ ] Ao selecionar a regra `manual`, verificar se o widget renderiza apenas os itens salvos em `selected_items` no page load e AJAX de paginação/busca.
+  - [ ] Validar que a ordenação respeita exatamente a ordem em que foram selecionados em `selected_items`.
+  - [ ] Validar que buscas textuais são filtradas e paginadas corretamente em PHP.
+- [ ] **4 Novos Modelos com Imagem Destaque**:
+  - [ ] Verificar se os novos templates (`publisher-index-grid-imagem` e `publisher-index-lista-imagem` em `pt-br`/`en`) foram criados e registrados em `publisher-index.json`.
+  - [ ] Validar que exibem imagens destaques usando a variável `@[[item#imagem]]@`.
+- [ ] **Variável de Widget no CRUD**:
+  - [ ] Acessar os 4 módulos (`publisher-index`, `publisher-highlights`, `menus`, `galleries`) nas 3 telas CRUD (adicionar, editar, clonar, pt-br/en).
+  - [ ] Validar a presença do campo "Variável do Widget" com input read-only `#hep-widget-val` e o botão "Copiar".
+  - [ ] Validar que o clique em "Copiar" coloca com sucesso a variável (ex: `[[widgets#modulo->render(...)]]`) na área de transferência.
+- [ ] **Suporte a Widgets Inline no Editor e Pré-visualizador**:
+  - [ ] No pré-visualizador de página, verificar se widgets adicionados em formato de variável inline `[[widgets#...]]` ou `@[[widgets#...]]@` são devidamente interpretados e renderizados.
+  - [ ] No Editor Visual (iframe), verificar se as variáveis de widget inline são convertidas em wrappers visuais operacionais de widget, possibilitando edição visual direta.
+
+### Evidência de Validação (BATCH-043)
+- [ ] Linting estático limpo (`node --check` / `php -l`).
+- [ ] Testes automatizados executados com sucesso via PHPUnit (`composer test`).
+- [ ] Testes manuais no navegador validados pelo operador.
 

@@ -12339,6 +12339,15 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "publisher-index",
+        "id": "form-show_metrics-label",
+        "valor": "Exibir métricas de paginação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "publisher-index",
         "id": "form-name-label",
@@ -12415,6 +12424,15 @@
         "modulo": "publisher-index",
         "id": "form-show_load_more_btn-label",
         "valor": "Show \"Load more\" button",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-index",
+        "id": "form-show_metrics-label",
+        "valor": "Show pagination metrics",
         "tipo": "string",
         "grupo": null,
         "descricao": null

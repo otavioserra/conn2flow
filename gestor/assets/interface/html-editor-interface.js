@@ -644,7 +644,7 @@ $(document).ready(function () {
     // O ocultamento da req-007 item 4 foi revertido — as abas externas "Pré-Visualização"
     // e "Editor HTML" vivem no template da página de edição, fora deste componente.
     // O seletor de estilo de simulação continua oculto para destaques (item 4 deste req).
-    if (('alvo' in gestor.html_editor) && (gestor.html_editor.alvo === 'publisher-highlights' || gestor.html_editor.alvo === 'menus')) {
+    if (('alvo' in gestor.html_editor) && (gestor.html_editor.alvo === 'publisher-highlights' || gestor.html_editor.alvo === 'menus' || gestor.html_editor.alvo === 'publisher-index')) {
         $('.publisher-design-mode-simulation').hide();
     }
 
@@ -774,6 +774,8 @@ $(document).ready(function () {
         'publisher': 'adminPaginasBackupCampo',
         'publisher-highlights': 'adminPaginasBackupCampo',
         'menus': 'adminPaginasBackupCampo',
+        // req-041 §3.1: alvo publisher-index reaproveita o mesmo callback de backup de páginas.
+        'publisher-index': 'adminPaginasBackupCampo',
     };
     const backupCallbackName = backupCallbackMap[gestor.html_editor.alvo] || 'adminPaginasBackupCampo';
 
@@ -784,11 +786,12 @@ $(document).ready(function () {
     function isHighlightsAlvo() {
         return alvoAtual() === 'publisher-highlights';
     }
-    // req-017 item 1 / req-018: `publisher-highlights`, `menus` e `galleries` usam a família de
-    // variáveis `[[item#X]]` (em vez de `[[publisher#TIPO#ID]]`). Este helper unifica essa detecção.
+    // req-017 item 1 / req-018 / req-041 §3.1: `publisher-highlights`, `menus`, `galleries` e
+    // `publisher-index` usam a família de variáveis `[[item#X]]` (em vez de `[[publisher#TIPO#ID]]`).
+    // Este helper unifica essa detecção.
     function alvoUsaItemVars() {
         var a = alvoAtual();
-        return a === 'publisher-highlights' || a === 'menus' || a === 'galleries';
+        return a === 'publisher-highlights' || a === 'menus' || a === 'galleries' || a === 'publisher-index';
     }
     // Regex global para encontrar todas as variáveis (suporta publisher, publisher-highlights e menus)
     function regexVariaveisGlobal() {
@@ -1976,7 +1979,7 @@ $(document).ready(function () {
             return html;
         }
 
-        if (alvo === 'publisher-highlights') {
+        if (alvo === 'publisher-highlights' || alvo === 'publisher-index') {
             const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
 
             if (simulacao) {
@@ -1984,11 +1987,17 @@ $(document).ready(function () {
                 let schema = {};
                 try { schema = JSON.parse(schemaStr); } catch (e) { }
 
-                // req-015 item 1.1: a simulação deve seguir a quantidade máxima definida pelo
-                // usuário no campo #count (refletindo instantaneamente, mesmo antes de salvar a
-                // página), em vez de depender da quantidade real de publicações no banco.
-                const countVal = $('#count').length ? $('#count').val() : null;
-                const count = Math.max(1, parseInt(countVal || schema.count || 4, 10));
+                // req-015 item 1.1 / req-041 §3.2: a simulação replica o item N vezes refletindo
+                // instantaneamente o controle do CRUD (antes de salvar). Para publisher-highlights
+                // N vem de #count; para publisher-index (sem #count) vem de #items_per_page (fallback 10).
+                let count;
+                if (alvo === 'publisher-index') {
+                    const ippVal = $('#items_per_page').length ? $('#items_per_page').val() : null;
+                    count = Math.max(1, parseInt(ippVal || schema.items_per_page || 10, 10));
+                } else {
+                    const countVal = $('#count').length ? $('#count').val() : null;
+                    count = Math.max(1, parseInt(countVal || schema.count || 4, 10));
+                }
                 const variableMapping = schema.variable_mapping || {};
 
                 const itemRegex = /<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i;
@@ -2245,6 +2254,19 @@ $(document).ready(function () {
     // ===== publisher-highlights: API pública para o módulo notificar mudanças nas variáveis
     window.publisher_highlights_update_target_variables = function (vars) {
         if (!isHighlightsAlvo()) return;
+        if (!Array.isArray(vars)) vars = [];
+
+        publisher_fields_schema.template_map = vars.map(function (v) {
+            const id = (v && typeof v === 'object') ? v.id : String(v);
+            return { id: id, variable: '[[item#' + id + ']]', label: id, type: 'text' };
+        });
+
+        publisherVariablesSearch();
+    };
+
+    // ===== publisher-index: API pública para o módulo notificar mudanças nas variáveis (req-041 §3.1)
+    window.publisher_index_update_target_variables = function (vars) {
+        if (alvoAtual() !== 'publisher-index') return;
         if (!Array.isArray(vars)) vars = [];
 
         publisher_fields_schema.template_map = vars.map(function (v) {

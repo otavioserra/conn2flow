@@ -180,7 +180,7 @@ function publisher_index_adicionar(){
 	// ===== Schema inicial vazio para o JS reidratar UI
 	// req-010 item 1: template_id passa a viver dentro do fields_schema (sem coluna dedicada).
 
-	$schema_inicial = ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => [], 'template_id' => '', 'items_per_page' => 10, 'show_search_input' => true, 'show_sorting_select' => true, 'show_load_more_btn' => true];
+	$schema_inicial = ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => [], 'template_id' => '', 'items_per_page' => 10, 'show_search_input' => true, 'show_sorting_select' => true, 'show_load_more_btn' => true, 'show_metrics' => true];
 	$_GESTOR['pagina'] .= '<script>var publisher_index_initial_schema = '.json_encode($schema_inicial).';</script>';
 
 	// ===== HTML Editor (alvo publisher-index)
@@ -470,7 +470,7 @@ function publisher_index_editar(){
 		// Defaults garantem retrocompatibilidade com registros gravados antes do req-004.
 		// req-010 item 1: template_id passa a viver dentro de fields_schema (sem coluna dedicada).
 		$fields_schema_decoded = json_decode($fields_schema, true) ?: [];
-		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => [], 'template_id' => '', 'items_per_page' => 10, 'show_search_input' => true, 'show_sorting_select' => true, 'show_load_more_btn' => true];
+		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => [], 'template_id' => '', 'items_per_page' => 10, 'show_search_input' => true, 'show_sorting_select' => true, 'show_load_more_btn' => true, 'show_metrics' => true];
 
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var publisher_index_initial_schema = '.$schema_json.';</script>';
@@ -746,7 +746,7 @@ function publisher_index_clonar(){
 
 		$fields_schema_decoded = json_decode($fields_schema, true) ?: [];
 		// req-010 item 1: template_id também é restaurado a partir do fields_schema na clonagem.
-		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => [], 'template_id' => '', 'items_per_page' => 10, 'show_search_input' => true, 'show_sorting_select' => true, 'show_load_more_btn' => true];
+		$fields_schema_decoded += ['rule' => 'latest', 'count' => 4, 'order_by' => 'date_desc', 'selected_items' => [], 'variable_mapping' => [], 'template_id' => '', 'items_per_page' => 10, 'show_search_input' => true, 'show_sorting_select' => true, 'show_load_more_btn' => true, 'show_metrics' => true];
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var publisher_index_initial_schema = '.$schema_json.';</script>';
 

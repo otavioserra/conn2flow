@@ -74,7 +74,8 @@ $(document).ready(function () {
         items_per_page: 10,
         show_search_input: true,
         show_sorting_select: true,
-        show_load_more_btn: true
+        show_load_more_btn: true,
+        show_metrics: true
     };
 
     if (!Array.isArray(schema.selected_items)) schema.selected_items = [];
@@ -88,6 +89,7 @@ $(document).ready(function () {
     schema.show_search_input = (typeof schema.show_search_input === 'undefined') ? true : !!schema.show_search_input;
     schema.show_sorting_select = (typeof schema.show_sorting_select === 'undefined') ? true : !!schema.show_sorting_select;
     schema.show_load_more_btn = (typeof schema.show_load_more_btn === 'undefined') ? true : !!schema.show_load_more_btn;
+    schema.show_metrics = (typeof schema.show_metrics === 'undefined') ? true : !!schema.show_metrics;
 
     // Cache do HTML/CSS originais carregados do banco no page load (req-026 / DEC-039).
     // Usado para restaurar o editor ao voltar para a opção "-modificado" do dropdown de modelos.
@@ -100,7 +102,7 @@ $(document).ready(function () {
     // ===== Hidratar inputs com o schema atual
 
     $('#rule').val(schema.rule || 'latest');
-    $('#count').val(schema.count || 4);
+    // req-041 §2.1: o campo #count foi removido do CRUD (redundante com items_per_page).
     $('#order_by').val(schema.order_by || 'date_desc');
 
     // req-028: hidratar os controles de exibição do índice.
@@ -108,6 +110,7 @@ $(document).ready(function () {
     $('#show_search_input').prop('checked', !!schema.show_search_input);
     $('#show_sorting_select').prop('checked', !!schema.show_sorting_select);
     $('#show_load_more_btn').prop('checked', !!schema.show_load_more_btn);
+    $('#show_metrics').prop('checked', !!schema.show_metrics);
 
     // req-011 item 2: dropdowns Fomantic UI já renderizaram suas cascas visuais antes desse
     // ponto. `.val()` muda o <select> mas a UI segue mostrando o padrão. Disparar
@@ -252,11 +255,7 @@ $(document).ready(function () {
         scheduleWidgetPreview(false);
     });
 
-    $('#count').on('change input', function () {
-        var v = parseInt($(this).val(), 10);
-        schema.count = isNaN(v) || v < 1 ? 1 : v;
-        scheduleWidgetPreview(false);
-    });
+    // req-041 §2.1: listener de #count removido — o elemento não existe mais no CRUD.
 
     $('#order_by').on('change', function () {
         schema.order_by = $(this).val() || 'date_desc';
@@ -269,10 +268,11 @@ $(document).ready(function () {
         schema.items_per_page = (v > 0) ? v : 10;
         scheduleWidgetPreview(false);
     });
-    $('#show_search_input, #show_sorting_select, #show_load_more_btn').on('change', function () {
+    $('#show_search_input, #show_sorting_select, #show_load_more_btn, #show_metrics').on('change', function () {
         schema.show_search_input = $('#show_search_input').prop('checked');
         schema.show_sorting_select = $('#show_sorting_select').prop('checked');
         schema.show_load_more_btn = $('#show_load_more_btn').prop('checked');
+        schema.show_metrics = $('#show_metrics').prop('checked');
         scheduleWidgetPreview(false);
     });
 
@@ -281,7 +281,8 @@ $(document).ready(function () {
     $('.ui.form').on('submit', function () {
         // Garantir consistência com o estado dos inputs
         schema.rule = $('#rule').val() || 'latest';
-        schema.count = parseInt($('#count').val(), 10) || 4;
+        // req-041 §2.1: count é vestigial (sem input no CRUD); mantém um valor seguro no schema.
+        schema.count = parseInt(schema.count, 10) || 4;
         schema.order_by = $('#order_by').val() || 'date_desc';
         // req-028: sincronizar controles de exibição do índice antes de serializar.
         var ipp = parseInt($('#items_per_page').val(), 10);
@@ -289,6 +290,7 @@ $(document).ready(function () {
         schema.show_search_input = $('#show_search_input').prop('checked');
         schema.show_sorting_select = $('#show_sorting_select').prop('checked');
         schema.show_load_more_btn = $('#show_load_more_btn').prop('checked');
+        schema.show_metrics = $('#show_metrics').prop('checked');
         // req-026: limpar o sufixo "-modificado" do input nativo do template antes de salvar.
         var $tempInput = $('#template_id');
         var tmplVal = $tempInput.val() || '';
@@ -622,7 +624,8 @@ $(document).ready(function () {
 
         // Garantir o schema mais recente
         schema.rule = $('#rule').val() || 'latest';
-        schema.count = parseInt($('#count').val(), 10) || 4;
+        // req-041 §2.1: count é vestigial (sem input no CRUD); mantém um valor seguro no schema.
+        schema.count = parseInt(schema.count, 10) || 4;
         schema.order_by = $('#order_by').val() || 'date_desc';
         // req-028: sincronizar controles de exibição do índice antes de gerar o preview.
         var ippPrev = parseInt($('#items_per_page').val(), 10);
@@ -630,6 +633,7 @@ $(document).ready(function () {
         schema.show_search_input = $('#show_search_input').prop('checked');
         schema.show_sorting_select = $('#show_sorting_select').prop('checked');
         schema.show_load_more_btn = $('#show_load_more_btn').prop('checked');
+        schema.show_metrics = $('#show_metrics').prop('checked');
 
         // req-014: para regra não-manual, enviar selected_items vazio via cópia, preservando
         // schema.selected_items (curadoria mantida pelas tags) intacto em memória.

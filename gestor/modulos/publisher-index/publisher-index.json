@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.1.0",
     "bibliotecas": [
         "interface",
         "html",
@@ -42,11 +42,11 @@
                     "id": "publisher-index-lista",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "c3c604df0ec451166ce70d481af49ba9",
+                        "html": "d52238325fe90b2fc164b378a6d62649",
                         "css": "",
-                        "combined": "c3c604df0ec451166ce70d481af49ba9"
+                        "combined": "d52238325fe90b2fc164b378a6d62649"
                     }
                 },
                 {
@@ -54,11 +54,35 @@
                     "id": "publisher-index-grid",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "a64f8bc557b4c97d69f7477f1a85c0fd",
+                        "html": "29ddfc002cce4a5b745766bfb59d9ec8",
                         "css": "",
-                        "combined": "a64f8bc557b4c97d69f7477f1a85c0fd"
+                        "combined": "29ddfc002cce4a5b745766bfb59d9ec8"
+                    }
+                },
+                {
+                    "name": "Publicador Índice - Linha do Tempo",
+                    "id": "publisher-index-timeline",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "1faece2aa842bdbfac45aa8f7ae128a6",
+                        "css": "",
+                        "combined": "1faece2aa842bdbfac45aa8f7ae128a6"
+                    }
+                },
+                {
+                    "name": "Publicador Índice - Agenda",
+                    "id": "publisher-index-agenda",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "4da8cf176017af91f386489a49484dee",
+                        "css": "",
+                        "combined": "4da8cf176017af91f386489a49484dee"
                     }
                 }
             ],
@@ -85,11 +109,11 @@
                     "path": "publisher-index\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "2369a5c072df286f44879186b2c6d76a",
+                        "html": "1b6ca40f55ee63a21f8f9d048ecd69c6",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "8d9f9d6743cfdbdd2a443f3ce6ddd53b"
+                        "combined": "28a15318049269fee49ddaf5969d3033"
                     }
                 },
                 {
@@ -99,11 +123,11 @@
                     "path": "publisher-index\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "6e53815ea65d43afbb06386b0cf476c1",
+                        "html": "ad64ce75c0d9277db1280b25a5d8d54a",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "ffb731e386269ec7fd17895162180e3b"
+                        "combined": "34db5a2ce925e4892060a6e32693c661"
                     }
                 },
                 {
@@ -113,11 +137,11 @@
                     "path": "publisher-index\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "505e91f9449ac9cba2e2c294f4101fc3",
+                        "html": "46cf3f6b69665590f4dea04ca7668905",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "5ab691043366f82e9fb0fc70840e2aa3"
+                        "combined": "caa908f50f8c4369d899b0ef825cb208"
                     }
                 }
             ],
@@ -166,6 +190,11 @@
                     "id": "form-show_load_more_btn-label",
                     "value": "Exibir botão \"Carregar mais\"",
                     "type": "string"
+                },
+                {
+                    "id": "form-show_metrics-label",
+                    "value": "Exibir métricas de paginação",
+                    "type": "string"
                 }
             ]
         },
@@ -194,11 +223,11 @@
                     "id": "publisher-index-lista",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "2e165d2b38f7700adb331e17fb344952",
+                        "html": "e0595bb4cc568772a1b87ac5d9511ea3",
                         "css": "",
-                        "combined": "2e165d2b38f7700adb331e17fb344952"
+                        "combined": "e0595bb4cc568772a1b87ac5d9511ea3"
                     }
                 },
                 {
@@ -206,11 +235,35 @@
                     "id": "publisher-index-grid",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "192535e7bfa8aa5f5d3bb9cae5445e2e",
+                        "html": "e4da08a663ae31c844a335687ab9bd17",
                         "css": "",
-                        "combined": "192535e7bfa8aa5f5d3bb9cae5445e2e"
+                        "combined": "e4da08a663ae31c844a335687ab9bd17"
+                    }
+                },
+                {
+                    "name": "Publisher Index - Timeline",
+                    "id": "publisher-index-timeline",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "b3ac7aff793d189675d747693e934124",
+                        "css": "",
+                        "combined": "b3ac7aff793d189675d747693e934124"
+                    }
+                },
+                {
+                    "name": "Publisher Index - Agenda",
+                    "id": "publisher-index-agenda",
+                    "target": "publisher-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "9b9680b6d92b37faf2a1af8c32c0cd3e",
+                        "css": "",
+                        "combined": "9b9680b6d92b37faf2a1af8c32c0cd3e"
                     }
                 }
             ],
@@ -237,11 +290,11 @@
                     "path": "publisher-index\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "0c07cb2c72bb91ee6c66eb142acb98e3",
+                        "html": "e370698bdc0ba798f2973cbc61b4690a",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "a41ec5447c9fe54b944eafac691fa71e"
+                        "combined": "d4c635d6deb4eab28e474d3f9ac4c6be"
                     }
                 },
                 {
@@ -251,11 +304,11 @@
                     "path": "publisher-index\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "311e105e913513d25cac6b1d0b6f94ec",
+                        "html": "e13d0e6dc219b16addff6f20f0a0a0bb",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "5a50b3454395158004b52c2fba45d799"
+                        "combined": "dd7579e2ff45a36235c0cc5f31962f43"
                     }
                 },
                 {
@@ -265,11 +318,11 @@
                     "path": "publisher-index\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "4e18ede87439858ada92bc46132a5a4d",
+                        "html": "2b902718b5ff8c1d592a3b42223f81d0",
                         "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "b398e60f950b8f38ca6dd3fb03719035"
+                        "combined": "8e84f01af1336a958f414cf1fb6ceae5"
                     }
                 }
             ],
@@ -317,6 +370,11 @@
                 {
                     "id": "form-show_load_more_btn-label",
                     "value": "Show \"Load more\" button",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_metrics-label",
+                    "value": "Show pagination metrics",
                     "type": "string"
                 }
             ]

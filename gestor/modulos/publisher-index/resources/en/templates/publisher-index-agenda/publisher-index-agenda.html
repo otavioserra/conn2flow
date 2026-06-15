@@ -2,12 +2,12 @@
     <div class="flex flex-col sm:flex-row gap-3 mb-6">
         <!-- search-input < -->
         <div class="flex-1">
-            <input type="search" class="publisher-index-search w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search publications...">
+            <input type="search" class="publisher-index-search w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="Search publications...">
         </div>
         <!-- search-input > -->
         <!-- sort-select < -->
         <div>
-            <select class="publisher-index-sort w-full sm:w-auto border border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select class="publisher-index-sort w-full sm:w-auto border border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500">
                 <option value="date_desc">Newest first</option>
                 <option value="date_asc">Oldest first</option>
                 <option value="title_asc">Title (A-Z)</option>
@@ -21,11 +21,15 @@
     <div class="publisher-index-metrics text-sm text-gray-500 mb-4">Showing <span data-page-count>@[[page_count]]@</span> of <span data-page-total>@[[page_total]]@</span></div>
     <!-- metrics > -->
 
-    <div class="publisher-index-items flex flex-col gap-4">
+    <div class="publisher-index-items flex flex-col gap-3">
         <!-- item < -->
-        <a href="@[[item#url]]@" class="block border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-white">
-            <h3 class="text-lg font-semibold text-gray-900 mb-1">@[[item#titulo]]@</h3>
-            <span class="text-sm text-gray-500">@[[item#data]]@</span>
+        <a href="@[[item#url]]@" class="flex items-stretch gap-4 border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow bg-white">
+            <div class="flex items-center justify-center bg-rose-500 text-white px-4 py-3 w-28 shrink-0 text-center">
+                <span class="text-sm font-semibold leading-tight">@[[item#data]]@</span>
+            </div>
+            <div class="flex items-center py-3 pr-4">
+                <h3 class="text-base font-semibold text-gray-900 leading-snug">@[[item#titulo]]@</h3>
+            </div>
         </a>
         <!-- item > -->
         <!-- no-item < -->
@@ -35,7 +39,7 @@
 
     <div class="text-center mt-6">
         <!-- load-more < -->
-        <button type="button" class="publisher-index-load-more inline-flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+        <button type="button" class="publisher-index-load-more inline-flex items-center gap-2 px-6 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors">
             Load more
         </button>
         <!-- load-more > -->

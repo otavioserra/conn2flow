@@ -20,10 +20,12 @@
  *   <!-- search-input < --> ... <!-- search-input > -->  contêiner da busca (condicional show_search_input)
  *   <!-- sort-select < --> ... <!-- sort-select > -->    contêiner da ordenação (condicional show_sorting_select)
  *   <!-- load-more < --> ... <!-- load-more > -->        botão "carregar mais" (condicional show_load_more_btn && tem_mais)
+ *   <!-- metrics < --> ... <!-- metrics > -->            métricas de paginação (condicional show_metrics)
  *
  * Variáveis globais resolvidas no contêiner (formato [[var]] ou @[[var]]@):
  *   [[grupo_slug]] [[publisher_id]] [[items_per_page]] [[ordenacao]]
- *   [[show_search_input]] [[show_sorting_select]] [[show_load_more_btn]]
+ *   [[show_search_input]] [[show_sorting_select]] [[show_load_more_btn]] [[show_metrics]]
+ *   [[page_count]] [[page_total]]   (req-041 §1.4: métricas "Exibindo X de Y")
  */
 
 function publisher_index_get_version(){
@@ -128,10 +130,12 @@ function publisher_index_widget_render_inline($params){
 	$show_search      = publisher_index_widget_bool($schema, 'show_search_input', true);
 	$show_sort        = publisher_index_widget_bool($schema, 'show_sorting_select', true);
 	$show_load_more   = publisher_index_widget_bool($schema, 'show_load_more_btn', true);
+	$show_metrics     = publisher_index_widget_bool($schema, 'show_metrics', true);
 
 	// Primeira página + 1 item extra para detectar se há próxima página.
 	$publicacoes = [];
 	$tem_mais = false;
+	$total = 0;
 	if(!empty($publisher_id)){
 		$publicacoes = publisher_index_widget_buscar_publicacoes([
 			'publisher_id' => $publisher_id,
@@ -144,7 +148,14 @@ function publisher_index_widget_render_inline($params){
 			$tem_mais = true;
 			array_pop($publicacoes);
 		}
+		// req-041 §1.4: total de publicações casadas (sem paginação) para as métricas.
+		$total = publisher_index_widget_contar_publicacoes([
+			'publisher_id' => $publisher_id,
+			'busca'        => '',
+		]);
 	}
+	// req-041 §1.4: itens efetivamente exibidos nesta primeira página (= min(items_per_page, total)).
+	$page_count = count($publicacoes);
 
 	$padraoItem   = '/<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i';
 	$padraoNoItem = '/<!--\s*no-item\s*<\s*-->([\s\S]*?)<!--\s*no-item\s*>\s*-->/i';
@@ -167,6 +178,7 @@ function publisher_index_widget_render_inline($params){
 	// Blocos condicionais de controle.
 	$output = publisher_index_widget_bloco_condicional($output, 'search-input', $show_search);
 	$output = publisher_index_widget_bloco_condicional($output, 'sort-select', $show_sort);
+	$output = publisher_index_widget_bloco_condicional($output, 'metrics', $show_metrics);
 	$output = publisher_index_widget_bloco_condicional($output, 'load-more', $show_load_more && $tem_mais);
 
 	// Variáveis globais (data-attributes do contêiner).
@@ -178,6 +190,10 @@ function publisher_index_widget_render_inline($params){
 		'show_search_input'   => $show_search ? 'true' : 'false',
 		'show_sorting_select' => $show_sort ? 'true' : 'false',
 		'show_load_more_btn'  => $show_load_more ? 'true' : 'false',
+		'show_metrics'        => $show_metrics ? 'true' : 'false',
+		// req-041 §1.4: métricas de paginação ("Exibindo [[page_count]] de [[page_total]]").
+		'page_count'          => (string)$page_count,
+		'page_total'          => (string)$total,
 	));
 
 	return publisher_index_widget_montar_saida($output, $css_custom, $css_compiled, $html_extra_head);
@@ -222,7 +238,7 @@ function publisher_index_render_ajax($params){
 	));
 
 	if(!$registro){
-		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'html' => '', 'tem_mais' => false);
+		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'html' => '', 'tem_mais' => false, 'total' => 0);
 		return '';
 	}
 
@@ -241,6 +257,7 @@ function publisher_index_render_ajax($params){
 
 	$publicacoes = [];
 	$tem_mais = false;
+	$total = 0;
 	if(!empty($publisher_id)){
 		$publicacoes = publisher_index_widget_buscar_publicacoes([
 			'publisher_id' => $publisher_id,
@@ -253,6 +270,11 @@ function publisher_index_render_ajax($params){
 			$tem_mais = true;
 			array_pop($publicacoes);
 		}
+		// req-041 §1.4: total de publicações casadas com a busca atual (para "Exibindo X de Y").
+		$total = publisher_index_widget_contar_publicacoes([
+			'publisher_id' => $publisher_id,
+			'busca'        => $busca,
+		]);
 	}
 
 	$itemTemplate = publisher_index_widget_extrair_item_template($registro['html'] ?? '');
@@ -270,6 +292,7 @@ function publisher_index_render_ajax($params){
 		'status'   => 'Ok',
 		'html'     => $html_itens,
 		'tem_mais' => $tem_mais,
+		'total'    => $total,
 	);
 
 	return '';
@@ -348,6 +371,90 @@ function publisher_index_widget_montar_saida($html, $css, $css_compiled = '', $h
 }
 
 /**
+ * req-041 §1.1: converte os caracteres não-ASCII (acentos) de um termo de busca para a sua
+ * forma de escape Unicode literal (`u00xx`) — com ou sem a barra invertida (`\u00xx`).
+ * Permite casar registros cujo nome foi gravado com Unicode corrompido no banco
+ * (ex.: "Título" salvo como "Tu00edtulo" ou "Título").
+ */
+function publisher_index_widget_unicode_escape($termo, $com_barra = false){
+	$termo = (string)$termo;
+	if($termo === '') return '';
+
+	$out = '';
+	$len = mb_strlen($termo, 'UTF-8');
+	for($i = 0; $i < $len; $i++){
+		$char = mb_substr($termo, $i, 1, 'UTF-8');
+		$code = function_exists('mb_ord') ? mb_ord($char, 'UTF-8') : ord($char);
+		if($code === false || $code < 128){
+			$out .= $char;
+		} else {
+			$out .= ($com_barra ? '\\u' : 'u').sprintf('%04x', $code);
+		}
+	}
+	return $out;
+}
+
+/**
+ * req-041 §1.2: decodifica padrões de escape Unicode literais (`u00xx` ou `\u00xx`) de volta
+ * para o caractere UTF-8 nativo. Corrige nomes/campos gravados de forma corrompida no banco.
+ */
+function publisher_index_widget_corrigir_unicode($str){
+	if(!is_string($str) || $str === '') return $str;
+
+	return preg_replace_callback('/\\\\?u([0-9a-fA-F]{4})/i', function($m){
+		return mb_convert_encoding(pack('N', hexdec($m[1])), 'UTF-8', 'UCS-4BE');
+	}, $str);
+}
+
+/**
+ * req-041 §1.1: monta a cláusula SQL de busca textual disjuntiva (termo literal + variantes
+ * de escape Unicode com e sem barra invertida) ou string vazia quando não há termo.
+ */
+function publisher_index_widget_clausula_busca($busca){
+	$busca = trim((string)$busca);
+	if($busca === '') return '';
+
+	$literal = banco_escape_field($busca);
+	$uni     = banco_escape_field(publisher_index_widget_unicode_escape($busca, false));
+	// Em LIKE do MySQL, "\" também escapa o próximo caractere do padrão. Para buscar
+	// uma barra literal gravada no banco, o padrão precisa receber "\\" antes do escape SQL.
+	$uniBar  = banco_escape_field(str_replace('\\', '\\\\', publisher_index_widget_unicode_escape($busca, true)));
+
+	return " AND (p.nome LIKE '%".$literal."%'"
+		." OR p.nome LIKE '%".$uni."%'"
+		." OR p.nome LIKE '%".$uniBar."%')";
+}
+
+/**
+ * req-041 §1.4: conta o total de publicações que casam com o publicador + busca (sem LIMIT),
+ * usando o mesmo INNER JOIN restritivo da listagem (§1.3).
+ */
+function publisher_index_widget_contar_publicacoes($params){
+	global $_GESTOR;
+
+	$publisher_id = $params['publisher_id'] ?? '';
+	if(empty($publisher_id)) return 0;
+
+	$language = $_GESTOR['linguagem-codigo'];
+
+	$where =
+		"WHERE p.publisher_id='".banco_escape_field($publisher_id)."'"
+		." AND p.status='A'"
+		." AND p.language='".banco_escape_field($language)."'";
+	$where .= publisher_index_widget_clausula_busca($params['busca'] ?? '');
+
+	$row = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas AS p INNER JOIN publisher_pages AS pp ON pp.page_id = p.id AND pp.language = p.language',
+		'campos' => Array('COUNT(*) AS total'),
+		'extra' => $where
+	));
+
+	// banco_select mapeia a chave do retorno pela string literal do campo; lemos o 1º valor.
+	return is_array($row) ? (int)reset($row) : 0;
+}
+
+/**
  * Busca publicações do publicador aplicando busca textual (LIKE no nome), paginação
  * (offset/limit) e ordenação (date_desc|date_asc|title_asc|title_desc).
  *
@@ -372,9 +479,7 @@ function publisher_index_widget_buscar_publicacoes($params){
 		." AND p.status='A'"
 		." AND p.language='".banco_escape_field($language)."'";
 
-	if($busca !== ''){
-		$where .= " AND p.nome LIKE '%".banco_escape_field($busca)."%'";
-	}
+	$where .= publisher_index_widget_clausula_busca($busca);
 
 	$order_map = [
 		'title_asc'  => ' ORDER BY p.nome ASC',
@@ -385,8 +490,11 @@ function publisher_index_widget_buscar_publicacoes($params){
 	$order = $order_map[$order_by_key] ?? $order_map['date_desc'];
 	$limitSql = ' LIMIT '.$offset.', '.$limit;
 
+	// req-041 §1.3: INNER JOIN garante que apenas publicações reais (com correspondência em
+	// publisher_pages) entrem na listagem — elimina a própria página de índice e páginas comuns
+	// que compartilham o mesmo publisher_id mas não são publicações cadastradas.
 	$rows = banco_select(Array(
-		'tabela' => 'paginas AS p LEFT JOIN publisher_pages AS pp ON pp.page_id = p.id AND pp.language = p.language',
+		'tabela' => 'paginas AS p INNER JOIN publisher_pages AS pp ON pp.page_id = p.id AND pp.language = p.language',
 		'campos' => Array(
 			'p.id',
 			'p.nome',
@@ -408,14 +516,16 @@ function publisher_index_widget_buscar_publicacoes($params){
 		if(is_array($campos_originais)){
 			foreach($campos_originais as $item_field){
 				if(is_array($item_field) && isset($item_field['id'])){
-					$campos_publisher[$item_field['id']] = $item_field['value'] ?? '';
+					// req-041 §1.2: decodifica Unicode corrompido nos campos custom da publicação.
+					$campos_publisher[$item_field['id']] = publisher_index_widget_corrigir_unicode((string)($item_field['value'] ?? ''));
 				}
 			}
 		}
 
 		$itens[] = array_merge([
 			'page_id' => $row['p.id'],
-			'titulo'  => $row['p.nome'] ?? '',
+			// req-041 §1.2: decodifica Unicode corrompido no título antes de devolver para render.
+			'titulo'  => publisher_index_widget_corrigir_unicode($row['p.nome'] ?? ''),
 			'url'     => $row['p.caminho'] ? $_GESTOR['url-raiz'].$row['p.caminho'] : '',
 			'data'    => $row['p.data_modificacao'] ? formato_data_hora_from_datetime_to_text($row['p.data_modificacao']) : '',
 		], $campos_publisher);

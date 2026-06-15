@@ -102,13 +102,13 @@
         "id": "publisher-index",
         "language": "pt-br",
         "status": "A",
-        "versao": 1
+        "versao": 3
     },
     {
         "nome": "Publisher Index",
         "id": "publisher-index",
         "language": "en",
         "status": "A",
-        "versao": 1
+        "versao": 3
     }
 ]

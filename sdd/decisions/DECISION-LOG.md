@@ -255,3 +255,41 @@ Ajustes Finais no Pré-visualizador de Widgets e Elemento Fantasma do Cursor (re
 3. **Estilo Limpo do Cursor Fantasma**: Ajustar a estilização de `#html-editor-insert-ghost` para remover restrições de layout estritas que impeçam ou quebrem a exibição e estruturação interna do elemento real renderizado.
 
 **Notas de execução (BATCH-040)**: (a) O script do preview é uma função nomeada `widgetPreviewBootstrap()` injetada por `(${fn.toString()})()` — isso preserva as regex literais (evita o problema de `\s`→`s` que ocorreria escrevendo o script como template string) e mantém o código autocontido (usa só globals do iframe + `window.parent.gestor`). Injetado nos dois caminhos de `previewHtmlConteudo` (layout e padrão), antes de `</body>`. O contêiner usa `display:contents` para não introduzir caixa extra no fluxo. (b) O nó de widget dentro do ghost recebe `data-widget-id` e dispara `requestWidgetRender`, mas **não vaza no save/snapshot**: o ghost (`#html-editor-insert-ghost`) é `isEditorOwned`, então seu conteúdo não é filho direto do body nem entra em `getUserContentNodes`. (c) `pointer-events:none` foi reforçado também nos descendentes do ghost (`#html-editor-insert-ghost *`) para a caixa flutuante jamais interceptar o cursor.
+
+## DEC-055 - 2026-06-15 - accepted
+
+Correções e Melhorias no Módulo publisher-index (req-041 / BATCH-041). Decisões de design:
+1. **Busca Tolerante a Acentuação**:
+   - Implementar a função utilitária `publisher_index_widget_unicode_escape()` que converte caracteres não-ASCII (acentos) do termo pesquisado para suas representações de escape Unicode (`u00xx` e `\u00xx`).
+   - Modificar a query SQL para realizar buscas combinadas com `OR` cobrindo o termo original e as versões Unicode escapadas, permitindo que a busca encontre registros mesmo com acentuação corrompida no banco de dados.
+2. **Decodificação de Unicode Corrompido**:
+   - Criar o helper `publisher_index_widget_corrigir_unicode()` que detecta padrões de escape Unicode (`\?u[0-9a-fA-F]{4}`) em strings e os re-decodifica para UTF-8 nativo usando a função `pack('N', hexdec($m[1]))` e `mb_convert_encoding()`.
+   - Aplicar esta decodificação ao título e campos dinâmicos ao buscar publicações do banco, garantindo exibição textual correta no widget renderizado.
+3. **Filtro Estrito de Publicações (INNER JOIN)**:
+   - Alterar o `LEFT JOIN` da consulta de publicações para `INNER JOIN` entre `paginas` e `publisher_pages`.
+   - Isso elimina do widget a renderização indesejada da própria página de índice que renderiza o widget (e qualquer outra página comum que compartilhe o mesmo `publisher_id` mas não seja uma publicação cadastrada na tabela `publisher_pages`).
+4. **Resolução de Métricas de Paginação**:
+   - Expor as variáveis globais de widget `[[page_count]]` e `[[page_total]]` no backend PHP.
+   - Enviar a propriedade `total` com a contagem total de publicações filtradas no JSON do retorno AJAX.
+   - No cliente JS (`publisher-index.widget.js`), contar fisicamente os filhos renderizados na listagem e preencher o texto de seletores `[data-page-count]` e `[data-page-total]` dinamicamente no término de cada chamada AJAX.
+5. **Ajustes e Simplificação de Layout do CRUD**:
+   - Remover o input de quantidade máxima de itens (`#count`) por ser redundante com a paginação do índice.
+   - Expandir os campos de Regra de Alimentação (`rule`) e Ordenação (`order_by`) para 8 colunas cada.
+   - Mover `#manual-items-wrapper` para dentro do bloco de Regra de Curadoria, e corrigir os typos de barra invertida em suas tags HTML (`div\ class` e `\div\`).
+6. **Integrações com Editor HTML Visual**:
+   - Declarar `window.publisher_index_update_target_variables` no interface JS do editor.
+   - Atualizar `alvoUsaItemVars()` para suportar o alvo `'publisher-index'`.
+   - Atualizar a simulação interna de itens no editor para ler de `#items_per_page` (fallback 10) em vez de `#count`.
+
+**Notas de execução (BATCH-041)**: (a) `banco_select` mapeia a chave do array de retorno pela string literal de cada campo (via `explode(',', ...)`), então `COUNT(*) AS total` vira uma chave não-trivial — `publisher_index_widget_contar_publicacoes()` lê o valor com `reset($row)`. (b) A cláusula de busca foi extraída para `publisher_index_widget_clausula_busca()` (reusada na listagem e na contagem) gerando `p.nome LIKE` para o termo literal + variantes `u00xx`/`\u00xx`; o `banco_escape_field` escapa a `\` da variante com barra, casando o conteúdo corrompido no banco. (c) O bloco de métricas "Exibindo X de Y" foi adicionado aos templates físicos lista/grid (e aos novos) com `[data-page-count]`/`[data-page-total]` e os placeholders `@[[page_count]]@`/`@[[page_total]]@`; o JS conta os filhos da listagem ignorando `.publisher-index-empty`. (d) O branch de simulação do `publisher-highlights` foi unificado com `publisher-index` em `publisherVariablesOrSimulation` (parametrizando a origem do count: `#count` vs `#items_per_page`). (e) **Pedido adicional do Engenheiro Chefe Humano nesta rodada (fora do req-041)**: criados 2 novos modelos para `publisher-index` — `publisher-index-timeline` (Linha do Tempo, trilho vertical com marcadores) e `publisher-index-agenda` (cartões horizontais com data em destaque), em pt-br e en, usando exclusivamente variáveis garantidas + blocos do widget, registrados em `publisher-index.json` (`version` 1.0, checksums vazios para o pipeline). Versões dos recursos alterados incrementadas (módulo 1.0.0→1.1.0; templates/páginas 1.1→1.2); checksums recalculados pelo pipeline.
+
+## DEC-056 - 2026-06-15 - accepted
+
+Controle de Métricas no publisher-index e suíte de testes MySQL (req-042 / BATCH-042). Decisões desta rodada:
+1. **Controle `show_metrics` como flag retrocompatível de schema**: O campo vive em `fields_schema`, com default `true` em adicionar/editar/clonar e no JavaScript administrativo. Registros antigos continuam exibindo métricas sem migração de dados.
+2. **Bloco condicional próprio para métricas**: As métricas usam os delimitadores `<!-- metrics < --> ... <!-- metrics > -->`, processados pelo mesmo helper `publisher_index_widget_bloco_condicional()` dos controles de busca, ordenação e carregar mais.
+3. **Variável global `show_metrics`**: O renderer passa a resolver `[[show_metrics]]`/`@[[show_metrics]]@` como `'true'` ou `'false'`, permitindo templates customizados que queiram refletir esse estado em atributos ou lógica visual.
+4. **Teste integrado MySQL gated e banco dedicado**: O teste de busca real só roda com `CONN2FLOW_RUN_DB_TESTS=1` e exige `CONN2FLOW_DB_DATABASE=conn2flow_test`. O setup cria/dropa apenas tabelas mínimas nesse banco dedicado, evitando qualquer impacto no banco de desenvolvimento.
+5. **Correção no `LIKE` para barra invertida literal**: A validação integrada revelou que `\` também é caractere de escape no padrão `LIKE` do MySQL. Para casar nomes gravados como `T\u00edtulo`, a variante com barra precisa ter a barra dobrada no padrão antes de `banco_escape_field()`.
+
+**Notas de execução (BATCH-042)**: implementado em `publisher-index.php`, `publisher-index.js`, `publisher-index.widget.php`, seis views CRUD, oito templates físicos e `tests/Integration/PublisherIndexWidgetTest.php`. Validação: `php -l` nos PHPs alterados, `node --check` no JS administrativo, `composer test` OK e teste MySQL dedicado contra `conn2flow_test` OK.

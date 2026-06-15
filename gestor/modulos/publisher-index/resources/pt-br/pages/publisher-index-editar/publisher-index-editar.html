@@ -14,18 +14,14 @@
 <h4 class="ui dividing header">Regra de Curadoria</h4>
 
 <div class="fields">
-    <div class="six wide field">
+    <div class="eight wide field">
         <label>Regra de Alimentação</label>
         <select id="rule" class="ui dropdown" name="rule">
             <option value="latest">Automática (últimas publicações)</option>
             <option value="manual">Manual (curadoria por item)</option>
         </select>
     </div>
-    <div class="four wide field">
-        <label>Quantidade máxima de itens</label>
-        <input type="number" name="count" id="count" min="1" value="4">
-    </div>
-    <div class="six wide field" id="order-by-wrapper">
+    <div class="eight wide field" id="order-by-wrapper">
         <label>Ordenação</label>
         <select id="order_by" class="ui dropdown" name="order_by">
             <option value="date_desc">Por data (mais recentes primeiro)</option>
@@ -36,24 +32,7 @@
     </div>
 </div>
 
-<h4 class="ui dividing header">Controles de Exibição do Índice</h4>
-
-<div class="fields">
-    <div class="five wide field">
-        <label>Itens por página</label>
-        <input type="number" id="items_per_page" min="1" value="10">
-    </div>
-    <div class="eleven wide field">
-        <label>Controles interativos no site publicado</label>
-        <div class="inline fields" style="margin-top: 4px;">
-            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_search_input" checked><label>Barra de busca</label></div></div>
-            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_sorting_select" checked><label>Ordenação</label></div></div>
-            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_load_more_btn" checked><label>Botão "Carregar mais"</label></div></div>
-        </div>
-    </div>
-</div>
-
-<div\ class="field"\ id="manual-items-wrapper" style="display:none;">
+<div class="field" id="manual-items-wrapper" style="display:none;">
     <label>Itens selecionados (ordem)</label>
     <div class="ui label" style="margin: 8px 0; display: block;">
         <i class="hand pointer icon"></i>
@@ -73,6 +52,24 @@
     <!-- Contêiner de tags selecionadas (reordenáveis via Sortable.js) -->
     <div id="selected-labels-container" class="ui segment sortable-labels-container" style="margin-top: 12px; min-height: 50px; padding: 10px; border: 1px dashed #ccc; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: #fafafa;">
         <!-- Labels inseridos dinamicamente por JS -->
+    </div>
+</div>
+
+<h4 class="ui dividing header">Controles de Exibição do Índice</h4>
+
+<div class="fields">
+    <div class="five wide field">
+        <label>Itens por página</label>
+        <input type="number" id="items_per_page" min="1" value="10">
+    </div>
+    <div class="eleven wide field">
+        <label>Controles interativos no site publicado</label>
+        <div class="inline fields" style="margin-top: 4px;">
+            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_search_input" checked><label>Barra de busca</label></div></div>
+            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_sorting_select" checked><label>Ordenação</label></div></div>
+            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_load_more_btn" checked><label>Botão "Carregar mais"</label></div></div>
+            <div class="field"><div class="ui toggle checkbox"><input type="checkbox" id="show_metrics" checked><label>Exibir métricas de paginação</label></div></div>
+        </div>
     </div>
 </div>
 

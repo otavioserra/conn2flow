@@ -39,6 +39,18 @@ $(document).ready(function () {
         var carregando = false;
         var debounceTimer = null;
 
+        // req-041 §1.4: atualiza os contadores de métricas "Exibindo X de Y". O page_count vem da
+        // contagem física dos itens renderizados na listagem (cresce no "Carregar mais"); o
+        // page_total vem do backend (total de publicações casadas com a busca atual).
+        function atualizarMetricas(total) {
+            // Conta os filhos reais da listagem, ignorando o bloco vazio (no-item).
+            var count = $items.children().not('.publisher-index-empty').length;
+            $root.find('[data-page-count]').text(count);
+            if (typeof total !== 'undefined' && total !== null && !isNaN(parseInt(total, 10))) {
+                $root.find('[data-page-total]').text(parseInt(total, 10));
+            }
+        }
+
         // ===== Busca (debounce de 300ms): reseta a página e substitui a lista.
         if ($search.length) {
             $search.on('input', function () {
@@ -106,6 +118,10 @@ $(document).ready(function () {
                         } else {
                             $loadMore.addClass('hidden').hide();
                         }
+
+                        // req-041 §1.4: refletir as métricas "Exibindo X de Y" após nova busca,
+                        // ordenação ou "Carregar mais".
+                        atualizarMetricas(res.total);
                     }
                 },
                 complete: function () {

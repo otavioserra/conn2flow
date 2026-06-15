@@ -82,6 +82,10 @@
   - Limitar testes de navegador ponta a ponta (E2E) para as operações vitais do sistema (Login de Administrador, Fluxo de Edição de Perfil, Criação de Destaque e sua correta renderização pública). Evitar escrever fluxos E2E complexos para pequenos CRUDs secundários.
 - **Integração Automática no CI/CD**:
   - Todo pull request ou push direcionado para `main` deve executar a suíte completa de testes automatizados via GitHub Actions (`.github/workflows/run-tests.yml`).
+- **Estratégia de Banco de Dados para Testes (MySQL Docker)**:
+  - Como a biblioteca core `banco.php` é acoplada ao driver `mysqli` (sem suporte a SQLite), testes que exigem conexões com o banco devem utilizar o container local do MySQL (`conn2flow-mysql`) mapeado em `127.0.0.1:3306`.
+  - É proibido realizar testes de integração ou unitários que alterem o banco de dados de desenvolvimento padrão (`conn2flow`). Todos os testes com banco de dados devem ser direcionados para uma base de dados de teste temporária (ex: `conn2flow_test`), com deleção automática das tabelas ou do banco de dados no encerramento da suíte.
+  - Funções auxiliares e lógicas puramente algorítmicas (como formatação de strings e manipulação de Unicode) devem ser testadas isoladamente sem qualquer chamada ou conexão ativa ao banco de dados.
 
 ---
 
@@ -93,4 +97,4 @@
 - Adicionadas diretrizes de injeção desduplicada de recursos de widgets e AJAX público de publicações em 11/06/2026.
 - Adicionada regra sobre escape de aspas em strings propostas para terminal em 12/06/2026.
 - Adicionadas as diretrizes estratégicas de testes (cobertura incremental, blindagem de bugs e caminhos críticos) em 12/06/2026.
-
+- Adicionado item sobre a estratégia de testes integrados contra MySQL Docker em 15/06/2026.
