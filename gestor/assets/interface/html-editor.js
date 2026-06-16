@@ -32,6 +32,8 @@ $(document).ready(function () {
             this.parentHighlightOverlay = null; // destaque de contêiner alvo (append) (req-039)
             this.insertGhost = null;            // elemento fantasma no modo de inserção (req-039)
             this.widgetSeq = 0;                 // contador de ids de wrapper de widget (req-039)
+            this.widgetCounter = 0;             // contador de ids únicos de widget (req-044 §1)
+            this.widgetsMap = {};               // mapa data-widget-id → {signature,isVariable,type,slug} (req-044 §1)
 
             this.hoveredElement = null;   // elemento sob o mouse (hover)
             this.selectedElement = null;  // elemento selecionado (persistente)
@@ -1403,8 +1405,19 @@ $(document).ready(function () {
             if (novo === null) return;
             const slug = novo.trim();
             const type = wrapper.getAttribute('data-widget-type') || '';
+            // req-044 §1: gera um NOVO id exclusivo e copia os metadados anteriores do mapa,
+            // evitando conflito caso o widget editado seja clone de outro na tela.
+            const oldId = wrapper.getAttribute('data-widget-id');
+            const oldMeta = (oldId && this.widgetsMap[oldId]) ? this.widgetsMap[oldId] : {};
+            const newId = this.nextWidgetId();
+            this.widgetsMap[newId] = {
+                signature: type + '->render({"grupo_slug": "' + slug + '"})',
+                isVariable: !!oldMeta.isVariable,
+                type: type,
+                slug: slug
+            };
+            wrapper.setAttribute('data-widget-id', newId);
             wrapper.setAttribute('data-widget-slug', slug);
-            wrapper.setAttribute('data-widget-signature', type + '->render({"grupo_slug": "' + slug + '"})');
             const label = wrapper.querySelector('.conn2flow-widget-label');
             if (label) label.textContent = 'Widget: ' + type + ' - ' + slug;
             // req-039: o mockup é descartado ao trocar o slug; re-renderiza o esqueleto.
@@ -1855,14 +1868,57 @@ $(document).ready(function () {
         }
 
         // ===================================================================
-        // Wrappers virtuais de widget — req-034 §6.5
+        // Wrappers virtuais de widget — req-034 §6.5 / req-044 §1
         // ===================================================================
+
+        // req-044 §1: gera um identificador de widget único e limpo (widget-0, widget-1, …).
+        nextWidgetId() { return 'widget-' + (this.widgetCounter++); }
+
+        // req-044 §1.2/§2.1: descarrega entidades HTML (&gt; → >, &quot; → ", &amp; → &) que o
+        // navegador injeta ao serializar a assinatura no DOM (incl. o caso de duplo escape
+        // &amp;gt;). Usa <textarea> (RCDATA: decodifica entidades sem interpretar markup).
+        htmlUnescape(str) {
+            if (!str || str.indexOf('&') === -1) return str || '';
+            const ta = document.createElement('textarea');
+            let out = str, prev, guard = 0;
+            do {
+                prev = out;
+                ta.innerHTML = out;
+                out = ta.value;
+                guard++;
+            } while (out !== prev && out.indexOf('&') !== -1 && guard < 3);
+            return out;
+        }
+
+        // req-044 §1: a assinatura real (com -> e aspas) vive SÓ no mapa em memória, nunca como
+        // atributo no DOM. Resolve pelo data-widget-id; fallback reconstrói de type/slug limpos.
+        getWidgetSignature(wrapper) {
+            const id = wrapper.getAttribute('data-widget-id');
+            const meta = id ? this.widgetsMap[id] : null;
+            if (meta && meta.signature) return meta.signature;
+            const type = wrapper.getAttribute('data-widget-type') || '';
+            const slug = wrapper.getAttribute('data-widget-slug') || '';
+            return type + '->render({"grupo_slug": "' + slug + '"})';
+        }
+
         createWrapperEl(opts) {
+            const id = opts.id || this.nextWidgetId();
+            const isVariable = !!opts.isVariable;
+            // req-044 §1: a assinatura (caracteres especiais) é guardada apenas no mapa em memória.
+            this.widgetsMap[id] = {
+                signature: opts.signature,
+                isVariable: isVariable,
+                type: opts.type,
+                slug: opts.slug
+            };
+
             const wrapper = document.createElement('div');
             wrapper.className = 'conn2flow-widget-wrapper';
+            wrapper.setAttribute('data-widget-id', id);
+            // req-044 §1: somente atributos limpos e alfanuméricos no DOM (sem -> nem aspas).
             wrapper.setAttribute('data-widget-type', opts.type);
             wrapper.setAttribute('data-widget-slug', opts.slug);
-            wrapper.setAttribute('data-widget-signature', opts.signature);
+            wrapper.setAttribute('data-widget-variable', isVariable ? 'true' : 'false');
             // req-039: o mockup original é preservado à parte; o inner pode receber o preview
             // renderizado (que NÃO deve vazar no save — o save usa o mockup).
             wrapper.setAttribute('data-widget-mockup', opts.innerHtml || '');
@@ -1883,11 +1939,12 @@ $(document).ready(function () {
         // req-039: pede ao pai o HTML renderizado do widget para preencher o wrapper.
         requestWidgetRender(wrapper) {
             if (!wrapper) return;
-            const signature = wrapper.getAttribute('data-widget-signature');
+            // req-044 §1: assinatura resolvida pelo mapa (nunca lida crua do DOM).
+            const signature = this.getWidgetSignature(wrapper);
             const slug = wrapper.getAttribute('data-widget-slug');
             if (!signature || !slug) return; // sem slug não há o que renderizar
             let wid = wrapper.getAttribute('data-widget-id');
-            if (!wid) { wid = 'w' + (++this.widgetSeq); wrapper.setAttribute('data-widget-id', wid); }
+            if (!wid) { wid = this.nextWidgetId(); wrapper.setAttribute('data-widget-id', wid); }
             const inner = wrapper.querySelector('.conn2flow-widget-inner');
             if (inner && !inner.innerHTML.trim()) {
                 inner.innerHTML = '<div style="padding:8px;color:#92400e;font:12px sans-serif">Carregando widget…</div>';
@@ -1913,38 +1970,49 @@ $(document).ready(function () {
          * em divs .conn2flow-widget-wrapper. Operação cirúrgica via varredura de nós COMMENT.
          */
         convertWidgetCommentsToWrappers() {
-            // req-043 §4.2: variáveis de widget inline ([[widgets#...]] ou @[[widgets#...]]@) viram
-            // blocos de comentário equivalentes antes da varredura, para serem editáveis como wrappers.
+            // req-044 §1.2: variáveis de widget inline ([[widgets#...]] ou @[[widgets#...]]@) viram
+            // comentários TEMPORÁRIOS rotulados como `widgets-var#` (distintos dos comentários reais
+            // `widgets#`), para que o save saiba reconstruí-las como variável e não como comentário.
             let bodyHtml = document.body.innerHTML;
             const varRe = /@?\[\[widgets#(.+?)\]\]@?/gi;
             if (varRe.test(bodyHtml)) {
-                document.body.innerHTML = bodyHtml.replace(varRe, '<!-- widgets#$1 < --><!-- widgets#$1 > -->');
+                document.body.innerHTML = bodyHtml.replace(varRe, '<!-- widgets-var#$1 < --><!-- widgets-var#$1 > -->');
             }
             const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_COMMENT, null);
             const comments = [];
             let n;
             while ((n = walker.nextNode())) comments.push(n);
 
-            const openRe = /^\s*widgets#(.+?)\s*<\s*$/i;
-            const closeRe = /^\s*widgets#\s*(.+?)\s*>\s*$/i;
+            // Grupo 1 = prefixo (widgets-var | widgets); grupo 2 = assinatura.
+            const openRe = /^\s*(widgets-var|widgets)#(.+?)\s*<\s*$/i;
+            const closeRe = /^\s*(widgets-var|widgets)#\s*(.+?)\s*>\s*$/i;
 
             for (let i = 0; i < comments.length; i++) {
                 const c = comments[i];
                 if (!c.parentNode) continue;
                 const mo = c.data.match(openRe);
                 if (!mo) continue;
-                const signature = mo[1].trim();
+                const isVariable = mo[1].toLowerCase() === 'widgets-var';
+                // req-044 §1.2: unescape das entidades antes de processar a assinatura.
+                const signature = this.htmlUnescape(mo[2].trim());
+                const rawSig = mo[2].trim();
 
-                // Procurar o fechamento correspondente.
+                // Procurar o fechamento correspondente (compara a assinatura crua, ainda escapada).
                 let close = null;
                 for (let j = i + 1; j < comments.length; j++) {
                     const mc = comments[j].data.match(closeRe);
-                    if (mc && mc[1].trim() === signature) { close = comments[j]; break; }
+                    if (mc && mc[1].toLowerCase() === mo[1].toLowerCase() && mc[2].trim() === rawSig) {
+                        close = comments[j];
+                        break;
+                    }
                 }
                 if (!close || close.parentNode !== c.parentNode) continue;
 
                 const parsed = this.parseWidgetSignature(signature);
+                // req-044 §1.2: id único + metadados no mapa em memória.
+                const widgetId = this.nextWidgetId();
                 const wrapper = this.createWrapperEl({
+                    id: widgetId, isVariable: isVariable,
                     type: parsed.type, slug: parsed.slug, name: parsed.slug,
                     signature: signature, innerHtml: ''
                 });
@@ -2112,11 +2180,29 @@ $(document).ready(function () {
                 '#html-editor-modal,.conn2flow-dnd-placeholder,.html-editor-container,.ui.dimmer.modals')
                 .forEach((el) => el.remove());
 
+            // req-044 §1.4: variáveis voltam como texto puro [[widgets#signature]] SEM re-escape
+            // das entidades. Como container.innerHTML re-escaparia `>`/`&` de um text node, usamos
+            // tokens alfanuméricos (não escapáveis) substituídos na string final.
+            const varReplacements = [];
             if (widgetsToComments) {
                 container.querySelectorAll('.conn2flow-widget-wrapper').forEach((wrapper) => {
-                    const signature = wrapper.getAttribute('data-widget-signature') ||
+                    // req-044 §1: a assinatura é resolvida pelo mapa em memória (data-widget-id),
+                    // nunca a partir de um atributo escapado no DOM.
+                    const id = wrapper.getAttribute('data-widget-id');
+                    const meta = id ? this.widgetsMap[id] : null;
+                    const signature = (meta && meta.signature) ? meta.signature :
                         ((wrapper.getAttribute('data-widget-type') || '') +
                             '->render({"grupo_slug": "' + (wrapper.getAttribute('data-widget-slug') || '') + '"})');
+                    const isVariable = meta ? !!meta.isVariable
+                        : wrapper.getAttribute('data-widget-variable') === 'true';
+
+                    if (isVariable) {
+                        const token = '__C2F_WVAR_' + varReplacements.length + '__';
+                        varReplacements.push({ token: token, text: '[[widgets#' + signature + ']]' });
+                        wrapper.parentNode.replaceChild(document.createTextNode(token), wrapper);
+                        return;
+                    }
+
                     // req-039: salvar o MOCKUP original (não o preview renderizado que está no inner).
                     const inner = wrapper.querySelector('.conn2flow-widget-inner');
                     const innerHtml = wrapper.hasAttribute('data-widget-mockup')
@@ -2133,7 +2219,9 @@ $(document).ready(function () {
                     wrapper.parentNode.replaceChild(frag, wrapper);
                 });
             }
-            return container.innerHTML.trim();
+            let out = container.innerHTML.trim();
+            varReplacements.forEach((r) => { out = out.split(r.token).join(r.text); });
+            return out;
         }
 
         getCleanHtml() {

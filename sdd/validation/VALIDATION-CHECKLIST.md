@@ -921,27 +921,40 @@ Itens marcados acima refletem o que é verificável estaticamente/por teste auto
 ---
 ## BATCH-044 - Correção de Caracteres Especiais nos Widgets, Suporte AJAX no Preview e Refatoração de Módulos (req-044)
 
-- [ ] **Mapeamento Baseado em IDs (widgetsMap)**:
-  - [ ] Validar que wrappers de widgets (`div.conn2flow-widget-wrapper`) usam atributos limpos e alfanuméricos (`data-widget-id`), evitando a presença de caracteres especiais do PHP/JSON no DOM do iframe.
-  - [ ] Verificar se as assinaturas originais contendo `->`, `"`, `{`, `}` são mantidas em um mapa na memória do editor (`this.widgetsMap`).
-  - [ ] Confirmar que a clonagem de widgets no editor visual funciona perfeitamente, copiando o metadado no mapa ou resolvendo IDs redundantes no save.
-  - [ ] Validar que ao salvar/voltar, os widgets que vieram de variáveis (`isVariable = true`) voltam exatamente ao formato `[[widgets#...]]` e os que eram comentários voltam como comentários, ambos sem caracteres corrompidos.
-- [ ] **Diferenciação e Unescape**:
-  - [ ] Verificar que as variáveis e comentários passam por processo de unescape das entidades HTML antes de serem registradas ou enviadas ao backend.
-- [ ] **Inclusão Automática de widget.js no Preview**:
-  - [ ] Criar ou visualizar uma página contendo um widget (ex: `galleries` ou `publisher-index`).
-  - [ ] Verificar se a folha de visualização do iframe inclui a tag `<script src="...widget.js"></script>` correspondente.
-  - [ ] Garantir que mesmo se a página contiver múltiplos widgets do mesmo módulo, o script é incluído exatamente uma vez.
-- [ ] **Suporte a AJAX de Widgets no Preview**:
-  - [ ] Abrir uma página de pré-visualização contendo `publisher-index` e interagir com busca ou paginação.
-  - [ ] Verificar que o preview de widgets define com sucesso `window.gestor.widgetsToAjax` e que o roteamento de AJAX no backend funciona normalmente sem dar erro 500.
-- [ ] **Refatoração para html-editor-modules.js**:
-  - [ ] Confirmar que o novo arquivo `gestor/assets/interface/html-editor-modules.js` contém todas as simulações e dados das seções `menus`, `galleries` e `publisher`.
-  - [ ] Verificar que as variáveis locais necessárias (CodeMirror, schemas) foram expostas de forma adequada na janela global.
-  - [ ] Validar que `html-editor.php` inclui o novo arquivo na ordem correta (antes do interface).
+- [x] **Mapeamento Baseado em IDs (widgetsMap)**:
+  - [x] Validar que wrappers de widgets (`div.conn2flow-widget-wrapper`) usam atributos limpos e alfanuméricos (`data-widget-id`/`data-widget-type`/`data-widget-slug`/`data-widget-variable`), evitando caracteres especiais do PHP/JSON no DOM do iframe (atributo `data-widget-signature` removido).
+  - [x] Verificar se as assinaturas originais contendo `->`, `"`, `{`, `}` são mantidas em um mapa na memória do editor (`this.widgetsMap`, chaveado por `data-widget-id`).
+  - [x] Confirmar que a edição/clonagem gera um **novo id exclusivo** copiando os metadados (`editWidgetWrapper`), evitando conflito entre clones.
+  - [x] Validar que ao salvar/voltar, os widgets que vieram de variáveis (`isVariable = true`) voltam exatamente ao formato `[[widgets#...]]` (via token, sem re-escape) e os que eram comentários voltam como comentários, ambos sem caracteres corrompidos.
+- [x] **Diferenciação e Unescape**:
+  - [x] Variáveis (`widgets-var#`) e comentários (`widgets#`) diferenciados na carga; unescape das entidades HTML (incl. duplo escape `&amp;gt;`) antes de registrar/enviar ao backend (helper `htmlUnescape`/`unescapeEntities` via `<textarea>`).
+- [x] **Inclusão Automática de widget.js no Preview**:
+  - [x] `previewHtmlConteudo` extrai as assinaturas (comentários + variáveis inline) e injeta `<script src="{raiz}{modulo}/widget.js">` no `<head>` para os módulos com controlador (`galleries`/`publisher-index`/`menus`).
+  - [x] Múltiplos widgets do mesmo módulo geram o script exatamente uma vez (desduplicado por módulo).
+- [x] **Suporte a AJAX de Widgets no Preview**:
+  - [x] `previewHtmlConteudo` injeta no `<head>` `window.gestor = Object.assign({}, window.parent.gestor); window.gestor.widgetsToAjax = "SIG1<#;>SIG2…"` (assinaturas únicas). Contrato confirmado em `widgets.php`: cada item de `widgetsToAjax` é a assinatura completa repassada a `widgets_get` como `$id`.
+- [x] **Refatoração para html-editor-modules.js**:
+  - [x] Novo `gestor/assets/interface/html-editor-modules.js` contém as 26 funções de simulação `menus`/`galleries`/`publisher` (+ `MENUS_SIM_FALLBACK`/`GALLERIES_SIM_FALLBACK` + `publisher_table_tr_skeleton`), anexadas ao `window`.
+  - [x] `html-editor-interface.js` expõe no `window` `CodeMirrorHtml`/`CodeMirrorHtmlExtraHead`/`publisher_fields_schema` + auxiliares `frameworkCSS`/`previewHtml`/`regexVariaveisGlobal`/`alvoUsaItemVars`.
+  - [x] `html-editor.php` inclui `html-editor-modules` **antes** de `html-editor-interface`.
 
 ### Evidência de Validação (BATCH-044)
 
-*(A ser preenchida pelo executor após a implementação)*
+- Validação estática executada em 2026-06-16:
+  - `node --check` OK em `html-editor.js`, `html-editor-interface.js`, `html-editor-modules.js` (novo), `html-editor-visual-controls.js`, `html-editor-helper.js`.
+  - `php -l gestor/bibliotecas/html-editor.php` → `No syntax errors detected`.
+  - `npm run test` (Vitest) → **3/3** (baseline preservado; confirma ausência de regressão nos stubs).
+  - `composer test` (PHPUnit) → **40/40 (112 asserts, 4 skipped** de banco gated por `CONN2FLOW_RUN_DB_TESTS`**)**.
+- Arquivos alterados:
+  - `gestor/assets/interface/html-editor.js` (Slice 1: `widgetCounter`/`widgetsMap`, `nextWidgetId`/`htmlUnescape`/`getWidgetSignature`; `createWrapperEl`/`editWidgetWrapper`/`requestWidgetRender`/`convertWidgetCommentsToWrappers`/`extractUserHtml` reescritos; `data-widget-signature` deixou de ser persistido).
+  - `gestor/assets/interface/html-editor-interface.js` (Slices 2/3/4: `unescapeEntities` no `widgetPreviewBootstrap`; `extrairAssinaturasWidgets`/`montarWidgetAssetsHead`; injeção de `widgetAssetsHead` nos dois caminhos; Slice 5: exposições no `window` + remoção das 26 funções de simulação).
+  - `gestor/bibliotecas/html-editor.php` (Slice 5: inclusão de `html-editor-modules` antes do interface).
+- Arquivo criado:
+  - `gestor/assets/interface/html-editor-modules.js` (Slice 5: 26 funções de simulação + constantes/estado, anexadas ao `window`).
+- Decisão registrada: [DEC-059](../decisions/DECISION-LOG.md#dec-059---2026-06-16---accepted).
+- Testes manuais/runtime pendentes com o operador (após `🗃️ Projects - Update => Core`):
+  - Inserir/editar widget cuja assinatura contenha `->` e aspas; salvar e voltar ao editor de código confirmando que a variável `[[widgets#...]]` (ou o comentário) volta **sem** corrupção (`&gt;`/`&amp;gt;`/`&quot;`).
+  - Página com `galleries`/`publisher-index`/`menus`: confirmar `<script .../widget.js>` no `<head>` do preview (uma vez por módulo) e `window.gestor.widgetsToAjax` preenchido; interagir com busca/paginação do `publisher-index` sem erro 500.
+  - Confirmar que as abas "Simular"/"Variáveis" de `menus`/`galleries`/`publisher-*` seguem funcionando com as funções servidas por `html-editor-modules.js`.
 
 

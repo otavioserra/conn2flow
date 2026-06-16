@@ -379,6 +379,13 @@ function html_editor_componente($params = false){
         $html_editor = modelo_var_troca_tudo($html_editor,'#pagina-html-extra-head-backup#','');
     }
 
+    // req-044 §5.3: simulações específicas de módulo extraídas do interface. Deve ser carregado
+	// ANTES de html-editor-interface (que expõe as instâncias/auxiliares que estas funções usam).
+	gestor_pagina_javascript_incluir('biblioteca',[
+		'caminho' => 'html-editor-modules',
+		'biblioteca' => 'html-editor',
+	]);
+
     // ===== Incluir script JS Interface do HTML Editor que conecta o mesmo com o Gestor/Modulos
 	gestor_pagina_javascript_incluir('biblioteca',[
 		'caminho' => 'html-editor-interface',
