@@ -1268,6 +1268,7 @@ function publisher_index_ajax_widget_preview(){
 	$html_input  = $_REQUEST['params']['html'] ?? ($_REQUEST['html'] ?? '');
 	$css_input   = $_REQUEST['params']['css'] ?? ($_REQUEST['css'] ?? '');
 	$publisher_id = $_REQUEST['params']['publisher_id'] ?? ($_REQUEST['publisher_id'] ?? '');
+	$grupo_slug = $_REQUEST['params']['grupo_slug'] ?? ($_REQUEST['grupo_slug'] ?? '');
 	$fields_schema_input = $_REQUEST['params']['fields_schema'] ?? ($_REQUEST['fields_schema'] ?? '{}');
 
 	// Garantir a biblioteca do widget incluída (precisamos da função render_inline).
@@ -1279,6 +1280,7 @@ function publisher_index_ajax_widget_preview(){
 		'html' => $html_input,
 		'css' => $css_input,
 		'publisher_id' => $publisher_id,
+		'grupo_slug' => $grupo_slug,
 		'fields_schema' => $fields_schema_input,
 	]);
 

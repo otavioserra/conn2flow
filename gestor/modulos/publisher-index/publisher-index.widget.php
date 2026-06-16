@@ -220,7 +220,7 @@ function publisher_index_render_ajax($params){
 
 	// O slug do grupo chega via JSON do wrapper (params) e, por robustez, também aceita
 	// o parâmetro explícito ajaxRegistroId enviado pelo script público.
-	$grupo_slug = $params['grupo_slug'] ?? ($_REQUEST['ajaxRegistroId'] ?? '');
+	$grupo_slug = $_REQUEST['ajaxRegistroId'] ?? ($params['grupo_slug'] ?? '');
 
 	$req       = isset($_REQUEST['params']) && is_array($_REQUEST['params']) ? $_REQUEST['params'] : [];
 	$busca     = isset($req['busca']) ? (string)$req['busca'] : '';

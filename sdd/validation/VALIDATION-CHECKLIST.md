@@ -957,4 +957,32 @@ Itens marcados acima refletem o que é verificável estaticamente/por teste auto
   - Página com `galleries`/`publisher-index`/`menus`: confirmar `<script .../widget.js>` no `<head>` do preview (uma vez por módulo) e `window.gestor.widgetsToAjax` preenchido; interagir com busca/paginação do `publisher-index` sem erro 500.
   - Confirmar que as abas "Simular"/"Variáveis" de `menus`/`galleries`/`publisher-*` seguem funcionando com as funções servidas por `html-editor-modules.js`.
 
+---
+## BATCH-045 - Correção de Erros de Inicialização (Temporal Dead Zone — TDZ) no Editor HTML Visual (req-045)
+
+- [x] **Reorganização da ordem de inicialização** (`html-editor-interface.js`):
+  - [x] 1ª iteração (insuficiente): removida a chamada síncrona de `contentPageTabHandler()` do meio do `$(document).ready` e movida para o fim. O erro **persistiu** em runtime porque o gatilho principal era outro.
+  - [x] 2ª iteração (correção real): o `onLoad` que o Fomantic dispara SÍNCRONAMENTE ao inicializar `$('.menuContainerPagina .item').tab({...})` (linha ~751) também chama `previewHtml()`/`pageModificationContainerMove()`. Esse bloco de init do `.tab()` foi movido para o fim do `ready`, junto ao `contentPageTabHandler()` (handler antes da init, ordem original preservada), garantindo que `WIDGET_SCRIPT_MODULES` (`const`) e `total_sessoes` (`let`) já estejam fora da TDZ.
+  - [x] Confirmado que o outro tab (`.menuPaginas`, ~L688) **não** precisa mover (seu `onLoad` só faz `CodeMirror*.refresh()`), e que as inits intermediárias (dropdowns `.frameworkCSS`/`.publisher-design-mode-*`) apenas registram callbacks `onChange` (não disparam na carga).
+- [x] **Overlays do editor sobrevivem a widget-variável** (`html-editor.js`):
+  - [x] `convertWidgetCommentsToWrappers()` não reescreve mais `document.body.innerHTML` para converter `[[widgets#...]]` (isso destruía os overlays/toolbar anexados ao body, quebrando a seleção quando havia widget em formato de variável). Nova `convertWidgetVariablesToComments()` faz a conversão cirurgicamente via TreeWalker `SHOW_TEXT` (pulando a UI `html-editor-*`) + `replaceChild` de fragmento, preservando a UI.
+
+### Evidência de Validação (BATCH-045)
+
+- Diagnóstico confirmado pelo runtime: o stack trace do console (v=1.3.1) tem todos os frames em `html-editor-interface.js` (`onLoad` L756 → `previewHtml` → `previewHtmlConteudo` → `montarWidgetAssetsHead` → `WIDGET_SCRIPT_MODULES`), originando na init `$('...').tab({...})` (L751) — **não** no `html-editor-modules.js`.
+- Investigação de efeito colateral da refatoração (Slice 5 do BATCH-044) — **descartado**: grep em `html-editor-modules.js` não encontra `WIDGET_SCRIPT_MODULES`/`montarWidgetAssetsHead`/`total_sessoes`; a única chamada relacionada é `previewHtml()` dentro de `publisherValuesUpdate()` (runtime, não na carga); o arquivo não tem execução top-level além de declarações + bloco `window.X = X`.
+- Validação estática executada em 2026-06-16:
+  - `node --check gestor/assets/interface/html-editor-interface.js` → OK (após mover a init do `.tab()`).
+  - Verificação por grep: `contentPageTabHandler()` e a init `$('.menuContainerPagina .item').tab({...})` são as únicas execuções síncronas que cascateiam em `previewHtml`/`pageModificationContainerMove`, e ambas estão agora no fim do `ready`.
+- Arquivos alterados:
+  - `gestor/assets/interface/html-editor-interface.js` (remoção da chamada síncrona de `contentPageTabHandler()` e do bloco de init do `.tab()` do meio do arquivo; ambos recolocados no fim do `ready`).
+  - `gestor/assets/interface/html-editor.js` (correção do overlay: nova `convertWidgetVariablesToComments()` cirúrgica; `convertWidgetCommentsToWrappers()` não reescreve mais `document.body.innerHTML`).
+  - `gestor/bibliotecas/html-editor.php` (`versao` da biblioteca `html-editor` bumpada pelo operador para cache-bust dos assets — 1.3.x no working tree; não alterada pelo executor).
+- Validação estática adicional: `node --check gestor/assets/interface/html-editor.js` → OK; Vitest 3/3 (baseline preservado).
+- Decisão registrada: [DEC-060](../decisions/DECISION-LOG.md#dec-060---2026-06-16---accepted).
+- Testes manuais/runtime pendentes com o operador:
+  - Carregar o Editor HTML Visual, abrir o console (F12) e confirmar ausência de `ReferenceError` ("Cannot access 'WIDGET_SCRIPT_MODULES'/'total_sessoes' before initialization").
+  - Confirmar que a troca de abas e a pré-visualização de widgets continuam funcionando (inclusive abrindo direto na aba `visualizacao-pagina`).
+  - Abrir o `editorHtmlVisual` numa página que contenha um widget em **formato de variável** (ex.: `[[widgets#menus->render({"grupo_slug": "teste"})]]`) e confirmar que o overlay de seleção de elementos funciona (antes ficava inerte); comparar com o mesmo widget em formato de comentário (deve seguir funcionando).
+
 

@@ -98,6 +98,7 @@ $(document).ready(function () {
 
     var availableItemVars = []; // [{id:'titulo'}, ...]   extraídas do template HTML
     var availablePublisherFields = []; // [{id:'titulo', name:'Título', type:'text'}, ...]
+    var widgetsToAjax = (typeof gestor !== 'undefined' && gestor.widgetsToAjax) ? gestor.widgetsToAjax : '';
 
     // ===== Hidratar inputs com o schema atual
 
@@ -663,6 +664,7 @@ $(document).ready(function () {
                     html: html,
                     css: css,
                     publisher_id: $publisher.val() || '',
+                    grupo_slug: gestor.moduloRegistroId || '',
                     fields_schema: JSON.stringify(out)
                 }
             },
@@ -682,7 +684,8 @@ $(document).ready(function () {
                         extraParams: {
                             customScripts: [
                                 { src: gestor.raiz + gestor.moduloId + '/widget.js' + '?v=' + gestor.versao },
-                            ]
+                            ],
+                            widgetsToAjax
                         }
                     });
                 } else {
@@ -961,6 +964,9 @@ $(document).ready(function () {
 
         // req-043 §3.3: variável inline do widget (copiar e colar em páginas/editor visual).
         $('#hep-widget-val').val('[[widgets#publisher-index->render({"grupo_slug": "' + slug + '"})]]');
+
+        // Incluir o widget no payload de preview para garantir que o editor interno do publisher-index receba a variável e possa o AJAX funcionar corretamente.
+        widgetsToAjax = widgetsToAjax + (widgetsToAjax.length > 0 ? '<#;>' : '') + 'publisher-index->render({\"grupo_slug\": \"' + slug + '\"})';
     }
 
     // req-043 §3.3: copiar a variável do widget para a área de transferência (com fallback).
@@ -997,4 +1003,6 @@ $(document).ready(function () {
         try { document.execCommand('copy'); } catch (err) { }
         document.body.removeChild(temp);
     }
+
+    updateWidgetCodeTab();
 });

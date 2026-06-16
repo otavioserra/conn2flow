@@ -16,7 +16,7 @@ Originalmente desenvolvido como um CMS proprietário chamado B2make, Conn2Flow a
 ## Índice
 
 - [📚 Documentação](#documentação)
-- [🆕 Última Versão](#latest-release)
+- [🆕 Última Versão](#última-versão)
 - [⚡ Instalação Rápida](#instalação-rápida)
 - [📖 Recursos de Aprendizado](#recursos-de-aprendizado)
 - [🤖 Agentes GitHub Copilot](#agentes-github-copilot)
@@ -39,14 +39,14 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
 ## Última Versão
 
-**v2.8.0 (10 Junho 2026)**
+**v2.9.0 (16 Junho 2026)**
 
-**🎯 Novas Funcionalidades:**
-- **Módulo de Menus Completo**: Gerenciamento de menus com árvore hierárquica e editor visual drag-and-drop (estilo WordPress, em Pointer Events vanilla).
-- **Módulo de Galerias de Imagens**: Curadoria visual, seleção em lote, ordenação Sortable.js, carrosséis públicos e links individuais por imagem (autocomplete AJAX de páginas).
-- **Aba "Código do Widget"**: CodeMirror somente leitura no editor de destaques/menus/galerias exibindo o envelopamento `<!-- widgets#... -->` pronto para colar nos layouts.
-- **Compilação Tailwind CSS CLI v4**: Build automático do CSS do Core via `npx @tailwindcss/cli` integrado localmente e no CI.
-- **Automação de Campos do Publicador**: Inserção em lote ("Adicionar todos os campos") com mapeamento automático ao modelo.
+**🎯 Principais Novidades:**
+- **Editor HTML Visual Avançado**: Toolbar flutuante com painel de estilos (20 grupos de formatação), paletas de cores, D&D com placeholders interativos, clipboard integrado (Copiar/Colar com atalhos Ctrl+C/V), ferramenta Embrulhar (Wrap) e renderizador de widgets AJAX.
+- **Segurança e Autenticação**: Suporte a autenticação de dois fatores (2FA via aplicativo/e-mail), login por e-mail sem senha (OTP), assistente interativo de configuração OAuth e perfis restritos de chaves de API com proteção 2FA.
+- **Suíte de Testes Automatizados**: Integração de testes automatizados (PHPUnit, Vitest, Playwright) rodando localmente e integrados no CI/CD do GitHub Actions.
+- **Publicador Índice e Curadoria Manual**: Curadoria manual com ordenação na listagem, busca inteligente com tratamento de acentuação Unicode, paginação dinâmica com métricas e prefixagem dinâmica da URL raiz em campos de imagem.
+- **Modularização de Código**: Extração das 26 simulações do editor para o arquivo independente `html-editor-modules.js`.
 
 Para o changelog completo, consulte [CHANGELOG-PT-BR.md](CHANGELOG-PT-BR.md).
 

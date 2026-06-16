@@ -66,6 +66,13 @@ function widgets_get($params = false){
 				$paramsArray = array();
 			}
 
+			// Evitar loop de widgets no AJAX se o slug do grupo não corresponder ao ID do widget solicitado.
+			if($_GESTOR['ajax']){
+				if(isset($_REQUEST['ajaxRegistroId']) && isset($paramsArray['grupo_slug']) && $_REQUEST['ajaxRegistroId'] !== $paramsArray['grupo_slug']){
+					return ''; // Evita loop de widgets no AJAX
+				}
+			}
+
 			// BATCH-008: Injetar o HTML estático capturado do wrapper na chave 'html'
 			// dos parâmetros do callback. Permite ao widget acessar o mockup original da
 			// página física para preview visual ou debug. Não substitui a renderização

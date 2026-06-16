@@ -618,6 +618,7 @@ $(document).ready(function () {
                     html: html,
                     css: css,
                     publisher_id: $publisher.val() || '',
+                    grupo_slug: gestor.moduloRegistroId || '',
                     fields_schema: JSON.stringify(out)
                 }
             },

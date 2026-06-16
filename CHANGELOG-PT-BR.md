@@ -5,6 +5,33 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [2.9.0] - 2026-06-16
+
+### Added
+- **Autenticação de Dois Fatores (2FA)**: Suporte nativo a 2FA via aplicativos autenticadores (TOTP) e e-mail nos perfis de usuários.
+- **Login Sem Senha via OTP**: Autenticação por e-mail sem necessidade de senha utilizando códigos de uso único (OTP).
+- **Gerenciador de Chaves de API**: Configuração dedicada de chaves de API nas opções de ambiente, com suporte a perfis de acesso e proteção por 2FA.
+- **Guia de Integração OAuth**: Assistente interativo passo a passo para configuração de integrações OAuth com Google, Facebook, Apple e GitHub.
+- **Editor HTML Visual - Painel Styler**: Painel avançado com 20 grupos de formatação (Texto, Layout, Caixa, Aparência) e paletas de cores circulares nativas.
+- **Drag & Drop Interativo**: Placeholders visuais piscantes indicando a posição de encaixe dos elementos e ghost follower indicando o formato do elemento inserido.
+- **Clipboard Interno**: Botões de Copiar e Colar com atalhos de teclado `Ctrl+C` e `Ctrl+V` nativos no editor.
+- **Ferramenta Embrulhar (Wrap)**: Funcionalidade para envelopar o elemento selecionado em tags estruturais (div, section, article, etc.).
+- **Esqueletos de Widgets Dinâmicos**: Renderização realista de widgets via endpoint `html-editor-widget-render` para exibir a estrutura de layouts no editor visual.
+- **Curadoria Manual no publisher-index**: Suporte para curadoria e ordenação manual de publicações na interface administrativa (CRUD).
+- **Contadores de Métricas**: Métricas dinâmicas exibindo "Exibindo X de Y publicações" ao carregar itens por AJAX no `publisher-index`.
+
+### Changed
+- **Layout do Styler do Editor**: Colunas invertidas posicionando os controles visuais à esquerda e tags do CodeMirror à direita, com toolbar reposicionável em telas cheias.
+- **Refatoração do Editor Visual**: Extração de 26 funções de simulação para `html-editor-modules.js` para simplificar e modularizar o `html-editor-interface.js`.
+- **Correções de Temporal Dead Zone (TDZ)**: Movimentação do `contentPageTabHandler()` e da inicialização do `.tab()` do Fomantic para o fim do ready do JQuery.
+- **Preservação de Overlays no Editor**: Substituição da reescrita destrutiva de `body.innerHTML` por substituições cirúrgicas em nós de texto (via TreeWalker) ao parsear variáveis `[[widgets#...]]`.
+
+### Fixed
+- **Busca Unicode no publisher-index**: Filtro inteligente de termos com acentuação e caracteres especiais nos títulos das publicações.
+- **Paginação de Duplicados no publisher-index**: Remoção de páginas de índice e duplicadas nos resultados da busca.
+- **Escape de Caracteres Especiais em Widgets**: Correção do bug que convertia `->` e aspas das variáveis `[[widgets#...]]` em entidades HTML (`&gt;`), quebrando o renderizador do backend.
+- **Prefixagem Dinâmica de Imagens**: Detecção automática de campos do tipo `image` no `publisher-index` e `publisher-highlights` para adicionar o prefixo de URL raiz do gestor.
+
 ## [2.8.4] - 2026-06-12
 
 ### Added

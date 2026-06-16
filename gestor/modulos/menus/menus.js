@@ -360,7 +360,8 @@ $(document).ready(function () {
                 params: {
                     html: html,
                     css: css,
-                    fields_schema: JSON.stringify(out)
+                    fields_schema: JSON.stringify(out),
+                    grupo_slug: gestor.moduloRegistroId || ''
                 }
             },
             success: function (dados) {

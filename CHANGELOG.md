@@ -5,6 +5,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.9.0] - 2026-06-16
+
+### Added
+- **Two-Factor Authentication (2FA)**: Native support for TOTP (authenticator apps) and email-based two-factor authentication inside user profiles.
+- **Passwordless OTP Login**: Passwordless email-based authentication via secure one-time password (OTP) codes.
+- **API Keys Management**: Dedicated API keys configuration in environment settings, supporting access profiles and optional 2FA protection.
+- **OAuth Integration Helper**: Interactive step-by-step setup guides for Google, Facebook, Apple, and GitHub OAuth integrations.
+- **Visual HTML Editor Controls**: Advanced visual styler panel (20 formatting groups across Text, Layout, Box, and Appearance sections) and circular color palettes.
+- **Interactive Drag & Drop**: Flashing visual placeholders indicating element drop targets and a ghost follower showing the exact shape of the element being inserted.
+- **Internal Clipboard**: Copier and Paste buttons supporting standard `Ctrl+C` and `Ctrl+V` keyboard shortcuts.
+- **Wrap Tool**: Added the "Embrulhar" (Wrap) element feature, allowing nesting of selected elements inside structural tags (div, section, article, etc.).
+- **Dynamic Widget Skeletons**: Realistic widget placeholders rendered via the `html-editor-widget-render` endpoint to display layout structures in the visual editor.
+- **Manual Curation in publisher-index**: Support for curating and sorting manual lists of publications inside the admin CRUD interface.
+- **Metric Counters**: Dynamic counters displaying "Showing X of Y publications" on AJAX load in `publisher-index`.
+
+### Changed
+- **HTML Editor Styler layout**: Inverted columns to position visual controls on the left and CodeMirror tags on the right, and flippable toolbar positioning when space is tight.
+- **Visual Editor Code Refactoring**: Extracted 26 simulation functions to `html-editor-modules.js` to simplify `html-editor-interface.js`.
+- **Temporal Dead Zone (TDZ) Fixes**: Moved `contentPageTabHandler()` and the Fomantic UI `.tab()` initializations to the end of the `$(document).ready` scope.
+- **Surgical Variables-to-Comments Replacement**: Replaced the destructive `body.innerHTML` write with a text-node-only TreeWalker replacement when parsing `[[widgets#...]]` variables in the visual editor.
+
+### Fixed
+- **Unicode Search in publisher-index**: Live search filtering of accent marks and special characters in publication titles.
+- **Duplicate Pagination in publisher-index**: Removed index and duplicate pages from search results.
+- **Widget Special Characters Escape**: Prevented `->` and json variables in `[[widgets#...]]` from escaping to `&gt;` and losing structure on save.
+- **Dynamic Image URL Prefixing**: Automated detection of `image` type fields in `publisher-index` and `publisher-highlights` to dynamically prefix them with `$_GESTOR['url-raiz']`.
+
 ## [2.8.4] - 2026-06-12
 
 ### Added

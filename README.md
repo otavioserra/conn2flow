@@ -18,7 +18,7 @@ Originally developed as a proprietary CMS named B2make, Conn2Flow is now being r
 ## Table of Contents
 
 - [📚 Documentation](#documentation)
-- [🆕 Latest Release](#latest-release)
+- [🆕 Latest Version](#latest-version)
 - [⚡ Quick Installation](#quick-installation)
 - [📖 Learning Resources](#learning-resources)
 - [🤖 GitHub Copilot Agents](#github-copilot-agents)
@@ -39,16 +39,16 @@ For detailed technical information and development guides, see:
 - **[📋 Changelog](CHANGELOG.md)** - Industry-standard changelog following Keep a Changelog format
 - **[📊 Full Development History](ai-workspace/en/docs/CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed commit-by-commit evolution
 
-## Latest Release
+## Latest Version
 
-**v2.8.0 (June 10, 2026)**
+**v2.9.0 (June 16, 2026)**
 
-**🎯 New Features:**
-- **Complete Menus Module**: Menu management with hierarchical tree and visual drag-and-drop editor (WordPress-style, vanilla Pointer Events).
-- **Image Galleries Module**: Batch selection, Sortable.js DND reordering, public carousels and per-image links (AJAX page autocomplete).
-- **"Widget Code" Tab**: Read-only CodeMirror in the highlights/menus/galleries editor showing the `<!-- widgets#... -->` wrapper ready to paste into layouts.
-- **Tailwind CSS CLI v4 Compilation**: Automatic core CSS compilation via `npx @tailwindcss/cli` locally and in CI.
-- **Publisher Fields Automation**: Batch insertion ("Add all fields") with automatic template variables mapping.
+**🎯 Key Features & Highlights:**
+- **Advanced Visual HTML Editor**: Floating toolbar, advanced 20-group styler panels, circular color palettes, visual drag-and-drop placeholders with ghost tracking, internal clipboard (Ctrl+C/V), element wrapping (Wrap), and real widget rendering.
+- **Security & Authentication**: Two-factor authentication (2FA via app/email), passwordless email-based OTP login, API Access Key profiles with 2FA gating, and interactive OAuth integration helpers.
+- **Unified Testing Suite**: Out-of-the-box support for PHPUnit, Vitest, and Playwright E2E browser tests with Actions workflow CI/CD.
+- **Publisher Index & Manual Curation**: Live diacritics-insensitive publication search, manual curatorial ordering, dynamic count metrics, and automated dynamic image URL root prefixing.
+- **Code Modularization**: Cleaned up the visual editor scope by externalizing simulation engines to `html-editor-modules.js`.
 
 For full changelog, see [CHANGELOG.md](CHANGELOG.md).
 

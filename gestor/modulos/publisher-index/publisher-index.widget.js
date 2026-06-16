@@ -14,7 +14,9 @@
 $(document).ready(function () {
     // Detecta se está em um iframe e se a URL atual é 'about:srcdoc'
     let targetUrl = window.location.href;
+    let isInIframe = false;
     if (window.self !== window.parent && targetUrl === 'about:srcdoc') {
+        isInIframe = true;
         try {
             // Usa a URL do pai (localhost)
             targetUrl = window.parent.location.href;
@@ -24,9 +26,21 @@ $(document).ready(function () {
         }
     }
 
-    $('.conn2flow-publisher-index').each(function () {
-        initPublisherIndex(this);
-    });
+    function preInitPublisherIndex() {
+        $('.conn2flow-publisher-index').each(function () {
+            initPublisherIndex(this);
+        });
+    }
+
+    if (isInIframe) {
+        // Se estiver em um iframe, dispara um setTimeout para garantir que o conteúdo do iframe esteja totalmente carregado antes de iniciar o widget.
+        setTimeout(function () {
+            preInitPublisherIndex();
+        }, 500);
+    } else {
+        // Se não estiver em um iframe, inicia imediatamente
+        preInitPublisherIndex();
+    }
 
     function initPublisherIndex(el) {
         var $root = $(el);

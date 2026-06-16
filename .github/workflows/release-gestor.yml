@@ -111,27 +111,18 @@ jobs:
         name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
         make_latest: true
         body: |
-          ## 🚀 Conn2Flow Gestor Release v2.8.0 (Módulo de Menus Completo + Módulo de Galerias + Compilador Tailwind CSS CLI + Automação)
+          ## 🚀 Conn2Flow Gestor Release v2.9.0 (Editor Visual Avançado + 2FA e Passwordless + Chaves de API + Suíte de Testes + Publicador Índice)
 
-          Esta versão traz o **Módulo de Menus Completo** com hierarquia arrastável estilo WordPress e suporte a publicadores, o **Módulo de Galerias de Imagens** com seleção em lote, links individuais por imagem e controles de slider/carrossel dinâmicos, a **Integração do compilador do Tailwind CSS v4 via CLI** no core do sistema e no pipeline de release, o novo botão **Adicionar todos os campos** no gerenciador de schemas de publicadores, a **otimização do CSS inline** com filtragem de redundâncias, além de correções de layout e de integridade de campos HTML.
+          Esta versão traz uma grande evolução no **Editor HTML Visual** com novas ferramentas de formatação, D&D interativo e clipboard interno, a adição de recursos modernos de **Autenticação e Segurança (2FA e Login Sem Senha OTP)**, gerenciador de **Chaves de API** com perfis, o módulo **Publicador Índice** enriquecido com curadoria manual e busca Unicode, e a integração nativa de uma **Suíte de Testes Automatizados (PHPUnit, Vitest, Playwright)** no pipeline.
 
           ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Módulo de Menus Completo**: Gerenciamento de menus com árvore hierárquica e editor visual drag-and-drop em Pointer Events vanilla (sem dependências externas). Suporta itens de Página, Link Personalizado (com target `_blank`/`_self`), Cabeçalhos, Ações de Link e Separadores estruturados (bloco `item-separator`).
-          - ✅ **Módulo de Menus - Nós de Publicadores**: Tipo de item `publicador` que expande sub-itens dinâmicos a partir de publicações em runtime, com suporte a limite de quantidade e ordenação.
-          - ✅ **Módulo de Galerias de Imagens**: Módulo de curadoria visual com seleção de arquivos em lote e ordenação Sortable.js. Suporta múltiplos layouts (Grid, Carousel, Masonry, Slider) e parâmetros de slide (setas, dot pagination, autoplay e loop).
-          - ✅ **Galerias - Links Individuais por Imagem**: Cada imagem curada pode ter um link próprio (Página com buscador AJAX de autocomplete e filtro de tipo, Link Customizado, Link com Classe CSS ou Última Publicação), além de controles globais de altura do contêiner e margem lateral.
-          - ✅ **Automação de Campos no Publicador**: Botão "Adicionar todos os campos" para instanciar automaticamente todas as variáveis não vinculadas de um modelo de template com geração de labels amigáveis.
-          - ✅ **Compilação do Tailwind CSS CLI**: Integração de compilação dos estilos globais do core via `npx @tailwindcss/cli` a partir da pasta `gestor/assets/tailwindcss/`. A compilação é acionada nas tarefas locais de sync e no pipeline de release.
-
-          ### 🔧 Melhorias e Correções Técnicas:
-          - ✅ **Otimização do CSS Inline**: O CSS compilado dinamicamente pelo Tailwind CDN no editor passa a filtrar regras redundantes já presentes no CSS global do sistema antes de gravar no banco, reduzindo o tamanho do CSS inline.
-          - ✅ **Pré-visualizador de HTML Unificado**: Geração da prévia de HTML externo (iframe) unificada na função `previewExternalHtmlConteudo`, compartilhada por destaques, menus e galerias.
-          - ✅ **Galerias - Busca de Páginas e Miniaturas**: Seletor estático de páginas substituído por buscador AJAX com autocomplete (filtro Página/Sistema/Ambos, isolado por imagem); miniaturas da curadoria ampliadas de 64×48 para 200×140 px.
-          - ✅ **Correções de Layout**: Imagens de galeria sem link deixam de parecer clicáveis (`pointer-events-none cursor-default`); padding e alinhamento da seta dos submenus do menu horizontal corrigidos.
-          - ✅ **Correção de Perda de Dados em Campos HTML**: Resolvido bug no qual valores de editores HTML (Quill) eram omitidos no submit em edições consecutivas sem modificação direta.
-          - ✅ **Integração `@config` no CSS**: Arquivo de entrada `input.css` do core integrado à configuração do workspace (`tailwind.config.js`) para limitar a varredura e compilação de classes a apenas templates e recursos úteis.
-          - ✅ **Node.js v20 no Pipeline**: Setup do Node.js v20 integrado no pipeline de release do GitHub Actions (`release-gestor.yml`) para compilar assets dinamicamente na nuvem e incluí-los na release.
-          - ✅ **Auditoria de Configurações**: Verificação estrutural do arquivo de template do `environment.json` contra o arquivo ativo de desenvolvimento.
+          - ✅ **Editor HTML Visual Avançado**: Painel styler expandido com 20 grupos de formatação, paletas de cores circulares, D&D com placeholders piscantes e ghost follower de cursor, clipboard integrado (Copiar/Colar e atalhos Ctrl+C/V), ferramenta Embrulhar (Wrap) e visualizador real de widgets via AJAX.
+          - ✅ **Segurança e 2FA**: Autenticação de Dois Fatores (2FA) nativa via aplicativos autenticadores (TOTP) e e-mail, e login sem senha (OTP) via e-mail direto.
+          - ✅ **Gerenciador de Chaves de API**: Geração de chaves de API com perfis de acesso restritos e proteção opcional por 2FA.
+          - ✅ **Assistente OAuth**: Guia interativo passo a passo para configuração das chaves de integrações Google, Facebook, Apple e GitHub.
+          - ✅ **Publicador Índice Avançado**: Curadoria e ordenação manual de itens, busca inteligente imune a acentuação Unicode, contador dinâmico de métricas de paginação e prefixagem dinâmica de URL raiz em imagens.
+          - ✅ **Suíte de Testes Nativa**: Integração de suíte de testes de backend (PHPUnit), frontend (Vitest) e ponta-a-ponta (Playwright) com execuções automáticas no GitHub Actions.
+          - ✅ **Refatoração e Modularização**: Migração de 26 funções de simulação do editor para o arquivo independente `html-editor-modules.js`.
         draft: false
         prerelease: false
         files: |

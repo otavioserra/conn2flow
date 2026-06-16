@@ -1966,18 +1966,59 @@ $(document).ready(function () {
         }
 
         /**
+         * req-045 (correção): converte variáveis de widget inline ([[widgets#...]] / @[[widgets#...]]@)
+         * em pares de comentários `widgets-var#` de forma CIRÚRGICA, percorrendo apenas os text nodes
+         * do conteúdo do usuário. NÃO reescreve document.body.innerHTML — fazer isso destruiria os
+         * overlays/toolbar/styler do editor (anexados ao body em createOverlays/createToolbar/
+         * createPlaceholder), quebrando a seleção de elementos quando a página tinha um widget em
+         * formato de variável. (Com widget em comentário o innerHTML não era reescrito, por isso só
+         * o caso de variável falhava.)
+         */
+        convertWidgetVariablesToComments() {
+            const varRe = /@?\[\[widgets#(.+?)\]\]@?/g;
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+                acceptNode: (node) => {
+                    if (!node.nodeValue || node.nodeValue.indexOf('[[widgets#') === -1) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+                    // Ignorar texto dentro da própria UI do editor (ids html-editor-*).
+                    for (let p = node.parentNode; p && p !== document.body; p = p.parentNode) {
+                        if (p.id && p.id.indexOf('html-editor-') === 0) return NodeFilter.FILTER_REJECT;
+                    }
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            });
+            const textNodes = [];
+            let tn;
+            while ((tn = walker.nextNode())) textNodes.push(tn);
+
+            textNodes.forEach((node) => {
+                const text = node.nodeValue;
+                const frag = document.createDocumentFragment();
+                let lastIndex = 0, m;
+                varRe.lastIndex = 0;
+                while ((m = varRe.exec(text)) !== null) {
+                    if (m.index > lastIndex) frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
+                    const sig = m[1].trim();
+                    frag.appendChild(document.createComment(' widgets-var#' + sig + ' < '));
+                    frag.appendChild(document.createComment(' widgets-var#' + sig + ' > '));
+                    lastIndex = m.index + m[0].length;
+                }
+                if (lastIndex < text.length) frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+                if (node.parentNode) node.parentNode.replaceChild(frag, node);
+            });
+        }
+
+        /**
          * Converte comentários de widget (<!-- widgets#X->render({...}) < --> ... > -->)
          * em divs .conn2flow-widget-wrapper. Operação cirúrgica via varredura de nós COMMENT.
          */
         convertWidgetCommentsToWrappers() {
             // req-044 §1.2: variáveis de widget inline ([[widgets#...]] ou @[[widgets#...]]@) viram
             // comentários TEMPORÁRIOS rotulados como `widgets-var#` (distintos dos comentários reais
-            // `widgets#`), para que o save saiba reconstruí-las como variável e não como comentário.
-            let bodyHtml = document.body.innerHTML;
-            const varRe = /@?\[\[widgets#(.+?)\]\]@?/gi;
-            if (varRe.test(bodyHtml)) {
-                document.body.innerHTML = bodyHtml.replace(varRe, '<!-- widgets-var#$1 < --><!-- widgets-var#$1 > -->');
-            }
+            // `widgets#`). req-045: a conversão é CIRÚRGICA (sem reescrever body.innerHTML) para não
+            // destruir os overlays/toolbar do editor.
+            this.convertWidgetVariablesToComments();
             const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_COMMENT, null);
             const comments = [];
             let n;

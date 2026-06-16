@@ -736,8 +736,10 @@ $(document).ready(function () {
         }
     }
 
-    contentPageTabHandler();
-
+    // req-045: NÃO chamar contentPageTabHandler() aqui (síncrono, no meio do arquivo). Ele
+    // cascateia em previewHtml()/montarWidgetAssetsHead(), que leem const/let declaradas mais
+    // abaixo (ex.: WIDGET_SCRIPT_MODULES, total_sessoes) — ainda na Temporal Dead Zone. O kickoff
+    // foi movido para o final do ready, após todas as declarações locais.
     window.contentPageTabHandler = contentPageTabHandler; // Expor globalmente para ser chamada após ações que modificam o conteúdo, como seleção de modelo.
 
     function contentPageTabChange(tabID = null) {
@@ -746,34 +748,10 @@ $(document).ready(function () {
         }
     }
 
-    $('.menuContainerPagina .item').tab({
-        onLoad: function (tabPath, parameterArray, historyEvent) {
-            switch (tabPath) {
-                case 'visualizacao-pagina':
-                    pageModificationContainerMove(tabPath);
-                    previewHtml();
-                    break;
-                case 'modelos':
-                    modelosCarregar();
-                    pageModificationContainerMove(tabPath);
-                    break;
-                case 'assistente-ia':
-                    pageModificationContainerMove(tabPath);
-                    if (gestor.ai.activated) {
-                        window.AITabActiveHandler();
-                    }
-                    break;
-                case 'visualizacao-codigo':
-                    codeTabHandler();
-                    break;
-                case 'publisher-variables':
-                    publisherVariablesSearch();
-                    break;
-            }
-
-            localStorage.setItem(gestor.moduloId + tabIdContent, tabPath);
-        }
-    });
+    // req-045: a inicialização do tab `.menuContainerPagina` foi movida para o FIM do ready.
+    // O Fomantic dispara `onLoad` de forma SÍNCRONA ao inicializar o tab; aqui (no meio do
+    // arquivo) o onLoad chamaria previewHtml()/pageModificationContainerMove() lendo const/let
+    // declaradas mais abaixo (WIDGET_SCRIPT_MODULES, total_sessoes) ainda na Temporal Dead Zone.
 
     // ===== Backup Campo Mudar
 
@@ -1557,7 +1535,8 @@ $(document).ready(function () {
             assinaturas.push(sig);
         };
         let m;
-        const reComentario = /<!--\s*widgets#([\s\S]+?)\s*<\s*-->/gi;
+        // const reComentario = /<!--\s*widgets#([\s\S]+?)\s*<\s*-->/gi;
+        const reComentario = /<!--\s*widgets#([\s\S]*?)\s*<\s*-->([\s\S]?)<!--\s*widgets#\1\s*>\s-->/gi;
         while ((m = reComentario.exec(html)) !== null) push(m[1]);
         const reVariavel = /@?\[\[widgets#([\s\S]+?)\]\]@?/gi;
         while ((m = reVariavel.exec(html)) !== null) push(m[1]);
@@ -1568,36 +1547,45 @@ $(document).ready(function () {
     //  (a) declara window.gestor.widgetsToAjax com as assinaturas (divisor <#;>), pois o srcdoc é
     //      gerado estaticamente pelo JS e o PHP não cria essa variável no contexto do iframe;
     //  (b) injeta os scripts controladores de widget (*.widget.js) de forma desduplicada.
-    function montarWidgetAssetsHead(htmlDoUsuario) {
-        const assinaturas = extrairAssinaturasWidgets(htmlDoUsuario);
-        if (!assinaturas.length) return '';
+    function montarWidgetAssetsHead(htmlDoUsuario, manualWidgetsToAjax = null) {
+        if (manualWidgetsToAjax !== null) {
+            let includes = '<script>\n' +
+                'window.gestor = Object.assign({}, window.parent.gestor || {});\n' +
+                'window.gestor.widgetsToAjax = ' + JSON.stringify(manualWidgetsToAjax) + ';\n' +
+                '<\/script>\n';
 
-        const raiz = (typeof gestor !== 'undefined' && gestor.raiz) ? gestor.raiz : '';
-        const versao = (typeof gestor !== 'undefined' && gestor.versao) ? gestor.versao : '';
+            return includes;
+        } else {
+            const assinaturas = extrairAssinaturasWidgets(htmlDoUsuario);
+            if (!assinaturas.length) return '';
 
-        // (a) variável widgetsToAjax (replica o que o PHP gera no page load do site real).
-        const listaAjax = assinaturas.join('<#;>');
-        let includes = '<script>\n' +
-            'window.gestor = Object.assign({}, window.parent.gestor || {});\n' +
-            'window.gestor.widgetsToAjax = ' + JSON.stringify(listaAjax) + ';\n' +
-            '<\/script>\n';
+            const raiz = (typeof gestor !== 'undefined' && gestor.raiz) ? gestor.raiz : '';
+            const versao = (typeof gestor !== 'undefined' && gestor.versao) ? gestor.versao : '';
 
-        // (b) scripts controladores por módulo (mapa fixo; uma única tag por módulo).
-        const incluidos = {};
-        assinaturas.forEach((sig) => {
-            const modulo = sig.split('->')[0].trim();
-            if (!WIDGET_SCRIPT_MODULES[modulo] || incluidos[modulo]) return;
-            incluidos[modulo] = true;
-            includes += '<script src="' + raiz + modulo + '/widget.js?v=' + versao + '"><\/script>\n';
-        });
-        return includes;
+            // (a) variável widgetsToAjax (replica o que o PHP gera no page load do site real).
+            const listaAjax = assinaturas.join('<#;>');
+            let includes = '<script>\n' +
+                'window.gestor = Object.assign({}, window.parent.gestor || {});\n' +
+                'window.gestor.widgetsToAjax = ' + JSON.stringify(listaAjax) + ';\n' +
+                '<\/script>\n';
+
+            // (b) scripts controladores por módulo (mapa fixo; uma única tag por módulo).
+            const incluidos = {};
+            assinaturas.forEach((sig) => {
+                const modulo = sig.split('->')[0].trim();
+                if (!WIDGET_SCRIPT_MODULES[modulo] || incluidos[modulo]) return;
+                incluidos[modulo] = true;
+                includes += '<script src="' + raiz + modulo + '/widget.js?v=' + versao + '"><\/script>\n';
+            });
+            return includes;
+        }
     }
 
     function previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui', extraParams = {}) {
         // req-040: script que renderiza os widgets (comentários) dentro do pré-visualizador.
         const widgetPreviewScript = `<script>(${widgetPreviewBootstrap.toString()})();<\/script>`;
         // req-044 §3/§4: includes de cabeçalho dos widgets presentes (widgetsToAjax + *.widget.js).
-        const widgetAssetsHead = montarWidgetAssetsHead(htmlDoUsuario);
+        const widgetAssetsHead = montarWidgetAssetsHead(htmlDoUsuario, extraParams.widgetsToAjax || null);
 
         // Incluir o CSS do usuário, se existir
         if (cssDoUsuario && cssDoUsuario.length > 0) {
@@ -1697,12 +1685,12 @@ $(document).ready(function () {
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
 				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>
-				${cssDoUsuario}
+				${widgetPreviewScript}
 				${widgetAssetsHead}
+				${cssDoUsuario}
 			</head>
 			<body>
 				${htmlDoUsuario}
-				${widgetPreviewScript}
 			</body>
 			</html>
 		`;
@@ -2726,4 +2714,42 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
             modal.modal('show');
         }
     })();
+
+    // req-045: kickoff da aba ativa E inicialização do tab `.menuContainerPagina` rodam SÓ aqui,
+    // no fim do $(document).ready — depois de TODAS as const/let/function locais estarem
+    // inicializadas (fora da Temporal Dead Zone). Há dois gatilhos síncronos que chamam
+    // previewHtml()/pageModificationContainerMove() (→ WIDGET_SCRIPT_MODULES ~L1544 /
+    // total_sessoes ~L2056): (1) contentPageTabHandler() e (2) o `onLoad` que o Fomantic dispara
+    // SÍNCRONAMENTE ao inicializar o `.tab()`. Ambos precisam vir após essas declarações.
+    // Ordem preservada do original (handler antes do init do tab).
+    contentPageTabHandler();
+
+    $('.menuContainerPagina .item').tab({
+        onLoad: function (tabPath, parameterArray, historyEvent) {
+            switch (tabPath) {
+                case 'visualizacao-pagina':
+                    pageModificationContainerMove(tabPath);
+                    previewHtml();
+                    break;
+                case 'modelos':
+                    modelosCarregar();
+                    pageModificationContainerMove(tabPath);
+                    break;
+                case 'assistente-ia':
+                    pageModificationContainerMove(tabPath);
+                    if (gestor.ai.activated) {
+                        window.AITabActiveHandler();
+                    }
+                    break;
+                case 'visualizacao-codigo':
+                    codeTabHandler();
+                    break;
+                case 'publisher-variables':
+                    publisherVariablesSearch();
+                    break;
+            }
+
+            localStorage.setItem(gestor.moduloId + tabIdContent, tabPath);
+        }
+    });
 });
