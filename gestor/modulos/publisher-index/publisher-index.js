@@ -678,7 +678,12 @@ $(document).ready(function () {
                     doc = window.previewExternalHtmlConteudo({
                         htmlDoUsuario: dados.html || '',
                         cssDoUsuario: css,
-                        framework: (gestor.html_editor && gestor.html_editor.framework_css) ? gestor.html_editor.framework_css : 'fomantic-ui'
+                        framework: (gestor.html_editor && gestor.html_editor.framework_css) ? gestor.html_editor.framework_css : 'fomantic-ui',
+                        extraParams: {
+                            customScripts: [
+                                { src: gestor.raiz + gestor.moduloId + '/widget.js' + '?v=' + gestor.versao },
+                            ]
+                        }
                     });
                 } else {
                     doc = '<!doctype html><html><head><meta charset="utf-8">';

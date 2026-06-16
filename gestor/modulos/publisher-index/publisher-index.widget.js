@@ -12,6 +12,17 @@
  * (publisher_index_render_ajax) devolve `{ status, html, tem_mais }`.
  */
 $(document).ready(function () {
+    // Detecta se está em um iframe e se a URL atual é 'about:srcdoc'
+    let targetUrl = window.location.href;
+    if (window.self !== window.parent && targetUrl === 'about:srcdoc') {
+        try {
+            // Usa a URL do pai (localhost)
+            targetUrl = window.parent.location.href;
+        } catch (e) {
+            // Fallback de segurança caso o acesso ao pai seja bloqueado
+            targetUrl = '/';
+        }
+    }
 
     $('.conn2flow-publisher-index').each(function () {
         initPublisherIndex(this);
@@ -101,7 +112,7 @@ $(document).ready(function () {
             if ($loadMore.length) $loadMore.addClass('loading');
 
             $.ajax({
-                url: window.location.href,
+                url: targetUrl,
                 type: 'POST',
                 data: requestData,
                 dataType: 'json',

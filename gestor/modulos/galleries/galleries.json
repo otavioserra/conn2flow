@@ -109,11 +109,11 @@
                     "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
                         "html": "cef384038c3621f034f12552f4e9fb2e",
-                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "97aaf1cc3f48e30f85be5ba46d9b1e9f"
+                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "combined": "5730db668c68a1cafffee3be09468b69"
                     }
                 },
                 {
@@ -123,11 +123,11 @@
                     "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
                         "html": "8104620d1cb3f20ddeb1886ceb997df7",
-                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "b0cb8e503d5f8d677edcb3e72cedcc99"
+                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "combined": "2f86edb294f2cf0c0fa7ca3e9e8ba590"
                     }
                 },
                 {
@@ -137,11 +137,11 @@
                     "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
                         "html": "4d14a3a071e0a60c259aed99593392d4",
-                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "de76c83bfa06bdfa96339dafc6483e8b"
+                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "combined": "813379d09e20cc4aef60dbef4999c7bb"
                     }
                 }
             ],
@@ -255,11 +255,11 @@
                     "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
                         "html": "b9c9b0e71eb2929563f07b094937e997",
-                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "d36d2939ce88e58293b162cbbc20befe"
+                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "combined": "06e8b147a4e10015b23be9423eb81fdb"
                     }
                 },
                 {
@@ -269,11 +269,11 @@
                     "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
                         "html": "b717e1fb5077fde3a8453fe62d4273c2",
-                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "99c34ce237a30d2fa7c8b81b146ff12f"
+                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "combined": "dfc0dbbf42c8c43445b470d19103bbaf"
                     }
                 },
                 {
@@ -283,11 +283,11 @@
                     "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
                         "html": "a51988bfcaba559cfedb56fbd85ad1af",
-                        "css": "adc00f93b23a36e130ce67b8f1b1dc17",
-                        "combined": "8f23ac00f845b5a910f1ce07d27a467e"
+                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "combined": "6118999f5c8a7a509331c3280ac8fc06"
                     }
                 }
             ],

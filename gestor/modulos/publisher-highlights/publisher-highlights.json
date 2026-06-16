@@ -133,11 +133,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
                         "html": "89ac4cea5aaa9ff0354ffbf0dc2a3bdd",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "707334ee89625bcffb162263ac04d7d2"
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "daf4aaea64c4a1ef8823bac4fdff9724"
                     }
                 },
                 {
@@ -147,11 +147,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
                         "html": "672cbca5ebbb7f2870fbc7e3232deaa9",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "a6eb9074f5d113429ded97677793281d"
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "ad763044a688b71fca80ecb2b3daf107"
                     }
                 },
                 {
@@ -161,11 +161,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
                         "html": "0dc81c76c45a09c5f42643c8f594939c",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "ea0591399a3c6affa7dbfceb75590f7a"
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "e115d729af8ddcba0094a90b4425c657"
                     }
                 }
             ],
@@ -343,11 +343,11 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
                         "html": "ebab3411bf298ea478495802a19a837f",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "387bc5f0b8d07c41ee81de70c0dd0c68"
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "d9717ebddf8862daaeca663eaf7e5b2d"
                     }
                 },
                 {
@@ -357,11 +357,11 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
                         "html": "0b8899343661bf628ca7857ea9f5b134",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "b51d583e42285c633d3de9b5a071d116"
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "ba8a63701d363e66499817c240e16600"
                     }
                 },
                 {
@@ -371,11 +371,11 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
                         "html": "fe4afd82d3f9db28508e602f65acf805",
-                        "css": "e56c0a44bba60df651f14858fd9a541d",
-                        "combined": "84d668724a867626b8efb55fe4bf5adb"
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "dcc4c861adfafcdd24201f59bb416b7d"
                     }
                 }
             ],

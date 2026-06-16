@@ -918,3 +918,30 @@ Itens marcados acima refletem o que é verificável estaticamente/por teste auto
 - [ ] Testes automatizados executados com sucesso via PHPUnit (`composer test`).
 - [ ] Testes manuais no navegador validados pelo operador.
 
+---
+## BATCH-044 - Correção de Caracteres Especiais nos Widgets, Suporte AJAX no Preview e Refatoração de Módulos (req-044)
+
+- [ ] **Mapeamento Baseado em IDs (widgetsMap)**:
+  - [ ] Validar que wrappers de widgets (`div.conn2flow-widget-wrapper`) usam atributos limpos e alfanuméricos (`data-widget-id`), evitando a presença de caracteres especiais do PHP/JSON no DOM do iframe.
+  - [ ] Verificar se as assinaturas originais contendo `->`, `"`, `{`, `}` são mantidas em um mapa na memória do editor (`this.widgetsMap`).
+  - [ ] Confirmar que a clonagem de widgets no editor visual funciona perfeitamente, copiando o metadado no mapa ou resolvendo IDs redundantes no save.
+  - [ ] Validar que ao salvar/voltar, os widgets que vieram de variáveis (`isVariable = true`) voltam exatamente ao formato `[[widgets#...]]` e os que eram comentários voltam como comentários, ambos sem caracteres corrompidos.
+- [ ] **Diferenciação e Unescape**:
+  - [ ] Verificar que as variáveis e comentários passam por processo de unescape das entidades HTML antes de serem registradas ou enviadas ao backend.
+- [ ] **Inclusão Automática de widget.js no Preview**:
+  - [ ] Criar ou visualizar uma página contendo um widget (ex: `galleries` ou `publisher-index`).
+  - [ ] Verificar se a folha de visualização do iframe inclui a tag `<script src="...widget.js"></script>` correspondente.
+  - [ ] Garantir que mesmo se a página contiver múltiplos widgets do mesmo módulo, o script é incluído exatamente uma vez.
+- [ ] **Suporte a AJAX de Widgets no Preview**:
+  - [ ] Abrir uma página de pré-visualização contendo `publisher-index` e interagir com busca ou paginação.
+  - [ ] Verificar que o preview de widgets define com sucesso `window.gestor.widgetsToAjax` e que o roteamento de AJAX no backend funciona normalmente sem dar erro 500.
+- [ ] **Refatoração para html-editor-modules.js**:
+  - [ ] Confirmar que o novo arquivo `gestor/assets/interface/html-editor-modules.js` contém todas as simulações e dados das seções `menus`, `galleries` e `publisher`.
+  - [ ] Verificar que as variáveis locais necessárias (CodeMirror, schemas) foram expostas de forma adequada na janela global.
+  - [ ] Validar que `html-editor.php` inclui o novo arquivo na ordem correta (antes do interface).
+
+### Evidência de Validação (BATCH-044)
+
+*(A ser preenchida pelo executor após a implementação)*
+
+

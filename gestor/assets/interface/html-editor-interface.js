@@ -1392,13 +1392,13 @@ $(document).ready(function () {
                         if (!selectorSet.has(rule.selectorText)) {
                             css += rule.cssText + "\n";
                         }
-                    } 
+                    }
                     else if (rule.type === CSSRule.MEDIA_RULE) {
                         const mediaContent = filterRules(rule.cssRules, selectorSet);
                         if (mediaContent.trim()) {
                             css += `@media ${rule.media.mediaText} {\n${mediaContent}}\n`;
                         }
-                    } 
+                    }
                     else if (rule.constructor.name === "CSSLayerBlockRule" || rule.type === 17) {
                         const layerContent = filterRules(rule.cssRules, selectorSet);
                         if (layerContent.trim()) {
