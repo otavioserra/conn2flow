@@ -1315,10 +1315,8 @@ $(document).ready(function () {
                 '#html-editor-selection-children,#html-editor-breadcrumb-hover-overlay,' +
                 '#html-editor-parent-highlight-overlay,#html-editor-insert-ghost,#html-editor-wrap-menu,' +
                 '#html-editor-tailwind-styler,.conn2flow-dnd-placeholder,.ui.dimmer.modals';
-            while ($(iframeDoc).find(sistemaSel).length > 0) {
-                $(iframeDoc).find(sistemaSel).remove();
-            }
-            bodyContent = $(iframeDoc).find('body')[0].innerHTML;
+            iframeDoc.querySelectorAll(sistemaSel).forEach(el => el.remove());
+            bodyContent = iframeDoc.body ? iframeDoc.body.innerHTML : '';
         }
 
         let updatedHtml;
@@ -1427,7 +1425,7 @@ $(document).ready(function () {
             }
 
             // 2. Localiza a tag de estilo gerada pelo Tailwind CDN (normalmente a última tag <style> no head)
-            const allStyleTags = $(iframeDoc).find('head > style');
+            const allStyleTags = iframeDoc.querySelectorAll('head > style');
             const tailwindStyleElement = allStyleTags[allStyleTags.length - 1];
 
             if (tailwindStyleElement) {
