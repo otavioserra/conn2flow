@@ -96,118 +96,118 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: zip, curl, mbstring, openssl
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: zip, curl, mbstring, openssl
 
-      - name: Install Composer dependencies
-        run: |
-          cd gestor
-          composer install --no-dev --optimize-autoloader --no-interaction
+    - name: Install Composer dependencies
+      run: |
+        cd gestor
+        composer install --no-dev --optimize-autoloader --no-interaction
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
 
-      - name: Compile Tailwind CSS
-        run: |
-          npm install tailwindcss @tailwindcss/cli
-          ./node_modules/.bin/tailwindcss -i ./gestor/assets/tailwindcss/system-input.css -o ./gestor/assets/tailwindcss/system-output.css --minify
+    - name: Compile Tailwind CSS
+      run: |
+        npm install tailwindcss @tailwindcss/cli
+        ./node_modules/.bin/tailwindcss -i ./gestor/assets/tailwindcss/system-input.css -o ./gestor/assets/tailwindcss/system-output.css --minify
 
-      - name: Generate Resources Updates
-        run: |
-          cd gestor/controladores/agents/arquitetura
-          php atualizacao-dados-recursos.php
-          echo "Resource updates generated successfully"
+    - name: Generate Resources Updates
+      run: |
+        cd gestor/controladores/agents/arquitetura
+        php atualizacao-dados-recursos.php
+        echo "Resource updates generated successfully"
 
-      - name: Commit Resources Updates
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add gestor/db/data/*.json
-          git add gestor/db/orphans/*.json
-          git add gestor/resources/*
-          git add gestor/modulos/*/*.json
-          git add gestor/assets/tailwindcss/*.css
-          git diff --cached --quiet || git commit -m "Auto-update resources for release ${{ github.ref_name }}"
+    - name: Commit Resources Updates
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add gestor/db/data/*.json
+        git add gestor/db/orphans/*.json
+        git add gestor/resources/*
+        git add gestor/modulos/*/*.json
+        git add gestor/assets/tailwindcss/*.css
+        git diff --cached --quiet || git commit -m "Auto-update resources for release ${{ github.ref_name }}"
 
-      - name: Remove resource files
-        run: |
-          # Remove all resource files and directory to make installation lighter
-          rm -rf gestor/resources/ && rmdir gestor/resources/ 2>/dev/null || true
+    - name: Remove resource files
+      run: |
+        # Remove all resource files and directory to make installation lighter
+        rm -rf gestor/resources/ && rmdir gestor/resources/ 2>/dev/null || true
 
-          # Remove module resource files recursively
-          find gestor/modulos -type d -name "resources" -exec rm -rf {} + || true
+        # Remove module resource files recursively
+        find gestor/modulos -type d -name "resources" -exec rm -rf {} + || true
 
-          # Remove temporary npm files from Tailwind compilation
-          rm -rf gestor/node_modules/ gestor/package.json gestor/package-lock.json node_modules/ package.json package-lock.json || true
+        # Remove temporary npm files from Tailwind compilation
+        rm -rf gestor/node_modules/ gestor/package.json gestor/package-lock.json node_modules/ package.json package-lock.json || true
 
-          echo "All resource files removed from release"
+        echo "All resource files removed from release"
 
-      - name: Create gestor.zip + checksum
-        run: |
-          # Remove arquivos desnecessÃ¡rios se existirem
-          rm -rf gestor/.git* || true
-          rm -rf gestor/vendor/bin/.phpunit* || true
-          rm -rf gestor/vendor/composer/tmp-* || true
+    - name: Create gestor.zip + checksum
+      run: |
+        # Remove arquivos desnecessários se existirem
+        rm -rf gestor/.git* || true
+        rm -rf gestor/vendor/bin/.phpunit* || true
+        rm -rf gestor/vendor/composer/tmp-* || true
 
-          # Remover somente .env sensÃ­veis da raiz (preservar templates em autenticacoes.exemplo)
-          find gestor -maxdepth 1 -type f -name '.env*' -exec rm -f {} + 2>/dev/null || true
-          # Remover .env internos reais de autenticacoes, exceto os de templates
-          if [ -d gestor/autenticacoes ]; then
-            find gestor/autenticacoes -type f -name '.env*' -not -path '*/autenticacoes.exemplo/*' -exec rm -f {} + 2>/dev/null || true
-          fi
+        # Remover somente .env sensíveis da raiz (preservar templates em autenticacoes.exemplo)
+        find gestor -maxdepth 1 -type f -name '.env*' -exec rm -f {} + 2>/dev/null || true
+        # Remover .env internos reais de autenticacoes, exceto os de templates
+        if [ -d gestor/autenticacoes ]; then
+          find gestor/autenticacoes -type f -name '.env*' -not -path '*/autenticacoes.exemplo/*' -exec rm -f {} + 2>/dev/null || true
+        fi
 
-          # Criar o arquivo ZIP (resource files already removed)
-          cd gestor
-          zip -r ../gestor.zip . \
-            -x "*.git*" \
-            -x "vendor/bin/.phpunit*" \
-            -x "vendor/composer/tmp-*" \
-            -x "node_modules/*" \
-            -x "*.DS_Store*" \
-            -x "*.log*" \
-            -x "tests/*" \
-            -x "phpunit.xml*" \
-            -x "resources/*" \
-            -x "modulos/*/resources/*"
-          cd ..
-          sha256sum gestor.zip | awk '{print $1}' > gestor.zip.sha256
+        # Criar o arquivo ZIP (resource files already removed)
+        cd gestor
+        zip -r ../gestor.zip . \
+          -x "*.git*" \
+          -x "vendor/bin/.phpunit*" \
+          -x "vendor/composer/tmp-*" \
+          -x "node_modules/*" \
+          -x "*.DS_Store*" \
+          -x "*.log*" \
+          -x "tests/*" \
+          -x "phpunit.xml*" \
+          -x "resources/*" \
+          -x "modulos/*/resources/*"
+        cd ..
+        sha256sum gestor.zip | awk '{print $1}' > gestor.zip.sha256
 
-      - name: Get tag name
-        id: tag
-        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+    - name: Get tag name
+      id: tag
+      run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.tag.outputs.TAG_NAME }}
-          name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
-          make_latest: true
-          body: |
-            ## ðŸš€ Conn2Flow Gestor Release v2.9.0 (Editor Visual AvanÃ§ado + 2FA e Passwordless + Chaves de API + SuÃ­te de Testes + Publicador Ãndice)
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.TAG_NAME }}
+        name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
+        make_latest: true
+        body: |
+          ## 🚀 Conn2Flow Gestor Release v2.9.0 (Editor Visual Avançado + 2FA e Passwordless + Chaves de API + Suíte de Testes + Publicador Índice)
 
-            Esta versÃ£o traz uma grande evoluÃ§Ã£o no **Editor HTML Visual** com novas ferramentas de formataÃ§Ã£o, D&D interativo e clipboard interno, a adiÃ§Ã£o de recursos modernos de **AutenticaÃ§Ã£o e SeguranÃ§a (2FA e Login Sem Senha OTP)**, gerenciador de **Chaves de API** com perfis, o mÃ³dulo **Publicador Ãndice** enriquecido com curadoria manual e busca Unicode, e a integraÃ§Ã£o nativa de uma **SuÃ­te de Testes Automatizados (PHPUnit, Vitest, Playwright)** no pipeline.
+          Esta versão traz uma grande evolução no **Editor HTML Visual** com novas ferramentas de formatação, D&D interativo e clipboard interno, a adição de recursos modernos de **Autenticação e Segurança (2FA e Login Sem Senha OTP)**, gerenciador de **Chaves de API** com perfis, o módulo **Publicador Índice** enriquecido com curadoria manual e busca Unicode, e a integração nativa de uma **Suíte de Testes Automatizados (PHPUnit, Vitest, Playwright)** no pipeline.
 
-            ### ðŸŽ¯ Novidades Principais desta VersÃ£o:
-            - âœ… **Editor HTML Visual AvanÃ§ado**: Painel styler expandido com 20 grupos de formataÃ§Ã£o, paletas de cores circulares, D&D com placeholders piscantes e ghost follower de cursor, clipboard integrado (Copiar/Colar e atalhos Ctrl+C/V), ferramenta Embrulhar (Wrap) e visualizador real de widgets via AJAX.
-            - âœ… **SeguranÃ§a e 2FA**: AutenticaÃ§Ã£o de Dois Fatores (2FA) nativa via aplicativos autenticadores (TOTP) e e-mail, e login sem senha (OTP) via e-mail direto.
-            - âœ… **Gerenciador de Chaves de API**: GeraÃ§Ã£o de chaves de API com perfis de acesso restritos e proteÃ§Ã£o opcional por 2FA.
-            - âœ… **Assistente OAuth**: Guia interativo passo a passo para configuraÃ§Ã£o das chaves de integraÃ§Ãµes Google, Facebook, Apple e GitHub.
-            - âœ… **Publicador Ãndice AvanÃ§ado**: Curadoria e ordenaÃ§Ã£o manual de itens, busca inteligente imune a acentuaÃ§Ã£o Unicode, contador dinÃ¢mico de mÃ©tricas de paginaÃ§Ã£o e prefixagem dinÃ¢mica de URL raiz em imagens.
-            - âœ… **SuÃ­te de Testes Nativa**: IntegraÃ§Ã£o de suÃ­te de testes de backend (PHPUnit), frontend (Vitest) e ponta-a-ponta (Playwright) com execuÃ§Ãµes automÃ¡ticas no GitHub Actions.
-            - âœ… **RefatoraÃ§Ã£o e ModularizaÃ§Ã£o**: MigraÃ§Ã£o de 26 funÃ§Ãµes de simulaÃ§Ã£o do editor para o arquivo independente `html-editor-modules.js`.
-          draft: false
-          prerelease: false
-          files: |
-            gestor.zip
-            gestor.zip.sha256
+          ### 🎯 Novidades Principais desta Versão:
+          - ✅ **Editor HTML Visual Avançado**: Painel styler expandido com 20 grupos de formatação, paletas de cores circulares, D&D com placeholders piscantes e ghost follower de cursor, clipboard integrado (Copiar/Colar e atalhos Ctrl+C/V), ferramenta Embrulhar (Wrap) e visualizador real de widgets via AJAX.
+          - ✅ **Segurança e 2FA**: Autenticação de Dois Fatores (2FA) nativa via aplicativos autenticadores (TOTP) e e-mail, e login sem senha (OTP) via e-mail direto.
+          - ✅ **Gerenciador de Chaves de API**: Geração de chaves de API com perfis de acesso restritos e proteção opcional por 2FA.
+          - ✅ **Assistente OAuth**: Guia interativo passo a passo para configuração das chaves de integrações Google, Facebook, Apple e GitHub.
+          - ✅ **Publicador Índice Avançado**: Curadoria e ordenação manual de itens, busca inteligente imune a acentuação Unicode, contador dinâmico de métricas de paginação e prefixagem dinâmica de URL raiz em imagens.
+          - ✅ **Suíte de Testes Nativa**: Integração de suíte de testes de backend (PHPUnit), frontend (Vitest) e ponta-a-ponta (Playwright) com execuções automáticas no GitHub Actions.
+          - ✅ **Refatoração e Modularização**: Migração de 26 funções de simulação do editor para o arquivo independente `html-editor-modules.js`.
+        draft: false
+        prerelease: false
+        files: |
+          gestor.zip
+          gestor.zip.sha256
