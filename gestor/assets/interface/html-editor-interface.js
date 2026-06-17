@@ -876,6 +876,31 @@ $(document).ready(function () {
             tailwindConfigScript = `<!-- CDN do TailwindCSS v4 -->
 				<script src="https://unpkg.com/@tailwindcss/browser@4"></script>`;
             tailwindConfigScript += `\n<link rel="stylesheet" type="text/css" media="all" href="${gestor.raiz}tailwindcss/system-output.css?v=${gestor.versao}" />`;
+
+            let incluirJSPrimeiro = false;
+            if ('projectTailwindcssConfig' in gestor.html_editor) {
+                if ('incluirJSPrimeiro' in gestor.html_editor.projectTailwindcssConfig) {
+                    if (gestor.html_editor.projectTailwindcssConfig.incluirJSPrimeiro) {
+                        incluirJSPrimeiro = gestor.html_editor.projectTailwindcssConfig.incluirJSPrimeiro;
+                    }
+                }
+            }
+
+            let projectCssTailwindcss = '';
+            if ('projectCssTailwindcss' in gestor.html_editor) {
+                projectCssTailwindcss = gestor.html_editor.projectCssTailwindcss;
+            }
+            let projectJavascriptTailwindcss = '';
+            if ('projectJavascriptTailwindcss' in gestor.html_editor) {
+                projectJavascriptTailwindcss = gestor.html_editor.projectJavascriptTailwindcss;
+            }
+
+            if (incluirJSPrimeiro) {
+                tailwindConfigScript += `${projectJavascriptTailwindcss.length > 0 ? "\n" + projectJavascriptTailwindcss : ''}${projectCssTailwindcss.length > 0 ? "\n" + projectCssTailwindcss : ''}`;
+            } else {
+                tailwindConfigScript += `${projectCssTailwindcss.length > 0 ? "\n" + projectCssTailwindcss : ''}${projectJavascriptTailwindcss.length > 0 ? "\n" + projectJavascriptTailwindcss : ''}`;
+            }
+
             iframeTitle = 'Tailwind CSS Preview';
         }
 
@@ -902,13 +927,6 @@ $(document).ready(function () {
                         margin: 0 !important;
                     }
                 </style>`;
-        }
-
-        // TailwindCSS de projeto
-        const tailwindcssPath = ('tailwindcssPath' in gestor.html_editor.project ? true : false);
-
-        if (tailwindcssPath) {
-            tailwindConfigScript += `<link rel="stylesheet" type="text/css" media="all" href="${gestor.html_editor.project.tailwindcssPath}" />`;
         }
 
         // CodeMirror CDN - mesma versão usada em html-editor.php
@@ -1616,6 +1634,31 @@ $(document).ready(function () {
             tailwindConfigScript = `<!-- CDN do TailwindCSS v4 -->
 				<script src="https://unpkg.com/@tailwindcss/browser@4"></script>`;
             tailwindConfigScript += `\n<link rel="stylesheet" type="text/css" media="all" href="${gestor.raiz}tailwindcss/system-output.css?v=${gestor.versao}" />`;
+
+            let incluirJSPrimeiro = false;
+            if ('projectTailwindcssConfig' in gestor.html_editor) {
+                if ('incluirJSPrimeiro' in gestor.html_editor.projectTailwindcssConfig) {
+                    if (gestor.html_editor.projectTailwindcssConfig.incluirJSPrimeiro) {
+                        incluirJSPrimeiro = gestor.html_editor.projectTailwindcssConfig.incluirJSPrimeiro;
+                    }
+                }
+            }
+
+            let projectCssTailwindcss = '';
+            if ('projectCssTailwindcss' in gestor.html_editor) {
+                projectCssTailwindcss = gestor.html_editor.projectCssTailwindcss;
+            }
+            let projectJavascriptTailwindcss = '';
+            if ('projectJavascriptTailwindcss' in gestor.html_editor) {
+                projectJavascriptTailwindcss = gestor.html_editor.projectJavascriptTailwindcss;
+            }
+
+            if (incluirJSPrimeiro) {
+                tailwindConfigScript += `${projectJavascriptTailwindcss.length > 0 ? "\n" + projectJavascriptTailwindcss : ''}${projectCssTailwindcss.length > 0 ? "\n" + projectCssTailwindcss : ''}`;
+            } else {
+                tailwindConfigScript += `${projectCssTailwindcss.length > 0 ? "\n" + projectCssTailwindcss : ''}${projectJavascriptTailwindcss.length > 0 ? "\n" + projectJavascriptTailwindcss : ''}`;
+            }
+
             iframeTitle = 'Tailwind CSS Preview';
         }
 
@@ -1642,13 +1685,6 @@ $(document).ready(function () {
                         margin: 0 !important;
                     }
                 </style>`;
-        }
-
-        // TailwindCSS de projeto
-        const tailwindcssPath = ('tailwindcssPath' in gestor.html_editor.project ? true : false);
-
-        if (tailwindcssPath) {
-            tailwindConfigScript += `<link rel="stylesheet" type="text/css" media="all" href="${gestor.html_editor.project.tailwindcssPath}" />`;
         }
 
         // Layout mode: o HTML do usuário já é um documento completo, apenas injetar frameworks

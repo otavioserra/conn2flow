@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.3.20',
+	'versao' => '1.3.22',
 );
 
 // ===== Funções auxiliares
@@ -244,10 +244,35 @@ function html_editor_componente($params = false){
     // ===== Editor HTML visual
     $html_editor = modelo_var_troca($html_editor,'#html-editor-modal#',html_editor_include());
 
+	// ===== Variáveis JS do Projeto para o Editor HTML (ex.: caminho do Tailwind CSS)
+
+	if(isset($_GESTOR['project-javascript-html-editor-tailwindcss'])){
+		$projectJavascriptTailwindcss = '';
+		if($_GESTOR['project-javascript-html-editor-tailwindcss'])
+		foreach($_GESTOR['project-javascript-html-editor-tailwindcss'] as $js){
+			$projectJavascriptTailwindcss .= "	" . $js . "\n";
+		}
+	}
+
+	if(isset($_GESTOR['project-css-html-editor-tailwindcss'])){
+		$projectCssTailwindcss = '';
+		if($_GESTOR['project-css-html-editor-tailwindcss'])
+		foreach($_GESTOR['project-css-html-editor-tailwindcss'] as $css){
+			$projectCssTailwindcss .= "	" . $css . "\n";
+		}
+	}
+
+	if(isset($_GESTOR['project-html-editor-tailwindcss-config'])){
+		$projectHtmlEditorTailwindcssConfig = $_GESTOR['project-html-editor-tailwindcss-config'];
+	}
+
 	// ===== Incluir variável JS do alvo para o frontend
 	gestor_js_variavel_incluir('html_editor',[
 		'alvo' => $alvo,
 		'alvos_modelos' => isset($alvos_modelos)? $alvos_modelos : $alvo,
+		'projectJavascriptTailwindcss' => isset($projectJavascriptTailwindcss)? $projectJavascriptTailwindcss : '',
+		'projectCssTailwindcss' => isset($projectCssTailwindcss)? $projectCssTailwindcss : '',
+		'projectTailwindcssConfig' => isset($projectHtmlEditorTailwindcssConfig)? $projectHtmlEditorTailwindcssConfig : [],
 	]);
 
 	// ===== Modificações específicas por alvo

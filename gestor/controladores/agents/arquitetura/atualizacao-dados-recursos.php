@@ -868,7 +868,7 @@ function normalizarConfigTabela(array $meta): ?array {
  * atualizador (atualizacoes-banco-de-dados.php). Blocos locais de módulo sobrescrevem o global.
  */
 function gerarSchemaMetadata(): void {
-    global $RESOURCES_DIR, $MODULES_DIR, $DB_DATA_DIR, $LOG_FILE;
+    global $RESOURCES_DIR, $MODULES_DIR, $DB_DATA_DIR, $LOG_FILE, $SYSTEM_PATH;
     $tables = [];
     $deletar = [];
 
@@ -886,30 +886,53 @@ function gerarSchemaMetadata(): void {
     };
 
     // 1) Tabelas globais (sem módulo dono): gestor/resources/tables_config.json
-    $globalFile = $RESOURCES_DIR . 'tables_config.json';
-    if (is_file($globalFile)) {
-        $g = jsonRead($globalFile);
-        if (is_array($g) && isset($g['tabelas']) && is_array($g['tabelas'])) {
-            foreach ($g['tabelas'] as $meta) {
-                if (is_array($meta)) $registrar($meta, 'global:tables_config.json');
+    // Em modo projeto, herda primeiro o contrato do núcleo e permite override pelo projeto.
+    $arquivosGlobais = [];
+    if (!empty($GLOBALS['CLI_ARGS']['project-path'])) {
+        $coreGlobal = $SYSTEM_PATH . 'gestor' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'tables_config.json';
+        if (is_file($coreGlobal)) {
+            $arquivosGlobais[] = [$coreGlobal, 'core:tables_config.json'];
+        }
+    }
+    $arquivosGlobais[] = [$RESOURCES_DIR . 'tables_config.json', 'global:tables_config.json'];
+
+    foreach ($arquivosGlobais as [$globalFile, $srcLabel]) {
+        if (is_file($globalFile)) {
+            $g = jsonRead($globalFile);
+            if (is_array($g) && isset($g['tabelas']) && is_array($g['tabelas'])) {
+                foreach ($g['tabelas'] as $meta) {
+                    if (is_array($meta)) $registrar($meta, $srcLabel);
+                }
+            } else {
+                log_disco_local('SCHEMA_META_WARN ' . basename($globalFile) . ' invalido ou sem chave "tabelas"', $LOG_FILE);
             }
         } else {
-            log_disco_local('SCHEMA_META_WARN tables_config.json invalido ou sem chave "tabelas"', $LOG_FILE);
+            log_disco_local('SCHEMA_META_INFO ' . basename($globalFile) . ' ausente em ' . $globalFile, $LOG_FILE);
         }
-    } else {
-        log_disco_local('SCHEMA_META_INFO tables_config.json ausente em ' . $globalFile, $LOG_FILE);
     }
 
     // 2) Blocos locais "tabela.config" de cada módulo
-    if (is_dir($MODULES_DIR)) {
-        foreach (glob($MODULES_DIR . '*', GLOB_ONLYDIR) ?: [] as $modPath) {
-            $modId = basename($modPath);
-            $jsonFile = $modPath . DIRECTORY_SEPARATOR . $modId . '.json';
-            $data = jsonRead($jsonFile);
-            if (!is_array($data)) continue;
-            $tabela = $data['tabela'] ?? null;
-            if (is_array($tabela) && !empty($tabela['config'])) {
-                $registrar($tabela, 'module:' . $modId);
+    // Em modo projeto, também herda os módulos do núcleo antes dos módulos locais.
+    $pastasModulos = [];
+    if (!empty($GLOBALS['CLI_ARGS']['project-path'])) {
+        $coreModDir = $SYSTEM_PATH . 'gestor' . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR;
+        if (is_dir($coreModDir)) {
+            $pastasModulos[] = [$coreModDir, 'core:'];
+        }
+    }
+    $pastasModulos[] = [$MODULES_DIR, 'module:'];
+
+    foreach ($pastasModulos as [$mDir, $srcPrefix]) {
+        if (is_dir($mDir)) {
+            foreach (glob($mDir . '*', GLOB_ONLYDIR) ?: [] as $modPath) {
+                $modId = basename($modPath);
+                $jsonFile = $modPath . DIRECTORY_SEPARATOR . $modId . '.json';
+                $data = jsonRead($jsonFile);
+                if (!is_array($data)) continue;
+                $tabela = $data['tabela'] ?? null;
+                if (is_array($tabela) && !empty($tabela['config'])) {
+                    $registrar($tabela, $srcPrefix . $modId);
+                }
             }
         }
     }
