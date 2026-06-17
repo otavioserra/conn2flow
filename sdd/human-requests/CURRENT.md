@@ -1,7 +1,7 @@
 # Current Human Request
 
-- **Intake ativo**: [req-047.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-047.md)
+- **Intake ativo**: [req-048.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-048.md)
 
-- **Status**: Criada a requisição req-047.md para corrigir a geração de schema-metadata.json em modo projeto, herdando tabelas do núcleo, a fim de evitar violação de chaves únicas (Integrity constraint violation: 1062) durante a atualização de banco no deploy.
+- **Status**: Execução concluída para a req-048.md: workflows do GitHub Actions consolidados em `.github/workflows/release-gestor.yml`, com job `release` dependente de `test` (`needs: test`), e workflow antigo removido.
 
-- **Pendências**: Execução da atualização pelo engenheiro executor no outro ambiente.
+- **Pendências**: Revisão/commit/push pelo operador principal.
