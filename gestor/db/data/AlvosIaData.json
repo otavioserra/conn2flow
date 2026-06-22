@@ -42,6 +42,20 @@
         "versao": 1
     },
     {
+        "nome": "Formulários",
+        "id": "forms",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Forms",
+        "id": "forms",
+        "language": "en",
+        "status": "A",
+        "versao": 1
+    },
+    {
         "nome": "Galerias",
         "id": "galleries",
         "language": "pt-br",

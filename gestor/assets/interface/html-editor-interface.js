@@ -762,6 +762,7 @@ $(document).ready(function () {
         'publisher': 'adminPaginasBackupCampo',
         'publisher-highlights': 'adminPaginasBackupCampo',
         'menus': 'adminPaginasBackupCampo',
+        'forms': 'adminPaginasBackupCampo',
         // req-041 §3.1: alvo publisher-index reaproveita o mesmo callback de backup de páginas.
         'publisher-index': 'adminPaginasBackupCampo',
     };
@@ -779,7 +780,7 @@ $(document).ready(function () {
     // Este helper unifica essa detecção.
     function alvoUsaItemVars() {
         var a = alvoAtual();
-        return a === 'publisher-highlights' || a === 'menus' || a === 'galleries' || a === 'publisher-index';
+        return a === 'publisher-highlights' || a === 'menus' || a === 'galleries' || a === 'publisher-index' || a === 'forms';
     }
     // Regex global para encontrar todas as variáveis (suporta publisher, publisher-highlights e menus)
     function regexVariaveisGlobal() {
@@ -1535,7 +1536,7 @@ $(document).ready(function () {
     }
 
     // req-044 §3/§4: mapa de módulos que possuem script controlador de widget público (*.widget.js).
-    const WIDGET_SCRIPT_MODULES = { 'galleries': true, 'publisher-index': true, 'menus': true };
+    const WIDGET_SCRIPT_MODULES = { 'galleries': true, 'publisher-index': true, 'menus': true, 'forms': true };
 
     // req-044 §3/§4: extrai as assinaturas de widgets (comentários e variáveis inline) presentes no
     // HTML do usuário, desduplicadas e na ordem de aparição. Espelha a detecção que o PHP faz no

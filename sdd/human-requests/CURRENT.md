@@ -1,7 +1,7 @@
 # Current Human Request
 
-- **Intake ativo**: [req-048.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-048.md)
+- **Intake ativo**: [req-051.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-051.md)
 
-- **Status**: Execução concluída para a req-048.md: workflows do GitHub Actions consolidados em `.github/workflows/release-gestor.yml`, com job `release` dependente de `test` (`needs: test`), e workflow antigo removido.
+- **Status**: Prontidão para execução do lote BATCH-051 (Escape HTML global no editor e divisão de opções nos selects do Forms).
 
-- **Pendências**: Revisão/commit/push pelo operador principal.
+- **Pendências**: Aguardando aprovação inicial do Engenheiro Chefe Humano para o executor iniciar o desenvolvimento.

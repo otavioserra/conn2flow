@@ -976,6 +976,23 @@ Itens marcados acima refletem o que é verificável estaticamente/por teste auto
   - Verificação por grep: `contentPageTabHandler()` e a init `$('.menuContainerPagina .item').tab({...})` são as únicas execuções síncronas que cascateiam em `previewHtml`/`pageModificationContainerMove`, e ambas estão agora no fim do `ready`.
 - Arquivos alterados:
   - `gestor/assets/interface/html-editor-interface.js` (remoção da chamada síncrona de `contentPageTabHandler()` e do bloco de init do `.tab()` do meio do arquivo; ambos recolocados no fim do `ready`).
+
+- [x] **Reorganização da ordem de inicialização** (`html-editor-interface.js`):
+  - [x] 1ª iteração (insuficiente): removida a chamada síncrona de `contentPageTabHandler()` do meio do `$(document).ready` e movida para o fim. O erro **persistiu** em runtime porque o gatilho principal era outro.
+  - [x] 2ª iteração (correção real): o `onLoad` que o Fomantic dispara SÍNCRONAMENTE ao inicializar `$('.menuContainerPagina .item').tab({...})` (linha ~751) também chama `previewHtml()`/`pageModificationContainerMove()`. Esse bloco de init do `.tab()` foi movido para o fim do `ready`, junto ao `contentPageTabHandler()` (handler antes da init, ordem original preservada), garantindo que `WIDGET_SCRIPT_MODULES` (`const`) e `total_sessoes` (`let`) já estejam fora da TDZ.
+  - [x] Confirmado que o outro tab (`.menuPaginas`, ~L688) **não** precisa mover (seu `onLoad` só faz `CodeMirror*.refresh()`), e que as inits intermediárias (dropdowns `.frameworkCSS`/`.publisher-design-mode-*`) apenas registram callbacks `onChange` (não disparam na carga).
+- [x] **Overlays do editor sobrevivem a widget-variável** (`html-editor.js`):
+  - [x] `convertWidgetCommentsToWrappers()` não reescreve mais `document.body.innerHTML` para converter `[[widgets#...]]` (isso destruía os overlays/toolbar anexados ao body, quebrando a seleção quando havia widget em formato de variável). Nova `convertWidgetVariablesToComments()` faz a conversão cirurgicamente via TreeWalker `SHOW_TEXT` (pulando a UI `html-editor-*`) + `replaceChild` de fragmento, preservando a UI.
+
+### Evidência de Validação (BATCH-045)
+
+- Diagnóstico confirmado pelo runtime: o stack trace do console (v=1.3.1) tem todos os frames em `html-editor-interface.js` (`onLoad` L756 → `previewHtml` → `previewHtmlConteudo` → `montarWidgetAssetsHead` → `WIDGET_SCRIPT_MODULES`), originando na init `$('...').tab({...})` (L751) — **não** no `html-editor-modules.js`.
+- Investigação de efeito colateral da refatoração (Slice 5 do BATCH-044) — **descartado**: grep em `html-editor-modules.js` não encontra `WIDGET_SCRIPT_MODULES`/`montarWidgetAssetsHead`/`total_sessoes`; a única chamada relacionada é `previewHtml()` dentro de `publisherValuesUpdate()` (runtime, não na carga); o arquivo não tem execução top-level além de declarações + bloco `window.X = X`.
+- Validação estática executada em 2026-06-16:
+  - `node --check gestor/assets/interface/html-editor-interface.js` → OK (após mover a init do `.tab()`).
+  - Verificação por grep: `contentPageTabHandler()` e a init `$('.menuContainerPagina .item').tab({...})` são as únicas execuções síncronas que cascateiam em `previewHtml`/`pageModificationContainerMove`, e ambas estão agora no fim do `ready`.
+- Arquivos alterados:
+  - `gestor/assets/interface/html-editor-interface.js` (remoção da chamada síncrona de `contentPageTabHandler()` e do bloco de init do `.tab()` do meio do arquivo; ambos recolocados no fim do `ready`).
   - `gestor/assets/interface/html-editor.js` (correção do overlay: nova `convertWidgetVariablesToComments()` cirúrgica; `convertWidgetCommentsToWrappers()` não reescreve mais `document.body.innerHTML`).
   - `gestor/bibliotecas/html-editor.php` (`versao` da biblioteca `html-editor` bumpada pelo operador para cache-bust dos assets — 1.3.x no working tree; não alterada pelo executor).
 - Validação estática adicional: `node --check gestor/assets/interface/html-editor.js` → OK; Vitest 3/3 (baseline preservado).
@@ -985,4 +1002,89 @@ Itens marcados acima refletem o que é verificável estaticamente/por teste auto
   - Confirmar que a troca de abas e a pré-visualização de widgets continuam funcionando (inclusive abrindo direto na aba `visualizacao-pagina`).
   - Abrir o `editorHtmlVisual` numa página que contenha um widget em **formato de variável** (ex.: `[[widgets#menus->render({"grupo_slug": "teste"})]]`) e confirmar que o overlay de seleção de elementos funciona (antes ficava inerte); comparar com o mesmo widget em formato de comentário (deve seguir funcionando).
 
+---
+## BATCH-049 - Refatoração Dinâmica do Módulo Forms com html-editor (req-049)
 
+- [x] Migração criada para `forms.html`, `forms.css`, `forms.css_compiled` e `forms.html_extra_head`.
+- [x] `forms` integrado ao `html_editor_componente`, ao popup de widgets do editor visual e ao mapa de scripts públicos do preview.
+- [x] CRUD administrativo de Forms substitui o JSON manual por abas de metadados, e-mail, redirects, campos e template/editor.
+- [x] Widget público `forms.widget.php` e script `forms.widget.js` criados.
+- [x] Alvo/modo de IA `forms` registrado no manifesto do módulo e nos data files atuais.
+
+### Evidência de Validação (BATCH-049)
+
+- `php -l gestor/modulos/forms/forms.php` -> OK.
+- `php -l gestor/modulos/forms/forms.widget.php` -> OK.
+- `php -l gestor/db/migrations/20260706110000_add_html_and_css_to_forms_table.php` -> OK.
+- `php -l gestor/bibliotecas/html-editor.php` -> OK.
+- `node --check gestor/modulos/forms/forms.js` -> OK.
+- `node --check gestor/modulos/forms/forms.widget.js` -> OK.
+- `node --check gestor/assets/interface/html-editor-interface.js` -> OK.
+- `node --check gestor/assets/interface/html-editor-modules.js` -> OK.
+- JSON parse OK em `forms.json`, `AlvosIaData.json` e `ModosIaData.json`.
+- Checagem direta de `forms_widget_render_inline()` -> OK para input/select/options.
+- `composer test` -> OK (`40 tests`, `112 assertions`, `4 skipped`, `1 deprecation`).
+- `npm run test` -> OK (`2 files`, `3 tests`) após reexecução fora do sandbox; a primeira tentativa falhou por permissão do esbuild ao carregar `vitest.config.js`.
+
+### Pendências Runtime
+
+- Executar `Update => Core` / pipeline de recursos para registrar templates, ai modes e checksums calculados.
+- Aplicar a migração Phinx no ambiente alvo.
+- Validar no navegador a edição visual, preview, cópia da variável `[[widgets#forms->render(...)]]` e renderização pública do formulário.
+
+---
+## BATCH-050 - Escape HTML, Correção de Abas Aninhadas e Novos Modelos no Forms (req-050)
+
+- [x] Parâmetro `html_specialchars` aceito em `html_editor_componente()` e ativo no backend ao renderizar `#pagina-html#` e `#pagina-html-extra-head#`.
+- [x] O backend de Forms em `forms.php` envia os parâmetros escapados para o editor e preserva o HTML bruto no fluxo de gravação/submissão.
+- [x] Inicialização das abas no `forms.js` usa `context: 'parent'` e `context: '[data-tab="forms-template"]'` para isolamento.
+- [x] Criados 4 novos modelos físicos de templates em português e 4 em inglês baseados em Tailwind CSS.
+- [x] Novos modelos registrados em `forms.json` e atualizados pelo compilador de recursos (`atualizacao-dados-recursos.php`).
+
+### Evidência de Validação (BATCH-050)
+
+- `php -l gestor/bibliotecas/html-editor.php` -> OK.
+- `php -l gestor/modulos/forms/forms.php` -> OK.
+- `node --check gestor/modulos/forms/forms.js` -> OK.
+- `node -e` para validar `forms.json` e os 8 registros de template -> OK.
+- `node -e` para validar marcadores `<!-- item < -->`, `<!-- item > -->`, blocos `type-*` e variáveis nos 8 arquivos HTML -> OK.
+- `php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php` -> OK, 2222 recursos e nenhum problema detectado.
+- `composer test` -> OK, 40 testes, 112 assertions, 4 skipped, 1 deprecation.
+- `npm run test` -> falhou no sandbox com `Access is denied` ao resolver `vitest.config.js`; reexecutado com permissão escalada -> OK, 2 arquivos e 3 testes.
+- `git diff --check` -> permanece com aviso em `sdd/human-requests/CURRENT.md:8` (linha em branco no EOF, arquivo de intake não alterado pelo executor).
+
+### Pendências Runtime
+
+- Carregar o formulário contendo `<textarea>` e confirmar que abre sem corromper o CodeMirror.
+- Clicar na aba "Widget" da tela de template e testar se os demais menus de abas permanecem funcionando.
+- Validar se os 4 novos modelos Tailwind (pt-br/en) estão disponíveis e funcionam no preview e publicação.
+
+---
+## BATCH-051 - Escape HTML Global no Editor e Divisão de Opções nos Selects (req-051)
+
+- [x] `html_editor_componente()` realiza escape de tags automaticamente se `html` ou `html_extra_head` forem fornecidos no array `$params` (comportamento global por padrão).
+- [x] A chamada de `html_editor_componente()` no Forms (`forms.php`) foi limpa removendo `'html_specialchars' => true`.
+- [x] A função `forms_widget_options_html()` em `forms.widget.php` suporta a divisão de valor/rótulo pelas sintaxes `:` e `|`.
+- [x] `forms.widget.php` renderiza opções de `radio` e `checkbox` como inputs dentro de labels, usando `name[]` para checkbox.
+- [x] `forms.js` adiciona `radio` e `checkbox` no dropdown de tipos e mostra `.forms-field-options` apenas para `select`, `radio` e `checkbox`.
+- [x] Os 5 templates físicos em `pt-br` e `en` receberam blocos `type-radio` e `type-checkbox`.
+- [x] Compilador de recursos executado após alteração dos templates.
+
+### Evidência de Validação (BATCH-051)
+
+- `php -l gestor/bibliotecas/html-editor.php` -> OK.
+- `php -l gestor/modulos/forms/forms.php` -> OK.
+- `php -l gestor/modulos/forms/forms.widget.php` -> OK.
+- `node --check gestor/modulos/forms/forms.js` -> OK.
+- Teste PHP via stdin para `forms_widget_options_html()` com select, radio e checkbox -> OK.
+- Validação Node dos marcadores `type-radio`/`type-checkbox` nos 10 templates -> OK.
+- `php ./gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php` -> OK, 2222 recursos e nenhum problema detectado.
+- `composer test` -> OK, 40 testes, 112 assertions, 4 skipped, 1 deprecation.
+- `npm run test` -> falhou no sandbox com `Access is denied` ao resolver `vitest.config.js`; reexecutado com permissão escalada -> OK, 2 arquivos e 3 testes.
+- `git diff --check` -> permanece com aviso em `sdd/human-requests/CURRENT.md:8` (linha em branco no EOF, arquivo de intake não alterado pelo executor).
+
+### Pendências Runtime
+
+- Testar o CRUD de Forms, criar um campo `select` com opções no formato `sp:São Paulo` e `rj|Rio de Janeiro` e validar a renderização pública do `<select>` gerado (com values e labels diferentes).
+- Testar campos `radio` e `checkbox` no CRUD, preview e submissão pública.
+- Assegurar que os demais formulários carregam no editor sem quebra do CodeMirror.

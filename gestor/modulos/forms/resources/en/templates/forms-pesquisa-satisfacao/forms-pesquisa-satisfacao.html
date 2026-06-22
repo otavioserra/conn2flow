@@ -1,0 +1,35 @@
+<form class="conn2flow-form bg-slate-50 border border-slate-200 rounded-xl p-6 max-w-2xl mx-auto space-y-4" data-form-id="@[[form_id]]@" method="post">
+    <input type="hidden" name="form_id" value="@[[form_id]]@">
+    <div class="text-left border-b border-slate-200 pb-3">
+        <h3 class="text-lg font-bold text-slate-800">We Value Your Feedback</h3>
+        <p class="text-xs text-slate-500">Help us improve our services by sharing your experience.</p>
+    </div>
+    <!-- item < -->
+    <div class="conn2flow-form-field">
+        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" for="@[[form_id]]@-@[[item#name]]@">@[[item#label]]@</label>
+        <!-- type-input < -->
+        <input class="w-full text-sm rounded-md border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:border-slate-500 transition" type="@[[item#type]]@" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@>
+        <!-- type-input > -->
+        <!-- type-textarea < -->
+        <textarea class="w-full text-sm rounded-md border border-slate-300 px-3 py-2 bg-white min-h-24 focus:outline-none focus:border-slate-500 transition" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@></textarea>
+        <!-- type-textarea > -->
+        <!-- type-select < -->
+        <select class="w-full text-sm rounded-md border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:border-slate-500 transition" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" @[[item#required]]@>
+            @[[item#options]]@
+        </select>
+        <!-- type-select > -->
+        <!-- type-radio < -->
+        <div class="flex flex-wrap gap-4 mt-1">
+            @[[item#options]]@
+        </div>
+        <!-- type-radio > -->
+        <!-- type-checkbox < -->
+        <div class="flex flex-wrap gap-4 mt-1">
+            @[[item#options]]@
+        </div>
+        <!-- type-checkbox > -->
+    </div>
+    <!-- item > -->
+    <div class="conn2flow-form-message hidden text-sm p-3 rounded-lg"></div>
+    <button class="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm rounded-md shadow-sm transition duration-150 conn2flow-form-submit" type="submit">Submit Feedback</button>
+</form>

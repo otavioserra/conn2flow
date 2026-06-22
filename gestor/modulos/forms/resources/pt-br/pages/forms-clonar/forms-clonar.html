@@ -1,44 +1,47 @@
-<div class="field">
-    <label>Nome</label>
-    <input type="text" name="name" placeholder="Ex: Nome do Formulário">
+<input type="hidden" name="fields_schema">
+
+<div class="ui top attached tabular menu menuForms">
+    <a class="active item" data-tab="forms-general"><i class="settings icon"></i> Geral</a>
+    <a class="item" data-tab="forms-email"><i class="mail icon"></i> E-mail</a>
+    <a class="item" data-tab="forms-redirects"><i class="share icon"></i> Redirects</a>
+    <a class="item" data-tab="forms-fields"><i class="list icon"></i> Campos</a>
+    <a class="item" data-tab="forms-template"><i class="code icon"></i> Template</a>
 </div>
 
-<div class="field">
-    <label>Descrição</label>
-    <input type="text" name="description" placeholder="Ex: Descrição do Formulário" value="#description#">
+<div class="ui bottom attached active tab segment" data-tab="forms-general">
+    <div class="field"><label>Nome</label><input type="text" name="name" placeholder="Ex: Nome do Formulário"></div>
+    <div class="field"><label>Descrição</label><input type="text" name="description" placeholder="Ex: Descrição do Formulário" value="#description#"></div>
+    <div class="field"><label>#form-module-label#</label><span>#select-module#</span></div>
+    <div class="field"><label>Ação</label><input type="text" id="form_action" placeholder="/api/forms/submit"></div>
+    <div class="three fields">
+        <div class="field"><label>Limite simples</label><input type="number" id="access_max_simple" min="0"></div>
+        <div class="field"><label>Limite total</label><input type="number" id="access_max" min="0"></div>
+        <div class="field"><label>reCAPTCHA</label><div class="ui toggle checkbox"><input type="checkbox" id="force_recaptcha"><label>Obrigatório</label></div></div>
+    </div>
 </div>
 
-<div class="field">
-    <label>#form-module-label#</label>
-    <span>#select-module#</span>
+<div class="ui bottom attached tab segment" data-tab="forms-email">
+    <div class="field"><label>Destinatários</label><input type="text" id="email_recipients"></div>
+    <div class="two fields"><div class="field"><label>Reply-To</label><input type="email" id="email_reply_to"></div><div class="field"><label>Nome do remetente</label><input type="text" id="email_reply_to_name"></div></div>
+    <div class="two fields"><div class="field"><label>Assunto</label><input type="text" id="email_subject"></div><div class="field"><label>Componente de mensagem</label><input type="text" id="email_message_component"></div></div>
 </div>
 
-<table class="ui table">
-    <thead>
-        <tr>
-            <th><i class="code icon"></i> Esquema dos Campos</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <div class="fields-schema-component">
-                    <div class="ui top attached tabular menu menuForms">
-                        <a class="active item" data-tab="data"
-                            data-tooltip="Clique para abrir os dados do esquema dos campos em formato JSON"
-                            data-position="top left" data-inverted="">Dados</a>
-                        <a class="item" data-tab="info"
-                            data-tooltip="Clique para abrir as informações das opções disponíveis do formulário em formato JSON"
-                            data-position="top left" data-inverted="">Informações</a>
-                    </div>
-                    <div class="ui bottom attached tab segment containerForms" data-tab="data">
-                        <textarea class="codemirror-json" name="fields_schema">#fields_schema#</textarea>
-                    </div>
-                    <div class="ui bottom attached tab segment containerForms" data-tab="info">
-                        #forms-info-definition#
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="ui bottom attached tab segment" data-tab="forms-redirects">
+    <div class="two fields"><div class="field"><label>Sucesso</label><input type="text" id="redirect_success_path"></div><div class="field"><label>Erro</label><input type="text" id="redirect_error_path"></div></div>
+</div>
+
+<div class="ui bottom attached tab segment" data-tab="forms-fields">
+    <button type="button" class="ui primary button" id="btn-add-form-field"><i class="plus icon"></i> Campo</button>
+    <table class="ui celled compact table" id="forms-fields-table">
+        <thead><tr><th style="width:40px;"></th><th>Rótulo</th><th>Nome</th><th>Tipo</th><th>Placeholder</th><th>Opções</th><th style="width:90px;">Obrigatório</th><th style="width:60px;"></th></tr></thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<div class="ui bottom attached tab segment" data-tab="forms-template">
+    <div class="field"><label>Modelo</label><select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id"><option value="">#template_placeholder_option#</option>#template_id_options#</select></div>
+    <div class="ui top attached tabular menu menuFormsTemplate"><a class="active item" data-tab="forms-preview"><i class="eye icon"></i> Prévia</a><a class="item" data-tab="forms-editor"><i class="code icon"></i> Editor HTML</a><a class="item" data-tab="forms-widget"><i class="cubes icon"></i> Widget</a></div>
+    <div class="ui bottom attached active tab segment" data-tab="forms-preview"><div style="position:relative;"><iframe id="iframe-forms-preview" style="width:100%;height:700px;border:1px solid #ccc;"></iframe><div class="ui dimmer forms-preview-dimmer"><div class="ui loader"></div></div></div></div>
+    <div class="ui bottom attached tab segment" data-tab="forms-editor">#html-editor#</div>
+    <div class="ui bottom attached tab segment" data-tab="forms-widget"><div class="field"><label>Variável do Widget</label><div class="ui action input"><input type="text" id="forms-widget-val" readonly><button type="button" id="btn-copy-forms-widget-val" class="ui teal button"><i class="copy icon"></i> Copiar</button></div></div><h4 class="ui header">Código HTML</h4><div style="border:1px solid #ccc;"><textarea id="forms-widget-code"></textarea></div></div>
+</div>

@@ -314,6 +314,64 @@ function galleriesSimularPreview(html) {
 function publisherVariablesOrSimulation(html = '') {
     const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
 
+    if (alvo === 'forms') {
+        const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
+        if (simulacao) {
+            const schemaStr = $('input[name="fields_schema"]').val() || '{}';
+            let schema = {};
+            try { schema = JSON.parse(schemaStr); } catch (e) { }
+            const fields = Array.isArray(schema.fields) ? schema.fields : [];
+            const itemRegex = /<!--\s*item\s*<\s*-->([\s\S]*?)<!--\s*item\s*>\s*-->/i;
+            const itemMatch = html.match(itemRegex);
+
+            if (itemMatch && fields.length > 0) {
+                const itemTemplate = itemMatch[1];
+                let replicated = '';
+
+                fields.forEach(function (field) {
+                    let fieldHtml = itemTemplate;
+                    const type = field.type || 'text';
+                    const options = Array.isArray(field.options)
+                        ? field.options.map(function (option) {
+                            const value = (option && typeof option === 'object') ? (option.value || option.label || '') : option;
+                            const label = (option && typeof option === 'object') ? (option.label || option.value || '') : option;
+                            return '<option value="' + value + '">' + label + '</option>';
+                        }).join('')
+                        : '';
+
+                    fieldHtml = fieldHtml.replace(/\[\[item#label\]\]/g, field.label || field.name || '');
+                    fieldHtml = fieldHtml.replace(/\[\[item#name\]\]/g, field.name || '');
+                    fieldHtml = fieldHtml.replace(/\[\[item#placeholder\]\]/g, field.placeholder || '');
+                    fieldHtml = fieldHtml.replace(/\[\[item#type\]\]/g, type === 'textarea' || type === 'select' ? 'text' : type);
+                    fieldHtml = fieldHtml.replace(/\[\[item#required\]\]/g, field.required ? 'required' : '');
+                    fieldHtml = fieldHtml.replace(/\[\[item#options\]\]/g, options);
+
+                    if (type === 'select') {
+                        fieldHtml = fieldHtml.replace(/<!--\s*type-select\s*<\s*-->([\s\S]*?)<!--\s*type-select\s*>\s*-->/gi, '$1');
+                        fieldHtml = fieldHtml.replace(/<!--\s*type-textarea\s*<\s*-->([\s\S]*?)<!--\s*type-textarea\s*>\s*-->/gi, '');
+                        fieldHtml = fieldHtml.replace(/<!--\s*type-input\s*<\s*-->([\s\S]*?)<!--\s*type-input\s*>\s*-->/gi, '');
+                    } else if (type === 'textarea') {
+                        fieldHtml = fieldHtml.replace(/<!--\s*type-textarea\s*<\s*-->([\s\S]*?)<!--\s*type-textarea\s*>\s*-->/gi, '$1');
+                        fieldHtml = fieldHtml.replace(/<!--\s*type-select\s*<\s*-->([\s\S]*?)<!--\s*type-select\s*>\s*-->/gi, '');
+                        fieldHtml = fieldHtml.replace(/<!--\s*type-input\s*<\s*-->([\s\S]*?)<!--\s*type-input\s*>\s*-->/gi, '');
+                    } else {
+                        fieldHtml = fieldHtml.replace(/<!--\s*type-input\s*<\s*-->([\s\S]*?)<!--\s*type-input\s*>\s*-->/gi, '$1');
+                        fieldHtml = fieldHtml.replace(/<!--\s*type-select\s*<\s*-->([\s\S]*?)<!--\s*type-select\s*>\s*-->/gi, '');
+                        fieldHtml = fieldHtml.replace(/<!--\s*type-textarea\s*<\s*-->([\s\S]*?)<!--\s*type-textarea\s*>\s*-->/gi, '');
+                    }
+
+                    replicated += fieldHtml;
+                });
+
+                html = html.replace(itemRegex, replicated);
+            }
+
+            html = html.replace(/\[\[form_id\]\]/g, 'formulario-simulacao');
+            html = html.replace(/\[\[form_action\]\]/g, schema.form_action || '');
+        }
+        return html;
+    }
+
     if (alvo === 'menus') {
         const simulacao = $('.publisherVariablesOrSimulation[data-id="simulation"]').hasClass('active');
         if (simulacao) html = menusSimularPreview(html);

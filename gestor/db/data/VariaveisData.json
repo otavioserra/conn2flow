@@ -6878,6 +6878,15 @@
     {
         "language": "pt-br",
         "modulo": "forms",
+        "id": "form-name-label",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
         "id": "form-module-placeholder",
         "valor": "Selecione opcionalmente um módulo",
         "tipo": "string",
@@ -6916,6 +6925,15 @@
         "modulo": "forms",
         "id": "form-description-label",
         "valor": "Descrição",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "form-name-label",
+        "valor": "Name",
         "tipo": "string",
         "grupo": null,
         "descricao": null
