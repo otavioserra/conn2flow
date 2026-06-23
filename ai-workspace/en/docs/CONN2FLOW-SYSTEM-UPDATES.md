@@ -145,5 +145,23 @@ Additional recommendation in deploy: script/infra ensure `chown -R www-data:www-
 - Distributed execution lock (cluster)
 
 ---
+
+## 🗑️ Declarative Deletion and 🔁 Forced Update (BATCH-056)
+
+The consolidated contract `gestor/db/data/schema-metadata.json` exposes two top-level maps, aggregated per table from the manifests (`tabela.config` / `tables_config.json`):
+
+- **`deletar`**: records to physically remove on deploy (imperative deletion).
+- **`forcar_atualizacao`**: records to **overwrite ignoring the** `project` **and** `user_modified` **protections**.
+
+Each record is identified by `{ "pk": <value> }` or `{ "natural_key": { column: value, ... } }`, according to the table strategy.
+
+### Forced-update behavior (`sincronizarTabela`)
+When a database record matches a `forcar_atualizacao` rule:
+1. **`project` bypass**: the record is updated even if it was marked by a project deploy (`project IS NOT NULL`).
+2. **`user_modified` bypass**: the preserved fields (`preserve_on_user_modified`) are **not** preserved — the full JSON payload is applied.
+3. **`user_modified` reset**: if the record had `user_modified = 1`, it is set back to `0`, signaling alignment with the deploy codebase.
+4. **`project` preserved**: the `project` value is neither changed nor cleared.
+
+---
 Document maintained by GitHub Copilot AI
-Last update: 2025-08-27
+Last update: 2026-06-23

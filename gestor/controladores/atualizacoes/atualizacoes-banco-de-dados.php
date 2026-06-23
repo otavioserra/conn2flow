@@ -247,13 +247,14 @@ function schemaMetadata(): array {
     global $DB_DATA_DIR;
     static $meta = null;
     if ($meta !== null) return $meta;
-    $meta = ['tables' => [], 'deletar' => []];
+    $meta = ['tables' => [], 'deletar' => [], 'forcar_atualizacao' => []];
     $file = $DB_DATA_DIR . 'schema-metadata.json';
     if (is_file($file)) {
         $d = json_decode((string)file_get_contents($file), true);
         if (is_array($d)) {
             $meta['tables'] = is_array($d['tables'] ?? null) ? $d['tables'] : [];
             $meta['deletar'] = is_array($d['deletar'] ?? null) ? $d['deletar'] : [];
+            $meta['forcar_atualizacao'] = is_array($d['forcar_atualizacao'] ?? null) ? $d['forcar_atualizacao'] : [];
         }
     } else {
         log_unificado('SCHEMA_METADATA_AUSENTE ' . $file . ' (usando fallback heurístico)', $GLOBALS['LOG_FILE_DB'] ?? 'atualizacoes-bd');
@@ -274,6 +275,18 @@ function naturalKeyColumns(string $tabela): array {
         return $meta['natural_key_columns'];
     }
     return [];
+}
+
+/**
+ * Lista de registros sob "atualização forçada" para uma tabela (do contrato schema-metadata.json).
+ * Cada item é { "pk": valor } ou { "natural_key": { coluna: valor, ... } }. Registros que casarem
+ * com essas regras são sobrescritos pelo deploy ignorando as proteções de project e user_modified
+ * (e com reset de user_modified=0). Retorna lista vazia quando não há regras.
+ */
+function forcarAtualizacaoLista(string $tabela): array {
+    $m = schemaMetadata();
+    $lista = $m['forcar_atualizacao'][$tabela] ?? [];
+    return is_array($lista) ? $lista : [];
 }
 
 /**
@@ -468,8 +481,31 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     $usarChaveNatural = ($strategy === 'natural_key'); // estratégia definida no contrato
     $insertOnly = !empty($meta['insert_only']); // tabela só aceita INSERT
 
+    // Atualização forçada (BATCH-056): registros que sobrescrevem as proteções de project e
+    // user_modified (com reset de user_modified=0). Identificados por PK ou por chave natural.
+    $forcarLista = forcarAtualizacaoLista($tabela);
+    $forcedPks = [];       // valor PK (string) => true
+    $forcedNaturais = [];  // chave natural => true
+    foreach ($forcarLista as $fReg) {
+        if (!is_array($fReg)) continue;
+        if (array_key_exists('pk', $fReg)) {
+            $forcedPks[(string)$fReg['pk']] = true;
+        } elseif (isset($fReg['natural_key']) && is_array($fReg['natural_key'])) {
+            $nk = naturalKeyGenerica($tabela, $fReg['natural_key']);
+            if ($nk !== null) $forcedNaturais[$nk] = true;
+        }
+    }
+    $temForcar = ($forcedPks || $forcedNaturais);
+    // Resolve se um registro existente do banco está sob atualização forçada (PK e/ou chave natural).
+    $isForced = function(array $exist) use ($tabela, $pkDeclarada, $forcedPks, $forcedNaturais, $temForcar): bool {
+        if (!$temForcar) return false;
+        if ($forcedPks && isset($exist[$pkDeclarada]) && isset($forcedPks[(string)$exist[$pkDeclarada]])) return true;
+        if ($forcedNaturais) { $nk = naturalKeyGenerica($tabela, $exist); if ($nk !== null && isset($forcedNaturais[$nk])) return true; }
+        return false;
+    };
+
     if ($debug) {
-        log_unificado("SYNC_INI tabela=$tabela modo=".($usarChaveNatural?'natural':'pk')." qtdJson=".count($registros), $GLOBALS['LOG_FILE_DB']);
+        log_unificado("SYNC_INI tabela=$tabela modo=".($usarChaveNatural?'natural':'pk')." qtdJson=".count($registros)." forcar=".count($forcarLista), $GLOBALS['LOG_FILE_DB']);
     }
 
     $inserted=$updated=$same=0;
@@ -505,6 +541,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             }
             $row = $jsonByPk[$pkVal];
             $matched[$pkVal]=true; $diff=[]; $oldVals=[];
+            $forced = $isForced($exist); // atualização forçada: ignora project/user_modified
 
             // Se tabela é insert-only, pular atualização
             if ($insertOnly) {
@@ -513,8 +550,8 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 continue;
             }
 
-            // Proteção de projeto para tabelas específicas
-            if ($temPreserve) {
+            // Proteção de projeto para tabelas específicas (ignorada sob atualização forçada)
+            if ($temPreserve && !$forced) {
                 if (!$project && !empty($exist['project'])) {
                     if (empty($exist['user_modified']) || (int)$exist['user_modified'] !== 1) {
                         $same++;
@@ -534,10 +571,11 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     continue;
                 }
                 $vOld = $exist[$c] ?? null;
-                if ($c==='user_modified' && (int)$vOld===1 && (int)$vNew!==1) continue;
+                if ($c==='user_modified' && (int)$vOld===1 && (int)$vNew!==1 && !$forced) continue;
                 if (normalizeValue($vNew)!==normalizeValue($vOld)) { $diff[$c]=$vNew; $oldVals[$c]=$vOld; }
             }
-            if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && $temPreserve) {
+            // Sob atualização forçada NÃO preservamos campos do usuário (payload completo do JSON).
+            if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && $temPreserve && !$forced) {
                 $changedPreserved=false; foreach ($preserveCampos as $campo) {
                     if (array_key_exists($campo,$diff)) {
                         if ($tabela==='variaveis' && $campo==='valor') { if (isset($exist['value_updated'])||isset($row['value_updated'])) $diff['value_updated']=$diff[$campo]; }
@@ -546,9 +584,13 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 }
                 if ($changedPreserved) { if (isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_unificado("USER_MODIFIED_PRESERVADO $tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']); }
             }
+            // Reset de user_modified=0 quando forçado (alinha o registro à base de código do deploy).
+            if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
+                $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
+            }
             if ($diff) {
-                // Marcar projeto se deploy de projeto para tabelas específicas
-                if ($temPreserve && $project) {
+                // Marcar projeto se deploy de projeto (preserva o project existente quando forçado).
+                if ($temPreserve && $project && !$forced) {
                     $diff['project'] = $project;
                 }
                 if ($simulate) { log_unificado("SIMULATE_UPDATE $tabela pk=$pkVal campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
@@ -643,9 +685,10 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         if (isset($dbIndex[$k])) {
             $exist = $dbIndex[$k];
             $diff=[]; $oldVals=[];
+            $forced = ($temForcar && (isset($forcedNaturais[$k]) || $isForced($exist))); // atualização forçada
 
-            // Proteção de projeto para tabelas específicas
-            if ($temPreserve) {
+            // Proteção de projeto para tabelas específicas (ignorada sob atualização forçada)
+            if ($temPreserve && !$forced) {
                 if (!$project && !empty($exist['project'])) {
                     if (empty($exist['user_modified']) || (int)$exist['user_modified'] !== 1) {
                         $same++;
@@ -655,7 +698,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             }
             foreach ($row as $c=>$vNew) {
                 // Ignorar campos de controle que não fazem parte do JSON natural
-                if ($c === 'user_modified' && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (int)$vNew!==1) continue;
+                if ($c === 'user_modified' && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (int)$vNew!==1 && !$forced) continue;
                 // Filtrar colunas inexistentes, com mapeamento de linguagem
                 if (is_array($allowedCols) && !isset($allowedCols[$c])) {
                     if ($c==='language' && isset($allowedCols['linguagem_codigo']) && !isset($diff['linguagem_codigo'])) {
@@ -667,11 +710,16 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 $vOld = $exist[$c] ?? null;
                 if (normalizeValue($vNew)!==normalizeValue($vOld)) { $diff[$c]=$vNew; $oldVals[$c]=$vOld; }
             }
-            if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && $temPreserve) {
+            // Sob atualização forçada NÃO preservamos campos do usuário (payload completo do JSON).
+            if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && $temPreserve && !$forced) {
                 $changedPreserved=false; foreach ($preserveCampos as $campo){ if(array_key_exists($campo,$diff)){ if($tabela==='variaveis' && $campo==='valor'){ if(isset($exist['value_updated'])||isset($row['value_updated'])) $diff['value_updated']=$diff[$campo]; } else { $dest=$campo.'_updated'; if(isset($exist[$dest])||isset($row[$dest])) $diff[$dest]=$diff[$campo]; } unset($diff[$campo]); $changedPreserved=true; }} if($changedPreserved){ if(isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_unificado("USER_MODIFIED_PRESERVADO_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE_DB']); }}
+            // Reset de user_modified=0 quando forçado (alinha o registro à base de código do deploy).
+            if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
+                $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
+            }
             if ($diff) {
-                // Marcar projeto se deploy de projeto para tabelas específicas
-                if ($temPreserve && $project) {
+                // Marcar projeto se deploy de projeto (preserva o project existente quando forçado).
+                if ($temPreserve && $project && !$forced) {
                     $diff['project'] = $project;
                 }
                 if ($simulate) { log_unificado("SIMULATE_UPDATE_NAT tabela=$tabela chave=$k campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
@@ -712,9 +760,10 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if ($existFallback) {
                 // Atualiza registro existente preenchendo linguagem faltante (auto-correção de bug histórico)
                 $exist = $existFallback; $diff=[]; $oldVals=[];
+                $forced = $isForced($exist); // atualização forçada
 
-                // Proteção de projeto para tabelas específicas
-                if ($temPreserve) {
+                // Proteção de projeto para tabelas específicas (ignorada sob atualização forçada)
+                if ($temPreserve && !$forced) {
                     if (!$project && !empty($exist['project'])) {
                         if (empty($exist['user_modified']) || (int)$exist['user_modified'] !== 1) {
                             $same++;
@@ -725,7 +774,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 $normalizeLangRow($row);
                 foreach ($row as $c=>$vNew) {
                     $vOld = $exist[$c] ?? null;
-                    if ($c==='user_modified' && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (int)$vNew!==1) continue;
+                    if ($c==='user_modified' && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (int)$vNew!==1 && !$forced) continue;
                     if (is_array($allowedCols) && !isset($allowedCols[$c])) {
                         if ($c==='language' && isset($allowedCols['linguagem_codigo']) && !isset($diff['linguagem_codigo'])) {
                             $vOldMap = $exist['linguagem_codigo'] ?? null;
@@ -739,9 +788,13 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 if (isset($diff['language']) && is_array($allowedCols) && !isset($allowedCols['language']) && isset($allowedCols['linguagem_codigo']) && !isset($diff['linguagem_codigo'])) {
                     $diff['linguagem_codigo'] = $diff['language']; unset($diff['language']);
                 }
+                // Reset de user_modified=0 quando forçado (alinha o registro à base de código do deploy).
+                if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
+                    $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
+                }
                 if ($diff) {
-                    // Marcar projeto se deploy de projeto para tabelas específicas
-                    if ($temPreserve && $project) {
+                    // Marcar projeto se deploy de projeto (preserva o project existente quando forçado).
+                    if ($temPreserve && $project && !$forced) {
                         $diff['project'] = $project;
                     }
                     if ($simulate) { log_unificado("SIMULATE_UPDATE_FALLBACK_NAT tabela=$tabela fallback=$fallbackKey campos=".implode(',',array_keys($diff)),$GLOBALS['LOG_FILE_DB']); }
@@ -992,7 +1045,7 @@ function relatorioFinal(array $resumo): void {
     foreach ($resumo as $tab=>$r) {
         $msg .= sprintf("📦 %s => +%d ~%d =%d" . PHP_EOL, $tab, $r['inserted'],$r['updated'],$r['same']);
     }
-    $msg .= "Σ TOTAL => +$totalIns ~${totalUpd} =${totalSame}" . PHP_EOL;
+    $msg .= "Σ TOTAL => +$totalIns ~{$totalUpd} ={$totalSame}" . PHP_EOL;
     log_unificado($msg, $LOG_FILE_DB); if (PHP_SAPI === 'cli') echo $msg;
 }
 

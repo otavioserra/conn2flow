@@ -188,5 +188,23 @@ bash ./ai-workspace/en/scripts/projects/update-system.sh [OPTIONS]
 - `🗃️ Projects - Update Project -> ID` — atualiza projeto específico
 
 ---
+
+## 🗑️ Deleção e 🔁 Atualização Forçada Declarativas (BATCH-056)
+
+O contrato consolidado `gestor/db/data/schema-metadata.json` expõe dois mapas de topo, agregados por tabela a partir dos manifestos (`tabela.config` / `tables_config.json`):
+
+- **`deletar`**: registros a remover fisicamente no deploy (deleção imperativa).
+- **`forcar_atualizacao`**: registros a **sobrescrever ignorando as proteções** de `project` e `user_modified`.
+
+Cada registro é identificado por `{ "pk": <valor> }` ou `{ "natural_key": { coluna: valor, ... } }`, conforme a estratégia da tabela.
+
+### Comportamento da atualização forçada (`sincronizarTabela`)
+Quando um registro do banco casa com uma regra de `forcar_atualizacao`:
+1. **Bypass de `project`**: o registro é atualizado mesmo que tenha sido marcado por um deploy de projeto (`project IS NOT NULL`).
+2. **Bypass de `user_modified`**: os campos preservados (`preserve_on_user_modified`) **não** são preservados — o payload completo do JSON é aplicado.
+3. **Reset de `user_modified`**: se o registro estava com `user_modified = 1`, ele volta a `0`, sinalizando alinhamento com a base de código do deploy.
+4. **`project` preservado**: o valor de `project` não é alterado nem limpo.
+
+---
 Documento mantido por GitHub Copilot IA
-Última atualização: 2026-02-16
+Última atualização: 2026-06-23

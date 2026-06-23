@@ -158,6 +158,17 @@ function updateModuleResourceMapping($module_path, $module_id, $language, $resou
 
 ---
 
+## 🌐 Language Resolution in Declarative Synchronization (BATCH-056)
+
+The generator resolves dynamic-table (`sync_resources`) metadata per language in a unified way for modules and globals:
+
+- **External metadata**: read per language under `resources/<language>/...` (module: `modulos/<module>/resources/<language>/<resources_dir|table>/<metadata_file>`; global: `gestor/resources/<language>/[<resources_dir>/]<metadata_file>`).
+- **Inline metadata**: read from the `resources -> <language> -> <table>` key of the JSON itself (`<module>.json` or `tables_config.json`).
+
+In both cases the scan iterates over every configured language and injects the corresponding `language` column, keeping parity between pt-br/en and other languages.
+
+---
+
 **Implementation Date:** August 07, 2025  
 **Version:** CONN2FLOW v1.8.4+  
 **Status:** ✅ COMPLETE HYBRID MULTILINGUAL SYSTEM

@@ -61,6 +61,46 @@ function menus_variaveis_template(){
 	);
 }
 
+function menus_schema_normalizar($schema){
+	if(!is_array($schema)) $schema = [];
+
+	if(!isset($schema['selected_items']) || !is_array($schema['selected_items'])) $schema['selected_items'] = [];
+	if(!isset($schema['availability']) || $schema['availability'] !== 'condicional') $schema['availability'] = 'todos';
+	if(!isset($schema['conditions']) || !is_array($schema['conditions'])) $schema['conditions'] = [];
+	if(!isset($schema['menus']) || !is_array($schema['menus'])) $schema['menus'] = [];
+	if(!isset($schema['menus']['visible_to_all']) || !is_array($schema['menus']['visible_to_all'])){
+		$schema['menus']['visible_to_all'] = $schema['selected_items'];
+	}
+	if(!isset($schema['template_id'])) $schema['template_id'] = '';
+
+	$conditions = [];
+	foreach($schema['conditions'] as $cond){
+		if(!is_array($cond) || empty($cond['slug'])) continue;
+		$type = (isset($cond['type']) && in_array($cond['type'], ['publico','logado','perfil_usuario'], true)) ? $cond['type'] : 'publico';
+		$slug = preg_replace('/[^a-zA-Z0-9_-]+/', '-', (string)$cond['slug']);
+		$slug = trim(strtolower($slug), '-');
+		if($slug === '') continue;
+		if(!isset($schema['menus'][$slug]) || !is_array($schema['menus'][$slug])) $schema['menus'][$slug] = [];
+		$condition = ['type' => $type, 'slug' => $slug];
+		if($type === 'perfil_usuario'){
+			$profile_ids = [];
+			if(isset($cond['profile_ids']) && is_array($cond['profile_ids'])){
+				foreach($cond['profile_ids'] as $profile_id){
+					$profile_id = (string)$profile_id;
+					if($profile_id !== '' && !in_array($profile_id, $profile_ids, true)) $profile_ids[] = $profile_id;
+				}
+			}
+			$condition['profile_ids'] = $profile_ids;
+			if(isset($cond['profiles']) && is_array($cond['profiles'])) $condition['profiles'] = $cond['profiles'];
+		}
+		$conditions[] = $condition;
+	}
+	$schema['conditions'] = $conditions;
+	$schema['selected_items'] = $schema['menus']['visible_to_all'];
+
+	return $schema;
+}
+
 // ===== Funções Principais
 
 function menus_adicionar(){
@@ -160,7 +200,7 @@ function menus_adicionar(){
 	// ===== Schema inicial vazio para o JS reidratar UI
 	// Menus são livres de publicadores: o schema guarda apenas a curadoria de itens e o template.
 
-	$schema_inicial = ['selected_items' => [], 'template_id' => ''];
+	$schema_inicial = menus_schema_normalizar(['selected_items' => [], 'template_id' => '']);
 	$_GESTOR['pagina'] .= '<script>var menus_initial_schema = '.json_encode($schema_inicial).';</script>';
 
 	// ===== HTML Editor (alvo menus)
@@ -432,9 +472,7 @@ function menus_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#name#',$name);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#id#',$id);
 
-		// Defaults garantem retrocompatibilidade. Menus guardam apenas selected_items e template_id.
-		$fields_schema_decoded = json_decode($fields_schema, true) ?: [];
-		$fields_schema_decoded += ['selected_items' => [], 'template_id' => ''];
+		$fields_schema_decoded = menus_schema_normalizar(json_decode($fields_schema, true) ?: []);
 
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var menus_initial_schema = '.$schema_json.';</script>';
@@ -660,8 +698,7 @@ function menus_clonar(){
 		$css_compiled = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $css_compiled);
 		$html_extra_head = preg_replace("/".preg_quote($open)."(.+?)".preg_quote($close)."/", strtolower($openText."$1".$closeText), $html_extra_head);
 
-		$fields_schema_decoded = json_decode($fields_schema, true) ?: [];
-		$fields_schema_decoded += ['selected_items' => [], 'template_id' => ''];
+		$fields_schema_decoded = menus_schema_normalizar(json_decode($fields_schema, true) ?: []);
 		$schema_json = json_encode($fields_schema_decoded);
 		$_GESTOR['pagina'] .= '<script>var menus_initial_schema = '.$schema_json.';</script>';
 
@@ -1043,6 +1080,53 @@ function menus_ajax_pages_fetch(){
 }
 
 /**
+ * AJAX: busca perfis de usuário ativos para o autocomplete de condições por perfil.
+ */
+function menus_ajax_profiles_search(){
+	global $_GESTOR;
+
+	$q = trim((string)($_REQUEST['params']['q'] ?? ($_REQUEST['q'] ?? '')));
+
+	$where = "WHERE status='A'";
+	if(isset($_GESTOR['linguagem-codigo']) && $_GESTOR['linguagem-codigo']){
+		$where .= " AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'";
+	}
+
+	if($q !== ''){
+		$q_escaped = banco_escape_field($q);
+		$where .= " AND (nome LIKE '%".$q_escaped."%' OR id LIKE '%".$q_escaped."%')";
+	}
+
+	$rows = banco_select(Array(
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array('id_usuarios_perfis', 'id', 'nome'),
+		'extra' => $where." ORDER BY nome ASC LIMIT 50",
+	));
+
+	$results = [];
+	if(is_array($rows)){
+		foreach($rows as $row){
+			$id_num = (string)($row['id_usuarios_perfis'] ?? '');
+			if($id_num === '') continue;
+			$slug = (string)($row['id'] ?? '');
+			$name = (string)($row['nome'] ?? $slug);
+			$label = trim($name.($slug !== '' ? ' ('.$slug.')' : ''));
+			$results[] = [
+				'value' => $id_num,
+				'name' => $label !== '' ? $label : $id_num,
+				'slug' => $slug,
+			];
+		}
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'success' => true,
+		'results' => $results,
+	);
+}
+
+/**
  * AJAX: renderiza o widget de menu com inputs crus (html, css, fields_schema) para a aba
  * "Pré-Visualização" da tela de edição. Retorna `{ status, html }`.
  */
@@ -1052,6 +1136,7 @@ function menus_ajax_widget_preview(){
 	$html_input  = $_REQUEST['params']['html'] ?? ($_REQUEST['html'] ?? '');
 	$css_input   = $_REQUEST['params']['css'] ?? ($_REQUEST['css'] ?? '');
 	$fields_schema_input = $_REQUEST['params']['fields_schema'] ?? ($_REQUEST['fields_schema'] ?? '{}');
+	$preview_slug = $_REQUEST['params']['preview_slug'] ?? ($_REQUEST['preview_slug'] ?? '');
 
 	// Garantir a biblioteca do widget incluída (precisamos da função render_inline).
 	if(!function_exists('menus_widget_render_inline')){
@@ -1062,6 +1147,7 @@ function menus_ajax_widget_preview(){
 		'html' => $html_input,
 		'css' => $css_input,
 		'fields_schema' => $fields_schema_input,
+		'preview_slug' => $preview_slug,
 	]);
 
 	$_GESTOR['ajax-json'] = Array(
@@ -1084,6 +1170,7 @@ function menus_start(){
 			case 'template-load': menus_ajax_template_load(); break;
 			case 'pages-search': menus_ajax_pages_search(); break;
 			case 'pages-fetch': menus_ajax_pages_fetch(); break;
+			case 'profiles-search': menus_ajax_profiles_search(); break;
 			case 'widget-preview': menus_ajax_widget_preview(); break;
 		}
 

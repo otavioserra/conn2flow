@@ -73,7 +73,20 @@ Each module has a JSON file with:
 
 ---
 
+## 🧱 Manifest `tabela` Block and Resource Synchronization (BATCH-056)
+
+In the `<module>.json` manifest, the `"tabela"` key describes how the module's table(s) join the data pipeline. The `"config"` sub-key accepts an **object** (1 table) or an **array of objects** (N tables, each with `"tabela_nome"`), with the properties:
+
+- `strategy` (`natural_key`/`pk`), `natural_key_columns`, `preserve_on_user_modified`, `insert_only`.
+- `sync_resources`, `resources_dir`, `metadata_file`, `field_types` (`json` / `file:<ext>`) — automatically generate `<PascalCase>Data.json` from the physical/inline resources.
+- `deletar` and `forcar_atualizacao` — lists of records (`pk` / `natural_key`) for deletion or forced overwrite on deploy.
+
+The generator (`atualizacao-dados-recursos.php`) consolidates these blocks (modules + global) into the `schema-metadata.json` contract.
+
+---
+
 ## 📜 Decision History
 - Real module validation implemented in August/2025.
 - Export of pages to invalid modules blocked.
 - Standardized module structure to facilitate maintenance.
+- Declarative synchronization of custom tables (`config` object/array, `sync_resources`, `field_types`, `forcar_atualizacao`) added in 2026-06 (BATCH-056).

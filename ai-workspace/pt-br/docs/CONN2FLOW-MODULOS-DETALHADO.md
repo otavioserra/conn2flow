@@ -73,7 +73,20 @@ Cada módulo possui um arquivo JSON com:
 
 ---
 
+## 🧱 Bloco `tabela` do Manifesto e Sincronização de Recursos (BATCH-056)
+
+No manifesto `<modulo>.json`, a chave `"tabela"` descreve como a(s) tabela(s) do módulo entram na esteira de dados. A sub-chave `"config"` aceita um **objeto** (1 tabela) ou um **array de objetos** (N tabelas, cada um com `"tabela_nome"`), com as propriedades:
+
+- `strategy` (`natural_key`/`pk`), `natural_key_columns`, `preserve_on_user_modified`, `insert_only`.
+- `sync_resources`, `resources_dir`, `metadata_file`, `field_types` (`json` / `file:<ext>`) — geram `<PascalCase>Data.json` automaticamente a partir dos recursos físicos/inline.
+- `deletar` e `forcar_atualizacao` — listas de registros (`pk` / `natural_key`) para remoção ou sobrescrita forçada no deploy.
+
+O gerador (`atualizacao-dados-recursos.php`) consolida esses blocos (módulos + global) no contrato `schema-metadata.json`.
+
+---
+
 ## 📜 Histórico de Decisões
 - Validação de módulos reais implementada em agosto/2025.
 - Exportação de páginas para módulos inválidos bloqueada.
 - Estrutura de módulos padronizada para facilitar manutenção.
+- Sincronização declarativa de tabelas customizadas (`config` objeto/array, `sync_resources`, `field_types`, `forcar_atualizacao`) adicionada em 2026-06 (BATCH-056).

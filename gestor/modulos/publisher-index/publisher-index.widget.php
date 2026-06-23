@@ -124,7 +124,8 @@ function publisher_index_widget_render_inline($params){
 	if(!is_array($schema)) $schema = [];
 
 	$items_per_page   = (int)($schema['items_per_page'] ?? 10);
-	if($items_per_page < 1) $items_per_page = 10;
+	if($items_per_page < 0) $items_per_page = 10;
+	if(!isset($schema['items_per_page']) || $schema['items_per_page'] === '') $items_per_page = 10;
 	$order_by         = $schema['order_by'] ?? 'date_desc';
 	$variable_mapping = $schema['variable_mapping'] ?? [];
 	$show_search      = publisher_index_widget_bool($schema, 'show_search_input', true);
@@ -140,7 +141,7 @@ function publisher_index_widget_render_inline($params){
 	$publicacoes = [];
 	$tem_mais = false;
 	$total = 0;
-	if(!empty($publisher_id)){
+	if($items_per_page > 0 && !empty($publisher_id)){
 		$publicacoes = publisher_index_widget_buscar_publicacoes([
 			'publisher_id'   => $publisher_id,
 			'busca'          => '',
@@ -254,7 +255,8 @@ function publisher_index_render_ajax($params){
 	if(!is_array($schema)) $schema = [];
 
 	$items_per_page = (int)($schema['items_per_page'] ?? 10);
-	if($items_per_page < 1) $items_per_page = 10;
+	if($items_per_page < 0) $items_per_page = 10;
+	if(!isset($schema['items_per_page']) || $schema['items_per_page'] === '') $items_per_page = 10;
 
 	$order_by = $ordenacao !== '' ? $ordenacao : ($schema['order_by'] ?? 'date_desc');
 	if(!in_array($order_by, ['date_desc','date_asc','title_asc','title_desc'], true)) $order_by = 'date_desc';
@@ -270,7 +272,7 @@ function publisher_index_render_ajax($params){
 	$publicacoes = [];
 	$tem_mais = false;
 	$total = 0;
-	if(!empty($publisher_id)){
+	if($items_per_page > 0 && !empty($publisher_id)){
 		$publicacoes = publisher_index_widget_buscar_publicacoes([
 			'publisher_id'   => $publisher_id,
 			'busca'          => $busca,
@@ -436,9 +438,17 @@ function publisher_index_widget_clausula_busca($busca){
 	// uma barra literal gravada no banco, o padrão precisa receber "\\" antes do escape SQL.
 	$uniBar  = banco_escape_field(str_replace('\\', '\\\\', publisher_index_widget_unicode_escape($busca, true)));
 
+	// Monta a expressão CASE para validar o JSON antes de buscar
+	$searchLiteral = "(CASE WHEN JSON_VALID(pp.fields_values) = 1 THEN JSON_SEARCH(pp.fields_values, 'one', '%".$literal."%') ELSE NULL END) IS NOT NULL";
+	$searchUni     = "(CASE WHEN JSON_VALID(pp.fields_values) = 1 THEN JSON_SEARCH(pp.fields_values, 'one', '%".$uni."%') ELSE NULL END) IS NOT NULL";
+	$searchUniBar  = "(CASE WHEN JSON_VALID(pp.fields_values) = 1 THEN JSON_SEARCH(pp.fields_values, 'one', '%".$uniBar."%') ELSE NULL END) IS NOT NULL";
+	
 	return " AND (p.nome LIKE '%".$literal."%'"
 		." OR p.nome LIKE '%".$uni."%'"
-		." OR p.nome LIKE '%".$uniBar."%')";
+		." OR p.nome LIKE '%".$uniBar."%'"
+		." OR ".$searchLiteral
+		." OR ".$searchUni
+		." OR ".$searchUniBar.")";
 }
 
 /**

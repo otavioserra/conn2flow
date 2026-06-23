@@ -195,4 +195,18 @@ curl -H "Authorization: Bearer $token" \
 - **Desenvolvedor**: Otavio Serra
 
 ---
+
+## 🔁 Exceção: Atualização Forçada (`forcar_atualizacao`) (BATCH-056)
+
+A proteção baseada em `project` / `user_modified` pode ser **deliberadamente contornada** para registros específicos declarados em `forcar_atualizacao` (no `tabela.config` do módulo ou no `tables_config.json` global; consolidado em `schema-metadata.json`).
+
+Para os registros que casam (por `pk` ou `natural_key`), o atualizador:
+- **ignora** a checagem de `project` (registros de deploy de projeto são re-sincronizados);
+- **ignora** a preservação de `user_modified` (aplica o payload completo do deploy);
+- **redefine `user_modified = 0`** quando estava em `1`, realinhando o registro à base de código;
+- **preserva** o valor de `project` (não altera nem limpa).
+
+É o mecanismo recomendado para corrigir, num deploy, registros que ficaram divergentes por edição manual ou por deploy de projeto anterior.
+
+---
 *Esta documentação detalha a implementação da proteção de banco de dados baseada em projetos, garantindo que deploys de projeto não sejam sobrescritos por atualizações normais do sistema.*

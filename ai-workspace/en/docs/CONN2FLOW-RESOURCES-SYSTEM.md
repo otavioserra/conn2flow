@@ -300,3 +300,31 @@ Whenever creating or editing HTML files for pages (in `resources/*/pages/`), add
 - Improves code semantics and accessibility.
 
 This convention must be followed in all pages created in the resource system.
+
+---
+
+## 🧩 Declarative Synchronization of Custom Tables (BATCH-056)
+
+As of req-056, **any table** — module or global — can join the resource compilation pipeline purely declaratively, with no hand-written PHP hook scripts.
+
+### Where to declare
+- **Module**: in the `"tabela"."config"` block of the `modulos/<module>/<module>.json` manifest.
+- **Global** (tables with no owning module): in `gestor/resources/tables_config.json`, under `"tabelas"."<table>"."config"`.
+
+The `"config"` key may be a **single object** (1 table) or an **array of objects** (N tables); use `"tabela_nome"` inside each element to name the table when the array declares more than one.
+
+### Resource synchronization directives
+| Key | Purpose |
+| --- | --- |
+| `sync_resources` | `true` automatically generates `<PascalCase>Data.json` for the table. |
+| `resources_dir` | Resource subfolder (default = table name). |
+| `metadata_file` | External JSON with the record list; when absent, reads inline from `resources -> <language> -> <table>`. |
+| `field_types` | Per-field conversions: `"json"` (encodes array/object) and `"file:<ext>"` (injects the content of `<id>.<ext>`). |
+
+### Path resolution
+- **Physical content** (`file:<ext>`): `<base>/resources/<language>/<resources_dir\|table>/<id>.<ext>` (UTF-8 BOM stripped).
+- **External metadata** (`metadata_file`):
+  - Module: `modulos/<module>/resources/<language>/<resources_dir\|table>/<metadata_file>`.
+  - Global: `gestor/resources/<language>/<metadata_file>` (or `.../<resources_dir>/<metadata_file>` when `resources_dir` is explicit).
+
+Each record receives standardized columns (`language`, `status='A'`, `versao`, `user_modified=0`) and an MD5 `checksum` (over the `file:*` files or over the payload) used to reuse the `versao` when nothing changes between deploys.

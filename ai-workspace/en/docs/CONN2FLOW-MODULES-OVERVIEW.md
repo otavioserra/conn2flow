@@ -296,3 +296,9 @@ The Conn2Flow module system represents a **mature and well-structured architectu
 ---
 
 > 📚 **For detailed analysis of each module, consult the [`modulos/`](modulos/) folder which contains specific and in-depth documentation of each system component.**
+
+---
+
+## 🔌 Attaching Custom Tables to the Data Pipeline (BATCH-056)
+
+Beyond the native tables, a module can **attach its own tables** to the synchronization pipeline by declaring them in the `"tabela"."config"` block of its manifest (single object or array for multiple tables). With `sync_resources: true`, the module automatically generates and synchronizes `<PascalCase>Data.json` from its resources (`resources/<language>/...`), with `json` / `file:<ext>` conversions, plus declaring deletions (`deletar`) and forced updates (`forcar_atualizacao`) — all without PHP hook scripts. The same applies to global tables with no owning module via `gestor/resources/tables_config.json`.

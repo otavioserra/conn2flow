@@ -448,7 +448,7 @@ function carregarDadosExistentes(): array {
  * Coleta recursos aplicando regras de unicidade e separando órfãos.
  */
 function coletarRecursos(array $existentes, array $map): array {
-    global $RESOURCES_DIR, $MODULES_DIR, $LOG_FILE;
+    global $RESOURCES_DIR, $MODULES_DIR, $LOG_FILE, $DB_DATA_DIR;
     $languages = array_keys($map['languages']);
 
     $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = $templates = $forms = [];
@@ -737,6 +737,64 @@ function coletarRecursos(array $existentes, array $map): array {
         }
     }
 
+    // ---------- Tabelas dinâmicas (sync_resources) ----------
+    // Varredura genérica declarada em tables_config.json (global) e nos blocos "tabela.config"
+    // dos módulos. Cada tabela com sync_resources=true tem seus registros lidos (inline/arquivo),
+    // convertidos via field_types (json/file:ext) e acumulados em dynamicTablesData[tabela][].
+    $dynamicTablesData = [];
+    // Não sobrescrever os Data.json gerados pelo pipeline fixo acima.
+    $reservadas = [
+        'layouts'=>true,'paginas'=>true,'componentes'=>true,'templates'=>true,'variaveis'=>true,
+        'prompts_ia'=>true,'modos_ia'=>true,'alvos_ia'=>true,'forms'=>true,
+    ];
+    $existDinamicoCache = [];
+    foreach (coletarConfigsTabelas() as [$cfg, $src]) {
+        if (empty($cfg['sync_resources'])) continue;
+        $tabelaNome = $cfg['nome'];
+        if (isset($reservadas[$tabelaNome])) {
+            log_disco_local("DYNAMIC_SKIP_RESERVADA tabela=$tabelaNome src=$src", $LOG_FILE);
+            continue;
+        }
+        $fieldTypes = (isset($cfg['field_types']) && is_array($cfg['field_types'])) ? $cfg['field_types'] : [];
+
+        // Índice dos dados existentes (para reuso de versao quando o checksum não muda).
+        if (!array_key_exists($tabelaNome, $existDinamicoCache)) {
+            $listaExist = jsonRead($DB_DATA_DIR . dataFileNameFromTable($tabelaNome)) ?? [];
+            $idx = [];
+            foreach ($listaExist as $er) {
+                if (!is_array($er) || !isset($er['id'])) continue;
+                $mod = $er['module'] ?? ($er['modulo'] ?? '');
+                $lng = $er['language'] ?? ($er['linguagem_codigo'] ?? '');
+                $idx[$lng.'|'.$mod.'|'.$er['id']] = $er;
+            }
+            $existDinamicoCache[$tabelaNome] = $idx;
+        }
+        $existIdx = $existDinamicoCache[$tabelaNome];
+
+        foreach ($languages as $lang) {
+            foreach (lerMetadadosDinamicos($cfg, $lang) as $rec) {
+                if (!is_array($rec)) continue;
+                $id = $rec['id'] ?? null;
+                if ($id === null || $id === '') continue;
+                $registro = processarRegistroDinamico($rec, $cfg, $lang);
+                $checksum = checksumRegistroDinamico($registro, $fieldTypes);
+                $mod = $registro['module'] ?? ($registro['modulo'] ?? '');
+                $kExist = $lang.'|'.$mod.'|'.$id;
+                $versao = 1;
+                if (isset($existIdx[$kExist])) {
+                    $old = $existIdx[$kExist];
+                    $oldVer = (int)($old['versao'] ?? 1);
+                    $versao = (($old['checksum'] ?? null) === $checksum) ? $oldVer : $oldVer + 1;
+                }
+                $registro['versao'] = $versao;
+                $registro['checksum'] = $checksum;
+                if (!array_key_exists('user_modified', $registro)) $registro['user_modified'] = 0;
+                $dynamicTablesData[$tabelaNome][] = $registro;
+            }
+        }
+        log_disco_local("DYNAMIC_COLLECTED tabela=$tabelaNome qtd=".count($dynamicTablesData[$tabelaNome] ?? [])." src=$src", $LOG_FILE);
+    }
+
     log_disco_local(__t('_collected_summary', [
         'layouts'=>count($layouts), 'pages'=>count($paginas), 'components'=>count($componentes), 'templates'=>count($templates), 'variables'=>count($variaveis), 'prompts_ia'=>count($prompts_ia), 'alvos_ia'=>count($alvos_ia), 'modos_ia'=>count($modos_ia), 'forms'=>count($forms)
     ]), $LOG_FILE);
@@ -751,6 +809,7 @@ function coletarRecursos(array $existentes, array $map): array {
         'modesData'=>$modos_ia,
         'targetsData'=>$alvos_ia,
         'formsData'=>$forms,
+        'dynamicTablesData'=>$dynamicTablesData,
         'orphans'=>$orphans,
     ];
 }
@@ -771,6 +830,16 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     jsonWrite($DB_DATA_DIR.'AlvosIaData.json', $recursos['targetsData']);
     jsonWrite($DB_DATA_DIR.'FormsData.json', $recursos['formsData']);
     jsonWrite($DB_DATA_DIR.'ModosIaData.json', $recursos['modesData']);
+    // Tabelas dinâmicas (sync_resources): gera [PascalCase]Data.json para cada tabela coletada.
+    foreach (($recursos['dynamicTablesData'] ?? []) as $tabela => $linhas) {
+        if (!is_string($tabela) || !preg_match('/^[a-z0-9_]+$/', $tabela)) {
+            log_disco_local("DYNAMIC_DATA_SKIP_NOME_INVALIDO tabela=".$tabela, $LOG_FILE);
+            continue;
+        }
+        $fileName = dataFileNameFromTable($tabela);
+        jsonWrite($DB_DATA_DIR.$fileName, array_values((array)$linhas));
+        log_disco_local("DYNAMIC_DATA_SAVED $fileName qtd=".count((array)$linhas), $LOG_FILE);
+    }
     $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
     ensureDir($orphDir, $LOG_FILE);
     foreach (['Layouts','Paginas','Componentes','Templates','Variaveis','PromptsIa','AlvosIa','ModosIa','Forms'] as $T) {
@@ -839,80 +908,228 @@ function dataFileNameFromTable(string $tabela): string {
 }
 
 /**
- * Normaliza um bloco "tabela" (de módulo ou do global) para a forma canônica do contrato.
- * Apenas blocos com sub-chave "config" entram no contrato (tabelas sincronizadas via *Data.json).
- * Retorna null quando o bloco não define regras de sincronização.
+ * Lê a lista de registros (metadados) de uma tabela dinâmica (sync_resources) para um idioma.
+ * Resolve a origem conforme a configuração:
+ *  - metadata_file definido:
+ *      * módulo: <base_dir>/<lang>/<resources_dir|tabela>/<metadata_file>
+ *      * global: <base_dir>/<lang>/<metadata_file> (ou .../<resources_dir>/<metadata_file> se resources_dir for explícito)
+ *  - metadata_file ausente: registros inline em <inline>.resources.<lang>.<tabela_nome>
+ * Retorna sempre uma lista (array de registros) — vazia quando não há nada a coletar.
  */
-function normalizarConfigTabela(array $meta): ?array {
-    $nome = $meta['nome'] ?? null;
-    $config = $meta['config'] ?? null;
-    if (!is_string($nome) || $nome === '' || !is_array($config)) return null;
-    $strategy = ($config['strategy'] ?? 'pk') === 'natural_key' ? 'natural_key' : 'pk';
-    return [
-        'nome' => $nome,
-        'id' => $meta['id'] ?? 'id',
-        'id_numerico' => $meta['id_numerico'] ?? null,
-        'data_file' => dataFileNameFromTable($nome),
-        'strategy' => $strategy,
-        'natural_key_columns' => array_values(array_filter((array)($config['natural_key_columns'] ?? []), 'is_string')),
-        'preserve_on_user_modified' => array_values(array_filter((array)($config['preserve_on_user_modified'] ?? []), 'is_string')),
-        'insert_only' => !empty($config['insert_only']),
-        'deletar' => array_values((array)($meta['deletar'] ?? [])),
-    ];
+function lerMetadadosDinamicos(array $cfg, string $lang): array {
+    $tabela = $cfg['nome'];
+    $metaFile = $cfg['metadata_file'] ?? null;
+    $baseDir = $cfg['base_dir'] ?? null;
+    if ($metaFile && is_string($baseDir) && $baseDir !== '') {
+        $resDirExplicit = $cfg['resources_dir'] ?? null;
+        if (($cfg['scope'] ?? null) === 'module') {
+            $resDir = $resDirExplicit ?? $tabela;
+            $path = $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $resDir . DIRECTORY_SEPARATOR . $metaFile;
+        } else { // global
+            $path = $resDirExplicit
+                ? $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $resDirExplicit . DIRECTORY_SEPARATOR . $metaFile
+                : $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $metaFile;
+        }
+        $lista = jsonRead($path);
+        return is_array($lista) ? array_values($lista) : [];
+    }
+    // Inline: resources -> lang -> tabela_nome
+    $inline = $cfg['inline'] ?? null;
+    if (is_array($inline) && isset($inline['resources'][$lang][$tabela]) && is_array($inline['resources'][$lang][$tabela])) {
+        return array_values($inline['resources'][$lang][$tabela]);
+    }
+    return [];
 }
 
 /**
- * Motor de varredura genérico (Registry Pattern): consolida as regras de sincronização
- * de tabelas a partir do arquivo global tables_config.json e dos blocos "tabela.config"
- * de cada módulo, produzindo o contrato único db/data/schema-metadata.json consumido pelo
- * atualizador (atualizacoes-banco-de-dados.php). Blocos locais de módulo sobrescrevem o global.
+ * Processa um registro de tabela dinâmica aplicando as conversões declaradas em field_types:
+ *  - "json": codifica arrays/objetos com json_encode (pretty + unescaped unicode).
+ *  - "file:<ext>": injeta o conteúdo (sem BOM) do arquivo físico <id>.<ext> na pasta de recursos
+ *    (<base_dir>/<lang>/<resources_dir|tabela>/<id>.<ext>).
+ * Preenche colunas padronizadas: language (idioma da varredura), status ('A' default),
+ * user_modified (0 default). versao/checksum são resolvidos pelo chamador.
  */
-function gerarSchemaMetadata(): void {
-    global $RESOURCES_DIR, $MODULES_DIR, $DB_DATA_DIR, $LOG_FILE, $SYSTEM_PATH;
-    $tables = [];
-    $deletar = [];
+function processarRegistroDinamico(array $rec, array $cfg, string $lang): array {
+    $tabela = $cfg['nome'];
+    $fieldTypes = (isset($cfg['field_types']) && is_array($cfg['field_types'])) ? $cfg['field_types'] : [];
+    $resDirName = $cfg['resources_dir'] ?? $tabela;
+    $baseDir = $cfg['base_dir'] ?? '';
+    $filesDir = $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $resDirName;
+    $id = isset($rec['id']) ? (string)$rec['id'] : '';
 
-    $registrar = function (array $meta, string $source) use (&$tables, &$deletar) {
-        $norm = normalizarConfigTabela($meta);
-        if ($norm === null) return;
-        $nome = $norm['nome'];
-        $del = $norm['deletar'];
-        unset($norm['deletar']);
-        $norm['source'] = $source;
-        $tables[$nome] = $norm; // registro posterior (módulo) sobrescreve anterior (global)
-        if ($del) {
-            $deletar[$nome] = array_merge($deletar[$nome] ?? [], $del);
+    $registro = [];
+    foreach ($rec as $campo => $valor) {
+        $tipo = $fieldTypes[$campo] ?? null;
+        if ($tipo === 'json' && (is_array($valor) || is_object($valor))) {
+            $registro[$campo] = json_encode($valor, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        } else {
+            $registro[$campo] = $valor;
         }
-    };
+    }
+
+    // Campos file:<ext> — injeta conteúdo físico (mesmo quando ausente no metadado).
+    foreach ($fieldTypes as $campo => $tipo) {
+        if (is_string($tipo) && strncmp($tipo, 'file:', 5) === 0 && $id !== '') {
+            $ext = substr($tipo, 5);
+            if ($ext === '') continue;
+            $fpath = $filesDir . DIRECTORY_SEPARATOR . $id . '.' . $ext;
+            $conteudo = readFileIfExists($fpath);
+            if ($conteudo !== null) {
+                $registro[$campo] = $conteudo;
+            } elseif (!array_key_exists($campo, $registro)) {
+                $registro[$campo] = null;
+            }
+        }
+    }
+
+    // Colunas padronizadas (a coluna real de idioma/módulo é filtrada pelo atualizador via SHOW COLUMNS).
+    if (!array_key_exists('language', $registro)) $registro['language'] = $lang;
+    $cols = is_array($cfg['natural_key_columns'] ?? null) ? $cfg['natural_key_columns'] : [];
+    if (($cfg['scope'] ?? null) === 'module' && !empty($cfg['modulo'])) {
+        if (in_array('module', $cols, true) && !array_key_exists('module', $registro)) $registro['module'] = $cfg['modulo'];
+        if (in_array('modulo', $cols, true) && !array_key_exists('modulo', $registro)) $registro['modulo'] = $cfg['modulo'];
+    }
+    if (!array_key_exists('status', $registro)) $registro['status'] = 'A';
+
+    return $registro;
+}
+
+/**
+ * Calcula o checksum MD5 de um registro dinâmico. Quando há campos file:<ext>, baseia-se
+ * exclusivamente no conteúdo desses arquivos; caso contrário, no payload do registro
+ * (excluindo colunas de controle versao/checksum/user_modified).
+ */
+function checksumRegistroDinamico(array $registro, array $fieldTypes): string {
+    $fileParts = [];
+    foreach ($fieldTypes as $campo => $tipo) {
+        if (is_string($tipo) && strncmp($tipo, 'file:', 5) === 0) {
+            $fileParts[] = $campo . '=' . (string)($registro[$campo] ?? '');
+        }
+    }
+    if ($fileParts) {
+        return md5(implode("\x1f", $fileParts));
+    }
+    $payload = $registro;
+    unset($payload['versao'], $payload['checksum'], $payload['user_modified']);
+    return md5((string)json_encode($payload, JSON_UNESCAPED_UNICODE));
+}
+
+/**
+ * Normaliza um bloco "tabela" (de módulo ou do global) para a forma canônica do contrato.
+ * A sub-chave "config" pode ser um OBJETO único (1 tabela) ou um ARRAY de objetos (N tabelas);
+ * objetos únicos são convertidos internamente em um array de 1 elemento.
+ *
+ * Retorna SEMPRE uma lista (array de 0+ entradas normalizadas), uma por configuração válida.
+ * Cada entrada carrega os campos do contrato (estratégia/chave natural/preserve/insert_only) e
+ * também as diretivas de sincronização declarativa de recursos (sync_resources/resources_dir/
+ * metadata_file/field_types) e as listas agregadas por tabela (deletar/forcar_atualizacao).
+ *
+ * O nome da tabela de cada entrada vem de config.tabela_nome (quando presente) ou do nome do
+ * bloco ("tabela"."nome"). As listas deletar/forcar_atualizacao podem ser declaradas dentro de
+ * cada elemento de config OU no nível do bloco (retrocompat); o nível do bloco só é herdado
+ * quando o nome da tabela coincide com o nome do bloco.
+ */
+function normalizarConfigTabela(array $meta): array {
+    $nomeBloco = (isset($meta['nome']) && is_string($meta['nome'])) ? $meta['nome'] : null;
+    $configRaw = $meta['config'] ?? null;
+    if (!is_array($configRaw)) return [];
+    // Objeto associativo único => array de 1 elemento. Array de objetos => mantém.
+    $configs = array_is_list($configRaw) ? $configRaw : [$configRaw];
+
+    $out = [];
+    foreach ($configs as $config) {
+        if (!is_array($config)) continue;
+        $nome = (isset($config['tabela_nome']) && is_string($config['tabela_nome']) && $config['tabela_nome'] !== '')
+            ? $config['tabela_nome'] : $nomeBloco;
+        if (!is_string($nome) || $nome === '') continue;
+        $mesmoBloco = ($nome === $nomeBloco);
+        $strategy = ($config['strategy'] ?? 'pk') === 'natural_key' ? 'natural_key' : 'pk';
+
+        // deletar/forcar_atualizacao: do elemento de config, com fallback ao nível do bloco
+        // somente quando a tabela coincide com o nome do bloco (retrocompat com BATCH-029).
+        $deletar = array_values((array)($config['deletar'] ?? []));
+        if (!$deletar && $mesmoBloco) $deletar = array_values((array)($meta['deletar'] ?? []));
+        $forcar = array_values((array)($config['forcar_atualizacao'] ?? []));
+        if (!$forcar && $mesmoBloco) $forcar = array_values((array)($meta['forcar_atualizacao'] ?? []));
+
+        $resourcesDir = (isset($config['resources_dir']) && is_string($config['resources_dir']) && $config['resources_dir'] !== '')
+            ? $config['resources_dir'] : null;
+        $metadataFile = (isset($config['metadata_file']) && is_string($config['metadata_file']) && $config['metadata_file'] !== '')
+            ? $config['metadata_file'] : null;
+        $fieldTypes = (isset($config['field_types']) && is_array($config['field_types'])) ? $config['field_types'] : [];
+
+        $out[] = [
+            'nome' => $nome,
+            'id' => $config['id'] ?? ($mesmoBloco ? ($meta['id'] ?? 'id') : 'id'),
+            'id_numerico' => $config['id_numerico'] ?? ($mesmoBloco ? ($meta['id_numerico'] ?? null) : null),
+            'data_file' => dataFileNameFromTable($nome),
+            'strategy' => $strategy,
+            'natural_key_columns' => array_values(array_filter((array)($config['natural_key_columns'] ?? []), 'is_string')),
+            'preserve_on_user_modified' => array_values(array_filter((array)($config['preserve_on_user_modified'] ?? []), 'is_string')),
+            'insert_only' => !empty($config['insert_only']),
+            // Diretivas de sincronização declarativa de recursos (build-time; não vão ao contrato).
+            'sync_resources' => !empty($config['sync_resources']),
+            'resources_dir' => $resourcesDir,
+            'metadata_file' => $metadataFile,
+            'field_types' => $fieldTypes,
+            // Listas agregadas por tabela.
+            'deletar' => $deletar,
+            'forcar_atualizacao' => $forcar,
+        ];
+    }
+    return $out;
+}
+
+/**
+ * Coleta TODAS as configurações de tabela normalizadas (globais + módulos), em ordem
+ * determinística (núcleo herdado em modo projeto → global/projeto → módulos do núcleo →
+ * módulos locais). Cada item retornado é [$norm, $source], onde $norm é a saída de
+ * normalizarConfigTabela() acrescida do contexto de varredura de recursos:
+ *  - 'scope'    : 'global' ou 'module'
+ *  - 'modulo'   : id do módulo (apenas scope=module)
+ *  - 'base_dir' : pasta-base de recursos (gestor/resources ou <modulo>/resources)
+ *  - 'inline'   : referência ao JSON de origem (para metadados inline em resources->lang->tabela)
+ *
+ * Reaproveitada por gerarSchemaMetadata() (contrato) e por coletarRecursos() (varredura dinâmica).
+ * Registros posteriores (módulos) sobrescrevem anteriores (global) ao consolidar por nome de tabela.
+ */
+function coletarConfigsTabelas(): array {
+    global $RESOURCES_DIR, $MODULES_DIR, $SYSTEM_PATH, $LOG_FILE;
+    $out = [];
 
     // 1) Tabelas globais (sem módulo dono): gestor/resources/tables_config.json
-    // Em modo projeto, herda primeiro o contrato do núcleo e permite override pelo projeto.
     $arquivosGlobais = [];
     if (!empty($GLOBALS['CLI_ARGS']['project-path'])) {
         $coreGlobal = $SYSTEM_PATH . 'gestor' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'tables_config.json';
         if (is_file($coreGlobal)) {
-            $arquivosGlobais[] = [$coreGlobal, 'core:tables_config.json'];
+            $arquivosGlobais[] = [$coreGlobal, 'core:tables_config.json', dirname($coreGlobal)];
         }
     }
-    $arquivosGlobais[] = [$RESOURCES_DIR . 'tables_config.json', 'global:tables_config.json'];
+    $arquivosGlobais[] = [$RESOURCES_DIR . 'tables_config.json', 'global:tables_config.json', rtrim($RESOURCES_DIR, DIRECTORY_SEPARATOR)];
 
-    foreach ($arquivosGlobais as [$globalFile, $srcLabel]) {
-        if (is_file($globalFile)) {
-            $g = jsonRead($globalFile);
-            if (is_array($g) && isset($g['tabelas']) && is_array($g['tabelas'])) {
-                foreach ($g['tabelas'] as $meta) {
-                    if (is_array($meta)) $registrar($meta, $srcLabel);
-                }
-            } else {
-                log_disco_local('SCHEMA_META_WARN ' . basename($globalFile) . ' invalido ou sem chave "tabelas"', $LOG_FILE);
-            }
-        } else {
+    foreach ($arquivosGlobais as [$globalFile, $srcLabel, $baseDir]) {
+        if (!is_file($globalFile)) {
             log_disco_local('SCHEMA_META_INFO ' . basename($globalFile) . ' ausente em ' . $globalFile, $LOG_FILE);
+            continue;
+        }
+        $g = jsonRead($globalFile);
+        if (!is_array($g) || !isset($g['tabelas']) || !is_array($g['tabelas'])) {
+            log_disco_local('SCHEMA_META_WARN ' . basename($globalFile) . ' invalido ou sem chave "tabelas"', $LOG_FILE);
+            continue;
+        }
+        foreach ($g['tabelas'] as $meta) {
+            if (!is_array($meta)) continue;
+            foreach (normalizarConfigTabela($meta) as $norm) {
+                $norm['scope'] = 'global';
+                $norm['modulo'] = null;
+                $norm['base_dir'] = $baseDir;
+                $norm['inline'] = $g;
+                $out[] = [$norm, $srcLabel];
+            }
         }
     }
 
     // 2) Blocos locais "tabela.config" de cada módulo
-    // Em modo projeto, também herda os módulos do núcleo antes dos módulos locais.
     $pastasModulos = [];
     if (!empty($GLOBALS['CLI_ARGS']['project-path'])) {
         $coreModDir = $SYSTEM_PATH . 'gestor' . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR;
@@ -923,18 +1140,59 @@ function gerarSchemaMetadata(): void {
     $pastasModulos[] = [$MODULES_DIR, 'module:'];
 
     foreach ($pastasModulos as [$mDir, $srcPrefix]) {
-        if (is_dir($mDir)) {
-            foreach (glob($mDir . '*', GLOB_ONLYDIR) ?: [] as $modPath) {
-                $modId = basename($modPath);
-                $jsonFile = $modPath . DIRECTORY_SEPARATOR . $modId . '.json';
-                $data = jsonRead($jsonFile);
-                if (!is_array($data)) continue;
-                $tabela = $data['tabela'] ?? null;
-                if (is_array($tabela) && !empty($tabela['config'])) {
-                    $registrar($tabela, $srcPrefix . $modId);
-                }
+        if (!is_dir($mDir)) continue;
+        foreach (glob($mDir . '*', GLOB_ONLYDIR) ?: [] as $modPath) {
+            $modId = basename($modPath);
+            $jsonFile = $modPath . DIRECTORY_SEPARATOR . $modId . '.json';
+            $data = jsonRead($jsonFile);
+            if (!is_array($data)) continue;
+            $tabela = $data['tabela'] ?? null;
+            if (!is_array($tabela) || empty($tabela['config'])) continue;
+            foreach (normalizarConfigTabela($tabela) as $norm) {
+                $norm['scope'] = 'module';
+                $norm['modulo'] = $modId;
+                $norm['base_dir'] = $modPath . DIRECTORY_SEPARATOR . 'resources';
+                $norm['inline'] = $data;
+                $out[] = [$norm, $srcPrefix . $modId];
             }
         }
+    }
+
+    return $out;
+}
+
+/**
+ * Motor de varredura genérico (Registry Pattern): consolida as regras de sincronização
+ * de tabelas a partir do arquivo global tables_config.json e dos blocos "tabela.config"
+ * de cada módulo, produzindo o contrato único db/data/schema-metadata.json consumido pelo
+ * atualizador (atualizacoes-banco-de-dados.php). Blocos locais de módulo sobrescrevem o global.
+ * As listas "deletar" e "forcar_atualizacao" são consolidadas (agregadas) por tabela.
+ */
+function gerarSchemaMetadata(): void {
+    global $DB_DATA_DIR, $LOG_FILE;
+    $tables = [];
+    $deletar = [];
+    $forcar = [];
+
+    foreach (coletarConfigsTabelas() as [$norm, $source]) {
+        $nome = $norm['nome'];
+        $del = $norm['deletar'] ?? [];
+        $forc = $norm['forcar_atualizacao'] ?? [];
+        // Mantém no contrato apenas os campos consumidos pelo atualizador (descarta contexto
+        // de varredura e diretivas de recurso, que são build-time).
+        $tables[$nome] = [
+            'nome' => $norm['nome'],
+            'id' => $norm['id'],
+            'id_numerico' => $norm['id_numerico'],
+            'data_file' => $norm['data_file'],
+            'strategy' => $norm['strategy'],
+            'natural_key_columns' => $norm['natural_key_columns'],
+            'preserve_on_user_modified' => $norm['preserve_on_user_modified'],
+            'insert_only' => $norm['insert_only'],
+            'source' => $source,
+        ];
+        if ($del) { $deletar[$nome] = array_merge($deletar[$nome] ?? [], $del); }
+        if ($forc) { $forcar[$nome] = array_merge($forcar[$nome] ?? [], $forc); }
     }
 
     ksort($tables);
@@ -942,10 +1200,11 @@ function gerarSchemaMetadata(): void {
         'generated_at' => date('c'),
         'tables' => $tables,
         'deletar' => $deletar,
+        'forcar_atualizacao' => $forcar,
     ];
     $dest = $DB_DATA_DIR . 'schema-metadata.json';
     if (jsonWrite($dest, $contrato)) {
-        log_disco_local('SCHEMA_METADATA_SAVED ' . $dest . ' tabelas=' . count($tables) . ' deletar=' . count($deletar), $LOG_FILE);
+        log_disco_local('SCHEMA_METADATA_SAVED ' . $dest . ' tabelas=' . count($tables) . ' deletar=' . count($deletar) . ' forcar=' . count($forcar), $LOG_FILE);
     } else {
         log_disco_local('SCHEMA_METADATA_ERRO ao gravar ' . $dest, $LOG_FILE);
     }

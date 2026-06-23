@@ -300,3 +300,31 @@ Sempre que criar ou editar arquivos HTML para páginas (em `resources/*/pages/`)
 - Melhora a semântica e acessibilidade do código.
 
 Essa convenção deve ser seguida em todas as páginas criadas no sistema de recursos.
+
+---
+
+## 🧩 Sincronização Declarativa de Tabelas Customizadas (BATCH-056)
+
+A partir do req-056, **qualquer tabela** — de módulo ou global — pode entrar na esteira de compilação de recursos de forma puramente declarativa, sem escrever scripts PHP de hook.
+
+### Onde declarar
+- **Módulo**: no bloco `"tabela"."config"` do manifesto `modulos/<modulo>/<modulo>.json`.
+- **Global** (tabelas sem módulo dono): no arquivo `gestor/resources/tables_config.json`, sob `"tabelas"."<tabela>"."config"`.
+
+A chave `"config"` pode ser um **objeto único** (1 tabela) ou um **array de objetos** (N tabelas); use `"tabela_nome"` dentro de cada elemento para nomear a tabela quando o array declarar mais de uma.
+
+### Diretivas de sincronização de recursos
+| Chave | Função |
+| --- | --- |
+| `sync_resources` | `true` gera automaticamente `<PascalCase>Data.json` para a tabela. |
+| `resources_dir` | Subpasta de recursos (default = nome da tabela). |
+| `metadata_file` | JSON externo com a lista de registros; se ausente, lê inline em `resources -> <idioma> -> <tabela>`. |
+| `field_types` | Conversões por campo: `"json"` (codifica array/objeto) e `"file:<ext>"` (injeta o conteúdo de `<id>.<ext>`). |
+
+### Resolução de caminhos
+- **Conteúdo físico** (`file:<ext>`): `<base>/resources/<idioma>/<resources_dir\|tabela>/<id>.<ext>` (BOM UTF-8 removido).
+- **Metadados externos** (`metadata_file`):
+  - Módulo: `modulos/<modulo>/resources/<idioma>/<resources_dir\|tabela>/<metadata_file>`.
+  - Global: `gestor/resources/<idioma>/<metadata_file>` (ou `.../<resources_dir>/<metadata_file>` se `resources_dir` for explícito).
+
+Cada registro recebe colunas padronizadas (`language`, `status='A'`, `versao`, `user_modified=0`) e um `checksum` MD5 (sobre os arquivos `file:*` ou sobre o payload) usado para reaproveitar a `versao` quando nada muda entre deploys.

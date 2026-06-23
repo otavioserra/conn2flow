@@ -29,7 +29,19 @@
     <p id="error-message-content"></p>
 </div>
 
-<h4 class="ui dividing header">Menu items</h4>
+<h4 class="ui dividing header">Menu Availability</h4>
+
+<div class="field">
+    <label>Availability type</label>
+    <select id="menu_availability" class="ui dropdown">
+        <option value="todos">Visible to Everyone</option>
+        <option value="condicional">Conditional Visibility</option>
+    </select>
+</div>
+
+<div id="menu-availability"></div>
+
+<div id="menu-item-builder-wrapper">
 
 <div class="ui label" style="margin: 8px 0; display: block;">
     <i class="sitemap icon"></i>
@@ -144,6 +156,8 @@
 
 <!-- Menu items tree (multi-level drag-and-drop, rendered by JS) -->
 <div id="menu-tree"></div>
+
+</div>
 
 <input type="hidden" name="fields_schema">
 

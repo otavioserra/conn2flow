@@ -158,6 +158,17 @@ function updateModuleResourceMapping($module_path, $module_id, $language, $resou
 
 ---
 
+## 🌐 Resolução de Idiomas na Sincronização Declarativa (BATCH-056)
+
+O gerador resolve os metadados de tabelas dinâmicas (`sync_resources`) por idioma de forma unificada para módulos e globais:
+
+- **Metadados externos**: lidos por idioma na pasta `resources/<idioma>/...` (módulo: `modulos/<modulo>/resources/<idioma>/<resources_dir|tabela>/<metadata_file>`; global: `gestor/resources/<idioma>/[<resources_dir>/]<metadata_file>`).
+- **Metadados inline**: lidos da chave `resources -> <idioma> -> <tabela>` do próprio JSON (`<modulo>.json` ou `tables_config.json`).
+
+Em ambos os casos a varredura percorre todos os idiomas configurados e injeta a coluna `language` correspondente, mantendo a paridade entre pt-br/en e demais idiomas.
+
+---
+
 **Data de Implementação:** 07 de Agosto de 2025  
 **Versão:** CONN2FLOW v1.8.4+  
 **Status:** ✅ SISTEMA HÍBRIDO MULTILÍNGUE COMPLETO

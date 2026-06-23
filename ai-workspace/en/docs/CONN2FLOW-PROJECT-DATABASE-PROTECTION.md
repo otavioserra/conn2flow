@@ -195,4 +195,18 @@ curl -H "Authorization: Bearer $token" \
 - **Developer**: Otavio Serra
 
 ---
+
+## 🔁 Exception: Forced Update (`forcar_atualizacao`) (BATCH-056)
+
+The `project` / `user_modified` protection can be **deliberately bypassed** for specific records declared in `forcar_atualizacao` (in the module's `tabela.config` or in the global `tables_config.json`; consolidated into `schema-metadata.json`).
+
+For the matching records (by `pk` or `natural_key`), the updater:
+- **ignores** the `project` check (project-deploy records are re-synchronized);
+- **ignores** the `user_modified` preservation (applies the full deploy payload);
+- **resets `user_modified = 0`** when it was `1`, realigning the record with the codebase;
+- **preserves** the `project` value (neither changed nor cleared).
+
+This is the recommended mechanism to fix, on a deploy, records that drifted due to manual editing or a prior project deploy.
+
+---
 *This documentation details the implementation of project-based database protection, ensuring that project deployments are not overwritten by normal system updates.*

@@ -7,7 +7,7 @@
  *    link-action / separador), editor drag-and-drop bidimensional estilo WordPress
  *    (arrastar na vertical = ordenar; arrastar na horizontal = indentar/desindentar como
  *    filho), edição inline de rótulo/URL/classes e exclusão recursiva.
- *  - Serializa a árvore (selected_items hierárquico + template_id) para o input hidden
+ *  - Serializa a árvore (availability + conditions + menus + template_id) para o input hidden
  *    `fields_schema` antes do submit e no preview ao vivo (AJAX widget-preview).
  *
  * O editor de árvore é um componente PRÓPRIO: Pointer Events em JS vanilla (sem jQuery UI /
@@ -36,6 +36,8 @@ $(document).ready(function () {
             + '.menu-tree-label.sep{color:#999;font-style:italic;}'
             + '.menu-tree-edit,.menu-tree-delete{cursor:pointer;opacity:0.6;}'
             + '.menu-tree-edit:hover,.menu-tree-delete:hover{opacity:1;}'
+            + '#condition-profile-tags{margin-top:8px;margin-bottom:12px;min-height:1px;}'
+            + '.condition-profile-tag{margin:4px 4px 4px 0!important;}'
             + '.menu-tree-placeholder{display:flex;align-items:center;justify-content:center;gap:12px;min-height:38px;'
             + 'margin:4px 0;border:2px dashed #2185d0;border-radius:4px;background:#e8f3ff;color:#2185d0;font-size:13px;'
             + 'font-weight:bold;user-select:none;box-sizing:border-box;}'
@@ -87,12 +89,10 @@ $(document).ready(function () {
 
     // ===== Estado do schema (re-hidratado a partir do PHP)
 
-    var schema = (typeof menus_initial_schema !== 'undefined' && menus_initial_schema) ? menus_initial_schema : {
+    var schema = normalizeSchema((typeof menus_initial_schema !== 'undefined' && menus_initial_schema) ? menus_initial_schema : {
         selected_items: [],
         template_id: ''
-    };
-
-    if (!Array.isArray(schema.selected_items)) schema.selected_items = [];
+    });
 
     // Cache do HTML/CSS originais carregados do banco no page load (req-026 / DEC-039).
     // Usado para restaurar o editor ao voltar para a opção "-modificado" do dropdown de modelos.
@@ -104,6 +104,7 @@ $(document).ready(function () {
     var treeItems = [];
     var selectedRowId = null;     // item clicado (ponto de inserção)
     var drag = null;              // estado do arraste em andamento
+    var activeMenuKey = initialActiveMenuKey();
 
     // ===== Hidratar inputs com o schema atual
 
@@ -143,11 +144,16 @@ $(document).ready(function () {
 
     var widgetCodeMirror = null;     // instância do CodeMirror da aba "Código do Widget"
     var manualSearchTimer = null;    // debounce do campo de busca
+    var profileSearchTimer = null;   // debounce do autocomplete de perfis
+    var conditionProfileSelection = [];
 
     // ===== Inicialização
 
     var $template = $('select[name="template_id"]');
     var $itemType = $('select[id="item_type"]');
+    var $availability = $('#menu_availability');
+
+    hydrateAvailabilityField();
 
     // Componentes Fomantic do construtor de itens.
     $('.ui.radio.checkbox').checkbox();
@@ -172,6 +178,7 @@ $(document).ready(function () {
 
     // Hidratar a árvore de itens a partir do schema (resolve nomes/urls de páginas).
     initTree();
+    renderAvailabilityUI();
 
     // Ao clicar na aba externa de Pré-Visualização, garantir refresh.
     $(document).on('click', '.menuConteudoMenu .item[data-tab="hep-preview"]', function () {
@@ -208,6 +215,134 @@ $(document).ready(function () {
     $itemType.on('change', function () {
         var value = $(this).val();
         toggleItemTypeFields(value);
+    });
+
+    $availability.on('change', function () {
+        saveActiveTree();
+        schema.availability = ($(this).val() === 'condicional') ? 'condicional' : 'todos';
+        activeMenuKey = initialActiveMenuKey();
+        initTree();
+        renderAvailabilityUI();
+        scheduleWidgetPreview(false, true);
+    });
+
+    $(document).on('click', '#btn-add-condition', function () {
+        conditionProfileSelection = [];
+        $('#menu-condition-form').slideDown(120);
+        $('#condition_type').val('publico');
+        $('#condition_slug').val('publico').focus();
+        toggleConditionProfileFields();
+    });
+
+    $(document).on('change', '#condition_type', function () {
+        var type = $(this).val() || 'publico';
+        var current = ($('#condition_slug').val() || '').trim();
+        if (!current || current === 'publico' || current === 'logado' || current === 'perfil_usuario') {
+            $('#condition_slug').val(type);
+        }
+        toggleConditionProfileFields();
+    });
+
+    $(document).on('click', '#btn-cancel-condition', function () {
+        $('#menu-condition-form').slideUp(120);
+        $('#condition_slug').val('');
+        conditionProfileSelection = [];
+        renderConditionProfileTags();
+        hideProfileSuggestions();
+    });
+
+    $(document).on('click', '#btn-confirm-condition', function () {
+        var type = $('#condition_type').val() || 'publico';
+        var slug = sanitizeConditionSlug($('#condition_slug').val() || type);
+        var exists = schema.conditions.some(function (cond) { return cond.slug === slug; });
+
+        if (exists) {
+            msg_erro_mostrar(isPtBr() ? 'Já existe uma condição com esse slug.' : 'A condition with this slug already exists.');
+            return;
+        }
+
+        if (type === 'perfil_usuario' && conditionProfileSelection.length === 0) {
+            msg_erro_mostrar(isPtBr() ? 'Selecione ao menos um perfil de usuário.' : 'Select at least one user profile.');
+            return;
+        }
+
+        var condition = { type: type, slug: slug };
+        if (type === 'perfil_usuario') {
+            condition.profile_ids = conditionProfileSelection.map(function (profile) { return profile.id; });
+            condition.profiles = $.extend(true, [], conditionProfileSelection);
+        }
+
+        saveActiveTree();
+        schema.conditions.push(condition);
+        if (!schema.menus || typeof schema.menus !== 'object') schema.menus = {};
+        schema.menus[slug] = [];
+        ensureConditionalHtmlBlock(slug);
+        activeMenuKey = slug;
+        selectedRowId = null;
+        treeItems = [];
+        $('#condition_slug').val('');
+        conditionProfileSelection = [];
+        renderConditionProfileTags();
+        hideProfileSuggestions();
+        msg_erro_resetar(false);
+        renderAvailabilityUI();
+        initTree();
+        scheduleWidgetPreview(false, true);
+    });
+
+    $(document).on('click', '.menu-condition-tabs .item', function (e) {
+        if ($(e.target).closest('.menu-condition-delete').length) return;
+        var slug = $(this).attr('data-slug');
+        if (!slug || slug === activeMenuKey) return;
+        saveActiveTree();
+        activeMenuKey = slug;
+        selectedRowId = null;
+        initTree();
+        renderAvailabilityUI();
+        scheduleWidgetPreview(false, true);
+    });
+
+    $(document).on('input', '#condition_profile_search', function () {
+        var value = ($(this).val() || '').trim();
+        if (profileSearchTimer) clearTimeout(profileSearchTimer);
+        if (value === '') { hideProfileSuggestions(); return; }
+        profileSearchTimer = setTimeout(function () { runProfileSearch(value); }, 300);
+    });
+
+    $(document).on('click', '#condition-profile-suggestions .item', function () {
+        var $item = $(this);
+        if ($item.hasClass('disabled')) return;
+        var id = $item.attr('data-id');
+        if (!id) return;
+        addConditionProfile({
+            id: id,
+            slug: $item.attr('data-slug') || '',
+            name: $item.attr('data-name') || id
+        });
+        $('#condition_profile_search').val('');
+        hideProfileSuggestions();
+    });
+
+    $(document).on('click', '.condition-profile-remove', function () {
+        var id = $(this).closest('.condition-profile-tag').attr('data-id');
+        conditionProfileSelection = conditionProfileSelection.filter(function (profile) { return profile.id !== id; });
+        renderConditionProfileTags();
+    });
+
+    $(document).on('click', '.menu-condition-delete', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var slug = $(this).closest('.item').attr('data-slug');
+        if (!slug) return;
+
+        saveActiveTree();
+        schema.conditions = schema.conditions.filter(function (cond) { return cond.slug !== slug; });
+        if (schema.menus && Object.prototype.hasOwnProperty.call(schema.menus, slug)) delete schema.menus[slug];
+        activeMenuKey = initialActiveMenuKey();
+        selectedRowId = null;
+        initTree();
+        renderAvailabilityUI();
+        scheduleWidgetPreview(false, true);
     });
 
     // Interceptar submit para serializar a árvore.
@@ -279,6 +414,336 @@ $(document).ready(function () {
         msg_erro_resetar(true);
     }
 
+    function hydrateAvailabilityField() {
+        if ($availability.length === 0) return;
+
+        var value = (schema.availability === 'condicional') ? 'condicional' : 'todos';
+        schema.availability = value;
+        $availability.val(value);
+
+        setTimeout(function () {
+            if ($availability.closest('.ui.dropdown').length || $availability.hasClass('dropdown')) {
+                try { $availability.dropdown('set selected', value); } catch (err) { $availability.val(value); }
+            }
+        }, 0);
+    }
+
+    function normalizeSchema(input) {
+        var out = $.extend(true, {}, input || {});
+
+        if (!Array.isArray(out.selected_items)) out.selected_items = [];
+        if (out.availability !== 'condicional') out.availability = 'todos';
+        if (!Array.isArray(out.conditions)) out.conditions = [];
+        if (!out.menus || typeof out.menus !== 'object' || Array.isArray(out.menus)) out.menus = {};
+
+        if (!Array.isArray(out.menus.visible_to_all)) {
+            out.menus.visible_to_all = out.selected_items.slice ? $.extend(true, [], out.selected_items) : [];
+        }
+
+        out.conditions = out.conditions.filter(function (cond) {
+            return cond && typeof cond === 'object' && cond.slug;
+        }).map(function (cond) {
+            var type = (cond.type === 'logado' || cond.type === 'perfil_usuario') ? cond.type : 'publico';
+            var slug = sanitizeConditionSlug(cond.slug || type);
+            if (!Array.isArray(out.menus[slug])) out.menus[slug] = [];
+            var normalized = { type: type, slug: slug };
+            if (type === 'perfil_usuario') {
+                normalized.profile_ids = normalizeProfileIds(cond.profile_ids || cond.profiles || []);
+                normalized.profiles = normalizeProfiles(cond.profiles || [], normalized.profile_ids);
+            }
+            return normalized;
+        });
+
+        out.template_id = out.template_id || '';
+        return out;
+    }
+
+    function initialActiveMenuKey() {
+        if (schema.availability === 'condicional' && schema.conditions.length > 0) {
+            return schema.conditions[0].slug;
+        }
+        return 'visible_to_all';
+    }
+
+    function saveActiveTree() {
+        if (!schema.menus || typeof schema.menus !== 'object') schema.menus = {};
+        if (!activeMenuKey) return;
+        schema.menus[activeMenuKey] = buildTree(treeItems);
+    }
+
+    function sanitizeConditionSlug(value) {
+        var slug = (value || '').toString().trim().toLowerCase();
+        slug = slug.normalize ? slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : slug;
+        slug = slug.replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
+        return slug || 'condicao';
+    }
+
+    function labelForConditionType(type) {
+        var pt = isPtBr();
+        if (type === 'logado') return pt ? 'Logado' : 'Logged in';
+        if (type === 'perfil_usuario') return pt ? 'Perfil de usuário' : 'User profile';
+        return pt ? 'Público' : 'Public';
+    }
+
+    function conditionProfileNames(cond) {
+        var names = [];
+        (cond.profiles || []).forEach(function (profile) {
+            if (!profile || typeof profile !== 'object') return;
+            var name = (profile.name || profile.text || profile.slug || profile.id || '').toString();
+            if (name && names.indexOf(name) === -1) names.push(name);
+        });
+        if (names.length === 0) {
+            (cond.profile_ids || []).forEach(function (id) {
+                id = (id || '').toString();
+                if (id && names.indexOf(id) === -1) names.push(id);
+            });
+        }
+        return names;
+    }
+
+    function conditionTabText(cond) {
+        var label = labelForConditionType(cond.type);
+        if (cond.type === 'perfil_usuario') {
+            var count = Array.isArray(cond.profile_ids) ? cond.profile_ids.length : conditionProfileNames(cond).length;
+            return cond.slug + ' (' + label + ' - ' + count + ')';
+        }
+        return cond.slug + ' (' + label + ')';
+    }
+
+    function conditionProfilesTooltip(cond) {
+        if (cond.type !== 'perfil_usuario') return '';
+        var names = conditionProfileNames(cond);
+        var prefix = isPtBr() ? 'Usuário Perfis: ' : 'User Profiles: ';
+        return prefix + (names.length ? names.join(', ') : (isPtBr() ? 'Nenhum perfil selecionado' : 'No profiles selected'));
+    }
+
+    function normalizeProfileIds(values) {
+        var ids = [];
+        (values || []).forEach(function (value) {
+            var id = (typeof value === 'object' && value !== null) ? value.id : value;
+            id = (id || '').toString();
+            if (id && ids.indexOf(id) === -1) ids.push(id);
+        });
+        return ids;
+    }
+
+    function normalizeProfiles(profiles, ids) {
+        var out = [];
+        var byId = {};
+        (profiles || []).forEach(function (profile) {
+            if (!profile || typeof profile !== 'object') return;
+            var id = (profile.id || profile.value || '').toString();
+            if (!id || byId[id]) return;
+            byId[id] = true;
+            out.push({
+                id: id,
+                slug: (profile.slug || '').toString(),
+                name: (profile.name || profile.text || id).toString()
+            });
+        });
+        (ids || []).forEach(function (id) {
+            id = (id || '').toString();
+            if (!id || byId[id]) return;
+            byId[id] = true;
+            out.push({ id: id, slug: '', name: id });
+        });
+        return out;
+    }
+
+    function toggleConditionProfileFields() {
+        var isProfile = ($('#condition_type').val() || '') === 'perfil_usuario';
+        $('#condition-profile-wrapper').toggle(isProfile);
+        if (!isProfile) {
+            conditionProfileSelection = [];
+            renderConditionProfileTags();
+            hideProfileSuggestions();
+        }
+    }
+
+    function addConditionProfile(profile) {
+        var id = (profile.id || '').toString();
+        if (!id) return;
+        var exists = conditionProfileSelection.some(function (item) { return item.id === id; });
+        if (exists) return;
+        conditionProfileSelection.push({
+            id: id,
+            slug: (profile.slug || '').toString(),
+            name: (profile.name || id).toString()
+        });
+        renderConditionProfileTags();
+    }
+
+    function renderConditionProfileTags() {
+        var $tags = $('#condition-profile-tags');
+        if ($tags.length === 0) return;
+        $tags.empty();
+        conditionProfileSelection.forEach(function (profile) {
+            var label = profile.name || profile.slug || profile.id;
+            var $tag = $('<span class="ui label condition-profile-tag"></span>')
+                .attr('data-id', profile.id)
+                .text(label);
+            $tag.append(' ');
+            $tag.append('<i class="delete icon condition-profile-remove" style="cursor:pointer;"></i>');
+            $tags.append($tag);
+        });
+    }
+
+    function hideProfileSuggestions() {
+        $('#condition-profile-suggestions').hide().empty();
+    }
+
+    function renderProfileSuggestions(results) {
+        var $dropdown = $('#condition-profile-suggestions');
+        if ($dropdown.length === 0) return;
+
+        $dropdown.empty();
+        var selected = {};
+        conditionProfileSelection.forEach(function (profile) { selected[profile.id] = true; });
+
+        var rows = (results || []).filter(function (r) { return r && r.value; });
+        if (rows.length === 0) {
+            $dropdown.append($('<div class="item" style="padding: 8px 12px; color: #999;"></div>').text(
+                isPtBr() ? 'Nenhum perfil encontrado' : 'No profiles found.'
+            ));
+        } else {
+            rows.forEach(function (r) {
+                var label = r.name || r.text || r.value;
+                var $item = $('<div class="item" style="padding: 8px 12px; cursor: pointer;"></div>')
+                    .attr('data-id', r.value)
+                    .attr('data-slug', r.slug || '')
+                    .attr('data-name', label)
+                    .text(label);
+                if (selected[r.value]) $item.addClass('disabled').css({ opacity: 0.5, cursor: 'not-allowed' });
+                $dropdown.append($item);
+            });
+        }
+        $dropdown.show();
+    }
+
+    function runProfileSearch(query) {
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            dataType: 'json',
+            data: {
+                opcao: gestor.moduloOpcao,
+                ajax: 'sim',
+                ajaxOpcao: 'profiles-search',
+                q: query,
+                params: { q: query }
+            },
+            success: function (dados) {
+                if (!dados || dados.status !== 'Ok') { renderProfileSuggestions([]); return; }
+                renderProfileSuggestions(dados.results || []);
+            },
+            error: function () { renderProfileSuggestions([]); }
+        });
+    }
+
+    function renderAvailabilityUI() {
+        var $target = $('#menu-availability');
+        if ($target.length === 0) return;
+
+        $target.empty();
+        $('#menu-item-builder-wrapper').toggle(schema.availability === 'todos' || !!activeMenuKey);
+
+        if (schema.availability !== 'condicional') return;
+
+        var pt = isPtBr();
+        var $panel = $('<div class="ui segment"></div>');
+        var $actions = $('<div style="margin-bottom:12px;"></div>');
+        $actions.append($('<button type="button" class="ui small teal button" id="btn-add-condition"></button>')
+            .html('<i class="plus icon"></i> ' + (pt ? 'Adicionar Condição' : 'Add Condition')));
+        $panel.append($actions);
+
+        var $form = $('<div id="menu-condition-form" class="ui form" style="display:none; margin-bottom:12px;"></div>');
+        var options = ''
+            + '<option value="publico">' + (pt ? 'Público' : 'Public') + '</option>'
+            + '<option value="logado">' + (pt ? 'Logado' : 'Logged in') + '</option>'
+            + '<option value="perfil_usuario">' + (pt ? 'Perfil de usuário' : 'User profile') + '</option>';
+        $form.append('<div class="two fields">'
+            + '<div class="field"><label>' + (pt ? 'Tipo' : 'Type') + '</label><select id="condition_type" class="ui dropdown">' + options + '</select></div>'
+            + '<div class="field"><label>Slug</label><input type="text" id="condition_slug" autocomplete="off"></div>'
+            + '</div>');
+        $form.append('<div id="condition-profile-wrapper" style="display:none;">'
+            + '<div class="field"><label>' + (pt ? 'Perfis permitidos' : 'Allowed profiles') + '</label>'
+            + '<div class="ui fluid icon input" style="position: relative;">'
+            + '<input type="text" id="condition_profile_search" placeholder="' + (pt ? 'Digite para buscar perfis...' : 'Type to search profiles...') + '" autocomplete="off">'
+            + '<i class="search icon"></i>'
+            + '<div id="condition-profile-suggestions" class="ui vertical menu" style="display:none; position:absolute; top:100%; left:0; width:100%; z-index:1000; max-height:250px; overflow-y:auto; box-shadow:0 4px 6px rgba(0,0,0,0.15); margin:0 !important;"></div>'
+            + '</div>'
+            + '<div id="condition-profile-tags" style="margin-top:8px;"></div>'
+            + '</div></div>');
+        $form.append('<button type="button" class="ui mini primary button" id="btn-confirm-condition">'
+            + (pt ? 'Adicionar' : 'Add') + '</button> '
+            + '<button type="button" class="ui mini button" id="btn-cancel-condition">'
+            + (pt ? 'Cancelar' : 'Cancel') + '</button>');
+        $panel.append($form);
+
+        if (schema.conditions.length > 0) {
+            var $tabs = $('<div class="ui pointing secondary menu menu-condition-tabs"></div>');
+            schema.conditions.forEach(function (cond) {
+                var $tab = $('<a class="item"></a>')
+                    .attr('data-slug', cond.slug)
+                    .toggleClass('active', cond.slug === activeMenuKey);
+                if (cond.type === 'perfil_usuario') {
+                    setTimeout(function () {
+                        $tab.popup({
+                            content: conditionProfilesTooltip(cond),
+                            position: 'top center',
+                            variation: 'inverted'
+                        });
+                    }, 0); // delay para evitar conflito com o .tab() do Fomantic
+                }
+                $tab.append($('<span></span>').text(conditionTabText(cond)));
+                $tab.append(' ');
+                $tab.append($('<i class="trash alternate outline icon menu-condition-delete" title="' + (pt ? 'Excluir' : 'Delete') + '"></i>'));
+                $tabs.append($tab);
+            });
+            $panel.append($tabs);
+        } else {
+            $('#menu-item-builder-wrapper').hide();
+            $panel.append($('<div class="ui message"></div>').text(
+                pt ? 'Adicione uma condição para montar a árvore de itens correspondente.' : 'Add a condition to build its menu tree.'
+            ));
+        }
+
+        $target.append($panel);
+        toggleConditionProfileFields();
+        renderConditionProfileTags();
+    }
+
+    function conditionalBlockOpen(slug) {
+        return '<!-- menu-conditional-' + slug + ' < -->';
+    }
+
+    function conditionalBlockClose(slug) {
+        return '<!-- menu-conditional-' + slug + ' > -->';
+    }
+
+    function extractVisibleMenuBlock(html) {
+        var match = (html || '').match(/<!--\s*menu-visible\s*<\s*-->[\s\S]*?<!--\s*menu-visible\s*>\s*-->/i);
+        return match ? match[0] : '';
+    }
+
+    function ensureConditionalHtmlBlock(slug) {
+        if (typeof window.html_editor_get_html !== 'function' || typeof window.html_editor_set_html !== 'function') return;
+        var html = window.html_editor_get_html() || '';
+        if (html.indexOf(conditionalBlockOpen(slug)) !== -1) return;
+
+        var visible = extractVisibleMenuBlock(html);
+        if (!visible) return;
+
+        var block = visible
+            .replace(/<!--\s*menu-visible\s*<\s*-->/i, conditionalBlockOpen(slug))
+            .replace(/<!--\s*menu-visible\s*>\s*-->/i, conditionalBlockClose(slug));
+        var nextHtml = html.replace(/\s*$/, '') + '\n\n' + block + '\n';
+
+        window.html_editor_set_html(nextHtml);
+        if (window.CodeMirrorHtml && window.CodeMirrorHtml.save) window.CodeMirrorHtml.save();
+        if (typeof window.updatedCodeMirrorHtml === 'function') window.updatedCodeMirrorHtml();
+    }
+
     // ===== Widget Preview (prévia ao vivo do menu com dados reais via AJAX widget-preview)
 
     var widgetPreviewTimer = null;
@@ -286,8 +751,11 @@ $(document).ready(function () {
     var widgetPreviewRetryCount = 0;
 
     function currentSchemaOut() {
+        saveActiveTree();
         var out = $.extend(true, {}, schema);
-        out.selected_items = buildTree(treeItems);
+        if (!out.menus || typeof out.menus !== 'object') out.menus = {};
+        if (!Array.isArray(out.menus.visible_to_all)) out.menus.visible_to_all = [];
+        out.selected_items = out.menus.visible_to_all;
         var tid = $('#template_id').val() || schema.template_id || '';
         if (tid.endsWith('-modificado')) {
             tid = tid.substring(0, tid.length - 11); // remove '-modificado'
@@ -342,7 +810,8 @@ $(document).ready(function () {
 
         var out = currentSchemaOut();
 
-        var snapshot = JSON.stringify({ html: html, css: css, schema: out });
+        var previewSlug = (schema.availability === 'condicional' && activeMenuKey && activeMenuKey !== 'visible_to_all') ? activeMenuKey : '';
+        var snapshot = JSON.stringify({ html: html, css: css, schema: out, preview_slug: previewSlug });
 
         if (!force && snapshot === widgetPreviewLastSnapshot) return;
 
@@ -361,6 +830,7 @@ $(document).ready(function () {
                     html: html,
                     css: css,
                     fields_schema: JSON.stringify(out),
+                    preview_slug: previewSlug,
                     grupo_slug: gestor.moduloRegistroId || ''
                 }
             },
@@ -490,7 +960,8 @@ $(document).ready(function () {
     // ===== Hidratação inicial da árvore
 
     function initTree() {
-        var items = Array.isArray(schema.selected_items) ? schema.selected_items : [];
+        var key = activeMenuKey || 'visible_to_all';
+        var items = (schema.menus && Array.isArray(schema.menus[key])) ? schema.menus[key] : [];
 
         if (items.length === 0) { treeItems = []; renderTree(); return; }
 

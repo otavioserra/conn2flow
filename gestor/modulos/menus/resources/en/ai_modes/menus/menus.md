@@ -19,6 +19,33 @@ If the user wants to show a message when the menu has no items, wrap that snippe
 <!-- no-item > -->
 ```
 
+MENU AVAILABILITY RULE:
+The complete menu template visible to everyone must be wrapped with:
+
+```html
+<!-- menu-visible < -->
+...MENU HTML...
+<!-- menu-visible > -->
+```
+
+When the user asks for variations by authentication state or user profile, create a complete block for each condition using the matching slug:
+
+```html
+<!-- menu-conditional-publico < -->
+...HTML shown to anonymous visitors...
+<!-- menu-conditional-publico > -->
+
+<!-- menu-conditional-logado < -->
+...HTML shown to logged-in users...
+<!-- menu-conditional-logado > -->
+
+<!-- menu-conditional-cliente < -->
+...HTML shown to the cliente profile...
+<!-- menu-conditional-cliente > -->
+```
+
+Each `menu-visible` or `menu-conditional-SLUG` block must contain the item markers (`item`, `item-parent`, `item-separator`, `no-item`) internally when it renders dynamic items. Preserve these comments intact when modifying existing HTML.
+
 PLACEHOLDER FORMATTING RULE:
 - Always use the format `[[item#variable_name]]` (item is literal/static; variable_name is dynamic).
 - Use the version without `@` for your output — the internal pipeline converts it to `@[[item#variable_name]]@` automatically on save.

@@ -19,6 +19,33 @@ Caso o usuário deseje exibir uma mensagem quando o menu não tiver itens, envol
 <!-- no-item > -->
 ```
 
+REGRA DE DISPONIBILIDADE DO MENU:
+O template completo do menu visível para todos deve ficar envelopado por:
+
+```html
+<!-- menu-visible < -->
+...HTML DO MENU...
+<!-- menu-visible > -->
+```
+
+Quando o usuário pedir variações por estado de autenticação ou perfil, crie um bloco completo para cada condição usando o slug correspondente:
+
+```html
+<!-- menu-conditional-publico < -->
+...HTML exibido para visitante anônimo...
+<!-- menu-conditional-publico > -->
+
+<!-- menu-conditional-logado < -->
+...HTML exibido para usuário logado...
+<!-- menu-conditional-logado > -->
+
+<!-- menu-conditional-cliente < -->
+...HTML exibido para o perfil cliente...
+<!-- menu-conditional-cliente > -->
+```
+
+Cada bloco `menu-visible` ou `menu-conditional-SLUG` deve conter internamente os marcadores de itens (`item`, `item-parent`, `item-separator`, `no-item`) quando houver renderização dinâmica. Preserve esses comentários intactos ao modificar HTML existente.
+
 REGRA DE FORMATAÇÃO DE PLACEHOLDERS:
 - Use sempre o formato `[[item#nome_da_variavel]]` (item é literal/estático; nome_da_variavel é dinâmico).
 - Use a versão sem `@` para o retorno gerado por você — o pipeline interno converte para `@[[item#nome_da_variavel]]@` automaticamente ao salvar.

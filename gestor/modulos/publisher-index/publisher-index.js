@@ -85,7 +85,7 @@ $(document).ready(function () {
     if (!schema.order_by) schema.order_by = 'date_desc';
 
     // req-028: controles de exibição do índice (paginação, busca e ordenação em runtime).
-    schema.items_per_page = parseInt(schema.items_per_page, 10) > 0 ? parseInt(schema.items_per_page, 10) : 10;
+    schema.items_per_page = parseInt(schema.items_per_page, 10) >= 0 ? parseInt(schema.items_per_page, 10) : 10;
     schema.show_search_input = (typeof schema.show_search_input === 'undefined') ? true : !!schema.show_search_input;
     schema.show_sorting_select = (typeof schema.show_sorting_select === 'undefined') ? true : !!schema.show_sorting_select;
     schema.show_load_more_btn = (typeof schema.show_load_more_btn === 'undefined') ? true : !!schema.show_load_more_btn;
@@ -107,7 +107,7 @@ $(document).ready(function () {
     $('#order_by').val(schema.order_by || 'date_desc');
 
     // req-028: hidratar os controles de exibição do índice.
-    $('#items_per_page').val(schema.items_per_page || 10);
+    $('#items_per_page').val(schema.items_per_page);
     $('#show_search_input').prop('checked', !!schema.show_search_input);
     $('#show_sorting_select').prop('checked', !!schema.show_sorting_select);
     $('#show_load_more_btn').prop('checked', !!schema.show_load_more_btn);
@@ -266,7 +266,7 @@ $(document).ready(function () {
     // req-028: controles de exibição do índice (itens por página + visibilidade dos controles).
     $('#items_per_page').on('input change', function () {
         var v = parseInt($(this).val(), 10);
-        schema.items_per_page = (v > 0) ? v : 10;
+        schema.items_per_page = (v >= 0) ? v : 10;
         scheduleWidgetPreview(false);
     });
     $('#show_search_input, #show_sorting_select, #show_load_more_btn, #show_metrics').on('change', function () {
@@ -287,7 +287,7 @@ $(document).ready(function () {
         schema.order_by = $('#order_by').val() || 'date_desc';
         // req-028: sincronizar controles de exibição do índice antes de serializar.
         var ipp = parseInt($('#items_per_page').val(), 10);
-        schema.items_per_page = (ipp > 0) ? ipp : 10;
+        schema.items_per_page = (ipp >= 0) ? ipp : 10;
         schema.show_search_input = $('#show_search_input').prop('checked');
         schema.show_sorting_select = $('#show_sorting_select').prop('checked');
         schema.show_load_more_btn = $('#show_load_more_btn').prop('checked');
@@ -630,7 +630,7 @@ $(document).ready(function () {
         schema.order_by = $('#order_by').val() || 'date_desc';
         // req-028: sincronizar controles de exibição do índice antes de gerar o preview.
         var ippPrev = parseInt($('#items_per_page').val(), 10);
-        schema.items_per_page = (ippPrev > 0) ? ippPrev : 10;
+        schema.items_per_page = (ippPrev >= 0) ? ippPrev : 10;
         schema.show_search_input = $('#show_search_input').prop('checked');
         schema.show_sorting_select = $('#show_sorting_select').prop('checked');
         schema.show_load_more_btn = $('#show_load_more_btn').prop('checked');

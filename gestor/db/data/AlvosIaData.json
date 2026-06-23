@@ -74,14 +74,14 @@
         "id": "menus",
         "language": "pt-br",
         "status": "A",
-        "versao": 6
+        "versao": 7
     },
     {
         "nome": "Menus",
         "id": "menus",
         "language": "en",
         "status": "A",
-        "versao": 6
+        "versao": 7
     },
     {
         "nome": "Publicador",
@@ -116,13 +116,13 @@
         "id": "publisher-index",
         "language": "pt-br",
         "status": "A",
-        "versao": 5
+        "versao": 6
     },
     {
         "nome": "Publisher Index",
         "id": "publisher-index",
         "language": "en",
         "status": "A",
-        "versao": 5
+        "versao": 6
     }
 ]

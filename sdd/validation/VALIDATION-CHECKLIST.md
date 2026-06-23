@@ -1088,3 +1088,130 @@ Itens marcados acima refletem o que é verificável estaticamente/por teste auto
 - Testar o CRUD de Forms, criar um campo `select` com opções no formato `sp:São Paulo` e `rj|Rio de Janeiro` e validar a renderização pública do `<select>` gerado (com values e labels diferentes).
 - Testar campos `radio` e `checkbox` no CRUD, preview e submissão pública.
 - Assegurar que os demais formulários carregam no editor sem quebra do CodeMirror.
+
+---
+## BATCH-052 - Disponibilidade do Menu com Visibilidade Condicional no Módulo Menus (req-052)
+
+- [x] **Novo Schema de Dados e Retrocompatibilidade**:
+  - [x] Schema suporta as chaves `availability`, `conditions` e `menus`.
+  - [x] Retrocompatibilidade garante que se `availability` estiver ausente, trata como `todos` e popula a árvore a partir de `selected_items`.
+- [x] **UI Administrativa (CRUD de Menus)**:
+  - [x] Seção renomeada para "Disponibilidade do Menu" (PT/EN).
+  - [x] Select com opções "Visível a Todos" e "Visibilidade Condicional" funcional.
+  - [x] Modo "Visível a Todos" renderiza a árvore de itens padrão.
+  - [x] Modo "Visibilidade Condicional" exibe painel CRUD de condições (público / logado / perfil_usuario), controle de slugs e abas para gerenciar cada menu de forma isolada.
+- [x] **Widget Público e Resolução de Condições**:
+  - [x] Widget integrado a `gestor_usuario()` para buscar dados do usuário.
+  - [x] Condições `publico`, `logado` e `perfil_usuario` (resolvendo contra tabela `usuarios_perfis` do banco) avaliadas na ordem.
+  - [x] Renderização dinâmica do bloco `<!-- menu-conditional-SLUG < -->` ou fallback para `<!-- menu-visible < -->` / HTML completo em caso de ausência.
+- [x] **Templates Físicos e IA**:
+  - [x] Templates nativos envelopados com os delimitadores `<!-- menu-visible < -->`.
+  - [x] Instruções de IA PT/EN atualizadas com referências aos comentários de controle de visibilidade.
+- [x] **Suíte de Testes Unitários**:
+  - [x] Testes unitários novos implementados em `tests/Unit/PHP/MenusWidgetConditionalVisibilityTest.php` validando as regras de visibilidade.
+
+### Evidência de Validação (BATCH-052)
+
+Evidência automatizada reportada pelo executor em 2026-06-22:
+- Linting estático:
+  - `php -l gestor\modulos\menus\menus.php` → OK
+  - `php -l gestor\modulos\menus\menus.widget.php` → OK
+  - `node --check gestor\modulos\menus\menus.js` → OK
+- Testes automatizados executados:
+  - PHPUnit novo [MenusWidgetConditionalVisibilityTest.php](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/tests/Unit/PHP/MenusWidgetConditionalVisibilityTest.php): **4/4 testes OK**.
+  - Suíte completa: **44 testes OK**.
+
+### Pendências Runtime
+- Rodar `Update => Core` (compilador de recursos) para sincronizar configurações e templates modificados.
+- Testar manualmente no navegador o fluxo de adicionar condições no CRUD de Menus, alternar abas e verificar a persistência dos menus.
+- Validar se o widget público alterna corretamente de acordo com o login e o perfil do usuário ativo.
+
+---
+## BATCH-053 - Ajustes e Melhorias na Disponibilidade Dinâmica de Menus Condicionais (req-053)
+
+- [x] **Autocomplete de Perfis de Usuário**:
+  - [x] Endpoint AJAX `profiles-search` implementado em `menus.php`.
+  - [x] Autocomplete/tags na UI do admin para múltiplos perfis na condição `perfil_usuario` funcional.
+  - [x] IDs de perfis selecionados persistidos no `fields_schema.conditions` do menu.
+- [x] **Duplicação Automática de Blocos HTML no CodeMirror**:
+  - [x] Ao adicionar uma nova condição, o JS do editor duplica cirurgicamente o bloco `menu-visible` no editor CodeMirror como `menu-conditional-SLUG`.
+- [x] **Live Preview Sincronizado com Aba Ativa**:
+  - [x] Alternar abas no construtor de menu passa o parâmetro `preview_slug` para o widget de pré-visualização.
+  - [x] O widget interpreta `preview_slug` e renderiza apenas o respectivo bloco condicional HTML e árvore de itens.
+- [x] **Resolução Dinâmica do Widget Público**:
+  - [x] Widget público valida o perfil do usuário logado (`id_usuarios_perfis`) contra a lista `condition.profile_ids`.
+  - [x] Mantém fallback de suporte a string/slug único de perfil para retrocompatibilidade.
+- [x] **Suíte de Testes Unitários**:
+  - [x] Testes em `tests/Unit/PHP/MenusWidgetConditionalVisibilityTest.php` atualizados cobrindo múltiplos perfis, perfis ausentes da lista e suporte a `preview_slug` (7/7).
+
+### Evidência de Validação (BATCH-053)
+
+Evidência automatizada reportada pelo executor em 2026-06-22:
+- Linting estático:
+  - `php -l gestor\modulos\menus\menus.php` → OK
+  - `php -l gestor\modulos\menus\menus.widget.php` → OK
+  - `node --check gestor\modulos\menus\menus.js` → OK
+- Testes automatizados executados:
+  - PHPUnit [MenusWidgetConditionalVisibilityTest.php](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/tests/Unit/PHP/MenusWidgetConditionalVisibilityTest.php): **7/7 testes OK**.
+  - Suíte completa: **47 testes OK**.
+
+### Pendências Runtime
+- Rodar `Update => Core` para compilar os recursos e carregar as rotas no sistema.
+- Validar visualmente no navegador a adição de condições do tipo `perfil_usuario`, selecionando múltiplos perfis no autocomplete e testando se as tags são geradas e podem ser removidas pelo `x`.
+- Confirmar no Live Preview que ao clicar nas abas de cada condição, o menu exibido no iframe de preview se altera dinamicamente.
+- Testar a renderização pública do menu com diferentes usuários e perfis para validar o redirecionamento/visibilidade de cada menu.
+
+---
+## BATCH-054 - Ajustes Visuais de Margem e Tooltip com Detalhe de Perfis no Módulo Menus (req-054)
+
+- [x] **Ajuste de Margem nas Tags**:
+  - [x] Margem aplicada às tags de perfis selecionados (`#condition-profile-tags` / `.condition-profile-tag`) para garantir espaçamento adequado em relação aos botões do formulário.
+- [x] **Abas de Condição com Contador e Tooltip**:
+  - [x] Abas de condição `perfil_usuario` exibem contador `slug (Perfil de usuário - N)`.
+  - [x] Abas recebem tooltip Fomantic-UI formatado (`Usuário Perfis: Perfil 1, Perfil 2...`) com os nomes legíveis dos perfis.
+  - [x] Fallback automático para os IDs se os nomes/labels dos perfis não estiverem salvos.
+
+### Evidência de Validação (BATCH-054)
+
+Evidência automatizada reportada pelo executor em 2026-06-22:
+- Linting estático:
+  - `php -l gestor\modulos\menus\menus.php` → OK
+  - `php -l gestor\modulos\menus\menus.widget.php` → OK
+  - `node --check gestor\modulos\menus\menus.js` → OK
+- Verificação de diff: `git diff --check` passou limpo nos arquivos do lote.
+
+### Pendências Runtime
+- Sincronizar os recursos via `Update => Core`.
+- Validar visualmente no navegador que as tags do CRUD possuem espaçamento inferior e não encostam no botão de confirmação.
+- Validar que ao passar o mouse nas abas das condições, o tooltip do Fomantic-UI renderiza o nome legível dos perfis vinculados e o título exibe o número de itens selecionados.
+
+
+## BATCH-056 - Sincronização Declarativa de Recursos, Deleção e Atualização Forçada (req-056)
+
+- [x] **Gerador (`atualizacao-dados-recursos.php`)**:
+  - [x] `normalizarConfigTabela()` aceita `config` objeto OU array de objetos (objeto → array de 1); resolve `tabela_nome`; agrega `deletar`/`forcar_atualizacao` por elemento e por bloco (retrocompat).
+  - [x] `coletarConfigsTabelas()` (motor compartilhado) reaproveitado por `gerarSchemaMetadata()` e `coletarRecursos()`.
+  - [x] `gerarSchemaMetadata()` consolida `deletar` e novo `forcar_atualizacao` (mapas de topo) no `schema-metadata.json`; campos de varredura ficam fora do contrato.
+  - [x] Varredura `sync_resources`: `lerMetadadosDinamicos()` (externo/inline por idioma), `processarRegistroDinamico()` (`field_types` `json`/`file:<ext>`, BOM removido, colunas padronizadas), `checksumRegistroDinamico()` (reuso de versão).
+  - [x] `atualizarDados()` gera `<PascalCase>Data.json` dinâmico via `dataFileNameFromTable()`, pulando as 9 tabelas fixas reservadas.
+- [x] **Config global (`tables_config.json`)**: `_comment` estendido (config objeto/array, `tabela_nome`, `sync_resources`/`resources_dir`/`metadata_file`/`field_types`/`deletar`/`forcar_atualizacao`); 4 tabelas existentes mantidas (retrocompat).
+- [x] **Atualizador (`atualizacoes-banco-de-dados.php`)**: `schemaMetadata()` lê `forcar_atualizacao`; `forcarAtualizacaoLista()` + `$isForced()`; bypass de `project`/`user_modified` + reset `user_modified=0` + preservação de `project` nos 3 caminhos (PK, chave natural, fallback). Correção `${var}`→`{$var}` (deprecation PHP 8.4).
+- [x] **Documentação**: 6 docs × pt-br/en atualizados (Recursos, Atualizações, Módulos Detalhado, Módulos Overview, Multilíngue, Proteção de Banco).
+
+### Evidência de Validação (BATCH-056)
+
+Evidência automatizada reportada pelo executor em 2026-06-23 (ambiente: PHP 8.4.8, mbstring/pdo_sqlite/pdo_mysql):
+- `php -l gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php` → OK
+- `php -l gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php` → OK
+- `json_decode` de `gestor/resources/tables_config.json` → VALID
+- Regeneração do contrato via `SDD_NO_AUTORUN` + `gerarSchemaMetadata()` → 17 tabelas preservadas, chave de topo `forcar_atualizacao` presente (vazia, pois nada declara ainda).
+- Smoke da varredura dinâmica (fixtures temporárias): `file:html`/`file:css` com BOM removido, `field_types: json` codificado, injeção de `language`/`status`/`module`, checksum estável e sensível a mudança de arquivo, leitura inline e externa → OK.
+- Teste de regressão `tests/Unit/PHP/ForcarAtualizacaoTest.php` (PDO SQLite + contrato temporário): forçado por chave natural (payload completo + `user_modified→0`, `project` preservado), forçado por PK (bypass de `project`), preservação normal de `user_modified=1`, proteção de projeto → `updated=2`, `same=2`, todas as asserts PASS.
+- `composer test` (suíte completa) → **48 testes, 142 assertions, OK** (4 skipped = testes de banco gated; 1 PHPUnit deprecation pré-existente, não relacionada).
+
+### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` (regenera `schema-metadata.json` + `<Pascal>Data.json` dinâmicos e recalcula checksums) e validar a sincronização em MySQL.
+- Validação manual end-to-end do `forcar_atualizacao` em MySQL: configurar uma tabela com registro em `forcar_atualizacao`, marcar `user_modified=1` no banco, rodar o deploy e confirmar que o dado físico foi reintegrado e `user_modified` voltou a `0`.
+
+
+

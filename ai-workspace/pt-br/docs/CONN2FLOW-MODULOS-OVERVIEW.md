@@ -296,3 +296,9 @@ O sistema de módulos do Conn2Flow representa uma **arquitetura madura e bem est
 ---
 
 > 📚 **Para análise detalhada de cada módulo, consulte a pasta [`modulos/`](modulos/) que contém documentação específica e aprofundada de cada componente do sistema.**
+
+---
+
+## 🔌 Acoplando Tabelas Customizadas à Esteira de Dados (BATCH-056)
+
+Além das tabelas nativas, um módulo pode **acoplar suas próprias tabelas** à esteira de sincronização declarando-as no bloco `"tabela"."config"` do seu manifesto (objeto único ou array para múltiplas tabelas). Com `sync_resources: true`, o módulo passa a gerar e sincronizar `<PascalCase>Data.json` automaticamente a partir dos seus recursos (`resources/<idioma>/...`), com conversões `json` / `file:<ext>`, além de declarar deleções (`deletar`) e atualizações forçadas (`forcar_atualizacao`) — tudo sem scripts PHP de hook. O mesmo vale para tabelas globais sem módulo dono via `gestor/resources/tables_config.json`.

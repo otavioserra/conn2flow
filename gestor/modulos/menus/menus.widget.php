@@ -108,8 +108,15 @@ function menus_widget_render_inline($params){
 	$schema = $params['fields_schema'] ?? '{}';
 	if(is_string($schema)) $schema = json_decode($schema, true);
 	if(!is_array($schema)) $schema = [];
+	$schema = menus_widget_normalizar_schema($schema);
 
-	$selected_items = (isset($schema['selected_items']) && is_array($schema['selected_items'])) ? $schema['selected_items'] : [];
+	$menu_resolvido = menus_widget_resolver_disponibilidade($schema, $params);
+	$html_template = menus_widget_selecionar_html_disponibilidade(
+		$html_template,
+		$menu_resolvido['availability'],
+		$menu_resolvido['slug']
+	);
+	$selected_items = $menu_resolvido['items'];
 
 	// Normaliza para a árvore tipada (retrocompat: lista de slugs do BATCH-015).
 	$arvore = menus_widget_normalizar_itens($selected_items);
@@ -142,6 +149,171 @@ function menus_widget_render_inline($params){
 	$output = menus_widget_montar_base($html_template, $itensRendered);
 
 	return menus_widget_montar_saida($output, $css_custom, $css_compiled, $html_extra_head);
+}
+
+function menus_widget_normalizar_schema($schema){
+	if(!is_array($schema)) $schema = [];
+
+	if(!isset($schema['selected_items']) || !is_array($schema['selected_items'])) $schema['selected_items'] = [];
+	if(!isset($schema['availability']) || $schema['availability'] !== 'condicional') $schema['availability'] = 'todos';
+	if(!isset($schema['conditions']) || !is_array($schema['conditions'])) $schema['conditions'] = [];
+	if(!isset($schema['menus']) || !is_array($schema['menus'])) $schema['menus'] = [];
+	if(!isset($schema['menus']['visible_to_all']) || !is_array($schema['menus']['visible_to_all'])){
+		$schema['menus']['visible_to_all'] = $schema['selected_items'];
+	}
+
+	$conditions = [];
+	foreach($schema['conditions'] as $cond){
+		if(!is_array($cond) || empty($cond['slug'])) continue;
+		$type = (isset($cond['type']) && in_array($cond['type'], ['publico','logado','perfil_usuario'], true)) ? $cond['type'] : 'publico';
+		$slug = preg_replace('/[^a-zA-Z0-9_-]+/', '-', (string)$cond['slug']);
+		$slug = trim(strtolower($slug), '-');
+		if($slug === '') continue;
+		if(!isset($schema['menus'][$slug]) || !is_array($schema['menus'][$slug])) $schema['menus'][$slug] = [];
+		$condition = ['type' => $type, 'slug' => $slug];
+		if($type === 'perfil_usuario'){
+			$condition['profile_ids'] = menus_widget_normalizar_profile_ids($cond['profile_ids'] ?? []);
+			if(isset($cond['profiles']) && is_array($cond['profiles'])) $condition['profiles'] = $cond['profiles'];
+		}
+		$conditions[] = $condition;
+	}
+	$schema['conditions'] = $conditions;
+	$schema['selected_items'] = $schema['menus']['visible_to_all'];
+
+	return $schema;
+}
+
+function menus_widget_resolver_disponibilidade($schema, $params = []){
+	$preview_slug = isset($params['preview_slug']) ? preg_replace('/[^a-zA-Z0-9_-]+/', '-', (string)$params['preview_slug']) : '';
+	$preview_slug = trim(strtolower($preview_slug), '-');
+	if($preview_slug !== ''){
+		if($preview_slug === 'visible_to_all'){
+			return [
+				'availability' => 'todos',
+				'slug' => 'visible_to_all',
+				'items' => $schema['menus']['visible_to_all'] ?? [],
+			];
+		}
+		return [
+			'availability' => 'condicional',
+			'slug' => $preview_slug,
+			'items' => $schema['menus'][$preview_slug] ?? [],
+		];
+	}
+
+	if(($schema['availability'] ?? 'todos') !== 'condicional'){
+		return [
+			'availability' => 'todos',
+			'slug' => 'visible_to_all',
+			'items' => $schema['menus']['visible_to_all'] ?? [],
+		];
+	}
+
+	$user_data = menus_widget_usuario_atual($params);
+
+	foreach($schema['conditions'] as $cond){
+		if(menus_widget_condicao_valida($cond, $user_data, $params)){
+			$slug = $cond['slug'];
+			return [
+				'availability' => 'condicional',
+				'slug' => $slug,
+				'items' => $schema['menus'][$slug] ?? [],
+			];
+		}
+	}
+
+	return [
+		'availability' => 'todos',
+		'slug' => 'visible_to_all',
+		'items' => $schema['menus']['visible_to_all'] ?? [],
+	];
+}
+
+function menus_widget_normalizar_profile_ids($values){
+	$out = [];
+	if(!is_array($values)) return $out;
+
+	foreach($values as $value){
+		if(is_array($value)) $value = $value['id'] ?? ($value['value'] ?? '');
+		$value = (string)$value;
+		if($value !== '' && !in_array($value, $out, true)) $out[] = $value;
+	}
+
+	return $out;
+}
+
+function menus_widget_usuario_atual($params = []){
+	if(isset($params['_user_data']) && is_array($params['_user_data'])) return $params['_user_data'];
+	if(function_exists('gestor_usuario')) return gestor_usuario();
+
+	return [
+		'id_usuarios' => 0,
+		'id_usuarios_perfis' => 0,
+		'id' => '_anonimo',
+	];
+}
+
+function menus_widget_usuario_logado($user_data){
+	$id_usuarios = (int)($user_data['id_usuarios'] ?? 0);
+	$id = (string)($user_data['id'] ?? '');
+	return $id_usuarios > 0 && $id !== '_anonimo';
+}
+
+function menus_widget_condicao_valida($cond, $user_data, $params = []){
+	$type = $cond['type'] ?? 'publico';
+	$slug = (string)($cond['slug'] ?? '');
+	$id_usuarios = (int)($user_data['id_usuarios'] ?? 0);
+	$id = (string)($user_data['id'] ?? '');
+	$logado = menus_widget_usuario_logado($user_data);
+
+	if($type === 'publico') return $id_usuarios <= 0 || $id === '_anonimo';
+	if($type === 'logado') return $logado;
+	if($type === 'perfil_usuario'){
+		if(!$logado) return false;
+		$profile_ids = menus_widget_normalizar_profile_ids($cond['profile_ids'] ?? []);
+		$user_profile_id = (string)($user_data['id_usuarios_perfis'] ?? '');
+		if(!empty($profile_ids)) return $user_profile_id !== '' && in_array($user_profile_id, $profile_ids, true);
+
+		$perfil_slug = menus_widget_obter_perfil_usuario_slug($user_data, $params);
+		return $perfil_slug !== '' && $perfil_slug === $slug;
+	}
+
+	return false;
+}
+
+function menus_widget_obter_perfil_usuario_slug($user_data, $params = []){
+	if(isset($params['_profile_slug'])) return (string)$params['_profile_slug'];
+
+	$id_perfil = (int)($user_data['id_usuarios_perfis'] ?? 0);
+	if($id_perfil <= 0 || !function_exists('banco_select')) return '';
+
+	$perfil = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array('id'),
+		'extra' => "WHERE id_usuarios_perfis='".banco_escape_field((string)$id_perfil)."'"
+	));
+
+	if(!is_array($perfil)) return '';
+	return (string)($perfil['id'] ?? '');
+}
+
+function menus_widget_selecionar_html_disponibilidade($html_template, $availability, $slug = null){
+	if($availability === 'condicional' && $slug){
+		$conditional = menus_widget_extrair_bloco_disponibilidade($html_template, 'menu-conditional-'.(string)$slug);
+		if($conditional !== null) return $conditional;
+	}
+
+	$visible = menus_widget_extrair_bloco_disponibilidade($html_template, 'menu-visible');
+	if($visible !== null) return $visible;
+
+	return $html_template;
+}
+
+function menus_widget_extrair_bloco_disponibilidade($html_template, $nome){
+	$pattern = '/<!--\s*'.preg_quote($nome, '/').'\s*<\s*-->([\s\S]*?)<!--\s*'.preg_quote($nome, '/').'\s*>\s*-->/i';
+	if(preg_match($pattern, $html_template, $m)) return $m[1];
+	return null;
 }
 
 /**
