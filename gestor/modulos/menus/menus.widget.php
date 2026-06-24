@@ -278,6 +278,18 @@ function menus_widget_condicao_valida($cond, $user_data, $params = []){
 	$type = $cond['type'] ?? 'publico';
 	$slug = (string)($cond['slug'] ?? '');
 	$perfil_usuario = ($user_data ?? false);
+
+	// Normalização de usuário anônimo: quando o perfil chega como array (testes
+	// unitários e rotinas administrativas) um usuário não autenticado é
+	// representado por id '_anonimo' ou por id_usuarios = 0. Nesses casos forçamos
+	// $perfil_usuario = false para que $logado seja corretamente falso (condição
+	// `publico` válida; `logado`/`perfil_usuario` inválidas).
+	if(is_array($perfil_usuario)){
+		$id_anonimo = isset($perfil_usuario['id']) && $perfil_usuario['id'] === '_anonimo';
+		$id_zero = isset($perfil_usuario['id_usuarios']) && (int)$perfil_usuario['id_usuarios'] === 0;
+		if($id_anonimo || $id_zero) $perfil_usuario = false;
+	}
+
 	$logado = $perfil_usuario !== false;
 
 	if($type === 'publico') return $perfil_usuario === false;
@@ -285,7 +297,21 @@ function menus_widget_condicao_valida($cond, $user_data, $params = []){
 	if($type === 'perfil_usuario'){
 		if(!$logado) return false;
 		$profile_ids = menus_widget_normalizar_profile_ids($cond['profile_ids'] ?? []);
-		$user_profile_id = (string)($perfil_usuario ?? '');
+
+		// Resolução segura do identificador do perfil, evitando a coerção direta de
+		// array para string (PHP Warning: Array to string conversion). Quando o
+		// perfil é array, usa o slug explícito de preview/teste (`_profile_slug`) ou
+		// a chave `id_usuarios_perfis`; valores primitivos seguem a coerção comum.
+		if(is_array($perfil_usuario)){
+			if(isset($params['_profile_slug']) && (string)$params['_profile_slug'] !== ''){
+				$user_profile_id = (string)$params['_profile_slug'];
+			}else{
+				$user_profile_id = (string)($perfil_usuario['id_usuarios_perfis'] ?? '');
+			}
+		}else{
+			$user_profile_id = (string)$perfil_usuario;
+		}
+
 		if(!empty($profile_ids)){
 			// Compatibilidade: aceita profile_id puro e profile_id já hash('sha256', id).
 			if(in_array($user_profile_id, $profile_ids, true)) return $user_profile_id;
