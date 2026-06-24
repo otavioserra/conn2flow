@@ -449,6 +449,15 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     }
     $allowedCols = $schemaCache[$tabela];
 
+    // Marcação de projeto (coluna 'project') exige que a coluna exista no schema da tabela.
+    // Tabelas sincronizadas sem essa coluna (ex.: widgets antigos sem a migração de 'project')
+    // não devem receber a marcação — caso contrário o UPSERT falha com
+    // "SQLSTATE[42S22]: Unknown column 'project'". Espelha o guard de 'user_modified'.
+    if ($project !== null && is_array($allowedCols) && !isset($allowedCols['project'])) {
+        if ($debug) log_unificado("PROJECT_COL_AUSENTE tabela=$tabela (marcacao de projeto ignorada)", $GLOBALS['LOG_FILE_DB']);
+        $project = null;
+    }
+
     // Descobrir coluna real de linguagem no schema (se existir)
     $colLangReal = null;
     if (is_array($allowedCols)) {
