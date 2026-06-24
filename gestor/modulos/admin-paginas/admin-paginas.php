@@ -1183,6 +1183,11 @@ function admin_paginas_interfaces_padroes(){
 							'id' => 'caminho',
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-url-path')),
 							'ordenar' => 'asc',
+							'formatar' => Array(
+								'id' => 'encapsular',
+								'capsula' => '<a href="'.$_GESTOR['url-raiz'].'#caminho#" class="ui basic label">#caminho#</a>',
+								'variavel' => '#caminho#',
+							),
 						),
 						Array(
 							'id' => $modulo['tabela']['data_modificacao'],

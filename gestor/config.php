@@ -7,7 +7,7 @@
 
 $_GESTOR										=	Array();
 
-$_GESTOR['versao']						        = 	'2.9.4'; // Versão do gestor como um todo.
+$_GESTOR['versao']						        = 	'2.9.5'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
@@ -148,6 +148,7 @@ $_CONFIG = [
     'session-garbagetime'               => (int)($_ENV['SESSION_GARBAGETIME'] ?? 86400),
     'session-garbage-colector-time'     => (int)($_ENV['SESSION_GARBAGE_COLECTOR_TIME'] ?? 3600),
     'cookie-authname'                   => ($_ENV['COOKIE_AUTHNAME'] ?? '_C2FCID') . $cookieHostSuffix,
+    'cookie-authprofile'                => ($_ENV['COOKIE_AUTHPROFILE'] ?? '_C2FCP') . $cookieHostSuffix,
     'cookie-verify'                     => ($_ENV['COOKIE_VERIFY'] ?? '_C2FCVID') . $cookieHostSuffix,
     'cookie-language'                   => ($_ENV['LANGUAGE_COOKIE'] ?? '_C2FCL') . $cookieHostSuffix,
     'cookie-lifetime'                   => (int)($_ENV['COOKIE_LIFETIME'] ?? 1296000),

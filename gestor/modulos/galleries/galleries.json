@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.3",
+    "versao": "1.0.4",
     "bibliotecas": [
         "interface",
         "html",
@@ -42,11 +42,11 @@
                     "id": "galleries-grid",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "22a6aca8a5d369151d0dd9a32ce9ae1b",
+                        "html": "d916729fd513c8617e1e4b3145d15440",
                         "css": "",
-                        "combined": "22a6aca8a5d369151d0dd9a32ce9ae1b"
+                        "combined": "d916729fd513c8617e1e4b3145d15440"
                     }
                 },
                 {
@@ -54,11 +54,11 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "4777a8ec90c8e1eab346f8ea092ab464",
+                        "html": "3648a43c0572d5f449ab73303b17e053",
                         "css": "bb97520c4c9f21b01a7889f507be0810",
-                        "combined": "b412d354ceb2b506d394939300d4ca0f"
+                        "combined": "9eccb972e8be2062387a29214ebcdb2b"
                     }
                 },
                 {
@@ -66,11 +66,11 @@
                     "id": "galleries-masonry",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "b8d181755e48bb30081e407aa22f78e1",
+                        "html": "8be7a3df0ee28c42328babbe85f922f4",
                         "css": "",
-                        "combined": "b8d181755e48bb30081e407aa22f78e1"
+                        "combined": "8be7a3df0ee28c42328babbe85f922f4"
                     }
                 },
                 {
@@ -78,11 +78,11 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "66e293273f90964c04853ab6b72c27d3",
+                        "html": "0c43e1fe7a007b37a0ea77958aaabefe",
                         "css": "1f9b0bae0cb2fbc149e45797cc5c50c0",
-                        "combined": "e9c10ffead6d5996a6b62d9b4e7413a4"
+                        "combined": "a8f7cc1ec96543dd17c1a88c8bb35ca3"
                     }
                 }
             ],
@@ -188,11 +188,11 @@
                     "id": "galleries-grid",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "e0a0e2e608938e87a9aa47b22db8c15e",
+                        "html": "fdfa9cbeb3106844498c7d387163a2b4",
                         "css": "",
-                        "combined": "e0a0e2e608938e87a9aa47b22db8c15e"
+                        "combined": "fdfa9cbeb3106844498c7d387163a2b4"
                     }
                 },
                 {
@@ -200,11 +200,11 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "2a24469c4910c53fe80318c01b7453b5",
+                        "html": "d86809e839c7dda5cb4f3246c5aea1f3",
                         "css": "bb97520c4c9f21b01a7889f507be0810",
-                        "combined": "ad46b5580fb16f3bcf2151ba68ec1ae1"
+                        "combined": "51470db8aaec407ad300bd115aa64260"
                     }
                 },
                 {
@@ -212,11 +212,11 @@
                     "id": "galleries-masonry",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "4b077ec345b85b01500f89b90ebf4f35",
+                        "html": "61631ed7907d7c7ce887b6fd6cdff4bc",
                         "css": "",
-                        "combined": "4b077ec345b85b01500f89b90ebf4f35"
+                        "combined": "61631ed7907d7c7ce887b6fd6cdff4bc"
                     }
                 },
                 {
@@ -224,11 +224,11 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "01a45f443c54e5f5c04b0ed5c6a1c39f",
+                        "html": "86ac285716c0fdd7eebeefad7722a70e",
                         "css": "1f9b0bae0cb2fbc149e45797cc5c50c0",
-                        "combined": "f4d98ddb7e779c0b4823d970656ab1db"
+                        "combined": "943de9d5d30a432164dbed0a979b5793"
                     }
                 }
             ],

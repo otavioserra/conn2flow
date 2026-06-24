@@ -979,6 +979,17 @@ function perfil_usuario_signout(){
 		]);
 		
 		unset($_COOKIE[$_CONFIG['cookie-authname']]);
+		
+		setcookie($_CONFIG['cookie-authprofile'], "", [
+			'expires' => time() - 3600,
+			'path' => '/',
+			'domain' => $_SERVER['SERVER_NAME'],
+			'secure' => true,
+			'httponly' => true,
+			'samesite' => 'Lax',
+		]);
+		
+		unset($_COOKIE[$_CONFIG['cookie-authprofile']]);
 	}
 	
 	gestor_redirecionar('signin/');

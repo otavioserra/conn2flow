@@ -1476,6 +1476,22 @@ function gestor_usuario(){
 	}
 }
 
+function gestor_usuario_perfil(){
+	global $_CONFIG;
+
+	// ===== Verifica se cookie no navegador está ativo.
+	
+	gestor_cookie_verificacao();
+	
+	// ===== Verifica se existe o cookie de profile existe.
+	
+	if(isset($_COOKIE[$_CONFIG['cookie-authprofile']])){
+		return $_COOKIE[$_CONFIG['cookie-authprofile']];
+	} else {
+		return false;
+	}
+}
+
 function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 	global $_GESTOR;
 	
@@ -2080,15 +2096,15 @@ function gestor_roteador(){
 				);
 			}
 			
-			// ===== Incluir widgets na página.
-
-			gestor_pagina_widgets();
-
 			// ===== Aplicar o layout à página
 
 			gestor_pagina_layout(Array(
 				'layout' => $layout,
 			));
+
+			// ===== Incluir widgets na página e/ou layout.
+
+			gestor_pagina_widgets();
 
 			// ===== Inclusão de bibliotecas globais de uma página
 			

@@ -2056,6 +2056,7 @@ function publisher_pages_interfaces_padroes(){
 						'nome',
 						'tipo',
 						'modulo',
+						'publisher_id',
 						'caminho',
 						$modulo['tabela']['data_modificacao'],
 					),
@@ -2070,7 +2071,6 @@ function publisher_pages_interfaces_padroes(){
 						Array(
 							'id' => 'nome',
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
-							'ordenar' => 'asc',
 						),
 						Array(
 							'id' => 'tipo',
@@ -2091,6 +2091,20 @@ function publisher_pages_interfaces_padroes(){
 							)
 						),
 						Array(
+							'id' => 'publisher_id',
+							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-label')),
+							'formatar' => Array(
+								'id' => 'outraTabela',
+								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
+								'tabela' => Array(
+									'nome' => 'publisher',
+									'campo_trocar' => 'name',
+									'campo_referencia' => 'id',
+									'where' => 'language="'.$_GESTOR['linguagem-codigo'].'"',
+								),
+							)
+						),
+						Array(
 							'id' => 'modulo',
 							'nome' => gestor_variaveis(Array('modulo' => 'modulos','id' => 'module-name')),
 							'formatar' => Array(
@@ -2107,13 +2121,18 @@ function publisher_pages_interfaces_padroes(){
 						Array(
 							'id' => 'caminho',
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-url-path')),
-							'ordenar' => 'asc',
+							'formatar' => Array(
+								'id' => 'encapsular',
+								'capsula' => '<a href="'.$_GESTOR['url-raiz'].'#caminho#" class="ui basic label">#caminho#</a>',
+								'variavel' => '#caminho#',
+							),
 						),
 						Array(
 							'id' => $modulo['tabela']['data_modificacao'],
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),
 							'formatar' => 'dataHora',
 							'nao_procurar' => true,
+							'ordenar' => 'desc',
 						),
 					),
 				),

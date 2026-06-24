@@ -200,7 +200,7 @@ function usuario_gerar_token_autorizacao($params = false){
 			'pubID' => $tokenPubId,
 		));
 		
-		// ===== Define cookie seguro no navegador
+		// ===== Define cookie seguro no navegador de autenticação
 		setcookie($_CONFIG['cookie-authname'], $token, [
 			'expires' => $expiration,
 			'path' => '/',
@@ -209,6 +209,31 @@ function usuario_gerar_token_autorizacao($params = false){
 			'httponly' => true, // Não acessível via JavaScript
 			'samesite' => 'Lax', // Proteção CSRF
 		]);
+
+		// ===== Pegar o perfil do usuário para definir cookie de perfil
+		$usuarios_perfis = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'up.id',
+			))
+			,
+			"usuarios as u, usuarios_perfis as up",
+			"WHERE u.id_usuarios='".$id_usuarios."' AND u.id_usuarios_perfis = up.id_usuarios_perfis "
+		);
+
+		$perfil_usuario = $usuarios_perfis[0]['up.id'] ?? null;
+		
+		if(isset($perfil_usuario)){
+			// ===== Define cookie seguro no navegador do perfil do usuário
+			setcookie($_CONFIG['cookie-authprofile'], hash('sha256', $perfil_usuario), [
+				'expires' => $expiration,
+				'path' => '/',
+				'domain' => $_SERVER['SERVER_NAME'],
+				'secure' => true, // Apenas HTTPS
+				'httponly' => true, // Não acessível via JavaScript
+				'samesite' => 'Lax', // Proteção CSRF
+			]);
+		}
 		
 		// ===== Obtém IP do usuário para auditoria
 

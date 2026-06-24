@@ -242,60 +242,64 @@ function menus_widget_normalizar_profile_ids($values){
 	return $out;
 }
 
-function menus_widget_usuario_atual($params = []){
-	if(isset($params['_user_data']) && is_array($params['_user_data'])) return $params['_user_data'];
-	if(function_exists('gestor_usuario')) return gestor_usuario();
+function menus_widget_normalizar_profile_ids_hashed($values){
+	$out = [];
+	if(!is_array($values)) return $out;
 
-	return [
-		'id_usuarios' => 0,
-		'id_usuarios_perfis' => 0,
-		'id' => '_anonimo',
-	];
+	foreach($values as $value){
+		if(is_array($value)) $value = $value['id'] ?? ($value['value'] ?? '');
+		$value = (string)$value;
+		if($value !== '' && !isset($out[$value])) $out[$value] = hash('sha256', $value);
+	}
+
+	return $out;
 }
 
-function menus_widget_usuario_logado($user_data){
-	$id_usuarios = (int)($user_data['id_usuarios'] ?? 0);
-	$id = (string)($user_data['id'] ?? '');
-	return $id_usuarios > 0 && $id !== '_anonimo';
+function menus_widget_profile_id_from_hash($user_profile_hash, $profile_ids){
+	$user_profile_hash = (string)$user_profile_hash;
+	if($user_profile_hash === '') return '';
+
+	$profile_hashes = menus_widget_normalizar_profile_ids_hashed($profile_ids);
+	foreach($profile_hashes as $profile_id => $profile_hash){
+		if(hash_equals((string)$profile_hash, $user_profile_hash)) return (string)$profile_id;
+	}
+
+	return '';
+}
+
+function menus_widget_usuario_atual($params = []){
+	if(isset($params['_user_data']) && is_array($params['_user_data'])) return $params['_user_data'];
+	if(function_exists('gestor_usuario_perfil')) return gestor_usuario_perfil();
+
+	return false;
 }
 
 function menus_widget_condicao_valida($cond, $user_data, $params = []){
 	$type = $cond['type'] ?? 'publico';
 	$slug = (string)($cond['slug'] ?? '');
-	$id_usuarios = (int)($user_data['id_usuarios'] ?? 0);
-	$id = (string)($user_data['id'] ?? '');
-	$logado = menus_widget_usuario_logado($user_data);
+	$perfil_usuario = ($user_data ?? false);
+	$logado = $perfil_usuario !== false;
 
-	if($type === 'publico') return $id_usuarios <= 0 || $id === '_anonimo';
+	if($type === 'publico') return $perfil_usuario === false;
 	if($type === 'logado') return $logado;
 	if($type === 'perfil_usuario'){
 		if(!$logado) return false;
 		$profile_ids = menus_widget_normalizar_profile_ids($cond['profile_ids'] ?? []);
-		$user_profile_id = (string)($user_data['id_usuarios_perfis'] ?? '');
-		if(!empty($profile_ids)) return $user_profile_id !== '' && in_array($user_profile_id, $profile_ids, true);
+		$user_profile_id = (string)($perfil_usuario ?? '');
+		if(!empty($profile_ids)){
+			// Compatibilidade: aceita profile_id puro e profile_id já hash('sha256', id).
+			if(in_array($user_profile_id, $profile_ids, true)) return $user_profile_id;
 
-		$perfil_slug = menus_widget_obter_perfil_usuario_slug($user_data, $params);
-		return $perfil_slug !== '' && $perfil_slug === $slug;
+			$profile_id_original = menus_widget_profile_id_from_hash($user_profile_id, $profile_ids);
+			if($profile_id_original !== '') return $profile_id_original;
+
+			return false;
+		}
+
+		return $user_profile_id !== '' ? $user_profile_id : false;
 	}
 
 	return false;
-}
-
-function menus_widget_obter_perfil_usuario_slug($user_data, $params = []){
-	if(isset($params['_profile_slug'])) return (string)$params['_profile_slug'];
-
-	$id_perfil = (int)($user_data['id_usuarios_perfis'] ?? 0);
-	if($id_perfil <= 0 || !function_exists('banco_select')) return '';
-
-	$perfil = banco_select(Array(
-		'unico' => true,
-		'tabela' => 'usuarios_perfis',
-		'campos' => Array('id'),
-		'extra' => "WHERE id_usuarios_perfis='".banco_escape_field((string)$id_perfil)."'"
-	));
-
-	if(!is_array($perfil)) return '';
-	return (string)($perfil['id'] ?? '');
 }
 
 function menus_widget_selecionar_html_disponibilidade($html_template, $availability, $slug = null){

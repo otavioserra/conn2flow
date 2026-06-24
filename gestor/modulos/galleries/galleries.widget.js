@@ -20,6 +20,19 @@ $(document).ready(function () {
         if ($gallery.data('c2fGalleryReady')) return;     // evita dupla inicialização
         $gallery.data('c2fGalleryReady', true);
 
+        // ===== Configuração de Altura e Margens Dinâmicas
+        var height = parseInt($gallery.data('height'), 10);
+        if (!isNaN(height) && height >= 1) {
+            $gallery.css('height', height + 'px');
+        }
+        var marginLateral = parseInt($gallery.data('margin-lateral'), 10);
+        if (!isNaN(marginLateral)) {
+            $gallery.css({
+                'margin-left': marginLateral + 'px',
+                'margin-right': marginLateral + 'px'
+            });
+        }
+
         var $wrapper = $gallery.find('.gallery-slides-wrapper').first();
         if ($wrapper.length === 0) return;
 
