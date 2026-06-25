@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 /**
  * Cobertura do descompilador de recursos (Pull System / req-058 / BATCH-058):
@@ -260,5 +261,129 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         $stats = rdr_processar($src, $gestor);
         $this->assertContains('paginas', $stats['ignoradas']);
         $this->assertArrayNotHasKey('paginas', $stats['tabelas']);
+    }
+
+    public function testOverrideScopeModuloEmTablesConfigUsaResourcesDoModulo(): void
+    {
+        $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
+        $src = $this->tmpDir . DIRECTORY_SEPARATOR . 'src';
+        @mkdir($gestor . '/resources', 0775, true);
+        @mkdir($gestor . '/modulos/menus/resources', 0775, true);
+        @mkdir($src, 0775, true);
+
+        $tablesConfig = ['tabelas' => ['menus' => [
+            'nome' => 'menus',
+            'id' => 'id',
+            'id_numerico' => 'id_menus',
+            'config' => [
+                'scope' => 'module',
+                'modulo' => 'menus',
+                'strategy' => 'natural_key',
+                'natural_key_columns' => ['language', 'module', 'id'],
+                'sync_resources' => true,
+                'metadata_file' => 'menus.json',
+                'field_types' => ['html' => 'file:html'],
+            ],
+        ]]];
+        file_put_contents($gestor . '/resources/tables_config.json', json_encode($tablesConfig));
+        file_put_contents($src . '/MenusData.json', json_encode([
+            ['id_menus' => 1, 'id' => 'main', 'language' => 'pt-br', 'module' => 'menus', 'html' => '<nav>Main</nav>', 'status' => 'A'],
+        ]));
+
+        $cfgs = rdr_coletar_configs($gestor);
+        $this->assertSame('module', $cfgs['menus']['scope']);
+        $this->assertSame('menus', $cfgs['menus']['modulo']);
+        $this->assertSame($gestor . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . 'menus' . DIRECTORY_SEPARATOR . 'resources', $cfgs['menus']['base_dir']);
+
+        rdr_processar($src, $gestor);
+        $this->assertFileExists($gestor . '/modulos/menus/resources/pt-br/menus/main.html');
+        $this->assertSame('<nav>Main</nav>', file_get_contents($gestor . '/modulos/menus/resources/pt-br/menus/main.html'));
+        $meta = json_decode(file_get_contents($gestor . '/modulos/menus/resources/pt-br/menus/menus.json'), true);
+        $this->assertSame('main', $meta[0]['id']);
+        $this->assertArrayNotHasKey('module', $meta[0]);
+    }
+
+    #[RunInSeparateProcess]
+    public function testCompiladorNormalizaOverrideScopeModuloEmConfig(): void
+    {
+        if (!defined('SDD_NO_AUTORUN')) {
+            define('SDD_NO_AUTORUN', true);
+        }
+        require_once CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR
+            . 'controladores' . DIRECTORY_SEPARATOR . 'agents' . DIRECTORY_SEPARATOR
+            . 'arquitetura' . DIRECTORY_SEPARATOR . 'atualizacao-dados-recursos.php';
+
+        $norm = normalizarConfigTabela([
+            'nome' => 'menus',
+            'id' => 'id',
+            'id_numerico' => 'id_menus',
+            'config' => [
+                'scope' => 'module',
+                'modulo' => 'menus',
+                'strategy' => 'natural_key',
+                'natural_key_columns' => ['language', 'module', 'id'],
+                'sync_resources' => true,
+            ],
+        ]);
+
+        $this->assertSame('module', $norm[0]['scope_override']);
+        $this->assertSame('menus', $norm[0]['modulo_override']);
+        $this->assertSame('menus', $norm[0]['nome']);
+    }
+
+    public function testContentsPulaQuandoMd5IgualSemAlterarTimestamp(): void
+    {
+        $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
+        $src = $this->tmpDir . DIRECTORY_SEPARATOR . 'src';
+        @mkdir($gestor . '/contents/uploads', 0775, true);
+        @mkdir($src . '/contents/uploads', 0775, true);
+        file_put_contents($gestor . '/contents/uploads/logo.txt', 'same');
+        file_put_contents($src . '/contents/uploads/logo.txt', 'same');
+        touch($gestor . '/contents/uploads/logo.txt', 1000);
+        touch($src . '/contents/uploads/logo.txt', 2000);
+
+        $stats = rdr_sincronizar_contents($src, $gestor);
+
+        $this->assertSame(0, $stats['copiados']);
+        $this->assertSame(1, $stats['pulados']);
+        $this->assertSame([], $stats['conflitos']);
+        $this->assertSame(1000, filemtime($gestor . '/contents/uploads/logo.txt'));
+    }
+
+    public function testContentsSobrescreveQuandoRemotoMaisNovoEPreservaTimestamp(): void
+    {
+        $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
+        $src = $this->tmpDir . DIRECTORY_SEPARATOR . 'src';
+        @mkdir($gestor . '/contents/uploads', 0775, true);
+        @mkdir($src . '/contents/uploads', 0775, true);
+        file_put_contents($gestor . '/contents/uploads/logo.txt', 'local');
+        file_put_contents($src . '/contents/uploads/logo.txt', 'remote');
+        touch($gestor . '/contents/uploads/logo.txt', 1000);
+        touch($src . '/contents/uploads/logo.txt', 2000);
+
+        $stats = rdr_sincronizar_contents($src, $gestor);
+
+        $this->assertSame(1, $stats['copiados']);
+        $this->assertSame('remote', file_get_contents($gestor . '/contents/uploads/logo.txt'));
+        $this->assertSame(2000, filemtime($gestor . '/contents/uploads/logo.txt'));
+    }
+
+    public function testContentsConflitoQuandoLocalMaisNovoOuMesmoTimestamp(): void
+    {
+        $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
+        $src = $this->tmpDir . DIRECTORY_SEPARATOR . 'src';
+        @mkdir($gestor . '/contents/uploads', 0775, true);
+        @mkdir($src . '/contents/uploads', 0775, true);
+        file_put_contents($gestor . '/contents/uploads/logo.txt', 'local');
+        file_put_contents($src . '/contents/uploads/logo.txt', 'remote');
+        touch($gestor . '/contents/uploads/logo.txt', 2000);
+        touch($src . '/contents/uploads/logo.txt', 1000);
+
+        $stats = rdr_sincronizar_contents($src, $gestor);
+
+        $this->assertSame(0, $stats['copiados']);
+        $this->assertSame(1, $stats['pulados']);
+        $this->assertSame(['uploads/logo.txt'], $stats['conflitos']);
+        $this->assertSame('local', file_get_contents($gestor . '/contents/uploads/logo.txt'));
     }
 }

@@ -60,7 +60,7 @@ if (is_file($LOG_LIB_PATH)) {
 // Parsing de argumentos CLI
 $GLOBALS['CLI_ARGS'] = [];
 if (PHP_SAPI === 'cli') {
-    foreach ($argv as $a) {
+    foreach (($argv ?? []) as $a) {
         if (preg_match('/^--([^=]+)=(.+)$/',$a,$m)) { $GLOBALS['CLI_ARGS'][$m[1]] = $m[2]; }
         elseif (substr($a,0,2)==='--') { $GLOBALS['CLI_ARGS'][substr($a,2)] = true; }
     }
@@ -1057,6 +1057,9 @@ function normalizarConfigTabela(array $meta): array {
         $metadataFile = (isset($config['metadata_file']) && is_string($config['metadata_file']) && $config['metadata_file'] !== '')
             ? $config['metadata_file'] : null;
         $fieldTypes = (isset($config['field_types']) && is_array($config['field_types'])) ? $config['field_types'] : [];
+        $scopeOverride = (isset($config['scope']) && is_string($config['scope'])) ? $config['scope'] : null;
+        $moduloOverride = (isset($config['modulo']) && is_string($config['modulo']) && $config['modulo'] !== '')
+            ? $config['modulo'] : null;
 
         $out[] = [
             'nome' => $nome,
@@ -1072,6 +1075,8 @@ function normalizarConfigTabela(array $meta): array {
             'resources_dir' => $resourcesDir,
             'metadata_file' => $metadataFile,
             'field_types' => $fieldTypes,
+            'scope_override' => $scopeOverride,
+            'modulo_override' => $moduloOverride,
             // Listas agregadas por tabela.
             'deletar' => $deletar,
             'forcar_atualizacao' => $forcar,
@@ -1120,9 +1125,13 @@ function coletarConfigsTabelas(): array {
         foreach ($g['tabelas'] as $meta) {
             if (!is_array($meta)) continue;
             foreach (normalizarConfigTabela($meta) as $norm) {
-                $norm['scope'] = 'global';
-                $norm['modulo'] = null;
-                $norm['base_dir'] = $baseDir;
+                $scope = ($norm['scope_override'] === 'module' && !empty($norm['modulo_override'])) ? 'module' : 'global';
+                $modulo = $scope === 'module' ? $norm['modulo_override'] : null;
+                $norm['scope'] = $scope;
+                $norm['modulo'] = $modulo;
+                $norm['base_dir'] = $scope === 'module'
+                    ? dirname($baseDir) . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . $modulo . DIRECTORY_SEPARATOR . 'resources'
+                    : $baseDir;
                 $norm['inline'] = $g;
                 $out[] = [$norm, $srcLabel];
             }
@@ -1149,9 +1158,13 @@ function coletarConfigsTabelas(): array {
             $tabela = $data['tabela'] ?? null;
             if (!is_array($tabela) || empty($tabela['config'])) continue;
             foreach (normalizarConfigTabela($tabela) as $norm) {
-                $norm['scope'] = 'module';
-                $norm['modulo'] = $modId;
-                $norm['base_dir'] = $modPath . DIRECTORY_SEPARATOR . 'resources';
+                $scope = ($norm['scope_override'] === 'global') ? 'global' : 'module';
+                $modulo = ($scope === 'module' && !empty($norm['modulo_override'])) ? $norm['modulo_override'] : ($scope === 'module' ? $modId : null);
+                $norm['scope'] = $scope;
+                $norm['modulo'] = $modulo;
+                $norm['base_dir'] = $scope === 'module'
+                    ? dirname($mDir) . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . $modulo . DIRECTORY_SEPARATOR . 'resources'
+                    : dirname($mDir) . DIRECTORY_SEPARATOR . 'resources';
                 $norm['inline'] = $data;
                 $out[] = [$norm, $srcPrefix . $modId];
             }

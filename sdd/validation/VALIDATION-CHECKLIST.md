@@ -149,18 +149,33 @@ Evidência automatizada reportada pelo executor em 2026-06-25 (ambiente: PHP 8.4
 ---
 ## BATCH-059 - Refinamentos, Overrides de Projeto e Sincronização Inteligente de Contents (req-059)
 
-- [ ] Script CLI do servidor renomeado para `gestor/controladores/recuperacoes/recuperacao-banco-de-dados.php`.
-- [ ] Compilador e descompilador de recursos suportando overrides de `scope` e `modulo` em `tables_config.json`.
-- [ ] Endpoint `_api/project/recover` compactando opcionalmente o diretório `gestor/contents/` sob o caminho `contents/` no ZIP.
-- [ ] Descompilador realizando pull inteligente da pasta `contents/` comparando MD5 e timestamps, e aplicando `touch()`.
-- [ ] Relatório de conflito exibido no final do pull mostrando alertas de choque no padrão `RDR_CONFLITO` para arquivos modificados localmente que são mais recentes que a versão alterada do servidor.
-- [ ] Script `recover-project.sh` e VS Code Tasks atualizados com a flag `--contents`.
-- [ ] Suíte de testes `RecuperacaoDadosRecursosTest.php` estendida para cobrir overrides em `tables_config.json`, comparação MD5 e timestamps (conflito/choque) no pull de `contents`.
-- [ ] Validação estática (`php -l`) de todos os arquivos PHP alterados.
+- [x] Script CLI do servidor renomeado para `gestor/controladores/recuperacoes/recuperacao-banco-de-dados.php`.
+- [x] Compilador e descompilador de recursos suportando overrides de `scope` e `modulo` em `tables_config.json`.
+- [x] Endpoint `_api/project/recover` compactando opcionalmente o diretório `gestor/contents/` sob o caminho `contents/` no ZIP.
+- [x] Descompilador realizando pull inteligente da pasta `contents/` comparando MD5 e timestamps, e aplicando `touch()`.
+- [x] Relatório de conflito exibido no final do pull mostrando alertas de choque no padrão `RDR_CONFLITO` para arquivos modificados localmente que são mais recentes que a versão alterada do servidor.
+- [x] Script `recover-project.sh` e VS Code Tasks atualizados com a flag `--contents`.
+- [x] Suíte de testes `RecuperacaoDadosRecursosTest.php` estendida para cobrir overrides em `tables_config.json`, comparação MD5 e timestamps (conflito/choque) no pull de `contents`.
+- [x] Validação estática (`php -l`) de todos os arquivos PHP alterados.
 
 ### Evidência de Validação (BATCH-059)
 
-*Aguardando implementação pelo engenheiro executor.*
+Evidência automatizada reportada pelo executor em 2026-06-25:
+- Linting estático (`php -l`) OK:
+  - `gestor/controladores/api/api.php`
+  - `gestor/controladores/recuperacoes/recuperacao-banco-de-dados.php`
+  - `gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php`
+  - `gestor/controladores/agents/arquitetura/recuperacao-dados-recursos.php`
+  - `tests/Unit/PHP/RecuperacaoDadosRecursosTest.php`
+- `.vscode/tasks.json` validado por `ConvertFrom-Json`: 46 tasks.
+- `git diff --check` OK.
+- `vendor/bin/phpunit tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` OK: **11 tests, 65 assertions**.
+- `composer test` OK: **59 tests, 207 assertions**; 4 skipped gated por banco; 1 `PHPUnit Deprecation` preexistente.
+- `bash -n ai-workspace/en/scripts/projects/recover-project.sh` não executado: neste Windows o comando `bash` encaminha para WSL, mas não há distribuição instalada.
+
+### Pendências Runtime (com o operador)
+- Executar a task `🗃️ Projects - Recover Current Project with Contents` contra API ativa e token OAuth válido.
+- Confirmar manualmente que conflitos reais em `contents/` aparecem como `RDR_CONFLITO`/`RDR_CONFLITOS` sem sobrescrever arquivos locais mais recentes.
 
 
 

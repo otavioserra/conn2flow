@@ -1,7 +1,7 @@
 # BATCH-059 — Refinamentos, Overrides de Projeto e Sincronização Inteligente de Contents (Pull System)
 
 - **Intake**: [req-059.md](../human-requests/req-059.md)
-- **Status**: ready-for-intake
+- **Status**: complete
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-059
 
 ## Contexto
@@ -26,3 +26,12 @@ Este lote implementa refinamentos críticos ao Pull System (BATCH-058):
 - **Mapeamento de Scope/Modulo**: Em `coletarConfigsTabelas()` e `rdr_coletar_configs()`, se a tabela global carregar `scope === 'module'` e `modulo !== null`, calcular a pasta base (`base_dir`) como `<gestorDir>/modulos/<modulo>/resources`.
 - **Cópia Inteligente**: Calcular `md5_file` antes de copiar. Se idêntico, pular. Se diferente, sobrescrever se e somente se `remote_mtime > local_mtime`. Se local for mais novo ou de mesma data, pular a cópia, registrar o conflito via `RDR_CONFLITO` e acumular no sumário final.
 - **Timestamp Touch**: Usar `touch()` local com a data do servidor ao realizar a cópia para manter os relógios de arquivos sincronizados em futuros pulls/deploys.
+
+## Evidência de validação
+
+- `php -l` OK em `api.php`, `recuperacao-banco-de-dados.php`, `atualizacao-dados-recursos.php`, `recuperacao-dados-recursos.php` e `RecuperacaoDadosRecursosTest.php`.
+- `.vscode/tasks.json` validado com `ConvertFrom-Json`.
+- `git diff --check` OK.
+- `vendor/bin/phpunit tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` OK: 11 testes, 65 assertions.
+- `composer test` OK: 59 testes, 207 assertions, 4 skipped e 1 deprecation PHPUnit preexistente.
+- `bash -n ai-workspace/en/scripts/projects/recover-project.sh` não executado neste Windows porque o comando `bash` encaminha para WSL e não há distribuição instalada.

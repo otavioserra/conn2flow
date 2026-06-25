@@ -251,9 +251,21 @@
             "problemMatcher": []
         },
         {
+            "label": "🗃️ Projects - Recover Current Project - with Contents",
+            "type": "shell",
+            "command": "bash ./ai-workspace/en/scripts/projects/recover-project.sh --contents",
+            "problemMatcher": []
+        },
+        {
             "label": "🗃️ Projects - Recover Project -> ID",
             "type": "shell",
             "command": "bash ./ai-workspace/en/scripts/projects/recover-project.sh --project ${input:projectID}",
+            "problemMatcher": []
+        },
+        {
+            "label": "🗃️ Projects - Recover Project -> ID - with Contents",
+            "type": "shell",
+            "command": "bash ./ai-workspace/en/scripts/projects/recover-project.sh --project ${input:projectID} --contents",
             "problemMatcher": []
         },
         {

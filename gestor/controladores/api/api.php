@@ -330,6 +330,12 @@ function api_project_recover() {
     } elseif (isset($_POST['tables']) && is_string($_POST['tables']) && $_POST['tables'] !== '') {
         $tabelas = explode(',', $_POST['tables']);
     }
+    $recover_contents = false;
+    if (is_array($body) && array_key_exists('recover_contents', $body)) {
+        $recover_contents = filter_var($body['recover_contents'], FILTER_VALIDATE_BOOLEAN);
+    } elseif (isset($_POST['recover_contents'])) {
+        $recover_contents = filter_var($_POST['recover_contents'], FILTER_VALIDATE_BOOLEAN);
+    }
     $tabelas = array_values(array_filter(array_map(function ($t) {
         return preg_replace('/[^a-z0-9_]/', '', strtolower(trim((string)$t)));
     }, $tabelas)));
@@ -381,6 +387,9 @@ function api_project_recover() {
         foreach ($jsonFiles as $jf) {
             $zip->addFile($jf, basename($jf));
         }
+        if ($recover_contents) {
+            api_zip_add_directory($zip, $_GESTOR['ROOT_PATH'] . 'contents', 'contents');
+        }
         $zip->close();
 
         if (!is_file($zip_path)) {
@@ -404,6 +413,35 @@ function api_project_recover() {
         if (is_file($zip_path)) { @unlink($zip_path); }
         if (is_dir($temp_base)) { api_remove_directory($temp_base); }
         api_response_error('Erro durante a recuperação do projeto: ' . $e->getMessage(), 500);
+    }
+}
+
+/**
+ * Adiciona recursivamente uma pasta ao ZIP preservando timestamps dos arquivos.
+ */
+function api_zip_add_directory(ZipArchive $zip, string $sourceDir, string $zipBase): void {
+    if (!is_dir($sourceDir)) return;
+    $sourceDir = rtrim($sourceDir, '/\\');
+    $zipBase = trim(str_replace('\\', '/', $zipBase), '/');
+    $it = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($sourceDir, FilesystemIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::SELF_FIRST
+    );
+    foreach ($it as $item) {
+        $path = $item->getPathname();
+        $rel = ltrim(str_replace('\\', '/', substr($path, strlen($sourceDir))), '/');
+        if ($rel === '') continue;
+        $zipName = $zipBase . '/' . $rel;
+        if ($item->isDir()) {
+            $zip->addEmptyDir($zipName);
+            continue;
+        }
+        if ($item->isFile()) {
+            $zip->addFile($path, $zipName);
+            if (method_exists($zip, 'setMtimeName')) {
+                $zip->setMtimeName($zipName, $item->getMTime());
+            }
+        }
     }
 }
 

@@ -117,6 +117,15 @@ function rdr_normalizar_config(array $meta, string $scope, ?string $modulo, stri
         $metadataFile = (isset($config['metadata_file']) && is_string($config['metadata_file']) && $config['metadata_file'] !== '')
             ? $config['metadata_file'] : null;
         $fieldTypes = (isset($config['field_types']) && is_array($config['field_types'])) ? $config['field_types'] : [];
+        $scopeOverride = (isset($config['scope']) && is_string($config['scope'])) ? $config['scope'] : null;
+        $moduloOverride = (isset($config['modulo']) && is_string($config['modulo']) && $config['modulo'] !== '')
+            ? $config['modulo'] : null;
+        $effectiveScope = ($scopeOverride === 'module' && $moduloOverride !== null) ? 'module' : $scope;
+        $effectiveModulo = ($effectiveScope === 'module') ? ($moduloOverride ?? $modulo) : null;
+        $gestorRoot = $scope === 'module' ? dirname(dirname(dirname($baseDir))) : dirname($baseDir);
+        $effectiveBaseDir = ($scopeOverride === 'module' && $moduloOverride !== null)
+            ? $gestorRoot . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . $moduloOverride . DIRECTORY_SEPARATOR . 'resources'
+            : $baseDir;
 
         $out[] = [
             'nome' => $nome,
@@ -128,9 +137,9 @@ function rdr_normalizar_config(array $meta, string $scope, ?string $modulo, stri
             'resources_dir' => $resourcesDir,
             'metadata_file' => $metadataFile,
             'field_types' => $fieldTypes,
-            'scope' => $scope,
-            'modulo' => $modulo,
-            'base_dir' => $baseDir,
+            'scope' => $effectiveScope,
+            'modulo' => $effectiveModulo,
+            'base_dir' => $effectiveBaseDir,
             'source_file' => $sourceFile,
         ];
     }
@@ -312,6 +321,73 @@ function rdr_escrever_metadados(array $cfg, string $lang, array $lista): bool {
     return rdr_json_write($sourceFile, $root);
 }
 
+// ========================= SINCRONIZACAO DE CONTENTS =========================
+
+/** Caminho relativo normalizado para logs de contents. */
+function rdr_contents_rel(string $baseDir, string $path): string {
+    return ltrim(str_replace('\\', '/', substr($path, strlen(rtrim($baseDir, '/\\')))), '/');
+}
+
+/**
+ * Copia contents/ do pacote de recuperacao respeitando MD5 e timestamps.
+ *
+ * @return array{copiados:int,pulados:int,conflitos:array<int,string>}
+ */
+function rdr_sincronizar_contents(string $sourceDir, string $gestorDir): array {
+    $remoteContents = rtrim($sourceDir, '/\\') . DIRECTORY_SEPARATOR . 'contents';
+    $localContents = rtrim($gestorDir, '/\\') . DIRECTORY_SEPARATOR . 'contents';
+    $stats = ['copiados' => 0, 'pulados' => 0, 'conflitos' => []];
+    if (!is_dir($remoteContents)) {
+        return $stats;
+    }
+    if (!is_dir($localContents)) {
+        @mkdir($localContents, 0775, true);
+    }
+
+    $it = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($remoteContents, FilesystemIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::SELF_FIRST
+    );
+    foreach ($it as $item) {
+        if (!$item->isFile()) continue;
+        $remotePath = $item->getPathname();
+        $rel = rdr_contents_rel($remoteContents, $remotePath);
+        if ($rel === '') continue;
+        $localPath = $localContents . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $rel);
+        $remoteMtime = $item->getMTime();
+
+        if (is_file($localPath)) {
+            if (md5_file($remotePath) === md5_file($localPath)) {
+                $stats['pulados']++;
+                continue;
+            }
+            $localMtime = filemtime($localPath) ?: 0;
+            if ($remoteMtime <= $localMtime) {
+                $stats['pulados']++;
+                $stats['conflitos'][] = $rel;
+                rdr_log("RDR_CONFLITO arquivo=$rel (local mais recente, remoto diferente; pulado)");
+                continue;
+            }
+        }
+
+        $dir = dirname($localPath);
+        if (!is_dir($dir)) @mkdir($dir, 0775, true);
+        if (@copy($remotePath, $localPath)) {
+            @touch($localPath, $remoteMtime);
+            $stats['copiados']++;
+        }
+    }
+
+    if ($stats['conflitos']) {
+        rdr_log('RDR_CONFLITOS total=' . count($stats['conflitos']));
+        foreach ($stats['conflitos'] as $rel) {
+            rdr_log('RDR_CONFLITOS arquivo=' . $rel);
+        }
+    }
+
+    return $stats;
+}
+
 // ========================= ORQUESTRAÇÃO =========================
 
 /**
@@ -322,9 +398,10 @@ function rdr_escrever_metadados(array $cfg, string $lang, array $lista): bool {
  */
 function rdr_processar(string $sourceDir, string $gestorDir): array {
     $configs = rdr_coletar_configs($gestorDir);
-    $stats = ['tabelas' => [], 'ignoradas' => [], 'arquivos' => 0, 'registros' => 0];
+    $stats = ['tabelas' => [], 'ignoradas' => [], 'arquivos' => 0, 'registros' => 0, 'contents' => ['copiados' => 0, 'pulados' => 0, 'conflitos' => []]];
 
     $sourceDir = rtrim($sourceDir, '/\\');
+    $stats['contents'] = rdr_sincronizar_contents($sourceDir, $gestorDir);
     $dataFiles = glob($sourceDir . DIRECTORY_SEPARATOR . '*Data.json') ?: [];
     if (!$dataFiles) {
         rdr_log('RDR_SEM_DATA_JSON em ' . $sourceDir);
@@ -412,7 +489,7 @@ function rdr_main(array $opts): int {
     $gestorDir = rdr_resolver_gestor_dir($opts);
     rdr_log("RDR_START source=$sourceDir gestor=$gestorDir");
     $stats = rdr_processar($sourceDir, $gestorDir);
-    rdr_log("RDR_DONE tabelas=" . count($stats['tabelas']) . " registros={$stats['registros']} arquivos={$stats['arquivos']}");
+    rdr_log("RDR_DONE tabelas=" . count($stats['tabelas']) . " registros={$stats['registros']} arquivos={$stats['arquivos']} contents_copiados={$stats['contents']['copiados']} contents_conflitos=" . count($stats['contents']['conflitos']));
     return 0;
 }
 

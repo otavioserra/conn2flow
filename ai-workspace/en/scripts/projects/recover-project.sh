@@ -55,9 +55,13 @@ download_recover() {
     local api_url="$2"
     local token="$3"
     local project_target="$4"
+    local recover_contents="$5"
 
     log "Requesting recover package from API..."
     log "API URL: $api_url"
+    if [ "$recover_contents" = "true" ]; then
+        log "Including contents/ in recover package."
+    fi
 
     # -o writes the (binary) body to file; -w prints only the HTTP code to stdout.
     RECOVER_HTTP_CODE=$(curl -s -o "$zip_file" -w "%{http_code}" \
@@ -65,7 +69,7 @@ download_recover() {
         -H "Authorization: Bearer $token" \
         -H "X-Project-ID: $project_target" \
         -H "Content-Type: application/json" \
-        -d '{}' \
+        -d "{\"recover_contents\":$recover_contents}" \
         "$api_url")
 
     log "HTTP Code: $RECOVER_HTTP_CODE"
@@ -83,18 +87,24 @@ COMPILER="$PROJECT_ROOT/gestor/controladores/agents/arquitetura/atualizacao-dado
 
 # Argument parsing
 PROJECT_TARGET_OVERRIDE=""
+RECOVER_CONTENTS="false"
 while [[ $# -gt 0 ]]; do
     case $1 in
         --project|-p)
             PROJECT_TARGET_OVERRIDE="$2"
             shift 2
             ;;
+        --contents|-c)
+            RECOVER_CONTENTS="true"
+            shift
+            ;;
         --help|-h)
-            echo "Usage: $0 [--project|-p PROJECT_ID]"
+            echo "Usage: $0 [--project|-p PROJECT_ID] [--contents|-c]"
             echo ""
             echo "Options:"
             echo "  --project, -p PROJECT_ID    Project identifier for recover (optional)"
             echo "                              If not provided, uses devEnvironment.projectTarget from environment.json"
+            echo "  --contents, -c              Also recover gestor/contents with smart MD5/timestamp sync"
             echo "  --help, -h                  Shows this help"
             exit 0
             ;;
@@ -177,7 +187,7 @@ ACCESS_TOKEN=$(get_oauth_token "$ENV_FILE" "$PROJECT_TARGET") || {
 API_URL=$(normalize_url "$PROJECT_URL" "/_api/project/recover")
 
 # Download with token renewal on 401
-if ! download_recover "$ZIP_FILE" "$API_URL" "$ACCESS_TOKEN" "$PROJECT_TARGET"; then
+if ! download_recover "$ZIP_FILE" "$API_URL" "$ACCESS_TOKEN" "$PROJECT_TARGET" "$RECOVER_CONTENTS"; then
     if [ "$RECOVER_HTTP_CODE" -eq 401 ]; then
         log_warning "Token expired. Trying to renew..."
         RENEW_SCRIPT="$PROJECT_ROOT/ai-workspace/en/scripts/api/renew-token.sh"
@@ -186,7 +196,7 @@ if ! download_recover "$ZIP_FILE" "$API_URL" "$ACCESS_TOKEN" "$PROJECT_TARGET"; 
             if [ $? -eq 0 ] && [ -n "$NEW_TOKEN" ] && [ "$NEW_TOKEN" != "null" ]; then
                 ACCESS_TOKEN=$(jq -r ".devProjects.\"$PROJECT_TARGET\".api.access_token" "$ENV_FILE")
                 log "Retrying recover with renewed token..."
-                if ! download_recover "$ZIP_FILE" "$API_URL" "$ACCESS_TOKEN" "$PROJECT_TARGET"; then
+                if ! download_recover "$ZIP_FILE" "$API_URL" "$ACCESS_TOKEN" "$PROJECT_TARGET" "$RECOVER_CONTENTS"; then
                     log_error "Recover failed even after token renewal (HTTP $RECOVER_HTTP_CODE)"
                     [ -f "$ZIP_FILE" ] && cat "$ZIP_FILE" && rm -f "$ZIP_FILE"
                     exit 1

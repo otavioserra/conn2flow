@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Recuperação de Dados de Recursos — Exportação Bruta no Servidor (Pull System)
+ * Recuperação de Banco de Dados — Exportação Bruta no Servidor (Pull System)
  * ------------------------------------------------------------------------------------------
  * req-058 / BATCH-058.
  *
@@ -25,8 +25,8 @@
  *                        CONN2FLOW_DB_HOST/CONN2FLOW_DB_DATABASE/CONN2FLOW_DB_USERNAME/CONN2FLOW_DB_PASSWORD.
  *
  * Exemplos:
- *   php recuperacao-dados-recursos.php
- *   php recuperacao-dados-recursos.php --tables=menus,galleries --output-dir=/tmp/recover
+ *   php recuperacao-banco-de-dados.php
+ *   php recuperacao-banco-de-dados.php --tables=menus,galleries --output-dir=/tmp/recover
  *
  * Estrutura: parse de argumentos -> bootstrap de banco -> inclusão do atualizador (SDD_NO_AUTORUN)
  * -> resolução de tabelas -> reverseExport().
