@@ -37,9 +37,9 @@ The correct flow is: **Physical Editing -> Processing (Generates JSON) -> Commit
 
 ## Project Metadata in the Pull System
 
-In deployed production projects, local source folders (`resources/`, `db/`, and `modulos/*/resources/`) do not need to exist on the server: the runtime consumes resources directly from the database. Because of that, the server cannot rely on the local `resources/tables_config.json` when `_api/project/recover` runs.
+In deployed production projects, local source folders (`resources/`, `db/`, and `modulos/*/resources/`) do not need to exist on the server: the runtime consumes resources directly from the database. Because of that, the server cannot rely on the local `resources/project_tables_config.json` when `_api/project/recover` runs.
 
-To decouple runtime recovery from local source files, the compiler generates `project-schema-metadata.json` in the project manager root whenever `resources/tables_config.json` exists. This file is packaged during deploy and installed on the server beside `db/` and `controladores/`. During pull, the API and the `recuperacao-banco-de-dados.php` CLI read this manifest and merge its tables with the default `db/data/schema-metadata.json` contract.
+To decouple runtime recovery from local source files, the compiler generates `project-schema-metadata.json` in the project manager root whenever `resources/project_tables_config.json` exists. This file is packaged during deploy and installed on the server beside `db/` and `controladores/`. During pull, the API and the `recuperacao-banco-de-dados.php` CLI read this manifest and merge its tables with the default `db/data/schema-metadata.json` contract. The `resources/tables_config.json` file is reserved for Core metadata, while project overrides and custom project tables must live in `resources/project_tables_config.json`.
 
 Short format:
 
@@ -401,7 +401,8 @@ As of req-056, **any table** — module or global — can join the resource comp
 
 ### Where to declare
 - **Module**: in the `"tabela"."config"` block of the `modulos/<module>/<module>.json` manifest.
-- **Global** (tables with no owning module): in `gestor/resources/tables_config.json`, under `"tabelas"."<table>"."config"`.
+- **Core global** (system-owned tables with no owning module): in `gestor/resources/tables_config.json`, under `"tabelas"."<table>"."config"`.
+- **Project global** (project overrides and custom project tables): in `gestor/resources/project_tables_config.json`, under `"tabelas"."<table>"."config"`.
 
 The `"config"` key may be a **single object** (1 table) or an **array of objects** (N tables); use `"tabela_nome"` inside each element to name the table when the array declares more than one.
 
@@ -411,10 +412,10 @@ The `"config"` key may be a **single object** (1 table) or an **array of objects
 | `sync_resources` | `true` automatically generates `<PascalCase>Data.json` for the table. |
 | `resources_dir` | Resource subfolder (default = table name). |
 | `metadata_file` | External JSON with the record list; when absent, reads inline from `resources -> <language> -> <table>`. |
-| `field_types` | Per-field conversions: `"json"` (encodes array/object) and `"file:<ext>"` (injects the content of `<id>.<ext>`). |
+| `field_types` | Per-field conversions: `"json"` (encodes array/object) and `"file:<ext>"` (injects the content of `<id>/<id>.<ext>`). |
 
 ### Path resolution
-- **Physical content** (`file:<ext>`): `<base>/resources/<language>/<resources_dir\|table>/<id>.<ext>` (UTF-8 BOM stripped).
+- **Physical content** (`file:<ext>`): `<base>/resources/<language>/<resources_dir\|table>/<id>/<id>.<ext>` (UTF-8 BOM stripped).
 - **External metadata** (`metadata_file`):
   - Module: `modulos/<module>/resources/<language>/<resources_dir\|table>/<metadata_file>`.
   - Global: `gestor/resources/<language>/<metadata_file>` (or `.../<resources_dir>/<metadata_file>` when `resources_dir` is explicit).

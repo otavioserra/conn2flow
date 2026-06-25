@@ -91,8 +91,8 @@ final class RecuperacaoDadosRecursosTest extends TestCase
 
         $res = rdr_descompilar_registro($rec, $cfg, 'pt-br');
 
-        // Arquivo físico em layout PLANO (<base>/<lang>/<tabela>/<id>.<ext>), sem BOM.
-        $esperado = $base . DIRECTORY_SEPARATOR . 'pt-br' . DIRECTORY_SEPARATOR . 'widgets_demo' . DIRECTORY_SEPARATOR . 'hero.html';
+        // Arquivo físico em subpasta por ID (<base>/<lang>/<tabela>/<id>/<id>.<ext>), sem BOM.
+        $esperado = $base . DIRECTORY_SEPARATOR . 'pt-br' . DIRECTORY_SEPARATOR . 'widgets_demo' . DIRECTORY_SEPARATOR . 'hero' . DIRECTORY_SEPARATOR . 'hero.html';
         $this->assertArrayHasKey($esperado, $res['files']);
         $this->assertSame('<div>Olá</div>', $res['files'][$esperado]);
 
@@ -178,9 +178,9 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         $this->assertIsArray($lista[0]['fields_schema']);
         $this->assertArrayNotHasKey('versao', $lista[0]);
 
-        // Arquivo físico: subpasta = nome da tabela.
-        $this->assertFileExists($gestor . '/resources/pt-br/widgets_demo/hero.html');
-        $this->assertSame('<section>Conteúdo</section>', file_get_contents($gestor . '/resources/pt-br/widgets_demo/hero.html'));
+        // Arquivo físico: subpasta da tabela + subpasta do recurso.
+        $this->assertFileExists($gestor . '/resources/pt-br/widgets_demo/hero/hero.html');
+        $this->assertSame('<section>Conteúdo</section>', file_get_contents($gestor . '/resources/pt-br/widgets_demo/hero/hero.html'));
     }
 
     public function testProcessaEscreveMetadadosInlineNoJsonRaiz(): void
@@ -217,8 +217,8 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         $this->assertArrayNotHasKey('id_widgets_inline', $inline[0]);
 
         // Arquivo físico do css.
-        $this->assertFileExists($gestor . '/resources/pt-br/widgets_inline/box.css');
-        $this->assertSame('.box{color:red}', file_get_contents($gestor . '/resources/pt-br/widgets_inline/box.css'));
+        $this->assertFileExists($gestor . '/resources/pt-br/widgets_inline/box/box.css');
+        $this->assertSame('.box{color:red}', file_get_contents($gestor . '/resources/pt-br/widgets_inline/box/box.css'));
     }
 
     public function testResolucaoDeCaminhosEspelhaCompilador(): void
@@ -263,6 +263,41 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         $this->assertArrayNotHasKey('paginas', $stats['tabelas']);
     }
 
+    public function testProcessaRegistroSemIdiomaUsaFallbackPtBr(): void
+    {
+        $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
+        $src = $this->tmpDir . DIRECTORY_SEPARATOR . 'src';
+        @mkdir($gestor . DIRECTORY_SEPARATOR . 'resources', 0775, true);
+        @mkdir($src, 0775, true);
+
+        $tablesConfig = ['tabelas' => ['arquivos' => [
+            'nome' => 'arquivos',
+            'id' => 'id',
+            'id_numerico' => 'id_arquivos',
+            'config' => [
+                'strategy' => 'natural_key',
+                'natural_key_columns' => ['id'],
+                'sync_resources' => true,
+                'metadata_file' => 'arquivos.json',
+                'field_types' => [],
+            ],
+        ]]];
+        file_put_contents($gestor . '/resources/project_tables_config.json', json_encode($tablesConfig));
+        file_put_contents($src . '/ArquivosData.json', json_encode([
+            ['id_arquivos' => 9, 'id' => 'logo', 'nome' => 'Logo', 'status' => 'A'],
+        ]));
+
+        $stats = rdr_processar($src, $gestor);
+
+        $this->assertArrayHasKey('arquivos', $stats['tabelas']);
+        $this->assertSame(['pt-br'], $stats['tabelas']['arquivos']['idiomas']);
+        $metaPath = $gestor . '/resources/pt-br/arquivos.json';
+        $this->assertFileExists($metaPath);
+        $lista = json_decode(file_get_contents($metaPath), true);
+        $this->assertSame('logo', $lista[0]['id']);
+        $this->assertArrayNotHasKey('id_arquivos', $lista[0]);
+    }
+
     public function testOverrideScopeModuloEmTablesConfigUsaResourcesDoModulo(): void
     {
         $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
@@ -285,7 +320,7 @@ final class RecuperacaoDadosRecursosTest extends TestCase
                 'field_types' => ['html' => 'file:html'],
             ],
         ]]];
-        file_put_contents($gestor . '/resources/tables_config.json', json_encode($tablesConfig));
+        file_put_contents($gestor . '/resources/project_tables_config.json', json_encode($tablesConfig));
         file_put_contents($src . '/MenusData.json', json_encode([
             ['id_menus' => 1, 'id' => 'main', 'language' => 'pt-br', 'module' => 'menus', 'html' => '<nav>Main</nav>', 'status' => 'A'],
         ]));
@@ -296,8 +331,8 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         $this->assertSame($gestor . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . 'menus' . DIRECTORY_SEPARATOR . 'resources', $cfgs['menus']['base_dir']);
 
         rdr_processar($src, $gestor);
-        $this->assertFileExists($gestor . '/modulos/menus/resources/pt-br/menus/main.html');
-        $this->assertSame('<nav>Main</nav>', file_get_contents($gestor . '/modulos/menus/resources/pt-br/menus/main.html'));
+        $this->assertFileExists($gestor . '/modulos/menus/resources/pt-br/menus/main/main.html');
+        $this->assertSame('<nav>Main</nav>', file_get_contents($gestor . '/modulos/menus/resources/pt-br/menus/main/main.html'));
         $meta = json_decode(file_get_contents($gestor . '/modulos/menus/resources/pt-br/menus/menus.json'), true);
         $this->assertSame('main', $meta[0]['id']);
         $this->assertArrayNotHasKey('module', $meta[0]);
@@ -339,7 +374,7 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         @mkdir($gestor . '/db/data', 0775, true);
         @mkdir($gestor . '/logs/arquitetura', 0775, true);
 
-        file_put_contents($gestor . '/resources/tables_config.json', json_encode(['tabelas' => ['arquivos' => [
+        file_put_contents($gestor . '/resources/project_tables_config.json', json_encode(['tabelas' => ['arquivos' => [
             'nome' => 'arquivos',
             'id' => 'id',
             'id_numerico' => 'id_arquivos',
@@ -365,8 +400,35 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         $manifest = json_decode(file_get_contents($manifestPath), true);
         $this->assertArrayHasKey('tabelas', $manifest);
         $this->assertArrayHasKey('arquivos', $manifest['tabelas']);
+        $this->assertArrayNotHasKey('variaveis', $manifest['tabelas']);
         $this->assertSame('ArquivosData.json', $manifest['tabelas']['arquivos']['data_file']);
         $this->assertArrayNotHasKey('generated_at', $manifest);
+    }
+
+    #[RunInSeparateProcess]
+    public function testCompiladorLeArquivoFisicoEmSubpastaPorId(): void
+    {
+        if (!defined('SDD_NO_AUTORUN')) {
+            define('SDD_NO_AUTORUN', true);
+        }
+        require_once CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR
+            . 'controladores' . DIRECTORY_SEPARATOR . 'agents' . DIRECTORY_SEPARATOR
+            . 'arquitetura' . DIRECTORY_SEPARATOR . 'atualizacao-dados-recursos.php';
+
+        $base = $this->tmpDir . DIRECTORY_SEPARATOR . 'resources';
+        @mkdir($base . '/pt-br/widgets_demo/hero', 0775, true);
+        file_put_contents($base . '/pt-br/widgets_demo/hero/hero.html', '<section>Hero</section>');
+
+        $cfg = [
+            'nome' => 'widgets_demo',
+            'resources_dir' => null,
+            'field_types' => ['html' => 'file:html'],
+            'base_dir' => $base,
+        ];
+
+        $registro = processarRegistroDinamico(['id' => 'hero'], $cfg, 'pt-br');
+
+        $this->assertSame('<section>Hero</section>', $registro['html']);
     }
 
     public function testCliServidorLeProjectSchemaMetadataSanitizandoTabelas(): void
@@ -448,5 +510,107 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         $this->assertSame(1, $stats['pulados']);
         $this->assertSame(['uploads/logo.txt'], $stats['conflitos']);
         $this->assertSame('local', file_get_contents($gestor . '/contents/uploads/logo.txt'));
+    }
+
+    /**
+     * Campo file:<ext> nulo ou vazio (registro que usa o template padrão sem customização) não
+     * deve gerar arquivo em branco e deve emitir o log explicativo RDR_DEBUG_FILE_EMPTY (req-063).
+     */
+    public function testCampoFileNuloOuVazioEmiteLogEnaoCriaArquivo(): void
+    {
+        $base = $this->tmpDir . DIRECTORY_SEPARATOR . 'resources';
+        $cfg = $this->cfgGlobalExterno($base);
+        $cfg['field_types'] = ['html' => 'file:html', 'css' => 'file:css'];
+
+        // html como string vazia e css nulo: nenhum dos dois deve virar arquivo.
+        $rec = ['id' => 'plain', 'name' => 'Plain', 'language' => 'pt-br', 'html' => '', 'css' => null];
+
+        $anterior = $GLOBALS['RDR_SILENT'] ?? null;
+        $GLOBALS['RDR_SILENT'] = false;
+        ob_start();
+        try {
+            $res = rdr_descompilar_registro($rec, $cfg, 'pt-br');
+        } finally {
+            $saida = ob_get_clean();
+            $GLOBALS['RDR_SILENT'] = $anterior;
+        }
+
+        // Nenhum arquivo físico acumulado (sem arquivo em branco).
+        $this->assertSame([], $res['files']);
+        // As chaves de campo file saem do metadado mesmo quando vazias.
+        $this->assertArrayNotHasKey('html', $res['meta']);
+        $this->assertArrayNotHasKey('css', $res['meta']);
+        // Log explicativo emitido por campo omitido.
+        $this->assertStringContainsString('RDR_DEBUG_FILE_EMPTY tabela=widgets_demo id=plain campo=html', $saida);
+        $this->assertStringContainsString('RDR_DEBUG_FILE_EMPTY tabela=widgets_demo id=plain campo=css', $saida);
+    }
+
+    /**
+     * Cenário misto realista (espelha o relatório do req-063): um registro customizado gera
+     * arquivos físicos; um registro que usa o template padrão (html/css nulos) é contabilizado
+     * mas não gera arquivos, emitindo apenas o log RDR_DEBUG_FILE_EMPTY.
+     */
+    public function testProcessaMisturaCustomizadoEPadraoSemArquivoEmBranco(): void
+    {
+        $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
+        $src = $this->tmpDir . DIRECTORY_SEPARATOR . 'src';
+        @mkdir($gestor . DIRECTORY_SEPARATOR . 'resources', 0775, true);
+        @mkdir($src, 0775, true);
+
+        $tablesConfig = ['tabelas' => ['galleries' => [
+            'nome' => 'galleries', 'id' => 'id', 'id_numerico' => 'id_galleries',
+            'config' => [
+                'strategy' => 'natural_key', 'natural_key_columns' => ['language', 'id'],
+                'sync_resources' => true, 'metadata_file' => 'galleries.json',
+                'field_types' => ['html' => 'file:html', 'css' => 'file:css', 'fields_schema' => 'json'],
+            ],
+        ]]];
+        file_put_contents($gestor . '/resources/project_tables_config.json', json_encode($tablesConfig));
+
+        file_put_contents($src . '/GalleriesData.json', json_encode([
+            // Customizado: html e css preenchidos -> 2 arquivos.
+            ['id_galleries' => 1, 'id' => 'galeria-teste', 'name' => 'Galeria Teste', 'language' => 'pt-br',
+             'html' => '<section>custom</section>', 'css' => '.x{color:red}', 'fields_schema' => '{"template_id":"galleries-slider"}',
+             'status' => 'A', 'versao' => 8, 'checksum' => 'a', 'user_modified' => 0],
+            // Template padrão: html/css nulos -> nenhum arquivo, só log.
+            ['id_galleries' => 2, 'id' => 'galeria-home', 'name' => 'Galeria Home', 'language' => 'pt-br',
+             'html' => null, 'css' => null, 'fields_schema' => '{"template_id":"galeria-home"}',
+             'status' => 'A', 'versao' => 8, 'checksum' => 'b', 'user_modified' => 0],
+        ]));
+
+        $anterior = $GLOBALS['RDR_SILENT'] ?? null;
+        $GLOBALS['RDR_SILENT'] = false;
+        ob_start();
+        try {
+            $stats = rdr_processar($src, $gestor);
+        } finally {
+            $saida = ob_get_clean();
+            $GLOBALS['RDR_SILENT'] = $anterior;
+        }
+
+        // 2 registros processados, mas só 2 arquivos (do registro customizado).
+        $this->assertArrayHasKey('galleries', $stats['tabelas']);
+        $this->assertSame(2, $stats['tabelas']['galleries']['registros']);
+        $this->assertSame(2, $stats['tabelas']['galleries']['arquivos']);
+        $this->assertSame(2, $stats['arquivos']);
+
+        // Registro customizado gera arquivos no layout por ID.
+        $this->assertFileExists($gestor . '/resources/pt-br/galleries/galeria-teste/galeria-teste.html');
+        $this->assertFileExists($gestor . '/resources/pt-br/galleries/galeria-teste/galeria-teste.css');
+        $this->assertSame('<section>custom</section>', file_get_contents($gestor . '/resources/pt-br/galleries/galeria-teste/galeria-teste.html'));
+
+        // Registro de template padrão não gera arquivo em branco.
+        $this->assertFileDoesNotExist($gestor . '/resources/pt-br/galleries/galeria-home/galeria-home.html');
+        $this->assertFileDoesNotExist($gestor . '/resources/pt-br/galleries/galeria-home/galeria-home.css');
+
+        // Metadado externo escrito para ambos, com fields_schema decodificado.
+        $lista = json_decode(file_get_contents($gestor . '/resources/pt-br/galleries.json'), true);
+        $this->assertCount(2, $lista);
+        $this->assertIsArray($lista[0]['fields_schema']);
+
+        // Log emitido só para o registro de template padrão.
+        $this->assertStringContainsString('RDR_DEBUG_FILE_EMPTY tabela=galleries id=galeria-home campo=html', $saida);
+        $this->assertStringContainsString('RDR_DEBUG_FILE_EMPTY tabela=galleries id=galeria-home campo=css', $saida);
+        $this->assertStringNotContainsString('id=galeria-teste', $saida);
     }
 }

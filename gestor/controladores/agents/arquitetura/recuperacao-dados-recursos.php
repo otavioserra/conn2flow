@@ -10,12 +10,10 @@
  *   - metadados saneados (JSON externo por idioma, ou inline em resources->idioma->tabela).
  *
  * Simetria com o compilador (CRÍTICA para round-trip estável): este descompilador é o reverso
- * EXATO de processarRegistroDinamico()/lerMetadadosDinamicos(). Em particular, o LAYOUT físico
- * é PLANO — os arquivos file:<ext> vão para
- *   <base_dir>/<lang>/<resources_dir|tabela>/<id>.<ext>
- * (SEM subpasta por id), exatamente como o compilador os lê. A prosa do intake sugeria
- * <id>/<id>.<ext>, mas isso quebraria o build (o compilador não encontraria os arquivos);
- * seguimos o código. Ver DEC do BATCH-058.
+ * EXATO de processarRegistroDinamico()/lerMetadadosDinamicos(). Em particular, os arquivos
+ * file:<ext> vão para
+ *   <base_dir>/<lang>/<resources_dir|tabela>/<id>/<id>.<ext>
+ * usando uma subpasta por recurso, no mesmo padrão dos recursos fixos do core.
  *
  * Saneamento de cada registro (reverso das injeções do compilador):
  *   - decodifica campos field_types "json" (string JSON do banco -> array/objeto);
@@ -28,7 +26,7 @@
  *   --source-dir=path   : (obrigatório) pasta com os <PascalCase>Data.json extraídos do ZIP da API.
  *   --project-path=path : (opcional) raiz de um projeto; sem isso, opera sobre o núcleo (gestor/).
  *
- * Estrutura: parse de args -> coleta de configs (tables_config.json + módulos) -> para cada
+ * Estrutura: parse de args -> coleta de configs (tables_config.json/project_tables_config.json + módulos) -> para cada
  * *Data.json com sync_resources, descompila registros, grava arquivos físicos e metadados.
  */
 
@@ -147,22 +145,25 @@ function rdr_normalizar_config(array $meta, string $scope, ?string $modulo, stri
 }
 
 /**
- * Coleta as configs de tabela sync_resources do núcleo/projeto: o global tables_config.json e os
- * blocos "tabela.config" de cada módulo. Módulos sobrescrevem o global por nome de tabela.
+ * Coleta as configs de tabela sync_resources do núcleo/projeto: tables_config.json global,
+ * project_tables_config.json do projeto e os blocos "tabela.config" de cada módulo.
+ * Registros posteriores sobrescrevem anteriores por nome de tabela.
  * Retorna um mapa nome_tabela => config.
  */
 function rdr_coletar_configs(string $gestorDir): array {
     $configs = [];
 
-    // 1) Global: <gestorDir>/resources/tables_config.json
+    // 1) Globais/projeto: <gestorDir>/resources/tables_config.json e project_tables_config.json.
     $resourcesDir = $gestorDir . DIRECTORY_SEPARATOR . 'resources';
-    $globalFile = $resourcesDir . DIRECTORY_SEPARATOR . 'tables_config.json';
-    $g = rdr_json_read($globalFile);
-    if (is_array($g) && isset($g['tabelas']) && is_array($g['tabelas'])) {
-        foreach ($g['tabelas'] as $meta) {
-            if (!is_array($meta)) continue;
-            foreach (rdr_normalizar_config($meta, 'global', null, $resourcesDir, $globalFile) as $cfg) {
-                if ($cfg['sync_resources']) $configs[$cfg['nome']] = $cfg;
+    foreach (['tables_config.json', 'project_tables_config.json'] as $configFileName) {
+        $globalFile = $resourcesDir . DIRECTORY_SEPARATOR . $configFileName;
+        $g = rdr_json_read($globalFile);
+        if (is_array($g) && isset($g['tabelas']) && is_array($g['tabelas'])) {
+            foreach ($g['tabelas'] as $meta) {
+                if (!is_array($meta)) continue;
+                foreach (rdr_normalizar_config($meta, 'global', null, $resourcesDir, $globalFile) as $cfg) {
+                    if ($cfg['sync_resources']) $configs[$cfg['nome']] = $cfg;
+                }
             }
         }
     }
@@ -189,12 +190,12 @@ function rdr_coletar_configs(string $gestorDir): array {
 
 // ========================= RESOLUÇÃO DE CAMINHOS =========================
 
-/** Idioma do registro (language ou linguagem_codigo legado). */
+/** Idioma do registro (language ou linguagem_codigo legado; fallback pt-br para tabelas sem idioma). */
 function rdr_resolve_lang(array $rec): ?string {
     foreach (['language', 'linguagem_codigo'] as $k) {
         if (isset($rec[$k]) && $rec[$k] !== '') return (string)$rec[$k];
     }
-    return null;
+    return 'pt-br';
 }
 
 /**
@@ -260,6 +261,9 @@ function rdr_sanear(array $meta, array $cfg, string $lang): array {
  * Descompila um único registro bruto: decodifica campos "json", extrai campos "file:<ext>" para
  * arquivos físicos (acumulados, não gravados aqui) e retorna o metadado saneado.
  *
+ * Campos "file:<ext>" ausentes, nulos ou vazios (registro que usa o template padrão sem
+ * customização) NÃO geram arquivo em branco; a omissão é registrada via log RDR_DEBUG_FILE_EMPTY.
+ *
  * @return array{meta: array, files: array<string,string>} 'files' mapeia caminho absoluto -> conteúdo.
  */
 function rdr_descompilar_registro(array $rec, array $cfg, string $lang): array {
@@ -287,9 +291,18 @@ function rdr_descompilar_registro(array $rec, array $cfg, string $lang): array {
         // Campo file:<ext> -> arquivo físico; a chave sai do metadado.
         if (strncmp($tipo, 'file:', 5) === 0) {
             $ext = substr($tipo, 5);
-            if ($ext !== '' && $id !== '' && array_key_exists($campo, $rec) && $rec[$campo] !== null) {
-                $fpath = $filesDir . DIRECTORY_SEPARATOR . $id . '.' . $ext;
-                $files[$fpath] = (string)rdr_strip_bom((string)$rec[$campo]);
+            if ($ext !== '' && $id !== '') {
+                $bruto = array_key_exists($campo, $rec) ? $rec[$campo] : null;
+                $conteudo = $bruto === null ? '' : (string)rdr_strip_bom((string)$bruto);
+                if ($conteudo === '') {
+                    // Campo físico ausente/nulo/vazio: típico de registro que usa o template padrão
+                    // do sistema sem customização (o html/css do registro fica nulo no banco). Não
+                    // gerar arquivo em branco; registrar o motivo para tornar "arquivos=0" explicável.
+                    rdr_log("RDR_DEBUG_FILE_EMPTY tabela={$cfg['nome']} id=$id campo=$campo");
+                } else {
+                    $fpath = $filesDir . DIRECTORY_SEPARATOR . $id . DIRECTORY_SEPARATOR . $id . '.' . $ext;
+                    $files[$fpath] = $conteudo;
+                }
             }
             unset($meta[$campo]);
         }
@@ -303,7 +316,7 @@ function rdr_descompilar_registro(array $rec, array $cfg, string $lang): array {
 
 /**
  * Escreve a lista de metadados de uma tabela/idioma. Caso metadata_file esteja configurado, grava
- * o JSON externo; caso contrário, atualiza inline o JSON raiz (tables_config.json/<mod>.json) na
+ * o JSON externo; caso contrário, atualiza inline o JSON raiz (project_tables_config.json/<mod>.json) na
  * chave resources -> idioma -> tabela.
  */
 function rdr_escrever_metadados(array $cfg, string $lang, array $lista): bool {

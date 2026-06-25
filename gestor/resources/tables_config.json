@@ -1,4 +1,69 @@
 {
-    "_comment": "Caso seja necessário fazer alguma modificação nos recursos globais, usar este arquivo de configuração de tabelas. Ref: 'ai-workspace\\pt-br\\docs\\CONN2FLOW-SISTEMA-RECURSOS.md'",
-    "tabelas": {}
+    "_comment": "Metadados de sincronização de tabelas globais que NÃO pertencem a um módulo específico (DEC-008 / BATCH-029; estendido no BATCH-056 / req-056). Espelha o formato do bloco \"tabela\" dos JSONs de módulo (nome/id/id_numerico/config/deletar/forcar_atualizacao). O gerador (atualizacao-dados-recursos.php) consolida estas regras junto com os blocos locais em db/data/schema-metadata.json, consumido pelo atualizador (atualizacoes-banco-de-dados.php). A chave 'config' pode ser um OBJETO único (1 tabela) ou um ARRAY de objetos (N tabelas); use 'tabela_nome' dentro de cada elemento de config para nomear a tabela quando o array declarar mais de uma. Estratégias: 'natural_key' (compara por natural_key_columns) ou 'pk' (compara por id_numerico). 'preserve_on_user_modified' lista campos preservados quando user_modified=1. 'insert_only' impede updates. Sincronização declarativa de recursos (BATCH-056): 'sync_resources'=true gera <PascalCase>Data.json automaticamente a partir de metadados; 'resources_dir' define a subpasta de recursos (default = nome da tabela); 'metadata_file' aponta um JSON externo de registros (quando ausente, lê inline em 'resources'->idioma->tabela); 'field_types' converte campos ('json' => json_encode; 'file:<ext>' => injeta o conteúdo de <id>.<ext>). Cada 'deletar' lista registros a remover no deploy e 'forcar_atualizacao' lista registros a sobrescrever ignorando proteções de project/user_modified (reset de user_modified=0): formato { \"natural_key\": {coluna: valor, ...} } ou { \"pk\": valor }.",
+    "tabelas": {
+        "variaveis": {
+            "nome": "variaveis",
+            "id": "id",
+            "id_numerico": "id_variaveis",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": [
+                    "language",
+                    "modulo",
+                    "grupo",
+                    "id"
+                ],
+                "preserve_on_user_modified": [
+                    "valor"
+                ],
+                "insert_only": false
+            },
+            "deletar": []
+        },
+        "usuarios_perfis_modulos": {
+            "nome": "usuarios_perfis_modulos",
+            "id": "id",
+            "id_numerico": "id_usuarios_perfis_modulos",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": [
+                    "perfil",
+                    "modulo"
+                ],
+                "preserve_on_user_modified": [],
+                "insert_only": false
+            },
+            "deletar": []
+        },
+        "usuarios_perfis_modulos_operacoes": {
+            "nome": "usuarios_perfis_modulos_operacoes",
+            "id": "id",
+            "id_numerico": "id_usuarios_perfis_modulos_operacoes",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": [
+                    "perfil",
+                    "operacao"
+                ],
+                "preserve_on_user_modified": [],
+                "insert_only": false
+            },
+            "deletar": []
+        },
+        "alvos_ia": {
+            "nome": "alvos_ia",
+            "id": "id",
+            "id_numerico": "id_alvos_ia",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": [
+                    "language",
+                    "id"
+                ],
+                "preserve_on_user_modified": [],
+                "insert_only": false
+            },
+            "deletar": []
+        }
+    }
 }

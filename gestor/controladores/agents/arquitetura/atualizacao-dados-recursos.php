@@ -944,8 +944,8 @@ function lerMetadadosDinamicos(array $cfg, string $lang): array {
 /**
  * Processa um registro de tabela dinâmica aplicando as conversões declaradas em field_types:
  *  - "json": codifica arrays/objetos com json_encode (pretty + unescaped unicode).
- *  - "file:<ext>": injeta o conteúdo (sem BOM) do arquivo físico <id>.<ext> na pasta de recursos
- *    (<base_dir>/<lang>/<resources_dir|tabela>/<id>.<ext>).
+ *  - "file:<ext>": injeta o conteúdo (sem BOM) do arquivo físico <id>.<ext> na pasta do recurso
+ *    (<base_dir>/<lang>/<resources_dir|tabela>/<id>/<id>.<ext>).
  * Preenche colunas padronizadas: language (idioma da varredura), status ('A' default),
  * user_modified (0 default). versao/checksum são resolvidos pelo chamador.
  */
@@ -972,7 +972,7 @@ function processarRegistroDinamico(array $rec, array $cfg, string $lang): array 
         if (is_string($tipo) && strncmp($tipo, 'file:', 5) === 0 && $id !== '') {
             $ext = substr($tipo, 5);
             if ($ext === '') continue;
-            $fpath = $filesDir . DIRECTORY_SEPARATOR . $id . '.' . $ext;
+            $fpath = $filesDir . DIRECTORY_SEPARATOR . $id . DIRECTORY_SEPARATOR . $id . '.' . $ext;
             $conteudo = readFileIfExists($fpath);
             if ($conteudo !== null) {
                 $registro[$campo] = $conteudo;
@@ -1102,15 +1102,20 @@ function coletarConfigsTabelas(): array {
     global $RESOURCES_DIR, $MODULES_DIR, $SYSTEM_PATH, $LOG_FILE;
     $out = [];
 
-    // 1) Tabelas globais (sem módulo dono): gestor/resources/tables_config.json
+    // 1) Tabelas globais/projeto: core usa tables_config.json; projeto usa project_tables_config.json.
     $arquivosGlobais = [];
     if (!empty($GLOBALS['CLI_ARGS']['project-path'])) {
         $coreGlobal = $SYSTEM_PATH . 'gestor' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'tables_config.json';
         if (is_file($coreGlobal)) {
             $arquivosGlobais[] = [$coreGlobal, 'core:tables_config.json', dirname($coreGlobal)];
         }
+        $projectGlobal = $RESOURCES_DIR . 'project_tables_config.json';
+        if (is_file($projectGlobal)) {
+            $arquivosGlobais[] = [$projectGlobal, 'project:project_tables_config.json', rtrim($RESOURCES_DIR, DIRECTORY_SEPARATOR)];
+        }
+    } else {
+        $arquivosGlobais[] = [$RESOURCES_DIR . 'tables_config.json', 'global:tables_config.json', rtrim($RESOURCES_DIR, DIRECTORY_SEPARATOR)];
     }
-    $arquivosGlobais[] = [$RESOURCES_DIR . 'tables_config.json', 'global:tables_config.json', rtrim($RESOURCES_DIR, DIRECTORY_SEPARATOR)];
 
     foreach ($arquivosGlobais as [$globalFile, $srcLabel, $baseDir]) {
         if (!is_file($globalFile)) {
@@ -1222,12 +1227,17 @@ function gerarSchemaMetadata(): void {
         log_disco_local('SCHEMA_METADATA_ERRO ao gravar ' . $dest, $LOG_FILE);
     }
 
-    $projectTablesConfig = rtrim($RESOURCES_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'tables_config.json';
+    $projectTablesConfig = rtrim($RESOURCES_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'project_tables_config.json';
     if (!empty($GLOBALS['CLI_ARGS']['project-path']) && is_file($projectTablesConfig)) {
+        $projectConfig = jsonRead($projectTablesConfig);
+        $projectKeys = (is_array($projectConfig) && isset($projectConfig['tabelas']) && is_array($projectConfig['tabelas']))
+            ? array_keys($projectConfig['tabelas'])
+            : [];
+        $projectTables = array_intersect_key($tables, array_flip($projectKeys));
         $projectDest = rtrim($GESTOR_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'project-schema-metadata.json';
-        $projectSchema = ['tabelas' => $tables];
+        $projectSchema = ['tabelas' => $projectTables];
         if (jsonWrite($projectDest, $projectSchema)) {
-            log_disco_local('PROJECT_SCHEMA_METADATA_SAVED ' . $projectDest . ' tabelas=' . count($tables), $LOG_FILE);
+            log_disco_local('PROJECT_SCHEMA_METADATA_SAVED ' . $projectDest . ' tabelas=' . count($projectTables), $LOG_FILE);
         } else {
             log_disco_local('PROJECT_SCHEMA_METADATA_ERRO ao gravar ' . $projectDest, $LOG_FILE);
         }

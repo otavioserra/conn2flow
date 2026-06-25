@@ -37,9 +37,9 @@ O fluxo correto é: **Edição Física -> Processamento (Gera JSON) -> Commit/Re
 
 ## Metadados de Projeto no Pull System
 
-Em projetos implantados em produção, as pastas locais de fonte (`resources/`, `db/` e `modulos/*/resources/`) não precisam existir no servidor: o runtime consome os recursos diretamente do banco de dados. Por isso, o servidor não consegue consultar o `resources/tables_config.json` local quando o Pull System executa `_api/project/recover`.
+Em projetos implantados em produção, as pastas locais de fonte (`resources/`, `db/` e `modulos/*/resources/`) não precisam existir no servidor: o runtime consome os recursos diretamente do banco de dados. Por isso, o servidor não consegue consultar o `resources/project_tables_config.json` local quando o Pull System executa `_api/project/recover`.
 
-Para desacoplar o servidor dos fontes locais, o compilador gera `project-schema-metadata.json` na raiz do gestor do projeto sempre que `resources/tables_config.json` existe. Esse arquivo é empacotado no deploy e instalado no servidor ao lado de `db/` e `controladores/`. No pull, a API e o CLI `recuperacao-banco-de-dados.php` leem esse manifesto e mesclam suas tabelas com o contrato padrão `db/data/schema-metadata.json`.
+Para desacoplar o servidor dos fontes locais, o compilador gera `project-schema-metadata.json` na raiz do gestor do projeto sempre que `resources/project_tables_config.json` existe. Esse arquivo é empacotado no deploy e instalado no servidor ao lado de `db/` e `controladores/`. No pull, a API e o CLI `recuperacao-banco-de-dados.php` leem esse manifesto e mesclam suas tabelas com o contrato padrão `db/data/schema-metadata.json`. O arquivo `resources/tables_config.json` fica reservado ao core, enquanto overrides e tabelas customizadas do projeto devem viver em `resources/project_tables_config.json`.
 
 Formato resumido:
 
@@ -401,7 +401,8 @@ A partir do req-056, **qualquer tabela** — de módulo ou global — pode entra
 
 ### Onde declarar
 - **Módulo**: no bloco `"tabela"."config"` do manifesto `modulos/<modulo>/<modulo>.json`.
-- **Global** (tabelas sem módulo dono): no arquivo `gestor/resources/tables_config.json`, sob `"tabelas"."<tabela>"."config"`.
+- **Global do core** (tabelas sem módulo dono mantidas pelo sistema): no arquivo `gestor/resources/tables_config.json`, sob `"tabelas"."<tabela>"."config"`.
+- **Global/projeto** (overrides e tabelas customizadas do projeto): no arquivo `gestor/resources/project_tables_config.json`, sob `"tabelas"."<tabela>"."config"`.
 
 A chave `"config"` pode ser um **objeto único** (1 tabela) ou um **array de objetos** (N tabelas); use `"tabela_nome"` dentro de cada elemento para nomear a tabela quando o array declarar mais de uma.
 
@@ -411,10 +412,10 @@ A chave `"config"` pode ser um **objeto único** (1 tabela) ou um **array de obj
 | `sync_resources` | `true` gera automaticamente `<PascalCase>Data.json` para a tabela. |
 | `resources_dir` | Subpasta de recursos (default = nome da tabela). |
 | `metadata_file` | JSON externo com a lista de registros; se ausente, lê inline em `resources -> <idioma> -> <tabela>`. |
-| `field_types` | Conversões por campo: `"json"` (codifica array/objeto) e `"file:<ext>"` (injeta o conteúdo de `<id>.<ext>`). |
+| `field_types` | Conversões por campo: `"json"` (codifica array/objeto) e `"file:<ext>"` (injeta o conteúdo de `<id>/<id>.<ext>`). |
 
 ### Resolução de caminhos
-- **Conteúdo físico** (`file:<ext>`): `<base>/resources/<idioma>/<resources_dir\|tabela>/<id>.<ext>` (BOM UTF-8 removido).
+- **Conteúdo físico** (`file:<ext>`): `<base>/resources/<idioma>/<resources_dir\|tabela>/<id>/<id>.<ext>` (BOM UTF-8 removido).
 - **Metadados externos** (`metadata_file`):
   - Módulo: `modulos/<modulo>/resources/<idioma>/<resources_dir\|tabela>/<metadata_file>`.
   - Global: `gestor/resources/<idioma>/<metadata_file>` (ou `.../<resources_dir>/<metadata_file>` se `resources_dir` for explícito).

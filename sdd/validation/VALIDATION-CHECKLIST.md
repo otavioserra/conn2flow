@@ -205,6 +205,82 @@ Evidência automatizada reportada pelo executor em 2026-06-25:
 - Rodar `🗃️ Projects - Deploy Current Project` ou `-> ID` em ambiente com Bash/7z disponível e confirmar que `project-schema-metadata.json` chega ao servidor.
 - Rodar o pull contra API ativa sem `tables` explícito e confirmar que tabelas declaradas apenas no manifesto de projeto entram no ZIP de recuperação.
 
+---
+## BATCH-061 - Renomeação para project_tables_config.json e Filtragem de Manifesto (req-061)
 
+- [x] Configuração customizada do projeto renomeada logicamente para `gestor/resources/project_tables_config.json`.
+- [x] `gestor/resources/tables_config.json` preservado como arquivo global do core.
+- [x] Compilador em modo `--project-path` lendo core de `tables_config.json` e projeto de `project_tables_config.json`.
+- [x] `project-schema-metadata.json` filtrado para conter apenas tabelas declaradas em `project_tables_config.json`.
+- [x] Descompilador lendo `tables_config.json` e `project_tables_config.json` em ordem, com o arquivo de projeto sobrescrevendo configs globais.
+- [x] Documentação pt-br/en atualizada para o novo nome do arquivo de projeto.
+- [x] Testes atualizados para simular `project_tables_config.json`.
+- [x] Validação estática (`php -l`) de todos os PHP alterados.
+
+### Evidência de Validação (BATCH-061)
+
+Evidência automatizada reportada pelo executor em 2026-06-25:
+- `php -l` OK:
+  - `gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php`
+  - `gestor/controladores/agents/arquitetura/recuperacao-dados-recursos.php`
+  - `tests/Unit/PHP/RecuperacaoDadosRecursosTest.php`
+- `vendor/bin/phpunit tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` OK: **13 tests, 72 assertions**.
+- `composer test` OK: **61 tests, 214 assertions**; 4 skipped gated por banco; 1 `PHPUnit Deprecation` preexistente.
+- `git diff --check -- . ':(exclude)sdd/human-requests/CURRENT.md'` OK. O `git diff --check` completo acusa linha em branco final em `sdd/human-requests/CURRENT.md`, arquivo de intake humano já alterado antes da execução e não editado pelo executor.
+
+### Pendências Runtime (com o operador)
+- Em um projeto real, renomear/mover configurações customizadas de `resources/tables_config.json` para `resources/project_tables_config.json`.
+- Rodar `Update => Core`/deploy em modo projeto e confirmar que `project-schema-metadata.json` contém apenas as tabelas declaradas no arquivo de projeto.
+
+---
+## BATCH-062 - Fallback de Idioma e Estruturação de Pastas de Recursos Dinâmicos (req-062)
+
+- [x] Descompilador usando fallback `pt-br` para registros sem `language` ou `linguagem_codigo`.
+- [x] Compilador lendo arquivos físicos `file:<ext>` em `<resources_dir|tabela>/<id>/<id>.<ext>`.
+- [x] Descompilador escrevendo arquivos físicos `file:<ext>` em `<resources_dir|tabela>/<id>/<id>.<ext>`.
+- [x] Suíte `RecuperacaoDadosRecursosTest.php` cobrindo fallback de idioma e subpastas por ID.
+- [x] Documentação pt-br/en atualizada para o novo layout físico.
+- [x] Validação estática (`php -l`) de todos os PHP alterados.
+
+### Evidência de Validação (BATCH-062)
+
+Evidência automatizada reportada pelo executor em 2026-06-25:
+- `php -l` OK:
+  - `gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php`
+  - `gestor/controladores/agents/arquitetura/recuperacao-dados-recursos.php`
+  - `tests/Unit/PHP/RecuperacaoDadosRecursosTest.php`
+- `vendor/bin/phpunit tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` OK: **15 tests, 78 assertions**.
+- `composer test` OK: **63 tests, 220 assertions**; 4 skipped gated por banco; 1 `PHPUnit Deprecation` preexistente.
+- `git diff --check -- . ':(exclude)sdd/human-requests/CURRENT.md'` OK. O `git diff --check` completo ainda herda linha em branco final em `sdd/human-requests/CURRENT.md`, arquivo de intake humano já alterado antes da execução.
+
+### Pendências Runtime (com o operador)
+- Em projeto real, mover arquivos físicos dinâmicos existentes do layout plano para `<id>/<id>.<ext>`.
+- Rodar pull de tabela sem idioma, como `arquivos`, e confirmar geração em `resources/pt-br/`.
+
+---
+## BATCH-063 - Depuração e Logging Explicativo na Descompilação de Arquivos (req-063)
+
+- [x] **Depuração de `arquivos=0`**:
+  - [x] Validar que quando arquivos dinâmicos (como de `galleries`, `menus`, `publisher`) têm campos físicos (`html`, `css`) nulos ou vazios no banco/JSON de origem, a descompilação não gera arquivos físicos correspondentes no disco (comportamento esperado). Causa-raiz confirmada: registros que usam o template padrão sem customização gravam `html`/`css` nulos no banco.
+- [x] **Log de Depuração no Console**:
+  - [x] Log `RDR_DEBUG_FILE_EMPTY tabela=X id=Y campo=Z` emitido (modo não silencioso) quando a gravação de um arquivo físico é pulada por campo nulo/vazio. A condição antiga (`!== null`) deixava passar string vazia e gerava arquivo em branco — agora qualquer conteúdo vazio (inclusive só-BOM) é omitido.
+- [x] **Validação com Testes Unitários**:
+  - [x] `testCampoFileNuloOuVazioEmiteLogEnaoCriaArquivo`: campos `''`/nulos não acumulam arquivo e emitem o log por campo.
+  - [x] `testProcessaMisturaCustomizadoEPadraoSemArquivoEmBranco`: cenário misto (1 customizado gera 2 arquivos, 1 padrão gera 0 + log), metadados escritos para ambos, sem arquivo em branco no disco.
+- [x] **Validação Estática**:
+  - [x] `php -l` OK no descompilador e no teste.
+
+### Evidência de Validação (BATCH-063)
+
+Evidência automatizada reportada pelo executor em 2026-06-25 (ambiente: PHP 8.4.8):
+- `php -l gestor/controladores/agents/arquitetura/recuperacao-dados-recursos.php` → OK
+- `php -l tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` → OK
+- `vendor/bin/phpunit tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` → **OK (17 tests, 97 assertions)** (era 15; +2 deste lote).
+- `composer test` → **OK (65 tests, 239 assertions, 4 skipped gated por banco)**; a única `PHPUnit Deprecation` é pré-existente e alheia a este slice.
+- Arquivos alterados: `gestor/controladores/agents/arquitetura/recuperacao-dados-recursos.php` (função `rdr_descompilar_registro` + docblock), `tests/Unit/PHP/RecuperacaoDadosRecursosTest.php`.
+
+### Pendências Runtime (com o operador)
+- Rodar o pull real (`🗃️ Projects - Recover ...`) contra a API e confirmar que `RDR_DEBUG_FILE_EMPTY` aparece no console para os registros que usam template padrão e que nenhum arquivo em branco é criado em `resources/`.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
 
 

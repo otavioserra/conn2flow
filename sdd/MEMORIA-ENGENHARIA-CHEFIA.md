@@ -98,6 +98,9 @@
 - As notas deste arquivo foram registradas pelo agente IA sob autorização expressa do Engenheiro Chefe Humano na sessão de 04/06/2026 para reter aprendizados de relacionamento de pair programming.
 - Adicionado item sobre a divisão de papéis em 05/06/2026.
 - Adicionadas regras de arquivamento do SDD e preservação de customizações de templates em 10/06/2026.
+- **Formatação de Orientação ao Executor (2026-06-25)**: Sempre que o usuário pedir para orientar ou gerar a mensagem para o engenheiro de execução, o agente deve obrigatoriamente fornecer ao fim de sua resposta a seguinte frase literal com o caminho absoluto:
+  `Você é meu engenheiro de implementação, comece por este arquivo: 'C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\sdd\human-requests\CURRENT.md'` (ou com o caminho absoluto da requisição correspondente, como `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\sdd\human-requests\req-XXX.md`).
+
 - Adicionadas diretrizes de injeção desduplicada de recursos de widgets e AJAX público de publicações em 11/06/2026.
 - Adicionada regra sobre escape de aspas em strings propostas para terminal em 12/06/2026.
 - Adicionadas as diretrizes estratégicas de testes (cobertura incremental, blindagem de bugs e caminhos críticos) em 12/06/2026.
