@@ -1,7 +1,7 @@
 # Current Human Request
 
-- **Intake ativo**: [req-063.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-063.md) (BATCH-063 `complete`, 2026-06-25).
+- **Intake ativo**: [req-065.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-065.md) (BATCH-065 `complete`, 2026-06-25).
 
-- **Status**: BATCH-063 concluído. Causa de `arquivos=0` confirmada (registros que usam template padrão gravam `html`/`css` nulos no banco); descompilador blindado contra arquivo em branco e com log `RDR_DEBUG_FILE_EMPTY`. Validação: `RecuperacaoDadosRecursosTest` 17/17, `composer test` 65/65.
+- **Status**: BATCH-065 concluído. Compilador e descompilador resolvem a coluna de ID dinamicamente (`$cfg['id']`, fallback `'id'`) na varredura de recursos, corrigindo `arquivos=0` para tabelas com ID customizado (ex.: `publisher_pages` com `"id":"page_id"`). Validação: `RecuperacaoDadosRecursosTest` 19/19, `composer test` 67/67.
 
-- **Pendências**: Pull runtime com o operador (confirmar `RDR_DEBUG_FILE_EMPTY` no console e ausência de arquivos em branco em `resources/`).
+- **Pendências**: BATCH-064 (versões de GitHub Actions) segue `ready-for-intake`. Pull/deploy runtime de tabela com ID customizado pendente com o operador.

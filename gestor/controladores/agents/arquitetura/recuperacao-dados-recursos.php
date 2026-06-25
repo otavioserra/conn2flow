@@ -190,6 +190,14 @@ function rdr_coletar_configs(string $gestorDir): array {
 
 // ========================= RESOLUÇÃO DE CAMINHOS =========================
 
+/**
+ * Nome da coluna identificadora lógica do recurso. Espelha o compilador: tabelas customizadas
+ * podem declarar uma coluna diferente de 'id' (ex.: "id": "page_id" em publisher_pages). Fallback 'id'.
+ */
+function rdr_id_col(array $cfg): string {
+    return (isset($cfg['id']) && is_string($cfg['id']) && $cfg['id'] !== '') ? $cfg['id'] : 'id';
+}
+
 /** Idioma do registro (language ou linguagem_codigo legado; fallback pt-br para tabelas sem idioma). */
 function rdr_resolve_lang(array $rec): ?string {
     foreach (['language', 'linguagem_codigo'] as $k) {
@@ -268,7 +276,8 @@ function rdr_sanear(array $meta, array $cfg, string $lang): array {
  */
 function rdr_descompilar_registro(array $rec, array $cfg, string $lang): array {
     $fieldTypes = is_array($cfg['field_types'] ?? null) ? $cfg['field_types'] : [];
-    $id = isset($rec['id']) ? (string)$rec['id'] : '';
+    $idCol = rdr_id_col($cfg);
+    $id = isset($rec[$idCol]) ? (string)$rec[$idCol] : '';
     $filesDir = rdr_files_dir($cfg, $lang);
 
     $meta = $rec;
@@ -438,11 +447,12 @@ function rdr_processar(string $sourceDir, string $gestorDir): array {
         // Agrupa metadados por idioma e grava arquivos físicos de imediato.
         $porLang = [];
         $arquivos = 0;
+        $idCol = rdr_id_col($cfg);
         foreach ($registros as $rec) {
             if (!is_array($rec)) continue;
             $lang = rdr_resolve_lang($rec);
             if ($lang === null) {
-                rdr_log("RDR_REGISTRO_SEM_LANG tabela=$tabela id=" . ($rec['id'] ?? '?'));
+                rdr_log("RDR_REGISTRO_SEM_LANG tabela=$tabela id=" . ($rec[$idCol] ?? '?'));
                 continue;
             }
             $res = rdr_descompilar_registro($rec, $cfg, $lang);

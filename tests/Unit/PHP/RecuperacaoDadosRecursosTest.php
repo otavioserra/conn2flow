@@ -613,4 +613,107 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         $this->assertStringContainsString('RDR_DEBUG_FILE_EMPTY tabela=galleries id=galeria-home campo=css', $saida);
         $this->assertStringNotContainsString('id=galeria-teste', $saida);
     }
+
+    /**
+     * Tabela com coluna de ID customizada (ex.: publisher_pages -> "id": "page_id"): o descompilador
+     * deve resolver o $id a partir da coluna configurada, gerar o arquivo na subpasta correta e
+     * preservar a coluna lógica no metadado, removendo apenas a PK auto-increment (req-065).
+     */
+    public function testDescompilaResolveColunaIdCustomizada(): void
+    {
+        $base = $this->tmpDir . DIRECTORY_SEPARATOR . 'resources';
+        $cfg = $this->cfgGlobalExterno($base);
+        $cfg['nome'] = 'publisher_pages';
+        $cfg['id'] = 'page_id';
+        $cfg['id_numerico'] = 'id_publisher_pages';
+        $cfg['field_types'] = ['html' => 'file:html'];
+
+        // Dump bruto: a chave lógica é page_id (não existe coluna 'id').
+        $rec = ['id_publisher_pages' => 1, 'page_id' => 'sobre', 'name' => 'Sobre',
+                'language' => 'pt-br', 'html' => '<p>Sobre</p>', 'status' => 'A'];
+
+        $res = rdr_descompilar_registro($rec, $cfg, 'pt-br');
+
+        // Arquivo físico na subpasta baseada no ID customizado.
+        $esperado = $base . DIRECTORY_SEPARATOR . 'pt-br' . DIRECTORY_SEPARATOR . 'publisher_pages'
+            . DIRECTORY_SEPARATOR . 'sobre' . DIRECTORY_SEPARATOR . 'sobre.html';
+        $this->assertArrayHasKey($esperado, $res['files']);
+        $this->assertSame('<p>Sobre</p>', $res['files'][$esperado]);
+
+        // page_id preservado; PK auto-increment e campo file removidos.
+        $this->assertSame('sobre', $res['meta']['page_id']);
+        $this->assertArrayNotHasKey('id_publisher_pages', $res['meta']);
+        $this->assertArrayNotHasKey('html', $res['meta']);
+    }
+
+    /**
+     * Round-trip com coluna de ID customizada: descompila um dump com page_id para arquivos físicos +
+     * metadado e, em seguida, recompila lendo o arquivo físico de volta, sem perda de atributos (req-065).
+     */
+    #[RunInSeparateProcess]
+    public function testRoundTripColunaIdCustomizada(): void
+    {
+        if (!defined('SDD_NO_AUTORUN')) {
+            define('SDD_NO_AUTORUN', true);
+        }
+        require_once CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR
+            . 'controladores' . DIRECTORY_SEPARATOR . 'agents' . DIRECTORY_SEPARATOR
+            . 'arquitetura' . DIRECTORY_SEPARATOR . 'atualizacao-dados-recursos.php';
+
+        $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
+        $src = $this->tmpDir . DIRECTORY_SEPARATOR . 'src';
+        @mkdir($gestor . DIRECTORY_SEPARATOR . 'resources', 0775, true);
+        @mkdir($src, 0775, true);
+
+        // Tabela de projeto com coluna de ID customizada (page_id) e PK id_publisher_pages.
+        $tablesConfig = ['tabelas' => ['publisher_pages' => [
+            'nome' => 'publisher_pages',
+            'id' => 'page_id',
+            'id_numerico' => 'id_publisher_pages',
+            'config' => [
+                'strategy' => 'natural_key',
+                'natural_key_columns' => ['language', 'page_id'],
+                'sync_resources' => true,
+                'metadata_file' => 'publisher_pages.json',
+                'field_types' => ['html' => 'file:html', 'fields_values' => 'json'],
+            ],
+        ]]];
+        file_put_contents($gestor . '/resources/project_tables_config.json', json_encode($tablesConfig));
+
+        file_put_contents($src . '/PublisherPagesData.json', json_encode([
+            ['id_publisher_pages' => 1, 'page_id' => 'home', 'language' => 'pt-br',
+             'html' => '<div>Home</div>', 'fields_values' => '[{"id":"titulo","value":"Início"}]',
+             'status' => 'A', 'versao' => 3, 'checksum' => 'k', 'user_modified' => 0],
+        ]));
+
+        // 1) DESCOMPILAÇÃO
+        $stats = rdr_processar($src, $gestor);
+        $this->assertArrayHasKey('publisher_pages', $stats['tabelas']);
+        $this->assertSame(1, $stats['tabelas']['publisher_pages']['registros']);
+        $this->assertSame(1, $stats['tabelas']['publisher_pages']['arquivos']);
+
+        $htmlPath = $gestor . '/resources/pt-br/publisher_pages/home/home.html';
+        $this->assertFileExists($htmlPath);
+        $this->assertSame('<div>Home</div>', file_get_contents($htmlPath));
+
+        $meta = json_decode(file_get_contents($gestor . '/resources/pt-br/publisher_pages.json'), true);
+        $this->assertSame('home', $meta[0]['page_id']);
+        $this->assertArrayNotHasKey('id_publisher_pages', $meta[0]);
+        $this->assertArrayNotHasKey('html', $meta[0]);
+        $this->assertIsArray($meta[0]['fields_values']);
+
+        // 2) COMPILAÇÃO (round-trip): recompila lendo o arquivo físico gerado.
+        $cfgComp = [
+            'nome' => 'publisher_pages',
+            'id' => 'page_id',
+            'resources_dir' => null,
+            'field_types' => ['html' => 'file:html'],
+            'base_dir' => $gestor . DIRECTORY_SEPARATOR . 'resources',
+            'natural_key_columns' => ['language', 'page_id'],
+            'scope' => 'global',
+        ];
+        $registro = processarRegistroDinamico(['page_id' => 'home'], $cfgComp, 'pt-br');
+        $this->assertSame('home', $registro['page_id']);
+        $this->assertSame('<div>Home</div>', $registro['html']);
+    }
 }

@@ -283,4 +283,52 @@ Evidência automatizada reportada pelo executor em 2026-06-25 (ambiente: PHP 8.4
 - Rodar o pull real (`🗃️ Projects - Recover ...`) contra a API e confirmar que `RDR_DEBUG_FILE_EMPTY` aparece no console para os registros que usam template padrão e que nenhum arquivo em branco é criado em `resources/`.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 
+---
+## BATCH-064 - Atualização de Versões dos Componentes do GitHub Actions (req-064)
+
+- [ ] Atualização de `actions/checkout@v4` para `actions/checkout@v7` nos workflows `release-gestor.yml` e `release-instalador.yml`.
+- [ ] Atualização de `actions/setup-node@v4` para `actions/setup-node@v6` em `release-gestor.yml`.
+- [ ] Atualização de `softprops/action-gh-release@v2` para `softprops/action-gh-release@v3` nos dois workflows.
+- [ ] Validação estática de formato YAML em ambos os workflows.
+
+### Evidência de Validação (BATCH-064)
+
+*(A ser preenchida pelo engenheiro executor após a implementação e testes)*
+
+---
+## BATCH-065 - Suporte a Colunas Customizadas de ID em Recursos Dinâmicos (req-065)
+
+- [x] **Descompilador (`recuperacao-dados-recursos.php`)**:
+  - [x] Ler dinamicamente a coluna configurada em `$cfg['id']` em `rdr_descompilar_registro()` para determinar o `$id` (helper `rdr_id_col($cfg)` com fallback `'id'`).
+  - [x] Ajustar o log `RDR_REGISTRO_SEM_LANG` para ler o ID de forma dinâmica na varredura.
+- [x] **Compilador (`atualizacao-dados-recursos.php`)**:
+  - [x] Ajustar a leitura de `$rec[$idCol]` no laço principal de compilação dinâmica.
+  - [x] Ajustar a leitura de `$rec[$idCol]` em `processarRegistroDinamico()`.
+  - [x] Ajustar o cache `$existDinamicoCache` para construir o índice de busca usando a coluna de ID dinâmica da tabela.
+- [x] **Testes Unitários**:
+  - [x] Criar teste dinâmico simulando round-trip completo com tabela de ID customizado (`page_id` / PK `id_publisher_pages`).
+  - [x] Confirmar que `composer test` passa limpo.
+- [x] **Validação Estática**:
+  - [x] Rodar `php -l` sem erros.
+
+### Evidência de Validação (BATCH-065)
+
+Evidência automatizada reportada pelo executor em 2026-06-25 (ambiente: PHP 8.4.8):
+- `php -l` → OK (3/3):
+  - `gestor/controladores/agents/arquitetura/recuperacao-dados-recursos.php`
+  - `gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php`
+  - `tests/Unit/PHP/RecuperacaoDadosRecursosTest.php`
+- `vendor/bin/phpunit tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` → **OK (19 tests, 113 assertions)** (era 17; +2 deste lote).
+- `composer test` → **OK (67 tests, 255 assertions, 4 skipped gated por banco)**; a única `PHPUnit Deprecation` é pré-existente e alheia a este slice.
+- Testes novos:
+  - `testDescompilaResolveColunaIdCustomizada`: dump com `page_id` (sem coluna `id`) gera o arquivo em `resources/pt-br/publisher_pages/sobre/sobre.html`, preserva `page_id` no metadado e remove a PK `id_publisher_pages`.
+  - `testRoundTripColunaIdCustomizada` (RunInSeparateProcess): descompila `PublisherPagesData.json` (`page_id`) para arquivo físico + metadado e recompila via `processarRegistroDinamico(['page_id'=>'home'])`, reinjetando o HTML sem perda de atributos.
+- Arquivos alterados: `recuperacao-dados-recursos.php` (helper `rdr_id_col` + `rdr_descompilar_registro` + log em `rdr_processar`), `atualizacao-dados-recursos.php` (`$idCol` no laço dinâmico, no cache `$existDinamicoCache` e em `processarRegistroDinamico`), `tests/Unit/PHP/RecuperacaoDadosRecursosTest.php`.
+
+### Pendências Runtime (com o operador)
+- Em um projeto real com tabela de ID customizada (ex.: `publisher_pages` com `"id": "page_id"`), rodar pull/deploy e confirmar geração dos arquivos físicos pela coluna lógica e round-trip sem perda de atributos.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+
+
 

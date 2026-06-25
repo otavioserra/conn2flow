@@ -756,16 +756,18 @@ function coletarRecursos(array $existentes, array $map): array {
             continue;
         }
         $fieldTypes = (isset($cfg['field_types']) && is_array($cfg['field_types'])) ? $cfg['field_types'] : [];
+        // Coluna identificadora lógica: tabelas customizadas podem usar outra coluna (ex.: page_id).
+        $idCol = (isset($cfg['id']) && is_string($cfg['id']) && $cfg['id'] !== '') ? $cfg['id'] : 'id';
 
         // Índice dos dados existentes (para reuso de versao quando o checksum não muda).
         if (!array_key_exists($tabelaNome, $existDinamicoCache)) {
             $listaExist = jsonRead($DB_DATA_DIR . dataFileNameFromTable($tabelaNome)) ?? [];
             $idx = [];
             foreach ($listaExist as $er) {
-                if (!is_array($er) || !isset($er['id'])) continue;
+                if (!is_array($er) || !isset($er[$idCol])) continue;
                 $mod = $er['module'] ?? ($er['modulo'] ?? '');
                 $lng = $er['language'] ?? ($er['linguagem_codigo'] ?? '');
-                $idx[$lng.'|'.$mod.'|'.$er['id']] = $er;
+                $idx[$lng.'|'.$mod.'|'.$er[$idCol]] = $er;
             }
             $existDinamicoCache[$tabelaNome] = $idx;
         }
@@ -774,7 +776,7 @@ function coletarRecursos(array $existentes, array $map): array {
         foreach ($languages as $lang) {
             foreach (lerMetadadosDinamicos($cfg, $lang) as $rec) {
                 if (!is_array($rec)) continue;
-                $id = $rec['id'] ?? null;
+                $id = $rec[$idCol] ?? null;
                 if ($id === null || $id === '') continue;
                 $registro = processarRegistroDinamico($rec, $cfg, $lang);
                 $checksum = checksumRegistroDinamico($registro, $fieldTypes);
@@ -955,7 +957,9 @@ function processarRegistroDinamico(array $rec, array $cfg, string $lang): array 
     $resDirName = $cfg['resources_dir'] ?? $tabela;
     $baseDir = $cfg['base_dir'] ?? '';
     $filesDir = $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $resDirName;
-    $id = isset($rec['id']) ? (string)$rec['id'] : '';
+    // Coluna identificadora lógica: tabelas customizadas podem usar outra coluna (ex.: page_id).
+    $idCol = (isset($cfg['id']) && is_string($cfg['id']) && $cfg['id'] !== '') ? $cfg['id'] : 'id';
+    $id = isset($rec[$idCol]) ? (string)$rec[$idCol] : '';
 
     $registro = [];
     foreach ($rec as $campo => $valor) {
