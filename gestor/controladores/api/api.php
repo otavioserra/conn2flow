@@ -169,6 +169,10 @@ function api_handle_project() {
             api_project_update();
             break;
 
+        case 'recover':
+            api_project_recover();
+            break;
+
         default:
             api_response_error('Sub-endpoint PROJECT não encontrado: ' . $sub_endpoint, 404);
     }
@@ -288,6 +292,118 @@ function api_project_update() {
         }
 
         api_response_error('Erro durante atualização do projeto: ' . $e->getMessage(), 500);
+    }
+}
+
+/**
+ * Endpoint de Recuperação (Pull System) — req-058 / BATCH-058.
+ *
+ * Extrai um dump bruto (raw) das tabelas selecionadas do banco do gestor em arquivos
+ * <PascalCase>Data.json e os devolve como pacote ZIP para download. É a via inversa do
+ * deploy: o cliente extrai o ZIP localmente e o descompilador
+ * (controladores/agents/arquitetura/recuperacao-dados-recursos.php) reconstrói os arquivos
+ * físicos (HTML/CSS/MD) e metadados do repositório.
+ *
+ * Requisitos: POST autenticado por OAuth (api_authenticate(true)). O corpo pode informar as
+ * tabelas via JSON {"tables":[...]} ou POST `tables` (lista separada por vírgulas); quando
+ * omitido, exporta todas as tabelas registradas em db/data/schema-metadata.json.
+ */
+function api_project_recover() {
+    global $_GESTOR;
+
+    // Requer autenticação OAuth válida.
+    api_authenticate(true);
+
+    // ID do projeto (contexto futuro) via header X-Project-ID.
+    $project_id = $_SERVER['HTTP_X_PROJECT_ID'] ?? null;
+
+    $method = $_SERVER['REQUEST_METHOD'];
+    if ($method !== 'POST') {
+        api_response_error('Método não permitido. Use POST.', 405);
+    }
+
+    // Resolver a lista de tabelas a exportar: corpo JSON {"tables":[...]} ou POST `tables` (CSV).
+    $tabelas = [];
+    $body = json_decode(file_get_contents('php://input'), true);
+    if (is_array($body) && isset($body['tables']) && is_array($body['tables'])) {
+        $tabelas = $body['tables'];
+    } elseif (isset($_POST['tables']) && is_string($_POST['tables']) && $_POST['tables'] !== '') {
+        $tabelas = explode(',', $_POST['tables']);
+    }
+    $tabelas = array_values(array_filter(array_map(function ($t) {
+        return preg_replace('/[^a-z0-9_]/', '', strtolower(trim((string)$t)));
+    }, $tabelas)));
+
+    // Incluir o script de atualizações de banco apenas para reusar suas funções
+    // (reverseExport/db/schemaMetadata) sem disparar o fluxo de deploy.
+    if (!defined('SDD_NO_AUTORUN')) {
+        define('SDD_NO_AUTORUN', true);
+    }
+    $script = $_GESTOR['ROOT_PATH'] . 'controladores/atualizacoes/atualizacoes-banco-de-dados.php';
+    if (!file_exists($script)) {
+        api_response_error('Script de atualização de banco não encontrado.', 500);
+    }
+    require_once $script;
+
+    // Sem tabelas informadas: todas as registradas no contrato de sincronização.
+    if (empty($tabelas)) {
+        $meta = schemaMetadata();
+        $tabelas = array_keys($meta['tables'] ?? []);
+    }
+    if (empty($tabelas)) {
+        api_response_error('Nenhuma tabela disponível para recuperação.', 400);
+    }
+
+    // Diretório temporário único para o dump bruto.
+    $temp_base = $_GESTOR['logs-path'] . 'temp_recover_' . time() . '_' . uniqid() . '/';
+    if (!is_dir($temp_base)) {
+        mkdir($temp_base, 0755, true);
+    }
+    $zip_path = rtrim($_GESTOR['logs-path'], '/\\') . DIRECTORY_SEPARATOR
+        . 'project-recover_' . time() . '_' . uniqid() . '.zip';
+
+    try {
+        // Conexão PDO com o banco do gestor (credenciais de $_BANCO via helper db()).
+        $pdo = db();
+
+        // Dump bruto das tabelas selecionadas em <PascalCase>Data.json no diretório temporário.
+        reverseExport($pdo, $tabelas, $temp_base);
+
+        // Compactar todos os *Data.json gerados.
+        if (!class_exists('ZipArchive')) {
+            throw new Exception('Extensão ZipArchive indisponível no servidor');
+        }
+        $zip = new ZipArchive();
+        if ($zip->open($zip_path, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+            throw new Exception('Falha ao criar arquivo ZIP de recuperação');
+        }
+        $jsonFiles = glob($temp_base . '*Data.json') ?: [];
+        foreach ($jsonFiles as $jf) {
+            $zip->addFile($jf, basename($jf));
+        }
+        $zip->close();
+
+        if (!is_file($zip_path)) {
+            throw new Exception('Pacote ZIP de recuperação não foi gerado');
+        }
+
+        // Stream do ZIP como download. Limpa buffers e sobrescreve o Content-Type JSON do topo.
+        while (ob_get_level() > 0) { ob_end_clean(); }
+        http_response_code(200);
+        header('Content-Type: application/zip');
+        header('Content-Disposition: attachment; filename="project-recover.zip"');
+        header('Content-Length: ' . filesize($zip_path));
+        readfile($zip_path);
+
+        // Limpeza imediata em disco.
+        @unlink($zip_path);
+        api_remove_directory($temp_base);
+        exit;
+
+    } catch (Throwable $e) {
+        if (is_file($zip_path)) { @unlink($zip_path); }
+        if (is_dir($temp_base)) { api_remove_directory($temp_base); }
+        api_response_error('Erro durante a recuperação do projeto: ' . $e->getMessage(), 500);
     }
 }
 

@@ -13,4 +13,4 @@ Rules:
 
 ## Histórico de Requisições Arquivadas
 
-Para fins de otimização de tokens e contexto, requisições antigas (`req-001.md` até `req-017.md`) foram movidas para a pasta histórica **[archive/](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/)**.
+Para fins de otimização de tokens e contexto, requisições antigas (`req-001.md` até `req-053.md`) foram movidas para a pasta histórica **[archive/](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/)**.
