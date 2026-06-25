@@ -281,6 +281,13 @@ create_zip_package() {
                 done
             fi
 
+            if [ -f "$PROJECT_PATH/project-schema-metadata.json" ]; then
+                if ! grep -Fxq "project-schema-metadata.json" "$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"; then
+                    echo "project-schema-metadata.json" >> "$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"
+                    log "Including project-schema-metadata.json in gitDeploy package."
+                fi
+            fi
+
             cd "$PROJECT_PATH"
             "7z" a -tzip "$ZIP_FILE" @"$TEMP_DIR/${PROJECT_TARGET}_git_files.txt" > /dev/null 2>&1
             return
@@ -291,6 +298,9 @@ create_zip_package() {
     fi
 
     cd "$PROJECT_PATH"
+    if [ -f "$PROJECT_PATH/project-schema-metadata.json" ]; then
+        log "Including project-schema-metadata.json in deploy package."
+    fi
     "7z" a -tzip "$ZIP_FILE" . -xr0!*.git* -xr0!*.tmp -xr0!*.log -xr0!temp/ -xr0!logs/ -xr0!resources/ > /dev/null 2>&1
 }
 

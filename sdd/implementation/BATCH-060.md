@@ -1,7 +1,7 @@
 # BATCH-060 — Pipeline de Metadados de Projeto e Desacoplamento (Pull System)
 
 - **Intake**: [req-060.md](../human-requests/req-060.md)
-- **Status**: ready-for-intake
+- **Status**: complete
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-060
 
 ## Contexto
@@ -29,3 +29,11 @@ Este lote resolve o desacoplamento de metadados do projeto entre o ambiente loca
   }
   ```
 - **Merge de Tabelas no Servidor**: No servidor, o `recuperacao-banco-de-dados.php` e a função `api_project_recover()` na API lerão esse arquivo e adicionarão as tabelas encontradas à lista de tabelas a exportar caso o cliente faça a requisição padrão.
+
+## Evidência de validação
+
+- `php -l` OK em `atualizacao-dados-recursos.php`, `api.php`, `recuperacao-banco-de-dados.php` e `RecuperacaoDadosRecursosTest.php`.
+- `vendor/bin/phpunit tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` OK: 13 tests, 71 assertions.
+- `composer test` OK: 61 tests, 213 assertions, 4 skipped e 1 deprecation PHPUnit preexistente.
+- `git diff --check` OK.
+- `bash -n ai-workspace/en/scripts/projects/deploy-project-v2.sh` não executado neste Windows porque o comando `bash` encaminha para WSL e não há distribuição instalada.

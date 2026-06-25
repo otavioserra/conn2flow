@@ -1182,7 +1182,7 @@ function coletarConfigsTabelas(): array {
  * As listas "deletar" e "forcar_atualizacao" são consolidadas (agregadas) por tabela.
  */
 function gerarSchemaMetadata(): void {
-    global $DB_DATA_DIR, $LOG_FILE;
+    global $DB_DATA_DIR, $LOG_FILE, $RESOURCES_DIR, $GESTOR_DIR;
     $tables = [];
     $deletar = [];
     $forcar = [];
@@ -1220,6 +1220,17 @@ function gerarSchemaMetadata(): void {
         log_disco_local('SCHEMA_METADATA_SAVED ' . $dest . ' tabelas=' . count($tables) . ' deletar=' . count($deletar) . ' forcar=' . count($forcar), $LOG_FILE);
     } else {
         log_disco_local('SCHEMA_METADATA_ERRO ao gravar ' . $dest, $LOG_FILE);
+    }
+
+    $projectTablesConfig = rtrim($RESOURCES_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'tables_config.json';
+    if (!empty($GLOBALS['CLI_ARGS']['project-path']) && is_file($projectTablesConfig)) {
+        $projectDest = rtrim($GESTOR_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'project-schema-metadata.json';
+        $projectSchema = ['tabelas' => $tables];
+        if (jsonWrite($projectDest, $projectSchema)) {
+            log_disco_local('PROJECT_SCHEMA_METADATA_SAVED ' . $projectDest . ' tabelas=' . count($tables), $LOG_FILE);
+        } else {
+            log_disco_local('PROJECT_SCHEMA_METADATA_ERRO ao gravar ' . $projectDest, $LOG_FILE);
+        }
     }
 }
 

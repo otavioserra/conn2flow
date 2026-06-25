@@ -354,7 +354,10 @@ function api_project_recover() {
     // Sem tabelas informadas: todas as registradas no contrato de sincronização.
     if (empty($tabelas)) {
         $meta = schemaMetadata();
-        $tabelas = array_keys($meta['tables'] ?? []);
+        $tabelas = array_values(array_unique(array_merge(
+            array_keys($meta['tables'] ?? []),
+            api_project_schema_metadata_tables($_GESTOR['ROOT_PATH'] . 'project-schema-metadata.json')
+        )));
     }
     if (empty($tabelas)) {
         api_response_error('Nenhuma tabela disponível para recuperação.', 400);
@@ -414,6 +417,19 @@ function api_project_recover() {
         if (is_dir($temp_base)) { api_remove_directory($temp_base); }
         api_response_error('Erro durante a recuperação do projeto: ' . $e->getMessage(), 500);
     }
+}
+
+/**
+ * Lê o manifesto transitório de projeto gerado pelo compilador local e retorna tabelas válidas.
+ */
+function api_project_schema_metadata_tables(string $manifestPath): array {
+    if (!is_file($manifestPath)) return [];
+    $raw = file_get_contents($manifestPath);
+    $data = json_decode((string)$raw, true);
+    if (!is_array($data) || !isset($data['tabelas']) || !is_array($data['tabelas'])) return [];
+    return array_values(array_filter(array_map(function ($t) {
+        return preg_replace('/[^a-z0-9_]/', '', strtolower(trim((string)$t)));
+    }, array_keys($data['tabelas']))));
 }
 
 /**

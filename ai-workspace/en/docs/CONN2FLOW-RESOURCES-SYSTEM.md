@@ -2,6 +2,7 @@
 
 ## 📋 Index
 - [Overview](#overview)
+- [Project Metadata in the Pull System](#project-metadata-in-the-pull-system)
 - [Fundamental Concepts](#fundamental-concepts)
 - [Resource Types](#resource-types)
 - [File Structure](#file-structure)
@@ -31,6 +32,97 @@ Conn2Flow's architecture treats resources as source code that needs to be "compi
 4.  **Execution (Runtime)**: On installation/update, the system reads the JSONs and updates the Database.
 
 The correct flow is: **Physical Editing -> Processing (Generates JSON) -> Commit/Release -> Consumption by Updater -> Database**.
+
+---
+
+## Project Metadata in the Pull System
+
+In deployed production projects, local source folders (`resources/`, `db/`, and `modulos/*/resources/`) do not need to exist on the server: the runtime consumes resources directly from the database. Because of that, the server cannot rely on the local `resources/tables_config.json` when `_api/project/recover` runs.
+
+To decouple runtime recovery from local source files, the compiler generates `project-schema-metadata.json` in the project manager root whenever `resources/tables_config.json` exists. This file is packaged during deploy and installed on the server beside `db/` and `controladores/`. During pull, the API and the `recuperacao-banco-de-dados.php` CLI read this manifest and merge its tables with the default `db/data/schema-metadata.json` contract.
+
+Short format:
+
+```json
+{
+  "tabelas": {
+    "menus": {
+      "nome": "menus",
+      "data_file": "MenusData.json",
+      "strategy": "natural_key"
+    }
+  }
+}
+```
+
+Module resource configured by the project without editing the original Core manifest:
+
+```json
+{
+  "tabelas": {
+    "menus": {
+      "nome": "menus",
+      "id": "id",
+      "id_numerico": "id_menus",
+      "config": {
+        "scope": "module",
+        "modulo": "menus",
+        "strategy": "natural_key",
+        "natural_key_columns": ["language", "module", "id"],
+        "sync_resources": true,
+        "metadata_file": "menus.json",
+        "field_types": {
+          "html": "file:html"
+        }
+      }
+    }
+  }
+}
+```
+
+Global resource stored under `resources/`:
+
+```json
+{
+  "tabelas": {
+    "widgets_demo": {
+      "nome": "widgets_demo",
+      "id": "id",
+      "id_numerico": "id_widgets_demo",
+      "config": {
+        "strategy": "natural_key",
+        "natural_key_columns": ["language", "id"],
+        "sync_resources": true,
+        "resources_dir": "widgets_demo",
+        "metadata_file": "widgets_demo.json",
+        "field_types": {
+          "html": "file:html",
+          "fields_schema": "json"
+        }
+      }
+    }
+  }
+}
+```
+
+Database-only table with no physical resource files:
+
+```json
+{
+  "tabelas": {
+    "arquivos": {
+      "nome": "arquivos",
+      "id": "id",
+      "id_numerico": "id_arquivos",
+      "config": {
+        "strategy": "natural_key",
+        "natural_key_columns": ["id"],
+        "sync_resources": false
+      }
+    }
+  }
+}
+```
 
 ---
 

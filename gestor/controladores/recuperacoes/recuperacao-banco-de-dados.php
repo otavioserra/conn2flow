@@ -74,6 +74,24 @@ function recuperacao_bootstrap_banco(array $args): void {
 }
 
 /**
+ * Lê gestor/project-schema-metadata.json e devolve os nomes de tabelas configuradas pelo projeto.
+ */
+function recuperacao_project_schema_metadata_tables(?string $gestorRoot = null): array {
+    $root = $gestorRoot;
+    if ($root === null || $root === '') {
+        $root = realpath(__DIR__ . '/../..') ?: (__DIR__ . '/../..');
+    }
+    $manifest = rtrim($root, '/\\') . DIRECTORY_SEPARATOR . 'project-schema-metadata.json';
+    if (!is_file($manifest)) return [];
+    $raw = file_get_contents($manifest);
+    $data = json_decode((string)$raw, true);
+    if (!is_array($data) || !isset($data['tabelas']) || !is_array($data['tabelas'])) return [];
+    return array_values(array_filter(array_map(function ($t) {
+        return preg_replace('/[^a-z0-9_]/', '', strtolower(trim((string)$t)));
+    }, array_keys($data['tabelas']))));
+}
+
+/**
  * Executa a exportação bruta das tabelas para o diretório de saída usando reverseExport().
  * Retorna 0 em sucesso e 1 em falha. Depende de o atualizador de banco já ter sido incluído
  * (define reverseExport/db/schemaMetadata/tabelaFromDataFile e a global $DB_DATA_DIR).
@@ -96,7 +114,10 @@ function recuperacao_executar(array $args, ?string $outputDir = null): int {
         $tabelas = array_map('trim', explode(',', $args['tables']));
     } else {
         $meta = schemaMetadata();
-        $tabelas = array_keys($meta['tables'] ?? []);
+        $tabelas = array_values(array_unique(array_merge(
+            array_keys($meta['tables'] ?? []),
+            recuperacao_project_schema_metadata_tables()
+        )));
         if (empty($tabelas)) {
             foreach (glob($DB_DATA_DIR . '*Data.json') ?: [] as $f) {
                 $tabelas[] = tabelaFromDataFile($f);

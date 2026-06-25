@@ -2,6 +2,7 @@
 
 ## 📋 Índice
 - [Visão Geral](#visão-geral)
+- [Metadados de Projeto no Pull System](#metadados-de-projeto-no-pull-system)
 - [Conceitos Fundamentais](#conceitos-fundamentais)
 - [Tipos de Recursos](#tipos-de-recursos)
 - [Estrutura de Arquivos](#estrutura-de-arquivos)
@@ -31,6 +32,97 @@ A arquitetura do Conn2Flow trata os recursos como código-fonte que precisa ser 
 4.  **Execução (Runtime)**: Na instalação/atualização, o sistema lê os JSONs e atualiza o Banco de Dados.
 
 O fluxo correto é: **Edição Física -> Processamento (Gera JSON) -> Commit/Release -> Consumo pelo Atualizador -> Banco de Dados**.
+
+---
+
+## Metadados de Projeto no Pull System
+
+Em projetos implantados em produção, as pastas locais de fonte (`resources/`, `db/` e `modulos/*/resources/`) não precisam existir no servidor: o runtime consome os recursos diretamente do banco de dados. Por isso, o servidor não consegue consultar o `resources/tables_config.json` local quando o Pull System executa `_api/project/recover`.
+
+Para desacoplar o servidor dos fontes locais, o compilador gera `project-schema-metadata.json` na raiz do gestor do projeto sempre que `resources/tables_config.json` existe. Esse arquivo é empacotado no deploy e instalado no servidor ao lado de `db/` e `controladores/`. No pull, a API e o CLI `recuperacao-banco-de-dados.php` leem esse manifesto e mesclam suas tabelas com o contrato padrão `db/data/schema-metadata.json`.
+
+Formato resumido:
+
+```json
+{
+  "tabelas": {
+    "menus": {
+      "nome": "menus",
+      "data_file": "MenusData.json",
+      "strategy": "natural_key"
+    }
+  }
+}
+```
+
+Exemplo de recurso de módulo configurado no projeto sem alterar o manifesto original do Core:
+
+```json
+{
+  "tabelas": {
+    "menus": {
+      "nome": "menus",
+      "id": "id",
+      "id_numerico": "id_menus",
+      "config": {
+        "scope": "module",
+        "modulo": "menus",
+        "strategy": "natural_key",
+        "natural_key_columns": ["language", "module", "id"],
+        "sync_resources": true,
+        "metadata_file": "menus.json",
+        "field_types": {
+          "html": "file:html"
+        }
+      }
+    }
+  }
+}
+```
+
+Exemplo de recurso global gravado em `resources/`:
+
+```json
+{
+  "tabelas": {
+    "widgets_demo": {
+      "nome": "widgets_demo",
+      "id": "id",
+      "id_numerico": "id_widgets_demo",
+      "config": {
+        "strategy": "natural_key",
+        "natural_key_columns": ["language", "id"],
+        "sync_resources": true,
+        "resources_dir": "widgets_demo",
+        "metadata_file": "widgets_demo.json",
+        "field_types": {
+          "html": "file:html",
+          "fields_schema": "json"
+        }
+      }
+    }
+  }
+}
+```
+
+Exemplo de tabela exclusivamente de banco de dados, sem arquivos físicos de recurso:
+
+```json
+{
+  "tabelas": {
+    "arquivos": {
+      "nome": "arquivos",
+      "id": "id",
+      "id_numerico": "id_arquivos",
+      "config": {
+        "strategy": "natural_key",
+        "natural_key_columns": ["id"],
+        "sync_resources": false
+      }
+    }
+  }
+}
+```
 
 ---
 

@@ -180,17 +180,30 @@ Evidência automatizada reportada pelo executor em 2026-06-25:
 ---
 ## BATCH-060 - Pipeline de Metadados de Projeto e Desacoplamento (req-060)
 
-- [ ] Compilador gerando `project-schema-metadata.json` na raiz do gestor local a partir de `tables_config.json`.
-- [ ] Script de deploy `deploy-project-v2.sh` incluindo `gestor/project-schema-metadata.json` no empacotamento do ZIP de release.
-- [ ] Endpoint da API `_api/project/recover` no servidor lendo as tabelas do `project-schema-metadata.json` para o dump.
-- [ ] Script CLI do servidor `recuperacao-banco-de-dados.php` lendo as tabelas do `project-schema-metadata.json`.
-- [ ] Documentação em português `ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-RECURSOS.md` atualizada com o funcionamento do `project-schema-metadata.json` e exemplos completos de configuração do `tables_config.json`.
-- [ ] Validação estática (`php -l`) de todos os arquivos PHP alterados.
-- [ ] Suíte de testes `RecuperacaoDadosRecursosTest.php` e compilação válidas.
+- [x] Compilador gerando `project-schema-metadata.json` na raiz do gestor local a partir de `tables_config.json`.
+- [x] Script de deploy `deploy-project-v2.sh` incluindo `gestor/project-schema-metadata.json` no empacotamento do ZIP de release.
+- [x] Endpoint da API `_api/project/recover` no servidor lendo as tabelas do `project-schema-metadata.json` para o dump.
+- [x] Script CLI do servidor `recuperacao-banco-de-dados.php` lendo as tabelas do `project-schema-metadata.json`.
+- [x] Documentação em português `ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-RECURSOS.md` atualizada com o funcionamento do `project-schema-metadata.json` e exemplos completos de configuração do `tables_config.json`.
+- [x] Validação estática (`php -l`) de todos os arquivos PHP alterados.
+- [x] Suíte de testes `RecuperacaoDadosRecursosTest.php` e compilação válidas.
 
 ### Evidência de Validação (BATCH-060)
 
-*Aguardando implementação pelo engenheiro executor.*
+Evidência automatizada reportada pelo executor em 2026-06-25:
+- `php -l` OK:
+  - `gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php`
+  - `gestor/controladores/api/api.php`
+  - `gestor/controladores/recuperacoes/recuperacao-banco-de-dados.php`
+  - `tests/Unit/PHP/RecuperacaoDadosRecursosTest.php`
+- `vendor/bin/phpunit tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` OK: **13 tests, 71 assertions**.
+- `composer test` OK: **61 tests, 213 assertions**; 4 skipped gated por banco; 1 `PHPUnit Deprecation` preexistente.
+- `git diff --check` OK.
+- `bash -n ai-workspace/en/scripts/projects/deploy-project-v2.sh` não executado: neste Windows o comando `bash` encaminha para WSL, mas não há distribuição instalada.
+
+### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Deploy Current Project` ou `-> ID` em ambiente com Bash/7z disponível e confirmar que `project-schema-metadata.json` chega ao servidor.
+- Rodar o pull contra API ativa sem `tables` explícito e confirmar que tabelas declaradas apenas no manifesto de projeto entram no ZIP de recuperação.
 
 
 

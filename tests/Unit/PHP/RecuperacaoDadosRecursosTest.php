@@ -331,6 +331,69 @@ final class RecuperacaoDadosRecursosTest extends TestCase
         $this->assertSame('menus', $norm[0]['nome']);
     }
 
+    #[RunInSeparateProcess]
+    public function testCompiladorGeraProjectSchemaMetadataNaRaizDoGestor(): void
+    {
+        $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
+        @mkdir($gestor . '/resources', 0775, true);
+        @mkdir($gestor . '/db/data', 0775, true);
+        @mkdir($gestor . '/logs/arquitetura', 0775, true);
+
+        file_put_contents($gestor . '/resources/tables_config.json', json_encode(['tabelas' => ['arquivos' => [
+            'nome' => 'arquivos',
+            'id' => 'id',
+            'id_numerico' => 'id_arquivos',
+            'config' => [
+                'strategy' => 'natural_key',
+                'natural_key_columns' => ['id'],
+                'sync_resources' => false,
+            ],
+        ]]]));
+
+        if (!defined('SDD_NO_AUTORUN')) {
+            define('SDD_NO_AUTORUN', true);
+        }
+        $argv = ['atualizacao-dados-recursos.php', '--project-path=' . $gestor];
+        require_once CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR
+            . 'controladores' . DIRECTORY_SEPARATOR . 'agents' . DIRECTORY_SEPARATOR
+            . 'arquitetura' . DIRECTORY_SEPARATOR . 'atualizacao-dados-recursos.php';
+
+        gerarSchemaMetadata();
+
+        $manifestPath = $gestor . '/project-schema-metadata.json';
+        $this->assertFileExists($manifestPath);
+        $manifest = json_decode(file_get_contents($manifestPath), true);
+        $this->assertArrayHasKey('tabelas', $manifest);
+        $this->assertArrayHasKey('arquivos', $manifest['tabelas']);
+        $this->assertSame('ArquivosData.json', $manifest['tabelas']['arquivos']['data_file']);
+        $this->assertArrayNotHasKey('generated_at', $manifest);
+    }
+
+    public function testCliServidorLeProjectSchemaMetadataSanitizandoTabelas(): void
+    {
+        if (!defined('SDD_NO_AUTORUN')) {
+            define('SDD_NO_AUTORUN', true);
+        }
+        require_once CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR
+            . 'controladores' . DIRECTORY_SEPARATOR . 'recuperacoes' . DIRECTORY_SEPARATOR
+            . 'recuperacao-banco-de-dados.php';
+
+        $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
+        @mkdir($gestor, 0775, true);
+        file_put_contents($gestor . '/project-schema-metadata.json', json_encode([
+            'tabelas' => [
+                'menus' => [],
+                'Publisher_Highlights' => [],
+                'bad-name!' => [],
+            ],
+        ]));
+
+        $this->assertSame(
+            ['menus', 'publisher_highlights', 'badname'],
+            recuperacao_project_schema_metadata_tables($gestor)
+        );
+    }
+
     public function testContentsPulaQuandoMd5IgualSemAlterarTimestamp(): void
     {
         $gestor = $this->tmpDir . DIRECTORY_SEPARATOR . 'gestor';
