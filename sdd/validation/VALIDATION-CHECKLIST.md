@@ -177,6 +177,21 @@ Evidência automatizada reportada pelo executor em 2026-06-25:
 - Executar a task `🗃️ Projects - Recover Current Project with Contents` contra API ativa e token OAuth válido.
 - Confirmar manualmente que conflitos reais em `contents/` aparecem como `RDR_CONFLITO`/`RDR_CONFLITOS` sem sobrescrever arquivos locais mais recentes.
 
+---
+## BATCH-060 - Pipeline de Metadados de Projeto e Desacoplamento (req-060)
+
+- [ ] Compilador gerando `project-schema-metadata.json` na raiz do gestor local a partir de `tables_config.json`.
+- [ ] Script de deploy `deploy-project-v2.sh` incluindo `gestor/project-schema-metadata.json` no empacotamento do ZIP de release.
+- [ ] Endpoint da API `_api/project/recover` no servidor lendo as tabelas do `project-schema-metadata.json` para o dump.
+- [ ] Script CLI do servidor `recuperacao-banco-de-dados.php` lendo as tabelas do `project-schema-metadata.json`.
+- [ ] Documentação em português `ai-workspace/pt-br/docs/CONN2FLOW-SISTEMA-RECURSOS.md` atualizada com o funcionamento do `project-schema-metadata.json` e exemplos completos de configuração do `tables_config.json`.
+- [ ] Validação estática (`php -l`) de todos os arquivos PHP alterados.
+- [ ] Suíte de testes `RecuperacaoDadosRecursosTest.php` e compilação válidas.
+
+### Evidência de Validação (BATCH-060)
+
+*Aguardando implementação pelo engenheiro executor.*
+
 
 
 
