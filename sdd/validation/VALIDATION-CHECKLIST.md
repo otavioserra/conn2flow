@@ -1233,6 +1233,22 @@ Evidência automatizada reportada pelo executor em 2026-06-23 (ambiente: PHP 8.4
 - Observação de escopo: o intake (req-057) cita "9 testes", mas a suíte real `MenusWidgetConditionalVisibilityTest` contém **7** testes — todos passam. Nenhum teste novo foi criado, pois o req descreve apenas a correção do widget; a divergência de contagem foi registrada para rastreabilidade.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 
+---
+## BATCH-058 - Sistema de Recuperação e Engenharia Reversa de Recursos (Pull System) (req-058)
+
+- [ ] Endpoint `_api/project/recover` implementado em `gestor/controladores/api/api.php` com validação OAuth e compressão ZIP.
+- [ ] Novo orquestrador CLI de exportação `gestor/controladores/recuperacoes/recuperacao-dados-recursos.php` no servidor.
+- [ ] Novo descompilador genérico `gestor/controladores/agents/arquitetura/recuperacao-dados-recursos.php` no cliente local.
+- [ ] Script de pull `ai-workspace/en/scripts/projects/recover-project.sh` integrado às VS Code Tasks.
+- [ ] Remoção de BOM e saneamento de metadados (`versao`, `checksum`, `user_modified`, `project` e chaves PK/auto-incremento) validados.
+- [ ] Suíte de testes unitários `tests/Unit/PHP/RecuperacaoDadosRecursosTest.php` cobrindo a engenharia reversa inline/externa de HTML/CSS/JSON.
+- [ ] Validação estática (`php -l`) de todos os arquivos PHP gerados.
+- [ ] Validação manual end-to-end de pull local e git status limpo.
+
+### Evidência de Validação (BATCH-058)
+
+*Aguardando implementação pelo engenheiro executor.*
+
 
 
 
