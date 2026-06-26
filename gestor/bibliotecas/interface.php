@@ -5257,6 +5257,7 @@ function interface_listar_tabela($params = false){
 				$col = modelo_var_troca($col,"#extra#",$col_params);
 				
 				if($tabela){
+					$id_without_format = $dado[$banco['id']];
 					foreach($tabela['colunas'] as $coluna){
 						if(isset($coluna['formatar'])){
 							$dado[$coluna['id']] = interface_formatar_dado(Array(
@@ -5279,7 +5280,7 @@ function interface_listar_tabela($params = false){
 					}
 					
 					$row = '
-				<td>'.$dado[$banco['id']].'</td>';
+				<td>'.$id_without_format.'</td>';
 					
 					$col = modelo_var_in($col,"#rows#",$row);
 				}

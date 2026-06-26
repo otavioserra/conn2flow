@@ -286,14 +286,16 @@ Evidência automatizada reportada pelo executor em 2026-06-25 (ambiente: PHP 8.4
 ---
 ## BATCH-064 - Atualização de Versões dos Componentes do GitHub Actions (req-064)
 
-- [ ] Atualização de `actions/checkout@v4` para `actions/checkout@v7` nos workflows `release-gestor.yml` e `release-instalador.yml`.
-- [ ] Atualização de `actions/setup-node@v4` para `actions/setup-node@v6` em `release-gestor.yml`.
-- [ ] Atualização de `softprops/action-gh-release@v2` para `softprops/action-gh-release@v3` nos dois workflows.
-- [ ] Validação estática de formato YAML em ambos os workflows.
+- [x] Atualização de `actions/checkout@v4` para `actions/checkout@v7` nos workflows `release-gestor.yml` e `release-instalador.yml`.
+- [x] Atualização de `actions/setup-node@v4` para `actions/setup-node@v6` em `release-gestor.yml`.
+- [x] Atualização de `softprops/action-gh-release@v2` para `softprops/action-gh-release@v3` nos dois workflows.
+- [x] Validação estática de formato YAML em ambos os workflows.
 
 ### Evidência de Validação (BATCH-064)
 
-*(A ser preenchida pelo engenheiro executor após a implementação e testes)*
+Evidência automatizada e estática reportada pelo executor em 2026-06-25:
+- Edições aplicadas aos arquivos: `.github/workflows/release-gestor.yml` e `.github/workflows/release-instalador.yml`.
+- Sintaxe YAML validada estaticamente. O teste final runtime ocorrerá no próximo disparo do pipeline via GitHub.
 
 ---
 ## BATCH-065 - Suporte a Colunas Customizadas de ID em Recursos Dinâmicos (req-065)
