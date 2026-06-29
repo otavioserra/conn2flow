@@ -795,33 +795,42 @@ $(document).ready(function () {
 
         switch (campo) {
             case 'html':
-                if (gestor.editorHtmlAtivo) {
-                    if (codeHtmlChanged) {
-                        valor = indentHtml(valor);
+                // req-067: só manipular o editor se a instância existir (telas sem editor).
+                if (typeof CodeMirrorHtml !== 'undefined' && CodeMirrorHtml) {
+                    if (gestor.editorHtmlAtivo) {
+                        if (codeHtmlChanged) {
+                            valor = indentHtml(valor);
 
+                            CodeMirrorHtml.getDoc().setValue(valor);
+                            CodeMirrorHtml.refresh();
+                        } else {
+                            tinymce.activeEditor.setContent(valor, { format: 'raw' });
+                        }
+                    } else {
                         CodeMirrorHtml.getDoc().setValue(valor);
                         CodeMirrorHtml.refresh();
-                    } else {
-                        tinymce.activeEditor.setContent(valor, { format: 'raw' });
                     }
-                } else {
-                    CodeMirrorHtml.getDoc().setValue(valor);
-                    CodeMirrorHtml.refresh();
                 }
                 break;
             case 'html-extra-head':
-                if (typeof CodeMirrorHtmlExtraHead !== 'undefined') {
+                if (typeof CodeMirrorHtmlExtraHead !== 'undefined' && CodeMirrorHtmlExtraHead) {
                     CodeMirrorHtmlExtraHead.getDoc().setValue(valor);
                     CodeMirrorHtmlExtraHead.refresh();
                 }
                 break;
             case 'css':
-                CodeMirrorCss.getDoc().setValue(valor);
-                CodeMirrorCss.refresh();
+                // req-067: idem para o editor de CSS.
+                if (typeof CodeMirrorCss !== 'undefined' && CodeMirrorCss) {
+                    CodeMirrorCss.getDoc().setValue(valor);
+                    CodeMirrorCss.refresh();
+                }
                 break;
             case 'css_compiled':
-                CodeMirrorCssCompiled.getDoc().setValue(valor);
-                CodeMirrorCssCompiled.refresh();
+                // req-067: idem para o editor de CSS compilado.
+                if (typeof CodeMirrorCssCompiled !== 'undefined' && CodeMirrorCssCompiled) {
+                    CodeMirrorCssCompiled.getDoc().setValue(valor);
+                    CodeMirrorCssCompiled.refresh();
+                }
                 break;
         }
     });
@@ -1732,6 +1741,8 @@ $(document).ready(function () {
     }
 
     function previewHtml() {
+        // req-067: não tentar gerar a prévia se os editores de HTML/CSS ainda não foram instanciados.
+        if (typeof CodeMirrorHtml === 'undefined' || !CodeMirrorHtml || typeof CodeMirrorCss === 'undefined' || !CodeMirrorCss) return;
         const iframe = $('#iframe-visualizacao-pagina');
 
         iframe.parent().find('.ui.dimmer').addClass('active');
@@ -1765,6 +1776,8 @@ $(document).ready(function () {
     }
 
     function getUpdatedHtmlWithValues() {
+        // req-067: sem editor de HTML instanciado, não há conteúdo do usuário para processar.
+        if (typeof CodeMirrorHtml === 'undefined' || !CodeMirrorHtml) return '';
         // Pegar o HTML do usuário.
         let htmlDoUsuario = CodeMirrorHtml.getDoc().getValue();
 
@@ -2078,6 +2091,8 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
 
     function totalDeSessoes() {
         let total = 0;
+        // req-067: sem editor de HTML instanciado, não há sessões a contar.
+        if (typeof CodeMirrorHtml === 'undefined' || !CodeMirrorHtml) return total;
         const html = CodeMirrorHtml.getDoc().getValue();
 
         // Contar a quantidade total de tag sections no HTML e retornar esse valor.
@@ -2105,6 +2120,8 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
     }
 
     function menuDeSessoes() {
+        // req-067: sem editor de HTML instanciado, não há menu de sessões a montar.
+        if (typeof CodeMirrorHtml === 'undefined' || !CodeMirrorHtml) return;
         const html = CodeMirrorHtml.getDoc().getValue();
 
         const regex = /<section\b[^>]*>([\s\S]*?)<\/section>/gi;
@@ -2360,22 +2377,27 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         }
     }
 
-    CodeMirrorHtml.on("change", function (instance, changeObj) {
-        //var newContent = instance.getValue();
+    // req-067: o listener só pode ser registrado se o CodeMirror de HTML existir. Em telas
+    // que não renderizam o editor (ex.: listar/visualizar do módulo forms), `.codemirror-html`
+    // não está no DOM e `CodeMirrorHtml` fica undefined — registrar `.on` aqui quebraria a página.
+    if (typeof CodeMirrorHtml !== 'undefined' && CodeMirrorHtml) {
+        CodeMirrorHtml.on("change", function (instance, changeObj) {
+            //var newContent = instance.getValue();
 
-        const total_atual = totalDeSessoes();
+            const total_atual = totalDeSessoes();
 
-        if (total_atual != total_sessoes) {
-            total_sessoes = total_atual;
-            menuDeSessoes();
+            if (total_atual != total_sessoes) {
+                total_sessoes = total_atual;
+                menuDeSessoes();
 
-            const tipo_modificacao = tipoModificationPage();
+                const tipo_modificacao = tipoModificationPage();
 
-            menuPages(tipo_modificacao);
-        }
+                menuPages(tipo_modificacao);
+            }
 
-        updatedCodeMirrorHtml();
-    });
+            updatedCodeMirrorHtml();
+        });
+    }
 
     function updatedCodeMirrorHtml() {
         if ('updatedCodeMirrorHtml' in window && typeof window.updatedCodeMirrorHtml === 'function') {

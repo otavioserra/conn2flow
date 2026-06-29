@@ -1,11 +1,11 @@
 <input type="hidden" name="fields_schema">
 
+<div class="forms-main-tabs">
 <div class="ui top attached tabular menu menuForms">
     <a class="active item" data-tab="forms-general"><i class="settings icon"></i> Geral</a>
     <a class="item" data-tab="forms-email"><i class="mail icon"></i> E-mail</a>
     <a class="item" data-tab="forms-redirects"><i class="share icon"></i> Redirects</a>
     <a class="item" data-tab="forms-fields"><i class="list icon"></i> Campos</a>
-    <a class="item" data-tab="forms-template"><i class="code icon"></i> Template</a>
 </div>
 
 <div class="ui bottom attached active tab segment" data-tab="forms-general">
@@ -37,11 +37,17 @@
         <tbody></tbody>
     </table>
 </div>
+</div>
 
-<div class="ui bottom attached tab segment" data-tab="forms-template">
-    <div class="field"><label>Modelo</label><select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id"><option value="">#template_placeholder_option#</option>#template_id_options#</select></div>
-    <div class="ui top attached tabular menu menuFormsTemplate"><a class="active item" data-tab="forms-preview"><i class="eye icon"></i> Prévia</a><a class="item" data-tab="forms-editor"><i class="code icon"></i> Editor HTML</a><a class="item" data-tab="forms-widget"><i class="cubes icon"></i> Widget</a></div>
-    <div class="ui bottom attached active tab segment" data-tab="forms-preview"><div style="position:relative;"><iframe id="iframe-forms-preview" style="width:100%;height:700px;border:1px solid #ccc;"></iframe><div class="ui dimmer forms-preview-dimmer"><div class="ui loader"></div></div></div></div>
-    <div class="ui bottom attached tab segment" data-tab="forms-editor">#html-editor#</div>
-    <div class="ui bottom attached tab segment" data-tab="forms-widget"><div class="field"><label>Variável do Widget</label><div class="ui action input"><input type="text" id="forms-widget-val" readonly><button type="button" id="btn-copy-forms-widget-val" class="ui teal button"><i class="copy icon"></i> Copiar</button></div></div><h4 class="ui header">Código HTML</h4><div style="border:1px solid #ccc;"><textarea id="forms-widget-code"></textarea></div></div>
+<h4 class="ui dividing header">Conteúdo do Formulário</h4>
+
+<div class="field"><label>Modelo</label><select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id"><option value="">#template_placeholder_option#</option>#template_id_options#</select></div>
+
+<div class="forms-content-tabs">
+<div class="ui top attached tabular menu menuConteudoForm"><a class="active item" data-tab="forms-preview"><i class="eye icon"></i> Pré-Visualização</a><a class="item" data-tab="forms-editor"><i class="code icon"></i> Editor HTML</a><a class="item" data-tab="forms-widget"><i class="cubes icon"></i> Código do Widget</a></div>
+<div class="ui bottom attached active tab segment" data-tab="forms-preview"><div style="position:relative;"><iframe id="iframe-forms-preview" style="width:100%;height:700px;border:1px solid #ccc;"></iframe><div class="ui dimmer forms-preview-dimmer"><div class="ui loader"></div></div></div></div>
+<div class="ui bottom attached tab segment" data-tab="forms-editor">
+    #html-editor#
+</div>
+<div class="ui bottom attached tab segment" data-tab="forms-widget"><div class="field"><label>Variável do Widget</label><div class="ui action input"><input type="text" id="forms-widget-val" readonly><button type="button" id="btn-copy-forms-widget-val" class="ui teal button"><i class="copy icon"></i> Copiar</button></div></div><h4 class="ui header">Código HTML</h4><div style="border:1px solid #ccc;"><textarea id="forms-widget-code"></textarea></div></div>
 </div>

@@ -18,6 +18,14 @@
     },
     "resources": {
         "pt-br": {
+            "widgets": [
+                {
+                    "id": "publisher-highlights",
+                    "name": "Destaques",
+                    "icon": "star",
+                    "tabela": "publisher_highlights"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "publisher-highlights",
@@ -228,6 +236,14 @@
             ]
         },
         "en": {
+            "widgets": [
+                {
+                    "id": "publisher-highlights",
+                    "name": "Highlights",
+                    "icon": "star",
+                    "tabela": "publisher_highlights"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "publisher-highlights",

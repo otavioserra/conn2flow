@@ -64,6 +64,21 @@
                 "insert_only": false
             },
             "deletar": []
+        },
+        "widgets": {
+            "nome": "widgets",
+            "id": "id",
+            "id_numerico": "id_widgets",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": [
+                    "language",
+                    "id"
+                ],
+                "preserve_on_user_modified": [],
+                "insert_only": false
+            },
+            "deletar": []
         }
     }
 }

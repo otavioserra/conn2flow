@@ -156,7 +156,7 @@ function ia_renderizar_prompt($params = false){
 			"WHERE alvo = '".banco_escape_field($alvo)."' AND status = 'A' AND language = '".$_GESTOR['linguagem-codigo']."' AND padrao IS NOT NULL"
 	));
 
-	$modo_padrao = ($modos && isset($modos['prompt']) ? $modos['prompt'] : '');
+	$modo_padrao = ($modos && isset($modos['prompt']) ? htmlentities($modos['prompt']) : '');
 
 	// ===== Conexões =====
 
@@ -558,7 +558,7 @@ function ia_ajax_prompts($params = false){
 		// Retorno do AJAX
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'Ok',
-			'prompt' => $prompt['prompt'],
+			'prompt' => htmlentities($prompt['prompt']),
 		);
 	} else {
 		$_GESTOR['ajax-json'] = Array(
@@ -619,7 +619,7 @@ function ia_ajax_modos($params = false){
 		// Retorno do AJAX
 		$_GESTOR['ajax-json'] = Array(
 			'status' => 'Ok',
-			'prompt' => $mode['prompt'],
+			'prompt' => htmlentities($mode['prompt']),
 		);
 	} else {
 		$_GESTOR['ajax-json'] = Array(

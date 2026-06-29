@@ -18,6 +18,14 @@
     },
     "resources": {
         "pt-br": {
+            "widgets": [
+                {
+                    "id": "galleries",
+                    "name": "Galerias",
+                    "icon": "images",
+                    "tabela": "galleries"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "galleries",
@@ -164,6 +172,14 @@
             ]
         },
         "en": {
+            "widgets": [
+                {
+                    "id": "galleries",
+                    "name": "Galleries",
+                    "icon": "images",
+                    "tabela": "galleries"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "galleries",

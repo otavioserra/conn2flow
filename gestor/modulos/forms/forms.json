@@ -32,6 +32,14 @@
     },
     "resources": {
         "pt-br": {
+            "widgets": [
+                {
+                    "id": "forms",
+                    "name": "Formulários",
+                    "icon": "clipboard list",
+                    "tabela": "forms"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "forms",
@@ -224,11 +232,11 @@
                     "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "3747166cd962dcf641080ee2d2980af8",
+                        "html": "d8745bd2a97c3e1eb49e645431d88716",
                         "css": "",
-                        "combined": "3747166cd962dcf641080ee2d2980af8"
+                        "combined": "d8745bd2a97c3e1eb49e645431d88716"
                     }
                 },
                 {
@@ -238,11 +246,11 @@
                     "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.4",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "8c2f13b56437b303a52a78d39bf3b9c3",
+                        "html": "678e5d685cae791abcf1b1d7aba5101c",
                         "css": "",
-                        "combined": "8c2f13b56437b303a52a78d39bf3b9c3"
+                        "combined": "678e5d685cae791abcf1b1d7aba5101c"
                     }
                 },
                 {
@@ -252,11 +260,11 @@
                     "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.3",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "727d7a24d556aa74b335abc76232e3f3",
+                        "html": "360f22f2c68940b477a23ada146329cc",
                         "css": "",
-                        "combined": "727d7a24d556aa74b335abc76232e3f3"
+                        "combined": "360f22f2c68940b477a23ada146329cc"
                     }
                 },
                 {
@@ -309,6 +317,14 @@
             ]
         },
         "en": {
+            "widgets": [
+                {
+                    "id": "forms",
+                    "name": "Forms",
+                    "icon": "clipboard list",
+                    "tabela": "forms"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "forms",
@@ -501,11 +517,11 @@
                     "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.8",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "da72cda00f7dea5b67ac56fa64aa0206",
+                        "html": "602a5943041c250cf51c48eb1f6c17f6",
                         "css": "",
-                        "combined": "da72cda00f7dea5b67ac56fa64aa0206"
+                        "combined": "602a5943041c250cf51c48eb1f6c17f6"
                     }
                 },
                 {
@@ -515,11 +531,11 @@
                     "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "0e4ee6d23a2c4c5ec3c41b070cd928b6",
+                        "html": "73b301aa0fd2a1c6a84ac3a0119a8b1e",
                         "css": "",
-                        "combined": "0e4ee6d23a2c4c5ec3c41b070cd928b6"
+                        "combined": "73b301aa0fd2a1c6a84ac3a0119a8b1e"
                     }
                 },
                 {
@@ -529,11 +545,11 @@
                     "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.5",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "3690fcfcbbbc41a6261392f9b167dad3",
+                        "html": "fd57e0ec56b7129731ebba05cabd1f25",
                         "css": "",
-                        "combined": "3690fcfcbbbc41a6261392f9b167dad3"
+                        "combined": "fd57e0ec56b7129731ebba05cabd1f25"
                     }
                 },
                 {

@@ -331,6 +331,109 @@ Evidência automatizada reportada pelo executor em 2026-06-25 (ambiente: PHP 8.4
 - Em um projeto real com tabela de ID customizada (ex.: `publisher_pages` com `"id": "page_id"`), rodar pull/deploy e confirmar geração dos arquivos físicos pela coluna lógica e round-trip sem perda de atributos.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 
+---
+## BATCH-066 - Registro Dinâmico de Widgets do Sistema e Carregamento sob Demanda no Editor HTML (req-066)
+
+- [x] **Banco de Dados**:
+  - [x] Migração Phinx para criação da tabela `widgets` com as colunas especificadas e índice único `['id', 'language']` (`20260708100000_create_widgets_table.php`, inclui `project`).
+- [x] **Configuração e Manifestos**:
+  - [x] Registro da tabela `widgets` em `gestor/resources/tables_config.json` (contrato `natural_key` por `[language, id]`).
+  - [x] Inclusão do recurso `"widgets"` nos arquivos JSON de manifesto para os módulos: `menus`, `galleries` e `publisher-index` (pt-br + en; `publisher-highlights` já existente).
+- [x] **Compilador de Recursos (`atualizacao-dados-recursos.php`)**:
+  - [x] Alteração para coletar e empacotar o recurso `'widgets'` dos módulos gerando o arquivo `WidgetsData.json` (pilha `$widgets`, chave `name`, `versao=1`).
+  - [x] Tratamento de órfãos para o recurso `'widgets'` (índice `$idxWidgets` por `lang|id`; `db/orphans/WidgetsData.json`).
+- [x] **Roteamento Backend (`html-editor.php`)**:
+  - [x] Nova rota AJAX `html-editor-widget-types` para carregar as categorias/tipos de widgets ativos.
+  - [x] Atualização da rota AJAX `html-editor-widgets-list` para aceitar o parâmetro `module` e carregar os registros da tabela correspondente sob demanda, aplicando filtros de `coluna_where` e sanitizando entradas (regex `^[a-zA-Z0-9_]+$`).
+- [x] **Interface Frontend (`html-editor-visual-controls.js`)**:
+  - [x] Remoção da lista estática `WIDGETS_MODULOS`.
+  - [x] Carregamento inicial das categorias via AJAX utilizando `html-editor-widget-types`.
+  - [x] Carregamento sob demanda (lazy loading) dos itens de cada categoria ao expandir o grupo, com cache local no JS (`widgetsCache[module]`) para evitar redundâncias.
+- [x] **Validação Estática**:
+  - [x] Executar `php -l` nos arquivos alterados sem erros.
+
+### Evidência de Validação (BATCH-066)
+
+Evidência automatizada reportada pelo executor em 2026-06-29 (ambiente: PHP 8.4.8, mbstring/pdo_sqlite/pdo_mysql):
+- `php -l` → OK (3/3): `gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php`, `gestor/bibliotecas/html-editor.php`, `gestor/db/migrations/20260708100000_create_widgets_table.php`.
+- `node --check gestor/assets/interface/html-editor-visual-controls.js` → OK.
+- JSON válido (`ConvertFrom-Json`) → 5/5: `tables_config.json`, `menus.json`, `galleries.json`, `publisher-index.json`, `publisher-highlights.json`.
+- Smoke read-only do compilador (inclui o arquivo com `SDD_NO_AUTORUN` e chama `coletarRecursos()` sem gravar): **8 widgets coletados** (4 módulos × pt-br/en), todos com `id`/`name`/`icon`/`tabela` corretos, `versao=1`, `user_modified=0`, `coluna_where=NULL`; **0 órfãos**.
+- `composer test` → **OK (67 tests, 255 assertions, 4 skipped gated por banco)**; a única `PHPUnit Deprecation` é pré-existente e alheia a este slice (sem testes novos — slice de UI + pipeline declarativo).
+- Bump de cache-bust: `biblioteca-html-editor` `1.3.23` → `1.3.24` (asset JS alterado).
+- Arquivos alterados: migração nova; `tables_config.json`; `menus.json`/`galleries.json`/`publisher-index.json`; `atualizacao-dados-recursos.php`; `html-editor.php`; `html-editor-visual-controls.js`.
+
+### Pendências Runtime (com o operador)
+- Rodar a esteira de atualização local (`🗃️ Projects - Update => Core`, que aplica a migração Phinx + gera `WidgetsData.json` + sincroniza) e confirmar a população correta da tabela `widgets` (8 linhas).
+- Validar no Editor HTML Visual que o carregamento das categorias ocorre dinamicamente (rota `html-editor-widget-types`) e os itens são trazidos via AJAX (`html-editor-widgets-list` com `module`) apenas ao expandir cada categoria, com cache ao fechar/reabrir.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-067 - Correção de Exceção de CodeMirror Indefinido e Abas Travadas no Módulo de Formulários (req-067)
+
+- [x] **Interface & Eventos (`html-editor-interface.js`)**:
+  - [x] Envolver o registro do evento `"change"` de `CodeMirrorHtml` em um bloco de verificação de existência (`typeof CodeMirrorHtml !== 'undefined' && CodeMirrorHtml`).
+  - [x] Blindar as referências ao `CodeMirrorHtml`, `CodeMirrorCss` e `CodeMirrorCssCompiled` no ouvinte do evento de backup (`$('#gestor-listener').on(backupCallbackName, ...)`).
+  - [x] **Novo**: Blindar as referências a `CodeMirrorHtml` e `CodeMirrorCss` em `previewHtml()`, `totalDeSessoes()`, `getUpdatedHtmlWithValues()` e `menuDeSessoes()` (early-return quando as instâncias não existem).
+  - [x] **Novo**: Causa-raiz identificada e corrigida — o editor estava aninhado em abas inativas no load (`forms-template`/`forms-preview`), impedindo a instanciação do CodeMirror. Editor movido para seção raiz `Conteúdo do Formulário`/`Form Content` fora das abas (6 HTMLs editar/adicionar/clonar × pt-br/en), espelhando o `publisher-highlights`.
+- [x] **Widget público (`forms.widget.php`)**:
+  - [x] Fallback ao template do banco (`templates`, `target='forms'`, via `fields_schema.template_id`) quando o campo `html` do registro está vazio, eliminando o widget renderizado vazio.
+- [x] **Verificação Estática**:
+  - [x] `node --check gestor/assets/interface/html-editor-interface.js` → OK; `php -l gestor/modulos/forms/forms.widget.php` → OK.
+- [x] **Testes de Integração**:
+  - [x] `composer test` → 67/67 (255 assertions, 4 skipped) limpo.
+
+### Evidência de Validação (BATCH-067)
+
+**Rodada 1** (2026-06-29): guards no listener `change` e no handler de backup (`#gestor-listener`). `node --check` OK, `php -l` OK, `composer test` 67/67.
+
+**Rodada 2 — causa-raiz + widget** (2026-06-29, escopo expandido pelo Engenheiro Chefe):
+- Causa-raiz: no `forms`, o `#html-editor#` estava em `data-tab="forms-editor"` (dentro de `data-tab="forms-template"`), ambos inativos no load — diferente do `publisher-highlights`, que renderiza o editor direto na página. Sem o editor visível/estável, `CodeMirror.fromTextArea` e as abas internas não se firmavam, deixando `CodeMirrorHtml`/`CodeMirrorCss` indefinidos → `previewHtml`/`totalDeSessoes` lançavam `undefined.getDoc()` e travavam a troca de abas Fomantic.
+- Correção estrutural: removida a sub-aba "Editor HTML" do `menuFormsTemplate` e movido o `#html-editor#` para `<h4 class="ui dividing header">Conteúdo do Formulário</h4>` (en: `Form Content`) fora das abas, nos 6 HTMLs (editar/adicionar/clonar × pt-br/en). `forms-view` não renderiza editor (não afetado).
+- Blindagem defensiva: `previewHtml()`, `getUpdatedHtmlWithValues()`, `totalDeSessoes()`, `menuDeSessoes()` com early-return quando o CodeMirror não existe.
+- Widget vazio (`forms.widget.php`): `forms_render()` retornava `''` quando `html` do banco estava vazio (template padrão não persistido por causa do mesmo bug do editor). Adicionado fallback que carrega `html`/`css`/`css_compiled`/`html_extra_head` do template (`fields_schema.template_id`).
+- Cache-bust: `biblioteca-html-editor` `1.3.25` → `1.3.26`.
+- `node --check` (interface.js) OK; `php -l` (forms.widget.php) OK; grep confirmou `Conteúdo do Formulário`/`Form Content` + `#html-editor#` nos 6 HTMLs e nenhum `data-tab="forms-editor"` remanescente; `composer test` 67/67 (255 assertions, 4 skipped).
+- Arquivos: 6 HTMLs do `forms`, `html-editor-interface.js`, `forms.widget.php`, `html-editor.php` (versão).
+
+### Pendências Runtime (com o operador)
+- Abrir a edição de um formulário (`forms/editar/`), mudar de templates no dropdown e navegar pelas abas (incluindo o Editor HTML agora em "Conteúdo do Formulário"), confirmando ausência de erros no console e funcionamento da prévia.
+- Renderizar um widget de formulário numa página publicada e confirmar que ele não vem mais vazio (incluindo forms que usam o template padrão, agora cobertos pelo fallback).
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-068 - Alinhamento Visual do CRUD e Painel de Conteúdo de Formulários com Menus (req-068)
+
+- [x] **Modelos de CRUD (HTMLs)**:
+  - [x] Remoção da aba "Template" (`forms-template`) dos 6 HTMLs de adicionar, editar e clonar (pt-br + en).
+  - [x] Criação do cabeçalho de seção raiz "Conteúdo do Formulário" (en: "Form Content") fora e abaixo das abas principais.
+  - [x] Inclusão do dropdown de seleção de modelo (`#template_id`) e do novo menu de abas `menuConteudoForm` com as sub-abas `forms-preview`, `forms-editor` e `forms-widget`.
+- [x] **Lógica de Interface (`forms.js`)**:
+  - [x] Inicialização de abas da classe `.menuConteudoForm` com persistência em `localStorage` da sub-aba ativa (`tabFormContentActive`).
+  - [x] Redirecionamento da mudança de sub-aba do editor para `window.contentPageTabHandler()` quando em `forms-editor`.
+- [x] **Verificação Estática**:
+  - [x] Executar `node --check` nos JS modificados e `php -l` nos PHP correspondentes.
+- [x] **Testes de Integração**:
+  - [x] Rodar `composer test` e verificar aprovação completa.
+
+### Evidência de Validação (BATCH-068)
+
+Evidência automatizada e visual reportada em 2026-06-29:
+- `node --check gestor\modulos\forms\forms.js` → OK.
+- `php -l gestor\modulos\forms\forms.php` → OK.
+- `php -l gestor\modulos\forms\forms.widget.php` → OK.
+- Reestruturação de abas Fomantic: resolvido o conflito entre o menu de abas principal (`menuForms`) e o menu interno (`menuConteudoForm`) através da adição dos containers `.forms-main-tabs` e `.forms-content-tabs` no HTML, configurados como `context` na inicialização do `.tab()` no `forms.js`.
+- `composer test` → **OK (67 tests, 255 assertions, 4 skipped)**.
+- Cache-bust: `biblioteca-html-editor` `1.3.25` → `1.3.26`.
+- Arquivos alterados: 6 HTMLs do forms, `forms.js`, `html-editor.php` (versão).
+
+### Pendências Runtime (com o operador)
+- Abrir a página de edição de formulário e checar visualmente que a aba "Template" sumiu, a seção de conteúdo e abas secundárias se alinharam com Menus, e os botões e abas funcionam de forma responsiva sem erros.
+- Restrição respeitada: nenhum `git commit`/`git push` executado antes desta revisão.
+
+
+
+
 
 
 

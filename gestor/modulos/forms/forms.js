@@ -16,24 +16,35 @@ $(document).ready(function () {
     var fieldSortable = null;
 
     $('.menuForms .item').tab({
-        context: 'parent',
+        context: '.forms-main-tabs',
         onLoad: function (tabPath) {
             localStorage.setItem(gestor.moduloId + 'formsActiveTab', tabPath);
-            if (tabPath === 'forms-template') schedulePreview(true, true);
         }
     });
 
-    $('.menuFormsTemplate .item').tab({
-        context: '[data-tab="forms-template"]',
+    function contentFormsTabHandler(tabID) {
+        var tab = tabID || localStorage.getItem(gestor.moduloId + 'tabFormContentActive') || 'forms-preview';
+        if ($('.menuConteudoForm .item[data-tab="' + tab + '"]').length === 0) tab = 'forms-preview';
+
+        if (!tabID) $('.menuConteudoForm .item').tab('change tab', tab);
+
+        if (tab === 'forms-preview') schedulePreview(true, true);
+        if (tab === 'forms-editor' && typeof window.contentPageTabHandler === 'function') window.contentPageTabHandler();
+        if (tab === 'forms-widget') updateWidgetCodeTab();
+    }
+
+    $('.menuConteudoForm .item').tab({
+        context: '.forms-content-tabs',
         onLoad: function (tabPath) {
-            if (tabPath === 'forms-preview') schedulePreview(true, true);
-            if (tabPath === 'forms-editor' && typeof window.contentPageTabHandler === 'function') window.contentPageTabHandler();
-            if (tabPath === 'forms-widget') updateWidgetCodeTab();
+            localStorage.setItem(gestor.moduloId + 'tabFormContentActive', tabPath);
+            contentFormsTabHandler(tabPath);
         }
     });
 
     var savedTab = localStorage.getItem(gestor.moduloId + 'formsActiveTab');
-    if (savedTab) $('.menuForms .item').tab('change tab', savedTab);
+    if (savedTab && $('.menuForms .item[data-tab="' + savedTab + '"]').length > 0) $('.menuForms .item').tab('change tab', savedTab);
+
+    contentFormsTabHandler();
 
     $('.ui.checkbox').checkbox();
     $('.ui.dropdown').dropdown();

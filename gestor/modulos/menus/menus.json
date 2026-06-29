@@ -18,6 +18,14 @@
     },
     "resources": {
         "pt-br": {
+            "widgets": [
+                {
+                    "id": "menus",
+                    "name": "Menus",
+                    "icon": "bars",
+                    "tabela": "menus"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "menus",
@@ -193,6 +201,14 @@
             ]
         },
         "en": {
+            "widgets": [
+                {
+                    "id": "menus",
+                    "name": "Menus",
+                    "icon": "bars",
+                    "tabela": "menus"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "menus",

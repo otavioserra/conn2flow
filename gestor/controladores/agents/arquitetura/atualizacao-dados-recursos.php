@@ -451,8 +451,8 @@ function coletarRecursos(array $existentes, array $map): array {
     global $RESOURCES_DIR, $MODULES_DIR, $LOG_FILE, $DB_DATA_DIR;
     $languages = array_keys($map['languages']);
 
-    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = $templates = $forms = [];
-    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'alvos_ia'=>[], 'modos_ia'=>[], 'templates'=>[], 'forms'=>[] ];
+    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = $templates = $forms = $widgets = [];
+    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'alvos_ia'=>[], 'modos_ia'=>[], 'templates'=>[], 'forms'=>[], 'widgets'=>[] ];
 
     // Índices de unicidade
     $idxLayouts = [];              // lang|id
@@ -465,6 +465,7 @@ function coletarRecursos(array $existentes, array $map): array {
     $idxPaginasPath = [];          // lang|caminho
     $idxVariaveis = [];            // lang|mod|id => groups[]
     $idxForms = [];               // lang|mod|id
+    $idxWidgets = [];             // lang|id
 
     // Helper versão + checksum reutilizando existente
     $versaoChecksum = function(string $tipo, string $chave, ?string $html, ?string $css) use (&$existentes) : array {
@@ -664,7 +665,7 @@ function coletarRecursos(array $existentes, array $map): array {
             foreach ($languages as $lang) {
                 if(empty($data['resources'][$lang])) continue;
                 $res = $data['resources'][$lang];
-                foreach (['layouts','components','templates','pages','ai_prompts','ai_prompts_targets','ai_modes'] as $tipo) {
+                foreach (['layouts','components','templates','pages','ai_prompts','ai_prompts_targets','ai_modes','widgets'] as $tipo) {
                     $arr = $res[$tipo] ?? [];
                     foreach ($arr as $item) {
                         $id = $item['id'] ?? null; if(!$id) continue;
@@ -701,6 +702,23 @@ function coletarRecursos(array $existentes, array $map): array {
                             $key = $lang.'|'.$id; if(isset($idxPromptsAlvosIa[$key])) { $orphans['alvos_ia'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
                             $idxPromptsAlvosIa[$key]=true;
                             $alvos_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'status'=>$item['status'] ?? 'A','versao'=>$versao ];
+                        } elseif ($tipo==='widgets') {
+                            // req-066 (BATCH-066): recurso "widgets" — registra a categoria/tipo de widget
+                            // do sistema na tabela global `widgets`. Não há arquivos físicos (html/css/md):
+                            // o registro é puramente estrutural. Unicidade por (language, id); duplicados → órfãos.
+                            $key = $lang.'|'.$id; if(isset($idxWidgets[$key])) { $orphans['widgets'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
+                            $idxWidgets[$key]=true;
+                            $widgets[] = [
+                                'id'            => $id,
+                                'name'          => $item['name'] ?? $id,
+                                'icon'          => $item['icon'] ?? '',
+                                'tabela'        => $item['tabela'] ?? '',
+                                'coluna_where'  => $item['coluna_where'] ?? null,
+                                'language'      => $lang,
+                                'status'        => $item['status'] ?? 'A',
+                                'versao'        => 1,
+                                'user_modified' => 0,
+                            ];
                         } else { // pages
                             $path = $item['path'] ?? ($id.'/');
                             $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxPaginasId[$kId])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
@@ -745,7 +763,7 @@ function coletarRecursos(array $existentes, array $map): array {
     // Não sobrescrever os Data.json gerados pelo pipeline fixo acima.
     $reservadas = [
         'layouts'=>true,'paginas'=>true,'componentes'=>true,'templates'=>true,'variaveis'=>true,
-        'prompts_ia'=>true,'modos_ia'=>true,'alvos_ia'=>true,'forms'=>true,
+        'prompts_ia'=>true,'modos_ia'=>true,'alvos_ia'=>true,'forms'=>true,'widgets'=>true,
     ];
     $existDinamicoCache = [];
     foreach (coletarConfigsTabelas() as [$cfg, $src]) {
@@ -811,6 +829,7 @@ function coletarRecursos(array $existentes, array $map): array {
         'modesData'=>$modos_ia,
         'targetsData'=>$alvos_ia,
         'formsData'=>$forms,
+        'widgetsData'=>$widgets,
         'dynamicTablesData'=>$dynamicTablesData,
         'orphans'=>$orphans,
     ];
@@ -832,6 +851,8 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     jsonWrite($DB_DATA_DIR.'AlvosIaData.json', $recursos['targetsData']);
     jsonWrite($DB_DATA_DIR.'FormsData.json', $recursos['formsData']);
     jsonWrite($DB_DATA_DIR.'ModosIaData.json', $recursos['modesData']);
+    // req-066 (BATCH-066): tabela global `widgets` (categorias/tipos de widget do sistema).
+    jsonWrite($DB_DATA_DIR.'WidgetsData.json', $recursos['widgetsData'] ?? []);
     // Tabelas dinâmicas (sync_resources): gera [PascalCase]Data.json para cada tabela coletada.
     foreach (($recursos['dynamicTablesData'] ?? []) as $tabela => $linhas) {
         if (!is_string($tabela) || !preg_match('/^[a-z0-9_]+$/', $tabela)) {
@@ -844,7 +865,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     }
     $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
     ensureDir($orphDir, $LOG_FILE);
-    foreach (['Layouts','Paginas','Componentes','Templates','Variaveis','PromptsIa','AlvosIa','ModosIa','Forms'] as $T) {
+    foreach (['Layouts','Paginas','Componentes','Templates','Variaveis','PromptsIa','AlvosIa','ModosIa','Forms','Widgets'] as $T) {
         $k = strtolower($T);
         jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
     }
@@ -855,7 +876,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
 
 function validarDuplicidades(array $recursos): array {
     $erros = [];
-    foreach (['layouts','paginas','componentes','templates','variaveis','prompts_ia','alvos_ia','modos_ia','forms'] as $t) {
+    foreach (['layouts','paginas','componentes','templates','variaveis','prompts_ia','alvos_ia','modos_ia','forms','widgets'] as $t) {
         $q = count($recursos['orphans'][$t] ?? []); if($q>0) $erros[] = "$t: $q órfãos";
     }
     return $erros;
@@ -869,7 +890,7 @@ function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void { /* V2:
 
 function reporteFinal(array $recursos, array $erros): void {
     global $LOG_FILE;
-    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['templatesData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['modesData']) + count($recursos['targetsData']) + count($recursos['formsData']);
+    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['templatesData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['modesData']) + count($recursos['targetsData']) + count($recursos['formsData']) + count($recursos['widgetsData'] ?? []);
     $totalOrphans = 0; foreach ($recursos['orphans'] as $lst) { $totalOrphans += count($lst); }
 
     $msg = "♻️  Relatório Final:".PHP_EOL.
@@ -882,6 +903,7 @@ function reporteFinal(array $recursos, array $erros): void {
            "➡️  Prompts IA: ".count($recursos['promptsData']).PHP_EOL.
            "➡️  Alvos IA: ".count($recursos['targetsData']).PHP_EOL.
            "➡️  Formulários: ".count($recursos['formsData']).PHP_EOL.
+           "➡️  Widgets: ".count($recursos['widgetsData'] ?? []).PHP_EOL.
            "Σ TOTAL: $total".PHP_EOL;
 
     if($totalOrphans > 0) $msg .=

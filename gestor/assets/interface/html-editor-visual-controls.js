@@ -44,15 +44,11 @@ $(document).ready(function () {
         { type: 'section', label: 'Seção', icon: 'object group outline' }
     ];
 
-    // Módulos de widget exibidos no painel (chave da rota AJAX -> rótulo + ícone).
-    var WIDGETS_MODULOS = [
-        { key: 'publisher-highlights', label: 'Destaques', icon: 'star' },
-        { key: 'menus', label: 'Menus', icon: 'bars' },
-        { key: 'galleries', label: 'Galerias', icon: 'images' },
-        { key: 'publisher-index', label: 'Índice', icon: 'list' }
-    ];
-
-    var widgetsCache = null; // resultado da rota AJAX (carregado uma vez por sessão)
+    // req-066: as categorias de widget do sistema são carregadas dinamicamente da tabela
+    // `widgets` (rota `html-editor-widget-types`) e os itens de cada categoria sob demanda
+    // (lazy load via `html-editor-widgets-list`), substituindo a antiga lista hardcoded.
+    var categoriasCache = null;  // [{ id, name, icon }] — carregado uma vez por sessão
+    var widgetsCache = {};       // itens por categoria: { <module>: [ { id, nome }, ... ] }
 
     // ===== Comunicação com o iframe
 
@@ -122,13 +118,8 @@ $(document).ready(function () {
         });
         html += '<div class="ui divider"></div>';
         html += '<div class="he-add-title">Widgets do Sistema</div>';
-        WIDGETS_MODULOS.forEach(function (mod) {
-            html += '<div class="he-add-widget-group" data-module="' + mod.key + '">'
-                + '<div class="he-add-widget-head"><i class="dropdown icon"></i>'
-                + '<i class="' + mod.icon + ' icon"></i><span>' + mod.label + '</span></div>'
-                + '<div class="he-add-widget-list"><div class="he-add-empty">Carregando...</div></div>'
-                + '</div>';
-        });
+        // Container das categorias (preenchido dinamicamente via AJAX ao abrir o painel).
+        html += '<div class="he-add-widget-groups"><div class="he-add-empty">Carregando...</div></div>';
         html += '</div>';
 
         $painel = $(html);
@@ -151,7 +142,7 @@ $(document).ready(function () {
         construirPainel();
         posicionarPainel($botao);
         $painel.show();
-        carregarWidgets();
+        carregarCategorias();
     }
 
     function fecharPainel() {
@@ -177,9 +168,17 @@ $(document).ready(function () {
         }
     });
 
-    // Expandir/recolher grupos de widget.
+    // Expandir/recolher grupos de widget, carregando os itens sob demanda ao abrir (req-066 §5).
     $(document.body).on('click', '.he-add-widget-head', function () {
-        $(this).closest('.he-add-widget-group').toggleClass('open');
+        var $group = $(this).closest('.he-add-widget-group');
+        var abrindo = !$group.hasClass('open');
+        $group.toggleClass('open');
+        if (abrindo) {
+            var module = String($group.data('module'));
+            if (!widgetsCache[module]) {
+                carregarItensCategoria(module, $group);
+            }
+        }
     });
 
     // Selecionar elemento HTML do painel -> iniciar inserção no iframe.
@@ -200,33 +199,61 @@ $(document).ready(function () {
         });
     });
 
-    // ===== AJAX da lista de widgets
+    // ===== Carga dinâmica de categorias e itens de widget (req-066 §5)
 
-    function popularWidgets(data) {
-        if (!$painel) return;
-        WIDGETS_MODULOS.forEach(function (mod) {
-            var lista = (data && data[mod.key]) ? data[mod.key] : [];
-            var $list = $painel.find('.he-add-widget-group[data-module="' + mod.key + '"] .he-add-widget-list');
-            $list.empty();
-            if (!lista.length) {
-                $list.append('<div class="he-add-empty">Nenhum registro ativo</div>');
-                return;
-            }
-            lista.forEach(function (w) {
-                var $item = $('<div class="he-add-item he-add-widget-item">'
-                    + '<i class="cube icon"></i><span></span></div>');
-                $item.attr('data-module', mod.key);
-                $item.attr('data-slug', w.id);
-                $item.attr('data-name', w.nome || w.id);
-                $item.find('span').text(w.nome || w.id);
-                $list.append($item);
-            });
+    // Sanitiza o nome do ícone vindo do banco antes de injetá-lo como classe CSS.
+    function sanitizarIcone(icon) {
+        return String(icon || 'cube').replace(/[^a-zA-Z0-9 _-]/g, '') || 'cube';
+    }
+
+    // Renderiza os itens (registros) de uma categoria na sua sublista.
+    function renderizarItens(module, lista, $list) {
+        $list.empty();
+        if (!lista || !lista.length) {
+            $list.append('<div class="he-add-empty">Nenhum registro ativo</div>');
+            return;
+        }
+        lista.forEach(function (w) {
+            var $item = $('<div class="he-add-item he-add-widget-item">'
+                + '<i class="cube icon"></i><span></span></div>');
+            $item.attr('data-module', module);
+            $item.attr('data-slug', w.id);
+            $item.attr('data-name', w.nome || w.id);
+            $item.find('span').text(w.nome || w.id);
+            $list.append($item);
         });
     }
 
-    function carregarWidgets() {
-        if (widgetsCache) {
-            popularWidgets(widgetsCache);
+    // Renderiza os grupos de categoria (colapsados) sob a seção "Widgets do Sistema".
+    function renderizarCategorias(categorias) {
+        if (!$painel) return;
+        var $cont = $painel.find('.he-add-widget-groups');
+        $cont.empty();
+        if (!categorias || !categorias.length) {
+            $cont.append('<div class="he-add-empty">Nenhuma categoria ativa</div>');
+            return;
+        }
+        categorias.forEach(function (cat) {
+            var module = String(cat.id);
+            var $group = $('<div class="he-add-widget-group">'
+                + '<div class="he-add-widget-head"><i class="dropdown icon"></i>'
+                + '<i class="' + sanitizarIcone(cat.icon) + ' icon"></i><span></span></div>'
+                + '<div class="he-add-widget-list"><div class="he-add-empty">Carregando...</div></div>'
+                + '</div>');
+            $group.attr('data-module', module);
+            $group.find('.he-add-widget-head > span').text(cat.name || module);
+            // Reusa itens já carregados nesta sessão (mantém o estado ao fechar/reabrir o painel).
+            if (widgetsCache[module]) {
+                renderizarItens(module, widgetsCache[module], $group.find('.he-add-widget-list'));
+            }
+            $cont.append($group);
+        });
+    }
+
+    // Carrega (uma vez) a lista de categorias ativas e as renderiza.
+    function carregarCategorias() {
+        if (categoriasCache) {
+            renderizarCategorias(categoriasCache);
             return;
         }
         $.ajax({
@@ -236,18 +263,38 @@ $(document).ready(function () {
             data: {
                 opcao: gestor.moduloOpcao,
                 ajax: 'sim',
-                ajaxOpcao: 'html-editor-widgets-list'
+                ajaxOpcao: 'html-editor-widget-types'
             },
             success: function (resp) {
-                if (resp && resp.status === 'Ok' && resp.data) {
-                    widgetsCache = resp.data;
-                    popularWidgets(widgetsCache);
-                } else {
-                    popularWidgets({});
-                }
+                categoriasCache = (resp && resp.status === 'Ok' && Array.isArray(resp.data)) ? resp.data : [];
+                renderizarCategorias(categoriasCache);
             },
             error: function () {
-                popularWidgets({});
+                renderizarCategorias([]);
+            }
+        });
+    }
+
+    // Carrega os itens de uma categoria sob demanda (cacheado por módulo).
+    function carregarItensCategoria(module, $group) {
+        var $list = $group.find('.he-add-widget-list');
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            dataType: 'json',
+            data: {
+                opcao: gestor.moduloOpcao,
+                ajax: 'sim',
+                ajaxOpcao: 'html-editor-widgets-list',
+                params: { module: module }
+            },
+            success: function (resp) {
+                var lista = (resp && resp.status === 'Ok' && Array.isArray(resp.data)) ? resp.data : [];
+                widgetsCache[module] = lista;
+                renderizarItens(module, lista, $list);
+            },
+            error: function () {
+                renderizarItens(module, [], $list);
             }
         });
     }

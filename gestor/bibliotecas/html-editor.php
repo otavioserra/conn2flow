@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.3.23',
+	'versao' => '1.3.26',
 );
 
 // ===== Funções auxiliares
@@ -555,6 +555,7 @@ function html_editor_ajax_interface($params = false){
     switch($_GESTOR['ajax-opcao']){
         case 'html-editor-ia-requests': html_editor_ajax_ia_requests(); break;
         case 'html-editor-templates-load': html_editor_ajax_templates_load(); break;
+        case 'html-editor-widget-types': html_editor_ajax_widget_types(); break;
         case 'html-editor-widgets-list': html_editor_ajax_widgets_list(); break;
         case 'html-editor-widget-render': html_editor_ajax_widget_render(); break;
 	}
@@ -600,54 +601,116 @@ function html_editor_ajax_widget_render(){
 }
 
 /**
+ * AJAX Widget Types.
+ *
+ * Retorna a lista de categorias/tipos de widget ativos (req-066 §4.1) para o carregamento
+ * inicial do painel de inclusão do Editor HTML Visual. Lê a tabela global `widgets`, populada
+ * dinamicamente pela esteira de Sincronização de Recursos, em vez de uma lista hardcoded.
+ *
+ */
+function html_editor_ajax_widget_types(){
+	global $_GESTOR;
+
+	$idioma = $_GESTOR['linguagem-codigo'];
+
+	$tipos = [];
+	$retorno_bd = banco_select([
+		'tabela' => 'widgets',
+		'campos' => ['id', 'name', 'icon'],
+		'extra'  => "WHERE status = 'A' AND language = '" . banco_escape_field($idioma) . "' ORDER BY name ASC",
+	]);
+
+	if($retorno_bd){
+		foreach($retorno_bd as $registro){
+			$tipos[] = [
+				'id'   => $registro['id'],
+				'name' => $registro['name'],
+				'icon' => $registro['icon'],
+			];
+		}
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data'   => $tipos,
+	);
+}
+
+/**
  * AJAX Widgets List.
  *
- * Retorna a lista de widgets ativos (slug + nome) disponíveis para inserção no Editor
- * HTML Visual (req-034 §5). Consulta as tabelas dos módulos de widget do sistema e devolve
- * os registros agrupados por módulo para o popup de inclusão da janela pai.
+ * Retorna os registros de widget (slug + nome) de UMA categoria/tipo, sob demanda (req-066 §4.2).
+ * Resolve a tabela alvo (e a coluna de filtro opcional) na tabela global `widgets` a partir do
+ * parâmetro `module` recebido do request e, então, consulta a tabela alvo dinamicamente.
  *
  */
 function html_editor_ajax_widgets_list(){
 	global $_GESTOR;
 
-	// Idioma corrente do gestor (mesma referência usada em html_editor_ajax_templates_load).
 	$idioma = $_GESTOR['linguagem-codigo'];
-	$where = "WHERE status = 'A' AND language = '" . banco_escape_field($idioma) . "' ORDER BY name ASC";
 
-	// Mapa tabela do banco => chave de saída no JSON (conforme exemplo do req-034 §5).
-	$mapa = [
-		'menus'                => 'menus',
-		'galleries'            => 'galleries',
-		'publisher_highlights' => 'publisher-highlights',
-		'publisher_index'      => 'publisher-index',
-		'forms'                => 'forms',
-	];
+	// Categoria/tipo solicitada pelo frontend (lazy load por grupo).
+	$module = $_REQUEST['params']['module'] ?? $_REQUEST['params']['widget_type'] ?? $_REQUEST['module'] ?? '';
+	$module = trim((string)$module);
 
-	$data = [];
-	foreach($mapa as $tabela => $chave){
-		$registros = [];
+	if($module === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => []);
+		return;
+	}
 
-		$retorno_bd = banco_select([
-			'tabela' => $tabela,
-			'campos' => ['id', 'name'],
-			'extra'  => $where,
-		]);
+	// 1) Localizar a definição do widget na tabela global `widgets`.
+	$definicao = banco_select([
+		'unico'  => true,
+		'tabela' => 'widgets',
+		'campos' => ['tabela', 'coluna_where'],
+		'extra'  => "WHERE id = '" . banco_escape_field($module) . "'"
+			. " AND language = '" . banco_escape_field($idioma) . "'"
+			. " AND status = 'A' LIMIT 1",
+	]);
 
-		if($retorno_bd){
-			foreach($retorno_bd as $registro){
-				$registros[] = [
-					'id'   => $registro['id'],
-					'nome' => $registro['name'],
-				];
-			}
+	if(!$definicao || empty($definicao['tabela'])){
+		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => []);
+		return;
+	}
+
+	$tabela = $definicao['tabela'];
+	$coluna_where = isset($definicao['coluna_where']) ? trim((string)$definicao['coluna_where']) : '';
+
+	// Validação anti-SQL Injection: o nome da tabela e da coluna devem conter apenas
+	// caracteres seguros (alfanuméricos e underscore), pois são interpolados na query.
+	if(!preg_match('/^[a-zA-Z0-9_]+$/', $tabela)){
+		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => []);
+		return;
+	}
+
+	// 2) Montar a cláusula WHERE da tabela alvo.
+	$where = "WHERE status = 'A' AND language = '" . banco_escape_field($idioma) . "'";
+	if($coluna_where !== '' && preg_match('/^[a-zA-Z0-9_]+$/', $coluna_where)){
+		$where .= " AND " . $coluna_where . " = '" . banco_escape_field($module) . "'";
+	}
+
+	// 3) Consultar a tabela alvo. A coluna de rótulo padrão das tabelas de widget é `name`;
+	// quando ausente/vazia, faz fallback para o próprio `id`.
+	$registros = [];
+	$retorno_bd = banco_select([
+		'tabela' => $tabela,
+		'campos' => ['id', 'name'],
+		'extra'  => $where . " ORDER BY name ASC",
+	]);
+
+	if($retorno_bd){
+		foreach($retorno_bd as $registro){
+			$nome = (isset($registro['name']) && $registro['name'] !== '') ? $registro['name'] : $registro['id'];
+			$registros[] = [
+				'id'   => $registro['id'],
+				'nome' => $nome,
+			];
 		}
-
-		$data[$chave] = $registros;
 	}
 
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
-		'data'   => $data,
+		'data'   => $registros,
 	);
 }
 

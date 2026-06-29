@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-06-25T21:30:59+00:00",
+    "generated_at": "2026-06-29T15:45:59+00:00",
     "tables": {
         "alvos_ia": {
             "nome": "alvos_ia",
@@ -267,6 +267,20 @@
             "preserve_on_user_modified": [
                 "valor"
             ],
+            "insert_only": false,
+            "source": "global:tables_config.json"
+        },
+        "widgets": {
+            "nome": "widgets",
+            "id": "id",
+            "id_numerico": "id_widgets",
+            "data_file": "WidgetsData.json",
+            "strategy": "natural_key",
+            "natural_key_columns": [
+                "language",
+                "id"
+            ],
+            "preserve_on_user_modified": [],
             "insert_only": false,
             "source": "global:tables_config.json"
         }

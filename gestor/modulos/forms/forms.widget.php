@@ -120,7 +120,41 @@ function forms_render($params) {
 			." AND language='".$_GESTOR['linguagem-codigo']."'",
 	]);
 
-	if (!$registro || trim($registro['html'] ?? '') === '') return '';
+	if (!$registro) return '';
+
+	$schema = forms_widget_schema($registro['fields_schema'] ?? '{}');
+
+	$html = (string)($registro['html'] ?? '');
+	$css = (string)($registro['css'] ?? '');
+	$css_compiled = (string)($registro['css_compiled'] ?? '');
+	$html_extra_head = (string)($registro['html_extra_head'] ?? '');
+
+	// Fallback de template: formulários que usam o modelo padrão (sem customização salva) gravam
+	// os campos html/css vazios no banco. Nesse caso, carregar o conteúdo do template referenciado
+	// em fields_schema.template_id para que o widget continue renderizando o formulário.
+	if (trim($html) === '') {
+		$template_id = (string)($schema['template_id'] ?? '');
+		if ($template_id !== '') {
+			$template = banco_select([
+				'unico' => true,
+				'tabela' => 'templates',
+				'campos' => ['html', 'css', 'css_compiled', 'html_extra_head'],
+				'extra' =>
+					"WHERE id='".banco_escape_field($template_id)."'"
+					." AND target='forms'"
+					." AND status='A'"
+					." AND language='".$_GESTOR['linguagem-codigo']."'",
+			]);
+			if ($template) {
+				$html = (string)($template['html'] ?? '');
+				if (trim($css) === '') $css = (string)($template['css'] ?? '');
+				if (trim($css_compiled) === '') $css_compiled = (string)($template['css_compiled'] ?? '');
+				if (trim($html_extra_head) === '') $html_extra_head = (string)($template['html_extra_head'] ?? '');
+			}
+		}
+	}
+
+	if (trim($html) === '') return '';
 
 	gestor_pagina_javascript_incluir([
 		'tipo' => 'widget',
@@ -130,15 +164,15 @@ function forms_render($params) {
 
 	if (function_exists('gestor_pagina_recursos_incluir')) {
 		gestor_pagina_recursos_incluir([
-			'css' => $registro['css'] ?? '',
-			'css_compiled' => $registro['css_compiled'] ?? '',
-			'html_extra_head' => $registro['html_extra_head'] ?? '',
+			'css' => $css,
+			'css_compiled' => $css_compiled,
+			'html_extra_head' => $html_extra_head,
 		]);
 	}
 
 	return forms_widget_render_inline([
 		'form_id' => $registro['id'],
-		'html' => $registro['html'],
+		'html' => $html,
 		'fields_schema' => $registro['fields_schema'] ?? '{}',
 	]);
 }

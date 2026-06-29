@@ -18,6 +18,14 @@
     },
     "resources": {
         "pt-br": {
+            "widgets": [
+                {
+                    "id": "publisher-index",
+                    "name": "Índice",
+                    "icon": "list",
+                    "tabela": "publisher_index"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "publisher-index",
@@ -223,6 +231,14 @@
             ]
         },
         "en": {
+            "widgets": [
+                {
+                    "id": "publisher-index",
+                    "name": "Index",
+                    "icon": "list",
+                    "tabela": "publisher_index"
+                }
+            ],
             "ai_prompts_targets": [
                 {
                     "id": "publisher-index",

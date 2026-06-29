@@ -1,0 +1,112 @@
+[
+    {
+        "id": "forms",
+        "name": "Formulários",
+        "icon": "clipboard list",
+        "tabela": "forms",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "forms",
+        "name": "Forms",
+        "icon": "clipboard list",
+        "tabela": "forms",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "galleries",
+        "name": "Galerias",
+        "icon": "images",
+        "tabela": "galleries",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "galleries",
+        "name": "Galleries",
+        "icon": "images",
+        "tabela": "galleries",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "menus",
+        "name": "Menus",
+        "icon": "bars",
+        "tabela": "menus",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "menus",
+        "name": "Menus",
+        "icon": "bars",
+        "tabela": "menus",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "publisher-highlights",
+        "name": "Destaques",
+        "icon": "star",
+        "tabela": "publisher_highlights",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "publisher-highlights",
+        "name": "Highlights",
+        "icon": "star",
+        "tabela": "publisher_highlights",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "publisher-index",
+        "name": "Índice",
+        "icon": "list",
+        "tabela": "publisher_index",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "publisher-index",
+        "name": "Index",
+        "icon": "list",
+        "tabela": "publisher_index",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    }
+]
