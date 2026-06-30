@@ -259,6 +259,7 @@ function galleries_adicionar(){
 		'alvo' => 'galleries',
 		'alvos_modelos' => 'galleries',
 		'target_variables' => galleries_variaveis_template(),
+		'widget_js_include' => ['galleries' => true],
 	)));
 
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#','');
@@ -543,6 +544,7 @@ function galleries_editar(){
 			'alvo' => 'galleries',
 			'alvos_modelos' => 'galleries',
 			'target_variables' => galleries_variaveis_template(),
+			'widget_js_include' => ['galleries' => true],
 		)));
 
 		// Conteúdos atuais para o editor
@@ -774,6 +776,7 @@ function galleries_clonar(){
 			'alvo' => 'galleries',
 			'alvos_modelos' => 'galleries',
 			'target_variables' => galleries_variaveis_template(),
+			'widget_js_include' => ['galleries' => true],
 		)));
 
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#',$html);

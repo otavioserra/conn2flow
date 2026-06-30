@@ -1,29 +1,137 @@
 $(document).ready(function () {
 
 	function start() {
-		if ($('._forms-submissions-controller').length > 0) {
-			const formObj = $('._forms-submissions-controller');
-			const formDefinition = ('form' in gestor && gestor.form) ? gestor.form : null;
+		// Marcador clássico (._forms-submissions-controller) + marcador padrão de widgets (.conn2flow-form).
+		var formObj = $('form._forms-submissions-controller, form.conn2flow-form');
+		if (formObj.length > 0) {
+			var formStore = ('form' in gestor && gestor.form) ? gestor.form : null;
 
-			formObj.each(function () {
-				var form = $(this);
-				if (formDefinition) {
-					// Verifica se há um blockWrapper (ex.: mensagem de bloqueio do backend)
-					if ('blockWrapper' in formDefinition && formDefinition.blockWrapper) {
-						// Substitui o conteúdo do formulário pelo wrapper de bloqueio
-						form.html(formDefinition.blockWrapper);
-					} else {
-						// Caso não haja bloqueio, inicializa o controlador normalmente
-						initFormController(form, formDefinition);
+			function ensureFormInstanceId(form, formKey, index) {
+				var instanceId = form.attr('data-form-instance-id');
+				if (instanceId) return instanceId;
+
+				var base = (formKey && String(formKey).trim() !== '') ? String(formKey).trim() : 'form';
+				instanceId = base + '--instance-' + (index + 1);
+				form.attr('data-form-instance-id', instanceId);
+				return instanceId;
+			}
+
+			function resolveFormConfig(form, formStore) {
+				function pickScalar(value, fallback) {
+					if (Array.isArray(value)) {
+						for (var i = 0; i < value.length; i++) {
+							var picked = pickScalar(value[i], '');
+							if (picked !== '') return picked;
+						}
+						return (typeof fallback === 'string') ? fallback : '';
 					}
+
+					if (value === null || typeof value === 'undefined') return (typeof fallback === 'string') ? fallback : '';
+					if (typeof value === 'string') return value.trim();
+					if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+					return (typeof fallback === 'string') ? fallback : '';
+				}
+
+				function toBool(value, fallback) {
+					if (Array.isArray(value)) value = pickScalar(value, '');
+					if (typeof value === 'boolean') return value;
+					if (typeof value === 'number') return value !== 0;
+					if (typeof value === 'string') {
+						var v = value.trim().toLowerCase();
+						if (v === 'true' || v === '1' || v === 'yes' || v === 'on') return true;
+						if (v === 'false' || v === '0' || v === 'no' || v === 'off' || v === '') return false;
+					}
+					return !!fallback;
+				}
+
+				function normalizeFormConfig(data, fallbackFormKey) {
+					if (!data || typeof data !== 'object') return data;
+					var normalized = $.extend(true, {}, data);
+
+					normalized.formId = pickScalar(normalized.formId, fallbackFormKey || '');
+					normalized.formAction = pickScalar(normalized.formAction, '');
+					normalized.ajaxOpcao = pickScalar(normalized.ajaxOpcao, 'forms-process');
+					normalized.formStatus = pickScalar(normalized.formStatus, 'A');
+					normalized.framework = pickScalar(normalized.framework, 'tailwindcss');
+					normalized.serverTimestamp = parseFloat(pickScalar(normalized.serverTimestamp, '0')) || 0;
+					normalized.blockWrapper = pickScalar(normalized.blockWrapper, '');
+					normalized.googleRecaptchaActive = toBool(normalized.googleRecaptchaActive, false);
+					normalized.googleRecaptchaSite = pickScalar(normalized.googleRecaptchaSite, '');
+					normalized.googleRecaptchaAction = pickScalar(normalized.googleRecaptchaAction, 'submit');
+					normalized.googleRecaptchaV2Active = toBool(normalized.googleRecaptchaV2Active, false);
+					normalized.googleRecaptchaV2Site = pickScalar(normalized.googleRecaptchaV2Site, '');
+
+					if (normalized.ui && typeof normalized.ui === 'object') {
+						if (normalized.ui.texts && typeof normalized.ui.texts === 'object') {
+							Object.keys(normalized.ui.texts).forEach(function (k) {
+								normalized.ui.texts[k] = pickScalar(normalized.ui.texts[k], '');
+							});
+						}
+						if (normalized.ui.components && typeof normalized.ui.components === 'object') {
+							Object.keys(normalized.ui.components).forEach(function (k) {
+								normalized.ui.components[k] = pickScalar(normalized.ui.components[k], '');
+							});
+						}
+					}
+
+					return normalized;
+				}
+
+				var formKey = form.attr('data-form-id') || form.attr('id') || form.attr('name') || '';
+
+				if (formKey && Object.prototype.hasOwnProperty.call(formStore, formKey) && typeof formStore[formKey] === 'object') {
+					return { key: formKey, data: normalizeFormConfig(formStore[formKey], formKey) };
+				}
+
+				// Retrocompatibilidade: somente quando gestor.form já é uma config de formulário único.
+				var looksLikeSingleFormConfig = !!(formStore && typeof formStore === 'object' && Array.isArray(formStore.fields) && formStore.ui);
+				if (looksLikeSingleFormConfig) {
+					return { key: formKey || formStore.formId || '', data: normalizeFormConfig(formStore, formKey || formStore.formId || '') };
+				}
+
+				return { key: formKey, data: null };
+			}
+
+			formObj.each(function (index) {
+				var form = $(this);
+				if (!formStore) return;
+
+				// Resolve por data-form-id (mesmo formulário lógico) e separa por instância.
+				var resolved = resolveFormConfig(form, formStore);
+				var formKey = resolved.key;
+				var data = resolved.data;
+
+				if (!data || typeof data !== 'object') return;
+
+				ensureFormInstanceId(form, formKey, index);
+
+				// Verifica se há um blockWrapper (ex.: mensagem de bloqueio do backend)
+				var blockWrapperHtml = (typeof data.blockWrapper === 'string') ? data.blockWrapper.trim() : '';
+				if (blockWrapperHtml !== '') {
+					// Substitui o conteúdo do formulário pelo wrapper de bloqueio
+					form.html(blockWrapperHtml);
+				} else {
+					// Caso não haja bloqueio, inicializa o controlador normalmente
+					initFormController(form, data);
 				}
 			});
 
 			function initFormController(form, data) {
+				if (form.data('c2fFormControllerReady')) return;
+				form.data('c2fFormControllerReady', true);
+
 				// Verificar se o formulário está ativo
-				if (data.formStatus !== 'A') {
+				var normalizedFormStatus = (typeof data.formStatus === 'string')
+					? data.formStatus.trim().toUpperCase()
+					: '';
+				if (normalizedFormStatus !== '' && normalizedFormStatus !== 'A') {
 					form.find('input, textarea, select, button').prop('disabled', true);
-					form.html(data.ui.components.formDisabled);
+					var formDisabledHtml = (data && data.ui && data.ui.components && typeof data.ui.components.formDisabled === 'string')
+						? data.ui.components.formDisabled.trim()
+						: '';
+					if (formDisabledHtml !== '') {
+						form.html(formDisabledHtml);
+					}
 					return;
 				}
 
@@ -34,14 +142,10 @@ $(document).ready(function () {
 						var maxLength = field.max_length ? parseInt(field.max_length, 10) : (['text', 'email'].indexOf(field.type) !== -1 ? 254 : (field.type === 'textarea' ? 10000 : null));
 						if (maxLength) {
 							input.attr('maxlength', maxLength);
-							// try to find existing counter inside .field, fallback to siblings/parent
-							var counter = input.closest('.field').find('.char-counter');
+							var counter = getCharCounter(input);
 							if (!counter.length) {
 								input.after('<div class="field-counter"><small class="char-counter">0 / ' + maxLength + '</small></div>');
-								counter = input.closest('.field').find('.char-counter');
-								if (!counter.length) counter = input.siblings('.field-counter').find('.char-counter');
-								if (!counter.length) counter = input.nextAll('.field-counter').find('.char-counter');
-								if (!counter.length) counter = input.parent().find('.char-counter');
+								counter = getCharCounter(input);
 							}
 							// initial update and live update
 							updateCharCounter(input, maxLength);
@@ -108,17 +212,29 @@ $(document).ready(function () {
 				return allValid;
 			}
 
+			function getUiText(data, key, fallback) {
+				if (data && data.ui && data.ui.texts && typeof data.ui.texts[key] === 'string') return data.ui.texts[key];
+				return (typeof fallback === 'string') ? fallback : '';
+			}
+
+			function getUiComponent(data, key, fallback) {
+				if (data && data.ui && data.ui.components && typeof data.ui.components[key] === 'string') return data.ui.components[key];
+				return (typeof fallback === 'string') ? fallback : '';
+			}
+
 			function validateField(input, field, prompts, framework, data) {
 				var value = input.val().trim();
 				var isValid = true;
 				var errorMsg = '';
+				var emptyPromptTpl = (prompts && typeof prompts.empty === 'string') ? prompts.empty : 'Campo #label# e obrigatorio.';
+				var emailPromptTpl = (prompts && typeof prompts.email === 'string') ? prompts.email : 'Campo #label# precisa de um e-mail valido.';
 
 				if (field.required && !value) {
 					isValid = false;
-					errorMsg = prompts.empty.replace('#label#', field.label);
+					errorMsg = emptyPromptTpl.replace('#label#', field.label);
 				} else if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
 					isValid = false;
-					errorMsg = prompts.email.replace('#label#', field.label);
+					errorMsg = emailPromptTpl.replace('#label#', field.label);
 				}
 				// Adicione mais regras (ex.: minLength, regex) baseadas em field.rules
 
@@ -132,7 +248,8 @@ $(document).ready(function () {
 
 				if (!isValid) {
 					var errorElementKey = (framework === 'fomantic-ui') ? 'errorElementFomantic' : 'errorElementTailwind';
-					var errorElement = data.ui.components[errorElementKey].replace('#message#', errorMsg);
+					var errorElementTpl = getUiComponent(data, errorElementKey, '<small class="error-msg" style="color:#dc2626;display:block;margin-top:6px;">#message#</small>');
+					var errorElement = errorElementTpl.replace('#message#', errorMsg);
 					var errorElementObj = $(errorElement);
 					errorElementObj.addClass('error-msg');
 					// Ajuste classes conforme framework
@@ -154,14 +271,31 @@ $(document).ready(function () {
 				}
 			}
 
+			function getCharCounter(input) {
+				var $input = (input instanceof jQuery) ? input : $(input);
+				var $container = $input.closest('.field, .conn2flow-form-field');
+				if ($container.length) {
+					var fromContainer = $container.find('.char-counter').first();
+					if (fromContainer.length) return fromContainer;
+				}
+
+				var fromSibling = $input.siblings('.field-counter').find('.char-counter').first();
+				if (fromSibling.length) return fromSibling;
+
+				var fromNext = $input.nextAll('.field-counter').find('.char-counter').first();
+				if (fromNext.length) return fromNext;
+
+				var fromParent = $input.parent().find('.char-counter').first();
+				if (fromParent.length) return fromParent;
+
+				return $();
+			}
+
 			function updateCharCounter(input, maxLength) {
 				var $input = (input instanceof jQuery) ? input : $(input);
 				var val = $input.val() || '';
 				var length = val.length;
-				var counter = $input.closest('.field').find('.char-counter');
-				if (!counter.length) counter = $input.siblings('.field-counter').find('.char-counter');
-				if (!counter.length) counter = $input.nextAll('.field-counter').find('.char-counter');
-				if (!counter.length) counter = $input.parent().find('.char-counter');
+				var counter = getCharCounter($input);
 				if (counter.length) {
 					counter.text(length + ' / ' + maxLength);
 					if (length > maxLength) {
@@ -232,14 +366,15 @@ $(document).ready(function () {
 					form.append('<input type="hidden" name="fingerprint" value="' + fingerprint + '">');
 				}
 
-				const currentTimestamp = data.serverTimestamp + (Date.now() / 1000 - data.serverTimestamp);
+				var serverTimestamp = (typeof data.serverTimestamp === 'number' && !isNaN(data.serverTimestamp)) ? data.serverTimestamp : 0;
+				const currentTimestamp = serverTimestamp > 0 ? (serverTimestamp + (Date.now() / 1000 - serverTimestamp)) : (Date.now() / 1000);
 				form.append('<input type="hidden" name="timestamp" value="' + currentTimestamp + '">');
 				form.append('<input type="text" name="honeypot" style="display:none;" value="">');
 
-				// Sempre tentar v3 primeiro (se ativo)
-				if ('googleRecaptchaActive' in data && data.googleRecaptchaActive) {
+				// Sempre tentar v3 primeiro (se ativo e com site key valida)
+				if (isRecaptchaV3Configured(data)) {
 					var action = ('googleRecaptchaAction' in data && data.googleRecaptchaAction) ? data.googleRecaptchaAction : 'submit';
-					var googleSiteKey = data.googleRecaptchaSite;
+					var googleSiteKey = getRecaptchaSiteKey(data);
 
 					// Carregar script do reCAPTCHA v3 dinamicamente se necessário
 					if (typeof grecaptcha === 'undefined') {
@@ -264,6 +399,22 @@ $(document).ready(function () {
 				}
 			}
 
+			function getRecaptchaSiteKey(data) {
+				if (!data) return '';
+				var key = (typeof data.googleRecaptchaSite === 'string') ? data.googleRecaptchaSite.trim() : '';
+				return key;
+			}
+
+			function isRecaptchaV3Configured(data) {
+				if (!data || !data.googleRecaptchaActive) return false;
+				var key = getRecaptchaSiteKey(data);
+				if (key === '') return false;
+				// Chaves com placeholders ou apenas separadores não são válidas para render.
+				if (/^[,\s]+$/.test(key)) return false;
+				if (key.indexOf('#') !== -1 || key.indexOf('placeholder') !== -1) return false;
+				return true;
+			}
+
 			function executeRecaptchaV3(form, data, googleSiteKey, action, clickedButton = null) {
 				grecaptcha.ready(function () {
 					grecaptcha.execute(googleSiteKey, { action: action }).then(function (token) {
@@ -280,7 +431,10 @@ $(document).ready(function () {
 
 			function addDimmer(form, data) {
 				var dimmerKey = (data.framework === 'fomantic-ui') ? 'dimmerFomantic' : 'dimmerTailwind';
-				var dimmerHtml = data.ui.components[dimmerKey].replace('#loadingText#', data.ui.texts.loading);
+				var dimmerTpl = getUiComponent(data, dimmerKey, '');
+				if (dimmerTpl === '') return;
+				var loadingText = getUiText(data, 'loading', 'Carregando...');
+				var dimmerHtml = dimmerTpl.replace('#loadingText#', loadingText);
 				var dimmer = $(dimmerHtml);
 				form.addClass('relative').append(dimmer);
 				if (data.framework === 'fomantic-ui') {
@@ -300,13 +454,16 @@ $(document).ready(function () {
 
 			function performAjaxSubmit(form, data, clickedButton = null) {
 				const formData = new FormData(form[0]);
+				var formId = (typeof data.formId === 'string' && data.formId.trim() !== '') ? data.formId.trim() : (form.attr('data-form-id') || '');
+				var ajaxOpcao = (typeof data.ajaxOpcao === 'string' && data.ajaxOpcao.trim() !== '') ? data.ajaxOpcao.trim() : 'forms-process';
+				var formAction = (typeof data.formAction === 'string' && data.formAction.trim() !== '') ? data.formAction.trim() : '';
 
 				formData.append('ajax', '1');
-				formData.append('ajaxOpcao', data.ajaxOpcao || 'forms-process');
-				formData.append('_formId', data.formId);
+				formData.append('ajaxOpcao', ajaxOpcao);
+				formData.append('_formId', formId);
 
 				$.ajax({
-					url: data.formAction || form.attr('action') || window.location.href,
+					url: formAction || form.attr('action') || window.location.href,
 					type: 'POST',
 					data: formData,
 					processData: false,
@@ -326,9 +483,9 @@ $(document).ready(function () {
 					error: function (xhr, status, error) {
 						removeDimmer(form, data); // Remover dimmer
 						if (status === 'timeout') {
-							showError(data.ui.texts.timeoutError, data, clickedButton, form);
+							showError(getUiText(data, 'timeoutError', 'Tempo limite excedido.'), data, clickedButton, form);
 						} else {
-							showError(data.ui.texts.generalError, data, clickedButton, form);
+							showError(getUiText(data, 'generalError', 'Erro ao enviar formulario.'), data, clickedButton, form);
 						}
 					}
 				});
@@ -354,9 +511,10 @@ $(document).ready(function () {
 
 			function proceedWithRecaptchaV2(form, data, clickedButton = null) {
 				// Mostrar mensagem para usuário completar v2
-				showError(data.ui.texts.requireV2Message, data, clickedButton, form, true);
+				showError(getUiText(data, 'requireV2Message', 'Confirme o captcha para continuar.'), data, clickedButton, form, true);
 
-				var recaptchaHtml = data.ui.components.recaptchaV2;
+				var recaptchaHtml = getUiComponent(data, 'recaptchaV2', '');
+				if (recaptchaHtml === '') return;
 				var recaptchaDiv = $(recaptchaHtml);
 				if (clickedButton && clickedButton.length) {
 					clickedButton.before(recaptchaDiv);
@@ -364,12 +522,12 @@ $(document).ready(function () {
 					form.append(recaptchaDiv);
 				}
 				grecaptcha.render(recaptchaDiv[0], {
-					'sitekey': data.googleRecaptchaV2Site
+					'sitekey': (typeof data.googleRecaptchaV2Site === 'string') ? data.googleRecaptchaV2Site : ''
 				});
 				// Re-bind submit para tentar novamente após v2
 				form.off('submit').on('submit', function (e) {
 					e.preventDefault();
-					if (validateAllFields(form, data.fields, data.prompts, data.framework)) {
+					if (validateAllFields(form, data.fields, data.prompts, data.framework, data)) {
 						performAjaxSubmit(form, data, clickedButton);
 					}
 				});
@@ -378,7 +536,8 @@ $(document).ready(function () {
 			function showError(message, data, clickedButton = null, form, isRecaptchaV2 = false) {
 				clearError(data, form);
 				var errorMessageKey = (data.framework === 'fomantic-ui') ? 'errorMessageFomantic' : 'errorMessageTailwind';
-				var errorMessage = data.ui.components[errorMessageKey].replace('#message#', message);
+				var errorMessageTpl = getUiComponent(data, errorMessageKey, '<div class="component-error-message-tailwind" style="margin:0 0 1rem 0;color:#b91c1c;">#message#</div>');
+				var errorMessage = errorMessageTpl.replace('#message#', message);
 				var errorDiv = $(errorMessage);
 
 				// Ajustar estilo do formulário para acomodar o reCAPTCHAv2, se necessário
@@ -389,7 +548,7 @@ $(document).ready(function () {
 				if (clickedButton && clickedButton.length) {
 					clickedButton.before(errorDiv);
 				} else {
-					$('._forms-submissions-controller').prepend(errorDiv);
+					form.prepend(errorDiv);
 				}
 			}
 

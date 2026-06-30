@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.3.26',
+	'versao' => '1.3.27',
 );
 
 // ===== Funções auxiliares
@@ -275,9 +275,13 @@ function html_editor_componente($params = false){
 	}
 
 	// ===== Incluir variável JS do alvo para o frontend
+	// req-070 §1.1: 'widget_js_include' parametriza quais scripts controladores de widget (*.widget.js)
+	// o preview do Editor HTML deve incluir, vindo de cada módulo. Quando ausente (null), o frontend
+	// aplica o fallback padrão com os 4 módulos do core.
 	gestor_js_variavel_incluir('html_editor',[
 		'alvo' => $alvo,
 		'alvos_modelos' => isset($alvos_modelos)? $alvos_modelos : $alvo,
+		'widget_js_include' => isset($widget_js_include)? $widget_js_include : null,
 		'projectJavascriptTailwindcss' => isset($projectJavascriptTailwindcss)? $projectJavascriptTailwindcss : '',
 		'projectCssTailwindcss' => isset($projectCssTailwindcss)? $projectCssTailwindcss : '',
 		'projectTailwindcssConfig' => isset($projectHtmlEditorTailwindcssConfig)? $projectHtmlEditorTailwindcssConfig : [],

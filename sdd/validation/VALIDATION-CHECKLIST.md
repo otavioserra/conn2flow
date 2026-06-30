@@ -431,6 +431,100 @@ Evidência automatizada e visual reportada em 2026-06-29:
 - Abrir a página de edição de formulário e checar visualmente que a aba "Template" sumiu, a seção de conteúdo e abas secundárias se alinharam com Menus, e os botões e abas funcionam de forma responsiva sem erros.
 - Restrição respeitada: nenhum `git commit`/`git push` executado antes desta revisão.
 
+---
+## BATCH-069 - Integração do Módulo de Formulários com o Controlador de Submissão de Biblioteca de Formulários (req-069)
+
+- [x] **Biblioteca de Formulários (`formulario.php`)**:
+  - [x] Adaptar `formulario_controlador()` para processar múltiplos IDs de formulário (aceitando array ou string): normaliza `$formId` em `$formIds` e processa DB/reCAPTCHA/acesso/params em `foreach ($formIds as $fid)` com reset por iteração.
+  - [x] Gerar as variáveis JavaScript estruturadas por ID (`$forms_js_vars[$fid]` → `gestor.form[fid]`); para ID único (string) também injeta o formato plano via segundo `gestor_js_variavel_incluir('form', ...)` (retrocompat legada). Bump de versão `biblioteca-formulario` `1.1.0` → `1.2.0` (cache-bust do `formulario.js`).
+- [x] **Script Controlador Frontend (`formulario.js`)**:
+  - [x] Expandir o seletor inicializador para capturar tanto `.conn2flow-form` quanto `._forms-submissions-controller` (`$('._forms-submissions-controller, .conn2flow-form')`).
+  - [x] Ler a configuração individualizada de cada formulário de `gestor.form[formId]` resolvendo o ID por `form.attr('id') || form.attr('data-form-id')` (com fallback ao objeto plano `gestor.form`). `showError` passou a isolar o erro na instância (`form.prepend`) em vez do seletor global.
+- [x] **Integração do Widget (`forms.widget.php`)**:
+  - [x] Chamar `gestor_incluir_biblioteca('formulario')` + `formulario_controlador(['formId' => $registro['id']])` em `forms_render()`, removendo a inclusão de `forms.widget.js` (`gestor_pagina_javascript_incluir(['tipo'=>'widget','modulo_id'=>'forms',...])`).
+- [x] **Saneamento de Arquivos**:
+  - [x] Deletar o arquivo redundante `forms.widget.js`.
+- [x] **Verificação Estática**:
+  - [x] Executar `node --check` no `formulario.js` e `php -l` em `formulario.php` / `forms.widget.php`.
+- [x] **Testes de Integração**:
+  - [x] Rodar `composer test` e confirmar aprovação total.
+
+### Evidência de Validação (BATCH-069)
+
+Evidência automatizada reportada pelo executor em 2026-06-29 (ambiente: PHP 8.4.8, PHPUnit 11.5.55):
+- `php -l gestor/bibliotecas/formulario.php` → `No syntax errors detected`.
+- `php -l gestor/modulos/forms/forms.widget.php` → `No syntax errors detected`.
+- `node --check gestor/assets/interface/formulario.js` → OK.
+- `composer test` → **OK (67 tests, 255 assertions, 4 skipped gated por banco)**; a única `PHPUnit Deprecation` é pré-existente e alheia a este slice (sem regressão vs. baseline BATCH-068; nenhum teste novo — slice de fluxo de widget/JS público sem hooks de banco testáveis isoladamente).
+- Grep de sanidade: `_forms-submissions-controller` no `formulario.js` restou apenas no seletor inicial duplo; `forms.widget.js` removido e sem referências remanescentes (apenas o `require_once` de `forms.widget.php`, que é o renderer).
+- Decisão registrada: [DEC-072](../decisions/DECISION-LOG.md#dec-072---2026-06-29---accepted).
+- Divergência de intake registrada: a prosa do req-069 §2 indicava `form.attr('id')`, porém **todos** os templates (clássico `contact.html` e os 5 de widget) usam `data-form-id` e nenhum define `id` no `<form>` — o JS lê `id` com fallback `data-form-id` para casar com as chaves de `gestor.form`.
+
+### Pendências Runtime (com o operador)
+- Adicionar mais de um widget de formulário na mesma página pública (ex.: contato no corpo + newsletter no rodapé) e verificar se as validações client-side e os envios via AJAX funcionam de forma independente para cada um, sem colisões em `gestor.form`/`localStorage` nem exceções no console.
+- Confirmar que o honeypot, o timestamp anti-replay e o reCAPTCHA (v2/v3) continuam presentes no fluxo do widget agora regido pela biblioteca.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+
+## BATCH-070 - Parametrização de Scripts de Widget no Editor HTML e Dinamização do Mapeamento do Módulo Subscriptions
+
+- [x] **Parametrização de Scripts de Widget no Editor HTML**:
+  - [x] Função `html_editor_componente` no `html-editor.php` aceita parâmetro `'widget_js_include'` (injetado em `gestor.html_editor.widget_js_include`).
+  - [x] Constante `WIDGET_SCRIPT_MODULES` no `html-editor-interface.js` recupera valor de `gestor.html_editor.widget_js_include` (fallback aos 4 módulos do core).
+  - [x] `montarWidgetAssetsHead` injeta os scripts declarados em `widget_js_include` mesmo sem assinatura `[[widgets#...]]` presente (preview do editor de forms = `.conn2flow-form` direto); editores de página/layout/componente (chave `null`) mantêm injeção por assinatura.
+  - [x] Chamadas para `html_editor_componente` em `forms.php`, `menus.php`, `galleries.php` e `publisher-index.php` atualizadas para passar o respectivo parâmetro.
+- [x] **Recriação do Script de Widget de Formulário**:
+  - [x] Rota AJAX `'forms-render-editor-html'` registrada no switch do backend em `forms.php` apontando para `forms_ajax_render_editor_html()`.
+  - [x] Função `forms_render_editor_html` implementada em `forms.widget.php` (reusa o builder `formulario_montar_js_vars`, extraído de `formulario_controlador` em `formulario.php`).
+  - [x] Arquivo `forms.widget.js` recriado: chamada AJAX dedicada no preview, popula `window.gestor.form[formId]` e carrega assíncronamente `interface.js` e `formulario.js`.
+- [x] **Dinamização do Mapeamento no Módulo Subscriptions (Lumix)**:
+  - [x] Migração Phinx `20260710120000_add_signup_fields_to_subscriptions_plans.php` (colunas `is_signup`, `signup_field_email`, `signup_field_password`, `signup_field_password_confirm`, `signup_id_usuarios_perfis`).
+  - [x] Variáveis de tradução adicionadas ao `subscriptions-plans.json` em `pt-br` e `en` (6 chaves) + bump de `versao` do módulo (1.0.0→1.1.0).
+  - [x] CRUD adicionar/editar persiste/carrega os 5 campos e resolve `#signup_profile_name#` para o autocomplete.
+  - [x] Autocomplete AJAX habilitado para o alvo `perfis` (endpoint `buscar-perfis`).
+  - [x] Novo endpoint AJAX `buscar-form-campos` extrai campos ativos do `fields_schema` do formulário selecionado.
+  - [x] `subscriptions-plans.js` e os 4 templates HTML (pt-br/en) com checkbox `is_signup`, container `.sig-signup-fields-container`, autocomplete de perfil e 3 selects de mapeamento (com toggle e pré-seleção).
+  - [x] Checkout dinâmico (`subscriptions.php`, `form_id` por slug+idioma) e signup dinâmico (`subscriptions.ajax.public.php`: `is_signup`/campos do plano; `subscriptions_criar_usuario` com `signup_id_usuarios_perfis`).
+
+### Evidência de Validação (BATCH-070)
+
+Evidência automatizada reportada pelo executor em 2026-06-30 (ambiente: PHP 8.4.8):
+- **conn2flow** — `php -l` OK: `html-editor.php`, `formulario.php`, `forms.php`, `forms.widget.php`, `menus.php`, `galleries.php`, `publisher-index.php`. `node --check` OK: `html-editor-interface.js`, `forms.widget.js`, `formulario.js`. `composer test` → **OK (67 tests, 255 assertions, 4 skipped)**; a única `PHPUnit Deprecation` é pré-existente. O refator de `formulario_controlador` (extração do builder `formulario_montar_js_vars`) preservou o comportamento (suíte inalterada). Cache-bust `biblioteca-html-editor` 1.3.26→1.3.27.
+- **lumix** — `php -l` OK: `subscriptions.php`, `subscriptions.ajax.public.php`, `subscriptions-plans.php`, migração `20260710120000`. `node --check` OK: `subscriptions-plans.js`. JSON válido: `subscriptions-plans.json`. Sem suíte de testes no projeto (`composer test`/`phpunit.xml` ausentes — conforme antecipado no req §3). Grep de sanidade: sem referências de código a `$formToPlan`/`$planMapping`/`$schemaCheck` (apenas comentários documentais).
+
+### Pendências Runtime (com o operador)
+- Rodar a migração Phinx no `lumix` (`20260710120000`) e o deploy (`Update => Core` do projeto) para recompilar `PaginasData.json`/`VariaveisData.json`/checksums dos 4 templates e do módulo.
+- Validar no Editor HTML de formulários que o preview do formulário inicializa interativamente (config via `forms-render-editor-html`) e responde a submissões no iframe.
+- No CRUD de planos: habilitar "Plano de Cadastro", vincular perfil via autocomplete e mapear os campos de e-mail/senha; salvar e conferir no banco.
+- Ativar `is_signup` + mapeamento nos planos que antes eram de cadastro (a migração nasce com default 0/null).
+- Executar o checkout público de um plano de cadastro no `lumix` e confirmar a criação da conta com o perfil dinamicamente atribuído.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+
+## BATCH-071 - Adição de Novos Tipos de Campos no Módulo de Formulários
+
+- [ ] **Construtor de Formulários (Admin)**:
+  - [ ] Dropdown de tipos em `forms.js` atualizado para conter `password`, `date`, `url` e `hidden`.
+  - [ ] Textarea de opções ativa para o tipo `hidden` para receber o valor padrão do campo.
+  - [ ] Placeholder do campo de opções configurado para exibir instrução de "Valor padrão do campo" quando o tipo selecionado for `hidden`.
+- [ ] **Renderizador de Widgets (Público)**:
+  - [ ] `forms.widget.php` atualizado para suportar novos tipos (`password`, `date`, `url`, `hidden`) no bloco de inputs simples.
+  - [ ] Placeholder `[[item#value]]` substituído pelo valor padrão cadastrado quando o tipo for `hidden`.
+- [ ] **Validações Centralizadas**:
+  - [ ] `formulario.php` atualizado com limites de 254 caracteres para `password` e `url`.
+  - [ ] Validação de formato de link/URL adicionada no backend via `FILTER_VALIDATE_URL`.
+  - [ ] `formulario.js` atualizado com limites de caracteres no lado do cliente para os novos tipos.
+
+### Evidência de Validação (BATCH-071)
+
+*Evidência documental - aguardando execução pelo engenheiro de implementação*
+
+### Pendências Runtime
+- Criar formulário no admin contendo campos de cada um dos 4 novos tipos.
+- Confirmar no preview do editor que os inputs renderizam com seus tipos nativos e que o input hidden contém o valor correto.
+- Enviar o formulário no site público testando validações de URL inválida e checando no banco o correto recebimento do campo oculto.
+
+
 
 
 

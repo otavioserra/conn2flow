@@ -1545,7 +1545,12 @@ $(document).ready(function () {
     }
 
     // req-044 §3/§4: mapa de módulos que possuem script controlador de widget público (*.widget.js).
-    const WIDGET_SCRIPT_MODULES = { 'galleries': true, 'publisher-index': true, 'menus': true, 'forms': true };
+    // req-070 §1.2: a lista passa a ser parametrizada por módulo via gestor.html_editor.widget_js_include
+    // (injetada pelo backend em html_editor_componente). Quando ausente, mantém o fallback com os 4
+    // módulos do core para retrocompatibilidade.
+    const WIDGET_SCRIPT_MODULES = (gestor.html_editor && gestor.html_editor.widget_js_include)
+        ? gestor.html_editor.widget_js_include
+        : { 'galleries': true, 'publisher-index': true, 'menus': true, 'forms': true };
 
     // req-044 §3/§4: extrai as assinaturas de widgets (comentários e variáveis inline) presentes no
     // HTML do usuário, desduplicadas e na ordem de aparição. Espelha a detecção que o PHP faz no
@@ -1583,7 +1588,14 @@ $(document).ready(function () {
             return includes;
         } else {
             const assinaturas = extrairAssinaturasWidgets(htmlDoUsuario);
-            if (!assinaturas.length) return '';
+            // req-070 §1: scripts declarados explicitamente pelo módulo (gestor.html_editor.widget_js_include)
+            // são injetados mesmo sem assinatura de widget presente — ex.: o editor de forms, cujo conteúdo
+            // do preview É o próprio formulário (.conn2flow-form), não um wrapper [[widgets#...]]. Quando o
+            // backend não informa a chave (editores de página/layout/componente), mantém-se a injeção
+            // apenas por assinatura (retrocompatibilidade).
+            const explicitInclude = (typeof gestor !== 'undefined' && gestor.html_editor && gestor.html_editor.widget_js_include)
+                ? gestor.html_editor.widget_js_include : null;
+            if (!assinaturas.length && !explicitInclude) return '';
 
             const raiz = (typeof gestor !== 'undefined' && gestor.raiz) ? gestor.raiz : '';
             const versao = (typeof gestor !== 'undefined' && gestor.versao) ? gestor.versao : '';
@@ -1595,14 +1607,24 @@ $(document).ready(function () {
                 'window.gestor.widgetsToAjax = ' + JSON.stringify(listaAjax) + ';\n' +
                 '<\/script>\n';
 
-            // (b) scripts controladores por módulo (mapa fixo; uma única tag por módulo).
+            // (b) scripts controladores por módulo (uma única tag por módulo): por assinatura presente
+            // (filtrados por WIDGET_SCRIPT_MODULES) e, adicionalmente, os declarados em widget_js_include.
             const incluidos = {};
-            assinaturas.forEach((sig) => {
-                const modulo = sig.split('->')[0].trim();
-                if (!WIDGET_SCRIPT_MODULES[modulo] || incluidos[modulo]) return;
+            const injetar = (modulo) => {
+                modulo = (modulo || '').trim();
+                if (!modulo || incluidos[modulo]) return;
                 incluidos[modulo] = true;
                 includes += '<script src="' + raiz + modulo + '/widget.js?v=' + versao + '"><\/script>\n';
+            };
+            assinaturas.forEach((sig) => {
+                const modulo = sig.split('->')[0].trim();
+                if (WIDGET_SCRIPT_MODULES[modulo]) injetar(modulo);
             });
+            if (explicitInclude) {
+                Object.keys(explicitInclude).forEach((modulo) => {
+                    if (explicitInclude[modulo]) injetar(modulo);
+                });
+            }
             return includes;
         }
     }

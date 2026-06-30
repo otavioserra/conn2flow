@@ -211,6 +211,7 @@ function menus_adicionar(){
 		'alvo' => 'menus',
 		'alvos_modelos' => 'menus',
 		'target_variables' => menus_variaveis_template(),
+		'widget_js_include' => ['menus' => true],
 	)));
 
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#','');
@@ -492,6 +493,7 @@ function menus_editar(){
 			'alvo' => 'menus',
 			'alvos_modelos' => 'menus',
 			'target_variables' => menus_variaveis_template(),
+			'widget_js_include' => ['menus' => true],
 		)));
 
 		// Conteúdos atuais para o editor
@@ -720,6 +722,7 @@ function menus_clonar(){
 			'alvo' => 'menus',
 			'alvos_modelos' => 'menus',
 			'target_variables' => menus_variaveis_template(),
+			'widget_js_include' => ['menus' => true],
 		)));
 
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#',$html);

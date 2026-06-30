@@ -135,6 +135,8 @@ function forms_prepare_editor_page($schema, $html = '', $css = '', $css_compiled
 		'target_variables' => forms_item_variables(),
 		'html' => $html,
 		'html_extra_head' => $html_extra_head,
+		// req-070 §1.3: o preview do editor de forms só precisa do script controlador de widget de forms.
+		'widget_js_include' => ['forms' => true],
 	];
 	$params[$modo] = true;
 
@@ -672,6 +674,33 @@ function forms_ajax_widget_preview() {
 	$_GESTOR['ajax-json'] = ['status' => 'Ok', 'html' => $rendered];
 }
 
+// req-070 §2.1: rota AJAX dedicada ao preview do Editor HTML. As variáveis dinâmicas que o
+// backend injeta em gestor.form[id] (fields_schema, reCAPTCHA, redirects, componentes Fomantic/
+// Tailwind) não existem no iframe estático do preview; este endpoint as recupera para um form_id
+// e devolve em `forms_js_vars`, permitindo que o forms.widget.js inicialize o formulário no iframe.
+function forms_ajax_render_editor_html() {
+	global $_GESTOR;
+
+	$form_id = $_REQUEST['params']['form_id'] ?? ($_REQUEST['form_id'] ?? '');
+
+	if (!function_exists('forms_render_editor_html')) {
+		require_once(__DIR__.'/forms.widget.php');
+	}
+
+	$forms_js_vars = forms_render_editor_html(['form_id' => $form_id]);
+
+	if (!$forms_js_vars) {
+		$_GESTOR['ajax-json'] = ['status' => 'Erro', 'message' => 'Formulário não encontrado.'];
+		return;
+	}
+
+	$_GESTOR['ajax-json'] = [
+		'status' => 'Ok',
+		'form_id' => $form_id,
+		'forms_js_vars' => $forms_js_vars,
+	];
+}
+
 // ==== Start
 
 function forms_start() {
@@ -685,6 +714,7 @@ function forms_start() {
 		switch ($_GESTOR['ajax-opcao']) {
 			case 'template-load': forms_ajax_template_load(); break;
 			case 'widget-preview': forms_ajax_widget_preview(); break;
+			case 'forms-render-editor-html': forms_ajax_render_editor_html(); break;
 		}
 
 		interface_ajax_finalizar();

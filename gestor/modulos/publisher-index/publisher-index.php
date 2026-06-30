@@ -190,6 +190,7 @@ function publisher_index_adicionar(){
 		'modulo' => $modulo,
 		'alvo' => 'publisher-index',
 		'alvos_modelos' => 'publisher-index',
+		'widget_js_include' => ['publisher-index' => true],
 	)));
 
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#','');
@@ -506,6 +507,7 @@ function publisher_index_editar(){
 			'alvos_modelos' => 'publisher-index',
 			'publisher' => $publisher_record,
 			'target_variables' => $item_variables,
+			'widget_js_include' => ['publisher-index' => true],
 		)));
 
 		// Conteúdos atuais para o editor
@@ -781,6 +783,7 @@ function publisher_index_clonar(){
 			'alvos_modelos' => 'publisher-index',
 			'publisher' => $publisher_record,
 			'target_variables' => $item_variables,
+			'widget_js_include' => ['publisher-index' => true],
 		)));
 
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#pagina-html#',$html);

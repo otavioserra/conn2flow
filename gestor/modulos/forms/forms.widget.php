@@ -156,10 +156,12 @@ function forms_render($params) {
 
 	if (trim($html) === '') return '';
 
-	gestor_pagina_javascript_incluir([
-		'tipo' => 'widget',
-		'modulo_id' => 'forms',
-		'versao' => forms_get_version(),
+	// Delega o fluxo de eventos e submissão AJAX para o controlador padrão da biblioteca de
+	// formulários (honeypot, reCAPTCHA v2/v3, rate limiting, validações e mensagens do backend),
+	// substituindo o script legado forms.widget.js. A config é injetada em gestor.form[id].
+	gestor_incluir_biblioteca('formulario');
+	formulario_controlador([
+		'formId' => $registro['id'],
 	]);
 
 	if (function_exists('gestor_pagina_recursos_incluir')) {
@@ -175,6 +177,30 @@ function forms_render($params) {
 		'html' => $html,
 		'fields_schema' => $registro['fields_schema'] ?? '{}',
 	]);
+}
+
+/**
+ * req-070 §2.2: obtém a configuração JS dinâmica (gestor.form[id]) de um formulário para o
+ * preview do Editor HTML. Reutiliza o builder da biblioteca de formulários (formulario_montar_js_vars)
+ * para devolver exatamente a mesma estrutura que formulario_controlador injeta no site publicado
+ * (fields, reCAPTCHA v2/v3, redirects, prompts, componentes Fomantic/Tailwind), sem renderizar a página.
+ *
+ * @param array $params ['form_id' => slug] (aceita 'formId'/'id' como aliases).
+ * @return array|null Configuração indexada pelo formulário ou null quando inexistente.
+ */
+function forms_render_editor_html($params) {
+	if (!is_array($params)) return null;
+
+	$form_id = $params['form_id'] ?? ($params['formId'] ?? ($params['id'] ?? null));
+	if (empty($form_id)) return null;
+
+	gestor_incluir_biblioteca('formulario');
+	if (!function_exists('formulario_montar_js_vars')) return null;
+
+	$forms_js_vars = formulario_montar_js_vars([$form_id]);
+	if (!is_array($forms_js_vars) || !isset($forms_js_vars[$form_id])) return null;
+
+	return $forms_js_vars[$form_id];
 }
 
 function forms_widget_render_inline($params) {

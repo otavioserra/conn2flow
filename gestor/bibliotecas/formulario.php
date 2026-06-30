@@ -8,14 +8,14 @@
  *
  * @package Conn2Flow
  * @subpackage Bibliotecas
- * @version 1.1.0
+ * @version 1.2.0
  */
 
 global $_GESTOR;
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-formulario']							=	Array(
-	'versao' => '1.1.0',
+	'versao' => '1.2.0',
 );
 
 // ===== Funções auxiliares
@@ -126,32 +126,21 @@ function formulario_email_processar_imagens($html) {
 // ===== Funções principais
 
 /**
- * Controlador de Formulários.
+ * Monta as variáveis JS (gestor.form[id]) de um ou mais formulários.
  *
- * Função controlador de formulários no backend, processamento de dados, integração com banco de dados, etc.
+ * Extraído de formulario_controlador (req-070) para ser reutilizado pelo preview do
+ * Editor HTML: retorna a mesma estrutura indexada por ID, sem injetar no namespace JS
+ * nem renderizar a página — apenas constrói e devolve o array.
  *
- * @global array $_GESTOR Sistema global com configurações.
- * @global array $_CONFIG Configurações.
- * 
- * @param array|false $params Parâmetros da função.
- * @param string $params['formId'] ID do formulário HTML (obrigatório).
- * @param string $params['formAction'] URL de ação do formulário (opcional).
- * @param string $params['formAjaxOpcao'] Opção AJAX (opcional).
- * 
- * @return void
+ * @param array $formIds Lista de IDs de formulário.
+ * @param string|null $formAjaxOpcao Opção AJAX (opcional).
+ * @return array Configurações indexadas por ID do formulário.
  */
-function formulario_controlador($params = false){
+function formulario_montar_js_vars($formIds, $formAjaxOpcao = null){
 	global $_GESTOR;
 	global $_CONFIG;
 
-	// Extrai parâmetros
-	if($params)foreach($params as $var => $val)$$var = $val;
-
-	if(isset($formId)){
-        // ===== Limpeza automática aleatória (~1% das requisições)
-        if(rand(0, 100) == 0){
-            formulario_acessos_limpeza();
-        }
+	if(!is_array($formIds)) $formIds = [$formIds];
 
 		// ==== Pegar o componente do formulário.
 		$form_ui = gestor_componente([
@@ -216,6 +205,19 @@ function formulario_controlador($params = false){
 			$form_ui_components['blockWrapperTailwind'] = modelo_tag_val($form_ui_cel['block-wrapper'], '<!-- blockWrapperTailwind -->', '<!-- /blockWrapperTailwind -->');
 		}
 
+		// ===== Preparar as configurações de cada formulário indexadas por ID
+		$forms_js_vars = [];
+
+		foreach($formIds as $fid){
+			// Reset por iteração para não vazar configuração de um formulário para outro
+			$formAction = null;
+			$blockWrapper = null;
+			$googleRecaptchaActive = null;
+			$googleRecaptchaSite = null;
+			$googleRecaptchaAction = null;
+			$googleRecaptchaV2Active = null;
+			$googleRecaptchaV2Site = null;
+
 		// ===== Buscar definição do formulário na tabela forms
         $formDefinition = banco_select(Array(
             'unico' => true,
@@ -224,11 +226,11 @@ function formulario_controlador($params = false){
                 'fields_schema',
                 'status',
             ),
-            'extra' => "WHERE id='$formId' AND language='".$_GESTOR['linguagem-codigo']."'"
+            'extra' => "WHERE id='".banco_escape_field($fid)."' AND language='".$_GESTOR['linguagem-codigo']."'"
         ));
 
         // ===== Verificar a permissão do acesso.
-        $acesso = formulario_acesso_verificar(['tipo' => $formId]);
+        $acesso = formulario_acesso_verificar(['tipo' => $fid]);
 
         // ===== Devolver mensagem de bloqueio caso o IP esteja bloqueado, senão incluir o formulário normalmente.
         if(!$acesso['permitido']){
@@ -264,7 +266,7 @@ function formulario_controlador($params = false){
             if($_CONFIG['usuario-recaptcha-active']){
                 $googleRecaptchaActive = true;
                 $googleRecaptchaSite = $_CONFIG['usuario-recaptcha-site'];
-                $googleRecaptchaAction = str_replace('-', '_', $formId) . '_action';
+                $googleRecaptchaAction = str_replace('-', '_', $fid) . '_action';
             }
         }
 
@@ -288,9 +290,9 @@ function formulario_controlador($params = false){
             ];
         }
         
-        // ===== Incluir o JS
-        $js_vars = [
-            'formId' => $formId,
+        // ===== Montar as variáveis do formulário (indexadas pelo seu ID)
+        $forms_js_vars[$fid] = [
+            'formId' => $fid,
             'formAction' => $formAction ?? $_GESTOR['url-raiz'] . 'forms-submissions-process/',
             'formStatus' => $formStatus,
             'ajaxOpcao' => $formAjaxOpcao ?? 'forms-process',
@@ -310,7 +312,64 @@ function formulario_controlador($params = false){
                 'components' => $form_ui_components,
             ],
         ];
-        formulario_incluir_js(['js_vars' => $js_vars]);
+		}
+
+		return $forms_js_vars;
+}
+
+/**
+ * Controlador de Formulários.
+ *
+ * Função controlador de formulários no backend, processamento de dados, integração com banco de dados, etc.
+ *
+ * @global array $_GESTOR Sistema global com configurações.
+ * @global array $_CONFIG Configurações.
+ * 
+ * @param array|false $params Parâmetros da função.
+ * @param string $params['formId'] ID do formulário HTML (obrigatório).
+ * @param string $params['formAction'] URL de ação do formulário (opcional).
+ * @param string $params['formAjaxOpcao'] Opção AJAX (opcional).
+ * 
+ * @return void
+ */
+function formulario_controlador($params = false){
+	global $_GESTOR;
+	global $_CONFIG;
+	static $formularioPlanoInjetado = false;
+
+	// Extrai parâmetros
+	if($params)foreach($params as $var => $val)$$var = $val;
+
+	if(isset($formId)){
+		// ===== Suporte a múltiplos formulários: normaliza para array interno mantendo o tipo
+		// original da chamada (string = retrocompatibilidade do namespace plano de gestor.form).
+		$formIsArray = is_array($formId);
+		$formIds = $formIsArray ? array_values($formId) : [$formId];
+
+        // ===== Limpeza automática aleatória (~1% das requisições)
+        if(rand(0, 100) == 0){
+            formulario_acessos_limpeza();
+        }
+
+		$forms_js_vars = formulario_montar_js_vars($formIds, $formAjaxOpcao ?? null);
+
+		// ===== Injetar as configurações no namespace JavaScript (gestor.form).
+		// Sempre injeta indexado por ID para suportar múltiplos formulários concorrentes na
+		// mesma página sem colisão de configurações/campos. Quando a chamada usa ID único
+		// (string), também injeta as variáveis em formato plano para manter a
+		// retrocompatibilidade do namespace global usado pelo controlador legado.
+		gestor_js_variavel_incluir('form', $forms_js_vars);
+
+		if(!$formIsArray && !$formularioPlanoInjetado){
+			$varsPlano = reset($forms_js_vars);
+			if(is_array($varsPlano)){
+				gestor_js_variavel_incluir('form', $varsPlano);
+				$formularioPlanoInjetado = true;
+			}
+		}
+
+		// ===== Incluir o JS da biblioteca de formulários (uma única vez)
+		gestor_pagina_javascript_incluir('biblioteca','formulario');
     }
 }
 
