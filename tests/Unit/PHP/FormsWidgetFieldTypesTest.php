@@ -124,6 +124,6 @@ final class FormsWidgetFieldTypesTest extends TestCase
         self::assertStringContainsString('type="password"', $html);
         self::assertStringContainsString('forms-password-wrapper', $html);
         self::assertStringContainsString('forms-password-toggle', $html);
-        self::assertStringContainsString('eye link icon', $html);
+        self::assertStringContainsString('forms-password-icon-eye', $html);
     }
 }

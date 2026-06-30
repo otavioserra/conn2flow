@@ -541,20 +541,25 @@ Evidência automatizada reportada pelo executor em 2026-06-30 (ambiente: PHP 8.4
 
 ## BATCH-072 - Remoção do Campo e Metadado "hosting_plan" no Módulo de Planos de Assinatura
 
-- [ ] **Banco de Dados (lumix)**:
-  - [ ] Criar nova migração Phinx no `lumix` para dropar a coluna `hosting_plan` da tabela `subscriptions_plans`.
-- [ ] **CRUD de Planos (lumix)**:
-  - [ ] Removido o campo `hosting_plan` do controlador `subscriptions-plans.php` em todos os fluxos de banco e placeholders.
-  - [ ] Removido o input `hosting_plan` e seu respectivo HTML dos 4 templates de adicionar/editar planos (pt-br/en).
-- [ ] **Hidratação de Configurações (lumix)**:
-  - [ ] `subscriptions.hooks.php` atualizado para remover a coluna do `banco_select` e a atribuição a `$planEntry['hosting_plan']`.
+- [x] **Banco de Dados (lumix)**:
+  - [x] Criada migração Phinx `20260710130000_remove_hosting_plan_from_subscriptions_plans.php` para dropar a coluna `hosting_plan` da tabela `subscriptions_plans` com guard `hasColumn` e `down()` reversível.
+- [x] **CRUD de Planos (lumix)**:
+  - [x] Removido o campo `hosting_plan` do controlador `subscriptions-plans.php` em todos os fluxos de banco e placeholders.
+  - [x] Removido o input `hosting_plan` e seu respectivo HTML dos 4 templates de adicionar/editar planos (pt-br/en).
+- [x] **Hidratação de Configurações (lumix)**:
+  - [x] `subscriptions.hooks.php` atualizado para remover a coluna do `banco_select` e a atribuição a `$planEntry['hosting_plan']`.
 
 ### Evidência de Validação (BATCH-072)
 
-*Evidência documental - aguardando execução pelo engenheiro de implementação*
+- `php -l` OK:
+  - `lumix/gestor/modulos/subscriptions-plans/subscriptions-plans.php`
+  - `lumix/gestor/modulos/subscriptions/subscriptions.hooks.php`
+  - `lumix/gestor/db/migrations/20260710130000_remove_hosting_plan_from_subscriptions_plans.php`
+- Grep de sanidade OK nos arquivos runtime do escopo: `hosting_plan` permanece apenas na nova migração de drop/reversão.
+- `composer db:migrate` tentado em `lumix`, mas o checkout local não possui `composer.json`/`vendor/bin` e o Composer retornou: `There are no commands defined in the "db" namespace.`
 
 ### Pendências Runtime
-- Rodar a migração `composer db:migrate` no `lumix`.
+- Rodar a migração Phinx no ambiente `lumix` configurado (o checkout local usado nesta execução não expõe `composer db:migrate`).
 - Validar no CRUD de planos que o campo não é mais exibido nem gera erros ao criar/editar registros.
 - Rodar a sincronização/deploy para garantir a atualização dos checksums/Data.json do módulo de planos.
 

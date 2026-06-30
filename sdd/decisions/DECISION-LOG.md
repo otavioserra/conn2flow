@@ -186,4 +186,13 @@ Novos Tipos de Campos, Limites via Campo "Opções" e Melhoria Progressiva no M�
 
 6. **Cobertura de teste**: novo `tests/Unit/PHP/FormsWidgetFieldTypesTest.php` (9 testes, 32 assertions) blinda as funções puras do renderer (parse de limites, valor do hidden input-only, injeção de minlength/maxlength/min/max/step, classe `forms-date-picker`, `type="url"`, wrapper/toggle de senha), sem banco. Versões cache-bust: módulo `forms` 1.0.0→1.1.0 e biblioteca `formulario` 1.2.0→1.3.0.
 
+## DEC-075 - 2026-06-30 - accepted
+
+Remoção do Campo e Metadado "hosting_plan" no Módulo de Planos de Assinatura (req-072 / BATCH-072). Decisões desta rodada:
+
+1. **Remoção da coluna por migração reversível**: Criada a nova migração Phinx `20260710130000_remove_hosting_plan_from_subscriptions_plans.php` para remover a coluna `hosting_plan` da tabela `subscriptions_plans` com segurança, incluindo o guard `hasColumn` no `up()` e recriação no `down()`.
+2. **Saneamento do CRUD**: O controlador `subscriptions-plans.php` e os 4 templates HTML de adicionar/editar planos (`pt-br`/`en`) foram limpos para remover a captura, validação, atribuição, placeholders e exibição visual do campo.
+3. **Saneamento do Hooks de Hidratação**: A função `subscriptions_hidratar_config_bd` em `subscriptions.hooks.php` foi atualizada para remover `hosting_plan` da consulta do banco de dados na tabela `subscriptions_plans` e remover a injeção condicional da chave no array `$planEntry`.
+
+
 
