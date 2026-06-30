@@ -139,9 +139,11 @@ $(document).ready(function () {
 					var input = form.find('[name="' + field.name + '"]');
 					if (input.length) {
 						// apply maxlength (schema override or defaults: text/email=254, textarea=10000)
-						var maxLength = field.max_length ? parseInt(field.max_length, 10) : (['text', 'email'].indexOf(field.type) !== -1 ? 254 : (field.type === 'textarea' ? 10000 : null));
+						var defaultMaxLength = field.max_length ? parseInt(field.max_length, 10) : (['text', 'email'].indexOf(field.type) !== -1 ? 254 : (field.type === 'textarea' ? 10000 : null));
+						var existingMaxLength = input.attr('maxlength');
+						var maxLength = existingMaxLength ? parseInt(existingMaxLength, 10) : defaultMaxLength;
 						if (maxLength) {
-							input.attr('maxlength', maxLength);
+							if (!existingMaxLength) input.attr('maxlength', maxLength);
 							var counter = getCharCounter(input);
 							if (!counter.length) {
 								input.after('<div class="field-counter"><small class="char-counter">0 / ' + maxLength + '</small></div>');
@@ -153,6 +155,47 @@ $(document).ready(function () {
 						}
 
 					}
+				});
+
+				// ===== Melhoria progressiva (Progressive Enhancement)
+				// Date picker Fomantic quando a biblioteca estiver disponível; caso contrário, mantém
+				// o comportamento nativo do navegador para <input type="date">.
+				if (typeof $.fn.calendar !== 'undefined') {
+					form.find('.forms-date-picker').each(function () {
+						var $inp = $(this);
+						try {
+							$inp.calendar({
+								type: 'date',
+								formatter: {
+									date: function (date) {
+										if (!date) return '';
+										var y = date.getFullYear();
+										var m = ('0' + (date.getMonth() + 1)).slice(-2);
+										var d = ('0' + date.getDate()).slice(-2);
+										return y + '-' + m + '-' + d;
+									}
+								}
+							});
+						} catch (e) { }
+					});
+				}
+
+				// Dropdowns Fomantic interativos sobre selects marcados com .ui.dropdown; senão <select> nativo.
+				if (typeof $.fn.dropdown !== 'undefined') {
+					try { form.find('select.ui.dropdown').dropdown(); } catch (e) { }
+				}
+
+				// Alternador de visibilidade de senha (Vanilla, delegado, funciona em qualquer framework).
+				form.on('click', '.forms-password-toggle', function (e) {
+					e.preventDefault();
+					var $toggle = $(this);
+					var $wrapper = $(this).closest('.forms-password-wrapper');
+					var $input = $wrapper.find('input').first();
+					if (!$input.length) return;
+					var showing = $input.attr('type') === 'password';
+					$input.attr('type', showing ? 'text' : 'password');
+					$toggle.find('.forms-password-icon-eye').css('display', showing ? 'none' : '');
+					$toggle.find('.forms-password-icon-eye-slash').css('display', showing ? '' : 'none');
 				});
 
 				// Capturar botão clicado
@@ -222,6 +265,31 @@ $(document).ready(function () {
 				return (typeof fallback === 'string') ? fallback : '';
 			}
 
+			// Extrai diretivas de limite (min/max/step) das linhas do campo "Opções" de um campo.
+			function parseFieldLimits(field) {
+				var res = { min: null, max: null, step: null };
+				var opts = field ? field.options : null;
+				if (typeof opts === 'string') opts = opts.split(/\r\n|\r|\n/);
+				if (!Array.isArray(opts)) return res;
+				opts.forEach(function (line) {
+					if (typeof line !== 'string') return;
+					var m = line.match(/^\s*(min|max|step)\s*:\s*(.+?)\s*$/i);
+					if (m) res[m[1].toLowerCase()] = m[2];
+				});
+				return res;
+			}
+
+			function pickPrompt(prompts, key, fallback) {
+				if (prompts && typeof prompts[key] === 'string' && prompts[key].trim() !== '') return prompts[key];
+				return fallback;
+			}
+
+			function fillPrompt(tpl, field, vars) {
+				var out = String(tpl).split('#label#').join(field.label || field.name || '');
+				if (vars) Object.keys(vars).forEach(function (k) { out = out.split('#' + k + '#').join(vars[k]); });
+				return out;
+			}
+
 			function validateField(input, field, prompts, framework, data) {
 				var value = input.val().trim();
 				var isValid = true;
@@ -235,8 +303,42 @@ $(document).ready(function () {
 				} else if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
 					isValid = false;
 					errorMsg = emailPromptTpl.replace('#label#', field.label);
+				} else if (value) {
+					// Validações customizadas via campo "Opções" (limite de caracteres, valor numérico, faixa de data, URL).
+					var limits = parseFieldLimits(field);
+					if (field.type === 'text' || field.type === 'textarea') {
+						var len = value.length;
+						if (limits.min !== null && len < parseInt(limits.min, 10)) {
+							isValid = false;
+							errorMsg = fillPrompt(pickPrompt(prompts, 'minLength', 'O campo #label# deve ter pelo menos #min# caracteres.'), field, { min: parseInt(limits.min, 10) });
+						} else if (limits.max !== null && len > parseInt(limits.max, 10)) {
+							isValid = false;
+							errorMsg = fillPrompt(pickPrompt(prompts, 'maxLength', 'O campo #label# deve ter no máximo #max# caracteres.'), field, { max: parseInt(limits.max, 10) });
+						}
+					} else if (field.type === 'number') {
+						var num = parseFloat(value.replace(',', '.'));
+						if (limits.min !== null && !isNaN(num) && num < parseFloat(limits.min)) {
+							isValid = false;
+							errorMsg = fillPrompt(pickPrompt(prompts, 'minValue', 'O campo #label# deve ter valor maior ou igual a #min#.'), field, { min: limits.min });
+						} else if (limits.max !== null && !isNaN(num) && num > parseFloat(limits.max)) {
+							isValid = false;
+							errorMsg = fillPrompt(pickPrompt(prompts, 'maxValue', 'O campo #label# deve ter valor menor ou igual a #max#.'), field, { max: limits.max });
+						}
+					} else if (field.type === 'date') {
+						if (limits.min !== null && value < limits.min) {
+							isValid = false;
+							errorMsg = fillPrompt(pickPrompt(prompts, 'minDate', 'O campo #label# deve ter data a partir de #min#.'), field, { min: limits.min });
+						} else if (limits.max !== null && value > limits.max) {
+							isValid = false;
+							errorMsg = fillPrompt(pickPrompt(prompts, 'maxDate', 'O campo #label# deve ter data até #max#.'), field, { max: limits.max });
+						}
+					} else if (field.type === 'url') {
+						if (!/^[a-z][a-z0-9+.-]*:\/\/.+/i.test(value)) {
+							isValid = false;
+							errorMsg = fillPrompt(pickPrompt(prompts, 'url', 'O campo #label# precisa de uma URL válida.'), field, null);
+						}
+					}
 				}
-				// Adicione mais regras (ex.: minLength, regex) baseadas em field.rules
 
 				updateFieldUI(input, isValid, errorMsg, framework, data);
 				return isValid;

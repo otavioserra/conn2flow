@@ -392,11 +392,11 @@
     {
         "name": "Formulário UI",
         "id": "form-ui",
-        "version": "1.14",
+        "version": "1.15",
         "checksum": {
-            "html": "c2d9623595a259fc374b272fb368c7e1",
+            "html": "878ca3d03cfb04ec3da182c86a622edd",
             "css": "",
-            "combined": "c2d9623595a259fc374b272fb368c7e1"
+            "combined": "878ca3d03cfb04ec3da182c86a622edd"
         }
     },
     {

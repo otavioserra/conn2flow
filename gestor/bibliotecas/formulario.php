@@ -8,15 +8,35 @@
  *
  * @package Conn2Flow
  * @subpackage Bibliotecas
- * @version 1.2.0
+ * @version 1.3.0
  */
 
 global $_GESTOR;
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-formulario']							=	Array(
-	'versao' => '1.2.0',
+	'versao' => '1.4.0',
 );
+
+/**
+ * Extrai diretivas de limite (min/max/step) das linhas do campo "Opções" de um campo de formulário.
+ * Aceita string multilinha ou array de linhas no formato `min:X`, `max:Y`, `step:Z`.
+ *
+ * @param mixed $options Conteúdo do campo options.
+ * @return array ['min'=>string|null, 'max'=>string|null, 'step'=>string|null]
+ */
+function formulario_parse_limits($options){
+	$res = ['min' => null, 'max' => null, 'step' => null];
+	if(is_string($options)) $options = preg_split('/\r\n|\r|\n/', $options);
+	if(!is_array($options)) return $res;
+	foreach($options as $line){
+		if(!is_string($line)) continue;
+		if(preg_match('/^\s*(min|max|step)\s*:\s*(.+?)\s*$/i', $line, $m)){
+			$res[strtolower($m[1])] = $m[2];
+		}
+	}
+	return $res;
+}
 
 // ===== Funções auxiliares
 
@@ -175,6 +195,13 @@ function formulario_montar_js_vars($formIds, $formAjaxOpcao = null){
 		if(isset($form_ui_cel['prompts'])){
 			$form_ui_prompts['empty'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-empty < -->', '<!-- prompt-empty > -->');
 			$form_ui_prompts['email'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- email < -->', '<!-- email > -->');
+			$form_ui_prompts['minLength'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-min-length < -->', '<!-- prompt-min-length > -->');
+			$form_ui_prompts['maxLength'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-max-length < -->', '<!-- prompt-max-length > -->');
+			$form_ui_prompts['minValue'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-min-value < -->', '<!-- prompt-min-value > -->');
+			$form_ui_prompts['maxValue'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-max-value < -->', '<!-- prompt-max-value > -->');
+			$form_ui_prompts['minDate'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-min-date < -->', '<!-- prompt-min-date > -->');
+			$form_ui_prompts['maxDate'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-max-date < -->', '<!-- prompt-max-date > -->');
+			$form_ui_prompts['url'] = modelo_tag_val($form_ui_cel['prompts'], '<!-- prompt-url < -->', '<!-- prompt-url > -->');
 		}
 
 		// Processar valores individuais dos ui-texts
@@ -411,6 +438,11 @@ function formulario_processador($params = false){
 		$form_ui_ajax_messages['minLength'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-min-length < -->', '<!-- ajax-message-min-length > -->');
 		$form_ui_ajax_messages['maxLength'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-max-length < -->', '<!-- ajax-message-max-length > -->');
 		$form_ui_ajax_messages['invalidEmail'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-invalid-email < -->', '<!-- ajax-message-invalid-email > -->');
+		$form_ui_ajax_messages['invalidUrl'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-invalid-url < -->', '<!-- ajax-message-invalid-url > -->');
+		$form_ui_ajax_messages['minValue'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-min-value < -->', '<!-- ajax-message-min-value > -->');
+		$form_ui_ajax_messages['maxValue'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-max-value < -->', '<!-- ajax-message-max-value > -->');
+		$form_ui_ajax_messages['minDate'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-min-date < -->', '<!-- ajax-message-min-date > -->');
+		$form_ui_ajax_messages['maxDate'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-max-date < -->', '<!-- ajax-message-max-date > -->');
 		$form_ui_ajax_messages['blocked'] = modelo_tag_val($form_ui_ajax_cel, '<!-- ajax-message-blocked < -->', '<!-- ajax-message-blocked > -->');
 	}
 
@@ -484,10 +516,10 @@ function formulario_processador($params = false){
 		if(isset($schema['force_recaptcha']) && $schema['force_recaptcha'] === true){
 			$forceRecaptchaV3 = true;
 		}
-		if(isset($schema['access_max'])){
+		if(isset($schema['access_max']) && !empty($schema['access_max'])){
 			$maxCadastros = (int)$schema['access_max'];
 		}
-		if(isset($schema['access_max_simple'])){
+		if(isset($schema['access_max_simple']) && !empty($schema['access_max_simple'])){
 			$maxCadastrosSimples = (int)$schema['access_max_simple'];
 		}
 	}
@@ -614,22 +646,29 @@ function formulario_processador($params = false){
                     return false;
                 }
                 
-                // Validação adicional para texto/textarea (mínimo 3 caracteres)
-                if(in_array($field['type'], ['text', 'textarea']) && mb_strlen($fieldValue, 'UTF-8') < 3){
-                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
-                    $_GESTOR['ajax-json'] = Array(
-                        'status' => 'error',
-                        'message' => modelo_var_troca($form_ui_ajax_messages['minLength'] ?? 'Campo #fieldLabel# deve ter pelo menos 3 caracteres.', '#fieldLabel#', ($field['label'] ?? $fieldName)),
-                    );
-                    return false;
+                // Validação adicional para texto/textarea (mínimo de caracteres: do campo Opções ou padrão 3)
+                if(in_array($field['type'], ['text', 'textarea'])){
+                    $limitesObrig = formulario_parse_limits($field['options'] ?? []);
+                    $minCaracteres = ($limitesObrig['min'] !== null && $limitesObrig['min'] !== '') ? (int)$limitesObrig['min'] : 3;
+                    if(mb_strlen($fieldValue, 'UTF-8') < $minCaracteres){
+                        formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                        $msg = !empty($form_ui_ajax_messages['minLength']) ? $form_ui_ajax_messages['minLength'] : 'Campo #fieldLabel# deve ter pelo menos #min# caracteres.';
+                        $msg = modelo_var_troca($msg, '#fieldLabel#', ($field['label'] ?? $fieldName));
+                        $msg = modelo_var_troca($msg, '#min#', $minCaracteres);
+                        $_GESTOR['ajax-json'] = Array(
+                            'status' => 'error',
+                            'message' => $msg,
+                        );
+                        return false;
+                    }
                 }
 
-                // ==== Máximo por tipo (padrões: text/email=254, textarea=10000) - pode ser sobrescrito por field.max_length
+                // ==== Máximo por tipo (padrões: text/email/password/url=254, textarea=10000) - pode ser sobrescrito por field.max_length
                 $maxLength = null;
                 if(isset($field['max_length'])){
                     $maxLength = (int)$field['max_length'];
                 } else {
-                    if(in_array($field['type'], ['text','email'])){
+                    if(in_array($field['type'], ['text','email','password','url'])){
                         $maxLength = 254;
                     } elseif($field['type'] === 'textarea'){
                         $maxLength = 10000;
@@ -663,13 +702,97 @@ function formulario_processador($params = false){
             }
         }
 
+        // Validação dinâmica para campos do tipo 'url' (formato de link válido quando preenchido)
+        foreach($schema['fields'] as $field){
+            if($field['type'] === 'url'){
+                $urlValue = trim($_POST[$field['name']] ?? '');
+                if($urlValue !== '' && !filter_var($urlValue, FILTER_VALIDATE_URL)){
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                    $msg = !empty($form_ui_ajax_messages['invalidUrl']) ? $form_ui_ajax_messages['invalidUrl'] : 'URL inválida no campo #fieldLabel#.';
+                    $msg = modelo_var_troca($msg, '#fieldLabel#', ($field['label'] ?? $field['name']));
+                    $_GESTOR['ajax-json'] = Array(
+                        'status' => 'error',
+                        'message' => $msg,
+                    );
+                    return false;
+                }
+            }
+        }
+
+        // Validações customizadas via campo "Opções": limites de caracteres (text/textarea),
+        // de valor numérico (number) e de faixa de data (date). Aplicam-se a campos preenchidos.
+        foreach($schema['fields'] as $field){
+            $fieldName = $field['name'];
+            $tipoCampo = $field['type'] ?? 'text';
+            $valor = trim($_POST[$fieldName] ?? '');
+            if($valor === '') continue;
+
+            $limites = formulario_parse_limits($field['options'] ?? []);
+            $rotulo = $field['label'] ?? $fieldName;
+
+            if(in_array($tipoCampo, ['text','textarea'])){
+                $len = mb_strlen($valor, 'UTF-8');
+                if($limites['min'] !== null && $limites['min'] !== '' && $len < (int)$limites['min']){
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                    $msg = !empty($form_ui_ajax_messages['minLength']) ? $form_ui_ajax_messages['minLength'] : 'Campo #fieldLabel# deve ter pelo menos #min# caracteres.';
+                    $msg = modelo_var_troca($msg, '#fieldLabel#', $rotulo);
+                    $msg = modelo_var_troca($msg, '#min#', (int)$limites['min']);
+                    $_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => $msg);
+                    return false;
+                }
+                if($limites['max'] !== null && $limites['max'] !== '' && $len > (int)$limites['max']){
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                    $msg = !empty($form_ui_ajax_messages['maxLength']) ? $form_ui_ajax_messages['maxLength'] : 'Campo #fieldLabel# deve ter no máximo #max# caracteres.';
+                    $msg = modelo_var_troca($msg, '#fieldLabel#', $rotulo);
+                    $msg = modelo_var_troca($msg, '#max#', (int)$limites['max']);
+                    $_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => $msg);
+                    return false;
+                }
+            } elseif($tipoCampo === 'number'){
+                $num = (float)str_replace(',', '.', $valor);
+                if($limites['min'] !== null && $limites['min'] !== '' && $num < (float)$limites['min']){
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                    $msg = !empty($form_ui_ajax_messages['minValue']) ? $form_ui_ajax_messages['minValue'] : 'O campo #fieldLabel# deve ter valor maior ou igual a #min#.';
+                    $msg = modelo_var_troca($msg, '#fieldLabel#', $rotulo);
+                    $msg = modelo_var_troca($msg, '#min#', $limites['min']);
+                    $_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => $msg);
+                    return false;
+                }
+                if($limites['max'] !== null && $limites['max'] !== '' && $num > (float)$limites['max']){
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                    $msg = !empty($form_ui_ajax_messages['maxValue']) ? $form_ui_ajax_messages['maxValue'] : 'O campo #fieldLabel# deve ter valor menor ou igual a #max#.';
+                    $msg = modelo_var_troca($msg, '#fieldLabel#', $rotulo);
+                    $msg = modelo_var_troca($msg, '#max#', $limites['max']);
+                    $_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => $msg);
+                    return false;
+                }
+            } elseif($tipoCampo === 'date'){
+                if($limites['min'] !== null && $limites['min'] !== '' && $valor < $limites['min']){
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                    $msg = !empty($form_ui_ajax_messages['minDate']) ? $form_ui_ajax_messages['minDate'] : 'O campo #fieldLabel# deve ter data a partir de #min#.';
+                    $msg = modelo_var_troca($msg, '#fieldLabel#', $rotulo);
+                    $msg = modelo_var_troca($msg, '#min#', $limites['min']);
+                    $_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => $msg);
+                    return false;
+                }
+                if($limites['max'] !== null && $limites['max'] !== '' && $valor > $limites['max']){
+                    formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
+                    $msg = !empty($form_ui_ajax_messages['maxDate']) ? $form_ui_ajax_messages['maxDate'] : 'O campo #fieldLabel# deve ter data até #max#.';
+                    $msg = modelo_var_troca($msg, '#fieldLabel#', $rotulo);
+                    $msg = modelo_var_troca($msg, '#max#', $limites['max']);
+                    $_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => $msg);
+                    return false;
+                }
+            }
+        }
+
 		// Validação de tamanho máximo para campos com valor (aplica também a campos opcionais)
 		foreach($schema['fields'] as $field){
 			$fieldName = $field['name'];
 			$fieldValue = trim($_POST[$fieldName] ?? '');
 
 			$maxLength = isset($field['max_length']) ? (int)$field['max_length'] : (
-				in_array($field['type'], ['text','email']) ? 254 : (
+				in_array($field['type'], ['text','email','password','url']) ? 254 : (
 					($field['type'] === 'textarea') ? 10000 : 1000
 				)
 			);

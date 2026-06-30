@@ -501,28 +501,63 @@ Evidência automatizada reportada pelo executor em 2026-06-30 (ambiente: PHP 8.4
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 
 
-## BATCH-071 - Adição de Novos Tipos de Campos no Módulo de Formulários
+## BATCH-071 - Adição de Novos Tipos de Campos no Módulo de Formulários (req-071)
 
-- [ ] **Construtor de Formulários (Admin)**:
-  - [ ] Dropdown de tipos em `forms.js` atualizado para conter `password`, `date`, `url` e `hidden`.
-  - [ ] Textarea de opções ativa para o tipo `hidden` para receber o valor padrão do campo.
-  - [ ] Placeholder do campo de opções configurado para exibir instrução de "Valor padrão do campo" quando o tipo selecionado for `hidden`.
-- [ ] **Renderizador de Widgets (Público)**:
-  - [ ] `forms.widget.php` atualizado para suportar novos tipos (`password`, `date`, `url`, `hidden`) no bloco de inputs simples.
-  - [ ] Placeholder `[[item#value]]` substituído pelo valor padrão cadastrado quando o tipo for `hidden`.
-- [ ] **Validações Centralizadas**:
-  - [ ] `formulario.php` atualizado com limites de 254 caracteres para `password` e `url`.
-  - [ ] Validação de formato de link/URL adicionada no backend via `FILTER_VALIDATE_URL`.
-  - [ ] `formulario.js` atualizado com limites de caracteres no lado do cliente para os novos tipos.
+- [x] **Construtor de Formulários (Admin)**:
+  - [x] Dropdown de tipos em `forms.js` atualizado para conter `password`, `date`, `url` e `hidden`.
+  - [x] Textarea de opções ativa para `hidden`, `text`, `textarea`, `number` e `date` (além de `select`/`radio`/`checkbox`), via helper `typeUsesOptions`.
+  - [x] Placeholders dinâmicos por tipo (`optionsPlaceholder`): "Valor padrão do campo"/"Default field value" (hidden), `min:3\nmax:100` (text/textarea), `min:18\nmax:100\nstep:1` (number), `min:2026-01-01\nmax:2026-12-31` (date), lista `valor:Rótulo` (select/radio/checkbox).
+- [x] **Renderizador de Widgets (Público)**:
+  - [x] `forms.widget.php` suporta os novos tipos no bloco `type-input` (o `item#type` resolve para o tipo nativo).
+  - [x] Valor padrão do `hidden` resolvido das opções (placeholder `[[item#value]]` + injeção de `value` quando ausente) e renderizado **só como `<input type="hidden">`** (sem label/wrapper).
+  - [x] Atributos de limite injetados a partir do campo Opções: `minlength`/`maxlength` (text/textarea), `min`/`max`/`step` (number), `min`/`max` + classe `forms-date-picker` (date).
+  - [x] Toggle de senha: `password` envolto em `.forms-password-wrapper` com botão `.forms-password-toggle` (ícone `eye link icon`), estilos inline compatíveis com Fomantic/Tailwind/Vanilla.
+- [x] **Validações Centralizadas (Backend `formulario.php`)**:
+  - [x] Limite de 254 caracteres estendido a `password` e `url` (nos dois blocos de max-length).
+  - [x] Validação de URL via `FILTER_VALIDATE_URL` (quando preenchido).
+  - [x] Validações min/max via campo Opções: comprimento (text/textarea), valor numérico (number) e faixa de data (date); min-length agora genérico (`#min#`).
+- [x] **Frontend (`formulario.js`)**:
+  - [x] Melhoria progressiva: date picker Fomantic (`.forms-date-picker`) quando `$.fn.calendar` existe; dropdown Fomantic em `select.ui.dropdown` quando disponível; toggle de senha vanilla delegado.
+  - [x] Validações client-side de comprimento/valor/data/URL parseando `field.options` (`parseFieldLimits`), com mensagens de `prompts` + fallback.
+- [x] **i18n**: novas mensagens em `form-ui` (pt-br/en): prompts (`prompt-min-length`/`prompt-max-length`/`prompt-min-value`/`prompt-max-value`/`prompt-min-date`/`prompt-max-date`/`prompt-url`) e ajax-messages (`ajax-message-max-length`/`-invalid-url`/`-min-value`/`-max-value`/`-min-date`/`-max-date`; `-min-length` genérico).
 
 ### Evidência de Validação (BATCH-071)
+
+Evidência automatizada reportada pelo executor em 2026-06-30 (ambiente: PHP 8.4.8, PHPUnit 11.5.55):
+- `node --check` → OK: `gestor/modulos/forms/forms.js`, `gestor/assets/interface/formulario.js`.
+- `php -l` → OK (3/3): `gestor/modulos/forms/forms.widget.php`, `gestor/bibliotecas/formulario.php`, `tests/Unit/PHP/FormsWidgetFieldTypesTest.php`.
+- JSON válido: `gestor/modulos/forms/forms.json`.
+- Teste novo `tests/Unit/PHP/FormsWidgetFieldTypesTest.php` → **OK (9 tests, 32 assertions)**: parse de limites, valor padrão do hidden (input-only), injeção minlength/maxlength (text/textarea), min/max/step (number), faixa + classe picker (date), `type="url"`, wrapper/toggle de senha.
+- `composer test` → **OK (76 tests, 287 assertions, 4 skipped gated por banco)** (era 67; +9 deste lote); a única `PHPUnit Deprecation` é pré-existente e alheia ao slice.
+- `npm run test` (vitest) → **OK (2 files, 3 tests)**, sem regressão client-side.
+- Cache-bust: módulo `forms` 1.0.0→1.1.0 (`forms.js`); biblioteca `formulario` 1.2.0→1.3.0 (`formulario.js`).
+
+### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` para recompilar o componente `form-ui` (pt-br/en) com as novas mensagens e atualizar os checksums/versões.
+- Criar formulário no admin contendo campos de cada um dos 4 novos tipos + limites (`text min:5/max:15`, `number min:18/max:120/step:1`, `date min:2026-06-01/max:2026-06-30`, `hidden` com valor padrão) e confirmar no preview os inputs nativos e o valor do hidden.
+- Enviar o formulário no site público (Tailwind) e em ambiente Fomantic, validando toggle de senha, calendário/dropdown, e o barramento de URL inválida e dos limites tanto no front quanto no backend.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+
+## BATCH-072 - Remoção do Campo e Metadado "hosting_plan" no Módulo de Planos de Assinatura
+
+- [ ] **Banco de Dados (lumix)**:
+  - [ ] Criar nova migração Phinx no `lumix` para dropar a coluna `hosting_plan` da tabela `subscriptions_plans`.
+- [ ] **CRUD de Planos (lumix)**:
+  - [ ] Removido o campo `hosting_plan` do controlador `subscriptions-plans.php` em todos os fluxos de banco e placeholders.
+  - [ ] Removido o input `hosting_plan` e seu respectivo HTML dos 4 templates de adicionar/editar planos (pt-br/en).
+- [ ] **Hidratação de Configurações (lumix)**:
+  - [ ] `subscriptions.hooks.php` atualizado para remover a coluna do `banco_select` e a atribuição a `$planEntry['hosting_plan']`.
+
+### Evidência de Validação (BATCH-072)
 
 *Evidência documental - aguardando execução pelo engenheiro de implementação*
 
 ### Pendências Runtime
-- Criar formulário no admin contendo campos de cada um dos 4 novos tipos.
-- Confirmar no preview do editor que os inputs renderizam com seus tipos nativos e que o input hidden contém o valor correto.
-- Enviar o formulário no site público testando validações de URL inválida e checando no banco o correto recebimento do campo oculto.
+- Rodar a migração `composer db:migrate` no `lumix`.
+- Validar no CRUD de planos que o campo não é mais exibido nem gera erros ao criar/editar registros.
+- Rodar a sincronização/deploy para garantir a atualização dos checksums/Data.json do módulo de planos.
+
 
 
 

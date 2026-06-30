@@ -98,8 +98,8 @@ $(document).ready(function () {
         var $row = $(this).closest('tr');
         var $options = $row.find('.forms-field-options');
         var val = fieldTypeValue($(this));
-        if (val === 'select' || val === 'radio' || val === 'checkbox') {
-            $options.show();
+        if (typeUsesOptions(val)) {
+            $options.attr('placeholder', optionsPlaceholder(val)).show();
         } else {
             $options.hide().val('');
         }
@@ -206,15 +206,15 @@ $(document).ready(function () {
         var type = field.type || 'text';
         var required = field.required ? ' checked' : '';
         var options = Array.isArray(field.options) ? field.options.join('\n') : (field.options || '');
-        var optionsStyle = (type === 'select' || type === 'radio' || type === 'checkbox') ? '' : ' style="display:none;"';
-        var placeholder = isPtBr() ? 'valor:Rótulo\nEx: sp:São Paulo' : 'value:Label\nEx: ny:New York';
+        var optionsStyle = typeUsesOptions(type) ? '' : ' style="display:none;"';
+        var placeholder = optionsPlaceholder(type);
         var row = ''
             + '<tr data-index="' + idx + '">'
             + '<td class="center aligned"><i class="grip vertical icon forms-field-handle"></i></td>'
             + '<td><input type="text" class="forms-field-label" value="' + escapeAttr(field.label || '') + '"></td>'
             + '<td><input type="text" class="forms-field-name" value="' + escapeAttr(field.name || '') + '"></td>'
             + '<td><select class="forms-field-type ui dropdown">'
-            + option('text', 'Text', type) + option('email', 'E-mail', type) + option('tel', 'Phone', type) + option('number', 'Number', type) + option('textarea', 'Textarea', type) + option('select', 'Select', type) + option('radio', 'Radio', type) + option('checkbox', 'Checkbox', type)
+            + option('text', 'Text', type) + option('email', 'E-mail', type) + option('tel', 'Phone', type) + option('number', 'Number', type) + option('password', 'Password', type) + option('date', 'Date', type) + option('url', 'URL', type) + option('hidden', 'Hidden', type) + option('textarea', 'Textarea', type) + option('select', 'Select', type) + option('radio', 'Radio', type) + option('checkbox', 'Checkbox', type)
             + '</select></td>'
             + '<td><input type="text" class="forms-field-placeholder" value="' + escapeAttr(field.placeholder || '') + '"></td>'
             + '<td><textarea class="forms-field-options" rows="2" placeholder="' + escapeAttr(placeholder) + '"' + optionsStyle + '>' + escapeHtml(options) + '</textarea></td>'
@@ -411,6 +411,20 @@ $(document).ready(function () {
 
     function option(value, label, selected) {
         return '<option value="' + value + '"' + (value === selected ? ' selected' : '') + '>' + label + '</option>';
+    }
+
+    // Tipos que reaproveitam a caixa "Opções": listas (select/radio/checkbox), valor padrão (hidden)
+    // e diretivas de limite (text/textarea: min/max de caracteres; number: min/max/step; date: min/max).
+    function typeUsesOptions(type) {
+        return ['select', 'radio', 'checkbox', 'hidden', 'text', 'textarea', 'number', 'date'].indexOf(type) !== -1;
+    }
+
+    function optionsPlaceholder(type) {
+        if (type === 'hidden') return isPtBr() ? 'Valor padrão do campo' : 'Default field value';
+        if (type === 'text' || type === 'textarea') return 'min:3\nmax:100';
+        if (type === 'number') return 'min:18\nmax:100\nstep:1';
+        if (type === 'date') return 'min:2026-01-01\nmax:2026-12-31';
+        return isPtBr() ? 'valor:Rótulo\nEx: sp:São Paulo' : 'value:Label\nEx: ny:New York';
     }
 
     function escapeAttr(value) {

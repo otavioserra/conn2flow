@@ -78,6 +78,104 @@ function forms_widget_options_html($field) {
 	return $html;
 }
 
+/**
+ * Extrai as diretivas de limite (min/max/step) das linhas do campo "Opções".
+ * Aceita string (multilinha) ou array de linhas. Linhas no formato `min:X`, `max:Y`, `step:Z`.
+ *
+ * @param mixed $options Conteúdo do campo options.
+ * @return array ['min'=>string|null, 'max'=>string|null, 'step'=>string|null]
+ */
+function forms_widget_parse_limits($options) {
+	$res = ['min' => null, 'max' => null, 'step' => null];
+	if (is_string($options)) $options = preg_split('/\r\n|\r|\n/', $options);
+	if (!is_array($options)) return $res;
+	foreach ($options as $line) {
+		if (!is_string($line)) continue;
+		if (preg_match('/^\s*(min|max|step)\s*:\s*(.+?)\s*$/i', $line, $m)) {
+			$res[strtolower($m[1])] = $m[2];
+		}
+	}
+	return $res;
+}
+
+/**
+ * Resolve o valor padrão de um campo `hidden` a partir do campo "Opções".
+ * O texto digitado nas opções representa o valor constante enviado pelo campo oculto.
+ */
+function forms_widget_hidden_default($options) {
+	if (is_array($options)) {
+		foreach ($options as $o) {
+			$o = trim((string)$o);
+			if ($o !== '') return $o;
+		}
+		return '';
+	}
+	return trim((string)$options);
+}
+
+/**
+ * Injeta atributos extras na primeira tag de abertura informada (`input`/`textarea`),
+ * preservando os atributos existentes. Usado para min/max/step/minlength/maxlength.
+ */
+function forms_widget_inject_tag_attrs($html, $tag, $attrs) {
+	if (trim($attrs) === '') return $html;
+	return preg_replace_callback('/<'.$tag.'\b([^>]*?)(\/?)>/i', function ($m) use ($tag, $attrs) {
+		return '<'.$tag.rtrim($m[1]).' '.trim($attrs).$m[2].'>';
+	}, $html, 1);
+}
+
+/**
+ * Injeta `value="..."` na primeira tag `<input>` quando ainda não houver atributo value.
+ * Usado para o valor padrão do campo `hidden` em templates legados sem o placeholder.
+ */
+function forms_widget_inject_value_if_absent($html, $value) {
+	return preg_replace_callback('/<input\b([^>]*?)>/i', function ($m) use ($value) {
+		if (preg_match('/\bvalue\s*=/i', $m[1])) return $m[0];
+		return '<input'.rtrim($m[1]).' value="'.htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8').'">';
+	}, $html, 1);
+}
+
+/**
+ * Acrescenta uma classe CSS à primeira tag de abertura informada (preserva classes existentes).
+ */
+function forms_widget_add_tag_class($html, $tag, $class) {
+	return preg_replace_callback('/<'.$tag.'\b([^>]*?)(\/?)>/i', function ($m) use ($tag, $class) {
+		$attrs = $m[1];
+		if (preg_match('/\bclass\s*=\s*"([^"]*)"/i', $attrs)) {
+			$attrs = preg_replace('/\bclass\s*=\s*"([^"]*)"/i', 'class="$1 '.$class.'"', $attrs, 1);
+		} else {
+			$attrs = rtrim($attrs).' class="'.$class.'"';
+		}
+		return '<'.$tag.$attrs.$m[2].'>';
+	}, $html, 1);
+}
+
+/**
+ * Envolve a primeira tag `<input>` numa estrutura com o botão de alternar visibilidade da senha.
+ * O botão usa a classe `.forms-password-toggle` e o ícone `eye` (Fomantic) com estilos inline
+ * para funcionar também em páginas Tailwind / CSS Vanilla sem depender do framework ativo.
+ */
+function forms_widget_wrap_password($html) {
+	return preg_replace_callback('/<input\b[^>]*>/i', function ($m) {
+		$input = $m[0];
+		$iconEye = '<svg class="forms-password-icon-eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12 18 18.75 12 18.75 2.25 12 2.25 12Z"></path><circle cx="12" cy="12" r="3.25"></circle></svg>';
+		$iconEyeSlash = '<svg class="forms-password-icon-eye-slash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;"><path d="M3 3l18 18"></path><path d="M10.58 10.58A2 2 0 0 0 10 12a2 2 0 0 0 3.42 1.42"></path><path d="M9.88 5.09A10.94 10.94 0 0 1 12 4.88c6 0 9.75 7.12 9.75 7.12a20.3 20.3 0 0 1-4.04 4.95"></path><path d="M6.61 6.61A20.78 20.78 0 0 0 2.25 12S6 19.12 12 19.12c1.76 0 3.3-.38 4.65-.97"></path></svg>';
+		$toggle = '<button type="button" class="forms-password-toggle" aria-label="Mostrar/ocultar senha" tabindex="-1"'
+			.' style="position:absolute;top:50%;right:0.75rem;transform:translateY(-50%);background:transparent;border:0;cursor:pointer;padding:0;line-height:1;color:#6b7280;">'
+			.$iconEye.$iconEyeSlash.'</button>';
+		return '<div class="forms-password-wrapper" style="position:relative;">'.$input.$toggle.'</div>';
+	}, $html, 1);
+}
+
+/**
+ * Extrai apenas a primeira tag `<input>` do HTML (descarta label/wrapper).
+ * Usado para campos `hidden`, que não devem exibir rótulo ou ocupar espaço visual.
+ */
+function forms_widget_extract_input($html) {
+	if (preg_match('/<input\b[^>]*>/i', $html, $m)) return $m[0];
+	return $html;
+}
+
 function forms_widget_render_field($template, $field) {
 	$type = $field['type'] ?? 'text';
 	$name = $field['name'] ?? '';
@@ -85,12 +183,19 @@ function forms_widget_render_field($template, $field) {
 	$placeholder = $field['placeholder'] ?? '';
 	$required = forms_widget_bool($field['required'] ?? false) ? 'required' : '';
 
+	// Tipos nativos que reaproveitam o bloco de input simples (type-input).
+	$inputType = ($type === 'textarea' || $type === 'select' || $type === 'radio' || $type === 'checkbox') ? 'text' : (string)$type;
+
+	// Valor padrão do campo (constante para hidden; vazio para os demais).
+	$value = ($type === 'hidden') ? forms_widget_hidden_default($field['options'] ?? []) : '';
+
 	$html = $template;
 	$html = forms_widget_replace_var($html, 'item#label', htmlspecialchars((string)$label, ENT_QUOTES, 'UTF-8'));
 	$html = forms_widget_replace_var($html, 'item#name', htmlspecialchars((string)$name, ENT_QUOTES, 'UTF-8'));
 	$html = forms_widget_replace_var($html, 'item#placeholder', htmlspecialchars((string)$placeholder, ENT_QUOTES, 'UTF-8'));
-	$html = forms_widget_replace_var($html, 'item#type', htmlspecialchars(($type === 'textarea' || $type === 'select' || $type === 'radio' || $type === 'checkbox') ? 'text' : (string)$type, ENT_QUOTES, 'UTF-8'));
+	$html = forms_widget_replace_var($html, 'item#type', htmlspecialchars($inputType, ENT_QUOTES, 'UTF-8'));
 	$html = forms_widget_replace_var($html, 'item#required', $required);
+	$html = forms_widget_replace_var($html, 'item#value', htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'));
 	$html = forms_widget_replace_var($html, 'item#options', forms_widget_options_html($field));
 
 	$html = forms_widget_block($html, 'type-select', $type === 'select');
@@ -98,6 +203,37 @@ function forms_widget_render_field($template, $field) {
 	$html = forms_widget_block($html, 'type-radio', $type === 'radio');
 	$html = forms_widget_block($html, 'type-checkbox', $type === 'checkbox');
 	$html = forms_widget_block($html, 'type-input', $type !== 'select' && $type !== 'textarea' && $type !== 'radio' && $type !== 'checkbox');
+
+	// ===== Atributos de limite/validação derivados do campo "Opções".
+	$limits = forms_widget_parse_limits($field['options'] ?? []);
+	if ($type === 'text' || $type === 'textarea') {
+		$tag = ($type === 'textarea') ? 'textarea' : 'input';
+		$attrs = '';
+		if ($limits['min'] !== null && $limits['min'] !== '') $attrs .= ' minlength="'.htmlspecialchars($limits['min'], ENT_QUOTES, 'UTF-8').'"';
+		if ($limits['max'] !== null && $limits['max'] !== '') $attrs .= ' maxlength="'.htmlspecialchars($limits['max'], ENT_QUOTES, 'UTF-8').'"';
+		$html = forms_widget_inject_tag_attrs($html, $tag, $attrs);
+	} elseif ($type === 'number') {
+		$attrs = '';
+		if ($limits['min'] !== null && $limits['min'] !== '') $attrs .= ' min="'.htmlspecialchars($limits['min'], ENT_QUOTES, 'UTF-8').'"';
+		if ($limits['max'] !== null && $limits['max'] !== '') $attrs .= ' max="'.htmlspecialchars($limits['max'], ENT_QUOTES, 'UTF-8').'"';
+		if ($limits['step'] !== null && $limits['step'] !== '') $attrs .= ' step="'.htmlspecialchars($limits['step'], ENT_QUOTES, 'UTF-8').'"';
+		$html = forms_widget_inject_tag_attrs($html, 'input', $attrs);
+	} elseif ($type === 'date') {
+		$attrs = '';
+		if ($limits['min'] !== null && $limits['min'] !== '') $attrs .= ' min="'.htmlspecialchars($limits['min'], ENT_QUOTES, 'UTF-8').'"';
+		if ($limits['max'] !== null && $limits['max'] !== '') $attrs .= ' max="'.htmlspecialchars($limits['max'], ENT_QUOTES, 'UTF-8').'"';
+		$html = forms_widget_inject_tag_attrs($html, 'input', $attrs);
+		// Marca para a melhoria progressiva (date picker Fomantic quando disponível).
+		$html = forms_widget_add_tag_class($html, 'input', 'forms-date-picker');
+	}
+
+	// ===== Tratamentos específicos por tipo.
+	if ($type === 'hidden') {
+		$html = forms_widget_inject_value_if_absent($html, $value);
+		$html = forms_widget_extract_input($html);
+	} elseif ($type === 'password') {
+		$html = forms_widget_wrap_password($html);
+	}
 
 	return $html;
 }
@@ -171,6 +307,13 @@ function forms_render($params) {
 			'html_extra_head' => $html_extra_head,
 		]);
 	}
+
+	// Script público do widget.
+	gestor_pagina_javascript_incluir(Array(
+		'tipo' => 'widget',
+		'modulo_id' => 'forms',
+		'versao' => forms_get_version(),
+	));
 
 	return forms_widget_render_inline([
 		'form_id' => $registro['id'],
