@@ -1347,6 +1347,8 @@ function dashboard_remover_pagina_instalacao_sucesso(){
 
 function dashboard_pagina_inicial(){
 	global $_GESTOR;
+
+	hook_do_action($_GESTOR['modulo-id'], 'start');
 	
 	// ===== Remover página de instalação-sucesso se existir
 	
