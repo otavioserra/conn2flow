@@ -2230,6 +2230,10 @@ function perfil_usuario_signup(){
 	global $_GESTOR;
 	global $_CONFIG;
 
+	// ===== Hook start
+
+	hook_do_action($_GESTOR['modulo-id'], 'signup.start');
+
 	// ===== Verificar a permissão do acesso.
 
 	gestor_incluir_biblioteca('autenticacao');
@@ -2564,6 +2568,10 @@ function perfil_usuario_signup(){
 		
 		gestor_redirecionar($signup_redirect);
 	}
+
+	// ===== Hook pos_banco
+
+	hook_do_action($_GESTOR['modulo-id'], 'signup.pos_banco');
 	
 	// ===== Verifica se o cookie está ativo no navegador do usuário.
 	
@@ -2660,6 +2668,10 @@ function perfil_usuario_signup(){
 	);
 	
 	interface_formulario_validacao($formulario);
+
+	// ===== Hook end
+
+	hook_do_action($_GESTOR['modulo-id'], 'signup.end');
 }
 
 function perfil_usuario_forgot_password(){

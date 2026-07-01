@@ -678,6 +678,25 @@ function forms_ajax_widget_preview() {
 // backend injeta em gestor.form[id] (fields_schema, reCAPTCHA, redirects, componentes Fomantic/
 // Tailwind) não existem no iframe estático do preview; este endpoint as recupera para um form_id
 // e devolve em `forms_js_vars`, permitindo que o forms.widget.js inicialize o formulário no iframe.
+function forms_ajax_buscar_componentes() {
+	global $_GESTOR;
+
+	$q = banco_escape_field($_REQUEST['q'] ?? '');
+	$lang = banco_escape_field($_GESTOR['linguagem-codigo']);
+	$rows = banco_select([
+		'tabela' => 'componentes',
+		'campos' => ['id', 'nome'],
+		'extra' => "WHERE language='".$lang."' AND status!='D' AND (nome LIKE '%".$q."%' OR id LIKE '%".$q."%') ORDER BY nome ASC LIMIT 15",
+	]);
+
+	$_GESTOR['ajax-json'] = [
+		'status' => 'success',
+		'results' => array_map(function ($r) {
+			return ['id' => $r['id'], 'text' => $r['nome'].' ('.$r['id'].')'];
+		}, $rows ?: []),
+	];
+}
+
 function forms_ajax_render_editor_html() {
 	global $_GESTOR;
 
@@ -714,6 +733,7 @@ function forms_start() {
 		switch ($_GESTOR['ajax-opcao']) {
 			case 'template-load': forms_ajax_template_load(); break;
 			case 'widget-preview': forms_ajax_widget_preview(); break;
+			case 'buscar-componentes': forms_ajax_buscar_componentes(); break;
 			case 'forms-render-editor-html': forms_ajax_render_editor_html(); break;
 		}
 

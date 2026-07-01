@@ -232,11 +232,11 @@
                     "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.9",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "d8745bd2a97c3e1eb49e645431d88716",
-                        "css": "",
-                        "combined": "d8745bd2a97c3e1eb49e645431d88716"
+                        "html": "f6b07cf23c4a69686d989c59a1e1f385",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "7146190c4fe26b966efa017d7f7edd76"
                     }
                 },
                 {
@@ -246,11 +246,11 @@
                     "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.7",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "678e5d685cae791abcf1b1d7aba5101c",
-                        "css": "",
-                        "combined": "678e5d685cae791abcf1b1d7aba5101c"
+                        "html": "9ec559b392ab542f7e3824472ca51c63",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "a9b71be991556a9ab0a1cd0e69cc42cf"
                     }
                 },
                 {
@@ -260,11 +260,11 @@
                     "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.6",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "360f22f2c68940b477a23ada146329cc",
-                        "css": "",
-                        "combined": "360f22f2c68940b477a23ada146329cc"
+                        "html": "185a9237aa5f73cf0f2442190b8cc006",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "8d6026e11af3496728c62e6e924b234e"
                     }
                 },
                 {
@@ -517,11 +517,11 @@
                     "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.11",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "602a5943041c250cf51c48eb1f6c17f6",
-                        "css": "",
-                        "combined": "602a5943041c250cf51c48eb1f6c17f6"
+                        "html": "fd0a564bf934fa4beb9b9e419835e8fb",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "2a6e5edada0d8dc8d94dd01ecf88661f"
                     }
                 },
                 {
@@ -531,11 +531,11 @@
                     "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.9",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "73b301aa0fd2a1c6a84ac3a0119a8b1e",
-                        "css": "",
-                        "combined": "73b301aa0fd2a1c6a84ac3a0119a8b1e"
+                        "html": "96793c1d186a8936e67f2c6ee51ce85b",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "e742955bbcd3c06f9ce6501e679b8c33"
                     }
                 },
                 {
@@ -545,11 +545,11 @@
                     "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.8",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "fd57e0ec56b7129731ebba05cabd1f25",
-                        "css": "",
-                        "combined": "fd57e0ec56b7129731ebba05cabd1f25"
+                        "html": "4f23fc8e7ac221a660d42b301c98faff",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "acc1e2deaf6240721e5d65a27fb692bf"
                     }
                 },
                 {

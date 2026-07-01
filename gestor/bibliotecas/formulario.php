@@ -809,9 +809,14 @@ function formulario_processador($params = false){
 				return false;
 			}
 			
+            // req-074 §6: não persistir o valor de campos do tipo password em forms_submissions
+            // (evita vazar credenciais na auditoria do banco). A chave permanece no payload por
+            // integridade estrutural; o valor em texto plano segue disponível em $_POST durante a
+            // requisição para o hook/controller criar/vincular o usuário.
+            $fieldValuePersistido = (($field['type'] ?? 'text') === 'password') ? '' : ($fieldValue ?? '');
             $fieldsValues[] = [
 				'name' => $fieldName,
-				'value' => $fieldValue ?? '',
+				'value' => $fieldValuePersistido,
 			];
         }
     }
@@ -898,6 +903,8 @@ function formulario_processador($params = false){
 	if($formDefinition && isset($schema['fields'])){
 		foreach($schema['fields'] as $field){
 			$fieldName = $field['name'];
+			// req-074 §6: não expor campos do tipo password no e-mail de notificação/confirmação.
+			if(($field['type'] ?? 'text') === 'password') continue;
 			$fieldLabel = isset($field['label']) ? $field['label'] : ucfirst($fieldName); // Fallback para o nome se não houver label
 			$fieldValue = '';
 			

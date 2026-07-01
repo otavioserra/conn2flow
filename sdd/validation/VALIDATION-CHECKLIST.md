@@ -564,10 +564,86 @@ Evidência automatizada reportada pelo executor em 2026-06-30 (ambiente: PHP 8.4
 - Rodar a sincronização/deploy para garantir a atualização dos checksums/Data.json do módulo de planos.
 
 
+## BATCH-073 - Parametrização Dinâmica de E-mails e Integração de Estágios de Serviço em Planos
+
+- [x] **Processamento de Checkout (`subscriptions` em `lumix`)**:
+  - [x] A função `subscriptions_ajax_forms_process()` carrega o template de e-mail a partir de `$schema['email']['message_component']` com fallback a `order-confirmation-email`.
+  - [x] A função utiliza o assunto do e-mail do campo `$schema['email']['subject']` realizando a substituição de `#name#`, `#code#`, `#formName#` (com fallback a variáveis do módulo).
+  - [x] O status inicial e cor do e-mail de confirmação são baseados na flag `is_free` do plano cadastrado.
+- [x] **Autocomplete de Componentes no forms (`conn2flow`)**:
+  - [x] Rota AJAX `buscar-componentes` adicionada em `forms.php`.
+  - [x] Inputs `#email_message_component` encapsulados em `.sig-autocomplete` nos 6 templates HTML de `forms` (pt-br/en, adicionar/editar/clonar).
+  - [x] JS `forms.js` inicializa e delega os eventos de busca, seleção e limpeza do autocomplete.
+- [x] **Layout do CRUD de Planos (`subscriptions-plans` em `lumix`)**:
+  - [x] Os 4 templates HTML de planos reorganizados em segmentos lógicos (`Geral`, `Integração`, `Serviço`, `Pagamentos / Gateways`, `Mapeamento de Cadastro`).
+  - [x] Restrições e sobras de layouts anteriores limpas dos arquivos do módulo.
+- [x] **Estágios e Banco (`subscriptions-plans` em `lumix`)**:
+  - [x] Migração de banco criada adicionando colunas `is_free` (boolean) e `initial_stage` (varchar) em `subscriptions_plans`.
+  - [x] Dropdown select `#select-initial_stage#` adicionado na interface do CRUD e lógica do backend.
+  - [x] AJAX `buscar-estagios` implementado no backend para filtrar estágios por `stage_type` e idioma.
+  - [x] JS `subscriptions-plans.js` carrega e repopula dinamicamente os estágios iniciais ao mudar o "Tipo de serviço".
+
+### Evidência de Validação (BATCH-073)
+
+- `php -l` OK:
+  - `conn2flow/gestor/modulos/forms/forms.php`
+  - `lumix/gestor/modulos/subscriptions/subscriptions.ajax.public.php`
+  - `lumix/gestor/modulos/subscriptions/subscriptions.php`
+  - `lumix/gestor/modulos/subscriptions/subscriptions.hooks.php`
+  - `lumix/gestor/modulos/subscriptions-plans/subscriptions-plans.php`
+  - `lumix/gestor/db/migrations/20260710140000_add_free_and_initial_stage_to_subscriptions_plans.php`
+- `node --check` OK:
+  - `conn2flow/gestor/modulos/forms/forms.js`
+  - `lumix/gestor/modulos/subscriptions-plans/subscriptions-plans.js`
+- JSON válido: `lumix/gestor/modulos/subscriptions-plans/subscriptions-plans.json`, `conn2flow/gestor/modulos/forms/forms.json`.
+- Grep de sanidade: sem sobras de `isCustomPlan`, `isCloudNano`, `emailSubjectId`, `custom-order-confirmation-email`, `email-subject-custom-confirmation` ou `form-pro-cloud-nano` em `subscriptions.ajax.public.php`.
+- `composer test` em `conn2flow`: OK, 76 testes, 287 assertions, 4 skipped, 1 PHPUnit deprecation.
+- `composer db:migrate` tentado em `lumix`, mas o checkout local retornou: `There are no commands defined in the "db" namespace.`
+
+### Pendências Runtime
+- Rodar a migração Phinx no ambiente `lumix` configurado (este checkout local não expõe `composer db:migrate`).
+- Validar o autocomplete de componentes de e-mail no construtor de formulários.
+- Validar o agrupamento visual de segmentos no CRUD de planos e a carga dinâmica de estágios por tipo de serviço.
 
 
+## BATCH-074 - Dinamização Completa de Planos e Saneamento de Hardcodes no Subscriptions
 
+- [x] **Saneamento de Dicionários Estáticos de Tradução de Nomes de Planos (§1)**:
+  - [x] Helper `subscriptions_obter_nome_plano($planSlug, $lang)` em `subscriptions.hooks.php` consulta `subscriptions_plans.name` por `id`+`language` (status≠'D'), com fallback humanizado do slug.
+  - [x] Substituídos os 5 dicionários estáticos (`$paypalPlanNames` ×2 nos hooks; `$paypalPlanNames`/`$planDisplayNames`/`$planNames` ×3 no controlador) pelo helper.
+- [x] **Dinamização de Filtros por Prefixo de Formulário (`form-pro-%`) (§2)**:
+  - [x] Helper `subscriptions_obter_form_ids_planos()` (form_ids distintos de planos ativos) + `subscriptions_obter_form_ids_clausula()` (gera `form_id IN (...)` escapado, fallback `LIKE 'form-pro-%'` quando vazio).
+  - [x] Atualizados os 3 filtros (`subscriptions.hooks.php` ×2 do IPN/retorno + `subscriptions.php` ×1) para usar a cláusula dinâmica.
+- [x] **Dinamização do Template de Checkout (`subscription-checkout.html`) (§3)**:
+  - [x] Unificados os 6 blocos por plano em uma única estrutura com placeholders (`#plan_name#`, `#plan_description#`, `#plan_price_card#`, `#checkout_form#`) — ~990→~135 linhas (pt-br/en).
+  - [x] **Divergência aprovada (orientação do usuário humano)**: em vez de blocos fixos `plan_fields_signup`/`plan_fields_custom`, o formulário do plano é renderizado dinamicamente via `forms_render(['form_id'=>...])` (lê `forms.html` por `form_id`), preservando os campos específicos de cada plano. Ver DEC-077.
+- [x] **Simplificação e Saneamento do Template da Landing Page (`subscription.html`) (§4)**:
+  - [x] Removido o marketing estático legado (Hero, Filosofia, VPS, “Por que pagar”, FAQ) — ~690→~55 linhas.
+  - [x] Mantidos apenas header + grid dinâmico (`custom_layout`/`plans_grid`/`plan_card` + placeholders) + rodapé minimalista (pt-br/en).
+- [x] **Saneamento do Template de Callback (`subscription-start.html`) (§5)**:
+  - [x] Neutralizados os textos das seções de status (jargão hospedagem/cloud/projeto/“our subscription platform” → linguagem de assinatura), sem alterar marcadores nem placeholders.
+  - [x] Preservadas as variáveis dinâmicas (`#plan_display_name#`/`#plan_name#`/`#customer_name#`/`#txn_id#`).
+- [x] **Proteção de Campos Password em Submissões (`formulario.php`, conn2flow) (§6)**:
+  - [x] Valor de campos `type==='password'` gravado como `''` em `forms_submissions.fields_values` (chave preservada); valor em texto plano mantido em `$_POST` para o signup.
+  - [x] Defesa em profundidade: campo `password` omitido também no laço do e-mail de notificação/confirmação.
+- [x] **Dinamização do Loop de Células de Plano na Página de Checkout (§7)**:
+  - [x] Removidos `$plans`/`$planCelMap`; resolução dinâmica em `subscriptions_plans` por slug + aliases legados (`aceleracao`/`mentoria`/`personalizado`); gate de pagamento por `total_payments > 0`.
 
+### Evidência de Validação (BATCH-074)
+
+Evidência automatizada reportada pelo executor em 2026-06-30 (ambiente: PHP 8.4.8):
+- `php -l` → OK (3/3): `subscriptions.php`, `subscriptions.hooks.php` (lumix), `gestor/bibliotecas/formulario.php` (conn2flow).
+- Integridade de marcadores HTML balanceada (1 abre + 1 fecha cada): checkout (`valid_plan`/`invalid_plan`/`step_form`/`step_payment`/`step_success`) e landing (`custom_layout`/`plans_grid`/`plan_card`) nos dois idiomas; placeholders presentes (`#plan_name#`/`#plan_description#`/`#plan_price_card#`/`#checkout_form#`/`#paypal_primary_*#` no checkout; `#plan_*#` na landing).
+- Grep de sanidade: sem `$paypalPlanNames`/`$planDisplayNames`/`$planNames`/`form-pro-%` (exceto o fallback intencional na cláusula) e sem `$activePlanCel`/`$planCelMap` (exceto comentário) no módulo.
+- `composer test` (conn2flow) → **OK (76 tests, 287 assertions, 4 skipped gated por banco)**; sem regressão da §6 (a única `PHPUnit Deprecation` é pré-existente). Sem suíte no `lumix` (`phpunit.xml`/`composer test` ausentes, conforme batches anteriores).
+
+### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` no `lumix` para recompilar `PaginasData.json` + checksums dos templates alterados (checkout/landing/callback) e sincronizar.
+- Confirmar que os formulários referenciados pelos planos têm `html` salvo na tabela `forms` (o checkout renderiza via `forms_render`; sem `html` o bloco do formulário sai vazio).
+- Executar o checkout público de um plano pago, um gratuito (`is_free`) e um sob medida (`total_payments=0`): formulário renderizado, card de preço correto, fluxo form→payment/success sem avisos de PHP.
+- Simular um retorno/IPN de webhook e confirmar que a submissão é localizada pela cláusula dinâmica `form_id IN (...)`.
+- Confirmar no banco que submissões com campo `password` gravam `value` vazio em `fields_values` e que o signup continua criando a conta (senha lida de `$_POST`).
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
 
 
 

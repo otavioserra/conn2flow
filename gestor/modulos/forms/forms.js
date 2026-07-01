@@ -155,6 +155,7 @@ $(document).ready(function () {
         $('#email_reply_to_name').val(schema.email.reply_to_name || '');
         $('#email_subject').val(schema.email.subject || '');
         $('#email_message_component').val(schema.email.message_component || schema.email.template || '');
+        $('#email_message_component').closest('.sig-autocomplete').find('.sig-search-input').val(schema.email.message_component || schema.email.template || '');
         $('#redirect_success_path').val(schema.redirects.success.path || '');
         $('#redirect_error_path').val(schema.redirects.error.path || '');
 
@@ -356,6 +357,66 @@ $(document).ready(function () {
     function syncHiddenSchema() {
         $('input[name="fields_schema"]').val(JSON.stringify(schema));
     }
+
+    $(document).on('input', '.sig-autocomplete .sig-search-input', function () {
+        var $box = $(this).closest('.sig-autocomplete');
+        var target = $box.data('target');
+        var q = $(this).val();
+        var $hidden = $box.find('.sig-hidden-value');
+        var $results = $box.find('.sig-results');
+
+        $hidden.val(q).trigger('input').trigger('change');
+
+        if (!target || q.length < 1) { $results.empty().hide(); return; }
+
+        $.ajax({
+            type: 'POST',
+            url: gestor.raiz + gestor.moduloCaminho + '/',
+            dataType: 'json',
+            data: {
+                opcao: gestor.moduloOpcao,
+                ajax: 'sim',
+                ajaxOpcao: 'buscar-' + target,
+                q: q
+            },
+            success: function (resp) {
+                $results.empty();
+                if (!resp || !resp.results || !resp.results.length) {
+                    $results.append('<div class="result" style="padding:.6em .8em;">' + (isPtBr() ? 'Nenhum resultado' : 'No results') + '</div>');
+                } else {
+                    resp.results.forEach(function (item) {
+                        $('<div class="result" style="cursor:pointer;padding:.6em .8em;border-bottom:1px solid #eee;"></div>')
+                            .text(item.text)
+                            .attr('data-id', item.id)
+                            .appendTo($results);
+                    });
+                }
+                $results.show();
+            }
+        });
+    });
+
+    $(document).on('click', '.sig-autocomplete .sig-results .result', function () {
+        var $box = $(this).closest('.sig-autocomplete');
+        var id = $(this).attr('data-id');
+        if (!id) return;
+        $box.find('.sig-hidden-value').val(id).trigger('input').trigger('change');
+        $box.find('.sig-search-input').val($(this).text());
+        $box.find('.sig-results').empty().hide();
+    });
+
+    $(document).on('click', '.sig-autocomplete .sig-clear', function () {
+        var $box = $(this).closest('.sig-autocomplete');
+        $box.find('.sig-hidden-value').val('').trigger('input').trigger('change');
+        $box.find('.sig-search-input').val('');
+        $box.find('.sig-results').empty().hide();
+    });
+
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.sig-autocomplete').length) {
+            $('.sig-results').empty().hide();
+        }
+    });
 
     function updateWidgetCodeTab() {
         if (typeof CodeMirror === 'undefined') {
