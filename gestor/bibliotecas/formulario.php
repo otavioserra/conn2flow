@@ -628,8 +628,8 @@ function formulario_processador($params = false){
             $fieldEmailValue = $_POST[$schema['field_email']];
         }
 
-		$responderPara = !empty($fieldEmailValue) ? $fieldEmailValue : (!empty($emailData) && isset($emailData['reply_to']) ? $emailData['reply_to'] : (!empty($_CONFIG['email']['sender']['replyTo']) ? $_CONFIG['email']['sender']['replyTo'] : null));
-		$responderParaNome = isset($fieldNameValueFlag) ? $fieldNameValue : (!empty($emailData) && isset($emailData['reply_to_name']) ? $emailData['reply_to_name'] : (!empty($_CONFIG['email']['sender']['replyToName']) ? $_CONFIG['email']['sender']['replyToName'] : null));
+		$responderPara = !empty($fieldEmailValue) ? $fieldEmailValue : (!empty($emailData) && isset($emailData['reply_to']) && !empty($emailData['reply_to']) ? $emailData['reply_to'] : (!empty($_CONFIG['email']['sender']['replyTo']) ? $_CONFIG['email']['sender']['replyTo'] : null));
+		$responderParaNome = isset($fieldNameValueFlag) ? $fieldNameValue : (!empty($emailData) && isset($emailData['reply_to_name']) && !empty($emailData['reply_to_name']) ? $emailData['reply_to_name'] : (!empty($_CONFIG['email']['sender']['replyToName']) ? $_CONFIG['email']['sender']['replyToName'] : null));
         
         // ===== Validar campos obrigatórios
         foreach($schema['fields'] as $field){
@@ -853,7 +853,7 @@ function formulario_processador($params = false){
 		$defaultSender = null;
 	}
 			
-	$destinatariosTXT = !empty($emailData) && isset($emailData['recipients']) ? $emailData['recipients'] : $defaultSender;
+	$destinatariosTXT = !empty($emailData) && isset($emailData['recipients']) && !empty($emailData['recipients']) ? $emailData['recipients'] : $defaultSender;
 	
 	$destinatarios = explode(';',trim($destinatariosTXT));
 
