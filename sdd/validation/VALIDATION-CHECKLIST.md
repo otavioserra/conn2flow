@@ -645,5 +645,26 @@ Evidência automatizada reportada pelo executor em 2026-06-30 (ambiente: PHP 8.4
 - Confirmar no banco que submissões com campo `password` gravam `value` vazio em `fields_values` e que o signup continua criando a conta (senha lida de `$_POST`).
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 
+## BATCH-075 - Adaptacao do Layout Administrativo do Gestor para Estetica Photon
+
+- [x] **Template HTML do layout administrativo (pt-br)**:
+  - [x] Shell reorganizado para sidebar escura navy com logo `logo-principal.png?v=1`, badge de marca, menu dinamico e perfil do usuario.
+  - [x] Tags dinamicas preservadas: `@[[pagina#menu]]@`, `@[[pagina#corpo]]@`, `@[[usuario#nome]]@` e `v@[[gestor#versao]]@`.
+  - [x] IDs consumidos por `gestor/assets/global/global.js` preservados: `menu-toggle-btn`, `menu-close-btn`, `menu-dashboard3d-btn`, `menu-resize-handle`, `menuComputerCont` e `paginaCont`.
+- [x] **CSS Photon/Fomantic**:
+  - [x] Paleta navy `#081d30`, divisorias, textos secundarios, hover/active e avatar/footer aplicados ao shell.
+  - [x] Sobrescritas do Fomantic escopadas para `.menuComputerCont`, evitando atingir formularios/tabelas do corpo.
+  - [x] Resize handle, botao toggle, overlay e comportamento mobile preservados com nova estetica.
+
+### Evidencia de Validacao (BATCH-075)
+
+- Conferencia objetiva via `Select-String`: tags dinamicas e IDs funcionais presentes no HTML atualizado.
+- `git diff --check -- gestor/resources/pt-br/layouts/layout-administrativo-do-gestor/layout-administrativo-do-gestor.html gestor/resources/pt-br/layouts/layout-administrativo-do-gestor/layout-administrativo-do-gestor.css` -> OK.
+- Revisao do componente real `menu-principal-sistema`: seletor de cabecalho ajustado para nao afetar `div.ui.tiny.header` dentro dos itens do menu.
+
+### Pendencias Runtime
+
+- Rodar `Update => Core` para propagar os arquivos de recurso ao banco/Data JSON.
+- Validar visualmente no navegador em desktop e mobile: menu injetado, hover/active, abrir/fechar, redimensionamento e overlay.
 
 
