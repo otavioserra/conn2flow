@@ -1009,10 +1009,28 @@ function gestor_cookie_verificacao(){
 
 function gestor_permissao_token(){
 	global $_GESTOR;
+
+	// ===== Idempotência por requisição (req-047 / BATCH-085 §1).
+	// Memoiza o resultado para não revalidar/renovar o JWT mais de uma vez no mesmo request.
+	// Sem isto, chamar esta função duas vezes (ex.: o filtro global roteador.paginas do
+	// bloqueio de assinatura expirada, seguido de gestor_permissao()) faria a segunda
+	// chamada ler o token que a primeira acabou de renovar e invalidar (o cookie novo só
+	// vale no próximo request), deslogando um usuário legítimo com 401.
+
+	if(array_key_exists('permissao-token-resultado', $_GESTOR)){
+		return $_GESTOR['permissao-token-resultado'];
+	}
+
+	$_GESTOR['permissao-token-resultado'] = gestor_permissao_token_processar();
+	return $_GESTOR['permissao-token-resultado'];
+}
+
+function gestor_permissao_token_processar(){
+	global $_GESTOR;
 	global $_CONFIG;
-	
+
 	// ===== Verifica se cookie no navegador está ativo.
-	
+
 	gestor_cookie_verificacao();
 	
 	// ===== Verifica se existe o cookie de autenticação gerado no login com sucesso.

@@ -53,12 +53,22 @@ function arquivo_estatico_start(){
 					break;
 					default:
 						if($alvo){
-							if($_GESTOR['caminho'][count($_GESTOR['caminho'])-1] != $ext.'.'.$ext){
-								$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
-							} else {
+							$arquivo_requisitado = $_GESTOR['caminho'][count($_GESTOR['caminho'])-1];
+							$padrao_opcao = '/^[A-Za-z0-9-]+$/';
+							
+							if($arquivo_requisitado == $ext.'.'.$ext){
 								if(count($_GESTOR['caminho']) == 2){
 									$file = $_GESTOR['modulos-path'].$alvo.'/'.$alvo.'.'.$ext;
 								}
+							} else if($arquivo_requisitado == $alvo2_sem_ext.'.'.$ext && preg_match($padrao_opcao, $alvo2_sem_ext)){
+								if(count($_GESTOR['caminho']) == 2){
+									$opcao = '.'.$alvo2_sem_ext;
+									$file = $_GESTOR['modulos-path'].$alvo.'/'.$alvo.$opcao.'.'.$ext;
+								}
+							}
+							
+							if(!file_exists($file)){
+								$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
 							}
 						}
 				}
