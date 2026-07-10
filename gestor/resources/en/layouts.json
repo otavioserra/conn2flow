@@ -2,11 +2,11 @@
     {
         "name": "Manager Administrative Layout",
         "id": "layout-administrativo-do-gestor",
-        "version": "1.29",
+        "version": "1.31",
         "checksum": {
-            "html": "f399e6f72cb0bea07b68dca30d883366",
+            "html": "40b3578719b187cff109649850a30c72",
             "css": "89f43d4fba51d6c62ae5d8df3e780d6b",
-            "combined": "1679d9e602ba6e99aa2e82451d480c52"
+            "combined": "599682e859085267f6fecba570a08933"
         }
     },
     {

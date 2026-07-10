@@ -34,10 +34,23 @@ ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 # Defaults
 MODE="default"
 PROJECT_TARGET_OVERRIDE=""
+CONTENTS_CHOICE="Sim"
+
+should_exclude_contents() {
+  case "$CONTENTS_CHOICE" in
+    [Nn]*|false|FALSE|False|0)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
 
 usage(){
-  echo "Usage: $0 [default|checksum|force] --project <PROJECT_ID>"
+  echo "Usage: $0 [default|checksum|force] --project <PROJECT_ID> [--contents Sim|Nao]"
   echo "  --project, -p    Project identifier (overrides devEnvironment.projectTarget)"
+  echo "  --contents       Include contents/ folder in synchronization (default: Sim)"
   echo "  default          Use date/time to decide (non-destructive)"
   echo "  checksum         Compare file contents by checksum"
   echo "  force            Overwrite files regardless of mtime"
@@ -49,6 +62,8 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     --project|-p)
       PROJECT_TARGET_OVERRIDE="$2"; shift 2;;
+    --contents)
+      CONTENTS_CHOICE="${2:-}"; shift 2;;
     default|checksum|force)
       MODE="$1"; shift;;
     --mode)
@@ -113,6 +128,11 @@ DESTINO="$TARGET_PATH"
 log "Source: $ORIGEM"
 log "Destination: $DESTINO"
 log "Mode: $MODE"
+if should_exclude_contents; then
+  log "contents/ folder: excluded from synchronization"
+else
+  log "contents/ folder: included in synchronization"
+fi
 
 # Check source exists
 if [ ! -d "$ORIGEM" ]; then
@@ -127,15 +147,20 @@ if [ ! -d "$DESTINO" ]; then
 fi
 
 # Build rsync command (do NOT delete files by default)
+RSYNC_EXCLUDES=(--exclude '.git/')
+if should_exclude_contents; then
+  RSYNC_EXCLUDES+=(--exclude 'contents/')
+fi
+
 case "$MODE" in
   default|"")
-    CMD=(rsync -avu --exclude '.git/' "$ORIGEM/" "$DESTINO/")
+    CMD=(rsync -avu "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
     ;;
   checksum)
-    CMD=(rsync -av --checksum --exclude '.git/' "$ORIGEM/" "$DESTINO/")
+    CMD=(rsync -av --checksum "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
     ;;
   force)
-    CMD=(rsync -av --ignore-times --exclude '.git/' "$ORIGEM/" "$DESTINO/")
+    CMD=(rsync -av --ignore-times "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
     ;;
   *)
     log_error "Invalid mode: $MODE"; exit 1;

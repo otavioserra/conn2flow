@@ -646,4 +646,154 @@ Evidência automatizada reportada pelo executor em 2026-06-30 (ambiente: PHP 8.4
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 
 
+## BATCH-075 - Dashboard Site Toolbar, Agendamento de Páginas e Extensões do Editor HTML (req-075)
 
+Lote consolidado (6 metas) implementado em slices sequenciais. Plano em [BATCH-075.md](../implementation/BATCH-075.md).
+
+### Slice 1 — Meta 1: Botão "Acessar Site" no Layout Administrativo
+
+- [x] Âncora `#menu-site-btn` adicionada ao grupo `ui icon buttons` da `.menu-controls` (primeiro item; ordem Acessar site → Dashboard 3D → Fechar), nos layouts admin `pt-br` e `en`.
+- [x] `href="@[[pagina#url-raiz]]@"` (raiz pública), ícone `external alternate`, tooltip localizado ("Acessar site" / "Visit site"), `data-position="bottom left"` alinhado aos botões irmãos.
+- [x] Notação `@[[...]]@` literal preservada (cópia do banco — não remover arrobas).
+
+#### Evidência de Validação (Slice 1)
+
+Evidência automatizada reportada em 2026-07-09:
+- Balanceamento de tags: `<a>`/`</a>` = 2/2 em cada layout (pt-br e en) após inserção do elemento completo — sem desbalanceamento.
+- Grep confirma `menu-site-btn` presente nos dois arquivos com o `href="@[[pagina#url-raiz]]@"` e os tooltips corretos por idioma.
+- Arquivos alterados: `gestor/resources/pt-br/layouts/layout-administrativo-do-gestor/layout-administrativo-do-gestor.html`, `gestor/resources/en/layouts/layout-administrativo-do-gestor/layout-administrativo-do-gestor.html`.
+
+#### Notas de escopo (Slice 1)
+
+- **Posicionamento**: o intake diz "ao lado direito dos botões `#menu-dashboard3d-btn` e `#menu-close-btn`". Interpretação aplicada: inserido como primeiro item do mesmo grupo `ui icon buttons` (Acessar site → Dashboard 3D → Fechar), mantendo o "X" (Fechar) como último por UX. Ajuste trivial caso a chefia prefira posição diferente.
+- **Alvo do link**: sem `target` (navega na mesma aba), espelhando o link de dashboard já existente no layout (linha 60). Fácil trocar para `target="_blank"` se preferir manter o admin aberto.
+
+#### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` para recompilar `PaginasData.json`/layouts e sincronizar (o layout é recurso de banco).
+- Validar no navegador que o botão aparece na barra de controles do menu admin e redireciona para a raiz pública do site.
+
+### Slice 3a — Meta 2: Dashboard Site Toolbar (iframe + rota + injeção)
+
+Reordenada à frente das Metas 5/6 porque o operador já havia scaffoldado a estrutura (rota, switch, funções vazias, refactor de `gestor_acesso`). Construído sobre esses esqueletos.
+
+- [x] Página iframe `dashboard-site-toolbar` (pt-br/en) preenchida com Tailwind: barra de altura total (~30px via iframe), acesso ao painel, `<!-- menu -->`, botões "Editar Página" (`#c2f-toolbar-edit`, live edit — Meta 3, comportamento pendente) e "Editar no Painel" (`#c2f-toolbar-edit-advanced`, `target="_parent"`). Rota `dashboard-site-toolbar/` já registrada no `dashboard.json` (layout `layout-pagina-simples`, `framework_css: tailwindcss`).
+- [x] `dashboard_site_toolbar()` (dashboard.php): lê `page_id`/`publisher_id` da query string (contexto da página hospedeira) e monta a URL de edição avançada — a página é carregada por `id` (=paginas.id) em ambos os módulos, mas o publicador precisa TAMBÉM do `publisher_id` (distinto do id da página) p/ fixar o contexto: `publisher-pages/editar/?id=<paginas.id>&publisher_id=<paginas.publisher_id>` quando publicador, senão `admin-paginas/editar/?id=<paginas.id>`.
+- [x] `dashboard_site_toolbar_menu()` (dashboard.php): dropdown Tailwind (base `menus-dropdown`) com os módulos que o perfil pode acessar (link para a página raiz do módulo, `target="_parent"`), label i18n (`Módulos`/`Modules`).
+- [x] `gestor_dashboard_toolbar()` (gestor.php): injeção do iframe fixo (top, 100% largura, 30px, `z-index` máximo) logo após `<body>` + inclusão do `dashboard.toolbar.js` (offset `margin-top:30px` na hospedeira) via `gestor_pagina_javascript_incluir(tipo=toolbar, modulo_id=dashboard)`. **Gating**: só para `usuario-id > 0` **e** `gestor_acesso('editar','admin-paginas')` **e** página pública (exclui layout `layout-administrativo-do-gestor` e `paginaIframe`). Resolve `id`/`publisher_id` da hospedeira consultando `paginas` por `caminho`+`language`. Chamada no bloco de finalização de `gestor.php` **antes** de `gestor_pagina_extra_head_e_javascript()` (após `gestor_pagina_widgets()`) p/ o JS auxiliar ser incluído, passando `caminho`.
+
+#### Evidência de Validação (Slice 3a)
+
+Evidência automatizada reportada em 2026-07-09 (PHP 8.4.8):
+- `php -l gestor/gestor.php` → OK; `php -l gestor/modulos/dashboard/dashboard.php` → OK.
+- `node --check gestor/modulos/dashboard/dashboard.toolbar.js` → OK.
+- `dashboard.json` → JSON VALID.
+- `composer test` → **76/76 (287 assertions, 4 skipped, 1 deprecation pré-existente)** — sem regressão após a injeção no core `gestor.php`.
+
+#### Notas de escopo / decisões (Slice 3a)
+
+- **Gating do render compartilhado**: a finalização em `gestor.php` (~L2180, `echo $_GESTOR['pagina']`) é usada por páginas públicas **e** admin (o `interface_finalizar()` não dá `exit`, retorna). Por isso o gating é explícito (exclui layout admin + iframe). Para anônimos, `gestor_dashboard_toolbar()` retorna antes de qualquer query (checagem de `usuario-id`), sem custo.
+- **`dashboard.toolbar.js` via `gestor_pagina_javascript_incluir`** (correção do Chefe): o JS é incluído pela função padrão (`tipo=toolbar`, `modulo_id=dashboard` → URL `dashboard/toolbar.js`, mapeada ao físico `dashboard.toolbar.js` por `arquivo-estatico.php`; `tipo` sem ponto p/ casar `/^[A-Za-z0-9-]+$/`). Como ela empilha em `javascript-fim` (despejado por `gestor_pagina_extra_head_e_javascript()`), a chamada da toolbar roda ANTES dessa etapa.
+- **URL de edição avançada (Meta 4)** (correção do Chefe): a página carrega por `id` (=paginas.id), mas o id da página e o `publisher_id` (id da publicação vinculada) **são distintos** — então o publicador recebe os dois: `publisher-pages/editar/?id=<paginas.id>&publisher_id=<paginas.publisher_id>` (o `publisher_id` fixa o contexto via `publisher_pages_publisher()`); comum: `admin-paginas/editar/?id=<paginas.id>`.
+- **Pendente nesta Meta**: comportamento do botão "Editar Página" (edição live in-place) é a **Meta 3** (slice próprio); a detecção/URL de publicador pode ser refinada na **Meta 4**.
+
+#### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` (recompila `PaginasData.json` da nova página `dashboard-site-toolbar` + remove `testes-do-dashboard`, aplica migração se houver) e sincronizar.
+- Logar como usuário com permissão de editar páginas, abrir uma página pública do site e confirmar: a barra de ~30px aparece no topo, o conteúdo é empurrado 30px, o dropdown de módulos lista os módulos acessíveis, e "Editar no Painel" abre `admin-paginas`/`publisher-pages` conforme a origem da página.
+- Confirmar que anônimos e páginas do painel administrativo **não** recebem a toolbar.
+
+### Slice 3b — Meta 3: Edição visual live via toolbar (Approach B / Path Y — fundação)
+
+Estratégia aprovada pelo Chefe: **Path Y** — o editor carrega o HTML ORIGINAL da tabela (com `@[[var]]@` e comentários de widget preservados; o html-editor já os trata como placeholders opacos), e o preview é que deve ganhar fidelidade visual à página live. Não se edita o DOM renderizado (isso queimaria vars/widgets). Sem motor de reconciliação.
+
+- [x] **UX (aval do Chefe): editar NÃO abre overlay que substitui a página — revela controles ABAIXO da toolbar.** Botão "Editar Página" (`#c2f-toolbar-edit`) faz toggle de uma segunda linha `#c2f-toolbar-editbar` (44px, oculta) dentro do próprio iframe, e posta `c2f-toolbar:resize`/`edit-start`/`edit-cancel`/`edit-save` (pt-br/en).
+- [x] **Toolbar dinâmica**: o iframe base 30px é redimensionado pelo host ao receber `c2f-toolbar:resize {height}` — mesma estratégia do seletor de linguagens (`global.js`). A toolbar mede dropdown de módulos (hover) + editbar aberta via `computeHeight()`. Transparência (`html,body{background:transparent}` + iframe `background:transparent`/`allowtransparency`) faz a área expandida mostrar a página atrás; só barra/dropdown/editbar ficam opacos.
+- [x] **Refinamentos visuais**: marca usa `@[[pagina#url-raiz]]@images/LogomarcaIcone.png` + texto "Dashboard"; menu (PHP) recebeu `id="c2f-toolbar-menu"`; z-index da toolbar 2147483000.
+- [x] **Motor marker-based (estratégia FINAL)** — decisão registrada: editor mostra a página RENDERIZADA; `@[[var]]@`/widgets viram caixas de destaque protegidas guardando o marcador; save reconstrói determinístico (caixa→marcador, resto→editado).
+- [x] **Backend — endpoint de save**: `dashboard_ajax_site_toolbar_save()` (ajax-opcao `site-toolbar-save`) grava `html`/`css`/`css_compiled`/`html_extra_head` em `paginas` por `id`+`language`, permissão `gestor_acesso('editar','admin-paginas')`, `banco_update_campo` escapando. `php -l` OK, `composer test` 76/76. *(Teste unitário gated por banco — não adicionado, seguindo precedente de endpoints acoplados a banco/POST.)*
+- [x] **Motor completo (marker-based)**:
+  - Backend `site-toolbar-render` (`dashboard_ajax_site_toolbar_render`): lê `paginas.html` original, envolve widgets (wrapper por comentário + inline `@[[widgets#...]]@`) e variáveis `@[[var]]@` (em texto) em **caixas de destaque** `.c2f-dyn-box` (`data-c2f-marker` = base64 do marcador); vars em atributo resolvem para valor. Helpers `dashboard_site_toolbar_box/_render_widget/_boxes_widgets/_resolver_var/_boxes_variaveis`.
+  - Wrapper `#c2f-page-content` no conteúdo da página (em `gestor_pagina_layout`, gated por `gestor_dashboard_toolbar_ativo()` — mesmo gate da injeção).
+  - **Editor visual REAL (correção do Chefe — não `contentEditable`)**: `html-editor.js` adaptado para aceitar `contentRoot` (default `document.body` → clássico intacto); escopa `resolveEditable`/`getUserContentNodes`/TreeWalkers/inserção ao root; auto-init guardado por `window.__c2fHtmlEditorNoAutoInit`; expõe `window.HtmlEditorClass`. `dashboard.toolbar.js` (edit-start): fetch render → troca `#c2f-page-content` → carrega jQuery (se ausente) + `interface/html-editor.js` (noAutoInit) → `new HtmlEditorClass({contentRoot:#c2f-page-content})` → editor real ativo (caixas tracejadas de seleção, floating toolbar, styler, DnD). Save: `getCleanHtml()` → `DOMParser` → `reconstructOriginal` (caixas→marcadores) → POST → reload. Cancel = reload.
+  - **Modal fallback vanilla (autorizado)**: `ensureFallbackModal()` injeta `#html-editor-modal` vanilla (inline styles portáveis) com `#text-field`/`#image-field`/`#code-field`+textareas quando ausente; `showModal`/`hideModal` vanilla quando não há Fomantic (`usaFomanticModal`); botões Salvar/Cancelar/backdrop ligados; code-edit usa `#element-code` sem CodeMirror. Bump `biblioteca-html-editor` 1.3.28→1.3.29. **Dependência dura**: só jQuery (carregado on-demand); Fomantic/CodeMirror opcionais (degradam graciosamente).
+
+#### Evidência de Validação (Slice 3b — fundação)
+
+Evidência automatizada em 2026-07-09 (PHP 8.4.8):
+- `node --check gestor/modulos/dashboard/dashboard.toolbar.js` → OK.
+- `php -l gestor/gestor.php` → OK; `php -l gestor/modulos/dashboard/dashboard.php` → OK.
+- `composer test` → **76/76 (287 assertions, 4 skipped)** — sem regressão.
+
+#### Pendências (refino + runtime)
+- **Refino (próximo)**: fidelidade visual do preview do editor à página live (`html-editor-interface.js` `editorHtmlVisualConteudo`/srcdoc) — incluir head/CSS/framework/layout da página para eliminar a leve diferença de CSS.
+- **Runtime (operador)**: após `Update => Core`, logar como editor, abrir página pública, clicar "Editar Página" → a barra de edição abre abaixo da toolbar e a página fica editável (caixas de var/widget protegidas); "Salvar alterações" persiste e recarrega; confirmar que `@[[var]]@` e widgets seguem preservados no `paginas.html` após salvar.
+
+### Slice 2 — Meta 5: Agendamento de Páginas e Datas Retroativas
+
+- [x] Migração `20260712100000_add_publish_window_to_paginas.php` (colunas `data_publicacao_inicio`/`data_publicacao_fim` datetime null, guards `hasColumn`, `down()` reversível). `paginas` já tinha `data_criacao`/`data_modificacao`.
+- [x] Helpers globais `gestor_parse_datetime_br()` (dd/mm/yyyy HH:mm ou ISO → DATETIME; null se vazio/inválido) e `gestor_datetime_para_input()`.
+- [x] Roteamento 404 (`gestor.php`): a query de página ativa (principal + fallback de idioma) filtra `(data_publicacao_inicio IS NULL OR <= NOW())` e `(data_publicacao_fim IS NULL OR >= NOW())` → fora da janela = 0 linhas = 404. Páginas de sistema (janela NULL) sempre passam.
+- [x] Controladores `admin-paginas` e `publisher-pages` (adicionar/clonar): campos `data_publicacao_inicio/fim` (se informados) + `data_criacao`/`data_modificacao` retroativas (valor informado ou NOW()). Editar (diff): idem, com preserve-on-empty (só altera janela quando data válida; `*_limpar` para NULL) e `data_modificacao` respeitando override.
+- [x] 12 forms (admin-paginas + publisher-pages × adicionar/editar/clonar × pt-br/en) com a seção "Agendamento e datas" (`<!-- agendamento-datas -->`, 4 `<input type="datetime-local">`) inserida após `<!-- permissao-pagina > --></div>`.
+
+#### Evidência de Validação (Slice 2)
+- `php -l` OK: `gestor.php`, `admin-paginas.php`, `publisher-pages.php`, migração. `composer test` **76/76**. Seção inserida nos 12 forms (perl bytes-crus preservou acentos `criação`/`modificação`).
+
+#### Limitações / Pendências (Slice 2)
+- Editar não pré-preenche os valores atuais das datas (campos vazios; preserve-on-empty evita apagar). Alteração **só de agendamento** (sem outro campo mudar) pode não disparar o save no editar (bloco dentro do finalize de update). Formato friendly dd/mm/yyyy é aceito pelo parser mas os inputs usam `datetime-local` (ISO). **Runtime**: migração via `Update => Core`; testar página agendada/expirada → 404; datas retroativas gravadas.
+
+### Slice 4 — Meta 6: Atalho de Edição Administrativa de Widget no Editor HTML
+
+- [x] Botão `he-tb-widget-admin` (ícone `external alternate`) no `#html-editor-floating-toolbar` (`html-editor.js`), visível só quando um `.conn2flow-widget-wrapper` está selecionado (`updateWidgetAdminButton` em `updateSelectionUI`).
+- [x] `openWidgetAdmin()`: abre `<raiz><data-widget-type>/editar/?id=<data-widget-slug>` em nova aba (raiz via `window.parent.gestor.raiz` com fallback). Cache-bust `biblioteca-html-editor` 1.3.27→1.3.28.
+
+#### Evidência de Validação (Slice 4)
+- `node --check gestor/assets/interface/html-editor.js` → OK. `composer test` **76/76**. **Runtime**: selecionar um widget no editor e confirmar que o botão abre o módulo (ex.: `menus/editar/?id=<slug>`).
+
+### Slice 5 — Rodada de Correções (pontos 1-5 + edição de layout + user_modified)
+
+Feedback do Chefe após teste da fundação. Consolidado em slice único conforme a instrução "faça tudo sem parar até terminar".
+
+- [x] **Ponto 1 — controles no `#c2f-toolbar-editbar`** (sempre visível durante a edição): botões `screenPagina` (desktop 100% / tablet 768px / mobile 375px), `html-editor-undo-btn`, `html-editor-redo-btn` e `html-editor-add-btn`. O undo/redo/add postam `c2f-toolbar:edit-undo`/`edit-redo`/`edit-add` ao host, que aciona `c2fEditor.undo()/redo()` e abre o painel "+" (`openAddPanel`). `screenPagina` posta `c2f-toolbar:edit-screen {width}` → `setEditScreen` redimensiona o `#c2f-layout-root`/`#c2f-page-content` na hospedeira.
+- [x] **Ponto 1b — painel de inserção de widgets no add-btn**: o `html-editor-add-btn` abre painel host (`openAddPanel`) que lista elementos básicos **e** grupos de widgets (reuso de `html_editor_ajax_widget_types`/`html_editor_ajax_widgets_list` via endpoints `site-toolbar-widget-types`/`site-toolbar-widgets-list` no `dashboard.php`, que incluem `gestor_incluir_biblioteca('html-editor')`). Inserção via `c2f-toolbar:edit-insert` (elemento) e inserção direta de widget no editor.
+- [x] **Ponto 2 — imagepick**: `requestBackgroundImage()` no `html-editor.js` cai em `window.prompt` de URL quando não há config `html_editor.imagepick` (contexto da toolbar não tem o módulo admin-paginas). O botão `he-bgimage-pick` volta a responder.
+- [x] **Ponto 3 — datas via `formato.php`** (helpers removidos do `gestor.php`): `formato_data_hora_br_para_datetime()` aceita **BR** (`DD/MM/AAAA [HH:MM]`) **e ISO** (`AAAA-MM-DD[THH:MM]`, o `datetime-local` foi **mantido**), e `formato_data_hora_datetime_para_input()` faz o inverso (DATETIME→`Y-m-d\TH:i`). `admin-paginas.php`/`publisher-pages.php` passam a incluir `formato` e usar essas fns.
+- [x] **CodeMirror in-place**: `dashboard.toolbar.js` (`ensureCodeMirror`/`initCodeMirrorField`) inicializa o CodeMirror sobre o `#element-code` do modal do editor live (carrega CSS/JS on-demand), espelhando o `admin-paginas`.
+- [x] **Ponto 4 — edição do LAYOUT** (via `layout_id`, só o body-inner): `dashboard_ajax_site_toolbar_render` retorna também `layout_id`/`layout_html` (body-inner do registro `layouts` do banco, renderizado com caixas e `$preservar_atributos=true` para manter `@[[pagina#url-raiz]]@` etc. literais); `#c2f-layout-root` (`data-layout-id`) envolve o body-inner na hospedeira. `saveEdit` divide: conteúdo (`#c2f-page-content`)→`paginas`; layout (`#c2f-layout-root` com o `#c2f-page-content` recolocado como `__C2F_CORPO__`→`@[[pagina#corpo]]@`)→`layouts` via `dashboard_site_toolbar_salvar_layout` (safeguard exige `@[[pagina#corpo]]@` no body-inner salvo).
+- [x] **Ponto 5-save — histórico + backup**: `dashboard_ajax_site_toolbar_save` grava, além do campo, `interface_backup_campo_incluir` + `interface_historico_incluir` no módulo-dono (`publisher-pages` se `publisher_id`, senão `admin-paginas`), espelhando o `admin-paginas`.
+- [x] **Ponto 5-dropdown — restauração de backups no editbar**: botão `#c2f-backups-btn` posta `c2f-toolbar:edit-backups`; host `openBackupPanel` busca `site-toolbar-backups` (lista `id`/`versao`/`data` de `backup_campos` do `id_paginas`+módulo-dono+`campo='html'`), e ao clicar busca `site-toolbar-backup-get` (valor renderizado com caixas) e injeta em `#c2f-page-content`.
+- [x] **user_modified=1**: o save marca `user_modified=1` (+`versao`+1 +`data_modificacao=NOW()`) tanto em `paginas` quanto em `layouts` (quando o layout é alterado no mesmo salvamento).
+
+#### Evidência de Validação (Slice 5)
+
+Evidência automatizada em 2026-07-09 (PHP 8.4.8):
+- `node --check gestor/modulos/dashboard/dashboard.toolbar.js` → OK.
+- `php -l` OK: `gestor/modulos/dashboard/dashboard.php`, `gestor/gestor.php`, `gestor/bibliotecas/formato.php`.
+- `composer test` → **76/76 (287 assertions, 4 skipped, 1 deprecation pré-existente)** — sem regressão.
+- Cache-bust `biblioteca-html-editor` até `1.3.30`.
+- Arquivos alterados: `dashboard.php`, `dashboard.toolbar.js`, `dashboard-site-toolbar.html` (pt-br/en), `html-editor.js`, `html-editor.php` (versão), `formato.php`, `gestor.php`, `admin-paginas.php`, `publisher-pages.php`.
+
+#### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` (aplica migração de janela de publicação + recompila `PaginasData.json`/layouts) e sincronizar.
+- Logar como editor, abrir página pública, "Editar Página": confirmar controles no editbar (telas responsivas, undo/redo, add com widgets, backups), imagepick por URL, edição de conteúdo **e** de layout (body-inner), salvamento com histórico/backup e `user_modified=1` em `paginas`/`layouts`, e restauração de um backup pelo dropdown.
+
+---
+## BATCH-076 - Opção de Exclusão de contents/ em Tarefas de Deploy e Sincronização (req-076)
+
+- [x] **Configuração de Tarefas (`.vscode/tasks.json`)**:
+  - [x] Adicionar o input seletor `contentsChoice` (Sim/Não) com valor padrão "Sim".
+  - [x] Atualizar as tarefas `"🗃️ Projects - Deploy Current Project"`, `"🗃️ Projects - Deploy Project -> ID"` e `"🗃️ Projects - Synchronize => Files -> ID"` para aceitar e propagar o parâmetro `--contents ${input:contentsChoice}`.
+- [x] **Script de Deploy (`deploy-project-v2.sh`)**:
+  - [x] Aceitar o parâmetro `--contents` e tratar o valor "Não" para excluir a pasta `contents/` da compressão 7z.
+  - [x] Quando `gitDeploy` estiver ativo e a opção for "Não", filtrar a lista de arquivos alterados para excluir qualquer alteração vinda de `contents/`.
+- [x] **Script de Sincronização (`synchronize-project.sh`)**:
+  - [x] Aceitar o parâmetro `--contents` e tratar o valor "Não" para adicionar `--exclude "contents/"` no comando `rsync`.
+- [x] **Validação**:
+  - [x] Sintaxe JSON e bash (`bash -n`) corretas.
+  - [x] Confirmar que a exclusão da pasta de uploads de fato ocorre no ZIP e no Rsync em testes manuais rápidos.
+
+### Evidência de Validação (BATCH-076)
+
+Evidência automatizada e estática reportada pelo executor em 2026-07-09:
+- Sintaxe de `.vscode/tasks.json` validada com sucesso.
+- Sintaxe bash de `deploy-project-v2.sh` e `synchronize-project.sh` validada via `bash -n` e opções de `--help` testadas com sucesso.
+- `git diff --check` executado sem erros nos arquivos modificados.

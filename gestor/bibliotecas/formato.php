@@ -79,8 +79,54 @@ function formato_data_hora_padrao_datetime($dataHora, $semHora = false){
 	
 	// Monta string no formato MySQL
 	$datetime = $dataArray[2]."-".$dataArray[1]."-".$dataArray[0].($semHora ? '' : " ".$dataHoraArray[1].":00");
-	
+
 	return $datetime;
+}
+
+/**
+ * Converte data/hora para DATETIME do MySQL (YYYY-MM-DD HH:MM:SS), COM validação:
+ * retorna null quando vazio ou em formato inválido. Aceita DUAS formas — o formato
+ * brasileiro (DD/MM/AAAA [HH:MM[:SS]]) e o ISO do <input type="datetime-local">
+ * (AAAA-MM-DD[THH:MM]). Sem a hora, assume 00:00. Ideal para campos opcionais de
+ * agendamento e datas retroativas (BATCH-075 / Meta 5).
+ *
+ * @param string $str Data/hora (BR ou ISO/datetime-local).
+ * @return string|null DATETIME (YYYY-MM-DD HH:MM:SS) ou null quando vazio/inválido.
+ */
+function formato_data_hora_br_para_datetime($str){
+	$str = trim((string)$str);
+	if($str === '') return null;
+
+	// O <input type="datetime-local"> usa 'T' entre data e hora.
+	$str = str_replace('T', ' ', $str);
+
+	// DD/MM/AAAA [HH:MM[:SS]]
+	if(preg_match('#^(\d{2})/(\d{2})/(\d{4})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?$#', $str, $m)){
+		return $m[3].'-'.$m[2].'-'.$m[1].' '.(isset($m[4]) ? $m[4] : '00').':'.(isset($m[5]) ? $m[5] : '00').':'.(isset($m[6]) ? $m[6] : '00');
+	}
+
+	// AAAA-MM-DD [HH:MM[:SS]] (ISO / datetime-local)
+	if(preg_match('#^(\d{4})-(\d{2})-(\d{2})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?$#', $str, $m)){
+		return $m[1].'-'.$m[2].'-'.$m[3].' '.(isset($m[4]) ? $m[4] : '00').':'.(isset($m[5]) ? $m[5] : '00').':'.(isset($m[6]) ? $m[6] : '00');
+	}
+
+	return null;
+}
+
+/**
+ * Converte um DATETIME do MySQL para o valor de um <input type="datetime-local">
+ * (Y-m-d\TH:i). Retorna '' quando vazio/nulo/zero (BATCH-075 / Meta 5 — pré-preencher
+ * as datas no formulário de edição).
+ *
+ * @param string $str DATETIME (YYYY-MM-DD HH:MM:SS).
+ * @return string Valor no formato Y-m-d\TH:i ou '' quando vazio.
+ */
+function formato_data_hora_datetime_para_input($str){
+	$str = trim((string)$str);
+	if($str === '' || strpos($str, '0000-00-00') === 0) return '';
+	$ts = strtotime($str);
+	if($ts === false) return '';
+	return date('Y-m-d\TH:i', $ts);
 }
 
 /**

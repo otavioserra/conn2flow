@@ -71,18 +71,19 @@
                     }
                 },
                 {
-                    "name": "Dashboard Pré Publicação",
-                    "id": "testes-do-dashboard",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "cf8d79dae48be6e8f5399b9c6ca4d71c",
-                        "css": "",
-                        "combined": "cf8d79dae48be6e8f5399b9c6ca4d71c"
-                    },
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "octavio-pagina\/",
+                    "name": "Dashboard Site Toolbar",
+                    "id": "dashboard-site-toolbar",
+                    "layout": "layout-pagina-simples",
+                    "path": "dashboard-site-toolbar\/",
                     "type": "system",
-                    "option": "dashboard-teste"
+                    "option": "dashboard-site-toolbar",
+                    "framework_css": "tailwindcss",
+                    "version": "1.9",
+                    "checksum": {
+                        "html": "8714c7829960a4ebad7dd75169b0732c",
+                        "css": "",
+                        "combined": "8714c7829960a4ebad7dd75169b0732c"
+                    }
                 }
             ],
             "components": [
@@ -278,18 +279,19 @@
                     }
                 },
                 {
-                    "name": "Dashboard Preview",
-                    "id": "testes-do-dashboard",
-                    "version": "1.2",
-                    "checksum": {
-                        "html": "90d84f327b1487c1fea03855a3ad0c36",
-                        "css": "",
-                        "combined": "90d84f327b1487c1fea03855a3ad0c36"
-                    },
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "octavio-pagina\/",
+                    "name": "Dashboard Site Toolbar",
+                    "id": "dashboard-site-toolbar",
+                    "layout": "layout-pagina-simples",
+                    "path": "dashboard-site-toolbar\/",
                     "type": "system",
-                    "option": "dashboard-teste"
+                    "option": "dashboard-site-toolbar",
+                    "framework_css": "tailwindcss",
+                    "version": "1.9",
+                    "checksum": {
+                        "html": "57780ccc422afac9f79cadfe08eda36a",
+                        "css": "",
+                        "combined": "57780ccc422afac9f79cadfe08eda36a"
+                    }
                 }
             ],
             "components": [

@@ -5,6 +5,9 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'publisher-pages';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/publisher-pages.json'), true);
 
+// Datas de agendamento (BATCH-075/Meta 5) usam formato.php (formato_data_hora_br_para_datetime).
+gestor_incluir_biblioteca('formato');
+
 // ===== Interfaces Auxiliares
 
 function publisher_pages_publisher($publisher_id = null){
@@ -183,8 +186,10 @@ function publisher_pages_adicionar(){
 		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
-		$campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = 'NOW()'; 	$campos[] = Array($campo_nome,$campo_valor,true);
+		$__dpi = formato_data_hora_br_para_datetime(isset($_REQUEST['data_publicacao_inicio']) ? $_REQUEST['data_publicacao_inicio'] : ''); if($__dpi !== null){ $campos[] = Array('data_publicacao_inicio', $__dpi); }
+		$__dpf = formato_data_hora_br_para_datetime(isset($_REQUEST['data_publicacao_fim']) ? $_REQUEST['data_publicacao_fim'] : ''); if($__dpf !== null){ $campos[] = Array('data_publicacao_fim', $__dpf); }
+		$__dcr = formato_data_hora_br_para_datetime(isset($_REQUEST['data_criacao']) ? $_REQUEST['data_criacao'] : ''); $campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = ($__dcr !== null ? "'".$__dcr."'" : 'NOW()'); 		$campos[] = Array($campo_nome,$campo_valor,true);
+		$__dmo = formato_data_hora_br_para_datetime(isset($_REQUEST['data_modificacao']) ? $_REQUEST['data_modificacao'] : ''); $campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = ($__dmo !== null ? "'".$__dmo."'" : 'NOW()'); 	$campos[] = Array($campo_nome,$campo_valor,true);
 	
 		banco_insert_name
 		(
@@ -757,7 +762,11 @@ function publisher_pages_editar(){
 		if(isset($editar['dados'])){
 			$campo_nome = 'user_modified'; $editar['dados'][] = $campo_nome." = 1";
 			$campo_nome = $modulo['tabela']['versao']; $editar['dados'][] = $campo_nome." = ".$campo_nome." + 1";
-			$campo_nome = $modulo['tabela']['data_modificacao']; $editar['dados'][] = $campo_nome."=NOW()";
+			// ===== Agendamento e datas retroativas (BATCH-075 / Meta 5)
+			$__dpi_e = formato_data_hora_br_para_datetime(isset($_REQUEST['data_publicacao_inicio']) ? $_REQUEST['data_publicacao_inicio'] : ''); if($__dpi_e !== null){ $editar['dados'][] = "data_publicacao_inicio='".$__dpi_e."'"; } else if(isset($_REQUEST['data_publicacao_inicio_limpar'])){ $editar['dados'][] = "data_publicacao_inicio=NULL"; }
+			$__dpf_e = formato_data_hora_br_para_datetime(isset($_REQUEST['data_publicacao_fim']) ? $_REQUEST['data_publicacao_fim'] : ''); if($__dpf_e !== null){ $editar['dados'][] = "data_publicacao_fim='".$__dpf_e."'"; } else if(isset($_REQUEST['data_publicacao_fim_limpar'])){ $editar['dados'][] = "data_publicacao_fim=NULL"; }
+			$__dcr_e = formato_data_hora_br_para_datetime(isset($_REQUEST['data_criacao']) ? $_REQUEST['data_criacao'] : ''); if($__dcr_e !== null){ $editar['dados'][] = $modulo['tabela']['data_criacao']."='".$__dcr_e."'"; }
+			$campo_nome = $modulo['tabela']['data_modificacao']; $__dmo_e = formato_data_hora_br_para_datetime(isset($_REQUEST['data_modificacao']) ? $_REQUEST['data_modificacao'] : ''); $editar['dados'][] = $campo_nome."=".($__dmo_e !== null ? "'".$__dmo_e."'" : "NOW()");
 			
 			$editar['sql'] = banco_campos_virgulas($editar['dados']);
 			
@@ -1494,8 +1503,10 @@ function publisher_pages_clonar(){
 		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
-		$campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = 'NOW()'; 	$campos[] = Array($campo_nome,$campo_valor,true);
+		$__dpi = formato_data_hora_br_para_datetime(isset($_REQUEST['data_publicacao_inicio']) ? $_REQUEST['data_publicacao_inicio'] : ''); if($__dpi !== null){ $campos[] = Array('data_publicacao_inicio', $__dpi); }
+		$__dpf = formato_data_hora_br_para_datetime(isset($_REQUEST['data_publicacao_fim']) ? $_REQUEST['data_publicacao_fim'] : ''); if($__dpf !== null){ $campos[] = Array('data_publicacao_fim', $__dpf); }
+		$__dcr = formato_data_hora_br_para_datetime(isset($_REQUEST['data_criacao']) ? $_REQUEST['data_criacao'] : ''); $campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = ($__dcr !== null ? "'".$__dcr."'" : 'NOW()'); 		$campos[] = Array($campo_nome,$campo_valor,true);
+		$__dmo = formato_data_hora_br_para_datetime(isset($_REQUEST['data_modificacao']) ? $_REQUEST['data_modificacao'] : ''); $campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = ($__dmo !== null ? "'".$__dmo."'" : 'NOW()'); 	$campos[] = Array($campo_nome,$campo_valor,true);
 	
 		banco_insert_name
 		(

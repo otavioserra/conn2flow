@@ -320,7 +320,7 @@ $(document).ready(function () {
 
 		// ===== Widget de Seleção de Linguagem (Via Iframe)
 
-		if (gestor.languages.widgetActive && Array.isArray(gestor.pageLanguages) && gestor.pageLanguages.length > 1) {
+		if (gestor.languages.widgetActive && Array.isArray(gestor.pageLanguages) && gestor.pageLanguages.length > 1 && (gestor.moduloId != 'dashboard' && gestor.moduloOpcao != 'dashboard-site-toolbar')) {
 			// Criar Iframe para isolar o ambiente (Fomantic UI / jQuery)
 			var iframeSrc = gestor.raiz + 'global/language-widget.html';
 			var iframeId = 'gestor-language-iframe';

@@ -1317,6 +1317,712 @@ function dashboard_menu(){
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- '.$cel_nome.' -->','');
 }
 
+/**
+ * Gera o dashboard site toolbar.
+ */
+function dashboard_site_toolbar(){
+	global $_GESTOR;
+
+	// ===== Contexto da página hospedeira (passado pela injeção via query string).
+
+	$page_id = (isset($_REQUEST['page_id']) ? trim($_REQUEST['page_id']) : '');
+	$publisher_id = (isset($_REQUEST['publisher_id']) ? trim($_REQUEST['publisher_id']) : '');
+
+	// ===== Edição avançada inteligente (Meta 4): a página é carregada por `id` (=paginas.id)
+	//       em ambos os módulos. Quando a página pertence a um publicador, abre publisher-pages
+	//       e precisa TAMBÉM do `publisher_id` (o id da publicação vinculada, distinto do id da
+	//       página) para fixar o contexto do publicador (publisher_pages_publisher lê
+	//       $_REQUEST['publisher_id']). Caso contrário, abre admin-paginas.
+
+	if($page_id !== ''){
+		if($publisher_id !== ''){
+			$advanced_edit_url = $_GESTOR['url-raiz'].'publisher-pages/editar/?id='.rawurlencode($page_id)
+				.'&publisher_id='.rawurlencode($publisher_id);
+		} else {
+			$advanced_edit_url = $_GESTOR['url-raiz'].'admin-paginas/editar/?id='.rawurlencode($page_id);
+		}
+	} else {
+		$advanced_edit_url = $_GESTOR['url-raiz'].'admin-paginas/';
+	}
+
+	// modelo_var_troca_tudo: o mesmo URL alimenta o botão "Editar no Painel" (href) e o
+	// "Editar Página" (data-edit-url).
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#advanced_edit_url#',$advanced_edit_url);
+
+	// page_id da página hospedeira — o frontend usa nos endpoints site-toolbar-render/save.
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#page_id#',htmlspecialchars($page_id, ENT_QUOTES, 'UTF-8'));
+
+	// ===== Menu de módulos do painel.
+
+	dashboard_site_toolbar_menu();
+}
+
+/**
+ * Gera o menu do dashboard site toolbar.
+ *
+ * Dropdown Tailwind (base: menus-dropdown) com os módulos que o perfil do
+ * usuário logado pode acessar, cada um linkando para a página raiz do módulo
+ * no painel (target="_parent" para sair do iframe).
+ */
+function dashboard_site_toolbar_menu(){
+	global $_GESTOR;
+
+	$lang = $_GESTOR['linguagem-codigo'];
+	$label_modulos = ($lang == 'en' ? 'Modules' : 'Módulos');
+	$label_vazio = ($lang == 'en' ? 'No modules' : 'Sem módulos');
+
+	// ===== Perfil do usuário logado.
+
+	$usuario = gestor_usuario();
+
+	$usuarios_perfis = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios_perfis',
+		'campos' => Array('id'),
+		'extra' => "WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'",
+	));
+
+	$perfil = ($usuarios_perfis ? $usuarios_perfis['id'] : '');
+
+	// ===== Módulos que o perfil pode acessar.
+
+	$perfil_modulos = array();
+
+	if($perfil !== ''){
+		$upm = banco_select_name(
+			banco_campos_virgulas(Array('modulo')),
+			"usuarios_perfis_modulos",
+			"WHERE perfil='".$perfil."'"
+		);
+
+		if($upm)foreach($upm as $m) $perfil_modulos[$m['modulo']] = true;
+	}
+
+	// ===== Link padrão de cada módulo (página raiz).
+
+	$paginas = banco_select_name(
+		banco_campos_virgulas(Array('modulo','caminho')),
+		"paginas",
+		"WHERE raiz IS NOT NULL AND language='".$lang."' AND status='A'"
+	);
+
+	$modulo_link = array();
+
+	if($paginas)foreach($paginas as $p){
+		if($p['modulo'] !== '' && !isset($modulo_link[$p['modulo']])){
+			$modulo_link[$p['modulo']] = $_GESTOR['url-raiz'].$p['caminho'];
+		}
+	}
+
+	// ===== Módulos ativos, ordenados por nome.
+
+	$modulos = banco_select_name(
+		banco_campos_virgulas(Array('id','nome')),
+		"modulos",
+		"WHERE language='".$lang."' AND status='A' ORDER BY nome ASC"
+	);
+
+	// ===== Montar os itens do dropdown.
+
+	$itens = '';
+
+	if($modulos)foreach($modulos as $m){
+		if($m['id'] == 'dashboard') continue;
+		if(!isset($perfil_modulos[$m['id']])) continue;
+
+		$link = (isset($modulo_link[$m['id']]) ? $modulo_link[$m['id']] : $_GESTOR['url-raiz'].'dashboard/');
+		$nome = htmlspecialchars($m['nome'], ENT_QUOTES, 'UTF-8');
+
+		$itens .=
+			'<li><a href="'.$link.'" target="_parent" '
+			.'class="block px-4 py-2 text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap">'
+			.$nome.'</a></li>';
+	}
+
+	if($itens === ''){
+		$itens = '<li class="px-4 py-2 text-slate-400 italic">'.$label_vazio.'</li>';
+	}
+
+	// ===== Dropdown (hover) no estilo Tailwind do menus-dropdown.
+
+	$menu =
+		'<div id="c2f-toolbar-menu" class="relative group flex items-stretch">'
+		.'<button type="button" class="flex items-center gap-1 px-3 hover:bg-slate-700 transition-colors whitespace-nowrap">'
+		.$label_modulos
+		.'<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>'
+		.'</button>'
+		.'<ul class="absolute left-0 top-full w-56 bg-white border border-slate-200 rounded-b-md shadow-lg py-1 hidden group-hover:block z-10 max-h-96 overflow-auto">'
+		.$itens
+		.'</ul>'
+		.'</div>';
+
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- menu -->',$menu);
+}
+
+/**
+ * AJAX — Salva o conteúdo editado da página (Dashboard Site Toolbar / Meta 3).
+ *
+ * Recebe o HTML ORIGINAL já reconstruído pelo editor (as caixas de destaque de
+ * variável/widget foram revertidas no cliente para os marcadores `@[[var]]@` /
+ * `<!-- widgets#... -->`), preservando o dinamismo. Persiste em `paginas` apenas os
+ * campos de conteúdo enviados. Exige permissão de edição de páginas.
+ */
+function dashboard_ajax_site_toolbar_save(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão para editar páginas.');
+		return;
+	}
+
+	$page_id = isset($_REQUEST['page_id']) ? trim($_REQUEST['page_id']) : '';
+
+	if($page_id === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não informada.');
+		return;
+	}
+
+	$language = $_GESTOR['linguagem-codigo'];
+
+	// ===== Estado atual da página (para backup do valor antigo + histórico).
+
+	$pagina = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas',
+		'campos' => Array('id_paginas','versao','publisher_id','html','css','css_compiled','html_extra_head'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($page_id)."'"
+			." AND language='".$language."'"
+			." AND status!='D'",
+	));
+
+	if(!$pagina){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não encontrada.');
+		return;
+	}
+
+	// ===== Grava os campos de conteúdo que MUDARAM; guarda o valor antigo p/ backup.
+
+	$campos = Array('html','css','css_compiled','html_extra_head');
+	$backups = Array();
+	$algum = false;
+
+	foreach($campos as $campo){
+		if(isset($_REQUEST[$campo])){
+			$novo = (string)$_REQUEST[$campo];
+			$antigo = isset($pagina[$campo]) ? (string)$pagina[$campo] : '';
+			if($novo !== $antigo){
+				banco_update_campo($campo, $novo);
+				if($antigo !== '') $backups[] = Array('campo' => $campo, 'valor' => $antigo);
+				$algum = true;
+			}
+		}
+	}
+
+	// ===== Persiste o conteúdo da página (se algum campo mudou) + backup/histórico.
+
+	if($algum){
+		$novaVersao = (int)$pagina['versao'] + 1;
+		banco_update_campo('user_modified', '1', true);
+		banco_update_campo('versao', (string)$novaVersao, true);
+		banco_update_campo('data_modificacao', 'NOW()', true);
+
+		banco_update_executar('paginas',
+			"WHERE id='".banco_escape_field($page_id)."'"
+			." AND language='".$language."'"
+		);
+
+		// Módulo dono da página (o backup/histórico aparece no CRUD correto).
+		$ownerModule = (existe($pagina['publisher_id']) ? 'publisher-pages' : 'admin-paginas');
+
+		gestor_incluir_biblioteca('interface');
+
+		foreach($backups as $backup){
+			interface_backup_campo_incluir(Array(
+				'id_numerico' => $pagina['id_paginas'],
+				'versao' => $novaVersao,
+				'campo' => $backup['campo'],
+				'valor' => $backup['valor'],
+				'modulo' => $ownerModule,
+			));
+		}
+
+		interface_historico_incluir(Array(
+			'id' => $page_id,
+			'modulo_id' => $ownerModule,
+			'tabela' => Array(
+				'nome' => 'paginas',
+				'id_numerico' => 'id_paginas',
+				'versao' => 'versao',
+			),
+			'alteracoes' => Array(
+				Array('campo' => 'form-html-label'),
+			),
+		));
+	}
+
+	// ===== Persiste o LAYOUT (se enviado e efetivamente mudou) — ponto 4.
+
+	$layoutSalvo = false;
+	if(isset($_REQUEST['layout_html']) && isset($_REQUEST['layout_id'])){
+		$layoutSalvo = dashboard_site_toolbar_salvar_layout($_REQUEST['layout_id'], $_REQUEST['layout_html'], $language);
+	}
+
+	if(!$algum && !$layoutSalvo){
+		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'message' => 'Sem alterações.');
+		return;
+	}
+
+	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'message' => 'Salvo.');
+}
+
+/**
+ * Helper — envolve um conteúdo dinâmico (variável/widget) numa caixa de destaque protegida,
+ * guardando o marcador ORIGINAL em base64 (`data-c2f-marker`) para reconstrução determinística.
+ */
+function dashboard_site_toolbar_box($marker, $rendered, $tipo){
+	$b64 = base64_encode($marker);
+	$tag = ($tipo === 'widget') ? 'div' : 'span';
+	return '<'.$tag.' class="c2f-dyn-box c2f-'.$tipo.'-box" data-c2f-marker="'.$b64.'" contenteditable="false">'.$rendered.'</'.$tag.'>';
+}
+
+/**
+ * Helper — renderiza um widget pela assinatura (`modulo->func({json})`) em modo page-load.
+ */
+function dashboard_site_toolbar_render_widget($signature){
+	global $_GESTOR;
+
+	$sig = trim((string)$signature);
+	if($sig === '' || !preg_match('/^[a-zA-Z0-9_\-]+->[a-zA-Z0-9_\-]+\(.*\)$/', $sig)){
+		return '';
+	}
+
+	$ajaxAnterior = isset($_GESTOR['ajax']) ? $_GESTOR['ajax'] : false;
+	$_GESTOR['ajax'] = false;
+	$out = widgets_get(Array('id' => $sig));
+	$_GESTOR['ajax'] = $ajaxAnterior;
+
+	return (string)$out;
+}
+
+/**
+ * Helper — troca os widgets (forma wrapper por comentário e forma inline `@[[widgets#...]]@`)
+ * por caixas de destaque com o widget renderizado dentro.
+ */
+function dashboard_site_toolbar_boxes_widgets($html){
+	// Forma wrapper: <!-- widgets#SIG < --> ... <!-- widgets#SIG > -->
+	$html = preg_replace_callback(
+		'/<!--\s*widgets#(.+?)\s*<\s*-->([\s\S]*?)<!--\s*widgets#\s*\1\s*>\s*-->/i',
+		function($m){
+			$rendered = dashboard_site_toolbar_render_widget($m[1]);
+			return dashboard_site_toolbar_box($m[0], $rendered, 'widget');
+		},
+		$html
+	);
+
+	// Forma inline: @[[widgets#SIG]]@
+	$html = preg_replace_callback(
+		'/@?\[\[widgets#(.+?)\]\]@?/i',
+		function($m){
+			$rendered = dashboard_site_toolbar_render_widget($m[1]);
+			return dashboard_site_toolbar_box($m[0], $rendered, 'widget');
+		},
+		$html
+	);
+
+	return $html;
+}
+
+/**
+ * Helper — resolve o valor renderizado de uma variável `@[[id]]@`. Retorna null quando
+ * desconhecida (nesse caso o marcador é mantido literal).
+ */
+function dashboard_site_toolbar_resolver_var($id){
+	global $_GESTOR;
+
+	// Menu do sistema (aparece no layout) — renderiza o HTML do menu numa caixa preservável.
+	if($id === 'pagina#menu'){
+		return (function_exists('gestor_pagina_menu') ? (string)gestor_pagina_menu() : '');
+	}
+
+	$sys = Array(
+		'pagina#url-raiz' => (isset($_GESTOR['url-raiz']) ? $_GESTOR['url-raiz'] : ''),
+		'pagina#url-full-http' => (isset($_GESTOR['url-full-http']) ? $_GESTOR['url-full-http'] : ''),
+		'gestor#versao' => (isset($_GESTOR['versao']) ? $_GESTOR['versao'] : ''),
+	);
+
+	if(array_key_exists($id, $sys)) return (string)$sys[$id];
+
+	$valor = gestor_variaveis_globais(Array('id' => $id));
+	if(isset($valor) && $valor !== false){
+		return (string)(existe($valor) ? $valor : '');
+	}
+
+	return null;
+}
+
+/**
+ * Helper — troca as variáveis `@[[id]]@`: em texto vira caixa de destaque (valor renderizado +
+ * marcador guardado); dentro de tags (atributos) resolve para o valor, para o visual ficar
+ * correto (caso raro; não é caixa).
+ */
+function dashboard_site_toolbar_boxes_variaveis($html, $preservar_atributos = false){
+	global $_GESTOR;
+
+	$open = $_GESTOR['variavel-global']['open'];
+	$close = $_GESTOR['variavel-global']['close'];
+	$varPattern = '/'.preg_quote($open,'/').'(.+?)'.preg_quote($close,'/').'/';
+
+	$parts = preg_split('/(<[^>]*>)/', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+	$out = '';
+
+	foreach($parts as $i => $part){
+		if(($i % 2) === 1){
+			// Segmento de TAG (atributos). No modo LAYOUT preservamos as variáveis literais
+			// (`@[[pagina#url-raiz]]@` etc. aparecem em href/src e NÃO podem ser queimadas no save,
+			// pois o layout é compartilhado). No modo conteúdo, resolvemos para o valor (visual).
+			if($preservar_atributos){
+				$out .= $part;
+			} else {
+				$out .= preg_replace_callback($varPattern, function($m){
+					$val = dashboard_site_toolbar_resolver_var(trim($m[1]));
+					return ($val === null) ? $m[0] : $val;
+				}, $part);
+			}
+		} else {
+			// Segmento de TEXTO: cada variável vira caixa de destaque.
+			$out .= preg_replace_callback($varPattern, function($m){
+				$id = trim($m[1]);
+				$val = dashboard_site_toolbar_resolver_var($id);
+				if($val === null) return $m[0];
+				return dashboard_site_toolbar_box($m[0], htmlspecialchars($val, ENT_QUOTES, 'UTF-8'), 'var');
+			}, $part);
+		}
+	}
+
+	return $out;
+}
+
+/**
+ * AJAX — Renderiza o conteúdo ORIGINAL da página com caixas de destaque nas variáveis/widgets,
+ * para o editor visual in-place da toolbar (Meta 3). Visual idêntico ao da página live; as caixas
+ * guardam o marcador original para o save reconstruir sem queimar o dinamismo.
+ */
+function dashboard_ajax_site_toolbar_render(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão para editar páginas.');
+		return;
+	}
+
+	$page_id = isset($_REQUEST['page_id']) ? trim($_REQUEST['page_id']) : '';
+	if($page_id === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não informada.');
+		return;
+	}
+
+	$language = $_GESTOR['linguagem-codigo'];
+
+	$pagina = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas',
+		'campos' => Array('html','layout_id'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($page_id)."'"
+			." AND language='".$language."'"
+			." AND status!='D'",
+	));
+
+	if(!$pagina){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não encontrada.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('widgets');
+
+	$open = $_GESTOR['variavel-global']['open'];
+	$close = $_GESTOR['variavel-global']['close'];
+
+	// ===== Conteúdo da página (paginas.html) com caixas → embrulhado em #c2f-page-content.
+
+	$contentHtml = (string)$pagina['html'];
+	$contentHtml = dashboard_site_toolbar_boxes_widgets($contentHtml);
+	$contentHtml = dashboard_site_toolbar_boxes_variaveis($contentHtml);
+	$contentWrapper = '<div id="c2f-page-content" data-c2f-content>'.$contentHtml.'</div>';
+
+	// ===== Layout (layouts.html do BANCO) — só o body-inner é editável (o <head> não).
+
+	$layoutId = isset($pagina['layout_id']) ? (string)$pagina['layout_id'] : '';
+	$layoutHtmlOut = '';
+
+	if($layoutId !== ''){
+		$layout = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'layouts',
+			'campos' => Array('html'),
+			'extra' =>
+				"WHERE id='".banco_escape_field($layoutId)."'"
+				." AND language='".$language."'"
+				." AND status!='D'",
+		));
+
+		if($layout && existe($layout['html'])){
+			$layoutHtml = (string)$layout['html'];
+
+			// Extrai o body-inner (só o corpo do layout é editável).
+			if(preg_match('/<body\b[^>]*>([\s\S]*?)<\/body>/i', $layoutHtml, $mBody)){
+				$bodyInner = $mBody[1];
+			} else {
+				$bodyInner = $layoutHtml;
+			}
+
+			// Caixas no layout: widgets + variáveis de TEXTO; atributos preservados literais
+			// (o layout é compartilhado — não queimar `@[[pagina#url-raiz]]@` etc.).
+			$bodyInner = dashboard_site_toolbar_boxes_widgets($bodyInner);
+			$bodyInner = dashboard_site_toolbar_boxes_variaveis($bodyInner, true);
+
+			// Injeta o conteúdo no lugar do marcador @[[pagina#corpo]]@.
+			$corpoMarker = $open.'pagina#corpo'.$close;
+			if(strpos($bodyInner, $corpoMarker) !== false){
+				$layoutHtmlOut = str_replace($corpoMarker, $contentWrapper, $bodyInner);
+			} else {
+				$layoutHtmlOut = $bodyInner.$contentWrapper;
+			}
+		}
+	}
+
+	// Fallback: sem layout → edita só o conteúdo.
+	if($layoutHtmlOut === ''){
+		$layoutHtmlOut = $contentWrapper;
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data' => Array(
+			'page_id' => $page_id,
+			'layout_id' => $layoutId,
+			'layout_html' => $layoutHtmlOut,
+			'html' => $contentHtml,
+		),
+	);
+}
+
+/**
+ * AJAX — Categorias de widget para o painel "+" do editor in-place. Reusa a função da lib
+ * html-editor (lê a tabela global `widgets`). Exige permissão de edição de páginas.
+ */
+function dashboard_ajax_site_toolbar_widget_types(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('html-editor');
+
+	if(function_exists('html_editor_ajax_widget_types')){
+		html_editor_ajax_widget_types();
+	} else {
+		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => Array());
+	}
+}
+
+/**
+ * AJAX — Itens de uma categoria de widget (parâmetro `module`) para o painel "+" in-place.
+ * Reusa a função da lib html-editor (resolve a tabela alvo). Exige permissão de edição.
+ */
+function dashboard_ajax_site_toolbar_widgets_list(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('html-editor');
+
+	if(function_exists('html_editor_ajax_widgets_list')){
+		html_editor_ajax_widgets_list();
+	} else {
+		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => Array());
+	}
+}
+
+/**
+ * Salva o body-inner editado do LAYOUT (Meta 3 / ponto 4). Substitui APENAS o corpo do
+ * `layouts.html` do banco (o <head> é preservado), com salvaguardas: exige o marcador de
+ * conteúdo `@[[pagina#corpo]]@` presente (senão está corrompido → não salva). Marca
+ * `user_modified=1`, bump de versão, e grava backup/histórico no módulo `admin-layouts`.
+ * Retorna true se salvou, false caso contrário.
+ */
+function dashboard_site_toolbar_salvar_layout($layout_id, $newBodyInner, $language){
+	global $_GESTOR;
+
+	$layout_id = trim((string)$layout_id);
+	$newBodyInner = (string)$newBodyInner;
+
+	if($layout_id === '' || $newBodyInner === '') return false;
+
+	// Salvaguarda: o body-inner PRECISA conter o marcador de conteúdo, senão corromperia o layout.
+	$corpoMarker = $_GESTOR['variavel-global']['open'].'pagina#corpo'.$_GESTOR['variavel-global']['close'];
+	if(strpos($newBodyInner, $corpoMarker) === false) return false;
+
+	$layout = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'layouts',
+		'campos' => Array('id_layouts','versao','html'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($layout_id)."'"
+			." AND language='".$language."'"
+			." AND status!='D'",
+	));
+
+	if(!$layout) return false;
+
+	$oldHtml = (string)$layout['html'];
+
+	// Reconstrói o layouts.html completo, trocando SÓ o body-inner (o <head> é preservado).
+	if(preg_match('/(<body\b[^>]*>)([\s\S]*?)(<\/body>)/i', $oldHtml)){
+		$novoHtml = preg_replace_callback('/(<body\b[^>]*>)([\s\S]*?)(<\/body>)/i', function($m) use ($newBodyInner){
+			return $m[1].$newBodyInner.$m[3];
+		}, $oldHtml, 1);
+	} else {
+		$novoHtml = $newBodyInner;
+	}
+
+	if($novoHtml === $oldHtml) return false;
+
+	$novaVersao = (int)$layout['versao'] + 1;
+	banco_update_campo('html', $novoHtml);
+	banco_update_campo('user_modified', '1', true);
+	banco_update_campo('versao', (string)$novaVersao, true);
+	banco_update_campo('data_modificacao', 'NOW()', true);
+	banco_update_executar('layouts',
+		"WHERE id='".banco_escape_field($layout_id)."'"
+		." AND language='".$language."'"
+	);
+
+	gestor_incluir_biblioteca('interface');
+
+	if($oldHtml !== ''){
+		interface_backup_campo_incluir(Array(
+			'id_numerico' => $layout['id_layouts'],
+			'versao' => $novaVersao,
+			'campo' => 'html',
+			'valor' => $oldHtml,
+			'modulo' => 'admin-layouts',
+		));
+	}
+
+	interface_historico_incluir(Array(
+		'id' => $layout_id,
+		'modulo_id' => 'admin-layouts',
+		'tabela' => Array('nome' => 'layouts', 'id_numerico' => 'id_layouts', 'versao' => 'versao'),
+		'alteracoes' => Array(Array('campo' => 'form-html-label')),
+	));
+
+	return true;
+}
+
+/**
+ * AJAX — Lista os backups do campo `html` da página atual (para o dropdown de restauração do
+ * editor in-place). Reusa a tabela `backup_campos` (mesma do admin). Exige permissão.
+ */
+function dashboard_ajax_site_toolbar_backups(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	$page_id = isset($_REQUEST['page_id']) ? trim($_REQUEST['page_id']) : '';
+	if($page_id === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não informada.');
+		return;
+	}
+
+	$language = $_GESTOR['linguagem-codigo'];
+
+	$pagina = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas',
+		'campos' => Array('id_paginas','publisher_id'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($page_id)."'"
+			." AND language='".$language."'"
+			." AND status!='D'",
+	));
+
+	if(!$pagina){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não encontrada.');
+		return;
+	}
+
+	$ownerModule = (existe($pagina['publisher_id']) ? 'publisher-pages' : 'admin-paginas');
+
+	$backups = banco_select_name(
+		banco_campos_virgulas(Array('id_backup_campos','versao','data')),
+		'backup_campos',
+		"WHERE id='".banco_escape_field($pagina['id_paginas'])."'"
+		." AND modulo='".$ownerModule."'"
+		." AND campo='html'"
+		." ORDER BY data DESC"
+	);
+
+	$out = Array();
+	if($backups){
+		foreach($backups as $b){
+			$out[] = Array(
+				'id' => $b['id_backup_campos'],
+				'versao' => $b['versao'],
+				'data' => $b['data'],
+			);
+		}
+	}
+
+	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => $out);
+}
+
+/**
+ * AJAX — Retorna o HTML de UM backup do campo `html`, já renderizado com caixas (para carregar
+ * direto na área de conteúdo do editor in-place). Exige permissão.
+ */
+function dashboard_ajax_site_toolbar_backup_get(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	$id = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
+	if($id <= 0){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Backup não informado.');
+		return;
+	}
+
+	$row = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'backup_campos',
+		'campos' => Array('valor'),
+		'extra' => "WHERE id_backup_campos='".$id."' AND campo='html'",
+	));
+
+	if(!$row){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Backup não encontrado.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('widgets');
+	$html = dashboard_site_toolbar_boxes_widgets((string)$row['valor']);
+	$html = dashboard_site_toolbar_boxes_variaveis($html);
+
+	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => Array('html' => $html));
+}
+
 function dashboard_remover_pagina_instalacao_sucesso(){
 	global $_GESTOR;
 	
@@ -1410,6 +2116,12 @@ function dashboard_start(){
 		
 		switch($_GESTOR['ajax-opcao']){
 			//case 'opcao': dashboard_ajax_opcao(); break;
+			case 'site-toolbar-render': dashboard_ajax_site_toolbar_render(); break;
+				case 'site-toolbar-widget-types': dashboard_ajax_site_toolbar_widget_types(); break;
+				case 'site-toolbar-widgets-list': dashboard_ajax_site_toolbar_widgets_list(); break;
+				case 'site-toolbar-backups': dashboard_ajax_site_toolbar_backups(); break;
+				case 'site-toolbar-backup-get': dashboard_ajax_site_toolbar_backup_get(); break;
+				case 'site-toolbar-save': dashboard_ajax_site_toolbar_save(); break;
 		}
 		
 		interface_ajax_finalizar();
@@ -1421,6 +2133,7 @@ function dashboard_start(){
 		switch($_GESTOR['opcao']){
 			case 'inicio': dashboard_pagina_inicial(); break;
 			case 'dashboard-3d': dashboard_3d(); break;
+			case 'dashboard-site-toolbar': dashboard_site_toolbar(); break;
 		}
 		
 		interface_finalizar();

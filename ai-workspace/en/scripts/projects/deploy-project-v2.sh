@@ -121,18 +121,36 @@ TEMP_DIR="$PROJECT_ROOT/temp"
 
 # Argument parsing
 PROJECT_TARGET_OVERRIDE=""
+CONTENTS_CHOICE="Sim"
+
+should_exclude_contents() {
+    case "$CONTENTS_CHOICE" in
+        [Nn]*|false|FALSE|False|0)
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
 while [[ $# -gt 0 ]]; do
     case $1 in
         --project|-p)
             PROJECT_TARGET_OVERRIDE="$2"
             shift 2
             ;;
+        --contents)
+            CONTENTS_CHOICE="${2:-}"
+            shift 2
+            ;;
         --help|-h)
-            echo "Usage: $0 [--project|-p PROJECT_ID]"
+            echo "Usage: $0 [--project|-p PROJECT_ID] [--contents Sim|Nao]"
             echo ""
             echo "Options:"
             echo "  --project, -p PROJECT_ID    Project identifier for deploy (optional)"
             echo "                              If not provided, uses the value of devEnvironment.projectTarget from environment.json"
+            echo "  --contents Sim|Nao          Include contents/ folder in deploy package (default: Sim)"
             echo "  --help, -h                  Shows this help"
             exit 0
             ;;
@@ -152,6 +170,11 @@ fi
 
 log "Starting project deploy..."
 log "Environment file: $ENV_FILE"
+if should_exclude_contents; then
+    log "contents/ folder: excluded from deploy package"
+else
+    log "contents/ folder: included in deploy package"
+fi
 
 # Determine target project
 if [ -n "$PROJECT_TARGET_OVERRIDE" ]; then
@@ -236,6 +259,7 @@ create_zip_package() {
 
         if [ -n "$GIT_ROOT" ]; then
             log "gitDeploy enabled, repo root found: $GIT_ROOT"
+            GIT_FILES_LIST="$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"
 
             cd "$PROJECT_PATH"
             PROJECT_PATH_WIN=$(pwd -W)
@@ -259,37 +283,59 @@ create_zip_package() {
                     git ls-files -- "$RELATIVE_PATH" | while IFS= read -r file; do
                         case "$file" in
                             "$RELATIVE_PATH"/*)
-                                echo "${file#$RELATIVE_PATH/}"
+                                relative_file="${file#$RELATIVE_PATH/}"
+                                if should_exclude_contents && [[ "$relative_file" == contents/* ]]; then
+                                    continue
+                                fi
+                                echo "$relative_file"
                                 ;;
                         esac
-                    done > "$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"
+                    done > "$GIT_FILES_LIST"
                 else
-                    git ls-files > "$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"
+                    git ls-files | while IFS= read -r file; do
+                        if should_exclude_contents && [[ "$file" == contents/* ]]; then
+                            continue
+                        fi
+                        echo "$file"
+                    done > "$GIT_FILES_LIST"
                 fi
             else
-                : > "$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"
+                : > "$GIT_FILES_LIST"
                 for file in "${CHANGED_FILES[@]}"; do
                     if [ -n "$RELATIVE_PATH" ]; then
                         case "$file" in
                             "$RELATIVE_PATH"/*)
-                                echo "${file#$RELATIVE_PATH/}" >> "$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"
+                                relative_file="${file#$RELATIVE_PATH/}"
+                                if should_exclude_contents && [[ "$relative_file" == contents/* ]]; then
+                                    continue
+                                fi
+                                echo "$relative_file" >> "$GIT_FILES_LIST"
                                 ;;
                         esac
                     else
-                        echo "$file" >> "$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"
+                        if should_exclude_contents && [[ "$file" == contents/* ]]; then
+                            continue
+                        fi
+                        echo "$file" >> "$GIT_FILES_LIST"
                     fi
                 done
             fi
 
             if [ -f "$PROJECT_PATH/project-schema-metadata.json" ]; then
-                if ! grep -Fxq "project-schema-metadata.json" "$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"; then
-                    echo "project-schema-metadata.json" >> "$TEMP_DIR/${PROJECT_TARGET}_git_files.txt"
+                if ! grep -Fxq "project-schema-metadata.json" "$GIT_FILES_LIST"; then
+                    echo "project-schema-metadata.json" >> "$GIT_FILES_LIST"
                     log "Including project-schema-metadata.json in gitDeploy package."
                 fi
             fi
 
+            if [ ! -s "$GIT_FILES_LIST" ]; then
+                log_warning "No files to package after applying contents/ exclusion."
+                log_warning "Deploy skipped because gitDeploy has no eligible files."
+                exit 0
+            fi
+
             cd "$PROJECT_PATH"
-            "7z" a -tzip "$ZIP_FILE" @"$TEMP_DIR/${PROJECT_TARGET}_git_files.txt" > /dev/null 2>&1
+            "7z" a -tzip "$ZIP_FILE" @"$GIT_FILES_LIST" > /dev/null 2>&1
             return
         fi
 
@@ -301,7 +347,11 @@ create_zip_package() {
     if [ -f "$PROJECT_PATH/project-schema-metadata.json" ]; then
         log "Including project-schema-metadata.json in deploy package."
     fi
-    "7z" a -tzip "$ZIP_FILE" . -xr0!*.git* -xr0!*.tmp -xr0!*.log -xr0!temp/ -xr0!logs/ -xr0!resources/ > /dev/null 2>&1
+    ZIP_EXCLUDES=(-xr0!*.git* -xr0!*.tmp -xr0!*.log -xr0!temp/ -xr0!logs/ -xr0!resources/)
+    if should_exclude_contents; then
+        ZIP_EXCLUDES+=(-xr0!contents/)
+    fi
+    "7z" a -tzip "$ZIP_FILE" . "${ZIP_EXCLUDES[@]}" > /dev/null 2>&1
 }
 
 create_zip_package

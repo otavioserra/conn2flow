@@ -448,8 +448,26 @@ function gestor_pagina_layout($params = false){
 	$layout = modelo_var_troca($layout,'<!-- pagina#titulo -->',($_GESTOR['pagina#titulo'] ? '<title>'.(isset($_GESTOR['pagina#titulo-extra']) ? $_GESTOR['pagina#titulo-extra'] : '').$_GESTOR['pagina#titulo'].'</title>' : ''));
 	
 	// ===== Página fundir layout + página
-	
-	$_GESTOR['pagina'] = modelo_var_troca($layout,$open.'pagina#corpo'.$close,$_GESTOR['pagina']);
+
+	$conteudo = $_GESTOR['pagina'];
+
+	// Para editores logados (Dashboard Site Toolbar / Meta 3), envolver o conteúdo da página
+	// num wrapper identificável — alvo da edição visual in-place (swap p/ render com caixas).
+	if(gestor_dashboard_toolbar_ativo()){
+		$conteudo = '<div id="c2f-page-content" data-c2f-content>'.$conteudo.'</div>';
+	}
+
+	$_GESTOR['pagina'] = modelo_var_troca($layout,$open.'pagina#corpo'.$close,$conteudo);
+
+	// Para edição de LAYOUT in-place (BATCH-075/Meta 3 ponto 4), envolver o CORPO do layout num
+	// #c2f-layout-root (que contém o #c2f-page-content). O iframe da toolbar é injetado depois,
+	// após <body>, FORA deste wrapper. Só o body do layout é editável (o <head> não).
+	if(gestor_dashboard_toolbar_ativo()){
+		$layoutId = isset($_GESTOR['layout#id']) ? (string)$_GESTOR['layout#id'] : '';
+		$_GESTOR['pagina'] = preg_replace_callback('/(<body\b[^>]*>)([\s\S]*?)(<\/body>)/i', function($m) use ($layoutId){
+			return $m[1].'<div id="c2f-layout-root" data-c2f-layout data-layout-id="'.htmlspecialchars($layoutId, ENT_QUOTES, 'UTF-8').'">'.$m[2].'</div>'.$m[3];
+		}, $_GESTOR['pagina'], 1);
+	}
 }
 
 function gestor_pagina_widgets(){
@@ -882,6 +900,108 @@ function gestor_pagina_ultimas_operacoes(){
 	global $_GESTOR;
 	
 	$_GESTOR['pagina'] = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $_GESTOR['pagina']);
+}
+
+/**
+ * Retorna true quando o Dashboard Site Toolbar deve estar ativo na requisição atual:
+ * editor logado com permissão de editar páginas, numa página pública (não o painel
+ * administrativo, não um iframe e não o próprio toolbar). O resultado é cacheado em
+ * $_GESTOR para que o wrapper de conteúdo (gestor_pagina_layout) e a injeção do iframe
+ * (gestor_dashboard_toolbar) usem exatamente o mesmo gate.
+ */
+function gestor_dashboard_toolbar_ativo(){
+	global $_GESTOR;
+
+	if(isset($_GESTOR['dashboard-toolbar-ativo'])) return $_GESTOR['dashboard-toolbar-ativo'];
+
+	$ativo = true;
+
+	if(isset($_GESTOR['opcao']) && isset($_GESTOR['modulo-id']) && $_GESTOR['modulo-id'] == 'dashboard' && $_GESTOR['opcao'] == 'dashboard-site-toolbar'){
+		// Acessando o próprio toolbar → não ativar (evita loop).
+		$ativo = false;
+	} else if(!gestor_usuario_perfil()){
+		$ativo = false;
+	} else if(!gestor_permissao_token() || !gestor_permissao_modulo()){
+		$ativo = false;
+	} else if(!(isset($_GESTOR['usuario-id']) && (int)$_GESTOR['usuario-id'] > 0)){
+		$ativo = false;
+	} else if(isset($_GESTOR['layout#id']) && $_GESTOR['layout#id'] == 'layout-administrativo-do-gestor'){
+		$ativo = false;
+	} else if(isset($_GESTOR['paginaIframe']) && $_GESTOR['paginaIframe']){
+		$ativo = false;
+	} else if(!gestor_acesso('editar','admin-paginas')){
+		$ativo = false;
+	}
+
+	$_GESTOR['dashboard-toolbar-ativo'] = $ativo;
+	return $ativo;
+}
+
+function gestor_dashboard_toolbar($params = false){
+	global $_GESTOR;
+
+	if($params)foreach($params as $var => $val)$$var = $val;
+
+	// ===== Parâmetros
+
+	// caminho - String - Opcional - caminho da página pública hospedeira (resolve id/publisher_id).
+
+	// ===== Gate único (mesmo do wrapper de conteúdo): editor logado em página pública.
+
+	if(!gestor_dashboard_toolbar_ativo()) return;
+
+	// ===== Precisa de um corpo de página (<body>) para injetar.
+
+	if(!isset($_GESTOR['pagina']) || stripos($_GESTOR['pagina'],'<body') === false) return;
+
+	// ===== Resolver a página hospedeira (id + publisher_id) pelo caminho.
+
+	$page_id = '';
+	$publisher_id = '';
+
+	if(isset($caminho) && $caminho !== ''){
+		$pagina_atual = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'paginas',
+			'campos' => Array('id','publisher_id'),
+			'extra' =>
+				"WHERE caminho='".banco_escape_field($caminho)."'"
+				." AND language='".$_GESTOR['linguagem-codigo']."'"
+				." AND status='A'",
+		));
+
+		if($pagina_atual){
+			$page_id = (existe($pagina_atual['id']) ? $pagina_atual['id'] : '');
+			$publisher_id = (existe($pagina_atual['publisher_id']) ? $pagina_atual['publisher_id'] : '');
+		}
+	}
+
+	// ===== Montar o src do iframe com o contexto da página hospedeira.
+
+	$src = $_GESTOR['url-raiz'].'dashboard-site-toolbar/?page_id='.rawurlencode($page_id);
+	if($publisher_id !== '' && $publisher_id !== null){
+		$src .= '&publisher_id='.rawurlencode($publisher_id);
+	}
+
+	// ===== Iframe fixo no topo (~30px) da barra.
+
+	$iframe =
+		'<iframe id="c2f-site-toolbar" src="'.$src.'" title="Dashboard Site Toolbar" '
+		.'style="position:fixed;top:0;left:0;width:100%;height:30px;border:0;margin:0;padding:0;z-index:2147483000;background:transparent;" allowtransparency="true"></iframe>';
+
+	// ===== Injetar o iframe imediatamente após a abertura do <body>.
+
+	$_GESTOR['pagina'] = preg_replace_callback('/(<body\b[^>]*>)/i', function($m) use ($iframe){
+		return $m[1].$iframe;
+	}, $_GESTOR['pagina'], 1);
+
+	// ===== Script de compensação de topo (dashboard.toolbar.js) — a URL dashboard/toolbar.js
+	//       é servida como o físico dashboard.toolbar.js (ver arquivo-estatico.php).
+
+	gestor_pagina_javascript_incluir(Array(
+		'tipo' => 'toolbar',
+		'modulo_id' => 'dashboard',
+	));
 }
 
 // =========================== Funções de Autenticação de Usuário
@@ -1523,15 +1643,11 @@ function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 	
 	// ===== Parâmetros
 	
-	// operacao - String - Obrigatório - operação do módulo atual.
+	// operacao - String - Opcional - operação do módulo atual.
 	// modulo - String - Opcional - foçar um módulo diferente do atual.
 	// usuario - String - Opcional - foçar um usuário diferente do atual.
 	
 	// ===== 
-	
-	if(!$operacao){
-		return false;
-	}
 	
 	if(!$usuario){
 		$usuario = gestor_usuario();
@@ -1558,6 +1674,39 @@ function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 	);
 	
 	if($modulos){
+		$usuarios_perfis = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_perfis',
+			'campos' => Array(
+				'id',
+			),
+			'extra' => 
+				"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
+		));
+
+		$perfil = $usuarios_perfis['id'];
+
+		// ===== Acesso base ao módulo pelo perfil.
+
+		$usuarios_perfis_modulos = banco_select_name
+		(
+			banco_campos_virgulas(Array(
+				'id_usuarios_perfis_modulos',
+			))
+			,
+			"usuarios_perfis_modulos",
+			"WHERE modulo='".$modulo."'"
+			." AND perfil='".$perfil."'"
+		);
+
+		$modulo_acesso = ($usuarios_perfis_modulos ? true : false);
+
+		// ===== Sem operação informada, o acesso ao módulo é suficiente.
+
+		if(!$operacao){
+			return $modulo_acesso;
+		}
+
 		$modulos_operacoes = banco_select_name
 		(
 			banco_campos_virgulas(Array(
@@ -1570,21 +1719,15 @@ function gestor_acesso($operacao = false,$modulo = false,$usuario = false){
 			." AND modulo_id='".$modulo."'"
 			." AND status='A'"
 		);
+
+		// ===== Operação não cadastrada: fallback para permissão de módulo.
+
+		if(!$modulos_operacoes){
+			return $modulo_acesso;
+		}
 		
 		if($modulos_operacoes){
 			$operacao_id = $modulos_operacoes[0]['id'];
-			
-			$usuarios_perfis = banco_select(Array(
-				'unico' => true,
-				'tabela' => 'usuarios_perfis',
-				'campos' => Array(
-					'id',
-				),
-				'extra' => 
-					"WHERE id_usuarios_perfis='".$usuario['id_usuarios_perfis']."'"
-			));
-			
-			$perfil = $usuarios_perfis['id'];
 			
 			$usuarios_perfis_modulos_operacoes = banco_select_name
 			(
@@ -1840,6 +1983,9 @@ function gestor_roteador(){
 		." AND language='".$_GESTOR['linguagem-codigo']."'"
 		." AND (tipo='sistema' OR tipo='pagina')"
 		." AND status='A'"
+		// ===== Janela de publicação (agendamento — BATCH-075/Meta 5): fora da janela → 404.
+		." AND (data_publicacao_inicio IS NULL OR data_publicacao_inicio <= NOW())"
+		." AND (data_publicacao_fim IS NULL OR data_publicacao_fim >= NOW())"
 	);
 
 	// ===== Caso não encontre a página e a mesma exista em linguagem diferente do padrão do sistema, devolver a página com a primeira língua disponível.
@@ -1853,6 +1999,8 @@ function gestor_roteador(){
 			"WHERE caminho='".banco_escape_field($caminho)."'"
 			." AND (tipo='sistema' OR tipo='pagina')"
 			." AND status='A'"
+			." AND (data_publicacao_inicio IS NULL OR data_publicacao_inicio <= NOW())"
+			." AND (data_publicacao_fim IS NULL OR data_publicacao_fim >= NOW())"
 		);
 	}
 
@@ -2132,8 +2280,13 @@ function gestor_roteador(){
 
 			gestor_pagina_widgets();
 
+			// ===== Dashboard Site Toolbar (injeção só para editores logados em páginas públicas).
+			//       Antes de gestor_pagina_extra_head_e_javascript() para o JS auxiliar ser incluído.
+
+			gestor_dashboard_toolbar(Array('caminho' => $caminho));
+
 			// ===== Inclusão de bibliotecas globais de uma página
-			
+
 			gestor_pagina_css();
 			gestor_pagina_extra_head_e_javascript();
 

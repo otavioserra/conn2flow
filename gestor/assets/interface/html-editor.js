@@ -16,7 +16,7 @@ $(document).ready(function () {
      * namespace de ações `c2f-he:*`.
      */
     class HtmlEditor {
-        constructor() {
+        constructor(options) {
             // ===== Estado
             this.hoverOverlay = null;
             this.selectionOverlay = null;
@@ -71,6 +71,11 @@ $(document).ready(function () {
                 // Limite do histórico Undo/Redo.
                 undoLimit: 30
             };
+
+            // BATCH-075/Meta 3: raiz do conteúdo editável. Default = document.body (contexto clássico
+            // do iframe, body = conteúdo). A edição in-place na página live passa #c2f-page-content
+            // para escopar seleção/varredura/inserção ao conteúdo (sem tocar layout/toolbar).
+            this.contentRoot = (options && options.contentRoot) || document.body;
 
             this.init();
         }
@@ -271,6 +276,8 @@ $(document).ready(function () {
                     <i class="box icon" style="margin:0"></i></button>
                 <button class="he-tb-btn he-tb-edit" type="button" title="Editar">
                     <i class="pencil icon" style="margin:0"></i></button>
+                <button class="he-tb-btn he-tb-widget-admin" type="button" title="Editar widget no módulo" style="display:none">
+                    <i class="external alternate icon" style="margin:0"></i></button>
                 <button class="he-tb-btn he-tb-del" type="button" title="Deletar">
                     <i class="trash icon" style="margin:0"></i></button>
                 <button class="he-tb-btn he-tb-deselect" type="button" title="Deselecionar (Esc)">
@@ -345,6 +352,10 @@ $(document).ready(function () {
             });
             tb.querySelector('.he-tb-edit').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.editSelected();
+            });
+            tb.querySelector('.he-tb-widget-admin').addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                if (this.selectedElement) this.openWidgetAdmin(this.selectedElement);
             });
             tb.querySelector('.he-tb-del').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.deleteSelected();
@@ -423,6 +434,8 @@ $(document).ready(function () {
         resolveEditable(element) {
             if (!element || element.nodeType !== Node.ELEMENT_NODE) return null;
             if (this.isEditorOwned(element)) return null;
+            // BATCH-075: quando escopado (edição in-place), só o conteúdo DENTRO do contentRoot é editável.
+            if (this.contentRoot !== document.body && (element === this.contentRoot || !this.contentRoot.contains(element))) return null;
 
             // Bloco atômico de widget.
             const wrapper = element.closest ? element.closest('.conn2flow-widget-wrapper') : null;
@@ -675,6 +688,7 @@ $(document).ready(function () {
             // ancorada à BORDA DIREITA do elemento (req-035 §1.1).
             this.toolbar.style.display = 'flex';
             this.updatePasteButton(); // req-036: o botão Colar entra/sai antes de medir a largura
+            this.updateWidgetAdminButton(element); // BATCH-075 §6: atalho p/ o módulo do widget selecionado
             const tbTop = rect.top + scrollTop - this.toolbar.offsetHeight - 6;
             const toolbarEmbaixo = tbTop < scrollTop; // sem espaço no topo: vai para baixo do elemento
             this.toolbar.style.top = (toolbarEmbaixo ? rect.bottom + scrollTop + 6 : tbTop) + 'px';
@@ -1244,6 +1258,14 @@ $(document).ready(function () {
         requestBackgroundImage() {
             if (!this.selectedElement) return;
             const cfg = (typeof html_editor !== 'undefined' && html_editor.imagepick) ? html_editor.imagepick : null;
+            // BATCH-075/Meta 3: sem o ImagePicker do admin (edição in-place na página live não
+            // carrega o seletor de imagens do servidor), cai num prompt de URL — mesma aplicação.
+            if (!cfg) {
+                const atual = this.currentBackgroundImageUrl(this.selectedElement) || '';
+                const url = window.prompt('URL da imagem de fundo:', atual);
+                if (url !== null && url.trim() !== '') this.applyBackgroundImage(url.trim());
+                return;
+            }
             this.imagePickerTarget = 'background';
             try {
                 window.parent.postMessage(JSON.stringify({ action: 'html-editor-imagepick-open', config: cfg }), '*');
@@ -1346,6 +1368,38 @@ $(document).ready(function () {
             if (btn) btn.style.display = this.clipboardElement ? 'inline-flex' : 'none';
         }
 
+        // BATCH-075 §6: mostra o atalho "Editar no módulo" só quando um widget está selecionado.
+        updateWidgetAdminButton(element) {
+            if (!this.toolbar) return;
+            const btn = this.toolbar.querySelector('.he-tb-widget-admin');
+            if (!btn) return;
+            const isWidget = !!(element && element.classList && element.classList.contains('conn2flow-widget-wrapper'));
+            btn.style.display = isWidget ? 'inline-flex' : 'none';
+        }
+
+        // BATCH-075 §6: abre a página administrativa do widget selecionado (ex.: menus/editar/?id=<slug>)
+        // em nova aba, mapeando o tipo (módulo) e o slug guardados no wrapper.
+        openWidgetAdmin(wrapper) {
+            if (!wrapper || !wrapper.getAttribute) return;
+            const type = wrapper.getAttribute('data-widget-type') || '';
+            const slug = wrapper.getAttribute('data-widget-slug') || '';
+            if (!type) return;
+
+            let raiz = '/';
+            try {
+                if (window.parent && window.parent.gestor && window.parent.gestor.raiz) {
+                    raiz = window.parent.gestor.raiz;
+                }
+            } catch (e) { /* cross-frame — mantém fallback */ }
+
+            const url = raiz + type + '/editar/?id=' + encodeURIComponent(slug);
+            try {
+                window.open(url, '_blank');
+            } catch (e) {
+                try { window.top.location.href = url; } catch (e2) { window.location.href = url; }
+            }
+        }
+
         // ===== Embrulhar (wrap) (req-036)
         toggleWrapMenu() {
             if (this.wrapMenu && this.wrapMenu.style.display === 'block') this.closeWrapMenu();
@@ -1433,14 +1487,83 @@ $(document).ready(function () {
         // Modal de edição (texto / imagem / código)
         // ===================================================================
         bindModal() {
+            this.ensureFallbackModal();
             this.modal = $('#html-editor-modal');
             if (!this.modal.length) return;
-            this.modal.modal({
-                closable: true,
-                onShow: () => { this.isModalActive = true; this.hideHover(); this.hideChrome(); },
-                onHide: () => { this.isModalActive = false; this.restoreChrome(); },
-                onApprove: () => { this.saveChanges(); }
-            });
+            // Usa o modal do Fomantic quando disponível (contexto admin); na página live pública
+            // (sem Fomantic) usa o fallback vanilla injetado por ensureFallbackModal().
+            this.usaFomanticModal = !this.modalFallback && (typeof this.modal.modal === 'function');
+            if (this.usaFomanticModal) {
+                this.modal.modal({
+                    closable: true,
+                    onShow: () => { this.isModalActive = true; this.hideHover(); this.hideChrome(); },
+                    onHide: () => { this.isModalActive = false; this.restoreChrome(); },
+                    onApprove: () => { this.saveChanges(); }
+                });
+            } else {
+                const box = this.modal[0];
+                const saveBtn = box.querySelector('.c2f-he-modal-save');
+                const cancelBtn = box.querySelector('.c2f-he-modal-cancel');
+                const backdrop = box.querySelector('.c2f-he-modal-backdrop');
+                if (saveBtn) saveBtn.addEventListener('click', () => { this.saveChanges(); this.hideModal(); });
+                if (cancelBtn) cancelBtn.addEventListener('click', () => { this.hideModal(); });
+                if (backdrop) backdrop.addEventListener('click', () => { this.hideModal(); });
+            }
+        }
+
+        // BATCH-075/Meta 3: na página live pública não há Fomantic nem o #html-editor-modal
+        // (montados por html_editor_componente no admin). Injeta um modal equivalente vanilla
+        // (estilo Tailwind via inline styles portáveis) com os mesmos ids de campo que o
+        // openEditModal/saveChanges esperam (#text-field/#image-field/#code-field + textareas).
+        ensureFallbackModal() {
+            if (document.getElementById('html-editor-modal')) return;
+            this.modalFallback = true;
+            const div = document.createElement('div');
+            div.id = 'html-editor-modal';
+            div.setAttribute('style', 'display:none;position:fixed;inset:0;z-index:1000001;font-family:ui-sans-serif,system-ui,sans-serif;');
+            div.innerHTML =
+                '<div class="c2f-he-modal-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.55);"></div>' +
+                '<div style="position:relative;max-width:640px;margin:6vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;max-height:88vh;">' +
+                    '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#0f172a;">Editar elemento</div>' +
+                    '<div style="padding:16px;overflow:auto;">' +
+                        '<div id="text-field" style="display:none;">' +
+                            '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Texto</label>' +
+                            '<textarea id="element-text" rows="6" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;"></textarea>' +
+                        '</div>' +
+                        '<div id="image-field" style="display:none;">' +
+                            '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">URL da imagem</label>' +
+                            '<input id="element-src" type="text" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;">' +
+                        '</div>' +
+                        '<div id="code-field" style="display:none;">' +
+                            '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Código HTML</label>' +
+                            '<textarea id="element-code" rows="10" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:13px ui-monospace,monospace;"></textarea>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div style="padding:12px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px;">' +
+                        '<button type="button" class="c2f-he-modal-cancel" style="padding:8px 16px;border:0;border-radius:8px;background:#e2e8f0;color:#0f172a;cursor:pointer;font:14px sans-serif;">Cancelar</button>' +
+                        '<button type="button" class="c2f-he-modal-save" style="padding:8px 16px;border:0;border-radius:8px;background:#16a34a;color:#fff;cursor:pointer;font:14px sans-serif;">Salvar</button>' +
+                    '</div>' +
+                '</div>';
+            document.body.appendChild(div);
+        }
+
+        showModal() {
+            if (this.usaFomanticModal) { this.modal.modal('show'); return; }
+            const box = this.modal[0];
+            if (!box) return;
+            this.isModalActive = true;
+            this.hideHover();
+            this.hideChrome();
+            box.style.display = 'block';
+        }
+
+        hideModal() {
+            if (this.usaFomanticModal) { this.modal.modal('hide'); return; }
+            const box = this.modal[0];
+            if (!box) return;
+            box.style.display = 'none';
+            this.isModalActive = false;
+            this.restoreChrome();
         }
 
         // Esconde overlays/toolbar/breadcrumb/styler (sem perder a seleção) — usado enquanto o
@@ -1512,7 +1635,7 @@ $(document).ready(function () {
             }
 
             this.editingElement = element;
-            this.modal.modal('show');
+            this.showModal();
         }
 
         syncImagepickPreview(element) {
@@ -1976,13 +2099,13 @@ $(document).ready(function () {
          */
         convertWidgetVariablesToComments() {
             const varRe = /@?\[\[widgets#(.+?)\]\]@?/g;
-            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+            const walker = document.createTreeWalker(this.contentRoot, NodeFilter.SHOW_TEXT, {
                 acceptNode: (node) => {
                     if (!node.nodeValue || node.nodeValue.indexOf('[[widgets#') === -1) {
                         return NodeFilter.FILTER_REJECT;
                     }
                     // Ignorar texto dentro da própria UI do editor (ids html-editor-*).
-                    for (let p = node.parentNode; p && p !== document.body; p = p.parentNode) {
+                    for (let p = node.parentNode; p && p !== this.contentRoot; p = p.parentNode) {
                         if (p.id && p.id.indexOf('html-editor-') === 0) return NodeFilter.FILTER_REJECT;
                     }
                     return NodeFilter.FILTER_ACCEPT;
@@ -2019,7 +2142,7 @@ $(document).ready(function () {
             // `widgets#`). req-045: a conversão é CIRÚRGICA (sem reescrever body.innerHTML) para não
             // destruir os overlays/toolbar do editor.
             this.convertWidgetVariablesToComments();
-            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_COMMENT, null);
+            const walker = document.createTreeWalker(this.contentRoot, NodeFilter.SHOW_COMMENT, null);
             const comments = [];
             let n;
             while ((n = walker.nextNode())) comments.push(n);
@@ -2164,8 +2287,8 @@ $(document).ready(function () {
             // Inserir o estado no topo do body (antes da UI/container).
             const tpl = document.createElement('template');
             tpl.innerHTML = html;
-            const ref = document.body.firstChild;
-            document.body.insertBefore(tpl.content, ref);
+            const ref = this.contentRoot.firstChild;
+            this.contentRoot.insertBefore(tpl.content, ref);
             // req-039: re-renderizar o esqueleto dos widgets sem mockup (preview não é salvo no snapshot).
             this.rerenderVisibleWidgets();
             try {
@@ -2202,7 +2325,7 @@ $(document).ready(function () {
         }
 
         getUserContentNodes() {
-            return Array.from(document.body.childNodes).filter((n) => this.isUserContentNode(n));
+            return Array.from(this.contentRoot.childNodes).filter((n) => this.isUserContentNode(n));
         }
 
         /**
@@ -2278,7 +2401,12 @@ $(document).ready(function () {
     }
 
     // ===== Inicializar o editor visual
-    window.htmlEditor = new HtmlEditor();
+    // BATCH-075/Meta 3: a edição in-place na página live seta window.__c2fHtmlEditorNoAutoInit=true
+    // ANTES de carregar este script e instancia manualmente com { contentRoot: #c2f-page-content }.
+    if (!window.__c2fHtmlEditorNoAutoInit) {
+        window.htmlEditor = new HtmlEditor();
+    }
+    window.HtmlEditorClass = HtmlEditor;
 
     // Expor o HTML limpo para a janela pai (save / sincronização do CodeMirror).
     window.htmlEditorGetCleanHtml = function () {
