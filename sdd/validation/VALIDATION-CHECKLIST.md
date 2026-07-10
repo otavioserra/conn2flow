@@ -797,3 +797,124 @@ Evidência automatizada e estática reportada pelo executor em 2026-07-09:
 - Sintaxe de `.vscode/tasks.json` validada com sucesso.
 - Sintaxe bash de `deploy-project-v2.sh` e `synchronize-project.sh` validada via `bash -n` e opções de `--help` testadas com sucesso.
 - `git diff --check` executado sem erros nos arquivos modificados.
+
+---
+## BATCH-077 - Desacoplamento de Scripts do Iframe e Mapeamento Inteligente de Variáveis no Live Editor (req-077)
+
+### Slice 1 — Desacoplamento do script da toolbar
+- [x] Lógica JS da toolbar extraída do `<script>` inline para o arquivo estático `gestor/modulos/dashboard/dashboard.iframe-toolbar.js`.
+- [x] Tag `<script>…</script>` removida dos 2 templates `dashboard-site-toolbar.html` (pt-br/en).
+- [x] Injeção via `gestor_pagina_javascript_incluir(Array('tipo'=>'iframe-toolbar','modulo_id'=>'dashboard'))` em `dashboard_site_toolbar()` (URL `dashboard/iframe-toolbar.js` → físico `dashboard.iframe-toolbar.js`, casando a regex `/^[A-Za-z0-9-]+$/` do `arquivo-estatico.php`).
+- [x] Órfão vazio `dashboard.iframe.toolbar.js` (0 bytes, sem referências) removido.
+
+### Slice 2 — Mapeamento inteligente de variáveis/atributos
+- [x] Backend `dashboard_ajax_site_toolbar_render` devolve o HTML CRU original (`content_raw` = `paginas.html`; `layout_raw` = body-inner do layout com o slot `@[[pagina#corpo]]@` preenchido por `#c2f-raw-content`). Campos legados (`html`/`layout_html`) preservados p/ retrocompat.
+- [x] `startEdit` (`dashboard.toolbar.js`) **não** substitui mais `root.innerHTML`; guarda o cru em `#paginaHTMLAntesEdicao` (display:none) e chama `mapTree(root, backup)` preservando o DOM vivo.
+- [x] Variável em **atributo** → tag viva marcada com `data-c2f-variable="ID_VAR_N"` + `varMap[ID]={param,variable,valor}` (valor resolvido segue visível no editor).
+- [x] Variável em **texto** → `annotateTextVars` envolve o trecho num `span.c2f-var-box` protegido (`contenteditable=false`).
+- [x] **Widget** → `mapTree` envolve a expansão viva num `div.c2f-widget-box` atômico via âncora estrutural.
+- [x] `saveEdit`/`reconstructOriginal` restaura `data-c2f-variable`→`@[[…]]@` (só quando o valor não foi alterado), caixas→marcador original, e **separa** `#c2f-page-content`→`paginas` do resto do layout (`#c2f-page-content`→`@[[pagina#corpo]]@`)→`layouts`.
+
+### Evidência de Validação (BATCH-077)
+
+Evidência automatizada reportada pelo executor em 2026-07-10:
+- `node --check` → OK (2/2): `dashboard.iframe-toolbar.js`, `dashboard.toolbar.js`.
+- `php -l gestor/modulos/dashboard/dashboard.php` → `No syntax errors detected`.
+- Balanceamento de tags nos 2 HTMLs: `<div>` 5/5, `<script>` 0 (script removido).
+- **Teste de lógica do motor** (harness `happy-dom` carregando o `dashboard.toolbar.js` REAL e exercitando o fluxo via message-bus `edit-start`/`edit-save` com `fetch` mockado): **16/16 checks OK**, cobrindo:
+  - **Atributos (caso de aceite — página raiz do sistema)**: `<a>`/`<img>` com `@[[pagina#url-raiz]]@` recebem `data-c2f-variable`; valor resolvido preservado no editor; no save os `@[[pagina#url-raiz]]@` são reconstruídos em `href`/`src`, `data-c2f-variable` removido e `<h1>` intacto.
+  - **Variável de texto**: `@[[usuario#nome]]@` vira caixa protegida com o valor resolvido; save reconstrói o marcador no texto.
+  - **Widget**: bloco de widget vira `.c2f-widget-box` atômica contendo o render vivo; `<footer>` fora da caixa preservado; save reconstrói o marcador `<!-- widgets#… -->` (com o mockup) e **não** grava o HTML renderizado.
+- Decisão registrada: [DEC-079](../decisions/DECISION-LOG.md#dec-079---2026-07-10---accepted).
+- Arquivos: novo `dashboard.iframe-toolbar.js`; `dashboard.toolbar.js`; `dashboard.php`; `dashboard-site-toolbar.html` (pt-br/en); removido `dashboard.iframe.toolbar.js`.
+
+### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` e sincronizar (as páginas `dashboard-site-toolbar` são recurso de banco — a remoção do `<script>` do template e o novo JS estático só refletem após o deploy).
+- Logar como editor, abrir uma página pública com `@[[pagina#url-raiz]]@` (ex.: raiz do sistema), "Editar Página" e confirmar: (1) o iframe da toolbar inicializa sem erros no console (script agora estático); (2) o layout/scripts/CSS do site vivo continuam funcionando durante a edição (sem quebra); (3) após editar e salvar, as imagens/links com `@[[pagina#url-raiz]]@` permanecem preservados no banco (não queimados) — inspecionar `paginas.html`/`layouts.html`.
+- Confirmar o comportamento do editor visual real (`html-editor.js`): que `getCleanHtml()` preserva as caixas `.c2f-dyn-box` e os atributos `data-c2f-variable` do DOM anotado antes do `reconstructOriginal`.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-078 - Correções no Live Editor: Trava de Widgets, Submenu do Painel "+" e Isolamento de Estilos (req-078)
+
+### Correção 1 — Travar edição/seleção de elementos internos de widgets
+- [x] `resolveEditable` (`html-editor.js`) reconhece `.c2f-dyn-box` como bloco atômico (`element.closest('.c2f-dyn-box')` → retorna a caixa), paridade com `.conn2flow-widget-wrapper`.
+- [x] CSS (`injectStyles`): `.c2f-dyn-box{user-select:none}` + `.c2f-dyn-box *{pointer-events:none!important;user-select:none!important}` deixam o conteúdo interno (texto/imagem/links do widget) inerte a clique/seleção.
+
+### Correção 2 — Painel "+" expande a categoria sem fechar/roubar o clique
+- [x] Causa-raiz: `#c2f-add-panel` fora de `isEditorOwned` → o clique em *capture* do editor usava `elementsFromPoint`, atravessava o painel, selecionava o conteúdo atrás e fazia `stopPropagation()`, matando o `toggleWidgetGroup`.
+- [x] `isEditorOwned` reconhece `#c2f-add-panel` e `#c2f-backup-panel` (via `closest`) → early-return no clique/hover; o clique propaga normal para o handler do painel (lógica de toggle do `dashboard.toolbar.js` inalterada).
+
+### Correção 3 — Blindagem de CSS dos controles injetados na página hospedeira
+- [x] `injectStyles`: hardening com `!important` de `color`/`background`/`-webkit-text-fill-color`/`font`/`caret-color` em `#html-editor-floating-toolbar .he-tb-btn` (+ ícones `<i>` e `he-tb-deselect`), `#html-editor-tailwind-styler` (+ `input`) e `#html-editor-modal textarea,input[type="text"],label`.
+- [x] `!important` no container do styler não vaza para filhos com cor própria (herança CSS não propaga `!important`) → tags/rótulos coloridos preservados.
+
+### Cache-bust
+- [x] Live: `dashboard.toolbar.js` carrega `interface/html-editor.js?v=c2f1` → `?v=c2f2`.
+- [x] Admin: `biblioteca-html-editor` `1.3.30` → `1.3.31` (`html-editor.php`).
+
+### Evidência de Validação (BATCH-078)
+
+#### Rodada 1 (R1)
+Evidência automatizada reportada pelo executor em 2026-07-10 (ambiente: PHP 8.4.8):
+- `node --check` → OK (2/2): `gestor/assets/interface/html-editor.js`, `gestor/modulos/dashboard/dashboard.toolbar.js` (garante que a template literal do CSS injetado fecha corretamente).
+- `php -l` → OK (2/2): `gestor/bibliotecas/html-editor.php`, `gestor/modulos/dashboard/dashboard.php`.
+- `composer test` → **OK (76 tests, 287 assertions, 4 skipped gated por banco)**; a única `PHPUnit Deprecation` é pré-existente e alheia a este slice. Sem regressão.
+- Sem teste unitário novo: slice de UI/CSS (precedente BATCH-066/068). As correções 1 e 2 são reconhecimento de classe via `closest` (baixo risco); a 3 é CSS. Instanciar `HtmlEditorClass` em happy-dom exigiria jQuery + bootstrap pesado do `init()` (frágil, jQuery ausente no node_modules); o motor de mapeamento já foi coberto no BATCH-077.
+- Decisão registrada: [DEC-080](../decisions/DECISION-LOG.md#dec-080---2026-07-10---accepted).
+- Arquivos: `gestor/assets/interface/html-editor.js` (`isEditorOwned`, `resolveEditable`, `injectStyles`); `gestor/modulos/dashboard/dashboard.toolbar.js` (cache-bust); `gestor/bibliotecas/html-editor.php` (versão).
+
+#### Rodada 2 (R2) — Widgets Sem Wrapper, Aparência e Ícones SVG (2026-07-10)
+- [x] **R2-P4 (Widget Sem Wrapper)**: Mapeamento de elementos-raiz do render do widget com atributos `data-c2f-widget-id`/`root`/`marker` em vez de criar um contêiner `.c2f-widget-box` (preservando herança e seletores CSS do site hospedeiro).
+- [x] **R2-P4 (Reconstrução)**: `reconstructOriginal` reconstrói o marcador original a partir do elemento marcado com `data-c2f-marker` e remove os elementos irmãos do mesmo grupo.
+- [x] **R2-P1 (Proteção Interna)**: `resolveEditable` reconhece `[data-c2f-widget-id]` como atômico e o CSS injetado desabilita ponteiros/seleção nos nós internos (`pointer-events: none`, `user-select: none`).
+- [x] **R2-P1 (Outline e Label)**: Exibição visual do widget via `outline: 1px dashed #fbbf24!important` e label absoluto flutuante `::before` (identificando tipo e slug do widget) sem interferir no fluxo/layout da página (utiliza `position: relative`).
+- [x] **R2-P2 (Atalho Admin)**: Botão `#he-tb-widget-admin` adaptado para identificar `data-widget-type` unificando o tratamento de wrappers clássicos e os novos elementos-raiz do live editor.
+- [x] **R2-P3 (Ícones SVG Inline)**: Substituição de tags `<i class="... icon">` do Fomantic por SVGs inline embutidos no floating toolbar (9 botões) e no styler, garantindo que apareçam em qualquer site público independente das fontes da UI administrativa.
+- [x] **Cache-Bust**: Query-string atualizada para `?v=c2f3` (`dashboard.toolbar.js`) e biblioteca setada para `1.4.0` (`html-editor.php`).
+
+**Evidência de Teste R2**:
+* Criado e executado o script de smoke test [`_smoke_batch078_r2.mjs`](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/_smoke_batch078_r2.mjs) em `happy-dom` simulando a carga do live editor, mapeamento de widget sem wrapper, anotação de atributos fora do widget e salvamento (reconstruct).
+* Resultado: **18/18 checks aprovados (PASS)** sem qualquer vazamento de atributos ou tags de wrapper no HTML reconstruído.
+* `composer test` mantido verde (**76/76 testes aprovados**).
+
+### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` e sincronizar (o novo `html-editor.js`/`dashboard.toolbar.js` e a versão da biblioteca só refletem após o deploy; limpar cache do navegador ajuda, embora o `?v=c2f3` já force o reload no live).
+- **Widgets**: entrar em modo de edição e confirmar que widgets (como menus e destaques) aparecem com outline amarelo tracejado e label identificador no topo ao passar o cursor, e que seus elementos internos **não** podem ser focados/editados.
+- **Painel "+"**: clicar no "+" da toolbar, clicar no grupo "Menus" e confirmar que o submenu expande sem fechar o painel.
+- **Estilos e Ícones**: confirmar que os ícones do floating toolbar aparecem perfeitamente renderizados e que os campos/textareas no modal de edição exibem fontes com contraste correto e legível, livre de herança do CSS do site.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+
+---
+## BATCH-079 - Mapeamento no Pai de Widgets Múltiplos, Image Picker, Filtro/Agrupamento de Módulos e Backups Página×Layout (req-079)
+
+- [x] **Item 1+7 — Marcadores preservados + mapeamento no PAI (marker-based, ver adendo DEC-081)**: `gestor_pagina_widgets` mantém os comentários `<!-- widgets#SIG < --> … > -->` no DOM vivo quando `gestor_dashboard_toolbar_ativo()`; `mapTree` delimita cada widget pela fronteira exata desses comentários (sem heurística de alinhamento) — marca o `liveParent` (`data-c2f-widget-parent`) quando o widget é o único conteúdo do contêiner, senão os elementos-raiz; `reconstructOriginal` substitui o `innerHTML` do pai pelo marcador cru (preserva `<nav>`/`<ul>`). Widgets duplicados/consecutivos ficam separados. Guarda contra marcar a raiz editável.
+- [x] **Item 2 — Ícones SVG**: helper `svgIcon()` substitui as `<i class="… icon">` restantes em `html-editor.js` (accordion `dropdown`, bgimage `folder open`/`trash`, botões `kind:'icon'` do styler).
+- [x] **Item 3 — Image picker no modal do live editor**: botão `_html-editor-imagepick-btn` ao lado do `#element-src`; `openLiveImagePicker` monta iframe → `admin-arquivos/?paginaIframe=sim` e a seleção preenche o input (`raiz` via construtor).
+- [x] **Item 4 — Modal redimensionável**: `resize:both;overflow:auto` + min/max na caixa do modal fallback.
+- [x] **Item 5 — Filtro de módulos**: `#c2f-modules-filter` no topo do dropdown + listener `input` (case-insensitive) em `dashboard.iframe-toolbar.js`.
+- [x] **Item 6 — Agrupamento por categoria**: `dashboard_site_toolbar_menu` agrupa por `modulos_grupos` (cabeçalhos `.c2f-group-header` + itens `.c2f-menu-item`); o filtro oculta cabeçalhos de grupos vazios.
+- [x] **Item 8 — Backups Página × Layout**: backend retorna `page_backups`/`layout_backups` e `backup-get` aceita `type=page|layout`; frontend com 2 colunas e restauração independente (layout preserva o `#c2f-page-content` vivo).
+
+### Evidência de Validação (BATCH-079)
+
+Reportada pelo executor em 2026-07-10 (PHP 8.4.8). **Rodada 2 (marker-based)** após teste visual do Chefe (um `<nav>` com dois `menu-header-padrao` idênticos ainda marcava o `<a>`):
+- `node --check` → OK: `dashboard.toolbar.js`, `dashboard.iframe-toolbar.js`, `html-editor.js`.
+- `php -l` → OK: `gestor.php`, `dashboard.php`, `html-editor.php`.
+- Smoke `node _smoke_batch079.mjs` reescrito (marcadores no DOM vivo) → **20/20 checks**:
+  - Cenário A: widget único é o único conteúdo do `<nav>` → marca o PAI, comentários removidos do vivo, reconstrução por `innerHTML` com o mockup cru e a tag `<nav>` preservada.
+  - Cenário B: 2 widgets idênticos consecutivos no MESMO `<nav>` → 2 `data-c2f-widget-id` distintos (nav não vira parent), reconstrução com 2 marcadores.
+  - Cenário C: widget + rodapé estático no mesmo contêiner → widget por-elemento, rodapé preservado, 1 marcador.
+- `composer test` → **76/76 (287 assertions, 4 skipped)** sem regressão.
+- `npm run test` (vitest) → **3/3** (widgets públicos intactos).
+- Cache-bust: `biblioteca-html-editor` `1.4.1`→`1.4.2`.
+
+### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` + limpar cache (o `dashboard.toolbar.js`/`gestor.php` mudaram; hard-refresh no navegador).
+- **Item 1/7**: abrir uma página com um menu de links (widget) que é o único conteúdo de um `<nav>` e confirmar que o outline amarelo envolve todo o `<nav>` com um único label; num `<nav>` com dois menus idênticos, confirmar dois widgets independentes.
+- **Item 2**: confirmar que todos os ícones do styler/bgimage/accordion renderizam no live editor (sem Fomantic).
+- **Item 3/4**: editar uma imagem, abrir o selecionador, escolher um arquivo do `admin-arquivos` e ver a URL preencher o `#element-src`; redimensionar o modal pelo canto.
+- **Item 5/6**: abrir o dropdown de módulos, ver as categorias e filtrar por texto (cabeçalhos vazios somem).
+- **Item 8**: abrir o painel de backups e confirmar as 2 colunas; restaurar um backup de layout preservando o conteúdo vivo, e um de página sem afetar o layout.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.

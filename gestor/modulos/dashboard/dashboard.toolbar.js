@@ -137,7 +137,9 @@
 		tries = tries || 0;
 		if (window.HtmlEditorClass) {
 			try {
-				c2fEditor = new window.HtmlEditorClass({ contentRoot: content });
+				// `raiz` habilita o image-picker autônomo do modal (item 3) — o motor monta um
+				// iframe → admin-arquivos e preenche o #element-src com o arquivo selecionado.
+				c2fEditor = new window.HtmlEditorClass({ contentRoot: content, raiz: getRaiz() });
 				ensureCodeMirror(initCodeMirrorField);
 			} catch (e) {
 				window.console && console.error('Editor in-place:', e);
@@ -153,10 +155,268 @@
 		ensureJQuery(function () {
 			// Impede o auto-init sobre document.body; instanciamos escopado ao conteúdo.
 			window.__c2fHtmlEditorNoAutoInit = true;
-			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f1', 'c2f-he-script', function () {
+			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f4', 'c2f-he-script', function () {
 				instantiateEditor(content, 0);
 			});
 		});
+	}
+
+	// ===== Motor de mapeamento inteligente (BATCH-077)
+	//
+	// Em vez de substituir destrutivamente o innerHTML da página viva (o que quebra scripts,
+	// CSS e estado JS do site), PRESERVAMOS o DOM VIVO e apenas o ANOTAMOS. O HTML ORIGINAL
+	// da página/layout (com os marcadores `@[[var]]@` e `<!-- widgets#... -->` intactos) é
+	// guardado num container oculto `#paginaHTMLAntesEdicao`; percorremos as duas árvores em
+	// paralelo (viva × original) e:
+	//   - variável em ATRIBUTO  → marca a tag viva com `data-c2f-variable="ID_VAR_N"` e guarda
+	//     `{param, variable, valor}` em `varMap` (o valor resolvido continua visível no editor);
+	//   - variável em TEXTO      → envolve o trecho vivo numa caixa protegida (`.c2f-var-box`);
+	//   - WIDGET                 → envolve a expansão viva numa caixa atômica (`.c2f-widget-box`).
+	// As caixas guardam o marcador original em base64 (`data-c2f-marker`). No salvar, atributos
+	// e caixas são reconstruídos de volta às notações originais.
+
+	var BACKUP_ID = 'paginaHTMLAntesEdicao';
+	var varMap = {};   // ID_VAR_N -> { param, variable (template cru do atributo), valor (resolvido) }
+	var varSeq = 0;
+	var mapRoot = null; // raiz editável passada ao mapTree (guarda p/ o mapeamento no pai — item 1).
+
+	function b64encode(str) {
+		try { return window.btoa(unescape(encodeURIComponent(str))); }
+		catch (e) { try { return window.btoa(str); } catch (e2) { return ''; } }
+	}
+
+	function escapeRe(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+	// Marcadores `@[[...]]@` / `[[...]]` (arrobas de cerco opcionais). Novo objeto por chamada
+	// para não vazar `lastIndex` entre usos concorrentes.
+	function markerRe() { return /@?\[\[[\s\S]+?\]\]@?/g; }
+	function hasMarker(s) { return markerRe().test(String(s == null ? '' : s)); }
+
+	function isWidgetOpen(node) {
+		return node && node.nodeType === 8 && /^\s*widgets#(.+?)\s*<\s*$/.test(node.nodeValue || '');
+	}
+	function widgetSig(node) {
+		var m = (node.nodeValue || '').match(/^\s*widgets#(.+?)\s*<\s*$/);
+		return m ? m[1] : '';
+	}
+	function isWidgetClose(node, sig) {
+		if (!node || node.nodeType !== 8) { return false; }
+		var m = (node.nodeValue || '').match(/^\s*widgets#(.+?)\s*>\s*$/);
+		return !!(m && m[1] === sig);
+	}
+	// Extrai módulo (type) e slug da assinatura do widget `MODULO->FUNCAO({"grupo_slug":"x"})`
+	// (espelha parseWidgetSignature do html-editor.js) — usados nos atributos data-widget-*.
+	function parseWidgetSignature(signature) {
+		var m = String(signature || '').match(/^(.+?)->(\w+)\((.*)\)$/);
+		var type = signature, slug = '';
+		if (m) {
+			type = m[1].trim();
+			try { var params = JSON.parse(m[3]); slug = params.grupo_slug || ''; } catch (e) { /* não-JSON */ }
+		}
+		return { type: type, slug: slug };
+	}
+	function nodeToHtml(node) {
+		if (!node) { return ''; }
+		if (node.nodeType === 1) { return node.outerHTML; }
+		if (node.nodeType === 3) { return node.nodeValue; }
+		if (node.nodeType === 8) { return '<!--' + (node.nodeValue || '') + '-->'; }
+		return '';
+	}
+
+	function makeBox(tipo, marker) {
+		var box = document.createElement(tipo === 'widget' ? 'div' : 'span');
+		box.className = 'c2f-dyn-box c2f-' + tipo + '-box';
+		box.setAttribute('data-c2f-marker', b64encode(marker));
+		box.setAttribute('contenteditable', 'false');
+		return box;
+	}
+
+	// Marca os atributos do elemento vivo cujo valor original contém variável(is).
+	function mapAttributes(liveEl, rawEl) {
+		if (!rawEl.attributes) { return; }
+		for (var i = 0; i < rawEl.attributes.length; i++) {
+			var a = rawEl.attributes[i];
+			if (!hasMarker(a.value)) { continue; }
+			var id = 'ID_VAR_' + (++varSeq);
+			var prev = liveEl.getAttribute('data-c2f-variable');
+			liveEl.setAttribute('data-c2f-variable', prev ? prev + ' ' + id : id);
+			varMap[id] = {
+				param: a.name,
+				variable: a.value,                  // template cru do atributo (com @[[...]]@)
+				valor: liveEl.getAttribute(a.name)  // valor resolvido exibido no editor
+			};
+		}
+	}
+
+	// Quebra um nó de texto vivo em: texto literal + caixa(s) de variável, usando o template cru.
+	function annotateTextVars(parent, liveTextNode, rawTemplate) {
+		var re = markerRe(), m, last = 0, reStr = '^';
+		var markers = [];
+		while ((m = re.exec(rawTemplate)) !== null) {
+			reStr += escapeRe(rawTemplate.slice(last, m.index)) + '([\\s\\S]*?)';
+			markers.push(m[0]);
+			last = m.index + m[0].length;
+			if (m.index === re.lastIndex) { re.lastIndex++; }
+		}
+		reStr += escapeRe(rawTemplate.slice(last)) + '$';
+		var mm;
+		try { mm = new RegExp(reStr).exec(String(liveTextNode.nodeValue)); } catch (e) { mm = null; }
+		if (!mm) { return; } // não casou → mantém o vivo intacto (best-effort)
+
+		var frag = document.createDocumentFragment();
+		re = markerRe(); last = 0; var gi = 1, mk;
+		while ((mk = re.exec(rawTemplate)) !== null) {
+			var lit = rawTemplate.slice(last, mk.index);
+			if (lit) { frag.appendChild(document.createTextNode(lit)); }
+			var box = makeBox('var', mk[0]);
+			box.appendChild(document.createTextNode(mm[gi++] != null ? mm[gi - 1] : ''));
+			frag.appendChild(box);
+			last = mk.index + mk[0].length;
+			if (mk.index === re.lastIndex) { re.lastIndex++; }
+		}
+		var tail = rawTemplate.slice(last);
+		if (tail) { frag.appendChild(document.createTextNode(tail)); }
+		parent.replaceChild(frag, liveTextNode);
+	}
+
+	// Varredura paralela viva × original. Widgets são delimitados pelos PRÓPRIOS comentários
+	// `<!-- widgets#SIG < --> … <!-- widgets#SIG > -->`, que o modo de edição preserva no DOM vivo
+	// (ver gestor_pagina_widgets). Variáveis (atributo/texto) são mapeadas por alinhamento estrutural.
+	function mapTree(liveParent, rawParent) {
+		var live = Array.prototype.slice.call(liveParent.childNodes);
+		var raw = Array.prototype.slice.call(rawParent.childNodes);
+		var li = 0, ri = 0;
+
+		while (ri < raw.length) {
+			var rnode = raw[ri];
+
+			// ----- Widget: delimitado pelos comentários `<!-- widgets#SIG < --> … > -->` que o modo
+			//   de edição preserva TAMBÉM no DOM vivo. A fronteira é EXATA (sem heurística): casamos o
+			//   comentário de abertura vivo pela mesma assinatura (a partir de `li`, o que separa
+			//   naturalmente widgets duplicados/consecutivos) e marcamos os nós entre open/close.
+			//   Modo-pai (item 1): se o widget é o ÚNICO conteúdo do contêriner, marca o PAI.
+			if (rnode.nodeType === 8 && isWidgetOpen(rnode)) {
+				var sig = widgetSig(rnode);
+				var rClose = ri + 1;
+				while (rClose < raw.length && !isWidgetClose(raw[rClose], sig)) { rClose++; }
+
+				// Marcador cru (open + mockup + close) — preserva o mockup do designer no save.
+				var markerHtml = nodeToHtml(rnode);
+				for (var k = ri + 1; k < rClose && k < raw.length; k++) { markerHtml += nodeToHtml(raw[k]); }
+				if (rClose < raw.length) { markerHtml += nodeToHtml(raw[rClose]); }
+
+				// Fronteira EXATA no vivo: 1º comentário de abertura com a mesma assinatura a partir de li.
+				var lOpen = -1;
+				for (var w = li; w < live.length; w++) {
+					if (live[w].nodeType === 8 && isWidgetOpen(live[w]) && widgetSig(live[w]) === sig) { lOpen = w; break; }
+				}
+				if (lOpen >= 0) {
+					var lClose = lOpen + 1;
+					while (lClose < live.length && !isWidgetClose(live[lClose], sig)) { lClose++; }
+
+					var rootEls = [];
+					for (var b = lOpen + 1; b < lClose && b < live.length; b++) {
+						if (live[b] && live[b].nodeType === 1) { rootEls.push(live[b]); }
+					}
+
+					var parsed = parseWidgetSignature(sig);
+					var wgid = 'ID_WIDGET_' + (++varSeq);
+
+					// O widget é o único conteúdo do contêiner? (nenhum elemento/texto/outro widget
+					// fora da faixa [lOpen,lClose]). Nesse caso marcamos o PAI (item 1).
+					var otherContent = false;
+					for (var c = 0; c < live.length; c++) {
+						if (c >= lOpen && c <= lClose) { continue; }
+						var nn = live[c];
+						if (!nn) { continue; }
+						if (nn.nodeType === 1) { otherContent = true; break; }
+						if (nn.nodeType === 3 && String(nn.nodeValue).trim() !== '') { otherContent = true; break; }
+						if (nn.nodeType === 8 && isWidgetOpen(nn)) { otherContent = true; break; }
+					}
+					var parentOk = liveParent.nodeType === 1 && liveParent !== mapRoot && liveParent !== document.body
+						&& liveParent.id !== 'c2f-page-content' && liveParent.id !== 'c2f-layout-root'
+						&& liveParent.id !== 'c2f-raw-content';
+
+					if (rootEls.length > 1 && !otherContent && parentOk) {
+						// Modo-pai: o innerHTML do pai é trocado pelo marcador no save (preserva a tag).
+						liveParent.setAttribute('data-c2f-widget-id', wgid);
+						liveParent.setAttribute('data-c2f-widget-parent', '1');
+						liveParent.setAttribute('data-c2f-widget-root', '1');
+						liveParent.setAttribute('data-c2f-marker', b64encode(markerHtml));
+						liveParent.setAttribute('data-widget-type', parsed.type);
+						liveParent.setAttribute('data-widget-slug', parsed.slug);
+						liveParent.setAttribute('contenteditable', 'false');
+						try {
+							var pp = window.getComputedStyle(liveParent).position;
+							if (pp === 'static' || !pp || pp === '') { liveParent.style.position = 'relative'; }
+						} catch (e) { /* noop */ }
+					} else if (rootEls.length) {
+						// Marca os próprios elementos-raiz (sem wrapper — BATCH-078 r2): todos ganham
+						// `data-c2f-widget-id`; o 1º recebe marcador + tipo/slug + widget-root.
+						for (var ei = 0; ei < rootEls.length; ei++) {
+							var wnode = rootEls[ei];
+							wnode.setAttribute('data-c2f-widget-id', wgid);
+							wnode.setAttribute('contenteditable', 'false');
+							if (ei === 0) {
+								wnode.setAttribute('data-c2f-widget-root', '1');
+								wnode.setAttribute('data-c2f-marker', b64encode(markerHtml));
+								wnode.setAttribute('data-widget-type', parsed.type);
+								wnode.setAttribute('data-widget-slug', parsed.slug);
+								try {
+									var pos = window.getComputedStyle(wnode).position;
+									if (pos === 'static' || !pos || pos === '') { wnode.style.position = 'relative'; }
+								} catch (e) { /* noop */ }
+							}
+						}
+					} else {
+						// Expansão sem elemento-raiz (só texto) → caixa atômica (legado).
+						var startNode = live[lOpen + 1];
+						var wbox = makeBox('widget', markerHtml);
+						if (startNode && startNode.parentNode === liveParent) {
+							liveParent.insertBefore(wbox, startNode);
+							for (var b2 = lOpen + 1; b2 < lClose; b2++) {
+								if (live[b2] && live[b2].parentNode === liveParent) { wbox.appendChild(live[b2]); }
+							}
+						}
+					}
+
+					// Remove os comentários do widget do DOM vivo (fronteira já consumida).
+					if (live[lOpen] && live[lOpen].parentNode) { live[lOpen].parentNode.removeChild(live[lOpen]); }
+					if (live[lClose] && live[lClose].parentNode) { live[lClose].parentNode.removeChild(live[lClose]); }
+
+					li = lClose + 1;
+				}
+				ri = (rClose < raw.length) ? rClose + 1 : raw.length;
+				continue;
+			}
+
+			// ----- Elemento: mapeia atributos + recursa nos filhos.
+			if (rnode.nodeType === 1) {
+				var lel = -1;
+				for (var e = li; e < live.length; e++) { if (live[e].nodeType === 1) { lel = e; break; } }
+				if (lel >= 0 && live[lel].tagName === rnode.tagName) {
+					mapAttributes(live[lel], rnode);
+					mapTree(live[lel], rnode);
+					li = lel + 1;
+				}
+				ri++;
+				continue;
+			}
+
+			// ----- Texto com variável: quebra em literal + caixa(s).
+			if (rnode.nodeType === 3 && hasMarker(rnode.nodeValue)) {
+				var lt = -1;
+				for (var t = li; t < live.length; t++) {
+					if (live[t].nodeType === 3 && String(live[t].nodeValue).trim() !== '') { lt = t; break; }
+					if (live[t].nodeType === 1) { break; }
+				}
+				if (lt >= 0) { annotateTextVars(liveParent, live[lt], String(rnode.nodeValue)); }
+				ri++;
+				continue;
+			}
+
+			ri++;
+		}
 	}
 
 	// ===== Edição in-place
@@ -175,12 +435,32 @@
 					return;
 				}
 				editLayoutId = json.data.layout_id || '';
-				// Editando o #c2f-layout-root: usa o layout+conteúdo com caixas; senão só o conteúdo.
-				if (root.id === LAYOUT_ROOT_ID && json.data.layout_html) {
-					root.innerHTML = json.data.layout_html;
-				} else {
-					root.innerHTML = json.data.html;
+
+				// HTML ORIGINAL (cru) correspondente ao que está VIVO no root:
+				//  - editando o layout (#c2f-layout-root) → body-inner cru (com o conteúdo cru embutido);
+				//  - editando só o conteúdo (#c2f-page-content) → paginas.html cru.
+				var editingLayout = (root.id === LAYOUT_ROOT_ID);
+				var rawHtml = editingLayout ? (json.data.layout_raw || '') : (json.data.content_raw || '');
+
+				// Guarda o original num container oculto e ANOTA o DOM vivo (sem substituí-lo).
+				if (rawHtml) {
+					var backup = document.getElementById(BACKUP_ID);
+					if (!backup) {
+						backup = document.createElement('div');
+						backup.id = BACKUP_ID;
+						backup.style.display = 'none';
+						document.body.appendChild(backup);
+					}
+					backup.innerHTML = rawHtml;
+
+					varMap = {}; varSeq = 0; mapRoot = root;
+					try {
+						mapTree(root, backup);
+					} catch (e) {
+						window.console && console.error('Mapeamento in-place:', e);
+					}
 				}
+
 				activateEditor(root);
 			})
 			.catch(function () { window.alert('Erro ao carregar o editor da página.'); });
@@ -192,20 +472,90 @@
 		catch (e) { try { return window.atob(b64); } catch (e2) { return ''; } }
 	}
 
-	// Reconstrói o HTML original: cada caixa de destaque volta ao seu marcador
-	// (`@[[var]]@` / `<!-- widgets#... -->`); o restante é o HTML editado pelo editor visual.
+	// Remove todos os atributos/estilos de anotação do live editor de um elemento (usado no
+	// fallback em que o widget marcado não pôde ser reconstruído por falta de marcador).
+	function stripWidgetAnnotations(el) {
+		if (!el || !el.removeAttribute) { return; }
+		['data-c2f-widget-id', 'data-c2f-widget-root', 'data-c2f-widget-parent', 'data-c2f-marker',
+			'data-widget-type', 'data-widget-slug', 'contenteditable'].forEach(function (a) { el.removeAttribute(a); });
+		if (el.style && el.style.position === 'relative') { el.style.position = ''; }
+		if (el.getAttribute && el.getAttribute('style') === '') { el.removeAttribute('style'); }
+	}
+
+	// Reconstrói o HTML original a partir do DOM editado:
+	//   1) atributos marcados (`data-c2f-variable`) voltam à notação `@[[...]]@` do banco
+	//      — só quando o valor não foi alterado pelo usuário (senão preserva a edição);
+	//   2) widgets marcados SEM wrapper (`[data-c2f-widget-id]`): o 1º elemento do grupo volta
+	//      ao marcador `<!-- widgets#... -->` (do `data-c2f-marker`) e os demais irmãos do grupo
+	//      são removidos (o marcador cobre toda a expansão);
+	//   3) caixas de destaque (`.c2f-dyn-box`) voltam ao marcador original (`@[[var]]@` etc.).
+	// O restante é o HTML editado pelo editor visual.
 	function reconstructOriginal(container) {
 		var clone = container.cloneNode(true);
-		var boxes = clone.querySelectorAll('.c2f-dyn-box');
 		var map = {};
 		var i = 0;
-		Array.prototype.forEach.call(boxes, function (box) {
+
+		// 1) Atributos com variável.
+		var marked = clone.querySelectorAll('[data-c2f-variable]');
+		Array.prototype.forEach.call(marked, function (el) {
+			var ids = (el.getAttribute('data-c2f-variable') || '').split(/\s+/);
+			ids.forEach(function (id) {
+				var info = varMap[id];
+				if (!info) { return; }
+				var cur = el.getAttribute(info.param);
+				if (cur === info.valor) { el.setAttribute(info.param, info.variable); }
+			});
+			el.removeAttribute('data-c2f-variable');
+		});
+
+		// 2) Widgets marcados sem wrapper — agrupa por data-c2f-widget-id.
+		var widgetGroups = {};
+		Array.prototype.forEach.call(clone.querySelectorAll('[data-c2f-widget-id]'), function (el) {
+			var gid = el.getAttribute('data-c2f-widget-id');
+			(widgetGroups[gid] = widgetGroups[gid] || []).push(el);
+		});
+		Object.keys(widgetGroups).forEach(function (gid) {
+			var els = widgetGroups[gid];
+			var rootEl = null;
+			for (var k = 0; k < els.length; k++) { if (els[k].getAttribute('data-c2f-marker')) { rootEl = els[k]; break; } }
+			if (!rootEl) { rootEl = els[0]; }
+			var marker = decodeMarker(rootEl.getAttribute('data-c2f-marker') || '');
+			var isParent = rootEl.getAttribute('data-c2f-widget-parent') === '1';
+
+			// Item 1: o marcador vive no elemento PAI → substitui o innerHTML dele pelo marcador cru
+			// (preserva a tag externa <nav>/<ul> + seus atributos), em vez de trocar o próprio nó.
+			if (isParent) {
+				if (marker) {
+					var ptoken = 'C2FBOX' + (i++) + 'X';
+					map[ptoken] = marker;
+					rootEl.textContent = ptoken;
+				} else {
+					while (rootEl.firstChild) { rootEl.removeChild(rootEl.firstChild); }
+				}
+				stripWidgetAnnotations(rootEl);
+				return;
+			}
+
+			// Remove os irmãos secundários do grupo (o marcador do root recompõe a expansão inteira).
+			els.forEach(function (el) { if (el !== rootEl && el.parentNode) { el.parentNode.removeChild(el); } });
+			if (marker) {
+				var token = 'C2FBOX' + (i++) + 'X';
+				map[token] = marker;
+				if (rootEl.parentNode) { rootEl.parentNode.replaceChild(document.createTextNode(token), rootEl); }
+			} else {
+				stripWidgetAnnotations(rootEl); // best-effort: sem marcador, mantém o conteúdo limpo.
+			}
+		});
+
+		// 3) Caixas de destaque (variáveis de texto) — via token para não escapar `<`/`>` do marcador.
+		Array.prototype.forEach.call(clone.querySelectorAll('.c2f-dyn-box'), function (box) {
 			var marker = decodeMarker(box.getAttribute('data-c2f-marker') || '');
 			var token = 'C2FBOX' + (i++) + 'X';
 			map[token] = marker;
 			var t = document.createTextNode(token);
 			if (box.parentNode) { box.parentNode.replaceChild(t, box); }
 		});
+
 		var html = clone.innerHTML;
 		Object.keys(map).forEach(function (token) { html = html.split(token).join(map[token]); });
 		return html;
@@ -410,15 +760,36 @@
 
 	function closeBackupPanel() { if (backupPanel) { backupPanel.style.display = 'none'; } }
 
-	function restoreBackup(id) {
+	// Restaura só o conteúdo da página (#c2f-page-content) a partir de um backup de PÁGINA.
+	function restorePageBackup(html) {
 		var content = document.getElementById(CONTENT_ID);
-		if (!content || !id) { return; }
-		ajaxJson(dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-backup-get&id=' + encodeURIComponent(id), function (json) {
-			if (json && json.status === 'Ok' && json.data && typeof json.data.html === 'string') {
-				content.innerHTML = json.data.html;
-			} else {
+		if (content) { content.innerHTML = html; }
+	}
+
+	// Restaura o LAYOUT (item 8) preservando o conteúdo vivo: injeta o body-inner do backup do
+	// layout no #c2f-layout-root e re-encaixa o #c2f-page-content atual no slot de conteúdo.
+	function restoreLayoutBackup(html) {
+		var layoutRoot = document.getElementById(LAYOUT_ROOT_ID);
+		if (!layoutRoot) { window.alert('O layout não está em edição nesta página (edite pelo layout para restaurá-lo).'); return; }
+		var liveContent = document.getElementById(CONTENT_ID);
+		if (liveContent && liveContent.parentNode) { liveContent.parentNode.removeChild(liveContent); }
+		layoutRoot.innerHTML = html;
+		var slot = layoutRoot.querySelector('#' + CONTENT_ID);
+		if (slot && liveContent) { slot.parentNode.replaceChild(liveContent, slot); }
+		else if (liveContent) { layoutRoot.appendChild(liveContent); }
+	}
+
+	function restoreBackup(id, type) {
+		if (!id) { return; }
+		var url = dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-backup-get&id=' + encodeURIComponent(id) +
+			'&type=' + encodeURIComponent(type || 'page');
+		ajaxJson(url, function (json) {
+			if (!json || json.status !== 'Ok' || !json.data || typeof json.data.html !== 'string') {
 				window.alert((json && json.message) ? json.message : 'Falha ao carregar o backup.');
+				return;
 			}
+			if (type === 'layout') { restoreLayoutBackup(json.data.html); }
+			else { restorePageBackup(json.data.html); }
 		});
 	}
 
@@ -426,32 +797,48 @@
 		if (backupPanel) { return backupPanel; }
 		backupPanel = document.createElement('div');
 		backupPanel.id = 'c2f-backup-panel';
-		backupPanel.style.cssText = 'position:fixed;z-index:2147483645;min-width:240px;max-width:340px;max-height:70vh;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.22);padding:8px;display:none;font:14px system-ui,sans-serif;color:#0f172a;';
+		backupPanel.style.cssText = 'position:fixed;z-index:2147483645;min-width:440px;max-width:600px;max-height:70vh;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.22);padding:8px;display:none;font:14px system-ui,sans-serif;color:#0f172a;';
 		document.body.appendChild(backupPanel);
 		backupPanel.addEventListener('mouseover', function (e) { var it = e.target.closest && e.target.closest('.c2f-backup-item'); if (it) { it.style.background = '#f1f5f9'; } });
 		backupPanel.addEventListener('mouseout', function (e) { var it = e.target.closest && e.target.closest('.c2f-backup-item'); if (it) { it.style.background = ''; } });
 		backupPanel.addEventListener('click', function (e) {
 			var it = e.target.closest('.c2f-backup-item');
-			if (it) { restoreBackup(it.getAttribute('data-id')); closeBackupPanel(); }
+			if (it) { restoreBackup(it.getAttribute('data-id'), it.getAttribute('data-type')); closeBackupPanel(); }
 		});
 		return backupPanel;
 	}
 
+	// Monta uma coluna do painel de backups (Página ou Layout).
+	function backupColumn(titulo, backups, type) {
+		var h = '<div style="flex:1 1 0;min-width:200px;">' +
+			'<div style="font:600 11px sans-serif;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin:4px 0;padding-bottom:4px;border-bottom:1px solid #e2e8f0;">' + esc(titulo) + '</div>';
+		if (!backups || !backups.length) {
+			h += '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Nenhum backup</div>';
+		} else {
+			backups.forEach(function (b) {
+				h += '<div class="c2f-backup-item" data-id="' + esc(b.id) + '" data-type="' + esc(type) +
+					'" style="padding:6px 8px;border-radius:6px;cursor:pointer;">v' + esc(b.versao) + ' — ' + esc(b.data) + '</div>';
+			});
+		}
+		return h + '</div>';
+	}
+
 	function openBackupPanel(x, y, pageId) {
 		buildBackupPanel();
-		var px = Math.max(8, Math.min(parseInt(x, 10) || 8, window.innerWidth - 350));
+		var px = Math.max(8, Math.min(parseInt(x, 10) || 8, window.innerWidth - 610));
 		backupPanel.style.left = px + 'px';
 		backupPanel.style.top = ((parseInt(y, 10) || 40) + 4) + 'px';
 		backupPanel.style.display = 'block';
 		backupPanel.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Carregando…</div>';
 		ajaxJson(dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-backups&page_id=' + encodeURIComponent(pageId || ''), function (json) {
-			var backups = (json && json.data) ? json.data : [];
-			if (!backups.length) { backupPanel.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Nenhum backup</div>'; return; }
-			var h = '<div style="font:600 11px sans-serif;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin:4px 0;">Restaurar backup do conteúdo</div>';
-			backups.forEach(function (b) {
-				h += '<div class="c2f-backup-item" data-id="' + esc(b.id) + '" style="padding:6px 8px;border-radius:6px;cursor:pointer;">v' + esc(b.versao) + ' — ' + esc(b.data) + '</div>';
-			});
-			backupPanel.innerHTML = h;
+			var data = (json && json.data) ? json.data : {};
+			var pageB = data.page_backups || [];
+			var layoutB = data.layout_backups || [];
+			backupPanel.innerHTML =
+				'<div style="display:flex;gap:12px;align-items:flex-start;">' +
+				backupColumn('Backups da Página', pageB, 'page') +
+				backupColumn('Backups do Layout', layoutB, 'layout') +
+				'</div>';
 		});
 	}
 

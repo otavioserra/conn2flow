@@ -1323,6 +1323,8 @@ function dashboard_menu(){
 function dashboard_site_toolbar(){
 	global $_GESTOR;
 
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+
 	// ===== Contexto da página hospedeira (passado pela injeção via query string).
 
 	$page_id = (isset($_REQUEST['page_id']) ? trim($_REQUEST['page_id']) : '');
@@ -1355,6 +1357,13 @@ function dashboard_site_toolbar(){
 	// ===== Menu de módulos do painel.
 
 	dashboard_site_toolbar_menu();
+
+	// ===== Script da própria barra (BATCH-077): antes embutido num <script> no template,
+	//       agora injetado como arquivo estático (`dashboard.iframe-toolbar.js`). O hífen em
+	//       `iframe-toolbar` casa a regex do roteador `arquivo-estatico.php` (URL
+	//       `dashboard/iframe-toolbar.js` → físico `dashboard.iframe-toolbar.js`).
+
+	gestor_pagina_javascript_incluir(Array('tipo' => 'iframe-toolbar', 'modulo_id' => $_GESTOR['modulo-id'], 'versao' => $modulo['versao']));
 }
 
 /**
@@ -1370,6 +1379,7 @@ function dashboard_site_toolbar_menu(){
 	$lang = $_GESTOR['linguagem-codigo'];
 	$label_modulos = ($lang == 'en' ? 'Modules' : 'Módulos');
 	$label_vazio = ($lang == 'en' ? 'No modules' : 'Sem módulos');
+	$label_filtro = ($lang == 'en' ? 'Filter modules...' : 'Filtre os módulos...');
 
 	// ===== Perfil do usuário logado.
 
@@ -1414,17 +1424,25 @@ function dashboard_site_toolbar_menu(){
 		}
 	}
 
-	// ===== Módulos ativos, ordenados por nome.
+	// ===== Módulos ativos (id, nome, grupo), ordenados por nome.
 
 	$modulos = banco_select_name(
-		banco_campos_virgulas(Array('id','nome')),
+		banco_campos_virgulas(Array('id','nome','modulo_grupo_id')),
 		"modulos",
 		"WHERE language='".$lang."' AND status='A' ORDER BY nome ASC"
 	);
 
-	// ===== Montar os itens do dropdown.
+	// ===== Grupos/categorias de módulos (mesma fonte de gestor_pagina_menu), ordenados.
 
-	$itens = '';
+	$modulos_grupos = banco_select(Array(
+		'tabela' => 'modulos_grupos',
+		'campos' => Array('id','nome','ordemMenu'),
+		'extra' => "WHERE language='".$lang."' ORDER BY ordemMenu ASC, nome ASC",
+	));
+
+	// ===== Agrupar os itens permitidos por categoria (item 6).
+
+	$grupos_itens = Array(); // grupo_id => HTML dos <li> de módulo daquele grupo.
 
 	if($modulos)foreach($modulos as $m){
 		if($m['id'] == 'dashboard') continue;
@@ -1432,16 +1450,55 @@ function dashboard_site_toolbar_menu(){
 
 		$link = (isset($modulo_link[$m['id']]) ? $modulo_link[$m['id']] : $_GESTOR['url-raiz'].'dashboard/');
 		$nome = htmlspecialchars($m['nome'], ENT_QUOTES, 'UTF-8');
+		$gid = (existe($m['modulo_grupo_id']) ? $m['modulo_grupo_id'] : '');
 
-		$itens .=
-			'<li><a href="'.$link.'" target="_parent" '
+		$item =
+			'<li class="c2f-menu-item"><a href="'.$link.'" target="_parent" '
 			.'class="block px-4 py-2 text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap">'
 			.$nome.'</a></li>';
+
+		$grupos_itens[$gid] = (isset($grupos_itens[$gid]) ? $grupos_itens[$gid] : '').$item;
+	}
+
+	// ===== Montar itens agrupados (grupos na ordem de modulos_grupos; depois os sem grupo).
+
+	$cabecalho = function($nomeGrupo, $gid){
+		return '<li class="c2f-group-header" data-group="'.htmlspecialchars($gid, ENT_QUOTES, 'UTF-8').'">'
+			.'<div class="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">'
+			.htmlspecialchars($nomeGrupo, ENT_QUOTES, 'UTF-8').'</div></li>';
+	};
+
+	$itens = '';
+	$renderizados = Array();
+
+	if($modulos_grupos)foreach($modulos_grupos as $g){
+		if(isset($grupos_itens[$g['id']])){
+			$itens .= $cabecalho($g['nome'], $g['id']).$grupos_itens[$g['id']];
+			$renderizados[$g['id']] = true;
+		}
+	}
+
+	$semGrupo = '';
+	foreach($grupos_itens as $gid => $html){
+		if(isset($renderizados[$gid])) continue;
+		$semGrupo .= $html;
+	}
+	if($semGrupo !== ''){
+		$label_outros = ($lang == 'en' ? 'Others' : 'Outros');
+		$itens .= $cabecalho($label_outros, '_sem-grupo').$semGrupo;
 	}
 
 	if($itens === ''){
 		$itens = '<li class="px-4 py-2 text-slate-400 italic">'.$label_vazio.'</li>';
 	}
+
+	// ===== Campo de filtro no topo do dropdown (item 5).
+
+	$filtro =
+		'<li class="px-2 pt-2 pb-1">'
+		.'<input id="c2f-modules-filter" type="text" autocomplete="off" placeholder="'.htmlspecialchars($label_filtro, ENT_QUOTES, 'UTF-8').'" '
+		.'class="w-full px-2 py-1 text-sm border border-slate-200 rounded text-slate-700 focus:outline-none focus:border-slate-400">'
+		.'</li>';
 
 	// ===== Dropdown (hover) no estilo Tailwind do menus-dropdown.
 
@@ -1451,7 +1508,8 @@ function dashboard_site_toolbar_menu(){
 		.$label_modulos
 		.'<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>'
 		.'</button>'
-		.'<ul class="absolute left-0 top-full w-56 bg-white border border-slate-200 rounded-b-md shadow-lg py-1 hidden group-hover:block z-10 max-h-96 overflow-auto">'
+		.'<ul class="absolute left-0 top-full w-64 bg-white border border-slate-200 rounded-b-md shadow-lg py-1 hidden group-hover:block z-10 max-h-96 overflow-auto">'
+		.$filtro
 		.$itens
 		.'</ul>'
 		.'</div>';
@@ -1744,17 +1802,28 @@ function dashboard_ajax_site_toolbar_render(){
 	$open = $_GESTOR['variavel-global']['open'];
 	$close = $_GESTOR['variavel-global']['close'];
 
+	$corpoMarker = $open.'pagina#corpo'.$close;
+
 	// ===== Conteúdo da página (paginas.html) com caixas → embrulhado em #c2f-page-content.
+	//       (Fluxo legado do motor de caixas — mantido para retrocompatibilidade/backups.)
 
 	$contentHtml = (string)$pagina['html'];
 	$contentHtml = dashboard_site_toolbar_boxes_widgets($contentHtml);
 	$contentHtml = dashboard_site_toolbar_boxes_variaveis($contentHtml);
 	$contentWrapper = '<div id="c2f-page-content" data-c2f-content>'.$contentHtml.'</div>';
 
+	// ===== HTML CRU (BATCH-077): o motor novo preserva o DOM VIVO e faz o mapeamento de
+	//       variáveis/widgets no frontend comparando o vivo com este HTML original (com os
+	//       marcadores `@[[var]]@`/`<!-- widgets#... -->` intactos), guardado num container
+	//       oculto `#paginaHTMLAntesEdicao`. Nada de caixas aqui — o cru é a referência.
+
+	$contentRaw = (string)$pagina['html'];
+
 	// ===== Layout (layouts.html do BANCO) — só o body-inner é editável (o <head> não).
 
 	$layoutId = isset($pagina['layout_id']) ? (string)$pagina['layout_id'] : '';
 	$layoutHtmlOut = '';
+	$layoutRaw = '';
 
 	if($layoutId !== ''){
 		$layout = banco_select(Array(
@@ -1777,17 +1846,23 @@ function dashboard_ajax_site_toolbar_render(){
 				$bodyInner = $layoutHtml;
 			}
 
-			// Caixas no layout: widgets + variáveis de TEXTO; atributos preservados literais
-			// (o layout é compartilhado — não queimar `@[[pagina#url-raiz]]@` etc.).
-			$bodyInner = dashboard_site_toolbar_boxes_widgets($bodyInner);
-			$bodyInner = dashboard_site_toolbar_boxes_variaveis($bodyInner, true);
-
-			// Injeta o conteúdo no lugar do marcador @[[pagina#corpo]]@.
-			$corpoMarker = $open.'pagina#corpo'.$close;
-			if(strpos($bodyInner, $corpoMarker) !== false){
-				$layoutHtmlOut = str_replace($corpoMarker, $contentWrapper, $bodyInner);
+			// ----- Fluxo legado (caixas), preservado.
+			$bodyInnerBoxes = dashboard_site_toolbar_boxes_widgets($bodyInner);
+			$bodyInnerBoxes = dashboard_site_toolbar_boxes_variaveis($bodyInnerBoxes, true);
+			if(strpos($bodyInnerBoxes, $corpoMarker) !== false){
+				$layoutHtmlOut = str_replace($corpoMarker, $contentWrapper, $bodyInnerBoxes);
 			} else {
-				$layoutHtmlOut = $bodyInner.$contentWrapper;
+				$layoutHtmlOut = $bodyInnerBoxes.$contentWrapper;
+			}
+
+			// ----- Fluxo novo (cru): body-inner do layout SEM tocar; o slot `@[[pagina#corpo]]@`
+			//        recebe o conteúdo cru embrulhado num marcador `#c2f-raw-content`, espelhando
+			//        a estrutura viva (`#c2f-layout-root` contendo `#c2f-page-content`).
+			$rawContentSlot = '<div id="c2f-raw-content" data-c2f-raw-content>'.$contentRaw.'</div>';
+			if(strpos($bodyInner, $corpoMarker) !== false){
+				$layoutRaw = str_replace($corpoMarker, $rawContentSlot, $bodyInner);
+			} else {
+				$layoutRaw = $bodyInner.$rawContentSlot;
 			}
 		}
 	}
@@ -1802,6 +1877,10 @@ function dashboard_ajax_site_toolbar_render(){
 		'data' => Array(
 			'page_id' => $page_id,
 			'layout_id' => $layoutId,
+			// Motor novo (BATCH-077): HTML cru para o mapeamento in-place no DOM vivo.
+			'content_raw' => $contentRaw,
+			'layout_raw' => $layoutRaw,
+			// Motor legado (caixas): mantido para retrocompatibilidade.
 			'layout_html' => $layoutHtmlOut,
 			'html' => $contentHtml,
 		),
@@ -1949,7 +2028,7 @@ function dashboard_ajax_site_toolbar_backups(){
 	$pagina = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'paginas',
-		'campos' => Array('id_paginas','publisher_id'),
+		'campos' => Array('id_paginas','publisher_id','layout_id'),
 		'extra' =>
 			"WHERE id='".banco_escape_field($page_id)."'"
 			." AND language='".$language."'"
@@ -1963,7 +2042,9 @@ function dashboard_ajax_site_toolbar_backups(){
 
 	$ownerModule = (existe($pagina['publisher_id']) ? 'publisher-pages' : 'admin-paginas');
 
-	$backups = banco_select_name(
+	// ===== Backups da PÁGINA (campo html do módulo dono).
+
+	$pageBackups = banco_select_name(
 		banco_campos_virgulas(Array('id_backup_campos','versao','data')),
 		'backup_campos',
 		"WHERE id='".banco_escape_field($pagina['id_paginas'])."'"
@@ -1972,18 +2053,50 @@ function dashboard_ajax_site_toolbar_backups(){
 		." ORDER BY data DESC"
 	);
 
-	$out = Array();
-	if($backups){
-		foreach($backups as $b){
-			$out[] = Array(
-				'id' => $b['id_backup_campos'],
-				'versao' => $b['versao'],
-				'data' => $b['data'],
-			);
+	$pageOut = Array();
+	if($pageBackups){
+		foreach($pageBackups as $b){
+			$pageOut[] = Array('id' => $b['id_backup_campos'], 'versao' => $b['versao'], 'data' => $b['data']);
 		}
 	}
 
-	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => $out);
+	// ===== Backups do LAYOUT vinculado (campo html do módulo admin-layouts, pelo id_layouts).
+
+	$layoutOut = Array();
+	$layoutId = (existe($pagina['layout_id']) ? (string)$pagina['layout_id'] : '');
+	if($layoutId !== ''){
+		$layout = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'layouts',
+			'campos' => Array('id_layouts'),
+			'extra' =>
+				"WHERE id='".banco_escape_field($layoutId)."'"
+				." AND language='".$language."'"
+				." AND status!='D'",
+		));
+
+		if($layout){
+			$layoutBackups = banco_select_name(
+				banco_campos_virgulas(Array('id_backup_campos','versao','data')),
+				'backup_campos',
+				"WHERE id='".banco_escape_field($layout['id_layouts'])."'"
+				." AND modulo='admin-layouts'"
+				." AND campo='html'"
+				." ORDER BY data DESC"
+			);
+
+			if($layoutBackups){
+				foreach($layoutBackups as $b){
+					$layoutOut[] = Array('id' => $b['id_backup_campos'], 'versao' => $b['versao'], 'data' => $b['data']);
+				}
+			}
+		}
+	}
+
+	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => Array(
+		'page_backups' => $pageOut,
+		'layout_backups' => $layoutOut,
+	));
 }
 
 /**
@@ -2004,6 +2117,8 @@ function dashboard_ajax_site_toolbar_backup_get(){
 		return;
 	}
 
+	$type = isset($_REQUEST['type']) ? trim($_REQUEST['type']) : 'page';
+
 	$row = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'backup_campos',
@@ -2017,8 +2132,36 @@ function dashboard_ajax_site_toolbar_backup_get(){
 	}
 
 	gestor_incluir_biblioteca('widgets');
-	$html = dashboard_site_toolbar_boxes_widgets((string)$row['valor']);
-	$html = dashboard_site_toolbar_boxes_variaveis($html);
+
+	if($type === 'layout'){
+		// Backup de LAYOUT: o valor é o `layouts.html` completo. Extrai o body-inner, renderiza
+		// as caixas (preservando variáveis de atributo) e injeta um SLOT de conteúdo vazio
+		// (`#c2f-page-content`) no lugar de `@[[pagina#corpo]]@` — o frontend re-encaixa o
+		// conteúdo vivo da página ali, preservando o que o usuário está editando (item 8).
+		$open = $_GESTOR['variavel-global']['open'];
+		$close = $_GESTOR['variavel-global']['close'];
+		$corpoMarker = $open.'pagina#corpo'.$close;
+
+		$layoutHtml = (string)$row['valor'];
+		if(preg_match('/<body\b[^>]*>([\s\S]*?)<\/body>/i', $layoutHtml, $mBody)){
+			$bodyInner = $mBody[1];
+		} else {
+			$bodyInner = $layoutHtml;
+		}
+
+		$bodyInnerBoxes = dashboard_site_toolbar_boxes_widgets($bodyInner);
+		$bodyInnerBoxes = dashboard_site_toolbar_boxes_variaveis($bodyInnerBoxes, true);
+
+		$slot = '<div id="c2f-page-content" data-c2f-content></div>';
+		if(strpos($bodyInnerBoxes, $corpoMarker) !== false){
+			$html = str_replace($corpoMarker, $slot, $bodyInnerBoxes);
+		} else {
+			$html = $bodyInnerBoxes.$slot;
+		}
+	} else {
+		$html = dashboard_site_toolbar_boxes_widgets((string)$row['valor']);
+		$html = dashboard_site_toolbar_boxes_variaveis($html);
+	}
 
 	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => Array('html' => $html));
 }

@@ -486,6 +486,14 @@ function gestor_pagina_widgets(){
 	// O conteúdo interno é capturado e repassado ao callback do widget pela
 	// chave 'html' do array de parâmetros, junto com o 'id'.
 
+	// No modo de edição do Live Editor (Dashboard Site Toolbar) PRESERVAMOS os comentários
+	// `<!-- widgets#SIG < --> … <!-- widgets#SIG > -->` ao redor do render (trocamos apenas o
+	// conteúdo interno = mockup → widget renderizado). Assim o DOM vivo carrega a fronteira EXATA
+	// de cada widget, e o live editor delimita/marca cada um sem heurística de alinhamento
+	// (resolve widgets duplicados/consecutivos e o mapeamento no contêiner pai). Para o visitante
+	// normal, os marcadores continuam sendo removidos (comportamento original).
+	$editMode = function_exists('gestor_dashboard_toolbar_ativo') ? gestor_dashboard_toolbar_ativo() : false;
+
 	$wrapperPattern = '/<!--\s*widgets#(.+?)\s*<\s*-->([\s\S]*?)<!--\s*widgets#\s*\1\s*>\s*-->/i';
 
 	if(preg_match_all($wrapperPattern, $_GESTOR['pagina'], $matchesWrapper, PREG_SET_ORDER)){
@@ -503,7 +511,10 @@ function gestor_pagina_widgets(){
 			));
 
 			if(existe($widget)){
-				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$widgetBlock,$widget);
+				$substituicao = $editMode
+					? ('<!-- widgets#'.$widgetId.' < -->'.$widget.'<!-- widgets#'.$widgetId.' > -->')
+					: $widget;
+				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$widgetBlock,$substituicao);
 			}
 		}
 	}
@@ -531,7 +542,10 @@ function gestor_pagina_widgets(){
 			));
 
 			if(existe($widget)){
-				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open."widgets#".$match.$close,$widget);
+				$substituicao = $editMode
+					? ('<!-- widgets#'.$match.' < -->'.$widget.'<!-- widgets#'.$match.' > -->')
+					: $widget;
+				$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open."widgets#".$match.$close,$substituicao);
 			}
 		}
 	}

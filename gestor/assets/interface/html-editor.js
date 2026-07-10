@@ -77,6 +77,12 @@ $(document).ready(function () {
             // para escopar seleção/varredura/inserção ao conteúdo (sem tocar layout/toolbar).
             this.contentRoot = (options && options.contentRoot) || document.body;
 
+            // BATCH-079 item 3: raiz do gestor p/ o image-picker autônomo do modal no live editor
+            // (monta um iframe → admin-arquivos). No admin fica vazio (o fluxo do modal-iframe é o
+            // do html-editor-interface.js); no live editor é passado por dashboard.toolbar.js.
+            this.raiz = (options && options.raiz) ? String(options.raiz) : '';
+            this.liveImagePickerOpen = false;
+
             this.init();
         }
 
@@ -212,6 +218,51 @@ $(document).ready(function () {
                 .conn2flow-widget-wrapper>.conn2flow-widget-inner{pointer-events:none;}
                 html.he-inserting,html.he-inserting *{cursor:copy !important;}
                 html.he-dragging,html.he-dragging *{cursor:move !important;}
+
+                /* ===== BATCH-078 — proteção dos blocos dinâmicos do live editor (widgets/variáveis)
+                   O usuário só interage com o bloco externo; os nós internos (texto, imagens, links
+                   do widget) ficam inertes a clique/seleção, igual ao editor clássico. */
+                .c2f-dyn-box{user-select:none;-webkit-user-select:none;-ms-user-select:none;
+                    cursor:pointer;}
+                .c2f-widget-box{display:block;}
+                .c2f-dyn-box *{pointer-events:none !important;user-select:none !important;
+                    -webkit-user-select:none !important;}
+                /* BATCH-078 r2 — widget marcado SEM wrapper: os PROPRIOS elementos-raiz do render
+                   recebem a marcacao, preservando o encadeamento CSS (nada e envolvido num div).
+                   A borda usa outline (nao ocupa espaco no box model) e o rotulo e um ::before
+                   posicionado (nao vira celula de grid/flex nem quebra :nth-child). */
+                [data-c2f-widget-id]{cursor:pointer;user-select:none;-webkit-user-select:none;}
+                [data-c2f-widget-id] *{pointer-events:none !important;user-select:none !important;
+                    -webkit-user-select:none !important;}
+                [data-c2f-widget-root]{outline:2px dashed #f59e0b !important;outline-offset:-2px !important;}
+                [data-c2f-widget-root]::before{
+                    content:"Widget: " attr(data-widget-type) " - " attr(data-widget-slug);
+                    position:absolute;top:0;left:0;z-index:6;background:#f59e0b;color:#1f2937;
+                    font:bold 10px/1.4 sans-serif !important;-webkit-text-fill-color:#1f2937 !important;
+                    padding:1px 6px;border-radius:4px 0 4px 0;pointer-events:none;white-space:nowrap;
+                    max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+
+                /* ===== BATCH-078 — blindagem de CSS dos controles do editor injetados na página
+                   hospedeira. Força cor/fundo/fonte com !important para não herdar do template do
+                   site (ícones apagados na toolbar, textarea ilegível no modal, styler quebrado). */
+                #html-editor-floating-toolbar .he-tb-btn{color:#fff !important;opacity:1 !important;}
+                #html-editor-floating-toolbar .he-tb-btn svg{stroke:currentColor !important;
+                    color:#fff !important;opacity:1 !important;display:block;}
+                #html-editor-floating-toolbar .he-tb-btn.he-tb-deselect,
+                #html-editor-floating-toolbar .he-tb-btn.he-tb-deselect svg{color:#fca5a5 !important;}
+                #html-editor-tailwind-styler{color:#1f2937 !important;background:#fff !important;
+                    font-family:sans-serif !important;line-height:normal !important;
+                    text-align:left !important;text-transform:none !important;}
+                #html-editor-tailwind-styler input{color:#1f2937 !important;
+                    -webkit-text-fill-color:#1f2937 !important;background:#fff !important;
+                    opacity:1 !important;text-align:left !important;letter-spacing:normal !important;}
+                #html-editor-modal label{color:#334155 !important;
+                    -webkit-text-fill-color:#334155 !important;}
+                #html-editor-modal textarea,#html-editor-modal input[type="text"]{
+                    color:#0f172a !important;-webkit-text-fill-color:#0f172a !important;
+                    background:#fff !important;caret-color:#0f172a !important;opacity:1 !important;
+                    text-align:left !important;text-transform:none !important;
+                    letter-spacing:normal !important;}
             `;
             const style = document.createElement('style');
             style.id = 'html-editor-visual-styles';
@@ -263,25 +314,22 @@ $(document).ready(function () {
         createToolbar() {
             const tb = document.createElement('div');
             tb.id = 'html-editor-floating-toolbar';
+            // BATCH-078 r2: ícones em SVG inline (stroke=currentColor). O live editor roda na página
+            // hospedeira SEM Fomantic-UI, então `<i class="... icon">` (icon-font) não renderizava;
+            // o SVG funciona em qualquer ambiente e herda a cor blindada do botão.
+            const svg = (paths) => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ' +
+                'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' +
+                'aria-hidden="true">' + paths + '</svg>';
             tb.innerHTML = `
-                <button class="he-tb-btn he-tb-drag" type="button" title="Arrastar / Mover">
-                    <i class="arrows alternate icon" style="margin:0"></i></button>
-                <button class="he-tb-btn he-tb-dup" type="button" title="Duplicar">
-                    <i class="clone icon" style="margin:0"></i></button>
-                <button class="he-tb-btn he-tb-copy" type="button" title="Copiar (Ctrl+C)">
-                    <i class="copy icon" style="margin:0"></i></button>
-                <button class="he-tb-btn he-tb-paste" type="button" title="Colar (Ctrl+V)" style="display:none">
-                    <i class="paste icon" style="margin:0"></i></button>
-                <button class="he-tb-btn he-tb-wrap" type="button" title="Embrulhar">
-                    <i class="box icon" style="margin:0"></i></button>
-                <button class="he-tb-btn he-tb-edit" type="button" title="Editar">
-                    <i class="pencil icon" style="margin:0"></i></button>
-                <button class="he-tb-btn he-tb-widget-admin" type="button" title="Editar widget no módulo" style="display:none">
-                    <i class="external alternate icon" style="margin:0"></i></button>
-                <button class="he-tb-btn he-tb-del" type="button" title="Deletar">
-                    <i class="trash icon" style="margin:0"></i></button>
-                <button class="he-tb-btn he-tb-deselect" type="button" title="Deselecionar (Esc)">
-                    <i class="times circle icon" style="margin:0"></i></button>
+                <button class="he-tb-btn he-tb-drag" type="button" title="Arrastar / Mover">${svg('<polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/>')}</button>
+                <button class="he-tb-btn he-tb-dup" type="button" title="Duplicar">${svg('<rect x="8" y="8" width="12" height="12" rx="2" ry="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/>')}</button>
+                <button class="he-tb-btn he-tb-copy" type="button" title="Copiar (Ctrl+C)">${svg('<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>')}</button>
+                <button class="he-tb-btn he-tb-paste" type="button" title="Colar (Ctrl+V)" style="display:none">${svg('<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>')}</button>
+                <button class="he-tb-btn he-tb-wrap" type="button" title="Embrulhar">${svg('<path d="M21 8v8a2 2 0 0 1-1 1.73l-7 4a2 2 0 0 1-2 0l-7-4A2 2 0 0 1 3 16V8a2 2 0 0 1 1-1.73l7-4a2 2 0 0 1 2 0l7 4A2 2 0 0 1 21 8z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>')}</button>
+                <button class="he-tb-btn he-tb-edit" type="button" title="Editar">${svg('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>')}</button>
+                <button class="he-tb-btn he-tb-widget-admin" type="button" title="Editar widget no módulo" style="display:none">${svg('<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>')}</button>
+                <button class="he-tb-btn he-tb-del" type="button" title="Deletar">${svg('<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>')}</button>
+                <button class="he-tb-btn he-tb-deselect" type="button" title="Deselecionar (Esc)">${svg('<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>')}</button>
             `;
             document.body.appendChild(tb);
             this.toolbar = tb;
@@ -421,6 +469,12 @@ $(document).ready(function () {
                 if (element.closest('#html-editor-modal')) return true;
                 if (element.closest('.html-editor-container')) return true;
                 if (element.closest('.ui.dimmer.modals')) return true;
+                // BATCH-078: painéis do live editor (adicionar elemento/widget, backups) são UI
+                // do próprio editor — cliques neles não podem vazar para a seleção do conteúdo
+                // atrás (o listener de clique em capture usa elementsFromPoint e atravessaria o
+                // painel, selecionando o conteúdo por baixo e matando o toggle das categorias).
+                if (element.closest('#c2f-add-panel')) return true;
+                if (element.closest('#c2f-backup-panel')) return true;
                 if (element.classList && element.classList.contains('conn2flow-dnd-placeholder')) return true;
             }
             return false;
@@ -440,6 +494,16 @@ $(document).ready(function () {
             // Bloco atômico de widget.
             const wrapper = element.closest ? element.closest('.conn2flow-widget-wrapper') : null;
             if (wrapper) return wrapper;
+
+            // BATCH-078: no live editor, os blocos dinâmicos são atômicos protegidos — clicar em
+            // qualquer conteúdo interno resolve para a âncora, impedindo a edição/seleção dos nós
+            // filhos (paridade com o wrapper clássico de widget). São dois casos:
+            //   - `.c2f-dyn-box`      = caixa de variável de texto (span/div envelope);
+            //   - `[data-c2f-widget-id]` = widget marcado SEM wrapper (o próprio elemento-raiz do
+            //     render, para não quebrar o encadeamento CSS — BATCH-078 r2).
+            // A proteção de ponteiro do conteúdo interno vem do CSS.
+            const dynBox = element.closest ? element.closest('.c2f-dyn-box,[data-c2f-widget-id]') : null;
+            if (dynBox) return dynBox;
 
             const tag = element.tagName.toLowerCase();
             if (this.config.ignoredTags.includes(tag)) return null;
@@ -1139,6 +1203,30 @@ $(document).ready(function () {
             return this._helperConfig;
         }
 
+        // BATCH-079 item 2: ícone SVG inline (stroke=currentColor) a partir do nome Fomantic legado.
+        // O live editor roda na página pública SEM a fonte Fomantic — `<i class="… icon">` não
+        // renderizava. O SVG independe da fonte e herda a cor blindada do botão/rótulo.
+        svgIcon(name) {
+            const P = {
+                'dropdown': '<polyline points="6 9 12 15 18 9"/>',
+                'folder open': '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+                'trash': '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+                'align left': '<line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/>',
+                'align center': '<line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/>',
+                'align right': '<line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="7" y2="18"/>',
+                'align justify': '<line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/>',
+                'ban': '<circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>',
+                'underline': '<path d="M6 3v7a6 6 0 0 0 12 0V3"/><line x1="4" y1="21" x2="20" y2="21"/>',
+                'strikethrough': '<path d="M16 4H9a3 3 0 0 0-2.83 4"/><path d="M14 12a4 4 0 0 1 0 8H6"/><line x1="4" y1="12" x2="20" y2="12"/>',
+                'arrows alternate horizontal': '<polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" y1="12" x2="22" y2="12"/>',
+                'arrows alternate vertical': '<polyline points="8 18 12 22 16 18"/><polyline points="8 6 12 2 16 6"/><line x1="12" y1="2" x2="12" y2="22"/>'
+            };
+            const paths = P[name] || '<rect x="4" y="4" width="16" height="16" rx="2"/>';
+            return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+                'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' +
+                'style="display:inline-block;vertical-align:middle" aria-hidden="true">' + paths + '</svg>';
+        }
+
         buildHelperPanelHtml() {
             const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
             // Agrupar a config por seção (preservando a ordem) para montar o accordion.
@@ -1154,7 +1242,7 @@ $(document).ready(function () {
             sections.forEach((sec, idx) => {
                 const active = idx === 0 ? ' active' : ''; // primeira seção aberta por padrão
                 html += '<div class="he-helper-section' + active + '" data-section="' + esc(sec.name) + '">' +
-                    '<i class="dropdown icon"></i>' + esc(sec.name) + '</div>';
+                    this.svgIcon('dropdown') + esc(sec.name) + '</div>';
                 html += '<div class="he-helper-section-body' + active + '">';
                 sec.groups.forEach((g) => { html += this.buildHelperGroupHtml(g, esc); });
                 html += '</div>';
@@ -1170,9 +1258,9 @@ $(document).ready(function () {
                 html += '<div class="he-bgimage">' +
                     '<div class="he-bgimage-actions">' +
                     '<button type="button" class="he-helper-btn he-bgimage-pick" title="Selecionar imagem do servidor">' +
-                    '<i class="folder open icon"></i> Imagem</button>' +
+                    this.svgIcon('folder open') + ' Imagem</button>' +
                     '<button type="button" class="he-helper-btn he-bgimage-clear" title="Remover imagem de fundo">' +
-                    '<i class="trash icon"></i></button>' +
+                    this.svgIcon('trash') + '</button>' +
                     '</div>' +
                     '<div class="he-bgimage-preview" style="display:none"><img alt="" /></div>' +
                     '</div></div>';
@@ -1193,7 +1281,7 @@ $(document).ready(function () {
                         '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '" style="' + styleAttr + '"></button>';
                 } else if (g.kind === 'icon') {
                     html += '<button type="button" class="he-helper-btn" data-helper-group="' + g.key +
-                        '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '"><i class="' + b.icon + ' icon"></i></button>';
+                        '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '">' + this.svgIcon(b.icon) + '</button>';
                 } else {
                     html += '<button type="button" class="he-helper-btn" data-helper-group="' + g.key +
                         '" data-helper-class="' + b.cls + '" title="' + esc(b.title) + '">' + esc(b.label) + '</button>';
@@ -1373,7 +1461,9 @@ $(document).ready(function () {
             if (!this.toolbar) return;
             const btn = this.toolbar.querySelector('.he-tb-widget-admin');
             if (!btn) return;
-            const isWidget = !!(element && element.classList && element.classList.contains('conn2flow-widget-wrapper'));
+            // Wrapper clássico (.conn2flow-widget-wrapper) e widget marcado do live editor
+            // (BATCH-078 r2, sem wrapper) carregam `data-widget-type` — unifica os dois casos.
+            const isWidget = !!(element && element.getAttribute && element.getAttribute('data-widget-type'));
             btn.style.display = isWidget ? 'inline-flex' : 'none';
         }
 
@@ -1521,30 +1611,108 @@ $(document).ready(function () {
             const div = document.createElement('div');
             div.id = 'html-editor-modal';
             div.setAttribute('style', 'display:none;position:fixed;inset:0;z-index:1000001;font-family:ui-sans-serif,system-ui,sans-serif;');
+            // BATCH-079 item 4: a caixa recebe `resize:both;overflow:auto` (+ min/max) para o usuário
+            // ajustar largura/altura arrastando o canto inferior direito.
             div.innerHTML =
                 '<div class="c2f-he-modal-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.55);"></div>' +
-                '<div style="position:relative;max-width:640px;margin:6vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;max-height:88vh;">' +
-                    '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#0f172a;">Editar elemento</div>' +
-                    '<div style="padding:16px;overflow:auto;">' +
+                '<div class="c2f-he-modal-box" style="position:relative;width:640px;max-width:96vw;min-width:320px;min-height:220px;max-height:92vh;margin:6vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;resize:both;overflow:auto;">' +
+                    '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#0f172a;flex:0 0 auto;">Editar elemento</div>' +
+                    '<div style="padding:16px;overflow:auto;flex:1 1 auto;">' +
                         '<div id="text-field" style="display:none;">' +
                             '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Texto</label>' +
                             '<textarea id="element-text" rows="6" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;"></textarea>' +
                         '</div>' +
                         '<div id="image-field" style="display:none;">' +
                             '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">URL da imagem</label>' +
-                            '<input id="element-src" type="text" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;">' +
+                            // Item 3: input + botão do selecionador de imagens do servidor (admin-arquivos).
+                            '<div style="display:flex;gap:6px;align-items:stretch;">' +
+                                '<input id="element-src" type="text" style="flex:1 1 auto;min-width:0;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;">' +
+                                '<button type="button" class="_html-editor-imagepick-btn" title="Selecionar imagem do servidor" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;cursor:pointer;">' + this.svgIcon('folder open') + '</button>' +
+                            '</div>' +
                         '</div>' +
                         '<div id="code-field" style="display:none;">' +
                             '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Código HTML</label>' +
                             '<textarea id="element-code" rows="10" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:13px ui-monospace,monospace;"></textarea>' +
                         '</div>' +
                     '</div>' +
-                    '<div style="padding:12px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px;">' +
+                    '<div style="padding:12px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px;flex:0 0 auto;">' +
                         '<button type="button" class="c2f-he-modal-cancel" style="padding:8px 16px;border:0;border-radius:8px;background:#e2e8f0;color:#0f172a;cursor:pointer;font:14px sans-serif;">Cancelar</button>' +
                         '<button type="button" class="c2f-he-modal-save" style="padding:8px 16px;border:0;border-radius:8px;background:#16a34a;color:#fff;cursor:pointer;font:14px sans-serif;">Salvar</button>' +
                     '</div>' +
                 '</div>';
             document.body.appendChild(div);
+            this.bindLiveImagePicker(div);
+        }
+
+        // BATCH-079 item 3: image-picker autônomo do modal do live editor. O botão abre um overlay
+        // com um iframe → admin-arquivos (?paginaIframe=sim); a seleção do arquivo (postada pelo
+        // iframe ao `window.parent` = esta janela) preenche o #element-src.
+        bindLiveImagePicker(modal) {
+            const btn = modal.querySelector('._html-editor-imagepick-btn');
+            if (btn) {
+                btn.addEventListener('click', (e) => { e.preventDefault(); this.openLiveImagePicker(); });
+            }
+            if (this._liveImagePickBound) return;
+            this._liveImagePickBound = true;
+            window.addEventListener('message', (e) => {
+                let data;
+                try { data = (typeof e.data === 'string') ? JSON.parse(e.data) : e.data; } catch (err) { return; }
+                if (!data || (data.moduloId !== 'admin-arquivos' && data.moduloId !== 'arquivos')) return;
+                if (!this.liveImagePickerOpen) return;
+                let dados;
+                try { dados = JSON.parse(decodeURI(data.data)); } catch (err) { return; }
+                if (dados && dados.tipo && /^image\//.test(dados.tipo)) {
+                    const src = document.getElementById('element-src');
+                    const caminho = dados.caminho || '';
+                    const url = /^https?:\/\//i.test(caminho) ? caminho : ((this.raiz || '') + caminho);
+                    if (src) src.value = url;
+                    this.closeLiveImagePicker();
+                } else {
+                    window.alert('O arquivo selecionado não é uma imagem.');
+                }
+            });
+        }
+
+        openLiveImagePicker() {
+            const raiz = this.raiz || '';
+            if (!raiz) { // sem raiz não há gerenciador — fallback ao input manual (prompt).
+                const src = document.getElementById('element-src');
+                const url = window.prompt('URL da imagem:', (src && src.value) || '');
+                if (url !== null && src) src.value = url.trim();
+                return;
+            }
+            let ov = document.getElementById('c2f-he-imagepick-overlay');
+            if (!ov) {
+                ov = document.createElement('div');
+                ov.id = 'c2f-he-imagepick-overlay';
+                ov.style.cssText = 'position:fixed;inset:0;z-index:1000002;display:none;';
+                ov.innerHTML =
+                    '<div class="c2f-he-ip-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.6);"></div>' +
+                    '<div style="position:relative;width:920px;max-width:96vw;height:80vh;margin:6vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden;">' +
+                        '<div style="padding:10px 14px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;">' +
+                            '<span style="font-weight:600;color:#0f172a;">Selecionar imagem</span>' +
+                            '<button type="button" class="c2f-he-ip-close" style="border:0;background:#e2e8f0;border-radius:6px;padding:6px 12px;cursor:pointer;color:#0f172a;">Fechar</button>' +
+                        '</div>' +
+                        '<iframe class="c2f-he-ip-frame" style="flex:1 1 auto;border:0;width:100%;"></iframe>' +
+                    '</div>';
+                document.body.appendChild(ov);
+                ov.querySelector('.c2f-he-ip-backdrop').addEventListener('click', () => this.closeLiveImagePicker());
+                ov.querySelector('.c2f-he-ip-close').addEventListener('click', () => this.closeLiveImagePicker());
+            }
+            const frame = ov.querySelector('.c2f-he-ip-frame');
+            frame.src = raiz + 'admin-arquivos/?paginaIframe=sim';
+            ov.style.display = 'block';
+            this.liveImagePickerOpen = true;
+        }
+
+        closeLiveImagePicker() {
+            const ov = document.getElementById('c2f-he-imagepick-overlay');
+            if (ov) {
+                ov.style.display = 'none';
+                const f = ov.querySelector('.c2f-he-ip-frame');
+                if (f) f.src = 'about:blank';
+            }
+            this.liveImagePickerOpen = false;
         }
 
         showModal() {

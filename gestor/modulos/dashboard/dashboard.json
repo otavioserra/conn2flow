@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.0.7",
     "bibliotecas": [
         "interface",
         "html"
@@ -78,11 +78,11 @@
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "8714c7829960a4ebad7dd75169b0732c",
+                        "html": "60dfaeb5ec73eb3ec927e7f27fcf1fca",
                         "css": "",
-                        "combined": "8714c7829960a4ebad7dd75169b0732c"
+                        "combined": "60dfaeb5ec73eb3ec927e7f27fcf1fca"
                     }
                 }
             ],
@@ -286,11 +286,11 @@
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "57780ccc422afac9f79cadfe08eda36a",
+                        "html": "44e9fdc332b4e386874cbf8a8377afb3",
                         "css": "",
-                        "combined": "57780ccc422afac9f79cadfe08eda36a"
+                        "combined": "44e9fdc332b4e386874cbf8a8377afb3"
                     }
                 }
             ],
