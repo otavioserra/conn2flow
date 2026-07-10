@@ -902,12 +902,12 @@ Evidência automatizada reportada pelo executor em 2026-07-10 (ambiente: PHP 8.4
 Reportada pelo executor em 2026-07-10 (PHP 8.4.8). **Rodada 2 (marker-based)** após teste visual do Chefe (um `<nav>` com dois `menu-header-padrao` idênticos ainda marcava o `<a>`):
 - `node --check` → OK: `dashboard.toolbar.js`, `dashboard.iframe-toolbar.js`, `html-editor.js`.
 - `php -l` → OK: `gestor.php`, `dashboard.php`, `html-editor.php`.
-- Smoke `node _smoke_batch079.mjs` reescrito (marcadores no DOM vivo) → **20/20 checks**:
+- Vitest (`npm run test`): Executa 20 checks em `tests/Unit/JS/dashboard.toolbar.test.js` (happy-dom, arquivo real via hook de teste) → **20/20 checks aprovados**:
   - Cenário A: widget único é o único conteúdo do `<nav>` → marca o PAI, comentários removidos do vivo, reconstrução por `innerHTML` com o mockup cru e a tag `<nav>` preservada.
   - Cenário B: 2 widgets idênticos consecutivos no MESMO `<nav>` → 2 `data-c2f-widget-id` distintos (nav não vira parent), reconstrução com 2 marcadores.
   - Cenário C: widget + rodapé estático no mesmo contêiner → widget por-elemento, rodapé preservado, 1 marcador.
 - `composer test` → **76/76 (287 assertions, 4 skipped)** sem regressão.
-- `npm run test` (vitest) → **3/3** (widgets públicos intactos).
+- `npm run test` (vitest) → **6/6** total aprovados (incluindo as 3 specs do live editor e 3 widgets legados).
 - Cache-bust: `biblioteca-html-editor` `1.4.1`→`1.4.2`.
 
 ### Pendências Runtime (com o operador)

@@ -63,11 +63,10 @@ só `#c2f-page-content`; clique em backup de layout restaura o layout preservand
 - `gestor/modulos/dashboard/dashboard.iframe-toolbar.js` (itens 5, 6).
 - `gestor/assets/interface/html-editor.js` (itens 2, 3, 4).
 - `gestor/bibliotecas/html-editor.php` (cache-bust da biblioteca).
-- `_smoke_batch079.mjs` (smoke marker-based: widget no pai + duplicados separados + estático preservado).
+- `tests/Unit/JS/dashboard.toolbar.test.js` (testes integrados vitest: widget no pai + duplicados separados + estático preservado).
 
 ## Validação
 - Estática: `node --check` (2 JS) + `php -l` (dashboard.php) + JSON/HTML balanceado.
-- Smoke `_smoke_batch079.mjs` (happy-dom): widget de menu (múltiplos `<a>`) mapeado no pai e
-  round-trip por innerHTML; 2 widgets idênticos consecutivos mapeados separadamente.
+- Vitest (`npm run test`): Executa 20 checks em `dashboard.toolbar.test.js` cobrindo o widget de menu mapeado no pai, round-trip de reconstrução por innerHTML, e 2 widgets idênticos consecutivos separados.
 - `composer test` sem regressão.
 - Runtime (deploy `Update => Core` + homologação visual): **pendente com o operador**.

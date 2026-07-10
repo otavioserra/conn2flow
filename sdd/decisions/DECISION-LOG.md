@@ -311,7 +311,7 @@ Mapeamento no Pai de Widgets Múltiplos, Image Picker, Filtro/Agrupamento de Mó
 
 8. **Cache-bust**: live carrega `interface/html-editor.js?v=c2f3` → `?v=c2f4`; admin bumpa `biblioteca-html-editor` `1.4.0` → `1.4.1`.
 
-**Validação**: `node --check` (3 JS) OK; `php -l` (`dashboard.php`, `html-editor.php`) OK; smoke `_smoke_batch079.mjs` (happy-dom, arquivo real via hook de teste): **18/18** (mapeamento no pai + reconstrução por innerHTML; 2 widgets idênticos consecutivos separados; âncora estática por cauda preservada); `composer test` **76/76** (287 assertions, 4 skipped) sem regressão; `npm run test` (vitest) **3/3**. Runtime (deploy `Update => Core` + homologação visual) **pendente com o operador**. Nenhum `git commit`/`git push` executado.
+**Validação**: `node --check` (3 JS) OK; `php -l` (`dashboard.php`, `html-editor.php`) OK; testes integrados via vitest em `tests/Unit/JS/dashboard.toolbar.test.js` (happy-dom, arquivo real via hook de teste) rodando 18 checks (mapeamento no pai + reconstrução por innerHTML; 2 widgets idênticos consecutivos separados; âncora estática por cauda preservada) aprovados; `composer test` **76/76** (287 assertions, 4 skipped) sem regressão; `npm run test` (vitest) **6/6** total aprovados. Runtime (deploy `Update => Core` + homologação visual) **pendente com o operador**. Nenhum `git commit`/`git push` executado.
 
 **Adendo — Marcadores de widget preservados no modo edição (2026-07-10, pós-teste do Chefe)**. A homologação mostrou que a heurística de alinhamento DOM-vivo × cru (itens 1 e 7 acima) ainda fragmentava widgets em casos reais: no header do transformamp, um `<nav>` com **dois `menu-header-padrao` idênticos consecutivos** (duplicação real no banco) fazia a divisão por assinatura/cauda marcar um `<a>` como raiz em vez do `<nav>`. **Decisão (proposta do Engenheiro Chefe Humano)**: em vez de adivinhar a fronteira do widget, **preservá-la explicitamente**.
 
@@ -321,6 +321,6 @@ Mapeamento no Pai de Widgets Múltiplos, Image Picker, Filtro/Agrupamento de Mó
 
 3. **Efeito**: um menu que é o único conteúdo de um `<nav>`/`<ul>` marca o `<nav>` inteiro (borda/label no contêiner); dois widgets idênticos consecutivos viram widgets separados e independentes; nós estáticos irmãos nunca são absorvidos. Sem `:nth-child`/`:first-child` afetados (comentários HTML não são elementos).
 
-**Validação do adendo**: `node --check` (`dashboard.toolbar.js`) OK; `php -l` (`gestor.php`, `dashboard.php`) OK; smoke `_smoke_batch079.mjs` reescrito (marcadores no DOM vivo) **20/20** (widget único → pai; 2 widgets consecutivos no mesmo `<nav>` separados; widget + rodapé estático preservado); `composer test` **76/76** sem regressão. Cache-bust: `biblioteca-html-editor` `1.4.1`→`1.4.2` (bump do operador/linter). Runtime (deploy + homologação visual) pendente com o operador.
+**Validação do adendo**: `node --check` (`dashboard.toolbar.js`) OK; `php -l` (`gestor.php`, `dashboard.php`) OK; testes vitest em `dashboard.toolbar.test.js` reescritos para marcadores no DOM vivo passando **20/20 checks** (widget único → pai; 2 widgets consecutivos no mesmo `<nav>` separados; widget + rodapé estático preservado); `composer test` **76/76** sem regressão. Cache-bust: `biblioteca-html-editor` `1.4.1`→`1.4.2` (bump do operador/linter). Runtime (deploy + homologação visual) pendente com o operador.
 
 
