@@ -560,6 +560,13 @@
 
 		var html = clone.innerHTML;
 		Object.keys(map).forEach(function (token) { html = html.split(token).join(map[token]); });
+
+		// Normaliza variáveis/widgets DIGITADOS pelo usuário no editor. No template a notação é
+		// `[[var]]` (openText/closeText); no banco é `@[[var]]@` (open/close, com cerco `@`). As
+		// variáveis que vieram das caixas já são reconstruídas com o cerco (via data-c2f-marker); as
+		// que o usuário digitou à mão (ex.: `[[pagina#url-raiz]]`, `[[widgets#slug]]`) ficam sem o
+		// cerco. Este passe final garante `@[[…]]@` para TODAS (idempotente: `@[[x]]@`→`@[[x]]@`).
+		html = html.replace(/@?\[\[([\s\S]+?)\]\]@?/g, '@[[$1]]@');
 		return html;
 	}
 
@@ -703,25 +710,80 @@
 		window.location.reload();
 	}
 
-	// Preview responsivo (screenPagina): redimensiona a área editável para simular a largura
-	// do dispositivo. Alvo: #c2f-layout-root (quando editando layout) ou #c2f-page-content.
-	function setEditScreen(width) {
-		var root = document.getElementById('c2f-layout-root') || document.getElementById(CONTENT_ID);
+	// Preview responsivo (screenPagina): SIMULA a viewport do dispositivo renderizando o conteúdo
+	// dentro de um IFRAME com a largura do device. Só assim as media queries (@media), unidades de
+	// viewport (vw/vh) e o evento window.resize respondem como num dispositivo real — mudar apenas
+	// a largura de um elemento NÃO dispara media queries (elas usam a viewport, não o elemento).
+	// Desktop (100%) volta à edição in-place; Tablet/Mobile é preview fiel (o editor fica desabilitado).
+	var deviceWrap = null;   // contêiner centralizado do preview.
+	var deviceIframe = null; // iframe que renderiza o conteúdo na largura do device.
+
+	// CSS do site (links + styles do <head>) para o documento do preview — SEM <script> (evita
+	// reexecutar JS do site / reinjetar a toolbar dentro do iframe).
+	function collectSiteCss() {
+		var css = '';
+		var nodes = document.head ? document.head.querySelectorAll('link[rel="stylesheet"], style') : [];
+		Array.prototype.forEach.call(nodes, function (n) { css += n.outerHTML; });
+		return css;
+	}
+
+	function buildPreviewDoc(innerHtml) {
+		var baseHref = (document.baseURI || window.location.href).replace(/"/g, '&quot;');
+		return '<!DOCTYPE html><html><head><meta charset="utf-8">' +
+			'<meta name="viewport" content="width=device-width, initial-scale=1">' +
+			'<base href="' + baseHref + '">' +
+			collectSiteCss() +
+			'<style>html,body{margin:0}</style></head><body>' + (innerHtml || '') + '</body></html>';
+	}
+
+	function enterDevicePreview(width) {
+		var root = document.getElementById(LAYOUT_ROOT_ID) || document.getElementById(CONTENT_ID);
 		if (!root) { return; }
-		var w = String(width || '100%');
-		if (w === '100%' || w === '100') {
-			root.style.maxWidth = '';
-			root.style.width = '';
-			root.style.margin = '';
-			root.style.boxShadow = '';
-			root.style.transition = '';
-		} else {
-			root.style.maxWidth = '100%';
-			root.style.width = w;
-			root.style.margin = '0 auto';
-			root.style.boxShadow = '0 0 0 1px rgba(0,0,0,.12)';
-			root.style.transition = 'width .2s';
+
+		// Preview já visível → só troca a largura do iframe (media queries re-avaliam sem recarregar).
+		if (deviceIframe && deviceWrap && deviceWrap.style.display === 'flex') {
+			deviceIframe.style.width = width;
+			return;
 		}
+
+		// Editor visual desabilitado durante o preview (fiel, não editável).
+		if (typeof c2fEditor !== 'undefined' && c2fEditor) {
+			if (typeof c2fEditor.deselectAll === 'function') { c2fEditor.deselectAll(); }
+			if (typeof c2fEditor.disable === 'function') { c2fEditor.disable(); }
+		}
+
+		// HTML limpo do conteúdo (sem o chrome/anotações do editor).
+		var innerHtml;
+		try { innerHtml = (c2fEditor && typeof c2fEditor.getCleanHtml === 'function') ? c2fEditor.getCleanHtml() : root.innerHTML; }
+		catch (e) { innerHtml = root.innerHTML; }
+
+		if (!deviceWrap) {
+			deviceWrap = document.createElement('div');
+			deviceWrap.id = 'c2f-device-preview';
+			deviceWrap.style.cssText = 'width:100%;display:flex;justify-content:center;background:#334155;padding:16px 0;box-sizing:border-box;';
+			deviceIframe = document.createElement('iframe');
+			deviceIframe.setAttribute('title', 'Preview do dispositivo');
+			deviceIframe.style.cssText = 'border:0;background:#fff;box-shadow:0 6px 24px rgba(0,0,0,.35);height:82vh;max-width:100%;transition:width .2s;';
+			deviceWrap.appendChild(deviceIframe);
+		}
+		if (!deviceWrap.parentNode && root.parentNode) { root.parentNode.insertBefore(deviceWrap, root.nextSibling); }
+		deviceIframe.style.width = width;
+		deviceIframe.srcdoc = buildPreviewDoc(innerHtml);
+		root.style.display = 'none';
+		deviceWrap.style.display = 'flex';
+	}
+
+	function exitDevicePreview() {
+		var root = document.getElementById(LAYOUT_ROOT_ID) || document.getElementById(CONTENT_ID);
+		if (deviceWrap) { deviceWrap.style.display = 'none'; }
+		if (root) { root.style.display = ''; }
+		if (typeof c2fEditor !== 'undefined' && c2fEditor && typeof c2fEditor.enable === 'function') { c2fEditor.enable(); }
+	}
+
+	function setEditScreen(width) {
+		var w = String(width || '100%');
+		if (w === '100%' || w === '100') { exitDevicePreview(); }
+		else { enterDevicePreview(w); }
 	}
 
 	// ===== Painel "+" (adicionar elemento ou widget) — BATCH-081 §5/§6: duas colunas

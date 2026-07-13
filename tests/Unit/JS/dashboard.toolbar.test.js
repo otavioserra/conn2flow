@@ -158,6 +158,20 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
     expect(called).toBe(false);
   });
 
+  it('normaliza variáveis DIGITADAS ([[x]] → @[[x]]@) e mantém as já cercadas (idempotente)', () => {
+    const el = createEl('<p>Base: [[pagina#url-raiz]] · widget [[widgets#promo]] · já @[[usuario#nome]]@</p>');
+    const out = T.reconstruct(el);
+    // Variáveis/widgets digitados ganham o cerco @…@.
+    expect(out).toContain('@[[pagina#url-raiz]]@');
+    expect(out).toContain('@[[widgets#promo]]@');
+    // A que já vinha cercada permanece sem duplicar o cerco.
+    expect(out).toContain('@[[usuario#nome]]@');
+    expect(out).not.toContain('@@[[');
+    expect(out).not.toContain(']]@@');
+    // Não sobra nenhuma variável sem cerco.
+    expect(/(^|[^@])\[\[pagina#url-raiz\]\]([^@]|$)/.test(out)).toBe(false);
+  });
+
   it('§3 — restorePageBackup re-anota o widget (marcadores) no conteúdo restaurado', () => {
     const sig = 'menus->render({"grupo_slug":"main"})';
     const content = document.createElement('div');

@@ -5,6 +5,11 @@
         margin: 0;
         padding: 0;
     }
+    /* Forces the dropdown box visible via JS (hover-intent), regardless of CSS :hover — beats
+       Tailwind's `hidden` during the close delay (see dashboard.iframe-toolbar.js). */
+    .c2f-dropdown-force-open {
+        display: block !important;
+    }
 </style>
 <div id="c2f-toolbar-root" data-page-id="#page_id#" class="w-full font-sans select-none text-slate-100 text-sm">
     <!-- Main bar (30px) -->

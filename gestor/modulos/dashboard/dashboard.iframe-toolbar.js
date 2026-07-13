@@ -19,8 +19,9 @@
     var MAIN_H = 30;
     var EDIT_H = 44;
     var editOn = false;
-    var menuOpen = false;
-    var openDropdown = null; // BATCH-081: menu de dropdown (Página/Usuário) aberto por clique.
+    var openDropdown = null;   // menuEl (caixa) do dropdown atualmente aberto (mede a altura do iframe).
+    var closeTimer = null;     // hover-intent: timer de fechamento adiado, cancelável.
+    var FORCE_OPEN = 'c2f-dropdown-force-open'; // força a caixa visível por JS (independe do :hover).
 
     function initToolbar() {
         var editBtn = document.getElementById('c2f-toolbar-edit');
@@ -38,12 +39,10 @@
         }
 
         function iframeHeight() {
-            // Altura do iframe: inclui o dropdown de módulos (hover) e/ou os dropdowns de
-            // Página/Usuário (clique), que apenas sobrepõem — não empurram a página.
+            // Altura do iframe: inclui o dropdown aberto (menu de módulos / Página / Usuário), que
+            // apenas sobrepõe — não empurra a página. A caixa é medida já VISÍVEL (FORCE_OPEN),
+            // então `offsetHeight` é confiável (não depende do timing do `:hover`).
             var h = persistentHeight();
-            if (menuOpen && dropdown) {
-                h = Math.max(h, MAIN_H + dropdown.offsetHeight + 8);
-            }
             if (openDropdown) {
                 h = Math.max(h, MAIN_H + openDropdown.offsetHeight + 8);
             }
@@ -59,7 +58,9 @@
         }
 
         function closeDropdowns() {
-            // Só limpa o estado de altura; a visibilidade dos menus é controlada por CSS (hover).
+            // Fecha imediatamente qualquer dropdown aberto (usado ao entrar/sair da edição).
+            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+            if (openDropdown) { openDropdown.classList.remove(FORCE_OPEN); }
             openDropdown = null;
         }
 
@@ -130,11 +131,9 @@
             });
         });
 
-        // Redimensiona o iframe para caber o dropdown de módulos (que excede os 30px).
-        if (menu) {
-            menu.addEventListener('mouseenter', function () { menuOpen = true; pushHeight(); });
-            menu.addEventListener('mouseleave', function () { menuOpen = false; pushHeight(); });
-        }
+        // O hover dos dropdowns (menu de módulos + Página + Usuário) é registrado adiante, num
+        // sistema hover-intent unificado (ver registerHoverDropdown), que resolve a corrida do
+        // crescimento assíncrono do iframe.
 
         // Filtro de módulos (item 5) + ocultação de cabeçalhos de grupos vazios (item 6).
         var filterInput = document.getElementById('c2f-modules-filter');
@@ -163,17 +162,51 @@
             });
         }
 
-        // ===== Dropdowns de Página e Usuário (BATCH-081 §3): abrem no HOVER, igual ao menu de
-        //       módulos (`c2f-toolbar-menu`) via `group-hover:block`. Aqui só crescemos o iframe
-        //       para caber o menu aberto (iframeHeight considera `openDropdown`).
-        var dropdowns = [document.getElementById('c2f-page-dropdown'), document.getElementById('c2f-user-dropdown')];
-        Array.prototype.forEach.call(dropdowns, function (dd) {
-            if (!dd) { return; }
-            var ddMenu = dd.querySelector('.c2f-dropdown-menu');
-            if (!ddMenu) { return; }
-            dd.addEventListener('mouseenter', function () { openDropdown = ddMenu; pushHeight(); });
-            dd.addEventListener('mouseleave', function () { if (openDropdown === ddMenu) { openDropdown = null; pushHeight(); } });
-        });
+        // ===== Hover-intent unificado dos dropdowns (menu de módulos + Página + Usuário).
+        //
+        // As caixas vivem DENTRO deste iframe (30px). Ao abrir, o iframe precisa crescer para caber a
+        // caixa — senão ela fica RECORTADA e, ao mover o mouse do trigger (30px) para a caixa, o
+        // ponteiro "cai" fora do iframe e o `:hover` do CSS se perde → a caixa some (agravado após
+        // redimensionar a janela, pois o crescimento assíncrono via postMessage perde a corrida).
+        //
+        // Correção: (1) a visibilidade da caixa é FORÇADA por JS (`FORCE_OPEN`), não só pelo `:hover`,
+        // e a altura é medida com a caixa já visível (offsetHeight confiável); (2) o fechamento é
+        // ADIADO (hover-intent) e cancelável — o mouse tem tempo de alcançar a caixa enquanto o iframe
+        // cresce, e ao entrar nela (mouseenter do próprio group, que a contém) o timer é cancelado.
+        function openDropdownMenu(menuEl) {
+            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+            if (openDropdown && openDropdown !== menuEl) { openDropdown.classList.remove(FORCE_OPEN); }
+            openDropdown = menuEl;
+            menuEl.classList.add(FORCE_OPEN); // visível ANTES de medir → offsetHeight correto.
+            pushHeight();
+        }
+
+        function scheduleCloseDropdown(menuEl) {
+            if (closeTimer) { clearTimeout(closeTimer); }
+            closeTimer = setTimeout(function () {
+                closeTimer = null;
+                menuEl.classList.remove(FORCE_OPEN);
+                if (openDropdown === menuEl) { openDropdown = null; pushHeight(); }
+            }, 220);
+        }
+
+        function registerHoverDropdown(groupEl, menuEl) {
+            if (!groupEl || !menuEl) { return; }
+            // O group CONTÉM a caixa (descendente): mover o trigger→caixa não dispara mouseleave
+            // enquanto a caixa estiver visível dentro do iframe já crescido.
+            groupEl.addEventListener('mouseenter', function () { openDropdownMenu(menuEl); });
+            groupEl.addEventListener('mouseleave', function () { scheduleCloseDropdown(menuEl); });
+        }
+
+        var pageDD = document.getElementById('c2f-page-dropdown');
+        var userDD = document.getElementById('c2f-user-dropdown');
+        registerHoverDropdown(menu, dropdown); // menu de módulos (dropdown = <ul> interno)
+        registerHoverDropdown(pageDD, pageDD ? pageDD.querySelector('.c2f-dropdown-menu') : null);
+        registerHoverDropdown(userDD, userDD ? userDD.querySelector('.c2f-dropdown-menu') : null);
+
+        // Redimensionar a janela com um dropdown aberto → reajusta a altura do iframe (a caixa pode
+        // ter mudado de altura com a nova largura).
+        window.addEventListener('resize', function () { if (openDropdown) { pushHeight(); } });
     }
 
     if (document.readyState === 'loading') {

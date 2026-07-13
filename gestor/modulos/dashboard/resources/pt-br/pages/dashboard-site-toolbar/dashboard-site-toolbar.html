@@ -5,6 +5,11 @@
         margin: 0;
         padding: 0;
     }
+    /* Força a caixa do dropdown visível por JS (hover-intent), independente do :hover do CSS —
+       vence o `hidden` do Tailwind durante o atraso de fechamento (ver dashboard.iframe-toolbar.js). */
+    .c2f-dropdown-force-open {
+        display: block !important;
+    }
 </style>
 <div id="c2f-toolbar-root" data-page-id="#page_id#" class="w-full font-sans select-none text-slate-100 text-sm">
     <!-- Barra principal (30px) -->

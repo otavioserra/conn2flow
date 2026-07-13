@@ -11,7 +11,9 @@
   * [req-080.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-080.md) (BATCH-080 `complete`, 2026-07-10): Integração de Modelos de Sessão e Assistente IA na Editbar (barra flutuante) do Live Editor.
   * [req-081.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-081.md) (BATCH-081 `complete`, 2026-07-11): CodeMirror no Assistente IA, correção do save intermitente (blindagem do corpo AJAX), dropdowns de Usuário/Página, CRUD de prompts, Código Customizado e painel "+" em duas colunas.
   * [req-082.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-082.md) (BATCH-082 `complete`, 2026-07-13): Correção de Carregamento de Widgets, Seleção de Modelos, Restauração de Backups e Hooks de Controle Multi-usuário.
+  * [req-083.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-083.md) (BATCH-083 `complete`, 2026-07-13): Correções de Homologação do Live Editor (Hover, Responsive Preview e Normalização).
 
-- **Status**: Lotes 75 a 82 concluídos. Aguardando novo intake humano.
+- **Status**: Lotes 75 a 83 concluídos. Aguardando homologação do BATCH-083 pelo operador.
 
 - **Pendências**: Nenhuma. Pronto para deploy/homologação.
+

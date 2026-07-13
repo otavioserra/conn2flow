@@ -1002,3 +1002,26 @@ Reportada pelo executor em 2026-07-13 (ambiente: PHP 8.4.8):
 - **§3**: restaurar backups de página e de layout e confirmar que os widgets/variáveis continuam selecionáveis/interativos (sem `.c2f-widget-box` morta) e que o save posterior preserva marcadores.
 - **§4**: **deploy do projeto `conn2flow-site`** (para sincronizar `hooks.json` → tabela `hooks` via `hooks_registrar_projeto`, senão o filtro não é carregado em runtime). Depois, logar como usuário restrito e tentar editar/salvar/restaurar backup de página de outro proprietário — confirmar o bloqueio (mensagem "Sem permissão…"); e como admin (acesso completo) confirmar acesso total. No core (sem o filtro registrado) o comportamento é permissivo (default `true`). Cobertura automatizada não incluída (o handler é de projeto privado).
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-083 - Correções de Homologação do Live Editor: Hover dos Dropdowns, Preview de Dispositivo Fiel e Normalização de Variáveis no Save
+
+- [x] **§1 — Hover dos dropdowns (hover-intent)**: `registerHoverDropdown` unificado nos 3 dropdowns (`c2f-toolbar-menu`/`c2f-page-dropdown`/`c2f-user-dropdown`); caixa forçada visível por JS (`c2f-dropdown-force-open`) antes de medir; fechamento adiado 220ms cancelável; `window.resize` reajusta a altura. CSS `.c2f-dropdown-force-open{display:block!important;}` nos 2 HTMLs.
+- [x] **§2 — Preview de dispositivo fiel**: `setEditScreen` renderiza o conteúdo num IFRAME (`#c2f-device-preview`) com a largura do device (media queries/vw-vh/resize reais); `srcdoc` com CSS do site + `<base href>`, sem scripts; Desktop edita in-place, Tablet/Mobile é preview não-editável (editor desabilitado); alternar device só troca a largura.
+- [x] **§3 — Normalização de variáveis/widgets no save**: passe final em `reconstructOriginal` normaliza `[[x]]`→`@[[x]]@` (idempotente), cobrindo variáveis e widgets inline digitados.
+
+### Evidência de Validação (BATCH-083)
+
+Reportada pelo executor em 2026-07-13 (ambiente: Node/Vitest):
+- `node --check` → OK: `gestor/modulos/dashboard/dashboard.iframe-toolbar.js`, `gestor/modulos/dashboard/dashboard.toolbar.js`.
+- `dashboard.json` → JSON válido (versao `1.0.10`).
+- Vitest `npx vitest run` → **20/20** (4 arquivos); `dashboard.toolbar.test.js` → **7/7** (+1 do lote): normaliza `[[pagina#url-raiz]]`/`[[widgets#promo]]`→`@[[…]]@`, mantém `@[[usuario#nome]]@` sem duplicar o cerco, não deixa variável sem cerco.
+- Sem mudança de PHP neste lote (não há `php -l`/`composer test` novos; a suíte PHP permanece 76/76 do BATCH-082).
+- Cache-bust: `dashboard.json` versao `1.0.9`→`1.0.10` (busta `dashboard.toolbar.js`/`dashboard.iframe-toolbar.js`).
+
+### Pendências Runtime (com o operador)
+- Deploy `🗃️ Projects - Update => Core` + hard-refresh (mudaram `dashboard.toolbar.js`, `dashboard.iframe-toolbar.js`, os 2 HTMLs e `dashboard.json`).
+- **§1**: redimensionar a janela e confirmar que os 3 dropdowns permanecem abertos ao mover o mouse do trigger para a caixa (sem sumir); testar alternância entre dropdowns.
+- **§2**: alternar Desktop/Tablet/Mobile e confirmar que o layout responsivo (media queries) muda de verdade; voltar ao Desktop e confirmar a edição in-place ativa.
+- **§3**: digitar `[[pagina#url-raiz]]` e um widget inline no editor, salvar e confirmar que o banco grava `@[[…]]@` (junto das variáveis existentes) e a página renderiza o valor.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
