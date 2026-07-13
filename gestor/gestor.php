@@ -2121,13 +2121,13 @@ function gestor_roteador(){
 			// ===== Incluir controladores de widgets na requisição AJAX.
 
 			gestor_pagina_widgets_ajax();
-			
+
 			// ===== Retornar a página formatada para o cliente. Ou erro caso haja.
-			
+
 			if(isset($_GESTOR['ajax-json'])){
 				header("Content-Type: application/json; charset: UTF-8");
 				echo json_encode($_GESTOR['ajax-json']);
-				exit;				
+				exit;
 			} else {
 				gestor_roteador_erro(Array(
 					'codigo' => 500,

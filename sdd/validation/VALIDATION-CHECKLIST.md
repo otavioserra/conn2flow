@@ -902,7 +902,7 @@ Evidência automatizada reportada pelo executor em 2026-07-10 (ambiente: PHP 8.4
 Reportada pelo executor em 2026-07-10 (PHP 8.4.8). **Rodada 2 (marker-based)** após teste visual do Chefe (um `<nav>` com dois `menu-header-padrao` idênticos ainda marcava o `<a>`):
 - `node --check` → OK: `dashboard.toolbar.js`, `dashboard.iframe-toolbar.js`, `html-editor.js`.
 - `php -l` → OK: `gestor.php`, `dashboard.php`, `html-editor.php`.
-- Vitest (`npm run test`): Executa 20 checks em `tests/Unit/JS/dashboard.toolbar.test.js` (happy-dom, arquivo real via hook de teste) → **20/20 checks aprovados**:
+- Vitest `tests/Unit/JS/dashboard.toolbar.test.js` (happy-dom, carrega o `dashboard.toolbar.js` real via hook injetado) → **3/3 specs**:
   - Cenário A: widget único é o único conteúdo do `<nav>` → marca o PAI, comentários removidos do vivo, reconstrução por `innerHTML` com o mockup cru e a tag `<nav>` preservada.
   - Cenário B: 2 widgets idênticos consecutivos no MESMO `<nav>` → 2 `data-c2f-widget-id` distintos (nav não vira parent), reconstrução com 2 marcadores.
   - Cenário C: widget + rodapé estático no mesmo contêiner → widget por-elemento, rodapé preservado, 1 marcador.
@@ -917,4 +917,88 @@ Reportada pelo executor em 2026-07-10 (PHP 8.4.8). **Rodada 2 (marker-based)** a
 - **Item 3/4**: editar uma imagem, abrir o selecionador, escolher um arquivo do `admin-arquivos` e ver a URL preencher o `#element-src`; redimensionar o modal pelo canto.
 - **Item 5/6**: abrir o dropdown de módulos, ver as categorias e filtrar por texto (cabeçalhos vazios somem).
 - **Item 8**: abrir o painel de backups e confirmar as 2 colunas; restaurar um backup de layout preservando o conteúdo vivo, e um de página sem afetar o layout.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-080 - Integração de Modelos de Sessão e Assistente IA no Live Editor (req-080)
+
+- [x] **Fix BATCH-079 — widget atômico**: `resolveEditable` resolve qualquer elemento do grupo para a raiz (`data-c2f-widget-root`); `positionOverlay`/`updateSelectionUI` usam a união dos bounding boxes (`elementRect`/`unionRect`); CSS marca todos os `[data-c2f-widget-id]`. Não se seleciona link a link; o outline cobre o widget inteiro.
+- [x] **Item 1/2 — Modelos**: botão `.he-tb-templates` (só no live), painel `#c2f-tpl-panel` com busca `#modelos-search-input` (debounce), select de framework, relação Substituir/Antes/Depois, grid `#modelos-cards` paginado; `insertTemplate` insere HTML no DOM vivo + CSS em `<style id="c2f-templates-css">`. AJAX `site-toolbar-templates-load`.
+- [x] **Item 3 — Assistente IA**: botão `.he-tb-ai`, painel `#c2f-ai-panel` (abas Prompt/Modo/Config), selects via `site-toolbar-ia-init` (`ia_editor_dados`), texto de prompt/modo via `site-toolbar-ia-prompt`/`-ia-mode`, geração via `site-toolbar-ia-request`; `applyAiResult` troca o elemento + injeta CSS.
+- [x] **Item 4 — Background picker**: `requestBackgroundImage` no live usa `openLiveImagePicker` (`imagePickerTarget='background'`); `bindLiveImagePicker` roteia p/ `applyBackgroundImage`. `.he-bgimage-clear` → `clearBackgroundImage`.
+- [x] **Item 5 — Backend**: 5 rotas `site-toolbar-*` no `dashboard.php` reusando `html-editor.php`/`ia.php`; `ia_editor_dados` novo; busca de templates retrocompatível.
+
+### Evidência de Validação (BATCH-080)
+
+Reportada pelo executor em 2026-07-10:
+- `node --check` → OK: `html-editor.js`, `dashboard.toolbar.js`.
+- `php -l` → OK: `dashboard.php`, `ia.php`, `html-editor.php`.
+- Vitest `npm run test` → **11/11** (4 arquivos); novo `tests/Unit/JS/html-editor.live.test.js` → **5/5**: botões Modelos/IA presentes só no live (com `raiz`) e ausentes no admin; painéis Modelos e IA abrem; `resolveEditable` de qualquer link do grupo → raiz (widget atômico); `requestBackgroundImage` roteia p/ `background`.
+- `composer test` → **76/76 (287 assertions, 4 skipped)** sem regressão.
+- Cache-bust: `interface/html-editor.js?v=c2f4`→`?v=c2f5` + `biblioteca-html-editor` `1.4.2`→`1.4.3`.
+
+### Pendências Runtime (com o operador)
+- Deploy `🗃️ Projects - Update => Core` + hard-refresh (o `html-editor.js`/`dashboard.php`/`ia.php` mudaram).
+- **Modelos**: selecionar um elemento, abrir Modelos, buscar/paginar, escolher "Inserir depois" e ver a seção com CSS aplicado no DOM vivo.
+- **IA**: abrir o Assistente IA (exige conexão configurada em `servidores_ia`), dar uma instrução curta, gerar e ver o elemento alterado na hora.
+- **Background**: no styler, `.he-bgimage-pick` abre o gerenciador de arquivos e aplica a imagem como `background-image`; `.he-bgimage-clear` remove.
+- **Widget atômico**: no `<nav>` com 2 menus idênticos, cada widget seleciona como um bloco só (outline cobrindo os 7 links, um label), sem selecionar link a link.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-081 - CodeMirror no Assistente IA, Correção no Save, Dropdowns da Toolbar e Painel "+" em Duas Colunas (req-081)
+
+- [x] **§1 — CodeMirror + resize no Assistente IA**: `initAiCodeMirror` instancia CodeMirror (markdown) em `#c2f-ai-instruction`/`#c2f-ai-mode-text` quando `window.CodeMirror` existe (dedup por `.CodeMirror` irmão), com helpers `aiGet/aiSet` (fallback ao textarea) usados por `submitAi`/`loadAiInit`/handlers; `dashboard.toolbar.js` carrega `mode/markdown` + `mode/javascript`. CSS `.c2f-he-live-box{resize:both;overflow:auto}` (Modelos e IA redimensionáveis).
+- [x] **§2 — Save intermitente (causa-raiz) + deseleção**: blindagem do corpo AJAX no `gestor.php` (`ob_start`/`ob_end_clean` + `JSON_INVALID_UTF8_SUBSTITUTE`) elimina o corpo não-JSON por warning/notice espúrio (origem do `.catch` → "Erro ao salvar a página." sem erro de rede/log). Cliente (`dashboard.toolbar.js`): `deselectAll()` antes do `getCleanHtml`, guarda de prontidão do editor e parse tolerante com diagnóstico. Novo `deselectAll()` no `html-editor.js`.
+- [x] **§3 — Dropdowns de Usuário e Página**: 2 HTMLs (pt-br/en) com dropdowns clicáveis; Usuário (`@[[usuario#nome]]@` + Perfil/Sair); Página (`#page_title#` + Editar Página/Avançado + Criar Nova/Clonar dinâmicos publisher×admin resolvidos em `dashboard_site_toolbar()`); toggle/altura em `dashboard.iframe-toolbar.js`.
+- [x] **§4 — CRUD de prompts**: botões `ai-prompt-new/edit/del/clear` + handlers reusando 3 rotas novas `site-toolbar-ia-prompt-new/-edit/-del` (→ `ia_ajax_prompt_novo/_edit/_del`); select atualizado após cada operação.
+- [x] **§5 — Código Customizado**: item no painel "+" → `openCustomCodePanel()` (CodeMirror htmlmixed) → `insertCustomHtml()` insere no DOM vivo; `#c2f-custom-panel` em `isEditorOwned`.
+- [x] **§6 — Painel "+" 2 colunas**: Elementos × Widgets (subcolunas grupos × itens), clique no grupo, autocomplete (debounce → AJAX cross-grupo), "Carregar mais"; backend `html_editor_widgets_buscar()` (paginação/busca/anti-injection), opção `site_toolbar.widgets_por_pagina` (padrão 10) no `dashboard.json`; editor clássico inalterado.
+
+### Evidência de Validação (BATCH-081)
+
+Reportada pelo executor em 2026-07-11 (ambiente: PHP 8.4.8):
+- `php -l` → OK (4/4): `gestor/gestor.php`, `gestor/modulos/dashboard/dashboard.php`, `gestor/bibliotecas/html-editor.php`, `gestor/bibliotecas/ia.php`.
+- `node --check` → OK (3/3): `gestor/assets/interface/html-editor.js`, `gestor/modulos/dashboard/dashboard.toolbar.js`, `gestor/modulos/dashboard/dashboard.iframe-toolbar.js`.
+- `dashboard.json` → JSON válido (com `site_toolbar.widgets_por_pagina`).
+- Vitest `npm run test` → **14/14** (4 arquivos); `tests/Unit/JS/html-editor.live.test.js` → **8/8** (+3 do lote): CRUD de prompts presentes e `aiPromptClear`; `deselectAll` limpa seleção/overlay; `openCustomCodePanel`+`insertCustomHtml` (painel montado, `isEditorOwned`, inserção após a seleção). Stub de CodeMirror em `setup.js` estendido com `setValue/getValue` diretos (espelha CM5 real).
+- `composer test` → **76/76 (287 assertions, 4 skipped)** sem regressão (1 PHPUnit Deprecation pré-existente e alheia).
+- Cache-bust: `interface/html-editor.js?v=c2f7`→`?v=c2f8`; `biblioteca-html-editor` `1.4.6`→`1.4.7`; `dashboard.json` versao `1.0.8`→`1.0.9`.
+
+### Pendências Runtime (com o operador)
+- Deploy `🗃️ Projects - Update => Core` + hard-refresh (mudaram `gestor.php`, `dashboard.php`, `html-editor.php`, `ia.php`, os 2 HTMLs do toolbar, `dashboard.json` e os JS do live/toolbar).
+- **§1**: abrir o Assistente IA e confirmar CodeMirror nos campos de instrução/modo e a caixa redimensionável pelo canto.
+- **§2**: reproduzir o cenário de save (editar e salvar sem mudar nada, repetidas vezes) e confirmar que **não** há mais o alerta intermitente "Erro ao salvar a página."; salvar com elemento selecionado/hover ativo e confirmar sucesso.
+- **§3**: abrir os dropdowns de Usuário (Perfil/Sair) e Página (Editar/Avançado/Criar Nova/Clonar), validando os links dinâmicos publisher×admin e o nome do usuário.
+- **§4**: criar/editar/excluir um prompt pelo painel do assistente e ver o select refletir.
+- **§5**: inserir um bloco via "Código Customizado" e vê-lo entrar no DOM vivo.
+- **§6**: no painel "+", validar as duas colunas, grupos×itens, o autocomplete e o "Carregar mais" (limite configurável).
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-082 - Carregamento de Widgets, Seleção de Modelos, Restauração de Backups e Isolamento Multi-usuário no Live Editor (req-082)
+
+- [x] **§1 — Widget dinâmico**: rota `site-toolbar-widget-render` → `dashboard_ajax_site_toolbar_widget_render()` (delega a `html_editor_ajax_widget_render()`); listener dedicado no `dashboard.toolbar.js` intercepta a string JSON `c2f-he:widget-render`, faz POST na rota e posta de volta `c2f-he:widget-rendered` (o motor chama `applyWidgetRender`).
+- [x] **§2 — Seleção do modelo**: `insertTemplate` rastreia o 1º nó de elemento (`nodeType===1`) nas 3 relações (replace/before/after) e o seleciona (`selectElement`).
+- [x] **§3 — Restauração de backups**: `dashboard_site_toolbar_boxes_widgets` embrulha widgets em `<!-- widgets#SIG < -->{render}<!-- widgets#SIG > -->`; novo `dashboard_site_toolbar_resolver_variaveis` (valor puro, sem `.c2f-var-box`); `backup-get` devolve `raw`; `restorePageBackup`/`restoreLayoutBackup` re-injetam html+raw, re-rodam `mapTree` e chamam `restoreChrome` (varMap preservado — DEC-084 §3).
+- [x] **§4 — Isolamento multi-usuário (hook core↔projeto)**: o core só emite o filtro `dashboard`/`site-toolbar.permissao-pagina` (helper `dashboard_site_toolbar_verificar_permissao_pagina` → `hook_apply_filters`, default `true`) nas rotas `render`/`save`/`backups` (selecionam `id_usuarios`) e `backup-get` (valida a página do contexto via `page_id`). O handler que aplica o isolamento vive no projeto (`conn2flow-site`: `multiusuario.hooks.php` + `hooks.json`).
+
+### Evidência de Validação (BATCH-082)
+
+Reportada pelo executor em 2026-07-13 (ambiente: PHP 8.4.8):
+- `php -l` → OK: `gestor/modulos/dashboard/dashboard.php`, `gestor/bibliotecas/html-editor.php` (core); `gestor/project/hooks/controllers/multiusuario.hooks.php` (conn2flow-site).
+- JSON válido: `conn2flow-site/.../project/hooks/hooks.json` (registro `controllers.dashboard` + `filters.dashboard["site-toolbar.permissao-pagina"]`).
+- `node --check` → OK: `gestor/assets/interface/html-editor.js`, `gestor/modulos/dashboard/dashboard.toolbar.js`.
+- Vitest `npx vitest run` → **19/19** (4 arquivos):
+  - `html-editor.live.test.js` → **10/10** (+2 do lote): `insertTemplate` seleciona o 1º elemento em replace/before/after; ignora nós de texto e seleciona o 1º ELEMENTO.
+  - `dashboard.toolbar.test.js` → **6/6** (+3 do lote): ponte widget-render→AJAX→widget-rendered (URL/body/postMessage corretos); guarda de assinatura/wrapper vazios (sem fetch); `restorePageBackup` re-anota o widget (marca no pai, consome comentários).
+- `composer test` → **76/76 (287 assertions, 4 skipped)** sem regressão (1 PHPUnit Deprecation pré-existente e alheia).
+- Cache-bust: `interface/html-editor.js?v=c2f9`→`?v=c2f10`; `biblioteca-html-editor` `1.4.9`→`1.4.10`.
+
+### Pendências Runtime (com o operador)
+- Deploy `🗃️ Projects - Update => Core` + hard-refresh (mudaram `dashboard.php`, `html-editor.php`, `html-editor.js`, `dashboard.toolbar.js`).
+- **§1**: inserir um widget pelo painel "+" e confirmar que renderiza de imediato (sem ficar em "Carregando widget…").
+- **§2**: adicionar um modelo e confirmar que o 1º elemento vem selecionado (substituir/antes/depois).
+- **§3**: restaurar backups de página e de layout e confirmar que os widgets/variáveis continuam selecionáveis/interativos (sem `.c2f-widget-box` morta) e que o save posterior preserva marcadores.
+- **§4**: **deploy do projeto `conn2flow-site`** (para sincronizar `hooks.json` → tabela `hooks` via `hooks_registrar_projeto`, senão o filtro não é carregado em runtime). Depois, logar como usuário restrito e tentar editar/salvar/restaurar backup de página de outro proprietário — confirmar o bloqueio (mensagem "Sem permissão…"); e como admin (acesso completo) confirmar acesso total. No core (sem o filtro registrado) o comportamento é permissivo (default `true`). Cobertura automatizada não incluída (o handler é de projeto privado).
 - Restrição respeitada: nenhum `git commit`/`git push` executado.

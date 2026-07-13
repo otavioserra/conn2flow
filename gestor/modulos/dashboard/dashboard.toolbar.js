@@ -110,6 +110,8 @@
 			base + 'addon/edit/matchbrackets.js',
 			base + 'mode/xml/xml.js',
 			base + 'mode/css/css.js',
+			base + 'mode/javascript/javascript.js',
+			base + 'mode/markdown/markdown.js',
 			base + 'mode/htmlmixed/htmlmixed.js'
 		], cb);
 	}
@@ -155,7 +157,7 @@
 		ensureJQuery(function () {
 			// Impede o auto-init sobre document.body; instanciamos escopado ao conteúdo.
 			window.__c2fHtmlEditorNoAutoInit = true;
-			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f4', 'c2f-he-script', function () {
+			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f10', 'c2f-he-script', function () {
 				instantiateEditor(content, 0);
 			});
 		});
@@ -561,52 +563,139 @@
 		return html;
 	}
 
+	// ===== Loader bloqueante de salvamento (overlay que cobre a tela toda).
+
+	function showSaveLoader() {
+		if (!document.getElementById('c2f-save-loader-style')) {
+			var st = document.createElement('style');
+			st.id = 'c2f-save-loader-style';
+			st.textContent = '@keyframes c2f-save-spin{to{transform:rotate(360deg)}}';
+			document.head.appendChild(st);
+		}
+		var ov = document.getElementById('c2f-save-loader');
+		if (!ov) {
+			ov = document.createElement('div');
+			ov.id = 'c2f-save-loader';
+			// z-index máximo → cobre inclusive o iframe da toolbar; bloqueia todo clique/interação.
+			ov.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.6);display:flex;align-items:center;justify-content:center;cursor:progress;';
+			ov.innerHTML =
+				'<div style="display:flex;flex-direction:column;align-items:center;gap:16px;background:#fff;padding:28px 44px;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.35);font:600 15px system-ui,sans-serif;color:#0f172a;">' +
+					'<div style="width:44px;height:44px;border:4px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:c2f-save-spin .8s linear infinite;"></div>' +
+					'<span>Salvando página…</span>' +
+				'</div>';
+			// Captura e impede qualquer interação por baixo enquanto salva.
+			['click', 'mousedown', 'mouseup', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
+				ov.addEventListener(ev, function (e) { e.stopPropagation(); e.preventDefault(); }, true);
+			});
+			document.body.appendChild(ov);
+		}
+		ov.style.display = 'flex';
+	}
+
+	function hideSaveLoader() {
+		var ov = document.getElementById('c2f-save-loader');
+		if (ov) { ov.style.display = 'none'; }
+	}
+
 	function saveEdit(pageId) {
 		var root = document.getElementById(LAYOUT_ROOT_ID) || document.getElementById(CONTENT_ID);
 		if (!root || !pageId) { return; }
 
-		// HTML limpo do editor visual (remove a UI do editor; widgets-wrapper→comentário).
-		var cleanHtml = (c2fEditor && typeof c2fEditor.getCleanHtml === 'function')
-			? c2fEditor.getCleanHtml()
-			: root.innerHTML;
+		// Guarda de prontidão: "Editar Página" inicia um fluxo ASSÍNCRONO (fetch do render +
+		// mapeamento + carga do html-editor.js). Se o usuário clica "Salvar" antes de o editor
+		// instanciar, salvaríamos o DOM cru sem anotações (perde variáveis/widgets). Aborta com aviso.
+		if (!c2fEditor || typeof c2fEditor.getCleanHtml !== 'function') {
+			window.alert('O editor ainda está carregando. Aguarde um instante e tente salvar novamente.');
+			return;
+		}
 
-		var parsed = new DOMParser().parseFromString(cleanHtml, 'text/html');
+		// 1) Deseleção determinística + desabilita o editor: some a caixa azul tracejada de seleção,
+		//    o hover que segue o mouse e demais overlays (não interferem no mapeamento/reconstrução).
+		if (typeof c2fEditor.deselectAll === 'function') { c2fEditor.deselectAll(); }
+		if (typeof c2fEditor.disable === 'function') { c2fEditor.disable(); }
 
+		// 2) Loader bloqueante cobrindo a tela toda.
+		showSaveLoader();
+
+		// 3) Deixa o DOM assentar (deseleção aplicada + loader pintado) ANTES de serializar/enviar —
+		//    sem esse respiro a extração podia pegar um estado transitório e o salvamento falhava.
+		setTimeout(function () { performSave(pageId, root); }, 500);
+	}
+
+	function performSave(pageId, root) {
 		var contentHtml, layoutHtml = '';
-		var pageContent = parsed.getElementById(CONTENT_ID);
 
-		if (root.id === LAYOUT_ROOT_ID && pageContent) {
-			// Conteúdo = #c2f-page-content → paginas; Layout = corpo com #c2f-page-content
-			// trocado pelo marcador @[[pagina#corpo]]@ → layouts.
-			contentHtml = reconstructOriginal(pageContent);
-			var marker = parsed.createTextNode('__C2F_CORPO__');
-			pageContent.parentNode.replaceChild(marker, pageContent);
-			layoutHtml = reconstructOriginal(parsed.body).split('__C2F_CORPO__').join('@[[pagina#corpo]]@');
-		} else {
-			contentHtml = reconstructOriginal(parsed.body);
+		try {
+			// HTML limpo do editor visual (remove a UI do editor; widgets-wrapper→comentário).
+			var cleanHtml = c2fEditor.getCleanHtml();
+			var parsed = new DOMParser().parseFromString(cleanHtml, 'text/html');
+			var pageContent = parsed.getElementById(CONTENT_ID);
+
+			if (root.id === LAYOUT_ROOT_ID && pageContent) {
+				// Conteúdo = #c2f-page-content → paginas; Layout = corpo com #c2f-page-content
+				// trocado pelo marcador @[[pagina#corpo]]@ → layouts.
+				contentHtml = reconstructOriginal(pageContent);
+				var marker = parsed.createTextNode('__C2F_CORPO__');
+				pageContent.parentNode.replaceChild(marker, pageContent);
+				layoutHtml = reconstructOriginal(parsed.body).split('__C2F_CORPO__').join('@[[pagina#corpo]]@');
+			} else {
+				contentHtml = reconstructOriginal(parsed.body);
+			}
+		} catch (e) {
+			hideSaveLoader();
+			if (c2fEditor && typeof c2fEditor.enable === 'function') { c2fEditor.enable(); }
+			window.alert('Erro ao preparar o salvamento da página.');
+			return;
 		}
 
-		var body =
-			'ajax=1&ajaxOpcao=site-toolbar-save' +
-			'&page_id=' + encodeURIComponent(pageId) +
-			'&html=' + encodeURIComponent(contentHtml);
+		// Roteamento (ajax/ajaxOpcao/ids) na QUERY STRING e conteúdo grande (html/layout_html) no
+		// corpo. NOTA: o bug do "302 → home" NÃO era roteamento (o request_order do servidor usa o
+		// fallback variables_order=EGPCS, que inclui POST em $_REQUEST) — era o redirect do histórico
+		// no backend (ver id_numerico_manual em dashboard_ajax_site_toolbar_save). Mantido como
+		// convenção defensiva (robusto mesmo se algum ambiente excluir POST de $_REQUEST).
+		var url = dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-save' +
+			'&page_id=' + encodeURIComponent(pageId);
+		var body = 'html=' + encodeURIComponent(contentHtml);
 		if (layoutHtml && editLayoutId) {
-			body += '&layout_id=' + encodeURIComponent(editLayoutId) +
-				'&layout_html=' + encodeURIComponent(layoutHtml);
+			url += '&layout_id=' + encodeURIComponent(editLayoutId);
+			body += '&layout_html=' + encodeURIComponent(layoutHtml);
 		}
 
-		fetch(dashboardAjaxUrl(), {
+		function saveFalhou(msg) {
+			hideSaveLoader();
+			if (c2fEditor && typeof c2fEditor.enable === 'function') { c2fEditor.enable(); }
+			window.alert(msg);
+		}
+
+		fetch(url, {
 			method: 'POST',
 			credentials: 'same-origin',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
 			body: body
 		})
-			.then(function (r) { return r.json(); })
-			.then(function (json) {
-				if (json && json.status === 'Ok') { window.location.reload(); }
-				else { window.alert((json && json.message) ? json.message : 'Falha ao salvar a página.'); }
+			// Lê como TEXTO e faz parse tolerante; em falha real mostra um trecho do corpo p/ diagnóstico.
+			.then(function (r) { return r.text(); })
+			.then(function (text) {
+				var json = parseJsonLoose(text);
+				// Sucesso → reload (o loader some sozinho com a nova página).
+				if (json && json.status === 'Ok') { window.location.reload(); return; }
+				if (json && json.message) { saveFalhou(json.message); return; }
+				var trecho = (text || '').replace(/\s+/g, ' ').trim().slice(0, 300);
+				saveFalhou('Falha ao salvar a página.' + (trecho ? '\n\nResposta do servidor:\n' + trecho : ''));
 			})
-			.catch(function () { window.alert('Erro ao salvar a página.'); });
+			.catch(function () { saveFalhou('Erro de rede ao salvar a página.'); });
+	}
+
+	// Parse tolerante: tenta JSON.parse direto; se falhar (corpo com prefixo espúrio), tenta
+	// recortar do primeiro "{" ao último "}". Retorna null se realmente não houver JSON.
+	function parseJsonLoose(text) {
+		if (typeof text !== 'string' || !text) { return null; }
+		try { return JSON.parse(text); } catch (e) { /* tenta recortar */ }
+		var i = text.indexOf('{'), j = text.lastIndexOf('}');
+		if (i !== -1 && j !== -1 && j > i) {
+			try { return JSON.parse(text.slice(i, j + 1)); } catch (e2) { /* sem JSON */ }
+		}
+		return null;
 	}
 
 	function cancelEdit() {
@@ -635,10 +724,14 @@
 		}
 	}
 
-	// ===== Painel "+" (adicionar elemento ou widget) — reusa os endpoints da lib html-editor.
+	// ===== Painel "+" (adicionar elemento ou widget) — BATCH-081 §5/§6: duas colunas
+	//       (Elementos | Widgets), com Widgets em subcolunas (Grupos | Itens), busca autocomplete
+	//       e paginação "Carregar mais". Reusa os endpoints da lib html-editor via dashboard.
 
 	var addPanel = null;
-	var widgetsCache = {};
+	var addActiveGroup = '';   // grupo/categoria selecionado (vazio = busca cross-grupo).
+	var addWidgetPage = 1;     // página corrente da lista de itens (paginação).
+	var addSearchTimer = null; // debounce da busca.
 	var ELEMENTOS = [
 		{ type: 'p', label: 'Parágrafo' }, { type: 'h1', label: 'Título H1' }, { type: 'h2', label: 'Título H2' },
 		{ type: 'h3', label: 'Título H3' }, { type: 'img', label: 'Imagem' }, { type: 'a', label: 'Link' },
@@ -671,43 +764,79 @@
 		}
 	}
 
-	function toggleWidgetGroup(head) {
-		var group = head.parentNode;
-		var list = group.querySelector('.c2f-add-widget-list');
-		var open = list.style.display !== 'block';
-		list.style.display = open ? 'block' : 'none';
-		if (open) {
-			var module = group.getAttribute('data-module');
-			if (!widgetsCache[module]) {
-				list.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:2px 8px;">Carregando…</div>';
-				ajaxJson(dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-widgets-list&params[module]=' + encodeURIComponent(module), function (json) {
-					var items = (json && json.data) ? json.data : [];
-					widgetsCache[module] = items;
-					if (!items.length) { list.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:2px 8px;">Vazio</div>'; return; }
-					var h = '';
-					items.forEach(function (it) {
-						var nome = it.nome || it.id;
-						h += '<div class="c2f-add-widget-item" data-module="' + esc(module) + '" data-slug="' + esc(it.id) +
-							'" data-name="' + esc(nome) + '" style="padding:5px 8px;border-radius:6px;cursor:pointer;">' + esc(nome) + '</div>';
-					});
-					list.innerHTML = h;
-				});
-			}
-		}
-	}
-
+	// Carrega os GRUPOS (categorias) de widget na subcoluna esquerda. Seleciona o 1º por padrão.
 	function loadWidgetCategories() {
 		var groups = addPanel.querySelector('.c2f-add-widget-groups');
+		groups.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Carregando…</div>';
 		ajaxJson(dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-widget-types', function (json) {
 			var cats = (json && json.data) ? json.data : [];
 			if (!cats.length) { groups.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Nenhum widget</div>'; return; }
 			var h = '';
-			cats.forEach(function (cat) {
-				h += '<div class="c2f-add-widget-group" data-module="' + esc(cat.id) + '">' +
-					'<div class="c2f-add-widget-head" style="padding:6px 8px;border-radius:6px;cursor:pointer;font-weight:600;">' + esc(cat.name) + '</div>' +
-					'<div class="c2f-add-widget-list" style="padding-left:16px;display:none;"></div></div>';
+			cats.forEach(function (cat, idx) {
+				h += '<div class="c2f-add-widget-group" data-module="' + esc(cat.id) + '" ' +
+					'style="padding:6px 8px;border-radius:6px;cursor:pointer;font-weight:600;' + (idx === 0 ? 'background:#e0e7ff;' : '') + '">' + esc(cat.name) + '</div>';
 			});
 			groups.innerHTML = h;
+			// Seleciona o primeiro grupo e carrega seus itens.
+			addActiveGroup = cats[0].id;
+			loadWidgetItems(true);
+		});
+	}
+
+	// Marca visualmente o grupo ativo (ou nenhum, durante uma busca cross-grupo).
+	function highlightActiveGroup() {
+		if (!addPanel) { return; }
+		var groups = addPanel.querySelectorAll('.c2f-add-widget-group');
+		Array.prototype.forEach.call(groups, function (g) {
+			g.style.background = (g.getAttribute('data-module') === addActiveGroup && addActiveGroup) ? '#e0e7ff' : '';
+		});
+	}
+
+	// Carrega/pagina os ITENS na subcoluna direita. Com busca preenchida, pesquisa cross-grupo
+	// (module vazio); senão lista o grupo ativo. `reset=true` recomeça na página 1.
+	function loadWidgetItems(reset) {
+		if (!addPanel) { return; }
+		var itemsBox = addPanel.querySelector('.c2f-add-widget-items');
+		var moreBtn = addPanel.querySelector('.c2f-add-widget-more');
+		var busca = (addPanel.querySelector('.c2f-add-widget-search').value || '').trim();
+		var module = busca ? '' : (addActiveGroup || '');
+
+		if (busca) { addActiveGroup = ''; }
+		highlightActiveGroup();
+
+		if (!busca && !module) {
+			itemsBox.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Selecione um grupo ou busque um widget.</div>';
+			moreBtn.style.display = 'none';
+			return;
+		}
+
+		if (reset) { addWidgetPage = 1; itemsBox.innerHTML = '<div class="c2f-add-loading" style="color:#94a3b8;font-size:12px;padding:4px 8px;">Carregando…</div>'; }
+		else { addWidgetPage++; }
+
+		var url = dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-widgets-list' +
+			'&params[module]=' + encodeURIComponent(module) +
+			'&params[busca]=' + encodeURIComponent(busca) +
+			'&params[pagina]=' + addWidgetPage;
+
+		ajaxJson(url, function (json) {
+			var data = (json && json.data) ? json.data : {};
+			var items = data.items || [];
+			var loading = itemsBox.querySelector('.c2f-add-loading');
+			if (loading) { loading.remove(); }
+			if (reset) { itemsBox.innerHTML = ''; }
+			if (reset && !items.length) {
+				itemsBox.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Nenhum widget encontrado.</div>';
+				moreBtn.style.display = 'none';
+				return;
+			}
+			var h = '';
+			items.forEach(function (it) {
+				var nome = it.nome || it.id;
+				h += '<div class="c2f-add-widget-item" data-module="' + esc(it.module) + '" data-slug="' + esc(it.id) +
+					'" data-name="' + esc(nome) + '" style="padding:5px 8px;border-radius:6px;cursor:pointer;">' + esc(nome) + '</div>';
+			});
+			itemsBox.insertAdjacentHTML('beforeend', h);
+			moreBtn.style.display = data.tem_mais ? 'block' : 'none';
 		});
 	}
 
@@ -715,35 +844,83 @@
 		if (addPanel) { return addPanel; }
 		addPanel = document.createElement('div');
 		addPanel.id = 'c2f-add-panel';
-		addPanel.style.cssText = 'position:fixed;z-index:2147483645;min-width:240px;max-width:300px;max-height:70vh;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.22);padding:8px;display:none;font:14px system-ui,sans-serif;color:#0f172a;';
-		var h = '<div style="font:600 11px sans-serif;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin:4px 0;">Elementos HTML</div>';
+		addPanel.style.cssText = 'position:fixed;z-index:2147483645;width:560px;max-width:94vw;max-height:72vh;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.22);padding:10px;display:none;font:14px system-ui,sans-serif;color:#0f172a;';
+		var titulo = function (t) { return '<div style="font:600 11px sans-serif;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin:2px 0 6px;">' + t + '</div>'; };
+
+		var elementosHtml = titulo('Elementos HTML');
 		ELEMENTOS.forEach(function (e) {
-			h += '<div class="c2f-add-el" data-el="' + e.type + '" style="padding:6px 8px;border-radius:6px;cursor:pointer;">' + e.label + '</div>';
+			elementosHtml += '<div class="c2f-add-el" data-el="' + e.type + '" style="padding:6px 8px;border-radius:6px;cursor:pointer;">' + e.label + '</div>';
 		});
-		h += '<div style="border-top:1px solid #e2e8f0;margin:6px 0;"></div>';
-		h += '<div style="font:600 11px sans-serif;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin:4px 0;">Widgets do Sistema</div>';
-		h += '<div class="c2f-add-widget-groups"><div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Carregando…</div></div>';
+		// BATCH-081 §5: opção de código customizado (CodeMirror livre → insertCustomHtml).
+		elementosHtml += '<div style="border-top:1px solid #e2e8f0;margin:6px 0;"></div>';
+		elementosHtml += '<div class="c2f-add-el" data-el="__custom__" style="padding:6px 8px;border-radius:6px;cursor:pointer;font-weight:600;color:#4338ca;">Código Customizado</div>';
+
+		var h =
+			'<div class="c2f-add-cols" style="display:flex;gap:12px;align-items:flex-start;">' +
+			'<div class="c2f-add-col-el" style="flex:0 0 160px;min-width:150px;">' + elementosHtml + '</div>' +
+			'<div class="c2f-add-col-widgets" style="flex:1 1 auto;min-width:0;border-left:1px solid #e2e8f0;padding-left:12px;">' +
+			titulo('Widgets') +
+			'<input type="text" class="c2f-add-widget-search" placeholder="Buscar widgets..." autocomplete="off" ' +
+			'style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;font:13px sans-serif;color:#0f172a;margin-bottom:8px;">' +
+			'<div style="display:flex;gap:10px;align-items:flex-start;">' +
+			'<div class="c2f-add-widget-groups" style="flex:0 0 42%;max-height:44vh;overflow:auto;"></div>' +
+			'<div style="flex:1 1 auto;min-width:0;border-left:1px solid #eef2f7;padding-left:10px;">' +
+			'<div class="c2f-add-widget-items" style="max-height:40vh;overflow:auto;"></div>' +
+			'<button type="button" class="c2f-add-widget-more" style="display:none;width:100%;margin-top:8px;padding:6px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;color:#334155;cursor:pointer;font:12px sans-serif;">Carregar mais</button>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</div>';
 		addPanel.innerHTML = h;
 		document.body.appendChild(addPanel);
-		addPanel.addEventListener('mouseover', function (e) { var it = e.target.closest && e.target.closest('.c2f-add-el,.c2f-add-widget-head,.c2f-add-widget-item'); if (it) { it.style.background = '#f1f5f9'; } });
-		addPanel.addEventListener('mouseout', function (e) { var it = e.target.closest && e.target.closest('.c2f-add-el,.c2f-add-widget-head,.c2f-add-widget-item'); if (it) { it.style.background = ''; } });
+
+		addPanel.addEventListener('mouseover', function (e) { var it = e.target.closest && e.target.closest('.c2f-add-el,.c2f-add-widget-group,.c2f-add-widget-item'); if (it && !(it.classList.contains('c2f-add-widget-group') && it.getAttribute('data-module') === addActiveGroup)) { it.style.background = '#f1f5f9'; } });
+		addPanel.addEventListener('mouseout', function (e) { var it = e.target.closest && e.target.closest('.c2f-add-el,.c2f-add-widget-group,.c2f-add-widget-item'); if (it && !(it.classList.contains('c2f-add-widget-group') && it.getAttribute('data-module') === addActiveGroup)) { it.style.background = ''; } });
+
 		addPanel.addEventListener('click', function (e) {
 			var el = e.target.closest('.c2f-add-el');
-			if (el) { insertElement(el.getAttribute('data-el')); closeAddPanel(); return; }
-			var head = e.target.closest('.c2f-add-widget-head');
-			if (head) { toggleWidgetGroup(head); return; }
+			if (el) {
+				var tipo = el.getAttribute('data-el');
+				if (tipo === '__custom__') {
+					if (c2fEditor && typeof c2fEditor.openCustomCodePanel === 'function') { c2fEditor.openCustomCodePanel(); }
+					closeAddPanel();
+					return;
+				}
+				insertElement(tipo); closeAddPanel(); return;
+			}
+			var group = e.target.closest('.c2f-add-widget-group');
+			if (group) {
+				addActiveGroup = group.getAttribute('data-module');
+				var search = addPanel.querySelector('.c2f-add-widget-search');
+				if (search) { search.value = ''; } // clicar num grupo limpa a busca (mostra o grupo inteiro).
+				loadWidgetItems(true);
+				return;
+			}
 			var item = e.target.closest('.c2f-add-widget-item');
 			if (item) { insertWidget(item.getAttribute('data-module'), item.getAttribute('data-slug'), item.getAttribute('data-name')); closeAddPanel(); return; }
+			var more = e.target.closest('.c2f-add-widget-more');
+			if (more) { loadWidgetItems(false); return; }
 		});
+
+		// Busca autocomplete (debounce 300ms → AJAX cross-grupo).
+		var search = addPanel.querySelector('.c2f-add-widget-search');
+		search.addEventListener('input', function () {
+			clearTimeout(addSearchTimer);
+			addSearchTimer = setTimeout(function () { loadWidgetItems(true); }, 300);
+		});
+
 		return addPanel;
 	}
 
 	function openAddPanel(x, y) {
 		buildAddPanel();
-		var px = Math.max(8, Math.min(parseInt(x, 10) || 8, window.innerWidth - 310));
+		var px = Math.max(8, Math.min(parseInt(x, 10) || 8, window.innerWidth - 570));
 		addPanel.style.left = px + 'px';
 		addPanel.style.top = ((parseInt(y, 10) || 40) + 4) + 'px';
 		addPanel.style.display = 'block';
+		var search = addPanel.querySelector('.c2f-add-widget-search');
+		if (search) { search.value = ''; }
+		addActiveGroup = '';
 		loadWidgetCategories();
 	}
 
@@ -757,39 +934,84 @@
 	// ===== Painel de Backups (restaurar versão do conteúdo) — ponto 5.
 
 	var backupPanel = null;
+	var backupPageId = ''; // página do contexto (valida a propriedade no backup-get — req-082 §4).
 
 	function closeBackupPanel() { if (backupPanel) { backupPanel.style.display = 'none'; } }
 
-	// Restaura só o conteúdo da página (#c2f-page-content) a partir de um backup de PÁGINA.
-	function restorePageBackup(html) {
+	// Re-anota o DOM restaurado a partir do HTML CRU (`raw`): injeta o cru no container oculto de
+	// mapeamento e re-roda o `mapTree` (req-082 §3). O `raw` do CONTEÚDO vai para #c2f-raw-content
+	// (quando editando layout) ou para o próprio backup oculto (quando editando só o conteúdo); o do
+	// LAYOUT substitui o backup oculto inteiro (o slot de conteúdo fica vazio, então o conteúdo vivo
+	// já anotado NÃO é reprocessado). `varMap` NÃO é zerado de propósito: preserva o mapeamento
+	// cruzado layout×conteúdo; só a subárvore restaurada é re-anotada (entradas antigas viram lixo
+	// inofensivo). Ao final, reativa o chrome do editor.
+	function remapAfterRestore(liveRoot, raw, isLayout) {
+		var backup = document.getElementById(BACKUP_ID);
+		if (!backup) {
+			backup = document.createElement('div');
+			backup.id = BACKUP_ID;
+			backup.style.display = 'none';
+			document.body.appendChild(backup);
+		}
+		var rawTarget;
+		if (isLayout) {
+			backup.innerHTML = raw || '';
+			rawTarget = backup;
+		} else {
+			rawTarget = backup.querySelector('#c2f-raw-content') || backup;
+			rawTarget.innerHTML = raw || '';
+		}
+		mapRoot = document.getElementById(LAYOUT_ROOT_ID) || document.getElementById(CONTENT_ID);
+		try { mapTree(liveRoot, rawTarget); }
+		catch (e) { window.console && console.error('Re-mapeamento pós-restauração:', e); }
+		if (typeof c2fEditor !== 'undefined' && c2fEditor && typeof c2fEditor.restoreChrome === 'function') {
+			c2fEditor.restoreChrome();
+		}
+	}
+
+	// Restaura só o conteúdo da página (#c2f-page-content) a partir de um backup de PÁGINA e re-anota
+	// os widgets/variáveis do conteúdo restaurado (req-082 §3).
+	function restorePageBackup(html, raw) {
 		var content = document.getElementById(CONTENT_ID);
-		if (content) { content.innerHTML = html; }
+		if (!content) { return; }
+		if (typeof c2fEditor !== 'undefined' && c2fEditor && typeof c2fEditor.deselectAll === 'function') {
+			c2fEditor.deselectAll();
+		}
+		content.innerHTML = html;
+		remapAfterRestore(content, raw, false);
 	}
 
 	// Restaura o LAYOUT (item 8) preservando o conteúdo vivo: injeta o body-inner do backup do
-	// layout no #c2f-layout-root e re-encaixa o #c2f-page-content atual no slot de conteúdo.
-	function restoreLayoutBackup(html) {
+	// layout no #c2f-layout-root, re-encaixa o #c2f-page-content atual no slot de conteúdo e re-anota
+	// os widgets/variáveis do layout restaurado (o conteúdo vivo mantém seu mapeamento — req-082 §3).
+	function restoreLayoutBackup(html, raw) {
 		var layoutRoot = document.getElementById(LAYOUT_ROOT_ID);
 		if (!layoutRoot) { window.alert('O layout não está em edição nesta página (edite pelo layout para restaurá-lo).'); return; }
+		if (typeof c2fEditor !== 'undefined' && c2fEditor && typeof c2fEditor.deselectAll === 'function') {
+			c2fEditor.deselectAll();
+		}
 		var liveContent = document.getElementById(CONTENT_ID);
 		if (liveContent && liveContent.parentNode) { liveContent.parentNode.removeChild(liveContent); }
 		layoutRoot.innerHTML = html;
 		var slot = layoutRoot.querySelector('#' + CONTENT_ID);
 		if (slot && liveContent) { slot.parentNode.replaceChild(liveContent, slot); }
 		else if (liveContent) { layoutRoot.appendChild(liveContent); }
+		remapAfterRestore(layoutRoot, raw, true);
 	}
 
 	function restoreBackup(id, type) {
 		if (!id) { return; }
 		var url = dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-backup-get&id=' + encodeURIComponent(id) +
-			'&type=' + encodeURIComponent(type || 'page');
+			'&type=' + encodeURIComponent(type || 'page') +
+			'&page_id=' + encodeURIComponent(backupPageId || '');
 		ajaxJson(url, function (json) {
 			if (!json || json.status !== 'Ok' || !json.data || typeof json.data.html !== 'string') {
 				window.alert((json && json.message) ? json.message : 'Falha ao carregar o backup.');
 				return;
 			}
-			if (type === 'layout') { restoreLayoutBackup(json.data.html); }
-			else { restorePageBackup(json.data.html); }
+			var raw = (typeof json.data.raw === 'string') ? json.data.raw : '';
+			if (type === 'layout') { restoreLayoutBackup(json.data.html, raw); }
+			else { restorePageBackup(json.data.html, raw); }
 		});
 	}
 
@@ -825,6 +1047,7 @@
 
 	function openBackupPanel(x, y, pageId) {
 		buildBackupPanel();
+		backupPageId = pageId || ''; // guarda p/ validar a propriedade da página no backup-get (§4).
 		var px = Math.max(8, Math.min(parseInt(x, 10) || 8, window.innerWidth - 610));
 		backupPanel.style.left = px + 'px';
 		backupPanel.style.top = ((parseInt(y, 10) || 40) + 4) + 'px';
@@ -847,6 +1070,46 @@
 		if (backupPanel && backupPanel.style.display === 'block' && (!e.target.closest || !e.target.closest('#c2f-backup-panel'))) {
 			closeBackupPanel();
 		}
+	});
+
+	// ===== Ponte de renderização de widget (motor html-editor.js → backend → motor) — req-082 §1.
+	//
+	// Ao inserir um widget, o motor posta (string JSON) `c2f-he:widget-render` para window.parent —
+	// na página hospedeira top, `window.parent === window`. Aqui interceptamos, pedimos o HTML
+	// renderizado ao backend (rota `site-toolbar-widget-render` → `html_editor_ajax_widget_render`)
+	// e devolvemos `c2f-he:widget-rendered` (string JSON) para a própria window → o motor chama
+	// `applyWidgetRender`. Sem isso, o widget fica preso em "Carregando widget…".
+	function handleEngineWidgetRender(signature, wrapperId) {
+		if (!signature || !wrapperId) { return; }
+		var url = dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-widget-render';
+		return fetch(url, {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+			body: 'params[signature]=' + encodeURIComponent(signature)
+		})
+			.then(function (r) { return r.json(); })
+			.then(function (json) {
+				var html = (json && json.status === 'Ok' && json.data && typeof json.data.html === 'string')
+					? json.data.html : '';
+				try {
+					window.postMessage(JSON.stringify({
+						action: 'c2f-he:widget-rendered', wrapperId: wrapperId, html: html
+					}), window.location.origin);
+				} catch (e) { /* noop */ }
+			})
+			.catch(function () { /* silencioso: o placeholder permanece, sem quebrar a edição */ });
+	}
+
+	// Listener dedicado às mensagens STRING do motor (o listener principal abaixo trata os objetos
+	// `c2f-toolbar:*` postados pelo iframe da toolbar).
+	window.addEventListener('message', function (ev) {
+		if (ev.origin !== window.location.origin) { return; }
+		if (typeof ev.data !== 'string') { return; }
+		var data;
+		try { data = JSON.parse(ev.data); } catch (e) { return; }
+		if (!data || data.action !== 'c2f-he:widget-render') { return; }
+		handleEngineWidgetRender(data.signature, data.wrapperId);
 	});
 
 	// ===== Mensagens da toolbar (iframe)
@@ -889,6 +1152,12 @@
 				break;
 			case 'c2f-toolbar:edit-backups':
 				openBackupPanel(data.x, data.y, data.page_id);
+				break;
+			case 'c2f-toolbar:edit-templates':
+				if (c2fEditor && typeof c2fEditor.openTemplatesPanel === 'function') { c2fEditor.openTemplatesPanel(); }
+				break;
+			case 'c2f-toolbar:edit-ai':
+				if (c2fEditor && typeof c2fEditor.openAiPanel === 'function') { c2fEditor.openAiPanel(); }
 				break;
 			default:
 				break;

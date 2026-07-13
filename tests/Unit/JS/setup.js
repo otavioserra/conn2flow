@@ -13,11 +13,17 @@ globalThis.loadDimmer = vi.fn();
 globalThis.msg_erro_resetar = vi.fn();
 globalThis.msg_erro_mostrar = vi.fn();
 globalThis.CodeMirror = {
-  fromTextArea: () => ({
-    setSize: vi.fn(),
-    getDoc: () => ({ setValue: vi.fn() }),
-    refresh: vi.fn()
-  })
+  // Espelha a API do CodeMirror 5 real: setValue/getValue diretos (proxy do doc) + getDoc.
+  fromTextArea: () => {
+    let _val = '';
+    return {
+      setSize: vi.fn(),
+      getDoc: () => ({ setValue: (v) => { _val = v == null ? '' : String(v); }, getValue: () => _val }),
+      setValue: (v) => { _val = v == null ? '' : String(v); },
+      getValue: () => _val,
+      refresh: vi.fn()
+    };
+  }
 };
 
 afterEach(() => {

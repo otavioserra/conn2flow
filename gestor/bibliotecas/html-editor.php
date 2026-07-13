@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.4.2',
+	'versao' => '1.4.10',
 );
 
 // ===== Funções auxiliares
@@ -719,6 +719,85 @@ function html_editor_ajax_widgets_list(){
 }
 
 /**
+ * Busca paginada de itens de widget para o painel "+" do Live Editor (BATCH-081 §6).
+ *
+ * Diferente de `html_editor_ajax_widgets_list` (usada pelo editor clássico, shape antigo), esta
+ * função devolve `{status, data:{items:[{id,nome,module}], tem_mais}}`. Suporta:
+ *  - `module`: restringe a UM grupo/categoria; vazio + `busca` → varre todas as categorias (cross-grupo);
+ *  - `busca`:  filtra por `name`/`id` (LIKE), habilitando o autocomplete inteligente;
+ *  - `pagina`/`limite`: paginação "Carregar mais".
+ *
+ * @param array $params { module?:string, busca?:string, pagina?:int, limite?:int }
+ * @return array Estrutura de resposta pronta para `$_GESTOR['ajax-json']`.
+ */
+function html_editor_widgets_buscar($params = array()){
+	global $_GESTOR;
+
+	$idioma = $_GESTOR['linguagem-codigo'];
+	$module = isset($params['module']) ? trim((string)$params['module']) : '';
+	$busca  = isset($params['busca']) ? trim((string)$params['busca']) : '';
+	$pagina = isset($params['pagina']) ? (int)$params['pagina'] : 1;
+	$limite = isset($params['limite']) ? (int)$params['limite'] : 10;
+	if($pagina < 1) $pagina = 1;
+	if($limite < 1) $limite = 10;
+
+	// 1) Definições de widget (tabela global `widgets`): uma categoria ou todas (cross-grupo).
+	$extraDef = "WHERE status = 'A' AND language = '" . banco_escape_field($idioma) . "'";
+	if($module !== ''){
+		$extraDef .= " AND id = '" . banco_escape_field($module) . "'";
+	}
+	$definicoes = banco_select([
+		'tabela' => 'widgets',
+		'campos' => ['id', 'tabela', 'coluna_where'],
+		'extra'  => $extraDef . " ORDER BY name ASC",
+	]);
+
+	if(!$definicoes){
+		return Array('status' => 'Ok', 'data' => Array('items' => Array(), 'tem_mais' => false));
+	}
+
+	// 2) Coletar os itens de cada tabela alvo (com validação anti-injection e filtro de busca).
+	$buscaEsc = banco_escape_field($busca);
+	$itens = Array();
+
+	foreach($definicoes as $def){
+		$tabela = isset($def['tabela']) ? trim((string)$def['tabela']) : '';
+		if($tabela === '' || !preg_match('/^[a-zA-Z0-9_]+$/', $tabela)){ continue; }
+
+		$coluna_where = isset($def['coluna_where']) ? trim((string)$def['coluna_where']) : '';
+
+		$where = "WHERE status = 'A' AND language = '" . banco_escape_field($idioma) . "'";
+		if($coluna_where !== '' && preg_match('/^[a-zA-Z0-9_]+$/', $coluna_where)){
+			$where .= " AND " . $coluna_where . " = '" . banco_escape_field($def['id']) . "'";
+		}
+		if($busca !== ''){
+			$where .= " AND (name LIKE '%" . $buscaEsc . "%' OR id LIKE '%" . $buscaEsc . "%')";
+		}
+
+		$retorno_bd = banco_select([
+			'tabela' => $tabela,
+			'campos' => ['id', 'name'],
+			'extra'  => $where . " ORDER BY name ASC",
+		]);
+
+		if($retorno_bd)foreach($retorno_bd as $registro){
+			$nome = (isset($registro['name']) && $registro['name'] !== '') ? $registro['name'] : $registro['id'];
+			$itens[] = Array('id' => $registro['id'], 'nome' => $nome, 'module' => $def['id']);
+		}
+	}
+
+	// 3) Ordenar (por nome) e paginar.
+	usort($itens, function($a, $b){ return strcasecmp($a['nome'], $b['nome']); });
+
+	$total = count($itens);
+	$offset = ($pagina - 1) * $limite;
+	$pagina_itens = array_slice($itens, $offset, $limite);
+	$tem_mais = ($offset + $limite) < $total;
+
+	return Array('status' => 'Ok', 'data' => Array('items' => array_values($pagina_itens), 'tem_mais' => $tem_mais));
+}
+
+/**
  * AJAX Templates.
  *
  * Retorna um template via AJAX para o frontend.
@@ -747,6 +826,13 @@ function html_editor_ajax_templates_load(){
 		$where_templates = "WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target IN (" . $alvos_modelos_string . ")";
 	} else {
 		$where_templates = "WHERE status = 'A' AND framework_css = '" . banco_escape_field($framework_css) . "' AND language = '" . banco_escape_field($idioma) . "' AND target = '" . banco_escape_field($alvo) . "'";
+	}
+
+	// Busca textual opcional por nome (usada pelo Live Editor — BATCH-080). Retrocompatível:
+	// o editor clássico não envia `busca`, então o comportamento não muda.
+	$busca = trim($_REQUEST['params']['busca'] ?? '');
+	if($busca !== ''){
+		$where_templates .= " AND nome LIKE '%".banco_escape_field($busca)."%'";
 	}
 
 	// Buscar templates no banco de dados

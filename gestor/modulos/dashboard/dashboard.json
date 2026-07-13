@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.7",
+    "versao": "1.0.9",
     "bibliotecas": [
         "interface",
         "html"
@@ -11,6 +11,9 @@
             "displayTime": 10000,
             "class": "black"
         }
+    },
+    "site_toolbar": {
+        "widgets_por_pagina": 10
     },
     "resources": {
         "pt-br": {
@@ -78,11 +81,11 @@
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
-                    "version": "1.10",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "60dfaeb5ec73eb3ec927e7f27fcf1fca",
+                        "html": "669a23abe7eca474a088ffc3a93befa7",
                         "css": "",
-                        "combined": "60dfaeb5ec73eb3ec927e7f27fcf1fca"
+                        "combined": "669a23abe7eca474a088ffc3a93befa7"
                     }
                 }
             ],
@@ -286,11 +289,11 @@
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
-                    "version": "1.10",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "44e9fdc332b4e386874cbf8a8377afb3",
+                        "html": "12ace17bfb2df18cd8ff424b09dfc258",
                         "css": "",
-                        "combined": "44e9fdc332b4e386874cbf8a8377afb3"
+                        "combined": "12ace17bfb2df18cd8ff424b09dfc258"
                     }
                 }
             ],

@@ -494,6 +494,86 @@ function ia_processar_retorno($params = false){
  *
  * @param array $params Parâmetros da função.
  */
+/**
+ * Dados do assistente de IA para UI vanilla (Live Editor — BATCH-080).
+ *
+ * Retorna, como arrays JSON-friendly, as listas necessárias para montar o painel de IA fora do
+ * Fomantic-UI: prompts, modos (+ texto do modo padrão), conexões (servidores) e modelos
+ * disponíveis. Espelha a coleta de `ia_renderizar_prompt` sem produzir HTML.
+ *
+ * @param string $alvo Alvo do prompt/modo (ex.: 'paginas').
+ * @return array Estrutura `{status, data|message}`.
+ */
+function ia_editor_dados($alvo){
+	global $_GESTOR;
+
+	$lang = $_GESTOR['linguagem-codigo'];
+	$alvoEsc = banco_escape_field($alvo);
+
+	// Conexões (sem servidor → IA indisponível).
+	$servidores = banco_select(Array(
+		'tabela' => 'servidores_ia',
+		'campos' => Array('id_servidores_ia','nome','padrao'),
+		'extra' => "WHERE status = 'A' ORDER BY padrao DESC, nome ASC",
+	));
+
+	if(!$servidores){
+		return Array('status' => 'error', 'message' => gestor_variaveis(Array('id' => 'ia-component-without-servidor')));
+	}
+
+	$servidoresOut = Array();
+	foreach($servidores as $s){ $servidoresOut[] = Array('id' => $s['id_servidores_ia'], 'nome' => $s['nome']); }
+
+	// Prompts salvos.
+	$prompts = banco_select(Array(
+		'tabela' => 'prompts_ia',
+		'campos' => Array('id','nome'),
+		'extra' => "WHERE alvo = '".$alvoEsc."' AND status = 'A' AND language = '".$lang."'",
+	));
+	$promptsOut = Array();
+	if($prompts)foreach($prompts as $p){ $promptsOut[] = Array('id' => $p['id'], 'nome' => $p['nome']); }
+
+	// Modos.
+	$modos = banco_select(Array(
+		'tabela' => 'modos_ia',
+		'campos' => Array('id','nome'),
+		'extra' => "WHERE alvo = '".$alvoEsc."' AND status = 'A' AND language = '".$lang."'",
+	));
+	$modosOut = Array();
+	if($modos)foreach($modos as $m){ $modosOut[] = Array('id' => $m['id'], 'nome' => $m['nome']); }
+
+	// Texto do modo padrão.
+	$modoPadrao = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'modos_ia',
+		'campos' => Array('prompt'),
+		'extra' => "WHERE alvo = '".$alvoEsc."' AND status = 'A' AND language = '".$lang."' AND padrao IS NOT NULL",
+	));
+	$modoPadraoTxt = ($modoPadrao && isset($modoPadrao['prompt'])) ? htmlentities($modoPadrao['prompt']) : '';
+
+	// Modelos disponíveis (data.json do gemini).
+	$modelosOut = Array();
+	$modeloPadrao = 'gemini-1.5-flash';
+	$modelosData = @json_decode(@file_get_contents($_GESTOR['ROOT_PATH'].'/modulos/admin-ia/gemini/'.$lang.'/data.json'), true);
+	$adminIAData = @json_decode(@file_get_contents($_GESTOR['ROOT_PATH'].'/modulos/admin-ia/admin-ia.json'), true);
+	if($adminIAData && isset($adminIAData['apis']['gemini']['defaultModel'])){ $modeloPadrao = $adminIAData['apis']['gemini']['defaultModel']; }
+	if($modelosData && isset($modelosData['models']) && is_array($modelosData['models'])){
+		$modelosData['models'] = hook_apply_filters('ia', 'models.available', $modelosData['models']);
+		foreach($modelosData['models'] as $m){
+			$modelosOut[] = Array('name' => $m['name'], 'displayName' => ($m['displayName'] ?? $m['name']), 'description' => ($m['description'] ?? ''));
+		}
+	}
+
+	return Array('status' => 'Ok', 'data' => Array(
+		'prompts' => $promptsOut,
+		'modos' => $modosOut,
+		'modo_padrao' => $modoPadraoTxt,
+		'servidores' => $servidoresOut,
+		'modelos' => $modelosOut,
+		'modelo_padrao' => $modeloPadrao,
+	));
+}
+
 function ia_ajax_interface($params = false){
 	global $_GESTOR;
 

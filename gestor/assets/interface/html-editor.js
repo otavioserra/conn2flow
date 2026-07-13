@@ -234,6 +234,10 @@ $(document).ready(function () {
                 [data-c2f-widget-id]{cursor:pointer;user-select:none;-webkit-user-select:none;}
                 [data-c2f-widget-id] *{pointer-events:none !important;user-select:none !important;
                     -webkit-user-select:none !important;}
+                /* Widget de múltiplos elementos-raiz (sem wrapper): outline em TODOS os elementos do
+                   grupo mostra a extensão do widget; a raiz carrega o label. O overlay de hover/seleção
+                   (JS) cobre a união do grupo. */
+                [data-c2f-widget-id]{outline:1px dashed #f59e0b !important;outline-offset:-1px !important;}
                 [data-c2f-widget-root]{outline:2px dashed #f59e0b !important;outline-offset:-2px !important;}
                 [data-c2f-widget-root]::before{
                     content:"Widget: " attr(data-widget-type) " - " attr(data-widget-slug);
@@ -405,6 +409,8 @@ $(document).ready(function () {
                 e.preventDefault(); e.stopPropagation();
                 if (this.selectedElement) this.openWidgetAdmin(this.selectedElement);
             });
+            // BATCH-080: os botões Modelos/IA do Live Editor ficam na editbar (c2f-toolbar-editbar),
+            // acionados via message-bus → dashboard.toolbar.js → c2fEditor.openTemplatesPanel()/openAiPanel().
             tb.querySelector('.he-tb-del').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.deleteSelected();
             });
@@ -475,6 +481,14 @@ $(document).ready(function () {
                 // painel, selecionando o conteúdo por baixo e matando o toggle das categorias).
                 if (element.closest('#c2f-add-panel')) return true;
                 if (element.closest('#c2f-backup-panel')) return true;
+                // BATCH-080: painéis de Modelos/IA e o overlay do image-picker também são UI do
+                // editor — sem isto, o clique em capture atravessa o modal (elementsFromPoint) e
+                // seleciona o elemento da página atrás, matando os cliques dentro do painel.
+                if (element.closest('#c2f-tpl-panel')) return true;
+                if (element.closest('#c2f-ai-panel')) return true;
+                // BATCH-081 §5: painel de código customizado também é UI do editor.
+                if (element.closest('#c2f-custom-panel')) return true;
+                if (element.closest('#c2f-he-imagepick-overlay')) return true;
                 if (element.classList && element.classList.contains('conn2flow-dnd-placeholder')) return true;
             }
             return false;
@@ -503,7 +517,18 @@ $(document).ready(function () {
             //     render, para não quebrar o encadeamento CSS — BATCH-078 r2).
             // A proteção de ponteiro do conteúdo interno vem do CSS.
             const dynBox = element.closest ? element.closest('.c2f-dyn-box,[data-c2f-widget-id]') : null;
-            if (dynBox) return dynBox;
+            if (dynBox) {
+                // BATCH-079/080: widget de múltiplos elementos-raiz (sem wrapper). QUALQUER elemento
+                // do grupo resolve para a RAIZ do grupo (`data-c2f-widget-root`), tornando o widget
+                // inteiro UM bloco atômico — não se seleciona link a link.
+                const gid = dynBox.getAttribute && dynBox.getAttribute('data-c2f-widget-id');
+                if (gid) {
+                    const scope = (this.contentRoot && this.contentRoot.querySelector) ? this.contentRoot : document;
+                    const root = scope.querySelector('[data-c2f-widget-id="' + gid + '"][data-c2f-widget-root="1"]');
+                    return root || dynBox;
+                }
+                return dynBox;
+            }
 
             const tag = element.tagName.toLowerCase();
             if (this.config.ignoredTags.includes(tag)) return null;
@@ -704,13 +729,39 @@ $(document).ready(function () {
         }
 
         positionOverlay(overlay, element) {
-            const rect = element.getBoundingClientRect();
+            const rect = this.elementRect(element);
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             overlay.style.top = (rect.top + scrollTop) + 'px';
             overlay.style.left = (rect.left + scrollLeft) + 'px';
             overlay.style.width = rect.width + 'px';
             overlay.style.height = rect.height + 'px';
+        }
+
+        // Retângulo do elemento — para um widget de múltiplos elementos-raiz (mesmo
+        // `data-c2f-widget-id`), devolve a UNIÃO dos bounding boxes do grupo, para o overlay/hover
+        // cobrir o widget inteiro (não só o 1º elemento).
+        elementRect(element) {
+            const gid = element && element.getAttribute ? element.getAttribute('data-c2f-widget-id') : null;
+            if (gid) {
+                const scope = (this.contentRoot && this.contentRoot.querySelectorAll) ? this.contentRoot : document;
+                const els = scope.querySelectorAll('[data-c2f-widget-id="' + gid + '"]');
+                if (els.length > 1) return this.unionRect(els) || element.getBoundingClientRect();
+            }
+            return element.getBoundingClientRect();
+        }
+
+        unionRect(els) {
+            let top = Infinity, left = Infinity, right = -Infinity, bottom = -Infinity, found = false;
+            els.forEach((e) => {
+                const r = e.getBoundingClientRect();
+                if (r.width === 0 && r.height === 0) return;
+                found = true;
+                top = Math.min(top, r.top); left = Math.min(left, r.left);
+                right = Math.max(right, r.right); bottom = Math.max(bottom, r.bottom);
+            });
+            if (!found) return null;
+            return { top, left, right, bottom, width: right - left, height: bottom - top };
         }
 
         // ===================================================================
@@ -743,7 +794,7 @@ $(document).ready(function () {
             this.positionOverlay(this.selectionOverlay, element);
             this.selectionOverlay.style.display = 'block';
 
-            const rect = element.getBoundingClientRect();
+            const rect = this.elementRect(element);
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             const left = rect.left + scrollLeft;
@@ -1345,9 +1396,14 @@ $(document).ready(function () {
         // ===== Imagem de fundo (ImagePicker) — req-039
         requestBackgroundImage() {
             if (!this.selectedElement) return;
+            // BATCH-080 item 4: no Live Editor usa o image-picker autônomo (iframe → admin-arquivos),
+            // aplicando a seleção como background-image (via imagePickerTarget='background').
+            if (this.raiz) {
+                this.imagePickerTarget = 'background';
+                this.openLiveImagePicker();
+                return;
+            }
             const cfg = (typeof html_editor !== 'undefined' && html_editor.imagepick) ? html_editor.imagepick : null;
-            // BATCH-075/Meta 3: sem o ImagePicker do admin (edição in-place na página live não
-            // carrega o seletor de imagens do servidor), cai num prompt de URL — mesma aplicação.
             if (!cfg) {
                 const atual = this.currentBackgroundImageUrl(this.selectedElement) || '';
                 const url = window.prompt('URL da imagem de fundo:', atual);
@@ -1615,30 +1671,30 @@ $(document).ready(function () {
             // ajustar largura/altura arrastando o canto inferior direito.
             div.innerHTML =
                 '<div class="c2f-he-modal-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.55);"></div>' +
-                '<div class="c2f-he-modal-box" style="position:relative;width:640px;max-width:96vw;min-width:320px;min-height:220px;max-height:92vh;margin:6vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;resize:both;overflow:auto;">' +
-                    '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#0f172a;flex:0 0 auto;">Editar elemento</div>' +
-                    '<div style="padding:16px;overflow:auto;flex:1 1 auto;">' +
-                        '<div id="text-field" style="display:none;">' +
-                            '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Texto</label>' +
-                            '<textarea id="element-text" rows="6" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;"></textarea>' +
-                        '</div>' +
-                        '<div id="image-field" style="display:none;">' +
-                            '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">URL da imagem</label>' +
-                            // Item 3: input + botão do selecionador de imagens do servidor (admin-arquivos).
-                            '<div style="display:flex;gap:6px;align-items:stretch;">' +
-                                '<input id="element-src" type="text" style="flex:1 1 auto;min-width:0;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;">' +
-                                '<button type="button" class="_html-editor-imagepick-btn" title="Selecionar imagem do servidor" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;cursor:pointer;">' + this.svgIcon('folder open') + '</button>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div id="code-field" style="display:none;">' +
-                            '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Código HTML</label>' +
-                            '<textarea id="element-code" rows="10" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:13px ui-monospace,monospace;"></textarea>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div style="padding:12px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px;flex:0 0 auto;">' +
-                        '<button type="button" class="c2f-he-modal-cancel" style="padding:8px 16px;border:0;border-radius:8px;background:#e2e8f0;color:#0f172a;cursor:pointer;font:14px sans-serif;">Cancelar</button>' +
-                        '<button type="button" class="c2f-he-modal-save" style="padding:8px 16px;border:0;border-radius:8px;background:#16a34a;color:#fff;cursor:pointer;font:14px sans-serif;">Salvar</button>' +
-                    '</div>' +
+                '<div class="c2f-he-modal-box" style="position:relative;width:640px;max-width:96vw;min-width:320px;height:70vh;min-height:220px;max-height:92vh;margin:7vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;resize:both;overflow:auto;">' +
+                '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#0f172a;flex:0 0 auto;">Editar elemento</div>' +
+                '<div style="padding:16px;overflow:auto;flex:1 1 auto;">' +
+                '<div id="text-field" style="display:none;">' +
+                '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Texto</label>' +
+                '<textarea id="element-text" rows="6" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;"></textarea>' +
+                '</div>' +
+                '<div id="image-field" style="display:none;">' +
+                '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">URL da imagem</label>' +
+                // Item 3: input + botão do selecionador de imagens do servidor (admin-arquivos).
+                '<div style="display:flex;gap:6px;align-items:stretch;">' +
+                '<input id="element-src" type="text" style="flex:1 1 auto;min-width:0;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;">' +
+                '<button type="button" class="_html-editor-imagepick-btn" title="Selecionar imagem do servidor" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;cursor:pointer;">' + this.svgIcon('folder open') + '</button>' +
+                '</div>' +
+                '</div>' +
+                '<div id="code-field" style="display:none;">' +
+                '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Código HTML</label>' +
+                '<textarea id="element-code" rows="10" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:13px ui-monospace,monospace;"></textarea>' +
+                '</div>' +
+                '</div>' +
+                '<div style="padding:12px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px;flex:0 0 auto;">' +
+                '<button type="button" class="c2f-he-modal-cancel" style="padding:8px 16px;border:0;border-radius:8px;background:#e2e8f0;color:#0f172a;cursor:pointer;font:14px sans-serif;">Cancelar</button>' +
+                '<button type="button" class="c2f-he-modal-save" style="padding:8px 16px;border:0;border-radius:8px;background:#16a34a;color:#fff;cursor:pointer;font:14px sans-serif;">Salvar</button>' +
+                '</div>' +
                 '</div>';
             document.body.appendChild(div);
             this.bindLiveImagePicker(div);
@@ -1650,7 +1706,8 @@ $(document).ready(function () {
         bindLiveImagePicker(modal) {
             const btn = modal.querySelector('._html-editor-imagepick-btn');
             if (btn) {
-                btn.addEventListener('click', (e) => { e.preventDefault(); this.openLiveImagePicker(); });
+                // Alvo = input #element-src do modal de edição de imagem.
+                btn.addEventListener('click', (e) => { e.preventDefault(); this.imagePickerTarget = null; this.openLiveImagePicker(); });
             }
             if (this._liveImagePickBound) return;
             this._liveImagePickBound = true;
@@ -1662,10 +1719,16 @@ $(document).ready(function () {
                 let dados;
                 try { dados = JSON.parse(decodeURI(data.data)); } catch (err) { return; }
                 if (dados && dados.tipo && /^image\//.test(dados.tipo)) {
-                    const src = document.getElementById('element-src');
                     const caminho = dados.caminho || '';
                     const url = /^https?:\/\//i.test(caminho) ? caminho : ((this.raiz || '') + caminho);
-                    if (src) src.value = url;
+                    // BATCH-080 item 4: roteia por alvo — imagem de fundo (styler) vs URL do modal.
+                    if (this.imagePickerTarget === 'background') {
+                        this.imagePickerTarget = null;
+                        this.applyBackgroundImage(url);
+                    } else {
+                        const src = document.getElementById('element-src');
+                        if (src) src.value = url;
+                    }
                     this.closeLiveImagePicker();
                 } else {
                     window.alert('O arquivo selecionado não é uma imagem.');
@@ -1688,12 +1751,12 @@ $(document).ready(function () {
                 ov.style.cssText = 'position:fixed;inset:0;z-index:1000002;display:none;';
                 ov.innerHTML =
                     '<div class="c2f-he-ip-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.6);"></div>' +
-                    '<div style="position:relative;width:920px;max-width:96vw;height:80vh;margin:6vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden;">' +
-                        '<div style="padding:10px 14px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;">' +
-                            '<span style="font-weight:600;color:#0f172a;">Selecionar imagem</span>' +
-                            '<button type="button" class="c2f-he-ip-close" style="border:0;background:#e2e8f0;border-radius:6px;padding:6px 12px;cursor:pointer;color:#0f172a;">Fechar</button>' +
-                        '</div>' +
-                        '<iframe class="c2f-he-ip-frame" style="flex:1 1 auto;border:0;width:100%;"></iframe>' +
+                    '<div style="position:relative;width:920px;max-width:96vw;height:80vh;margin:7vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden;">' +
+                    '<div style="padding:10px 14px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;">' +
+                    '<span style="font-weight:600;color:#0f172a;">Selecionar imagem</span>' +
+                    '<button type="button" class="c2f-he-ip-close" style="border:0;background:#e2e8f0;border-radius:6px;padding:6px 12px;cursor:pointer;color:#0f172a;">Fechar</button>' +
+                    '</div>' +
+                    '<iframe class="c2f-he-ip-frame" style="flex:1 1 auto;border:0;width:100%;padding: 5px 10px 10px;"></iframe>' +
                     '</div>';
                 document.body.appendChild(ov);
                 ov.querySelector('.c2f-he-ip-backdrop').addEventListener('click', () => this.closeLiveImagePicker());
@@ -1713,6 +1776,623 @@ $(document).ready(function () {
                 if (f) f.src = 'about:blank';
             }
             this.liveImagePickerOpen = false;
+        }
+
+        // ===================================================================
+        // BATCH-080: Painéis do Live Editor (Modelos de Sessão + Assistente IA)
+        // ===================================================================
+
+        // Escapa texto p/ atributos/HTML.
+        escHtml(s) {
+            return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // URL AJAX do dashboard (rotas site-toolbar-*), derivada da raiz do gestor.
+        liveAjaxUrl(opcao) {
+            return (this.raiz || '') + 'dashboard/?ajax=1&ajaxOpcao=' + encodeURIComponent(opcao);
+        }
+
+        liveAjaxJson(url, opts, cb) {
+            const init = { credentials: 'same-origin' };
+            if (opts && opts.method) { init.method = opts.method; init.headers = opts.headers; init.body = opts.body; }
+            fetch(url, init).then((r) => r.json()).then(cb).catch(() => cb(null));
+        }
+
+        // CSS blindado (uma vez) dos painéis do live editor.
+        injectLivePanelStyles() {
+            if (document.getElementById('c2f-he-live-panel-styles')) return;
+            const css = `
+                .c2f-he-live-overlay{position:fixed;inset:0;z-index:1000003;display:none;font:14px system-ui,sans-serif !important;color:#0f172a !important;}
+                .c2f-he-live-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.55);}
+                .c2f-he-live-box{position:relative;width:720px;max-width:96vw;height:auto;max-height:88vh;min-width:360px;min-height:280px;margin:7vh auto;background:#fff !important;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:auto;resize:both;}
+                /* Altura inicial DEFINIDA nos painéis com resize-follow de CodeMirror (IA / Código
+                   Customizado) — sem isto a caixa nasce com height:auto (dirigida pelo conteúdo) e o
+                   ResizeObserver entra em loop de feedback ao ajustar o CodeMirror. O painel de
+                   Modelos (sem observer) segue com altura automática. */
+                #c2f-ai-panel .c2f-he-live-box,#c2f-custom-panel .c2f-he-live-box{height:70vh;}
+                .c2f-he-live-box .CodeMirror{border:1px solid #cbd5e1;border-radius:8px;height:auto;min-height:120px;}
+                .c2f-he-live-head{padding:12px 16px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;font-weight:600 !important;color:#0f172a !important;}
+                .c2f-he-live-body{padding:14px 16px;overflow:auto;flex:1 1 auto;}
+                .c2f-he-live-foot{padding:10px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px;flex:0 0 auto;}
+                .c2f-he-live-overlay input,.c2f-he-live-overlay select,.c2f-he-live-overlay textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1 !important;border-radius:8px;padding:9px 10px;font:14px sans-serif !important;color:#0f172a !important;background:#fff !important;-webkit-text-fill-color:#0f172a !important;margin:0;}
+                .c2f-he-live-overlay label{display:block;font-size:12px;color:#475569 !important;-webkit-text-fill-color:#475569 !important;margin:10px 0 4px;font-weight:600 !important;}
+                .c2f-he-live-btn{padding:8px 16px;border:0;border-radius:8px;cursor:pointer;font:14px sans-serif !important;}
+                .c2f-he-live-btn.primary{background:#16a34a !important;color:#fff !important;-webkit-text-fill-color:#fff !important;}
+                .c2f-he-live-btn.ghost{background:#e2e8f0 !important;color:#0f172a !important;-webkit-text-fill-color:#0f172a !important;}
+                .c2f-tpl-relation{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;}
+                .c2f-tpl-relation button{flex:1 1 auto;padding:7px 8px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc !important;color:#334155 !important;-webkit-text-fill-color:#334155 !important;cursor:pointer;font:13px sans-serif !important;}
+                .c2f-tpl-relation button.active{background:#2563eb !important;color:#fff !important;-webkit-text-fill-color:#fff !important;border-color:#2563eb;}
+                .c2f-tpl-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px;}
+                .c2f-tpl-card{border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;cursor:pointer;background:#fff !important;transition:box-shadow .1s,border-color .1s;}
+                .c2f-tpl-card:hover{border-color:#2563eb;box-shadow:0 4px 14px rgba(0,0,0,.12);}
+                .c2f-tpl-card img{width:100%;height:90px;object-fit:cover;display:block;background:#f1f5f9;}
+                .c2f-tpl-card .nm{padding:6px 8px;font-size:12px;color:#0f172a !important;-webkit-text-fill-color:#0f172a !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+                .c2f-ai-tabs{display:flex;gap:4px;border-bottom:1px solid #e5e7eb;margin-bottom:10px;}
+                .c2f-ai-tabs button{padding:8px 12px;border:0;background:transparent !important;color:#64748b !important;-webkit-text-fill-color:#64748b !important;cursor:pointer;border-bottom:2px solid transparent;font:13px sans-serif !important;}
+                .c2f-ai-tabs button.active{color:#0f172a !important;-webkit-text-fill-color:#0f172a !important;border-bottom-color:#2563eb;font-weight:600 !important;}
+                .c2f-ai-tab-body{display:none;}
+                .c2f-ai-tab-body.active{display:block;}
+            `;
+            const style = document.createElement('style');
+            style.id = 'c2f-he-live-panel-styles';
+            style.textContent = css;
+            document.head.appendChild(style);
+        }
+
+        // ===== Modelos de Sessão =====
+
+        openTemplatesPanel() {
+            if (!this.selectedElement) { window.alert('Selecione um elemento na página primeiro.'); return; }
+            this.injectLivePanelStyles();
+            this.buildTemplatesPanel();
+            this._tplRelation = this._tplRelation || 'after';
+            document.getElementById('c2f-tpl-panel').style.display = 'block';
+            this.loadTemplates(true);
+        }
+
+        closeTemplatesPanel() {
+            const p = document.getElementById('c2f-tpl-panel');
+            if (p) p.style.display = 'none';
+        }
+
+        buildTemplatesPanel() {
+            if (document.getElementById('c2f-tpl-panel')) return;
+            const p = document.createElement('div');
+            p.id = 'c2f-tpl-panel';
+            p.className = 'c2f-he-live-overlay';
+            p.innerHTML =
+                '<div class="c2f-he-live-backdrop"></div>' +
+                '<div class="c2f-he-live-box">' +
+                '<div class="c2f-he-live-head"><span>Modelos de sessão</span><button type="button" class="c2f-he-live-btn ghost c2f-tpl-close">Fechar</button></div>' +
+                '<div class="c2f-he-live-body">' +
+                '<div style="display:flex;gap:8px;">' +
+                '<input type="text" id="modelos-search-input" placeholder="Buscar modelos..." style="flex:1 1 auto;">' +
+                '<select id="c2f-tpl-framework" style="flex:0 0 160px;">' +
+                '<option value="tailwindcss">Tailwind CSS</option>' +
+                '<option value="fomantic-ui">Fomantic UI</option>' +
+                '<option value="bootstrap">Bootstrap</option>' +
+                '<option value="pure-css">CSS puro</option>' +
+                '</select>' +
+                '</div>' +
+                '<label>Inserir em relação ao elemento selecionado</label>' +
+                '<div class="c2f-tpl-relation">' +
+                '<button type="button" data-rel="replace">Substituir</button>' +
+                '<button type="button" data-rel="before">Inserir antes</button>' +
+                '<button type="button" data-rel="after">Inserir depois</button>' +
+                '</div>' +
+                '<div class="c2f-tpl-cards" id="modelos-cards"></div>' +
+                '<div style="text-align:center;margin-top:12px;"><button type="button" class="c2f-he-live-btn ghost c2f-tpl-more" style="display:none;">Carregar mais</button></div>' +
+                '</div>' +
+                '</div>';
+            document.body.appendChild(p);
+
+            p.querySelector('.c2f-tpl-close').addEventListener('click', () => this.closeTemplatesPanel());
+            p.querySelector('.c2f-he-live-backdrop').addEventListener('click', () => this.closeTemplatesPanel());
+            p.querySelector('.c2f-tpl-more').addEventListener('click', () => this.loadTemplates(false));
+            p.querySelector('#c2f-tpl-framework').addEventListener('change', () => this.loadTemplates(true));
+
+            const search = p.querySelector('#modelos-search-input');
+            search.addEventListener('input', () => {
+                clearTimeout(this._tplSearchTimer);
+                this._tplSearchTimer = setTimeout(() => this.loadTemplates(true), 300);
+            });
+
+            const rel = p.querySelector('.c2f-tpl-relation');
+            rel.addEventListener('click', (e) => {
+                const b = e.target.closest('button[data-rel]');
+                if (!b) return;
+                this._tplRelation = b.getAttribute('data-rel');
+                rel.querySelectorAll('button').forEach((x) => x.classList.toggle('active', x === b));
+            });
+            rel.querySelector('[data-rel="after"]').classList.add('active');
+
+            p.querySelector('#modelos-cards').addEventListener('click', (e) => {
+                const card = e.target.closest('.c2f-tpl-card');
+                if (!card || !this._tplData) return;
+                const modelo = this._tplData[card.getAttribute('data-idx')];
+                if (modelo) { this.insertTemplate(modelo); this.closeTemplatesPanel(); }
+            });
+        }
+
+        loadTemplates(reset) {
+            const panel = document.getElementById('c2f-tpl-panel');
+            if (!panel) return;
+            if (reset) { this._tplPage = 1; this._tplData = []; panel.querySelector('#modelos-cards').innerHTML = ''; }
+            else { this._tplPage = (this._tplPage || 1) + 1; }
+            const framework = panel.querySelector('#c2f-tpl-framework').value;
+            const busca = (panel.querySelector('#modelos-search-input').value || '').trim();
+            let url = this.liveAjaxUrl('site-toolbar-templates-load') +
+                '&params[pagina]=' + this._tplPage + '&params[limite]=12' +
+                '&params[framework_css]=' + encodeURIComponent(framework) +
+                '&params[alvo]=paginas';
+            if (busca) url += '&params[busca]=' + encodeURIComponent(busca);
+            this.liveAjaxJson(url, null, (json) => {
+                const cards = panel.querySelector('#modelos-cards');
+                if (!json || json.status !== 'Ok' || !json.data) {
+                    if (reset) cards.innerHTML = '<div style="color:#94a3b8;font-size:13px;grid-column:1/-1;">Nenhum modelo encontrado.</div>';
+                    return;
+                }
+                const modelos = json.data.modelos || [];
+                if (reset && !modelos.length) { cards.innerHTML = '<div style="color:#94a3b8;font-size:13px;grid-column:1/-1;">Nenhum modelo encontrado.</div>'; }
+                this.renderTemplateCards(modelos);
+                panel.querySelector('.c2f-tpl-more').style.display = json.data.tem_mais ? 'inline-block' : 'none';
+            });
+        }
+
+        renderTemplateCards(modelos) {
+            const cards = document.querySelector('#c2f-tpl-panel #modelos-cards');
+            if (!cards) return;
+            let html = '';
+            modelos.forEach((m) => {
+                const idx = this._tplData.push(m) - 1;
+                html += '<div class="c2f-tpl-card" data-idx="' + idx + '">' +
+                    '<img src="' + this.escHtml(m.thumbnail) + '" alt="" onerror="this.style.display=\'none\'">' +
+                    '<div class="nm" title="' + this.escHtml(m.nome) + '">' + this.escHtml(m.nome) + '</div></div>';
+            });
+            cards.insertAdjacentHTML('beforeend', html);
+        }
+
+        insertTemplate(modelo) {
+            const el = this.selectedElement;
+            if (!el || !modelo) return;
+            // CSS do modelo → injeta numa tag <style> dedicada (aplica de imediato).
+            if (modelo.css) {
+                let styleTag = document.getElementById('c2f-templates-css');
+                if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'c2f-templates-css'; document.head.appendChild(styleTag); }
+                if (styleTag.textContent.indexOf(modelo.css) === -1) styleTag.textContent += '\n' + modelo.css;
+            }
+            const rel = this._tplRelation || 'after';
+            const tmp = document.createElement('div');
+            tmp.innerHTML = modelo.html || '';
+            const nodes = Array.prototype.slice.call(tmp.childNodes);
+            // Rastreia o 1º nó de ELEMENTO (nodeType===1) inserido, para selecioná-lo ao final —
+            // vale para replace/before/after (req-082 §2: o modelo já vem selecionado ao inserir).
+            let firstInserted = null;
+            const track = (n) => { if (!firstInserted && n && n.nodeType === 1) firstInserted = n; };
+            let anchor = el;
+            if (rel === 'replace') {
+                const first = nodes.shift();
+                if (first) { el.parentNode.replaceChild(first, el); anchor = first; track(first); }
+                nodes.forEach((n) => { anchor.parentNode.insertBefore(n, anchor.nextSibling); anchor = n; track(n); });
+            } else if (rel === 'before') {
+                nodes.forEach((n) => { el.parentNode.insertBefore(n, el); track(n); });
+            } else { // after
+                let ref = el;
+                nodes.forEach((n) => { ref.parentNode.insertBefore(n, ref.nextSibling); ref = n; track(n); });
+            }
+            this.afterDomMutation();
+            // Seleciona automaticamente o primeiro elemento do bloco recém-inserido (req-082 §2).
+            if (firstInserted) this.selectElement(firstInserted);
+            else if (this.selectedElement) this.updateSelectionUI();
+        }
+
+        // ===== Assistente IA =====
+
+        openAiPanel() {
+            if (!this.selectedElement) { window.alert('Selecione um elemento na página primeiro.'); return; }
+            this.injectLivePanelStyles();
+            this.buildAiPanel();
+            document.getElementById('c2f-ai-panel').style.display = 'block';
+            this.initAiCodeMirror(); // BATCH-081 §1
+            this.observeLiveBoxResize(document.getElementById('c2f-ai-panel'));
+            if (!this._aiInitLoaded) this.loadAiInit();
+        }
+
+        closeAiPanel() {
+            const p = document.getElementById('c2f-ai-panel');
+            if (p) p.style.display = 'none';
+        }
+
+        buildAiPanel() {
+            if (document.getElementById('c2f-ai-panel')) return;
+            const p = document.createElement('div');
+            p.id = 'c2f-ai-panel';
+            p.className = 'c2f-he-live-overlay';
+            p.innerHTML =
+                '<div class="c2f-he-live-backdrop"></div>' +
+                '<div class="c2f-he-live-box">' +
+                '<div class="c2f-he-live-head"><span>Assistente IA</span><button type="button" class="c2f-he-live-btn ghost c2f-ai-close">Fechar</button></div>' +
+                '<div class="c2f-he-live-body">' +
+                '<div class="c2f-ai-tabs">' +
+                '<button type="button" data-tab="prompt" class="active">Prompt</button>' +
+                '<button type="button" data-tab="mode">Modo</button>' +
+                '<button type="button" data-tab="config">Configuração</button>' +
+                '</div>' +
+                '<div class="c2f-ai-tab-body active" data-tab="prompt">' +
+                '<label>Prompt salvo (opcional)</label>' +
+                '<select id="c2f-ai-prompt"><option value="">—</option></select>' +
+                // BATCH-081 §4: CRUD de prompts personalizados do usuário.
+                '<div class="c2f-ai-prompt-actions" style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">' +
+                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-new" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">Novo</button>' +
+                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-edit" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">Salvar</button>' +
+                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-del" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">Excluir</button>' +
+                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-clear" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">Limpar</button>' +
+                '</div>' +
+                '<label>Sua instrução</label>' +
+                '<textarea id="c2f-ai-instruction" rows="5" placeholder="Ex.: mude o título para \'Conn2flow AI\' e deixe o texto mais persuasivo"></textarea>' +
+                '</div>' +
+                '<div class="c2f-ai-tab-body" data-tab="mode">' +
+                '<label>Modo</label>' +
+                '<select id="c2f-ai-mode"></select>' +
+                '<label>Prompt do modo (template enviado à IA)</label>' +
+                '<textarea id="c2f-ai-mode-text" rows="6"></textarea>' +
+                '</div>' +
+                '<div class="c2f-ai-tab-body" data-tab="config">' +
+                '<label>Conexão</label>' +
+                '<select id="c2f-ai-server"></select>' +
+                '<label>Modelo</label>' +
+                '<select id="c2f-ai-model"></select>' +
+                '</div>' +
+                '<div id="c2f-ai-status" style="margin-top:10px;font-size:13px;color:#64748b;"></div>' +
+                '</div>' +
+                '<div class="c2f-he-live-foot">' +
+                '<button type="button" class="c2f-he-live-btn ghost c2f-ai-close">Cancelar</button>' +
+                '<button type="button" class="c2f-he-live-btn primary c2f-ai-send">Gerar e aplicar</button>' +
+                '</div>' +
+                '</div>';
+            document.body.appendChild(p);
+
+            p.querySelectorAll('.c2f-ai-close').forEach((b) => b.addEventListener('click', () => this.closeAiPanel()));
+            p.querySelector('.c2f-he-live-backdrop').addEventListener('click', () => this.closeAiPanel());
+            p.querySelector('.c2f-ai-send').addEventListener('click', () => this.submitAi());
+
+            // BATCH-081 §4: CRUD de prompts.
+            p.querySelector('#ai-prompt-new').addEventListener('click', () => this.aiPromptNew());
+            p.querySelector('#ai-prompt-edit').addEventListener('click', () => this.aiPromptEdit());
+            p.querySelector('#ai-prompt-del').addEventListener('click', () => this.aiPromptDel());
+            p.querySelector('#ai-prompt-clear').addEventListener('click', () => this.aiPromptClear());
+
+            const tabs = p.querySelector('.c2f-ai-tabs');
+            tabs.addEventListener('click', (e) => {
+                const b = e.target.closest('button[data-tab]');
+                if (!b) return;
+                const tab = b.getAttribute('data-tab');
+                tabs.querySelectorAll('button').forEach((x) => x.classList.toggle('active', x === b));
+                p.querySelectorAll('.c2f-ai-tab-body').forEach((x) => x.classList.toggle('active', x.getAttribute('data-tab') === tab));
+                // BATCH-081 §1: refresca o CodeMirror da aba recém-exibida (instanciado oculto).
+                if (this._aiCm) {
+                    setTimeout(() => {
+                        try {
+                            if (tab === 'prompt' && this._aiCm.instruction) this._aiCm.instruction.refresh();
+                            if (tab === 'mode' && this._aiCm.mode) this._aiCm.mode.refresh();
+                        } catch (err) { /* noop */ }
+                    }, 20);
+                }
+            });
+
+            // Ao trocar o prompt salvo, busca o texto e joga na instrução.
+            p.querySelector('#c2f-ai-prompt').addEventListener('change', (e) => {
+                const id = e.target.value;
+                if (!id) return;
+                const url = this.liveAjaxUrl('site-toolbar-ia-prompt') + '&params[target]=paginas&params[prompt_id]=' + encodeURIComponent(id);
+                this.liveAjaxJson(url, null, (json) => {
+                    if (json && json.status === 'Ok') {
+                        const tmp = document.createElement('textarea'); tmp.innerHTML = json.prompt || '';
+                        this.aiSetInstruction(tmp.value);
+                    }
+                });
+            });
+            // Ao trocar o modo, busca o template do modo.
+            p.querySelector('#c2f-ai-mode').addEventListener('change', (e) => {
+                const id = e.target.value;
+                if (!id) return;
+                const url = this.liveAjaxUrl('site-toolbar-ia-mode') + '&params[target]=paginas&params[mode_id]=' + encodeURIComponent(id);
+                this.liveAjaxJson(url, null, (json) => {
+                    if (json && json.status === 'Ok') {
+                        const tmp = document.createElement('textarea'); tmp.innerHTML = json.prompt || '';
+                        this.aiSetMode(tmp.value);
+                    }
+                });
+            });
+        }
+
+        // BATCH-081 §1: CodeMirror (markdown) nos textareas do assistente. Só instancia se o
+        // CodeMirror estiver carregado (o Live Editor o carrega via dashboard.toolbar.js); caso
+        // contrário mantém os textareas simples (degradação graciosa). Dedup por `.CodeMirror` irmão.
+        initAiCodeMirror() {
+            if (typeof CodeMirror === 'undefined' || !CodeMirror) return;
+            if (this._aiCm && this._aiCm.instruction) {
+                setTimeout(() => { try { this._aiCm.instruction.refresh(); if (this._aiCm.mode) this._aiCm.mode.refresh(); } catch (e) { /* noop */ } }, 30);
+                return;
+            }
+            const mk = (id, altura) => {
+                const ta = document.getElementById(id);
+                if (!ta) return null;
+                if (ta.nextSibling && ta.nextSibling.classList && ta.nextSibling.classList.contains('CodeMirror')) return null;
+                const cm = CodeMirror.fromTextArea(ta, {
+                    lineNumbers: true, lineWrapping: true, mode: 'markdown', htmlMode: true,
+                    indentUnit: 4, theme: 'tomorrow-night-bright'
+                });
+                cm.setSize('100%', altura);
+                return cm;
+            };
+            this._aiCm = { instruction: mk('c2f-ai-instruction', 150), mode: mk('c2f-ai-mode-text', 180) };
+        }
+
+        aiStatusEl() { return document.querySelector('#c2f-ai-panel #c2f-ai-status'); }
+
+        aiGetInstruction() {
+            if (this._aiCm && this._aiCm.instruction) return this._aiCm.instruction.getValue();
+            const ta = document.getElementById('c2f-ai-instruction');
+            return ta ? ta.value : '';
+        }
+        aiSetInstruction(v) {
+            if (this._aiCm && this._aiCm.instruction) { this._aiCm.instruction.setValue(v || ''); return; }
+            const ta = document.getElementById('c2f-ai-instruction');
+            if (ta) ta.value = v || '';
+        }
+        aiGetMode() {
+            if (this._aiCm && this._aiCm.mode) return this._aiCm.mode.getValue();
+            const ta = document.getElementById('c2f-ai-mode-text');
+            return ta ? ta.value : '';
+        }
+        aiSetMode(v) {
+            if (this._aiCm && this._aiCm.mode) { this._aiCm.mode.setValue(v || ''); return; }
+            const ta = document.getElementById('c2f-ai-mode-text');
+            if (ta) ta.value = v || '';
+        }
+
+        // ===== CRUD de prompts (BATCH-081 §4) — reusa as rotas site-toolbar-ia-prompt-*.
+        aiPromptCrud(opcao, paramsObj, cb) {
+            // Routing na QUERY STRING; params no corpo (o dashboard mescla $_POST em $_REQUEST).
+            const body = new URLSearchParams();
+            Object.keys(paramsObj || {}).forEach((k) => body.set('params[' + k + ']', paramsObj[k] == null ? '' : paramsObj[k]));
+            this.liveAjaxJson((this.raiz || '') + 'dashboard/?ajax=1&ajaxOpcao=' + encodeURIComponent(opcao), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                body: body.toString()
+            }, cb);
+        }
+
+        aiPromptSelect() { return document.querySelector('#c2f-ai-panel #c2f-ai-prompt'); }
+
+        aiPromptClear() {
+            this.aiSetInstruction('');
+            const sel = this.aiPromptSelect();
+            if (sel) sel.value = '';
+            const st = this.aiStatusEl(); if (st) st.textContent = '';
+        }
+
+        aiPromptNew() {
+            const nome = window.prompt('Nome do novo prompt:');
+            if (nome === null) return;
+            const nm = String(nome).trim();
+            const st = this.aiStatusEl();
+            if (!nm) { if (st) st.textContent = 'Informe um nome para o prompt.'; return; }
+            this.aiPromptCrud('site-toolbar-ia-prompt-new', { target: 'paginas', nome: nm, prompt: this.aiGetInstruction() }, (json) => {
+                if (!json || json.status !== 'Ok') { if (st) st.textContent = (json && (json.message || json.msg)) || 'Falha ao criar o prompt.'; return; }
+                const sel = this.aiPromptSelect();
+                if (sel && json.id) {
+                    const opt = document.createElement('option');
+                    opt.value = json.id; opt.textContent = nm;
+                    sel.appendChild(opt); sel.value = json.id;
+                }
+                if (st) st.textContent = 'Prompt criado.';
+            });
+        }
+
+        aiPromptEdit() {
+            const sel = this.aiPromptSelect();
+            const id = sel ? sel.value : '';
+            const st = this.aiStatusEl();
+            if (!id) { if (st) st.textContent = 'Selecione um prompt salvo para editar.'; return; }
+            this.aiPromptCrud('site-toolbar-ia-prompt-edit', { target: 'paginas', prompt_id: id, prompt: this.aiGetInstruction() }, (json) => {
+                if (st) st.textContent = (json && json.status === 'Ok') ? 'Prompt salvo.' : ((json && (json.message || json.msg)) || 'Falha ao salvar o prompt.');
+            });
+        }
+
+        aiPromptDel() {
+            const sel = this.aiPromptSelect();
+            const id = sel ? sel.value : '';
+            const st = this.aiStatusEl();
+            if (!id) { if (st) st.textContent = 'Selecione um prompt salvo para excluir.'; return; }
+            if (!window.confirm('Excluir o prompt selecionado?')) return;
+            this.aiPromptCrud('site-toolbar-ia-prompt-del', { target: 'paginas', prompt_id: id }, (json) => {
+                if (json && json.status === 'Ok') {
+                    Array.prototype.slice.call(sel.options).forEach((o) => { if (o.value === id) o.remove(); });
+                    sel.value = '';
+                    if (st) st.textContent = 'Prompt excluído.';
+                } else if (st) { st.textContent = (json && (json.message || json.msg)) || 'Falha ao excluir o prompt.'; }
+            });
+        }
+
+        loadAiInit() {
+            const p = document.getElementById('c2f-ai-panel');
+            const status = p.querySelector('#c2f-ai-status');
+            status.textContent = 'Carregando opções…';
+            this.liveAjaxJson(this.liveAjaxUrl('site-toolbar-ia-init') + '&params[alvo]=paginas', null, (json) => {
+                if (!json || json.status !== 'Ok' || !json.data) { status.textContent = json && json.message ? json.message : 'IA indisponível (sem conexões configuradas).'; return; }
+                const d = json.data;
+                const opt = (arr, valKey, txtKey) => ['<option value="">—</option>'].concat((arr || []).map((x) =>
+                    '<option value="' + this.escHtml(x[valKey]) + '">' + this.escHtml(x[txtKey]) + '</option>')).join('');
+                p.querySelector('#c2f-ai-prompt').innerHTML = opt(d.prompts, 'id', 'nome');
+                p.querySelector('#c2f-ai-mode').innerHTML = (d.modos || []).map((x) =>
+                    '<option value="' + this.escHtml(x.id) + '">' + this.escHtml(x.nome) + '</option>').join('') || '<option value="">—</option>';
+                p.querySelector('#c2f-ai-server').innerHTML = (d.servidores || []).map((x) =>
+                    '<option value="' + this.escHtml(x.id) + '">' + this.escHtml(x.nome) + '</option>').join('') || '<option value="">—</option>';
+                p.querySelector('#c2f-ai-model').innerHTML = (d.modelos || []).map((x) =>
+                    '<option value="' + this.escHtml(x.name) + '"' + (x.name === d.modelo_padrao ? ' selected' : '') + '>' + this.escHtml(x.displayName || x.name) + '</option>').join('') || '<option value="">—</option>';
+                if (d.modo_padrao) { const tmp = document.createElement('textarea'); tmp.innerHTML = d.modo_padrao; this.aiSetMode(tmp.value); }
+                this._aiInitLoaded = true;
+                status.textContent = '';
+            });
+        }
+
+        submitAi() {
+            const el = this.selectedElement;
+            if (!el) return;
+            const p = document.getElementById('c2f-ai-panel');
+            const status = p.querySelector('#c2f-ai-status');
+            const instruction = this.aiGetInstruction().trim();
+            const modeText = this.aiGetMode();
+            const serverId = p.querySelector('#c2f-ai-server').value;
+            const model = p.querySelector('#c2f-ai-model').value;
+            if (!instruction) { status.textContent = 'Escreva uma instrução.'; return; }
+            if (!serverId) { status.textContent = 'Selecione uma conexão de IA.'; return; }
+            status.textContent = 'Gerando… isso pode levar alguns segundos.';
+
+            // Routing (ajax/ajaxOpcao) na QUERY STRING; dados no corpo. Convenção defensiva — o
+            // "302 → home" do save NÃO era roteamento (era o redirect do histórico no backend).
+            const params = new URLSearchParams();
+            params.set('target', 'paginas');
+            params.set('prompt', instruction);
+            params.set('mode', modeText);
+            params.set('server_id', serverId);
+            if (model) params.set('model', model);
+            params.set('data[html]', el.outerHTML);
+            params.set('data[css]', '');
+            params.set('data[framework_css]', p.querySelector('#c2f-ai-model') ? 'tailwindcss' : '');
+
+            this.liveAjaxJson((this.raiz || '') + 'dashboard/?ajax=1&ajaxOpcao=site-toolbar-ia-request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                body: params.toString()
+            }, (json) => {
+                if (!json || json.status !== 'Ok' || !json.data) { status.textContent = (json && json.message) ? json.message : 'Falha ao gerar conteúdo.'; return; }
+                this.applyAiResult(json.data.html_gerado || '', json.data.css_gerado || '');
+                status.textContent = 'Aplicado!';
+                this.closeAiPanel();
+            });
+        }
+
+        applyAiResult(html, css) {
+            const el = this.selectedElement;
+            if (!el) return;
+            if (css) {
+                let styleTag = document.getElementById('c2f-ai-css');
+                if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'c2f-ai-css'; document.head.appendChild(styleTag); }
+                styleTag.textContent += '\n' + css;
+            }
+            if (html) {
+                const tmp = document.createElement('div');
+                tmp.innerHTML = html.trim();
+                const novo = tmp.firstElementChild;
+                if (novo && el.parentNode) {
+                    el.parentNode.replaceChild(novo, el);
+                    this.selectElement(novo);
+                }
+            }
+            this.afterDomMutation();
+        }
+
+        // ===================================================================
+        // BATCH-081 §2: Deseleção determinística (antes de salvar)
+        // ===================================================================
+        // Limpa TODO o estado visual do editor (seleção, hover, contornos, wrap-menu, modo de
+        // inserção) de forma determinística. Chamado por dashboard.toolbar.js ANTES de extrair o
+        // HTML limpo no save, evitando falhas de mapeamento quando há elemento selecionado/hover.
+        deselectAll() {
+            if (this.insertMode) this.exitInsertMode();
+            this.clearSelection();
+            this.hideHover();
+            this.hideBreadcrumbHover();
+            this.closeWrapMenu();
+        }
+
+        // ===================================================================
+        // BATCH-081 §5: Código customizado (painel "+" → CodeMirror livre)
+        // ===================================================================
+        openCustomCodePanel() {
+            this.injectLivePanelStyles();
+            this.buildCustomCodePanel();
+            document.getElementById('c2f-custom-panel').style.display = 'block';
+            this.initCustomCodeMirror();
+            this.observeLiveBoxResize(document.getElementById('c2f-custom-panel'));
+        }
+
+        closeCustomCodePanel() {
+            const p = document.getElementById('c2f-custom-panel');
+            if (p) p.style.display = 'none';
+        }
+
+        buildCustomCodePanel() {
+            if (document.getElementById('c2f-custom-panel')) return;
+            const p = document.createElement('div');
+            p.id = 'c2f-custom-panel';
+            p.className = 'c2f-he-live-overlay';
+            p.innerHTML =
+                '<div class="c2f-he-live-backdrop"></div>' +
+                '<div class="c2f-he-live-box">' +
+                '<div class="c2f-he-live-head"><span>Código customizado</span><button type="button" class="c2f-he-live-btn ghost c2f-custom-close">Fechar</button></div>' +
+                '<div class="c2f-he-live-body">' +
+                '<label>HTML / CSS livre</label>' +
+                '<textarea id="c2f-custom-code" rows="12" placeholder="Ex.: <section class=&quot;...&quot;><h2>Título</h2><p>Texto</p></section>"></textarea>' +
+                '<div id="c2f-custom-status" style="margin-top:10px;font-size:13px;color:#64748b;"></div>' +
+                '</div>' +
+                '<div class="c2f-he-live-foot">' +
+                '<button type="button" class="c2f-he-live-btn ghost c2f-custom-close">Cancelar</button>' +
+                '<button type="button" class="c2f-he-live-btn primary c2f-custom-insert">Inserir</button>' +
+                '</div>' +
+                '</div>';
+            document.body.appendChild(p);
+            p.querySelectorAll('.c2f-custom-close').forEach((b) => b.addEventListener('click', () => this.closeCustomCodePanel()));
+            p.querySelector('.c2f-he-live-backdrop').addEventListener('click', () => this.closeCustomCodePanel());
+            p.querySelector('.c2f-custom-insert').addEventListener('click', () => this.confirmCustomCode());
+        }
+
+        initCustomCodeMirror() {
+            if (typeof CodeMirror === 'undefined' || !CodeMirror) return;
+            if (this._customCm) { setTimeout(() => { try { this._customCm.refresh(); } catch (e) { /* noop */ } }, 30); return; }
+            const ta = document.getElementById('c2f-custom-code');
+            if (!ta) return;
+            if (ta.nextSibling && ta.nextSibling.classList && ta.nextSibling.classList.contains('CodeMirror')) return;
+            this._customCm = CodeMirror.fromTextArea(ta, {
+                lineNumbers: true, lineWrapping: true, mode: 'htmlmixed', htmlMode: true,
+                indentUnit: 4, theme: 'tomorrow-night-bright'
+            });
+            this._customCm.setSize('100%', 260);
+        }
+
+        confirmCustomCode() {
+            const code = this._customCm ? this._customCm.getValue()
+                : (document.getElementById('c2f-custom-code') ? document.getElementById('c2f-custom-code').value : '');
+            const status = document.getElementById('c2f-custom-status');
+            if (!code || !code.trim()) { if (status) status.textContent = 'Escreva algum código.'; return; }
+            this.insertCustomHtml(code);
+            if (this._customCm) this._customCm.setValue('');
+            else { const ta = document.getElementById('c2f-custom-code'); if (ta) ta.value = ''; }
+            this.closeCustomCodePanel();
+        }
+
+        // Insere o bloco de código no DOM vivo — como um elemento padrão (estilo c2f-add-el):
+        // após o elemento selecionado quando houver, ou ao final do conteúdo editável.
+        insertCustomHtml(html) {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html;
+            const nodes = Array.prototype.slice.call(tmp.childNodes);
+            if (!nodes.length) return;
+            const sel = this.selectedElement;
+            let firstEl = null;
+            if (sel && sel.parentNode) {
+                let ref = sel;
+                nodes.forEach((n) => { ref.parentNode.insertBefore(n, ref.nextSibling); ref = n; if (!firstEl && n.nodeType === 1) firstEl = n; });
+            } else {
+                const target = (this.contentRoot && this.contentRoot !== document.body) ? this.contentRoot : document.body;
+                nodes.forEach((n) => { target.appendChild(n); if (!firstEl && n.nodeType === 1) firstEl = n; });
+            }
+            this.afterDomMutation();
+            if (firstEl) this.selectElement(firstEl);
         }
 
         showModal() {
@@ -1804,6 +2484,85 @@ $(document).ready(function () {
 
             this.editingElement = element;
             this.showModal();
+            // BATCH-081 §2 (feedback): ajusta os campos à altura atual da caixa e passa a observar
+            // o redimensionamento manual (canto inferior direito).
+            this.observeModalResize();
+            this.syncModalFieldSizes();
+            if (this.editingType === 'code') setTimeout(() => this.syncModalFieldSizes(), 120);
+        }
+
+        // Ao redimensionar a caixa do modal (`.c2f-he-modal-box`, resize:both), os campos internos
+        // acompanham: o textarea de texto cresce em altura e o CodeMirror do código usa `setSize`.
+        observeModalResize() {
+            const box = document.querySelector('#html-editor-modal .c2f-he-modal-box');
+            if (!box || this._modalResizeObserved || typeof ResizeObserver === 'undefined') return;
+            this._modalResizeObserved = true;
+            const ro = new ResizeObserver(() => this.syncModalFieldSizes());
+            ro.observe(box);
+        }
+
+        syncModalFieldSizes() {
+            const modal = document.getElementById('html-editor-modal');
+            if (!modal || modal.style.display === 'none') return;
+            const box = modal.querySelector('.c2f-he-modal-box');
+            if (!box) return;
+            const body = box.children[1];
+            if (!body) return;
+            const cs = window.getComputedStyle(body);
+            const avail = body.clientHeight - (parseFloat(cs.paddingTop) || 0) - (parseFloat(cs.paddingBottom) || 0);
+            const fieldAvail = (field) => {
+                const label = field.querySelector('label');
+                const labelH = label ? (label.offsetHeight + (parseFloat(window.getComputedStyle(label).marginBottom) || 0)) : 0;
+                return Math.max(120, Math.round(avail - labelH - 4));
+            };
+            const textField = document.getElementById('text-field');
+            if (textField && textField.style.display !== 'none') {
+                const ta = document.getElementById('element-text');
+                if (ta) {
+                    const h = fieldAvail(textField);
+                    // Guarda anti-loop do ResizeObserver: só aplica quando a altura realmente muda.
+                    if (ta._c2fH !== h) { ta._c2fH = h; ta.style.height = h + 'px'; }
+                }
+            }
+            const codeField = document.getElementById('code-field');
+            if (codeField && codeField.style.display !== 'none') {
+                const h = fieldAvail(codeField);
+                if (this._modalCodeH !== h) {
+                    this._modalCodeH = h;
+                    if (window.CodeMirrorHtmlEditor && typeof window.CodeMirrorHtmlEditor.setSize === 'function') {
+                        window.CodeMirrorHtmlEditor.setSize('100%', h);
+                    } else {
+                        const ta = document.getElementById('element-code');
+                        if (ta) ta.style.height = h + 'px';
+                    }
+                }
+            }
+        }
+
+        // BATCH-081 §2 (feedback): ao redimensionar um painel `.c2f-he-live-box` (IA / Código
+        // Customizado), os CodeMirror visíveis dentro dele acompanham a altura via `setSize`.
+        // A instância do CM fica em `element.CodeMirror` (API do CodeMirror 5).
+        observeLiveBoxResize(panel) {
+            if (!panel || panel._resizeObserved || typeof ResizeObserver === 'undefined') return;
+            const box = panel.querySelector('.c2f-he-live-box');
+            const body = panel.querySelector('.c2f-he-live-body');
+            if (!box || !body) return;
+            panel._resizeObserved = true;
+            const ro = new ResizeObserver(() => {
+                const bodyRect = body.getBoundingClientRect();
+                const cmEls = panel.querySelectorAll('.CodeMirror');
+                Array.prototype.forEach.call(cmEls, (cmEl) => {
+                    if (!cmEl.CodeMirror || cmEl.offsetParent === null) return;
+                    const top = cmEl.getBoundingClientRect().top;
+                    const avail = Math.max(100, Math.round(bodyRect.bottom - top - 8));
+                    // Guarda anti-loop do ResizeObserver: só redimensiona quando a altura muda.
+                    if (cmEl._c2fAvail === avail) return;
+                    cmEl._c2fAvail = avail;
+                    cmEl.CodeMirror.setSize('100%', avail);
+                    cmEl.CodeMirror.refresh();
+                });
+            });
+            ro.observe(box);
         }
 
         syncImagepickPreview(element) {

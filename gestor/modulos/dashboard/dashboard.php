@@ -1351,6 +1351,39 @@ function dashboard_site_toolbar(){
 	// "Editar Página" (data-edit-url).
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#advanced_edit_url#',$advanced_edit_url);
 
+	// ===== Dropdown "Página" (BATCH-081 §3): título, "Criar Nova" e "Clonar" dinâmicos.
+	//       Publisher (tem publisher_id) → módulo publisher-pages; caso contrário admin-paginas.
+
+	$ehPublisher = ($page_id !== '' && $publisher_id !== '');
+	$moduloPaginas = $ehPublisher ? 'publisher-pages' : 'admin-paginas';
+
+	$new_page_url = $_GESTOR['url-raiz'].$moduloPaginas.'/adicionar/';
+
+	if($page_id !== ''){
+		$clone_page_url = $_GESTOR['url-raiz'].$moduloPaginas.'/clonar/?id='.rawurlencode($page_id);
+		if($ehPublisher){ $clone_page_url .= '&publisher_id='.rawurlencode($publisher_id); }
+	} else {
+		$clone_page_url = $_GESTOR['url-raiz'].$moduloPaginas.'/';
+	}
+
+	// Título da página atual (paginas.nome). Fallback para o próprio id se não encontrada.
+	$page_title = $page_id;
+	if($page_id !== ''){
+		$pagina_atual = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'paginas',
+			'campos' => Array('nome'),
+			'extra' => "WHERE id='".banco_escape_field($page_id)."' AND language='".$_GESTOR['linguagem-codigo']."' AND status!='D'",
+		));
+		if($pagina_atual && isset($pagina_atual['nome']) && $pagina_atual['nome'] !== ''){
+			$page_title = $pagina_atual['nome'];
+		}
+	}
+
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#new_page_url#',$new_page_url);
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#clone_page_url#',$clone_page_url);
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#page_title#',htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'));
+
 	// page_id da página hospedeira — o frontend usa nos endpoints site-toolbar-render/save.
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#page_id#',htmlspecialchars($page_id, ENT_QUOTES, 'UTF-8'));
 
@@ -1518,6 +1551,24 @@ function dashboard_site_toolbar_menu(){
 }
 
 /**
+ * Ponto de extensão de permissão da Editbar (req-082 §4).
+ *
+ * O CORE não conhece regras de isolamento multi-usuário — elas são específicas de cada projeto.
+ * Este helper apenas EXPÕE um ponto de extensão: o filtro `dashboard` / `site-toolbar.permissao-pagina`,
+ * com default `true` (o core não restringe). Projetos (ex.: Conn2Flow Site) registram um handler
+ * desse filtro em `project/hooks/hooks.json` que recebe o registro da página (`$pagina`, com
+ * `id_usuarios`/`publisher_id`) e retorna `false` para bloquear usuários restritos. Sem a biblioteca
+ * de hooks carregada, o default permissivo prevalece.
+ *
+ * @param array $pagina Registro da página (inclui `id_usuarios` e `publisher_id`).
+ * @return bool True se pode operar; false caso contrário.
+ */
+function dashboard_site_toolbar_verificar_permissao_pagina($pagina){
+	if(!function_exists('hook_apply_filters')) return true;
+	return (bool) hook_apply_filters('dashboard', 'site-toolbar.permissao-pagina', true, $pagina);
+}
+
+/**
  * AJAX — Salva o conteúdo editado da página (Dashboard Site Toolbar / Meta 3).
  *
  * Recebe o HTML ORIGINAL já reconstruído pelo editor (as caixas de destaque de
@@ -1547,7 +1598,7 @@ function dashboard_ajax_site_toolbar_save(){
 	$pagina = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'paginas',
-		'campos' => Array('id_paginas','versao','publisher_id','html','css','css_compiled','html_extra_head'),
+		'campos' => Array('id_paginas','versao','publisher_id','id_usuarios','html','css','css_compiled','html_extra_head'),
 		'extra' =>
 			"WHERE id='".banco_escape_field($page_id)."'"
 			." AND language='".$language."'"
@@ -1556,6 +1607,12 @@ function dashboard_ajax_site_toolbar_save(){
 
 	if(!$pagina){
 		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não encontrada.');
+		return;
+	}
+
+	// Isolamento multi-usuário (req-082 §4): usuário restrito só salva a própria página.
+	if(!dashboard_site_toolbar_verificar_permissao_pagina($pagina)){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão para editar esta página.');
 		return;
 	}
 
@@ -1605,8 +1662,13 @@ function dashboard_ajax_site_toolbar_save(){
 			));
 		}
 
+		// id_numerico_manual é OBRIGATÓRIO aqui: sem ele, interface_historico_incluir resolve o
+		// id numérico via interface_modulo_variavel_valor(), que exige `$_GESTOR['modulo-registro-id']`
+		// (contexto do CRUD admin). No AJAX do site toolbar esse id não existe → a função dispara
+		// gestor_redirecionar_raiz() (302 → /dashboard/), quebrando o save. Passamos o id conhecido.
 		interface_historico_incluir(Array(
 			'id' => $page_id,
+			'id_numerico_manual' => $pagina['id_paginas'],
 			'modulo_id' => $ownerModule,
 			'tabela' => Array(
 				'nome' => 'paginas',
@@ -1664,16 +1726,22 @@ function dashboard_site_toolbar_render_widget($signature){
 }
 
 /**
- * Helper — troca os widgets (forma wrapper por comentário e forma inline `@[[widgets#...]]@`)
- * por caixas de destaque com o widget renderizado dentro.
+ * Helper — renderiza os widgets (forma wrapper por comentário e forma inline `@[[widgets#...]]@`)
+ * mantendo-os embrulhados nos MARCADORES DE COMENTÁRIO vivos
+ * `<!-- widgets#SIG < -->{render}<!-- widgets#SIG > -->` (req-082 §3).
+ *
+ * Esse é o mesmo formato que a página viva expõe no modo de edição (ver `gestor_pagina_widgets`),
+ * então o `mapTree` do frontend delimita e re-anota cada widget pela fronteira exata dos comentários
+ * — em vez da antiga div `.c2f-widget-box`, que ficava "morta" (não interativa) ao restaurar backups.
  */
 function dashboard_site_toolbar_boxes_widgets($html){
 	// Forma wrapper: <!-- widgets#SIG < --> ... <!-- widgets#SIG > -->
 	$html = preg_replace_callback(
 		'/<!--\s*widgets#(.+?)\s*<\s*-->([\s\S]*?)<!--\s*widgets#\s*\1\s*>\s*-->/i',
 		function($m){
-			$rendered = dashboard_site_toolbar_render_widget($m[1]);
-			return dashboard_site_toolbar_box($m[0], $rendered, 'widget');
+			$sig = trim($m[1]);
+			$rendered = dashboard_site_toolbar_render_widget($sig);
+			return '<!-- widgets#'.$sig.' < -->'.$rendered.'<!-- widgets#'.$sig.' > -->';
 		},
 		$html
 	);
@@ -1682,13 +1750,34 @@ function dashboard_site_toolbar_boxes_widgets($html){
 	$html = preg_replace_callback(
 		'/@?\[\[widgets#(.+?)\]\]@?/i',
 		function($m){
-			$rendered = dashboard_site_toolbar_render_widget($m[1]);
-			return dashboard_site_toolbar_box($m[0], $rendered, 'widget');
+			$sig = trim($m[1]);
+			$rendered = dashboard_site_toolbar_render_widget($sig);
+			return '<!-- widgets#'.$sig.' < -->'.$rendered.'<!-- widgets#'.$sig.' > -->';
 		},
 		$html
 	);
 
 	return $html;
+}
+
+/**
+ * Helper — resolve as variáveis `@[[id]]@` para o VALOR renderizado (texto puro), tanto em texto
+ * quanto em atributos, espelhando o que a página viva expõe (req-082 §3). Diferente de
+ * `dashboard_site_toolbar_boxes_variaveis`, NÃO cria caixas `.c2f-var-box` — assim, no fluxo de
+ * restauração de backup, o `mapTree` do frontend re-anota as variáveis a partir do HTML cru (`raw`),
+ * exatamente como faz na carga inicial (`site-toolbar-render`). Marcadores desconhecidos ficam literais.
+ */
+function dashboard_site_toolbar_resolver_variaveis($html){
+	global $_GESTOR;
+
+	$open = $_GESTOR['variavel-global']['open'];
+	$close = $_GESTOR['variavel-global']['close'];
+	$varPattern = '/'.preg_quote($open,'/').'(.+?)'.preg_quote($close,'/').'/';
+
+	return preg_replace_callback($varPattern, function($m){
+		$val = dashboard_site_toolbar_resolver_var(trim($m[1]));
+		return ($val === null) ? $m[0] : $val;
+	}, $html);
 }
 
 /**
@@ -1785,7 +1874,7 @@ function dashboard_ajax_site_toolbar_render(){
 	$pagina = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'paginas',
-		'campos' => Array('html','layout_id'),
+		'campos' => Array('html','layout_id','id_usuarios','publisher_id'),
 		'extra' =>
 			"WHERE id='".banco_escape_field($page_id)."'"
 			." AND language='".$language."'"
@@ -1794,6 +1883,12 @@ function dashboard_ajax_site_toolbar_render(){
 
 	if(!$pagina){
 		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não encontrada.');
+		return;
+	}
+
+	// Isolamento multi-usuário (req-082 §4): usuário restrito só carrega o editor da própria página.
+	if(!dashboard_site_toolbar_verificar_permissao_pagina($pagina)){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão para editar esta página.');
 		return;
 	}
 
@@ -1909,8 +2004,15 @@ function dashboard_ajax_site_toolbar_widget_types(){
 }
 
 /**
- * AJAX — Itens de uma categoria de widget (parâmetro `module`) para o painel "+" in-place.
- * Reusa a função da lib html-editor (resolve a tabela alvo). Exige permissão de edição.
+ * AJAX — Itens de widget para o painel "+" in-place (BATCH-081: duas colunas / grupos).
+ *
+ * Aceita `params[module]` (grupo/categoria), `params[busca]` (autocomplete) e `params[pagina]`
+ * (paginação "Carregar mais"). Quando `module` está vazio e há `busca`, a pesquisa é cross-grupo
+ * (varre todas as tabelas de widget). O limite por página vem da opção do módulo
+ * `site_toolbar.widgets_por_pagina` (padrão 10). Resposta:
+ * `{status:'Ok', data:{items:[{id,nome,module}], tem_mais:bool}}`.
+ *
+ * O editor clássico continua usando `html_editor_ajax_widgets_list` (shape antigo, inalterado).
  */
 function dashboard_ajax_site_toolbar_widgets_list(){
 	global $_GESTOR;
@@ -1922,10 +2024,53 @@ function dashboard_ajax_site_toolbar_widgets_list(){
 
 	gestor_incluir_biblioteca('html-editor');
 
-	if(function_exists('html_editor_ajax_widgets_list')){
-		html_editor_ajax_widgets_list();
+	if(!function_exists('html_editor_widgets_buscar')){
+		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => Array('items' => Array(), 'tem_mais' => false));
+		return;
+	}
+
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	$limite_padrao = 10;
+	if(isset($modulo['site_toolbar']['widgets_por_pagina'])){
+		$limite_padrao = (int)$modulo['site_toolbar']['widgets_por_pagina'];
+	}
+	if($limite_padrao < 1) $limite_padrao = 10;
+
+	$module = isset($_REQUEST['params']['module']) ? trim((string)$_REQUEST['params']['module']) : '';
+	$busca = isset($_REQUEST['params']['busca']) ? trim((string)$_REQUEST['params']['busca']) : '';
+	$pagina = isset($_REQUEST['params']['pagina']) ? (int)$_REQUEST['params']['pagina'] : 1;
+	if($pagina < 1) $pagina = 1;
+
+	$_GESTOR['ajax-json'] = html_editor_widgets_buscar(Array(
+		'module' => $module,
+		'busca' => $busca,
+		'pagina' => $pagina,
+		'limite' => $limite_padrao,
+	));
+}
+
+/**
+ * AJAX — Renderiza um widget pela sua assinatura para o Live Editor (req-082 §1).
+ *
+ * Ponte entre o motor `html-editor.js` (que posta `c2f-he:widget-render` ao inserir um widget) e o
+ * backend: reusa `html_editor_ajax_widget_render()` da lib, que resolve `modulo->func({...})` em modo
+ * page-load. O frontend (`dashboard.toolbar.js`) posta de volta `c2f-he:widget-rendered` com o HTML.
+ * Exige permissão de edição de páginas.
+ */
+function dashboard_ajax_site_toolbar_widget_render(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('html-editor');
+
+	if(function_exists('html_editor_ajax_widget_render')){
+		html_editor_ajax_widget_render();
 	} else {
-		$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => Array());
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Renderizador de widget indisponível.');
 	}
 }
 
@@ -1995,8 +2140,10 @@ function dashboard_site_toolbar_salvar_layout($layout_id, $newBodyInner, $langua
 		));
 	}
 
+	// id_numerico_manual evita interface_modulo_variavel_valor() → gestor_redirecionar_raiz (302).
 	interface_historico_incluir(Array(
 		'id' => $layout_id,
+		'id_numerico_manual' => $layout['id_layouts'],
 		'modulo_id' => 'admin-layouts',
 		'tabela' => Array('nome' => 'layouts', 'id_numerico' => 'id_layouts', 'versao' => 'versao'),
 		'alteracoes' => Array(Array('campo' => 'form-html-label')),
@@ -2028,7 +2175,7 @@ function dashboard_ajax_site_toolbar_backups(){
 	$pagina = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'paginas',
-		'campos' => Array('id_paginas','publisher_id','layout_id'),
+		'campos' => Array('id_paginas','publisher_id','id_usuarios','layout_id'),
 		'extra' =>
 			"WHERE id='".banco_escape_field($page_id)."'"
 			." AND language='".$language."'"
@@ -2037,6 +2184,12 @@ function dashboard_ajax_site_toolbar_backups(){
 
 	if(!$pagina){
 		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não encontrada.');
+		return;
+	}
+
+	// Isolamento multi-usuário (req-082 §4): usuário restrito só lista backups da própria página.
+	if(!dashboard_site_toolbar_verificar_permissao_pagina($pagina)){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão para esta página.');
 		return;
 	}
 
@@ -2100,8 +2253,12 @@ function dashboard_ajax_site_toolbar_backups(){
 }
 
 /**
- * AJAX — Retorna o HTML de UM backup do campo `html`, já renderizado com caixas (para carregar
- * direto na área de conteúdo do editor in-place). Exige permissão.
+ * AJAX — Retorna o HTML de UM backup do campo `html` (req-082 §3). Devolve dois campos:
+ *   - `html`: versão RENDERIZADA (widgets embrulhados nos marcadores de comentário + variáveis
+ *     resolvidas para o valor), para injetar direto no DOM vivo;
+ *   - `raw`:  HTML CRU salvo (marcadores `@[[...]]@`/`<!-- widgets#... -->` intactos), para o
+ *     frontend re-rodar o `mapTree` e re-anotar widgets/variáveis (mesmo fluxo de `site-toolbar-render`).
+ * Exige permissão de edição e, quando a lib multi-usuário está presente, a propriedade da página.
  */
 function dashboard_ajax_site_toolbar_backup_get(){
 	global $_GESTOR;
@@ -2119,6 +2276,24 @@ function dashboard_ajax_site_toolbar_backup_get(){
 
 	$type = isset($_REQUEST['type']) ? trim($_REQUEST['type']) : 'page';
 
+	// Isolamento multi-usuário (req-082 §4): valida a página do contexto (dona do backup em edição).
+	$page_id = isset($_REQUEST['page_id']) ? trim($_REQUEST['page_id']) : '';
+	if($page_id !== ''){
+		$paginaCtx = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'paginas',
+			'campos' => Array('id_usuarios','publisher_id'),
+			'extra' =>
+				"WHERE id='".banco_escape_field($page_id)."'"
+				." AND language='".$_GESTOR['linguagem-codigo']."'"
+				." AND status!='D'",
+		));
+		if($paginaCtx && !dashboard_site_toolbar_verificar_permissao_pagina($paginaCtx)){
+			$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão para esta página.');
+			return;
+		}
+	}
+
 	$row = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'backup_campos',
@@ -2134,13 +2309,14 @@ function dashboard_ajax_site_toolbar_backup_get(){
 	gestor_incluir_biblioteca('widgets');
 
 	if($type === 'layout'){
-		// Backup de LAYOUT: o valor é o `layouts.html` completo. Extrai o body-inner, renderiza
-		// as caixas (preservando variáveis de atributo) e injeta um SLOT de conteúdo vazio
-		// (`#c2f-page-content`) no lugar de `@[[pagina#corpo]]@` — o frontend re-encaixa o
-		// conteúdo vivo da página ali, preservando o que o usuário está editando (item 8).
+		// Backup de LAYOUT: o valor é o `layouts.html` completo. Extrai o body-inner e injeta um SLOT
+		// de conteúdo vazio (`#c2f-page-content`) no lugar de `@[[pagina#corpo]]@` — o frontend re-encaixa
+		// o conteúdo vivo ali (preservando o que o usuário está editando). O `raw` mantém o body-inner
+		// CRU (com o mesmo slot vazio) para o `mapTree` re-anotar as variáveis/widgets do layout.
 		$open = $_GESTOR['variavel-global']['open'];
 		$close = $_GESTOR['variavel-global']['close'];
 		$corpoMarker = $open.'pagina#corpo'.$close;
+		$slot = '<div id="c2f-page-content" data-c2f-content></div>';
 
 		$layoutHtml = (string)$row['valor'];
 		if(preg_match('/<body\b[^>]*>([\s\S]*?)<\/body>/i', $layoutHtml, $mBody)){
@@ -2149,21 +2325,150 @@ function dashboard_ajax_site_toolbar_backup_get(){
 			$bodyInner = $layoutHtml;
 		}
 
-		$bodyInnerBoxes = dashboard_site_toolbar_boxes_widgets($bodyInner);
-		$bodyInnerBoxes = dashboard_site_toolbar_boxes_variaveis($bodyInnerBoxes, true);
+		$bodyInnerRender = dashboard_site_toolbar_boxes_widgets($bodyInner);
+		$bodyInnerRender = dashboard_site_toolbar_resolver_variaveis($bodyInnerRender);
+		$html = (strpos($bodyInnerRender, $corpoMarker) !== false)
+			? str_replace($corpoMarker, $slot, $bodyInnerRender)
+			: $bodyInnerRender.$slot;
 
-		$slot = '<div id="c2f-page-content" data-c2f-content></div>';
-		if(strpos($bodyInnerBoxes, $corpoMarker) !== false){
-			$html = str_replace($corpoMarker, $slot, $bodyInnerBoxes);
-		} else {
-			$html = $bodyInnerBoxes.$slot;
-		}
+		$raw = (strpos($bodyInner, $corpoMarker) !== false)
+			? str_replace($corpoMarker, $slot, $bodyInner)
+			: $bodyInner.$slot;
 	} else {
 		$html = dashboard_site_toolbar_boxes_widgets((string)$row['valor']);
-		$html = dashboard_site_toolbar_boxes_variaveis($html);
+		$html = dashboard_site_toolbar_resolver_variaveis($html);
+		$raw = (string)$row['valor'];
 	}
 
-	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => Array('html' => $html));
+	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'data' => Array('html' => $html, 'raw' => $raw));
+}
+
+/**
+ * AJAX — Modelos de sessão para o Live Editor (BATCH-080). Reusa a listagem paginada/busca da
+ * biblioteca `html-editor` sem violar o painel clássico. Exige permissão de edição.
+ */
+function dashboard_ajax_site_toolbar_templates_load(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('html-editor');
+	html_editor_ajax_templates_load();
+}
+
+/**
+ * AJAX — Dados de inicialização do assistente de IA (prompts/modos/conexões/modelos) para o painel
+ * vanilla do Live Editor. Reusa `ia_editor_dados`.
+ */
+function dashboard_ajax_site_toolbar_ia_init(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('ia');
+	$alvo = isset($_REQUEST['params']['alvo']) ? trim($_REQUEST['params']['alvo']) : 'paginas';
+	$_GESTOR['ajax-json'] = ia_editor_dados($alvo);
+}
+
+/**
+ * AJAX — Texto de um prompt salvo do assistente de IA (por id+alvo). Reusa `ia_ajax_prompts`.
+ */
+function dashboard_ajax_site_toolbar_ia_prompt(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('ia');
+	ia_ajax_prompts();
+}
+
+/**
+ * AJAX — Texto (template) de um modo de IA (por id+alvo). Reusa `ia_ajax_modos`.
+ */
+function dashboard_ajax_site_toolbar_ia_mode(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('ia');
+	ia_ajax_modos();
+}
+
+/**
+ * AJAX — Processa a requisição de geração/modificação por IA (envia ao servidor e devolve
+ * html/css gerados). Reusa `html_editor_ajax_ia_requests` (+ `ia_enviar_prompt`).
+ */
+function dashboard_ajax_site_toolbar_ia_request(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('ia');
+	gestor_incluir_biblioteca('html-editor');
+	html_editor_ajax_ia_requests();
+}
+
+/**
+ * AJAX — Cria um prompt salvo do assistente de IA a partir do painel do Live Editor.
+ * Reusa `ia_ajax_prompt_novo` (params: target/nome/prompt). Exige permissão de edição.
+ */
+function dashboard_ajax_site_toolbar_ia_prompt_new(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('ia');
+	ia_ajax_prompt_novo();
+}
+
+/**
+ * AJAX — Edita (salva o texto de) um prompt do assistente de IA no Live Editor.
+ * Reusa `ia_ajax_prompt_edit` (params: target/prompt_id/prompt). Exige permissão de edição.
+ */
+function dashboard_ajax_site_toolbar_ia_prompt_edit(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('ia');
+	ia_ajax_prompt_edit();
+}
+
+/**
+ * AJAX — Deleta um prompt do assistente de IA no Live Editor.
+ * Reusa `ia_ajax_prompt_del` (params: target/prompt_id). Exige permissão de edição.
+ */
+function dashboard_ajax_site_toolbar_ia_prompt_del(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	gestor_incluir_biblioteca('ia');
+	ia_ajax_prompt_del();
 }
 
 function dashboard_remover_pagina_instalacao_sucesso(){
@@ -2256,29 +2561,56 @@ function dashboard_start(){
 	
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();
-		
+
+		// Defensivo: garante que o corpo do POST esteja em `$_REQUEST` (lido pelos handlers e libs
+		// reusadas ia.php/html-editor.php) mesmo se algum ambiente configurar `request_order` sem
+		// "P". NOTA: não era isto que causava o "302 → home" do save (este servidor usa o fallback
+		// variables_order=EGPCS, que já inclui POST) — a causa era o redirect do histórico; ver
+		// `id_numerico_manual` em dashboard_ajax_site_toolbar_save/salvar_layout.
+		if(!empty($_POST)){
+			$_REQUEST = array_merge($_REQUEST, $_POST);
+		}
+
+		// NÃO gatear por gestor_dashboard_toolbar_ativo(): o gate é FALSE na própria página do
+		// toolbar (guard anti-recursão) e a checagem de permissão já é feita DENTRO de cada handler
+		// (gestor_acesso('editar','admin-paginas')). O gate aqui quebrava o render do toolbar
+		// (placeholders sem troca + JS do iframe não injetado).
 		switch($_GESTOR['ajax-opcao']){
 			//case 'opcao': dashboard_ajax_opcao(); break;
 			case 'site-toolbar-render': dashboard_ajax_site_toolbar_render(); break;
-				case 'site-toolbar-widget-types': dashboard_ajax_site_toolbar_widget_types(); break;
-				case 'site-toolbar-widgets-list': dashboard_ajax_site_toolbar_widgets_list(); break;
-				case 'site-toolbar-backups': dashboard_ajax_site_toolbar_backups(); break;
-				case 'site-toolbar-backup-get': dashboard_ajax_site_toolbar_backup_get(); break;
-				case 'site-toolbar-save': dashboard_ajax_site_toolbar_save(); break;
+			case 'site-toolbar-widget-types': dashboard_ajax_site_toolbar_widget_types(); break;
+			case 'site-toolbar-widgets-list': dashboard_ajax_site_toolbar_widgets_list(); break;
+			case 'site-toolbar-widget-render': dashboard_ajax_site_toolbar_widget_render(); break;
+			case 'site-toolbar-backups': dashboard_ajax_site_toolbar_backups(); break;
+			case 'site-toolbar-backup-get': dashboard_ajax_site_toolbar_backup_get(); break;
+			case 'site-toolbar-save': dashboard_ajax_site_toolbar_save(); break;
+			case 'site-toolbar-templates-load': dashboard_ajax_site_toolbar_templates_load(); break;
+			case 'site-toolbar-ia-init': dashboard_ajax_site_toolbar_ia_init(); break;
+			case 'site-toolbar-ia-prompt': dashboard_ajax_site_toolbar_ia_prompt(); break;
+			case 'site-toolbar-ia-mode': dashboard_ajax_site_toolbar_ia_mode(); break;
+			case 'site-toolbar-ia-request': dashboard_ajax_site_toolbar_ia_request(); break;
+			// BATCH-081: CRUD de prompts do assistente IA no Live Editor (reusa ia_ajax_prompt_*).
+			case 'site-toolbar-ia-prompt-new': dashboard_ajax_site_toolbar_ia_prompt_new(); break;
+			case 'site-toolbar-ia-prompt-edit': dashboard_ajax_site_toolbar_ia_prompt_edit(); break;
+			case 'site-toolbar-ia-prompt-del': dashboard_ajax_site_toolbar_ia_prompt_del(); break;
 		}
-		
+
 		interface_ajax_finalizar();
 	} else {
 		dashboard_interfaces_padroes();
-		
+
 		interface_iniciar();
-		
+
+		// `dashboard-site-toolbar` (render do próprio toolbar) NÃO pode ser gateado por
+		// gestor_dashboard_toolbar_ativo() — o gate é FALSE nessa página (anti-recursão), o que
+		// impedia a troca dos placeholders (#page_id#/#advanced_edit_url#/<!-- menu -->) e a
+		// injeção do dashboard.iframe-toolbar.js.
 		switch($_GESTOR['opcao']){
 			case 'inicio': dashboard_pagina_inicial(); break;
 			case 'dashboard-3d': dashboard_3d(); break;
 			case 'dashboard-site-toolbar': dashboard_site_toolbar(); break;
 		}
-		
+
 		interface_finalizar();
 	}
 }

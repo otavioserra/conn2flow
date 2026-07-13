@@ -309,12 +309,14 @@ $_GESTOR['bibliotecas']							=	Array('banco','gestor','modelo','hooks');
 
 if(isset($_GESTOR['bibliotecas']))
 foreach($_GESTOR['bibliotecas'] as $_biblioteca){
-	$_caminhos = $_GESTOR['bibliotecas-dados'][$_biblioteca];
-	
-	if($_caminhos)
-	foreach($_caminhos as $_caminho){
-		require_once($_GESTOR['modulos-bibliotecas'].$_caminho);
-	}
+    if(isset($_GESTOR['bibliotecas-dados']) && isset($_GESTOR['bibliotecas-dados'][$_biblioteca])){
+        $_caminhos = $_GESTOR['bibliotecas-dados'][$_biblioteca];
+
+        if($_caminhos)
+        foreach($_caminhos as $_caminho){
+            require_once($_GESTOR['modulos-bibliotecas'].$_caminho);
+        }
+    }
 }
 
 // Adicionar o config do projeto caso exista, para adcionar configurações específicas do projeto.

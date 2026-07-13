@@ -20,6 +20,7 @@
     var EDIT_H = 44;
     var editOn = false;
     var menuOpen = false;
+    var openDropdown = null; // BATCH-081: menu de dropdown (Página/Usuário) aberto por clique.
 
     function initToolbar() {
         var editBtn = document.getElementById('c2f-toolbar-edit');
@@ -37,10 +38,14 @@
         }
 
         function iframeHeight() {
-            // Altura do iframe: inclui o dropdown de módulos (que apenas sobrepõe, não empurra).
+            // Altura do iframe: inclui o dropdown de módulos (hover) e/ou os dropdowns de
+            // Página/Usuário (clique), que apenas sobrepõem — não empurram a página.
             var h = persistentHeight();
             if (menuOpen && dropdown) {
                 h = Math.max(h, MAIN_H + dropdown.offsetHeight + 8);
+            }
+            if (openDropdown) {
+                h = Math.max(h, MAIN_H + openDropdown.offsetHeight + 8);
             }
             return h;
         }
@@ -53,8 +58,14 @@
             }, origin);
         }
 
+        function closeDropdowns() {
+            // Só limpa o estado de altura; a visibilidade dos menus é controlada por CSS (hover).
+            openDropdown = null;
+        }
+
         function setEdit(on) {
             editOn = on;
+            closeDropdowns(); // BATCH-081: entrar/sair da edição fecha os dropdowns abertos.
             if (editBar) editBar.style.display = on ? 'flex' : 'none';
             pushHeight();
             window.parent.postMessage({ type: on ? 'c2f-toolbar:edit-start' : 'c2f-toolbar:edit-cancel', page_id: pageId }, origin);
@@ -91,6 +102,20 @@
             backupsBtn.addEventListener('click', function () {
                 var r = backupsBtn.getBoundingClientRect();
                 window.parent.postMessage({ type: 'c2f-toolbar:edit-backups', x: r.left, y: r.bottom, page_id: pageId }, origin);
+            });
+        }
+
+        // BATCH-080: Modelos de sessão e Assistente IA — acionam os painéis no host (dashboard.toolbar.js).
+        var templatesBtn = document.getElementById('c2f-templates-btn');
+        if (templatesBtn) {
+            templatesBtn.addEventListener('click', function () {
+                window.parent.postMessage({ type: 'c2f-toolbar:edit-templates' }, origin);
+            });
+        }
+        var aiBtn = document.getElementById('c2f-ai-btn');
+        if (aiBtn) {
+            aiBtn.addEventListener('click', function () {
+                window.parent.postMessage({ type: 'c2f-toolbar:edit-ai' }, origin);
             });
         }
 
@@ -137,6 +162,18 @@
                 pushHeight(); // a altura do dropdown mudou → reajusta o iframe.
             });
         }
+
+        // ===== Dropdowns de Página e Usuário (BATCH-081 §3): abrem no HOVER, igual ao menu de
+        //       módulos (`c2f-toolbar-menu`) via `group-hover:block`. Aqui só crescemos o iframe
+        //       para caber o menu aberto (iframeHeight considera `openDropdown`).
+        var dropdowns = [document.getElementById('c2f-page-dropdown'), document.getElementById('c2f-user-dropdown')];
+        Array.prototype.forEach.call(dropdowns, function (dd) {
+            if (!dd) { return; }
+            var ddMenu = dd.querySelector('.c2f-dropdown-menu');
+            if (!ddMenu) { return; }
+            dd.addEventListener('mouseenter', function () { openDropdown = ddMenu; pushHeight(); });
+            dd.addEventListener('mouseleave', function () { if (openDropdown === ddMenu) { openDropdown = null; pushHeight(); } });
+        });
     }
 
     if (document.readyState === 'loading') {

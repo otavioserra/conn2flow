@@ -269,7 +269,17 @@ function menus_widget_profile_id_from_hash($user_profile_hash, $profile_ids){
 
 function menus_widget_usuario_atual($params = []){
 	if(isset($params['_user_data']) && is_array($params['_user_data'])) return $params['_user_data'];
-	if(function_exists('gestor_usuario_perfil')) return gestor_usuario_perfil();
+	if(function_exists('gestor_usuario_perfil')){
+		$usuario_perfil = gestor_usuario_perfil();
+
+		if($usuario_perfil){
+			if(!gestor_permissao_token() || !gestor_permissao_modulo()){
+				return false;
+			} else {
+				return $usuario_perfil;
+			}
+		}
+	}	
 
 	return false;
 }
