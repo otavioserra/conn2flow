@@ -597,6 +597,14 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
                 $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
             }
+            // req-086: Forçar inclusão de data_modificacao no diff para evitar que o trigger
+            // ON UPDATE CURRENT_TIMESTAMP do MySQL sobrescreva a data customizada do JSON.
+            if ($diff) {
+                if (isset($row['data_modificacao']) && is_array($allowedCols) && isset($allowedCols['data_modificacao']) && !isset($diff['data_modificacao'])) {
+                    $diff['data_modificacao'] = $row['data_modificacao'];
+                    $oldVals['data_modificacao'] = $exist['data_modificacao'] ?? null;
+                }
+            }
             if ($diff) {
                 // Marcar projeto se deploy de projeto (preserva o project existente quando forçado).
                 if ($temPreserve && $project && !$forced) {
@@ -726,6 +734,14 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
                 $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
             }
+            // req-086: Forçar inclusão de data_modificacao no diff para evitar que o trigger
+            // ON UPDATE CURRENT_TIMESTAMP do MySQL sobrescreva a data customizada do JSON.
+            if ($diff) {
+                if (isset($row['data_modificacao']) && is_array($allowedCols) && isset($allowedCols['data_modificacao']) && !isset($diff['data_modificacao'])) {
+                    $diff['data_modificacao'] = $row['data_modificacao'];
+                    $oldVals['data_modificacao'] = $exist['data_modificacao'] ?? null;
+                }
+            }
             if ($diff) {
                 // Marcar projeto se deploy de projeto (preserva o project existente quando forçado).
                 if ($temPreserve && $project && !$forced) {
@@ -800,6 +816,14 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 // Reset de user_modified=0 quando forçado (alinha o registro à base de código do deploy).
                 if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
                     $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
+                }
+                // req-086: Forçar inclusão de data_modificacao no diff para evitar que o trigger
+                // ON UPDATE CURRENT_TIMESTAMP do MySQL sobrescreva a data customizada do JSON.
+                if ($diff) {
+                    if (isset($row['data_modificacao']) && is_array($allowedCols) && isset($allowedCols['data_modificacao']) && !isset($diff['data_modificacao'])) {
+                        $diff['data_modificacao'] = $row['data_modificacao'];
+                        $oldVals['data_modificacao'] = $exist['data_modificacao'] ?? null;
+                    }
                 }
                 if ($diff) {
                     // Marcar projeto se deploy de projeto (preserva o project existente quando forçado).

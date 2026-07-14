@@ -517,7 +517,7 @@ function coletarRecursos(array $existentes, array $map): array {
                 $paths = resourcePaths($RESOURCES_DIR,$lang,'layouts',$id,true);
                 $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
                 [$versao,$cks] = $versaoChecksum('layouts',$key,$html,$css);
-                $layouts[] = [
+                $layoutData = [
                     'nome' => $l['name'] ?? ($l['nome'] ?? $id),
                     'id' => $id,
                     'language' => $lang,
@@ -529,6 +529,9 @@ function coletarRecursos(array $existentes, array $map): array {
                     'file_version' => $l['version'] ?? null,
                     'checksum' => json_encode($cks,JSON_UNESCAPED_UNICODE)
                 ];
+                if (isset($l['data_criacao'])) $layoutData['data_criacao'] = $l['data_criacao'];
+                if (isset($l['data_modificacao'])) $layoutData['data_modificacao'] = $l['data_modificacao'];
+                $layouts[] = $layoutData;
             }
         }
 
@@ -543,7 +546,7 @@ function coletarRecursos(array $existentes, array $map): array {
                 $paths = resourcePaths($RESOURCES_DIR,$lang,'components',$id,true);
                 $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
                 [$versao,$cks] = $versaoChecksum('componentes',$key,$html,$css);
-                $componentes[] = [
+                $componenteData = [
                     'nome' => $c['name'] ?? ($c['nome'] ?? $id),
                     'id' => $id,
                     'language' => $lang,
@@ -556,6 +559,9 @@ function coletarRecursos(array $existentes, array $map): array {
                     'file_version' => $c['version'] ?? null,
                     'checksum' => json_encode($cks,JSON_UNESCAPED_UNICODE)
                 ];
+                if (isset($c['data_criacao'])) $componenteData['data_criacao'] = $c['data_criacao'];
+                if (isset($c['data_modificacao'])) $componenteData['data_modificacao'] = $c['data_modificacao'];
+                $componentes[] = $componenteData;
             }
         }
 
@@ -573,7 +579,7 @@ function coletarRecursos(array $existentes, array $map): array {
                 $paths = resourcePaths($RESOURCES_DIR,$lang,'pages',$id,true);
                 $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
                 [$versao,$cks] = $versaoChecksum('paginas',$kId,$html,$css);
-                $paginas[] = [
+                $paginaData = [
                     'layout_id' => $p['layout'] ?? null,
                     'nome' => $p['name'] ?? ($p['nome'] ?? $id),
                     'id' => $id,
@@ -588,11 +594,15 @@ function coletarRecursos(array $existentes, array $map): array {
                     'css' => $css,
                     'html_extra_head' => $p['html_extra_head'] ?? null,
                     'framework_css' => getFrameworkCss($p),
+                    'publisher_id' => $p['publisher_id'] ?? null,
                     'status' => $p['status'] ?? 'A',
                     'versao' => $versao,
                     'file_version' => $p['version'] ?? null,
                     'checksum' => json_encode($cks,JSON_UNESCAPED_UNICODE)
                 ];
+                if (isset($p['data_criacao'])) $paginaData['data_criacao'] = $p['data_criacao'];
+                if (isset($p['data_modificacao'])) $paginaData['data_modificacao'] = $p['data_modificacao'];
+                $paginas[] = $paginaData;
             }
         }
 
@@ -608,7 +618,7 @@ function coletarRecursos(array $existentes, array $map): array {
                 $paths = resourcePaths($RESOURCES_DIR,$lang,'templates',$id,true);
                 $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
                 [$versao,$cks] = $versaoChecksum('templates',$kId,$html,$css);
-                $templates[] = [
+                $templateData = [
                     'nome' => $p['name'] ?? ($p['nome'] ?? $id),
                     'id' => $id,
                     'target' => $target,
@@ -622,6 +632,9 @@ function coletarRecursos(array $existentes, array $map): array {
                     'file_version' => $p['version'] ?? null,
                     'checksum' => json_encode($cks,JSON_UNESCAPED_UNICODE)
                 ];
+                if (isset($p['data_criacao'])) $templateData['data_criacao'] = $p['data_criacao'];
+                if (isset($p['data_modificacao'])) $templateData['data_modificacao'] = $p['data_modificacao'];
+                $templates[] = $templateData;
             }
         }
 
@@ -642,7 +655,7 @@ function coletarRecursos(array $existentes, array $map): array {
                     if(in_array($grp,$groups,true)) { $orphans['variaveis'][]=$v+['_motivo'=>'duplicidade group repetido','language'=>$lang]; continue; }
                 }
                 $idxVariaveis[$base][] = ($grp ?? '');
-                $variaveis[] = [
+                $variavelData = [
                     'language' => $lang,
                     'modulo' => $mod!=='' ? $mod : null,
                     'id' => $id,
@@ -651,6 +664,9 @@ function coletarRecursos(array $existentes, array $map): array {
                     'grupo' => $grp,
                     'descricao' => $v['description'] ?? ($v['descricao'] ?? null),
                 ];
+                if (isset($v['data_criacao'])) $variavelData['data_criacao'] = $v['data_criacao'];
+                if (isset($v['data_modificacao'])) $variavelData['data_modificacao'] = $v['data_modificacao'];
+                $variaveis[] = $variavelData;
             }
         }
     }
@@ -674,22 +690,33 @@ function coletarRecursos(array $existentes, array $map): array {
                         if ($tipo==='layouts') {
                             $key = $lang.'|'.$modId.'|'.$id; if(isset($idxLayouts[$key])) { $orphans['layouts'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxLayouts[$key]=true; [$versao,$cks]=$versaoChecksum('layouts',$key,$html,$css);
-                            $layouts[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $modLayoutData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            if (isset($item['data_criacao'])) $modLayoutData['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $modLayoutData['data_modificacao'] = $item['data_modificacao'];
+                            $layouts[] = $modLayoutData;
                         } elseif ($tipo==='components') {
                             $key = $lang.'|'.$modId.'|'.$id; if(isset($idxComponentes[$key])) { $orphans['componentes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxComponentes[$key]=true; [$versao,$cks]=$versaoChecksum('componentes',$key,$html,$css);
-                            $componentes[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $modCompData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            if (isset($item['data_criacao'])) $modCompData['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $modCompData['data_modificacao'] = $item['data_modificacao'];
+                            $componentes[] = $modCompData;
                         } elseif ($tipo==='templates') {
                             $target = $item['target'] ?? ($item['target'] ?? null);
                             $key = $lang.'|'.$target.'|'.$id; if(isset($idxTemplates[$key])) { $orphans['templates'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'target'=>$target]; continue; }
                             $idxTemplates[$key]=true; [$versao,$cks]=$versaoChecksum('templates',$key,$html,$css);
-                            $templates[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'target'=>$target,'thumbnail'=>$item['thumbnail'] ?? null,'language'=>$lang,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $modTemplateData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'target'=>$target,'thumbnail'=>$item['thumbnail'] ?? null,'language'=>$lang,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            if (isset($item['data_criacao'])) $modTemplateData['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $modTemplateData['data_modificacao'] = $item['data_modificacao'];
+                            $templates[] = $modTemplateData;
                         } elseif ($tipo==='ai_prompts') {
                             $md = readFileIfExists($paths['md']);
                             $key = $lang.'|'.$id; if(isset($idxPromptsIa[$key])) { $orphans['ai_prompts'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
                             $idxPromptsIa[$key]=true; [$versao,$cks]=$versaoChecksumPrompt('ai_prompts',$key,$md);
                             $prompts_ia_aux = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'alvo'=>$item['target'] ?? null,'prompt'=>$md,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
                             if(isset($item['default']) && $item['default']) $prompts_ia_aux['padrao']=1;
+                            if (isset($item['data_criacao'])) $prompts_ia_aux['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $prompts_ia_aux['data_modificacao'] = $item['data_modificacao'];
                             $prompts_ia[] = $prompts_ia_aux;
                         } elseif ($tipo==='ai_modes') {
                             $md = readFileIfExists($paths['md']);
@@ -697,18 +724,23 @@ function coletarRecursos(array $existentes, array $map): array {
                             $idxModosIa[$key]=true; [$versao,$cks]=$versaoChecksumPrompt('ai_modes',$key,$md);
                             $modos_ia_aux = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'alvo'=>$item['target'] ?? null,'prompt'=>$md,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
                             if(isset($item['default']) && $item['default']) $modos_ia_aux['padrao']=1;
+                            if (isset($item['data_criacao'])) $modos_ia_aux['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $modos_ia_aux['data_modificacao'] = $item['data_modificacao'];
                             $modos_ia[] = $modos_ia_aux;
                         } elseif ($tipo==='ai_prompts_targets') {
                             $key = $lang.'|'.$id; if(isset($idxPromptsAlvosIa[$key])) { $orphans['alvos_ia'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang]; continue; }
                             $idxPromptsAlvosIa[$key]=true;
-                            $alvos_ia[] = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'status'=>$item['status'] ?? 'A','versao'=>$versao ];
+                            $alvoData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'status'=>$item['status'] ?? 'A','versao'=>$versao ];
+                            if (isset($item['data_criacao'])) $alvoData['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $alvoData['data_modificacao'] = $item['data_modificacao'];
+                            $alvos_ia[] = $alvoData;
                         } elseif ($tipo==='widgets') {
                             // req-066 (BATCH-066): recurso "widgets" — registra a categoria/tipo de widget
                             // do sistema na tabela global `widgets`. Não há arquivos físicos (html/css/md):
                             // o registro é puramente estrutural. Unicidade por (language, id); duplicados → órfãos.
                             $key = $lang.'|'.$id; if(isset($idxWidgets[$key])) { $orphans['widgets'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxWidgets[$key]=true;
-                            $widgets[] = [
+                            $widgetData = [
                                 'id'            => $id,
                                 'name'          => $item['name'] ?? $id,
                                 'icon'          => $item['icon'] ?? '',
@@ -719,12 +751,18 @@ function coletarRecursos(array $existentes, array $map): array {
                                 'versao'        => 1,
                                 'user_modified' => 0,
                             ];
+                            if (isset($item['data_criacao'])) $widgetData['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $widgetData['data_modificacao'] = $item['data_modificacao'];
+                            $widgets[] = $widgetData;
                         } else { // pages
                             $path = $item['path'] ?? ($id.'/');
                             $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxPaginasId[$kId])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $kPath = $lang.'|'.strtolower(trim($path,'/')); if(isset($idxPaginasPath[$kPath])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade caminho','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true; [$versao,$cks]=$versaoChecksum('paginas',$kId,$html,$css);
-                            $paginas[] = [ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html, 'html_extra_head' => $item['html_extra_head'] ?? null,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $modPageData = [ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html, 'html_extra_head' => $item['html_extra_head'] ?? null,'css'=>$css,'framework_css'=>getFrameworkCss($item),'publisher_id'=>$item['publisher_id'] ?? null,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            if (isset($item['data_criacao'])) $modPageData['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $modPageData['data_modificacao'] = $item['data_modificacao'];
+                            $paginas[] = $modPageData;
                         }
                     }
                 }
@@ -740,7 +778,10 @@ function coletarRecursos(array $existentes, array $map): array {
                             if($grp===null || $grp==='') { if(!empty($groups) || in_array('', $groups,true)){ $orphans['variaveis'][]=$item+['_motivo'=>'duplicidade sem group','language'=>$lang,'modulo'=>$modId]; continue; } }
                             else { if(in_array($grp,$groups,true)){ $orphans['variaveis'][]=$item+['_motivo'=>'duplicidade group repetido','language'=>$lang,'modulo'=>$modId]; continue; } }
                             $idxVariaveis[$base][] = ($grp ?? '');
-                            $variaveis[] = [ 'language'=>$lang,'modulo'=>$modId,'id'=>$id,'valor'=>$item['value'] ?? null,'tipo'=>$item['type'] ?? null,'grupo'=>$grp,'descricao'=>$item['description'] ?? null ];
+                            $modVarData = [ 'language'=>$lang,'modulo'=>$modId,'id'=>$id,'valor'=>$item['value'] ?? null,'tipo'=>$item['type'] ?? null,'grupo'=>$grp,'descricao'=>$item['description'] ?? null ];
+                            if (isset($item['data_criacao'])) $modVarData['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $modVarData['data_modificacao'] = $item['data_modificacao'];
+                            $variaveis[] = $modVarData;
                         } elseif ($tipo==='forms') {
                             $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxForms[$kId])) { $orphans['forms'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxForms[$kId]=true;
@@ -748,6 +789,10 @@ function coletarRecursos(array $existentes, array $map): array {
                                 $item['fields_schema'] = json_encode($item['fields_schema'], JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
                             }
                             $forms[] = [ 'name'=>$item['name'] ?? null,'id'=>$id,'description'=>$item['description'] ?? null,'template_id'=>$item['template_id'] ?? null,'fields_schema'=>$item['fields_schema'] ?? null,'module'=>$modId,'language'=>$lang ];
+                            // req-084: preservação condicional de datas customizadas
+                            $lastIdx = array_key_last($forms);
+                            if (isset($item['data_criacao'])) $forms[$lastIdx]['data_criacao'] = $item['data_criacao'];
+                            if (isset($item['data_modificacao'])) $forms[$lastIdx]['data_modificacao'] = $item['data_modificacao'];
                         }
                     }
                 }

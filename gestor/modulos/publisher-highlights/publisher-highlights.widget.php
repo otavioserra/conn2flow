@@ -327,9 +327,12 @@ function publisher_highlights_widget_prefixar_url_raiz($valor){
 
 	$valor = (string)$valor;
 	if($valor === '') return $valor;
+	$raiz = (string)($_GESTOR['url-raiz'] ?? '');
+	if(strpos($valor, '@[[pagina#url-raiz]]@') !== false){
+		return str_replace('@[[pagina#url-raiz]]@', $raiz, $valor);
+	}
 	if(preg_match('#^(https?:)?//#i', $valor) || strpos($valor, 'data:') === 0) return $valor;
 
-	$raiz = (string)($_GESTOR['url-raiz'] ?? '');
 	if($raiz !== '' && substr($raiz, -1) === '/' && substr($valor, 0, 1) === '/'){
 		return $raiz.ltrim($valor, '/');
 	}

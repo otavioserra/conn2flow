@@ -207,6 +207,15 @@
         // Redimensionar a janela com um dropdown aberto → reajusta a altura do iframe (a caixa pode
         // ter mudado de altura com a nova largura).
         window.addEventListener('resize', function () { if (openDropdown) { pushHeight(); } });
+
+        // Reentrada automática no modo de edição após restaurar um backup (BATCH-085). O roteador
+        // sinaliza `gestor.siteToolbarBackupRestaurado` na página HOSPEDEIRA (same-origin → acessível
+        // por window.parent). Entramos em edição já com o conteúdo do backup renderizado pelo backend.
+        try {
+            if (window.parent && window.parent.gestor && window.parent.gestor.siteToolbarBackupRestaurado && !editOn) {
+                setEdit(true);
+            }
+        } catch (e) { /* acesso ao parent indisponível → ignora */ }
     }
 
     if (document.readyState === 'loading') {

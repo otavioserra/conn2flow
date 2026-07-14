@@ -1,6 +1,6 @@
 # Current Human Request
 
-- **Intake ativo (Agente Atual)**: nenhum.
+- **Intake ativo (Agente Atual)**: Nenhum.
 
 - **Lotes Fechados**: 
   * [req-075.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-075.md) (BATCH-075 `complete`, 2026-07-10): Site Toolbar completa, agendamento de páginas e extensões do editor.
@@ -12,8 +12,10 @@
   * [req-081.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-081.md) (BATCH-081 `complete`, 2026-07-11): CodeMirror no Assistente IA, correção do save intermitente (blindagem do corpo AJAX), dropdowns de Usuário/Página, CRUD de prompts, Código Customizado e painel "+" em duas colunas.
   * [req-082.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-082.md) (BATCH-082 `complete`, 2026-07-13): Correção de Carregamento de Widgets, Seleção de Modelos, Restauração de Backups e Hooks de Controle Multi-usuário.
   * [req-083.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-083.md) (BATCH-083 `complete`, 2026-07-13): Correções de Homologação do Live Editor (Hover, Responsive Preview e Normalização).
+  * [req-084.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-084.md) (BATCH-084 `complete`, 2026-07-13): Preservação de Datas Customizadas (data_criacao/data_modificacao) na Compilação de Recursos.
+  * [req-086.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-086.md) (BATCH-086 `complete`, 2026-07-14): Preservação de data_modificacao no Sincronizador de Banco de Dados.
 
-- **Status**: Lotes 75 a 83 concluídos. Aguardando homologação do BATCH-083 pelo operador.
+- **Status**: BATCH-086 implementado e validado (sintaxe OK, suíte de testes verde).
 
-- **Pendências**: Nenhuma. Pronto para deploy/homologação.
+- **Pendências**: Nenhuma.
 

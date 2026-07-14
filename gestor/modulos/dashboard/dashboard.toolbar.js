@@ -716,24 +716,16 @@
 	// a largura de um elemento NÃO dispara media queries (elas usam a viewport, não o elemento).
 	// Desktop (100%) volta à edição in-place; Tablet/Mobile é preview fiel (o editor fica desabilitado).
 	var deviceWrap = null;   // contêiner centralizado do preview.
-	var deviceIframe = null; // iframe que renderiza o conteúdo na largura do device.
+	var deviceIframe = null; // iframe que renderiza a página real na largura do device.
 
-	// CSS do site (links + styles do <head>) para o documento do preview — SEM <script> (evita
-	// reexecutar JS do site / reinjetar a toolbar dentro do iframe).
-	function collectSiteCss() {
-		var css = '';
-		var nodes = document.head ? document.head.querySelectorAll('link[rel="stylesheet"], style') : [];
-		Array.prototype.forEach.call(nodes, function (n) { css += n.outerHTML; });
-		return css;
-	}
-
-	function buildPreviewDoc(innerHtml) {
-		var baseHref = (document.baseURI || window.location.href).replace(/"/g, '&quot;');
-		return '<!DOCTYPE html><html><head><meta charset="utf-8">' +
-			'<meta name="viewport" content="width=device-width, initial-scale=1">' +
-			'<base href="' + baseHref + '">' +
-			collectSiteCss() +
-			'<style>html,body{margin:0}</style></head><body>' + (innerHtml || '') + '</body></html>';
+	// URL da PRÓPRIA página com o parâmetro que desativa a toolbar (evita recursão do iframe da barra)
+	// mas mantém o layout + CSS + JS reais do site — assim media queries, vw/vh E as interações JS
+	// (menu hambúrguer, carrosséis, etc.) funcionam de verdade no preview. Reflete a versão SALVA
+	// (recarrega do servidor); as edições não salvas ficam preservadas no DOM real ao voltar ao Desktop.
+	function devicePreviewUrl() {
+		var loc = window.location;
+		var qs = loc.search ? (loc.search + '&') : '?';
+		return loc.origin + loc.pathname + qs + 'c2f-device-preview=1';
 	}
 
 	function enterDevicePreview(width) {
@@ -752,11 +744,6 @@
 			if (typeof c2fEditor.disable === 'function') { c2fEditor.disable(); }
 		}
 
-		// HTML limpo do conteúdo (sem o chrome/anotações do editor).
-		var innerHtml;
-		try { innerHtml = (c2fEditor && typeof c2fEditor.getCleanHtml === 'function') ? c2fEditor.getCleanHtml() : root.innerHTML; }
-		catch (e) { innerHtml = root.innerHTML; }
-
 		if (!deviceWrap) {
 			deviceWrap = document.createElement('div');
 			deviceWrap.id = 'c2f-device-preview';
@@ -764,11 +751,11 @@
 			deviceIframe = document.createElement('iframe');
 			deviceIframe.setAttribute('title', 'Preview do dispositivo');
 			deviceIframe.style.cssText = 'border:0;background:#fff;box-shadow:0 6px 24px rgba(0,0,0,.35);height:82vh;max-width:100%;transition:width .2s;';
+			deviceIframe.src = devicePreviewUrl(); // carrega a página real 1x; depois só a largura muda.
 			deviceWrap.appendChild(deviceIframe);
 		}
 		if (!deviceWrap.parentNode && root.parentNode) { root.parentNode.insertBefore(deviceWrap, root.nextSibling); }
 		deviceIframe.style.width = width;
-		deviceIframe.srcdoc = buildPreviewDoc(innerHtml);
 		root.style.display = 'none';
 		deviceWrap.style.display = 'flex';
 	}
@@ -1000,80 +987,23 @@
 
 	function closeBackupPanel() { if (backupPanel) { backupPanel.style.display = 'none'; } }
 
-	// Re-anota o DOM restaurado a partir do HTML CRU (`raw`): injeta o cru no container oculto de
-	// mapeamento e re-roda o `mapTree` (req-082 §3). O `raw` do CONTEÚDO vai para #c2f-raw-content
-	// (quando editando layout) ou para o próprio backup oculto (quando editando só o conteúdo); o do
-	// LAYOUT substitui o backup oculto inteiro (o slot de conteúdo fica vazio, então o conteúdo vivo
-	// já anotado NÃO é reprocessado). `varMap` NÃO é zerado de propósito: preserva o mapeamento
-	// cruzado layout×conteúdo; só a subárvore restaurada é re-anotada (entradas antigas viram lixo
-	// inofensivo). Ao final, reativa o chrome do editor.
-	function remapAfterRestore(liveRoot, raw, isLayout) {
-		var backup = document.getElementById(BACKUP_ID);
-		if (!backup) {
-			backup = document.createElement('div');
-			backup.id = BACKUP_ID;
-			backup.style.display = 'none';
-			document.body.appendChild(backup);
-		}
-		var rawTarget;
-		if (isLayout) {
-			backup.innerHTML = raw || '';
-			rawTarget = backup;
-		} else {
-			rawTarget = backup.querySelector('#c2f-raw-content') || backup;
-			rawTarget.innerHTML = raw || '';
-		}
-		mapRoot = document.getElementById(LAYOUT_ROOT_ID) || document.getElementById(CONTENT_ID);
-		try { mapTree(liveRoot, rawTarget); }
-		catch (e) { window.console && console.error('Re-mapeamento pós-restauração:', e); }
-		if (typeof c2fEditor !== 'undefined' && c2fEditor && typeof c2fEditor.restoreChrome === 'function') {
-			c2fEditor.restoreChrome();
-		}
-	}
-
-	// Restaura só o conteúdo da página (#c2f-page-content) a partir de um backup de PÁGINA e re-anota
-	// os widgets/variáveis do conteúdo restaurado (req-082 §3).
-	function restorePageBackup(html, raw) {
-		var content = document.getElementById(CONTENT_ID);
-		if (!content) { return; }
-		if (typeof c2fEditor !== 'undefined' && c2fEditor && typeof c2fEditor.deselectAll === 'function') {
-			c2fEditor.deselectAll();
-		}
-		content.innerHTML = html;
-		remapAfterRestore(content, raw, false);
-	}
-
-	// Restaura o LAYOUT (item 8) preservando o conteúdo vivo: injeta o body-inner do backup do
-	// layout no #c2f-layout-root, re-encaixa o #c2f-page-content atual no slot de conteúdo e re-anota
-	// os widgets/variáveis do layout restaurado (o conteúdo vivo mantém seu mapeamento — req-082 §3).
-	function restoreLayoutBackup(html, raw) {
-		var layoutRoot = document.getElementById(LAYOUT_ROOT_ID);
-		if (!layoutRoot) { window.alert('O layout não está em edição nesta página (edite pelo layout para restaurá-lo).'); return; }
-		if (typeof c2fEditor !== 'undefined' && c2fEditor && typeof c2fEditor.deselectAll === 'function') {
-			c2fEditor.deselectAll();
-		}
-		var liveContent = document.getElementById(CONTENT_ID);
-		if (liveContent && liveContent.parentNode) { liveContent.parentNode.removeChild(liveContent); }
-		layoutRoot.innerHTML = html;
-		var slot = layoutRoot.querySelector('#' + CONTENT_ID);
-		if (slot && liveContent) { slot.parentNode.replaceChild(liveContent, slot); }
-		else if (liveContent) { layoutRoot.appendChild(liveContent); }
-		remapAfterRestore(layoutRoot, raw, true);
-	}
-
+	// Restauração de backup SERVER-SIDE (BATCH-085): em vez de injetar o HTML no cliente (o que
+	// quebrava DOM/scripts), sinalizamos o backup escolhido ao backend (grava variável de sessão) e
+	// recarregamos. No reload, o roteador (`gestor_site_toolbar_backup_aplicar`) substitui a página/
+	// layout pela versão do backup e a renderiza pelo pipeline normal; o editbar reentra sozinho no
+	// modo de edição (flag `gestor.siteToolbarBackupRestaurado`). Ao salvar, já é o valor do backup.
 	function restoreBackup(id, type) {
 		if (!id) { return; }
-		var url = dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-backup-get&id=' + encodeURIComponent(id) +
+		var url = dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-backup-restore' +
+			'&id=' + encodeURIComponent(id) +
 			'&type=' + encodeURIComponent(type || 'page') +
 			'&page_id=' + encodeURIComponent(backupPageId || '');
 		ajaxJson(url, function (json) {
-			if (!json || json.status !== 'Ok' || !json.data || typeof json.data.html !== 'string') {
-				window.alert((json && json.message) ? json.message : 'Falha ao carregar o backup.');
+			if (!json || json.status !== 'Ok') {
+				window.alert((json && json.message) ? json.message : 'Falha ao restaurar o backup.');
 				return;
 			}
-			var raw = (typeof json.data.raw === 'string') ? json.data.raw : '';
-			if (type === 'layout') { restoreLayoutBackup(json.data.html, raw); }
-			else { restorePageBackup(json.data.html, raw); }
+			window.location.reload();
 		});
 	}
 

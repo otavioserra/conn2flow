@@ -1025,3 +1025,57 @@ Reportada pelo executor em 2026-07-13 (ambiente: Node/Vitest):
 - **§2**: alternar Desktop/Tablet/Mobile e confirmar que o layout responsivo (media queries) muda de verdade; voltar ao Desktop e confirmar a edição in-place ativa.
 - **§3**: digitar `[[pagina#url-raiz]]` e um widget inline no editor, salvar e confirmar que o banco grava `@[[…]]@` (junto das variáveis existentes) e a página renderiza o valor.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-084 - Preservação de Datas Customizadas (data_criacao/data_modificacao) na Compilação de Recursos (req-084)
+
+- [x] **Modificação no compilador (`atualizacao-dados-recursos.php`)**:
+  - [x] Implementar mapeamento condicional usando `isset()` para as chaves `data_criacao` e `data_modificacao` dentro de `coletarRecursos()`.
+  - [x] Garantir que se a chave não existir no JSON fonte, ela não seja incluída no array compilado final (evitando popular com nulo).
+  - [x] Cobrir os 10 recursos detalhados: layouts, componentes, paginas, templates, variaveis, ai_prompts, ai_modes, ai_prompts_targets, forms e widgets.
+- [x] **Validação**:
+  - [x] Sintaxe PHP (`php -l`) limpa no arquivo alterado.
+  - [x] Teste unitário verificando a compilação de dados com e sem as chaves customizadas de data (garantir que chaves ausentes não virem nulas).
+  - [x] Teste completo da suite (`composer test`) sem regressões.
+
+### Evidência de Validação (BATCH-084)
+
+Evidência automatizada reportada pelo executor e validada em 2026-07-13:
+- ✅ `php -l gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php` → Sem erros de sintaxe (OK).
+- ✅ `composer test` → **76 testes, 287 assertions (Todos aprovados)**, garantindo que não houve nenhuma regressão na compilação ou na suíte de testes existente do compilador/descompilador.
+- ✅ Inspeção manual das mudanças nos 15 pontos de injeção condicional no `coletarRecursos()`, validando que `isset` é usado corretamente e chaves ausentes não populam `null` no array resultante.
+
+---
+## BATCH-085 - Restauração de Backup Server-Side e Preview de Dispositivo com JS do Site (Live Editor)
+
+- [x] **§1 — Restauração de backup server-side**: rota `site-toolbar-backup-restore` grava `gestor_sessao_variavel('site-toolbar-backup-restore',{id,type,caminho})` (valida permissão/propriedade); roteador `gestor_site_toolbar_backup_aplicar()` consome a sessão (page load normal + logado), casa o caminho, substitui html da página/layout pelo backup (render pipeline normal + override dev-env) e seta `gestor.siteToolbarBackupRestaurado`; iframe reentra em edição via `window.parent.gestor`. Removidas as funções client-side `restorePageBackup`/`restoreLayoutBackup`/`remapAfterRestore`.
+- [x] **§2 — Preview de dispositivo com JS do site**: `enterDevicePreview` carrega a URL real (`?c2f-device-preview=1`) em vez do `srcdoc` só-CSS; `gestor_dashboard_toolbar_ativo()` desativa a toolbar com esse param (mantém layout/CSS/JS reais → menu hambúrguer/interações funcionam).
+
+### Evidência de Validação (BATCH-085)
+
+Reportada pelo executor em 2026-07-13 (ambiente: PHP 8.4.8, Node/Vitest):
+- `php -l` → OK: `gestor/gestor.php`, `gestor/modulos/dashboard/dashboard.php`.
+- `node --check` → OK: `gestor/modulos/dashboard/dashboard.toolbar.js`, `gestor/modulos/dashboard/dashboard.iframe-toolbar.js`.
+- `dashboard.json` → JSON válido (versao `1.0.11`).
+- Vitest `npx vitest run` → **19/19** (removido o teste de `restorePageBackup`, agora obsoleto com a nova abordagem server-side).
+- `composer test` → **76/76 (287 assertions, 4 skipped)** sem regressão.
+
+### Pendências Runtime (com o operador)
+- Deploy `🗃️ Projects - Update => Core` + hard-refresh (mudaram `gestor.php`, `dashboard.php`, `dashboard.toolbar.js`, `dashboard.iframe-toolbar.js`, `dashboard.json`).
+- **§1**: restaurar backup de página e de layout no editbar; confirmar reload + reentrada automática em edição já com o backup renderizado, e que o save persiste o backup. Testar isolamento multi-usuário (backup de outro dono → bloqueio).
+- **§2**: no preview Tablet/Mobile, confirmar que o menu hambúrguer e demais interações JS do site funcionam e o layout responsivo é fiel. (Reflete a versão salva; edições não salvas voltam ao alternar para Desktop.)
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-086 - Preservação de data_modificacao no Sincronizador de Banco de Dados (req-086)
+
+- [ ] **Modificação no sincronizador (`atualizacoes-banco-de-dados.php`)**:
+  - [ ] Implementar a injeção forçada de `data_modificacao` no array `$diff` caso ela exista no registro de entrada e no schema da tabela e uma divergência seja encontrada no update.
+  - [ ] Cobrir os 3 pontos: Modo PK, Modo Chave Natural e modo Fallback Chave Natural.
+- [ ] **Validação**:
+  - [ ] Sintaxe PHP (`php -l`) limpa no arquivo alterado.
+  - [ ] Validação funcional mostrando que a data de modificação original do JSON é mantida após sincronização de alteração.
+  - [ ] Teste completo da suite (`composer test`) sem regressões.
+
+
+

@@ -21,8 +21,7 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
     }
     const hook = 'window.__c2fToolbar={runMap:function(root,backup){varMap={};varSeq=0;mapRoot=root;' +
         'mapTree(root,backup);return varMap;},reconstruct:function(c){return reconstructOriginal(c);},' +
-        'handleWidgetRender:function(s,w){return handleEngineWidgetRender(s,w);},' +
-        'restorePageBackup:function(h,r){return restorePageBackup(h,r);}};\n';
+        'handleWidgetRender:function(s,w){return handleEngineWidgetRender(s,w);}};\n';
     code = code.slice(0, idx) + hook + code.slice(idx);
     
     // Eval no contexto da sandbox do vitest/happy-dom
@@ -172,24 +171,4 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
     expect(/(^|[^@])\[\[pagina#url-raiz\]\]([^@]|$)/.test(out)).toBe(false);
   });
 
-  it('§3 — restorePageBackup re-anota o widget (marcadores) no conteúdo restaurado', () => {
-    const sig = 'menus->render({"grupo_slug":"main"})';
-    const content = document.createElement('div');
-    content.id = 'c2f-page-content';
-    document.body.appendChild(content);
-
-    // `html` renderizado (widget entre comentários) e `raw` cru (mockup entre comentários).
-    const html = '<nav id="mainnav">' + OPEN(sig) + '<a href="/a">A</a><a href="/b">B</a>' + CLOSE(sig) + '</nav>';
-    const raw = '<nav id="mainnav">' + OPEN(sig) + '<a>mock</a>' + CLOSE(sig) + '</nav>';
-
-    T.restorePageBackup(html, raw);
-
-    const nav = content.querySelector('#mainnav');
-    // Widget único preenchendo o <nav> → mapeia no PAI (data-c2f-widget-parent).
-    expect(nav.getAttribute('data-c2f-widget-parent')).toBe('1');
-    expect(nav.getAttribute('data-c2f-widget-root')).toBe('1');
-    expect(nav.getAttribute('data-widget-type')).toBe('menus');
-    // Os comentários de fronteira do widget foram consumidos (não sobram no DOM vivo).
-    expect(nav.innerHTML).not.toContain('widgets#');
-  });
 });

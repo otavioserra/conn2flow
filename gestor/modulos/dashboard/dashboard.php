@@ -2344,6 +2344,66 @@ function dashboard_ajax_site_toolbar_backup_get(){
 }
 
 /**
+ * AJAX — Sinaliza a restauração de um backup para o próximo reload (req-082 follow-up / BATCH-085).
+ *
+ * Em vez de injetar o HTML do backup no cliente (que quebrava o DOM/scripts), grava uma variável de
+ * sessão (`site-toolbar-backup-restore`) com o id do backup, o tipo (page/layout) e o caminho da
+ * página. No reload, `gestor_site_toolbar_backup_aplicar()` (roteador) substitui o conteúdo pela
+ * versão do backup e a renderiza pelo pipeline normal. Exige permissão de edição e propriedade da página.
+ */
+function dashboard_ajax_site_toolbar_backup_restore(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return;
+	}
+
+	$id = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
+	$type = (isset($_REQUEST['type']) && trim($_REQUEST['type']) === 'layout') ? 'layout' : 'page';
+	$page_id = isset($_REQUEST['page_id']) ? trim($_REQUEST['page_id']) : '';
+
+	if($id <= 0 || $page_id === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Backup ou página não informados.');
+		return;
+	}
+
+	$language = $_GESTOR['linguagem-codigo'];
+
+	// Resolve a página (valida propriedade multi-usuário) e captura o caminho para o roteador casar.
+	$pagina = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas',
+		'campos' => Array('id_usuarios','publisher_id','caminho'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($page_id)."'"
+			." AND language='".$language."'"
+			." AND status!='D'",
+	));
+
+	if(!$pagina){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não encontrada.');
+		return;
+	}
+
+	if(!dashboard_site_toolbar_verificar_permissao_pagina($pagina)){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão para esta página.');
+		return;
+	}
+
+	// Sinaliza na sessão; o roteador aplica no próximo reload e devolve o backup renderizado.
+	if(function_exists('gestor_sessao_variavel')){
+		gestor_sessao_variavel('site-toolbar-backup-restore', Array(
+			'id' => $id,
+			'type' => $type,
+			'caminho' => rtrim((string)$pagina['caminho'], '/').'/',
+		));
+	}
+
+	$_GESTOR['ajax-json'] = Array('status' => 'Ok');
+}
+
+/**
  * AJAX — Modelos de sessão para o Live Editor (BATCH-080). Reusa a listagem paginada/busca da
  * biblioteca `html-editor` sem violar o painel clássico. Exige permissão de edição.
  */
@@ -2583,6 +2643,7 @@ function dashboard_start(){
 			case 'site-toolbar-widget-render': dashboard_ajax_site_toolbar_widget_render(); break;
 			case 'site-toolbar-backups': dashboard_ajax_site_toolbar_backups(); break;
 			case 'site-toolbar-backup-get': dashboard_ajax_site_toolbar_backup_get(); break;
+			case 'site-toolbar-backup-restore': dashboard_ajax_site_toolbar_backup_restore(); break;
 			case 'site-toolbar-save': dashboard_ajax_site_toolbar_save(); break;
 			case 'site-toolbar-templates-load': dashboard_ajax_site_toolbar_templates_load(); break;
 			case 'site-toolbar-ia-init': dashboard_ajax_site_toolbar_ia_init(); break;

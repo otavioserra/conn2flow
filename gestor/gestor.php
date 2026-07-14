@@ -943,6 +943,11 @@ function gestor_dashboard_toolbar_ativo(){
 		$ativo = false;
 	} else if(isset($_GESTOR['paginaIframe']) && $_GESTOR['paginaIframe']){
 		$ativo = false;
+	} else if(isset($_REQUEST['c2f-device-preview'])){
+		// Preview de dispositivo do Live Editor: o iframe carrega a PRÓPRIA página (layout + CSS + JS
+		// reais do site, para media queries e interações como o menu hambúrguer funcionarem) mas SEM
+		// a toolbar/editor — evita recursão do iframe da barra (BATCH-085 §preview-device).
+		$ativo = false;
 	} else if(!gestor_acesso('editar','admin-paginas')){
 		$ativo = false;
 	}
@@ -1895,6 +1900,64 @@ function gestor_hotfix(){
 	exit;
 }
 
+/**
+ * Live Editor — restauração de backup via sessão (BATCH-085).
+ *
+ * Substitui a injeção de HTML no CLIENTE (que quebrava ao trocar de backup) por um fluxo server-side:
+ * o front clica num backup → sinaliza via AJAX (`site-toolbar-backup-restore`) → grava-se uma variável
+ * de sessão → recarrega a página. Aqui, no roteamento (page load normal), detectamos a sinalização e
+ * substituímos o HTML da PÁGINA ou do LAYOUT pela versão do backup — que é então renderizada pelo
+ * pipeline normal do gestor (robusto). A sinalização é consumida UMA vez; um flag JS
+ * (`gestor.siteToolbarBackupRestaurado`) avisa o front para reentrar no modo de edição já com o backup.
+ *
+ * @param array $paginas Resultado do select de páginas do roteador (por referência).
+ * @return void
+ */
+function gestor_site_toolbar_backup_aplicar(&$paginas){
+	global $_GESTOR;
+
+	// Só no page load normal (não-AJAX) e para usuário logado — evita a query de sessão para visitantes.
+	if(!empty($_GESTOR['ajax'])) return;
+	if(!(isset($_GESTOR['usuario-id']) && (int)$_GESTOR['usuario-id'] > 0)) return;
+	if(!function_exists('gestor_sessao_variavel')) return;
+
+	$sinal = gestor_sessao_variavel('site-toolbar-backup-restore');
+	if(!$sinal || !is_array($sinal)) return;
+
+	// Confere se a sinalização é da página que está sendo roteada (pelo caminho normalizado).
+	$caminhoAtual = rtrim(($_GESTOR['caminho-total'] ?? ''), '/').'/';
+	if(($sinal['caminho'] ?? '') !== $caminhoAtual) return;
+
+	// Consome a sinalização (uma vez só, mesmo que algo falhe adiante).
+	if(function_exists('gestor_sessao_variavel_del')) gestor_sessao_variavel_del('site-toolbar-backup-restore');
+
+	$id = (int)($sinal['id'] ?? 0);
+	$type = (($sinal['type'] ?? '') === 'layout') ? 'layout' : 'page';
+	if($id <= 0) return;
+
+	$row = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'backup_campos',
+		'campos' => Array('valor'),
+		'extra' => "WHERE id_backup_campos='".$id."' AND campo='html'",
+	));
+	if(!$row) return;
+
+	$valor = (string)$row['valor'];
+
+	// Override consumido no roteador: para a página, ainda substituímos $paginas[0]['html'] (prod); o
+	// override em $_GESTOR cobre também o dev-env, onde o html vem do arquivo físico.
+	if($type === 'layout'){
+		$_GESTOR['site-toolbar-backup-layout-html'] = $valor;
+	} else {
+		$_GESTOR['site-toolbar-backup-page-html'] = $valor;
+		if(is_array($paginas) && isset($paginas[0])) $paginas[0]['html'] = $valor;
+	}
+
+	if(!isset($_GESTOR['javascript-vars'])) $_GESTOR['javascript-vars'] = Array();
+	$_GESTOR['javascript-vars']['siteToolbarBackupRestaurado'] = true;
+}
+
 function gestor_roteador(){
 	global $_GESTOR;
 	global $_INDEX;
@@ -2022,6 +2085,11 @@ function gestor_roteador(){
 	if (isset($paginas)) {
 		gestor_incluir_biblioteca('hooks');
 		$paginas = hook_apply_filters('gestor', 'roteador.paginas', $paginas);
+	}
+
+	// ===== Live Editor: aplicar restauração de backup sinalizada por sessão (BATCH-085).
+	if (isset($paginas)) {
+		gestor_site_toolbar_backup_aplicar($paginas);
 	}
 
 	// ===== Verificar se a página existe. Se sim, montar a página, executar módulo se houver e imprimir. Senão gerar erro 404 ou redirecionar para página 404.
@@ -2180,6 +2248,11 @@ function gestor_roteador(){
 				$css = $paginas[0]['css'];
 			}
 
+			// Live Editor (BATCH-085): backup restaurado tem precedência (cobre dev-env, que lê do arquivo).
+			if(isset($_GESTOR['site-toolbar-backup-page-html'])){
+				$html = $_GESTOR['site-toolbar-backup-page-html'];
+			}
+
 			$html_extra_head = $paginas[0]['html_extra_head'];
 			$css_compiled = $paginas[0]['css_compiled'];
 			$framework_css = $paginas[0]['framework_css'];
@@ -2235,6 +2308,11 @@ function gestor_roteador(){
 				$layout = $layouts['html'];
 				$layout_css = $layouts['css'];
 				$layout_css_compiled = $layouts['css_compiled'];
+
+				// Live Editor (BATCH-085): backup de LAYOUT restaurado tem precedência.
+				if(isset($_GESTOR['site-toolbar-backup-layout-html'])){
+					$layout = $_GESTOR['site-toolbar-backup-layout-html'];
+				}
 
 				$_GESTOR['layout#id'] = $paginas[0]['layout_id'];
 			} else {
