@@ -18,7 +18,7 @@
  * --dry-run         : Simula operações sem alterar o banco (apenas exibe o que seria feito).
  * --force-all       : Força atualização de todas as tabelas, ignorando checksums anteriores.
  * --tables=lista    : Sincroniza apenas as tabelas especificadas (ex: --tables=variaveis,paginas).
- * --orphans-mode=op : Define tratamento de órfãos: export (default), log ou ignore.
+ * --orphans-mode=op : Define tratamento de órfãos: ignore (default), export ou log.
  * --skip-migrate    : Pula execução das migrações Phinx (útil para ambiente já migrado).
  * --backup          : Realiza backup das tabelas antes de atualizar (em backups/atualizacoes/).
  * --reverse         : Exporta dados do banco para arquivos *Data.json (modo reverso).
@@ -432,7 +432,7 @@ function descobrirPK(string $tabela, array $row): string {
  * v1.10.16: parâmetro $simulate para permitir dry-run exibindo diffs sem persistir.
  */
 function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $logDiffs = true, bool $simulate = false): array {
-    if (empty($registros)) return ['inserted'=>0,'updated'=>0,'same'=>0];
+    if (empty($registros)) return ['inserted'=>0,'updated'=>0,'same'=>0,'orphans'=>0];
     $debug = !empty($GLOBALS['CLI_OPTS']['debug']);
     $project = $GLOBALS['CLI_OPTS']['project'] ?? null;
 
@@ -527,7 +527,8 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     $dbRows = $pdo->query("SELECT * FROM `$tabela`")->fetchAll(PDO::FETCH_ASSOC);
 
     // Preparar modo órfãos
-    $orphansMode = $GLOBALS['CLI_OPTS']['orphans-mode'] ?? 'export'; // export|log|ignore
+    $orphansMode = $GLOBALS['CLI_OPTS']['orphans-mode'] ?? 'ignore'; // ignore|export|log (req-087: padrão alterado de 'export' para 'ignore')
+    $orphansDetail = !empty($GLOBALS['CLI_OPTS']['orphans-detail']); // req-087: logs individuais de órfãos condicionados a esta flag
     $orphans = [];
 
     if (!$usarChaveNatural) {
@@ -543,7 +544,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
         foreach ($dbRows as $exist) {
             $pkVal = (string)($exist[$pkDeclarada] ?? ''); if ($pkVal==='') continue;
             if (!isset($jsonByPk[$pkVal])) {
-                if ($debug) log_unificado("ORPHAN_DB_ROW tabela=$tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']);
+                if ($orphansDetail) log_unificado("ORPHAN_DB_ROW tabela=$tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']);
                 if ($orphansMode !== 'ignore') { $orphans[] = $exist; }
                 $same++;
                 continue;
@@ -641,7 +642,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             log_unificado("ORPHANS_DETECTED tabela=$tabela qtd=".count($orphans), $GLOBALS['LOG_FILE_DB']);
         }
         if ($debug) log_unificado("SYNC_FIM tabela=$tabela +$inserted ~$updated =$same orphans=".count($orphans)." modo=pk", $GLOBALS['LOG_FILE_DB']);
-        return ['inserted'=>$inserted,'updated'=>$updated,'same'=>$same];
+        return ['inserted'=>$inserted,'updated'=>$updated,'same'=>$same,'orphans'=>count($orphans)];
     }
 
     // ===== MODO CHAVE NATURAL =====
@@ -876,7 +877,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     foreach ($registros as $row) { $nk=$naturalKeyFn($tabela,$row); if($nk!==null) $jsonKeys[$nk]=true; }
     foreach ($dbIndex as $nk=>$exist) {
         if (!isset($jsonKeys[$nk])) {
-            if ($debug) log_unificado("ORPHAN_DB_ROW_NAT tabela=$tabela chave=$nk", $GLOBALS['LOG_FILE_DB']);
+            if ($orphansDetail) log_unificado("ORPHAN_DB_ROW_NAT tabela=$tabela chave=$nk", $GLOBALS['LOG_FILE_DB']);
             if ($orphansMode !== 'ignore') { $orphans[] = $exist; }
         }
     }
@@ -892,7 +893,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     }
 
     if ($debug) log_unificado("SYNC_FIM tabela=$tabela +$inserted ~$updated =$same orphans=".count($orphans)." modo=natural", $GLOBALS['LOG_FILE_DB']);
-    return ['inserted'=>$inserted,'updated'=>$updated,'same'=>$same];
+    return ['inserted'=>$inserted,'updated'=>$updated,'same'=>$same,'orphans'=>count($orphans)];
 }
 
 /** Escapa valores para log: limita tamanho e substitui quebras */
@@ -1072,13 +1073,13 @@ function dataFileNameFromTable(string $tabela): string {
 
 function relatorioFinal(array $resumo): void {
     global $LOG_FILE_DB;
-    $totalIns=$totalUpd=$totalSame=0; foreach ($resumo as $r){$totalIns+=$r['inserted'];$totalUpd+=$r['updated'];$totalSame+=$r['same'];}
+    $totalIns=$totalUpd=$totalSame=$totalOrphans=0; foreach ($resumo as $r){$totalIns+=$r['inserted'];$totalUpd+=$r['updated'];$totalSame+=$r['same'];$totalOrphans+=$r['orphans'] ?? 0;}
     $msg = "📝 " . tr('_final_report') . PHP_EOL
         . str_repeat('═',50) . PHP_EOL;
     foreach ($resumo as $tab=>$r) {
-        $msg .= sprintf("📦 %s => +%d ~%d =%d" . PHP_EOL, $tab, $r['inserted'],$r['updated'],$r['same']);
+        $msg .= sprintf("📦 %s => +%d ~%d =%d (órfãos: %d)" . PHP_EOL, $tab, $r['inserted'],$r['updated'],$r['same'],$r['orphans'] ?? 0);
     }
-    $msg .= "Σ TOTAL => +$totalIns ~{$totalUpd} ={$totalSame}" . PHP_EOL;
+    $msg .= "Σ TOTAL => +$totalIns ~{$totalUpd} ={$totalSame} | Órfãos Totais: {$totalOrphans}" . PHP_EOL;
     log_unificado($msg, $LOG_FILE_DB); if (PHP_SAPI === 'cli') echo $msg;
 }
 

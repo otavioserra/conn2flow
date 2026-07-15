@@ -1,6 +1,6 @@
 # Current Human Request
 
-- **Intake ativo (Agente Atual)**: Nenhum.
+- **Intake ativo (Agente Atual)**: [req-088.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-088.md) (BATCH-088 `in-progress`, 2026-07-15).
 
 - **Lotes Fechados**: 
   * [req-075.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-075.md) (BATCH-075 `complete`, 2026-07-10): Site Toolbar completa, agendamento de páginas e extensões do editor.
@@ -14,8 +14,8 @@
   * [req-083.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-083.md) (BATCH-083 `complete`, 2026-07-13): Correções de Homologação do Live Editor (Hover, Responsive Preview e Normalização).
   * [req-084.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-084.md) (BATCH-084 `complete`, 2026-07-13): Preservação de Datas Customizadas (data_criacao/data_modificacao) na Compilação de Recursos.
   * [req-086.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-086.md) (BATCH-086 `complete`, 2026-07-14): Preservação de data_modificacao no Sincronizador de Banco de Dados.
+  * [req-087.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-087.md) (BATCH-087 `complete`, 2026-07-15): Parametrização e Resumo de Órfãos no Sincronizador de Banco de Dados.
 
-- **Status**: BATCH-086 implementado e validado (sintaxe OK, suíte de testes verde).
+- **Status**: BATCH-088 em andamento. Definição do plano detalhado e criação dos novos módulos `forms-search` e `pages-index` para busca pública de páginas do site.
 
-- **Pendências**: Nenhuma.
-
+- **Pendências**: Implementação completa dos novos módulos, migração do banco, e validação no core.

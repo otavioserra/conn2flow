@@ -519,7 +519,7 @@ function executarAtualizacaoBanco(array $opts): void {
                 'pass' => $_BANCO['senha'] ?? '',
             ],
         ];
-        foreach (['debug','force-all','tables','log-diff','dry-run'] as $k) { if (isset($opts[$k])) $cli[$k] = $opts[$k]; }
+        foreach (['debug','force-all','tables','log-diff','dry-run','orphans-detail','orphans-mode'] as $k) { if (isset($opts[$k])) $cli[$k] = $opts[$k]; }
         $GLOBALS['CLI_OPTS'] = $cli;
 
         $dbLogs = [];

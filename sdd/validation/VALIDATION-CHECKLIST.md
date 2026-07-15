@@ -1069,13 +1069,59 @@ Reportada pelo executor em 2026-07-13 (ambiente: PHP 8.4.8, Node/Vitest):
 ---
 ## BATCH-086 - Preservação de data_modificacao no Sincronizador de Banco de Dados (req-086)
 
-- [ ] **Modificação no sincronizador (`atualizacoes-banco-de-dados.php`)**:
-  - [ ] Implementar a injeção forçada de `data_modificacao` no array `$diff` caso ela exista no registro de entrada e no schema da tabela e uma divergência seja encontrada no update.
-  - [ ] Cobrir os 3 pontos: Modo PK, Modo Chave Natural e modo Fallback Chave Natural.
+- [x] **Modificação no sincronizador (`atualizacoes-banco-de-dados.php`)**:
+  - [x] Implementar a injeção forçada de `data_modificacao` no array `$diff` caso ela exista no registro de entrada e no schema da tabela e uma divergência seja encontrada no update.
+  - [x] Cobrir os 3 pontos: Modo PK, Modo Chave Natural e modo Fallback Chave Natural.
+- [x] **Validação**:
+  - [x] Sintaxe PHP (`php -l`) limpa no arquivo alterado.
+  - [x] Validação funcional mostrando que a data de modificação original do JSON é mantida após sincronização de alteração.
+  - [x] Teste completo da suite (`composer test`) sem regressões.
+
+### Evidência de Validação (BATCH-086)
+- ✅ `php -l` → OK.
+- ✅ `composer test` → **76 testes, 287 assertions (Todos aprovados)**.
+- ✅ Deploy e sincronização realizados com sucesso pelo operador. A `data_modificacao` mantida no JSON foi gravada na base de dados, sem ser sobrescrita pelo timestamp da execução.
+
+---
+## BATCH-087 - Parametrização e Resumo de Órfãos no Sincronizador de Banco de Dados (req-087)
+
+- [x] **Modificação no sincronizador (`atualizacoes-banco-de-dados.php`)**:
+  - [x] Retornar contagem de órfãos na chave `'orphans'` na função `sincronizarTabela()`.
+  - [x] Silenciar logs individuais (`ORPHAN_DB_ROW` e `ORPHAN_DB_ROW_NAT`) exigindo a presença de `--orphans-detail` na CLI.
+  - [x] Alterar padrão de exportação de órfãos (`$orphansMode`) para `'ignore'`. A gravação física em disco exige `--orphans-mode=export`.
+  - [x] Atualizar `relatorioFinal()` para imprimir a quantidade de órfãos na tabela por recurso e a soma total consolidada.
+- [x] **Modificação na atualização do sistema (`atualizacoes-sistema.php`)**:
+  - [x] Propagar as flags `'orphans-detail'` e `'orphans-mode'` no whitelist de `executarAtualizacaoBanco()`.
+- [x] **Validação**:
+  - [x] Sintaxe PHP (`php -l`) limpa nos dois arquivos alterados.
+  - [x] Validação visual do novo sumário sem geração de arquivos JSON ou logs individuais de órfãos no console.
+  - [x] Reativação completa do log individual e exportações via flags CLI.
+  - [x] Teste completo da suite (`composer test`) sem regressões.
+
+### Evidência de Validação (BATCH-087)
+
+Evidência automatizada e estática validada em 2026-07-15:
+- ✅ Lint estático de banco de dados (`php -l atualizacoes-banco-de-dados.php`) → OK.
+- ✅ Lint estático de sistema (`php -l atualizacoes-sistema.php`) → OK.
+- ✅ `composer test` → **76 testes, 287 assertions (Todos aprovados)**.
+- ✅ Validação visual: o relatório final agora inclui `(órfãos: X)` para cada tabela e a soma total consolidada `| Órfãos Totais: Y`, e o comportamento padrão silencioso não gerou arquivos JSON ou logs individuais desnecessários.
+
+---
+## BATCH-088 - Módulos/Widgets "forms-search" (Formulários de Busca) e "pages-index" (Páginas Índice) (req-088)
+
+- [ ] **Módulo `forms-search`**:
+  - [ ] Copiado de `forms/` para `forms-search/` com devidas substituições de nomes de variáveis, slugs, ids, tabelas e arquivos.
+  - [ ] O formulário público usa o método `GET` e possui o input `name="search"`.
+  - [ ] O action do formulário é dinâmico e aponta para a URL da página alvo definida no construtor.
+- [ ] **Módulo `pages-index`**:
+  - [ ] Copiado de `publisher-index/` para `pages-index/` com substituições de slugs e nomenclatura.
+  - [ ] A consulta de listagem é feita diretamente contra a tabela `paginas` (filtrando por `status='A' AND language='$language' AND tipo='pagina'`).
+  - [ ] A busca filtra pelos campos `nome` e `html` da página (`nome LIKE '%termo%' OR html LIKE '%termo%'`).
+  - [ ] A busca é alimentada inicialmente pela variável GET `search` se presente na URL.
+  - [ ] Mapeamento padrão dos itens fornece as variáveis `[[item#title]]`, `[[item#summary]]` e `[[item#url]]`.
+  - [ ] Página padrão `pages-index/` criada e registrada nos metadados do módulo.
+- [ ] **Migração do Banco**:
+  - [ ] Nova migração Phinx gerando as tabelas `forms_search`, `forms_search_submissions` e `pages_index` com os índices correspondentes.
 - [ ] **Validação**:
-  - [ ] Sintaxe PHP (`php -l`) limpa no arquivo alterado.
-  - [ ] Validação funcional mostrando que a data de modificação original do JSON é mantida após sincronização de alteração.
-  - [ ] Teste completo da suite (`composer test`) sem regressões.
-
-
-
+  - [ ] Sintaxe PHP (`php -l`) e JS (`node --check`) limpa em todos os novos arquivos.
+  - [ ] Execução bem-sucedida de `composer test` no core, sem regressões.
