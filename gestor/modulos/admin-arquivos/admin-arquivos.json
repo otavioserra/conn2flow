@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.4",
+    "versao": "1.1.5",
     "bibliotecas": [
         "interface",
         "html",
@@ -17,6 +17,13 @@
     "imagem": {
         "mini_width": 200
     },
+    "lista": {
+        "max_por_pagina": 60,
+        "lote_miniaturas": 5
+    },
+    "upload": {
+        "max_bytes": 20000000
+    },
     "resources": {
         "pt-br": {
             "layouts": [],
@@ -29,11 +36,11 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.9",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "8f33d8113e655162a32f7a7213409e19",
-                        "css": "da65a7d1abba118408353e14d6102779",
-                        "combined": "ddb032331dd7e8da25416f3ac40a104a"
+                        "html": "4f9ea0696dafd4f3af6eff7f182bd190",
+                        "css": "bbe2a69f3835dd001be8f6ef7202ee89",
+                        "combined": "8a8af1144f70baf21fcfebbc820b2bc1"
                     }
                 },
                 {
@@ -43,11 +50,11 @@
                     "path": "admin-arquivos\/adicionar\/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.2",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "e92d605fe333091027237714997c2779",
-                        "css": "938b9feb7d3d8dffbb915b2adbf06978",
-                        "combined": "458ba40cf7e64309e86198f1766e1da8"
+                        "html": "70f113c4c55ff90e3cc30fa786169554",
+                        "css": "d91d19fcfe1529ca8d190132491b1e9a",
+                        "combined": "43d7775ef0c5c475560bf839e1e85fca"
                     }
                 },
                 {
@@ -342,6 +349,151 @@
                     "id": "list-button-copy-tooltip",
                     "value": "Clique para Copiar URL deste arquivo.",
                     "type": "string"
+                },
+                {
+                    "id": "view-large",
+                    "value": "Grande com detalhes",
+                    "type": "string"
+                },
+                {
+                    "id": "view-medium",
+                    "value": "Ícones médios",
+                    "type": "string"
+                },
+                {
+                    "id": "view-small",
+                    "value": "Ícones pequenos",
+                    "type": "string"
+                },
+                {
+                    "id": "view-list",
+                    "value": "Listagem",
+                    "type": "string"
+                },
+                {
+                    "id": "breadcrumb-root",
+                    "value": "Início",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-new",
+                    "value": "Nova Pasta",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-rename",
+                    "value": "Renomear",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-delete",
+                    "value": "Excluir Pasta",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-name-placeholder",
+                    "value": "Nome da pasta",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-not-empty-confirm",
+                    "value": "A pasta não está vazia. Deseja excluir recursivamente todo o conteúdo?",
+                    "type": "string"
+                },
+                {
+                    "id": "delete-confirm",
+                    "value": "Confirma a exclusão?",
+                    "type": "string"
+                },
+                {
+                    "id": "delete-selected",
+                    "value": "Excluir Selecionados",
+                    "type": "string"
+                },
+                {
+                    "id": "select-all",
+                    "value": "Selecionar Todos",
+                    "type": "string"
+                },
+                {
+                    "id": "selected-count-label",
+                    "value": "item(ns) selecionado(s)",
+                    "type": "string"
+                },
+                {
+                    "id": "thumbs-processing",
+                    "value": "Processando miniaturas...",
+                    "type": "string"
+                },
+                {
+                    "id": "col-name",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "col-date",
+                    "value": "Data",
+                    "type": "string"
+                },
+                {
+                    "id": "col-type",
+                    "value": "Tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "col-size",
+                    "value": "Tamanho",
+                    "type": "string"
+                },
+                {
+                    "id": "empty-folder",
+                    "value": "Esta pasta está vazia.",
+                    "type": "string"
+                },
+                {
+                    "id": "upload-error-extension",
+                    "value": "Tipo de arquivo não permitido por questões de segurança.",
+                    "type": "string"
+                },
+                {
+                    "id": "copied",
+                    "value": "URL copiada!",
+                    "type": "string"
+                },
+                {
+                    "id": "preview-size",
+                    "value": "Tamanho",
+                    "type": "string"
+                },
+                {
+                    "id": "destination-folder",
+                    "value": "Pasta de destino",
+                    "type": "string"
+                },
+                {
+                    "id": "create-here",
+                    "value": "Criar Pasta",
+                    "type": "string"
+                },
+                {
+                    "id": "dropzone-hint",
+                    "value": "Arraste e solte arquivos aqui ou clique para selecionar",
+                    "type": "string"
+                },
+                {
+                    "id": "destination-hint",
+                    "value": "Os arquivos serão enviados para esta pasta (a pasta atual navegada na lista de arquivos).",
+                    "type": "string"
+                },
+                {
+                    "id": "search-files-placeholder",
+                    "value": "Buscar pastas ou arquivos...",
+                    "type": "string"
+                },
+                {
+                    "id": "open-new-tab",
+                    "value": "Abrir",
+                    "type": "string"
                 }
             ]
         },
@@ -356,11 +508,11 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.9",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "8f33d8113e655162a32f7a7213409e19",
-                        "css": "da65a7d1abba118408353e14d6102779",
-                        "combined": "ddb032331dd7e8da25416f3ac40a104a"
+                        "html": "4f9ea0696dafd4f3af6eff7f182bd190",
+                        "css": "bbe2a69f3835dd001be8f6ef7202ee89",
+                        "combined": "8a8af1144f70baf21fcfebbc820b2bc1"
                     }
                 },
                 {
@@ -370,11 +522,11 @@
                     "path": "admin-arquivos\/adicionar\/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.2",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "e92d605fe333091027237714997c2779",
-                        "css": "938b9feb7d3d8dffbb915b2adbf06978",
-                        "combined": "458ba40cf7e64309e86198f1766e1da8"
+                        "html": "70f113c4c55ff90e3cc30fa786169554",
+                        "css": "d91d19fcfe1529ca8d190132491b1e9a",
+                        "combined": "43d7775ef0c5c475560bf839e1e85fca"
                     }
                 },
                 {
@@ -567,7 +719,7 @@
                 },
                 {
                     "id": "filter-info",
-                    "value": "Select a period and/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter</b> button to see the results.",
+                    "value": "Select a period and\/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter<\/b> button to see the results.",
                     "type": "string"
                 },
                 {
@@ -668,6 +820,151 @@
                 {
                     "id": "list-button-copy-tooltip",
                     "value": "Click to Copy URL of this file.",
+                    "type": "string"
+                },
+                {
+                    "id": "view-large",
+                    "value": "Large with details",
+                    "type": "string"
+                },
+                {
+                    "id": "view-medium",
+                    "value": "Medium icons",
+                    "type": "string"
+                },
+                {
+                    "id": "view-small",
+                    "value": "Small icons",
+                    "type": "string"
+                },
+                {
+                    "id": "view-list",
+                    "value": "List",
+                    "type": "string"
+                },
+                {
+                    "id": "breadcrumb-root",
+                    "value": "Home",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-new",
+                    "value": "New Folder",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-rename",
+                    "value": "Rename",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-delete",
+                    "value": "Delete Folder",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-name-placeholder",
+                    "value": "Folder name",
+                    "type": "string"
+                },
+                {
+                    "id": "folder-not-empty-confirm",
+                    "value": "The folder is not empty. Delete all its content recursively?",
+                    "type": "string"
+                },
+                {
+                    "id": "delete-confirm",
+                    "value": "Confirm deletion?",
+                    "type": "string"
+                },
+                {
+                    "id": "delete-selected",
+                    "value": "Delete Selected",
+                    "type": "string"
+                },
+                {
+                    "id": "select-all",
+                    "value": "Select All",
+                    "type": "string"
+                },
+                {
+                    "id": "selected-count-label",
+                    "value": "item(s) selected",
+                    "type": "string"
+                },
+                {
+                    "id": "thumbs-processing",
+                    "value": "Processing thumbnails...",
+                    "type": "string"
+                },
+                {
+                    "id": "col-name",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "col-date",
+                    "value": "Date",
+                    "type": "string"
+                },
+                {
+                    "id": "col-type",
+                    "value": "Type",
+                    "type": "string"
+                },
+                {
+                    "id": "col-size",
+                    "value": "Size",
+                    "type": "string"
+                },
+                {
+                    "id": "empty-folder",
+                    "value": "This folder is empty.",
+                    "type": "string"
+                },
+                {
+                    "id": "upload-error-extension",
+                    "value": "File type not allowed for security reasons.",
+                    "type": "string"
+                },
+                {
+                    "id": "copied",
+                    "value": "URL copied!",
+                    "type": "string"
+                },
+                {
+                    "id": "preview-size",
+                    "value": "Size",
+                    "type": "string"
+                },
+                {
+                    "id": "destination-folder",
+                    "value": "Destination folder",
+                    "type": "string"
+                },
+                {
+                    "id": "create-here",
+                    "value": "Create Folder",
+                    "type": "string"
+                },
+                {
+                    "id": "dropzone-hint",
+                    "value": "Drag and drop files here or click to select",
+                    "type": "string"
+                },
+                {
+                    "id": "destination-hint",
+                    "value": "Files will be uploaded to this folder (the current folder navigated in the file list).",
+                    "type": "string"
+                },
+                {
+                    "id": "search-files-placeholder",
+                    "value": "Search folders or files...",
+                    "type": "string"
+                },
+                {
+                    "id": "open-new-tab",
+                    "value": "Open",
                     "type": "string"
                 }
             ]

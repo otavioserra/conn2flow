@@ -56,6 +56,20 @@
         "versao": 1
     },
     {
+        "nome": "Formulário de Busca",
+        "id": "forms-search",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Search Form",
+        "id": "forms-search",
+        "language": "en",
+        "status": "A",
+        "versao": 1
+    },
+    {
         "nome": "Galerias",
         "id": "galleries",
         "language": "pt-br",
@@ -82,6 +96,20 @@
         "language": "en",
         "status": "A",
         "versao": 7
+    },
+    {
+        "nome": "Páginas Índice",
+        "id": "pages-index",
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1
+    },
+    {
+        "nome": "Pages Index",
+        "id": "pages-index",
+        "language": "en",
+        "status": "A",
+        "versao": 1
     },
     {
         "nome": "Publicador",

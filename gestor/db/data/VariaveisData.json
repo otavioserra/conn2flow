@@ -2187,6 +2187,267 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "view-large",
+        "valor": "Grande com detalhes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "view-medium",
+        "valor": "Ícones médios",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "view-small",
+        "valor": "Ícones pequenos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "view-list",
+        "valor": "Listagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "breadcrumb-root",
+        "valor": "Início",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "folder-new",
+        "valor": "Nova Pasta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "folder-rename",
+        "valor": "Renomear",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "folder-delete",
+        "valor": "Excluir Pasta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "folder-name-placeholder",
+        "valor": "Nome da pasta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "folder-not-empty-confirm",
+        "valor": "A pasta não está vazia. Deseja excluir recursivamente todo o conteúdo?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "delete-confirm",
+        "valor": "Confirma a exclusão?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "delete-selected",
+        "valor": "Excluir Selecionados",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "select-all",
+        "valor": "Selecionar Todos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "selected-count-label",
+        "valor": "item(ns) selecionado(s)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "thumbs-processing",
+        "valor": "Processando miniaturas...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "col-name",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "col-date",
+        "valor": "Data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "col-type",
+        "valor": "Tipo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "col-size",
+        "valor": "Tamanho",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "empty-folder",
+        "valor": "Esta pasta está vazia.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "upload-error-extension",
+        "valor": "Tipo de arquivo não permitido por questões de segurança.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "copied",
+        "valor": "URL copiada!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "preview-size",
+        "valor": "Tamanho",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "destination-folder",
+        "valor": "Pasta de destino",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "create-here",
+        "valor": "Criar Pasta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "dropzone-hint",
+        "valor": "Arraste e solte arquivos aqui ou clique para selecionar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "destination-hint",
+        "valor": "Os arquivos serão enviados para esta pasta (a pasta atual navegada na lista de arquivos).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "search-files-placeholder",
+        "valor": "Buscar pastas ou arquivos...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
+        "id": "open-new-tab",
+        "valor": "Abrir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-arquivos",
         "id": "add-button-label",
@@ -2659,6 +2920,267 @@
         "modulo": "admin-arquivos",
         "id": "list-button-copy-tooltip",
         "valor": "Click to Copy URL of this file.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "view-large",
+        "valor": "Large with details",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "view-medium",
+        "valor": "Medium icons",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "view-small",
+        "valor": "Small icons",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "view-list",
+        "valor": "List",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "breadcrumb-root",
+        "valor": "Home",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "folder-new",
+        "valor": "New Folder",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "folder-rename",
+        "valor": "Rename",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "folder-delete",
+        "valor": "Delete Folder",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "folder-name-placeholder",
+        "valor": "Folder name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "folder-not-empty-confirm",
+        "valor": "The folder is not empty. Delete all its content recursively?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "delete-confirm",
+        "valor": "Confirm deletion?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "delete-selected",
+        "valor": "Delete Selected",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "select-all",
+        "valor": "Select All",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "selected-count-label",
+        "valor": "item(s) selected",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "thumbs-processing",
+        "valor": "Processing thumbnails...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "col-name",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "col-date",
+        "valor": "Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "col-type",
+        "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "col-size",
+        "valor": "Size",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "empty-folder",
+        "valor": "This folder is empty.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "upload-error-extension",
+        "valor": "File type not allowed for security reasons.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "copied",
+        "valor": "URL copied!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "preview-size",
+        "valor": "Size",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "destination-folder",
+        "valor": "Destination folder",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "create-here",
+        "valor": "Create Folder",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "dropzone-hint",
+        "valor": "Drag and drop files here or click to select",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "destination-hint",
+        "valor": "Files will be uploaded to this folder (the current folder navigated in the file list).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "search-files-placeholder",
+        "valor": "Search folders or files...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "open-new-tab",
+        "valor": "Open",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6985,6 +7507,114 @@
     },
     {
         "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "form-name-label",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "form-module-placeholder",
+        "valor": "Selecione opcionalmente um módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "form-module-label",
+        "valor": "Módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "form-template_id-label",
+        "valor": "Template (Recurso)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "form-fields_schema-label",
+        "valor": "Esquema dos Campos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "form-description-label",
+        "valor": "Descrição",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "form-module-placeholder",
+        "valor": "Optionally select a module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "form-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "form-template_id-label",
+        "valor": "Template (Resource)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "form-fields_schema-label",
+        "valor": "Fields Schema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "form-description-label",
+        "valor": "Description",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
         "modulo": "forms-submissions",
         "id": "error-msg-missing-fields",
         "valor": "Campos obrigatórios ausentes.",
@@ -9535,6 +10165,222 @@
         "modulo": "modulos-operacoes",
         "id": "form-operation-placeholder",
         "valor": "Operation ID",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-name-label",
+        "valor": "Nome do Índice de Publicações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-field-title",
+        "valor": "Título da página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-field-summary",
+        "valor": "Resumo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-field-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-field-date",
+        "valor": "Data de modificação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-template_id-label",
+        "valor": "Modelo Visual do Índice",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-fields_schema-label",
+        "valor": "Regras de Listagem e Mapeamento de Variáveis",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-items_per_page-label",
+        "valor": "Itens por página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-show_search_input-label",
+        "valor": "Exibir barra de busca",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-show_sorting_select-label",
+        "valor": "Exibir ordenação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-show_load_more_btn-label",
+        "valor": "Exibir botão \"Carregar mais\"",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "pages-index",
+        "id": "form-show_metrics-label",
+        "valor": "Exibir métricas de paginação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-name-label",
+        "valor": "Publication index name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-field-title",
+        "valor": "Page title",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-field-summary",
+        "valor": "Summary",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-field-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-field-date",
+        "valor": "Modification date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-template_id-label",
+        "valor": "Index visual template",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-fields_schema-label",
+        "valor": "Listing rules and variable mapping",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-items_per_page-label",
+        "valor": "Items per page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-show_search_input-label",
+        "valor": "Show search bar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-show_sorting_select-label",
+        "valor": "Show sorting",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-show_load_more_btn-label",
+        "valor": "Show \"Load more\" button",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "pages-index",
+        "id": "form-show_metrics-label",
+        "valor": "Show pagination metrics",
         "tipo": "string",
         "grupo": null,
         "descricao": null

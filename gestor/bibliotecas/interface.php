@@ -930,8 +930,13 @@ function interface_historico($params = false){
 						"WHERE id_usuarios='".$id_usuarios."'"
 					);
 					
-					$user_id = $usuarios[0]['id'];
-					$user_primeiro_nome = $usuarios[0]['primeiro_nome'];
+					if($usuarios){
+						$user_id = $usuarios[0]['id'];
+						$user_primeiro_nome = $usuarios[0]['primeiro_nome'];
+					} else {
+						$user_id = '';
+						$user_primeiro_nome = 'Usuário não encontrado';
+					}
 				}
 				
 				// ===== Informar o autor do registro do histórico.
@@ -1595,9 +1600,22 @@ function interface_formulario_campos($params = false){
 					// ===== Se existe o arquivo, baixar dados do banco, senão definir valores padrões
 					
 					$found = false;
+
+					// BATCH-090: garante helpers de caminho seguro / miniatura física.
+					require_once $_GESTOR['bibliotecas-path'].'arquivo.php';
+
+					// BATCH-090: retrocompatibilidade — quando o identificador salvo NÃO é
+					// numérico, trata-se de um CAMINHO físico relativo (novo padrão do picker).
+					if(isset($campo['id_arquivos']) && !is_numeric($campo['id_arquivos'])){
+						if(!isset($campo['caminho']) || !existe($campo['caminho'])){
+							$campo['caminho'] = $campo['id_arquivos'];
+						}
+						unset($campo['id_arquivos']);
+					}
+
 					if(isset($campo['id_arquivos'])){
 						$id_arquivos = $campo['id_arquivos'];
-						
+
 						$arquivos = banco_select_name
 						(
 							banco_campos_virgulas(Array(
@@ -1659,10 +1677,26 @@ function interface_formulario_campos($params = false){
 							
 							$fileId = $arquivos[0]['id_arquivos'];
 						} else {
-							$imgSrc = $_GESTOR['url-full'] . $campo['caminho'];
+							// BATCH-090: sem registro no banco — resolve pelos metadados do arquivo físico.
+							$caminhoRel = function_exists('arquivo_caminho_relativo_seguro')
+								? arquivo_caminho_relativo_seguro($campo['caminho'])
+								: $campo['caminho'];
+							if ($caminhoRel === false) $caminhoRel = $campo['caminho'];
 
-							// TODO: Verificar se o arquivo existe no sistema de arquivos e pegar a data de criação correta.
-							$file_path = $_GESTOR['contents-path'] . $campo['caminho'];
+							$file_path = $_GESTOR['contents-path'] . $caminhoRel;
+
+							// Prefere a miniatura física (mini/), com cache-bust por timestamp da origem.
+							$relMini = function_exists('arquivo_mini_caminho_relativo')
+								? arquivo_mini_caminho_relativo($caminhoRel)
+								: (dirname($caminhoRel).'/mini/'.basename($caminhoRel));
+							$mini_path = $_GESTOR['contents-path'] . $relMini;
+
+							if (is_file($mini_path)) {
+								$imgSrc = $_GESTOR['url-full'] . $relMini . '?t=' . (@filemtime($mini_path) ?: time());
+							} else {
+								$imgSrc = $_GESTOR['url-full'] . $caminhoRel . (file_exists($file_path) ? '?t=' . (@filemtime($file_path) ?: time()) : '');
+							}
+
 							if (file_exists($file_path)) {
 								$file_mod_time = filemtime($file_path);
 								$file = [

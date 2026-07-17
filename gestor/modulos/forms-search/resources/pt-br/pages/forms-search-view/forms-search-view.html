@@ -1,0 +1,59 @@
+<table class="ui definition table">
+    <thead>
+        <tr>
+            <th></th>
+            <th><i class="info circle icon"></i> Informações Básicas</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ID do Formulário</td>
+            <td>
+                <div class="ui basic label">#id#</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="two wide">Nome</td>
+            <td>#name#</td>
+        </tr>
+        <tr>
+            <td>Descrição</td>
+            <td>#description#</td>
+        </tr>
+        <tr>
+            <td>Módulo</td>
+            <td>#module#</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="ui table">
+    <thead>
+        <tr>
+            <th><i class="code icon"></i> Esquema dos Campos</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+
+                <div class="fields-schema-component">
+                    <div class="ui top attached tabular menu menuForms">
+                        <a class="active item" data-tab="data"
+                            data-tooltip="Clique para abrir os dados do esquema dos campos em formato JSON"
+                            data-position="top left" data-inverted="">Dados</a>
+                        <a class="item" data-tab="info"
+                            data-tooltip="Clique para abrir as informações das opções disponíveis do formulário em formato JSON"
+                            data-position="top left" data-inverted="">Informações</a>
+                    </div>
+                    <div class="ui bottom attached tab segment containerForms" data-tab="data">
+                        <textarea class="codemirror-json">#fields_schema#</textarea>
+                    </div>
+                    <div class="ui bottom attached tab segment containerForms" data-tab="info">
+                        #forms-search-info-definition#
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

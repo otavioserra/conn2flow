@@ -1,0 +1,31 @@
+<form class="conn2flow-form space-y-4 max-w-2xl" data-form-id="@[[form_id]]@" method="post">
+    <input type="hidden" name="form_id" value="@[[form_id]]@">
+    <!-- item < -->
+    <div class="conn2flow-form-field">
+        <label class="block text-sm font-semibold text-gray-800 mb-1" for="@[[form_id]]@-@[[item#name]]@">@[[item#label]]@</label>
+        <!-- type-input < -->
+        <input class="w-full rounded border border-gray-300 px-3 py-2" type="@[[item#type]]@" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@>
+        <!-- type-input > -->
+        <!-- type-textarea < -->
+        <textarea class="w-full rounded border border-gray-300 px-3 py-2 min-h-32" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@></textarea>
+        <!-- type-textarea > -->
+        <!-- type-select < -->
+        <select class="w-full rounded border border-gray-300 px-3 py-2" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" @[[item#required]]@>
+            @[[item#options]]@
+        </select>
+        <!-- type-select > -->
+        <!-- type-radio < -->
+        <div class="flex flex-wrap gap-4 mt-1">
+            @[[item#options]]@
+        </div>
+        <!-- type-radio > -->
+        <!-- type-checkbox < -->
+        <div class="flex flex-wrap gap-4 mt-1">
+            @[[item#options]]@
+        </div>
+        <!-- type-checkbox > -->
+    </div>
+    <!-- item > -->
+    <div class="conn2flow-form-message hidden"></div>
+    <button class="ui primary button conn2flow-form-submit" type="submit">Submit</button>
+</form>

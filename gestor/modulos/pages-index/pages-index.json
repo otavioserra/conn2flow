@@ -1,0 +1,497 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "html-editor"
+    ],
+    "id_numerico": "id_pages_index",
+    "tabela": {
+        "nome": "pages_index",
+        "nome_especifico": "name",
+        "id": "id",
+        "id_numerico": "id_pages_index",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "widgets": [
+                {
+                    "id": "pages-index",
+                    "name": "Páginas Índice",
+                    "icon": "list",
+                    "tabela": "pages_index"
+                }
+            ],
+            "ai_prompts_targets": [
+                {
+                    "id": "pages-index",
+                    "name": "Páginas Índice"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "pages-index",
+                    "name": "Páginas Índice",
+                    "target": "pages-index",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Páginas Índice - Lista",
+                    "id": "pages-index-lista",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "bf356870a9802bce089a2354c4051051",
+                        "css": "",
+                        "combined": "bf356870a9802bce089a2354c4051051"
+                    }
+                },
+                {
+                    "name": "Páginas Índice - Grade de Cards",
+                    "id": "pages-index-grid",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "918324cbc31ae62630812b5d1c39fcc2",
+                        "css": "",
+                        "combined": "918324cbc31ae62630812b5d1c39fcc2"
+                    }
+                },
+                {
+                    "name": "Páginas Índice - Linha do Tempo",
+                    "id": "pages-index-timeline",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "4718cb9842cda18ae8de6f3e1eafe2e7",
+                        "css": "",
+                        "combined": "4718cb9842cda18ae8de6f3e1eafe2e7"
+                    }
+                },
+                {
+                    "name": "Páginas Índice - Agenda",
+                    "id": "pages-index-agenda",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "a4b4607f1e7cfa4fc539bed3728e55ba",
+                        "css": "",
+                        "combined": "a4b4607f1e7cfa4fc539bed3728e55ba"
+                    }
+                },
+                {
+                    "name": "Páginas Índice - Grade com Imagem Destaque",
+                    "id": "pages-index-grid-imagem",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "0f5c33d0ea50ab12ef6ce0b62f4121c0",
+                        "css": "",
+                        "combined": "0f5c33d0ea50ab12ef6ce0b62f4121c0"
+                    }
+                },
+                {
+                    "name": "Páginas Índice - Lista com Imagem Destaque",
+                    "id": "pages-index-lista-imagem",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "63c85fb9d194f9b25d2c620e1f61f7e4",
+                        "css": "",
+                        "combined": "63c85fb9d194f9b25d2c620e1f61f7e4"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Páginas Índice - Listar",
+                    "id": "pages-index",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pages-index\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Páginas Índice - Adicionar",
+                    "id": "pages-index-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pages-index\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.8",
+                    "checksum": {
+                        "html": "14f8e3ed037a80c56da137df0ffc3a95",
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "57c27066df7bd469fd63ec65bb448dd2"
+                    }
+                },
+                {
+                    "name": "Páginas Índice - Editar",
+                    "id": "pages-index-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pages-index\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.8",
+                    "checksum": {
+                        "html": "07bca7663152c077eaa1d4bd5cea86a7",
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "22327e1f76bb771dcb4a4825389d5108"
+                    }
+                },
+                {
+                    "name": "Páginas Índice - Clonar",
+                    "id": "pages-index-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pages-index\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.8",
+                    "checksum": {
+                        "html": "e373676dfc09d051d8a6519a2b924ca5",
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "ce05f5b2968a502cd0a45d0ba08e48dd"
+                    }
+                },
+                {
+                    "name": "Busca de Páginas",
+                    "id": "pages-index-busca",
+                    "layout": "pagina-simples-tailwindcss",
+                    "path": "busca\/",
+                    "type": "pagina",
+                    "without_permission": 1,
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a2c4769a1c8cc5c21e1495ccf3b1ea04",
+                        "css": "",
+                        "combined": "a2c4769a1c8cc5c21e1495ccf3b1ea04"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome do Índice de Publicações",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-title",
+                    "value": "Título da página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-summary",
+                    "value": "Resumo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-url",
+                    "value": "URL",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-date",
+                    "value": "Data de modificação",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Modelo Visual do Índice",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Regras de Listagem e Mapeamento de Variáveis",
+                    "type": "string"
+                },
+                {
+                    "id": "form-items_per_page-label",
+                    "value": "Itens por página",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_search_input-label",
+                    "value": "Exibir barra de busca",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_sorting_select-label",
+                    "value": "Exibir ordenação",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_load_more_btn-label",
+                    "value": "Exibir botão \"Carregar mais\"",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_metrics-label",
+                    "value": "Exibir métricas de paginação",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "widgets": [
+                {
+                    "id": "pages-index",
+                    "name": "Pages Index",
+                    "icon": "list",
+                    "tabela": "pages_index"
+                }
+            ],
+            "ai_prompts_targets": [
+                {
+                    "id": "pages-index",
+                    "name": "Pages Index"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "pages-index",
+                    "name": "Pages Index",
+                    "target": "pages-index",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Pages Index - List",
+                    "id": "pages-index-lista",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "55061e86a75ebcd32095ad7249fa2d7f",
+                        "css": "",
+                        "combined": "55061e86a75ebcd32095ad7249fa2d7f"
+                    }
+                },
+                {
+                    "name": "Pages Index - Card Grid",
+                    "id": "pages-index-grid",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.5",
+                    "checksum": {
+                        "html": "8d5467cd3e178cb1a33b6a69c301c800",
+                        "css": "",
+                        "combined": "8d5467cd3e178cb1a33b6a69c301c800"
+                    }
+                },
+                {
+                    "name": "Pages Index - Timeline",
+                    "id": "pages-index-timeline",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "9c3bac45fde29fa87673ae9e646882b4",
+                        "css": "",
+                        "combined": "9c3bac45fde29fa87673ae9e646882b4"
+                    }
+                },
+                {
+                    "name": "Pages Index - Agenda",
+                    "id": "pages-index-agenda",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.3",
+                    "checksum": {
+                        "html": "8691bf17be639bbd6252e5b14027c51e",
+                        "css": "",
+                        "combined": "8691bf17be639bbd6252e5b14027c51e"
+                    }
+                },
+                {
+                    "name": "Pages Index - Card Grid with Featured Image",
+                    "id": "pages-index-grid-imagem",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "cca34dfd5ab636003ecb6cc85e8c11c2",
+                        "css": "",
+                        "combined": "cca34dfd5ab636003ecb6cc85e8c11c2"
+                    }
+                },
+                {
+                    "name": "Pages Index - List with Featured Image",
+                    "id": "pages-index-lista-imagem",
+                    "target": "pages-index",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "2f2616f7f3999d800f6440e99d37639f",
+                        "css": "",
+                        "combined": "2f2616f7f3999d800f6440e99d37639f"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Pages Index - List",
+                    "id": "pages-index",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pages-index\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Pages Index - Add",
+                    "id": "pages-index-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pages-index\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.8",
+                    "checksum": {
+                        "html": "ac7aabd98b01f3494fef12212cbf4750",
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "12a9fe27efb3b8e1f32dea2e4e83a114"
+                    }
+                },
+                {
+                    "name": "Pages Index - Edit",
+                    "id": "pages-index-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pages-index\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.8",
+                    "checksum": {
+                        "html": "9251b0449b27915498a353d778b91514",
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "5e577f790414a7402847952bb81d4d44"
+                    }
+                },
+                {
+                    "name": "Pages Index - Clone",
+                    "id": "pages-index-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "pages-index\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.8",
+                    "checksum": {
+                        "html": "4427fe0c1f5cb59a02b3ce7655f65763",
+                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
+                        "combined": "5e4cabd312bf9abe3c121cbdca5624bb"
+                    }
+                },
+                {
+                    "name": "Page Search",
+                    "id": "pages-index-busca",
+                    "layout": "pagina-simples-tailwindcss",
+                    "path": "busca\/",
+                    "type": "pagina",
+                    "without_permission": 1,
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "1aa1c598e2588adaa642d74a7170d4e9",
+                        "css": "",
+                        "combined": "1aa1c598e2588adaa642d74a7170d4e9"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Publication index name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-title",
+                    "value": "Page title",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-summary",
+                    "value": "Summary",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-url",
+                    "value": "URL",
+                    "type": "string"
+                },
+                {
+                    "id": "form-field-date",
+                    "value": "Modification date",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Index visual template",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Listing rules and variable mapping",
+                    "type": "string"
+                },
+                {
+                    "id": "form-items_per_page-label",
+                    "value": "Items per page",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_search_input-label",
+                    "value": "Show search bar",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_sorting_select-label",
+                    "value": "Show sorting",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_load_more_btn-label",
+                    "value": "Show \"Load more\" button",
+                    "type": "string"
+                },
+                {
+                    "id": "form-show_metrics-label",
+                    "value": "Show pagination metrics",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

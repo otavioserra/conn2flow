@@ -1,0 +1,35 @@
+<form class="conn2flow-form bg-white border border-gray-200 rounded-xl shadow-sm p-6 max-w-md mx-auto space-y-4" data-form-id="@[[form_id]]@" method="post">
+    <input type="hidden" name="form_id" value="@[[form_id]]@">
+    <div class="text-center pb-2">
+        <h3 class="text-lg font-bold text-gray-800">Fique por dentro!</h3>
+        <p class="text-xs text-gray-500">Receba novidades e conteúdos exclusivos diretamente no seu e-mail.</p>
+    </div>
+    <!-- item < -->
+    <div class="conn2flow-form-field">
+        <label class="block text-xs font-semibold text-gray-600 mb-1" for="@[[form_id]]@-@[[item#name]]@">@[[item#label]]@</label>
+        <!-- type-input < -->
+        <input class="w-full text-sm rounded-lg border border-gray-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" type="@[[item#type]]@" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@>
+        <!-- type-input > -->
+        <!-- type-textarea < -->
+        <textarea class="w-full text-sm rounded-lg border border-gray-300 px-3 py-2.5 min-h-24 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@></textarea>
+        <!-- type-textarea > -->
+        <!-- type-select < -->
+        <select class="w-full text-sm rounded-lg border border-gray-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" @[[item#required]]@>
+            @[[item#options]]@
+        </select>
+        <!-- type-select > -->
+        <!-- type-radio < -->
+        <div class="flex flex-wrap gap-3 mt-1">
+            @[[item#options]]@
+        </div>
+        <!-- type-radio > -->
+        <!-- type-checkbox < -->
+        <div class="flex flex-wrap gap-3 mt-1">
+            @[[item#options]]@
+        </div>
+        <!-- type-checkbox > -->
+    </div>
+    <!-- item > -->
+    <div class="conn2flow-form-message hidden text-sm p-3 rounded-lg"></div>
+    <button class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm hover:shadow transition duration-150 conn2flow-form-submit" type="submit">Inscrever-se</button>
+</form>

@@ -1368,11 +1368,12 @@ function dashboard_site_toolbar(){
 
 	// Título da página atual (paginas.nome). Fallback para o próprio id se não encontrada.
 	$page_title = $page_id;
+	$pagina_atual = null;
 	if($page_id !== ''){
 		$pagina_atual = banco_select(Array(
 			'unico' => true,
 			'tabela' => 'paginas',
-			'campos' => Array('nome'),
+			'campos' => Array('nome', 'id_usuarios', 'publisher_id'),
 			'extra' => "WHERE id='".banco_escape_field($page_id)."' AND language='".$_GESTOR['linguagem-codigo']."' AND status!='D'",
 		));
 		if($pagina_atual && isset($pagina_atual['nome']) && $pagina_atual['nome'] !== ''){
@@ -1383,6 +1384,18 @@ function dashboard_site_toolbar(){
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#new_page_url#',$new_page_url);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#clone_page_url#',$clone_page_url);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#page_title#',htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'));
+
+	// Usuários sem autorização sobre a página atual não devem receber controles de edição.
+	// O menu de módulos e o dropdown do usuário permanecem disponíveis para navegação.
+	if($pagina_atual && !dashboard_site_toolbar_verificar_permissao_pagina($pagina_atual)){
+		$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'], '<!-- dropdown-page < -->', '<!-- dropdown-page > -->');
+	} else {
+		$_GESTOR['pagina'] = str_replace(
+			Array('<!-- dropdown-page < -->', '<!-- dropdown-page > -->'),
+			'',
+			$_GESTOR['pagina']
+		);
+	}
 
 	// page_id da página hospedeira — o frontend usa nos endpoints site-toolbar-render/save.
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#page_id#',htmlspecialchars($page_id, ENT_QUOTES, 'UTF-8'));

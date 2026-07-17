@@ -1,11 +1,60 @@
-input[type="file"] { 
-    opacity: 0; /* make transparent */
-    z-index: -1; /* move under anything else */
-    position: absolute; /* don't let it take up space */
+/* BATCH-090: Upload com drag & drop, destino e tamanho de pré-visualização. */
+
+input[type="file"] {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
 }
-#files-cont{
-    margin-top:20px;
+
+#files-cont {
+    margin-top: 20px;
 }
-.hidden{
-    display:none;
+
+.hidden {
+    display: none;
 }
+
+/* ===== Dropzone ===== */
+
+.c2f-dropzone {
+    border: 2px dashed rgba(34, 36, 38, .25);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    transition: background .15s ease, border-color .15s ease;
+}
+
+.c2f-dropzone.c2f-drag {
+    border-color: #2185d0;
+    background: rgba(33, 133, 208, .06);
+}
+
+.c2f-dropzone i {
+    color: rgba(0, 0, 0, .35);
+}
+
+.c2f-destination .c2f-dest-label {
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ===== Seletor de tamanho de pré-visualização ===== */
+
+.c2f-preview-size-label {
+    font-size: .7em;
+    color: rgba(0, 0, 0, .5);
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.c2f-upload-thumb .ui.image {
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+#files-cont.preview-s .c2f-upload-thumb .ui.image { width: 80px; height: 80px; }
+#files-cont.preview-m .c2f-upload-thumb .ui.image { width: 150px; height: 150px; }
+#files-cont.preview-l .c2f-upload-thumb .ui.image { width: 240px; height: 240px; }
+#files-cont.preview-xl .c2f-upload-thumb .ui.image { width: 100%; height: auto; max-height: 420px; }

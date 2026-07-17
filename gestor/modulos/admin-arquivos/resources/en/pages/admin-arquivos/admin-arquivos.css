@@ -1,19 +1,318 @@
-.hidden{
-    display:none;
+/* BATCH-090: Gerenciador de arquivos por árvore física — 4 modos de visualização. */
+
+.hidden {
+    display: none;
 }
-.extra.content{
-	line-height: 3.5em;
+
+.c2f-files-app .c2f-toolbar {
+    margin-bottom: 0;
 }
-.fileImage{
+
+.c2f-breadcrumb {
+    font-size: 1.1em;
+}
+
+.c2f-folder-tools {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Só é flex quando visível; escondida vence o display:flex (senão o !important
+   do flex sobrepõe .hidden e a barra fica sempre aparecendo). */
+.c2f-selection-bar:not(.hidden) {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.c2f-selection-bar.hidden {
+    display: none !important;
+}
+
+/* ===== Busca instantânea ===== */
+
+.c2f-search-box {
+    margin: 10px 0;
+}
+
+.c2f-search-box .c2f-search-clear {
+    cursor: pointer;
+}
+
+.c2f-search-box i.icon.hidden {
+    display: none !important;
+}
+
+.c2f-hidden-search {
+    display: none !important;
+}
+
+/* ===== Lista base ===== */
+
+.c2f-files-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.c2f-item {
     position: relative;
-    width: 100%;
-    padding-top: 75%;
-    overflow:hidden;
+    border: 1px solid rgba(34, 36, 38, .15);
+    border-radius: 6px;
+    background: #fff;
+    box-sizing: border-box;
+    transition: box-shadow .15s ease, border-color .15s ease;
 }
-.fileImage img{
+
+.c2f-item:hover {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
+    border-color: rgba(34, 36, 38, .35);
+}
+
+.c2f-item .c2f-check {
     position: absolute;
-    object-fit: cover;
+    top: 6px;
+    left: 6px;
+    z-index: 3;
+    background: rgba(255, 255, 255, .85);
+    border-radius: 4px;
+    padding: 1px 3px;
+}
+
+.c2f-thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #f7f7f8;
+    cursor: pointer;
+}
+
+.c2f-thumb .c2f-img {
     width: 100%;
     height: 100%;
-    top:0;
+    object-fit: cover;
+}
+
+.c2f-folder .c2f-thumb {
+    background: #fffdf3;
+}
+
+.c2f-name {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.c2f-sub {
+    color: rgba(0, 0, 0, .5);
+    font-size: .85em;
+}
+
+.c2f-actions {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+/* ===== Modo GRANDE (card com detalhes) ===== */
+
+.view-large .c2f-item {
+    width: calc(25% - 12px);
+    padding: 10px;
+}
+
+.view-large .c2f-thumb {
+    width: 100%;
+    height: 160px;
+    border-radius: 4px;
+}
+
+.view-large .c2f-meta {
+    margin-top: 8px;
+}
+
+.view-large .c2f-actions {
+    margin-top: 8px;
+    justify-content: center;
+}
+
+/* ===== Modo MÉDIO (ícones médios) ===== */
+
+.view-medium .c2f-item {
+    width: calc(16.66% - 12px);
+    padding: 8px;
+    text-align: center;
+}
+
+.view-medium .c2f-thumb {
+    width: 100%;
+    height: 110px;
+    border-radius: 4px;
+}
+
+.view-medium .c2f-meta {
+    margin-top: 6px;
+}
+
+.view-medium .c2f-sub.c2f-col-type,
+.view-medium .c2f-sub.c2f-col-size,
+.view-small .c2f-sub,
+.view-medium .c2f-actions {
+    display: none;
+}
+
+.view-medium .c2f-item:hover .c2f-actions {
+    display: flex;
+    justify-content: center;
+}
+
+/* ===== Modo PEQUENO (ícones pequenos) ===== */
+
+.view-small .c2f-item {
+    width: calc(10% - 12px);
+    padding: 6px;
+    text-align: center;
+}
+
+.view-small .c2f-thumb {
+    width: 100%;
+    height: 64px;
+    border-radius: 4px;
+}
+
+.view-small .c2f-name {
+    font-size: .82em;
+    font-weight: 500;
+}
+
+.view-small .c2f-actions {
+    display: none;
+}
+
+.view-small .c2f-item:hover .c2f-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+/* ===== Modo LISTAGEM (tabela/linha compacta) ===== */
+
+.view-list .c2f-files-list {
+    display: block;
+    gap: 0;
+}
+
+.view-list .c2f-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 10px 6px 34px;
+    border-radius: 0;
+    border-bottom: none;
+}
+
+.view-list .c2f-item + .c2f-item {
+    border-top: none;
+}
+
+.view-list .c2f-thumb {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 3px;
+}
+
+.view-list .c2f-meta {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.view-list .c2f-name {
+    flex: 2;
+    min-width: 0;
+}
+
+.view-list .c2f-sub {
+    flex: 1;
+    white-space: nowrap;
+}
+
+.view-list .c2f-actions {
+    margin-left: auto;
+}
+
+/* Responsividade */
+@media only screen and (max-width: 767px) {
+    .view-large .c2f-item { width: calc(50% - 12px); }
+    .view-medium .c2f-item { width: calc(33.33% - 12px); }
+    .view-small .c2f-item { width: calc(25% - 12px); }
+    .view-list .c2f-sub.c2f-col-type { display: none; }
+}
+
+/* ===== Galeria de imagens (modal) ===== */
+
+.c2f-gallery-content.content {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #101113;
+    padding: 0 !important;
+}
+
+.c2f-gallery-stage {
+    flex: 1;
+    text-align: center;
+    min-width: 0;
+    padding: 8px;
+}
+
+.c2f-gallery-img {
+    max-width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+}
+
+.c2f-gallery-prev,
+.c2f-gallery-next {
+    flex: 0 0 auto;
+    margin: 0 6px !important;
+}
+
+.c2f-gallery-strip {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 8px;
+    background: #1b1c1d;
+}
+
+.c2f-gallery-strip img {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: .5;
+    border: 2px solid transparent;
+    transition: opacity .15s ease;
+}
+
+.c2f-gallery-strip img:hover {
+    opacity: .85;
+}
+
+.c2f-gallery-strip img.active {
+    opacity: 1;
+    border-color: #2185d0;
 }

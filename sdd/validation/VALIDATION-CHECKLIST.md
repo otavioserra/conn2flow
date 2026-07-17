@@ -1109,19 +1109,62 @@ Evidência automatizada e estática validada em 2026-07-15:
 ---
 ## BATCH-088 - Módulos/Widgets "forms-search" (Formulários de Busca) e "pages-index" (Páginas Índice) (req-088)
 
-- [ ] **Módulo `forms-search`**:
-  - [ ] Copiado de `forms/` para `forms-search/` com devidas substituições de nomes de variáveis, slugs, ids, tabelas e arquivos.
-  - [ ] O formulário público usa o método `GET` e possui o input `name="search"`.
-  - [ ] O action do formulário é dinâmico e aponta para a URL da página alvo definida no construtor.
-- [ ] **Módulo `pages-index`**:
-  - [ ] Copiado de `publisher-index/` para `pages-index/` com substituições de slugs e nomenclatura.
-  - [ ] A consulta de listagem é feita diretamente contra a tabela `paginas` (filtrando por `status='A' AND language='$language' AND tipo='pagina'`).
-  - [ ] A busca filtra pelos campos `nome` e `html` da página (`nome LIKE '%termo%' OR html LIKE '%termo%'`).
-  - [ ] A busca é alimentada inicialmente pela variável GET `search` se presente na URL.
-  - [ ] Mapeamento padrão dos itens fornece as variáveis `[[item#title]]`, `[[item#summary]]` e `[[item#url]]`.
-  - [ ] Página padrão `pages-index/` criada e registrada nos metadados do módulo.
-- [ ] **Migração do Banco**:
-  - [ ] Nova migração Phinx gerando as tabelas `forms_search`, `forms_search_submissions` e `pages_index` com os índices correspondentes.
-- [ ] **Validação**:
-  - [ ] Sintaxe PHP (`php -l`) e JS (`node --check`) limpa em todos os novos arquivos.
-  - [ ] Execução bem-sucedida de `composer test` no core, sem regressões.
+- [x] **Módulo `forms-search`**:
+  - [x] Copiado de `forms/` para `forms-search/` com substituições de nomes de variáveis, slugs, ids, tabelas e arquivos (via placeholders para desambiguar `forms_search` da tabela/funções vs `forms-search` do módulo/arquivos).
+  - [x] O formulário público usa o método `GET` (`forms_search_widget_forcar_get`) e garante o input `name="search"` (`forms_search_widget_garantir_campo_search`).
+  - [x] O action é dinâmico (`fields_schema.form_action` via campo `#form_action` do CRUD) e aponta para a página alvo; default `busca/` (`forms_search_resolver_action`). Sem controlador POST/reCAPTCHA.
+  - [x] Helper `forms_search_registrar_busca()` grava o termo em `forms_search_submissions`.
+- [x] **Módulo `pages-index`**:
+  - [x] Copiado de `publisher-index/` para `pages-index/` com substituições de slugs e nomenclatura.
+  - [x] Consulta DIRETA a `paginas` (`status='A' AND language='$language' AND tipo='pagina' AND sem_permissao=1`), sem JOIN em `publisher_pages`.
+  - [x] Busca filtra `nome`/`html` (`nome LIKE '%termo%' OR html LIKE '%termo%'`); ordenação `title_asc/desc`, `date_asc/desc` (`data_modificacao`).
+  - [x] Busca alimentada inicialmente pela variável GET `search` (page load) e refletida no input via `[[search]]`.
+  - [x] Mapeamento padrão fornece `[[item#title]]` (nome), `[[item#summary]]` (`strip_tags(html)` ~200 chars), `[[item#url]]` (url-raiz+caminho) e `[[item#date]]` (bônus).
+  - [x] Página semente pública criada e registrada (caminho `busca/` — ver DEC-089 §nota; `pages-index/` é a rota admin do módulo). Widget aponta para índice `grupo_slug="padrao"`.
+- [x] **Migração do Banco**:
+  - [x] `20260715120000_create_forms_search_and_pages_index_tables.php` cria `forms_search`, `forms_search_submissions` e `pages_index` (índices únicos `[id, language]` + `down()` reversível).
+- [x] **Validação**:
+  - [x] Sintaxe PHP (`php -l`) e JS (`node --check`) limpa em todos os novos arquivos.
+  - [x] Execução bem-sucedida de `composer test` no core, sem regressões.
+
+### Evidência de Validação (BATCH-088)
+
+Evidência automatizada reportada pelo executor em 2026-07-15 (ambiente: PHP 8.4.8):
+- `php -l` → **OK (5/5)**: `pages-index.php`, `pages-index.widget.php`, `forms-search.php`, `forms-search.widget.php`, migração `20260715120000`.
+- `node --check` → **OK (4/4)**: `pages-index.js`, `pages-index.widget.js`, `forms-search.js`, `forms-search.widget.js`.
+- JSON válido → **OK (4/4)**: `pages-index.json`, `forms-search.json`, `ModulosData.json`, `UsuariosPerfisModulosData.json`.
+- Teste novo `tests/Unit/PHP/PagesIndexFormsSearchWidgetTest.php` → **OK (14 tests, 27 assertions)**: resumo (strip_tags/truncamento/reticências), render de itens ([[item#X]] + variable_mapping), blocos condicionais/globais, resolução de action (vazio→`busca/`, relativo, absoluto), força de `method=get`+action e garantia/idempotência do campo `name="search"`.
+- `composer test` (suíte completa) → **OK (90 tests, 314 assertions, 4 skipped)** — era 76; +14 deste lote, sem regressão (a única `PHPUnit Deprecation` é pré-existente).
+
+### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` (aplica a migração Phinx, gera os `*Data.json` e recalcula checksums) e confirmar: as 3 tabelas criadas; os 2 módulos listados; os 2 widgets (`pages-index`/`forms-search`) na tabela `widgets`; a página `busca/` gerada.
+- **Criar o índice padrão `pages_index` com `id='padrao'`** (CRUD `pages-index/adicionar/`) e um template, para a página semente `busca/` renderizar resultados (o widget usa `grupo_slug="padrao"`).
+- Validar o fluxo ponta a ponta: form `forms-search` (GET) envia `?search=termo` para `busca/`; a página exibe as páginas casadas e o termo é gravado em `forms_search_submissions`.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-090 - Transição do Gerenciador de Arquivos para Árvore Física e CRUD de Diretórios (req-090)
+
+- [x] **Segurança (biblioteca pura)**:
+  - [x] `bibliotecas/arquivo.php` com `arquivo_nome_sanitizar`, `arquivo_extensao_perigosa`, `arquivo_caminho_relativo_seguro`, `arquivo_caminho_resolver`, `arquivo_mini_caminho_relativo`, `arquivo_tipo_por_extensao` (versão 1.1.0).
+  - [x] Todas as rotas do backend validam a entrada por esses helpers antes de tocar o disco (path traversal, extensão perigosa, sanitização de nome).
+- [x] **Banco**: migração `20260717120000_create_arquivos_disco_categorias_table.php` (nova tabela `arquivos_disco_categorias`, índice único `[caminho_hash,id_categorias]`, `down()` reversível). `arquivos`/`arquivos_categorias` legadas preservadas.
+- [x] **Backend (`admin-arquivos.php`)**: rotas `listar` (varredura física paginada/ordenada/filtrada + breadcrumb + thumbsMissing), `uploadFile` (destino, sanitização, bloqueio de extensão, colisão, mini imediata, categorias por caminho), `miniaturas` (lote SimpleImage), `excluir` (lote + pasta recursiva + limpeza de mini/associações), `pasta-criar`, `renomear` (move associações), `categorias-arquivo`.
+- [x] **Frontend (`admin-arquivos.js`)**: 4 modos de visualização (localStorage), breadcrumb navegável, miniaturas lazy em lote com barra de status + cache-bust, seleção em lote + exclusão em massa, CRUD de pastas, filtros; upload com drag&drop, seletor de tamanho de preview e pasta de destino; bloqueio client-side de extensão.
+- [x] **Views/i18n**: `admin-arquivos.html`/`admin-arquivos-adicionar.html` + CSS (pt-br + en) reescritos; ~24 variáveis novas por idioma; `admin-arquivos.json` 1.0.4 → 1.1.0 (config `lista`/`upload`).
+- [x] **Retrocompat Image Picker (`interface.php`)**: `imagepick` resolve identificador não-numérico como caminho físico (metadados do disco + miniatura preferida com cache-bust); IDs numéricos legados via tabela `arquivos`; picker devolve caminho relativo.
+
+### Evidência de Validação (BATCH-090)
+
+Evidência automatizada reportada pelo executor em 2026-07-17 (ambiente: PHP 8.4.8):
+- `php -l` → OK (5/5): `gestor/bibliotecas/arquivo.php`, `gestor/modulos/admin-arquivos/admin-arquivos.php`, `gestor/bibliotecas/interface.php`, `gestor/db/migrations/20260717120000_create_arquivos_disco_categorias_table.php`, `tests/Unit/PHP/AdminArquivosSegurancaTest.php`.
+- `node --check gestor/modulos/admin-arquivos/admin-arquivos.js` → OK; `admin-arquivos.json` → JSON válido.
+- `vendor/bin/phpunit tests/Unit/PHP/AdminArquivosSegurancaTest.php` → **OK (16 tests, 53 assertions)**: sanitização de nome (caracteres inválidos, componentes de diretório, bytes nulos), extensões perigosas (executáveis, dupla extensão, ocultos de config, extensões seguras), path traversal (relativo válido/rejeita `..`/absoluto/nulo), resolução sob a base (mantém dentro/rejeita escape/aceita alvo inexistente seguro), caminho de miniatura e tipo por extensão.
+- `composer test` → **OK (106 tests, 367 assertions, 4 skipped gated por banco)**; a única `PHPUnit Deprecation` é pré-existente e alheia a este slice.
+
+### Pendências Runtime (com o operador)
+- Rodar `🗃️ Projects - Update => Core` + migração `20260717120000` (cria `arquivos_disco_categorias`; recompila páginas/variáveis do módulo).
+- Homologar `/admin-arquivos/`: alternar os **4 modos** de visualização; criar/renomear/excluir pastas (inclusive pasta não-vazia com confirmação recursiva); navegar por breadcrumb; seleção em lote + exclusão em massa; filtros por data/categoria/ordenação.
+- Homologar `/admin-arquivos/adicionar/`: drag&drop, seletor de tamanho de pré-visualização, escolha/criação de pasta de destino, upload e geração dinâmica das miniaturas com a barra `Processando miniaturas...`.
+- Homologar o Image Picker: inserir imagem via iframe num módulo consumidor (ex.: galleries) e confirmar persistência retrocompatível (registro numérico legado renderiza da tabela `arquivos`; caminho físico novo renderiza do disco/mini).
+- Restrição respeitada: nenhum `git commit`/`git push` executado.

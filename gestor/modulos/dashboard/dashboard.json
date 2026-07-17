@@ -81,11 +81,11 @@
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "771a8f3aacf35e3f58149f606a331973",
+                        "html": "edb5143c2e47e27d1f9b3c703f1ddabe",
                         "css": "",
-                        "combined": "771a8f3aacf35e3f58149f606a331973"
+                        "combined": "edb5143c2e47e27d1f9b3c703f1ddabe"
                     }
                 }
             ],
@@ -289,11 +289,11 @@
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "ff77c265872f1f9c83eb4ffc5481f982",
+                        "html": "2abb151206636668cea416341f945372",
                         "css": "",
-                        "combined": "ff77c265872f1f9c83eb4ffc5481f982"
+                        "combined": "2abb151206636668cea416341f945372"
                     }
                 }
             ],

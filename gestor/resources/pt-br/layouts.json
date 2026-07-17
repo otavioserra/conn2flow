@@ -12,11 +12,11 @@
     {
         "name": "Layout Página Sem Permissão",
         "id": "layout-pagina-sem-permissao",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "265d63320925cfb795d456ff37596de1",
+            "html": "c2292785b4c5ced41e2b8f4baa4efae3",
             "css": "4952e5053d5eebf5a31bf1a8c6812a98",
-            "combined": "75621c73ce5b64c7c791e0ade7911c0b"
+            "combined": "aad5ec69cbe34a15f1f414687591972a"
         }
     },
     {
@@ -52,11 +52,11 @@
     {
         "name": "Layout Página Padrão",
         "id": "layout-pagina-padrao",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "1dc7daac46c20ff2d657f15480c7101b",
+            "html": "1fbd07c6e0ada1b0a129ddce0ca07f58",
             "css": "b37dfd1ae99d8fbc8fec01de439345aa",
-            "combined": "3c5baa890bd03274e8120f47bdcfe850"
+            "combined": "d4119c403f683ec16c948fb479f8e980"
         }
     },
     {

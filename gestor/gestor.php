@@ -935,7 +935,7 @@ function gestor_dashboard_toolbar_ativo(){
 		$ativo = false;
 	} else if(!gestor_usuario_perfil()){
 		$ativo = false;
-	} else if(!gestor_permissao_token() || !gestor_permissao_modulo()){
+	} else if(!gestor_permissao_token() || !gestor_permissao_modulo(false)){
 		$ativo = false;
 	} else if(!(isset($_GESTOR['usuario-id']) && (int)$_GESTOR['usuario-id'] > 0)){
 		$ativo = false;
@@ -1389,11 +1389,18 @@ function gestor_permissao_fingerprint(){
 	}
 }
 
-function gestor_permissao_modulo(){
+/**
+ * Verifica se o usuário atual pode acessar o módulo da requisição.
+ *
+ * @param bool $alertar Quando false, retorna apenas o resultado da consulta,
+ *                      sem gravar alerta em sessão.
+ * @param string|false $modulo_forcado Módulo a consultar; false usa a rota atual.
+ */
+function gestor_permissao_modulo($alertar = true, $modulo_forcado = false){
 	global $_GESTOR;
 	
 	$usuario = gestor_usuario();
-	$modulo = $_GESTOR['modulo'] ?? '';
+	$modulo = $modulo_forcado ?: ($_GESTOR['modulo'] ?? '');
 	
 	if(!existe($modulo)){
 		return true;
@@ -1533,12 +1540,14 @@ function gestor_permissao_modulo(){
 		}
 	}
 	
-	gestor_incluir_biblioteca('interface');
-	
-	interface_alerta(Array(
-		'redirect' => true,
-		'msg' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'alert-without-permission'))
-	));
+	if($alertar){
+		gestor_incluir_biblioteca('interface');
+
+		interface_alerta(Array(
+			'redirect' => true,
+			'msg' => gestor_variaveis(Array('modulo' => 'usuarios','id' => 'alert-without-permission'))
+		));
+	}
 	
 	return false;
 }

@@ -1,0 +1,59 @@
+<table class="ui definition table">
+    <thead>
+        <tr>
+            <th></th>
+            <th><i class="info circle icon"></i> Basic Information</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Form ID</td>
+            <td>
+                <div class="ui basic label">#id#</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="two wide">Name</td>
+            <td>#name#</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>#description#</td>
+        </tr>
+        <tr>
+            <td>Module</td>
+            <td>#module#</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="ui table">
+    <thead>
+        <tr>
+            <th><i class="code icon"></i> Fields Schema</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+
+                <div class="fields-schema-component">
+                    <div class="ui top attached tabular menu menuForms">
+                        <a class="active item" data-tab="data"
+                            data-tooltip="Click to open the field schema data in JSON format" data-position="top left"
+                            data-inverted="">Data</a>
+                        <a class="item" data-tab="info"
+                            data-tooltip="Click to open the available form options information in JSON format"
+                            data-position="top left" data-inverted="">Information</a>
+                    </div>
+                    <div class="ui bottom attached tab segment containerForms" data-tab="data">
+                        <textarea class="codemirror-json">#fields_schema#</textarea>
+                    </div>
+                    <div class="ui bottom attached tab segment containerForms" data-tab="info">
+                        #forms-search-info-definition#
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

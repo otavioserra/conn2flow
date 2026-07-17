@@ -327,6 +327,65 @@ function log_hosts_usuarios($params = false){
 }
 
 /**
+ * Registra o encadeamento de chamadas atual em arquivo de log.
+ *
+ * Útil para diagnosticar a origem de efeitos colaterais, como alertas ou
+ * redirecionamentos inesperados. O rastreamento também é retornado para uso
+ * pontual pelo código chamador.
+ *
+ * @param string $titulo Texto que antecede o rastreamento.
+ * @param string $logFilename Nome base do arquivo de log sem extensão.
+ * @param bool $deleteFileAfter Se true, exclui o arquivo antes de gravar.
+ * @param array $contexto Metadados adicionais seguros para incluir no log.
+ *
+ * @return string Rastreamento de chamadas em formato de texto.
+ */
+function log_backtrace($titulo = 'Encadeamento de chamada:', $logFilename = 'gestor', $deleteFileAfter = false, $contexto = Array()){
+	global $_GESTOR;
+
+	$caminho = $_GESTOR['caminho-total'] ?? '';
+	if($caminho === '' && isset($_SERVER['REQUEST_URI'])){
+		$caminho = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '';
+	}
+
+	$metadados = Array(
+		'metodo' => $_SERVER['REQUEST_METHOD'] ?? 'CLI',
+		'caminho' => $caminho,
+		'modulo' => $_GESTOR['modulo-id'] ?? ($_GESTOR['modulo'] ?? ''),
+		'opcao' => $_GESTOR['opcao'] ?? '',
+		'interface-opcao' => $_GESTOR['interface-opcao'] ?? '',
+		'ajax' => !empty($_GESTOR['ajax']) ? 'sim' : 'nao',
+		'idioma' => $_GESTOR['linguagem-codigo'] ?? '',
+		'campos-get' => !empty($_GET) ? implode(',', array_keys($_GET)) : '',
+		'campos-post' => !empty($_POST) ? implode(',', array_keys($_POST)) : '',
+	);
+
+	if(is_array($contexto)){
+		foreach($contexto as $chave => $valor){
+			if(is_scalar($valor) || $valor === null){
+				$metadados[$chave] = (string) $valor;
+			}
+		}
+	}
+
+	$linhas_metadados = Array();
+	foreach($metadados as $chave => $valor){
+		if($valor !== '') $linhas_metadados[] = $chave . ': ' . $valor;
+	}
+
+	$trace = (new Exception())->getTraceAsString();
+	log_disco(
+		$titulo . "\n"
+		. "Metadados da requisicao:\n" . implode("\n", $linhas_metadados) . "\n"
+		. "Encadeamento de chamada:\n" . $trace,
+		$logFilename,
+		$deleteFileAfter
+	);
+
+	return $trace;
+}
+
+/**
  * Grava mensagens de log em arquivo de disco.
  *
  * Registra mensagens em arquivos de log organizados por data.

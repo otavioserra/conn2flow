@@ -22,6 +22,28 @@
         "user_modified": 0
     },
     {
+        "id": "forms-search",
+        "name": "Formulário de Busca",
+        "icon": "search",
+        "tabela": "forms_search",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "forms-search",
+        "name": "Search Form",
+        "icon": "search",
+        "tabela": "forms_search",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
         "id": "galleries",
         "name": "Galerias",
         "icon": "images",
@@ -59,6 +81,28 @@
         "name": "Menus",
         "icon": "bars",
         "tabela": "menus",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "pages-index",
+        "name": "Páginas Índice",
+        "icon": "list",
+        "tabela": "pages_index",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "pages-index",
+        "name": "Pages Index",
+        "icon": "list",
+        "tabela": "pages_index",
         "coluna_where": null,
         "language": "en",
         "status": "A",

@@ -125,6 +125,14 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "pages-index"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "forms-search"
+    },
+    {
+        "perfil": "administradores",
         "modulo": "contatos"
     },
     {

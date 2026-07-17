@@ -1,0 +1,605 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "html-editor"
+    ],
+    "id_numerico": "id_forms_search",
+    "tabela": {
+        "nome": "forms_search",
+        "nome_especifico": "name",
+        "id": "id",
+        "id_numerico": "id_forms_search",
+        "status": "status",
+        "versao": "version",
+        "data_criacao": "created_at",
+        "data_modificacao": "updated_at",
+        "config": {
+            "strategy": "natural_key",
+            "natural_key_columns": [
+                "language",
+                "module",
+                "id"
+            ],
+            "preserve_on_user_modified": [
+                "name",
+                "fields_schema"
+            ],
+            "insert_only": false
+        },
+        "deletar": []
+    },
+    "resources": {
+        "pt-br": {
+            "widgets": [
+                {
+                    "id": "forms-search",
+                    "name": "Formulário de Busca",
+                    "icon": "search",
+                    "tabela": "forms_search"
+                }
+            ],
+            "ai_prompts_targets": [
+                {
+                    "id": "forms-search",
+                    "name": "Formulário de Busca"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "forms-search",
+                    "name": "Formulário de Busca",
+                    "target": "forms-search",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "form_info": {
+                "name": "Nome do Formulário",
+                "id": "id-do-formulario",
+                "description": "Descrição do formulário.",
+                "fields_schema": {
+                    "field_name": "name",
+                    "field_email": "email",
+                    "form_action": "url-para-onde-enviar-o-formulario",
+                    "access_max_simple": 5,
+                    "access_max": 10,
+                    "force_recaptcha": true,
+                    "email": {
+                        "recipients": "Nome <email@email.com>; Another Name <another@email.com>",
+                        "reply_to": "email@email.com",
+                        "reply_to_name": "Nome do Remetente",
+                        "subject": "Assunto nº #code#",
+                        "message_component": "id-do-componente-de-mensagem"
+                    },
+                    "redirects": {
+                        "success": {
+                            "type": "url",
+                            "path": "your-page\/success\/"
+                        },
+                        "error": {
+                            "type": "url",
+                            "path": "your-page\/error\/"
+                        }
+                    },
+                    "fields": [
+                        {
+                            "type": "text",
+                            "name": "name",
+                            "label": "Nome",
+                            "required": true
+                        },
+                        {
+                            "type": "email",
+                            "name": "email",
+                            "label": "E-mail",
+                            "required": true
+                        },
+                        {
+                            "type": "textarea",
+                            "name": "message",
+                            "label": "Mensagem",
+                            "required": false
+                        }
+                    ]
+                }
+            },
+            "layouts": [
+                {
+                    "name": "Página Simples TailwindCSS",
+                    "id": "pagina-simples-tailwindcss",
+                    "framework_css": "tailwindcss",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "5d5efc9849f45c5a257ee4e6fff49d16",
+                        "css": "",
+                        "combined": "5d5efc9849f45c5a257ee4e6fff49d16"
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Formulário Definições Informações",
+                    "id": "forms-search-info-definition",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "d0be0dda51a46031254cccfa08c1d85e",
+                        "css": "",
+                        "combined": "d0be0dda51a46031254cccfa08c1d85e"
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Formulário de Contato Básico",
+                    "id": "forms-search-contato-basico",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "8753c36322442ae89b747f38fe605fb6",
+                        "css": "",
+                        "combined": "8753c36322442ae89b747f38fe605fb6"
+                    }
+                },
+                {
+                    "name": "Inscrição na Newsletter",
+                    "id": "forms-search-newsletter-newsletter",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "4bf6bdafaef9e8f15e16c491a282f65d",
+                        "css": "",
+                        "combined": "4bf6bdafaef9e8f15e16c491a282f65d"
+                    }
+                },
+                {
+                    "name": "Registro de Usuário",
+                    "id": "forms-search-registro-usuario",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "b8f6a4b275bd7d992b87541060e9e9d4",
+                        "css": "",
+                        "combined": "b8f6a4b275bd7d992b87541060e9e9d4"
+                    }
+                },
+                {
+                    "name": "Pesquisa de Satisfação",
+                    "id": "forms-search-pesquisa-satisfacao",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "ec713cf91f1e9f8ee6326d59a41997ef",
+                        "css": "",
+                        "combined": "ec713cf91f1e9f8ee6326d59a41997ef"
+                    }
+                },
+                {
+                    "name": "Suporte Técnico",
+                    "id": "forms-search-suporte-tecnico",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "7369fec0015bad20f27abb1501d2f33c",
+                        "css": "",
+                        "combined": "7369fec0015bad20f27abb1501d2f33c"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Formulários Listar",
+                    "id": "forms-search-list",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Formulários Visualizar",
+                    "id": "forms-search-view",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/view\/",
+                    "type": "system",
+                    "option": "visualizar",
+                    "version": "1.11",
+                    "checksum": {
+                        "html": "9d78df67183fc363bf48cd602e4e09e4",
+                        "css": "",
+                        "combined": "9d78df67183fc363bf48cd602e4e09e4"
+                    }
+                },
+                {
+                    "name": "Formulários Adicionar",
+                    "id": "forms-search-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.12",
+                    "checksum": {
+                        "html": "2ed25e364dbc53228dcabb70dd571ffd",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "a089807d20e5a3c94ff59e6ef1f75933"
+                    }
+                },
+                {
+                    "name": "Formulários Editar",
+                    "id": "forms-search-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.10",
+                    "checksum": {
+                        "html": "ba2ec8c5fb0b5acb8bccd46bf2e53e65",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "3a4b3b34484bb71c504419e529e61763"
+                    }
+                },
+                {
+                    "name": "Formulários Clonar",
+                    "id": "forms-search-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.9",
+                    "checksum": {
+                        "html": "cdca8864f9794afa940cdf39bb725b14",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "6b5e5cd24ead03c97b271c69b2afbdf7"
+                    }
+                },
+                {
+                    "name": "Forms Test Email Page",
+                    "id": "forms-search-test-email-page",
+                    "layout": "pagina-simples-tailwindcss",
+                    "path": "forms-search\/test-email-page\/",
+                    "type": "system",
+                    "option": "test-email-page",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "752b731f15b5cb2b87db994b3599a35f",
+                        "css": "",
+                        "combined": "752b731f15b5cb2b87db994b3599a35f"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Selecione opcionalmente um módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Template (Recurso)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Esquema dos Campos",
+                    "type": "string"
+                },
+                {
+                    "id": "form-description-label",
+                    "value": "Descrição",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "widgets": [
+                {
+                    "id": "forms-search",
+                    "name": "Search Form",
+                    "icon": "search",
+                    "tabela": "forms_search"
+                }
+            ],
+            "ai_prompts_targets": [
+                {
+                    "id": "forms-search",
+                    "name": "Search Form"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "forms-search",
+                    "name": "Search Form",
+                    "target": "forms-search",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "form_info": {
+                "name": "Form Name",
+                "id": "form-id",
+                "description": "Form description.",
+                "fields_schema": {
+                    "field_name": "name",
+                    "field_email": "email",
+                    "form_action": "url-for-where-to-send-form",
+                    "access_max_simple": 5,
+                    "access_max": 10,
+                    "force_recaptcha": true,
+                    "email": {
+                        "recipients": "Name <email@email.com>; Another Name <another@email.com>",
+                        "reply_to": "email@email.com",
+                        "reply_to_name": "Sender Name",
+                        "subject": "Subject nº #code#",
+                        "template": "template-component-id"
+                    },
+                    "redirects": {
+                        "success": {
+                            "type": "url",
+                            "path": "your-page\/success\/"
+                        },
+                        "error": {
+                            "type": "url",
+                            "path": "your-page\/error\/"
+                        }
+                    },
+                    "fields": [
+                        {
+                            "type": "text",
+                            "name": "name",
+                            "label": "Name",
+                            "required": true
+                        },
+                        {
+                            "type": "email",
+                            "name": "email",
+                            "label": "E-mail",
+                            "required": true
+                        },
+                        {
+                            "type": "textarea",
+                            "name": "message",
+                            "label": "Message",
+                            "required": false
+                        }
+                    ]
+                }
+            },
+            "layouts": [
+                {
+                    "name": "Simple Page TailwindCSS",
+                    "id": "pagina-simples-tailwindcss",
+                    "framework_css": "tailwindcss",
+                    "version": "1.4",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                }
+            ],
+            "components": [
+                {
+                    "name": "Forms Info Definition",
+                    "id": "forms-search-info-definition",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "09eb18ffe59752355d20fa36336a7a9f",
+                        "css": "",
+                        "combined": "09eb18ffe59752355d20fa36336a7a9f"
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Basic Contact Form",
+                    "id": "forms-search-contato-basico",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "07a6c123f9a7d70029f71c504651d59e",
+                        "css": "",
+                        "combined": "07a6c123f9a7d70029f71c504651d59e"
+                    }
+                },
+                {
+                    "name": "Newsletter Subscription",
+                    "id": "forms-search-newsletter-newsletter",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "64c9e2af0bf687f8690b0175508e237b",
+                        "css": "",
+                        "combined": "64c9e2af0bf687f8690b0175508e237b"
+                    }
+                },
+                {
+                    "name": "User Registration",
+                    "id": "forms-search-registro-usuario",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "5acd05ef9330c9bb456b5518bb430939",
+                        "css": "",
+                        "combined": "5acd05ef9330c9bb456b5518bb430939"
+                    }
+                },
+                {
+                    "name": "Satisfaction Survey",
+                    "id": "forms-search-pesquisa-satisfacao",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "fc0894afbab9cf3672a0e679f04f7069",
+                        "css": "",
+                        "combined": "fc0894afbab9cf3672a0e679f04f7069"
+                    }
+                },
+                {
+                    "name": "Technical Support",
+                    "id": "forms-search-suporte-tecnico",
+                    "target": "forms-search",
+                    "framework_css": "tailwindcss",
+                    "version": "1.2",
+                    "checksum": {
+                        "html": "f1e9e7d4c43fcf902a1e2f2d0cb268cd",
+                        "css": "",
+                        "combined": "f1e9e7d4c43fcf902a1e2f2d0cb268cd"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Forms List",
+                    "id": "forms-search-list",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
+                    }
+                },
+                {
+                    "name": "Forms View",
+                    "id": "forms-search-view",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/view\/",
+                    "type": "system",
+                    "option": "visualizar",
+                    "version": "1.14",
+                    "checksum": {
+                        "html": "08418961498fe8037d93d3cd32be5351",
+                        "css": "",
+                        "combined": "08418961498fe8037d93d3cd32be5351"
+                    }
+                },
+                {
+                    "name": "Forms Add",
+                    "id": "forms-search-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/adicionar\/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.14",
+                    "checksum": {
+                        "html": "112eb22df2143919deb2968b8e41d653",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "d2af150a5dce1909268347a977b64ba8"
+                    }
+                },
+                {
+                    "name": "Forms Edit",
+                    "id": "forms-search-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/editar\/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.12",
+                    "checksum": {
+                        "html": "4a6249d727e45ab1925c45fcac4253ee",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "d13c586409f0f08fec3dd41e1fe45242"
+                    }
+                },
+                {
+                    "name": "Forms Clone",
+                    "id": "forms-search-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "forms-search\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.11",
+                    "checksum": {
+                        "html": "84bce0922c3a7847fb017f5fa18ce700",
+                        "css": "aa43d6aa4dec695c666f726474800b97",
+                        "combined": "4e5677dd03d001e8face98ed64234366"
+                    }
+                },
+                {
+                    "name": "Forms Test Email Page",
+                    "id": "forms-search-test-email-page",
+                    "layout": "pagina-simples-tailwindcss",
+                    "path": "forms-search\/test-email-page\/",
+                    "type": "system",
+                    "option": "test-email-page",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "752b731f15b5cb2b87db994b3599a35f",
+                        "css": "",
+                        "combined": "752b731f15b5cb2b87db994b3599a35f"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-placeholder",
+                    "value": "Optionally select a module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-template_id-label",
+                    "value": "Template (Resource)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Fields Schema",
+                    "type": "string"
+                },
+                {
+                    "id": "form-description-label",
+                    "value": "Description",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}
