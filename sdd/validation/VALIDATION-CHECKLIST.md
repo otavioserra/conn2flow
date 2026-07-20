@@ -1168,3 +1168,29 @@ Evidência automatizada reportada pelo executor em 2026-07-17 (ambiente: PHP 8.4
 - Homologar `/admin-arquivos/adicionar/`: drag&drop, seletor de tamanho de pré-visualização, escolha/criação de pasta de destino, upload e geração dinâmica das miniaturas com a barra `Processando miniaturas...`.
 - Homologar o Image Picker: inserir imagem via iframe num módulo consumidor (ex.: galleries) e confirmar persistência retrocompatível (registro numérico legado renderiza da tabela `arquivos`; caminho físico novo renderiza do disco/mini).
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-091 - Refinamentos de CRUD, Novos Modelos de Lupa e Autocomplete AJAX Otimizado no Módulo "forms-search" (req-091)
+
+- [ ] **Módulo `forms-search`**:
+  - [ ] Removidas as abas "Email" e "Redirects" dos templates de CRUD (adicionar, editar, clonar) e desabilitada a lógica de processamento destas abas no PHP/JS.
+  - [ ] Renomeada a aba "Campos" para "Campos Extras".
+  - [ ] Forçada a renderização do input padrão de busca (`name="search"`) demarcado por `<!-- input-search < -->` em todos os templates visuais de lupas do widget.
+  - [ ] Redesenhados os 5 templates padrão de lupas / caixas de busca focados na usabilidade de pesquisa textual.
+- [ ] **Autocomplete AJAX no Widget**:
+  - [ ] Novo endpoint AJAX em `forms-search.php` / `.widget.php` que consulta a tabela `paginas` (`status = 'A' AND language = '$language' AND tipo = 'pagina' AND sem_permissao = 1`).
+  - [ ] Caixa flutuante de resultados (`<!-- results-box < -->`) renderizada dinamicamente com limite inicial de 30 páginas e botão "Carregar mais".
+  - [ ] Ao clicar em um item da caixa flutuante, o usuário é redirecionado para a respectiva página.
+  - [ ] Se o usuário submeter o formulário (Enter ou clique), envia um GET com `?search=termo` para o action configurado (default `busca/`).
+- [ ] **Melhorias de Usabilidade Aprovadas**:
+  - [ ] Debounce de 300ms implementado na digitação para disparar o autocomplete AJAX.
+  - [ ] Limite mínimo de 3 caracteres para disparar o autocomplete.
+  - [ ] Navegação na caixa de resultados usando as setas Cima/Baixo e seleção via Enter.
+  - [ ] Destaque do termo de busca no título/resumo usando a tag `<mark>` ou classe negrito.
+  - [ ] Cache local de resultados em memória JS.
+- [ ] **AI Mode**:
+  - [ ] Prompts de IA no `forms-search.json` adaptados para descrever as novas características de formulário de busca e autocomplete.
+- [ ] **Validação**:
+  - [ ] Sintaxe PHP (`php -l`) e JS (`node --check`) limpa nos novos arquivos.
+  - [ ] Execução com sucesso da suíte completa de testes (`composer test`).
+

@@ -1,9 +1,8 @@
 # Current Human Request
 
-- **Intake ativo (Agente Atual)**: [req-088.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-088.md) (BATCH-088 `in-progress`, 2026-07-15).
+- **Intake ativo (Agente Atual)**: [req-091.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-091.md) (BATCH-091 `in-progress`, 2026-07-20).
 - **Outros Intakes Pendentes (Outros Agentes)**: 
   * [req-089.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-089.md) (BATCH-089 `ready-for-intake`, 2026-07-15).
-  * [req-090.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-090.md) (BATCH-090 `ready-for-intake`, 2026-07-17).
 
 - **Lotes Fechados**: 
   * [req-075.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-075.md) (BATCH-075 `complete`, 2026-07-10): Site Toolbar completa, agendamento de páginas e extensões do editor.
@@ -18,7 +17,9 @@
   * [req-084.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-084.md) (BATCH-084 `complete`, 2026-07-13): Preservação de Datas Customizadas (data_criacao/data_modificacao) na Compilação de Recursos.
   * [req-086.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-086.md) (BATCH-086 `complete`, 2026-07-14): Preservação de data_modificacao no Sincronizador de Banco de Dados.
   * [req-087.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-087.md) (BATCH-087 `complete`, 2026-07-15): Parametrização e Resumo de Órfãos no Sincronizador de Banco de Dados.
+  * [req-088.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-088.md) (BATCH-088 `complete`, 2026-07-15): Criação dos Módulos/Widgets "forms-search" (Formulários de Busca) e "pages-index" (Páginas Índice).
+  * [req-090.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-090.md) (BATCH-090 `complete`, 2026-07-17): Transição do Gerenciador de Arquivos para Árvore Física no Disco e CRUD Completo de Diretórios no Admin-Arquivos.
 
-- **Status**: BATCH-088 em andamento. Definição do plano detalhado e criação dos novos módulos `forms-search` e `pages-index` para busca pública de páginas do site.
+- **Status**: BATCH-091 em andamento. Definição do plano detalhado de refinamento do módulo `forms-search` (remoção de abas inúteis, modelos visuais de lupa, autocomplete AJAX otimizado com debounce, navegação via teclado, highlighting, cache local e paginação).
 
-- **Pendências**: Implementação completa dos novos módulos, migração do banco, e validação no core.
+- **Pendências**: Cópia e adequação dos arquivos no outro agente de execução; verificação dos testes locais.
