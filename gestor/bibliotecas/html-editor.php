@@ -3,7 +3,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.4.10',
+	'versao' => '1.4.11',
 );
 
 // ===== Funções auxiliares
@@ -562,7 +562,158 @@ function html_editor_ajax_interface($params = false){
         case 'html-editor-widget-types': html_editor_ajax_widget_types(); break;
         case 'html-editor-widgets-list': html_editor_ajax_widgets_list(); break;
         case 'html-editor-widget-render': html_editor_ajax_widget_render(); break;
+        case 'html-editor-render-vars': html_editor_ajax_render_vars(); break;
 	}
+}
+
+/**
+ * ============================================================================
+ * req-093 (BATCH-093) — Renderização de variáveis/widgets como caixas no Editor
+ * HTML Visual CLÁSSICO e no preview, espelhando a Editbar (Dashboard Site Toolbar).
+ *
+ * Diferença-chave para a Editbar: o Editor Clássico trabalha com o HTML do
+ * CodeMirror, onde as variáveis vêm SEM o cerco de execução (`[[var]]`, pois o
+ * template-load converte `@[[`→`[[`). Por isso a regex é TOLERANTE a `@?[[...]]@?`
+ * e o marcador guardado em `data-c2f-marker` preserva EXATAMENTE o texto de
+ * entrada — garantindo round-trip perfeito na reversão do frontend (seja `[[var]]`
+ * ou `@[[var]]@`). Estas funções são uma DUPLICAÇÃO deliberada das da Editbar
+ * (decisão do Chefe: manter a Editbar intacta), adaptadas ao contrato do clássico.
+ * ============================================================================
+ */
+
+// Regex tolerante ao cerco de execução: casa `[[id]]`, `@[[id]]`, `[[id]]@`, `@[[id]]@`.
+function html_editor_var_pattern(){
+	return '/@?\[\[(.+?)\]\]@?/';
+}
+
+// Envolve um conteúdo dinâmico numa caixa de destaque, guardando o marcador ORIGINAL em base64
+// (`data-c2f-marker`) para a reconstrução determinística no save.
+function html_editor_var_box($marker, $rendered, $tipo){
+	$b64 = base64_encode($marker);
+	$tag = ($tipo === 'widget') ? 'div' : 'span';
+	return '<'.$tag.' class="c2f-dyn-box c2f-'.$tipo.'-box" data-c2f-marker="'.$b64.'" contenteditable="false">'.$rendered.'</'.$tag.'>';
+}
+
+// Renderiza um widget pela assinatura (`modulo->func({json})`) em modo page-load.
+function html_editor_render_widget_signature($signature){
+	global $_GESTOR;
+
+	$sig = trim((string)$signature);
+	if($sig === '' || !preg_match('/^[a-zA-Z0-9_\-]+->[a-zA-Z0-9_\-]+\(.*\)$/', $sig)) return '';
+
+	gestor_incluir_biblioteca('widgets');
+	$ajaxAnterior = isset($_GESTOR['ajax']) ? $_GESTOR['ajax'] : false;
+	$_GESTOR['ajax'] = false;
+	$out = widgets_get(Array('id' => $sig));
+	$_GESTOR['ajax'] = $ajaxAnterior;
+
+	return (string)$out;
+}
+
+// Resolve o valor renderizado de uma variável global pelo id. Retorna null quando desconhecida
+// (nesse caso o marcador é mantido literal — pode ser uma variável LOCAL do módulo, resolvida pela
+// simulação no frontend).
+function html_editor_resolver_var($id){
+	global $_GESTOR;
+
+	if($id === 'pagina#menu'){
+		return (function_exists('gestor_pagina_menu') ? (string)gestor_pagina_menu() : '');
+	}
+
+	$sys = Array(
+		'pagina#url-raiz' => (isset($_GESTOR['url-raiz']) ? $_GESTOR['url-raiz'] : ''),
+		'pagina#url-full-http' => (isset($_GESTOR['url-full-http']) ? $_GESTOR['url-full-http'] : ''),
+		'gestor#versao' => (isset($_GESTOR['versao']) ? $_GESTOR['versao'] : ''),
+	);
+	if(array_key_exists($id, $sys)) return (string)$sys[$id];
+
+	if(function_exists('gestor_variaveis_globais')){
+		$valor = gestor_variaveis_globais(Array('id' => $id));
+		if(isset($valor) && $valor !== false){
+			return (string)(existe($valor) ? $valor : '');
+		}
+	}
+
+	return null;
+}
+
+// Troca os widgets (comentário `<!-- widgets#SIG < --> … > -->` ou inline `@?[[widgets#SIG]]@?`) pelo
+// widget renderizado, mantendo os marcadores de comentário vivos (o motor os reconhece como átomo).
+function html_editor_boxes_widgets($html){
+	$html = preg_replace_callback('/<!--\s*widgets#(.+?)\s*<\s*-->([\s\S]*?)<!--\s*widgets#\s*\1\s*>\s*-->/i', function($m){
+		$sig = trim($m[1]);
+		return '<!-- widgets#'.$sig.' < -->'.html_editor_render_widget_signature($sig).'<!-- widgets#'.$sig.' > -->';
+	}, $html);
+
+	$html = preg_replace_callback('/@?\[\[widgets#(.+?)\]\]@?/i', function($m){
+		$sig = trim($m[1]);
+		return '<!-- widgets#'.$sig.' < -->'.html_editor_render_widget_signature($sig).'<!-- widgets#'.$sig.' > -->';
+	}, $html);
+
+	return $html;
+}
+
+// Resolve TODAS as variáveis globais para o VALOR (texto puro, sem caixas) — usado no preview iframe.
+// Variáveis desconhecidas (locais) e widgets inline são mantidos literais.
+function html_editor_resolver_variaveis($html){
+	return preg_replace_callback(html_editor_var_pattern(), function($m){
+		if(stripos($m[1], 'widgets#') === 0) return $m[0]; // widget inline: tratado à parte
+		$val = html_editor_resolver_var(trim($m[1]));
+		return ($val === null) ? $m[0] : $val;
+	}, $html);
+}
+
+// Envolve as variáveis GLOBAIS em caixas: em TEXTO vira `.c2f-var-box` (valor + marcador); em ATRIBUTO
+// resolve para o valor (visual correto). Variáveis desconhecidas (locais/simulação) ficam literais.
+function html_editor_boxes_variaveis($html){
+	$pattern = html_editor_var_pattern();
+	$parts = preg_split('/(<[^>]*>)/', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+	$out = '';
+
+	foreach($parts as $i => $part){
+		if(($i % 2) === 1){
+			// Segmento de TAG (atributos): resolve para o valor.
+			$out .= preg_replace_callback($pattern, function($m){
+				if(stripos($m[1], 'widgets#') === 0) return $m[0];
+				$val = html_editor_resolver_var(trim($m[1]));
+				return ($val === null) ? $m[0] : $val;
+			}, $part);
+		} else {
+			// Segmento de TEXTO: cada variável GLOBAL vira caixa de destaque.
+			$out .= preg_replace_callback($pattern, function($m){
+				if(stripos($m[1], 'widgets#') === 0) return $m[0];
+				$val = html_editor_resolver_var(trim($m[1]));
+				if($val === null) return $m[0];
+				return html_editor_var_box($m[0], htmlspecialchars($val, ENT_QUOTES, 'UTF-8'), 'var');
+			}, $part);
+		}
+	}
+
+	return $out;
+}
+
+/**
+ * AJAX — Recebe o HTML do editor (CodeMirror) e devolve duas versões renderizadas (req-093):
+ *   - `boxes`:  variáveis globais em caixas (`.c2f-var-box` + `data-c2f-marker`) + widgets renderizados
+ *               entre comentários — para carregar no EDITOR VISUAL (átomos reversíveis no save).
+ *   - `values`: variáveis globais resolvidas para valor puro (sem caixas) — para o PREVIEW iframe.
+ * As variáveis LOCAIS/de simulação (desconhecidas do backend) são preservadas para o frontend resolver.
+ */
+function html_editor_ajax_render_vars(){
+	global $_GESTOR;
+
+	$html = $_REQUEST['params']['html'] ?? $_REQUEST['html'] ?? '';
+	$html = (string)$html;
+
+	$comWidgets = html_editor_boxes_widgets($html);
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data' => Array(
+			'boxes'  => html_editor_boxes_variaveis($comWidgets),
+			'values' => html_editor_resolver_variaveis($comWidgets),
+		),
+	);
 }
 
 /**

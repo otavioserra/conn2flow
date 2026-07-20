@@ -1205,19 +1205,52 @@ Evidência automatizada reportada em 2026-07-20:
 ---
 ## BATCH-092 - Destaque, Sincronização de URL, Debounce, Cache e Teclado no Módulo "pages-index" (req-092)
 
-- [ ] **Destaque Visual (Highlighting)**:
-  - [ ] Termo buscado destacado nos títulos (`[[item#title]]`) e resumos (`[[item#summary]]`) dos itens exibidos na listagem do `pages-index`.
-  - [ ] Marcação gerada dinamicamente com `<mark>` de forma case-insensitive no script cliente.
-- [ ] **Integração com URL**:
-  - [ ] No carregamento inicial, se a URL contiver `?search=termo` (ou `?busca=termo`), preenche o input `.pages-index-search`, executa a busca AJAX e destaca o termo.
-  - [ ] Ao digitar no input `.pages-index-search`, atualiza a URL do navegador usando `history.replaceState` sem recarregar a página.
-- [ ] **Melhorias de Usabilidade no Widget**:
-  - [ ] Debounce de 300ms com cancelamento automático de requisições AJAX pendentes (race condition protection).
-  - [ ] Cache local em memória JS para consultas repetidas do `pages-index`.
-  - [ ] Suporte a navegação por teclado (ArrowUp/ArrowDown) na lista de resultados da página quando o campo de busca estiver focado, e navegação ao pressionar Enter.
-- [ ] **Validação**:
-  - [ ] Sintaxe PHP (`php -l`) e JS (`node --check`) limpa.
-  - [ ] Execução com sucesso da suíte de testes.
+- [x] **Destaque Visual (Highlighting)**:
+  - [x] Termo buscado destacado nos títulos (`[[item#title]]`) e resumos (`[[item#summary]]`) dos itens exibidos na listagem do `pages-index`.
+  - [x] Marcação gerada dinamicamente com `<mark>` de forma case-insensitive no script cliente.
+- [x] **Integração com URL**:
+  - [x] No carregamento inicial, se a URL contiver `?search=termo` (ou `?busca=termo`), preenche o input `.pages-index-search`, executa a busca AJAX e destaca o termo.
+  - [x] Ao digitar no input `.pages-index-search`, atualiza a URL do navegador usando `history.replaceState` sem recarregar a página.
+- [x] **Melhorias de Usabilidade no Widget**:
+  - [x] Debounce de 300ms com cancelamento automático de requisições AJAX pendentes (race condition protection).
+  - [x] Cache local em memória JS para consultas repetidas do `pages-index`.
+  - [x] Suporte a navegação por teclado (ArrowUp/ArrowDown) na lista de resultados da página quando o campo de busca estiver focado, e navegação ao pressionar Enter.
+- [x] **Validação**:
+  - [x] Sintaxe PHP (`php -l`) e JS (`node --check`) limpa.
+  - [x] Execução com sucesso da suíte de testes.
+
+### Evidência de Validação (BATCH-092)
+
+Evidência automatizada reportada em 2026-07-20:
+- Lint estático (`php -l` e `node --check`) → OK.
+- `composer test` (PHPUnit) → **OK (110 testes, 474 assertions, 4 skipped)** — todos aprovados.
+- `npm run test` (Vitest) → **OK (25 testes, todos aprovados)** — cobrindo o novo `pages-index.widget.test.js` para o frontend.
+
+---
+## BATCH-093 - Renderização de Variáveis/Widgets no Editor HTML Clássico e Preview (req-093) — `complete`
+
+- [x] **Backend (`html-editor.php`)**: funções de caixas duplicadas/adaptadas (`html_editor_boxes_variaveis`/`_boxes_widgets`/`resolver_var`/`resolver_variaveis`/`var_box`/`render_widget_signature`) com regex tolerante a `[[var]]`/`@[[var]]@`; rota `html-editor-render-vars` → `{boxes, values}`. Globais resolvidas; locais preservadas literais.
+- [x] **Frontend (`html-editor-interface.js`)**: `htmlEditorRenderVars` (AJAX, cb `{boxes,values}`, fallback ao cru), `htmlEditorReconstructVars` (reversão caixa→`[[var]]`, no-op sem caixas), `editorHtmlVisual` async (globais em caixas antes de abrir), reversão no save (`previsualizarConfirmar`).
+- [x] **Preview iframe** (`previewHtml` async): globais resolvidas para valor via `values`; locais via simulação; fallback ao HTML local.
+- [x] **publisher-pages** coberto pela infra genérica (rota resolve globais p/ qualquer módulo; locais preservadas). Editor visual: globais em caixas, locais como marcadores (preservadas no save; sem simulação replicada, que quebraria a reversão 1:1).
+- [ ] **Refinamento opcional**: variáveis LOCAIS em caixas protegidas 1:1 no editor visual (UX). *(futuro; atual já é seguro)*
+- [ ] **Widgets no clássico** (render + reversão em runtime). *(validar no deploy)*
+
+### Evidência de Validação (BATCH-093 — Fase base)
+
+Reportada pelo executor em 2026-07-20:
+- `php -l gestor/bibliotecas/html-editor.php` → OK. Smoke CLI das funções de caixas: global em texto → `.c2f-var-box` com `data-c2f-marker`; global em atributo → valor; local (`[[item#foo]]`) → preservada; `values` resolve tudo → **OK**.
+- `node --check gestor/assets/interface/html-editor-interface.js` → OK.
+- `npx vitest run tests/Unit/JS/html-editor-vars.test.js` → **4/4** (extraindo a função REAL): round-trip `[[var]]`, no-op sem caixas, cerco `@[[var]]@` exato, múltiplas caixas.
+- Suíte completa: `npx vitest run` **29/29**, `composer test` **110/110** sem regressão.
+- Cache-bust: `biblioteca-html-editor` `1.4.10`→`1.4.11`.
+
+### Pendências
+- Runtime (deploy `Update => Core`):
+  - `/admin-paginas/`: no **preview** (`#iframe-visualizacao-pagina`), confirmar que as variáveis globais aparecem com o valor real; no **Editor Visual**, ver as globais como caixas de destaque; editar texto, salvar e conferir no banco que a variável (`[[…]]`/`@[[…]]@`) foi preservada (não o valor).
+  - `/publisher-pages/`: confirmar que as variáveis LOCAIS simuladas e as GLOBAIS aparecem em harmonia no preview; no editor visual, globais em caixas e locais como marcadores; save preserva ambas.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
 
 
 

@@ -1,8 +1,7 @@
 # Current Human Request
 
-- **Intake ativo (Agente Atual)**: [req-092.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-092.md) (BATCH-092 `in-progress`, 2026-07-20).
-- **Outros Intakes Pendentes (Outros Agentes)**: 
-  * [req-089.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-089.md) (BATCH-089 `ready-for-intake`, 2026-07-15).
+- **Intake ativo (Agente Atual)**: Nenhum.
+- **Outros Intakes Pendentes (Outros Agentes)**: Nenhum.
 
 - **Lotes Fechados**: 
   * [req-075.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-075.md) (BATCH-075 `complete`, 2026-07-10): Site Toolbar completa, agendamento de páginas e extensões do editor.
@@ -18,9 +17,12 @@
   * [req-086.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-086.md) (BATCH-086 `complete`, 2026-07-14): Preservação de data_modificacao no Sincronizador de Banco de Dados.
   * [req-087.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-087.md) (BATCH-087 `complete`, 2026-07-15): Parametrização e Resumo de Órfãos no Sincronizador de Banco de Dados.
   * [req-088.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-088.md) (BATCH-088 `complete`, 2026-07-15): Criação dos Módulos/Widgets "forms-search" (Formulários de Busca) e "pages-index" (Páginas Índice).
+  * [req-089.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-089.md) (BATCH-089 `complete`, 2026-07-15): Ocultação do Dropdown de Página por Permissão no Live Editor e Ajuste de Alerta no Hook de Admin-paginas.
   * [req-090.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-090.md) (BATCH-090 `complete`, 2026-07-17): Transição do Gerenciador de Arquivos para Árvore Física no Disco e CRUD Completo de Diretórios no Admin-Arquivos.
   * [req-091.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-091.md) (BATCH-091 `complete`, 2026-07-20): Refinamentos de CRUD, Novos Modelos de Lupa e Autocomplete AJAX Otimizado no Módulo "forms-search".
+  * [req-092.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-092.md) (BATCH-092 `complete`, 2026-07-20): Destaque, Sincronização de URL, Debounce, Cache e Teclado no Módulo "pages-index".
+  * [req-093.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-093.md) (BATCH-093 `complete`, 2026-07-20): Renderização de Variáveis/Widgets no Editor HTML Clássico e Preview (igual à Editbar).
 
-- **Status**: BATCH-092 em andamento. Definição do plano detalhado de melhorias do widget `pages-index` (destaque de termos nos títulos/resumos, sincronização com URL GET via replaceState, debounce otimizado, cache local de requisições e navegação via teclado nos itens da listagem).
+- **Status**: BATCH-092 e BATCH-093 implementados e validados no core (PHPUnit 110/110 OK, Vitest 29/29 OK).
 
-- **Pendências**: Cópia e adequação dos arquivos no outro agente de execução; verificação dos testes locais.
+- **Pendências**: Nenhuma.

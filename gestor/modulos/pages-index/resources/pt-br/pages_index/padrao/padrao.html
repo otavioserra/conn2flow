@@ -1,0 +1,50 @@
+<section class="conn2flow-pages-index font-sans max-w-4xl mx-auto p-4" data-grupo-slug="[[grupo_slug]]"
+    data-items-per-page="[[items_per_page]]" data-ordenacao="[[ordenacao]]" data-page="1">
+    <div class="flex flex-col sm:flex-row gap-3 mb-6">
+        <!-- search-input < -->
+        <div class="flex-1">
+            <input value="[[search]]" type="search"
+                class="pages-index-search w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Buscar publicações...">
+        </div>
+        <!-- search-input > -->
+        <!-- sort-select < -->
+        <div>
+            <select
+                class="pages-index-sort w-full sm:w-auto border border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="date_desc">Mais recentes</option>
+                <option value="date_asc">Mais antigas</option>
+                <option value="title_asc">Título (A-Z)</option>
+                <option value="title_desc">Título (Z-A)</option>
+            </select>
+        </div>
+        <!-- sort-select > -->
+    </div>
+
+    <!-- metrics < -->
+    <div class="pages-index-metrics text-sm text-gray-500 mb-4">Exibindo <span data-page-count>[[page_count]]</span> de
+        <span data-page-total>[[page_total]]</span></div>
+    <!-- metrics > -->
+
+    <div class="pages-index-items flex flex-col gap-4">
+        <!-- item < -->
+        <a href="[[item#url]]"
+            class="block border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-white">
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">[[item#title]]</h3>
+            <span class="text-sm text-gray-500">[[item#date]]</span>
+        </a>
+        <!-- item > -->
+        <!-- no-item < -->
+        <div class="pages-index-empty text-center text-gray-500 py-10">Nenhuma publicação encontrada.</div>
+        <!-- no-item > -->
+    </div>
+
+    <div class="text-center mt-6">
+        <!-- load-more < -->
+        <button type="button"
+            class="pages-index-load-more inline-flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            Carregar mais
+        </button>
+        <!-- load-more > -->
+    </div>
+</section>

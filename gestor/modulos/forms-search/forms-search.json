@@ -95,11 +95,11 @@
                 {
                     "name": "Formulário Definições Informações",
                     "id": "forms-search-info-definition",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "ce0a2a07932f9a16f591f1593bc3e39f",
+                        "html": "e623f9c680e21d5d9895ef82cddf7e90",
                         "css": "",
-                        "combined": "ce0a2a07932f9a16f591f1593bc3e39f"
+                        "combined": "e623f9c680e21d5d9895ef82cddf7e90"
                     }
                 }
             ],
@@ -202,11 +202,11 @@
                     "path": "forms-search\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "e42652b4e9398045a8ab7f40eb7a155d",
+                        "html": "feb953e83781cc2136f5a70e5ff3c1b0",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "1dd1ced91d2edfdc3ca098ca7e88d9b4"
+                        "combined": "3cd281eeb7ff3782181f41b7732086c8"
                     }
                 },
                 {
@@ -216,11 +216,11 @@
                     "path": "forms-search\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "a95b652093285adea976724b681d4a1b",
+                        "html": "7b9bd87ababd83d48a6d067e7ee9b64d",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "290d0a2b92e9ccaa5253d7563c0a3606"
+                        "combined": "a71bc3a74eb53b9ec9f5b8d17c8af9ae"
                     }
                 },
                 {
@@ -230,11 +230,11 @@
                     "path": "forms-search\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "37e303da6842c030af58c2dccc27088d",
+                        "html": "e6b88e35966739cdde20cb8425d29f3e",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "b58e6a59c5ec56958e587e46dbb9ac10"
+                        "combined": "0f27606b1a3956086ad6f3537a2fa150"
                     }
                 }
             ],
@@ -335,11 +335,11 @@
                 {
                     "name": "Forms Info Definition",
                     "id": "forms-search-info-definition",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "dd63ec346f22f129cdf4bfaab91d64f4",
+                        "html": "93b2356516d8ef140ad869775924e56d",
                         "css": "",
-                        "combined": "dd63ec346f22f129cdf4bfaab91d64f4"
+                        "combined": "93b2356516d8ef140ad869775924e56d"
                     }
                 }
             ],
@@ -442,11 +442,11 @@
                     "path": "forms-search\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "5a4c4cfba6bcdb3c1792ba6fb9172620",
+                        "html": "814b1e840477be7dd7a7cfb96cd5e966",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "26b40b1f988e54758973c74d1d7c40e7"
+                        "combined": "a2590d43725ad025e419178784834a76"
                     }
                 },
                 {
@@ -456,11 +456,11 @@
                     "path": "forms-search\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "6bc5955150ef9ffb07143d3ee7beef62",
+                        "html": "849dac0222572a84050f5d10ce7077f8",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "c11d2a3fdf51dda67d8693a3d59b8d51"
+                        "combined": "5c51448407a14bf652f19498be2e04bb"
                     }
                 },
                 {
@@ -470,11 +470,11 @@
                     "path": "forms-search\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "e8b5686d8ff9ab178dfca6f9e39081fe",
+                        "html": "70e0b0ba751dacfa6ae4af65776ddacc",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "52f66111590e158ef9ddf254831acae2"
+                        "combined": "6f056c9780a67c68d0d9c66411fd5ef4"
                     }
                 }
             ],

@@ -14,10 +14,52 @@
         "status": "status",
         "versao": "versao",
         "data_criacao": "data_criacao",
-        "data_modificacao": "data_modificacao"
+        "data_modificacao": "data_modificacao",
+        "config": {
+            "sync_resources": true,
+            "strategy": "natural_key",
+            "natural_key_columns": [
+                "language",
+                "id"
+            ],
+            "preserve_on_user_modified": [
+                "name",
+                "fields_schema",
+                "css_compiled",
+                "html_extra_head",
+                "html",
+                "css"
+            ],
+            "field_types": {
+                "html": "file:html",
+                "css": "file:css",
+                "fields_schema": "json"
+            },
+            "insert_only": false
+        },
+        "deletar": []
     },
     "resources": {
         "pt-br": {
+            "pages_index": [
+                {
+                    "id": "padrao",
+                    "name": "Páginas Índice Padrão",
+                    "fields_schema": {
+                        "rule": "latest",
+                        "count": 4,
+                        "order_by": "date_desc",
+                        "template_id": "pages-index-lista",
+                        "show_metrics": true,
+                        "items_per_page": 30,
+                        "selected_items": [],
+                        "variable_mapping": {},
+                        "show_search_input": true,
+                        "show_load_more_btn": true,
+                        "show_sorting_select": true
+                    }
+                }
+            ],
             "widgets": [
                 {
                     "id": "pages-index",
@@ -256,6 +298,25 @@
             ]
         },
         "en": {
+            "pages_index": [
+                {
+                    "id": "padrao",
+                    "name": "Pages Index Default",
+                    "fields_schema": {
+                        "rule": "latest",
+                        "count": 4,
+                        "order_by": "date_desc",
+                        "template_id": "pages-index-lista",
+                        "show_metrics": true,
+                        "items_per_page": 30,
+                        "selected_items": [],
+                        "variable_mapping": {},
+                        "show_search_input": true,
+                        "show_load_more_btn": true,
+                        "show_sorting_select": true
+                    }
+                }
+            ],
             "widgets": [
                 {
                     "id": "pages-index",

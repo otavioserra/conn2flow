@@ -404,6 +404,13 @@ function forms_search_render($params) {
 		]);
 	}
 
+	// Script público do widget.
+	gestor_pagina_javascript_incluir(Array(
+		'tipo' => 'widget',
+		'modulo_id' => 'forms-search',
+		'versao' => forms_search_get_version(),
+	));
+
 	return forms_search_widget_render_inline([
 		'form_id' => $registro['id'],
 		'html' => $html,

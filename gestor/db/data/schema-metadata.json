@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-07-20T12:17:41+00:00",
+    "generated_at": "2026-07-20T16:04:49+00:00",
     "tables": {
         "alvos_ia": {
             "nome": "alvos_ia",
@@ -158,6 +158,27 @@
             "preserve_on_user_modified": [],
             "insert_only": false,
             "source": "module:modulos-operacoes"
+        },
+        "pages_index": {
+            "nome": "pages_index",
+            "id": "id",
+            "id_numerico": "id_pages_index",
+            "data_file": "PagesIndexData.json",
+            "strategy": "natural_key",
+            "natural_key_columns": [
+                "language",
+                "id"
+            ],
+            "preserve_on_user_modified": [
+                "name",
+                "fields_schema",
+                "css_compiled",
+                "html_extra_head",
+                "html",
+                "css"
+            ],
+            "insert_only": false,
+            "source": "module:pages-index"
         },
         "paginas": {
             "nome": "paginas",

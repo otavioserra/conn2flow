@@ -1229,6 +1229,70 @@ $(document).ready(function () {
 		`;
     }
 
+    // req-093: pede ao backend (rota `html-editor-render-vars`) as duas versões renderizadas do HTML:
+    // `data.boxes` (variáveis globais em caixas `.c2f-var-box` + `data-c2f-marker` + widgets renderizados,
+    // para o EDITOR VISUAL) e `data.values` (globais resolvidas para valor, para o PREVIEW). Em qualquer
+    // falha, chama `cb(null)` → o chamador usa o HTML cru (fluxo antigo preservado, sem regressão).
+    function htmlEditorRenderVars(html, cb) {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: gestor.raiz + gestor.moduloCaminho,
+                data: {
+                    opcao: gestor.moduloOpcao,
+                    ajax: 'sim',
+                    ajaxOpcao: 'html-editor-render-vars',
+                    ajaxRegistroId: (('moduloRegistroId' in gestor) ? gestor.moduloRegistroId : false),
+                    params: { html: html }
+                },
+                dataType: 'json',
+                success: function (dados) {
+                    cb(dados && dados.status === 'Ok' && dados.data ? dados.data : null);
+                },
+                error: function () { cb(null); }
+            });
+        } catch (e) { cb(null); }
+    }
+
+    // req-093: reverte as caixas de variável global (`.c2f-dyn-box`/`.c2f-var-box` com
+    // `data-c2f-marker`) ao MARCADOR original (o texto exato que entrou, ex.: `[[pagina#url-raiz]]`),
+    // para o save gravar as variáveis no banco em vez do valor renderizado. Espelha o
+    // `reconstructOriginal` da Editbar, mas SÓ para variáveis (os widgets já são revertidos a
+    // comentários pelo `htmlEditorGetCleanHtml` do motor). Early-return sem caixas → no-op seguro.
+    function htmlEditorReconstructVars(html) {
+        if (typeof html !== 'string' || html.indexOf('data-c2f-marker') === -1) return html;
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        var boxes = tmp.querySelectorAll('[data-c2f-marker]');
+        var map = {};
+        var i = 0;
+        Array.prototype.forEach.call(boxes, function (box) {
+            var b64 = box.getAttribute('data-c2f-marker');
+            if (!b64) return;
+            var marker;
+            try { marker = decodeURIComponent(escape(window.atob(b64))); }
+            catch (e) { try { marker = window.atob(b64); } catch (e2) { return; } }
+            var token = '__C2FVAR' + (i++) + '__';
+            map[token] = marker;
+            if (box.parentNode) { box.parentNode.replaceChild(document.createTextNode(token), box); }
+        });
+        var out = tmp.innerHTML;
+        Object.keys(map).forEach(function (token) { out = out.split(token).join(map[token]); });
+        return out;
+    }
+    window.htmlEditorReconstructVars = htmlEditorReconstructVars;
+
+    // Monta o srcdoc do editor visual e abre o modal (reuso entre o fluxo síncrono de layouts e o
+    // assíncrono de páginas/componentes que primeiro renderiza as caixas de variável — req-093).
+    function abrirEditorVisualSrcdoc(htmlParaEditor, cssDoUsuario, iframe) {
+        const idFramework = frameworkCSS();
+        iframe.attr('srcdoc', editorHtmlVisualConteudo(htmlParaEditor, cssDoUsuario, idFramework));
+        $('.previsualizar.modal')
+            .modal({ allowMultiple: true, observeChanges: true })
+            .modal('show');
+        if (idFramework === 'tailwindcss') { updateCSSCompiled(iframe); } else { updateCSSCompiled(iframe, true); }
+    }
+
     function editorHtmlVisual() {
         const iframe = $('#iframe-preview');
         const alvo = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
@@ -1240,14 +1304,13 @@ $(document).ready(function () {
             iframe.parent().find('.ui.dimmer').removeClass('active');
         });
 
-        let htmlDoUsuario;
         const cssDoUsuario = CodeMirrorCss.getDoc().getValue().trim();
 
         if (alvo === 'layouts') {
             // Para layouts, manter o HTML completo (documento inteiro).
             // Armazenar head e atributos originais para reconstrução no save.
             const fullHtml = CodeMirrorHtml.getDoc().getValue();
-            htmlDoUsuario = fullHtml.trim();
+            const htmlDoUsuario = fullHtml.trim();
 
             const headMatch = fullHtml.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
             window._layoutOriginalHead = headMatch ? headMatch[0] : '<head></head>';
@@ -1257,31 +1320,20 @@ $(document).ready(function () {
 
             const doctypeMatch = fullHtml.match(/<!DOCTYPE[^>]*>/i);
             window._layoutDoctype = doctypeMatch ? doctypeMatch[0] : '<!DOCTYPE html>';
+
+            abrirEditorVisualSrcdoc(htmlDoUsuario, cssDoUsuario, iframe);
         } else {
             // Para páginas/componentes, filtrar apenas o conteúdo do <body>
-            htmlDoUsuario = filtrarHtmlBody(CodeMirrorHtml.getDoc().getValue()).trim();
+            const htmlDoUsuario = filtrarHtmlBody(CodeMirrorHtml.getDoc().getValue()).trim();
 
             // Atualizar o CodeMirror com o HTML filtrado.
             CodeMirrorHtml.getDoc().setValue(htmlDoUsuario);
-        }
 
-        const idFramework = frameworkCSS();
-
-        iframe.attr('srcdoc', editorHtmlVisualConteudo(htmlDoUsuario, cssDoUsuario, idFramework));
-
-        // Configurar e mostrar modal com suporte a múltiplos modais (para o imagepick)
-        $('.previsualizar.modal')
-            .modal({
-                allowMultiple: true,
-                observeChanges: true
-            })
-            .modal('show');
-
-        // Atualizar o código CSS no conteúdo do CodeMirror
-        if (idFramework === 'tailwindcss') {
-            updateCSSCompiled(iframe);
-        } else {
-            updateCSSCompiled(iframe, true);
+            // req-093: renderiza as variáveis globais em caixas no backend antes de abrir o editor
+            // visual (fallback ao HTML cru em caso de falha).
+            htmlEditorRenderVars(htmlDoUsuario, function (data) {
+                abrirEditorVisualSrcdoc((data && data.boxes) || htmlDoUsuario, cssDoUsuario, iframe);
+            });
         }
     }
 
@@ -1328,6 +1380,11 @@ $(document).ready(function () {
             iframeDoc.querySelectorAll(sistemaSel).forEach(el => el.remove());
             bodyContent = iframeDoc.body ? iframeDoc.body.innerHTML : '';
         }
+
+        // req-093: reverte as caixas de variável global (.c2f-var-box + data-c2f-marker) ao marcador
+        // original ([[var]]) — o banco grava as variáveis, não os valores renderizados. No-op se não
+        // houver caixas (fluxo antigo intacto).
+        bodyContent = htmlEditorReconstructVars(bodyContent);
 
         let updatedHtml;
 
@@ -1780,21 +1837,29 @@ $(document).ready(function () {
 
         const idFramework = frameworkCSS();
 
-        // Substituir as variáveis do template ou simulação, se necessário
+        // Substituir as variáveis LOCAIS do template ou simulação, se necessário
         htmlDoUsuario = publisherVariablesOrSimulation(htmlDoUsuario);
 
         // Substituir as variáveis do template ou valores, se necessário
         htmlDoUsuario = publisherVariablesOrValues(htmlDoUsuario);
 
-        // Incluir o HTML e CSS do usuário no conteúdo do iframe
-        iframe.attr('srcdoc', previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, idFramework));
+        const montar = function (html) {
+            // Incluir o HTML e CSS do usuário no conteúdo do iframe
+            iframe.attr('srcdoc', previewHtmlConteudo(html, cssDoUsuario, idFramework));
+            // Atualizar o código CSS no conteúdo do CodeMirror
+            if (idFramework === 'tailwindcss') {
+                updateCSSCompiled(iframe);
+            } else {
+                updateCSSCompiled(iframe, true);
+            }
+        };
 
-        // Atualizar o código CSS no conteúdo do CodeMirror
-        if (idFramework === 'tailwindcss') {
-            updateCSSCompiled(iframe);
-        } else {
-            updateCSSCompiled(iframe, true);
-        }
+        // req-093: resolve também as variáveis GLOBAIS (valor real, sem caixas) no preview — as LOCAIS
+        // já foram tratadas acima (simulação); as globais desconhecidas do backend ficam literais.
+        // Fallback ao HTML local em caso de falha do AJAX (preview nunca quebra).
+        htmlEditorRenderVars(htmlDoUsuario, function (data) {
+            montar((data && typeof data.values === 'string') ? data.values : htmlDoUsuario);
+        });
     }
 
     function getUpdatedHtmlWithValues() {
