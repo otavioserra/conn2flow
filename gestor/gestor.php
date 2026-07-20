@@ -1999,7 +1999,7 @@ function gestor_roteador(){
 	
 	// ===== Rotear URLs de sistema
 	
-	if(isset($_GESTOR['caminho']))
+	if(isset($_GESTOR['caminho']) && isset($_GESTOR['caminho'][0]))
 	switch($_GESTOR['caminho'][0]){
 		case '_gestor-cookie-verify': 
 			// ===== Verifica se é retorno de redirecionamento veio junto com o cookie. Se sim redirecionar usuário para a URL com queryString. Senão redireciona automaticamente para página informando a obrigatoriedade do uso de cookies para funcionar a página com permissão.
@@ -2478,7 +2478,7 @@ function gestor_config(){
 
 	// =========================== Controladores
 
-	if(isset($_GESTOR['caminho']))
+	if(isset($_GESTOR['caminho']) && isset($_GESTOR['caminho'][0]))
 	switch($_GESTOR['caminho'][0]){
 		case '_gateways':
 			require_once($_GESTOR['controladores-path'].'plataforma-gateways/plataforma-gateways.php'); exit;

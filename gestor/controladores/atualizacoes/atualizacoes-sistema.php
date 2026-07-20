@@ -833,16 +833,19 @@ function main_update(array $argv): int {
             // Merge .env (adiciona novas variáveis)
             $envAtual = $BASE_PATH.'autenticacoes'.DIRECTORY_SEPARATOR.($opts['domain']??'localhost').DIRECTORY_SEPARATOR.'.env';
             $envTpl = null;
-            // Se capturamos antes do deploy, reconstruímos novo caminho
+            // O merge precisa comparar com o template recém-extraído do staging.
+            // Se usarmos primeiro o caminho reconstruído na base, acabamos lendo o template antigo
+            // ainda instalado e novas chaves só entram na atualização seguinte.
             if ($envTemplateRel) {
-                $reconstructed = $BASE_PATH.$envTemplateRel; // local após mover
-                if (file_exists($reconstructed)) {
-                    $envTpl = $reconstructed;
-                    if(!empty($opts['debug'])) logAtualizacao('Template .env pós-deploy (reconstructed): '.$envTpl,'DEBUG');
-                } elseif ($envTemplateOriginalPath && file_exists($envTemplateOriginalPath)) {
-                    // fallback improvável (caso rename não tenha ocorrido)
+                if ($envTemplateOriginalPath && file_exists($envTemplateOriginalPath)) {
                     $envTpl = $envTemplateOriginalPath;
-                    if(!empty($opts['debug'])) logAtualizacao('Template .env ainda no staging (fallback): '.$envTpl,'DEBUG');
+                    if(!empty($opts['debug'])) logAtualizacao('Template .env no staging (prioritário para merge): '.$envTpl,'DEBUG');
+                } else {
+                    $reconstructed = $BASE_PATH.$envTemplateRel; // fallback após mover
+                    if (file_exists($reconstructed)) {
+                        $envTpl = $reconstructed;
+                        if(!empty($opts['debug'])) logAtualizacao('Template .env pós-deploy (fallback reconstructed): '.$envTpl,'DEBUG');
+                    }
                 }
             }
             // Caso não tenhamos capturado antes ou não reconstruído, tenta busca agora no destino final
@@ -1111,7 +1114,7 @@ function webDeployFiles(string $sid): array {
     $envTemplateInitial = localizarEnvTemplate($realRoot, 'dominio', !empty($opts['debug']));
     $envTemplateRel=null; $envTemplateOriginalPath=null; if($envTemplateInitial){ $envTemplateOriginalPath=$envTemplateInitial; $envTemplateRel=ltrim(substr($envTemplateInitial, strlen($realRoot)), DIRECTORY_SEPARATOR); }
     $envAtual=$BASE_PATH.'autenticacoes'.DIRECTORY_SEPARATOR.($opts['domain']??'localhost').DIRECTORY_SEPARATOR.'.env'; $envTpl=null;
-    if($envTemplateRel){ $reconstructed=$BASE_PATH.$envTemplateRel; if(file_exists($reconstructed)) $envTpl=$reconstructed; elseif($envTemplateOriginalPath && file_exists($envTemplateOriginalPath)) $envTpl=$envTemplateOriginalPath; }
+    if($envTemplateRel){ if($envTemplateOriginalPath && file_exists($envTemplateOriginalPath)) $envTpl=$envTemplateOriginalPath; else { $reconstructed=$BASE_PATH.$envTemplateRel; if(file_exists($reconstructed)) $envTpl=$reconstructed; } }
     if(!$envTpl) $envTpl=localizarEnvTemplate($BASE_PATH,'dominio',!empty($opts['debug'])) ?? localizarEnvTemplate($BASE_PATH,$opts['domain']??'localhost',!empty($opts['debug']));
     if($envTpl) mergeEnv($envAtual,$envTpl,$CONTEXT,$dry); else logAtualizacao('WebDeployFiles: template .env não encontrado','WARNING');
     $protegidos=['contents','logs','backups','temp','autenticacoes'];
