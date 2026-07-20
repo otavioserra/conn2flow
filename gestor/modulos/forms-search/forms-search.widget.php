@@ -22,6 +22,9 @@ function forms_search_widget_schema($fields_schema) {
 	$schema = json_decode($fields_schema ?: '{}', true);
 	if (!is_array($schema)) $schema = [];
 	if (!isset($schema['fields']) || !is_array($schema['fields'])) $schema['fields'] = [];
+	$schema['fields'] = array_values(array_filter($schema['fields'], function ($field) {
+		return !is_array($field) || strtolower(trim((string)($field['name'] ?? ''))) !== 'search';
+	}));
 	return $schema;
 }
 
@@ -141,13 +144,111 @@ function forms_search_widget_inject_value_if_absent($html, $value) {
 function forms_search_widget_add_tag_class($html, $tag, $class) {
 	return preg_replace_callback('/<'.$tag.'\b([^>]*?)(\/?)>/i', function ($m) use ($tag, $class) {
 		$attrs = $m[1];
-		if (preg_match('/\bclass\s*=\s*"([^"]*)"/i', $attrs)) {
+		if (preg_match('/\bclass\s*=\s*"([^"]*)"/i', $attrs, $class_match)) {
+			if (preg_match('/(?:^|\s)'.preg_quote($class, '/').'(?:\s|$)/', $class_match[1])) return $m[0];
 			$attrs = preg_replace('/\bclass\s*=\s*"([^"]*)"/i', 'class="$1 '.$class.'"', $attrs, 1);
 		} else {
 			$attrs = rtrim($attrs).' class="'.$class.'"';
 		}
 		return '<'.$tag.$attrs.$m[2].'>';
 	}, $html, 1);
+}
+
+/**
+ * Define ou substitui um atributo na primeira tag recebida, aceitando atributos com aspas
+ * simples, duplas ou sem aspas. O valor sempre volta escapado e entre aspas duplas.
+ */
+function forms_search_widget_set_attribute($tag, $name, $value) {
+	$escaped = htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+	$pattern = '/\s+'.preg_quote($name, '/').'\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i';
+	$attribute = ' '.$name.'="'.$escaped.'"';
+	if (preg_match($pattern, $tag)) return preg_replace($pattern, $attribute, $tag, 1);
+	return preg_replace('/\s*\/?\s*>$/', $attribute.'>', $tag, 1);
+}
+
+function forms_search_widget_add_boolean_attribute($tag, $name) {
+	if (preg_match('/\s+'.preg_quote($name, '/').'(?:\s|=|>|\/)/i', $tag)) return $tag;
+	return preg_replace('/\s*\/?\s*>$/', ' '.$name.'>', $tag, 1);
+}
+
+function forms_search_widget_normalize_search_input($input, $form_id, $results_id) {
+	$input = forms_search_widget_set_attribute($input, 'type', 'search');
+	$input = forms_search_widget_set_attribute($input, 'name', 'search');
+	$input = forms_search_widget_set_attribute($input, 'id', (string)$form_id.'-search');
+	$input = forms_search_widget_set_attribute($input, 'autocomplete', 'off');
+	$input = forms_search_widget_set_attribute($input, 'role', 'combobox');
+	$input = forms_search_widget_set_attribute($input, 'aria-autocomplete', 'list');
+	$input = forms_search_widget_set_attribute($input, 'aria-controls', $results_id);
+	$input = forms_search_widget_set_attribute($input, 'aria-expanded', 'false');
+	return forms_search_widget_add_boolean_attribute($input, 'required');
+}
+
+/**
+ * Renderiza a célula intrínseca de busca. O desenho do input continua pertencendo ao template,
+ * mas seus atributos funcionais são controlados pelo módulo e não pelo schema de campos extras.
+ */
+function forms_search_widget_render_search_cell($html, $form_id) {
+	$results_id = (string)$form_id.'-autocomplete-results';
+	$pattern = '/<!--\s*input-search\s*<\s*-->([\s\S]*?)<!--\s*input-search\s*>\s*-->/i';
+	$found = false;
+	$html = preg_replace_callback($pattern, function ($m) use ($form_id, $results_id, &$found) {
+		$found = true;
+		$content = $m[1];
+		$input_found = false;
+		$content = preg_replace_callback('/<input\b[^>]*>/i', function ($input_match) use ($form_id, $results_id, &$input_found) {
+			if ($input_found) return $input_match[0];
+			$input_found = true;
+			return forms_search_widget_normalize_search_input($input_match[0], $form_id, $results_id);
+		}, $content, 1);
+
+		if (!$input_found) {
+			$content .= '<input type="search" name="search" id="'.htmlspecialchars((string)$form_id, ENT_QUOTES, 'UTF-8').'-search"'
+				.' class="forms-search-input" autocomplete="off" role="combobox" aria-autocomplete="list"'
+				.' aria-controls="'.htmlspecialchars($results_id, ENT_QUOTES, 'UTF-8').'" aria-expanded="false" required>';
+		}
+		return $content;
+	}, $html, 1);
+
+	if (!$found) {
+		$normalized = false;
+		$html = preg_replace_callback('/<input\b[^>]*>/i', function ($input_match) use ($form_id, $results_id, &$normalized) {
+			if ($normalized || !preg_match('/\sname\s*=\s*(["\'])search\1/i', $input_match[0])) return $input_match[0];
+			$normalized = true;
+			return forms_search_widget_normalize_search_input($input_match[0], $form_id, $results_id);
+		}, $html);
+		if (!$normalized) {
+			$fallback = '<input type="search" name="search" id="'.htmlspecialchars((string)$form_id, ENT_QUOTES, 'UTF-8').'-search"'
+				.' class="forms-search-input" autocomplete="off" role="combobox" aria-autocomplete="list"'
+				.' aria-controls="'.htmlspecialchars($results_id, ENT_QUOTES, 'UTF-8').'" aria-expanded="false" required>';
+			$html = preg_replace('/<\/form>/i', $fallback.'</form>', $html, 1);
+		}
+	}
+	return $html;
+}
+
+/** Garante a caixa flutuante que receberá resultados, inclusive em templates legados. */
+function forms_search_widget_render_results_cell($html, $form_id) {
+	$results_id = (string)$form_id.'-autocomplete-results';
+	$pattern = '/<!--\s*results-box\s*<\s*-->([\s\S]*?)<!--\s*results-box\s*>\s*-->/i';
+	$found = false;
+	$html = preg_replace_callback($pattern, function ($m) use ($results_id, &$found) {
+		$found = true;
+		$content = trim($m[1]);
+		if ($content === '') $content = '<div class="forms-search-results"></div>';
+		$content = forms_search_widget_add_tag_class($content, 'div', 'forms-search-results');
+		$content = preg_replace_callback('/<div\b[^>]*>/i', function ($tag_match) use ($results_id) {
+			$tag = forms_search_widget_set_attribute($tag_match[0], 'id', $results_id);
+			$tag = forms_search_widget_set_attribute($tag, 'role', 'listbox');
+			return forms_search_widget_set_attribute($tag, 'aria-live', 'polite');
+		}, $content, 1);
+		return $content;
+	}, $html, 1);
+
+	if (!$found) {
+		$fallback = '<div class="forms-search-results" id="'.htmlspecialchars($results_id, ENT_QUOTES, 'UTF-8').'" role="listbox" aria-live="polite"></div>';
+		$html = preg_replace('/<\/form>/i', $fallback.'</form>', $html, 1);
+	}
+	return $html;
 }
 
 /**
@@ -310,32 +411,10 @@ function forms_search_render($params) {
 	]);
 }
 
-/**
- * req-070 §2.2: obtém a configuração JS dinâmica (gestor.form[id]) de um formulário para o
- * preview do Editor HTML. Reutiliza o builder da biblioteca de formulários (formulario_montar_js_vars)
- * para devolver exatamente a mesma estrutura que formulario_controlador injeta no site publicado
- * (fields, reCAPTCHA v2/v3, redirects, prompts, componentes Fomantic/Tailwind), sem renderizar a página.
- *
- * @param array $params ['form_id' => slug] (aceita 'formId'/'id' como aliases).
- * @return array|null Configuração indexada pelo formulário ou null quando inexistente.
- */
-function forms_search_render_editor_html($params) {
-	if (!is_array($params)) return null;
-
-	$form_id = $params['form_id'] ?? ($params['formId'] ?? ($params['id'] ?? null));
-	if (empty($form_id)) return null;
-
-	gestor_incluir_biblioteca('formulario');
-	if (!function_exists('formulario_montar_js_vars')) return null;
-
-	$forms_search_js_vars = formulario_montar_js_vars([$form_id]);
-	if (!is_array($forms_search_js_vars) || !isset($forms_search_js_vars[$form_id])) return null;
-
-	return $forms_search_js_vars[$form_id];
-}
-
+/** Renderiza HTML informado pelo CRUD ou pelo widget público usando o mesmo contrato. */
 function forms_search_widget_render_inline($params) {
 	$form_id = $params['form_id'] ?? ($params['grupo_slug'] ?? 'busca');
+	$form_id = forms_search_widget_normalize_form_id($form_id);
 	$html = $params['html'] ?? '';
 	$schema = forms_search_widget_schema($params['fields_schema'] ?? '{}');
 	$fields = $schema['fields'];
@@ -356,17 +435,27 @@ function forms_search_widget_render_inline($params) {
 
 	$html = forms_search_widget_replace_var($html, 'form_id', htmlspecialchars((string)$form_id, ENT_QUOTES, 'UTF-8'));
 	$html = forms_search_widget_replace_var($html, 'form_action', htmlspecialchars($action, ENT_QUOTES, 'UTF-8'));
-	$html = forms_search_widget_replace_var($html, 'force_recaptcha', 'false');
 
 	// req-088 §1: força GET + action no <form> e garante um campo name="search" na saída.
-	$html = forms_search_widget_forcar_get($html, $action);
-	$html = forms_search_widget_garantir_campo_search($html);
+	$html = forms_search_widget_forcar_get($html, $action, $form_id);
+	$html = forms_search_widget_render_search_cell($html, $form_id);
+	$html = forms_search_widget_render_results_cell($html, $form_id);
 
 	return $html;
 }
 
 /**
- * req-088 §1: resolve o caminho alvo do action. Vazio → destino padrão de buscas (`pages-index/`).
+ * Impede que placeholders usados na documentacao virem ids reais no DOM do preview.
+ * Registros publicados sempre recebem o slug persistido; o fallback existe para inclusao/preview.
+ */
+function forms_search_widget_normalize_form_id($form_id) {
+	$form_id = trim((string)$form_id);
+	if ($form_id === '' || preg_match('/^\[[^\]]+\]$/', $form_id)) return 'forms-search-preview';
+	return $form_id;
+}
+
+/**
+ * req-088 §1: resolve o caminho alvo do action. Vazio → destino padrão de buscas (`pages-index-search/`).
  * URLs absolutas (http/https/protocol-relative) passam intactas; caminhos relativos recebem a url-raiz.
  */
 function forms_search_resolver_action($raw) {
@@ -375,7 +464,7 @@ function forms_search_resolver_action($raw) {
 	$raw = trim((string)$raw);
 	$raiz = (string)($_GESTOR['url-raiz'] ?? '');
 
-	if ($raw === '') return $raiz.'busca/';
+	if ($raw === '') return $raiz.'pages-index-search/';
 	if (preg_match('#^(https?:)?//#i', $raw)) return $raw;
 
 	// Remove barra inicial redundante para não duplicar com a url-raiz (que termina em /).
@@ -389,39 +478,87 @@ function forms_search_resolver_action($raw) {
  * req-088 §1: força o primeiro <form> a usar method="get" e o action informado, removendo
  * eventuais method/action herdados do template (que vinha com method="post").
  */
-function forms_search_widget_forcar_get($html, $action) {
-	return preg_replace_callback('/<form\b([^>]*)>/i', function ($m) use ($action) {
-		$attrs = $m[1];
-		$attrs = preg_replace('/\s+method\s*=\s*"[^"]*"/i', '', $attrs);
-		$attrs = preg_replace('/\s+action\s*=\s*"[^"]*"/i', '', $attrs);
-		$attrs = rtrim($attrs);
-		return '<form'.$attrs.' method="get" action="'.htmlspecialchars((string)$action, ENT_QUOTES, 'UTF-8').'">';
+function forms_search_widget_forcar_get($html, $action, $form_id = '') {
+	return preg_replace_callback('/<form\b([^>]*)>/i', function ($m) use ($action, $form_id) {
+		$form = forms_search_widget_set_attribute($m[0], 'method', 'get');
+		$form = forms_search_widget_set_attribute($form, 'action', $action);
+		$form = forms_search_widget_set_attribute($form, 'data-form-id', $form_id);
+		return forms_search_widget_add_tag_class($form, 'form', 'conn2flow-search-form');
 	}, $html, 1);
 }
 
-/**
- * req-088 §1: garante que a saída contenha um campo `name="search"` (a variável enviada na URL).
- * Se nenhum campo já usar esse name, converte o primeiro <input type=text|search> para name="search",
- * dando robustez a templates herdados do forms cujo campo não se chama "search".
- */
-function forms_search_widget_garantir_campo_search($html) {
-	if (preg_match('/name\s*=\s*"search"/i', $html)) return $html;
+function forms_search_autocomplete_summary($html, $limit = 180) {
+	$text = preg_replace('#<(script|style)\b[^>]*>[\s\S]*?</\1>#i', ' ', (string)$html);
+	$text = preg_replace('/<[^>]+>/', ' ', $text);
+	$text = trim(html_entity_decode($text, ENT_QUOTES, 'UTF-8'));
+	$text = preg_replace('/\s+/u', ' ', $text);
+	if (function_exists('mb_strlen') && mb_strlen($text, 'UTF-8') > $limit) {
+		return rtrim(mb_substr($text, 0, $limit, 'UTF-8')).'…';
+	}
+	if (!function_exists('mb_strlen') && strlen($text) > $limit) {
+		return rtrim(substr($text, 0, $limit)).'…';
+	}
+	return $text;
+}
 
-	$done = false;
-	$html = preg_replace_callback('/<input\b([^>]*)>/i', function ($m) use (&$done) {
-		if ($done) return $m[0];
-		$attrs = $m[1];
-		if (!preg_match('/type\s*=\s*"(text|search)"/i', $attrs)) return $m[0];
-		$done = true;
-		if (preg_match('/name\s*=\s*"[^"]*"/i', $attrs)) {
-			$attrs = preg_replace('/name\s*=\s*"[^"]*"/i', 'name="search"', $attrs, 1);
-		} else {
-			$attrs = rtrim($attrs).' name="search"';
-		}
-		return '<input'.$attrs.'>';
-	}, $html);
+/** Consulta pública paginada usada pelo autocomplete (30 resultados por página). */
+function forms_search_autocomplete_response($params) {
+	global $_GESTOR;
 
-	return $html;
+	if (!is_array($params)) $params = [];
+	$search = trim((string)($params['search'] ?? ($params['busca'] ?? '')));
+	$page = max(1, (int)($params['page'] ?? ($params['pagina'] ?? 1)));
+	$length = function_exists('mb_strlen') ? mb_strlen($search, 'UTF-8') : strlen($search);
+	if ($length < 3) {
+		return ['status' => 'Ok', 'results' => [], 'tem_mais' => false, 'pagina' => $page];
+	}
+
+	$limit = 30;
+	$offset = ($page - 1) * $limit;
+	$literal = banco_escape_field($search);
+	$language = banco_escape_field($_GESTOR['linguagem-codigo'] ?? 'pt-br');
+	$rows = banco_select([
+		'tabela' => 'paginas',
+		'campos' => ['nome', 'caminho', 'html'],
+		'extra' => "WHERE status='A' AND language='".$language."' AND tipo='pagina' AND sem_permissao=1"
+			." AND (nome LIKE '%".$literal."%' OR html LIKE '%".$literal."%')"
+			." ORDER BY nome ASC LIMIT ".$offset.", ".($limit + 1),
+	]);
+
+	$rows = is_array($rows) ? $rows : [];
+	$has_more = count($rows) > $limit;
+	if ($has_more) array_pop($rows);
+	$root = (string)($_GESTOR['url-raiz'] ?? '');
+	$results = [];
+	foreach ($rows as $row) {
+		$path = (string)($row['caminho'] ?? '');
+		$results[] = [
+			'title' => (string)($row['nome'] ?? ''),
+			'summary' => forms_search_autocomplete_summary($row['html'] ?? ''),
+			'url' => $path !== '' ? $root.ltrim($path, '/') : '',
+		];
+	}
+
+	return [
+		'status' => 'Ok',
+		'results' => $results,
+		'tem_mais' => $has_more,
+		'pagina' => $page,
+	];
+}
+
+/** Callback do roteador AJAX público de widgets. */
+function forms_search_render_ajax($params) {
+	global $_GESTOR;
+
+	if (!is_array($params)) $params = [];
+	if (($_GESTOR['ajax-opcao'] ?? '') !== 'forms-search-autocomplete') return '';
+	$expected_id = (string)($params['form_id'] ?? '');
+	$requested_id = (string)($_REQUEST['ajaxRegistroId'] ?? '');
+	if ($expected_id !== '' && $requested_id !== '' && $expected_id !== $requested_id) return '';
+
+	$_GESTOR['ajax-json'] = forms_search_autocomplete_response($_REQUEST['params'] ?? []);
+	return '';
 }
 
 /**

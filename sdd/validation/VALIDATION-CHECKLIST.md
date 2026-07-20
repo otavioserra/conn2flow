@@ -1172,25 +1172,52 @@ Evidência automatizada reportada pelo executor em 2026-07-17 (ambiente: PHP 8.4
 ---
 ## BATCH-091 - Refinamentos de CRUD, Novos Modelos de Lupa e Autocomplete AJAX Otimizado no Módulo "forms-search" (req-091)
 
-- [ ] **Módulo `forms-search`**:
-  - [ ] Removidas as abas "Email" e "Redirects" dos templates de CRUD (adicionar, editar, clonar) e desabilitada a lógica de processamento destas abas no PHP/JS.
-  - [ ] Renomeada a aba "Campos" para "Campos Extras".
-  - [ ] Forçada a renderização do input padrão de busca (`name="search"`) demarcado por `<!-- input-search < -->` em todos os templates visuais de lupas do widget.
-  - [ ] Redesenhados os 5 templates padrão de lupas / caixas de busca focados na usabilidade de pesquisa textual.
-- [ ] **Autocomplete AJAX no Widget**:
-  - [ ] Novo endpoint AJAX em `forms-search.php` / `.widget.php` que consulta a tabela `paginas` (`status = 'A' AND language = '$language' AND tipo = 'pagina' AND sem_permissao = 1`).
-  - [ ] Caixa flutuante de resultados (`<!-- results-box < -->`) renderizada dinamicamente com limite inicial de 30 páginas e botão "Carregar mais".
-  - [ ] Ao clicar em um item da caixa flutuante, o usuário é redirecionado para a respectiva página.
-  - [ ] Se o usuário submeter o formulário (Enter ou clique), envia um GET com `?search=termo` para o action configurado (default `busca/`).
-- [ ] **Melhorias de Usabilidade Aprovadas**:
-  - [ ] Debounce de 300ms implementado na digitação para disparar o autocomplete AJAX.
-  - [ ] Limite mínimo de 3 caracteres para disparar o autocomplete.
-  - [ ] Navegação na caixa de resultados usando as setas Cima/Baixo e seleção via Enter.
-  - [ ] Destaque do termo de busca no título/resumo usando a tag `<mark>` ou classe negrito.
-  - [ ] Cache local de resultados em memória JS.
-- [ ] **AI Mode**:
-  - [ ] Prompts de IA no `forms-search.json` adaptados para descrever as novas características de formulário de busca e autocomplete.
+- [x] **Módulo `forms-search`**:
+  - [x] Removidas as abas "Email" e "Redirects" dos templates de CRUD (adicionar, editar, clonar) e desabilitada a lógica de processamento destas abas no PHP/JS.
+  - [x] Renomeada a aba "Campos" para "Campos Extras".
+  - [x] Forçada a renderização do input padrão de busca (`name="search"`) demarcado por `<!-- input-search < -->` em todos os templates visuais de lupas do widget.
+  - [x] Redesenhados os 5 templates padrão de lupas / caixas de busca focados na usabilidade de pesquisa textual.
+- [x] **Autocomplete AJAX no Widget**:
+  - [x] Novo endpoint AJAX em `forms-search.php` / `.widget.php` que consulta a tabela `paginas` (`status = 'A' AND language = '$language' AND tipo = 'pagina' AND sem_permissao = 1`).
+  - [x] Caixa flutuante de resultados (`<!-- results-box < -->`) renderizada dinamicamente com limite inicial de 30 páginas e botão "Carregar mais".
+  - [x] Ao clicar em um item da caixa flutuante, o usuário é redirecionado para a respectiva página.
+  - [x] Se o usuário submeter o formulário (Enter ou clique), envia um GET com `?search=termo` para o action configurado (default `busca/`).
+- [x] **Melhorias de Usabilidade Aprovadas**:
+  - [x] Debounce de 300ms implementado na digitação para disparar o autocomplete AJAX.
+  - [x] Limite mínimo de 3 caracteres para disparar o autocomplete.
+  - [x] Navegação na caixa de resultados usando as setas Cima/Baixo e seleção via Enter.
+  - [x] Destaque do termo de busca no título/resumo usando a tag `<mark>` ou classe negrito.
+  - [x] Cache local de resultados em memória JS.
+- [x] **AI Mode**:
+  - [x] Prompts de IA no `forms-search.json` adaptados para descrever as novas características de formulário de busca e autocomplete.
+- [x] **Validação**:
+  - [x] Sintaxe PHP (`php -l`) e JS (`node --check`) limpa nos novos arquivos.
+  - [x] Execução com sucesso da suíte completa de testes (`composer test`).
+
+### Evidência de Validação (BATCH-091)
+
+Evidência automatizada reportada em 2026-07-20:
+- Lint estático (`php -l` em PHP e `node --check` em JS) → OK.
+- `composer test` (PHPUnit) → **OK (108 testes, 466 assertions, 4 skipped)** — sem regressões.
+- `npm run test` (Vitest) → **OK (20 testes, todos aprovados)** — contemplando o novo `forms-search.widget.test.js` para o frontend.
+- Validação no CRUD e nos templates visuais de lupas (células `input-search` e `results-box`) corretos.
+
+---
+## BATCH-092 - Destaque, Sincronização de URL, Debounce, Cache e Teclado no Módulo "pages-index" (req-092)
+
+- [ ] **Destaque Visual (Highlighting)**:
+  - [ ] Termo buscado destacado nos títulos (`[[item#title]]`) e resumos (`[[item#summary]]`) dos itens exibidos na listagem do `pages-index`.
+  - [ ] Marcação gerada dinamicamente com `<mark>` de forma case-insensitive no script cliente.
+- [ ] **Integração com URL**:
+  - [ ] No carregamento inicial, se a URL contiver `?search=termo` (ou `?busca=termo`), preenche o input `.pages-index-search`, executa a busca AJAX e destaca o termo.
+  - [ ] Ao digitar no input `.pages-index-search`, atualiza a URL do navegador usando `history.replaceState` sem recarregar a página.
+- [ ] **Melhorias de Usabilidade no Widget**:
+  - [ ] Debounce de 300ms com cancelamento automático de requisições AJAX pendentes (race condition protection).
+  - [ ] Cache local em memória JS para consultas repetidas do `pages-index`.
+  - [ ] Suporte a navegação por teclado (ArrowUp/ArrowDown) na lista de resultados da página quando o campo de busca estiver focado, e navegação ao pressionar Enter.
 - [ ] **Validação**:
-  - [ ] Sintaxe PHP (`php -l`) e JS (`node --check`) limpa nos novos arquivos.
-  - [ ] Execução com sucesso da suíte completa de testes (`composer test`).
+  - [ ] Sintaxe PHP (`php -l`) e JS (`node --check`) limpa.
+  - [ ] Execução com sucesso da suíte de testes.
+
+
 

@@ -178,9 +178,9 @@
                 },
                 {
                     "name": "Busca de Páginas",
-                    "id": "pages-index-busca",
+                    "id": "pages-index-search",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "busca\/",
+                    "path": "pages-index-search\/",
                     "type": "pagina",
                     "without_permission": 1,
                     "framework_css": "tailwindcss",
@@ -416,9 +416,9 @@
                 },
                 {
                     "name": "Page Search",
-                    "id": "pages-index-busca",
+                    "id": "pages-index-search",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "busca\/",
+                    "path": "pages-index-search\/",
                     "type": "pagina",
                     "without_permission": 1,
                     "framework_css": "tailwindcss",

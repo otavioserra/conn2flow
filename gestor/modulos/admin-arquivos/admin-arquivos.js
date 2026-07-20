@@ -316,6 +316,7 @@ $(document).ready(function () {
 		// ===== Carregamento / navegação
 
 		function carregar(append) {
+			if (!append) estado.pagina = 0; // reload do zero sempre parte da página 0
 			var filtros = coletarFiltros();
 			$('#gestor-listener').trigger('carregar_abrir');
 			$.ajax({

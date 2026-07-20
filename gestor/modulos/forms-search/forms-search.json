@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.1.0",
     "bibliotecas": [
         "interface",
         "html",
@@ -63,46 +63,16 @@
                 "id": "id-do-formulario",
                 "description": "Descrição do formulário.",
                 "fields_schema": {
-                    "field_name": "name",
-                    "field_email": "email",
-                    "form_action": "url-para-onde-enviar-o-formulario",
-                    "access_max_simple": 5,
-                    "access_max": 10,
-                    "force_recaptcha": true,
-                    "email": {
-                        "recipients": "Nome <email@email.com>; Another Name <another@email.com>",
-                        "reply_to": "email@email.com",
-                        "reply_to_name": "Nome do Remetente",
-                        "subject": "Assunto nº #code#",
-                        "message_component": "id-do-componente-de-mensagem"
-                    },
-                    "redirects": {
-                        "success": {
-                            "type": "url",
-                            "path": "your-page\/success\/"
-                        },
-                        "error": {
-                            "type": "url",
-                            "path": "your-page\/error\/"
-                        }
-                    },
+                    "form_action": "pages-index-search\/",
                     "fields": [
                         {
-                            "type": "text",
-                            "name": "name",
-                            "label": "Nome",
-                            "required": true
-                        },
-                        {
-                            "type": "email",
-                            "name": "email",
-                            "label": "E-mail",
-                            "required": true
-                        },
-                        {
-                            "type": "textarea",
-                            "name": "message",
-                            "label": "Mensagem",
+                            "type": "select",
+                            "name": "categoria",
+                            "label": "Categoria",
+                            "options": [
+                                "noticias:Notícias",
+                                "servicos:Serviços"
+                            ],
                             "required": false
                         }
                     ]
@@ -125,73 +95,73 @@
                 {
                     "name": "Formulário Definições Informações",
                     "id": "forms-search-info-definition",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "d0be0dda51a46031254cccfa08c1d85e",
+                        "html": "ce0a2a07932f9a16f591f1593bc3e39f",
                         "css": "",
-                        "combined": "d0be0dda51a46031254cccfa08c1d85e"
+                        "combined": "ce0a2a07932f9a16f591f1593bc3e39f"
                     }
                 }
             ],
             "templates": [
                 {
-                    "name": "Formulário de Contato Básico",
+                    "name": "Barra de Busca Clássica",
                     "id": "forms-search-contato-basico",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "8753c36322442ae89b747f38fe605fb6",
+                        "html": "fd7d92ea845875df031ba6dc93115d04",
                         "css": "",
-                        "combined": "8753c36322442ae89b747f38fe605fb6"
+                        "combined": "fd7d92ea845875df031ba6dc93115d04"
                     }
                 },
                 {
-                    "name": "Inscrição na Newsletter",
+                    "name": "Busca Minimalista",
                     "id": "forms-search-newsletter-newsletter",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "4bf6bdafaef9e8f15e16c491a282f65d",
+                        "html": "c0f20a726b9f622e665666c681ade211",
                         "css": "",
-                        "combined": "4bf6bdafaef9e8f15e16c491a282f65d"
+                        "combined": "c0f20a726b9f622e665666c681ade211"
                     }
                 },
                 {
-                    "name": "Registro de Usuário",
+                    "name": "Busca Hero",
                     "id": "forms-search-registro-usuario",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "b8f6a4b275bd7d992b87541060e9e9d4",
+                        "html": "96a89aef50b84b5174be5ed4916a20a3",
                         "css": "",
-                        "combined": "b8f6a4b275bd7d992b87541060e9e9d4"
+                        "combined": "96a89aef50b84b5174be5ed4916a20a3"
                     }
                 },
                 {
-                    "name": "Pesquisa de Satisfação",
+                    "name": "Busca Compacta",
                     "id": "forms-search-pesquisa-satisfacao",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "ec713cf91f1e9f8ee6326d59a41997ef",
+                        "html": "bf90c989f23a029605e04542f5ab4edc",
                         "css": "",
-                        "combined": "ec713cf91f1e9f8ee6326d59a41997ef"
+                        "combined": "bf90c989f23a029605e04542f5ab4edc"
                     }
                 },
                 {
-                    "name": "Suporte Técnico",
+                    "name": "Busca em Alto Contraste",
                     "id": "forms-search-suporte-tecnico",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "7369fec0015bad20f27abb1501d2f33c",
+                        "html": "d1ba74fc2f69643b89f2855f371c848c",
                         "css": "",
-                        "combined": "7369fec0015bad20f27abb1501d2f33c"
+                        "combined": "d1ba74fc2f69643b89f2855f371c848c"
                     }
                 }
             ],
@@ -232,11 +202,11 @@
                     "path": "forms-search\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "2ed25e364dbc53228dcabb70dd571ffd",
+                        "html": "e42652b4e9398045a8ab7f40eb7a155d",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "a089807d20e5a3c94ff59e6ef1f75933"
+                        "combined": "1dd1ced91d2edfdc3ca098ca7e88d9b4"
                     }
                 },
                 {
@@ -246,11 +216,11 @@
                     "path": "forms-search\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "ba2ec8c5fb0b5acb8bccd46bf2e53e65",
+                        "html": "a95b652093285adea976724b681d4a1b",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "3a4b3b34484bb71c504419e529e61763"
+                        "combined": "290d0a2b92e9ccaa5253d7563c0a3606"
                     }
                 },
                 {
@@ -260,26 +230,11 @@
                     "path": "forms-search\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "cdca8864f9794afa940cdf39bb725b14",
+                        "html": "37e303da6842c030af58c2dccc27088d",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "6b5e5cd24ead03c97b271c69b2afbdf7"
-                    }
-                },
-                {
-                    "name": "Forms Test Email Page",
-                    "id": "forms-search-test-email-page",
-                    "layout": "pagina-simples-tailwindcss",
-                    "path": "forms-search\/test-email-page\/",
-                    "type": "system",
-                    "option": "test-email-page",
-                    "framework_css": "tailwindcss",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "752b731f15b5cb2b87db994b3599a35f",
-                        "css": "",
-                        "combined": "752b731f15b5cb2b87db994b3599a35f"
+                        "combined": "b58e6a59c5ec56958e587e46dbb9ac10"
                     }
                 }
             ],
@@ -348,46 +303,16 @@
                 "id": "form-id",
                 "description": "Form description.",
                 "fields_schema": {
-                    "field_name": "name",
-                    "field_email": "email",
-                    "form_action": "url-for-where-to-send-form",
-                    "access_max_simple": 5,
-                    "access_max": 10,
-                    "force_recaptcha": true,
-                    "email": {
-                        "recipients": "Name <email@email.com>; Another Name <another@email.com>",
-                        "reply_to": "email@email.com",
-                        "reply_to_name": "Sender Name",
-                        "subject": "Subject nº #code#",
-                        "template": "template-component-id"
-                    },
-                    "redirects": {
-                        "success": {
-                            "type": "url",
-                            "path": "your-page\/success\/"
-                        },
-                        "error": {
-                            "type": "url",
-                            "path": "your-page\/error\/"
-                        }
-                    },
+                    "form_action": "pages-index-search\/",
                     "fields": [
                         {
-                            "type": "text",
-                            "name": "name",
-                            "label": "Name",
-                            "required": true
-                        },
-                        {
-                            "type": "email",
-                            "name": "email",
-                            "label": "E-mail",
-                            "required": true
-                        },
-                        {
-                            "type": "textarea",
-                            "name": "message",
-                            "label": "Message",
+                            "type": "select",
+                            "name": "category",
+                            "label": "Category",
+                            "options": [
+                                "news:News",
+                                "services:Services"
+                            ],
                             "required": false
                         }
                     ]
@@ -410,73 +335,73 @@
                 {
                     "name": "Forms Info Definition",
                     "id": "forms-search-info-definition",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "09eb18ffe59752355d20fa36336a7a9f",
+                        "html": "dd63ec346f22f129cdf4bfaab91d64f4",
                         "css": "",
-                        "combined": "09eb18ffe59752355d20fa36336a7a9f"
+                        "combined": "dd63ec346f22f129cdf4bfaab91d64f4"
                     }
                 }
             ],
             "templates": [
                 {
-                    "name": "Basic Contact Form",
+                    "name": "Classic Search Bar",
                     "id": "forms-search-contato-basico",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "07a6c123f9a7d70029f71c504651d59e",
+                        "html": "cf3903ac104e9cbce373fe93870f52b2",
                         "css": "",
-                        "combined": "07a6c123f9a7d70029f71c504651d59e"
+                        "combined": "cf3903ac104e9cbce373fe93870f52b2"
                     }
                 },
                 {
-                    "name": "Newsletter Subscription",
+                    "name": "Minimal Search",
                     "id": "forms-search-newsletter-newsletter",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "64c9e2af0bf687f8690b0175508e237b",
+                        "html": "36447f25d7cd4b37aba2d719dca15751",
                         "css": "",
-                        "combined": "64c9e2af0bf687f8690b0175508e237b"
+                        "combined": "36447f25d7cd4b37aba2d719dca15751"
                     }
                 },
                 {
-                    "name": "User Registration",
+                    "name": "Hero Search",
                     "id": "forms-search-registro-usuario",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "5acd05ef9330c9bb456b5518bb430939",
+                        "html": "461692ddf2544ac9459e0780a34f8c5e",
                         "css": "",
-                        "combined": "5acd05ef9330c9bb456b5518bb430939"
+                        "combined": "461692ddf2544ac9459e0780a34f8c5e"
                     }
                 },
                 {
-                    "name": "Satisfaction Survey",
+                    "name": "Compact Search",
                     "id": "forms-search-pesquisa-satisfacao",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "fc0894afbab9cf3672a0e679f04f7069",
+                        "html": "1027c76542221c3c42a2140ea2d6b623",
                         "css": "",
-                        "combined": "fc0894afbab9cf3672a0e679f04f7069"
+                        "combined": "1027c76542221c3c42a2140ea2d6b623"
                     }
                 },
                 {
-                    "name": "Technical Support",
+                    "name": "High Contrast Search",
                     "id": "forms-search-suporte-tecnico",
                     "target": "forms-search",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "f1e9e7d4c43fcf902a1e2f2d0cb268cd",
+                        "html": "11d320cebf6fda866728b427dbe432e4",
                         "css": "",
-                        "combined": "f1e9e7d4c43fcf902a1e2f2d0cb268cd"
+                        "combined": "11d320cebf6fda866728b427dbe432e4"
                     }
                 }
             ],
@@ -517,11 +442,11 @@
                     "path": "forms-search\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "112eb22df2143919deb2968b8e41d653",
+                        "html": "5a4c4cfba6bcdb3c1792ba6fb9172620",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "d2af150a5dce1909268347a977b64ba8"
+                        "combined": "26b40b1f988e54758973c74d1d7c40e7"
                     }
                 },
                 {
@@ -531,11 +456,11 @@
                     "path": "forms-search\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "4a6249d727e45ab1925c45fcac4253ee",
+                        "html": "6bc5955150ef9ffb07143d3ee7beef62",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "d13c586409f0f08fec3dd41e1fe45242"
+                        "combined": "c11d2a3fdf51dda67d8693a3d59b8d51"
                     }
                 },
                 {
@@ -545,26 +470,11 @@
                     "path": "forms-search\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "84bce0922c3a7847fb017f5fa18ce700",
+                        "html": "e8b5686d8ff9ab178dfca6f9e39081fe",
                         "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "4e5677dd03d001e8face98ed64234366"
-                    }
-                },
-                {
-                    "name": "Forms Test Email Page",
-                    "id": "forms-search-test-email-page",
-                    "layout": "pagina-simples-tailwindcss",
-                    "path": "forms-search\/test-email-page\/",
-                    "type": "system",
-                    "option": "test-email-page",
-                    "framework_css": "tailwindcss",
-                    "version": "1.1",
-                    "checksum": {
-                        "html": "752b731f15b5cb2b87db994b3599a35f",
-                        "css": "",
-                        "combined": "752b731f15b5cb2b87db994b3599a35f"
+                        "combined": "52f66111590e158ef9ddf254831acae2"
                     }
                 }
             ],

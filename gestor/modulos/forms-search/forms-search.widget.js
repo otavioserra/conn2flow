@@ -1,124 +1,278 @@
-/**
- * forms-search.widget.js — Controlador do widget de formulários no PREVIEW do Editor HTML (req-070).
- *
- * No site publicado o formulário é regido diretamente pela biblioteca de formulários
- * (formulario.php injeta gestor.form[id] no page load + formulario.js — ver BATCH-069). No
- * preview do Editor HTML, porém, o iframe é um srcdoc estático gerado por JS: o backend não roda
- * formulario_controlador, então gestor.form fica vazio e o formulário não se inicializa.
- *
- * Este script roda DENTRO do iframe de preview. Ele varre os formulários renderizados
- * (.conn2flow-form / ._forms-submissions-controller), recupera via AJAX dedicado
- * (ajaxOpcao=forms-search-render-editor-html) as mesmas variáveis que o backend injetaria em
- * gestor.form[id] e, em seguida, carrega interface.js + formulario.js para ligar os eventos de
- * submissão — reproduzindo o comportamento do site real dentro do preview.
- *
- * Como cada módulo declara seu próprio widget_js_include (req-070 §1), este arquivo só é incluído
- * no preview do editor de formulários, onde gestor.moduloCaminho === 'forms-search'.
- */
 (function () {
-    var $ = window.jQuery || window.$;
-    var gestor = window.gestor || (window.parent && window.parent.gestor) || null;
-    if (!$ || !gestor || !gestor.raiz) return;
+    'use strict';
 
-    var SELECTOR = 'form._forms-submissions-controller, form.conn2flow-form, ._forms-submissions-controller, .conn2flow-form';
+    var MIN_LENGTH = 3;
+    var DEBOUNCE_MS = 300;
+    var cache = Object.create(null);
+    var gestorConfig = window.gestor || null;
+    try {
+        if (!gestorConfig && window.parent && window.parent !== window) gestorConfig = window.parent.gestor || null;
+    } catch (e) { }
 
-    var configRequested = {}; // form_id -> true (config já solicitada)
-    var pendingFetches = 0;   // requisições AJAX em voo
-    var scriptsLoaded = false;
-
-    function carregarScript(src, callback) {
-        var s = document.createElement('script');
-        s.src = src;
-        s.onload = function () { if (callback) callback(); };
-        s.onerror = function () { if (callback) callback(); };
-        document.head.appendChild(s);
+    function isPreview() {
+        return window.location.href === 'about:srcdoc' && window.parent && window.parent !== window;
     }
 
-    // Carrega a biblioteca de formulários uma única vez. A interface.js entra antes do
-    // formulario.js (mesma ordem do site publicado). O start() do formulario.js roda no ready;
-    // como o documento já está carregado, ele dispara de imediato e lê gestor.form já populado.
-    function carregarBiblioteca() {
-        if (scriptsLoaded) return;
-        scriptsLoaded = true;
-        var versao = gestor.versao || '1.0.0';
-        carregarScript(gestor.raiz + 'interface/interface.js?v=' + versao, function () {
-            carregarScript(gestor.raiz + 'interface/formulario.js?v=' + versao);
+    function languageIsPtBr() {
+        var lang = (gestorConfig && gestorConfig.language) || document.documentElement.lang || '';
+        return String(lang).toLowerCase().indexOf('pt') === 0;
+    }
+
+    function endpoint() {
+        if (isPreview()) {
+            try { return window.parent.location.href; } catch (e) { return window.location.href; }
+        }
+        return window.location.href;
+    }
+
+    function requestBody(formId, term, page) {
+        var data = new URLSearchParams();
+        data.set('ajax', 'sim');
+        data.set('ajaxOpcao', 'forms-search-autocomplete');
+        data.set('ajaxRegistroId', formId);
+        data.set('params[search]', term);
+        data.set('params[page]', String(page));
+        // Aciona forms_search_render_ajax() tanto no site publicado quanto no srcdoc do CRUD.
+        data.set('ajaxWidgets', 'forms-search->render(' + JSON.stringify({ form_id: formId }) + ')');
+
+        if (isPreview()) {
+            if (gestorConfig && gestorConfig.moduloOpcao) data.set('opcao', gestorConfig.moduloOpcao);
+        }
+        return data;
+    }
+
+    function cacheKey(formId, term, page) {
+        return formId + '\n' + term.toLocaleLowerCase() + '\n' + page;
+    }
+
+    function init(form) {
+        if (!form || form.getAttribute('data-forms-search-ready') === 'true') return;
+        var input = form.querySelector('input[name="search"]');
+        var box = form.querySelector('.forms-search-results');
+        if (!input || !box) return;
+
+        form.setAttribute('data-forms-search-ready', 'true');
+        var formId = form.getAttribute('data-form-id') || form.id || 'busca';
+        var state = {
+            term: '',
+            page: 0,
+            timer: null,
+            requestToken: 0,
+            controller: null,
+            activeIndex: -1
+        };
+
+        function options() {
+            return Array.prototype.slice.call(box.querySelectorAll('.forms-search-result'));
+        }
+
+        function openBox() {
+            box.hidden = false;
+            box.style.display = 'block';
+            input.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeBox(clear) {
+            input.setAttribute('aria-expanded', 'false');
+            box.hidden = true;
+            box.style.display = 'none';
+            state.activeIndex = -1;
+            if (clear) box.textContent = '';
+        }
+
+        function statusMessage(text) {
+            box.textContent = '';
+            var message = document.createElement('div');
+            message.className = 'forms-search-status';
+            message.style.cssText = 'padding:0.9rem 1rem;color:#64748b;font-size:0.875rem;';
+            message.textContent = text;
+            box.appendChild(message);
+            openBox();
+        }
+
+        function appendHighlighted(target, text, term) {
+            text = String(text || '');
+            var source = text.toLocaleLowerCase();
+            var needle = String(term || '').toLocaleLowerCase();
+            var cursor = 0;
+            var index;
+            if (!needle) { target.textContent = text; return; }
+            while ((index = source.indexOf(needle, cursor)) !== -1) {
+                if (index > cursor) target.appendChild(document.createTextNode(text.slice(cursor, index)));
+                var mark = document.createElement('mark');
+                mark.style.cssText = 'background:#fef08a;color:inherit;padding:0;';
+                mark.textContent = text.slice(index, index + needle.length);
+                target.appendChild(mark);
+                cursor = index + needle.length;
+            }
+            if (cursor < text.length) target.appendChild(document.createTextNode(text.slice(cursor)));
+        }
+
+        function resultElement(item, term) {
+            var link = document.createElement('a');
+            link.className = 'forms-search-result';
+            link.href = item.url || '#';
+            link.setAttribute('role', 'option');
+            link.setAttribute('aria-selected', 'false');
+            link.style.cssText = 'display:block;padding:0.85rem 1rem;border-bottom:1px solid rgba(148,163,184,.24);text-decoration:none;color:inherit;cursor:pointer;';
+
+            var title = document.createElement('span');
+            title.className = 'forms-search-result-title';
+            title.style.cssText = 'display:block;font-weight:700;line-height:1.35;';
+            appendHighlighted(title, item.title, term);
+            link.appendChild(title);
+
+            if (item.summary) {
+                var summary = document.createElement('span');
+                summary.className = 'forms-search-result-summary';
+                summary.style.cssText = 'display:block;margin-top:.25rem;color:#64748b;font-size:.875rem;line-height:1.4;';
+                appendHighlighted(summary, item.summary, term);
+                link.appendChild(summary);
+            }
+
+            link.addEventListener('mouseenter', function () {
+                setActive(options().indexOf(link));
+            });
+            return link;
+        }
+
+        function setActive(index) {
+            var items = options();
+            if (!items.length) { state.activeIndex = -1; return; }
+            if (index < 0) index = items.length - 1;
+            if (index >= items.length) index = 0;
+            items.forEach(function (item, itemIndex) {
+                var selected = itemIndex === index;
+                item.setAttribute('aria-selected', selected ? 'true' : 'false');
+                item.style.background = selected ? 'rgba(59,130,246,.10)' : '';
+            });
+            state.activeIndex = index;
+            items[index].scrollIntoView({ block: 'nearest' });
+        }
+
+        function render(response, append) {
+            if (!append) box.textContent = '';
+            else {
+                var previousButton = box.querySelector('.forms-search-load-more');
+                if (previousButton) previousButton.remove();
+            }
+
+            var results = response && Array.isArray(response.results) ? response.results : [];
+            results.forEach(function (item) { box.appendChild(resultElement(item, state.term)); });
+
+            if (!append && !results.length) {
+                statusMessage(languageIsPtBr() ? 'Nenhum resultado encontrado.' : 'No results found.');
+                return;
+            }
+
+            if (response && response.tem_mais) {
+                var button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'forms-search-load-more';
+                button.style.cssText = 'display:block;width:100%;padding:.8rem 1rem;border:0;background:#f8fafc;color:#2563eb;font-weight:700;cursor:pointer;';
+                button.textContent = languageIsPtBr() ? 'Carregar mais' : 'Load more';
+                button.addEventListener('click', function () { request(state.page + 1, true); });
+                box.appendChild(button);
+            }
+            state.activeIndex = -1;
+            openBox();
+        }
+
+        function request(page, append) {
+            var term = input.value.trim();
+            if (term.length < MIN_LENGTH) { closeBox(true); return; }
+            state.term = term;
+            var key = cacheKey(formId, term, page);
+            if (cache[key]) {
+                state.page = page;
+                render(cache[key], append);
+                return;
+            }
+
+            state.requestToken += 1;
+            var token = state.requestToken;
+            if (state.controller) state.controller.abort();
+            state.controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+            if (!append) statusMessage(languageIsPtBr() ? 'Buscando…' : 'Searching…');
+
+            fetch(endpoint(), {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                body: requestBody(formId, term, page).toString(),
+                signal: state.controller ? state.controller.signal : undefined
+            }).then(function (response) {
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                return response.json();
+            }).then(function (response) {
+                if (token !== state.requestToken || input.value.trim() !== term) return;
+                if (!response || response.status !== 'Ok') throw new Error('Invalid autocomplete response');
+                cache[key] = response;
+                state.page = page;
+                render(response, append);
+            }).catch(function (error) {
+                if (error && error.name === 'AbortError') return;
+                if (token === state.requestToken) statusMessage(languageIsPtBr() ? 'Não foi possível carregar os resultados.' : 'Unable to load results.');
+            });
+        }
+
+        input.addEventListener('input', function () {
+            clearTimeout(state.timer);
+            state.requestToken += 1;
+            if (state.controller) state.controller.abort();
+            if (input.value.trim().length < MIN_LENGTH) { closeBox(true); return; }
+            state.timer = setTimeout(function () { request(1, false); }, DEBOUNCE_MS);
         });
-    }
 
-    function solicitarConfig(formId) {
-        if (configRequested[formId]) return;
-        configRequested[formId] = true;
-        pendingFetches++;
-
-        $.ajax({
-            type: 'POST',
-            url: gestor.raiz + 'forms-search/',
-            dataType: 'json',
-            data: {
-                opcao: gestor.moduloOpcao,
-                ajax: 'sim',
-                ajaxOpcao: 'forms-search-render-editor-html',
-                params: { form_id: formId }
-            },
-            success: function (resp) {
-                if (resp && resp.status === 'Ok' && resp.forms_search_js_vars) {
-                    gestor.form = gestor.form || {};
-                    gestor.form[formId] = resp.forms_search_js_vars;
-                }
-            },
-            complete: function () {
-                pendingFetches--;
-                if (pendingFetches <= 0) carregarBiblioteca();
+        input.addEventListener('keydown', function (event) {
+            var items = options();
+            if (event.key === 'ArrowDown' && items.length) {
+                event.preventDefault();
+                setActive(state.activeIndex + 1);
+            } else if (event.key === 'ArrowUp' && items.length) {
+                event.preventDefault();
+                setActive(state.activeIndex - 1);
+            } else if (event.key === 'Enter' && state.activeIndex >= 0 && items[state.activeIndex]) {
+                event.preventDefault();
+                window.location.assign(items[state.activeIndex].href);
+            } else if (event.key === 'Escape') {
+                closeBox(false);
             }
         });
-    }
 
-    // Coleta os IDs dos formulários presentes no DOM (deduplicados). Retorna a quantidade encontrada.
-    function varrerFormularios() {
-        var encontrados = 0;
-        $(SELECTOR).each(function () {
-            var formId = $(this).attr('data-form-id') || $(this).attr('id') || '';
-            if (formId) {
-                encontrados++;
-                solicitarConfig(formId);
-            }
+        input.addEventListener('focus', function () {
+            var term = input.value.trim();
+            if (term.length < MIN_LENGTH) return;
+            var firstPage = cache[cacheKey(formId, term, 1)];
+            if (firstPage) { state.term = term; state.page = 1; render(firstPage, false); }
         });
-        return encontrados;
+
+        document.addEventListener('click', function (event) {
+            if (!form.contains(event.target)) closeBox(false);
+        });
+
+        closeBox(true);
     }
 
-    // Os widgets do preview são renderizados de forma assíncrona (AJAX html-editor-widget-render),
-    // então o formulário pode ainda não estar no DOM quando este script roda. Faz polling curto até
-    // estabilizar a contagem de formulários (ou atingir o limite de tentativas).
-    function iniciar() {
-        var tentativas = 0;
-        var maxTentativas = 40; // ~10s a 250ms
-        var ultimaContagem = -1;
-        var estavel = 0;
-
-        var timer = setInterval(function () {
-            tentativas++;
-            var contagem = varrerFormularios();
-
-            if (contagem > 0 && contagem === ultimaContagem) {
-                estavel++;
-            } else {
-                estavel = 0;
-            }
-            ultimaContagem = contagem;
-
-            // Para de varrer quando a contagem estabiliza (2 ciclos) ou esgota as tentativas.
-            if ((contagem > 0 && estavel >= 2) || tentativas >= maxTentativas) {
-                clearInterval(timer);
-                // Se nenhum fetch ficou pendente mas há formulários, garante o carregamento da lib.
-                if (contagem > 0 && pendingFetches <= 0) carregarBiblioteca();
-            }
-        }, 250);
+    function scan(root) {
+        if (root && root.matches && root.matches('form.conn2flow-search-form')) init(root);
+        var forms = (root || document).querySelectorAll ? (root || document).querySelectorAll('form.conn2flow-search-form') : [];
+        Array.prototype.forEach.call(forms, init);
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', iniciar);
-    } else {
-        iniciar();
+    function start() {
+        scan(document);
+        if (typeof MutationObserver !== 'undefined') {
+            new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    Array.prototype.forEach.call(mutation.addedNodes || [], function (node) {
+                        if (node.nodeType === 1) scan(node);
+                    });
+                });
+            }).observe(document.documentElement, { childList: true, subtree: true });
+        }
     }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+    else start();
 })();

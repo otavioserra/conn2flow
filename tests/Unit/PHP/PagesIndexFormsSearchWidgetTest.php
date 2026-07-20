@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
  * BATCH-088 (req-088): cobre as funções PURAS dos widgets novos pages-index e forms-search
  * (sem banco de dados):
  *  - pages-index: resumo textual, render de itens ([[item#X]]), blocos condicionais e globais.
- *  - forms-search: resolução do action, força de method=get e garantia do campo name="search".
+ *  - forms-search: action GET, campo search intrínseco e caixa de autocomplete.
  */
 final class PagesIndexFormsSearchWidgetTest extends TestCase
 {
@@ -91,7 +91,7 @@ final class PagesIndexFormsSearchWidgetTest extends TestCase
 
     public function testResolverActionVazioUsaDestinoPadrao(): void
     {
-        self::assertSame('https://site.test/busca/', forms_search_resolver_action(''));
+        self::assertSame('https://site.test/pages-index-search/', forms_search_resolver_action(''));
     }
 
     public function testResolverActionRelativoRecebeUrlRaiz(): void
@@ -111,34 +111,135 @@ final class PagesIndexFormsSearchWidgetTest extends TestCase
     public function testForcarGetTrocaMethodEAction(): void
     {
         $html = '<form class="c2f" method="post" action="/velho">campos</form>';
-        $out = forms_search_widget_forcar_get($html, 'https://site.test/busca/');
+        $out = forms_search_widget_forcar_get($html, 'https://site.test/pages-index-search/', 'busca-site');
         self::assertStringContainsString('method="get"', $out);
-        self::assertStringContainsString('action="https://site.test/busca/"', $out);
+        self::assertStringContainsString('action="https://site.test/pages-index-search/"', $out);
+        self::assertStringContainsString('data-form-id="busca-site"', $out);
+        self::assertStringContainsString('conn2flow-search-form', $out);
         self::assertStringNotContainsString('method="post"', $out);
         self::assertStringNotContainsString('action="/velho"', $out);
-        self::assertStringContainsString('class="c2f"', $out);
+        self::assertStringContainsString('class="c2f conn2flow-search-form"', $out);
     }
 
-    public function testGarantirCampoSearchConverteNamePrimeiroInput(): void
+    public function testCelulaSearchInjetaContratoSemAlterarCampoExtra(): void
     {
-        $html = '<form><input type="text" name="nome"><input type="email" name="email"></form>';
-        $out = forms_search_widget_garantir_campo_search($html);
+        $html = '<form><!-- input-search < --><input class="visual" placeholder="Buscar"><!-- input-search > -->'
+            . '<input type="text" name="categoria"></form>';
+        $out = forms_search_widget_render_search_cell($html, 'busca-site');
         self::assertStringContainsString('name="search"', $out);
-        self::assertStringNotContainsString('name="nome"', $out);
-        // O segundo campo (email) não é tocado.
-        self::assertStringContainsString('name="email"', $out);
+        self::assertStringContainsString('type="search"', $out);
+        self::assertStringContainsString('id="busca-site-search"', $out);
+        self::assertStringContainsString('aria-controls="busca-site-autocomplete-results"', $out);
+        self::assertStringContainsString('required', $out);
+        self::assertStringContainsString('name="categoria"', $out);
+        self::assertStringNotContainsString('input-search <', $out);
     }
 
-    public function testGarantirCampoSearchNaoDuplicaQuandoJaExiste(): void
+    public function testCelulaResultadosInjetaContratoAcessivel(): void
     {
-        $html = '<form><input type="search" name="search"></form>';
-        self::assertSame($html, forms_search_widget_garantir_campo_search($html));
+        $html = '<form><!-- results-box < --><div class="visual"></div><!-- results-box > --></form>';
+        $out = forms_search_widget_render_results_cell($html, 'busca-site');
+        self::assertStringContainsString('class="visual forms-search-results"', $out);
+        self::assertStringContainsString('id="busca-site-autocomplete-results"', $out);
+        self::assertStringContainsString('role="listbox"', $out);
+        self::assertStringContainsString('aria-live="polite"', $out);
+        self::assertStringNotContainsString('results-box <', $out);
     }
 
-    public function testGarantirCampoSearchAdicionaNameQuandoAusente(): void
+    public function testRenderInlineSempreIncluiSearchMesmoSemCamposExtras(): void
     {
-        $html = '<form><input type="text" placeholder="Buscar"></form>';
-        $out = forms_search_widget_garantir_campo_search($html);
+        $html = '<form><!-- input-search < --><input class="visual"><!-- input-search > -->'
+            . '<!-- item < --><input name="[[item#name]]"><!-- item > -->'
+            . '<!-- results-box < --><div></div><!-- results-box > --></form>';
+        $out = forms_search_widget_render_inline([
+            'form_id' => 'busca-site',
+            'html' => $html,
+            'fields_schema' => '{"fields":[{"name":"search","type":"text"},{"name":"categoria","type":"text"}]}',
+        ]);
         self::assertStringContainsString('name="search"', $out);
+        self::assertSame(1, substr_count($out, 'name="search"'));
+        self::assertStringContainsString('name="categoria"', $out);
+        self::assertStringContainsString('forms-search-results', $out);
+        self::assertStringNotContainsString('[[item#name]]', $out);
+        self::assertStringContainsString('action="https://site.test/pages-index-search/"', $out);
+    }
+
+    public function testRenderInlineNaoMaterializaPlaceholderComoSlugDoPreview(): void
+    {
+        $out = forms_search_widget_render_inline([
+            'form_id' => '[slug-do-formulario]',
+            'html' => '<form><input type="search" name="search"><div class="forms-search-results"></div></form>',
+            'fields_schema' => '{"fields":[]}',
+        ]);
+
+        self::assertStringNotContainsString('[slug-do-formulario]', $out);
+        self::assertStringContainsString('data-form-id="forms-search-preview"', $out);
+        self::assertStringContainsString('id="forms-search-preview-search"', $out);
+        self::assertStringContainsString('id="forms-search-preview-autocomplete-results"', $out);
+    }
+
+    public function testResumoAutocompleteRemoveHtmlETrunca(): void
+    {
+        $out = forms_search_autocomplete_summary('<h1>Título</h1><p>' . str_repeat('x', 200) . '</p>', 30);
+        self::assertStringStartsWith('Título ', $out);
+        self::assertSame(31, mb_strlen($out, 'UTF-8'));
+        self::assertStringEndsWith('…', $out);
+    }
+
+    public function testCallbackAjaxDoWidgetRespondeTambemAoPreviewDoCrud(): void
+    {
+        $requestBefore = $_REQUEST;
+        $ajaxBefore = $GLOBALS['_GESTOR']['ajax-json'] ?? null;
+        $ajaxOpcaoBefore = $GLOBALS['_GESTOR']['ajax-opcao'] ?? null;
+        try {
+            $GLOBALS['_GESTOR']['ajax-opcao'] = 'forms-search-autocomplete';
+            $_REQUEST = [
+                'ajaxRegistroId' => 'busca-site',
+                'params' => ['search' => 'ab', 'page' => 1],
+            ];
+            unset($GLOBALS['_GESTOR']['ajax-json']);
+
+            self::assertSame('', forms_search_render_ajax(['form_id' => 'busca-site']));
+            self::assertSame('Ok', $GLOBALS['_GESTOR']['ajax-json']['status']);
+            self::assertSame([], $GLOBALS['_GESTOR']['ajax-json']['results']);
+            self::assertFalse($GLOBALS['_GESTOR']['ajax-json']['tem_mais']);
+        } finally {
+            $_REQUEST = $requestBefore;
+            if ($ajaxOpcaoBefore === null) unset($GLOBALS['_GESTOR']['ajax-opcao']);
+            else $GLOBALS['_GESTOR']['ajax-opcao'] = $ajaxOpcaoBefore;
+            if ($ajaxBefore === null) unset($GLOBALS['_GESTOR']['ajax-json']);
+            else $GLOBALS['_GESTOR']['ajax-json'] = $ajaxBefore;
+        }
+    }
+
+    public function testTodosOsTemplatesPossuemCelulasERenderizamContratoDeBusca(): void
+    {
+        $base = CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR
+            . 'forms-search' . DIRECTORY_SEPARATOR . 'resources';
+        $files = [];
+        foreach (['pt-br', 'en'] as $language) {
+            $pattern = $base . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . 'templates'
+                . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR . '*.html';
+            $files = array_merge($files, glob($pattern) ?: []);
+        }
+
+        self::assertCount(10, $files);
+        foreach ($files as $file) {
+            $html = (string)file_get_contents($file);
+            self::assertSame(1, substr_count($html, '<!-- input-search < -->'), $file);
+            self::assertSame(1, substr_count($html, '<!-- results-box < -->'), $file);
+
+            $out = forms_search_widget_render_inline([
+                'form_id' => 'busca-template',
+                'html' => $html,
+                'fields_schema' => '{"fields":[]}',
+            ]);
+            self::assertSame(1, substr_count($out, 'name="search"'), $file);
+            self::assertSame(1, substr_count($out, 'forms-search-results'), $file);
+            self::assertStringContainsString('method="get"', $out, $file);
+            self::assertStringContainsString('action="https://site.test/pages-index-search/"', $out, $file);
+            self::assertStringNotContainsString('input-search <', $out, $file);
+            self::assertStringNotContainsString('results-box <', $out, $file);
+        }
     }
 }

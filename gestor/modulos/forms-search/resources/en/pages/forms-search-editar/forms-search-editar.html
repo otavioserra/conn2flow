@@ -3,30 +3,18 @@
 <div class="forms-search-main-tabs">
 <div class="ui top attached tabular menu menuForms">
     <a class="active item" data-tab="forms-search-general"><i class="settings icon"></i> General</a>
-    <a class="item" data-tab="forms-search-email"><i class="mail icon"></i> E-mail</a>
-    <a class="item" data-tab="forms-search-redirects"><i class="share icon"></i> Redirects</a>
-    <a class="item" data-tab="forms-search-fields"><i class="list icon"></i> Fields</a>
+    <a class="item" data-tab="forms-search-fields"><i class="list icon"></i> Extra Fields</a>
 </div>
 
 <div class="ui bottom attached active tab segment" data-tab="forms-search-general">
     <div class="field"><label>Name</label><input type="text" name="name" placeholder="Ex: Form Name" value="#name#"></div>
     <div class="field"><label>Description</label><input type="text" name="description" placeholder="Ex: Form Description" value="#description#"></div>
     <div class="field"><label>#form-module-label#</label><span>#select-module#</span></div>
-    <div class="field"><label>Action</label><input type="text" id="form_action" placeholder="pages-index/"></div>
-    <div class="three fields"><div class="field"><label>Simple limit</label><input type="number" id="access_max_simple" min="0"></div><div class="field"><label>Total limit</label><input type="number" id="access_max" min="0"></div><div class="field"><label>reCAPTCHA</label><div class="ui toggle checkbox"><input type="checkbox" id="force_recaptcha"><label>Required</label></div></div></div>
-</div>
-
-<div class="ui bottom attached tab segment" data-tab="forms-search-email">
-    <div class="field"><label>Recipients</label><input type="text" id="email_recipients"></div>
-    <div class="two fields"><div class="field"><label>Reply-To</label><input type="email" id="email_reply_to"></div><div class="field"><label>Sender name</label><input type="text" id="email_reply_to_name"></div></div>
-    <div class="two fields"><div class="field"><label>Subject</label><input type="text" id="email_subject"></div><div class="field"><label>Message component</label><div class="sig-autocomplete" data-target="componentes" style="position:relative;"><div class="ui action input"><input type="text" class="sig-search-input" autocomplete="off"><button type="button" class="ui icon button sig-clear"><i class="times icon"></i></button></div><input type="hidden" id="email_message_component" class="sig-hidden-value" value=""><div class="sig-results ui segment" style="display:none;position:absolute;z-index:10;width:100%;max-height:220px;overflow:auto;padding:0;margin-top:2px;"></div></div></div></div>
-</div>
-
-<div class="ui bottom attached tab segment" data-tab="forms-search-redirects">
-    <div class="two fields"><div class="field"><label>Success</label><input type="text" id="redirect_success_path"></div><div class="field"><label>Error</label><input type="text" id="redirect_error_path"></div></div>
+    <div class="field"><label>Action</label><input type="text" id="form_action" placeholder="pages-index-search/"></div>
 </div>
 
 <div class="ui bottom attached tab segment" data-tab="forms-search-fields">
+    <div class="ui info message">The required <code>search</code> field is included automatically. Add only optional filters here.</div>
     <button type="button" class="ui primary button" id="btn-add-form-field"><i class="plus icon"></i> Field</button>
     <table class="ui celled compact table" id="forms-search-fields-table">
         <thead><tr><th style="width:40px;"></th><th>Label</th><th>Name</th><th>Type</th><th>Placeholder</th><th>Options</th><th style="width:90px;">Required</th><th style="width:60px;"></th></tr></thead>

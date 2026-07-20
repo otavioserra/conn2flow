@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.5",
+    "versao": "1.1.6",
     "bibliotecas": [
         "interface",
         "html",
@@ -18,7 +18,7 @@
         "mini_width": 200
     },
     "lista": {
-        "max_por_pagina": 60,
+        "max_por_pagina": 24,
         "lote_miniaturas": 5
     },
     "upload": {
@@ -50,11 +50,11 @@
                     "path": "admin-arquivos\/adicionar\/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "70f113c4c55ff90e3cc30fa786169554",
-                        "css": "d91d19fcfe1529ca8d190132491b1e9a",
-                        "combined": "43d7775ef0c5c475560bf839e1e85fca"
+                        "html": "0a378bbc2501de51816ef6f545904f1e",
+                        "css": "d31d76fb8265d4e421328464d29c85c6",
+                        "combined": "3d597003978f8d5ea86bd9ef662f93ed"
                     }
                 },
                 {
@@ -522,11 +522,11 @@
                     "path": "admin-arquivos\/adicionar\/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "70f113c4c55ff90e3cc30fa786169554",
-                        "css": "d91d19fcfe1529ca8d190132491b1e9a",
-                        "combined": "43d7775ef0c5c475560bf839e1e85fca"
+                        "html": "0a378bbc2501de51816ef6f545904f1e",
+                        "css": "d31d76fb8265d4e421328464d29c85c6",
+                        "combined": "3d597003978f8d5ea86bd9ef662f93ed"
                     }
                 },
                 {

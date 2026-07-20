@@ -1138,7 +1138,7 @@ function gestor_cookie_verificacao(){
 		
 		// ===== Redirecionar o usuário afim de conferir se está ativo numa nova conexão com a URL e queryString caso o mesmo não tenha sido logado de outra forma.
 		
-		$url = urlencode($_GESTOR['caminho-total']);
+		$url = $_GESTOR['caminho-total'] ? urlencode($_GESTOR['caminho-total']) : '';
 		$queryString = urlencode(gestor_querystring());
 		
 		header("Location: " . $_GESTOR['url-raiz'] . '_gestor-cookie-verify/'.$cookieId.'/?url='.$url.(existe($queryString) ? '&queryString='.$queryString : ''));
@@ -2008,7 +2008,7 @@ function gestor_roteador(){
 				header("Location: " . $_GESTOR['url-raiz'] . 'cookies-is-mandatory/'); exit;
 			} else {
 				$url = urldecode(banco_escape_field($_REQUEST['url']));
-				$queryString = urldecode(banco_escape_field($_REQUEST['queryString']));
+				$queryString = $_REQUEST['queryString'] ? urldecode(banco_escape_field($_REQUEST['queryString'])) : '';
 				
 				header("Location: " . $_GESTOR['url-raiz'] . $url .(existe($queryString) ? '?'.$queryString : '')); exit;
 			}

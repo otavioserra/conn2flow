@@ -1,35 +1,24 @@
-<form class="conn2flow-form bg-white border border-gray-200 rounded-2xl shadow-md p-8 max-w-xl mx-auto space-y-5" data-form-id="@[[form_id]]@" method="post">
-    <input type="hidden" name="form_id" value="@[[form_id]]@">
-    <div class="border-b border-gray-100 pb-4">
-        <h2 class="text-xl font-bold text-gray-800">Criar Nova Conta</h2>
-        <p class="text-sm text-gray-500">Preencha os campos abaixo para iniciar o seu cadastro.</p>
+<form class="mx-auto w-full max-w-4xl rounded-3xl bg-gradient-to-br from-blue-700 to-indigo-800 p-7 shadow-xl" data-form-id="@[[form_id]]@" action="@[[form_action]]@" method="get">
+    <div class="mb-5 text-center text-white"><h2 class="text-2xl font-bold">Encontre o conteúdo certo</h2><p class="mt-1 text-sm text-blue-100">Pesquise em todas as páginas publicadas.</p></div>
+    <div class="relative">
+        <div class="flex rounded-2xl bg-white p-1.5 shadow-lg">
+            <!-- input-search < -->
+            <input class="min-w-0 flex-1 rounded-xl border-0 px-4 py-3 text-slate-900 outline-none" type="search" placeholder="Digite ao menos 3 caracteres">
+            <!-- input-search > -->
+            <button class="flex items-center gap-2 rounded-xl bg-indigo-600 px-5 font-semibold text-white hover:bg-indigo-700" type="submit"><svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span>Pesquisar</span></button>
+        </div>
+        <!-- results-box < -->
+        <div class="forms-search-results absolute left-0 right-0 top-full z-50 mt-3 hidden max-h-96 overflow-y-auto rounded-2xl border border-indigo-100 bg-white text-slate-900 shadow-2xl"></div>
+        <!-- results-box > -->
     </div>
     <!-- item < -->
-    <div class="conn2flow-form-field">
-        <label class="block text-sm font-medium text-gray-700 mb-1.5" for="@[[form_id]]@-@[[item#name]]@">@[[item#label]]@</label>
-        <!-- type-input < -->
-        <input class="w-full text-sm rounded-lg border border-gray-300 px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" type="@[[item#type]]@" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@>
-        <!-- type-input > -->
-        <!-- type-textarea < -->
-        <textarea class="w-full text-sm rounded-lg border border-gray-300 px-3.5 py-2.5 min-h-28 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@></textarea>
-        <!-- type-textarea > -->
-        <!-- type-select < -->
-        <select class="w-full text-sm rounded-lg border border-gray-300 px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition bg-white" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" @[[item#required]]@>
-            @[[item#options]]@
-        </select>
-        <!-- type-select > -->
-        <!-- type-radio < -->
-        <div class="flex flex-wrap gap-4 mt-1.5">
-            @[[item#options]]@
-        </div>
-        <!-- type-radio > -->
-        <!-- type-checkbox < -->
-        <div class="flex flex-wrap gap-4 mt-1.5">
-            @[[item#options]]@
-        </div>
-        <!-- type-checkbox > -->
+    <div class="mt-4 rounded-xl bg-white/10 p-3">
+        <label class="mb-1 block text-sm font-semibold text-white" for="@[[form_id]]@-@[[item#name]]@">@[[item#label]]@</label>
+        <!-- type-input < --><input class="w-full rounded-lg border border-white/30 bg-white px-3 py-2 text-slate-900" type="@[[item#type]]@" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@><!-- type-input > -->
+        <!-- type-textarea < --><textarea class="min-h-24 w-full rounded-lg border border-white/30 bg-white px-3 py-2 text-slate-900" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" placeholder="@[[item#placeholder]]@" @[[item#required]]@></textarea><!-- type-textarea > -->
+        <!-- type-select < --><select class="w-full rounded-lg border border-white/30 bg-white px-3 py-2 text-slate-900" id="@[[form_id]]@-@[[item#name]]@" name="@[[item#name]]@" @[[item#required]]@>@[[item#options]]@</select><!-- type-select > -->
+        <!-- type-radio < --><div class="flex flex-wrap gap-3 text-white">@[[item#options]]@</div><!-- type-radio > -->
+        <!-- type-checkbox < --><div class="flex flex-wrap gap-3 text-white">@[[item#options]]@</div><!-- type-checkbox > -->
     </div>
     <!-- item > -->
-    <div class="conn2flow-form-message hidden text-sm p-3 rounded-lg"></div>
-    <button class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-lg shadow-md hover:shadow-lg transition duration-200 conn2flow-form-submit" type="submit">Cadastrar</button>
 </form>

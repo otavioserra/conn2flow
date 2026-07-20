@@ -20,20 +20,6 @@ function forms_search_normalize_array($array) {
 function forms_search_schema_default() {
 	return [
 		'form_action' => '',
-		'access_max_simple' => '',
-		'access_max' => '',
-		'force_recaptcha' => false,
-		'email' => [
-			'recipients' => '',
-			'reply_to' => '',
-			'reply_to_name' => '',
-			'subject' => '',
-			'message_component' => '',
-		],
-		'redirects' => [
-			'success' => ['type' => 'url', 'path' => ''],
-			'error' => ['type' => 'url', 'path' => ''],
-		],
 		'fields' => [],
 		'template_id' => '',
 	];
@@ -45,12 +31,19 @@ function forms_search_schema_decode($fields_schema, $template_id = '') {
 		$schema = [];
 	}
 	$schema = array_replace_recursive(forms_search_schema_default(), $schema);
+	// Remove configurações herdadas do módulo forms que não fazem parte de uma busca GET.
+	foreach (['email', 'redirects', 'access_max_simple', 'access_max', 'force_recaptcha'] as $deprecated_key) {
+		unset($schema[$deprecated_key]);
+	}
 	if (empty($schema['template_id']) && $template_id !== '') {
 		$schema['template_id'] = $template_id;
 	}
 	if (!isset($schema['fields']) || !is_array($schema['fields'])) {
 		$schema['fields'] = [];
 	}
+	$schema['fields'] = array_values(array_filter($schema['fields'], function ($field) {
+		return !is_array($field) || strtolower(trim((string)($field['name'] ?? ''))) !== 'search';
+	}));
 	return $schema;
 }
 
@@ -612,17 +605,6 @@ function forms_search_interfaces_padroes() {
 	}
 }
 
-function forms_search_test_email_page() {
-	global $_GESTOR;
-
-	$testEmailPage = gestor_componente([
-		'id' => 'base-email',
-		'modulo' => 'contatos',
-	]);
-
-	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#test-email-page#', $testEmailPage);
-}
-
 // ==== Ajax
 
 function forms_search_ajax_template_load() {
@@ -674,52 +656,6 @@ function forms_search_ajax_widget_preview() {
 	$_GESTOR['ajax-json'] = ['status' => 'Ok', 'html' => $rendered];
 }
 
-// req-070 §2.1: rota AJAX dedicada ao preview do Editor HTML. As variáveis dinâmicas que o
-// backend injeta em gestor.form[id] (fields_schema, reCAPTCHA, redirects, componentes Fomantic/
-// Tailwind) não existem no iframe estático do preview; este endpoint as recupera para um form_id
-// e devolve em `forms_search_js_vars`, permitindo que o forms-search.widget.js inicialize o formulário no iframe.
-function forms_search_ajax_buscar_componentes() {
-	global $_GESTOR;
-
-	$q = banco_escape_field($_REQUEST['q'] ?? '');
-	$lang = banco_escape_field($_GESTOR['linguagem-codigo']);
-	$rows = banco_select([
-		'tabela' => 'componentes',
-		'campos' => ['id', 'nome'],
-		'extra' => "WHERE language='".$lang."' AND status!='D' AND (nome LIKE '%".$q."%' OR id LIKE '%".$q."%') ORDER BY nome ASC LIMIT 15",
-	]);
-
-	$_GESTOR['ajax-json'] = [
-		'status' => 'success',
-		'results' => array_map(function ($r) {
-			return ['id' => $r['id'], 'text' => $r['nome'].' ('.$r['id'].')'];
-		}, $rows ?: []),
-	];
-}
-
-function forms_search_ajax_render_editor_html() {
-	global $_GESTOR;
-
-	$form_id = $_REQUEST['params']['form_id'] ?? ($_REQUEST['form_id'] ?? '');
-
-	if (!function_exists('forms_search_render_editor_html')) {
-		require_once(__DIR__.'/forms-search.widget.php');
-	}
-
-	$forms_search_js_vars = forms_search_render_editor_html(['form_id' => $form_id]);
-
-	if (!$forms_search_js_vars) {
-		$_GESTOR['ajax-json'] = ['status' => 'Erro', 'message' => 'Formulário não encontrado.'];
-		return;
-	}
-
-	$_GESTOR['ajax-json'] = [
-		'status' => 'Ok',
-		'form_id' => $form_id,
-		'forms_search_js_vars' => $forms_search_js_vars,
-	];
-}
-
 // ==== Start
 
 function forms_search_start() {
@@ -733,8 +669,6 @@ function forms_search_start() {
 		switch ($_GESTOR['ajax-opcao']) {
 			case 'template-load': forms_search_ajax_template_load(); break;
 			case 'widget-preview': forms_search_ajax_widget_preview(); break;
-			case 'buscar-componentes': forms_search_ajax_buscar_componentes(); break;
-			case 'forms-search-render-editor-html': forms_search_ajax_render_editor_html(); break;
 		}
 
 		interface_ajax_finalizar();
@@ -747,7 +681,6 @@ function forms_search_start() {
 			case 'adicionar': forms_search_adicionar(); break;
 			case 'editar': forms_search_editar(); break;
 			case 'clonar': forms_search_clonar(); break;
-			case 'test-email-page': forms_search_test_email_page(); break;
 		}
 
 		interface_finalizar();

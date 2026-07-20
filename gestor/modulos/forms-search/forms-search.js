@@ -2,10 +2,6 @@ $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length === 0 && $('#_gestor-interface-insert-dados').length === 0) return;
 
     var schema = (typeof forms_search_initial_schema !== 'undefined' && forms_search_initial_schema) ? forms_search_initial_schema : {};
-    schema.email = schema.email || {};
-    schema.redirects = schema.redirects || {};
-    schema.redirects.success = schema.redirects.success || {};
-    schema.redirects.error = schema.redirects.error || {};
     schema.fields = Array.isArray(schema.fields) ? schema.fields : [];
 
     var initialHtml = $('textarea.codemirror-html').val() || '';
@@ -14,6 +10,7 @@ $(document).ready(function () {
     var previewLastSnapshot = null;
     var widgetCodeMirror = null;
     var fieldSortable = null;
+    var widgetsToAjax = (typeof gestor !== 'undefined' && gestor.widgetsToAjax) ? gestor.widgetsToAjax : '';
 
     $('.menuForms .item').tab({
         context: '.forms-search-main-tabs',
@@ -84,7 +81,7 @@ $(document).ready(function () {
         schedulePreview(false);
     });
 
-    $(document).on('input change', '#form_action,#access_max_simple,#access_max,#force_recaptcha,#email_recipients,#email_reply_to,#email_reply_to_name,#email_subject,#email_message_component,#redirect_success_path,#redirect_error_path', function () {
+    $(document).on('input change', '#form_action', function () {
         updateSchemaFromInputs();
         schedulePreview(false);
     });
@@ -146,18 +143,8 @@ $(document).ready(function () {
     });
 
     function hydrateSchema() {
-        $('#form_action').val(schema.form_action || '');
-        $('#access_max_simple').val(schema.access_max_simple || '');
-        $('#access_max').val(schema.access_max || '');
-        $('#force_recaptcha').prop('checked', !!schema.force_recaptcha).closest('.ui.checkbox').checkbox(schema.force_recaptcha ? 'check' : 'uncheck');
-        $('#email_recipients').val(schema.email.recipients || '');
-        $('#email_reply_to').val(schema.email.reply_to || '');
-        $('#email_reply_to_name').val(schema.email.reply_to_name || '');
-        $('#email_subject').val(schema.email.subject || '');
-        $('#email_message_component').val(schema.email.message_component || schema.email.template || '');
-        $('#email_message_component').closest('.sig-autocomplete').find('.sig-search-input').val(schema.email.message_component || schema.email.template || '');
-        $('#redirect_success_path').val(schema.redirects.success.path || '');
-        $('#redirect_error_path').val(schema.redirects.error.path || '');
+        // Mantem a tela correta mesmo antes de uma sincronizacao dos recursos HTML no banco.
+        $('#form_action').attr('placeholder', 'pages-index-search/').val(schema.form_action || '');
 
         if (schema.template_id) {
             var modId = schema.template_id + '-modificado';
@@ -170,20 +157,6 @@ $(document).ready(function () {
 
     function updateSchemaFromInputs() {
         schema.form_action = $('#form_action').val() || '';
-        schema.access_max_simple = $('#access_max_simple').val() || '';
-        schema.access_max = $('#access_max').val() || '';
-        schema.force_recaptcha = $('#force_recaptcha').is(':checked');
-        schema.email = {
-            recipients: $('#email_recipients').val() || '',
-            reply_to: $('#email_reply_to').val() || '',
-            reply_to_name: $('#email_reply_to_name').val() || '',
-            subject: $('#email_subject').val() || '',
-            message_component: $('#email_message_component').val() || ''
-        };
-        schema.redirects = {
-            success: { type: 'url', path: $('#redirect_success_path').val() || '' },
-            error: { type: 'url', path: $('#redirect_error_path').val() || '' }
-        };
         var tid = $('#template_id').val() || '';
         schema.template_id = tid.endsWith('-modificado') ? tid.substring(0, tid.length - 11) : tid;
         syncHiddenSchema();
@@ -339,14 +312,26 @@ $(document).ready(function () {
                 previewLastSnapshot = snapshot;
 
                 var doc;
+                var signature = formsSearchWidgetSignature();
+                var previewWidgetsToAjax = appendWidgetSignature(widgetsToAjax, signature);
                 if (typeof window.previewExternalHtmlConteudo === 'function') {
                     doc = window.previewExternalHtmlConteudo({
                         htmlDoUsuario: dados.html || '',
                         cssDoUsuario: css,
-                        framework: (gestor.html_editor && gestor.html_editor.framework_css) ? gestor.html_editor.framework_css : 'fomantic-ui'
+                        framework: (gestor.html_editor && gestor.html_editor.framework_css) ? gestor.html_editor.framework_css : 'fomantic-ui',
+                        extraParams: {
+                            customScripts: [
+                                { src: gestor.raiz + 'forms-search/widget.js?v=' + gestor.versao }
+                            ],
+                            widgetsToAjax: previewWidgetsToAjax
+                        }
                     });
                 } else {
-                    doc = '<!doctype html><html><head><meta charset="utf-8"><style>' + css + '</style></head><body>' + (dados.html || '') + '</body></html>';
+                    doc = '<!doctype html><html><head><meta charset="utf-8"><style>' + css + '</style>'
+                        + '<script>window.gestor=Object.assign({},window.parent.gestor||{});window.gestor.widgetsToAjax='
+                        + JSON.stringify(previewWidgetsToAjax) + ';<\/script>'
+                        + '<script src="' + gestor.raiz + 'forms-search/widget.js?v=' + gestor.versao + '"><\/script>'
+                        + '</head><body>' + (dados.html || '') + '</body></html>';
                 }
                 $iframe.attr('srcdoc', doc);
             },
@@ -357,66 +342,6 @@ $(document).ready(function () {
     function syncHiddenSchema() {
         $('input[name="fields_schema"]').val(JSON.stringify(schema));
     }
-
-    $(document).on('input', '.sig-autocomplete .sig-search-input', function () {
-        var $box = $(this).closest('.sig-autocomplete');
-        var target = $box.data('target');
-        var q = $(this).val();
-        var $hidden = $box.find('.sig-hidden-value');
-        var $results = $box.find('.sig-results');
-
-        $hidden.val(q).trigger('input').trigger('change');
-
-        if (!target || q.length < 1) { $results.empty().hide(); return; }
-
-        $.ajax({
-            type: 'POST',
-            url: gestor.raiz + gestor.moduloCaminho + '/',
-            dataType: 'json',
-            data: {
-                opcao: gestor.moduloOpcao,
-                ajax: 'sim',
-                ajaxOpcao: 'buscar-' + target,
-                q: q
-            },
-            success: function (resp) {
-                $results.empty();
-                if (!resp || !resp.results || !resp.results.length) {
-                    $results.append('<div class="result" style="padding:.6em .8em;">' + (isPtBr() ? 'Nenhum resultado' : 'No results') + '</div>');
-                } else {
-                    resp.results.forEach(function (item) {
-                        $('<div class="result" style="cursor:pointer;padding:.6em .8em;border-bottom:1px solid #eee;"></div>')
-                            .text(item.text)
-                            .attr('data-id', item.id)
-                            .appendTo($results);
-                    });
-                }
-                $results.show();
-            }
-        });
-    });
-
-    $(document).on('click', '.sig-autocomplete .sig-results .result', function () {
-        var $box = $(this).closest('.sig-autocomplete');
-        var id = $(this).attr('data-id');
-        if (!id) return;
-        $box.find('.sig-hidden-value').val(id).trigger('input').trigger('change');
-        $box.find('.sig-search-input').val($(this).text());
-        $box.find('.sig-results').empty().hide();
-    });
-
-    $(document).on('click', '.sig-autocomplete .sig-clear', function () {
-        var $box = $(this).closest('.sig-autocomplete');
-        $box.find('.sig-hidden-value').val('').trigger('input').trigger('change');
-        $box.find('.sig-search-input').val('');
-        $box.find('.sig-results').empty().hide();
-    });
-
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('.sig-autocomplete').length) {
-            $('.sig-results').empty().hide();
-        }
-    });
 
     function updateWidgetCodeTab() {
         if (typeof CodeMirror === 'undefined') {
@@ -454,7 +379,19 @@ $(document).ready(function () {
 
     function currentSlug() {
         if (typeof gestor !== 'undefined' && gestor.moduloRegistroId) return gestor.moduloRegistroId;
-        return isPtBr() ? '[slug-do-formulario]' : '[form-slug]';
+        // Na inclusao ainda nao existe um id persistido. O preview precisa de um id funcional,
+        // e nao do placeholder documental, porque ele compoe data-form-id, ids ARIA e ajaxWidgets.
+        return 'forms-search-preview';
+    }
+
+    function formsSearchWidgetSignature() {
+        return 'forms-search->render(' + JSON.stringify({ form_id: currentSlug() }) + ')';
+    }
+
+    function appendWidgetSignature(current, signature) {
+        var list = String(current || '').split('<#;>').filter(function (item) { return item !== ''; });
+        if (list.indexOf(signature) === -1) list.push(signature);
+        return list.join('<#;>');
     }
 
     function nextFieldName() {
