@@ -235,12 +235,24 @@ function reconstruirArgs(array $original): array {
     $out=[]; foreach($original as $i=>$a){ if($i===0) continue; $out[]=$a; } return $out;
 }
 
+function detectarDominioAtualizacaoPadrao(): string {
+    global $_GESTOR;
+
+    $serverName = trim((string)($_SERVER['SERVER_NAME'] ?? ''));
+    if ($serverName !== '') return $serverName;
+
+    $authPathServer = trim((string)($_GESTOR['AUTH_PATH_SERVER'] ?? ''), "\\/");
+    if ($authPathServer !== '') return basename($authPathServer);
+
+    return 'localhost';
+}
+
 function validarOpts(array &$opts): void {
     if (!empty($opts['only-files']) && !empty($opts['only-db'])) {
         throw new InvalidArgumentException('Flags conflitantes: --only-files e --only-db');
     }
     if (empty($opts['domain'])) {
-        $opts['domain'] = 'localhost'; // Fallback
+        $opts['domain'] = detectarDominioAtualizacaoPadrao();
     }
 }
 
@@ -475,6 +487,8 @@ function parseEnvLines(array $lines): array {
 function mergeEnv(string $envAtualPath, string $envTemplatePath, array &$context, bool $dryRun): void {
     if(!file_exists($envAtualPath) || !file_exists($envTemplatePath)) { logAtualizacao('Merge .env ignorado (arquivos ausentes)','WARNING'); return; }
 
+    logAtualizacao('Merge .env: alvo='.$envAtualPath.' template='.$envTemplatePath,'DEBUG');
+
     // Antes do merge, substituir LANGUAGE_DEFAULT=LANG por LANGUAGE_DEFAULT=pt-br no template
     $templateContent = file_get_contents($envTemplatePath);
     $templateContent = preg_replace('/^LANGUAGE_DEFAULT=LANG$/m', 'LANGUAGE_DEFAULT=pt-br', $templateContent);
@@ -494,7 +508,7 @@ function mergeEnv(string $envAtualPath, string $envTemplatePath, array &$context
     }
     $context['env_merge']['added']=array_keys($added);
     $context['env_merge']['deprecated']=$deprecated; // apenas log
-    logAtualizacao('Merge .env: novas='.count($added).' deprecated='.count($deprecated));
+    logAtualizacao('Merge .env: novas='.count($added).' deprecated='.count($deprecated).' keys='.implode(',', array_keys($added)));
 }
 
 // ----------------------------
@@ -984,7 +998,7 @@ function webStart(array $req): array {
     $CONTEXT['session_log']=webSessionLogPath($sid);
     logAtualizacao('WebStart: iniciando sessão');
     $opts = [
-        'domain'=>$req['domain']??'localhost',
+        'domain'=>$req['domain']??detectarDominioAtualizacaoPadrao(),
         'tag'=>$req['tag']??null,
         'local-artifact'=>!empty($req['local'])?1:null,
         'no-verify'=>!empty($req['no_verify'])?1:null,

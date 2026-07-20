@@ -233,9 +233,10 @@ function admin_atualizacoes_ajax_update(){
                 $extras=[]; foreach($extraFlagsMap as $k=>$flag){ if(!empty($params[$k])) $extras[$flag]=1; }
                 if(!empty($params['tables'])) $extras['tables']=$params['tables'];
                 if(!empty($params['logs_retention_days'])) $extras['logs_retention_days']=(int)$params['logs_retention_days'];
+                $domain = trim((string)($params['domain'] ?? ''));
                 $resp = admin_atualizacoes_call_system(array_filter(array_merge([
                     'action'=>'start',
-                    'domain'=>$params['domain'] ?? 'localhost',
+                    'domain'=>$domain !== '' ? $domain : null,
                     'tag'=>$params['tag'] ?? null,
                 ],$mapModo,$extras)));
                 break;
