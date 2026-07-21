@@ -1254,13 +1254,23 @@ Reportada pelo executor em 2026-07-20:
 ---
 ## BATCH-094 - Tradução Completa dos Templates de Páginas do Módulo "publisher-index" para o Inglês (req-094)
 
-- [ ] **Tradução dos Arquivos HTML de Recursos**:
-  - [ ] `publisher-index-adicionar.html` totalmente traduzido do português para o inglês.
-  - [ ] `publisher-index-editar.html` totalmente traduzido do português para o inglês.
-  - [ ] `publisher-index-clonar.html` totalmente traduzido do português para o inglês.
-- [ ] **Validação**:
-  - [ ] Estrutura HTML, IDs e classes CSS preservados de forma íntegra.
-  - [ ] Interface administrativa do módulo em inglês livre de termos em português ao acessar em `/en/`.
+- [x] **Tradução dos Arquivos HTML de Recursos**:
+  - [x] `publisher-index-adicionar.html` totalmente traduzido do português para o inglês.
+  - [x] `publisher-index-editar.html` totalmente traduzido do português para o inglês.
+  - [x] `publisher-index-clonar.html` totalmente traduzido do português para o inglês.
+- [x] **Validação**:
+  - [x] Estrutura HTML, IDs e classes CSS preservados de forma íntegra.
+  - [x] Interface administrativa do módulo em inglês livre de termos em português ao acessar em `/en/`.
+
+### Evidência de Validação (BATCH-094)
+
+Evidência visual e automatizada reportada em 2026-07-21:
+- `git diff --check` → Passou sem erros.
+- Lint estático de HTML e JS → OK.
+- `composer test` (PHPUnit) → **110 testes passados** (474 assertions).
+- `npm run test` (Vitest) → **29 testes passados** (todos aprovados).
+- Nenhuma string acentuada remanescente em português nas páginas em inglês.
+
 
 
 

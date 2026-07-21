@@ -1,6 +1,6 @@
 # Current Human Request
 
-- **Intake ativo (Agente Atual)**: [req-094.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-094.md) (BATCH-094 `in-progress`, 2026-07-21).
+- **Intake ativo (Agente Atual)**: Nenhum.
 - **Outros Intakes Pendentes (Outros Agentes)**: Nenhum.
 
 - **Lotes Fechados**: 
@@ -22,7 +22,8 @@
   * [req-091.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-091.md) (BATCH-091 `complete`, 2026-07-20): Refinamentos de CRUD, Novos Modelos de Lupa e Autocomplete AJAX Otimizado no Módulo "forms-search".
   * [req-092.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-092.md) (BATCH-092 `complete`, 2026-07-20): Destaque, Sincronização de URL, Debounce, Cache e Teclado no Módulo "pages-index".
   * [req-093.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-093.md) (BATCH-093 `complete`, 2026-07-20): Renderização de Variáveis/Widgets no Editor HTML Clássico e Preview (igual à Editbar).
+  * [req-094.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-094.md) (BATCH-094 `complete`, 2026-07-21): Tradução Completa dos Templates de Páginas do Módulo "publisher-index" para o Inglês.
 
-- **Status**: BATCH-094 em andamento. Definição do plano detalhado de tradução completa dos templates HTML do módulo `publisher-index` para a língua inglesa.
+- **Status**: BATCH-094 concluído e validado (Vitest 29/29 OK, PHPUnit 110/110 OK).
 
-- **Pendências**: Tradução e adequação dos arquivos no outro agente de execução; verificação dos testes locais.
+- **Pendências**: Nenhuma.

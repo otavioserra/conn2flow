@@ -1,10 +1,10 @@
 <div class="field">
-    <label>Nome do Bloco de Destaques</label>
-    <input type="text" name="name" placeholder="Ex: Destaques da Home - Notícias (cópia)">
+    <label>Highlights Block Name</label>
+    <input type="text" name="name" placeholder="E.g.: Homepage Highlights - News (copy)">
 </div>
 
 <div class="field">
-    <label>Publicador de Origem</label>
+    <label>Source Publisher</label>
     <select id="publisher_id" class="ui search clearable dropdown publisherDropdown" name="publisher_id">
         <option value="">#publisher_placeholder_option#</option>
         #publisher_id_options#
@@ -14,29 +14,29 @@
 <div class="ui info icon message">
     <i class="info circle icon"></i>
     <div class="content">
-        <div class="header">Clone fiel do bloco de origem</div>
-        <p>O HTML e o CSS do bloco original já estão carregados no editor abaixo. Ajuste as regras, modelo e
-            mapeamento conforme necessário. Após salvar, o registro original permanece inalterado.</p>
+        <div class="header">Exact Copy of the Source Block</div>
+        <p>The original block's HTML and CSS are already loaded into the editor below. Adjust the rules, template,
+            and mapping as needed. After saving, the original record remains unchanged.</p>
     </div>
 </div>
 
-<h4 class="ui dividing header">Regra de Curadoria</h4>
+<h4 class="ui dividing header">Curation Rule</h4>
 
 <div class="fields">
     <div class="eight wide field">
-        <label>Regra de Alimentação</label>
+        <label>Content Selection Rule</label>
         <select id="rule" class="ui dropdown" name="rule">
-            <option value="latest">Automática (últimas publicações)</option>
-            <option value="manual">Manual (curadoria por item)</option>
+            <option value="latest">Automatic (latest publications)</option>
+            <option value="manual">Manual (item-by-item curation)</option>
         </select>
     </div>
     <div class="eight wide field" id="order-by-wrapper">
-        <label>Ordenação</label>
+        <label>Sort Order</label>
         <select id="order_by" class="ui dropdown" name="order_by">
-            <option value="date_desc">Por data (mais recentes primeiro)</option>
-            <option value="date_asc">Por data (mais antigas primeiro)</option>
-            <option value="title_asc">Alfabética (A-Z)</option>
-            <option value="title_desc">Alfabética (Z-A)</option>
+            <option value="date_desc">By date (newest first)</option>
+            <option value="date_asc">By date (oldest first)</option>
+            <option value="title_asc">Alphabetical (A-Z)</option>
+            <option value="title_desc">Alphabetical (Z-A)</option>
         </select>
     </div>
 </div>
@@ -96,28 +96,28 @@
     </div>
 </div>
 
-<h4 class="ui dividing header">Modelo Visual de Destaque</h4>
+<h4 class="ui dividing header">Highlight Visual Template</h4>
 
 <div class="field">
-    <label>Modelo (Recurso)</label>
+    <label>Template (Resource)</label>
     <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
 </div>
 
-<h4 class="ui dividing header">Mapeamento de Variáveis <kbd class="ui label">[[item#...]]</kbd>
+<h4 class="ui dividing header">Variable Mapping <kbd class="ui label">[[item#...]]</kbd>
     <kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd>
-    <kbd class="ui label">Campos do Publicador</kbd>
+    <kbd class="ui label">Publisher Fields</kbd>
 </h4>
 
 <div class="ui segment template-options-wrapper" style="display:none;">
     <div class="ui medium dimmer template-loading">
-        <div class="ui text loader">Carregando dados...</div>
+        <div class="ui text loader">Loading data...</div>
     </div>
 
     <div class="ui negative message hidden" id="error-message">
-        <div class="header">Erro!</div>
+        <div class="header">Error!</div>
         <p id="error-message-content"></p>
     </div>
 
@@ -126,16 +126,16 @@
             <div class="sixteen wide column">
                 <div class="ui grid template-fields-list">
                     <div class="five wide column">
-                        <h5>Variáveis do Modelo <kbd class="ui label">[[item#...]]</kbd></h5>
+                        <h5>Template Variables <kbd class="ui label">[[item#...]]</kbd></h5>
                         <div id="available-fields-list"></div>
                     </div>
                     <div class="five wide column">
-                        <h5>Campos do Publicador</h5>
+                        <h5>Publisher Fields</h5>
                         <div id="missing-fields-list"></div>
                     </div>
                     <div class="six wide column">
-                        <h5>Vinculados: Variável <kbd class="ui teal icon label"><i
-                                    class="exchange alternate icon"></i></kbd> Campo</h5>
+                        <h5>Linked: Variable <kbd class="ui teal icon label"><i
+                                    class="exchange alternate icon"></i></kbd> Field</h5>
                         <div id="linked-fields-list"></div>
                     </div>
                 </div>
@@ -146,10 +146,10 @@
 
 <input type="hidden" name="fields_schema">
 
-<h4 class="ui dividing header">Conteúdo do Destaque</h4>
+<h4 class="ui dividing header">Highlight Content</h4>
 
 <div class="ui top attached tabular menu menuConteudoDestaque">
-    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Pré-Visualização</a>
+    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Preview</a>
     <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
     <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Widget Code</a>
 </div>
@@ -190,14 +190,14 @@
     </div>
 </div>
 
-<!-- Skeletons para elementos dinâmicos -->
+<!-- Skeletons for dynamic elements -->
 <div id="template-skeletons" style="display: none;">
-    <span class="msg-novo-template" style="display:none">Novo Modelo</span>
-    <span class="msg-erro-carregar-template" style="display:none">Erro ao carregar modelo: </span>
-    <span class="msg-erro-desconhecido" style="display:none">Erro desconhecido</span>
-    <span class="msg-nenhum-campo-template" style="display:none">Nenhuma variável do modelo</span>
-    <span class="msg-nenhum-campo-publisher" style="display:none">Nenhum campo do publicador</span>
-    <span class="msg-nenhum-campo-vinculado" style="display:none">Nenhuma variável vinculada</span>
+    <span class="msg-novo-template" style="display:none">New Template</span>
+    <span class="msg-erro-carregar-template" style="display:none">Error loading template: </span>
+    <span class="msg-erro-desconhecido" style="display:none">Unknown error</span>
+    <span class="msg-nenhum-campo-template" style="display:none">No template variables</span>
+    <span class="msg-nenhum-campo-publisher" style="display:none">No publisher fields</span>
+    <span class="msg-nenhum-campo-vinculado" style="display:none">No linked variables</span>
     <span class="msg-campos-padroes" style="display:none">Default Fields</span>
     <span class="msg-campos-dinamicos" style="display:none">Dynamic Fields</span>
     <span class="msg-todos-campos-vinculados" style="display:none">All publisher fields are already linked</span>
