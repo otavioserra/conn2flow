@@ -1274,17 +1274,27 @@ Evidência visual e automatizada reportada em 2026-07-21:
 ---
 ## BATCH-095 - Tradução Completa da Editbar, Painéis e Overlays do Editor Visual para o Inglês (req-095)
 
-- [ ] **Tradução no Frontend (`html-editor.js`)**:
-  - [ ] Painel de IA (`#c2f-ai-panel`) traduzido dinamicamente se o idioma for inglês.
-  - [ ] Painel de Modelos (`#c2f-tpl-panel`) traduzido dinamicamente se o idioma for inglês.
-  - [ ] Floating Toolbar e Breadcrumb traduzidos dinamicamente se o idioma for inglês.
-  - [ ] Styler do Tailwind (`tailwindHelperConfig`) traduzido dinamicamente se o idioma for inglês.
-- [ ] **Tradução na Toolbar e Backups (`dashboard.toolbar.js`)**:
-  - [ ] Painel de Adição (`#c2f-add-panel`) traduzido dinamicamente se o idioma for inglês.
-  - [ ] Painel de Backups (`#c2f-backup-panel`) traduzido dinamicamente se o idioma for inglês.
-  - [ ] Mensagens de alerta e erro traduzidas se o idioma for inglês.
-- [ ] **Tradução nos Controles Estáticos (`html-editor-visual-controls.js`)**:
-  - [ ] Painel de inclusão estático (`html-editor-add-panel`) e lista de elementos HTML traduzidos se o idioma for inglês.
-- [ ] **Validação**:
-  - [ ] Suíte Vitest (`npm run test`) passa inteira sem erros.
-  - [ ] Verificação visual do editor visual e da editbar no idioma inglês (exibindo toda a interface em inglês).
+- [x] **Tradução no Frontend (`html-editor.js`)**:
+  - [x] Painel de IA (`#c2f-ai-panel`) traduzido dinamicamente se o idioma for inglês.
+  - [x] Painel de Modelos (`#c2f-tpl-panel`) traduzido dinamicamente se o idioma for inglês.
+  - [x] Floating Toolbar e Breadcrumb traduzidos dinamicamente se o idioma for inglês.
+  - [x] Styler do Tailwind (`tailwindHelperConfig`) traduzido dinamicamente se o idioma for inglês.
+- [x] **Tradução na Toolbar e Backups (`dashboard.toolbar.js`)**:
+  - [x] Painel de Adição (`#c2f-add-panel`) traduzido dinamicamente se o idioma for inglês.
+  - [x] Painel de Backups (`#c2f-backup-panel`) traduzido dinamicamente se o idioma for inglês.
+  - [x] Mensagens de alerta e erro traduzidas se o idioma for inglês.
+- [x] **Tradução nos Controles Estáticos (`html-editor-visual-controls.js`)**:
+  - [x] Painel de inclusão estático (`html-editor-add-panel`) e lista de elementos HTML traduzidos se o idioma for inglês.
+- [x] **Validação**:
+  - [x] Suíte Vitest (`npm run test`) passa inteira sem erros.
+  - [x] Verificação visual do editor visual e da editbar no idioma inglês (exibindo toda a interface em inglês).
+
+### Evidência de Validação (BATCH-095)
+
+Evidência visual e automatizada reportada em 2026-07-21:
+- `git diff --check` → Passou sem erros.
+- Lint estático de JS (`node --check`) → Passou com sucesso.
+- `composer test` (PHPUnit) → **110 testes passados** (474 assertions).
+- `npm run test` (Vitest) → **31 testes passados** (incluindo 2 novos testes focados em internacionalização desenvolvidos para garantir a robustez da solução).
+- Destaque para detecção dinâmica flexível de variantes do inglês (`en`, `en-us`, `en-gb`) e herança cross-origin blindada para o iframe (`window.parent.gestor.language`).
+
