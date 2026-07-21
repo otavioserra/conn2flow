@@ -1251,6 +1251,18 @@ Reportada pelo executor em 2026-07-20:
   - `/publisher-pages/`: confirmar que as variáveis LOCAIS simuladas e as GLOBAIS aparecem em harmonia no preview; no editor visual, globais em caixas e locais como marcadores; save preserva ambas.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 
+---
+## BATCH-094 - Tradução Completa dos Templates de Páginas do Módulo "publisher-index" para o Inglês (req-094)
+
+- [ ] **Tradução dos Arquivos HTML de Recursos**:
+  - [ ] `publisher-index-adicionar.html` totalmente traduzido do português para o inglês.
+  - [ ] `publisher-index-editar.html` totalmente traduzido do português para o inglês.
+  - [ ] `publisher-index-clonar.html` totalmente traduzido do português para o inglês.
+- [ ] **Validação**:
+  - [ ] Estrutura HTML, IDs e classes CSS preservados de forma íntegra.
+  - [ ] Interface administrativa do módulo em inglês livre de termos em português ao acessar em `/en/`.
+
+
 
 
 
