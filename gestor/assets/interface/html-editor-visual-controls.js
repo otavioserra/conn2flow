@@ -17,6 +17,11 @@ $(document).ready(function () {
     // Só ativa quando o componente do HTML Editor existe nesta página.
     if (typeof gestor === 'undefined' || !gestor.html_editor) return;
 
+    function t(portuguese, english) {
+        var language = String(gestor.language || '').toLowerCase();
+        return language.indexOf('en') === 0 ? english : portuguese;
+    }
+
     // ===== Protocolo de mensagens pai <-> iframe (compartilhado com html-editor.js)
     var ACT = {
         UNDO: 'c2f-he:undo',
@@ -33,15 +38,15 @@ $(document).ready(function () {
 
     // ===== Elementos HTML disponíveis no painel de inclusão (req-034 §4)
     var ELEMENTOS_HTML = [
-        { type: 'p', label: 'Parágrafo', icon: 'paragraph' },
-        { type: 'h1', label: 'Título H1', icon: 'heading' },
-        { type: 'h2', label: 'Título H2', icon: 'heading' },
-        { type: 'h3', label: 'Título H3', icon: 'heading' },
-        { type: 'img', label: 'Imagem', icon: 'image' },
-        { type: 'a', label: 'Link', icon: 'linkify' },
-        { type: 'button', label: 'Botão', icon: 'hand pointer' },
-        { type: 'div', label: 'Bloco', icon: 'square outline' },
-        { type: 'section', label: 'Seção', icon: 'object group outline' }
+        { type: 'p', label: 'Parágrafo', labelEn: 'Paragraph', icon: 'paragraph' },
+        { type: 'h1', label: 'Título H1', labelEn: 'Heading H1', icon: 'heading' },
+        { type: 'h2', label: 'Título H2', labelEn: 'Heading H2', icon: 'heading' },
+        { type: 'h3', label: 'Título H3', labelEn: 'Heading H3', icon: 'heading' },
+        { type: 'img', label: 'Imagem', labelEn: 'Image', icon: 'image' },
+        { type: 'a', label: 'Link', labelEn: 'Link', icon: 'linkify' },
+        { type: 'button', label: 'Botão', labelEn: 'Button', icon: 'hand pointer' },
+        { type: 'div', label: 'Bloco', labelEn: 'Block', icon: 'square outline' },
+        { type: 'section', label: 'Seção', labelEn: 'Section', icon: 'object group outline' }
     ];
 
     // req-066: as categorias de widget do sistema são carregadas dinamicamente da tabela
@@ -111,15 +116,15 @@ $(document).ready(function () {
         if ($painel) return $painel;
 
         var html = '<div class="html-editor-add-panel">';
-        html += '<div class="he-add-title">Elementos HTML</div>';
+        html += '<div class="he-add-title">' + t('Elementos HTML', 'HTML Elements') + '</div>';
         ELEMENTOS_HTML.forEach(function (el) {
             html += '<div class="he-add-item he-add-element" data-element="' + el.type + '">'
-                + '<i class="' + el.icon + ' icon"></i><span>' + el.label + '</span></div>';
+                + '<i class="' + el.icon + ' icon"></i><span>' + t(el.label, el.labelEn) + '</span></div>';
         });
         html += '<div class="ui divider"></div>';
-        html += '<div class="he-add-title">Widgets do Sistema</div>';
+        html += '<div class="he-add-title">' + t('Widgets do Sistema', 'System Widgets') + '</div>';
         // Container das categorias (preenchido dinamicamente via AJAX ao abrir o painel).
-        html += '<div class="he-add-widget-groups"><div class="he-add-empty">Carregando...</div></div>';
+        html += '<div class="he-add-widget-groups"><div class="he-add-empty">' + t('Carregando...', 'Loading...') + '</div></div>';
         html += '</div>';
 
         $painel = $(html);
@@ -210,7 +215,7 @@ $(document).ready(function () {
     function renderizarItens(module, lista, $list) {
         $list.empty();
         if (!lista || !lista.length) {
-            $list.append('<div class="he-add-empty">Nenhum registro ativo</div>');
+            $list.append('<div class="he-add-empty">' + t('Nenhum registro ativo', 'No active records') + '</div>');
             return;
         }
         lista.forEach(function (w) {
@@ -230,7 +235,7 @@ $(document).ready(function () {
         var $cont = $painel.find('.he-add-widget-groups');
         $cont.empty();
         if (!categorias || !categorias.length) {
-            $cont.append('<div class="he-add-empty">Nenhuma categoria ativa</div>');
+            $cont.append('<div class="he-add-empty">' + t('Nenhuma categoria ativa', 'No active categories') + '</div>');
             return;
         }
         categorias.forEach(function (cat) {
@@ -238,7 +243,7 @@ $(document).ready(function () {
             var $group = $('<div class="he-add-widget-group">'
                 + '<div class="he-add-widget-head"><i class="dropdown icon"></i>'
                 + '<i class="' + sanitizarIcone(cat.icon) + ' icon"></i><span></span></div>'
-                + '<div class="he-add-widget-list"><div class="he-add-empty">Carregando...</div></div>'
+                + '<div class="he-add-widget-list"><div class="he-add-empty">' + t('Carregando...', 'Loading...') + '</div></div>'
                 + '</div>');
             $group.attr('data-module', module);
             $group.find('.he-add-widget-head > span').text(cat.name || module);

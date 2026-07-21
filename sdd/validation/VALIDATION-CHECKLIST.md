@@ -1271,8 +1271,20 @@ Evidência visual e automatizada reportada em 2026-07-21:
 - `npm run test` (Vitest) → **29 testes passados** (todos aprovados).
 - Nenhuma string acentuada remanescente em português nas páginas em inglês.
 
+---
+## BATCH-095 - Tradução Completa da Editbar, Painéis e Overlays do Editor Visual para o Inglês (req-095)
 
-
-
-
-
+- [ ] **Tradução no Frontend (`html-editor.js`)**:
+  - [ ] Painel de IA (`#c2f-ai-panel`) traduzido dinamicamente se o idioma for inglês.
+  - [ ] Painel de Modelos (`#c2f-tpl-panel`) traduzido dinamicamente se o idioma for inglês.
+  - [ ] Floating Toolbar e Breadcrumb traduzidos dinamicamente se o idioma for inglês.
+  - [ ] Styler do Tailwind (`tailwindHelperConfig`) traduzido dinamicamente se o idioma for inglês.
+- [ ] **Tradução na Toolbar e Backups (`dashboard.toolbar.js`)**:
+  - [ ] Painel de Adição (`#c2f-add-panel`) traduzido dinamicamente se o idioma for inglês.
+  - [ ] Painel de Backups (`#c2f-backup-panel`) traduzido dinamicamente se o idioma for inglês.
+  - [ ] Mensagens de alerta e erro traduzidas se o idioma for inglês.
+- [ ] **Tradução nos Controles Estáticos (`html-editor-visual-controls.js`)**:
+  - [ ] Painel de inclusão estático (`html-editor-add-panel`) e lista de elementos HTML traduzidos se o idioma for inglês.
+- [ ] **Validação**:
+  - [ ] Suíte Vitest (`npm run test`) passa inteira sem erros.
+  - [ ] Verificação visual do editor visual e da editbar no idioma inglês (exibindo toda a interface em inglês).

@@ -81,9 +81,33 @@ $(document).ready(function () {
             // (monta um iframe → admin-arquivos). No admin fica vazio (o fluxo do modal-iframe é o
             // do html-editor-interface.js); no live editor é passado por dashboard.toolbar.js.
             this.raiz = (options && options.raiz) ? String(options.raiz) : '';
+            this.language = this.resolveLanguage(options);
             this.liveImagePickerOpen = false;
 
             this.init();
+        }
+
+        resolveLanguage(options) {
+            let language = (options && options.language) ? String(options.language) : '';
+            if (!language && window.gestor && window.gestor.language) {
+                language = String(window.gestor.language);
+            }
+            if (!language) {
+                try {
+                    if (window.parent && window.parent !== window && window.parent.gestor && window.parent.gestor.language) {
+                        language = String(window.parent.gestor.language);
+                    }
+                } catch (e) { /* cross-origin parent: keep the local/default language */ }
+            }
+            return language.toLowerCase();
+        }
+
+        isEnglish() {
+            return this.language.indexOf('en') === 0;
+        }
+
+        t(portuguese, english) {
+            return this.isEnglish() ? english : portuguese;
         }
 
         // ===================================================================
@@ -325,15 +349,15 @@ $(document).ready(function () {
                 'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' +
                 'aria-hidden="true">' + paths + '</svg>';
             tb.innerHTML = `
-                <button class="he-tb-btn he-tb-drag" type="button" title="Arrastar / Mover">${svg('<polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/>')}</button>
-                <button class="he-tb-btn he-tb-dup" type="button" title="Duplicar">${svg('<rect x="8" y="8" width="12" height="12" rx="2" ry="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/>')}</button>
-                <button class="he-tb-btn he-tb-copy" type="button" title="Copiar (Ctrl+C)">${svg('<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>')}</button>
-                <button class="he-tb-btn he-tb-paste" type="button" title="Colar (Ctrl+V)" style="display:none">${svg('<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>')}</button>
-                <button class="he-tb-btn he-tb-wrap" type="button" title="Embrulhar">${svg('<path d="M21 8v8a2 2 0 0 1-1 1.73l-7 4a2 2 0 0 1-2 0l-7-4A2 2 0 0 1 3 16V8a2 2 0 0 1 1-1.73l7-4a2 2 0 0 1 2 0l7 4A2 2 0 0 1 21 8z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>')}</button>
-                <button class="he-tb-btn he-tb-edit" type="button" title="Editar">${svg('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>')}</button>
-                <button class="he-tb-btn he-tb-widget-admin" type="button" title="Editar widget no módulo" style="display:none">${svg('<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>')}</button>
-                <button class="he-tb-btn he-tb-del" type="button" title="Deletar">${svg('<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>')}</button>
-                <button class="he-tb-btn he-tb-deselect" type="button" title="Deselecionar (Esc)">${svg('<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>')}</button>
+                <button class="he-tb-btn he-tb-drag" type="button" title="${this.t('Arrastar / Mover', 'Drag / Move')}">${svg('<polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/>')}</button>
+                <button class="he-tb-btn he-tb-dup" type="button" title="${this.t('Duplicar', 'Duplicate')}">${svg('<rect x="8" y="8" width="12" height="12" rx="2" ry="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/>')}</button>
+                <button class="he-tb-btn he-tb-copy" type="button" title="${this.t('Copiar (Ctrl+C)', 'Copy (Ctrl+C)')}">${svg('<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>')}</button>
+                <button class="he-tb-btn he-tb-paste" type="button" title="${this.t('Colar (Ctrl+V)', 'Paste (Ctrl+V)')}" style="display:none">${svg('<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>')}</button>
+                <button class="he-tb-btn he-tb-wrap" type="button" title="${this.t('Embrulhar', 'Wrap')}">${svg('<path d="M21 8v8a2 2 0 0 1-1 1.73l-7 4a2 2 0 0 1-2 0l-7-4A2 2 0 0 1 3 16V8a2 2 0 0 1 1-1.73l7-4a2 2 0 0 1 2 0l7 4A2 2 0 0 1 21 8z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>')}</button>
+                <button class="he-tb-btn he-tb-edit" type="button" title="${this.t('Editar', 'Edit')}">${svg('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>')}</button>
+                <button class="he-tb-btn he-tb-widget-admin" type="button" title="${this.t('Editar widget no módulo', 'Edit widget in module')}" style="display:none">${svg('<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>')}</button>
+                <button class="he-tb-btn he-tb-del" type="button" title="${this.t('Deletar', 'Delete')}">${svg('<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>')}</button>
+                <button class="he-tb-btn he-tb-deselect" type="button" title="${this.t('Deselecionar (Esc)', 'Deselect (Esc)')}">${svg('<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>')}</button>
             `;
             document.body.appendChild(tb);
             this.toolbar = tb;
@@ -361,7 +385,7 @@ $(document).ready(function () {
                     <div class="he-styler-col-visual">${this.buildHelperPanelHtml()}</div>
                     <div class="he-styler-col-classes">
                         <div class="he-tw-tags"></div>
-                        <input type="text" list="html-editor-tw-classes" placeholder="Adicionar classes (espaço/Enter)..." />
+                        <input type="text" list="html-editor-tw-classes" placeholder="${this.t('Adicionar classes (espaço/Enter)...', 'Add classes (space/Enter)...')}" />
                     </div>
                 </div>
             `;
@@ -887,7 +911,7 @@ $(document).ready(function () {
             this.breadcrumb.innerHTML = '';
             const lbl = document.createElement('span');
             lbl.className = 'he-crumb-label';
-            lbl.textContent = 'Ancestrais:';
+            lbl.textContent = this.t('Ancestrais:', 'Ancestors:');
             this.breadcrumb.appendChild(lbl);
             path.forEach((el, idx) => {
                 if (idx > 0) {
@@ -926,7 +950,7 @@ $(document).ready(function () {
             }
             const lbl = document.createElement('span');
             lbl.className = 'he-crumb-label';
-            lbl.textContent = 'Filhos:';
+            lbl.textContent = this.t('Filhos:', 'Children:');
             this.childrenBar.appendChild(lbl);
             children.forEach((el, idx) => {
                 if (idx > 0) {
@@ -963,7 +987,7 @@ $(document).ready(function () {
             classes.forEach((cls) => {
                 const tag = document.createElement('span');
                 tag.className = 'he-tw-tag';
-                tag.innerHTML = '<span></span> <b data-class="" title="Remover">&times;</b>';
+                tag.innerHTML = '<span></span> <b data-class="" title="' + this.t('Remover', 'Remove') + '">&times;</b>';
                 tag.querySelector('span').textContent = cls;
                 tag.querySelector('b').setAttribute('data-class', cls);
                 tagsBox.appendChild(tag);
@@ -1249,6 +1273,105 @@ $(document).ready(function () {
                     ]
                 }
             ];
+            if (this.isEnglish()) {
+                const sections = {
+                    'Texto': 'Text',
+                    'Bordas': 'Borders',
+                    'Espaçamento': 'Spacing',
+                    'Caixa': 'Box',
+                    'Aparência': 'Appearance',
+                    'Fundo': 'Background'
+                };
+                const labels = {
+                    'Alinhamento': 'Alignment',
+                    'Esquerda': 'Left',
+                    'Centro': 'Center',
+                    'Direita': 'Right',
+                    'Justificado': 'Justified',
+                    'Tamanho': 'Size',
+                    'Pequeno': 'Small',
+                    'Médio': 'Medium',
+                    'Grande': 'Large',
+                    'Extra grande': 'Extra large',
+                    'Peso': 'Weight',
+                    'Negrito': 'Bold',
+                    'Caixa': 'Case',
+                    'Maiúsculas': 'Uppercase',
+                    'Minúsculas': 'Lowercase',
+                    'Capitalizar': 'Capitalize',
+                    'Decoração': 'Decoration',
+                    'Nenhuma': 'None',
+                    'Nenhum': 'None',
+                    'Sublinhado': 'Underline',
+                    'Riscado': 'Strikethrough',
+                    'Cor do texto': 'Text color',
+                    'Preto': 'Black',
+                    'Cinza': 'Gray',
+                    'Vermelho': 'Red',
+                    'Azul': 'Blue',
+                    'Verde': 'Green',
+                    'Amarelo': 'Yellow',
+                    'Roxo': 'Purple',
+                    'Branco': 'White',
+                    'Exibição': 'Display',
+                    'Bloco': 'Block',
+                    'Direção': 'Direction',
+                    'Linha': 'Row',
+                    'Coluna': 'Column',
+                    'Justificar': 'Justify content',
+                    'Início': 'Start',
+                    'Entre': 'Space between',
+                    'Fim': 'End',
+                    'Alinhar itens': 'Align items',
+                    'Topo': 'Top',
+                    'Meio': 'Middle',
+                    'Base': 'Bottom',
+                    'Esticar': 'Stretch',
+                    'Espaço (gap)': 'Gap',
+                    'Largura': 'Width',
+                    'Automática': 'Auto',
+                    'Metade': 'Half',
+                    'Total': 'Full',
+                    'Margem': 'Margin',
+                    'Pequena': 'Small',
+                    'Média': 'Medium',
+                    'Cantos': 'Border radius',
+                    'Reto': 'Square',
+                    'Leve': 'Slight',
+                    'Redondo': 'Round',
+                    'Borda': 'Border width',
+                    'Fina': 'Thin',
+                    'Grossa': 'Thick',
+                    'Cor da borda': 'Border color',
+                    'Transparente': 'Transparent',
+                    'Sombra': 'Shadow',
+                    'Opacidade': 'Opacity',
+                    'Cor de fundo': 'Background color',
+                    'Imagem de fundo': 'Background image',
+                    'Cinza claro': 'Light gray',
+                    'Cinza escuro': 'Dark gray',
+                    'Repetição': 'Repeat',
+                    'Repetir': 'Repeat',
+                    'Não': 'No',
+                    'Não repetir': 'No repeat',
+                    'Repetir horizontal': 'Repeat horizontally',
+                    'Repetir vertical': 'Repeat vertically',
+                    'Automático': 'Auto',
+                    'Cobrir': 'Cover',
+                    'Conter': 'Contain',
+                    'Posição': 'Position',
+                    'Esq': 'Left',
+                    'Dir': 'Right'
+                };
+                this._helperConfig.forEach((group) => {
+                    group.section = sections[group.section] || group.section;
+                    group.title = labels[group.title] || group.title;
+                    group.buttons.forEach((button) => {
+                        if (button.label) button.label = labels[button.label] || button.label;
+                        if (button.title) button.title = labels[button.title] || button.title;
+                    });
+                });
+            }
             // Deriva a lista fechada de classes de cada grupo a partir dos botões.
             this._helperConfig.forEach((g) => { g.classes = g.buttons.map((b) => b.cls); });
             return this._helperConfig;
@@ -1283,7 +1406,7 @@ $(document).ready(function () {
             // Agrupar a config por seção (preservando a ordem) para montar o accordion.
             const sections = [];
             this.tailwindHelperConfig().forEach((g) => {
-                const name = g.section || 'Geral';
+                const name = g.section || this.t('Geral', 'General');
                 let sec = sections.find((s) => s.name === name);
                 if (!sec) { sec = { name: name, groups: [] }; sections.push(sec); }
                 sec.groups.push(g);
@@ -1308,9 +1431,9 @@ $(document).ready(function () {
             if (g.kind === 'bgimage') {
                 html += '<div class="he-bgimage">' +
                     '<div class="he-bgimage-actions">' +
-                    '<button type="button" class="he-helper-btn he-bgimage-pick" title="Selecionar imagem do servidor">' +
-                    this.svgIcon('folder open') + ' Imagem</button>' +
-                    '<button type="button" class="he-helper-btn he-bgimage-clear" title="Remover imagem de fundo">' +
+                    '<button type="button" class="he-helper-btn he-bgimage-pick" title="' + this.t('Selecionar imagem do servidor', 'Select image from server') + '">' +
+                    this.svgIcon('folder open') + ' ' + this.t('Imagem', 'Image') + '</button>' +
+                    '<button type="button" class="he-helper-btn he-bgimage-clear" title="' + this.t('Remover imagem de fundo', 'Remove background image') + '">' +
                     this.svgIcon('trash') + '</button>' +
                     '</div>' +
                     '<div class="he-bgimage-preview" style="display:none"><img alt="" /></div>' +
@@ -1672,28 +1795,28 @@ $(document).ready(function () {
             div.innerHTML =
                 '<div class="c2f-he-modal-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.55);"></div>' +
                 '<div class="c2f-he-modal-box" style="position:relative;width:640px;max-width:96vw;min-width:320px;height:70vh;min-height:220px;max-height:92vh;margin:7vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;resize:both;overflow:auto;">' +
-                '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#0f172a;flex:0 0 auto;">Editar elemento</div>' +
+                '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#0f172a;flex:0 0 auto;">' + this.t('Editar elemento', 'Edit element') + '</div>' +
                 '<div style="padding:16px;overflow:auto;flex:1 1 auto;">' +
                 '<div id="text-field" style="display:none;">' +
-                '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Texto</label>' +
+                '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">' + this.t('Texto', 'Text') + '</label>' +
                 '<textarea id="element-text" rows="6" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;"></textarea>' +
                 '</div>' +
                 '<div id="image-field" style="display:none;">' +
-                '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">URL da imagem</label>' +
+                '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">' + this.t('URL da imagem', 'Image URL') + '</label>' +
                 // Item 3: input + botão do selecionador de imagens do servidor (admin-arquivos).
                 '<div style="display:flex;gap:6px;align-items:stretch;">' +
                 '<input id="element-src" type="text" style="flex:1 1 auto;min-width:0;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;">' +
-                '<button type="button" class="_html-editor-imagepick-btn" title="Selecionar imagem do servidor" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;cursor:pointer;">' + this.svgIcon('folder open') + '</button>' +
+                '<button type="button" class="_html-editor-imagepick-btn" title="' + this.t('Selecionar imagem do servidor', 'Select image from server') + '" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;cursor:pointer;">' + this.svgIcon('folder open') + '</button>' +
                 '</div>' +
                 '</div>' +
                 '<div id="code-field" style="display:none;">' +
-                '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">Código HTML</label>' +
+                '<label style="display:block;font-size:13px;color:#334155;margin-bottom:6px;">' + this.t('Código HTML', 'HTML Code') + '</label>' +
                 '<textarea id="element-code" rows="10" style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:13px ui-monospace,monospace;"></textarea>' +
                 '</div>' +
                 '</div>' +
                 '<div style="padding:12px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px;flex:0 0 auto;">' +
-                '<button type="button" class="c2f-he-modal-cancel" style="padding:8px 16px;border:0;border-radius:8px;background:#e2e8f0;color:#0f172a;cursor:pointer;font:14px sans-serif;">Cancelar</button>' +
-                '<button type="button" class="c2f-he-modal-save" style="padding:8px 16px;border:0;border-radius:8px;background:#16a34a;color:#fff;cursor:pointer;font:14px sans-serif;">Salvar</button>' +
+                '<button type="button" class="c2f-he-modal-cancel" style="padding:8px 16px;border:0;border-radius:8px;background:#e2e8f0;color:#0f172a;cursor:pointer;font:14px sans-serif;">' + this.t('Cancelar', 'Cancel') + '</button>' +
+                '<button type="button" class="c2f-he-modal-save" style="padding:8px 16px;border:0;border-radius:8px;background:#16a34a;color:#fff;cursor:pointer;font:14px sans-serif;">' + this.t('Salvar', 'Save') + '</button>' +
                 '</div>' +
                 '</div>';
             document.body.appendChild(div);
@@ -1731,7 +1854,7 @@ $(document).ready(function () {
                     }
                     this.closeLiveImagePicker();
                 } else {
-                    window.alert('O arquivo selecionado não é uma imagem.');
+                    window.alert(this.t('O arquivo selecionado não é uma imagem.', 'The selected file is not an image.'));
                 }
             });
         }
@@ -1740,7 +1863,7 @@ $(document).ready(function () {
             const raiz = this.raiz || '';
             if (!raiz) { // sem raiz não há gerenciador — fallback ao input manual (prompt).
                 const src = document.getElementById('element-src');
-                const url = window.prompt('URL da imagem:', (src && src.value) || '');
+                const url = window.prompt(this.t('URL da imagem:', 'Image URL:'), (src && src.value) || '');
                 if (url !== null && src) src.value = url.trim();
                 return;
             }
@@ -1753,8 +1876,8 @@ $(document).ready(function () {
                     '<div class="c2f-he-ip-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.6);"></div>' +
                     '<div style="position:relative;width:920px;max-width:96vw;height:80vh;margin:7vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden;">' +
                     '<div style="padding:10px 14px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;">' +
-                    '<span style="font-weight:600;color:#0f172a;">Selecionar imagem</span>' +
-                    '<button type="button" class="c2f-he-ip-close" style="border:0;background:#e2e8f0;border-radius:6px;padding:6px 12px;cursor:pointer;color:#0f172a;">Fechar</button>' +
+                    '<span style="font-weight:600;color:#0f172a;">' + this.t('Selecionar imagem', 'Select image') + '</span>' +
+                    '<button type="button" class="c2f-he-ip-close" style="border:0;background:#e2e8f0;border-radius:6px;padding:6px 12px;cursor:pointer;color:#0f172a;">' + this.t('Fechar', 'Close') + '</button>' +
                     '</div>' +
                     '<iframe class="c2f-he-ip-frame" style="flex:1 1 auto;border:0;width:100%;padding: 5px 10px 10px;"></iframe>' +
                     '</div>';
@@ -1843,7 +1966,7 @@ $(document).ready(function () {
         // ===== Modelos de Sessão =====
 
         openTemplatesPanel() {
-            if (!this.selectedElement) { window.alert('Selecione um elemento na página primeiro.'); return; }
+            if (!this.selectedElement) { window.alert(this.t('Selecione um elemento na página primeiro.', 'Select an element on the page first.')); return; }
             this.injectLivePanelStyles();
             this.buildTemplatesPanel();
             this._tplRelation = this._tplRelation || 'after';
@@ -1864,25 +1987,25 @@ $(document).ready(function () {
             p.innerHTML =
                 '<div class="c2f-he-live-backdrop"></div>' +
                 '<div class="c2f-he-live-box">' +
-                '<div class="c2f-he-live-head"><span>Modelos de sessão</span><button type="button" class="c2f-he-live-btn ghost c2f-tpl-close">Fechar</button></div>' +
+                '<div class="c2f-he-live-head"><span>' + this.t('Modelos de sessão', 'Session templates') + '</span><button type="button" class="c2f-he-live-btn ghost c2f-tpl-close">' + this.t('Fechar', 'Close') + '</button></div>' +
                 '<div class="c2f-he-live-body">' +
                 '<div style="display:flex;gap:8px;">' +
-                '<input type="text" id="modelos-search-input" placeholder="Buscar modelos..." style="flex:1 1 auto;">' +
+                '<input type="text" id="modelos-search-input" placeholder="' + this.t('Buscar modelos...', 'Search templates...') + '" style="flex:1 1 auto;">' +
                 '<select id="c2f-tpl-framework" style="flex:0 0 160px;">' +
                 '<option value="tailwindcss">Tailwind CSS</option>' +
                 '<option value="fomantic-ui">Fomantic UI</option>' +
                 '<option value="bootstrap">Bootstrap</option>' +
-                '<option value="pure-css">CSS puro</option>' +
+                '<option value="pure-css">' + this.t('CSS puro', 'Pure CSS') + '</option>' +
                 '</select>' +
                 '</div>' +
-                '<label>Inserir em relação ao elemento selecionado</label>' +
+                '<label>' + this.t('Inserir em relação ao elemento selecionado', 'Insert relative to selected element') + '</label>' +
                 '<div class="c2f-tpl-relation">' +
-                '<button type="button" data-rel="replace">Substituir</button>' +
-                '<button type="button" data-rel="before">Inserir antes</button>' +
-                '<button type="button" data-rel="after">Inserir depois</button>' +
+                '<button type="button" data-rel="replace">' + this.t('Substituir', 'Replace') + '</button>' +
+                '<button type="button" data-rel="before">' + this.t('Inserir antes', 'Insert before') + '</button>' +
+                '<button type="button" data-rel="after">' + this.t('Inserir depois', 'Insert after') + '</button>' +
                 '</div>' +
                 '<div class="c2f-tpl-cards" id="modelos-cards"></div>' +
-                '<div style="text-align:center;margin-top:12px;"><button type="button" class="c2f-he-live-btn ghost c2f-tpl-more" style="display:none;">Carregar mais</button></div>' +
+                '<div style="text-align:center;margin-top:12px;"><button type="button" class="c2f-he-live-btn ghost c2f-tpl-more" style="display:none;">' + this.t('Carregar mais', 'Load more') + '</button></div>' +
                 '</div>' +
                 '</div>';
             document.body.appendChild(p);
@@ -1930,11 +2053,11 @@ $(document).ready(function () {
             this.liveAjaxJson(url, null, (json) => {
                 const cards = panel.querySelector('#modelos-cards');
                 if (!json || json.status !== 'Ok' || !json.data) {
-                    if (reset) cards.innerHTML = '<div style="color:#94a3b8;font-size:13px;grid-column:1/-1;">Nenhum modelo encontrado.</div>';
+                    if (reset) cards.innerHTML = '<div style="color:#94a3b8;font-size:13px;grid-column:1/-1;">' + this.t('Nenhum modelo encontrado.', 'No templates found.') + '</div>';
                     return;
                 }
                 const modelos = json.data.modelos || [];
-                if (reset && !modelos.length) { cards.innerHTML = '<div style="color:#94a3b8;font-size:13px;grid-column:1/-1;">Nenhum modelo encontrado.</div>'; }
+                if (reset && !modelos.length) { cards.innerHTML = '<div style="color:#94a3b8;font-size:13px;grid-column:1/-1;">' + this.t('Nenhum modelo encontrado.', 'No templates found.') + '</div>'; }
                 this.renderTemplateCards(modelos);
                 panel.querySelector('.c2f-tpl-more').style.display = json.data.tem_mais ? 'inline-block' : 'none';
             });
@@ -1990,7 +2113,7 @@ $(document).ready(function () {
         // ===== Assistente IA =====
 
         openAiPanel() {
-            if (!this.selectedElement) { window.alert('Selecione um elemento na página primeiro.'); return; }
+            if (!this.selectedElement) { window.alert(this.t('Selecione um elemento na página primeiro.', 'Select an element on the page first.')); return; }
             this.injectLivePanelStyles();
             this.buildAiPanel();
             document.getElementById('c2f-ai-panel').style.display = 'block';
@@ -2012,43 +2135,43 @@ $(document).ready(function () {
             p.innerHTML =
                 '<div class="c2f-he-live-backdrop"></div>' +
                 '<div class="c2f-he-live-box">' +
-                '<div class="c2f-he-live-head"><span>Assistente IA</span><button type="button" class="c2f-he-live-btn ghost c2f-ai-close">Fechar</button></div>' +
+                '<div class="c2f-he-live-head"><span>' + this.t('Assistente IA', 'AI Assistant') + '</span><button type="button" class="c2f-he-live-btn ghost c2f-ai-close">' + this.t('Fechar', 'Close') + '</button></div>' +
                 '<div class="c2f-he-live-body">' +
                 '<div class="c2f-ai-tabs">' +
                 '<button type="button" data-tab="prompt" class="active">Prompt</button>' +
-                '<button type="button" data-tab="mode">Modo</button>' +
-                '<button type="button" data-tab="config">Configuração</button>' +
+                '<button type="button" data-tab="mode">' + this.t('Modo', 'Mode') + '</button>' +
+                '<button type="button" data-tab="config">' + this.t('Configuração', 'Configuration') + '</button>' +
                 '</div>' +
                 '<div class="c2f-ai-tab-body active" data-tab="prompt">' +
-                '<label>Prompt salvo (opcional)</label>' +
+                '<label>' + this.t('Prompt salvo (opcional)', 'Saved prompt (optional)') + '</label>' +
                 '<select id="c2f-ai-prompt"><option value="">—</option></select>' +
                 // BATCH-081 §4: CRUD de prompts personalizados do usuário.
                 '<div class="c2f-ai-prompt-actions" style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">' +
-                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-new" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">Novo</button>' +
-                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-edit" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">Salvar</button>' +
-                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-del" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">Excluir</button>' +
-                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-clear" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">Limpar</button>' +
+                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-new" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">' + this.t('Novo', 'New') + '</button>' +
+                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-edit" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">' + this.t('Salvar', 'Save') + '</button>' +
+                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-del" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">' + this.t('Excluir', 'Delete') + '</button>' +
+                '<button type="button" class="c2f-he-live-btn ghost" id="ai-prompt-clear" style="flex:1 1 auto;font-size:12px;padding:6px 8px;">' + this.t('Limpar', 'Clear') + '</button>' +
                 '</div>' +
-                '<label>Sua instrução</label>' +
-                '<textarea id="c2f-ai-instruction" rows="5" placeholder="Ex.: mude o título para \'Conn2flow AI\' e deixe o texto mais persuasivo"></textarea>' +
+                '<label>' + this.t('Sua instrução', 'Your instruction') + '</label>' +
+                '<textarea id="c2f-ai-instruction" rows="5" placeholder="' + this.t('Ex.: mude o título para \'Conn2flow AI\' e deixe o texto mais persuasivo', 'E.g.: change the title to \'Conn2flow AI\' and make the text more persuasive') + '"></textarea>' +
                 '</div>' +
                 '<div class="c2f-ai-tab-body" data-tab="mode">' +
-                '<label>Modo</label>' +
+                '<label>' + this.t('Modo', 'Mode') + '</label>' +
                 '<select id="c2f-ai-mode"></select>' +
-                '<label>Prompt do modo (template enviado à IA)</label>' +
+                '<label>' + this.t('Prompt do modo (template enviado à IA)', 'Mode prompt (template sent to AI)') + '</label>' +
                 '<textarea id="c2f-ai-mode-text" rows="6"></textarea>' +
                 '</div>' +
                 '<div class="c2f-ai-tab-body" data-tab="config">' +
-                '<label>Conexão</label>' +
+                '<label>' + this.t('Conexão', 'Connection') + '</label>' +
                 '<select id="c2f-ai-server"></select>' +
-                '<label>Modelo</label>' +
+                '<label>' + this.t('Modelo', 'Model') + '</label>' +
                 '<select id="c2f-ai-model"></select>' +
                 '</div>' +
                 '<div id="c2f-ai-status" style="margin-top:10px;font-size:13px;color:#64748b;"></div>' +
                 '</div>' +
                 '<div class="c2f-he-live-foot">' +
-                '<button type="button" class="c2f-he-live-btn ghost c2f-ai-close">Cancelar</button>' +
-                '<button type="button" class="c2f-he-live-btn primary c2f-ai-send">Gerar e aplicar</button>' +
+                '<button type="button" class="c2f-he-live-btn ghost c2f-ai-close">' + this.t('Cancelar', 'Cancel') + '</button>' +
+                '<button type="button" class="c2f-he-live-btn primary c2f-ai-send">' + this.t('Gerar e aplicar', 'Generate and apply') + '</button>' +
                 '</div>' +
                 '</div>';
             document.body.appendChild(p);
@@ -2175,20 +2298,20 @@ $(document).ready(function () {
         }
 
         aiPromptNew() {
-            const nome = window.prompt('Nome do novo prompt:');
+            const nome = window.prompt(this.t('Nome do novo prompt:', 'New prompt name:'));
             if (nome === null) return;
             const nm = String(nome).trim();
             const st = this.aiStatusEl();
-            if (!nm) { if (st) st.textContent = 'Informe um nome para o prompt.'; return; }
+            if (!nm) { if (st) st.textContent = this.t('Informe um nome para o prompt.', 'Enter a name for the prompt.'); return; }
             this.aiPromptCrud('site-toolbar-ia-prompt-new', { target: 'paginas', nome: nm, prompt: this.aiGetInstruction() }, (json) => {
-                if (!json || json.status !== 'Ok') { if (st) st.textContent = (json && (json.message || json.msg)) || 'Falha ao criar o prompt.'; return; }
+                if (!json || json.status !== 'Ok') { if (st) st.textContent = (json && (json.message || json.msg)) || this.t('Falha ao criar o prompt.', 'Failed to create the prompt.'); return; }
                 const sel = this.aiPromptSelect();
                 if (sel && json.id) {
                     const opt = document.createElement('option');
                     opt.value = json.id; opt.textContent = nm;
                     sel.appendChild(opt); sel.value = json.id;
                 }
-                if (st) st.textContent = 'Prompt criado.';
+                if (st) st.textContent = this.t('Prompt criado.', 'Prompt created.');
             });
         }
 
@@ -2196,9 +2319,11 @@ $(document).ready(function () {
             const sel = this.aiPromptSelect();
             const id = sel ? sel.value : '';
             const st = this.aiStatusEl();
-            if (!id) { if (st) st.textContent = 'Selecione um prompt salvo para editar.'; return; }
+            if (!id) { if (st) st.textContent = this.t('Selecione um prompt salvo para editar.', 'Select a saved prompt to edit.'); return; }
             this.aiPromptCrud('site-toolbar-ia-prompt-edit', { target: 'paginas', prompt_id: id, prompt: this.aiGetInstruction() }, (json) => {
-                if (st) st.textContent = (json && json.status === 'Ok') ? 'Prompt salvo.' : ((json && (json.message || json.msg)) || 'Falha ao salvar o prompt.');
+                if (st) st.textContent = (json && json.status === 'Ok')
+                    ? this.t('Prompt salvo.', 'Prompt saved.')
+                    : ((json && (json.message || json.msg)) || this.t('Falha ao salvar o prompt.', 'Failed to save the prompt.'));
             });
         }
 
@@ -2206,23 +2331,23 @@ $(document).ready(function () {
             const sel = this.aiPromptSelect();
             const id = sel ? sel.value : '';
             const st = this.aiStatusEl();
-            if (!id) { if (st) st.textContent = 'Selecione um prompt salvo para excluir.'; return; }
-            if (!window.confirm('Excluir o prompt selecionado?')) return;
+            if (!id) { if (st) st.textContent = this.t('Selecione um prompt salvo para excluir.', 'Select a saved prompt to delete.'); return; }
+            if (!window.confirm(this.t('Excluir o prompt selecionado?', 'Delete the selected prompt?'))) return;
             this.aiPromptCrud('site-toolbar-ia-prompt-del', { target: 'paginas', prompt_id: id }, (json) => {
                 if (json && json.status === 'Ok') {
                     Array.prototype.slice.call(sel.options).forEach((o) => { if (o.value === id) o.remove(); });
                     sel.value = '';
-                    if (st) st.textContent = 'Prompt excluído.';
-                } else if (st) { st.textContent = (json && (json.message || json.msg)) || 'Falha ao excluir o prompt.'; }
+                    if (st) st.textContent = this.t('Prompt excluído.', 'Prompt deleted.');
+                } else if (st) { st.textContent = (json && (json.message || json.msg)) || this.t('Falha ao excluir o prompt.', 'Failed to delete the prompt.'); }
             });
         }
 
         loadAiInit() {
             const p = document.getElementById('c2f-ai-panel');
             const status = p.querySelector('#c2f-ai-status');
-            status.textContent = 'Carregando opções…';
+            status.textContent = this.t('Carregando opções…', 'Loading options...');
             this.liveAjaxJson(this.liveAjaxUrl('site-toolbar-ia-init') + '&params[alvo]=paginas', null, (json) => {
-                if (!json || json.status !== 'Ok' || !json.data) { status.textContent = json && json.message ? json.message : 'IA indisponível (sem conexões configuradas).'; return; }
+                if (!json || json.status !== 'Ok' || !json.data) { status.textContent = json && json.message ? json.message : this.t('IA indisponível (sem conexões configuradas).', 'AI unavailable (no connections configured).'); return; }
                 const d = json.data;
                 const opt = (arr, valKey, txtKey) => ['<option value="">—</option>'].concat((arr || []).map((x) =>
                     '<option value="' + this.escHtml(x[valKey]) + '">' + this.escHtml(x[txtKey]) + '</option>')).join('');
@@ -2248,9 +2373,9 @@ $(document).ready(function () {
             const modeText = this.aiGetMode();
             const serverId = p.querySelector('#c2f-ai-server').value;
             const model = p.querySelector('#c2f-ai-model').value;
-            if (!instruction) { status.textContent = 'Escreva uma instrução.'; return; }
-            if (!serverId) { status.textContent = 'Selecione uma conexão de IA.'; return; }
-            status.textContent = 'Gerando… isso pode levar alguns segundos.';
+            if (!instruction) { status.textContent = this.t('Escreva uma instrução.', 'Enter an instruction.'); return; }
+            if (!serverId) { status.textContent = this.t('Selecione uma conexão de IA.', 'Select an AI connection.'); return; }
+            status.textContent = this.t('Gerando… isso pode levar alguns segundos.', 'Generating... this may take a few seconds.');
 
             // Routing (ajax/ajaxOpcao) na QUERY STRING; dados no corpo. Convenção defensiva — o
             // "302 → home" do save NÃO era roteamento (era o redirect do histórico no backend).
@@ -2269,9 +2394,9 @@ $(document).ready(function () {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
                 body: params.toString()
             }, (json) => {
-                if (!json || json.status !== 'Ok' || !json.data) { status.textContent = (json && json.message) ? json.message : 'Falha ao gerar conteúdo.'; return; }
+                if (!json || json.status !== 'Ok' || !json.data) { status.textContent = (json && json.message) ? json.message : this.t('Falha ao gerar conteúdo.', 'Failed to generate content.'); return; }
                 this.applyAiResult(json.data.html_gerado || '', json.data.css_gerado || '');
-                status.textContent = 'Aplicado!';
+                status.textContent = this.t('Aplicado!', 'Applied!');
                 this.closeAiPanel();
             });
         }
@@ -2334,15 +2459,15 @@ $(document).ready(function () {
             p.innerHTML =
                 '<div class="c2f-he-live-backdrop"></div>' +
                 '<div class="c2f-he-live-box">' +
-                '<div class="c2f-he-live-head"><span>Código customizado</span><button type="button" class="c2f-he-live-btn ghost c2f-custom-close">Fechar</button></div>' +
+                '<div class="c2f-he-live-head"><span>' + this.t('Código customizado', 'Custom code') + '</span><button type="button" class="c2f-he-live-btn ghost c2f-custom-close">' + this.t('Fechar', 'Close') + '</button></div>' +
                 '<div class="c2f-he-live-body">' +
-                '<label>HTML / CSS livre</label>' +
-                '<textarea id="c2f-custom-code" rows="12" placeholder="Ex.: <section class=&quot;...&quot;><h2>Título</h2><p>Texto</p></section>"></textarea>' +
+                '<label>' + this.t('HTML / CSS livre', 'Custom HTML / CSS') + '</label>' +
+                '<textarea id="c2f-custom-code" rows="12" placeholder="' + this.t('Ex.: <section class=&quot;...&quot;><h2>Título</h2><p>Texto</p></section>', 'E.g.: <section class=&quot;...&quot;><h2>Title</h2><p>Text</p></section>') + '"></textarea>' +
                 '<div id="c2f-custom-status" style="margin-top:10px;font-size:13px;color:#64748b;"></div>' +
                 '</div>' +
                 '<div class="c2f-he-live-foot">' +
-                '<button type="button" class="c2f-he-live-btn ghost c2f-custom-close">Cancelar</button>' +
-                '<button type="button" class="c2f-he-live-btn primary c2f-custom-insert">Inserir</button>' +
+                '<button type="button" class="c2f-he-live-btn ghost c2f-custom-close">' + this.t('Cancelar', 'Cancel') + '</button>' +
+                '<button type="button" class="c2f-he-live-btn primary c2f-custom-insert">' + this.t('Inserir', 'Insert') + '</button>' +
                 '</div>' +
                 '</div>';
             document.body.appendChild(p);
@@ -2368,7 +2493,7 @@ $(document).ready(function () {
             const code = this._customCm ? this._customCm.getValue()
                 : (document.getElementById('c2f-custom-code') ? document.getElementById('c2f-custom-code').value : '');
             const status = document.getElementById('c2f-custom-status');
-            if (!code || !code.trim()) { if (status) status.textContent = 'Escreva algum código.'; return; }
+            if (!code || !code.trim()) { if (status) status.textContent = this.t('Escreva algum código.', 'Enter some code.'); return; }
             this.insertCustomHtml(code);
             if (this._customCm) this._customCm.setValue('');
             else { const ta = document.getElementById('c2f-custom-code'); if (ta) ta.value = ''; }
@@ -2887,19 +3012,19 @@ $(document).ready(function () {
             const t = (type || 'p').toLowerCase();
             let el;
             switch (t) {
-                case 'h1': el = document.createElement('h1'); el.textContent = 'Novo título'; break;
-                case 'h2': el = document.createElement('h2'); el.textContent = 'Novo título'; break;
-                case 'h3': el = document.createElement('h3'); el.textContent = 'Novo título'; break;
+                case 'h1': el = document.createElement('h1'); el.textContent = this.t('Novo título', 'New heading'); break;
+                case 'h2': el = document.createElement('h2'); el.textContent = this.t('Novo título', 'New heading'); break;
+                case 'h3': el = document.createElement('h3'); el.textContent = this.t('Novo título', 'New heading'); break;
                 case 'img':
                     el = document.createElement('img');
                     el.setAttribute('src', (typeof html_editor !== 'undefined' && html_editor.raiz ? html_editor.raiz : '') + 'images/imagem-padrao.png');
                     el.setAttribute('alt', '');
                     break;
-                case 'a': el = document.createElement('a'); el.setAttribute('href', '#'); el.textContent = 'Novo link'; break;
-                case 'button': el = document.createElement('button'); el.setAttribute('type', 'button'); el.textContent = 'Novo botão'; break;
-                case 'div': el = document.createElement('div'); el.textContent = 'Novo bloco'; break;
-                case 'section': el = document.createElement('section'); el.textContent = 'Nova seção'; break;
-                default: el = document.createElement('p'); el.textContent = 'Novo parágrafo';
+                case 'a': el = document.createElement('a'); el.setAttribute('href', '#'); el.textContent = this.t('Novo link', 'New link'); break;
+                case 'button': el = document.createElement('button'); el.setAttribute('type', 'button'); el.textContent = this.t('Novo botão', 'New button'); break;
+                case 'div': el = document.createElement('div'); el.textContent = this.t('Novo bloco', 'New block'); break;
+                case 'section': el = document.createElement('section'); el.textContent = this.t('Nova seção', 'New section'); break;
+                default: el = document.createElement('p'); el.textContent = this.t('Novo parágrafo', 'New paragraph');
             }
             return el;
         }
@@ -2997,7 +3122,7 @@ $(document).ready(function () {
             if (!wid) { wid = this.nextWidgetId(); wrapper.setAttribute('data-widget-id', wid); }
             const inner = wrapper.querySelector('.conn2flow-widget-inner');
             if (inner && !inner.innerHTML.trim()) {
-                inner.innerHTML = '<div style="padding:8px;color:#92400e;font:12px sans-serif">Carregando widget…</div>';
+                inner.innerHTML = '<div style="padding:8px;color:#92400e;font:12px sans-serif">' + this.t('Carregando widget…', 'Loading widget...') + '</div>';
             }
             try {
                 window.parent.postMessage(JSON.stringify({
@@ -3012,7 +3137,7 @@ $(document).ready(function () {
             if (!wrapper) return;
             const inner = wrapper.querySelector('.conn2flow-widget-inner');
             if (!inner) return;
-            inner.innerHTML = html || '<div style="padding:8px;color:#9ca3af;font:12px sans-serif">(widget sem conteúdo)</div>';
+            inner.innerHTML = html || '<div style="padding:8px;color:#9ca3af;font:12px sans-serif">' + this.t('(widget sem conteúdo)', '(widget with no content)') + '</div>';
         }
 
         /**

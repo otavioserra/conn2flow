@@ -64,6 +64,42 @@ describe('html-editor.js — Live Editor (BATCH-080)', () => {
     expect(ai.querySelector('#c2f-ai-instruction')).toBeTruthy();
   });
 
+  it('traduz os controles do Live Editor quando gestor.language começa com en', () => {
+    window.gestor = { language: 'en-us' };
+    try {
+      const ed = makeEditor({ raiz: 'https://site.test/' });
+      const alvo = document.createElement('div');
+      ed.contentRoot.appendChild(alvo);
+      ed.selectElement(alvo);
+
+      expect(document.querySelector('.he-tb-drag').title).toBe('Drag / Move');
+      expect(document.querySelector('.he-tb-widget-admin').title).toBe('Edit widget in module');
+      expect(document.querySelector('#html-editor-tailwind-styler input').placeholder).toBe('Add classes (space/Enter)...');
+      expect(document.querySelector('#html-editor-selection-breadcrumb .he-crumb-label').textContent).toBe('Ancestors:');
+      expect(document.querySelector('.c2f-he-modal-cancel').textContent).toBe('Cancel');
+
+      const align = ed.tailwindHelperConfig().find((group) => group.key === 'align');
+      expect(align.section).toBe('Text');
+      expect(align.title).toBe('Alignment');
+      expect(align.buttons[0].title).toBe('Left');
+
+      ed.openTemplatesPanel();
+      const tpl = document.getElementById('c2f-tpl-panel');
+      expect(tpl.textContent).toContain('Session templates');
+      expect(tpl.querySelector('#modelos-search-input').placeholder).toBe('Search templates...');
+      expect(tpl.textContent).toContain('Insert relative to selected element');
+
+      ed.openAiPanel();
+      const ai = document.getElementById('c2f-ai-panel');
+      expect(ai.textContent).toContain('AI Assistant');
+      expect(ai.textContent).toContain('Configuration');
+      expect(ai.querySelector('#c2f-ai-instruction').placeholder).toContain('change the title');
+      expect(ed.buildElement('p').textContent).toBe('New paragraph');
+    } finally {
+      delete window.gestor;
+    }
+  });
+
   it('trata o widget de múltiplos elementos como bloco atômico (resolveEditable → raiz do grupo)', () => {
     const ed = makeEditor({ raiz: 'https://site.test/' });
     const nav = document.createElement('nav');

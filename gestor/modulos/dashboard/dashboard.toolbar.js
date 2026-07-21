@@ -28,6 +28,22 @@
 	var c2fEditor = null;   // instância do html-editor escopada ao layout+conteúdo.
 	var editLayoutId = '';  // layout_id da página em edição (para salvar em layouts).
 
+	function languageCode() {
+		var language = (window.gestor && window.gestor.language) ? window.gestor.language : '';
+		if (!language) {
+			try {
+				if (window.parent && window.parent !== window && window.parent.gestor) {
+					language = window.parent.gestor.language || '';
+				}
+			} catch (e) { /* cross-origin parent: keep the local/default language */ }
+		}
+		return String(language || '').toLowerCase();
+	}
+
+	function t(portuguese, english) {
+		return languageCode().indexOf('en') === 0 ? english : portuguese;
+	}
+
 	// ===== Offset / redimensionamento
 
 	function setPageOffset(offset) {
@@ -141,7 +157,7 @@
 			try {
 				// `raiz` habilita o image-picker autônomo do modal (item 3) — o motor monta um
 				// iframe → admin-arquivos e preenche o #element-src com o arquivo selecionado.
-				c2fEditor = new window.HtmlEditorClass({ contentRoot: content, raiz: getRaiz() });
+				c2fEditor = new window.HtmlEditorClass({ contentRoot: content, raiz: getRaiz(), language: languageCode() });
 				ensureCodeMirror(initCodeMirrorField);
 			} catch (e) {
 				window.console && console.error('Editor in-place:', e);
@@ -433,7 +449,7 @@
 			.then(function (r) { return r.json(); })
 			.then(function (json) {
 				if (!json || json.status !== 'Ok' || !json.data) {
-					window.alert((json && json.message) ? json.message : 'Falha ao carregar o editor da página.');
+					window.alert((json && json.message) ? json.message : t('Falha ao carregar o editor da página.', 'Failed to load the page editor.'));
 					return;
 				}
 				editLayoutId = json.data.layout_id || '';
@@ -465,7 +481,7 @@
 
 				activateEditor(root);
 			})
-			.catch(function () { window.alert('Erro ao carregar o editor da página.'); });
+			.catch(function () { window.alert(t('Erro ao carregar o editor da página.', 'Error loading the page editor.')); });
 	}
 
 	function decodeMarker(b64) {
@@ -588,7 +604,7 @@
 			ov.innerHTML =
 				'<div style="display:flex;flex-direction:column;align-items:center;gap:16px;background:#fff;padding:28px 44px;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.35);font:600 15px system-ui,sans-serif;color:#0f172a;">' +
 					'<div style="width:44px;height:44px;border:4px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:c2f-save-spin .8s linear infinite;"></div>' +
-					'<span>Salvando página…</span>' +
+					'<span>' + t('Salvando página…', 'Saving page...') + '</span>' +
 				'</div>';
 			// Captura e impede qualquer interação por baixo enquanto salva.
 			['click', 'mousedown', 'mouseup', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
@@ -612,7 +628,7 @@
 		// mapeamento + carga do html-editor.js). Se o usuário clica "Salvar" antes de o editor
 		// instanciar, salvaríamos o DOM cru sem anotações (perde variáveis/widgets). Aborta com aviso.
 		if (!c2fEditor || typeof c2fEditor.getCleanHtml !== 'function') {
-			window.alert('O editor ainda está carregando. Aguarde um instante e tente salvar novamente.');
+			window.alert(t('O editor ainda está carregando. Aguarde um instante e tente salvar novamente.', 'The editor is still loading. Wait a moment and try saving again.'));
 			return;
 		}
 
@@ -651,7 +667,7 @@
 		} catch (e) {
 			hideSaveLoader();
 			if (c2fEditor && typeof c2fEditor.enable === 'function') { c2fEditor.enable(); }
-			window.alert('Erro ao preparar o salvamento da página.');
+			window.alert(t('Erro ao preparar o salvamento da página.', 'Error preparing the page save.'));
 			return;
 		}
 
@@ -688,9 +704,9 @@
 				if (json && json.status === 'Ok') { window.location.reload(); return; }
 				if (json && json.message) { saveFalhou(json.message); return; }
 				var trecho = (text || '').replace(/\s+/g, ' ').trim().slice(0, 300);
-				saveFalhou('Falha ao salvar a página.' + (trecho ? '\n\nResposta do servidor:\n' + trecho : ''));
+				saveFalhou(t('Falha ao salvar a página.', 'Failed to save the page.') + (trecho ? '\n\n' + t('Resposta do servidor:', 'Server response:') + '\n' + trecho : ''));
 			})
-			.catch(function () { saveFalhou('Erro de rede ao salvar a página.'); });
+			.catch(function () { saveFalhou(t('Erro de rede ao salvar a página.', 'Network error while saving the page.')); });
 	}
 
 	// Parse tolerante: tenta JSON.parse direto; se falhar (corpo com prefixo espúrio), tenta
@@ -782,9 +798,9 @@
 	var addWidgetPage = 1;     // página corrente da lista de itens (paginação).
 	var addSearchTimer = null; // debounce da busca.
 	var ELEMENTOS = [
-		{ type: 'p', label: 'Parágrafo' }, { type: 'h1', label: 'Título H1' }, { type: 'h2', label: 'Título H2' },
-		{ type: 'h3', label: 'Título H3' }, { type: 'img', label: 'Imagem' }, { type: 'a', label: 'Link' },
-		{ type: 'button', label: 'Botão' }, { type: 'div', label: 'Bloco' }, { type: 'section', label: 'Seção' }
+		{ type: 'p', label: 'Parágrafo', labelEn: 'Paragraph' }, { type: 'h1', label: 'Título H1', labelEn: 'Heading H1' }, { type: 'h2', label: 'Título H2', labelEn: 'Heading H2' },
+		{ type: 'h3', label: 'Título H3', labelEn: 'Heading H3' }, { type: 'img', label: 'Imagem', labelEn: 'Image' }, { type: 'a', label: 'Link', labelEn: 'Link' },
+		{ type: 'button', label: 'Botão', labelEn: 'Button' }, { type: 'div', label: 'Bloco', labelEn: 'Block' }, { type: 'section', label: 'Seção', labelEn: 'Section' }
 	];
 
 	function ajaxJson(url, cb) {
@@ -816,10 +832,10 @@
 	// Carrega os GRUPOS (categorias) de widget na subcoluna esquerda. Seleciona o 1º por padrão.
 	function loadWidgetCategories() {
 		var groups = addPanel.querySelector('.c2f-add-widget-groups');
-		groups.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Carregando…</div>';
+		groups.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">' + t('Carregando…', 'Loading...') + '</div>';
 		ajaxJson(dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-widget-types', function (json) {
 			var cats = (json && json.data) ? json.data : [];
-			if (!cats.length) { groups.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Nenhum widget</div>'; return; }
+			if (!cats.length) { groups.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">' + t('Nenhum widget', 'No widgets') + '</div>'; return; }
 			var h = '';
 			cats.forEach(function (cat, idx) {
 				h += '<div class="c2f-add-widget-group" data-module="' + esc(cat.id) + '" ' +
@@ -854,12 +870,12 @@
 		highlightActiveGroup();
 
 		if (!busca && !module) {
-			itemsBox.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Selecione um grupo ou busque um widget.</div>';
+			itemsBox.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">' + t('Selecione um grupo ou busque um widget.', 'Select a group or search for a widget.') + '</div>';
 			moreBtn.style.display = 'none';
 			return;
 		}
 
-		if (reset) { addWidgetPage = 1; itemsBox.innerHTML = '<div class="c2f-add-loading" style="color:#94a3b8;font-size:12px;padding:4px 8px;">Carregando…</div>'; }
+		if (reset) { addWidgetPage = 1; itemsBox.innerHTML = '<div class="c2f-add-loading" style="color:#94a3b8;font-size:12px;padding:4px 8px;">' + t('Carregando…', 'Loading...') + '</div>'; }
 		else { addWidgetPage++; }
 
 		var url = dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-widgets-list' +
@@ -874,7 +890,7 @@
 			if (loading) { loading.remove(); }
 			if (reset) { itemsBox.innerHTML = ''; }
 			if (reset && !items.length) {
-				itemsBox.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Nenhum widget encontrado.</div>';
+				itemsBox.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">' + t('Nenhum widget encontrado.', 'No widgets found.') + '</div>';
 				moreBtn.style.display = 'none';
 				return;
 			}
@@ -896,26 +912,26 @@
 		addPanel.style.cssText = 'position:fixed;z-index:2147483645;width:560px;max-width:94vw;max-height:72vh;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.22);padding:10px;display:none;font:14px system-ui,sans-serif;color:#0f172a;';
 		var titulo = function (t) { return '<div style="font:600 11px sans-serif;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin:2px 0 6px;">' + t + '</div>'; };
 
-		var elementosHtml = titulo('Elementos HTML');
+		var elementosHtml = titulo(t('Elementos HTML', 'HTML Elements'));
 		ELEMENTOS.forEach(function (e) {
-			elementosHtml += '<div class="c2f-add-el" data-el="' + e.type + '" style="padding:6px 8px;border-radius:6px;cursor:pointer;">' + e.label + '</div>';
+			elementosHtml += '<div class="c2f-add-el" data-el="' + e.type + '" style="padding:6px 8px;border-radius:6px;cursor:pointer;">' + t(e.label, e.labelEn) + '</div>';
 		});
 		// BATCH-081 §5: opção de código customizado (CodeMirror livre → insertCustomHtml).
 		elementosHtml += '<div style="border-top:1px solid #e2e8f0;margin:6px 0;"></div>';
-		elementosHtml += '<div class="c2f-add-el" data-el="__custom__" style="padding:6px 8px;border-radius:6px;cursor:pointer;font-weight:600;color:#4338ca;">Código Customizado</div>';
+		elementosHtml += '<div class="c2f-add-el" data-el="__custom__" style="padding:6px 8px;border-radius:6px;cursor:pointer;font-weight:600;color:#4338ca;">' + t('Código Customizado', 'Custom Code') + '</div>';
 
 		var h =
 			'<div class="c2f-add-cols" style="display:flex;gap:12px;align-items:flex-start;">' +
 			'<div class="c2f-add-col-el" style="flex:0 0 160px;min-width:150px;">' + elementosHtml + '</div>' +
 			'<div class="c2f-add-col-widgets" style="flex:1 1 auto;min-width:0;border-left:1px solid #e2e8f0;padding-left:12px;">' +
 			titulo('Widgets') +
-			'<input type="text" class="c2f-add-widget-search" placeholder="Buscar widgets..." autocomplete="off" ' +
+			'<input type="text" class="c2f-add-widget-search" placeholder="' + t('Buscar widgets...', 'Search widgets...') + '" autocomplete="off" ' +
 			'style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;font:13px sans-serif;color:#0f172a;margin-bottom:8px;">' +
 			'<div style="display:flex;gap:10px;align-items:flex-start;">' +
 			'<div class="c2f-add-widget-groups" style="flex:0 0 42%;max-height:44vh;overflow:auto;"></div>' +
 			'<div style="flex:1 1 auto;min-width:0;border-left:1px solid #eef2f7;padding-left:10px;">' +
 			'<div class="c2f-add-widget-items" style="max-height:40vh;overflow:auto;"></div>' +
-			'<button type="button" class="c2f-add-widget-more" style="display:none;width:100%;margin-top:8px;padding:6px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;color:#334155;cursor:pointer;font:12px sans-serif;">Carregar mais</button>' +
+			'<button type="button" class="c2f-add-widget-more" style="display:none;width:100%;margin-top:8px;padding:6px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;color:#334155;cursor:pointer;font:12px sans-serif;">' + t('Carregar mais', 'Load more') + '</button>' +
 			'</div>' +
 			'</div>' +
 			'</div>' +
@@ -1000,7 +1016,7 @@
 			'&page_id=' + encodeURIComponent(backupPageId || '');
 		ajaxJson(url, function (json) {
 			if (!json || json.status !== 'Ok') {
-				window.alert((json && json.message) ? json.message : 'Falha ao restaurar o backup.');
+				window.alert((json && json.message) ? json.message : t('Falha ao restaurar o backup.', 'Failed to restore the backup.'));
 				return;
 			}
 			window.location.reload();
@@ -1027,7 +1043,7 @@
 		var h = '<div style="flex:1 1 0;min-width:200px;">' +
 			'<div style="font:600 11px sans-serif;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin:4px 0;padding-bottom:4px;border-bottom:1px solid #e2e8f0;">' + esc(titulo) + '</div>';
 		if (!backups || !backups.length) {
-			h += '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Nenhum backup</div>';
+			h += '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">' + t('Nenhum backup', 'No backups') + '</div>';
 		} else {
 			backups.forEach(function (b) {
 				h += '<div class="c2f-backup-item" data-id="' + esc(b.id) + '" data-type="' + esc(type) +
@@ -1044,15 +1060,15 @@
 		backupPanel.style.left = px + 'px';
 		backupPanel.style.top = ((parseInt(y, 10) || 40) + 4) + 'px';
 		backupPanel.style.display = 'block';
-		backupPanel.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">Carregando…</div>';
+		backupPanel.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">' + t('Carregando…', 'Loading...') + '</div>';
 		ajaxJson(dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-backups&page_id=' + encodeURIComponent(pageId || ''), function (json) {
 			var data = (json && json.data) ? json.data : {};
 			var pageB = data.page_backups || [];
 			var layoutB = data.layout_backups || [];
 			backupPanel.innerHTML =
 				'<div style="display:flex;gap:12px;align-items:flex-start;">' +
-				backupColumn('Backups da Página', pageB, 'page') +
-				backupColumn('Backups do Layout', layoutB, 'layout') +
+				backupColumn(t('Backups da Página', 'Page Backups'), pageB, 'page') +
+				backupColumn(t('Backups do Layout', 'Layout Backups'), layoutB, 'layout') +
 				'</div>';
 		});
 	}

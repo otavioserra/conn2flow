@@ -21,7 +21,9 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
     }
     const hook = 'window.__c2fToolbar={runMap:function(root,backup){varMap={};varSeq=0;mapRoot=root;' +
         'mapTree(root,backup);return varMap;},reconstruct:function(c){return reconstructOriginal(c);},' +
-        'handleWidgetRender:function(s,w){return handleEngineWidgetRender(s,w);}};\n';
+        'handleWidgetRender:function(s,w){return handleEngineWidgetRender(s,w);},' +
+        'buildAddPanel:function(){return buildAddPanel();},backupColumn:function(title,items,type){return backupColumn(title,items,type);},' +
+        'translate:function(pt,en){return t(pt,en);}};\n';
     code = code.slice(0, idx) + hook + code.slice(idx);
     
     // Eval no contexto da sandbox do vitest/happy-dom
@@ -36,6 +38,7 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
   afterEach(() => {
     document.body.innerHTML = '';
     delete window.__c2fToolbar;
+    delete window.gestor;
   });
 
   const OPEN = (s) => '<!-- widgets#' + s + ' < -->';
@@ -169,6 +172,19 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
     expect(out).not.toContain(']]@@');
     // Não sobra nenhuma variável sem cerco.
     expect(/(^|[^@])\[\[pagina#url-raiz\]\]([^@]|$)/.test(out)).toBe(false);
+  });
+
+  it('traduz o painel de adição e estados de backup para inglês', () => {
+    window.gestor = { language: 'en-us' };
+    const panel = T.buildAddPanel();
+
+    expect(panel.textContent).toContain('HTML Elements');
+    expect(panel.textContent).toContain('Paragraph');
+    expect(panel.textContent).toContain('Custom Code');
+    expect(panel.textContent).toContain('Load more');
+    expect(panel.querySelector('.c2f-add-widget-search').placeholder).toBe('Search widgets...');
+    expect(T.backupColumn('Page Backups', [], 'page')).toContain('No backups');
+    expect(T.translate('Falha ao restaurar o backup.', 'Failed to restore the backup.')).toBe('Failed to restore the backup.');
   });
 
 });
