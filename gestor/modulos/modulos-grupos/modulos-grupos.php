@@ -147,7 +147,7 @@ function modulos_grupos_editar(){
 		
 		$editar = Array(
 			'tabela' => $modulo['tabela']['nome'],
-			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D'",
+			'extra' => "WHERE ".$modulo['tabela']['id']."='".$id."' AND ".$modulo['tabela']['status']."!='D' AND language='".$_GESTOR['linguagem-codigo']."'",
 		);
 		
 		$campo_nome = "nome"; $request_name = 'nome'; $alteracoes_name = 'name'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; if(!isset($_REQUEST['_gestor-nao-alterar-id'])){$alterar_id = true;} $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
@@ -221,6 +221,7 @@ function modulos_grupos_editar(){
 		$modulo['tabela']['nome'],
 		"WHERE ".$modulo['tabela']['id']."='".$id."'"
 		." AND ".$modulo['tabela']['status']."!='D'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
 	if($_GESTOR['banco-resultado']){
@@ -260,6 +261,13 @@ function modulos_grupos_editar(){
 				'icon' => 'plus circle',
 				'cor' => 'blue',
 			),
+			'clonar' => Array(
+				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/clonar/?'.$modulo['tabela']['id'].'='.$id,
+				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-clone')),
+				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-clone')),
+				'icon' => 'clone',
+				'cor' => 'teal',
+			),
 			'status' => Array(
 				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=status&'.$modulo['tabela']['status'].'='.($status_atual == 'A' ? 'I' : 'A' ).'&'.$modulo['tabela']['id'].'='.$id.'&redirect='.urlencode($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id),
 				'rotulo' => ($status_atual == 'A' ? gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-desactive')) : gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-active')) ),
@@ -274,6 +282,142 @@ function modulos_grupos_editar(){
 				'icon' => 'trash alternate',
 				'cor' => 'red',
 			),
+		),
+		'formulario' => Array(
+			'validacao' => Array(
+				Array(
+					'regra' => 'texto-obrigatorio',
+					'campo' => 'nome',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
+				)
+			)
+		)
+	);
+}
+
+function modulos_grupos_clonar(){
+	global $_GESTOR;
+	
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	
+	// ===== Identificador do registro a ser clonado.
+	
+	$id = $_GESTOR['modulo-registro-id'];
+	
+	// ===== Definição dos campos do banco de dados para clonar.
+	
+	$camposBanco = Array(
+		'nome',
+		'host',
+	);
+	
+	$camposBancoPadrao = Array(
+		$modulo['tabela']['status'],
+		$modulo['tabela']['versao'],
+		$modulo['tabela']['data_criacao'],
+		$modulo['tabela']['data_modificacao'],
+	);
+	
+	$camposBancoClonar = array_merge($camposBanco,$camposBancoPadrao);
+	
+	// ===== Gravar registro no Banco
+	
+	if(isset($_GESTOR['adicionar-banco'])){
+		$usuario = gestor_usuario();
+		
+		// ===== Validação de campos obrigatórios
+		
+		interface_validacao_campos_obrigatorios(Array(
+			'campos' => Array(
+				Array(
+					'regra' => 'texto-obrigatorio',
+					'campo' => 'nome',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-label')),
+				)
+			)
+		));
+		
+		// ===== Definição do identificador
+		
+		$campos = null;
+		$campo_sem_aspas_simples = false;
+		
+		$id = banco_identificador(Array(
+			'id' => banco_escape_field($_REQUEST["nome"]),
+			'tabela' => Array(
+				'nome' => $modulo['tabela']['nome'],
+				'campo' => $modulo['tabela']['id'],
+				'id_nome' => $modulo['tabela']['id_numerico'],
+				'where' => "language='".$_GESTOR['linguagem-codigo']."'",
+			),
+		));
+		
+		// ===== Campos gerais
+		
+		$campo_nome = "id_usuarios"; $campo_valor = $usuario['id_usuarios']; 			$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = "host"; $post_nome = "host"; $campo_valor = '1';					if($_REQUEST[$post_nome] == 'on')		$campos[] = Array($campo_nome,$campo_valor,true);
+		
+		// ===== Campos comuns
+		
+		$campo_nome = 'language '; $campo_valor = $_GESTOR['linguagem-codigo']; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = $modulo['tabela']['status']; $campo_valor = 'A'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = $modulo['tabela']['versao']; $campo_valor = '1'; 					$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+		$campo_nome = $modulo['tabela']['data_criacao']; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
+		$campo_nome = $modulo['tabela']['data_modificacao']; $campo_valor = 'NOW()'; 	$campos[] = Array($campo_nome,$campo_valor,true);
+	
+		banco_insert_name
+		(
+			$campos,
+			$modulo['tabela']['nome']
+		);
+		
+		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
+	}
+	
+	// ===== Inclusão Módulo JS
+	
+	gestor_pagina_javascript_incluir();
+	
+	// ===== Selecionar dados do banco de dados
+	
+	$retorno_bd = banco_select_editar
+	(
+		banco_campos_virgulas($camposBancoClonar)
+		,
+		$modulo['tabela']['nome'],
+		"WHERE ".$modulo['tabela']['id']."='".$id."'"
+		." AND ".$modulo['tabela']['status']."!='D'"
+		." AND language='".$_GESTOR['linguagem-codigo']."'"
+	);
+	
+	if($_GESTOR['banco-resultado']){
+		$host = (isset($retorno_bd['host']) ? true : false);
+		
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#checked#',($host ? 'checked' : ''));
+		
+		// ===== Popular os metaDados
+		
+		$status_atual = (isset($retorno_bd[$modulo['tabela']['status']]) ? $retorno_bd[$modulo['tabela']['status']] : '');
+		
+		if(isset($retorno_bd[$modulo['tabela']['data_criacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_criacao']], 'formato' => 'dataHora'))); }
+		if(isset($retorno_bd[$modulo['tabela']['data_modificacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_modificacao']], 'formato' => 'dataHora'))); }
+		if(isset($retorno_bd[$modulo['tabela']['versao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-version')),'dado' => $retorno_bd[$modulo['tabela']['versao']]); }
+		if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => ($retorno_bd[$modulo['tabela']['status']] == 'A' ? '<div class="ui center aligned green message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-active')).'</b></div>' : '').($retorno_bd[$modulo['tabela']['status']] == 'I' ? '<div class="ui center aligned brown message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-inactive')).'</b></div>' : '')); }
+	} else {
+		gestor_redirecionar_raiz();
+	}
+	
+	// ===== Interface clonar finalizar opções
+	
+	$_GESTOR['interface']['clonar']['finalizar'] = Array(
+		'id' => $id,
+		'metaDados' => $metaDados,
+		'banco' => Array(
+			'nome' => $modulo['tabela']['nome'],
+			'id' => $modulo['tabela']['id'],
+			'status' => $modulo['tabela']['status'],
 		),
 		'formulario' => Array(
 			'validacao' => Array(
@@ -349,6 +493,12 @@ function modulos_grupos_interfaces_padroes(){
 						'icon' => 'edit',
 						'cor' => 'basic blue',
 					),
+					'clonar' => Array(
+						'url' => 'clonar/',
+						'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-clone')),
+						'icon' => 'clone',
+						'cor' => 'basic teal',
+					),
 					'ativar' => Array(
 						'opcao' => 'status',
 						'status_atual' => 'I',
@@ -409,6 +559,7 @@ function modulos_grupos_start(){
 		switch($_GESTOR['opcao']){
 			case 'adicionar': modulos_grupos_adicionar(); break;
 			case 'editar': modulos_grupos_editar(); break;
+			case 'clonar': modulos_grupos_clonar(); break;
 		}
 		
 		interface_finalizar();

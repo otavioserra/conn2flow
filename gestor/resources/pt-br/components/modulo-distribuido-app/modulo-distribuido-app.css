@@ -1,0 +1,87 @@
+/* Componente global da Arquitetura de Módulos Distribuídos (req-005). */
+.c2f-md-app { width: 100%; }
+
+.c2f-md-screen {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 2rem 1rem;
+}
+
+.c2f-md-card {
+	width: 100%;
+	max-width: 420px;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+	padding: 2rem;
+	text-align: center;
+}
+
+.c2f-md-icon { font-size: 2.5rem; line-height: 1; margin-bottom: 0.75rem; color: #2563eb; }
+.c2f-md-icon .icon { margin: 0; }
+.c2f-md-icon-danger { color: #b91c1c; }
+.c2f-md-title { font-size: 1.35rem; font-weight: 700; color: #111827; margin: 0 0 0.5rem; }
+.c2f-md-text { font-size: 0.95rem; color: #4b5563; margin: 0 0 1.25rem; line-height: 1.5; }
+
+.c2f-md-error {
+	color: #b91c1c;
+	background: #fef2f2;
+	border: 1px solid #fca5a5;
+	border-radius: 8px;
+	font-size: 0.9rem;
+	padding: 0.6rem 0.75rem;
+	margin-bottom: 1rem;
+	text-align: left;
+}
+.c2f-md-error:empty { display: none; }
+
+.c2f-md-form { display: flex; flex-direction: column; text-align: left; gap: 0.35rem; }
+.c2f-md-label { font-size: 0.85rem; font-weight: 600; color: #374151; margin-top: 0.5rem; }
+.c2f-md-input {
+	width: 100%;
+	padding: 0.6rem 0.75rem;
+	border: 1px solid #d1d5db;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	box-sizing: border-box;
+}
+.c2f-md-input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+
+.c2f-md-btn {
+	display: inline-block;
+	margin-top: 1rem;
+	padding: 0.65rem 1.1rem;
+	border: none;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: none;
+	transition: background-color 0.15s ease;
+}
+.c2f-md-btn-primary { background: #2563eb; color: #fff; }
+.c2f-md-btn-primary:hover { background: #1d4ed8; }
+.c2f-md-btn-support { background: #f3f4f6; color: #111827; border: 1px solid #d1d5db; }
+.c2f-md-btn-support:hover { background: #e5e7eb; }
+
+.c2f-md-noperm .c2f-md-card { border-color: #fca5a5; }
+.c2f-md-noperm .c2f-md-title { color: #b91c1c; }
+
+.c2f-md-iframe-screen { padding: 0; display: block; }
+.c2f-md-iframe {
+	width: 100%;
+	min-height: 80vh;
+	border: 0;
+	display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+	.c2f-md-card { background: #1f2937; border-color: #374151; }
+	.c2f-md-title { color: #f9fafb; }
+	.c2f-md-text { color: #d1d5db; }
+	.c2f-md-label { color: #e5e7eb; }
+	.c2f-md-input { background: #111827; border-color: #4b5563; color: #f9fafb; }
+	.c2f-md-btn-support { background: #374151; color: #f9fafb; border-color: #4b5563; }
+}

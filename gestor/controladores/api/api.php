@@ -939,6 +939,44 @@ function api_handle_modulo($modulo_id, $action) {
     );
 }
 
+// =========================== Canal de Módulos Distribuídos (req-005)
+
+/**
+ * Despacha as requisições do canal de módulos distribuídos.
+ *
+ * Rota: api[/v1]/modulo-distribuido/{slug}/{acao}. A ação determina o lado:
+ *  - 'db' / 'ping'          => lado DISTRIBUÍDO (executa a operação no banco local).
+ *  - 'signin' / 'refresh'   => lado CENTRAL (autenticação/ativação, devolve tokens).
+ *
+ * A autenticação do canal é feita por assinatura HMAC (verificada em cada handler),
+ * dispensando o OAuth para as operações máquina-a-máquina entre central e distribuído.
+ *
+ * @return void
+ */
+function api_handle_modulo_distribuido() {
+    global $_GESTOR;
+
+    gestor_incluir_biblioteca('modulo-distribuido');
+
+    $rota = modulo_distribuido_parse_rota($_GESTOR['caminho']);
+    if ($rota === null) {
+        api_response_error('Rota de módulo distribuído inválida. Use modulo-distribuido/{slug}/{acao}.', 400);
+    }
+
+    $acao = $rota['acao'];
+
+    // Ações de autenticação/ativação e o middleware de permissão são atendidos pelo central.
+    if (in_array($acao, ['signin', 'refresh', 'ativar', 'permissao'], true)) {
+        require_once $_GESTOR['ROOT_PATH'] . 'controladores/api/api-module-central.php';
+        api_module_central_handle($rota);
+        return;
+    }
+
+    // Demais ações (db, ping) são atendidas pelo lado distribuído (executa no banco local).
+    require_once $_GESTOR['ROOT_PATH'] . 'controladores/api/api-module-distributed.php';
+    api_module_distributed_handle($rota);
+}
+
 // =========================== Roteamento da API
 
 function api_route_request() {
@@ -988,6 +1026,12 @@ function api_route_request() {
 
         case 'system':
             api_handle_system();
+            break;
+
+        case 'v1':
+        case 'modulo-distribuido':
+            // Canal de módulos distribuídos (req-005): api[/v1]/modulo-distribuido/{slug}/{acao}.
+            api_handle_modulo_distribuido();
             break;
 
         default:

@@ -190,6 +190,16 @@ $_CONFIG = [
         'maximo-tokens-usuario'       => (int)($_ENV['OAUTH2_MAXIMO_TOKENS_USUARIO'] ?? 5),
     ],
 
+    // Arquitetura de Módulos Distribuídos (req-005)
+    // secret      : segredo HMAC compartilhado entre central e distribuído (igual nos dois).
+    // central-url : URL base do central (usada pelo distribuído p/ o Iframe e o middleware).
+    // endpoint    : endpoint da API do distribuído (usado pelo central p/ o canal de banco).
+    'modulo-distribuido' => [
+        'secret'      => $_ENV['MODULO_DISTRIBUIDO_SECRET'] ?? '',
+        'central-url' => $_ENV['MODULO_DISTRIBUIDO_CENTRAL_URL'] ?? '',
+        'endpoint'    => $_ENV['MODULO_DISTRIBUIDO_ENDPOINT'] ?? '',
+    ],
+
     // Controle de Acessos
     'acessos-maximo-falhas-logins'      => (int)($_ENV['ACESSOS_MAXIMO_FALHAS_LOGINS'] ?? 10),
     'acessos-maximo-logins-simples'     => (int)($_ENV['ACESSOS_MAXIMO_LOGINS_SIMPLES'] ?? 3),
@@ -301,6 +311,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
     'seguranca' => Array('seguranca.php'),
     'interface-v2' => Array('interface-v2.php'),
     'banco-v2' => Array('banco-v2.php'),
+    'modulo-distribuido' => Array('modulo-distribuido.php'),
 );
 
 // Bibliotecas principais do sistema

@@ -1,0 +1,43 @@
+<!-- Componente global da Arquitetura de Módulos Distribuídos (req-005).
+     Contém os três estados de renderização; a biblioteca modulo-distribuido mantém
+     apenas o bloco do estado atual (login / sem-permissao / iframe) e preenche os
+     textos por idioma. Reutilizável por qualquer módulo distribuído. -->
+<div class="c2f-md-app" data-c2f-md-state="#c2f-md-state#">
+
+	<!-- login < -->
+	<div class="c2f-md-screen c2f-md-login">
+		<div class="c2f-md-card">
+			<div class="c2f-md-icon"><i class="lock icon"></i></div>
+			<h2 class="c2f-md-title">#c2f-md-login-title#</h2>
+			<p class="c2f-md-text">#c2f-md-login-subtitle#</p>
+			<div class="c2f-md-error">#c2f-md-login-error#</div>
+			<form class="c2f-md-form" method="post" action="#c2f-md-signin-action#" data-c2f-md-form="signin">
+				<label class="c2f-md-label" for="c2f-md-user">#c2f-md-login-user#</label>
+				<input class="c2f-md-input" type="text" id="c2f-md-user" name="usuario" autocomplete="username" required>
+				<label class="c2f-md-label" for="c2f-md-pass">#c2f-md-login-pass#</label>
+				<input class="c2f-md-input" type="password" id="c2f-md-pass" name="senha" autocomplete="current-password" required>
+				<input type="hidden" name="c2f-md-signin" value="1">
+				<button class="c2f-md-btn c2f-md-btn-primary" type="submit">#c2f-md-login-submit#</button>
+			</form>
+		</div>
+	</div>
+	<!-- login > -->
+
+	<!-- sem-permissao < -->
+	<div class="c2f-md-screen c2f-md-noperm">
+		<div class="c2f-md-card">
+			<div class="c2f-md-icon c2f-md-icon-danger"><i class="ban icon"></i></div>
+			<h2 class="c2f-md-title">#c2f-md-noperm-title#</h2>
+			<p class="c2f-md-text">#c2f-md-noperm-message#</p>
+			<a class="c2f-md-btn c2f-md-btn-support" href="#c2f-md-support-url#">#c2f-md-noperm-support#</a>
+		</div>
+	</div>
+	<!-- sem-permissao > -->
+
+	<!-- iframe < -->
+	<div class="c2f-md-screen c2f-md-iframe-screen">
+		<iframe class="c2f-md-iframe" src="#iframe-src#" title="#c2f-md-iframe-title#" loading="lazy"></iframe>
+	</div>
+	<!-- iframe > -->
+
+</div>

@@ -38,11 +38,22 @@ fi
 
 echo "New version is: $NEW_VERSION"
 
-## Removes all old tags matching gestor-v2.7.* pattern locally and remotely
+## Removes all old tags matching the same major.minor series as NEW_VERSION
+VERSION_MAJOR=$(echo "$NEW_VERSION" | cut -d'.' -f1)
+VERSION_MINOR=$(echo "$NEW_VERSION" | cut -d'.' -f2)
+
+if [ -z "$VERSION_MAJOR" ] || [ -z "$VERSION_MINOR" ]; then
+  echo "Error: Invalid version format returned by version.php: $NEW_VERSION"
+  exit 1
+fi
+
+TAG_SERIES="${VERSION_MAJOR}.${VERSION_MINOR}"
+OLD_TAG_PATTERN="gestor-v${TAG_SERIES}.*"
+
 set +e
-OLD_TAGS=$(git tag | grep "^gestor-v2.7")
+OLD_TAGS=$(git tag --list "$OLD_TAG_PATTERN")
 if [ -n "$OLD_TAGS" ]; then
-  echo "Removing all old tags matching gestor-v2.7.* pattern: $OLD_TAGS"
+  echo "Removing all old tags matching $OLD_TAG_PATTERN: $OLD_TAGS"
   for tag in $OLD_TAGS; do
     if [ -n "$tag" ]; then
       git tag -d "$tag"

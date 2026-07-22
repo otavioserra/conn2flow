@@ -14,7 +14,10 @@
         "data_modificacao": "data_modificacao",
         "config": {
             "strategy": "natural_key",
-            "natural_key_columns": ["language", "id"],
+            "natural_key_columns": [
+                "language",
+                "id"
+            ],
             "preserve_on_user_modified": [],
             "insert_only": false
         },
@@ -66,6 +69,20 @@
                         "css": "",
                         "combined": "36e3752df78811bc45f4ca5abf8c889d"
                     }
+                },
+                {
+                    "name": "Módulos Grupos - Clonar",
+                    "id": "modulos-grupos-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos-grupos\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "b31c7f2d881bcad6c89fa3fed8365855",
+                        "css": "",
+                        "combined": "b31c7f2d881bcad6c89fa3fed8365855"
+                    }
                 }
             ],
             "components": [],
@@ -94,7 +111,7 @@
                     "name": "Module Groups",
                     "id": "modulos-grupos",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/",
+                    "path": "modulos-grupos\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -109,7 +126,7 @@
                     "name": "Module Groups - Add",
                     "id": "modulos-grupos-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/adicionar/",
+                    "path": "modulos-grupos\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.1",
@@ -123,7 +140,7 @@
                     "name": "Module Groups - Edit",
                     "id": "modulos-grupos-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/editar/",
+                    "path": "modulos-grupos\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.1",
@@ -131,6 +148,20 @@
                         "html": "36e3752df78811bc45f4ca5abf8c889d",
                         "css": "",
                         "combined": "36e3752df78811bc45f4ca5abf8c889d"
+                    }
+                },
+                {
+                    "name": "Module Groups - Clone",
+                    "id": "modulos-grupos-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "modulos-grupos\/clonar\/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "b31c7f2d881bcad6c89fa3fed8365855",
+                        "css": "",
+                        "combined": "b31c7f2d881bcad6c89fa3fed8365855"
                     }
                 }
             ],

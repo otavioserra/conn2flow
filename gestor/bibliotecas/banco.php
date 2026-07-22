@@ -28,16 +28,20 @@ $_GESTOR['biblioteca-banco']							=	Array(
  */
 function banco_escape_field($field){
 	global $_BANCO;
-	
-	// Verifica se precisa conectar ao banco
+
+	// Verifica se precisa conectar ao banco (apenas quando o driver é mysqli).
 	$connect_db = false;
 	if(!isset($_BANCO['conexao']))$connect_db = true;
-	if($connect_db)banco_conectar();
-	
+	if($connect_db && ($_BANCO['tipo'] ?? '') == "mysqli")banco_conectar();
+
 	// Escapa o valor usando mysqli
-	if($_BANCO['tipo'] == "mysqli"){
+	if(($_BANCO['tipo'] ?? '') == "mysqli"){
 		return mysqli_real_escape_string($_BANCO['conexao'],$field);
 	}
+
+	// Fallback para ambientes sem mysqli (ex.: testes / execução distribuída sem
+	// conexão local): escape básico determinístico em vez de retornar null.
+	return addslashes((string)$field);
 }
 
 /**
@@ -173,6 +177,15 @@ function banco_fechar_conexao(){
 function banco_query($query){
     global $_BANCO;
 
+    // ===== Interceptação distribuída (req-005 / Arquitetura de Módulos Distribuídos)
+    // Quando o contexto distribuído está ativo, a execução da instrução é delegada
+    // de forma transparente para a instalação distribuída (site.com) via API, em vez
+    // de rodar no banco local. banco_distribuido_query() devolve um BancoResultadoRemoto
+    // (SELECT) ou true/false (escrita), mantendo a mesma semântica de retorno.
+    if(!empty($_BANCO['distribuido']) && function_exists('banco_distribuido_query')){
+        return banco_distribuido_query($query);
+    }
+
     // Conecta ao banco se necessário
     $connect_db = false;
     if(!isset($_BANCO['conexao']))$connect_db = true;
@@ -202,7 +215,11 @@ function banco_query($query){
  */
 function banco_num_rows($result){
 	global $_BANCO;
-	
+
+	// Resultado remoto de módulo distribuído (req-005).
+	if($result instanceof BancoResultadoRemoto)
+		return $result->numRows();
+
 	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_num_rows($result);
 }
@@ -218,7 +235,11 @@ function banco_num_rows($result){
  */
 function banco_num_fields($result){
 	global $_BANCO;
-	
+
+	// Resultado remoto de módulo distribuído (req-005).
+	if($result instanceof BancoResultadoRemoto)
+		return $result->numFields();
+
 	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_num_fields($result);
 }
@@ -235,7 +256,11 @@ function banco_num_fields($result){
  */
 function banco_field_name($result,$num_field){
 	global $_BANCO;
-	
+
+	// Resultado remoto de módulo distribuído (req-005).
+	if($result instanceof BancoResultadoRemoto)
+		return $result->fieldName($num_field);
+
 	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_fetch_field_direct($result,$num_field)->name;
 }
@@ -285,7 +310,11 @@ function banco_fields_names($table){
  */
 function banco_row($result){
 	global $_BANCO;
-	
+
+	// Resultado remoto de módulo distribuído (req-005).
+	if($result instanceof BancoResultadoRemoto)
+		return $result->fetchRow();
+
 	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_fetch_row($result);
 }
@@ -301,7 +330,11 @@ function banco_row($result){
  */
 function banco_row_array($result){
 	global $_BANCO;
-	
+
+	// Resultado remoto de módulo distribuído (req-005).
+	if($result instanceof BancoResultadoRemoto)
+		return $result->fetchArray();
+
 	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_fetch_array($result);
 }
@@ -317,6 +350,11 @@ function banco_row_array($result){
  */
 function banco_fetch_assoc($result){
 	global $_BANCO;
+
+	// Resultado remoto de módulo distribuído (req-005).
+	if($result instanceof BancoResultadoRemoto)
+		return $result->fetchAssoc();
+
 	// Retorna próxima linha como array associativo ou null.
 	if($_BANCO['tipo'] == "mysqli"){
 		return mysqli_fetch_assoc($result);
@@ -1090,6 +1128,10 @@ function banco_insert_tudo($campos,$tabela){
  */
 function banco_last_id(){
 	global $_BANCO;
+
+	// Última operação executada em modo distribuído (req-005): usa o insert_id remoto.
+	if(isset($_BANCO['distribuido']) && isset($_BANCO['distribuido-insert-id']))
+		return $_BANCO['distribuido-insert-id'];
 
 	if($_BANCO['tipo'] == "mysqli")
 		return mysqli_insert_id($_BANCO['conexao']);

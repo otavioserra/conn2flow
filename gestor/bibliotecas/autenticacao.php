@@ -1305,4 +1305,192 @@ function autenticacao_decriptar_chave_privada($params = false){
 	}
 }
 
+// =========================== Autenticação de Módulos Distribuídos (req-005)
+
+/**
+ * Valida as credenciais de um usuário para ativação/login do canal distribuído.
+ *
+ * Espelha a mesma verificação de credenciais do fluxo web (perfil_usuario_signin):
+ * busca o usuário por login e confere a senha com password_verify, exigindo status 'A'.
+ * Diferente do fluxo web, NÃO faz redirect/echo — retorna um resultado estruturado,
+ * adequado para ser consumido pela API central que devolve os tokens ao distribuído.
+ *
+ * @param string $usuario Login do usuário.
+ * @param string $senha   Senha em texto plano.
+ *
+ * @return array ['valido' => bool, 'id_usuarios' => int|null, 'mensagem' => string|null]
+ */
+function autenticacao_distribuido_validar_credenciais($usuario, $senha){
+	if(!is_string($usuario) || $usuario === '' || !is_string($senha) || $senha === ''){
+		return ['valido' => false, 'id_usuarios' => null, 'mensagem' => 'Usuário e senha são obrigatórios.'];
+	}
+
+	$usuario_escapado = banco_escape_field($usuario);
+
+	$usuarios = banco_select_name(
+		banco_campos_virgulas(Array('id_usuarios','senha','status')),
+		"usuarios",
+		"WHERE usuario='".$usuario_escapado."' AND status!='D'"
+	);
+
+	if(!$usuarios || !isset($usuarios[0]['senha'])){
+		return ['valido' => false, 'id_usuarios' => null, 'mensagem' => 'Usuário ou senha inválidos.'];
+	}
+
+	if(!password_verify($senha, $usuarios[0]['senha'])){
+		return ['valido' => false, 'id_usuarios' => null, 'mensagem' => 'Usuário ou senha inválidos.'];
+	}
+
+	if(($usuarios[0]['status'] ?? '') !== 'A'){
+		return ['valido' => false, 'id_usuarios' => null, 'mensagem' => 'Usuário inativo.'];
+	}
+
+	return ['valido' => true, 'id_usuarios' => (int)$usuarios[0]['id_usuarios'], 'mensagem' => null];
+}
+
+/**
+ * Gera os tokens de acesso e renovação (OAuth2) para o canal distribuído.
+ *
+ * Reaproveita a infraestrutura OAuth2 já usada pela API do sistema, com escopo
+ * dedicado 'distributed'. Deve ser chamada após a validação das credenciais.
+ *
+ * @param int $id_usuarios ID do usuário já validado.
+ *
+ * @return array|false Tokens (access_token, refresh_token, expires_in, ...) ou false.
+ */
+function autenticacao_distribuido_gerar_tokens($id_usuarios){
+	if(!$id_usuarios){
+		return false;
+	}
+
+	gestor_incluir_biblioteca('oauth2');
+
+	return oauth2_gerar_token_client_credentials(Array(
+		'id_usuarios' => (int)$id_usuarios,
+		'grant_type'  => 'client_credentials',
+		'scope'       => 'distributed',
+	));
+}
+
+/**
+ * Verifica se o usuário tem permissão de acesso ao módulo alvo (controle por perfil).
+ *
+ * Replica, de forma standalone (sem sessão/redirect/gestor_usuario), a árvore de
+ * decisão de gestor_permissao_modulo() em gestor.php: resolve o perfil do usuário
+ * (direto, herdado do usuário-pai do host, ou perfil de gestor) e confere o vínculo
+ * em usuarios_perfis_modulos / usuarios_gestores_perfis_modulos.
+ *
+ * É usada no signin distribuído para autorizar o acesso ao módulo antes de emitir
+ * tokens, garantindo que o controle de permissão via API seja equivalente ao local.
+ *
+ * @param int    $id_usuarios ID do usuário já autenticado.
+ * @param string $modulo      Slug do módulo alvo (ex.: 'modulos-grupos-distribuido').
+ *
+ * @return bool true se o usuário pode acessar o módulo.
+ */
+function autenticacao_distribuido_verificar_permissao_modulo($id_usuarios, $modulo){
+	global $_GESTOR;
+
+	if(!$id_usuarios || !is_string($modulo) || $modulo === ''){
+		return false;
+	}
+
+	$modulo_escapado = banco_escape_field($modulo);
+
+	// ===== Dados do usuário necessários à decisão (mesmos campos de gestor_usuario()).
+
+	$usuarios = banco_select_name(
+		banco_campos_virgulas(Array('id_hosts','id_usuarios_perfis','gestor_perfil')),
+		"usuarios",
+		"WHERE id_usuarios='".(int)$id_usuarios."'"
+	);
+	if(!$usuarios){
+		return false;
+	}
+	$usuario = $usuarios[0];
+
+	// ===== O módulo precisa existir e estar ativo no idioma corrente.
+
+	$modulos = banco_select_name(
+		banco_campos_virgulas(Array('id_modulos')),
+		"modulos",
+		"WHERE id='".$modulo_escapado."' AND status='A' AND language='".$_GESTOR['linguagem-codigo']."'"
+	);
+	if(!$modulos){
+		return false;
+	}
+
+	// ===== Usuário filho de host.
+
+	if(!empty($usuario['id_hosts'])){
+		$id_hosts = banco_escape_field($usuario['id_hosts']);
+
+		// Perfil de gestor vinculado ao host tem precedência.
+		if(!empty($usuario['gestor_perfil'])){
+			$perm = banco_select_name(
+				banco_campos_virgulas(Array('id_usuarios_gestores_perfis_modulos')),
+				"usuarios_gestores_perfis_modulos",
+				"WHERE perfil='".banco_escape_field($usuario['gestor_perfil'])."'"
+				." AND modulo='".$modulo_escapado."'"
+				." AND id_hosts='".$id_hosts."'"
+			);
+			return (bool)$perm;
+		}
+
+		// Sem perfil de gestor: perfil herdado do usuário-pai do host.
+		$hosts = banco_select(Array('unico'=>true,'tabela'=>'hosts','campos'=>Array('id_usuarios'),
+			'extra'=>"WHERE id_hosts='".$id_hosts."'"));
+		if(!$hosts){ return false; }
+
+		$usuarioPai = banco_select(Array('unico'=>true,'tabela'=>'usuarios','campos'=>Array('id_usuarios_perfis'),
+			'extra'=>"WHERE id_usuarios='".banco_escape_field($hosts['id_usuarios'])."'"));
+		if(!$usuarioPai){ return false; }
+
+		$usuarios_perfis = banco_select(Array('unico'=>true,'tabela'=>'usuarios_perfis','campos'=>Array('id'),
+			'extra'=>"WHERE id_usuarios_perfis='".banco_escape_field($usuarioPai['id_usuarios_perfis'])."'"));
+		if(!$usuarios_perfis){ return false; }
+
+		$perm = banco_select_name(
+			banco_campos_virgulas(Array('id_usuarios_perfis_modulos')),
+			"usuarios_perfis_modulos",
+			"WHERE perfil='".banco_escape_field($usuarios_perfis['id'])."' AND modulo='".$modulo_escapado."'"
+		);
+		return (bool)$perm;
+	}
+
+	// ===== Usuário sem host: perfil direto.
+
+	$usuarios_perfis = banco_select(Array('unico'=>true,'tabela'=>'usuarios_perfis','campos'=>Array('id'),
+		'extra'=>"WHERE id_usuarios_perfis='".banco_escape_field($usuario['id_usuarios_perfis'])."'"));
+	if(!$usuarios_perfis){ return false; }
+
+	$perm = banco_select_name(
+		banco_campos_virgulas(Array('id_usuarios_perfis_modulos')),
+		"usuarios_perfis_modulos",
+		"WHERE perfil='".banco_escape_field($usuarios_perfis['id'])."' AND modulo='".$modulo_escapado."'"
+	);
+	return (bool)$perm;
+}
+
+/**
+ * Verifica se um access token do canal distribuído está ativo e íntegro.
+ *
+ * Usada pela instalação distribuída para decidir a renderização: token ativo abre o
+ * Iframe administrativo do central; token ausente/inválido exibe a tela de login.
+ *
+ * @param string $token Access token a validar.
+ *
+ * @return bool true se o token é válido e não expirou.
+ */
+function autenticacao_distribuido_token_ativo($token){
+	if(!is_string($token) || $token === ''){
+		return false;
+	}
+
+	gestor_incluir_biblioteca('oauth2');
+
+	$validacao = oauth2_validar_token(Array('token' => $token));
+	return is_array($validacao) && !empty($validacao);
+}
+
 ?>

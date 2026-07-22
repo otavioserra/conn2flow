@@ -409,5 +409,15 @@
             "css": "",
             "combined": "0a60f73c73f7cd18c3d78835b6df4ca9"
         }
+    },
+    {
+        "name": "Módulo Distribuído App",
+        "id": "modulo-distribuido-app",
+        "version": "1.1",
+        "checksum": {
+            "html": "1e9a7cce634eb61b95fc434a4eb05317",
+            "css": "521fce07744cf01128af97277f0b58cf",
+            "combined": "4451accbf92bf2b30ec89742c6a8ffba"
+        }
     }
 ]
