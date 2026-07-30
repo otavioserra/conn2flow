@@ -466,9 +466,15 @@ function admin_arquivos_listar_arquivos(){
 	// ===== Variáveis JS do gerenciador
 	$maxPorPagina = isset($modulo['lista']['max_por_pagina']) ? (int)$modulo['lista']['max_por_pagina'] : 60;
 
+	// BATCH-102: pasta explícita na URL (`?dir=`) tem precedência sobre o cache da última pasta que o
+	// frontend mantém em localStorage — mesmo contrato já usado na tela de envio. Sem `dir`, a listagem
+	// (inclusive no modo picker) retoma a última pasta acessada.
+	$dirExplicito = isset($_REQUEST['dir']);
+
 	$_GESTOR['javascript-vars']['adminArquivos'] = Array(
 		'contentsUrl' => $_GESTOR['url-full'],
-		'dirInicial' => '',
+		'dirExplicito' => $dirExplicito,
+		'dirInicial' => ($dirExplicito ? (arquivo_caminho_relativo_seguro($_REQUEST['dir']) ?: '') : ''),
 		'maxPorPagina' => $maxPorPagina,
 		'loteMiniaturas' => isset($modulo['lista']['lote_miniaturas']) ? (int)$modulo['lista']['lote_miniaturas'] : 5,
 		'paginaIframe' => $_GESTOR['paginaIframe'] ? true : false,

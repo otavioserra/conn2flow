@@ -1473,3 +1473,53 @@ Reportada pelo executor em 2026-07-30:
 - Runtime (após deploy `Update => Core`): reproduzir vídeo e áudio na página publicada (inclusive arrastar a linha do tempo e testar em iOS/Safari); enviar um arquivo com espaço no nome e conferir que ele é gravado com hífen; conferir o player de áudio com a altura natural.
 - Arquivos JÁ enviados com espaço no nome continuam dependendo do `.htaccess` com `[B]` — em instalações antigas, atualizar o arquivo ou renomear os arquivos pelo gerenciador.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-101 - Embed sem Arquivo Escolhido não Emite Atributo de Fonte Vazio (homologação, 2026-07-30)
+
+- [x] **Sintoma**: `<audio>` inserido pelo painel "+" aparecia colapsado (~11px de largura, ~70px de altura = padding do badge + player em erro).
+- [x] **Diagnóstico por comparação dos dois HTMLs enviados pelo Chefe** (um quebrado, um correto, com invólucros idênticos e `display: block` nos dois — descartando contexto de flex/grid como causa):
+  - [x] O quebrado tinha `src=""`; o correto não tinha o atributo.
+  - [x] O quebrado trazia `position:relative; z-index:1` **com espaço** após o `;` — assinatura do `styleExtra` reconstruído em `embedReadConfig` (`join('; ')`), provando que ele passou pelo "Aplicar" do modal, enquanto o correto veio apenas do `buildElement`. A section escolhida era coincidência.
+  - [x] `src=""` faz o navegador resolver para a URL da própria página e tentar carregá-la como mídia: erro de decodificação, player colapsado e uma requisição inútil ao HTML.
+- [x] **Correção**: os geradores omitem o atributo de fonte quando vazio — `src` (mídia/iframe), `data` (`<object>`), `data-pdf-src` (PDF.js) e o `src` do Google Viewer (que apontaria para um viewer com `url=` vazia).
+- [x] **Hipótese descartada e revertida**: chegou-se a aplicar `width:100%` no invólucro de largura fluida (suspeita de contexto shrink-to-fit em flex/grid). A evidência mostrou invólucros idênticos nos dois casos, então a mudança foi revertida em vez de mantida "por precaução".
+- [ ] **Homologação runtime**: pendente com o operador.
+
+### Evidência de Validação (BATCH-101)
+
+Reportada pelo executor em 2026-07-30:
+- `node --check gestor/assets/interface/html-editor.js` → **OK**.
+- `npx vitest run` → **68/68**, com 2 casos novos: fonte vazia omite o atributo nos 4 geradores; fonte preenchida continua emitindo normalmente.
+- `composer test` (PHPUnit) → **165/165** sem regressão.
+- Cache-bust: `biblioteca-html-editor` `1.5.3`→`1.5.4`, motor `?v=c2f14`→`?v=c2f15`.
+
+### Pendências
+
+- Runtime: inserir áudio/vídeo pelo painel "+", aplicar o modal SEM escolher arquivo e confirmar que o player mantém a largura normal; depois escolher o arquivo e confirmar a reprodução.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-102 - Memória da Última Pasta no Modo Picker do Admin-Arquivos (demanda direta do Chefe, 2026-07-30)
+
+- [x] **Diagnóstico**: o cache da pasta corrente (`localStorage['adminArquivosDir']`) era ignorado nas DUAS pontas quando `paginaIframe` estava ativo — não era lido no boot (`if (!cfg.paginaIframe)`) nem gravado após navegar (BATCH-090). O seletor abria sempre na raiz.
+- [x] **Leitura**: o cache passa a valer também no picker, com precedência `?dir=` explícito > cache > raiz.
+- [x] **Gravação**: a pasta corrente é salva em toda navegação, inclusive no picker (mesma árvore de arquivos).
+- [x] **Contrato alinhado entre as telas**: a listagem passou a expor `dirExplicito`/`dirInicial` (a partir de `?dir=`, saneado por `arquivo_caminho_relativo_seguro`), exatamente como a tela de envio já fazia — as duas telas agora decidem a pasta inicial pela mesma regra, e um chamador pode abrir o seletor numa pasta específica.
+- [x] **Fluxo completo do picker coerente**: navegar até a pasta → "Adicionar" leva `?dir=` (explícito) → enviar → voltar pela seta cai na listagem sem `dir` → o cache devolve a mesma pasta.
+- [x] **Pasta apagada não quebra**: `admin_arquivos_ler_pasta` já cai para a raiz quando a pasta do cache não existe mais (self-heal do BATCH-090).
+- [ ] **Homologação runtime**: pendente com o operador.
+
+### Evidência de Validação (BATCH-102)
+
+Reportada pelo executor em 2026-07-30:
+- `php -l gestor/modulos/admin-arquivos/admin-arquivos.php` → **OK**; `node --check admin-arquivos.js` → **OK**; `admin-arquivos.json` válido.
+- `composer test` (PHPUnit) → **165/165** sem regressão.
+- Cache-bust: módulo `admin-arquivos` `1.1.6`→`1.1.7` (o `?v=` do `js.js` vem da chave `versao` do manifesto).
+- Sem cobertura automatizada: o comportamento é estado de front (localStorage) + renderização condicional; verificação manual registrada nas pendências, conforme a regra final do checklist.
+- Módulo espelhado no mirror local (`dev-environment/data/.../modulos/admin-arquivos/`) para teste imediato antes do deploy.
+
+### Pendências
+
+- Runtime: navegar até uma subpasta pelo gerenciador normal, abrir o seletor por um campo de imagem/embed e confirmar que ele abre na MESMA pasta; navegar para outra pasta dentro do picker, fechar, reabrir e confirmar a persistência; conferir que o botão "Adicionar" (com `?dir=`) continua abrindo na pasta corrente.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.

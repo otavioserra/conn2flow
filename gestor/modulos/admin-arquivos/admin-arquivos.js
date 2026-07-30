@@ -85,9 +85,12 @@ $(document).ready(function () {
 
 		var LS_DIR = 'adminArquivosDir';
 
-		// Restaura a última pasta acessada (cache), exceto no modo picker (iframe).
+		// BATCH-102: restaura a última pasta acessada (cache) — INCLUSIVE no modo picker (iframe), que
+		// navega na mesma árvore de arquivos. Antes o picker era excluído do cache e sempre abria na
+		// raiz, obrigando o usuário a refazer o caminho a cada seleção de arquivo.
+		// Precedência: pasta explícita na URL (`?dir=`, ex.: botão "Adicionar" da listagem) > cache > raiz.
 		var dirInicial = cfg.dirInicial || '';
-		if (!cfg.paginaIframe) {
+		if (!cfg.dirExplicito) {
 			var dirSalvo = localStorage.getItem(LS_DIR);
 			if (dirSalvo !== null) dirInicial = dirSalvo;
 		}
@@ -330,7 +333,9 @@ $(document).ready(function () {
 				success: function (dados) {
 					if (dados.status === 'Ok') {
 						estado.dir = dados.dir;
-						if (!cfg.paginaIframe) localStorage.setItem(LS_DIR, estado.dir);
+						// BATCH-102: grava também no picker — a pasta corrente é a mesma árvore e o
+						// usuário espera voltar onde parou na próxima seleção de arquivo.
+						localStorage.setItem(LS_DIR, estado.dir);
 						atualizarAddHref();
 						renderLista(dados, append);
 					} else {

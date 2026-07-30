@@ -561,3 +561,29 @@ Mídia embutida: 403 em arquivos com espaço, streaming por HTTP Range e dimensi
 5. **Altura padrão por TIPO de mídia**: o modal usava 600px como altura padrão para qualquer embed sem altura própria, o que esticava o player de `<audio>` (que tem altura intrínseca de ~54px). `embedDefaultSize()` passa a devolver áudio sem altura, vídeo 360px, iframe/embed 400px e documento 600px; além disso `buildMediaMarkup()` nunca emite `height` para áudio e `applyEmbedSize()` redimensiona áudio só na largura — a altura do player nativo é preservada mesmo arrastando as alças.
 
 Validação: verificação HTTP real no container (200 com `Accept-Ranges`/`Content-Length`, 206 com `Content-Range`, 416, CSS mantendo charset), `php -l` 3/3, `node --check` OK, `composer test` **165/165** (novo `ArquivoEstaticoRangeTest` 6/6), `npx vitest run` **66/66**. Cache-bust: `biblioteca-html-editor` `1.5.3`, motor `?v=c2f14`. Nenhum `git commit`/`git push` executado.
+
+## DEC-097 - 2026-07-30 - accepted
+
+Embed sem arquivo escolhido não emite atributo de fonte vazio (homologação / BATCH-101). Decisões desta rodada:
+
+1. **`src=""` é pior que ausência de `src`**: um atributo de fonte vazio resolve para a URL da PRÓPRIA página — o navegador baixa o HTML, tenta decodificá-lo como mídia, falha e (no Chrome) colapsa o player, além da requisição inútil. Como o fluxo do painel "+" cria o embed SEM fonte por design (o modal abre logo depois para o usuário escolher o arquivo), o caminho "aplicar sem escolher" era comum. Todos os geradores passaram a omitir o atributo quando a fonte está vazia: `src` (mídia/iframe), `data` (`<object>`), `data-pdf-src` (PDF.js) e o `src` do Google Viewer (que apontaria para um viewer com `url=` vazia).
+
+2. **O diagnóstico veio da comparação dos dois HTMLs, não de suposição**: o Chefe enviou um caso quebrado e um correto. Os invólucros eram idênticos (`display: block`, mesma estrutura), o que **descartou** contexto de flex/grid. A diferença estava no `src=""` — e o caso quebrado ainda trazia `position:relative; z-index:1` com espaço após o `;`, assinatura do `styleExtra` reconstruído por `embedReadConfig` (`join('; ')`), provando que ele passara pelo "Aplicar" do modal enquanto o correto viera apenas do `buildElement`. A troca de section relatada era coincidência.
+
+3. **Hipótese descartada foi REVERTIDA, não mantida por precaução**: durante a investigação aplicou-se `width:100%` ao invólucro de largura fluida, para o caso de ele cair num contexto shrink-to-fit. Sem evidência de que isso ocorria — e com risco de comprimir irmãos em containers flex — a mudança foi desfeita. Registrar a hipótese aqui evita que alguém a reintroduza sem medir.
+
+Cache-bust: `biblioteca-html-editor` `1.5.4`, motor `?v=c2f15`. Validação: `node --check` OK, `npx vitest run` **68/68**, `composer test` **165/165**. Nenhum `git commit`/`git push` executado.
+
+## DEC-098 - 2026-07-30 - accepted
+
+Memória da última pasta no modo picker do `admin-arquivos` (demanda direta do Engenheiro Chefe / BATCH-102). Decisões desta rodada:
+
+1. **O cache de pasta passa a valer no picker**: o BATCH-090 introduziu o cache (`localStorage['adminArquivosDir']`) excluindo explicitamente o modo iframe nas duas pontas — não lia no boot nem gravava ao navegar. A premissa era que o seletor deveria começar onde o chamador mandasse; na prática nenhum chamador informa pasta, então o efeito real era abrir sempre na raiz e obrigar o usuário a refazer o caminho a cada seleção. Como é a MESMA árvore de arquivos, o cache passa a ser lido e gravado também no picker.
+
+2. **Precedência explícita em vez de exclusão por modo**: a regra deixou de ser "picker não usa cache" e passou a ser `?dir=` explícito > cache > raiz. Isso preserva a intenção original (abrir numa pasta específica quando alguém pedir) sem sacrificar a usabilidade no caso comum. A tela de envio já usava exatamente esse contrato (`cfg.dirExplicito ? cfg.dirInicial : cache`); a listagem apenas foi alinhada a ele.
+
+3. **A listagem passou a aceitar `?dir=`**: antes o PHP fixava `dirInicial => ''` na listagem. Agora expõe `dirExplicito`/`dirInicial` a partir de `$_REQUEST['dir']`, saneado por `arquivo_caminho_relativo_seguro` (helper de segurança do BATCH-090) — o que habilita, de graça, abrir o seletor direto numa pasta quando algum ponto de uso quiser isso no futuro.
+
+4. **Fluxo do picker fica fechado**: navegar até a pasta → "Adicionar" (com `?dir=`, explícito) → enviar → voltar pela seta (sem `dir`) → o cache devolve a mesma pasta, onde o arquivo recém-enviado está. Combina com o BATCH-099, que liberou o envio dentro do iframe. Pasta apagada continua caindo na raiz pelo self-heal já existente em `admin_arquivos_ler_pasta`.
+
+Cache-bust: módulo `admin-arquivos` `1.1.6`→`1.1.7`. Validação: `php -l` OK, `node --check` OK, JSON válido, `composer test` **165/165**. O comportamento é estado de front + renderização condicional, sem cobertura unitária viável — verificação manual registrada no checklist. Nenhum `git commit`/`git push` executado.

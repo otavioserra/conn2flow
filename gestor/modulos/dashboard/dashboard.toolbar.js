@@ -173,7 +173,7 @@
 		ensureJQuery(function () {
 			// Impede o auto-init sobre document.body; instanciamos escopado ao conteúdo.
 			window.__c2fHtmlEditorNoAutoInit = true;
-			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f14', 'c2f-he-script', function () {
+			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f15', 'c2f-he-script', function () {
 				instantiateEditor(content, 0);
 			});
 		});
