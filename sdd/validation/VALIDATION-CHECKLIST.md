@@ -1523,3 +1523,44 @@ Reportada pelo executor em 2026-07-30:
 
 - Runtime: navegar até uma subpasta pelo gerenciador normal, abrir o seletor por um campo de imagem/embed e confirmar que ele abre na MESMA pasta; navegar para outra pasta dentro do picker, fechar, reabrir e confirmar a persistência; conferir que o botão "Adicionar" (com `?dir=`) continua abrindo na pasta corrente.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-103 - Filtro de Módulos no Menu Principal do Gestor (demanda direta do Chefe, 2026-07-30)
+
+- [x] **Campo de filtro no menu**: input `#gestor-menu-filtro` no topo do componente `menu-principal-sistema` (pt-br e en), com ícone de busca e placeholder já traduzido por idioma (o componente é versionado por idioma, dispensando texto condicional no PHP).
+- [x] **Comportamento espelhado da Editbar**: itens que não casam somem; o bloco do grupo é ocultado junto com o cabeçalho quando fica sem itens visíveis.
+- [x] **Busca tolerante**: comparação ignora caixa e acentuação (`normalize('NFD')` + remoção das marcas combinantes) — 'usuarios' encontra 'Usuários', 'indice' encontra 'Páginas Índice'.
+- [x] **Itens fixos também filtrados** (Dashboard e Sair), conforme decidido pelo Chefe; limpar o campo devolve o menu completo.
+- [x] **Extras de usabilidade**: aviso 'Nenhum módulo encontrado' (texto do componente, por idioma) e tecla Esc para limpar o filtro.
+- [x] **JS em `gestor/assets/global/admin.js`** (arquivo indicado pelo Chefe, até então vazio), com API pública `window.gestorMenuFiltro.aplicar/iniciar` e `iniciar()` idempotente.
+- [x] **Inclusão do asset**: a tag `<script>` acompanha o HTML retornado por `gestor_pagina_menu()`. A fila de assets NÃO funciona nesse ponto: `gestor_pagina_menu()` é chamada por `gestor_pagina_variaveis()` (gestor.php:619), que roda DEPOIS de `gestor_pagina_extra_head_e_javascript()` — o marcador de JS já foi resolvido e o item enfileirado ficaria órfão.
+- [x] **Fonte 100% ASCII no regex de acentos**: o range é montado com `String.fromCharCode`, imune à normalização Unicode do arquivo por editores.
+- [ ] **Homologação runtime (deploy `Update => Core`)**: pendente com o operador.
+
+### Evidência de Validação (BATCH-103)
+
+Reportada pelo executor em 2026-07-30:
+- `php -l gestor/gestor.php` → **OK**; `node --check gestor/assets/global/admin.js` → **OK**.
+- `npx vitest run` → **76/76** (9 arquivos), com o novo `tests/Unit/JS/admin-menu-filtro.test.js` **8/8**: API exposta, filtro por texto, ocultação do bloco/cabeçalho, tolerância a acento e caixa, filtragem dos itens fixos, aviso de vazio, reação ao evento `input`, Esc limpando e `iniciar()` idempotente.
+- `composer test` (PHPUnit) → **165/165** sem regressão.
+
+### Pendências
+
+- **Deploy obrigatório**: o componente `menu-principal-sistema` é lido do BANCO (`gestor_componente`), então o campo só aparece após o pipeline de resources do `Update => Core`. O `admin.js` é asset físico e passa a ser servido assim que o core for sincronizado.
+- Runtime: digitar no campo e conferir filtragem, ocultação de grupos vazios, aviso de vazio, Esc e o menu em `/en/`.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+### Rodada 2 do BATCH-103 — correções de consistência nas buscas (mesma sessão)
+
+Reportado pelo Chefe na homologação: o filtro NOVO do menu encontrava itens acentuados, mas o filtro da
+Editbar — usado como base — não. A comparação foi então unificada.
+
+- [x] **Editbar (`dashboard.iframe-toolbar.js`)**: `#c2f-modules-filter` passou a normalizar acento e caixa. Digitar 'pa' encontra 'Páginas' (antes o `indexOf` cru falhava no 2º caractere acentuado).
+- [x] **Busca de modelos (`html-editor-interface.js`)**: mesmo defeito no `modelosFiltrar`, corrigido com o helper `htmlEditorNormalizarBusca` (aplicado a header, meta e id do modelo).
+- [x] **Botão 'x' de limpar na aba Modelos**: `#modelos-search-input` era o único campo de busca sem o atalho; ganhou o par lupa/x no padrão do gerenciador de arquivos (`.modelos-search-icon` / `.modelos-search-clear`), nos componentes pt-br e en, com clique limpando + refiltrando + devolvendo o foco (Esc também sincroniza os ícones).
+- [x] **Salto de rolagem no 'Carregar Mais'**: `modelosCarregar` escondia `#modelos-cards` durante o AJAX — a página perdia toda a altura da lista e o navegador voltava ao topo. Agora a lista só é escondida na PRIMEIRA página (quando é de fato substituída); na paginação o loading aparece abaixo dos cards, sem deslocar a leitura.
+- [x] **Helper duplicado deliberadamente** nos três contextos (painel, iframe da Editbar e editor clássico), sempre com o range de acentos montado por `String.fromCharCode` (fonte ASCII).
+
+Evidência: `node --check` 3/3 OK; `npx vitest run` **83/83**, com o novo `tests/Unit/JS/dashboard.iframe-toolbar.test.js` **5/5** (regressão do acento, termo acentuado, caixa, cabeçalho de grupo vazio e limpeza do campo) e 2 casos novos em `html-editor-vars.test.js` (normalização e alternância dos ícones); `composer test` **165/165**. Cache-bust: `dashboard.json` `1.0.13`→`1.0.14`, `biblioteca-html-editor` `1.5.4`→`1.5.5`.
+
+Pendência runtime: conferir na Editbar que 'pa' lista as Páginas; na aba Modelos, o 'x' limpando a busca e o 'Carregar Mais' mantendo a posição da rolagem.

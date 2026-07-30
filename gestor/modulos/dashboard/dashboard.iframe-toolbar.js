@@ -23,6 +23,24 @@
     var closeTimer = null;     // hover-intent: timer de fechamento adiado, cancelável.
     var FORCE_OPEN = 'c2f-dropdown-force-open'; // força a caixa visível por JS (independe do :hover).
 
+    // BATCH-103 (correção): marcas combinantes (U+0300-U+036F) montadas por código — mantém o fonte
+    // ASCII e imune a um editor que normalize o arquivo. Mesmo helper do filtro do menu do painel
+    // (`gestor/assets/global/admin.js`); a duplicação é deliberada porque este arquivo roda dentro do
+    // iframe da barra, sem acesso ao bundle do painel.
+    var RE_ACENTOS = new RegExp('[' + String.fromCharCode(0x300) + '-' + String.fromCharCode(0x36f) + ']', 'g');
+
+    /**
+     * Minúsculas e SEM acentos para a comparação do filtro.
+     *
+     * Sem isto, digitar 'pa' não encontrava 'Páginas': o segundo caractere do texto é 'á', então o
+     * `indexOf` falhava. A busca agora casa independentemente de acentuação e caixa.
+     */
+    function normalizarTexto(texto) {
+        var valor = String(texto == null ? '' : texto).toLowerCase().trim();
+        if (!valor.normalize) return valor;
+        return valor.normalize('NFD').replace(RE_ACENTOS, '');
+    }
+
     function initToolbar() {
         var editBtn = document.getElementById('c2f-toolbar-edit');
         var editBar = document.getElementById('c2f-toolbar-editbar');
@@ -141,10 +159,10 @@
             // Impede que clicar/digitar no campo dispare navegação/fechamento indevido.
             filterInput.addEventListener('click', function (e) { e.stopPropagation(); });
             filterInput.addEventListener('input', function () {
-                var term = (filterInput.value || '').trim().toLowerCase();
+                var term = normalizarTexto(filterInput.value);
                 var items = menu ? menu.querySelectorAll('.c2f-menu-item') : [];
                 Array.prototype.forEach.call(items, function (it) {
-                    var txt = (it.textContent || '').toLowerCase();
+                    var txt = normalizarTexto(it.textContent);
                     it.style.display = (!term || txt.indexOf(term) !== -1) ? '' : 'none';
                 });
                 // Oculta o cabeçalho de cada grupo sem itens visíveis.

@@ -401,12 +401,23 @@ function gestor_pagina_menu($params = false){
 	$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
 	
 	// ===== Remover celulas inúteis
-	
+
 	$menuConteiner = modelo_var_troca($menuConteiner,'<!-- itemContCel -->','');
 	$menuConteiner = modelo_var_troca($menuConteiner,'<!-- itemMenu -->','');
-	
+
+	// ===== JavaScript do painel administrativo (BATCH-103): filtro do menu.
+	//
+	// A tag acompanha o HTML do menu em vez de entrar na fila de assets (`gestor_pagina_css_incluir`
+	// / `gestor_pagina_javascript_incluir`): esta função é chamada por `gestor_pagina_variaveis()`,
+	// que roda DEPOIS de `gestor_pagina_extra_head_e_javascript()` — quando o `<!-- pagina#js -->` já
+	// foi resolvido, qualquer item enfileirado ali fica órfão e o script nunca chega à página.
+	// Como `admin.js` só interessa a quem vê o menu, carregá-lo junto dele mantém o custo restrito
+	// ao painel e dispensa um gate extra no pipeline.
+
+	$menuConteiner .= "\n".'<script src="'.$_GESTOR['url-raiz'].'global/admin.js?v='.$_GESTOR['versao'].'"></script>';
+
 	// ===== Retornar o conteiner.
-	
+
 	return $menuConteiner;
 }
 

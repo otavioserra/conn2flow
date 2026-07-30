@@ -224,8 +224,13 @@ $(document).ready(function () {
 
         modelos_carregando = true;
 
-        // Mostrar loading
-        $('#modelos-cards').hide();
+        // BATCH-103: em "Carregar Mais" (página > 1) a lista NÃO é escondida. Esconder `#modelos-cards`
+        // remove toda a altura já renderizada, a página encolhe e o navegador joga a rolagem de volta
+        // ao topo — era o salto reclamado ao paginar. O loading fica abaixo dos cards, então aparecer
+        // ali não desloca o que o usuário está vendo. Na primeira página a lista é substituída, então
+        // esconder continua correto.
+        var modelosPrimeiraPagina = (modelos_pagina === 1);
+        if (modelosPrimeiraPagina) $('#modelos-cards').hide();
         $('#modelos-loading').show();
 
         const framework_css = frameworkCSS();
@@ -308,6 +313,18 @@ $(document).ready(function () {
 
     // ===== Filtro de Modelos de Páginas
 
+    // BATCH-103 (correção): marcas combinantes (U+0300-U+036F) montadas por código — mantém o fonte
+    // ASCII e imune a um editor que normalize o arquivo. Mesmo helper usado no filtro do menu do
+    // painel (`global/admin.js`) e no da Editbar (`dashboard.iframe-toolbar.js`).
+    var RE_ACENTOS_BUSCA = new RegExp('[' + String.fromCharCode(0x300) + '-' + String.fromCharCode(0x36f) + ']', 'g');
+
+    /** Minúsculas e sem acentos: 'pa' encontra 'Páginas', 'usuarios' encontra 'Usuários'. */
+    function htmlEditorNormalizarBusca(texto) {
+        var valor = String(texto == null ? '' : texto).toLowerCase().trim();
+        if (!valor.normalize) return valor;
+        return valor.normalize('NFD').replace(RE_ACENTOS_BUSCA, '');
+    }
+
     /**
      * Filtra os cards de modelos baseado na query de busca
      * @param {string} query - Texto de busca (opcional, usa o valor do input se não fornecido)
@@ -322,7 +339,9 @@ $(document).ready(function () {
 
         // Usar query fornecida ou valor do input
         var searchQuery = (typeof query !== 'undefined') ? query : searchInput.value;
-        var normalizedQuery = searchQuery.toLowerCase().trim();
+        // BATCH-103 (correcao): comparacao sem acento e sem caixa - digitar 'pa' precisa encontrar
+        // 'Paginas' (o segundo caractere do texto e acentuado, entao o `includes` cru falhava).
+        var normalizedQuery = htmlEditorNormalizarBusca(searchQuery);
 
         var cards = cardsContainer.querySelectorAll('.modelo-card');
         var visibleCount = 0;
@@ -332,13 +351,13 @@ $(document).ready(function () {
             var meta = card.querySelector('.meta');
             var modeloId = card.getAttribute('data-modelo-id') || '';
 
-            var headerText = header ? header.textContent.toLowerCase() : '';
-            var metaText = meta ? meta.textContent.toLowerCase() : '';
+            var headerText = header ? htmlEditorNormalizarBusca(header.textContent) : '';
+            var metaText = meta ? htmlEditorNormalizarBusca(meta.textContent) : '';
 
             var matches = normalizedQuery === '' ||
                 headerText.includes(normalizedQuery) ||
                 metaText.includes(normalizedQuery) ||
-                modeloId.toLowerCase().includes(normalizedQuery);
+                htmlEditorNormalizarBusca(modeloId).includes(normalizedQuery);
 
             if (matches) {
                 card.style.display = '';
@@ -370,9 +389,19 @@ $(document).ready(function () {
         }
     }
 
+    // BATCH-103: alterna o ícone de lupa com o "x" de limpar, no mesmo padrão do gerenciador de
+    // arquivos (`.c2f-search-icon` / `.c2f-search-clear`) — o campo de modelos era o único sem o
+    // atalho para limpar a busca.
+    function modelosBuscaSincronizarIcones(valor) {
+        var vazio = String(valor == null ? '' : valor).trim() === '';
+        $('.modelos-search-clear').toggleClass('hidden', vazio);
+        $('.modelos-search-icon').toggleClass('hidden', !vazio);
+    }
+
     // Event listener para input de busca de modelos (debounced)
     $(document).on('input', '#modelos-search-input', function () {
         var input = this;
+        modelosBuscaSincronizarIcones(input.value); // ícone acompanha a digitação, sem debounce
         clearTimeout(input._debounceTimer);
         input._debounceTimer = setTimeout(function () {
             modelosFiltrar(input.value);
@@ -383,9 +412,21 @@ $(document).ready(function () {
     $(document).on('keydown', '#modelos-search-input', function (e) {
         if (e.key === 'Escape') {
             this.value = '';
+            modelosBuscaSincronizarIcones('');
             modelosFiltrar('');
             this.blur();
         }
+    });
+
+    // Clique no "x": limpa a busca, restaura a lista e devolve o foco ao campo.
+    $(document).on('click', '.modelos-search-clear', function () {
+        var input = document.getElementById('modelos-search-input');
+        if (!input) return;
+        input.value = '';
+        clearTimeout(input._debounceTimer);
+        modelosBuscaSincronizarIcones('');
+        modelosFiltrar('');
+        input.focus();
     });
 
     function modeloSelecionar(modelo_id) {

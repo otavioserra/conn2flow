@@ -587,3 +587,27 @@ Memória da última pasta no modo picker do `admin-arquivos` (demanda direta do 
 4. **Fluxo do picker fica fechado**: navegar até a pasta → "Adicionar" (com `?dir=`, explícito) → enviar → voltar pela seta (sem `dir`) → o cache devolve a mesma pasta, onde o arquivo recém-enviado está. Combina com o BATCH-099, que liberou o envio dentro do iframe. Pasta apagada continua caindo na raiz pelo self-heal já existente em `admin_arquivos_ler_pasta`.
 
 Cache-bust: módulo `admin-arquivos` `1.1.6`→`1.1.7`. Validação: `php -l` OK, `node --check` OK, JSON válido, `composer test` **165/165**. O comportamento é estado de front + renderização condicional, sem cobertura unitária viável — verificação manual registrada no checklist. Nenhum `git commit`/`git push` executado.
+
+## DEC-099 - 2026-07-30 - accepted
+
+Filtro de módulos no menu principal do gestor (demanda direta do Engenheiro Chefe / BATCH-103). Decisões desta rodada:
+
+1. **Comportamento portado da Editbar, adaptado à estrutura do menu**: o `c2f-modules-filter` esconde itens e depois varre irmãos para ocultar cabeçalhos de grupo órfãos. No menu do gestor a estrutura é mais simples — cada grupo é um `.ui.list > .item` que já contém o cabeçalho e seus links —, então basta ocultar o bloco quando nenhum `a.item` interno estiver visível. Itens fixos (Dashboard e Sair) também são filtrados, decisão do Chefe, para o comportamento ficar uniforme com a Editbar.
+
+2. **Texto do campo vem do COMPONENTE, não do PHP**: a Editbar decide o rótulo no PHP (condicional de idioma) porque monta o menu em código. Aqui o componente `menu-principal-sistema` já é versionado por idioma (`resources/pt-br` e `resources/en`), então placeholder e aviso de vazio ficam no HTML de cada idioma — sem condicional de idioma no core e sem depender de registro novo na tabela de variáveis.
+
+3. **O asset acompanha o HTML do menu, e não a fila de assets**: `gestor_pagina_menu()` é chamada por `gestor_pagina_variaveis()` (gestor.php:619), que roda DEPOIS de `gestor_pagina_extra_head_e_javascript()`. Nesse ponto o marcador de JS da página já foi substituído, então `gestor_pagina_css_incluir()`/`gestor_pagina_javascript_incluir()` apenas empilhariam a tag num array que ninguém mais lê — o script nunca chegaria à página. A tag `<script src>` com cache-bust de versão é concatenada ao HTML retornado pelo menu: carrega de fato, mantém o custo restrito a quem vê o menu e dispensa um gate novo no pipeline. Alternativa registrada, caso se prefira a fila: incluir em `gestor_pagina_extra_head_e_javascript` com guarda de usuário logado.
+
+4. **Regex de acentuação montado por código**: o range de marcas combinantes é construído com `String.fromCharCode(0x300)`/`0x36f` em vez de escrito literalmente. Mantém o fonte 100% ASCII e imune a um editor que normalize o arquivo (NFC juntaria as marcas ao colchete anterior, corrompendo o padrão silenciosamente).
+
+5. **API pública para teste**: `window.gestorMenuFiltro.aplicar(termo, escopo)` e `iniciar()` (idempotente, marcada por atributo no campo), mesmo padrão de `window.conn2flowPdfViewerInit` — permite cobrir a lógica com Vitest sem simular digitação em toda checagem.
+
+Validação: `php -l` OK, `node --check` OK, `npx vitest run` **76/76** (novo `admin-menu-filtro.test.js` 8/8), `composer test` **165/165**. Requer deploy `Update => Core`: o componente do menu é lido do banco. Nenhum `git commit`/`git push` executado.
+
+### Adendo DEC-099 (rodada 2 — consistência das buscas, mesma sessão)
+
+6. **O bug estava na BASE, não só no port**: ao portar o filtro da Editbar para o menu do painel, a versão nova ganhou normalização de acentuação — e o Chefe notou a inconsistência: 'pa' encontrava 'Páginas' no menu novo, mas não na Editbar. A comparação crua falha porque o segundo caractere do texto é acentuado. Corrigidos os dois pontos remanescentes (`dashboard.iframe-toolbar.js` e a busca de modelos em `html-editor-interface.js`), todos usando o mesmo helper com o range montado por `String.fromCharCode`. Lição registrada: ao portar comportamento, avaliar a base antes de copiá-la — o padrão existente pode ser o defeito.
+
+7. **Botão 'x' de limpar padronizado**: `#modelos-search-input` era o único campo de busca do sistema sem o atalho de limpar. Adotado o par lupa/x do gerenciador de arquivos (`.c2f-search-icon`/`.c2f-search-clear` → `.modelos-search-icon`/`.modelos-search-clear`), alternado por `hidden` do Fomantic; o clique limpa, refiltra e devolve o foco ao campo. Os textos (`title`) ficam nos componentes por idioma.
+
+8. **Salto de rolagem no 'Carregar Mais' era o `hide()` da lista**: `modelosCarregar` escondia `#modelos-cards` enquanto o AJAX rodava. Com a lista fora do fluxo a página encolhe e o navegador reposiciona a rolagem no topo — daí o salto ao paginar. A correção condiciona o `hide()` à PRIMEIRA página (única em que a lista é realmente substituída); na paginação o indicador de carregamento aparece abaixo dos cards, sem deslocar o que o usuário lê. Preferiu-se isso a salvar/restaurar `scrollTop`, que trataria o sintoma e dependeria de descobrir o contêiner rolável correto.

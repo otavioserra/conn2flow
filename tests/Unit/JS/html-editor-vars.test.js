@@ -58,3 +58,61 @@ describe('html-editor-interface.js — reversão de variáveis (req-093)', () =>
     expect(reconstruct(html)).toBe('[[a]]-[[b]]');
   });
 });
+
+/**
+ * BATCH-103 — busca da aba "Modelos" do Editor HTML.
+ *
+ * Duas correções cobertas aqui, ambas com a função REAL extraída do arquivo:
+ *  - `htmlEditorNormalizarBusca`: digitar 'pa' precisa encontrar 'Páginas' (a comparação crua falhava
+ *    porque o segundo caractere do texto é acentuado);
+ *  - `modelosBuscaSincronizarIcones`: alterna a lupa com o "x" de limpar, que não existia neste campo.
+ */
+function extrairFuncao(nome, extra) {
+  const code = fs.readFileSync('gestor/assets/interface/html-editor-interface.js', 'utf8');
+  const start = code.indexOf('function ' + nome + '(');
+  if (start < 0) throw new Error(nome + ' não encontrada no arquivo');
+  let i = code.indexOf('{', start), depth = 0, end = -1;
+  for (; i < code.length; i++) {
+    if (code[i] === '{') depth++;
+    else if (code[i] === '}') { depth--; if (depth === 0) { end = i + 1; break; } }
+  }
+  const fnSrc = code.slice(start, end);
+  return new Function('$', (extra || '') + '\n' + fnSrc + '\nreturn ' + nome + ';');
+}
+
+describe('html-editor-interface.js — busca de modelos (BATCH-103)', () => {
+  it('normaliza acentuação e caixa na busca (pa encontra Páginas)', () => {
+    // A constante do range de acentos é declarada fora da função; recriamos igual ao arquivo.
+    const preludio = "var RE_ACENTOS_BUSCA = new RegExp('[' + String.fromCharCode(0x300) + '-' + " +
+      "String.fromCharCode(0x36f) + ']', 'g');";
+    const normalizar = extrairFuncao('htmlEditorNormalizarBusca', preludio)(null);
+
+    expect(normalizar('Páginas')).toBe('paginas');
+    expect(normalizar('Páginas').includes(normalizar('pa'))).toBe(true);
+    expect(normalizar('Usuários').includes(normalizar('usuarios'))).toBe(true);
+    expect(normalizar('  ARQUIVOS  ')).toBe('arquivos');
+    expect(normalizar(null)).toBe('');
+  });
+
+  it('alterna a lupa com o x de limpar conforme o campo tem texto', () => {
+    const chamadas = [];
+    // Stub mínimo de jQuery: registra o seletor e o estado passado ao toggleClass.
+    const $ = (seletor) => ({
+      toggleClass: (classe, estado) => { chamadas.push({ seletor, classe, estado }); }
+    });
+    const sincronizar = extrairFuncao('modelosBuscaSincronizarIcones')($);
+
+    sincronizar('pag');
+    expect(chamadas).toEqual([
+      { seletor: '.modelos-search-clear', classe: 'hidden', estado: false }, // x visível
+      { seletor: '.modelos-search-icon', classe: 'hidden', estado: true }    // lupa oculta
+    ]);
+
+    chamadas.length = 0;
+    sincronizar('   ');
+    expect(chamadas).toEqual([
+      { seletor: '.modelos-search-clear', classe: 'hidden', estado: true },  // x oculto
+      { seletor: '.modelos-search-icon', classe: 'hidden', estado: false }   // lupa visível
+    ]);
+  });
+});
