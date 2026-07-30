@@ -51,8 +51,12 @@ if (!function_exists('arquivo_nome_sanitizar')) {
 		$nome = preg_replace('/[:\*\?"<>\|]+/u', '-', $nome);
 		$nome = preg_replace('/[\x00-\x1F\x7F]+/u', '', $nome);
 
-		// Colapsa espaços e hífens repetidos.
-		$nome = preg_replace('/\s+/u', ' ', $nome);
+		// Colapsa espaços e troca por hífen (BATCH-100): nome de arquivo com espaço vira `%20` na URL
+		// e sobrevive mal ao caminho inteiro — atributos `src` com espaço literal são HTML inválido e
+		// a reescrita do Apache rejeita query string com espaço (403 AH10411, quando o `.htaccess` não
+		// usa a flag [B]). Arquivos vindos de gravadores de tela e do WhatsApp trazem espaço por padrão,
+		// então a normalização acontece na ENTRADA (upload/renomeação) e vale para todo o sistema.
+		$nome = preg_replace('/\s+/u', '-', $nome);
 		$nome = preg_replace('/-{2,}/', '-', $nome);
 
 		// Nomes reservados (Windows) ou compostos apenas de pontos/espaços viram vazio.

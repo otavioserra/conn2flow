@@ -62,6 +62,22 @@ final class AdminArquivosSegurancaTest extends TestCase
         self::assertSame('anb.txt', arquivo_nome_sanitizar("a\x00n\x01b.txt"));
     }
 
+    /**
+     * BATCH-100: espaço no nome vira hífen já na entrada. Nomes de gravador de tela e do WhatsApp
+     * trazem espaço por padrão, e isso produzia `src` com espaço literal (HTML inválido) e 403 na
+     * reescrita do Apache sem a flag [B].
+     */
+    public function testSanitizarTrocaEspacosPorHifen(): void
+    {
+        self::assertSame('2026-07-30-16-03-46.mp4', arquivo_nome_sanitizar('2026-07-30 16-03-46.mp4'));
+        self::assertSame('WhatsApp-Ptt-2026-07-30-at-13.16.55.ogg', arquivo_nome_sanitizar('WhatsApp Ptt 2026-07-30 at 13.16.55.ogg'));
+        // Espaços repetidos e hífens duplicados colapsam num único hífen.
+        self::assertSame('meu-arquivo.pdf', arquivo_nome_sanitizar('meu    arquivo.pdf'));
+        self::assertSame('a-b.png', arquivo_nome_sanitizar('a - b.png'));
+        // Sem espaços nas pontas sobrando.
+        self::assertSame('nome.txt', arquivo_nome_sanitizar('  nome.txt  '));
+    }
+
     public function testSanitizarVazioQuandoSoInvalidos(): void
     {
         self::assertSame('', arquivo_nome_sanitizar('...'));

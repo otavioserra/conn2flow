@@ -46,7 +46,13 @@ $(document).ready(function () {
         { type: 'a', label: 'Link', labelEn: 'Link', icon: 'linkify' },
         { type: 'button', label: 'Botão', labelEn: 'Button', icon: 'hand pointer' },
         { type: 'div', label: 'Bloco', labelEn: 'Block', icon: 'square outline' },
-        { type: 'section', label: 'Seção', labelEn: 'Section', icon: 'object group outline' }
+        { type: 'section', label: 'Seção', labelEn: 'Section', icon: 'object group outline' },
+        // req-097 item 6: mídia/documento embutido (o motor envolve e abre o modal de embed).
+        { type: 'object', label: 'Objeto / PDF', labelEn: 'Object / PDF', icon: 'file pdf outline' },
+        { type: 'iframe', label: 'Iframe', labelEn: 'Iframe', icon: 'window maximize outline' },
+        { type: 'embed', label: 'Embed', labelEn: 'Embed', icon: 'code' },
+        { type: 'video', label: 'Vídeo', labelEn: 'Video', icon: 'video' },
+        { type: 'audio', label: 'Áudio', labelEn: 'Audio', icon: 'volume up' }
     ];
 
     // req-066: as categorias de widget do sistema são carregadas dinamicamente da tabela

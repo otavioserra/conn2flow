@@ -98,8 +98,10 @@ function rdr_log(string $msg): void {
  */
 function rdr_normalizar_config(array $meta, string $scope, ?string $modulo, string $baseDir, string $sourceFile): array {
     $nomeBloco = (isset($meta['nome']) && is_string($meta['nome'])) ? $meta['nome'] : null;
-    $configRaw = $meta['config'] ?? null;
-    if (!is_array($configRaw)) return [];
+    $configRaw = $meta['config'] ?? [[]];
+    if (!is_array($configRaw) || empty($configRaw)) {
+        $configRaw = [[]];
+    }
     $configs = array_is_list($configRaw) ? $configRaw : [$configRaw];
 
     $out = [];
@@ -159,8 +161,11 @@ function rdr_coletar_configs(string $gestorDir): array {
         $globalFile = $resourcesDir . DIRECTORY_SEPARATOR . $configFileName;
         $g = rdr_json_read($globalFile);
         if (is_array($g) && isset($g['tabelas']) && is_array($g['tabelas'])) {
-            foreach ($g['tabelas'] as $meta) {
+            foreach ($g['tabelas'] as $tabKey => $meta) {
                 if (!is_array($meta)) continue;
+                if (is_string($tabKey) && !is_numeric($tabKey) && empty($meta['nome'])) {
+                    $meta['nome'] = $tabKey;
+                }
                 foreach (rdr_normalizar_config($meta, 'global', null, $resourcesDir, $globalFile) as $cfg) {
                     if ($cfg['sync_resources']) $configs[$cfg['nome']] = $cfg;
                 }
@@ -176,7 +181,9 @@ function rdr_coletar_configs(string $gestorDir): array {
             $data = rdr_json_read($modPath . DIRECTORY_SEPARATOR . $modId . '.json');
             if (!is_array($data)) continue;
             $tabela = $data['tabela'] ?? null;
-            if (!is_array($tabela) || empty($tabela['config'])) continue;
+            if (!is_array($tabela)) continue;
+            $temConfig = !empty($tabela['config']) || !empty($tabela['deletar']) || !empty($tabela['forcar_atualizacao']) || !empty($tabela['sync_resources']);
+            if (!$temConfig) continue;
             $baseDir = $modPath . DIRECTORY_SEPARATOR . 'resources';
             $sourceFile = $modPath . DIRECTORY_SEPARATOR . $modId . '.json';
             foreach (rdr_normalizar_config($tabela, 'module', $modId, $baseDir, $sourceFile) as $cfg) {

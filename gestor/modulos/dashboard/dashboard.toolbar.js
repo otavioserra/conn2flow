@@ -173,7 +173,7 @@
 		ensureJQuery(function () {
 			// Impede o auto-init sobre document.body; instanciamos escopado ao conteúdo.
 			window.__c2fHtmlEditorNoAutoInit = true;
-			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f10', 'c2f-he-script', function () {
+			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f14', 'c2f-he-script', function () {
 				instantiateEditor(content, 0);
 			});
 		});
@@ -800,7 +800,12 @@
 	var ELEMENTOS = [
 		{ type: 'p', label: 'Parágrafo', labelEn: 'Paragraph' }, { type: 'h1', label: 'Título H1', labelEn: 'Heading H1' }, { type: 'h2', label: 'Título H2', labelEn: 'Heading H2' },
 		{ type: 'h3', label: 'Título H3', labelEn: 'Heading H3' }, { type: 'img', label: 'Imagem', labelEn: 'Image' }, { type: 'a', label: 'Link', labelEn: 'Link' },
-		{ type: 'button', label: 'Botão', labelEn: 'Button' }, { type: 'div', label: 'Bloco', labelEn: 'Block' }, { type: 'section', label: 'Seção', labelEn: 'Section' }
+		{ type: 'button', label: 'Botão', labelEn: 'Button' }, { type: 'div', label: 'Bloco', labelEn: 'Block' }, { type: 'section', label: 'Seção', labelEn: 'Section' },
+		// req-097 item 6: mídia/documento embutido — o motor envolve o elemento inserido e abre o modal
+		// de embed (fonte, dimensões, motor de PDF) logo em seguida.
+		{ type: 'object', label: 'Objeto / PDF', labelEn: 'Object / PDF' }, { type: 'iframe', label: 'Iframe', labelEn: 'Iframe' },
+		{ type: 'embed', label: 'Embed', labelEn: 'Embed' }, { type: 'video', label: 'Vídeo', labelEn: 'Video' },
+		{ type: 'audio', label: 'Áudio', labelEn: 'Audio' }
 	];
 
 	function ajaxJson(url, cb) {

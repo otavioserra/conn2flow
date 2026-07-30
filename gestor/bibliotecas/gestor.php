@@ -117,6 +117,54 @@ function gestor_pagina_recursos_incluir($params = false){
 }
 
 /**
+ * Detecta se um HTML de página usa o motor de exibição PDF.js (req-096 / BATCH-096).
+ *
+ * O Editor HTML grava o motor B como o contêiner `<div class="conn2flow-pdfjs" data-pdf-src="…">`.
+ * A detecção é feita sobre o HTML final (depois dos widgets) para que os assets do PDF.js sejam
+ * incluídos apenas nas páginas que realmente possuem um leitor — nunca em todo o site.
+ *
+ * Função PURA (sem dependência de $_GESTOR) para ser testável isoladamente.
+ *
+ * @param string $html HTML da página já montada.
+ * @return bool
+ */
+function gestor_pdf_viewer_detectar($html){
+	if(!is_string($html) || $html === '') return false;
+	if(strpos($html,'conn2flow-pdfjs') === false) return false;
+
+	// Compara TOKEN por TOKEN do atributo class. Uma checagem por substring (ou por \b) daria falso
+	// positivo em classes derivadas como `conn2flow-pdfjs-legacy`, incluindo assets sem necessidade.
+	if(!preg_match_all('/class\s*=\s*("|\')([^"\']*)\1/i', $html, $matches, PREG_SET_ORDER)) return false;
+
+	foreach($matches as $match){
+		$classes = preg_split('/\s+/', trim($match[2]));
+
+		if($classes && in_array('conn2flow-pdfjs', $classes, true)) return true;
+	}
+
+	return false;
+}
+
+/**
+ * Tags de inclusão dos assets do motor PDF.js (req-096 / BATCH-096).
+ *
+ * A biblioteca vem da CDN (mesma estratégia do CodeMirror no Editor HTML) e o inicializador é um
+ * asset de core servido por `interface/pdf-viewer.js`.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param string $urlRaiz Raiz pública do projeto ($_GESTOR['url-raiz']).
+ * @param string $versao Versão do sistema, usada para cache-bust.
+ * @return array Lista de tags <script>.
+ */
+function gestor_pdf_viewer_assets($urlRaiz = '', $versao = ''){
+	return Array(
+		'<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>',
+		'<script src="'.$urlRaiz.'interface/pdf-viewer.js?v='.$versao.'"></script>',
+	);
+}
+
+/**
  * Renderiza um componente HTML/CSS dinâmico.
  *
  * Busca e processa componentes do banco de dados com suporte a:

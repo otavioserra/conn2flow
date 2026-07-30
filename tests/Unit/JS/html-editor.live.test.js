@@ -222,6 +222,111 @@ describe('html-editor.js — Live Editor (BATCH-080)', () => {
     });
   });
 
+  // ===== BATCH-098 — área de transferência persistente (copiar em uma página, colar em outra)
+
+  describe('copiar/colar persistente', () => {
+    beforeEach(() => { window.localStorage.clear(); });
+
+    it('copySelected grava a cópia saneada no localStorage (sem invólucro de embed)', () => {
+      const ed = makeEditor({ raiz: 'https://site.test/' });
+      ed.contentRoot.innerHTML = '<section class="bloco"><object data="/a.pdf" type="application/pdf"></object></section>';
+      ed.wrapEmbeds();
+      ed.selectedElement = ed.contentRoot.querySelector('section.bloco');
+      ed.updateSelectionUI = () => {};
+
+      ed.copySelected();
+
+      const guardado = JSON.parse(window.localStorage.getItem('c2f-he-clipboard'));
+      expect(guardado.html).toContain('<section class="bloco">');
+      expect(guardado.html).toContain('<object data="/a.pdf"');
+      expect(guardado.html).not.toContain('conn2flow-embed-wrapper');
+      expect(guardado.html).not.toContain('c2f-embed-shield');
+      expect(typeof guardado.ts).toBe('number');
+    });
+
+    it('uma nova sessão/página recupera a cópia e cola no conteúdo', () => {
+      const origem = makeEditor({ raiz: 'https://site.test/' });
+      origem.contentRoot.innerHTML = '<p class="copiado">bloco original</p>';
+      origem.selectedElement = origem.contentRoot.querySelector('p.copiado');
+      origem.updateSelectionUI = () => {};
+      origem.copySelected();
+
+      // Simula outra página: DOM zerado e editor novo (o localStorage é o que sobrevive).
+      document.body.innerHTML = '';
+      const destino = makeEditor({ raiz: 'https://site.test/' });
+      destino.afterDomMutation = () => {};
+      destino.selectElement = () => {};
+
+      expect(destino.hasClipboard()).toBe(true);
+      destino.pasteSelected();
+      expect(destino.contentRoot.querySelector('p.copiado')).toBeTruthy();
+      expect(destino.contentRoot.querySelector('p.copiado').textContent).toBe('bloco original');
+    });
+
+    it('copiar de novo SUBSTITUI a cópia guardada', () => {
+      const ed = makeEditor({ raiz: 'https://site.test/' });
+      ed.contentRoot.innerHTML = '<p class="a">primeiro</p><p class="b">segundo</p>';
+      ed.updateSelectionUI = () => {};
+
+      ed.selectedElement = ed.contentRoot.querySelector('p.a');
+      ed.copySelected();
+      ed.selectedElement = ed.contentRoot.querySelector('p.b');
+      ed.copySelected();
+
+      const guardado = JSON.parse(window.localStorage.getItem('c2f-he-clipboard'));
+      expect(guardado.html).toContain('segundo');
+      expect(guardado.html).not.toContain('primeiro');
+    });
+
+    it('colar sem seleção envia o bloco para o fim do conteúdo da página', () => {
+      const layout = document.createElement('div');
+      layout.id = 'c2f-layout-root';
+      layout.innerHTML = '<header>layout</header><div id="c2f-page-content"><p>conteúdo</p></div>';
+      document.body.appendChild(layout);
+      const ed = new Cls({ contentRoot: layout, raiz: 'https://site.test/' });
+      ed.afterDomMutation = () => {};
+      ed.selectElement = () => {};
+      ed.clipboardHtml = '<section class="colado">bloco</section>';
+
+      ed.selectedElement = null;
+      ed.pasteSelected();
+
+      const conteudo = layout.querySelector('#c2f-page-content');
+      expect(conteudo.querySelector('section.colado')).toBeTruthy();
+      expect(layout.querySelector(':scope > section.colado')).toBeNull();
+    });
+
+    it('colar renumera os ids de widget (o original e a cópia não colidem no save)', () => {
+      const ed = makeEditor({ raiz: 'https://site.test/' });
+      ed.afterDomMutation = () => {};
+      ed.selectElement = () => {};
+      ed.contentRoot.innerHTML = '<nav data-c2f-widget-id="W1" data-c2f-widget-root="1">menu</nav>';
+      ed.clipboardHtml = '<nav data-c2f-widget-id="W1" data-c2f-widget-root="1">menu</nav>';
+
+      ed.selectedElement = ed.contentRoot.querySelector('nav');
+      ed.pasteSelected();
+
+      const ids = Array.from(ed.contentRoot.querySelectorAll('[data-c2f-widget-id]'))
+        .map((n) => n.getAttribute('data-c2f-widget-id'));
+      expect(ids.length).toBe(2);
+      expect(ids[0]).not.toBe(ids[1]);
+    });
+
+    it('sem cópia guardada o botão Colar fica oculto; com cópia, visível', () => {
+      const ed = makeEditor({ raiz: 'https://site.test/' });
+      expect(ed.hasClipboard()).toBe(false);
+      ed.updatePasteButton();
+      expect(document.querySelector('.he-tb-paste').style.display).toBe('none');
+
+      ed.contentRoot.innerHTML = '<p class="x">y</p>';
+      ed.selectedElement = ed.contentRoot.querySelector('p.x');
+      ed.updateSelectionUI = () => {};
+      ed.copySelected();
+      ed.updatePasteButton();
+      expect(document.querySelector('.he-tb-paste').style.display).toBe('inline-flex');
+    });
+  });
+
   it('insertTemplate ignora nós de texto e seleciona o 1º ELEMENTO do bloco (§2)', () => {
     const ed = makeEditor({ raiz: 'https://site.test/' });
     ed.afterDomMutation = () => {};

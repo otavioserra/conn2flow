@@ -28,10 +28,13 @@ $(document).ready(function () {
             this.placeholder = null;
             this.wrapMenu = null;               // popup de tags para embrulhar (req-036)
             this.clipboardElement = null;       // área de transferência interna (req-036)
+            this.clipboardHtml = '';            // cópia persistente (localStorage) — BATCH-098
             this.imagePickerTarget = null;      // alvo do ImagePicker: 'background' (req-039)
             this.parentHighlightOverlay = null; // destaque de contêiner alvo (append) (req-039)
             this.insertGhost = null;            // elemento fantasma no modo de inserção (req-039)
             this.widgetSeq = 0;                 // contador de ids de wrapper de widget (req-039)
+            this.embedSeq = 0;                  // contador de ids de invólucro de embed (req-096)
+            this.editingEmbedWrapper = null;    // invólucro de embed aberto no modal (req-096)
             this.widgetCounter = 0;             // contador de ids únicos de widget (req-044 §1)
             this.widgetsMap = {};               // mapa data-widget-id → {signature,isVariable,type,slug} (req-044 §1)
 
@@ -68,6 +71,10 @@ $(document).ready(function () {
                 inlineTextTags: ['strong', 'em', 'b', 'i', 'u', 'span', 'a', 'br', 'small', 'code', 'mark', 'sub', 'sup', 'q', 'cite', 'abbr', 'time', 'label', 'wbr', 's', 'del', 'ins'],
                 // Containers vazios candidatos a receber inserção "dentro".
                 containerTags: ['div', 'section', 'article', 'main', 'header', 'footer', 'nav', 'aside', 'ul', 'ol', 'figure', 'form'],
+                // req-096 (BATCH-096): tags de mídia/documento embutido que "engolem" os eventos do
+                // ponteiro (o documento interno recebe o mouse antes da página). Recebem o invólucro
+                // atômico `.conn2flow-embed-wrapper` com escudo, badge e alças de redimensionamento.
+                embedTags: ['object', 'iframe', 'embed', 'video', 'audio'],
                 // Limite do histórico Undo/Redo.
                 undoLimit: 30
             };
@@ -121,7 +128,13 @@ $(document).ready(function () {
             this.bindModal();
             this.bindEvents();
             this.bindMessageBus();
+            // BATCH-098: recupera a cópia guardada (de outra página/sessão) antes do 1º render da
+            // barra flutuante, para o botão "Colar" já nascer disponível.
+            this.initClipboard();
             this.convertWidgetCommentsToWrappers();
+            // req-096: envolve os embeds já presentes no conteúdo (antes do 1º snapshot, que os extrai
+            // sem invólucro — o wrap é sempre reconstruído a partir da tag limpa).
+            this.wrapEmbeds();
             // Estado inicial do histórico.
             this.undoStack = [this.captureSnapshot()];
             this.redoStack = [];
@@ -291,6 +304,51 @@ $(document).ready(function () {
                     background:#fff !important;caret-color:#0f172a !important;opacity:1 !important;
                     text-align:left !important;text-transform:none !important;
                     letter-spacing:normal !important;}
+
+                /* ===== req-096 (BATCH-096) — invólucro atômico de mídia/documento embutido.
+                   iframe/object/embed/video/audio capturam o ponteiro dentro do
+                   documento interno: sem uma camada de escudo o editor não consegue selecionar, mostrar
+                   contorno de hover nem arrastar o elemento. O invólucro é UI de RUNTIME — é removido em
+                   toda extração de HTML (save e snapshots de undo), persistindo apenas a tag limpa. */
+                /* display é ajustado por JS (syncEmbedWrapperLayout): block quando o embed tem largura
+                   fluida (100%), para o percentual ter um contêiner de referência; inline-block +
+                   fit-content quando a largura é fixa em px, para as alças ficarem junto ao embed. */
+                .conn2flow-embed-wrapper{position:relative;display:block;max-width:100%;
+                    border:2px dashed #0ea5e9;background:rgba(14,165,233,0.06);border-radius:4px;
+                    padding:18px 4px 4px;margin:4px 0;box-sizing:border-box;}
+                .conn2flow-embed-wrapper>.conn2flow-embed-label{position:absolute;top:0;left:0;z-index:6;
+                    background:#0ea5e9;color:#082f49 !important;-webkit-text-fill-color:#082f49 !important;
+                    font:bold 10px/1.4 sans-serif !important;padding:1px 6px;border-radius:4px 0 4px 0;
+                    pointer-events:none;white-space:nowrap;max-width:100%;overflow:hidden;
+                    text-overflow:ellipsis;}
+                .conn2flow-embed-wrapper>.conn2flow-embed-inner{display:block;max-width:100%;}
+                /* Inertiza o conteúdo embutido: o ponteiro nunca chega ao documento interno. */
+                .conn2flow-embed-wrapper>.conn2flow-embed-inner>*{pointer-events:none !important;
+                    max-width:100%;}
+                /* Escudo transparente: recebe hover/clique/duplo clique no lugar do embed. */
+                .conn2flow-embed-wrapper>.c2f-embed-shield{position:absolute;inset:0;z-index:5;
+                    background:transparent;cursor:pointer;}
+                .conn2flow-embed-wrapper>.c2f-embed-handle{position:absolute;z-index:7;width:12px;
+                    height:12px;background:#0ea5e9;border:2px solid #fff;border-radius:50%;
+                    box-shadow:0 1px 3px rgba(0,0,0,.35);}
+                .conn2flow-embed-wrapper>.c2f-embed-handle-nw{top:-6px;left:-6px;cursor:nwse-resize;}
+                .conn2flow-embed-wrapper>.c2f-embed-handle-ne{top:-6px;right:-6px;cursor:nesw-resize;}
+                .conn2flow-embed-wrapper>.c2f-embed-handle-sw{bottom:-6px;left:-6px;cursor:nesw-resize;}
+                .conn2flow-embed-wrapper>.c2f-embed-handle-se{bottom:-6px;right:-6px;cursor:nwse-resize;}
+                html.he-embed-resizing,html.he-embed-resizing *{cursor:nwse-resize !important;
+                    user-select:none !important;}
+                /* Contêiner do motor PDF.js: no editor aparece como bloco identificável mesmo antes de
+                   o runtime (interface/pdf-viewer.js) desenhar as páginas. */
+                .conn2flow-pdfjs{min-height:120px;background:#f1f5f9;border:1px solid #cbd5e1;
+                    border-radius:4px;box-sizing:border-box;}
+                /* Fallback amigável do motor nativo (só aparece quando o navegador não renderiza PDF). */
+                .conn2flow-pdf-fallback{display:flex;flex-direction:column;align-items:center;
+                    justify-content:center;gap:10px;padding:24px;text-align:center;
+                    font:14px/1.5 system-ui,sans-serif;color:#334155;background:#f8fafc;
+                    border:1px solid #e2e8f0;border-radius:8px;}
+                .conn2flow-pdf-fallback-btn{display:inline-flex;align-items:center;gap:6px;
+                    background:#2563eb;color:#fff !important;text-decoration:none;padding:10px 18px;
+                    border-radius:8px;font-weight:600;}
             `;
             const style = document.createElement('style');
             style.id = 'html-editor-visual-styles';
@@ -489,8 +547,17 @@ $(document).ready(function () {
                 element.id === 'html-editor-insert-ghost' ||
                 element.id === 'html-editor-tailwind-styler' ||
                 element.id === 'html-editor-wrap-menu' ||
+                element.id === 'c2f-he-embed-modal' ||
                 element.id === 'html-editor-modal')) return true;
+            // req-097 Fix 1: elementos de SISTEMA do Live Editor (iframe da barra, contêiner do preview
+            // de dispositivo e o loader de salvamento) nunca são conteúdo editável nem podem entrar na
+            // extração — blindando aqui, ficam de fora de wrapEmbeds/resolveEditable/extractUserHtml
+            // de uma só vez. Sem isto, o iframe da barra podia ser envolvido/salvo e o embed "vazava"
+            // para dentro da Editbar.
+            if (element.id === 'c2f-site-toolbar' || element.id === 'c2f-device-preview' ||
+                element.id === 'c2f-save-loader') return true;
             if (typeof element.closest === 'function') {
+                if (element.closest('#c2f-device-preview')) return true;
                 if (element.closest('#html-editor-floating-toolbar')) return true;
                 if (element.closest('#html-editor-selection-breadcrumb')) return true;
                 if (element.closest('#html-editor-selection-children')) return true;
@@ -512,6 +579,8 @@ $(document).ready(function () {
                 if (element.closest('#c2f-ai-panel')) return true;
                 // BATCH-081 §5: painel de código customizado também é UI do editor.
                 if (element.closest('#c2f-custom-panel')) return true;
+                // req-096: modal de edição de mídia/documento embutido (4 abas).
+                if (element.closest('#c2f-he-embed-modal')) return true;
                 if (element.closest('#c2f-he-imagepick-overlay')) return true;
                 if (element.classList && element.classList.contains('conn2flow-dnd-placeholder')) return true;
             }
@@ -532,6 +601,12 @@ $(document).ready(function () {
             // Bloco atômico de widget.
             const wrapper = element.closest ? element.closest('.conn2flow-widget-wrapper') : null;
             if (wrapper) return wrapper;
+
+            // req-096: bloco atômico de mídia/documento embutido. O escudo, o badge, as alças e o
+            // próprio embed resolvem para o invólucro — o usuário manipula o bloco, nunca o conteúdo
+            // interno (que fica inerte a ponteiro pelo CSS).
+            const embedWrapper = element.closest ? element.closest('.conn2flow-embed-wrapper') : null;
+            if (embedWrapper) return embedWrapper;
 
             // BATCH-078: no live editor, os blocos dinâmicos são atômicos protegidos — clicar em
             // qualquer conteúdo interno resolve para a âncora, impedindo a edição/seleção dos nós
@@ -578,6 +653,8 @@ $(document).ready(function () {
         getEditType(element) {
             if (!element || !element.tagName) return 'text';
             if (element.classList && element.classList.contains('conn2flow-widget-wrapper')) return 'widget';
+            // req-096: invólucro de mídia/documento embutido abre o modal estruturado de embeds.
+            if (element.classList && element.classList.contains('conn2flow-embed-wrapper')) return 'embed';
             const tag = element.tagName.toLowerCase();
             if (tag === 'img') return 'image';
             if (this.isDirectlyTextEditable(element)) return 'text';
@@ -679,8 +756,9 @@ $(document).ready(function () {
                     !this.isTypingTarget(e.target) && this.isTextSelectionCollapsed()) {
                     // Copiar o elemento só quando não há seleção de texto ativa (preserva a cópia nativa).
                     e.preventDefault(); this.copySelected();
-                } else if ((e.ctrlKey || e.metaKey) && key === 'v' && this.clipboardElement &&
-                    this.selectedElement && !this.isTypingTarget(e.target)) {
+                } else if ((e.ctrlKey || e.metaKey) && key === 'v' && this.hasClipboard() &&
+                    !this.isTypingTarget(e.target)) {
+                    // BATCH-098: sem seleção o bloco vai para o fim do conteúdo (colar entre páginas).
                     e.preventDefault(); this.pasteSelected();
                 }
             });
@@ -723,7 +801,7 @@ $(document).ready(function () {
                             this.imagePickerTarget = null;
                             const raiz = (typeof html_editor !== 'undefined' && html_editor.raiz) ? html_editor.raiz : '';
                             const caminho = data.imageData.caminho || '';
-                            const url = /^https?:\/\//i.test(caminho) ? caminho : (raiz + caminho);
+                            const url = this.urlDeArquivo(caminho, raiz);
                             this.applyBackgroundImage(url);
                         }
                         break;
@@ -1610,29 +1688,147 @@ $(document).ready(function () {
             this.afterDomMutation();
         }
 
-        // ===== Copiar / Colar (req-036)
+        // ===================================================================
+        // Copiar / Colar (req-036) — área de transferência PERSISTENTE (BATCH-098)
+        //
+        // Antes o bloco copiado vivia só em memória: ao sair do modo de edição (que recarrega a
+        // página) ou ao navegar para outra página, a cópia se perdia — inviabilizando o caso real
+        // "copiar uma seção desta página e colar em outra". Agora a cópia é gravada como HTML no
+        // localStorage (mesma origem ⇒ compartilhada entre páginas do site, entre o Live Editor e o
+        // editor clássico e entre abas). Copiar de novo SUBSTITUI a cópia guardada.
+        // ===================================================================
+
+        clipboardStorageKey() { return 'c2f-he-clipboard'; }
+
+        readStoredClipboard() {
+            try {
+                const raw = window.localStorage.getItem(this.clipboardStorageKey());
+                if (!raw) return null;
+                const dados = JSON.parse(raw);
+                return (dados && dados.html) ? dados : null;
+            } catch (e) { return null; } // storage indisponível (modo privado/negado): só memória
+        }
+
+        writeStoredClipboard(html) {
+            try {
+                window.localStorage.setItem(this.clipboardStorageKey(), JSON.stringify({
+                    html: html, ts: Date.now(), origem: window.location ? window.location.href : ''
+                }));
+                return true;
+            } catch (e) { return false; } // cota estourada: a cópia continua válida nesta sessão
+        }
+
+        /** Carrega a cópia guardada para a memória e acompanha alterações feitas em outras abas. */
+        initClipboard() {
+            const dados = this.readStoredClipboard();
+            if (dados) this.clipboardHtml = dados.html;
+            if (this._clipboardBound) return;
+            this._clipboardBound = true;
+            window.addEventListener('storage', (e) => {
+                if (!e || e.key !== this.clipboardStorageKey()) return;
+                const atual = this.readStoredClipboard();
+                this.clipboardHtml = atual ? atual.html : '';
+                this.updatePasteButton();
+            });
+        }
+
+        hasClipboard() { return !!this.clipboardHtml; }
+
+        /**
+         * HTML da cópia, saneado para viajar entre páginas: sem o invólucro de embed nem o leitor
+         * PDF.js renderizado (UI de runtime) e sem `data-c2f-variable`/`contenteditable`, que só fazem
+         * sentido junto do `varMap` da página de ORIGEM (na página de destino a variável seria
+         * reconstruída errada; o valor já resolvido é colado como texto).
+         * Os marcadores `data-c2f-marker` são PRESERVADOS — é o que faz um widget colado continuar
+         * sendo um widget na página de destino.
+         */
+        buildClipboardMarkup(el) {
+            const container = document.createElement('div');
+            container.appendChild(el.cloneNode(true));
+            this.unwrapEmbedsIn(container);
+            this.cleanPdfJsIn(container);
+            Array.prototype.forEach.call(container.querySelectorAll('[data-c2f-variable]'),
+                (n) => n.removeAttribute('data-c2f-variable'));
+            Array.prototype.forEach.call(container.querySelectorAll('[contenteditable]'),
+                (n) => n.removeAttribute('contenteditable'));
+            return container.innerHTML;
+        }
+
+        /**
+         * Renumera os identificadores de widget do bloco colado. Sem isso, colar na MESMA página onde o
+         * original está deixaria dois grupos com o mesmo `data-c2f-widget-id` — e o `reconstructOriginal`
+         * da Editbar, que agrupa por esse id, descartaria os "irmãos" de um deles no salvamento.
+         */
+        remapPastedIds(container) {
+            const mapa = {};
+            Array.prototype.forEach.call(container.querySelectorAll('[data-c2f-widget-id]'), (n) => {
+                const gid = n.getAttribute('data-c2f-widget-id');
+                if (!mapa[gid]) mapa[gid] = 'paste-' + (this.embedSeq++) + '-' + gid;
+                n.setAttribute('data-c2f-widget-id', mapa[gid]);
+            });
+            // Wrapper clássico: novo id + registro da assinatura no mapa em memória desta sessão.
+            Array.prototype.forEach.call(container.querySelectorAll('.conn2flow-widget-wrapper'), (w) => {
+                const type = w.getAttribute('data-widget-type') || '';
+                const slug = w.getAttribute('data-widget-slug') || '';
+                const id = this.nextWidgetId();
+                this.widgetsMap[id] = {
+                    signature: type + '->render({"grupo_slug": "' + slug + '"})',
+                    isVariable: w.getAttribute('data-widget-variable') === 'true',
+                    type: type, slug: slug
+                };
+                w.setAttribute('data-widget-id', id);
+            });
+        }
+
         copySelected() {
             const el = this.selectedElement;
             if (!el) return;
-            this.clipboardElement = el.cloneNode(true);
+            const markup = this.buildClipboardMarkup(el);
+            if (!markup) return;
+            this.clipboardHtml = markup;
+            this.clipboardElement = null;      // a fonte única passa a ser o HTML (memória + storage)
+            this.writeStoredClipboard(markup); // copiar de novo substitui a cópia guardada
             // Re-exibe o botão Colar e reposiciona a toolbar (ancorada à direita).
             if (this.selectedElement) this.updateSelectionUI();
             else this.updatePasteButton();
         }
 
         pasteSelected() {
+            const markup = this.clipboardHtml;
+            if (!markup) return;
+            const tmp = document.createElement('div');
+            tmp.innerHTML = markup;
+            this.remapPastedIds(tmp);
+            const nodes = Array.prototype.slice.call(tmp.childNodes);
+            if (!nodes.length) return;
+
             const el = this.selectedElement;
-            if (!this.clipboardElement || !el || !el.parentNode) return;
-            const clone = this.clipboardElement.cloneNode(true);
-            el.parentNode.insertBefore(clone, el.nextSibling);
-            this.selectElement(clone);
+            let primeiro = null;
+            if (el && el.parentNode) {
+                let ref = el;
+                nodes.forEach((n) => {
+                    ref.parentNode.insertBefore(n, ref.nextSibling);
+                    ref = n;
+                    if (!primeiro && n.nodeType === Node.ELEMENT_NODE) primeiro = n;
+                });
+            } else {
+                // Sem seleção (caso típico de "abri outra página e quero colar"): vai para o fim do
+                // conteúdo editável — nunca na raiz do layout (ver insertionRoot, req-097).
+                const destino = this.insertionRoot();
+                nodes.forEach((n) => {
+                    destino.appendChild(n);
+                    if (!primeiro && n.nodeType === Node.ELEMENT_NODE) primeiro = n;
+                });
+            }
+
             this.afterDomMutation();
+            if (primeiro) this.selectElement(primeiro);
         }
 
         updatePasteButton() {
             if (!this.toolbar) return;
             const btn = this.toolbar.querySelector('.he-tb-paste');
-            if (btn) btn.style.display = this.clipboardElement ? 'inline-flex' : 'none';
+            if (btn) btn.style.display = this.hasClipboard() ? 'inline-flex' : 'none';
         }
 
         // BATCH-075 §6: mostra o atalho "Editar no módulo" só quando um widget está selecionado.
@@ -1717,6 +1913,11 @@ $(document).ready(function () {
             // Widgets: editam o slug do registro (não abrem o CodeMirror — req-034 §6.5).
             if (el.classList && el.classList.contains('conn2flow-widget-wrapper')) {
                 this.editWidgetWrapper(el);
+                return;
+            }
+            // req-096: embeds abrem o modal estruturado em 4 abas (atributos, motor de PDF, mídia, avançado).
+            if (el.classList && el.classList.contains('conn2flow-embed-wrapper')) {
+                this.openEmbedModal(el);
                 return;
             }
             this.openEditModal(el);
@@ -1839,11 +2040,14 @@ $(document).ready(function () {
                 try { data = (typeof e.data === 'string') ? JSON.parse(e.data) : e.data; } catch (err) { return; }
                 if (!data || (data.moduloId !== 'admin-arquivos' && data.moduloId !== 'arquivos')) return;
                 if (!this.liveImagePickerOpen) return;
+                // req-096: quando o alvo é a fonte de um embed, quem trata é bindEmbedFilePicker
+                // (aceita PDF/vídeo/documento); aqui só a seleção de IMAGEM é válida.
+                if (this.imagePickerTarget === 'embed') return;
                 let dados;
                 try { dados = JSON.parse(decodeURI(data.data)); } catch (err) { return; }
                 if (dados && dados.tipo && /^image\//.test(dados.tipo)) {
                     const caminho = dados.caminho || '';
-                    const url = /^https?:\/\//i.test(caminho) ? caminho : ((this.raiz || '') + caminho);
+                    const url = this.urlDeArquivo(caminho, this.raiz || '');
                     // BATCH-080 item 4: roteia por alvo — imagem de fundo (styler) vs URL do modal.
                     if (this.imagePickerTarget === 'background') {
                         this.imagePickerTarget = null;
@@ -1867,11 +2071,18 @@ $(document).ready(function () {
                 if (url !== null && src) src.value = url.trim();
                 return;
             }
+            this.openFilePickerOverlay(raiz);
+        }
+
+        // req-096: abertura do overlay do gerenciador de arquivos isolada do fluxo de imagem, para ser
+        // reusada pelo seletor de fonte do embed (que aceita PDF/vídeo/documento, não só imagem).
+        openFilePickerOverlay(raiz) {
             let ov = document.getElementById('c2f-he-imagepick-overlay');
             if (!ov) {
                 ov = document.createElement('div');
                 ov.id = 'c2f-he-imagepick-overlay';
-                ov.style.cssText = 'position:fixed;inset:0;z-index:1000002;display:none;';
+                // req-097 Fix 3: acima de todos os modais/painéis do editor (o de embed usa 1000000).
+                ov.style.cssText = 'position:fixed;inset:0;z-index:1000060;display:none;';
                 ov.innerHTML =
                     '<div class="c2f-he-ip-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.6);"></div>' +
                     '<div style="position:relative;width:920px;max-width:96vw;height:80vh;margin:7vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden;">' +
@@ -2500,6 +2711,24 @@ $(document).ready(function () {
             this.closeCustomCodePanel();
         }
 
+        /**
+         * req-097 Fix 1: destino padrão das inserções SEM alvo selecionado.
+         *
+         * No Live Editor a raiz editável é `#c2f-layout-root` (a edição cobre layout + conteúdo), e o
+         * save separa: o que está dentro de `#c2f-page-content` vai para `paginas.html`; o resto vai
+         * para `layouts.html`. Um `appendChild` na raiz gravava o elemento no LAYOUT — que reaparece em
+         * TODAS as páginas e também dentro do iframe da Editbar (que renderiza o mesmo layout), dando a
+         * impressão de duplicação/triplicação. Havendo conteúdo de página, ele é o destino natural.
+         */
+        insertionRoot() {
+            const root = (this.contentRoot && this.contentRoot !== document.body) ? this.contentRoot : document.body;
+            if (root && typeof root.querySelector === 'function') {
+                const conteudo = root.querySelector('#c2f-page-content');
+                if (conteudo) return conteudo;
+            }
+            return root;
+        }
+
         // Insere o bloco de código no DOM vivo — como um elemento padrão (estilo c2f-add-el):
         // após o elemento selecionado quando houver, ou ao final do conteúdo editável.
         insertCustomHtml(html) {
@@ -2513,7 +2742,7 @@ $(document).ready(function () {
                 let ref = sel;
                 nodes.forEach((n) => { ref.parentNode.insertBefore(n, ref.nextSibling); ref = n; if (!firstEl && n.nodeType === 1) firstEl = n; });
             } else {
-                const target = (this.contentRoot && this.contentRoot !== document.body) ? this.contentRoot : document.body;
+                const target = this.insertionRoot();
                 nodes.forEach((n) => { target.appendChild(n); if (!firstEl && n.nodeType === 1) firstEl = n; });
             }
             this.afterDomMutation();
@@ -2987,10 +3216,9 @@ $(document).ready(function () {
             if (!node) { this.exitInsertMode(); return; }
 
             if (!this.insertAtTarget(node, target)) {
-                // fallback (clique sem alvo): inserir antes da UI do editor no body.
-                const ref = document.getElementById('html-editor-modal') ||
-                    document.getElementById('html-editor-hover-overlay');
-                document.body.insertBefore(node, ref || null);
+                // req-097 Fix 1: fallback (clique sem alvo) vai para o conteúdo editável — nunca para o
+                // body (ficaria fora do que é salvo) nem para a raiz do layout (viraria parte do layout).
+                this.insertionRoot().appendChild(node);
             }
 
             this.exitInsertMode();
@@ -3005,6 +3233,16 @@ $(document).ready(function () {
             // Inserção de imagem abre o ImagePicker imediatamente.
             if (payload.kind === 'element' && payload.elementType === 'img') {
                 this.openEditModal(node);
+            }
+
+            // req-097 item 6: mídia/documento embutido já entra envolvido (o afterDomMutation acima
+            // envolveu) e abre o modal para o usuário informar a fonte imediatamente.
+            if (payload.kind === 'element' && this.config.embedTags.includes(String(payload.elementType))) {
+                const wrapper = node.closest ? node.closest('.conn2flow-embed-wrapper') : null;
+                if (wrapper) {
+                    this.selectElement(wrapper);
+                    this.openEmbedModal(wrapper, 'general');
+                }
             }
         }
 
@@ -3024,6 +3262,32 @@ $(document).ready(function () {
                 case 'button': el = document.createElement('button'); el.setAttribute('type', 'button'); el.textContent = this.t('Novo botão', 'New button'); break;
                 case 'div': el = document.createElement('div'); el.textContent = this.t('Novo bloco', 'New block'); break;
                 case 'section': el = document.createElement('section'); el.textContent = this.t('Nova seção', 'New section'); break;
+                // req-097 item 6: mídia/documento embutido. Nasce com dimensões padrão e SEM fonte —
+                // o modal abre logo após a inserção para o usuário escolher o arquivo/URL.
+                case 'object':
+                    el = document.createElement('object');
+                    el.setAttribute('type', 'application/pdf');
+                    el.setAttribute('style', 'width:100%;height:600px;position:relative;z-index:1');
+                    break;
+                case 'iframe':
+                    el = document.createElement('iframe');
+                    el.setAttribute('style', 'width:100%;height:400px;position:relative;z-index:1');
+                    el.setAttribute('frameborder', '0');
+                    break;
+                case 'embed':
+                    el = document.createElement('embed');
+                    el.setAttribute('style', 'width:100%;height:400px;position:relative;z-index:1');
+                    break;
+                case 'video':
+                    el = document.createElement('video');
+                    el.setAttribute('controls', '');
+                    el.setAttribute('style', 'width:100%;height:360px;position:relative;z-index:1');
+                    break;
+                case 'audio':
+                    el = document.createElement('audio');
+                    el.setAttribute('controls', '');
+                    el.setAttribute('style', 'width:100%;position:relative;z-index:1');
+                    break;
                 default: el = document.createElement('p'); el.textContent = this.t('Novo parágrafo', 'New paragraph');
             }
             return el;
@@ -3268,9 +3532,977 @@ $(document).ready(function () {
         }
 
         // ===================================================================
+        // req-096 (BATCH-096) — Mídia/documento embutido: invólucro atômico, escudo de eventos,
+        // redimensionamento visual e os 3 motores de exibição de PDF.
+        //
+        // Contrato: o invólucro `.conn2flow-embed-wrapper` (badge + escudo + alças) é UI de RUNTIME.
+        // `extractUserHtml` o remove SEMPRE (save e snapshots de undo), então o HTML persistido contém
+        // apenas a tag limpa; `init`/`applyState`/`afterDomMutation` reconstroem o invólucro de forma
+        // idempotente a partir dessa tag.
+        // ===================================================================
+
+        nextEmbedId() { return 'embed-' + (this.embedSeq++); }
+
+        // Seletor dos elementos que recebem invólucro: as tags de embed + o contêiner do motor PDF.js
+        // (que é um `<div>` inerte até o runtime `interface/pdf-viewer.js` desenhar as páginas).
+        embedSelector() {
+            return this.config.embedTags.join(',') + ',div.conn2flow-pdfjs';
+        }
+
+        isPdfUrl(url) {
+            return /\.pdf(\?|#|$)/i.test(String(url == null ? '' : url).trim());
+        }
+
+        isGoogleViewerUrl(url) {
+            return /docs\.google\.com\/(viewer|gview)/i.test(String(url == null ? '' : url));
+        }
+
+        /**
+         * Classifica o elemento embutido. Os 3 primeiros tipos são PDF (habilitam a aba de motores):
+         * `pdf-native` (<object type=application/pdf>), `pdfjs` (.conn2flow-pdfjs), `pdf-google`
+         * (iframe do Google Docs Viewer). Os demais são o tipo da tag.
+         */
+        embedKind(el) {
+            if (!el || !el.tagName) return 'embed';
+            const tag = el.tagName.toLowerCase();
+            if (el.classList && el.classList.contains('conn2flow-pdfjs')) return 'pdfjs';
+            const src = el.getAttribute('data') || el.getAttribute('src') || '';
+            const type = (el.getAttribute('type') || '').toLowerCase();
+            if (tag === 'iframe' && this.isGoogleViewerUrl(src)) return 'pdf-google';
+            if (type.indexOf('application/pdf') === 0 || this.isPdfUrl(src)) {
+                return (tag === 'object' || tag === 'embed') ? 'pdf-native' : 'pdf-' + tag;
+            }
+            return tag;
+        }
+
+        isPdfKind(kind) {
+            return String(kind || '').indexOf('pdf') === 0;
+        }
+
+        embedBadgeLabel(kind) {
+            switch (kind) {
+                case 'pdf-native': return this.t('Objeto PDF', 'PDF Object');
+                case 'pdfjs': return this.t('PDF (PDF.js)', 'PDF (PDF.js)');
+                case 'pdf-google': return this.t('PDF (Google Viewer)', 'PDF (Google Viewer)');
+                case 'pdf-iframe': return this.t('PDF (Iframe)', 'PDF (Iframe)');
+                case 'iframe': return this.t('Iframe', 'Iframe');
+                case 'video': return this.t('Vídeo', 'Video');
+                case 'audio': return this.t('Áudio', 'Audio');
+                case 'object': return this.t('Objeto', 'Object');
+                default: return this.t('Embutido', 'Embed');
+            }
+        }
+
+        /** Envolve todos os embeds do conteúdo ainda sem invólucro (idempotente). */
+        wrapEmbeds() {
+            const scope = this.contentRoot || document.body;
+            if (!scope || typeof scope.querySelectorAll !== 'function') return;
+            const list = Array.prototype.slice.call(scope.querySelectorAll(this.embedSelector()));
+            list.forEach((el) => {
+                if (this.isEditorOwned(el)) return;
+                if (el.closest && el.closest('.conn2flow-embed-wrapper')) return;
+                // Embed DENTRO de um bloco dinâmico (widget renderizado ou caixa de variável) não pode
+                // ganhar invólucro: esses blocos são atômicos e voltam ao marcador no save — editar o
+                // embed interno criaria uma alteração que seria descartada silenciosamente.
+                if (el.closest && el.closest('.conn2flow-widget-wrapper,[data-c2f-widget-id],.c2f-dyn-box')) return;
+                // Não envolver o que está dentro da UI do editor (ex.: iframe do seletor de arquivos).
+                for (let p = el.parentNode; p && p !== scope; p = p.parentNode) {
+                    if (this.isEditorOwned(p)) return;
+                }
+                this.wrapEmbedElement(el);
+            });
+            // req-097 Fix 4: leitores PDF.js presentes no conteúdo renderizam ao vivo dentro do editor.
+            this.refreshPdfJsViewers();
+        }
+
+        wrapEmbedElement(el) {
+            const parent = el.parentNode;
+            if (!parent) return null;
+            const kind = this.embedKind(el);
+            const wrapper = document.createElement('div');
+            wrapper.className = 'conn2flow-embed-wrapper';
+            wrapper.setAttribute('data-c2f-embed', '1');
+            wrapper.setAttribute('data-c2f-embed-id', this.nextEmbedId());
+            wrapper.setAttribute('data-c2f-embed-tag', el.tagName.toLowerCase());
+            wrapper.setAttribute('data-c2f-embed-kind', kind);
+
+            const label = document.createElement('div');
+            label.className = 'conn2flow-embed-label';
+            label.textContent = this.embedBadgeLabel(kind);
+
+            const inner = document.createElement('div');
+            inner.className = 'conn2flow-embed-inner';
+
+            const shield = document.createElement('div');
+            shield.className = 'c2f-embed-shield';
+            shield.title = this.t('Clique duplo para editar este elemento embutido.',
+                'Double-click to edit this embedded element.');
+
+            parent.insertBefore(wrapper, el);
+            inner.appendChild(el);
+            wrapper.appendChild(label);
+            wrapper.appendChild(inner);
+            wrapper.appendChild(shield);
+            ['nw', 'ne', 'sw', 'se'].forEach((corner) => {
+                const handle = document.createElement('span');
+                handle.className = 'c2f-embed-handle c2f-embed-handle-' + corner;
+                handle.setAttribute('data-c2f-corner', corner);
+                wrapper.appendChild(handle);
+            });
+
+            // Duplo clique no escudo → modal, já na aba correspondente ao tipo detectado.
+            shield.addEventListener('dblclick', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.openEmbedModal(wrapper, this.isPdfKind(kind) ? 'engine' : 'general');
+            });
+            // Alças: iniciam o redimensionamento visual (não devem virar seleção/arraste do DnD).
+            wrapper.addEventListener('mousedown', (e) => {
+                const handle = (e.target && e.target.closest) ? e.target.closest('.c2f-embed-handle') : null;
+                if (!handle) return;
+                this.startEmbedResize(e, wrapper, handle.getAttribute('data-c2f-corner'));
+            }, true);
+
+            // Se o embed acabou de ser inserido e estava selecionado, a seleção passa ao invólucro
+            // (que é o bloco atômico manipulável).
+            if (this.selectedElement === el) this.selectedElement = wrapper;
+
+            this.syncEmbedWrapperLayout(wrapper, el);
+
+            return wrapper;
+        }
+
+        /**
+         * Ajusta o invólucro à largura do embed. Com largura FLUIDA (`100%`, ou nenhuma), o invólucro
+         * precisa ser `block` — num `inline-block` shrink-to-fit o percentual do filho não tem
+         * referência e o embed colapsa para o tamanho intrínseco (300px). Com largura FIXA em px, o
+         * invólucro encolhe (`fit-content`) para as alças ficarem exatamente nos cantos do embed.
+         */
+        syncEmbedWrapperLayout(wrapper, el) {
+            if (!wrapper || !el) return;
+            const largura = String((el.style && el.style.width) || el.getAttribute('width') || '').trim();
+            const fixa = /^\d+(\.\d+)?px$/i.test(largura) || /^\d+$/.test(largura);
+            wrapper.style.display = fixa ? 'inline-block' : 'block';
+            wrapper.style.width = fixa ? 'fit-content' : '';
+        }
+
+        /** Elemento embutido de um invólucro (a tag real que será persistida). */
+        embedElement(wrapper) {
+            if (!wrapper || typeof wrapper.querySelector !== 'function') return null;
+            const inner = wrapper.querySelector('.conn2flow-embed-inner');
+            return inner ? inner.firstElementChild : null;
+        }
+
+        /**
+         * Remove os invólucros de um contêiner, devolvendo apenas as tags limpas — preservando a
+         * posição exata (o elemento assume o lugar do invólucro no mesmo pai).
+         * Usado no clone da extração e também no DOM VIVO ao desabilitar o editor (req-097 Fix 2).
+         */
+        unwrapEmbedsIn(container) {
+            if (!container || typeof container.querySelectorAll !== 'function') return;
+            Array.prototype.forEach.call(container.querySelectorAll('.conn2flow-embed-wrapper'), (wrapper) => {
+                if (!wrapper.parentNode) return;
+                const el = this.embedElement(wrapper);
+                if (el) wrapper.parentNode.replaceChild(el, wrapper);
+                else wrapper.parentNode.removeChild(wrapper);
+            });
+            // req-097 Fix 1: resíduos órfãos (de um HTML salvo por versão anterior, com o invólucro
+            // persistido) são removidos para o save voltar a ser limpo e idempotente.
+            Array.prototype.forEach.call(
+                container.querySelectorAll('.c2f-embed-shield,.c2f-embed-handle,.conn2flow-embed-label'),
+                (el) => { if (el.parentNode) el.parentNode.removeChild(el); }
+            );
+        }
+
+        /**
+         * req-097 Fix 1/Fix 4: o runtime do PDF.js DESENHA dentro do contêiner (toolbar + canvas) e o
+         * marca como pronto. Nada disso pode ser persistido — o contrato salvo é o `<div>` vazio com os
+         * `data-pdf-*`. Restaura o contêiner no clone da extração.
+         */
+        cleanPdfJsIn(container) {
+            if (!container || typeof container.querySelectorAll !== 'function') return;
+            Array.prototype.forEach.call(container.querySelectorAll('.conn2flow-pdfjs'), (host) => {
+                host.removeAttribute('data-c2f-pdfjs-ready');
+                host.innerHTML = '';
+            });
+        }
+
+        // ===== Redimensionamento visual (alças nos cantos)
+
+        startEmbedResize(e, wrapper, corner) {
+            const el = this.embedElement(wrapper);
+            if (!el) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const rect = el.getBoundingClientRect();
+            const start = { x: e.clientX, y: e.clientY, w: rect.width || 320, h: rect.height || 240 };
+            const dirX = (corner === 'ne' || corner === 'se') ? 1 : -1;
+            const dirY = (corner === 'sw' || corner === 'se') ? 1 : -1;
+            document.documentElement.classList.add('he-embed-resizing');
+
+            const onMove = (ev) => {
+                const w = Math.max(80, Math.round(start.w + (ev.clientX - start.x) * dirX));
+                const h = Math.max(80, Math.round(start.h + (ev.clientY - start.y) * dirY));
+                this.applyEmbedSize(el, w + 'px', h + 'px');
+                this.updateSelectionUI();
+            };
+            const onUp = () => {
+                document.removeEventListener('mousemove', onMove, true);
+                document.removeEventListener('mouseup', onUp, true);
+                document.documentElement.classList.remove('he-embed-resizing');
+                // Largura agora é fixa em px → o invólucro encolhe junto ao embed.
+                this.syncEmbedWrapperLayout(wrapper, el);
+                // Suprime o clique residual (senão o mouseup vira toggle de seleção).
+                this.suppressClick = true;
+                this.afterDomMutation();
+            };
+            document.addEventListener('mousemove', onMove, true);
+            document.addEventListener('mouseup', onUp, true);
+        }
+
+        /**
+         * Dimensões do embed vivem no `style` (aceita px/%/vh). Os atributos legados `width`/`height`
+         * são removidos para não competir com o style e gerar tamanho inconsistente entre navegadores.
+         */
+        applyEmbedSize(el, width, height) {
+            if (!el) return;
+            if (el.removeAttribute) { el.removeAttribute('width'); el.removeAttribute('height'); }
+            if (width) el.style.width = width;
+            // BATCH-100: `<audio>` só é redimensionado na largura — a altura é a do player nativo.
+            if (String(el.tagName || '').toLowerCase() === 'audio') { el.style.height = ''; return; }
+            if (height) el.style.height = height;
+        }
+
+        // ===== Configuração (leitura do DOM → objeto)
+
+        splitCssSize(value) {
+            const m = String(value == null ? '' : value).trim().match(/^(-?[\d.]+)\s*(px|%|vh|vw|em|rem)?$/i);
+            if (!m) return { value: '', unit: 'px' };
+            return { value: m[1], unit: (m[2] || 'px').toLowerCase() };
+        }
+
+        /**
+         * BATCH-100: dimensões padrão POR TIPO, usadas quando o elemento não traz as suas.
+         * O `<audio>` tem altura intrínseca (a barra do player, ~54px): forçar uma altura fixa —
+         * pior ainda a de documento, 600px — estica o player e deforma o bloco. Por isso ele nasce
+         * sem altura; documentos e vídeos têm padrões próprios.
+         */
+        embedDefaultSize(tag) {
+            switch (String(tag || '').toLowerCase()) {
+                case 'audio': return { width: '100', widthUnit: '%', height: '', heightUnit: 'px' };
+                case 'video': return { width: '100', widthUnit: '%', height: '360', heightUnit: 'px' };
+                case 'iframe':
+                case 'embed': return { width: '100', widthUnit: '%', height: '400', heightUnit: 'px' };
+                default: return { width: '100', widthUnit: '%', height: '600', heightUnit: 'px' };
+            }
+        }
+
+        /** Lê o estado atual do embed para popular o modal. */
+        embedReadConfig(wrapper) {
+            const el = this.embedElement(wrapper);
+            const padrao = this.embedDefaultSize(el && el.tagName ? el.tagName : '');
+            const cfg = {
+                tag: 'iframe', kind: 'iframe', src: '', title: '',
+                width: padrao.width, widthUnit: padrao.widthUnit,
+                height: padrao.height, heightUnit: padrao.heightUnit,
+                engine: 'native', pdfZoom: 'page-width', pdfToolbar: true, pdfPage: '1',
+                pdfScroll: 'vertical', allowfullscreen: false, sandbox: '', controls: true,
+                autoplay: false, loop: false, muted: false, poster: '',
+                params: [], fallbackHtml: '', styleExtra: '', classExtra: ''
+            };
+            if (!el) return cfg;
+
+            cfg.tag = el.tagName.toLowerCase();
+            cfg.kind = this.embedKind(el);
+            cfg.title = el.getAttribute('title') || '';
+
+            // Fonte: `data` no <object>, `src` nas demais; no PDF.js vem de data-pdf-src.
+            if (cfg.kind === 'pdfjs') {
+                cfg.engine = 'pdfjs';
+                cfg.src = el.getAttribute('data-pdf-src') || '';
+                cfg.pdfZoom = el.getAttribute('data-pdf-zoom') || 'page-width';
+                cfg.pdfToolbar = el.getAttribute('data-pdf-toolbar') !== '0';
+                cfg.pdfPage = el.getAttribute('data-pdf-page') || '1';
+                cfg.pdfScroll = el.getAttribute('data-pdf-scroll') || 'vertical';
+            } else if (cfg.kind === 'pdf-google') {
+                cfg.engine = 'google';
+                cfg.src = this.googleViewerSource(el.getAttribute('src') || '');
+            } else {
+                cfg.engine = 'native';
+                cfg.src = el.getAttribute('data') || el.getAttribute('src') || '';
+            }
+
+            const w = this.splitCssSize(el.style.width || el.getAttribute('width') || '');
+            const h = this.splitCssSize(el.style.height || el.getAttribute('height') || '');
+            if (w.value) { cfg.width = w.value; cfg.widthUnit = w.unit; }
+            if (h.value) { cfg.height = h.value; cfg.heightUnit = h.unit; }
+
+            cfg.allowfullscreen = el.hasAttribute('allowfullscreen');
+            cfg.sandbox = el.getAttribute('sandbox') || '';
+            cfg.controls = (cfg.tag === 'video' || cfg.tag === 'audio') ? el.hasAttribute('controls') : true;
+            cfg.autoplay = el.hasAttribute('autoplay');
+            cfg.loop = el.hasAttribute('loop');
+            cfg.muted = el.hasAttribute('muted');
+            cfg.poster = el.getAttribute('poster') || '';
+
+            Array.prototype.forEach.call(el.querySelectorAll('param'), (p) => {
+                cfg.params.push({ name: p.getAttribute('name') || '', value: p.getAttribute('value') || '' });
+            });
+
+            const fallback = el.querySelector ? el.querySelector('.conn2flow-pdf-fallback') : null;
+            if (fallback) cfg.fallbackHtml = fallback.innerHTML.trim();
+
+            // Classes e estilos extras (fora das dimensões e das classes de sistema).
+            cfg.classExtra = String(el.className || '').split(/\s+/)
+                .filter((c) => c && c.indexOf('conn2flow-') !== 0).join(' ');
+            const style = el.getAttribute('style') || '';
+            cfg.styleExtra = style.split(';')
+                .map((d) => d.trim())
+                .filter((d) => d && !/^(width|height)\s*:/i.test(d))
+                .join('; ');
+
+            return cfg;
+        }
+
+        /** Extrai a URL original de um src do Google Docs Viewer (`?url=…`). */
+        googleViewerSource(src) {
+            const m = String(src || '').match(/[?&]url=([^&]+)/);
+            if (!m) return '';
+            try { return decodeURIComponent(m[1]); } catch (e) { return m[1]; }
+        }
+
+        /**
+         * BATCH-100: URL utilizável a partir do caminho devolvido pelo gerenciador de arquivos.
+         *
+         * O caminho é o IDENTIFICADOR do arquivo (com espaços e acentos como estão no disco) — o que
+         * vai para um atributo `src`/`href` precisa ser codificado, senão o HTML sai inválido (espaço
+         * literal dentro do atributo). `encodeURI` preserva `/` e `:` e converte apenas o que precisa;
+         * é idempotente para trechos já codificados (`%20` não vira `%2520`).
+         */
+        urlDeArquivo(caminho, raiz) {
+            const bruto = String(caminho == null ? '' : caminho);
+            const url = /^https?:\/\//i.test(bruto) ? bruto : (String(raiz || '') + bruto);
+            try { return encodeURI(decodeURI(url)); } catch (e) { return url; }
+        }
+
+        absoluteUrl(url) {
+            const raw = String(url == null ? '' : url).trim();
+            if (!raw || /^https?:\/\//i.test(raw)) return raw;
+            try { return new URL(raw, window.location.href).href; } catch (e) { return raw; }
+        }
+
+        // ===== Geradores de markup (funções puras — cobertas por teste)
+
+        embedSizeStyle(cfg) {
+            const parts = [];
+            if (cfg.width) parts.push('width:' + cfg.width + (cfg.widthUnit || 'px'));
+            if (cfg.height) parts.push('height:' + cfg.height + (cfg.heightUnit || 'px'));
+            // req-097 Fix 2: templates costumam ter camadas decorativas absolutas (`absolute inset-0 z-0`)
+            // dentro da seção. Um embed com posição estática fica ABAIXO delas e não recebe o ponteiro —
+            // o PDF parece uma imagem travada no site publicado. Nasce posicionado para receber os
+            // eventos; se o usuário definir position/z-index próprios nos estilos extras, eles vencem.
+            const extra = String(cfg.styleExtra || '');
+            if (!/(^|;)\s*position\s*:/i.test(extra)) parts.push('position:relative');
+            if (!/(^|;)\s*z-index\s*:/i.test(extra)) parts.push('z-index:1');
+            if (extra) parts.push(extra.replace(/;\s*$/, ''));
+            return parts.join(';');
+        }
+
+        embedClassAttr(cfg, systemClass) {
+            const classes = [];
+            if (systemClass) classes.push(systemClass);
+            if (cfg.classExtra) classes.push(String(cfg.classExtra).trim());
+            return classes.length ? ' class="' + this.escHtml(classes.join(' ')) + '"' : '';
+        }
+
+        embedParamsMarkup(cfg) {
+            if (!cfg.params || !cfg.params.length) return '';
+            return cfg.params.filter((p) => p && p.name)
+                .map((p) => '<param name="' + this.escHtml(p.name) + '" value="' + this.escHtml(p.value || '') + '">')
+                .join('');
+        }
+
+        /**
+         * Fallback padrão do motor nativo: mensagem + botão de abrir/baixar o arquivo.
+         * Os estilos vão INLINE porque este HTML é persistido e renderizado no site publicado, onde o
+         * CSS do editor não existe — o fallback precisa ser apresentável por conta própria (as classes
+         * seguem disponíveis para customização pelo template do projeto).
+         */
+        defaultPdfFallbackHtml(src) {
+            const url = this.escHtml(src || '');
+            const box = 'display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+                'gap:10px;padding:24px;text-align:center;font:14px/1.5 system-ui,sans-serif;color:#334155;' +
+                'background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;';
+            const btn = 'display:inline-flex;align-items:center;gap:6px;background:#2563eb;color:#fff;' +
+                'text-decoration:none;padding:10px 18px;border-radius:8px;font-weight:600;';
+            return '<div class="conn2flow-pdf-fallback" style="' + box + '">' +
+                '<p>' + this.t('Seu navegador não exibe PDFs incorporados.',
+                    'Your browser cannot display embedded PDFs.') + '</p>' +
+                '<a class="conn2flow-pdf-fallback-btn" style="' + btn + '" href="' + url +
+                '" target="_blank" rel="noopener">' +
+                this.t('Abrir o PDF', 'Open the PDF') + '</a>' +
+                '</div>';
+        }
+
+        /** Opção A: `<object>` nativo com fallback amigável interno (aparece só em quem não renderiza). */
+        buildPdfNativeMarkup(cfg) {
+            const style = this.embedSizeStyle(cfg);
+            const fallback = (cfg.fallbackHtml && cfg.fallbackHtml.trim())
+                ? '<div class="conn2flow-pdf-fallback">' + cfg.fallbackHtml + '</div>'
+                : this.defaultPdfFallbackHtml(cfg.src);
+            const fonte = String(cfg.src || '').trim();
+            return '<object' + this.embedClassAttr(cfg, 'conn2flow-pdf-object') +
+                (fonte ? ' data="' + this.escHtml(fonte) + '"' : '') + ' type="application/pdf"' +
+                (style ? ' style="' + this.escHtml(style) + '"' : '') +
+                (cfg.title ? ' title="' + this.escHtml(cfg.title) + '"' : '') + '>' +
+                this.embedParamsMarkup(cfg) + fallback + '</object>';
+        }
+
+        /** Opção B: contêiner do renderizador PDF.js (desenhado por `interface/pdf-viewer.js`). */
+        buildPdfJsMarkup(cfg) {
+            const style = this.embedSizeStyle(cfg);
+            const page = String(parseInt(cfg.pdfPage, 10) > 0 ? parseInt(cfg.pdfPage, 10) : 1);
+            const fonte = String(cfg.src || '').trim();
+            return '<div' + this.embedClassAttr(cfg, 'conn2flow-pdfjs') +
+                (fonte ? ' data-pdf-src="' + this.escHtml(fonte) + '"' : '') +
+                ' data-pdf-zoom="' + this.escHtml(cfg.pdfZoom || 'page-width') + '"' +
+                ' data-pdf-toolbar="' + (cfg.pdfToolbar ? '1' : '0') + '"' +
+                ' data-pdf-page="' + page + '"' +
+                ' data-pdf-scroll="' + this.escHtml(cfg.pdfScroll || 'vertical') + '"' +
+                (style ? ' style="' + this.escHtml(style) + '"' : '') +
+                (cfg.title ? ' title="' + this.escHtml(cfg.title) + '"' : '') +
+                '></div>';
+        }
+
+        /** Opção C: iframe do Google Docs Viewer (exige URL pública e absoluta). */
+        buildPdfGoogleMarkup(cfg) {
+            const style = this.embedSizeStyle(cfg);
+            const fonte = String(cfg.src || '').trim();
+            // Sem arquivo escolhido não há visualizador a montar — o `src` é omitido em vez de apontar
+            // para um viewer com `url=` vazio (que renderiza uma página de erro do Google).
+            const url = fonte ? ('https://docs.google.com/viewer?url=' +
+                encodeURIComponent(this.absoluteUrl(fonte)) + '&embedded=true') : '';
+            return '<iframe' + this.embedClassAttr(cfg, 'conn2flow-pdf-google') +
+                (url ? ' src="' + this.escHtml(url) + '"' : '') +
+                (style ? ' style="' + this.escHtml(style) + '"' : '') +
+                (cfg.title ? ' title="' + this.escHtml(cfg.title) + '"' : '') +
+                ' frameborder="0" loading="lazy"' + (cfg.allowfullscreen ? ' allowfullscreen' : '') +
+                '></iframe>';
+        }
+
+        /** Mídia e iframes genéricos (não-PDF): preserva a tag e aplica os atributos das abas 3 e 4. */
+        buildMediaMarkup(cfg) {
+            const tag = ['iframe', 'video', 'audio', 'embed', 'object'].indexOf(cfg.tag) >= 0 ? cfg.tag : 'iframe';
+            // BATCH-100: o player de áudio tem altura própria — altura fixa só o deforma.
+            const dados = (tag === 'audio') ? Object.assign({}, cfg, { height: '' }) : cfg;
+            const style = this.embedSizeStyle(dados);
+            const attrs = [];
+            // BATCH-101: fonte VAZIA omite o atributo. `src=""` faz o navegador resolver para a URL da
+            // própria página e tentar carregá-la como mídia: o player entra em estado de erro e o Chrome
+            // o colapsa (o `<audio>` virava um traço de ~11px), além de gerar uma requisição inútil.
+            const fonte = String(cfg.src || '').trim();
+            if (fonte) attrs.push((tag === 'object' ? 'data="' : 'src="') + this.escHtml(fonte) + '"');
+            if (style) attrs.push('style="' + this.escHtml(style) + '"');
+            if (cfg.title) attrs.push('title="' + this.escHtml(cfg.title) + '"');
+            if (tag === 'iframe') {
+                if (cfg.sandbox) attrs.push('sandbox="' + this.escHtml(cfg.sandbox) + '"');
+                if (cfg.allowfullscreen) attrs.push('allowfullscreen');
+                attrs.push('frameborder="0"');
+            }
+            if (tag === 'video' || tag === 'audio') {
+                if (cfg.controls) attrs.push('controls');
+                if (cfg.autoplay) attrs.push('autoplay');
+                if (cfg.loop) attrs.push('loop');
+                if (cfg.muted) attrs.push('muted');
+                if (tag === 'video' && cfg.poster) attrs.push('poster="' + this.escHtml(cfg.poster) + '"');
+            }
+            const open = '<' + tag + this.embedClassAttr(cfg, '') + ' ' + attrs.join(' ') + '>';
+            if (tag === 'embed') return open;
+            const inner = (tag === 'object') ? this.embedParamsMarkup(cfg) +
+                (cfg.fallbackHtml ? cfg.fallbackHtml : '') : (cfg.fallbackHtml || '');
+            return open + inner + '</' + tag + '>';
+        }
+
+        /** Dispatch: motor de PDF escolhido na aba 2 ou markup de mídia/iframe. */
+        buildEmbedMarkup(cfg) {
+            const isPdf = this.isPdfKind(cfg.kind) || this.isPdfUrl(cfg.src) || cfg.engine === 'pdfjs' ||
+                cfg.engine === 'google';
+            if (!isPdf) return this.buildMediaMarkup(cfg);
+            switch (cfg.engine) {
+                case 'pdfjs': return this.buildPdfJsMarkup(cfg);
+                case 'google': return this.buildPdfGoogleMarkup(cfg);
+                default: return this.buildPdfNativeMarkup(cfg);
+            }
+        }
+
+        // ===== Modal de edição (4 abas)
+
+        embedModalTabs() {
+            return [
+                { key: 'general', label: this.t('Atributos & Parâmetros', 'Attributes & Parameters') },
+                { key: 'engine', label: this.t('Motor de Exibição (PDF)', 'Display Engine (PDF)') },
+                { key: 'media', label: this.t('Iframe & Mídia', 'Iframe & Media') },
+                { key: 'advanced', label: this.t('Código & Avançado', 'Code & Advanced') }
+            ];
+        }
+
+        buildEmbedModal() {
+            let modal = document.getElementById('c2f-he-embed-modal');
+            if (modal) return modal;
+
+            const unitOptions = (selected) => ['px', '%', 'vh']
+                .map((u) => '<option value="' + u + '"' + (u === selected ? ' selected' : '') + '>' + u + '</option>')
+                .join('');
+            const tabs = this.embedModalTabs();
+
+            modal = document.createElement('div');
+            modal.id = 'c2f-he-embed-modal';
+            // req-097 Fix 3: o modal fica ABAIXO do overlay do seletor de arquivos (1000060) — antes o
+            // gerenciador abria atrás da caixa e não dava para escolher o arquivo.
+            modal.setAttribute('style', 'display:none;position:fixed;inset:0;z-index:1000000;' +
+                'font:14px system-ui,sans-serif;color:#0f172a;');
+            modal.innerHTML =
+                '<div class="c2f-he-embed-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.55);"></div>' +
+                '<div class="c2f-he-embed-box" style="position:relative;width:720px;max-width:96vw;height:76vh;' +
+                'min-width:340px;min-height:320px;max-height:94vh;margin:6vh auto;background:#fff;border-radius:10px;' +
+                'box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;resize:both;overflow:auto;">' +
+                '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;flex:0 0 auto;">' +
+                this.t('Editar elemento embutido', 'Edit embedded element') +
+                ' <span id="c2f-he-embed-kind" style="font-weight:400;color:#64748b;"></span></div>' +
+                '<div style="display:flex;gap:4px;padding:8px 12px 0;border-bottom:1px solid #e5e7eb;flex:0 0 auto;flex-wrap:wrap;">' +
+                tabs.map((tab, idx) => '<button type="button" class="c2f-he-embed-tab" data-tab="' + tab.key + '" ' +
+                    'style="border:1px solid #e2e8f0;border-bottom:0;background:' + (idx === 0 ? '#fff' : '#f1f5f9') +
+                    ';padding:7px 12px;border-radius:6px 6px 0 0;cursor:pointer;font:13px system-ui,sans-serif;color:#0f172a;">' +
+                    this.escHtml(tab.label) + '</button>').join('') +
+                '</div>' +
+                '<div style="padding:14px 16px;overflow:auto;flex:1 1 auto;">' +
+
+                // Aba 1 — atributos gerais
+                '<div class="c2f-he-embed-pane" data-pane="general">' +
+                '<label style="display:block;font-size:13px;margin-bottom:6px;">' +
+                this.t('URL / Arquivo fonte', 'Source URL / file') + '</label>' +
+                '<div style="display:flex;gap:6px;align-items:stretch;margin-bottom:12px;">' +
+                '<input id="c2f-he-embed-src" type="text" style="flex:1 1 auto;min-width:0;box-sizing:border-box;' +
+                'border:1px solid #cbd5e1;border-radius:8px;padding:9px;font:14px sans-serif;">' +
+                '<button type="button" class="_html-editor-imagepick-btn c2f-he-embed-pick" ' +
+                'title="' + this.t('Selecionar arquivo do servidor', 'Select file from server') + '" ' +
+                'style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;' +
+                'border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;cursor:pointer;">' +
+                this.svgIcon('folder open') + '</button>' +
+                '</div>' +
+                '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;">' +
+                '<div style="flex:1 1 180px;"><label style="display:block;font-size:13px;margin-bottom:6px;">' +
+                this.t('Largura', 'Width') + '</label>' +
+                '<div style="display:flex;gap:6px;">' +
+                '<input id="c2f-he-embed-width" type="text" style="flex:1 1 auto;min-width:0;box-sizing:border-box;' +
+                'border:1px solid #cbd5e1;border-radius:8px;padding:9px;">' +
+                '<select id="c2f-he-embed-width-unit" style="flex:0 0 auto;border:1px solid #cbd5e1;border-radius:8px;padding:9px;">' +
+                unitOptions('%') + '</select></div></div>' +
+                '<div style="flex:1 1 180px;"><label style="display:block;font-size:13px;margin-bottom:6px;">' +
+                this.t('Altura', 'Height') + '</label>' +
+                '<div style="display:flex;gap:6px;">' +
+                '<input id="c2f-he-embed-height" type="text" style="flex:1 1 auto;min-width:0;box-sizing:border-box;' +
+                'border:1px solid #cbd5e1;border-radius:8px;padding:9px;">' +
+                '<select id="c2f-he-embed-height-unit" style="flex:0 0 auto;border:1px solid #cbd5e1;border-radius:8px;padding:9px;">' +
+                unitOptions('px') + '</select></div></div>' +
+                '</div>' +
+                '<label style="display:block;font-size:13px;margin-bottom:6px;">' +
+                this.t('Título / descrição acessível', 'Accessible title / description') + '</label>' +
+                '<input id="c2f-he-embed-title" type="text" style="width:100%;box-sizing:border-box;' +
+                'border:1px solid #cbd5e1;border-radius:8px;padding:9px;">' +
+                '</div>' +
+
+                // Aba 2 — motor de exibição de PDF
+                '<div class="c2f-he-embed-pane" data-pane="engine" style="display:none;">' +
+                '<div id="c2f-he-embed-engine-warning" style="display:none;background:#fef3c7;color:#92400e;' +
+                'border:1px solid #fde68a;border-radius:8px;padding:10px;margin-bottom:12px;font-size:13px;">' +
+                this.t('Este elemento não aponta para um arquivo PDF. Escolha um .pdf na aba anterior para habilitar os motores.',
+                    'This element does not point to a PDF file. Choose a .pdf in the previous tab to enable the engines.') +
+                '</div>' +
+                '<label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;cursor:pointer;">' +
+                '<input type="radio" name="c2f-he-embed-engine" value="native" style="margin-top:3px;">' +
+                '<span><b>' + this.t('A — Objeto nativo com fallback', 'A — Native object with fallback') + '</b><br>' +
+                '<span style="color:#64748b;font-size:12px;">' +
+                this.t('&lt;object type="application/pdf"&gt; com mensagem e botão de download exibidos apenas quando o navegador não renderiza PDF.',
+                    '&lt;object type="application/pdf"&gt; with a message and download button shown only when the browser cannot render PDFs.') +
+                '</span></span></label>' +
+                '<label style="display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;cursor:pointer;">' +
+                '<input type="radio" name="c2f-he-embed-engine" value="pdfjs" style="margin-top:3px;">' +
+                '<span><b>' + this.t('B — Renderizador PDF.js', 'B — PDF.js renderer') + '</b><br>' +
+                '<span style="color:#64748b;font-size:12px;">' +
+                this.t('Renderiza em canvas — exibição idêntica em desktop, Android e iOS.',
+                    'Renders to canvas — identical display on desktop, Android and iOS.') +
+                '</span></span></label>' +
+                '<div id="c2f-he-embed-pdfjs-options" style="display:none;background:#f8fafc;border:1px solid #e2e8f0;' +
+                'border-radius:8px;padding:10px;margin:0 0 10px 26px;">' +
+                '<div style="display:flex;gap:12px;flex-wrap:wrap;">' +
+                '<div style="flex:1 1 150px;"><label style="display:block;font-size:12px;margin-bottom:4px;">' +
+                this.t('Zoom', 'Zoom') + '</label>' +
+                '<select id="c2f-he-embed-pdfjs-zoom" style="width:100%;border:1px solid #cbd5e1;border-radius:6px;padding:7px;">' +
+                '<option value="page-width">' + this.t('Largura da página', 'Page width') + '</option>' +
+                '<option value="page-fit">' + this.t('Página inteira', 'Whole page') + '</option>' +
+                '<option value="0.75">75%</option><option value="1">100%</option>' +
+                '<option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option>' +
+                '</select></div>' +
+                '<div style="flex:1 1 120px;"><label style="display:block;font-size:12px;margin-bottom:4px;">' +
+                this.t('Página inicial', 'Initial page') + '</label>' +
+                '<input id="c2f-he-embed-pdfjs-page" type="number" min="1" value="1" ' +
+                'style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:6px;padding:7px;"></div>' +
+                '<div style="flex:1 1 150px;"><label style="display:block;font-size:12px;margin-bottom:4px;">' +
+                this.t('Modo de rolagem', 'Scroll mode') + '</label>' +
+                '<select id="c2f-he-embed-pdfjs-scroll" style="width:100%;border:1px solid #cbd5e1;border-radius:6px;padding:7px;">' +
+                '<option value="vertical">' + this.t('Vertical (todas as páginas)', 'Vertical (all pages)') + '</option>' +
+                '<option value="page">' + this.t('Página a página', 'Page by page') + '</option>' +
+                '</select></div>' +
+                '</div>' +
+                '<label style="display:flex;gap:6px;align-items:center;margin-top:8px;font-size:13px;cursor:pointer;">' +
+                '<input id="c2f-he-embed-pdfjs-toolbar" type="checkbox" checked> ' +
+                this.t('Exibir barra de ferramentas do leitor', 'Show reader toolbar') + '</label>' +
+                '</div>' +
+                '<label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;">' +
+                '<input type="radio" name="c2f-he-embed-engine" value="google" style="margin-top:3px;">' +
+                '<span><b>' + this.t('C — Visualizador Google Docs', 'C — Google Docs Viewer') + '</b><br>' +
+                '<span style="color:#64748b;font-size:12px;">' +
+                this.t('Iframe do Google Docs Viewer — ideal para PDFs públicos, sem bibliotecas adicionais.',
+                    'Google Docs Viewer iframe — ideal for public PDFs, with no extra libraries.') +
+                '</span></span></label>' +
+                '</div>' +
+
+                // Aba 3 — iframe e mídia
+                '<div class="c2f-he-embed-pane" data-pane="media" style="display:none;">' +
+                '<label style="display:flex;gap:6px;align-items:center;margin-bottom:8px;cursor:pointer;">' +
+                '<input id="c2f-he-embed-allowfullscreen" type="checkbox"> allowfullscreen</label>' +
+                '<label style="display:block;font-size:13px;margin:8px 0 6px;">sandbox</label>' +
+                '<input id="c2f-he-embed-sandbox" type="text" placeholder="allow-scripts allow-same-origin" ' +
+                'style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:9px;">' +
+                '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;">' +
+                '<label style="display:flex;gap:6px;align-items:center;cursor:pointer;">' +
+                '<input id="c2f-he-embed-controls" type="checkbox" checked> controls</label>' +
+                '<label style="display:flex;gap:6px;align-items:center;cursor:pointer;">' +
+                '<input id="c2f-he-embed-autoplay" type="checkbox"> autoplay</label>' +
+                '<label style="display:flex;gap:6px;align-items:center;cursor:pointer;">' +
+                '<input id="c2f-he-embed-loop" type="checkbox"> loop</label>' +
+                '<label style="display:flex;gap:6px;align-items:center;cursor:pointer;">' +
+                '<input id="c2f-he-embed-muted" type="checkbox"> muted</label>' +
+                '</div>' +
+                '<label style="display:block;font-size:13px;margin:12px 0 6px;">poster</label>' +
+                '<input id="c2f-he-embed-poster" type="text" style="width:100%;box-sizing:border-box;' +
+                'border:1px solid #cbd5e1;border-radius:8px;padding:9px;">' +
+                '</div>' +
+
+                // Aba 4 — código e avançado
+                '<div class="c2f-he-embed-pane" data-pane="advanced" style="display:none;">' +
+                '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">' +
+                '<label style="font-size:13px;">' + this.t('Parâmetros internos (&lt;param&gt;)', 'Inner parameters (&lt;param&gt;)') + '</label>' +
+                '<button type="button" id="c2f-he-embed-param-add" style="border:1px solid #cbd5e1;background:#f1f5f9;' +
+                'border-radius:6px;padding:5px 10px;cursor:pointer;font:12px system-ui,sans-serif;">+ ' +
+                this.t('Adicionar', 'Add') + '</button></div>' +
+                '<div id="c2f-he-embed-params"></div>' +
+                '<label style="display:block;font-size:13px;margin:12px 0 6px;">' +
+                this.t('HTML de fallback customizado', 'Custom fallback HTML') + '</label>' +
+                '<textarea id="c2f-he-embed-fallback" rows="4" style="width:100%;box-sizing:border-box;' +
+                'border:1px solid #cbd5e1;border-radius:8px;padding:9px;font:13px ui-monospace,monospace;"></textarea>' +
+                '<label style="display:block;font-size:13px;margin:12px 0 6px;">' +
+                this.t('Estilos inline extras', 'Extra inline styles') + '</label>' +
+                '<input id="c2f-he-embed-style" type="text" placeholder="border:0; margin:0 auto" ' +
+                'style="width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:9px;">' +
+                '<label style="display:block;font-size:13px;margin:12px 0 6px;">' +
+                this.t('Classes CSS extras', 'Extra CSS classes') + '</label>' +
+                '<input id="c2f-he-embed-class" type="text" style="width:100%;box-sizing:border-box;' +
+                'border:1px solid #cbd5e1;border-radius:8px;padding:9px;">' +
+                '</div>' +
+
+                '</div>' +
+                '<div style="padding:12px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;' +
+                'gap:8px;flex:0 0 auto;">' +
+                '<button type="button" class="c2f-he-embed-cancel" style="padding:8px 16px;border:0;border-radius:8px;' +
+                'background:#e2e8f0;color:#0f172a;cursor:pointer;">' + this.t('Cancelar', 'Cancel') + '</button>' +
+                '<button type="button" class="c2f-he-embed-apply" style="padding:8px 16px;border:0;border-radius:8px;' +
+                'background:#16a34a;color:#fff;cursor:pointer;">' + this.t('Aplicar', 'Apply') + '</button>' +
+                '</div>' +
+                '</div>';
+
+            document.body.appendChild(modal);
+
+            modal.querySelector('.c2f-he-embed-backdrop').addEventListener('click', () => this.closeEmbedModal());
+            modal.querySelector('.c2f-he-embed-cancel').addEventListener('click', () => this.closeEmbedModal());
+            modal.querySelector('.c2f-he-embed-apply').addEventListener('click', () => this.applyEmbedModal());
+            Array.prototype.forEach.call(modal.querySelectorAll('.c2f-he-embed-tab'), (btn) => {
+                btn.addEventListener('click', () => this.showEmbedTab(btn.getAttribute('data-tab')));
+            });
+            modal.querySelector('#c2f-he-embed-param-add')
+                .addEventListener('click', () => this.addEmbedParamRow('', ''));
+            modal.querySelector('.c2f-he-embed-pick')
+                .addEventListener('click', (e) => { e.preventDefault(); this.openEmbedFilePicker(); });
+            // Detecção automática: digitar/colar um link .pdf habilita a aba de motores.
+            modal.querySelector('#c2f-he-embed-src')
+                .addEventListener('input', () => this.syncEmbedEngineAvailability());
+            Array.prototype.forEach.call(modal.querySelectorAll('input[name="c2f-he-embed-engine"]'), (radio) => {
+                radio.addEventListener('change', () => this.syncEmbedEngineAvailability());
+            });
+
+            return modal;
+        }
+
+        showEmbedTab(key) {
+            const modal = document.getElementById('c2f-he-embed-modal');
+            if (!modal) return;
+            Array.prototype.forEach.call(modal.querySelectorAll('.c2f-he-embed-pane'), (pane) => {
+                pane.style.display = (pane.getAttribute('data-pane') === key) ? 'block' : 'none';
+            });
+            Array.prototype.forEach.call(modal.querySelectorAll('.c2f-he-embed-tab'), (btn) => {
+                btn.style.background = (btn.getAttribute('data-tab') === key) ? '#fff' : '#f1f5f9';
+            });
+        }
+
+        addEmbedParamRow(name, value) {
+            const list = document.querySelector('#c2f-he-embed-modal #c2f-he-embed-params');
+            if (!list) return;
+            const row = document.createElement('div');
+            row.className = 'c2f-he-embed-param-row';
+            row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;';
+            row.innerHTML =
+                '<input type="text" class="c2f-he-embed-param-name" placeholder="name" value="' +
+                this.escHtml(name || '') + '" style="flex:1 1 40%;min-width:0;box-sizing:border-box;' +
+                'border:1px solid #cbd5e1;border-radius:6px;padding:7px;">' +
+                '<input type="text" class="c2f-he-embed-param-value" placeholder="value" value="' +
+                this.escHtml(value || '') + '" style="flex:1 1 60%;min-width:0;box-sizing:border-box;' +
+                'border:1px solid #cbd5e1;border-radius:6px;padding:7px;">' +
+                '<button type="button" class="c2f-he-embed-param-del" style="flex:0 0 auto;border:1px solid #fecaca;' +
+                'background:#fee2e2;color:#b91c1c;border-radius:6px;padding:0 10px;cursor:pointer;">&times;</button>';
+            row.querySelector('.c2f-he-embed-param-del').addEventListener('click', () => row.remove());
+            list.appendChild(row);
+        }
+
+        /** Habilita/desabilita a aba de motores conforme a fonte apontar (ou não) para um PDF. */
+        syncEmbedEngineAvailability() {
+            const modal = document.getElementById('c2f-he-embed-modal');
+            if (!modal) return;
+            const src = (modal.querySelector('#c2f-he-embed-src') || {}).value || '';
+            const engineSelected = modal.querySelector('input[name="c2f-he-embed-engine"]:checked');
+            const engine = engineSelected ? engineSelected.value : 'native';
+            const isPdf = this.isPdfUrl(src) || engine === 'pdfjs' || engine === 'google';
+            const warning = modal.querySelector('#c2f-he-embed-engine-warning');
+            if (warning) warning.style.display = isPdf ? 'none' : 'block';
+            const pdfjsOptions = modal.querySelector('#c2f-he-embed-pdfjs-options');
+            if (pdfjsOptions) pdfjsOptions.style.display = (engine === 'pdfjs') ? 'block' : 'none';
+        }
+
+        openEmbedModal(wrapper, tab) {
+            if (!wrapper) return;
+            const cfg = this.embedReadConfig(wrapper);
+            const modal = this.buildEmbedModal();
+            this.editingEmbedWrapper = wrapper;
+
+            const set = (id, value) => { const el = modal.querySelector('#' + id); if (el) el.value = value; };
+            const check = (id, value) => { const el = modal.querySelector('#' + id); if (el) el.checked = !!value; };
+
+            modal.querySelector('#c2f-he-embed-kind').textContent = '(' + this.embedBadgeLabel(cfg.kind) + ')';
+            set('c2f-he-embed-src', cfg.src);
+            set('c2f-he-embed-width', cfg.width);
+            set('c2f-he-embed-width-unit', cfg.widthUnit);
+            set('c2f-he-embed-height', cfg.height);
+            set('c2f-he-embed-height-unit', cfg.heightUnit);
+            set('c2f-he-embed-title', cfg.title);
+            set('c2f-he-embed-pdfjs-zoom', cfg.pdfZoom);
+            set('c2f-he-embed-pdfjs-page', cfg.pdfPage);
+            set('c2f-he-embed-pdfjs-scroll', cfg.pdfScroll);
+            check('c2f-he-embed-pdfjs-toolbar', cfg.pdfToolbar);
+            check('c2f-he-embed-allowfullscreen', cfg.allowfullscreen);
+            set('c2f-he-embed-sandbox', cfg.sandbox);
+            check('c2f-he-embed-controls', cfg.controls);
+            check('c2f-he-embed-autoplay', cfg.autoplay);
+            check('c2f-he-embed-loop', cfg.loop);
+            check('c2f-he-embed-muted', cfg.muted);
+            set('c2f-he-embed-poster', cfg.poster);
+            set('c2f-he-embed-fallback', cfg.fallbackHtml);
+            set('c2f-he-embed-style', cfg.styleExtra);
+            set('c2f-he-embed-class', cfg.classExtra);
+
+            const engineRadio = modal.querySelector('input[name="c2f-he-embed-engine"][value="' + cfg.engine + '"]');
+            if (engineRadio) engineRadio.checked = true;
+
+            const params = modal.querySelector('#c2f-he-embed-params');
+            if (params) params.innerHTML = '';
+            (cfg.params || []).forEach((p) => this.addEmbedParamRow(p.name, p.value));
+
+            this.showEmbedTab(tab || 'general');
+            this.syncEmbedEngineAvailability();
+            this.isModalActive = true;
+            this.hideHover();
+            this.hideChrome();
+            modal.style.display = 'block';
+        }
+
+        closeEmbedModal() {
+            const modal = document.getElementById('c2f-he-embed-modal');
+            if (modal) modal.style.display = 'none';
+            this.editingEmbedWrapper = null;
+            this.isModalActive = false;
+            this.restoreChrome();
+        }
+
+        /** Lê o formulário do modal → objeto de configuração. */
+        embedModalConfig() {
+            const modal = document.getElementById('c2f-he-embed-modal');
+            if (!modal) return null;
+            const val = (id) => { const el = modal.querySelector('#' + id); return el ? String(el.value || '').trim() : ''; };
+            const chk = (id) => { const el = modal.querySelector('#' + id); return !!(el && el.checked); };
+            const engineSelected = modal.querySelector('input[name="c2f-he-embed-engine"]:checked');
+            const base = this.editingEmbedWrapper ? this.embedReadConfig(this.editingEmbedWrapper) : {};
+            const params = Array.prototype.map.call(modal.querySelectorAll('.c2f-he-embed-param-row'), (row) => ({
+                name: String((row.querySelector('.c2f-he-embed-param-name') || {}).value || '').trim(),
+                value: String((row.querySelector('.c2f-he-embed-param-value') || {}).value || '').trim()
+            })).filter((p) => p.name);
+
+            return {
+                tag: base.tag || 'iframe',
+                kind: base.kind || 'iframe',
+                src: val('c2f-he-embed-src'),
+                title: val('c2f-he-embed-title'),
+                width: val('c2f-he-embed-width'),
+                widthUnit: val('c2f-he-embed-width-unit') || 'px',
+                height: val('c2f-he-embed-height'),
+                heightUnit: val('c2f-he-embed-height-unit') || 'px',
+                engine: engineSelected ? engineSelected.value : 'native',
+                pdfZoom: val('c2f-he-embed-pdfjs-zoom') || 'page-width',
+                pdfToolbar: chk('c2f-he-embed-pdfjs-toolbar'),
+                pdfPage: val('c2f-he-embed-pdfjs-page') || '1',
+                pdfScroll: val('c2f-he-embed-pdfjs-scroll') || 'vertical',
+                allowfullscreen: chk('c2f-he-embed-allowfullscreen'),
+                sandbox: val('c2f-he-embed-sandbox'),
+                controls: chk('c2f-he-embed-controls'),
+                autoplay: chk('c2f-he-embed-autoplay'),
+                loop: chk('c2f-he-embed-loop'),
+                muted: chk('c2f-he-embed-muted'),
+                poster: val('c2f-he-embed-poster'),
+                params: params,
+                fallbackHtml: (modal.querySelector('#c2f-he-embed-fallback') || {}).value || '',
+                styleExtra: val('c2f-he-embed-style'),
+                classExtra: val('c2f-he-embed-class')
+            };
+        }
+
+        applyEmbedModal() {
+            const wrapper = this.editingEmbedWrapper;
+            const cfg = this.embedModalConfig();
+            if (!wrapper || !cfg) { this.closeEmbedModal(); return; }
+            const markup = this.buildEmbedMarkup(cfg);
+            const temp = document.createElement('div');
+            temp.innerHTML = markup;
+            const novo = temp.firstElementChild;
+            if (!novo || !wrapper.parentNode) { this.closeEmbedModal(); return; }
+
+            // Substitui o invólucro inteiro pela tag nova e re-envolve (badge/tipo recalculados).
+            wrapper.parentNode.replaceChild(novo, wrapper);
+            this.closeEmbedModal();
+            const novoWrapper = this.wrapEmbedElement(novo);
+            if (novoWrapper) this.selectElement(novoWrapper);
+            this.afterDomMutation();
+            this.refreshPdfJsViewers();
+        }
+
+        /**
+         * Seletor de arquivo do servidor para a fonte do embed (aceita PDF/vídeo/documento, ao contrário
+         * do picker de imagem). Reusa o overlay do gerenciador de arquivos (admin-arquivos).
+         */
+        openEmbedFilePicker() {
+            const raiz = this.pickerRaiz();
+            const input = document.querySelector('#c2f-he-embed-modal #c2f-he-embed-src');
+            if (!raiz) {
+                const url = window.prompt(this.t('URL do arquivo:', 'File URL:'), (input && input.value) || '');
+                if (url !== null && input) { input.value = url.trim(); this.syncEmbedEngineAvailability(); }
+                return;
+            }
+            this.imagePickerTarget = 'embed';
+            this.bindEmbedFilePicker();
+            this.openFilePickerOverlay(raiz);
+        }
+
+        /**
+         * Raiz do gestor para o seletor de arquivos. No Live Editor vem por `options.raiz`; no editor
+         * clássico o iframe recebe a const `html_editor` (html-editor-helper.js) e, por fim, tenta o
+         * `gestor` local/da janela pai.
+         */
+        pickerRaiz() {
+            if (this.raiz) return this.raiz;
+            try {
+                if (typeof html_editor !== 'undefined' && html_editor && html_editor.raiz) {
+                    return String(html_editor.raiz);
+                }
+            } catch (e) { /* const ausente neste contexto */ }
+            try {
+                if (window.gestor && window.gestor.raiz) return String(window.gestor.raiz);
+                if (window.parent && window.parent !== window && window.parent.gestor && window.parent.gestor.raiz) {
+                    return String(window.parent.gestor.raiz);
+                }
+            } catch (e) { /* cross-origin: sem raiz utilizável */ }
+            return '';
+        }
+
+        /** Escuta a seleção do gerenciador de arquivos quando o alvo é a fonte do embed. */
+        bindEmbedFilePicker() {
+            if (this._embedPickBound) return;
+            this._embedPickBound = true;
+            window.addEventListener('message', (e) => {
+                if (this.imagePickerTarget !== 'embed' || !this.liveImagePickerOpen) return;
+                let data;
+                try { data = (typeof e.data === 'string') ? JSON.parse(e.data) : e.data; } catch (err) { return; }
+                if (!data || (data.moduloId !== 'admin-arquivos' && data.moduloId !== 'arquivos')) return;
+                let dados;
+                try { dados = JSON.parse(decodeURI(data.data)); } catch (err) { return; }
+                if (!dados) return;
+                const caminho = dados.caminho || '';
+                const url = this.urlDeArquivo(caminho, this.pickerRaiz());
+                const input = document.querySelector('#c2f-he-embed-modal #c2f-he-embed-src');
+                if (input) input.value = url;
+                this.imagePickerTarget = null;
+                this.closeLiveImagePicker();
+                // Detecção automática do tipo: `.pdf` habilita os motores e propõe o nativo.
+                this.syncEmbedEngineAvailability();
+                if (this.isPdfUrl(url)) this.showEmbedTab('engine');
+            });
+        }
+
+        /**
+         * req-097 Fix 4: renderiza os leitores PDF.js do conteúdo AO VIVO no editor. O runtime só está
+         * na página quando ela já tinha um leitor no page load (`gestor_pagina_pdf_viewer`); ao escolher
+         * o Motor B durante a edição, o script precisa ser carregado sob demanda — sem isso o usuário via
+         * apenas um bloco cinza estático no lugar do PDF.
+         */
+        refreshPdfJsViewers() {
+            const scope = this.contentRoot || document.body;
+            if (!scope || typeof scope.querySelector !== 'function') return;
+            if (!scope.querySelector('.conn2flow-pdfjs')) return;
+            this.ensurePdfViewer(() => {
+                try {
+                    if (typeof window.conn2flowPdfViewerInit === 'function') window.conn2flowPdfViewerInit();
+                } catch (e) { /* noop */ }
+            });
+        }
+
+        /** Carrega `interface/pdf-viewer.js` uma única vez (o próprio runtime busca a lib do PDF.js). */
+        ensurePdfViewer(cb) {
+            if (typeof window.conn2flowPdfViewerInit === 'function') { cb(); return; }
+            const raiz = this.pickerRaiz();
+            const id = 'c2f-pdf-viewer-script';
+            let script = document.getElementById(id);
+            if (script) { script.addEventListener('load', cb); return; }
+            script = document.createElement('script');
+            script.id = id;
+            script.src = raiz + 'interface/pdf-viewer.js';
+            script.addEventListener('load', cb);
+            script.addEventListener('error', () => { /* sem runtime: o contêiner segue como placeholder */ });
+            document.head.appendChild(script);
+        }
+
+        // ===================================================================
         // Histórico Undo / Redo — req-034 §6.1
         // ===================================================================
         afterDomMutation() {
+            // req-096: qualquer mutação pode ter trazido um embed novo (template, IA, código
+            // customizado, colagem) — o wrap é idempotente e roda antes do snapshot.
+            this.wrapEmbeds();
             this.updateSelectionUI();
             this.pushUndo();
             // Notificar o pai para re-sincronizar o CodeMirror, se aplicável.
@@ -3341,8 +4573,11 @@ $(document).ready(function () {
             tpl.innerHTML = html;
             const ref = this.contentRoot.firstChild;
             this.contentRoot.insertBefore(tpl.content, ref);
+            // req-096: o snapshot guarda as tags limpas — reconstrói os invólucros de embed.
+            this.wrapEmbeds();
             // req-039: re-renderizar o esqueleto dos widgets sem mockup (preview não é salvo no snapshot).
             this.rerenderVisibleWidgets();
+            this.refreshPdfJsViewers();
             try {
                 window.parent.postMessage(JSON.stringify({ action: 'c2f-he:dom-changed' }), '*');
             } catch (e) { /* noop */ }
@@ -3393,8 +4628,19 @@ $(document).ready(function () {
                 '#html-editor-selection-overlay,#html-editor-selection-breadcrumb,#html-editor-selection-children,' +
                 '#html-editor-breadcrumb-hover-overlay,#html-editor-tailwind-styler,#html-editor-wrap-menu,' +
                 '#html-editor-parent-highlight-overlay,#html-editor-insert-ghost,' +
-                '#html-editor-modal,.conn2flow-dnd-placeholder,.html-editor-container,.ui.dimmer.modals')
+                '#html-editor-modal,#c2f-he-embed-modal,.conn2flow-dnd-placeholder,.html-editor-container,' +
+                '.ui.dimmer.modals,' +
+                // req-097 Fix 1: elementos de sistema do Live Editor NUNCA são persistidos — o iframe da
+                // barra dentro do HTML salvo era o que fazia o embed "vazar" para dentro da Editbar.
+                '#c2f-site-toolbar,#c2f-device-preview,#c2f-save-loader')
                 .forEach((el) => el.remove());
+
+            // req-096: os invólucros de embed são UI de runtime — SEMPRE removidos (save E snapshots do
+            // undo), persistindo apenas a tag limpa (`<object>`/`<iframe>`/`<video>`/…). Roda antes do
+            // tratamento de widgets para que um embed dentro de widget sem mockup também saia limpo.
+            this.unwrapEmbedsIn(container);
+            // req-097 Fix 1: o leitor PDF.js volta ao contêiner vazio (canvas/toolbar não são persistidos).
+            this.cleanPdfJsIn(container);
 
             // req-044 §1.4: variáveis voltam como texto puro [[widgets#signature]] SEM re-escape
             // das entidades. Como container.innerHTML re-escaparia `>`/`&` de um text node, usamos
@@ -3447,8 +4693,23 @@ $(document).ready(function () {
         // ===================================================================
         // API pública
         // ===================================================================
-        enable() { this.isEnabled = true; }
-        disable() { this.isEnabled = false; this.hideHover(); this.clearSelection(); }
+        /**
+         * req-097 Fix 2: o invólucro (escudo + `pointer-events:none` no conteúdo) existe SÓ enquanto o
+         * editor está habilitado. Ao desabilitar (sair da edição, entrar no preview de dispositivo,
+         * salvar), os embeds voltam ao DOM vivo sem o escudo e recuperam a interatividade — o leitor de
+         * PDF volta a rolar/ampliar, o vídeo volta a tocar. Ao reabilitar, o invólucro é reconstruído.
+         */
+        enable() {
+            this.isEnabled = true;
+            this.wrapEmbeds();
+        }
+
+        disable() {
+            this.isEnabled = false;
+            this.hideHover();
+            this.clearSelection();
+            this.unwrapEmbedsIn(this.contentRoot || document.body);
+        }
         updateConfig(newConfig) { this.config = Object.assign({}, this.config, newConfig); }
     }
 

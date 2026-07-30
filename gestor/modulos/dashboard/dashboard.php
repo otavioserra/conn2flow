@@ -1330,31 +1330,45 @@ function dashboard_site_toolbar(){
 	$page_id = (isset($_REQUEST['page_id']) ? trim($_REQUEST['page_id']) : '');
 	$publisher_id = (isset($_REQUEST['publisher_id']) ? trim($_REQUEST['publisher_id']) : '');
 
-	// ===== Edição avançada inteligente (Meta 4): a página é carregada por `id` (=paginas.id)
-	//       em ambos os módulos. Quando a página pertence a um publicador, abre publisher-pages
-	//       e precisa TAMBÉM do `publisher_id` (o id da publicação vinculada, distinto do id da
-	//       página) para fixar o contexto do publicador (publisher_pages_publisher lê
-	//       $_REQUEST['publisher_id']). Caso contrário, abre admin-paginas.
+	// ===== Edição avançada (req-097 item 5): DOIS destinos independentes, em vez de um link que
+	//       mudava de módulo conforme a origem da página.
+	//       - "Editar Avançado" → SEMPRE `admin-paginas` (a página crua, disponível para qualquer página);
+	//       - "Editar Publicação Avançado" → `publisher-pages`, exibido SÓ quando a página vem de uma
+	//         publicação (precisa do `publisher_id`, o id da publicação vinculada, distinto do id da
+	//         página, lido por publisher_pages_publisher em $_REQUEST['publisher_id']).
+
+	$ehPublisher = ($page_id !== '' && $publisher_id !== '');
 
 	if($page_id !== ''){
-		if($publisher_id !== ''){
-			$advanced_edit_url = $_GESTOR['url-raiz'].'publisher-pages/editar/?id='.rawurlencode($page_id)
-				.'&publisher_id='.rawurlencode($publisher_id);
-		} else {
-			$advanced_edit_url = $_GESTOR['url-raiz'].'admin-paginas/editar/?id='.rawurlencode($page_id);
-		}
+		$advanced_edit_url = $_GESTOR['url-raiz'].'admin-paginas/editar/?id='.rawurlencode($page_id);
 	} else {
 		$advanced_edit_url = $_GESTOR['url-raiz'].'admin-paginas/';
 	}
 
+	$publisher_advanced_edit_url = $ehPublisher
+		? $_GESTOR['url-raiz'].'publisher-pages/editar/?id='.rawurlencode($page_id)
+			.'&publisher_id='.rawurlencode($publisher_id)
+		: $_GESTOR['url-raiz'].'publisher-pages/';
+
 	// modelo_var_troca_tudo: o mesmo URL alimenta o botão "Editar no Painel" (href) e o
 	// "Editar Página" (data-edit-url).
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#advanced_edit_url#',$advanced_edit_url);
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#publisher_advanced_edit_url#',$publisher_advanced_edit_url);
+
+	// O link da publicação só existe no menu quando há publicação vinculada.
+	if($ehPublisher){
+		$_GESTOR['pagina'] = str_replace(
+			Array('<!-- dropdown-page-publisher < -->', '<!-- dropdown-page-publisher > -->'),
+			'',
+			$_GESTOR['pagina']
+		);
+	} else {
+		$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'], '<!-- dropdown-page-publisher < -->', '<!-- dropdown-page-publisher > -->');
+	}
 
 	// ===== Dropdown "Página" (BATCH-081 §3): título, "Criar Nova" e "Clonar" dinâmicos.
 	//       Publisher (tem publisher_id) → módulo publisher-pages; caso contrário admin-paginas.
 
-	$ehPublisher = ($page_id !== '' && $publisher_id !== '');
 	$moduloPaginas = $ehPublisher ? 'publisher-pages' : 'admin-paginas';
 
 	$new_page_url = $_GESTOR['url-raiz'].$moduloPaginas.'/adicionar/';

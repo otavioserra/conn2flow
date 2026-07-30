@@ -1187,6 +1187,7 @@ $(document).ready(function () {
                 ${codemirrorInitScript}
                 ${htmlEditorVars}
                 ${htmlEditorScriptPath}
+                ${montarPdfViewerHead(htmlDoUsuario)}
                 ${cssDoUsuario}
                 <!-- html-editor-injected-end -->
             `;
@@ -1219,6 +1220,7 @@ $(document).ready(function () {
 				${codemirrorIncludes}
 				${htmlEditorVars}
 				${htmlEditorScriptPath}
+				${montarPdfViewerHead(htmlDoUsuario)}
 				${cssDoUsuario}
 			</head>
 			<body>
@@ -1686,6 +1688,17 @@ $(document).ready(function () {
         }
     }
 
+    // req-096 (BATCH-096): quando o HTML editado usa o motor PDF.js (`<div class="conn2flow-pdfjs">`),
+    // o srcdoc do preview/editor visual precisa do inicializador do leitor — no site publicado esse
+    // include vem de `gestor_pagina_pdf_viewer()`, que não roda no iframe estático montado por JS.
+    // O próprio `pdf-viewer.js` carrega a lib do PDF.js sob demanda, então basta uma tag.
+    function montarPdfViewerHead(htmlDoUsuario) {
+        if (!htmlDoUsuario || htmlDoUsuario.indexOf('conn2flow-pdfjs') === -1) return '';
+        const raiz = (typeof gestor !== 'undefined' && gestor.raiz) ? gestor.raiz : '';
+        const versao = (typeof gestor !== 'undefined' && gestor.versao) ? gestor.versao : '';
+        return `<script src="${raiz}interface/pdf-viewer.js?v=${versao}"><\/script>\n`;
+    }
+
     function previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui', extraParams = {}) {
         // req-040: script que renderiza os widgets (comentários) dentro do pré-visualizador.
         const widgetPreviewScript = `<script>(${widgetPreviewBootstrap.toString()})();<\/script>`;
@@ -1785,6 +1798,8 @@ $(document).ready(function () {
             layoutIncludes += cssDoUsuario + '\n';
             // req-044 §3/§4: widgetsToAjax + scripts controladores dos widgets presentes.
             layoutIncludes += widgetAssetsHead;
+            // req-096: leitor PDF.js quando o conteúdo usa o motor B.
+            layoutIncludes += montarPdfViewerHead(htmlDoUsuario);
             if (fullHtml.includes('<!-- pagina#css -->')) {
                 fullHtml = fullHtml.replace('<!-- pagina#css -->', layoutIncludes + '<!-- pagina#css -->');
             } else if (fullHtml.match(/<\/head>/i)) {
@@ -1810,6 +1825,7 @@ $(document).ready(function () {
 				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>
 				${widgetPreviewScript}
 				${widgetAssetsHead}
+				${montarPdfViewerHead(htmlDoUsuario)}
 				${cssDoUsuario}
 			</head>
 			<body>

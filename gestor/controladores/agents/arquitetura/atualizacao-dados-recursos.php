@@ -1102,8 +1102,10 @@ function checksumRegistroDinamico(array $registro, array $fieldTypes): string {
  */
 function normalizarConfigTabela(array $meta): array {
     $nomeBloco = (isset($meta['nome']) && is_string($meta['nome'])) ? $meta['nome'] : null;
-    $configRaw = $meta['config'] ?? null;
-    if (!is_array($configRaw)) return [];
+    $configRaw = $meta['config'] ?? [[]];
+    if (!is_array($configRaw) || empty($configRaw)) {
+        $configRaw = [[]];
+    }
     // Objeto associativo único => array de 1 elemento. Array de objetos => mantém.
     $configs = array_is_list($configRaw) ? $configRaw : [$configRaw];
 
@@ -1198,8 +1200,11 @@ function coletarConfigsTabelas(): array {
             log_disco_local('SCHEMA_META_WARN ' . basename($globalFile) . ' invalido ou sem chave "tabelas"', $LOG_FILE);
             continue;
         }
-        foreach ($g['tabelas'] as $meta) {
+        foreach ($g['tabelas'] as $tabKey => $meta) {
             if (!is_array($meta)) continue;
+            if (is_string($tabKey) && !is_numeric($tabKey) && empty($meta['nome'])) {
+                $meta['nome'] = $tabKey;
+            }
             foreach (normalizarConfigTabela($meta) as $norm) {
                 $scope = ($norm['scope_override'] === 'module' && !empty($norm['modulo_override'])) ? 'module' : 'global';
                 $modulo = $scope === 'module' ? $norm['modulo_override'] : null;
@@ -1232,7 +1237,9 @@ function coletarConfigsTabelas(): array {
             $data = jsonRead($jsonFile);
             if (!is_array($data)) continue;
             $tabela = $data['tabela'] ?? null;
-            if (!is_array($tabela) || empty($tabela['config'])) continue;
+            if (!is_array($tabela)) continue;
+            $temConfig = !empty($tabela['config']) || !empty($tabela['deletar']) || !empty($tabela['forcar_atualizacao']) || !empty($tabela['sync_resources']);
+            if (!$temConfig) continue;
             foreach (normalizarConfigTabela($tabela) as $norm) {
                 $scope = ($norm['scope_override'] === 'global') ? 'global' : 'module';
                 $modulo = ($scope === 'module' && !empty($norm['modulo_override'])) ? $norm['modulo_override'] : ($scope === 'module' ? $modId : null);

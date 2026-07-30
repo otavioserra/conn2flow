@@ -24,7 +24,12 @@
   * [req-093.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-093.md) (BATCH-093 `complete`, 2026-07-20): Renderização de Variáveis/Widgets no Editor HTML Clássico e Preview (igual à Editbar).
   * [req-094.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-094.md) (BATCH-094 `complete`, 2026-07-21): Tradução Completa dos Templates de Páginas do Módulo "publisher-index" para o Inglês.
   * [req-095.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-095.md) (BATCH-095 `complete`, 2026-07-21): Tradução Completa da Editbar, Painéis e Overlays do Editor Visual para o Inglês.
+  * [req-096.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-096.md) (BATCH-096 `complete`, 2026-07-29): Mapeamento Visual de Embeds, Proteção de Eventos, Suporte Híbrido a PDF (PDF.js, Google Viewer, Object Fallback) e Modal Estruturado.
+  * [req-097.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-097.md) (BATCH-097 `complete`, 2026-07-30): Opções Separadas de Edição Avançada na Toolbar, Inserção de Embeds no Painel "+" e Correções do Leitor/Modal de Embed.
+  * (BATCH-098 `complete`, 2026-07-30): Área de Transferência Persistente do Editor Visual (copiar numa página, colar em outra).
+  * (BATCH-099 `complete`, 2026-07-30): Upload e Gestão de Pastas Liberados no Modo Picker do Admin-Arquivos.
+  * (BATCH-100 `complete`, 2026-07-30): Mídia Embutida: 403 em Arquivos com Espaço, Streaming (HTTP Range) e Dimensionamento do Áudio.
 
-- **Status**: BATCH-095 concluído e validado (Vitest 31/31 OK, PHPUnit 110/110 OK).
+- **Status**: BATCH-096 a BATCH-100 concluídos e validados (Vitest 66/66 OK, PHPUnit 165/165 OK).
 
 - **Pendências**: Nenhuma.

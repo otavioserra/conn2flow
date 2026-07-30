@@ -482,10 +482,12 @@ function admin_arquivos_listar_arquivos(){
 
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#paginaIframe#",($_GESTOR['paginaIframe'] ? '?paginaIframe=sim' : ''));
 
-	// ===== No modo picker (iframe) ocultar as ferramentas de gestão de pastas/upload
-	if ($_GESTOR['paginaIframe']) {
-		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- normal-tools < -->','<!-- normal-tools > -->','');
-	}
+	// BATCH-099: as ferramentas de gestão (Adicionar / Nova pasta / Selecionar todos) também ficam
+	// disponíveis no modo picker (iframe). O gerenciador é o MESMO em todos os pontos de seleção de
+	// arquivo (imagem, PDF, vídeo…), então quem escolhe um arquivo precisa poder enviá-lo na hora, sem
+	// abrir o módulo em outra aba. O restante do fluxo já era preparado para isso: o href do botão
+	// "Adicionar" recebe `?paginaIframe=sim` (aqui e em `atualizarAddHref()` no JS) e a tela de upload
+	// volta para a listagem em modo picker.
 
 	// ===== Filtro por categorias e ordenação (selects Fomantic server-side)
 	interface_formulario_campos(Array(
@@ -555,8 +557,10 @@ function admin_arquivos_upload(){
 	gestor_pagina_javascript_incluir();
 
 	// ===== Trocar o botão voltar / URL conforme picker
+	// BATCH-099: o botão voltar é MANTIDO no picker — com o upload liberado dentro do iframe, ele é o
+	// caminho de retorno à listagem (sem ele o usuário ficava preso na tela de envio). O destino já
+	// preserva o modo picker (`?paginaIframe=sim`).
 	if ($_GESTOR['paginaIframe']) {
-		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'],'<!-- botao-voltar < -->','<!-- botao-voltar > -->','');
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#url#",$_GESTOR['url-full'] . 'admin-arquivos/?paginaIframe=sim');
 	} else {
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#url#",$_GESTOR['url-full'] . 'admin-arquivos/');

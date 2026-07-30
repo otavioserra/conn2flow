@@ -551,6 +551,26 @@ function gestor_pagina_widgets(){
 	}
 }
 
+/**
+ * req-096 (BATCH-096): inclui os assets do motor PDF.js somente quando a página final contém o
+ * contêiner `.conn2flow-pdfjs` (gerado pelo Editor HTML). Deve rodar DEPOIS de gestor_pagina_widgets()
+ * — o contêiner pode vir do HTML de um widget — e ANTES de gestor_pagina_extra_head_e_javascript(),
+ * que serializa as inclusões na página.
+ */
+function gestor_pagina_pdf_viewer(){
+	global $_GESTOR;
+
+	if(!isset($_GESTOR['pagina'])) return;
+	if(!function_exists('gestor_pdf_viewer_detectar')) return;
+	if(!gestor_pdf_viewer_detectar($_GESTOR['pagina'])) return;
+
+	$assets = gestor_pdf_viewer_assets($_GESTOR['url-raiz'],$_GESTOR['versao']);
+
+	foreach($assets as $asset){
+		gestor_pagina_javascript_incluir($asset);
+	}
+}
+
 function gestor_pagina_widgets_ajax(){
 	global $_GESTOR;
 
@@ -613,6 +633,9 @@ function gestor_pagina_variaveis(){
 	$usuario = gestor_usuario();
 	
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'usuario#nome'.$close,$usuario['nome']);
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'usuario#slug'.$close,$usuario['id']);
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'usuario#perfil-nome'.$close,$usuario['perfil_nome']);
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'usuario#perfil-slug'.$close,$usuario['perfil_slug']);
 	
 	if(isset($_GESTOR['modulo-id'])) $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#modulo-id'.$close,$_GESTOR['modulo-id']);
 	if(isset($_GESTOR['modulo-registro-id'])) $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#registro-id'.$close,$_GESTOR['modulo-registro-id']);
@@ -1631,8 +1654,21 @@ function gestor_usuario(){
 				"usuarios",
 				"WHERE id_usuarios='".$_GESTOR['usuario-id']."'"
 			);
+
+			$usuarios_perfis = banco_select_name
+			(
+				banco_campos_virgulas(Array(
+					'nome',
+					'id',
+				))
+				,
+				"usuarios_perfis",
+				"WHERE id_usuarios_perfis='".$usuarios[0]['id_usuarios_perfis']."'"
+			);
 			
 			$_GESTOR['usuario'] = $usuarios[0];
+			$_GESTOR['usuario']['perfil_nome'] = $usuarios_perfis[0]['nome'];
+			$_GESTOR['usuario']['perfil_slug'] = $usuarios_perfis[0]['id'];
 		}
 		
 		return $_GESTOR['usuario'];
@@ -1646,6 +1682,8 @@ function gestor_usuario(){
 			'gestor_perfil' => '',
 			'usuario' => '_anonimo',
 			'nome' => 'Anônimo',
+			'perfil_nome' => 'Anônimo',
+			'perfil_slug' => 'anonimo',
 		);
 	}
 }
@@ -2385,6 +2423,10 @@ function gestor_roteador(){
 			//       Antes de gestor_pagina_extra_head_e_javascript() para o JS auxiliar ser incluído.
 
 			gestor_dashboard_toolbar(Array('caminho' => $caminho));
+
+			// ===== Motor de exibição PDF.js (req-096): assets incluídos só se a página usa o leitor.
+
+			gestor_pagina_pdf_viewer();
 
 			// ===== Inclusão de bibliotecas globais de uma página
 
