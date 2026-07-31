@@ -20,7 +20,21 @@ tmp/
 # Arquivos de configuração local
 .env.local
 config.local.php
-.claude/
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/c2f-database-testing/
+!.claude/skills/c2f-database-testing/**
+!.claude/skills/c2f-gd-image-safety/
+!.claude/skills/c2f-gd-image-safety/**
+!.claude/skills/c2f-json-resources-sync/
+!.claude/skills/c2f-json-resources-sync/**
+!.claude/skills/c2f-mysql-utf8-emoji-encoding/
+!.claude/skills/c2f-mysql-utf8-emoji-encoding/**
+!.claude/skills/c2f-widget-development/
+!.claude/skills/c2f-widget-development/**
+!.claude/skills/sdd-memory-gardening/
+!.claude/skills/sdd-memory-gardening/**
 
 # Dependências
 node_modules/

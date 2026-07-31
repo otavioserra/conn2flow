@@ -1,0 +1,9 @@
+# Dependências, builds e dados locais volumosos
+node_modules/
+vendor/
+dist/
+build/
+temp/
+tmp/
+logs/
+*.log

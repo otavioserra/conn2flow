@@ -1,0 +1,9 @@
+# Compatibilidade com Gemini Code Assist / Antigravity
+node_modules/
+vendor/
+dist/
+build/
+temp/
+tmp/
+logs/
+*.log

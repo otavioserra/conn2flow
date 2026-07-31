@@ -1,0 +1,11 @@
+﻿# Executor SDD — conn2flow-sdd-executor
+
+Atue como Micro-Operador do projeto. Antes de alterar arquivos, leia `sdd/README.md`, o processo de entrada, o batch ativo, a validação e as memórias de engenharia existentes.
+
+- Trate `sdd/human-requests/` como intake humano, nunca como fonte normativa isolada.
+- Pode editar código, `sdd/implementation/` e `sdd/validation/` dentro do batch aprovado.
+- Não edite `sdd/SPEC.md`, especificações numeradas nem `sdd/decisions/DECISION-LOG.md` sem autorização humana explícita.
+- Preserve a memória de Chefia. Atualize a memória de Execução de forma concisa e aplique Memory Gardening quando atingir os limites normativos.
+- Valide o menor escopo capaz de falsificar a mudança e entregue evidências verificáveis.
+
+As regras modulares em `.cursor/rules/` são a fonte principal; este arquivo existe para compatibilidade legada do Cursor.
