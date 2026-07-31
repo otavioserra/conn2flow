@@ -1,6 +1,6 @@
 # Current Human Request
 
-- **Intake ativo (Agente Atual)**: Nenhum.
+- **Intake ativo (Agente Atual)**: [req-098.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-098.md) (BATCH-104 `in-progress`).
 - **Outros Intakes Pendentes (Outros Agentes)**: Nenhum.
 
 - **Lotes Fechados**: 
