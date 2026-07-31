@@ -25,7 +25,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-paypal'] = Array(
-    'versao' => '3.0.0',
+    'versao' => '3.1.0',
     'modo-gateway' => false,
     'gateway-id' => null,
     'gateway-dados' => null,
@@ -663,6 +663,86 @@ function paypal_autenticar($params = false){
 }
 
 /**
+ * Gera o client token usado pelos Card Fields/Hosted Fields no navegador.
+ *
+ * @param array|false $params Parâmetros opcionais
+ * @param string $params['customer_id'] ID do cliente no vault do PayPal (opcional)
+ *
+ * @return string|false Client token ou false em erro
+ */
+function paypal_gerar_client_token($params = false){
+    $customer_id = null;
+
+    if($params !== false){
+        if(!is_array($params)){
+            return false;
+        }
+
+        if(array_key_exists('customer_id', $params)){
+            if(!is_string($params['customer_id']) || trim($params['customer_id']) === ''){
+                return false;
+            }
+
+            $customer_id = trim($params['customer_id']);
+        }
+    }
+
+    $token = paypal_autenticar();
+    if(!$token || empty($token['access_token'])){
+        return false;
+    }
+
+    $request = Array(
+        'endpoint' => '/v1/identity/generate-token',
+        'method' => 'POST',
+        'access_token' => $token['access_token']
+    );
+
+    if($customer_id !== null){
+        $request['data'] = Array('customer_id' => $customer_id);
+    }
+
+    $response = paypal_requisicao($request);
+
+    if(!$response || $response['http_code'] !== 200 || empty($response['data']['client_token']) || !is_string($response['data']['client_token'])){
+        if(function_exists('paypal_log_registro')){
+            paypal_log_registro(Array(
+                'tipo' => 'paypal-generate-client-token-error',
+                'mensagem' => 'Erro ao gerar client token no PayPal',
+                'detalhes' => $response
+            ));
+        }
+        return false;
+    }
+
+    return $response['data']['client_token'];
+}
+
+/**
+ * Valida a estrutura mínima de uma fonte de pagamento aceita neste fluxo.
+ *
+ * A validação é intencionalmente estrutural: regras de bandeira, vault e 3DS
+ * continuam sob responsabilidade da API do PayPal.
+ *
+ * @param mixed $payment_source Fonte de pagamento recebida pelo backend
+ *
+ * @return bool True para payment_source.card ou payment_source.token não vazios
+ */
+function paypal_validar_payment_source($payment_source){
+    if(!is_array($payment_source) || empty($payment_source)){
+        return false;
+    }
+
+    foreach(Array('card', 'token') as $tipo){
+        if(isset($payment_source[$tipo]) && is_array($payment_source[$tipo]) && !empty($payment_source[$tipo])){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
  * Cria um pedido (order) no PayPal.
  *
  * Cria um pedido de pagamento que pode ser aprovado pelo comprador.
@@ -678,6 +758,9 @@ function paypal_autenticar($params = false){
  * @param string $params['url_retorno'] URL de retorno após aprovação (opcional)
  * @param string $params['url_cancelamento'] URL de retorno após cancelamento (opcional)
  * @param string $params['referencia'] ID de referência customizado (opcional)
+ * @param string $params['intent'] Intenção CAPTURE ou AUTHORIZE (opcional, padrão: CAPTURE)
+ * @param array $params['payment_source'] Cartão ou token para pagamento direto (opcional)
+ * @param string $params['request_id'] Chave de idempotência PayPal-Request-Id (opcional)
  *
  * @return array|false Array com dados do pedido ou false em erro
  * @return string return['id'] ID do pedido criado
@@ -706,9 +789,19 @@ function paypal_criar_pedido($params = false){
         $moeda = isset($_CONFIG['paypal']['currency']) ? $_CONFIG['paypal']['currency'] : 'BRL';
     }
     
+    // Intent padrão
+    $intent_pedido = isset($intent) ? strtoupper((string)$intent) : 'CAPTURE';
+    if(!in_array($intent_pedido, Array('CAPTURE', 'AUTHORIZE'), true)){
+        return false;
+    }
+
+    if(isset($payment_source) && !paypal_validar_payment_source($payment_source)){
+        return false;
+    }
+
     // Construir estrutura do pedido
     $order_data = Array(
-        'intent' => 'CAPTURE',
+        'intent' => $intent_pedido,
         'purchase_units' => Array(
             Array(
                 'amount' => Array(
@@ -718,6 +811,10 @@ function paypal_criar_pedido($params = false){
             )
         )
     );
+
+    if(isset($payment_source)){
+        $order_data['payment_source'] = $payment_source;
+    }
     
     // Adicionar descrição
     if(isset($descricao)){
@@ -781,14 +878,23 @@ function paypal_criar_pedido($params = false){
     }
     
     // Fazer requisição
+    $request_headers = Array('Prefer: return=representation');
+    if(isset($payment_source)){
+        $idempotency_key = isset($request_id) && is_string($request_id) && trim($request_id) !== ''
+            ? trim($request_id)
+            : paypal_gerar_id('ORDER');
+        $request_headers[] = 'PayPal-Request-Id: ' . $idempotency_key;
+    }
+
     $response = paypal_requisicao(Array(
         'endpoint' => '/v2/checkout/orders',
         'method' => 'POST',
         'access_token' => $token['access_token'],
-        'data' => $order_data
+        'data' => $order_data,
+        'headers' => $request_headers
     ));
     
-    if(!$response || $response['http_code'] !== 201){
+    if(!$response || !in_array($response['http_code'], Array(200, 201), true)){
         if(function_exists('paypal_log_registro')){
             paypal_log_registro(Array(
                 'tipo' => 'paypal-create-order-error',
@@ -896,6 +1002,113 @@ function paypal_capturar_pedido($params = false){
         'status' => $capture_status,
         'order_id' => $order_id,
         'capture_data' => $capture
+    );
+}
+
+/**
+ * Processa um pagamento transparente recebido do frontend.
+ *
+ * Há dois contratos suportados:
+ * - Card Fields: o SDK aprova uma ordem e o frontend envia `order_id` para captura.
+ * - Token/vault: o frontend envia `payment_source` e o backend cria a ordem ou assinatura.
+ *
+ * @param array|false $params Parâmetros do fluxo
+ * @param string $params['tipo'] pedido ou assinatura (opcional, inferido por plan_id)
+ * @param array $params['payment_source'] payment_source.card ou payment_source.token
+ * @param string $params['order_id'] Ordem aprovada pelo Card Fields para captura (opcional)
+ * @param bool $params['capturar'] Capturar ordem APPROVED automaticamente (padrão: true)
+ *
+ * @return array|false Resultado normalizado ou false para payload inválido/erro da API
+ */
+function paypal_processar_pagamento_transparente($params = false){
+    if(!is_array($params)){
+        return false;
+    }
+
+    $tipo = isset($params['tipo']) ? strtolower(trim((string)$params['tipo'])) : '';
+    if($tipo === ''){
+        $tipo = isset($params['plan_id']) ? 'assinatura' : 'pedido';
+    }
+
+    if(in_array($tipo, Array('subscription', 'subscriptions'), true)){
+        $tipo = 'assinatura';
+    } elseif(in_array($tipo, Array('order', 'orders', 'pagamento'), true)){
+        $tipo = 'pedido';
+    }
+
+    if(!in_array($tipo, Array('pedido', 'assinatura'), true)){
+        return false;
+    }
+
+    // No fluxo Card Fields o dado PCI permanece no iframe; o backend recebe apenas a ordem aprovada.
+    if($tipo === 'pedido' && isset($params['order_id'])){
+        if(!is_string($params['order_id']) || trim($params['order_id']) === ''){
+            return false;
+        }
+
+        $captura = paypal_capturar_pedido(Array('order_id' => trim($params['order_id'])));
+        if(!$captura){
+            return false;
+        }
+
+        return Array(
+            'tipo' => 'pedido',
+            'acao' => 'captura',
+            'status' => $captura['status'] ?? null,
+            'pedido' => null,
+            'captura' => $captura
+        );
+    }
+
+    if(!isset($params['payment_source']) || !paypal_validar_payment_source($params['payment_source'])){
+        return false;
+    }
+
+    if($tipo === 'assinatura'){
+        if(empty($params['plan_id']) || !is_string($params['plan_id'])){
+            return false;
+        }
+
+        $assinatura = paypal_criar_assinatura($params);
+        if(!$assinatura){
+            return false;
+        }
+
+        return Array(
+            'tipo' => 'assinatura',
+            'acao' => 'criacao',
+            'status' => $assinatura['status'] ?? null,
+            'assinatura' => $assinatura
+        );
+    }
+
+    if(!isset($params['valor']) || !is_numeric($params['valor']) || (float)$params['valor'] <= 0){
+        return false;
+    }
+
+    $pedido = paypal_criar_pedido($params);
+    if(!$pedido){
+        return false;
+    }
+
+    $captura = null;
+    $capturar = !array_key_exists('capturar', $params) || $params['capturar'] === true;
+    $intent = isset($params['intent']) ? strtoupper((string)$params['intent']) : 'CAPTURE';
+
+    // Pagamentos one-step podem voltar COMPLETED. Apenas APPROVED ainda precisa de captura.
+    if($capturar && $intent === 'CAPTURE' && strtoupper((string)($pedido['status'] ?? '')) === 'APPROVED'){
+        $captura = paypal_capturar_pedido(Array('order_id' => $pedido['id']));
+        if(!$captura){
+            return false;
+        }
+    }
+
+    return Array(
+        'tipo' => 'pedido',
+        'acao' => $captura ? 'captura' : 'criacao',
+        'status' => $captura['status'] ?? ($pedido['status'] ?? null),
+        'pedido' => $pedido,
+        'captura' => $captura
     );
 }
 
@@ -1930,6 +2143,7 @@ function paypal_atualizar_precos_plano($params = false){
  * @param array $params['application_context'] Contexto da aplicação (opcional)
  * @param string $params['url_retorno'] URL de retorno após aprovação (opcional)
  * @param string $params['url_cancelamento'] URL de retorno após cancelamento (opcional)
+ * @param array $params['payment_source'] Cartão ou token de pagamento (opcional)
  *
  * @return array|false Array com dados da assinatura ou false em erro
  */
@@ -1980,6 +2194,18 @@ function paypal_criar_assinatura($params = false){
         if(!empty($subscriber)){
             $subscription_data['subscriber'] = $subscriber;
         }
+    }
+
+    if(isset($payment_source)){
+        if(!paypal_validar_payment_source($payment_source)){
+            return false;
+        }
+
+        // A Subscriptions API recebe a fonte dentro de subscriber.payment_source.
+        if(!isset($subscription_data['subscriber'])){
+            $subscription_data['subscriber'] = Array();
+        }
+        $subscription_data['subscriber']['payment_source'] = $payment_source;
     }
     
     // Contexto da aplicação
@@ -4255,10 +4481,11 @@ function paypal_formatar_data($data, $incluir_hora = true){
  */
 function paypal_info(){
     return Array(
-        'versao' => '3.0.0',
+        'versao' => '3.1.0',
         'autor' => 'Conn2Flow',
         'licenca' => 'MIT',
         'apis' => Array(
+            'Identity API v1' => 'Client tokens para Card Fields',
             'Orders API v2' => 'Pedidos e checkout',
             'Payments API v2' => 'Captura e reembolsos',
             'Catalog Products API v1' => 'Produtos do catálogo',
@@ -4276,10 +4503,12 @@ function paypal_info(){
             'paypal_obter_credenciais',
             'paypal_requisicao',
             'paypal_autenticar',
+            'paypal_gerar_client_token',
             // Orders
             'paypal_criar_pedido',
             'paypal_capturar_pedido',
             'paypal_consultar_pedido',
+            'paypal_processar_pagamento_transparente',
             // Payments
             'paypal_reembolsar',
             'paypal_consultar_reembolso',
@@ -4347,6 +4576,7 @@ function paypal_info(){
             'paypal_gerar_id',
             'paypal_validar_email',
             'paypal_formatar_data',
+            'paypal_validar_payment_source',
             'paypal_info',
             // Gateway
             'paypal_gateways_pagamentos_configurar',

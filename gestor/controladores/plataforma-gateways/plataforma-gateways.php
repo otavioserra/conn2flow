@@ -338,8 +338,109 @@ function plataforma_gateways_500($message = 'Internal Server Error') {
 // =========================== PAYPAL - HANDLERS ===========================
 
 /**
+ * Processa webhook do Stripe.
+ *
+ * Modos de operação (espelho do PayPal):
+ * - Modular (URL: /_gateways/{module_id}/stripe/webhook): delega validação e processamento
+ *   ao hook do módulo, que configura o gateway correto (webhook_secret) antes de validar.
+ * - Legacy (URL: /_gateways/stripe/webhook): valida com o gateway padrão tipo stripe e
+ *   dispara os hooks de todos os módulos.
+ *
+ * O Stripe assina com HMAC no header `Stripe-Signature` — não há validação por IP.
+ */
+function plataforma_gateways_stripe_webhook() {
+    global $_GESTOR;
+
+    $modulo_id = $_GESTOR['plataforma-gateways-modulo'] ?? null;
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        plataforma_gateways_log(Array('gateway' => 'stripe', 'endpoint' => 'webhook', 'status' => 'error', 'message' => 'Método não permitido: ' . $_SERVER['REQUEST_METHOD']));
+        plataforma_gateways_resposta_erro(405, 'Method Not Allowed');
+    }
+
+    if (!plataforma_gateways_validar_content_type(Array('application/json'))) {
+        plataforma_gateways_log(Array('gateway' => 'stripe', 'endpoint' => 'webhook', 'status' => 'error', 'message' => 'Content-Type inválido'));
+        plataforma_gateways_400('Invalid Content-Type');
+    }
+
+    $payload = file_get_contents('php://input');
+    if (empty($payload)) {
+        plataforma_gateways_log(Array('gateway' => 'stripe', 'endpoint' => 'webhook', 'status' => 'error', 'message' => 'Payload vazio'));
+        plataforma_gateways_400('Empty payload');
+    }
+
+    $data = json_decode($payload, true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        plataforma_gateways_log(Array('gateway' => 'stripe', 'endpoint' => 'webhook', 'status' => 'error', 'message' => 'JSON inválido: ' . json_last_error_msg()));
+        plataforma_gateways_400('Invalid JSON');
+    }
+
+    $headers = getallheaders();
+    $signature = '';
+    foreach ($headers as $hName => $hValue) {
+        if (strtolower($hName) === 'stripe-signature') { $signature = $hValue; break; }
+    }
+
+    // ===== MODO MODULAR: o módulo valida com o webhook_secret do gateway dele.
+    if (!empty($modulo_id)) {
+        plataforma_gateways_log(Array(
+            'gateway' => 'stripe', 'endpoint' => 'webhook', 'status' => 'info',
+            'message' => 'Webhook modular recebido — módulo: ' . $modulo_id,
+            'data' => Array('event_type' => $data['type'] ?? 'unknown', 'module' => $modulo_id),
+        ));
+
+        plataforma_gateways_disparar_hook('stripe', 'webhook', Array(
+            'event_type'       => $data['type'] ?? 'unknown',
+            'resource'         => $data['data']['object'] ?? null,
+            'event_data'       => $data,
+            'needs_validation' => true,
+            'signature_header' => $signature,
+            'raw_body'         => $payload,
+        ), $modulo_id);
+
+        plataforma_gateways_resposta_sucesso(Array(
+            'event_id' => $data['id'] ?? null,
+            'processed' => true,
+            'module' => $modulo_id,
+        ));
+    }
+
+    // ===== MODO LEGACY: valida com o gateway padrão tipo stripe.
+    gestor_incluir_biblioteca('stripe');
+    gestor_incluir_biblioteca('banco');
+
+    $configOk = stripe_gateways_pagamentos_configurar();
+    $evento = $configOk ? stripe_validar_webhook(Array('payload' => $payload, 'signature_header' => $signature)) : false;
+
+    if (!$evento) {
+        plataforma_gateways_log(Array(
+            'gateway' => 'stripe', 'endpoint' => 'webhook', 'status' => 'error',
+            'message' => 'Assinatura do webhook inválida ou gateway não configurado',
+            'data' => Array('event_type' => $data['type'] ?? 'unknown'),
+        ));
+        plataforma_gateways_401('Invalid webhook signature');
+    }
+
+    plataforma_gateways_log(Array(
+        'gateway' => 'stripe', 'endpoint' => 'webhook', 'status' => 'success',
+        'message' => 'Webhook validado', 'data' => Array('event_type' => $evento['type'] ?? 'unknown'),
+    ));
+
+    plataforma_gateways_disparar_hook('stripe', 'webhook', Array(
+        'event_type' => $evento['type'] ?? 'unknown',
+        'resource'   => $evento['data']['object'] ?? null,
+        'event_data' => $evento,
+    ));
+
+    plataforma_gateways_resposta_sucesso(Array(
+        'event_id' => $evento['id'] ?? null,
+        'processed' => true,
+    ));
+}
+
+/**
  * Processa webhook do PayPal
- * 
+ *
  * Modos de operação:
  * - Modular (URL: /_gateways/{module_id}/paypal/webhook):
  *   Delega validação e processamento ao hook do módulo, que configura
@@ -989,8 +1090,20 @@ function plataforma_gateways_start() {
             break;
             
         case 'stripe':
-            // TODO: Implementar handlers do Stripe
-            plataforma_gateways_404('Stripe gateway not implemented yet');
+            switch ($endpoint) {
+                case 'webhook':
+                    plataforma_gateways_stripe_webhook();
+                    break;
+
+                default:
+                    plataforma_gateways_log(Array(
+                        'gateway' => 'stripe',
+                        'endpoint' => $endpoint,
+                        'status' => 'error',
+                        'message' => 'Endpoint não encontrado',
+                    ));
+                    plataforma_gateways_404('Stripe endpoint not found');
+            }
             break;
             
         case 'pagbank':

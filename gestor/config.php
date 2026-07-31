@@ -291,6 +291,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'configuracao' => Array('configuracao.php'),
 	'host' => Array('host.php'),
 	'paypal' => Array('paypal.php'),
+	'stripe' => Array('stripe.php'),
 	'variaveis' => Array('variaveis.php'),
 	'log' => Array('log.php'),
 	'autenticacao' => Array('autenticacao.php'),

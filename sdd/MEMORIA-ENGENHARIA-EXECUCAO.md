@@ -14,6 +14,13 @@
 
 ## Tarefas recentes
 
+### 2026-07-31 — Rodada de análise de segurança/sistêmica (backlog)
+
+- Auditoria do core (`gestor`) e do instalador (`gestor-instalador`) gerou 10 itens em `sdd/backlog/` (BL-001..BL-010), **sem tocar código** — aguardam promoção humana.
+- Achados de maior severidade: instalador baixa o release com `SSL_VERIFYPEER=false` e sem checksum (o updater do core já verifica SHA256 — usar de referência); IDs de sessão/token via `md5(uniqid(rand()))` enquanto o CSRF já usa `random_bytes`; CSRF é código morto (definido em `seguranca.php`, nunca validado).
+- Padrão a lembrar: acesso a dados de runtime é por concatenação de `WHERE` com `banco_escape_field` (fallback `addslashes` sem conexão); prepared statements só em `banco-v2`/migrations. Existem pares v1/v2 paralelos (banco, interface, admin-paginas) = débito de migração.
+- Nenhum cabeçalho de segurança HTTP no core (CSP/HSTS/X-Frame-Options ausentes).
+
 ### BATCH-103 — busca normalizada e paginação sem salto
 
 - Comparações textuais de UI devem usar lowercase + NFD sem marcas combinantes. Monte o range Unicode por código (`String.fromCharCode`) para não depender da normalização do arquivo-fonte.

@@ -182,3 +182,17 @@ Extensão da biblioteca PayPal (PHP) e asset JS para Checkout Transparente e Tok
 2. **Suporte nativo a `payment_source` em Pedidos e Assinaturas**: atualização de `paypal_criar_pedido` e `paypal_criar_assinatura` para aceitar a estrutura `payment_source` (cartões tokenizados `payment_source.card` e tokens `payment_source.token`).
 3. **Helper de Processamento Transparente**: inclusão de `paypal_processar_pagamento_transparente($params)` para orquestrar a validação e cobrança/assinatura via backend de forma padronizada.
 4. **Asset JS de Frontend (`gestor/assets/paypal/paypal.js`)**: criação da biblioteca utilitária no frontend composta por: carregamento dinâmico do SDK oficial com parâmetros de `components`, `vault` e `data-client-token`; renderização e estilização dos Hosted/Card Fields com feedback de validação em tempo real; e método `paypalCardFieldsSubmit` para tokenização síncrona/assíncrona no submit do formulário.
+
+### Adendo DEC-100 — alinhamento com os contratos oficiais durante a implementação
+
+5. **`data-client-token` é atributo, não query string**: o loader mantém `client-id`, `components`, `intent`, `vault` e demais opções públicas na URL, mas grava o client token em `data-client-token` na tag `<script>`, como exige o SDK. Colocar o segredo na URL aumentaria sua exposição em histórico, telemetria e logs de proxy.
+
+6. **Card Fields aprova ordem; não se inventa nonce**: no SDK atual, `CardFields.submit()` dispara o fluxo ligado a `createOrder`/`onApprove`. O retorno normalizado de `paypalCardFieldsSubmit` contém `order_id` e somente inclui `payment_source` quando o SDK ou um callback da integração realmente o fornece. O helper PHP aceita `order_id` para captura; assim os dados PCI permanecem nos iframes PayPal. Payloads já tokenizados continuam aceitos via `payment_source.card`/`payment_source.token`.
+
+7. **Nesting correto em assinaturas**: Orders recebe `payment_source` no topo; Subscriptions recebe em `subscriber.payment_source`, conforme o schema da API v1. O parâmetro público da função continua sendo `$params['payment_source']`, sem exigir que o chamador conheça o nesting do endpoint.
+
+8. **Idempotência no pagamento direto**: pedidos com `payment_source` enviam `PayPal-Request-Id` (aceito por `$params['request_id']` ou gerado localmente) e tratam respostas 200/201. `intent` passou a aceitar `CAPTURE` e `AUTHORIZE`, preservando `CAPTURE` como padrão.
+
+9. **Compatibilidade de frontend**: Card Fields é a integração preferida; Hosted Fields legado é fallback explícito quando o SDK carregado não oferece `CardFields`. A API pública também fica exposta em `window.conn2flowPaypal` e nos três nomes globais solicitados.
+
+Validação: `php -l` e `node --check` OK; Vitest **90/90** (7 casos PayPal novos); PHPUnit **172/172** (7 casos PayPal novos, 4 testes preexistentes pulados). A homologação com credenciais Sandbox/Live permanece operacional, pois a suíte não deve chamar APIs financeiras externas. Nenhum `git commit`/`git push` executado.

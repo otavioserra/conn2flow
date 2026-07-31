@@ -182,11 +182,11 @@
     {
         "name": "Menu Principal Sistema",
         "id": "menu-principal-sistema",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "708d6c3eab26e3bd0473f87bac06d8ff",
+            "html": "e15315e6815e37a8048418596b87edd8",
             "css": "65f8cb8d07537f63b7a7441edd3be9a7",
-            "combined": "d7f4c60e63db95d1bb04157810bde076"
+            "combined": "957ad69162ec4bb16d13011040dd1706"
         }
     },
     {
@@ -352,11 +352,11 @@
     {
         "name": "HTML Editor Modelos",
         "id": "html-editor-modelos",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "7329ca296f2b44b2fddd2fed95829d2c",
+            "html": "365d847d1f7a9deaae12f81db3adcc93",
             "css": "dea9254a7fff284b390256e4fbc84984",
-            "combined": "0180779af5f3813c9053debe31714a9d"
+            "combined": "ffb9d053931bf690c9c7f43b5d496543"
         }
     },
     {
@@ -413,11 +413,11 @@
     {
         "name": "Módulo Distribuído App",
         "id": "modulo-distribuido-app",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "1e9a7cce634eb61b95fc434a4eb05317",
-            "css": "521fce07744cf01128af97277f0b58cf",
-            "combined": "4451accbf92bf2b30ec89742c6a8ffba"
+            "html": "a78b816685fff38fb0512835cc046082",
+            "css": "79e0cc197910a30e3b71a9360318aa06",
+            "combined": "e7c0ea588105ebd32201323dfe4fe250"
         }
     }
 ]

@@ -356,3 +356,36 @@ Editbar — usado como base — não. A comparação foi então unificada.
 Evidência: `node --check` 3/3 OK; `npx vitest run` **83/83**, com o novo `tests/Unit/JS/dashboard.iframe-toolbar.test.js` **5/5** (regressão do acento, termo acentuado, caixa, cabeçalho de grupo vazio e limpeza do campo) e 2 casos novos em `html-editor-vars.test.js` (normalização e alternância dos ícones); `composer test` **165/165**. Cache-bust: `dashboard.json` `1.0.13`→`1.0.14`, `biblioteca-html-editor` `1.5.4`→`1.5.5`.
 
 Pendência runtime: conferir na Editbar que 'pa' lista as Páginas; na aba Modelos, o 'x' limpando a busca e o 'Carregar Mais' mantendo a posição da rolagem.
+
+---
+## BATCH-104 - Checkout Transparente e Tokenização PayPal (req-098, 2026-07-31)
+
+- [x] `paypal_gerar_client_token()` chama `POST /v1/identity/generate-token`, aceita `customer_id` string opcional, retorna apenas `client_token` e falha para payload/HTTP inválido.
+- [x] `paypal_criar_pedido()` preserva o fluxo anterior e acrescenta `payment_source`, `intent` CAPTURE/AUTHORIZE, `Prefer: return=representation` e `PayPal-Request-Id` em chamadas one-step.
+- [x] Respostas idempotentes 200 e criações 201 são aceitas em Orders.
+- [x] `paypal_criar_assinatura()` recebe `$params['payment_source']` e o encaminha no nesting oficial `subscriber.payment_source`.
+- [x] `paypal_processar_pagamento_transparente()` valida tipo, fonte e valor/plano antes da API e cobre captura por `order_id`, ordem por token/vault e assinatura.
+- [x] Versão PHP `3.1.0` e novas funções expostas por `paypal_info()`.
+- [x] Loader JS deduplica chamadas, monta query do SDK e mantém o client token somente em `data-client-token`.
+- [x] Card Fields renderiza número, validade, CVV e titular, com seletores customizáveis e fallback para Hosted Fields legado.
+- [x] Eventos do SDK aplicam classes de foco/válido/inválido, `aria-invalid` e mensagens customizáveis.
+- [x] Submit consulta `getState()`, bloqueia formulário inválido e normaliza `order_id`/`payment_source` sem converter dados mascarados em token fictício.
+- [x] APIs globais: `paypalCarregamentoSDK`, `paypalCardFieldsInit`, `paypalCardFieldsSubmit` e `conn2flowPaypal`.
+- [x] Cobertura JS nova 7/7: query/atributo seguro, deduplicação, renderização, validação, retorno de fonte, retorno de ordem e bloqueio de submit.
+- [x] Cobertura PHP nova 7/7: fonte card/token, rejeições, helper, nesting, idempotência e metadados.
+- [ ] Homologação runtime com credenciais Sandbox e conta elegível (não automatizada para evitar chamadas financeiras externas).
+
+### Evidência de Validação (BATCH-104)
+
+- `php -l gestor/bibliotecas/paypal.php` e no teste PHP: **OK**.
+- `node --check gestor/assets/paypal/paypal.js` e no teste JS: **OK**.
+- `git diff --check`: **OK**.
+- `npx vitest run`: **90/90** em 11 arquivos; `paypal.test.js` **7/7**.
+- `composer test`: **172/172**, 707 assertions e 4 testes preexistentes pulados; `PaypalTransparentCheckoutTest` **7/7**.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+### Pendências
+
+- Em Sandbox: conferir elegibilidade, estados visuais, captura, autorização e 3DS quando aplicável.
+- Assinatura transparente por cartão depende do produto, região e conta habilitados pelo PayPal; validar antes de Live.
+- Revisar CSP da aplicação hospedeira para os domínios exigidos pelo SDK/iframes PayPal.

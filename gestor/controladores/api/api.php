@@ -997,6 +997,12 @@ function api_route_request() {
 
     // Roteamento baseado no endpoint
     switch ($endpoint) {
+        case 'auth':
+            // Autenticação mobile (BATCH-008 conn2flow-app): login, logout, me, modules.
+            require_once $_GESTOR['ROOT_PATH'] . 'controladores/api/api-auth.php';
+            api_auth_handle(isset($_GESTOR['caminho'][2]) ? $_GESTOR['caminho'][2] : null);
+            break;
+
         case 'oauth':
             // Verificar sub-endpoint OAuth
             $sub_endpoint = isset($_GESTOR['caminho'][2]) ? $_GESTOR['caminho'][2] : null;
