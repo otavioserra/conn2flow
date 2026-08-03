@@ -367,9 +367,28 @@ function stripe_criar_assinatura($params = Array()){
     );
 }
 
+/**
+ * Consulta uma assinatura.
+ *
+ * `expand` é o que decide se campos como `latest_invoice` voltam como objeto ou apenas como id
+ * em string. Sem ele não há como ler o status do PaymentIntent da primeira fatura nem o valor
+ * cobrado — quem precisa desses dados deve pedir o expand explicitamente.
+ *
+ * @param array $params ['subscription_id' => obrig, 'expand' => array opcional]
+ * @return array|false
+ */
 function stripe_consultar_assinatura($params = Array()){
     if(empty($params['subscription_id'])) return false;
-    $resp = stripe_requisicao(Array('endpoint' => '/v1/subscriptions/' . rawurlencode($params['subscription_id'])));
+
+    $query = Array();
+    if(!empty($params['expand']) && is_array($params['expand'])){
+        $query['expand'] = array_values($params['expand']);
+    }
+
+    $resp = stripe_requisicao(Array(
+        'endpoint' => '/v1/subscriptions/' . rawurlencode($params['subscription_id']),
+        'data' => $query,
+    ));
     if(!$resp || $resp['http_code'] !== 200) return false;
     return $resp['data'];
 }
