@@ -25,6 +25,7 @@
     var configRequested = {}; // form_id -> true (config já solicitada)
     var pendingFetches = 0;   // requisições AJAX em voo
     var scriptsLoaded = false;
+    var configSolicitada = false; // houve ao menos uma busca real de config (contexto de preview)
 
     function carregarScript(src, callback) {
         var s = document.createElement('script');
@@ -48,7 +49,18 @@
 
     function solicitarConfig(formId) {
         if (configRequested[formId]) return;
+
+        // No site publicado o backend já injeta gestor.form[formId] (formulario_controlador), e a
+        // rota /forms/ é administrativa: pedir config ali devolveria 401 e, no complete, este script
+        // carregaria interface.js/formulario.js por cima da página pública — quebrando o formulário.
+        // Só o preview do Editor HTML chega aqui sem a config injetada.
+        if (gestor.form && gestor.form[formId]) {
+            configRequested[formId] = true;
+            return;
+        }
+
         configRequested[formId] = true;
+        configSolicitada = true;
         pendingFetches++;
 
         $.ajax({
@@ -110,8 +122,9 @@
             // Para de varrer quando a contagem estabiliza (2 ciclos) ou esgota as tentativas.
             if ((contagem > 0 && estavel >= 2) || tentativas >= maxTentativas) {
                 clearInterval(timer);
-                // Se nenhum fetch ficou pendente mas há formulários, garante o carregamento da lib.
-                if (contagem > 0 && pendingFetches <= 0) carregarBiblioteca();
+                // Garante o carregamento da lib apenas no preview (onde houve busca de config).
+                // No site publicado a biblioteca já veio do backend — recarregar duplicaria handlers.
+                if (contagem > 0 && pendingFetches <= 0 && configSolicitada) carregarBiblioteca();
             }
         }, 250);
     }

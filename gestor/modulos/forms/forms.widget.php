@@ -232,6 +232,9 @@ function forms_widget_render_field($template, $field) {
 		$html = forms_widget_inject_value_if_absent($html, $value);
 		$html = forms_widget_extract_input($html);
 	} elseif ($type === 'password') {
+		// Sem `autocomplete`, o Chrome alerta no console e pode sugerir a senha salva do site num
+		// campo de cadastro. `new-password` é o valor correto para criação/confirmação de senha.
+		$html = forms_widget_inject_tag_attrs($html, 'input', ' autocomplete="new-password"');
 		$html = forms_widget_wrap_password($html);
 	}
 
@@ -308,7 +311,14 @@ function forms_render($params) {
 		]);
 	}
 
-	// Script público do widget.
+	// Script controlador do widget. Ele acompanha o formulário em todos os contextos (preview do
+	// Editor HTML, widget embutido numa página qualquer e páginas de fluxo), porque o widget é a
+	// unidade que módulos consumidores podem interceptar.
+	//
+	// No site publicado a config já foi injetada acima por `formulario_controlador`; o próprio
+	// script detecta isso (guarda por `gestor.form[formId]`) e não busca config nem recarrega
+	// bibliotecas. Sem essa guarda, a página pública chamava a rota administrativa `/forms/` (401)
+	// e carregava `interface.js` por cima do layout público.
 	gestor_pagina_javascript_incluir(Array(
 		'tipo' => 'widget',
 		'modulo_id' => 'forms',

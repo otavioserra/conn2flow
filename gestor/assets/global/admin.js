@@ -1,5 +1,5 @@
 /**
- * Conn2Flow — JavaScript do painel administrativo (BATCH-103).
+ * Conn2Flow — JavaScript do painel administrativo (BATCH-103/BATCH-105).
  *
  * Filtro do menu principal do gestor (`@[[pagina#menu]]@` → componente `menu-principal-sistema`),
  * espelhando o comportamento do `c2f-modules-filter` da Editbar: ao digitar, só os itens que casam
@@ -18,6 +18,7 @@
  * o comportamento ficar uniforme com a Editbar; limpar o campo devolve o menu completo.
  *
  * API pública: `window.gestorMenuFiltro.aplicar(termo)` — idempotente e usada nos testes.
+ * BATCH-105: setas percorrem os resultados visiveis; ArrowUp no primeiro devolve o foco ao filtro.
  */
 (function () {
     'use strict';
@@ -83,13 +84,48 @@
 
         var menu = (campo.closest ? campo.closest(CONTAINER) : null) || document.querySelector(CONTAINER);
 
+        function itensVisiveis() {
+            var itens = menu ? menu.querySelectorAll('a.item') : [];
+            return Array.prototype.filter.call(itens, function (item) {
+                return item.style.display !== 'none';
+            });
+        }
+
         campo.addEventListener('input', function () { aplicar(campo.value, menu); });
-        // Esc limpa o filtro sem tirar o foco do campo.
+        // Esc limpa o filtro sem tirar o foco do campo; seta para baixo entra nos resultados.
         campo.addEventListener('keydown', function (e) {
-            if ((e.key || '') !== 'Escape') return;
-            campo.value = '';
-            aplicar('', menu);
+            var key = e.key || '';
+            if (key === 'Escape') {
+                campo.value = '';
+                aplicar('', menu);
+            } else if (key === 'ArrowDown') {
+                var itens = itensVisiveis();
+                if (!itens.length) return;
+                e.preventDefault();
+                itens[0].focus();
+            }
         });
+
+        // Nos links, as setas percorrem apenas resultados visiveis. O primeiro devolve o foco ao
+        // filtro com ArrowUp; Enter continua sendo o comportamento nativo do proprio link.
+        if (menu) {
+            menu.addEventListener('keydown', function (e) {
+                var key = e.key || '';
+                if (key !== 'ArrowDown' && key !== 'ArrowUp') return;
+
+                var itens = itensVisiveis();
+                var index = itens.indexOf(e.target);
+                if (index === -1) return;
+
+                e.preventDefault();
+                if (key === 'ArrowDown' && index < itens.length - 1) {
+                    itens[index + 1].focus();
+                } else if (key === 'ArrowUp') {
+                    if (index > 0) itens[index - 1].focus();
+                    else campo.focus();
+                }
+            });
+        }
     }
 
     window.gestorMenuFiltro = { aplicar: aplicar, iniciar: iniciar };

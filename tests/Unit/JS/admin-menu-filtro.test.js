@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 /**
- * BATCH-103 — filtro do menu principal do painel administrativo (`gestor/assets/global/admin.js`),
+ * BATCH-103/BATCH-105 — filtro e navegacao por teclado do menu principal do painel,
  * espelhando o `c2f-modules-filter` da Editbar.
  *
  * Carrega o arquivo REAL (IIFE que expõe `window.gestorMenuFiltro`).
@@ -59,7 +59,11 @@ const visiveis = () => Array.from(document.querySelectorAll('.menuConteiner a.it
 const blocosVisiveis = () => Array.from(document.querySelectorAll('.menuConteiner .ui.list > .item'))
   .filter((b) => b.style.display !== 'none').length;
 
-describe('admin.js — filtro do menu principal (BATCH-103)', () => {
+function pressionar(elemento, key) {
+  elemento.dispatchEvent(new window.KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+}
+
+describe('admin.js — filtro do menu principal (BATCH-103/BATCH-105)', () => {
   let api;
 
   beforeEach(() => {
@@ -135,5 +139,38 @@ describe('admin.js — filtro do menu principal (BATCH-103)', () => {
     campo.value = 'usuarios';
     campo.dispatchEvent(new window.Event('input'));
     expect(visiveis()).toEqual(['Usuários']);
+  });
+
+  it('percorre os resultados visiveis e volta ao filtro a partir do primeiro', () => {
+    const campo = document.getElementById('gestor-menu-filtro');
+    campo.value = 'pag';
+    campo.dispatchEvent(new window.Event('input'));
+    const resultados = Array.from(document.querySelectorAll('.menuConteiner a.item'))
+      .filter((item) => item.style.display !== 'none');
+    campo.focus();
+
+    pressionar(campo, 'ArrowDown');
+    expect(document.activeElement).toBe(resultados[0]);
+    pressionar(resultados[0], 'ArrowDown');
+    expect(document.activeElement).toBe(resultados[1]);
+
+    // Nao ha ciclo: seta para baixo no ultimo mantem o ultimo resultado focado.
+    pressionar(resultados[1], 'ArrowDown');
+    expect(document.activeElement).toBe(resultados[1]);
+
+    pressionar(resultados[1], 'ArrowUp');
+    expect(document.activeElement).toBe(resultados[0]);
+    pressionar(resultados[0], 'ArrowUp');
+    expect(document.activeElement).toBe(campo);
+  });
+
+  it('nao tira o foco do filtro quando nao ha resultados', () => {
+    const campo = document.getElementById('gestor-menu-filtro');
+    campo.value = 'inexistente';
+    campo.dispatchEvent(new window.Event('input'));
+    campo.focus();
+
+    pressionar(campo, 'ArrowDown');
+    expect(document.activeElement).toBe(campo);
   });
 });

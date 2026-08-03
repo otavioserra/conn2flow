@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 /**
- * BATCH-103 (correção) — filtro de módulos da Editbar (`#c2f-modules-filter`).
+ * BATCH-103/BATCH-105 — filtro e navegacao por teclado dos modulos da Editbar.
  *
  * O filtro comparava texto cru: digitar 'pa' NÃO encontrava 'Páginas', porque o segundo caractere do
  * texto é acentuado. Agora a comparação ignora acentuação e caixa, igual ao filtro do menu do painel.
@@ -52,7 +52,11 @@ function digitar(valor) {
   campo.dispatchEvent(new window.Event('input'));
 }
 
-describe('dashboard.iframe-toolbar.js — filtro de módulos da Editbar', () => {
+function pressionar(elemento, key) {
+  elemento.dispatchEvent(new window.KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+}
+
+describe('dashboard.iframe-toolbar.js — filtro de modulos da Editbar (BATCH-103/BATCH-105)', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
     montarBarra();
@@ -92,5 +96,27 @@ describe('dashboard.iframe-toolbar.js — filtro de módulos da Editbar', () => 
     digitar('');
     expect(itensVisiveis().length).toBe(4);
     expect(gruposVisiveis().length).toBe(2);
+  });
+
+  it('percorre somente resultados visiveis e volta ao filtro a partir do primeiro', () => {
+    const campo = document.getElementById('c2f-modules-filter');
+    const links = Array.from(document.querySelectorAll('.c2f-menu-item a'));
+    digitar('pa');
+    campo.focus();
+
+    pressionar(campo, 'ArrowDown');
+    expect(document.activeElement).toBe(links[0]);
+
+    pressionar(links[0], 'ArrowDown');
+    expect(document.activeElement).toBe(links[1]);
+
+    // O proximo item do DOM esta filtrado; no ultimo resultado o foco permanece nele.
+    pressionar(links[1], 'ArrowDown');
+    expect(document.activeElement).toBe(links[1]);
+
+    pressionar(links[1], 'ArrowUp');
+    expect(document.activeElement).toBe(links[0]);
+    pressionar(links[0], 'ArrowUp');
+    expect(document.activeElement).toBe(campo);
   });
 });

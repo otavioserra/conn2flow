@@ -306,8 +306,12 @@ function stripe_consultar_payment_intent($params = Array()){
  * O retorno inclui o `client_secret` do PaymentIntent da primeira fatura (cobrança
  * imediata) ou do SetupIntent pendente (trial/valor zero), com o tipo correspondente.
  *
+ * Com `trial_period_days`, a assinatura nasce em `trialing` e o Stripe cobra o método salvo
+ * automaticamente no vencimento — nesse caso não há cobrança imediata e o `client_secret`
+ * devolvido é o de um SetupIntent (`secret_type = 'setup'`), que apenas autoriza o cartão.
+ *
  * @param array $params ['customer_id' => obrig, 'price_id' => obrig, 'referencia' => opc,
- *                       'metadata' => opc, 'idempotency_key' => opc]
+ *                       'metadata' => opc, 'idempotency_key' => opc, 'trial_period_days' => opc]
  * @return array|false ['id','status','client_secret','secret_type' => 'payment'|'setup','subscription_data'] ou false.
  */
 function stripe_criar_assinatura($params = Array()){
@@ -320,6 +324,15 @@ function stripe_criar_assinatura($params = Array()){
         'payment_settings' => Array('save_default_payment_method' => 'on_subscription'),
         'expand' => Array('latest_invoice.payment_intent', 'pending_setup_intent'),
     );
+
+    // Período de teste: o trial não vem do Price, precisa ser declarado aqui.
+    $trialDias = (int)($params['trial_period_days'] ?? 0);
+    if($trialDias > 0){
+        $dados['trial_period_days'] = $trialDias;
+        // Sem método de pagamento no vencimento, pausar preserva o vínculo e o histórico da
+        // assinatura (cancelar obrigaria o cliente a refazer o checkout do zero).
+        $dados['trial_settings'] = Array('end_behavior' => Array('missing_payment_method' => 'pause'));
+    }
     $metadata = Array();
     if(!empty($params['referencia'])) $metadata['referencia'] = $params['referencia'];
     if(!empty($params['metadata']) && is_array($params['metadata'])) $metadata = array_merge($metadata, $params['metadata']);
@@ -414,9 +427,29 @@ function stripe_suspender_assinatura($params = Array()){
     return ($resp && $resp['http_code'] === 200);
 }
 
-/** Reativa uma assinatura suspensa por pause_collection. Não ressuscita cancelada. */
+/**
+ * Reativa uma assinatura pausada. Não ressuscita cancelada.
+ *
+ * São dois mecanismos distintos de pausa: `pause_collection` (status segue `active`, cobrança
+ * suspensa — usado pela operação `suspend` do módulo) e o status `paused`, em que o Stripe coloca
+ * a assinatura quando o teste termina sem método de pagamento. O primeiro se desfaz limpando o
+ * campo; o segundo exige o endpoint dedicado `/resume`.
+ */
 function stripe_ativar_assinatura($params = Array()){
     if(empty($params['subscription_id'])) return false;
+
+    $assinatura = stripe_consultar_assinatura(Array('subscription_id' => $params['subscription_id']));
+    $status = is_array($assinatura) ? (string)($assinatura['status'] ?? '') : '';
+
+    if($status === 'paused'){
+        $resp = stripe_requisicao(Array(
+            'endpoint' => '/v1/subscriptions/' . rawurlencode($params['subscription_id']) . '/resume',
+            'method' => 'POST',
+            'data' => Array('billing_cycle_anchor' => 'now'),
+        ));
+        return ($resp && $resp['http_code'] === 200);
+    }
+
     $resp = stripe_requisicao(Array(
         'endpoint' => '/v1/subscriptions/' . rawurlencode($params['subscription_id']),
         'method' => 'POST',

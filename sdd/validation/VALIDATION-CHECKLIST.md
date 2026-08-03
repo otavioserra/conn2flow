@@ -389,3 +389,27 @@ Pendência runtime: conferir na Editbar que 'pa' lista as Páginas; na aba Model
 - Em Sandbox: conferir elegibilidade, estados visuais, captura, autorização e 3DS quando aplicável.
 - Assinatura transparente por cartão depende do produto, região e conta habilitados pelo PayPal; validar antes de Live.
 - Revisar CSP da aplicação hospedeira para os domínios exigidos pelo SDK/iframes PayPal.
+
+---
+## BATCH-105 - Navegacao por Teclado nos Filtros de Modulos (2026-08-03)
+
+- [x] `ArrowDown` no input foca o primeiro resultado visivel nos dois menus.
+- [x] `ArrowDown`/`ArrowUp` percorrem somente resultados visiveis.
+- [x] `ArrowUp` no primeiro resultado devolve o foco ao input correspondente.
+- [x] `ArrowDown` no ultimo resultado nao cria ciclo.
+- [x] Sem resultados, o foco permanece no input.
+- [x] Enter permanece sob o comportamento nativo do link focado.
+- [x] Escape do filtro do menu principal continua limpando o termo.
+- [x] Estrutura PHP e componentes por idioma permanecem compativeis e sem texto novo.
+- [ ] Homologacao manual na Editbar e no menu principal apos sincronizacao do core.
+
+### Evidencia de Validacao (BATCH-105)
+
+- `node --check gestor/modulos/dashboard/dashboard.iframe-toolbar.js`: **OK**.
+- `node --check gestor/assets/global/admin.js`: **OK**.
+- Parse de `gestor/modulos/dashboard/dashboard.json`: **OK**.
+- Testes focados (`dashboard.iframe-toolbar.test.js` + `admin-menu-filtro.test.js`): **16/16**.
+- Suite Vitest completa: **93/93** em 11 arquivos.
+- `git diff --check` no slice: **OK**.
+- Avisos de rede do Happy DOM em `html-editor-embed.test.js` sao preexistentes; nao alteram o
+  resultado aprovado da suite nem exercitam os arquivos deste batch.

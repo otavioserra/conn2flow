@@ -10,6 +10,14 @@
   var sdkPromise = null;
   var contexto = null; // { stripe, elements, clientSecret, secretType }
 
+  function objectAssign(target) {
+    for (var i = 1; i < arguments.length; i += 1) {
+      var source = arguments[i] || {};
+      Object.keys(source).forEach(function (key) { target[key] = source[key]; });
+    }
+    return target;
+  }
+
   function requireDocument() {
     if (!global.document || !global.document.createElement) {
       throw new Error('O carregamento do SDK do Stripe exige um documento HTML.');
@@ -81,7 +89,22 @@
         appearance: options.appearance || { theme: 'night' }
       });
 
-      var paymentElement = elements.create('payment', options.paymentElementOptions || {});
+      // `defaultValues` pré-preenche nome/e-mail já coletados antes do pagamento. O endereço de
+      // cobrança fica em `fields.billingDetails: 'auto'` (padrão): o Stripe pede apenas o que o
+      // método/país exige — para cartão no Brasil normalmente só o essencial. Para exigir endereço
+      // completo, passe `paymentElementOptions.fields.billingDetails.address: 'never'` e colete-o
+      // no seu formulário, ou use o Address Element.
+      var elementOptions = objectAssign({}, options.paymentElementOptions || {});
+      if (options.customerName || options.customerEmail) {
+        var billing = {};
+        if (options.customerName) billing.name = options.customerName;
+        if (options.customerEmail) billing.email = options.customerEmail;
+        elementOptions.defaultValues = objectAssign({}, elementOptions.defaultValues || {}, {
+          billingDetails: objectAssign({}, (elementOptions.defaultValues || {}).billingDetails || {}, billing)
+        });
+      }
+
+      var paymentElement = elements.create('payment', elementOptions);
       paymentElement.mount(options.container);
 
       contexto = {

@@ -2249,7 +2249,7 @@ function interface_formulario_validacao($params = false){
 								'prompt' => $prompt[2],
 							),
 							Array(
-								'type' => 'maxLength[100]',
+								'type' => 'maxLength[255]',
 								'prompt' => $prompt[3],
 							),
 						)
@@ -2279,7 +2279,7 @@ function interface_formulario_validacao($params = false){
 								'prompt' => $prompt[2],
 							),
 							Array(
-								'type' => 'maxLength[100]',
+								'type' => 'maxLength[255]',
 								'prompt' => $prompt[3],
 							),
 						)
@@ -2361,7 +2361,7 @@ function interface_formulario_validacao($params = false){
 								'prompt' => $prompt[2],
 							),
 							Array(
-								'type' => 'maxLength[100]',
+								'type' => 'maxLength[255]',
 								'prompt' => $prompt[3],
 							),
 							Array(
@@ -2467,7 +2467,7 @@ function interface_formulario_validacao($params = false){
 										'prompt' => $prompt[2],
 									),
 									Array(
-										'type' => 'maxLength[100]',
+										'type' => 'maxLength[255]',
 										'prompt' => $prompt[3],
 									),
 									Array(
@@ -2656,7 +2656,7 @@ function interface_validacao_campos_obrigatorios($params = false){
 			switch($campo['regra']){
 				case 'texto-obrigatorio':
 					$min = (isset($campo['min']) ? $campo['min'] : 3);
-					$max = (isset($campo['max']) ? $campo['max'] : 100);
+					$max = (isset($campo['max']) ? $campo['max'] : 255);
 					
 					$len = strlen($_REQUEST[$campo['campo']]);
 					

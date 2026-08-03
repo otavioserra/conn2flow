@@ -105,6 +105,7 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-098 | 2026-07-30 | accepted | Memória da última pasta no modo picker do `admin-arquivos` (demanda direta do... |
 | DEC-099 | 2026-07-30 | accepted | Filtro de módulos no menu principal do gestor (demanda direta do Engenheiro C... |
 | DEC-100 | 2026-07-31 | accepted | Extensão da biblioteca PayPal (PHP) e asset JS para Checkout Transparente e T... |
+| DEC-101 | 2026-08-03 | accepted | Navegacao por foco real nos resultados visiveis dos dois filtros de modulos (BATCH-105). |
 
 ---
 
@@ -196,3 +197,24 @@ Extensão da biblioteca PayPal (PHP) e asset JS para Checkout Transparente e Tok
 9. **Compatibilidade de frontend**: Card Fields é a integração preferida; Hosted Fields legado é fallback explícito quando o SDK carregado não oferece `CardFields`. A API pública também fica exposta em `window.conn2flowPaypal` e nos três nomes globais solicitados.
 
 Validação: `php -l` e `node --check` OK; Vitest **90/90** (7 casos PayPal novos); PHPUnit **172/172** (7 casos PayPal novos, 4 testes preexistentes pulados). A homologação com credenciais Sandbox/Live permanece operacional, pois a suíte não deve chamar APIs financeiras externas. Nenhum `git commit`/`git push` executado.
+
+## DEC-101 - 2026-08-03 - accepted
+
+Navegacao por teclado nos filtros de modulos da Editbar e do menu principal do gestor (demanda
+direta do Engenheiro Chefe / BATCH-105). Decisoes desta rodada:
+
+1. **Mover o foco real, sem manter um indice visual paralelo**: os resultados ja sao links. Focar o
+   link visivel produz navegacao acessivel, feedback de foco do navegador/framework e mantem Enter
+   como ativacao nativa, sem duplicar `click()` em JavaScript.
+2. **Recalcular a lista visivel a cada tecla**: a navegacao consulta `.c2f-menu-item`/`a.item` no
+   estado atual e ignora os elementos com `display:none`; assim nunca entra em resultado removido
+   pelo termo digitado e nao precisa sincronizar estado adicional com o listener de `input`.
+3. **Limites sem ciclo**: `ArrowDown` no ultimo resultado mantem o foco; `ArrowUp` no primeiro volta
+   ao input. O retorno explicito ao filtro atende a edicao imediata do termo e evita um salto
+   inesperado do ultimo para o primeiro.
+4. **Markup preservado**: `dashboard.php` e os componentes pt-br/en nao precisam de `tabindex`,
+   roles ou texto novo, pois os itens acionaveis ja sao anchors. O delta fica restrito aos dois
+   controladores JavaScript, aos testes e ao cache-bust do dashboard.
+
+Validacao: `node --check` nos dois assets e parse do JSON OK; testes focados **16/16**; Vitest
+completo **93/93**; `git diff --check` OK. Nenhum `git commit`/`git push` executado.

@@ -153,9 +153,19 @@
         // sistema hover-intent unificado (ver registerHoverDropdown), que resolve a corrida do
         // crescimento assíncrono do iframe.
 
-        // Filtro de módulos (item 5) + ocultação de cabeçalhos de grupos vazios (item 6).
+        // Filtro de modulos + navegacao por teclado (BATCH-103/BATCH-105).
         var filterInput = document.getElementById('c2f-modules-filter');
         if (filterInput) {
+            function moduleLinksVisiveis() {
+                var items = menu ? menu.querySelectorAll('.c2f-menu-item') : [];
+                var links = [];
+                Array.prototype.forEach.call(items, function (it) {
+                    var link = it.querySelector('a');
+                    if (it.style.display !== 'none' && link) links.push(link);
+                });
+                return links;
+            }
+
             // Impede que clicar/digitar no campo dispare navegação/fechamento indevido.
             filterInput.addEventListener('click', function (e) { e.stopPropagation(); });
             filterInput.addEventListener('input', function () {
@@ -178,6 +188,35 @@
                 });
                 pushHeight(); // a altura do dropdown mudou → reajusta o iframe.
             });
+
+            // Navegacao por teclado entre os resultados visiveis. Como os resultados sao links,
+            // mover o foco real tambem preserva o Enter nativo para abrir o modulo.
+            if (dropdown) {
+                dropdown.addEventListener('keydown', function (e) {
+                    var key = e.key || '';
+                    if (key !== 'ArrowDown' && key !== 'ArrowUp') return;
+
+                    var links = moduleLinksVisiveis();
+                    if (e.target === filterInput) {
+                        if (key === 'ArrowDown' && links.length) {
+                            e.preventDefault();
+                            links[0].focus();
+                        }
+                        return;
+                    }
+
+                    var index = links.indexOf(e.target);
+                    if (index === -1) return;
+
+                    e.preventDefault();
+                    if (key === 'ArrowDown' && index < links.length - 1) {
+                        links[index + 1].focus();
+                    } else if (key === 'ArrowUp') {
+                        if (index > 0) links[index - 1].focus();
+                        else filterInput.focus();
+                    }
+                });
+            }
         }
 
         // ===== Hover-intent unificado dos dropdowns (menu de módulos + Página + Usuário).
