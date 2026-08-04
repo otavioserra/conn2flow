@@ -503,6 +503,192 @@ function stripe_reembolsar($params = Array()){
 }
 
 // ============================================================================
+// CATÁLOGO (Produtos e Preços)
+// ============================================================================
+
+/**
+ * Cria um produto no catálogo (`POST /v1/products`).
+ *
+ * @param array $params ['nome' => obrig, 'descricao' => opc, 'imagens' => array de URLs opc,
+ *                       'metadata' => array opc, 'ativo' => bool (padrão true), 'idempotency_key' => opc]
+ * @return array|false Produto criado (`prod_...`) ou false.
+ */
+function stripe_criar_produto($params = Array()){
+    $nome = trim((string)($params['nome'] ?? ''));
+    if($nome === '') return false;
+
+    $dados = Array('name' => $nome, 'active' => (isset($params['ativo']) && !$params['ativo']) ? 'false' : 'true');
+    if(!empty($params['descricao'])) $dados['description'] = $params['descricao'];
+    if(!empty($params['imagens']) && is_array($params['imagens'])) $dados['images'] = array_values(array_filter($params['imagens']));
+    if(!empty($params['metadata']) && is_array($params['metadata'])) $dados['metadata'] = $params['metadata'];
+
+    $resp = stripe_requisicao(Array(
+        'endpoint' => '/v1/products',
+        'method' => 'POST',
+        'data' => $dados,
+        'idempotency_key' => $params['idempotency_key'] ?? '',
+    ));
+    if(!$resp || $resp['http_code'] !== 200 || empty($resp['data']['id'])) return false;
+    return $resp['data'];
+}
+
+/**
+ * Atualiza um produto existente (`POST /v1/products/{id}`).
+ *
+ * Só envia os campos presentes em `$params` — o Stripe faz merge parcial, então omitir
+ * uma chave preserva o valor remoto. Para limpar a lista de imagens, envie `'imagens' => Array()`.
+ *
+ * @param array $params ['product_id' => obrig, 'nome' => opc, 'descricao' => opc,
+ *                       'imagens' => array opc, 'metadata' => array opc, 'ativo' => bool opc]
+ * @return array|false Produto atualizado ou false.
+ */
+function stripe_atualizar_produto($params = Array()){
+    if(empty($params['product_id'])) return false;
+
+    $dados = Array();
+    if(isset($params['nome']) && trim((string)$params['nome']) !== '') $dados['name'] = $params['nome'];
+    if(array_key_exists('descricao', $params)) $dados['description'] = (string)$params['descricao'];
+    if(array_key_exists('imagens', $params) && is_array($params['imagens'])){
+        $imagens = array_values(array_filter($params['imagens']));
+        // Lista vazia precisa ir como `images[]=''` para o Stripe entender "remover todas".
+        $dados['images'] = empty($imagens) ? Array('') : $imagens;
+    }
+    if(!empty($params['metadata']) && is_array($params['metadata'])) $dados['metadata'] = $params['metadata'];
+    if(isset($params['ativo'])) $dados['active'] = $params['ativo'] ? 'true' : 'false';
+
+    if(empty($dados)) return false;
+
+    $resp = stripe_requisicao(Array(
+        'endpoint' => '/v1/products/' . rawurlencode($params['product_id']),
+        'method' => 'POST',
+        'data' => $dados,
+    ));
+    if(!$resp || $resp['http_code'] !== 200) return false;
+    return $resp['data'];
+}
+
+function stripe_consultar_produto($params = Array()){
+    if(empty($params['product_id'])) return false;
+    $resp = stripe_requisicao(Array('endpoint' => '/v1/products/' . rawurlencode($params['product_id'])));
+    if(!$resp || $resp['http_code'] !== 200) return false;
+    return $resp['data'];
+}
+
+/**
+ * Lista produtos da conta (`GET /v1/products`).
+ *
+ * @param array $params ['limite' => 1..100 (padrão 100), 'ativo' => bool opc, 'starting_after' => opc]
+ * @return array|false ['data' => array de produtos, 'has_more' => bool] ou false.
+ */
+function stripe_listar_produtos($params = Array()){
+    $query = Array('limit' => max(1, min(100, (int)($params['limite'] ?? 100))));
+    if(isset($params['ativo'])) $query['active'] = $params['ativo'] ? 'true' : 'false';
+    if(!empty($params['starting_after'])) $query['starting_after'] = $params['starting_after'];
+
+    $resp = stripe_requisicao(Array('endpoint' => '/v1/products', 'data' => $query));
+    if(!$resp || $resp['http_code'] !== 200) return false;
+
+    return Array(
+        'data' => $resp['data']['data'] ?? Array(),
+        'has_more' => !empty($resp['data']['has_more']),
+    );
+}
+
+/** Arquiva um produto (o Stripe não permite exclusão de produto com preços associados). */
+function stripe_arquivar_produto($params = Array()){
+    if(empty($params['product_id'])) return false;
+    return (bool) stripe_atualizar_produto(Array('product_id' => $params['product_id'], 'ativo' => false));
+}
+
+/**
+ * Cria um preço (`POST /v1/prices`).
+ *
+ * O valor de um preço é imutável na API do Stripe: mudar amount/moeda/recorrência exige criar
+ * um preço novo e arquivar o anterior — não existe update de `unit_amount`.
+ *
+ * @param array $params ['product_id' => obrig, 'valor' => decimal obrig, 'moeda' => 'BRL',
+ *                       'intervalo' => 'day'|'week'|'month'|'year' (ausente = pagamento avulso),
+ *                       'intervalo_quantidade' => int (padrão 1 — trimestral = month/3),
+ *                       'apelido' => opc, 'metadata' => opc, 'idempotency_key' => opc]
+ * @return array|false Preço criado (`price_...`) ou false.
+ */
+function stripe_criar_preco($params = Array()){
+    if(empty($params['product_id'])) return false;
+    if(!isset($params['valor']) || (float)$params['valor'] < 0) return false;
+
+    $moeda = strtolower((string)($params['moeda'] ?? 'BRL'));
+    $dados = Array(
+        'product' => $params['product_id'],
+        'currency' => $moeda,
+        'unit_amount' => stripe_valor_menor_unidade($params['valor'], $moeda),
+    );
+
+    $intervalo = (string)($params['intervalo'] ?? '');
+    if($intervalo !== ''){
+        $dados['recurring'] = Array(
+            'interval' => $intervalo,
+            'interval_count' => max(1, (int)($params['intervalo_quantidade'] ?? 1)),
+        );
+    }
+    if(!empty($params['apelido'])) $dados['nickname'] = $params['apelido'];
+    if(!empty($params['metadata']) && is_array($params['metadata'])) $dados['metadata'] = $params['metadata'];
+
+    $resp = stripe_requisicao(Array(
+        'endpoint' => '/v1/prices',
+        'method' => 'POST',
+        'data' => $dados,
+        'idempotency_key' => $params['idempotency_key'] ?? '',
+    ));
+    if(!$resp || $resp['http_code'] !== 200 || empty($resp['data']['id'])) return false;
+    return $resp['data'];
+}
+
+function stripe_consultar_preco($params = Array()){
+    if(empty($params['price_id'])) return false;
+
+    $query = Array();
+    if(!empty($params['expand']) && is_array($params['expand'])) $query['expand'] = array_values($params['expand']);
+
+    $resp = stripe_requisicao(Array('endpoint' => '/v1/prices/' . rawurlencode($params['price_id']), 'data' => $query));
+    if(!$resp || $resp['http_code'] !== 200) return false;
+    return $resp['data'];
+}
+
+/**
+ * Lista preços da conta (`GET /v1/prices`).
+ *
+ * @param array $params ['product_id' => opc (filtra por produto), 'limite' => 1..100,
+ *                       'ativo' => bool opc, 'starting_after' => opc, 'expand' => array opc]
+ * @return array|false ['data' => array de preços, 'has_more' => bool] ou false.
+ */
+function stripe_listar_precos($params = Array()){
+    $query = Array('limit' => max(1, min(100, (int)($params['limite'] ?? 100))));
+    if(!empty($params['product_id'])) $query['product'] = $params['product_id'];
+    if(isset($params['ativo'])) $query['active'] = $params['ativo'] ? 'true' : 'false';
+    if(!empty($params['starting_after'])) $query['starting_after'] = $params['starting_after'];
+    if(!empty($params['expand']) && is_array($params['expand'])) $query['expand'] = array_values($params['expand']);
+
+    $resp = stripe_requisicao(Array('endpoint' => '/v1/prices', 'data' => $query));
+    if(!$resp || $resp['http_code'] !== 200) return false;
+
+    return Array(
+        'data' => $resp['data']['data'] ?? Array(),
+        'has_more' => !empty($resp['data']['has_more']),
+    );
+}
+
+/** Arquiva um preço (`active=false`). Preço em uso por assinatura viva continua cobrando. */
+function stripe_arquivar_preco($params = Array()){
+    if(empty($params['price_id'])) return false;
+    $resp = stripe_requisicao(Array(
+        'endpoint' => '/v1/prices/' . rawurlencode($params['price_id']),
+        'method' => 'POST',
+        'data' => Array('active' => 'false'),
+    ));
+    return ($resp && $resp['http_code'] === 200);
+}
+
+// ============================================================================
 // WEBHOOK
 // ============================================================================
 
