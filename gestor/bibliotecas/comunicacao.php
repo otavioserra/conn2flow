@@ -258,8 +258,10 @@ function comunicacao_email($params = false){
 			if(isset($remetente)){
 				if(isset($remetente['de'])){ $sender['from'] = $remetente['de']; }
 				if(isset($remetente['deNome'])){ $sender['fromName'] = $remetente['deNome']; }
-				if(isset($remetente['responderPara'])){ $sender['replyTo'] = $remetente['responderPara']; }
-				if(isset($remetente['responderParaNome'])){ $sender['replyToName'] = $remetente['responderParaNome']; }
+				// Só sobrescreve o Reply-To padrão quando o chamador informa um valor: campo em branco
+				// no cadastro do formulário significa "usar o do sistema", não "apagar o remetente".
+				if(!empty($remetente['responderPara'])){ $sender['replyTo'] = $remetente['responderPara']; }
+				if(!empty($remetente['responderParaNome'])){ $sender['replyToName'] = $remetente['responderParaNome']; }
 			}
 			
 			if(isset($destinatarios)){
@@ -432,7 +434,12 @@ function comunicacao_email($params = false){
 				//Sender
 				
 				if(isset($sender['fromName'])){ $mail->setFrom($sender['from'], $sender['fromName']); } else { $mail->setFrom($sender['from']); }
-				if(isset($sender['replyToName'])){ $mail->addReplyTo($sender['replyTo'], $sender['replyToName']); } else { $mail->addReplyTo($sender['replyTo']); }
+				// Reply-To é opcional: com valor vazio o PHPMailer registra "Invalid address (Reply-To)"
+				// e a mensagem inteira deixa de sair. Um campo em branco no cadastro do formulário
+				// não pode derrubar o envio — sem endereço, simplesmente não há Reply-To.
+				if(!empty($sender['replyTo'])){
+					if(!empty($sender['replyToName'])){ $mail->addReplyTo($sender['replyTo'], $sender['replyToName']); } else { $mail->addReplyTo($sender['replyTo']); }
+				}
 				
 				//Recipients
 				

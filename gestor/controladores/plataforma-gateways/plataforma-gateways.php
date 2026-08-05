@@ -860,6 +860,18 @@ function plataforma_gateways_disparar_hook($gateway, $action, $data = Array(), $
         ));
     }
     
+    // `modulos` tem uma linha por idioma, então o mesmo módulo aparece repetido e o hook rodaria
+    // uma vez por idioma cadastrado (visível no log do webhook: cada evento registrado em
+    // duplicata). O `break` do `processed` mascarava isso apenas quando o evento era tratado.
+    if ($modulos) {
+        $modulosUnicos = Array();
+        foreach ($modulos as $m) {
+            if (isset($modulosUnicos[$m['id']])) continue;
+            $modulosUnicos[$m['id']] = $m;
+        }
+        $modulos = array_values($modulosUnicos);
+    }
+
     if ($modulos) {
         foreach ($modulos as $modulo) {
             $modulo_id = $modulo['id'];

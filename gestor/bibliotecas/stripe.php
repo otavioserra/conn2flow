@@ -296,6 +296,23 @@ function stripe_consultar_payment_intent($params = Array()){
     return $resp['data'];
 }
 
+/**
+ * Consulta um SetupIntent (`seti_...`).
+ *
+ * É a fonte autoritativa e IMEDIATA de "o cliente autorizou um cartão": o `payment_method` aparece
+ * aqui no mesmo instante em que o navegador confirma, enquanto a propagação para
+ * `subscription.default_payment_method` leva alguns segundos.
+ *
+ * @param array $params ['setup_intent_id' => obrig]
+ * @return array|false
+ */
+function stripe_consultar_setup_intent($params = Array()){
+    if(empty($params['setup_intent_id'])) return false;
+    $resp = stripe_requisicao(Array('endpoint' => '/v1/setup_intents/' . rawurlencode($params['setup_intent_id'])));
+    if(!$resp || $resp['http_code'] !== 200) return false;
+    return $resp['data'];
+}
+
 // ============================================================================
 // ASSINATURAS (Billing)
 // ============================================================================
@@ -388,6 +405,29 @@ function stripe_consultar_assinatura($params = Array()){
     $resp = stripe_requisicao(Array(
         'endpoint' => '/v1/subscriptions/' . rawurlencode($params['subscription_id']),
         'data' => $query,
+    ));
+    if(!$resp || $resp['http_code'] !== 200) return false;
+    return $resp['data'];
+}
+
+/**
+ * Fixa o método de pagamento padrão de uma assinatura.
+ *
+ * No fluxo de trial o cartão é autorizado por um SetupIntent, e o Stripe leva alguns segundos para
+ * copiar o método para a assinatura por conta própria. Gravar explicitamente elimina essa janela —
+ * o que evita recusar um cliente que já pagou — e garante que a cobrança do fim do trial encontre
+ * um método salvo.
+ *
+ * @param array $params ['subscription_id' => obrig, 'payment_method_id' => obrig]
+ * @return array|false Assinatura atualizada ou false.
+ */
+function stripe_definir_metodo_padrao_assinatura($params = Array()){
+    if(empty($params['subscription_id']) || empty($params['payment_method_id'])) return false;
+
+    $resp = stripe_requisicao(Array(
+        'endpoint' => '/v1/subscriptions/' . rawurlencode($params['subscription_id']),
+        'method' => 'POST',
+        'data' => Array('default_payment_method' => $params['payment_method_id']),
     ));
     if(!$resp || $resp['http_code'] !== 200) return false;
     return $resp['data'];
@@ -533,6 +573,36 @@ function stripe_criar_produto($params = Array()){
 }
 
 /**
+ * Monta o corpo de uma atualização de produto.
+ *
+ * Isolada da requisição para ser verificável sem rede: é aqui que mora a regra de como o Stripe
+ * aceita cada campo, e um payload inválido derruba TODA atualização de produto.
+ *
+ * Regra que custou um defeito de runtime: para esvaziar uma lista, o Stripe exige o parâmetro sem
+ * índice (`images=`). Enviar `images[0]=''` devolve `parameter_invalid_empty` — "'images[0]'
+ * cannot be unset" —, o que quebrava o salvamento de todo produto sem imagem.
+ *
+ * @param array $params Mesmos campos de `stripe_atualizar_produto`.
+ * @return array Corpo pronto para `http_build_query`.
+ */
+function stripe_produto_payload($params = Array()){
+    $dados = Array();
+
+    if(isset($params['nome']) && trim((string)$params['nome']) !== '') $dados['name'] = $params['nome'];
+    if(array_key_exists('descricao', $params)) $dados['description'] = (string)$params['descricao'];
+
+    if(array_key_exists('imagens', $params) && is_array($params['imagens'])){
+        $imagens = array_values(array_filter($params['imagens'], function($url){ return trim((string)$url) !== ''; }));
+        $dados['images'] = empty($imagens) ? '' : $imagens;
+    }
+
+    if(!empty($params['metadata']) && is_array($params['metadata'])) $dados['metadata'] = $params['metadata'];
+    if(isset($params['ativo'])) $dados['active'] = $params['ativo'] ? 'true' : 'false';
+
+    return $dados;
+}
+
+/**
  * Atualiza um produto existente (`POST /v1/products/{id}`).
  *
  * Só envia os campos presentes em `$params` — o Stripe faz merge parcial, então omitir
@@ -545,17 +615,7 @@ function stripe_criar_produto($params = Array()){
 function stripe_atualizar_produto($params = Array()){
     if(empty($params['product_id'])) return false;
 
-    $dados = Array();
-    if(isset($params['nome']) && trim((string)$params['nome']) !== '') $dados['name'] = $params['nome'];
-    if(array_key_exists('descricao', $params)) $dados['description'] = (string)$params['descricao'];
-    if(array_key_exists('imagens', $params) && is_array($params['imagens'])){
-        $imagens = array_values(array_filter($params['imagens']));
-        // Lista vazia precisa ir como `images[]=''` para o Stripe entender "remover todas".
-        $dados['images'] = empty($imagens) ? Array('') : $imagens;
-    }
-    if(!empty($params['metadata']) && is_array($params['metadata'])) $dados['metadata'] = $params['metadata'];
-    if(isset($params['ativo'])) $dados['active'] = $params['ativo'] ? 'true' : 'false';
-
+    $dados = stripe_produto_payload($params);
     if(empty($dados)) return false;
 
     $resp = stripe_requisicao(Array(

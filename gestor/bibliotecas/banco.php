@@ -205,12 +205,36 @@ function banco_query($query){
 }
 
 /**
+ * Retorna quantas linhas a última escrita (INSERT/UPDATE/DELETE) alterou.
+ *
+ * Serve para atualizações condicionais que decidem algo pelo resultado — o padrão "só uma
+ * requisição pode reivindicar esta ação": um `UPDATE ... WHERE <ainda não feito>` afeta 1 linha
+ * para quem chegou primeiro e 0 para as demais, mesmo com requisições concorrentes.
+ *
+ * @global array $_BANCO Configurações de conexão do banco.
+ *
+ * @return int|null Linhas afetadas, ou null quando indisponível (ex.: modo distribuído).
+ */
+function banco_linhas_afetadas(){
+	global $_BANCO;
+
+	// Módulo distribuído: a escrita roda na instalação remota e o driver local não tem o contador.
+	if(!empty($_BANCO['distribuido'])) return null;
+	if(!isset($_BANCO['conexao'])) return null;
+
+	if($_BANCO['tipo'] == "mysqli")
+		return mysqli_affected_rows($_BANCO['conexao']);
+
+	return null;
+}
+
+/**
  * Retorna o número de linhas de um resultado de query.
  *
  * @global array $_BANCO Configurações de conexão do banco.
- * 
+ *
  * @param mysqli_result $result O resultado da query.
- * 
+ *
  * @return int O número de linhas no resultado.
  */
 function banco_num_rows($result){

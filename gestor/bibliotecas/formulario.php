@@ -954,6 +954,20 @@ function formulario_processador($params = false){
 	// Remover a célula original
 	$mensagem = modelo_var_troca($mensagem,'<!-- '.$cel_nome.' -->','');
 
+	// ===== Ponto de extensão: o módulo dono do formulário pode personalizar a mensagem antes do
+	// envio (marca, logotipo, rodapé). O core não conhece a configuração de cada módulo, então em
+	// vez de embutir regra aqui, entrega o HTML pronto e devolve o que o filtro retornar.
+	// Aplicado ANTES do embedding de imagens, para que uma URL trocada pelo filtro também seja
+	// processada. Sem filtro registrado, o valor passa intacto.
+	gestor_incluir_biblioteca('hooks');
+	if(function_exists('hook_apply_filters')){
+		$mensagem = hook_apply_filters('formulario', 'email.mensagem', $mensagem, Array(
+			'form_id'  => $formId ?? null,
+			'language' => $_GESTOR['linguagem-codigo'] ?? null,
+			'origem'   => 'formulario-processador',
+		));
+	}
+
 	// ===== Processar imagens locais para embedding automático
 	$resultadoImagens = formulario_email_processar_imagens($mensagem);
 	$mensagem = $resultadoImagens['html'];
