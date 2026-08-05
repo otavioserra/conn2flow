@@ -623,6 +623,26 @@ function formulario_processador($params = false){
         if(isset($schema['field_name']) && isset($_POST[$schema['field_name']])){
             $fieldNameValue = $_POST[$schema['field_name']];
 			$fieldNameValueFlag = true;
+        } else {
+            // Sem `field_name` no schema, o nome da submissão caía no fallback técnico
+            // (`<form_id>-<timestamp>`) e se propagava para o cadastro do usuário e para os
+            // registros que derivam dele. O dado existe no POST — o que faltava era saber qual
+            // campo o representa. Descoberta em ordem: campo chamado `name`, depois o primeiro
+            // campo de texto declarado no schema.
+            $candidatos = Array('name');
+            foreach(($schema['fields'] ?? Array()) as $campoSchema){
+                if(in_array(($campoSchema['type'] ?? 'text'), Array('text', 'string'), true)){
+                    $candidatos[] = $campoSchema['name'] ?? '';
+                }
+            }
+
+            foreach($candidatos as $candidato){
+                if($candidato === '' || !isset($_POST[$candidato])) continue;
+                if(trim((string)$_POST[$candidato]) === '') continue;
+                $fieldNameValue = $_POST[$candidato];
+                $fieldNameValueFlag = true;
+                break;
+            }
         }
         if(isset($schema['field_email']) && isset($_POST[$schema['field_email']])){
             $fieldEmailValue = $_POST[$schema['field_email']];
