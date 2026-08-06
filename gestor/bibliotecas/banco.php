@@ -9,6 +9,7 @@
  * @package Conn2Flow
  * @subpackage Bibliotecas
  * @version 1.2.0
+ * @deprecated banco-v2.php é a implementação canônica; novas funcionalidades devem usar seus prepared statements.
  */
 
 // Registro da versão da biblioteca no sistema global
@@ -34,40 +35,12 @@ function banco_escape_field($field){
 	if(!isset($_BANCO['conexao']))$connect_db = true;
 	if($connect_db && ($_BANCO['tipo'] ?? '') == "mysqli")banco_conectar();
 
-	// Escapa o valor usando mysqli
-	if(($_BANCO['tipo'] ?? '') == "mysqli"){
-		return mysqli_real_escape_string($_BANCO['conexao'],$field);
+	// Escapa somente com uma conexão mysqli ativa; nunca simula escape SQL.
+	if(($_BANCO['tipo'] ?? '') == "mysqli" && isset($_BANCO['conexao']) && $_BANCO['conexao'] instanceof mysqli){
+		return mysqli_real_escape_string($_BANCO['conexao'], (string)$field);
 	}
 
-	// Fallback para ambientes sem mysqli (ex.: testes / execução distribuída sem
-	// conexão local): escape básico determinístico em vez de retornar null.
-	return addslashes((string)$field);
-}
-
-/**
- * Remove barras de escape de uma string de forma inteligente.
- *
- * Esta função retorna a string convertida para string sem processar
- * a remoção de barras invertidas, apenas garantindo que seja uma string.
- *
- * @param mixed $str O valor a ser processado.
- * 
- * @return string A string processada.
- */
-function banco_smartstripslashes($str){
-	/* $cd1 = substr_count($str, "\"");
-	$cd2 = substr_count($str, "\\\"");
-	$cs1 = substr_count($str, "'");
-	$cs2 = substr_count($str, "\\'");
-	$tmp = strtr($str, array("\\\"" => "", "\\'" => ""));
-	$cb1 = substr_count($tmp, "\\");
-	$cb2 = substr_count($tmp, "\\\\");
-	
-	if ($cd1 == $cd2 && $cs1 == $cs2 && $cb1 == 2 * $cb2) {
-		return strtr($str, array("\\\"" => "\"", "\\'" => "'", "\\\\" => "\\"));
-	} */
-	
-	return (string)$str;
+	throw new LogicException('banco_escape_field requer uma conexão mysqli ativa; use banco-v2 com parâmetros preparados.');
 }
 
 /**
@@ -446,7 +419,7 @@ function banco_sql_names($sql,$campos){
 			
 			// Monta array associativo para cada campo
 			foreach($campos_name as $campo_name){
-				$rows_out[$campo_name] = ( !is_numeric($rows_aux[$count]) ? banco_smartstripslashes($rows_aux[$count]) : $rows_aux[$count]);
+				$rows_out[$campo_name] = (!is_numeric($rows_aux[$count]) ? (string)$rows_aux[$count] : $rows_aux[$count]);
 				$count++;
 			}
 			$rows[] = $rows_out;
@@ -534,10 +507,9 @@ function banco_select($params = false){
 }
 
 /**
- * Seleciona dados do banco retornando arrays associativos com stripslashes.
+ * Seleciona dados do banco retornando arrays associativos.
  *
- * Função legada para seleção de dados. Similar a banco_select mas
- * aplica banco_smartstripslashes aos valores não-numéricos.
+ * Função legada para seleção de dados. Novos acessos devem usar banco-v2.
  *
  * @param string $campos Lista de campos separados por vírgula ou '*'.
  * @param string $tabela Nome da tabela.
@@ -576,7 +548,7 @@ function banco_select_name($campos,$tabela,$extra){
 			
 			foreach($campos_name as $campo_name){
 				// Aplica stripslashes apenas para valores não-numéricos
-				$rows_out[$campo_name] = ( !is_numeric($rows_aux[$count]) ? banco_smartstripslashes($rows_aux[$count]) : $rows_aux[$count]);
+				$rows_out[$campo_name] = (!is_numeric($rows_aux[$count]) ? (string)$rows_aux[$count] : $rows_aux[$count]);
 				$count++;
 			}
 			$rows[] = $rows_out;
@@ -632,7 +604,7 @@ function banco_select_editar($campos,$tabela,$extra){
 		
 		foreach($campos_name as $campo_name){
 			if(isset($rows_aux[$count])){
-				$rows_out[$campo_name] = (!is_numeric($rows_aux[$count]) ? banco_smartstripslashes($rows_aux[$count]) : $rows_aux[$count]);
+				$rows_out[$campo_name] = (!is_numeric($rows_aux[$count]) ? (string)$rows_aux[$count] : $rows_aux[$count]);
 			}
 			
 			$count++;
@@ -698,7 +670,7 @@ function banco_select_campos_antes_iniciar($campos,$tabela,$extra){
 		// Monta array associativo
 		foreach($campos_name as $campo_name){
 			if(isset($rows_aux[$count])){
-				$rows_out[$campo_name] = (!is_numeric($rows_aux[$count]) ? banco_smartstripslashes($rows_aux[$count]) : $rows_aux[$count]);
+				$rows_out[$campo_name] = (!is_numeric($rows_aux[$count]) ? (string)$rows_aux[$count] : $rows_aux[$count]);
 			}
 			
 			$count++;

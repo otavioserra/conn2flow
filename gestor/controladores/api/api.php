@@ -11,58 +11,97 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	Array(
 
 // =========================== Headers CORS e Configurações
 
-header('Access-Control-Allow-Origin: *');
+function api_cors_configurar() {
+    global $_CONFIG;
+
+    $origin = trim((string)($_SERVER['HTTP_ORIGIN'] ?? ''));
+    $permitidas = $_CONFIG['api']['cors-origins'] ?? [];
+    if ($origin !== '' && in_array($origin, $permitidas, true)) {
+        header('Access-Control-Allow-Origin: ' . $origin);
+        header('Vary: Origin');
+    }
+
+    return $origin === '' || in_array($origin, $permitidas, true);
+}
+
+$corsPermitido = api_cors_configurar();
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization, X-API-Key');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Content-Type: application/json; charset=UTF-8');
 
 // ===== Resposta para preflight OPTIONS
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
+    http_response_code($corsPermitido ? 204 : 403);
     exit;
 }
 
 // =========================== Rate Limiting Básico
 
-function api_rate_limit_check($endpoint = 'default') {
-    global $_GESTOR;
-
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $key = 'api_rate_limit_' . $endpoint . '_' . $ip;
-    $max_requests = 100; // 100 requisições por hora
-    $window = 3600; // 1 hora em segundos
-
-    // Implementação simples de rate limiting (em produção, usar Redis ou similar)
-    $api_logs_path = $_GESTOR['logs-path'] . 'api/';
-    if (!is_dir($api_logs_path)) {
-        mkdir($api_logs_path, 0755, true);
-    }
-    $cache_file = $api_logs_path . 'api_rate_limit_' . md5($key) . '.cache';
-
-    $current_time = time();
-    $requests = [];
-
-    if (file_exists($cache_file)) {
-        $data = json_decode(file_get_contents($cache_file), true);
-        if ($data && isset($data['requests'])) {
-            $requests = array_filter($data['requests'], function($timestamp) use ($current_time, $window) {
-                return ($current_time - $timestamp) < $window;
-            });
+function api_bearer_token() {
+    $authorization = (string)($_SERVER['HTTP_AUTHORIZATION'] ?? '');
+    if ($authorization === '' && function_exists('getallheaders')) {
+        foreach ((array)getallheaders() as $nome => $valor) {
+            if (strcasecmp((string)$nome, 'Authorization') === 0) {
+                $authorization = (string)$valor;
+                break;
+            }
         }
     }
 
-    if (count($requests) >= $max_requests) {
-        return false; // Rate limit excedido
+    return preg_match('/^Bearer\s+([^\s]+)$/i', trim($authorization), $matches) ? $matches[1] : null;
+}
+
+function api_token_validar_memoizado($token) {
+    global $_GESTOR;
+
+    $chave = hash('sha256', (string)$token);
+    if (array_key_exists($chave, $_GESTOR['api-auth-cache'] ?? [])) return $_GESTOR['api-auth-cache'][$chave];
+
+    gestor_incluir_biblioteca('oauth2');
+    $resultado = oauth2_validar_token(['token' => $token]);
+    $_GESTOR['api-auth-cache'][$chave] = is_array($resultado) ? $resultado : false;
+
+    return $_GESTOR['api-auth-cache'][$chave];
+}
+
+function api_rate_limit_subject() {
+    $token = api_bearer_token();
+    if ($token !== null) {
+        $usuario = api_token_validar_memoizado($token);
+        if (is_array($usuario) && isset($usuario['id_usuarios'])) return 'user:' . (int)$usuario['id_usuarios'];
     }
 
-    $requests[] = $current_time;
+    return 'ip:' . (string)($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+}
 
-    // Manter apenas as últimas 1000 requisições para não crescer indefinidamente
-    $requests = array_slice($requests, -1000);
+function api_rate_limit_check($endpoint = 'default') {
+    global $_CONFIG;
 
-    file_put_contents($cache_file, json_encode(['requests' => $requests]));
+    $maxRequests = (int)($_CONFIG['api']['rate-limit-max'] ?? 100);
+    $window = (int)($_CONFIG['api']['rate-limit-window'] ?? 3600);
+    $windowStart = intdiv(time(), $window) * $window;
+    $route = strtoupper((string)($_SERVER['REQUEST_METHOD'] ?? 'GET')) . ':' . (string)$endpoint;
+    $subject = api_rate_limit_subject();
 
-    return true;
+    try {
+        gestor_incluir_biblioteca('banco-v2');
+        $db = banco_v2();
+        $db->executar(
+            'INSERT INTO api_rate_limits (route, subject, window_start, request_count, updated_at) '
+            . 'VALUES (?, ?, ?, 1, NOW()) '
+            . 'ON DUPLICATE KEY UPDATE request_count=request_count+1, updated_at=NOW()',
+            [$route, $subject, $windowStart]
+        );
+        $rows = $db->sql(
+            'SELECT request_count FROM api_rate_limits WHERE route=? AND subject=? AND window_start=? LIMIT 1',
+            [$route, $subject, $windowStart]
+        );
+
+        return isset($rows[0]['request_count']) && (int)$rows[0]['request_count'] <= $maxRequests;
+    } catch (Throwable $e) {
+        error_log('Falha no rate limit persistente da API: ' . $e->getMessage());
+        return false;
+    }
 }
 
 // =========================== Autenticação
@@ -75,33 +114,19 @@ function api_authenticate($require_auth = false) {
     }
 
     // Verificar token de autenticação
-    $headers = getallheaders();
-    $token = null;
-
-    if (isset($headers['Authorization'])) {
-        $auth_header = $headers['Authorization'];
-        if (preg_match('/Bearer\s+(.*)$/i', $auth_header, $matches)) {
-            $token = $matches[1];
-        }
-    } elseif (isset($headers['X-API-Key'])) {
-        $token = $headers['X-API-Key'];
-    } elseif (isset($_GET['token'])) {
-        $token = $_GET['token'];
-    }
+    $token = api_bearer_token();
 
     if (!$token) {
         api_response_error('Token de autenticação não fornecido', 401);
     }
 
     // Validação real do token OAuth 2.0
-    gestor_incluir_biblioteca('oauth2');
-
-    $token_validacao = oauth2_validar_token(Array('token' => $token));
+    $token_validacao = api_token_validar_memoizado($token);
     if(!$token_validacao || !is_array($token_validacao)){
         api_response_error('Token de autenticação inválido ou expirado', 401);
     }
 
-    return true;
+    return $token_validacao;
 }
 
 // =========================== Funções de Resposta
@@ -1050,11 +1075,13 @@ function api_route_request() {
 
 // =========================== Inicialização da API
 
-try {
-    api_route_request();
-} catch (Exception $e) {
-    error_log('API Error: ' . $e->getMessage());
-    api_response_error('Erro interno do servidor', 500);
+if(!defined('SDD_NO_AUTORUN')){
+    try {
+        api_route_request();
+    } catch (Exception $e) {
+        error_log('API Error: ' . $e->getMessage());
+        api_response_error('Erro interno do servidor', 500);
+    }
 }
 
 ?>

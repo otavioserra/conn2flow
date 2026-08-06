@@ -187,7 +187,8 @@ function usuario_gerar_token_autorizacao($params = false){
 		fclose($fp);
 		
 		// ===== Gera identificadores únicos do token
-		$tokenPubId = md5(uniqid(rand(), true));
+		gestor_incluir_biblioteca('seguranca');
+		$tokenPubId = seguranca_token_aleatorio(32);
 		
 		// Hash HMAC para validação adicional
 		$pubIDValidation = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
@@ -300,7 +301,8 @@ function usuario_app_gerar_token_autorizacao($params = false){
 		fclose($fp);
 		
 		// ===== Gera identificadores únicos do token
-		$tokenPubId = md5(uniqid(rand(), true));
+		gestor_incluir_biblioteca('seguranca');
+		$tokenPubId = seguranca_token_aleatorio(32);
 		
 		// Hash HMAC para validação adicional
 		$pubIDValidation = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);

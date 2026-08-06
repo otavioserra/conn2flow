@@ -20,6 +20,19 @@ $_GESTOR['biblioteca-seguranca'] = Array(
 // ===== Helpers
 
 /**
+ * Gera um identificador hexadecimal com entropia criptograficamente segura.
+ *
+ * @param int $bytes Quantidade de bytes aleatórios (mínimo: 16 / 128 bits).
+ * @return string
+ */
+function seguranca_token_aleatorio($bytes = 32){
+    $bytes = (int)$bytes;
+    if($bytes < 16) $bytes = 16;
+
+    return bin2hex(random_bytes($bytes));
+}
+
+/**
  * Retorna o bloco de rede do IP (3 primeiros octetos no IPv4).
  *
  * @param string|null $ip IP a avaliar (padrão: REMOTE_ADDR).
@@ -106,7 +119,7 @@ function gestor_csrf_token(){
     $token = gestor_sessao_variavel('csrf_token');
 
     if(!existe($token)){
-        $token = bin2hex(random_bytes(32));
+        $token = seguranca_token_aleatorio(32);
         gestor_sessao_variavel('csrf_token', $token);
     }
 
@@ -119,12 +132,57 @@ function gestor_csrf_token(){
  * @param string $token Token recebido na requisição.
  * @return bool
  */
-function gestor_csrf_validar($token){
-    $esperado = gestor_sessao_variavel('csrf_token');
+function gestor_csrf_validar($token, $esperado = null){
+    if($esperado === null) $esperado = gestor_sessao_variavel('csrf_token');
 
     if(!existe($esperado) || !is_string($token) || $token === '') return false;
 
     return hash_equals((string)$esperado, (string)$token);
+}
+
+/**
+ * Obtém o token CSRF enviado em campo de formulário ou cabeçalho HTTP.
+ *
+ * @return string
+ */
+function seguranca_csrf_token_requisicao(){
+    if(isset($_SERVER['HTTP_X_CSRF_TOKEN'])) return (string)$_SERVER['HTTP_X_CSRF_TOKEN'];
+    if(isset($_POST['_csrf_token'])) return (string)$_POST['_csrf_token'];
+    if(isset($_REQUEST['_csrf_token'])) return (string)$_REQUEST['_csrf_token'];
+
+    return '';
+}
+
+/**
+ * Informa se a rota usa autenticação M2M/Bearer e, portanto, não usa cookie de sessão.
+ * O canal distribuído é protegido por HMAC dentro do controlador da API.
+ *
+ * @param array $caminho Segmentos normalizados da rota.
+ * @return bool
+ */
+function seguranca_csrf_rota_isenta($caminho){
+    if(!is_array($caminho) || !isset($caminho[0])) return false;
+
+    return $caminho[0] === '_api' || $caminho[0] === 'api';
+}
+
+/**
+ * Exige CSRF em métodos mutáveis autenticados pelo cookie do painel.
+ *
+ * @return bool true quando a requisição pode continuar.
+ */
+function seguranca_csrf_requisicao_validar(){
+    global $_GESTOR;
+    global $_CONFIG;
+
+    $metodo = strtoupper((string)($_SERVER['REQUEST_METHOD'] ?? 'GET'));
+    if(!in_array($metodo, Array('POST', 'PUT', 'PATCH', 'DELETE'), true)) return true;
+    if(seguranca_csrf_rota_isenta($_GESTOR['caminho'] ?? Array())) return true;
+
+    $cookieAuth = $_CONFIG['cookie-authname'] ?? '';
+    if($cookieAuth === '' || !isset($_COOKIE[$cookieAuth])) return true;
+
+    return gestor_csrf_validar(seguranca_csrf_token_requisicao());
 }
 
 ?>

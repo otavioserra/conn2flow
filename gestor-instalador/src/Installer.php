@@ -50,6 +50,9 @@ class Installer
             try {
                 $result = $this->$step();
                 $this->log("Etapa {$step} concluída com sucesso");
+                if (($result['status'] ?? '') === 'finished') {
+                    $this->finalizeInstallerCleanup();
+                }
                 return $result;
             } catch (Exception $e) {
                 $this->log("Erro na etapa {$step}: " . $e->getMessage(), 'ERROR');
@@ -117,12 +120,16 @@ class Installer
 
         // Busca a URL do release mais recente do gestor usando GitHub API
         $gestorUrl = $this->getLatestGestorReleaseUrl();
-    $gestorZipPath = $this->tempDir . DIRECTORY_SEPARATOR . 'gestor.zip';
+        $gestorZipPath = $this->tempDir . DIRECTORY_SEPARATOR . 'gestor.zip';
+        $checksumPath = $this->tempDir . DIRECTORY_SEPARATOR . 'gestor.zip.sha256';
 
         $this->log("URL do gestor detectada: {$gestorUrl}");
 
         // Download do arquivo gestor.zip
         $this->downloadFile($gestorUrl, $gestorZipPath);
+        $this->downloadFile($gestorUrl . '.sha256', $checksumPath);
+        self::verifyZipSha256($gestorZipPath, $checksumPath);
+        $this->log('Checksum SHA256 do release verificado antes da extração.');
 
         return [
             'status' => 'success',
@@ -134,6 +141,7 @@ class Installer
     private function unzip_files() 
     {
         $gestorZipPath = $this->tempDir . '/gestor.zip';
+        $checksumPath = $this->tempDir . '/gestor.zip.sha256';
         // Usa o caminho de instalação personalizado
         $installPath = isset($this->data['install_path']) ? realpath($this->data['install_path']) ?: $this->data['install_path'] : null;
         $this->log("Descompactando arquivos para: {$installPath}");
@@ -152,6 +160,7 @@ class Installer
         if ($skipUnzip) {
             $this->log("SKIP_UNZIP ativado: pulando extração do ZIP, mas executando correção de permissões e configuração do sistema");
         } else {
+            self::verifyZipSha256($gestorZipPath, $checksumPath);
             // Descompacta o gestor.zip DENTRO do caminho especificado (não um nível acima)
             $this->extractZip($gestorZipPath, $installPath);
         }
@@ -432,20 +441,55 @@ class Installer
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Conn2Flow-Installer/1.0');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        if (defined('CURLOPT_PROTOCOLS') && defined('CURLPROTO_HTTPS')) {
+            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+            curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
+        }
         
         $data = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
         curl_close($ch);
         
         if ($httpCode !== 200 || $data === false) {
-            throw new Exception(__('error_download_failed', 'Falha no download do arquivo: ') . $url);
+            throw new Exception(__('error_download_failed', 'Falha no download do arquivo: ') . $url . ($curlError ? ' (' . $curlError . ')' : ''));
         }
         
         if (file_put_contents($destination, $data) === false) {
             throw new Exception(__('error_save_file', 'Erro ao salvar arquivo: ') . $destination);
         }
+    }
+
+    /**
+     * Verifica estritamente um ZIP contra o arquivo SHA256 publicado no release.
+     * Aceita o formato "hash  nome" ou somente o hash.
+     */
+    public static function verifyZipSha256(string $zipPath, string $checksumFile): array
+    {
+        if (!is_file($zipPath) || !is_readable($zipPath)) {
+            throw new Exception('Arquivo ZIP indisponível para verificação de integridade.');
+        }
+        if (!is_file($checksumFile) || !is_readable($checksumFile)) {
+            throw new Exception('Arquivo de checksum SHA256 ausente.');
+        }
+
+        $checksum = trim((string)file_get_contents($checksumFile));
+        if (!preg_match('/^([a-f0-9]{64})(?:\s+\*?.+)?$/i', $checksum, $matches)) {
+            throw new Exception('Formato do arquivo SHA256 inválido.');
+        }
+
+        $expected = strtolower($matches[1]);
+        $got = hash_file('sha256', $zipPath);
+        if (!is_string($got) || !hash_equals($expected, strtolower($got))) {
+            throw new Exception('Checksum SHA256 do ZIP divergente. Instalação abortada.');
+        }
+
+        return ['expected' => $expected, 'got' => strtolower($got), 'file' => basename($zipPath)];
     }
 
     /**
@@ -485,6 +529,35 @@ class Installer
     /**
      * Configura o arquivo .env
      */
+    private function envValueLiteral($value)
+    {
+        $value = (string)$value;
+        if ($value !== '' && preg_match('/^[A-Za-z0-9_@.\/:+-]+$/', $value)) return $value;
+
+        return '"' . str_replace(['\\', '"', '$', "\r", "\n"], ['\\\\', '\\"', '\\$', '', '\\n'], $value) . '"';
+    }
+
+    /** Substitui uma linha do .env sem interpretar $1, barras ou outros metacaracteres. */
+    private function envSetLiteral($content, $key, $value)
+    {
+        $line = $key . '=' . $this->envValueLiteral($value);
+        $eol = strpos((string)$content, "\r\n") !== false ? "\r\n" : "\n";
+        $linhas = explode("\n", str_replace("\r\n", "\n", (string)$content));
+        $encontrado = false;
+
+        foreach($linhas as &$linhaAtual){
+            if(str_starts_with($linhaAtual, $key . '=')){
+                $linhaAtual = $line;
+                $encontrado = true;
+            }
+        }
+        unset($linhaAtual);
+
+        if(!$encontrado) $linhas[] = $line;
+
+        return implode($eol, $linhas);
+    }
+
     private function configureEnvFile($domainDir)
     {
         $envPath = $domainDir . '/.env';
@@ -493,10 +566,10 @@ class Installer
             $envContent = file_get_contents($envPath);
             
             // Substitui as variáveis do banco de dados
-            $envContent = preg_replace('/^DB_HOST=.*$/m', 'DB_HOST=' . $this->data['db_host'], $envContent);
-            $envContent = preg_replace('/^DB_DATABASE=.*$/m', 'DB_DATABASE=' . $this->data['db_name'], $envContent);
-            $envContent = preg_replace('/^DB_USERNAME=.*$/m', 'DB_USERNAME=' . $this->data['db_user'], $envContent);
-            $envContent = preg_replace('/^DB_PASSWORD=.*$/m', 'DB_PASSWORD=' . ($this->data['db_pass'] ?? ''), $envContent);
+            $envContent = $this->envSetLiteral($envContent, 'DB_HOST', $this->data['db_host']);
+            $envContent = $this->envSetLiteral($envContent, 'DB_DATABASE', $this->data['db_name']);
+            $envContent = $this->envSetLiteral($envContent, 'DB_USERNAME', $this->data['db_user']);
+            $envContent = $this->envSetLiteral($envContent, 'DB_PASSWORD', $this->data['db_pass'] ?? '');
             
             // Substitui o domínio em todas as ocorrências
             $domain = $this->data['domain'];
@@ -504,33 +577,33 @@ class Installer
             
             // Gera senhas aleatórias para segurança
             $opensslPassword = bin2hex(random_bytes(16));
-            $envContent = preg_replace('/^OPENSSL_PASSWORD=.*$/m', 'OPENSSL_PASSWORD=' . $opensslPassword, $envContent);
+            $envContent = $this->envSetLiteral($envContent, 'OPENSSL_PASSWORD', $opensslPassword);
             
             $userHashPassword = bin2hex(random_bytes(16));
-            $envContent = preg_replace('/^USUARIO_HASH_PASSWORD=.*$/m', 'USUARIO_HASH_PASSWORD=' . $userHashPassword, $envContent);
+            $envContent = $this->envSetLiteral($envContent, 'USUARIO_HASH_PASSWORD', $userHashPassword);
             
             // Gera chaves aleatórias para reCAPTCHA (placeholder)
             $recaptchaSite = bin2hex(random_bytes(20));
             $recaptchaServer = bin2hex(random_bytes(20));
-            $envContent = preg_replace('/^USUARIO_RECAPTCHA_SITE=.*$/m', 'USUARIO_RECAPTCHA_SITE=' . $recaptchaSite, $envContent);
-            $envContent = preg_replace('/^USUARIO_RECAPTCHA_SERVER=.*$/m', 'USUARIO_RECAPTCHA_SERVER=' . $recaptchaServer, $envContent);
+            $envContent = $this->envSetLiteral($envContent, 'USUARIO_RECAPTCHA_SITE', $recaptchaSite);
+            $envContent = $this->envSetLiteral($envContent, 'USUARIO_RECAPTCHA_SERVER', $recaptchaServer);
             
             // Configura email básico (pode ser configurado depois)
-            $envContent = preg_replace('/^EMAIL_HOST=.*$/m', 'EMAIL_HOST=' . $domain, $envContent);
-            $envContent = preg_replace('/^EMAIL_USER=.*$/m', 'EMAIL_USER=noreply@' . $domain, $envContent);
-            $envContent = preg_replace('/^EMAIL_PASS=.*$/m', 'EMAIL_PASS=', $envContent);
-            $envContent = preg_replace('/^EMAIL_FROM=.*$/m', 'EMAIL_FROM=noreply@' . $domain, $envContent);
-            $envContent = preg_replace('/^EMAIL_REPLY_TO=.*$/m', 'EMAIL_REPLY_TO=noreply@' . $domain, $envContent);
+            $envContent = $this->envSetLiteral($envContent, 'EMAIL_HOST', $domain);
+            $envContent = $this->envSetLiteral($envContent, 'EMAIL_USER', 'noreply@' . $domain);
+            $envContent = $this->envSetLiteral($envContent, 'EMAIL_PASS', '');
+            $envContent = $this->envSetLiteral($envContent, 'EMAIL_FROM', 'noreply@' . $domain);
+            $envContent = $this->envSetLiteral($envContent, 'EMAIL_REPLY_TO', 'noreply@' . $domain);
             
             // Detecta se estamos numa subpasta e configura URL_RAIZ
             $urlRaiz = $this->detectUrlRaiz();
             $this->log("Configurando URL_RAIZ detectada: {$urlRaiz}");
-            $envContent = preg_replace('/^URL_RAIZ=.*$/m', 'URL_RAIZ=' . $urlRaiz, $envContent);
+            $envContent = $this->envSetLiteral($envContent, 'URL_RAIZ', $urlRaiz);
             
             // Configura a linguagem padrão selecionada na instalação
             $defaultLanguage = $this->data['lang'] ?? 'pt-br';
             $this->log("Configurando LANGUAGE_DEFAULT: {$defaultLanguage}");
-            $envContent = preg_replace('/^LANGUAGE_DEFAULT=.*$/m', 'LANGUAGE_DEFAULT=' . $defaultLanguage, $envContent);
+            $envContent = $this->envSetLiteral($envContent, 'LANGUAGE_DEFAULT', $defaultLanguage);
             
             // Salva o arquivo modificado
             if (file_put_contents($envPath, $envContent) === false) {
@@ -759,32 +832,34 @@ class Installer
             $this->removeDirectory($publicAccessPath);
             $this->log("Pasta public-access removida: {$publicAccessPath}");
             
-            // Remove todos os arquivos do instalador exceto index.php e .htaccess
-            $this->cleanupInstallerFiles();
-            
         } else {
             $this->log("Diretório public-access não encontrado: {$publicAccessPath}", 'ERROR');
         }
     }
 
     /**
-     * Remove todos os arquivos do instalador exceto index.php, .htaccess e installer.log
+     * Remove os artefatos executáveis e dados sensíveis do instalador concluído.
      */
     private function cleanupInstallerFiles()
     {
-        $this->log("Removendo arquivos do instalador, mantendo apenas index.php, .htaccess e installer.log...");
+        $this->log("Removendo integralmente os artefatos do instalador...");
         
         // Lista de pastas para remover completamente
         $foldersToRemove = [
             'src',
             'views', 
             'assets',
-            'lang'
+            'lang',
+            'temp',
+            'public-access'
         ];
         
-        // Lista de arquivos para remover (installer.log será preservado para debug)
+        // O log e o lock são removidos por último para não deixar credenciais/resíduos.
         $filesToRemove = [
-            'teste-seguranca.txt'
+            'teste-seguranca.txt',
+            '.env.debug',
+            'install.lock',
+            'installer.log'
         ];
         
         // Remove pastas
@@ -792,7 +867,6 @@ class Installer
             $folderPath = $this->baseDir . '/' . $folder;
             if (is_dir($folderPath)) {
                 $this->removeDirectory($folderPath);
-                $this->log("Pasta removida: {$folderPath}");
             }
         }
         
@@ -800,12 +874,15 @@ class Installer
         foreach ($filesToRemove as $file) {
             $filePath = $this->baseDir . '/' . $file;
             if (file_exists($filePath)) {
-                unlink($filePath);
-                $this->log("Arquivo removido: {$filePath}");
+                @unlink($filePath);
             }
         }
-        
-        $this->log("Limpeza concluída. Restam apenas index.php, .htaccess e installer.log na pasta do instalador.");
+    }
+
+    /** Executada somente depois de a resposta final estar montada e registrada em log. */
+    private function finalizeInstallerCleanup()
+    {
+        $this->cleanupInstallerFiles();
     }
     
     /**
@@ -819,8 +896,7 @@ class Installer
             $this->log("Diretório temporário removido: {$this->tempDir}");
         }
         
-        // A limpeza dos arquivos do instalador é feita em cleanupInstallerFiles()
-        // chamada pelo setupPublicAccess(), deixando apenas index.php e .htaccess
+        // A remoção final ocorre em runStep(), depois que a resposta de sucesso foi montada.
     }
 
     /**
@@ -1081,7 +1157,8 @@ body {
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Conn2Flow-Installer/1.0');
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
@@ -1207,8 +1284,12 @@ body {
             $adminEmail = $this->data['admin_email'];
             $adminPass = $this->data['admin_pass'];
 
-            if (defined('PASSWORD_ARGON2I')) {
-                $hash = password_hash($adminPass, PASSWORD_ARGON2I, ['cost' => 9]);
+            if (defined('PASSWORD_ARGON2ID')) {
+                $hash = password_hash($adminPass, PASSWORD_ARGON2ID, [
+                    'memory_cost' => 65536,
+                    'time_cost' => 4,
+                    'threads' => 2,
+                ]);
             } else {
                 $hash = password_hash($adminPass, PASSWORD_BCRYPT, ['cost' => 12]);
             }

@@ -23,6 +23,46 @@ function arquivo_estatico_404(){
 	exit;
 }
 
+/** Rejeita traversal textual, inclusive quando veio percent-encoded mais de uma vez. */
+function arquivo_estatico_caminho_valido($caminho){
+	$caminho = (string)$caminho;
+
+	for($i = 0; $i < 3; $i++){
+		$decodificado = rawurldecode($caminho);
+		if($decodificado === $caminho) break;
+		$caminho = $decodificado;
+	}
+
+	return strpos($caminho, '..') === false
+		&& strpos($caminho, "\0") === false
+		&& strpos($caminho, '\\') === false;
+}
+
+/**
+ * Resolve o caminho fisicamente e garante que ele permaneça sob uma raiz autorizada.
+ *
+ * @param string $arquivo Caminho candidato.
+ * @param array $bases Diretórios assets/, contents/ e modulos/ autorizados.
+ * @return string|false Caminho real contido ou false.
+ */
+function arquivo_estatico_resolver_autorizado($arquivo, $bases){
+	$realArquivo = realpath((string)$arquivo);
+	if($realArquivo === false || !is_file($realArquivo)) return false;
+
+	$realArquivo = rtrim(str_replace('\\', '/', $realArquivo), '/');
+	foreach((array)$bases as $base){
+		$realBase = realpath((string)$base);
+		if($realBase === false) continue;
+		$realBase = rtrim(str_replace('\\', '/', $realBase), '/');
+
+		if($realArquivo === $realBase || str_starts_with($realArquivo, $realBase.'/')){
+			return $realArquivo;
+		}
+	}
+
+	return false;
+}
+
 /**
  * Content-Type do arquivo servido (BATCH-100).
  *
@@ -163,6 +203,14 @@ function arquivo_estatico_start(){
 	global $_INDEX;
 	
 	if(isset($_GESTOR['arquivo-estatico'])){
+		$caminhoTotal = (string)($_GESTOR['caminho-total'] ?? '');
+		if(!arquivo_estatico_caminho_valido($caminhoTotal)) arquivo_estatico_404();
+
+		$basesAutorizadas = Array(
+			$_GESTOR['assets-path'],
+			$_GESTOR['contents-path'],
+			$_GESTOR['modulos-path'],
+		);
 		$ext = ($_GESTOR['arquivo-estatico']['ext'] ? $_GESTOR['arquivo-estatico']['ext'] : null);
 		$alvo = ($_GESTOR['arquivo-estatico']['alvo'] ? $_GESTOR['arquivo-estatico']['alvo'] : null);
 		$alvo2 = ($_GESTOR['arquivo-estatico']['alvo2'] ? $_GESTOR['arquivo-estatico']['alvo2'] : null);
@@ -202,8 +250,11 @@ function arquivo_estatico_start(){
 								}
 							}
 							
-							if(!file_exists($file)){
+							$fileResolvido = arquivo_estatico_resolver_autorizado($file, $basesAutorizadas);
+							if($fileResolvido === false){
 								$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
+							} else {
+								$file = $fileResolvido;
 							}
 						}
 				}
@@ -212,16 +263,18 @@ function arquivo_estatico_start(){
 				$file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];
 		}
 		
-		if(file_exists($file)){
-			arquivo_estatico_enviar($file, $ext);
+		$fileResolvido = arquivo_estatico_resolver_autorizado($file, $basesAutorizadas);
+		if($fileResolvido !== false){
+			arquivo_estatico_enviar($fileResolvido, $ext);
 		}
 
 		// ===== Arquivos gerenciado pelos usuários via módulo arquivos.
 
 		$file = $_GESTOR['contents-path'].$_GESTOR['caminho-total'];
 
-		if(file_exists($file)){
-			arquivo_estatico_enviar($file, $ext);
+		$fileResolvido = arquivo_estatico_resolver_autorizado($file, $basesAutorizadas);
+		if($fileResolvido !== false){
+			arquivo_estatico_enviar($fileResolvido, $ext);
 		}
 	}
 	

@@ -413,3 +413,79 @@ Pendência runtime: conferir na Editbar que 'pa' lista as Páginas; na aba Model
 - `git diff --check` no slice: **OK**.
 - Avisos de rede do Happy DOM em `html-editor-embed.test.js` sao preexistentes; nao alteram o
   resultado aprovado da suite nem exercitam os arquivos deste batch.
+
+---
+## BATCH-106 - Opções de Exibição, Sidebar de CSS, Barra de Navegação e Ação Substituir (req-106, 2026-08-06)
+
+- [x] **Painel de Opções de Exibição (`c2f-view-options-panel`)**:
+  - [x] Botão `c2f-tb-view-options` na Editbar (`c2f-toolbar-editbar`, pt-br e en) e na topbar do editor visual dos módulos (componente `html-editor-visual-modal`, pt-br e en).
+  - [x] Painel flutuante no padrão do `c2f-add-panel`, com os toggles nomeados `Sidebar Lateral de CSS` e `Barra de Navegação de Elementos`.
+  - [x] Os dois nascem **desativados**; a escolha é persistida (`localStorage['c2f-he-view-options']`) e recuperada no boot do motor, com o painel refletindo o estado real ao abrir.
+- [x] **Sidebar Lateral Fixa de CSS (`c2f-he-css-sidebar`)**:
+  - [x] Coluna fixa à esquerda de 240px, cabeçalho fixo "Sidebar Lateral de CSS" e corpo rolável na altura útil da viewport.
+  - [x] Encaixa abaixo da Barra de Navegação e do offset da Editbar, sem sobreposição (`top` = offset + altura da barra; `height: calc(100vh - top)`).
+  - [x] O `#html-editor-tailwind-styler` é realocado para dentro dela (mesmo nó/handlers, sem duplicação) e devolvido ao `document.body` ao desligar.
+  - [x] Classes Tailwind ativas agrupadas por variante (`base`, `sm:`, `md:`, `hover:`…) com remoção pelo "x".
+  - [x] Bloco dedicado às classes customizadas do projeto (não-Tailwind), também removíveis.
+  - [x] Autocomplete instantâneo sobre o dicionário expandido (a partir de 2 caracteres do último token).
+  - [x] Seção "Valores manuais" no `he-styler-col-visual` aceitando `25px`, `1.5rem`, `#123456` (vazio remove a propriedade).
+  - [x] Campo de CSS inline customizado lendo/gravando o atributo `style` inteiro.
+  - [x] Inspetor de estilos computados (`getComputedStyle`, 20 propriedades).
+  - [x] `tailwindSuggestions` expandido (flexbox, grid, tamanhos, espaçamentos, bordas, sombras, opacidade, posicionamento, transições, paleta completa, arbitrários `w-[350px]`/`bg-[#1a2b3c]` e variantes) alimentando datalist e autocomplete.
+- [x] **Barra Superior Fixa de Navegação (`c2f-he-element-navbar`)**:
+  - [x] 44px abaixo da Editbar, colunas 20% (rótulo fixo) / 80% (área útil).
+  - [x] Breadcrumb de ancestrais e lista de filhos realocados para a coluna de 80% e devolvidos ao `document.body` ao desligar.
+  - [x] Desativada por padrão.
+- [x] **Toolbar flutuante e ação "Substituir" (`.he-tb-replace`)**:
+  - [x] O toolbar contextual continua acompanhando o elemento selecionado.
+  - [x] Botão ao lado de Copiar/Colar, visível só com cópia guardada **e** elemento selecionado.
+  - [x] Substitui o elemento pelo bloco da área de transferência, renumera ids de widget e seleciona automaticamente o novo objeto.
+- [x] **Isolamento da UI nova**: `isEditorOwned` (clique não vaza para o conteúdo atrás), `extractUserHtml` e o fallback de salvamento do `html-editor-interface.js` removem os painéis; `disable()`/`enable()` escondem e devolvem os painéis fixos.
+- [ ] **Homologação runtime (deploy `Update => Core`)**: pendente com o operador — os dois botões vêm de página/componente lidos do banco.
+
+### Evidência de Validação (BATCH-106)
+
+Reportada pelo executor em 2026-08-06:
+- `node --check` → `html-editor.js`, `html-editor-interface.js`, `html-editor-visual-controls.js`, `dashboard.toolbar.js`, `dashboard.iframe-toolbar.js` → **5/5 OK**.
+- `php -l gestor/bibliotecas/html-editor.php` → **OK**. Parse de `dashboard.json`, `resources/pt-br/components.json` e `resources/en/components.json` → **OK**.
+- `npx vitest run` → **118/118** em 12 arquivos (antes 93/93), com o novo `tests/Unit/JS/html-editor-view-options.test.js` **21/21** (painéis desligados por padrão, encaixe/desencaixe dos três painéis, persistência entre instâncias, encaixe sem sobreposição com offset da Editbar, `disable`/`enable`, isolamento na extração, aviso de vazio, chave desconhecida, botão e comportamento do Substituir, renumeração de ids, separação Tailwind × customizadas, variantes, autocomplete, valores manuais, CSS inline, computados e dicionário expandido), 3 casos novos em `dashboard.toolbar.test.js` (montagem, sincronização e tradução do painel) e 1 em `dashboard.iframe-toolbar.test.js` (mensagem do botão da Editbar).
+- `composer test` (PHPUnit) → **172/172** (707 assertions, 4 skipped preexistentes) sem regressão.
+- Ajuste de teste existente: `html-editor.live.test.js` passou a mirar `#html-editor-tailwind-styler .he-class-input` — o styler deixou de ter um único `<input>` (os campos de valores manuais também são inputs).
+- Sem cobertura automatizada: o painel da janela pai (`html-editor-visual-controls.js`) depende de jQuery/Fomantic reais; o stub de teste do repositório não cobre `is`/`css`/`outerWidth`. Verificação registrada como manual, conforme a regra final do checklist.
+- Cache-bust: `biblioteca-html-editor` `1.5.6`→`1.5.7`, `dashboard.json` `1.0.15`→`1.0.16`, motor no Live Editor `?v=c2f15`→`?v=c2f16`. Checksums dos recursos alterados esvaziados para o pipeline recalcular.
+
+### Pendências
+
+- **Deploy obrigatório**: a página `dashboard-site-toolbar` (Editbar) e o componente `html-editor-visual-modal` (editor dos módulos) são lidos do BANCO — os botões só aparecem após o `Update => Core`. Os assets JS são físicos e passam a valer com o core sincronizado.
+- Runtime: ligar/desligar os dois toggles nos dois editores; conferir a persistência após recarregar; conferir o encaixe sem sobreposição; testar valores manuais, autocomplete, CSS inline e computados; testar Substituir (copiar A, selecionar B, substituir → B vira A e fica selecionado); salvar e conferir que o HTML persistido não contém a UI dos painéis; repetir em `/en/`.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+### Rodada 2 do BATCH-106 — homologação do Chefe (mesma data)
+
+Quatro ajustes de usabilidade reportados no teste da rodada 1:
+
+- [x] **Painéis flutuantes legados aposentados**: trilha de ancestrais, lista de filhos e caixa de estilização não acompanham mais o elemento selecionado — existem apenas dentro da Barra de Navegação e da Sidebar de CSS. Com o painel correspondente desligado, nada é exibido (o empilhamento flutuante segue no arquivo, inativo). A barra flutuante de AÇÕES continua acompanhando o elemento.
+- [x] **Botão de fechar (`c2f-he-panel-close`)** no canto superior direito da área do título dos dois painéis: desliga o painel, exatamente como desmarcar o toggle nas Opções de Exibição (o painel de opções reflete o estado ao reabrir).
+- [x] **Botão de ancoragem (`c2f-he-panel-side`)** à esquerda do fechar: setas horizontais na sidebar (esquerda ⇄ direita) e verticais na barra de navegação (topo ⇄ base).
+- [x] **Ancoragem persistida com o padrão original**: `cssSidebarRight`/`elementNavbarBottom` no mesmo registro de `localStorage`, ambos `false` (sidebar à esquerda, barra no topo). O encaixe é recalculado nos quatro arranjos — com a barra embaixo, a sidebar sobe até a Editbar e encurta na base.
+- [x] **Clique na Editbar fecha TODA a UI flutuante**: o clique ocorre dentro do iframe da barra, então o `mousedown` da página hospedeira nunca disparava e nenhum backdrop era atingido. A barra publica `c2f-toolbar:ui-dismiss` a cada `mousedown` (em captura) e o host responde com `dismissHostPanels()` — painéis desta página (Opções de Exibição, "+", Backups) e, por delegação a `c2fEditor.dismissFloatingUi()`, os do motor (Modelos, IA, Código Customizado, modal de embed, seletor de arquivos e modal de edição). É o mesmo conjunto que já fechava ao clicar fora na área editável.
+- [x] **Clique DENTRO de painel/modal não fecha nada**: o aviso só nasce de cliques na barra; na área editável cada backdrop/`closest()` continua responsável. Como o `mousedown` precede o `click`, o botão que abre um painel continua funcionando.
+- [x] **Regressão corrigida**: `closeEmbedModal()` zera `isModalActive` incondicionalmente — lido depois dele, o modal de edição nunca seria fechado por `dismissFloatingUi`. O estado passou a ser lido antes, e embed/picker só são fechados quando de fato estão abertos.
+
+Evidência (2026-08-06): `node --check` em `html-editor.js`, `dashboard.toolbar.js` e `dashboard.iframe-toolbar.js` → **3/3 OK**; `php -l` e parse do `dashboard.json` → OK; `npx vitest run` → **130/130** (`html-editor-view-options.test.js` 21→**29**: legado oculto, exibição ao ligar, fechar pelo cabeçalho, alternância esquerda/direita, alternância topo/base com reencaixe da sidebar, persistência da ancoragem, `dismissFloatingUi` fechando os painéis do motor sem perder a seleção e o guard do modal de edição; +3 em `dashboard.toolbar.test.js` — `dismissHostPanels` nos painéis do host, delegação ao motor e ausência de editor; +1 em `dashboard.iframe-toolbar.test.js` — aviso e ordem `mousedown` → `click`); `composer test` → **181/181** (a suíte PHP cresceu com o BATCH-107, em paralelo; sem regressão). Cache-bust: `biblioteca-html-editor` `1.5.7`→`1.5.8`, `dashboard.json` `1.0.16`→`1.0.17`, motor `?v=c2f16`→`?v=c2f17`. Nenhum recurso do banco foi alterado nesta rodada.
+
+Pendência runtime da rodada 2: conferir que nada flutua com os painéis desligados; alternar a ancoragem nos quatro arranjos; fechar cada painel pelo ✕; abrir cada painel (Opções, "+", Backups, Modelos, IA, Código Customizado) e clicar na Editbar confirmando o fechamento; conferir que clicar dentro do painel não o fecha.
+
+### Rodada 3 do BATCH-106 — homologação do Chefe (mesma data)
+
+- [x] **CSS inline com CodeMirror**: o campo `he-inline-css` da Sidebar de CSS virou editor CodeMirror (`mode: css`, tema `tomorrow-night-bright`, `indentUnit` 4, 110px — a largura da sidebar não comporta os 800px do padrão de abas), criado sob demanda apenas com a sidebar ligada e idempotente (dedup por `.CodeMirror` irmão).
+- [x] **Degradação graciosa preservada**: sem a biblioteca (ou sem `getValue`/`setValue`), o `<textarea>` continua funcionando; o listener de `blur` só é registrado se a build expuser `on()`.
+- [x] **Leitura/escrita coerentes**: `syncInlineCss` usa `setValue` + `refresh` (o editor pode nascer oculto) e `applyInlineCss` lê de `inlineCssValue()`; valor idêntico ao `style` atual não empilha passo de undo.
+- [x] **`#c2f-ai-status` deixa de sumir ao redimensionar a caixa**: o cálculo do resize-follow descontava só o topo do editor, fazendo o CodeMirror engolir o espaço de quem vinha depois. Agora: `altura visível do corpo − (conteúdo total − altura dos editores)`, com folga de 8px.
+- [x] **Editor da aba "Modo" nasce na altura certa**: o ajuste vivia apenas no `ResizeObserver` (que reage a mudanças da CAIXA). Extraído para `syncLiveBoxCodeMirrors(panel)` e chamado também na troca de abas e na abertura dos painéis de IA e Código Customizado.
+- [x] **Guarda anti-loop afrouxada para 2px**: diferenças de arredondamento realimentavam o observador.
+- [x] **Painéis fixos permanecem no preview de dispositivo**: `enterDevicePreview()` chama `disable()`, que escondia a Sidebar e a Barra. `disable({ manterPaineis: true })` é usado só nesse caminho — trocar a largura de visualização não é sair do modo de edição. Sair da edição e salvar continuam escondendo os painéis.
+
+Evidência (2026-08-06): `node --check` em `html-editor.js` e `dashboard.toolbar.js` → **2/2 OK**; `php -l` e parse do `dashboard.json` → OK; `npx vitest run` → **134/134** (`html-editor-view-options.test.js` 29→**33**: conversão em CodeMirror idempotente, leitura/escrita do `style` e aplicação no `blur` sem undo redundante, degradação graciosa sem a lib, e painéis mantidos no preview de dispositivo); `composer test` → **181/181** sem regressão. O stub de CodeMirror dos testes (`tests/Unit/JS/setup.js`) ganhou `on()` e um `__emit()` auxiliar. Cache-bust: `biblioteca-html-editor` `1.5.8`→`1.5.9`, `dashboard.json` `1.0.17`→`1.0.18`, motor `?v=c2f17`→`?v=c2f18`. Nenhum recurso do banco foi alterado nesta rodada.
+
+Pendência runtime da rodada 3: editar CSS inline pelo CodeMirror (botão e saída do campo); no Assistente IA, arrastar o canto inferior direito conferindo que o `#c2f-ai-status` continua visível e abrir a aba "Modo" conferindo a altura inicial do editor; trocar desktop/tablet/mobile conferindo que os painéis fixos permanecem.

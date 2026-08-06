@@ -1355,7 +1355,8 @@ function gestor_sessao_iniciar(){
 	global $_CONFIG;
 	
 	if(!isset($_COOKIE[$_CONFIG['session-authname']])){
-		$sessionId = md5(uniqid(rand(), true));
+		gestor_incluir_biblioteca('seguranca');
+		$sessionId = seguranca_token_aleatorio(32);
 		
 		setcookie($_CONFIG['session-authname'], $sessionId, [
 			'expires' => time() + $_CONFIG['session-lifetime'],

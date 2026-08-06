@@ -1,3 +1,62 @@
+(function () {
+	'use strict';
+
+	function csrfToken() {
+		var meta = document.querySelector('meta[name="csrf-token"]');
+		return meta ? meta.getAttribute('content') : '';
+	}
+
+	function metodoMutavel(method) {
+		return ['POST', 'PUT', 'PATCH', 'DELETE'].indexOf(String(method || 'GET').toUpperCase()) !== -1;
+	}
+
+	function mesmaOrigem(input) {
+		try {
+			var alvo = typeof input === 'string' ? input : input.url;
+			return new URL(alvo, window.location.href).origin === window.location.origin;
+		} catch (error) {
+			return false;
+		}
+	}
+
+	// Todos os $.ajax do painel recebem o mesmo cabeçalho, inclusive módulos legados.
+	if (window.jQuery) {
+		window.jQuery.ajaxPrefilter(function (options, originalOptions, xhr) {
+			var token = csrfToken();
+			if (token && !options.crossDomain && metodoMutavel(options.type)) xhr.setRequestHeader('X-CSRF-Token', token);
+		});
+	}
+
+	// Cobre os fluxos modernos que usam fetch diretamente.
+	if (window.fetch) {
+		var fetchOriginal = window.fetch.bind(window);
+		window.fetch = function (input, init) {
+			init = init || {};
+			var token = csrfToken();
+			if (token && mesmaOrigem(input) && metodoMutavel(init.method)) {
+				var headers = new Headers(init.headers || {});
+				headers.set('X-CSRF-Token', token);
+				init.headers = headers;
+			}
+			return fetchOriginal(input, init);
+		};
+	}
+
+	document.addEventListener('submit', function (event) {
+		var form = event.target;
+		var token = csrfToken();
+		if (!token || !form || !mesmaOrigem(form.action || window.location.href) || String(form.method || 'GET').toUpperCase() === 'GET') return;
+		var input = form.querySelector('input[name="_csrf_token"]');
+		if (!input) {
+			input = document.createElement('input');
+			input.type = 'hidden';
+			input.name = '_csrf_token';
+			form.appendChild(input);
+		}
+		input.value = token;
+	}, true);
+})();
+
 $(document).ready(function () {
 	// ===== Menu Principal do gestor.
 

@@ -190,6 +190,18 @@ $_CONFIG = [
         'maximo-tokens-usuario'       => (int)($_ENV['OAUTH2_MAXIMO_TOKENS_USUARIO'] ?? 5),
     ],
 
+    // Hardening HTTP/API (req-107). Listas são separadas por vírgula no .env.
+    'security' => [
+        'csp'                 => trim((string)($_ENV['SECURITY_CSP'] ?? '')),
+        'csp-report-only'     => filter_var($_ENV['SECURITY_CSP_REPORT_ONLY'] ?? false, FILTER_VALIDATE_BOOLEAN),
+        'x-frame-options'     => trim((string)($_ENV['SECURITY_X_FRAME_OPTIONS'] ?? 'SAMEORIGIN')),
+    ],
+    'api' => [
+        'cors-origins'        => array_values(array_filter(array_map('trim', explode(',', (string)($_ENV['API_CORS_ORIGINS'] ?? ''))))),
+        'rate-limit-max'      => max(1, (int)($_ENV['API_RATE_LIMIT_MAX'] ?? 100)),
+        'rate-limit-window'   => max(60, (int)($_ENV['API_RATE_LIMIT_WINDOW'] ?? 3600)),
+    ],
+
     // Arquitetura de Módulos Distribuídos (req-005)
     // secret      : segredo HMAC compartilhado entre central e distribuído (igual nos dois).
     // central-url : URL base do central (usada pelo distribuído p/ o Iframe e o middleware).

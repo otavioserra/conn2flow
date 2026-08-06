@@ -10,6 +10,53 @@ if (function_exists('mb_internal_encoding')) {
     mb_internal_encoding('UTF-8');
 }
 
+$installerHttps = !empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off';
+session_name('C2F_INSTALLER');
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'secure' => $installerHttps,
+    'httponly' => true,
+    'samesite' => 'Strict',
+]);
+session_start();
+
+$installerLockPath = __DIR__ . DIRECTORY_SEPARATOR . 'install.lock';
+if (!isset($_SESSION['conn2flow_install_token'])) {
+    $_SESSION['conn2flow_install_token'] = bin2hex(random_bytes(32));
+}
+$installToken = $_SESSION['conn2flow_install_token'];
+
+function installer_lock_acquire($path, $token)
+{
+    $now = time();
+    if (is_file($path)) {
+        $lock = json_decode((string)file_get_contents($path), true);
+        $sameOwner = is_array($lock)
+            && isset($lock['token_hash'])
+            && hash_equals((string)$lock['token_hash'], hash('sha256', $token));
+        $stale = !is_array($lock) || ($now - (int)($lock['created_at'] ?? 0)) > 7200;
+        if (!$sameOwner && !$stale) return false;
+    }
+
+    $payload = json_encode([
+        'token_hash' => hash('sha256', $token),
+        'created_at' => $now,
+    ], JSON_UNESCAPED_SLASHES);
+
+    return file_put_contents($path, $payload, LOCK_EX) !== false;
+}
+
+function installer_lock_validate($path, $token)
+{
+    if (!is_file($path)) return false;
+    $lock = json_decode((string)file_get_contents($path), true);
+
+    return is_array($lock)
+        && isset($lock['token_hash'])
+        && hash_equals((string)$lock['token_hash'], hash('sha256', $token));
+}
+
 // ===== Definições de variáveis gerais do gestor.
 
 $_GESTOR_INSTALADOR['versao']								=	'1.5.2'; // Versão do gestor instalador.
@@ -63,6 +110,11 @@ function load_debug_env($envPath)
 $debugData = load_debug_env($debugEnvPath);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (!installer_lock_acquire($installerLockPath, $installToken)) {
+        http_response_code(423);
+        echo 'O instalador já está em execução em outra sessão.';
+        exit;
+    }
     if (!empty($debugData)) {
         // Se .env.debug existe, exibe tela de instalação via modo debug
         require_once __DIR__ . '/views/debug.php';
@@ -110,8 +162,21 @@ try {
         $inputData['debug'] = '1';
     }
 
+    $postedToken = (string)($inputData['install_token'] ?? '');
+    if ($postedToken === '' || !hash_equals($installToken, $postedToken) || !installer_lock_validate($installerLockPath, $postedToken)) {
+        send_json_error('Token ou arquivo de trava do instalador inválido.', 403);
+    }
+
     // A ação determina qual etapa da instalação executar
     $action = $inputData['action'] ?? 'validate_input';
+
+    if ($action === 'validate_input' && !empty($inputData['install_path'])) {
+        $installedPath = rtrim((string)$inputData['install_path'], '/\\');
+        if (is_file($installedPath . DIRECTORY_SEPARATOR . 'gestor.php')
+            && is_file($installedPath . DIRECTORY_SEPARATOR . 'config.php')) {
+            send_json_error('Este ambiente já está instalado. A reexecução do instalador foi bloqueada.', 409);
+        }
+    }
 
     // Se modo debug e SKIP_DOWNLOAD=1, força etapa após download
     if (!empty($debugData) && isset($debugData['skip_download']) && $debugData['skip_download'] == '1' && $action === 'download_files') {

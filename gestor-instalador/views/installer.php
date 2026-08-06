@@ -9,6 +9,7 @@
     <link rel="manifest" href="assets/favicon/site.webmanifest">
     <title data-translate="page_title"><?= __('page_title') ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>window.conn2flowInstallToken = <?= json_encode($installToken, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;</script>
 </head>
 <body class="bg-gray-100">
     <!-- Language Selection Modal -->
@@ -37,6 +38,7 @@
             </p>
             <form id="installer-form" action="." method="POST" autocomplete="off" novalidate>
                 <input type="hidden" name="install" value="1">
+                <input type="hidden" name="install_token" value="<?= htmlspecialchars($installToken, ENT_QUOTES, 'UTF-8') ?>">
                 <!-- Database Configuration -->
                 <div class="mb-6">
                     <h2 data-translate="db_config_title" class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4"><?= __('db_config_title') ?></h2>

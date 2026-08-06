@@ -17,6 +17,29 @@ $_GESTOR['biblioteca-oauth2'] = Array(
 );
 
 /**
+ * Calcula os IDs que devem ser revogados antes de inserir um novo access token.
+ * Mantém no máximo $maximo tokens pelo critério FIFO (data e ID como desempate).
+ */
+function oauth2_fifo_ids_para_revogar($tokens, $maximo){
+    $maximo = max(1, (int)$maximo);
+    $tokens = array_values(array_filter((array)$tokens, static function ($token) {
+        return !isset($token['tipo']) || $token['tipo'] === 'access';
+    }));
+
+    usort($tokens, static function ($a, $b) {
+        $dataA = strtotime((string)($a['data_criacao'] ?? '1970-01-01 00:00:00')) ?: 0;
+        $dataB = strtotime((string)($b['data_criacao'] ?? '1970-01-01 00:00:00')) ?: 0;
+        if($dataA === $dataB) return (int)($a['id_oauth2_tokens'] ?? 0) <=> (int)($b['id_oauth2_tokens'] ?? 0);
+        return $dataA <=> $dataB;
+    });
+
+    $quantidade = max(0, count($tokens) - $maximo + 1);
+    return array_map(static function ($token) {
+        return (int)$token['id_oauth2_tokens'];
+    }, array_slice($tokens, 0, $quantidade));
+}
+
+/**
  * Gera tokens OAuth 2.0 usando credenciais de usuário do sistema.
  *
  * Recebe id_usuarios já validado e gera access_token e refresh_token.
@@ -50,21 +73,20 @@ function oauth2_gerar_token_client_credentials($params = false){
         return false;
     }
 
-    // ===== Verificar limite de tokens ativos por usuário (ex.: máximo 5)
+    // ===== Limpar expirados e aplicar rotação FIFO de access tokens ativos
     $max_tokens = isset($_CONFIG['oauth2']['maximo-tokens-usuario']) ? $_CONFIG['oauth2']['maximo-tokens-usuario'] : 5;
+    oauth2_limpar_tokens_expirados();
+
     $tokens_ativos = banco_select_name(
-        banco_campos_virgulas(Array('COUNT(*) as total')),
+        banco_campos_virgulas(Array('id_oauth2_tokens', 'data_criacao', 'tipo')),
         "oauth2_tokens",
-        "WHERE id_usuarios='" . $id_usuarios . "' AND expiration > " . time()
+        "WHERE id_usuarios='" . (int)$id_usuarios . "' AND tipo='access' AND expiration > " . time()
+        . " ORDER BY data_criacao ASC, id_oauth2_tokens ASC"
     );
 
-    if (isset($tokens_ativos) && isset($tokens_ativos[0]['total']) && $tokens_ativos[0]['total'] >= $max_tokens) {
-        return false; // Ou lance erro: "Limite de tokens ativos atingido"
+    foreach(oauth2_fifo_ids_para_revogar($tokens_ativos ?: Array(), $max_tokens) as $idRevogar){
+        banco_delete('oauth2_tokens', "WHERE id_oauth2_tokens='".(int)$idRevogar."'");
     }
-
-    // ===== Limpar tokens expirados antes de gerar novos
-
-    oauth2_limpar_tokens_expirados();
 
     // ===== Gerar tokens usando JWT
 
@@ -86,7 +108,8 @@ function oauth2_gerar_token_client_credentials($params = false){
 
     // ===== Gerar pubID único para access_token
 
-    $pubID = md5(uniqid(mt_rand(), true));
+    gestor_incluir_biblioteca('seguranca');
+    $pubID = seguranca_token_aleatorio(32);
 
     // ===== Gerar pubIDValidation para access_token (hash HMAC)
 
@@ -121,7 +144,7 @@ function oauth2_gerar_token_client_credentials($params = false){
 
     // ===== Gerar pubID único para refresh_token
 
-    $refresh_pubID = md5(uniqid(mt_rand(), true));
+    $refresh_pubID = seguranca_token_aleatorio(32);
 
     // ===== Gerar pubIDValidation para refresh_token (hash HMAC)
 
@@ -271,6 +294,17 @@ function oauth2_validar_token($params = false){
     );
 
     if(!$tokens){
+        return false;
+    }
+
+    // ===== HMAC adicional liga o pubID persistido ao segredo fora do banco
+
+    $pubIDBanco = (string)$tokens[0]['pubID'];
+    $hmacBanco = (string)$tokens[0]['pubIDValidation'];
+    $hmacEsperado = hash_hmac($_CONFIG['usuario-hash-algo'], $pubIDBanco, $_CONFIG['usuario-hash-password']);
+    if(!hash_equals($hmacEsperado, $hmacBanco)
+        || !hash_equals($pubIDBanco, (string)$validacao['pubID'])
+        || (string)$tokens[0]['id_usuarios'] !== (string)$validacao['sub']){
         return false;
     }
 
@@ -463,7 +497,9 @@ function oauth2_renovar_token($params = false){
     $pubIDValidation_from_db = $tokens[0]['pubIDValidation'];
     $expected_pubIDValidation = hash_hmac($_CONFIG['usuario-hash-algo'], $pubID_from_db, $_CONFIG['usuario-hash-password']);
 
-    if($pubIDValidation_from_db !== $expected_pubIDValidation){
+    if(!hash_equals($expected_pubIDValidation, (string)$pubIDValidation_from_db)
+        || !hash_equals((string)$pubID_from_db, (string)$validacao['pubID'])
+        || (string)$tokens[0]['id_usuarios'] !== (string)$validacao['sub']){
         return false;
     }
 

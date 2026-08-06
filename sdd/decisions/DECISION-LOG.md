@@ -106,6 +106,7 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-099 | 2026-07-30 | accepted | Filtro de módulos no menu principal do gestor (demanda direta do Engenheiro C... |
 | DEC-100 | 2026-07-31 | accepted | Extensão da biblioteca PayPal (PHP) e asset JS para Checkout Transparente e T... |
 | DEC-101 | 2026-08-03 | accepted | Navegacao por foco real nos resultados visiveis dos dois filtros de modulos (BATCH-105). |
+| DEC-103 | 2026-08-06 | accepted | Painéis fixos opcionais do editor visual (Sidebar de CSS e Barra de Navegação), expansão do styler e ação Substituir (BATCH-106). |
 
 ---
 
@@ -218,3 +219,160 @@ direta do Engenheiro Chefe / BATCH-105). Decisoes desta rodada:
 
 Validacao: `node --check` nos dois assets e parse do JSON OK; testes focados **16/16**; Vitest
 completo **93/93**; `git diff --check` OK. Nenhum `git commit`/`git push` executado.
+
+## DEC-102 - 2026-08-06 - accepted
+
+Promocao e consolidacao das recomendacoes de seguranca e arquitetura do backlog para a requisicao humana `req-107.md` (BATCH-107). Decisões desta rodada:
+
+1. **Promocao unificada dos 10 itens do backlog (`BL-001` a `BL-010`)**: em vez de dispersar as correcoes de seguranca em pequenos lotes fragmentados, consolida-se uma requisicao estruturada (`req-107.md`) cobrindo instalador, CSPRNG, path traversal, CSRF, API, OAuth2, cabeçalhos HTTP, prepared statements e saneamento de codigo.
+2. **CSPRNG obrigatorio em tokens e sessoes**: substituicao de `md5(uniqid(rand(), true))` e `md5(uniqid(mt_rand(), true))` por `random_bytes()` / `random_int` com entropia minima de 128 bits centralizados em `seguranca_token_aleatorio()`.
+3. **Contencao estrita de Path Traversal por `realpath`**: validacao por `realpath` e `str_starts_with` contra os diretoriaos autorizados (`assets/`, `contents/`, `modulos/`) com rejeicao imediata de `..` e bytes nulos.
+4. **Validacao CSRF obrigatoria em acoes de estado por cookie**: ativacao de `gestor_csrf_validar()` nos formulaios e requisições AJAX autenticados por cookie no painel, mantendo isencao documentada apenas para endpoints M2M/HMAC.
+5. **Hardening de API e OAuth2**: CORS parametrizado por allow-list, eliminacao de tokens em query string (`?token=`), validacao do HMAC `pubIDValidation` na verificacao de access tokens e rotacao FIFO de sessoes limite.
+6. **Arquivamento rastreavel do backlog**: os rascunhos `BL-001` a `BL-010` foram movidos para `sdd/backlog/archive/` e anotados como `PROMOTED` em `sdd/backlog/BACKLOG-INDEX.md`.
+
+## DEC-103 - 2026-08-06 - accepted
+
+Painéis fixos opcionais do editor visual, expansão da caixa de estilização e ação "Substituir"
+(req-106 / BATCH-106). Decisões desta rodada:
+
+1. **Encaixe (dock) do MESMO nó, em vez de painéis novos**: a Sidebar de CSS e a Barra de Navegação
+   não reimplementam styler, breadcrumb e lista de filhos — elas os RECEBEM. Ligar um toggle move o
+   elemento existente (`appendChild`) para dentro do painel fixo e acrescenta uma classe de estado
+   (`he-styler-docked` / `he-nav-docked`) que anula o posicionamento absoluto e a moldura própria;
+   desligar devolve o nó ao `document.body`. Todos os listeners registrados na criação continuam
+   válidos, `renderStyler`/`renderBreadcrumb`/`renderChildren` seguem intactos e não existe risco de
+   duas cópias divergirem. O custo é uma regra em `updateSelectionUI`: o que está encaixado não é
+   medido nem posicionado.
+
+2. **Os painéis SOBREPÕEM o conteúdo; não empurram a página**: a alternativa (aplicar `margin-left`
+   ao `<html>`, como o Live Editor já faz com `margin-top`) mudaria a largura de renderização do
+   conteúdo editado — percentuais, `100vw` e layouts fluidos passariam a ser desenhados numa caixa
+   diferente da que o visitante vê, além de gerar rolagem horizontal. Como o editor edita o DOM real,
+   preferiu-se a camada sobreposta (padrão de inspetor), com o toggle disponível para liberar a
+   borda esquerda quando o usuário precisar. "Sem sobreposições" do intake foi lido como o que é: a
+   sidebar encaixa ABAIXO da barra de navegação, que por sua vez encaixa abaixo da Editbar.
+
+3. **O offset do topo vem do `margin-top` do `<html>`, não da altura do iframe da barra**: o iframe
+   `#c2f-site-toolbar` CRESCE quando um dropdown abre (ele apenas sobrepõe), então sua altura não
+   serve de referência. O `margin-top` que `dashboard.toolbar.js` aplica é exatamente o offset
+   PERSISTENTE (30px + 44px da editbar aberta). No editor clássico não há barra e o offset é 0.
+
+4. **Estado persistido, padrão desligado**: as opções vivem em `localStorage['c2f-he-view-options']`
+   com os dois valores em `false` por padrão, no mesmo modelo da área de transferência do BATCH-098.
+   Sem persistência o usuário teria de religar a sidebar a cada página; com ela, a exigência do
+   intake ("desativado por padrão") vale na primeira experiência e a preferência é respeitada
+   depois. Storage indisponível cai silenciosamente no padrão desligado.
+
+5. **O painel de opções conversa com o motor pelo canal de cada contexto**: no Live Editor o motor
+   roda na MESMA página do `dashboard.toolbar.js`, então o toggle chama `c2fEditor.setViewOption()`
+   direto (e lê `getViewOption()` ao abrir, evitando um estado paralelo). No editor clássico o motor
+   está dentro do iframe: a janela pai posta `c2f-he:view-option`. Como o iframe usa `srcdoc`, ele
+   herda a origem — o painel do pai lê o mesmo `localStorage` para marcar os checkboxes.
+
+6. **Separação Tailwind × classes do projeto é HEURÍSTICA e organizacional**: `isTailwindClass`
+   trabalha sobre o utilitário sem variante, aceita a sintaxe de colchetes e casa contra um conjunto
+   de prefixos/palavras. Uma classe do projeto que colida com um prefixo (`text-destaque`) aparece
+   no bloco do Tailwind — o que muda é só o agrupamento visual, nunca o que é aplicado ao elemento.
+   Preferiu-se isso a exigir um dicionário completo do Tailwind embarcado no motor.
+
+7. **Valores manuais e CSS inline entram no accordion existente, não numa área exclusiva da
+   sidebar**: assim o painel flutuante (sidebar desligada) ganha as mesmas capacidades sem inflar —
+   as seções nascem fechadas — e não é preciso manter dois modos de renderização do styler.
+
+8. **"Substituir" limpa a seleção ANTES de remover o alvo**: `afterDomMutation` chama
+   `updateSelectionUI`, que trabalha sobre `selectedElement`; apagar o nó antes de zerar a seleção
+   deixaria a UI apontando para um elemento fora do documento. O bloco entra na POSIÇÃO do original
+   (não ao lado, como o "Colar"), passa por `remapPastedIds` — colar/substituir na mesma página do
+   original não pode duplicar `data-c2f-widget-id` — e o novo objeto é selecionado ao final.
+
+9. **Os três ids novos entram no contrato de UI do editor**: `isEditorOwned` (para o clique não
+   vazar para o conteúdo atrás via `elementsFromPoint`), `extractUserHtml` e o seletor de fallback do
+   salvamento em `html-editor-interface.js`. Sem isso, no editor clássico (onde `contentRoot` é o
+   próprio `body`) os painéis seriam persistidos junto com a página.
+
+Validação: `node --check` 5/5, `php -l` OK, JSON OK, `npx vitest run` **118/118** (novo
+`html-editor-view-options.test.js` 21/21), `composer test` **172/172**. Requer deploy
+`Update => Core`: os dois botões vêm de página/componente lidos do banco. Nenhum `git commit`/
+`git push` executado.
+
+### Adendo DEC-103 (rodada 2 — homologação do Chefe, mesma data)
+
+10. **O modo flutuante dos três painéis foi APOSENTADO, não mantido como alternativa**: a decisão do
+    Chefe na homologação é que a usabilidade antiga (breadcrumb, filhos e styler perseguindo o
+    elemento) não se justifica agora que existem lugares fixos para eles. Com o painel desligado, o
+    conteúdo continua sendo RENDERIZADO (a barra fixa o consome assim que ligada) mas não é exibido.
+    O empilhamento flutuante permanece no arquivo, inativo — desabilitar custa uma linha e preserva a
+    possibilidade de retomada; remover exigiria reescrever `updateSelectionUI`. A barra flutuante de
+    AÇÕES (`html-editor-floating-toolbar`) não faz parte do legado aposentado: ela precisa estar
+    junto do elemento.
+
+11. **Ancoragem alternável em vez de painel arrastável**: o problema real relatado é o painel cobrir
+    o objeto que se quer editar. Duas posições opostas por painel (esquerda/direita, topo/base)
+    resolvem isso com um clique, sem introduzir arraste, redimensionamento e persistência de
+    coordenadas — que exigiriam tratar viewport pequena, colisão entre os painéis e reencaixe. O
+    botão vive no cabeçalho, junto do fechar, porque é lá que o usuário já olha para identificar o
+    painel.
+
+12. **O ✕ do cabeçalho é o MESMO caminho do toggle**: `setViewOption(painel, false)` — não um "ocultar
+    temporário" paralelo. Assim o painel de Opções de Exibição continua sendo a fonte única do
+    estado (ao reabrir, o toggle aparece desmarcado) e a escolha é persistida como qualquer outra.
+
+13. **Clique no iframe da Editbar precisa ser ANUNCIADO ao host**: os painéis do host fecham por um
+    `mousedown` no `document` da página hospedeira, e os do motor por um clique no próprio backdrop.
+    Nenhum dos dois acontece quando o clique cai dentro do iframe da barra — daí os painéis ficarem
+    abertos ao usar outro botão da Editbar. A barra passa a publicar `c2f-toolbar:ui-dismiss` em
+    captura, e o host concentra o fechamento em `dismissHostPanels()`.
+
+14. **A regra é "clicou fora, fechou" — em qualquer superfície** (decisão do Chefe na rodada 2): o
+    `ui-dismiss` fecha TODA a UI flutuante, não só a do host. `dismissHostPanels()` delega ao motor
+    por `c2fEditor.dismissFloatingUi()`, que fecha exatamente o conjunto que já fechava por backdrop
+    ao clicar na área editável — Modelos, IA, Código Customizado, modal de embed, seletor de arquivos
+    e modal de edição. Chegou-se a preservar os painéis do motor (receio de perder texto digitado no
+    Assistente de IA), mas eles já sumiam ao clicar na página; manter a exceção só na barra criaria
+    duas regras para o mesmo gesto. Clique DENTRO de um painel continua sem efeito: o aviso nasce
+    apenas de cliques na barra e, na página, cada backdrop/`closest()` segue responsável.
+
+15. **Ler `isModalActive` ANTES de fechar os demais**: `closeEmbedModal()` zera a flag
+    incondicionalmente (mesmo com o modal de embed fechado). Encadear os fechamentos sem cuidado
+    fazia o modal de EDIÇÃO deixar de ser fechado — o teste do guard pegou isso. `dismissFloatingUi`
+    captura o estado no início e só fecha embed/picker quando eles estão de fato abertos.
+
+Validação da rodada 2: `node --check` 3/3, `php -l` OK, JSON OK, `npx vitest run` **130/130**,
+`composer test` **181/181**. Cache-bust: `biblioteca-html-editor` `1.5.8`, `dashboard.json`
+`1.0.17`, motor `?v=c2f17`. Nenhum `git commit`/`git push` executado.
+
+### Adendo DEC-103 (rodada 3 — homologação do Chefe, mesma data)
+
+16. **CodeMirror no CSS inline com altura própria**: a diretriz de Chefia para editores CodeMirror em
+    abas/containers extras fixa `setSize('100%', 800)`. Aqui o editor vive numa sidebar de 240px de
+    largura, ao lado de outros blocos roláveis — 800px de altura tornaria o painel inutilizável.
+    Herdam-se o tema (`tomorrow-night-bright`) e a indentação (4); o modo é `css` (é uma declaração
+    de estilo, não HTML) e a altura fica em 110px. A criação é sob demanda, só com a sidebar ligada,
+    e a **degradação graciosa** para `<textarea>` é mantida — inclusive o `on('blur')`, registrado
+    apenas quando a build expõe eventos. `applyInlineCss` ignora valor idêntico ao `style` atual,
+    senão cada troca de foco empilharia um passo de undo vazio.
+
+17. **O resize-follow precisa descontar o que vem DEPOIS do editor**: a conta anterior
+    (`fundo do corpo − topo do editor`) dava ao CodeMirror todo o espaço restante, empurrando para
+    fora da área visível o que vinha depois dele no corpo — daí o `#c2f-ai-status` só aparecer
+    rolando a caixa. A conta passou a ser `altura visível do corpo − (conteúdo total − altura dos
+    editores)`, que não depende de conhecer os elementos vizinhos e continua válida se o painel
+    ganhar novos blocos. A guarda anti-loop subiu de "igualdade exata" para "diferença ≤ 2px", porque
+    o arredondamento realimentava o `ResizeObserver`.
+
+18. **Ajuste de altura não pode viver só no ResizeObserver**: ele reage a mudanças da CAIXA, então o
+    editor de uma aba recém-exibida ficava com a altura fixa do `setSize` inicial até o usuário
+    arrastar o canto. A lógica virou o método `syncLiveBoxCodeMirrors(panel)`, chamado pelo
+    observador, pela troca de abas e pela abertura dos painéis de IA e Código Customizado.
+
+19. **Preview de dispositivo não é sair da edição**: `enterDevicePreview()` desabilita o editor para
+    que o preview seja fiel, e a rodada 1 amarrou a visibilidade dos painéis fixos ao `disable()`.
+    O resultado é que trocar desktop/tablet/mobile fazia a Sidebar e a Barra sumirem, sugerindo que a
+    funcionalidade tinha ido embora. `disable()` passou a aceitar `{ manterPaineis: true }`, usado
+    só nesse caminho — preferido a criar um método novo, porque mantém um único ponto de desligamento
+    do editor e deixa a exceção explícita em quem a pede.
+
+Validação da rodada 3: `node --check` 2/2, `php -l` OK, JSON OK, `npx vitest run` **134/134**,
+`composer test` **181/181**. Cache-bust: `biblioteca-html-editor` `1.5.9`, `dashboard.json`
+`1.0.18`, motor `?v=c2f18`. Nenhum `git commit`/`git push` executado.

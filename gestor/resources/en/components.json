@@ -342,11 +342,11 @@
     {
         "name": "HTML Editor Visual Modal",
         "id": "html-editor-visual-modal",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "a53e49ddf9904f421e42929d4fc3fba9",
+            "html": "e8abab90e3418cc158524bf60f47394d",
             "css": "",
-            "combined": "a53e49ddf9904f421e42929d4fc3fba9"
+            "combined": "e8abab90e3418cc158524bf60f47394d"
         }
     },
     {

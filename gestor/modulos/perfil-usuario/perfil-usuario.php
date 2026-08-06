@@ -491,7 +491,11 @@ function perfil_usuario_editar(){
 			case 'senha':
 				$senha = banco_escape_field($_REQUEST['senha']);
 				
-				$senhaHash = password_hash($senha, PASSWORD_ARGON2I, ["cost" => 9]);
+				$senhaHash = password_hash($senha, PASSWORD_ARGON2ID, [
+					'memory_cost' => 65536,
+					'time_cost' => 4,
+					'threads' => 2,
+				]);
 			break;
 		}
 		
@@ -2377,7 +2381,11 @@ function perfil_usuario_signup(){
 			
 			$senha = banco_escape_field($_REQUEST['senha']);
 			
-			$senhaHash = password_hash($senha, PASSWORD_ARGON2I, ["cost" => 9]);
+			$senhaHash = password_hash($senha, PASSWORD_ARGON2ID, [
+				'memory_cost' => 65536,
+				'time_cost' => 4,
+				'threads' => 2,
+			]);
 			
 			// ===== Separar os nomes (primeiro, do meio e último)
 			
@@ -2452,7 +2460,8 @@ function perfil_usuario_signup(){
 			
 			// ===== Criar o token e guardar o mesmo no banco
 			
-			$tokenPubId = md5(uniqid(rand(), true));
+			gestor_incluir_biblioteca('seguranca');
+			$tokenPubId = seguranca_token_aleatorio(32);
 			$expiration = time() + $_CONFIG['token-lifetime'];
 
 			$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
@@ -2767,7 +2776,8 @@ function perfil_usuario_forgot_password(){
 				if($status == 'A'){
 					// ===== Criar o token e guardar o mesmo no banco
 					
-					$tokenPubId = md5(uniqid(rand(), true));
+					gestor_incluir_biblioteca('seguranca');
+					$tokenPubId = seguranca_token_aleatorio(32);
 					$expiration = time() + $_CONFIG['token-lifetime'];
 		
 					$pubID = hash_hmac($_CONFIG['usuario-hash-algo'], $tokenPubId, $_CONFIG['usuario-hash-password']);
@@ -3004,7 +3014,11 @@ function perfil_usuario_redefine_password(){
 			
 			$senha = banco_escape_field($_REQUEST['senha']);
 			
-			$senhaHash = password_hash($senha, PASSWORD_ARGON2I, ["cost" => 9]);
+			$senhaHash = password_hash($senha, PASSWORD_ARGON2ID, [
+				'memory_cost' => 65536,
+				'time_cost' => 4,
+				'threads' => 2,
+			]);
 			
 			// ===== Atualizar senha no banco da conta do usuário e redirecionar para a página de confirmação
 			

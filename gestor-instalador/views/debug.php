@@ -9,6 +9,7 @@
     <link rel="manifest" href="assets/favicon/site.webmanifest">
     <title>Instalação via Modo Debug</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>window.conn2flowInstallToken = <?= json_encode($installToken, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;</script>
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto mt-20">

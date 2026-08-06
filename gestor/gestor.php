@@ -832,6 +832,15 @@ function gestor_pagina_extra_head_e_javascript(){
 	// Javascript do projeto regras de negócio, se existir.
 
 	if(!isset($_GESTOR['project-javascript'])) $_GESTOR['project-javascript'] = Array();
+
+	// Token do painel para formulários e clientes AJAX autenticados por cookie.
+	if(isset($_COOKIE[$_CONFIG['cookie-authname']])){
+		gestor_incluir_biblioteca('seguranca');
+		$csrfToken = gestor_csrf_token();
+		$_GESTOR['html-extra-head'][] = '<meta name="csrf-token" content="'.htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8').'">';
+		if(!isset($_GESTOR['javascript-vars'])) $_GESTOR['javascript-vars'] = Array();
+		$_GESTOR['javascript-vars']['csrfToken'] = $csrfToken;
+	}
 	
 	if(isset($_GESTOR['layout#id']) && isset($_GESTOR['project-javascript-layouts-remove']) && in_array($_GESTOR['layout#id'], $_GESTOR['project-javascript-layouts-remove'])){
 		// Não incluir javascript do projeto, pois o layout atual está na lista de layouts para não incluir o javascript do projeto.
@@ -1159,7 +1168,8 @@ function gestor_cookie_verificacao(){
 	if(!isset($_COOKIE[$_CONFIG['cookie-verify']]) && !isset($_COOKIE[$_CONFIG['cookie-authname']])){
 		// ===== Criar um cookie de verificação
 		
-		$cookieId = md5(uniqid(rand(), true));
+		gestor_incluir_biblioteca('seguranca');
+		$cookieId = seguranca_token_aleatorio(32);
 		
 		setcookie($_CONFIG['cookie-verify'], $cookieId, [
 			'expires' => '0',
@@ -2473,6 +2483,45 @@ function gestor_roteador(){
 	}
 }
 
+/** Rejeita traversal e separadores ambíguos antes de qualquer concatenação de caminho. */
+function gestor_caminho_publico_valido($caminho){
+	$caminho = (string)$caminho;
+
+	for($i = 0; $i < 3; $i++){
+		$decodificado = rawurldecode($caminho);
+		if($decodificado === $caminho) break;
+		$caminho = $decodificado;
+	}
+
+	return strpos($caminho, '..') === false
+		&& strpos($caminho, "\0") === false
+		&& strpos($caminho, '\\') === false;
+}
+
+/** Emite cabeçalhos defensivos para todas as respostas do bootstrap web. */
+function gestor_cabecalhos_seguranca(){
+	global $_CONFIG;
+
+	if(headers_sent()) return;
+
+	header('X-Content-Type-Options: nosniff');
+	header('Referrer-Policy: strict-origin-when-cross-origin');
+
+	$xFrame = trim((string)($_CONFIG['security']['x-frame-options'] ?? 'SAMEORIGIN'));
+	if($xFrame !== '' && strcasecmp($xFrame, 'OFF') !== 0) header('X-Frame-Options: '.$xFrame);
+
+	$https = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off');
+	if($https) header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+
+	$csp = trim((string)($_CONFIG['security']['csp'] ?? ''));
+	if($csp !== ''){
+		$nome = !empty($_CONFIG['security']['csp-report-only'])
+			? 'Content-Security-Policy-Report-Only'
+			: 'Content-Security-Policy';
+		header($nome.': '.$csp);
+	}
+}
+
 function gestor_config(){
 	global $_GESTOR;
 	global $_CONFIG;
@@ -2480,7 +2529,12 @@ function gestor_config(){
 	// =========================== Definição do Caminho da Página
 
 	if(isset($_REQUEST['_gestor-caminho'])){
-		$_GESTOR['caminho-total'] = $_REQUEST['_gestor-caminho'];
+		if(!gestor_caminho_publico_valido($_REQUEST['_gestor-caminho'])){
+			http_response_code(400);
+			exit;
+		}
+
+		$_GESTOR['caminho-total'] = (string)$_REQUEST['_gestor-caminho'];
 		$_GESTOR['caminho'] = explode('/',strtolower($_GESTOR['caminho-total']));
 
 		// Verificar se o primeiro segmento é uma linguagem válida, se sim definir a linguagem e remover do array de caminho.
@@ -2543,8 +2597,16 @@ function gestor_config(){
 }
 
 function gestor_start(){
+	gestor_cabecalhos_seguranca();
 	gestor_config();
 	gestor_sessao_iniciar();
+	gestor_incluir_biblioteca('seguranca');
+	if(!seguranca_csrf_requisicao_validar()){
+		http_response_code(403);
+		header('Content-Type: application/json; charset=UTF-8');
+		echo json_encode(Array('status' => 'error', 'message' => 'Token CSRF inválido ou ausente.'), JSON_UNESCAPED_UNICODE);
+		exit;
+	}
 	gestor_roteador();
 }
 

@@ -689,7 +689,8 @@ function autenticacao_cliente_gerar_token_validacao($params = false){
 			if(isset($pubID)){
 				$tokenPubId = $pubID;
 			} else {
-				$tokenPubId = md5(uniqid(rand(), true));
+				gestor_incluir_biblioteca('seguranca');
+				$tokenPubId = seguranca_token_aleatorio(32);
 			}
 			
 			// ===== Gerar o token JWT
@@ -1391,11 +1392,19 @@ function autenticacao_distribuido_gerar_tokens($id_usuarios){
 function autenticacao_distribuido_verificar_permissao_modulo($id_usuarios, $modulo){
 	global $_GESTOR;
 
-	if(!$id_usuarios || !is_string($modulo) || $modulo === ''){
+	if(!$id_usuarios || !is_string($modulo) || !preg_match('/^[A-Za-z0-9-]+$/', $modulo)){
 		return false;
 	}
 
-	$modulo_escapado = banco_escape_field($modulo);
+	// IDs vindos do banco são aceitos somente no formato canônico; o canal distribuído
+	// não possui uma conexão mysqli local e não pode recorrer a escape simulado.
+	$identificador = static function ($valor) {
+		$valor = (string)$valor;
+		return preg_match('/^[A-Za-z0-9_-]+$/', $valor) ? $valor : null;
+	};
+	$modulo_escapado = $modulo;
+	$linguagem = $identificador($_GESTOR['linguagem-codigo'] ?? '');
+	if($linguagem === null) return false;
 
 	// ===== Dados do usuário necessários à decisão (mesmos campos de gestor_usuario()).
 
@@ -1414,7 +1423,7 @@ function autenticacao_distribuido_verificar_permissao_modulo($id_usuarios, $modu
 	$modulos = banco_select_name(
 		banco_campos_virgulas(Array('id_modulos')),
 		"modulos",
-		"WHERE id='".$modulo_escapado."' AND status='A' AND language='".$_GESTOR['linguagem-codigo']."'"
+		"WHERE id='".$modulo_escapado."' AND status='A' AND language='".$linguagem."'"
 	);
 	if(!$modulos){
 		return false;
@@ -1423,14 +1432,16 @@ function autenticacao_distribuido_verificar_permissao_modulo($id_usuarios, $modu
 	// ===== Usuário filho de host.
 
 	if(!empty($usuario['id_hosts'])){
-		$id_hosts = banco_escape_field($usuario['id_hosts']);
+		$id_hosts = (int)$usuario['id_hosts'];
 
 		// Perfil de gestor vinculado ao host tem precedência.
 		if(!empty($usuario['gestor_perfil'])){
+			$gestorPerfil = $identificador($usuario['gestor_perfil']);
+			if($gestorPerfil === null) return false;
 			$perm = banco_select_name(
 				banco_campos_virgulas(Array('id_usuarios_gestores_perfis_modulos')),
 				"usuarios_gestores_perfis_modulos",
-				"WHERE perfil='".banco_escape_field($usuario['gestor_perfil'])."'"
+				"WHERE perfil='".$gestorPerfil."'"
 				." AND modulo='".$modulo_escapado."'"
 				." AND id_hosts='".$id_hosts."'"
 			);
@@ -1443,17 +1454,19 @@ function autenticacao_distribuido_verificar_permissao_modulo($id_usuarios, $modu
 		if(!$hosts){ return false; }
 
 		$usuarioPai = banco_select(Array('unico'=>true,'tabela'=>'usuarios','campos'=>Array('id_usuarios_perfis'),
-			'extra'=>"WHERE id_usuarios='".banco_escape_field($hosts['id_usuarios'])."'"));
+			'extra'=>"WHERE id_usuarios='".(int)$hosts['id_usuarios']."'"));
 		if(!$usuarioPai){ return false; }
 
 		$usuarios_perfis = banco_select(Array('unico'=>true,'tabela'=>'usuarios_perfis','campos'=>Array('id'),
-			'extra'=>"WHERE id_usuarios_perfis='".banco_escape_field($usuarioPai['id_usuarios_perfis'])."'"));
+			'extra'=>"WHERE id_usuarios_perfis='".(int)$usuarioPai['id_usuarios_perfis']."'"));
 		if(!$usuarios_perfis){ return false; }
 
+		$perfilHerdado = $identificador($usuarios_perfis['id']);
+		if($perfilHerdado === null) return false;
 		$perm = banco_select_name(
 			banco_campos_virgulas(Array('id_usuarios_perfis_modulos')),
 			"usuarios_perfis_modulos",
-			"WHERE perfil='".banco_escape_field($usuarios_perfis['id'])."' AND modulo='".$modulo_escapado."'"
+			"WHERE perfil='".$perfilHerdado."' AND modulo='".$modulo_escapado."'"
 		);
 		return (bool)$perm;
 	}
@@ -1461,13 +1474,15 @@ function autenticacao_distribuido_verificar_permissao_modulo($id_usuarios, $modu
 	// ===== Usuário sem host: perfil direto.
 
 	$usuarios_perfis = banco_select(Array('unico'=>true,'tabela'=>'usuarios_perfis','campos'=>Array('id'),
-		'extra'=>"WHERE id_usuarios_perfis='".banco_escape_field($usuario['id_usuarios_perfis'])."'"));
+		'extra'=>"WHERE id_usuarios_perfis='".(int)$usuario['id_usuarios_perfis']."'"));
 	if(!$usuarios_perfis){ return false; }
 
+	$perfilDireto = $identificador($usuarios_perfis['id']);
+	if($perfilDireto === null) return false;
 	$perm = banco_select_name(
 		banco_campos_virgulas(Array('id_usuarios_perfis_modulos')),
 		"usuarios_perfis_modulos",
-		"WHERE perfil='".banco_escape_field($usuarios_perfis['id'])."' AND modulo='".$modulo_escapado."'"
+		"WHERE perfil='".$perfilDireto."' AND modulo='".$modulo_escapado."'"
 	);
 	return (bool)$perm;
 }

@@ -244,6 +244,7 @@ async function runInstallation(initialFormData) {
         postData.append(pair[0], pair[1]);
     }
     postData.append('lang', currentLang);
+    postData.set('install_token', window.conn2flowInstallToken || '');
 
     while (!isFinished) {
         postData.set('action', nextStep);
