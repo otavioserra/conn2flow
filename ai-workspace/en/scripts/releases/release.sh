@@ -108,23 +108,53 @@ if [ "$RELEASE_MODE" = "manual" ]; then
 
   rm -f gestor.zip gestor.zip.sha256
 
-  if command -v zip >/dev/null 2>&1; then
-    cd gestor
-    zip -r ../gestor.zip . \
-      -x "*.git*" \
-      -x "vendor/bin/.phpunit*" \
-      -x "vendor/composer/tmp-*" \
-      -x "node_modules/*" \
-      -x "*.DS_Store*" \
-      -x "*.log*" \
-      -x "tests/*" \
-      -x "phpunit.xml*" \
-      -x "resources/*" \
-      -x "modulos/*/resources/*"
-    cd ..
-  else
-    git archive --format=zip --output=gestor.zip HEAD:gestor
+  TMP_DIR=$(mktemp -d)
+  cp -a gestor "$TMP_DIR/gestor"
+
+  # Align manual packaging with the workflow cleanup to avoid sensitive/unneeded files.
+  rm -rf "$TMP_DIR/gestor/.git" "$TMP_DIR/gestor/.gitignore" "$TMP_DIR/gestor/.gitattributes"
+  rm -rf "$TMP_DIR/gestor/vendor/bin/.phpunit"* "$TMP_DIR/gestor/vendor/composer/tmp-"*
+  rm -rf "$TMP_DIR/gestor/tests"
+  find "$TMP_DIR/gestor" -type f -name 'phpunit.xml*' -delete
+  rm -rf "$TMP_DIR/gestor/resources"
+  find "$TMP_DIR/gestor/modulos" -type d -name "resources" -exec rm -rf {} + 2>/dev/null || true
+  rm -rf "$TMP_DIR/gestor/node_modules"
+  rm -f "$TMP_DIR/gestor/package.json" "$TMP_DIR/gestor/package-lock.json"
+  find "$TMP_DIR/gestor" -maxdepth 1 -type f -name '.env*' -delete
+
+  if [ -d "$TMP_DIR/gestor/autenticacoes" ]; then
+    find "$TMP_DIR/gestor/autenticacoes" -type f -name '.env*' -not -path '*/autenticacoes.exemplo/*' -delete
   fi
+
+  find "$TMP_DIR/gestor" -name "*.DS_Store*" -type f -delete
+  find "$TMP_DIR/gestor" -name "*.log*" -type f -delete
+
+  DEST_ZIP="$PWD/gestor.zip"
+
+  if command -v zip >/dev/null 2>&1; then
+    cd "$TMP_DIR/gestor"
+    zip -r "$DEST_ZIP" .
+    cd - >/dev/null
+  elif command -v powershell >/dev/null 2>&1; then
+    if command -v cygpath >/dev/null 2>&1; then
+      SRC_WIN=$(cygpath -w "$TMP_DIR/gestor")
+      DEST_WIN=$(cygpath -w "$DEST_ZIP")
+    else
+      SRC_WIN="$TMP_DIR/gestor"
+      DEST_WIN="$DEST_ZIP"
+    fi
+    powershell -NoProfile -Command "Compress-Archive -Path '$SRC_WIN\\*' -DestinationPath '$DEST_WIN' -Force" >/dev/null
+  elif command -v pwsh >/dev/null 2>&1; then
+    SRC_UNIX="$TMP_DIR/gestor"
+    DEST_UNIX="$DEST_ZIP"
+    pwsh -NoProfile -Command "Compress-Archive -Path '$SRC_UNIX/*' -DestinationPath '$DEST_UNIX' -Force" >/dev/null
+  else
+    rm -rf "$TMP_DIR"
+    echo "Error: Neither 'zip' nor PowerShell compression is available to create gestor.zip"
+    exit 1
+  fi
+
+  rm -rf "$TMP_DIR"
 
   sha256sum gestor.zip | awk '{print $1}' > gestor.zip.sha256
 

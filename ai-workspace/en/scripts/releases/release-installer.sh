@@ -105,7 +105,35 @@ if [ "$RELEASE_MODE" = "manual" ]; then
       -x ".env.debug"
     cd ..
   else
-    git archive --format=zip --output=instalador.zip HEAD:gestor-instalador
+    TMP_DIR=$(mktemp -d)
+    cp -a gestor-instalador "$TMP_DIR/gestor-instalador"
+
+    rm -rf "$TMP_DIR/gestor-instalador/temp"
+    rm -f "$TMP_DIR/gestor-instalador/.env.debug"
+    find "$TMP_DIR/gestor-instalador" -name "*.DS_Store*" -type f -delete
+    find "$TMP_DIR/gestor-instalador" -name "*.log*" -type f -delete
+    find "$TMP_DIR/gestor-instalador" -name "*.git*" -exec rm -rf {} +
+
+    if command -v powershell >/dev/null 2>&1; then
+      if command -v cygpath >/dev/null 2>&1; then
+        SRC_WIN=$(cygpath -w "$TMP_DIR/gestor-instalador")
+        DEST_WIN=$(cygpath -w "$PWD/instalador.zip")
+      else
+        SRC_WIN="$TMP_DIR/gestor-instalador"
+        DEST_WIN="$PWD/instalador.zip"
+      fi
+      powershell -NoProfile -Command "Compress-Archive -Path '$SRC_WIN\\*' -DestinationPath '$DEST_WIN' -Force" >/dev/null
+    elif command -v pwsh >/dev/null 2>&1; then
+      SRC_UNIX="$TMP_DIR/gestor-instalador"
+      DEST_UNIX="$PWD/instalador.zip"
+      pwsh -NoProfile -Command "Compress-Archive -Path '$SRC_UNIX/*' -DestinationPath '$DEST_UNIX' -Force" >/dev/null
+    else
+      rm -rf "$TMP_DIR"
+      echo "Error: Neither 'zip' nor PowerShell compression is available to create instalador.zip"
+      exit 1
+    fi
+
+    rm -rf "$TMP_DIR"
   fi
 
   if gh release view "$TAG_NAME" >/dev/null 2>&1; then
