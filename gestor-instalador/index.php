@@ -59,7 +59,7 @@ function installer_lock_validate($path, $token)
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR_INSTALADOR['versao']								=	'1.5.3'; // Versão do gestor instalador.
+$_GESTOR_INSTALADOR['versao']								=	'1.5.4'; // Versão do gestor instalador.
 
 // Função para enviar erros em formato JSON
 function send_json_error($message, $statusCode = 400, $logContent = null)

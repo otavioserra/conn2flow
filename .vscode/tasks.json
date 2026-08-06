@@ -42,7 +42,8 @@
         {
             "label": "🔧 Installer - GIT Release",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/releases/release-installer.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\""
+            "command": "bash ./ai-workspace/en/scripts/releases/release-installer.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\" ${input:releaseMode}",
+            "problemMatcher": []
         },
         {
             "label": "🔧 Installer - Synchronize",
@@ -62,7 +63,7 @@
         {
             "label": "🛠️ Manager - GIT Release",
             "type": "shell",
-            "command": "bash ./ai-workspace/en/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\"",
+            "command": "bash ./ai-workspace/en/scripts/releases/release.sh ${input:tipo} \"${input:tagMsg}\" \"${input:commitMsg}\" ${input:releaseMode}",
             "problemMatcher": []
         },
         {
@@ -296,6 +297,16 @@
             "id": "commitMsg",
             "description": "📦 Commit Message ❔",
             "type": "promptString"
+        },
+        {
+            "id": "releaseMode",
+            "description": "🚀 Release mode (automatic or manual) ❔",
+            "type": "pickString",
+            "options": [
+                "automatic",
+                "manual"
+            ],
+            "default": "automatic"
         },
         {
             "id": "moduloID",

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Run: bash ./ai-workspace/git/scripts/release.sh TYPE "TAG_MSG" "COMMIT_MSG"
+# Run: bash ./ai-workspace/git/scripts/release.sh TYPE "TAG_MSG" "COMMIT_MSG" [automatic|manual]
 
 # Script to automate the release process:
 # 1. Updates the version in config.php
@@ -14,7 +14,7 @@ set -e
 # Checks if the release type (patch, minor, major) was passed as an argument
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   echo "Error: Insufficient arguments."
-  echo "Usage:   ./ai-workspace/en/scripts/releases/release.sh [type] \"Tag Summary\" \"Detailed Commit Message\""
+  echo "Usage:   ./ai-workspace/en/scripts/releases/release.sh [type] \"Tag Summary\" \"Detailed Commit Message\" [automatic|manual]"
   echo "Example: ./ai-workspace/en/scripts/releases/release.sh patch \"Fix password validation\" \"fix(login): Fix bug preventing special characters in password.\""
   exit 1
 fi
@@ -22,8 +22,15 @@ fi
 RELEASE_TYPE=$1
 TAG_SUMMARY=$2
 COMMIT_DETAILS=$3
+RELEASE_MODE=${4:-automatic}
 CONFIG_FILE="gestor/config.php"
 VERSION_SCRIPT="ai-workspace/en/scripts/releases/version.php"
+WORKFLOW_FILE=".github/workflows/release-gestor.yml"
+
+if [ "$RELEASE_MODE" != "automatic" ] && [ "$RELEASE_MODE" != "manual" ]; then
+  echo "Error: Invalid release mode '$RELEASE_MODE'. Use automatic or manual."
+  exit 1
+fi
 
 # 1. Runs the PHP script to update the version in config.php
 echo "Updating version ($RELEASE_TYPE)..."
@@ -77,3 +84,58 @@ echo "Release gestor-v$NEW_VERSION created successfully!"
 
 git push
 git push --tags
+
+if [ "$RELEASE_MODE" = "manual" ]; then
+  TAG_NAME="gestor-v$NEW_VERSION"
+  RELEASE_TITLE="Gestor $TAG_NAME"
+  BODY_FILE="/tmp/${TAG_NAME}-release-body.md"
+
+  echo "Manual mode enabled. Creating GitHub release directly..."
+
+  awk '
+    /body: \|/ { in_body=1; next }
+    in_body && /^[[:space:]]*draft:/ { in_body=0 }
+    in_body {
+      sub(/^          /, "")
+      print
+    }
+  ' "$WORKFLOW_FILE" > "$BODY_FILE"
+
+  if [ ! -s "$BODY_FILE" ]; then
+    echo "Error: Failed to extract release body from $WORKFLOW_FILE"
+    exit 1
+  fi
+
+  rm -f gestor.zip gestor.zip.sha256
+
+  if command -v zip >/dev/null 2>&1; then
+    cd gestor
+    zip -r ../gestor.zip . \
+      -x "*.git*" \
+      -x "vendor/bin/.phpunit*" \
+      -x "vendor/composer/tmp-*" \
+      -x "node_modules/*" \
+      -x "*.DS_Store*" \
+      -x "*.log*" \
+      -x "tests/*" \
+      -x "phpunit.xml*" \
+      -x "resources/*" \
+      -x "modulos/*/resources/*"
+    cd ..
+  else
+    git archive --format=zip --output=gestor.zip HEAD:gestor
+  fi
+
+  sha256sum gestor.zip | awk '{print $1}' > gestor.zip.sha256
+
+  if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+    gh release delete "$TAG_NAME" --yes
+  fi
+
+  gh release create "$TAG_NAME" gestor.zip gestor.zip.sha256 \
+    --title "$RELEASE_TITLE" \
+    --notes-file "$BODY_FILE" \
+    --latest
+
+  echo "Manual release created: $TAG_NAME"
+fi
