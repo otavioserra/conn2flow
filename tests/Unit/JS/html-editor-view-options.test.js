@@ -57,8 +57,8 @@ describe('html-editor.js — opções de exibição (req-106)', () => {
     expect(navbar).toBeTruthy();
     expect(sidebar.classList.contains('he-view-on')).toBe(false);
     expect(navbar.classList.contains('he-view-on')).toBe(false);
-    expect(sidebar.querySelector('.c2f-he-css-sidebar-head').textContent).toBe('Sidebar Lateral de CSS');
-    expect(navbar.querySelector('.c2f-he-navbar-label').textContent).toBe('Barra de Navegação de Elementos');
+    expect(sidebar.querySelector('.c2f-he-css-sidebar-head').textContent).toBe('Estilização de Elementos');
+    expect(navbar.querySelector('.c2f-he-navbar-label').textContent).toBe('Navegação de Elementos');
     expect(ed.getViewOption('cssSidebar')).toBe(false);
     expect(ed.getViewOption('elementNavbar')).toBe(false);
     // Desligados, os painéis continuam flutuando no body (comportamento legado preservado).

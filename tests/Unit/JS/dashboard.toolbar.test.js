@@ -207,8 +207,8 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
     expect(painel).toBeTruthy();
     expect(painel.style.display).toBe('block');
     expect(painel.style.top).toBe('78px');
-    expect(painel.textContent).toContain('Sidebar Lateral de CSS');
-    expect(painel.textContent).toContain('Barra de Navegação de Elementos');
+    expect(painel.textContent).toContain('Estilização de Elementos');
+    expect(painel.textContent).toContain('Navegação de Elementos');
 
     const toggles = painel.querySelectorAll('[data-view-option]');
     expect(toggles.length).toBe(2);
@@ -272,8 +272,8 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
 
     const painel = document.getElementById('c2f-view-options-panel');
     expect(painel.textContent).toContain('Display Options');
-    expect(painel.textContent).toContain('CSS Side Panel');
-    expect(painel.textContent).toContain('Element Navigation Bar');
+    expect(painel.textContent).toContain('Element Styling');
+    expect(painel.textContent).toContain('Element Navigation');
   });
 
 });
