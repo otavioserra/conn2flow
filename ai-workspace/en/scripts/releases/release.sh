@@ -145,7 +145,8 @@ if [ "$RELEASE_MODE" = "manual" ]; then
 
   if command -v zip >/dev/null 2>&1; then
     cd "$TMP_DIR/gestor"
-    zip -r "$DEST_ZIP" .
+    # Segunda barreira além da limpeza/validação do staging.
+    zip -r "$DEST_ZIP" . -x "*.git*"
     cd - >/dev/null
   elif command -v 7z >/dev/null 2>&1; then
     cd "$TMP_DIR/gestor"
