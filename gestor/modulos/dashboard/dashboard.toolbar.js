@@ -1016,8 +1016,8 @@
 	var viewOptionsPanel = null;
 
 	var VIEW_OPTIONS = [
-		{ key: 'cssSidebar', label: 'Sidebar Lateral de CSS', labelEn: 'CSS Side Panel' },
-		{ key: 'elementNavbar', label: 'Barra de Navegação de Elementos', labelEn: 'Element Navigation Bar' }
+		{ key: 'cssSidebar', label: 'Estilização de Elementos', labelEn: 'Element Styling' },
+		{ key: 'elementNavbar', label: 'Navegação de Elementos', labelEn: 'Element Navigation' }
 	];
 
 	function closeViewOptionsPanel() { if (viewOptionsPanel) { viewOptionsPanel.style.display = 'none'; } }

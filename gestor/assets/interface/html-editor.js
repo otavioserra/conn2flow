@@ -775,7 +775,7 @@ $(document).ready(function () {
                 this.buildViewPanelActions('elementNavbar') + '</div>' +
                 '<div class="c2f-he-navbar-area"><div class="c2f-he-navbar-empty"></div></div>';
             navbar.querySelector('.c2f-he-navbar-label .c2f-he-panel-title').textContent =
-                this.t('Barra de Navegação de Elementos', 'Element Navigation Bar');
+                this.t('Navegação de Elementos', 'Element Navigation');
             navbar.querySelector('.c2f-he-navbar-empty').textContent =
                 this.t('Nenhum elemento selecionado.', 'No element selected.');
             document.body.appendChild(navbar);
@@ -788,7 +788,7 @@ $(document).ready(function () {
                 this.buildViewPanelActions('cssSidebar') + '</div>' +
                 '<div class="c2f-he-css-sidebar-body"><div class="c2f-he-css-sidebar-empty"></div></div>';
             sidebar.querySelector('.c2f-he-css-sidebar-head .c2f-he-panel-title').textContent =
-                this.t('Sidebar Lateral de CSS', 'CSS Side Panel');
+                this.t('Estilização de Elementos', 'Element Styling');
             sidebar.querySelector('.c2f-he-css-sidebar-empty').textContent =
                 this.t('Selecione um elemento para estilizar.', 'Select an element to style it.');
             document.body.appendChild(sidebar);
