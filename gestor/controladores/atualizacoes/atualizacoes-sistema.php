@@ -533,7 +533,7 @@ function executarAtualizacaoBanco(array $opts): void {
                 'pass' => $_BANCO['senha'] ?? '',
             ],
         ];
-        foreach (['debug','force-all','tables','log-diff','dry-run','orphans-detail','orphans-mode'] as $k) { if (isset($opts[$k])) $cli[$k] = $opts[$k]; }
+        foreach (['debug','force-all','tables','log-diff','dry-run','orphans-detail','orphans-mode','defer-session-reset'] as $k) { if (isset($opts[$k])) $cli[$k] = $opts[$k]; }
         $GLOBALS['CLI_OPTS'] = $cli;
 
         $dbLogs = [];
@@ -1184,7 +1184,19 @@ function webDatabase(string $sid): array { global $CONTEXT, $BASE_PATH, $_GESTOR
         return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'error'=>'Script não encontrado'];
     }
     logAtualizacao('WebDatabase: iniciando com script='.$scriptBanco);
-    try { executarAtualizacaoBanco($opts); $st['progress']['database']=['done'=>true,'ts'=>time()]; saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_parcial_execucao((int)$st['exec_id'],$CONTEXT); logAtualizacao('WebDatabase: concluído'); return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'next'=>'finalize']; }
+    try {
+        // A limpeza global de sessões precisa ocorrer somente após o último POST
+        // do fluxo; caso contrário, o token CSRF validado acima desaparece antes
+        // da chamada de finalize.
+        $opts['defer-session-reset'] = true;
+        executarAtualizacaoBanco($opts);
+        $st['progress']['database']=['done'=>true,'ts'=>time()];
+        $st['session_reset_pending']=true;
+        saveWebState($sid,$st);
+        if(!empty($st['exec_id'])) persist_parcial_execucao((int)$st['exec_id'],$CONTEXT);
+        logAtualizacao('WebDatabase: concluído');
+        return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'next'=>'finalize'];
+    }
     catch(Throwable $e){ $st['errors'][]=$e->getMessage(); saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,1,$e->getMessage()); logErroCtx('WebDatabase erro: '.$e->getMessage()); return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'error'=>$e->getMessage(),'next'=>'finalize']; }
 }
 
@@ -1198,7 +1210,26 @@ function webFinalize(string $sid): array { global $CONTEXT, $LOGS_DIR, $TEMP_DIR
         // Limpeza staging (se ainda existir)
         if(!empty($CONTEXT['staging_dir']) && is_dir($CONTEXT['staging_dir'])) removeDirectoryRecursive($CONTEXT['staging_dir']);
     } catch(Throwable $e){ logAtualizacao('WebFinalize: falha limpeza staging '.$e->getMessage(),'WARNING'); }
-    $st['finished']=true; $st['progress']['finalize']=['done'=>true,'ts'=>time()]; saveWebState($sid,$st); if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,0,null); logAtualizacao('WebFinalize: concluído'); return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'finished'=>true]; }
+    $sessionResetPending = !empty($st['session_reset_pending']);
+    $st['finished']=true;
+    $st['session_reset_pending']=false;
+    $st['progress']['finalize']=['done'=>true,'ts'=>time()];
+    saveWebState($sid,$st);
+    if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,0,null);
+    logAtualizacao('WebFinalize: concluído');
+
+    // O POST de finalize já foi validado. Agora é seguro invalidar os caches de
+    // sessão; a próxima página renderizada criará um token CSRF novo.
+    if($sessionResetPending && function_exists('gestor_sessao_del_all')) {
+        try {
+            gestor_sessao_del_all();
+            logAtualizacao('WebFinalize: sessões do Gestor reinicializadas');
+        } catch(Throwable $e) {
+            logAtualizacao('WebFinalize: falha ao reinicializar sessões '.$e->getMessage(),'WARNING');
+        }
+    }
+
+    return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'finished'=>true]; }
 
 function webStatus(string $sid): array { $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida'];
     // Recarregar flags da sessão (inclui debug)

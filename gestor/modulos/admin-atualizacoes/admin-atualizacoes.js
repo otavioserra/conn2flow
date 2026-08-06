@@ -87,9 +87,9 @@ $(document).ready(function () {
             if (on) { ld.addClass('active').show(); }
             else { ld.removeClass('active').hide(); }
         }
-        function ajax(params) {
+        function ajax(params, method) {
             return $.ajax({
-                type: 'POST',
+                type: method || 'POST',
                 url: endpoint,
                 data: { opcao: gestor.moduloOpcao, ajax: 'sim', ajaxOpcao: 'update', params: params },
                 dataType: 'json',
@@ -135,13 +135,13 @@ $(document).ready(function () {
         function doDeploy() { log('Deploy: executando arquivos + merge .env'); setLoading(true); ajax({ acao: 'deploy', sid: currentSid }).done(resp => { setLoading(false); if (resp.status !== 'ok') { log('Erro deploy: ' + (resp.erro || '')); return; } const data = resp.data; if (data.error) { log('Erro deploy: ' + data.error); return; } if (!currentExecId && data.exec_id) currentExecId = data.exec_id; log('Deploy concluído.'); next(data.next); }).fail(() => { setLoading(false); log('Falha deploy'); }); }
         function doDb() { log('Banco: iniciando'); setLoading(true); ajax({ acao: 'db', sid: currentSid }).done(resp => { setLoading(false); if (resp.status !== 'ok') { log('Erro banco: ' + (resp.erro || '')); return; } const data = resp.data; if (data.error) { log('Erro banco: ' + data.error); } else if (data.skipped) { log('Banco ignorado.'); } else { log('Banco concluído.'); } if (!currentExecId && data.exec_id) currentExecId = data.exec_id; next(data.next); }).fail(() => { setLoading(false); log('Falha banco'); }); }
         function doFinalize() { log('Finalizando sessão'); setLoading(true); ajax({ acao: 'finalize', sid: currentSid }).done(resp => { setLoading(false); if (resp.status !== 'ok') { log('Erro finalize: ' + (resp.erro || '')); return; } const data = resp.data; if (data.error) { log('Erro finalize: ' + data.error); return; } if (!currentExecId && data.exec_id) currentExecId = data.exec_id; log('Sessão finalizada.'); startPolling(); }).fail(() => { setLoading(false); log('Falha finalize'); }); }
-        function startPolling() { if (polling) clearInterval(polling); polling = setInterval(() => { ajax({ acao: 'status', sid: currentSid }).done(resp => { if (resp.status !== 'ok') { log('Erro status: ' + (resp.erro || '')); clearInterval(polling); $('#atualizacoes-start-btn').removeClass('disabled').prop('disabled', false); return; } const data = resp.data; if (data.error) { log('Erro status: ' + data.error); clearInterval(polling); $('#atualizacoes-start-btn').removeClass('disabled').prop('disabled', false); return; } if (data.progress_percent !== undefined) { setProgress(data.progress_percent); } if (data.state && data.state.finished) { clearInterval(polling); $('#atualizacoes-cancel-btn').hide(); log('Processo completo.'); $('#atualizacoes-mode-label').text((currentModo || selectedMode || '?') + ' (finalizado)'); $('#atualizacoes-start-btn').removeClass('disabled').prop('disabled', false); setProgress(100); } }); }, 3000); }
+        function startPolling() { if (polling) clearInterval(polling); polling = setInterval(() => { ajax({ acao: 'status', sid: currentSid }, 'GET').done(resp => { if (resp.status !== 'ok') { log('Erro status: ' + (resp.erro || '')); clearInterval(polling); $('#atualizacoes-start-btn').removeClass('disabled').prop('disabled', false); return; } const data = resp.data; if (data.error) { log('Erro status: ' + data.error); clearInterval(polling); $('#atualizacoes-start-btn').removeClass('disabled').prop('disabled', false); return; } if (data.progress_percent !== undefined) { setProgress(data.progress_percent); } if (data.state && data.state.finished) { clearInterval(polling); $('#atualizacoes-cancel-btn').hide(); log('Processo completo.'); $('#atualizacoes-mode-label').text((currentModo || selectedMode || '?') + ' (finalizado)'); $('#atualizacoes-start-btn').removeClass('disabled').prop('disabled', false); setProgress(100); } }); }, 3000); }
         // Cancelar (futuro: endpoint cancel). Exposto para uso
         function cancelar() { if (!currentSid) return; log('Solicitando cancelamento...'); ajax({ acao: 'cancel', sid: currentSid }).done(resp => { if (resp.status === 'ok' && resp.data && resp.data.canceled) { log('Cancelado.'); if (polling) clearInterval(polling); $('#atualizacoes-cancel-btn').hide(); $('#atualizacoes-start-btn').removeClass('disabled').prop('disabled', false); } else { log('Falha ao cancelar'); } }); }
         // Expor algumas funções para extensões futuras (opcional)
         window.adminAtualizacoes = {
             restart: () => { if (polling) clearInterval(polling); currentSid = null; currentExecId = null; statusBox.empty(); },
-            status: () => ajax({ acao: 'status', sid: currentSid }),
+            status: () => ajax({ acao: 'status', sid: currentSid }, 'GET'),
             execId: () => currentExecId,
             cancelar
         };

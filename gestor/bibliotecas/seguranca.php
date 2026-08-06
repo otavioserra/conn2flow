@@ -167,6 +167,25 @@ function seguranca_csrf_rota_isenta($caminho){
 }
 
 /**
+ * Mantém compatibilidade somente no autoatualizador que introduziu o CSRF.
+ *
+ * A página do atualizador permanece aberta enquanto substitui os próprios
+ * arquivos. Em instalações anteriores à 2.9.25, esse documento ainda não
+ * possui o cliente que envia o token, embora o backend recém-instalado já o
+ * conheça. A isenção termina automaticamente nas versões posteriores.
+ *
+ * @param array $caminho Segmentos normalizados da rota.
+ * @param string $versao Versão atual do Gestor.
+ * @return bool
+ */
+function seguranca_csrf_atualizador_transicao_isento($caminho, $versao){
+    if(!is_array($caminho) || ($caminho[0] ?? '') !== 'admin-atualizacoes') return false;
+    if(!is_string($versao) || $versao === '') return false;
+
+    return version_compare($versao, '2.9.25', '<=');
+}
+
+/**
  * Exige CSRF em métodos mutáveis autenticados pelo cookie do painel.
  *
  * @return bool true quando a requisição pode continuar.
@@ -178,6 +197,7 @@ function seguranca_csrf_requisicao_validar(){
     $metodo = strtoupper((string)($_SERVER['REQUEST_METHOD'] ?? 'GET'));
     if(!in_array($metodo, Array('POST', 'PUT', 'PATCH', 'DELETE'), true)) return true;
     if(seguranca_csrf_rota_isenta($_GESTOR['caminho'] ?? Array())) return true;
+    if(seguranca_csrf_atualizador_transicao_isento($_GESTOR['caminho'] ?? Array(), $_GESTOR['versao'] ?? '')) return true;
 
     $cookieAuth = $_CONFIG['cookie-authname'] ?? '';
     if($cookieAuth === '' || !isset($_COOKIE[$cookieAuth])) return true;

@@ -1180,7 +1180,11 @@ function main(): int {
             log_unificado('WARN registrar manager_updates: '.encLog($e->getMessage()), $LOG_FILE_DB);
         }
         relatorioFinal($resumo);
-        gestor_sessao_del_all(); // limpa cache de sessão do gestor (se houver)
+        if (empty($CLI_OPTS['defer-session-reset'])) {
+            gestor_sessao_del_all(); // execução CLI: limpa imediatamente
+        } else {
+            log_unificado('SESSOES_RESET_ADIADO_PARA_FINALIZE', $LOG_FILE_DB);
+        }
         log_unificado(tr('_process_end_success'), $LOG_FILE_DB);
         return 0;
     } catch (Throwable $e) {
