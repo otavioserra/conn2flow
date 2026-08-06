@@ -63,6 +63,8 @@ set -e
 
 # 3. Adds, commits, and creates an annotated Git tag with distinct messages
 echo "Creating commit and tag for version installer-v$NEW_VERSION..."
+# Never commit local release artifacts by accident.
+rm -f gestor.zip gestor.zip.sha256 instalador.zip
 git add .
 git commit -m "$COMMIT_DETAILS"
 git tag -a "instalador-v$NEW_VERSION" -m "$TAG_SUMMARY"
@@ -75,7 +77,9 @@ git push --tags
 if [ "$RELEASE_MODE" = "manual" ]; then
   TAG_NAME="instalador-v$NEW_VERSION"
   RELEASE_TITLE="Instalador $TAG_NAME"
-  BODY_FILE="/tmp/${TAG_NAME}-release-body.md"
+  TMP_RELEASE_DIR=$(mktemp -d)
+  BODY_FILE="$TMP_RELEASE_DIR/release-body.md"
+  DEST_ZIP="$TMP_RELEASE_DIR/instalador.zip"
 
   echo "Manual mode enabled. Creating GitHub release directly..."
 
@@ -93,17 +97,34 @@ if [ "$RELEASE_MODE" = "manual" ]; then
     exit 1
   fi
 
-  rm -f instalador.zip
-
   if command -v zip >/dev/null 2>&1; then
     cd gestor-instalador
-    zip -r ../instalador.zip . \
+    zip -r "$DEST_ZIP" . \
       -x "*.git*" \
       -x "*.DS_Store*" \
       -x "*.log*" \
       -x "temp/*" \
       -x ".env.debug"
     cd ..
+  elif command -v 7z >/dev/null 2>&1 || command -v 7za >/dev/null 2>&1 || command -v 7zz >/dev/null 2>&1; then
+    TMP_DIR=$(mktemp -d)
+    cp -a gestor-instalador "$TMP_DIR/gestor-instalador"
+
+    rm -rf "$TMP_DIR/gestor-instalador/temp"
+    rm -f "$TMP_DIR/gestor-instalador/.env.debug"
+    find "$TMP_DIR/gestor-instalador" -name "*.DS_Store*" -type f -delete
+    find "$TMP_DIR/gestor-instalador" -name "*.log*" -type f -delete
+    find "$TMP_DIR/gestor-instalador" -name "*.git*" -exec rm -rf {} +
+
+    if command -v 7z >/dev/null 2>&1; then
+      (cd "$TMP_DIR/gestor-instalador" && 7z a -tzip "$DEST_ZIP" . >/dev/null)
+    elif command -v 7za >/dev/null 2>&1; then
+      (cd "$TMP_DIR/gestor-instalador" && 7za a -tzip "$DEST_ZIP" . >/dev/null)
+    else
+      (cd "$TMP_DIR/gestor-instalador" && 7zz a -tzip "$DEST_ZIP" . >/dev/null)
+    fi
+
+    rm -rf "$TMP_DIR"
   else
     TMP_DIR=$(mktemp -d)
     cp -a gestor-instalador "$TMP_DIR/gestor-instalador"
@@ -115,21 +136,79 @@ if [ "$RELEASE_MODE" = "manual" ]; then
     find "$TMP_DIR/gestor-instalador" -name "*.git*" -exec rm -rf {} +
 
     if command -v powershell >/dev/null 2>&1; then
+      PS_SCRIPT=$(mktemp)
+      cat > "$PS_SCRIPT" <<'PS'
+param(
+  [string]$SourceDir,
+  [string]$DestinationZip
+)
+
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+Add-Type -AssemblyName System.IO.Compression
+
+if (Test-Path -LiteralPath $DestinationZip) {
+  Remove-Item -LiteralPath $DestinationZip -Force
+}
+
+$zip = [System.IO.Compression.ZipFile]::Open($DestinationZip, 1)
+try {
+  Get-ChildItem -LiteralPath $SourceDir -Recurse -File | ForEach-Object {
+    $full = $_.FullName
+    $relative = $full.Substring($SourceDir.Length).TrimStart('\\', '/').Replace('\\', '/')
+    [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $full, $relative, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
+  }
+}
+finally {
+  $zip.Dispose()
+}
+PS
+
       if command -v cygpath >/dev/null 2>&1; then
         SRC_WIN=$(cygpath -w "$TMP_DIR/gestor-instalador")
-        DEST_WIN=$(cygpath -w "$PWD/instalador.zip")
+        DEST_WIN=$(cygpath -w "$DEST_ZIP")
+        SCRIPT_WIN=$(cygpath -w "$PS_SCRIPT")
       else
         SRC_WIN="$TMP_DIR/gestor-instalador"
-        DEST_WIN="$PWD/instalador.zip"
+        DEST_WIN="$DEST_ZIP"
+        SCRIPT_WIN="$PS_SCRIPT"
       fi
-      powershell -NoProfile -Command "Compress-Archive -Path '$SRC_WIN\\*' -DestinationPath '$DEST_WIN' -Force" >/dev/null
+      powershell -NoProfile -ExecutionPolicy Bypass -File "$SCRIPT_WIN" -SourceDir "$SRC_WIN" -DestinationZip "$DEST_WIN" >/dev/null
+      rm -f "$PS_SCRIPT"
     elif command -v pwsh >/dev/null 2>&1; then
+      PS_SCRIPT=$(mktemp)
+      cat > "$PS_SCRIPT" <<'PS'
+param(
+  [string]$SourceDir,
+  [string]$DestinationZip
+)
+
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+Add-Type -AssemblyName System.IO.Compression
+
+if (Test-Path -LiteralPath $DestinationZip) {
+  Remove-Item -LiteralPath $DestinationZip -Force
+}
+
+$zip = [System.IO.Compression.ZipFile]::Open($DestinationZip, 1)
+try {
+  Get-ChildItem -LiteralPath $SourceDir -Recurse -File | ForEach-Object {
+    $full = $_.FullName
+    $relative = $full.Substring($SourceDir.Length).TrimStart('\\', '/').Replace('\\', '/')
+    [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $full, $relative, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
+  }
+}
+finally {
+  $zip.Dispose()
+}
+PS
+
       SRC_UNIX="$TMP_DIR/gestor-instalador"
-      DEST_UNIX="$PWD/instalador.zip"
-      pwsh -NoProfile -Command "Compress-Archive -Path '$SRC_UNIX/*' -DestinationPath '$DEST_UNIX' -Force" >/dev/null
+      DEST_UNIX="$DEST_ZIP"
+      pwsh -NoProfile -File "$PS_SCRIPT" -SourceDir "$SRC_UNIX" -DestinationZip "$DEST_UNIX" >/dev/null
+      rm -f "$PS_SCRIPT"
     else
       rm -rf "$TMP_DIR"
-      echo "Error: Neither 'zip' nor PowerShell compression is available to create instalador.zip"
+      echo "Error: Neither 'zip', '7z' nor PowerShell compression is available to create instalador.zip"
       exit 1
     fi
 
@@ -140,10 +219,12 @@ if [ "$RELEASE_MODE" = "manual" ]; then
     gh release delete "$TAG_NAME" --yes
   fi
 
-  gh release create "$TAG_NAME" instalador.zip \
+  gh release create "$TAG_NAME" "$DEST_ZIP#instalador.zip" \
     --title "$RELEASE_TITLE" \
     --notes-file "$BODY_FILE" \
     --latest
+
+  rm -rf "$TMP_RELEASE_DIR"
 
   echo "Manual release created: $TAG_NAME"
 fi
