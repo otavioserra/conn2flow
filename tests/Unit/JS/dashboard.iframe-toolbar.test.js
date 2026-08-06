@@ -120,3 +120,52 @@ describe('dashboard.iframe-toolbar.js — filtro de modulos da Editbar (BATCH-10
     expect(document.activeElement).toBe(campo);
   });
 });
+
+/**
+ * BATCH-106 — botão "Opções de Exibição" da Editbar. O painel vive na página HOSPEDEIRA (junto do
+ * motor), então a barra só publica a posição do botão, como já faz o painel "+".
+ */
+describe('dashboard.iframe-toolbar.js — botão de opções de exibição (BATCH-106)', () => {
+  let postadas;
+
+  beforeEach(() => {
+    document.body.innerHTML = `
+      <div id="c2f-toolbar-root" data-page-id="pagina-teste">
+        <div id="c2f-toolbar-editbar">
+          <button type="button" id="c2f-tb-view-options">Opções de Exibição</button>
+        </div>
+      </div>`;
+    carregarBarra();
+    postadas = [];
+    window.parent.postMessage = (msg) => { postadas.push(msg); };
+  });
+
+  it('publica c2f-toolbar:edit-view-options com a posição do botão', () => {
+    document.getElementById('c2f-tb-view-options')
+      .dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+
+    const msg = postadas.find((m) => m && m.type === 'c2f-toolbar:edit-view-options');
+    expect(msg).toBeTruthy();
+    expect(typeof msg.x).toBe('number');
+    expect(typeof msg.y).toBe('number');
+  });
+
+  it('avisa o host (ui-dismiss) a cada clique na barra, para fechar os painéis abertos', () => {
+    // Clique em área "vazia" da barra: o aviso de fechamento é publicado.
+    // (Cada `carregarBarra()` do arquivo de teste soma um listener no mesmo `document`, então aqui
+    // conta-se a presença, não a quantidade — em produção o script é carregado uma única vez.)
+    document.getElementById('c2f-toolbar-editbar')
+      .dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true }));
+    expect(postadas.filter((m) => m && m.type === 'c2f-toolbar:ui-dismiss').length).toBeGreaterThan(0);
+
+    // Clique no botão que abre um painel: o mousedown fecha o que estava aberto ANTES do click
+    // abrir o painel pedido — nessa ordem o botão continua funcionando.
+    postadas = [];
+    const botao = document.getElementById('c2f-tb-view-options');
+    botao.dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true }));
+    botao.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+    const tipos = postadas.map((m) => m && m.type).filter(Boolean);
+    expect(tipos.indexOf('c2f-toolbar:ui-dismiss'))
+      .toBeLessThan(tipos.indexOf('c2f-toolbar:edit-view-options'));
+  });
+});

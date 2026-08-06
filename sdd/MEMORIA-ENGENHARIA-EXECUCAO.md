@@ -14,6 +14,34 @@
 
 ## Tarefas recentes
 
+### BATCH-106 — painéis fixos opcionais do editor visual
+
+- Para tirar um painel da flutuação, MOVA o nó existente (`appendChild`) e anule o posicionamento por
+  classe de estado. Recriar o painel dentro do contêiner novo duplicaria handlers e lógica de render.
+- O offset do topo no Live Editor é o `margin-top` do `<html>` (offset persistente da Editbar), nunca
+  a altura do iframe `#c2f-site-toolbar` — ela cresce quando um dropdown abre.
+- Todo elemento novo de UI do editor precisa entrar em três lugares: `isEditorOwned` (clique não
+  vaza), `extractUserHtml` e o seletor de fallback do save em `html-editor-interface.js`.
+- `styler.querySelector('input')` era frágil: ao acrescentar campos na coluna visual, o "primeiro
+  input" deixou de ser o de classes. Prefira seletor por classe própria (`.he-class-input`).
+- Painéis do editor clássico ficam na janela pai e falam com o motor por `postMessage`; como o
+  preview usa `srcdoc`, iframe e pai compartilham `localStorage` (mesma origem).
+- Rodada 2: clique dentro do iframe da Editbar NÃO dispara `mousedown` na página hospedeira nem
+  atinge backdrop nenhum — todo fechamento "ao clicar fora" precisa de um aviso explícito da barra
+  (`ui-dismiss`), inclusive para os painéis do motor. Como o `mousedown` precede o `click`, fechar
+  tudo no aviso não atrapalha o botão que abre um painel.
+- `closeEmbedModal()` zera `isModalActive` mesmo com o modal de embed fechado: ao encadear
+  fechamentos, leia o estado do modal de edição ANTES de chamá-lo.
+- Rodada 3: em caixa redimensionável, o CodeMirror não pode receber "todo o espaço até o fundo" —
+  desconte a altura dos irmãos posteriores (dele e dos ancestrais), senão o rodapé/status sai da área
+  visível. NÃO use `scrollHeight` nessa conta: ele nunca é menor que `clientHeight`, então com o
+  conteúdo cabendo a expressão colapsa na altura atual do editor e ele encolhe a cada disparo do
+  `ResizeObserver`, matando o acompanhamento do arraste. O termo descontado precisa ser independente
+  da altura do editor. E o ajuste não pode viver só no observador: chame também ao trocar de aba e ao
+  abrir o painel, senão o editor recém-exibido fica na altura inicial.
+- `disable()` do motor é usado tanto para SAIR da edição quanto para o preview de dispositivo —
+  comportamento que só vale ao sair precisa de flag explícita (`{manterPaineis:true}`).
+
 ### 2026-07-31 — Rodada de análise de segurança/sistêmica (backlog)
 
 - Auditoria do core (`gestor`) e do instalador (`gestor-instalador`) gerou 10 itens em `sdd/backlog/` (BL-001..BL-010), **sem tocar código** — aguardam promoção humana.
@@ -36,17 +64,6 @@
 - Nunca gere `src=""` ou `data=""`: o navegador requisita a própria página como mídia, falha na decodificação e pode colapsar o player.
 - Em geradores de markup, omita completamente o atributo de fonte quando não houver valor.
 - Hipóteses não sustentadas pela evidência devem ser revertidas; a assinatura `; ` no style ajudou a provar que o elemento havia passado pelo modal.
-
-### BATCH-100 — arquivos com espaço, Range e embeds
-
-- Apache 2.4.53+ pode recusar rewrite de caminho decodificado com espaço (`AH10411`). A regra precisa da flag `[B]`; codificar `%20` no cliente não corrige a decodificação interna.
-- Servir áudio/vídeo exige `Accept-Ranges`, `Content-Length`, resposta 206/416 e streaming por blocos; não anexar charset a tipos binários.
-- Tamanhos padrão dependem do tipo: áudio sem altura, vídeo 360px, iframe/embed 400px e documento 600px. Codifique apenas a URL de exibição; preserve o caminho cru como identificador do backend.
-
-### BATCH-099 — picker é o gerenciador completo
-
-- `?paginaIframe=sim` usa o mesmo `admin-arquivos`. O fluxo de upload e o retorno precisam permanecer acessíveis; diferenças legítimas são seleção em vez de cópia de URL e parâmetros de retorno.
-- Antes de esconder ferramentas por modo, confirme os links e handlers já implementados para não tornar um fluxo existente inalcançável.
 
 ## Pendências
 

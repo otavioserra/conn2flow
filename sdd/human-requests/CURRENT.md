@@ -1,9 +1,10 @@
 # Current Human Request
 
-- **Intake ativo (Agente Atual)**: [req-106.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-106.md) (BATCH-106 `ready-for-intake`, 2026-08-06).
+- **Intake ativo (Agente Atual)**: Nenhum.
 - **Outros Intakes Pendentes (Outros Agentes)**: Nenhum.
 
 - **Lotes Fechados**: 
+  * [req-106.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-106.md) (BATCH-106 `complete`, 2026-08-06): Painel Flutuante de Opções de Exibição, Sidebar Lateral de CSS e Barra Superior de Navegação no Editor Visual.
   * [req-107.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-107.md) (BATCH-107 `complete`, 2026-08-06): Hardening de Segurança, Mitigação de Vulnerabilidades e Saneamento do Core.
   * [req-075.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-075.md) (BATCH-075 `complete`, 2026-07-10): Site Toolbar completa, agendamento de páginas e extensões do editor.
   * [req-076.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-076.md) (BATCH-076 `complete`, 2026-07-09): Exclusão de `contents/` em deploy/sincronização.
@@ -32,6 +33,6 @@
   * (BATCH-099 `complete`, 2026-07-30): Upload e Gestão de Pastas Liberados no Modo Picker do Admin-Arquivos.
   * (BATCH-100 `complete`, 2026-07-30): Mídia Embutida: 403 em Arquivos com Espaço, Streaming (HTTP Range) e Dimensionamento do Áudio.
 
-- **Status**: BATCH-104 concluído e validado (Vitest 90/90 OK, PHPUnit 172/172 OK; homologação PayPal Sandbox pendente).
+- **Status**: BATCH-106 concluído e validado (Vitest 134/134 OK, PHPUnit 181/181 OK).
 
 - **Pendências**: Nenhuma.

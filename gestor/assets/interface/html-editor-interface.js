@@ -1419,6 +1419,8 @@ $(document).ready(function () {
                 '#html-editor-selection-overlay,#html-editor-floating-toolbar,#html-editor-selection-breadcrumb,' +
                 '#html-editor-selection-children,#html-editor-breadcrumb-hover-overlay,' +
                 '#html-editor-parent-highlight-overlay,#html-editor-insert-ghost,#html-editor-wrap-menu,' +
+                // req-106: painéis fixos de exibição (hospedam styler/breadcrumbs quando ligados).
+                '#c2f-he-css-sidebar,#c2f-he-element-navbar,' +
                 '#html-editor-tailwind-styler,.conn2flow-dnd-placeholder,.ui.dimmer.modals';
             iframeDoc.querySelectorAll(sistemaSel).forEach(el => el.remove());
             bodyContent = iframeDoc.body ? iframeDoc.body.innerHTML : '';

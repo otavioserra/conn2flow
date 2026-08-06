@@ -74,7 +74,9 @@ describe('html-editor.js — Live Editor (BATCH-080)', () => {
 
       expect(document.querySelector('.he-tb-drag').title).toBe('Drag / Move');
       expect(document.querySelector('.he-tb-widget-admin').title).toBe('Edit widget in module');
-      expect(document.querySelector('#html-editor-tailwind-styler input').placeholder).toBe('Add classes (space/Enter)...');
+      // BATCH-106: o styler deixou de ter um único <input> (há campos de valores manuais), então o
+      // campo de classes passou a ser identificado pela classe `he-class-input`.
+      expect(document.querySelector('#html-editor-tailwind-styler .he-class-input').placeholder).toBe('Add classes (space/Enter)...');
       expect(document.querySelector('#html-editor-selection-breadcrumb .he-crumb-label').textContent).toBe('Ancestors:');
       expect(document.querySelector('.c2f-he-modal-cancel').textContent).toBe('Cancel');
 

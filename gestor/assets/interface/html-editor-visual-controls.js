@@ -33,8 +33,35 @@ $(document).ready(function () {
         CANCEL_INSERT: 'c2f-he:cancel-insert',
         HISTORY: 'c2f-he:history',
         WIDGET_RENDER: 'c2f-he:widget-render',
-        WIDGET_RENDERED: 'c2f-he:widget-rendered'
+        WIDGET_RENDERED: 'c2f-he:widget-rendered',
+        // req-106 (BATCH-106): liga/desliga a Sidebar Lateral de CSS e a Barra de Navegação de
+        // Elementos dentro do iframe do preview.
+        VIEW_OPTION: 'c2f-he:view-option'
     };
+
+    // ===== Opções de exibição (req-106)
+    //
+    // O estado real vive no motor (dentro do iframe) e é persistido em
+    // `localStorage['c2f-he-view-options']`. Como o iframe usa `srcdoc`, ele herda esta origem — o
+    // mesmo storage — então a janela pai lê a MESMA chave para marcar os toggles ao abrir o painel.
+    var VIEW_OPTIONS_KEY = 'c2f-he-view-options';
+
+    var VIEW_OPTIONS = [
+        { key: 'cssSidebar', label: 'Sidebar Lateral de CSS', labelEn: 'CSS Side Panel' },
+        { key: 'elementNavbar', label: 'Barra de Navegação de Elementos', labelEn: 'Element Navigation Bar' }
+    ];
+
+    function lerOpcoesExibicao() {
+        var base = { cssSidebar: false, elementNavbar: false };
+        try {
+            var raw = window.localStorage.getItem(VIEW_OPTIONS_KEY);
+            if (!raw) return base;
+            var dados = JSON.parse(raw);
+            if (!dados || typeof dados !== 'object') return base;
+            Object.keys(base).forEach(function (k) { base[k] = !!dados[k]; });
+            return base;
+        } catch (e) { return base; }
+    }
 
     // ===== Elementos HTML disponíveis no painel de inclusão (req-034 §4)
     var ELEMENTOS_HTML = [
@@ -107,7 +134,16 @@ $(document).ready(function () {
             + '.html-editor-add-panel .he-add-widget-head:hover{background:#f3f4f6;}'
             + '.html-editor-add-panel .he-add-widget-list{padding-left:1.5rem;display:none;}'
             + '.html-editor-add-panel .he-add-widget-group.open .he-add-widget-list{display:block;}'
-            + '.html-editor-add-panel .he-add-empty{color:#999;font-size:12px;padding:0.25rem 0.5rem;}';
+            + '.html-editor-add-panel .he-add-empty{color:#999;font-size:12px;padding:0.25rem 0.5rem;}'
+            // req-106: painel de opções de exibição (mesma moldura do painel de inclusão).
+            + '.html-editor-view-options-panel{position:fixed;z-index:10000;min-width:280px;max-width:340px;'
+            + 'background:#fff;border:1px solid #d4d4d5;border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,0.2);'
+            + 'padding:0.75rem;display:none;}'
+            + '.html-editor-view-options-panel .he-view-title{font-weight:bold;color:#767676;'
+            + 'text-transform:uppercase;font-size:11px;letter-spacing:.5px;margin:0.25rem 0 0.4rem;}'
+            + '.html-editor-view-options-panel .he-view-item{display:flex;align-items:center;gap:0.5rem;'
+            + 'padding:0.4rem 0.5rem;border-radius:4px;cursor:pointer;color:#333;}'
+            + '.html-editor-view-options-panel .he-view-item:hover{background:#f3f4f6;}';
         var style = document.createElement('style');
         style.id = 'html-editor-visual-controls-styles';
         style.textContent = css;
@@ -176,6 +212,64 @@ $(document).ready(function () {
         if (!$painel || !$painel.is(':visible')) return;
         if ($(e.target).closest('.html-editor-add-panel, .html-editor-add-btn').length === 0) {
             fecharPainel();
+        }
+    });
+
+    // ===== Painel de opções de exibição (req-106)
+
+    var $painelExibicao = null;
+
+    function construirPainelExibicao() {
+        if ($painelExibicao) return $painelExibicao;
+        var html = '<div class="html-editor-view-options-panel">';
+        html += '<div class="he-view-title">' + t('Opções de Exibição', 'Display Options') + '</div>';
+        VIEW_OPTIONS.forEach(function (o) {
+            html += '<label class="he-view-item"><input type="checkbox" data-view-option="' + o.key + '">'
+                + '<span>' + t(o.label, o.labelEn) + '</span></label>';
+        });
+        html += '</div>';
+        $painelExibicao = $(html);
+        $('body').append($painelExibicao);
+        return $painelExibicao;
+    }
+
+    function sincronizarPainelExibicao() {
+        if (!$painelExibicao) return;
+        var estado = lerOpcoesExibicao();
+        $painelExibicao.find('[data-view-option]').each(function () {
+            this.checked = !!estado[$(this).data('view-option')];
+        });
+    }
+
+    function abrirPainelExibicao($botao) {
+        construirPainelExibicao();
+        var rect = $botao[0].getBoundingClientRect();
+        var largura = $painelExibicao.outerWidth() || 300;
+        var left = Math.min(rect.left, Math.max(10, window.innerWidth - largura - 10));
+        $painelExibicao.css({ top: (rect.bottom + 6) + 'px', left: left + 'px' });
+        sincronizarPainelExibicao();
+        $painelExibicao.show();
+    }
+
+    function fecharPainelExibicao() {
+        if ($painelExibicao) $painelExibicao.hide();
+    }
+
+    $(document.body).on('click', '.c2f-tb-view-options', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if ($painelExibicao && $painelExibicao.is(':visible')) fecharPainelExibicao();
+        else abrirPainelExibicao($(this));
+    });
+
+    $(document.body).on('change', '.html-editor-view-options-panel [data-view-option]', function () {
+        enviarParaIframe(ACT.VIEW_OPTION, { key: String($(this).data('view-option')), on: !!this.checked });
+    });
+
+    $(document).on('mousedown', function (e) {
+        if (!$painelExibicao || !$painelExibicao.is(':visible')) return;
+        if ($(e.target).closest('.html-editor-view-options-panel, .c2f-tb-view-options').length === 0) {
+            fecharPainelExibicao();
         }
     });
 

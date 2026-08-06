@@ -173,7 +173,7 @@
 		ensureJQuery(function () {
 			// Impede o auto-init sobre document.body; instanciamos escopado ao conteúdo.
 			window.__c2fHtmlEditorNoAutoInit = true;
-			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f15', 'c2f-he-script', function () {
+			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f18', 'c2f-he-script', function () {
 				instantiateEditor(content, 0);
 			});
 		});
@@ -603,8 +603,8 @@
 			ov.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.6);display:flex;align-items:center;justify-content:center;cursor:progress;';
 			ov.innerHTML =
 				'<div style="display:flex;flex-direction:column;align-items:center;gap:16px;background:#fff;padding:28px 44px;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.35);font:600 15px system-ui,sans-serif;color:#0f172a;">' +
-					'<div style="width:44px;height:44px;border:4px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:c2f-save-spin .8s linear infinite;"></div>' +
-					'<span>' + t('Salvando página…', 'Saving page...') + '</span>' +
+				'<div style="width:44px;height:44px;border:4px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:c2f-save-spin .8s linear infinite;"></div>' +
+				'<span>' + t('Salvando página…', 'Saving page...') + '</span>' +
 				'</div>';
 			// Captura e impede qualquer interação por baixo enquanto salva.
 			['click', 'mousedown', 'mouseup', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
@@ -754,10 +754,12 @@
 			return;
 		}
 
-		// Editor visual desabilitado durante o preview (fiel, não editável).
+		// Editor visual desabilitado durante o preview (fiel, não editável). req-106 rodada 3: os
+		// painéis fixos (Sidebar de CSS / Barra de Navegação) PERMANECEM — trocar a largura de
+		// visualização não é sair do modo de edição.
 		if (typeof c2fEditor !== 'undefined' && c2fEditor) {
 			if (typeof c2fEditor.deselectAll === 'function') { c2fEditor.deselectAll(); }
-			if (typeof c2fEditor.disable === 'function') { c2fEditor.disable(); }
+			if (typeof c2fEditor.disable === 'function') { c2fEditor.disable({ manterPaineis: true }); }
 		}
 
 		if (!deviceWrap) {
@@ -999,7 +1001,74 @@
 		if (addPanel && addPanel.style.display === 'block' && (!e.target.closest || !e.target.closest('#c2f-add-panel'))) {
 			closeAddPanel();
 		}
+		if (viewOptionsPanel && viewOptionsPanel.style.display === 'block' &&
+			(!e.target.closest || !e.target.closest('#c2f-view-options-panel'))) {
+			closeViewOptionsPanel();
+		}
 	});
+
+	// ===== Painel de Opções de Exibição (req-106 / BATCH-106)
+	//
+	// Mesmo padrão visual do painel "+": caixa flutuante ancorada ao botão da Editbar. Os toggles
+	// ligam/desligam a Sidebar Lateral de CSS e a Barra de Navegação de Elementos DIRETAMENTE na
+	// instância do motor (que roda nesta mesma página, no Live Editor) — sem postMessage.
+
+	var viewOptionsPanel = null;
+
+	var VIEW_OPTIONS = [
+		{ key: 'cssSidebar', label: 'Sidebar Lateral de CSS', labelEn: 'CSS Side Panel' },
+		{ key: 'elementNavbar', label: 'Barra de Navegação de Elementos', labelEn: 'Element Navigation Bar' }
+	];
+
+	function closeViewOptionsPanel() { if (viewOptionsPanel) { viewOptionsPanel.style.display = 'none'; } }
+
+	function buildViewOptionsPanel() {
+		if (viewOptionsPanel) { return viewOptionsPanel; }
+		viewOptionsPanel = document.createElement('div');
+		viewOptionsPanel.id = 'c2f-view-options-panel';
+		viewOptionsPanel.style.cssText = 'position:fixed;z-index:2147483645;width:300px;max-width:94vw;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.22);padding:10px;display:none;font:14px system-ui,sans-serif;color:#0f172a;';
+		var h = '<div style="font:600 11px sans-serif;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin:2px 0 6px;">' +
+			t('Opções de Exibição', 'Display Options') + '</div>';
+		VIEW_OPTIONS.forEach(function (o) {
+			h += '<label class="c2f-view-option" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;">' +
+				'<input type="checkbox" data-view-option="' + esc(o.key) + '" style="width:16px;height:16px;cursor:pointer;">' +
+				'<span>' + esc(t(o.label, o.labelEn)) + '</span></label>';
+		});
+		viewOptionsPanel.innerHTML = h;
+		document.body.appendChild(viewOptionsPanel);
+
+		viewOptionsPanel.addEventListener('mouseover', function (e) { var it = e.target.closest && e.target.closest('.c2f-view-option'); if (it) { it.style.background = '#f1f5f9'; } });
+		viewOptionsPanel.addEventListener('mouseout', function (e) { var it = e.target.closest && e.target.closest('.c2f-view-option'); if (it) { it.style.background = ''; } });
+		viewOptionsPanel.addEventListener('change', function (e) {
+			var campo = e.target.closest && e.target.closest('[data-view-option]');
+			if (!campo) { return; }
+			if (c2fEditor && typeof c2fEditor.setViewOption === 'function') {
+				c2fEditor.setViewOption(campo.getAttribute('data-view-option'), campo.checked);
+			}
+		});
+		return viewOptionsPanel;
+	}
+
+	function syncViewOptionsPanel() {
+		if (!viewOptionsPanel) { return; }
+		var campos = viewOptionsPanel.querySelectorAll('[data-view-option]');
+		Array.prototype.forEach.call(campos, function (campo) {
+			var on = false;
+			if (c2fEditor && typeof c2fEditor.getViewOption === 'function') {
+				on = !!c2fEditor.getViewOption(campo.getAttribute('data-view-option'));
+			}
+			campo.checked = on;
+		});
+	}
+
+	function openViewOptionsPanel(x, y) {
+		buildViewOptionsPanel();
+		var px = Math.max(8, Math.min(parseInt(x, 10) || 8, window.innerWidth - 310));
+		viewOptionsPanel.style.left = px + 'px';
+		viewOptionsPanel.style.top = ((parseInt(y, 10) || 40) + 4) + 'px';
+		viewOptionsPanel.style.display = 'block';
+		syncViewOptionsPanel(); // o estado real é o do motor (recuperado do localStorage no boot)
+	}
 
 	// ===== Painel de Backups (restaurar versão do conteúdo) — ponto 5.
 
@@ -1084,6 +1153,18 @@
 			closeBackupPanel();
 		}
 	});
+
+	// req-106 rodada 2: fecha TODA a UI flutuante de uma vez. Usado pelo aviso
+	// `c2f-toolbar:ui-dismiss`, postado pela barra a cada clique dentro do iframe da Editbar — de
+	// onde o `mousedown` desta página nunca chega e nenhum backdrop é atingido. Cobre os painéis
+	// desta página (Opções, "+", Backups) e os do motor (Modelos, IA, Código Customizado, modais de
+	// edição/embed e o seletor de arquivos), que já fechavam ao clicar fora na área editável.
+	function dismissHostPanels() {
+		closeAddPanel();
+		closeBackupPanel();
+		closeViewOptionsPanel();
+		if (c2fEditor && typeof c2fEditor.dismissFloatingUi === 'function') { c2fEditor.dismissFloatingUi(); }
+	}
 
 	// ===== Ponte de renderização de widget (motor html-editor.js → backend → motor) — req-082 §1.
 	//
@@ -1171,6 +1252,12 @@
 				break;
 			case 'c2f-toolbar:edit-ai':
 				if (c2fEditor && typeof c2fEditor.openAiPanel === 'function') { c2fEditor.openAiPanel(); }
+				break;
+			case 'c2f-toolbar:edit-view-options':
+				openViewOptionsPanel(data.x, data.y);
+				break;
+			case 'c2f-toolbar:ui-dismiss':
+				dismissHostPanels();
 				break;
 			default:
 				break;

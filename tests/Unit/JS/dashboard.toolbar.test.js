@@ -23,7 +23,13 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
         'mapTree(root,backup);return varMap;},reconstruct:function(c){return reconstructOriginal(c);},' +
         'handleWidgetRender:function(s,w){return handleEngineWidgetRender(s,w);},' +
         'buildAddPanel:function(){return buildAddPanel();},backupColumn:function(title,items,type){return backupColumn(title,items,type);},' +
-        'translate:function(pt,en){return t(pt,en);}};\n';
+        'translate:function(pt,en){return t(pt,en);},' +
+        // BATCH-106: painel de opções de exibição + injeção de um editor de teste (c2fEditor é
+        // privado à IIFE e no runtime só existe depois de "Editar Página").
+        'openViewOptions:function(x,y){return openViewOptionsPanel(x,y);},' +
+        'openAdd:function(x,y){return openAddPanel(x,y);},' +
+        'dismissPanels:function(){return dismissHostPanels();},' +
+        'setEditor:function(e){c2fEditor=e;}};\n';
     code = code.slice(0, idx) + hook + code.slice(idx);
     
     // Eval no contexto da sandbox do vitest/happy-dom
@@ -185,6 +191,89 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
     expect(panel.querySelector('.c2f-add-widget-search').placeholder).toBe('Search widgets...');
     expect(T.backupColumn('Page Backups', [], 'page')).toContain('No backups');
     expect(T.translate('Falha ao restaurar o backup.', 'Failed to restore the backup.')).toBe('Failed to restore the backup.');
+  });
+
+  // ===== BATCH-106 — painel de Opções de Exibição =====
+
+  it('abre o painel de opções com os dois toggles e reflete o estado do editor', () => {
+    T.setEditor({
+      viewOptions: { cssSidebar: true, elementNavbar: false },
+      getViewOption: function (k) { return !!this.viewOptions[k]; },
+      setViewOption: function (k, on) { this.viewOptions[k] = !!on; }
+    });
+
+    T.openViewOptions(120, 74);
+    const painel = document.getElementById('c2f-view-options-panel');
+    expect(painel).toBeTruthy();
+    expect(painel.style.display).toBe('block');
+    expect(painel.style.top).toBe('78px');
+    expect(painel.textContent).toContain('Sidebar Lateral de CSS');
+    expect(painel.textContent).toContain('Barra de Navegação de Elementos');
+
+    const toggles = painel.querySelectorAll('[data-view-option]');
+    expect(toggles.length).toBe(2);
+    // Sincroniza com o estado real do motor ao abrir (recuperado do localStorage no boot).
+    expect(painel.querySelector('[data-view-option="cssSidebar"]').checked).toBe(true);
+    expect(painel.querySelector('[data-view-option="elementNavbar"]').checked).toBe(false);
+  });
+
+  it('o toggle aciona setViewOption no editor', () => {
+    const chamadas = [];
+    T.setEditor({
+      viewOptions: { cssSidebar: false, elementNavbar: false },
+      getViewOption: function (k) { return !!this.viewOptions[k]; },
+      setViewOption: function (k, on) { chamadas.push([k, on]); this.viewOptions[k] = !!on; }
+    });
+
+    T.openViewOptions(10, 40);
+    const campo = document.querySelector('#c2f-view-options-panel [data-view-option="elementNavbar"]');
+    campo.checked = true;
+    campo.dispatchEvent(new window.Event('change', { bubbles: true }));
+
+    expect(chamadas).toEqual([['elementNavbar', true]]);
+  });
+
+  it('dismissHostPanels fecha os painéis flutuantes do host (clique na Editbar)', () => {
+    T.setEditor({ getViewOption: function () { return false; }, setViewOption: function () { } });
+    T.openViewOptions(10, 40);
+    T.openAdd(10, 40);
+
+    const viewPanel = document.getElementById('c2f-view-options-panel');
+    const addPanel = document.getElementById('c2f-add-panel');
+    expect(viewPanel.style.display).toBe('block');
+    expect(addPanel.style.display).toBe('block');
+
+    T.dismissPanels();
+    expect(viewPanel.style.display).toBe('none');
+    expect(addPanel.style.display).toBe('none');
+  });
+
+  it('dismissHostPanels também fecha a UI flutuante do motor (Modelos, IA, modais)', () => {
+    let chamou = 0;
+    T.setEditor({
+      getViewOption: function () { return false; },
+      setViewOption: function () { },
+      dismissFloatingUi: function () { chamou++; }
+    });
+
+    T.dismissPanels();
+    expect(chamou).toBe(1);
+  });
+
+  it('dismissHostPanels não quebra sem editor instanciado (fora do modo de edição)', () => {
+    T.setEditor(null);
+    expect(() => T.dismissPanels()).not.toThrow();
+  });
+
+  it('traduz o painel de opções de exibição para inglês', () => {
+    window.gestor = { language: 'en-gb' };
+    T.setEditor({ getViewOption: function () { return false; }, setViewOption: function () { } });
+    T.openViewOptions(10, 40);
+
+    const painel = document.getElementById('c2f-view-options-panel');
+    expect(painel.textContent).toContain('Display Options');
+    expect(painel.textContent).toContain('CSS Side Panel');
+    expect(painel.textContent).toContain('Element Navigation Bar');
   });
 
 });

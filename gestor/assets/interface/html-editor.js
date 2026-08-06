@@ -27,6 +27,10 @@ $(document).ready(function () {
             this.styler = null;
             this.placeholder = null;
             this.wrapMenu = null;               // popup de tags para embrulhar (req-036)
+            this.cssSidebar = null;             // sidebar lateral fixa de CSS (req-106)
+            this.elementNavbar = null;          // barra superior de navegação de elementos (req-106)
+            this.viewOptions = null;            // {cssSidebar,elementNavbar} — req-106
+            this._inlineCssCm = null;           // CodeMirror do campo de CSS inline (req-106 r3)
             this.clipboardElement = null;       // área de transferência interna (req-036)
             this.clipboardHtml = '';            // cópia persistente (localStorage) — BATCH-098
             this.imagePickerTarget = null;      // alvo do ImagePicker: 'background' (req-039)
@@ -121,9 +125,13 @@ $(document).ready(function () {
         // Inicialização
         // ===================================================================
         init() {
+            // req-106: o estado das opções de exibição precisa existir ANTES de criar os painéis
+            // (a sidebar/navbar já nascem no estado guardado, sem "piscar" ligada e desligada).
+            this.viewOptions = this.readViewOptions();
             this.injectStyles();
             this.createOverlays();
             this.createToolbar();
+            this.createViewPanels();
             this.createPlaceholder();
             this.bindModal();
             this.bindEvents();
@@ -349,6 +357,106 @@ $(document).ready(function () {
                 .conn2flow-pdf-fallback-btn{display:inline-flex;align-items:center;gap:6px;
                     background:#2563eb;color:#fff !important;text-decoration:none;padding:10px 18px;
                     border-radius:8px;font-weight:600;}
+
+                /* ===== req-106 (BATCH-106) — painéis de exibição opcionais.
+                   O breadcrumb/filhos e a caixa de estilização deixam de acompanhar o elemento quando
+                   o usuário liga a Barra de Navegação de Elementos e/ou a Sidebar Lateral de CSS no
+                   painel "Opções de Exibição". Os dois nascem DESLIGADOS; ligados, os painéis
+                   flutuantes existentes são REALOCADOS (dock) para dentro deles — sem duplicar
+                   markup nem handlers. */
+                #c2f-he-element-navbar{position:fixed;left:0;top:0;width:100%;height:44px;
+                    z-index:999997;display:none;box-sizing:border-box;background:#111827;
+                    color:#e5e7eb !important;-webkit-text-fill-color:#e5e7eb !important;
+                    border-bottom:1px solid #374151;font:11px/1.4 monospace !important;
+                    text-align:left !important;text-transform:none !important;}
+                #c2f-he-element-navbar.he-view-on{display:flex;}
+                #c2f-he-element-navbar.he-view-bottom{border-bottom:none;
+                    border-top:1px solid #374151;}
+                #c2f-he-element-navbar .c2f-he-navbar-label{flex:0 0 20%;max-width:20%;
+                    display:flex;align-items:center;justify-content:space-between;gap:6px;
+                    padding:0 6px 0 10px;box-sizing:border-box;
+                    font:bold 10px sans-serif !important;color:#9ca3af !important;
+                    -webkit-text-fill-color:#9ca3af !important;text-transform:uppercase;
+                    letter-spacing:.4px;border-right:1px solid #374151;overflow:hidden;}
+                #c2f-he-element-navbar .c2f-he-panel-title{overflow:hidden;text-overflow:ellipsis;
+                    white-space:nowrap;}
+                #c2f-he-element-navbar .c2f-he-navbar-area{flex:1 1 80%;max-width:80%;min-width:0;
+                    box-sizing:border-box;padding:2px 8px;overflow:auto;display:flex;
+                    flex-direction:column;justify-content:center;gap:2px;}
+                #c2f-he-element-navbar .c2f-he-navbar-empty{color:#6b7280 !important;
+                    -webkit-text-fill-color:#6b7280 !important;font:11px monospace !important;}
+                #c2f-he-css-sidebar{position:fixed;left:0;top:0;width:240px;z-index:999997;
+                    display:none;flex-direction:column;box-sizing:border-box;background:#fff;
+                    border-right:1px solid #d1d5db;box-shadow:2px 0 10px rgba(0,0,0,0.12);
+                    color:#1f2937 !important;font-family:sans-serif !important;
+                    line-height:normal !important;text-align:left !important;
+                    text-transform:none !important;}
+                #c2f-he-css-sidebar.he-view-on{display:flex;}
+                #c2f-he-css-sidebar.he-view-right{border-right:none;
+                    border-left:1px solid #d1d5db;box-shadow:-2px 0 10px rgba(0,0,0,0.12);}
+                #c2f-he-css-sidebar .c2f-he-css-sidebar-head{flex:0 0 auto;padding:6px 6px 6px 10px;
+                    background:#111827;color:#e5e7eb !important;
+                    -webkit-text-fill-color:#e5e7eb !important;font:bold 10px sans-serif !important;
+                    text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;
+                    justify-content:space-between;gap:6px;}
+                #c2f-he-css-sidebar .c2f-he-panel-title{overflow:hidden;text-overflow:ellipsis;
+                    white-space:nowrap;}
+                /* Ações do cabeçalho (alternar ancoragem / fechar) — req-106 rodada 2. */
+                .c2f-he-panel-actions{display:flex;align-items:center;gap:2px;flex:0 0 auto;}
+                .c2f-he-panel-btn{display:inline-flex;align-items:center;justify-content:center;
+                    width:22px;height:22px;padding:0;border:none;border-radius:4px;
+                    background:transparent;cursor:pointer;color:#e5e7eb !important;
+                    -webkit-text-fill-color:#e5e7eb !important;opacity:.85;}
+                .c2f-he-panel-btn:hover{background:rgba(255,255,255,0.18);opacity:1;}
+                .c2f-he-panel-btn svg{stroke:currentColor !important;color:#e5e7eb !important;
+                    display:block;}
+                .c2f-he-panel-btn.c2f-he-panel-close:hover{background:rgba(220,38,38,0.85);}
+                #c2f-he-css-sidebar .c2f-he-css-sidebar-body{flex:1 1 auto;min-height:0;
+                    overflow-y:auto;padding:6px;}
+                #c2f-he-css-sidebar .c2f-he-css-sidebar-empty{color:#6b7280 !important;
+                    -webkit-text-fill-color:#6b7280 !important;font:12px sans-serif !important;
+                    padding:8px 4px;}
+                /* Encaixe (dock): os painéis perdem o posicionamento absoluto e a moldura própria. */
+                #html-editor-tailwind-styler.he-styler-docked{position:static;max-width:none;
+                    max-height:none;overflow:visible;border:none;box-shadow:none;padding:0;}
+                #html-editor-selection-breadcrumb.he-nav-docked,
+                #html-editor-selection-children.he-nav-docked{position:static;max-width:100%;
+                    border-radius:0;padding:0;background:transparent;}
+                /* Blocos de classes/CSS inline da coluna direita do styler (req-106 §2). */
+                #html-editor-tailwind-styler .he-css-block{margin-bottom:6px;}
+                #html-editor-tailwind-styler .he-css-block-title{font:bold 9px sans-serif;
+                    color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+                #html-editor-tailwind-styler .he-tw-variant{margin-bottom:3px;}
+                #html-editor-tailwind-styler .he-tw-variant-label{font:bold 9px monospace;
+                    color:#9333ea;margin-bottom:2px;}
+                #html-editor-tailwind-styler .he-tw-tag.he-tw-tag-custom{background:#fef3c7;
+                    color:#92400e;}
+                #html-editor-tailwind-styler .he-css-empty{font:11px sans-serif;color:#9ca3af;}
+                #html-editor-tailwind-styler .he-class-suggest{display:none;margin-top:3px;
+                    max-height:140px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:4px;}
+                #html-editor-tailwind-styler .he-class-suggest.active{display:block;}
+                #html-editor-tailwind-styler .he-class-suggest-item{padding:3px 6px;cursor:pointer;
+                    font:11px monospace;color:#1f2937;}
+                #html-editor-tailwind-styler .he-class-suggest-item:hover{background:#eff6ff;}
+                #html-editor-tailwind-styler textarea.he-inline-css{width:100%;box-sizing:border-box;
+                    border:1px solid #d1d5db;border-radius:4px;padding:3px 6px;font:11px monospace;
+                    color:#1f2937 !important;-webkit-text-fill-color:#1f2937 !important;
+                    background:#fff !important;resize:vertical;}
+                /* CodeMirror do campo de CSS inline (req-106 rodada 3). O editor cabe na largura da
+                   sidebar; a fonte menor é necessária para uma regra caber sem quebrar. */
+                #html-editor-tailwind-styler .CodeMirror{border:1px solid #d1d5db;border-radius:4px;
+                    height:110px;font-size:11px;line-height:1.4;text-align:left !important;}
+                #html-editor-tailwind-styler .CodeMirror pre{font-family:monospace !important;}
+                #html-editor-tailwind-styler .he-manual-grid{display:flex;flex-wrap:wrap;gap:4px;}
+                #html-editor-tailwind-styler .he-manual-field{flex:1 1 96px;min-width:90px;
+                    display:flex;flex-direction:column;gap:2px;}
+                #html-editor-tailwind-styler .he-manual-field span{font:9px sans-serif;color:#6b7280;}
+                #html-editor-tailwind-styler .he-computed-row{display:flex;justify-content:space-between;
+                    gap:6px;font:10px monospace;color:#374151;padding:1px 0;
+                    border-bottom:1px dotted #e5e7eb;}
+                #html-editor-tailwind-styler .he-computed-row b{color:#6b7280;font-weight:600;}
+                #html-editor-tailwind-styler .he-computed-row span{color:#111827;
+                    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%;}
             `;
             const style = document.createElement('style');
             style.id = 'html-editor-visual-styles';
@@ -411,6 +519,7 @@ $(document).ready(function () {
                 <button class="he-tb-btn he-tb-dup" type="button" title="${this.t('Duplicar', 'Duplicate')}">${svg('<rect x="8" y="8" width="12" height="12" rx="2" ry="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/>')}</button>
                 <button class="he-tb-btn he-tb-copy" type="button" title="${this.t('Copiar (Ctrl+C)', 'Copy (Ctrl+C)')}">${svg('<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>')}</button>
                 <button class="he-tb-btn he-tb-paste" type="button" title="${this.t('Colar (Ctrl+V)', 'Paste (Ctrl+V)')}" style="display:none">${svg('<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>')}</button>
+                <button class="he-tb-btn he-tb-replace" type="button" title="${this.t('Substituir pelo item copiado', 'Replace with copied item')}" style="display:none">${svg('<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>')}</button>
                 <button class="he-tb-btn he-tb-wrap" type="button" title="${this.t('Embrulhar', 'Wrap')}">${svg('<path d="M21 8v8a2 2 0 0 1-1 1.73l-7 4a2 2 0 0 1-2 0l-7-4A2 2 0 0 1 3 16V8a2 2 0 0 1 1-1.73l7-4a2 2 0 0 1 2 0l7 4A2 2 0 0 1 21 8z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>')}</button>
                 <button class="he-tb-btn he-tb-edit" type="button" title="${this.t('Editar', 'Edit')}">${svg('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>')}</button>
                 <button class="he-tb-btn he-tb-widget-admin" type="button" title="${this.t('Editar widget no módulo', 'Edit widget in module')}" style="display:none">${svg('<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>')}</button>
@@ -438,12 +547,29 @@ $(document).ready(function () {
             // req-037/req-038: duas colunas — ESQUERDA (painel visual) e DIREITA (tags + input).
             const styler = document.createElement('div');
             styler.id = 'html-editor-tailwind-styler';
+            // req-106 §2: a coluna direita passou a separar classes Tailwind (agrupadas por variante)
+            // de classes customizadas do projeto, com autocomplete instantâneo e um campo de CSS
+            // inline. O input de classes ganhou a classe `he-class-input` porque o painel deixou de
+            // ter um único `<input>` (os campos de valores manuais também são inputs).
             styler.innerHTML = `
                 <div class="he-styler-cols">
                     <div class="he-styler-col-visual">${this.buildHelperPanelHtml()}</div>
                     <div class="he-styler-col-classes">
-                        <div class="he-tw-tags"></div>
-                        <input type="text" list="html-editor-tw-classes" placeholder="${this.t('Adicionar classes (espaço/Enter)...', 'Add classes (space/Enter)...')}" />
+                        <div class="he-css-block">
+                            <div class="he-css-block-title">${this.t('Classes Tailwind', 'Tailwind classes')}</div>
+                            <div class="he-tw-tags"></div>
+                        </div>
+                        <div class="he-css-block">
+                            <div class="he-css-block-title">${this.t('Classes customizadas', 'Custom classes')}</div>
+                            <div class="he-custom-tags"></div>
+                        </div>
+                        <input type="text" class="he-class-input" list="html-editor-tw-classes" placeholder="${this.t('Adicionar classes (espaço/Enter)...', 'Add classes (space/Enter)...')}" />
+                        <div class="he-class-suggest"></div>
+                        <div class="he-css-block" style="margin-top:6px">
+                            <div class="he-css-block-title">${this.t('CSS inline customizado', 'Custom inline CSS')}</div>
+                            <textarea class="he-inline-css" rows="3" placeholder="${this.t('ex.: color:#123456; padding:12px', 'e.g.: color:#123456; padding:12px')}"></textarea>
+                            <button type="button" class="he-helper-btn he-inline-css-apply" style="margin-top:4px">${this.t('Aplicar CSS', 'Apply CSS')}</button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -471,6 +597,21 @@ $(document).ready(function () {
                 this.applyHelperClass(btn.getAttribute('data-helper-group'), btn.getAttribute('data-helper-class'));
             });
 
+            // req-106 §2: valores manuais/digitais na coluna visual (25px, 1.5rem, #123456…).
+            // `change` cobre o blur e `Enter` aplica sem tirar o foco do campo.
+            const visualCol = styler.querySelector('.he-styler-col-visual');
+            visualCol.addEventListener('change', (e) => {
+                const campo = e.target.closest('[data-manual-prop]');
+                if (!campo) return;
+                this.applyManualStyle(campo.getAttribute('data-manual-prop'), campo.value);
+            });
+            visualCol.addEventListener('keydown', (e) => {
+                const campo = e.target.closest('[data-manual-prop]');
+                if (!campo || e.key !== 'Enter') return;
+                e.preventDefault();
+                this.applyManualStyle(campo.getAttribute('data-manual-prop'), campo.value);
+            });
+
             // ===== Ações da toolbar
             tb.querySelector('.he-tb-dup').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.duplicateSelected();
@@ -480,6 +621,10 @@ $(document).ready(function () {
             });
             tb.querySelector('.he-tb-paste').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.pasteSelected();
+            });
+            // req-106 §4: troca o elemento selecionado pelo bloco da área de transferência.
+            tb.querySelector('.he-tb-replace').addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation(); this.replaceSelected();
             });
             tb.querySelector('.he-tb-wrap').addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation(); this.toggleWrapMenu();
@@ -513,16 +658,288 @@ $(document).ready(function () {
             });
 
             // ===== Tailwind styler: input
-            const input = styler.querySelector('input');
+            const input = styler.querySelector('.he-class-input');
             input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') { e.preventDefault(); this.applyClassesFromInput(); }
+                if (e.key === 'Enter') { e.preventDefault(); this.closeClassSuggestions(); this.applyClassesFromInput(); }
+                else if (e.key === 'Escape') { this.closeClassSuggestions(); }
             });
-            input.addEventListener('blur', () => { this.applyClassesFromInput(); });
-            // Remover classe ao clicar no "x".
-            styler.querySelector('.he-tw-tags').addEventListener('click', (e) => {
+            // O `blur` aplica o que foi digitado, mas não pode atropelar o clique numa sugestão —
+            // por isso o item da lista usa `mousedown` (dispara antes do blur) e limpa o campo.
+            input.addEventListener('blur', () => { this.closeClassSuggestions(); this.applyClassesFromInput(); });
+            // req-106 §5.1: autocomplete com filtro instantâneo sobre o dicionário expandido.
+            input.addEventListener('input', () => { this.renderClassSuggestions(input.value); });
+            styler.querySelector('.he-class-suggest').addEventListener('mousedown', (e) => {
+                const item = e.target.closest('.he-class-suggest-item');
+                if (!item) return;
+                e.preventDefault(); e.stopPropagation();
+                this.addClassFromSuggestion(item.getAttribute('data-class'));
+            });
+            // Remover classe ao clicar no "x" (Tailwind e customizadas).
+            const removerClasse = (e) => {
                 const x = e.target.closest('b[data-class]');
                 if (x) { this.removeClass(x.getAttribute('data-class')); }
+            };
+            styler.querySelector('.he-tw-tags').addEventListener('click', removerClasse);
+            styler.querySelector('.he-custom-tags').addEventListener('click', removerClasse);
+            // req-106 §2: aplicação do CSS inline customizado (atributo `style` completo).
+            styler.querySelector('.he-inline-css-apply').addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation(); this.applyInlineCss();
             });
+        }
+
+        // ===================================================================
+        // req-106 (BATCH-106) — Opções de exibição: Sidebar Lateral de CSS e
+        // Barra Superior de Navegação de Elementos.
+        //
+        // Os dois painéis nascem DESLIGADOS. Quando ligados, os elementos que hoje acompanham a
+        // seleção (`#html-editor-tailwind-styler`, `#html-editor-selection-breadcrumb` e
+        // `#html-editor-selection-children`) são REALOCADOS para dentro deles — o mesmo nó, com os
+        // mesmos listeners. Nada é duplicado e desligar devolve o nó ao `document.body`.
+        // ===================================================================
+        viewOptionsStorageKey() { return 'c2f-he-view-options'; }
+
+        /**
+         * `cssSidebar`/`elementNavbar` ligam os painéis; `cssSidebarRight`/`elementNavbarBottom`
+         * guardam a ancoragem escolhida pelo botão de setas do cabeçalho (req-106 rodada 2). Os
+         * padrões mantêm a sidebar à ESQUERDA e a barra de navegação no TOPO.
+         */
+        defaultViewOptions() {
+            return { cssSidebar: false, elementNavbar: false, cssSidebarRight: false, elementNavbarBottom: false };
+        }
+
+        readViewOptions() {
+            const base = this.defaultViewOptions();
+            try {
+                const raw = window.localStorage.getItem(this.viewOptionsStorageKey());
+                if (!raw) return base;
+                const dados = JSON.parse(raw);
+                if (!dados || typeof dados !== 'object') return base;
+                Object.keys(base).forEach((k) => { base[k] = !!dados[k]; });
+                return base;
+            } catch (e) { return base; } // storage indisponível: mantém o padrão desligado
+        }
+
+        writeViewOptions() {
+            try {
+                window.localStorage.setItem(this.viewOptionsStorageKey(), JSON.stringify(this.viewOptions));
+                return true;
+            } catch (e) { return false; }
+        }
+
+        getViewOption(key) { return !!(this.viewOptions && this.viewOptions[key]); }
+
+        setViewOption(key, on) {
+            if (!this.viewOptions || !Object.prototype.hasOwnProperty.call(this.viewOptions, key)) return;
+            this.viewOptions[key] = !!on;
+            this.writeViewOptions();
+            this.applyViewOptions();
+        }
+
+        /**
+         * Ações do cabeçalho dos painéis fixos (req-106 rodada 2): alternar a ancoragem e fechar
+         * (equivale a desmarcar o toggle no painel de Opções de Exibição).
+         */
+        buildViewPanelActions(painel) {
+            const horizontal = painel === 'cssSidebar';
+            const tituloLado = horizontal
+                ? this.t('Ancorar do outro lado (esquerda/direita)', 'Dock to the other side (left/right)')
+                : this.t('Ancorar na outra ponta (topo/base)', 'Dock to the other end (top/bottom)');
+            return '<span class="c2f-he-panel-actions">' +
+                '<button type="button" class="c2f-he-panel-btn c2f-he-panel-side" title="' + tituloLado + '">' +
+                this.svgIcon(horizontal ? 'arrows alternate horizontal' : 'arrows alternate vertical') + '</button>' +
+                '<button type="button" class="c2f-he-panel-btn c2f-he-panel-close" title="' +
+                this.t('Fechar (desativa nas Opções de Exibição)', 'Close (turns it off in Display Options)') +
+                '">' + this.svgIcon('close') + '</button>' +
+                '</span>';
+        }
+
+        /** Liga os botões de ancoragem/fechar de um painel fixo. */
+        bindViewPanelActions(painelEl, painel) {
+            painelEl.addEventListener('click', (e) => {
+                if (e.target.closest('.c2f-he-panel-side')) {
+                    e.preventDefault(); e.stopPropagation();
+                    this.toggleViewPanelSide(painel);
+                    return;
+                }
+                if (e.target.closest('.c2f-he-panel-close')) {
+                    e.preventDefault(); e.stopPropagation();
+                    this.setViewOption(painel, false);
+                }
+            });
+        }
+
+        createViewPanels() {
+            const navbar = document.createElement('div');
+            navbar.id = 'c2f-he-element-navbar';
+            navbar.innerHTML = '<div class="c2f-he-navbar-label"><span class="c2f-he-panel-title"></span>' +
+                this.buildViewPanelActions('elementNavbar') + '</div>' +
+                '<div class="c2f-he-navbar-area"><div class="c2f-he-navbar-empty"></div></div>';
+            navbar.querySelector('.c2f-he-navbar-label .c2f-he-panel-title').textContent =
+                this.t('Barra de Navegação de Elementos', 'Element Navigation Bar');
+            navbar.querySelector('.c2f-he-navbar-empty').textContent =
+                this.t('Nenhum elemento selecionado.', 'No element selected.');
+            document.body.appendChild(navbar);
+            this.elementNavbar = navbar;
+            this.bindViewPanelActions(navbar, 'elementNavbar');
+
+            const sidebar = document.createElement('div');
+            sidebar.id = 'c2f-he-css-sidebar';
+            sidebar.innerHTML = '<div class="c2f-he-css-sidebar-head"><span class="c2f-he-panel-title"></span>' +
+                this.buildViewPanelActions('cssSidebar') + '</div>' +
+                '<div class="c2f-he-css-sidebar-body"><div class="c2f-he-css-sidebar-empty"></div></div>';
+            sidebar.querySelector('.c2f-he-css-sidebar-head .c2f-he-panel-title').textContent =
+                this.t('Sidebar Lateral de CSS', 'CSS Side Panel');
+            sidebar.querySelector('.c2f-he-css-sidebar-empty').textContent =
+                this.t('Selecione um elemento para estilizar.', 'Select an element to style it.');
+            document.body.appendChild(sidebar);
+            this.cssSidebar = sidebar;
+            this.bindViewPanelActions(sidebar, 'cssSidebar');
+
+            this.applyViewOptions();
+        }
+
+        applyViewOptions() {
+            this.dockCssSidebar(this.getViewOption('cssSidebar'));
+            this.dockElementNavbar(this.getViewOption('elementNavbar'));
+            this.layoutViewPanels();
+            if (this.selectedElement) this.updateSelectionUI();
+        }
+
+        /** Altura ocupada no topo pela Editbar do Live Editor (0 no editor clássico). */
+        chromeTopOffset() {
+            try {
+                if (!document.getElementById('c2f-site-toolbar')) return 0;
+                const raiz = document.documentElement;
+                if (!raiz) return 0;
+                // `dashboard.toolbar.js` empurra a página com margin-top !important no <html>; esse é
+                // o offset PERSISTENTE da barra (a altura do iframe cresce com dropdown aberto e não
+                // serve de referência).
+                let valor = parseInt(raiz.style.marginTop, 10);
+                if (isNaN(valor) && window.getComputedStyle) {
+                    valor = parseInt(window.getComputedStyle(raiz).marginTop, 10);
+                }
+                return (isNaN(valor) || valor < 0) ? 0 : valor;
+            } catch (e) { return 0; }
+        }
+
+        layoutViewPanels() {
+            if (!this.elementNavbar || !this.cssSidebar) return;
+            const topo = this.chromeTopOffset();
+            const navOn = this.getViewOption('elementNavbar');
+            const navEmbaixo = this.getViewOption('elementNavbarBottom');
+            const sidebarDireita = this.getViewOption('cssSidebarRight');
+
+            // Barra de navegação: no topo encosta na Editbar; embaixo, na base da viewport.
+            if (navEmbaixo) {
+                this.elementNavbar.style.top = 'auto';
+                this.elementNavbar.style.bottom = '0px';
+            } else {
+                this.elementNavbar.style.bottom = 'auto';
+                this.elementNavbar.style.top = topo + 'px';
+            }
+            this.elementNavbar.classList.toggle('he-view-bottom', !!navEmbaixo);
+
+            // Sidebar: encaixa sem sobrepor a barra de navegação, de qualquer lado que ela esteja.
+            const alturaNavbar = navOn ? (this.elementNavbar.offsetHeight || 44) : 0;
+            const topoSidebar = topo + ((navOn && !navEmbaixo) ? alturaNavbar : 0);
+            const baseSidebar = (navOn && navEmbaixo) ? alturaNavbar : 0;
+            this.cssSidebar.style.top = topoSidebar + 'px';
+            this.cssSidebar.style.height = 'calc(100vh - ' + (topoSidebar + baseSidebar) + 'px)';
+            if (sidebarDireita) {
+                this.cssSidebar.style.left = 'auto';
+                this.cssSidebar.style.right = '0px';
+            } else {
+                this.cssSidebar.style.right = 'auto';
+                this.cssSidebar.style.left = '0px';
+            }
+            this.cssSidebar.classList.toggle('he-view-right', !!sidebarDireita);
+        }
+
+        /**
+         * req-106 rodada 2: alterna a ancoragem do painel pelo botão de setas do cabeçalho — a
+         * sidebar troca entre esquerda e direita, a barra de navegação entre topo e base. Serve para
+         * liberar a área que o painel estiver cobrindo, sem precisar desligá-lo.
+         */
+        toggleViewPanelSide(painel) {
+            const chave = painel === 'cssSidebar' ? 'cssSidebarRight'
+                : (painel === 'elementNavbar' ? 'elementNavbarBottom' : '');
+            if (!chave) return;
+            this.setViewOption(chave, !this.getViewOption(chave));
+        }
+
+        dockCssSidebar(on) {
+            if (!this.cssSidebar || !this.styler) return;
+            const corpo = this.cssSidebar.querySelector('.c2f-he-css-sidebar-body');
+            this.cssSidebar.classList.toggle('he-view-on', !!on);
+            this.styler.classList.toggle('he-styler-docked', !!on);
+            if (on) {
+                if (this.styler.parentNode !== corpo) corpo.appendChild(this.styler);
+                // 240px é estreito demais para as duas colunas lado a lado.
+                this.styler.classList.add('he-styler-stacked');
+            } else if (this.styler.parentNode !== document.body) {
+                document.body.appendChild(this.styler);
+            }
+            this.styler.style.top = '';
+            this.styler.style.left = '';
+            if (this.selectedElement) this.renderStyler(this.selectedElement);
+            else this.styler.style.display = 'none';
+            this.syncViewPanelsEmpty();
+        }
+
+        dockElementNavbar(on) {
+            if (!this.elementNavbar || !this.breadcrumb || !this.childrenBar) return;
+            const area = this.elementNavbar.querySelector('.c2f-he-navbar-area');
+            this.elementNavbar.classList.toggle('he-view-on', !!on);
+            [this.breadcrumb, this.childrenBar].forEach((el) => {
+                el.classList.toggle('he-nav-docked', !!on);
+                if (on) { if (el.parentNode !== area) area.appendChild(el); }
+                else if (el.parentNode !== document.body) document.body.appendChild(el);
+                el.style.top = '';
+                el.style.left = '';
+            });
+            this.syncViewPanelsEmpty();
+        }
+
+        /**
+         * req-106 rodada 2: fecha toda a UI flutuante do motor que JÁ fecha ao clicar fora na página
+         * (cada uma tem seu backdrop). É chamada pelo host quando o clique acontece dentro do iframe
+         * da Editbar — de onde nenhum backdrop é atingido —, dando o mesmo resultado intuitivo:
+         * clicou fora, fechou. Clique DENTRO de um painel/modal nunca chega aqui.
+         */
+        dismissFloatingUi() {
+            // `closeEmbedModal` zera `isModalActive` incondicionalmente, então o estado do modal de
+            // edição precisa ser lido ANTES — senão ele deixaria de ser fechado aqui.
+            const modalAberto = this.isModalActive;
+            this.closeWrapMenu();
+            this.closeClassSuggestions();
+            if (typeof this.closeTemplatesPanel === 'function') this.closeTemplatesPanel();
+            if (typeof this.closeAiPanel === 'function') this.closeAiPanel();
+            if (typeof this.closeCustomCodePanel === 'function') this.closeCustomCodePanel();
+            if (this.liveImagePickerOpen && typeof this.closeLiveImagePicker === 'function') {
+                this.closeLiveImagePicker();
+            }
+            const embed = document.getElementById('c2f-he-embed-modal');
+            const embedAberto = !!(embed && embed.style.display !== 'none');
+            if (embedAberto && typeof this.closeEmbedModal === 'function') this.closeEmbedModal();
+            // O modal de edição só é fechado quando está de fato aberto (o `hideModal` do Fomantic
+            // dispara callbacks de fechamento mesmo com o modal oculto).
+            if (modalAberto && !embedAberto && typeof this.hideModal === 'function') this.hideModal();
+        }
+
+        /** Mostra o aviso de "nada selecionado" nos painéis fixos quando não há o que exibir. */
+        syncViewPanelsEmpty() {
+            const temSelecao = !!this.selectedElement;
+            if (this.elementNavbar) {
+                const vazio = this.elementNavbar.querySelector('.c2f-he-navbar-empty');
+                if (vazio) vazio.style.display = temSelecao ? 'none' : 'block';
+            }
+            if (this.cssSidebar) {
+                // O styler não abre para blocos atômicos (widget): sem o aviso a sidebar ficaria
+                // vazia sem explicação.
+                const estilizavel = temSelecao && !!this.styler && this.styler.style.display === 'block';
+                const vazio = this.cssSidebar.querySelector('.c2f-he-css-sidebar-empty');
+                if (vazio) vazio.style.display = estilizavel ? 'none' : 'block';
+            }
         }
 
         createPlaceholder() {
@@ -548,6 +965,11 @@ $(document).ready(function () {
                 element.id === 'html-editor-tailwind-styler' ||
                 element.id === 'html-editor-wrap-menu' ||
                 element.id === 'c2f-he-embed-modal' ||
+                // req-106: painéis fixos de exibição e o painel de opções (este último vive na
+                // página hospedeira, junto do editor, no Live Editor).
+                element.id === 'c2f-he-css-sidebar' ||
+                element.id === 'c2f-he-element-navbar' ||
+                element.id === 'c2f-view-options-panel' ||
                 element.id === 'html-editor-modal')) return true;
             // req-097 Fix 1: elementos de SISTEMA do Live Editor (iframe da barra, contêiner do preview
             // de dispositivo e o loader de salvamento) nunca são conteúdo editável nem podem entrar na
@@ -563,6 +985,11 @@ $(document).ready(function () {
                 if (element.closest('#html-editor-selection-children')) return true;
                 if (element.closest('#html-editor-wrap-menu')) return true;
                 if (element.closest('#html-editor-tailwind-styler')) return true;
+                // req-106: cliques dentro dos painéis fixos não podem vazar para a seleção do
+                // conteúdo atrás (o listener de clique em capture usa elementsFromPoint).
+                if (element.closest('#c2f-he-css-sidebar')) return true;
+                if (element.closest('#c2f-he-element-navbar')) return true;
+                if (element.closest('#c2f-view-options-panel')) return true;
                 if (element.closest('#html-editor-modal')) return true;
                 if (element.closest('.html-editor-container')) return true;
                 if (element.closest('.ui.dimmer.modals')) return true;
@@ -735,6 +1162,9 @@ $(document).ready(function () {
             const reposition = () => {
                 if (this.hoveredElement) this.positionOverlay(this.hoverOverlay, this.hoveredElement);
                 if (this.selectedElement) this.updateSelectionUI();
+                // req-106: sem seleção os painéis fixos continuam na tela — a altura da Editbar pode
+                // ter mudado (entrar/sair do modo de edição), então o encaixe é recalculado sempre.
+                else this.layoutViewPanels();
             };
             window.addEventListener('scroll', reposition, { passive: true });
             window.addEventListener('resize', reposition, { passive: true });
@@ -793,6 +1223,11 @@ $(document).ready(function () {
                             widgetSlug: data.widgetSlug, widgetName: data.widgetName
                         }); break;
                     case 'c2f-he:cancel-insert': this.exitInsertMode(); break;
+                    // req-106: acionados pelo editor clássico (janela pai) — a Editbar do Live Editor
+                    // fala direto com a instância, sem passar por postMessage.
+                    case 'c2f-he:replace': this.replaceSelected(); break;
+                    case 'c2f-he:view-option':
+                        this.setViewOption(String(data.key || ''), !!data.on); break;
                     case 'c2f-he:widget-rendered':
                         this.applyWidgetRender(data.wrapperId, data.html); break;
                     case 'html-editor-imagepick-selected':
@@ -887,6 +1322,10 @@ $(document).ready(function () {
             if (this.styler) this.styler.style.display = 'none';
             this.closeWrapMenu();
             this.hideBreadcrumbHover();
+            this.closeClassSuggestions();
+            // req-106: os painéis fixos continuam visíveis (são o "lugar" da informação); só voltam
+            // ao estado vazio.
+            this.syncViewPanelsEmpty();
         }
 
         updateSelectionUI() {
@@ -919,28 +1358,31 @@ $(document).ready(function () {
             let stackTop = rect.bottom + scrollTop;
             if (toolbarEmbaixo) stackTop += this.toolbar.offsetHeight + 12;
 
-            // 1) Ancestrais (breadcrumb legado, sempre presente quando há seleção).
+            // req-106 rodada 2: o modo FLUTUANTE destes três painéis foi APOSENTADO. A trilha de
+            // ancestrais, a lista de filhos e a caixa de estilização só aparecem dentro da Barra de
+            // Navegação de Elementos e da Sidebar Lateral de CSS; com o respectivo painel desligado,
+            // simplesmente não são exibidos (o código de empilhamento legado segue abaixo, inativo,
+            // preservado para eventual retomada).
+            const navDocked = this.getViewOption('elementNavbar');
+            const cssDocked = this.getViewOption('cssSidebar');
+
+            // 1) Ancestrais (conteúdo sempre renderizado; exibido só na barra fixa).
             this.renderBreadcrumb(element);
-            this.breadcrumb.style.display = 'flex';
-            this.breadcrumb.style.top = stackTop + 'px';
-            this.breadcrumb.style.left = this.clampLeft(this.breadcrumb, left) + 'px';
-            stackTop += this.breadcrumb.offsetHeight;
+            this.breadcrumb.style.display = navDocked ? 'flex' : 'none';
 
-            // 2) Filhos (novo seletor; oculta-se sozinho se não houver filhos editáveis).
+            // 2) Filhos (renderChildren decide se há filhos editáveis a listar).
             this.renderChildren(element);
-            if (this.childrenBar.style.display !== 'none') {
-                this.childrenBar.style.top = stackTop + 'px';
-                this.childrenBar.style.left = this.clampLeft(this.childrenBar, left) + 'px';
-                stackTop += this.childrenBar.offsetHeight;
+            if (!navDocked) this.childrenBar.style.display = 'none';
+
+            // 3) Tailwind styler (renderStyler já respeita o estado da sidebar).
+            if (cssDocked) {
+                this.styler.classList.add('he-styler-stacked');
+            } else {
+                this.styler.style.display = 'none';
             }
 
-            // 3) Tailwind styler (se visível para o elemento atual).
-            if (this.styler.style.display === 'block') {
-                // req-037: empilhar as duas colunas verticalmente em elementos estreitos (<400px).
-                this.styler.classList.toggle('he-styler-stacked', rect.width < 400);
-                this.styler.style.top = (stackTop + 2) + 'px';
-                this.styler.style.left = this.clampLeft(this.styler, left) + 'px';
-            }
+            this.layoutViewPanels();
+            this.syncViewPanelsEmpty();
         }
 
         // req-039: mantém o painel dentro da largura visível do iframe (clamp horizontal).
@@ -1057,27 +1499,132 @@ $(document).ready(function () {
         renderStyler(element) {
             if (!element || (element.classList && element.classList.contains('conn2flow-widget-wrapper'))) {
                 this.styler.style.display = 'none';
+                this.syncViewPanelsEmpty();
                 return;
             }
-            const tagsBox = this.styler.querySelector('.he-tw-tags');
-            tagsBox.innerHTML = '';
             const classes = Array.from(element.classList || []);
-            classes.forEach((cls) => {
-                const tag = document.createElement('span');
-                tag.className = 'he-tw-tag';
-                tag.innerHTML = '<span></span> <b data-class="" title="' + this.t('Remover', 'Remove') + '">&times;</b>';
-                tag.querySelector('span').textContent = cls;
-                tag.querySelector('b').setAttribute('data-class', cls);
-                tagsBox.appendChild(tag);
-            });
-            this.styler.querySelector('input').value = '';
+            // req-106 §2: as classes utilitárias do Tailwind ficam agrupadas por variante
+            // (base/`sm:`/`hover:`…) e as classes do projeto ganham um bloco próprio.
+            const tailwind = classes.filter((c) => this.isTailwindClass(c));
+            const custom = classes.filter((c) => !this.isTailwindClass(c));
+            this.renderClassTags(this.styler.querySelector('.he-tw-tags'), tailwind, true);
+            this.renderClassTags(this.styler.querySelector('.he-custom-tags'), custom, false);
+            this.styler.querySelector('.he-class-input').value = '';
+            this.closeClassSuggestions();
             this.syncHelperButtons(element);
-            this.styler.style.display = 'block';
+            this.syncManualFields(element);
+            // O CodeMirror do CSS inline é criado sob demanda (idempotente) e só faz sentido com a
+            // sidebar ligada, que é onde o campo fica utilizável.
+            if (this.getViewOption('cssSidebar')) this.ensureInlineCssMirror();
+            this.syncInlineCss(element);
+            this.renderComputedStyles(element);
+            // req-106 rodada 2: a caixa de estilização só existe DENTRO da Sidebar Lateral de CSS;
+            // com a sidebar desligada ela não volta a flutuar sobre o elemento.
+            this.styler.style.display = this.getViewOption('cssSidebar') ? 'block' : 'none';
             this.updateSelectionUI();
         }
 
+        /**
+         * Renderiza as etiquetas de classe com o "x" de remover.
+         * @param {HTMLElement} box    contêiner de destino
+         * @param {string[]} classes   classes a exibir
+         * @param {boolean} agrupar    agrupa por variante (`sm:`, `hover:`…) — só para Tailwind
+         */
+        renderClassTags(box, classes, agrupar) {
+            if (!box) return;
+            box.innerHTML = '';
+            if (!classes.length) {
+                const vazio = document.createElement('div');
+                vazio.className = 'he-css-empty';
+                vazio.textContent = this.t('Nenhuma', 'None');
+                box.appendChild(vazio);
+                return;
+            }
+            const criarTag = (cls, custom) => {
+                const tag = document.createElement('span');
+                tag.className = 'he-tw-tag' + (custom ? ' he-tw-tag-custom' : '');
+                tag.innerHTML = '<span></span> <b data-class="" title="' + this.t('Remover', 'Remove') + '">&times;</b>';
+                tag.querySelector('span').textContent = cls;
+                tag.querySelector('b').setAttribute('data-class', cls);
+                return tag;
+            };
+            if (!agrupar) {
+                classes.forEach((cls) => box.appendChild(criarTag(cls, true)));
+                return;
+            }
+            const grupos = [];
+            classes.forEach((cls) => {
+                const variante = this.classVariant(cls);
+                let grupo = grupos.find((g) => g.variante === variante);
+                if (!grupo) { grupo = { variante: variante, classes: [] }; grupos.push(grupo); }
+                grupo.classes.push(cls);
+            });
+            grupos.forEach((g) => {
+                const bloco = document.createElement('div');
+                bloco.className = 'he-tw-variant';
+                bloco.setAttribute('data-variant', g.variante);
+                const rotulo = document.createElement('div');
+                rotulo.className = 'he-tw-variant-label';
+                rotulo.textContent = g.variante === '' ? this.t('base', 'base') : g.variante;
+                bloco.appendChild(rotulo);
+                g.classes.forEach((cls) => bloco.appendChild(criarTag(cls, false)));
+                box.appendChild(bloco);
+            });
+        }
+
+        /** Prefixo de variante da classe (`md:hover:flex` → `md:hover:`); vazio quando não há. */
+        classVariant(cls) {
+            const partes = String(cls).split(':');
+            if (partes.length < 2) return '';
+            return partes.slice(0, -1).join(':') + ':';
+        }
+
+        /**
+         * Heurística de classificação Tailwind × classe do projeto. Trabalha sobre o utilitário
+         * SEM variante e aceita a sintaxe de valor arbitrário (`w-[350px]`, `bg-[#1a2b3c]`).
+         * Uma classe do projeto que colida com um prefixo utilitário (ex.: `text-destaque`) cai no
+         * bloco do Tailwind — a separação é organizacional, não altera o que é aplicado ao elemento.
+         */
+        isTailwindClass(cls) {
+            const texto = String(cls || '').trim();
+            if (!texto) return false;
+            const base = texto.split(':').pop().replace(/^[-!]+/, '');
+            if (!base) return false;
+            if (base.indexOf('[') !== -1) return true; // valor arbitrário: w-[350px], bg-[#1a2b3c]
+            const palavras = this.tailwindWordSet();
+            if (palavras.has(base)) return true;
+            const raiz = base.split('-')[0];
+            return this.tailwindPrefixSet().has(raiz);
+        }
+
+        tailwindPrefixSet() {
+            if (this._twPrefixes) return this._twPrefixes;
+            this._twPrefixes = new Set(('p px py pt pb pl pr ps pe m mx my mt mb ml mr ms me space ' +
+                'w h size min max basis grow shrink flex order grid col row gap justify items self content place ' +
+                'text font leading tracking indent align whitespace break hyphens list decoration underline ' +
+                'bg from via to gradient border divide outline ring shadow opacity mix blend ' +
+                'rounded object aspect columns box float clear isolation overflow overscroll ' +
+                'top right bottom left inset z visible invisible collapse ' +
+                'cursor pointer resize scroll snap touch select will caret accent appearance ' +
+                'transition duration ease delay animate transform scale rotate translate skew origin ' +
+                'filter blur brightness contrast drop grayscale hue invert saturate sepia backdrop ' +
+                'table caption border sr not fill stroke container').split(' '));
+            return this._twPrefixes;
+        }
+
+        tailwindWordSet() {
+            if (this._twWords) return this._twWords;
+            this._twWords = new Set(('block inline inline-block inline-flex inline-grid flex grid flow-root contents ' +
+                'hidden table static fixed absolute relative sticky visible invisible collapse isolate ' +
+                'truncate uppercase lowercase capitalize normal-case italic not-italic antialiased ' +
+                'underline overline line-through no-underline container sronly sr-only not-sr-only ' +
+                'border rounded shadow transition transform filter blur grayscale invert ' +
+                'flex-wrap flex-nowrap flex-wrap-reverse grow shrink').split(' '));
+            return this._twWords;
+        }
+
         applyClassesFromInput() {
-            const input = this.styler.querySelector('input');
+            const input = this.styler.querySelector('.he-class-input');
             const value = (input.value || '').trim();
             if (!value || !this.selectedElement) { input.value = ''; return; }
             value.split(/\s+/).forEach((cls) => {
@@ -1086,6 +1633,188 @@ $(document).ready(function () {
             input.value = '';
             this.renderStyler(this.selectedElement);
             this.afterDomMutation();
+        }
+
+        // ===== req-106 §5.1: autocomplete instantâneo do dicionário de classes
+
+        /** Último token digitado (permite listar `p-4 text-` filtrando só o `text-`). */
+        currentClassToken(valor) {
+            const partes = String(valor || '').split(/\s+/);
+            return partes.length ? partes[partes.length - 1] : '';
+        }
+
+        renderClassSuggestions(valor) {
+            const box = this.styler ? this.styler.querySelector('.he-class-suggest') : null;
+            if (!box) return;
+            const termo = this.currentClassToken(valor).toLowerCase();
+            box.innerHTML = '';
+            if (termo.length < 2) { box.classList.remove('active'); return; }
+            const achados = this.tailwindSuggestions()
+                .filter((c) => c.toLowerCase().indexOf(termo) !== -1)
+                .slice(0, 12);
+            if (!achados.length) { box.classList.remove('active'); return; }
+            achados.forEach((c) => {
+                const item = document.createElement('div');
+                item.className = 'he-class-suggest-item';
+                item.setAttribute('data-class', c);
+                item.textContent = c;
+                box.appendChild(item);
+            });
+            box.classList.add('active');
+        }
+
+        closeClassSuggestions() {
+            const box = this.styler ? this.styler.querySelector('.he-class-suggest') : null;
+            if (box) { box.innerHTML = ''; box.classList.remove('active'); }
+        }
+
+        addClassFromSuggestion(cls) {
+            if (!cls || !this.selectedElement) { this.closeClassSuggestions(); return; }
+            this.selectedElement.classList.add(cls);
+            const input = this.styler.querySelector('.he-class-input');
+            if (input) input.value = '';
+            this.closeClassSuggestions();
+            this.renderStyler(this.selectedElement);
+            this.afterDomMutation();
+        }
+
+        // ===== req-106 §2: valores manuais e CSS inline
+
+        manualStyleFields() {
+            return [
+                { prop: 'width', label: this.t('Largura', 'Width'), hint: '350px' },
+                { prop: 'height', label: this.t('Altura', 'Height'), hint: '200px' },
+                { prop: 'padding', label: 'Padding', hint: '1.5rem' },
+                { prop: 'margin', label: this.t('Margem', 'Margin'), hint: '0 auto' },
+                { prop: 'font-size', label: this.t('Fonte', 'Font size'), hint: '18px' },
+                { prop: 'line-height', label: this.t('Entrelinha', 'Line height'), hint: '1.6' },
+                { prop: 'color', label: this.t('Cor', 'Color'), hint: '#123456' },
+                { prop: 'background-color', label: this.t('Fundo', 'Background'), hint: '#1a2b3c' },
+                { prop: 'border-radius', label: this.t('Cantos', 'Radius'), hint: '12px' },
+                { prop: 'gap', label: 'Gap', hint: '14px' }
+            ];
+        }
+
+        applyManualStyle(prop, valor) {
+            const el = this.selectedElement;
+            if (!el || !prop) return;
+            const texto = String(valor == null ? '' : valor).trim();
+            if (texto === '') el.style.removeProperty(prop);
+            else el.style.setProperty(prop, texto);
+            if (el.getAttribute('style') === '') el.removeAttribute('style');
+            this.syncInlineCss(el);
+            this.renderComputedStyles(el);
+            this.afterDomMutation();
+        }
+
+        syncManualFields(element) {
+            if (!this.styler) return;
+            const campos = this.styler.querySelectorAll('[data-manual-prop]');
+            Array.prototype.forEach.call(campos, (campo) => {
+                const prop = campo.getAttribute('data-manual-prop');
+                campo.value = (element && element.style) ? element.style.getPropertyValue(prop) : '';
+            });
+        }
+
+        /**
+         * req-106 rodada 3: o campo de CSS inline usa CodeMirror (modo `css`, tema do editor), com
+         * degradação graciosa para o `<textarea>` quando a biblioteca não estiver carregada. Os dois
+         * contextos já a carregam: o srcdoc do editor clássico e o `dashboard.toolbar.js` no Live
+         * Editor (ambos com `mode/css/css.js`).
+         */
+        ensureInlineCssMirror() {
+            if (this._inlineCssCm) return this._inlineCssCm;
+            if (typeof CodeMirror === 'undefined' || !CodeMirror || !this.styler) return null;
+            const ta = this.styler.querySelector('.he-inline-css');
+            if (!ta) return null;
+            // Dedup: um `.CodeMirror` irmão significa que o textarea já foi convertido.
+            if (ta.nextSibling && ta.nextSibling.classList &&
+                ta.nextSibling.classList.contains('CodeMirror')) return this._inlineCssCm;
+            let cm = null;
+            try {
+                cm = CodeMirror.fromTextArea(ta, {
+                    lineNumbers: false, lineWrapping: true, mode: 'css',
+                    indentUnit: 4, theme: 'tomorrow-night-bright'
+                });
+            } catch (e) { return null; } // sem o modo css carregado: segue com o textarea
+            if (!cm || typeof cm.getValue !== 'function' || typeof cm.setValue !== 'function') return null;
+            if (typeof cm.setSize === 'function') cm.setSize('100%', 110);
+            // Sair do campo aplica, como o `blur` do input de classes — o botão "Aplicar CSS" continua
+            // disponível para quem prefere confirmar explicitamente (e é o único caminho se a build
+            // do CodeMirror não expuser eventos).
+            if (typeof cm.on === 'function') cm.on('blur', () => { this.applyInlineCss(); });
+            this._inlineCssCm = cm;
+            return cm;
+        }
+
+        inlineCssValue() {
+            if (this._inlineCssCm) return this._inlineCssCm.getValue();
+            const campo = this.styler ? this.styler.querySelector('.he-inline-css') : null;
+            return campo ? campo.value : '';
+        }
+
+        syncInlineCss(element) {
+            if (!this.styler) return;
+            const valor = (element && element.getAttribute) ? (element.getAttribute('style') || '') : '';
+            if (this._inlineCssCm) {
+                if (this._inlineCssCm.getValue() !== valor) this._inlineCssCm.setValue(valor);
+                // O editor pode ter sido criado/atualizado com a sidebar oculta; sem o refresh ele
+                // desenha em cima de uma medida obsoleta.
+                setTimeout(() => { try { this._inlineCssCm.refresh(); } catch (e) { /* noop */ } }, 20);
+                return;
+            }
+            const campo = this.styler.querySelector('.he-inline-css');
+            if (campo) campo.value = valor;
+        }
+
+        applyInlineCss() {
+            const el = this.selectedElement;
+            if (!el || !this.styler) return;
+            const texto = (this.inlineCssValue() || '').trim();
+            // Sem mudança real não há por que empilhar um passo de undo (o `blur` do CodeMirror
+            // dispara em toda troca de foco).
+            if (texto === (el.getAttribute('style') || '').trim()) return;
+            if (texto === '') el.removeAttribute('style');
+            else el.setAttribute('style', texto);
+            this.syncManualFields(el);
+            this.renderComputedStyles(el);
+            this.afterDomMutation();
+        }
+
+        // ===== req-106 §5.3: inspetor de estilos computados
+
+        computedStyleProps() {
+            return ['display', 'position', 'width', 'height', 'margin', 'padding', 'font-size',
+                'font-weight', 'line-height', 'color', 'background-color', 'border', 'border-radius',
+                'box-shadow', 'opacity', 'z-index', 'flex-direction', 'justify-content',
+                'align-items', 'gap'];
+        }
+
+        renderComputedStyles(element) {
+            if (!this.styler) return;
+            const box = this.styler.querySelector('.he-computed');
+            if (!box) return;
+            box.innerHTML = '';
+            if (!element || !window.getComputedStyle) return;
+            let estilo;
+            try { estilo = window.getComputedStyle(element); } catch (e) { return; }
+            if (!estilo) return;
+            this.computedStyleProps().forEach((prop) => {
+                let valor = '';
+                try { valor = estilo.getPropertyValue(prop) || ''; } catch (e) { valor = ''; }
+                if (!valor) return;
+                const linha = document.createElement('div');
+                linha.className = 'he-computed-row';
+                linha.setAttribute('data-prop', prop);
+                const nome = document.createElement('b');
+                nome.textContent = prop;
+                const val = document.createElement('span');
+                val.textContent = valor;
+                val.title = valor;
+                linha.appendChild(nome);
+                linha.appendChild(val);
+                box.appendChild(linha);
+            });
         }
 
         removeClass(cls) {
@@ -1471,7 +2200,9 @@ $(document).ready(function () {
                 'underline': '<path d="M6 3v7a6 6 0 0 0 12 0V3"/><line x1="4" y1="21" x2="20" y2="21"/>',
                 'strikethrough': '<path d="M16 4H9a3 3 0 0 0-2.83 4"/><path d="M14 12a4 4 0 0 1 0 8H6"/><line x1="4" y1="12" x2="20" y2="12"/>',
                 'arrows alternate horizontal': '<polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" y1="12" x2="22" y2="12"/>',
-                'arrows alternate vertical': '<polyline points="8 18 12 22 16 18"/><polyline points="8 6 12 2 16 6"/><line x1="12" y1="2" x2="12" y2="22"/>'
+                'arrows alternate vertical': '<polyline points="8 18 12 22 16 18"/><polyline points="8 6 12 2 16 6"/><line x1="12" y1="2" x2="12" y2="22"/>',
+                // req-106 rodada 2: fechar o painel fixo pelo próprio cabeçalho.
+                'close': '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'
             };
             const paths = P[name] || '<rect x="4" y="4" width="16" height="16" rx="2"/>';
             return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
@@ -1499,6 +2230,35 @@ $(document).ready(function () {
                 sec.groups.forEach((g) => { html += this.buildHelperGroupHtml(g, esc); });
                 html += '</div>';
             });
+            html += this.buildManualSectionHtml(esc);
+            html += this.buildComputedSectionHtml(esc);
+            return html;
+        }
+
+        // req-106 §2: seção de digitação livre de valores (25px, 1.5rem, #123456…), aplicada como
+        // estilo inline. Fica no accordion (fechada por padrão), então não infla o painel flutuante.
+        buildManualSectionHtml(esc) {
+            const titulo = this.t('Valores manuais', 'Manual values');
+            let html = '<div class="he-helper-section" data-section="' + esc(titulo) + '">' +
+                this.svgIcon('dropdown') + esc(titulo) + '</div>';
+            html += '<div class="he-helper-section-body"><div class="he-helper-group">';
+            html += '<div class="he-helper-title">' +
+                esc(this.t('Digite valores livres (px, rem, %, #hex)', 'Type free values (px, rem, %, #hex)')) +
+                '</div><div class="he-manual-grid">';
+            this.manualStyleFields().forEach((f) => {
+                html += '<label class="he-manual-field"><span>' + esc(f.label) + '</span>' +
+                    '<input type="text" data-manual-prop="' + esc(f.prop) + '" placeholder="' + esc(f.hint) + '" /></label>';
+            });
+            html += '</div></div></div>';
+            return html;
+        }
+
+        // req-106 §5.3: inspetor de estilos computados (getComputedStyle) do elemento selecionado.
+        buildComputedSectionHtml(esc) {
+            const titulo = this.t('Estilos computados', 'Computed styles');
+            let html = '<div class="he-helper-section" data-section="' + esc(titulo) + '">' +
+                this.svgIcon('dropdown') + esc(titulo) + '</div>';
+            html += '<div class="he-helper-section-body"><div class="he-computed"></div></div>';
             return html;
         }
 
@@ -1656,23 +2416,83 @@ $(document).ready(function () {
             }
         }
 
+        /**
+         * Dicionário de classes usado pelo `<datalist>` e pelo autocomplete instantâneo da Sidebar
+         * de CSS. req-106 §2 ampliou significativamente a cobertura (flexbox, grid, tamanhos,
+         * espaçamentos, bordas, sombras, opacidade, posicionamento, transições) e incluiu exemplos
+         * da sintaxe de valor arbitrário (`w-[350px]`, `bg-[#1a2b3c]`) e de variantes responsivas/
+         * de estado, para o usuário descobrir o padrão sem sair do editor.
+         */
         tailwindSuggestions() {
+            if (this._twSuggestions) return this._twSuggestions;
             const out = [];
-            const scale = ['0', '1', '2', '3', '4', '5', '6', '8', '10', '12', '16', '20', '24'];
-            ['p', 'px', 'py', 'pt', 'pb', 'pl', 'pr', 'm', 'mx', 'my', 'mt', 'mb', 'ml', 'mr', 'gap'].forEach((p) => {
-                scale.forEach((s) => out.push(p + '-' + s));
+            const scale = ['0', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '5', '6', '7', '8', '10',
+                '12', '14', '16', '20', '24', '28', '32', '40', '48', '56', '64', 'px', 'auto'];
+            ['p', 'px', 'py', 'pt', 'pb', 'pl', 'pr', 'm', 'mx', 'my', 'mt', 'mb', 'ml', 'mr',
+                'gap', 'gap-x', 'gap-y', 'space-x', 'space-y'].forEach((p) => {
+                    scale.forEach((s) => out.push(p + '-' + s));
+                });
+            ['w', 'h', 'min-w', 'max-w', 'min-h', 'max-h'].forEach((p) => {
+                ['full', 'screen', 'auto', 'fit', 'min', 'max', 'px', '0', '1/2', '1/3', '2/3', '1/4', '3/4']
+                    .forEach((s) => out.push(p + '-' + s));
             });
-            ['w', 'h'].forEach((p) => { out.push(p + '-full', p + '-screen', p + '-auto', p + '-1/2', p + '-1/3', p + '-2/3'); });
-            ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl'].forEach((s) => out.push('text-' + s));
-            const colors = ['gray', 'red', 'blue', 'green', 'yellow', 'indigo', 'purple', 'pink'];
-            const shades = ['100', '200', '300', '400', '500', '600', '700', '800', '900'];
-            colors.forEach((c) => shades.forEach((sh) => { out.push('bg-' + c + '-' + sh); out.push('text-' + c + '-' + sh); }));
-            ['flex', 'inline-flex', 'grid', 'block', 'inline-block', 'hidden', 'flex-row', 'flex-col', 'flex-wrap',
-                'items-center', 'items-start', 'items-end', 'justify-center', 'justify-between', 'justify-start', 'justify-end',
-                'font-bold', 'font-semibold', 'font-medium', 'text-center', 'text-left', 'text-right',
-                'relative', 'absolute', 'fixed', 'sticky', 'rounded', 'rounded-lg', 'rounded-full',
-                'shadow', 'shadow-md', 'shadow-lg', 'border', 'border-2', 'overflow-hidden', 'cursor-pointer',
-                'container', 'mx-auto', 'transition'].forEach((c) => out.push(c));
+            ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'].forEach((s) => {
+                out.push('text-' + s); out.push('max-w-' + s); out.push('rounded-' + s); out.push('shadow-' + s);
+            });
+            const colors = ['slate', 'gray', 'zinc', 'red', 'orange', 'amber', 'yellow', 'lime', 'green',
+                'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'];
+            const shades = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
+            colors.forEach((c) => shades.forEach((sh) => {
+                out.push('bg-' + c + '-' + sh); out.push('text-' + c + '-' + sh); out.push('border-' + c + '-' + sh);
+            }));
+            ['white', 'black', 'transparent', 'current'].forEach((c) => {
+                out.push('bg-' + c); out.push('text-' + c); out.push('border-' + c);
+            });
+            // Grid
+            for (let i = 1; i <= 12; i++) {
+                out.push('grid-cols-' + i); out.push('col-span-' + i);
+                if (i <= 6) { out.push('grid-rows-' + i); out.push('row-span-' + i); }
+            }
+            // Opacidade / z-index / ordem
+            ['0', '5', '10', '20', '25', '30', '40', '50', '60', '70', '75', '80', '90', '95', '100']
+                .forEach((o) => out.push('opacity-' + o));
+            ['0', '10', '20', '30', '40', '50', 'auto'].forEach((z) => out.push('z-' + z));
+            // Palavras isoladas e utilitários frequentes
+            ['flex', 'inline-flex', 'grid', 'inline-grid', 'block', 'inline-block', 'inline', 'hidden',
+                'flow-root', 'contents', 'table', 'flex-row', 'flex-row-reverse', 'flex-col', 'flex-col-reverse',
+                'flex-wrap', 'flex-nowrap', 'flex-1', 'flex-auto', 'flex-initial', 'flex-none', 'grow', 'grow-0',
+                'shrink', 'shrink-0', 'basis-full', 'basis-1/2', 'basis-1/3',
+                'items-center', 'items-start', 'items-end', 'items-stretch', 'items-baseline',
+                'justify-center', 'justify-between', 'justify-start', 'justify-end', 'justify-around', 'justify-evenly',
+                'content-center', 'content-between', 'self-start', 'self-center', 'self-end', 'self-stretch',
+                'place-items-center', 'place-content-center',
+                'font-thin', 'font-light', 'font-normal', 'font-medium', 'font-semibold', 'font-bold', 'font-extrabold',
+                'italic', 'not-italic', 'uppercase', 'lowercase', 'capitalize', 'normal-case', 'truncate',
+                'underline', 'line-through', 'no-underline', 'text-center', 'text-left', 'text-right', 'text-justify',
+                'leading-none', 'leading-tight', 'leading-normal', 'leading-relaxed', 'leading-loose',
+                'tracking-tight', 'tracking-normal', 'tracking-wide', 'whitespace-nowrap', 'break-words',
+                'relative', 'absolute', 'fixed', 'sticky', 'static', 'inset-0', 'top-0', 'right-0', 'bottom-0', 'left-0',
+                'rounded', 'rounded-none', 'rounded-full', 'rounded-t-lg', 'rounded-b-lg',
+                'border', 'border-0', 'border-2', 'border-4', 'border-8', 'border-t', 'border-r', 'border-b', 'border-l',
+                'border-solid', 'border-dashed', 'border-dotted', 'divide-y', 'divide-x',
+                'shadow', 'shadow-none', 'shadow-inner', 'ring', 'ring-2', 'ring-offset-2', 'outline-none',
+                'overflow-hidden', 'overflow-auto', 'overflow-x-auto', 'overflow-y-auto', 'overflow-visible',
+                'object-cover', 'object-contain', 'object-center', 'aspect-square', 'aspect-video',
+                'cursor-pointer', 'cursor-default', 'select-none', 'pointer-events-none',
+                'transition', 'transition-all', 'transition-colors', 'duration-150', 'duration-300', 'duration-500',
+                'ease-in', 'ease-out', 'ease-in-out', 'delay-150', 'animate-pulse', 'animate-spin',
+                'transform', 'scale-95', 'scale-100', 'scale-105', 'rotate-45', 'translate-x-2', 'translate-y-2',
+                'container', 'mx-auto', 'sr-only', 'isolate'].forEach((c) => out.push(c));
+            // Valores arbitrários (sintaxe de colchetes) — exemplos prontos para editar.
+            ['w-[350px]', 'h-[200px]', 'max-w-[960px]', 'min-h-[50vh]', 'p-[18px]', 'm-[10px]',
+                'gap-[14px]', 'text-[15px]', 'leading-[1.6]', 'rounded-[12px]', 'top-[10%]',
+                'bg-[#1a2b3c]', 'text-[#1a2b3c]', 'border-[#1a2b3c]', 'w-[calc(100%-2rem)]']
+                .forEach((c) => out.push(c));
+            // Variantes responsivas e de estado (o agrupamento da sidebar usa o mesmo prefixo).
+            ['sm:', 'md:', 'lg:', 'xl:', '2xl:', 'hover:', 'focus:', 'active:', 'disabled:', 'group-hover:']
+                .forEach((v) => ['flex', 'hidden', 'block', 'grid-cols-2', 'text-lg', 'p-8', 'underline',
+                    'bg-blue-700', 'text-white'].forEach((c) => out.push(v + c)));
+            this._twSuggestions = out;
             return out;
         }
 
@@ -1825,10 +2645,42 @@ $(document).ready(function () {
             if (primeiro) this.selectElement(primeiro);
         }
 
+        /**
+         * req-106 §4: substitui o elemento selecionado pelo bloco guardado na área de transferência
+         * e seleciona automaticamente o objeto colado. Diferente de "Colar" (que insere ao lado), o
+         * alvo deixa de existir — por isso a seleção é limpa ANTES da remoção, para o
+         * `updateSelectionUI` não tropeçar num nó fora do documento.
+         */
+        replaceSelected() {
+            const alvo = this.selectedElement;
+            const markup = this.clipboardHtml;
+            if (!alvo || !alvo.parentNode || !markup) return;
+            const tmp = document.createElement('div');
+            tmp.innerHTML = markup;
+            this.remapPastedIds(tmp);
+            const nodes = Array.prototype.slice.call(tmp.childNodes);
+            if (!nodes.length) return;
+
+            const pai = alvo.parentNode;
+            let primeiro = null;
+            nodes.forEach((n) => {
+                pai.insertBefore(n, alvo);
+                if (!primeiro && n.nodeType === Node.ELEMENT_NODE) primeiro = n;
+            });
+            this.clearSelection();
+            pai.removeChild(alvo);
+
+            this.afterDomMutation();
+            if (primeiro && document.body.contains(primeiro)) this.selectElement(primeiro);
+        }
+
         updatePasteButton() {
             if (!this.toolbar) return;
             const btn = this.toolbar.querySelector('.he-tb-paste');
             if (btn) btn.style.display = this.hasClipboard() ? 'inline-flex' : 'none';
+            // req-106 §4: "Substituir" precisa dos DOIS lados (cópia guardada + elemento selecionado).
+            const rep = this.toolbar.querySelector('.he-tb-replace');
+            if (rep) rep.style.display = (this.hasClipboard() && this.selectedElement) ? 'inline-flex' : 'none';
         }
 
         // BATCH-075 §6: mostra o atalho "Editar no módulo" só quando um widget está selecionado.
@@ -2327,9 +3179,13 @@ $(document).ready(function () {
             if (!this.selectedElement) { window.alert(this.t('Selecione um elemento na página primeiro.', 'Select an element on the page first.')); return; }
             this.injectLivePanelStyles();
             this.buildAiPanel();
-            document.getElementById('c2f-ai-panel').style.display = 'block';
+            const painel = document.getElementById('c2f-ai-panel');
+            painel.style.display = 'block';
             this.initAiCodeMirror(); // BATCH-081 §1
-            this.observeLiveBoxResize(document.getElementById('c2f-ai-panel'));
+            this.observeLiveBoxResize(painel);
+            // req-106 rodada 3: a caixa nasce com altura fixa (70vh) e o ResizeObserver só dispara
+            // quando ela MUDA de tamanho — o primeiro ajuste precisa ser explícito.
+            setTimeout(() => { this.syncLiveBoxCodeMirrors(painel); }, 30);
             if (!this._aiInitLoaded) this.loadAiInit();
         }
 
@@ -2405,11 +3261,15 @@ $(document).ready(function () {
                 tabs.querySelectorAll('button').forEach((x) => x.classList.toggle('active', x === b));
                 p.querySelectorAll('.c2f-ai-tab-body').forEach((x) => x.classList.toggle('active', x.getAttribute('data-tab') === tab));
                 // BATCH-081 §1: refresca o CodeMirror da aba recém-exibida (instanciado oculto).
+                // req-106 rodada 3: além do refresh, reajusta a ALTURA ao espaço livre — o editor da
+                // aba nasce com a altura fixa do `setSize` inicial e, sem isto, só se acertava quando
+                // o usuário redimensionava a caixa.
                 if (this._aiCm) {
                     setTimeout(() => {
                         try {
                             if (tab === 'prompt' && this._aiCm.instruction) this._aiCm.instruction.refresh();
                             if (tab === 'mode' && this._aiCm.mode) this._aiCm.mode.refresh();
+                            this.syncLiveBoxCodeMirrors(p);
                         } catch (err) { /* noop */ }
                     }, 20);
                 }
@@ -2652,9 +3512,13 @@ $(document).ready(function () {
         openCustomCodePanel() {
             this.injectLivePanelStyles();
             this.buildCustomCodePanel();
-            document.getElementById('c2f-custom-panel').style.display = 'block';
+            const painel = document.getElementById('c2f-custom-panel');
+            painel.style.display = 'block';
             this.initCustomCodeMirror();
-            this.observeLiveBoxResize(document.getElementById('c2f-custom-panel'));
+            this.observeLiveBoxResize(painel);
+            // req-106 rodada 3: primeiro ajuste explícito (o observador só reage a MUDANÇAS da caixa)
+            // — o `#c2f-custom-status` abaixo do editor tem o mesmo problema do painel de IA.
+            setTimeout(() => { this.syncLiveBoxCodeMirrors(painel); }, 30);
         }
 
         closeCustomCodePanel() {
@@ -2902,21 +3766,69 @@ $(document).ready(function () {
             const body = panel.querySelector('.c2f-he-live-body');
             if (!box || !body) return;
             panel._resizeObserved = true;
-            const ro = new ResizeObserver(() => {
-                const bodyRect = body.getBoundingClientRect();
-                const cmEls = panel.querySelectorAll('.CodeMirror');
-                Array.prototype.forEach.call(cmEls, (cmEl) => {
-                    if (!cmEl.CodeMirror || cmEl.offsetParent === null) return;
-                    const top = cmEl.getBoundingClientRect().top;
-                    const avail = Math.max(100, Math.round(bodyRect.bottom - top - 8));
-                    // Guarda anti-loop do ResizeObserver: só redimensiona quando a altura muda.
-                    if (cmEl._c2fAvail === avail) return;
-                    cmEl._c2fAvail = avail;
-                    cmEl.CodeMirror.setSize('100%', avail);
-                    cmEl.CodeMirror.refresh();
-                });
-            });
+            const ro = new ResizeObserver(() => { this.syncLiveBoxCodeMirrors(panel); });
             ro.observe(box);
+        }
+
+        /**
+         * Altura ocupada pelo que vem DEPOIS de um elemento dentro do corpo da caixa: irmãos
+         * posteriores dele e dos seus ancestrais, até o corpo. É o `#c2f-ai-status` do Assistente IA
+         * (e o `#c2f-custom-status` do Código Customizado), que ficavam fora da área visível.
+         *
+         * Não depende da altura do próprio editor — condição para o ajuste continuar acompanhando o
+         * arraste sem realimentar o `ResizeObserver`.
+         */
+        alturaAposElemento(el, ate) {
+            let total = 0;
+            let node = el;
+            while (node && node !== ate && node.parentElement) {
+                let irmao = node.nextElementSibling;
+                while (irmao) {
+                    if (irmao.offsetParent !== null) {
+                        const cs = window.getComputedStyle(irmao);
+                        total += irmao.offsetHeight +
+                            (parseFloat(cs.marginTop) || 0) + (parseFloat(cs.marginBottom) || 0);
+                    }
+                    irmao = irmao.nextElementSibling;
+                }
+                node = node.parentElement;
+            }
+            return total;
+        }
+
+        /**
+         * Ajusta a altura dos CodeMirror VISÍVEIS de um painel do Live Editor ao espaço livre no
+         * corpo da caixa. O editor CRESCE E ENCOLHE junto com a caixa (o usuário arrasta o canto
+         * inferior direito) — comportamento do BATCH-081 preservado.
+         *
+         * req-106 rodada 3 — dois defeitos corrigidos, sem mexer no dinamismo:
+         *  1. A conta era `fundo do corpo − topo do editor`: o CodeMirror tomava tudo até a borda
+         *     inferior e empurrava para fora o que vinha DEPOIS dele (o status só aparecia rolando a
+         *     caixa). Agora `alturaAposElemento()` é descontada.
+         *  2. O ajuste só acontecia no `ResizeObserver` (que reage a mudanças da CAIXA), então o
+         *     editor de uma aba recém-exibida ficava na altura fixa do `setSize` inicial até o
+         *     usuário arrastar o canto. A função passou a ser chamada também na troca de abas e na
+         *     abertura do painel — é o que faz a aba "Modo" nascer com a altura das demais.
+         */
+        syncLiveBoxCodeMirrors(panel) {
+            if (!panel) return;
+            const body = panel.querySelector('.c2f-he-live-body');
+            if (!body) return;
+            const bodyRect = body.getBoundingClientRect();
+            const cs = window.getComputedStyle(body);
+            const limite = bodyRect.bottom - (parseFloat(cs.paddingBottom) || 0);
+            Array.prototype.forEach.call(panel.querySelectorAll('.CodeMirror'), (cmEl) => {
+                if (!cmEl.CodeMirror || cmEl.offsetParent === null) return;
+                const topo = cmEl.getBoundingClientRect().top;
+                const apos = this.alturaAposElemento(cmEl, body);
+                const avail = Math.max(100, Math.round(limite - topo - apos - 8));
+                // Guarda anti-loop do ResizeObserver: só redimensiona quando a altura muda de fato
+                // (o cálculo independe da altura do editor, então não há realimentação).
+                if (cmEl._c2fAvail === avail) return;
+                cmEl._c2fAvail = avail;
+                cmEl.CodeMirror.setSize('100%', avail);
+                cmEl.CodeMirror.refresh();
+            });
         }
 
         syncImagepickPreview(element) {
@@ -4630,6 +5542,9 @@ $(document).ready(function () {
                 '#html-editor-parent-highlight-overlay,#html-editor-insert-ghost,' +
                 '#html-editor-modal,#c2f-he-embed-modal,.conn2flow-dnd-placeholder,.html-editor-container,' +
                 '.ui.dimmer.modals,' +
+                // req-106: painéis fixos de exibição (a sidebar/navbar hospedam o styler e os
+                // breadcrumbs quando ligados — removê-las tira todo o conjunto de uma vez).
+                '#c2f-he-css-sidebar,#c2f-he-element-navbar,#c2f-view-options-panel,' +
                 // req-097 Fix 1: elementos de sistema do Live Editor NUNCA são persistidos — o iframe da
                 // barra dentro do HTML salvo era o que fazia o embed "vazar" para dentro da Editbar.
                 '#c2f-site-toolbar,#c2f-device-preview,#c2f-save-loader')
@@ -4702,13 +5617,27 @@ $(document).ready(function () {
         enable() {
             this.isEnabled = true;
             this.wrapEmbeds();
+            // req-106: os painéis fixos voltam no estado guardado ao reentrar na edição.
+            this.applyViewOptions();
         }
 
-        disable() {
+        /**
+         * @param {{manterPaineis?: boolean}} [opcoes]
+         *   `manterPaineis` preserva a Sidebar de CSS e a Barra de Navegação na tela. É o caso do
+         *   preview de dispositivo (req-106 rodada 3): o usuário CONTINUA no modo de edição, apenas
+         *   trocou a largura de visualização — ver os painéis sumirem sugere que a funcionalidade
+         *   foi embora. Ao sair da edição ou salvar, o padrão (esconder) continua valendo.
+         */
+        disable(opcoes) {
             this.isEnabled = false;
             this.hideHover();
             this.clearSelection();
             this.unwrapEmbedsIn(this.contentRoot || document.body);
+            if (opcoes && opcoes.manterPaineis) return;
+            // req-106: fora do modo de edição (salvamento, sair) a Sidebar de CSS e a Barra de
+            // Navegação somem — elas são UI de edição, não do site.
+            if (this.cssSidebar) this.cssSidebar.classList.remove('he-view-on');
+            if (this.elementNavbar) this.elementNavbar.classList.remove('he-view-on');
         }
         updateConfig(newConfig) { this.config = Object.assign({}, this.config, newConfig); }
     }

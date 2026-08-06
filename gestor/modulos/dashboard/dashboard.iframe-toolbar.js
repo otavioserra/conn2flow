@@ -138,6 +138,25 @@
             });
         }
 
+        // req-106 (BATCH-106): "Opções de Exibição" — o painel flutuante vive na página hospedeira
+        // (junto do editor), então enviamos apenas a posição do botão, como o painel "+" já faz.
+        var viewOptionsBtn = document.getElementById('c2f-tb-view-options');
+        if (viewOptionsBtn) {
+            viewOptionsBtn.addEventListener('click', function () {
+                var r = viewOptionsBtn.getBoundingClientRect();
+                window.parent.postMessage({ type: 'c2f-toolbar:edit-view-options', x: r.left, y: r.bottom }, origin);
+            });
+        }
+
+        // req-106 rodada 2: os painéis do host (Opções de Exibição, "+", Backups) fecham ao clicar
+        // FORA deles — mas um clique na barra acontece dentro DESTE iframe, então o `mousedown` da
+        // página hospedeira nunca dispara e o painel ficava aberto. Avisamos o host a cada clique na
+        // barra. O `mousedown` precede o `click`, então o botão que abre um painel continua
+        // funcionando: o host fecha o que estava aberto e o `click` abre o painel pedido.
+        document.addEventListener('mousedown', function () {
+            window.parent.postMessage({ type: 'c2f-toolbar:ui-dismiss' }, origin);
+        }, true);
+
         // Preview responsivo (screenPagina): redimensiona a área editável na página hospedeira.
         var screenBtns = document.querySelectorAll('.screenPagina');
         Array.prototype.forEach.call(screenBtns, function (btn) {

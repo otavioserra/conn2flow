@@ -353,13 +353,20 @@ Validação da rodada 2: `node --check` 3/3, `php -l` OK, JSON OK, `npx vitest r
     apenas quando a build expõe eventos. `applyInlineCss` ignora valor idêntico ao `style` atual,
     senão cada troca de foco empilharia um passo de undo vazio.
 
-17. **O resize-follow precisa descontar o que vem DEPOIS do editor**: a conta anterior
-    (`fundo do corpo − topo do editor`) dava ao CodeMirror todo o espaço restante, empurrando para
-    fora da área visível o que vinha depois dele no corpo — daí o `#c2f-ai-status` só aparecer
-    rolando a caixa. A conta passou a ser `altura visível do corpo − (conteúdo total − altura dos
-    editores)`, que não depende de conhecer os elementos vizinhos e continua válida se o painel
-    ganhar novos blocos. A guarda anti-loop subiu de "igualdade exata" para "diferença ≤ 2px", porque
-    o arredondamento realimentava o `ResizeObserver`.
+17. **O resize-follow precisa descontar o que vem DEPOIS do editor — sem perder o dinamismo**: a
+    conta original (`fundo do corpo − topo do editor`) dava ao CodeMirror todo o espaço restante,
+    empurrando para fora da área visível o que vinha depois dele no corpo — daí o `#c2f-ai-status` só
+    aparecer rolando a caixa. A correção mantém a base (fundo do corpo, que cresce junto com a caixa
+    quando o usuário arrasta o canto) e desconta `alturaAposElemento(editor, corpo)`: a soma dos
+    irmãos posteriores do editor e dos seus ancestrais até o corpo, com margens. Vale para o status
+    de hoje e para qualquer bloco futuro.
+    **Tentativa descartada, registrada para não ser reintroduzida**: calcular o livre por
+    `clientHeight − (scrollHeight − altura dos editores)`. `scrollHeight` nunca é menor que
+    `clientHeight`, então, com o conteúdo cabendo na caixa, a expressão colapsa em "altura atual do
+    editor − folga": cada disparo do `ResizeObserver` encolhia o editor até o mínimo e matava o
+    acompanhamento do mouse — justamente o comportamento do BATCH-081 que a rodada deveria preservar.
+    Como a conta adotada não depende da altura do editor, não há realimentação e a guarda anti-loop
+    por igualdade exata continua suficiente.
 
 18. **Ajuste de altura não pode viver só no ResizeObserver**: ele reage a mudanças da CAIXA, então o
     editor de uma aba recém-exibida ficava com a altura fixa do `setSize` inicial até o usuário
@@ -373,6 +380,6 @@ Validação da rodada 2: `node --check` 3/3, `php -l` OK, JSON OK, `npx vitest r
     só nesse caminho — preferido a criar um método novo, porque mantém um único ponto de desligamento
     do editor e deixa a exceção explícita em quem a pede.
 
-Validação da rodada 3: `node --check` 2/2, `php -l` OK, JSON OK, `npx vitest run` **134/134**,
+Validação da rodada 3: `node --check` 2/2, `php -l` OK, JSON OK, `npx vitest run` **137/137**,
 `composer test` **181/181**. Cache-bust: `biblioteca-html-editor` `1.5.9`, `dashboard.json`
 `1.0.18`, motor `?v=c2f18`. Nenhum `git commit`/`git push` executado.
