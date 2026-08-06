@@ -42,6 +42,22 @@ final class HardeningReq107Test extends TestCase
         self::assertFalse(seguranca_csrf_atualizador_transicao_isento(['admin-usuarios'], '2.9.25'));
     }
 
+    public function testCsrfIsentaSomenteConsultaDeStatusLegadaDoAutoatualizador(): void
+    {
+        self::assertTrue(seguranca_csrf_atualizador_status_isento(
+            ['admin-atualizacoes'],
+            ['params' => ['acao' => 'status', 'sid' => 'abc123']]
+        ));
+        self::assertFalse(seguranca_csrf_atualizador_status_isento(
+            ['admin-atualizacoes'],
+            ['params' => ['acao' => 'finalize', 'sid' => 'abc123']]
+        ));
+        self::assertFalse(seguranca_csrf_atualizador_status_isento(
+            ['admin-usuarios'],
+            ['params' => ['acao' => 'status']]
+        ));
+    }
+
     public function testApiAceitaTokenSomenteNoAuthorizationBearer(): void
     {
         $_GET['token'] = 'token-na-query';

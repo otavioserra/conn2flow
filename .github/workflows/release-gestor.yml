@@ -108,7 +108,7 @@ jobs:
     - name: Install Composer dependencies
       run: |
         cd gestor
-        composer install --no-dev --optimize-autoloader --no-interaction
+        composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
 
     - name: Setup Node.js
       uses: actions/setup-node@v6
@@ -154,8 +154,17 @@ jobs:
       run: |
         # Remove arquivos desnecessários se existirem
         rm -rf gestor/.git* || true
+        # Dependências instaladas a partir do source podem conter seus próprios
+        # repositórios Git; remova-os antes de criar o artefato de produção.
+        find gestor -type d -name '.git' -prune -exec rm -rf {} +
         rm -rf gestor/vendor/bin/.phpunit* || true
         rm -rf gestor/vendor/composer/tmp-* || true
+
+        # Falha defensivamente se algum metadado Git ainda estiver no staging.
+        if [ -n "$(find gestor -type d -name '.git' -print -quit)" ]; then
+          echo "Nested .git directory found in release staging"
+          exit 1
+        fi
 
         # Remover somente .env sensíveis da raiz (preservar templates em autenticacoes.exemplo)
         find gestor -maxdepth 1 -type f -name '.env*' -exec rm -f {} + 2>/dev/null || true

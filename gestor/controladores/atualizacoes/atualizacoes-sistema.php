@@ -1222,7 +1222,19 @@ function webFinalize(string $sid): array { global $CONTEXT, $LOGS_DIR, $TEMP_DIR
     // sessão; a próxima página renderizada criará um token CSRF novo.
     if($sessionResetPending && function_exists('gestor_sessao_del_all')) {
         try {
+            // Preserva somente o token já validado desta página. Isso mantém
+            // compatibilidade com o documento que iniciou a autoatualização,
+            // enquanto os demais caches de sessão são reinicializados.
+            $csrfTokenAtual = '';
+            if(function_exists('seguranca_csrf_token_requisicao') && function_exists('gestor_csrf_validar')) {
+                $csrfTokenRecebido = seguranca_csrf_token_requisicao();
+                if(gestor_csrf_validar($csrfTokenRecebido)) $csrfTokenAtual = $csrfTokenRecebido;
+            }
+
             gestor_sessao_del_all();
+            if($csrfTokenAtual !== '' && function_exists('gestor_sessao_variavel')) {
+                gestor_sessao_variavel('csrf_token', $csrfTokenAtual);
+            }
             logAtualizacao('WebFinalize: sessões do Gestor reinicializadas');
         } catch(Throwable $e) {
             logAtualizacao('WebFinalize: falha ao reinicializar sessões '.$e->getMessage(),'WARNING');

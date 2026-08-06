@@ -116,6 +116,10 @@ if [ "$RELEASE_MODE" = "manual" ]; then
 
   # Align manual packaging with the workflow cleanup to avoid sensitive/unneeded files.
   rm -rf "$TMP_DIR/gestor/.git" "$TMP_DIR/gestor/.gitignore" "$TMP_DIR/gestor/.gitattributes"
+  # Composer may have installed dependencies from source, leaving nested Git
+  # repositories inside vendor. They are never needed at runtime and can add
+  # roughly 100 MB to the release artifact.
+  find "$TMP_DIR/gestor" -type d -name '.git' -prune -exec rm -rf {} +
   rm -rf "$TMP_DIR/gestor/vendor/bin/.phpunit"* "$TMP_DIR/gestor/vendor/composer/tmp-"*
   rm -rf "$TMP_DIR/gestor/tests"
   find "$TMP_DIR/gestor" -type f -name 'phpunit.xml*' -delete
@@ -131,6 +135,13 @@ if [ "$RELEASE_MODE" = "manual" ]; then
 
   find "$TMP_DIR/gestor" -name "*.DS_Store*" -type f -delete
   find "$TMP_DIR/gestor" -name "*.log*" -type f -delete
+
+  # Defensive check: never publish an artifact containing Git metadata.
+  if [ -n "$(find "$TMP_DIR/gestor" -type d -name '.git' -print -quit)" ]; then
+    rm -rf "$TMP_DIR"
+    echo "Error: Nested .git directory found in manual release staging"
+    exit 1
+  fi
 
   if command -v zip >/dev/null 2>&1; then
     cd "$TMP_DIR/gestor"

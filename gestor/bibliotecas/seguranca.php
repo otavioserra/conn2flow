@@ -186,6 +186,25 @@ function seguranca_csrf_atualizador_transicao_isento($caminho, $versao){
 }
 
 /**
+ * Reconhece a consulta de status do autoatualizador como operação de leitura.
+ *
+ * Versões antigas do cliente enviavam essa consulta por POST. A isenção é
+ * limitada à ação status; deploy, banco, finalize e cancel continuam exigindo
+ * o token CSRF nas versões em que a proteção já está ativa.
+ *
+ * @param array $caminho Segmentos normalizados da rota.
+ * @param array $requisicao Parâmetros recebidos pela requisição.
+ * @return bool
+ */
+function seguranca_csrf_atualizador_status_isento($caminho, $requisicao){
+    if(!is_array($caminho) || ($caminho[0] ?? '') !== 'admin-atualizacoes') return false;
+    if(!is_array($requisicao)) return false;
+
+    $params = $requisicao['params'] ?? Array();
+    return is_array($params) && ($params['acao'] ?? '') === 'status';
+}
+
+/**
  * Exige CSRF em métodos mutáveis autenticados pelo cookie do painel.
  *
  * @return bool true quando a requisição pode continuar.
@@ -198,6 +217,7 @@ function seguranca_csrf_requisicao_validar(){
     if(!in_array($metodo, Array('POST', 'PUT', 'PATCH', 'DELETE'), true)) return true;
     if(seguranca_csrf_rota_isenta($_GESTOR['caminho'] ?? Array())) return true;
     if(seguranca_csrf_atualizador_transicao_isento($_GESTOR['caminho'] ?? Array(), $_GESTOR['versao'] ?? '')) return true;
+    if(seguranca_csrf_atualizador_status_isento($_GESTOR['caminho'] ?? Array(), $_REQUEST)) return true;
 
     $cookieAuth = $_CONFIG['cookie-authname'] ?? '';
     if($cookieAuth === '' || !isset($_COOKIE[$cookieAuth])) return true;
