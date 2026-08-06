@@ -205,6 +205,62 @@ function seguranca_csrf_atualizador_status_isento($caminho, $requisicao){
 }
 
 /**
+ * Permite concluir uma sessao do autoatualizador iniciada por um cliente
+ * anterior ao CSRF. O SID aleatorio e o estado persistido limitam a isencao
+ * a uma transicao real, recente, inacabada e na etapa esperada.
+ *
+ * Clientes atuais marcam a sessao como csrf-capable e nunca usam esta isencao.
+ *
+ * @param array $caminho Segmentos normalizados da rota.
+ * @param array $requisicao Parametros recebidos pela requisicao.
+ * @param string|null $rootPath Raiz fisica do Gestor (injetavel nos testes).
+ * @param int|null $agora Timestamp atual (injetavel nos testes).
+ * @return bool
+ */
+function seguranca_csrf_atualizador_sessao_legada_isento($caminho, $requisicao, $rootPath = null, $agora = null){
+    global $_GESTOR;
+
+    if(!is_array($caminho) || ($caminho[0] ?? '') !== 'admin-atualizacoes') return false;
+    if(!is_array($requisicao) || seguranca_csrf_token_requisicao() !== '') return false;
+
+    $params = $requisicao['params'] ?? Array();
+    if(!is_array($params)) return false;
+
+    $acao = (string)($params['acao'] ?? '');
+    $sid = (string)($params['sid'] ?? '');
+    if(!in_array($acao, Array('deploy', 'db', 'finalize', 'cancel'), true)) return false;
+    if(!preg_match('/^[a-f0-9]{16}$/D', $sid)) return false;
+
+    if($rootPath === null) $rootPath = (string)($_GESTOR['ROOT_PATH'] ?? '');
+    if($rootPath === '') return false;
+
+    $arquivo = rtrim($rootPath, '/\\').DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'sessions'.DIRECTORY_SEPARATOR.$sid.'.json';
+    if(!is_file($arquivo) || filesize($arquivo) > 1048576) return false;
+
+    $estado = json_decode((string)@file_get_contents($arquivo), true);
+    if(!is_array($estado) || !hash_equals($sid, (string)($estado['sid'] ?? ''))) return false;
+    if(!empty($estado['finished']) || !empty($estado['opts']['csrf-capable'])) return false;
+
+    $criadoEm = strtotime((string)($estado['created_at'] ?? ''));
+    $agora = $agora ?? time();
+    if($criadoEm === false || $criadoEm > $agora + 300 || $criadoEm < $agora - 21600) return false;
+
+    $progresso = is_array($estado['progress'] ?? null) ? $estado['progress'] : Array();
+    $bootstrapConcluido = !empty($progresso['bootstrap']['done']);
+    $deployConcluido = !empty($progresso['deploy_files']['done']);
+    $bancoConcluido = !empty($progresso['database']['done']);
+
+    if($acao === 'deploy') return $bootstrapConcluido && !$deployConcluido;
+    if($acao === 'db') return $deployConcluido && !$bancoConcluido;
+    if($acao === 'finalize'){
+        $semBanco = !empty($estado['opts']['only-files']) || !empty($estado['opts']['no-db']) || !empty($estado['opts']['download-only']);
+        return $deployConcluido && ($bancoConcluido || $semBanco);
+    }
+
+    return true; // cancel de uma sessao valida e ainda inacabada.
+}
+
+/**
  * Exige CSRF em métodos mutáveis autenticados pelo cookie do painel.
  *
  * @return bool true quando a requisição pode continuar.
@@ -218,6 +274,7 @@ function seguranca_csrf_requisicao_validar(){
     if(seguranca_csrf_rota_isenta($_GESTOR['caminho'] ?? Array())) return true;
     if(seguranca_csrf_atualizador_transicao_isento($_GESTOR['caminho'] ?? Array(), $_GESTOR['versao'] ?? '')) return true;
     if(seguranca_csrf_atualizador_status_isento($_GESTOR['caminho'] ?? Array(), $_REQUEST)) return true;
+    if(seguranca_csrf_atualizador_sessao_legada_isento($_GESTOR['caminho'] ?? Array(), $_REQUEST)) return true;
 
     $cookieAuth = $_CONFIG['cookie-authname'] ?? '';
     if($cookieAuth === '' || !isset($_COOKIE[$cookieAuth])) return true;

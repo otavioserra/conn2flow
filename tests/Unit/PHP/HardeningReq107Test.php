@@ -58,6 +58,92 @@ final class HardeningReq107Test extends TestCase
         ));
     }
 
+    public function testCsrfPermiteSomenteEtapaValidaDeSessaoLegadaDoAutoatualizador(): void
+    {
+        $agora = 1786050600;
+        $sid = 'a94064ba170414e5';
+        $raiz = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'c2f-csrf-update-' . bin2hex(random_bytes(4));
+        $diretorio = $raiz . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR . 'sessions';
+        mkdir($diretorio, 0777, true);
+        $arquivo = $diretorio . DIRECTORY_SEPARATOR . $sid . '.json';
+        $estado = [
+            'sid' => $sid,
+            'created_at' => date(DATE_ATOM, $agora - 120),
+            'opts' => [],
+            'progress' => [
+                'bootstrap' => ['done' => true],
+                'deploy_files' => ['done' => true],
+            ],
+            'finished' => false,
+        ];
+        file_put_contents($arquivo, json_encode($estado));
+        $cabecalhoAnterior = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+        unset($_SERVER['HTTP_X_CSRF_TOKEN']);
+
+        try {
+            $requisicaoDb = ['params' => ['acao' => 'db', 'sid' => $sid]];
+            self::assertTrue(seguranca_csrf_atualizador_sessao_legada_isento(
+                ['admin-atualizacoes'],
+                $requisicaoDb,
+                $raiz,
+                $agora
+            ));
+
+            self::assertFalse(seguranca_csrf_atualizador_sessao_legada_isento(
+                ['admin-atualizacoes'],
+                ['params' => ['acao' => 'finalize', 'sid' => $sid]],
+                $raiz,
+                $agora
+            ));
+
+            $estado['progress']['database'] = ['done' => true];
+            file_put_contents($arquivo, json_encode($estado));
+            self::assertTrue(seguranca_csrf_atualizador_sessao_legada_isento(
+                ['admin-atualizacoes'],
+                ['params' => ['acao' => 'finalize', 'sid' => $sid]],
+                $raiz,
+                $agora
+            ));
+
+            $estado['opts']['csrf-capable'] = 1;
+            file_put_contents($arquivo, json_encode($estado));
+            self::assertFalse(seguranca_csrf_atualizador_sessao_legada_isento(
+                ['admin-atualizacoes'],
+                ['params' => ['acao' => 'cancel', 'sid' => $sid]],
+                $raiz,
+                $agora
+            ));
+
+            $_SERVER['HTTP_X_CSRF_TOKEN'] = 'token-invalido';
+            $estado['opts'] = [];
+            file_put_contents($arquivo, json_encode($estado));
+            self::assertFalse(seguranca_csrf_atualizador_sessao_legada_isento(
+                ['admin-atualizacoes'],
+                ['params' => ['acao' => 'cancel', 'sid' => $sid]],
+                $raiz,
+                $agora
+            ));
+
+            unset($_SERVER['HTTP_X_CSRF_TOKEN']);
+            $estado['created_at'] = date(DATE_ATOM, $agora - 21601);
+            file_put_contents($arquivo, json_encode($estado));
+            self::assertFalse(seguranca_csrf_atualizador_sessao_legada_isento(
+                ['admin-atualizacoes'],
+                ['params' => ['acao' => 'cancel', 'sid' => $sid]],
+                $raiz,
+                $agora
+            ));
+        } finally {
+            if($cabecalhoAnterior === null) unset($_SERVER['HTTP_X_CSRF_TOKEN']);
+            else $_SERVER['HTTP_X_CSRF_TOKEN'] = $cabecalhoAnterior;
+            @unlink($arquivo);
+            @rmdir($diretorio);
+            @rmdir(dirname($diretorio));
+            @rmdir(dirname(dirname($diretorio)));
+            @rmdir($raiz);
+        }
+    }
+
     public function testApiAceitaTokenSomenteNoAuthorizationBearer(): void
     {
         $_GET['token'] = 'token-na-query';

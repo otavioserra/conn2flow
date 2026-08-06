@@ -1600,17 +1600,19 @@ function gestor_permissao(){
 	global $_GESTOR;
 	
 	if(!gestor_permissao_token()){
+		$caminho = (isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : '');
+		$caminho = rtrim($caminho,'/').'/';
+
+		gestor_sessao_variavel("redirecionar-local",$caminho);
+
 		if($_GESTOR['ajax']){
 			gestor_roteador_erro(Array(
 				'codigo' => 401,
 				'ajax' => $_GESTOR['ajax'],
+				'redirect' => 'signin/',
+				'auth_required' => true,
 			));
 		} else {
-			$caminho = (isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : '');
-			$caminho = rtrim($caminho,'/').'/';
-			
-			gestor_sessao_variavel("redirecionar-local",$caminho);
-			
 			gestor_roteador_erro(Array(
 				'codigo' => 401,
 			));
@@ -1910,11 +1912,19 @@ function gestor_roteador_erro($params = false){
 			header("Content-Type: application/json; charset: UTF-8");
 			
 			if(isset($redirect)){
-				echo json_encode(Array(
+				$resposta = Array(
 					'error' => $codigo,
 					'info' => 'JSON unauthorized',
 					'redirect' => $redirect,
-				));
+				);
+
+				if(!empty($auth_required)){
+					$resposta['code'] = 'AUTH_REQUIRED';
+					$redirectSeguro = str_replace(Array("\r","\n"),'',(string)$redirect);
+					header('X-Gestor-Auth-Redirect: '.rtrim($_GESTOR['url-raiz'],'/').'/'.ltrim($redirectSeguro,'/'));
+				}
+
+				echo json_encode($resposta);
 			} else {
 				switch($codigo){
 					case 401:

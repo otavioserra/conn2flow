@@ -19,11 +19,38 @@
 		}
 	}
 
+	var redirecionandoParaLogin = false;
+
+	function redirecionarParaLogin(destino) {
+		if (redirecionandoParaLogin || !destino) return;
+		try {
+			var url = new URL(destino, window.location.href);
+			if (url.origin !== window.location.origin || url.href === window.location.href) return;
+			redirecionandoParaLogin = true;
+			window.location.assign(url.href);
+		} catch (error) {
+			// Ignora destinos invalidos recebidos de respostas externas ou malformadas.
+		}
+	}
+
+	function tratarFalhaAutenticacaoXhr(xhr) {
+		if (!xhr || xhr.status !== 401) return;
+		var destino = xhr.getResponseHeader('X-Gestor-Auth-Redirect');
+		var resposta = xhr.responseJSON;
+		if (!destino && resposta && resposta.code === 'AUTH_REQUIRED') {
+			destino = String((window.gestor && gestor.raiz) || '/') + String(resposta.redirect || 'signin/');
+		}
+		if (destino) redirecionarParaLogin(destino);
+	}
+
 	// Todos os $.ajax do painel recebem o mesmo cabeçalho, inclusive módulos legados.
 	if (window.jQuery) {
 		window.jQuery.ajaxPrefilter(function (options, originalOptions, xhr) {
 			var token = csrfToken();
 			if (token && !options.crossDomain && metodoMutavel(options.type)) xhr.setRequestHeader('X-CSRF-Token', token);
+		});
+		window.jQuery(document).ajaxError(function (event, xhr) {
+			tratarFalhaAutenticacaoXhr(xhr);
 		});
 	}
 
@@ -38,7 +65,13 @@
 				headers.set('X-CSRF-Token', token);
 				init.headers = headers;
 			}
-			return fetchOriginal(input, init);
+			return fetchOriginal(input, init).then(function (response) {
+				if (response.status === 401) {
+					var destino = response.headers.get('X-Gestor-Auth-Redirect');
+					if (destino) redirecionarParaLogin(destino);
+				}
+				return response;
+			});
 		};
 	}
 

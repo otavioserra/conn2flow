@@ -1015,6 +1015,7 @@ function webStart(array $req): array {
         'download-only'=>!empty($req['download_only'])?1:null,
         'skip-download'=>!empty($req['skip_download'])?1:null,
         'clean-temp'=>!empty($req['clean_temp'])?1:null,
+        'csrf-capable'=>!empty($req['csrf_capable'])?1:null,
         'tables'=>!empty($req['tables'])?$req['tables']:null,
         'logs-retention-days'=>!empty($req['logs_retention_days'])?(int)$req['logs_retention_days']:null,
     ];

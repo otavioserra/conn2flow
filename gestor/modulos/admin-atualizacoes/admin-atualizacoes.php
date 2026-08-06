@@ -229,6 +229,7 @@ function admin_atualizacoes_ajax_update(){
                     'backup'=>'backup',
                     'wipe'=>'wipe', // nova flag: envia --wipe ao backend
                     'clean_temp'=>'clean_temp',
+                    'csrf_capable'=>'csrf_capable',
                 ];
                 $extras=[]; foreach($extraFlagsMap as $k=>$flag){ if(!empty($params[$k])) $extras[$flag]=1; }
                 if(!empty($params['tables'])) $extras['tables']=$params['tables'];

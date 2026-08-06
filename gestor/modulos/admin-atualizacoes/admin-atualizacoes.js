@@ -114,7 +114,7 @@ $(document).ready(function () {
             setLoading(true);
             $('#atualizacoes-start-btn').addClass('disabled').prop('disabled', true);
             const adv = collectAdvanced(root);
-            adv.acao = 'start'; adv.modo = modo;
+            adv.acao = 'start'; adv.modo = modo; adv.csrf_capable = 1;
             // confirmação adicional se usuário marcou --wipe (perigoso)
             if (adv.wipe) {
                 const ok = window.confirm('The --wipe option will remove non-protected files. Are you sure you want to continue?');
