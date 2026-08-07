@@ -8,13 +8,13 @@
  *
  * @package Conn2Flow
  * @subpackage Bibliotecas
- * @version 1.2.0
+ * @version 1.2.1
  * @deprecated banco-v2.php é a implementação canônica; novas funcionalidades devem usar seus prepared statements.
  */
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-banco']							=	Array(
-	'versao' => '1.2.0',
+	'versao' => '1.2.1',
 );
 
 /**
@@ -41,6 +41,21 @@ function banco_escape_field($field){
 	}
 
 	throw new LogicException('banco_escape_field requer uma conexão mysqli ativa; use banco-v2 com parâmetros preparados.');
+}
+
+/**
+ * Mantém compatibilidade com módulos que normalizam valores lidos do banco.
+ *
+ * O algoritmo histórico de remoção inteligente de barras já estava desativado;
+ * o contrato efetivo da função é apenas converter o valor recebido para string.
+ * Novas implementações não devem depender desta helper.
+ *
+ * @param mixed $str O valor a ser normalizado.
+ * @return string
+ * @deprecated Compatibilidade com consumidores legados; faça a conversão explicitamente.
+ */
+function banco_smartstripslashes($str){
+	return (string)$str;
 }
 
 /**

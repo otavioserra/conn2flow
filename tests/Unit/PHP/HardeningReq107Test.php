@@ -172,6 +172,14 @@ final class HardeningReq107Test extends TestCase
         }
     }
 
+    public function testSmartStripslashesPermaneceComoShimDeCompatibilidade(): void
+    {
+        self::assertTrue(function_exists('banco_smartstripslashes'));
+        self::assertSame('texto\\com\\barras', banco_smartstripslashes('texto\\com\\barras'));
+        self::assertSame('', banco_smartstripslashes(null));
+        self::assertSame('123', banco_smartstripslashes(123));
+    }
+
     public function testCaminhoEstaticoRejeitaTraversalNuloEBarraInvertida(): void
     {
         self::assertFalse(arquivo_estatico_caminho_valido('../config.php'));
