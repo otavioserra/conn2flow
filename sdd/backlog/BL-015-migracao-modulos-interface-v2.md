@@ -4,7 +4,7 @@
 - **Status:** IN-DISCUSSION
 - **Data:** 2026-08-07
 - **Escopo:** consumidores de `interface.php` dentro do core
-- **Relacionados:** BL-013, BL-014, BL-016, BL-018
+- **Relacionados:** BL-013, BL-014, BL-016, BL-018, BL-038, BL-039
 
 ## Inventário inicial
 
@@ -17,6 +17,8 @@ Consumidores de maior risco/volume incluem `perfil-usuario`, `publisher-pages`, 
 ### Onda 0 — Contratos e telemetria
 
 - fechar a API v2;
+- aprovar a arquitetura OO, fachadas de transição e guardrails do BL-038;
+- caracterizar repetições e validar a plataforma CRUD do BL-039 com um cadastro simples;
 - mapear chamadas v1 em tempo de execução;
 - criar adaptadores temporários e regra de CI que bloqueie novas chamadas v1.
 
@@ -28,7 +30,8 @@ Consumidores de maior risco/volume incluem `perfil-usuario`, `publisher-pages`, 
 ### Onda 2 — Módulos CRUD simples
 
 - migrar módulos com poucos hooks e relacionamentos;
-- consolidar padrões reutilizáveis de campos, filtros, ações e permissões.
+- adotar o Nível 1 declarativo da plataforma CRUD quando compatível;
+- consolidar padrões reutilizáveis de campos, filtros, ações e permissões sem criar uma superclasse monolítica.
 
 ### Onda 3 — Módulos compartilhados e de alto uso
 
@@ -51,6 +54,8 @@ Consumidores de maior risco/volume incluem `perfil-usuario`, `publisher-pages`, 
 Cada migração deve registrar:
 
 - chamadas v1 substituídas e contratos v2 utilizados;
+- nível de adoção CRUD (declarativo, composto ou caso de uso explícito) e justificativa;
+- funções/globais removidos, fachada temporária usada e dependências injetadas;
 - operações de banco e limites transacionais;
 - permissões e ações disponíveis;
 - componentes Fomantic/DataTables a substituir;

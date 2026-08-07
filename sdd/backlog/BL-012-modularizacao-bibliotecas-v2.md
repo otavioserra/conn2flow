@@ -4,7 +4,7 @@
 - **Status:** IN-DISCUSSION
 - **Data:** 2026-08-07
 - **Escopo:** `gestor/bibliotecas/banco-v2.php`, `gestor/bibliotecas/interface-v2.php` e respectivos consumidores
-- **Relacionados:** BL-011, BL-013, BL-014
+- **Relacionados:** BL-011, BL-013, BL-014, BL-038, BL-039
 
 ## Contexto
 
@@ -71,3 +71,5 @@ Os nomes finais dependem de ADR. A separação deve acompanhar responsabilidades
 ## Próxima decisão
 
 Aprovar o mapa de pacotes e promover a extração estrutural como primeiro lote da futura branch v3.0, antes da migração massiva dos módulos.
+
+Esta modularização é a primeira fatia técnica da migração OO sistêmica do BL-038. A camada `AdminInterface/Crud` deve adotar o contrato especializado do BL-039, evitando que `InterfaceV2` permaneça uma fachada monolítica ou que a divisão gere uma segunda plataforma CRUD concorrente.

@@ -4,7 +4,7 @@
 - **Status:** IN-DISCUSSION
 - **Data:** 2026-08-07
 - **Escopo:** infraestrutura de interface administrativa v2
-- **Relacionados:** BL-011, BL-012, BL-014, BL-015, BL-016
+- **Relacionados:** BL-011, BL-012, BL-014, BL-015, BL-016, BL-038, BL-039
 
 ## Diagnóstico
 
@@ -76,3 +76,5 @@ A interface administrativa deve orquestrar casos de uso; não deve construir SQL
 ## Próxima decisão
 
 Fechar o contrato público da interface v2 e os limites entre interface, banco, HTTP e renderer antes de reescrever o piloto `admin-paginas-v2`.
+
+O contrato CRUD reutilizável será definido no BL-039. A interface fornece adapters, formulários e presenters; ela não deve voltar a concentrar persistência, policies, histórico e lifecycle CRUD numa única classe.
