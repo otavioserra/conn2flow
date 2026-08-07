@@ -1,133 +1,126 @@
-# ╔════════════════════════════════════════════════════════════════════╗
-# ║  Docker Compose — PHP 8.5 + PostgreSQL 17                        ║
-# ║  Usa banco-v2.php (PDO) com driver PostgreSQL                    ║
-# ║                                                                    ║
-# ║  Uso:                                                              ║
-# ║    docker compose -f docker-compose.php85-pgsql.yml up -d          ║
-# ║    docker compose -f docker-compose.php85-pgsql.yml down           ║
-# ║                                                                    ║
-# ║  Configuração .env necessária:                                     ║
-# ║    DB_CONNECTION=pgsql                                             ║
-# ║    DB_HOST=postgres                                                ║
-# ║    DB_PORT=5432                                                    ║
-# ║    DB_DATABASE=conn2flow                                           ║
-# ║    DB_USERNAME=conn2flow_user                                      ║
-# ║    DB_PASSWORD=conn2flow_pass                                      ║
-# ╚════════════════════════════════════════════════════════════════════╝
+# Conn2Flow v3 PostgreSQL integration environment.
+#
+# Start the web/database profile:
+#   docker compose -f docker-compose.php85-pgsql.yml up -d
+#
+# Run banco v2 PostgreSQL tests in an isolated container:
+#   docker compose -f docker-compose.php85-pgsql.yml --profile tests run --rm banco-v2-tests
+#
+# This project intentionally does not share containers, volumes, ports or site
+# files with the MySQL/2.9.x environment.
+
+name: c2f-v3-pgsql
 
 services:
-  # Aplicação conn2flow — PHP 8.5
   app:
     build:
       context: .
       dockerfile: Dockerfile.php85
-    container_name: conn2flow-app-php85-pgsql
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "127.0.0.1:${C2F_PGSQL_APP_PORT:-8085}:80"
     volumes:
-      - ../data/sites/localhost/public_html:/var/www/html:cached
-      - ../data/sites:/var/www/sites:cached
+      - ../data/postgresql/sites:/var/www/sites:cached
+      - ../..:/workspace:cached
     environment:
-      - APACHE_DOCUMENT_ROOT=/var/www/html
-      - PHP_INI_SCAN_DIR=/usr/local/etc/php/conf.d
+      APACHE_DOCUMENT_ROOT: /var/www/sites/localhost/public_html
+      PHP_INI_SCAN_DIR: /usr/local/etc/php/conf.d
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${C2F_PGSQL_DATABASE:-conn2flow}
+      DB_USERNAME: ${C2F_PGSQL_USERNAME:-conn2flow_user}
+      DB_PASSWORD: ${C2F_PGSQL_PASSWORD:-conn2flow_pass}
+      DB_SCHEMA: ${C2F_PGSQL_SCHEMA:-public}
+      DB_SSLMODE: disable
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"exit(extension_loaded('pdo_pgsql') ? 0 : 1);\" && apache2ctl -t"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
     networks:
-      - conn2flow-network
+      - c2f-pgsql
 
-  # Optional: Cloudflare Tunnel
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: conn2flow-cloudflared
-    restart: "no"
-    profiles:
-      - tunnel
-    command: tunnel --config /etc/cloudflared/config.yml --no-autoupdate run
-    depends_on:
-      - app
-    networks:
-      - conn2flow-network
+  postgres:
+    image: postgres:18.4-alpine3.23
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${C2F_PGSQL_DATABASE:-conn2flow}
+      POSTGRES_USER: ${C2F_PGSQL_USERNAME:-conn2flow_user}
+      POSTGRES_PASSWORD: ${C2F_PGSQL_PASSWORD:-conn2flow_pass}
+      PGDATA: /var/lib/postgresql/18/docker
+      TZ: UTC
+    ports:
+      - "127.0.0.1:${C2F_PGSQL_PORT:-5433}:5432"
     volumes:
-      - ../data/cloudflared:/etc/cloudflared:ro
+      # PostgreSQL 18+ uses a major-version-specific PGDATA below this mount.
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    networks:
+      - c2f-pgsql
 
-  # Servidor FTP com ProFTPD
-  ftp:
+  banco-v2-tests:
     build:
       context: .
-      dockerfile: Dockerfile.ftp
-    container_name: conn2flow-ftp
+      dockerfile: Dockerfile.php85
+    profiles: ["tests"]
     restart: "no"
-    profiles: [ "optional" ]
-    ports:
-      - "21:21"
-      - "21100-21110:21100-21110"
+    entrypoint: ["/bin/sh", "-lc"]
+    command:
+      - >-
+        php vendor/phpunit/phpunit/phpunit -c phpunit.xml
+        tests/Unit/PHP/DatabaseDialectTest.php
+        tests/Integration/BancoV2PostgreSqlTest.php
+    working_dir: /workspace
     volumes:
-      - ../data/sites:/home/ftp
+      - ../..:/workspace:cached
     environment:
-      - PROFTPD_LOG_LEVEL=info
+      CONN2FLOW_RUN_PGSQL_TESTS: "1"
+      CONN2FLOW_DB_CONNECTION: pgsql
+      CONN2FLOW_DB_HOST: postgres
+      CONN2FLOW_DB_PORT: 5432
+      CONN2FLOW_DB_DATABASE: ${C2F_PGSQL_DATABASE:-conn2flow}
+      CONN2FLOW_DB_USERNAME: ${C2F_PGSQL_USERNAME:-conn2flow_user}
+      CONN2FLOW_DB_PASSWORD: ${C2F_PGSQL_PASSWORD:-conn2flow_pass}
+      CONN2FLOW_DB_SCHEMA: ${C2F_PGSQL_SCHEMA:-public}
+      CONN2FLOW_DB_SSLMODE: disable
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
-      - conn2flow-network
+      - c2f-pgsql
 
-  # Banco de dados PostgreSQL 17
-  postgres:
-    image: postgres:17-alpine
-    container_name: conn2flow-postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: conn2flow
-      POSTGRES_USER: conn2flow_user
-      POSTGRES_PASSWORD: conn2flow_pass
-      TZ: America/Sao_Paulo
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - conn2flow-network
-
-  # pgAdmin 4 — Interface web para PostgreSQL (equivalente ao phpMyAdmin)
   pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: conn2flow-pgadmin
+    image: dpage/pgadmin4:9.17
+    profiles: ["tools"]
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@conn2flow.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_DEFAULT_EMAIL: ${C2F_PGADMIN_EMAIL:-admin@conn2flow.local}
+      PGADMIN_DEFAULT_PASSWORD: ${C2F_PGADMIN_PASSWORD:-change-me-local}
       PGADMIN_LISTEN_PORT: 80
     ports:
-      - "8081:80"
+      - "127.0.0.1:${C2F_PGADMIN_PORT:-8083}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
-      - conn2flow-network
-
-  # Cache em memória (memcached)
-  memcached:
-    image: memcached:alpine
-    container_name: conn2flow-memcached
-    restart: "no"
-    profiles: [ "optional" ]
-    ports:
-      - "11211:11211"
-    networks:
-      - conn2flow-network
-
-  # Cache em memória (redis)
-  redis:
-    image: redis:alpine
-    container_name: conn2flow-redis
-    restart: "no"
-    profiles: [ "optional" ]
-    ports:
-      - "6379:6379"
-    networks:
-      - conn2flow-network
+      - c2f-pgsql
 
 volumes:
   postgres_data:
-    driver: local
+  pgadmin_data:
 
 networks:
-  conn2flow-network:
+  c2f-pgsql:
     driver: bridge

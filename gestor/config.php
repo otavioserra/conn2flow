@@ -125,9 +125,14 @@ global $_BANCO, $_CONFIG;
 $_BANCO = [
     'tipo'    => $_ENV['DB_CONNECTION'] ?? 'mysqli',
     'host'    => $_ENV['DB_HOST'] ?? 'localhost',
+    'porta'   => (int)($_ENV['DB_PORT'] ?? (in_array(strtolower((string)($_ENV['DB_CONNECTION'] ?? 'mysqli')), ['pgsql', 'pdo_pgsql', 'postgres', 'postgresql'], true) ? 5432 : 3306)),
     'nome'    => $_ENV['DB_DATABASE'] ?? '',
     'usuario' => $_ENV['DB_USERNAME'] ?? '',
     'senha'   => $_ENV['DB_PASSWORD'] ?? '',
+    'charset' => $_ENV['DB_CHARSET'] ?? (in_array(strtolower((string)($_ENV['DB_CONNECTION'] ?? 'mysqli')), ['pgsql', 'pdo_pgsql', 'postgres', 'postgresql'], true) ? 'UTF8' : 'utf8mb4'),
+    'schema'  => $_ENV['DB_SCHEMA'] ?? 'public',
+    'sslmode' => $_ENV['DB_SSLMODE'] ?? 'prefer',
+    'application-name' => $_ENV['DB_APPLICATION_NAME'] ?? 'conn2flow',
 ];
 
 // Linguagem padrão do gestor e listagem de códigos de linguagens.

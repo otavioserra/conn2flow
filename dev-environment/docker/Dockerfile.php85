@@ -1,5 +1,5 @@
 # Dockerfile PHP 8.5 para conn2flow - Suporte a MySQL + PostgreSQL via PDO
-FROM php:8.5-apache
+FROM php:8.5.8-apache-bookworm
 
 # Instalar dependências do sistema (inclui libs para PostgreSQL)
 RUN apt-get update && apt-get install -y \
@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libpq-dev \
+    libicu-dev \
     curl \
     wget \
     less \
@@ -35,6 +36,7 @@ RUN docker-php-ext-install \
     mysqli \
     pgsql \
     mbstring \
+    intl \
     exif \
     pcntl \
     bcmath \

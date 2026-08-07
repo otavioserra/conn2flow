@@ -89,6 +89,12 @@ enum DriverBanco: string
 	}
 }
 
+require_once __DIR__ . '/banco-v2/Dialect/DatabaseDialect.php';
+require_once __DIR__ . '/banco-v2/Dialect/AbstractDatabaseDialect.php';
+require_once __DIR__ . '/banco-v2/Dialect/MySqlDialect.php';
+require_once __DIR__ . '/banco-v2/Dialect/PostgreSqlDialect.php';
+require_once __DIR__ . '/banco-v2/Dialect/DialectFactory.php';
+
 // =====================================================================
 //  READONLY CLASS — Expressão SQL crua (raw)
 // =====================================================================
@@ -137,6 +143,9 @@ readonly class ConfigBanco
 		public string      $usuario = '',
 		public string      $senha   = '',
 		public string      $charset = 'utf8mb4',
+		public string      $schema  = 'public',
+		public string      $sslmode = 'prefer',
+		public string      $applicationName = 'conn2flow',
 		array              $opcoes  = [],
 	) {
 		// Opções PDO padrão para robustez e segurança
@@ -156,12 +165,18 @@ readonly class ConfigBanco
 	#[NoDiscard]
 	public function dsn(): string
 	{
-		$prefixo = $this->driver->dsnPrefixo();
+		$dialeto = \C2F\Database\Dialect\DialectFactory::create($this->driver->value);
 
-		return match ($this->driver) {
-			DriverBanco::MySQL => "{$prefixo}:host={$this->host};port={$this->porta};dbname={$this->nome};charset={$this->charset}",
-			DriverBanco::PostgreSQL => "{$prefixo}:host={$this->host};port={$this->porta};dbname={$this->nome}",
-		};
+		return $dialeto->buildDsn(
+			host: $this->host,
+			port: $this->porta,
+			database: $this->nome,
+			charset: $this->charset,
+			options: [
+				'sslmode' => $this->sslmode,
+				'application_name' => $this->applicationName,
+			],
+		);
 	}
 
 	/**
@@ -174,6 +189,7 @@ readonly class ConfigBanco
 			driver:  DriverBanco::MySQL,
 			porta:   DriverBanco::MySQL->portaPadrao(),
 			charset: DriverBanco::MySQL->charsetPadrao(),
+			schema:  '',
 		};
 	}
 
@@ -187,6 +203,7 @@ readonly class ConfigBanco
 			driver:  DriverBanco::PostgreSQL,
 			porta:   DriverBanco::PostgreSQL->portaPadrao(),
 			charset: DriverBanco::PostgreSQL->charsetPadrao(),
+			schema:  'public',
 		};
 	}
 
@@ -210,6 +227,9 @@ readonly class ConfigBanco
 			usuario: $_BANCO['usuario'] ?? '',
 			senha:   $_BANCO['senha']   ?? '',
 			charset: $_BANCO['charset'] ?? $driver->charsetPadrao(),
+			schema:  $_BANCO['schema'] ?? 'public',
+			sslmode: $_BANCO['sslmode'] ?? 'prefer',
+			applicationName: $_BANCO['application-name'] ?? 'conn2flow',
 		);
 	}
 }
@@ -994,6 +1014,69 @@ class ConsultaBanco
 	}
 
 	/**
+	 * Atomically inserts or updates a record using the active database dialect.
+	 *
+	 * PostgreSQL uses ON CONFLICT and MySQL uses ON DUPLICATE KEY UPDATE.
+	 * Conflict columns must be backed by a primary key or unique constraint.
+	 *
+	 * @param array<string, mixed> $dados Values keyed by column name.
+	 * @param string|list<string> $conflito Primary/unique conflict columns.
+	 * @param list<string>|null $atualizar Columns updated on conflict. Null updates
+	 *        every supplied column except the conflict columns; an empty array
+	 *        keeps the existing row unchanged.
+	 */
+	public function upsert(array $dados, string|array $conflito, ?array $atualizar = null): static
+	{
+		if ($dados === []) {
+			throw new \InvalidArgumentException('Upsert data cannot be empty.');
+		}
+
+		$colunasConflito = is_array($conflito) ? array_values($conflito) : [$conflito];
+		if ($colunasConflito === [] || in_array('', $colunasConflito, true)) {
+			throw new \InvalidArgumentException('Upsert requires at least one conflict column.');
+		}
+
+		$colunas = array_keys($dados);
+		foreach ($colunasConflito as $coluna) {
+			if (!array_key_exists($coluna, $dados)) {
+				throw new \InvalidArgumentException("Conflict column is missing from upsert data: {$coluna}");
+			}
+		}
+
+		$colunasAtualizar = $atualizar ?? array_values(array_diff($colunas, $colunasConflito));
+		foreach ($colunasAtualizar as $coluna) {
+			if (!array_key_exists($coluna, $dados)) {
+				throw new \InvalidArgumentException("Update column is missing from upsert data: {$coluna}");
+			}
+		}
+
+		$expressoes = [];
+		$params = [];
+		foreach ($dados as $valor) {
+			if ($valor instanceof ExpressaoSQL) {
+				$expressoes[] = $valor->expressao;
+			} elseif ($valor === null) {
+				$expressoes[] = 'NULL';
+			} else {
+				$expressoes[] = '?';
+				$params[] = $valor;
+			}
+		}
+
+		$quote = $this->banco->quoteIdentifier(...);
+		$sql = $this->banco->dialeto()->buildUpsert(
+			quotedTable: $quote($this->tabela),
+			quotedColumns: array_map($quote, $colunas),
+			valueExpressions: $expressoes,
+			quotedConflictColumns: array_map($quote, $colunasConflito),
+			quotedUpdateColumns: array_map($quote, $colunasAtualizar),
+		);
+
+		$this->banco->executar($sql, $params);
+		return $this;
+	}
+
+	/**
 	 * INSERT + UPDATE (upsert) baseado em existência do registro.
 	 *
 	 * Equivalente a banco_insert_update(). Verifica se o registro existe via SELECT,
@@ -1249,6 +1332,7 @@ class BancoV2
 {
 	private ?\PDO        $conexao           = null;
 	private ConfigBanco  $config;
+	private \C2F\Database\Dialect\DatabaseDialect $dialeto;
 	private int          $reconexoes        = 0;
 	private ?array       $dadosAnteriores   = null;
 	private array        $updateCampos      = [];
@@ -1267,6 +1351,7 @@ class BancoV2
 	public function __construct(?ConfigBanco $config = null)
 	{
 		$this->config = $config ?? ConfigBanco::fromGlobal();
+		$this->dialeto = \C2F\Database\Dialect\DialectFactory::create($this->config->driver->value);
 	}
 
 	/**
@@ -1286,11 +1371,11 @@ class BancoV2
 				$this->config->opcoes,
 			);
 
-			// Configurações pós-conexão específicas por driver
-			match ($this->config->driver) {
-				DriverBanco::MySQL => $this->conexao->exec("SET NAMES {$this->config->charset}"),
-				DriverBanco::PostgreSQL => $this->conexao->exec("SET client_encoding TO '{$this->config->charset}'"),
-			};
+			$this->dialeto->configureConnection(
+				connection: $this->conexao,
+				charset: $this->config->charset,
+				schema: $this->config->schema,
+			);
 
 		} catch (\PDOException $e) {
 			error_log("ERRO BANCO V2: Conexão falhou — " . $e->getMessage());
@@ -1356,6 +1441,13 @@ class BancoV2
 	public function driver(): DriverBanco
 	{
 		return $this->config->driver;
+	}
+
+	/** Returns the SQL dialect used by this connection. */
+	#[NoDiscard]
+	public function dialeto(): \C2F\Database\Dialect\DatabaseDialect
+	{
+		return $this->dialeto;
 	}
 
 	/** Retorna o número de reconexões desde a criação da instância. */
@@ -1541,16 +1633,13 @@ class BancoV2
 	#[NoDiscard]
 	public function quoteIdentifier(string $nome): string
 	{
-		// Não cita se já contiver ponto (tabela.campo), asterisco, ou já estiver citado
-		if (str_contains($nome, '.') || str_contains($nome, '*') || str_contains($nome, '(')
-			|| str_starts_with($nome, '`') || str_starts_with($nome, '"')) {
+		// Expressions remain an explicit compatibility escape hatch. New code
+		// should use BancoV2::raw() instead of passing expressions as identifiers.
+		if (str_contains($nome, '(')) {
 			return $nome;
 		}
 
-		return match ($this->config->driver) {
-			DriverBanco::MySQL      => "`{$nome}`",
-			DriverBanco::PostgreSQL => "\"{$nome}\"",
-		};
+		return $this->dialeto->quoteIdentifier($nome);
 	}
 
 	// =================================================================
@@ -1568,19 +1657,7 @@ class BancoV2
 	#[NoDiscard]
 	public function ultimoId(?string $sequencia = null): int|string
 	{
-		$pdo = $this->conexao();
-
-		if ($this->config->driver === DriverBanco::PostgreSQL && $sequencia === null) {
-			// PostgreSQL padrão: recupera via lastval()
-			try {
-				$stmt = $pdo->query('SELECT lastval()');
-				return (int) $stmt->fetchColumn();
-			} catch (\PDOException) {
-				return 0;
-			}
-		}
-
-		return $pdo->lastInsertId($sequencia) ?: 0;
+		return $this->dialeto->lastInsertedId($this->conexao(), $sequencia);
 	}
 
 	/**
@@ -1617,25 +1694,8 @@ class BancoV2
 	#[NoDiscard]
 	public function camposInfo(string $tabela): array
 	{
-		$sql = match ($this->config->driver) {
-			DriverBanco::MySQL => "SHOW COLUMNS FROM {$tabela}",
-			DriverBanco::PostgreSQL =>
-				"SELECT column_name as \"Field\", data_type as \"Type\", " .
-				"is_nullable as \"Null\", " .
-				"CASE WHEN column_default LIKE 'nextval%' THEN 'PRI' " .
-				"     WHEN column_default IS NOT NULL THEN '' ELSE '' END as \"Key\", " .
-				"column_default as \"Default\", '' as \"Extra\" " .
-				"FROM information_schema.columns " .
-				"WHERE table_name = ? AND table_schema = 'public' " .
-				"ORDER BY ordinal_position",
-		};
-
-		$params = match ($this->config->driver) {
-			DriverBanco::MySQL      => [],
-			DriverBanco::PostgreSQL => [$tabela],
-		};
-
-		$resultado = $this->query($sql, $params);
+		$consulta = $this->dialeto->columnsQuery($tabela, $this->config->schema);
+		$resultado = $this->query($consulta['sql'], $consulta['params']);
 		$rows = $resultado->todos();
 
 		if (!$rows) return [];
@@ -1676,12 +1736,8 @@ class BancoV2
 	#[NoDiscard]
 	public function tabelasLista(): array
 	{
-		$sql = match ($this->config->driver) {
-			DriverBanco::MySQL      => "SHOW TABLES",
-			DriverBanco::PostgreSQL => "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public'",
-		};
-
-		$resultado = $this->query($sql);
+		$consulta = $this->dialeto->listTablesQuery($this->config->schema);
+		$resultado = $this->query($consulta['sql'], $consulta['params']);
 		$lista = [];
 
 		while ($row = $resultado->linha()) {
