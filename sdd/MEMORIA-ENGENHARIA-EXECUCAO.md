@@ -14,6 +14,34 @@
 
 ## Tarefas recentes
 
+### 2026-08-10 — req-108: diagnóstico do 429 falso no deploy
+
+- **`ParseError` É `Throwable`**: `require_once` de arquivo que não compila, feito DENTRO de um `try`, é
+  capturado por `catch (Throwable)`. Um erro de sintaxe vira, silenciosamente, o desfecho de erro daquele
+  bloco — aqui virou "Rate limit excedido" (HTTP 429) com a tabela vazia.
+- Ambiente real é **PHP 8.3.32** (Apache e CLI do container). `banco-v2.php` e `interface-v2.php` declaram
+  `@requires PHP 8.5+` e usam `clone $this with {}` e pipe `|>`: nunca compilaram aqui.
+- Sintoma "tabela vazia + limite excedido" é assinatura de falha ANTES do INSERT, não de contagem.
+- `catch` que devolve o mesmo valor para "falha ao avaliar" e "regra violada" custa horas de depuração;
+  separar os dois desfechos vale mais que o fail-closed silencioso.
+- `php -l` em massa no core (fora de `vendor/` e `temp/`) acha esse tipo de defeito em segundos —
+  não havia essa guarda no CI.
+- Resíduo de branch: `banco-v2`/`interface-v2`/`admin-paginas-v2` nasceram no MESMO commit `c8fefefa`
+  (testes de 8.5 feitos na `main`, desacoplamento para a `3.0.x` iniciado mas incompleto). O
+  `api.php` só os tornou alcançáveis em `b64bc18d` (BATCH-107).
+- **Trocar de branch não resolveria**: `main`, `2.9.x` e `3.0.x` têm o mesmo `api.php` incluindo
+  `banco-v2` na linha 87, e nenhuma versão do `banco-v2.php` compila abaixo de 8.5. Ao diagnosticar
+  a partir de uma branch de desenvolvimento, confirmar o alcance nas demais antes de concluir que
+  o defeito é dela.
+- **`gestor/db/data/*.json` é GERADO** por `controladores/agents/arquitetura/atualizacao-dados-recursos.php`
+  a partir dos recursos e do `.json` de cada módulo. Nunca editar à mão: remova na raiz e rode o gerador.
+  Editar com `JSON.stringify` do Node destrói o escape `\/` do `json_encode` do PHP e gera ~2.000 linhas
+  de ruído; com o gerador, o diff fica só nas remoções reais.
+- Linha 2.x (`main`/`2.9.x`) e linha 3.x (`3.0.x`) são **independentes, não espelhadas**: 2.x usa as
+  bibliotecas antigas e não conhece PHP 8.5; 3.0.x exige 8.5 e usa `banco-v2`. Nada de fallback ou
+  `PHP_VERSION_ID` tentando servir as duas.
+- No Git Bash, `docker exec ... php /tmp/x.php` tem o path convertido pelo MSYS; usar `MSYS_NO_PATHCONV=1`.
+
 ### BATCH-106 — painéis fixos opcionais do editor visual
 
 - Para tirar um painel da flutuação, MOVA o nó existente (`appendChild`) e anule o posicionamento por

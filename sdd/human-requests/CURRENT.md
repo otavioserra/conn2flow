@@ -1,7 +1,7 @@
 # Current Human Request
 
 - **Intake ativo (Agente Atual)**: Nenhum.
-- **Outros Intakes Pendentes (Outros Agentes)**: Nenhum.
+- **Outros Intakes Pendentes (Outros Agentes)**: [req-108.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-108.md) — Deploy falha com HTTP 429 falso porque `api.php` carrega `banco-v2.php` (sintaxe PHP 8.5) num ambiente PHP 8.3; o `ParseError` é capturado pelo `catch (Throwable)` e vira "Rate limit excedido". Diagnóstico fechado e **rumo já decidido pelo Chefe (2026-08-10): fallback para `banco.php` quando `PHP_VERSION_ID < 80500`, mantendo as bibliotecas v2 intactas em 8.5** — elas NÃO devem ser retro-portadas. Pronto para implementação (BATCH-108); nenhum código foi alterado nesta rodada.
 
 - **Lotes Fechados**: 
   * [req-106.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-106.md) (BATCH-106 `complete`, 2026-08-06): Painel Flutuante de Opções de Exibição, Sidebar Lateral de CSS e Barra Superior de Navegação no Editor Visual.

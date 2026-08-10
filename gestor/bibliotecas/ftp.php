@@ -138,7 +138,7 @@ function ftp_colocar_arquivo($params = false){
 			return false;
 		}
 		
-		if(!$_GESTOR['ftp-conexao'])){
+		if(!$_GESTOR['ftp-conexao']){
 			return false;
 		}
 		

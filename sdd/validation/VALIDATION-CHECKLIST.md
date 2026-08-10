@@ -490,3 +490,23 @@ Pendência runtime da rodada 2: conferir que nada flutua com os painéis desliga
 Evidência (2026-08-06): `node --check` em `html-editor.js` e `dashboard.toolbar.js` → **2/2 OK**; `php -l` e parse do `dashboard.json` → OK; `npx vitest run` → **137/137** (`html-editor-view-options.test.js` 29→**36**: conversão em CodeMirror idempotente, leitura/escrita do `style` e aplicação no `blur` sem undo redundante, degradação graciosa sem a lib, painéis mantidos no preview de dispositivo e três casos de resize com medidas stubadas — desconto do status, acompanhamento do arraste nos dois sentidos e ausência de encolhimento espontâneo em disparos repetidos); `composer test` → **181/181** sem regressão. O stub de CodeMirror dos testes (`tests/Unit/JS/setup.js`) ganhou `on()` e um `__emit()` auxiliar. Cache-bust: `biblioteca-html-editor` `1.5.8`→`1.5.9`, `dashboard.json` `1.0.17`→`1.0.18`, motor `?v=c2f17`→`?v=c2f18`. Nenhum recurso do banco foi alterado nesta rodada.
 
 Pendência runtime da rodada 3: editar CSS inline pelo CodeMirror (botão e saída do campo); no Assistente IA, arrastar o canto inferior direito conferindo que o `#c2f-ai-status` continua visível e abrir a aba "Modo" conferindo a altura inicial do editor; trocar desktop/tablet/mobile conferindo que os painéis fixos permanecem.
+
+## BATCH-108 — Desacoplar a linha 2.x do código PHP 8.5 (req-108)
+
+Contexto: o deploy falhava com `HTTP 429 "Rate limit excedido"` e a tabela `api_rate_limits` vazia. Causa: `api_rate_limit_check()` carregava `banco-v2.php` (sintaxe PHP 8.5) dentro de um `try`; o `require_once` lançava `ParseError` — que é `Throwable` — o catch devolvia `false` e o roteador traduzia isso para 429.
+
+- [x] Causa-raiz reproduzida no container: `try { require 'banco-v2.php'; } catch (Throwable $e)` → `CAPTURADO: ParseError :: syntax error, unexpected identifier "with"`.
+- [x] Ambiente confirmado em **PHP 8.3.32** (`apache2handler` e CLI); `banco-v2.php` não compila em nenhuma branch (`main`/`2.9.x` linha 173, `3.0.x` linha 188).
+- [x] Defeito confirmado nas três branches (mesmo `api.php`, mesma linha 87) — não era problema da branch de desenvolvimento.
+- [x] `api_rate_limit_check()` reescrita: contagem via `banco.php` (v1), **sem `PHP_VERSION_ID`, sem fallback, sem condicional** — a linha 2.x não conhece PHP 8.5.
+- [x] Três desfechos separados: `true` (dentro do limite), `false` (excedido → 429) e `null` (falha de infraestrutura → 503 com log da exceção original, classe, arquivo e linha).
+- [x] Contagem validada contra o banco real: chamadas consecutivas devolveram 1, 2, 3; `total <= max` deu `true` com `max=100` e `false` com `max=2` (429 legítimo preservado). Registros de teste removidos ao final.
+- [x] Removidos da linha 2.x: `bibliotecas/banco-v2.php`, `bibliotecas/interface-v2.php`, `modulos/admin-paginas-v2/` (2 arquivos) e os registros `'interface-v2'`/`'banco-v2'` em `config.php`.
+- [x] Dados de seed órfãos do módulo removido eliminados **pelo gerador** (`atualizacao-dados-recursos.php`), não à mão: Páginas 264→256, Variáveis 1668→1610, Componentes 120→118. Diff de 717 deleções e 1 inserção (apenas o `generated_at` de `schema-metadata.json`); gerador reportou "Nenhum problema detectado" e nenhum órfão.
+- [x] `bibliotecas/ftp.php:139`: parêntese excedente removido (defeito independente, mesmo sintoma).
+- [x] **Lint completo do core sob PHP 8.4 (excluindo `vendor/`, `temp/`, PHPMailer): 100% dos arquivos compilam** — antes, 4 falhavam.
+- [x] Nenhuma ocorrência de `PHP_VERSION_ID` ou `80500` introduzida em `api.php`.
+- [ ] Deploy `Update => Core` na instalação local e reexecução de `deploy-project-v2.sh --project transformamp-local --contents Sim` **(pendente operador)** — o `api.php` que roda vem da instalação, não do repositório.
+- [ ] Verificar após o deploy que `api_rate_limits` passa a acumular `request_count` na janela corrente **(pendente operador)**.
+- [ ] Linhas órfãs de `admin-paginas-v2` nos bancos `conn2flow`/`transformamp` (8 páginas + 58 variáveis) **não** foram deletadas; a cargo do próximo sync ou de limpeza manual **(pendente operador)**.
+- [ ] `3.0.x` permanece intocada, com `banco-v2` e requisito de PHP 8.5 **(por decisão; nada a validar aqui)**.

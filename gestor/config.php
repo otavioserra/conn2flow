@@ -322,8 +322,6 @@ $_GESTOR['bibliotecas-dados'] = Array(
     'jwt' => Array('jwt.php'),
     'oauth' => Array('oauth.php'),
     'seguranca' => Array('seguranca.php'),
-    'interface-v2' => Array('interface-v2.php'),
-    'banco-v2' => Array('banco-v2.php'),
     'modulo-distribuido' => Array('modulo-distribuido.php'),
 );
 

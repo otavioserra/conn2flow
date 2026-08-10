@@ -74,6 +74,55 @@ function api_rate_limit_subject() {
     return 'ip:' . (string)($_SERVER['REMOTE_ADDR'] ?? 'unknown');
 }
 
+/**
+ * Contabiliza a requisição na janela corrente e devolve o total acumulado.
+ *
+ * req-108: esta linha do core (2.x) roda em PHP anterior ao 8.5 e usa exclusivamente as
+ * bibliotecas antigas — aqui, `banco.php`, que já vem carregada em toda requisição
+ * (`config.php`, `$_GESTOR['bibliotecas']`). As bibliotecas `*-v2` pertencem à linha 3.0.x,
+ * que exige PHP 8.5, e não existem nesta branch. Chamá-las aqui foi o defeito original: o
+ * `require` lançava `ParseError`, que é `Throwable`, era engolido pelo catch desta função e
+ * virava um falso "rate limit excedido".
+ *
+ * @return int|null Total de requisições na janela, ou null se a contagem não pôde ser lida.
+ */
+function api_rate_limit_contabilizar($route, $subject, $windowStart) {
+    $routeEscapado   = banco_escape_field($route);
+    $subjectEscapado = banco_escape_field($subject);
+    $janela          = (int)$windowStart;
+
+    $insercao = banco_query(
+        "INSERT INTO api_rate_limits (route, subject, window_start, request_count, updated_at) "
+        . "VALUES ('".$routeEscapado."', '".$subjectEscapado."', ".$janela.", 1, NOW()) "
+        . "ON DUPLICATE KEY UPDATE request_count=request_count+1, updated_at=NOW()"
+    );
+
+    // banco_query() devolve false quando a instrução falha (tabela ausente, conexão caída…).
+    if ($insercao === false) return null;
+
+    $linhas = banco_sql(
+        "SELECT request_count FROM api_rate_limits"
+        . " WHERE route='".$routeEscapado."'"
+        . " AND subject='".$subjectEscapado."'"
+        . " AND window_start=".$janela
+        . " LIMIT 1"
+    );
+
+    if (!isset($linhas[0]['request_count'])) return null;
+
+    return (int)$linhas[0]['request_count'];
+}
+
+/**
+ * Avalia o rate limit da rota.
+ *
+ * req-108: os três desfechos são distintos de propósito. Antes, qualquer falha de
+ * infraestrutura era convertida em `false` e apresentada ao operador como "Rate limit
+ * excedido", escondendo a causa real (um erro de sintaxe) atrás de uma mensagem plausível.
+ *
+ * @return bool|null true = dentro do limite; false = limite excedido;
+ *                   null = não foi possível avaliar (falha de infraestrutura).
+ */
 function api_rate_limit_check($endpoint = 'default') {
     global $_CONFIG;
 
@@ -84,23 +133,18 @@ function api_rate_limit_check($endpoint = 'default') {
     $subject = api_rate_limit_subject();
 
     try {
-        gestor_incluir_biblioteca('banco-v2');
-        $db = banco_v2();
-        $db->executar(
-            'INSERT INTO api_rate_limits (route, subject, window_start, request_count, updated_at) '
-            . 'VALUES (?, ?, ?, 1, NOW()) '
-            . 'ON DUPLICATE KEY UPDATE request_count=request_count+1, updated_at=NOW()',
-            [$route, $subject, $windowStart]
-        );
-        $rows = $db->sql(
-            'SELECT request_count FROM api_rate_limits WHERE route=? AND subject=? AND window_start=? LIMIT 1',
-            [$route, $subject, $windowStart]
-        );
+        $total = api_rate_limit_contabilizar($route, $subject, $windowStart);
 
-        return isset($rows[0]['request_count']) && (int)$rows[0]['request_count'] <= $maxRequests;
+        // Sem contagem legível não há como afirmar que o limite foi excedido.
+        if ($total === null) return null;
+
+        return $total <= $maxRequests;
     } catch (Throwable $e) {
-        error_log('Falha no rate limit persistente da API: ' . $e->getMessage());
-        return false;
+        error_log(
+            'Falha ao avaliar o rate limit da API (' . get_class($e) . '): ' . $e->getMessage()
+            . ' em ' . $e->getFile() . ':' . $e->getLine()
+        );
+        return null;
     }
 }
 
@@ -1015,9 +1059,13 @@ function api_route_request() {
     $endpoint = $_GESTOR['caminho'][1];
     $method = $_SERVER['REQUEST_METHOD'];
 
-    // Rate limiting
-    if (!api_rate_limit_check($endpoint)) {
+    // Rate limiting (req-108: falha de infraestrutura não pode se disfarçar de limite excedido)
+    $limite = api_rate_limit_check($endpoint);
+    if ($limite === false) {
         api_response_error('Rate limit excedido. Tente novamente mais tarde.', 429);
+    }
+    if ($limite === null) {
+        api_response_error('Não foi possível avaliar o limite de requisições. Consulte o log do servidor.', 503);
     }
 
     // Roteamento baseado no endpoint

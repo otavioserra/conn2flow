@@ -1300,32 +1300,6 @@
         "checksum": "{\"html\":\"d0dae208d0c9c46f4041e52bb5e503df\",\"css\":\"\",\"combined\":\"d0dae208d0c9c46f4041e52bb5e503df\"}"
     },
     {
-        "nome": "Lista Página ou Sistema",
-        "id": "lista-pagina-ou-sistema",
-        "language": "pt-br",
-        "modulo": "admin-paginas-v2",
-        "html": null,
-        "css": null,
-        "framework_css": "fomantic-ui",
-        "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
-    },
-    {
-        "nome": "Page or System List",
-        "id": "lista-pagina-ou-sistema",
-        "language": "en",
-        "modulo": "admin-paginas-v2",
-        "html": null,
-        "css": null,
-        "framework_css": "fomantic-ui",
-        "status": "A",
-        "versao": 1,
-        "file_version": "1.6",
-        "checksum": "{\"html\":\"\",\"css\":\"\",\"combined\":\"\"}"
-    },
-    {
         "nome": "Plugins - Exec",
         "id": "plugins-exec",
         "language": "pt-br",
