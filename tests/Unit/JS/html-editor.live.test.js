@@ -164,6 +164,89 @@ describe('html-editor.js — Live Editor (BATCH-080)', () => {
     expect(ed.aiGetInstruction()).toBe('');
   });
 
+  it('seleciona paginas-editbar e carrega seu prompt por padrão no painel IA', () => {
+    const ed = makeEditor({ raiz: 'https://site.test/' });
+    const alvo = document.createElement('h1');
+    ed.contentRoot.appendChild(alvo);
+    ed.selectedElement = alvo;
+    ed.liveAjaxJson = (url, options, callback) => {
+      if (url.includes('site-toolbar-ia-init')) {
+        callback({
+          status: 'Ok',
+          data: {
+            prompts: [],
+            modos: [
+              { id: 'paginas', nome: 'Páginas' },
+              { id: 'paginas-editbar', nome: 'Páginas (Editbar)' },
+            ],
+            modo_padrao: 'prompt clássico',
+            servidores: [{ id: 'server-1', nome: 'Servidor' }],
+            modelos: [],
+            modelo_padrao: '',
+          },
+        });
+      } else if (url.includes('site-toolbar-ia-mode')) {
+        expect(url).toContain('params[mode_id]=paginas-editbar');
+        callback({ status: 'Ok', prompt: 'prompt editbar' });
+      }
+    };
+
+    ed.openAiPanel();
+
+    expect(document.getElementById('c2f-ai-mode').value).toBe('paginas-editbar');
+    expect(ed.aiGetMode()).toBe('prompt editbar');
+
+    document.getElementById('c2f-ai-mode').value = 'paginas';
+    ed.closeAiPanel();
+    ed.openAiPanel();
+    expect(document.getElementById('c2f-ai-mode').value).toBe('paginas-editbar');
+    expect(ed.aiGetMode()).toBe('prompt editbar');
+  });
+
+  it('mantém o modo padrão clássico quando paginas-editbar não está disponível', () => {
+    const ed = makeEditor({ raiz: 'https://site.test/' });
+    const alvo = document.createElement('p');
+    ed.contentRoot.appendChild(alvo);
+    ed.selectedElement = alvo;
+    ed.liveAjaxJson = (url, options, callback) => {
+      if (url.includes('site-toolbar-ia-init')) {
+        callback({
+          status: 'Ok',
+          data: {
+            prompts: [],
+            modos: [{ id: 'paginas', nome: 'Páginas' }],
+            modo_padrao: 'prompt clássico',
+            servidores: [],
+            modelos: [],
+            modelo_padrao: '',
+          },
+        });
+      }
+    };
+
+    ed.openAiPanel();
+
+    expect(document.getElementById('c2f-ai-mode').value).toBe('paginas');
+    expect(ed.aiGetMode()).toBe('prompt clássico');
+  });
+
+  it('preserva JavaScript devolvido no próprio fragmento HTML da Editbar', () => {
+    const ed = makeEditor({ raiz: 'https://site.test/' });
+    const alvo = document.createElement('div');
+    alvo.textContent = 'original';
+    ed.contentRoot.appendChild(alvo);
+    ed.selectedElement = alvo;
+
+    ed.applyAiResult(
+      '<div class="carousel">Carrossel</div><script>window.carouselReady = true;</script>',
+      '',
+    );
+
+    expect(ed.contentRoot.querySelector('.carousel').textContent).toBe('Carrossel');
+    expect(ed.contentRoot.querySelector('script').textContent).toContain('carouselReady');
+    expect(ed.selectedElement).toBe(ed.contentRoot.querySelector('.carousel'));
+  });
+
   it('deselectAll limpa a seleção ativa de forma determinística (§2)', () => {
     const ed = makeEditor({ raiz: 'https://site.test/' });
     const alvo = document.createElement('div');

@@ -8,6 +8,7 @@
   * Origem da demanda: surgiu durante a execução do projeto privado `transformamp` (req-020/BATCH-028), cujo deploy estava bloqueado por este defeito.
 
 - **Lotes Fechados**: 
+  * [req-109.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-109.md) (BATCH-109 `complete`, 2026-08-10): Modo de IA Dedicado 'paginas-editbar' para Edição de Elementos Isolados no Live Editor e Editbar.
   * [req-106.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-106.md) (BATCH-106 `complete`, 2026-08-06): Painel Flutuante de Opções de Exibição, Sidebar Lateral de CSS e Barra Superior de Navegação no Editor Visual.
   * [req-107.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-107.md) (BATCH-107 `complete`, 2026-08-06): Hardening de Segurança, Mitigação de Vulnerabilidades e Saneamento do Core.
   * [req-075.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-075.md) (BATCH-075 `complete`, 2026-07-10): Site Toolbar completa, agendamento de páginas e extensões do editor.

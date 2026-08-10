@@ -60,6 +60,17 @@
         "padrao": 1
     },
     {
+        "nome": "Páginas (Editbar)",
+        "id": "paginas-editbar",
+        "language": "pt-br",
+        "alvo": "paginas",
+        "prompt": "Gere ou modifique somente o elemento ou fragmento HTML recebido. Devolva estritamente o código HTML resultante usando markdown ```html ``` e, somente se necessário, o CSS extra usando markdown ```css ```.\nO HTML usa o framework CSS `{{framework_css}}`.\nNão explique a solução, pois somente os códigos HTML e CSS gerados serão aproveitados.\nPreserve o elemento raiz ou os elementos de nível superior recebidos, salvo quando o usuário pedir explicitamente para alterá-los. Não adicione wrappers não solicitados.\nNão há obrigatoriedade de envolver o resultado em uma tag `<section>` nem de incluir atributos `data-id` ou `data-title`. Se o HTML recebido for um elemento isolado, devolva diretamente a evolução desse mesmo elemento. Por exemplo, ao receber `<h1>Título<\/h1>`, devolva o `<h1>` modificado, sem adicionar uma `<section>` ou outro contêiner ao redor.\nQuando a alteração precisar de JavaScript para animações, carrosséis ou outras interações, você pode incluí-lo em uma tag `<script>` no próprio fragmento retornado dentro do bloco ```html ```. Não devolva um bloco markdown `javascript` separado. Mantenha o script restrito ao elemento ou fragmento editado e preserve o HTML recebido quando não houver necessidade de JavaScript.\nHTML recebido:\n```html\n{{html}}\n```\nCSS recebido:\n```css\n{{css}}\n```\nA seguir, um usuário sem ou com conhecimento de HTML descreveu a alteração desejada:\n",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"md\":\"2c2061f94ac995a70b1757ad71ab1213\"}"
+    },
+    {
         "nome": "Pages",
         "id": "paginas",
         "language": "en",
@@ -70,6 +81,17 @@
         "file_version": "1.0",
         "checksum": "{\"md\":\"67319760276662e23eb47c73ae167bdb\"}",
         "padrao": 1
+    },
+    {
+        "nome": "Pages (Editbar)",
+        "id": "paginas-editbar",
+        "language": "en",
+        "alvo": "paginas",
+        "prompt": "Generate or modify only the provided HTML element or fragment. Return strictly the resulting HTML code using markdown ```html ``` and, only if needed, extra CSS using markdown ```css ```.\nThe HTML uses the CSS framework `{{framework_css}}`.\nDo not explain the solution, because only the generated HTML and CSS code will be used.\nPreserve the provided root element or top-level elements unless the user explicitly asks to change them. Do not add unrequested wrappers.\nThere is no requirement to wrap the result in a `<section>` tag or to include `data-id` or `data-title` attributes. If the provided HTML is an isolated element, return the updated version of that same element directly. For example, when given `<h1>Title<\/h1>`, return the modified `<h1>` without adding a `<section>` or another container around it.\nWhen the change needs JavaScript for animations, carousels, or other interactions, you may include it in a `<script>` tag in the returned fragment inside the ```html ``` block itself. Do not return a separate `javascript` markdown block. Keep the script scoped to the edited element or fragment, and preserve the provided HTML when JavaScript is unnecessary.\nProvided HTML:\n```html\n{{html}}\n```\nProvided CSS:\n```css\n{{css}}\n```\nBelow, a user with or without HTML knowledge described the requested change:\n",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.0",
+        "checksum": "{\"md\":\"8e05d834cbe18800e1024762d07b505c\"}"
     },
     {
         "nome": "Formulários",

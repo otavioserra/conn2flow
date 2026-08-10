@@ -3187,6 +3187,7 @@ $(document).ready(function () {
             // quando ela MUDA de tamanho — o primeiro ajuste precisa ser explícito.
             setTimeout(() => { this.syncLiveBoxCodeMirrors(painel); }, 30);
             if (!this._aiInitLoaded) this.loadAiInit();
+            else this.selectAiMode('paginas-editbar');
         }
 
         closeAiPanel() {
@@ -3289,16 +3290,27 @@ $(document).ready(function () {
             });
             // Ao trocar o modo, busca o template do modo.
             p.querySelector('#c2f-ai-mode').addEventListener('change', (e) => {
-                const id = e.target.value;
-                if (!id) return;
-                const url = this.liveAjaxUrl('site-toolbar-ia-mode') + '&params[target]=paginas&params[mode_id]=' + encodeURIComponent(id);
-                this.liveAjaxJson(url, null, (json) => {
-                    if (json && json.status === 'Ok') {
-                        const tmp = document.createElement('textarea'); tmp.innerHTML = json.prompt || '';
-                        this.aiSetMode(tmp.value);
-                    }
-                });
+                this.loadAiMode(e.target.value);
             });
+        }
+
+        loadAiMode(id) {
+            if (!id) return;
+            const url = this.liveAjaxUrl('site-toolbar-ia-mode') + '&params[target]=paginas&params[mode_id]=' + encodeURIComponent(id);
+            this.liveAjaxJson(url, null, (json) => {
+                if (json && json.status === 'Ok') {
+                    const tmp = document.createElement('textarea'); tmp.innerHTML = json.prompt || '';
+                    this.aiSetMode(tmp.value);
+                }
+            });
+        }
+
+        selectAiMode(id) {
+            const select = document.querySelector('#c2f-ai-panel #c2f-ai-mode');
+            if (!select || !Array.prototype.some.call(select.options, (option) => option.value === id)) return false;
+            select.value = id;
+            this.loadAiMode(id);
+            return true;
         }
 
         // BATCH-081 §1: CodeMirror (markdown) nos textareas do assistente. Só instancia se o
@@ -3429,7 +3441,9 @@ $(document).ready(function () {
                     '<option value="' + this.escHtml(x.id) + '">' + this.escHtml(x.nome) + '</option>').join('') || '<option value="">—</option>';
                 p.querySelector('#c2f-ai-model').innerHTML = (d.modelos || []).map((x) =>
                     '<option value="' + this.escHtml(x.name) + '"' + (x.name === d.modelo_padrao ? ' selected' : '') + '>' + this.escHtml(x.displayName || x.name) + '</option>').join('') || '<option value="">—</option>';
-                if (d.modo_padrao) { const tmp = document.createElement('textarea'); tmp.innerHTML = d.modo_padrao; this.aiSetMode(tmp.value); }
+                if (!this.selectAiMode('paginas-editbar') && d.modo_padrao) {
+                    const tmp = document.createElement('textarea'); tmp.innerHTML = d.modo_padrao; this.aiSetMode(tmp.value);
+                }
                 this._aiInitLoaded = true;
                 status.textContent = '';
             });
@@ -3485,7 +3499,9 @@ $(document).ready(function () {
                 tmp.innerHTML = html.trim();
                 const novo = tmp.firstElementChild;
                 if (novo && el.parentNode) {
-                    el.parentNode.replaceChild(novo, el);
+                    const fragment = document.createDocumentFragment();
+                    while (tmp.firstChild) fragment.appendChild(tmp.firstChild);
+                    el.parentNode.replaceChild(fragment, el);
                     this.selectElement(novo);
                 }
             }

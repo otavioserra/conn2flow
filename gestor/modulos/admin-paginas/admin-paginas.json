@@ -71,6 +71,15 @@
                     "checksum": {
                         "md": ""
                     }
+                },
+                {
+                    "id": "paginas-editbar",
+                    "name": "Páginas (Editbar)",
+                    "target": "paginas",
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
                 }
             ],
             "ai_prompts": [
@@ -372,6 +381,15 @@
                     "name": "Pages",
                     "target": "paginas",
                     "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                },
+                {
+                    "id": "paginas-editbar",
+                    "name": "Pages (Editbar)",
+                    "target": "paginas",
                     "version": "1.0",
                     "checksum": {
                         "md": ""
