@@ -1,7 +1,11 @@
 # Current Human Request
 
 - **Intake ativo (Agente Atual)**: Nenhum.
-- **Outros Intakes Pendentes (Outros Agentes)**: [req-108.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-108.md) — Deploy falha com HTTP 429 falso porque `api.php` carrega `banco-v2.php` (sintaxe PHP 8.5) num ambiente PHP 8.3; o `ParseError` é capturado pelo `catch (Throwable)` e vira "Rate limit excedido". Diagnóstico fechado e **rumo já decidido pelo Chefe (2026-08-10): fallback para `banco.php` quando `PHP_VERSION_ID < 80500`, mantendo as bibliotecas v2 intactas em 8.5** — elas NÃO devem ser retro-portadas. Pronto para implementação (BATCH-108); nenhum código foi alterado nesta rodada.
+- **Outros Intakes Pendentes (Outros Agentes)**: Nenhum.
+
+- **Implementado nesta rodada**: [req-108.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-108.md) (BATCH-108, 2026-08-10) — deploy devolvia `HTTP 429` falso porque `api.php` carregava `banco-v2.php` (sintaxe PHP 8.5) num ambiente PHP 8.3: o `ParseError` era capturado pelo `catch (Throwable)` e virava "Rate limit excedido", com a tabela `api_rate_limits` vazia. Modelo adotado: **separação por linha de versão, sem fallback** — a linha 2.x usa só as bibliotecas antigas, a `3.0.x` exige PHP 8.5. Aplicado em `main` (`2c9f7a35`) e `2.9.x` (`e1ffe993`); a `3.0.x` não foi tocada. O core inteiro passou a compilar sob PHP 8.3/8.4 (antes, 4 arquivos falhavam).
+  * **Pendência aberta — Parte IV do req-108**: falta a guarda de `php -l` no CI. Sem ela, nada barra um arquivo com sintaxe 8.5 entrando na linha 2.x — foi exatamente o que permitiu o commit `c8fefefa` passar.
+  * Origem da demanda: surgiu durante a execução do projeto privado `transformamp` (req-020/BATCH-028), cujo deploy estava bloqueado por este defeito.
 
 - **Lotes Fechados**: 
   * [req-106.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-106.md) (BATCH-106 `complete`, 2026-08-06): Painel Flutuante de Opções de Exibição, Sidebar Lateral de CSS e Barra Superior de Navegação no Editor Visual.
