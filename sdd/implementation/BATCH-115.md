@@ -47,3 +47,6 @@
 - `node --check` da busca clínica, `php -l` da busca clínica e de assinaturas e
   `git diff --check` → OK;
 - escala global mantida no padrão de 16px; o desvio visual era zoom de 110% do navegador.
+- deploy local via API → HTTP 200; sincronização forçada e limitada a `componentes` → 43 sem
+  alteração; leitura da base `photon` confirmou oito recursos novos com precompiled preenchido e
+  `user_modified=0`.

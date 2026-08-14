@@ -872,5 +872,7 @@ passar o mouse sobre o painel de Configurações (nada da página atrás pode se
   fontes adicionais (`snapphoton-system`, pt-br/en).
 - [x] Escala global restaurada ao padrão de 16px após confirmação de zoom de 110% no navegador.
 - [x] Testes Node estruturais: **4/4**; `node --check`, dois `php -l` e `git diff --check`: OK.
-- [ ] Publicar/sincronizar os novos componentes no banco local e homologar busca clínica e checkout.
+- [x] Deploy local HTTP 200 e sincronização `componentes --force-all`: 43 registros sem divergência.
+- [x] Base `photon`: oito componentes novos, `user_modified=0`, precompiled entre 1.383 e 5.036 bytes.
+- [ ] Homologar visualmente busca clínica e checkout no navegador a 100%.
 - [ ] Migrar `snapphoton-system` por famílias de tela antes de remover sua ponte.
