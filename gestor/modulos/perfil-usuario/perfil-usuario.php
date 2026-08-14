@@ -1802,8 +1802,9 @@ function perfil_usuario_signin(){
 	}
 	
 	// ===== Verifica se o cookie está ativo no navegador do usuário.
-	
-	gestor_cookie_verificacao();
+	// req-109: fluxo de autenticação exige sessão por cookie — mantém o round-trip de verificação.
+
+	gestor_cookie_verificacao(true);
 	
 	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
 	
@@ -2583,8 +2584,9 @@ function perfil_usuario_signup(){
 	hook_do_action($_GESTOR['modulo-id'], 'signup.pos_banco');
 	
 	// ===== Verifica se o cookie está ativo no navegador do usuário.
-	
-	gestor_cookie_verificacao();
+	// req-109: fluxo de autenticação exige sessão por cookie — mantém o round-trip de verificação.
+
+	gestor_cookie_verificacao(true);
 	
 	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
 	

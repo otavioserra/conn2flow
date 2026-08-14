@@ -2,8 +2,16 @@
 
 global $_GESTOR;
 
+// req-112: esta versão é o cache-bust ÚNICO do editor visual. Ela versiona os TRÊS consumidores:
+//   1. `interface/html-editor.js` no editor clássico (via gestor_pagina_javascript_incluir);
+//   2. `dashboard/toolbar.js` da Editbar (via gestor_dashboard_toolbar em gestor.php);
+//   3. `interface/html-editor.js` carregado sob demanda POR DENTRO da Editbar (via a variável JS
+//      `gestor.htmlEditorVersao`).
+// Alterou `html-editor.js`, `html-editor-interface.js` ou `dashboard.toolbar.js`? Bumpe AQUI — é o
+// único lugar. Antes havia uma string `?v=c2fNN` escrita à mão no dashboard.toolbar.js, esquecida
+// numa entrega e responsável por uma rodada inteira de homologação sem efeito.
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.5.9',
+	'versao' => '1.5.11',
 );
 
 // ===== Funções auxiliares
@@ -247,6 +255,30 @@ function html_editor_componente($params = false){
 		]);
 	} else {
 		$cel_nome = 'publisher-page-html-editor-btns'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+	}
+
+	// ===== req-110: aba "SEO & Compartilhamento".
+	//       Só existe quando o chamador informa `seo` — layouts, componentes e alvos sem metadados
+	//       próprios continuam com o mesmo conjunto de abas de antes. Os campos de texto são do
+	//       formulário padrão do módulo; a imagem de destaque é resolvida pelo `imagepick` de
+	//       `interface_formulario_campos()`, que substitui `<span>#imagepick-featured-image#</span>`
+	//       depois que este componente já está dentro de $_GESTOR['pagina'].
+
+	if(isset($seo) && is_array($seo)){
+		$html_editor_seo = gestor_componente(Array(
+			'id' => 'html-editor-seo',
+		));
+
+		$html_editor_seo = modelo_var_troca($html_editor_seo,'#og-titulo#',htmlspecialchars((string)($seo['og_titulo'] ?? ''), ENT_QUOTES, 'UTF-8'));
+		$html_editor_seo = modelo_var_troca($html_editor_seo,'#og-descricao#',htmlspecialchars((string)($seo['og_descricao'] ?? ''), ENT_QUOTES, 'UTF-8'));
+		// req-112: meta tags clássicas de SEO.
+		$html_editor_seo = modelo_var_troca($html_editor_seo,'#meta-descricao#',htmlspecialchars((string)($seo['meta_descricao'] ?? ''), ENT_QUOTES, 'UTF-8'));
+		$html_editor_seo = modelo_var_troca($html_editor_seo,'#meta-keywords#',htmlspecialchars((string)($seo['meta_keywords'] ?? ''), ENT_QUOTES, 'UTF-8'));
+
+		$html_editor = modelo_var_troca($html_editor,'#html-editor-seo#',$html_editor_seo);
+	} else {
+		$cel_nome = 'seo-html-editor-menu'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
+		$cel_nome = 'seo-html-editor-tab'; $html_editor = modelo_tag_del($html_editor,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
 	}
 
     // ===== Editor HTML visual
@@ -1173,8 +1205,11 @@ function html_editor_ajax_ia_requests(){
 			$modo = modelo_var_troca_tudo($modo,'{{variables}}',$variables);
 		break;
 		default:
-			$cel_nome = 'publisher'; $modelo_texto = modelo_tag_del($modelo_texto,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
-
+			// req-109: os demais alvos (páginas, layouts, componentes) não têm lista de variáveis
+			// para substituir — o modo IA segue como veio. Aqui havia um resíduo copiado de outro
+			// contexto que operava sobre `$modelo_texto`, variável inexistente nesta função, cujo
+			// resultado era descartado: só produzia `PHP Warning: Undefined variable $modelo_texto`.
+		break;
 	}
 
 	// Preparar prompt completo

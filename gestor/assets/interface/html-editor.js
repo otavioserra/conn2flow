@@ -970,6 +970,11 @@ $(document).ready(function () {
                 element.id === 'c2f-he-css-sidebar' ||
                 element.id === 'c2f-he-element-navbar' ||
                 element.id === 'c2f-view-options-panel' ||
+                // req-112: painel de Configurações da Página e o overlay do seletor de arquivos.
+                // Faltavam aqui desde o BATCH-110 — era a causa do hover realçar o elemento ATRÁS do
+                // painel e do primeiro clique ser consumido pela seleção em vez do botão.
+                element.id === 'c2f-page-config-panel' ||
+                element.id === 'c2f-page-config-picker' ||
                 element.id === 'html-editor-modal')) return true;
             // req-097 Fix 1: elementos de SISTEMA do Live Editor (iframe da barra, contêiner do preview
             // de dispositivo e o loader de salvamento) nunca são conteúdo editável nem podem entrar na
@@ -990,6 +995,8 @@ $(document).ready(function () {
                 if (element.closest('#c2f-he-css-sidebar')) return true;
                 if (element.closest('#c2f-he-element-navbar')) return true;
                 if (element.closest('#c2f-view-options-panel')) return true;
+                if (element.closest('#c2f-page-config-panel')) return true;
+                if (element.closest('#c2f-page-config-picker')) return true;
                 if (element.closest('#html-editor-modal')) return true;
                 if (element.closest('.html-editor-container')) return true;
                 if (element.closest('.ui.dimmer.modals')) return true;
@@ -3425,6 +3432,21 @@ $(document).ready(function () {
             });
         }
 
+        // req-112 (rodada 2): o select de modos de IA da EDITBAR mostra apenas `paginas-editbar`.
+        //
+        // Os dois modos compartilham o alvo `paginas`, então a rota `site-toolbar-ia-init` devolve
+        // ambos. O modo clássico `paginas` continua registrado e disponível no editor dos módulos —
+        // ele gera uma SEÇÃO inteira, enquanto a Editbar edita um elemento isolado; oferecer os dois
+        // aqui só convida ao resultado errado. A remoção é pontual, neste select.
+        //
+        // O fallback para a lista completa é deliberado: numa instalação que ainda não recebeu o
+        // `paginas-editbar` (deploy pendente), esvaziar o select deixaria o painel de IA inutilizável.
+        aiModosVisiveis(modos) {
+            const lista = Array.isArray(modos) ? modos : [];
+            const editbar = lista.filter((x) => x && String(x.id) === 'paginas-editbar');
+            return editbar.length ? editbar : lista;
+        }
+
         loadAiInit() {
             const p = document.getElementById('c2f-ai-panel');
             const status = p.querySelector('#c2f-ai-status');
@@ -3435,7 +3457,7 @@ $(document).ready(function () {
                 const opt = (arr, valKey, txtKey) => ['<option value="">—</option>'].concat((arr || []).map((x) =>
                     '<option value="' + this.escHtml(x[valKey]) + '">' + this.escHtml(x[txtKey]) + '</option>')).join('');
                 p.querySelector('#c2f-ai-prompt').innerHTML = opt(d.prompts, 'id', 'nome');
-                p.querySelector('#c2f-ai-mode').innerHTML = (d.modos || []).map((x) =>
+                p.querySelector('#c2f-ai-mode').innerHTML = this.aiModosVisiveis(d.modos).map((x) =>
                     '<option value="' + this.escHtml(x.id) + '">' + this.escHtml(x.nome) + '</option>').join('') || '<option value="">—</option>';
                 p.querySelector('#c2f-ai-server').innerHTML = (d.servidores || []).map((x) =>
                     '<option value="' + this.escHtml(x.id) + '">' + this.escHtml(x.nome) + '</option>').join('') || '<option value="">—</option>';
@@ -5561,6 +5583,8 @@ $(document).ready(function () {
                 // req-106: painéis fixos de exibição (a sidebar/navbar hospedam o styler e os
                 // breadcrumbs quando ligados — removê-las tira todo o conjunto de uma vez).
                 '#c2f-he-css-sidebar,#c2f-he-element-navbar,#c2f-view-options-panel,' +
+                // req-112: painel de Configurações da Página e seu seletor de arquivos.
+                '#c2f-page-config-panel,#c2f-page-config-picker,' +
                 // req-097 Fix 1: elementos de sistema do Live Editor NUNCA são persistidos — o iframe da
                 // barra dentro do HTML salvo era o que fazia o embed "vazar" para dentro da Editbar.
                 '#c2f-site-toolbar,#c2f-device-preview,#c2f-save-loader')

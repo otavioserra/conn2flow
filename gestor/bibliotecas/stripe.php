@@ -328,7 +328,8 @@ function stripe_consultar_setup_intent($params = Array()){
  * devolvido é o de um SetupIntent (`secret_type = 'setup'`), que apenas autoriza o cartão.
  *
  * @param array $params ['customer_id' => obrig, 'price_id' => obrig, 'referencia' => opc,
- *                       'metadata' => opc, 'idempotency_key' => opc, 'trial_period_days' => opc]
+ *                       'metadata' => opc, 'idempotency_key' => opc, 'trial_period_days' => opc,
+ *                       'payment_method_id' => opc (método já salvo no Customer/assinatura)]
  * @return array|false ['id','status','client_secret','secret_type' => 'payment'|'setup','subscription_data'] ou false.
  */
 function stripe_criar_assinatura($params = Array()){
@@ -341,6 +342,9 @@ function stripe_criar_assinatura($params = Array()){
         'payment_settings' => Array('save_default_payment_method' => 'on_subscription'),
         'expand' => Array('latest_invoice.payment_intent', 'pending_setup_intent'),
     );
+    if(!empty($params['payment_method_id'])){
+        $dados['default_payment_method'] = $params['payment_method_id'];
+    }
 
     // Período de teste: o trial não vem do Price, precisa ser declarado aqui.
     $trialDias = (int)($params['trial_period_days'] ?? 0);
@@ -487,7 +491,8 @@ function stripe_suspender_assinatura($params = Array()){
 }
 
 /**
- * Reativa uma assinatura pausada. Não ressuscita cancelada.
+ * Reativa uma assinatura pausada ou com cancelamento agendado. Não ressuscita uma assinatura
+ * que já alcançou o estado terminal `canceled`.
  *
  * São dois mecanismos distintos de pausa: `pause_collection` (status segue `active`, cobrança
  * suspensa — usado pela operação `suspend` do módulo) e o status `paused`, em que o Stripe coloca
@@ -512,7 +517,10 @@ function stripe_ativar_assinatura($params = Array()){
     $resp = stripe_requisicao(Array(
         'endpoint' => '/v1/subscriptions/' . rawurlencode($params['subscription_id']),
         'method' => 'POST',
-        'data' => Array('pause_collection' => ''),
+        'data' => Array(
+            'pause_collection' => '',
+            'cancel_at_period_end' => 'false',
+        ),
     ));
     return ($resp && $resp['http_code'] === 200);
 }

@@ -14,6 +14,9 @@ function admin_environment_env_read(){
     // Isso evita conflito com a classe Dotenv que já foi usada no config.php
     $envData = [
         'SITE_NAME' => $_ENV['SITE_NAME'] ?? 'Conn2Flow',
+        // req-111 (CR-001): tokens adicionais de robô, complementares à lista embutida do core.
+        'CRAWLER_TOKENS_EXTRA_ATIVO' => $_ENV['CRAWLER_TOKENS_EXTRA_ATIVO'] ?? 'false',
+        'CRAWLER_TOKENS_EXTRA' => $_ENV['CRAWLER_TOKENS_EXTRA'] ?? '',
         'USUARIO_RECAPTCHA_ACTIVE' => $_ENV['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
         'USUARIO_RECAPTCHA_SITE' => $_ENV['USUARIO_RECAPTCHA_SITE'] ?? '',
         'USUARIO_RECAPTCHA_SERVER' => $_ENV['USUARIO_RECAPTCHA_SERVER'] ?? '',
@@ -283,6 +286,8 @@ function admin_environment_raiz(){
     
     $dados = [
         'site_name' => $envData['SITE_NAME'] ?? 'Conn2Flow',
+        'crawler_tokens_extra_ativo' => $envData['CRAWLER_TOKENS_EXTRA_ATIVO'] ?? 'false',
+        'crawler_tokens_extra' => $envData['CRAWLER_TOKENS_EXTRA'] ?? '',
         'usuario_recaptcha_active' => $envData['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
         'usuario_recaptcha_site' => $envData['USUARIO_RECAPTCHA_SITE'] ?? '',
         'usuario_recaptcha_server' => $envData['USUARIO_RECAPTCHA_SERVER'] ?? '',
@@ -399,6 +404,13 @@ function admin_environment_raiz(){
     // Site
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-name#', $dados['site_name']);
 
+    // req-111 (CR-001): tokens de robô — estado do toggle, lista do operador e o baseline do core
+    // exibido como referência (somente leitura), para o operador não recadastrar o que já existe.
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#crawler-tokens-extra-ativo#', $dados['crawler_tokens_extra_ativo']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#crawler-tokens-extra-ativo-checked#', $dados['crawler_tokens_extra_ativo'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#crawler-tokens-extra#', htmlspecialchars($dados['crawler_tokens_extra'], ENT_QUOTES, 'UTF-8'));
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#crawler-tokens-padrao#', htmlspecialchars(implode(', ', gestor_crawler_tokens_padrao()), ENT_QUOTES, 'UTF-8'));
+
     // Usuário / reCAPTCHA
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-active#', $dados['usuario_recaptcha_active']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-active-checked#', $dados['usuario_recaptcha_active'] === 'true' ? 'checked' : '');
@@ -509,6 +521,9 @@ function admin_environment_ajax_salvar(){
     
     // Coletar dados do formulário — Site
     if(isset($_REQUEST['site_name'])) $data['SITE_NAME'] = $_REQUEST['site_name'];
+    if(isset($_REQUEST['crawler_tokens_extra_ativo'])) $data['CRAWLER_TOKENS_EXTRA_ATIVO'] = $_REQUEST['crawler_tokens_extra_ativo'];
+    // Normaliza antes de gravar: o operador digita separando por vírgula, ; ou quebra de linha.
+    if(isset($_REQUEST['crawler_tokens_extra'])) $data['CRAWLER_TOKENS_EXTRA'] = implode(',', gestor_crawler_tokens_normalizar($_REQUEST['crawler_tokens_extra']));
 
     // Coletar dados do formulário — Usuário
     if(isset($_REQUEST['usuario_recaptcha_active'])) $data['USUARIO_RECAPTCHA_ACTIVE'] = $_REQUEST['usuario_recaptcha_active'];

@@ -107,6 +107,10 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-100 | 2026-07-31 | accepted | Extensão da biblioteca PayPal (PHP) e asset JS para Checkout Transparente e T... |
 | DEC-101 | 2026-08-03 | accepted | Navegacao por foco real nos resultados visiveis dos dois filtros de modulos (BATCH-105). |
 | DEC-103 | 2026-08-06 | accepted | Painéis fixos opcionais do editor visual (Sidebar de CSS e Barra de Navegação), expansão do styler e ação Substituir (BATCH-106). |
+| DEC-104 | 2026-08-13 | accepted | Isenção de crawlers, verificação silenciosa de cookie, OpenGraph no core e auditoria de CSRF em formulários submetidos por código (BATCH-109). |
+| DEC-105 | 2026-08-13 | accepted | Metadados de compartilhamento por página, aba de SEO no Editor HTML, painel de Configurações na Editbar e sitemap.xml incremental (BATCH-110). |
+| DEC-106 | 2026-08-13 | accepted | Reversão do bloqueio de analytics e fim do laço de verificação de cookie; tokens de robô em duas camadas (CR-001 / BATCH-111). Reverte DEC-104 §4. |
+| DEC-107 | 2026-08-14 | accepted | Sitemap em assets, correção do 301, aba SEO no publisher-pages, isolamento do painel da Editbar e meta tags de SEO (BATCH-112). |
 
 ---
 
@@ -383,3 +387,321 @@ Validação da rodada 2: `node --check` 3/3, `php -l` OK, JSON OK, `npx vitest r
 Validação da rodada 3: `node --check` 2/2, `php -l` OK, JSON OK, `npx vitest run` **137/137**,
 `composer test` **181/181**. Cache-bust: `biblioteca-html-editor` `1.5.9`, `dashboard.json`
 `1.0.18`, motor `?v=c2f18`. Nenhum `git commit`/`git push` executado.
+
+## DEC-104 - 2026-08-13 - accepted
+
+Isenção de crawlers, verificação silenciosa de cookie, OpenGraph no core e auditoria de CSRF em
+formulários submetidos por código (req-109 / BATCH-109). Decisões desta rodada:
+
+1. **A verificação de cookie deixou de ser um pedágio universal**: `gestor_cookie_verificacao()`
+   emitia o cookie e, no MESMO request, interrompia a resposta com `Location:
+   _gestor-cookie-verify/`. O round-trip é legítimo para PROVAR que o navegador aceita cookies antes
+   de autenticar — mas era cobrado de toda requisição, inclusive GET de página pública. A função
+   passou a ter três desfechos explícitos: crawler (nada acontece), padrão (`Set-Cookie` na própria
+   resposta, sem 302) e `$exigirSessao = true` (comportamento original). Só `gestor_permissao()` e os
+   fluxos de signin/signup pedem o modo forte; `gestor_permissao_token_processar()` e
+   `gestor_usuario_perfil()` apenas LEEM o cookie e passaram ao modo silencioso.
+
+2. **Detecção de crawler por token, não por lista fechada de User-Agents**: os agentes do WhatsApp,
+   Meta, Twitter/X e buscadores carregam versão, URL de contato e sufixos que mudam sem aviso.
+   Comparar substring em caixa baixa contra 29 tokens conhecidos é estável; uma lista de UA completos
+   quebraria na primeira atualização deles. O resultado é memoizado por request
+   (`gestor_requisicao_crawler()`), porque a checagem aparece em quatro pontos do bootstrap.
+
+3. **Crawler em página protegida recebe `<head>` e nada mais**: as duas alternativas óbvias eram
+   ruins — redirecionar para `/signin/` faz o preview do link exibir a tela de login, e servir a
+   página seria vazamento de conteúdo privado. A resposta é `200` com título, `robots: noindex` e as
+   tags OpenGraph, corpo vazio, e o módulo da página **nem chega a ser incluído** (a interceptação
+   acontece antes de `gestor_permissao()`). Visitante humano deslogado segue para `/signin/` com o
+   retorno preservado, sem mudança.
+
+4. **Bloqueio de rastreamento REMOVE o bloco, não deixa de adicioná-lo**: o snippet de GTM/Meta Pixel
+   quase sempre vem do `html_extra_head` da página ou do layout, ou seja, do BANCO — o core não tem
+   como "não incluir" o que não foi ele que enfileirou. `gestor_rastreamento_remover()` varre as filas
+   de head/JS no último ponto antes da serialização e apaga os blocos por assinatura. Registro
+   honesto de limite: **não existe nenhuma linha de GTM/Meta Pixel no repositório `conn2flow`**
+   (varredura em `gestor/`, `conn2flow-site` e `transformamp`), então a deduplicação do ID do Pixel
+   pedida no intake não tem onde ser feita no core; o que o core entrega é o mecanismo genérico mais
+   o `gestor.rastreamentoBloqueado`, que transforma `fbq`/`dataLayer`/`gtag` em no-op antes de o
+   snippet do projeto rodar — sem sobrescrever coletor já carregado.
+
+5. **A causa-raiz do 403 no salvamento do Editor Visual não era a barra dupla**: `$.formSubmitNormal()`
+   chama `$(form).submit()`, e o jQuery percorre uma propagação SIMULADA (dispatch próprio, não
+   `dispatchEvent`) que não aciona listeners nativos; a ação padrão dele é
+   `HTMLFormElement.prototype.submit()`, que também não dispara evento `submit` algum. O
+   `document.addEventListener('submit', …, true)` do BATCH-107 — única proteção até aqui — nunca era
+   acionado nesse caminho, e o campo `_csrf_token` jamais era anexado. A correção cobre os TRÊS
+   caminhos: captura nativa (usuário), handler delegado do jQuery (trigger) e envelope de
+   `HTMLFormElement.prototype.submit` (rede final), este instalado uma única vez e marcado por
+   `__c2fCsrf` para o asset carregado duas vezes não empilhar envelopes.
+
+6. **O token precisa ser buscado fora do `<head>` quando o contexto é `srcdoc`**: o iframe do preview
+   herda a origem, mas não o `<head>` da página hospedeira — não tem a `<meta name="csrf-token">` nem
+   o `global.js`. `csrfToken()` passou a procurar também em `window.gestor.csrfToken` e
+   `window.parent.gestor.csrfToken`, e o `renderWidgets` envia o token no cabeçalho **e** no corpo
+   (`seguranca_csrf_token_requisicao()` aceita os dois; o cabeçalho sobrevive a proxy que reescreva
+   o corpo).
+
+7. **`_csrf_token` continua sendo o nome do campo**: o intake pede `_gestor-csrf-token`, mas o
+   contrato do backend nasceu no BATCH-107 e lê `_csrf_token`/`X-CSRF-Token`. Um segundo nome exigiria
+   mudar o validador e reprocessar todos os formulários já existentes, sem ganho de segurança.
+
+8. **Falha de CSRF em navegação normal deixou de ser JSON cru**: o usuário do Editor Visual via
+   `{"status":"error","message":"Token CSRF inválido ou ausente."}` em tela cheia e concluía que
+   perdera o trabalho. `gestor_csrf_resposta_invalida()` preserva o JSON para clientes AJAX (contrato
+   intacto) e devolve uma página "Sessão expirada" com botão de voltar para navegação — o conteúdo do
+   formulário fica preservado pelo histórico. No front, o editor ainda BLOQUEIA o envio quando não há
+   token, avisando antes de disparar um POST condenado.
+
+9. **`moduloUrl()` como fonte única da URL do módulo no editor**: `gestor.moduloCaminho` já chega do
+   backend com a barra final (`rtrim($caminho,'/').'/'` em `gestor.php`), então o `+ '/'` espalhado
+   pelo arquivo produzia `admin-paginas/editar//`. A normalização foi centralizada nos três pontos do
+   editor (ajaxDefault, render-vars e o `renderWidgets` do `srcdoc`). O MESMO padrão existe em vários
+   módulos (`admin-ia`, `admin-plugins`, `interface.js`…), mas eles não fazem parte deste slice —
+   trocar todos seria refactor amplo sem mudança normativa, e o roteador tolera a barra extra.
+
+10. **OpenGraph nasce no core com fallback, e some quando a página já tem o seu**: `og:image` vazio
+    faz o WhatsApp exibir o card SEM imagem em vez de recorrer ao padrão do site, então tag sem valor
+    simplesmente não é emitida. E se a página/layout já traz OpenGraph gravado à mão no
+    `html_extra_head`, o core não injeta o seu — duas `og:title` fazem o scraper escolher
+    arbitrariamente. Os valores vêm de `$_GESTOR['pagina#og']`, um ponto de extensão que o CRUD do
+    req-110 vai preencher sem tocar nesta camada; até lá, o fallback é nome da página +
+    `site-name`/`site-description`/`site-og-image` do `config.php`.
+
+Validação: `php -l` 6/6, `node --check` 2/2, `bash -n` 2/2, `git diff --check` OK, `composer test`
+**200/200** (novo `CrawlersOpenGraphTest` 15/15), `npx vitest run` **171/171** (novos
+`global-csrf.test.js` 14/14 e `html-editor-csrf-url.test.js` 14/14). Deploy `Update => Core` e
+homologação runtime pendentes com o operador. Nenhum `git commit`/`git push` executado.
+
+## DEC-105 - 2026-08-13 - accepted
+
+Metadados de compartilhamento por página, aba de SEO no Editor HTML, painel de Configurações na
+Editbar e sitemap.xml incremental (req-110 / BATCH-110). Decisões desta rodada:
+
+1. **O que se grava é o CAMINHO do arquivo, não o `id_arquivos`**: desde o BATCH-090 a árvore de
+   arquivos é física e o registro no banco é opcional — o `imagepick` da `interface.php` já resolve
+   miniatura, nome e tipo pelos metadados do arquivo em disco quando não existe linha em `arquivos`.
+   Guardar o id numérico criaria uma dependência que o próprio gerenciador não garante mais.
+
+2. **Chave ausente ≠ chave vazia**: `gestor_pagina_og_do_registro()` devolve SOMENTE as colunas
+   preenchidas. Se devolvesse `['title' => '']` para uma página sem título social,
+   `gestor_open_graph_dados()` (BATCH-109) veria a chave presente e ela venceria o nome da página —
+   o fallback deixaria de funcionar exatamente nas páginas que mais dependem dele. Do outro lado, na
+   EDIÇÃO o valor vazio precisa ser gravado (o usuário está removendo o título social de propósito),
+   então a comparação usa o valor do request sempre presente, e não `isset`.
+
+3. **A aba de SEO só existe quando o chamador a pede**: `html_editor_componente()` recebe `seo` e,
+   sem ele, remove menu e conteúdo por `modelo_tag_del` — o mesmo mecanismo já usado para os blocos
+   do publisher. Assim layouts, componentes e todos os demais alvos continuam com exatamente o
+   conjunto de abas de antes, sem condicional espalhada pelo JS.
+
+4. **Nenhum código novo de seletor de imagem no editor clássico**: o `imagepick` de
+   `interface_formulario_campos()` substitui `<span>#imagepick-featured-image#</span>` DEPOIS que o
+   componente do editor já foi inserido em `$_GESTOR['pagina']`. Bastou declarar o campo no módulo e
+   deixar o placeholder no componente — o modal, o iframe do gerenciador e o preview vieram de graça.
+
+5. **O painel da Editbar vive na página HOSPEDEIRA, não no iframe da barra**: é a mesma razão dos
+   painéis do BATCH-106, agravada aqui — o seletor de arquivos precisa cobrir o conteúdo; dentro do
+   iframe da Editbar ele ficaria confinado à altura da barra. A barra posta a posição do botão e o
+   `page_id`; o host monta, carrega e salva.
+
+6. **`dismissHostPanels()` ganhou uma exceção deliberada**: com o seletor de arquivos aberto, o
+   painel de configurações NÃO é fechado. O clique que escolhe o arquivo acontece dentro do iframe do
+   gerenciador e propagaria o `ui-dismiss`; fechar ali apagaria o título e a descrição já digitados.
+   É a única exceção à regra "clicou na barra, fechou tudo" do DEC-103 §14, e ela é temporária —
+   dura só enquanto o overlay está aberto.
+
+7. **O sitemap é atualizado INCREMENTALMENTE, por manipulação de string**: o CRUD de páginas é
+   chamado uma vez por edição; regenerar o arquivo inteiro a cada salvamento significaria uma
+   varredura da tabela por clique, visível no tempo de resposta do painel num site grande. O upsert
+   remove o bloco `<url>` da URL alvo e reinsere antes de `</urlset>`, preservando byte a byte tudo
+   que não mudou — inclusive entradas que o operador tenha acrescentado à mão. DOM/`SimpleXML`
+   reescreveriam o documento inteiro e destruiriam essas edições.
+   Geração completa continua existindo para dois casos: arquivo ausente (primeira execução) e arquivo
+   corrompido/sem `<urlset>`.
+
+8. **Elegibilidade reaproveita a lista de rotas de sistema do BATCH-109**: `sitemap_pagina_elegivel()`
+   chama `gestor_pagina_sistema_sem_rastreamento()` em vez de manter uma segunda lista. São a mesma
+   pergunta feita duas vezes ("isto é página de conteúdo?"), e duas listas divergiriam.
+
+9. **Falha de sitemap nunca derruba o CRUD**: é artefato derivado e regenerável. Erro de escrita vai
+   para `log_disco` e a gravação da página segue. O mesmo vale para a exceção capturada no callback.
+
+10. **Status e exclusão entram por `callbackFunction`, não por alteração da `interface`**: as duas
+    operações são executadas pela biblioteca compartilhada, que já dispara o callback depois de
+    gravar e antes de redirecionar. Alterar `interface_status_finalizar`/`interface_excluir_finalizar`
+    afetaria todos os módulos do sistema por causa de um requisito de um só.
+
+11. **`publisher-pages` ficou de fora, com motivo**: as publicações gravam na MESMA tabela `paginas`
+    (vinculadas por `publisher_id`), então as colunas novas já valem para elas e o roteador já as lê;
+    o painel da Editbar edita qualquer página, inclusive as de publicação. O que falta é só a aba de
+    SEO no formulário daquele módulo — um slice pequeno e isolado, que merece batch próprio em vez de
+    misturar duas superfícies de CRUD na mesma validação.
+
+Validação: `php -l` 10/10, `node --check` 4/4, JSON OK, `git diff --check` OK, `composer test`
+**223/223** (novo `SitemapTest` 19/19 + 4 casos em `CrawlersOpenGraphTest`), `npx vitest run`
+**181/181** (novo `dashboard.page-config.test.js` 10/10). Migração Phinx e deploy `Update => Core`
+pendentes com o operador — a migração precisa vir ANTES do deploy, senão o `SELECT` do roteador
+falha. Nenhum `git commit`/`git push` executado.
+
+## DEC-106 - 2026-08-13 - accepted
+
+Reversão do bloqueio de analytics e fim do laço de verificação de cookie (CR-001 / BATCH-111).
+Decisões desta rodada:
+
+1. **O requisito estava errado, não a implementação**: o req-109 §3/§4 pedia bloquear analytics em
+   páginas de sistema, partindo da leitura de que a `cookies-is-mandatory/` aparecia nos relatórios
+   porque o coletor rodava nela. É o contrário: o coletor não escolheu ir lá — **todo cliente sem
+   cookie era empurrado para lá**. Bots de analytics são stateless por definição. Bloquear o script
+   trata o sintoma no lugar errado e ainda joga fora sinal legítimo (`404` e `500` são exatamente o
+   que se quer ver no relatório). Decisão do Engenheiro Chefe: os coletores continuam acessando tudo.
+
+2. **A evidência veio de medição, não de leitura de código**: `curl` contra os dois domínios de
+   produção mostrou navegador real chegando a 200 em 2 saltos e **cliente stateless — incluindo o
+   Googlebot — em laço infinito**. O `curl` aborta por excesso de redirects. Registrar isto importa
+   porque a conclusão inverteu o diagnóstico do intake, e inverter requisito exige prova, não opinião.
+
+3. **A causa do laço é a página explicar o problema estando dentro dele**: `cookies-is-mandatory/` é
+   uma página como qualquer outra e, ao ser renderizada, chama `gestor_cookie_verificacao()` de novo.
+   A trava adotada é a mais simples que fecha o ciclo: **rota de sistema nunca redireciona** — emite
+   o cookie e devolve a página. Preferida a alternativas com marcador de tentativa na URL, que
+   exigiriam carregar estado por query string justamente no fluxo de quem não carrega estado.
+
+4. **A decisão virou função pura de propósito**: `gestor_cookie_verificacao_desfecho()` existe para
+   ser testável. A diretriz de blindagem de bugs da Chefia pede que defeito identificado nasça com
+   teste que falhe se ele voltar; enquanto a regra vivia dentro de `gestor_cookie_verificacao()`, no
+   `gestor/gestor.php` (que executa `gestor_start()` no fim do arquivo e não é carregável em teste),
+   isso era impossível. São 5 casos cobrindo o laço.
+
+5. **O round-trip saiu de `gestor_permissao()`**: a chamada que o BATCH-109 acrescentou ali era
+   redundante. Quem chega numa página protegida sem sessão é mandado para `/signin/` duas linhas
+   abaixo, e é o `/signin/` que faz a prova; quem chega com sessão já tem o cookie de autenticação e
+   a função retornaria sem efeito. O único resultado prático era um salto a mais antes do login.
+
+6. **Rota de sistema sai do índice**: enquanto o laço existiu, `cookies-is-mandatory/` foi entregue a
+   buscador e a coletor no lugar da página pedida — e ela é `tipo=page` com `sem_permissao`, ou seja,
+   nada impedia a indexação. `noindex, nofollow` no `<head>` e `X-Robots-Tag` no cabeçalho tiram o
+   que já entrou e evitam que uma reincidência volte a poluir relatório e busca.
+
+7. **A detecção de robô deixou de ser peça crítica** — e essa é a resposta ao "correr atrás do rabo
+   do cachorro". Com o laço fechado, cliente sem cookie recebe a página pública seja ele reconhecido
+   ou não. Lista de tokens é, por natureza, sempre desatualizada; o que muda o jogo é a correção
+   estrutural, não o cadastro. Uma tela de configuração sem a correção só mudaria o lugar onde a
+   caçada é anotada.
+
+8. **Mesmo assim a lista continua existindo, em duas camadas**: a detecção ainda serve ao OUTRO uso,
+   entregar só o `<head>` com OpenGraph em página protegida (req-109 §10). Por isso o **baseline fica
+   embutido e sempre ativo** — desligar tudo por padrão faria o preview de link de página protegida
+   voltar a exibir a tela de login, regressão silenciosa do que o BATCH-109 consertou. O baseline é
+   composto de identificadores estáveis (WhatsApp, `facebookexternalhit`, Googlebot não mudam de nome
+   há anos) e foi ampliado de 29 para 50 tokens com os bots de anúncio e auditoria que faltavam. A
+   **lista extra configurável**, desligada por padrão, atende o caso levantado pelo Chefe: site com
+   fluxo alto de um robô específico, resolvido sem release do core.
+
+9. **Rename honesto**: `gestor_pagina_sistema_sem_rastreamento()` virou `gestor_pagina_rota_sistema()`.
+   Sem o bloqueio, o nome antigo descrevia um comportamento que deixou de existir. A função sobrevive
+   porque o `sitemap_pagina_elegivel()` (BATCH-110) a usa para excluir rotas utilitárias do sitemap —
+   duas perguntas diferentes sobre a mesma lista, e uma lista só.
+
+Validação: `php -l` OK, `node --check` OK, JSON OK, `git diff --check` OK, `composer test`
+**229/229** (`CrawlersOpenGraphTest` 15→25), `npx vitest run` **178/178** (os 3 casos do bloqueio
+saíram junto com o código). Deploy `Update => Core` pendente e **prioritário**: é ele que tira os
+sites do laço. Nenhum `git commit`/`git push` executado.
+
+### Adendo ao DEC-104 (item 4)
+
+O item 4 do DEC-104 — bloqueio de rastreamento em páginas de sistema — está **REVERTIDO** por este
+DEC-106 e pelo CR-001. O raciocínio original ("o snippet vem do banco, então filtre a fila em vez de
+não adicionar") era tecnicamente correto, mas resolvia um problema que não existia: o analytics não
+era a causa do sintoma, era mais uma vítima do laço de redirecionamento.
+
+## DEC-107 - 2026-08-14 - accepted
+
+Sitemap em assets, correção do 301, aba SEO no publisher-pages, isolamento do painel da Editbar e
+meta tags de SEO (req-112 / BATCH-112). Decisões desta rodada:
+
+1. **`assets/` em vez da raiz, porque a raiz dependia de configuração externa**: na raiz o
+   `sitemap.xml` só era servido pela regra `RewriteCond %{SCRIPT_FILENAME} !-f` do `.htaccess` — que
+   varia por instalação e some em servidor com roteador mais restritivo. Em `assets/` quem entrega é
+   o `arquivo-estatico.php`, que é parte do core e vale em toda instalação. Achado importante: o
+   `default:` do switch de extensão já resolve qualquer extensão desconhecida contra `assets-path`, e
+   `xml` já estava na tabela de Content-Type — **nenhuma linha do controlador ou do `.htaccess`
+   precisou mudar**. Só a função de caminho.
+
+2. **Abrir o sitemap para `tipo='sistema'` exigiu uma segunda peneira**: o intake pede que páginas
+   públicas de sistema entrem, citando `/signin/`, `/signup/` e `/recover-password/`. Um levantamento
+   das páginas públicas do core mostrou que a maioria delas NÃO é conteúdo: `oauth-callback`,
+   `oauth-authenticate`, `social-login`, `signin-2fa`, `validate-user`, `email-confirmation`,
+   `forms-submissions-process`, `pagina-de-impressao`, `dashboard-site-toolbar`, além das telas de
+   confirmação. Indexar isso gasta orçamento de rastreio e leva o visitante a tela sem contexto —
+   callback então só faz sentido dentro de um fluxo com parâmetros. Daí a
+   `sitemap_caminho_nao_indexavel()`, que barra por lista exata + dois sufixos (`-confirmation`,
+   `/success`) + prefixo `admin-`. As três rotas nomeadas no intake continuam entrando.
+
+3. **`interface_modulo_variavel_valor()` era o defeito do 301, não a chamada**: essa helper chama
+   `gestor_redirecionar_raiz()` quando não encontra o registro. Num CRUD isso é um `exit` no meio da
+   gravação — o 301 nunca era inserido, e o usuário era jogado para a raiz sem entender por quê. Ela
+   ainda aplica um filtro por `id_hosts` que não corresponde a estes módulos. A troca por um
+   `banco_select_name` direto elimina os dois problemas e permite tratar a ausência do id como o que
+   ela é: um caso a registrar em log, não a derrubar a requisição. Aproveitada a passagem para
+   impedir duplicata em `paginas_301` — A → B → A → B gerava duas linhas idênticas.
+
+4. **A correção do "event bleed-through" não era CSS**: o intake descreve `pointer-events`,
+   `z-index` e `stopPropagation`, e todos ajudam — mas a causa-raiz era `c2f-page-config-panel` e
+   `c2f-page-config-picker` **não estarem em `isEditorOwned()`**, omissão minha no BATCH-110. O motor
+   decide o que é UI por `elementsFromPoint` + `isEditorOwned`; fora dessa lista, o painel é tratado
+   como conteúdo, o hover realça o elemento atrás e o primeiro clique vira seleção. A memória de
+   execução do BATCH-106 já registrava a regra — "todo elemento novo de UI precisa entrar em três
+   lugares" — e ela não foi seguida na entrega anterior.
+
+5. **A barreira de eventos fica na BOLHA, nunca na captura**: `stopPropagation()` num listener de
+   captura no painel impediria o evento de chegar ao próprio botão dentro dele — quebrando exatamente
+   o que o intake pede para consertar. Cheguei a escrever em captura e corrigi antes de validar; há
+   teste cobrindo os dois lados (evento não vaza para o documento E o botão responde).
+
+6. **`description` e `keywords` são campos separados do OpenGraph, não os mesmos**: buscador lê
+   `description`, rede social lê `og:description`, e um site pode querer textos diferentes para cada
+   público (um objetivo, outro persuasivo). O fallback em cascata evita retrabalho para quem não quer
+   essa distinção: metadado próprio → `og_descricao` da própria página → `config.php`.
+
+7. **`keywords` só é emitida quando preenchida**: nenhum buscador relevante a usa para ranquear há
+   anos. Mantê-la é atender ao intake e a quem tem processo interno que a exige; emiti-la vazia seria
+   só ruído no `<head>`.
+
+8. **A Editbar é a terceira superfície de gravação e precisava do mesmo gatilho** (levantado pelo
+   Chefe durante a rodada): verifiquei que `dashboard_ajax_site_toolbar_save()` grava apenas os
+   campos de conteúdo — não sobrescreve os metadados de SEO nem toca no `caminho` —, então não havia
+   risco de perda de dado nem necessidade de 301 ali. O que faltava era o `<lastmod>`: ela atualiza
+   `data_modificacao` e não sincronizava o sitemap, justamente na superfície de edição mais usada.
+
+Validação: `php -l` 10/10, `node --check` 2/2, JSON OK, `git diff --check` OK, `composer test`
+**241/241**, `npx vitest run` **181/181**. Migração Phinx precisa rodar ANTES do deploy
+`Update => Core`. Nenhum `git commit`/`git push` executado.
+
+### Adendo DEC-107 (rodada 2 — homologação do Chefe, mesma data)
+
+9. **`html-editor.js` tem DOIS cache-busts independentes, e eu tratei só um**: o editor clássico é
+   servido com `?v={biblioteca-html-editor.versao}`; o Live Editor carrega o MESMO arquivo físico com
+   uma string FIXA `?v=c2fNN` escrita em `dashboard.toolbar.js`. Bumpar a versão da biblioteca — que
+   foi o que o Chefe tentou — não alcança o Live Editor. A correção do M5 estava no arquivo desde o
+   início e simplesmente nunca era baixada. Regra que fica: alterar `html-editor.js` exige bumpar os
+   DOIS.
+
+10. **Asset de módulo incluído sem `versao` herda a versão do SISTEMA**: `dashboard.toolbar.js` era
+    injetado por `gestor_pagina_javascript_incluir()` sem a chave `versao`, e a helper cai em
+    `$_GESTOR['versao']` — que só muda a cada release. Na prática, nenhuma alteração nesse arquivo
+    chegava ao navegador entre releases, mesmo com deploy feito. Vale conferir o mesmo padrão em
+    outros assets de módulo incluídos por array.
+
+11. **Cache-bust do editor visual unificado na BIBLIOTECA (decisão do Chefe)**: a primeira correção
+    usou a versão do módulo `dashboard`. O Chefe apontou o desenho melhor — usar
+    `biblioteca-html-editor`, porque a Editbar e o motor mudam JUNTOS: mexer na barra quase sempre
+    implica mexer no editor. Assim `gestor/bibliotecas/html-editor.php` vira o cache-bust ÚNICO dos
+    três consumidores (motor no clássico, `toolbar.js`, e o motor carregado por dentro da Editbar via
+    a variável JS `gestor.htmlEditorVersao`). A string fixa foi ELIMINADA: número escrito à mão, num
+    arquivo diferente do que se está editando, é exatamente o que falhou nesta rodada.
+
+11. **Sintoma que não muda após correção é hipótese sobre ENTREGA, não sobre lógica**: a segunda
+    rodada foi resolvida sem tocar na regra — só descobrindo por que o arquivo não chegava. Antes de
+    reescrever lógica que parece correta, confirmar no DevTools qual URL (e qual `?v=`) o navegador
+    está de fato pedindo.

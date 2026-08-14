@@ -18,7 +18,21 @@ case "$ACAO" in
     echo "🔧 Criando estrutura para: $SITE_NAME"
     mkdir -p "$SITES_DIR/$SITE_NAME/home"
     mkdir -p "$SITES_DIR/$SITE_NAME/public_html"
-    
+
+    # req-109: diretório de logs criado junto com o site, escrevível por Apache e CLI.
+    mkdir -p "$SITES_DIR/$SITE_NAME/public_html/gestor/logs"
+    chmod -R 777 "$SITES_DIR/$SITE_NAME/public_html/gestor/logs" 2>/dev/null || true
+
+    if docker ps | grep conn2flow-app > /dev/null 2>&1; then
+      docker exec conn2flow-app bash -c "
+        if [ -d '/var/www/sites/$SITE_NAME/public_html/gestor/logs' ]; then
+          chown -R www-data:www-data '/var/www/sites/$SITE_NAME/public_html/gestor/logs'
+          chmod -R 777 '/var/www/sites/$SITE_NAME/public_html/gestor/logs'
+        fi
+      " 2>/dev/null || true
+    fi
+
+
     # Página de boas-vindas
     echo "<h1>$SITE_NAME - Conn2Flow</h1><p>Site criado em $(date)</p>" > "$SITES_DIR/$SITE_NAME/public_html/index.html"
     

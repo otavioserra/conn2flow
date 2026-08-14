@@ -7,7 +7,7 @@
 
 $_GESTOR										=	Array();
 
-$_GESTOR['versao']						        = 	'2.9.34'; // Versão do gestor como um todo.
+$_GESTOR['versao']						        = 	'2.9.35'; // Versão do gestor como um todo.
 $_GESTOR['id']									=	'conn2flow-'; // Identificador básico do gestor
 
 // ===== Definição dos marcadores de abertura e fechamento de varíaveis globais.
@@ -172,6 +172,20 @@ $_CONFIG = [
     // Configurações do Site
     'site-name'                         => $_ENV['SITE_NAME'] ?? 'Conn2Flow',
 
+    // Fallback de compartilhamento social (req-109). Usados pelas metatags OpenGraph quando a
+    // página não define metadados próprios. `SITE_OG_IMAGE` aceita URL absoluta ou caminho
+    // relativo à raiz pública (ex.: `contents/imagens/banner-compartilhamento.jpg`).
+    'site-description'                  => $_ENV['SITE_DESCRIPTION'] ?? '',
+    // req-112: fallback global de `<meta name="keywords">`.
+    'site-keywords'                     => $_ENV['SITE_KEYWORDS'] ?? '',
+    'site-og-image'                     => $_ENV['SITE_OG_IMAGE'] ?? '',
+
+    // Tokens ADICIONAIS de User-Agent tratados como robô (req-111). A lista embutida em
+    // `gestor_crawler_tokens_padrao()` está sempre ativa; esta complementa, para sites com fluxo
+    // alto de robôs específicos, e é editável em Ambiente → Configurações do Site.
+    'crawler-tokens-extra-ativo'        => filter_var($_ENV['CRAWLER_TOKENS_EXTRA_ATIVO'] ?? false, FILTER_VALIDATE_BOOLEAN),
+    'crawler-tokens-extra'              => $_ENV['CRAWLER_TOKENS_EXTRA'] ?? '',
+
     // Configurações do PayPal
     'paypal'  => [
         'default'                       => $_ENV['PAYPAL_DEFAULT'] ?? 'padrao',
@@ -278,6 +292,10 @@ $_GESTOR['development-env'] = filter_var($_ENV['DEVELOPMENT_ENV'] ?? false, FILT
 
 $_GESTOR['url-full']							=	'//'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'];
 $_GESTOR['url-full-http']						=	'https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz'];
+// req-110: base absoluta SEM o prefixo de idioma. `url-full-http` recebe o idioma quando ele está na
+// URL (gestor_config), o que serve para links da requisição corrente mas não para o sitemap, onde o
+// prefixo é decidido pelo idioma de CADA página.
+$_GESTOR['url-full-http-sem-lang']				=	'https://'.$_SERVER['SERVER_NAME'].$_GESTOR['url-raiz-sem-lang'];
 
 // ===== Definições dos caminhos relativos.
 
@@ -317,6 +335,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'plugins-installer' => Array('plugins-installer.php'),
 	'ia' => Array('ia.php'),
     'html-editor' => Array('html-editor.php'),
+    'sitemap' => Array('sitemap.php'),
     'oauth2' => Array('oauth2.php'),
     '2fa' => Array('2fa.php'),
     'jwt' => Array('jwt.php'),

@@ -1715,6 +1715,13 @@ function interface_formulario_campos($params = false){
 							$data = interface_formatar_dado(Array('dado' => $file['data_modificacao'], 'formato' => 'dataHora'));
 							$nome = $file['nome'];
 							$tipo = $file['mime_type'];
+
+							// req-112: neste ramo não existe linha em `arquivos`, então `$fileId` nunca
+							// era definido — e como `$found` vira true logo abaixo, o bloco de padrões
+							// não roda. O resultado era `PHP Warning: Undefined variable $fileId` na
+							// troca de `#file-id#`. Desde o BATCH-090 o identificador do arquivo É o
+							// caminho relativo (é o que o picker devolve em `id`), então é ele que vai.
+							$fileId = $campo['caminho'];
 						}
 
 						$caminho = $campo['caminho'];

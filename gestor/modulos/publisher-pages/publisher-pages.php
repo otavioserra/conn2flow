@@ -174,6 +174,12 @@ function publisher_pages_adicionar(){
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css_compiled"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html_extra_head"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		// req-112: metadados de SEO/compartilhamento.
+		$campo_nome = "imagem_destaque"; $post_nome = 'imagem_destaque-caminho';		if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "og_titulo"; $post_nome = $campo_nome;							if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "og_descricao"; $post_nome = $campo_nome;							if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "meta_descricao"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "meta_keywords"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field(gestor_meta_keywords_normalizar($_REQUEST[$post_nome])));
 		
 		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
 		
@@ -252,6 +258,10 @@ function publisher_pages_adicionar(){
 			'publisher_pages'
 		);
 
+		// req-112: publicação nova (ou clonada) entra no sitemap.
+		$_GESTOR['modulo-registro-id'] = $page_id;
+		publisher_pages_sitemap_sincronizar();
+
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$page_id);
 	}
 
@@ -267,6 +277,13 @@ function publisher_pages_adicionar(){
 		'adicionarEditar' => true,
 		'publisherPage' => true,
 		'alvo' => 'paginas',
+		// req-112: a aba "SEO & Compartilhamento" já nasce disponível na criação.
+		'seo' => Array(
+			'og_titulo' => '',
+			'og_descricao' => '',
+			'meta_descricao' => '',
+			'meta_keywords' => '',
+		),
 	]));
 
 	// ===== Publisher
@@ -493,6 +510,13 @@ function publisher_pages_adicionar(){
 			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 			'dados' => $modulo['selectDadosFrameworkCSS'],
 		),
+		// req-112: imagem de destaque (og:image) da aba "SEO & Compartilhamento".
+		Array(
+			'tipo' => 'imagepick',
+			'id' => 'featured-image',
+			'nome' => 'imagem_destaque',
+			'caminho' => isset($imagem_destaque) ? $imagem_destaque : '',
+		),
 		Array(
 			'tipo' => 'select',
 			'id' => 'publisher',
@@ -592,6 +616,12 @@ function publisher_pages_editar(){
 		'css_compiled', // Novo campo
 		'html_extra_head', // Novo campo
 		'framework_css',
+		// req-112: metadados de SEO/compartilhamento, espelhando o admin-paginas.
+		'imagem_destaque',
+		'og_titulo',
+		'og_descricao',
+		'meta_descricao',
+		'meta_keywords',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -737,6 +767,16 @@ function publisher_pages_editar(){
 		$_REQUEST['css_compiled'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['css_compiled']);
 		$_REQUEST['html_extra_head'] = preg_replace("/".preg_quote($openText)."(.+?)".preg_quote($closeText)."/", strtolower($open."$1".$close), $_REQUEST['html_extra_head']);
 		
+		// ===== req-112: metadados de SEO/compartilhamento. Campo vazio GRAVA vazio (remover o texto
+		//       social deve devolver o fallback), então a comparação usa o valor sempre presente do
+		//       request, e não `isset` — mesmo contrato do admin-paginas.
+
+		$campo_nome = "imagem_destaque"; $request_name = 'imagem_destaque-caminho'; $alteracoes_name = 'featured-image'; $__v = isset($_REQUEST[$request_name]) ? trim((string)$_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
+		$campo_nome = "og_titulo"; $request_name = $campo_nome; $alteracoes_name = 'og-title'; $__v = isset($_REQUEST[$request_name]) ? trim((string)$_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
+		$campo_nome = "og_descricao"; $request_name = $campo_nome; $alteracoes_name = 'og-description'; $__v = isset($_REQUEST[$request_name]) ? trim((string)$_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
+		$campo_nome = "meta_descricao"; $request_name = $campo_nome; $alteracoes_name = 'meta-description'; $__v = isset($_REQUEST[$request_name]) ? trim((string)$_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
+		$campo_nome = "meta_keywords"; $request_name = $campo_nome; $alteracoes_name = 'meta-keywords'; $__v = isset($_REQUEST[$request_name]) ? gestor_meta_keywords_normalizar($_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
+
 		// ===== Atualização dos demais campos.
 
 		$campo_nome = "layout_id"; $request_name = 'layout'; $alteracoes_name = 'layout'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
@@ -782,18 +822,53 @@ function publisher_pages_editar(){
 			// ===== Se mudou o caminho, criar página 301 do caminho
 			
 			if(isset($caminhoMudou)){
-				$campos = null; $campo_sem_aspas_simples = null;
-				
-				$campo_nome = "id_paginas"; $campo_valor = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])); 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "caminho"; $campo_valor = $caminhoMudou; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
-				
-				banco_insert_name
+				// req-112: id numérico lido DIRETO da tabela. `interface_modulo_variavel_valor()`
+				// chama `gestor_redirecionar_raiz()` quando não encontra o registro — um `exit` no
+				// meio da gravação, que abortava o 301 sem aviso — e aplica um filtro por `id_hosts`
+				// que não vale aqui. Mesmo defeito corrigido no admin-paginas.
+				$id_atual = (isset($id_novo) ? $id_novo : $id);
+
+				$registro = banco_select_name
 				(
-					$campos,
-					"paginas_301"
+					banco_campos_virgulas(Array($modulo['tabela']['id_numerico'])),
+					$modulo['tabela']['nome'],
+					"WHERE ".$modulo['tabela']['id']."='".banco_escape_field($id_atual)."'"
+					." AND language='".$_GESTOR['linguagem-codigo']."'"
+					." AND ".$modulo['tabela']['status']."!='D'"
 				);
+
+				$id_numerico = $registro ? $registro[0][$modulo['tabela']['id_numerico']] : null;
+
+				if($id_numerico){
+					$ja_existe = banco_select_name
+					(
+						banco_campos_virgulas(Array('id_paginas_301')),
+						"paginas_301",
+						"WHERE caminho='".banco_escape_field($caminhoMudou)."'"
+					);
+
+					if(!$ja_existe){
+						$campos = null; $campo_sem_aspas_simples = null;
+
+						$campo_nome = "id_paginas"; $campo_valor = $id_numerico; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+						$campo_nome = "caminho"; $campo_valor = $caminhoMudou; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+						$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
+
+						banco_insert_name
+						(
+							$campos,
+							"paginas_301"
+						);
+					}
+				} else if(function_exists('log_disco')) {
+					log_disco('301 não registrado: id numérico não encontrado para a publicação '.$id_atual, 'publisher-pages');
+				}
+
+				$_GESTOR['modulo-registro-id'] = $id_atual;
 			}
+
+			// req-112: sitemap acompanha a edição; se o caminho mudou, a URL antiga sai antes.
+			publisher_pages_sitemap_sincronizar(false, (isset($caminhoMudou) ? $caminhoMudou : null));
 		}
 
 		// ===== Atualizar campos do publisher pages
@@ -969,6 +1044,12 @@ function publisher_pages_editar(){
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
+		// req-112: metadados de SEO/compartilhamento.
+		$imagem_destaque = (isset($retorno_bd['imagem_destaque']) ? $retorno_bd['imagem_destaque'] : '');
+		$og_titulo = (isset($retorno_bd['og_titulo']) ? $retorno_bd['og_titulo'] : '');
+		$og_descricao = (isset($retorno_bd['og_descricao']) ? $retorno_bd['og_descricao'] : '');
+		$meta_descricao = (isset($retorno_bd['meta_descricao']) ? $retorno_bd['meta_descricao'] : '');
+		$meta_keywords = (isset($retorno_bd['meta_keywords']) ? $retorno_bd['meta_keywords'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
 		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
 
@@ -1172,6 +1253,13 @@ function publisher_pages_editar(){
 			'modulo' => $modulo,
 			'alvo' => 'paginas',
 			'publisherPage' => true,
+			// req-112: aba "SEO & Compartilhamento" com os metadados desta publicação.
+			'seo' => Array(
+				'og_titulo' => isset($og_titulo) ? $og_titulo : '',
+				'og_descricao' => isset($og_descricao) ? $og_descricao : '',
+				'meta_descricao' => isset($meta_descricao) ? $meta_descricao : '',
+				'meta_keywords' => isset($meta_keywords) ? $meta_keywords : '',
+			),
 		]));
 
 		// ===== Popular os metaDados
@@ -1246,6 +1334,13 @@ function publisher_pages_editar(){
 			'valor_selecionado' => $framework_css,
 			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 			'dados' => $modulo['selectDadosFrameworkCSS'],
+		),
+		// req-112: imagem de destaque (og:image) da aba "SEO & Compartilhamento".
+		Array(
+			'tipo' => 'imagepick',
+			'id' => 'featured-image',
+			'nome' => 'imagem_destaque',
+			'caminho' => isset($imagem_destaque) ? $imagem_destaque : '',
 		),
 		Array(
 			'tipo' => 'select',
@@ -1377,6 +1472,12 @@ function publisher_pages_clonar(){
 		'css_compiled', // Novo campo
 		'html_extra_head', // Novo campo
 		'framework_css',
+		// req-112: metadados de SEO/compartilhamento, espelhando o admin-paginas.
+		'imagem_destaque',
+		'og_titulo',
+		'og_descricao',
+		'meta_descricao',
+		'meta_keywords',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -1491,6 +1592,12 @@ function publisher_pages_clonar(){
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css_compiled"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html_extra_head"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		// req-112: metadados de SEO/compartilhamento.
+		$campo_nome = "imagem_destaque"; $post_nome = 'imagem_destaque-caminho';		if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "og_titulo"; $post_nome = $campo_nome;							if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "og_descricao"; $post_nome = $campo_nome;							if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "meta_descricao"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "meta_keywords"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field(gestor_meta_keywords_normalizar($_REQUEST[$post_nome])));
 		
 		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
 		
@@ -1569,6 +1676,10 @@ function publisher_pages_clonar(){
 			'publisher_pages'
 		);
 
+		// req-112: publicação nova (ou clonada) entra no sitemap.
+		$_GESTOR['modulo-registro-id'] = $page_id;
+		publisher_pages_sitemap_sincronizar();
+
 		gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$page_id);
 	}
 
@@ -1601,6 +1712,12 @@ function publisher_pages_clonar(){
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
+		// req-112: metadados de SEO/compartilhamento.
+		$imagem_destaque = (isset($retorno_bd['imagem_destaque']) ? $retorno_bd['imagem_destaque'] : '');
+		$og_titulo = (isset($retorno_bd['og_titulo']) ? $retorno_bd['og_titulo'] : '');
+		$og_descricao = (isset($retorno_bd['og_descricao']) ? $retorno_bd['og_descricao'] : '');
+		$meta_descricao = (isset($retorno_bd['meta_descricao']) ? $retorno_bd['meta_descricao'] : '');
+		$meta_keywords = (isset($retorno_bd['meta_keywords']) ? $retorno_bd['meta_keywords'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
 		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
 
@@ -1804,6 +1921,13 @@ function publisher_pages_clonar(){
 			'modulo' => $modulo,
 			'alvo' => 'paginas',
 			'publisherPage' => true,
+			// req-112: aba "SEO & Compartilhamento" com os metadados desta publicação.
+			'seo' => Array(
+				'og_titulo' => isset($og_titulo) ? $og_titulo : '',
+				'og_descricao' => isset($og_descricao) ? $og_descricao : '',
+				'meta_descricao' => isset($meta_descricao) ? $meta_descricao : '',
+				'meta_keywords' => isset($meta_keywords) ? $meta_keywords : '',
+			),
 		]));
 
 		// ===== Popular os metaDados
@@ -1878,6 +2002,13 @@ function publisher_pages_clonar(){
 			'valor_selecionado' => $framework_css,
 			'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 			'dados' => $modulo['selectDadosFrameworkCSS'],
+		),
+		// req-112: imagem de destaque (og:image) da aba "SEO & Compartilhamento".
+		Array(
+			'tipo' => 'imagepick',
+			'id' => 'featured-image',
+			'nome' => 'imagem_destaque',
+			'caminho' => isset($imagem_destaque) ? $imagem_destaque : '',
 		),
 		Array(
 			'tipo' => 'select',
@@ -2222,6 +2353,45 @@ function publisher_pages_ajax_editor_html_switch(){
 
 // ==== Start
 
+/**
+ * req-112: sincroniza o `sitemap.xml` com a publicação corrente.
+ *
+ * Espelha `admin_paginas_sitemap_sincronizar()` — as publicações gravam na MESMA tabela `paginas`,
+ * então a biblioteca de sitemap é a mesma; só o ponto de acionamento é por módulo.
+ *
+ * A falha nunca interrompe o CRUD: o sitemap é artefato derivado e regenerável.
+ *
+ * @param bool $remover Força a remoção da entrada (exclusão do registro).
+ * @param string|null $caminhoAntigo Caminho anterior, quando o slug mudou.
+ * @return void
+ */
+function publisher_pages_sitemap_sincronizar($remover = false, $caminhoAntigo = null){
+	global $_GESTOR;
+
+	$id = $_GESTOR['modulo-registro-id'] ?? '';
+	if(!existe($id)) return;
+
+	gestor_incluir_biblioteca('sitemap');
+
+	if(!function_exists('sitemap_sincronizar_por_id')) return;
+
+	try {
+		sitemap_sincronizar_por_id($id, $remover, $caminhoAntigo);
+	} catch (Throwable $e) {
+		if(function_exists('log_disco')) log_disco('Falha ao sincronizar o sitemap: '.$e->getMessage(), 'sitemap');
+	}
+}
+
+/** Callback de exclusão: a entrada sai do sitemap. */
+function publisher_pages_sitemap_remover(){
+	publisher_pages_sitemap_sincronizar(true);
+}
+
+/** Callback de mudança de status: a elegibilidade é recalculada a partir do registro. */
+function publisher_pages_sitemap_atualizar(){
+	publisher_pages_sitemap_sincronizar(false);
+}
+
 function publisher_pages_start(){
 	global $_GESTOR;
 	
@@ -2237,7 +2407,12 @@ function publisher_pages_start(){
 		interface_ajax_finalizar();
 	} else {
 		publisher_pages_interfaces_padroes();
-		
+
+		// req-112: status e exclusão são executados pela `interface`; o sitemap é sincronizado pelo
+		// callback disparado logo após a gravação e antes do redirecionamento.
+		$_GESTOR['interface']['status']['finalizar']['callbackFunction'] = 'publisher_pages_sitemap_atualizar';
+		$_GESTOR['interface']['excluir']['finalizar']['callbackFunction'] = 'publisher_pages_sitemap_remover';
+
 		interface_iniciar();
 		
 		switch($_GESTOR['opcao']){

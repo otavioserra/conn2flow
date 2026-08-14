@@ -48,6 +48,39 @@ describe('html-editor.js — opções de exibição (req-106)', () => {
     return alvo;
   }
 
+  // ===== req-112 (rodada 2): modos de IA visíveis na Editbar
+
+  it('o select de modos da Editbar mostra apenas o paginas-editbar', () => {
+    const ed = makeEditor();
+
+    const modos = [
+      { id: 'paginas', nome: 'Páginas' },
+      { id: 'paginas-editbar', nome: 'Páginas (Editbar)' }
+    ];
+
+    const visiveis = ed.aiModosVisiveis(modos);
+
+    expect(visiveis).toHaveLength(1);
+    expect(visiveis[0].id).toBe('paginas-editbar');
+  });
+
+  it('sem o paginas-editbar registrado, cai na lista completa (painel não fica inutilizável)', () => {
+    const ed = makeEditor();
+
+    // Instalação com deploy pendente: esvaziar o select deixaria o Assistente de IA sem opção.
+    const modos = [{ id: 'paginas', nome: 'Páginas' }];
+
+    expect(ed.aiModosVisiveis(modos)).toEqual(modos);
+  });
+
+  it('entrada vazia ou inválida não quebra a montagem do select', () => {
+    const ed = makeEditor();
+
+    expect(ed.aiModosVisiveis([])).toEqual([]);
+    expect(ed.aiModosVisiveis(null)).toEqual([]);
+    expect(ed.aiModosVisiveis(undefined)).toEqual([]);
+  });
+
   it('cria os dois painéis DESLIGADOS por padrão, com os rótulos exigidos', () => {
     const ed = makeEditor();
 

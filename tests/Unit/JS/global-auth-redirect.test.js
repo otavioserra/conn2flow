@@ -14,7 +14,10 @@ function carregarInterceptadores(fetchImpl = vi.fn()) {
     return {
       ajaxError(callback) {
         ajaxError = callback;
-      }
+      },
+      // req-109: o global.js passou a registrar um handler delegado de `submit` no document para
+      // cobrir formulários submetidos por código (`$(form).submit()` não dispara evento nativo).
+      on: vi.fn()
     };
   }
   jquery.ajaxPrefilter = vi.fn();

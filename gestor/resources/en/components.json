@@ -312,11 +312,11 @@
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.10",
+        "version": "1.12",
         "checksum": {
-            "html": "93e34bd9ed7f06c4be7eee042efa32a9",
+            "html": "d92b8d4cb453fcc23b6453add584457d",
             "css": "1fb7d1b67165d5f5578c4130c5dcd1ef",
-            "combined": "d9bdba3b8bfb520c7250a5955667ce23"
+            "combined": "874153ae6eb3a2715d5aa9cc9f035367"
         }
     },
     {
@@ -418,6 +418,16 @@
             "html": "a78b816685fff38fb0512835cc046082",
             "css": "79e0cc197910a30e3b71a9360318aa06",
             "combined": "e7c0ea588105ebd32201323dfe4fe250"
+        }
+    },
+    {
+        "name": "HTML Editor SEO and Sharing",
+        "id": "html-editor-seo",
+        "version": "1.3",
+        "checksum": {
+            "html": "02d78f3b83dc41dea01b22d9d1e45ae8",
+            "css": "",
+            "combined": "02d78f3b83dc41dea01b22d9d1e45ae8"
         }
     }
 ]

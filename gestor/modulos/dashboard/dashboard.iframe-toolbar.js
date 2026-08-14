@@ -138,6 +138,16 @@
             });
         }
 
+        // req-110 (BATCH-110): "Configurações da Página" — mesmo padrão: o painel vive na página
+        // hospedeira (onde estão o editor e o seletor de arquivos); daqui vai só a posição e o id.
+        var pageConfigBtn = document.getElementById('c2f-page-config-btn');
+        if (pageConfigBtn) {
+            pageConfigBtn.addEventListener('click', function () {
+                var r = pageConfigBtn.getBoundingClientRect();
+                window.parent.postMessage({ type: 'c2f-toolbar:page-config', x: r.left, y: r.bottom, page_id: pageId }, origin);
+            });
+        }
+
         // req-106 (BATCH-106): "Opções de Exibição" — o painel flutuante vive na página hospedeira
         // (junto do editor), então enviamos apenas a posição do botão, como o painel "+" já faz.
         var viewOptionsBtn = document.getElementById('c2f-tb-view-options');

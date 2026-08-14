@@ -169,11 +169,24 @@
 		}
 	}
 
+	// req-112: cache-bust do motor. Era uma string FIXA (`?v=c2fNN`) que precisava ser lembrada e
+	// bumpada à mão a cada alteração do `html-editor.js` — e não foi, então a correção do painel de
+	// Configurações ficou uma rodada inteira sem chegar ao navegador. Agora segue a versão da
+	// biblioteca `html-editor` (`gestor/bibliotecas/html-editor.php`), a MESMA que versiona este
+	// arquivo e o motor no editor clássico: um número só governa os três.
+	function versaoHtmlEditor() {
+		if (window.gestor && window.gestor.htmlEditorVersao) { return window.gestor.htmlEditorVersao; }
+		// Sem a variável (contexto antigo), a versão do sistema ainda é melhor que nenhuma.
+		if (window.gestor && window.gestor.versao) { return window.gestor.versao; }
+		return '';
+	}
+
 	function activateEditor(content) {
 		ensureJQuery(function () {
 			// Impede o auto-init sobre document.body; instanciamos escopado ao conteúdo.
 			window.__c2fHtmlEditorNoAutoInit = true;
-			loadScriptOnce(getRaiz() + 'interface/html-editor.js?v=c2f18', 'c2f-he-script', function () {
+			var motor = getRaiz() + 'interface/html-editor.js?v=' + encodeURIComponent(versaoHtmlEditor());
+			loadScriptOnce(motor, 'c2f-he-script', function () {
 				instantiateEditor(content, 0);
 			});
 		});
@@ -1070,6 +1083,231 @@
 		syncViewOptionsPanel(); // o estado real é o do motor (recuperado do localStorage no boot)
 	}
 
+	// ===== Painel de Configurações da Página (req-110 / BATCH-110)
+	//
+	// Permite editar título social, descrição social e imagem de destaque sem sair do Live Editor.
+	// Vive na página hospedeira pelo mesmo motivo dos demais painéis: é aqui que o seletor de
+	// arquivos (`admin-arquivos` em iframe) pode ser sobreposto ao conteúdo — dentro do iframe da
+	// Editbar ele ficaria confinado à altura da barra.
+
+	var pageConfigPanel = null;
+	var pageConfigPageId = '';
+	var pageConfigImagem = '';
+	var pageConfigPickerOverlay = null;
+
+	function closePageConfigPanel() { if (pageConfigPanel) { pageConfigPanel.style.display = 'none'; } }
+
+	function buildPageConfigPanel() {
+		if (pageConfigPanel) { return pageConfigPanel; }
+		pageConfigPanel = document.createElement('div');
+		pageConfigPanel.id = 'c2f-page-config-panel';
+		// req-112: `pointer-events:auto` e `isolation:isolate` são explícitos porque o painel é
+		// injetado na página EDITADA — que pode ter regras próprias de `pointer-events` herdadas, e
+		// cujo motor de edição escuta o documento inteiro.
+		pageConfigPanel.style.cssText = 'position:fixed;z-index:2147483646;isolation:isolate;pointer-events:auto;width:380px;max-width:94vw;max-height:80vh;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.22);padding:12px;display:none;font:14px system-ui,sans-serif;color:#0f172a;';
+		document.body.appendChild(pageConfigPanel);
+
+		// req-112: reforço contra vazamento de evento para a página editada. A correção PRINCIPAL é o
+		// painel entrar em `isEditorOwned()` no motor (html-editor.js) — sem isso o hover realçava o
+		// elemento ATRÁS do painel e o primeiro clique era consumido pela seleção em vez do botão.
+		//
+		// A propagação é barrada na fase de BOLHA, nunca na de captura: em captura o
+		// `stopPropagation()` impediria o evento de chegar ao próprio botão dentro do painel. E como
+		// estes listeners são registrados ANTES do handler de clique abaixo, no mesmo elemento e na
+		// mesma fase, ele continua rodando (`stopPropagation` não afeta o mesmo nó).
+		['mousedown', 'mouseup', 'click', 'mousemove', 'mouseover', 'mouseout', 'dblclick', 'contextmenu']
+			.forEach(function (evento) {
+				pageConfigPanel.addEventListener(evento, function (e) { e.stopPropagation(); });
+			});
+
+		pageConfigPanel.addEventListener('click', function (e) {
+			var alvo = e.target.closest && e.target.closest('[data-page-config-action]');
+			if (!alvo) { return; }
+			e.preventDefault();
+			var acao = alvo.getAttribute('data-page-config-action');
+			if (acao === 'pick') { openPageConfigPicker(); }
+			if (acao === 'clear') { pageConfigImagem = ''; renderPageConfigImagem(); }
+			if (acao === 'save') { savePageConfig(); }
+		});
+
+		return pageConfigPanel;
+	}
+
+	function pageConfigCampo(id, rotulo, valor, multilinha, dica) {
+		var campo = multilinha
+			? '<textarea id="' + id + '" rows="3" style="width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #cbd5e1;border-radius:6px;font:inherit;resize:vertical;">' + esc(valor) + '</textarea>'
+			: '<input type="text" id="' + id + '" value="' + esc(valor) + '" style="width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #cbd5e1;border-radius:6px;font:inherit;">';
+
+		return '<div style="margin-bottom:10px;">' +
+			'<label for="' + id + '" style="display:block;font:600 12px sans-serif;color:#475569;margin-bottom:4px;">' + esc(rotulo) + '</label>' +
+			campo +
+			(dica ? '<div style="font-size:11px;color:#94a3b8;margin-top:3px;">' + esc(dica) + '</div>' : '') +
+			'</div>';
+	}
+
+	function renderPageConfigImagem() {
+		if (!pageConfigPanel) { return; }
+		var alvo = pageConfigPanel.querySelector('.c2f-page-config-image');
+		if (!alvo) { return; }
+
+		if (pageConfigImagem) {
+			alvo.innerHTML = '<img src="' + esc(getRaiz() + String(pageConfigImagem).replace(/^\/+/, '')) + '" alt="" ' +
+				'style="max-width:100%;max-height:120px;border-radius:6px;border:1px solid #e2e8f0;display:block;margin-bottom:6px;">' +
+				'<div style="font-size:11px;color:#64748b;word-break:break-all;">' + esc(pageConfigImagem) + '</div>';
+		} else {
+			alvo.innerHTML = '<div style="font-size:12px;color:#94a3b8;padding:8px 0;">' +
+				t('Nenhuma imagem escolhida — o compartilhamento usa o padrão do site.',
+					'No image selected — sharing falls back to the site default.') + '</div>';
+		}
+
+		var limpar = pageConfigPanel.querySelector('[data-page-config-action="clear"]');
+		if (limpar) { limpar.style.display = pageConfigImagem ? 'inline-block' : 'none'; }
+	}
+
+	// O gerenciador de arquivos posta a seleção como STRING JSON
+	// (`{moduloId, moduloOpcao, data: "<json>"}`) — mesmo contrato do picker do editor.
+	function openPageConfigPicker() {
+		if (!pageConfigPickerOverlay) {
+			pageConfigPickerOverlay = document.createElement('div');
+			pageConfigPickerOverlay.id = 'c2f-page-config-picker';
+			// req-112: acima do painel (2147483646) e com pointer-events explícito.
+			pageConfigPickerOverlay.style.cssText = 'position:fixed;inset:0;z-index:2147483647;isolation:isolate;pointer-events:auto;display:none;';
+			pageConfigPickerOverlay.innerHTML =
+				'<div class="c2f-pcp-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,.6);"></div>' +
+				'<div style="position:relative;width:920px;max-width:96vw;height:80vh;margin:7vh auto;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden;">' +
+				'<div style="padding:10px 14px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;">' +
+				'<span style="font-weight:600;color:#0f172a;">' + t('Selecionar imagem', 'Select image') + '</span>' +
+				'<button type="button" class="c2f-pcp-close" style="border:0;background:#e2e8f0;border-radius:6px;padding:6px 12px;cursor:pointer;color:#0f172a;">' + t('Fechar', 'Close') + '</button>' +
+				'</div>' +
+				'<iframe class="c2f-pcp-frame" style="flex:1 1 auto;border:0;width:100%;"></iframe>' +
+				'</div>';
+			document.body.appendChild(pageConfigPickerOverlay);
+			['mousedown', 'mouseup', 'click', 'mousemove', 'mouseover', 'mouseout', 'dblclick']
+				.forEach(function (evento) {
+					pageConfigPickerOverlay.addEventListener(evento, function (e) { e.stopPropagation(); });
+				});
+			pageConfigPickerOverlay.querySelector('.c2f-pcp-backdrop').addEventListener('click', closePageConfigPicker);
+			pageConfigPickerOverlay.querySelector('.c2f-pcp-close').addEventListener('click', closePageConfigPicker);
+		}
+
+		pageConfigPickerOverlay.querySelector('.c2f-pcp-frame').src = getRaiz() + 'admin-arquivos/?paginaIframe=sim';
+		pageConfigPickerOverlay.style.display = 'block';
+	}
+
+	function closePageConfigPicker() {
+		if (!pageConfigPickerOverlay) { return; }
+		pageConfigPickerOverlay.style.display = 'none';
+		var f = pageConfigPickerOverlay.querySelector('.c2f-pcp-frame');
+		if (f) { f.src = 'about:blank'; }
+	}
+
+	function aplicarSelecaoDeImagem(payload) {
+		if (!pageConfigPickerOverlay || pageConfigPickerOverlay.style.display !== 'block') { return false; }
+		if (!payload || !payload.caminho) { return false; }
+		pageConfigImagem = String(payload.caminho);
+		renderPageConfigImagem();
+		closePageConfigPicker();
+		return true;
+	}
+
+	function savePageConfig() {
+		if (!pageConfigPanel || !pageConfigPageId) { return; }
+		var titulo = pageConfigPanel.querySelector('#c2f-pc-og-titulo');
+		var descricao = pageConfigPanel.querySelector('#c2f-pc-og-descricao');
+		var metaDescricao = pageConfigPanel.querySelector('#c2f-pc-meta-descricao');
+		var metaKeywords = pageConfigPanel.querySelector('#c2f-pc-meta-keywords');
+		var status = pageConfigPanel.querySelector('.c2f-page-config-status');
+
+		if (status) { status.textContent = t('Salvando…', 'Saving...'); status.style.color = '#64748b'; }
+
+		var corpo = new URLSearchParams();
+		corpo.set('page_id', pageConfigPageId);
+		corpo.set('og_titulo', titulo ? titulo.value : '');
+		corpo.set('og_descricao', descricao ? descricao.value : '');
+		corpo.set('meta_descricao', metaDescricao ? metaDescricao.value : '');
+		corpo.set('meta_keywords', metaKeywords ? metaKeywords.value : '');
+		corpo.set('imagem_destaque', pageConfigImagem || '');
+
+		fetch(dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-page-config-save', {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+			body: corpo.toString()
+		}).then(function (r) { return r.json(); }).then(function (json) {
+			if (!status) { return; }
+			if (json && json.status === 'Ok') {
+				status.textContent = t('Salvo.', 'Saved.');
+				status.style.color = '#16a34a';
+			} else {
+				status.textContent = (json && json.message) ? json.message : t('Falha ao salvar.', 'Failed to save.');
+				status.style.color = '#dc2626';
+			}
+		}).catch(function () {
+			if (status) { status.textContent = t('Falha ao salvar.', 'Failed to save.'); status.style.color = '#dc2626'; }
+		});
+	}
+
+	function openPageConfigPanel(x, y, pageId) {
+		buildPageConfigPanel();
+		pageConfigPageId = pageId || '';
+
+		var px = Math.max(8, Math.min(parseInt(x, 10) || 8, window.innerWidth - 390));
+		pageConfigPanel.style.left = px + 'px';
+		pageConfigPanel.style.top = ((parseInt(y, 10) || 40) + 4) + 'px';
+		pageConfigPanel.style.display = 'block';
+		pageConfigPanel.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:4px 8px;">' + t('Carregando…', 'Loading...') + '</div>';
+
+		ajaxJson(dashboardAjaxUrl() + '?ajax=1&ajaxOpcao=site-toolbar-page-config&page_id=' + encodeURIComponent(pageConfigPageId), function (json) {
+			if (!json || json.status !== 'Ok' || !json.data) {
+				pageConfigPanel.innerHTML = '<div style="color:#dc2626;font-size:12px;padding:4px 8px;">' +
+					esc((json && json.message) ? json.message : t('Falha ao carregar.', 'Failed to load.')) + '</div>';
+				return;
+			}
+
+			var d = json.data;
+			pageConfigImagem = d.imagem_destaque || '';
+
+			pageConfigPanel.innerHTML =
+				'<div style="font:600 11px sans-serif;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin:2px 0 8px;">' +
+				t('Configurações da Página', 'Page Settings') + '</div>' +
+				'<div style="font-size:12px;color:#94a3b8;margin-bottom:10px;word-break:break-all;">' + esc(d.caminho || '') + '</div>' +
+				pageConfigCampo('c2f-pc-og-titulo', t('Título social', 'Social title'), d.og_titulo || '', false,
+					t('Vazio usa o nome da página: ', 'Empty uses the page name: ') + (d.nome || '')) +
+				pageConfigCampo('c2f-pc-og-descricao', t('Descrição social', 'Social description'), d.og_descricao || '', true,
+					t('Resumo exibido no card do link.', 'Summary shown on the link card.')) +
+				// req-112: meta tags clássicas, para buscador.
+				pageConfigCampo('c2f-pc-meta-descricao', t('Meta descrição (Google)', 'Meta description (Google)'), d.meta_descricao || '', true,
+					t('Vazio usa a descrição social ou o padrão do site.', 'Empty falls back to the social description or the site default.')) +
+				pageConfigCampo('c2f-pc-meta-keywords', t('Palavras-chave', 'Keywords'), d.meta_keywords || '', false,
+					t('Separadas por vírgula.', 'Comma separated.')) +
+				'<div style="margin-bottom:10px;">' +
+				'<label style="display:block;font:600 12px sans-serif;color:#475569;margin-bottom:4px;">' +
+				t('Imagem de destaque', 'Featured image') + '</label>' +
+				'<div class="c2f-page-config-image"></div>' +
+				'<div style="display:flex;gap:6px;margin-top:6px;">' +
+				'<button type="button" data-page-config-action="pick" style="border:0;background:#e2e8f0;border-radius:6px;padding:6px 12px;cursor:pointer;color:#0f172a;font:inherit;">' +
+				t('Escolher…', 'Choose...') + '</button>' +
+				'<button type="button" data-page-config-action="clear" style="border:0;background:#fee2e2;border-radius:6px;padding:6px 12px;cursor:pointer;color:#b91c1c;font:inherit;display:none;">' +
+				t('Remover', 'Remove') + '</button>' +
+				'</div></div>' +
+				'<div style="display:flex;align-items:center;gap:10px;margin-top:12px;">' +
+				'<button type="button" data-page-config-action="save" style="border:0;background:#16a34a;color:#fff;border-radius:6px;padding:7px 16px;cursor:pointer;font:inherit;">' +
+				t('Salvar', 'Save') + '</button>' +
+				'<span class="c2f-page-config-status" style="font-size:12px;"></span>' +
+				'</div>';
+
+			renderPageConfigImagem();
+		});
+	}
+
+	// Fecha o painel de configurações ao clicar fora (mas não quando o seletor está por cima).
+	document.addEventListener('mousedown', function (e) {
+		if (!pageConfigPanel || pageConfigPanel.style.display !== 'block') { return; }
+		if (pageConfigPickerOverlay && pageConfigPickerOverlay.style.display === 'block') { return; }
+		if (e.target.closest && e.target.closest('#c2f-page-config-panel')) { return; }
+		closePageConfigPanel();
+	});
+
 	// ===== Painel de Backups (restaurar versão do conteúdo) — ponto 5.
 
 	var backupPanel = null;
@@ -1160,9 +1398,14 @@
 	// desta página (Opções, "+", Backups) e os do motor (Modelos, IA, Código Customizado, modais de
 	// edição/embed e o seletor de arquivos), que já fechavam ao clicar fora na área editável.
 	function dismissHostPanels() {
+		// req-110: com o seletor de arquivos aberto, um clique na Editbar não deve derrubar o painel
+		// de configurações por baixo dele — o usuário perderia o que já digitou.
+		if (pageConfigPickerOverlay && pageConfigPickerOverlay.style.display === 'block') { return; }
+
 		closeAddPanel();
 		closeBackupPanel();
 		closeViewOptionsPanel();
+		closePageConfigPanel();
 		if (c2fEditor && typeof c2fEditor.dismissFloatingUi === 'function') { c2fEditor.dismissFloatingUi(); }
 	}
 
@@ -1202,6 +1445,14 @@
 		if (typeof ev.data !== 'string') { return; }
 		var data;
 		try { data = JSON.parse(ev.data); } catch (e) { return; }
+		// req-110: seleção do gerenciador de arquivos para a Imagem de Destaque. O `admin-arquivos`
+		// posta `{moduloId, moduloOpcao, data: "<json>"}` — mesmo contrato do picker do editor.
+		if (data && data.moduloId === 'admin-arquivos' && typeof data.data === 'string') {
+			var selecao;
+			try { selecao = JSON.parse(data.data); } catch (erro) { selecao = null; }
+			if (aplicarSelecaoDeImagem(selecao)) { return; }
+		}
+
 		if (!data || data.action !== 'c2f-he:widget-render') { return; }
 		handleEngineWidgetRender(data.signature, data.wrapperId);
 	});
@@ -1255,6 +1506,9 @@
 				break;
 			case 'c2f-toolbar:edit-view-options':
 				openViewOptionsPanel(data.x, data.y);
+				break;
+			case 'c2f-toolbar:page-config':
+				openPageConfigPanel(data.x, data.y, data.page_id);
 				break;
 			case 'c2f-toolbar:ui-dismiss':
 				dismissHostPanels();

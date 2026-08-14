@@ -107,6 +107,9 @@ $(document).ready(function () {
             ajax: 'sim',
             ajaxOpcao: 'salvar',
             site_name: $('#site_name').val(),
+            // req-111 (CR-001): tokens adicionais de robô, complementares à lista embutida do core.
+            crawler_tokens_extra_ativo: $('#crawler_tokens_extra_ativo').parent().checkbox('is checked') ? 'true' : 'false',
+            crawler_tokens_extra: $('#crawler_tokens_extra').val(),
             usuario_recaptcha_active: $('#usuario_recaptcha_active').parent().checkbox('is checked') ? 'true' : 'false',
             usuario_recaptcha_site: $('#usuario_recaptcha_site').val(),
             usuario_recaptcha_server: $('#usuario_recaptcha_server').val(),

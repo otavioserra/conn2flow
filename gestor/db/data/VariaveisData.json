@@ -855,6 +855,132 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-menu-label",
+        "valor": "SEO & Compartilhamento",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-menu-tooltip",
+        "valor": "Clique para editar o título, a descrição e a imagem usados ao compartilhar esta página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-hint-title",
+        "valor": "Como esta página aparece ao ser compartilhada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-hint-text",
+        "valor": "Estes dados alimentam as metatags OpenGraph lidas por WhatsApp, Facebook, LinkedIn, Telegram e X. Campos em branco usam o nome da página e os padrões do site.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-og-title-label",
+        "valor": "Título social",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-og-title-placeholder",
+        "valor": "Deixe em branco para usar o nome da página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-og-description-label",
+        "valor": "Descrição social",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-og-description-placeholder",
+        "valor": "Resumo curto exibido no card do link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-featured-image-label",
+        "valor": "Imagem de destaque",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-search-header",
+        "valor": "Buscadores (Google)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-meta-description-label",
+        "valor": "Meta Descrição",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-meta-description-placeholder",
+        "valor": "Resumo exibido no resultado de busca. Vazio usa a descrição social ou o padrão do site.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-meta-keywords-label",
+        "valor": "Palavras-chave",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "html-editor-seo-meta-keywords-placeholder",
+        "valor": "Separadas por vírgula. Ex: fotografia, ensaio, estúdio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -1705,6 +1831,132 @@
         "modulo": null,
         "id": "forms-subject-emails",
         "valor": "You have received a new contact on the website - #code#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-menu-label",
+        "valor": "SEO & Sharing",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-menu-tooltip",
+        "valor": "Click to edit the title, description and image used when this page is shared.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-hint-title",
+        "valor": "How this page looks when shared",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-hint-text",
+        "valor": "These values fill the OpenGraph meta tags read by WhatsApp, Facebook, LinkedIn, Telegram and X. Empty fields fall back to the page name and the site defaults.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-og-title-label",
+        "valor": "Social title",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-og-title-placeholder",
+        "valor": "Leave empty to use the page name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-og-description-label",
+        "valor": "Social description",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-og-description-placeholder",
+        "valor": "Short summary shown on the link card",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-featured-image-label",
+        "valor": "Featured image",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-search-header",
+        "valor": "Search engines (Google)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-meta-description-label",
+        "valor": "Meta Description",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-meta-description-placeholder",
+        "valor": "Summary shown in search results. Empty falls back to the social description or the site default.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-meta-keywords-label",
+        "valor": "Keywords",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "html-editor-seo-meta-keywords-placeholder",
+        "valor": "Comma separated. Ex: photography, session, studio",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -26,7 +26,12 @@ if (!isset($_GESTOR['debug'])) { $_GESTOR['debug'] = false; }
 if (!isset($_GESTOR['logs-path'])) {
 	$defaultLogs = realpath(__DIR__ . '/..') . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR;
 	// Cria diretório de logs se não existir
-	if ($defaultLogs && !is_dir($defaultLogs)) @mkdir($defaultLogs, 0775, true);
+	// req-109: o diretório pode ser criado pelo CLI (deploy/cron) e escrito pelo Apache (www-data),
+	// ou vice-versa. Com 0775 o segundo processo cai em `Permission denied` a cada gravação.
+	if ($defaultLogs && !is_dir($defaultLogs)) {
+		@mkdir($defaultLogs, 0777, true);
+		@chmod($defaultLogs, 0777);
+	}
 	$_GESTOR['logs-path'] = $defaultLogs ?: sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 }
 
@@ -412,19 +417,34 @@ function log_disco($msg, $logFilename = "gestor", $deleteFileAfter = false){
 	// ===== Determina caminho para os logs
 	$path = $_GESTOR['logs-path'] ?? sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 	// Cria diretório se não existir
-	if (!is_dir($path)) @mkdir($path, 0775, true);
-	
+	// req-109: 0777 + chmod defensivo — o mesmo diretório é escrito pelo Apache (www-data) e pelo
+	// CLI (deploy, cron, testes), e quem cria primeiro define o dono. Sem isso o segundo processo
+	// só consegue emitir `Permission denied` (e o aviso do PHP polui a saída HTML da página).
+	if (!is_dir($path)) {
+		@mkdir($path, 0777, true);
+		@chmod($path, 0777);
+	}
+
 	// ===== Define nome do arquivo com data atual
 	$myFile = $path . $logFilename.'-'.date('Y-m-d').".log";
-	
+
 	// ===== Opcionalmente exclui arquivo existente
 	if ($deleteFileAfter && is_file($myFile)) {
 		@unlink($myFile);
 	}
-	
+
 	// ===== Preserva conteúdo existente e adiciona nova mensagem
 	$existing = (is_file($myFile) && filesize($myFile) > 0) ? file_get_contents($myFile) : '';
-	file_put_contents($myFile, $existing . $msg . "\n");
+	$novoArquivo = !is_file($myFile);
+
+	if (@file_put_contents($myFile, $existing . $msg . "\n") === false) {
+		// Log é observabilidade: falha de escrita não pode derrubar a requisição nem imprimir aviso
+		// no meio do HTML. O erro do PHP fica no error_log do servidor.
+		error_log('[conn2flow] Falha ao gravar log em: ' . $myFile);
+		return;
+	}
+
+	if ($novoArquivo) @chmod($myFile, 0666);
 }
 
 ?>

@@ -502,5 +502,75 @@
         "id": "forms-subject-emails",
         "value": "You have received a new contact on the website - #code#",
         "type": "string"
+    },
+    {
+        "id": "html-editor-seo-menu-label",
+        "value": "SEO & Sharing",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-menu-tooltip",
+        "value": "Click to edit the title, description and image used when this page is shared.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-hint-title",
+        "value": "How this page looks when shared",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-hint-text",
+        "value": "These values fill the OpenGraph meta tags read by WhatsApp, Facebook, LinkedIn, Telegram and X. Empty fields fall back to the page name and the site defaults.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-og-title-label",
+        "value": "Social title",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-og-title-placeholder",
+        "value": "Leave empty to use the page name",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-og-description-label",
+        "value": "Social description",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-og-description-placeholder",
+        "value": "Short summary shown on the link card",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-featured-image-label",
+        "value": "Featured image",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-search-header",
+        "value": "Search engines (Google)",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-meta-description-label",
+        "value": "Meta Description",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-meta-description-placeholder",
+        "value": "Summary shown in search results. Empty falls back to the social description or the site default.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-meta-keywords-label",
+        "value": "Keywords",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-meta-keywords-placeholder",
+        "value": "Comma separated. Ex: photography, session, studio",
+        "type": "string"
     }
 ]

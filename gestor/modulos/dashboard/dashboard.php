@@ -1720,6 +1720,24 @@ function dashboard_ajax_site_toolbar_save(){
 		return;
 	}
 
+	// ===== req-112: a Editbar é a TERCEIRA superfície que grava a página (além de admin-paginas e
+	//       publisher-pages) e a única que não sincronizava o sitemap. Ela não toca no `caminho` nem
+	//       nos metadados — só no conteúdo —, mas atualiza `data_modificacao`, e sem esta chamada o
+	//       `<lastmod>` do XML ficava defasado justamente na superfície de edição mais usada.
+
+	if($algum){
+		gestor_incluir_biblioteca('sitemap');
+
+		if(function_exists('sitemap_sincronizar_por_id')){
+			try {
+				sitemap_sincronizar_por_id($page_id);
+			} catch (Throwable $e) {
+				// Artefato derivado: falha aqui não pode derrubar o salvamento do conteúdo.
+				if(function_exists('log_disco')) log_disco('Falha ao sincronizar o sitemap (editbar): '.$e->getMessage(), 'sitemap');
+			}
+		}
+	}
+
 	$_GESTOR['ajax-json'] = Array('status' => 'Ok', 'message' => 'Salvo.');
 }
 
@@ -2641,6 +2659,136 @@ function dashboard_interfaces_padroes(){
 
 // ==== Start
 
+/**
+ * req-110 (BATCH-110) — carrega a página e confere a permissão para os endpoints de configuração.
+ *
+ * Devolve `null` e já preenche `ajax-json` quando o acesso deve ser negado, para os dois handlers
+ * abaixo não repetirem a validação.
+ *
+ * @return array|null
+ */
+function dashboard_site_toolbar_page_config_pagina(){
+	global $_GESTOR;
+
+	if(!gestor_acesso('editar','admin-paginas')){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão.');
+		return null;
+	}
+
+	$page_id = isset($_REQUEST['page_id']) ? trim($_REQUEST['page_id']) : '';
+	if($page_id === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não informada.');
+		return null;
+	}
+
+	$pagina = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas',
+		'campos' => Array('id_paginas','id','publisher_id','id_usuarios','nome','caminho','imagem_destaque','og_titulo','og_descricao','meta_descricao','meta_keywords'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($page_id)."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+			." AND status!='D'",
+	));
+
+	if(!$pagina){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Página não encontrada.');
+		return null;
+	}
+
+	// Mesmo isolamento multi-usuário dos backups (req-082 §4).
+	if(!dashboard_site_toolbar_verificar_permissao_pagina($pagina)){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Sem permissão para esta página.');
+		return null;
+	}
+
+	return $pagina;
+}
+
+/** req-110: devolve os metadados de compartilhamento da página para o painel da Editbar. */
+function dashboard_ajax_site_toolbar_page_config(){
+	global $_GESTOR;
+
+	$pagina = dashboard_site_toolbar_page_config_pagina();
+	if(!$pagina) return;
+
+	$imagem = (string)($pagina['imagem_destaque'] ?? '');
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data' => Array(
+			'nome' => (string)($pagina['nome'] ?? ''),
+			'caminho' => (string)($pagina['caminho'] ?? ''),
+			'og_titulo' => (string)($pagina['og_titulo'] ?? ''),
+			'og_descricao' => (string)($pagina['og_descricao'] ?? ''),
+			'meta_descricao' => (string)($pagina['meta_descricao'] ?? ''),
+			'meta_keywords' => (string)($pagina['meta_keywords'] ?? ''),
+			'imagem_destaque' => $imagem,
+			'imagem_url' => ($imagem !== '' ? $_GESTOR['url-full'].ltrim($imagem, '/') : ''),
+		),
+	);
+}
+
+/** req-110: grava os metadados vindos do painel da Editbar e sincroniza o sitemap. */
+function dashboard_ajax_site_toolbar_page_config_save(){
+	global $_GESTOR;
+
+	$pagina = dashboard_site_toolbar_page_config_pagina();
+	if(!$pagina) return;
+
+	gestor_incluir_biblioteca('arquivo');
+
+	$og_titulo = trim((string)($_REQUEST['og_titulo'] ?? ''));
+	$og_descricao = trim((string)($_REQUEST['og_descricao'] ?? ''));
+	// req-112: meta tags clássicas de SEO.
+	$meta_descricao = trim((string)($_REQUEST['meta_descricao'] ?? ''));
+	$meta_keywords = gestor_meta_keywords_normalizar($_REQUEST['meta_keywords'] ?? '');
+	$imagem = trim((string)($_REQUEST['imagem_destaque'] ?? ''));
+
+	// O caminho da imagem é um identificador de arquivo — passa pelo mesmo saneador do BATCH-090.
+	if($imagem !== '' && function_exists('arquivo_caminho_relativo_seguro')){
+		$seguro = arquivo_caminho_relativo_seguro($imagem);
+		if($seguro === false){
+			$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Caminho de imagem inválido.');
+			return;
+		}
+		$imagem = $seguro;
+	}
+
+	$dados = Array(
+		"og_titulo='".banco_escape_field(mb_substr($og_titulo, 0, 255))."'",
+		"og_descricao='".banco_escape_field($og_descricao)."'",
+		"meta_descricao='".banco_escape_field($meta_descricao)."'",
+		"meta_keywords='".banco_escape_field(mb_substr($meta_keywords, 0, 500))."'",
+		"imagem_destaque='".banco_escape_field(mb_substr($imagem, 0, 500))."'",
+		"data_modificacao=NOW()",
+	);
+
+	banco_update(
+		banco_campos_virgulas($dados),
+		'paginas',
+		"WHERE id_paginas='".banco_escape_field($pagina['id_paginas'])."'"
+	);
+
+	// O sitemap não muda com metadados sociais, mas o `lastmod` sim.
+	gestor_incluir_biblioteca('sitemap');
+	if(function_exists('sitemap_sincronizar_por_id')){
+		try { sitemap_sincronizar_por_id($pagina['id']); } catch (Throwable $e) { /* artefato derivado */ }
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data' => Array(
+			'og_titulo' => $og_titulo,
+			'og_descricao' => $og_descricao,
+			'meta_descricao' => $meta_descricao,
+			'meta_keywords' => $meta_keywords,
+			'imagem_destaque' => $imagem,
+			'imagem_url' => ($imagem !== '' ? $_GESTOR['url-full'].ltrim($imagem, '/') : ''),
+		),
+	);
+}
+
 function dashboard_start(){
 	global $_GESTOR;
 	
@@ -2681,6 +2829,9 @@ function dashboard_start(){
 			case 'site-toolbar-ia-prompt-new': dashboard_ajax_site_toolbar_ia_prompt_new(); break;
 			case 'site-toolbar-ia-prompt-edit': dashboard_ajax_site_toolbar_ia_prompt_edit(); break;
 			case 'site-toolbar-ia-prompt-del': dashboard_ajax_site_toolbar_ia_prompt_del(); break;
+			// req-110 (BATCH-110): metadados de compartilhamento da página, editáveis sem sair do Live Editor.
+			case 'site-toolbar-page-config': dashboard_ajax_site_toolbar_page_config(); break;
+			case 'site-toolbar-page-config-save': dashboard_ajax_site_toolbar_page_config_save(); break;
 		}
 
 		interface_ajax_finalizar();

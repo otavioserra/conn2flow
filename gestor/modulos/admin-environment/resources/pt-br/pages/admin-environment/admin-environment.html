@@ -50,6 +50,34 @@
                         <input type="text" id="site_name" name="site_name" value="#site-name#"
                             placeholder="Ex: Meu Website">
                     </div>
+
+                    <!-- ===== Robôs e Rastreadores (req-111) ===== -->
+                    <h4 class="ui dividing header"><i class="robot icon"></i> Robôs e Rastreadores</h4>
+                    <p class="ui grey text">O sistema já reconhece os robôs mais comuns sem nenhuma
+                        configuração. Ative esta opção apenas se o seu site receber muito acesso de um robô
+                        específico que ainda não esteja na lista abaixo.</p>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="crawler_tokens_extra_ativo" name="crawler_tokens_extra_ativo"
+                                #crawler-tokens-extra-ativo-checked#>
+                            <label>Ativar tokens adicionais de robô</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Tokens adicionais</label>
+                        <textarea id="crawler_tokens_extra" name="crawler_tokens_extra" rows="3"
+                            placeholder="Um por linha, ou separados por vírgula. Ex: meurobo, outro-bot">#crawler-tokens-extra#</textarea>
+                        <div class="ui small grey text" style="margin-top:6px;">
+                            A comparação é por trecho do User-Agent, sem diferenciar maiúsculas de minúsculas.
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Já reconhecidos pelo sistema (somente leitura)</label>
+                        <div class="ui small message" style="word-break:break-word;">#crawler-tokens-padrao#</div>
+                    </div>
                 </form>
             </div>
 

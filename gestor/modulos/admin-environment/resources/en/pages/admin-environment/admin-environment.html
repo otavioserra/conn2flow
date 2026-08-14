@@ -38,6 +38,34 @@
                         <input type="text" id="site_name" name="site_name"
                             value="#site-name#" placeholder="Ex: My Website">
                     </div>
+
+                    <!-- ===== Bots and Crawlers (req-111) ===== -->
+                    <h4 class="ui dividing header"><i class="robot icon"></i> Bots and Crawlers</h4>
+                    <p class="ui grey text">The system already recognizes the most common bots with no
+                        configuration at all. Enable this option only if your site gets heavy traffic from a
+                        specific bot that is not in the list below yet.</p>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="crawler_tokens_extra_ativo" name="crawler_tokens_extra_ativo"
+                                #crawler-tokens-extra-ativo-checked#>
+                            <label>Enable additional bot tokens</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Additional tokens</label>
+                        <textarea id="crawler_tokens_extra" name="crawler_tokens_extra" rows="3"
+                            placeholder="One per line, or comma separated. Ex: mybot, other-bot">#crawler-tokens-extra#</textarea>
+                        <div class="ui small grey text" style="margin-top:6px;">
+                            Matching is done by User-Agent substring, case insensitive.
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Already recognized by the system (read only)</label>
+                        <div class="ui small message" style="word-break:break-word;">#crawler-tokens-padrao#</div>
+                    </div>
                 </form>
             </div>
 

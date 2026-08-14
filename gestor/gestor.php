@@ -833,6 +833,43 @@ function gestor_pagina_extra_head_e_javascript(){
 
 	if(!isset($_GESTOR['project-javascript'])) $_GESTOR['project-javascript'] = Array();
 
+	// ===== req-109: metatags OpenGraph do <head>.
+	//       Só injeta quando a página/layout não trouxe OpenGraph próprio no html_extra_head — duas
+	//       tags og:title fazem o scraper escolher arbitrariamente qual usar.
+
+	if(empty($_GESTOR['paginaIframe']) && !gestor_open_graph_existe($_GESTOR['html-extra-head'])){
+		foreach(gestor_open_graph_tags(gestor_open_graph_dados()) as $tag){
+			$_GESTOR['html-extra-head'][] = $tag."\n";
+		}
+	}
+
+	// ===== req-112: meta tags clássicas de SEO (`description` e `keywords`), com o mesmo cuidado —
+	//       página/layout que já traga a sua não recebe a do core.
+
+	if(empty($_GESTOR['paginaIframe']) && !gestor_meta_seo_existe($_GESTOR['html-extra-head'])){
+		foreach(gestor_meta_seo_tags(gestor_meta_seo_dados()) as $tag){
+			$_GESTOR['html-extra-head'][] = $tag."\n";
+		}
+	}
+
+	// ===== req-111 (CR-001): rota de sistema não é conteúdo — sai do índice.
+	//       Enquanto o laço existiu, `cookies-is-mandatory/` foi entregue a buscador e a coletor no
+	//       lugar da página pedida; ela é `tipo=page`/`sem_permissao`, então nada impedia a indexação.
+	//       Fechado o laço, isto garante que o que já foi indexado saia — e que uma reincidência não
+	//       volte a poluir relatório e resultado de busca.
+
+	if(gestor_pagina_rota_sistema((string)($_GESTOR['caminho-total'] ?? ''))){
+		$_GESTOR['html-extra-head'][] = '<meta name="robots" content="noindex, nofollow">'."\n";
+		if(!headers_sent()) header('X-Robots-Tag: noindex, nofollow');
+	}
+
+	// ===== req-111 (CR-001): o bloqueio de analytics em páginas de sistema, introduzido pelo
+	//       req-109 §3/§4, foi REMOVIDO. O diagnóstico original estava invertido: a
+	//       `cookies-is-mandatory/` não aparecia nos relatórios porque o analytics rodava nela, e
+	//       sim porque todo cliente sem cookie era EMPURRADO para lá pelo laço de verificação.
+	//       Fechado o laço (ver gestor_cookie_verificacao e a rota `_gestor-cookie-verify`), o
+	//       sintoma desaparece na origem e os coletores voltam a receber tudo, sem exceção.
+
 	// Token do painel para formulários e clientes AJAX autenticados por cookie.
 	if(isset($_COOKIE[$_CONFIG['cookie-authname']])){
 		gestor_incluir_biblioteca('seguranca');
@@ -1059,10 +1096,32 @@ function gestor_dashboard_toolbar($params = false){
 
 	// ===== Script de compensação de topo (dashboard.toolbar.js) — a URL dashboard/toolbar.js
 	//       é servida como o físico dashboard.toolbar.js (ver arquivo-estatico.php).
+	//
+	//       req-112: o cache-bust da Editbar passou a seguir a versão da BIBLIOTECA html-editor.
+	//
+	//       Antes, sem a chave `versao`, `gestor_pagina_javascript_incluir()` caía em
+	//       `$_GESTOR['versao']` — a versão do SISTEMA, que só muda a cada release. Toda alteração
+	//       neste arquivo entre releases ficava presa no cache do navegador, mesmo após o deploy.
+	//
+	//       A versão escolhida é a de `biblioteca-html-editor` (e não a do módulo dashboard) porque a
+	//       Editbar e o motor `html-editor.js` mudam juntos: mexer na barra quase sempre implica mexer
+	//       no editor. Com uma única versão governando os DOIS arquivos, basta bumpar
+	//       `gestor/bibliotecas/html-editor.php` para forçar o reload de ambos — sem depender de
+	//       lembrar de uma segunda string espalhada em outro arquivo.
+
+	gestor_incluir_biblioteca('html-editor');
+
+	$htmlEditorVersao = $_GESTOR['biblioteca-html-editor']['versao'] ?? $_GESTOR['versao'];
+
+	// O motor é carregado sob demanda POR DENTRO do dashboard.toolbar.js; como ele não enxerga o
+	// PHP, a versão viaja pela variável global de JS.
+	if(!isset($_GESTOR['javascript-vars'])) $_GESTOR['javascript-vars'] = Array();
+	$_GESTOR['javascript-vars']['htmlEditorVersao'] = $htmlEditorVersao;
 
 	gestor_pagina_javascript_incluir(Array(
 		'tipo' => 'toolbar',
 		'modulo_id' => 'dashboard',
+		'versao' => $htmlEditorVersao,
 	));
 }
 
@@ -1159,18 +1218,69 @@ function gestor_permissao_validar_jwt($params = false){
 	}
 }
 
-function gestor_cookie_verificacao(){
+/**
+ * Requisição de crawler/scraper social, memoizada por request (req-109 / BATCH-109).
+ *
+ * @return bool
+ */
+function gestor_requisicao_crawler(){
+	global $_GESTOR;
+
+	if(!array_key_exists('requisicao-crawler', $_GESTOR)){
+		$_GESTOR['requisicao-crawler'] = gestor_crawler_detectar($_SERVER['HTTP_USER_AGENT'] ?? null);
+	}
+
+	return $_GESTOR['requisicao-crawler'];
+}
+
+/**
+ * Emite (e, quando necessário, confere) o cookie de verificação do navegador.
+ *
+ * req-109 / BATCH-109 — o comportamento passou a depender de QUEM pergunta:
+ *
+ * - Crawler/scraper social: nada acontece. Esses agentes não guardam cookie e não seguem o
+ *   round-trip; qualquer `Location:` faz o preview do link perder o HTML público e as tags
+ *   OpenGraph da página real.
+ * - Página pública (padrão): o cookie é emitido no cabeçalho `Set-Cookie` da PRÓPRIA resposta,
+ *   sem interromper o carregamento com o 302 para `_gestor-cookie-verify/`. O visitante recebe a
+ *   página pedida na primeira requisição e o cookie passa a existir a partir da próxima.
+ * - Fluxo que exige sessão ativa por cookie ($exigirSessao = true — login, perfil, áreas
+ *   restritas): mantém o round-trip original, que é o único jeito de PROVAR que o navegador
+ *   aceita cookies antes de autenticar.
+ *
+ * @param bool $exigirSessao Quando true, redireciona para conferir o cookie numa nova conexão.
+ * @return void
+ */
+function gestor_cookie_verificacao($exigirSessao = false){
 	global $_GESTOR;
 	global $_CONFIG;
-	
-	// ===== Verifica se cookie no navegador está ativo.
-	
-	if(!isset($_COOKIE[$_CONFIG['cookie-verify']]) && !isset($_COOKIE[$_CONFIG['cookie-authname']])){
-		// ===== Criar um cookie de verificação
-		
-		gestor_incluir_biblioteca('seguranca');
-		$cookieId = seguranca_token_aleatorio(32);
-		
+
+	// ===== req-111 (CR-001): a decisão vive em `gestor_cookie_verificacao_desfecho()`, função pura
+	//       da biblioteca, para ser coberta por teste. O laço que ela impede foi MEDIDO em produção:
+	//
+	//       `/` → `_gestor-cookie-verify/<id>/?url=` → `cookies-is-mandatory/` →
+	//       `_gestor-cookie-verify/<id>/?url=cookies-is-mandatory%2F` → `cookies-is-mandatory/` → …
+	//
+	//       Nasce porque a PRÓPRIA `cookies-is-mandatory/` é uma página e, ao ser renderizada,
+	//       reentra aqui — a tela que existe para explicar o problema estava presa nele. Qualquer
+	//       cliente sem cookie (o Googlebot não persiste cookie entre requisições) ficava rodando
+	//       em círculo e NUNCA via conteúdo.
+
+	$desfecho = gestor_cookie_verificacao_desfecho(Array(
+		'crawler' => gestor_requisicao_crawler(),
+		'tem_cookie' => isset($_COOKIE[$_CONFIG['cookie-verify']]) || isset($_COOKIE[$_CONFIG['cookie-authname']]),
+		'exigir_sessao' => $exigirSessao,
+		'caminho' => (string)($_GESTOR['caminho-total'] ?? ''),
+	));
+
+	if($desfecho === 'ignorar') return;
+
+	// ===== Criar um cookie de verificação
+
+	gestor_incluir_biblioteca('seguranca');
+	$cookieId = seguranca_token_aleatorio(32);
+
+	if(!headers_sent()){
 		setcookie($_CONFIG['cookie-verify'], $cookieId, [
 			'expires' => '0',
 			'path' => '/',
@@ -1179,15 +1289,24 @@ function gestor_cookie_verificacao(){
 			'httponly' => true,
 			'samesite' => 'Lax',
 		]);
-		
-		// ===== Redirecionar o usuário afim de conferir se está ativo numa nova conexão com a URL e queryString caso o mesmo não tenha sido logado de outra forma.
-		
-		$url = !empty($_GESTOR['caminho-total']) ? urlencode($_GESTOR['caminho-total']) : '';
-		$queryString = urlencode(gestor_querystring());
-		
-		header("Location: " . $_GESTOR['url-raiz'] . '_gestor-cookie-verify/'.$cookieId.'/?url='.$url.(existe($queryString) ? '&queryString='.$queryString : ''));
-		exit;
 	}
+
+	// ===== O cookie recém-emitido só chega no $_COOKIE da PRÓXIMA requisição; registrar aqui evita
+	//       que uma segunda chamada no mesmo request reemita o cabeçalho com outro valor.
+
+	$_COOKIE[$_CONFIG['cookie-verify']] = $cookieId;
+
+	// ===== Verificação silenciosa: a página pedida segue carregando normalmente.
+
+	if($desfecho !== 'redirecionar') return;
+
+	// ===== Redirecionar o usuário afim de conferir se está ativo numa nova conexão com a URL e queryString caso o mesmo não tenha sido logado de outra forma.
+
+	$url = !empty($_GESTOR['caminho-total']) ? urlencode($_GESTOR['caminho-total']) : '';
+	$queryString = urlencode(gestor_querystring());
+
+	header("Location: " . $_GESTOR['url-raiz'] . '_gestor-cookie-verify/'.$cookieId.'/?url='.$url.(existe($queryString) ? '&queryString='.$queryString : ''));
+	exit;
 }
 
 function gestor_permissao_token(){
@@ -1598,7 +1717,15 @@ function gestor_permissao_modulo($alertar = true, $modulo_forcado = false){
 
 function gestor_permissao(){
 	global $_GESTOR;
-	
+
+	// ===== req-111 (CR-001): a chamada `gestor_cookie_verificacao(true)` que o req-109 acrescentou
+	//       aqui foi REMOVIDA por ser redundante e por custar um salto a mais.
+	//
+	//       Quem chega numa página protegida sem sessão é mandado para `/signin/` duas linhas abaixo,
+	//       e é o `/signin/` que precisa (e faz) a prova de cookie. Quem chega COM sessão já tem o
+	//       cookie de autenticação, e a verificação retornaria sem efeito. O único resultado prático
+	//       do round-trip aqui era um redirecionamento extra antes do login.
+
 	if(!gestor_permissao_token()){
 		$caminho = (isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : '');
 		$caminho = rtrim($caminho,'/').'/';
@@ -1970,6 +2097,122 @@ function gestor_roteador_erro($params = false){
 	}
 }
 
+/**
+ * Resolve os valores OpenGraph da requisição corrente (req-109 / BATCH-109).
+ *
+ * A ordem é: metadados próprios da página (`$_GESTOR['pagina#og']`, preenchido pelo CRUD do
+ * req-110 ou por um módulo) → título/nome da página → variáveis globais do `config.php`.
+ *
+ * @param array|false $params
+ * @param array $params['pagina'] Registro da página (opcional; usa `pagina#titulo` quando ausente).
+ * @return array Valores prontos para `gestor_open_graph_tags()`.
+ */
+function gestor_open_graph_dados($params = false){
+	global $_GESTOR;
+	global $_CONFIG;
+
+	$pagina = (is_array($params) && isset($params['pagina']) && is_array($params['pagina'])) ? $params['pagina'] : Array();
+	$og = (isset($_GESTOR['pagina#og']) && is_array($_GESTOR['pagina#og'])) ? $_GESTOR['pagina#og'] : Array();
+
+	$siteName = (string)($_CONFIG['site-name'] ?? '');
+
+	$titulo = (string)($og['title'] ?? '');
+	if(!existe($titulo)) $titulo = (string)($pagina['nome'] ?? '');
+	if(!existe($titulo)) $titulo = (string)($_GESTOR['pagina#titulo'] ?? '');
+	if(!existe($titulo)) $titulo = $siteName;
+
+	$descricao = (string)($og['description'] ?? '');
+	if(!existe($descricao)) $descricao = (string)($_CONFIG['site-description'] ?? '');
+
+	$imagem = (string)($og['image'] ?? '');
+	if(!existe($imagem)) $imagem = (string)($_CONFIG['site-og-image'] ?? '');
+
+	// Imagem relativa vira absoluta: o WhatsApp e o Meta descartam `og:image` sem host.
+	if(existe($imagem) && !preg_match('#^(https?:)?//#i', $imagem)){
+		$imagem = rtrim((string)($_GESTOR['url-full-http'] ?? ''), '/').'/'.ltrim($imagem, '/');
+	}
+
+	$url = (string)($og['url'] ?? '');
+	if(!existe($url)){
+		$caminho = (string)($_GESTOR['caminho-total'] ?? '');
+		$url = (string)($_GESTOR['url-full-http'] ?? '').ltrim($caminho, '/');
+	}
+
+	return Array(
+		'title'       => $titulo,
+		'description' => $descricao,
+		'image'       => $imagem,
+		'url'         => $url,
+		'site_name'   => $siteName,
+		'type'        => (string)($og['type'] ?? 'website'),
+	);
+}
+
+/**
+ * Resolve `description` e `keywords` da requisição corrente (req-112 / BATCH-112).
+ *
+ * Ordem: metadados próprios da página (`$_GESTOR['pagina#og']`) → `og_descricao` da própria página
+ * (quem preencheu só o texto social não precisa repetir) → `config.php`.
+ *
+ * @return array Valores prontos para `gestor_meta_seo_tags()`.
+ */
+function gestor_meta_seo_dados(){
+	global $_GESTOR;
+	global $_CONFIG;
+
+	$og = (isset($_GESTOR['pagina#og']) && is_array($_GESTOR['pagina#og'])) ? $_GESTOR['pagina#og'] : Array();
+
+	$descricao = (string)($og['meta_description'] ?? '');
+	if(!existe($descricao)) $descricao = (string)($og['description'] ?? '');
+	if(!existe($descricao)) $descricao = (string)($_CONFIG['site-description'] ?? '');
+
+	$keywords = (string)($og['meta_keywords'] ?? '');
+	if(!existe($keywords)) $keywords = (string)($_CONFIG['site-keywords'] ?? '');
+
+	return Array(
+		'description' => $descricao,
+		'keywords' => $keywords,
+	);
+}
+
+/**
+ * Resposta mínima para crawler em página protegida (req-109 / BATCH-109).
+ *
+ * Devolve `200` com um documento que tem apenas `<head>`: título, `robots: noindex` e as tags
+ * OpenGraph da página. O corpo fica vazio — o preview do link exibe o card correto sem que
+ * nenhuma linha do conteúdo privado seja renderizada ou sequer consultada (o módulo da página
+ * não chega a ser incluído).
+ *
+ * @param array $pagina Registro da página vindo do roteador.
+ * @return void Encerra a requisição.
+ */
+function gestor_roteador_crawler_pagina_protegida($pagina = Array()){
+	global $_GESTOR;
+
+	// req-110: metadados próprios da página têm precedência sobre os fallbacks do config.
+	$_GESTOR['pagina#og'] = gestor_pagina_og_do_registro($pagina);
+
+	$dados = gestor_open_graph_dados(Array('pagina' => $pagina));
+	$tags = gestor_open_graph_tags($dados);
+
+	$html = '<!DOCTYPE html>'."\n"
+		.'<html lang="'.htmlspecialchars((string)($_GESTOR['linguagem-codigo'] ?? 'pt-br'), ENT_QUOTES, 'UTF-8').'">'."\n"
+		.'<head>'."\n"
+		.'	<meta charset="UTF-8">'."\n"
+		.'	<meta name="robots" content="noindex, nofollow">'."\n"
+		.'	<title>'.htmlspecialchars($dados['title'], ENT_QUOTES, 'UTF-8').'</title>'."\n";
+
+	foreach($tags as $tag) $html .= '	'.$tag."\n";
+
+	$html .= '</head>'."\n".'<body></body>'."\n".'</html>';
+
+	http_response_code(200);
+	header('Content-Type: text/html; charset=UTF-8');
+	header('X-Robots-Tag: noindex');
+	echo $html;
+	exit;
+}
+
 function gestor_hotfix(){
 	
 	
@@ -2070,9 +2313,18 @@ function gestor_roteador(){
 	
 	if(isset($_GESTOR['caminho']) && isset($_GESTOR['caminho'][0]))
 	switch($_GESTOR['caminho'][0]){
-		case '_gestor-cookie-verify': 
+		case '_gestor-cookie-verify':
 			// ===== Verifica se é retorno de redirecionamento veio junto com o cookie. Se sim redirecionar usuário para a URL com queryString. Senão redireciona automaticamente para página informando a obrigatoriedade do uso de cookies para funcionar a página com permissão.
-			
+
+			// req-109: crawler que caiu aqui (link antigo compartilhado) volta para a URL de origem em
+			// vez de receber a página de cookies obrigatórios — só assim o preview lê o OpenGraph real.
+			if(gestor_requisicao_crawler()){
+				$url = !empty($_REQUEST['url']) ? urldecode(banco_escape_field($_REQUEST['url'])) : '';
+				$queryString = !empty($_REQUEST['queryString']) ? urldecode(banco_escape_field($_REQUEST['queryString'])) : '';
+
+				header("Location: " . $_GESTOR['url-raiz'] . $url .(existe($queryString) ? '?'.$queryString : '')); exit;
+			}
+
 			if(!isset($_COOKIE[$_CONFIG['cookie-verify']])){
 				header("Location: " . $_GESTOR['url-raiz'] . 'cookies-is-mandatory/'); exit;
 			} else {
@@ -2118,6 +2370,13 @@ function gestor_roteador(){
 			'sem_permissao',
 			'nome',
 			'framework_css',
+			// req-110: metadados de compartilhamento social gravados por página.
+			'imagem_destaque',
+			'og_titulo',
+			'og_descricao',
+			// req-112: meta tags clássicas de SEO.
+			'meta_descricao',
+			'meta_keywords',
 		);
 	}
 
@@ -2203,6 +2462,13 @@ function gestor_roteador(){
 
 		// ==== Verificar se a página tem permissão, se houver e o usuário não estiver logado, deve redirecionar para a página de login e finalizar a requisição.
 		if(!existe($paginas[0]['sem_permissao'])){
+			// req-109: crawler sem sessão numa página protegida recebe só o <head> com OpenGraph.
+			// Redirecioná-lo para /signin/ faz o preview do link exibir a tela de login; devolver o
+			// conteúdo seria vazamento. O corpo sai vazio e o visitante humano continua no fluxo normal.
+			if(!$_GESTOR['ajax'] && gestor_requisicao_crawler() && !gestor_permissao_token()){
+				gestor_roteador_crawler_pagina_protegida($paginas[0]);
+			}
+
 			gestor_permissao();
 		} else {
 			$sem_permissao = true;
@@ -2342,6 +2608,11 @@ function gestor_roteador(){
 			$_GESTOR['pagina'] = $html;
 			$_GESTOR['pagina#titulo'] = $nome;
 			$_GESTOR['pagina#framework_css'] = $framework_css;
+
+			// ===== req-110: metadados de compartilhamento social da página alimentam o OpenGraph
+			//       montado pelo BATCH-109 (gestor_open_graph_dados). Valor vazio cai no fallback.
+
+			$_GESTOR['pagina#og'] = gestor_pagina_og_do_registro($paginas[0]);
 
 			// ===== Módulo alvo quando houver executar
 
@@ -2606,16 +2877,71 @@ function gestor_config(){
 	}
 }
 
+/**
+ * Resposta de token CSRF ausente/inválido (req-107, aprimorada no req-109 / BATCH-109).
+ *
+ * Clientes AJAX continuam recebendo o mesmo JSON de antes (contrato preservado). O que muda é a
+ * NAVEGAÇÃO normal: um POST de formulário que falha na validação fazia o navegador exibir o JSON
+ * cru em tela cheia — o usuário do Editor Visual via `{"status":"error","message":"Token CSRF
+ * inválido ou ausente."}` no lugar da página e concluía que perdera o trabalho. Agora recebe uma
+ * página explicando o que houve, com botão de voltar (o conteúdo do formulário é preservado pelo
+ * histórico do navegador).
+ *
+ * @return void Encerra a requisição.
+ */
+function gestor_csrf_resposta_invalida(){
+	global $_GESTOR;
+
+	http_response_code(403);
+
+	$mensagem = 'Token CSRF inválido ou ausente.';
+
+	$aceita = strtolower((string)($_SERVER['HTTP_ACCEPT'] ?? ''));
+	$requisicaoAjax = !empty($_REQUEST['ajax'])
+		|| strtolower((string)($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '')) === 'xmlhttprequest'
+		|| (strpos($aceita, 'application/json') !== false && strpos($aceita, 'text/html') === false);
+
+	if($requisicaoAjax){
+		header('Content-Type: application/json; charset=UTF-8');
+		echo json_encode(Array('status' => 'error', 'message' => $mensagem), JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	$ingles = strpos(strtolower((string)($_GESTOR['linguagem-codigo'] ?? 'pt-br')), 'en') === 0;
+
+	$titulo = $ingles ? 'Session expired' : 'Sessão expirada';
+	$texto = $ingles
+		? 'Your security token expired or was not sent. Go back, reload the page and try again — your data was not saved.'
+		: 'Seu token de segurança expirou ou não foi enviado. Volte, recarregue a página e tente novamente — nada foi salvo.';
+	$voltar = $ingles ? 'Go back' : 'Voltar';
+
+	header('Content-Type: text/html; charset=UTF-8');
+
+	echo '<!DOCTYPE html>'."\n"
+		.'<html lang="'.htmlspecialchars((string)($_GESTOR['linguagem-codigo'] ?? 'pt-br'), ENT_QUOTES, 'UTF-8').'">'."\n"
+		.'<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+		.'<meta name="robots" content="noindex"><title>'.htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8').'</title>'
+		.'<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;'
+		.'font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#f6f7f9;color:#1b1c1d}'
+		.'.c2f-box{max-width:520px;padding:32px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.12);text-align:center}'
+		.'h1{font-size:20px;margin:0 0 12px}p{margin:0 0 24px;line-height:1.5;color:#5b5f66}'
+		.'button{padding:10px 22px;border:0;border-radius:6px;background:#2185d0;color:#fff;font-size:15px;cursor:pointer}'
+		.'</style></head>'."\n"
+		.'<body><div class="c2f-box"><h1>'.htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8').'</h1>'
+		.'<p>'.htmlspecialchars($texto, ENT_QUOTES, 'UTF-8').'</p>'
+		.'<button type="button" onclick="history.back()">'.htmlspecialchars($voltar, ENT_QUOTES, 'UTF-8').'</button>'
+		.'</div></body></html>';
+
+	exit;
+}
+
 function gestor_start(){
 	gestor_cabecalhos_seguranca();
 	gestor_config();
 	gestor_sessao_iniciar();
 	gestor_incluir_biblioteca('seguranca');
 	if(!seguranca_csrf_requisicao_validar()){
-		http_response_code(403);
-		header('Content-Type: application/json; charset=UTF-8');
-		echo json_encode(Array('status' => 'error', 'message' => 'Token CSRF inválido ou ausente.'), JSON_UNESCAPED_UNICODE);
-		exit;
+		gestor_csrf_resposta_invalida();
 	}
 	gestor_roteador();
 }

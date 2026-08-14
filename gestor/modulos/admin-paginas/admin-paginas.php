@@ -100,6 +100,14 @@ function admin_paginas_adicionar(){
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css_compiled"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html_extra_head"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		// req-110: metadados de compartilhamento social (OpenGraph). O caminho do arquivo vem do campo
+		// oculto `-caminho` do image picker; o id numérico não é usado (árvore física, BATCH-090).
+		$campo_nome = "imagem_destaque"; $post_nome = 'imagem_destaque-caminho';		if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "og_titulo"; $post_nome = $campo_nome;							if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "og_descricao"; $post_nome = $campo_nome;							if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		// req-112: meta tags clássicas de SEO. Keywords passam pelo normalizador antes do banco.
+		$campo_nome = "meta_descricao"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "meta_keywords"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field(gestor_meta_keywords_normalizar($_REQUEST[$post_nome])));
 		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
 		
 		if(gestor_acesso('permissao-pagina')){
@@ -122,6 +130,10 @@ function admin_paginas_adicionar(){
 			$modulo['tabela']['nome']
 		);
 		
+		// req-110: nova página pública entra no sitemap.
+		$_GESTOR['modulo-registro-id'] = $id;
+		admin_paginas_sitemap_sincronizar();
+
 		// Hook: notificar que um registro do módulo foi adicionado no banco de dados
 		hook_do_action($_GESTOR['modulo-id'], 'adicionar.banco', $id, [
 			'nome' => banco_escape_field($_REQUEST['pagina-nome'] ?? ''),
@@ -143,6 +155,13 @@ function admin_paginas_adicionar(){
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'#html-editor#',html_editor_componente([
 		'alvo' => 'paginas',
+		// req-110: a aba "SEO & Compartilhamento" já nasce disponível na criação da página.
+		'seo' => Array(
+			'og_titulo' => '',
+			'og_descricao' => '',
+			'meta_descricao' => '',
+			'meta_keywords' => '',
+		),
 	]));
 
 	// ===== Inclusão Módulo JS
@@ -244,6 +263,13 @@ function admin_paginas_adicionar(){
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 					'dados' => $modulo['selectDadosFrameworkCSS'],
 				),
+				// req-110: imagem de destaque (og:image) da aba "SEO & Compartilhamento".
+				Array(
+					'tipo' => 'imagepick',
+					'id' => 'featured-image',
+					'nome' => 'imagem_destaque',
+					'caminho' => '',
+				),
 			)
 		)
 	);
@@ -274,15 +300,22 @@ function admin_paginas_editar(){
 		'css_compiled', // Novo campo
 		'html_extra_head', // Novo campo
 		'framework_css',
+		// req-110: metadados de compartilhamento social (OpenGraph).
+		'imagem_destaque',
+		'og_titulo',
+		'og_descricao',
+		// req-112: meta tags clássicas de SEO.
+		'meta_descricao',
+		'meta_keywords',
 	);
-	
+
 	$camposBancoPadrao = Array(
 		$modulo['tabela']['status'],
 		$modulo['tabela']['versao'],
 		$modulo['tabela']['data_criacao'],
 		$modulo['tabela']['data_modificacao'],
 	);
-	
+
 	$camposBancoEditar = array_merge($camposBanco,$camposBancoPadrao);
 	$camposBancoAntes = $camposBanco;
 	
@@ -417,6 +450,15 @@ function admin_paginas_editar(){
 		$campo_nome = "css"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "css_compiled"; $request_name = $campo_nome; $alteracoes_name = 'css-compiled'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}} // Novo campo
 		$campo_nome = "html_extra_head"; $request_name = $campo_nome; $alteracoes_name = 'html-extra-head'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}} // Novo campo
+
+		// ===== req-110: metadados de compartilhamento social. Campo vazio GRAVA vazio (o usuário
+		//       pode querer remover o título social e voltar ao fallback), então a comparação usa o
+		//       valor sempre presente do request, e não `isset`.
+		$campo_nome = "imagem_destaque"; $request_name = 'imagem_destaque-caminho'; $alteracoes_name = 'featured-image'; $__v = isset($_REQUEST[$request_name]) ? trim((string)$_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
+		$campo_nome = "og_titulo"; $request_name = $campo_nome; $alteracoes_name = 'og-title'; $__v = isset($_REQUEST[$request_name]) ? trim((string)$_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
+		$campo_nome = "og_descricao"; $request_name = $campo_nome; $alteracoes_name = 'og-description'; $__v = isset($_REQUEST[$request_name]) ? trim((string)$_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
+		$campo_nome = "meta_descricao"; $request_name = $campo_nome; $alteracoes_name = 'meta-description'; $__v = isset($_REQUEST[$request_name]) ? trim((string)$_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
+		$campo_nome = "meta_keywords"; $request_name = $campo_nome; $alteracoes_name = 'meta-keywords'; $__v = isset($_REQUEST[$request_name]) ? gestor_meta_keywords_normalizar($_REQUEST[$request_name]) : ''; if(isset($_REQUEST[$request_name]) && banco_select_campos_antes($campo_nome) != $__v){$editar['dados'][] = $campo_nome."='" . banco_escape_field($__v) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($__v));}
 		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
@@ -466,6 +508,8 @@ function admin_paginas_editar(){
 				'alteracoes' => $alteracoes,
 			));
 			
+			$_GESTOR['modulo-registro-id'] = (isset($id_novo) ? $id_novo : $id);
+
 			// Hook: notificar que um registro do módulo foi editado no banco
 			hook_do_action($_GESTOR['modulo-id'], 'editar.banco', (isset($id_novo) ? $id_novo : $id), [
 				'nome' => banco_escape_field($_REQUEST['pagina-nome'] ?? ''),
@@ -474,20 +518,56 @@ function admin_paginas_editar(){
 			]);
 
 			// ===== Se mudou o caminho, criar página 301 do caminho
-			
+
 			if(isset($caminhoMudou)){
-				$campos = null; $campo_sem_aspas_simples = null;
-				
-				$campo_nome = "id_paginas"; $campo_valor = interface_modulo_variavel_valor(Array('variavel' => $modulo['tabela']['id_numerico'])); 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "caminho"; $campo_valor = $caminhoMudou; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-				$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
-				
-				banco_insert_name
+				// req-112: o id numérico é lido DIRETO da tabela, e não por
+				// `interface_modulo_variavel_valor()`. Aquela helper chama `gestor_redirecionar_raiz()`
+				// quando não encontra o registro — um `exit` no meio da gravação, que abortava o 301
+				// sem aviso — e ainda aplica um filtro por `id_hosts` que não vale para este módulo.
+				$id_atual = (isset($id_novo) ? $id_novo : $id);
+
+				$registro = banco_select_name
 				(
-					$campos,
-					"paginas_301"
+					banco_campos_virgulas(Array($modulo['tabela']['id_numerico'])),
+					$modulo['tabela']['nome'],
+					"WHERE ".$modulo['tabela']['id']."='".banco_escape_field($id_atual)."'"
+					." AND language='".$_GESTOR['linguagem-codigo']."'"
+					." AND ".$modulo['tabela']['status']."!='D'"
 				);
+
+				$id_numerico = $registro ? $registro[0][$modulo['tabela']['id_numerico']] : null;
+
+				if($id_numerico){
+					// Não duplicar: o mesmo caminho antigo pode já ter sido registrado numa edição
+					// anterior (A → B → A → B deixaria duas linhas idênticas).
+					$ja_existe = banco_select_name
+					(
+						banco_campos_virgulas(Array('id_paginas_301')),
+						"paginas_301",
+						"WHERE caminho='".banco_escape_field($caminhoMudou)."'"
+					);
+
+					if(!$ja_existe){
+						$campos = null; $campo_sem_aspas_simples = null;
+
+						$campo_nome = "id_paginas"; $campo_valor = $id_numerico; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+						$campo_nome = "caminho"; $campo_valor = $caminhoMudou; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+						$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
+
+						banco_insert_name
+						(
+							$campos,
+							"paginas_301"
+						);
+					}
+				} else if(function_exists('log_disco')) {
+					log_disco('301 não registrado: id numérico não encontrado para a página '.$id_atual, 'admin-paginas');
+				}
 			}
+
+			// req-110/req-112: caminho, status e permissão podem ter mudado — o sitemap acompanha.
+			// Quando o caminho mudou, a URL ANTIGA sai do XML antes de a nova entrar.
+			admin_paginas_sitemap_sincronizar(false, (isset($caminhoMudou) ? $caminhoMudou : null));
 		}
 		
 		// ===== Reler URL.
@@ -527,6 +607,12 @@ function admin_paginas_editar(){
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
 		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
+		// req-110: metadados de compartilhamento social.
+		$imagem_destaque = (isset($retorno_bd['imagem_destaque']) ? $retorno_bd['imagem_destaque'] : '');
+		$og_titulo = (isset($retorno_bd['og_titulo']) ? $retorno_bd['og_titulo'] : '');
+		$og_descricao = (isset($retorno_bd['og_descricao']) ? $retorno_bd['og_descricao'] : '');
+		$meta_descricao = (isset($retorno_bd['meta_descricao']) ? $retorno_bd['meta_descricao'] : '');
+		$meta_keywords = (isset($retorno_bd['meta_keywords']) ? $retorno_bd['meta_keywords'] : '');
 		
 		// ===== Variaveis globais alterar.
 		
@@ -568,6 +654,13 @@ function admin_paginas_editar(){
 			'editar' => true,
 			'modulo' => $modulo,
 			'alvo' => 'paginas',
+			// req-110: aba "SEO & Compartilhamento" com os metadados desta página.
+			'seo' => Array(
+				'og_titulo' => $og_titulo,
+				'og_descricao' => $og_descricao,
+				'meta_descricao' => $meta_descricao,
+				'meta_keywords' => $meta_keywords,
+			),
 		]));
 
 		// ===== Popular os metaDados
@@ -715,6 +808,15 @@ function admin_paginas_editar(){
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 					'dados' => $modulo['selectDadosFrameworkCSS'],
 				),
+				// req-110: imagem de destaque (og:image) na aba "SEO & Compartilhamento" do Editor HTML.
+				// O placeholder `<span>#imagepick-featured-image#</span>` vive no componente
+				// `html-editor-seo`, já inserido em $_GESTOR['pagina'] por html_editor_componente().
+				Array(
+					'tipo' => 'imagepick',
+					'id' => 'featured-image',
+					'nome' => 'imagem_destaque',
+					'caminho' => $imagem_destaque,
+				),
 			)
 		)
 	);
@@ -744,15 +846,22 @@ function admin_paginas_clonar(){
 		'css_compiled', // Novo campo
 		'html_extra_head', // Novo campo
 		'framework_css',
+		// req-110: metadados de compartilhamento social acompanham o clone.
+		'imagem_destaque',
+		'og_titulo',
+		'og_descricao',
+		// req-112: meta tags clássicas de SEO.
+		'meta_descricao',
+		'meta_keywords',
 	);
-	
+
 	$camposBancoPadrao = Array(
 		$modulo['tabela']['status'],
 		$modulo['tabela']['versao'],
 		$modulo['tabela']['data_criacao'],
 		$modulo['tabela']['data_modificacao'],
 	);
-	
+
 	$camposBancoClonar = array_merge($camposBanco,$camposBancoPadrao);
 	
 	// ===== Gravar registro no Banco
@@ -842,6 +951,14 @@ function admin_paginas_clonar(){
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css_compiled"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html_extra_head"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		// req-110: metadados de compartilhamento social (OpenGraph). O caminho do arquivo vem do campo
+		// oculto `-caminho` do image picker; o id numérico não é usado (árvore física, BATCH-090).
+		$campo_nome = "imagem_destaque"; $post_nome = 'imagem_destaque-caminho';		if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "og_titulo"; $post_nome = $campo_nome;							if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "og_descricao"; $post_nome = $campo_nome;							if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		// req-112: meta tags clássicas de SEO. Keywords passam pelo normalizador antes do banco.
+		$campo_nome = "meta_descricao"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "meta_keywords"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field(gestor_meta_keywords_normalizar($_REQUEST[$post_nome])));
 		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
 		
 		if(gestor_acesso('permissao-pagina')){
@@ -864,6 +981,10 @@ function admin_paginas_clonar(){
 			$modulo['tabela']['nome']
 		);
 		
+		// req-110: o clone é uma página nova e também entra no sitemap.
+		$_GESTOR['modulo-registro-id'] = $id;
+		admin_paginas_sitemap_sincronizar();
+
 		// Hook: notificar que um registro do módulo foi clonado no banco de dados
 		hook_do_action($_GESTOR['modulo-id'], 'clonar.banco', $id, [
 			'nome' => banco_escape_field($_REQUEST['pagina-nome'] ?? ''),
@@ -906,7 +1027,13 @@ function admin_paginas_clonar(){
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
 		$sem_permissao = (isset($retorno_bd['sem_permissao']) ? true : false);
-		
+		// req-110: metadados de compartilhamento social.
+		$imagem_destaque = (isset($retorno_bd['imagem_destaque']) ? $retorno_bd['imagem_destaque'] : '');
+		$og_titulo = (isset($retorno_bd['og_titulo']) ? $retorno_bd['og_titulo'] : '');
+		$og_descricao = (isset($retorno_bd['og_descricao']) ? $retorno_bd['og_descricao'] : '');
+		$meta_descricao = (isset($retorno_bd['meta_descricao']) ? $retorno_bd['meta_descricao'] : '');
+		$meta_keywords = (isset($retorno_bd['meta_keywords']) ? $retorno_bd['meta_keywords'] : '');
+
 		// ===== Variaveis globais alterar.
 		
 		$open = $_GESTOR['variavel-global']['open'];
@@ -944,6 +1071,13 @@ function admin_paginas_clonar(){
 			'editar' => true,
 			'modulo' => $modulo,
 			'alvos' => 'paginas',
+			// req-110: metadados sociais acompanham o clone.
+			'seo' => Array(
+				'og_titulo' => $og_titulo,
+				'og_descricao' => $og_descricao,
+				'meta_descricao' => $meta_descricao,
+				'meta_keywords' => $meta_keywords,
+			),
 		]));
 	} else {
 		gestor_redirecionar_raiz();
@@ -1044,6 +1178,13 @@ function admin_paginas_clonar(){
 					'valor_selecionado' => $framework_css,
 					'placeholder' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-framework-css-label')),
 					'dados' => $modulo['selectDadosFrameworkCSS'],
+				),
+				// req-110: imagem de destaque (og:image) da aba "SEO & Compartilhamento".
+				Array(
+					'tipo' => 'imagepick',
+					'id' => 'featured-image',
+					'nome' => 'imagem_destaque',
+					'caminho' => isset($imagem_destaque) ? $imagem_destaque : '',
 				),
 			)
 		)
@@ -1283,22 +1424,66 @@ function admin_paginas_ajax_editor_html_switch(){
 
 // ==== Start
 
+/**
+ * req-110: sincroniza o `sitemap.xml` com a página corrente.
+ *
+ * Usada tanto nas gravações do próprio módulo quanto como `callbackFunction` das operações
+ * genéricas de status e exclusão — que são executadas pela `interface`, não por este arquivo.
+ *
+ * A falha nunca interrompe o CRUD: o sitemap é um artefato derivado e pode ser regenerado.
+ *
+ * @param bool $remover Força a remoção da entrada (exclusão do registro).
+ * @param string|null $caminhoAntigo Caminho anterior, quando o slug mudou (req-112).
+ * @return void
+ */
+function admin_paginas_sitemap_sincronizar($remover = false, $caminhoAntigo = null){
+	global $_GESTOR;
+
+	$id = $_GESTOR['modulo-registro-id'] ?? '';
+	if(!existe($id)) return;
+
+	gestor_incluir_biblioteca('sitemap');
+
+	if(!function_exists('sitemap_sincronizar_por_id')) return;
+
+	try {
+		sitemap_sincronizar_por_id($id, $remover, $caminhoAntigo);
+	} catch (Throwable $e) {
+		if(function_exists('log_disco')) log_disco('Falha ao sincronizar o sitemap: '.$e->getMessage(), 'sitemap');
+	}
+}
+
+/** Callback de exclusão: a entrada sai do sitemap. */
+function admin_paginas_sitemap_remover(){
+	admin_paginas_sitemap_sincronizar(true);
+}
+
+/** Callback de mudança de status: a elegibilidade é recalculada a partir do registro. */
+function admin_paginas_sitemap_atualizar(){
+	admin_paginas_sitemap_sincronizar(false);
+}
+
 function admin_paginas_start(){
 	global $_GESTOR;
-	
+
 	gestor_incluir_bibliotecas();
-	
+
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();
-		
+
 		switch($_GESTOR['ajax-opcao']){
 			case 'editor-html-switch': admin_paginas_ajax_editor_html_switch(); break;
 		}
-		
+
 		interface_ajax_finalizar();
 	} else {
 		admin_paginas_interfaces_padroes();
-		
+
+		// req-110: status e exclusão são executados pela `interface`; o sitemap é sincronizado
+		// pelo callback disparado logo após a gravação e antes do redirecionamento.
+		$_GESTOR['interface']['status']['finalizar']['callbackFunction'] = 'admin_paginas_sitemap_atualizar';
+		$_GESTOR['interface']['excluir']['finalizar']['callbackFunction'] = 'admin_paginas_sitemap_remover';
+
 		interface_iniciar();
 		
 		switch($_GESTOR['opcao']){

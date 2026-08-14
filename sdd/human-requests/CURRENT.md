@@ -1,15 +1,13 @@
 # Current Human Request
 
-- **Intake ativo (Agente Atual)**: Nenhum.
+- **Intake ativo (Agente Atual)**: [req-112.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-112.md) (BATCH-112 `ready-for-intake`, 2026-08-14).
 - **Outros Intakes Pendentes (Outros Agentes)**: Nenhum.
 
-- **Implementado nesta rodada**: [req-108.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-108.md) (BATCH-108, 2026-08-10) — deploy devolvia `HTTP 429` falso porque `api.php` carregava `banco-v2.php` (sintaxe PHP 8.5) num ambiente PHP 8.3: o `ParseError` era capturado pelo `catch (Throwable)` e virava "Rate limit excedido", com a tabela `api_rate_limits` vazia. Modelo adotado: **separação por linha de versão, sem fallback** — a linha 2.x usa só as bibliotecas antigas, a `3.0.x` exige PHP 8.5. Aplicado em `main` (`2c9f7a35`) e `2.9.x` (`e1ffe993`); a `3.0.x` não foi tocada. O core inteiro passou a compilar sob PHP 8.3/8.4 (antes, 4 arquivos falhavam).
-  * **Pendência aberta — Parte IV do req-108**: falta a guarda de `php -l` no CI. Sem ela, nada barra um arquivo com sintaxe 8.5 entrando na linha 2.x — foi exatamente o que permitiu o commit `c8fefefa` passar.
-  * Origem da demanda: surgiu durante a execução do projeto privado `transformamp` (req-020/BATCH-028), cujo deploy estava bloqueado por este defeito.
-
 - **Lotes Fechados**: 
-  * [req-109.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-109.md) (BATCH-109 `complete`, 2026-08-10): Modo de IA Dedicado 'paginas-editbar' para Edição de Elementos Isolados no Live Editor e Editbar.
-  * [req-106.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-106.md) (BATCH-106 `complete`, 2026-08-06): Painel Flutuante de Opções de Exibição, Sidebar Lateral de CSS e Barra Superior de Navegação no Editor Visual.
+  * [req-110.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-110.md) (BATCH-110 `complete`, 2026-08-13): CRUD de Metadados de Página, Imagem de Destaque, Aba SEO no Editor HTML, Painel na Editbar e Sitemap XML.
+  * (BATCH-111 / CR-001 `complete`, 2026-08-13): Reversão de bloqueio de analytics e eliminação definitiva do laço infinito de redirecionamento de cookies.
+  * [req-109.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-109.md) (BATCH-109 `complete`, 2026-08-13): Isenção de Crawlers/Bots, Set-Cookie Silencioso, Auditoria CSRF no global.js, Permissões no Docker e Correções no Editor Visual.
+  * [req-108.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-108.md) (BATCH-108 `complete`, 2026-08-10): Desacoplamento da linha 2.x do código PHP 8.5 e eliminação do falso 429 no deploy.
   * [req-107.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-107.md) (BATCH-107 `complete`, 2026-08-06): Hardening de Segurança, Mitigação de Vulnerabilidades e Saneamento do Core.
   * [req-075.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-075.md) (BATCH-075 `complete`, 2026-07-10): Site Toolbar completa, agendamento de páginas e extensões do editor.
   * [req-076.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-076.md) (BATCH-076 `complete`, 2026-07-09): Exclusão de `contents/` em deploy/sincronização.

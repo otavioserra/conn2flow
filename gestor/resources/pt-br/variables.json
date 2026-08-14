@@ -502,5 +502,75 @@
         "id": "forms-subject-emails",
         "value": "Você recebeu um novo contato no site - #code#",
         "type": "string"
+    },
+    {
+        "id": "html-editor-seo-menu-label",
+        "value": "SEO & Compartilhamento",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-menu-tooltip",
+        "value": "Clique para editar o título, a descrição e a imagem usados ao compartilhar esta página.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-hint-title",
+        "value": "Como esta página aparece ao ser compartilhada",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-hint-text",
+        "value": "Estes dados alimentam as metatags OpenGraph lidas por WhatsApp, Facebook, LinkedIn, Telegram e X. Campos em branco usam o nome da página e os padrões do site.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-og-title-label",
+        "value": "Título social",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-og-title-placeholder",
+        "value": "Deixe em branco para usar o nome da página",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-og-description-label",
+        "value": "Descrição social",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-og-description-placeholder",
+        "value": "Resumo curto exibido no card do link",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-featured-image-label",
+        "value": "Imagem de destaque",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-search-header",
+        "value": "Buscadores (Google)",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-meta-description-label",
+        "value": "Meta Descrição",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-meta-description-placeholder",
+        "value": "Resumo exibido no resultado de busca. Vazio usa a descrição social ou o padrão do site.",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-meta-keywords-label",
+        "value": "Palavras-chave",
+        "type": "string"
+    },
+    {
+        "id": "html-editor-seo-meta-keywords-placeholder",
+        "value": "Separadas por vírgula. Ex: fotografia, ensaio, estúdio",
+        "type": "string"
     }
 ]

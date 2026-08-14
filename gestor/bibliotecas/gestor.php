@@ -117,6 +117,432 @@ function gestor_pagina_recursos_incluir($params = false){
 }
 
 /**
+ * Detecta crawlers/scrapers sociais e de busca pelo User-Agent (req-109 / BATCH-109).
+ *
+ * O WhatsApp, o Meta, o Twitter/X e afins buscam a URL UMA vez, sem cookies e sem seguir o
+ * fluxo de verificação de cookie do gestor. Qualquer `Location:` intermediário faz o preview
+ * do link chegar vazio (ou com o HTML da página de cookies obrigatórios) e as tags OpenGraph
+ * da página real nunca são lidas. Por isso o bootstrap precisa reconhecê-los e isentá-los.
+ *
+ * A comparação é por SUBSTRING em caixa baixa: os User-Agents desses robôs carregam versão,
+ * URL de contato e sufixos variáveis, então casar o token é mais estável que uma lista fechada.
+ *
+ * Função PURA (sem dependência de $_GESTOR) para ser testável isoladamente.
+ *
+ * @param string|null $userAgent User-Agent da requisição ($_SERVER['HTTP_USER_AGENT']).
+ * @return bool
+ */
+function gestor_crawler_detectar($userAgent = null, $tokensExtra = null){
+	if(!is_string($userAgent)) return false;
+
+	$userAgent = strtolower(trim($userAgent));
+	if($userAgent === '') return false;
+
+	$tokens = gestor_crawler_tokens_padrao();
+
+	if($tokensExtra === null) $tokensExtra = gestor_crawler_tokens_extra();
+	if(is_array($tokensExtra) && $tokensExtra) $tokens = array_merge($tokens, $tokensExtra);
+
+	foreach($tokens as $token){
+		$token = strtolower(trim((string)$token));
+		if($token === '') continue;
+		if(strpos($userAgent, $token) !== false) return true;
+	}
+
+	return false;
+}
+
+/**
+ * Lista embutida de tokens de robô (req-109, ampliada no req-111 / CR-001).
+ *
+ * Sempre ativa. São nomes estáveis — WhatsApp, `facebookexternalhit`, Googlebot e afins não mudam
+ * de identificador há anos —, então esta lista não é fonte de manutenção recorrente. O que muda com
+ * o tempo entra pela lista configurável (`gestor_crawler_tokens_extra`), sem deploy.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @return array
+ */
+function gestor_crawler_tokens_padrao(){
+	return Array(
+		// Redes sociais e mensageiros — preview de link.
+		'whatsapp',
+		'facebookexternalhit',
+		'facebookcatalog',
+		'facebot',
+		'meta-externalagent',
+		'meta-externalfetcher',
+		'instagram',
+		'twitterbot',
+		'linkedinbot',
+		'telegrambot',
+		'discordbot',
+		'slackbot',
+		'slack-imgproxy',
+		'pinterest',
+		'redditbot',
+		'skypeuripreview',
+		'embedly',
+		'quora link preview',
+		'vkshare',
+
+		// Buscadores.
+		'googlebot',
+		'google-inspectiontool',
+		'googleother',
+		'google-extended',
+		'storebot-google',
+		'google-site-verification',
+		'bingbot',
+		'bingpreview',
+		'duckduckbot',
+		'yandexbot',
+		'baiduspider',
+		'applebot',
+		'petalbot',
+		'amazonbot',
+
+		// Anúncios e auditoria de landing page (req-111 / CR-001).
+		'adsbot-google',
+		'mediapartners-google',
+		'google-read-aloud',
+		'chrome-lighthouse',
+		'google page speed insights',
+		'gtmetrix',
+		'ahrefsbot',
+		'semrushbot',
+		'mj12bot',
+		'dotbot',
+		'screaming frog',
+
+		// Monitoramento de disponibilidade e validadores.
+		'uptimerobot',
+		'pingdom',
+		'statuscake',
+		'better uptime',
+		'w3c_validator',
+		'developers.google.com/+/web/snippet',
+	);
+}
+
+/**
+ * Tokens adicionais definidos pelo operador em Ambiente → Configurações do Site (req-111 / CR-001).
+ *
+ * Desligada por padrão. Existe para o caso de um site com fluxo alto de robôs específicos: o
+ * operador acrescenta o token e o efeito vale na hora, sem release do core.
+ *
+ * IMPORTANTE: esta lista é um COMPLEMENTO. A correção do laço de cookie (req-111) não depende de
+ * reconhecer robô algum — cliente sem cookie recebe a página pública de qualquer forma. Estes
+ * tokens servem ao outro uso da detecção: entregar só o `<head>` com OpenGraph em página protegida.
+ *
+ * @return array
+ */
+function gestor_crawler_tokens_extra(){
+	global $_CONFIG;
+
+	if(empty($_CONFIG['crawler-tokens-extra-ativo'])) return Array();
+
+	$bruto = $_CONFIG['crawler-tokens-extra'] ?? '';
+	if(is_array($bruto)) return array_values(array_filter(array_map('trim', $bruto), 'strlen'));
+
+	return gestor_crawler_tokens_normalizar($bruto);
+}
+
+/**
+ * Converte o texto livre da configuração numa lista de tokens.
+ *
+ * Aceita separação por vírgula, ponto e vírgula ou quebra de linha — o operador digita como quiser.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param string $bruto
+ * @return array
+ */
+function gestor_crawler_tokens_normalizar($bruto){
+	if(is_array($bruto)) $bruto = implode(',', $bruto);
+	if(!is_string($bruto) || trim($bruto) === '') return Array();
+
+	$partes = preg_split('/[,;\r\n]+/', $bruto);
+	$tokens = Array();
+
+	foreach($partes as $parte){
+		$parte = strtolower(trim($parte));
+		if($parte === '') continue;
+		if(in_array($parte, $tokens, true)) continue;
+		$tokens[] = $parte;
+	}
+
+	return $tokens;
+}
+
+/**
+ * Identifica páginas de sistema que NÃO devem receber scripts de rastreamento (req-109 / BATCH-109).
+ *
+ * `cookies-is-mandatory/`, as páginas de erro e as rotas internas do gestor não são conteúdo
+ * do site: disparar GTM/Meta Pixel nelas polui a analítica, duplica o Pixel (`Duplicate Pixel ID`)
+ * e — na página de cookies obrigatórios — provoca chamadas CAPI malformadas justamente porque o
+ * ambiente de cookie ainda não está provisionado.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param string $caminho Caminho da página já normalizado (`$_GESTOR['caminho-total']` com barra final).
+ * @return bool
+ */
+function gestor_pagina_rota_sistema($caminho = ''){
+	if(!is_string($caminho)) return false;
+
+	$caminho = strtolower(trim($caminho));
+	$caminho = trim($caminho, '/');
+
+	$sistema = Array(
+		'cookies-is-mandatory',
+		'_gestor-cookie-verify',
+		'404',
+		'403',
+		'500',
+		'503',
+	);
+
+	foreach($sistema as $rota){
+		if($caminho === $rota || strpos($caminho, $rota.'/') === 0) return true;
+	}
+
+	return false;
+}
+
+/**
+ * Monta as metatags OpenGraph do `<head>` (req-109 / BATCH-109).
+ *
+ * Os valores vêm de `$_GESTOR['pagina#og']` quando a página define metadados próprios (o CRUD
+ * dessas colunas é escopo do req-110) e caem, de forma graciosa, para o nome da página, o
+ * `site-name` do `config.php` e o banner/logo padrão do projeto. Nenhuma tag é emitida com valor
+ * vazio: um `og:image` vazio faz o WhatsApp exibir o card sem imagem em vez de usar o fallback.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param array $params
+ * @param string $params['title']       Título da página.
+ * @param string $params['description'] Descrição/resumo.
+ * @param string $params['image']       URL absoluta da imagem de compartilhamento.
+ * @param string $params['url']         URL canônica da página.
+ * @param string $params['site_name']   Nome do site.
+ * @param string $params['type']        Tipo OpenGraph (padrão `website`).
+ * @param bool   $params['twitter']     Emite também o par mínimo de Twitter Cards (padrão true).
+ * @return array Lista de tags `<meta …>`.
+ */
+function gestor_open_graph_tags($params = false){
+	$valores = is_array($params) ? $params : Array();
+
+	$campos = Array(
+		'og:title'       => (string)($valores['title'] ?? ''),
+		'og:description' => (string)($valores['description'] ?? ''),
+		'og:image'       => (string)($valores['image'] ?? ''),
+		'og:url'         => (string)($valores['url'] ?? ''),
+		'og:site_name'   => (string)($valores['site_name'] ?? ''),
+		'og:type'        => (string)($valores['type'] ?? 'website'),
+	);
+
+	$tags = Array();
+	$temImagem = false;
+
+	foreach($campos as $propriedade => $conteudo){
+		$conteudo = trim(preg_replace('/\s+/', ' ', $conteudo));
+		if($conteudo === '') continue;
+
+		if($propriedade === 'og:image') $temImagem = true;
+
+		$tags[] = '<meta property="'.$propriedade.'" content="'.htmlspecialchars($conteudo, ENT_QUOTES, 'UTF-8').'">';
+	}
+
+	// Twitter/X não lê `og:title` sem o `twitter:card`; o restante ele herda do OpenGraph.
+	$twitter = !isset($valores['twitter']) || $valores['twitter'];
+
+	if($twitter && $tags){
+		$tags[] = '<meta name="twitter:card" content="'.($temImagem ? 'summary_large_image' : 'summary').'">';
+	}
+
+	return $tags;
+}
+
+/**
+ * Decide o desfecho da verificação de cookie do navegador (req-111 / CR-001).
+ *
+ * Extraída de `gestor_cookie_verificacao()` para ser testável: o laço de redirecionamento que essa
+ * regra evita foi um defeito MEDIDO em produção, e a diretriz de blindagem de bugs pede um teste
+ * que falhe se ele voltar.
+ *
+ * Desfechos:
+ *  - `ignorar`      — nada a fazer (robô, ou cookie já presente).
+ *  - `emitir`       — emite o `Set-Cookie` e SEGUE renderizando a página pedida.
+ *  - `redirecionar` — emite o cookie e faz o round-trip por `_gestor-cookie-verify/`.
+ *
+ * A regra decisiva contra o laço: numa ROTA DE SISTEMA nunca se redireciona. A
+ * `cookies-is-mandatory/` é uma página como qualquer outra e, ao ser renderizada, reentra nesta
+ * verificação — sem esta trava, a tela que existe para explicar o problema fica presa nele.
+ *
+ * Função PURA (sem $_GESTOR, $_COOKIE ou headers) para ser testável isoladamente.
+ *
+ * @param array $params
+ * @param bool   $params['crawler']       Requisição identificada como robô.
+ * @param bool   $params['tem_cookie']    Já existe cookie de verificação ou de autenticação.
+ * @param bool   $params['exigir_sessao'] Fluxo que precisa PROVAR o cookie (login/cadastro).
+ * @param string $params['caminho']       Caminho da requisição corrente.
+ * @return string
+ */
+function gestor_cookie_verificacao_desfecho($params = false){
+	$p = is_array($params) ? $params : Array();
+
+	if(!empty($p['crawler'])) return 'ignorar';
+	if(!empty($p['tem_cookie'])) return 'ignorar';
+
+	// Trava anti-laço: rota de sistema emite o cookie, mas nunca redireciona.
+	if(gestor_pagina_rota_sistema((string)($p['caminho'] ?? ''))) return 'emitir';
+
+	if(empty($p['exigir_sessao'])) return 'emitir';
+
+	return 'redirecionar';
+}
+
+/**
+ * Extrai os metadados OpenGraph gravados no registro da página (req-110 / BATCH-110).
+ *
+ * Devolve apenas as chaves REALMENTE preenchidas: `gestor_open_graph_dados()` trata chave ausente
+ * como "usar o fallback", enquanto uma chave presente e vazia venceria o nome da página.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param array $pagina Linha da tabela `paginas`.
+ * @return array
+ */
+function gestor_pagina_og_do_registro($pagina = Array()){
+	if(!is_array($pagina)) return Array();
+
+	$mapa = Array(
+		'og_titulo' => 'title',
+		'og_descricao' => 'description',
+		'imagem_destaque' => 'image',
+		// req-112: meta tags clássicas viajam no mesmo pacote, com chaves próprias.
+		'meta_descricao' => 'meta_description',
+		'meta_keywords' => 'meta_keywords',
+	);
+
+	$og = Array();
+
+	foreach($mapa as $coluna => $chave){
+		if(!isset($pagina[$coluna])) continue;
+
+		$valor = trim((string)$pagina[$coluna]);
+		if($valor === '') continue;
+
+		$og[$chave] = $valor;
+	}
+
+	return $og;
+}
+
+/**
+ * Monta as meta tags clássicas de SEO do `<head>` (req-112 / BATCH-112).
+ *
+ * Complementa o OpenGraph, não o substitui: buscador lê `description`/`keywords`, rede social lê
+ * `og:*`. Um site pode querer textos diferentes para cada público, então são campos separados.
+ *
+ * `keywords` só é emitida quando há valor — nenhum buscador relevante a usa para ranquear há anos, e
+ * emitir a tag vazia é ruído puro.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param array $params
+ * @param string $params['description']
+ * @param string $params['keywords'] Lista separada por vírgula.
+ * @return array Lista de tags `<meta …>`.
+ */
+function gestor_meta_seo_tags($params = false){
+	$valores = is_array($params) ? $params : Array();
+	$tags = Array();
+
+	$descricao = trim(preg_replace('/\s+/', ' ', (string)($valores['description'] ?? '')));
+	if($descricao !== ''){
+		$tags[] = '<meta name="description" content="'.htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8').'">';
+	}
+
+	$keywords = gestor_meta_keywords_normalizar($valores['keywords'] ?? '');
+	if($keywords !== ''){
+		$tags[] = '<meta name="keywords" content="'.htmlspecialchars($keywords, ENT_QUOTES, 'UTF-8').'">';
+	}
+
+	return $tags;
+}
+
+/**
+ * Normaliza a lista de palavras-chave digitada pelo usuário (req-112 / BATCH-112).
+ *
+ * Aceita vírgula, ponto e vírgula ou quebra de linha; devolve separado por `, `, sem duplicatas,
+ * sem entradas vazias e preservando a caixa original (marca própria pode ter maiúscula).
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param string|array $bruto
+ * @return string
+ */
+function gestor_meta_keywords_normalizar($bruto){
+	if(is_array($bruto)) $bruto = implode(',', $bruto);
+	if(!is_string($bruto) || trim($bruto) === '') return '';
+
+	$partes = preg_split('/[,;\r\n]+/', $bruto);
+	$palavras = Array();
+	$vistas = Array();
+
+	foreach($partes as $parte){
+		$parte = trim(preg_replace('/\s+/', ' ', $parte));
+		if($parte === '') continue;
+
+		$chave = mb_strtolower($parte, 'UTF-8');
+		if(isset($vistas[$chave])) continue;
+
+		$vistas[$chave] = true;
+		$palavras[] = $parte;
+	}
+
+	return implode(', ', $palavras);
+}
+
+/**
+ * Detecta se um HTML já traz metatags de descrição/keywords próprias (req-112 / BATCH-112).
+ *
+ * Mesmo cuidado do OpenGraph: página ou layout que já traga a sua não recebe a do core — duas
+ * `description` fazem o buscador escolher arbitrariamente.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param string|array $html
+ * @return bool
+ */
+function gestor_meta_seo_existe($html){
+	if(is_array($html)) $html = implode("\n", $html);
+	if(!is_string($html) || $html === '') return false;
+
+	return (bool)preg_match('/name\s*=\s*("|\')description\1/i', $html);
+}
+
+/**
+ * Detecta se um HTML já traz metatags OpenGraph próprias (req-109 / BATCH-109).
+ *
+ * Layouts e páginas antigos podem trazer OpenGraph gravado à mão no `html_extra_head`. Nesse caso
+ * o core não injeta o seu conjunto — duas tags `og:title` fazem o scraper escolher arbitrariamente.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param string|array $html HTML (ou lista de trechos) já enfileirado para o `<head>`.
+ * @return bool
+ */
+function gestor_open_graph_existe($html){
+	if(is_array($html)) $html = implode("\n", $html);
+	if(!is_string($html) || $html === '') return false;
+
+	return (bool)preg_match('/property\s*=\s*("|\')og:(title|image|description)\1/i', $html);
+}
+
+/**
  * Detecta se um HTML de página usa o motor de exibição PDF.js (req-096 / BATCH-096).
  *
  * O Editor HTML grava o motor B como o contêiner `<div class="conn2flow-pdfjs" data-pdf-src="…">`.
@@ -1637,8 +2063,13 @@ function gestor_sessao_del_all(){
  */
 function gestor_modulos_dados($modulo_id = ''){
 	global $_GESTOR;
-	
-	$modulo_dados = json_decode(file_get_contents($_GESTOR['modulos-path'] .$modulo_id. '/'.$modulo_id.'.json'), true);
+
+	// req-112: guarda de existência. Sem ela, um `modulo_id` inválido faz `file_get_contents`
+	// emitir warning — que, em página pública, sai no meio do HTML.
+	$caminho = $_GESTOR['modulos-path'] .$modulo_id. '/'.$modulo_id.'.json';
+	if(!is_file($caminho)) return null;
+
+	$modulo_dados = json_decode(file_get_contents($caminho), true);
 
 	if($modulo_dados) {
 		return $modulo_dados;

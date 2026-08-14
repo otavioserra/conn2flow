@@ -1,10 +1,22 @@
 $(document).ready(function () {
 
+    // req-109 §7: `gestor.moduloCaminho` já chega do backend com a barra final. Somar outra barra
+    // gerava `admin-paginas/editar//`, rota que o gestor não resolve (403/404 no AJAX do editor).
+    // Esta função é a fonte única da URL do módulo em todo o arquivo.
+    function moduloUrl() {
+        var url = String(gestor.raiz || '') + String(gestor.moduloCaminho || '').replace(/^\/+/, '');
+        url = url.replace(/([^:])\/{2,}/g, '$1/');
+        if (url.charAt(url.length - 1) !== '/') url += '/';
+        return url;
+    }
+
+    window.htmlEditorModuloUrl = moduloUrl; // exposta para teste e para os painéis do editor.
+
     // ===== Ajax Default
 
     var ajaxDefault = {
         type: 'POST',
-        url: gestor.raiz + gestor.moduloCaminho + '/',
+        url: moduloUrl(),
         ajaxOpcao: 'ajaxOpcao',
         data: {
             opcao: gestor.moduloOpcao,
@@ -1280,7 +1292,7 @@ $(document).ready(function () {
         try {
             $.ajax({
                 type: 'POST',
-                url: gestor.raiz + gestor.moduloCaminho,
+                url: moduloUrl(),
                 data: {
                     opcao: gestor.moduloOpcao,
                     ajax: 'sim',
@@ -1458,8 +1470,49 @@ $(document).ready(function () {
             return;
         }
 
+        // req-109 §8: o salvamento é um POST de formulário disparado por código. Nem o evento
+        // `submit` nativo nem o handler delegado do jQuery cobrem TODOS os caminhos até o envio,
+        // então o token é anexado aqui, explicitamente, antes de `$.formSubmitNormal()`.
+        if (!htmlEditorAplicarCsrfNoFormulario()) return;
+
         $.formSubmitNormal();
     });
+
+    // req-109 §8: anexa o token CSRF ao formulário padrão do gestor e avisa o usuário de forma
+    // amigável quando ele não existe. Sem isto o backend responde 403 com o JSON cru
+    // `{"status":"error","message":"Token CSRF inválido ou ausente."}`, que o navegador exibe na
+    // tela inteira — o trabalho do editor parece perdido, embora só falte o token.
+    function htmlEditorAplicarCsrfNoFormulario() {
+        const $form = $('.ui.form.interfaceFormPadrao');
+        if (!$form.length) return true;
+
+        const token = (typeof gestor !== 'undefined' && gestor.csrfToken)
+            ? gestor.csrfToken
+            : ($('meta[name="csrf-token"]').attr('content') || '');
+
+        if (!token) {
+            const emIngles = htmlEditorIdiomaIngles();
+            alert(emIngles
+                ? 'Your session expired and the security token is no longer available. Open a new tab, sign in again and copy your changes before saving.'
+                : 'Sua sessão expirou e o token de segurança não está mais disponível. Abra outra aba, entre novamente e copie suas alterações antes de salvar.');
+            return false;
+        }
+
+        let $campo = $form.find('input[name="_csrf_token"]');
+        if (!$campo.length) {
+            $campo = $('<input type="hidden" name="_csrf_token">').appendTo($form);
+        }
+        $campo.val(token);
+
+        return true;
+    }
+
+    function htmlEditorIdiomaIngles() {
+        const lang = String((typeof gestor !== 'undefined' && gestor.language) ? gestor.language : '').toLowerCase();
+        return lang.indexOf('en') === 0;
+    }
+
+    window.htmlEditorAplicarCsrfNoFormulario = htmlEditorAplicarCsrfNoFormulario; // exposta para teste.
 
     function updateCSSCompiled(iframe, clean = false) {
         if (clean) {
@@ -1602,7 +1655,16 @@ $(document).ready(function () {
             var P = window.parent;
             if (!P || !P.gestor) return;
             var g = P.gestor;
-            var url = g.raiz + g.moduloCaminho + '/';
+            // req-109 §7: `moduloCaminho` já vem do backend com a barra final
+            // (gestor.php: `rtrim($caminho,'/').'/'`). Concatenar outra barra produzia
+            // `admin-paginas/editar//`, uma rota que o gestor não resolve.
+            var url = String(g.raiz || '').replace(/\/+$/, '/') + String(g.moduloCaminho || '').replace(/^\/+/, '');
+            url = url.replace(/([^:])\/{2,}/g, '$1/');
+            if (url.charAt(url.length - 1) !== '/') url += '/';
+            // req-109 §7: o iframe é `srcdoc` — herda a origem, mas não o <head> da página
+            // hospedeira, então não tem a <meta name="csrf-token"> nem o global.js. Sem o token
+            // explícito, todo POST daqui volta 403 "Token CSRF inválido ou ausente.".
+            var csrf = (g.csrfToken || '');
             var openRe = /^\s*widgets#(.+?)\s*<\s*$/i;
             var closeRe = /^\s*widgets#\s*(.+?)\s*>\s*$/i;
             var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_COMMENT, null);
@@ -1632,9 +1694,13 @@ $(document).ready(function () {
                 (function (boxEl, sig) {
                     var jq = window.jQuery || window.$;
                     var data = { opcao: g.moduloOpcao, ajax: 'sim', ajaxOpcao: 'html-editor-widget-render', params: { signature: sig } };
+                    // Token vai no corpo E no cabeçalho: `seguranca_csrf_token_requisicao()` aceita
+                    // os dois, e o cabeçalho sobrevive a proxies que reescrevem o corpo.
+                    if (csrf) data._csrf_token = csrf;
                     if (jq) {
                         jq.ajax({
                             type: 'POST', url: url, dataType: 'json', data: data,
+                            headers: csrf ? { 'X-CSRF-Token': csrf } : {},
                             success: function (resp) { if (resp && resp.status === 'Ok' && resp.data) boxEl.innerHTML = resp.data.html || ''; },
                             error: function () { }
                         });

@@ -1,9 +1,61 @@
 (function () {
 	'use strict';
 
+	// Nome do campo oculto de CSRF. É o contrato lido pelo backend em
+	// `seguranca_csrf_token_requisicao()` (gestor/bibliotecas/seguranca.php).
+	var CSRF_CAMPO = '_csrf_token';
+	var CSRF_HEADER = 'X-CSRF-Token';
+
+	// req-109: o token é procurado em três lugares, nesta ordem, porque o editor visual roda dentro
+	// de um iframe `srcdoc` — que herda a origem, mas não o <head> da página hospedeira, e portanto
+	// não tem a <meta name="csrf-token">. Sem o fallback pelo `gestor` do pai, toda requisição de
+	// modificação disparada de dentro do editor volta com 403 "Token CSRF inválido ou ausente.".
 	function csrfToken() {
-		var meta = document.querySelector('meta[name="csrf-token"]');
-		return meta ? meta.getAttribute('content') : '';
+		try {
+			var meta = document.querySelector('meta[name="csrf-token"]');
+			if (meta && meta.getAttribute('content')) return meta.getAttribute('content');
+		} catch (error) {
+			// document indisponível (contexto sem DOM); segue para os fallbacks.
+		}
+
+		try {
+			if (window.gestor && window.gestor.csrfToken) return window.gestor.csrfToken;
+		} catch (error) {
+			// gestor ausente nesta janela.
+		}
+
+		try {
+			if (window.parent && window.parent !== window && window.parent.gestor && window.parent.gestor.csrfToken) {
+				return window.parent.gestor.csrfToken;
+			}
+		} catch (error) {
+			// Acesso ao pai bloqueado (iframe cross-origin) — sem token disponível.
+		}
+
+		return '';
+	}
+
+	// req-109: anexa (ou atualiza) o campo oculto de CSRF num formulário.
+	// Exposto porque formulários submetidos por CÓDIGO — `form.submit()` nativo ou
+	// `$(form).submit()` do jQuery — não disparam o evento `submit`, e portanto não passam pelo
+	// listener abaixo. É o caso do salvamento do Editor Visual (`$.formSubmitNormal`).
+	function aplicarCsrfNoFormulario(form) {
+		if (!form || form.nodeType !== 1) return false;
+		if (String(form.method || 'GET').toUpperCase() === 'GET') return false;
+
+		var token = csrfToken();
+		if (!token) return false;
+		if (!mesmaOrigem(form.getAttribute('action') || window.location.href)) return false;
+
+		var input = form.querySelector('input[name="' + CSRF_CAMPO + '"]');
+		if (!input) {
+			input = document.createElement('input');
+			input.type = 'hidden';
+			input.name = CSRF_CAMPO;
+			form.appendChild(input);
+		}
+		input.value = token;
+		return true;
 	}
 
 	function metodoMutavel(method) {
@@ -47,11 +99,34 @@
 	if (window.jQuery) {
 		window.jQuery.ajaxPrefilter(function (options, originalOptions, xhr) {
 			var token = csrfToken();
-			if (token && !options.crossDomain && metodoMutavel(options.type)) xhr.setRequestHeader('X-CSRF-Token', token);
+			if (token && !options.crossDomain && metodoMutavel(options.type)) xhr.setRequestHeader(CSRF_HEADER, token);
 		});
 		window.jQuery(document).ajaxError(function (event, xhr) {
 			tratarFalhaAutenticacaoXhr(xhr);
 		});
+
+		// req-109: `$(form).submit()` percorre a propagação SIMULADA do jQuery, que não aciona
+		// listeners nativos registrados com addEventListener. Um handler delegado no document é o
+		// único ponto que enxerga esses envios — usado pelo salvamento do Editor Visual.
+		window.jQuery(document).on('submit', 'form', function () {
+			aplicarCsrfNoFormulario(this);
+		});
+	}
+
+	// req-109: rede de segurança final. `HTMLFormElement.prototype.submit` é o que o jQuery chama
+	// como ação padrão do trigger e o que módulos legados chamam direto — e ele NÃO dispara evento
+	// `submit` algum. Sem este envelope, o campo oculto nunca seria anexado nesses caminhos.
+	if (typeof HTMLFormElement !== 'undefined' && HTMLFormElement.prototype && !HTMLFormElement.prototype.__c2fCsrf) {
+		var submitOriginal = HTMLFormElement.prototype.submit;
+		HTMLFormElement.prototype.submit = function () {
+			try {
+				aplicarCsrfNoFormulario(this);
+			} catch (error) {
+				// Nunca impedir o envio por causa do token: o backend decide se aceita.
+			}
+			return submitOriginal.apply(this, arguments);
+		};
+		HTMLFormElement.prototype.__c2fCsrf = true;
 	}
 
 	// Cobre os fluxos modernos que usam fetch diretamente.
@@ -62,7 +137,7 @@
 			var token = csrfToken();
 			if (token && mesmaOrigem(input) && metodoMutavel(init.method)) {
 				var headers = new Headers(init.headers || {});
-				headers.set('X-CSRF-Token', token);
+				headers.set(CSRF_HEADER, token);
 				init.headers = headers;
 			}
 			return fetchOriginal(input, init).then(function (response) {
@@ -76,18 +151,21 @@
 	}
 
 	document.addEventListener('submit', function (event) {
-		var form = event.target;
-		var token = csrfToken();
-		if (!token || !form || !mesmaOrigem(form.action || window.location.href) || String(form.method || 'GET').toUpperCase() === 'GET') return;
-		var input = form.querySelector('input[name="_csrf_token"]');
-		if (!input) {
-			input = document.createElement('input');
-			input.type = 'hidden';
-			input.name = '_csrf_token';
-			form.appendChild(input);
-		}
-		input.value = token;
+		aplicarCsrfNoFormulario(event.target);
 	}, true);
+
+	// req-111 (CR-001): o neutralizador de `fbq`/`dataLayer`/`gtag` do req-109 §4 foi REMOVIDO.
+	// Nenhuma página do sistema bloqueia coletor de analytics — o problema original era o laço de
+	// redirecionamento de cookie empurrando clientes sem cookie para `cookies-is-mandatory/`, e ele
+	// foi resolvido no backend, na origem.
+
+	// API pública mínima — usada pelo editor visual (iframe srcdoc) e testável isoladamente.
+	window.gestorCsrf = {
+		campo: CSRF_CAMPO,
+		header: CSRF_HEADER,
+		token: csrfToken,
+		aplicarNoFormulario: aplicarCsrfNoFormulario
+	};
 })();
 
 $(document).ready(function () {
