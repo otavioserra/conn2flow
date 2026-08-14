@@ -15,8 +15,19 @@
         "data_modificacao": "data_modificacao",
         "config": {
             "strategy": "natural_key",
-            "natural_key_columns": ["language", "modulo", "id"],
-            "preserve_on_user_modified": ["nome", "modulo", "framework_css", "html", "css"],
+            "natural_key_columns": [
+                "language",
+                "modulo",
+                "id"
+            ],
+            "preserve_on_user_modified": [
+                "nome",
+                "modulo",
+                "framework_css",
+                "html",
+                "css",
+                "css_compiled"
+            ],
             "insert_only": false
         },
         "deletar": []
@@ -105,7 +116,7 @@
                     "name": "Admin Componentes",
                     "id": "admin-componentes",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-componentes\/",
+                    "path": "admin-componentes/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -120,7 +131,7 @@
                     "name": "Admin Componentes - Adicionar",
                     "id": "admin-componentes-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-componentes\/adicionar\/",
+                    "path": "admin-componentes/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.7",
@@ -134,7 +145,7 @@
                     "name": "Admin Componentes - Editar",
                     "id": "admin-componentes-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-componentes\/editar\/",
+                    "path": "admin-componentes/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.7",
@@ -338,7 +349,7 @@
                     "name": "Admin Components",
                     "id": "admin-componentes",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-componentes\/",
+                    "path": "admin-componentes/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -353,7 +364,7 @@
                     "name": "Admin Components - Add",
                     "id": "admin-componentes-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-componentes\/adicionar\/",
+                    "path": "admin-componentes/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.7",
@@ -367,7 +378,7 @@
                     "name": "Admin Components - Edit",
                     "id": "admin-componentes-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-componentes\/editar\/",
+                    "path": "admin-componentes/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.7",
@@ -498,5 +509,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "21c8307854c5d9dc"
 }

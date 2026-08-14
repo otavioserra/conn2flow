@@ -26,11 +26,11 @@
                         "redirects": {
                             "success": {
                                 "type": "url",
-                                "path": "contact\/success\/"
+                                "path": "contact/success/"
                             },
                             "error": {
                                 "type": "url",
-                                "path": "contact\/"
+                                "path": "contact/"
                             }
                         },
                         "fields": [
@@ -84,7 +84,7 @@
                     "name": "Contato",
                     "id": "contact",
                     "layout": "layout-pagina-padrao",
-                    "path": "contact\/",
+                    "path": "contact/",
                     "type": "system",
                     "option": "contact",
                     "without_permission": true,
@@ -99,7 +99,7 @@
                     "name": "Contato Sucesso",
                     "id": "contact-success",
                     "layout": "layout-pagina-padrao",
-                    "path": "contact\/success\/",
+                    "path": "contact/success/",
                     "type": "system",
                     "option": "contact-success",
                     "html_extra_head": "<meta name=\"robots\" content=\"noindex\">",
@@ -125,11 +125,11 @@
                         "redirects": {
                             "success": {
                                 "type": "url",
-                                "path": "contact\/success\/"
+                                "path": "contact/success/"
                             },
                             "error": {
                                 "type": "url",
-                                "path": "contact\/"
+                                "path": "contact/"
                             }
                         },
                         "fields": [
@@ -172,7 +172,7 @@
                     "name": "Contact",
                     "id": "contact",
                     "layout": "layout-pagina-padrao",
-                    "path": "contact\/",
+                    "path": "contact/",
                     "type": "system",
                     "option": "contact",
                     "without_permission": true,
@@ -187,7 +187,7 @@
                     "name": "Contact Success",
                     "id": "contact-success",
                     "layout": "layout-pagina-padrao",
-                    "path": "contact\/success\/",
+                    "path": "contact/success/",
                     "type": "system",
                     "option": "contact-success",
                     "html_extra_head": "<meta name=\"robots\" content=\"noindex\">",
@@ -201,5 +201,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "403342bc09cadb24"
 }

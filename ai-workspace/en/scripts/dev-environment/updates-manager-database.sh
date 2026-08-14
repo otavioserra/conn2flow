@@ -5,6 +5,7 @@
 # Usage:
 #   bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh
 #   bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh --project <PROJECT_ID>
+#   bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh --project <PROJECT_ID> --force-all
 
 set -e
 
@@ -24,10 +25,14 @@ LOCAL_DOCKER_ROOT="$PROJECT_ROOT/dev-environment/data/sites/"
 DOCKER_ROOT="/var/www/sites/"
 
 PROJECT_TARGET_OVERRIDE=""
+FORCE_ALL=false
+TABLES=""
 
 usage() {
-  echo "Usage: $0 [--project|-p PROJECT_ID]"
+  echo "Usage: $0 [--project|-p PROJECT_ID] [--tables TABLE_A,TABLE_B] [--force-all]"
   echo "  --project, -p    Project identifier"
+  echo "  --tables         Restrict synchronization to a comma-separated table list"
+  echo "  --force-all      Force all data tables even when manager_updates checksums match"
   echo "  --help, -h       Show this help"
 }
 
@@ -35,6 +40,14 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     --project|-p)
       PROJECT_TARGET_OVERRIDE="$2"
+      shift 2
+      ;;
+    --force-all)
+      FORCE_ALL=true
+      shift
+      ;;
+    --tables)
+      TABLES="$2"
       shift 2
       ;;
     --help|-h)
@@ -127,7 +140,21 @@ log "Docker Path: $PATH_DOCKER"
 log "PHP Script: $PHP_SCRIPT"
 log "Running database updates..."
 
-if docker exec conn2flow-app bash -c "php ${PHP_SCRIPT} --debug --log-diff"; then
+PHP_ARGS="--debug --log-diff"
+if [ -n "$TABLES" ]; then
+  if [[ ! "$TABLES" =~ ^[a-zA-Z0-9_,]+$ ]]; then
+    log_error "Invalid --tables value. Use only table names separated by commas."
+    exit 1
+  fi
+  PHP_ARGS="$PHP_ARGS --tables=$TABLES"
+  log "Tables filter: $TABLES"
+fi
+if [ "$FORCE_ALL" = true ]; then
+  PHP_ARGS="$PHP_ARGS --force-all"
+  log "Force all tables: enabled"
+fi
+
+if docker exec conn2flow-app bash -c "php ${PHP_SCRIPT} ${PHP_ARGS}"; then
   log_success "Database updates completed successfully!"
 else
   log_error "An error occurred during database updates."

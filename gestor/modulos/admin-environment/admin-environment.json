@@ -13,7 +13,7 @@
                     "name": "Admin Environment",
                     "id": "admin-environment",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-environment\/",
+                    "path": "admin-environment/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
@@ -94,7 +94,7 @@
                 },
                 {
                     "id": "recaptcha-error-invalid-response",
-                    "value": "Token and\/or Server Key (secret) is invalid.",
+                    "value": "Token and/or Server Key (secret) is invalid.",
                     "type": "string"
                 },
                 {
@@ -171,7 +171,7 @@
                     "name": "Admin Environment",
                     "id": "admin-environment",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-environment\/",
+                    "path": "admin-environment/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
@@ -252,7 +252,7 @@
                 },
                 {
                     "id": "recaptcha-error-invalid-response",
-                    "value": "Token e\/ou Server Key (secret) de resposta é inválido.",
+                    "value": "Token e/ou Server Key (secret) de resposta é inválido.",
                     "type": "string"
                 },
                 {
@@ -322,5 +322,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "06ffeafc4d6ddf28"
 }

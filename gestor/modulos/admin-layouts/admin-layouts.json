@@ -15,8 +15,18 @@
         "data_modificacao": "data_modificacao",
         "config": {
             "strategy": "natural_key",
-            "natural_key_columns": ["language", "modulo", "id"],
-            "preserve_on_user_modified": ["nome", "framework_css", "html", "css"],
+            "natural_key_columns": [
+                "language",
+                "modulo",
+                "id"
+            ],
+            "preserve_on_user_modified": [
+                "nome",
+                "framework_css",
+                "html",
+                "css",
+                "css_compiled"
+            ],
             "insert_only": false
         },
         "deletar": []
@@ -105,7 +115,7 @@
                     "name": "Admin Layouts",
                     "id": "admin-layouts",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-layouts\/",
+                    "path": "admin-layouts/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -120,7 +130,7 @@
                     "name": "Admin Layouts - Editar",
                     "id": "admin-layouts-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-layouts\/editar\/",
+                    "path": "admin-layouts/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.7",
@@ -134,7 +144,7 @@
                     "name": "Admin Layouts - Adicionar",
                     "id": "admin-layouts-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-layouts\/adicionar\/",
+                    "path": "admin-layouts/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.7",
@@ -333,7 +343,7 @@
                     "name": "Admin Layouts",
                     "id": "admin-layouts",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-layouts\/",
+                    "path": "admin-layouts/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -348,7 +358,7 @@
                     "name": "Admin Layouts - Edit",
                     "id": "admin-layouts-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-layouts\/editar\/",
+                    "path": "admin-layouts/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.7",
@@ -362,7 +372,7 @@
                     "name": "Admin Layouts - Add",
                     "id": "admin-layouts-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-layouts\/adicionar\/",
+                    "path": "admin-layouts/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.7",
@@ -488,5 +498,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "d08b1776b4ba5984"
 }

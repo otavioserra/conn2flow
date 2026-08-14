@@ -2,16 +2,15 @@
 
 global $_GESTOR;
 
-// req-112: esta versão é o cache-bust ÚNICO do editor visual. Ela versiona os TRÊS consumidores:
+// req-112/req-113: a versão semântica abaixo é fallback. O cache-bust principal agora vem
+// deterministicamente do manifesto de assets do diretório `interface`, cobrindo os TRÊS consumidores:
 //   1. `interface/html-editor.js` no editor clássico (via gestor_pagina_javascript_incluir);
 //   2. `dashboard/toolbar.js` da Editbar (via gestor_dashboard_toolbar em gestor.php);
 //   3. `interface/html-editor.js` carregado sob demanda POR DENTRO da Editbar (via a variável JS
 //      `gestor.htmlEditorVersao`).
-// Alterou `html-editor.js`, `html-editor-interface.js` ou `dashboard.toolbar.js`? Bumpe AQUI — é o
-// único lugar. Antes havia uma string `?v=c2fNN` escrita à mão no dashboard.toolbar.js, esquecida
-// numa entrega e responsável por uma rodada inteira de homologação sem efeito.
+// A rotina de assets atualiza a URL quando qualquer arquivo proprietário muda, sem bump manual.
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => '1.5.11',
+	'versao' => gestor_asset_version('interface', '1.5.11'),
 );
 
 // ===== Funções auxiliares
@@ -123,6 +122,7 @@ function html_editor_publisher_controls($params = false){
  * @param array $params['alvos_modelos'] alvos extras para modelos.
  * @param array $params['publisher'] variáveis do publisher.
  * @param array $params['publisherPage'] controles específicos do publisher page.
+ * @param string $params['css_precompiled'] CSS Tailwind offline usado como baseline no editor.
  * 
  */
 function html_editor_componente($params = false){
@@ -294,16 +294,23 @@ function html_editor_componente($params = false){
 		}
 	}
 
-	if(isset($_GESTOR['project-css-html-editor-tailwindcss'])){
-		$projectCssTailwindcss = '';
-		if($_GESTOR['project-css-html-editor-tailwindcss'])
-		foreach($_GESTOR['project-css-html-editor-tailwindcss'] as $css){
-			$projectCssTailwindcss .= "	" . $css . "\n";
-		}
-	}
-
 	if(isset($_GESTOR['project-html-editor-tailwindcss-config'])){
 		$projectHtmlEditorTailwindcssConfig = $_GESTOR['project-html-editor-tailwindcss-config'];
+	}
+
+	// req-114: o browser recebe o mesmo contrato de tema do build offline. Em projetos,
+	// `contents/tailwindcss/browser-contract.css` prevalece sobre o contrato do core.
+	$tailwindBrowserContract = '';
+	$rootPath = rtrim((string)($_GESTOR['ROOT_PATH'] ?? ''), '/\\') . DIRECTORY_SEPARATOR;
+	$contractCandidates = [
+		$rootPath . 'contents' . DIRECTORY_SEPARATOR . 'tailwindcss' . DIRECTORY_SEPARATOR . 'browser-contract.css',
+		$rootPath . 'assets' . DIRECTORY_SEPARATOR . 'tailwindcss' . DIRECTORY_SEPARATOR . 'browser-contract.css',
+	];
+	foreach($contractCandidates as $contractPath){
+		if(is_file($contractPath)){
+			$tailwindBrowserContract = (string)file_get_contents($contractPath);
+			break;
+		}
 	}
 
 	// ===== Incluir variável JS do alvo para o frontend
@@ -315,8 +322,10 @@ function html_editor_componente($params = false){
 		'alvos_modelos' => isset($alvos_modelos)? $alvos_modelos : $alvo,
 		'widget_js_include' => isset($widget_js_include)? $widget_js_include : null,
 		'projectJavascriptTailwindcss' => isset($projectJavascriptTailwindcss)? $projectJavascriptTailwindcss : '',
-		'projectCssTailwindcss' => isset($projectCssTailwindcss)? $projectCssTailwindcss : '',
 		'projectTailwindcssConfig' => isset($projectHtmlEditorTailwindcssConfig)? $projectHtmlEditorTailwindcssConfig : [],
+		'tailwindBrowserVersion' => '4.3.0',
+		'tailwindBrowserContractBase64' => base64_encode($tailwindBrowserContract),
+		'cssPrecompiledBase64' => base64_encode((string)(isset($css_precompiled) ? $css_precompiled : '')),
 	]);
 
 	// ===== Modificações específicas por alvo
@@ -1034,6 +1043,7 @@ function html_editor_ajax_templates_load(){
 			'html',
 			'html_extra_head',
 			'css',
+			'css_precompiled',
 			'css_compiled',
 			'framework_css',
 		],
@@ -1066,6 +1076,7 @@ function html_editor_ajax_templates_load(){
 				'html' => $modelo['html'],
 				'html_extra_head' => $modelo['html_extra_head'],
 				'css' => $modelo['css'],
+				'css_precompiled' => $modelo['css_precompiled'] ?? '',
 				'css_compiled' => $modelo['css_compiled'],
 				'framework_css' => $modelo['framework_css']
 			];

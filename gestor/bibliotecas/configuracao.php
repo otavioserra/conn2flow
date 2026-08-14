@@ -13,7 +13,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-configuracao']							=	Array(
-	'versao' => '1.2.0',
+	'versao' => gestor_asset_version('configuracao', '1.2.0'),
 	'camposTipos' => Array(
 		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-string-label')),				'valor' => 'string',			),
 		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-text-label')),					'valor' => 'text',				),

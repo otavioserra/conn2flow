@@ -94,6 +94,76 @@ function arquivo_estatico_content_type($ext, $file = ''){
 }
 
 /**
+ * Indica se a URL carrega um identificador de versao apto a invalidar o cache.
+ *
+ * O gestor publica CSS/JS/assets proprios com `?v=<versao>`. Quando o conteudo muda, a URL muda
+ * junto; portanto essa representacao pode ser mantida por longo prazo no navegador e no CDN.
+ */
+function arquivo_estatico_versao_cache_valida($query){
+	if(!is_array($query) || !array_key_exists('v', $query) || !is_scalar($query['v'])) return false;
+
+	$versao = trim((string)$query['v']);
+	return $versao !== '' && preg_match('/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/', $versao) === 1;
+}
+
+/** Politica de cache dos recursos publicos servidos por este controlador. */
+function arquivo_estatico_cache_control($query){
+	if(arquivo_estatico_versao_cache_valida($query)){
+		return 'public, max-age=31536000, immutable';
+	}
+
+	// URLs sem versao podem ser atualizadas: TTL curto e revalidacao em segundo plano.
+	return 'public, max-age=86400, stale-while-revalidate=604800';
+}
+
+/** Gera um validador barato e estavel sem reler o conteudo inteiro do arquivo. */
+function arquivo_estatico_etag($tamanho, $lastModified){
+	return '"'.dechex((int)$lastModified).'-'.dechex((int)$tamanho).'"';
+}
+
+/** Compara If-None-Match, aceitando lista, wildcard e comparacao fraca para GET/HEAD. */
+function arquivo_estatico_etag_corresponde($ifNoneMatch, $etag){
+	$ifNoneMatch = trim((string)$ifNoneMatch);
+	if($ifNoneMatch === '') return false;
+
+	$etagNormalizado = preg_replace('/^W\//i', '', trim((string)$etag));
+	foreach(explode(',', $ifNoneMatch) as $candidato){
+		$candidato = trim($candidato);
+		if($candidato === '*') return true;
+		$candidato = preg_replace('/^W\//i', '', $candidato);
+		if($candidato === $etagNormalizado) return true;
+	}
+
+	return false;
+}
+
+/** Aplica a precedencia HTTP: If-None-Match prevalece sobre If-Modified-Since. */
+function arquivo_estatico_nao_modificado($ifNoneMatch, $ifModifiedSince, $etag, $lastModified){
+	$ifNoneMatch = trim((string)$ifNoneMatch);
+	if($ifNoneMatch !== '') return arquivo_estatico_etag_corresponde($ifNoneMatch, $etag);
+
+	$ifModifiedSince = trim((string)$ifModifiedSince);
+	if($ifModifiedSince === '') return false;
+
+	// Alguns clientes acrescentam parametros depois da data HTTP.
+	$data = trim(explode(';', $ifModifiedSince, 2)[0]);
+	$timestamp = strtotime($data);
+	return $timestamp !== false && (int)$lastModified <= $timestamp;
+}
+
+/** If-Range desatualizado faz o servidor ignorar Range e devolver o arquivo completo. */
+function arquivo_estatico_if_range_permite($ifRange, $etag, $lastModified){
+	$ifRange = trim((string)$ifRange);
+	if($ifRange === '') return true;
+
+	if(str_starts_with($ifRange, '"')) return hash_equals((string)$etag, $ifRange);
+	if(str_starts_with(strtoupper($ifRange), 'W/')) return false;
+
+	$timestamp = strtotime($ifRange);
+	return $timestamp !== false && (int)$lastModified <= $timestamp;
+}
+
+/**
  * Interpreta o cabeçalho `Range` de uma requisição (BATCH-100).
  *
  * Reprodução de mídia depende disso: o navegador pede faixas do arquivo para iniciar rápido e para
@@ -148,16 +218,38 @@ function arquivo_estatico_range($header, $tamanho){
 function arquivo_estatico_enviar($file, $ext){
 	$tamanho = filesize($file);
 	$lastModified = filemtime($file);
+	$etag = arquivo_estatico_etag($tamanho, $lastModified);
+	$metodo = strtoupper((string)($_SERVER['REQUEST_METHOD'] ?? 'GET'));
 
 	// Buffers abertos corrompem binário e invalidam o Content-Length.
 	while(ob_get_level() > 0){ ob_end_clean(); }
 
 	header('Last-Modified: '.gmdate('D, d M Y H:i:s', $lastModified).' GMT');
-	header('Cache-Control: private');
+	header('ETag: '.$etag);
+	header('Cache-Control: '.arquivo_estatico_cache_control(isset($_GET) ? $_GET : Array()));
 	header('Content-Type: '.arquivo_estatico_content_type($ext, $file));
 	header('Accept-Ranges: bytes');
 
-	$range = arquivo_estatico_range(isset($_SERVER['HTTP_RANGE']) ? $_SERVER['HTTP_RANGE'] : '', $tamanho);
+	if(($metodo === 'GET' || $metodo === 'HEAD') && arquivo_estatico_nao_modificado(
+		$_SERVER['HTTP_IF_NONE_MATCH'] ?? '',
+		$_SERVER['HTTP_IF_MODIFIED_SINCE'] ?? '',
+		$etag,
+		$lastModified
+	)){
+		http_response_code(304);
+		exit;
+	}
+
+	$rangeHeader = isset($_SERVER['HTTP_RANGE']) ? $_SERVER['HTTP_RANGE'] : '';
+	if($rangeHeader !== '' && !arquivo_estatico_if_range_permite(
+		$_SERVER['HTTP_IF_RANGE'] ?? '',
+		$etag,
+		$lastModified
+	)){
+		$rangeHeader = '';
+	}
+
+	$range = arquivo_estatico_range($rangeHeader, $tamanho);
 
 	if($range === false){
 		http_response_code(416);
@@ -167,6 +259,7 @@ function arquivo_estatico_enviar($file, $ext){
 
 	if($range === null){
 		header('Content-Length: '.$tamanho);
+		if($metodo === 'HEAD') exit;
 		readfile($file);
 		exit;
 	}
@@ -177,6 +270,7 @@ function arquivo_estatico_enviar($file, $ext){
 	http_response_code(206);
 	header('Content-Range: bytes '.$inicio.'-'.$fim.'/'.$tamanho);
 	header('Content-Length: '.$comprimento);
+	if($metodo === 'HEAD') exit;
 
 	$handle = fopen($file, 'rb');
 	if($handle === false) exit;

@@ -25,7 +25,7 @@
                     "name": "OAuth 2.0 Authenticação",
                     "id": "oauth-authenticate",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-authenticate\/",
+                    "path": "oauth-authenticate/",
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
@@ -40,7 +40,7 @@
                     "name": "OAuth 2.0 Verificação 2FA",
                     "id": "oauth-authenticate-2fa",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-authenticate-2fa\/",
+                    "path": "oauth-authenticate-2fa/",
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
@@ -61,7 +61,7 @@
                         "combined": "7a091bf268e2fa5c62000fef94fdede7"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "signin\/",
+                    "path": "signin/",
                     "type": "system",
                     "option": "signin",
                     "without_permission": true
@@ -71,7 +71,7 @@
                     "id": "signin-2fa",
                     "version": "1.1",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "signin-2fa\/",
+                    "path": "signin-2fa/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
@@ -86,7 +86,7 @@
                     "id": "social-login",
                     "version": "1.1",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "social-login\/",
+                    "path": "social-login/",
                     "type": "system",
                     "option": "social-login",
                     "without_permission": true,
@@ -101,7 +101,7 @@
                     "id": "oauth-callback",
                     "version": "1.1",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-callback\/",
+                    "path": "oauth-callback/",
                     "type": "system",
                     "option": "oauth-callback",
                     "without_permission": true,
@@ -121,7 +121,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "signout\/",
+                    "path": "signout/",
                     "type": "system",
                     "option": "signout"
                 },
@@ -135,7 +135,7 @@
                         "combined": "d48b08c1849bcaeb4ed9939ab2563fe1"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "perfil-usuario\/",
+                    "path": "perfil-usuario/",
                     "type": "system",
                     "option": "editar",
                     "root": true
@@ -150,7 +150,7 @@
                         "combined": "b106ef13fa11754052fb9a31122c643c"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "restrict-area\/",
+                    "path": "restrict-area/",
                     "type": "system",
                     "option": "area-restrita"
                 },
@@ -164,7 +164,7 @@
                         "combined": "df58b7e5c554fb44a338c46b5bc2f8a6"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "validate-user\/",
+                    "path": "validate-user/",
                     "type": "system",
                     "option": "validar-usuario",
                     "without_permission": true
@@ -179,7 +179,7 @@
                         "combined": "36252affc726b0a003349db772ffe552"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "forgot-password\/",
+                    "path": "forgot-password/",
                     "type": "system",
                     "option": "forgot-password",
                     "without_permission": true
@@ -194,7 +194,7 @@
                         "combined": "100a56701ff0b6d915e3cf9e3f2791c8"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "forgot-password-confirmation\/",
+                    "path": "forgot-password-confirmation/",
                     "type": "system",
                     "option": "forgot-password-confirmation",
                     "without_permission": true
@@ -209,7 +209,7 @@
                         "combined": "920fbd11ee6d54345028e33ac3d7599c"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "redefine-password\/",
+                    "path": "redefine-password/",
                     "type": "system",
                     "option": "redefine-password",
                     "without_permission": true
@@ -224,7 +224,7 @@
                         "combined": "1e674e0f0326986bb2b77ec4130490ae"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "redefine-password-confirmation\/",
+                    "path": "redefine-password-confirmation/",
                     "type": "system",
                     "option": "redefine-password-confirmation",
                     "without_permission": true
@@ -239,7 +239,7 @@
                         "combined": "6950f9bcbb6f17372e8d431feb1b55cb"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "signup\/",
+                    "path": "signup/",
                     "type": "system",
                     "option": "signup",
                     "without_permission": true
@@ -254,7 +254,7 @@
                         "combined": "589314427de8eec6b99dcffb571ce7cb"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "email-confirmation\/",
+                    "path": "email-confirmation/",
                     "type": "system",
                     "option": "confirmacao-email",
                     "without_permission": true
@@ -448,7 +448,7 @@
                 },
                 {
                     "id": "alert-password-invalid",
-                    "value": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
+                    "value": "Senha incorreta! Você tem mais <b>#tentativas#</b> tentativas, senão será desconectado automaticamente!",
                     "type": "string"
                 },
                 {
@@ -458,7 +458,7 @@
                 },
                 {
                     "id": "alert-there-is-a-field",
-                    "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+                    "value": "Já existe cadastro do campo  <b>#label#</b> com o mesmo valor: <b>#value#</b>. Favor escolher outro  <b>#label#</b> e tentar novamente.",
                     "type": "string"
                 },
                 {
@@ -473,7 +473,7 @@
                 },
                 {
                     "id": "alert-user-or-password-invalid",
-                    "value": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+                    "value": "Usuário e/ou Senha inválidos. Favor tentar novamente.",
                     "type": "string"
                 },
                 {
@@ -593,7 +593,7 @@
                 },
                 {
                     "id": "restrict-area-info",
-                    "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+                    "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar</b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
                     "type": "string"
                 },
                 {
@@ -733,12 +733,12 @@
                 },
                 {
                     "id": "forgot-password-message-content",
-                    "value": "Se sim, preencha o campo <b>Email<\/b> e depois o campo <b>Confirme o Email<\/b>. Em seguida o sistema irá enviar uma mensagem no endereço de email informado. Siga as orientações desta mensagem afim de criar uma nova senha.",
+                    "value": "Se sim, preencha o campo <b>Email</b> e depois o campo <b>Confirme o Email</b>. Em seguida o sistema irá enviar uma mensagem no endereço de email informado. Siga as orientações desta mensagem afim de criar uma nova senha.",
                     "type": "string"
                 },
                 {
                     "id": "alert-user-email-invalid",
-                    "value": "Não existe nenhum cadastro no sistema com o email informado: <b>#email#<\/b> . Verifique se o email enviado foi informado corretamente e tente denovo.",
+                    "value": "Não existe nenhum cadastro no sistema com o email informado: <b>#email#</b> . Verifique se o email enviado foi informado corretamente e tente denovo.",
                     "type": "string"
                 },
                 {
@@ -753,7 +753,7 @@
                 },
                 {
                     "id": "forgot-password-confirmation-message-content",
-                    "value": "Foi enviado uma mensagem com instruções para alterar a sua senha no seguinte email: <b>#email#<\/b> . Favor acessar o seu cliente de emails e seguir as orientações enviadas.",
+                    "value": "Foi enviado uma mensagem com instruções para alterar a sua senha no seguinte email: <b>#email#</b> . Favor acessar o seu cliente de emails e seguir as orientações enviadas.",
                     "type": "string"
                 },
                 {
@@ -778,7 +778,7 @@
                 },
                 {
                     "id": "redefine-password-message-content",
-                    "value": "Se sim, preencha o campo <b>Senha<\/b> e depois o campo <b>Confirme a Senha<\/b>. Então, clique no botão <b>Redefinir<\/b> para alterar a sua senha.",
+                    "value": "Se sim, preencha o campo <b>Senha</b> e depois o campo <b>Confirme a Senha</b>. Então, clique no botão <b>Redefinir</b> para alterar a sua senha.",
                     "type": "string"
                 },
                 {
@@ -898,7 +898,7 @@
                 },
                 {
                     "id": "alert-recaptcha-invalid",
-                    "value": "A sua requisição <b>não<\/b> foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um <b>robô<\/b>. Favor tentar novamente, mas caso o problema persista, favor entrar em contato clicando <b>#url#<\/b>.",
+                    "value": "A sua requisição <b>não</b> foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um <b>robô</b>. Favor tentar novamente, mas caso o problema persista, favor entrar em contato clicando <b>#url#</b>.",
                     "type": "string"
                 },
                 {
@@ -933,7 +933,7 @@
                 },
                 {
                     "id": "reset-password",
-                    "value": "senha redefinida com sucesso! <b>IP: #ip# | USER_AGENT: #user-agent#<\/b>",
+                    "value": "senha redefinida com sucesso! <b>IP: #ip# | USER_AGENT: #user-agent#</b>",
                     "type": "string"
                 },
                 {
@@ -950,7 +950,7 @@
                     "name": "OAuth 2.0 Authentication",
                     "id": "oauth-authenticate",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-authenticate\/",
+                    "path": "oauth-authenticate/",
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
@@ -965,7 +965,7 @@
                     "name": "OAuth 2.0 2FA Verification",
                     "id": "oauth-authenticate-2fa",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-authenticate-2fa\/",
+                    "path": "oauth-authenticate-2fa/",
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
@@ -986,7 +986,7 @@
                         "combined": "602bd6fa2af0e5d6fc3c2abc3bd1e236"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "signin\/",
+                    "path": "signin/",
                     "type": "system",
                     "option": "signin",
                     "without_permission": true
@@ -996,7 +996,7 @@
                     "id": "signin-2fa",
                     "version": "1.1",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "signin-2fa\/",
+                    "path": "signin-2fa/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
@@ -1011,7 +1011,7 @@
                     "id": "social-login",
                     "version": "1.1",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "social-login\/",
+                    "path": "social-login/",
                     "type": "system",
                     "option": "social-login",
                     "without_permission": true,
@@ -1026,7 +1026,7 @@
                     "id": "oauth-callback",
                     "version": "1.1",
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-callback\/",
+                    "path": "oauth-callback/",
                     "type": "system",
                     "option": "oauth-callback",
                     "without_permission": true,
@@ -1046,7 +1046,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "signout\/",
+                    "path": "signout/",
                     "type": "system",
                     "option": "signout"
                 },
@@ -1060,7 +1060,7 @@
                         "combined": "d48b08c1849bcaeb4ed9939ab2563fe1"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "perfil-usuario\/",
+                    "path": "perfil-usuario/",
                     "type": "system",
                     "option": "editar",
                     "root": true
@@ -1075,7 +1075,7 @@
                         "combined": "b106ef13fa11754052fb9a31122c643c"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "restrict-area\/",
+                    "path": "restrict-area/",
                     "type": "system",
                     "option": "area-restrita"
                 },
@@ -1089,7 +1089,7 @@
                         "combined": "df58b7e5c554fb44a338c46b5bc2f8a6"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "validate-user\/",
+                    "path": "validate-user/",
                     "type": "system",
                     "option": "validar-usuario",
                     "without_permission": true
@@ -1104,7 +1104,7 @@
                         "combined": "4eb42bb8416e8f5b653d8718cc3d6ea3"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "forgot-password\/",
+                    "path": "forgot-password/",
                     "type": "system",
                     "option": "forgot-password",
                     "without_permission": true
@@ -1119,7 +1119,7 @@
                         "combined": "100a56701ff0b6d915e3cf9e3f2791c8"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "forgot-password-confirmation\/",
+                    "path": "forgot-password-confirmation/",
                     "type": "system",
                     "option": "forgot-password-confirmation",
                     "without_permission": true
@@ -1134,7 +1134,7 @@
                         "combined": "920fbd11ee6d54345028e33ac3d7599c"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "redefine-password\/",
+                    "path": "redefine-password/",
                     "type": "system",
                     "option": "redefine-password",
                     "without_permission": true
@@ -1149,7 +1149,7 @@
                         "combined": "1e674e0f0326986bb2b77ec4130490ae"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "redefine-password-confirmation\/",
+                    "path": "redefine-password-confirmation/",
                     "type": "system",
                     "option": "redefine-password-confirmation",
                     "without_permission": true
@@ -1164,7 +1164,7 @@
                         "combined": "f5210119479465a5fbbe90ecf2610dd9"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "signup\/",
+                    "path": "signup/",
                     "type": "system",
                     "option": "signup",
                     "without_permission": true
@@ -1179,7 +1179,7 @@
                         "combined": "3a622d3cc729cd116484244446b9e90a"
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "email-confirmation\/",
+                    "path": "email-confirmation/",
                     "type": "system",
                     "option": "confirmacao-email",
                     "without_permission": true
@@ -1374,7 +1374,7 @@
                 },
                 {
                     "id": "alert-password-invalid",
-                    "value": "Incorrect password! You have <b>#tentativas#<\/b> more attempts, otherwise you will be automatically disconnected!",
+                    "value": "Incorrect password! You have <b>#tentativas#</b> more attempts, otherwise you will be automatically disconnected!",
                     "type": "string"
                 },
                 {
@@ -1384,7 +1384,7 @@
                 },
                 {
                     "id": "alert-there-is-a-field",
-                    "value": "There is already a registration for the field <b>#label#<\/b> with the same value: <b>#value#<\/b>. Please choose another <b>#label#<\/b> and try again.",
+                    "value": "There is already a registration for the field <b>#label#</b> with the same value: <b>#value#</b>. Please choose another <b>#label#</b> and try again.",
                     "type": "string"
                 },
                 {
@@ -1399,7 +1399,7 @@
                 },
                 {
                     "id": "alert-user-or-password-invalid",
-                    "value": "Invalid username and\/or password. Please try again.",
+                    "value": "Invalid username and/or password. Please try again.",
                     "type": "string"
                 },
                 {
@@ -1519,7 +1519,7 @@
                 },
                 {
                     "id": "restrict-area-info",
-                    "value": "Please enter your password below and then click the <b>Send<\/b> button to provisionally authorize the modification of any sensitive data in your account.",
+                    "value": "Please enter your password below and then click the <b>Send</b> button to provisionally authorize the modification of any sensitive data in your account.",
                     "type": "string"
                 },
                 {
@@ -1659,12 +1659,12 @@
                 },
                 {
                     "id": "forgot-password-message-content",
-                    "value": "If yes, fill in the <b>Email<\/b> field and then the <b>Confirm Email<\/b> field. Then the system will send a message to the email address provided. Follow the instructions in this message to create a new password.",
+                    "value": "If yes, fill in the <b>Email</b> field and then the <b>Confirm Email</b> field. Then the system will send a message to the email address provided. Follow the instructions in this message to create a new password.",
                     "type": "string"
                 },
                 {
                     "id": "alert-user-email-invalid",
-                    "value": "There is no registration in the system with the email provided: <b>#email#<\/b>. Please check if the email sent was entered correctly and try again.",
+                    "value": "There is no registration in the system with the email provided: <b>#email#</b>. Please check if the email sent was entered correctly and try again.",
                     "type": "string"
                 },
                 {
@@ -1679,7 +1679,7 @@
                 },
                 {
                     "id": "forgot-password-confirmation-message-content",
-                    "value": "A message with instructions to change your password was sent to the following email: <b>#email#<\/b>. Please access your email client and follow the instructions sent.",
+                    "value": "A message with instructions to change your password was sent to the following email: <b>#email#</b>. Please access your email client and follow the instructions sent.",
                     "type": "string"
                 },
                 {
@@ -1704,7 +1704,7 @@
                 },
                 {
                     "id": "redefine-password-message-content",
-                    "value": "If yes, fill in the <b>Password<\/b> field and then the <b>Confirm Password<\/b> field. Then, click the <b>Reset<\/b> button to change your password.",
+                    "value": "If yes, fill in the <b>Password</b> field and then the <b>Confirm Password</b> field. Then, click the <b>Reset</b> button to change your password.",
                     "type": "string"
                 },
                 {
@@ -1824,7 +1824,7 @@
                 },
                 {
                     "id": "alert-recaptcha-invalid",
-                    "value": "Your request <b>was not<\/b> accepted because our automatic security system considered it to be made by a <b>robot<\/b>. Please try again, but if the problem persists, please contact us by clicking <b>#url#<\/b>.",
+                    "value": "Your request <b>was not</b> accepted because our automatic security system considered it to be made by a <b>robot</b>. Please try again, but if the problem persists, please contact us by clicking <b>#url#</b>.",
                     "type": "string"
                 },
                 {
@@ -1859,7 +1859,7 @@
                 },
                 {
                     "id": "reset-password",
-                    "value": "password reset successfully! <b>IP: #ip# | USER_AGENT: #user-agent#<\/b>",
+                    "value": "password reset successfully! <b>IP: #ip# | USER_AGENT: #user-agent#</b>",
                     "type": "string"
                 },
                 {
@@ -1869,5 +1869,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "f6fe91130b1e496a"
 }

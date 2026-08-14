@@ -14,7 +14,10 @@
         "data_modificacao": "data_modificacao",
         "config": {
             "strategy": "natural_key",
-            "natural_key_columns": ["language", "id"],
+            "natural_key_columns": [
+                "language",
+                "id"
+            ],
             "preserve_on_user_modified": [],
             "insert_only": false
         },
@@ -28,7 +31,7 @@
                     "name": "Módulos Operações",
                     "id": "modulos-operacoes",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-operacoes\/",
+                    "path": "modulos-operacoes/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -43,7 +46,7 @@
                     "name": "Módulos Operações - Adicionar",
                     "id": "modulos-operacoes-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-operacoes\/adicionar\/",
+                    "path": "modulos-operacoes/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.1",
@@ -57,7 +60,7 @@
                     "name": "Módulos Operações - Editar",
                     "id": "modulos-operacoes-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-operacoes\/editar\/",
+                    "path": "modulos-operacoes/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.1",
@@ -183,5 +186,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "54e8f0a742f2ce4d"
 }

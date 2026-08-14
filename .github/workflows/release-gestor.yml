@@ -115,15 +115,13 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Compile Tailwind CSS
+    - name: Install Tailwind CSS compiler
       run: |
         npm install tailwindcss @tailwindcss/cli
-        ./node_modules/.bin/tailwindcss -i ./gestor/assets/tailwindcss/system-input.css -o ./gestor/assets/tailwindcss/system-output.css --minify
 
-    - name: Generate Resources Updates
+    - name: Generate resources and per-resource Tailwind CSS
       run: |
-        cd gestor/controladores/agents/arquitetura
-        php atualizacao-dados-recursos.php
+        php gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php
         echo "Resource updates generated successfully"
 
     - name: Commit Resources Updates
@@ -133,8 +131,12 @@ jobs:
         git add gestor/db/data/*.json
         git add gestor/db/orphans/*.json
         git add gestor/resources/*
+        git add gestor/resources/.tailwind-build-manifest.json
         git add gestor/modulos/*/*.json
+        git add gestor/modulos/*/resources
         git add gestor/assets/tailwindcss/*.css
+        git add gestor/assets/asset-versions.json
+        git add gestor/contents/asset-version.json
         git diff --cached --quiet || git commit -m "Auto-update resources for release ${{ github.ref_name }}"
 
     - name: Remove resource files

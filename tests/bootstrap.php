@@ -37,6 +37,7 @@ $_GESTOR = [
     'recursos-incluidos-hashes' => [],
     'html-extra-head' => [],
     'css' => [],
+    'css-precompiled' => [],
     'css-compiled' => [],
 ];
 

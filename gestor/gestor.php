@@ -414,7 +414,7 @@ function gestor_pagina_menu($params = false){
 	// Como `admin.js` só interessa a quem vê o menu, carregá-lo junto dele mantém o custo restrito
 	// ao painel e dispensa um gate extra no pipeline.
 
-	$menuConteiner .= "\n".'<script src="'.$_GESTOR['url-raiz'].'global/admin.js?v='.$_GESTOR['versao'].'"></script>';
+	$menuConteiner .= "\n".'<script src="'.$_GESTOR['url-raiz'].'global/admin.js?v='.gestor_asset_version('global').'"></script>';
 
 	// ===== Retornar o conteiner.
 
@@ -575,7 +575,7 @@ function gestor_pagina_pdf_viewer(){
 	if(!function_exists('gestor_pdf_viewer_detectar')) return;
 	if(!gestor_pdf_viewer_detectar($_GESTOR['pagina'])) return;
 
-	$assets = gestor_pdf_viewer_assets($_GESTOR['url-raiz'],$_GESTOR['versao']);
+	$assets = gestor_pdf_viewer_assets($_GESTOR['url-raiz'],gestor_asset_version('interface'));
 
 	foreach($assets as $asset){
 		gestor_pagina_javascript_incluir($asset);
@@ -634,10 +634,12 @@ function gestor_pagina_variaveis(){
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#titulo'.$close,$_GESTOR['pagina#titulo']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'pagina#contato-url'.$close,$_GESTOR['pagina#contato-url']);
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'gestor#versao'.$close,$_GESTOR['versao']);
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'gestor#asset-version'.$close,gestor_asset_version());
 
 	// ===== Projeto variáveis trocar
 
 	if(isset($_GESTOR['project-version'])) $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'project#version'.$close,$_GESTOR['project-version']);
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],$open.'project#asset-version'.$close,$_GESTOR['project-asset-version'] ?? gestor_asset_version());
 	
 	// ===== Dados do usuário
 	
@@ -735,8 +737,8 @@ function gestor_pagina_css(){
 
 	$css_padrao = Array();
 	if($fomantic_ui_included) $css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css" />';
-	if($tailwindcss_included) $css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'tailwindcss/system-output.css?v='.$_GESTOR['versao'].'" />';
 
+	if(!isset($_GESTOR['css-precompiled'])) $_GESTOR['css-precompiled'] = Array();
 	if(!isset($_GESTOR['css-compiled'])) $_GESTOR['css-compiled'] = Array();
 	if(!isset($_GESTOR['css'])) $_GESTOR['css'] = Array();
 	if(!isset($_GESTOR['css-fim'])) $_GESTOR['css-fim'] = Array();
@@ -753,8 +755,9 @@ function gestor_pagina_css(){
 		$_GESTOR['project-css'] = $_GESTOR['project-css-layouts-include'][$_GESTOR['layout#id']];
 	}
 
-	// Incluir os CSS's seguindo a ordem: CSS padrão, CSS do projeto, CSS compilado, CSS normal e CSS fim.
-	$csss = array_merge($css_padrao,$_GESTOR['project-css'],$_GESTOR['css-compiled'],$_GESTOR['css'],$_GESTOR['css-fim']);
+	// Ordem: CSS padrão/projeto, pré-compilado offline, compilado online, autoral e final.
+	$css_precompiled_ordenado = gestor_css_precompiled_ordenar($_GESTOR['css-precompiled']);
+	$csss = array_merge($css_padrao,$_GESTOR['project-css'],$css_precompiled_ordenado,$_GESTOR['css-compiled'],$_GESTOR['css'],$_GESTOR['css-fim']);
 
 	if($csss)
 	foreach($csss as $css){
@@ -772,7 +775,7 @@ function gestor_pagina_css_incluir($css = false){
 	global $_GESTOR;
 	
 	if(!$css){
-		$_GESTOR['css-fim'][] = $css = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/css.css?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'">';
+		$_GESTOR['css-fim'][] = $css = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/css.css?v='.gestor_modulo_asset_version($_GESTOR['modulo-id']).'">';
 		
 		// ===== Verifica se já foi adicionado este css, se sim, remover o último que foi adicionado.
 		if(!isset($_GESTOR['css-fim-adicionados'])){
@@ -823,7 +826,7 @@ function gestor_pagina_extra_head_e_javascript(){
 
 	if($fomantic_ui_included) $js_padrao[] = '<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>'; // Semantic-UI
 
-	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'global/global.js?v='.$_GESTOR['versao'].'"></script>'; // Global JS
+	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'global/global.js?v='.gestor_asset_version('global').'"></script>'; // Global JS
 	
 	if(!isset($_GESTOR['html-extra-head'])) $_GESTOR['html-extra-head'] = Array();
 	if(!isset($_GESTOR['javascript'])) $_GESTOR['javascript'] = Array();
@@ -902,6 +905,8 @@ function gestor_pagina_extra_head_e_javascript(){
 	
 	$variaveis_js = Array(
 		'versao' => $_GESTOR['versao'],
+		'assetVersion' => gestor_asset_version(),
+		'projectAssetVersion' => $_GESTOR['project-asset-version'] ?? gestor_asset_version(),
 		'raiz' => $_GESTOR['url-raiz'],
 		'raizSemLang' => $_GESTOR['url-raiz-sem-lang'],
 		'language' => $_GESTOR['linguagem-codigo'],
@@ -910,6 +915,7 @@ function gestor_pagina_extra_head_e_javascript(){
 		'languageCookie' => $_CONFIG['cookie-language'],
 		'moduloId' => (isset($_GESTOR['modulo-id']) ? $_GESTOR['modulo-id'] : false ),
 		'moduloVersao' => (isset($_GESTOR['modulo-versao']) ? $_GESTOR['modulo-versao'] : false ),
+		'moduloAssetVersion' => (isset($_GESTOR['modulo-id']) ? gestor_modulo_asset_version($_GESTOR['modulo-id']) : false ),
 		'moduloOpcao' => (isset($_GESTOR['opcao']) ? $_GESTOR['opcao'] : false ),
 		'widgetsToAjax' => (isset($_GESTOR['widgetsToAjax']) ? $_GESTOR['widgetsToAjax'] : null ),
 		'moduloCaminho' => $caminho,
@@ -937,16 +943,16 @@ function gestor_pagina_javascript_incluir($js = false,$id = false, $retornar = f
 			return;
 		}
 		if(isset($_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'])){
-			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js?v='.gestor_modulo_asset_version($_GESTOR['modulo-id']).'"></script>';
 			$js_id = $_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js';
 		} else {
-			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/js.js?v='.$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['versao'].'"></script>';
+			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/js.js?v='.gestor_modulo_asset_version($_GESTOR['modulo-id']).'"></script>';
 			$js_id = $_GESTOR['modulo-id'].'/js.js';
 		}
 	} elseif(gettype($js) == 'array') {
 		$tipo = (isset($js['tipo']) ? $js['tipo'] : '');
 		$modulo_id = (isset($js['modulo_id']) ? $js['modulo_id'] : 'undefined');
-		$versao = (isset($js['versao']) ? $js['versao'] : $_GESTOR['versao']);
+		$versao = (isset($js['asset_version']) ? $js['asset_version'] : (isset($_GESTOR['modulo#'.$modulo_id]) ? gestor_modulo_asset_version($modulo_id) : (isset($js['versao']) ? $js['versao'] : gestor_asset_version())));
 		
 		$js_script = '<script src="'.$_GESTOR['url-raiz'].$modulo_id.'/'.$tipo.'.js?v='.$versao.'"></script>';
 		$js_id = $modulo_id.'/'.$tipo.'.js';
@@ -954,9 +960,9 @@ function gestor_pagina_javascript_incluir($js = false,$id = false, $retornar = f
 		switch($js){
 			case 'biblioteca':
 				if (is_array($id)) {
-                    $js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.(isset($id['caminho']) ? $id['caminho'] : '').'.js?v='.$_GESTOR['biblioteca-'.(isset($id['biblioteca']) ? $id['biblioteca'] : '')]['versao'].'"></script>';
+					$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.(isset($id['caminho']) ? $id['caminho'] : '').'.js?v='.gestor_asset_version('interface', $_GESTOR['biblioteca-'.(isset($id['biblioteca']) ? $id['biblioteca'] : '')]['versao'] ?? null).'"></script>';
                 } else {
-					$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.$id.'.js?v='.$_GESTOR['biblioteca-'.$id]['versao'].'"></script>';
+					$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.$id.'.js?v='.gestor_asset_version('interface', $_GESTOR['biblioteca-'.$id]['versao'] ?? null).'"></script>';
                 }
 			break;
 		}
@@ -2363,6 +2369,7 @@ function gestor_roteador(){
 			'html',
 			'html_extra_head',
 			'css',
+			'css_precompiled',
 			'css_compiled',
 			'modulo',
 			'plugin',
@@ -2576,20 +2583,25 @@ function gestor_roteador(){
 					if(existe($plugin)){
 						$html_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
 						$css_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
+						$css_precompiled_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.precompiled.css';
 					} else {
 						$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
 						$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
+						$css_precompiled_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.precompiled.css';
 					}
 				} else {
 					$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.html';
 					$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.css';
+					$css_precompiled_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/pages/'.$id.'/'.$id.'.precompiled.css';
 				}
 
 				$html = (file_exists($html_path)) ? file_get_contents($html_path) : (existe($paginas[0]['html']) ? $paginas[0]['html'] : '');
 				$css = (file_exists($css_path)) ? file_get_contents($css_path) : (existe($paginas[0]['css']) ? $paginas[0]['css'] : '');
+				$css_precompiled = (file_exists($css_precompiled_path)) ? file_get_contents($css_precompiled_path) : ($paginas[0]['css_precompiled'] ?? '');
 			} else {
 				$html = $paginas[0]['html'];
 				$css = $paginas[0]['css'];
+				$css_precompiled = $paginas[0]['css_precompiled'] ?? '';
 			}
 
 			// Live Editor (BATCH-085): backup restaurado tem precedência (cobre dev-env, que lê do arquivo).
@@ -2641,6 +2653,8 @@ function gestor_roteador(){
 			if(isset($_GESTOR['layout'])){
 				$layout = (isset($_GESTOR['layout']['html']) ? $_GESTOR['layout']['html'] : '');
 				$layout_css = (isset($_GESTOR['layout']['css']) ? $_GESTOR['layout']['css'] : '');
+				$layout_css_precompiled = (isset($_GESTOR['layout']['css_precompiled']) ? $_GESTOR['layout']['css_precompiled'] : '');
+				$layout_css_compiled = (isset($_GESTOR['layout']['css_compiled']) ? $_GESTOR['layout']['css_compiled'] : '');
 			} else if($paginas[0]['layout_id']){
 				if($_GESTOR['paginaIframe']){
 					$layouts = gestor_layout(Array(
@@ -2656,6 +2670,7 @@ function gestor_roteador(){
 				
 				$layout = $layouts['html'];
 				$layout_css = $layouts['css'];
+				$layout_css_precompiled = $layouts['css_precompiled'];
 				$layout_css_compiled = $layouts['css_compiled'];
 
 				// Live Editor (BATCH-085): backup de LAYOUT restaurado tem precedência.
@@ -2667,6 +2682,7 @@ function gestor_roteador(){
 			} else {
 				$layout = '';
 				$layout_css = '';
+				$layout_css_precompiled = '';
 				$layout_css_compiled = '';
 			}
 			
@@ -2674,11 +2690,14 @@ function gestor_roteador(){
 
 			gestor_pagina_recursos_incluir(Array(
 				'css' => $layout_css,
+				'css_precompiled' => $layout_css_precompiled,
+				'css_precompiled_role' => 'layout-precompiled',
 				'css_compiled' => $layout_css_compiled,
 			));
 
 			gestor_pagina_recursos_incluir(Array(
 				'css' => $css,
+				'css_precompiled' => $css_precompiled,
 				'css_compiled' => $css_compiled,
 				'html_extra_head' => $html_extra_head,
 			));

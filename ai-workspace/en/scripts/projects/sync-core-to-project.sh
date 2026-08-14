@@ -93,15 +93,13 @@ if [ ! -d "$TARGET_PATH" ]; then
   exit 1
 fi
 
-# Compile Tailwind CSS for the Core before syncing (if configured)
+# Generate Core resources, incremental Tailwind and cache tokens before syncing.
 TAILWIND_CLI=$(jq -r '.devEnvironment["tailwindcss/cli"] // empty' "$ENV_FILE" 2>/dev/null)
+RESOURCE_SCRIPT="$PROJECT_ROOT/gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
 if [ -n "$TAILWIND_CLI" ] && [ "$TAILWIND_CLI" != "null" ]; then
-  log "Running Tailwind CSS CLI for the Core before synchronization..."
-  if ! ( cd "$CORE_SOURCE" && eval "$TAILWIND_CLI" ); then
-    log_error "Tailwind CSS compilation failed. Aborting core sync to avoid copying stale/broken assets."
-    exit 1
-  fi
-  log_success "Tailwind CSS compiled successfully for the Core."
+  TAILWINDCSS_COMMAND="$TAILWIND_CLI" php "$RESOURCE_SCRIPT"
+else
+  php "$RESOURCE_SCRIPT"
 fi
 
 CMD=(

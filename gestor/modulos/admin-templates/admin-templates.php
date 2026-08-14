@@ -222,6 +222,7 @@ function admin_templates_editar(){
 		'target',
 		'html',
 		'css',
+		'css_precompiled',
 		'css_compiled',
 		'html_extra_head',
 		'framework_css',
@@ -403,6 +404,7 @@ function admin_templates_editar(){
 		$thumbnail = (isset($retorno_bd['thumbnail']) ? $retorno_bd['thumbnail'] : '');
 		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
+		$css_precompiled = (isset($retorno_bd['css_precompiled']) ? $retorno_bd['css_precompiled'] : '');
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 		
@@ -460,6 +462,7 @@ function admin_templates_editar(){
 			'editar' => true,
 			'modulo' => $modulo,
 			'alvo' => $target,
+			'css_precompiled' => $css_precompiled,
 			'publisher' => isset($publisher) ? $publisher[0] : null,
 			'alvos_modelos' => 'paginas,publisher',
 		]));

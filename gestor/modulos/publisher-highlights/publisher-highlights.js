@@ -639,7 +639,7 @@ $(document).ready(function () {
                 } else {
                     doc = '<!doctype html><html><head><meta charset="utf-8">';
                     doc += `<!-- CDN do TailwindCSS v4 -->
-                    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>`;
+                    <script src="https://unpkg.com/@tailwindcss/browser@4.3.0"></script>`;
                     doc += '</head><body>' + (dados.html || '') + '</body></html>';
                 }
 

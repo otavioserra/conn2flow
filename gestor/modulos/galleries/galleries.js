@@ -930,14 +930,14 @@ $(document).ready(function () {
                         framework: (gestor.html_editor && gestor.html_editor.framework_css) ? gestor.html_editor.framework_css : 'fomantic-ui',
                         extraParams: {
                             customScripts: [
-                                { src: gestor.raiz + gestor.moduloId + '/widget.js' + '?v=' + gestor.versao },
+                                { src: gestor.raiz + gestor.moduloId + '/widget.js' + '?v=' + (gestor.moduloAssetVersion || gestor.versao) },
                             ]
                         }
                     });
                 } else {
                     doc = '<!doctype html><html><head><meta charset="utf-8">';
                     doc += `<!-- CDN do TailwindCSS v4 -->
-                    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>`;
+                    <script src="https://unpkg.com/@tailwindcss/browser@4.3.0"></script>`;
                     doc += '</head><body>' + (dados.html || '') + '</body></html>';
                 }
 

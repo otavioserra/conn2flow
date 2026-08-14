@@ -155,6 +155,7 @@ function admin_componentes_editar(){
 		'framework_css',
 		'html',
 		'css',
+		'css_precompiled',
 		'css_compiled', // Novo campo
 		'html_extra_head', // Novo campo
 		'modulo',
@@ -315,6 +316,7 @@ function admin_componentes_editar(){
 		$framework_css = (isset($retorno_bd['framework_css']) ? $retorno_bd['framework_css'] : '');
 		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
+		$css_precompiled = (isset($retorno_bd['css_precompiled']) ? $retorno_bd['css_precompiled'] : '');
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 		$bd_modulo = (isset($retorno_bd['modulo']) ? $retorno_bd['modulo'] : '');
@@ -347,6 +349,7 @@ function admin_componentes_editar(){
 			'editar' => true,
 			'modulo' => $modulo,
 			'alvo' => 'componentes',
+			'css_precompiled' => $css_precompiled,
 		]));
 		
 		// ===== Popular os metaDados

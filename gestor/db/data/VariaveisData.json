@@ -6752,6 +6752,42 @@
     {
         "language": "pt-br",
         "modulo": "dashboard",
+        "id": "toolbar-modules-label",
+        "valor": "Módulos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "toolbar-modules-empty-label",
+        "valor": "Sem módulos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "toolbar-modules-filter-placeholder",
+        "valor": "Filtre os módulos...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "toolbar-modules-others-label",
+        "valor": "Outros",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
         "id": "toast-update-title",
         "valor": "Atualização Disponível",
         "tipo": "string",
@@ -6943,6 +6979,42 @@
         "modulo": "dashboard",
         "id": "logout-label",
         "valor": "Logout",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "toolbar-modules-label",
+        "valor": "Modules",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "toolbar-modules-empty-label",
+        "valor": "No modules",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "toolbar-modules-filter-placeholder",
+        "valor": "Filter modules...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "toolbar-modules-others-label",
+        "valor": "Others",
         "tipo": "string",
         "grupo": null,
         "descricao": null

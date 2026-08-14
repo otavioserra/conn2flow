@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-08-14T13:40:04+00:00",
+    "generated_at": "2026-08-14T21:58:23+00:00",
     "tables": {
         "alvos_ia": {
             "nome": "alvos_ia",
@@ -42,7 +42,8 @@
                 "modulo",
                 "framework_css",
                 "html",
-                "css"
+                "css",
+                "css_compiled"
             ],
             "insert_only": false,
             "source": "module:admin-componentes"
@@ -98,7 +99,8 @@
                 "nome",
                 "framework_css",
                 "html",
-                "css"
+                "css",
+                "css_compiled"
             ],
             "insert_only": false,
             "source": "module:admin-layouts"
@@ -198,7 +200,8 @@
                 "framework_css",
                 "sem_permissao",
                 "html",
-                "css"
+                "css",
+                "css_compiled"
             ],
             "insert_only": false,
             "source": "module:admin-paginas"
@@ -233,7 +236,8 @@
                 "target",
                 "framework_css",
                 "html",
-                "css"
+                "css",
+                "css_compiled"
             ],
             "insert_only": false,
             "source": "module:admin-templates"

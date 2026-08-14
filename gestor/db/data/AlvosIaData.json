@@ -46,14 +46,14 @@
         "id": "forms",
         "language": "pt-br",
         "status": "A",
-        "versao": 1
+        "versao": 2
     },
     {
         "nome": "Forms",
         "id": "forms",
         "language": "en",
         "status": "A",
-        "versao": 1
+        "versao": 2
     },
     {
         "nome": "Formulário de Busca",
@@ -102,14 +102,14 @@
         "id": "pages-index",
         "language": "pt-br",
         "status": "A",
-        "versao": 1
+        "versao": 2
     },
     {
         "nome": "Pages Index",
         "id": "pages-index",
         "language": "en",
         "status": "A",
-        "versao": 1
+        "versao": 2
     },
     {
         "nome": "Publicador",

@@ -21,7 +21,7 @@
                     "name": "Variáveis",
                     "id": "variables",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "variables\/",
+                    "path": "variables/",
                     "type": "system",
                     "option": "variables",
                     "root": true,
@@ -59,7 +59,7 @@
                     "name": "Variables",
                     "id": "variables",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "variables\/",
+                    "path": "variables/",
                     "type": "system",
                     "option": "variables",
                     "root": true,
@@ -90,5 +90,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "3a3d4b2ec51a4f4a"
 }

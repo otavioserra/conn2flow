@@ -476,6 +476,7 @@ $(document).ready(function () {
         if (typeof CodeMirrorCssCompiled !== 'undefined') {
             CodeMirrorCssCompiled.getDoc().setValue(modelo.css_compiled ?? '');
         }
+        window.htmlEditorCssPrecompiled = modelo.css_precompiled ?? '';
 
         // Mudar para a aba de visualização da página
         const autoPreview = $('.page-modification-auto-preview').checkbox('is checked');
@@ -920,6 +921,37 @@ $(document).ready(function () {
         return bodyMatch ? bodyMatch[1] : html;
     }
 
+    // req-114: contrato de tema compartilhado entre o CLI offline e o browser.
+    function htmlEditorDecodeBase64(value) {
+        if (!value) return '';
+        try {
+            const binary = atob(value);
+            const bytes = Uint8Array.from(binary, character => character.charCodeAt(0));
+            return new TextDecoder('utf-8').decode(bytes);
+        } catch (error) {
+            console.warn('Nao foi possivel carregar o contrato Tailwind do editor:', error);
+            return '';
+        }
+    }
+
+    function tailwindPreviewIncludes() {
+        const editorConfig = gestor.html_editor || {};
+        const version = editorConfig.tailwindBrowserVersion || '4.3.0';
+        const contract = htmlEditorDecodeBase64(editorConfig.tailwindBrowserContractBase64 || '');
+        const initialBaseline = htmlEditorDecodeBase64(editorConfig.cssPrecompiledBase64 || '');
+        const baseline = (typeof window.htmlEditorCssPrecompiled === 'string')
+            ? window.htmlEditorCssPrecompiled
+            : initialBaseline;
+        const escapeStyleEnd = value => String(value || '').replace(/<\/style/gi, '<\\/style');
+        const projectJavascript = editorConfig.projectJavascriptTailwindcss || '';
+
+        return `<!-- Tailwind browser usa o mesmo tema do build offline -->
+            ${baseline ? `<style data-c2f-tailwind-role="baseline">${escapeStyleEnd(baseline)}</style>` : ''}
+            ${contract ? `<style type="text/tailwindcss" data-c2f-tailwind-role="browser-contract">${escapeStyleEnd(contract)}</style>` : ''}
+            <script src="https://unpkg.com/@tailwindcss/browser@${version}"><\/script>
+            ${projectJavascript}`;
+    }
+
     // Função para gerar o conteúdo da página do editor HTML visual.
     function editorHtmlVisualConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui') {
         // Incluir o script e variáveis do editor HTML
@@ -927,7 +959,7 @@ $(document).ready(function () {
 
         // Incluir o CSS do usuário, se existir
         if (cssDoUsuario && cssDoUsuario.length > 0) {
-            cssDoUsuario = `<style>${cssDoUsuario}</style>`;
+            cssDoUsuario = `<style data-c2f-tailwind-role="authored">${cssDoUsuario}</style>`;
         } else {
             cssDoUsuario = '';
         }
@@ -936,33 +968,7 @@ $(document).ready(function () {
         let tailwindConfigScript = '';
 
         if (framework === 'tailwindcss') {
-            tailwindConfigScript = `<!-- CDN do TailwindCSS v4 -->
-				<script src="https://unpkg.com/@tailwindcss/browser@4"></script>`;
-            tailwindConfigScript += `\n<link rel="stylesheet" type="text/css" media="all" href="${gestor.raiz}tailwindcss/system-output.css?v=${gestor.versao}" />`;
-
-            let incluirJSPrimeiro = false;
-            if ('projectTailwindcssConfig' in gestor.html_editor) {
-                if ('incluirJSPrimeiro' in gestor.html_editor.projectTailwindcssConfig) {
-                    if (gestor.html_editor.projectTailwindcssConfig.incluirJSPrimeiro) {
-                        incluirJSPrimeiro = gestor.html_editor.projectTailwindcssConfig.incluirJSPrimeiro;
-                    }
-                }
-            }
-
-            let projectCssTailwindcss = '';
-            if ('projectCssTailwindcss' in gestor.html_editor) {
-                projectCssTailwindcss = gestor.html_editor.projectCssTailwindcss;
-            }
-            let projectJavascriptTailwindcss = '';
-            if ('projectJavascriptTailwindcss' in gestor.html_editor) {
-                projectJavascriptTailwindcss = gestor.html_editor.projectJavascriptTailwindcss;
-            }
-
-            if (incluirJSPrimeiro) {
-                tailwindConfigScript += `${projectJavascriptTailwindcss.length > 0 ? "\n" + projectJavascriptTailwindcss : ''}${projectCssTailwindcss.length > 0 ? "\n" + projectCssTailwindcss : ''}`;
-            } else {
-                tailwindConfigScript += `${projectCssTailwindcss.length > 0 ? "\n" + projectCssTailwindcss : ''}${projectJavascriptTailwindcss.length > 0 ? "\n" + projectJavascriptTailwindcss : ''}`;
-            }
+            tailwindConfigScript = tailwindPreviewIncludes();
 
             iframeTitle = 'Tailwind CSS Preview';
         }
@@ -1520,95 +1526,78 @@ $(document).ready(function () {
             return;
         }
 
-        var iframeObject = iframe[0];
-        setTimeout(function () {
-            const iframeDoc = iframeObject.contentDocument || iframeObject.contentWindow.document;
+        const iframeObject = iframe[0];
 
-            // Função recursiva para coletar seletores de qualquer folha de estilo (inclusive dentro de @layer, @media, etc.)
-            function collectSelectors(rules, selectorSet) {
-                if (!rules) return;
-                for (let j = 0; j < rules.length; j++) {
-                    const rule = rules[j];
-                    if (rule.type === CSSRule.STYLE_RULE) {
-                        selectorSet.add(rule.selectorText);
-                    } else if (rule.cssRules) {
-                        collectSelectors(rule.cssRules, selectorSet);
-                    }
+        // O Tailwind Browser compila de forma assíncrona. Polling limitado evita a antiga
+        // suposição frágil de que a última tag <style> estaria pronta em exatamente 750 ms.
+        function ruleContext(rule) {
+            if (rule.type === 4) return `@media ${rule.media.mediaText}`;
+            if (rule.type === 12) return `@supports ${rule.conditionText}`;
+            if (rule.constructor && rule.constructor.name === 'CSSLayerBlockRule') return `@layer ${rule.name || ''}`;
+            return rule.cssText ? rule.cssText.split('{', 1)[0].trim() : '';
+        }
+
+        function collectRuleSignatures(rules, signatureSet, context = '') {
+            if (!rules) return;
+            for (let index = 0; index < rules.length; index++) {
+                const rule = rules[index];
+                if (rule.type === 1 && rule.selectorText) {
+                    signatureSet.add(`${context}|${rule.selectorText}|${rule.cssText}`);
+                } else if (rule.cssRules) {
+                    collectRuleSignatures(rule.cssRules, signatureSet, `${context}/${ruleContext(rule)}`);
                 }
             }
+        }
 
-            // 1. Coleta seletores globais já existentes nas folhas de estilos core
-            const systemSelectors = new Set();
-            for (let i = 0; i < iframeDoc.styleSheets.length; i++) {
-                const sheet = iframeDoc.styleSheets[i];
-                try {
-                    // Mapeia tanto system-output.css quanto output.css
-                    if (sheet.href && (sheet.href.indexOf('system-output.css') !== -1 || sheet.href.indexOf('output.css') !== -1)) {
-                        collectSelectors(sheet.cssRules || sheet.rules, systemSelectors);
-                    }
-                } catch (e) {
-                    console.warn("Nao foi possivel ler a folha de estilo do sistema para filtragem:", e);
-                }
-            }
-
-            // Função recursiva para filtrar regras redundantes, preservando a estrutura de @media, @layer, etc.
-            function filterRules(rules, selectorSet) {
-                let css = "";
-                if (!rules) return css;
-                for (let i = 0; i < rules.length; i++) {
-                    const rule = rules[i];
-                    if (rule.type === CSSRule.STYLE_RULE) {
-                        if (!selectorSet.has(rule.selectorText)) {
-                            css += rule.cssText + "\n";
-                        }
-                    }
-                    else if (rule.type === CSSRule.MEDIA_RULE) {
-                        const mediaContent = filterRules(rule.cssRules, selectorSet);
-                        if (mediaContent.trim()) {
-                            css += `@media ${rule.media.mediaText} {\n${mediaContent}}\n`;
-                        }
-                    }
-                    else if (rule.constructor.name === "CSSLayerBlockRule" || rule.type === 17) {
-                        const layerContent = filterRules(rule.cssRules, selectorSet);
-                        if (layerContent.trim()) {
-                            const layerName = rule.name ? ` ${rule.name}` : "";
-                            css += `@layer${layerName} {\n${layerContent}}\n`;
-                        }
-                    }
-                    else if (rule.type === CSSRule.SUPPORTS_RULE) {
-                        const supportsContent = filterRules(rule.cssRules, selectorSet);
-                        if (supportsContent.trim()) {
-                            css += `@supports ${rule.conditionText} {\n${supportsContent}}\n`;
-                        }
-                    }
-                    else {
-                        // Mantém outras diretivas e regras (@theme, @keyframes etc.)
-                        css += rule.cssText + "\n";
-                    }
-                }
-                return css;
-            }
-
-            // 2. Localiza a tag de estilo gerada pelo Tailwind CDN (normalmente a última tag <style> no head)
-            const allStyleTags = iframeDoc.querySelectorAll('head > style');
-            const tailwindStyleElement = allStyleTags[allStyleTags.length - 1];
-
-            if (tailwindStyleElement) {
-                let generatedCss = "";
-                const sheet = tailwindStyleElement.sheet;
-
-                // 3. Extrai e filtra as regras estruturadas (suporta Tailwind v3 e v4)
-                if (sheet && sheet.cssRules && sheet.cssRules.length > 0) {
-                    generatedCss = filterRules(sheet.cssRules, systemSelectors);
+        function filterRules(rules, signatureSet, context = '') {
+            let css = '';
+            if (!rules) return css;
+            for (let index = 0; index < rules.length; index++) {
+                const rule = rules[index];
+                if (rule.type === 1) {
+                    const signature = `${context}|${rule.selectorText}|${rule.cssText}`;
+                    if (!signatureSet.has(signature)) css += rule.cssText + "\n";
+                } else if (rule.cssRules) {
+                    const childContext = `${context}/${ruleContext(rule)}`;
+                    const content = filterRules(rule.cssRules, signatureSet, childContext);
+                    if (!content.trim()) continue;
+                    if (rule.type === 4) css += `@media ${rule.media.mediaText} {\n${content}}\n`;
+                    else if (rule.type === 12) css += `@supports ${rule.conditionText} {\n${content}}\n`;
+                    else if (rule.constructor && rule.constructor.name === 'CSSLayerBlockRule') {
+                        css += `@layer${rule.name ? ` ${rule.name}` : ''} {\n${content}}\n`;
+                    } else css += rule.cssText + "\n";
                 } else {
-                    // Fallback se não conseguir ler o objeto sheet (Tailwind v3 innerHTML bruto)
-                    generatedCss = tailwindStyleElement.innerHTML;
+                    css += rule.cssText + "\n";
                 }
-
-                // 4. Atualiza o editor CodeMirror com as classes exclusivas filtradas
-                CodeMirrorCssCompiled.getDoc().setValue(generatedCss.trim());
             }
-        }, 750);
+            return css;
+        }
+
+        function capture(attempt = 0) {
+            const iframeDoc = iframeObject.contentDocument || iframeObject.contentWindow.document;
+            if (!iframeDoc) return;
+
+            const baselineSignatures = new Set();
+            iframeDoc.querySelectorAll('style[data-c2f-tailwind-role="baseline"]').forEach(style => {
+                try { collectRuleSignatures(style.sheet ? style.sheet.cssRules : null, baselineSignatures); }
+                catch (error) { console.warn('Nao foi possivel ler o CSS precompilado:', error); }
+            });
+
+            const generatedStyles = Array.from(iframeDoc.querySelectorAll('head > style:not([data-c2f-tailwind-role])'));
+            const tailwindStyle = generatedStyles.findLast
+                ? generatedStyles.findLast(style => style.sheet && style.sheet.cssRules && style.sheet.cssRules.length)
+                : generatedStyles.reverse().find(style => style.sheet && style.sheet.cssRules && style.sheet.cssRules.length);
+
+            if (!tailwindStyle) {
+                if (attempt < 30) setTimeout(() => capture(attempt + 1), 150);
+                return;
+            }
+
+            const generatedCss = filterRules(tailwindStyle.sheet.cssRules, baselineSignatures).trim();
+            CodeMirrorCssCompiled.getDoc().setValue(generatedCss);
+        }
+
+        setTimeout(() => capture(), 100);
     }
 
     // Função para gerar o conteúdo da página de pré-visualização fora do editor HTML.
@@ -1816,7 +1805,7 @@ $(document).ready(function () {
 
         // Incluir o CSS do usuário, se existir
         if (cssDoUsuario && cssDoUsuario.length > 0) {
-            cssDoUsuario = `<style>${cssDoUsuario}</style>`;
+            cssDoUsuario = `<style data-c2f-tailwind-role="authored">${cssDoUsuario}</style>`;
         } else {
             cssDoUsuario = '';
         }
@@ -1840,33 +1829,7 @@ $(document).ready(function () {
         let tailwindConfigScript = '';
 
         if (framework === 'tailwindcss') {
-            tailwindConfigScript = `<!-- CDN do TailwindCSS v4 -->
-				<script src="https://unpkg.com/@tailwindcss/browser@4"></script>`;
-            tailwindConfigScript += `\n<link rel="stylesheet" type="text/css" media="all" href="${gestor.raiz}tailwindcss/system-output.css?v=${gestor.versao}" />`;
-
-            let incluirJSPrimeiro = false;
-            if ('projectTailwindcssConfig' in gestor.html_editor) {
-                if ('incluirJSPrimeiro' in gestor.html_editor.projectTailwindcssConfig) {
-                    if (gestor.html_editor.projectTailwindcssConfig.incluirJSPrimeiro) {
-                        incluirJSPrimeiro = gestor.html_editor.projectTailwindcssConfig.incluirJSPrimeiro;
-                    }
-                }
-            }
-
-            let projectCssTailwindcss = '';
-            if ('projectCssTailwindcss' in gestor.html_editor) {
-                projectCssTailwindcss = gestor.html_editor.projectCssTailwindcss;
-            }
-            let projectJavascriptTailwindcss = '';
-            if ('projectJavascriptTailwindcss' in gestor.html_editor) {
-                projectJavascriptTailwindcss = gestor.html_editor.projectJavascriptTailwindcss;
-            }
-
-            if (incluirJSPrimeiro) {
-                tailwindConfigScript += `${projectJavascriptTailwindcss.length > 0 ? "\n" + projectJavascriptTailwindcss : ''}${projectCssTailwindcss.length > 0 ? "\n" + projectCssTailwindcss : ''}`;
-            } else {
-                tailwindConfigScript += `${projectCssTailwindcss.length > 0 ? "\n" + projectCssTailwindcss : ''}${projectJavascriptTailwindcss.length > 0 ? "\n" + projectJavascriptTailwindcss : ''}`;
-            }
+            tailwindConfigScript = tailwindPreviewIncludes();
 
             iframeTitle = 'Tailwind CSS Preview';
         }

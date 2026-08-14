@@ -1437,9 +1437,35 @@ function dashboard_site_toolbar_menu(){
 	global $_GESTOR;
 
 	$lang = $_GESTOR['linguagem-codigo'];
-	$label_modulos = ($lang == 'en' ? 'Modules' : 'Módulos');
-	$label_vazio = ($lang == 'en' ? 'No modules' : 'Sem módulos');
-	$label_filtro = ($lang == 'en' ? 'Filter modules...' : 'Filtre os módulos...');
+	$labels = Array(
+		'modules' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'toolbar-modules-label')),
+		'empty' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'toolbar-modules-empty-label')),
+		'filter' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'toolbar-modules-filter-placeholder')),
+		'others' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'toolbar-modules-others-label')),
+	);
+
+	// Estrutura visual mantida nos recursos; o PHP fornece somente dados e ordem.
+	$componentIds = Array(
+		'dashboard-site-toolbar-menu',
+		'dashboard-site-toolbar-menu-item',
+		'dashboard-site-toolbar-menu-group',
+		'dashboard-site-toolbar-menu-empty',
+	);
+	$components = Array();
+	foreach($componentIds as $componentId){
+		$components[$componentId] = gestor_componente(Array(
+			'id' => $componentId,
+			'modulo' => 'dashboard',
+			'linguagem' => $lang,
+		));
+	}
+	$render = static function($componentId, $values = Array()) use ($components){
+		$html = (isset($components[$componentId]) ? $components[$componentId] : '');
+		foreach($values as $key => $value){
+			$html = modelo_var_troca_tudo($html, '#'.$key.'#', (string)$value);
+		}
+		return $html;
+	};
 
 	// ===== Perfil do usuário logado.
 
@@ -1509,23 +1535,25 @@ function dashboard_site_toolbar_menu(){
 		if(!isset($perfil_modulos[$m['id']])) continue;
 
 		$link = (isset($modulo_link[$m['id']]) ? $modulo_link[$m['id']] : $_GESTOR['url-raiz'].'dashboard/');
-		$nome = htmlspecialchars($m['nome'], ENT_QUOTES, 'UTF-8');
+		$link = htmlspecialchars($link, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+		$nome = htmlspecialchars($m['nome'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 		$gid = (existe($m['modulo_grupo_id']) ? $m['modulo_grupo_id'] : '');
 
-		$item =
-			'<li class="c2f-menu-item"><a href="'.$link.'" target="_parent" '
-			.'class="block px-4 py-2 text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap">'
-			.$nome.'</a></li>';
+		$item = $render('dashboard-site-toolbar-menu-item', Array(
+			'url' => $link,
+			'name' => $nome,
+		));
 
 		$grupos_itens[$gid] = (isset($grupos_itens[$gid]) ? $grupos_itens[$gid] : '').$item;
 	}
 
 	// ===== Montar itens agrupados (grupos na ordem de modulos_grupos; depois os sem grupo).
 
-	$cabecalho = function($nomeGrupo, $gid){
-		return '<li class="c2f-group-header" data-group="'.htmlspecialchars($gid, ENT_QUOTES, 'UTF-8').'">'
-			.'<div class="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">'
-			.htmlspecialchars($nomeGrupo, ENT_QUOTES, 'UTF-8').'</div></li>';
+	$cabecalho = function($nomeGrupo, $gid) use ($render){
+		return $render('dashboard-site-toolbar-menu-group', Array(
+			'group-id' => htmlspecialchars($gid, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+			'group-name' => htmlspecialchars($nomeGrupo, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+		));
 	};
 
 	$itens = '';
@@ -1544,35 +1572,18 @@ function dashboard_site_toolbar_menu(){
 		$semGrupo .= $html;
 	}
 	if($semGrupo !== ''){
-		$label_outros = ($lang == 'en' ? 'Others' : 'Outros');
-		$itens .= $cabecalho($label_outros, '_sem-grupo').$semGrupo;
+		$itens .= $cabecalho($labels['others'], '_sem-grupo').$semGrupo;
 	}
 
 	if($itens === ''){
-		$itens = '<li class="px-4 py-2 text-slate-400 italic">'.$label_vazio.'</li>';
+		$itens = $render('dashboard-site-toolbar-menu-empty', Array('label' => $labels['empty']));
 	}
 
-	// ===== Campo de filtro no topo do dropdown (item 5).
-
-	$filtro =
-		'<li class="px-2 pt-2 pb-1">'
-		.'<input id="c2f-modules-filter" type="text" autocomplete="off" placeholder="'.htmlspecialchars($label_filtro, ENT_QUOTES, 'UTF-8').'" '
-		.'class="w-full px-2 py-1 text-sm border border-slate-200 rounded text-slate-700 focus:outline-none focus:border-slate-400">'
-		.'</li>';
-
-	// ===== Dropdown (hover) no estilo Tailwind do menus-dropdown.
-
-	$menu =
-		'<div id="c2f-toolbar-menu" class="relative group flex items-stretch">'
-		.'<button type="button" class="flex items-center gap-1 px-3 hover:bg-slate-700 transition-colors whitespace-nowrap">'
-		.$label_modulos
-		.'<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>'
-		.'</button>'
-		.'<ul class="absolute left-0 top-full w-64 bg-white border border-slate-200 rounded-b-md shadow-lg py-1 hidden group-hover:block z-10 max-h-96 overflow-auto">'
-		.$filtro
-		.$itens
-		.'</ul>'
-		.'</div>';
+	$menu = $render('dashboard-site-toolbar-menu', Array(
+		'label' => htmlspecialchars($labels['modules'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+		'filter-placeholder' => htmlspecialchars($labels['filter'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+		'items' => $itens,
+	));
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'],'<!-- menu -->',$menu);
 }

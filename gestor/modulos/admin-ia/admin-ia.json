@@ -12,8 +12,8 @@
     },
     "apis": {
         "gemini": {
-            "urlGenerateContent": "https:\/\/generativelanguage.googleapis.com\/v1beta\/{MODEL}:generateContent?key={API_KEY}",
-            "defaultModel": "models\/gemini-3-flash-preview"
+            "urlGenerateContent": "https://generativelanguage.googleapis.com/v1beta/{MODEL}:generateContent?key={API_KEY}",
+            "defaultModel": "models/gemini-3-flash-preview"
         }
     },
     "resources": {
@@ -24,7 +24,7 @@
                     "name": "Admin IA - Listar",
                     "id": "admin-ia-listar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-ia\/listar\/",
+                    "path": "admin-ia/listar/",
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
@@ -39,7 +39,7 @@
                     "name": "Admin IA - Adicionar",
                     "id": "admin-ia-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-ia\/adicionar\/",
+                    "path": "admin-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
@@ -54,7 +54,7 @@
                     "name": "Admin IA - Editar",
                     "id": "admin-ia-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-ia\/editar\/",
+                    "path": "admin-ia/editar/",
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
@@ -103,7 +103,7 @@
                     "name": "Admin AI - List",
                     "id": "admin-ia-listar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-ia\/listar\/",
+                    "path": "admin-ia/listar/",
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
@@ -118,7 +118,7 @@
                     "name": "Admin AI - Add",
                     "id": "admin-ia-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-ia\/adicionar\/",
+                    "path": "admin-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
@@ -133,7 +133,7 @@
                     "name": "Admin AI - Edit",
                     "id": "admin-ia-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-ia\/editar\/",
+                    "path": "admin-ia/editar/",
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
@@ -175,5 +175,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "c000bbe4c16228d4"
 }

@@ -8,7 +8,7 @@
 
 function forms_search_get_version() {
 	$modulo = json_decode(file_get_contents(__DIR__ . '/forms-search.json'), true);
-	return isset($modulo['versao']) ? $modulo['versao'] : '1.0.0';
+	return $modulo['asset_version'] ?? $modulo['versao'] ?? '1.0.0';
 }
 
 function forms_search_widget_bool($value) {

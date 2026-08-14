@@ -124,26 +124,19 @@ if [ ! -d "$PROJECT_PATH" ]; then
     mkdir -p "$PROJECT_PATH"
 fi
 
-# Check and execute TailwindCSS CLI if configured
+# Pass the configured Tailwind command to the PHP resource pipeline. The pipeline
+# strips legacy -i/-o arguments and compiles only changed resources.
 TAILWIND_CLI=$(jq -r ".devProjects.\"$PROJECT_TARGET\".\"tailwindcss/cli\"" "$ENV_FILE" 2>/dev/null)
-
-if [ -n "$TAILWIND_CLI" ] && [ "$TAILWIND_CLI" != "null" ]; then
-    log "Executing TailwindCSS CLI for the project..."
-    cd "$PROJECT_PATH"
-    eval "$TAILWIND_CLI"
-    if [ $? -eq 0 ]; then
-        log_success "TailwindCSS CLI executed successfully!"
-    else
-        log_error "TailwindCSS CLI execution failed"
-        exit 1
-    fi
-fi
 
 # Execute PHP script with project path
 log "Executing resource update for the project..."
 log "Command: php \"$PHP_SCRIPT\" --project-path=\"$PROJECT_PATH\""
 
-php "$PHP_SCRIPT" --project-path="$PROJECT_PATH"
+if [ -n "$TAILWIND_CLI" ] && [ "$TAILWIND_CLI" != "null" ]; then
+    TAILWINDCSS_COMMAND="$TAILWIND_CLI" php "$PHP_SCRIPT" --project-path="$PROJECT_PATH"
+else
+    php "$PHP_SCRIPT" --project-path="$PROJECT_PATH"
+fi
 
 if [ $? -eq 0 ]; then
     log_success "Resource update completed successfully!"

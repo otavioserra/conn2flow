@@ -14,7 +14,7 @@
 global $_GESTOR;
 
 $_GESTOR['biblioteca-interface']							=	Array(
-	'versao' => '1.1.5',
+	'versao' => gestor_asset_version('interface', '1.1.5'),
 );
 
 // ===== Funções formatação

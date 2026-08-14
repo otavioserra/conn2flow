@@ -15,7 +15,10 @@
         "data_modificacao": "data_modificacao",
         "config": {
             "strategy": "natural_key",
-            "natural_key_columns": ["language", "id"],
+            "natural_key_columns": [
+                "language",
+                "id"
+            ],
             "preserve_on_user_modified": [],
             "insert_only": false
         },
@@ -34,7 +37,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "usuarios-perfis\/",
+                    "path": "usuarios-perfis/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -49,7 +52,7 @@
                         "combined": "7c4ceb5911b832310b04ccdc267707a4"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "usuarios-perfis\/adicionar\/",
+                    "path": "usuarios-perfis/adicionar/",
                     "type": "system",
                     "option": "adicionar"
                 },
@@ -63,7 +66,7 @@
                         "combined": "886ad1f0a721251fceb0b87516dbf9eb"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "usuarios-perfis\/editar\/",
+                    "path": "usuarios-perfis/editar/",
                     "type": "system",
                     "option": "editar"
                 }
@@ -212,5 +215,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "8252c10248410bf0"
 }

@@ -297,6 +297,7 @@ function admin_paginas_editar(){
 		'sem_permissao',
 		'html',
 		'css',
+		'css_precompiled',
 		'css_compiled', // Novo campo
 		'html_extra_head', // Novo campo
 		'framework_css',
@@ -603,6 +604,7 @@ function admin_paginas_editar(){
 		$opcao = (isset($retorno_bd['opcao']) ? $retorno_bd['opcao'] : '');
 		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
+		$css_precompiled = (isset($retorno_bd['css_precompiled']) ? $retorno_bd['css_precompiled'] : '');
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		$html_extra_head = (isset($retorno_bd['html_extra_head']) ? $retorno_bd['html_extra_head'] : '');
 		$raiz = (isset($retorno_bd['raiz']) ? true : false);
@@ -654,6 +656,7 @@ function admin_paginas_editar(){
 			'editar' => true,
 			'modulo' => $modulo,
 			'alvo' => 'paginas',
+			'css_precompiled' => $css_precompiled,
 			// req-110: aba "SEO & Compartilhamento" com os metadados desta página.
 			'seo' => Array(
 				'og_titulo' => $og_titulo,

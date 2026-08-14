@@ -67,4 +67,73 @@ final class ArquivoEstaticoRangeTest extends TestCase
         self::assertStringNotContainsString('charset', arquivo_estatico_content_type('mp4'));
         self::assertSame('application/octet-stream', arquivo_estatico_content_type('mp4'));
     }
+
+    public function testCacheLongoEhRestritoAUrlComVersaoValida(): void
+    {
+        self::assertTrue(arquivo_estatico_versao_cache_valida(['v' => '2.9.35']));
+        self::assertTrue(arquivo_estatico_versao_cache_valida(['v' => 'build-20260814_1']));
+        self::assertFalse(arquivo_estatico_versao_cache_valida([]));
+        self::assertFalse(arquivo_estatico_versao_cache_valida(['v' => '']));
+        self::assertFalse(arquivo_estatico_versao_cache_valida(['v' => ['invalido']]));
+        self::assertFalse(arquivo_estatico_versao_cache_valida(['v' => "versao\r\nX-Test: 1"]));
+
+        self::assertSame(
+            'public, max-age=31536000, immutable',
+            arquivo_estatico_cache_control(['v' => '2.9.35'])
+        );
+        self::assertSame(
+            'public, max-age=86400, stale-while-revalidate=604800',
+            arquivo_estatico_cache_control([])
+        );
+    }
+
+    public function testEtagEhEstavelEConsideraDataETamanho(): void
+    {
+        self::assertSame('"64-3e8"', arquivo_estatico_etag(1000, 100));
+        self::assertNotSame(arquivo_estatico_etag(1000, 100), arquivo_estatico_etag(1001, 100));
+        self::assertNotSame(arquivo_estatico_etag(1000, 100), arquivo_estatico_etag(1000, 101));
+    }
+
+    public function testIfNoneMatchAceitaListaWildcardEComparacaoFraca(): void
+    {
+        $etag = '"64-3e8"';
+
+        self::assertTrue(arquivo_estatico_etag_corresponde($etag, $etag));
+        self::assertTrue(arquivo_estatico_etag_corresponde('"outro", W/"64-3e8"', $etag));
+        self::assertTrue(arquivo_estatico_etag_corresponde('*', $etag));
+        self::assertFalse(arquivo_estatico_etag_corresponde('"outro"', $etag));
+    }
+
+    public function testIfNoneMatchTemPrecedenciaSobreIfModifiedSince(): void
+    {
+        $etag = '"64-3e8"';
+        $modificado = strtotime('2026-08-14 12:00:00 UTC');
+        $depois = gmdate('D, d M Y H:i:s', $modificado + 3600).' GMT';
+
+        self::assertTrue(arquivo_estatico_nao_modificado($etag, '', $etag, $modificado));
+        self::assertTrue(arquivo_estatico_nao_modificado('', $depois, $etag, $modificado));
+        self::assertFalse(arquivo_estatico_nao_modificado('"outro"', $depois, $etag, $modificado));
+        self::assertFalse(arquivo_estatico_nao_modificado('', 'data-invalida', $etag, $modificado));
+    }
+
+    public function testIfRangeSoPermiteFaixaComValidadorAtual(): void
+    {
+        $etag = '"64-3e8"';
+        $modificado = strtotime('2026-08-14 12:00:00 UTC');
+
+        self::assertTrue(arquivo_estatico_if_range_permite('', $etag, $modificado));
+        self::assertTrue(arquivo_estatico_if_range_permite($etag, $etag, $modificado));
+        self::assertFalse(arquivo_estatico_if_range_permite('W/'.$etag, $etag, $modificado));
+        self::assertFalse(arquivo_estatico_if_range_permite('"outro"', $etag, $modificado));
+        self::assertTrue(arquivo_estatico_if_range_permite(
+            gmdate('D, d M Y H:i:s', $modificado + 60).' GMT',
+            $etag,
+            $modificado
+        ));
+        self::assertFalse(arquivo_estatico_if_range_permite(
+            gmdate('D, d M Y H:i:s', $modificado - 60).' GMT',
+            $etag,
+            $modificado
+        ));
+    }
 }

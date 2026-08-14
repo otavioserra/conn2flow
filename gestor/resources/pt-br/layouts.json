@@ -68,5 +68,17 @@
             "css": "3cb92b2858b7f058956f6b632a804f6a",
             "combined": "8f215768f26c873c7f5db3998ec26fea"
         }
+    },
+    {
+        "name": "Layout Mínimo Tailwind para Iframe",
+        "id": "layout-iframe-tailwindcss",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "2ed0fc6c4f008669f44eb2d2a97b3828",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "2ed0fc6c4f008669f44eb2d2a97b3828"
+        }
     }
 ]

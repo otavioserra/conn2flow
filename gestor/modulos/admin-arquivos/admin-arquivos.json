@@ -32,7 +32,7 @@
                     "name": "Admin Arquivos",
                     "id": "admin-arquivos",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos\/",
+                    "path": "admin-arquivos/",
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
@@ -47,7 +47,7 @@
                     "name": "Admin Arquivos - Adicionar",
                     "id": "admin-arquivos-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos\/adicionar\/",
+                    "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
                     "version": "1.5",
@@ -61,7 +61,7 @@
                     "name": "Emissão teste",
                     "id": "emissao-teste",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos\/emissao-teste\/",
+                    "path": "admin-arquivos/emissao-teste/",
                     "type": "system",
                     "without_permission": true,
                     "version": "1.0",
@@ -247,7 +247,7 @@
                 },
                 {
                     "id": "filter-info",
-                    "value": "Selecione um período e\/ou uma ou mais categoria(s) caso queira filtrar o resultado por esses dados. Depois, clique no botão <b>Filtrar<\/b> para ver os resultados.",
+                    "value": "Selecione um período e/ou uma ou mais categoria(s) caso queira filtrar o resultado por esses dados. Depois, clique no botão <b>Filtrar</b> para ver os resultados.",
                     "type": "string"
                 },
                 {
@@ -504,7 +504,7 @@
                     "name": "Admin Files",
                     "id": "admin-arquivos",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos\/",
+                    "path": "admin-arquivos/",
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
@@ -519,7 +519,7 @@
                     "name": "Admin Files - Add",
                     "id": "admin-arquivos-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos\/adicionar\/",
+                    "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
                     "version": "1.5",
@@ -533,7 +533,7 @@
                     "name": "Test Emission",
                     "id": "emissao-teste",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos\/emissao-teste\/",
+                    "path": "admin-arquivos/emissao-teste/",
                     "type": "system",
                     "without_permission": true,
                     "version": "1.0",
@@ -719,7 +719,7 @@
                 },
                 {
                     "id": "filter-info",
-                    "value": "Select a period and\/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter<\/b> button to see the results.",
+                    "value": "Select a period and/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter</b> button to see the results.",
                     "type": "string"
                 },
                 {
@@ -969,5 +969,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "24611d3978249205"
 }

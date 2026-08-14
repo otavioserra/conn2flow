@@ -1,0 +1,2 @@
+/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */
+@layer utilities{.px-4{padding-inline:calc(var(--spacing,.25rem) * 4)}.py-2{padding-block:calc(var(--spacing,.25rem) * 2)}.text-slate-400{color:var(--color-slate-400,oklch(70.4% .04 256.788))}.italic{font-style:italic}}

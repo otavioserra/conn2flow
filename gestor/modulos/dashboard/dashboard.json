@@ -76,7 +76,7 @@
                 {
                     "name": "Dashboard Site Toolbar",
                     "id": "dashboard-site-toolbar",
-                    "layout": "layout-pagina-simples",
+                    "layout": "layout-iframe-tailwindcss",
                     "path": "dashboard-site-toolbar\/",
                     "type": "system",
                     "option": "dashboard-site-toolbar",
@@ -109,6 +109,54 @@
                         "css": "7384ffd304eb09e0b5e9dff4cea68208",
                         "combined": "47d7c7e9cbf9e37adc90e2fc044026f9"
                     }
+                },
+                {
+                    "name": "Menu da Toolbar do Site",
+                    "id": "dashboard-site-toolbar-menu",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a136078e764e67ba868a70235db4d70b",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "a136078e764e67ba868a70235db4d70b"
+                    }
+                },
+                {
+                    "name": "Item do Menu da Toolbar do Site",
+                    "id": "dashboard-site-toolbar-menu-item",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "f748da9165bd0b6022d103902cd27466",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "f748da9165bd0b6022d103902cd27466"
+                    }
+                },
+                {
+                    "name": "Grupo do Menu da Toolbar do Site",
+                    "id": "dashboard-site-toolbar-menu-group",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "ff7012d9f2cef0dcc5665f975c55d8e6",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "ff7012d9f2cef0dcc5665f975c55d8e6"
+                    }
+                },
+                {
+                    "name": "Estado Vazio do Menu da Toolbar do Site",
+                    "id": "dashboard-site-toolbar-menu-empty",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "09109307e3bea00e20e899acbdd92c8c",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "09109307e3bea00e20e899acbdd92c8c"
+                    }
                 }
             ],
             "variables": [
@@ -120,6 +168,26 @@
                 {
                     "id": "logout-label",
                     "value": "Sair",
+                    "type": "string"
+                },
+                {
+                    "id": "toolbar-modules-label",
+                    "value": "Módulos",
+                    "type": "string"
+                },
+                {
+                    "id": "toolbar-modules-empty-label",
+                    "value": "Sem módulos",
+                    "type": "string"
+                },
+                {
+                    "id": "toolbar-modules-filter-placeholder",
+                    "value": "Filtre os módulos...",
+                    "type": "string"
+                },
+                {
+                    "id": "toolbar-modules-others-label",
+                    "value": "Outros",
                     "type": "string"
                 },
                 {
@@ -284,7 +352,7 @@
                 {
                     "name": "Dashboard Site Toolbar",
                     "id": "dashboard-site-toolbar",
-                    "layout": "layout-pagina-simples",
+                    "layout": "layout-iframe-tailwindcss",
                     "path": "dashboard-site-toolbar\/",
                     "type": "system",
                     "option": "dashboard-site-toolbar",
@@ -317,6 +385,54 @@
                         "css": "3ca472f60624409d709aa480fb339761",
                         "combined": "1d28cf88c0125dfb801dad5fb36390c3"
                     }
+                },
+                {
+                    "name": "Site Toolbar Menu",
+                    "id": "dashboard-site-toolbar-menu",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "a136078e764e67ba868a70235db4d70b",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "a136078e764e67ba868a70235db4d70b"
+                    }
+                },
+                {
+                    "name": "Site Toolbar Menu Item",
+                    "id": "dashboard-site-toolbar-menu-item",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "f748da9165bd0b6022d103902cd27466",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "f748da9165bd0b6022d103902cd27466"
+                    }
+                },
+                {
+                    "name": "Site Toolbar Menu Group",
+                    "id": "dashboard-site-toolbar-menu-group",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "ff7012d9f2cef0dcc5665f975c55d8e6",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "ff7012d9f2cef0dcc5665f975c55d8e6"
+                    }
+                },
+                {
+                    "name": "Site Toolbar Menu Empty State",
+                    "id": "dashboard-site-toolbar-menu-empty",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "09109307e3bea00e20e899acbdd92c8c",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "09109307e3bea00e20e899acbdd92c8c"
+                    }
                 }
             ],
             "variables": [
@@ -328,6 +444,26 @@
                 {
                     "id": "logout-label",
                     "value": "Logout",
+                    "type": "string"
+                },
+                {
+                    "id": "toolbar-modules-label",
+                    "value": "Modules",
+                    "type": "string"
+                },
+                {
+                    "id": "toolbar-modules-empty-label",
+                    "value": "No modules",
+                    "type": "string"
+                },
+                {
+                    "id": "toolbar-modules-filter-placeholder",
+                    "value": "Filter modules...",
+                    "type": "string"
+                },
+                {
+                    "id": "toolbar-modules-others-label",
+                    "value": "Others",
                     "type": "string"
                 },
                 {
@@ -432,5 +568,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "1565f88879c12b72"
 }

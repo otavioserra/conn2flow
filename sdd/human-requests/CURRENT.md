@@ -1,9 +1,14 @@
 # Current Human Request
 
-- **Intake ativo (Agente Atual)**: [req-112.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-112.md) (BATCH-112 `ready-for-intake`, 2026-08-14).
-- **Outros Intakes Pendentes (Outros Agentes)**: Nenhum.
+- **Intakes em homologação**:
+  - [req-113.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-113.md) (BATCH-113 `implemented-pending-homologation`, 2026-08-14): cache HTTP e tokens determinísticos de assets implementados no core/projeto e entrypoints.
+  - [req-114.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-114.md) (BATCH-114 `implemented-pending-homologation`, 2026-08-14): Tailwind incremental por recurso, `css_precompiled`, editor browser-safe e eliminação dos outputs globais implementados.
+
+- **Intake em implementação**:
+  - [req-115.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-115.md) (BATCH-115 `implementation-in-progress`, 2026-08-14): toolbar extraída para componentes/variáveis localizados; cobertura transitória dos módulos privados implantada; fontes adicionais justificadas e reportadas; migração dos demais fragmentos dinâmicos segue incremental.
 
 - **Lotes Fechados**: 
+  * [req-112.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-112.md) (BATCH-112 `complete`, 2026-08-14): Sitemap em assets, correção do 301, SEO no publisher-pages, isolamento do painel da Editbar e meta tags.
   * [req-110.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-110.md) (BATCH-110 `complete`, 2026-08-13): CRUD de Metadados de Página, Imagem de Destaque, Aba SEO no Editor HTML, Painel na Editbar e Sitemap XML.
   * (BATCH-111 / CR-001 `complete`, 2026-08-13): Reversão de bloqueio de analytics e eliminação definitiva do laço infinito de redirecionamento de cookies.
   * [req-109.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-109.md) (BATCH-109 `complete`, 2026-08-13): Isenção de Crawlers/Bots, Set-Cookie Silencioso, Auditoria CSRF no global.js, Permissões no Docker e Correções no Editor Visual.
@@ -36,6 +41,6 @@
   * (BATCH-099 `complete`, 2026-07-30): Upload e Gestão de Pastas Liberados no Modo Picker do Admin-Arquivos.
   * (BATCH-100 `complete`, 2026-07-30): Mídia Embutida: 403 em Arquivos com Espaço, Streaming (HTTP Range) e Dimensionamento do Áudio.
 
-- **Status**: BATCH-106 concluído e validado (Vitest 134/134 OK, PHPUnit 181/181 OK).
+- **Status**: req-113 e req-114 implementadas localmente; req-115 em implementação, com toolbar estruturalmente concluída, pontes privadas publicadas no ambiente local e governança de fontes dinâmicas ativa.
 
-- **Pendências**: Nenhuma.
+- **Pendências**: homologar visualmente a toolbar; migrar gradualmente o HTML dinâmico restante e, depois, repetir PageSpeed. A sincronização direcionada dos oito componentes do Core foi concluída no ambiente local.

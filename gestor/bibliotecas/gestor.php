@@ -58,7 +58,62 @@ function existe($dado = false){
 	}
 }
 
+/** Resolve token de cache de um diretório de assets, com fallback semântico. */
+function gestor_asset_version($owner = null, $fallback = null){
+	global $_GESTOR;
+	if(is_string($owner) && $owner !== '' && isset($_GESTOR['asset-versions']['owners'][$owner])){
+		return $_GESTOR['asset-versions']['owners'][$owner];
+	}
+	if(isset($_GESTOR['asset-version'])) return $_GESTOR['asset-version'];
+	if($fallback !== null && $fallback !== '') return $fallback;
+	return $_GESTOR['versao'] ?? '1';
+}
+
+/** Resolve token de cache do módulo sem alterar sua versão semântica. */
+function gestor_modulo_asset_version($modulo){
+	global $_GESTOR;
+	if(is_string($modulo)) $modulo = $_GESTOR['modulo#'.$modulo] ?? [];
+	if(is_array($modulo)){
+		if(!empty($modulo['asset_version'])) return $modulo['asset_version'];
+		if(!empty($modulo['versao'])) return $modulo['versao'];
+	}
+	return gestor_asset_version();
+}
+
 // =========================== Funções do Gestor
+
+/**
+ * Ordena sidecars Tailwind pela responsabilidade na cascata.
+ *
+ * A ordem dos CSS Cascade Layers é definida na primeira aparição de cada camada. O layout precisa
+ * declarar `theme, base, components, utilities` antes que páginas/componentes emitam apenas
+ * `utilities`; caso contrário o Preflight pode ficar acima das utilities e sobrescrever controles.
+ * A ordenação é estável dentro de cada papel.
+ */
+function gestor_css_precompiled_ordenar($styles){
+	$buckets = Array(
+		'layout-precompiled' => Array(),
+		'dependency-precompiled' => Array(),
+		'resource-precompiled' => Array(),
+		'other' => Array(),
+	);
+
+	foreach((array)$styles as $style){
+		$role = 'other';
+		if(is_string($style) && preg_match('/data-tailwind-role="([^"]+)"/', $style, $match)){
+			$candidate = $match[1];
+			if(isset($buckets[$candidate])) $role = $candidate;
+		}
+		$buckets[$role][] = $style;
+	}
+
+	return array_merge(
+		$buckets['layout-precompiled'],
+		$buckets['dependency-precompiled'],
+		$buckets['resource-precompiled'],
+		$buckets['other']
+	);
+}
 
 /**
  * Inclui recursos de página (CSS, CSS compilado e HTML extra head) no pipeline global.
@@ -67,6 +122,8 @@ function existe($dado = false){
  *
  * @param array $params
  * @param string $params['css']
+ * @param string $params['css_precompiled']
+ * @param string $params['css_precompiled_role'] Papel opcional para diagnóstico no DOM.
  * @param string $params['css_compiled']
  * @param string $params['html_extra_head']
  */
@@ -102,7 +159,23 @@ function gestor_pagina_recursos_incluir($params = false){
 		}
 	}
 
-	// 3) CSS Compilado
+	// 3) CSS pré-compilado offline (req-114)
+	if(isset($css_precompiled) && existe($css_precompiled)){
+		$hash = md5($css_precompiled);
+		if(!isset($_GESTOR['recursos-incluidos-hashes'][$hash])){
+			$_GESTOR['recursos-incluidos-hashes'][$hash] = true;
+			$css_precompiled_formatted = preg_replace("/(^|\n)/m", "\n        ", $css_precompiled);
+
+			$role = (isset($css_precompiled_role) && in_array($css_precompiled_role, ['layout-precompiled','resource-precompiled','dependency-precompiled'], true))
+				? $css_precompiled_role
+				: 'resource-precompiled';
+			$_GESTOR['css-precompiled'][] = '<style data-tailwind-role="'.$role.'">'."\n"
+				.$css_precompiled_formatted."\n"
+				.'</style>'."\n";
+		}
+	}
+
+	// 4) CSS compilado pelo editor online
 	if(isset($css_compiled) && existe($css_compiled)){
 		$hash = md5($css_compiled);
 		if(!isset($_GESTOR['recursos-incluidos-hashes'][$hash])){
@@ -590,6 +663,19 @@ function gestor_pdf_viewer_assets($urlRaiz = '', $versao = ''){
 	);
 }
 
+/** Monta a condição agrupada de IDs usada pela inclusão múltipla de componentes. */
+function gestor_componente_ids_condicao($ids, $escape = null){
+	if($escape === null) $escape = 'banco_escape_field';
+	$condicoes = Array();
+
+	foreach((array)$ids as $id){
+		if(!is_scalar($id) || (string)$id === '') continue;
+		$condicoes[(string)$id] = "id='".call_user_func($escape, (string)$id)."'";
+	}
+
+	return $condicoes ? '('.implode(' OR ', array_values($condicoes)).')' : '';
+}
+
 /**
  * Renderiza um componente HTML/CSS dinâmico.
  *
@@ -616,6 +702,11 @@ function gestor_componente($params = false){
 	global $_GESTOR;
 
 	if($params)foreach($params as $var => $val)$$var = $val;
+
+	$lang = (isset($linguagem) ? (string)$linguagem : (string)$_GESTOR['linguagem-codigo']);
+	$lang_sql = banco_escape_field($lang);
+	$modulo_sql = isset($modulo) ? banco_escape_field((string)$modulo) : null;
+	$return_css_ativo = !empty($return_css);
 	
 	// ===== Parâmetros
 	
@@ -648,15 +739,16 @@ function gestor_componente($params = false){
 				'id',
 				'html',
 				'css',
+				'css_precompiled',
 				'css_compiled',
 				'html_extra_head',
 				'modulo',
 			))
 			,
 			"componentes",
-			"WHERE id_componentes='".$id_componentes."'"
-			." AND language='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
-			.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
+			"WHERE id_componentes=".(int)$id_componentes
+			." AND language='".$lang_sql."'"
+			.(isset($modulo) ? " AND modulo='".$modulo_sql."'" : "")
 		);
 	}
 	
@@ -664,10 +756,7 @@ function gestor_componente($params = false){
 		switch(gettype($id)){
 			case 'array':
 				$return_array = true;
-				$ids = '';
-				foreach($id as $i){
-					$ids .= (existe($ids) ? ' OR ' : '') .  "id='".$i."'";
-				}
+				$ids = gestor_componente_ids_condicao($id);
 				
 				if(existe($ids)){
 					$componentes = banco_select_name
@@ -676,6 +765,7 @@ function gestor_componente($params = false){
 							'id',
 							'html',
 							'css',
+							'css_precompiled',
 							'css_compiled',
 							'html_extra_head',
 							'modulo',
@@ -683,8 +773,8 @@ function gestor_componente($params = false){
 						,
 						"componentes",
 						"WHERE ".$ids
-						." AND language='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
-						.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
+						." AND language='".$lang_sql."'"
+						.(isset($modulo) ? " AND modulo='".$modulo_sql."'" : "")
 					);
 				}
 			break;
@@ -695,15 +785,16 @@ function gestor_componente($params = false){
 						'id',
 						'html',
 						'css',
+						'css_precompiled',
 						'css_compiled',
 						'html_extra_head',
 						'modulo',
 					))
 					,
 					"componentes",
-					"WHERE id='".$id."'"
-					." AND language='".(isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo'])."'"
-					.(isset($modulo) ? " AND modulo='".$modulo."'" : "")
+					"WHERE id='".banco_escape_field((string)$id)."'"
+					." AND language='".$lang_sql."'"
+					.(isset($modulo) ? " AND modulo='".$modulo_sql."'" : "")
 				);
 		}
 	}
@@ -716,37 +807,42 @@ function gestor_componente($params = false){
 				$id = $componente['id'];
 				$modulo = $componente['modulo'];
 
-				if($_GESTOR['development-env']){
-					$lang = (isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo']);
-
+				if(!empty($_GESTOR['development-env'])){
 					if(existe($modulo)){
 						$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/components/'.$id.'/'.$id.'.html';
 						$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/components/'.$id.'/'.$id.'.css';
+						$css_precompiled_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/components/'.$id.'/'.$id.'.precompiled.css';
 					} else {
 						$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/components/'.$id.'/'.$id.'.html';
 						$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/components/'.$id.'/'.$id.'.css';
+						$css_precompiled_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/components/'.$id.'/'.$id.'.precompiled.css';
 					}
 
 					$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
 					$css = (file_exists($css_path)) ? file_get_contents($css_path) : '';
+					$css_precompiled = (file_exists($css_precompiled_path)) ? file_get_contents($css_precompiled_path) : ($componente['css_precompiled'] ?? '');
 				} else {
 					$html = $componente['html'];
 					$css = $componente['css'];
+					$css_precompiled = $componente['css_precompiled'] ?? '';
 				}
 				
 				$html_extra_head = $componente['html_extra_head'];
 				$css_compiled = $componente['css_compiled'];
 				
-				if(isset($return_css)){
+				if($return_css_ativo){
 					$return[$id] = Array(
 						'html' => $html,
 						'html_extra_head' => $html_extra_head,
 						'css' => $css,
+						'css_precompiled' => $css_precompiled,
 						'css_compiled' => $css_compiled,
 					);
 				} else {
 					gestor_pagina_recursos_incluir(Array(
 						'css' => $css,
+						'css_precompiled' => $css_precompiled,
+						'css_precompiled_role' => 'resource-precompiled',
 						'css_compiled' => $css_compiled,
 						'html_extra_head' => $html_extra_head,
 					));
@@ -766,37 +862,42 @@ function gestor_componente($params = false){
 			$id = $componentes[0]['id'];
 			$modulo = $componentes[0]['modulo'];
 
-			if($_GESTOR['development-env']){
-				$lang = (isset($linguagem) ? $linguagem : $_GESTOR['linguagem-codigo']);
-				
+			if(!empty($_GESTOR['development-env'])){
 				if(existe($modulo)){
 					$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/components/'.$id.'/'.$id.'.html';
 					$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/components/'.$id.'/'.$id.'.css';
+					$css_precompiled_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/components/'.$id.'/'.$id.'.precompiled.css';
 				} else {
 					$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/components/'.$id.'/'.$id.'.html';
 					$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/components/'.$id.'/'.$id.'.css';
+					$css_precompiled_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/components/'.$id.'/'.$id.'.precompiled.css';
 				}
 
 				$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
 				$css = (file_exists($css_path)) ? file_get_contents($css_path) : '';
+				$css_precompiled = (file_exists($css_precompiled_path)) ? file_get_contents($css_precompiled_path) : ($componentes[0]['css_precompiled'] ?? '');
 			} else {
 				$html = $componentes[0]['html'];
 				$css = $componentes[0]['css'];
+				$css_precompiled = $componentes[0]['css_precompiled'] ?? '';
 			}
 			
 			$css_compiled = $componentes[0]['css_compiled'];
 			$html_extra_head = $componentes[0]['html_extra_head'];
 
-			if(isset($return_css)){
+			if($return_css_ativo){
 				return Array(
 					'html' => $html,
 					'css' => $css,
 					'html_extra_head' => $html_extra_head,
+					'css_precompiled' => $css_precompiled,
 					'css_compiled' => $css_compiled,
 				);
 			} else {
 				gestor_pagina_recursos_incluir(Array(
 					'css' => $css,
+					'css_precompiled' => $css_precompiled,
+					'css_precompiled_role' => 'resource-precompiled',
 					'css_compiled' => $css_compiled,
 					'html_extra_head' => $html_extra_head,
 				));
@@ -878,6 +979,7 @@ function gestor_layout($params = false){
 				'id',
 				'html',
 				'css',
+				'css_precompiled',
 				'css_compiled',
 				'framework_css',
 				'plugin',
@@ -906,6 +1008,7 @@ function gestor_layout($params = false){
 							'id',
 							'html',
 							'css',
+							'css_precompiled',
 							'css_compiled',
 							'framework_css',
 							'plugin',
@@ -925,6 +1028,7 @@ function gestor_layout($params = false){
 						'id',
 						'html',
 						'css',
+						'css_precompiled',
 						'css_compiled',
 						'framework_css',
 						'plugin',
@@ -955,20 +1059,25 @@ function gestor_layout($params = false){
 						if(existe($plugin)){
 							$html_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
 							$css_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+							$css_precompiled_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.precompiled.css';
 						} else {
 							$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
 							$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+							$css_precompiled_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.precompiled.css';
 						}
 					} else {
 						$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
 						$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+						$css_precompiled_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.precompiled.css';
 					}
 
 					$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
 					$css = (file_exists($css_path)) ? file_get_contents($css_path) : '';
+					$css_precompiled = (file_exists($css_precompiled_path)) ? file_get_contents($css_precompiled_path) : ($layout['css_precompiled'] ?? '');
 				} else {
 					$html = $layout['html'];
 					$css = $layout['css'];
+					$css_precompiled = $layout['css_precompiled'] ?? '';
 				}
 				
 				$css_compiled = $layout['css_compiled'];
@@ -977,24 +1086,16 @@ function gestor_layout($params = false){
 					$return[$id] = Array(
 						'html' => $html,
 						'css' => $css,
+						'css_precompiled' => $css_precompiled,
 						'css_compiled' => $css_compiled,
 						'framework_css' => $framework_css,
 					);
 				} else {
-					if(existe($css_compiled)){
-						$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
-						
-						$_GESTOR['css-compiled'][] = '<style>'."\n";
-						$_GESTOR['css-compiled'][] = $css_compiled."\n";
-						$_GESTOR['css-compiled'][] = '</style>'."\n";
-					}
-					if(existe($css)){
-						$css = preg_replace("/(^|\n)/m", "\n        ", $css);
-						
-						$_GESTOR['css'][] = '<style>'."\n";
-						$_GESTOR['css'][] = $css."\n";
-						$_GESTOR['css'][] = '</style>'."\n";
-					}
+					gestor_pagina_recursos_incluir(Array(
+						'css' => $css,
+						'css_precompiled' => $css_precompiled,
+						'css_compiled' => $css_compiled,
+					));
 					
 					$return[$id] = Array(
 						'html' => $html,
@@ -1018,20 +1119,25 @@ function gestor_layout($params = false){
 					if(existe($plugin)){
 						$html_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
 						$css_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+						$css_precompiled_path = $_GESTOR['plugins-path'].$plugin.'/modules/'.$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.precompiled.css';
 					} else {
 						$html_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
 						$css_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+						$css_precompiled_path = $_GESTOR['modulos-path'].$modulo.'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.precompiled.css';
 					}
 				} else {
 					$html_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.html';
 					$css_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.css';
+					$css_precompiled_path = $_GESTOR['ROOT_PATH'].'/resources/'.$lang.'/layouts/'.$id.'/'.$id.'.precompiled.css';
 				}
 
 				$html = (file_exists($html_path)) ? file_get_contents($html_path) : '';
 				$css = (file_exists($css_path)) ? file_get_contents($css_path) : '';
+				$css_precompiled = (file_exists($css_precompiled_path)) ? file_get_contents($css_precompiled_path) : ($layouts[0]['css_precompiled'] ?? '');
 			} else {
 				$html = $layouts[0]['html'];
 				$css = $layouts[0]['css'];
+				$css_precompiled = $layouts[0]['css_precompiled'] ?? '';
 			}
 			
 			$css_compiled = $layouts[0]['css_compiled'];
@@ -1043,25 +1149,16 @@ function gestor_layout($params = false){
 				return Array(
 					'html' => $html,
 					'css' => $css,
+					'css_precompiled' => $css_precompiled,
 					'css_compiled' => $css_compiled,
 					'framework_css' => $framework_css,
 				);
 			} else {
-				if(existe($css_compiled)){
-					$css_compiled = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
-					
-					$_GESTOR['css-compiled'][] = '<style>'."\n";
-					$_GESTOR['css-compiled'][] = $css_compiled."\n";
-					$_GESTOR['css-compiled'][] = '</style>'."\n";
-				}
-				
-				if(existe($css)){
-					$css = preg_replace("/(^|\n)/m", "\n        ", $css);
-					
-					$_GESTOR['css'][] = '<style>'."\n";
-					$_GESTOR['css'][] = $css."\n";
-					$_GESTOR['css'][] = '</style>'."\n";
-				}
+				gestor_pagina_recursos_incluir(Array(
+					'css' => $css,
+					'css_precompiled' => $css_precompiled,
+					'css_compiled' => $css_compiled,
+				));
 				
 				return $html;
 			}

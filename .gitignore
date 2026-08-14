@@ -43,6 +43,7 @@ vendor/
 # Cache
 cache/
 *.cache
+gestor/.tailwind-build/
 
 # Uploads
 uploads/

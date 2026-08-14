@@ -81,14 +81,14 @@ echo "📤 Source: $ORIGEM"
 echo "📥 Target: $DESTINO"
 echo "🐳 Docker Path: $PATH_DOCKER"
 
-# Compile Tailwind CSS for the Core before synchronizing (if configured)
+# Gera recursos, Tailwind incremental e tokens de cache antes da cópia.
+REPO_ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
+RESOURCE_SCRIPT="$REPO_ROOT/gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php"
+echo "🎨 Atualizando recursos e assets do Core..."
 if [ -n "$TAILWIND_CLI" ] && [ "$TAILWIND_CLI" != "null" ]; then
-  echo "🎨 Executando TailwindCSS CLI para o Core..."
-  if ! ( cd "$ORIGEM" && eval "$TAILWIND_CLI" ); then
-    echo "❌ Falha ao compilar o TailwindCSS do Core. Sincronização abortada."
-    exit 1
-  fi
-  echo "✅ TailwindCSS do Core compilado com sucesso."
+  TAILWINDCSS_COMMAND="$TAILWIND_CLI" php "$RESOURCE_SCRIPT"
+else
+  php "$RESOURCE_SCRIPT"
 fi
 
 # Execute chosen command

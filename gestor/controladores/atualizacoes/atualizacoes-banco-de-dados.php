@@ -36,6 +36,9 @@
 
 declare(strict_types=1);
 
+const DB_SYNC_POLICY_VERSION = '2-css-precompiled-pipeline-owned';
+const DB_SYNC_POLICY_TABLES = ['paginas', 'layouts', 'componentes', 'templates'];
+
 // =====================
 // Configuração Global
 // =====================
@@ -239,6 +242,32 @@ function tabelaFromDataFile(string $file): string {
 }
 
 /**
+ * Calcula as tabelas que precisam ser sincronizadas por mudança de dados ou da
+ * própria política do sincronizador. A versão da política permite backfills
+ * únicos mesmo quando o conteúdo dos Data.json permaneceu igual entre deploys.
+ *
+ * @return list<string>
+ */
+function tabelasAlteradasPorChecksum(array $atuais, array $anteriores): array {
+    $alteradas = [];
+    foreach ($atuais as $file => $sum) {
+        if ($file === '__sync_policy') continue;
+        if (!isset($anteriores[$file]) || $anteriores[$file] !== $sum) {
+            $alteradas[] = tabelaFromDataFile($file);
+        }
+    }
+
+    if (($anteriores['__sync_policy'] ?? null) !== ($atuais['__sync_policy'] ?? null)) {
+        foreach (DB_SYNC_POLICY_TABLES as $tabela) {
+            $dataFile = dataFileNameFromTable($tabela);
+            if (array_key_exists($dataFile, $atuais)) $alteradas[] = $tabela;
+        }
+    }
+
+    return array_values(array_unique($alteradas));
+}
+
+/**
  * Carrega o contrato consolidado de sincronização (schema-metadata.json) com cache.
  * Fonte única e dinâmica das regras antes hardcoded ($tabelasChaveNatural, $tabelasInsertOnly,
  * $preserveMap e a chave natural por tabela). Gerado por atualizacao-dados-recursos.php.
@@ -266,6 +295,34 @@ function schemaMetadata(): array {
 function tabelaMeta(string $tabela): ?array {
     $m = schemaMetadata();
     return $m['tables'][$tabela] ?? null;
+}
+
+/**
+ * Campos autorais preservados quando user_modified=1.
+ *
+ * css_precompiled é sempre um artefato do pipeline local/CI e nunca conteúdo do
+ * usuário. O filtro também protege instalações que ainda recebam um
+ * schema-metadata.json antigo contendo esse campo na lista de preservação.
+ */
+function camposPreservadosUsuario(?array $meta): array {
+    $campos = ($meta && is_array($meta['preserve_on_user_modified'] ?? null))
+        ? $meta['preserve_on_user_modified']
+        : [];
+    return array_values(array_filter(
+        $campos,
+        static fn($campo): bool => is_string($campo) && $campo !== 'css_precompiled'
+    ));
+}
+
+/**
+ * Impede que uma atualização do Core publique seu artefato Tailwind sobre um
+ * recurso pertencente a projeto privado. No deploy do projeto, $project é
+ * informado e o css_precompiled segue normalmente no diff.
+ */
+function aplicarPoliticaCssPrecompiled(array &$diff, array $existente, $project, bool $forced): void {
+    if (!$forced && empty($project) && !empty($existente['project'])) {
+        unset($diff['css_precompiled']);
+    }
 }
 
 /** Colunas da chave natural de uma tabela (vazio quando a estratégia não é natural_key). */
@@ -482,7 +539,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
     // (substituem $tabelasChaveNatural, $tabelasInsertOnly e $preserveMap hardcoded).
     $meta = tabelaMeta($tabela);
     $strategy = $meta['strategy'] ?? 'pk';
-    $preserveCampos = ($meta && is_array($meta['preserve_on_user_modified'] ?? null)) ? $meta['preserve_on_user_modified'] : [];
+    $preserveCampos = camposPreservadosUsuario($meta);
     $temPreserve = !empty($preserveCampos);
 
     $pkDeclarada = pkPorTabela($tabela) ?? descobrirPK($tabela, $registros[0]);
@@ -584,6 +641,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 if ($c==='user_modified' && (int)$vOld===1 && (int)$vNew!==1 && !$forced) continue;
                 if (normalizeValue($vNew)!==normalizeValue($vOld)) { $diff[$c]=$vNew; $oldVals[$c]=$vOld; }
             }
+            aplicarPoliticaCssPrecompiled($diff, $exist, $project, $forced);
             // Sob atualização forçada NÃO preservamos campos do usuário (payload completo do JSON).
             if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && $temPreserve && !$forced) {
                 $changedPreserved=false; foreach ($preserveCampos as $campo) {
@@ -728,6 +786,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 $vOld = $exist[$c] ?? null;
                 if (normalizeValue($vNew)!==normalizeValue($vOld)) { $diff[$c]=$vNew; $oldVals[$c]=$vOld; }
             }
+            aplicarPoliticaCssPrecompiled($diff, $exist, $project, $forced);
             // Sob atualização forçada NÃO preservamos campos do usuário (payload completo do JSON).
             if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && $temPreserve && !$forced) {
                 $changedPreserved=false; foreach ($preserveCampos as $campo){ if(array_key_exists($campo,$diff)){ if($tabela==='variaveis' && $campo==='valor'){ if(isset($exist['value_updated'])||isset($row['value_updated'])) $diff['value_updated']=$diff[$campo]; } else { $dest=$campo.'_updated'; if(isset($exist[$dest])||isset($row[$dest])) $diff[$dest]=$diff[$campo]; } unset($diff[$campo]); $changedPreserved=true; }} if($changedPreserved){ if(isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_unificado("USER_MODIFIED_PRESERVADO_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE_DB']); }}
@@ -813,6 +872,26 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 // Se linguagem só existe como 'language' mas schema usa 'linguagem_codigo', ajustar
                 if (isset($diff['language']) && is_array($allowedCols) && !isset($allowedCols['language']) && isset($allowedCols['linguagem_codigo']) && !isset($diff['linguagem_codigo'])) {
                     $diff['linguagem_codigo'] = $diff['language']; unset($diff['language']);
+                }
+                aplicarPoliticaCssPrecompiled($diff, $exist, $project, $forced);
+                // O fallback histórico deve respeitar a mesma preservação por campo do fluxo normal.
+                if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && $temPreserve && !$forced) {
+                    $changedPreserved = false;
+                    foreach ($preserveCampos as $campo) {
+                        if (!array_key_exists($campo, $diff)) continue;
+                        if ($tabela === 'variaveis' && $campo === 'valor') {
+                            if (isset($exist['value_updated']) || isset($row['value_updated'])) $diff['value_updated'] = $diff[$campo];
+                        } else {
+                            $dest = $campo . '_updated';
+                            if (isset($exist[$dest]) || isset($row[$dest])) $diff[$dest] = $diff[$campo];
+                        }
+                        unset($diff[$campo]);
+                        $changedPreserved = true;
+                    }
+                    if ($changedPreserved) {
+                        if (isset($exist['system_updated']) || isset($row['system_updated'])) $diff['system_updated'] = 1;
+                        if ($debug) log_unificado("USER_MODIFIED_PRESERVADO_FALLBACK_NAT tabela=$tabela chave=$fallbackKey", $GLOBALS['LOG_FILE_DB']);
+                    }
                 }
                 // Reset de user_modified=0 quando forçado (alinha o registro à base de código do deploy).
                 if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
@@ -1111,6 +1190,7 @@ function main(): int {
         foreach (glob($DB_DATA_DIR . '*Data.json') as $f) {
             $checksums[basename($f)] = md5_file($f) ?: '';
         }
+        $checksums['__sync_policy'] = DB_SYNC_POLICY_VERSION;
         $checksumsJson = json_encode($checksums, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
         $previousMap = [];
         $CHECKSUM_CHANGED_TABLES = null; // null => todas
@@ -1124,10 +1204,7 @@ function main(): int {
         }
 
         if ($previousMap && !$forceAll) {
-            $changed = [];
-            foreach ($checksums as $file=>$sum) {
-                if (!isset($previousMap[$file]) || $previousMap[$file] !== $sum) { $changed[] = tabelaFromDataFile($file); }
-            }
+            $changed = tabelasAlteradasPorChecksum($checksums, $previousMap);
             if ($changed) {
                 $CHECKSUM_CHANGED_TABLES = $changed;
                 log_unificado('CHECKSUM_CHANGED_TABLES='.implode(',', $changed), $LOG_FILE_DB);

@@ -44,6 +44,12 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 - BATCH-097d (externo, projeto lumix req-066): seção "CATÁLOGO (Produtos e Preços)" na biblioteca core `gestor/bibliotecas/stripe.php` — `stripe_criar_produto`, `stripe_atualizar_produto` (merge parcial; limpar imagens exige `images[]=''`), `stripe_consultar_produto`, `stripe_listar_produtos`, `stripe_arquivar_produto`, `stripe_criar_preco`, `stripe_consultar_preco`, `stripe_listar_precos` e `stripe_arquivar_preco`. As listagens devolvem `['data','has_more']` e aceitam `expand` (o consumidor usa `data.product` para trazer o catálogo inteiro numa chamada). Não há update de `unit_amount` na API do Stripe: trocar valor/moeda/recorrência é criar preço novo e arquivar o anterior. Nenhum arquivo do core além da biblioteca foi tocado. `php -l` verde; smoke das pré-condições no projeto consumidor. Ver lumix/sdd/implementation/BATCH-117-stripe-products-module.md e DECISION-040
 
+## Batches em andamento
+
+| Batch | Status | Escopo | Plano |
+| --- | --- | --- | --- |
+| BATCH-115 | in-progress | Extração de HTML dinâmico e consolidação do Tailwind por recurso (req-115) | [BATCH-115.md](BATCH-115.md) |
+
 ## Regra operacional
 
 Não abra um novo batch funcional sem atualizar este índice. Se o escopo mudar de forma normativa, registre primeiro a mudança em `sdd/change-requests/`.

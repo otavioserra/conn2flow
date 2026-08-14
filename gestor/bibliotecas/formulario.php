@@ -15,7 +15,7 @@ global $_GESTOR;
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-formulario']							=	Array(
-	'versao' => '1.4.0',
+	'versao' => gestor_asset_version('interface', '1.4.0'),
 );
 
 /**

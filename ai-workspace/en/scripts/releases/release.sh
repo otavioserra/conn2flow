@@ -45,6 +45,11 @@ fi
 
 echo "New version is: $NEW_VERSION"
 
+# Generate per-resource Tailwind, Data.json and deterministic asset cache tokens
+# before the release commit/tag. The routine performs no Git or network operation.
+echo "Generating resources and asset cache tokens..."
+php gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php
+
 ## Removes all old tags matching the same major.minor series as NEW_VERSION
 VERSION_MAJOR=$(echo "$NEW_VERSION" | cut -d'.' -f1)
 VERSION_MINOR=$(echo "$NEW_VERSION" | cut -d'.' -f2)

@@ -140,6 +140,10 @@ if [ ! -d "$ORIGEM" ]; then
   exit 1
 fi
 
+# Files-only synchronization still needs fresh deterministic cache tokens.
+ASSET_SCRIPT="$PROJECT_ROOT/gestor/controladores/agents/arquitetura/atualizacao-versoes-assets.php"
+php "$ASSET_SCRIPT" --root="$ORIGEM"
+
 # Ensure destination exists
 if [ ! -d "$DESTINO" ]; then
   log_warning "Destination does not exist. Creating: $DESTINO"

@@ -21,7 +21,7 @@
                     "name": "Admin Atualizações",
                     "id": "admin-atualizacoes",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-atualizacoes\/",
+                    "path": "admin-atualizacoes/",
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
@@ -36,7 +36,7 @@
                     "name": "Admin Atualizações - Detalhe",
                     "id": "admin-atualizacoes-detalhe",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-atualizacoes\/detalhe\/",
+                    "path": "admin-atualizacoes/detalhe/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
                     "version": "1.2",
@@ -239,7 +239,7 @@
                     "name": "Admin Updates",
                     "id": "admin-atualizacoes",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-atualizacoes\/",
+                    "path": "admin-atualizacoes/",
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
@@ -254,7 +254,7 @@
                     "name": "Admin Updates - Detail",
                     "id": "admin-atualizacoes-detalhe",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-atualizacoes\/detalhe\/",
+                    "path": "admin-atualizacoes/detalhe/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
                     "version": "1.2",
@@ -450,5 +450,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "403b28dbab406060"
 }

@@ -1,0 +1,1913 @@
+{
+    "version": 1,
+    "tailwind_version": "unknown",
+    "central_input": "assets/tailwindcss/system-input.css",
+    "central_hash": "d336b895a788bae3c151d7ea1489d63052e4a067065a1decf26b81439414f722",
+    "browser_contract": "assets/tailwindcss/browser-contract.css",
+    "browser_contract_hash": "374c7360ff3d3609814ef61f58271591bd4781278ee23b535c239a1a20f69705",
+    "resources": {
+        "global||en|components|forms-prepared-email": {
+            "fingerprint": "b7fa994e9d15baef8019dfaae94af583c3b15c03f4eb38525b77cfa87f96cb52",
+            "output_hash": "51ae34f2877203bac8fba60b99ceece84ded5a61446454007be9e609dfa832eb",
+            "output": "resources//en/components/forms-prepared-email/forms-prepared-email.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/components/forms-prepared-email/forms-prepared-email.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:26+00:00"
+        },
+        "global||en|layouts|layout-iframe-tailwindcss": {
+            "fingerprint": "eb4ea79738abc34d6f7c6653de12e40839d5a0d723f68fdacd7a5e9ea45b436a",
+            "output_hash": "b76b45d14e66e1eb8f975b21ccfde8b36c46b3e10fcb9c2362f8b3972aa36863",
+            "output": "resources//en/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T21:28:23+00:00"
+        },
+        "global||en|templates|componente-card-produto": {
+            "fingerprint": "feab29ee6b2953c19c410eb8c3c9416503b76002d110053a401eb74626350072",
+            "output_hash": "a662a8a57f929f43cd8753c6a0232660fcd2a4ada1b125945f8d270b4590a37e",
+            "output": "resources//en/templates/componente-card-produto/componente-card-produto.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/componente-card-produto/componente-card-produto.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:27+00:00"
+        },
+        "global||en|templates|componente-footer-completo": {
+            "fingerprint": "4c90c318ebb863eec11756b516ddd9cfee3097c603aaede8a615445b11491f64",
+            "output_hash": "6f3cf462571a953c38ca9979f92a9fd9b5733ba95f176dc55b045fbc55d8c540",
+            "output": "resources//en/templates/componente-footer-completo/componente-footer-completo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/componente-footer-completo/componente-footer-completo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:27+00:00"
+        },
+        "global||en|templates|componente-formulario-contato": {
+            "fingerprint": "872683442c6f34c7c380e68ebddd87a01808b2ce90517edcd41c7ae42b311b5e",
+            "output_hash": "37fab0a5fe8a5a25f43c2e5132a31c714b3af20b24e532475023726a9af48584",
+            "output": "resources//en/templates/componente-formulario-contato/componente-formulario-contato.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/componente-formulario-contato/componente-formulario-contato.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:27+00:00"
+        },
+        "global||en|templates|componente-header-navegacao": {
+            "fingerprint": "5debf164c4a12d07980b610728e091877ae839285727bc49805b102f86fb2027",
+            "output_hash": "9085c38d7f5566d03b34311c89c3f666fb0e86fe5bb2a0cdd6b42626290420c8",
+            "output": "resources//en/templates/componente-header-navegacao/componente-header-navegacao.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/componente-header-navegacao/componente-header-navegacao.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:28+00:00"
+        },
+        "global||en|templates|componente-hero-banner": {
+            "fingerprint": "e0befab135e6b37e3381a695c9834e6681acc6535899f1a9a55217e4a12f4cb6",
+            "output_hash": "14e7342729ab957cb339a7a3f8766ac26fe9352fed8f8dd2d47445dba9c40a13",
+            "output": "resources//en/templates/componente-hero-banner/componente-hero-banner.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/componente-hero-banner/componente-hero-banner.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:28+00:00"
+        },
+        "global||en|templates|layout-blog-sidebar": {
+            "fingerprint": "5a3fd2ade80a212f52078f69ebbefcebe4f1e93fc0c26ec44a478cacef48a07e",
+            "output_hash": "d0cce541179ebe1eb1749b573a4e5246018e28a7b39434126ec8356138e01b83",
+            "output": "resources//en/templates/layout-blog-sidebar/layout-blog-sidebar.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/layout-blog-sidebar/layout-blog-sidebar.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:29+00:00"
+        },
+        "global||en|templates|layout-dashboard": {
+            "fingerprint": "b043e7361a0d9878a5e852f5bd433bbc0e2fb80889e4e4c9bd6a664817b13c75",
+            "output_hash": "deea0c160c96455f3f12b7b0e3253718a5a45d291dbdc0f3fc79d5307b45a0d6",
+            "output": "resources//en/templates/layout-dashboard/layout-dashboard.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/layout-dashboard/layout-dashboard.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:29+00:00"
+        },
+        "global||en|templates|layout-landing-page": {
+            "fingerprint": "e342d5de41b5d5d6556d2f43cc644689d6b9a17d9dbb98389d6e9d044469e7e5",
+            "output_hash": "0dfdda3ecc1908adb5a38066d928a3c0778fef44747db7b2e09e8fb060f77527",
+            "output": "resources//en/templates/layout-landing-page/layout-landing-page.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/layout-landing-page/layout-landing-page.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:29+00:00"
+        },
+        "global||en|templates|layout-portfolio": {
+            "fingerprint": "09ea041d622f8a6872362ecb1d419d417efa438efa543524a6ab7cc41dc4bd5c",
+            "output_hash": "af4affe037bfe305f883e1147e84339a81408af591b9e8015cc0a911bac444b0",
+            "output": "resources//en/templates/layout-portfolio/layout-portfolio.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/layout-portfolio/layout-portfolio.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:30+00:00"
+        },
+        "global||en|templates|layout-site-institucional": {
+            "fingerprint": "bfa9f03e350138ca7c5c4fcf2531f4ae8ced91865a9a5c7a276c2b4b01a91726",
+            "output_hash": "b2e62c795c6fb350b8ba0b0799b63166f5e382aa20884b56a5524a747f1a4e04",
+            "output": "resources//en/templates/layout-site-institucional/layout-site-institucional.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/layout-site-institucional/layout-site-institucional.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:30+00:00"
+        },
+        "global||en|templates|sessao-com-2-colunas": {
+            "fingerprint": "347fe70923210047fa2843a62e9c1a1c48727a50730eb647d53844a5741d0b8b",
+            "output_hash": "953163489d6e5765a7b3731edecc89a1747a1bfd200a6a6e55ebfee0b131b8f0",
+            "output": "resources//en/templates/sessao-com-2-colunas/sessao-com-2-colunas.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-com-2-colunas/sessao-com-2-colunas.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:30+00:00"
+        },
+        "global||en|templates|sessao-com-2-colunas-alternativo": {
+            "fingerprint": "472043c3da49a89f5b01dea0c3041d5aa8af5e796ed9652763af466cf9c34c76",
+            "output_hash": "986e50f7f8dff4b6f717ba65c6737b2231ed5cbbdee764279b9036ce3011f10d",
+            "output": "resources//en/templates/sessao-com-2-colunas-alternativo/sessao-com-2-colunas-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-com-2-colunas-alternativo/sessao-com-2-colunas-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:31+00:00"
+        },
+        "global||en|templates|sessao-com-3-colunas": {
+            "fingerprint": "b72db73d9343708103cfe594de43bf292d64652c8d5df0b46277442fb69375eb",
+            "output_hash": "a714efe98f38c32ffedbaeaa598c3b79fdfa9133c5eacd21a0b7e8d003fc7292",
+            "output": "resources//en/templates/sessao-com-3-colunas/sessao-com-3-colunas.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-com-3-colunas/sessao-com-3-colunas.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:31+00:00"
+        },
+        "global||en|templates|sessao-com-3-colunas-alternativo": {
+            "fingerprint": "57423e30b7729c3d2cc35669dd59106a6532d15a74357390a0f8e2f2982f1912",
+            "output_hash": "373b70800d8c449a2788dab9873604c89cd345077ab64bf7664bb79d4b78a11a",
+            "output": "resources//en/templates/sessao-com-3-colunas-alternativo/sessao-com-3-colunas-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-com-3-colunas-alternativo/sessao-com-3-colunas-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:32+00:00"
+        },
+        "global||en|templates|sessao-com-abas": {
+            "fingerprint": "33166e52a33b4ae50a8f0bb1e720f6b2a597357785e0f49b9de3a1735aa253e3",
+            "output_hash": "9451aab13480301d5261c8f3aa2c3d5230cb2acac5039d4b26a6662af16a9664",
+            "output": "resources//en/templates/sessao-com-abas/sessao-com-abas.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-com-abas/sessao-com-abas.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:32+00:00"
+        },
+        "global||en|templates|sessao-com-abas-alternativo": {
+            "fingerprint": "52d5a236f536dcb675406a938c2bf9a1361effcd4546ef4837d6046d0b6bd537",
+            "output_hash": "68c9293526dd52319a549c110727349d734d1ceb541d8a8bceca362693e60d65",
+            "output": "resources//en/templates/sessao-com-abas-alternativo/sessao-com-abas-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-com-abas-alternativo/sessao-com-abas-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:32+00:00"
+        },
+        "global||en|templates|sessao-contato-mapa": {
+            "fingerprint": "88608ee96539c6ea01e37aee4c34b50e4ae67773a849401ac496b3dece493f9a",
+            "output_hash": "73f21b277e828733ba18e58479b00707344da327b4bbfbc3979d79da9a5f60db",
+            "output": "resources//en/templates/sessao-contato-mapa/sessao-contato-mapa.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-contato-mapa/sessao-contato-mapa.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:33+00:00"
+        },
+        "global||en|templates|sessao-contato-mapa-alternativo": {
+            "fingerprint": "b420a61ee475c2e1d8046c4ef04ec9493852e829f8018f8d89f583f56fb78ba6",
+            "output_hash": "1f6495bf17c242b24e39f370231e5e7402d501de98a092b5631ceab1dbb2a9bc",
+            "output": "resources//en/templates/sessao-contato-mapa-alternativo/sessao-contato-mapa-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-contato-mapa-alternativo/sessao-contato-mapa-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:33+00:00"
+        },
+        "global||en|templates|sessao-cta-gradiente": {
+            "fingerprint": "61a9bba8c5bf67b9b019a636df8ce0075004851fc77117ee8ee7bf70ac898f65",
+            "output_hash": "86d39212b9bb5bc4ed7b565e7796ad84337e93134d9138287c21acb4e780f276",
+            "output": "resources//en/templates/sessao-cta-gradiente/sessao-cta-gradiente.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-cta-gradiente/sessao-cta-gradiente.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:33+00:00"
+        },
+        "global||en|templates|sessao-cta-gradiente-alternativo": {
+            "fingerprint": "901b482ab08c8a1f6852b2427fe629d06ee238485cc76e101b6ff49d8810d7bb",
+            "output_hash": "a2a3da5dbde61e58118ca94c6c4eb7f8695c242c5ebd82a1672f3a782dc293fa",
+            "output": "resources//en/templates/sessao-cta-gradiente-alternativo/sessao-cta-gradiente-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-cta-gradiente-alternativo/sessao-cta-gradiente-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:34+00:00"
+        },
+        "global||en|templates|sessao-depoimentos-cards": {
+            "fingerprint": "fa460531b574834495b7593699cfc072c416931b6968bb4e572cc1d044924766",
+            "output_hash": "010e94bcc7117f6c2fb9b9be794baccba2e890e3b2f0dfb5c9a811506e1dd545",
+            "output": "resources//en/templates/sessao-depoimentos-cards/sessao-depoimentos-cards.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-depoimentos-cards/sessao-depoimentos-cards.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:34+00:00"
+        },
+        "global||en|templates|sessao-depoimentos-cards-alternativo": {
+            "fingerprint": "a2e52583474c8aff8e6b4ea7726b89a03c97f4ed63835e515d48c4ef954d7ab3",
+            "output_hash": "62f9111df7fe9d5b097c662e6361f84d3e2fa2537057d748831ccde89c2fce7b",
+            "output": "resources//en/templates/sessao-depoimentos-cards-alternativo/sessao-depoimentos-cards-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-depoimentos-cards-alternativo/sessao-depoimentos-cards-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:34+00:00"
+        },
+        "global||en|templates|sessao-destaque": {
+            "fingerprint": "1aa0e78222851bf852b2249c6f3a863592916914d1433d36c159a2e1d259e214",
+            "output_hash": "e72586c2b0ca771156be30aa208e5270f82b757aa9e49fa4f50d540500ec8a85",
+            "output": "resources//en/templates/sessao-destaque/sessao-destaque.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-destaque/sessao-destaque.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:35+00:00"
+        },
+        "global||en|templates|sessao-destaque-alternativo": {
+            "fingerprint": "94df233743c299956cb65deae69f858b30ff2ca6c86035681e74b1362d899423",
+            "output_hash": "36273d93d29e66e1488bf460b798df34318bd32eb12e7ea660f7aabbf635650a",
+            "output": "resources//en/templates/sessao-destaque-alternativo/sessao-destaque-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-destaque-alternativo/sessao-destaque-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:35+00:00"
+        },
+        "global||en|templates|sessao-faq-acordeao": {
+            "fingerprint": "a98ef8bd90df7f57ca19744eac411d8deef23a9cc898abfd2c318a834f63aaa7",
+            "output_hash": "b139b08298eec571285c47532e58a23f5a3aecc56f7d2f184d0afe329b149185",
+            "output": "resources//en/templates/sessao-faq-acordeao/sessao-faq-acordeao.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-faq-acordeao/sessao-faq-acordeao.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:36+00:00"
+        },
+        "global||en|templates|sessao-faq-acordeao-alternativo": {
+            "fingerprint": "15800fdfe31c200a7238e2f38cdb89b5ffa4de175dc87a263e3fdebac25c3c95",
+            "output_hash": "d71573d26b0d80eea011b440b1169259294e9fd6885bdc7cef0594a399180599",
+            "output": "resources//en/templates/sessao-faq-acordeao-alternativo/sessao-faq-acordeao-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-faq-acordeao-alternativo/sessao-faq-acordeao-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:36+00:00"
+        },
+        "global||en|templates|sessao-galeria-masonry": {
+            "fingerprint": "d4aa43b47576f3507903ad44fce0ca560d7943ec59e979fa2234c92d9616d8d0",
+            "output_hash": "1cdbe3128eb45254d30b9b4a48a9945739005e86a694d8757c5dc27b20ee9acf",
+            "output": "resources//en/templates/sessao-galeria-masonry/sessao-galeria-masonry.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-galeria-masonry/sessao-galeria-masonry.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:36+00:00"
+        },
+        "global||en|templates|sessao-galeria-masonry-alternativo": {
+            "fingerprint": "0c93823b9e397af9c0c64dbbec8c764b27df9cb577bc34fde3333d4869ab42ac",
+            "output_hash": "90c8deff26b648f290006be343b28034761215581305eebb723371f98d3768e3",
+            "output": "resources//en/templates/sessao-galeria-masonry-alternativo/sessao-galeria-masonry-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-galeria-masonry-alternativo/sessao-galeria-masonry-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:37+00:00"
+        },
+        "global||en|templates|sessao-hero-moderno": {
+            "fingerprint": "5f87358441f2257d7498f00a053f6262da7acd583ef1a1486efacf7374720bac",
+            "output_hash": "421b638b302dccf124b3fd181199ba2637ab4cd9bd2bd16eeeee34db75c33358",
+            "output": "resources//en/templates/sessao-hero-moderno/sessao-hero-moderno.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-hero-moderno/sessao-hero-moderno.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:37+00:00"
+        },
+        "global||en|templates|sessao-hero-moderno-alternativo": {
+            "fingerprint": "aaf4e8cf4c543a8d86aa5b9e31a6aca4bf9c5ba21c3ecb0e4b2fd9c4fe3a245d",
+            "output_hash": "4caac77b6cba2a37ca1f1a2ab697be14efbe0cb0cc6e610a75537185d3220e7b",
+            "output": "resources//en/templates/sessao-hero-moderno-alternativo/sessao-hero-moderno-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-hero-moderno-alternativo/sessao-hero-moderno-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:37+00:00"
+        },
+        "global||en|templates|sessao-newsletter-minimalista": {
+            "fingerprint": "6c037a89ec1ec33a9305124aba7a48d138911d1c5eb3b7e34d2ed40ef253ed51",
+            "output_hash": "c2f1ffb66ba22b795f71a9e533ff87379ec0396f0f64349514e3a4f7c12f3c15",
+            "output": "resources//en/templates/sessao-newsletter-minimalista/sessao-newsletter-minimalista.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-newsletter-minimalista/sessao-newsletter-minimalista.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:38+00:00"
+        },
+        "global||en|templates|sessao-newsletter-minimalista-alternativo": {
+            "fingerprint": "25d43700f03d411b77d6c1e0367e974d868c787b26d78c819140879214e54e08",
+            "output_hash": "ce2cc465ef544e98b294a46e5976cb0926b85ff81e8a540e2642636fbe374523",
+            "output": "resources//en/templates/sessao-newsletter-minimalista-alternativo/sessao-newsletter-minimalista-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-newsletter-minimalista-alternativo/sessao-newsletter-minimalista-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:38+00:00"
+        },
+        "global||en|templates|sessao-recursos-grid": {
+            "fingerprint": "7f9a819698dc3f6139cadc47954f65c0c2a73e2e5caffed78de760719e0aaf88",
+            "output_hash": "151ed579cfe129852062a72a18da2f8598f7801aa2db0ebb9e077df2d5f71134",
+            "output": "resources//en/templates/sessao-recursos-grid/sessao-recursos-grid.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-recursos-grid/sessao-recursos-grid.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:39+00:00"
+        },
+        "global||en|templates|sessao-recursos-grid-alternativo": {
+            "fingerprint": "a05a80a40c0e78faf00fa92d5da02e2cc885e98f615dc9bc9724c3df1d221d9c",
+            "output_hash": "e698b1ece795eed801f9378157b927a0acab3ce58f553edf9cd7bd90ba4ba05f",
+            "output": "resources//en/templates/sessao-recursos-grid-alternativo/sessao-recursos-grid-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-recursos-grid-alternativo/sessao-recursos-grid-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:39+00:00"
+        },
+        "global||en|templates|sessao-stats-moderno": {
+            "fingerprint": "aa4c31a26229adb8e005d7f1242b710be8bb15a189917769355f0d56ca49e10c",
+            "output_hash": "cb0108fdb4fb9f9779706c7a2d1d9c1adde018a1f6fffd35a838e4a96f7dc00b",
+            "output": "resources//en/templates/sessao-stats-moderno/sessao-stats-moderno.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-stats-moderno/sessao-stats-moderno.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:39+00:00"
+        },
+        "global||en|templates|sessao-stats-moderno-alternativo": {
+            "fingerprint": "97208596343c998a88213c37445b25f5ad386547a8d9a9ddaa24635ef435052a",
+            "output_hash": "dc9d395bc0424c5829855dfa505783424106c7833decf07a25f387c9dca03568",
+            "output": "resources//en/templates/sessao-stats-moderno-alternativo/sessao-stats-moderno-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//en/templates/sessao-stats-moderno-alternativo/sessao-stats-moderno-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:40+00:00"
+        },
+        "global||pt-br|components|forms-prepared-email": {
+            "fingerprint": "e47cb2b2e2249fdbe3323e87587856bc1de9acc6ff6214fe0e1d6c67230f9a42",
+            "output_hash": "51ae34f2877203bac8fba60b99ceece84ded5a61446454007be9e609dfa832eb",
+            "output": "resources//pt-br/components/forms-prepared-email/forms-prepared-email.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/components/forms-prepared-email/forms-prepared-email.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:40+00:00"
+        },
+        "global||pt-br|layouts|layout-iframe-tailwindcss": {
+            "fingerprint": "95e4671adccc45a6baf7793ca45cb6beba731ae2d04169321cd152b6c37bde45",
+            "output_hash": "b76b45d14e66e1eb8f975b21ccfde8b36c46b3e10fcb9c2362f8b3972aa36863",
+            "output": "resources//pt-br/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T21:28:24+00:00"
+        },
+        "global||pt-br|templates|componente-card-produto": {
+            "fingerprint": "621ef0dbdd691c75e3d2fe623cfa73712ae779cba438567f3dee983bb834ebb2",
+            "output_hash": "a662a8a57f929f43cd8753c6a0232660fcd2a4ada1b125945f8d270b4590a37e",
+            "output": "resources//pt-br/templates/componente-card-produto/componente-card-produto.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/componente-card-produto/componente-card-produto.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:40+00:00"
+        },
+        "global||pt-br|templates|componente-footer-completo": {
+            "fingerprint": "e07fe3c3cd56ee941a56ec70d93154a34f8badc23a6a3a8f84d1c6fbd9713921",
+            "output_hash": "6f3cf462571a953c38ca9979f92a9fd9b5733ba95f176dc55b045fbc55d8c540",
+            "output": "resources//pt-br/templates/componente-footer-completo/componente-footer-completo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/componente-footer-completo/componente-footer-completo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:41+00:00"
+        },
+        "global||pt-br|templates|componente-formulario-contato": {
+            "fingerprint": "1b160baf5b0d849e290e6e061633a4faea230aa917681e6380305628726619c2",
+            "output_hash": "37fab0a5fe8a5a25f43c2e5132a31c714b3af20b24e532475023726a9af48584",
+            "output": "resources//pt-br/templates/componente-formulario-contato/componente-formulario-contato.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/componente-formulario-contato/componente-formulario-contato.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:41+00:00"
+        },
+        "global||pt-br|templates|componente-header-navegacao": {
+            "fingerprint": "d12963d8956543aa217c4cb3f13da854e00c4b2cf39838be3bb15a993f4ef3e7",
+            "output_hash": "9085c38d7f5566d03b34311c89c3f666fb0e86fe5bb2a0cdd6b42626290420c8",
+            "output": "resources//pt-br/templates/componente-header-navegacao/componente-header-navegacao.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/componente-header-navegacao/componente-header-navegacao.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:41+00:00"
+        },
+        "global||pt-br|templates|componente-hero-banner": {
+            "fingerprint": "28feade9c9465bc446b5f2b716d89e5380cb49873c8aa9b641e4503ae31fd705",
+            "output_hash": "14e7342729ab957cb339a7a3f8766ac26fe9352fed8f8dd2d47445dba9c40a13",
+            "output": "resources//pt-br/templates/componente-hero-banner/componente-hero-banner.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/componente-hero-banner/componente-hero-banner.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:42+00:00"
+        },
+        "global||pt-br|templates|layout-blog-sidebar": {
+            "fingerprint": "4e8083107a36c1dceff42ae7f5308cc037c0a795defc7587127885197ba03889",
+            "output_hash": "d0cce541179ebe1eb1749b573a4e5246018e28a7b39434126ec8356138e01b83",
+            "output": "resources//pt-br/templates/layout-blog-sidebar/layout-blog-sidebar.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/layout-blog-sidebar/layout-blog-sidebar.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:42+00:00"
+        },
+        "global||pt-br|templates|layout-dashboard": {
+            "fingerprint": "78de7fad8962558742c4984f8bd188c3775e5390b56a000a7ebf5a1d473a1b77",
+            "output_hash": "deea0c160c96455f3f12b7b0e3253718a5a45d291dbdc0f3fc79d5307b45a0d6",
+            "output": "resources//pt-br/templates/layout-dashboard/layout-dashboard.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/layout-dashboard/layout-dashboard.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:43+00:00"
+        },
+        "global||pt-br|templates|layout-landing-page": {
+            "fingerprint": "f2fa60079a4b89edb403f1ee159565db4fdf9c265502f4f042468a14658f7718",
+            "output_hash": "0dfdda3ecc1908adb5a38066d928a3c0778fef44747db7b2e09e8fb060f77527",
+            "output": "resources//pt-br/templates/layout-landing-page/layout-landing-page.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/layout-landing-page/layout-landing-page.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:43+00:00"
+        },
+        "global||pt-br|templates|layout-portfolio": {
+            "fingerprint": "72974a4f79e03080e49c7ff0dc71ff66dc23bc0eed7f6b6c9c89cfec4401662f",
+            "output_hash": "af4affe037bfe305f883e1147e84339a81408af591b9e8015cc0a911bac444b0",
+            "output": "resources//pt-br/templates/layout-portfolio/layout-portfolio.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/layout-portfolio/layout-portfolio.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:43+00:00"
+        },
+        "global||pt-br|templates|layout-site-institucional": {
+            "fingerprint": "2a31905fa28a05bd154695031c5378911cad93f84bc16524e8eb3525b10e2123",
+            "output_hash": "b2e62c795c6fb350b8ba0b0799b63166f5e382aa20884b56a5524a747f1a4e04",
+            "output": "resources//pt-br/templates/layout-site-institucional/layout-site-institucional.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/layout-site-institucional/layout-site-institucional.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:44+00:00"
+        },
+        "global||pt-br|templates|sessao-com-2-colunas": {
+            "fingerprint": "cb1c3b0575988a24e42d603f8ba131aad7eda68f0dc633988fb9e09485f11ea2",
+            "output_hash": "ba61647792341c6f8976de5ec2896dd66fe5801fe748d7f17608e0046a6ea636",
+            "output": "resources//pt-br/templates/sessao-com-2-colunas/sessao-com-2-colunas.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-com-2-colunas/sessao-com-2-colunas.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:44+00:00"
+        },
+        "global||pt-br|templates|sessao-com-2-colunas-alternativo": {
+            "fingerprint": "b704f4076f46ef332b748780c11adafaed97c5cf05db9b607c838098c6af843d",
+            "output_hash": "3fcf62176ba4bc7179f7008d8030556f6aabee8348a1d855809b567aadb13ad4",
+            "output": "resources//pt-br/templates/sessao-com-2-colunas-alternativo/sessao-com-2-colunas-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-com-2-colunas-alternativo/sessao-com-2-colunas-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:44+00:00"
+        },
+        "global||pt-br|templates|sessao-com-3-colunas": {
+            "fingerprint": "b7c4dfa25fabb18b5a3cf51d1a7d8ac0111ef9930c373f537b032d59531eda71",
+            "output_hash": "6878a561397ac7b3f5e771ac09e709fa814a1b42ce5146971159036f12d2d7ac",
+            "output": "resources//pt-br/templates/sessao-com-3-colunas/sessao-com-3-colunas.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-com-3-colunas/sessao-com-3-colunas.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:45+00:00"
+        },
+        "global||pt-br|templates|sessao-com-3-colunas-alternativo": {
+            "fingerprint": "3f1f9a51d5756419532b4eb707fca6a5939b906f4a7433fae5230b54e0124526",
+            "output_hash": "0d047c53108a287c04e85386cd4b9c13ab12fe308423b3411a9ccaacd61398cb",
+            "output": "resources//pt-br/templates/sessao-com-3-colunas-alternativo/sessao-com-3-colunas-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-com-3-colunas-alternativo/sessao-com-3-colunas-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:45+00:00"
+        },
+        "global||pt-br|templates|sessao-com-abas": {
+            "fingerprint": "9df4341734922f2d340f77b63359263f5ab54f5a771d01a9c856b305d524ff4a",
+            "output_hash": "9451aab13480301d5261c8f3aa2c3d5230cb2acac5039d4b26a6662af16a9664",
+            "output": "resources//pt-br/templates/sessao-com-abas/sessao-com-abas.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-com-abas/sessao-com-abas.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:46+00:00"
+        },
+        "global||pt-br|templates|sessao-com-abas-alternativo": {
+            "fingerprint": "8d73999d07bdbb7cba82d77f8bea10cd00d018d948201cf28c32ad1934d359d5",
+            "output_hash": "f3f29fee6f10c9385b690dcc12b02b63707d38f1a471a0f0ea87b708efd3ec84",
+            "output": "resources//pt-br/templates/sessao-com-abas-alternativo/sessao-com-abas-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-com-abas-alternativo/sessao-com-abas-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:46+00:00"
+        },
+        "global||pt-br|templates|sessao-contato-mapa": {
+            "fingerprint": "f721f739178a0842dea0c789151b0ec5efff0a9b0c9736b16ee5b86d48b71d84",
+            "output_hash": "73f21b277e828733ba18e58479b00707344da327b4bbfbc3979d79da9a5f60db",
+            "output": "resources//pt-br/templates/sessao-contato-mapa/sessao-contato-mapa.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-contato-mapa/sessao-contato-mapa.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:46+00:00"
+        },
+        "global||pt-br|templates|sessao-contato-mapa-alternativo": {
+            "fingerprint": "1b28dae4c3892212fb9fbc3657fa81edef7f06c411dce2b67987f54a6db2f792",
+            "output_hash": "1f6495bf17c242b24e39f370231e5e7402d501de98a092b5631ceab1dbb2a9bc",
+            "output": "resources//pt-br/templates/sessao-contato-mapa-alternativo/sessao-contato-mapa-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-contato-mapa-alternativo/sessao-contato-mapa-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:47+00:00"
+        },
+        "global||pt-br|templates|sessao-cta-gradiente": {
+            "fingerprint": "32fd65a538a87ce9e49819739166a6cd63cb42bbe4ee2be3d32a3baad2ce6bee",
+            "output_hash": "86d39212b9bb5bc4ed7b565e7796ad84337e93134d9138287c21acb4e780f276",
+            "output": "resources//pt-br/templates/sessao-cta-gradiente/sessao-cta-gradiente.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-cta-gradiente/sessao-cta-gradiente.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:47+00:00"
+        },
+        "global||pt-br|templates|sessao-cta-gradiente-alternativo": {
+            "fingerprint": "486f42a14bedee1463bd07bceee69196c2dfb6c5360bd620a744e6df47ae2e93",
+            "output_hash": "a2a3da5dbde61e58118ca94c6c4eb7f8695c242c5ebd82a1672f3a782dc293fa",
+            "output": "resources//pt-br/templates/sessao-cta-gradiente-alternativo/sessao-cta-gradiente-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-cta-gradiente-alternativo/sessao-cta-gradiente-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:48+00:00"
+        },
+        "global||pt-br|templates|sessao-depoimentos-cards": {
+            "fingerprint": "dd1aa962b22a8d1c84ac4b40577ef46000800d7c00fe053d75ea3998e86d2c3c",
+            "output_hash": "010e94bcc7117f6c2fb9b9be794baccba2e890e3b2f0dfb5c9a811506e1dd545",
+            "output": "resources//pt-br/templates/sessao-depoimentos-cards/sessao-depoimentos-cards.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-depoimentos-cards/sessao-depoimentos-cards.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:48+00:00"
+        },
+        "global||pt-br|templates|sessao-depoimentos-cards-alternativo": {
+            "fingerprint": "ad37ebc26a14f5558f6975e357208d5d2d68f4b8d92c3982bf18d11936ad9eec",
+            "output_hash": "62f9111df7fe9d5b097c662e6361f84d3e2fa2537057d748831ccde89c2fce7b",
+            "output": "resources//pt-br/templates/sessao-depoimentos-cards-alternativo/sessao-depoimentos-cards-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-depoimentos-cards-alternativo/sessao-depoimentos-cards-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:48+00:00"
+        },
+        "global||pt-br|templates|sessao-destaque": {
+            "fingerprint": "d37318f114fa8df15a1ca5eb40355556b5c4a627994120232e51029c6a5b2f10",
+            "output_hash": "e72586c2b0ca771156be30aa208e5270f82b757aa9e49fa4f50d540500ec8a85",
+            "output": "resources//pt-br/templates/sessao-destaque/sessao-destaque.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-destaque/sessao-destaque.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:49+00:00"
+        },
+        "global||pt-br|templates|sessao-destaque-alternativo": {
+            "fingerprint": "74f5f54dc9e2542ec798361d3ca8d043210e864e71b5bacb967ba4e73eb13aa5",
+            "output_hash": "36273d93d29e66e1488bf460b798df34318bd32eb12e7ea660f7aabbf635650a",
+            "output": "resources//pt-br/templates/sessao-destaque-alternativo/sessao-destaque-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-destaque-alternativo/sessao-destaque-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:49+00:00"
+        },
+        "global||pt-br|templates|sessao-faq-acordeao": {
+            "fingerprint": "c09bc594b68de364446dcbad0d3c4a0ff0dd868b959149b48fe9535a43172a55",
+            "output_hash": "b139b08298eec571285c47532e58a23f5a3aecc56f7d2f184d0afe329b149185",
+            "output": "resources//pt-br/templates/sessao-faq-acordeao/sessao-faq-acordeao.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-faq-acordeao/sessao-faq-acordeao.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:49+00:00"
+        },
+        "global||pt-br|templates|sessao-faq-acordeao-alternativo": {
+            "fingerprint": "35a4f87e875a7a2c1c743360e2a68c4a1fb5d1d36d1e5c386ac594c3451a4564",
+            "output_hash": "d71573d26b0d80eea011b440b1169259294e9fd6885bdc7cef0594a399180599",
+            "output": "resources//pt-br/templates/sessao-faq-acordeao-alternativo/sessao-faq-acordeao-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-faq-acordeao-alternativo/sessao-faq-acordeao-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:50+00:00"
+        },
+        "global||pt-br|templates|sessao-galeria-masonry": {
+            "fingerprint": "9f975a04172341b543fa36d4feb448c4dd2a988e28af0e5fe730702c56a50cad",
+            "output_hash": "1cdbe3128eb45254d30b9b4a48a9945739005e86a694d8757c5dc27b20ee9acf",
+            "output": "resources//pt-br/templates/sessao-galeria-masonry/sessao-galeria-masonry.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-galeria-masonry/sessao-galeria-masonry.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:50+00:00"
+        },
+        "global||pt-br|templates|sessao-galeria-masonry-alternativo": {
+            "fingerprint": "825e2a237baf4eae139bd0b866112edce156a466af26c451a515fea4e83618b7",
+            "output_hash": "90c8deff26b648f290006be343b28034761215581305eebb723371f98d3768e3",
+            "output": "resources//pt-br/templates/sessao-galeria-masonry-alternativo/sessao-galeria-masonry-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-galeria-masonry-alternativo/sessao-galeria-masonry-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:50+00:00"
+        },
+        "global||pt-br|templates|sessao-hero-moderno": {
+            "fingerprint": "cd08f5099d058951d4af5896770dac032f48c068d9faa6dec2dada7c2513fe14",
+            "output_hash": "421b638b302dccf124b3fd181199ba2637ab4cd9bd2bd16eeeee34db75c33358",
+            "output": "resources//pt-br/templates/sessao-hero-moderno/sessao-hero-moderno.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-hero-moderno/sessao-hero-moderno.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:51+00:00"
+        },
+        "global||pt-br|templates|sessao-hero-moderno-alternativo": {
+            "fingerprint": "f56e39a506a8f80cfd714ff4f24d2029fb409e96031ab3f0ba0aa10bb2c22227",
+            "output_hash": "4caac77b6cba2a37ca1f1a2ab697be14efbe0cb0cc6e610a75537185d3220e7b",
+            "output": "resources//pt-br/templates/sessao-hero-moderno-alternativo/sessao-hero-moderno-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-hero-moderno-alternativo/sessao-hero-moderno-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:51+00:00"
+        },
+        "global||pt-br|templates|sessao-newsletter-minimalista": {
+            "fingerprint": "b8c154efda89747d0461dfd1450afc059368916c678ce15796f98097dd2b29b3",
+            "output_hash": "c2f1ffb66ba22b795f71a9e533ff87379ec0396f0f64349514e3a4f7c12f3c15",
+            "output": "resources//pt-br/templates/sessao-newsletter-minimalista/sessao-newsletter-minimalista.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-newsletter-minimalista/sessao-newsletter-minimalista.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:52+00:00"
+        },
+        "global||pt-br|templates|sessao-newsletter-minimalista-alternativo": {
+            "fingerprint": "f6478d7e235e10a9515323eb0c74feeadf289d0e941ccaa07df380870dd85a81",
+            "output_hash": "ce2cc465ef544e98b294a46e5976cb0926b85ff81e8a540e2642636fbe374523",
+            "output": "resources//pt-br/templates/sessao-newsletter-minimalista-alternativo/sessao-newsletter-minimalista-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-newsletter-minimalista-alternativo/sessao-newsletter-minimalista-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:52+00:00"
+        },
+        "global||pt-br|templates|sessao-recursos-grid": {
+            "fingerprint": "ede12816a376635d63ae4fdf2aeb72290f3e179083cbaf7ff199aaf9050ad75e",
+            "output_hash": "83979e40e09710f8eb098f219950d3c90ba90ae5bd3945aa1c3d19285d53841e",
+            "output": "resources//pt-br/templates/sessao-recursos-grid/sessao-recursos-grid.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-recursos-grid/sessao-recursos-grid.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:52+00:00"
+        },
+        "global||pt-br|templates|sessao-recursos-grid-alternativo": {
+            "fingerprint": "f172226d75556da6ac8b3f60be5b3ecd6a805f9652a6c4109b5661c7e5e1c314",
+            "output_hash": "6e293231424f5f9df5c9cedc6079b4a8d45180de7e05681d070dcbaa2e1602f9",
+            "output": "resources//pt-br/templates/sessao-recursos-grid-alternativo/sessao-recursos-grid-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-recursos-grid-alternativo/sessao-recursos-grid-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:53+00:00"
+        },
+        "global||pt-br|templates|sessao-stats-moderno": {
+            "fingerprint": "493f30189bd07a8846df285e064b9a0b82bfa036b69c2e8d7fb96f2af2804660",
+            "output_hash": "cb0108fdb4fb9f9779706c7a2d1d9c1adde018a1f6fffd35a838e4a96f7dc00b",
+            "output": "resources//pt-br/templates/sessao-stats-moderno/sessao-stats-moderno.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-stats-moderno/sessao-stats-moderno.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:53+00:00"
+        },
+        "global||pt-br|templates|sessao-stats-moderno-alternativo": {
+            "fingerprint": "0b64a1ef9ebba8d29bd3862c71828cdeba9ada99d5af5ff169d03b0c790f7061",
+            "output_hash": "dc9d395bc0424c5829855dfa505783424106c7833decf07a25f387c9dca03568",
+            "output": "resources//pt-br/templates/sessao-stats-moderno-alternativo/sessao-stats-moderno-alternativo.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "resources//pt-br/templates/sessao-stats-moderno-alternativo/sessao-stats-moderno-alternativo.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:54+00:00"
+        },
+        "module|contatos|pt-br|components|base-email": {
+            "fingerprint": "6b4c059808c6a917ca8a0b68f8b0c01e76b907073e10159a752aeeca5a8d1c60",
+            "output_hash": "4425a640e4469dc9a9007324ccec221be32bcc479c36559b67b4b1f0f2a3d6eb",
+            "output": "modulos/contatos/resources/pt-br/components/base-email/base-email.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/contatos/resources/pt-br/components/base-email/base-email.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:54+00:00"
+        },
+        "module|dashboard|en|components|dashboard-site-toolbar-menu": {
+            "fingerprint": "6b5818f5aa3337f2414f4991740351bf1b143afebf352d4738be6db5153c7ad3",
+            "output_hash": "b7900426a81a82a575b0a6b59b8207995e28af9965ce604ce970019ec154c30b",
+            "output": "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu/dashboard-site-toolbar-menu.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu/dashboard-site-toolbar-menu.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:34+00:00"
+        },
+        "module|dashboard|en|components|dashboard-site-toolbar-menu-empty": {
+            "fingerprint": "7a7133866a2674eaba17841f3fa0e24da7d4952aa5d3f77c14586a3e230e9c22",
+            "output_hash": "3b4a1edfc839cf28475492086284d7a4ac12d8fa13c448631d1bead4b46a5b35",
+            "output": "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu-empty/dashboard-site-toolbar-menu-empty.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu-empty/dashboard-site-toolbar-menu-empty.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:34+00:00"
+        },
+        "module|dashboard|en|components|dashboard-site-toolbar-menu-group": {
+            "fingerprint": "c87b0c695d48b1c6f6faaa6b50fc923e537f6ad5ca9e845aebaf717eecc90e7a",
+            "output_hash": "dd76f299d615f189f7ffaa0f25caed8fe6114cb710d3d75742212dec59f3db27",
+            "output": "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu-group/dashboard-site-toolbar-menu-group.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu-group/dashboard-site-toolbar-menu-group.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:34+00:00"
+        },
+        "module|dashboard|en|components|dashboard-site-toolbar-menu-item": {
+            "fingerprint": "01db5bf02eefb89a9cedbfb092e751756f20fd2bca8a083c744ea716e1c587c5",
+            "output_hash": "c89a62c815e02a79e6bada7632d899ea43bb0463dfb5468f1241204d0ffa47e2",
+            "output": "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu-item/dashboard-site-toolbar-menu-item.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu-item/dashboard-site-toolbar-menu-item.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:35+00:00"
+        },
+        "module|dashboard|en|pages|dashboard-site-toolbar": {
+            "fingerprint": "58a08f9ac7a5b1cd1138756b470d46953dc5111f405943fbc93653854911955c",
+            "output_hash": "3440c5619db0dafe729e1c6d4006cc000b55effe745392a0bbeb5f84ddba5984",
+            "output": "modulos/dashboard/resources/en/pages/dashboard-site-toolbar/dashboard-site-toolbar.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/en/pages/dashboard-site-toolbar/dashboard-site-toolbar.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:35+00:00"
+        },
+        "module|dashboard|pt-br|components|dashboard-site-toolbar-menu": {
+            "fingerprint": "b6f9c85c77ae846d96b44f643d5613f6d8f30413ccbacd19b198f9692bdf8832",
+            "output_hash": "b7900426a81a82a575b0a6b59b8207995e28af9965ce604ce970019ec154c30b",
+            "output": "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu/dashboard-site-toolbar-menu.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu/dashboard-site-toolbar-menu.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:35+00:00"
+        },
+        "module|dashboard|pt-br|components|dashboard-site-toolbar-menu-empty": {
+            "fingerprint": "31afc3d02aa91a19e684a6c9666758890a88758c6f595698e332c8104952b1c3",
+            "output_hash": "3b4a1edfc839cf28475492086284d7a4ac12d8fa13c448631d1bead4b46a5b35",
+            "output": "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu-empty/dashboard-site-toolbar-menu-empty.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu-empty/dashboard-site-toolbar-menu-empty.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:36+00:00"
+        },
+        "module|dashboard|pt-br|components|dashboard-site-toolbar-menu-group": {
+            "fingerprint": "408d834405ad0e9730742b76dbf27635a18ab8dacffd989c3716cfb3190adc37",
+            "output_hash": "dd76f299d615f189f7ffaa0f25caed8fe6114cb710d3d75742212dec59f3db27",
+            "output": "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu-group/dashboard-site-toolbar-menu-group.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu-group/dashboard-site-toolbar-menu-group.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:36+00:00"
+        },
+        "module|dashboard|pt-br|components|dashboard-site-toolbar-menu-item": {
+            "fingerprint": "6e03ea0b38f0cd29b539a7642104e7d01b35136fef3e4c5923da1018a2920a58",
+            "output_hash": "c89a62c815e02a79e6bada7632d899ea43bb0463dfb5468f1241204d0ffa47e2",
+            "output": "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu-item/dashboard-site-toolbar-menu-item.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu-item/dashboard-site-toolbar-menu-item.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:36+00:00"
+        },
+        "module|dashboard|pt-br|pages|dashboard-site-toolbar": {
+            "fingerprint": "ee6a97ecfea92ae612ac5fd95dba2a5cad45dcbde4c0f189ee0be8869ca901ad",
+            "output_hash": "d8b9d3a8554ae2884018af879b7a024dc956ae878aef83a3c53f6888226a91f5",
+            "output": "modulos/dashboard/resources/pt-br/pages/dashboard-site-toolbar/dashboard-site-toolbar.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/dashboard/resources/pt-br/pages/dashboard-site-toolbar/dashboard-site-toolbar.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T20:45:37+00:00"
+        },
+        "module|forms-search|en|templates|forms-search-contato-basico": {
+            "fingerprint": "db0b67408871168d906d7f42533e533e4b5103ba1441ef9047a445cff08c1334",
+            "output_hash": "5bc92e97c3d8017a9484115903a5dc0f008f01d4cc08208955de338c04f40932",
+            "output": "modulos/forms-search/resources/en/templates/forms-search-contato-basico/forms-search-contato-basico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/en/templates/forms-search-contato-basico/forms-search-contato-basico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:55+00:00"
+        },
+        "module|forms-search|en|templates|forms-search-newsletter-newsletter": {
+            "fingerprint": "a1b8f5e1d2b91c76b3aa4fed54502c87313b7e9b8184cf5f3c1b8c4e6884b28c",
+            "output_hash": "87b55154f3e493f89a2441c5e00f2e179d2cac287ea53525d9698759553a8762",
+            "output": "modulos/forms-search/resources/en/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/en/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:56+00:00"
+        },
+        "module|forms-search|en|templates|forms-search-pesquisa-satisfacao": {
+            "fingerprint": "11ae5b4da05d19cb279914edd3284b1b7ba54223218d9281341078b97051f86a",
+            "output_hash": "16046463a5893e80e3e116d85eb2b84e8f44ec254552324e9dabaa996640b4b3",
+            "output": "modulos/forms-search/resources/en/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/en/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:56+00:00"
+        },
+        "module|forms-search|en|templates|forms-search-registro-usuario": {
+            "fingerprint": "27adeeedc4e7e3531fd86d9d4a9ee37ef84b1f378921b581f3c5a5241d99334e",
+            "output_hash": "b7c4b0e13b9c7883cca01a4f778e561adf78756dd7dd32c0d002d4266ef3eab9",
+            "output": "modulos/forms-search/resources/en/templates/forms-search-registro-usuario/forms-search-registro-usuario.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/en/templates/forms-search-registro-usuario/forms-search-registro-usuario.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:57+00:00"
+        },
+        "module|forms-search|en|templates|forms-search-suporte-tecnico": {
+            "fingerprint": "7de10d9a8c417b66ad3677d78666a63815670e0ed550fe19e74bab872b8e8108",
+            "output_hash": "43b67fc69a4560b0388e9ec7f037f2f0cc7f3ec38064d57bbf1c91f40e8fc5f4",
+            "output": "modulos/forms-search/resources/en/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/en/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:57+00:00"
+        },
+        "module|forms-search|pt-br|layouts|pagina-simples-tailwindcss": {
+            "fingerprint": "82846c277e7815094febca3052ca06faf46e0bebaced3f0a64cb95e912dacfad",
+            "output_hash": "b76b45d14e66e1eb8f975b21ccfde8b36c46b3e10fcb9c2362f8b3972aa36863",
+            "output": "modulos/forms-search/resources/pt-br/layouts/pagina-simples-tailwindcss/pagina-simples-tailwindcss.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/pt-br/layouts/pagina-simples-tailwindcss/pagina-simples-tailwindcss.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:57+00:00"
+        },
+        "module|forms-search|pt-br|templates|forms-search-contato-basico": {
+            "fingerprint": "85c9d949cfbd4eda56d5c4685e2473dd94eb7efe351e0a0445dcff892dd57fd8",
+            "output_hash": "5bc92e97c3d8017a9484115903a5dc0f008f01d4cc08208955de338c04f40932",
+            "output": "modulos/forms-search/resources/pt-br/templates/forms-search-contato-basico/forms-search-contato-basico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/pt-br/templates/forms-search-contato-basico/forms-search-contato-basico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:58+00:00"
+        },
+        "module|forms-search|pt-br|templates|forms-search-newsletter-newsletter": {
+            "fingerprint": "698bb0add96e79e2934e85525506612b655eb3688f4d8128718c359357b8f0bd",
+            "output_hash": "87b55154f3e493f89a2441c5e00f2e179d2cac287ea53525d9698759553a8762",
+            "output": "modulos/forms-search/resources/pt-br/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/pt-br/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:58+00:00"
+        },
+        "module|forms-search|pt-br|templates|forms-search-pesquisa-satisfacao": {
+            "fingerprint": "01f0215f128eed79d95d88e324e295316371454088628a7eefe99d8e85b08d6c",
+            "output_hash": "16046463a5893e80e3e116d85eb2b84e8f44ec254552324e9dabaa996640b4b3",
+            "output": "modulos/forms-search/resources/pt-br/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/pt-br/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:59+00:00"
+        },
+        "module|forms-search|pt-br|templates|forms-search-registro-usuario": {
+            "fingerprint": "59fffbb36995829dd4a706ab6065db2f6339408c27f62b062ab9ecddb63c6fc7",
+            "output_hash": "b7c4b0e13b9c7883cca01a4f778e561adf78756dd7dd32c0d002d4266ef3eab9",
+            "output": "modulos/forms-search/resources/pt-br/templates/forms-search-registro-usuario/forms-search-registro-usuario.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/pt-br/templates/forms-search-registro-usuario/forms-search-registro-usuario.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:59+00:00"
+        },
+        "module|forms-search|pt-br|templates|forms-search-suporte-tecnico": {
+            "fingerprint": "739c1ac7fa9a9db10934d1f1e437d385cc00b13d947c180ed89054859ea55732",
+            "output_hash": "43b67fc69a4560b0388e9ec7f037f2f0cc7f3ec38064d57bbf1c91f40e8fc5f4",
+            "output": "modulos/forms-search/resources/pt-br/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms-search/resources/pt-br/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:04:59+00:00"
+        },
+        "module|forms|en|pages|forms-test-email-page": {
+            "fingerprint": "e3a791912862104c4eb0a4b25f7c350ee56a711dc699548ffae4b1eaeaa0291c",
+            "output_hash": "217e9b4ed6e729bd6bbacd3303e8e01fad3f978b17cbb389b3611aa1e7876a5e",
+            "output": "modulos/forms/resources/en/pages/forms-test-email-page/forms-test-email-page.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/en/pages/forms-test-email-page/forms-test-email-page.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:00+00:00"
+        },
+        "module|forms|en|templates|forms-contato-basico": {
+            "fingerprint": "4f0e2259a108db4d20a9e56fab6cb424cf726eaed015a6ea82dae0d23ed4fd7b",
+            "output_hash": "b2dbd940928e35494da33a04ddc27a89e62770b3300a6a3c230254d0c28755ba",
+            "output": "modulos/forms/resources/en/templates/forms-contato-basico/forms-contato-basico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/en/templates/forms-contato-basico/forms-contato-basico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:00+00:00"
+        },
+        "module|forms|en|templates|forms-newsletter-newsletter": {
+            "fingerprint": "bda7b3dae3a4fd3e1249b49c619610204cf83b011d0c78f3723aa7abde647a76",
+            "output_hash": "f6aab24f343149c9b0a69e61de2c2029a3a02f9adcd4c415ca23eebcf6e165fe",
+            "output": "modulos/forms/resources/en/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/en/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:00+00:00"
+        },
+        "module|forms|en|templates|forms-pesquisa-satisfacao": {
+            "fingerprint": "76a2281fea4420c684399a396896979f462073dd53fa85ad4144baf4f151e199",
+            "output_hash": "32afdd27a8eac914de86fa5cdf6d0e0030f358eece558efff8e261d86279b257",
+            "output": "modulos/forms/resources/en/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/en/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:01+00:00"
+        },
+        "module|forms|en|templates|forms-registro-usuario": {
+            "fingerprint": "8b9bd3b07bb8b096a3a32f43d222b2bb19221ec810cd2550ad78085e440d8b9d",
+            "output_hash": "2e125175ddec38a928d23e3a2adee945f8930edb8f6b1326fbee2728607fc60e",
+            "output": "modulos/forms/resources/en/templates/forms-registro-usuario/forms-registro-usuario.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/en/templates/forms-registro-usuario/forms-registro-usuario.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:01+00:00"
+        },
+        "module|forms|en|templates|forms-suporte-tecnico": {
+            "fingerprint": "43676b538220f57157d2366426948e2897ef8d8bd075a0b52188c4fcb7a6501f",
+            "output_hash": "7cdff85e7089dd7b73e45850bf45f6da5eefd7cc65d4833ce36826f7deac6449",
+            "output": "modulos/forms/resources/en/templates/forms-suporte-tecnico/forms-suporte-tecnico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/en/templates/forms-suporte-tecnico/forms-suporte-tecnico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:02+00:00"
+        },
+        "module|forms|pt-br|layouts|pagina-simples-tailwindcss": {
+            "fingerprint": "cf669863a6ffc31646d69ae489fa4134e1b97689c77b8c18215e6a270b427fb8",
+            "output_hash": "b76b45d14e66e1eb8f975b21ccfde8b36c46b3e10fcb9c2362f8b3972aa36863",
+            "output": "modulos/forms/resources/pt-br/layouts/pagina-simples-tailwindcss/pagina-simples-tailwindcss.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/pt-br/layouts/pagina-simples-tailwindcss/pagina-simples-tailwindcss.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:02+00:00"
+        },
+        "module|forms|pt-br|pages|forms-test-email-page": {
+            "fingerprint": "0cb4d689241d57c35b12a3443c8b2a9745f3f7757390acbfc10158e09d700b6d",
+            "output_hash": "217e9b4ed6e729bd6bbacd3303e8e01fad3f978b17cbb389b3611aa1e7876a5e",
+            "output": "modulos/forms/resources/pt-br/pages/forms-test-email-page/forms-test-email-page.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/pt-br/pages/forms-test-email-page/forms-test-email-page.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:02+00:00"
+        },
+        "module|forms|pt-br|templates|forms-contato-basico": {
+            "fingerprint": "fb9a333d85b54ec95a3e6b86fac2d44002ef006e09ec271515ceef902396f4c1",
+            "output_hash": "b2dbd940928e35494da33a04ddc27a89e62770b3300a6a3c230254d0c28755ba",
+            "output": "modulos/forms/resources/pt-br/templates/forms-contato-basico/forms-contato-basico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/pt-br/templates/forms-contato-basico/forms-contato-basico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:03+00:00"
+        },
+        "module|forms|pt-br|templates|forms-newsletter-newsletter": {
+            "fingerprint": "9aeff978a606fcb4d76aa288c1af3597ac35142c897aa572127a27e7feea2d1e",
+            "output_hash": "f6aab24f343149c9b0a69e61de2c2029a3a02f9adcd4c415ca23eebcf6e165fe",
+            "output": "modulos/forms/resources/pt-br/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/pt-br/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:03+00:00"
+        },
+        "module|forms|pt-br|templates|forms-pesquisa-satisfacao": {
+            "fingerprint": "5a0492a34099e96417bb8e756e607ab03c2b44823e368f155f0e6b3d41aa8b04",
+            "output_hash": "32afdd27a8eac914de86fa5cdf6d0e0030f358eece558efff8e261d86279b257",
+            "output": "modulos/forms/resources/pt-br/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/pt-br/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:04+00:00"
+        },
+        "module|forms|pt-br|templates|forms-registro-usuario": {
+            "fingerprint": "b1314d43f531de2fb6b65be3b243875129bb3ebc10f1423f6a5a8e40eac6a18a",
+            "output_hash": "2e125175ddec38a928d23e3a2adee945f8930edb8f6b1326fbee2728607fc60e",
+            "output": "modulos/forms/resources/pt-br/templates/forms-registro-usuario/forms-registro-usuario.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/pt-br/templates/forms-registro-usuario/forms-registro-usuario.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:04+00:00"
+        },
+        "module|forms|pt-br|templates|forms-suporte-tecnico": {
+            "fingerprint": "985310902e91edbb475a7e85d39bba206af67fa3e4cb2fb1f6e71d99542a3d4f",
+            "output_hash": "7cdff85e7089dd7b73e45850bf45f6da5eefd7cc65d4833ce36826f7deac6449",
+            "output": "modulos/forms/resources/pt-br/templates/forms-suporte-tecnico/forms-suporte-tecnico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/forms/resources/pt-br/templates/forms-suporte-tecnico/forms-suporte-tecnico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:04+00:00"
+        },
+        "module|galleries|en|templates|galleries-carousel": {
+            "fingerprint": "b5e85f6b377852d63bdff32ee0c37bce4ef2794ea5c291aa73be7883ce3c7344",
+            "output_hash": "8fe34ff7f1504c50f6d0f4298891b516780ab6f897a9fb64251547b7a7245047",
+            "output": "modulos/galleries/resources/en/templates/galleries-carousel/galleries-carousel.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/en/templates/galleries-carousel/galleries-carousel.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:05+00:00"
+        },
+        "module|galleries|en|templates|galleries-grid": {
+            "fingerprint": "345bca684aeb920c99ff41a968b162f21bfdc9015d38e332a5affd87e68a4628",
+            "output_hash": "e6f31960ea7430e852aa6d4ef0efe63eb6cc12cfa8b268471907f31830714d5a",
+            "output": "modulos/galleries/resources/en/templates/galleries-grid/galleries-grid.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/en/templates/galleries-grid/galleries-grid.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:05+00:00"
+        },
+        "module|galleries|en|templates|galleries-masonry": {
+            "fingerprint": "e2524ab1ba6d811d985282875ee1e69a13a4c7fae3a31172c1b60d7e011d3775",
+            "output_hash": "2b038c0719dbdbbb407bc580dc1534a6055e58ab91bf8bd2ef6ec4729d425671",
+            "output": "modulos/galleries/resources/en/templates/galleries-masonry/galleries-masonry.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/en/templates/galleries-masonry/galleries-masonry.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:05+00:00"
+        },
+        "module|galleries|en|templates|galleries-slider": {
+            "fingerprint": "a8fba7d929a542f335c445337fc347be5df8e0bd9d3e081552417d742d76ae6d",
+            "output_hash": "17452c1883ea8ae5234dc7322d29a4a07b75b8f3880c8b2523d0b443abe19b4e",
+            "output": "modulos/galleries/resources/en/templates/galleries-slider/galleries-slider.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/en/templates/galleries-slider/galleries-slider.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:06+00:00"
+        },
+        "module|galleries|pt-br|templates|galleries-carousel": {
+            "fingerprint": "3350495a59f104851c00f6790b0ada881dd489f8d59de81dde9dfa43431d780d",
+            "output_hash": "8fe34ff7f1504c50f6d0f4298891b516780ab6f897a9fb64251547b7a7245047",
+            "output": "modulos/galleries/resources/pt-br/templates/galleries-carousel/galleries-carousel.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/pt-br/templates/galleries-carousel/galleries-carousel.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:06+00:00"
+        },
+        "module|galleries|pt-br|templates|galleries-grid": {
+            "fingerprint": "3187e0a148e0bf31dde8d328a7efec2785ef8f31dc5a4047e857e7f032e31fc3",
+            "output_hash": "e6f31960ea7430e852aa6d4ef0efe63eb6cc12cfa8b268471907f31830714d5a",
+            "output": "modulos/galleries/resources/pt-br/templates/galleries-grid/galleries-grid.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/pt-br/templates/galleries-grid/galleries-grid.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:07+00:00"
+        },
+        "module|galleries|pt-br|templates|galleries-masonry": {
+            "fingerprint": "dff32dd9c228285641a5416cfa8f71adf207a9190238af61e4a1c42822b5a602",
+            "output_hash": "2b038c0719dbdbbb407bc580dc1534a6055e58ab91bf8bd2ef6ec4729d425671",
+            "output": "modulos/galleries/resources/pt-br/templates/galleries-masonry/galleries-masonry.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/pt-br/templates/galleries-masonry/galleries-masonry.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:07+00:00"
+        },
+        "module|galleries|pt-br|templates|galleries-slider": {
+            "fingerprint": "e2179eee4a1863fc6e6518934a2a47a29dcec6e32b357db0de9cb2af33bbac25",
+            "output_hash": "17452c1883ea8ae5234dc7322d29a4a07b75b8f3880c8b2523d0b443abe19b4e",
+            "output": "modulos/galleries/resources/pt-br/templates/galleries-slider/galleries-slider.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/pt-br/templates/galleries-slider/galleries-slider.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:07+00:00"
+        },
+        "module|menus|en|templates|menus-breadcrumb": {
+            "fingerprint": "db87a137a19ad62d85f4e388cc5e3542cb4c2f04436f53cfce8ee0c2e3a60b5c",
+            "output_hash": "3d99c7818d34af2ffb03b641b38178bc43499064aae053e30ca66bf9510f2973",
+            "output": "modulos/menus/resources/en/templates/menus-breadcrumb/menus-breadcrumb.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/en/templates/menus-breadcrumb/menus-breadcrumb.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:08+00:00"
+        },
+        "module|menus|en|templates|menus-dropdown": {
+            "fingerprint": "52264a16329186054e956754eb8f22b27395e52ac7bb12d32b896a4bfe22f1b4",
+            "output_hash": "7346230732e53c36c9408867399272fc94a25eae0046e1cc3e2775b0a222c47b",
+            "output": "modulos/menus/resources/en/templates/menus-dropdown/menus-dropdown.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/en/templates/menus-dropdown/menus-dropdown.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:08+00:00"
+        },
+        "module|menus|en|templates|menus-footer-colunas": {
+            "fingerprint": "455025ffacf822f8ef008fde610d439c06a741c827b4e46ce52ccebfe318b561",
+            "output_hash": "7209de2cec950b36d11a86417c1fd2db2571d32920f8af9d5ea03bea88153740",
+            "output": "modulos/menus/resources/en/templates/menus-footer-colunas/menus-footer-colunas.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/en/templates/menus-footer-colunas/menus-footer-colunas.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:09+00:00"
+        },
+        "module|menus|en|templates|menus-horizontal-navbar": {
+            "fingerprint": "b819f7d243398fdabb691ad12cf44e42c00edfdb0b16ed29bfc8b3ac3fa34562",
+            "output_hash": "f02aef3994a74ec2098bcb4bf03544422a23099897c32b83b4e8591286ff688c",
+            "output": "modulos/menus/resources/en/templates/menus-horizontal-navbar/menus-horizontal-navbar.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/en/templates/menus-horizontal-navbar/menus-horizontal-navbar.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:09+00:00"
+        },
+        "module|menus|en|templates|menus-mobile-hamburguer": {
+            "fingerprint": "cae216d215c4ff32528b2d2a21dcefb5d006e0ab56a037450e43ad7871a54e6a",
+            "output_hash": "635e958fe375793948e6d9b51ef059a62f3c38d989b4d67778ed1450e6075e02",
+            "output": "modulos/menus/resources/en/templates/menus-mobile-hamburguer/menus-mobile-hamburguer.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/en/templates/menus-mobile-hamburguer/menus-mobile-hamburguer.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:09+00:00"
+        },
+        "module|menus|en|templates|menus-vertical-sidebar": {
+            "fingerprint": "f8601abf8171441ab28a6c6f77e8436a9f8ad5d541f1a27b9d008c38adb4d550",
+            "output_hash": "dc50a95dcdcc7da6b5dede5d5895f9321bc52cb584b247a5a9b17a59fd773fb3",
+            "output": "modulos/menus/resources/en/templates/menus-vertical-sidebar/menus-vertical-sidebar.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/en/templates/menus-vertical-sidebar/menus-vertical-sidebar.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:10+00:00"
+        },
+        "module|menus|pt-br|templates|menus-breadcrumb": {
+            "fingerprint": "a208de93865946a32037dca2a1268ba873805cfd214ba53d6ddd9ce61d48a4ee",
+            "output_hash": "3d99c7818d34af2ffb03b641b38178bc43499064aae053e30ca66bf9510f2973",
+            "output": "modulos/menus/resources/pt-br/templates/menus-breadcrumb/menus-breadcrumb.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/pt-br/templates/menus-breadcrumb/menus-breadcrumb.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:10+00:00"
+        },
+        "module|menus|pt-br|templates|menus-dropdown": {
+            "fingerprint": "bee5ad6fb8475cd8317049a34fb89b04495e0b0123b900eb730e378a40062657",
+            "output_hash": "7346230732e53c36c9408867399272fc94a25eae0046e1cc3e2775b0a222c47b",
+            "output": "modulos/menus/resources/pt-br/templates/menus-dropdown/menus-dropdown.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/pt-br/templates/menus-dropdown/menus-dropdown.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:11+00:00"
+        },
+        "module|menus|pt-br|templates|menus-footer-colunas": {
+            "fingerprint": "56acb3d160f56ddc0c8e95dc83b688f2448f443a8eb167056d9f60367a263654",
+            "output_hash": "7209de2cec950b36d11a86417c1fd2db2571d32920f8af9d5ea03bea88153740",
+            "output": "modulos/menus/resources/pt-br/templates/menus-footer-colunas/menus-footer-colunas.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/pt-br/templates/menus-footer-colunas/menus-footer-colunas.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:11+00:00"
+        },
+        "module|menus|pt-br|templates|menus-horizontal-navbar": {
+            "fingerprint": "18c53c60f9069a1a2ef189c9b36663c879d87c9d472933c86ab3a464de982a4c",
+            "output_hash": "f02aef3994a74ec2098bcb4bf03544422a23099897c32b83b4e8591286ff688c",
+            "output": "modulos/menus/resources/pt-br/templates/menus-horizontal-navbar/menus-horizontal-navbar.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/pt-br/templates/menus-horizontal-navbar/menus-horizontal-navbar.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:11+00:00"
+        },
+        "module|menus|pt-br|templates|menus-mobile-hamburguer": {
+            "fingerprint": "9bb374054a1984dc286d939b5e737381a07cbebdf4ee08704a2584cf3ec7e9c1",
+            "output_hash": "635e958fe375793948e6d9b51ef059a62f3c38d989b4d67778ed1450e6075e02",
+            "output": "modulos/menus/resources/pt-br/templates/menus-mobile-hamburguer/menus-mobile-hamburguer.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/pt-br/templates/menus-mobile-hamburguer/menus-mobile-hamburguer.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:12+00:00"
+        },
+        "module|menus|pt-br|templates|menus-vertical-sidebar": {
+            "fingerprint": "6ab53a6922d40b572162117c10f2455cc93296800e73f869ed7907ee969b0a36",
+            "output_hash": "dc50a95dcdcc7da6b5dede5d5895f9321bc52cb584b247a5a9b17a59fd773fb3",
+            "output": "modulos/menus/resources/pt-br/templates/menus-vertical-sidebar/menus-vertical-sidebar.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/menus/resources/pt-br/templates/menus-vertical-sidebar/menus-vertical-sidebar.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:12+00:00"
+        },
+        "module|pages-index|en|pages|pages-index-search": {
+            "fingerprint": "47654c43b3bb88275f88a63405985653d507dfecb42edbbb8b289125b7cbc35c",
+            "output_hash": "5f62b0cd093f352a408aeb3bc0a6efae2c5ce2bb849273a42304948a03a094f0",
+            "output": "modulos/pages-index/resources/en/pages/pages-index-search/pages-index-search.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/en/pages/pages-index-search/pages-index-search.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:13+00:00"
+        },
+        "module|pages-index|en|templates|pages-index-agenda": {
+            "fingerprint": "67a282f425d8947180a5ac2c852473a9f5102018f0c73a596c6661fbeaf36b20",
+            "output_hash": "87da7d8abd3ab17bc2af7b653efddb28f1b1171100734d37f525d5daa9e219e3",
+            "output": "modulos/pages-index/resources/en/templates/pages-index-agenda/pages-index-agenda.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/en/templates/pages-index-agenda/pages-index-agenda.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:13+00:00"
+        },
+        "module|pages-index|en|templates|pages-index-grid": {
+            "fingerprint": "3203f3c9890d5efb74c02b11cb7130d5a929fd98dcf0476299f913bf217d03d8",
+            "output_hash": "98b6ea2f00b011160249cef087a87a5e323b79e7842d28b9d5eeead8dabd863f",
+            "output": "modulos/pages-index/resources/en/templates/pages-index-grid/pages-index-grid.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/en/templates/pages-index-grid/pages-index-grid.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:13+00:00"
+        },
+        "module|pages-index|en|templates|pages-index-grid-imagem": {
+            "fingerprint": "e0a1f4c34765a6ff493942eb36ca2d3675577dc23f9bd62e8a0fcfe7081a1855",
+            "output_hash": "df506af2f86a31f4ce3352bb06b534f6a26094bafbdba4c07d0bb6703706b1eb",
+            "output": "modulos/pages-index/resources/en/templates/pages-index-grid-imagem/pages-index-grid-imagem.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/en/templates/pages-index-grid-imagem/pages-index-grid-imagem.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:14+00:00"
+        },
+        "module|pages-index|en|templates|pages-index-lista": {
+            "fingerprint": "cae78b5bff6ee75e67733ddc0bd6d00897d06a10ee9a5bde77980dcd60749050",
+            "output_hash": "8cd301a370b0a90ef41b796173e6a517920954d1d20fd91f80395b39ce5df520",
+            "output": "modulos/pages-index/resources/en/templates/pages-index-lista/pages-index-lista.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/en/templates/pages-index-lista/pages-index-lista.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:14+00:00"
+        },
+        "module|pages-index|en|templates|pages-index-lista-imagem": {
+            "fingerprint": "a8d7735d0d2054e16767363c0a1ce332134a9a72df7ff10222e632996b8a782a",
+            "output_hash": "fb1c0d2e956b3aee5663be1cf54a6abeecbb04cb7da1ef6370974fe139218960",
+            "output": "modulos/pages-index/resources/en/templates/pages-index-lista-imagem/pages-index-lista-imagem.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/en/templates/pages-index-lista-imagem/pages-index-lista-imagem.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:15+00:00"
+        },
+        "module|pages-index|en|templates|pages-index-timeline": {
+            "fingerprint": "e88e6c2f923c3ddab4f041bb5ac89a18d2a9ee1a8c7311b10c476a8d53683d39",
+            "output_hash": "3418c0cd6b9987acebcfb98956782c03aecf7563d1191c0d7f2b09072d87b35c",
+            "output": "modulos/pages-index/resources/en/templates/pages-index-timeline/pages-index-timeline.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/en/templates/pages-index-timeline/pages-index-timeline.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:15+00:00"
+        },
+        "module|pages-index|pt-br|pages|pages-index-search": {
+            "fingerprint": "8ced0335446b7f08b603678e3ab320c1235abbd837adfe80055f7475177f6efb",
+            "output_hash": "5f62b0cd093f352a408aeb3bc0a6efae2c5ce2bb849273a42304948a03a094f0",
+            "output": "modulos/pages-index/resources/pt-br/pages/pages-index-search/pages-index-search.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/pt-br/pages/pages-index-search/pages-index-search.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:15+00:00"
+        },
+        "module|pages-index|pt-br|templates|pages-index-agenda": {
+            "fingerprint": "964e065f3ac049c3c4fe3a8446fdb979d1a1459cfd4ae306429cadbea5f9ba20",
+            "output_hash": "87da7d8abd3ab17bc2af7b653efddb28f1b1171100734d37f525d5daa9e219e3",
+            "output": "modulos/pages-index/resources/pt-br/templates/pages-index-agenda/pages-index-agenda.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/pt-br/templates/pages-index-agenda/pages-index-agenda.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:16+00:00"
+        },
+        "module|pages-index|pt-br|templates|pages-index-grid": {
+            "fingerprint": "75986b6dfb905c833b460a8e8d81750edbb21d8fc0c7bac413754a3f6375416f",
+            "output_hash": "98b6ea2f00b011160249cef087a87a5e323b79e7842d28b9d5eeead8dabd863f",
+            "output": "modulos/pages-index/resources/pt-br/templates/pages-index-grid/pages-index-grid.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/pt-br/templates/pages-index-grid/pages-index-grid.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:16+00:00"
+        },
+        "module|pages-index|pt-br|templates|pages-index-grid-imagem": {
+            "fingerprint": "89374d3fb083230964a613fa5a2e15de2217e5af6c997184a19f9215f93bb9af",
+            "output_hash": "df506af2f86a31f4ce3352bb06b534f6a26094bafbdba4c07d0bb6703706b1eb",
+            "output": "modulos/pages-index/resources/pt-br/templates/pages-index-grid-imagem/pages-index-grid-imagem.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/pt-br/templates/pages-index-grid-imagem/pages-index-grid-imagem.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:16+00:00"
+        },
+        "module|pages-index|pt-br|templates|pages-index-lista": {
+            "fingerprint": "0eb3ad0998b72528331b2dbedf13834e405787d2036998271e94ad157292bb0a",
+            "output_hash": "8cd301a370b0a90ef41b796173e6a517920954d1d20fd91f80395b39ce5df520",
+            "output": "modulos/pages-index/resources/pt-br/templates/pages-index-lista/pages-index-lista.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/pt-br/templates/pages-index-lista/pages-index-lista.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:17+00:00"
+        },
+        "module|pages-index|pt-br|templates|pages-index-lista-imagem": {
+            "fingerprint": "53234687665d663ea84468db7810fc969af22d7ee2ef606371fa447c3db2e070",
+            "output_hash": "fb1c0d2e956b3aee5663be1cf54a6abeecbb04cb7da1ef6370974fe139218960",
+            "output": "modulos/pages-index/resources/pt-br/templates/pages-index-lista-imagem/pages-index-lista-imagem.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/pt-br/templates/pages-index-lista-imagem/pages-index-lista-imagem.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:17+00:00"
+        },
+        "module|pages-index|pt-br|templates|pages-index-timeline": {
+            "fingerprint": "fdecf16f52be9f422165af0fa66af2cbeb7c9c1bea2d3510be441d614d560a96",
+            "output_hash": "3418c0cd6b9987acebcfb98956782c03aecf7563d1191c0d7f2b09072d87b35c",
+            "output": "modulos/pages-index/resources/pt-br/templates/pages-index-timeline/pages-index-timeline.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/pages-index/resources/pt-br/templates/pages-index-timeline/pages-index-timeline.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:18+00:00"
+        },
+        "module|publisher-highlights|en|templates|publisher-highlights-artigos-editorial": {
+            "fingerprint": "ae9b2ce109de6c3d38017c739814a4c7eec2c14b53e756560c7893bcfdaec4b5",
+            "output_hash": "dfad1d23456c706b815686a6d5cea708dd66af02e446496f2caa7eda11f3dd2b",
+            "output": "modulos/publisher-highlights/resources/en/templates/publisher-highlights-artigos-editorial/publisher-highlights-artigos-editorial.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/en/templates/publisher-highlights-artigos-editorial/publisher-highlights-artigos-editorial.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:18+00:00"
+        },
+        "module|publisher-highlights|en|templates|publisher-highlights-destaque-principal-carousel": {
+            "fingerprint": "7bb082fc88d17f7fec0ae9138aaf3e29049672503eedf16ffa4637ebfe56de39",
+            "output_hash": "7faf847ab5533893d26a885ad7d378eada2a0b9076b999ebb40d0c76727b0315",
+            "output": "modulos/publisher-highlights/resources/en/templates/publisher-highlights-destaque-principal-carousel/publisher-highlights-destaque-principal-carousel.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/en/templates/publisher-highlights-destaque-principal-carousel/publisher-highlights-destaque-principal-carousel.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:18+00:00"
+        },
+        "module|publisher-highlights|en|templates|publisher-highlights-lives-video-destaque": {
+            "fingerprint": "7f0fc33cbc74eba56a306f647005314d3f065d0acb670d8317b02c4250d7eb83",
+            "output_hash": "4f7837be50eb20faab3c3ec3a0bced572a7f2317a02d203c3784b61e0a6dc9da",
+            "output": "modulos/publisher-highlights/resources/en/templates/publisher-highlights-lives-video-destaque/publisher-highlights-lives-video-destaque.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/en/templates/publisher-highlights-lives-video-destaque/publisher-highlights-lives-video-destaque.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:19+00:00"
+        },
+        "module|publisher-highlights|en|templates|publisher-highlights-notas-mosaico": {
+            "fingerprint": "ad0d338221a5389afe30c4e3281290bb0b1202affa492f52db7356bd5d31c7be",
+            "output_hash": "e7059c451517ab183599fe3fd0facfc8c28549ea5a631d1d0e41c2c8f9eabf68",
+            "output": "modulos/publisher-highlights/resources/en/templates/publisher-highlights-notas-mosaico/publisher-highlights-notas-mosaico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/en/templates/publisher-highlights-notas-mosaico/publisher-highlights-notas-mosaico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:19+00:00"
+        },
+        "module|publisher-highlights|en|templates|publisher-highlights-noticias-grid-cards": {
+            "fingerprint": "d6c06e398619bf870b30fcd1ee2425195bdd5802c86645d10da53fe65cb8feca",
+            "output_hash": "ae54f44c593cc2b7432172d6a29ad418bf412c5611deb454c198ad2a12e6221e",
+            "output": "modulos/publisher-highlights/resources/en/templates/publisher-highlights-noticias-grid-cards/publisher-highlights-noticias-grid-cards.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/en/templates/publisher-highlights-noticias-grid-cards/publisher-highlights-noticias-grid-cards.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:20+00:00"
+        },
+        "module|publisher-highlights|en|templates|publisher-highlights-noticias-lista-simples": {
+            "fingerprint": "324890ff97d0d8464cacd8552fea4deda73d913e776d98cd243804a58e996ba0",
+            "output_hash": "0f538fcfba0e1bd2422285851073ec59aeeffd7d46f0dccde5606c4e2f7e40b8",
+            "output": "modulos/publisher-highlights/resources/en/templates/publisher-highlights-noticias-lista-simples/publisher-highlights-noticias-lista-simples.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/en/templates/publisher-highlights-noticias-lista-simples/publisher-highlights-noticias-lista-simples.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:20+00:00"
+        },
+        "module|publisher-highlights|pt-br|templates|publisher-highlights-artigos-editorial": {
+            "fingerprint": "3e461f3fe0d08ce55b324f4d508dbb8d0a34991bc95c3f2b6e9e612b6b228f49",
+            "output_hash": "dfad1d23456c706b815686a6d5cea708dd66af02e446496f2caa7eda11f3dd2b",
+            "output": "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-artigos-editorial/publisher-highlights-artigos-editorial.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-artigos-editorial/publisher-highlights-artigos-editorial.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:20+00:00"
+        },
+        "module|publisher-highlights|pt-br|templates|publisher-highlights-lives-video-destaque": {
+            "fingerprint": "b1b430295e2b4d481e67888b1f0acd584920eb04903d247e4295d5fa6514a867",
+            "output_hash": "4f7837be50eb20faab3c3ec3a0bced572a7f2317a02d203c3784b61e0a6dc9da",
+            "output": "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-lives-video-destaque/publisher-highlights-lives-video-destaque.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-lives-video-destaque/publisher-highlights-lives-video-destaque.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:21+00:00"
+        },
+        "module|publisher-highlights|pt-br|templates|publisher-highlights-notas-mosaico": {
+            "fingerprint": "9be81cbe4367551e9a1d2ce406e295f9562d2f7db2404c437c4e7f1f0330b28a",
+            "output_hash": "e7059c451517ab183599fe3fd0facfc8c28549ea5a631d1d0e41c2c8f9eabf68",
+            "output": "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-notas-mosaico/publisher-highlights-notas-mosaico.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-notas-mosaico/publisher-highlights-notas-mosaico.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:21+00:00"
+        },
+        "module|publisher-highlights|pt-br|templates|publisher-highlights-noticias-grid-cards": {
+            "fingerprint": "cf4ddae96e5f102b30873dc36e55cb4040889d6e2d87515155eb2a58a0103b51",
+            "output_hash": "ae54f44c593cc2b7432172d6a29ad418bf412c5611deb454c198ad2a12e6221e",
+            "output": "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-noticias-grid-cards/publisher-highlights-noticias-grid-cards.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-noticias-grid-cards/publisher-highlights-noticias-grid-cards.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:22+00:00"
+        },
+        "module|publisher-highlights|pt-br|templates|publisher-highlights-noticias-lista-simples": {
+            "fingerprint": "76a868b6ef30b9cf87d096abdf877f0d0e69f8ffe1313ce4e323198fd08b0bf9",
+            "output_hash": "0f538fcfba0e1bd2422285851073ec59aeeffd7d46f0dccde5606c4e2f7e40b8",
+            "output": "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-noticias-lista-simples/publisher-highlights-noticias-lista-simples.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-noticias-lista-simples/publisher-highlights-noticias-lista-simples.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:22+00:00"
+        },
+        "module|publisher-highlights|pt-br|templates|publisher-highlights-principal-carousel": {
+            "fingerprint": "5853a0da4234658f0085e7312e2b5177373f70344dff66e8e0467ddb51eca634",
+            "output_hash": "7faf847ab5533893d26a885ad7d378eada2a0b9076b999ebb40d0c76727b0315",
+            "output": "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-principal-carousel/publisher-highlights-principal-carousel.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-principal-carousel/publisher-highlights-principal-carousel.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:22+00:00"
+        },
+        "module|publisher-index|en|templates|publisher-index-agenda": {
+            "fingerprint": "f785f48f4dded4f861ac0c4f36b761b3d1c2b2cd818d7ba7de42975940781565",
+            "output_hash": "87da7d8abd3ab17bc2af7b653efddb28f1b1171100734d37f525d5daa9e219e3",
+            "output": "modulos/publisher-index/resources/en/templates/publisher-index-agenda/publisher-index-agenda.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/en/templates/publisher-index-agenda/publisher-index-agenda.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:23+00:00"
+        },
+        "module|publisher-index|en|templates|publisher-index-grid": {
+            "fingerprint": "bb42acb1fba5e62095315dc16f9b4e3095d0631da0b2d65dfdfe433f5bc26da4",
+            "output_hash": "98b6ea2f00b011160249cef087a87a5e323b79e7842d28b9d5eeead8dabd863f",
+            "output": "modulos/publisher-index/resources/en/templates/publisher-index-grid/publisher-index-grid.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/en/templates/publisher-index-grid/publisher-index-grid.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:23+00:00"
+        },
+        "module|publisher-index|en|templates|publisher-index-grid-imagem": {
+            "fingerprint": "223fb6b0d8a2dfd27b8d7c9ae69cfc5eebb2c07c9a3c7b95accaaf47b3e3ab8d",
+            "output_hash": "df506af2f86a31f4ce3352bb06b534f6a26094bafbdba4c07d0bb6703706b1eb",
+            "output": "modulos/publisher-index/resources/en/templates/publisher-index-grid-imagem/publisher-index-grid-imagem.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/en/templates/publisher-index-grid-imagem/publisher-index-grid-imagem.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:24+00:00"
+        },
+        "module|publisher-index|en|templates|publisher-index-lista": {
+            "fingerprint": "97ba35d0eefefd4637ffd819fc38277c9797e9c754bacb97348b961ec20a729a",
+            "output_hash": "8cd301a370b0a90ef41b796173e6a517920954d1d20fd91f80395b39ce5df520",
+            "output": "modulos/publisher-index/resources/en/templates/publisher-index-lista/publisher-index-lista.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/en/templates/publisher-index-lista/publisher-index-lista.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:24+00:00"
+        },
+        "module|publisher-index|en|templates|publisher-index-lista-imagem": {
+            "fingerprint": "93ebd4298c161ffc8249a620772716e434247a3af4dd162e40f7a0f77d562588",
+            "output_hash": "fb1c0d2e956b3aee5663be1cf54a6abeecbb04cb7da1ef6370974fe139218960",
+            "output": "modulos/publisher-index/resources/en/templates/publisher-index-lista-imagem/publisher-index-lista-imagem.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/en/templates/publisher-index-lista-imagem/publisher-index-lista-imagem.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:24+00:00"
+        },
+        "module|publisher-index|en|templates|publisher-index-timeline": {
+            "fingerprint": "7710913067e3e7c05f1baa33cf0a41e036b2f51bbafc32bb85bfa621a79901a7",
+            "output_hash": "3418c0cd6b9987acebcfb98956782c03aecf7563d1191c0d7f2b09072d87b35c",
+            "output": "modulos/publisher-index/resources/en/templates/publisher-index-timeline/publisher-index-timeline.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/en/templates/publisher-index-timeline/publisher-index-timeline.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:25+00:00"
+        },
+        "module|publisher-index|pt-br|templates|publisher-index-agenda": {
+            "fingerprint": "e6db269ff4f07ebf236a894fe2bfe4db8031e8971951fa17bf6b47939f8663f5",
+            "output_hash": "87da7d8abd3ab17bc2af7b653efddb28f1b1171100734d37f525d5daa9e219e3",
+            "output": "modulos/publisher-index/resources/pt-br/templates/publisher-index-agenda/publisher-index-agenda.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/pt-br/templates/publisher-index-agenda/publisher-index-agenda.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:25+00:00"
+        },
+        "module|publisher-index|pt-br|templates|publisher-index-grid": {
+            "fingerprint": "55422bbe0f38ce49b88e08b2debd1d48639fa46a9134f2e200b5668519ba06f3",
+            "output_hash": "98b6ea2f00b011160249cef087a87a5e323b79e7842d28b9d5eeead8dabd863f",
+            "output": "modulos/publisher-index/resources/pt-br/templates/publisher-index-grid/publisher-index-grid.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/pt-br/templates/publisher-index-grid/publisher-index-grid.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:25+00:00"
+        },
+        "module|publisher-index|pt-br|templates|publisher-index-grid-imagem": {
+            "fingerprint": "8ef1c048de24f836a1c1b8fe1f2f11d0851d78cbdc6a7e569354d6d87189b849",
+            "output_hash": "df506af2f86a31f4ce3352bb06b534f6a26094bafbdba4c07d0bb6703706b1eb",
+            "output": "modulos/publisher-index/resources/pt-br/templates/publisher-index-grid-imagem/publisher-index-grid-imagem.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/pt-br/templates/publisher-index-grid-imagem/publisher-index-grid-imagem.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:26+00:00"
+        },
+        "module|publisher-index|pt-br|templates|publisher-index-lista": {
+            "fingerprint": "a76a1bf4b88e0b12d11d8e14268436e9766d6f9414d1328d4e7d3b9dd2dcea6e",
+            "output_hash": "8cd301a370b0a90ef41b796173e6a517920954d1d20fd91f80395b39ce5df520",
+            "output": "modulos/publisher-index/resources/pt-br/templates/publisher-index-lista/publisher-index-lista.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/pt-br/templates/publisher-index-lista/publisher-index-lista.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:26+00:00"
+        },
+        "module|publisher-index|pt-br|templates|publisher-index-lista-imagem": {
+            "fingerprint": "f3ea6ee827a0a977f05ca87dc962e57e848cb29471a055bb3b7034110006b4e7",
+            "output_hash": "fb1c0d2e956b3aee5663be1cf54a6abeecbb04cb7da1ef6370974fe139218960",
+            "output": "modulos/publisher-index/resources/pt-br/templates/publisher-index-lista-imagem/publisher-index-lista-imagem.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/pt-br/templates/publisher-index-lista-imagem/publisher-index-lista-imagem.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:27+00:00"
+        },
+        "module|publisher-index|pt-br|templates|publisher-index-timeline": {
+            "fingerprint": "381ac47ecf2136fca82a19445fc1fff4fb891e364acdaf3a209747386c49ae4e",
+            "output_hash": "3418c0cd6b9987acebcfb98956782c03aecf7563d1191c0d7f2b09072d87b35c",
+            "output": "modulos/publisher-index/resources/pt-br/templates/publisher-index-timeline/publisher-index-timeline.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher-index/resources/pt-br/templates/publisher-index-timeline/publisher-index-timeline.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:27+00:00"
+        },
+        "module|publisher|en|templates|noticias-imagem-destaque": {
+            "fingerprint": "a9b27f2933510539479598ccbf0a537dece3414248ea9fa9a4137b46dafc804f",
+            "output_hash": "589c4f92395e3f3c9fecd803641dee7576c2ecf553dd9eb9354cc48c70db28d5",
+            "output": "modulos/publisher/resources/en/templates/noticias-imagem-destaque/noticias-imagem-destaque.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher/resources/en/templates/noticias-imagem-destaque/noticias-imagem-destaque.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:27+00:00"
+        },
+        "module|publisher|en|templates|noticias-simples": {
+            "fingerprint": "e56fe514d1998c4ee2a780a6c13e99447e9a0878cb38cc91d8d42462b544d408",
+            "output_hash": "4f06068ced02f50efaeb801f85cd281da3f80d0e3e3c66ac66b61a5eb9f97777",
+            "output": "modulos/publisher/resources/en/templates/noticias-simples/noticias-simples.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher/resources/en/templates/noticias-simples/noticias-simples.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:28+00:00"
+        },
+        "module|publisher|pt-br|templates|noticias-imagem-destaque": {
+            "fingerprint": "70c3c2c3769f7161287f19053e063d814c2603a5791d33da9ad1f37d68d73e41",
+            "output_hash": "589c4f92395e3f3c9fecd803641dee7576c2ecf553dd9eb9354cc48c70db28d5",
+            "output": "modulos/publisher/resources/pt-br/templates/noticias-imagem-destaque/noticias-imagem-destaque.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher/resources/pt-br/templates/noticias-imagem-destaque/noticias-imagem-destaque.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:28+00:00"
+        },
+        "module|publisher|pt-br|templates|noticias-simples": {
+            "fingerprint": "989b4b6f4a86549f3913cb9efd1176a7c176b3fc585e8b1a75c7e5bc34af89ed",
+            "output_hash": "4f06068ced02f50efaeb801f85cd281da3f80d0e3e3c66ac66b61a5eb9f97777",
+            "output": "modulos/publisher/resources/pt-br/templates/noticias-simples/noticias-simples.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/publisher/resources/pt-br/templates/noticias-simples/noticias-simples.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-14T19:05:29+00:00"
+        }
+    }
+}

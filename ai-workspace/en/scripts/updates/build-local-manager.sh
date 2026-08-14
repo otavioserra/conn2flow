@@ -29,7 +29,7 @@ cd "$TMP_DIR/gestor"
 # Generate resource updates (optional, if script exists)
 if [ -f controladores/agents/arquitetura/atualizacao-dados-recursos.php ]; then
   echo "[local-build] Generating resources" >&2
-  (cd controladores/agents/arquitetura && php atualizacao-dados-recursos.php || true)
+  php controladores/agents/arquitetura/atualizacao-dados-recursos.php --tailwind-import-only
 fi
 
 # Remove resources according to workflow

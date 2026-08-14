@@ -32,7 +32,7 @@
                     "name": "Usuários",
                     "id": "usuarios",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "usuarios\/",
+                    "path": "usuarios/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -47,7 +47,7 @@
                     "name": "Usuários - Adicionar",
                     "id": "usuarios-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "usuarios\/adicionar\/",
+                    "path": "usuarios/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.1",
@@ -61,7 +61,7 @@
                     "name": "Usuários - Editar",
                     "id": "usuarios-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "usuarios\/editar\/",
+                    "path": "usuarios/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.1",
@@ -206,7 +206,7 @@
                 },
                 {
                     "id": "alert-user-or-password-invalid",
-                    "value": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+                    "value": "Usuário e/ou Senha inválidos. Favor tentar novamente.",
                     "type": "string"
                 },
                 {
@@ -221,7 +221,7 @@
                 },
                 {
                     "id": "alert-there-is-a-field",
-                    "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+                    "value": "Já existe cadastro do campo  <b>#label#</b> com o mesmo valor: <b>#value#</b>. Favor escolher outro  <b>#label#</b> e tentar novamente.",
                     "type": "string"
                 },
                 {
@@ -261,7 +261,7 @@
                 },
                 {
                     "id": "restrict-area-info",
-                    "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+                    "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar</b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
                     "type": "string"
                 },
                 {
@@ -271,7 +271,7 @@
                 },
                 {
                     "id": "alert-password-invalid",
-                    "value": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
+                    "value": "Senha incorreta! Você tem mais <b>#tentativas#</b> tentativas, senão será desconectado automaticamente!",
                     "type": "string"
                 },
                 {
@@ -313,7 +313,7 @@
                     "name": "Users",
                     "id": "usuarios",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "usuarios\/",
+                    "path": "usuarios/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -328,7 +328,7 @@
                     "name": "Users - Add",
                     "id": "usuarios-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "usuarios\/adicionar\/",
+                    "path": "usuarios/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.1",
@@ -342,7 +342,7 @@
                     "name": "Users - Edit",
                     "id": "usuarios-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "usuarios\/editar\/",
+                    "path": "usuarios/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.2",
@@ -487,7 +487,7 @@
                 },
                 {
                     "id": "alert-user-or-password-invalid",
-                    "value": "Invalid username and\/or password. Please try again.",
+                    "value": "Invalid username and/or password. Please try again.",
                     "type": "string"
                 },
                 {
@@ -502,7 +502,7 @@
                 },
                 {
                     "id": "alert-there-is-a-field",
-                    "value": "There is already a registration for the field <b>#label#<\/b> with the same value: <b>#value#<\/b>. Please choose another <b>#label#<\/b> and try again.",
+                    "value": "There is already a registration for the field <b>#label#</b> with the same value: <b>#value#</b>. Please choose another <b>#label#</b> and try again.",
                     "type": "string"
                 },
                 {
@@ -542,7 +542,7 @@
                 },
                 {
                     "id": "restrict-area-info",
-                    "value": "Please enter your password below and then click the <b>Send<\/b> button to provisionally authorize the modification of any sensitive data in your account.",
+                    "value": "Please enter your password below and then click the <b>Send</b> button to provisionally authorize the modification of any sensitive data in your account.",
                     "type": "string"
                 },
                 {
@@ -552,7 +552,7 @@
                 },
                 {
                     "id": "alert-password-invalid",
-                    "value": "Incorrect password! You have <b>#tentativas#<\/b> more attempts, otherwise you will be automatically disconnected!",
+                    "value": "Incorrect password! You have <b>#tentativas#</b> more attempts, otherwise you will be automatically disconnected!",
                     "type": "string"
                 },
                 {
@@ -587,5 +587,6 @@
                 }
             ]
         }
-    }
+    },
+    "asset_version": "4c7beeeb3705c187"
 }

@@ -1,0 +1,4 @@
+/*
+ * Contrato central do tema. O gerador de recursos injeta os @source pontuais
+ * em inputs temporários e nunca varre o gestor inteiro.
+ */

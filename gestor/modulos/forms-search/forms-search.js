@@ -321,7 +321,7 @@ $(document).ready(function () {
                         framework: (gestor.html_editor && gestor.html_editor.framework_css) ? gestor.html_editor.framework_css : 'fomantic-ui',
                         extraParams: {
                             customScripts: [
-                                { src: gestor.raiz + 'forms-search/widget.js?v=' + gestor.versao }
+                                { src: gestor.raiz + 'forms-search/widget.js?v=' + (gestor.moduloAssetVersion || gestor.versao) }
                             ],
                             widgetsToAjax: previewWidgetsToAjax
                         }
@@ -330,7 +330,7 @@ $(document).ready(function () {
                     doc = '<!doctype html><html><head><meta charset="utf-8"><style>' + css + '</style>'
                         + '<script>window.gestor=Object.assign({},window.parent.gestor||{});window.gestor.widgetsToAjax='
                         + JSON.stringify(previewWidgetsToAjax) + ';<\/script>'
-                        + '<script src="' + gestor.raiz + 'forms-search/widget.js?v=' + gestor.versao + '"><\/script>'
+                        + '<script src="' + gestor.raiz + 'forms-search/widget.js?v=' + (gestor.moduloAssetVersion || gestor.versao) + '"><\/script>'
                         + '</head><body>' + (dados.html || '') + '</body></html>';
                 }
                 $iframe.attr('srcdoc', doc);

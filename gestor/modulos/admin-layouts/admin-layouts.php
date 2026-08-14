@@ -136,6 +136,7 @@ function admin_layouts_editar(){
 		'framework_css',
 		'html',
 		'css',
+		'css_precompiled',
 		'css_compiled', // Novo campo
 	);
 	
@@ -291,6 +292,7 @@ function admin_layouts_editar(){
 		$framework_css = (isset($retorno_bd['framework_css']) ? $retorno_bd['framework_css'] : '');
 		$html = (isset($retorno_bd['html']) ? htmlentities($retorno_bd['html']) : '');
 		$css = (isset($retorno_bd['css']) ? $retorno_bd['css'] : '');
+		$css_precompiled = (isset($retorno_bd['css_precompiled']) ? $retorno_bd['css_precompiled'] : '');
 		$css_compiled = (isset($retorno_bd['css_compiled']) ? $retorno_bd['css_compiled'] : '');
 		
 		// ===== Variaveis globais alterar.
@@ -319,6 +321,7 @@ function admin_layouts_editar(){
 			'editar' => true,
 			'modulo' => $modulo,
 			'alvo' => 'layouts',
+			'css_precompiled' => $css_precompiled,
 		]));
 		
 		// ===== Popular os metaDados

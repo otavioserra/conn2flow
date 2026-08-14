@@ -451,10 +451,53 @@ function stripe_cancelar_assinatura($params = Array()){
 }
 
 /**
+ * Monta o corpo da troca de preço de uma assinatura, resolvendo `trial_end` contra a assinatura
+ * em curso. Separada da requisição para ser verificável sem rede.
+ *
+ * Sobre `trial_end`: o produto de destino pode ter dias de teste próprios no Stripe, e a troca não
+ * pode conceder um período novo. A API aceita um timestamp Unix ou `now` — `unchanged` é valor de
+ * `billing_cycle_anchor`, não de `trial_end`; enviá-lo ali devolveria `parameter_invalid_integer` e
+ * derrubaria a troca inteira. Por isso `unchanged` é resolvido AQUI, para o `trial_end` exato da
+ * assinatura consultada (o objeto já está em mãos, sem chamada extra). Fora do teste não há nada a
+ * preservar e o parâmetro é omitido — omissão é o que mantém o comportamento padrão do Stripe.
+ *
+ * @param array $sub    Assinatura consultada (precisa de items.data[0].id).
+ * @param array $params Mesmos parâmetros de stripe_trocar_preco_assinatura.
+ * @return array|false Corpo da requisição ou false quando a assinatura não tem item de preço.
+ */
+function stripe_troca_preco_payload($sub, $params = Array()){
+    $itemId = $sub['items']['data'][0]['id'] ?? null;
+    if(!$itemId || empty($params['price_id'])) return false;
+
+    $dados = Array(
+        'items' => Array(Array('id' => $itemId, 'price' => $params['price_id'])),
+        'proration_behavior' => $params['proration_behavior'] ?? 'always_invoice',
+        'payment_behavior' => 'allow_incomplete',
+    );
+
+    if(array_key_exists('trial_end', $params)){
+        $trialEnd = $params['trial_end'];
+
+        if($trialEnd === 'unchanged'){
+            $emTeste = ((string)($sub['status'] ?? '') === 'trialing');
+            $atual   = (int)($sub['trial_end'] ?? 0);
+            if($emTeste && $atual > 0) $dados['trial_end'] = $atual;
+        } elseif($trialEnd === 'now'){
+            $dados['trial_end'] = 'now';
+        } elseif((int)$trialEnd > 0){
+            $dados['trial_end'] = (int)$trialEnd;
+        }
+    }
+
+    return $dados;
+}
+
+/**
  * Troca o preço de uma assinatura ativa (upgrade/downgrade) com proration nativa.
  *
  * @param array $params ['subscription_id' => obrig, 'price_id' => obrig,
- *                       'proration_behavior' => 'always_invoice'|'create_prorations'|'none' (padrão always_invoice)]
+ *                       'proration_behavior' => 'always_invoice'|'create_prorations'|'none' (padrão always_invoice),
+ *                       'trial_end' => 'unchanged'|'now'|timestamp (opcional; ver stripe_troca_preco_payload)]
  * @return array|false Assinatura atualizada ou false.
  */
 function stripe_trocar_preco_assinatura($params = Array()){
@@ -463,17 +506,13 @@ function stripe_trocar_preco_assinatura($params = Array()){
     $sub = stripe_consultar_assinatura(Array('subscription_id' => $params['subscription_id']));
     if(!$sub) return false;
 
-    $itemId = $sub['items']['data'][0]['id'] ?? null;
-    if(!$itemId) return false;
+    $dados = stripe_troca_preco_payload($sub, $params);
+    if($dados === false) return false;
 
     $resp = stripe_requisicao(Array(
         'endpoint' => '/v1/subscriptions/' . rawurlencode($params['subscription_id']),
         'method' => 'POST',
-        'data' => Array(
-            'items' => Array(Array('id' => $itemId, 'price' => $params['price_id'])),
-            'proration_behavior' => $params['proration_behavior'] ?? 'always_invoice',
-            'payment_behavior' => 'allow_incomplete',
-        ),
+        'data' => $dados,
     ));
     if(!$resp || $resp['http_code'] !== 200) return false;
     return $resp['data'];

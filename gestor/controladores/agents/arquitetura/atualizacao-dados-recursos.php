@@ -66,6 +66,34 @@ if (PHP_SAPI === 'cli') {
     }
 }
 
+// Saída de progresso em tempo real (req-114). O log técnico em disco continua independente.
+$GLOBALS['CLI_PROGRESS_LAST_CONTEXT'] = '';
+
+function cliProgress(string $message, bool $force = false, bool $verboseOnly = false): void {
+    $args = $GLOBALS['CLI_ARGS'] ?? [];
+    if (!$force && isset($args['quiet'])) return;
+    if ($verboseOnly && !isset($args['verbose'])) return;
+
+    if (isset($args['no-ansi'])) {
+        $message = preg_replace('/[^\x09\x0A\x0D\x20-\x7E\x{00A0}-\x{FFFF}]/u', '', $message) ?? $message;
+    }
+
+    echo $message . PHP_EOL;
+    if (function_exists('ob_flush') && ob_get_level() > 0) @ob_flush();
+    flush();
+}
+
+function cliProgressStep(int $current, int $total, string $message): float {
+    $GLOBALS['CLI_PROGRESS_LAST_CONTEXT'] = $message;
+    cliProgress("[$current/$total] $message...");
+    return microtime(true);
+}
+
+function cliProgressDone(int $current, int $total, string $message, float $startedAt): void {
+    $elapsed = number_format(microtime(true) - $startedAt, 2, ',', '.');
+    cliProgress("[$current/$total] $message ({$elapsed}s)");
+}
+
 // Verificar se é execução para projeto específico
 $projectPath = $GLOBALS['CLI_ARGS']['project-path'] ?? null;
 $isProjectMode = false;
@@ -186,13 +214,16 @@ function readFileIfExists(string $path): ?string {
 }
 
 /**
- * Calcula checksums individuais e combinado para HTML/CSS.
+ * Calcula checksums individuais e combinado para HTML/CSS/CSS pré-compilado.
  */
-function buildChecksum(?string $html, ?string $css): array {
+function buildChecksum(?string $html, ?string $css, ?string $cssPrecompiled = null): array {
     $h = ($html === null || $html === '') ? '' : md5($html);
     $c = ($css === null || $css === '') ? '' : md5($css);
-    $combined = ($h === '' && $c === '') ? '' : md5(($html ?? '') . ($css ?? ''));
-    return ['html' => $h, 'css' => $c, 'combined' => $combined];
+    $p = ($cssPrecompiled === null || $cssPrecompiled === '') ? '' : md5($cssPrecompiled);
+    $combined = ($h === '' && $c === '' && $p === '')
+        ? ''
+        : md5(($html ?? '') . ($css ?? '') . ($cssPrecompiled ?? ''));
+    return ['html' => $h, 'css' => $c, 'css_precompiled' => $p, 'combined' => $combined];
 }
 
 /**
@@ -311,9 +342,10 @@ function atualizarArquivosOrigem(array $map): void {
  * Compara checksums.
  */
 function checksumsEqual(array $a, array $b): bool {
-    return ($a['html'] ?? null) === ($b['html'] ?? null)
-        && ($a['css'] ?? null) === ($b['css'] ?? null)
-        && ($a['combined'] ?? null) === ($b['combined'] ?? null);
+    return ($a['html'] ?? '') === ($b['html'] ?? '')
+        && ($a['css'] ?? '') === ($b['css'] ?? '')
+        && ($a['css_precompiled'] ?? '') === ($b['css_precompiled'] ?? '')
+        && ($a['combined'] ?? '') === ($b['combined'] ?? '');
 }
 
 /**
@@ -364,6 +396,7 @@ function resourcePaths(string $base, string $language, string $typeKey, string $
         'dir'  => $dir,
         'html' => $dir . DIRECTORY_SEPARATOR . $resId . '.html',
         'css'  => $dir . DIRECTORY_SEPARATOR . $resId . '.css',
+        'css_precompiled' => $dir . DIRECTORY_SEPARATOR . $resId . '.precompiled.css',
         'md'   => $dir . DIRECTORY_SEPARATOR . $resId . '.md',
     ];
 }
@@ -468,8 +501,8 @@ function coletarRecursos(array $existentes, array $map): array {
     $idxWidgets = [];             // lang|id
 
     // Helper versão + checksum reutilizando existente
-    $versaoChecksum = function(string $tipo, string $chave, ?string $html, ?string $css) use (&$existentes) : array {
-        $cks = buildChecksum($html,$css);
+    $versaoChecksum = function(string $tipo, string $chave, ?string $html, ?string $css, ?string $cssPrecompiled = null) use (&$existentes) : array {
+        $cks = buildChecksum($html,$css,$cssPrecompiled);
         $versao = 1;
         if (isset($existentes[$tipo][$chave])) {
             $old = $existentes[$tipo][$chave];
@@ -516,13 +549,15 @@ function coletarRecursos(array $existentes, array $map): array {
                 $idxLayouts[$key]=true;
                 $paths = resourcePaths($RESOURCES_DIR,$lang,'layouts',$id,true);
                 $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
-                [$versao,$cks] = $versaoChecksum('layouts',$key,$html,$css);
+                $cssPrecompiled = readFileIfExists($paths['css_precompiled']);
+                [$versao,$cks] = $versaoChecksum('layouts',$key,$html,$css,$cssPrecompiled);
                 $layoutData = [
                     'nome' => $l['name'] ?? ($l['nome'] ?? $id),
                     'id' => $id,
                     'language' => $lang,
                     'html' => $html,
                     'css' => $css,
+                    'css_precompiled' => $cssPrecompiled,
                     'framework_css' => getFrameworkCss($l),
                     'status' => $l['status'] ?? 'A',
                     'versao' => $versao,
@@ -545,7 +580,8 @@ function coletarRecursos(array $existentes, array $map): array {
                 $idxComponentes[$key]=true;
                 $paths = resourcePaths($RESOURCES_DIR,$lang,'components',$id,true);
                 $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
-                [$versao,$cks] = $versaoChecksum('componentes',$key,$html,$css);
+                $cssPrecompiled = readFileIfExists($paths['css_precompiled']);
+                [$versao,$cks] = $versaoChecksum('componentes',$key,$html,$css,$cssPrecompiled);
                 $componenteData = [
                     'nome' => $c['name'] ?? ($c['nome'] ?? $id),
                     'id' => $id,
@@ -553,6 +589,7 @@ function coletarRecursos(array $existentes, array $map): array {
                     'modulo' => $c['module'] ?? ($c['modulo'] ?? null),
                     'html' => $html,
                     'css' => $css,
+                    'css_precompiled' => $cssPrecompiled,
                     'framework_css' => getFrameworkCss($c),
                     'status' => $c['status'] ?? 'A',
                     'versao' => $versao,
@@ -578,7 +615,8 @@ function coletarRecursos(array $existentes, array $map): array {
                 $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true;
                 $paths = resourcePaths($RESOURCES_DIR,$lang,'pages',$id,true);
                 $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
-                [$versao,$cks] = $versaoChecksum('paginas',$kId,$html,$css);
+                $cssPrecompiled = readFileIfExists($paths['css_precompiled']);
+                [$versao,$cks] = $versaoChecksum('paginas',$kId,$html,$css,$cssPrecompiled);
                 $paginaData = [
                     'layout_id' => $p['layout'] ?? null,
                     'nome' => $p['name'] ?? ($p['nome'] ?? $id),
@@ -592,6 +630,7 @@ function coletarRecursos(array $existentes, array $map): array {
                     'sem_permissao' => $p['without_permission'] ?? ($p['sem_permissao'] ?? null),
                     'html' => $html,
                     'css' => $css,
+                    'css_precompiled' => $cssPrecompiled,
                     'html_extra_head' => $p['html_extra_head'] ?? null,
                     'framework_css' => getFrameworkCss($p),
                     'publisher_id' => $p['publisher_id'] ?? null,
@@ -617,7 +656,8 @@ function coletarRecursos(array $existentes, array $map): array {
                 $idxTemplates[$kId]=true;
                 $paths = resourcePaths($RESOURCES_DIR,$lang,'templates',$id,true);
                 $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
-                [$versao,$cks] = $versaoChecksum('templates',$kId,$html,$css);
+                $cssPrecompiled = readFileIfExists($paths['css_precompiled']);
+                [$versao,$cks] = $versaoChecksum('templates',$kId,$html,$css,$cssPrecompiled);
                 $templateData = [
                     'nome' => $p['name'] ?? ($p['nome'] ?? $id),
                     'id' => $id,
@@ -626,6 +666,7 @@ function coletarRecursos(array $existentes, array $map): array {
                     'language' => $lang,
                     'html' => $html,
                     'css' => $css,
+                    'css_precompiled' => $cssPrecompiled,
                     'framework_css' => getFrameworkCss($p),
                     'status' => $p['status'] ?? 'A',
                     'versao' => $versao,
@@ -687,25 +728,26 @@ function coletarRecursos(array $existentes, array $map): array {
                         $id = $item['id'] ?? null; if(!$id) continue;
                         $paths = resourcePaths($modPath,$lang,$tipo,$id);
                         $html = readFileIfExists($paths['html']); $css = readFileIfExists($paths['css']);
+                        $cssPrecompiled = readFileIfExists($paths['css_precompiled']);
                         if ($tipo==='layouts') {
                             $key = $lang.'|'.$modId.'|'.$id; if(isset($idxLayouts[$key])) { $orphans['layouts'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
-                            $idxLayouts[$key]=true; [$versao,$cks]=$versaoChecksum('layouts',$key,$html,$css);
-                            $modLayoutData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $idxLayouts[$key]=true; [$versao,$cks]=$versaoChecksum('layouts',$key,$html,$css,$cssPrecompiled);
+                            $modLayoutData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'css_precompiled'=>$cssPrecompiled,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
                             if (isset($item['data_criacao'])) $modLayoutData['data_criacao'] = $item['data_criacao'];
                             if (isset($item['data_modificacao'])) $modLayoutData['data_modificacao'] = $item['data_modificacao'];
                             $layouts[] = $modLayoutData;
                         } elseif ($tipo==='components') {
                             $key = $lang.'|'.$modId.'|'.$id; if(isset($idxComponentes[$key])) { $orphans['componentes'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
-                            $idxComponentes[$key]=true; [$versao,$cks]=$versaoChecksum('componentes',$key,$html,$css);
-                            $modCompData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $idxComponentes[$key]=true; [$versao,$cks]=$versaoChecksum('componentes',$key,$html,$css,$cssPrecompiled);
+                            $modCompData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'modulo'=>$modId,'html'=>$html,'css'=>$css,'css_precompiled'=>$cssPrecompiled,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
                             if (isset($item['data_criacao'])) $modCompData['data_criacao'] = $item['data_criacao'];
                             if (isset($item['data_modificacao'])) $modCompData['data_modificacao'] = $item['data_modificacao'];
                             $componentes[] = $modCompData;
                         } elseif ($tipo==='templates') {
                             $target = $item['target'] ?? ($item['target'] ?? null);
                             $key = $lang.'|'.$target.'|'.$id; if(isset($idxTemplates[$key])) { $orphans['templates'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'target'=>$target]; continue; }
-                            $idxTemplates[$key]=true; [$versao,$cks]=$versaoChecksum('templates',$key,$html,$css);
-                            $modTemplateData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'target'=>$target,'thumbnail'=>$item['thumbnail'] ?? null,'language'=>$lang,'html'=>$html,'css'=>$css,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $idxTemplates[$key]=true; [$versao,$cks]=$versaoChecksum('templates',$key,$html,$css,$cssPrecompiled);
+                            $modTemplateData = [ 'nome'=>$item['name'] ?? $id,'id'=>$id,'target'=>$target,'thumbnail'=>$item['thumbnail'] ?? null,'language'=>$lang,'html'=>$html,'css'=>$css,'css_precompiled'=>$cssPrecompiled,'framework_css'=>getFrameworkCss($item),'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
                             if (isset($item['data_criacao'])) $modTemplateData['data_criacao'] = $item['data_criacao'];
                             if (isset($item['data_modificacao'])) $modTemplateData['data_modificacao'] = $item['data_modificacao'];
                             $templates[] = $modTemplateData;
@@ -758,8 +800,8 @@ function coletarRecursos(array $existentes, array $map): array {
                             $path = $item['path'] ?? ($id.'/');
                             $kId = $lang.'|'.$modId.'|'.$id; if(isset($idxPaginasId[$kId])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade id','language'=>$lang,'modulo'=>$modId]; continue; }
                             $kPath = $lang.'|'.strtolower(trim($path,'/')); if(isset($idxPaginasPath[$kPath])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade caminho','language'=>$lang,'modulo'=>$modId]; continue; }
-                            $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true; [$versao,$cks]=$versaoChecksum('paginas',$kId,$html,$css);
-                            $modPageData = [ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html, 'html_extra_head' => $item['html_extra_head'] ?? null,'css'=>$css,'framework_css'=>getFrameworkCss($item),'publisher_id'=>$item['publisher_id'] ?? null,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true; [$versao,$cks]=$versaoChecksum('paginas',$kId,$html,$css,$cssPrecompiled);
+                            $modPageData = [ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html, 'html_extra_head' => $item['html_extra_head'] ?? null,'css'=>$css,'css_precompiled'=>$cssPrecompiled,'framework_css'=>getFrameworkCss($item),'publisher_id'=>$item['publisher_id'] ?? null,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
                             if (isset($item['data_criacao'])) $modPageData['data_criacao'] = $item['data_criacao'];
                             if (isset($item['data_modificacao'])) $modPageData['data_modificacao'] = $item['data_modificacao'];
                             $paginas[] = $modPageData;
@@ -950,6 +992,16 @@ function reporteFinal(array $recursos, array $erros): void {
            "➡️  Formulários: ".count($recursos['formsData']).PHP_EOL.
            "➡️  Widgets: ".count($recursos['widgetsData'] ?? []).PHP_EOL.
            "Σ TOTAL: $total".PHP_EOL;
+
+    $tailwind = $recursos['tailwindStats'] ?? null;
+    if (is_array($tailwind) && !empty($tailwind['enabled'])) {
+        $msg .= "Tailwind por recurso: ".(int)($tailwind['discovered'] ?? 0)." encontrados; ".
+                (int)($tailwind['compiled'] ?? 0)." compilados; ".
+                (int)($tailwind['cached'] ?? 0)." em cache; ".
+                (int)($tailwind['removed'] ?? 0)." removidos; ".
+                (int)($tailwind['resources_with_sources'] ?? 0)." recursos com ".
+                (int)($tailwind['additional_sources'] ?? 0)." fontes adicionais.".PHP_EOL;
+    }
 
     if($totalOrphans > 0) $msg .=
            "⚠️  ⚠️  Órfãos Detectados: $totalOrphans ⚠️  ⚠️".PHP_EOL.
@@ -1365,34 +1417,70 @@ function executarDataHooks(array $contexto): void {
 
 // ========================= 6) MAIN =========================
 
-function main(): void {
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'tailwind-recursos.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'atualizacao-versoes-assets.php';
+
+function main(): int {
     global $LOG_FILE;
     try {
         log_disco_local('Início processo V2', $LOG_FILE);
+
+        $started = cliProgressStep(1, 8, 'Carregando o mapa de recursos');
         $map = carregarMapeamentoGlobal();
+        cliProgressDone(1, 8, 'Mapa de recursos carregado', $started);
+
+        $started = cliProgressStep(2, 8, 'Atualizando metadados de origem');
         if (empty($GLOBALS['CLI_ARGS']['no-origin-update'])) {
             atualizarArquivosOrigem($map);
         } else {
             log_disco_local('PULANDO atualização de arquivos de origem (--no-origin-update)', $LOG_FILE);
+            cliProgress('       Etapa ignorada por --no-origin-update.');
         }
+		if (empty($GLOBALS['CLI_ARGS']['no-assets'])) {
+			asset_versions_update($GLOBALS['GESTOR_DIR'], false, isset($GLOBALS['CLI_ARGS']['quiet']));
+		}
+        cliProgressDone(2, 8, 'Metadados de origem processados', $started);
+
+        $started = cliProgressStep(3, 8, 'Compilando Tailwind por recurso');
+        $tailwindStats = tailwind_recursos_compilar($map);
+        cliProgressDone(3, 8, 'Tailwind por recurso processado', $started);
+
+        $started = cliProgressStep(4, 8, 'Carregando dados existentes');
         $exist = carregarDadosExistentes();
+        cliProgressDone(4, 8, 'Dados existentes carregados', $started);
+
+        $started = cliProgressStep(5, 8, 'Coletando e validando recursos');
         $recursos = coletarRecursos($exist,$map);
+        $recursos['tailwindStats'] = $tailwindStats;
+        cliProgressDone(5, 8, 'Recursos coletados e validados', $started);
+
+        $started = cliProgressStep(6, 8, 'Persistindo arquivos Data.json');
         atualizarDados($exist,$recursos);
+        cliProgressDone(6, 8, 'Arquivos Data.json persistidos', $started);
         // Contrato de sincronização consolidado (Registry Pattern) e hooks pós-geração.
+        $started = cliProgressStep(7, 8, 'Atualizando contratos e hooks de dados');
         gerarSchemaMetadata();
         executarDataHooks(['db_data_dir' => $GLOBALS['DB_DATA_DIR'], 'recursos' => $recursos]);
+        cliProgressDone(7, 8, 'Contratos e hooks processados', $started);
+
+        $started = cliProgressStep(8, 8, 'Gerando o relatório final');
         $erros = validarDuplicidades($recursos);
         reporteFinal($recursos,$erros);
+        cliProgressDone(8, 8, 'Relatório final gerado', $started);
         log_disco_local('Fim processo V2 OK', $LOG_FILE);
+        return 0;
     } catch (Throwable $e) {
         $err = 'Erro fatal: '.$e->getMessage();
+        $context = trim((string)($GLOBALS['CLI_PROGRESS_LAST_CONTEXT'] ?? ''));
+        if ($context !== '') $err .= " [etapa: {$context}]";
         log_disco_local($err,$LOG_FILE); echo "❌ $err".PHP_EOL;
+        return 1;
     }
 }
 
 // Executa (guard permite incluir este arquivo em testes sem disparar a geração completa)
 if (!defined('SDD_NO_AUTORUN')) {
-    main();
+    exit(main());
 }
 
 ?>
