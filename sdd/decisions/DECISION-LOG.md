@@ -705,3 +705,27 @@ Validação: `php -l` 10/10, `node --check` 2/2, JSON OK, `git diff --check` OK,
     rodada foi resolvida sem tocar na regra — só descobrindo por que o arquivo não chegava. Antes de
     reescrever lógica que parece correta, confirmar no DevTools qual URL (e qual `?v=`) o navegador
     está de fato pedindo.
+
+## DEC-108 - 2026-08-14 - accepted
+
+Extração incremental dos bridges privados do BATCH-115:
+
+1. **Página `user_modified` não pode ser pré-requisito para receber templates novos**: os fragmentos
+   da busca clínica são anexados pelo controlador depois da montagem da página. O recurso e seu
+   `css_precompiled` chegam mesmo quando o HTML autoral é preservado pelo sincronizador.
+
+2. **Um componente pode ser um catálogo funcional de templates, mas não um catálogo de classes**:
+   `busca-clinica-runtime-fragments` contém os sete DOMs realmente clonados pela aplicação. Isso é
+   diferente do bridge antigo, cujo HTML era só comentário e existia para fazer o compilador ler o
+   JavaScript.
+
+3. **Fragmento PHP selecionado no servidor deve carregar só seu próprio sidecar**: os três estados
+   do preço do checkout viraram componentes distintos. Um plano gratuito não precisa baixar as
+   utilities exclusivas do card sob medida ou pago.
+
+4. **`snapphoton-system` permanece coberto até a última família ser migrada**: o asset compartilhado
+   concentra dezenas de renderizadores de seis telas. Remover `tailwind_sources` após migrar apenas
+   uma família produziria uma falsa conclusão e novas perdas visuais; a remoção será o último passo.
+
+5. **Escala de navegador não deve virar regra de tema**: o aparente aumento local era zoom de 110%.
+   O projeto permanece com o padrão de 16px e deve ser homologado com zoom do navegador em 100%.

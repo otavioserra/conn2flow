@@ -855,3 +855,22 @@ passar o mouse sobre o painel de Configurações (nada da página atrás pode se
 - [x] Decisão extraída para o método puro `aiModosVisiveis()`, com 3 casos em
       `html-editor-view-options.test.js` (filtra, faz fallback, tolera entrada vazia/inválida).
 - [x] `node --check` OK; Vitest **184/184**.
+
+## BATCH-115 — Rodada 2: bridges privados
+
+- [x] `busca-clinica-runtime-tailwind` removido de pt-br/en e do `ComponentesData.json`.
+- [x] Sete estados da busca clínica existem como `<template>` no componente localizado
+  `busca-clinica-runtime-fragments`.
+- [x] JavaScript preenche texto e atributos pelo DOM; HTML oficial de protocolos continua vindo do
+  renderizador do servidor.
+- [x] Componente da busca é anexado pelo PHP sem depender de alteração na página `user_modified`.
+- [x] `subscriptions-runtime-tailwind` removido de pt-br/en e do `ComponentesData.json`.
+- [x] Cards de preço gratuito, sob medida e pago existem como seis recursos localizados com
+  `css_precompiled` não vazio.
+- [x] Controlador de assinaturas não contém as classes Tailwind desses cards.
+- [x] Gerador privado concluiu 66/66 compilações, zero erros e reportou somente dois recursos com
+  fontes adicionais (`snapphoton-system`, pt-br/en).
+- [x] Escala global restaurada ao padrão de 16px após confirmação de zoom de 110% no navegador.
+- [x] Testes Node estruturais: **4/4**; `node --check`, dois `php -l` e `git diff --check`: OK.
+- [ ] Publicar/sincronizar os novos componentes no banco local e homologar busca clínica e checkout.
+- [ ] Migrar `snapphoton-system` por famílias de tela antes de remover sua ponte.

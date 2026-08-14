@@ -26,8 +26,24 @@
 
 ## Continuidade incremental
 
-- substituir as pontes `tailwind_sources` por componentes reais em `snapphoton-system`,
-  `busca-clinica` e `subscriptions`;
+- `busca-clinica` concluída: sete estados dinâmicos migrados para um componente de templates
+  localizado, preenchido por DOM seguro no JavaScript;
+- `subscriptions` concluída: cards gratuito, sob medida e pago migrados para componentes próprios,
+  selecionados e preenchidos pelo controlador;
+- o projeto passou de seis para dois recursos com `tailwind_sources`; restam apenas as versões
+  pt-br/en do bridge de `snapphoton-system`;
+- extrair `snapphoton-system` por famílias de tela (busca/síntese, documentos/editor,
+  categorias/cache/arquivos) antes de remover sua cobertura transitória;
 - migrar gradualmente os demais literais HTML relevantes de PHP/JavaScript conforme o inventário
   do intake;
 - manter auditoria de novas fontes dinâmicas e cobertura de utilities exclusivas.
+
+## Evidência da rodada 2
+
+- gerador privado: 66 recursos encontrados e recompilados, zero erros, dois recursos com duas
+  fontes adicionais;
+- `node --test tests/js/busca-clinica-runtime-fragments.test.cjs
+  tests/js/subscriptions-checkout-components.test.cjs` → 4/4;
+- `node --check` da busca clínica, `php -l` da busca clínica e de assinaturas e
+  `git diff --check` → OK;
+- escala global mantida no padrão de 16px; o desvio visual era zoom de 110% do navegador.

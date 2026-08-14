@@ -5,7 +5,7 @@
   - [req-114.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-114.md) (BATCH-114 `implemented-pending-homologation`, 2026-08-14): Tailwind incremental por recurso, `css_precompiled`, editor browser-safe e eliminação dos outputs globais implementados.
 
 - **Intake em implementação**:
-  - [req-115.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-115.md) (BATCH-115 `implementation-in-progress`, 2026-08-14): toolbar extraída para componentes/variáveis localizados; cobertura transitória dos módulos privados implantada; fontes adicionais justificadas e reportadas; migração dos demais fragmentos dinâmicos segue incremental.
+  - [req-115.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-115.md) (BATCH-115 `implementation-in-progress`, 2026-08-14): toolbar, busca clínica e cards de checkout extraídos para componentes localizados; somente `snapphoton-system` ainda usa cobertura transitória.
 
 - **Lotes Fechados**: 
   * [req-112.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-112.md) (BATCH-112 `complete`, 2026-08-14): Sitemap em assets, correção do 301, SEO no publisher-pages, isolamento do painel da Editbar e meta tags.
@@ -41,6 +41,6 @@
   * (BATCH-099 `complete`, 2026-07-30): Upload e Gestão de Pastas Liberados no Modo Picker do Admin-Arquivos.
   * (BATCH-100 `complete`, 2026-07-30): Mídia Embutida: 403 em Arquivos com Espaço, Streaming (HTTP Range) e Dimensionamento do Áudio.
 
-- **Status**: req-113 e req-114 implementadas localmente; req-115 em implementação, com toolbar estruturalmente concluída, pontes privadas publicadas no ambiente local e governança de fontes dinâmicas ativa.
+- **Status**: req-113 e req-114 implementadas localmente; req-115 em implementação, com toolbar, busca clínica e checkout estruturalmente migrados. Restam somente dois bridges localizados do módulo `snapphoton-system`; governança de fontes dinâmicas ativa.
 
-- **Pendências**: homologar visualmente a toolbar; migrar gradualmente o HTML dinâmico restante e, depois, repetir PageSpeed. A sincronização direcionada dos oito componentes do Core foi concluída no ambiente local.
+- **Pendências**: migrar `snapphoton-system` por famílias de tela, homologar os novos componentes privados no ambiente local e, depois, repetir PageSpeed. A sincronização direcionada dos oito componentes do Core foi concluída no ambiente local.
