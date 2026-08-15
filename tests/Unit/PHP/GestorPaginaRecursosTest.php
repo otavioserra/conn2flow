@@ -15,6 +15,7 @@ final class GestorPaginaRecursosTest extends TestCase
         $_GESTOR['css'] = [];
         $_GESTOR['css-precompiled'] = [];
         $_GESTOR['css-compiled'] = [];
+        unset($_GESTOR['tailwind-page-bundle']);
     }
 
     public function testIncluiRecursosUmaVezPorConteudo(): void
@@ -70,11 +71,40 @@ final class GestorPaginaRecursosTest extends TestCase
             'css_precompiled' => '.dependency { display: grid; }',
             'css_precompiled_role' => 'dependency-precompiled',
         ]);
+        gestor_pagina_recursos_incluir([
+            'css_precompiled' => '.page { display: flex; }',
+            'css_precompiled_role' => 'page-precompiled',
+        ]);
 
         $ordered = gestor_css_precompiled_ordenar($_GESTOR['css-precompiled']);
-        self::assertCount(3, $ordered);
+        self::assertCount(4, $ordered);
         self::assertStringContainsString('layout-precompiled', $ordered[0]);
         self::assertStringContainsString('dependency-precompiled', $ordered[1]);
-        self::assertStringContainsString('resource-precompiled', $ordered[2]);
+        self::assertStringContainsString('page-precompiled', $ordered[2]);
+        self::assertStringContainsString('resource-precompiled', $ordered[3]);
+    }
+
+    public function testBundleDaPaginaSubstituiSomenteSidecarsPrecompiladosIsolados(): void
+    {
+        global $_GESTOR;
+
+        foreach ([
+            'layout-precompiled' => '.layout{}',
+            'dependency-precompiled' => '.dependency{}',
+            'resource-precompiled' => '.resource{}',
+            'page-precompiled' => '.page{}',
+        ] as $role => $css) {
+            gestor_pagina_recursos_incluir([
+                'css_precompiled' => $css,
+                'css_precompiled_role' => $role,
+            ]);
+        }
+
+        $_GESTOR['tailwind-page-bundle'] = true;
+        $ordered = gestor_css_precompiled_ordenar($_GESTOR['css-precompiled']);
+
+        self::assertCount(1, $ordered);
+        self::assertStringContainsString('page-precompiled', $ordered[0]);
+        self::assertStringNotContainsString('layout-precompiled', $ordered[0]);
     }
 }

@@ -50,3 +50,24 @@
 - deploy local via API → HTTP 200; sincronização forçada e limitada a `componentes` → 43 sem
   alteração; leitura da base `photon` confirmou oito recursos novos com precompiled preenchido e
   `user_modified=0`.
+
+## Correção de cascata — bundle canônico por página
+
+- **Causa-raiz**: concatenar saídas Tailwind independentes perde a ordem global dos utilitários.
+  Na Busca Clínica, `.hidden` de um sidecar posterior anulava `lg:flex` do layout e invertia o menu
+  desktop/mobile.
+- **Contrato novo e opt-in**: páginas que definem `$_GESTOR['tailwind-page-bundle']` emitem
+  `page-precompiled`; nesse modo o runtime exclui apenas os demais sidecars Tailwind isolados e
+  mantém CSS autoral e o CSS do editor.
+- **Primeira rota migrada**: `busca-clinica-dashboard` compila página + `photon-admin` + fragmentos
+  dinâmicos + templates clínicos default/variation em um único sidecar de 22.427 bytes.
+- **Template corrigido**: a resolução SQL e o fallback físico passaram a devolver
+  `css_precompiled`; o recurso entra como dependência quando a rota não usa bundle.
+- **Evidência estática**: `hidden` precede `lg:flex`; `max-h-56` e `lg:grid-cols-3` estão presentes;
+  lint PHP e `git diff --check` aprovados.
+- **Evidência de entrega**: sincronização do core fonte, deploy privado HTTP 200 e hashes idênticos
+  no destino para `gestor.php`, `bibliotecas/gestor.php`, controlador da busca e sidecar da página.
+- **Regressão**: Core com 269 testes/1.064 asserções; projeto com 5/5 testes Node; quatro testes do
+  Core ignorados e uma depreciação já conhecida.
+- **Próximo passo**: aplicar o mesmo contrato, com dependências declaradas por rota, antes de
+  remover o bridge final de `snapphoton-system`.

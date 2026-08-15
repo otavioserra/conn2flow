@@ -2698,6 +2698,7 @@ function gestor_roteador(){
 			gestor_pagina_recursos_incluir(Array(
 				'css' => $css,
 				'css_precompiled' => $css_precompiled,
+				'css_precompiled_role' => 'page-precompiled',
 				'css_compiled' => $css_compiled,
 				'html_extra_head' => $html_extra_head,
 			));

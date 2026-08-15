@@ -94,6 +94,7 @@ function gestor_css_precompiled_ordenar($styles){
 	$buckets = Array(
 		'layout-precompiled' => Array(),
 		'dependency-precompiled' => Array(),
+		'page-precompiled' => Array(),
 		'resource-precompiled' => Array(),
 		'other' => Array(),
 	);
@@ -107,9 +108,18 @@ function gestor_css_precompiled_ordenar($styles){
 		$buckets[$role][] = $style;
 	}
 
+	// Uma página pode optar por um bundle Tailwind canônico que já foi compilado
+	// com seu layout e dependências. Nesse modo, concatenar os sidecars isolados
+	// reintroduziria conflitos de ordem entre utilitários globais (`hidden` x
+	// `lg:flex`, por exemplo). CSS autoral/compilado online permanece no pipeline.
+	if(!empty($GLOBALS['_GESTOR']['tailwind-page-bundle']) && $buckets['page-precompiled']){
+		return array_merge($buckets['page-precompiled'], $buckets['other']);
+	}
+
 	return array_merge(
 		$buckets['layout-precompiled'],
 		$buckets['dependency-precompiled'],
+		$buckets['page-precompiled'],
 		$buckets['resource-precompiled'],
 		$buckets['other']
 	);
@@ -166,7 +176,7 @@ function gestor_pagina_recursos_incluir($params = false){
 			$_GESTOR['recursos-incluidos-hashes'][$hash] = true;
 			$css_precompiled_formatted = preg_replace("/(^|\n)/m", "\n        ", $css_precompiled);
 
-			$role = (isset($css_precompiled_role) && in_array($css_precompiled_role, ['layout-precompiled','resource-precompiled','dependency-precompiled'], true))
+			$role = (isset($css_precompiled_role) && in_array($css_precompiled_role, ['layout-precompiled','page-precompiled','resource-precompiled','dependency-precompiled'], true))
 				? $css_precompiled_role
 				: 'resource-precompiled';
 			$_GESTOR['css-precompiled'][] = '<style data-tailwind-role="'.$role.'">'."\n"

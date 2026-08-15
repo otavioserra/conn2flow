@@ -111,6 +111,8 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-105 | 2026-08-13 | accepted | Metadados de compartilhamento por página, aba de SEO no Editor HTML, painel de Configurações na Editbar e sitemap.xml incremental (BATCH-110). |
 | DEC-106 | 2026-08-13 | accepted | Reversão do bloqueio de analytics e fim do laço de verificação de cookie; tokens de robô em duas camadas (CR-001 / BATCH-111). Reverte DEC-104 §4. |
 | DEC-107 | 2026-08-14 | accepted | Sitemap em assets, correção do 301, aba SEO no publisher-pages, isolamento do painel da Editbar e meta tags de SEO (BATCH-112). |
+| DEC-108 | 2026-08-14 | accepted | Extração incremental dos bridges privados e preservação temporária da cobertura de `snapphoton-system` (BATCH-115). |
+| DEC-109 | 2026-08-14 | accepted | Bundle Tailwind canônico e opt-in por página para impedir colisão entre sidecars independentes (BATCH-115). |
 
 ---
 
@@ -729,3 +731,29 @@ Extração incremental dos bridges privados do BATCH-115:
 
 5. **Escala de navegador não deve virar regra de tema**: o aparente aumento local era zoom de 110%.
    O projeto permanece com o padrão de 16px e deve ser homologado com zoom do navegador em 100%.
+
+## DEC-109 - 2026-08-14 - accepted
+
+Bundle Tailwind canônico e opt-in por página (req-115 / BATCH-115):
+
+1. **Sidecar correto isoladamente não implica cascata correta em conjunto**: cada compilação possui
+   apenas um subconjunto das utilities. Ao concatená-las, a ordem entre bundles passa a valer mais
+   que a ordem canônica do Tailwind; `.hidden` posterior anulou `lg:flex` do layout na Busca
+   Clínica.
+
+2. **A unidade de entrega visual é a rota, não a soma cega dos recursos**: o artefato continua
+   armazenado por recurso, mas uma rota migrada compila layout, página e dependências declaradas em
+   um único `page-precompiled`. Isso preserva o benefício de CSS pequeno sem voltar ao antigo
+   `system-output.css` global.
+
+3. **Migração obrigatoriamente opt-in**: o runtime só elimina sidecars isolados quando o módulo
+   define `tailwind-page-bundle` e existe um `page-precompiled`. Rotas não inventariadas continuam
+   no contrato anterior; ativar globalmente esconderia dependências ainda não declaradas.
+
+4. **CSS autoral e CSS do editor não são descartados**: a seleção afeta somente a faixa
+   `css-precompiled`. `css`, `css_compiled`, CSS de projeto e `css-fim` mantêm sua precedência e seu
+   propósito.
+
+5. **Template escolhido dinamicamente é dependência da página**: todos os templates elegíveis
+   precisam entrar nas fontes do bundle. O PHP também deve carregar `templates.css_precompiled`
+   no fallback sem bundle; omitir o campo foi a causa da imagem clínica sem `max-h-56`.
