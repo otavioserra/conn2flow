@@ -231,13 +231,122 @@ function tailwind_recursos_sources(array $metadata, string $resourceDir): array
     return array_values(array_unique($sources));
 }
 
+/**
+ * Resolve dependências semânticas de recursos somente durante o build.
+ *
+ * O metadado referencia IDs do Gestor, nunca caminhos publicados. Os arquivos
+ * físicos existem no repositório de desenvolvimento e são removidos do pacote
+ * depois que o css_precompiled já foi persistido nos Data.json.
+ *
+ * @return list<string>
+ */
+function tailwind_recursos_dependencies(array $metadata, string $scope, ?string $module, string $language, string $type): array
+{
+    global $GESTOR_DIR;
+
+    $dependencies = (array)($metadata['tailwind_dependencies'] ?? []);
+    if ($dependencies !== []) {
+        $reason = $metadata['tailwind_dependencies_reason'] ?? null;
+        if (!is_string($reason) || trim($reason) === '') {
+            $id = is_string($metadata['id'] ?? null) ? $metadata['id'] : '(sem id)';
+            throw new RuntimeException("Recurso {$id} usa tailwind_dependencies sem tailwind_dependencies_reason.");
+        }
+    }
+
+    // Um bundle de página sempre inclui o layout já declarado no contrato da
+    // própria página. Primeiro procura no módulo e depois nos recursos globais.
+    if (($metadata['tailwind_bundle'] ?? false) === true && $type === 'pages') {
+        $pageId = is_string($metadata['id'] ?? null) ? $metadata['id'] : '(sem id)';
+        $layoutId = $metadata['layout'] ?? null;
+        if (!is_string($layoutId) || trim($layoutId) === '') {
+            throw new RuntimeException("Página {$pageId} usa tailwind_bundle sem layout.");
+        }
+        $layoutLanguage = $metadata['tailwind_layout_language'] ?? $language;
+        if (!is_string($layoutLanguage) || $layoutLanguage === '') {
+            throw new RuntimeException("Página {$pageId} possui tailwind_layout_language inválido.");
+        }
+        $layoutDependency = ['type' => 'layouts', 'id' => $layoutId, 'language' => $layoutLanguage];
+        $moduleCandidate = $module !== null
+            ? tailwind_recursos_dependency_path($layoutDependency + ['module' => $module])
+            : null;
+        if ($moduleCandidate !== null && is_file($moduleCandidate)) {
+            $dependencies[] = $layoutDependency + ['module' => $module];
+        } else {
+            $dependencies[] = $layoutDependency + ['scope' => 'global'];
+        }
+    }
+
+    $resolved = [];
+    foreach ($dependencies as $dependency) {
+        if (!is_array($dependency)) {
+            throw new RuntimeException('Cada tailwind_dependencies deve ser um objeto com type e id.');
+        }
+        $dependency += ['language' => $language];
+        if (!array_key_exists('module', $dependency) && ($dependency['scope'] ?? null) !== 'global') {
+            $dependency['module'] = $module;
+        }
+        $candidate = tailwind_recursos_dependency_path($dependency);
+        if ($candidate === null || !is_file($candidate)) {
+            $id = (string)($dependency['id'] ?? '(sem id)');
+            throw new RuntimeException("Dependência Tailwind do Gestor não encontrada: {$id}");
+        }
+        if (!tailwind_recursos_path_dentro($candidate, $GESTOR_DIR)) {
+            throw new RuntimeException("Dependência Tailwind fora da raiz permitida: {$candidate}");
+        }
+        $resolved[] = realpath($candidate) ?: $candidate;
+    }
+
+    sort($resolved, SORT_STRING);
+    return array_values(array_unique($resolved));
+}
+
+function tailwind_recursos_dependency_path(array $dependency): ?string
+{
+    global $GESTOR_DIR;
+
+    $allowedTypes = ['layouts', 'components', 'pages', 'templates'];
+    $type = $dependency['type'] ?? null;
+    $id = $dependency['id'] ?? null;
+    $language = $dependency['language'] ?? null;
+    if (!is_string($type) || !in_array($type, $allowedTypes, true)
+        || !is_string($id) || $id === '' || str_contains($id, '/') || str_contains($id, '\\')
+        || !is_string($language) || $language === '') {
+        return null;
+    }
+
+    $module = $dependency['module'] ?? null;
+    if (($dependency['scope'] ?? null) === 'global') $module = null;
+    if ($module !== null && (!is_string($module) || $module === '' || str_contains($module, '/') || str_contains($module, '\\'))) {
+        return null;
+    }
+
+    $base = $module === null
+        ? $GESTOR_DIR . DIRECTORY_SEPARATOR . 'resources'
+        : $GESTOR_DIR . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'resources';
+
+    return $base . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $type
+        . DIRECTORY_SEPARATOR . $id . DIRECTORY_SEPARATOR . $id . '.html';
+}
+
 function tailwind_recursos_descriptor(array $metadata, string $scope, ?string $module, string $language, string $type, string $base, bool $baseIsResourcesDir): ?array
 {
     $id = $metadata['id'] ?? null;
     if (!is_string($id) || $id === '' || getFrameworkCss($metadata) !== 'tailwindcss') return null;
     $paths = resourcePaths($base, $language, $type, $id, $baseIsResourcesDir);
     if (!is_file($paths['html'])) return null;
-    $sources = tailwind_recursos_sources($metadata, $paths['dir']);
+    $sources = array_merge(
+        tailwind_recursos_sources($metadata, $paths['dir']),
+        tailwind_recursos_dependencies($metadata, $scope, $module, $language, $type)
+    );
+    sort($sources, SORT_STRING);
+    $sources = array_values(array_unique($sources));
+    $bundle = ($metadata['tailwind_bundle'] ?? false) === true;
+    if ($bundle && $type !== 'pages') {
+        throw new RuntimeException("tailwind_bundle só pode ser usado em páginas: {$id}");
+    }
+    if ($bundle && $sources === []) {
+        throw new RuntimeException("Página {$id} usa tailwind_bundle sem dependências ou fontes resolvidas.");
+    }
     $safelist = array_values(array_filter((array)($metadata['tailwind_safelist'] ?? []), fn($v) => is_string($v) && trim($v) !== ''));
     sort($safelist, SORT_STRING);
     return [
@@ -248,6 +357,7 @@ function tailwind_recursos_descriptor(array $metadata, string $scope, ?string $m
         'type' => $type,
         'id' => $id,
         'layout' => $type === 'layouts',
+        'bundle' => $bundle,
         'html' => $paths['html'],
         'output' => $paths['css_precompiled'],
         'dir' => $paths['dir'],
@@ -363,7 +473,9 @@ function tailwind_recursos_atomic_write(string $path, string $content): void
 function tailwind_recursos_input_temporario(array $resource, string $centralInput, string $tempDir): string
 {
     $central = tailwind_recursos_css_string(tailwind_recursos_relativo($tempDir, $centralInput));
-    $lines = $resource['layout']
+    // Layouts e bundles canônicos precisam carregar theme/base/preflight. Recursos
+    // isolados importam apenas utilities porque recebem essas camadas do layout.
+    $lines = ($resource['layout'] || !empty($resource['bundle']))
         ? ['@import "' . $central . '";']
         : ['@reference "' . $central . '";', '@import "tailwindcss/utilities.css" layer(utilities) source(none);'];
 
@@ -388,6 +500,7 @@ function tailwind_recursos_fingerprint(array $resource, string $centralHash, str
         'central' => $centralHash,
         'tailwind' => $version,
         'layout' => $resource['layout'],
+        'bundle' => !empty($resource['bundle']),
         'sources' => $sourceHashes,
         'safelist' => $resource['safelist'],
         'minify' => true,

@@ -118,6 +118,25 @@ final class TailwindRecursosTest extends TestCase
         );
     }
 
+    public function testBundleCanonicoImportaTemaEBaseDoInputCentral(): void
+    {
+        $resource = [
+            'layout' => false,
+            'bundle' => true,
+            'html' => '/gestor/page.html',
+            'sources' => ['/gestor/layout.html'],
+            'safelist' => [],
+        ];
+
+        $input = tailwind_recursos_input_temporario($resource, '/gestor/input.css', '/gestor/.tailwind-build');
+
+        self::assertStringContainsString('@import "../input.css";', $input);
+        self::assertStringNotContainsString('@reference', $input);
+        self::assertStringNotContainsString('tailwindcss/utilities.css', $input);
+        self::assertStringContainsString('@source "../page.html";', $input);
+        self::assertStringContainsString('@source "../layout.html";', $input);
+    }
+
     public function testRecusaFonteDinamicaSemJustificativaAuditavel(): void
     {
         $this->expectException(RuntimeException::class);
@@ -146,6 +165,63 @@ final class TailwindRecursosTest extends TestCase
         self::assertFalse(tailwind_recursos_output_valido($directory . DIRECTORY_SEPARATOR . 'missing.css'));
     }
 
+    public function testResolveDependenciasSemanticasDaToolbarSomenteNoBuild(): void
+    {
+        global $GESTOR_DIR;
+        $previous = $GESTOR_DIR ?? null;
+        $GESTOR_DIR = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'gestor';
+
+        try {
+            $resolved = tailwind_recursos_dependencies([
+                'id' => 'dashboard-site-toolbar',
+                'layout' => 'layout-iframe-tailwindcss',
+                'tailwind_bundle' => true,
+                'tailwind_dependencies_reason' => 'teste',
+                'tailwind_dependencies' => [
+                    ['type' => 'components', 'id' => 'dashboard-site-toolbar-menu'],
+                    ['type' => 'components', 'id' => 'dashboard-site-toolbar-menu-item'],
+                    ['type' => 'components', 'id' => 'dashboard-site-toolbar-menu-group'],
+                    ['type' => 'components', 'id' => 'dashboard-site-toolbar-menu-empty'],
+                ],
+            ], 'module', 'dashboard', 'pt-br', 'pages');
+        } finally {
+            if ($previous === null) unset($GESTOR_DIR);
+            else $GESTOR_DIR = $previous;
+        }
+
+        self::assertCount(5, $resolved);
+        self::assertTrue((bool)array_filter($resolved, fn($path) => str_ends_with(
+            str_replace('\\', '/', $path),
+            '/resources/pt-br/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html'
+        )));
+        self::assertTrue((bool)array_filter($resolved, fn($path) => str_ends_with(
+            str_replace('\\', '/', $path),
+            '/modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu/dashboard-site-toolbar-menu.html'
+        )));
+    }
+
+    public function testRecusaPathTraversalEmDependenciaSemantica(): void
+    {
+        global $GESTOR_DIR;
+        $previous = $GESTOR_DIR ?? null;
+        $GESTOR_DIR = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'gestor';
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('não encontrada');
+        try {
+            tailwind_recursos_dependencies([
+                'id' => 'invalido',
+                'tailwind_dependencies_reason' => 'teste',
+                'tailwind_dependencies' => [
+                    ['type' => 'components', 'id' => '../fora'],
+                ],
+            ], 'module', 'dashboard', 'pt-br', 'components');
+        } finally {
+            if ($previous === null) unset($GESTOR_DIR);
+            else $GESTOR_DIR = $previous;
+        }
+    }
+
     public function testToolbarExtraiMenuPhpParaComponentesTailwind(): void
     {
         $root = dirname(__DIR__, 3);
@@ -169,8 +245,15 @@ final class TailwindRecursosTest extends TestCase
             }
 
             self::assertIsArray($toolbar, "Toolbar ausente em {$language}");
+            self::assertTrue($toolbar['tailwind_bundle'] ?? false);
             self::assertArrayNotHasKey('tailwind_sources', $toolbar);
+            self::assertCount(4, $toolbar['tailwind_dependencies'] ?? []);
             self::assertSame('layout-iframe-tailwindcss', $toolbar['layout'] ?? null);
+
+            foreach ($toolbar['tailwind_dependencies'] as $dependency) {
+                self::assertSame('components', $dependency['type'] ?? null);
+                self::assertStringNotContainsString('/', $dependency['id'] ?? '');
+            }
 
             $components = [];
             foreach ($metadata['resources'][$language]['components'] ?? [] as $component) {
@@ -225,6 +308,12 @@ final class TailwindRecursosTest extends TestCase
             self::assertStringContainsString('@layer base', $layoutPreflight);
             self::assertStringContainsString('box-sizing:border-box', $layoutPreflight);
             self::assertStringContainsString('appearance:button', $layoutPreflight);
+
+            $pageCss = $moduleDirectory . DIRECTORY_SEPARATOR . 'resources'
+                . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . 'pages'
+                . DIRECTORY_SEPARATOR . 'dashboard-site-toolbar'
+                . DIRECTORY_SEPARATOR . 'dashboard-site-toolbar.precompiled.css';
+            self::assertFileExists($pageCss);
         }
 
         $php = (string) file_get_contents($moduleDirectory . DIRECTORY_SEPARATOR . 'dashboard.php');

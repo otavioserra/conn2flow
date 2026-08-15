@@ -170,3 +170,22 @@ começava em `@layer properties`/`@layer utilities`, sem theme/base.
   não incluídos automaticamente;
 - `PaginasData.json`, sidecars dos dois bundles e o manifesto Tailwind devem entrar apenas após a
   recompilação final bem-sucedida.
+
+## Atualização do handoff — implementação concluída na mesma sessão
+
+Os itens 1–5 marcados como incompletos acima foram executados depois da publicação inicial do
+handoff:
+
+- Busca Clínica agora declara três dependências semânticas; o layout `photon-admin` é inferido e a
+  página EN explicita `tailwind_layout_language: pt-br`;
+- Editbar declara quatro componentes semânticos; seu layout iframe é inferido por idioma;
+- mensagem de validação, teste de resolução do layout/componente e teste contra path traversal
+  foram adicionados;
+- geradores Core/projeto concluíram sem erro e conservaram os 173/66 recursos em cache, porque as
+  dependências semânticas resolveram para os mesmos HTMLs e o CSS final não mudou;
+- Core completo: 272 testes, 1.096 asserções, quatro ignorados e uma depreciação preexistente;
+- projeto: 3/3 testes Node; `git diff --check` aprovado nos dois repositórios.
+
+Pendência real para o próximo operador/agente: homologar visualmente Busca Clínica, resultado e
+Editbar em sessão autenticada com zoom 100% e `Ctrl+F5`. Se houver divergência, salvar novos HTMLs
+renderizados; não reintroduzir concatenação de sidecars nem caminhos físicos no metadado.

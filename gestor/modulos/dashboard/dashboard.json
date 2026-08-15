@@ -81,6 +81,14 @@
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        { "type": "components", "id": "dashboard-site-toolbar-menu" },
+                        { "type": "components", "id": "dashboard-site-toolbar-menu-item" },
+                        { "type": "components", "id": "dashboard-site-toolbar-menu-group" },
+                        { "type": "components", "id": "dashboard-site-toolbar-menu-empty" }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-115: bundle canônico da toolbar inclui o layout declarado na página e os componentes montados dinamicamente pelo PHP.",
                     "version": "1.19",
                     "checksum": {
                         "html": "113d57aa967c5ed5f6cff3c148d5978a",
@@ -357,6 +365,14 @@
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        { "type": "components", "id": "dashboard-site-toolbar-menu" },
+                        { "type": "components", "id": "dashboard-site-toolbar-menu-item" },
+                        { "type": "components", "id": "dashboard-site-toolbar-menu-group" },
+                        { "type": "components", "id": "dashboard-site-toolbar-menu-empty" }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-115: canonical toolbar bundle includes the page layout and the components assembled dynamically by PHP.",
                     "version": "1.19",
                     "checksum": {
                         "html": "4cf33744e2cada19c8ea668fc877f050",

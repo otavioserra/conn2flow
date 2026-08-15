@@ -1323,6 +1323,11 @@ function dashboard_menu(){
 function dashboard_site_toolbar(){
 	global $_GESTOR;
 
+	// A toolbar combina página, layout e quatro componentes dinâmicos. Seu
+	// sidecar já é um bundle completo e substitui os sidecars isolados para
+	// preservar a ordem canônica das utilities Tailwind.
+	$_GESTOR['tailwind-page-bundle'] = true;
+
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
 	// ===== Contexto da página hospedeira (passado pela injeção via query string).
