@@ -757,3 +757,28 @@ Bundle Tailwind canônico e opt-in por página (req-115 / BATCH-115):
 5. **Template escolhido dinamicamente é dependência da página**: todos os templates elegíveis
    precisam entrar nas fontes do bundle. O PHP também deve carregar `templates.css_precompiled`
    no fallback sem bundle; omitir o campo foi a causa da imagem clínica sem `max-h-56`.
+
+## DEC-110 - 2026-08-14 - accepted
+
+Contrato de camadas para bundles Tailwind canônicos (req-115 / BATCH-115):
+
+1. **Bundle que substitui layout precisa substituir também suas camadas globais**: compilar somente
+   utilities é correto para sidecar isolado, mas incorreto para `page-precompiled` que elimina o
+   layout da resposta. O bundle deve carregar tema, base e Preflight do input central.
+
+2. **`tailwind_sources` não implica bundle**: a propriedade também serve a pontes temporárias de
+   PHP/JavaScript. A intenção de substituir a faixa pré-compilada inteira fica explícita em
+   `tailwind_bundle: true`, restrita a páginas e exigindo fontes adicionais declaradas.
+
+3. **A Editbar é uma rota independente**: seu iframe tem página, layout e componentes próprios;
+   portanto recebe seu próprio bundle canônico. Não deve herdar nem depender do bundle da página
+   hospedeira.
+
+4. **Dependência entre recursos é semântica, não um caminho de `resources/`**: produção remove as
+   árvores físicas. Componentes, layouts e templates entram no metadado por `type`, `module`,
+   `language` e `id`; o compilador traduz para arquivo apenas durante o build. O runtime continua
+   usando `gestor_componente()`, `gestor_layout()` e tabelas do banco.
+
+5. **`tailwind_sources` fica reservado a fonte bruta transitória**: PHP/JavaScript ainda não
+   extraído pode permanecer como fonte auditada. Assim que o HTML vira recurso do Gestor, a ponte
+   por caminho deve ser substituída por `tailwind_dependencies`.
