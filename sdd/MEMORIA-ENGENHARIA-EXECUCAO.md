@@ -111,6 +111,39 @@
 - `og:image` vazio faz o WhatsApp mostrar card sem imagem em vez de usar o fallback — omita a tag.
 - Suítes após o batch: PHPUnit **200/200**, Vitest **171/171**.
 
+## 2026-08-15 — Review dos BATCH-111/112/115 (disparado pelo req-076 do lumix)
+
+- **Tailwind v4 só emite a variável de `@theme` que ele VÊ usada, e ele vê só as utilities do HTML
+  escaneado.** CSS autoral de recurso não passa pelo compilador: se consome `var(--color-…)`, o token
+  pode não existir na saída. `var()` indefinida invalida a declaração e a propriedade cai para o
+  valor inicial — some cor/borda **sem erro em lugar nenhum**. Projeto com tema próprio precisa de
+  `@theme static`. O core não sente porque não tem `@theme` nem CSS autoral consumindo token.
+- **Em modo bundle o núcleo descarta `resource-precompiled`** — é por isso que a rota declara suas
+  dependências. Consequência ainda não coberta: recurso escolhido em RUNTIME (template selecionável
+  por `target` no banco) nasce fora do bundle e renderiza sem estilo, em silêncio.
+- **Descarte silencioso é o que impede o diagnóstico.** Vale logar em dev quando um sidecar não vazio
+  for descartado por causa do bundle.
+- `dependency-precompiled` está no bucket e na whitelist do ordenador e **nenhum ponto emite** esse
+  papel; os dois includes de template caem no default `resource-precompiled`.
+- Sitemap medido no `snapphoton-local`: `/sitemap.xml` entrega o arquivo de `assets/` (roteador vence),
+  mas o `sitemap.xml` **antigo continua na raiz** — em instalação onde a regra `!-f` resolva primeiro,
+  o arquivo velho passa a ser servido para sempre. Não existe `robots.txt` no core nem no projeto.
+- A heurística de "página de confirmação" do sitemap cobre `…/success`, mas as páginas se chamam
+  `…-success`: `contacts-success/`, `subscription-checkout/error/` e `/payment/` estão indexadas.
+- Acerto a preservar: a MESMA `gestor_pagina_rota_sistema()` alimenta o `noindex` do BATCH-111 e a
+  exclusão do sitemap — rota nova entra ou sai dos dois de uma vez.
+- **A coluna `css_precompiled` não chegou a `forms`/`forms_search`** (só `templates`, `componentes`,
+  `paginas`, `layouts`). Por isso `forms_render()` nunca incluiu o pré-compilado e TODO formulário do
+  widget saía sem as utilities dos campos. Projetar a coluna sem `banco_campo_existe()` devolve
+  **HTTP 500 em rota pública**, não degradação.
+- **Componente sem `framework_css` não é compilado e ninguém avisa.** O `form-ui` — overlay, erros e
+  bloqueio de TODOS os formulários — nunca teve `.precompiled.css`; junto disso o dimmer usava
+  `bg-opacity-50`, que **não existe no Tailwind v4**. O overlay era injetado e ficava invisível.
+- Correção ao finding F4: `dependency-precompiled` não tinha emissor **no core**; o lumix já o usava.
+  Agora `forms`/`forms-search` também emitem, e a cascata do checkout foi medida como
+  `layout` → `dependency` → `page` → `resource`.
+- Findings completos em [reviews/REVIEW-2026-08-15-batches-111-112-115.md](reviews/REVIEW-2026-08-15-batches-111-112-115.md).
+
 ## Pendências
 
 - Testes que executam o compilador de recursos podem regenerar data files/checksums. Conferir `git status` e manter apenas alterações pertencentes ao batch corrente.

@@ -392,11 +392,13 @@
     {
         "name": "Form UI",
         "id": "form-ui",
-        "version": "1.15",
+        "framework_css": "tailwindcss",
+        "version": "1.16",
         "checksum": {
-            "html": "b00ec4660514dc6672c4ba96db3f2742",
+            "html": "e22c3639b1143c9c813c6ca70bc6eca8",
             "css": "",
-            "combined": "b00ec4660514dc6672c4ba96db3f2742"
+            "css_precompiled": "",
+            "combined": "e22c3639b1143c9c813c6ca70bc6eca8"
         }
     },
     {

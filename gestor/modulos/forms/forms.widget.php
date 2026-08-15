@@ -252,7 +252,17 @@ function forms_render($params) {
 	$registro = banco_select([
 		'unico' => true,
 		'tabela' => 'forms',
-		'campos' => ['id_forms', 'id', 'fields_schema', 'html', 'css', 'css_compiled', 'html_extra_head'],
+		// req-077 §2: `css_precompiled` carrega TODAS as utilities Tailwind do formulário desde a
+		// pré-compilação por recurso; sem ele o widget renderiza com classes que não existem em CSS
+		// nenhum e os campos aparecem sem padding, borda ou arredondamento.
+		// A coluna existe em `templates`, `componentes`, `paginas` e
+		// `layouts`, mas NÃO em `forms` — a migração da pré-compilação por recurso não
+		// alcançou esta tabela. Projetar a coluna sem guard derruba a consulta inteira (HTTP 500
+		// na rota pública). Enquanto a coluna não existir, o formulário customizado no editor
+		// não tem sidecar próprio e o visual vem do template referenciado, logo abaixo.
+		'campos' => banco_campo_existe('css_precompiled', 'forms')
+			? ['id_forms', 'id', 'fields_schema', 'html', 'css', 'css_precompiled', 'css_compiled', 'html_extra_head']
+			: ['id_forms', 'id', 'fields_schema', 'html', 'css', 'css_compiled', 'html_extra_head'],
 		'extra' =>
 			"WHERE id='".banco_escape_field($form_id)."'"
 			." AND status='A'"
@@ -265,19 +275,26 @@ function forms_render($params) {
 
 	$html = (string)($registro['html'] ?? '');
 	$css = (string)($registro['css'] ?? '');
+	$css_precompiled = (string)($registro['css_precompiled'] ?? '');
 	$css_compiled = (string)($registro['css_compiled'] ?? '');
 	$html_extra_head = (string)($registro['html_extra_head'] ?? '');
 
-	// Fallback de template: formulários que usam o modelo padrão (sem customização salva) gravam
-	// os campos html/css vazios no banco. Nesse caso, carregar o conteúdo do template referenciado
-	// em fields_schema.template_id para que o widget continue renderizando o formulário.
-	if (trim($html) === '') {
-		$template_id = (string)($schema['template_id'] ?? '');
-		if ($template_id !== '') {
+	// Fallback de template, por dois motivos distintos:
+	//  1. HTML vazio — formulário que usa o modelo padrão (sem customização salva) grava html/css
+	//     vazios no banco e todo o conteúdo vem do template referenciado em `template_id`;
+	//  2. req-077 §2: SEM `css_precompiled` próprio — o HTML customizado no editor nasce como CÓPIA
+	//     do template, então são as utilities Tailwind DELE que vestem o formulário. Como a tabela
+	//     `forms` não tem a coluna, esta é a única origem possível hoje; sem isso um formulário
+	//     customizado renderiza os campos sem padding, borda nem arredondamento.
+	$template_id = (string)($schema['template_id'] ?? '');
+	if ($template_id !== '' && (trim($html) === '' || trim($css_precompiled) === '')) {
+		{
 			$template = banco_select([
 				'unico' => true,
 				'tabela' => 'templates',
-				'campos' => ['html', 'css', 'css_compiled', 'html_extra_head'],
+				// req-077 §2: o formulário que usa o modelo padrão grava html/css vazios e todo o
+				// visual vem daqui — inclusive as utilities pré-compiladas.
+				'campos' => ['html', 'css', 'css_precompiled', 'css_compiled', 'html_extra_head'],
 				'extra' =>
 					"WHERE id='".banco_escape_field($template_id)."'"
 					." AND target='forms'"
@@ -285,10 +302,15 @@ function forms_render($params) {
 					." AND language='".$_GESTOR['linguagem-codigo']."'",
 			]);
 			if ($template) {
-				$html = (string)($template['html'] ?? '');
-				if (trim($css) === '') $css = (string)($template['css'] ?? '');
-				if (trim($css_compiled) === '') $css_compiled = (string)($template['css_compiled'] ?? '');
-				if (trim($html_extra_head) === '') $html_extra_head = (string)($template['html_extra_head'] ?? '');
+				// Conteúdo só é substituído quando o formulário não tem HTML próprio; o CSS
+				// pré-compilado é herdado em qualquer caso, porque é dele que vêm as utilities.
+				if (trim($html) === '') {
+					$html = (string)($template['html'] ?? '');
+					if (trim($css) === '') $css = (string)($template['css'] ?? '');
+					if (trim($css_compiled) === '') $css_compiled = (string)($template['css_compiled'] ?? '');
+					if (trim($html_extra_head) === '') $html_extra_head = (string)($template['html_extra_head'] ?? '');
+				}
+				if (trim($css_precompiled) === '') $css_precompiled = (string)($template['css_precompiled'] ?? '');
 			}
 		}
 	}
@@ -306,6 +328,8 @@ function forms_render($params) {
 	if (function_exists('gestor_pagina_recursos_incluir')) {
 		gestor_pagina_recursos_incluir([
 			'css' => $css,
+			'css_precompiled' => $css_precompiled,
+			'css_precompiled_role' => 'dependency-precompiled',
 			'css_compiled' => $css_compiled,
 			'html_extra_head' => $html_extra_head,
 		]);

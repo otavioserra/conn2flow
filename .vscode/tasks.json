@@ -203,7 +203,6 @@
         {
             "label": "🗃️ Projects - Update => All - Core & Project",
             "dependsOn": [
-                "🗃️ Projects - Resources Core -> ID",
                 "🗃️ Projects - Sync Core -> ID",
                 "🗃️ Projects - Synchronize => Database -> ID",
                 "🗃️ Projects - Synchronize => Resources -> ID",
@@ -226,7 +225,6 @@
         {
             "label": "🗃️ Projects - Update => Core",
             "dependsOn": [
-                "🗃️ Projects - Resources Core -> ID",
                 "🗃️ Projects - Sync Core -> ID",
                 "🗃️ Projects - Synchronize => Database -> ID"
             ],

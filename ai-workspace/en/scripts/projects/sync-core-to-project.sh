@@ -119,6 +119,23 @@ log "Running: ${CMD[*]}"
 
 "${CMD[@]}"
 
+# `rsync -u` preserva arquivos locais mais novos, o que é desejável para dados
+# específicos da instalação, mas não para este contrato runtime: gestor.php e
+# bibliotecas/gestor.php precisam ser sempre da mesma revisão. Um release antigo
+# aplicado depois do sync pode deixar a biblioteca com timestamp novo e produzir
+# fatal de função indefinida. Revalida o par por conteúdo, ignorando timestamps.
+RUNTIME_CONTRACT_CMD=(
+  rsync
+  -avc
+  --relative
+  "$CORE_SOURCE/./gestor.php"
+  "$CORE_SOURCE/./bibliotecas/gestor.php"
+  "$TARGET_PATH/"
+)
+
+log "Synchronizing atomic runtime contract: gestor.php + bibliotecas/gestor.php"
+"${RUNTIME_CONTRACT_CMD[@]}"
+
 log_success "Conn2Flow core synchronized to project test folder: $TARGET_PATH"
 
 exit 0

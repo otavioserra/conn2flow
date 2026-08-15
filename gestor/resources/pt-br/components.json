@@ -392,11 +392,13 @@
     {
         "name": "Formulário UI",
         "id": "form-ui",
-        "version": "1.15",
+        "framework_css": "tailwindcss",
+        "version": "1.16",
         "checksum": {
-            "html": "878ca3d03cfb04ec3da182c86a622edd",
+            "html": "57970ffb1f142792242c8235d8d5e3a3",
             "css": "",
-            "combined": "878ca3d03cfb04ec3da182c86a622edd"
+            "css_precompiled": "",
+            "combined": "57970ffb1f142792242c8235d8d5e3a3"
         }
     },
     {

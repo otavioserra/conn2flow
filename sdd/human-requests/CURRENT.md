@@ -1,11 +1,12 @@
 # Current Human Request
 
-- **Intakes em homologação**:
+- **Intake Ativo**:
+  - [req-116.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-116.md) (BATCH-116 `ready-for-intake`, 2026-08-15): Revisão dos Modos de IA (`ai_modes`), diretrizes de CSS (3 camadas) e otimização de payload no Assistente IA.
+
+- **Intakes em homologação / andamento**:
+  - [req-115.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-115.md) (BATCH-115 `implementation-in-progress`, 2026-08-14): toolbar, busca clínica e cards de checkout extraídos para componentes localizados; governança de bundles canônicos ativa.
   - [req-113.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-113.md) (BATCH-113 `implemented-pending-homologation`, 2026-08-14): cache HTTP e tokens determinísticos de assets implementados no core/projeto e entrypoints.
   - [req-114.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-114.md) (BATCH-114 `implemented-pending-homologation`, 2026-08-14): Tailwind incremental por recurso, `css_precompiled`, editor browser-safe e eliminação dos outputs globais implementados.
-
-- **Intake em implementação**:
-  - [req-115.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-115.md) (BATCH-115 `implementation-in-progress`, 2026-08-14): toolbar, busca clínica e cards de checkout extraídos para componentes localizados; somente `snapphoton-system` ainda usa cobertura transitória.
 
 - **Lotes Fechados**: 
   * [req-112.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-112.md) (BATCH-112 `complete`, 2026-08-14): Sitemap em assets, correção do 301, SEO no publisher-pages, isolamento do painel da Editbar e meta tags.

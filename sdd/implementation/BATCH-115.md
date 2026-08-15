@@ -189,3 +189,16 @@ handoff:
 Pendência real para o próximo operador/agente: homologar visualmente Busca Clínica, resultado e
 Editbar em sessão autenticada com zoom 100% e `Ctrl+F5`. Se houver divergência, salvar novos HTMLs
 renderizados; não reintroduzir concatenação de sidecars nem caminhos físicos no metadado.
+
+## Correção de instalação híbrida após homologação
+
+- fatal observado: `gestor.php` chamava `gestor_css_precompiled_ordenar()`, mas a instalação local
+  mantinha `bibliotecas/gestor.php` anterior ao contrato;
+- hashes confirmaram `gestor.php` idêntico ao fonte e biblioteca divergente. O arquivo antigo tinha
+  timestamp mais novo após a API aplicar `gestor-v2.9.35`, então `rsync -u` o preservou;
+- `sync-core-to-project.sh` continua usando `-u` para a cópia geral, mas ao final sincroniza
+  `gestor.php` e `bibliotecas/gestor.php` juntos com checksum, formando um contrato runtime atômico;
+- a leitura de `layouts.css_precompiled` em `gestor.php` ganhou fallback vazio para tolerar dados
+  legados durante transições;
+- warnings anteriores de `config.php` foram gerados por invocações CLI no host, fora da rede/config
+  normal do container, e não são a causa do fatal do roteador.

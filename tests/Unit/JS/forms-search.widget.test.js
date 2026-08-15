@@ -11,7 +11,7 @@ function runScript(relativePath) {
 describe('forms-search.widget.js', () => {
   it('injects the widget controller and AJAX signature into the CRUD preview srcdoc', () => {
     const source = readFileSync(resolve(process.cwd(), 'gestor/modulos/forms-search/forms-search.js'), 'utf8');
-    expect(source).toContain("{ src: gestor.raiz + 'forms-search/widget.js?v=' + gestor.versao }");
+    expect(source).toContain("{ src: gestor.raiz + 'forms-search/widget.js?v=' + (gestor.moduloAssetVersion || gestor.versao) }");
     expect(source).toContain('widgetsToAjax: previewWidgetsToAjax');
     expect(source).toContain("forms-search->render(' + JSON.stringify({ form_id: currentSlug() }) + ')'");
     expect(source).toContain("return 'forms-search-preview';");

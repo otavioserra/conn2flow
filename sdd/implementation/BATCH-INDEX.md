@@ -49,6 +49,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | Batch | Status | Escopo | Plano |
 | --- | --- | --- | --- |
 | BATCH-115 | in-progress | Extração de HTML dinâmico e consolidação do Tailwind por recurso (req-115) | [BATCH-115.md](BATCH-115.md) |
+| BATCH-116 | ready-for-intake | Revisão dos Modos de IA (`ai_modes`), Diretrizes de CSS (3 camadas) e Contexto no Assistente IA (req-116) | [BATCH-116.md](BATCH-116.md) |
 
 ## Regra operacional
 
