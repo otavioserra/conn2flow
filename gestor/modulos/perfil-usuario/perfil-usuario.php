@@ -682,10 +682,14 @@ function perfil_usuario_editar(){
 			}
 		}
 
-		// ===== Rota de Segurança (req-030): 2FA e contas sociais
+		// ===== Aba Segurança (req-030): 2FA e contas sociais
 
 		perfil_usuario_editar_seguranca();
-		
+
+		// ===== Aba Sessões & Dispositivos (req-118)
+
+		perfil_usuario_editar_sessoes();
+
 		// ===== Popular os metaDados
 		
 		$status_atual = (isset($retorno_bd[$modulo['tabela']['status']]) ? $retorno_bd[$modulo['tabela']['status']] : '');
@@ -818,22 +822,38 @@ function perfil_usuario_seguranca_var($id){
 	return gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => $id));
 }
 
+// ===== Vocabulário Tailwind do painel (req-118) =====
+//
+// As classes vivem em constantes porque o compilador de recursos escaneia ESTE arquivo (declarado em
+// `tailwind_sources` da página `perfil-usuario`): repetir a mesma cadeia em cada `.=` faria o HTML
+// divergir entre ramos sem que nada avisasse.
+
+const PERFIL_USUARIO_CARTAO       = 'rounded-xl border border-slate-200 bg-white p-4 shadow-sm';
+const PERFIL_USUARIO_TITULO       = 'mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700';
+const PERFIL_USUARIO_ROTULO       = 'mb-1 block text-sm font-semibold text-slate-700';
+const PERFIL_USUARIO_CAMPO        = 'block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!';
+const PERFIL_USUARIO_BOTAO        = 'inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50';
+const PERFIL_USUARIO_BOTAO_OK     = 'inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700';
+const PERFIL_USUARIO_BOTAO_ALERTA = 'inline-flex items-center gap-2 rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700';
+const PERFIL_USUARIO_BOTAO_MINI   = 'inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50';
+const PERFIL_USUARIO_ETIQUETA     = 'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold';
+const PERFIL_USUARIO_AJUDA        = 'text-sm text-slate-500';
+
 /**
- * Renderiza a seção de Segurança (2FA + contas sociais) no bloco `seguranca-campos`
- * da página de perfil quando acessada via `?configurar-seguranca=sim`.
+ * Renderiza a seção de Segurança (2FA + contas sociais) no bloco `seguranca-campos`.
+ *
+ * A aba passa a existir SEMPRE (req-118), mas o QR Code e a chave manual continuam materializados
+ * apenas sob `?configurar-seguranca=sim`: exibir o segredo TOTP em toda carga do perfil ampliaria a
+ * superfície aprovada no req-030 sem que ninguém tivesse pedido.
  */
 function perfil_usuario_editar_seguranca(){
 	global $_GESTOR;
 
 	$bloco = 'seguranca-campos';
 
-	// Só renderiza a seção quando explicitamente solicitada.
-	if(!isset($_REQUEST['configurar-seguranca']) || $_REQUEST['configurar-seguranca'] !== 'sim'){
-		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', '');
-		return;
-	}
-
 	gestor_incluir_biblioteca('2fa');
+
+	$configurando = (isset($_REQUEST['configurar-seguranca']) && $_REQUEST['configurar-seguranca'] === 'sim');
 
 	$usuario = gestor_usuario();
 	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
@@ -854,19 +874,29 @@ function perfil_usuario_editar_seguranca(){
 	$googleAtivo = (($_ENV['AUTH_METHOD_GOOGLE_ACTIVE'] ?? 'false') === 'true');
 	$metaAtivo = (($_ENV['AUTH_METHOD_META_ACTIVE'] ?? 'false') === 'true');
 
-	$html = '<div id="seg-seguranca">';
-	$html .= '<div id="seg-msg" class="ui message" style="display:none;"></div>';
+	$qrCodeNecessario = false;
+
+	$html = '<div id="seg-seguranca" class="space-y-6">';
+	$html .= '<div id="seg-msg" class="hidden rounded-lg border px-4 py-3 text-sm"></div>';
 
 	// ===== Seção 2FA
-	$html .= '<div class="ui dividing header"><i class="lock icon"></i> '.perfil_usuario_seguranca_var('security-2fa-title').'</div>';
+
+	$html .= '<div class="'.PERFIL_USUARIO_CARTAO.'">';
+	$html .= '<h3 class="'.PERFIL_USUARIO_TITULO.'"><span aria-hidden="true">🔒</span> '.perfil_usuario_seguranca_var('security-2fa-title').'</h3>';
 
 	if($ativo){
-		$html .= '<div class="ui positive message">'.perfil_usuario_seguranca_var('security-2fa-active').' <b>'.htmlspecialchars(strtoupper($tipo)).'</b></div>';
-		$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-password-label').'</label><input type="password" id="seg-2fa-senha" autocomplete="current-password"></div>';
-		$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric"></div>';
-		$html .= '<button type="button" class="ui red button" id="btn-2fa-desativar"><i class="unlock icon"></i> '.perfil_usuario_seguranca_var('security-2fa-disable').'</button>';
+		$html .= '<p class="'.PERFIL_USUARIO_ETIQUETA.' bg-emerald-50 text-emerald-700">'.perfil_usuario_seguranca_var('security-2fa-active').' '.htmlspecialchars(strtoupper((string)$tipo)).'</p>';
+		$html .= '<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">';
+		$html .= '<div><label class="'.PERFIL_USUARIO_ROTULO.'" for="seg-2fa-senha">'.perfil_usuario_seguranca_var('security-password-label').'</label><input type="password" id="seg-2fa-senha" autocomplete="current-password" class="'.PERFIL_USUARIO_CAMPO.'"></div>';
+		$html .= '<div><label class="'.PERFIL_USUARIO_ROTULO.'" for="seg-2fa-codigo">'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" class="'.PERFIL_USUARIO_CAMPO.'"></div>';
+		$html .= '</div>';
+		$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_ALERTA.' mt-4" id="btn-2fa-desativar"><span aria-hidden="true">🔓</span> '.perfil_usuario_seguranca_var('security-2fa-disable').'</button>';
 	} else if(!$metodoApp && !$metodoEmail){
-		$html .= '<div class="ui warning message">'.perfil_usuario_seguranca_var('security-2fa-none-method').'</div>';
+		$html .= '<p class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">'.perfil_usuario_seguranca_var('security-2fa-none-method').'</p>';
+	} else if(!$configurando){
+		$html .= '<p class="'.PERFIL_USUARIO_ETIQUETA.' bg-slate-100 text-slate-600">'.perfil_usuario_seguranca_var('security-2fa-inactive').'</p>';
+		$html .= '<p class="'.PERFIL_USUARIO_AJUDA.' mt-3">'.perfil_usuario_seguranca_var('security-2fa-inactive-help').'</p>';
+		$html .= '<a class="'.PERFIL_USUARIO_BOTAO.' mt-4" href="'.$_GESTOR['url-raiz'].'perfil-usuario/?configurar-seguranca=sim#seguranca"><span aria-hidden="true">🛡️</span> '.perfil_usuario_seguranca_var('security-2fa-configure').'</a>';
 	} else {
 		// Persistir um secret (enabled=0) para o método app, reutilizado entre recargas.
 		$secret = ($dados2fa && !empty($dados2fa['two_factor_secret'])) ? $dados2fa['two_factor_secret'] : '';
@@ -876,35 +906,41 @@ function perfil_usuario_editar_seguranca(){
 			banco_update_executar('usuarios', "WHERE id_usuarios='".$id_usuarios."'");
 		}
 
-		$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var('security-2fa-inactive-help').'</p>';
+		$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('security-2fa-inactive-help').'</p>';
 
 		$opcoes = '';
 		if($metodoApp) $opcoes .= '<option value="app">'.perfil_usuario_seguranca_var('security-2fa-app-option').'</option>';
 		if($metodoEmail) $opcoes .= '<option value="email">'.perfil_usuario_seguranca_var('security-2fa-email-option').'</option>';
-		$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-method-label').'</label><select id="seg-2fa-metodo">'.$opcoes.'</select></div>';
+		$html .= '<div class="mt-4"><label class="'.PERFIL_USUARIO_ROTULO.'" for="seg-2fa-metodo">'.perfil_usuario_seguranca_var('security-2fa-method-label').'</label><select id="seg-2fa-metodo" class="'.PERFIL_USUARIO_CAMPO.'">'.$opcoes.'</select></div>';
 
 		if($metodoApp){
+			$qrCodeNecessario = true;
 			$otpauth = two_factor_get_qr_code($email, $secret);
-			$html .= '<div id="seg-2fa-app-bloco">';
-			$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var('security-2fa-scan-help').'</p>';
-			$html .= '<div id="seg-2fa-qr" data-otpauth="'.htmlspecialchars($otpauth, ENT_QUOTES).'" style="margin:1rem 0;"></div>';
-			$html .= '<div class="ui small message"><b>'.htmlspecialchars($secret).'</b></div>';
+			$html .= '<div id="seg-2fa-app-bloco" class="mt-4">';
+			$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('security-2fa-scan-help').'</p>';
+			$html .= '<div id="seg-2fa-qr" data-otpauth="'.htmlspecialchars($otpauth, ENT_QUOTES).'" class="my-4 inline-block rounded-lg border border-slate-200 bg-white p-3"></div>';
+			$html .= '<p class="'.PERFIL_USUARIO_ROTULO.'">'.perfil_usuario_seguranca_var('security-2fa-secret-label').'</p>';
+			$html .= '<code class="inline-block rounded-md bg-slate-100 px-3 py-2 font-mono text-sm tracking-wider break-all text-slate-800">'.htmlspecialchars((string)$secret).'</code>';
 			$html .= '</div>';
 		}
 
 		if($metodoEmail){
-			$html .= '<div id="seg-2fa-email-bloco"><button type="button" class="ui blue button" id="btn-2fa-email-enviar"><i class="mail icon"></i> '.perfil_usuario_seguranca_var('security-2fa-send-email').'</button></div>';
+			$html .= '<div id="seg-2fa-email-bloco" class="mt-4"><button type="button" class="'.PERFIL_USUARIO_BOTAO.'" id="btn-2fa-email-enviar"><span aria-hidden="true">✉️</span> '.perfil_usuario_seguranca_var('security-2fa-send-email').'</button></div>';
 		}
 
-		$html .= '<div class="field" style="margin-top:1rem;"><label>'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric"></div>';
-		$html .= '<button type="button" class="ui green button" id="btn-2fa-ativar"><i class="check icon"></i> '.perfil_usuario_seguranca_var('security-2fa-activate').'</button>';
+		$html .= '<div class="mt-4"><label class="'.PERFIL_USUARIO_ROTULO.'" for="seg-2fa-codigo">'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" class="'.PERFIL_USUARIO_CAMPO.'"></div>';
+		$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_OK.' mt-4" id="btn-2fa-ativar"><span aria-hidden="true">✅</span> '.perfil_usuario_seguranca_var('security-2fa-activate').'</button>';
 	}
 
+	$html .= '</div>';
+
 	// ===== Seção Contas Sociais
-	$html .= '<div class="ui dividing header" style="margin-top:2rem;"><i class="users icon"></i> '.perfil_usuario_seguranca_var('security-social-title').'</div>';
+
+	$html .= '<div class="'.PERFIL_USUARIO_CARTAO.'">';
+	$html .= '<h3 class="'.PERFIL_USUARIO_TITULO.'"><span aria-hidden="true">🔗</span> '.perfil_usuario_seguranca_var('security-social-title').'</h3>';
 
 	if(!$googleAtivo && !$metaAtivo){
-		$html .= '<div class="ui grey text">'.perfil_usuario_seguranca_var('security-social-none-active').'</div>';
+		$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('security-social-none-active').'</p>';
 	} else {
 		$vinculos = banco_select(Array(
 			'tabela' => 'usuarios_provedores',
@@ -920,26 +956,127 @@ function perfil_usuario_editar_seguranca(){
 		if($googleAtivo) $provedores['google'] = 'Google';
 		if($metaAtivo) $provedores['meta'] = 'Meta';
 
-		$html .= '<div class="ui list">';
+		$html .= '<ul class="divide-y divide-slate-100">';
 		foreach($provedores as $pid => $pnome){
-			$html .= '<div class="item" style="padding:.5rem 0;"><b>'.$pnome.'</b>: ';
+			$html .= '<li class="flex flex-wrap items-center justify-between gap-3 py-3">';
+			$html .= '<span class="text-sm font-medium text-slate-800">'.$pnome.'</span>';
 			if(isset($mapa[$pid])){
-				$html .= '<span class="ui green text">'.perfil_usuario_seguranca_var('security-social-linked').' ('.htmlspecialchars($mapa[$pid]).')</span> ';
-				$html .= '<button type="button" class="ui red mini button btn-social-desvincular" data-provider="'.$pid.'">'.perfil_usuario_seguranca_var('security-social-unlink').'</button>';
+				$html .= '<span class="flex flex-wrap items-center gap-2">';
+				$html .= '<span class="'.PERFIL_USUARIO_ETIQUETA.' bg-emerald-50 text-emerald-700">'.perfil_usuario_seguranca_var('security-social-linked').'</span>';
+				$html .= '<span class="text-xs break-all text-slate-500">'.htmlspecialchars((string)$mapa[$pid]).'</span>';
+				$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_MINI.' btn-social-desvincular" data-provider="'.$pid.'">'.perfil_usuario_seguranca_var('security-social-unlink').'</button>';
+				$html .= '</span>';
 			} else {
-				$html .= '<button type="button" class="ui mini button btn-social-vincular" data-provider="'.$pid.'">'.perfil_usuario_seguranca_var('security-social-link').' '.$pnome.'</button>';
+				$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_MINI.' btn-social-vincular" data-provider="'.$pid.'">'.perfil_usuario_seguranca_var('security-social-link').' '.$pnome.'</button>';
 			}
-			$html .= '</div>';
+			$html .= '</li>';
 		}
+		$html .= '</ul>';
+	}
+
+	$html .= '</div>';
+
+	$html .= '</div>';
+
+	$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', $html);
+
+	// QR Code renderizado no cliente (o secret não é enviado a terceiros). A biblioteca externa só
+	// entra na página que de fato desenha o QR.
+	if($qrCodeNecessario){
+		gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>');
+	}
+}
+
+/**
+ * Renderiza a seção "Sessões & Dispositivos" no bloco `sessoes-campos` da página de perfil.
+ *
+ * A sessão da requisição corrente recebe a etiqueta "Este dispositivo" e não tem botão de revogar:
+ * revogar a própria sessão pelo painel derrubaria o usuário no meio da operação — para isso existe
+ * o "Sair" do menu.
+ */
+function perfil_usuario_editar_sessoes(){
+	global $_GESTOR;
+
+	$bloco = 'sessoes-campos';
+
+	gestor_incluir_biblioteca('usuario');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+	$tokenAtual = isset($_GESTOR['usuario-token-id']) ? $_GESTOR['usuario-token-id'] : null;
+
+	$sessoes = usuario_sessoes_listar($id_usuarios,$tokenAtual);
+	$desconhecido = perfil_usuario_seguranca_var('sessions-unknown');
+
+	$outras = 0;
+	foreach($sessoes as $sessao){ if(!$sessao['atual']) $outras++; }
+
+	$html = '<div id="seg-sessoes" class="space-y-6">';
+	$html .= '<div id="sessoes-msg" class="hidden rounded-lg border px-4 py-3 text-sm"></div>';
+
+	$html .= '<div class="'.PERFIL_USUARIO_CARTAO.'">';
+	$html .= '<h3 class="'.PERFIL_USUARIO_TITULO.'"><span aria-hidden="true">💻</span> '.perfil_usuario_seguranca_var('sessions-title').'</h3>';
+	$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('sessions-help').'</p>';
+
+	if($outras > 0){
+		$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_ALERTA.' mt-4" id="btn-sessoes-revogar-outras"><span aria-hidden="true">⛔</span> '.perfil_usuario_seguranca_var('sessions-revoke-others').'</button>';
+	}
+
+	$html .= '</div>';
+
+	if(!$sessoes){
+		$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('sessions-empty').'</p>';
+	} else {
+		$html .= '<div id="sessoes-lista" class="grid grid-cols-1 gap-4 lg:grid-cols-2">';
+
+		foreach($sessoes as $sessao){
+			$navegador = $sessao['navegador'] !== '' ? $sessao['navegador'] : $desconhecido;
+			$sistema = $sessao['sistema'] !== '' ? $sessao['sistema'] : $desconhecido;
+			$icone = ($sessao['dispositivo'] === 'mobile' ? '📱' : ($sessao['dispositivo'] === 'tablet' ? '📲' : '🖥️'));
+
+			$titulo = modelo_var_troca_tudo(
+				modelo_var_troca_tudo(perfil_usuario_seguranca_var('sessions-device-title'),'#browser#',$navegador),
+				'#system#',
+				$sistema
+			);
+
+			$html .= '<article class="'.PERFIL_USUARIO_CARTAO.($sessao['atual'] ? ' ring-2 ring-emerald-500' : '').'" data-sessao-pubid="'.htmlspecialchars($sessao['pubID'], ENT_QUOTES).'">';
+			$html .= '<div class="flex flex-wrap items-start justify-between gap-2">';
+			$html .= '<h4 class="flex items-center gap-2 text-sm font-semibold text-slate-800"><span aria-hidden="true">'.$icone.'</span> '.htmlspecialchars($titulo).'</h4>';
+
+			if($sessao['atual']){
+				$html .= '<span class="'.PERFIL_USUARIO_ETIQUETA.' bg-emerald-50 text-emerald-700">'.perfil_usuario_seguranca_var('sessions-current-badge').'</span>';
+			}
+
+			$html .= '</div>';
+
+			$html .= '<dl class="mt-3 space-y-1 text-xs text-slate-600">';
+			$html .= '<div class="flex gap-2"><dt class="font-semibold">'.perfil_usuario_seguranca_var('sessions-ip-label').':</dt><dd class="break-all">'.htmlspecialchars($sessao['ip'] !== '' ? $sessao['ip'] : $desconhecido).'</dd></div>';
+			$html .= '<div class="flex gap-2"><dt class="font-semibold">'.perfil_usuario_seguranca_var('sessions-created-label').':</dt><dd>'.htmlspecialchars($sessao['data_criacao'] !== '' ? interface_formatar_dado(Array('dado' => $sessao['data_criacao'],'formato' => 'dataHora')) : $desconhecido).'</dd></div>';
+
+			if($sessao['origem'] !== ''){
+				$html .= '<div class="flex gap-2"><dt class="font-semibold">'.perfil_usuario_seguranca_var('sessions-origin-label').':</dt><dd class="break-all">'.htmlspecialchars($sessao['origem']).'</dd></div>';
+			}
+
+			$html .= '</dl>';
+
+			$html .= '<p class="mt-3 flex flex-wrap items-center gap-2">';
+			$html .= '<span class="'.PERFIL_USUARIO_ETIQUETA.' bg-slate-100 text-slate-600">'.perfil_usuario_seguranca_var($sessao['sessao'] ? 'sessions-type-browser' : 'sessions-type-persistent').'</span>';
+
+			if(!$sessao['atual']){
+				$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_MINI.' btn-sessao-revogar" data-pubid="'.htmlspecialchars($sessao['pubID'], ENT_QUOTES).'">'.perfil_usuario_seguranca_var('sessions-revoke').'</button>';
+			}
+
+			$html .= '</p>';
+			$html .= '</article>';
+		}
+
 		$html .= '</div>';
 	}
 
 	$html .= '</div>';
 
 	$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', $html);
-
-	// QR Code renderizado no cliente (o secret não é enviado a terceiros).
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>');
 }
 
 function perfil_usuario_interfaces_padroes(){
@@ -3615,6 +3752,58 @@ function perfil_usuario_ajax_seguranca_social_desvincular(){
 	banco_delete('usuarios_provedores', "WHERE usuario_id='".$id_usuarios."' AND provider_name='".banco_escape_field($provider)."'");
 
 	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('security-social-unlinked-ok'));
+}
+
+// ==== Sessões ativas (req-118) ====
+
+/**
+ * Revoga uma sessão específica do usuário autenticado.
+ *
+ * O `pubID` chega do cliente, então a remoção é sempre escopada ao usuário da sessão corrente
+ * (`usuario_sessao_revogar` exige o `id_usuarios` no WHERE). Revogar o PRÓPRIO token é recusado
+ * aqui: derrubaria o usuário no meio da operação, e para sair existe o `signout`.
+ */
+function perfil_usuario_ajax_sessoes_revogar(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('usuario');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+	$pubID = isset($_REQUEST['pubID']) ? trim((string)$_REQUEST['pubID']) : '';
+	$tokenAtual = isset($_GESTOR['usuario-token-id']) ? (string)$_GESTOR['usuario-token-id'] : '';
+
+	if(!$id_usuarios || $pubID === '' || ($tokenAtual !== '' && hash_equals($tokenAtual,$pubID))){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('sessions-revoke-error'));
+		return;
+	}
+
+	if(!usuario_sessao_revogar($pubID,$id_usuarios)){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('sessions-revoke-error'));
+		return;
+	}
+
+	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('sessions-revoked-ok'));
+}
+
+/**
+ * Encerra todas as sessões do usuário autenticado, exceto a da requisição corrente.
+ */
+function perfil_usuario_ajax_sessoes_revogar_outras(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('usuario');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+	$tokenAtual = isset($_GESTOR['usuario-token-id']) ? (string)$_GESTOR['usuario-token-id'] : '';
+
+	if(!$id_usuarios || !usuario_sessoes_revogar_outras($tokenAtual,$id_usuarios)){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('sessions-revoke-error'));
+		return;
+	}
+
+	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('sessions-revoked-others-ok'));
 }
 
 // ==== Start

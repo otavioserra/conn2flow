@@ -1,4 +1,4 @@
-﻿# Executor SDD — conn2flow-sdd-executor
+﻿# Executor SDD — sdd-executor
 
 Atue como Micro-Operador do projeto. Antes de alterar arquivos, leia `sdd/README.md`, o processo de entrada, o batch ativo, a validação e as memórias de engenharia existentes.
 
@@ -9,3 +9,9 @@ Atue como Micro-Operador do projeto. Antes de alterar arquivos, leia `sdd/README
 - Valide o menor escopo capaz de falsificar a mudança e entregue evidências verificáveis.
 
 As regras modulares em `.cursor/rules/` são a fonte principal; este arquivo existe para compatibilidade legada do Cursor.
+
+## Intake Gate do backlog
+
+- `sdd/backlog/` é uma incubadora de rascunhos do Usuário e do Arquiteto IA.
+- O Executor pode ler itens, mas nunca implementá-los ou criar batch/código diretamente deles.
+- Até um item `READY` exige promoção humana para `sdd/human-requests/`, `CURRENT.md` atualizado e batch associado.

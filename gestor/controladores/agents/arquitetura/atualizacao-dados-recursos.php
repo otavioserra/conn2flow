@@ -41,6 +41,8 @@
 
 declare(strict_types=1);
 
+ini_set('memory_limit', '1024M');
+
 // Definir globais
 global $SYSTEM_PATH, $BASE_PATH, $GESTOR_DIR, $RESOURCES_DIR, $MODULES_DIR, $DB_DATA_DIR, $LOG_DIR, $LOG_FILE, $LOG_DISCO;
 

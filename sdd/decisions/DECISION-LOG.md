@@ -782,3 +782,92 @@ Contrato de camadas para bundles Tailwind canônicos (req-115 / BATCH-115):
 5. **`tailwind_sources` fica reservado a fonte bruta transitória**: PHP/JavaScript ainda não
    extraído pode permanecer como fonte auditada. Assim que o HTML vira recurso do Gestor, a ponte
    por caminho deve ser substituída por `tailwind_dependencies`.
+
+## DEC-111 - 2026-08-17 - accepted
+
+Captura do `css_compiled` e política de delta contra a cascata real (req-117 / BATCH-117):
+
+1. **A folha do Tailwind Browser é reconhecida pelo FORMATO, nunca pela posição**: ela é criada
+   vazia (`document.head.append`) e só recebe conteúdo quando o build assíncrono termina. "A última
+   `<style>` do `<head>` com regras" escolhia qualquer folha injetada em runtime — o motor injeta 4
+   delas no mesmo documento. A assinatura válida são as camadas nomeadas da v4
+   (theme/base/components/utilities/properties).
+
+2. **Todo `<style>` que o sistema emite declara seu papel**: `data-c2f-tailwind-role` para o que o
+   editor injeta, `data-tailwind-role` para os pré-compilados offline e `data-c2f-css-role` para as
+   filas de CSS autoral e `css_compiled` da página pública. Folha sem papel declarado é candidata a
+   ser confundida com a saída do compilador — e o `css_compiled` anterior é o caso mais perigoso,
+   porque contém `@layer utilities` e congelaria a captura no valor já gravado.
+
+3. **O `css_compiled` grava o DELTA contra o que a página recebe no runtime, não uma quantidade
+   fixa**: o baseline do editor é a cascata (layout + dependências + recurso), e não apenas o
+   pré-compilado do próprio recurso. Página sob layout pré-compilado grava só as utilities novas;
+   página sem cascata offline grava o output completo e continua autossuficiente. A decisão é do
+   dado, sem flag. Medido na página `sobre` do photon: 65% de redução.
+
+4. **Camada de fundação é decidida por CAMADA; utilities, por regra**: `theme` e `base` não dependem
+   do conteúdo — o compilador as emite inteiras a partir do contrato — e o filtro por assinatura não
+   as segura, porque build offline e runtime do browser divergem em detalhes de seletor
+   (`::file-selector-button` no Preflight do 4.3.0). Como o `css_compiled` entra depois do
+   pré-compilado na cascata, a versão do editor venceria a do build em produção. Divergência entre as
+   duas versões é assunto de recompilar o bundle, não de remendar página a página.
+
+5. **Captura incompleta nunca sobrescreve o valor gravado**: esgotada a janela de polling, o editor
+   clássico preserva o conteúdo do CodeMirror e a Editbar omite o campo do POST. Gravar o resultado
+   parcial é exatamente o defeito que fez páginas inteiras perderem as utilities.
+
+6. **HTML do painel de Código é aplicado por ação explícita, CSS ao vivo**: reescrever
+   `#c2f-page-content` recria os nós e derruba as anotações do mapeamento in-place
+   (`data-c2f-variable`, `.c2f-dyn-box`). Ao vivo, a cada tecla, isso destruiria a edição em curso.
+
+7. **Guarda de build avisa por padrão e só quebra com `--tailwind-strict`**: os defeitos cobertos
+   (F1/F4c) são silenciosos e antigos; transformá-los em erro de imediato pararia builds que hoje
+   passam. Heurística de detecção é calibrada contra o inventário real — um aviso que soa em 176
+   recursos é um aviso que ninguém lê.
+
+## DEC-112 - 2026-08-17 - accepted
+
+Fechamento dos findings do review de 2026-08-15 (BATCH-118):
+
+1. **Descarte silencioso é defeito de diagnóstico, não só de estilo**: em modo bundle, sidecar
+   `resource-precompiled` descartado passa a ser logado. Layout e dependências continuam saindo em
+   silêncio porque o descarte deles é intencional; o bucket ANÔNIMO é o único que denuncia recurso
+   escolhido em runtime, que nasceu fora do bundle declarado em build-time.
+
+2. **Catálogo de recurso selecionável em runtime e bundle canônico são incompatíveis sem declaração
+   explícita**: enquanto a dependência não puder ser declarada por `target`, toda rota com bundle que
+   escolha template por consulta ao banco precisa listar os ids elegíveis.
+
+3. **O compilador avisa o que só ele consegue ver**: ele conhece o CSS que gerou para cada layout e a
+   declaração de cada página. Layout que emite `display` sob variante responsiva com concorrente
+   incondicional, servindo página sem bundle, é conflito de ordem em potencial — e o sintoma
+   (menu invertido) leva a suspeitar do markup, que está correto.
+
+4. **Papel de pré-compilado é contrato de ORDEM, não anotação de diagnóstico**: os includes de
+   `gestor_layout()` sem papel caíam no default `resource-precompiled` e iam para o fim da cascata,
+   depois das dependências e da página. CSS de layout carrega theme, base e Preflight: a ordem
+   invertida é um defeito visual, não uma imprecisão de rótulo.
+
+5. **Heurística de nomenclatura se calibra contra o inventário real**: a regra de "página de
+   confirmação" cobria `…/success` enquanto as páginas se chamavam `…-success`. Sufixo com hífen,
+   underscore e barra; e etapa de fluxo (`payment`) só é barrada em caminho composto, porque na raiz
+   pode ser conteúdo legítimo.
+
+6. **Artefato derivado que mudou de lugar tem de apagar o antigo**: o `sitemap.xml` na raiz sobreviveu
+   à mudança para `assets/` e, em instalação onde a regra `!-f` resolva antes do roteador, seria
+   servido para sempre. A remoção só acontece sob trava de autoria — arquivo de terceiro é preservado.
+
+7. **`robots.txt` e sitemap derivam da MESMA lista de rotas**: o `noindex` só é visto depois do
+   rastreio; o `robots.txt` é o único ponto que barra antes. Alimentá-lo por outra fonte abriria a
+   chance de liberar o que o sitemap esconde.
+
+8. **Dedup precisa do escopo inteiro da chave**: `paginas_301` deduplicava por `caminho`, mas a chave
+   real é (`caminho`, `id_paginas`) — sem `id_paginas`, o registro de um idioma bloqueava o do outro e
+   caminho reciclado continuava apontando para a página anterior. Na leitura, o desempate é pelo mais
+   recente que resolva no idioma corrente.
+
+9. **Camada de tema se filtra por DECLARAÇÃO, nunca por camada inteira** (revisa o item 4 da DEC-111):
+   o Tailwind v4 só emite a variável que vê usada, então o `@theme` do layout tem apenas os tokens do
+   LAYOUT. Descartá-lo inteiro deixa as utilities novas da página com `var()` indefinida — 13 de 21
+   elementos mudaram de aparência ao salvar. Só `@layer base` (Preflight), que não depende do
+   conteúdo, pode ser decidido por camada.

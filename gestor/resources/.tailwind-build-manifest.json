@@ -920,7 +920,7 @@
             "built_at": "2026-08-15T00:13:49+00:00"
         },
         "module|dashboard|en|pages|dashboard-site-toolbar": {
-            "fingerprint": "4184fbad13fc9c4a899db0b709fc1d061b3bffc0a72cfdc8c86be51711d71b9e",
+            "fingerprint": "b04589fcc096efb5e617204ce1d34b4d6f5f0f0bb9a98d1c398fa1aac290163f",
             "output_hash": "e388fd3b4dcbf2b68732acac01be3da9127059b5cece27c4731da91c538a6c98",
             "output": "modulos/dashboard/resources/en/pages/dashboard-site-toolbar/dashboard-site-toolbar.precompiled.css",
             "tailwind_version": "unknown",
@@ -933,7 +933,7 @@
                 "resources/en/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-15T00:13:50+00:00"
+            "built_at": "2026-08-17T20:49:44+00:00"
         },
         "module|dashboard|pt-br|components|dashboard-site-toolbar-menu": {
             "fingerprint": "f5a2e08f523c19e926bb13378cf08daddca658c6ed9e7d7f46c166d2991f4633",
@@ -980,7 +980,7 @@
             "built_at": "2026-08-15T00:13:51+00:00"
         },
         "module|dashboard|pt-br|pages|dashboard-site-toolbar": {
-            "fingerprint": "c74709a4d9e30a2a9197b3ee77c9c5029e24deff1fe2528bff16c7c9874ca955",
+            "fingerprint": "82fba3370b1e6e2f30f9f4579675de4f5a0c01b15e575671e61bab984085ac3d",
             "output_hash": "713e5f258f90e54af3dfdf1292ecc0e741ebe3160f6bace0ecb867be2f694dd5",
             "output": "modulos/dashboard/resources/pt-br/pages/dashboard-site-toolbar/dashboard-site-toolbar.precompiled.css",
             "tailwind_version": "unknown",
@@ -993,7 +993,7 @@
                 "resources/pt-br/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-15T00:13:51+00:00"
+            "built_at": "2026-08-17T20:49:45+00:00"
         },
         "module|forms-search|en|templates|forms-search-contato-basico": {
             "fingerprint": "a94d069f252fdef94bf24c143a372455effd81e0bad91d211fe911277664ea9f",

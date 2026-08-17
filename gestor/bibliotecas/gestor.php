@@ -113,6 +113,27 @@ function gestor_css_precompiled_ordenar($styles){
 	// reintroduziria conflitos de ordem entre utilitários globais (`hidden` x
 	// `lg:flex`, por exemplo). CSS autoral/compilado online permanece no pipeline.
 	if(!empty($GLOBALS['_GESTOR']['tailwind-page-bundle']) && $buckets['page-precompiled']){
+		// F2 do review de 2026-08-15: o descarte silencioso é o que impede o diagnóstico.
+		//
+		// `resource-precompiled` é o bucket de quem NÃO declarou papel — e é exatamente por aí que
+		// entra um recurso escolhido em RUNTIME. O caso medido: a lista de templates de uma rota é
+		// DADO, não código (`SELECT ... FROM templates WHERE target=... AND status='A'`), então um
+		// template novo fica selecionável pelo operador, nasce fora do bundle declarado em build-time
+		// e renderiza sem estilo. Sem este log, não há sinal nenhum de que isso aconteceu.
+		//
+		// Layout e dependências também são descartados aqui, mas por desenho: o bundle já os
+		// compilou junto. Só o bucket anônimo é sintoma.
+		if($buckets['resource-precompiled'] && function_exists('log_disco') && empty($GLOBALS['_GESTOR']['tailwind-bundle-descarte-logado'])){
+			$GLOBALS['_GESTOR']['tailwind-bundle-descarte-logado'] = true;
+			log_disco(
+				'Bundle canônico descartou '.count($buckets['resource-precompiled']).' sidecar(es) sem papel declarado'
+				.' na rota '.((string)($GLOBALS['_GESTOR']['caminho-total'] ?? '?')).'.'
+				.' Recurso escolhido em runtime (ex.: template por target) precisa entrar em tailwind_dependencies,'
+				.' senão renderiza sem estilo.',
+				'tailwind'
+			);
+		}
+
 		return array_merge($buckets['page-precompiled'], $buckets['other']);
 	}
 
@@ -163,7 +184,9 @@ function gestor_pagina_recursos_incluir($params = false){
 			$_GESTOR['recursos-incluidos-hashes'][$hash] = true;
 			$css_formatted = preg_replace("/(^|\n)/m", "\n        ", $css);
 
-			$_GESTOR['css'][] = '<style>'."\n";
+			// req-117: o papel viaja no DOM. A Editbar roda o Tailwind Browser NA PÁGINA PÚBLICA e
+			// precisa distinguir a folha que o runtime do Tailwind gera das folhas que o PHP emitiu.
+			$_GESTOR['css'][] = '<style data-c2f-css-role="authored">'."\n";
 			$_GESTOR['css'][] = $css_formatted."\n";
 			$_GESTOR['css'][] = '</style>'."\n";
 		}
@@ -192,7 +215,11 @@ function gestor_pagina_recursos_incluir($params = false){
 			$_GESTOR['recursos-incluidos-hashes'][$hash] = true;
 			$css_compiled_formatted = preg_replace("/(^|\n)/m", "\n        ", $css_compiled);
 
-			$_GESTOR['css-compiled'][] = '<style>'."\n";
+			// req-117: este é o mais crítico dos papéis. O `css_compiled` gravado contém
+			// `@layer utilities` — exatamente a assinatura pela qual a captura reconhece a saída do
+			// Tailwind Browser. Sem a marca, a Editbar releria o próprio valor antigo como se fosse
+			// a compilação nova e a página congelaria no CSS da edição anterior.
+			$_GESTOR['css-compiled'][] = '<style data-c2f-css-role="compiled">'."\n";
 			$_GESTOR['css-compiled'][] = $css_compiled_formatted."\n";
 			$_GESTOR['css-compiled'][] = '</style>'."\n";
 		}
@@ -391,6 +418,55 @@ function gestor_pagina_rota_sistema($caminho = ''){
 	}
 
 	return false;
+}
+
+/**
+ * Registra um redirecionamento 301 de um caminho liberado por uma página (F10 do review 2026-08-15).
+ *
+ * Antes daqui, `admin-paginas` e `publisher-pages` traziam o mesmo bloco duplicado, com dedup por
+ * `WHERE caminho='…'` — sem página nem idioma. Duas consequências:
+ *
+ * 1. **Caminho reciclado aponta para a página errada.** Se `/promo/` foi liberado pela página X e
+ *    depois assumido pela página Y, ao renomear Y o `if(!$ja_existe)` pulava a gravação e `/promo/`
+ *    continuava redirecionando para X — silenciosamente, porque o único `log_disco` do bloco cobria
+ *    outro ramo.
+ * 2. **Só o primeiro idioma ganhava 301.** `paginas_301` não tem coluna `language` e o `caminho`
+ *    gravado é agnóstico de idioma, então a linha do pt-br bloqueava a do en para a MESMA página.
+ *
+ * A dedup passa a ser por par (`caminho`, `id_paginas`): a repetição A → B → A → B continua sem
+ * gerar linha nova, os dois idiomas convivem, e caminho reciclado gera uma linha por dona. Quem
+ * desempata na leitura é `gestor_roteador_301()`, que prefere o registro mais recente que resolva
+ * para uma página ativa no idioma corrente.
+ *
+ * @param int|string $id_paginas Id NUMÉRICO da página que liberou o caminho.
+ * @param string $caminho Caminho antigo.
+ * @return bool True quando uma linha foi inserida.
+ */
+function gestor_pagina_301_registrar($id_paginas, $caminho){
+	$caminho = trim((string)$caminho);
+	$id_paginas = (int)$id_paginas;
+
+	if($caminho === '' || $id_paginas <= 0) return false;
+
+	$ja_existe = banco_select_name
+	(
+		banco_campos_virgulas(Array('id_paginas_301')),
+		"paginas_301",
+		"WHERE caminho='".banco_escape_field($caminho)."'"
+		." AND id_paginas='".$id_paginas."'"
+	);
+
+	if($ja_existe) return false;
+
+	$campos = Array(
+		Array('id_paginas', $id_paginas, null),
+		Array('caminho', $caminho, null),
+		Array('data_criacao', 'NOW()', true),
+	);
+
+	banco_insert_name($campos, "paginas_301");
+
+	return true;
 }
 
 /**
@@ -1101,9 +1177,15 @@ function gestor_layout($params = false){
 						'framework_css' => $framework_css,
 					);
 				} else {
+					// F4 do review de 2026-08-15: sem papel declarado, o pré-compilado caía no default
+					// `resource-precompiled` e ia para o FIM da ordem, depois das dependências e da
+					// página. Como o CSS de layout carrega theme, base e Preflight, isso invertia a
+					// cascata. (O review descreveu estes dois pontos como "includes de template"; eles
+					// são de `gestor_layout()`, então o papel correto é `layout-precompiled`.)
 					gestor_pagina_recursos_incluir(Array(
 						'css' => $css,
 						'css_precompiled' => $css_precompiled,
+						'css_precompiled_role' => 'layout-precompiled',
 						'css_compiled' => $css_compiled,
 					));
 					
@@ -1164,9 +1246,11 @@ function gestor_layout($params = false){
 					'framework_css' => $framework_css,
 				);
 			} else {
+				// F4 do review de 2026-08-15: mesmo motivo do bloco acima — este também é layout.
 				gestor_pagina_recursos_incluir(Array(
 					'css' => $css,
 					'css_precompiled' => $css_precompiled,
+					'css_precompiled_role' => 'layout-precompiled',
 					'css_compiled' => $css_compiled,
 				));
 				

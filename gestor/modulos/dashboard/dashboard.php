@@ -1932,10 +1932,12 @@ function dashboard_ajax_site_toolbar_render(){
 
 	$language = $_GESTOR['linguagem-codigo'];
 
+	// req-117: o painel de Código e a injeção do Tailwind Browser precisam das outras camadas de
+	// conteúdo da página (CSS autoral, CSS compilado, extra head) e do framework CSS em vigor.
 	$pagina = banco_select(Array(
 		'unico' => true,
 		'tabela' => 'paginas',
-		'campos' => Array('html','layout_id','id_usuarios','publisher_id'),
+		'campos' => Array('html','css','css_compiled','html_extra_head','framework_css','layout_id','id_usuarios','publisher_id'),
 		'extra' =>
 			"WHERE id='".banco_escape_field($page_id)."'"
 			." AND language='".$language."'"
@@ -2028,6 +2030,23 @@ function dashboard_ajax_site_toolbar_render(){
 		$layoutHtmlOut = $contentWrapper;
 	}
 
+	// ===== req-117: contrato do Tailwind Browser + camadas de código da página.
+	//
+	//       O contrato viaja NESTE endpoint, e não na página pública, de propósito: ele só é
+	//       necessário quando o usuário entra em edição. Embutir o `@theme static` em toda visita
+	//       anônima custaria alguns KB por pageview sem nenhum uso.
+
+	gestor_incluir_biblioteca('html-editor');
+
+	$frameworkCss = isset($pagina['framework_css']) ? (string)$pagina['framework_css'] : '';
+	$tailwindContract = '';
+	$tailwindVersion = '';
+
+	if($frameworkCss === 'tailwindcss'){
+		$tailwindContract = function_exists('html_editor_tailwind_browser_contract') ? html_editor_tailwind_browser_contract() : '';
+		$tailwindVersion = function_exists('html_editor_tailwind_browser_version') ? html_editor_tailwind_browser_version() : '4.3.0';
+	}
+
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
 		'data' => Array(
@@ -2039,6 +2058,13 @@ function dashboard_ajax_site_toolbar_render(){
 			// Motor legado (caixas): mantido para retrocompatibilidade.
 			'layout_html' => $layoutHtmlOut,
 			'html' => $contentHtml,
+			// req-117: camadas de código exibidas/editadas no painel "Código" da Editbar.
+			'css' => isset($pagina['css']) ? (string)$pagina['css'] : '',
+			'css_compiled' => isset($pagina['css_compiled']) ? (string)$pagina['css_compiled'] : '',
+			'html_extra_head' => isset($pagina['html_extra_head']) ? (string)$pagina['html_extra_head'] : '',
+			'framework_css' => $frameworkCss,
+			'tailwind_browser_version' => $tailwindVersion,
+			'tailwind_browser_contract' => $tailwindContract,
 		),
 	);
 }

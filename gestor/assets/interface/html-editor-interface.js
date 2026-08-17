@@ -1520,6 +1520,12 @@ $(document).ready(function () {
 
     window.htmlEditorAplicarCsrfNoFormulario = htmlEditorAplicarCsrfNoFormulario; // exposta para teste.
 
+    // req-117: número de tentativas e intervalo do polling da compilação (4 s no total). O
+    // @tailwindcss/browser resolve em ~100–300 ms num documento comum; a folga cobre máquina lenta
+    // e primeira carga do script pelo CDN.
+    const CSS_COMPILED_TENTATIVAS = 40;
+    const CSS_COMPILED_INTERVALO = 100;
+
     function updateCSSCompiled(iframe, clean = false) {
         if (clean) {
             CodeMirrorCssCompiled.getDoc().setValue('');
@@ -1528,76 +1534,43 @@ $(document).ready(function () {
 
         const iframeObject = iframe[0];
 
-        // O Tailwind Browser compila de forma assíncrona. Polling limitado evita a antiga
-        // suposição frágil de que a última tag <style> estaria pronta em exatamente 750 ms.
-        function ruleContext(rule) {
-            if (rule.type === 4) return `@media ${rule.media.mediaText}`;
-            if (rule.type === 12) return `@supports ${rule.conditionText}`;
-            if (rule.constructor && rule.constructor.name === 'CSSLayerBlockRule') return `@layer ${rule.name || ''}`;
-            return rule.cssText ? rule.cssText.split('{', 1)[0].trim() : '';
-        }
-
-        function collectRuleSignatures(rules, signatureSet, context = '') {
-            if (!rules) return;
-            for (let index = 0; index < rules.length; index++) {
-                const rule = rules[index];
-                if (rule.type === 1 && rule.selectorText) {
-                    signatureSet.add(`${context}|${rule.selectorText}|${rule.cssText}`);
-                } else if (rule.cssRules) {
-                    collectRuleSignatures(rule.cssRules, signatureSet, `${context}/${ruleContext(rule)}`);
-                }
-            }
-        }
-
-        function filterRules(rules, signatureSet, context = '') {
-            let css = '';
-            if (!rules) return css;
-            for (let index = 0; index < rules.length; index++) {
-                const rule = rules[index];
-                if (rule.type === 1) {
-                    const signature = `${context}|${rule.selectorText}|${rule.cssText}`;
-                    if (!signatureSet.has(signature)) css += rule.cssText + "\n";
-                } else if (rule.cssRules) {
-                    const childContext = `${context}/${ruleContext(rule)}`;
-                    const content = filterRules(rule.cssRules, signatureSet, childContext);
-                    if (!content.trim()) continue;
-                    if (rule.type === 4) css += `@media ${rule.media.mediaText} {\n${content}}\n`;
-                    else if (rule.type === 12) css += `@supports ${rule.conditionText} {\n${content}}\n`;
-                    else if (rule.constructor && rule.constructor.name === 'CSSLayerBlockRule') {
-                        css += `@layer${rule.name ? ` ${rule.name}` : ''} {\n${content}}\n`;
-                    } else css += rule.cssText + "\n";
-                } else {
-                    css += rule.cssText + "\n";
-                }
-            }
-            return css;
+        // A lógica de captura vive no motor (`html-editor.js`), que roda DENTRO do iframe — uma
+        // implementação só, compartilhada com a Editbar. O `srcdoc` herda a origem, então a janela
+        // pai alcança o objeto normalmente; o try/catch cobre o caso de o documento ainda estar
+        // trocando de conteúdo.
+        function capturaApi() {
+            try {
+                const janela = iframeObject.contentWindow;
+                if (janela && janela.HtmlEditorCssCapture) return janela.HtmlEditorCssCapture;
+            } catch (error) { /* documento em transição: a próxima tentativa resolve */ }
+            return null;
         }
 
         function capture(attempt = 0) {
-            const iframeDoc = iframeObject.contentDocument || iframeObject.contentWindow.document;
-            if (!iframeDoc) return;
+            let iframeDoc = null;
+            try { iframeDoc = iframeObject.contentDocument || iframeObject.contentWindow.document; }
+            catch (error) { iframeDoc = null; }
 
-            const baselineSignatures = new Set();
-            iframeDoc.querySelectorAll('style[data-c2f-tailwind-role="baseline"]').forEach(style => {
-                try { collectRuleSignatures(style.sheet ? style.sheet.cssRules : null, baselineSignatures); }
-                catch (error) { console.warn('Nao foi possivel ler o CSS precompilado:', error); }
-            });
+            const api = capturaApi();
+            const resultado = (iframeDoc && api) ? api.extract(iframeDoc) : { ready: false, motivo: 'sem-motor', css: '' };
 
-            const generatedStyles = Array.from(iframeDoc.querySelectorAll('head > style:not([data-c2f-tailwind-role])'));
-            const tailwindStyle = generatedStyles.findLast
-                ? generatedStyles.findLast(style => style.sheet && style.sheet.cssRules && style.sheet.cssRules.length)
-                : generatedStyles.reverse().find(style => style.sheet && style.sheet.cssRules && style.sheet.cssRules.length);
-
-            if (!tailwindStyle) {
-                if (attempt < 30) setTimeout(() => capture(attempt + 1), 150);
+            if (resultado.ready) {
+                CodeMirrorCssCompiled.getDoc().setValue(resultado.css);
                 return;
             }
 
-            const generatedCss = filterRules(tailwindStyle.sheet.cssRules, baselineSignatures).trim();
-            CodeMirrorCssCompiled.getDoc().setValue(generatedCss);
+            if (attempt < CSS_COMPILED_TENTATIVAS) {
+                setTimeout(() => capture(attempt + 1), CSS_COMPILED_INTERVALO);
+                return;
+            }
+
+            // Janela esgotada: PRESERVA o valor que veio do banco. Gravar uma captura incompleta é
+            // o defeito que este bloco existe para impedir — foi assim que páginas inteiras
+            // perderam as utilities do Tailwind (req-117).
+            console.warn('CSS compilado nao ficou pronto a tempo (' + resultado.motivo + '); o valor anterior foi preservado.');
         }
 
-        setTimeout(() => capture(), 100);
+        setTimeout(() => capture(), CSS_COMPILED_INTERVALO);
     }
 
     // Função para gerar o conteúdo da página de pré-visualização fora do editor HTML.

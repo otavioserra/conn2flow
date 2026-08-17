@@ -28,6 +28,12 @@
 	var c2fEditor = null;   // instância do html-editor escopada ao layout+conteúdo.
 	var editLayoutId = '';  // layout_id da página em edição (para salvar em layouts).
 
+	// req-117: as demais camadas de código da página em edição, entregues pelo `site-toolbar-render`.
+	// Alimentam o painel "Código" e o salvamento — antes daqui a Editbar só conhecia o `html`, e por
+	// isso o `css_compiled` da página nunca era atualizado por uma edição ao vivo.
+	var pageCode = { css: '', css_compiled: '', html_extra_head: '', framework_css: '' };
+	var pageCodeDirty = {}; // campos efetivamente editados no painel (só eles vão no POST).
+
 	function languageCode() {
 		var language = (window.gestor && window.gestor.language) ? window.gestor.language : '';
 		if (!language) {
@@ -179,6 +185,39 @@
 		// Sem a variável (contexto antigo), a versão do sistema ainda é melhor que nenhuma.
 		if (window.gestor && window.gestor.versao) { return window.gestor.versao; }
 		return '';
+	}
+
+	// req-117: runtime do Tailwind na PÁGINA PÚBLICA durante a edição.
+	//
+	// A página pública nasce só com o CSS estático pré-compilado. Sem o runtime, uma classe nova
+	// digitada no Styler ou no CodeMirror não existe em folha nenhuma: o elemento não muda na tela e
+	// o usuário conclui que o editor está quebrado. Com o runtime, a classe é compilada na hora — e
+	// é a MESMA folha que o `performSave` extrai para gravar em `paginas.css_compiled`.
+	//
+	// O contrato (`@theme static`) e a versão vêm do `site-toolbar-render`, não da página pública:
+	// só quem entra em edição precisa deles. Sem `@import "tailwindcss"` no contrato o runtime
+	// prefixa o import sozinho — é o comportamento documentado do @tailwindcss/browser v4.
+	//
+	// Efeito colateral conhecido: o runtime emite o Preflight. Em página cujo layout já traz o
+	// pré-compilado (o caso normal) as regras são idênticas e nada muda visualmente; em página sem
+	// nenhuma cascata Tailwind offline, entrar em edição pode alterar a aparência — que é
+	// exatamente a aparência que ela terá depois de salva.
+	function ensureTailwindRuntime(dados) {
+		if (!dados || dados.framework_css !== 'tailwindcss') { return; }
+		if (document.getElementById('c2f-tw-browser')) { return; }
+
+		var contrato = dados.tailwind_browser_contract || '';
+		if (contrato) {
+			var estilo = document.createElement('style');
+			estilo.id = 'c2f-tw-contract';
+			estilo.type = 'text/tailwindcss';
+			estilo.setAttribute('data-c2f-tailwind-role', 'browser-contract');
+			estilo.textContent = contrato;
+			document.head.appendChild(estilo);
+		}
+
+		var versao = dados.tailwind_browser_version || '4.3.0';
+		loadScriptOnce('https://unpkg.com/@tailwindcss/browser@' + encodeURIComponent(versao), 'c2f-tw-browser', function () { });
 	}
 
 	function activateEditor(content) {
@@ -467,6 +506,18 @@
 				}
 				editLayoutId = json.data.layout_id || '';
 
+				// req-117: guarda as demais camadas de código e liga o runtime do Tailwind ANTES de
+				// instanciar o editor — a compilação é assíncrona e a primeira classe digitada já
+				// encontra o compilador de pé.
+				pageCode = {
+					css: json.data.css || '',
+					css_compiled: json.data.css_compiled || '',
+					html_extra_head: json.data.html_extra_head || '',
+					framework_css: json.data.framework_css || ''
+				};
+				pageCodeDirty = {};
+				ensureTailwindRuntime(json.data);
+
 				// HTML ORIGINAL (cru) correspondente ao que está VIVO no root:
 				//  - editando o layout (#c2f-layout-root) → body-inner cru (com o conteúdo cru embutido);
 				//  - editando só o conteúdo (#c2f-page-content) → paginas.html cru.
@@ -658,6 +709,32 @@
 		setTimeout(function () { performSave(pageId, root); }, 500);
 	}
 
+	// req-117: extrai a folha que o Tailwind Browser gerou nesta página, usando a MESMA lógica do
+	// editor clássico (`window.HtmlEditorCssCapture`, definida no motor `html-editor.js`).
+	//
+	// O baseline sai do próprio DOM: os `<style data-tailwind-role="...">` que o PHP emitiu são
+	// exatamente a cascata pré-compilada que a página recebe, então o que sobra é o delta.
+	//
+	// Janela de 2 s (contra os 4 s do editor clássico) porque aqui o usuário está esperando o
+	// salvamento. Esgotada sem resultado, o callback recebe `null` e o campo NÃO vai no POST — o
+	// backend só grava o que chega, então o valor do banco fica preservado.
+	function capturarCssCompiled(callback, tentativa) {
+		tentativa = tentativa || 0;
+
+		if (pageCode.framework_css !== 'tailwindcss' || !window.HtmlEditorCssCapture) { callback(null); return; }
+
+		var resultado = window.HtmlEditorCssCapture.extract(document);
+		if (resultado.ready) { callback(resultado.css); return; }
+
+		if (tentativa >= 20) {
+			window.console && console.warn('CSS compilado nao ficou pronto a tempo (' + resultado.motivo + '); o valor gravado foi preservado.');
+			callback(null);
+			return;
+		}
+
+		setTimeout(function () { capturarCssCompiled(callback, tentativa + 1); }, 100);
+	}
+
 	function performSave(pageId, root) {
 		var contentHtml, layoutHtml = '';
 
@@ -697,29 +774,44 @@
 			body += '&layout_html=' + encodeURIComponent(layoutHtml);
 		}
 
+		// req-117: campos do painel "Código". Só entram no POST quando foram efetivamente editados —
+		// `dashboard_ajax_site_toolbar_save` grava tudo o que chega, então mandar um campo intocado
+		// geraria versão e backup à toa a cada salvamento.
+		['css', 'html_extra_head'].forEach(function (campo) {
+			if (pageCodeDirty[campo]) { body += '&' + campo + '=' + encodeURIComponent(pageCode[campo] || ''); }
+		});
+
 		function saveFalhou(msg) {
 			hideSaveLoader();
 			if (c2fEditor && typeof c2fEditor.enable === 'function') { c2fEditor.enable(); }
 			window.alert(msg);
 		}
 
-		fetch(url, {
-			method: 'POST',
-			credentials: 'same-origin',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-			body: body
-		})
-			// Lê como TEXTO e faz parse tolerante; em falha real mostra um trecho do corpo p/ diagnóstico.
-			.then(function (r) { return r.text(); })
-			.then(function (text) {
-				var json = parseJsonLoose(text);
-				// Sucesso → reload (o loader some sozinho com a nova página).
-				if (json && json.status === 'Ok') { window.location.reload(); return; }
-				if (json && json.message) { saveFalhou(json.message); return; }
-				var trecho = (text || '').replace(/\s+/g, ' ').trim().slice(0, 300);
-				saveFalhou(t('Falha ao salvar a página.', 'Failed to save the page.') + (trecho ? '\n\n' + t('Resposta do servidor:', 'Server response:') + '\n' + trecho : ''));
+		function enviar(cssCompiled) {
+			if (cssCompiled !== null && cssCompiled !== undefined) {
+				body += '&css_compiled=' + encodeURIComponent(cssCompiled);
+			}
+
+			fetch(url, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+				body: body
 			})
-			.catch(function () { saveFalhou(t('Erro de rede ao salvar a página.', 'Network error while saving the page.')); });
+				// Lê como TEXTO e faz parse tolerante; em falha real mostra um trecho do corpo p/ diagnóstico.
+				.then(function (r) { return r.text(); })
+				.then(function (text) {
+					var json = parseJsonLoose(text);
+					// Sucesso → reload (o loader some sozinho com a nova página).
+					if (json && json.status === 'Ok') { window.location.reload(); return; }
+					if (json && json.message) { saveFalhou(json.message); return; }
+					var trecho = (text || '').replace(/\s+/g, ' ').trim().slice(0, 300);
+					saveFalhou(t('Falha ao salvar a página.', 'Failed to save the page.') + (trecho ? '\n\n' + t('Resposta do servidor:', 'Server response:') + '\n' + trecho : ''));
+				})
+				.catch(function () { saveFalhou(t('Erro de rede ao salvar a página.', 'Network error while saving the page.')); });
+		}
+
+		capturarCssCompiled(enviar);
 	}
 
 	// Parse tolerante: tenta JSON.parse direto; se falhar (corpo com prefixo espúrio), tenta
@@ -1392,6 +1484,303 @@
 		}
 	});
 
+	// ===== Painel de Código da Página (req-117 / BATCH-117)
+	//
+	// Equivalente ao "Código" do editor clássico (`data-tab="visualizacao-codigo"`), que expõe as
+	// quatro camadas de conteúdo de uma página. Vive na hospedeira porque precisa ler o DOM em
+	// edição e a folha gerada pelo Tailwind Browser lá — dentro do iframe da Editbar ficaria
+	// confinado aos 30px de altura da barra.
+
+	var codePanel = null;
+	var codeEditors = {};        // aba -> instância CodeMirror (ou o <textarea> em degradação)
+	var codeActiveTab = 'html';
+	var codeApplyTimer = null;
+
+	var CODE_TABS = [
+		{ id: 'html', rotulo: ['HTML', 'HTML'], modo: 'htmlmixed', leitura: false },
+		{ id: 'html_extra_head', rotulo: ['HTML Extra Head', 'Extra Head HTML'], modo: 'htmlmixed', leitura: false },
+		{ id: 'css', rotulo: ['CSS', 'CSS'], modo: 'css', leitura: false },
+		{ id: 'css_compiled', rotulo: ['CSS Compilado', 'Compiled CSS'], modo: 'css', leitura: true }
+	];
+
+	function closeCodePanel() { if (codePanel) { codePanel.style.display = 'none'; } }
+
+	// HTML que SERÁ salvo: o DOM em edição já revertido aos marcadores originais. É o mesmo caminho
+	// do `performSave`, para o painel nunca mostrar algo diferente do que vai para o banco.
+	function codeHtmlAtual() {
+		var root = document.getElementById(LAYOUT_ROOT_ID) || document.getElementById(CONTENT_ID);
+		if (!root || !c2fEditor || typeof c2fEditor.getCleanHtml !== 'function') { return ''; }
+		try {
+			var parsed = new DOMParser().parseFromString(c2fEditor.getCleanHtml(), 'text/html');
+			var conteudo = parsed.getElementById(CONTENT_ID);
+			return reconstructOriginal((root.id === LAYOUT_ROOT_ID && conteudo) ? conteudo : parsed.body);
+		} catch (e) { return ''; }
+	}
+
+	// CSS Compilado é um espelho de leitura: mostra o que a captura gravaria SE o salvamento
+	// acontecesse agora. Enquanto o Tailwind não terminar, informa isso em vez de mostrar vazio —
+	// campo vazio seria lido como "a página não tem utilities", que é o engano do req-117.
+	function codeCssCompiledAtual() {
+		if (pageCode.framework_css !== 'tailwindcss') {
+			return t('/* A página não usa Tailwind CSS: não há CSS compilado. */',
+				'/* This page does not use Tailwind CSS: there is no compiled CSS. */');
+		}
+		if (!window.HtmlEditorCssCapture) {
+			return t('/* O motor de edição ainda está carregando… */', '/* The editor engine is still loading... */');
+		}
+		var resultado = window.HtmlEditorCssCapture.extract(document);
+		if (resultado.ready) { return resultado.css; }
+		return t('/* Compilando (' + resultado.motivo + ')… o valor gravado é preservado até terminar. */',
+			'/* Compiling (' + resultado.motivo + ')... the stored value is preserved until it finishes. */');
+	}
+
+	function codeValorDaAba(tab) {
+		if (tab === 'html') { return codeHtmlAtual(); }
+		if (tab === 'css_compiled') { return codeCssCompiledAtual(); }
+		return pageCode[tab] || '';
+	}
+
+	// CSS autoral aplicado ao vivo: reaproveita a folha que o PHP emitiu (`data-c2f-css-role`) para o
+	// resultado na tela ser o mesmo da página publicada, inclusive na ordem da cascata.
+	function codeAplicarCss(valor) {
+		var folha = document.querySelector('style[data-c2f-css-role="authored"]');
+		if (!folha) {
+			folha = document.createElement('style');
+			folha.setAttribute('data-c2f-css-role', 'authored');
+			document.head.appendChild(folha);
+		}
+		folha.textContent = valor;
+	}
+
+	// O HTML é aplicado por AÇÃO EXPLÍCITA, não a cada tecla: reescrever `#c2f-page-content` recria
+	// os nós e derruba as anotações do mapeamento in-place (`data-c2f-variable`, `.c2f-dyn-box`), o
+	// que a cada caractere destruiria a edição. Depois de aplicar, o HTML digitado passa a ser
+	// também o original de referência, e as variáveis aparecem como marcador até o recarregamento.
+	function codeAplicarHtml(valor) {
+		var alvo = document.getElementById(CONTENT_ID);
+		if (!alvo) { return false; }
+
+		alvo.innerHTML = valor;
+
+		var backup = document.getElementById(BACKUP_ID);
+		if (backup) {
+			backup.innerHTML = valor;
+			varMap = {}; varSeq = 0; mapRoot = alvo;
+			try { mapTree(alvo, backup); } catch (e) { window.console && console.error('Mapeamento in-place:', e); }
+		}
+
+		if (c2fEditor && typeof c2fEditor.afterDomMutation === 'function') { c2fEditor.afterDomMutation(); }
+		return true;
+	}
+
+	function codeCriarEditor(tab) {
+		var area = codePanel.querySelector('[data-code-area="' + tab + '"]');
+		if (!area || codeEditors[tab]) { return; }
+
+		var config = CODE_TABS.filter(function (c) { return c.id === tab; })[0];
+
+		if (!window.CodeMirror) { codeEditors[tab] = area; return; } // degradação: textarea puro
+
+		var cm = window.CodeMirror.fromTextArea(area, {
+			lineNumbers: true,
+			lineWrapping: true,
+			styleActiveLine: true,
+			matchBrackets: true,
+			mode: config.modo,
+			htmlMode: config.modo === 'htmlmixed',
+			indentUnit: 4,
+			readOnly: config.leitura,
+			theme: 'tomorrow-night-bright'
+		});
+		cm.setSize('100%', '100%');
+
+		if (!config.leitura) {
+			cm.on('change', function () {
+				pageCode[tab] = cm.getValue();
+				pageCodeDirty[tab] = true;
+				if (tab !== 'css') { return; }
+				// Só o CSS é aplicado ao vivo — é barato e não destrói nós do DOM.
+				if (codeApplyTimer) { clearTimeout(codeApplyTimer); }
+				codeApplyTimer = setTimeout(function () { codeAplicarCss(pageCode.css); }, 400);
+			});
+		}
+
+		codeEditors[tab] = cm;
+	}
+
+	function codeDefinirValor(tab, valor) {
+		var editor = codeEditors[tab];
+		if (!editor) { return; }
+		if (editor.getDoc) { editor.getDoc().setValue(valor); editor.refresh(); }
+		else { editor.value = valor; }
+	}
+
+	function codeSelecionarAba(tab) {
+		codeActiveTab = tab;
+
+		Array.prototype.forEach.call(codePanel.querySelectorAll('[data-code-tab]'), function (botao) {
+			var on = botao.getAttribute('data-code-tab') === tab;
+			botao.style.background = on ? '#0f172a' : 'transparent';
+			botao.style.color = on ? '#f8fafc' : '#475569';
+		});
+		Array.prototype.forEach.call(codePanel.querySelectorAll('[data-code-body]'), function (corpo) {
+			corpo.style.display = corpo.getAttribute('data-code-body') === tab ? 'block' : 'none';
+		});
+
+		var aplicar = codePanel.querySelector('[data-code-action="apply-html"]');
+		if (aplicar) { aplicar.style.display = (tab === 'html') ? 'inline-block' : 'none'; }
+
+		codeCriarEditor(tab);
+
+		// HTML e CSS Compilado são derivados do DOM VIVO: recarregam a cada abertura de aba, senão o
+		// painel mostraria o estado de quando foi montado.
+		if (tab === 'html' || tab === 'css_compiled') { codeDefinirValor(tab, codeValorDaAba(tab)); }
+		else if (codeEditors[tab] && codeEditors[tab].refresh) { codeEditors[tab].refresh(); }
+	}
+
+	// Estilos do painel, espelhando os do `c2f-ai-panel` do motor (`.c2f-he-live-*`): overlay de tela
+	// cheia com backdrop e a caixa CENTRALIZADA. Escritos aqui, e não reusando as classes do motor,
+	// porque o CSS delas só é injetado quando um painel do motor abre pela primeira vez — o painel de
+	// Código pode ser o primeiro a aparecer.
+	function ensureCodePanelStyles() {
+		if (document.getElementById('c2f-code-panel-styles')) { return; }
+		var st = document.createElement('style');
+		st.id = 'c2f-code-panel-styles';
+		st.setAttribute('data-c2f-tailwind-role', 'editor-ui'); // req-117: fora da captura.
+		st.textContent =
+			'#c2f-code-panel{position:fixed;inset:0;z-index:1000003;display:none;isolation:isolate;' +
+			'pointer-events:auto;font:14px system-ui,sans-serif !important;color:#0f172a !important;}' +
+			'#c2f-code-panel .c2f-code-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.55);}' +
+			'#c2f-code-panel .c2f-code-box{position:relative;width:900px;max-width:96vw;height:78vh;' +
+			'min-width:360px;min-height:280px;margin:7vh auto;background:#fff !important;border-radius:10px;' +
+			'box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden;resize:both;}' +
+			'#c2f-code-panel .c2f-code-head{padding:10px 14px;border-bottom:1px solid #e5e7eb;display:flex;' +
+			'align-items:center;gap:6px;flex:0 0 auto;}' +
+			'#c2f-code-panel .c2f-code-body{flex:1 1 auto;min-height:0;overflow:hidden;}' +
+			'#c2f-code-panel .c2f-code-foot{padding:6px 14px;border-top:1px solid #e5e7eb;font-size:11px;' +
+			'color:#94a3b8;flex:0 0 auto;}' +
+			'#c2f-code-panel .CodeMirror{height:100%;}';
+		document.head.appendChild(st);
+	}
+
+	function buildCodePanel() {
+		if (codePanel) { return codePanel; }
+
+		ensureCodePanelStyles();
+
+		codePanel = document.createElement('div');
+		codePanel.id = 'c2f-code-panel';
+
+		var abas = '';
+		var corpos = '';
+		CODE_TABS.forEach(function (tab) {
+			abas += '<button type="button" data-code-tab="' + tab.id + '" ' +
+				'style="border:0;background:transparent;color:#475569;padding:6px 12px;border-radius:6px;cursor:pointer;font:600 12px sans-serif;">' +
+				esc(t(tab.rotulo[0], tab.rotulo[1])) + '</button>';
+			corpos += '<div data-code-body="' + tab.id + '" style="display:none;height:100%;">' +
+				'<textarea data-code-area="' + tab.id + '"></textarea></div>';
+		});
+
+		codePanel.innerHTML =
+			'<div class="c2f-code-backdrop"></div>' +
+			'<div class="c2f-code-box">' +
+			'<div class="c2f-code-head">' +
+			'<strong style="font-size:13px;margin-right:6px;">' + esc(t('Código da página', 'Page code')) + '</strong>' +
+			abas +
+			'<span style="margin-left:auto;"></span>' +
+			'<button type="button" data-code-action="apply-html" ' +
+			'style="border:0;background:#2563eb;color:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;font:600 12px sans-serif;display:none;">' +
+			esc(t('Aplicar ao conteúdo', 'Apply to content')) + '</button>' +
+			'<button type="button" data-code-action="close" ' +
+			'style="border:0;background:#e2e8f0;border-radius:6px;padding:6px 10px;cursor:pointer;color:#0f172a;">✕</button>' +
+			'</div>' +
+			'<div class="c2f-code-body">' + corpos + '</div>' +
+			'<div class="c2f-code-foot">' +
+			esc(t('CSS é aplicado ao vivo. O HTML é aplicado pelo botão. Tudo é gravado ao salvar a página.',
+				'CSS applies live. HTML applies through the button. Everything is stored when you save the page.')) +
+			'</div>' +
+			'</div>';
+
+		document.body.appendChild(codePanel);
+
+		// Barreira na fase de BOLHA (nunca em captura): em captura o `stopPropagation` impediria o
+		// evento de chegar aos próprios botões e ao CodeMirror do painel. A blindagem principal
+		// continua sendo `isEditorOwned()` no motor — ver req-112 §M5.
+		['mousedown', 'mouseup', 'click', 'mousemove', 'mouseover', 'mouseout', 'dblclick', 'contextmenu', 'keydown']
+			.forEach(function (evento) {
+				codePanel.addEventListener(evento, function (e) { e.stopPropagation(); });
+			});
+
+		codePanel.addEventListener('click', function (e) {
+			// Clique no backdrop fecha, como em qualquer modal do editor. Com o overlay de tela cheia
+			// este é o "clique fora": nenhum clique chega à página atrás.
+			if (e.target.classList && e.target.classList.contains('c2f-code-backdrop')) {
+				e.preventDefault();
+				closeCodePanel();
+				return;
+			}
+
+			var aba = e.target.closest && e.target.closest('[data-code-tab]');
+			if (aba) { e.preventDefault(); codeSelecionarAba(aba.getAttribute('data-code-tab')); return; }
+
+			var acao = e.target.closest && e.target.closest('[data-code-action]');
+			if (!acao) { return; }
+			e.preventDefault();
+
+			if (acao.getAttribute('data-code-action') === 'close') { closeCodePanel(); return; }
+
+			if (acao.getAttribute('data-code-action') === 'apply-html') {
+				var editor = codeEditors.html;
+				var valor = editor ? (editor.getDoc ? editor.getDoc().getValue() : editor.value) : '';
+				if (!codeAplicarHtml(valor)) {
+					window.alert(t('Não foi possível aplicar: o conteúdo da página não foi encontrado.',
+						'Could not apply: the page content was not found.'));
+				}
+			}
+		});
+
+		// Rede de segurança para o clique fora: com o overlay de tela cheia quem responde é o
+		// backdrop (acima), mas se o painel for exibido sem cobrir a viewport inteira — outro
+		// contexto, CSS do site sobrescrevendo o overlay — o clique na página ainda o fecha.
+		// Sem isso, o painel só fechava pelo ✕ ou clicando na Editbar, ao contrário do resto da UI.
+		document.addEventListener('mousedown', function (e) {
+			if (!codePanel || codePanel.style.display === 'none') { return; }
+			if (e.target.closest && e.target.closest('#c2f-code-panel')) { return; }
+			// O seletor de arquivos e os modais do motor sobem acima do painel; fechar por baixo
+			// deles derrubaria o que o usuário está fazendo em cima.
+			if (e.target.closest && e.target.closest('#c2f-he-imagepick-overlay, #c2f-he-embed-modal, #html-editor-modal')) { return; }
+			closeCodePanel();
+		});
+
+		return codePanel;
+	}
+
+	// As coordenadas do botão são ignoradas de propósito: o painel é CENTRALIZADO, no padrão do
+	// `c2f-ai-panel`. Ancorado ao botão — que fica no canto direito da Editbar — ele nascia deslocado
+	// para a borda da tela. A assinatura mantém `x`/`y` porque a mensagem da barra os envia, como
+	// fazem os demais painéis.
+	function openCodePanel(x, y) {
+		if (!c2fEditor) {
+			window.alert(t('Entre no modo de edição para abrir o código da página.',
+				'Enter edit mode to open the page code.'));
+			return;
+		}
+
+		buildCodePanel();
+
+		codePanel.style.display = 'block';
+
+		// O CodeMirror mede o contêiner ao nascer; criar os editores com o painel já visível evita a
+		// caixa de 1px de altura que aparecia nos painéis montados escondidos (req-106 rodada 3).
+		ensureCodeMirror(function () {
+			CODE_TABS.forEach(function (tab) {
+				codeCriarEditor(tab.id);
+				codeDefinirValor(tab.id, codeValorDaAba(tab.id));
+			});
+			codeSelecionarAba(codeActiveTab);
+		});
+	}
+
 	// req-106 rodada 2: fecha TODA a UI flutuante de uma vez. Usado pelo aviso
 	// `c2f-toolbar:ui-dismiss`, postado pela barra a cada clique dentro do iframe da Editbar — de
 	// onde o `mousedown` desta página nunca chega e nenhum backdrop é atingido. Cobre os painéis
@@ -1406,6 +1795,7 @@
 		closeBackupPanel();
 		closeViewOptionsPanel();
 		closePageConfigPanel();
+		closeCodePanel(); // req-117
 		if (c2fEditor && typeof c2fEditor.dismissFloatingUi === 'function') { c2fEditor.dismissFloatingUi(); }
 	}
 
@@ -1503,6 +1893,9 @@
 				break;
 			case 'c2f-toolbar:edit-ai':
 				if (c2fEditor && typeof c2fEditor.openAiPanel === 'function') { c2fEditor.openAiPanel(); }
+				break;
+			case 'c2f-toolbar:edit-code': // req-117
+				openCodePanel(data.x, data.y);
 				break;
 			case 'c2f-toolbar:edit-view-options':
 				openViewOptionsPanel(data.x, data.y);

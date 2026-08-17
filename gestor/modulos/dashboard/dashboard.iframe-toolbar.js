@@ -138,6 +138,18 @@
             });
         }
 
+        // req-117 (BATCH-117): "Código" — abre o painel de código-fonte da página (HTML, HTML Extra
+        // Head, CSS e CSS Compilado). O painel vive na hospedeira porque precisa ler o DOM em edição
+        // e a folha que o Tailwind Browser gera lá; dentro do iframe da barra ele ficaria preso aos
+        // 30px de altura dela.
+        var codeBtn = document.getElementById('c2f-code-btn');
+        if (codeBtn) {
+            codeBtn.addEventListener('click', function () {
+                var r = codeBtn.getBoundingClientRect();
+                window.parent.postMessage({ type: 'c2f-toolbar:edit-code', x: r.left, y: r.bottom, page_id: pageId }, origin);
+            });
+        }
+
         // req-110 (BATCH-110): "Configurações da Página" — mesmo padrão: o painel vive na página
         // hospedeira (onde estão o editor e o seletor de arquivos); daqui vai só a posição e o id.
         var pageConfigBtn = document.getElementById('c2f-page-config-btn');

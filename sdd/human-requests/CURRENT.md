@@ -1,6 +1,10 @@
 # Current Human Request
 
-- **Intake Ativo**:
+- **Intakes Ativos / Planejados**:
+  - [req-118.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-118.md) (BATCH-119 `ready-for-intake`, 2026-08-17): Modernização do Painel de Perfil do Usuário em Tailwind CSS, Estrutura em Abas e Gestão de Sessões Ativas.
+  - [req-119.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-119.md) (BATCH-120 `ready-for-intake`, 2026-08-17): Personal Access Tokens (Chaves de API Pessoais) e Códigos de Recuperação (Recovery Codes) no Perfil de Usuário.
+  - [req-120.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-120.md) (BATCH-121 `ready-for-intake`, 2026-08-17): Migração Completa das Telas de Autenticação, Cadastro e Recuperação de Senha para Tailwind CSS.
+  - [req-117.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-117.md) (BATCH-117 `ready-for-intake`, 2026-08-17): Paridade do Tailwind Browser CDN, Painel de Código na Editbar e Correção de Race Condition na Extração do CSS Compilado.
   - [req-116.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-116.md) (BATCH-116 `ready-for-intake`, 2026-08-15): Revisão dos Modos de IA (`ai_modes`), diretrizes de CSS (3 camadas) e otimização de payload no Assistente IA.
 
 - **Intakes em homologação / andamento**:

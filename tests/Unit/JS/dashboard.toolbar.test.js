@@ -29,6 +29,14 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
         'openViewOptions:function(x,y){return openViewOptionsPanel(x,y);},' +
         'openAdd:function(x,y){return openAddPanel(x,y);},' +
         'dismissPanels:function(){return dismissHostPanels();},' +
+        // req-117: runtime do Tailwind na página pública, painel de Código e captura do css_compiled.
+        'ensureTailwind:function(d){return ensureTailwindRuntime(d);},' +
+        'openCode:function(x,y){return openCodePanel(x,y);},' +
+        'setPageCode:function(c){pageCode=c;pageCodeDirty={};},' +
+        'getPageCode:function(){return pageCode;},' +
+        'markDirty:function(campo){pageCodeDirty[campo]=true;},' +
+        'capturarCss:function(cb){return capturarCssCompiled(cb);},' +
+        'save:function(id,root){return performSave(id,root);},' +
         'setEditor:function(e){c2fEditor=e;}};\n';
     code = code.slice(0, idx) + hook + code.slice(idx);
     
@@ -274,6 +282,207 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
     expect(painel.textContent).toContain('Display Options');
     expect(painel.textContent).toContain('Element Styling');
     expect(painel.textContent).toContain('Element Navigation');
+  });
+
+  // ===== req-117 — Tailwind Browser e painel de Código na Editbar ================================
+  //
+  // A página pública nasce só com o CSS estático pré-compilado. Sem o runtime injetado na edição,
+  // uma classe nova digitada no Styler não existe em folha nenhuma (nada muda na tela) e o
+  // `performSave` nunca teve o que gravar em `paginas.css_compiled`.
+
+  describe('req-117 — runtime do Tailwind na página pública', () => {
+    const render = {
+      framework_css: 'tailwindcss',
+      tailwind_browser_version: '4.3.0',
+      tailwind_browser_contract: '@theme static { --color-x: red; }'
+    };
+
+    it('injeta contrato e script do CDN em página Tailwind', () => {
+      T.ensureTailwind(render);
+
+      const contrato = document.getElementById('c2f-tw-contract');
+      expect(contrato).toBeTruthy();
+      expect(contrato.getAttribute('type')).toBe('text/tailwindcss');
+      // A marca mantém o contrato FORA da captura: ele é entrada do compilador, não saída.
+      expect(contrato.getAttribute('data-c2f-tailwind-role')).toBe('browser-contract');
+      expect(contrato.textContent).toContain('--color-x');
+
+      const script = document.getElementById('c2f-tw-browser');
+      expect(script).toBeTruthy();
+      expect(script.src).toContain('@tailwindcss/browser@4.3.0');
+    });
+
+    it('não injeta nada em página que não usa Tailwind', () => {
+      T.ensureTailwind({ framework_css: 'fomantic-ui' });
+      expect(document.getElementById('c2f-tw-contract')).toBe(null);
+      expect(document.getElementById('c2f-tw-browser')).toBe(null);
+    });
+
+    it('é idempotente — reentrar na edição não empilha um segundo runtime', () => {
+      T.ensureTailwind(render);
+      T.ensureTailwind(render);
+      expect(document.querySelectorAll('#c2f-tw-contract').length).toBe(1);
+      expect(document.querySelectorAll('script[id="c2f-tw-browser"]').length).toBe(1);
+    });
+  });
+
+  describe('req-117 — captura do css_compiled no salvamento', () => {
+    it('devolve null quando a página não usa Tailwind (o valor gravado é preservado)', () => {
+      T.setPageCode({ css: '', css_compiled: '', html_extra_head: '', framework_css: 'fomantic-ui' });
+      let recebido = 'sentinela';
+      T.capturarCss((css) => { recebido = css; });
+      expect(recebido).toBe(null);
+    });
+
+    it('usa a API do motor e devolve o CSS quando a compilação terminou', () => {
+      T.setPageCode({ css: '', css_compiled: '', html_extra_head: '', framework_css: 'tailwindcss' });
+      window.HtmlEditorCssCapture = { extract: () => ({ ready: true, motivo: 'ok', css: '@layer utilities{.text-3xl{font-size:1.875rem}}' }) };
+
+      let recebido = null;
+      T.capturarCss((css) => { recebido = css; });
+      expect(recebido).toContain('.text-3xl');
+      delete window.HtmlEditorCssCapture;
+    });
+
+    it('devolve null (sem sobrescrever) quando a compilação não fica pronta a tempo', async () => {
+      T.setPageCode({ css: '', css_compiled: '', html_extra_head: '', framework_css: 'tailwindcss' });
+      window.HtmlEditorCssCapture = { extract: () => ({ ready: false, motivo: 'sem-utilities', css: '' }) };
+
+      const recebido = await new Promise((resolve) => T.capturarCss(resolve));
+      // null → o campo não entra no POST → `dashboard_ajax_site_toolbar_save` não toca na coluna.
+      expect(recebido).toBe(null);
+      delete window.HtmlEditorCssCapture;
+    }, 10000);
+  });
+
+  describe('req-117 — painel de Código', () => {
+    function editorFake() {
+      return {
+        getCleanHtml: () => '<div id="c2f-page-content"><p class="text-3xl">Oi</p></div>',
+        getViewOption: function () { return false; },
+        setViewOption: function () { }
+      };
+    }
+
+    beforeEach(() => {
+      const conteudo = document.createElement('div');
+      conteudo.id = 'c2f-page-content';
+      conteudo.innerHTML = '<p class="text-3xl">Oi</p>';
+      document.body.appendChild(conteudo);
+      T.setEditor(editorFake());
+      T.setPageCode({ css: '.ha{color:red}', css_compiled: '', html_extra_head: '<meta name="x">', framework_css: 'tailwindcss' });
+    });
+
+    it('monta o painel com as 4 abas', () => {
+      T.openCode(10, 40);
+      const painel = document.getElementById('c2f-code-panel');
+      expect(painel).toBeTruthy();
+      expect(painel.style.display).toBe('block');
+
+      const abas = Array.from(painel.querySelectorAll('[data-code-tab]')).map((b) => b.getAttribute('data-code-tab'));
+      expect(abas).toEqual(['html', 'html_extra_head', 'css', 'css_compiled']);
+    });
+
+    it('carrega o CSS autoral e o extra head vindos do site-toolbar-render', () => {
+      T.openCode(10, 40);
+      const painel = document.getElementById('c2f-code-panel');
+      // O CodeMirror é o stub do setup: o valor fica acessível pelo getValue da instância.
+      expect(painel.querySelector('[data-code-body="css"]')).toBeTruthy();
+      expect(T.getPageCode().css).toBe('.ha{color:red}');
+      expect(T.getPageCode().html_extra_head).toBe('<meta name="x">');
+    });
+
+    it('o botão "Aplicar ao conteúdo" só aparece na aba HTML', () => {
+      T.openCode(10, 40);
+      const painel = document.getElementById('c2f-code-panel');
+      const aplicar = painel.querySelector('[data-code-action="apply-html"]');
+
+      expect(aplicar.style.display).toBe('inline-block');
+
+      painel.querySelector('[data-code-tab="css"]').dispatchEvent(new window.Event('click', { bubbles: true }));
+      expect(aplicar.style.display).toBe('none');
+    });
+
+    it('fecha ao clicar FORA — no backdrop (homologação 2026-08-17)', () => {
+      // `dismissHostPanels()` só é acionado por clique dentro do iframe da Editbar; sem isto, clicar
+      // na página deixava o painel aberto, diferente do resto da UI. Com o overlay de tela cheia,
+      // "fora" é o backdrop.
+      T.openCode(10, 40);
+      const painel = document.getElementById('c2f-code-panel');
+      expect(painel.style.display).toBe('block');
+
+      painel.querySelector('.c2f-code-backdrop')
+        .dispatchEvent(new window.Event('click', { bubbles: true }));
+
+      expect(painel.style.display).toBe('none');
+    });
+
+    it('fecha por clique na página quando o overlay não cobre a viewport (rede de segurança)', () => {
+      T.openCode(10, 40);
+      const painel = document.getElementById('c2f-code-panel');
+
+      document.getElementById('c2f-page-content')
+        .dispatchEvent(new window.Event('mousedown', { bubbles: true }));
+
+      expect(painel.style.display).toBe('none');
+    });
+
+    it('clique DENTRO do painel não o fecha', () => {
+      T.openCode(10, 40);
+      const painel = document.getElementById('c2f-code-panel');
+
+      painel.querySelector('[data-code-tab="css"]')
+        .dispatchEvent(new window.Event('mousedown', { bubbles: true }));
+
+      expect(painel.style.display).toBe('block');
+    });
+
+    it('fecha pelo ✕ e pelo dismissHostPanels (clique na Editbar)', () => {
+      T.openCode(10, 40);
+      const painel = document.getElementById('c2f-code-panel');
+
+      painel.querySelector('[data-code-action="close"]').dispatchEvent(new window.Event('click', { bubbles: true }));
+      expect(painel.style.display).toBe('none');
+
+      T.openCode(10, 40);
+      expect(painel.style.display).toBe('block');
+      T.dismissPanels();
+      expect(painel.style.display).toBe('none');
+    });
+
+    it('avisa em vez de abrir quando ainda não se entrou no modo de edição', () => {
+      T.setEditor(null);
+      const alertas = [];
+      const original = window.alert;
+      window.alert = (m) => alertas.push(m);
+
+      T.openCode(10, 40);
+
+      window.alert = original;
+      expect(document.getElementById('c2f-code-panel')).toBe(null);
+      expect(alertas.length).toBe(1);
+    });
+
+    it('é CENTRALIZADO, não ancorado ao botão (homologação 2026-08-17)', () => {
+      // Ancorado às coordenadas do botão — que fica no canto direito da Editbar — o painel nascia
+      // colado na borda da tela. Passou ao padrão do `c2f-ai-panel`: overlay + caixa com margin auto.
+      T.openCode(1200, 40);
+      const painel = document.getElementById('c2f-code-panel');
+
+      expect(painel.style.left).toBe('');
+      expect(painel.style.top).toBe('');
+      expect(painel.querySelector('.c2f-code-box')).toBeTruthy();
+      expect(document.getElementById('c2f-code-panel-styles')).toBeTruthy();
+    });
+
+    it('traduz o painel para inglês', () => {
+      window.gestor = { language: 'en' };
+      T.openCode(10, 40);
+      const painel = document.getElementById('c2f-code-panel');
+      expect(painel.textContent).toContain('Page code');
+      expect(painel.textContent).toContain('Compiled CSS');
+      expect(painel.textContent).toContain('Apply to content');
+    });
   });
 
 });

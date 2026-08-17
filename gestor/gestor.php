@@ -1985,6 +1985,14 @@ function gestor_roteador_301_ou_404($params = false){
 	// ===== 
 	
 	if(isset($caminho)){
+		// F10 do review de 2026-08-15: um mesmo caminho pode ter mais de um registro legítimo —
+		// uma linha por IDIOMA da página (a tabela não tem coluna `language` e o caminho gravado é
+		// agnóstico) e, quando um caminho é reciclado, uma linha por página que já o teve. Usar
+		// sempre `[0]` fazia o registro mais ANTIGO vencer: no melhor caso o 301 não acontecia
+		// (destino de outro idioma não passa no filtro), no pior redirecionava para a página errada.
+		//
+		// A varredura é do mais recente para o mais antigo e para no primeiro que resolva para uma
+		// página ATIVA no idioma corrente — que é, por construção, a dona atual do caminho.
 		$paginas_301 = banco_select_name
 		(
 			banco_campos_virgulas(Array(
@@ -1993,9 +2001,11 @@ function gestor_roteador_301_ou_404($params = false){
 			,
 			"paginas_301",
 			"WHERE caminho='".banco_escape_field($caminho)."'"
+			." ORDER BY id_paginas_301 DESC"
 		);
-		
-		if($paginas_301){
+
+		if($paginas_301)
+		foreach($paginas_301 as $registro_301){
 			$paginas = banco_select_name
 			(
 				banco_campos_virgulas(Array(
@@ -2003,11 +2013,11 @@ function gestor_roteador_301_ou_404($params = false){
 				))
 				,
 				"paginas",
-				"WHERE id_paginas='".$paginas_301[0]['id_paginas']."'"
+				"WHERE id_paginas='".banco_escape_field($registro_301['id_paginas'])."'"
 				." AND language='".$_GESTOR['linguagem-codigo']."'"
 				." AND status='A'"
 			);
-			
+
 			if($paginas){
 				gestor_roteador_erro(Array(
 					'codigo' => 301,

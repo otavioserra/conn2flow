@@ -460,6 +460,10 @@ $(document).ready(function () {
             `;
             const style = document.createElement('style');
             style.id = 'html-editor-visual-styles';
+            // req-117: a captura do `css_compiled` varre `head > style` procurando a saída do
+            // Tailwind Browser. Todo <style> que o motor injeta precisa se declarar, senão vira
+            // candidato e o CSS da UI do editor acaba gravado no banco como CSS da página.
+            style.setAttribute('data-c2f-tailwind-role', 'editor-ui');
             style.textContent = css;
             document.head.appendChild(style);
 
@@ -975,6 +979,8 @@ $(document).ready(function () {
                 // painel e do primeiro clique ser consumido pela seleção em vez do botão.
                 element.id === 'c2f-page-config-panel' ||
                 element.id === 'c2f-page-config-picker' ||
+                // req-117: painel de Código da Editbar (4 abas com CodeMirror).
+                element.id === 'c2f-code-panel' ||
                 element.id === 'html-editor-modal')) return true;
             // req-097 Fix 1: elementos de SISTEMA do Live Editor (iframe da barra, contêiner do preview
             // de dispositivo e o loader de salvamento) nunca são conteúdo editável nem podem entrar na
@@ -997,6 +1003,7 @@ $(document).ready(function () {
                 if (element.closest('#c2f-view-options-panel')) return true;
                 if (element.closest('#c2f-page-config-panel')) return true;
                 if (element.closest('#c2f-page-config-picker')) return true;
+                if (element.closest('#c2f-code-panel')) return true; // req-117
                 if (element.closest('#html-editor-modal')) return true;
                 if (element.closest('.html-editor-container')) return true;
                 if (element.closest('.ui.dimmer.modals')) return true;
@@ -3029,6 +3036,7 @@ $(document).ready(function () {
             `;
             const style = document.createElement('style');
             style.id = 'c2f-he-live-panel-styles';
+            style.setAttribute('data-c2f-tailwind-role', 'editor-ui'); // req-117: fora da captura.
             style.textContent = css;
             document.head.appendChild(style);
         }
@@ -3152,7 +3160,9 @@ $(document).ready(function () {
             // CSS do modelo → injeta numa tag <style> dedicada (aplica de imediato).
             if (modelo.css) {
                 let styleTag = document.getElementById('c2f-templates-css');
-                if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'c2f-templates-css'; document.head.appendChild(styleTag); }
+                // req-117: `authored-runtime` — é CSS de conteúdo aplicado em tempo de edição, não
+                // a saída do Tailwind Browser; declarar o papel o mantém fora da captura.
+                if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'c2f-templates-css'; styleTag.setAttribute('data-c2f-tailwind-role', 'authored-runtime'); document.head.appendChild(styleTag); }
                 if (styleTag.textContent.indexOf(modelo.css) === -1) styleTag.textContent += '\n' + modelo.css;
             }
             const rel = this._tplRelation || 'after';
@@ -3513,7 +3523,7 @@ $(document).ready(function () {
             if (!el) return;
             if (css) {
                 let styleTag = document.getElementById('c2f-ai-css');
-                if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'c2f-ai-css'; document.head.appendChild(styleTag); }
+                if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'c2f-ai-css'; styleTag.setAttribute('data-c2f-tailwind-role', 'authored-runtime'); document.head.appendChild(styleTag); } // req-117: fora da captura.
                 styleTag.textContent += '\n' + css;
             }
             if (html) {
@@ -5585,6 +5595,8 @@ $(document).ready(function () {
                 '#c2f-he-css-sidebar,#c2f-he-element-navbar,#c2f-view-options-panel,' +
                 // req-112: painel de Configurações da Página e seu seletor de arquivos.
                 '#c2f-page-config-panel,#c2f-page-config-picker,' +
+                // req-117: painel de Código da Editbar — UI, nunca conteúdo salvo.
+                '#c2f-code-panel,' +
                 // req-097 Fix 1: elementos de sistema do Live Editor NUNCA são persistidos — o iframe da
                 // barra dentro do HTML salvo era o que fazia o embed "vazar" para dentro da Editbar.
                 '#c2f-site-toolbar,#c2f-device-preview,#c2f-save-loader')
@@ -5693,5 +5705,310 @@ $(document).ready(function () {
     // Expor o HTML limpo para a janela pai (save / sincronização do CodeMirror).
     window.htmlEditorGetCleanHtml = function () {
         return window.htmlEditor ? window.htmlEditor.getCleanHtml() : '';
+    };
+
+    // ===================================================================================
+    // req-117 — Captura do CSS compilado pelo Tailwind Browser
+    // ===================================================================================
+    //
+    // UMA implementação, consumida pelos dois editores:
+    //  - editor clássico: `html-editor-interface.js` roda na janela PAI e alcança este objeto pelo
+    //    `contentWindow` do iframe (o `srcdoc` herda a origem);
+    //  - Editbar: `dashboard.toolbar.js` roda na MESMA janela que o motor.
+    //
+    // Por que NÃO vale "a última <style> do <head> com regras" (o critério anterior): o
+    // @tailwindcss/browser cria a folha de saída com `document.head.append(<style>)` VAZIA e só
+    // escreve nela quando o build assíncrono termina. Nesse intervalo, qualquer <style> injetado em
+    // runtime (UI do editor, CSS de modelo, CSS do assistente de IA) é "o último com regras" — e era
+    // isso que ia parar na coluna `css_compiled`. A folha de saída é reconhecida pelo FORMATO da v4:
+    // camadas nomeadas theme/base/components/utilities/properties.
+
+    const TAILWIND_OUTPUT_LAYERS = ['theme', 'base', 'components', 'utilities', 'properties'];
+
+    // Nome da camada. `rule.name` é o caminho do CSSOM real; o `cssText` cobre navegador antigo e
+    // os objetos simulados dos testes.
+    function cssRuleLayerName(rule) {
+        if (!rule) return '';
+        if (typeof rule.name === 'string' && rule.name.trim() !== '') return rule.name.trim();
+        const match = String(rule.cssText || '').match(/^\s*@layer\s+([A-Za-z0-9_-]+)/);
+        return match ? match[1] : '';
+    }
+
+    // `@media`(4), `@keyframes`(7) e `@supports`(12) também têm `cssRules`, e o keyframes ainda tem
+    // `name` (o da animação) — por isso a exclusão explícita por tipo antes de qualquer heurística.
+    function cssRuleIsLayerBlock(rule) {
+        if (!rule || !rule.cssRules) return false;
+        if (rule.type === 4 || rule.type === 7 || rule.type === 12) return false;
+        if (rule.constructor && rule.constructor.name === 'CSSLayerBlockRule') return true;
+        return /^\s*@layer\b/.test(String(rule.cssText || ''));
+    }
+
+    // `@layer utilities` COM regras filhas. É a prova de que o scanner do Tailwind já varreu o
+    // documento: a folha nasce com as camadas declaradas e o bloco de utilities vazio.
+    function cssRulesHaveUtilities(rules) {
+        if (!rules) return false;
+        for (let index = 0; index < rules.length; index++) {
+            const rule = rules[index];
+            if (cssRuleIsLayerBlock(rule)) {
+                if (cssRuleLayerName(rule) === 'utilities' && rule.cssRules && rule.cssRules.length > 0) return true;
+                if (cssRulesHaveUtilities(rule.cssRules)) return true;
+                continue;
+            }
+            if (rule && rule.cssRules && cssRulesHaveUtilities(rule.cssRules)) return true;
+        }
+        return false;
+    }
+
+    // Assinatura de saída do Tailwind v4: um bloco `@layer <camada conhecida>` ou a declaração de
+    // ordem `@layer theme, base, components, utilities;` (CSSLayerStatementRule → `nameList`).
+    function cssRulesAreTailwindOutput(rules) {
+        if (!rules || !rules.length) return false;
+        for (let index = 0; index < rules.length; index++) {
+            const rule = rules[index];
+            if (cssRuleIsLayerBlock(rule) && TAILWIND_OUTPUT_LAYERS.indexOf(cssRuleLayerName(rule)) !== -1) return true;
+            const nameList = rule && rule.nameList;
+            if (nameList && nameList.length) {
+                for (let n = 0; n < nameList.length; n++) {
+                    if (TAILWIND_OUTPUT_LAYERS.indexOf(String(nameList[n])) !== -1) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Folha de origem cruzada lança ao ler `cssRules`; devolver null deixa o chamador seguir.
+    function cssSafeRules(style) {
+        if (!style) return null;
+        try { return style.sheet ? style.sheet.cssRules : null; }
+        catch (error) { return null; }
+    }
+
+    // Três famílias de marcação ficam FORA da busca, porque nenhuma delas é a saída do browser:
+    //  - `data-c2f-tailwind-role`: o que o editor injeta (baseline, contrato, autoral, UI, runtime);
+    //  - `data-tailwind-role`: os pré-compilados offline do runtime público;
+    //  - `data-c2f-css-role`: as filas de CSS autoral e de `css_compiled` anterior da página pública.
+    // O `css_compiled` anterior é o mais perigoso dos três: ele PODE conter `@layer utilities` e
+    // seria aceito como saída do browser, congelando a captura no valor já gravado.
+    function findTailwindOutputStyle(doc) {
+        if (!doc || !doc.querySelectorAll) return null;
+        const styles = doc.querySelectorAll('head > style:not([data-c2f-tailwind-role]):not([data-tailwind-role]):not([data-c2f-css-role])');
+        for (let index = styles.length - 1; index >= 0; index--) {
+            const rules = cssSafeRules(styles[index]);
+            if (rules && rules.length && cssRulesAreTailwindOutput(rules)) return styles[index];
+        }
+        return null;
+    }
+
+    function cssRuleContext(rule) {
+        if (rule.type === 4) return '@media ' + rule.media.mediaText;
+        if (rule.type === 12) return '@supports ' + rule.conditionText;
+        if (cssRuleIsLayerBlock(rule)) return '@layer ' + cssRuleLayerName(rule);
+        return rule.cssText ? rule.cssText.split('{', 1)[0].trim() : '';
+    }
+
+    function collectRuleSignatures(rules, signatureSet, context) {
+        if (!rules) return;
+        context = context || '';
+        for (let index = 0; index < rules.length; index++) {
+            const rule = rules[index];
+            if (rule.type === 1 && rule.selectorText) {
+                signatureSet.add(context + '|' + rule.selectorText + '|' + rule.cssText);
+            } else if (rule.cssRules) {
+                collectRuleSignatures(rule.cssRules, signatureSet, context + '/' + cssRuleContext(rule));
+            }
+        }
+    }
+
+    // req-117: o baseline é a cascata que a página JÁ recebe no runtime — no editor clássico vem
+    // servida numa folha `baseline` montada pelo PHP (layout + dependências + recurso); na Editbar
+    // são os próprios `<style data-tailwind-role="...">` presentes na página pública. Com ela, o
+    // que sobra na captura é o DELTA: página sob layout pré-compilado grava só as utilities novas;
+    // página sem cascata nenhuma (layout autoral, instalação sem build) grava o output inteiro e
+    // continua autossuficiente. A decisão é do dado, não de um flag.
+    function baselineStyles(doc) {
+        if (!doc || !doc.querySelectorAll) return [];
+        return doc.querySelectorAll('style[data-c2f-tailwind-role="baseline"], style[data-tailwind-role]');
+    }
+
+    function collectBaselineSignatures(doc) {
+        const signatures = new Set();
+        const styles = baselineStyles(doc);
+        for (let index = 0; index < styles.length; index++) {
+            const rules = cssSafeRules(styles[index]);
+            if (rules) collectRuleSignatures(rules, signatures, '');
+        }
+        return signatures;
+    }
+
+    // Camadas de FUNDAÇÃO já presentes na cascata pré-compilada da página.
+    //
+    // Só `base` (o Preflight) entra aqui, e a decisão é por CAMADA porque o filtro por assinatura
+    // não a segura: medido com Chromium real, o Preflight do @tailwindcss/browser 4.3.0 traz
+    // `::file-selector-button` agrupado no seletor e o do bundle offline o separa numa regra
+    // própria, então NENHUMA assinatura casa e o Preflight inteiro seria regravado. Como o
+    // `css_compiled` entra DEPOIS do pré-compilado na cascata do runtime, a versão do editor
+    // venceria a do build em produção. O Preflight não depende do conteúdo da página — é
+    // responsabilidade do build offline, e divergência de versão se resolve recompilando o bundle.
+    //
+    // `theme` NÃO entra: ver filterThemeRule(). `utilities`, `properties` e `components` seguem no
+    // filtro fino por assinatura — são geradas a partir das classes do HTML, e é aí que o editor
+    // acrescenta o que falta.
+    function collectBaselineLayers(doc) {
+        const layers = {};
+        const styles = baselineStyles(doc);
+        for (let index = 0; index < styles.length; index++) {
+            const rules = cssSafeRules(styles[index]);
+            if (!rules) continue;
+            for (let r = 0; r < rules.length; r++) {
+                if (!cssRuleIsLayerBlock(rules[r])) continue;
+                const nome = cssRuleLayerName(rules[r]);
+                if (nome && rules[r].cssRules && rules[r].cssRules.length) layers[nome] = true;
+            }
+        }
+        return layers;
+    }
+
+    const TAILWIND_FOUNDATION_LAYERS = ['base'];
+
+    // Tokens de `@theme` já declarados na cascata pré-compilada, por seletor.
+    //
+    // Mapa `seletor -> { '--token': true }`. É o que permite gravar o DELTA de tokens em vez de
+    // decidir a camada inteira.
+    function collectBaselineThemeTokens(doc) {
+        const mapa = {};
+        const styles = baselineStyles(doc);
+        for (let index = 0; index < styles.length; index++) {
+            const rules = cssSafeRules(styles[index]);
+            if (!rules) continue;
+            for (let r = 0; r < rules.length; r++) {
+                if (!cssRuleIsLayerBlock(rules[r]) || cssRuleLayerName(rules[r]) !== 'theme') continue;
+                const filhas = rules[r].cssRules || [];
+                for (let f = 0; f < filhas.length; f++) {
+                    const regra = filhas[f];
+                    if (regra.type !== 1 || !regra.selectorText || !regra.style) continue;
+                    const alvo = mapa[regra.selectorText] || (mapa[regra.selectorText] = {});
+                    for (let p = 0; p < regra.style.length; p++) alvo[regra.style[p]] = true;
+                }
+            }
+        }
+        return mapa;
+    }
+
+    /**
+     * Reescreve uma regra de `@layer theme` mantendo só os tokens AUSENTES do baseline.
+     *
+     * Por que não descartar a camada inteira (era o que este bloco fazia, e quebrou): o Tailwind v4
+     * só emite a variável de tema que ele VÊ sendo usada, e ele vê apenas as utilities do HTML que
+     * escaneou. O `@layer theme` do layout contém, portanto, apenas os tokens que o LAYOUT usa. Uma
+     * utility nova da página — `.text-3xl`, `.text-slate-300` — referencia `var(--text-3xl)` e
+     * `var(--color-slate-300)`, que não estão lá. `var()` indefinida invalida a declaração inteira e
+     * a propriedade cai para o valor inicial: medido na página `sobre`, 13 de 21 elementos mudavam
+     * ao salvar (`font-size` 48px → 16px, `color` → preto). É o finding F1 do review de 2026-08-15
+     * batendo na própria captura.
+     *
+     * Filtrar por DECLARAÇÃO resolve os dois lados: os tokens novos que as utilities precisam são
+     * gravados, e os que o build já entrega não são reescritos — então o `css_compiled`, que vem
+     * depois na cascata, não sobrepõe o tema do build.
+     *
+     * @returns {string} CSS da regra, ou '' quando não sobrou nenhum token.
+     */
+    function filterThemeRule(rule, baselineTokens) {
+        if (!rule || rule.type !== 1 || !rule.style || !rule.selectorText) return '';
+
+        const jaTem = (baselineTokens && baselineTokens[rule.selectorText]) || null;
+        const declaracoes = [];
+
+        for (let p = 0; p < rule.style.length; p++) {
+            const nome = rule.style[p];
+            if (jaTem && jaTem[nome]) continue;
+            declaracoes.push(nome + ': ' + rule.style.getPropertyValue(nome) + ';');
+        }
+
+        if (!declaracoes.length) return '';
+        return rule.selectorText + ' { ' + declaracoes.join(' ') + ' }\n';
+    }
+
+    function filterRulesAgainstBaseline(rules, signatureSet, context, baselineLayers, baselineTokens) {
+        let css = '';
+        if (!rules) return css;
+        context = context || '';
+        for (let index = 0; index < rules.length; index++) {
+            const rule = rules[index];
+            // Camada de fundação que a página já recebe do build offline sai inteira (ver
+            // collectBaselineLayers). Só no nível de topo: `@layer base` aninhado não existe na v4.
+            if (baselineLayers && context === '' && cssRuleIsLayerBlock(rule)
+                && TAILWIND_FOUNDATION_LAYERS.indexOf(cssRuleLayerName(rule)) !== -1
+                && baselineLayers[cssRuleLayerName(rule)]) {
+                continue;
+            }
+            // Dentro de `@layer theme` o corte é por DECLARAÇÃO, não por regra (ver filterThemeRule).
+            if (context === '/@layer theme' && rule.type === 1) {
+                css += filterThemeRule(rule, baselineTokens);
+                continue;
+            }
+            if (rule.type === 1) {
+                const signature = context + '|' + rule.selectorText + '|' + rule.cssText;
+                if (!signatureSet.has(signature)) css += rule.cssText + '\n';
+            } else if (rule.cssRules) {
+                const content = filterRulesAgainstBaseline(rule.cssRules, signatureSet, context + '/' + cssRuleContext(rule), baselineLayers, baselineTokens);
+                if (!content.trim()) continue;
+                if (rule.type === 4) css += '@media ' + rule.media.mediaText + ' {\n' + content + '}\n';
+                else if (rule.type === 12) css += '@supports ' + rule.conditionText + ' {\n' + content + '}\n';
+                else if (cssRuleIsLayerBlock(rule)) {
+                    const name = cssRuleLayerName(rule);
+                    css += '@layer' + (name ? ' ' + name : '') + ' {\n' + content + '}\n';
+                } else css += rule.cssText + '\n';
+            } else {
+                css += rule.cssText + '\n';
+            }
+        }
+        return css;
+    }
+
+    /**
+     * Estado atual da compilação no documento informado.
+     *
+     * @returns {{ready: boolean, motivo: string, css: string}}
+     *   `ready:false` significa "ainda não deu tempo" — o chamador deve reagendar e, ao esgotar a
+     *   janela, PRESERVAR o valor anterior. Gravar um resultado incompleto é exatamente o defeito
+     *   que este bloco existe para impedir.
+     */
+    function extractCompiledCss(doc) {
+        const style = findTailwindOutputStyle(doc);
+        if (!style) return { ready: false, motivo: 'sem-folha', css: '' };
+
+        const rules = cssSafeRules(style);
+        if (!rules || !rules.length) return { ready: false, motivo: 'folha-vazia', css: '' };
+
+        // Documento sem nenhuma classe não tem utilities a esperar — a folha já está no estado final.
+        const temClasses = !!(doc.body && doc.body.querySelectorAll('[class]').length > 0);
+        if (temClasses && !cssRulesHaveUtilities(rules)) return { ready: false, motivo: 'sem-utilities', css: '' };
+
+        return {
+            ready: true,
+            motivo: 'ok',
+            css: filterRulesAgainstBaseline(
+                rules,
+                collectBaselineSignatures(doc),
+                '',
+                collectBaselineLayers(doc),
+                collectBaselineThemeTokens(doc)
+            ).trim()
+        };
+    }
+
+    window.HtmlEditorCssCapture = {
+        layers: TAILWIND_OUTPUT_LAYERS,
+        layerName: cssRuleLayerName,
+        isLayerBlock: cssRuleIsLayerBlock,
+        hasGeneratedUtilities: cssRulesHaveUtilities,
+        isTailwindOutput: cssRulesAreTailwindOutput,
+        findOutputStyle: findTailwindOutputStyle,
+        collectBaselineSignatures: collectBaselineSignatures,
+        collectBaselineLayers: collectBaselineLayers,
+        collectBaselineThemeTokens: collectBaselineThemeTokens,
+        filterThemeRule: filterThemeRule,
+        filterRules: filterRulesAgainstBaseline,
+        extract: extractCompiledCss
     };
 });

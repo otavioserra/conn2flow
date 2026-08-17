@@ -8,14 +8,14 @@
  *
  * @package Conn2Flow
  * @subpackage Bibliotecas
- * @version 1.1.0
+ * @version 1.2.0
  */
 
 global $_GESTOR;
 
 // Registro da versão da biblioteca no sistema global
 $_GESTOR['biblioteca-usuario']							=	Array(
-	'versao' => '1.1.0',
+	'versao' => '1.2.0',
 );
 
 // ===== Funções auxiliares
@@ -463,6 +463,229 @@ function usuario_autorizacao_provisoria($params = false){
 			$_GESTOR['pagina'] = $pagina.$_GESTOR['pagina'];
 		}
 	}
+}
+
+// ===== Sessões ativas e dispositivos conectados (req-118)
+
+/**
+ * Identifica navegador, sistema operacional e tipo de dispositivo a partir do User-Agent.
+ *
+ * Função PURA — é ela que decide o texto que o usuário lê ao reconhecer (ou não) um acesso, e é a
+ * única parte da auditoria de sessões testável sem banco.
+ *
+ * A ordem das comparações importa e não é alfabética: toda string de navegador baseado em Chromium
+ * contém `Chrome`, e o Chrome do iOS/Android contém `Safari`. Por isso os derivados (Edge, Opera,
+ * Samsung Internet) são testados ANTES do Chrome, e o Safari só é aceito quando nenhum deles casou.
+ * Pelo mesmo motivo `Windows NT` é testado antes de qualquer coisa e `Android` antes de `Linux` —
+ * todo Android é Linux no User-Agent.
+ *
+ * Navegador e sistema saem VAZIOS quando não reconhecidos, nunca com um rótulo tipo "Desconhecido":
+ * a biblioteca é core e não tem idioma; quem exibe é que resolve a variável traduzida.
+ *
+ * @param string $userAgent Cabeçalho `User-Agent` bruto (pode vir vazio).
+ *
+ * @return array{navegador:string,sistema:string,dispositivo:string} Nomes crus, sem tradução.
+ */
+function usuario_user_agent_analisar($userAgent){
+	$ua = is_string($userAgent) ? trim($userAgent) : '';
+
+	if($ua === ''){
+		return Array(
+			'navegador' => '',
+			'sistema' => '',
+			'dispositivo' => 'desktop',
+		);
+	}
+
+	// ===== Navegador (derivados do Chromium antes do Chrome; Safari por último)
+
+	$navegador = '';
+
+	$navegadores = Array(
+		'Edge' => '/\bEdgA?\/|\bEdge\//i',
+		'Opera' => '/\bOPR\/|\bOpera\b/i',
+		'Samsung Internet' => '/\bSamsungBrowser\//i',
+		'Vivaldi' => '/\bVivaldi\//i',
+		'Brave' => '/\bBrave\//i',
+		'Firefox' => '/\bFirefox\/|\bFxiOS\//i',
+		'Chrome' => '/\bChrome\/|\bCriOS\/|\bChromium\//i',
+		'Internet Explorer' => '/\bMSIE\b|\bTrident\//i',
+		'Safari' => '/\bSafari\//i',
+	);
+
+	foreach($navegadores as $nome => $regex){
+		if(preg_match($regex,$ua)){
+			$navegador = $nome;
+			break;
+		}
+	}
+
+	// ===== Sistema operacional (Android antes de Linux; iOS antes de macOS)
+
+	$sistema = '';
+
+	$sistemas = Array(
+		'Windows' => '/\bWindows NT\b|\bWindows Phone\b/i',
+		'Android' => '/\bAndroid\b/i',
+		'iOS' => '/\biPhone\b|\biPad\b|\biPod\b/i',
+		'macOS' => '/\bMac OS X\b|\bMacintosh\b/i',
+		'Chrome OS' => '/\bCrOS\b/i',
+		'Linux' => '/\bLinux\b|\bX11\b/i',
+	);
+
+	foreach($sistemas as $nome => $regex){
+		if(preg_match($regex,$ua)){
+			$sistema = $nome;
+			break;
+		}
+	}
+
+	// ===== Dispositivo
+
+	if(preg_match('/\biPad\b|\bTablet\b/i',$ua) || (preg_match('/\bAndroid\b/i',$ua) && !preg_match('/\bMobile\b/i',$ua))){
+		$dispositivo = 'tablet';
+	} else if(preg_match('/\bMobi\b|\bMobile\b|\biPhone\b|\biPod\b|\bWindows Phone\b/i',$ua)){
+		$dispositivo = 'mobile';
+	} else {
+		$dispositivo = 'desktop';
+	}
+
+	return Array(
+		'navegador' => $navegador,
+		'sistema' => $sistema,
+		'dispositivo' => $dispositivo,
+	);
+}
+
+/**
+ * Normaliza uma linha de `usuarios_tokens` para exibição no painel de sessões.
+ *
+ * Função PURA. Separada da consulta de propósito: é aqui que se decide qual sessão é marcada como
+ * "este dispositivo" — comparação que, errada, faria o usuário revogar o próprio acesso achando que
+ * derrubava outro.
+ *
+ * @param array $registro Linha de `usuarios_tokens` (`pubID`, `ip`, `user_agent`, `expiration`,
+ *                        `data_criacao`, `origem`).
+ * @param string|null $tokenAtual `pubID` do token da requisição corrente.
+ *
+ * @return array Sessão normalizada, com `atual`, `navegador`, `sistema`, `dispositivo` e `sessao`.
+ */
+function usuario_sessao_formatar($registro, $tokenAtual = null){
+	$registro = is_array($registro) ? $registro : Array();
+
+	$pubID = isset($registro['pubID']) ? (string)$registro['pubID'] : '';
+	$userAgent = isset($registro['user_agent']) ? (string)$registro['user_agent'] : '';
+	$expiration = isset($registro['expiration']) ? (int)$registro['expiration'] : 0;
+
+	$agente = usuario_user_agent_analisar($userAgent);
+
+	return Array(
+		'pubID' => $pubID,
+		'ip' => isset($registro['ip']) && $registro['ip'] !== null ? (string)$registro['ip'] : '',
+		'user_agent' => $userAgent,
+		'navegador' => $agente['navegador'],
+		'sistema' => $agente['sistema'],
+		'dispositivo' => $agente['dispositivo'],
+		'origem' => isset($registro['origem']) && $registro['origem'] !== null ? (string)$registro['origem'] : '',
+		'data_criacao' => isset($registro['data_criacao']) && $registro['data_criacao'] !== null ? (string)$registro['data_criacao'] : '',
+		'expiration' => $expiration,
+		// expiration 0 é cookie de sessão (morre ao fechar o navegador), não token expirado.
+		'sessao' => ($expiration === 0),
+		// Sem token corrente NENHUMA linha é marcada como atual: marcar a errada é pior que não marcar.
+		'atual' => ($pubID !== '' && $tokenAtual !== null && $tokenAtual !== '' && hash_equals((string)$tokenAtual,$pubID)),
+	);
+}
+
+/**
+ * Lista as sessões ativas de um usuário, já normalizadas para exibição.
+ *
+ * @global array $_GESTOR Sistema global com configurações.
+ *
+ * @param int $id_usuario ID do usuário dono das sessões.
+ * @param string|null $token_atual_pubID `pubID` do token da requisição corrente (opcional).
+ *
+ * @return array Lista de sessões (mais recentes primeiro); vazia quando não há usuário válido.
+ */
+function usuario_sessoes_listar($id_usuario, $token_atual_pubID = null){
+	$id_usuario = (int)$id_usuario;
+
+	if($id_usuario <= 0) return Array();
+
+	$registros = banco_select(Array(
+		'tabela' => 'usuarios_tokens',
+		'campos' => Array(
+			'pubID',
+			'ip',
+			'user_agent',
+			'origem',
+			'expiration',
+			'data_criacao',
+		),
+		'extra' => "WHERE id_usuarios='".$id_usuario."' ORDER BY data_criacao DESC",
+	));
+
+	if(!is_array($registros)) return Array();
+
+	$sessoes = Array();
+
+	foreach($registros as $registro){
+		if(!is_array($registro)) continue;
+		$sessoes[] = usuario_sessao_formatar($registro,$token_atual_pubID);
+	}
+
+	return $sessoes;
+}
+
+/**
+ * Revoga uma sessão específica do usuário informado.
+ *
+ * O `id_usuarios` entra no WHERE junto do `pubID`: o identificador chega do cliente e, sozinho,
+ * permitiria derrubar a sessão de outro usuário.
+ *
+ * @param string $pubID Identificador público do token a remover.
+ * @param int $id_usuario ID do usuário dono do token.
+ *
+ * @return bool True quando o comando foi emitido; false quando os parâmetros são inválidos.
+ */
+function usuario_sessao_revogar($pubID,$id_usuario){
+	$pubID = is_string($pubID) ? trim($pubID) : '';
+	$id_usuario = (int)$id_usuario;
+
+	if($pubID === '' || $id_usuario <= 0) return false;
+
+	banco_delete
+	(
+		"usuarios_tokens",
+		"WHERE pubID='".banco_escape_field($pubID)."' AND id_usuarios='".$id_usuario."'"
+	);
+
+	return true;
+}
+
+/**
+ * Encerra todas as sessões do usuário, exceto a da requisição corrente.
+ *
+ * Exige o token atual justamente para não deixar o usuário sem acesso nenhum: sem ele, a operação
+ * seria um logout global disfarçado de "desconectar os outros dispositivos".
+ *
+ * @param string $token_atual_pubID `pubID` do token que deve ser preservado.
+ * @param int $id_usuario ID do usuário dono dos tokens.
+ *
+ * @return bool True quando o comando foi emitido; false quando os parâmetros são inválidos.
+ */
+function usuario_sessoes_revogar_outras($token_atual_pubID,$id_usuario){
+	$token_atual_pubID = is_string($token_atual_pubID) ? trim($token_atual_pubID) : '';
+	$id_usuario = (int)$id_usuario;
+
+	if($token_atual_pubID === '' || $id_usuario <= 0) return false;
+
+	banco_delete
+	(
+		"usuarios_tokens",
+		"WHERE id_usuarios='".$id_usuario."' AND pubID!='".banco_escape_field($token_atual_pubID)."'"
+	);
+
+	return true;
 }
 
 /**

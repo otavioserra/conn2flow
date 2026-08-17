@@ -12,3 +12,4 @@ alwaysApply: false
 4. Trate `sdd/SPEC.md`, especificações numeradas e `DECISION-LOG.md` como somente leitura, salvo autorização humana explícita.
 5. Nunca altere a memória de Chefia sem ordem humana. Mantenha a memória de Execução abaixo dos limites de `sdd/process/MEMORY-GARDENING-GUIDELINES.md` quando o arquivo existir.
 6. Preserve alterações locais alheias, valide cedo e registre evidências no batch e no checklist.
+7. Trate `sdd/backlog/` como incubadora de leitura exclusiva do Usuário/Arquiteto. Nunca implemente um item dali; exija promoção humana para `sdd/human-requests/`, `CURRENT.md` e batch executável.

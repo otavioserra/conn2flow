@@ -310,4 +310,110 @@ final class SitemapTest extends TestCase
         self::assertStringContainsString('&amp;', $xml);
         self::assertSame(0, substr_count(sitemap_xml_remover($xml, $loc), '<url>'));
     }
+
+    // ===== F7 — telas de desfecho de fluxo (review de 2026-08-15)
+    //
+    // A heurística original cobria `…-confirmation` e `…/success`, mas as páginas do projeto se
+    // chamam `contacts-success` — com HÍFEN. Medido no sitemap gerado: `contacts-success/`,
+    // `en/contacts-success/`, `subscription-checkout/error/` e `subscription-checkout/payment/`
+    // estavam indexadas. São exatamente as telas "destino de um POST" que a função quer excluir.
+
+    public function testSucessoComHifenNaoEhIndexavel(): void
+    {
+        self::assertTrue(sitemap_caminho_nao_indexavel('contacts-success/'));
+    }
+
+    public function testSucessoComUnderscoreNaoEhIndexavel(): void
+    {
+        self::assertTrue(sitemap_caminho_nao_indexavel('contacts_success/'));
+    }
+
+    public function testTelaDeErroDeFluxoNaoEhIndexavel(): void
+    {
+        self::assertTrue(sitemap_caminho_nao_indexavel('subscription-checkout/error/'));
+    }
+
+    public function testEtapaIntermediariaDePagamentoNaoEhIndexavel(): void
+    {
+        self::assertTrue(sitemap_caminho_nao_indexavel('subscription-checkout/payment/'));
+    }
+
+    public function testPaginaDePagamentoNaRaizContinuaIndexavel(): void
+    {
+        // `payment` sozinho pode ser conteúdo legítimo ("formas de pagamento"): só é barrado como
+        // etapa final de um caminho composto.
+        self::assertFalse(sitemap_caminho_nao_indexavel('payment/'));
+    }
+
+    public function testPaginaComSuccessNoMeioDoNomeContinuaIndexavel(): void
+    {
+        // A regra é de SUFIXO — `cases-of-success-2026` é conteúdo.
+        self::assertFalse(sitemap_caminho_nao_indexavel('success-stories/'));
+    }
+
+    // ===== F8 — remoção do sitemap.xml legado da raiz
+
+    public function testReconheceSitemapGeradoPeloCore(): void
+    {
+        self::assertTrue(sitemap_conteudo_proprio(sitemap_xml_montar([['loc' => 'https://site.test/']])));
+    }
+
+    public function testNaoReconheceArquivoDeTerceiroComoProprio(): void
+    {
+        // Trava da remoção: um `sitemap.xml` posto à mão pelo operador precisa sobreviver.
+        self::assertFalse(sitemap_conteudo_proprio('<?xml version="1.0"?><outro></outro>'));
+        self::assertFalse(sitemap_conteudo_proprio(''));
+        self::assertFalse(sitemap_conteudo_proprio('texto solto'));
+    }
+
+    public function testIndiceDeSitemapsNaoEhTratadoComoProprio(): void
+    {
+        $indice = '<?xml version="1.0" encoding="UTF-8"?>'
+            . '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+            . '<sitemap><loc>https://site.test/sitemap-1.xml</loc></sitemap></sitemapindex>';
+
+        self::assertFalse(sitemap_conteudo_proprio($indice));
+    }
+
+    // ===== F9 — robots.txt
+
+    public function testRobotsDeclaraOSitemapEBarraRotasUtilitarias(): void
+    {
+        $txt = sitemap_robots_montar(['sitemap' => 'https://site.test/sitemap.xml']);
+
+        self::assertStringContainsString('User-agent: *', $txt);
+        self::assertStringContainsString('Sitemap: https://site.test/sitemap.xml', $txt);
+        // As mesmas rotas que `sitemap_caminho_nao_indexavel()` exclui do XML.
+        self::assertStringContainsString('Disallow: /oauth-callback', $txt);
+        self::assertStringContainsString('Disallow: /_gestor-cookie-verify', $txt);
+        self::assertStringContainsString('Disallow: /dashboard-site-toolbar', $txt);
+    }
+
+    public function testRobotsOmiteALinhaDeSitemapQuandoNaoHaUrl(): void
+    {
+        self::assertStringNotContainsString('Sitemap:', sitemap_robots_montar([]));
+    }
+
+    public function testRobotsAceitaPrefixosExtrasNormalizandoABarra(): void
+    {
+        $txt = sitemap_robots_montar(['disallow' => ['relatorios', '/interno']]);
+
+        self::assertStringContainsString('Disallow: /relatorios', $txt);
+        self::assertStringContainsString('Disallow: /interno', $txt);
+    }
+
+    public function testRobotsNaoDuplicaPrefixoJaPresente(): void
+    {
+        $txt = sitemap_robots_montar(['disallow' => ['/oauth-callback']]);
+
+        self::assertSame(1, substr_count($txt, 'Disallow: /oauth-callback'));
+    }
+
+    public function testRobotsVaiParaOMesmoDiretorioDoSitemap(): void
+    {
+        self::assertSame(
+            dirname(sitemap_caminho_arquivo()) . DIRECTORY_SEPARATOR . 'robots.txt',
+            sitemap_robots_caminho_arquivo()
+        );
+    }
 }

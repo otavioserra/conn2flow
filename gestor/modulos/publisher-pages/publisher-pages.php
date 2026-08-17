@@ -840,26 +840,8 @@ function publisher_pages_editar(){
 				$id_numerico = $registro ? $registro[0][$modulo['tabela']['id_numerico']] : null;
 
 				if($id_numerico){
-					$ja_existe = banco_select_name
-					(
-						banco_campos_virgulas(Array('id_paginas_301')),
-						"paginas_301",
-						"WHERE caminho='".banco_escape_field($caminhoMudou)."'"
-					);
-
-					if(!$ja_existe){
-						$campos = null; $campo_sem_aspas_simples = null;
-
-						$campo_nome = "id_paginas"; $campo_valor = $id_numerico; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-						$campo_nome = "caminho"; $campo_valor = $caminhoMudou; 		$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
-						$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; 		$campos[] = Array($campo_nome,$campo_valor,true);
-
-						banco_insert_name
-						(
-							$campos,
-							"paginas_301"
-						);
-					}
+					// F10 do review de 2026-08-15: mesma helper compartilhada do `admin-paginas`.
+					gestor_pagina_301_registrar($id_numerico, $caminhoMudou);
 				} else if(function_exists('log_disco')) {
 					log_disco('301 não registrado: id numérico não encontrado para a publicação '.$id_atual, 'publisher-pages');
 				}
@@ -1253,6 +1235,9 @@ function publisher_pages_editar(){
 			'modulo' => $modulo,
 			'alvo' => 'paginas',
 			'publisherPage' => true,
+			// req-117: o layout entra no baseline do editor porque é ele quem entrega theme, base e
+			// Preflight à publicação no runtime. Sem isso o CSS compilado grava tudo de novo.
+			'layout_id' => $layout_id,
 			// req-112: aba "SEO & Compartilhamento" com os metadados desta publicação.
 			'seo' => Array(
 				'og_titulo' => isset($og_titulo) ? $og_titulo : '',
@@ -1921,6 +1906,9 @@ function publisher_pages_clonar(){
 			'modulo' => $modulo,
 			'alvo' => 'paginas',
 			'publisherPage' => true,
+			// req-117: o layout entra no baseline do editor porque é ele quem entrega theme, base e
+			// Preflight à publicação no runtime. Sem isso o CSS compilado grava tudo de novo.
+			'layout_id' => $layout_id,
 			// req-112: aba "SEO & Compartilhamento" com os metadados desta publicação.
 			'seo' => Array(
 				'og_titulo' => isset($og_titulo) ? $og_titulo : '',

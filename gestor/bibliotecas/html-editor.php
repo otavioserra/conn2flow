@@ -10,7 +10,7 @@ global $_GESTOR;
 //      `gestor.htmlEditorVersao`).
 // A rotina de assets atualiza a URL quando qualquer arquivo proprietário muda, sem bump manual.
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => gestor_asset_version('interface', '1.5.11'),
+	'versao' => gestor_asset_version('interface', '1.5.12'),
 );
 
 // ===== Funções auxiliares
@@ -108,6 +108,122 @@ function html_editor_publisher_controls($params = false){
 	return $html_editor_publisher_controls;
 }
 
+/**
+ * Versão do `@tailwindcss/browser` usada pelos editores (req-117).
+ *
+ * Um número só governa o iframe do editor clássico e a injeção na página pública da Editbar — os
+ * dois têm de compilar com a MESMA versão do runtime, senão o CSS gravado por um difere do outro.
+ *
+ * @return string
+ */
+function html_editor_tailwind_browser_version(){
+	return '4.3.0';
+}
+
+/**
+ * Contrato de tema entregue ao Tailwind Browser (req-114, extraído em req-117).
+ *
+ * Em projetos, `contents/tailwindcss/browser-contract.css` prevalece sobre o contrato do core. O
+ * arquivo traz o `@theme static` e NÃO precisa de `@import "tailwindcss"`: o runtime do browser
+ * concatena os `<style type="text/tailwindcss">` e prefixa o import sozinho quando não encontra um.
+ *
+ * @return string CSS do contrato, ou string vazia quando não houver arquivo.
+ */
+function html_editor_tailwind_browser_contract(){
+	global $_GESTOR;
+
+	$rootPath = rtrim((string)($_GESTOR['ROOT_PATH'] ?? ''), '/\\') . DIRECTORY_SEPARATOR;
+	$contractCandidates = [
+		$rootPath . 'contents' . DIRECTORY_SEPARATOR . 'tailwindcss' . DIRECTORY_SEPARATOR . 'browser-contract.css',
+		$rootPath . 'assets' . DIRECTORY_SEPARATOR . 'tailwindcss' . DIRECTORY_SEPARATOR . 'browser-contract.css',
+	];
+
+	foreach($contractCandidates as $contractPath){
+		if(is_file($contractPath)) return (string)file_get_contents($contractPath);
+	}
+
+	return '';
+}
+
+/**
+ * Baseline de CSS pré-compilado do editor (req-117).
+ *
+ * O editor injeta esse CSS numa folha `data-c2f-tailwind-role="baseline"` dentro do iframe, e a
+ * captura do `css_compiled` grava apenas o DELTA em relação a ela. Para o delta ser honesto, o
+ * baseline tem de ser a MESMA cascata que a página monta no runtime público — em
+ * `gestor_css_precompiled_ordenar()`: layout → dependências → página → recursos.
+ *
+ * Antes daqui o editor recebia só o pré-compilado do próprio recurso. Página criada pelo usuário no
+ * gestor vive apenas no banco e nunca entra em `tailwind_recursos_descobrir()` (que varre arquivos
+ * físicos em `resources/`), então esse valor é sempre vazio: nada era filtrado e o `css_compiled`
+ * saía com `@layer theme` e o Preflight inteiro — 62% de duplicata do que o layout já entrega,
+ * medido na página `sobre` do projeto photon.
+ *
+ * O caso inverso continua coberto sem nenhum flag: sem layout pré-compilado, o baseline fica vazio,
+ * nada é filtrado e a página grava o output completo — que é justamente o que ela precisa quando não
+ * há cascata offline por trás.
+ *
+ * @param array $params
+ * @param string $params['css_precompiled'] pré-compilado do próprio recurso.
+ * @param string $params['layout_id'] layout da página, quando houver.
+ * @param string $params['alvo'] alvo do editor (`paginas`, `layouts`, `componentes`…).
+ * @return string CSS concatenado na ordem da cascata.
+ */
+function html_editor_css_precompiled_baseline($params = false){
+	global $_GESTOR;
+
+	if($params)foreach($params as $var => $val)$$var = $val;
+
+	$css_precompiled = (string)(isset($css_precompiled) ? $css_precompiled : '');
+	$layout_id = (string)(isset($layout_id) ? $layout_id : '');
+	$alvo = (string)(isset($alvo) ? $alvo : 'paginas');
+
+	// Editando o próprio layout, o pré-compilado dele já É a base — não há camada acima.
+	if($layout_id === '' || $alvo === 'layouts') return $css_precompiled;
+
+	$layout_css_precompiled = '';
+
+	// F4b do review de 2026-08-15: projetar a coluna sem checar devolve HTTP 500, não degradação.
+	if(!function_exists('banco_campo_existe') || !banco_campo_existe('css_precompiled','layouts')){
+		return $css_precompiled;
+	}
+
+	$layout = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'layouts',
+		'campos' => Array('css_precompiled'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($layout_id)."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+			." AND status!='D'",
+	));
+
+	if($layout && isset($layout['css_precompiled'])) $layout_css_precompiled = (string)$layout['css_precompiled'];
+
+	return html_editor_css_precompiled_concatenar($layout_css_precompiled, $css_precompiled);
+}
+
+/**
+ * Concatena as camadas do baseline na ordem da cascata do runtime (req-117).
+ *
+ * Separada de `html_editor_css_precompiled_baseline()` por ser a única parte que não depende do
+ * banco — e é a parte que decide o resultado. A ordem importa: o layout vem primeiro, exatamente
+ * como em `gestor_css_precompiled_ordenar()`.
+ *
+ * @param string $layout CSS pré-compilado do layout.
+ * @param string $recurso CSS pré-compilado do próprio recurso.
+ * @return string
+ */
+function html_editor_css_precompiled_concatenar($layout, $recurso){
+	$layout = (string)$layout;
+	$recurso = (string)$recurso;
+
+	if($layout === '') return $recurso;
+	if($recurso === '') return $layout;
+
+	return $layout."\n".$recurso;
+}
+
 // ===== Funções principais
 
 /**
@@ -122,8 +238,11 @@ function html_editor_publisher_controls($params = false){
  * @param array $params['alvos_modelos'] alvos extras para modelos.
  * @param array $params['publisher'] variáveis do publisher.
  * @param array $params['publisherPage'] controles específicos do publisher page.
- * @param string $params['css_precompiled'] CSS Tailwind offline usado como baseline no editor.
- * 
+ * @param string $params['css_precompiled'] CSS Tailwind offline do PRÓPRIO recurso.
+ * @param string $params['layout_id'] layout da página, quando houver (req-117). Serve para montar o
+ *        baseline do editor com a mesma cascata do runtime público, e não só com o pré-compilado do
+ *        recurso — ver html_editor_css_precompiled_baseline().
+ *
  */
 function html_editor_componente($params = false){
 	global $_GESTOR;
@@ -298,20 +417,10 @@ function html_editor_componente($params = false){
 		$projectHtmlEditorTailwindcssConfig = $_GESTOR['project-html-editor-tailwindcss-config'];
 	}
 
-	// req-114: o browser recebe o mesmo contrato de tema do build offline. Em projetos,
-	// `contents/tailwindcss/browser-contract.css` prevalece sobre o contrato do core.
-	$tailwindBrowserContract = '';
-	$rootPath = rtrim((string)($_GESTOR['ROOT_PATH'] ?? ''), '/\\') . DIRECTORY_SEPARATOR;
-	$contractCandidates = [
-		$rootPath . 'contents' . DIRECTORY_SEPARATOR . 'tailwindcss' . DIRECTORY_SEPARATOR . 'browser-contract.css',
-		$rootPath . 'assets' . DIRECTORY_SEPARATOR . 'tailwindcss' . DIRECTORY_SEPARATOR . 'browser-contract.css',
-	];
-	foreach($contractCandidates as $contractPath){
-		if(is_file($contractPath)){
-			$tailwindBrowserContract = (string)file_get_contents($contractPath);
-			break;
-		}
-	}
+	// req-114: o browser recebe o mesmo contrato de tema do build offline.
+	// req-117: a leitura saiu daqui para uma função própria, porque a Editbar precisa do MESMO
+	// contrato para rodar o Tailwind Browser na página pública.
+	$tailwindBrowserContract = html_editor_tailwind_browser_contract();
 
 	// ===== Incluir variável JS do alvo para o frontend
 	// req-070 §1.1: 'widget_js_include' parametriza quais scripts controladores de widget (*.widget.js)
@@ -323,9 +432,18 @@ function html_editor_componente($params = false){
 		'widget_js_include' => isset($widget_js_include)? $widget_js_include : null,
 		'projectJavascriptTailwindcss' => isset($projectJavascriptTailwindcss)? $projectJavascriptTailwindcss : '',
 		'projectTailwindcssConfig' => isset($projectHtmlEditorTailwindcssConfig)? $projectHtmlEditorTailwindcssConfig : [],
-		'tailwindBrowserVersion' => '4.3.0',
+		'tailwindBrowserVersion' => html_editor_tailwind_browser_version(),
 		'tailwindBrowserContractBase64' => base64_encode($tailwindBrowserContract),
-		'cssPrecompiledBase64' => base64_encode((string)(isset($css_precompiled) ? $css_precompiled : '')),
+		// req-117: o baseline deixou de ser só o pré-compilado deste recurso e passou a ser a
+		// cascata que a página REALMENTE recebe no runtime (layout + recurso). Sem isso, página
+		// criada pelo usuário — que nunca passa pelo build offline e portanto tem
+		// `css_precompiled` vazio — não filtrava nada, e o `css_compiled` gravado carregava
+		// `@layer theme` e o Preflight inteiro por cima do que o layout já entrega.
+		'cssPrecompiledBase64' => base64_encode(html_editor_css_precompiled_baseline(Array(
+			'css_precompiled' => (isset($css_precompiled) ? $css_precompiled : ''),
+			'layout_id' => (isset($layout_id) ? $layout_id : ''),
+			'alvo' => $alvo,
+		))),
 	]);
 
 	// ===== Modificações específicas por alvo

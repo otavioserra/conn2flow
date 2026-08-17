@@ -29,3 +29,9 @@
 - Mova históricos antigos para a subpasta `archive/` correspondente: `sdd/decisions/archive/`, `sdd/human-requests/archive/`, `sdd/implementation/archive/` ou `sdd/validation/archive/`.
 - Nos arquivos principais, substitua o histórico arquivado por tabelas Markdown resumidas com 1 linha por item e link direto para o arquivo em `archive/`.
 - Ao carregar contexto inicial, priorize os arquivos principais e abra itens em `archive/` apenas quando o batch, a requisição ativa ou um link de rastreabilidade exigir.
+
+## Intake Gate do backlog
+
+- `sdd/backlog/` é uma incubadora de rascunhos administrada pelo Usuário e pelo Arquiteto IA.
+- O Executor pode ler itens para contexto, mas é estritamente proibido de implementá-los, abrir batch de execução ou alterar código diretamente a partir deles.
+- Um item, inclusive `READY`, só se torna executável após promoção humana explícita para `sdd/human-requests/req-XXX.md`, atualização de `CURRENT.md` e associação a um batch.

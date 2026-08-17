@@ -876,3 +876,152 @@ passar o mouse sobre o painel de Configurações (nada da página atrás pode se
 - [x] Base `photon`: oito componentes novos, `user_modified=0`, precompiled entre 1.383 e 5.036 bytes.
 - [ ] Homologar visualmente busca clínica e checkout no navegador a 100%.
 - [ ] Migrar `snapphoton-system` por famílias de tela antes de remover sua ponte.
+
+---
+
+## BATCH-117 — Paridade do Tailwind Browser CDN, Painel de Código na Editbar e Correção de Race Condition na Extração do CSS Compilado (req-117)
+
+- [x] `hasGeneratedUtilities(rules)` implementada para inspecionar recursivamente regras de utilitários no CSSOM.
+- [x] `updateCSSCompiled` em `html-editor-interface.js` aguarda a prontidão real dos utilitários antes de encerrar o polling (40 tentativas × 100 ms).
+- [x] **Correção além do intake**: a folha do Tailwind passou a ser identificada pelo FORMATO (camadas nomeadas da v4), não pela posição. O critério antigo ("última `<style>` com regras") escolhia qualquer folha injetada em runtime — inclusive o CSS da UI do editor.
+- [x] `CodeMirrorCssCompiled` no Editor HTML recebe as utilitárias da página; janela esgotada PRESERVA o valor anterior em vez de gravar captura incompleta.
+- [x] Injeção dinâmica do runtime do `@tailwindcss/browser` e contrato `@theme static` na ativação do Live Editor (`dashboard.toolbar.js`), com o contrato viajando pelo `site-toolbar-render`.
+- [ ] Renderização visual imediata na tela ao adicionar novas classes Tailwind no Styler ou DOM durante a edição in-place — **homologação do operador**.
+- [x] Botão "Código" (`#c2f-code-btn`) presente na Editbar (PT-BR e EN) ao lado do Assistente IA, aplicado ao banco local (`file_version` 1.19 → 1.21).
+- [x] Painel flutuante `#c2f-code-panel` abre sem vazar cliques para a página de trás (`isEditorOwned` nos três pontos + barreira de eventos na fase de bolha).
+- [x] 4 Sub-abas funcionais com CodeMirror (HTML, HTML Extra Head, CSS, CSS Compilado) no padrão do sistema (`tomorrow-night-bright`, indentUnit 4, refresh na troca de aba).
+- [x] Sincronização com o DOM vivo — **com uma diferença deliberada em relação ao intake**: o CSS é aplicado ao vivo (debounce de 400 ms), o HTML por botão "Aplicar ao conteúdo". Reescrever `#c2f-page-content` a cada tecla recriaria os nós e derrubaria as anotações do mapeamento in-place (`data-c2f-variable`, `.c2f-dyn-box`), destruindo a edição em curso.
+- [x] Extração de `html`, `css`, `html_extra_head` e `css_compiled` no salvamento da Editbar (`performSave`); campos intocados NÃO vão no POST, para não gerar versão e backup a cada salvamento.
+- [x] Testes automatizados: Vitest **220/220** (novo `html-editor-css-capture.test.js` 21/21 + 12 casos novos em `dashboard.toolbar.test.js`); PHPUnit **297/297** (novos `TailwindGuardasTest` 16/16 e `HtmlEditorBaselineTest` 9/9).
+- [x] `node --check` sem erros nos JS modificados; `php -l` OK nos PHP modificados; JSON válido.
+- [ ] Verificação manual: reabrir e salvar `/photon/sobre/` no Editor Clássico e na Editbar, confirmando as utilitárias no banco e a fidelidade visual — **homologação do operador**.
+
+### Findings do review de 2026-08-15 incluídos nesta rodada
+
+- [x] **F1** — `tailwind_recursos_tokens_ausentes()`: o build passou a comparar os `var(--…)` do CSS autoral com os tokens presentes na saída e avisar quando o `@theme` podou algum.
+- [x] **F4c(a)** — `tailwind_recursos_html_usa_tailwind()`: avisa quando o HTML tem utilities mas o recurso não declara `framework_css=tailwindcss` (o defeito do `form-ui`).
+- [x] **F4c(b)** — `tailwind_recursos_utilities_removidas()`: recusa utilities da v3 removidas na v4 (`bg-opacity-*`, `flex-shrink-*`, …).
+- [x] Avisos são informativos por padrão; `--tailwind-strict` os promove a erro de build, para o CI apertar quando o inventário estiver limpo.
+
+### Evidência de Validação (BATCH-117)
+
+Reportada pelo executor em 2026-08-17.
+
+**Diagnóstico medido (antes de qualquer alteração), base `photon`:**
+
+| Página | `css_compiled` | Sintoma |
+| --- | --- | --- |
+| `sobre` | 5.708 B | CSS autoral re-serializado, **zero** `@layer` |
+| `pagina-raiz-do-sistema` | 5.690 B | idem |
+| `teste-de-pagina` | 4.894 B | `@layer properties;` + declaração de ordem, **`@layer utilities` vazio** |
+
+As duas primeiras são a captura da folha ERRADA; a terceira é a race condition do intake. Os dois
+modos de falha estavam materializados no banco ao mesmo tempo.
+
+**Runtime do `@tailwindcss/browser@4.3.0` (lido do bundle da unpkg):** ele concatena os
+`<style type="text/tailwindcss">` e **prefixa `@import "tailwindcss";` sozinho quando não encontra um
+`@import`** — o `browser-contract.css` sem import está correto, não era essa a falha. A folha de saída
+é criada por `document.head.append(<style>)` **vazia**, e o `html-editor.js` injeta 4 `<style>` próprios
+no mesmo `<head>`.
+
+**Verificação com Chromium real** (Playwright + bundle 4.3.0 + HTML real da `sobre` + contrato do
+projeto), comparando o antes/depois da política de baseline:
+
+| Cenário | Bytes | Camadas gravadas | Utilities |
+| --- | ---: | --- | --- |
+| Sem cascata pré-compilada | 8.774 | properties, theme, base, utilities | presentes |
+| Com o `layout-precompiled` do `photon-public` | 3.086 | properties, utilities | presentes |
+
+Economia de **65%**, batendo com os 62% previstos na análise. `.text-3xl`, `.space-y-5`,
+`.leading-relaxed` e `.max-w-4xl` presentes nos dois; CSS da UI do editor ausente nos dois.
+
+**Correção de desenho descoberta na medição:** o filtro por assinatura de regra NÃO segura camadas de
+fundação. O Preflight do browser 4.3.0 emite `*, ::after, ::before, ::backdrop, ::file-selector-button`
+e o bundle offline do layout emite `*, ::after, ::before, ::backdrop` — nenhuma assinatura casa e o
+Preflight inteiro era regravado (economia de apenas 17%). Como o `css_compiled` entra DEPOIS do
+pré-compilado na cascata, a versão do editor venceria a do build em produção. `theme` e `base` passaram
+a ser decididas por CAMADA; `utilities`, `properties` e `components` seguem no filtro fino.
+
+**Pipeline e ambiente:**
+
+- gerador do core: 175 recursos, 2 compilados (os dois idiomas da Editbar), 173 em cache, 0 erros;
+- guardas novas calibradas contra o inventário real: de **176 avisos para 4** (com `flex`/`grid`/`hidden`
+  isolados na heurística, todo recurso Fomantic disparava — `ui grid`, `ui items`, `left floated`);
+- `sync-core-to-project.sh --project snapphoton-local`: 6 arquivos-chave conferidos por MD5, todos iguais;
+- `atualizacoes-banco-de-dados.php --tables=paginas --force-all`: +2 ~60 =194, sem tocar em `sobre`,
+  `teste-de-pagina` nem `home-alternativa` (confirmado por `--dry-run` antes de aplicar);
+- `GET http://localhost/photon/sobre/` → **HTTP 200**, com `data-tailwind-role="layout-precompiled"`,
+  2× `data-c2f-css-role="authored"` e 1× `data-c2f-css-role="compiled"` no `<head>`.
+
+### Pendências
+
+- **O dado gravado continua errado até um novo salvamento.** As três páginas acima só recuperam as
+  utilitárias quando reabertas e salvas no editor — a correção é do caminho de gravação, não uma
+  migração. Vale conferir o mesmo inventário nos demais projetos.
+- Homologação runtime com o operador: salvar no editor clássico e na Editbar; conferir efeito visual
+  imediato de classe nova no Styler; abrir o painel de Código nas 4 abas; repetir em `/en/`.
+- Achado do F4c aguardando decisão (fora do escopo aprovado desta rodada): o componente do core
+  `html-editor-publisher-simulation` (pt-br e en) usa Tailwind puro (`text-3xl`, `bg-gradient-to-r`,
+  `bg-indigo-50`, `px-2`, `py-1`) e **não declara `framework_css`** — nunca é compilado. É o mesmo
+  defeito do `form-ui`. O outro aviso (`sessao-com-2-colunas-fomantic-ui`, `font-light text-primary
+  mb-8`) é limítrofe e provavelmente falso positivo.
+- Restrição respeitada: nenhum `git commit`/`git push` executado; `sdd/human-requests/` não foi tocada.
+
+---
+## BATCH-118 - Findings restantes do review de 2026-08-15 (F2, F3, F4, F7-F10) + homologação do BATCH-117
+
+- [x] **F2** — descarte de `resource-precompiled` em modo bundle registrado em `log_disco(..., 'tailwind')`, com rota e contagem, uma vez por requisição. Layout e dependências continuam descartados em silêncio, por desenho.
+- [x] **F3** — `tailwind_recursos_layout_display_sensivel()` (pura) + aviso de build para página sem `tailwind_bundle` sob layout que emite `display` responsivo com concorrente incondicional.
+- [x] **F4** — os dois pontos de `bibliotecas/gestor.php` declaram `layout-precompiled`. **Correção ao review**: eles não são "includes de template", estão dentro de `gestor_layout()`.
+- [x] **F7** — `confirmation`/`success`/`error`/`failure`/`cancel` como sufixo (`-`, `_`, `/`); `payment`/`checkout`/`processing` como segmento final de caminho composto.
+- [x] **F8** — `sitemap_legado_remover()` + trava `sitemap_conteudo_proprio()` (arquivo de terceiro e índice de sitemaps são preservados e logados).
+- [x] **F9** — `sitemap_robots_montar()`/`sitemap_robots_gravar()` gerando `assets/robots.txt` na geração completa.
+- [x] **F10** — `gestor_pagina_301_registrar()` com dedup por (caminho, id_paginas), substituindo o bloco duplicado nos dois módulos; roteador varre candidatos do mais recente ao mais antigo.
+- [x] Correções de homologação do BATCH-117: fechamento por clique fora, centralização do painel e o `@layer theme` por declaração.
+- [ ] Homologação runtime com o operador (ver pendências).
+
+### Evidência de Validação (BATCH-118)
+
+Reportada pelo executor em 2026-08-17.
+
+**Verificação HTTP no `snapphoton-local`**, após disparar `sitemap_gerar_completo()`:
+
+| Item | Antes | Depois |
+| --- | --- | --- |
+| `assets/sitemap.xml` | 36 URLs | **31 URLs** |
+| `contacts-success`, `checkout/error`, `checkout/payment` | indexadas | **0 ocorrências** |
+| `sitemap.xml` na raiz | 1.161 bytes (9 URLs, de 14/08) | **removido** |
+| `/robots.txt` | 404 | **200 `text/plain`**, com 11 `Disallow:` + `Sitemap:` |
+| `/photon/sobre/` | 200 | 200 |
+
+**Calibração do aviso F3** contra layouts reais: nenhum layout do core dispara (nenhum tem a
+combinação); `photon-admin` e `photon-public` do lumix disparam — e `photon-admin` é exatamente o
+layout onde a inversão desktop/mobile foi observada na Busca Clínica.
+
+**Regressão do BATCH-117 corrigida nesta rodada** — medida com Chromium real, comparando estilos
+computados entre "durante a edição" e "depois de salvar", na página `sobre`:
+
+| | Elementos divergentes | `css_compiled` |
+| --- | ---: | ---: |
+| Antes (theme descartado por camada) | **13 de 21** | 3.086 B |
+| Depois (theme por declaração) | **0 de 21** | 3.695 B |
+
+Divergências observadas antes da correção: `font-size` 48px → 16px, `font-weight` 800 → 400,
+`letter-spacing` -1.2px → normal, `color` → preto. Causa: o `@layer theme` do layout só contém os
+tokens que o LAYOUT usa (F1), então `var(--text-3xl)` e `var(--color-slate-300)` das utilities novas
+ficavam indefinidas e invalidavam a declaração.
+
+**Suítes**: `composer test` **315/315** (4 skipped e 1 deprecação preexistentes) — `SitemapTest`
+24→38 e `TailwindGuardasTest` 16→20; `npx vitest run` **228/228** — `html-editor-css-capture.test.js`
+21→25 e `dashboard.toolbar.test.js` 25→29. `php -l`, `node --check`, JSON e `git diff --check` OK.
+Gerador do core: 175 recursos, 0 erros, 4 avisos (os mesmos do BATCH-117).
+
+### Pendências
+
+- Homologação runtime com o operador: conferir o painel de Código centralizado e fechando por clique
+  fora; salvar `/photon/sobre/` e confirmar que o resultado é idêntico ao visto na edição; renomear
+  uma página em dois idiomas e conferir os dois 301; conferir `/robots.txt` em produção (a URL do
+  sitemap sai de `url-full-http-sem-lang`, e no local aparece como `https://localhost/photon/`).
+- Dívida registrada: dependência de template por `target` (sugestão 2 do F2) e a decisão de
+  arquitetura sobre Tailwind no painel administrativo (bloqueia o `html-editor-publisher-simulation`).
+- Restrição respeitada: nenhum `git commit`/`git push` executado; `sdd/human-requests/` não foi tocada.

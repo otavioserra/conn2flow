@@ -117,16 +117,132 @@ function sitemap_caminho_nao_indexavel($caminho){
 
 	if(in_array($caminho, $exatos, true)) return true;
 
-	// Páginas de confirmação ("…-confirmation", "…/success"): são o destino de um POST, não uma
-	// entrada de navegação — indexá-las leva o visitante a uma tela sem contexto.
-	if(substr($caminho, -13) === '-confirmation') return true;
-	if(substr($caminho, -8) === '/success') return true;
+	// Telas de desfecho de fluxo: são o destino de um POST, não uma entrada de navegação — indexá-las
+	// leva o visitante a uma tela sem contexto (ou, no caso de `error`, a uma tela de erro).
+	//
+	// F7 do review de 2026-08-15: a regra original cobria só `…-confirmation` e `…/success`, mas as
+	// páginas do projeto se chamam `contacts-success` — com HÍFEN. Medido no sitemap gerado (36 URLs):
+	// `contacts-success/`, `en/contacts-success/`, `subscription-checkout/error/` e
+	// `subscription-checkout/payment/` estavam indexadas. A intenção estava certa; a heurística não
+	// batia com a nomenclatura real.
+	$desfechos = Array('confirmation', 'success', 'error', 'failure', 'cancel');
+
+	$segmentos = explode('/', $caminho);
+	$ultimo = end($segmentos);
+
+	foreach($desfechos as $desfecho){
+		if($ultimo === $desfecho) return true;
+		if(substr($ultimo, -(strlen($desfecho) + 1)) === '-'.$desfecho) return true;
+		if(substr($ultimo, -(strlen($desfecho) + 1)) === '_'.$desfecho) return true;
+	}
+
+	// `payment` só como etapa INTERMEDIÁRIA de um fluxo (`subscription-checkout/payment`). Sozinho na
+	// raiz ele pode ser conteúdo legítimo ("formas de pagamento"), então exige-se caminho composto.
+	if(count($segmentos) > 1 && in_array($ultimo, Array('payment', 'checkout', 'processing'), true)) return true;
 
 	// Área administrativa que porventura esteja marcada como pública (ex.: emissões de teste).
-	$primeiro = explode('/', $caminho)[0];
+	$primeiro = $segmentos[0];
 	if(strpos($primeiro, 'admin-') === 0) return true;
 
 	return false;
+}
+
+// ===== robots.txt (F9 do review de 2026-08-15)
+
+/**
+ * Monta o conteúdo do `robots.txt`.
+ *
+ * Função PURA. O `noindex` que o BATCH-111 passou a emitir só é visto DEPOIS do rastreio; o
+ * `robots.txt` é o único ponto em que dá para barrar antes e declarar o sitemap. É o complemento
+ * natural da trinca BATCH-110/111/112.
+ *
+ * Os prefixos barrados saem das MESMAS regras que excluem uma rota do sitemap — mantendo o acerto
+ * de desenho registrado no review: rota nova entra ou sai dos dois de uma vez, sem chance de o
+ * `robots.txt` liberar o que o sitemap esconde.
+ *
+ * @param array $params
+ * @param string $params['sitemap'] URL absoluta do sitemap (omitida quando vazia).
+ * @param array $params['disallow'] Prefixos adicionais a barrar.
+ * @return string
+ */
+function sitemap_robots_montar($params = Array()){
+	$sitemap = isset($params['sitemap']) ? trim((string)$params['sitemap']) : '';
+	$extras = isset($params['disallow']) && is_array($params['disallow']) ? $params['disallow'] : Array();
+
+	// Rotas utilitárias do gestor: as mesmas de `gestor_pagina_rota_sistema()` e da lista de exatos
+	// de `sitemap_caminho_nao_indexavel()` que fazem sentido como prefixo.
+	$disallow = Array(
+		'/_gestor-cookie-verify',
+		'/cookies-is-mandatory',
+		'/oauth-callback',
+		'/oauth-authenticate',
+		'/social-login',
+		'/signin-2fa',
+		'/validate-user',
+		'/email-confirmation',
+		'/forms-submissions-process',
+		'/pagina-de-impressao',
+		'/dashboard-site-toolbar',
+	);
+
+	foreach($extras as $extra){
+		$extra = trim((string)$extra);
+		if($extra === '') continue;
+		if(substr($extra, 0, 1) !== '/') $extra = '/'.$extra;
+		if(!in_array($extra, $disallow, true)) $disallow[] = $extra;
+	}
+
+	$linhas = Array('User-agent: *');
+	foreach($disallow as $rota) $linhas[] = 'Disallow: '.$rota;
+
+	if($sitemap !== ''){
+		$linhas[] = '';
+		$linhas[] = 'Sitemap: '.$sitemap;
+	}
+
+	return implode("\n", $linhas)."\n";
+}
+
+/**
+ * Caminho físico do `robots.txt`.
+ *
+ * Mesma decisão do sitemap (req-112): o arquivo vive em `assets/` e quem o entrega é o
+ * `arquivo-estatico.php` do core — o `default:` do switch resolve extensão desconhecida contra
+ * `assets-path`, e `txt` já está mapeado para `text/plain`. Na raiz ele dependeria da regra `!-f` do
+ * `.htaccess`, que varia por instalação. Verificado por HTTP: `/robots.txt` → 200 `text/plain`.
+ *
+ * @return string
+ */
+function sitemap_robots_caminho_arquivo(){
+	$arquivo = sitemap_caminho_arquivo();
+	return dirname($arquivo).DIRECTORY_SEPARATOR.'robots.txt';
+}
+
+/**
+ * Grava o `robots.txt` apontando para o sitemap público.
+ *
+ * @return bool
+ */
+function sitemap_robots_gravar(){
+	global $_GESTOR;
+
+	$base = (string)($_GESTOR['url-full-http-sem-lang'] ?? $_GESTOR['url-full-http'] ?? '');
+	$base = ($base === '') ? '' : rtrim($base, '/').'/';
+
+	$conteudo = sitemap_robots_montar(Array(
+		'sitemap' => ($base === '') ? '' : $base.'sitemap.xml',
+	));
+
+	$arquivo = sitemap_robots_caminho_arquivo();
+
+	if(@file_put_contents($arquivo, $conteudo) === false){
+		if(function_exists('log_disco')) log_disco('Falha ao gravar '.$arquivo, 'sitemap');
+		return false;
+	}
+
+	@chmod($arquivo, 0664);
+
+	return true;
 }
 
 // ===== Montagem e edição do XML (funções puras)
@@ -312,7 +428,72 @@ function sitemap_gravar($xml){
 
 	@chmod($arquivo, 0664);
 
+	sitemap_legado_remover();
+
 	return true;
+}
+
+/**
+ * Reconhece um `sitemap.xml` gerado por ESTA biblioteca (F8 do review de 2026-08-15).
+ *
+ * Função PURA. Serve de trava para a remoção do arquivo legado: só apagamos o que nós mesmos
+ * escrevemos. Um `sitemap.xml` posto à mão pelo operador, ou gerado por outra ferramenta, precisa
+ * sobreviver.
+ *
+ * @param string $conteudo
+ * @return bool
+ */
+function sitemap_conteudo_proprio($conteudo){
+	$conteudo = (string)$conteudo;
+	if(trim($conteudo) === '') return false;
+
+	// Assinatura de `sitemap_xml_montar()`: declaração XML seguida do urlset no namespace padrão.
+	if(strpos($conteudo, '<?xml') === false) return false;
+	if(strpos($conteudo, 'http://www.sitemaps.org/schemas/sitemap/0.9') === false) return false;
+	if(strpos($conteudo, '<sitemapindex') !== false) return false; // índice de sitemaps não é nosso.
+
+	return true;
+}
+
+/**
+ * Apaga o `sitemap.xml` que versões anteriores gravavam na RAIZ pública (F8).
+ *
+ * O req-112 moveu o arquivo para `assets/` porque a entrega pela raiz depende da regra
+ * `RewriteCond %{SCRIPT_FILENAME} !-f` do `.htaccess`, que varia por instalação — mas não removeu o
+ * arquivo antigo. Medido no `snapphoton-local`: `assets/sitemap.xml` com 4.344 bytes e 36 URLs, e a
+ * raiz ainda com o de 1.161 bytes e 9 URLs. Hoje o roteador vence e o novo é servido; numa
+ * instalação onde o `!-f` resolva primeiro, o arquivo velho passaria a ser servido **para sempre**,
+ * com 9 URLs e sem sinal nenhum. É justamente a variação que motivou a mudança.
+ *
+ * Roda a cada gravação e é barata (um `is_file` quando o arquivo já não existe).
+ *
+ * @return bool True quando algo foi removido.
+ */
+function sitemap_legado_remover(){
+	global $_GESTOR;
+
+	$raizPublica = $_GESTOR['ROOT_PATH'] ?? null;
+	if(!$raizPublica) return false;
+
+	$legado = rtrim((string)$raizPublica, '/\\').DIRECTORY_SEPARATOR.'sitemap.xml';
+
+	// Segurança: se `assets-path` for a própria raiz (instalação não convencional), o "legado" É o
+	// arquivo corrente — nunca apagar o que acabamos de gravar.
+	if(realpath($legado) && realpath($legado) === realpath(sitemap_caminho_arquivo())) return false;
+
+	if(!is_file($legado)) return false;
+
+	if(!sitemap_conteudo_proprio((string)@file_get_contents($legado))){
+		if(function_exists('log_disco')) log_disco('sitemap.xml na raiz não foi gerado pelo core; preservado: '.$legado, 'sitemap');
+		return false;
+	}
+
+	if(@unlink($legado)){
+		if(function_exists('log_disco')) log_disco('sitemap.xml legado removido da raiz: '.$legado, 'sitemap');
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -357,7 +538,13 @@ function sitemap_gerar_completo(){
 		$urls[] = Array('loc' => $loc, 'lastmod' => $pagina['data_modificacao'] ?? null);
 	}
 
-	return sitemap_gravar(sitemap_xml_montar($urls));
+	$gravado = sitemap_gravar(sitemap_xml_montar($urls));
+
+	// F9: o `robots.txt` acompanha a geração completa. Falha nele não invalida o sitemap — é um
+	// artefato derivado, como o próprio XML.
+	sitemap_robots_gravar();
+
+	return $gravado;
 }
 
 /**

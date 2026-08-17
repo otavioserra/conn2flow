@@ -14,6 +14,67 @@
 
 ## Tarefas recentes
 
+### 2026-08-17 — BATCH-118: findings F2, F3, F4, F7–F10 e a regressão do @layer theme
+
+- **Descartar `@layer theme` por camada foi o F1 batendo na minha própria correção.** O theme do
+  layout só tem os tokens que o LAYOUT usa; utility nova da página referencia `var(--text-3xl)`
+  inexistente, a declaração é invalidada e a propriedade cai para o inicial. Medido com Chromium:
+  13 de 21 elementos mudavam ao salvar. O corte no theme tem de ser por DECLARAÇÃO. Só `@layer base`
+  (Preflight), que não depende do conteúdo, pode ser decidido por camada.
+- **Comparar estilos COMPUTADOS entre dois estados é o teste que fecha discussão de CSS.** Duas
+  páginas Playwright (uma com o runtime ativo, outra só com o precompiled + o delta capturado),
+  `getComputedStyle` em cada elemento, diff por propriedade. Achou a causa em uma execução.
+- **O review pode errar o nome da coisa.** O F4 falava dos "dois includes de template" de
+  `bibliotecas/gestor.php`; eles estão dentro de `gestor_layout()`. O papel certo era
+  `layout-precompiled` (primeiro na ordem), não `dependency-precompiled` — e isso agravava o
+  finding, porque theme/base/Preflight iam para o fim da cascata.
+- **Dedup precisa da chave inteira.** `paginas_301` deduplicava só por `caminho`, mas a tabela não
+  tem `language` e o caminho é agnóstico: a linha do pt-br bloqueava a do en para a MESMA página.
+  A chave real é (`caminho`, `id_paginas`); na leitura, desempata o mais recente que resolva no
+  idioma corrente.
+- `/robots.txt` é servido por `assets/robots.txt` pelo mesmo caminho do sitemap — o `default:` do
+  `arquivo-estatico.php` resolve extensão desconhecida contra `assets-path`, e `txt` já está mapeado.
+  Verificado por HTTP antes de escrever a função.
+- Artefato derivado que muda de lugar tem de apagar o antigo, sob trava de autoria: o `sitemap.xml`
+  da raiz sobreviveu ao req-112 e, onde o `!-f` do `.htaccess` resolva primeiro, seria servido para
+  sempre.
+- Suítes após o batch: PHPUnit **315/315**, Vitest **228/228**.
+
+### 2026-08-17 — req-117 / BATCH-117: captura do CSS compilado, Tailwind na Editbar e painel de Código
+
+- **Antes de aceitar o diagnóstico de um intake, leia o runtime de terceiros.** O intake dizia que a
+  causa era a checagem encerrar cedo por causa das regras base. Lendo o bundle do
+  `@tailwindcss/browser@4.3.0`: (a) ele **prefixa `@import "tailwindcss";` sozinho** quando o
+  contrato não traz um — o `browser-contract.css` só com `@theme static` está correto; (b) a folha
+  de saída nasce **vazia** (`document.head.append`) e só é preenchida no fim do build. O defeito real
+  era o critério POSICIONAL ("última `<style>` com regras"): o `html-editor.js` injeta 4 `<style>` no
+  mesmo `<head>`, então o que ia para o banco podia ser o CSS da UI do editor.
+- **Todo `<style>` que o sistema emite tem de declarar seu papel.** O `css_compiled` gravado contém
+  `@layer utilities` — a mesma assinatura da saída do compilador. Sem `data-c2f-css-role`, a Editbar
+  releria o próprio valor antigo como compilação nova e a página congelaria na edição anterior.
+- **Filtro por assinatura de regra NÃO segura camada de fundação.** Preflight do browser 4.3.0 emite
+  `*, ::after, ::before, ::backdrop, ::file-selector-button`; o bundle offline emite sem o último —
+  nenhuma assinatura casa. E como `css_compiled` entra DEPOIS do pré-compilado na cascata
+  (`gestor.php`), a versão do editor venceria a do build **em produção**. Só `@layer base` sai por
+  camada; `theme` foi corrigido para sair por DECLARAÇÃO no BATCH-118 (ver a entrada acima).
+- **Página criada pelo usuário NUNCA terá `css_precompiled`**: `tailwind_recursos_descobrir()` varre
+  arquivos físicos em `resources/`, e ela vive só no banco (333 de 374 no photon). Mas o LAYOUT tem —
+  e é dele que vêm theme, Preflight e utilities. Por isso o baseline do editor tem de ser a cascata,
+  não o pré-compilado do próprio recurso.
+- Verificação com **Chromium real via Playwright** (`page.setContent` + bundle da unpkg + HTML real do
+  banco) validou o que happy-dom não alcança: ele não implementa `CSSLayerBlockRule` nem monta
+  `sheet.cssRules` a partir de `textContent`. Nos testes unitários, CSSOM simulado com classes falsas
+  cujo `constructor.name` casa.
+- **Heurística de aviso precisa ser calibrada contra o inventário, não contra a intuição.** A
+  detecção de "HTML usa Tailwind" com `flex|grid|hidden` isolados disparou em **176** recursos —
+  colide com `ui grid`/`ui items` do Fomantic. Exigindo duas utilities distintas COM valor e
+  excluindo classes Bootstrap (`justify-content-*`, `text-primary`), caiu para 4.
+- `site-toolbar-render` é o lugar certo para o contrato `@theme static` da Editbar: só quem entra em
+  edição precisa dele, e embuti-lo na página pública custaria KB por pageview anônimo.
+- Correção de caminho de gravação **não corrige dado já gravado**. As 3 páginas defeituosas do photon
+  só se recuperam ao serem salvas de novo.
+- Suítes após o batch: PHPUnit **297/297**, Vitest **220/220**.
+
 ### 2026-08-14 — req-112 / BATCH-112: sitemap, 301, publisher-pages e meta tags
 
 - **Elemento novo de UI do editor tem de entrar em `isEditorOwned()`** — a regra já estava registrada
@@ -46,103 +107,14 @@
   fallback para a lista completa, senão instalação sem o modo novo fica com o painel inutilizável.
 - Suítes após o batch: PHPUnit **241/241**, Vitest **184/184**.
 
-### 2026-08-13 — CR-001 / BATCH-111: laço de cookie e reversão do bloqueio de analytics
+## Review de 2026-08-15: estado
 
-- **Sintoma em relatório de analytics não prova onde está a causa.** "A `cookies-is-mandatory/`
-  aparece no GA" foi lido como "o analytics roda nela"; era o oposto — todo cliente sem cookie era
-  EMPURRADO para lá. Bot de analytics é stateless por definição: não guarda cookie, não segue
-  round-trip. Antes de aceitar um requisito que bloqueia algo, MEÇA quem chega e como.
-- **`curl` sem cookie jar é o teste que expõe fluxo de cookie.** Navegador real chegava a 200 em 2
-  saltos; cliente stateless e Googlebot entravam em laço infinito. Um `-w "%{num_redirects}
-  %{url_effective} %{http_code}"` decide a discussão em segundos.
-- **Página que explica um problema não pode estar atrás dele.** `cookies-is-mandatory/` reentrava na
-  verificação de cookie ao ser renderizada e fechava o ciclo sobre si mesma. Regra geral: rota de
-  sistema não passa pelo portão que ela existe para explicar.
-- **Googlebot não persiste cookie entre requisições.** Qualquer gate de cookie na home o cega.
-- **Decisão que não é testável tende a regredir.** A regra do laço morava dentro de
-  `gestor/gestor.php`, que roda `gestor_start()` no fim do arquivo e não carrega em teste. Extraída
-  para função pura na biblioteca, virou 5 casos de blindagem.
-- Detecção por lista de tokens é sempre desatualizada. Ela só vale como complemento; quem resolve é
-  a correção estrutural. Se a lista for a peça crítica, o desenho está errado.
-- Ao remover um comportamento, confira se a função que o nomeava ficou com nome mentiroso e se
-  alguém mais a usa (`gestor_pagina_sistema_sem_rastreamento` → `gestor_pagina_rota_sistema`, ainda
-  usada pelo sitemap).
-- Suítes após o batch: PHPUnit **229/229**, Vitest **178/178**.
-
-### 2026-08-13 — req-110 / BATCH-110: metadados da página, Editbar e sitemap
-
-- **Chave ausente ≠ chave vazia** em arrays de fallback: devolver `['title' => '']` faz a chave
-  "vencer" o fallback. Nos extratores, OMITA a chave; nos gravadores, o vazio precisa ir ao banco
-  (compare pelo valor do request, não por `isset`).
-- `interface_formulario_campos()` resolve `<span>#imagepick-<id>#</span>` DEPOIS que o componente já
-  está em `$_GESTOR['pagina']` — dá para colocar um image picker dentro do Editor HTML sem escrever
-  uma linha de seletor.
-- `admin-paginas`, `publisher-pages` e as publicações gravam na MESMA tabela `paginas`
-  (`publisher_id` vincula). Coluna nova vale para os dois; só o formulário é por módulo.
-- Operações genéricas (`status`, `excluir`) rodam na `interface` e aceitam
-  `$_GESTOR['interface'][opcao]['finalizar']['callbackFunction']` — é o gancho certo, sem tocar a
-  biblioteca compartilhada.
-- `json_encode` para reescrever JSON de recurso: **nunca** use `JSON_UNESCAPED_SLASHES`. O
-  `dashboard.json` usa o escape `\/` do PHP; sem o flag correto o diff explode em ruído (mesma
-  armadilha registrada no req-108). Confira também o newline final.
-- Em stub de `fetch` de teste, case o valor EXATO de `ajaxOpcao`: `x-page-config` é prefixo de
-  `x-page-config-save` e o match por substring devolve a resposta errada, mascarando o teste de erro.
-- Suítes após o batch: PHPUnit **223/223**, Vitest **181/181**.
-
-### 2026-08-13 — req-109 / BATCH-109: cookies, crawlers, CSRF e OpenGraph
-
-- **jQuery `.submit()` NÃO dispara evento `submit`**: `$(form).submit()` usa a propagação SIMULADA do
-  jQuery (dispatch próprio, não `dispatchEvent`) e sua ação padrão é
-  `HTMLFormElement.prototype.submit()`, que também não emite evento. Um
-  `document.addEventListener('submit', …, true)` cobre só o clique do usuário. Para pegar TODOS os
-  envios são precisos três pontos: captura nativa + handler delegado do jQuery + envelope do
-  prototype (com marca `__c2fCsrf` para o asset carregado 2× não empilhar envelopes).
-- Iframe `srcdoc` herda a ORIGEM mas não o `<head>` da hospedeira: sem `<meta name="csrf-token">` e
-  sem `global.js`. Ler o token de `parent.gestor.csrfToken` é o único caminho lá dentro.
-- `gestor.moduloCaminho` já vem com a barra final (`rtrim($caminho,'/').'/'`, gestor.php). Todo
-  `+ '/'` em cima disso gera `modulo/opcao//`. O padrão está espalhado por vários módulos.
-- `existe()` considera string só de espaços como preenchida — para decidir por conteúdo real, use o
-  valor TRIMADO (um teste pegou isso no `twitter:card`).
-- GTM/Meta Pixel **não existem no core**; vêm do `html_extra_head` do banco ou do JS do projeto.
-  (O bloqueio que este batch introduziu foi REVERTIDO pelo CR-001 — ver a entrada do BATCH-111.)
-- Redirecionar bot para `/signin/` faz o preview do link exibir a tela de login. Resposta certa para
-  página protegida: `200` só com `<head>` (OpenGraph + noindex), interceptado ANTES de incluir o
-  módulo da página.
-- `og:image` vazio faz o WhatsApp mostrar card sem imagem em vez de usar o fallback — omita a tag.
-- Suítes após o batch: PHPUnit **200/200**, Vitest **171/171**.
-
-## 2026-08-15 — Review dos BATCH-111/112/115 (disparado pelo req-076 do lumix)
-
-- **Tailwind v4 só emite a variável de `@theme` que ele VÊ usada, e ele vê só as utilities do HTML
-  escaneado.** CSS autoral de recurso não passa pelo compilador: se consome `var(--color-…)`, o token
-  pode não existir na saída. `var()` indefinida invalida a declaração e a propriedade cai para o
-  valor inicial — some cor/borda **sem erro em lugar nenhum**. Projeto com tema próprio precisa de
-  `@theme static`. O core não sente porque não tem `@theme` nem CSS autoral consumindo token.
-- **Em modo bundle o núcleo descarta `resource-precompiled`** — é por isso que a rota declara suas
-  dependências. Consequência ainda não coberta: recurso escolhido em RUNTIME (template selecionável
-  por `target` no banco) nasce fora do bundle e renderiza sem estilo, em silêncio.
-- **Descarte silencioso é o que impede o diagnóstico.** Vale logar em dev quando um sidecar não vazio
-  for descartado por causa do bundle.
-- `dependency-precompiled` está no bucket e na whitelist do ordenador e **nenhum ponto emite** esse
-  papel; os dois includes de template caem no default `resource-precompiled`.
-- Sitemap medido no `snapphoton-local`: `/sitemap.xml` entrega o arquivo de `assets/` (roteador vence),
-  mas o `sitemap.xml` **antigo continua na raiz** — em instalação onde a regra `!-f` resolva primeiro,
-  o arquivo velho passa a ser servido para sempre. Não existe `robots.txt` no core nem no projeto.
-- A heurística de "página de confirmação" do sitemap cobre `…/success`, mas as páginas se chamam
-  `…-success`: `contacts-success/`, `subscription-checkout/error/` e `/payment/` estão indexadas.
-- Acerto a preservar: a MESMA `gestor_pagina_rota_sistema()` alimenta o `noindex` do BATCH-111 e a
-  exclusão do sitemap — rota nova entra ou sai dos dois de uma vez.
-- **A coluna `css_precompiled` não chegou a `forms`/`forms_search`** (só `templates`, `componentes`,
-  `paginas`, `layouts`). Por isso `forms_render()` nunca incluiu o pré-compilado e TODO formulário do
-  widget saía sem as utilities dos campos. Projetar a coluna sem `banco_campo_existe()` devolve
-  **HTTP 500 em rota pública**, não degradação.
-- **Componente sem `framework_css` não é compilado e ninguém avisa.** O `form-ui` — overlay, erros e
-  bloqueio de TODOS os formulários — nunca teve `.precompiled.css`; junto disso o dimmer usava
-  `bg-opacity-50`, que **não existe no Tailwind v4**. O overlay era injetado e ficava invisível.
-- Correção ao finding F4: `dependency-precompiled` não tinha emissor **no core**; o lumix já o usava.
-  Agora `forms`/`forms-search` também emitem, e a cascata do checkout foi medida como
-  `layout` → `dependency` → `page` → `resource`.
-- Findings completos em [reviews/REVIEW-2026-08-15-batches-111-112-115.md](reviews/REVIEW-2026-08-15-batches-111-112-115.md).
+Todos os findings (F1–F10) foram fechados entre os BATCH-117 e BATCH-118. Dívidas registradas:
+dependência de template por `target` (sugestão 2 do F2) e a decisão de arquitetura sobre Tailwind no
+painel administrativo. Acerto a preservar: a MESMA `gestor_pagina_rota_sistema()` alimenta o `noindex`
+do BATCH-111, a exclusão do sitemap e agora o `robots.txt` — rota nova entra ou sai dos três de uma
+vez. Texto completo em
+[reviews/REVIEW-2026-08-15-batches-111-112-115.md](reviews/REVIEW-2026-08-15-batches-111-112-115.md).
 
 ## Pendências
 
