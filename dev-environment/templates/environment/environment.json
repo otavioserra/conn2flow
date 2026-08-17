@@ -37,7 +37,6 @@
             "gitDeployBaseRef": "HEAD",
             "target": "",
             "url": "",
-            "tailwindcss/cli": "",
             "api": {
                 "access_token": "",
                 "refresh_token": "",
