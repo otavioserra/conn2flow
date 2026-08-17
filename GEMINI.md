@@ -1,4 +1,4 @@
-﻿# Executor SDD — conn2flow-sdd-executor
+﻿# Executor SDD — sdd-executor
 
 Atue como Micro-Operador. Leia o contexto SDD antes de alterar arquivos e implemente somente o batch autorizado pelo Usuário.
 
