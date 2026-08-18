@@ -1,20 +1,14 @@
-<div class="ui stackable two column centered grid">
-    <div class="column">
-        <div class="ui segment">
-            <form id="_gestor-form-oauth-2fa" action="@[[pagina#url-raiz]]@oauth-authenticate-2fa/" method="post" name="_gestor-form-oauth-2fa"
-                class="ui form">
-                <div class="ui center aligned header large">Verificação de API</div>
-                <div class="ui hidden divider">&nbsp;</div>
-                #conteudo-2fa#
-                <div class="ui hidden divider">&nbsp;</div>
-                <div class="ui error message">&nbsp;</div>
-                <div class="field">
-                    <button class="fluid ui button blue" name="_gestor-oauth-2fa" value="1">Verificar e Liberar Tokens</button>
-                </div>
-                <div class="ui basic segment center aligned">
-                    <a href="@[[pagina#url-raiz]]@oauth-authenticate/">Cancelar</a>
-                </div>
-            </form>
+<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <h1 class="mb-6 text-center text-2xl font-semibold text-slate-900">@[[oauth-2fa-title]]@</h1>
+    <form id="_gestor-form-oauth-2fa" action="@[[pagina#url-raiz]]@oauth-authenticate-2fa/" method="post"
+        name="_gestor-form-oauth-2fa" data-c2f-form="tailwind" class="space-y-4">
+        #conteudo-2fa#
+        <div class="hidden rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800" data-c2f-form-erros></div>
+        <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-600/40 focus-visible:outline-none active:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60" name="_gestor-oauth-2fa"
+            value="1">@[[oauth-2fa-button]]@</button>
+        <div class="mt-6 space-y-1 text-center text-sm text-slate-600">
+            <p><a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@oauth-authenticate/">@[[oauth-2fa-cancel]]@</a></p>
         </div>
-    </div>
+    </form>
 </div>

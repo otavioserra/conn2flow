@@ -80,5 +80,62 @@
             "css_precompiled": "",
             "combined": "2ed0fc6c4f008669f44eb2d2a97b3828"
         }
+    },
+    {
+        "name": "Admin Layout Tailwind",
+        "id": "layout-administrativo-tailwind",
+        "framework_css": "tailwindcss",
+        "tailwind_dependencies": [
+            {
+                "type": "components",
+                "id": "menu-principal-sistema-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-formulario-edicao-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-carregando-modal-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-alerta-modal-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-delecao-modal-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                "scope": "global"
+            }
+        ],
+        "tailwind_dependencies_reason": "REQ-118: o menu e os componentes da interface administrativa sao montados em runtime pelo PHP e nao possuem sidecar proprio na cascata; sem declara-los, o layout compila sem as utilities deles.",
+        "version": "1.1",
+        "checksum": {
+            "html": "3cbc73794f8855e57535a19b36a47bf4",
+            "css": "7e87920042b529ec2368d6f08f0e35d0",
+            "css_precompiled": "",
+            "combined": "582f704abd672234290d70d9b5f9cdbc"
+        }
+    },
+    {
+        "name": "Public Page Layout Tailwind",
+        "id": "layout-pagina-sem-permissao-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "2bf8a2011588b35ff3e95daa09bccc3c",
+            "css": "deb00b61e70192c06a8ed89803eb711c",
+            "css_precompiled": "",
+            "combined": "dade7209ac649ce2b4458e8fc4a48457"
+        }
     }
 ]

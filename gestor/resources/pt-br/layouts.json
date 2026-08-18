@@ -80,5 +80,62 @@
             "css_precompiled": "",
             "combined": "2ed0fc6c4f008669f44eb2d2a97b3828"
         }
+    },
+    {
+        "name": "Layout Administrativo Tailwind",
+        "id": "layout-administrativo-tailwind",
+        "framework_css": "tailwindcss",
+        "tailwind_dependencies": [
+            {
+                "type": "components",
+                "id": "menu-principal-sistema-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-formulario-edicao-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-carregando-modal-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-alerta-modal-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-delecao-modal-tailwind",
+                "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                "scope": "global"
+            }
+        ],
+        "tailwind_dependencies_reason": "REQ-118: o menu e os componentes da interface administrativa sao montados em runtime pelo PHP e nao possuem sidecar proprio na cascata; sem declara-los, o layout compila sem as utilities deles.",
+        "version": "1.1",
+        "checksum": {
+            "html": "24ac77a6fca87734bbc3783fa9e41852",
+            "css": "7e87920042b529ec2368d6f08f0e35d0",
+            "css_precompiled": "",
+            "combined": "a4fb1481c016c2ce310328f0c614e8d6"
+        }
+    },
+    {
+        "name": "Layout Página Sem Permissão Tailwind",
+        "id": "layout-pagina-sem-permissao-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "8ba0020a9759d12fbe8f3a89c4232a6c",
+            "css": "deb00b61e70192c06a8ed89803eb711c",
+            "css_precompiled": "",
+            "combined": "8a3c9db11cab56eff88cae6eedb6981f"
+        }
     }
 ]

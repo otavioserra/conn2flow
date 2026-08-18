@@ -1,14 +1,14 @@
 {
     "version": 1,
-    "system": "c27a01d75a04538b",
+    "system": "d9cc3a312cc65d40",
     "owners": {
         "configuracao": "d9322996d38e9b8c",
         "dashboard": "431d9008a60564a7",
         "datatables": "5648e2d8917a0a2b",
         "favicon": "8587a3f200e38cbe",
-        "global": "8a90c977546d4672",
+        "global": "38ef3c53615a246a",
         "images": "24911cddaa3f5975",
-        "interface": "af59f1383cdf4be9",
+        "interface": "0a729592136178d6",
         "interface-v2": "ed5f03e2856538cc",
         "jQuery-File-Upload-10.32.0": "b4d1102d60e5702c",
         "jQuery-Mask-Plugin-v1.14.16": "7c1dba1bc4269bbe",

@@ -1,0 +1,35 @@
+/*
+ * CSS autoral do layout administrativo Tailwind.
+ *
+ * Só entra aqui o que utility não expressa: a barra de rolagem do menu e a supressão de seleção
+ * durante o arraste do redimensionador. Todo o resto do layout é utility no HTML.
+ *
+ * ATENÇÃO (F1 do review de 2026-08-15): este arquivo NÃO passa pelo compilador Tailwind. Se ele
+ * consumir um token de `@theme` que o build podou, a declaração inteira é invalidada em silêncio —
+ * por isso aqui só há valores literais.
+ */
+
+[data-admin-sidebar] nav {
+    scrollbar-width: thin;
+    scrollbar-color: #334155 transparent;
+}
+
+[data-admin-sidebar] nav::-webkit-scrollbar {
+    width: 8px;
+}
+
+[data-admin-sidebar] nav::-webkit-scrollbar-thumb {
+    background-color: #334155;
+    border-radius: 9999px;
+}
+
+/* Durante o arraste do menu, o navegador tentaria selecionar o texto sob o cursor. */
+body.c2f-admin-redimensionando {
+    user-select: none;
+    cursor: col-resize;
+}
+
+body.c2f-admin-redimensionando [data-admin-sidebar],
+body.c2f-admin-redimensionando [data-admin-conteudo] {
+    transition: none !important;
+}

@@ -1,79 +1,58 @@
-<div class="ui two column centered grid stackable">
-    <div class="column">
-        <div class="ui segment">
-            <form id="_gestor-form-signup" action="@[[pagina#url-raiz]]@signup/" method="post"
-                name="_gestor-form-signup" class="ui form interfaceFormPadrao">
-                <div class="ui center aligned header large">@[[signup-title]]@</div>
-                <div class="ui hidden divider"></div>
-                <!-- bloqueado-mensagem < -->
-                <div class="ui icon negative message visible">
-                    <i class="exclamation triangle icon"></i>
-                    <div class="content">
-                        <div class="header">
-                            Maximum Number of Allowed Registrations Reached!
-                        </div>
-                        <p>Unfortunately, it is not possible to register a new account in our system as the maximum
-                            limit of daily registrations on your network has been reached. Please try again within 24
-                            hours.</p>
-                    </div>
-                </div><!-- bloqueado-mensagem > -->
-                <!-- formulario < -->
-                <div class="ui hidden divider"></div>
-                <div class="field">
-                    <label>@[[signup-name-label]]@</label>
-                    <input type="text" name="nome" placeholder="@[[signup-name-placeholder]]@"
-                        autocomplete="new-password">
-                </div>
-                <div class="field">
-                    <label>@[[signup-email-label]]@</label>
-                    <input type="text" name="email" placeholder="@[[signup-email-placeholder]]@" maxlength="100"
-                        autocomplete="new-password">
-                </div>
-                <div class="field">
-                    <label>@[[signup-email-2-label]]@</label>
-                    <input type="text" name="email-2" placeholder="@[[signup-email-2-placeholder]]@" maxlength="100"
-                        autocomplete="new-password">
-                </div>
-                <div class="field">
-                    <label>@[[signup-senha-label]]@</label>
-                    <input type="password" name="senha" placeholder="@[[signup-senha-placeholder]]@" maxlength="100"
-                        autocomplete="new-password">
-                </div>
-                <div class="field">
-                    <label>@[[signup-senha-2-label]]@</label>
-                    <input type="password" name="senha-2" placeholder="@[[signup-senha-2-placeholder]]@" maxlength="100"
-                        autocomplete="new-password">
-                </div>
-                <!-- plano-cont < -->
-                <div class="ui hidden divider"></div>
-                <div class="inline fields">
-                    <label for="plano">@[[signup-plan]]@:</label>
-                    <!-- plano-cel < -->
-                    <div class="field">
-                        <div class="ui radio checkbox">
-                            <input type="radio" name="plano" value="#val#" #checked#="">
-                            <label>#nome#</label>
-                        </div>
-                    </div><!-- plano-cel > -->
-                </div>
-                <!-- plano-cont > -->
-                <div class="ui hidden divider"></div>
-                <div class="ui hidden divider"></div>
-                <div class="ui error message">&nbsp;</div>
-                <div class="field">
-                    <button class="fluid ui button blue">@[[signup-button]]@</button>
-                </div>
-                <!-- formulario > -->
-                <div class="field">
-                    <div class="ui hidden divider">&nbsp;</div>
-                    <div class="ui basic segment center aligned">
-                        <div class="">@[[signup-login-label]]@ <a
-                                href="@[[pagina#url-raiz]]@signin/">@[[signup-login-button]]@</a>
-                        </div>
-                    </div>
-                </div>
-                <input id="_gestor-signup" name="_gestor-signup" type="hidden" value="1">
-            </form>
+<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <h1 class="mb-6 text-center text-2xl font-semibold text-slate-900">@[[signup-title]]@</h1>
+    <form id="_gestor-form-signup" action="@[[pagina#url-raiz]]@signup/" method="post"
+        name="_gestor-form-signup" data-c2f-form="tailwind" class="interfaceFormPadrao space-y-4">
+        <!-- bloqueado-mensagem < -->
+        <div class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+            <p class="font-semibold">@[[signup-blocked-title]]@</p>
+            <p class="mt-1">@[[signup-blocked-message]]@</p>
+        </div><!-- bloqueado-mensagem > -->
+        <!-- formulario < -->
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-nome">@[[signup-name-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="text" id="c2f-nome" name="nome" placeholder="@[[signup-name-placeholder]]@" autocomplete="name">
         </div>
-    </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-email">@[[signup-email-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="email" id="c2f-email" name="email" placeholder="@[[signup-email-placeholder]]@" maxlength="100" autocomplete="email">
+        </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-email-2">@[[signup-email-2-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="email" id="c2f-email-2" name="email-2" placeholder="@[[signup-email-2-placeholder]]@" maxlength="100" autocomplete="email">
+        </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-senha">@[[signup-senha-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="password" id="c2f-senha" name="senha" placeholder="@[[signup-senha-placeholder]]@" maxlength="100" autocomplete="new-password" data-perfil-senha>
+        </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-senha-2">@[[signup-senha-2-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="password" id="c2f-senha-2" name="senha-2" placeholder="@[[signup-senha-2-placeholder]]@" maxlength="100" autocomplete="new-password">
+        </div>
+        <div>
+            <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                <div data-perfil-senha-barra class="h-full w-0 rounded-full bg-slate-300 transition-all duration-200"></div>
+            </div>
+            <p data-perfil-senha-rotulo class="mt-2 text-xs font-medium text-slate-500">@[[password-strength-empty]]@</p>
+        </div>
+        <!-- plano-cont < -->
+        <fieldset>
+            <legend class="mb-1.5 block text-sm font-medium text-slate-700">@[[signup-plan]]@</legend>
+            <div class="flex flex-wrap gap-4">
+                <!-- plano-cel < -->
+                <label class="flex items-center gap-2 text-sm text-slate-700">
+                    <input type="radio" name="plano" value="#val#" #checked#="" class="size-4 border-slate-300 text-emerald-600 focus:ring-emerald-600/20">
+                    <span>#nome#</span>
+                </label><!-- plano-cel > -->
+            </div>
+        </fieldset>
+        <!-- plano-cont > -->
+        <div class="hidden rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800" data-c2f-form-erros></div>
+        <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-600/40 focus-visible:outline-none active:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60">@[[signup-button]]@</button>
+        <!-- formulario > -->
+        <div class="mt-6 space-y-1 text-center text-sm text-slate-600">
+            <p>@[[signup-login-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@signin/">@[[signup-login-button]]@</a></p>
+        </div>
+        <input id="_gestor-signup" name="_gestor-signup" type="hidden" value="1">
+    </form>
 </div>

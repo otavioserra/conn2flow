@@ -1,0 +1,52 @@
+<!-- conteiner < -->
+<div id="seg-sessoes" class="space-y-6">
+    <div id="sessoes-msg" class="hidden rounded-lg border px-4 py-3 text-sm"></div>
+    <div class="@[[classe-cartao]]@">
+        <h3 class="@[[classe-titulo]]@"><span aria-hidden="true">💻</span> @[[sessions-title]]@</h3>
+        <p class="@[[classe-ajuda]]@">@[[sessions-help]]@</p>
+        <!-- revogar-outras < -->
+        <button type="button" class="@[[classe-botao-alerta]]@ mt-4" id="btn-sessoes-revogar-outras">
+            <span aria-hidden="true">⛔</span> @[[sessions-revoke-others]]@
+        </button><!-- revogar-outras > -->
+    </div>
+    <!-- vazio < -->
+    <p class="@[[classe-ajuda]]@">@[[sessions-empty]]@</p><!-- vazio > -->
+    <!-- lista < -->
+    <div id="sessoes-lista" class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <!-- cartao -->
+    </div><!-- lista > -->
+</div><!-- conteiner > -->
+<!-- cartao < -->
+<article class="@[[classe-cartao]]@#destaque#" data-sessao-pubid="#pubid#">
+    <div class="flex flex-wrap items-start justify-between gap-2">
+        <h4 class="flex items-center gap-2 text-sm font-semibold text-slate-800">
+            <span aria-hidden="true">#icone#</span> #titulo#
+        </h4>
+        <!-- atual < -->
+        <span class="@[[classe-etiqueta]]@ bg-emerald-50 text-emerald-700">@[[sessions-current-badge]]@</span>
+        <!-- atual > -->
+    </div>
+    <dl class="mt-3 space-y-1 text-xs text-slate-600">
+        <div class="flex gap-2">
+            <dt class="font-semibold">@[[sessions-ip-label]]@:</dt>
+            <dd class="break-all">#ip#</dd>
+        </div>
+        <div class="flex gap-2">
+            <dt class="font-semibold">@[[sessions-created-label]]@:</dt>
+            <dd>#data#</dd>
+        </div>
+        <!-- origem < -->
+        <div class="flex gap-2">
+            <dt class="font-semibold">@[[sessions-origin-label]]@:</dt>
+            <dd class="break-all">#origem#</dd>
+        </div><!-- origem > -->
+    </dl>
+    <p class="mt-3 flex flex-wrap items-center gap-2">
+        <span class="@[[classe-etiqueta]]@ bg-slate-100 text-slate-600">#tipo#</span>
+        <!-- revogar < -->
+        <button type="button" class="@[[classe-botao-mini]]@ btn-sessao-revogar"
+            data-pubid="#pubid#">@[[sessions-revoke]]@</button><!-- revogar > -->
+    </p>
+</article><!-- cartao > -->
+<!-- etiqueta < -->
+<span class="@[[classe-etiqueta]]@ #cor#">#texto#</span><!-- etiqueta > -->

@@ -11412,6 +11412,960 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "profile-tabs-label",
+        "valor": "Seções do perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "profile-tab-data",
+        "valor": "Dados Pessoais",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "profile-tab-security",
+        "valor": "Segurança & 2FA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "profile-tab-sessions",
+        "valor": "Sessões & Dispositivos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "profile-personal-data-title",
+        "valor": "Dados cadastrais",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-empty",
+        "valor": "Digite uma senha para ver a força.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-weak",
+        "valor": "Senha fraca",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-fair",
+        "valor": "Senha razoável",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-good",
+        "valor": "Senha boa",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-strong",
+        "valor": "Senha forte",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-inactive",
+        "valor": "O 2FA está desativado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-configure",
+        "valor": "Configurar 2FA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-secret-label",
+        "valor": "Chave manual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-title",
+        "valor": "Sessões ativas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-help",
+        "valor": "Estes são os dispositivos conectados à sua conta. Se você não reconhecer um acesso, revogue-o e troque a sua senha.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-empty",
+        "valor": "Nenhuma sessão ativa encontrada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-unknown",
+        "valor": "Desconhecido",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-current-badge",
+        "valor": "Este dispositivo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-device-title",
+        "valor": "#browser# no #system#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-ip-label",
+        "valor": "IP",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-created-label",
+        "valor": "Início do acesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-origin-label",
+        "valor": "Origem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-type-browser",
+        "valor": "Sessão do navegador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-type-persistent",
+        "valor": "Acesso lembrado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke",
+        "valor": "Revogar sessão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke-others",
+        "valor": "Desconectar outros dispositivos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke-confirm",
+        "valor": "Deseja revogar esta sessão? O acesso daquele dispositivo será encerrado imediatamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke-others-confirm",
+        "valor": "Deseja encerrar todas as outras sessões? Somente este dispositivo continuará conectado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoked-ok",
+        "valor": "Sessão revogada com sucesso.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoked-others-ok",
+        "valor": "As demais sessões foram encerradas.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke-error",
+        "valor": "Não foi possível revogar a sessão.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "profile-tab-api-tokens",
+        "valor": "Chaves de API",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-title",
+        "valor": "Chaves de API pessoais",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-help",
+        "valor": "Chaves de API permitem que aplicações externas acessem o sistema em seu nome. Trate cada chave como uma senha.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-create",
+        "valor": "Gerar nova chave de API",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-confirm",
+        "valor": "Gerar chave",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-cancel",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-name-label",
+        "valor": "Nome da chave",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-name-placeholder",
+        "valor": "Ex.: Integração Zapier, CLI Local",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-name-required",
+        "valor": "Informe um nome para a chave.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-expiration-label",
+        "valor": "Expira em (dias)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-expiration-never",
+        "valor": "Sem expiração",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-scopes-label",
+        "valor": "Escopos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-scope-read",
+        "valor": "Leitura",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-scope-write",
+        "valor": "Escrita",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-scope-deploy",
+        "valor": "Publicação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-copy-warning",
+        "valor": "Copie esta chave agora. Você não poderá visualizá-la novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-copy",
+        "valor": "Copiar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-copied",
+        "valor": "Chave copiada para a área de transferência.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-empty",
+        "valor": "Você ainda não tem chaves de API.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-name",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-prefix",
+        "valor": "Prefixo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-created",
+        "valor": "Criada em",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-last-use",
+        "valor": "Último uso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-status",
+        "valor": "Situação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-actions",
+        "valor": "Ações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-never-used",
+        "valor": "Nunca usada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-status-ativo",
+        "valor": "Ativa",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-status-revogado",
+        "valor": "Revogada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-status-expirado",
+        "valor": "Expirada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-revoke",
+        "valor": "Revogar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-revoke-confirm",
+        "valor": "Deseja revogar esta chave? Qualquer integração que a utilize perderá o acesso imediatamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-created-ok",
+        "valor": "Chave de API criada com sucesso.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-revoked-ok",
+        "valor": "Chave de API revogada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-create-error",
+        "valor": "Não foi possível criar a chave de API.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-revoke-error",
+        "valor": "Não foi possível revogar a chave de API.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-not-allowed",
+        "valor": "Seu perfil não está autorizado a emitir chaves de API.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "recovery-codes-title",
+        "valor": "Códigos de recuperação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "recovery-codes-help",
+        "valor": "Guarde estes códigos em local seguro. Cada um funciona UMA única vez e serve para entrar caso você perca o aplicativo autenticador. Eles não serão exibidos novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "recovery-code-label",
+        "valor": "Ou use um código de recuperação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-blocked-title",
+        "valor": "Endereço de IP do seu dispositivo está bloqueado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-blocked-message",
+        "valor": "Não é possível acessar sua conta deste dispositivo por excesso de tentativas com usuário e\/ou senha inválidos. Tente novamente mais tarde ou de outra rede.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "login-email-code-button",
+        "valor": "Enviar código de acesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "signup-blocked-title",
+        "valor": "Limite de cadastros alcançado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "signup-blocked-message",
+        "valor": "O limite máximo de cadastros por dia na sua rede foi alcançado. Tente novamente dentro de 24h.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-blocked-title",
+        "valor": "Endereço de IP do seu dispositivo está bloqueado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-blocked-message",
+        "valor": "Não é possível alterar a sua senha neste dispositivo por excesso de tentativas com e-mails inválidos. Tente novamente mais tarde ou de outra rede.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-authenticate-title",
+        "valor": "Autenticação OAuth 2.0",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-authenticate-help",
+        "valor": "Forneça suas credenciais para obter tokens de acesso à API.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-authenticate-button",
+        "valor": "Autenticar e obter tokens",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-scope-label",
+        "valor": "Escopo (opcional)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-redirect-label",
+        "valor": "URL de redirecionamento (opcional)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-2fa-title",
+        "valor": "Verificação de API",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-2fa-button",
+        "valor": "Verificar e liberar tokens",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-2fa-cancel",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-2fa-email-help",
+        "valor": "Digite o código enviado por e-mail para continuar a geração dos tokens de API.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "email-confirmed-message",
+        "valor": "E-mail confirmado com sucesso!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "email-confirmed-button",
+        "valor": "Acessar o sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "social-login-redirecting",
+        "valor": "Redirecionando para o provedor de login...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "oauth-callback-processing",
+        "valor": "Processando autenticação...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "signout-message",
+        "valor": "Encerrando a sua sessão...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-cartao",
+        "valor": "rounded-xl border border-slate-200 bg-white p-4 shadow-sm",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-titulo",
+        "valor": "mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-rotulo",
+        "valor": "mb-1 block text-sm font-semibold text-slate-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-campo",
+        "valor": "block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-botao",
+        "valor": "inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-botao-ok",
+        "valor": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-botao-alerta",
+        "valor": "inline-flex items-center gap-2 rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-botao-mini",
+        "valor": "inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-etiqueta",
+        "valor": "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-ajuda",
+        "valor": "text-sm text-slate-500",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-campo",
+        "valor": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600\/20 focus:outline-none",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-rotulo",
+        "valor": "mb-1.5 block text-sm font-medium text-slate-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-ok",
+        "valor": "rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-secundario",
+        "valor": "flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400\/40 focus-visible:outline-none",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-aba",
+        "valor": "flex-1 rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
         "language": "en",
         "modulo": "perfil-usuario",
         "id": "button-security",
@@ -12634,6 +13588,960 @@
         "tipo": "string",
         "grupo": null,
         "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "profile-tabs-label",
+        "valor": "Profile sections",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "profile-tab-data",
+        "valor": "Personal Data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "profile-tab-security",
+        "valor": "Security & 2FA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "profile-tab-sessions",
+        "valor": "Sessions & Devices",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "profile-personal-data-title",
+        "valor": "Registration data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-empty",
+        "valor": "Type a password to see its strength.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-weak",
+        "valor": "Weak password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-fair",
+        "valor": "Fair password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-good",
+        "valor": "Good password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "password-strength-strong",
+        "valor": "Strong password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-inactive",
+        "valor": "2FA is disabled.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-configure",
+        "valor": "Set up 2FA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "security-2fa-secret-label",
+        "valor": "Manual key",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-title",
+        "valor": "Active sessions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-help",
+        "valor": "These are the devices connected to your account. If you do not recognise an access, revoke it and change your password.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-empty",
+        "valor": "No active session found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-unknown",
+        "valor": "Unknown",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-current-badge",
+        "valor": "This device",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-device-title",
+        "valor": "#browser# on #system#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-ip-label",
+        "valor": "IP",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-created-label",
+        "valor": "Signed in at",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-origin-label",
+        "valor": "Origin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-type-browser",
+        "valor": "Browser session",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-type-persistent",
+        "valor": "Remembered access",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke",
+        "valor": "Revoke session",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke-others",
+        "valor": "Sign out other devices",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke-confirm",
+        "valor": "Revoke this session? That device will be signed out immediately.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke-others-confirm",
+        "valor": "Sign out every other session? Only this device will stay connected.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoked-ok",
+        "valor": "Session revoked successfully.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoked-others-ok",
+        "valor": "The other sessions have been ended.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "sessions-revoke-error",
+        "valor": "The session could not be revoked.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "profile-tab-api-tokens",
+        "valor": "API Keys",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-title",
+        "valor": "Personal API keys",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-help",
+        "valor": "API keys let external applications access the system on your behalf. Treat every key like a password.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-create",
+        "valor": "Generate new API key",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-confirm",
+        "valor": "Generate key",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-name-label",
+        "valor": "Key name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-name-placeholder",
+        "valor": "E.g. Zapier integration, Local CLI",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-name-required",
+        "valor": "Enter a name for the key.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-expiration-label",
+        "valor": "Expires in (days)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-expiration-never",
+        "valor": "Never expires",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-scopes-label",
+        "valor": "Scopes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-scope-read",
+        "valor": "Read",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-scope-write",
+        "valor": "Write",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-scope-deploy",
+        "valor": "Deploy",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-copy-warning",
+        "valor": "Copy this key now. You will not be able to see it again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-copy",
+        "valor": "Copy",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-copied",
+        "valor": "Key copied to the clipboard.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-empty",
+        "valor": "You have no API keys yet.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-name",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-prefix",
+        "valor": "Prefix",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-created",
+        "valor": "Created at",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-last-use",
+        "valor": "Last used",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-col-actions",
+        "valor": "Actions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-never-used",
+        "valor": "Never used",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-status-ativo",
+        "valor": "Active",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-status-revogado",
+        "valor": "Revoked",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-status-expirado",
+        "valor": "Expired",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-revoke",
+        "valor": "Revoke",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-revoke-confirm",
+        "valor": "Revoke this key? Any integration using it will lose access immediately.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-created-ok",
+        "valor": "API key created successfully.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-revoked-ok",
+        "valor": "API key revoked.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-create-error",
+        "valor": "The API key could not be created.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-revoke-error",
+        "valor": "The API key could not be revoked.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "api-tokens-not-allowed",
+        "valor": "Your profile is not allowed to issue API keys.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "recovery-codes-title",
+        "valor": "Recovery codes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "recovery-codes-help",
+        "valor": "Store these codes somewhere safe. Each one works ONCE and lets you sign in if you lose your authenticator app. They will not be shown again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "recovery-code-label",
+        "valor": "Or use a recovery code",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-blocked-title",
+        "valor": "Your device IP address is blocked",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-blocked-message",
+        "valor": "This device cannot access your account due to too many attempts with an invalid user and\/or password. Try again later or from another network.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "login-email-code-button",
+        "valor": "Send access code",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-blocked-title",
+        "valor": "Sign-up limit reached",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "signup-blocked-message",
+        "valor": "The maximum number of sign-ups per day for your network has been reached. Please try again within 24h.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-blocked-title",
+        "valor": "Your device IP address is blocked",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "forgot-password-blocked-message",
+        "valor": "You cannot reset your password from this device due to too many attempts with invalid e-mails. Try again later or from another network.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-authenticate-title",
+        "valor": "OAuth 2.0 authentication",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-authenticate-help",
+        "valor": "Provide your credentials to obtain API access tokens.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-authenticate-button",
+        "valor": "Authenticate and get tokens",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-scope-label",
+        "valor": "Scope (optional)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-redirect-label",
+        "valor": "Redirect URL (optional)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-2fa-title",
+        "valor": "API verification",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-2fa-button",
+        "valor": "Verify and release tokens",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-2fa-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-2fa-email-help",
+        "valor": "Enter the email access code to continue generating API tokens.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "email-confirmed-message",
+        "valor": "E-mail confirmed successfully!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "email-confirmed-button",
+        "valor": "Go to the system",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "social-login-redirecting",
+        "valor": "Redirecting to the login provider...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "oauth-callback-processing",
+        "valor": "Processing authentication...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "signout-message",
+        "valor": "Ending your session...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-cartao",
+        "valor": "rounded-xl border border-slate-200 bg-white p-4 shadow-sm",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-titulo",
+        "valor": "mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-rotulo",
+        "valor": "mb-1 block text-sm font-semibold text-slate-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-campo",
+        "valor": "block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-botao",
+        "valor": "inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-botao-ok",
+        "valor": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-botao-alerta",
+        "valor": "inline-flex items-center gap-2 rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-botao-mini",
+        "valor": "inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-etiqueta",
+        "valor": "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-ajuda",
+        "valor": "text-sm text-slate-500",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-campo",
+        "valor": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600\/20 focus:outline-none",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-rotulo",
+        "valor": "mb-1.5 block text-sm font-medium text-slate-700",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-ok",
+        "valor": "rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-secundario",
+        "valor": "flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400\/40 focus-visible:outline-none",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "classe-publico-aba",
+        "valor": "flex-1 rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
     },
     {
         "language": "pt-br",

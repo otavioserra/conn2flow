@@ -1,5 +1,5 @@
 {
-    "versao": "1.3.0",
+    "versao": "1.7.0",
     "bibliotecas": [
         "interface",
         "html",
@@ -24,240 +24,471 @@
                 {
                     "name": "OAuth 2.0 Authenticação",
                     "id": "oauth-authenticate",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-authenticate/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "oauth-authenticate\/",
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
-                    "version": "1.5",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "05791f279e17a7bf145c1d64c1c8b6d4",
+                        "html": "4ca6c58a5ae7ffaec3566d078d7b60d6",
                         "css": "",
-                        "combined": "05791f279e17a7bf145c1d64c1c8b6d4"
-                    }
+                        "css_precompiled": "",
+                        "combined": "4ca6c58a5ae7ffaec3566d078d7b60d6"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-2fa-campos"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-login-metodos"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "OAuth 2.0 Verificação 2FA",
                     "id": "oauth-authenticate-2fa",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-authenticate-2fa/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "oauth-authenticate-2fa\/",
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
-                    "version": "1.1",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "2cf2446432a8032e4702438d8498fc6d",
+                        "html": "767a8ea49b2177aaf4ea0c4ec08415e2",
                         "css": "",
-                        "combined": "2cf2446432a8032e4702438d8498fc6d"
-                    }
+                        "css_precompiled": "",
+                        "combined": "767a8ea49b2177aaf4ea0c4ec08415e2"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-2fa-campos"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-login-metodos"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Acessar Sistema",
                     "id": "acessar-sistema",
-                    "version": "1.4",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "7a091bf268e2fa5c62000fef94fdede7",
+                        "html": "577361b39f641808b2042154fe69e1f9",
                         "css": "",
-                        "combined": "7a091bf268e2fa5c62000fef94fdede7"
+                        "css_precompiled": "",
+                        "combined": "577361b39f641808b2042154fe69e1f9"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "signin/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "signin\/",
                     "type": "system",
                     "option": "signin",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-2fa-campos"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-login-metodos"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Verificação em Duas Etapas",
                     "id": "signin-2fa",
-                    "version": "1.1",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "signin-2fa/",
+                    "version": "1.5",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "signin-2fa\/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
                     "checksum": {
-                        "html": "12feaf2f143750ec7fd63d8efb4ff4f5",
+                        "html": "30ec7e6a9a6ecfd9e62f5a8d01008e87",
                         "css": "",
-                        "combined": "12feaf2f143750ec7fd63d8efb4ff4f5"
-                    }
+                        "css_precompiled": "",
+                        "combined": "30ec7e6a9a6ecfd9e62f5a8d01008e87"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-2fa-campos"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-login-metodos"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Login Social",
                     "id": "social-login",
-                    "version": "1.1",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "social-login/",
+                    "version": "1.4",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "social-login\/",
                     "type": "system",
                     "option": "social-login",
                     "without_permission": true,
                     "checksum": {
-                        "html": "bdb919e315faf280ff4868bf54d3bbb9",
+                        "html": "b2021f9033f98b8d6f70758ab1b2f66b",
                         "css": "",
-                        "combined": "bdb919e315faf280ff4868bf54d3bbb9"
-                    }
+                        "css_precompiled": "",
+                        "combined": "b2021f9033f98b8d6f70758ab1b2f66b"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Callback OAuth",
                     "id": "oauth-callback",
-                    "version": "1.1",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-callback/",
+                    "version": "1.4",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "oauth-callback\/",
                     "type": "system",
                     "option": "oauth-callback",
                     "without_permission": true,
                     "checksum": {
-                        "html": "c17e27cb0026546ff00b3aa1342cd896",
+                        "html": "b3d5404c1188e3f6befa8f207acec4ef",
                         "css": "",
-                        "combined": "c17e27cb0026546ff00b3aa1342cd896"
-                    }
+                        "css_precompiled": "",
+                        "combined": "b3d5404c1188e3f6befa8f207acec4ef"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Sair Sistema",
                     "id": "sair-sistema",
-                    "version": "1.0",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "b71983ce204302b4366e57456d905c63",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "b71983ce204302b4366e57456d905c63"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "signout/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "signout\/",
                     "type": "system",
-                    "option": "signout"
+                    "option": "signout",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Perfil Usuário",
                     "id": "perfil-usuario",
-                    "version": "1.3",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "d48b08c1849bcaeb4ed9939ab2563fe1",
+                        "html": "96c8808b17dc63af3248a907790fb43e",
                         "css": "",
-                        "combined": "d48b08c1849bcaeb4ed9939ab2563fe1"
+                        "css_precompiled": "",
+                        "combined": "96c8808b17dc63af3248a907790fb43e"
                     },
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "perfil-usuario/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "perfil-usuario\/",
                     "type": "system",
                     "option": "editar",
-                    "root": true
+                    "root": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-seguranca"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-sessoes"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-api-tokens"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Área Restrita",
                     "id": "Area-restrita",
-                    "version": "1.1",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "b106ef13fa11754052fb9a31122c643c",
+                        "html": "f5f1056569e2e4e8cc90045a28da15f5",
                         "css": "",
-                        "combined": "b106ef13fa11754052fb9a31122c643c"
+                        "css_precompiled": "",
+                        "combined": "f5f1056569e2e4e8cc90045a28da15f5"
                     },
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "restrict-area/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "restrict-area\/",
                     "type": "system",
-                    "option": "area-restrita"
+                    "option": "area-restrita",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Validar Usuário",
                     "id": "validar-usuario",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "df58b7e5c554fb44a338c46b5bc2f8a6",
+                        "html": "9ba20f61d477c5fb45deab801fa124b7",
                         "css": "",
-                        "combined": "df58b7e5c554fb44a338c46b5bc2f8a6"
+                        "css_precompiled": "",
+                        "combined": "9ba20f61d477c5fb45deab801fa124b7"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "validate-user/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "validate-user\/",
                     "type": "system",
                     "option": "validar-usuario",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Esqueceu a Senha",
                     "id": "esqueceu-a-senha",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "36252affc726b0a003349db772ffe552",
+                        "html": "8f547e25eba2ce4d6140216c70949cce",
                         "css": "",
-                        "combined": "36252affc726b0a003349db772ffe552"
+                        "css_precompiled": "",
+                        "combined": "8f547e25eba2ce4d6140216c70949cce"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "forgot-password/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "forgot-password\/",
                     "type": "system",
                     "option": "forgot-password",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Esqueceu a Senha Email Enviado",
                     "id": "esqueceu-a-senha-email-enviado",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "100a56701ff0b6d915e3cf9e3f2791c8",
+                        "html": "f1497a363baa8daf131265465dfb9fe2",
                         "css": "",
-                        "combined": "100a56701ff0b6d915e3cf9e3f2791c8"
+                        "css_precompiled": "",
+                        "combined": "f1497a363baa8daf131265465dfb9fe2"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "forgot-password-confirmation/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "forgot-password-confirmation\/",
                     "type": "system",
                     "option": "forgot-password-confirmation",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Redefinir Senha",
                     "id": "redefinir-senha",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "920fbd11ee6d54345028e33ac3d7599c",
+                        "html": "811bff9ab661eb5da96a938a80c51ac4",
                         "css": "",
-                        "combined": "920fbd11ee6d54345028e33ac3d7599c"
+                        "css_precompiled": "",
+                        "combined": "811bff9ab661eb5da96a938a80c51ac4"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "redefine-password/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "redefine-password\/",
                     "type": "system",
                     "option": "redefine-password",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Redefinir Senha Confirmação",
                     "id": "redefinir-senha-confirmacao",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "1e674e0f0326986bb2b77ec4130490ae",
+                        "html": "ffeb073c310b42ca8c85a4369993cd2f",
                         "css": "",
-                        "combined": "1e674e0f0326986bb2b77ec4130490ae"
+                        "css_precompiled": "",
+                        "combined": "ffeb073c310b42ca8c85a4369993cd2f"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "redefine-password-confirmation/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "redefine-password-confirmation\/",
                     "type": "system",
                     "option": "redefine-password-confirmation",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Cadastrar no Sistema",
                     "id": "cadastrar-no-sistema",
-                    "version": "1.2",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "6950f9bcbb6f17372e8d431feb1b55cb",
+                        "html": "6f11bc890694de90f6afc17c864d2f97",
                         "css": "",
-                        "combined": "6950f9bcbb6f17372e8d431feb1b55cb"
+                        "css_precompiled": "",
+                        "combined": "6f11bc890694de90f6afc17c864d2f97"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "signup/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "signup\/",
                     "type": "system",
                     "option": "signup",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Confirmação de Email",
                     "id": "confirmacao-de-email",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "589314427de8eec6b99dcffb571ce7cb",
+                        "html": "5f8d418d2ebb52df323bd0110decba1f",
                         "css": "",
-                        "combined": "589314427de8eec6b99dcffb571ce7cb"
+                        "css_precompiled": "",
+                        "combined": "5f8d418d2ebb52df323bd0110decba1f"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "email-confirmation/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "email-confirmation\/",
                     "type": "system",
                     "option": "confirmacao-email",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 }
             ],
             "variables": [
@@ -448,7 +679,7 @@
                 },
                 {
                     "id": "alert-password-invalid",
-                    "value": "Senha incorreta! Você tem mais <b>#tentativas#</b> tentativas, senão será desconectado automaticamente!",
+                    "value": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
                     "type": "string"
                 },
                 {
@@ -458,7 +689,7 @@
                 },
                 {
                     "id": "alert-there-is-a-field",
-                    "value": "Já existe cadastro do campo  <b>#label#</b> com o mesmo valor: <b>#value#</b>. Favor escolher outro  <b>#label#</b> e tentar novamente.",
+                    "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
                     "type": "string"
                 },
                 {
@@ -473,7 +704,7 @@
                 },
                 {
                     "id": "alert-user-or-password-invalid",
-                    "value": "Usuário e/ou Senha inválidos. Favor tentar novamente.",
+                    "value": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
                     "type": "string"
                 },
                 {
@@ -593,7 +824,7 @@
                 },
                 {
                     "id": "restrict-area-info",
-                    "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar</b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+                    "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
                     "type": "string"
                 },
                 {
@@ -733,12 +964,12 @@
                 },
                 {
                     "id": "forgot-password-message-content",
-                    "value": "Se sim, preencha o campo <b>Email</b> e depois o campo <b>Confirme o Email</b>. Em seguida o sistema irá enviar uma mensagem no endereço de email informado. Siga as orientações desta mensagem afim de criar uma nova senha.",
+                    "value": "Se sim, preencha o campo <b>Email<\/b> e depois o campo <b>Confirme o Email<\/b>. Em seguida o sistema irá enviar uma mensagem no endereço de email informado. Siga as orientações desta mensagem afim de criar uma nova senha.",
                     "type": "string"
                 },
                 {
                     "id": "alert-user-email-invalid",
-                    "value": "Não existe nenhum cadastro no sistema com o email informado: <b>#email#</b> . Verifique se o email enviado foi informado corretamente e tente denovo.",
+                    "value": "Não existe nenhum cadastro no sistema com o email informado: <b>#email#<\/b> . Verifique se o email enviado foi informado corretamente e tente denovo.",
                     "type": "string"
                 },
                 {
@@ -753,7 +984,7 @@
                 },
                 {
                     "id": "forgot-password-confirmation-message-content",
-                    "value": "Foi enviado uma mensagem com instruções para alterar a sua senha no seguinte email: <b>#email#</b> . Favor acessar o seu cliente de emails e seguir as orientações enviadas.",
+                    "value": "Foi enviado uma mensagem com instruções para alterar a sua senha no seguinte email: <b>#email#<\/b> . Favor acessar o seu cliente de emails e seguir as orientações enviadas.",
                     "type": "string"
                 },
                 {
@@ -778,7 +1009,7 @@
                 },
                 {
                     "id": "redefine-password-message-content",
-                    "value": "Se sim, preencha o campo <b>Senha</b> e depois o campo <b>Confirme a Senha</b>. Então, clique no botão <b>Redefinir</b> para alterar a sua senha.",
+                    "value": "Se sim, preencha o campo <b>Senha<\/b> e depois o campo <b>Confirme a Senha<\/b>. Então, clique no botão <b>Redefinir<\/b> para alterar a sua senha.",
                     "type": "string"
                 },
                 {
@@ -898,7 +1129,7 @@
                 },
                 {
                     "id": "alert-recaptcha-invalid",
-                    "value": "A sua requisição <b>não</b> foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um <b>robô</b>. Favor tentar novamente, mas caso o problema persista, favor entrar em contato clicando <b>#url#</b>.",
+                    "value": "A sua requisição <b>não<\/b> foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um <b>robô<\/b>. Favor tentar novamente, mas caso o problema persista, favor entrar em contato clicando <b>#url#<\/b>.",
                     "type": "string"
                 },
                 {
@@ -933,13 +1164,640 @@
                 },
                 {
                     "id": "reset-password",
-                    "value": "senha redefinida com sucesso! <b>IP: #ip# | USER_AGENT: #user-agent#</b>",
+                    "value": "senha redefinida com sucesso! <b>IP: #ip# | USER_AGENT: #user-agent#<\/b>",
                     "type": "string"
                 },
                 {
                     "id": "password-redefined-mail-subject",
                     "value": "Senha da Conta Conn2Flow redefinida com sucesso nº #numero#",
                     "type": "string"
+                },
+                {
+                    "id": "profile-tabs-label",
+                    "value": "Seções do perfil",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-tab-data",
+                    "value": "Dados Pessoais",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-tab-security",
+                    "value": "Segurança & 2FA",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-tab-sessions",
+                    "value": "Sessões & Dispositivos",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-personal-data-title",
+                    "value": "Dados cadastrais",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-empty",
+                    "value": "Digite uma senha para ver a força.",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-weak",
+                    "value": "Senha fraca",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-fair",
+                    "value": "Senha razoável",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-good",
+                    "value": "Senha boa",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-strong",
+                    "value": "Senha forte",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-inactive",
+                    "value": "O 2FA está desativado.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-configure",
+                    "value": "Configurar 2FA",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-secret-label",
+                    "value": "Chave manual",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-title",
+                    "value": "Sessões ativas",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-help",
+                    "value": "Estes são os dispositivos conectados à sua conta. Se você não reconhecer um acesso, revogue-o e troque a sua senha.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-empty",
+                    "value": "Nenhuma sessão ativa encontrada.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-unknown",
+                    "value": "Desconhecido",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-current-badge",
+                    "value": "Este dispositivo",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-device-title",
+                    "value": "#browser# no #system#",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-ip-label",
+                    "value": "IP",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-created-label",
+                    "value": "Início do acesso",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-origin-label",
+                    "value": "Origem",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-type-browser",
+                    "value": "Sessão do navegador",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-type-persistent",
+                    "value": "Acesso lembrado",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke",
+                    "value": "Revogar sessão",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke-others",
+                    "value": "Desconectar outros dispositivos",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke-confirm",
+                    "value": "Deseja revogar esta sessão? O acesso daquele dispositivo será encerrado imediatamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke-others-confirm",
+                    "value": "Deseja encerrar todas as outras sessões? Somente este dispositivo continuará conectado.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoked-ok",
+                    "value": "Sessão revogada com sucesso.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoked-others-ok",
+                    "value": "As demais sessões foram encerradas.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke-error",
+                    "value": "Não foi possível revogar a sessão.",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-tab-api-tokens",
+                    "value": "Chaves de API",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-title",
+                    "value": "Chaves de API pessoais",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-help",
+                    "value": "Chaves de API permitem que aplicações externas acessem o sistema em seu nome. Trate cada chave como uma senha.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-create",
+                    "value": "Gerar nova chave de API",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-confirm",
+                    "value": "Gerar chave",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-name-label",
+                    "value": "Nome da chave",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-name-placeholder",
+                    "value": "Ex.: Integração Zapier, CLI Local",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-name-required",
+                    "value": "Informe um nome para a chave.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-expiration-label",
+                    "value": "Expira em (dias)",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-expiration-never",
+                    "value": "Sem expiração",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-scopes-label",
+                    "value": "Escopos",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-scope-read",
+                    "value": "Leitura",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-scope-write",
+                    "value": "Escrita",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-scope-deploy",
+                    "value": "Publicação",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-copy-warning",
+                    "value": "Copie esta chave agora. Você não poderá visualizá-la novamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-copy",
+                    "value": "Copiar",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-copied",
+                    "value": "Chave copiada para a área de transferência.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-empty",
+                    "value": "Você ainda não tem chaves de API.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-name",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-prefix",
+                    "value": "Prefixo",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-created",
+                    "value": "Criada em",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-last-use",
+                    "value": "Último uso",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-status",
+                    "value": "Situação",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-actions",
+                    "value": "Ações",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-never-used",
+                    "value": "Nunca usada",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-status-ativo",
+                    "value": "Ativa",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-status-revogado",
+                    "value": "Revogada",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-status-expirado",
+                    "value": "Expirada",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-revoke",
+                    "value": "Revogar",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-revoke-confirm",
+                    "value": "Deseja revogar esta chave? Qualquer integração que a utilize perderá o acesso imediatamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-created-ok",
+                    "value": "Chave de API criada com sucesso.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-revoked-ok",
+                    "value": "Chave de API revogada.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-create-error",
+                    "value": "Não foi possível criar a chave de API.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-revoke-error",
+                    "value": "Não foi possível revogar a chave de API.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-not-allowed",
+                    "value": "Seu perfil não está autorizado a emitir chaves de API.",
+                    "type": "string"
+                },
+                {
+                    "id": "recovery-codes-title",
+                    "value": "Códigos de recuperação",
+                    "type": "string"
+                },
+                {
+                    "id": "recovery-codes-help",
+                    "value": "Guarde estes códigos em local seguro. Cada um funciona UMA única vez e serve para entrar caso você perca o aplicativo autenticador. Eles não serão exibidos novamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "recovery-code-label",
+                    "value": "Ou use um código de recuperação",
+                    "type": "string"
+                },
+                {
+                    "id": "login-blocked-title",
+                    "value": "Endereço de IP do seu dispositivo está bloqueado",
+                    "type": "string"
+                },
+                {
+                    "id": "login-blocked-message",
+                    "value": "Não é possível acessar sua conta deste dispositivo por excesso de tentativas com usuário e\/ou senha inválidos. Tente novamente mais tarde ou de outra rede.",
+                    "type": "string"
+                },
+                {
+                    "id": "login-email-code-button",
+                    "value": "Enviar código de acesso",
+                    "type": "string"
+                },
+                {
+                    "id": "signup-blocked-title",
+                    "value": "Limite de cadastros alcançado",
+                    "type": "string"
+                },
+                {
+                    "id": "signup-blocked-message",
+                    "value": "O limite máximo de cadastros por dia na sua rede foi alcançado. Tente novamente dentro de 24h.",
+                    "type": "string"
+                },
+                {
+                    "id": "forgot-password-blocked-title",
+                    "value": "Endereço de IP do seu dispositivo está bloqueado",
+                    "type": "string"
+                },
+                {
+                    "id": "forgot-password-blocked-message",
+                    "value": "Não é possível alterar a sua senha neste dispositivo por excesso de tentativas com e-mails inválidos. Tente novamente mais tarde ou de outra rede.",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-authenticate-title",
+                    "value": "Autenticação OAuth 2.0",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-authenticate-help",
+                    "value": "Forneça suas credenciais para obter tokens de acesso à API.",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-authenticate-button",
+                    "value": "Autenticar e obter tokens",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-scope-label",
+                    "value": "Escopo (opcional)",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-redirect-label",
+                    "value": "URL de redirecionamento (opcional)",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-2fa-title",
+                    "value": "Verificação de API",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-2fa-button",
+                    "value": "Verificar e liberar tokens",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-2fa-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-2fa-email-help",
+                    "value": "Digite o código enviado por e-mail para continuar a geração dos tokens de API.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-confirmed-message",
+                    "value": "E-mail confirmado com sucesso!",
+                    "type": "string"
+                },
+                {
+                    "id": "email-confirmed-button",
+                    "value": "Acessar o sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "social-login-redirecting",
+                    "value": "Redirecionando para o provedor de login...",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-callback-processing",
+                    "value": "Processando autenticação...",
+                    "type": "string"
+                },
+                {
+                    "id": "signout-message",
+                    "value": "Encerrando a sua sessão...",
+                    "type": "string"
+                },
+                {
+                    "id": "classe-cartao",
+                    "value": "rounded-xl border border-slate-200 bg-white p-4 shadow-sm",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-titulo",
+                    "value": "mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-rotulo",
+                    "value": "mb-1 block text-sm font-semibold text-slate-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-campo",
+                    "value": "block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-botao",
+                    "value": "inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-botao-ok",
+                    "value": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-botao-alerta",
+                    "value": "inline-flex items-center gap-2 rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-botao-mini",
+                    "value": "inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-etiqueta",
+                    "value": "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-ajuda",
+                    "value": "text-sm text-slate-500",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-campo",
+                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600\/20 focus:outline-none",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-rotulo",
+                    "value": "mb-1.5 block text-sm font-medium text-slate-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-ok",
+                    "value": "rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-secundario",
+                    "value": "flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400\/40 focus-visible:outline-none",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-aba",
+                    "value": "flex-1 rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                }
+            ],
+            "components": [
+                {
+                    "name": "Perfil Usuário Segurança",
+                    "id": "perfil-usuario-seguranca",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "253b75fbe7277852f01d1c85f048bdeb",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "253b75fbe7277852f01d1c85f048bdeb"
+                    }
+                },
+                {
+                    "name": "Perfil Usuário Sessões",
+                    "id": "perfil-usuario-sessoes",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "786ac999fd46a7505b0d8663dd6d0d90",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "786ac999fd46a7505b0d8663dd6d0d90"
+                    }
+                },
+                {
+                    "name": "Perfil Usuário Chaves de API",
+                    "id": "perfil-usuario-api-tokens",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4e239c1e3916f6d1ffa50902c05aad0c",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "4e239c1e3916f6d1ffa50902c05aad0c"
+                    }
+                },
+                {
+                    "name": "Perfil Usuário Campos 2FA",
+                    "id": "perfil-usuario-2fa-campos",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "f6b1ae1f52474c449d13e060347285b6",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "f6b1ae1f52474c449d13e060347285b6"
+                    }
+                },
+                {
+                    "name": "Perfil Usuário Métodos de Login",
+                    "id": "perfil-usuario-login-metodos",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "deaab732b308719b1f11eb1efe5d3b2a",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "deaab732b308719b1f11eb1efe5d3b2a"
+                    }
                 }
             ]
         },
@@ -949,243 +1807,555 @@
                 {
                     "name": "OAuth 2.0 Authentication",
                     "id": "oauth-authenticate",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-authenticate/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "oauth-authenticate\/",
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
-                    "version": "1.3",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "6fcca9eced34b5ea4fec607aa2f16383",
+                        "html": "4ca6c58a5ae7ffaec3566d078d7b60d6",
                         "css": "",
-                        "combined": "6fcca9eced34b5ea4fec607aa2f16383"
-                    }
+                        "css_precompiled": "",
+                        "combined": "4ca6c58a5ae7ffaec3566d078d7b60d6"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-2fa-campos"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-login-metodos"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "OAuth 2.0 2FA Verification",
                     "id": "oauth-authenticate-2fa",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-authenticate-2fa/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "oauth-authenticate-2fa\/",
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
-                    "version": "1.1",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "2527193977c752cb263ff6b4bd4a0853",
+                        "html": "767a8ea49b2177aaf4ea0c4ec08415e2",
                         "css": "",
-                        "combined": "2527193977c752cb263ff6b4bd4a0853"
-                    }
+                        "css_precompiled": "",
+                        "combined": "767a8ea49b2177aaf4ea0c4ec08415e2"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-2fa-campos"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-login-metodos"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Access System",
                     "id": "acessar-sistema",
-                    "version": "1.5",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "602bd6fa2af0e5d6fc3c2abc3bd1e236",
+                        "html": "577361b39f641808b2042154fe69e1f9",
                         "css": "",
-                        "combined": "602bd6fa2af0e5d6fc3c2abc3bd1e236"
+                        "css_precompiled": "",
+                        "combined": "577361b39f641808b2042154fe69e1f9"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "signin/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "signin\/",
                     "type": "system",
                     "option": "signin",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-2fa-campos"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-login-metodos"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Two-Step Verification",
                     "id": "signin-2fa",
-                    "version": "1.1",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "signin-2fa/",
+                    "version": "1.5",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "signin-2fa\/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
                     "checksum": {
-                        "html": "12feaf2f143750ec7fd63d8efb4ff4f5",
+                        "html": "30ec7e6a9a6ecfd9e62f5a8d01008e87",
                         "css": "",
-                        "combined": "12feaf2f143750ec7fd63d8efb4ff4f5"
-                    }
+                        "css_precompiled": "",
+                        "combined": "30ec7e6a9a6ecfd9e62f5a8d01008e87"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-2fa-campos"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-login-metodos"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Social Login",
                     "id": "social-login",
-                    "version": "1.1",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "social-login/",
+                    "version": "1.4",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "social-login\/",
                     "type": "system",
                     "option": "social-login",
                     "without_permission": true,
                     "checksum": {
-                        "html": "43e01e0dbca1df8229cacf6c57989cd4",
+                        "html": "b2021f9033f98b8d6f70758ab1b2f66b",
                         "css": "",
-                        "combined": "43e01e0dbca1df8229cacf6c57989cd4"
-                    }
+                        "css_precompiled": "",
+                        "combined": "b2021f9033f98b8d6f70758ab1b2f66b"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "OAuth Callback",
                     "id": "oauth-callback",
-                    "version": "1.1",
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "oauth-callback/",
+                    "version": "1.4",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "oauth-callback\/",
                     "type": "system",
                     "option": "oauth-callback",
                     "without_permission": true,
                     "checksum": {
-                        "html": "74324a183cf7f9785d692f1c7d8b8e54",
+                        "html": "b3d5404c1188e3f6befa8f207acec4ef",
                         "css": "",
-                        "combined": "74324a183cf7f9785d692f1c7d8b8e54"
-                    }
+                        "css_precompiled": "",
+                        "combined": "b3d5404c1188e3f6befa8f207acec4ef"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Logout System",
                     "id": "sair-sistema",
-                    "version": "1.0",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "",
+                        "html": "b71983ce204302b4366e57456d905c63",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "b71983ce204302b4366e57456d905c63"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "signout/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "signout\/",
                     "type": "system",
-                    "option": "signout"
+                    "option": "signout",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "User Profile",
                     "id": "perfil-usuario",
-                    "version": "1.3",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "d48b08c1849bcaeb4ed9939ab2563fe1",
+                        "html": "96c8808b17dc63af3248a907790fb43e",
                         "css": "",
-                        "combined": "d48b08c1849bcaeb4ed9939ab2563fe1"
+                        "css_precompiled": "",
+                        "combined": "96c8808b17dc63af3248a907790fb43e"
                     },
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "perfil-usuario/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "perfil-usuario\/",
                     "type": "system",
                     "option": "editar",
-                    "root": true
+                    "root": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-seguranca"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-sessoes"
+                        },
+                        {
+                            "type": "components",
+                            "id": "perfil-usuario-api-tokens"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Restricted Area",
                     "id": "Area-restrita",
-                    "version": "1.1",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "b106ef13fa11754052fb9a31122c643c",
+                        "html": "f5f1056569e2e4e8cc90045a28da15f5",
                         "css": "",
-                        "combined": "b106ef13fa11754052fb9a31122c643c"
+                        "css_precompiled": "",
+                        "combined": "f5f1056569e2e4e8cc90045a28da15f5"
                     },
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "restrict-area/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "restrict-area\/",
                     "type": "system",
-                    "option": "area-restrita"
+                    "option": "area-restrita",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Validate User",
                     "id": "validar-usuario",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "df58b7e5c554fb44a338c46b5bc2f8a6",
+                        "html": "9ba20f61d477c5fb45deab801fa124b7",
                         "css": "",
-                        "combined": "df58b7e5c554fb44a338c46b5bc2f8a6"
+                        "css_precompiled": "",
+                        "combined": "9ba20f61d477c5fb45deab801fa124b7"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "validate-user/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "validate-user\/",
                     "type": "system",
                     "option": "validar-usuario",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Forgot Password",
                     "id": "esqueceu-a-senha",
-                    "version": "1.2",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "4eb42bb8416e8f5b653d8718cc3d6ea3",
+                        "html": "8f547e25eba2ce4d6140216c70949cce",
                         "css": "",
-                        "combined": "4eb42bb8416e8f5b653d8718cc3d6ea3"
+                        "css_precompiled": "",
+                        "combined": "8f547e25eba2ce4d6140216c70949cce"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "forgot-password/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "forgot-password\/",
                     "type": "system",
                     "option": "forgot-password",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Forgot Password Email Sent",
                     "id": "esqueceu-a-senha-email-enviado",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "100a56701ff0b6d915e3cf9e3f2791c8",
+                        "html": "f1497a363baa8daf131265465dfb9fe2",
                         "css": "",
-                        "combined": "100a56701ff0b6d915e3cf9e3f2791c8"
+                        "css_precompiled": "",
+                        "combined": "f1497a363baa8daf131265465dfb9fe2"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "forgot-password-confirmation/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "forgot-password-confirmation\/",
                     "type": "system",
                     "option": "forgot-password-confirmation",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Reset Password",
                     "id": "redefinir-senha",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "920fbd11ee6d54345028e33ac3d7599c",
+                        "html": "811bff9ab661eb5da96a938a80c51ac4",
                         "css": "",
-                        "combined": "920fbd11ee6d54345028e33ac3d7599c"
+                        "css_precompiled": "",
+                        "combined": "811bff9ab661eb5da96a938a80c51ac4"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "redefine-password/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "redefine-password\/",
                     "type": "system",
                     "option": "redefine-password",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Reset Password Confirmation",
                     "id": "redefinir-senha-confirmacao",
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "1e674e0f0326986bb2b77ec4130490ae",
+                        "html": "ffeb073c310b42ca8c85a4369993cd2f",
                         "css": "",
-                        "combined": "1e674e0f0326986bb2b77ec4130490ae"
+                        "css_precompiled": "",
+                        "combined": "ffeb073c310b42ca8c85a4369993cd2f"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "redefine-password-confirmation/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "redefine-password-confirmation\/",
                     "type": "system",
                     "option": "redefine-password-confirmation",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Register in System",
                     "id": "cadastrar-no-sistema",
-                    "version": "1.3",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "f5210119479465a5fbbe90ecf2610dd9",
+                        "html": "6f11bc890694de90f6afc17c864d2f97",
                         "css": "",
-                        "combined": "f5210119479465a5fbbe90ecf2610dd9"
+                        "css_precompiled": "",
+                        "combined": "6f11bc890694de90f6afc17c864d2f97"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "signup/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "signup\/",
                     "type": "system",
                     "option": "signup",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Email Confirmation",
                     "id": "confirmacao-de-email",
-                    "version": "1.2",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "3a622d3cc729cd116484244446b9e90a",
+                        "html": "5f8d418d2ebb52df323bd0110decba1f",
                         "css": "",
-                        "combined": "3a622d3cc729cd116484244446b9e90a"
+                        "css_precompiled": "",
+                        "combined": "5f8d418d2ebb52df323bd0110decba1f"
                     },
-                    "layout": "layout-pagina-sem-permissao",
-                    "path": "email-confirmation/",
+                    "layout": "layout-pagina-sem-permissao-tailwind",
+                    "path": "email-confirmation\/",
                     "type": "system",
                     "option": "confirmacao-email",
-                    "without_permission": true
+                    "without_permission": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.php",
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 }
             ],
-            "components": [],
+            "components": [
+                {
+                    "name": "User Profile Security",
+                    "id": "perfil-usuario-seguranca",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "253b75fbe7277852f01d1c85f048bdeb",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "253b75fbe7277852f01d1c85f048bdeb"
+                    }
+                },
+                {
+                    "name": "User Profile Sessions",
+                    "id": "perfil-usuario-sessoes",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "786ac999fd46a7505b0d8663dd6d0d90",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "786ac999fd46a7505b0d8663dd6d0d90"
+                    }
+                },
+                {
+                    "name": "User Profile API Keys",
+                    "id": "perfil-usuario-api-tokens",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4e239c1e3916f6d1ffa50902c05aad0c",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "4e239c1e3916f6d1ffa50902c05aad0c"
+                    }
+                },
+                {
+                    "name": "User Profile 2FA Fields",
+                    "id": "perfil-usuario-2fa-campos",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "f6b1ae1f52474c449d13e060347285b6",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "f6b1ae1f52474c449d13e060347285b6"
+                    }
+                },
+                {
+                    "name": "User Profile Login Methods",
+                    "id": "perfil-usuario-login-metodos",
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/perfil-usuario.json"
+                    ],
+                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "deaab732b308719b1f11eb1efe5d3b2a",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "deaab732b308719b1f11eb1efe5d3b2a"
+                    }
+                }
+            ],
             "variables": [
                 {
                     "id": "button-security",
@@ -1374,7 +2544,7 @@
                 },
                 {
                     "id": "alert-password-invalid",
-                    "value": "Incorrect password! You have <b>#tentativas#</b> more attempts, otherwise you will be automatically disconnected!",
+                    "value": "Incorrect password! You have <b>#tentativas#<\/b> more attempts, otherwise you will be automatically disconnected!",
                     "type": "string"
                 },
                 {
@@ -1384,7 +2554,7 @@
                 },
                 {
                     "id": "alert-there-is-a-field",
-                    "value": "There is already a registration for the field <b>#label#</b> with the same value: <b>#value#</b>. Please choose another <b>#label#</b> and try again.",
+                    "value": "There is already a registration for the field <b>#label#<\/b> with the same value: <b>#value#<\/b>. Please choose another <b>#label#<\/b> and try again.",
                     "type": "string"
                 },
                 {
@@ -1399,7 +2569,7 @@
                 },
                 {
                     "id": "alert-user-or-password-invalid",
-                    "value": "Invalid username and/or password. Please try again.",
+                    "value": "Invalid username and\/or password. Please try again.",
                     "type": "string"
                 },
                 {
@@ -1519,7 +2689,7 @@
                 },
                 {
                     "id": "restrict-area-info",
-                    "value": "Please enter your password below and then click the <b>Send</b> button to provisionally authorize the modification of any sensitive data in your account.",
+                    "value": "Please enter your password below and then click the <b>Send<\/b> button to provisionally authorize the modification of any sensitive data in your account.",
                     "type": "string"
                 },
                 {
@@ -1659,12 +2829,12 @@
                 },
                 {
                     "id": "forgot-password-message-content",
-                    "value": "If yes, fill in the <b>Email</b> field and then the <b>Confirm Email</b> field. Then the system will send a message to the email address provided. Follow the instructions in this message to create a new password.",
+                    "value": "If yes, fill in the <b>Email<\/b> field and then the <b>Confirm Email<\/b> field. Then the system will send a message to the email address provided. Follow the instructions in this message to create a new password.",
                     "type": "string"
                 },
                 {
                     "id": "alert-user-email-invalid",
-                    "value": "There is no registration in the system with the email provided: <b>#email#</b>. Please check if the email sent was entered correctly and try again.",
+                    "value": "There is no registration in the system with the email provided: <b>#email#<\/b>. Please check if the email sent was entered correctly and try again.",
                     "type": "string"
                 },
                 {
@@ -1679,7 +2849,7 @@
                 },
                 {
                     "id": "forgot-password-confirmation-message-content",
-                    "value": "A message with instructions to change your password was sent to the following email: <b>#email#</b>. Please access your email client and follow the instructions sent.",
+                    "value": "A message with instructions to change your password was sent to the following email: <b>#email#<\/b>. Please access your email client and follow the instructions sent.",
                     "type": "string"
                 },
                 {
@@ -1704,7 +2874,7 @@
                 },
                 {
                     "id": "redefine-password-message-content",
-                    "value": "If yes, fill in the <b>Password</b> field and then the <b>Confirm Password</b> field. Then, click the <b>Reset</b> button to change your password.",
+                    "value": "If yes, fill in the <b>Password<\/b> field and then the <b>Confirm Password<\/b> field. Then, click the <b>Reset<\/b> button to change your password.",
                     "type": "string"
                 },
                 {
@@ -1824,7 +2994,7 @@
                 },
                 {
                     "id": "alert-recaptcha-invalid",
-                    "value": "Your request <b>was not</b> accepted because our automatic security system considered it to be made by a <b>robot</b>. Please try again, but if the problem persists, please contact us by clicking <b>#url#</b>.",
+                    "value": "Your request <b>was not<\/b> accepted because our automatic security system considered it to be made by a <b>robot<\/b>. Please try again, but if the problem persists, please contact us by clicking <b>#url#<\/b>.",
                     "type": "string"
                 },
                 {
@@ -1859,16 +3029,561 @@
                 },
                 {
                     "id": "reset-password",
-                    "value": "password reset successfully! <b>IP: #ip# | USER_AGENT: #user-agent#</b>",
+                    "value": "password reset successfully! <b>IP: #ip# | USER_AGENT: #user-agent#<\/b>",
                     "type": "string"
                 },
                 {
                     "id": "password-redefined-mail-subject",
                     "value": "Conn2Flow Account Password Reset Successfully nº #numero#",
                     "type": "string"
+                },
+                {
+                    "id": "profile-tabs-label",
+                    "value": "Profile sections",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-tab-data",
+                    "value": "Personal Data",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-tab-security",
+                    "value": "Security & 2FA",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-tab-sessions",
+                    "value": "Sessions & Devices",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-personal-data-title",
+                    "value": "Registration data",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-empty",
+                    "value": "Type a password to see its strength.",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-weak",
+                    "value": "Weak password",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-fair",
+                    "value": "Fair password",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-good",
+                    "value": "Good password",
+                    "type": "string"
+                },
+                {
+                    "id": "password-strength-strong",
+                    "value": "Strong password",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-inactive",
+                    "value": "2FA is disabled.",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-configure",
+                    "value": "Set up 2FA",
+                    "type": "string"
+                },
+                {
+                    "id": "security-2fa-secret-label",
+                    "value": "Manual key",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-title",
+                    "value": "Active sessions",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-help",
+                    "value": "These are the devices connected to your account. If you do not recognise an access, revoke it and change your password.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-empty",
+                    "value": "No active session found.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-unknown",
+                    "value": "Unknown",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-current-badge",
+                    "value": "This device",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-device-title",
+                    "value": "#browser# on #system#",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-ip-label",
+                    "value": "IP",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-created-label",
+                    "value": "Signed in at",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-origin-label",
+                    "value": "Origin",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-type-browser",
+                    "value": "Browser session",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-type-persistent",
+                    "value": "Remembered access",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke",
+                    "value": "Revoke session",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke-others",
+                    "value": "Sign out other devices",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke-confirm",
+                    "value": "Revoke this session? That device will be signed out immediately.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke-others-confirm",
+                    "value": "Sign out every other session? Only this device will stay connected.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoked-ok",
+                    "value": "Session revoked successfully.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoked-others-ok",
+                    "value": "The other sessions have been ended.",
+                    "type": "string"
+                },
+                {
+                    "id": "sessions-revoke-error",
+                    "value": "The session could not be revoked.",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-tab-api-tokens",
+                    "value": "API Keys",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-title",
+                    "value": "Personal API keys",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-help",
+                    "value": "API keys let external applications access the system on your behalf. Treat every key like a password.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-create",
+                    "value": "Generate new API key",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-confirm",
+                    "value": "Generate key",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-name-label",
+                    "value": "Key name",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-name-placeholder",
+                    "value": "E.g. Zapier integration, Local CLI",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-name-required",
+                    "value": "Enter a name for the key.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-expiration-label",
+                    "value": "Expires in (days)",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-expiration-never",
+                    "value": "Never expires",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-scopes-label",
+                    "value": "Scopes",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-scope-read",
+                    "value": "Read",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-scope-write",
+                    "value": "Write",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-scope-deploy",
+                    "value": "Deploy",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-copy-warning",
+                    "value": "Copy this key now. You will not be able to see it again.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-copy",
+                    "value": "Copy",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-copied",
+                    "value": "Key copied to the clipboard.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-empty",
+                    "value": "You have no API keys yet.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-name",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-prefix",
+                    "value": "Prefix",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-created",
+                    "value": "Created at",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-last-use",
+                    "value": "Last used",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-col-actions",
+                    "value": "Actions",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-never-used",
+                    "value": "Never used",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-status-ativo",
+                    "value": "Active",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-status-revogado",
+                    "value": "Revoked",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-status-expirado",
+                    "value": "Expired",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-revoke",
+                    "value": "Revoke",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-revoke-confirm",
+                    "value": "Revoke this key? Any integration using it will lose access immediately.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-created-ok",
+                    "value": "API key created successfully.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-revoked-ok",
+                    "value": "API key revoked.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-create-error",
+                    "value": "The API key could not be created.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-revoke-error",
+                    "value": "The API key could not be revoked.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-tokens-not-allowed",
+                    "value": "Your profile is not allowed to issue API keys.",
+                    "type": "string"
+                },
+                {
+                    "id": "recovery-codes-title",
+                    "value": "Recovery codes",
+                    "type": "string"
+                },
+                {
+                    "id": "recovery-codes-help",
+                    "value": "Store these codes somewhere safe. Each one works ONCE and lets you sign in if you lose your authenticator app. They will not be shown again.",
+                    "type": "string"
+                },
+                {
+                    "id": "recovery-code-label",
+                    "value": "Or use a recovery code",
+                    "type": "string"
+                },
+                {
+                    "id": "login-blocked-title",
+                    "value": "Your device IP address is blocked",
+                    "type": "string"
+                },
+                {
+                    "id": "login-blocked-message",
+                    "value": "This device cannot access your account due to too many attempts with an invalid user and\/or password. Try again later or from another network.",
+                    "type": "string"
+                },
+                {
+                    "id": "login-email-code-button",
+                    "value": "Send access code",
+                    "type": "string"
+                },
+                {
+                    "id": "signup-blocked-title",
+                    "value": "Sign-up limit reached",
+                    "type": "string"
+                },
+                {
+                    "id": "signup-blocked-message",
+                    "value": "The maximum number of sign-ups per day for your network has been reached. Please try again within 24h.",
+                    "type": "string"
+                },
+                {
+                    "id": "forgot-password-blocked-title",
+                    "value": "Your device IP address is blocked",
+                    "type": "string"
+                },
+                {
+                    "id": "forgot-password-blocked-message",
+                    "value": "You cannot reset your password from this device due to too many attempts with invalid e-mails. Try again later or from another network.",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-authenticate-title",
+                    "value": "OAuth 2.0 authentication",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-authenticate-help",
+                    "value": "Provide your credentials to obtain API access tokens.",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-authenticate-button",
+                    "value": "Authenticate and get tokens",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-scope-label",
+                    "value": "Scope (optional)",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-redirect-label",
+                    "value": "Redirect URL (optional)",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-2fa-title",
+                    "value": "API verification",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-2fa-button",
+                    "value": "Verify and release tokens",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-2fa-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-2fa-email-help",
+                    "value": "Enter the email access code to continue generating API tokens.",
+                    "type": "string"
+                },
+                {
+                    "id": "email-confirmed-message",
+                    "value": "E-mail confirmed successfully!",
+                    "type": "string"
+                },
+                {
+                    "id": "email-confirmed-button",
+                    "value": "Go to the system",
+                    "type": "string"
+                },
+                {
+                    "id": "social-login-redirecting",
+                    "value": "Redirecting to the login provider...",
+                    "type": "string"
+                },
+                {
+                    "id": "oauth-callback-processing",
+                    "value": "Processing authentication...",
+                    "type": "string"
+                },
+                {
+                    "id": "signout-message",
+                    "value": "Ending your session...",
+                    "type": "string"
+                },
+                {
+                    "id": "classe-cartao",
+                    "value": "rounded-xl border border-slate-200 bg-white p-4 shadow-sm",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-titulo",
+                    "value": "mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-rotulo",
+                    "value": "mb-1 block text-sm font-semibold text-slate-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-campo",
+                    "value": "block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-botao",
+                    "value": "inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-botao-ok",
+                    "value": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-botao-alerta",
+                    "value": "inline-flex items-center gap-2 rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-botao-mini",
+                    "value": "inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-etiqueta",
+                    "value": "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-ajuda",
+                    "value": "text-sm text-slate-500",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-campo",
+                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600\/20 focus:outline-none",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-rotulo",
+                    "value": "mb-1.5 block text-sm font-medium text-slate-700",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-ok",
+                    "value": "rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-secundario",
+                    "value": "flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400\/40 focus-visible:outline-none",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                },
+                {
+                    "id": "classe-publico-aba",
+                    "value": "flex-1 rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900",
+                    "type": "string",
+                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 }
             ]
         }
     },
-    "asset_version": "f6fe91130b1e496a"
+    "asset_version": "545803eaa40688a8"
 }

@@ -12,3 +12,4 @@ user-invocable: false
 4. Nunca altere a memória de Chefia sem instrução humana explícita.
 5. Reescreva a memória visando cerca de 5 KB e obrigatoriamente menos de 10 KB.
 6. Valide frontmatter, descoberta das skills e o diff Git recuperável.
+7. Registre tamanhos e evidências no checklist do batch.

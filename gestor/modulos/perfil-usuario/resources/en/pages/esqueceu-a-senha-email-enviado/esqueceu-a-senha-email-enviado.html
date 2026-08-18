@@ -1,21 +1,17 @@
-<div class="ui stackable two column centered grid">
-    <div class="column">
-        <div class="ui segment">
-            <div class="ui center aligned header large">@[[forgot-password-confirmation-title]]@</div>
-            <div class="ui hidden divider">&nbsp;</div>
-            <div class="ui icon message">
-                <i class="paper plane icon"></i>
-                <div class="content">
-                    <div class="header">@[[forgot-password-confirmation-message-header]]@ </div>
-                    <p>#message#</p>
-                </div>
-            </div>
-            <div class="ui basic segment center aligned">
-                <div class="">@[[forgot-password-login-label]]@ <a href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a>
-                </div>
-                <div>@[[forgot-password-new-register-label]]@ <a href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a>
-                </div>
-            </div>
-        </div>
+<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <div class="mb-4 flex justify-center">
+        <span class="flex size-12 items-center justify-center rounded-full bg-emerald-50 text-2xl"
+            aria-hidden="true">&#128233;</span>
+    </div>
+    <h1 class="mb-6 text-center text-2xl font-semibold text-slate-900">@[[forgot-password-confirmation-title]]@</h1>
+    <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+        <p class="font-semibold">@[[forgot-password-confirmation-message-header]]@</p>
+        <p class="mt-1">#message#</p>
+    </div>
+    <div class="mt-6 space-y-1 text-center text-sm text-slate-600">
+        <p>@[[forgot-password-login-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a></p>
+        <p>@[[forgot-password-new-register-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a></p>
     </div>
 </div>

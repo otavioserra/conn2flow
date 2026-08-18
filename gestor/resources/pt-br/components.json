@@ -431,5 +431,77 @@
             "css": "",
             "combined": "02d78f3b83dc41dea01b22d9d1e45ae8"
         }
+    },
+    {
+        "name": "Menu Principal Sistema Tailwind",
+        "id": "menu-principal-sistema-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "482d30474e9f3694204a51a43f663f44",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "482d30474e9f3694204a51a43f663f44"
+        }
+    },
+    {
+        "name": "Interface Formulário Edição Tailwind",
+        "id": "interface-formulario-edicao-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "74402e4e018ea2e2ca9fc0bcacf004cc",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "74402e4e018ea2e2ca9fc0bcacf004cc"
+        }
+    },
+    {
+        "name": "Interface Carregando Modal Tailwind",
+        "id": "interface-carregando-modal-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "20fbeaea8df8cfdcba949bea2046b7ac",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "20fbeaea8df8cfdcba949bea2046b7ac"
+        }
+    },
+    {
+        "name": "Interface Alerta Modal Tailwind",
+        "id": "interface-alerta-modal-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "63becc09efe801a5ff62881bad05c807",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "63becc09efe801a5ff62881bad05c807"
+        }
+    },
+    {
+        "name": "Interface Deleção Modal Tailwind",
+        "id": "interface-delecao-modal-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "fc9c9bc69064786ebd09754c61a0c15b",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "fc9c9bc69064786ebd09754c61a0c15b"
+        }
+    },
+    {
+        "name": "Interface Autorização Provisória Tailwind",
+        "id": "interface-formulario-autorizacao-provisoria-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "88cc86f3a9bbccacd0e9faa15a829b23",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "88cc86f3a9bbccacd0e9faa15a829b23"
+        }
     }
 ]

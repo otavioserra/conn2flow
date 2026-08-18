@@ -1,0 +1,34 @@
+<!-- email-enviado < -->
+<div class="@[[classe-publico-ok]]@">@[[security-2fa-email-sent]]@</div><!-- email-enviado > -->
+<!-- ajuda < -->
+<p class="text-sm text-slate-600">#texto#</p><!-- ajuda > -->
+<!-- reenviar-email < -->
+<a class="@[[classe-publico-secundario]]@" href="#url#">
+    <span aria-hidden="true">✉️</span> @[[security-2fa-send-email]]@
+</a><!-- reenviar-email > -->
+<!-- metodo < -->
+<div>
+    <label class="@[[classe-publico-rotulo]]@" for="seg-2fa-metodo">@[[security-2fa-method-label]]@</label>
+    <select id="seg-2fa-metodo" name="metodo" class="@[[classe-publico-campo]]@">#opcoes#</select>
+</div><!-- metodo > -->
+<!-- metodo-opcao < -->
+<option value="#valor#">#rotulo#</option><!-- metodo-opcao > -->
+<!-- qr < -->
+<div id="seg-2fa-app-bloco" class="space-y-3">
+    <p class="text-sm text-slate-600">@[[security-2fa-scan-help]]@</p>
+    <div id="seg-2fa-qr" data-otpauth="#otpauth#"
+        class="mx-auto inline-block rounded-lg border border-slate-200 bg-white p-3"></div>
+    <p class="@[[classe-publico-rotulo]]@">@[[security-2fa-secret-label]]@</p>
+    <code
+        class="inline-block rounded-md bg-slate-100 px-3 py-2 font-mono text-sm tracking-wider break-all text-slate-800">#secret#</code>
+</div><!-- qr > -->
+<!-- email-bloco < -->
+<div id="seg-2fa-email-bloco">#botao#</div><!-- email-bloco > -->
+<!-- campo-codigo < -->
+<div>
+    <label class="@[[classe-publico-rotulo]]@" for="seg-2fa-codigo">@[[security-2fa-code-label]]@</label>
+    <input class="@[[classe-publico-campo]]@ c2f-codigo text-center font-mono text-lg" type="text" name="codigo"
+        id="seg-2fa-codigo" maxlength="6" inputmode="numeric" autocomplete="one-time-code" autofocus>
+</div><!-- campo-codigo > -->
+<!-- recovery-aviso < -->
+<p class="text-xs text-slate-500">@[[recovery-code-label]]@</p><!-- recovery-aviso > -->

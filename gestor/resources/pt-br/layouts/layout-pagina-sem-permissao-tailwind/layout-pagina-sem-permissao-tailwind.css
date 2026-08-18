@@ -1,0 +1,26 @@
+/*
+ * CSS autoral do layout público Tailwind.
+ *
+ * Só entra aqui o que utility não expressa. O restante do shell (header, card central, rodapé) é
+ * utility no HTML.
+ *
+ * ATENÇÃO (F1 do review de 2026-08-15): este arquivo NÃO passa pelo compilador Tailwind. Se ele
+ * consumir um token de `@theme` que o build podou, a declaração inteira é invalidada em silêncio —
+ * por isso aqui só há valores literais.
+ */
+
+/* Autofill do Chrome pinta o campo de amarelo e ignora `background-color`; o único caminho é a
+   sombra interna. Sem isso, todo formulário de login nasce com um campo destoando do card. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+    box-shadow: 0 0 0 1000px #ffffff inset;
+    -webkit-text-fill-color: #0f172a;
+}
+
+/* O campo de código 2FA é lido dígito a dígito; o espaçamento evita leitura ambígua. */
+input[inputmode="numeric"].c2f-codigo {
+    letter-spacing: 0.5em;
+    text-indent: 0.5em;
+}

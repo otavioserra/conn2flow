@@ -57,8 +57,20 @@ function api_token_validar_memoizado($token) {
     $chave = hash('sha256', (string)$token);
     if (array_key_exists($chave, $_GESTOR['api-auth-cache'] ?? [])) return $_GESTOR['api-auth-cache'][$chave];
 
-    gestor_incluir_biblioteca('oauth2');
-    $resultado = oauth2_validar_token(['token' => $token]);
+    // req-119: Personal Access Token e token OAuth 2.0 chegam pelo MESMO `Authorization: Bearer`.
+    // O desempate é pelo formato (`c2f_pat_`), antes de qualquer validação: sem ele todo PAT passaria
+    // pelo validador de JWT, falharia na decodificação e o usuário receberia "token inválido" sem
+    // nenhuma pista do motivo. Os dois validadores devolvem o MESMO contrato, então nenhum endpoint
+    // precisou aprender um segundo formato.
+    gestor_incluir_biblioteca('usuario');
+
+    if (function_exists('usuario_api_token_formato') && usuario_api_token_formato($token)) {
+        $resultado = usuario_api_token_validar($token);
+    } else {
+        gestor_incluir_biblioteca('oauth2');
+        $resultado = oauth2_validar_token(['token' => $token]);
+    }
+
     $_GESTOR['api-auth-cache'][$chave] = is_array($resultado) ? $resultado : false;
 
     return $_GESTOR['api-auth-cache'][$chave];

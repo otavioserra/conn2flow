@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <!-- pagina#titulo -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="@[[pagina#url-raiz]]@favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="@[[pagina#url-raiz]]@favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="@[[pagina#url-raiz]]@favicon/favicon-16x16.png">
+    <link rel="manifest" href="@[[pagina#url-raiz]]@favicon/site.webmanifest">
+    <!--
+        Apenas a folha de ÍCONES do Fomantic, não o framework. A coluna `modulos.icone` guarda nomes
+        de ícone Fomantic para todos os módulos instalados; trocar essa fonte exigiria reescrever o
+        cadastro inteiro e quebraria plugins de terceiros. O CSS de layout continua 100% Tailwind.
+    -->
+    <link rel="stylesheet" type="text/css" media="all"
+        href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/components/icon.min.css">
+    <!-- pagina#css -->
+    <!-- pagina#js -->
+</head>
+
+<body class="min-h-screen bg-slate-100 text-slate-800 antialiased">
+    <div id="c2f-admin-shell" class="min-h-screen" data-menu-largura-min="220" data-menu-largura-max="450"
+        data-menu-largura-padrao="260">
+        <div data-admin-overlay
+            class="fixed inset-0 z-30 hidden bg-slate-900/50 lg:hidden" aria-hidden="true"></div>
+
+        <aside data-admin-sidebar
+            class="fixed inset-y-0 left-0 z-40 flex w-[260px] -translate-x-full flex-col bg-slate-900 text-slate-100 transition-transform duration-200 lg:translate-x-0">
+            <div class="flex items-center justify-between gap-2 px-3 py-3">
+                <div class="flex items-center gap-1">
+                    <a href="@[[pagina#url-raiz]]@" title="Acessar site"
+                        class="inline-flex size-9 items-center justify-center rounded-lg bg-emerald-600 text-white transition-colors hover:bg-emerald-700">
+                        <i class="external alternate icon"></i>
+                    </a>
+                    <button type="button" data-admin-dashboard3d title="Dashboard 3D"
+                        class="inline-flex size-9 items-center justify-center rounded-lg bg-sky-600 text-white transition-colors hover:bg-sky-700">
+                        <i class="cube icon"></i>
+                    </button>
+                </div>
+                <button type="button" data-admin-fechar title="Fechar menu"
+                    class="inline-flex size-9 items-center justify-center rounded-lg bg-slate-800 text-slate-300 transition-colors hover:bg-slate-700 hover:text-white">
+                    <i class="times icon"></i>
+                </button>
+            </div>
+
+            @[[pagina#menu]]@
+
+            <div class="border-t border-slate-800 px-3 py-3">
+                <span
+                    class="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300">
+                    <i class="certificate icon text-amber-400"></i> Gestor v@[[gestor#versao]]@
+                </span>
+            </div>
+
+            <div data-admin-resize title="Arraste para redimensionar"
+                class="absolute inset-y-0 -right-1 hidden w-2 cursor-col-resize touch-none select-none lg:block">
+                <span class="absolute top-1/2 left-1/2 h-10 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-700"></span>
+            </div>
+        </aside>
+
+        <div data-admin-conteudo class="flex min-h-screen flex-col transition-[margin] duration-200 lg:ml-[260px]">
+            <header class="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3">
+                <div class="flex items-center gap-3">
+                    <button type="button" data-admin-abrir title="Abrir menu"
+                        class="inline-flex size-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50">
+                        <i class="bars icon"></i>
+                    </button>
+                    <a href="@[[pagina#url-raiz]]@dashboard/" class="inline-flex items-center">
+                        <img src="@[[pagina#url-raiz]]@images/logo-principal.png" alt="Conn2Flow"
+                            class="h-8 w-auto max-w-full">
+                    </a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span
+                        class="inline-flex size-8 items-center justify-center rounded-full bg-slate-800 text-xs font-semibold text-white"
+                        aria-hidden="true"><i class="user icon"></i></span>
+                    <span class="hidden text-sm font-medium text-slate-700 sm:inline">@[[usuario#nome]]@</span>
+                </div>
+            </header>
+
+            <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
+                @[[pagina#corpo]]@
+            </main>
+        </div>
+    </div>
+
+    <div id="gestor-listener"></div>
+</body>
+
+</html>

@@ -1,60 +1,39 @@
-<div class="ui stackable two column centered grid">
-    <div class="column">
-        <div class="ui segment">
-            <div class="ui center aligned header large">@[[forgot-password-title]]@</div>
-            <!-- bloqueado-mensagem < --><div class="ui hidden divider">&nbsp;</div>
-            <div class="ui icon negative message visible">
-            	<i class="exclamation triangle icon"></i>
-                <div class="content">
-                    <div class="header">
-                        Endereço de IP do seu dispositivo está BLOQUEADO!
-                    </div>
-                    <p>Infelizmente não é possível alterar a sua senha neste dispositivo atual devido ao excesso de falhas na tentativa de informar emails inválidos. Favor tentar novamente mais tarde neste dispositivo ou então em um outro numa outra rede.</p>
-                </div>
-            </div>
-            <div class="ui hidden divider">&nbsp;</div>
-            <div class="ui hidden divider">&nbsp;</div>
-            <div class="field">
-                <div class="ui hidden divider">&nbsp;</div>
-                <div class="ui basic segment center aligned">
-                    <div class="">@[[forgot-password-login-label]]@ <a href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a>
-                    </div>
-                    <div>@[[forgot-password-new-register-label]]@ <a href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a>
-                    </div>
-                </div>
-            </div><!-- bloqueado-mensagem > -->
-            <!-- formulario < -->
-            <form id="_gestor-form-forgot-password" action="@[[pagina#url-raiz]]@forgot-password/" method="post" name="_gestor-form-forgot-password" class="ui form">
-                <div class="ui icon message">
-                    <i class="user lock icon"></i>
-                    <div class="content">
-                        <div class="header"> @[[forgot-password-message-header]]@ </div>
-                        <p>@[[forgot-password-message-content]]@</p>
-                    </div>
-                </div>
-                <div class="field">
-                    <label>@[[forgot-password-email-label]]@</label>
-                    <input type="text" name="email" placeholder="@[[forgot-password-email-placeholder]]@">
-                </div>
-                <div class="field">
-                    <label>@[[forgot-password-email-2-label]]@</label>
-                    <input type="text" name="email-2" placeholder="@[[forgot-password-email-2-placeholder]]@">
-                </div>
-                <div class="ui hidden divider">&nbsp;</div>
-                <div class="ui error message">&nbsp;</div>
-                <div class="field">
-                    <button class="fluid ui button blue">@[[forgot-password-button]]@</button>
-                    <div class="ui hidden divider">&nbsp;</div>
-                    <div class="ui basic segment center aligned">
-                        <div class="">@[[forgot-password-login-label]]@ <a href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a>
-                        </div>
-                        <div>@[[forgot-password-new-register-label]]@ <a href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a>
-                        </div>
-                    </div>
-                </div>
-                <input id="_gestor-forgot-password" name="_gestor-forgot-password" type="hidden" value="1">
-            </form>
-            <!-- formulario > -->
-        </div>
+<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <h1 class="mb-6 text-center text-2xl font-semibold text-slate-900">@[[forgot-password-title]]@</h1>
+    <!-- bloqueado-mensagem < -->
+    <div class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+        <p class="font-semibold">@[[forgot-password-blocked-title]]@</p>
+        <p class="mt-1">@[[forgot-password-blocked-message]]@</p>
     </div>
+    <div class="mt-6 space-y-1 text-center text-sm text-slate-600">
+        <p>@[[forgot-password-login-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a></p>
+        <p>@[[forgot-password-new-register-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a></p>
+    </div><!-- bloqueado-mensagem > -->
+    <!-- formulario < -->
+    <form id="_gestor-form-forgot-password" action="@[[pagina#url-raiz]]@forgot-password/" method="post"
+        name="_gestor-form-forgot-password" data-c2f-form="tailwind" class="space-y-4">
+        <div class="rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-900">
+            <p class="font-semibold">@[[forgot-password-message-header]]@</p>
+            <p class="mt-1">@[[forgot-password-message-content]]@</p>
+        </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-email">@[[forgot-password-email-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="email" id="c2f-email" name="email" placeholder="@[[forgot-password-email-placeholder]]@" autocomplete="email">
+        </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-email-2">@[[forgot-password-email-2-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="email" id="c2f-email-2" name="email-2" placeholder="@[[forgot-password-email-2-placeholder]]@" autocomplete="email">
+        </div>
+        <div class="hidden rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800" data-c2f-form-erros></div>
+        <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-600/40 focus-visible:outline-none active:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60">@[[forgot-password-button]]@</button>
+        <div class="mt-6 space-y-1 text-center text-sm text-slate-600">
+            <p>@[[forgot-password-login-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a></p>
+            <p>@[[forgot-password-new-register-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a></p>
+        </div>
+        <input id="_gestor-forgot-password" name="_gestor-forgot-password" type="hidden" value="1">
+    </form><!-- formulario > -->
 </div>

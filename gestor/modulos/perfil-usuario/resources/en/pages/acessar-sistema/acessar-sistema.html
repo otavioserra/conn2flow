@@ -1,78 +1,52 @@
-<div class="ui stackable two column centered grid">
-    <div class="column">
-        <div class="ui segment">
-            <form id="_gestor-form-logar" action="@[[pagina#url-raiz]]@signin/" method="post" name="_gestor-form-logar"
-                class="ui form">
-                <div class="ui center aligned header large">@[[login-titulo]]@</div>
-                <div class="ui hidden divider">&nbsp;</div>
-                <!-- bloqueado-mensagem < -->
-                <div class="ui icon negative message visible">
-                    <i class="exclamation triangle icon"></i>
-                    <div class="content">
-                        <div class="header">
-                            Your device's IP address is BLOCKED!
-                        </div>
-                        <p>Unfortunately, it is not possible to access your account from this current device due to
-                            excessive failed login attempts with invalid username and/or password. Please try again
-                            later on this device or on another one on a different network.</p>
-                    </div>
-                </div>
-                <div class="ui hidden divider">&nbsp;</div>
-                <div class="ui hidden divider">&nbsp;</div>
-                <div class="field">
-                    <div class="ui hidden divider">&nbsp;</div>
-                    <div class="ui basic segment center aligned">
-                        <div class="">@[[login-forgot-password-label]]@ <a
-                                href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a>
-                        </div>
-                        <div>@[[login-new-register-label]]@ <a
-                                href="@[[pagina#url-raiz]]@signup/">@[[login-new-register-button]]@</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- bloqueado-mensagem > -->
-                <!-- formulario < -->
-                <!-- login-local < -->
-                #login-method-switch#
-                <input type="hidden" name="login_method" id="login_method" value="#login-method-default#">
-                <div class="ui hidden divider">&nbsp;</div>
-                <div class="ui hidden divider">&nbsp;</div>
-                <div class="field">
-                    <label>@[[login-user-label]]@</label>
-                    <input type="text" name="usuario" placeholder="@[[login-user-placeholder]]@">
-                </div>
-                <!-- login-senha < -->
-                <div class="field password-login-field">
-                    <label>@[[login-password-label]]@</label>
-                    <input type="password" name="senha" placeholder="@[[login-password-placeholder]]@">
-                </div>
-                <div class="field password-login-field">
-                    <div class="ui checkbox">
-                        <input type="checkbox" name="permanecer-logado" value="1">
-                        <label>@[[login-keep-logged-in-label]]@</label>
-                    </div>
-                </div>
-                <!-- login-senha > -->
-                <div class="ui hidden divider">&nbsp;</div>
-                <div class="ui error message">&nbsp;</div>
-                <div class="field">
-                    <button class="fluid ui button blue login-submit-button" data-password-label="@[[login-button-label]]@" data-email-label="Send Access Code">@[[login-button-label]]@</button>
-                    <div class="ui hidden divider">&nbsp;</div>
-                    <div class="ui basic segment center aligned">
-                        <div class="password-login-field">@[[login-forgot-password-label]]@ <a
-                                href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a>
-                        </div>
-                        <div>@[[login-new-register-label]]@ <a
-                                href="@[[pagina#url-raiz]]@signup/">@[[login-new-register-button]]@</a>
-                        </div>
-                    </div>
-                </div>
-                <input id="_gestor-logar" name="_gestor-logar" type="hidden" value="1">
-                <input id="_gestor-fingerprint" name="_gestor-fingerprint" type="hidden">
-                <!-- login-local > -->
-                #login-social#
-                <!-- formulario > -->
-            </form>
+<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <h1 class="mb-6 text-center text-2xl font-semibold text-slate-900">@[[login-titulo]]@</h1>
+    <form id="_gestor-form-logar" action="@[[pagina#url-raiz]]@signin/" method="post"
+        name="_gestor-form-logar" data-c2f-form="tailwind" class="space-y-4">
+        <!-- bloqueado-mensagem < -->
+        <div class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+            <p class="font-semibold">@[[login-blocked-title]]@</p>
+            <p class="mt-1">@[[login-blocked-message]]@</p>
         </div>
-    </div>
+        <div class="mt-6 space-y-1 text-center text-sm text-slate-600">
+            <p>@[[login-forgot-password-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a></p>
+            <p>@[[login-new-register-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@signup/">@[[login-new-register-button]]@</a></p>
+        </div>
+        <!-- bloqueado-mensagem > -->
+        <!-- formulario < -->
+        <!-- login-local < -->
+        #login-method-switch#
+        <input type="hidden" name="login_method" id="login_method" value="#login-method-default#">
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-usuario">@[[login-user-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="text" id="c2f-usuario" name="usuario" placeholder="@[[login-user-placeholder]]@" autocomplete="username">
+        </div>
+        <!-- login-senha < -->
+        <div class="password-login-field">
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-senha">@[[login-password-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="password" id="c2f-senha" name="senha"
+                placeholder="@[[login-password-placeholder]]@" autocomplete="current-password">
+        </div>
+        <label class="password-login-field flex items-center gap-2 text-sm text-slate-700">
+            <input type="checkbox" name="permanecer-logado" value="1" class="size-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600/20">
+            <span>@[[login-keep-logged-in-label]]@</span>
+        </label>
+        <!-- login-senha > -->
+        <div class="hidden rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800" data-c2f-form-erros></div>
+        <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-600/40 focus-visible:outline-none active:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60 login-submit-button"
+            data-password-label="@[[login-button-label]]@"
+            data-email-label="@[[login-email-code-button]]@">@[[login-button-label]]@</button>
+        <div class="mt-6 space-y-1 text-center text-sm text-slate-600">
+            <p class="password-login-field">@[[login-forgot-password-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a></p>
+            <p>@[[login-new-register-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@signup/">@[[login-new-register-button]]@</a></p>
+        </div>
+        <input id="_gestor-logar" name="_gestor-logar" type="hidden" value="1">
+        <input id="_gestor-fingerprint" name="_gestor-fingerprint" type="hidden">
+        <!-- login-local > -->
+        #login-social#
+        <!-- formulario > -->
+    </form>
 </div>

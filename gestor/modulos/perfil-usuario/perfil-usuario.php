@@ -8,7 +8,12 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR_
 function perfil_usuario_area_restrita(){
 	global $_GESTOR;
 	global $_CONFIG;
-	
+
+	// req-120: a tela roda dentro do painel administrativo Tailwind. Sem o bundle, o compilador
+	// avisa que o layout emite `display` sob variante responsiva e a concatenação de sidecars pode
+	// inverter desktop/mobile (finding F3 do review de 2026-08-15).
+	$_GESTOR['tailwind-page-bundle'] = true;
+
 	if(isset($_REQUEST['_gestor-restrict-area-atualizar'])){
 		$usuario = gestor_usuario();
 		
@@ -105,7 +110,9 @@ function perfil_usuario_area_restrita(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Alterar dados do formulário de validação
@@ -628,11 +635,20 @@ function perfil_usuario_editar(){
 	}
 	
 	// ===== Inclusão Módulo JS
-	
+
 	gestor_pagina_javascript_incluir();
-	
+
+	// ===== Bundle canônico do Tailwind (req-118)
+	//
+	// O layout emite `display` sob variante responsiva (`lg:block`, `lg:hidden`, `sm:inline`) e o
+	// compilador avisa que concatenar sidecars nesse cenário pode inverter desktop/mobile — é o
+	// finding F3 do review de 2026-08-15. Com o bundle, layout, componentes e página compilam num
+	// CSS só e a ordem global das utilities fica preservada.
+
+	$_GESTOR['tailwind-page-bundle'] = true;
+
 	// ===== Selecionar dados do banco de dados
-	
+
 	$retorno_bd = banco_select_editar
 	(
 		banco_campos_virgulas($camposBancoEditar)
@@ -690,6 +706,43 @@ function perfil_usuario_editar(){
 
 		perfil_usuario_editar_sessoes();
 
+		// ===== Aba Chaves de API (req-119)
+
+		perfil_usuario_editar_api_tokens();
+
+		// A aba só aparece para quem pode usar a API; sem isso o usuário veria uma aba que não
+		// mostra nada e não explica por quê.
+		if(empty($_GESTOR['perfil-api-tokens-visivel'])){
+			$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- aba-api-tokens < -->','<!-- aba-api-tokens > -->');
+		} else {
+			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'<!-- aba-api-tokens < -->','');
+			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'<!-- aba-api-tokens > -->','');
+		}
+
+		// ===== Dicionário do runtime do painel (req-118)
+		//
+		// Só os textos que o JS escreve sozinho (força de senha e confirmações de revogação); tudo
+		// que o PHP já renderiza continua vindo pronto no HTML.
+
+		$_GESTOR['javascript-vars']['perfilUsuario'] = Array(
+			'password-strength-empty' => perfil_usuario_seguranca_var('password-strength-empty'),
+			'password-strength-weak' => perfil_usuario_seguranca_var('password-strength-weak'),
+			'password-strength-fair' => perfil_usuario_seguranca_var('password-strength-fair'),
+			'password-strength-good' => perfil_usuario_seguranca_var('password-strength-good'),
+			'password-strength-strong' => perfil_usuario_seguranca_var('password-strength-strong'),
+			'sessions-revoke-confirm' => perfil_usuario_seguranca_var('sessions-revoke-confirm'),
+			'sessions-revoke-others-confirm' => perfil_usuario_seguranca_var('sessions-revoke-others-confirm'),
+			'sessions-revoke-error' => perfil_usuario_seguranca_var('sessions-revoke-error'),
+			'api-tokens-name-required' => perfil_usuario_seguranca_var('api-tokens-name-required'),
+			'api-tokens-create-error' => perfil_usuario_seguranca_var('api-tokens-create-error'),
+			'api-tokens-revoke-confirm' => perfil_usuario_seguranca_var('api-tokens-revoke-confirm'),
+			'api-tokens-revoke-error' => perfil_usuario_seguranca_var('api-tokens-revoke-error'),
+			'api-tokens-copied' => perfil_usuario_seguranca_var('api-tokens-copied'),
+			'api-tokens-status-revogado' => perfil_usuario_seguranca_var('api-tokens-status-revogado'),
+			'recovery-codes-title' => perfil_usuario_seguranca_var('recovery-codes-title'),
+			'recovery-codes-help' => perfil_usuario_seguranca_var('recovery-codes-help'),
+		);
+
 		// ===== Popular os metaDados
 		
 		$status_atual = (isset($retorno_bd[$modulo['tabela']['status']]) ? $retorno_bd[$modulo['tabela']['status']] : '');
@@ -697,7 +750,20 @@ function perfil_usuario_editar(){
 		if(isset($retorno_bd[$modulo['tabela']['data_criacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_criacao']], 'formato' => 'dataHora'))); }
 		if(isset($retorno_bd[$modulo['tabela']['data_modificacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_modificacao']], 'formato' => 'dataHora'))); }
 		if(isset($retorno_bd[$modulo['tabela']['versao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-version')),'dado' => $retorno_bd[$modulo['tabela']['versao']]); }
-		if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => ($retorno_bd[$modulo['tabela']['status']] == 'A' ? '<div class="ui center aligned green message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-active')).'</b></div>' : '').($retorno_bd[$modulo['tabela']['status']] == 'I' ? '<div class="ui center aligned brown message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-inactive')).'</b></div>' : '')); }
+		// req-120: o painel roda em Tailwind puro — a etiqueta de status precisa sair no vocabulário
+		// dele, senão vira texto sem estilo dentro da tabela de metadados.
+		if(isset($retorno_bd[$modulo['tabela']['status']])){
+			$statusAtual = $retorno_bd[$modulo['tabela']['status']];
+			$statusHtml = '';
+
+			if($statusAtual == 'A'){
+				$statusHtml = perfil_usuario_etiqueta_status('field-status-active','bg-emerald-50 text-emerald-700');
+			} else if($statusAtual == 'I'){
+				$statusHtml = perfil_usuario_etiqueta_status('field-status-inactive','bg-amber-50 text-amber-700');
+			}
+
+			$metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => $statusHtml);
+		}
 	} else {
 		gestor_redirecionar_raiz();
 	}
@@ -822,22 +888,167 @@ function perfil_usuario_seguranca_var($id){
 	return gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => $id));
 }
 
-// ===== Vocabulário Tailwind do painel (req-118) =====
+// ===== Blocos de interface do módulo (req-118/119/120) =====
 //
-// As classes vivem em constantes porque o compilador de recursos escaneia ESTE arquivo (declarado em
-// `tailwind_sources` da página `perfil-usuario`): repetir a mesma cadeia em cada `.=` faria o HTML
-// divergir entre ramos sem que nada avisasse.
+// NENHUM HTML é escrito aqui. Todo markup vive no Sistema de Recursos, em
+// `resources/<lang>/components/perfil-usuario-*`, e as classes utilitárias vivem nas VARIÁVEIS do
+// sistema (`perfil-usuario.json`), resolvidas como `@[[classe-…]]@` dentro do próprio componente.
+// Isso mantém o visual editável por instalação (componente e variável são dados de banco) e mantém
+// o compilador Tailwind enxergando tudo — o JSON do módulo é declarado em `tailwind_sources`.
+//
+// O papel do PHP passou a ser só decidir QUAIS blocos entram e com que valores.
 
-const PERFIL_USUARIO_CARTAO       = 'rounded-xl border border-slate-200 bg-white p-4 shadow-sm';
-const PERFIL_USUARIO_TITULO       = 'mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700';
-const PERFIL_USUARIO_ROTULO       = 'mb-1 block text-sm font-semibold text-slate-700';
-const PERFIL_USUARIO_CAMPO        = 'block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!';
-const PERFIL_USUARIO_BOTAO        = 'inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50';
-const PERFIL_USUARIO_BOTAO_OK     = 'inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700';
-const PERFIL_USUARIO_BOTAO_ALERTA = 'inline-flex items-center gap-2 rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700';
-const PERFIL_USUARIO_BOTAO_MINI   = 'inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50';
-const PERFIL_USUARIO_ETIQUETA     = 'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold';
-const PERFIL_USUARIO_AJUDA        = 'text-sm text-slate-500';
+/**
+ * Carrega um componente do próprio módulo.
+ *
+ * @param string $id Id do componente.
+ *
+ * @return string HTML do componente, ou vazio quando ele ainda não foi sincronizado.
+ */
+function perfil_usuario_componente($id){
+	global $_GESTOR;
+
+	$html = gestor_componente(Array(
+		'id' => $id,
+		'modulo' => $_GESTOR['modulo-id'],
+	));
+
+	return is_string($html) ? $html : '';
+}
+
+/**
+ * Extrai um bloco nomeado de um componente.
+ *
+ * O componente guarda TODAS as variantes de uma tela e o PHP escolhe qual usar. Extrair em vez de
+ * concatenar é o que permite ao operador editar qualquer variante sem tocar em código.
+ *
+ * @param string $html HTML do componente.
+ * @param string $bloco Nome do bloco delimitado por `<!-- nome < -->` e `<!-- nome > -->`.
+ *
+ * @return string Conteúdo do bloco.
+ */
+function perfil_usuario_bloco($html,$bloco){
+	return modelo_tag_val($html,'<!-- '.$bloco.' < -->','<!-- '.$bloco.' > -->');
+}
+
+/** Remove um bloco nomeado, deixando o restante intacto. */
+function perfil_usuario_bloco_remover($html,$bloco){
+	return modelo_tag_in($html,'<!-- '.$bloco.' < -->','<!-- '.$bloco.' > -->','');
+}
+
+/** Mantém um bloco nomeado, removendo apenas os marcadores. */
+function perfil_usuario_bloco_manter($html,$bloco){
+	return modelo_tag_in($html,'<!-- '.$bloco.' < -->','<!-- '.$bloco.' > -->',perfil_usuario_bloco($html,$bloco));
+}
+
+/**
+ * Monta o alternador entre login por senha e login por código de e-mail (req-120).
+ *
+ * O contrato com o JS não mudou: `.login-method-toggle`, `data-method` e a classe `active` continuam
+ * sendo o que o `perfil-usuario.js` lê para trocar de modo.
+ */
+function perfil_usuario_login_method_switch($labelSenha,$labelEmail){
+	$bloco = perfil_usuario_bloco(perfil_usuario_componente('perfil-usuario-login-metodos'),'switch');
+
+	$bloco = modelo_var_troca($bloco,'#label-senha#',$labelSenha);
+	$bloco = modelo_var_troca($bloco,'#label-email#',$labelEmail);
+
+	return $bloco;
+}
+
+/**
+ * Monta o bloco de login social (req-120).
+ *
+ * O ícone é uma letra, não uma webfont: as telas públicas não carregam o Fomantic e puxar uma folha
+ * de ícones inteira para dois glifos custaria mais que o botão.
+ *
+ * @param array $provedores Mapa `provider => Array(sigla, rótulo)`.
+ */
+function perfil_usuario_login_social($provedores){
+	global $_GESTOR;
+
+	if(!$provedores) return '';
+
+	$componente = perfil_usuario_componente('perfil-usuario-login-metodos');
+	$conteiner = perfil_usuario_bloco($componente,'social-conteiner');
+	$modelo = perfil_usuario_bloco($componente,'social-botao');
+
+	foreach($provedores as $provider => $dados){
+		$botao = $modelo;
+		$botao = modelo_var_troca($botao,'#url#',$_GESTOR['url-raiz'].'social-login/?provider='.$provider);
+		$botao = modelo_var_troca($botao,'#cor#',($provider === 'google' ? 'bg-rose-600' : 'bg-sky-700'));
+		$botao = modelo_var_troca($botao,'#sigla#',$dados[0]);
+		$botao = modelo_var_troca($botao,'#rotulo#',$dados[1]);
+
+		$conteiner = modelo_var_in($conteiner,'<!-- social-botao -->',$botao);
+	}
+
+	return modelo_var_troca($conteiner,'<!-- social-botao -->','');
+}
+
+/**
+ * Monta a etiqueta de status exibida nos metadados do perfil (req-120).
+ *
+ * Usa o mesmo bloco de etiqueta dos demais painéis, para o status não destoar do resto da tela.
+ *
+ * @param string $variavelInterface Id da variável de idioma no módulo `interface`.
+ * @param string $cor Classes de cor da etiqueta.
+ */
+function perfil_usuario_etiqueta_status($variavelInterface,$cor){
+	$etiqueta = perfil_usuario_bloco(perfil_usuario_componente('perfil-usuario-sessoes'),'etiqueta');
+
+	$etiqueta = modelo_var_troca($etiqueta,'#cor#',$cor);
+	$etiqueta = modelo_var_troca($etiqueta,'#texto#',gestor_variaveis(Array('modulo' => 'interface','id' => $variavelInterface)));
+
+	return $etiqueta;
+}
+
+/** Devolve um bloco do componente de campos de 2FA das telas públicas (req-120). */
+function perfil_usuario_2fa_bloco($bloco){
+	return perfil_usuario_bloco(perfil_usuario_componente('perfil-usuario-2fa-campos'),$bloco);
+}
+
+/** Campo de código das telas de 2FA. */
+function perfil_usuario_2fa_campo_codigo(){
+	return perfil_usuario_2fa_bloco('campo-codigo');
+}
+
+/** Botão de reenvio do código por e-mail. */
+function perfil_usuario_2fa_reenviar_email($rota){
+	global $_GESTOR;
+
+	return modelo_var_troca(perfil_usuario_2fa_bloco('reenviar-email'),'#url#',$_GESTOR['url-raiz'].$rota.'?enviar-email=sim');
+}
+
+/** Parágrafo de ajuda das telas de 2FA. */
+function perfil_usuario_2fa_ajuda($texto){
+	return modelo_var_troca(perfil_usuario_2fa_bloco('ajuda'),'#texto#',$texto);
+}
+
+/**
+ * Monta as opções de método de 2FA a partir do bloco de opção do componente informado.
+ *
+ * @param string $componente Id do componente que traz o bloco de opção.
+ * @param string $blocoOpcao Nome do bloco de uma opção.
+ * @param bool $metodoApp Método por aplicativo habilitado.
+ * @param bool $metodoEmail Método por e-mail habilitado.
+ */
+function perfil_usuario_2fa_opcoes($componente,$blocoOpcao,$metodoApp,$metodoEmail){
+	$modelo = perfil_usuario_bloco(perfil_usuario_componente($componente),$blocoOpcao);
+	$opcoes = '';
+
+	if($metodoApp){
+		$opcao = modelo_var_troca($modelo,'#valor#','app');
+		$opcoes .= modelo_var_troca($opcao,'#rotulo#',perfil_usuario_seguranca_var('security-2fa-app-option'));
+	}
+
+	if($metodoEmail){
+		$opcao = modelo_var_troca($modelo,'#valor#','email');
+		$opcoes .= modelo_var_troca($opcao,'#rotulo#',perfil_usuario_seguranca_var('security-2fa-email-option'));
+	}
+
+	return $opcoes;
+}
 
 /**
  * Renderiza a seção de Segurança (2FA + contas sociais) no bloco `seguranca-campos`.
@@ -874,79 +1085,59 @@ function perfil_usuario_editar_seguranca(){
 	$googleAtivo = (($_ENV['AUTH_METHOD_GOOGLE_ACTIVE'] ?? 'false') === 'true');
 	$metaAtivo = (($_ENV['AUTH_METHOD_META_ACTIVE'] ?? 'false') === 'true');
 
+	$componente = perfil_usuario_componente('perfil-usuario-seguranca');
 	$qrCodeNecessario = false;
 
-	$html = '<div id="seg-seguranca" class="space-y-6">';
-	$html .= '<div id="seg-msg" class="hidden rounded-lg border px-4 py-3 text-sm"></div>';
-
-	// ===== Seção 2FA
-
-	$html .= '<div class="'.PERFIL_USUARIO_CARTAO.'">';
-	$html .= '<h3 class="'.PERFIL_USUARIO_TITULO.'"><span aria-hidden="true">🔒</span> '.perfil_usuario_seguranca_var('security-2fa-title').'</h3>';
+	// ===== Bloco 2FA
 
 	if($ativo){
-		$html .= '<p class="'.PERFIL_USUARIO_ETIQUETA.' bg-emerald-50 text-emerald-700">'.perfil_usuario_seguranca_var('security-2fa-active').' '.htmlspecialchars(strtoupper((string)$tipo)).'</p>';
-		$html .= '<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">';
-		$html .= '<div><label class="'.PERFIL_USUARIO_ROTULO.'" for="seg-2fa-senha">'.perfil_usuario_seguranca_var('security-password-label').'</label><input type="password" id="seg-2fa-senha" autocomplete="current-password" class="'.PERFIL_USUARIO_CAMPO.'"></div>';
-		$html .= '<div><label class="'.PERFIL_USUARIO_ROTULO.'" for="seg-2fa-codigo">'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" class="'.PERFIL_USUARIO_CAMPO.'"></div>';
-		$html .= '</div>';
-		$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_ALERTA.' mt-4" id="btn-2fa-desativar"><span aria-hidden="true">🔓</span> '.perfil_usuario_seguranca_var('security-2fa-disable').'</button>';
+		$bloco2fa = modelo_var_troca(perfil_usuario_bloco($componente,'2fa-ativo'),'#tipo#',htmlspecialchars(strtoupper((string)$tipo)));
 	} else if(!$metodoApp && !$metodoEmail){
-		$html .= '<p class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">'.perfil_usuario_seguranca_var('security-2fa-none-method').'</p>';
+		$bloco2fa = perfil_usuario_bloco($componente,'2fa-sem-metodo');
 	} else if(!$configurando){
-		$html .= '<p class="'.PERFIL_USUARIO_ETIQUETA.' bg-slate-100 text-slate-600">'.perfil_usuario_seguranca_var('security-2fa-inactive').'</p>';
-		$html .= '<p class="'.PERFIL_USUARIO_AJUDA.' mt-3">'.perfil_usuario_seguranca_var('security-2fa-inactive-help').'</p>';
-		$html .= '<a class="'.PERFIL_USUARIO_BOTAO.' mt-4" href="'.$_GESTOR['url-raiz'].'perfil-usuario/?configurar-seguranca=sim#seguranca"><span aria-hidden="true">🛡️</span> '.perfil_usuario_seguranca_var('security-2fa-configure').'</a>';
+		$bloco2fa = modelo_var_troca(
+			perfil_usuario_bloco($componente,'2fa-inativo'),
+			'#url-configurar#',
+			$_GESTOR['url-raiz'].'perfil-usuario/?configurar-seguranca=sim#seguranca'
+		);
 	} else {
 		// Persistir um secret (enabled=0) para o método app, reutilizado entre recargas.
 		$secret = ($dados2fa && !empty($dados2fa['two_factor_secret'])) ? $dados2fa['two_factor_secret'] : '';
+
 		if($metodoApp && $secret === ''){
 			$secret = two_factor_generate_secret();
 			banco_update_campo('two_factor_secret', $secret);
 			banco_update_executar('usuarios', "WHERE id_usuarios='".$id_usuarios."'");
 		}
 
-		$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('security-2fa-inactive-help').'</p>';
-
-		$opcoes = '';
-		if($metodoApp) $opcoes .= '<option value="app">'.perfil_usuario_seguranca_var('security-2fa-app-option').'</option>';
-		if($metodoEmail) $opcoes .= '<option value="email">'.perfil_usuario_seguranca_var('security-2fa-email-option').'</option>';
-		$html .= '<div class="mt-4"><label class="'.PERFIL_USUARIO_ROTULO.'" for="seg-2fa-metodo">'.perfil_usuario_seguranca_var('security-2fa-method-label').'</label><select id="seg-2fa-metodo" class="'.PERFIL_USUARIO_CAMPO.'">'.$opcoes.'</select></div>';
+		$bloco2fa = perfil_usuario_bloco($componente,'2fa-configurar');
+		$bloco2fa = modelo_var_troca($bloco2fa,'#opcoes#',perfil_usuario_2fa_opcoes('perfil-usuario-seguranca','2fa-metodo-opcao',$metodoApp,$metodoEmail));
 
 		if($metodoApp){
 			$qrCodeNecessario = true;
-			$otpauth = two_factor_get_qr_code($email, $secret);
-			$html .= '<div id="seg-2fa-app-bloco" class="mt-4">';
-			$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('security-2fa-scan-help').'</p>';
-			$html .= '<div id="seg-2fa-qr" data-otpauth="'.htmlspecialchars($otpauth, ENT_QUOTES).'" class="my-4 inline-block rounded-lg border border-slate-200 bg-white p-3"></div>';
-			$html .= '<p class="'.PERFIL_USUARIO_ROTULO.'">'.perfil_usuario_seguranca_var('security-2fa-secret-label').'</p>';
-			$html .= '<code class="inline-block rounded-md bg-slate-100 px-3 py-2 font-mono text-sm tracking-wider break-all text-slate-800">'.htmlspecialchars((string)$secret).'</code>';
-			$html .= '</div>';
+			$bloco2fa = perfil_usuario_bloco_manter($bloco2fa,'app');
+			$bloco2fa = modelo_var_troca($bloco2fa,'#otpauth#',htmlspecialchars(two_factor_get_qr_code($email,$secret), ENT_QUOTES));
+			$bloco2fa = modelo_var_troca($bloco2fa,'#secret#',htmlspecialchars((string)$secret));
+		} else {
+			$bloco2fa = perfil_usuario_bloco_remover($bloco2fa,'app');
 		}
 
-		if($metodoEmail){
-			$html .= '<div id="seg-2fa-email-bloco" class="mt-4"><button type="button" class="'.PERFIL_USUARIO_BOTAO.'" id="btn-2fa-email-enviar"><span aria-hidden="true">✉️</span> '.perfil_usuario_seguranca_var('security-2fa-send-email').'</button></div>';
-		}
-
-		$html .= '<div class="mt-4"><label class="'.PERFIL_USUARIO_ROTULO.'" for="seg-2fa-codigo">'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" class="'.PERFIL_USUARIO_CAMPO.'"></div>';
-		$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_OK.' mt-4" id="btn-2fa-ativar"><span aria-hidden="true">✅</span> '.perfil_usuario_seguranca_var('security-2fa-activate').'</button>';
+		$bloco2fa = $metodoEmail
+			? perfil_usuario_bloco_manter($bloco2fa,'email')
+			: perfil_usuario_bloco_remover($bloco2fa,'email');
 	}
 
-	$html .= '</div>';
-
-	// ===== Seção Contas Sociais
-
-	$html .= '<div class="'.PERFIL_USUARIO_CARTAO.'">';
-	$html .= '<h3 class="'.PERFIL_USUARIO_TITULO.'"><span aria-hidden="true">🔗</span> '.perfil_usuario_seguranca_var('security-social-title').'</h3>';
+	// ===== Bloco de contas sociais
 
 	if(!$googleAtivo && !$metaAtivo){
-		$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('security-social-none-active').'</p>';
+		$blocoSocial = perfil_usuario_bloco($componente,'social-vazio');
 	} else {
 		$vinculos = banco_select(Array(
 			'tabela' => 'usuarios_provedores',
 			'campos' => Array('provider_name', 'provider_uid'),
 			'extra' => "WHERE usuario_id='".$id_usuarios."'",
 		));
+
 		$mapa = Array();
 		if(is_array($vinculos)){
 			foreach($vinculos as $v){ if(isset($v['provider_name'])) $mapa[$v['provider_name']] = isset($v['provider_uid']) ? $v['provider_uid'] : ''; }
@@ -956,27 +1147,29 @@ function perfil_usuario_editar_seguranca(){
 		if($googleAtivo) $provedores['google'] = 'Google';
 		if($metaAtivo) $provedores['meta'] = 'Meta';
 
-		$html .= '<ul class="divide-y divide-slate-100">';
+		$blocoSocial = perfil_usuario_bloco($componente,'social-lista');
+		$modeloItem = perfil_usuario_bloco($componente,'social-item');
+
 		foreach($provedores as $pid => $pnome){
-			$html .= '<li class="flex flex-wrap items-center justify-between gap-3 py-3">';
-			$html .= '<span class="text-sm font-medium text-slate-800">'.$pnome.'</span>';
 			if(isset($mapa[$pid])){
-				$html .= '<span class="flex flex-wrap items-center gap-2">';
-				$html .= '<span class="'.PERFIL_USUARIO_ETIQUETA.' bg-emerald-50 text-emerald-700">'.perfil_usuario_seguranca_var('security-social-linked').'</span>';
-				$html .= '<span class="text-xs break-all text-slate-500">'.htmlspecialchars((string)$mapa[$pid]).'</span>';
-				$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_MINI.' btn-social-desvincular" data-provider="'.$pid.'">'.perfil_usuario_seguranca_var('security-social-unlink').'</button>';
-				$html .= '</span>';
+				$acao = modelo_var_troca(perfil_usuario_bloco($componente,'social-vinculado'),'#uid#',htmlspecialchars((string)$mapa[$pid]));
 			} else {
-				$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_MINI.' btn-social-vincular" data-provider="'.$pid.'">'.perfil_usuario_seguranca_var('security-social-link').' '.$pnome.'</button>';
+				$acao = perfil_usuario_bloco($componente,'social-desvinculado');
 			}
-			$html .= '</li>';
+
+			$item = modelo_var_troca($modeloItem,'#acao#',$acao);
+			$item = modelo_var_troca_tudo($item,'#provedor-nome#',$pnome);
+			$item = modelo_var_troca_tudo($item,'#provedor#',$pid);
+
+			$blocoSocial = modelo_var_in($blocoSocial,'<!-- social-item -->',$item);
 		}
-		$html .= '</ul>';
+
+		$blocoSocial = modelo_var_troca($blocoSocial,'<!-- social-item -->','');
 	}
 
-	$html .= '</div>';
-
-	$html .= '</div>';
+	$html = perfil_usuario_bloco($componente,'conteiner');
+	$html = modelo_var_troca($html,'#bloco-2fa#',$bloco2fa);
+	$html = modelo_var_troca($html,'#bloco-social#',$blocoSocial);
 
 	$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', $html);
 
@@ -985,6 +1178,93 @@ function perfil_usuario_editar_seguranca(){
 	if($qrCodeNecessario){
 		gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>');
 	}
+}
+
+/**
+ * Renderiza a seção "Chaves de API" no bloco `api-tokens-campos` da página de perfil (req-119).
+ *
+ * A aba só existe para perfis autorizados a usar a API: emitir token para quem não pode consumi-la
+ * entregaria uma credencial inútil e daria a impressão de que a política foi contornada.
+ */
+function perfil_usuario_editar_api_tokens(){
+	global $_GESTOR;
+
+	$bloco = 'api-tokens-campos';
+
+	gestor_incluir_biblioteca('usuario');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+
+	// O gate de schema entra junto do de permissão: enquanto a migração não tiver rodado nesta
+	// instalação, a aba inteira não existe — em vez de erro na primeira consulta (BATCH-122).
+	if(!$id_usuarios || !perfil_usuario_api_tokens_habilitado($usuario) || !usuario_api_tokens_disponivel()){
+		$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', '');
+		$_GESTOR['perfil-api-tokens-visivel'] = false;
+		return;
+	}
+
+	$_GESTOR['perfil-api-tokens-visivel'] = true;
+
+	$componente = perfil_usuario_componente('perfil-usuario-api-tokens');
+	$tokens = usuario_api_tokens_listar($id_usuarios);
+	$nunca = perfil_usuario_seguranca_var('api-tokens-never-used');
+
+	$html = perfil_usuario_bloco($componente,'conteiner');
+
+	// ===== Escopos oferecidos na criação
+
+	$modeloEscopo = perfil_usuario_bloco($componente,'escopo');
+
+	foreach(Array('read','write','deploy') as $escopo){
+		$item = modelo_var_troca($modeloEscopo,'#valor#',$escopo);
+		$item = modelo_var_troca($item,'#rotulo#',perfil_usuario_seguranca_var('api-tokens-scope-'.$escopo));
+		$item = modelo_var_troca($item,'#checked#',($escopo === 'read' ? 'checked' : ''));
+
+		$html = modelo_var_in($html,'<!-- escopo -->',$item);
+	}
+
+	$html = modelo_var_troca($html,'<!-- escopo -->','');
+
+	// ===== Listagem
+
+	if(!$tokens){
+		$html = perfil_usuario_bloco_remover($html,'tabela');
+		$html = perfil_usuario_bloco_manter($html,'vazio');
+	} else {
+		$html = perfil_usuario_bloco_remover($html,'vazio');
+		$html = perfil_usuario_bloco_manter($html,'tabela');
+
+		$modeloLinha = perfil_usuario_bloco($componente,'linha');
+
+		foreach($tokens as $token){
+			$ativo = ($token['situacao'] === 'ativo');
+			$cor = $ativo
+				? 'bg-emerald-50 text-emerald-700'
+				: ($token['situacao'] === 'expirado' ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-600');
+
+			$linha = $modeloLinha;
+
+			// Token já revogado ou expirado não tem o que revogar — o botão só existiria para falhar.
+			$linha = $ativo
+				? perfil_usuario_bloco_manter($linha,'revogar')
+				: perfil_usuario_bloco_remover($linha,'revogar');
+
+			$linha = modelo_var_troca($linha,'#nome#',htmlspecialchars((string)$token['nome']));
+			$linha = modelo_var_troca($linha,'#prefixo#',htmlspecialchars((string)$token['token_prefix']));
+			$linha = modelo_var_troca($linha,'#criacao#',htmlspecialchars(interface_formatar_dado(Array('dado' => $token['data_criacao'],'formato' => 'dataHora'))));
+			$linha = modelo_var_troca($linha,'#ultimo-uso#',htmlspecialchars(!empty($token['ultimo_uso']) ? interface_formatar_dado(Array('dado' => $token['ultimo_uso'],'formato' => 'dataHora')) : $nunca));
+			$linha = modelo_var_troca($linha,'#cor-situacao#',$cor);
+			$linha = modelo_var_troca($linha,'#situacao#',perfil_usuario_seguranca_var('api-tokens-status-'.$token['situacao']));
+			$linha = modelo_var_troca_tudo($linha,'#id#',(string)(int)$token['id_usuarios_api_tokens']);
+
+			$html = modelo_var_in($html,'<!-- linha -->',$linha);
+		}
+
+		$html = modelo_var_troca($html,'<!-- linha -->','');
+	}
+
+	$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', $html);
 }
 
 /**
@@ -1008,26 +1288,24 @@ function perfil_usuario_editar_sessoes(){
 	$sessoes = usuario_sessoes_listar($id_usuarios,$tokenAtual);
 	$desconhecido = perfil_usuario_seguranca_var('sessions-unknown');
 
+	$componente = perfil_usuario_componente('perfil-usuario-sessoes');
+	$html = perfil_usuario_bloco($componente,'conteiner');
+
 	$outras = 0;
 	foreach($sessoes as $sessao){ if(!$sessao['atual']) $outras++; }
 
-	$html = '<div id="seg-sessoes" class="space-y-6">';
-	$html .= '<div id="sessoes-msg" class="hidden rounded-lg border px-4 py-3 text-sm"></div>';
-
-	$html .= '<div class="'.PERFIL_USUARIO_CARTAO.'">';
-	$html .= '<h3 class="'.PERFIL_USUARIO_TITULO.'"><span aria-hidden="true">💻</span> '.perfil_usuario_seguranca_var('sessions-title').'</h3>';
-	$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('sessions-help').'</p>';
-
-	if($outras > 0){
-		$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_ALERTA.' mt-4" id="btn-sessoes-revogar-outras"><span aria-hidden="true">⛔</span> '.perfil_usuario_seguranca_var('sessions-revoke-others').'</button>';
-	}
-
-	$html .= '</div>';
+	$html = ($outras > 0)
+		? perfil_usuario_bloco_manter($html,'revogar-outras')
+		: perfil_usuario_bloco_remover($html,'revogar-outras');
 
 	if(!$sessoes){
-		$html .= '<p class="'.PERFIL_USUARIO_AJUDA.'">'.perfil_usuario_seguranca_var('sessions-empty').'</p>';
+		$html = perfil_usuario_bloco_remover($html,'lista');
+		$html = perfil_usuario_bloco_manter($html,'vazio');
 	} else {
-		$html .= '<div id="sessoes-lista" class="grid grid-cols-1 gap-4 lg:grid-cols-2">';
+		$html = perfil_usuario_bloco_remover($html,'vazio');
+		$html = perfil_usuario_bloco_manter($html,'lista');
+
+		$modeloCartao = perfil_usuario_bloco($componente,'cartao');
 
 		foreach($sessoes as $sessao){
 			$navegador = $sessao['navegador'] !== '' ? $sessao['navegador'] : $desconhecido;
@@ -1040,41 +1318,34 @@ function perfil_usuario_editar_sessoes(){
 				$sistema
 			);
 
-			$html .= '<article class="'.PERFIL_USUARIO_CARTAO.($sessao['atual'] ? ' ring-2 ring-emerald-500' : '').'" data-sessao-pubid="'.htmlspecialchars($sessao['pubID'], ENT_QUOTES).'">';
-			$html .= '<div class="flex flex-wrap items-start justify-between gap-2">';
-			$html .= '<h4 class="flex items-center gap-2 text-sm font-semibold text-slate-800"><span aria-hidden="true">'.$icone.'</span> '.htmlspecialchars($titulo).'</h4>';
+			$cartao = $modeloCartao;
 
-			if($sessao['atual']){
-				$html .= '<span class="'.PERFIL_USUARIO_ETIQUETA.' bg-emerald-50 text-emerald-700">'.perfil_usuario_seguranca_var('sessions-current-badge').'</span>';
-			}
+			$cartao = $sessao['atual']
+				? perfil_usuario_bloco_manter($cartao,'atual')
+				: perfil_usuario_bloco_remover($cartao,'atual');
 
-			$html .= '</div>';
+			// A sessão atual não ganha botão de revogar: derrubaria o usuário no meio da operação.
+			$cartao = $sessao['atual']
+				? perfil_usuario_bloco_remover($cartao,'revogar')
+				: perfil_usuario_bloco_manter($cartao,'revogar');
 
-			$html .= '<dl class="mt-3 space-y-1 text-xs text-slate-600">';
-			$html .= '<div class="flex gap-2"><dt class="font-semibold">'.perfil_usuario_seguranca_var('sessions-ip-label').':</dt><dd class="break-all">'.htmlspecialchars($sessao['ip'] !== '' ? $sessao['ip'] : $desconhecido).'</dd></div>';
-			$html .= '<div class="flex gap-2"><dt class="font-semibold">'.perfil_usuario_seguranca_var('sessions-created-label').':</dt><dd>'.htmlspecialchars($sessao['data_criacao'] !== '' ? interface_formatar_dado(Array('dado' => $sessao['data_criacao'],'formato' => 'dataHora')) : $desconhecido).'</dd></div>';
+			$cartao = ($sessao['origem'] !== '')
+				? modelo_var_troca(perfil_usuario_bloco_manter($cartao,'origem'),'#origem#',htmlspecialchars($sessao['origem']))
+				: perfil_usuario_bloco_remover($cartao,'origem');
 
-			if($sessao['origem'] !== ''){
-				$html .= '<div class="flex gap-2"><dt class="font-semibold">'.perfil_usuario_seguranca_var('sessions-origin-label').':</dt><dd class="break-all">'.htmlspecialchars($sessao['origem']).'</dd></div>';
-			}
+			$cartao = modelo_var_troca($cartao,'#destaque#',($sessao['atual'] ? ' ring-2 ring-emerald-500' : ''));
+			$cartao = modelo_var_troca($cartao,'#icone#',$icone);
+			$cartao = modelo_var_troca($cartao,'#titulo#',htmlspecialchars($titulo));
+			$cartao = modelo_var_troca($cartao,'#ip#',htmlspecialchars($sessao['ip'] !== '' ? $sessao['ip'] : $desconhecido));
+			$cartao = modelo_var_troca($cartao,'#data#',htmlspecialchars($sessao['data_criacao'] !== '' ? interface_formatar_dado(Array('dado' => $sessao['data_criacao'],'formato' => 'dataHora')) : $desconhecido));
+			$cartao = modelo_var_troca($cartao,'#tipo#',perfil_usuario_seguranca_var($sessao['sessao'] ? 'sessions-type-browser' : 'sessions-type-persistent'));
+			$cartao = modelo_var_troca_tudo($cartao,'#pubid#',htmlspecialchars($sessao['pubID'], ENT_QUOTES));
 
-			$html .= '</dl>';
-
-			$html .= '<p class="mt-3 flex flex-wrap items-center gap-2">';
-			$html .= '<span class="'.PERFIL_USUARIO_ETIQUETA.' bg-slate-100 text-slate-600">'.perfil_usuario_seguranca_var($sessao['sessao'] ? 'sessions-type-browser' : 'sessions-type-persistent').'</span>';
-
-			if(!$sessao['atual']){
-				$html .= '<button type="button" class="'.PERFIL_USUARIO_BOTAO_MINI.' btn-sessao-revogar" data-pubid="'.htmlspecialchars($sessao['pubID'], ENT_QUOTES).'">'.perfil_usuario_seguranca_var('sessions-revoke').'</button>';
-			}
-
-			$html .= '</p>';
-			$html .= '</article>';
+			$html = modelo_var_in($html,'<!-- cartao -->',$cartao);
 		}
 
-		$html .= '</div>';
+		$html = modelo_var_troca($html,'<!-- cartao -->','');
 	}
-
-	$html .= '</div>';
 
 	$_GESTOR['pagina'] = modelo_tag_in($_GESTOR['pagina'], '<!-- '.$bloco.' < -->', '<!-- '.$bloco.' > -->', $html);
 }
@@ -1535,7 +1806,9 @@ function perfil_usuario_oauth_authenticate(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Incluir componentes
@@ -1560,11 +1833,7 @@ function perfil_usuario_oauth_authenticate(){
 		if($apiSenhaAtiva && $apiEmailAtivo){
 			$labelSenha = ($_GESTOR['linguagem-codigo'] === 'en') ? 'Use Password' : 'Usar Senha';
 			$labelEmail = ($_GESTOR['linguagem-codigo'] === 'en') ? 'Use Email Code' : 'Usar Código por E-mail';
-			$loginMethodSwitch = ''
-				. '<div class="ui two item menu login-method-menu">'
-				. '<a class="item active login-method-toggle" data-method="password"><i class="lock icon"></i> '.$labelSenha.'</a>'
-				. '<a class="item login-method-toggle" data-method="email"><i class="mail icon"></i> '.$labelEmail.'</a>'
-				. '</div>';
+			$loginMethodSwitch = perfil_usuario_login_method_switch($labelSenha,$labelEmail);
 		}
 
 		if(!$apiSenhaAtiva){
@@ -1671,22 +1940,21 @@ function perfil_usuario_oauth_authenticate_2fa(){
 	if(isset($_REQUEST['enviar-email']) && $tipo === 'email'){
 		$d = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('email'), 'extra' => "WHERE id_usuarios='".$id_usuarios."'"));
 		if($d && !empty($d['email'])){ two_factor_email_send_code($id_usuarios, $d['email']); }
-		$html .= '<div class="ui positive message">'.perfil_usuario_seguranca_var('security-2fa-email-sent').'</div>';
+		$html .= perfil_usuario_2fa_bloco('email-enviado');
 	}
 
 	if($mode === 'email-login'){
-		$html .= '<p class="ui grey text">'.(($_GESTOR['linguagem-codigo'] === 'en') ? 'Enter the email access code to continue generating API tokens.' : 'Digite o código enviado por e-mail para continuar a geração dos tokens de API.').'</p>';
+		$html .= perfil_usuario_2fa_ajuda(perfil_usuario_seguranca_var('oauth-2fa-email-help'));
 	} else {
 		$chave = ($tipo === 'email') ? 'login-2fa-verify-email-help' : 'login-2fa-verify-app-help';
-		$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var($chave).'</p>';
+		$html .= perfil_usuario_2fa_ajuda(perfil_usuario_seguranca_var($chave));
 	}
 
 	if($tipo === 'email'){
-		$labelReenviar = perfil_usuario_seguranca_var('security-2fa-send-email');
-		$html .= '<div style="margin-bottom:1rem;"><a class="ui blue button" href="'.$_GESTOR['url-raiz'].'oauth-authenticate-2fa/?enviar-email=sim"><i class="mail icon"></i> '.$labelReenviar.'</a></div>';
+		$html .= perfil_usuario_2fa_reenviar_email('oauth-authenticate-2fa/');
 	}
 
-	$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" name="codigo" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" autocomplete="one-time-code"></div>';
+	$html .= perfil_usuario_2fa_campo_codigo();
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#conteudo-2fa#', $html);
 
@@ -1965,7 +2233,9 @@ function perfil_usuario_signin(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Renderização dinâmica dos métodos de login (req-030)
@@ -1986,11 +2256,7 @@ function perfil_usuario_signin(){
 		if($senhaAtiva && $emailAtivo){
 			$labelSenha = ($_GESTOR['linguagem-codigo'] === 'en') ? 'Sign in with Password' : 'Entrar com Senha';
 			$labelEmail = ($_GESTOR['linguagem-codigo'] === 'en') ? 'Sign in with Email Code' : 'Entrar com Código por E-mail';
-			$loginMethodSwitch = ''
-				. '<div class="ui two item menu login-method-menu">'
-				. '<a class="item active login-method-toggle" data-method="password"><i class="lock icon"></i> '.$labelSenha.'</a>'
-				. '<a class="item login-method-toggle" data-method="email"><i class="mail icon"></i> '.$labelEmail.'</a>'
-				. '</div>';
+			$loginMethodSwitch = perfil_usuario_login_method_switch($labelSenha,$labelEmail);
 		}
 
 		if(!$senhaAtiva){
@@ -2001,17 +2267,16 @@ function perfil_usuario_signin(){
 		$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-method-default#', $loginMethodDefault);
 	}
 
-	$social = '';
-	if($googleAtivo || $metaAtivo){
-		$social .= '<div class="ui horizontal divider">'.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'login-social-or')).'</div>';
-		if($googleAtivo){
-			$social .= '<a class="fluid ui red button" href="'.$_GESTOR['url-raiz'].'social-login/?provider=google"><i class="google icon"></i> '.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'login-with-google')).'</a><div class="ui hidden divider">&nbsp;</div>';
-		}
-		if($metaAtivo){
-			$social .= '<a class="fluid ui blue button" href="'.$_GESTOR['url-raiz'].'social-login/?provider=meta"><i class="facebook icon"></i> '.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'login-with-meta')).'</a>';
-		}
+	$provedores = Array();
+
+	if($googleAtivo){
+		$provedores['google'] = Array('G',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'login-with-google')));
 	}
-	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-social#', $social);
+	if($metaAtivo){
+		$provedores['meta'] = Array('f',gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'login-with-meta')));
+	}
+
+	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#login-social#', perfil_usuario_login_social($provedores));
 
 	// ===== Interface finalizar opções
 
@@ -2296,6 +2561,16 @@ function perfil_usuario_signin_2fa(){
 				$secret = ($d && isset($d['two_factor_secret'])) ? $d['two_factor_secret'] : '';
 				$valido = ($secret !== '') && two_factor_validate_code($secret, $codigo);
 			}
+
+			// ===== Código de recuperação (req-119)
+			//
+			// Só é tentado quando o segundo fator normal já falhou: é o caminho de resgate de quem
+			// perdeu o aplicativo autenticador, e cada código vale UMA vez. Tentar antes gastaria um
+			// código a cada digitação errada do TOTP.
+
+			if(!$valido){
+				$valido = perfil_usuario_recovery_code_consumir($id_usuarios,$codigo);
+			}
 		}
 
 		if($valido){
@@ -2316,20 +2591,22 @@ function perfil_usuario_signin_2fa(){
 	if(isset($_REQUEST['enviar-email'])){
 		$d = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('email'), 'extra' => "WHERE id_usuarios='".$id_usuarios."'"));
 		if($d && !empty($d['email'])){ two_factor_email_send_code($id_usuarios, $d['email']); }
-		$html .= '<div class="ui positive message">'.perfil_usuario_seguranca_var('security-2fa-email-sent').'</div>';
+		$html .= perfil_usuario_2fa_bloco('email-enviado');
 	}
 
-	$linkEnviarEmail = '<a class="ui blue button" href="'.$_GESTOR['url-raiz'].'signin-2fa/?enviar-email=sim"><i class="mail icon"></i> '.perfil_usuario_seguranca_var('security-2fa-send-email').'</a>';
+	$qrCodeNecessario = false;
 
 	if($mode === 'setup'){
-		$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var('login-2fa-setup-help').'</p>';
+		$html .= perfil_usuario_2fa_ajuda(perfil_usuario_seguranca_var('login-2fa-setup-help'));
 
-		$opcoes = '';
-		if($metodoApp) $opcoes .= '<option value="app">'.perfil_usuario_seguranca_var('security-2fa-app-option').'</option>';
-		if($metodoEmail) $opcoes .= '<option value="email">'.perfil_usuario_seguranca_var('security-2fa-email-option').'</option>';
-		$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-method-label').'</label><select id="seg-2fa-metodo" name="metodo">'.$opcoes.'</select></div>';
+		$html .= modelo_var_troca(
+			perfil_usuario_2fa_bloco('metodo'),
+			'#opcoes#',
+			perfil_usuario_2fa_opcoes('perfil-usuario-2fa-campos','metodo-opcao',$metodoApp,$metodoEmail)
+		);
 
 		if($metodoApp){
+			$qrCodeNecessario = true;
 			$dados = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('two_factor_secret', 'email'), 'extra' => "WHERE id_usuarios='".$id_usuarios."'"));
 			$secret = ($dados && !empty($dados['two_factor_secret'])) ? $dados['two_factor_secret'] : '';
 			if($secret === ''){
@@ -2338,33 +2615,41 @@ function perfil_usuario_signin_2fa(){
 				banco_update_executar('usuarios', "WHERE id_usuarios='".$id_usuarios."'");
 			}
 			$emailUsuario = ($dados && isset($dados['email'])) ? $dados['email'] : '';
-			$otpauth = two_factor_get_qr_code($emailUsuario, $secret);
 
-			$html .= '<div id="seg-2fa-app-bloco">';
-			$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var('security-2fa-scan-help').'</p>';
-			$html .= '<div id="seg-2fa-qr" data-otpauth="'.htmlspecialchars($otpauth, ENT_QUOTES).'" style="margin:1rem auto;"></div>';
-			$html .= '<div class="ui small message"><b>'.htmlspecialchars($secret).'</b></div>';
-			$html .= '</div>';
+			$qr = perfil_usuario_2fa_bloco('qr');
+			$qr = modelo_var_troca($qr,'#otpauth#',htmlspecialchars(two_factor_get_qr_code($emailUsuario,$secret), ENT_QUOTES));
+			$qr = modelo_var_troca($qr,'#secret#',htmlspecialchars($secret));
+
+			$html .= $qr;
 		}
 
 		if($metodoEmail){
-			$html .= '<div id="seg-2fa-email-bloco">'.$linkEnviarEmail.'</div>';
+			$html .= modelo_var_troca(perfil_usuario_2fa_bloco('email-bloco'),'#botao#',perfil_usuario_2fa_reenviar_email('signin-2fa/'));
 		}
 	} else {
 		$tipo = gestor_sessao_variavel('pending_2fa_type');
 		$chave = ($tipo === 'email') ? 'login-2fa-verify-email-help' : 'login-2fa-verify-app-help';
-		$html .= '<p class="ui grey text">'.perfil_usuario_seguranca_var($chave).'</p>';
+		$html .= perfil_usuario_2fa_ajuda(perfil_usuario_seguranca_var($chave));
 		if($tipo === 'email'){
-			$html .= '<div style="margin-bottom:1rem;">'.$linkEnviarEmail.'</div>';
+			$html .= perfil_usuario_2fa_reenviar_email('signin-2fa/');
 		}
 	}
 
-	$html .= '<div class="field"><label>'.perfil_usuario_seguranca_var('security-2fa-code-label').'</label><input type="text" name="codigo" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" autocomplete="one-time-code"></div>';
+	$html .= perfil_usuario_2fa_campo_codigo();
+
+	// req-119: o mesmo campo aceita um código de recuperação; o backend só o tenta depois de o
+	// segundo fator normal falhar, então basta dizer isso ao usuário.
+	if($mode !== 'setup' && usuario_recovery_codes_disponivel()){
+		$html .= perfil_usuario_2fa_bloco('recovery-aviso');
+	}
 
 	$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#conteudo-2fa#', $html);
 
-	// QR Code renderizado no cliente.
-	gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>');
+	// QR Code renderizado no cliente, só na tela que de fato o desenha.
+	if($qrCodeNecessario){
+		gestor_pagina_javascript_incluir('<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>');
+	}
+
 	gestor_pagina_javascript_incluir();
 }
 
@@ -2747,7 +3032,9 @@ function perfil_usuario_signup(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Planos: DESCONTINUADO! Será removido daqui.
@@ -3046,7 +3333,9 @@ function perfil_usuario_forgot_password(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Interface adicionar finalizar opções
@@ -3084,7 +3373,9 @@ function perfil_usuario_forgot_password_confirmation(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Caso exista a variável devolva a página, senão redirecionar porque não se deve acessar essa página diretamente.
@@ -3368,7 +3659,9 @@ function perfil_usuario_redefine_password(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Interface finalizar opções
@@ -3406,7 +3699,9 @@ function perfil_usuario_redefine_password_confirmation(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Caso exista a variável devolva a página, senão redirecionar porque não se deve acessar essa página diretamente.
@@ -3464,7 +3759,9 @@ function perfil_usuario_validar_usuario(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Alterar dados do formulário de validação
@@ -3580,7 +3877,9 @@ function perfil_usuario_confirmacao_email(){
 	
 	// ===== Inclusão Módulo JS
 	
-	gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>');
+	// req-120: o runtime da interface é escolhido pelo framework da requisição — as telas públicas
+	// migradas rodam em Tailwind puro e o `interface.js` legado quebraria nelas (depende do Fomantic).
+	interface_assets_incluir();
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Interface finalizar opções
@@ -3655,11 +3954,34 @@ function perfil_usuario_ajax_seguranca_2fa_ativar(){
 		return;
 	}
 
+	// ===== Códigos de recuperação (req-119)
+	//
+	// Gerados NA ATIVAÇÃO e devolvidos em texto puro uma única vez. É a única janela em que isso
+	// acontece: o banco guarda apenas hashes, e sem esses códigos a perda do aplicativo autenticador
+	// significa perda irreversível da conta.
+
+	gestor_incluir_biblioteca('usuario');
+
+	// Sem a coluna (migração ainda não aplicada nesta instalação), o 2FA é ativado do mesmo jeito e
+	// apenas não há códigos de recuperação — perder o 2FA inteiro por uma coluna seria muito pior.
+	$recoveryCodes = usuario_recovery_codes_disponivel() ? usuario_recovery_codes_gerar(10) : Array();
+
 	banco_update_campo('two_factor_enabled', '1');
 	banco_update_campo('two_factor_type', $metodo);
+
+	if($recoveryCodes){
+		banco_update_campo('two_factor_recovery_codes', json_encode(array_map('usuario_recovery_code_hash',$recoveryCodes)));
+	}
+
 	banco_update_executar('usuarios', "WHERE id_usuarios='".$id_usuarios."'");
 
-	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('security-2fa-enabled-ok'));
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'success',
+		'message' => perfil_usuario_seguranca_var('security-2fa-enabled-ok'),
+		'recovery_codes' => $recoveryCodes,
+		'recovery_title' => perfil_usuario_seguranca_var('recovery-codes-title'),
+		'recovery_help' => perfil_usuario_seguranca_var('recovery-codes-help'),
+	);
 }
 
 function perfil_usuario_ajax_seguranca_2fa_desativar(){
@@ -3754,6 +4076,121 @@ function perfil_usuario_ajax_seguranca_social_desvincular(){
 	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('security-social-unlinked-ok'));
 }
 
+// ==== Códigos de recuperação do 2FA (req-119) ====
+
+/**
+ * Tenta consumir um código de recuperação do usuário.
+ *
+ * A lista é regravada SEM o código usado antes de o login prosseguir: um código de uso único que
+ * sobrevive ao uso não é código de recuperação, é uma segunda senha permanente.
+ *
+ * @param int $id_usuarios Usuário em processo de login.
+ * @param string $codigo Código digitado.
+ *
+ * @return bool True quando o código era válido e foi consumido.
+ */
+function perfil_usuario_recovery_code_consumir($id_usuarios,$codigo){
+	gestor_incluir_biblioteca('usuario');
+
+	$id_usuarios = (int)$id_usuarios;
+
+	if($id_usuarios <= 0 || trim((string)$codigo) === '') return false;
+	if(!usuario_recovery_codes_disponivel()) return false;
+
+	$dados = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'usuarios',
+		'campos' => Array('two_factor_recovery_codes'),
+		'extra' => "WHERE id_usuarios='".$id_usuarios."'",
+	));
+
+	if(!$dados || empty($dados['two_factor_recovery_codes'])) return false;
+
+	$hashes = json_decode((string)$dados['two_factor_recovery_codes'],true);
+
+	if(!is_array($hashes)) return false;
+
+	$resultado = usuario_recovery_code_consumir($codigo,$hashes);
+
+	if(!$resultado['valido']) return false;
+
+	banco_update_campo('two_factor_recovery_codes',json_encode(array_values($resultado['restantes'])));
+	banco_update_executar('usuarios',"WHERE id_usuarios='".$id_usuarios."'");
+
+	return true;
+}
+
+// ==== Chaves de API pessoais (req-119) ====
+
+/**
+ * Diz se o usuário corrente pode emitir Personal Access Tokens.
+ *
+ * A política é a MESMA da API (`AUTH_API_ALLOWED_PROFILES`), e não uma permissão nova: um token
+ * emitido por quem não pode usar a API seria uma credencial inútil — ou, pior, um caminho lateral
+ * para contornar a política.
+ */
+function perfil_usuario_api_tokens_habilitado($usuario){
+	$perfil = isset($usuario['id_usuarios_perfis']) ? $usuario['id_usuarios_perfis'] : null;
+
+	return ($perfil !== null) && perfil_usuario_api_perfil_permitido($perfil);
+}
+
+function perfil_usuario_ajax_api_token_gerar(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('usuario');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+
+	if(!$id_usuarios || !perfil_usuario_api_tokens_habilitado($usuario) || !usuario_api_tokens_disponivel()){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('api-tokens-not-allowed'));
+		return;
+	}
+
+	$nome = isset($_REQUEST['nome']) ? trim((string)$_REQUEST['nome']) : '';
+
+	if($nome === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('api-tokens-name-required'));
+		return;
+	}
+
+	$dias = isset($_REQUEST['expiracao']) ? (int)$_REQUEST['expiracao'] : 0;
+	$escopos = isset($_REQUEST['escopos']) ? (array)$_REQUEST['escopos'] : Array();
+
+	$resultado = usuario_api_token_gerar($id_usuarios,$nome,$escopos,($dias > 0 ? $dias : null));
+
+	if(!$resultado){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('api-tokens-create-error'));
+		return;
+	}
+
+	// O token em texto puro trafega UMA única vez, aqui. Não há endpoint que o recupere.
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'success',
+		'message' => perfil_usuario_seguranca_var('api-tokens-created-ok'),
+		'token' => $resultado['token'],
+		'prefixo' => $resultado['prefixo'],
+	);
+}
+
+function perfil_usuario_ajax_api_token_revogar(){
+	global $_GESTOR;
+
+	gestor_incluir_biblioteca('usuario');
+
+	$usuario = gestor_usuario();
+	$id_usuarios = isset($usuario['id_usuarios']) ? (int)$usuario['id_usuarios'] : 0;
+	$id_token = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
+
+	if(!$id_usuarios || !$id_token || !usuario_api_token_revogar($id_token,$id_usuarios)){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => perfil_usuario_seguranca_var('api-tokens-revoke-error'));
+		return;
+	}
+
+	$_GESTOR['ajax-json'] = Array('status' => 'success', 'message' => perfil_usuario_seguranca_var('api-tokens-revoked-ok'));
+}
+
 // ==== Sessões ativas (req-118) ====
 
 /**
@@ -3823,6 +4260,10 @@ function perfil_usuario_start(){
 			case 'seguranca-2fa-desativar': perfil_usuario_ajax_seguranca_2fa_desativar(); break;
 			case 'seguranca-social-vincular': perfil_usuario_ajax_seguranca_social_vincular(); break;
 			case 'seguranca-social-desvincular': perfil_usuario_ajax_seguranca_social_desvincular(); break;
+			case 'sessoes-revogar': perfil_usuario_ajax_sessoes_revogar(); break;
+			case 'sessoes-revogar-outras': perfil_usuario_ajax_sessoes_revogar_outras(); break;
+			case 'api-token-gerar': perfil_usuario_ajax_api_token_gerar(); break;
+			case 'api-token-revogar': perfil_usuario_ajax_api_token_revogar(); break;
 		}
 		
 		interface_ajax_finalizar();

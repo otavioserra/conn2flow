@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- pagina#titulo -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="@[[pagina#url-raiz]]@favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="@[[pagina#url-raiz]]@favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="@[[pagina#url-raiz]]@favicon/favicon-16x16.png">
+    <link rel="manifest" href="@[[pagina#url-raiz]]@favicon/site.webmanifest">
+    <!-- pagina#css -->
+    <!-- pagina#js -->
+</head>
+
+<body class="flex min-h-screen flex-col bg-slate-50 text-slate-800 antialiased">
+    <header class="border-b border-slate-200 bg-white">
+        <div class="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4">
+            <a href="@[[pagina#url-raiz]]@" class="inline-flex items-center">
+                <img src="@[[pagina#url-raiz]]@images/logo-principal.png" alt="Conn2Flow"
+                    class="h-8 w-auto max-w-[200px] sm:h-10">
+            </a>
+        </div>
+    </header>
+
+    <main class="flex flex-1 items-start justify-center px-4 py-8 sm:py-12">
+        <div class="w-full max-w-md">
+            @[[pagina#corpo]]@
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white">
+        <div class="mx-auto w-full max-w-5xl px-4 py-4 text-center text-xs text-slate-500">
+            Conn2Flow &middot; v@[[gestor#versao]]@
+        </div>
+    </footer>
+
+    <div id="gestor-listener"></div>
+</body>
+
+</html>

@@ -420,8 +420,18 @@ function usuario_autorizacao_provisoria($params = false){
 		
 		// Se não é válida, carrega e configura modal de autorização
 		if(!$valido){
+			// req-118: a trava de credenciais também precisa existir na base Tailwind — sem a
+			// variante, a página em Tailwind puro receberia um modal Fomantic sem CSS nem JS, ou
+			// seja, um bloqueio de segurança invisível ao usuário. A guarda existe porque esta
+			// biblioteca também é carregada em contexto público, onde `interface` pode não estar.
+			$componenteAutorizacao = 'interface-formulario-autorizacao-provisoria';
+
+			if(function_exists('interface_componente_variante')){
+				$componenteAutorizacao = interface_componente_variante($componenteAutorizacao);
+			}
+
 			$pagina = gestor_componente(Array(
-				'id' => 'interface-formulario-autorizacao-provisoria',
+				'id' => $componenteAutorizacao,
 			));
 			
 			// Define URLs de cancelamento
@@ -686,6 +696,421 @@ function usuario_sessoes_revogar_outras($token_atual_pubID,$id_usuario){
 	);
 
 	return true;
+}
+
+// ===== Personal Access Tokens e códigos de recuperação (req-119)
+
+/** Prefixo que identifica um Personal Access Token deste sistema. */
+define('USUARIO_API_TOKEN_PREFIXO', 'c2f_pat_');
+
+/**
+ * Diz se o schema já suporta Personal Access Tokens (req-119 / BATCH-122).
+ *
+ * O código chega por arquivos e o schema por migração; as duas coisas não pousam juntas em toda
+ * instalação. Enquanto a tabela não existir, a funcionalidade inteira se comporta como se não
+ * estivesse instalada — e nenhuma tela que já funcionava quebra.
+ *
+ * @return bool
+ */
+function usuario_api_tokens_disponivel(){
+	// Falha fechado também quando o detector não está carregado: sem meio de confirmar o schema, a
+	// funcionalidade nova não é oferecida.
+	if(!function_exists('gestor_schema_tabela_existe')) return false;
+
+	return gestor_schema_tabela_existe('usuarios_api_tokens');
+}
+
+/**
+ * Diz se o schema já suporta códigos de recuperação de 2FA (req-119 / BATCH-122).
+ *
+ * Sem a coluna, o 2FA continua funcionando normalmente: apenas não há códigos para gerar nem para
+ * resgatar. Perder o 2FA inteiro por causa de uma coluna ausente seria muito pior.
+ *
+ * @return bool
+ */
+function usuario_recovery_codes_disponivel(){
+	if(!function_exists('gestor_schema_campo_existe')) return false;
+
+	return gestor_schema_campo_existe('two_factor_recovery_codes','usuarios');
+}
+
+/**
+ * Diz se uma string TEM O FORMATO de um Personal Access Token.
+ *
+ * Função PURA. É o desempate entre PAT e token OAuth 2.0 no mesmo cabeçalho `Authorization: Bearer`:
+ * sem ela, todo PAT passaria pelo validador de JWT, falharia na decodificação e o usuário receberia
+ * "token inválido" sem nenhuma pista do motivo.
+ *
+ * Não valida o token — só o formato. Quem decide se ele vale é `usuario_api_token_validar()`.
+ *
+ * @param string $token Valor bruto recebido no cabeçalho.
+ *
+ * @return bool
+ */
+function usuario_api_token_formato($token){
+	if(!is_string($token)) return false;
+
+	$prefixo = USUARIO_API_TOKEN_PREFIXO;
+
+	return (strncmp($token,$prefixo,strlen($prefixo)) === 0)
+		&& (strlen($token) > strlen($prefixo));
+}
+
+/**
+ * Calcula o hash de armazenamento de um Personal Access Token.
+ *
+ * Função PURA. SHA-256 sem sal por decisão explícita: diferente de senha, o token é um segredo de
+ * 64 hexadecimais gerado por CSPRNG — não há dicionário a proteger, e a busca precisa ser feita PELO
+ * hash (um sal por linha obrigaria a varrer a tabela inteira a cada requisição de API).
+ *
+ * @param string $token Token em texto puro.
+ *
+ * @return string Hash hexadecimal de 64 caracteres.
+ */
+function usuario_api_token_hash($token){
+	return hash('sha256',(string)$token);
+}
+
+/**
+ * Extrai o prefixo exibível de um token.
+ *
+ * Função PURA. É o que permite ao usuário reconhecer a chave na listagem sem que o segredo precise
+ * ser recuperável.
+ *
+ * @param string $token Token em texto puro.
+ *
+ * @return string Prefixo do sistema mais os 8 primeiros caracteres da parte aleatória.
+ */
+function usuario_api_token_prefixo($token){
+	$token = (string)$token;
+	$prefixo = USUARIO_API_TOKEN_PREFIXO;
+	$corpo = (strncmp($token,$prefixo,strlen($prefixo)) === 0) ? substr($token,strlen($prefixo)) : $token;
+
+	return $prefixo.substr($corpo,0,8);
+}
+
+/**
+ * Decide se um token registrado está utilizável AGORA.
+ *
+ * Função PURA — separada da consulta porque é a regra que a API aplica a cada requisição, e porque
+ * o desfecho precisa distinguir revogado de expirado (o usuário resolve os dois de formas
+ * diferentes).
+ *
+ * @param array $registro Linha de `usuarios_api_tokens` (`status`, `expiracao`).
+ * @param int|null $agora Timestamp de referência; omitido usa `time()`.
+ *
+ * @return string `ativo`, `revogado` ou `expirado`.
+ */
+function usuario_api_token_situacao($registro,$agora = null){
+	$registro = is_array($registro) ? $registro : Array();
+	$agora = ($agora === null) ? time() : (int)$agora;
+
+	$status = isset($registro['status']) ? (string)$registro['status'] : '';
+
+	if($status === 'R') return 'revogado';
+	if($status !== 'A') return 'revogado';
+
+	$expiracao = isset($registro['expiracao']) ? (string)$registro['expiracao'] : '';
+
+	// Expiração vazia é token perpétuo — decisão do usuário no momento da criação, não um defeito.
+	if($expiracao === '') return 'ativo';
+
+	$limite = strtotime($expiracao);
+
+	if($limite === false) return 'ativo';
+
+	return ($limite < $agora) ? 'expirado' : 'ativo';
+}
+
+/**
+ * Gera um Personal Access Token para o usuário.
+ *
+ * O token em texto puro é devolvido UMA ÚNICA VEZ: o banco guarda apenas o hash, então não há
+ * caminho de recuperação — nem para o próprio usuário, nem para quem tiver acesso ao banco.
+ *
+ * @param int $id_usuario Dono do token.
+ * @param string $nome Identificador amigável.
+ * @param array $escopos Permissões autorizadas.
+ * @param int|null $dias_expiracao Validade em dias; `null` para token sem expiração.
+ *
+ * @return array|false `['token' => …, 'prefixo' => …, 'expiracao' => …]` ou false se inválido.
+ */
+function usuario_api_token_gerar($id_usuario,$nome,$escopos = Array(),$dias_expiracao = null){
+	$id_usuario = (int)$id_usuario;
+	$nome = trim((string)$nome);
+
+	if($id_usuario <= 0 || $nome === '') return false;
+	if(!usuario_api_tokens_disponivel()) return false;
+
+	gestor_incluir_biblioteca('seguranca');
+
+	// CSPRNG (contrato do BATCH-107): token de acesso previsível é credencial pública.
+	$token = USUARIO_API_TOKEN_PREFIXO.seguranca_token_aleatorio(32);
+
+	$expiracao = null;
+
+	if($dias_expiracao !== null && (int)$dias_expiracao > 0){
+		$expiracao = date('Y-m-d H:i:s',time() + ((int)$dias_expiracao * 86400));
+	}
+
+	$escopos = array_values(array_filter((array)$escopos,function($e){ return is_string($e) && trim($e) !== ''; }));
+
+	$campos = null; $campo_sem_aspas_simples = null;
+
+	$campo_nome = "id_usuarios"; $campo_valor = $id_usuario; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+	$campo_nome = "nome"; $campo_valor = banco_escape_field($nome); $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+	$campo_nome = "token_prefix"; $campo_valor = usuario_api_token_prefixo($token); $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+	$campo_nome = "token_hash"; $campo_valor = usuario_api_token_hash($token); $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+	// JSON ASCII-safe: a conexão do gestor é `utf8` de 3 bytes e um escopo com emoji truncaria a linha.
+	$campo_nome = "escopos"; $campo_valor = banco_escape_field(json_encode($escopos)); $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+	$campo_nome = "status"; $campo_valor = 'A'; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+	$campo_nome = "data_criacao"; $campo_valor = 'NOW()'; $campos[] = Array($campo_nome,$campo_valor,true);
+
+	if($expiracao !== null){
+		$campo_nome = "expiracao"; $campo_valor = $expiracao; $campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
+	}
+
+	banco_insert_name($campos,"usuarios_api_tokens");
+
+	return Array(
+		'token' => $token,
+		'prefixo' => usuario_api_token_prefixo($token),
+		'expiracao' => $expiracao,
+	);
+}
+
+/**
+ * Valida um Personal Access Token e registra o uso.
+ *
+ * O retorno é COMPATÍVEL com `oauth2_validar_token()` de propósito: a API já sabe consumir aquele
+ * formato, e divergir aqui obrigaria cada endpoint a tratar dois contratos.
+ *
+ * @param string $token_puro Token recebido no cabeçalho.
+ *
+ * @return array|false Dados do usuário autenticado ou false.
+ */
+function usuario_api_token_validar($token_puro){
+	if(!usuario_api_token_formato($token_puro)) return false;
+	if(!usuario_api_tokens_disponivel()) return false;
+
+	$registros = banco_select(Array(
+		'tabela' => 'usuarios_api_tokens',
+		'campos' => Array(
+			'id_usuarios_api_tokens',
+			'id_usuarios',
+			'escopos',
+			'expiracao',
+			'status',
+		),
+		'extra' => "WHERE token_hash='".banco_escape_field(usuario_api_token_hash($token_puro))."'",
+	));
+
+	if(!is_array($registros) || !isset($registros[0])) return false;
+
+	$registro = $registros[0];
+
+	if(usuario_api_token_situacao($registro) !== 'ativo') return false;
+
+	$usuarios = banco_select(Array(
+		'tabela' => 'usuarios',
+		'campos' => Array(
+			'id_usuarios',
+			'nome',
+			'email',
+			'usuario',
+			'id_usuarios_perfis',
+		),
+		'extra' => "WHERE id_usuarios='".(int)$registro['id_usuarios']."' AND status='A'",
+	));
+
+	// Usuário inativo ou removido derruba o token junto: a credencial pertence à conta, não a si mesma.
+	if(!is_array($usuarios) || !isset($usuarios[0])) return false;
+
+	banco_update_campo('ultimo_uso','NOW()',true);
+	banco_update_executar('usuarios_api_tokens',"WHERE id_usuarios_api_tokens='".(int)$registro['id_usuarios_api_tokens']."'");
+
+	$escopos = json_decode((string)($registro['escopos'] ?? '[]'),true);
+
+	return Array(
+		'id_usuarios' => $usuarios[0]['id_usuarios'],
+		'nome' => $usuarios[0]['nome'],
+		'email' => $usuarios[0]['email'],
+		'usuario' => $usuarios[0]['usuario'],
+		'id_usuarios_perfis' => $usuarios[0]['id_usuarios_perfis'],
+		'scope' => is_array($escopos) ? implode(' ',$escopos) : '',
+		'api_token' => true,
+	);
+}
+
+/**
+ * Revoga um Personal Access Token do usuário informado.
+ *
+ * O `id_usuarios` entra no WHERE porque o id do token viaja pelo formulário: sem ele, um id
+ * adivinhado revogaria a chave de outra conta.
+ *
+ * @param int $id_token Identificador do token.
+ * @param int $id_usuario Dono do token.
+ *
+ * @return bool True quando o comando foi emitido.
+ */
+function usuario_api_token_revogar($id_token,$id_usuario){
+	$id_token = (int)$id_token;
+	$id_usuario = (int)$id_usuario;
+
+	if($id_token <= 0 || $id_usuario <= 0) return false;
+	if(!usuario_api_tokens_disponivel()) return false;
+
+	// Revogar em vez de apagar preserva a auditoria: a linha continua contando quando o token foi
+	// criado e quando foi usado pela última vez.
+	banco_update_campo('status','R');
+	banco_update_campo('data_modificacao','NOW()',true);
+	banco_update_executar(
+		'usuarios_api_tokens',
+		"WHERE id_usuarios_api_tokens='".$id_token."' AND id_usuarios='".$id_usuario."'"
+	);
+
+	return true;
+}
+
+/**
+ * Lista os tokens de um usuário, já anotados com a situação corrente.
+ *
+ * @param int $id_usuario Dono dos tokens.
+ *
+ * @return array Lista de tokens (mais recentes primeiro).
+ */
+function usuario_api_tokens_listar($id_usuario){
+	$id_usuario = (int)$id_usuario;
+
+	if($id_usuario <= 0) return Array();
+	if(!usuario_api_tokens_disponivel()) return Array();
+
+	$registros = banco_select(Array(
+		'tabela' => 'usuarios_api_tokens',
+		'campos' => Array(
+			'id_usuarios_api_tokens',
+			'nome',
+			'token_prefix',
+			'escopos',
+			'expiracao',
+			'ultimo_uso',
+			'status',
+			'data_criacao',
+		),
+		'extra' => "WHERE id_usuarios='".$id_usuario."' ORDER BY data_criacao DESC",
+	));
+
+	if(!is_array($registros)) return Array();
+
+	$tokens = Array();
+
+	foreach($registros as $registro){
+		if(!is_array($registro)) continue;
+
+		$escopos = json_decode((string)($registro['escopos'] ?? '[]'),true);
+
+		$registro['escopos'] = is_array($escopos) ? $escopos : Array();
+		$registro['situacao'] = usuario_api_token_situacao($registro);
+
+		$tokens[] = $registro;
+	}
+
+	return $tokens;
+}
+
+// ===== Códigos de recuperação do 2FA (req-119)
+
+/**
+ * Gera códigos de recuperação em texto puro.
+ *
+ * Função PURA quanto ao formato (a aleatoriedade vem do CSPRNG). O alfabeto exclui `0`, `O`, `1`,
+ * `I` e `L`: o código é feito para ser copiado à mão de um papel, e esses caracteres são os que o
+ * usuário digita errado.
+ *
+ * @param int $quantidade Quantos códigos gerar.
+ *
+ * @return array Lista de códigos no formato `XXXX-XXXX`.
+ */
+function usuario_recovery_codes_gerar($quantidade = 10){
+	$quantidade = (int)$quantidade;
+	if($quantidade <= 0) return Array();
+
+	$alfabeto = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+	$limite = strlen($alfabeto) - 1;
+	$codigos = Array();
+
+	for($i = 0; $i < $quantidade; $i++){
+		$bruto = '';
+		for($j = 0; $j < 8; $j++){
+			$bruto .= $alfabeto[random_int(0,$limite)];
+		}
+		$codigos[] = substr($bruto,0,4).'-'.substr($bruto,4,4);
+	}
+
+	return $codigos;
+}
+
+/**
+ * Normaliza um código de recuperação para comparação.
+ *
+ * Função PURA. O usuário digita o código lendo de um papel: hífen, espaço e caixa variam, e nenhuma
+ * dessas variações deveria custar uma das dez chances que ele tem.
+ *
+ * @param string $codigo Código digitado.
+ *
+ * @return string Código só com os caracteres significativos, em caixa alta.
+ */
+function usuario_recovery_code_normalizar($codigo){
+	return strtoupper(preg_replace('/[^A-Za-z0-9]/','',(string)$codigo));
+}
+
+/**
+ * Calcula o hash de armazenamento de um código de recuperação.
+ *
+ * Função PURA sobre a forma normalizada — gravar o hash do texto digitado faria `abcd-1234` e
+ * `ABCD1234` virarem códigos diferentes.
+ *
+ * @param string $codigo Código em texto puro.
+ *
+ * @return string Hash hexadecimal.
+ */
+function usuario_recovery_code_hash($codigo){
+	return hash('sha256',usuario_recovery_code_normalizar($codigo));
+}
+
+/**
+ * Consome um código de recuperação de uma lista de hashes.
+ *
+ * Função PURA — é o coração do resgate de acesso e a única parte que decide se um código é de uso
+ * único de verdade. Devolve a lista SEM o código usado; quem persiste é o chamador.
+ *
+ * @param string $codigo Código digitado pelo usuário.
+ * @param array $hashes Lista de hashes ainda válidos.
+ *
+ * @return array{valido:bool,restantes:array}
+ */
+function usuario_recovery_code_consumir($codigo,$hashes){
+	$hashes = array_values(array_filter((array)$hashes,function($h){ return is_string($h) && $h !== ''; }));
+	$normalizado = usuario_recovery_code_normalizar($codigo);
+
+	if($normalizado === ''){
+		return Array('valido' => false, 'restantes' => $hashes);
+	}
+
+	$alvo = usuario_recovery_code_hash($codigo);
+	$restantes = Array();
+	$valido = false;
+
+	foreach($hashes as $hash){
+		// hash_equals em vez de === : a comparação acontece por tentativa de login.
+		if(!$valido && hash_equals($hash,$alvo)){
+			$valido = true;
+			continue;
+		}
+		$restantes[] = $hash;
+	}
+
+	return Array('valido' => $valido, 'restantes' => $restantes);
 }
 
 /**

@@ -1,38 +1,35 @@
-<div class="ui stackable two column centered grid">
-    <div class="column">
-        <div class="ui segment">
-            <form id="_gestor-form-redefine-password" action="@[[pagina#url-raiz]]@redefine-password/" method="post" name="_gestor-form-redefine-password" class="ui form">
-                <div class="ui center aligned header large">@[[redefine-password-title]]@</div>
-                <div class="ui icon blue message">
-                    <i class="user secret icon"></i>
-                    <div class="content">
-                        <div class="header"> @[[redefine-password-message-header]]@ </div>
-                        <p>@[[redefine-password-message-content]]@</p>
-                    </div>
-                </div>
-                <div class="field">
-                    <label>@[[redefine-password-pass-label]]@</label>
-                    <input type="password" name="senha" placeholder="@[[redefine-password-pass-placeholder]]@" autocomplete="new-password">
-                </div>
-                <div class="field">
-                    <label>@[[redefine-password-pass-2-label]]@</label>
-                    <input type="password" name="senha-2" placeholder="@[[redefine-password-pass-2-placeholder]]@" autocomplete="new-password">
-                </div>
-                <div class="ui hidden divider">&nbsp;</div>
-                <div class="ui error message">&nbsp;</div>
-                <div class="field">
-                    <button class="fluid ui button blue">@[[redefine-password-button]]@</button>
-                    <div class="ui hidden divider">&nbsp;</div>
-                    <div class="ui basic segment center aligned">
-                        <div class="">@[[forgot-password-login-label]]@ <a href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a>
-                        </div>
-                        <div>@[[forgot-password-new-register-label]]@ <a href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a>
-                        </div>
-                    </div>
-                </div>
-                <input id="_gestor-redefine-password" name="_gestor-redefine-password" type="hidden" value="1">
-                <input id="_gestor-redefine-password-token" name="_gestor-redefine-password-token" type="hidden" value="#token#">
-            </form>
+<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <h1 class="mb-6 text-center text-2xl font-semibold text-slate-900">@[[redefine-password-title]]@</h1>
+    <form id="_gestor-form-redefine-password" action="@[[pagina#url-raiz]]@redefine-password/" method="post"
+        name="_gestor-form-redefine-password" data-c2f-form="tailwind" class="space-y-4">
+        <div class="rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-900">
+            <p class="font-semibold">@[[redefine-password-message-header]]@</p>
+            <p class="mt-1">@[[redefine-password-message-content]]@</p>
         </div>
-    </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-senha">@[[redefine-password-pass-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="password" id="c2f-senha" name="senha" placeholder="@[[redefine-password-pass-placeholder]]@" autocomplete="new-password" data-perfil-senha>
+        </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-senha-2">@[[redefine-password-pass-2-label]]@</label>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="password" id="c2f-senha-2" name="senha-2" placeholder="@[[redefine-password-pass-2-placeholder]]@" autocomplete="new-password">
+        </div>
+        <div>
+            <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                <div data-perfil-senha-barra class="h-full w-0 rounded-full bg-slate-300 transition-all duration-200"></div>
+            </div>
+            <p data-perfil-senha-rotulo class="mt-2 text-xs font-medium text-slate-500">@[[password-strength-empty]]@</p>
+        </div>
+        <div class="hidden rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800" data-c2f-form-erros></div>
+        <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-600/40 focus-visible:outline-none active:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60">@[[redefine-password-button]]@</button>
+        <div class="mt-6 space-y-1 text-center text-sm text-slate-600">
+            <p>@[[forgot-password-login-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a></p>
+            <p>@[[forgot-password-new-register-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+                    href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a></p>
+        </div>
+        <input id="_gestor-redefine-password" name="_gestor-redefine-password" type="hidden" value="1">
+        <input id="_gestor-redefine-password-token" name="_gestor-redefine-password-token" type="hidden"
+            value="#token#">
+    </form>
 </div>

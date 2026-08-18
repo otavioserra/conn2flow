@@ -1,78 +1,62 @@
----
+﻿---
 name: c2f-resources-system
-description: Use ao criar, editar, compilar ou sincronizar recursos do Conn2Flow (páginas, layouts, componentes, templates, variáveis, prompts de IA e tabelas declarativas).
+description: "Use ao criar, editar, compilar ou sincronizar recursos do Conn2Flow (paginas, layouts, componentes, templates, variaveis, prompts IA, formularios, widgets e tabelas declarativas)."
 user-invocable: false
 ---
 
 # Sistema de Recursos do Conn2Flow (`resources/`)
 
-Consulte e aplique as seguintes convenções ao manipular o Sistema de Recursos e a arquitetura de compilação de dados do Conn2Flow:
+Consulte e aplique as seguintes convenÃ§Ãµes ao manipular o Sistema de Recursos e a arquitetura de compilaÃ§Ã£o de dados do Conn2Flow.
 
 > [!WARNING]
-> **REGRA MANDATÓRIA DE ARQUIVOS HTML, CSS E MARKDOWN**:
-> NUNCA crie arquivos `.html`, `.css` ou `.md` soltos na raiz do projeto, em pastas públicas estáticas ou na raiz de módulos PHP!
-> TODO e QUALQUER conteúdo HTML, CSS ou Markdown para páginas, layouts, componentes, templates ou prompts no Conn2Flow DEVE OBRIGATORIAMENTE ser criado dentro da estrutura do **Sistema de Recursos** (`resources/`), para que possa ser compilado em `*Data.json` e sincronizado no Banco de Dados SQL pelo runtime.
+> **REGRA MANDATÃ“RIA DE ARQUIVOS HTML, CSS E MARKDOWN**:
+> NUNCA crie arquivos `.html`, `.css` ou `.md` soltos na raiz do projeto, em pastas pÃºblicas estÃ¡ticas ou na raiz de mÃ³dulos PHP!
+> TODO e QUALQUER conteÃºdo HTML, CSS ou Markdown para pÃ¡ginas, layouts, componentes, templates ou prompts no Conn2Flow DEVE OBRIGATORIAMENTE ser criado dentro da estrutura do **Sistema de Recursos** (`resources/`), para que possa ser compilado em `*Data.json` e sincronizado no Banco de Dados SQL pelo runtime.
 
-## 1. Arquitetura de Recursos (Edição Física ➔ Compilação ➔ Banco)
+## 1. Arquitetura de Recursos (EdiÃ§Ã£o FÃ­sica -> CompilaÃ§Ã£o -> Banco)
 
-* **Fonte (Source)**: Desenvolvedores criam/editam arquivos físicos em `resources/<idioma>/<tipo>/<id>/<id>.<ext>`.
-* **Natural Key**: O nome da pasta do recurso (`<id>`) é a chave primária natural no Banco de Dados.
-* **Compilação**: O script `atualizacao-dados-recursos.php` lê os fontes e gera arquivos estáticos em `gestor/db/data/*Data.json` (`PaginasData.json`, `LayoutsData.json`, `ComponentesData.json`).
-* **Sincronização**: O script `atualizacoes-banco-de-dados.php` aplica Upsert no Banco respeitando proteções de `user_modified = 1` e `project`.
-
----
-
-## 2. Estrutura de Pastas e Tipos
-
-* **Recursos Globais**: `gestor/resources/<lang>/pages|layouts|components/` + JSONs raízes (`pages.json`, etc.).
-* **Recursos de Módulo**: `modulos/<modulo-id>/resources/<lang>/pages|layouts|components/` + `<modulo-id>.json`.
-* **Entidades Principais**:
-  - **Páginas (`paginas`)**: Elementos com URL; vinculados a um layout via `id_layouts`.
-  - **Layouts (`layouts`)**: Estrutura externa (header/footer) contendo o slot de inserção da página.
-  - **Componentes (`componentes`)**: Blocos reutilizáveis de HTML/CSS.
-  - **Prompts & Modos IA (`ai_prompts`, `ai_modes`)**: Instruções e system prompts armazenados em Markdown (`.md`).
+* **Fonte (Source)**: Desenvolvedores criam/editam arquivos fÃ­sicos em `resources/<idioma>/<tipo>/<id>/<id>.<ext>`.
+* **Recursos de MÃ³dulo**: `modulos/<modulo-id>/resources/<idioma>/<tipo>/<id>/<id>.<ext>`.
+* **Natural Key**: O nome da pasta do recurso (`<id>`) Ã© a chave primÃ¡ria natural no Banco de Dados.
+* **CompilaÃ§Ã£o**: O script `atualizacao-dados-recursos.php` lÃª os fontes e gera arquivos estÃ¡ticos em `gestor/db/data/*Data.json` (`PaginasData.json`, `LayoutsData.json`, `ComponentesData.json`).
+* **SincronizaÃ§Ã£o**: O script `atualizacoes-banco-de-dados.php` aplica Upsert no Banco respeitando proteÃ§Ãµes de `user_modified = 1` e `project`.
 
 ---
 
-## 3. CLI de Gerenciamento (`upsert-resources.php`)
+## 2. Os 11 Tipos de Recursos Nativos
 
-Use a ferramenta CLI para criar, clonar ou remover recursos com sincronização de metadados e fontes:
-
-* **Modo Interativo**:
-  ```bash
-  php ai-workspace/scripts/resources/upsert-resources.php
-  ```
-* **Criar Página Global e Abrir no Editor**:
-  ```bash
-  php ai-workspace/scripts/resources/upsert-resources.php --type=page --id=minha-pagina --open
-  ```
-* **Copiar / Clonar Recurso**:
-  ```bash
-  php ai-workspace/scripts/resources/upsert-resources.php --action=copy --type=component --id=botao-padrao --source-target=gestor --target=project --new-id=botao-custom
-  ```
-* **Deletar Recurso**:
-  ```bash
-  php ai-workspace/scripts/resources/upsert-resources.php --action=delete --type=layout --id=layout-antigo
-  ```
+| Tipo | Tabela SQL | Arquivo Fonte | Uso |
+|---|---|---|---|
+| `pages` (paginas) | `paginas` | `<id>/<id>.html` + `<id>.css` | PÃ¡ginas com URL, vinculadas a layout via `id_layouts` |
+| `layouts` | `layouts` | `<id>/<id>.html` + `<id>.css` | Estrutura externa (header/footer) com slot de inserÃ§Ã£o |
+| `components` (componentes) | `componentes` | `<id>/<id>.html` + `<id>.css` | Blocos reutilizÃ¡veis de HTML/CSS |
+| `templates` | `templates` | `<id>/<id>.html` | Templates de email, notificaÃ§Ã£o, etc. |
+| `variables` (variaveis) | `variaveis` | `variables.json` | Mensagens, labels e textos multilÃ­ngues |
+| `ai_prompts` | `prompts` | `<id>/<id>.md` | Prompts e instruÃ§Ãµes de IA em Markdown |
+| `ai_modes` | `modos` | `<id>/<id>.md` | System prompts e modos de IA |
+| `ai_prompts_targets` | `prompts_targets` | `<id>/<id>.md` | Targets de prompts de IA |
+| `forms` (formularios) | `formularios` | `<id>/<id>.html` | FormulÃ¡rios HTML reutilizÃ¡veis |
+| `widgets` | `widgets` | `<id>/<id>.html` + `<id>.css` | Widgets visuais de interface |
 
 ---
 
-## 4. Convenções de HTML e Seções
+## 3. ConvenÃ§Ãµes de HTML e SeÃ§Ãµes
 
-* Em arquivos de página (`pages/<id>/<id>.html`), adicione obrigatoriamente os atributos às tags `<section>`:
+* Em arquivos de pÃ¡gina (`pages/<id>/<id>.html`), adicione obrigatoriamente os atributos Ã s tags `<section>`:
   ```html
   <section class="text-center mb-16" data-id="1" data-title="hero">
-      <!-- Conteúdo da seção -->
+      <!-- ConteÃºdo da seÃ§Ã£o -->
   </section>
   ```
-  - `data-id`: Índice numérico sequencial iniciando em 1.
-  - `data-title`: Nome semântico simples da seção (ex: `hero`, `recursos`, `contato`).
+  - `data-id`: Ãndice numÃ©rico sequencial iniciando em 1.
+  - `data-title`: Nome semÃ¢ntico simples da seÃ§Ã£o (ex: `hero`, `recursos`, `contato`).
 
 ---
 
-## 5. Sincronização Declarativa de Tabelas Customizadas
+## 4. Extensibilidade DinÃ¢mica de Recursos
 
-Em `modulos/<modulo>/<modulo>.json` ou `resources/project_tables_config.json`:
+Tabelas customizadas podem se tornar novos tipos de recursos automaticamente usando `sync_resources: true` em `tables_config.json` ou `<modulo>.json`:
+
 ```json
 {
   "tabelas": {
@@ -83,10 +67,21 @@ Em `modulos/<modulo>/<modulo>.json` ou `resources/project_tables_config.json`:
         "resources_dir": "minha_tabela",
         "metadata_file": "minha_tabela.json",
         "field_types": {
-          "html": "file:html"
+          "html": "file:html",
+          "css": "file:css",
+          "conteudo": "file:md",
+          "config": "json"
         }
       }
     }
   }
 }
 ```
+
+Os `field_types` suportados sÃ£o:
+* `file:html` â€” Arquivo HTML fÃ­sico em `<id>/<id>.html`
+* `file:css` â€” Arquivo CSS fÃ­sico em `<id>/<id>.css`
+* `file:md` â€” Arquivo Markdown fÃ­sico em `<id>/<id>.md`
+* `json` â€” Dados JSON inline no metadado
+
+A compilaÃ§Ã£o gera `[PascalCase]Data.json` (ex: `MinhaTabelaData.json`) automaticamente.

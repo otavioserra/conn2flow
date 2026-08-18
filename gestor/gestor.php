@@ -27,9 +27,16 @@ function gestor_pagina_menu($params = false){
 	}
 	
 	// ===== Layout do menu
-	
+	//
+	// req-118: o menu acompanha o framework da requisição (layout + página). A árvore de permissões,
+	// os grupos e as células são EXATAMENTE as mesmas nas duas variantes — só o HTML muda —, então
+	// nenhuma regra de acesso foi duplicada.
+
+	$menuFramework = gestor_framework_css_atual();
+	$menuTailwind = ($menuFramework['modo'] === 'tailwindcss');
+
 	$menu = gestor_componente(Array(
-		'id' => 'menu-principal-sistema',
+		'id' => ($menuTailwind ? 'menu-principal-sistema-tailwind' : 'menu-principal-sistema'),
 	));
 	
 	$cel_nome = 'icon'; $cel[$cel_nome] = modelo_tag_val($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $menu = modelo_tag_in($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
@@ -272,7 +279,11 @@ function gestor_pagina_menu($params = false){
 		$cel_aux = $cel[$cel_nome];
 		
 		$cel_aux = modelo_var_troca($cel_aux,"#nome#",(existe($modulo['titulo']) ? $modulo['titulo'] : $modulo['nome']));
-		$cel_aux = modelo_var_troca($cel_aux,"#class#",(isset($_GESTOR['modulo-id']) && $modulo['id'] == $_GESTOR['modulo-id'] ? ' active':''));
+		// O estado ativo é escrito no vocabulário do framework: `.active` é uma classe do Fomantic e
+		// não existe em Tailwind, onde o realce precisa vir de utilities.
+		$menuClasseAtiva = $menuTailwind ? ' bg-slate-800 text-white' : ' active';
+
+		$cel_aux = modelo_var_troca($cel_aux,"#class#",(isset($_GESTOR['modulo-id']) && $modulo['id'] == $_GESTOR['modulo-id'] ? $menuClasseAtiva : ''));
 		
 		if($modulo['icone2']){
 			$cel_nome_icon = 'icon-2';
@@ -413,8 +424,13 @@ function gestor_pagina_menu($params = false){
 	// foi resolvido, qualquer item enfileirado ali fica órfão e o script nunca chega à página.
 	// Como `admin.js` só interessa a quem vê o menu, carregá-lo junto dele mantém o custo restrito
 	// ao painel e dispensa um gate extra no pipeline.
+	//
+	// req-118: em Tailwind puro o runtime é outro (`admin-tailwind.js`, vanilla) — o legado depende
+	// de jQuery e das classes `.menuComputerCont`/`.paginaCont`, que a marcação nova não tem.
 
-	$menuConteiner .= "\n".'<script src="'.$_GESTOR['url-raiz'].'global/admin.js?v='.gestor_asset_version('global').'"></script>';
+	$menuAsset = ($menuTailwind ? 'global/admin-tailwind.js' : 'global/admin.js');
+
+	$menuConteiner .= "\n".'<script src="'.$_GESTOR['url-raiz'].$menuAsset.'?v='.gestor_asset_version('global').'"></script>';
 
 	// ===== Retornar o conteiner.
 
@@ -719,20 +735,13 @@ function gestor_pagina_css(){
 	global $_GESTOR;
 
 	// ===== Inclusão de bibliotecas CSS Fomantic-UI / Tailwind CSS
+	//       A decisão sai de layout + página juntos (req-118): gestor_framework_css_resolver().
 
-	$layout_framework = $_GESTOR['layout#framework_css'] ?? null;
-	$pagina_framework = $_GESTOR['pagina#framework_css'] ?? null;
+	$framework = gestor_framework_css_atual();
 
-	$fomantic_ui_included = false;
-	if ($layout_framework == 'fomantic-ui' || $pagina_framework == 'fomantic-ui' || (empty($layout_framework) && empty($pagina_framework))) {
-		$fomantic_ui_included = true;
-	}
+	$fomantic_ui_included = $framework['fomantic'];
+	$tailwindcss_included = $framework['tailwind'];
 
-	$tailwindcss_included = false;
-	if ($layout_framework == 'tailwindcss' || $pagina_framework == 'tailwindcss') {
-		$tailwindcss_included = true;
-	}
-	
 	$css_global = '';
 
 	$css_padrao = Array();
@@ -809,16 +818,10 @@ function gestor_pagina_extra_head_e_javascript(){
 	global $_GESTOR;
 	global $_CONFIG;
 
-	// ===== Inclusão de bibliotecas CSS Fomantic-UI
+	// ===== Inclusão de bibliotecas Javascript Fomantic-UI (mesma resolução do CSS: layout + página).
 
-	$layout_framework = $_GESTOR['layout#framework_css'] ?? null;
-	$pagina_framework = $_GESTOR['pagina#framework_css'] ?? null;
+	$fomantic_ui_included = gestor_framework_css_atual()['fomantic'];
 
-	$fomantic_ui_included = false;
-	if ($layout_framework == 'fomantic-ui' || $pagina_framework == 'fomantic-ui' || (empty($layout_framework) && empty($pagina_framework))) {
-		$fomantic_ui_included = true;
-	}
-	
 	// ===== Inclusão de bibliotecas javascript
 	
 	$js_global_includes = '';

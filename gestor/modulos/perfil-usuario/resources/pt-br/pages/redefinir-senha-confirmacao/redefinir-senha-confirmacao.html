@@ -1,21 +1,15 @@
-<div class="ui stackable two column centered grid">
-    <div class="column">
-        <div class="ui segment">
-            <div class="ui center aligned header large">@[[redefine-password-confirmation-title]]@</div>
-            <div class="ui hidden divider">&nbsp;</div>
-            <div class="ui icon green message">
-                <i class="user check icon"></i>
-                <div class="content">
-                    <div class="header"> @[[redefine-password-confirmation-message-header]]@ </div>
-                    <p>#message#</p>
-                </div>
-            </div>
-            <div class="ui basic segment center aligned">
-                <div class="">@[[forgot-password-login-label]]@ <a href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a>
-                </div>
-                <div>@[[forgot-password-new-register-label]]@ <a href="@[[pagina#url-raiz]]@signup/">@[[forgot-password-new-register-button]]@</a>
-                </div>
-            </div>
-        </div>
+<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <div class="mb-4 flex justify-center">
+        <span class="flex size-12 items-center justify-center rounded-full bg-emerald-50 text-2xl"
+            aria-hidden="true">&#9989;</span>
+    </div>
+    <h1 class="mb-6 text-center text-2xl font-semibold text-slate-900">@[[redefine-password-confirmation-title]]@</h1>
+    <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+        <p class="font-semibold">@[[redefine-password-confirmation-message-header]]@</p>
+        <p class="mt-1">#message#</p>
+    </div>
+    <div class="mt-6">
+        <a class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-600/40 focus-visible:outline-none active:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60 inline-block text-center"
+            href="@[[pagina#url-raiz]]@signin/">@[[forgot-password-login-button]]@</a>
     </div>
 </div>

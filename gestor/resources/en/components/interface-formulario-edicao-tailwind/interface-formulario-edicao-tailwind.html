@@ -1,0 +1,63 @@
+<h1 class="mb-4 text-2xl font-semibold text-slate-900">#titulo#</h1>
+<!-- botoes < -->
+<div class="mb-4 flex flex-wrap justify-end gap-2">
+    #botoes#
+</div><!-- botoes > -->
+<!-- meta-dados < -->
+<div class="mb-6 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+    <table class="w-full min-w-max text-left text-sm">
+        <thead class="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+            <tr>
+                <!-- cel-th < -->
+                <th class="border-b border-slate-200 px-4 py-2">#meta-titulo#</th>
+                <!-- cel-th > -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- cel-td < -->
+                <td class="px-4 py-2 text-slate-800">#meta-dado#</td>
+                <!-- cel-td > -->
+            </tr>
+        </tbody>
+    </table>
+</div><!-- meta-dados > -->
+<form id="#form-id#" action="#form-action#" method="post" name="#form-name#" enctype="multipart/form-data"
+    data-c2f-form="tailwind" class="interfaceFormPadrao space-y-6">
+    <div id="_gestor-interface-edit-dados">#form-page#</div>
+    <!-- nao-alterar-id < -->
+    <label class="flex items-center gap-2 text-sm text-slate-700">
+        <input type="checkbox" name="_gestor-nao-alterar-id" value="1" checked
+            class="size-4! rounded! border! border-slate-300!">
+        <span>#form-nao-alterar-id-label#</span>
+    </label><!-- nao-alterar-id > -->
+    <input id="_gestor-atualizar" name="_gestor-atualizar" type="hidden" value="1">
+    <input id="_gestor-variavel-id" name="_gestor-registro-id" type="hidden" value="#form-registro-id#">
+    <div data-c2f-form-erros class="hidden rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+    </div>
+    <!-- botao-editar < -->
+    <div class="flex flex-wrap items-center justify-center gap-2 border-t border-slate-200 pt-4">
+        <!-- botao-padrao < -->
+        <button id="_gestor-interface-edit-button" type="submit" title="#form-button-title#"
+            class="inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700">#form-button-value#</button>
+        <!-- botao-padrao > -->
+        <!-- botoes-rodape < -->
+        #botoes-rodape#
+        <!-- botoes-rodape > -->
+    </div><!-- botao-editar > -->
+</form>
+<!-- historico < -->
+<div class="mt-6 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+    <table class="w-full min-w-max text-left text-sm">
+        <thead class="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+            <tr>
+                <th class="border-b border-slate-200 px-4 py-2">Change History</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="px-4 py-2 text-slate-800">#historico#</td>
+            </tr>
+        </tbody>
+    </table>
+</div><!-- historico > -->

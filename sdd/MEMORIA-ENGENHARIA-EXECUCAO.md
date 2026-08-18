@@ -14,6 +14,116 @@
 
 ## Tarefas recentes
 
+### 2026-08-18 — req-118 / BATCH-119: base administrativa Tailwind (layout, menu, interface, perfil)
+
+- **Antes de migrar uma tela de framework, procure o RUNTIME, não o CSS.** O bloqueio não era o
+  visual: `interface.js` chama `$.fn.modal` do Fomantic em **16 pontos sem guarda**, e um deles é o
+  modal de Área Restrita — trava de credenciais. E `gestor_pagina_css()` /
+  `gestor_pagina_extra_head_e_javascript()` usavam a MESMA condição para CSS e JS: layout
+  `tailwindcss` perde os dois de uma vez.
+- **Contrato de dados portável salvou o lote.** `interface_formulario_validacao()` emite regras no
+  formato do validador do Fomantic e o inventário inteiro do core usa só **6 tipos** (`notEmpty`,
+  `minLength[n]`, `maxLength[n]`, `email`, `match[campo]`, `regExp[/…/]`). O runtime novo interpreta
+  o mesmo dicionário — **zero função PHP de validação alterada**. Meça o inventário antes de assumir
+  que reescrever o backend é inevitável.
+- **A decisão de framework tem DUAS fontes**: `layouts.framework_css` e `paginas.framework_css`.
+  Decidir por um lado só entrega tela sem CSS ou modal sem o JS que o abre. Virou
+  `gestor_framework_css_resolver()` (pura, 3 modos) e o modo `hibrido` é o que preserva o legado.
+- **Variante de componente por sufixo (`<id>-tailwind`) muda o HTML, nunca o contrato.** Os `switch`
+  seguem no id canônico. Cuidado no canônico: cortar por `str_ends_with('tailwind')` amputaria
+  `layout-iframe-tailwindcss` — a checagem é pelo hífen (há teste).
+- **Tailwind v4.3 emite `var(--spacing,.25rem)` COM fallback** quando o recurso é isolado
+  (`@reference` + utilities `source(none)`); com `tailwind_bundle` o theme entra e o fallback some.
+  Isso é o que torna seguro pôr utility em página servida por layout não-Tailwind.
+- **Utility perde do Fomantic por especificidade** (`.ui.form input[type=text]` (0,3,1) × `.px-3`
+  (0,1,0)) — ordem na cascata não resolve. O sufixo `!` do v4 (`px-3!`) emite `!important` e vence;
+  verificado compilando um probe real com o CLI.
+- **O aviso do F3 (BATCH-118) pegou o caso previsto na primeira execução**: layout novo emite
+  `display` sob variante responsiva e a página sem bundle levaria a inversão desktop/mobile.
+  Declarar `tailwind_bundle` + `tailwind_dependencies` apagou o aviso. `tailwind-page-bundle` é
+  setado **pelo módulo em PHP**, não derivado do JSON — não esqueça essa linha.
+- **Ícone é dado, não estilo.** `modulos.icone` guarda nomes Fomantic para todos os módulos; o layout
+  Tailwind carrega só `dist/components/icon.min.css` em vez de reescrever o cadastro e quebrar
+  plugins de terceiros.
+- Teste que carrega `perfil-usuario.js` precisa do `installJQueryStub()`: o topo do arquivo ainda tem
+  o `$(document).ready` das telas de login/2FA, e sem o stub o arquivo nem é avaliado.
+- `replaceState({}, '', '#hash')` **preserva a querystring anterior** — um teste de resolução por
+  hash tem de reescrever o caminho inteiro, senão mede a regra errada.
+- Suítes após o batch: PHPUnit **353/353**, Vitest **309/309**.
+
+### 2026-08-18 — req-119 / BATCH-120 e req-120 / BATCH-121: PAT, recovery codes e telas públicas
+
+- **Segredo que existe uma vez só dita o comportamento da INTERFACE, não só do backend.** PAT e
+  recovery codes são devolvidos em claro em uma única resposta; o fluxo antigo de ativar 2FA fazia
+  `location.reload()` e teria destruído os dez códigos antes de o usuário anotá-los. Ao gravar só
+  hash, procure todo `reload()` no caminho.
+- **Dois formatos de credencial no mesmo `Authorization: Bearer` precisam de desempate por FORMATO,
+  antes de validar.** Sem o prefixo `c2f_pat_`, todo PAT passaria pelo validador de JWT e falharia
+  como "token inválido". Fazer os dois validadores devolverem o MESMO contrato evitou tocar
+  endpoint algum — e o rate limit por usuário passou a valer para PAT de graça.
+- **SHA-256 sem sal é a escolha certa para token de API** (64 hex de CSPRNG, sem dicionário a
+  proteger) porque a busca é feita PELO hash; um sal por linha obrigaria a varrer a tabela a cada
+  requisição. Para senha continua valendo o contrário.
+- **Falhar fechado x falhar aberto se decide por consequência**: status desconhecido vira `revogado`
+  (dado corrompido não pode virar credencial), mas data de expiração ilegível vira `ativo` (derrubar
+  credencial de produção por formato inesperado é pior que ignorá-lo).
+- **Alfabeto de código de recuperação exclui `0/O/1/I/L`**: o código é copiado à mão de um papel, e
+  cada erro de digitação custa uma das dez chances. Normalize (hífen, espaço, caixa) ANTES do hash.
+- **Migração de marcação desloca o risco para fora do comportamento.** O que quebra não é lógica: é
+  classe do framework antigo sobrevivendo (tela sem estilo) ou `name` de campo POST perdido
+  (formulário que envia e não grava). Teste lendo os arquivos REAIS de recursos, nos dois idiomas.
+- **30 arquivos com o mesmo esqueleto se geram, não se escrevem.** Escrever à mão faz o vocabulário
+  divergir entre telas do mesmo fluxo — que é o defeito que a migração está corrigindo.
+- **PHPUnit 11 carrega UMA classe por arquivo**: duas classes no mesmo `*Test.php` fazem a segunda
+  sumir em silêncio (a suíte cresce menos do que o esperado). E `@dataProvider` em doc-comment gera
+  deprecation — use `#[DataProvider]`.
+- Autofill do Chrome ignora `background-color`; só `box-shadow` interna resolve. Sem isso, todo
+  formulário de login nasce com um campo destoando do card.
+
+### 2026-08-18 — BATCH-123: HTML é recurso, classe é variável, .env é outra coisa
+
+- **Errei e o Chefe corrigiu: escrevi markup direto no PHP.** `$html .= '<div class="…">'` é sempre
+  mais rápido que criar o bloco no componente — e é exatamente por isso que volta sozinho. **Todo
+  HTML pertence a `resources/`**; markup no PHP não passa pelo pipeline, não vira `*Data.json`, não
+  chega ao banco e não é editável por instalação.
+- **Classe utilitária é VARIÁVEL do sistema, não constante PHP.** Variável é dado de banco:
+  versionada, editável por instalação, sem deploy de código. `const PERFIL_USUARIO_CARTAO` congela o
+  visual no código.
+- **`.env`/`config.php` é para constante global estável ou dado sensível** (token, segredo). Não é
+  destino de valor de apresentação — regra do Chefe.
+- **Verificado antes de adotar: o extractor do Tailwind ENXERGA classes dentro do JSON de
+  variáveis.** Basta declarar o `<modulo>.json` em `tailwind_sources`. Foi o probe compilado que
+  liberou o desenho — sem ele, a alternativa seria safelist duplicada.
+- **Componente do módulo montado em runtime PRECISA entrar em `tailwind_dependencies` da página.**
+  Medido: `divide-slate-100` (só existe no componente de Segurança) ficou fora do bundle até a
+  declaração. `tailwind_sources` cobre arquivos; `tailwind_dependencies` cobre recursos do gestor.
+- **Padrão de componente com variantes**: um componente guarda TODOS os estados da tela em blocos
+  nomeados e o PHP só escolhe qual entra (`modelo_tag_val` extrai, `modelo_tag_in` mantém/remove,
+  `modelo_var_in` repete). Cuidado: **bloco ausente faz `modelo_tag_val` devolver string vazia** — a
+  seção some da tela sem erro nenhum, então a existência dos blocos merece teste.
+- Suíte após a correção: PHPUnit **520/520**, Vitest **328/328**.
+
+### 2026-08-18 — BATCH-122: funcionalidade nova nunca pode depender de a migração ter rodado
+
+- **Errei a premissa e o Chefe corrigiu.** Registrei "migração Phinx pendente" como passo manual; o
+  pipeline roda sozinho (`atualizacoes-banco-de-dados.php` → `migracoes()`), só pulando com
+  `--skip-migrate`. Antes de escrever pendência de deploy, LEIA o pipeline.
+- **O risco real não é a migração ser esquecida, é código e schema chegarem por canais diferentes.**
+  Arquivos por sync, schema por migração: a migração pode falhar e o deploy prosseguir, a
+  atualização pode ser só de arquivos, e existe **a janela entre os arquivos chegarem e a migração
+  terminar** — nela, toda requisição roda código novo contra schema velho. Desfecho sem tratamento:
+  tela que já funcionava quebra por causa de funcionalidade que o usuário nem pediu.
+- **O padrão é gate de schema que falha FECHADO**: `gestor_schema_tabela_existe()` /
+  `gestor_schema_campo_existe()`, memoizados por requisição. `SHOW TABLES` é UMA query e cobre todas
+  as checagens de tabela; `SHOW COLUMNS` exige conferir a tabela antes, senão o próprio gate emite o
+  erro de SQL que ele existe para evitar.
+- **Escolha o que degrada.** PAT some inteiro (é funcionalidade nova); mas o 2FA **ativa normalmente**
+  sem a coluna de recovery codes — perder o segundo fator por causa de uma coluna seria muito pior
+  que ficar sem os códigos de resgate. A assimetria é a decisão, não um descuido.
+- Mantenha o gerador puro e ponha o gate no CHAMADOR: `usuario_recovery_codes_gerar()` continua
+  testável e reaproveitável porque não conhece schema.
+- Suítes após os lotes do dia: PHPUnit **508/508**, Vitest **328/328**.
+
 ### 2026-08-17 — BATCH-118: findings F2, F3, F4, F7–F10 e a regressão do @layer theme
 
 - **Descartar `@layer theme` por camada foi o F1 batendo na minha própria correção.** O theme do

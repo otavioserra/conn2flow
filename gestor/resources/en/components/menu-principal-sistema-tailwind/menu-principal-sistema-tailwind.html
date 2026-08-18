@@ -1,0 +1,35 @@
+<!-- conteiner < -->
+<div class="flex h-full flex-col">
+    <div class="px-3 pb-3">
+        <div class="relative">
+            <input type="text" id="gestor-menu-filtro" autocomplete="off" placeholder="Filter modules..."
+                class="w-full! rounded-lg! border! border-slate-700! bg-slate-800! py-2! pr-3! pl-9! text-sm! text-slate-100! shadow-none! placeholder:text-slate-400!">
+            <span class="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-slate-400"
+                aria-hidden="true"><i class="search icon"></i></span>
+        </div>
+        <p data-menu-vazio class="mt-2 hidden rounded-md bg-slate-800 px-3 py-2 text-xs text-slate-300">No modules
+            found.</p>
+    </div>
+    <nav class="flex-1 space-y-4 overflow-y-auto px-3 pb-4" aria-label="Modules">
+        <!-- itemContCel < -->
+        <div data-menu-grupo>#itemCont#</div><!-- itemContCel > -->
+    </nav>
+</div><!-- conteiner > -->
+<!-- categoria < -->
+<p data-menu-grupo-titulo class="mb-1 px-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+    #categoria-nome#</p>
+<div class="space-y-0.5">
+    <!-- itemMenu -->
+</div><!-- categoria > -->
+<!-- simples < -->
+<div class="space-y-0.5">
+    <!-- itemMenu -->
+</div><!-- simples > -->
+<!-- item < --><a data-menu-item href="#link#"
+    class="group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white#class#">
+    <span class="flex w-5 shrink-0 justify-center text-slate-400 group-hover:text-white" aria-hidden="true">
+        <!-- icon < --><i class="#icon# icon"></i><!-- icon > -->
+        <!-- icon-2 < --><i class="#icon# icon"></i><i class="#icon-2# icon"></i><!-- icon-2 > -->
+    </span>
+    <span data-menu-item-nome class="truncate">#nome#</span>
+</a><!-- item > -->

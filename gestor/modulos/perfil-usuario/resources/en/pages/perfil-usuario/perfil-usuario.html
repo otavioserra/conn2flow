@@ -16,6 +16,12 @@
             class="-mb-px inline-flex items-center gap-2 border-b-2 border-transparent px-4 py-3 text-sm font-semibold text-slate-500 transition-colors hover:text-slate-800 focus:outline-none">
             <span aria-hidden="true">💻</span> @[[profile-tab-sessions]]@
         </button>
+        <!-- aba-api-tokens < -->
+        <button type="button" role="tab" aria-selected="false" aria-controls="perfil-painel-api-tokens"
+            id="perfil-aba-api-tokens" data-perfil-aba="api-tokens"
+            class="-mb-px inline-flex items-center gap-2 border-b-2 border-transparent px-4 py-3 text-sm font-semibold text-slate-500 transition-colors hover:text-slate-800 focus:outline-none">
+            <span aria-hidden="true">🔑</span> @[[profile-tab-api-tokens]]@
+        </button><!-- aba-api-tokens > -->
     </nav>
 
     <section id="perfil-painel-dados" role="tabpanel" aria-labelledby="perfil-aba-dados"
@@ -147,4 +153,7 @@
 
     <section id="perfil-painel-sessoes" role="tabpanel" aria-labelledby="perfil-aba-sessoes"
         data-perfil-painel="sessoes" class="hidden space-y-6"><!-- sessoes-campos < --><!-- sessoes-campos > --></section>
+
+    <section id="perfil-painel-api-tokens" role="tabpanel" aria-labelledby="perfil-aba-api-tokens"
+        data-perfil-painel="api-tokens" class="hidden space-y-6"><!-- api-tokens-campos < --><!-- api-tokens-campos > --></section>
 </div>

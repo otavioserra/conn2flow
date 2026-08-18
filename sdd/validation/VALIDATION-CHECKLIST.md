@@ -1025,3 +1025,171 @@ Gerador do core: 175 recursos, 0 erros, 4 avisos (os mesmos do BATCH-117).
 - Dívida registrada: dependência de template por `target` (sugestão 2 do F2) e a decisão de
   arquitetura sobre Tailwind no painel administrativo (bloqueia o `html-editor-publisher-simulation`).
 - Restrição respeitada: nenhum `git commit`/`git push` executado; `sdd/human-requests/` não foi tocada.
+
+---
+## BATCH-119 - Layout administrativo Tailwind, menu interativo e painel de perfil com sessões (req-118, 2026-08-18)
+
+- [x] **Resolução de framework por layout + página**:
+  - [x] `gestor_framework_css_resolver()` (pura) decide a partir das DUAS colunas `framework_css`.
+  - [x] Modos `fomantic-ui`, `tailwindcss` e `hibrido`; nada declarado continua caindo no legado.
+  - [x] Bloco duplicado de decisão removido de `gestor_pagina_css()` e `gestor_pagina_extra_head_e_javascript()`.
+- [x] **Variantes de componente**:
+  - [x] `interface_componente_variante()` aplica o sufixo `-tailwind` só em Tailwind puro.
+  - [x] Em `hibrido` o componente legado é preservado (com Fomantic na página, é o único com estilo).
+  - [x] `interface_componente_canonico()` não amputa id que apenas termina com `tailwind` (`layout-iframe-tailwindcss`).
+  - [x] Nenhum componente legado foi alterado.
+- [x] **Runtime `interface-tailwind.js`**:
+  - [x] Interpreta o MESMO dicionário de regras do validador do Fomantic (`notEmpty`, `minLength[n]`, `maxLength[n]`, `email`, `match[campo]`, `regExp[/…/]`) — nenhuma função PHP de validação mudou.
+  - [x] Loader com contador: duas chamadas AJAX simultâneas não apagam o loader na primeira resposta.
+  - [x] Modal de Área Restrita abre sozinho e NÃO fecha por Esc nem por clique no fundo.
+  - [x] Query string do momento do envio anexada ao POST (contrato herdado).
+- [x] **Layout `layout-administrativo-tailwind`**:
+  - [x] `layout-administrativo-do-gestor` inalterado.
+  - [x] Somente `components/icon.min.css` do Fomantic (folha de ícones, não o framework).
+  - [x] Sidebar, topo com avatar, overlay mobile, container fluido e badge de versão.
+- [x] **Menu (`menu-principal-sistema-tailwind` + `admin-tailwind.js`)**:
+  - [x] Mesma árvore de permissões/grupos do legado; só o vocabulário do estado ativo mudou.
+  - [x] Abrir/fechar com overlay em mobile, sem empurrar o conteúdo.
+  - [x] Resize por arraste com limites 220–450px, persistência e duplo clique restaurando o padrão.
+  - [x] Filtro tolerante a acento/caixa, aviso de vazio, Esc e navegação por teclado (BATCH-105).
+- [x] **Painel do perfil**:
+  - [x] Três abas sem recarregamento; aba resolvida por querystring → hash → `localStorage`.
+  - [x] Medidor de força de senha alinhado ao piso do backend (12 caracteres).
+  - [x] Trava de Área Restrita preservada nos quatro fluxos de alteração.
+  - [x] QR Code e chave manual continuam só sob `?configurar-seguranca=sim`.
+- [x] **Sessões ativas**:
+  - [x] `usuario_user_agent_analisar()` e `usuario_sessao_formatar()` puras e cobertas por teste.
+  - [x] Revogações exigem `id_usuarios` no WHERE; revogar as outras exige o token atual.
+  - [x] Sessão atual marcada com etiqueta e sem botão de revogar.
+- [x] **Pré-compilação**: `tailwind_bundle` + dependências declaradas; aviso do F3 eliminado.
+- [ ] **Deploy `Update => Core` + homologação runtime**: pendente com o operador.
+
+### Evidência de Validação (BATCH-119)
+
+Reportada pelo executor em 2026-08-18:
+- `php -l` → `gestor.php`, `bibliotecas/gestor.php`, `bibliotecas/interface.php`, `bibliotecas/usuario.php`, `perfil-usuario.php` e os 2 testes novos → **OK**.
+- `node --check` → `interface-tailwind.js`, `admin-tailwind.js`, `perfil-usuario.js` → **3/3 OK**.
+- Compilador de recursos → **191 encontrados, 16 compilados, 0 erros**. Os 2 avisos de F3 (`display` sob variante responsiva no layout novo) desapareceram ao declarar `tailwind_bundle`; restaram os 4 avisos pré-existentes do inventário calibrado no BATCH-117.
+- `composer test` (PHPUnit) → **353/353** (1214 assertions, 4 skipped preexistentes), com `PerfilUsuarioSessoesTest` **24/24** e `FrameworkCssResolverTest` **14/14**.
+- `npx vitest run` → **309/309** em 20 arquivos, com `perfil-usuario.painel.test.js` **25/25**, `admin-tailwind.test.js` **24/24** e `interface-tailwind.test.js` **32/32**.
+- Persistência conferida nos `Data.json`: layout (18.386 B pt-br / 18.406 B en), componente do menu (6.336 B) e bundle da página (21.835 B pt-br / 21.855 B en).
+- Cache-bust: tokens determinísticos regenerados (`global`, `interface`, `system` e `asset_version` do módulo `perfil-usuario`).
+
+### Pendências
+
+- Deploy `Update => Core` obrigatório: layout, componentes e página vêm do BANCO.
+- Runtime: abrir `/perfil-usuario/` no layout novo; navegar entre as três abas; alterar nome/e-mail/usuário/senha conferindo o modal de Área Restrita; ativar e desativar 2FA; revogar uma sessão e depois "desconectar outros dispositivos"; redimensionar e filtrar o menu; repetir em `/en/` e em mobile.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-120 - Personal Access Tokens e códigos de recuperação de 2FA (req-119, 2026-08-18)
+
+- [x] **Banco**: migração `20260818100000` cria `usuarios_api_tokens` (índice único em `token_hash`) e a coluna `two_factor_recovery_codes` em `usuarios`, ambas idempotentes.
+- [x] **Segredos gravados só como hash**: token e recovery codes nunca são recuperáveis do banco.
+- [x] **Biblioteca core**:
+  - [x] `usuario_api_token_formato()` separa PAT de token OAuth no mesmo `Authorization: Bearer`.
+  - [x] `usuario_api_token_situacao()` distingue `ativo`, `revogado` e `expirado`; status desconhecido falha fechado, data ilegível falha aberto.
+  - [x] `usuario_api_token_gerar()` usa CSPRNG e devolve o token uma única vez.
+  - [x] `usuario_api_token_validar()` recusa token de usuário inativo e registra `ultimo_uso`.
+  - [x] `usuario_api_token_revogar()` exige `id_usuarios` no WHERE.
+  - [x] Recovery codes: alfabeto sem caracteres ambíguos, normalização antes do hash e consumo de uso único.
+- [x] **API**: `api_token_validar_memoizado()` desempata pelo formato e devolve o mesmo contrato do OAuth 2.0 — nenhum endpoint precisou mudar.
+- [x] **Aba de Chaves de API**: formulário, exibição única do token com cópia, listagem com situação e revogação; aba removida do HTML para perfis não autorizados.
+- [x] **Recovery codes na ativação do 2FA**: 10 códigos exibidos sem recarregar a página.
+- [x] **Login 2FA**: código de recuperação tentado só depois de o segundo fator normal falhar; código consumido é invalidado.
+- [ ] **Deploy `Update => Core` + homologação runtime**: pendente com o operador (a migração roda sozinha no pipeline).
+
+### Evidência de Validação (BATCH-120)
+
+Reportada pelo executor em 2026-08-18:
+- `php -l` → `bibliotecas/usuario.php`, `perfil-usuario.php`, `controladores/api/api.php`, a migração e os 2 testes novos → **OK**.
+- `node --check gestor/modulos/perfil-usuario/perfil-usuario.js` → **OK**.
+- Compilador de recursos → **0 erros** (apenas os 4 avisos pré-existentes).
+- `composer test` (PHPUnit) → **387/387** (1286 assertions, 4 skipped preexistentes), com `UsuarioApiTokensTest` **20/20** e `UsuarioRecoveryCodesTest` **14/14**.
+- `npx vitest run` → **328/328** em 21 arquivos, com `perfil-usuario.api-tokens.test.js` **19/19**.
+
+### Pendências
+
+- A migração é aplicada pelo próprio pipeline de deploy. Se ela falhar ou for pulada, o BATCH-122 garante que a aba de chaves simplesmente não aparece, em vez de erro.
+- Runtime: criar uma chave e conferir que o valor aparece uma vez e a página não recarrega; usar a chave em `Authorization: Bearer` num endpoint da API e conferir o "Último uso"; revogar e confirmar o 401; ativar o 2FA e conferir os 10 códigos; entrar com um deles e confirmar que ele não funciona duas vezes.
+- Escopos são gravados e devolvidos em `scope`, mas ainda não são aplicados por nenhum endpoint (registrado como fora de escopo).
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-121 - Layout público Tailwind e migração das 15 telas de identidade (req-120, 2026-08-18)
+
+- [x] **Layout legado preservado**: `layout-pagina-sem-permissao` inalterado (critério de aceite 1), com teste que o exige.
+- [x] **Layout novo** `layout-pagina-sem-permissao-tailwind` (pt-br/en) com header, card central e rodapé; marcadores do pipeline (`pagina#css`, `pagina#js`, `pagina#corpo`, `gestor-listener`) presentes e verificados por teste.
+- [x] **15 telas migradas nos dois idiomas** (30 arquivos), todas com `framework_css = tailwindcss` e layout Tailwind.
+- [x] **Zero Fomantic**: varredura por classe (`class="ui …"`) e por ícone de webfont (`<i class="… icon">`) em todos os arquivos.
+- [x] **Contratos do backend preservados**: ids de formulário, `name` de todos os campos POST, blocos `<!-- x < --> … > -->` e placeholders `#var#`, cobertos caso a caso.
+- [x] **Contrato com o runtime**: `data-c2f-form="tailwind"` em todos os formulários validados, caixa `data-c2f-form-erros` e medidor de senha nas telas com senha.
+- [x] **HTML gerado em PHP migrado**: alternador de método, botões sociais, campo de código 2FA, reenvio de e-mail e etiqueta de status.
+- [x] **Runtime correto por tela**: as 10 inclusões diretas de `interface.js` passaram por `interface_assets_incluir()`.
+- [x] **Área Restrita**: migrada para o layout administrativo Tailwind com `tailwind_bundle` (aviso F3 eliminado).
+- [ ] **Deploy `Update => Core` + homologação dos fluxos**: pendente com o operador.
+
+### Evidência de Validação (BATCH-121)
+
+Reportada pelo executor em 2026-08-18:
+- `php -l gestor/modulos/perfil-usuario/perfil-usuario.php` e no teste novo → **OK**; `node --check` → **OK**.
+- Compilador de recursos → **32 compilados, 0 erros**; os avisos de F3 em `Area-restrita` desapareceram com o bundle, restando os 4 pré-existentes.
+- Varredura direta nos 30 arquivos de página → **nenhuma** classe do Fomantic.
+- `composer test` (PHPUnit) → **494/494** (1807 assertions, 4 skipped preexistentes), com `PerfilUsuarioTelasPublicasTest` **107/107**. Deprecations mantidas em 1 (a pré-existente): o data provider novo usa atributos, não doc-comment.
+- `npx vitest run` → **328/328** sem regressão.
+
+### Pendências
+
+- Deploy `Update => Core` obrigatório: layout e páginas vêm do BANCO.
+- Runtime: percorrer login (senha e código por e-mail), login social, 2FA (app e e-mail), recovery code, cadastro, esqueci minha senha, redefinição, confirmação de e-mail, logout e Área Restrita — em desktop e mobile, nos dois idiomas.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-122 - Degradação graciosa quando a migração não rodou (req-119, 2026-08-18)
+
+- [x] **Detectores no core** (`bibliotecas/gestor.php`), memoizados por requisição e silenciosos:
+  - [x] `gestor_schema_tabela_existe()` — um único `SHOW TABLES` por requisição, resultado inteiro em cache.
+  - [x] `gestor_schema_campo_existe()` — confere a TABELA antes, para nunca emitir `SHOW COLUMNS` sobre tabela inexistente.
+  - [x] Ambos falham fechado: banco indisponível ou exceção resultam em `false`, nunca em erro propagado.
+- [x] **Personal Access Tokens**: gerar, validar, revogar e listar recusam sem a tabela; a aba do perfil não é renderizada (mesmo caminho do perfil não autorizado).
+- [x] **Códigos de recuperação**: sem a coluna, o 2FA é ativado normalmente e apenas não gera códigos; o resgate no login não valida; o rótulo do campo não é exibido.
+- [x] **API**: token com formato de PAT recebe "credencial inválida" (401), não erro 500.
+- [x] **Guarda de carregamento**: os dois gates verificam `function_exists` antes de chamar o detector.
+
+### Evidência de Validação (BATCH-122)
+
+Reportada pelo executor em 2026-08-18:
+- `php -l` → `bibliotecas/gestor.php`, `bibliotecas/usuario.php`, `perfil-usuario.php`, teste novo → **OK**.
+- `composer test` → **508/508** (novo `SchemaDegradacaoTest` **14/14**, simulando os dois mundos — com e sem migração — pelo cache de schema, sem tocar o banco).
+- `npx vitest run` → **328/328** sem regressão.
+- Compilador de recursos → **0 erros**.
+
+### Pendências
+
+- Runtime: com a tabela ausente, abrir `/perfil-usuario/` e confirmar que a aba de Chaves de API não aparece e que nenhuma outra aba quebra; ativar o 2FA e confirmar que funciona sem os códigos.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-123 - HTML para o Sistema de Recursos e classes para as Variáveis (correção do Chefe, 2026-08-18)
+
+- [x] **Zero markup em PHP**: as abas de Segurança, Sessões e Chaves de API, os blocos das telas de 2FA e os botões sociais saíram do `perfil-usuario.php` e viraram componentes em `resources/<lang>/components/` (5 componentes × 2 idiomas).
+- [x] **Zero constante de classe em PHP**: as 15 classes utilitárias viraram VARIÁVEIS do sistema, consumidas como `@[[classe-…]]@` nos componentes.
+- [x] **PHP só decide**: escolhe qual bloco entra e com que valores, via `modelo_tag_val` / `modelo_tag_in` / `modelo_var_in`.
+- [x] **Compilador enxerga as classes das variáveis**: `perfil-usuario.json` declarado em `tailwind_sources` (verificado com probe real antes de adotar o desenho).
+- [x] **Bundle declara os componentes do módulo**: sem isso, classe que só existe no componente fica fora do CSS.
+- [x] **Contrato com o JS preservado**: ids, classes de gancho e `data-*` conferidos caso a caso.
+- [ ] **Deploy `Update => Core`**: pendente — componentes e variáveis vêm do banco.
+
+### Evidência de Validação (BATCH-123)
+
+Reportada pelo executor em 2026-08-18:
+- `php -l` e `node --check` → **OK**.
+- Compilador de recursos → **40 compilados, 0 erros**, 150 componentes no inventário; apenas os 4 avisos pré-existentes.
+- Conferência direta no bundle da página (24.114 bytes): `divide-slate-100`, `bg-red-700`, `ring-emerald-500`, `bg-amber-50` e `font-mono` presentes. Antes de declarar os componentes como dependência, `divide-slate-100` estava **ausente** — foi o que provou a necessidade da declaração.
+- `composer test` → **520/520** (novo `PerfilUsuarioRecursosTest` **12/12**, 380 assertions).
+- `npx vitest run` → **328/328** sem regressão.
+
+### Pendências
+
+- Runtime: abrir o perfil e conferir as três abas com o visual íntegro; alterar uma variável `classe-*` pelo gestor e confirmar que o painel muda sem deploy de código.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.

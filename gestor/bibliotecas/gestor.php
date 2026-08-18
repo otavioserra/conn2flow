@@ -83,6 +83,153 @@ function gestor_modulo_asset_version($modulo){
 // =========================== Funções do Gestor
 
 /**
+ * Resolve o framework CSS efetivo de uma requisição a partir do layout E da página (req-118).
+ *
+ * Uma página final é layout + página, e as DUAS carregam a coluna `framework_css`. A decisão nunca
+ * pode sair de um lado só: uma página Tailwind servida por layout Fomantic continua precisando do
+ * Fomantic (é o layout que desenha menu, topo e modais), e o inverso também vale.
+ *
+ * Função PURA — é ela que decide quais bibliotecas entram na página e qual variante de componente a
+ * interface entrega; errar aqui deixa a tela sem CSS ou sem runtime, sem erro em lugar nenhum.
+ *
+ * Regras (as mesmas que `gestor_pagina_css()` já aplicava, agora em um lugar só):
+ * - Fomantic entra quando qualquer um dos dois o declara OU quando NENHUM declara nada (legado).
+ * - Tailwind entra quando qualquer um dos dois o declara.
+ *
+ * @param string|null $layoutFramework Valor de `layouts.framework_css`.
+ * @param string|null $paginaFramework Valor de `paginas.framework_css`.
+ *
+ * @return array{fomantic:bool,tailwind:bool,modo:string} `modo` é `fomantic-ui`, `tailwindcss` ou
+ *                                                        `hibrido` (os dois ativos ao mesmo tempo).
+ */
+function gestor_framework_css_resolver($layoutFramework = null, $paginaFramework = null){
+	$layout = is_string($layoutFramework) ? trim($layoutFramework) : '';
+	$pagina = is_string($paginaFramework) ? trim($paginaFramework) : '';
+
+	$fomantic = ($layout === 'fomantic-ui' || $pagina === 'fomantic-ui' || ($layout === '' && $pagina === ''));
+	$tailwind = ($layout === 'tailwindcss' || $pagina === 'tailwindcss');
+
+	if($fomantic && $tailwind){
+		$modo = 'hibrido';
+	} else if($tailwind){
+		$modo = 'tailwindcss';
+	} else {
+		$modo = 'fomantic-ui';
+	}
+
+	return Array(
+		'fomantic' => $fomantic,
+		'tailwind' => $tailwind,
+		'modo' => $modo,
+	);
+}
+
+/**
+ * Atalho para a resolução de framework da requisição corrente.
+ *
+ * @return array{fomantic:bool,tailwind:bool,modo:string}
+ */
+function gestor_framework_css_atual(){
+	global $_GESTOR;
+
+	return gestor_framework_css_resolver(
+		$_GESTOR['layout#framework_css'] ?? null,
+		$_GESTOR['pagina#framework_css'] ?? null
+	);
+}
+
+// =========================== Detecção de schema (req-119 / BATCH-122)
+//
+// O código do sistema é atualizado por ARQUIVOS e o schema por MIGRAÇÕES, e as duas coisas não
+// chegam juntas em toda instalação. `atualizacoes-banco-de-dados.php` roda as migrações no deploy,
+// mas há caminhos reais em que o código novo alcança um banco antigo:
+//
+//   - a migração falha (permissão, lock, timeout) e o restante do deploy prossegue;
+//   - a atualização é só de arquivos (`Synchronize => Files`), sem tocar o banco;
+//   - o operador usa `--skip-migrate`;
+//   - a janela entre os arquivos chegarem e a migração terminar — qualquer requisição nesse
+//     intervalo executa código novo contra schema velho.
+//
+// Nesses casos o desfecho aceitável é a funcionalidade nova NÃO APARECER, nunca um erro 500 numa
+// tela que já funcionava. Estas duas funções são o gate para isso: memoizadas por requisição,
+// silenciosas e sem exceção.
+
+/**
+ * Diz se uma tabela existe no banco corrente.
+ *
+ * `SHOW TABLES` é executado UMA vez por requisição e o resultado inteiro fica memoizado — verificar
+ * tabela a tabela custaria uma ida ao banco por checagem, em código que roda no caminho de render.
+ *
+ * @param string $tabela Nome da tabela.
+ *
+ * @return bool False também quando o banco não pôde ser consultado (falha fechado: sem certeza de
+ *               que o schema está pronto, a funcionalidade nova não é oferecida).
+ */
+function gestor_schema_tabela_existe($tabela){
+	global $_GESTOR;
+
+	$tabela = (string)$tabela;
+	if($tabela === '') return false;
+
+	if(!isset($_GESTOR['schema-tabelas'])){
+		$lista = Array();
+
+		try {
+			if(function_exists('banco_tabelas_lista')){
+				$resultado = banco_tabelas_lista();
+				if(is_array($resultado)) $lista = $resultado;
+			}
+		} catch (\Throwable $e){
+			// Banco indisponível não pode derrubar a página: o gate simplesmente nega.
+			$lista = Array();
+		}
+
+		$_GESTOR['schema-tabelas'] = array_flip($lista);
+	}
+
+	return isset($_GESTOR['schema-tabelas'][$tabela]);
+}
+
+/**
+ * Diz se um campo existe em uma tabela do banco corrente.
+ *
+ * A existência da TABELA é verificada primeiro: `SHOW COLUMNS` sobre tabela inexistente é um erro
+ * de SQL, e a ideia aqui é justamente não produzir nenhum.
+ *
+ * @param string $campo Nome da coluna.
+ * @param string $tabela Nome da tabela.
+ *
+ * @return bool
+ */
+function gestor_schema_campo_existe($campo, $tabela){
+	global $_GESTOR;
+
+	$campo = (string)$campo;
+	$tabela = (string)$tabela;
+
+	if($campo === '' || !gestor_schema_tabela_existe($tabela)) return false;
+
+	$chave = $tabela.'.'.$campo;
+
+	if(!isset($_GESTOR['schema-campos'])) $_GESTOR['schema-campos'] = Array();
+	if(isset($_GESTOR['schema-campos'][$chave])) return $_GESTOR['schema-campos'][$chave];
+
+	$existe = false;
+
+	try {
+		if(function_exists('banco_campo_existe')){
+			$existe = (bool)banco_campo_existe($campo,$tabela);
+		}
+	} catch (\Throwable $e){
+		$existe = false;
+	}
+
+	$_GESTOR['schema-campos'][$chave] = $existe;
+
+	return $existe;
+}
+
+/**
  * Ordena sidecars Tailwind pela responsabilidade na cascata.
  *
  * A ordem dos CSS Cascade Layers é definida na primeira aparição de cada camada. O layout precisa

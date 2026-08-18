@@ -1,0 +1,86 @@
+<!-- conteiner < -->
+<div id="seg-seguranca" class="space-y-6">
+    <div id="seg-msg" class="hidden rounded-lg border px-4 py-3 text-sm"></div>
+    <div class="@[[classe-cartao]]@">
+        <h3 class="@[[classe-titulo]]@"><span aria-hidden="true">🔒</span> @[[security-2fa-title]]@</h3>
+        #bloco-2fa#
+    </div>
+    <div class="@[[classe-cartao]]@">
+        <h3 class="@[[classe-titulo]]@"><span aria-hidden="true">🔗</span> @[[security-social-title]]@</h3>
+        #bloco-social#
+    </div>
+</div><!-- conteiner > -->
+<!-- 2fa-ativo < -->
+<p class="@[[classe-etiqueta]]@ bg-emerald-50 text-emerald-700">@[[security-2fa-active]]@ #tipo#</p>
+<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div>
+        <label class="@[[classe-rotulo]]@" for="seg-2fa-senha">@[[security-password-label]]@</label>
+        <input type="password" id="seg-2fa-senha" autocomplete="current-password" class="@[[classe-campo]]@">
+    </div>
+    <div>
+        <label class="@[[classe-rotulo]]@" for="seg-2fa-codigo">@[[security-2fa-code-label]]@</label>
+        <input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" class="@[[classe-campo]]@">
+    </div>
+</div>
+<button type="button" class="@[[classe-botao-alerta]]@ mt-4" id="btn-2fa-desativar">
+    <span aria-hidden="true">🔓</span> @[[security-2fa-disable]]@
+</button><!-- 2fa-ativo > -->
+<!-- 2fa-sem-metodo < -->
+<p class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+    @[[security-2fa-none-method]]@</p><!-- 2fa-sem-metodo > -->
+<!-- 2fa-inativo < -->
+<p class="@[[classe-etiqueta]]@ bg-slate-100 text-slate-600">@[[security-2fa-inactive]]@</p>
+<p class="@[[classe-ajuda]]@ mt-3">@[[security-2fa-inactive-help]]@</p>
+<a class="@[[classe-botao]]@ mt-4" href="#url-configurar#">
+    <span aria-hidden="true">🛡️</span> @[[security-2fa-configure]]@
+</a><!-- 2fa-inativo > -->
+<!-- 2fa-configurar < -->
+<p class="@[[classe-ajuda]]@">@[[security-2fa-inactive-help]]@</p>
+<div class="mt-4">
+    <label class="@[[classe-rotulo]]@" for="seg-2fa-metodo">@[[security-2fa-method-label]]@</label>
+    <select id="seg-2fa-metodo" class="@[[classe-campo]]@">#opcoes#</select>
+</div>
+<!-- app < -->
+<div id="seg-2fa-app-bloco" class="mt-4">
+    <p class="@[[classe-ajuda]]@">@[[security-2fa-scan-help]]@</p>
+    <div id="seg-2fa-qr" data-otpauth="#otpauth#"
+        class="my-4 inline-block rounded-lg border border-slate-200 bg-white p-3"></div>
+    <p class="@[[classe-rotulo]]@">@[[security-2fa-secret-label]]@</p>
+    <code class="inline-block rounded-md bg-slate-100 px-3 py-2 font-mono text-sm tracking-wider break-all text-slate-800">#secret#</code>
+</div><!-- app > -->
+<!-- email < -->
+<div id="seg-2fa-email-bloco" class="mt-4">
+    <button type="button" class="@[[classe-botao]]@" id="btn-2fa-email-enviar">
+        <span aria-hidden="true">✉️</span> @[[security-2fa-send-email]]@
+    </button>
+</div><!-- email > -->
+<div class="mt-4">
+    <label class="@[[classe-rotulo]]@" for="seg-2fa-codigo">@[[security-2fa-code-label]]@</label>
+    <input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" class="@[[classe-campo]]@">
+</div>
+<button type="button" class="@[[classe-botao-ok]]@ mt-4" id="btn-2fa-ativar">
+    <span aria-hidden="true">✅</span> @[[security-2fa-activate]]@
+</button><!-- 2fa-configurar > -->
+<!-- 2fa-metodo-opcao < -->
+<option value="#valor#">#rotulo#</option><!-- 2fa-metodo-opcao > -->
+<!-- social-vazio < -->
+<p class="@[[classe-ajuda]]@">@[[security-social-none-active]]@</p><!-- social-vazio > -->
+<!-- social-lista < -->
+<ul class="divide-y divide-slate-100">
+    <!-- social-item -->
+</ul><!-- social-lista > -->
+<!-- social-item < -->
+<li class="flex flex-wrap items-center justify-between gap-3 py-3">
+    <span class="text-sm font-medium text-slate-800">#provedor-nome#</span>
+    #acao#
+</li><!-- social-item > -->
+<!-- social-vinculado < -->
+<span class="flex flex-wrap items-center gap-2">
+    <span class="@[[classe-etiqueta]]@ bg-emerald-50 text-emerald-700">@[[security-social-linked]]@</span>
+    <span class="text-xs break-all text-slate-500">#uid#</span>
+    <button type="button" class="@[[classe-botao-mini]]@ btn-social-desvincular"
+        data-provider="#provedor#">@[[security-social-unlink]]@</button>
+</span><!-- social-vinculado > -->
+<!-- social-desvinculado < -->
+<button type="button" class="@[[classe-botao-mini]]@ btn-social-vincular"
+    data-provider="#provedor#">@[[security-social-link]]@ #provedor-nome#</button><!-- social-desvinculado > -->

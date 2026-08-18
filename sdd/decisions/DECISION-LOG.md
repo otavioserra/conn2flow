@@ -871,3 +871,65 @@ Fechamento dos findings do review de 2026-08-15 (BATCH-118):
    LAYOUT. Descartá-lo inteiro deixa as utilities novas da página com `var()` indefinida — 13 de 21
    elementos mudaram de aparência ao salvar. Só `@layer base` (Preflight), que não depende do
    conteúdo, pode ser decidido por camada.
+
+## DEC-113 - 2026-08-18 - accepted
+
+**Título**: Base administrativa Tailwind — resolução por layout + página, variantes de componente e
+runtime próprio da interface (req-118 / BATCH-119)
+
+**Contexto**: o intake pedia o painel de perfil modernizado; o Chefe ampliou o escopo para um layout
+administrativo nativo em Tailwind e decidiu, na mesma sessão, que ele **não** carregaria o Fomantic —
+a linha 3.0 do sistema será 100% Tailwind, e a adaptação começa por aqui.
+
+O bloqueio não era o CSS: era o runtime. `interface.js` chama `$.fn.modal` do Fomantic em 16 pontos
+sem nenhuma guarda, e entre eles está o modal de Área Restrita, que é a trava de credenciais do
+próprio perfil. Além disso, `gestor_pagina_css()` e `gestor_pagina_extra_head_e_javascript()` usavam
+a mesma condição para o CSS e o JS do Fomantic — um layout `tailwindcss` perde os dois de uma vez.
+
+**Decisão**:
+
+1. **A resolução de framework sai de layout E página, nunca de um lado só.** Uma página final é
+   layout + página, e as duas carregam a coluna `framework_css`.
+   `gestor_framework_css_resolver()` é pura e devolve três modos: `fomantic-ui`, `tailwindcss` e
+   `hibrido`. As regras são as que o core já aplicava; o ganho é haver um lugar só onde a decisão
+   mora, e um teste que a falsifica.
+
+2. **Variante de componente por sufixo, com o legado intocado.** Cada componente da interface ganha
+   um irmão `<id>-tailwind`, escolhido em runtime. Em modo `hibrido` a variante **não** é aplicada —
+   com o Fomantic na página, o componente legado é o único com estilo garantido. Os `switch` que
+   decidem quais variáveis cada componente recebe continuam escritos sobre o id canônico: **a
+   variante muda o HTML, nunca o contrato de dados.**
+
+3. **O contrato de validação é portável; o runtime é que muda.**
+   `interface_formulario_validacao()` emite regras no formato do validador do Fomantic, e o
+   inventário inteiro do core usa apenas 6 tipos (`notEmpty`, `minLength[n]`, `maxLength[n]`,
+   `email`, `match[campo]`, `regExp[/…/]`). `interface-tailwind.js` interpreta esse mesmo dicionário
+   — nenhuma função PHP de validação precisou mudar. Tipo desconhecido é ignorado em vez de reprovar:
+   o legado tem regras que este runtime ainda não precisa, e travar formulário válido por
+   desconhecimento seria pior que o defeito.
+
+4. **A folha de ÍCONES do Fomantic fica; o framework sai.** A coluna `modulos.icone` guarda nomes de
+   ícone Fomantic para todos os módulos instalados. Trocar essa fonte exigiria reescrever o cadastro
+   inteiro e quebraria plugins de terceiros. O layout novo carrega
+   `dist/components/icon.min.css` e nada mais — o CSS de layout continua 100% Tailwind.
+
+5. **Bundle canônico no painel administrativo não é preferência, é o F3 do review de 2026-08-15.**
+   Sem `tailwind_bundle`, o compilador acusou que o layout emite `display` sob variante responsiva
+   (`lg:block`, `lg:hidden`, `sm:inline`) e a concatenação de sidecars pode inverter desktop/mobile.
+   Com o bundle o aviso desaparece e a ordem global das utilities fica preservada.
+
+6. **O modificador `!` do Tailwind v4 fica nos controles de formulário.** No modo `hibrido`,
+   `.ui.form input[type="text"]` tem especificidade (0,3,1) contra (0,1,0) de `.px-3` — ordem na
+   cascata não resolve. Em Tailwind puro ele é redundante (o Preflight já normaliza), mas inofensivo,
+   e é o que sustenta a página quando ela é servida por um layout Fomantic.
+
+**Consequências**:
+
+- O painel administrativo passa a ter duas bases coexistindo, com fronteira explícita e testada. Os
+  módulos ainda não migrados continuam exatamente como estavam, no layout legado.
+- `interface.php` foi adaptada apenas nos caminhos exercitados por este lote (edição, componentes de
+  modal, runtime e autorização provisória), conforme instrução do Chefe. Listagem, inclusão,
+  visualização e configuração seguem no componente legado — servidas pelo layout legado, sem
+  regressão. Migrá-las é o caminho natural dos próximos lotes.
+- A dívida "decisão de arquitetura sobre Tailwind no painel administrativo", registrada no review de
+  2026-08-15, está fechada.

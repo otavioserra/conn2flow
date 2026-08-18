@@ -1155,6 +1155,81 @@ function interface_historico($params = false){
 }
 
 /**
+ * Enfileira o runtime da interface administrativa adequado ao framework da requisição (req-118).
+ *
+ * Em modo Tailwind puro o `interface.js` legado NÃO pode entrar: ele chama `$.fn.modal` do Fomantic
+ * em 16 pontos sem nenhuma guarda, e o Fomantic não está na página. O substituto
+ * (`interface-tailwind.js`) lê exatamente o mesmo contrato — `gestor.interface.regrasValidacao`,
+ * `gestor.interface.validarCampos` e os eventos de `#gestor-listener` —, então nenhuma função PHP
+ * que monta regra de validação precisou mudar.
+ *
+ * O CSS legado segue fora: em Tailwind o estilo vem do pré-compilado do layout.
+ *
+ * @return void
+ */
+function interface_assets_incluir(){
+	global $_GESTOR;
+
+	$versao = $_GESTOR['biblioteca-interface']['versao'];
+
+	if(gestor_framework_css_atual()['modo'] === 'tailwindcss'){
+		$asset = '<script src="'.$_GESTOR['url-raiz'].'interface/interface-tailwind.js?v='.$versao.'"></script>';
+
+		if(!in_array($asset,$_GESTOR['javascript'] ?? Array(),true)){
+			$_GESTOR['javascript'][] = $asset;
+		}
+
+		return;
+	}
+
+	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$versao.'" />';
+	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$versao.'"></script>';
+}
+
+// =========================== Variantes por framework CSS (req-118)
+//
+// A linha 3.0 do sistema é 100% Tailwind. Até lá, a interface administrativa serve as duas bases ao
+// mesmo tempo: cada componente ganha um irmão `<id>-tailwind` e a escolha é feita em runtime pela
+// resolução layout + página (`gestor_framework_css_resolver`). Nenhum componente legado é alterado —
+// é isso que mantém os módulos ainda não migrados exatamente como estavam.
+
+/**
+ * Devolve o id da variante Tailwind de um componente quando a requisição é Tailwind pura.
+ *
+ * Função PURA quando o modo é informado. Em modo `hibrido` a variante NÃO é aplicada: se o Fomantic
+ * está na página, o componente legado é o que tem estilo garantido.
+ *
+ * @param string $id Id canônico do componente.
+ * @param string|null $modo Modo resolvido; quando omitido, usa o da requisição corrente.
+ *
+ * @return string Id a carregar.
+ */
+function interface_componente_variante($id, $modo = null){
+	if($modo === null){
+		$modo = gestor_framework_css_atual()['modo'];
+	}
+
+	if($modo !== 'tailwindcss') return $id;
+	if(substr($id,-9) === '-tailwind') return $id;
+
+	return $id.'-tailwind';
+}
+
+/**
+ * Reduz o id de um componente à sua forma canônica (sem o sufixo de variante).
+ *
+ * Os `switch` que decidem quais variáveis cada componente recebe continuam escritos sobre o id
+ * canônico: a variante muda o HTML, nunca o contrato de dados.
+ *
+ * @param string $id Id possivelmente sufixado.
+ *
+ * @return string Id canônico.
+ */
+function interface_componente_canonico($id){
+	return (substr($id,-9) === '-tailwind') ? substr($id,0,-9) : $id;
+}
+
+/**
  * Marca componentes para inclusão na interface.
  *
  * Registra um ou mais componentes para serem incluídos posteriormente
@@ -1229,9 +1304,9 @@ function interface_componentes($params = false){
 			if(count($componentes) > 0){
 				foreach($componentes as $componente => $val){
 					switch($componente){
-						case 'modal-carregamento': $componentes_layouts_ids[] = 'interface-carregando-modal'; break;
-						case 'modal-delecao': $componentes_layouts_ids[] = 'interface-delecao-modal'; break;
-						case 'modal-alerta': $componentes_layouts_ids[] = 'interface-alerta-modal'; break;
+						case 'modal-carregamento': $componentes_layouts_ids[] = interface_componente_variante('interface-carregando-modal'); break;
+						case 'modal-delecao': $componentes_layouts_ids[] = interface_componente_variante('interface-delecao-modal'); break;
+						case 'modal-alerta': $componentes_layouts_ids[] = interface_componente_variante('interface-alerta-modal'); break;
 						case 'modal-iframe': $componentes_layouts_ids[] = 'interface-iframe-modal'; break;
 					}
 				}
@@ -1252,8 +1327,9 @@ function interface_componentes($params = false){
 				
 				foreach($layouts as $id => $layout){
 					$componente_html = '';
-					
-					switch($id){
+
+					// A variante muda o HTML, não o contrato: o switch continua no id canônico.
+					switch(interface_componente_canonico($id)){
 						// ===== Modal de carregamento
 						
 						case 'interface-carregando-modal':
@@ -3821,8 +3897,7 @@ function interface_adicionar_finalizar($params = false){
 	
 	// ===== Inclusão Interface
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	interface_assets_incluir();
 	
 	// ===== Interface Javascript Vars
 	
@@ -3921,8 +3996,7 @@ function interface_adicionar_incomum_finalizar($params = false){
 	
 	// ===== Inclusão Interface
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	interface_assets_incluir();
 	
 	// ===== Interface Javascript Vars
 	
@@ -4119,8 +4193,7 @@ function interface_editar_incomum_finalizar($params = false){
 	
 	// ===== Inclusão Interface
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	interface_assets_incluir();
 	
 	// ===== Interface Javascript Vars
 	
@@ -4206,9 +4279,9 @@ function interface_editar_finalizar($params = false){
 	));
 	
 	// ===== Formulário de edição
-	
+
 	$pagina = gestor_componente(Array(
-		'id' => 'interface-formulario-edicao',
+		'id' => interface_componente_variante('interface-formulario-edicao'),
 	));
 	
 	// ===== Remover não alterar id
@@ -4338,8 +4411,7 @@ function interface_editar_finalizar($params = false){
 	
 	// ===== Inclusão Interface
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	interface_assets_incluir();
 	
 	// ===== Interface Javascript Vars
 	
@@ -4489,8 +4561,7 @@ function interface_visualizar_finalizar($params = false){
 	
 	// ===== Inclusão Interface
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	interface_assets_incluir();
 	
 	// ===== Interface Javascript Vars
 	
@@ -4616,8 +4687,7 @@ function interface_config_finalizar($params = false){
 	
 	// ===== Inclusão Interface
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	interface_assets_incluir();
 	
 	// ===== Interface Javascript Vars
 	
@@ -4692,9 +4762,9 @@ function interface_alteracoes_finalizar($params = false){
 	));
 	
 	// ===== Formulário de edição
-	
+
 	$pagina = gestor_componente(Array(
-		'id' => 'interface-formulario-edicao',
+		'id' => interface_componente_variante('interface-formulario-edicao'),
 	));
 	
 	$pagina = modelo_var_troca($pagina,"#titulo#",$_GESTOR['pagina#titulo']);
@@ -4807,8 +4877,7 @@ function interface_alteracoes_finalizar($params = false){
 	
 	// ===== Inclusão Interface
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	interface_assets_incluir();
 	
 	// ===== Interface Javascript Vars
 	
@@ -4919,8 +4988,7 @@ function interface_simples_finalizar($params = false){
 	
 	// ===== Inclusão Interface
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	interface_assets_incluir();
 	
 	// ===== Interface Javascript Vars
 	
@@ -5472,8 +5540,7 @@ function interface_listar_finalizar($params = false){
 	
 	// ===== Inclusão Interface
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$_GESTOR['biblioteca-interface']['versao'].'"></script>';
+	interface_assets_incluir();
 }
 
 // ===== Interfaces conectoras dos módulos.
