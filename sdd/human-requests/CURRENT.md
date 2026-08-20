@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-123.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-123.md) (BATCH-125 `ready-for-intake`, 2026-08-20): Customização de Menus Administrativos: Labels e Ordenação em Módulos Grupos e Override de Componentes por Projeto.
   - [req-122.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-122.md) (BATCH-124 `implemented-pending-homologation`, 2026-08-19): Correção da População de Publicadores de Destino no Modal Mover Publicação (`publisher-pages/editar`).
   - [req-121.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-121.md) (BATCH-122 `implemented-pending-homologation`, 2026-08-19): Mover Página de Publicação entre Tipos de Publicador no Módulo Publisher Pages, com tratamento de prefixo de URL e 301.
   - [req-118.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-118.md) (BATCH-119 `implemented-pending-homologation`, 2026-08-18): Layout administrativo em Tailwind, menu interativo e painel de perfil com gestão de sessões ativas.

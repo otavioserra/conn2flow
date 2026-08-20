@@ -24,13 +24,24 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 - A cada término de etapa/comando relevante, atualize e re-exiba a lista marcando `[x]` nas etapas concluídas e destacando a etapa atual (`⏳ [EM ANDAMENTO]`).
 - Nunca execute sequências longas de comandos sem atualizar o status visual para o usuário.
 
-## 🛡️ Modos de Autonomia de IA & Trava de Deploy
+## 🛡️ Espectro de 3 Níveis de Autonomia de IA
 
-- **Modo SUPERVISIONADO (Padrão Mandatório)**:
-  * O agente implementa código e roda testes, mas **NÃO realiza commit ou deploy automático**.
-  * O desenvolvedor revisa e aprova as mudanças no chat/IDE.
+1. **Nível 1: SUPERVISIONADO (Padrão Mandatório / Human-in-the-Loop)**:
+   - O agente implementa código e executa testes, mas **NÃO realiza commit, push ou deploy automático**.
+   - O desenvolvedor revisa e aprova as mudanças no chat/IDE antes da consolidação.
 
-- **Modo AUTÔNOMO (Apenas quando explicitado na requisição / usuário)**:
-  * Permitido quando a requisição contiver `modo: autonomo` ou o usuário autorizar expressamente.
-  * O agente pode: criar branch/worktree (`feat/req-XXX`), codificar, compilar (`c2f resources:sync`), rodar testes (`c2f db:test`), commitar e executar **DEPLOY EXCLUSIVAMENTE EM AMBIENTE DE TESTE LOCAL** (`c2f manager:update-all` ou Docker local).
-  * ⛔ **REGRA INVIOLÁVEL DE SEGURANÇA: NUNCA REALIZAR DEPLOY AUTOMÁTICO NO AMBIENTE DE PRODUÇÃO OU SERVIDORES REMOTOS.**
+2. **Nível 2: AUTÔNOMO MONITORADO (Live Autopilot / Glass-Box no Chat)**:
+   - Ativado quando a requisição contiver `modo: autonomo_monitorado` ou o usuário autorizar expressamente o acompanhamento contínuo na tela.
+   - O agente executa a esteira completa com **Live Todo List (`[ ]` ➔ `[x]`) visível e atualizado em tempo real**:
+     * Criação de branch/worktree isolada (`feat/req-XXX`).
+     * Codificação e compilação de recursos (`c2f resources:sync`).
+     * Execução de testes automatizados (`c2f db:test`).
+     * **DEPLOY EXCLUSIVAMENTE EM AMBIENTE DE TESTE LOCAL** (`c2f manager:update-all` ou Docker local).
+     * ⛔ **REGRA INVIOLÁVEL DE SEGURANÇA: NUNCA REALIZAR DEPLOY AUTOMÁTICO EM AMBIENTE DE PRODUÇÃO OU SERVIDORES REMOTOS.**
+     * Commit semântico e push na branch de trabalho.
+     * Relatório final com logs de execução e evidências de validação.
+
+3. **Nível 3: AUTÔNOMO HEADLESS (Background Silencioso / Black-Box)**:
+   - Ativado quando a requisição contiver `modo: autonomo_headless`.
+   - O agente executa toda a esteira em segundo plano isolado via MCP Hub / Git Worktrees, emitindo notificação e relatório consolidado apenas ao término.
+
