@@ -31,7 +31,7 @@
                     "name": "Módulos Grupos",
                     "id": "modulos-grupos",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/",
+                    "path": "modulos-grupos\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -46,42 +46,45 @@
                     "name": "Módulos Grupos - Adicionar",
                     "id": "modulos-grupos-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/adicionar/",
+                    "path": "modulos-grupos\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "",
+                        "html": "d6960e18960aacc5a06125ba93ef652c",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "d6960e18960aacc5a06125ba93ef652c"
                     }
                 },
                 {
                     "name": "Módulos Grupos - Editar",
                     "id": "modulos-grupos-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/editar/",
+                    "path": "modulos-grupos\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "",
+                        "html": "8dd2f3ce05977a4244ae98cd6f7c3cfa",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "8dd2f3ce05977a4244ae98cd6f7c3cfa"
                     }
                 },
                 {
                     "name": "Módulos Grupos - Clonar",
                     "id": "modulos-grupos-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/clonar/",
+                    "path": "modulos-grupos\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "",
+                        "html": "f29098082c3daa318905e2e3731144c3",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "f29098082c3daa318905e2e3731144c3"
                     }
                 }
             ],
@@ -131,7 +134,7 @@
                     "name": "Module Groups",
                     "id": "modulos-grupos",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/",
+                    "path": "modulos-grupos\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -146,42 +149,45 @@
                     "name": "Module Groups - Add",
                     "id": "modulos-grupos-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/adicionar/",
+                    "path": "modulos-grupos\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "",
+                        "html": "d6960e18960aacc5a06125ba93ef652c",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "d6960e18960aacc5a06125ba93ef652c"
                     }
                 },
                 {
                     "name": "Module Groups - Edit",
                     "id": "modulos-grupos-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/editar/",
+                    "path": "modulos-grupos\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "",
+                        "html": "8dd2f3ce05977a4244ae98cd6f7c3cfa",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "8dd2f3ce05977a4244ae98cd6f7c3cfa"
                     }
                 },
                 {
                     "name": "Module Groups - Clone",
                     "id": "modulos-grupos-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos-grupos/clonar/",
+                    "path": "modulos-grupos\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "",
+                        "html": "f29098082c3daa318905e2e3731144c3",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "f29098082c3daa318905e2e3731144c3"
                     }
                 }
             ],

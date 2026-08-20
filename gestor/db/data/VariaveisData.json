@@ -9830,6 +9830,42 @@
     {
         "language": "pt-br",
         "modulo": "modulos-grupos",
+        "id": "form-menu-label-label",
+        "valor": "Rótulo do Menu",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "modulos-grupos",
+        "id": "form-menu-label-placeholder",
+        "valor": "Se não preenchido, usa o Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "modulos-grupos",
+        "id": "form-ordem-menu-label",
+        "valor": "Ordem no Menu",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "modulos-grupos",
+        "id": "form-ordem-menu-placeholder",
+        "valor": "Ex: 1, 2, 3...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "modulos-grupos",
         "id": "form-host-label",
         "valor": "Host",
         "tipo": "string",
@@ -9850,6 +9886,42 @@
         "modulo": "modulos-grupos",
         "id": "form-name-placeholder",
         "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "modulos-grupos",
+        "id": "form-menu-label-label",
+        "valor": "Menu Label",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "modulos-grupos",
+        "id": "form-menu-label-placeholder",
+        "valor": "If not filled, uses Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "modulos-grupos",
+        "id": "form-ordem-menu-label",
+        "valor": "Menu Order",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "modulos-grupos",
+        "id": "form-ordem-menu-placeholder",
+        "valor": "Ex: 1, 2, 3...",
         "tipo": "string",
         "grupo": null,
         "descricao": null
