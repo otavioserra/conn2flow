@@ -48,6 +48,8 @@ function modulos_grupos_adicionar(){
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "host"; $post_nome = "host"; $campo_valor = '1';					if($_REQUEST[$post_nome] == 'on')		$campos[] = Array($campo_nome,$campo_valor,true);
+		$campo_nome = "menu_label"; $post_nome = "menu_label"; 							if(isset($_REQUEST[$post_nome]) && $_REQUEST[$post_nome] !== '')		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "ordemMenu"; $post_nome = "ordemMenu"; 							if(isset($_REQUEST[$post_nome]) && is_numeric($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,(int)$_REQUEST[$post_nome],true);
 		
 		// ===== Campos comuns
 		
@@ -69,6 +71,11 @@ function modulos_grupos_adicionar(){
 	// ===== Inclusão Módulo JS
 	
 	gestor_pagina_javascript_incluir();
+	
+	// ===== Inicializar campos vazios no template
+	
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#menu_label#','');
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#ordemMenu#','');
 	
 	// ===== Interface adicionar finalizar opções
 	
@@ -99,6 +106,8 @@ function modulos_grupos_editar(){
 	$camposBanco = Array(
 		'nome',
 		'host',
+		'menu_label',
+		'ordemMenu',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -178,6 +187,22 @@ function modulos_grupos_editar(){
 			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo_nome) ? '1' : '0'),'valor_depois' => ($_REQUEST[$request_name] == 'on' ? '1' : '0'));
 		}
 		
+		$campo_nome = "menu_label"; $request_name = 'menu_label'; $alteracoes_name = 'menu-label';
+		$val_antes = banco_select_campos_antes($campo_nome);
+		$val_depois = (isset($_REQUEST[$request_name]) && $_REQUEST[$request_name] !== '' ? $_REQUEST[$request_name] : null);
+		if($val_antes !== $val_depois){
+			$editar['dados'][] = $campo_nome."=" . ($val_depois !== null ? "'" . banco_escape_field($val_depois) . "'" : "NULL");
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => ($val_antes !== null ? $val_antes : ''), 'valor_depois' => ($val_depois !== null ? $val_depois : ''));
+		}
+
+		$campo_nome = "ordemMenu"; $request_name = 'ordemMenu'; $alteracoes_name = 'ordem-menu';
+		$val_antes = banco_select_campos_antes($campo_nome);
+		$val_depois = (isset($_REQUEST[$request_name]) && is_numeric($_REQUEST[$request_name]) ? (int)$_REQUEST[$request_name] : null);
+		if($val_antes != $val_depois){
+			$editar['dados'][] = $campo_nome."=" . ($val_depois !== null ? (int)$val_depois : "NULL");
+			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => ($val_antes !== null ? (string)$val_antes : ''), 'valor_depois' => ($val_depois !== null ? (string)$val_depois : ''));
+		}
+		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		
 		if(isset($editar['dados'])){
@@ -227,8 +252,12 @@ function modulos_grupos_editar(){
 	if($_GESTOR['banco-resultado']){
 		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$host = (isset($retorno_bd['host']) ? true : false);
+		$menu_label = (isset($retorno_bd['menu_label']) ? $retorno_bd['menu_label'] : '');
+		$ordemMenu = (isset($retorno_bd['ordemMenu']) ? $retorno_bd['ordemMenu'] : '');
 		
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#menu_label#',$menu_label);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#ordemMenu#',$ordemMenu);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#checked#',($host ? 'checked' : ''));
 		
 		// ===== Popular os metaDados
@@ -309,6 +338,8 @@ function modulos_grupos_clonar(){
 	$camposBanco = Array(
 		'nome',
 		'host',
+		'menu_label',
+		'ordemMenu',
 	);
 	
 	$camposBancoPadrao = Array(
@@ -358,6 +389,8 @@ function modulos_grupos_clonar(){
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "host"; $post_nome = "host"; $campo_valor = '1';					if($_REQUEST[$post_nome] == 'on')		$campos[] = Array($campo_nome,$campo_valor,true);
+		$campo_nome = "menu_label"; $post_nome = "menu_label"; 							if(isset($_REQUEST[$post_nome]) && $_REQUEST[$post_nome] !== '')		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "ordemMenu"; $post_nome = "ordemMenu"; 							if(isset($_REQUEST[$post_nome]) && is_numeric($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,(int)$_REQUEST[$post_nome],true);
 		
 		// ===== Campos comuns
 		
@@ -394,7 +427,11 @@ function modulos_grupos_clonar(){
 	
 	if($_GESTOR['banco-resultado']){
 		$host = (isset($retorno_bd['host']) ? true : false);
+		$menu_label = (isset($retorno_bd['menu_label']) ? $retorno_bd['menu_label'] : '');
+		$ordemMenu = (isset($retorno_bd['ordemMenu']) ? $retorno_bd['ordemMenu'] : '');
 		
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#menu_label#',$menu_label);
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#ordemMenu#',$ordemMenu);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#checked#',($host ? 'checked' : ''));
 		
 		// ===== Popular os metaDados

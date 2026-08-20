@@ -51,9 +51,9 @@
                     "option": "adicionar",
                     "version": "1.1",
                     "checksum": {
-                        "html": "b31c7f2d881bcad6c89fa3fed8365855",
+                        "html": "",
                         "css": "",
-                        "combined": "b31c7f2d881bcad6c89fa3fed8365855"
+                        "combined": ""
                     }
                 },
                 {
@@ -65,9 +65,9 @@
                     "option": "editar",
                     "version": "1.1",
                     "checksum": {
-                        "html": "36e3752df78811bc45f4ca5abf8c889d",
+                        "html": "",
                         "css": "",
-                        "combined": "36e3752df78811bc45f4ca5abf8c889d"
+                        "combined": ""
                     }
                 },
                 {
@@ -79,9 +79,9 @@
                     "option": "clonar",
                     "version": "1.1",
                     "checksum": {
-                        "html": "b31c7f2d881bcad6c89fa3fed8365855",
+                        "html": "",
                         "css": "",
-                        "combined": "b31c7f2d881bcad6c89fa3fed8365855"
+                        "combined": ""
                     }
                 }
             ],
@@ -95,6 +95,26 @@
                 {
                     "id": "form-name-placeholder",
                     "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-menu-label-label",
+                    "value": "Rótulo do Menu",
+                    "type": "string"
+                },
+                {
+                    "id": "form-menu-label-placeholder",
+                    "value": "Se não preenchido, usa o Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-ordem-menu-label",
+                    "value": "Ordem no Menu",
+                    "type": "string"
+                },
+                {
+                    "id": "form-ordem-menu-placeholder",
+                    "value": "Ex: 1, 2, 3...",
                     "type": "string"
                 },
                 {
@@ -131,9 +151,9 @@
                     "option": "adicionar",
                     "version": "1.1",
                     "checksum": {
-                        "html": "b31c7f2d881bcad6c89fa3fed8365855",
+                        "html": "",
                         "css": "",
-                        "combined": "b31c7f2d881bcad6c89fa3fed8365855"
+                        "combined": ""
                     }
                 },
                 {
@@ -145,9 +165,9 @@
                     "option": "editar",
                     "version": "1.1",
                     "checksum": {
-                        "html": "36e3752df78811bc45f4ca5abf8c889d",
+                        "html": "",
                         "css": "",
-                        "combined": "36e3752df78811bc45f4ca5abf8c889d"
+                        "combined": ""
                     }
                 },
                 {
@@ -159,9 +179,9 @@
                     "option": "clonar",
                     "version": "1.1",
                     "checksum": {
-                        "html": "b31c7f2d881bcad6c89fa3fed8365855",
+                        "html": "",
                         "css": "",
-                        "combined": "b31c7f2d881bcad6c89fa3fed8365855"
+                        "combined": ""
                     }
                 }
             ],
@@ -175,6 +195,26 @@
                 {
                     "id": "form-name-placeholder",
                     "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-menu-label-label",
+                    "value": "Menu Label",
+                    "type": "string"
+                },
+                {
+                    "id": "form-menu-label-placeholder",
+                    "value": "If not filled, uses Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-ordem-menu-label",
+                    "value": "Menu Order",
+                    "type": "string"
+                },
+                {
+                    "id": "form-ordem-menu-placeholder",
+                    "value": "Ex: 1, 2, 3...",
                     "type": "string"
                 },
                 {

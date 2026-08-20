@@ -64,6 +64,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-121 | implemented-pending-homologation | Layout público Tailwind e migração das 15 telas de identidade (req-120) | [BATCH-121.md](BATCH-121.md) |
 | BATCH-122 | implemented-pending-homologation | Mover Página de Publicação entre Tipos de Publicador no Módulo Publisher Pages (req-121) | VALIDATION-CHECKLIST.md#batch-122 |
 | BATCH-124 | implemented-pending-homologation | Correção da População de Publicadores de Destino no Modal Mover Publicação (req-122) | VALIDATION-CHECKLIST.md#batch-124 |
+| BATCH-125 | implemented-pending-homologation | Customização de Menus Administrativos: Labels e Ordenação em Módulos Grupos e Override de Componentes por Projeto (req-123) | VALIDATION-CHECKLIST.md#batch-125 |
+
 
 
 

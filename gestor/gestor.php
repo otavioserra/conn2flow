@@ -35,8 +35,25 @@ function gestor_pagina_menu($params = false){
 	$menuFramework = gestor_framework_css_atual();
 	$menuTailwind = ($menuFramework['modo'] === 'tailwindcss');
 
+	$componenteMenuId = ($menuTailwind ? 'menu-principal-sistema-tailwind' : 'menu-principal-sistema');
+
+	// req-123: Override de componente de menu por projeto ($_GESTOR['project-admin-menu-components'])
+	$layoutAtualId = (isset($_GESTOR['layout#id']) && is_string($_GESTOR['layout#id']) && $_GESTOR['layout#id'] !== '')
+		? $_GESTOR['layout#id']
+		: ($_GESTOR['layout-id'] ?? null);
+
+	if (isset($_GESTOR['project-admin-menu-components']) && is_array($_GESTOR['project-admin-menu-components'])) {
+		if ($layoutAtualId && isset($_GESTOR['project-admin-menu-components'][$layoutAtualId])) {
+			$componenteMenuId = $_GESTOR['project-admin-menu-components'][$layoutAtualId];
+		} elseif (isset($_GESTOR['project-admin-menu-components']['padrao'])) {
+			$componenteMenuId = $_GESTOR['project-admin-menu-components']['padrao'];
+		} elseif (isset($_GESTOR['project-admin-menu-components']['default'])) {
+			$componenteMenuId = $_GESTOR['project-admin-menu-components']['default'];
+		}
+	}
+
 	$menu = gestor_componente(Array(
-		'id' => ($menuTailwind ? 'menu-principal-sistema-tailwind' : 'menu-principal-sistema'),
+		'id' => $componenteMenuId,
 	));
 	
 	$cel_nome = 'icon'; $cel[$cel_nome] = modelo_tag_val($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $menu = modelo_tag_in($menu,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
@@ -190,10 +207,11 @@ function gestor_pagina_menu($params = false){
 		'campos' => Array(
 			'id', // campo textual
 			'nome',
+			'menu_label',
 			'ordemMenu',
 		),
 		'extra' => 
-			"WHERE language='".$_GESTOR['linguagem-codigo']."' ORDER BY ordemMenu ASC, nome ASC"
+			"WHERE language='".$_GESTOR['linguagem-codigo']."' ORDER BY CASE WHEN ordemMenu IS NULL THEN 1 ELSE 0 END, ordemMenu ASC, nome ASC"
 	));
 	
 	// ===== Verifica se o usuário é admin do host para mostrar no menu o Host Configurações ou não.
@@ -330,7 +348,7 @@ function gestor_pagina_menu($params = false){
 				foreach($modulos_grupos as $modulo_grupo){
 					if($modulo_grupo['id'] == $modulo['modulo_grupo_id']){
 						$achouGrupo = true;
-						$nomeGrupo = $modulo_grupo['nome'];
+						$nomeGrupo = (existe($modulo_grupo['menu_label']) ? $modulo_grupo['menu_label'] : $modulo_grupo['nome']);
 						break;
 					}
 				}
@@ -362,9 +380,7 @@ function gestor_pagina_menu($params = false){
 	
 	$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
 	
-	// ===== Incluir grupos no conteiner.
-	
-	$menuConteinerSemPrioridade = '';
+	// ===== Incluir grupos no conteiner (em ordem de prioridade definida na consulta).
 	
 	if($modulos_grupos)
 	foreach($modulos_grupos as $modulo_grupo){
@@ -372,16 +388,8 @@ function gestor_pagina_menu($params = false){
 			$cel_conteiner = $cel['itemContCel'];
 			$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$grupos[$modulo_grupo['id']]);
             
-			if($modulo_grupo['ordemMenu']){
-				$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
-			} else {
-				$menuConteinerSemPrioridade .= $cel_conteiner;
-			}
+			$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
 		}
-	}
-	
-	if(existe($menuConteinerSemPrioridade)){
-		$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$menuConteinerSemPrioridade);
 	}
 	
 	// ===== Incluir sair no conteiner
