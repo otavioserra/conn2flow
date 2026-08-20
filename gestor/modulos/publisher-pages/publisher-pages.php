@@ -1070,6 +1070,29 @@ function publisher_pages_editar(){
 				
 				$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#publisher-id#', '?id='.$publisher_id);
 
+				// req-122: Popular opções do modal "Mover Publicação"
+				$publishers_disponiveis = banco_select(Array(
+					'tabela' => 'publisher',
+					'campos' => Array('id', 'name'),
+					'extra' => "WHERE status!='D' AND language='".$_GESTOR['linguagem-codigo']."' ORDER BY name ASC"
+				));
+
+				$mover_options_html = '';
+				if($publishers_disponiveis){
+					foreach($publishers_disponiveis as $pub){
+						if($pub['id'] != $publisher_id){
+							$mover_options_html .= '<option value="'.htmlspecialchars($pub['id']).'">'.htmlspecialchars($pub['name']).'</option>';
+						}
+					}
+				}
+
+				if($mover_options_html !== ''){
+					$_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#mover-publicador-options#', $mover_options_html);
+				} else {
+					// Sem publicadores alternativos, remover o modal
+					$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- mover-publicador-modal < -->','<!-- mover-publicador-modal > -->');
+				}
+
 				$fields_schema = $publisher['fields_schema'];
 				$path_prefix = $publisher['path_prefix'] ?? '';
 
@@ -1201,6 +1224,7 @@ function publisher_pages_editar(){
 		} else {
 			// Remover a seção de campos do publicador
 			$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- publisher-options < -->','<!-- publisher-options > -->');
+			$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- mover-publicador-modal < -->','<!-- mover-publicador-modal > -->');
 			$_GESTOR['pagina'] = modelo_tag_del($_GESTOR['pagina'],'<!-- publisher-fields-container < -->','<!-- publisher-fields-container > -->');
 		}
 
@@ -2339,6 +2363,202 @@ function publisher_pages_ajax_editor_html_switch(){
 	);
 }
 
+/**
+ * req-121: Processa a migração de custódia de uma publicação entre tipos de publicador.
+ * Trata inteligentemente os prefixos de URL (path_prefix) e registra 301 caso a rota mude.
+ */
+function publisher_pages_ajax_mover_publicador(){
+	global $_GESTOR;
+	
+	$page_id = $_REQUEST['page_id'] ?? $_REQUEST['ajaxRegistroId'] ?? '';
+	$new_publisher_id = $_REQUEST['new_publisher_id'] ?? '';
+	
+	if(!existe($page_id) || !existe($new_publisher_id)){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'Error',
+			'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-move-error-select')),
+		);
+		return;
+	}
+	
+	// ===== Carregar página atual
+	$pagina = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas',
+		'campos' => Array(
+			'id_paginas',
+			'id',
+			'nome',
+			'caminho',
+			'publisher_id',
+		),
+		'extra' => "WHERE id='".banco_escape_field($page_id)."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+			." AND status!='D'"
+	));
+	
+	if(!$pagina){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'Error',
+			'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-move-error-not-found')),
+		);
+		return;
+	}
+	
+	$id_paginas = $pagina['id_paginas'];
+	$old_publisher_id = $pagina['publisher_id'];
+	$caminho_atual = $pagina['caminho'];
+	
+	if($old_publisher_id == $new_publisher_id){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'Error',
+			'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-move-error-same')),
+		);
+		return;
+	}
+	
+	// ===== Carregar publicador destino
+	$new_publisher = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'publisher',
+		'campos' => Array('id', 'name', 'path_prefix'),
+		'extra' => "WHERE id='".banco_escape_field($new_publisher_id)."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+			." AND status!='D'"
+	));
+	
+	if(!$new_publisher){
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'Error',
+			'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-move-error-not-found')),
+		);
+		return;
+	}
+	
+	// ===== Carregar publicador origem
+	$old_publisher = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'publisher',
+		'campos' => Array('id', 'name', 'path_prefix'),
+		'extra' => "WHERE id='".banco_escape_field($old_publisher_id)."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+			." AND status!='D'"
+	));
+	
+	$old_prefix = $old_publisher ? ($old_publisher['path_prefix'] ?? '') : '';
+	$new_prefix = $new_publisher['path_prefix'] ?? '';
+	
+	$norm_old = trim(trim($old_prefix), '/');
+	$norm_new = trim(trim($new_prefix), '/');
+	
+	$caminho_clean = ltrim($caminho_atual, '/');
+	$prefix_check = ($norm_old !== '') ? $norm_old . '/' : '';
+	
+	$novo_caminho = $caminho_atual;
+	
+	if($norm_old !== '' && (stripos($caminho_clean, $prefix_check) === 0 || strcasecmp($caminho_clean, $norm_old) === 0)){
+		$rest = (strcasecmp($caminho_clean, $norm_old) === 0) ? '' : substr($caminho_clean, strlen($prefix_check));
+		if($norm_new !== ''){
+			$novo_caminho = $norm_new . '/' . ($rest !== false && $rest !== '' ? ltrim($rest, '/') : '');
+		} else {
+			$novo_caminho = ($rest !== false && $rest !== '' ? ltrim($rest, '/') : '');
+		}
+		
+		if($novo_caminho !== ''){
+			$novo_caminho = rtrim($novo_caminho, '/') . '/';
+		} else {
+			$novo_caminho = '/';
+		}
+	}
+	
+	// ===== Verificar colisão se o caminho mudou
+	if($novo_caminho !== $caminho_atual){
+		$colisao = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'paginas',
+			'campos' => Array('id_paginas'),
+			'extra' => "WHERE caminho='".banco_escape_field($novo_caminho)."'"
+				." AND id_paginas!='".$id_paginas."'"
+				." AND language='".$_GESTOR['linguagem-codigo']."'"
+				." AND status!='D'"
+		));
+		
+		if($colisao){
+			$_GESTOR['ajax-json'] = Array(
+				'status' => 'Error',
+				'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-move-error-path-conflict')),
+			);
+			return;
+		}
+	}
+	
+	// ===== Atualizar tabela paginas
+	$alteracoes = Array();
+	$update_paginas = Array(
+		"publisher_id='" . banco_escape_field($new_publisher_id) . "'",
+		"versao=versao+1",
+		"data_modificacao=NOW()",
+		"user_modified=1",
+	);
+	
+	$alteracoes[] = Array(
+		'campo' => 'historico-publisher-movido',
+		'valor_antes' => $old_publisher ? $old_publisher['name'] : $old_publisher_id,
+		'valor_depois' => $new_publisher['name'],
+	);
+	
+	$caminhoMudou = null;
+	if($novo_caminho !== $caminho_atual){
+		$update_paginas[] = "caminho='" . banco_escape_field($novo_caminho) . "'";
+		$caminhoMudou = $caminho_atual;
+		$alteracoes[] = Array(
+			'campo' => 'historico-caminho-movido',
+			'valor_antes' => $caminho_atual,
+			'valor_depois' => $novo_caminho,
+		);
+	}
+	
+	banco_update(
+		implode(',', $update_paginas),
+		'paginas',
+		"WHERE id_paginas='".$id_paginas."'"
+	);
+	
+	// ===== Atualizar tabela publisher_pages
+	banco_update(
+		"publisher_id='" . banco_escape_field($new_publisher_id) . "'",
+		'publisher_pages',
+		"WHERE page_id='" . banco_escape_field($page_id) . "'"
+		." AND publisher_id='" . banco_escape_field($old_publisher_id) . "'"
+		." AND language='" . $_GESTOR['linguagem-codigo'] . "'"
+	);
+	
+	// ===== Redirecionamento 301 e Sitemap
+	if(isset($caminhoMudou)){
+		gestor_pagina_301_registrar($id_paginas, $caminhoMudou);
+		$_GESTOR['modulo-registro-id'] = $page_id;
+		publisher_pages_sitemap_sincronizar(false, $caminhoMudou);
+	}
+	
+	// ===== Histórico
+	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
+	interface_historico_incluir(Array(
+		'id' => $page_id,
+		'tabela' => Array(
+			'nome' => $modulo['tabela']['nome'],
+			'id_numerico' => $modulo['tabela']['id_numerico'],
+			'versao' => $modulo['tabela']['versao'],
+		),
+		'alteracoes' => $alteracoes,
+	));
+	
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'form-move-success')),
+		'redirect' => $_GESTOR['url-raiz'] . $_GESTOR['modulo-id'] . '/editar/?id=' . urlencode($page_id),
+	);
+}
+
 // ==== Start
 
 /**
@@ -2390,6 +2610,7 @@ function publisher_pages_start(){
 		
 		switch($_GESTOR['ajax-opcao']){
 			case 'editor-html-switch': publisher_pages_ajax_editor_html_switch(); break;
+			case 'mover-publicador': publisher_pages_ajax_mover_publicador(); break;
 		}
 		
 		interface_ajax_finalizar();

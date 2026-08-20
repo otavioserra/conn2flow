@@ -1,10 +1,17 @@
 ---
 name: c2f-dev-scripts
-description: Use ao consultar, executar ou criar scripts de automação CLI/Bash/PHP em ambiente de desenvolvimento Conn2Flow.
+description: "LEIA ANTES de rodar scripts em dev-environment/ ou ferramentas CLI do projeto. Se não ler: comandos falham por caminhos relativos errados, variáveis de ambiente ausentes ou execução fora do container Docker."
 user-invocable: false
 ---
 
 # Scripts de Automação e Desenvolvimento (`ai-workspace/scripts/`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Executar tarefas de automação, sincronização, geração de recursos, migrações ou testes via scripts PowerShell/Bash em `dev-environment/` ou `scripts/`.
+- **SKIP APENAS SE**: Edição manual de documentação Markdown sem execução de scripts auxiliares.
+- **CONSEQUÊNCIA DE IGNORAR**: Comandos falham por caminhos incorretos, permissões do Docker ou sobrescrita indevida de arquivos de ambiente.
+
+---
 
 Consulte as convenções para uso e criação de scripts de desenvolvimento no Conn2Flow:
 

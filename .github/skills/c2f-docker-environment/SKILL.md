@@ -1,10 +1,17 @@
 ---
 name: c2f-docker-environment
-description: Use ao interagir com o ambiente de containers Docker do Conn2Flow: container conn2flow-app, verificação/truncamento de php_errors.log e comandos CLI.
+description: "LEIA ANTES de interagir com containers Docker (conn2flow-app, mysql, redis, etc.). Se não ler: portas entram em conflito, dados locais não sincronizam ou comandos rodam no host com versões incompatíveis de PHP/MySQL."
 user-invocable: false
 ---
 
 # Ambiente Docker Conn2Flow (`CONN2FLOW-DOCKER-ENVIRONMENT.md`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Subir, descer, reiniciar ou executar comandos dentro dos containers Docker do ambiente de desenvolvimento.
+- **SKIP APENAS SE**: Ambientes nativos locais sem contêineres ou tarefas documentais puras.
+- **CONSEQUÊNCIA DE IGNORAR**: Falhas de conexão com o banco de dados, execução em versão incorreta de runtime (PHP 8.2 vs 8.5) ou perda de persistência nos volumes locais.
+
+---
 
 Consulte e aplique as seguintes convenções para operar no ambiente de containerização local:
 

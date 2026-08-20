@@ -1,3 +1,16 @@
+---
+name: c2f-global-variables
+description: "LEIA ANTES de ler ou escrever nas superglobais $_GESTOR, $_CONFIG, $_BANCO ou $_ENV. Se não ler: estado de roteamento é sobrescrito, dados de sessão são violados e respostas AJAX corrompem o envelope JSON."
+user-invocable: false
+---
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Acessar, modificar ou registrar dados nas superglobais centrais do Conn2Flow (`$_GESTOR`, `$_CONFIG`, `$_BANCO`, `$_ENV`).
+- **SKIP APENAS SE**: Funções puras que recebem todos os parâmetros por argumento sem usar estado global.
+- **CONSEQUÊNCIA DE IGNORAR**: Colisão de chaves no array global, corrupção da resposta AJAX (`$_GESTOR['ajax-resposta']`), ou desvio no fluxo de roteamento de páginas e módulos.
+
+---
+
 ﻿---
 name: c2f-global-variables
 description: "Use ao consultar, acessar ou modificar as superglobais do Conn2Flow: $_GESTOR (runtime), $_CONFIG (configuracao central), $_BANCO (conexao DB) e $_ENV (ambiente)."

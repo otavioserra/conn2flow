@@ -1,10 +1,17 @@
 ---
 name: c2f-plugin-architecture
-description: Use ao desenvolver, instalar, compilar ou gerenciar plugins públicos ou privados no Conn2Flow: manifestos plugin.json, ciclos de vida e sobreposição de recursos.
+description: "LEIA ANTES de criar ou empacotar novos plugins para o ecossistema Conn2Flow. Se não ler: plugins não instalam, colidem com tabelas do core ou não desinstalam limpamente."
 user-invocable: false
 ---
 
 # Arquitetura e Ciclo de Vida de Plugins (`CONN2FLOW-PLUGIN-ARCHITECTURE.md`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Criar, estruturar ou testar pacotes em `dev-plugins/` ou `gestor/plugins/`.
+- **SKIP APENAS SE**: Desenvolvimento de recursos nativos do Core ou customizações exclusivas de projeto.
+- **CONSEQUÊNCIA DE IGNORAR**: Plugins incompatíveis com o ciclo de vida do instalador, resíduos órfãos deixados no banco após desinstalação e violação do isolamento de plugins.
+
+---
 
 Consulte e aplique as seguintes convenções ao trabalhar com plugins no Conn2Flow:
 

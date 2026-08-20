@@ -1,10 +1,17 @@
 ---
 name: c2f-documentation-governance
-description: Use ao ler, verificar, auditá-las ou atualizar documentações técnicas (docs/, *.md) no Conn2Flow para evitar desatualização e desacoplamento do código-fonte real.
+description: "LEIA ANTES de escrever ou atualizar documentações técnicas, especificações e manuais. Se não ler: documentação diverge do código-fonte real (Princípio da Autoridade do Código) e gera alucinações em agentes futuros."
 user-invocable: false
 ---
 
 # Governança e Verificação de Documentação (`c2f-documentation-governance`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Criar, atualizar ou validar qualquer documento técnico em `docs/`, `sdd/` ou guias de arquitetura.
+- **SKIP APENAS SE**: Correção de pequenos erros de digitação (typos) em arquivos que não alterem contratos normativos.
+- **CONSEQUÊNCIA DE IGNORAR**: Doc drift (documentação desatualizada), propagação de premissas falsas e violação do Princípio da Autoridade do Código-Fonte.
+
+---
 
 Consulte e aplique este protocolo de verificação para garantir a sincronia e autoridade do código em relação a documentações técnicas:
 

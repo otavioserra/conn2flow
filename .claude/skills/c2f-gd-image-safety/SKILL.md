@@ -1,10 +1,17 @@
 ---
 name: c2f-gd-image-safety
-description: Use ao ler, converter, redimensionar ou gerar miniaturas com GD, SimpleImage, WebP, AVIF ou outros formatos opcionais.
+description: "LEIA ANTES de manipular imagens com PHP GD (redimensionamento, conversão, thumbnails). Se não ler: o servidor entra em Fatal Error por falta de suporte a formatos (WebP/AVIF), esgota memória ou corrompe uploads."
 user-invocable: false
 ---
 
 # Segurança de imagens GD
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Manipular upload, redimensionamento, recorte ou conversão de imagens usando a extensão GD do PHP.
+- **SKIP APENAS SE**: Upload de arquivos binários não-imagem (PDFs, vídeos, áudios) tratados como arquivos estáticos puros.
+- **CONSEQUÊNCIA DE IGNORAR**: Fatal Errors não capturados (`\Throwable`) em servidores sem suporte nativo a formatos específicos (WebP/AVIF) e corrupção de imagens de usuários.
+
+---
 
 - Antes de processar um formato, confirme `function_exists` tanto para a função de leitura quanto para a de escrita.
 - Não presuma suporte WebP/AVIF a partir da presença da extensão GD; valide as funções específicas ou `gd_info()`.

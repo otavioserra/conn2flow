@@ -1,10 +1,17 @@
 ---
 name: c2f-database-testing
-description: Use ao testar sincronização, migrations ou código de banco Conn2Flow sem tocar dados reais do ambiente.
+description: "LEIA ANTES de rodar ou criar testes automatizados de banco de dados (PHPUnit / SQLite / MySQL). Se não ler: testes poluem o banco principal, falham por funções MySQL não suportadas em SQLite ou mascaram regressões."
 user-invocable: false
 ---
 
 # Testes isolados de banco Conn2Flow
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Escrever, executar ou debugar testes automatizados unitários ou de integração que acessam tabelas de banco de dados.
+- **SKIP APENAS SE**: Testes de unidade puros (com mocking completo) ou testes exclusivos de JavaScript (Vitest/happy-dom).
+- **CONSEQUÊNCIA DE IGNORAR**: Testes falham no CI/CD por incompatibilidade SQLite/MySQL ou poluem indevidamente a base de desenvolvimento local `conn2flow_test`.
+
+---
 
 1. Prefira SQLite em memória para funções puras, CRUD isolado e fluxos com transporte/resolvers injetáveis.
 2. Quando a semântica MySQL for indispensável, use somente o banco dedicado `conn2flow_test` no container local.

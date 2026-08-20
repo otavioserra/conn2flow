@@ -1,10 +1,17 @@
 ---
 name: c2f-mysql-utf8-emoji-encoding
-description: Use ao persistir JSON com texto livre, conteúdo de IA ou emojis em conexões MySQL Conn2Flow configuradas como utf8 de 3 bytes.
+description: "LEIA ANTES de salvar textos, posts, JSONs ou strings que possam conter Emojis ou caracteres Unicode especiais no MySQL. Se não ler: o banco rejeita o UPDATE silenciosamente e o registro fica NULL/não persiste."
 user-invocable: false
 ---
 
 # JSON seguro para MySQL utf8 de 3 bytes
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Gravar dados textuais ricos, posts de redes sociais, feedbacks de usuários ou JSONs arbitrários em colunas MySQL.
+- **SKIP APENAS SE**: Colunas estritamente numéricas, booleanas ou slugs ASCII controlados.
+- **CONSEQUÊNCIA DE IGNORAR**: Falha silenciosa de gravação no MySQL (`Incorrect string value`), perda irrecuperável de conteúdo digitado pelo usuário e campos persistidos como NULL.
+
+---
 
 - Enquanto a conexão usar `mysqli_set_charset(..., "utf8")`, trate caracteres de 4 bytes como incompatíveis com gravação direta.
 - Codifique payloads JSON com `json_encode($dados, JSON_UNESCAPED_SLASHES)`.

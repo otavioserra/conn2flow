@@ -1,11 +1,17 @@
 ---
 name: raise-spec-change
-description: Abre uma rodada de mudança normativa em repositório SDD. Use quando requisito, contrato, critério de aceite ou decisão estrutural realmente precisar mudar.
-disable-model-invocation: true
-argument-hint: "[mudança-requisitada]"
+description: "LEIA ANTES de alterar qualquer regra normativa, requisito funcional ou contrato em sdd/SPEC.md. Se não ler: mudanças não autorizadas violam a governança SDD e geram retrabalho estrutural."
+user-invocable: true
 ---
 
 # Mudança normativa
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Detectar que a implementação exige mudança de contrato, novo modelo de dados, alteração de requisito ou quebra de premissa em `sdd/SPEC.md`.
+- **SKIP APENAS SE**: A mudança for apenas de detalhe técnico de implementação dentro dos limites da especificação vigente.
+- **CONSEQUÊNCIA DE IGNORAR**: Violação do fluxo normativo SDD, edição ilegal de arquivos restritos da Chefia e desvio do escopo do projeto.
+
+---
 
 Trate `$ARGUMENTS` como um pedido de mudança normativa.
 

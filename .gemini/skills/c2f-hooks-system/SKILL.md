@@ -1,10 +1,17 @@
 ---
 name: c2f-hooks-system
-description: Use ao emitir, filtrar ou registrar eventos do sistema de Hooks Conn2Flow (Actions, Filters, JSON de hooks e controllers em PHP).
+description: "LEIA ANTES de criar, interceptar ou disparar ações (Actions) e filtros (Filters) de extensibilidade. Se não ler: hooks não disparam por registro ausente em hooks.json, parâmetros são perdidos ou causam efeitos colaterais silenciosos."
 user-invocable: false
 ---
 
 # Sistema de Hooks do Conn2Flow (`gestor/bibliotecas/hooks.php`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Criar ou consumir pontos de extensão via `hook_do_action()` ou `hook_apply_filters()`, ou registrar manipuladores em `hooks.json` / `project/hooks/`.
+- **SKIP APENAS SE**: Código interno fechado de um módulo sem necessidade de interoperabilidade com outros módulos ou plugins.
+- **CONSEQUÊNCIA DE IGNORAR**: Filtros ignorados silenciosamente por falta de registro em `hooks.json`, corrupção do retorno de filtros ou acoplamento monolítico indevido.
+
+---
 
 Consulte e aplique as seguintes convenções ao trabalhar com o sistema de Actions e Filters no Conn2Flow:
 

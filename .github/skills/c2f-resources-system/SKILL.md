@@ -1,3 +1,16 @@
+---
+name: c2f-resources-system
+description: "LEIA ANTES de criar ou editar qualquer um dos 11 tipos de recursos nativos (pages, layouts, components, templates, variables, ai_prompts, etc.). Se não ler: recursos não entram no build, perdem vínculos e quebram o deploy."
+user-invocable: false
+---
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Criar, estruturar ou alterar arquivos dentro das pastas `resources/<lang>/` de módulos ou projetos.
+- **SKIP APENAS SE**: Edição de arquivos não gerenciados pelo sistema de recursos (ex: scripts na raiz de `scripts/`).
+- **CONSEQUÊNCIA DE IGNORAR**: Recursos não sincronizados para o banco de dados SQL, ausência de compilação em `*Data.json`, quebra de layouts no site publicado e dados desatualizados.
+
+---
+
 ﻿---
 name: c2f-resources-system
 description: "Use ao criar, editar, compilar ou sincronizar recursos do Conn2Flow (paginas, layouts, componentes, templates, variaveis, prompts IA, formularios, widgets e tabelas declarativas)."

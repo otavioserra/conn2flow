@@ -1,10 +1,17 @@
 ---
 name: c2f-database-operations
-description: Use ao realizar operações CRUD no banco de dados Conn2Flow (banco.php) ou criar/alterar migrações de banco com Phinx (migrations).
+description: "LEIA ANTES de executar queries SQL, operações CRUD via banco.php ou criar migrações Phinx. Se não ler: consultas quebram por falta de escape, quebram em multi-idioma ou corrompem dados em produção."
 user-invocable: false
 ---
 
 # Operações de Banco de Dados e Migrações (`banco.php` / Phinx)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Criar ou modificar consultas SQL, operações CRUD (`banco_select`, `banco_insert_name`, `banco_update`, `banco_delete`) ou migrações de banco com Phinx.
+- **SKIP APENAS SE**: Tarefa puramente de frontend/CSS sem qualquer interação com banco de dados.
+- **CONSEQUÊNCIA DE IGNORAR**: Falhas silenciosas de escape (`banco_escape_field`), quebra de consultas em multi-idioma por falta de `language` ou erro de integridade/snapshot em edições.
+
+---
 
 Consulte e aplique as seguintes convenções ao realizar seleções, inserções, edições, deleções e migrações no Conn2Flow:
 

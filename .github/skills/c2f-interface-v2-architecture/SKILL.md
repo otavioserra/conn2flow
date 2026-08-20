@@ -1,10 +1,17 @@
 ---
 name: c2f-interface-v2-architecture
-description: Use ao construir ou modificar telas administrativas com interface.php no Conn2Flow: fluxos de CRUD V2, alertas, modais e formulários.
+description: "LEIA ANTES de renderizar modais, listas de cards, breadcrumbs ou componentes visuais do painel administrativo. Se não ler: o layout quebra no mobile, perde reatividade e conflita com a esteira de estilos v2."
 user-invocable: false
 ---
 
 # Arquitetura de Interface V2 (`gestor/bibliotecas/interface.php`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Desenvolver ou refatorar interfaces administrativas, formulários complexos, modais de confirmação ou listas dinâmicas do Gestor.
+- **SKIP APENAS SE**: Endpoints de API headless (JSON puro) sem renderização de interface visual.
+- **CONSEQUÊNCIA DE IGNORAR**: Inconsistência na experiência do usuário, falhas de acessibilidade/responsividade e conflitos entre frameworks CSS na administração.
+
+---
 
 Consulte e aplique as seguintes convenções ao utilizar o construtor de interfaces administrativas no Conn2Flow:
 

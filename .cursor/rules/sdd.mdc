@@ -1,5 +1,5 @@
 ---
-description: Aplicar a governança Spec-Driven Development ao ler ou editar artefatos em sdd/.
+description: "Aplicar a governança Spec-Driven Development ao ler ou editar artefatos em sdd/. Invoque explicitamente as skills obrigatórias por marco de fluxo."
 globs: ["sdd/**/*"]
 alwaysApply: false
 ---
@@ -8,8 +8,9 @@ alwaysApply: false
 
 1. Leia `sdd/README.md`, `sdd/process/00-START-HERE.md`, `sdd/process/01-WORKFLOW.md`, `sdd/implementation/BATCH-INDEX.md`, o batch ativo, `sdd/validation/VALIDATION-CHECKLIST.md` e `sdd/decisions/DECISION-LOG.md`.
 2. Se a tarefa apontar para `sdd/human-requests/`, leia `CURRENT.md` e a requisição ativa primeiro; classifique-a no artefato SDD correto.
-3. Como Executor, escreva apenas no escopo operacional aprovado: código, batches e validação.
-4. Trate `sdd/SPEC.md`, especificações numeradas e `DECISION-LOG.md` como somente leitura, salvo autorização humana explícita.
-5. Nunca altere a memória de Chefia sem ordem humana. Mantenha a memória de Execução abaixo dos limites de `sdd/process/MEMORY-GARDENING-GUIDELINES.md` quando o arquivo existir.
-6. Preserve alterações locais alheias, valide cedo e registre evidências no batch e no checklist.
-7. Trate `sdd/backlog/` como incubadora de leitura exclusiva do Usuário/Arquiteto. Nunca implemente um item dali; exija promoção humana para `sdd/human-requests/`, `CURRENT.md` e batch executável.
+3. Invoque explicitamente as Skills Obrigatórias por Marco de Fluxo (`sdd-workflow`, `project-validation`, Core Skills `c2f-*`, `sdd-memory-gardening`).
+4. Como Executor, escreva apenas no escopo operacional aprovado: código, batches e validação.
+5. Trate `sdd/SPEC.md`, especificações numeradas e `DECISION-LOG.md` como somente leitura, salvo autorização humana explícita.
+6. Nunca altere a memória de Chefia sem ordem humana. Mantenha a memória de Execução abaixo dos limites de `sdd/process/MEMORY-GARDENING-GUIDELINES.md`.
+7. Preserve alterações locais alheias, valide cedo e registre evidências no batch e no checklist.
+8. Trate `sdd/backlog/` como incubadora de leitura exclusiva do Usuário/Arquiteto. Nunca implemente um item dali; exija promoção humana para `sdd/human-requests/`, `CURRENT.md` e batch executável.

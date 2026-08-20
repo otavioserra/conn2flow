@@ -1,6 +1,8 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-122.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-122.md) (BATCH-124 `implemented-pending-homologation`, 2026-08-19): Correção da População de Publicadores de Destino no Modal Mover Publicação (`publisher-pages/editar`).
+  - [req-121.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-121.md) (BATCH-122 `implemented-pending-homologation`, 2026-08-19): Mover Página de Publicação entre Tipos de Publicador no Módulo Publisher Pages, com tratamento de prefixo de URL e 301.
   - [req-118.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-118.md) (BATCH-119 `implemented-pending-homologation`, 2026-08-18): Layout administrativo em Tailwind, menu interativo e painel de perfil com gestão de sessões ativas.
   - [req-119.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-119.md) (BATCH-120 `implemented-pending-homologation`, 2026-08-18): Personal Access Tokens e códigos de recuperação de 2FA.
   - [req-120.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-120.md) (BATCH-121 `implemented-pending-homologation`, 2026-08-18): Layout público Tailwind e migração das 15 telas de identidade.

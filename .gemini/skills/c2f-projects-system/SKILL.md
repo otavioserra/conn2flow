@@ -1,10 +1,17 @@
 ---
 name: c2f-projects-system
-description: Use ao trabalhar com a arquitetura de projetos Conn2Flow: deploy automatizado via OAuth API (/api/project/update), compactação ZIP, renovação de tokens, environment.json e execução inline.
+description: "LEIA ANTES de sincronizar, compilar ou fazer deploy de projetos (conn2flow-site, lumix, etc.). Se não ler: arquivos do projeto sobrescrevem o core indevidamente, dados de tenants se misturam ou o deploy falha."
 user-invocable: false
 ---
 
 # Sistema de Projetos e Deploy (`CONN2FLOW-SISTEMA-PROJETOS.md`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Executar comandos de sincronização de projetos (`deploy-project-v2.sh`, `sync-project-to-core`, etc.) ou configurar `environment.json`.
+- **SKIP APENAS SE**: Desenvolvimento isolado no Core do Conn2Flow sem projetos associados.
+- **CONSEQUÊNCIA DE IGNORAR**: Sobrescrita acidental de código do Core por arquivos de projeto, inconsistência de caminhos no `environment.json` e falhas de deploy em produção.
+
+---
 
 Consulte e aplique as seguintes convenções ao gerenciar a arquitetura de projetos e o pipeline de deploy no Conn2Flow:
 

@@ -1,28 +1,18 @@
-# Spec-Driven Project Guidelines
+# Instruções do Copilot — Spec-Driven Development
 
-- Este repositório deve tratar `sdd/README.md` e os sdd numerados como fonte normativa.
-- Antes de editar código ou sdd, leia `sdd/README.md`, `sdd/process/00-START-HERE.md`, `sdd/process/01-WORKFLOW.md`, `sdd/implementation/BATCH-INDEX.md`, o batch atual, `sdd/validation/VALIDATION-CHECKLIST.md` e `sdd/decisions/DECISION-LOG.md`.
-- Use `sdd/human-requests/` apenas como intake humano não normativo. Se a demanda vier como caminho de arquivo Markdown ou como a própria pasta, leia esse material primeiro e depois classifique a demanda no artefato SDD correto.
-- **Memórias de Engenharia**: No início de cada sessão, leia obrigatoriamente `sdd/MEMORIA-ENGENHARIA-CHEFIA.md` e `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` para alinhar contexto antes de qualquer alteração.
-- **Manutenção da Memória de Execução**: Ao término de cada tarefa, atualize `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` com novos aprendizados, bugs resolvidos e particularidades do ambiente. Nunca modifique `sdd/MEMORIA-ENGENHARIA-CHEFIA.md` sem instrução explícita do usuário humano.
-- Classifique a demanda cedo: change request, implementação de batch, review ou validação.
-- Não reescreva os sdd numerados para comentários pequenos de review.
-- Edite sdd numerados apenas quando requisito, contrato, critério de aceite ou decisão aprovada realmente mudar.
-- Mantenha o trabalho em batches pequenos com alvo de validação explícito.
-- Para decidir o artefato correto dentro do fluxo SDD, use a skill [sdd-workflow](./skills/sdd-workflow/SKILL.md).
-- Para validação local do projeto, ajuste e use a skill [project-validation](./skills/project-validation/SKILL.md).
-- O hook [sdd-session-start.json](./hooks/sdd-session-start.json) injeta um lembrete curto de SDD no início da sessão; mantenha esse hook pequeno e previsível.
+- Trate `sdd/README.md` e especificações numeradas como fonte normativa.
+- Leia `sdd/README.md`, `sdd/process/00-START-HERE.md`, `sdd/process/01-WORKFLOW.md`, `sdd/implementation/BATCH-INDEX.md`, o batch ativo e `sdd/validation/VALIDATION-CHECKLIST.md` antes de editar código.
+- Memórias de Engenharia: leia `sdd/MEMORIA-ENGENHARIA-CHEFIA.md` e `sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` no início da sessão.
 
-## Otimização de Contexto e Arquivamento
+## Skills OBRIGATÓRIAS por Marco de Fluxo
 
-- Mantenha `sdd/decisions/DECISION-LOG.md`, `sdd/implementation/BATCH-INDEX.md` e `sdd/validation/VALIDATION-CHECKLIST.md` com no máximo 10 itens correntes ou ativos.
-- Mantenha também `sdd/human-requests/` enxuto, preservando no máximo 10 requisições correntes ou recentes fora de `archive/`.
-- Mova históricos antigos para a subpasta `archive/` correspondente: `sdd/decisions/archive/`, `sdd/human-requests/archive/`, `sdd/implementation/archive/` ou `sdd/validation/archive/`.
-- Nos arquivos principais, substitua o histórico arquivado por tabelas Markdown resumidas com 1 linha por item e link direto para o arquivo em `archive/`.
-- Ao carregar contexto inicial, priorize os arquivos principais e abra itens em `archive/` apenas quando o batch, a requisição ativa ou um link de rastreabilidade exigir.
+Invoque explicitamente a skill correspondente ANTES de editar código ou fechar lotes:
+- **Início de Tarefa**: `start-sdd-slice`, `continue-sdd-batch`, `sdd-workflow`.
+- **Durante a Edição**: invoque as Core Skills (`c2f-*`) relevantes para a stack tocada.
+- **Fechamento e Validação**: `project-validation`, `review-current-batch`, `sdd-memory-gardening`.
+- **Mudança Normativa**: `raise-spec-change`.
 
 ## Intake Gate do backlog
 
-- `sdd/backlog/` é uma incubadora de leitura exclusiva do Usuário e do Arquiteto IA.
-- O Executor pode consultar itens, mas não pode implementá-los, abrir batch executável ou alterar código diretamente a partir deles.
-- Mesmo `READY`, o item exige promoção humana para `sdd/human-requests/`, atualização de `CURRENT.md` e batch associado.
+- `sdd/backlog/` é incubadora de rascunhos. É proibido implementar itens diretamente dali.
+- Um item só se torna executável após promoção humana para `sdd/human-requests/req-XXX.md` e associação a um batch.

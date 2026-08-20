@@ -1,10 +1,17 @@
 ---
 name: sdd-workflow
-description: Use quando o repositório seguir Spec-Driven Development e a tarefa tocar sdd numerados, batches, reviews, validation, decisions ou change requests.
+description: "LEIA ANTES de criar ou alterar qualquer arquivo na pasta sdd/ (process, implementation, validation, decisions). Se não ler: o fluxo de Agente Duplo é quebrado e os artefatos de controle perdem a governança."
 user-invocable: false
 ---
 
 # SDD workflow
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Iniciar qualquer tarefa do framework SDD, interpretar requisições humanas ou classificar artefatos nas pastas de controle.
+- **SKIP APENAS SE**: Tarefas completamente alheias ao ciclo de governança SDD (ex: git commits diretos de infraestrutura).
+- **CONSEQUÊNCIA DE IGNORAR**: Desalinhamento entre Arquiteto e Executor, criação de arquivos em locais errados e colapso da metodologia de Agente Duplo.
+
+---
 
 Use esta skill quando o projeto for guiado por sdd versionados.
 

@@ -1,10 +1,17 @@
 ---
 name: c2f-gestor-functions
-description: Use ao realizar operações com o gestor Conn2Flow: componentes, variáveis globais/módulo, bibliotecas, sessões, redirecionamentos e layouts.
+description: "LEIA ANTES de chamar funções do núcleo gestor.php (layouts, sessões, redirecionamentos, componentes). Se não ler: redirecionamentos emitem exit() no meio de rotinas, componentes quebram por escopo ou sessões expiram incorretamente."
 user-invocable: false
 ---
 
 # Funções da Biblioteca de Gestor (`gestor.php`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Invocar ou refatorar chamadas a funções centrais de `gestor/bibliotecas/gestor.php` (`gestor_componente`, `gestor_redirecionar`, `gestor_pagina_*`, `gestor_usuario`).
+- **SKIP APENAS SE**: Código isolado em bibliotecas utilitárias puras sem acoplamento ao runtime do Gestor.
+- **CONSEQUÊNCIA DE IGNORAR**: Quebras de fluxo de execução (ex: `gestor_redirecionar_raiz()` abortando gravações), perda de estado de sessão ou falhas na montagem de páginas.
+
+---
 
 Consulte e aplique as seguintes convenções ao utilizar as funções centrais do Gestor no Conn2Flow (`gestor/bibliotecas/gestor.php`):
 

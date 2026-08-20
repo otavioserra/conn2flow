@@ -1,10 +1,17 @@
 ---
 name: c2f-multilingual-system
-description: Use ao desenvolver com o sistema híbrido multilíngue do Conn2Flow: códigos de idioma, estruturas resources/<lang>/, tradução automática e chaves de i18n.
+description: "LEIA ANTES de adicionar novos idiomas, rotas i18n ou consultas multi-idioma. Se não ler: conteúdo de idiomas diferentes vaza na mesma página ou URLs internacionais quebram com erro 404."
 user-invocable: false
 ---
 
 # Sistema Híbrido Multilíngue Conn2Flow (`CONN2FLOW-MULTILINGUAL-HYBRID-SYSTEM.md`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Manipular tabelas com coluna `language`, registrar rotas internacionalizadas (`/en/`, `/pt-br/`) ou gerenciar dicionários de idiomas.
+- **SKIP APENAS SE**: Módulos utilitários globais agnósticos a idioma.
+- **CONSEQUÊNCIA DE IGNORAR**: Vazamento de registros em inglês na visualização em português (e vice-versa), falha na resolução de slugs traduzidos e desindexação de SEO.
+
+---
 
 Consulte e aplique as seguintes convenções ao desenvolver para suporte a múltiplos idiomas no Conn2Flow:
 

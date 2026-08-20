@@ -15345,6 +15345,141 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-btn",
+        "valor": "Mover Publicação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-tooltip",
+        "valor": "Mover esta página para outro publicador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-title",
+        "valor": "Mover Publicação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-warning",
+        "valor": "A página passará a pertencer ao novo publicador. Se o caminho utilizar o prefixo padrão do publicador atual, a URL será recalculada e um redirecionamento 301 será registrado automaticamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-select-label",
+        "valor": "Publicador de destino",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-select-placeholder",
+        "valor": "Selecione o publicador de destino",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-cancel",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-confirm",
+        "valor": "Confirmar Transferência",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-success",
+        "valor": "Publicação movida com sucesso.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-same",
+        "valor": "O publicador de destino é o mesmo da origem.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-not-found",
+        "valor": "Página ou publicador não encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-path-conflict",
+        "valor": "O novo caminho já está em uso por outra página.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-select",
+        "valor": "Selecione um publicador de destino.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "historico-publisher-movido",
+        "valor": "Publicador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "historico-caminho-movido",
+        "valor": "Caminho (Mover)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "publisher-pages",
         "id": "form-name-label",
@@ -15673,6 +15808,141 @@
         "modulo": "publisher-pages",
         "id": "form-html-label",
         "valor": "HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-btn",
+        "valor": "Move Publication",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-tooltip",
+        "valor": "Move this page to another publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-title",
+        "valor": "Move Publication",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-warning",
+        "valor": "The page will be transferred to the new publisher. If the path uses the current publisher's default prefix, the URL will be recalculated and a 301 redirect will be registered automatically.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-select-label",
+        "valor": "Destination publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-select-placeholder",
+        "valor": "Select the destination publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-confirm",
+        "valor": "Confirm Transfer",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-success",
+        "valor": "Publication moved successfully.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-same",
+        "valor": "The destination publisher is the same as the source.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-not-found",
+        "valor": "Page or publisher not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-path-conflict",
+        "valor": "The new path is already in use by another page.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-select",
+        "valor": "Select a destination publisher.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "historico-publisher-movido",
+        "valor": "Publisher",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "historico-caminho-movido",
+        "valor": "Path (Move)",
         "tipo": "string",
         "grupo": null,
         "descricao": null

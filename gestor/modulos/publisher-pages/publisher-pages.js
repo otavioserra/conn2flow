@@ -518,6 +518,62 @@ $(document).ready(function () {
 
 			return true;
 		});
+
+		// ===== Modal Mover Publicador (req-121)
+
+		if ($('.mover-publicador-modal').length > 0) {
+			$('.mover-publicador-modal').modal({
+				closable: true
+			});
+
+			$('.mover-publicador-select').dropdown();
+
+			$(document.body).on('click', '.mover-publicador-btn', function (e) {
+				e.preventDefault();
+				$('.mover-publicador-modal').modal('show');
+			});
+
+			$(document.body).on('click', '.mover-publicador-confirmar', function (e) {
+				e.preventDefault();
+				var newPublisherId = $('.mover-publicador-select').dropdown('get value');
+				if (!newPublisherId) {
+					return;
+				}
+
+				var $btn = $(this);
+				$btn.addClass('loading disabled');
+
+				$.ajax({
+					type: 'POST',
+					url: gestor.raiz + gestor.moduloCaminho,
+					data: {
+						opcao: gestor.moduloOpcao,
+						ajax: 'sim',
+						ajaxOpcao: 'mover-publicador',
+						ajaxRegistroId: gestor.moduloRegistroId,
+						page_id: gestor.moduloRegistroId,
+						new_publisher_id: newPublisherId
+					},
+					dataType: 'json',
+					success: function (dados) {
+						if (dados.status === 'Ok') {
+							if (dados.redirect) {
+								window.location.href = dados.redirect;
+							} else {
+								window.location.reload();
+							}
+						} else {
+							$btn.removeClass('loading disabled');
+							alert(dados.message || 'Erro ao mover a publicação.');
+						}
+					},
+					error: function () {
+						$btn.removeClass('loading disabled');
+						alert('Erro de conexão ao mover a publicação.');
+					}
+				});
+			});
+		}
 	}
 
 	if ($('#_gestor-interface-listar').length > 0) {

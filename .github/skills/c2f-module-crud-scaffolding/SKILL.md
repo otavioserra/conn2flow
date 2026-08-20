@@ -1,3 +1,16 @@
+---
+name: c2f-module-crud-scaffolding
+description: "LEIA ANTES de criar, estruturar ou refatorar novos módulos administrativos e CRUDs no Conn2Flow. Se não ler: o módulo viola o padrão canônico modulos-grupos, quebra o histórico de auditoria e falha na sincronização determinística."
+user-invocable: false
+---
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Criar uma nova pasta em `modulos/` ou `gestor/modulos/` contendo controller `.php`, schema `.json`, script `.js` e `resources/`.
+- **SKIP APENAS SE**: Pequenos ajustes pontuais em módulos legados sem alteração de estrutura ou ciclo de vida.
+- **CONSEQUÊNCIA DE IGNORAR**: Módulos incompatíveis com o dispatcher de rotas, ausência de chave natural (`strategy: "natural_key"`), falha no snapshot de histórico (`banco_select_campos_antes_iniciar`) e perda de auditoria.
+
+---
+
 ﻿---
 name: c2f-module-crud-scaffolding
 description: "Use ao criar, estruturar, desenvolver ou refatorar modulos administrativos e rotinas CRUD no Conn2Flow, seguindo o padrao canonico de gestor/modulos/modulos-grupos/."

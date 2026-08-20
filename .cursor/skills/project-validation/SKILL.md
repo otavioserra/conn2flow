@@ -1,10 +1,17 @@
 ---
 name: project-validation
-description: Use quando a tarefa exigir validação local do slice atual em repositório SDD. Ajuda a escolher a menor checagem executável antes de ampliar escopo.
+description: "LEIA ANTES de validar qualquer alteração de código ou fechar um lote SDD. Se não ler: testes incompletos deixam passar regressões graves e o lote é concluído sem evidências verificáveis."
 user-invocable: false
 ---
 
 # Validação do projeto
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Concluir implementações de código e preparar as evidências de testes técnicos, automatizados ou visuais para registrar em `VALIDATION-CHECKLIST.md`.
+- **SKIP APENAS SE**: Tarefas de pura especificação/planejamento documental onde nenhum arquivo de código foi alterado.
+- **CONSEQUÊNCIA DE IGNORAR**: Falso positivo de conclusão de lote, código com regressões em produção e falta de rastreabilidade de evidências.
+
+---
 
 Use esta skill quando a tarefa exigir validação do batch atual.
 

@@ -10,17 +10,13 @@
 - Edite sdd numerados apenas quando requisito, contrato, critério de aceite ou decisão aprovada realmente mudar.
 - Mantenha o trabalho em batches pequenos com alvo de validação explícito.
 
-## Skills principais
+## Skills OBRIGATÓRIAS por Marco de Fluxo
 
-- Use `/start-sdd-slice` para nova demanda ou entrada em `sdd/human-requests/`.
-- Use `/continue-sdd-batch` para retomar um batch em andamento.
-- Use `/review-current-batch` para review findings-first do batch atual.
-- Use `/raise-spec-change` para rodada de mudança normativa.
-
-## Skills automáticas
-
-- `sdd-workflow`: decidir o artefato certo e manter o batch alinhado ao fluxo.
-- `project-validation`: escolher a menor validação executável para o slice atual.
+Invoque explicitamente a skill correspondente ANTES de editar código ou fechar lotes:
+- **Início de Tarefa**: `/start-sdd-slice` (nova demanda), `/continue-sdd-batch` (retomar batch), `sdd-workflow` (alinhar fluxo).
+- **Durante a Edição**: invoque as Core Skills (`c2f-*`) relevantes para a stack tocada (banco, variáveis, recursos, layout, etc.).
+- **Fechamento e Validação**: `project-validation` (estratégia de testes), `/review-current-batch` (review findings-first), `sdd-memory-gardening` (podar memórias).
+- **Mudança Normativa**: `/raise-spec-change` (se houver alteração de contrato/requisito).
 
 ## Otimização de Contexto e Arquivamento
 

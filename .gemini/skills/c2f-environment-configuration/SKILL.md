@@ -1,3 +1,16 @@
+---
+name: c2f-environment-configuration
+description: "LEIA ANTES de adicionar ou manipular credenciais, variáveis de ambiente (.env) e configurações centrais em config.php. Se não ler: segredos vazam no repositório git público, variáveis não propagam para produção ou geram erros fatais."
+user-invocable: false
+---
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Declarar, ler ou alterar variáveis de ambiente (`$_ENV`), constantes em `gestor/config.php` ou templates em `autenticacoes.exemplo/`.
+- **SKIP APENAS SE**: Valores de apresentação/UI que devem residir obrigatoriamente no sistema de variáveis (`variables.json`).
+- **CONSEQUÊNCIA DE IGNORAR**: Vazamento de credenciais privadas em repositórios públicos, erros fatais de configuração indefinida em produção ou mistura indevida de dados de apresentação no `.env`.
+
+---
+
 ﻿---
 name: c2f-environment-configuration
 description: "Use ao adicionar, ler ou modificar credenciais, API keys, tokens, parametros de conexao e configuracoes sensiveis no Conn2Flow."

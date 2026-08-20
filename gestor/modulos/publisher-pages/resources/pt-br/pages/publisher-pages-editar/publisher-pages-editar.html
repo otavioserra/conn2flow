@@ -8,7 +8,38 @@
     data-tooltip="Clique para editar o publicador" data-position="top left" data-inverted="">
     <i class="edit icon"></i>
     Editar Publicador
-</a><!-- publisher-options > -->
+</a>
+<button type="button" class="ui button olive mover-publicador-btn" data-tooltip="@[[form-move-tooltip]]@"
+    data-position="top left" data-inverted="">
+    <i class="exchange icon"></i>
+    @[[form-move-btn]]@
+</button><!-- publisher-options > -->
+
+<!-- mover-publicador-modal < -->
+<div class="ui small modal mover-publicador-modal">
+    <div class="header">
+        <i class="exchange icon"></i> @[[form-move-title]]@
+    </div>
+    <div class="content">
+        <div class="ui warning message">
+            <p>@[[form-move-warning]]@</p>
+        </div>
+        <div class="field">
+            <label>@[[form-move-select-label]]@</label>
+            <select class="ui fluid search dropdown mover-publicador-select" name="new_publisher_id">
+                <option value="">@[[form-move-select-placeholder]]@</option>
+                #mover-publicador-options#
+            </select>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">@[[form-move-cancel]]@</div>
+        <div class="ui olive approve button mover-publicador-confirmar">
+            <i class="exchange icon"></i> @[[form-move-confirm]]@
+        </div>
+    </div>
+</div>
+<!-- mover-publicador-modal > -->
 
 <h4 class="ui horizontal divider header publisher-fields-header">
     <i class="file image outline icon"></i>

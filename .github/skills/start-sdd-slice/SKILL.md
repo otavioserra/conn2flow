@@ -1,11 +1,17 @@
 ---
 name: start-sdd-slice
-description: Inicia uma nova rodada em repositório SDD. Use quando a demanda for nova, vier de sdd/human-requests ou ainda não estiver classificada entre change request, implementação, review ou validação.
-disable-model-invocation: true
-argument-hint: "[demanda]"
+description: "LEIA ANTES de iniciar uma nova requisição humana (req-XXX.md) ou novo lote de trabalho. Se não ler: o lote inicia sem escopo delimitado, sem contrato de validação e invade limites de outros batches."
+user-invocable: true
 ---
 
 # Início de slice SDD
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Receber uma nova requisição humana em `sdd/human-requests/` ou abrir um novo `BATCH-XXX.md` em `sdd/implementation/`.
+- **SKIP APENAS SE**: O batch já tiver sido iniciado anteriormente (onde o comando correto é `/continue-sdd-batch`).
+- **CONSEQUÊNCIA DE IGNORAR**: Execução sem planejamento atômico, mistura de responsabilidades entre múltiplos lotes e falta de critérios de aceite claros.
+
+---
 
 Trate `$ARGUMENTS` como a demanda nova a ser classificada e executada.
 

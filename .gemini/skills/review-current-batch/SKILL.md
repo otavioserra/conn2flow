@@ -1,11 +1,17 @@
 ---
-description: Faz review findings-first do batch atual em repositório SDD. Use quando a implementação já existe e o foco agora é localizar bug, regressão, spec drift, batch drift e validação ausente.
-disable-model-invocation: true
-allowed-tools: Read Grep Glob Bash(git diff *) Bash(git status *)
-argument-hint: [foco-opcional]
+name: review-current-batch
+description: "LEIA ANTES de submeter um batch para aprovação humana ou criar pull request. Se não ler: findings críticos passam despercebidos, o código é rejeitado pelo revisor e acumula dívida técnica."
+user-invocable: true
 ---
 
 # Review do batch atual
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Realizar a revisão rigorosa findings-first do lote de código implementado antes da validação final ou entrega ao Usuário.
+- **SKIP APENAS SE**: Durante a fase inicial de rascunho enquanto o código ainda está sendo ativamente digitado.
+- **CONSEQUÊNCIA DE IGNORAR**: Submissão de lotes com bugs óbvios, violação de convenções de estilo e acúmulo de débito técnico.
+
+---
 
 Revise o batch atual em modo findings-first.
 

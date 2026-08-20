@@ -8,7 +8,13 @@ Atue como Micro-Operador do projeto. Antes de alterar arquivos, leia `sdd/README
 - Preserve a memória de Chefia. Atualize a memória de Execução de forma concisa e aplique Memory Gardening quando atingir os limites normativos.
 - Valide o menor escopo capaz de falsificar a mudança e entregue evidências verificáveis.
 
-As regras modulares em `.cursor/rules/` são a fonte principal; este arquivo existe para compatibilidade legada do Cursor.
+## Skills OBRIGATÓRIAS por Marco de Fluxo
+
+Invoque explicitamente a skill correspondente ANTES de editar código ou fechar lotes:
+- **Início de Tarefa**: `start-sdd-slice`, `continue-sdd-batch`, `sdd-workflow`.
+- **Durante a Edição**: invoque as Core Skills (`c2f-*`) relevantes para a stack tocada.
+- **Fechamento e Validação**: `project-validation`, `review-current-batch`, `sdd-memory-gardening`.
+- **Mudança Normativa**: `raise-spec-change`.
 
 ## Intake Gate do backlog
 

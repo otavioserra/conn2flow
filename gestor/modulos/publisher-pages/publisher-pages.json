@@ -69,7 +69,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/",
+                    "path": "publisher-pages\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -77,14 +77,15 @@
                 {
                     "name": "Publicador Páginas - Editar",
                     "id": "publisher-pages-editar",
-                    "version": "1.4",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "9eddc03bbefd0d9605c93fdfc4e44111",
+                        "html": "43f28a4d20a0af26286da1f10d34390b",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
-                        "combined": "ca56da546489b53fc6befa9b332442ff"
+                        "css_precompiled": "",
+                        "combined": "9c7d2dc2e267d2770ffc5b04567c0437"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/editar/",
+                    "path": "publisher-pages\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -98,7 +99,7 @@
                         "combined": "33203d35b33ac61bd6b668fc35f0a1dc"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/adicionar/",
+                    "path": "publisher-pages\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
                 },
@@ -112,7 +113,7 @@
                         "combined": "6a08e90b65ddc65dae8b327ca749aeb3"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/clonar/",
+                    "path": "publisher-pages\/clonar\/",
                     "type": "system",
                     "option": "clonar"
                 }
@@ -205,7 +206,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "Sem Permissão / Acesso Público",
+                    "value": "Sem Permissão \/ Acesso Público",
                     "type": "string"
                 },
                 {
@@ -220,7 +221,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "pelo menos uma '/' no final",
+                    "value": "pelo menos uma '\/' no final",
                     "type": "string"
                 },
                 {
@@ -302,6 +303,81 @@
                     "id": "form-html-label",
                     "value": "HTML",
                     "type": "string"
+                },
+                {
+                    "id": "form-move-btn",
+                    "value": "Mover Publicação",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-tooltip",
+                    "value": "Mover esta página para outro publicador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-title",
+                    "value": "Mover Publicação",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-warning",
+                    "value": "A página passará a pertencer ao novo publicador. Se o caminho utilizar o prefixo padrão do publicador atual, a URL será recalculada e um redirecionamento 301 será registrado automaticamente.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-select-label",
+                    "value": "Publicador de destino",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-select-placeholder",
+                    "value": "Selecione o publicador de destino",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-confirm",
+                    "value": "Confirmar Transferência",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-success",
+                    "value": "Publicação movida com sucesso.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-error-same",
+                    "value": "O publicador de destino é o mesmo da origem.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-error-not-found",
+                    "value": "Página ou publicador não encontrado.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-error-path-conflict",
+                    "value": "O novo caminho já está em uso por outra página.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-error-select",
+                    "value": "Selecione um publicador de destino.",
+                    "type": "string"
+                },
+                {
+                    "id": "historico-publisher-movido",
+                    "value": "Publicador",
+                    "type": "string"
+                },
+                {
+                    "id": "historico-caminho-movido",
+                    "value": "Caminho (Mover)",
+                    "type": "string"
                 }
             ]
         },
@@ -339,7 +415,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/",
+                    "path": "publisher-pages\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -347,14 +423,15 @@
                 {
                     "name": "Publisher Pages - Edit",
                     "id": "publisher-pages-editar",
-                    "version": "1.4",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "92861e278ef1931cf7e773e51b41ac1e",
+                        "html": "a4ba1ea3fad00462822d6b0fdebb3345",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
-                        "combined": "ff40843887e231649d7cd76efe51018d"
+                        "css_precompiled": "",
+                        "combined": "2f7d768b744c06161735a2af75667dbd"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/editar/",
+                    "path": "publisher-pages\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -368,7 +445,7 @@
                         "combined": "11ee62140db2e5eb2cf8ea1612c7d014"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/adicionar/",
+                    "path": "publisher-pages\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
                 },
@@ -382,7 +459,7 @@
                         "combined": "d8bd3fa21e1a39e6b996534f02f9e135"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "publisher-pages/clonar/",
+                    "path": "publisher-pages\/clonar\/",
                     "type": "system",
                     "option": "clonar"
                 }
@@ -475,7 +552,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "No Permission / Public Access",
+                    "value": "No Permission \/ Public Access",
                     "type": "string"
                 },
                 {
@@ -490,7 +567,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "at least one '/' at the end",
+                    "value": "at least one '\/' at the end",
                     "type": "string"
                 },
                 {
@@ -572,9 +649,84 @@
                     "id": "form-html-label",
                     "value": "HTML",
                     "type": "string"
+                },
+                {
+                    "id": "form-move-btn",
+                    "value": "Move Publication",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-tooltip",
+                    "value": "Move this page to another publisher",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-title",
+                    "value": "Move Publication",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-warning",
+                    "value": "The page will be transferred to the new publisher. If the path uses the current publisher's default prefix, the URL will be recalculated and a 301 redirect will be registered automatically.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-select-label",
+                    "value": "Destination publisher",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-select-placeholder",
+                    "value": "Select the destination publisher",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-confirm",
+                    "value": "Confirm Transfer",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-success",
+                    "value": "Publication moved successfully.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-error-same",
+                    "value": "The destination publisher is the same as the source.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-error-not-found",
+                    "value": "Page or publisher not found.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-error-path-conflict",
+                    "value": "The new path is already in use by another page.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-move-error-select",
+                    "value": "Select a destination publisher.",
+                    "type": "string"
+                },
+                {
+                    "id": "historico-publisher-movido",
+                    "value": "Publisher",
+                    "type": "string"
+                },
+                {
+                    "id": "historico-caminho-movido",
+                    "value": "Path (Move)",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "0f0c60ec38ee22ab"
+    "asset_version": "4cb506cd4b1417bb"
 }

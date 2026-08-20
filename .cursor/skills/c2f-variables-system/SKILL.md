@@ -1,3 +1,16 @@
+---
+name: c2f-variables-system
+description: "LEIA ANTES de escrever qualquer texto, rótulo, título, tooltip, mensagem de erro ou alerta no código. Se não ler: strings literais violam a governança i18n, impedem personalização por tenant e o PR é rejeitado."
+user-invocable: false
+---
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Escrever, alterar ou adicionar qualquer texto visível, label, mensagem de validação, título ou alerta em arquivos PHP, HTML ou JavaScript.
+- **SKIP APENAS SE**: Identificadores técnicos estritos (nomes de colunas SQL, chaves de array, classes CSS ou slugs internos).
+- **CONSEQUÊNCIA DE IGNORAR**: Rejeição sumária do PR por inclusão de texto hardcoded, quebra da internacionalização (i18n) e impossibilidade de alteração de textos via painel de variáveis.
+
+---
+
 ﻿---
 name: c2f-variables-system
 description: "Use SEMPRE que for escrever textos, mensagens de erro, alertas, labels ou qualquer string de interface. Consulte ANTES de usar texto literal em PHP, HTML ou JS."

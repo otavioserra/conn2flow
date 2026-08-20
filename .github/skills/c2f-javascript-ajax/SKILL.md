@@ -1,10 +1,17 @@
 ---
 name: c2f-javascript-ajax
-description: Use ao criar ou ajustar chamadas AJAX e manipulação de eventos JavaScript/UI no frontend Conn2Flow: objeto ajaxDefault, gestor.raiz, callbacks e Semantic UI dropdowns.
+description: "LEIA ANTES de escrever chamadas AJAX, requisições fetch ou scripts frontend que comunicam com o backend. Se não ler: erros 401 não tratam expiração de sessão, loaders congelam na tela e formulários duplicam envio."
 user-invocable: false
 ---
 
 # Padrão de Chamadas AJAX e JavaScript Conn2Flow
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Escrever código JavaScript frontend que realiza requisições assíncronas (AJAX / Fetch) para controladores do Gestor.
+- **SKIP APENAS SE**: Scripts utilitários puramente visuais (ex: animações simples sem comunicação assíncrona).
+- **CONSEQUÊNCIA DE IGNORAR**: Travamento da UI com spinners infinitos em caso de erro, perda de token CSRF, ausência de tratamento de sessão expirada (401) e cliques duplicados em botões de ação.
+
+---
 
 Consulte e aplique as seguintes convenções ao implementar requisições AJAX e componentes de interface no frontend Conn2Flow:
 

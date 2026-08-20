@@ -1,10 +1,17 @@
 ---
 name: c2f-modelo-templates
-description: Use ao manipular modelos HTML/texto e células repetitivas no Conn2Flow: modelo_var_troca, extração e iteração de células com tags de comentários, modelo_var_in e modelo_tag_del.
+description: "LEIA ANTES de manipular templates HTML com marcadores <!-- cel < -->, <!-- tag < --> ou modelo_var_troca(). Se não ler: blocos inteiros somem silenciosamente da tela ou geram tags residuais não substituídas."
 user-invocable: false
 ---
 
 # Manipulação de Modelos e Células (`modelo.php`)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Manipular estruturas de repetição, células condicionais ou troca de marcadores em templates HTML via biblioteca `modelo.php`.
+- **SKIP APENAS SE**: Renderização direta de dados sem uso do motor de templates do Gestor.
+- **CONSEQUÊNCIA DE IGNORAR**: `modelo_tag_val()` devolvendo vazio e apagando seções da tela sem erro explícito, marcadores crus `#[id]#` expostos ao usuário final ou duplicação de blocos.
+
+---
 
 Consulte e aplique as seguintes convenções ao utilizar as funções de modelos e processamento de templates no Conn2Flow (`gestor/bibliotecas/modelo.php`):
 
