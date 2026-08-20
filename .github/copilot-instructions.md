@@ -16,3 +16,10 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 
 - `sdd/backlog/` é incubadora de rascunhos. É proibido implementar itens diretamente dali.
 - Um item só se torna executável após promoção humana para `sdd/human-requests/req-XXX.md` e associação a um batch.
+
+
+## 📋 Protocolo de Transparência & Checklist Vivo (Live Todo List)
+
+- Ao iniciar qualquer requisição ou lote, renderize imediatamente a lista completa de tarefas (`Todo List`) com caixas de seleção `[ ]`.
+- A cada término de etapa/comando relevante, atualize e re-exiba a lista marcando `[x]` nas etapas concluídas e destacando a etapa atual (`⏳ [EM ANDAMENTO]`).
+- Nunca execute sequências longas de comandos sem atualizar o status visual para o usuário.

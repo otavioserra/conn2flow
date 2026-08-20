@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Conn2Flow Core CLI Wrapper (Bash)
+# Conn2Flow Core CLI Wrapper (Bash / macOS / Linux / Git Bash)
 # ==============================================================================
 
 set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-php "${DIR}/cli/c2f.php" "$@"
+
+if command -v php >/dev/null 2>&1; then
+    php "${DIR}/cli/c2f.php" "$@"
+else
+    echo "Error: PHP binary is not found in PATH." >&2
+    exit 1
+fi

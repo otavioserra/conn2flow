@@ -47,3 +47,10 @@ Se a tarefa apontar para `sdd/human-requests/*.md` ou para a pasta `sdd/human-re
 - `sdd/human-requests/` nunca é fonte normativa; ele só alimenta change requests, reviews, batches, decisions ou validação.
 - Não reescreva os sdd numerados para comentários pequenos de review.
 - Não abra o próximo batch antes de o atual estar estável e revisável.
+
+
+## 📋 Protocolo de Transparência & Checklist Vivo (Live Todo List)
+
+- Ao iniciar qualquer requisição ou lote, renderize imediatamente a lista completa de tarefas (`Todo List`) com caixas de seleção `[ ]`.
+- A cada término de etapa/comando relevante, atualize e re-exiba a lista marcando `[x]` nas etapas concluídas e destacando a etapa atual (`⏳ [EM ANDAMENTO]`).
+- Nunca execute sequências longas de comandos sem atualizar o status visual para o usuário.

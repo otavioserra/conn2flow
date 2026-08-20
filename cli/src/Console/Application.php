@@ -4,18 +4,41 @@ declare(strict_types=1);
 
 namespace Conn2Flow\Cli\Console;
 
+use Conn2Flow\Cli\Commands\AiPruneMemoriesCommand;
 use Conn2Flow\Cli\Commands\AiSyncCommand;
 use Conn2Flow\Cli\Commands\DbTestCommand;
 use Conn2Flow\Cli\Commands\DbUpdateCommand;
 use Conn2Flow\Cli\Commands\DockerLogsCommand;
+use Conn2Flow\Cli\Commands\DockerPhpVersionCommand;
 use Conn2Flow\Cli\Commands\DockerStatusCommand;
 use Conn2Flow\Cli\Commands\DockerTruncateLogsCommand;
 use Conn2Flow\Cli\Commands\HelpCommand;
+use Conn2Flow\Cli\Commands\InstallerBuildCommand;
+use Conn2Flow\Cli\Commands\InstallerNewCommand;
+use Conn2Flow\Cli\Commands\InstallerReleaseCommand;
+use Conn2Flow\Cli\Commands\InstallerSyncCommand;
+use Conn2Flow\Cli\Commands\ManagerBuildCommand;
+use Conn2Flow\Cli\Commands\ManagerCommitCommand;
+use Conn2Flow\Cli\Commands\ManagerReleaseCommand;
+use Conn2Flow\Cli\Commands\ManagerSyncFilesCommand;
+use Conn2Flow\Cli\Commands\ManagerUpdateAllCommand;
 use Conn2Flow\Cli\Commands\ModuleCreateCommand;
+use Conn2Flow\Cli\Commands\PluginBuildCommand;
+use Conn2Flow\Cli\Commands\PluginCommitCommand;
+use Conn2Flow\Cli\Commands\PluginReleaseCommand;
+use Conn2Flow\Cli\Commands\PluginResourcesCommand;
+use Conn2Flow\Cli\Commands\PluginSyncCommand;
+use Conn2Flow\Cli\Commands\ProjectDeployCommand;
+use Conn2Flow\Cli\Commands\ProjectRecoverCommand;
+use Conn2Flow\Cli\Commands\ProjectSyncCoreCommand;
+use Conn2Flow\Cli\Commands\ProjectSyncDbCommand;
+use Conn2Flow\Cli\Commands\ProjectSyncFilesCommand;
+use Conn2Flow\Cli\Commands\ProjectSyncResourcesCommand;
+use Conn2Flow\Cli\Commands\ProjectUpdateAllCommand;
+use Conn2Flow\Cli\Commands\ProjectUpdateSystemCommand;
 use Conn2Flow\Cli\Commands\ResourcesSyncCommand;
+use Conn2Flow\Cli\Commands\TailwindFixSpacingCommand;
 use Conn2Flow\Cli\Contracts\CommandInterface;
-use Conn2Flow\Cli\Contracts\InputInterface;
-use Conn2Flow\Cli\Contracts\OutputInterface;
 use Throwable;
 
 final class Application
@@ -34,15 +57,55 @@ final class Application
 
     private function registerBuiltInCommands(): void
     {
+        // General / Help
         $this->register(new HelpCommand($this));
+
+        // Resources & DB
         $this->register(new ResourcesSyncCommand($this->rootPath));
-        $this->register(new AiSyncCommand($this->rootPath));
-        $this->register(new ModuleCreateCommand($this->rootPath));
-        $this->register(new DockerStatusCommand());
-        $this->register(new DockerLogsCommand());
-        $this->register(new DockerTruncateLogsCommand());
         $this->register(new DbTestCommand($this->rootPath));
         $this->register(new DbUpdateCommand($this->rootPath));
+
+        // AI & SDD
+        $this->register(new AiSyncCommand($this->rootPath));
+        $this->register(new AiPruneMemoriesCommand($this->rootPath));
+
+        // Modules & Manager
+        $this->register(new ModuleCreateCommand($this->rootPath));
+        $this->register(new ManagerBuildCommand($this->rootPath));
+        $this->register(new ManagerSyncFilesCommand($this->rootPath));
+        $this->register(new ManagerUpdateAllCommand($this->rootPath));
+        $this->register(new ManagerCommitCommand($this->rootPath));
+        $this->register(new ManagerReleaseCommand($this->rootPath));
+
+        // Plugins
+        $this->register(new PluginSyncCommand($this->rootPath));
+        $this->register(new PluginBuildCommand($this->rootPath));
+        $this->register(new PluginResourcesCommand($this->rootPath));
+        $this->register(new PluginCommitCommand($this->rootPath));
+        $this->register(new PluginReleaseCommand($this->rootPath));
+
+        // Projects
+        $this->register(new ProjectSyncCoreCommand($this->rootPath));
+        $this->register(new ProjectSyncResourcesCommand($this->rootPath));
+        $this->register(new ProjectSyncFilesCommand($this->rootPath));
+        $this->register(new ProjectSyncDbCommand($this->rootPath));
+        $this->register(new ProjectUpdateAllCommand($this->rootPath));
+        $this->register(new ProjectDeployCommand($this->rootPath));
+        $this->register(new ProjectRecoverCommand($this->rootPath));
+        $this->register(new ProjectUpdateSystemCommand($this->rootPath));
+
+        // Installer
+        $this->register(new InstallerSyncCommand($this->rootPath));
+        $this->register(new InstallerBuildCommand($this->rootPath));
+        $this->register(new InstallerNewCommand($this->rootPath));
+        $this->register(new InstallerReleaseCommand($this->rootPath));
+
+        // Docker & Frontend
+        $this->register(new DockerStatusCommand());
+        $this->register(new DockerPhpVersionCommand());
+        $this->register(new DockerLogsCommand());
+        $this->register(new DockerTruncateLogsCommand());
+        $this->register(new TailwindFixSpacingCommand($this->rootPath));
     }
 
     public function register(CommandInterface $command): void

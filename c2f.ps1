@@ -15,5 +15,11 @@ param(
 )
 
 $scriptPath = Join-Path $PSScriptRoot 'cli\c2f.php'
+
+if (-not (Test-Path $scriptPath)) {
+    Write-Error "c2f bootstrap not found at $scriptPath"
+    exit 1
+}
+
 php $scriptPath @CliArgs
 exit $LASTEXITCODE

@@ -17,3 +17,10 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 - `sdd/backlog/` é uma incubadora de rascunhos gerenciada pelo Usuário e pelo Arquiteto IA.
 - Você pode ler itens do backlog para contexto, mas é estritamente proibido de transformá-los diretamente em código, batch ou alteração normativa.
 - Mesmo com status `READY`, o item só é executável depois de promoção humana para `sdd/human-requests/req-XXX.md`, atualização de `CURRENT.md` e associação a um batch.
+
+
+## 📋 Protocolo de Transparência & Checklist Vivo (Live Todo List)
+
+- Ao iniciar qualquer requisição ou lote, renderize imediatamente a lista completa de tarefas (`Todo List`) com caixas de seleção `[ ]`.
+- A cada término de etapa/comando relevante, atualize e re-exiba a lista marcando `[x]` nas etapas concluídas e destacando a etapa atual (`⏳ [EM ANDAMENTO]`).
+- Nunca execute sequências longas de comandos sem atualizar o status visual para o usuário.
