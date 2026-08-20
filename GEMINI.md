@@ -24,3 +24,14 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
 - Ao iniciar qualquer requisição ou lote, renderize imediatamente a lista completa de tarefas (`Todo List`) com caixas de seleção `[ ]`.
 - A cada término de etapa/comando relevante, atualize e re-exiba a lista marcando `[x]` nas etapas concluídas e destacando a etapa atual (`⏳ [EM ANDAMENTO]`).
 - Nunca execute sequências longas de comandos sem atualizar o status visual para o usuário.
+
+## 🛡️ Modos de Autonomia de IA & Trava de Deploy
+
+- **Modo SUPERVISIONADO (Padrão Mandatório)**:
+  * O agente implementa código e roda testes, mas **NÃO realiza commit ou deploy automático**.
+  * O desenvolvedor revisa e aprova as mudanças no chat/IDE.
+
+- **Modo AUTÔNOMO (Apenas quando explicitado na requisição / usuário)**:
+  * Permitido quando a requisição contiver `modo: autonomo` ou o usuário autorizar expressamente.
+  * O agente pode: criar branch/worktree (`feat/req-XXX`), codificar, compilar (`c2f resources:sync`), rodar testes (`c2f db:test`), commitar e executar **DEPLOY EXCLUSIVAMENTE EM AMBIENTE DE TESTE LOCAL** (`c2f manager:update-all` ou Docker local).
+  * ⛔ **REGRA INVIOLÁVEL DE SEGURANÇA: NUNCA REALIZAR DEPLOY AUTOMÁTICO NO AMBIENTE DE PRODUÇÃO OU SERVIDORES REMOTOS.**

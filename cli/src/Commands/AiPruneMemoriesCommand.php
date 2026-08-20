@@ -16,7 +16,7 @@ final class AiPruneMemoriesCommand extends BaseProcessCommand
 
     public function getDescription(): string
     {
-        return 'Execute Memory Gardening on MEMORIA-ENGENHARIA-EXECUCAO.md (<5KB ceiling).';
+        return 'Execute Memory Gardening on MEMORIA-ENGENHARIA-EXECUCAO.md (35KB alert, 50KB max ceiling).';
     }
 
     public function getAliases(): array
@@ -27,7 +27,7 @@ final class AiPruneMemoriesCommand extends BaseProcessCommand
     public function getHelp(): string
     {
         return "Usage: c2f ai:prune-memories\n\n" .
-               "Validates that sdd/MEMORIA-ENGENHARIA-EXECUCAO.md is kept under 50 lines / 5KB.";
+               "Validates that sdd/MEMORIA-ENGENHARIA-EXECUCAO.md is kept under 50KB / 150 lines (alert at 35KB / 100 lines).";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -45,12 +45,17 @@ final class AiPruneMemoriesCommand extends BaseProcessCommand
 
         $output->info("Current Memory File: {$size} bytes ({$lines} lines)");
 
-        if ($size > 5120 || $lines > 50) {
-            $output->warning("Memory file exceeds the 5KB / 50 lines ceiling ({$size}B, {$lines} lines). Please prune older completed tasks.");
+        if ($size > 51200 || $lines > 150) {
+            $output->warning("Memory file exceeds the 50KB / 150 lines ceiling ({$size}B, {$lines} lines). Please prune older completed tasks to ~15KB (12-15 tasks).");
             return 1;
         }
 
-        $output->success("Memory file is healthy ({$size}B, {$lines} lines) and within the 5KB ceiling!");
+        if ($size > 35840 || $lines > 100) {
+            $output->info("Memory file is approaching limit ({$size}B, {$lines} lines). Consider scheduling memory pruning soon.");
+            return 0;
+        }
+
+        $output->success("Memory file is healthy ({$size}B, {$lines} lines) and within the 35KB-50KB ceiling!");
         return 0;
     }
 }
