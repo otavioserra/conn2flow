@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Conn2Flow\Cli\Console;
 
+use Conn2Flow\Cli\Commands\AiMcpSetupCommand;
 use Conn2Flow\Cli\Commands\AiPruneMemoriesCommand;
 use Conn2Flow\Cli\Commands\AiSyncCommand;
 use Conn2Flow\Cli\Commands\DbTestCommand;
@@ -68,6 +69,7 @@ final class Application
         // AI & SDD
         $this->register(new AiSyncCommand($this->rootPath));
         $this->register(new AiPruneMemoriesCommand($this->rootPath));
+        $this->register(new AiMcpSetupCommand($this->rootPath));
 
         // Modules & Manager
         $this->register(new ModuleCreateCommand($this->rootPath));
