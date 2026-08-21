@@ -52,7 +52,12 @@ function montarShell() {
         </div>
         <div data-admin-resize></div>
       </aside>
-      <div data-admin-conteudo></div>
+      <div data-admin-conteudo class="lg:ml-[260px]">
+        <header>
+          <button type="button" data-admin-abrir></button>
+        </header>
+        <main data-admin-main class="mx-auto w-full max-w-7xl"></main>
+      </div>
     </div>
   `;
 }
@@ -111,7 +116,7 @@ describe('Layout administrativo Tailwind — runtime do menu (req-118)', () => {
       document.querySelector('[data-admin-fechar]').dispatchEvent(new window.Event('click', { bubbles: true }));
 
       expect(document.querySelector('[data-admin-sidebar]').classList.contains('-translate-x-full')).toBe(true);
-      expect(document.querySelector('[data-admin-conteudo]').style.marginLeft).toBe('');
+      expect(document.querySelector('[data-admin-conteudo]').style.marginLeft).toBe('0px');
     });
 
     it('o botão do topo alterna entre abrir e fechar', () => {
@@ -150,7 +155,7 @@ describe('Layout administrativo Tailwind — runtime do menu (req-118)', () => {
       T.iniciar();
 
       expect(document.querySelector('[data-admin-sidebar]').classList.contains('-translate-x-full')).toBe(true);
-      expect(document.querySelector('[data-admin-conteudo]').style.marginLeft).toBe('');
+      expect(document.querySelector('[data-admin-conteudo]').style.marginLeft).toBe('0px');
     });
 
     it('em mobile o overlay aparece ao abrir e fecha o menu ao ser clicado', () => {
@@ -183,7 +188,35 @@ describe('Layout administrativo Tailwind — runtime do menu (req-118)', () => {
 
       document.querySelector('[data-admin-abrir]').dispatchEvent(new window.Event('click', { bubbles: true }));
 
-      expect(document.querySelector('[data-admin-conteudo]').style.marginLeft).toBe('');
+      expect(document.querySelector('[data-admin-conteudo]').style.marginLeft).toBe('0px');
+    });
+
+    // req-124 F3 (regressão): recolher o menu deixava uma faixa vazia da largura da barra. O runtime
+    // limpava só o inline style, e a utility `lg:ml-[260px]` do layout reassumia o recuo — em
+    // desktop o conteúdo nunca alcançava a borda esquerda.
+    it('recolher o menu zera o recuo e libera a largura de leitura do conteúdo', () => {
+      montarShell();
+      document.querySelector('[data-admin-conteudo]').insertAdjacentHTML(
+        'beforebegin',
+        '<button type="button" data-admin-abrir></button>'
+      );
+      T.iniciar();
+
+      const conteudo = document.querySelector('[data-admin-conteudo]');
+      const principal = document.querySelector('[data-admin-main]');
+
+      expect(conteudo.style.marginLeft).toBe('260px');
+      expect(principal.style.maxWidth).toBe('');
+
+      document.querySelector('[data-admin-abrir]').dispatchEvent(new window.Event('click', { bubbles: true }));
+
+      expect(conteudo.style.marginLeft).toBe('0px');
+      expect(principal.style.maxWidth).toBe('none');
+
+      document.querySelector('[data-admin-abrir]').dispatchEvent(new window.Event('click', { bubbles: true }));
+
+      expect(conteudo.style.marginLeft).toBe('260px');
+      expect(principal.style.maxWidth).toBe('');
     });
   });
 
@@ -395,9 +428,116 @@ describe('Layout administrativo Tailwind — runtime do menu (req-118)', () => {
     });
   });
 
+  describe('alternância de visibilidade dos botões abrir/fechar (req-125 F3)', () => {
+    it('menu aberto esconde o botão abrir e mostra o botão fechar', () => {
+      montarShell();
+      T.iniciar();
+
+      const btnAbrir = document.querySelector('[data-admin-abrir]');
+      const btnFechar = document.querySelector('[data-admin-fechar]');
+
+      expect(btnAbrir.classList.contains('hidden')).toBe(true);
+      expect(btnFechar.classList.contains('hidden')).toBe(false);
+    });
+
+    // A classe `hidden` sozinha NÃO esconde estes botões: ambos são `inline-flex`, e no bundle do
+    // layout `.inline-flex` é emitida depois de `.hidden` — mesma especificidade, mesma camada,
+    // ganha a última. Quem realmente apaga o botão é o atributo booleano `hidden`, servido pelo
+    // preflight como `display:none!important`. Se um dia a classe voltar a ser o único mecanismo, é
+    // aqui que o teste avisa.
+    it('esconde pelo atributo hidden, não só pela classe', () => {
+      montarShell();
+      T.iniciar();
+
+      const btnAbrir = document.querySelector('[data-admin-abrir]');
+      const btnFechar = document.querySelector('[data-admin-fechar]');
+
+      expect(btnAbrir.hasAttribute('hidden')).toBe(true);
+      expect(btnFechar.hasAttribute('hidden')).toBe(false);
+
+      btnFechar.dispatchEvent(new window.Event('click', { bubbles: true }));
+
+      expect(btnAbrir.hasAttribute('hidden')).toBe(false);
+      expect(btnFechar.hasAttribute('hidden')).toBe(true);
+    });
+
+    // O botão nasce com `lg:hidden` para não piscar ao lado do "fechar" na primeira pintura do
+    // desktop. A utility mora numa media query emitida depois de `.inline-flex`, então ela venceria
+    // o runtime: sem removê-la no boot, recolher o menu no desktop deixaria os DOIS botões sumidos.
+    it('libera a utility lg:hidden do botão abrir no boot', () => {
+      montarShell();
+      document.querySelector('[data-admin-abrir]').classList.add('lg:hidden');
+
+      T.iniciar();
+
+      expect(document.querySelector('[data-admin-abrir]').classList.contains('lg:hidden')).toBe(false);
+    });
+
+    it('menu fechado mostra o botão abrir e esconde o botão fechar', () => {
+      montarShell();
+      T.iniciar();
+
+      const btnAbrir = document.querySelector('[data-admin-abrir]');
+      const btnFechar = document.querySelector('[data-admin-fechar]');
+
+      btnFechar.dispatchEvent(new window.Event('click', { bubbles: true }));
+
+      expect(btnAbrir.classList.contains('hidden')).toBe(false);
+      expect(btnFechar.classList.contains('hidden')).toBe(true);
+    });
+
+    it('no mobile nasce fechado com botão abrir visível e fechar escondido', () => {
+      larguraDaTela(390);
+      montarShell();
+      T.iniciar();
+
+      const btnAbrir = document.querySelector('[data-admin-abrir]');
+      const btnFechar = document.querySelector('[data-admin-fechar]');
+
+      expect(btnAbrir.classList.contains('hidden')).toBe(false);
+      expect(btnFechar.classList.contains('hidden')).toBe(true);
+
+      // Clicar em abrir alterna o estado
+      btnAbrir.dispatchEvent(new window.Event('click', { bubbles: true }));
+
+      expect(btnAbrir.classList.contains('hidden')).toBe(true);
+      expect(btnFechar.classList.contains('hidden')).toBe(false);
+    });
+  });
+
+  describe('eliminação de warnings do Lucide (req-125 F4)', () => {
+    it('remove data-lucide de elementos com valores compostos Fomantic antes de criar ícones', () => {
+      document.body.innerHTML = `
+        <div id="c2f-admin-shell">
+          <aside data-admin-sidebar class="lg:translate-x-0">
+            <i id="icon-valido" data-lucide="box" class="box icon"></i>
+            <i id="icon-composto" data-lucide="comments outline" class="comments outline icon"></i>
+            <i id="icon-vazio" data-lucide="" class="icon"></i>
+          </aside>
+          <div data-admin-conteudo></div>
+        </div>
+      `;
+
+      let chamadaCreateIcons = false;
+      window.lucide = {
+        createIcons: () => {
+          chamadaCreateIcons = true;
+        },
+      };
+
+      T.iniciar();
+
+      expect(chamadaCreateIcons).toBe(true);
+      expect(document.getElementById('icon-valido').getAttribute('data-lucide')).toBe('box');
+      expect(document.getElementById('icon-composto').hasAttribute('data-lucide')).toBe(false);
+      expect(document.getElementById('icon-vazio').hasAttribute('data-lucide')).toBe(false);
+    });
+  });
+
   it('fora do layout Tailwind o runtime não faz nada', () => {
     // A página do layout legado tem `.menuComputerCont`, não `#c2f-admin-shell`.
     document.body.innerHTML = '<div class="menuComputerCont"></div>';
     expect(() => T.iniciar()).not.toThrow();
   });
 });
+

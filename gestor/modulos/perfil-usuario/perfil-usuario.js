@@ -269,7 +269,11 @@ $(document).ready(function(){
 
 	var CHAVE_ABA = 'c2f-perfil-aba';
 
-	var CLASSES_ABA_ATIVA = ['border-emerald-600', 'text-slate-900'];
+	// req-124 F6: o sublinhado da aba ativa é identidade de marca, não semântica de estado — no Core
+	// ele segue o azul Conn2Flow. O verde continua reservado ao que significa sucesso ou "ativo"
+	// (banners de confirmação, etiqueta de 2FA ligado, sessão atual) e à faixa "Forte" da força de
+	// senha, que é uma escala e não uma cor de marca.
+	var CLASSES_ABA_ATIVA = ['border-sky-600', 'text-slate-900'];
 	var CLASSES_ABA_INATIVA = ['border-transparent', 'text-slate-500'];
 
 	function texto(id, padrao) {
@@ -317,9 +321,17 @@ $(document).ready(function(){
 		return null;
 	}
 
+	// req-124 F5: o histórico de alterações é desenhado pelo componente de edição da interface, DEPOIS
+	// do formulário e fora do painel de abas — então ele ficava aberto sob "Segurança", "Sessões" e
+	// "Tokens de API", onde não descreve nada do que está na tela. Ele pertence à aba de dados, que é
+	// a única que edita os campos auditados. Quando não há histórico, o PHP remove a célula inteira e
+	// não sobra nada para esconder.
+	var ABA_DO_HISTORICO = 'dados';
+
 	function iniciarAbas(painel) {
 		var abas = Array.prototype.slice.call(painel.querySelectorAll('[data-perfil-aba]'));
 		var paineis = Array.prototype.slice.call(painel.querySelectorAll('[data-perfil-painel]'));
+		var historico = document.querySelector('[data-c2f-historico]');
 
 		if (!abas.length) return null;
 
@@ -338,6 +350,8 @@ $(document).ready(function(){
 			paineis.forEach(function (secao) {
 				secao.classList.toggle('hidden', secao.getAttribute('data-perfil-painel') !== nome);
 			});
+
+			if (historico) historico.classList.toggle('hidden', nome !== ABA_DO_HISTORICO);
 
 			if (persistir) {
 				try { window.localStorage.setItem(CHAVE_ABA, nome); } catch (e) { /* sem persistência */ }

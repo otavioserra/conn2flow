@@ -1136,7 +1136,12 @@ function interface_historico($params = false){
 			}
 			
 			$historico_linha .= '.</div></div></div>'.$botao_carregar_mais.'</div>';
-			$pagina = modelo_var_troca($pagina,"<td>#historico#</td>","<td>".$historico_linha."</td>");
+			// req-124 F5: a troca precisa mirar SÓ o token. Ela casava a string literal
+			// `<td>#historico#</td>`, que só existe no componente Fomantic — o
+			// `interface-formulario-edicao-tailwind` escreve `<td class="px-4 py-2 …">#historico#</td>`
+			// e não casava com nada, deixando o marcador cru na tela. Preservar o `<td>` original é
+			// também o que o ramo AJAX abaixo sempre fez.
+			$pagina = modelo_var_troca($pagina,"#historico#",$historico_linha);
 		} else {
 			$historico_linha .= '.</div></div></div>';
 			$pagina = modelo_var_troca($pagina,"#historico#",$historico_linha);

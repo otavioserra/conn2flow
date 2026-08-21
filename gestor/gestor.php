@@ -53,6 +53,7 @@ function gestor_pagina_menu_icone($modulo, $campo, $tailwind){
 	return $campo === 'icone' ? $legado : '';
 }
 
+
 function gestor_pagina_menu($params = false){
 	global $_GESTOR;
 	
@@ -413,12 +414,30 @@ function gestor_pagina_menu($params = false){
 			$cel_icon = $cel[$cel_nome_icon];
 
 			$cel_icon = modelo_var_troca($cel_icon,"#icon-2#",$moduloIcone2);
+			$cel_icon = modelo_var_troca($cel_icon,"#icon-2-lucide#",gestor_pagina_menu_icone_lucide_atributo($moduloIcone2));
 		} else {
 			$cel_nome_icon = 'icon';
 			$cel_icon = $cel[$cel_nome_icon];
 		}
 
-		$cel_icon = modelo_var_troca($cel_icon,"#icon#",($moduloIcone ? $moduloIcone : ($menuTailwind ? 'circle-help' : 'question circle outline')));
+		$iconePadrao = $menuTailwind ? 'circle-help' : 'question circle outline';
+		$iconeFinal = $moduloIcone ? $moduloIcone : $iconePadrao;
+
+		$cel_icon = modelo_var_troca($cel_icon,"#icon#",$iconeFinal);
+
+		// req-125 F4: o ATRIBUTO `data-lucide` é montado aqui, não escrito no template.
+		//
+		//   Antes, a célula trazia `data-lucide="#icon#"` e o mesmo valor ia para o atributo e para a
+		//   classe. Num banco onde o módulo só tem o vocabulário Fomantic legado — todo módulo de
+		//   projeto derivado, hoje —, isso entregava `data-lucide="comments outline"` ao Lucide, que
+		//   respondia com `icon name was not found` no console a cada item do menu. Um nome de ícone
+		//   é endereço DENTRO de um catálogo: o do Lucide é kebab-case de um segmento só, e nada mais
+		//   é endereçável ali.
+		//
+		//   Marcador vazio não resolveria: `createIcons()` seleciona `[data-lucide]` por PRESENÇA do
+		//   atributo, e `data-lucide=""` gera exatamente o mesmo warning. O atributo precisa não ser
+		//   emitido — por isso o template usa `#icon-lucide#`, que recebe o atributo inteiro ou nada.
+		$cel_icon = modelo_var_troca($cel_icon,"#icon-lucide#",gestor_pagina_menu_icone_lucide_atributo($iconeFinal));
 		
 		$cel_aux = modelo_var_troca($cel_aux,"<!-- icon -->",$cel_icon);
 		
@@ -1221,9 +1240,25 @@ function gestor_dashboard_toolbar($params = false){
 		.'style="position:fixed;top:0;left:0;width:100%;height:30px;border:0;margin:0;padding:0;z-index:2147483000;background:transparent;" allowtransparency="true"></iframe>';
 
 	// ===== Injetar o iframe imediatamente após a abertura do <body>.
+	//
+	//       req-124 F1: junto com o iframe, o <body> recebe a classe `c2f-toolbar-ativa`. A barra é
+	//       `position:fixed` e por isso ignora o `margin-top` que o `dashboard.toolbar.js` aplica no
+	//       <html> — todo elemento `fixed`/`sticky` ancorado em `top:0` (a barra lateral e o cabeçalho
+	//       do `layout-administrativo-tailwind`) continuaria por baixo dela. A classe é o gancho que os
+	//       CSS de layout usam para descer esses elementos nos 30px da barra.
 
-	$_GESTOR['pagina'] = preg_replace_callback('/(<body\b[^>]*>)/i', function($m) use ($iframe){
-		return $m[1].$iframe;
+	$_GESTOR['pagina'] = preg_replace_callback('/(<body\b)([^>]*)(>)/i', function($m) use ($iframe){
+		$atributos = $m[2];
+
+		if(preg_match('/\sclass\s*=\s*"[^"]*"/i', $atributos)){
+			$atributos = preg_replace('/(\sclass\s*=\s*")([^"]*)(")/i', '${1}${2} c2f-toolbar-ativa${3}', $atributos, 1);
+		} else if(preg_match("/\sclass\s*=\s*'[^']*'/i", $atributos)){
+			$atributos = preg_replace("/(\sclass\s*=\s*')([^']*)(')/i", '${1}${2} c2f-toolbar-ativa${3}', $atributos, 1);
+		} else {
+			$atributos .= ' class="c2f-toolbar-ativa"';
+		}
+
+		return $m[1].$atributos.$m[3].$iframe;
 	}, $_GESTOR['pagina'], 1);
 
 	// ===== Script de compensação de topo (dashboard.toolbar.js) — a URL dashboard/toolbar.js
@@ -3059,6 +3094,7 @@ function gestor_config(){
 	}
 }
 
+
 /**
  * Resposta de token CSRF ausente/inválido (req-107, aprimorada no req-109 / BATCH-109).
  *
@@ -3066,8 +3102,14 @@ function gestor_config(){
  * NAVEGAÇÃO normal: um POST de formulário que falha na validação fazia o navegador exibir o JSON
  * cru em tela cheia — o usuário do Editor Visual via `{"status":"error","message":"Token CSRF
  * inválido ou ausente."}` no lugar da página e concluía que perdera o trabalho. Agora recebe uma
- * página explicando o que houve, com botão de voltar (o conteúdo do formulário é preservado pelo
- * histórico do navegador).
+ * página explicando o que houve, com botão de voltar.
+ *
+ * req-125 F1: o botão fazia `history.back()` puro, e no login isso é um LAÇO. Voltar pelo histórico
+ * restaura o formulário do bfcache com o mesmo token expirado dentro do campo oculto; entrar de novo
+ * falha de novo, indefinidamente, sem nenhuma pista para o usuário. Quando a tela de origem é uma
+ * rota de identidade, o botão passa a NAVEGAR para ela (`location.replace`, que também tira a tela de
+ * erro do histórico), forçando um GET novo — sessão limpa e token novo. `history.back()` continua
+ * sendo o comportamento para o resto do gestor, onde preservar o que foi digitado é o que importa.
  *
  * @return void Encerra a requisição.
  */
@@ -3097,7 +3139,26 @@ function gestor_csrf_resposta_invalida(){
 		: 'Seu token de segurança expirou ou não foi enviado. Volte, recarregue a página e tente novamente — nada foi salvo.';
 	$voltar = $ingles ? 'Go back' : 'Voltar';
 
+	// req-125 F1: a própria tela de erro não pode entrar no bfcache. Sem isto, voltar PARA ela (por
+	// exemplo depois de um `location.replace` seguido de um back) devolveria a página estática com o
+	// mesmo botão apontando para um estado já vencido.
+	header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+	header('Pragma: no-cache');
 	header('Content-Type: text/html; charset=UTF-8');
+
+	$destino = gestor_csrf_destino_recarregamento(
+		(isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : ''),
+		(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''),
+		(isset($_GESTOR['url-raiz']) ? $_GESTOR['url-raiz'] : '/')
+	);
+
+	// O destino resolvido é escrito como DADO (`data-c2f-destino`), não interpolado no meio do
+	// JavaScript: assim o escape do atributo é a única barreira necessária, e o onclick continua
+	// sendo uma string constante, auditável e idêntica em toda resposta.
+	$acao = "var d=this.getAttribute('data-c2f-destino');"
+		.'if(d){window.location.replace(d);}'
+		.'else if(window.history.length > 1){window.history.back();}'
+		.'else{window.location.reload();}';
 
 	echo '<!DOCTYPE html>'."\n"
 		.'<html lang="'.htmlspecialchars((string)($_GESTOR['linguagem-codigo'] ?? 'pt-br'), ENT_QUOTES, 'UTF-8').'">'."\n"
@@ -3111,7 +3172,8 @@ function gestor_csrf_resposta_invalida(){
 		.'</style></head>'."\n"
 		.'<body><div class="c2f-box"><h1>'.htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8').'</h1>'
 		.'<p>'.htmlspecialchars($texto, ENT_QUOTES, 'UTF-8').'</p>'
-		.'<button type="button" onclick="history.back()">'.htmlspecialchars($voltar, ENT_QUOTES, 'UTF-8').'</button>'
+		.'<button type="button" data-c2f-destino="'.htmlspecialchars($destino, ENT_QUOTES, 'UTF-8').'"'
+		.' onclick="'.htmlspecialchars($acao, ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($voltar, ENT_QUOTES, 'UTF-8').'</button>'
 		.'</div></body></html>';
 
 	exit;

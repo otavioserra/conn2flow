@@ -10,12 +10,22 @@
     <link rel="icon" type="image/png" sizes="16x16" href="@[[pagina#url-raiz]]@favicon/favicon-16x16.png">
     <link rel="manifest" href="@[[pagina#url-raiz]]@favicon/site.webmanifest">
     <!--
-        Only the Fomantic ICON stylesheet, not the framework. The `modulos.icone` column stores
-        Fomantic icon names for every installed module; changing that source would mean rewriting the
-        whole registry and would break third-party plugins. Layout CSS stays 100% Tailwind.
+        Only the Fomantic ICON stylesheet, not the framework. It draws the STRUCTURAL icons hardcoded
+        in this layout (open/close menu, site shortcut, 3D dashboard, version badge): those are fixed
+        and never come from the module registry. Layout CSS stays 100% Tailwind.
     -->
     <link rel="stylesheet" type="text/css" media="all"
         href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/components/icon.min.css">
+    <!--
+        req-124 F2: module icons are a different story. `gestor_pagina_menu_icone()` hands a Tailwind
+        menu the contents of `modulos.icone_tailwind`, which is Lucide vocabulary — and the two
+        catalogs do not translate. Without Lucide loaded the component wrote `class="blocks icon"`
+        against the Fomantic sheet and the icon vanished silently on 19 of the 33 menu modules (the
+        survivors were only the names that happen to exist in both catalogs: `user`, `home`,
+        `search`…). `defer` guarantees it runs before the DOMContentLoaded that boots
+        `admin-tailwind.js`, which calls `lucide.createIcons()`.
+    -->
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
     <!-- pagina#css -->
     <!-- pagina#js -->
 </head>
@@ -64,7 +74,7 @@
             <header class="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3">
                 <div class="flex items-center gap-3">
                     <button type="button" data-admin-abrir title="Open menu"
-                        class="inline-flex size-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50">
+                        class="inline-flex size-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50 lg:hidden">
                         <i class="bars icon"></i>
                     </button>
                     <a href="@[[pagina#url-raiz]]@dashboard/" class="inline-flex items-center">
@@ -80,7 +90,7 @@
                 </div>
             </header>
 
-            <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
+            <main data-admin-main class="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
                 @[[pagina#corpo]]@
             </main>
         </div>

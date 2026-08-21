@@ -4,17 +4,6 @@
 
 Conn2Flow is a complete, open-source Content Management System (CMS) built with modern PHP, featuring a revolutionary plugin architecture and comprehensive development tools. This repository contains everything needed to develop, test, and deploy both the core CMS and custom plugins.
 
-**Welcome to Conn2Flow - Complete Open Source CMS Development Environment!**
-
-Conn2Flow is a modern, lightweight and flexible open-source Content Management System (CMS) built using LAMP technology (Linux, Apache, MySQL, and PHP). This repository provides a **complete development environment** that includes:
-
-- ✅ **Full CMS System** (gestor/) - Core CMS with all management features
-- ✅ **Automated Web Installer** (gestor-instalador/) - One-click installation with multilingual support
-- ✅ **Development Tools** (ai-workspace/) - Complete development environment with AI-assisted workflows
-- ✅ **Plugin Development Framework** (dev-plugins/) - Full plugin creation and testing environment
-
-Originally developed as a proprietary CMS named B2make, Conn2Flow is now being released to the open-source community to foster collaboration and innovation.
-
 ## Table of Contents
 
 - [📚 Documentation](#documentation)
@@ -41,14 +30,14 @@ For detailed technical information and development guides, see:
 
 ## Latest Version
 
-**v2.9.0 (June 16, 2026)**
+**v2.9.39 (August 2026)**
 
 **🎯 Key Features & Highlights:**
+- **Tailwind CSS Administrative & Public Layouts**: Modern responsive administrative layout with collapsible sidebar, real-time drag resizer, live search with full keyboard navigation, and native Lucide icon catalog support.
+- **Security Hardening & Zero CSRF Loop**: Robust CSRF validation with CSPRNG tokens, clean login expired session recovery on `/signin/`, and secure HTTP security headers.
+- **Personal Access Tokens (PAT) & 2FA Recovery**: Scoped API token management in user profiles with disposable recovery codes for two-factor authentication.
 - **Advanced Visual HTML Editor**: Floating toolbar, advanced 20-group styler panels, circular color palettes, visual drag-and-drop placeholders with ghost tracking, internal clipboard (Ctrl+C/V), element wrapping (Wrap), and real widget rendering.
-- **Security & Authentication**: Two-factor authentication (2FA via app/email), passwordless email-based OTP login, API Access Key profiles with 2FA gating, and interactive OAuth integration helpers.
 - **Unified Testing Suite**: Out-of-the-box support for PHPUnit, Vitest, and Playwright E2E browser tests with Actions workflow CI/CD.
-- **Publisher Index & Manual Curation**: Live diacritics-insensitive publication search, manual curatorial ordering, dynamic count metrics, and automated dynamic image URL root prefixing.
-- **Code Modularization**: Cleaned up the visual editor scope by externalizing simulation engines to `html-editor-modules.js`.
 
 For full changelog, see [CHANGELOG.md](CHANGELOG.md).
 
@@ -59,7 +48,7 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
 ### Prerequisites
 
 - **Web Server**: Apache or Nginx with PHP support
-- **PHP**: Version 8.0 or higher with required extensions (curl, zip, pdo_mysql, openssl, mbstring, pdo_sqlite)
+- **PHP**: Version 8.1 or higher with required extensions (curl, zip, pdo_mysql, openssl, mbstring, pdo_sqlite)
 - **MySQL**: Version 5.7 or higher (or MariaDB equivalent)
 - **Node.js & NPM**: Node.js (v20+) and NPM (v10+) required for local testing compilation, vitest, playwright and Tailwind CSS CLI v4 compilation
 - **Write Permissions**: Web server must have write access to installation directory
@@ -80,6 +69,7 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
    ```powershell
    Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip" -OutFile "instalador.zip"
    ```
+
    **Always Latest Installer:**
    ```bash
    # Linux/macOS
@@ -90,6 +80,7 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
    $latest = (gh release list --json tagName | ConvertFrom-Json | Where-Object { $_.tagName -like "instalador-v*" } | Select-Object -First 1).tagName
    Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/$latest/instalador.zip" -OutFile "instalador.zip"
    ```
+
    **Releases Page:**
    - Go to the [releases page](https://github.com/otavioserra/conn2flow/releases) and download the latest **Instalador** release (look for `instalador-v*` tags, not the "Latest" badge which points to the Gestor system).
 
@@ -97,6 +88,8 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
    ```bash
    unzip instalador.zip -d /path/to/your/webroot/gestor-instalador/
    # Or install directly to webroot. The installer is smart enough to detect whether it is in the root or sub-folders.
+   unzip instalador.zip -d /path/to/your/webroot/
+   ```kflow CI/CD.
    unzip instalador.zip -d /path/to/your/webroot/
    ```
 

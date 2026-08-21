@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
 
     services:
@@ -29,30 +29,50 @@ jobs:
           --health-retries=10
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: dom, json, libxml, mbstring, mysqli, pdo_mysql, openssl, tokenizer, xml, xmlwriter
+          extensions: dom, json, libxml, mbstring, mysqli, pdo_mysql, openssl, tokenizer, xml, xmlwriter, zip, curl
           coverage: none
+          tools: composer:v2
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
 
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Cache Playwright browser binaries
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Install PHP test dependencies
+      - name: Install PHP test dependencies (root)
         run: composer install --no-interaction --prefer-dist
 
       - name: Install gestor runtime dependencies
-        run: composer install --working-dir=gestor --no-dev --no-interaction --prefer-dist
+        run: composer install --working-dir=gestor --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Prepare test environment
         run: |
@@ -76,149 +96,115 @@ jobs:
       - name: Run Phinx migrations
         run: php gestor/vendor/bin/phinx migrate -c gestor/phinx.php -e gestor
 
-      - name: Run PHPUnit
+      - name: Run PHPUnit (Backend Tests)
         run: composer test
         env:
           CONN2FLOW_TEST_BOOTSTRAP_CONFIG: '1'
           CONN2FLOW_RUN_DB_TESTS: '1'
 
-      - name: Run Vitest
+      - name: Run Vitest (Frontend Tests)
         run: npm run test
 
-      - name: Install Playwright browser
+      - name: Install Playwright browser and OS dependencies
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium
 
-      - name: Run Playwright
+      - name: Install Playwright OS dependencies if browser cached
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Run Playwright (E2E Tests)
         run: npm run test:e2e
 
-  release:
-    needs: test
-    runs-on: ubuntu-latest
+      # ===== BUILD & RELEASE STAGE (Executado imediatamente no mesmo runner após os testes) =====
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v7
+      - name: Generate resources and per-resource Tailwind CSS
+        run: |
+          php gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php
+          echo "Resource updates generated successfully"
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: zip, curl, mbstring, openssl
+      - name: Commit Resources Updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add gestor/db/data/*.json
+          git add gestor/db/orphans/*.json
+          git add gestor/resources/*
+          git add gestor/resources/.tailwind-build-manifest.json
+          git add gestor/modulos/*/*.json
+          git add gestor/modulos/*/resources
+          git add gestor/assets/tailwindcss/*.css
+          git add gestor/assets/asset-versions.json
+          git add gestor/contents/asset-version.json
+          git diff --cached --quiet || git commit -m "Auto-update resources for release ${{ github.ref_name }}"
 
-    - name: Install Composer dependencies
-      run: |
-        cd gestor
-        composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+      - name: Remove resource files
+        run: |
+          # Remove all resource files and directory to make installation lighter
+          rm -rf gestor/resources/ && rmdir gestor/resources/ 2>/dev/null || true
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v6
-      with:
-        node-version: '20'
+          # Remove module resource files recursively
+          find gestor/modulos -type d -name "resources" -exec rm -rf {} + || true
 
-    - name: Install Tailwind CSS compiler
-      run: |
-        npm install tailwindcss @tailwindcss/cli
+          # Remove temporary npm files from Tailwind compilation
+          rm -rf gestor/node_modules/ gestor/package.json gestor/package-lock.json node_modules/ package.json package-lock.json || true
 
-    - name: Generate resources and per-resource Tailwind CSS
-      run: |
-        php gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php
-        echo "Resource updates generated successfully"
+          echo "All resource files removed from release"
 
-    - name: Commit Resources Updates
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add gestor/db/data/*.json
-        git add gestor/db/orphans/*.json
-        git add gestor/resources/*
-        git add gestor/resources/.tailwind-build-manifest.json
-        git add gestor/modulos/*/*.json
-        git add gestor/modulos/*/resources
-        git add gestor/assets/tailwindcss/*.css
-        git add gestor/assets/asset-versions.json
-        git add gestor/contents/asset-version.json
-        git diff --cached --quiet || git commit -m "Auto-update resources for release ${{ github.ref_name }}"
+      - name: Create gestor.zip + checksum
+        run: |
+          # Remove arquivos desnecessários se existirem
+          rm -rf gestor/.git* || true
+          # Dependências instaladas a partir do source podem conter seus próprios
+          # repositórios Git; remova-os antes de criar o artefato de produção.
+          find gestor -type d -name '.git' -prune -exec rm -rf {} +
+          rm -rf gestor/vendor/bin/.phpunit* || true
+          rm -rf gestor/vendor/composer/tmp-* || true
 
-    - name: Remove resource files
-      run: |
-        # Remove all resource files and directory to make installation lighter
-        rm -rf gestor/resources/ && rmdir gestor/resources/ 2>/dev/null || true
+          # Falha defensivamente se algum metadado Git ainda estiver no staging.
+          if [ -n "$(find gestor -type d -name '.git' -print -quit)" ]; then
+            echo "Nested .git directory found in release staging"
+            exit 1
+          fi
 
-        # Remove module resource files recursively
-        find gestor/modulos -type d -name "resources" -exec rm -rf {} + || true
+          # Remover somente .env sensíveis da raiz (preservar templates em autenticacoes.exemplo)
+          find gestor -maxdepth 1 -type f -name '.env*' -exec rm -f {} + 2>/dev/null || true
+          # Remover .env internos reais de autenticacoes, exceto os de templates
+          if [ -d gestor/autenticacoes ]; then
+            find gestor/autenticacoes -type f -name '.env*' -not -path '*/autenticacoes.exemplo/*' -exec rm -f {} + 2>/dev/null || true
+          fi
 
-        # Remove temporary npm files from Tailwind compilation
-        rm -rf gestor/node_modules/ gestor/package.json gestor/package-lock.json node_modules/ package.json package-lock.json || true
+          # Criar o arquivo ZIP (resource files already removed)
+          cd gestor
+          zip -r ../gestor.zip . \
+            -x "*.git*" \
+            -x "vendor/bin/.phpunit*" \
+            -x "vendor/composer/tmp-*" \
+            -x "node_modules/*" \
+            -x "*.DS_Store*" \
+            -x "*.log*" \
+            -x "tests/*" \
+            -x "phpunit.xml*" \
+            -x "resources/*" \
+            -x "modulos/*/resources/*"
+          cd ..
+          sha256sum gestor.zip | awk '{print $1}' > gestor.zip.sha256
 
-        echo "All resource files removed from release"
+      - name: Get tag name
+        id: tag
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-    - name: Create gestor.zip + checksum
-      run: |
-        # Remove arquivos desnecessários se existirem
-        rm -rf gestor/.git* || true
-        # Dependências instaladas a partir do source podem conter seus próprios
-        # repositórios Git; remova-os antes de criar o artefato de produção.
-        find gestor -type d -name '.git' -prune -exec rm -rf {} +
-        rm -rf gestor/vendor/bin/.phpunit* || true
-        rm -rf gestor/vendor/composer/tmp-* || true
-
-        # Falha defensivamente se algum metadado Git ainda estiver no staging.
-        if [ -n "$(find gestor -type d -name '.git' -print -quit)" ]; then
-          echo "Nested .git directory found in release staging"
-          exit 1
-        fi
-
-        # Remover somente .env sensíveis da raiz (preservar templates em autenticacoes.exemplo)
-        find gestor -maxdepth 1 -type f -name '.env*' -exec rm -f {} + 2>/dev/null || true
-        # Remover .env internos reais de autenticacoes, exceto os de templates
-        if [ -d gestor/autenticacoes ]; then
-          find gestor/autenticacoes -type f -name '.env*' -not -path '*/autenticacoes.exemplo/*' -exec rm -f {} + 2>/dev/null || true
-        fi
-
-        # Criar o arquivo ZIP (resource files already removed)
-        cd gestor
-        zip -r ../gestor.zip . \
-          -x "*.git*" \
-          -x "vendor/bin/.phpunit*" \
-          -x "vendor/composer/tmp-*" \
-          -x "node_modules/*" \
-          -x "*.DS_Store*" \
-          -x "*.log*" \
-          -x "tests/*" \
-          -x "phpunit.xml*" \
-          -x "resources/*" \
-          -x "modulos/*/resources/*"
-        cd ..
-        sha256sum gestor.zip | awk '{print $1}' > gestor.zip.sha256
-
-    - name: Get tag name
-      id: tag
-      run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-
-    - name: Create Release
-      id: create_release
-      uses: softprops/action-gh-release@v3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ steps.tag.outputs.TAG_NAME }}
-        name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
-        make_latest: true
-        body: |
-          ## 🚀 Conn2Flow Gestor Release v2.9.0 (Editor Visual Avançado + 2FA e Passwordless + Chaves de API + Suíte de Testes + Publicador Índice)
-
-          Esta versão traz uma grande evolução no **Editor HTML Visual** com novas ferramentas de formatação, D&D interativo e clipboard interno, a adição de recursos modernos de **Autenticação e Segurança (2FA e Login Sem Senha OTP)**, gerenciador de **Chaves de API** com perfis, o módulo **Publicador Índice** enriquecido com curadoria manual e busca Unicode, e a integração nativa de uma **Suíte de Testes Automatizados (PHPUnit, Vitest, Playwright)** no pipeline.
-
-          ### 🎯 Novidades Principais desta Versão:
-          - ✅ **Editor HTML Visual Avançado**: Painel styler expandido com 20 grupos de formatação, paletas de cores circulares, D&D com placeholders piscantes e ghost follower de cursor, clipboard integrado (Copiar/Colar e atalhos Ctrl+C/V), ferramenta Embrulhar (Wrap) e visualizador real de widgets via AJAX.
-          - ✅ **Segurança e 2FA**: Autenticação de Dois Fatores (2FA) nativa via aplicativos autenticadores (TOTP) e e-mail, e login sem senha (OTP) via e-mail direto.
-          - ✅ **Gerenciador de Chaves de API**: Geração de chaves de API com perfis de acesso restritos e proteção opcional por 2FA.
-          - ✅ **Assistente OAuth**: Guia interativo passo a passo para configuração das chaves de integrações Google, Facebook, Apple e GitHub.
-          - ✅ **Publicador Índice Avançado**: Curadoria e ordenação manual de itens, busca inteligente imune a acentuação Unicode, contador dinâmico de métricas de paginação e prefixagem dinâmica de URL raiz em imagens.
-          - ✅ **Suíte de Testes Nativa**: Integração de suíte de testes de backend (PHPUnit), frontend (Vitest) e ponta-a-ponta (Playwright) com execuções automáticas no GitHub Actions.
-          - ✅ **Refatoração e Modularização**: Migração de 26 funções de simulação do editor para o arquivo independente `html-editor-modules.js`.
-        draft: false
-        prerelease: false
-        files: |
-          gestor.zip
-          gestor.zip.sha256
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.TAG_NAME }}
+          name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
+          make_latest: true
+          draft: false
+          prerelease: false
+          files: |
+            gestor.zip
+            gestor.zip.sha256

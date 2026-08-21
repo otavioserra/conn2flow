@@ -29,19 +29,20 @@
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "4ca6c58a5ae7ffaec3566d078d7b60d6",
+                        "html": "dbba30a59280a86bf4b45be75eff2f14",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "4ca6c58a5ae7ffaec3566d078d7b60d6"
+                        "combined": "dbba30a59280a86bf4b45be75eff2f14"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -62,19 +63,20 @@
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "767a8ea49b2177aaf4ea0c4ec08415e2",
+                        "html": "fa5767d524ce2a49f2c0106d1eeeb7f7",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "767a8ea49b2177aaf4ea0c4ec08415e2"
+                        "combined": "fa5767d524ce2a49f2c0106d1eeeb7f7"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -90,12 +92,12 @@
                 {
                     "name": "Acessar Sistema",
                     "id": "acessar-sistema",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "577361b39f641808b2042154fe69e1f9",
+                        "html": "d2592b32665ff4b33d6510d034ec8f47",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "577361b39f641808b2042154fe69e1f9"
+                        "combined": "d2592b32665ff4b33d6510d034ec8f47"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signin/",
@@ -105,9 +107,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -123,24 +126,25 @@
                 {
                     "name": "Verificação em Duas Etapas",
                     "id": "signin-2fa",
-                    "version": "1.5",
+                    "version": "1.6",
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signin-2fa/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
                     "checksum": {
-                        "html": "30ec7e6a9a6ecfd9e62f5a8d01008e87",
+                        "html": "f6951b38e360c6c6eab3f08773c11d83",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "30ec7e6a9a6ecfd9e62f5a8d01008e87"
+                        "combined": "f6951b38e360c6c6eab3f08773c11d83"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -171,9 +175,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Callback OAuth",
@@ -193,9 +198,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Sair Sistema",
@@ -214,9 +220,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Perfil Usuário",
@@ -236,9 +243,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
                         {
@@ -289,12 +297,12 @@
                 {
                     "name": "Área Restrita",
                     "id": "Area-restrita",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "f5f1056569e2e4e8cc90045a28da15f5",
+                        "html": "e32173ed6fb6bee3ed247a0528fd3391",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f5f1056569e2e4e8cc90045a28da15f5"
+                        "combined": "e32173ed6fb6bee3ed247a0528fd3391"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "restrict-area/",
@@ -354,19 +362,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Esqueceu a Senha",
                     "id": "esqueceu-a-senha",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "8f547e25eba2ce4d6140216c70949cce",
+                        "html": "934c9664b2191b611802068a5ef1ad1f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "8f547e25eba2ce4d6140216c70949cce"
+                        "combined": "934c9664b2191b611802068a5ef1ad1f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "forgot-password/",
@@ -376,19 +385,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Esqueceu a Senha Email Enviado",
                     "id": "esqueceu-a-senha-email-enviado",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "f1497a363baa8daf131265465dfb9fe2",
+                        "html": "e3d5fa7195fab699d07d67477c77d8ec",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f1497a363baa8daf131265465dfb9fe2"
+                        "combined": "e3d5fa7195fab699d07d67477c77d8ec"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "forgot-password-confirmation/",
@@ -398,19 +408,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Redefinir Senha",
                     "id": "redefinir-senha",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "811bff9ab661eb5da96a938a80c51ac4",
+                        "html": "fbe4975d6a9a33f36c1d61ce34b7a829",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "811bff9ab661eb5da96a938a80c51ac4"
+                        "combined": "fbe4975d6a9a33f36c1d61ce34b7a829"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "redefine-password/",
@@ -420,19 +431,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Redefinir Senha Confirmação",
                     "id": "redefinir-senha-confirmacao",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "ffeb073c310b42ca8c85a4369993cd2f",
+                        "html": "6d2f1c071b80097960f7c693cda737dc",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ffeb073c310b42ca8c85a4369993cd2f"
+                        "combined": "6d2f1c071b80097960f7c693cda737dc"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "redefine-password-confirmation/",
@@ -442,19 +454,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Cadastrar no Sistema",
                     "id": "cadastrar-no-sistema",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "6f11bc890694de90f6afc17c864d2f97",
+                        "html": "dc4a733fa2cec94e5d71b6354b1472bd",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6f11bc890694de90f6afc17c864d2f97"
+                        "combined": "dc4a733fa2cec94e5d71b6354b1472bd"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signup/",
@@ -464,19 +477,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Confirmação de Email",
                     "id": "confirmacao-de-email",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "5f8d418d2ebb52df323bd0110decba1f",
+                        "html": "48dbb4ff3f7fe5140279674749e682b0",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5f8d418d2ebb52df323bd0110decba1f"
+                        "combined": "48dbb4ff3f7fe5140279674749e682b0"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "email-confirmation/",
@@ -486,9 +500,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 }
             ],
             "variables": [
@@ -830,6 +845,11 @@
                 {
                     "id": "restrict-area-info-title",
                     "value": "Autorização Provisória de Alteração",
+                    "type": "string"
+                },
+                {
+                    "id": "restrict-area-back-label",
+                    "value": "Voltar",
                     "type": "string"
                 },
                 {
@@ -1659,7 +1679,7 @@
                 },
                 {
                     "id": "classe-botao-ok",
-                    "value": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
+                    "value": "inline-flex items-center gap-2 rounded-lg border border-sky-600 bg-sky-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-700",
                     "type": "string",
                     "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
@@ -1689,7 +1709,7 @@
                 },
                 {
                     "id": "classe-publico-campo",
-                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none",
+                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 focus:outline-none",
                     "type": "string",
                     "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
@@ -1724,9 +1744,10 @@
                     "id": "perfil-usuario-seguranca",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.2",
                     "checksum": {
                         "html": "9936df9c4332b9c857b4f9e9a269fb93",
@@ -1740,9 +1761,10 @@
                     "id": "perfil-usuario-sessoes",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.2",
                     "checksum": {
                         "html": "668e857f688b292743ff479ef68fd4af",
@@ -1756,9 +1778,10 @@
                     "id": "perfil-usuario-api-tokens",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.2",
                     "checksum": {
                         "html": "1664f8902a6f5ce7f3e4211d337155f0",
@@ -1772,9 +1795,10 @@
                     "id": "perfil-usuario-2fa-campos",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.2",
                     "checksum": {
                         "html": "e6e1838b3bd68f1cac00d6e60190a4b9",
@@ -1788,9 +1812,10 @@
                     "id": "perfil-usuario-login-metodos",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.1",
                     "checksum": {
                         "html": "deaab732b308719b1f11eb1efe5d3b2a",
@@ -1812,19 +1837,20 @@
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "4ca6c58a5ae7ffaec3566d078d7b60d6",
+                        "html": "dbba30a59280a86bf4b45be75eff2f14",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "4ca6c58a5ae7ffaec3566d078d7b60d6"
+                        "combined": "dbba30a59280a86bf4b45be75eff2f14"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -1845,19 +1871,20 @@
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "767a8ea49b2177aaf4ea0c4ec08415e2",
+                        "html": "fa5767d524ce2a49f2c0106d1eeeb7f7",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "767a8ea49b2177aaf4ea0c4ec08415e2"
+                        "combined": "fa5767d524ce2a49f2c0106d1eeeb7f7"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -1873,12 +1900,12 @@
                 {
                     "name": "Access System",
                     "id": "acessar-sistema",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "577361b39f641808b2042154fe69e1f9",
+                        "html": "d2592b32665ff4b33d6510d034ec8f47",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "577361b39f641808b2042154fe69e1f9"
+                        "combined": "d2592b32665ff4b33d6510d034ec8f47"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signin/",
@@ -1888,9 +1915,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -1906,24 +1934,25 @@
                 {
                     "name": "Two-Step Verification",
                     "id": "signin-2fa",
-                    "version": "1.5",
+                    "version": "1.6",
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signin-2fa/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
                     "checksum": {
-                        "html": "30ec7e6a9a6ecfd9e62f5a8d01008e87",
+                        "html": "f6951b38e360c6c6eab3f08773c11d83",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "30ec7e6a9a6ecfd9e62f5a8d01008e87"
+                        "combined": "f6951b38e360c6c6eab3f08773c11d83"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -1954,9 +1983,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "OAuth Callback",
@@ -1976,9 +2006,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Logout System",
@@ -1997,9 +2028,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "User Profile",
@@ -2019,9 +2051,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6).",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
                         {
@@ -2072,12 +2105,12 @@
                 {
                     "name": "Restricted Area",
                     "id": "Area-restrita",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "f5f1056569e2e4e8cc90045a28da15f5",
+                        "html": "e32173ed6fb6bee3ed247a0528fd3391",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f5f1056569e2e4e8cc90045a28da15f5"
+                        "combined": "e32173ed6fb6bee3ed247a0528fd3391"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "restrict-area/",
@@ -2137,19 +2170,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Forgot Password",
                     "id": "esqueceu-a-senha",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "8f547e25eba2ce4d6140216c70949cce",
+                        "html": "934c9664b2191b611802068a5ef1ad1f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "8f547e25eba2ce4d6140216c70949cce"
+                        "combined": "934c9664b2191b611802068a5ef1ad1f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "forgot-password/",
@@ -2159,19 +2193,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Forgot Password Email Sent",
                     "id": "esqueceu-a-senha-email-enviado",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "f1497a363baa8daf131265465dfb9fe2",
+                        "html": "e3d5fa7195fab699d07d67477c77d8ec",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f1497a363baa8daf131265465dfb9fe2"
+                        "combined": "e3d5fa7195fab699d07d67477c77d8ec"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "forgot-password-confirmation/",
@@ -2181,19 +2216,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Reset Password",
                     "id": "redefinir-senha",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "811bff9ab661eb5da96a938a80c51ac4",
+                        "html": "fbe4975d6a9a33f36c1d61ce34b7a829",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "811bff9ab661eb5da96a938a80c51ac4"
+                        "combined": "fbe4975d6a9a33f36c1d61ce34b7a829"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "redefine-password/",
@@ -2203,19 +2239,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Reset Password Confirmation",
                     "id": "redefinir-senha-confirmacao",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "ffeb073c310b42ca8c85a4369993cd2f",
+                        "html": "6d2f1c071b80097960f7c693cda737dc",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ffeb073c310b42ca8c85a4369993cd2f"
+                        "combined": "6d2f1c071b80097960f7c693cda737dc"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "redefine-password-confirmation/",
@@ -2225,19 +2262,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Register in System",
                     "id": "cadastrar-no-sistema",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "6f11bc890694de90f6afc17c864d2f97",
+                        "html": "dc4a733fa2cec94e5d71b6354b1472bd",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6f11bc890694de90f6afc17c864d2f97"
+                        "combined": "dc4a733fa2cec94e5d71b6354b1472bd"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signup/",
@@ -2247,19 +2285,20 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 },
                 {
                     "name": "Email Confirmation",
                     "id": "confirmacao-de-email",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "5f8d418d2ebb52df323bd0110decba1f",
+                        "html": "48dbb4ff3f7fe5140279674749e682b0",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5f8d418d2ebb52df323bd0110decba1f"
+                        "combined": "48dbb4ff3f7fe5140279674749e682b0"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "email-confirmation/",
@@ -2269,9 +2308,10 @@
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../perfil-usuario.php",
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) e no runtime de abas/forca-de-senha (perfil-usuario.js) — sem escanear os tres, o precompiled sai sem as utilities desses paineis (req-124 F6)."
                 }
             ],
             "components": [
@@ -2280,9 +2320,10 @@
                     "id": "perfil-usuario-seguranca",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.2",
                     "checksum": {
                         "html": "9936df9c4332b9c857b4f9e9a269fb93",
@@ -2296,9 +2337,10 @@
                     "id": "perfil-usuario-sessoes",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.2",
                     "checksum": {
                         "html": "668e857f688b292743ff479ef68fd4af",
@@ -2312,9 +2354,10 @@
                     "id": "perfil-usuario-api-tokens",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.2",
                     "checksum": {
                         "html": "1664f8902a6f5ce7f3e4211d337155f0",
@@ -2328,9 +2371,10 @@
                     "id": "perfil-usuario-2fa-campos",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.2",
                     "checksum": {
                         "html": "e6e1838b3bd68f1cac00d6e60190a4b9",
@@ -2344,9 +2388,10 @@
                     "id": "perfil-usuario-login-metodos",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../perfil-usuario.json"
+                        "../../../../perfil-usuario.json",
+                        "../../../../perfil-usuario.js"
                     ],
-                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
                     "version": "1.1",
                     "checksum": {
                         "html": "deaab732b308719b1f11eb1efe5d3b2a",
@@ -2695,6 +2740,11 @@
                 {
                     "id": "restrict-area-info-title",
                     "value": "Provisional Change Authorization",
+                    "type": "string"
+                },
+                {
+                    "id": "restrict-area-back-label",
+                    "value": "Back",
                     "type": "string"
                 },
                 {
@@ -3524,7 +3574,7 @@
                 },
                 {
                     "id": "classe-botao-ok",
-                    "value": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
+                    "value": "inline-flex items-center gap-2 rounded-lg border border-sky-600 bg-sky-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-700",
                     "type": "string",
                     "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
@@ -3554,7 +3604,7 @@
                 },
                 {
                     "id": "classe-publico-campo",
-                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none",
+                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 focus:outline-none",
                     "type": "string",
                     "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
@@ -3585,5 +3635,5 @@
             ]
         }
     },
-    "asset_version": "84e29c02d474774d"
+    "asset_version": "41fa91c810144f2f"
 }

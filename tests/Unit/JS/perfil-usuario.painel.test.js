@@ -25,7 +25,7 @@ function carregarPainel() {
 
 // Espelha o HTML real da página (resources/<lang>/pages/perfil-usuario) já com os blocos que o PHP
 // preenche em runtime.
-function montarPainel({ comSenha = true, comSessoes = true, comSeguranca = true } = {}) {
+function montarPainel({ comSenha = true, comSessoes = true, comSeguranca = true, comHistorico = true } = {}) {
   document.body.innerHTML = `
     <div id="perfil-usuario-painel" data-perfil-aba-padrao="dados">
       <nav role="tablist">
@@ -64,6 +64,7 @@ function montarPainel({ comSenha = true, comSessoes = true, comSeguranca = true 
         </div>` : ''}
       </section>
     </div>
+    ${comHistorico ? '<div data-c2f-historico><table></table></div>' : ''}
   `;
 }
 
@@ -133,10 +134,12 @@ describe('Perfil do Usuário — painel Tailwind (req-118)', () => {
 
       aba('seguranca').dispatchEvent(new window.Event('click', { bubbles: true }));
 
-      expect(aba('seguranca').classList.contains('border-emerald-600')).toBe(true);
+      // req-124 F6: o sublinhado da aba ativa segue a paleta azul Conn2Flow; o verde ficou reservado
+      // ao que significa sucesso ou "ativo".
+      expect(aba('seguranca').classList.contains('border-sky-600')).toBe(true);
       expect(aba('seguranca').classList.contains('border-transparent')).toBe(false);
       expect(aba('dados').classList.contains('border-transparent')).toBe(true);
-      expect(aba('dados').classList.contains('border-emerald-600')).toBe(false);
+      expect(aba('dados').classList.contains('border-sky-600')).toBe(false);
     });
 
     it('lembra a última aba escolhida entre visitas', () => {
@@ -157,6 +160,38 @@ describe('Perfil do Usuário — painel Tailwind (req-118)', () => {
       T.iniciar();
 
       expect(painelDe('dados').classList.contains('hidden')).toBe(false);
+    });
+
+    // req-124 F5 (regressão): o histórico é desenhado pelo componente de edição da interface, fora do
+    // painel de abas, e por isso ficava visível também sob "Segurança" e "Sessões" — onde não
+    // descreve nada do que está na tela.
+    it('o histórico de alterações só acompanha a aba de dados', () => {
+      montarPainel();
+      T.iniciar();
+
+      const historico = document.querySelector('[data-c2f-historico]');
+
+      expect(historico.classList.contains('hidden')).toBe(false);
+
+      aba('seguranca').dispatchEvent(new window.Event('click', { bubbles: true }));
+      expect(historico.classList.contains('hidden')).toBe(true);
+
+      aba('sessoes').dispatchEvent(new window.Event('click', { bubbles: true }));
+      expect(historico.classList.contains('hidden')).toBe(true);
+
+      aba('dados').dispatchEvent(new window.Event('click', { bubbles: true }));
+      expect(historico.classList.contains('hidden')).toBe(false);
+    });
+
+    it('sem histórico cadastrado o painel de abas continua funcionando', () => {
+      // O PHP remove a célula inteira quando não há registros; o runtime não pode depender dela.
+      montarPainel({ comHistorico: false });
+      T.iniciar();
+
+      aba('seguranca').dispatchEvent(new window.Event('click', { bubbles: true }));
+
+      expect(painelDe('seguranca').classList.contains('hidden')).toBe(false);
+      expect(document.querySelector('[data-c2f-historico]')).toBe(null);
     });
   });
 

@@ -1743,6 +1743,136 @@ function gestor_reload_url(){
 	gestor_redirecionar($_GESTOR['caminho-total']);
 }
 
+// =========================== req-125 (BATCH-127): vocabulário de rota e de ícone
+//
+// Funções PURAS, sem estado global, consumidas pelo bootstrap (`gestor/gestor.php`). Vivem
+// aqui — e não junto de quem as chama — porque é o que as torna verificáveis por teste: o
+// bootstrap termina em `gestor_start()` e não pode ser incluído por um caso de teste.
+
+/**
+ * Rotas públicas de identidade cujo formulário carrega um token CSRF de uso único.
+ *
+ * São as telas em que voltar pelo histórico é ativamente NOCIVO: o navegador restaura o formulário
+ * do cache com o token já queimado e a submissão seguinte falha de novo, em laço. A lista vive
+ * separada da de `sitemap.php` porque o critério é outro — lá é indexação, aqui é ciclo de token.
+ *
+ * @return array<int,string> Primeiros segmentos de caminho, sem barras.
+ */
+function gestor_csrf_rotas_identidade(){
+	return Array(
+		'signin',
+		'signin-2fa',
+		'signup',
+		'forgot-password',
+		'reset-password',
+		'validate-user',
+	);
+}
+
+
+/**
+ * Destino de recarregamento limpo para a tela de erro de CSRF (req-125 / BATCH-127).
+ *
+ * Função pura: recebe o caminho da requisição que falhou, o referer e a raiz, e devolve a URL que
+ * emite um token novo — ou string vazia quando não há como afirmar qual é a tela de origem.
+ *
+ * Duas fontes, nesta ordem. A PRIMEIRA é o próprio caminho da requisição: o POST de login vai para
+ * `/signin/`, então quando ele falha o CSRF é o caminho ATUAL que nomeia a tela — não o referer, que
+ * pode estar ausente por política de referrer. A segunda é o referer, para o caso de um POST que
+ * saiu do login para outra rota.
+ *
+ * @param string      $caminhoTotal Caminho da requisição corrente, já sem o prefixo de idioma.
+ * @param string|null $referer      Conteúdo de `HTTP_REFERER`, se houver.
+ * @param string      $urlRaiz      Raiz do gestor, com barra final e com idioma quando houver.
+ * @return string URL absoluta de destino ou '' quando indeterminado.
+ */
+function gestor_csrf_destino_recarregamento($caminhoTotal, $referer, $urlRaiz){
+	$rotas = gestor_csrf_rotas_identidade();
+	$urlRaiz = (string)$urlRaiz;
+
+	// ===== 1) Caminho da requisição que falhou.
+
+	$caminho = trim(strtolower((string)$caminhoTotal), '/');
+
+	if($caminho !== ''){
+		$primeiro = explode('/', $caminho);
+		$primeiro = $primeiro[0];
+
+		if(in_array($primeiro, $rotas, true)){
+			return $urlRaiz.$primeiro.'/';
+		}
+	}
+
+	// ===== 2) Referer.
+
+	$referer = trim((string)$referer);
+
+	if($referer === ''){
+		return '';
+	}
+
+	$refererCaminho = parse_url($referer, PHP_URL_PATH);
+
+	if(!is_string($refererCaminho) || $refererCaminho === ''){
+		return '';
+	}
+
+	$segmentos = array_values(array_filter(explode('/', strtolower($refererCaminho)), 'strlen'));
+
+	foreach($segmentos as $segmento){
+		if(in_array($segmento, $rotas, true)){
+			return $urlRaiz.$segmento.'/';
+		}
+	}
+
+	return '';
+}
+
+
+/**
+ * Um nome é endereçável no catálogo do Lucide? (req-125 / BATCH-127)
+ *
+ * O Lucide resolve o valor de `data-lucide` por `toPascalCase()`, que colapsa separadores: só um
+ * identificador kebab-case de segmentos alfanuméricos chega a algum ícone. Qualquer outra coisa —
+ * e em especial os nomes COMPOSTOS do Fomantic, que são várias classes separadas por espaço
+ * (`comments outline`, `credit card outline`, `bottom right corner share`) — é garantidamente um
+ * `icon name was not found` no console.
+ *
+ * A pergunta que esta função responde é de FORMA, não de existência: ela não sabe se `box` está no
+ * bundle, sabe que `comments outline` não pode estar. É o suficiente para o que o warning custa, e
+ * não cria uma segunda cópia do catálogo para manter sincronizada a cada versão do Lucide.
+ *
+ * @param string $nome Valor já resolvido do ícone.
+ * @return bool
+ */
+function gestor_pagina_menu_icone_lucide_valido($nome){
+	$nome = is_string($nome) ? trim($nome) : '';
+
+	if($nome === ''){
+		return false;
+	}
+
+	return (bool)preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $nome);
+}
+
+
+/**
+ * Atributo `data-lucide` pronto para interpolação — ou string vazia (req-125 / BATCH-127).
+ *
+ * Devolver o atributo INTEIRO (e não só o valor) é o que permite omiti-lo: `createIcons()` varre
+ * `[data-lucide]` pela presença do atributo, então `data-lucide=""` é processado e reclama igual.
+ *
+ * @param string $nome Valor já resolvido do ícone.
+ * @return string `data-lucide="…"` ou ''.
+ */
+function gestor_pagina_menu_icone_lucide_atributo($nome){
+	if(!gestor_pagina_menu_icone_lucide_valido($nome)){
+		return '';
+	}
+
+	return 'data-lucide="'.htmlspecialchars(trim((string)$nome), ENT_QUOTES, 'UTF-8').'"';
+}
+
 /**
  * Remove uma variável específica da query string.
  *

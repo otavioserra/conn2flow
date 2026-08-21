@@ -1,6 +1,8 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-125.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-125.md) (BATCH-127 `implemented-pending-homologation`, 2026-08-21): Correção de Reload em Erro de CSRF/Sessão, Mapeamento de Ícones de Módulos de Projetos, Alternância de Botões Abrir/Fechar Menu e Eliminação de Warnings do Lucide. Os ícones dos módulos de projeto foram gravados no `conn2flow-site` (ids reais); o núcleo entrega a migração idempotente `20260821100000`.
+  - [req-124.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-124.md) (BATCH-126 `implemented-pending-homologation`, 2026-08-21): Correções no Layout Administrativo Tailwind, Menu do Gestor, Histórico do Perfil e Identidade Visual Azul Conn2Flow no Core.
   - [req-123.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-123.md) (BATCH-125 `implemented-pending-homologation`, 2026-08-20): Customização de Menus Administrativos: Labels e Ordenação em Módulos Grupos e Override de Componentes por Projeto.
   - [req-122.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-122.md) (BATCH-124 `implemented-pending-homologation`, 2026-08-19): Correção da População de Publicadores de Destino no Modal Mover Publicação (`publisher-pages/editar`).
   - [req-121.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-121.md) (BATCH-122 `implemented-pending-homologation`, 2026-08-19): Mover Página de Publicação entre Tipos de Publicador no Módulo Publisher Pages, com tratamento de prefixo de URL e 301.

@@ -1,4 +1,4 @@
-﻿# Validation Checklist
+# Validation Checklist
 
 Use este checklist para validar batches no conn2flow sem perder de vista o baseline operacional do repositÃ³rio.
 
@@ -10,7 +10,7 @@ Use este checklist para validar batches no conn2flow sem perder de vista o basel
 - [x] .github/instructions/, .github/prompts/, .github/skills/ e .github/agents/ com artefatos SDD do Copilot
 - [x] sdd/scripts/hooks/ criado com hooks de sessÃ£o SDD
 - [x] sdd/human-requests/ ativo
-- [x] sdd/README.md, process/, implementation/, alidation/ e decisions/ criados
+- [x] sdd/README.md, process/, implementation/, validation/ e decisions/ criados
 - [x] sdd/00-baseline-architecture.md criado com preservaÃ§Ã£o do legado
 
 ## Checklist mÃ­nimo por batch
@@ -577,3 +577,73 @@ Reportada pelo executor em 2026-08-18:
 - Runtime: abrir o perfil e conferir as três abas com o visual íntegro; alterar uma variável `classe-*` pelo gestor e confirmar que o painel muda sem deploy de código.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 
+
+---
+## BATCH-126 - Layout administrativo Tailwind, ícones do menu, histórico do perfil e paleta azul Conn2Flow (req-124, 2026-08-21)
+
+- [x] **F1 — Editbar sem sobreposição**: `gestor_dashboard_toolbar()` marca o `<body>` com `c2f-toolbar-ativa` no mesmo passo em que injeta o iframe; o CSS autoral do layout desce a barra lateral (`fixed`), o overlay e o cabeçalho (`sticky`) em 30px e devolve a altura ao shell (`min-height: calc(100vh - 30px)`).
+- [x] **F2 — Ícones completos no menu**: causa-raiz era vocabulário, não cadastro. O menu Tailwind recebia nomes **Lucide** (`modulos.icone_tailwind`) e o componente os desenhava contra a folha do **Fomantic** — 19 dos 33 módulos do menu ficavam sem glifo (os 8 relatados entre eles). O item passa a nascer `<i data-lucide="X" class="X icon">` e o layout carrega o Lucide com `defer`.
+- [x] **F2b — Catálogo saneado**: `modulos-operacoes` usava `settings2`, que não existe no Lucide (o nome é `settings-2`); `interface` e `ftp` eram os únicos módulos sem par de ícones e foram preenchidos.
+- [x] **F3 — Conteúdo alcança a borda ao recolher o menu**: `marginLeft = ''` devolvia o recuo à utility `lg:ml-[260px]` do layout em vez de zerá-lo. O runtime passa a zerar explicitamente e a liberar a largura de leitura do `<main>` (`max-w-7xl` → `none`) enquanto a barra está recolhida.
+- [x] **F4 — Botão "Sair" alcançável**: o container do menu usava `h-full`, e `min-height:auto` o impedia de encolher — o rodapé saía do viewport. Agora é `min-h-0 flex-1`, o `<nav>` ganhou `min-h-0` e a folga inferior subiu de `pb-4` para `pb-16`.
+- [x] **F5 — Histórico saneado**: a troca casava a string literal `<td>#historico#</td>`, que só existe no componente Fomantic; no Tailwind (`<td class="px-4 py-2 …">`) não casava e o marcador cru era impresso. A troca passa a mirar só o token. O bloco ganhou `data-c2f-historico` e o painel do perfil o mantém restrito à aba de Dados.
+- [x] **F6 — Paleta azul Conn2Flow**: botões primários, links, anéis de foco, cor de controle marcado e sublinhado da aba ativa migraram de `emerald` para `sky` nas 16 telas do módulo (× 2 idiomas), nas variáveis `classe-botao-ok` e `classe-publico-campo` e nos componentes globais de edição/alerta. O verde ficou reservado à SEMÂNTICA: banners de sucesso, etiquetas de "ativo" (2FA, social vinculado, sessão atual) e a faixa "Forte" da força de senha.
+- [x] **Bônus de correção**: `perfil-usuario.js` entrou em `tailwind_sources` — as classes que o runtime aplica não eram escaneadas, e `bg-emerald-500` (força "Forte") estava fora do bundle.
+- [ ] **Deploy `Update => Core` + homologação visual**: pendente com o operador — layout, componentes, variáveis e `modulos` vêm do banco.
+
+### Evidência de Validação (BATCH-126)
+
+Reportada pelo executor em 2026-08-21:
+- `php -l` → **OK** em todos os PHP alterados e nos 2 arquivos de teste novos/editados.
+- `node --check` (via `new Function`) → **OK** em `admin-tailwind.js` e `perfil-usuario.js`.
+- Compilador de recursos → **50 compilados na 1ª passada, 0 erros**; apenas os 4 avisos pré-existentes (`html-editor-publisher-simulation`, `sessao-com-2-colunas-fomantic-ui`), não relacionados ao lote.
+- `composer test` → **581/581** (2760 assertions). Antes do lote: 537. Novos: `LayoutAdministrativoTailwindTest` **13/13** (254 assertions) e 2 casos de paleta em `PerfilUsuarioTelasPublicasTest`.
+- `npm run test` (Vitest) → **331/331** em 21 arquivos. Antes do lote: 328, com **4 falhas** nos testes que codificavam o comportamento antigo (3 de `marginLeft === ''`, 1 de `border-emerald-600`) — atualizados para o novo contrato, mais 3 casos de regressão novos.
+- Conferência direta nos bundles: `min-h-0`, `pb-16` e `size-4` presentes no layout; `bg-sky-600`/`border-sky-600`/`text-sky-700` nas telas públicas; `bg-emerald-500` passou a existir no bundle do perfil após a inclusão do `.js` em `tailwind_sources`.
+- Validação cruzada de catálogos: os 33 módulos do menu foram conferidos contra o `icon.min.css` real do Fomantic 2.9.4 e contra os 1.857 ícones do bundle Lucide 0.544.0 — foi assim que os 19 sem glifo e o `settings2` inválido apareceram.
+
+### Pendências
+
+- Runtime: abrir o painel com a Editbar ativa; recolher o menu e conferir a borda esquerda; rolar a barra até o botão "Sair"; percorrer as 4 abas do perfil observando o histórico; revisar as telas públicas de identidade no azul Conn2Flow.
+- **Banco local sem a migração `icone_tailwind`**: `modulos` ainda não tem a coluna no ambiente de dev. Enquanto ela não rodar, o menu cai no vocabulário Fomantic legado — coberto pela dupla camada `data-lucide` + `class`, mas a homologação de F2 só é conclusiva após `db:update`.
+- **Impacto cruzado no `lumix` (SnapPhoton), tratado no mesmo dia**: os três botões primários do Core em Tailwind (`interface-formulario-edicao-tailwind`, `interface-alerta-modal-tailwind`, `interface-formulario-autorizacao-provisoria-tailwind`) migraram para `sky`, e o painel do SnapPhoton é verde. O guard de paridade byte a byte do projeto (`admin-menu-config.test.php`) acusou os dois espelhos divergentes na primeira execução; foram ressincronizados e o painel voltou ao verde por CSS autoral do layout `photon-admin`, sem bifurcar componente. Detalhe no BATCH-176 do `lumix`.
+- **Variável do Core adicionada pelo lote irmão**: `restrict-area-back-label` (`pt-br` = Voltar, `en` = Back) entrou no módulo `perfil-usuario` por conta da req-087 do SnapPhoton, ao lado das irmãs `restrict-area-info*`. Ela viaja para os ambientes junto com esta release.
+- Restrição respeitada: nenhum `git commit`/`git push` executado.
+
+---
+## BATCH-127 - Reload limpo em CSRF, ícones dos módulos de projeto, alternância dos botões de menu e saneamento do Lucide (req-125, 2026-08-21)
+
+- [x] **F1 — Reload limpo em CSRF / sessão expirada**: `gestor_csrf_destino_recarregamento()` (pura, em `gestor/bibliotecas/gestor.php`) resolve a tela de origem por DUAS fontes, nesta ordem: o caminho da requisição que falhou — que é o que existe quando o navegador não manda referer — e, só depois, o `HTTP_REFERER`. Quando a origem é uma rota de identidade (`signin`, `signin-2fa`, `signup`, `forgot-password`, `reset-password`, `validate-user`), o botão "Voltar" faz `location.replace()` para ela: GET novo, token novo, e a tela de erro sai do histórico. Fora dessas rotas o destino é vazio e o botão segue em `history.back()`, que é o comportamento desejável no resto do gestor. A resposta ganhou `Cache-Control: no-store` para ela própria não voltar do bfcache. O destino vai no HTML como DADO (`data-c2f-destino`), não interpolado dentro do JavaScript.
+- [x] **F2 — Ícones dos módulos servidos por projeto**: os pares foram gravados onde os módulos realmente existem — o `ModulosData.json` do `conn2flow-site` — usando os ids REAIS: `3d-catalog`/`box`, `3d-catalog-groups`/`boxes`, `3d-catalog-items`/`box`, `social-connections`/`share-2`, `gateways-pagamentos`/`credit-card`, `publisher-social-media`/`megaphone`, `social-apps`/`smartphone`, `arquivos`/`folder-open` e `modulos-grupos-distribuido`/`network`. A migração `20260821100000_alter_modulos_update_icones_projetos` (núcleo) é o que alcança bancos já existentes; ela cobre os ids reais e também os apelidos em português, porque um `UPDATE` sem correspondência custa zero. Guarda de coluna (`hasColumn('icone_tailwind')`) para poder rodar em qualquer ordem de catch-up, e valores por bind.
+- [x] **F3 — Alternância dos botões abrir/fechar**: `sincronizarBotoes()` no `admin-tailwind.js` deixa em tela só o botão contextual, chamado por `abrir()` e `fechar()` — o que cobre também o estado inicial, já que o boot passa por um dos dois. O botão "abrir" nasce com `lg:hidden` no layout (desktop nasce com o menu expandido) e o runtime **remove a utility no boot**, no mesmo padrão que a barra lateral já usa com `lg:translate-x-0`.
+- [x] **F4 — Saneamento de `data-lucide`**: o ATRIBUTO passou a ser montado no backend por `gestor_pagina_menu_icone_lucide_atributo()`, e o template do `menu-principal-sistema-tailwind` recebe `#icon-lucide#` / `#icon-2-lucide#` em vez de `data-lucide="#icon#"`. Segunda camada no `admin-tailwind.js`: `sanearIcones()` remove `data-lucide` inválido de qualquer origem antes de `createIcons()`.
+- [x] **Compilação de recursos**: `c2f resources:sync` → **2652 recursos, 0 erros**; `menu-principal-sistema-tailwind` de `1.4` para `1.5` nos dois idiomas, com checksum recalculado pelo pipeline. Token do asset `global` renovado (o `admin-tailwind.js` mudou).
+- [x] **Testes**: `composer test` **630/630** (2925 asserções, 4 skips de ambiente), `npm run test` **337/337** em 21 arquivos, `php -l` verde em todos os PHP tocados e `node --check` verde no JS.
+
+### O que estava errado no rascunho anterior deste lote
+
+Uma sessão anterior deixou a F2 apontando para o lugar errado, e isso vale registro porque o sintoma seria nulo — não há erro, não há log:
+
+- **Nove módulos foram INSERIDOS no `ModulosData.json` do núcleo** com ids em português (`catalogo-3d`, `conexoes-sociais`, `publicador-midias-sociais`, `modulos-grupos-distribuidos`…). Nenhum desses ids existe: os módulos vivem em `conn2flow-site/gestor/modulos/` e são registrados com id em inglês — e `modulos-grupos-distribuido` é singular. O núcleo não hospeda nenhum deles (só `admin-arquivos`), e os registros não vinham com página associada, então `gestor_pagina_menu()` os descartaria em silêncio; o efeito real seria linha órfã em `modulos` em TODO ambiente do núcleo. Os 18 registros (9 módulos × 2 idiomas) foram removidos.
+- **A migração fazia `UPDATE` sobre esses mesmos ids inexistentes** e interpolava valores direto no SQL. Reescrita com os ids reais, bind de parâmetros e guarda de coluna.
+- **O saneamento do `data-lucide` era um `str_replace` da marcação já renderizada** (`str_replace('data-lucide="'.$icone.'"', '', $html)`) — o antipadrão que o BATCH-126 registrou com o `#historico#`. Substituído pelo marcador dedicado no template.
+- **A alternância usava só `classList.add('hidden')`**, que NÃO esconde estes dois botões: ambos são `inline-flex` e, no bundle do layout, `.inline-flex` é emitida depois de `.hidden` — mesma especificidade, mesma camada, ganha a última. Quem apaga é o atributo booleano `hidden`, servido pelo preflight como `display:none!important` em `@layer base` (e `!important` inverte a ordem das camadas). A classe continua sendo escrita como estado declarado; o atributo é o mecanismo.
+
+### Evidência de Validação (BATCH-127)
+
+- `php -l` → **OK** em `gestor/gestor.php`, `gestor/bibliotecas/gestor.php`, `gestor/bibliotecas/interface.php`, a migração e os dois arquivos de teste.
+- `node --check` → **OK** em `gestor/assets/global/admin-tailwind.js`.
+- `c2f resources:sync` → **2652 recursos, 0 erros**; os 4 avisos são os pré-existentes (`html-editor-publisher-simulation`, `sessao-com-2-colunas-fomantic-ui`), não relacionados ao lote.
+- `composer test` → **630/630**, 2925 asserções. Antes do lote: 581.
+- `npm run test` → **337/337**. Antes do lote: 331.
+- **Catálogos conferidos contra as fontes reais, não contra memória**: os 8 nomes Fomantic foram casados com as 1.941 combinações de `i.icon.*` do `icon.min.css` 2.9.4, e os 11 nomes Lucide com os 1.862 ícones do bundle UMD 0.544.0. Todos existem.
+- Testes novos: `CsrfReloadIconesMenuTest` (43 casos) exercita as funções puras de verdade — foi para isso que elas foram movidas do bootstrap para `gestor/bibliotecas/gestor.php`, já que `gestor/gestor.php` termina em `gestor_start()` e não pode ser incluído por um caso de teste. Inclui dois guardas de dados: o núcleo não pode registrar módulo de projeto, e todo `icone_tailwind` do núcleo tem que ser endereçável no Lucide. Em `admin-tailwind.test.js`, 2 casos novos cobrem o mecanismo real (atributo `hidden`) e a liberação do `lg:hidden` no boot.
+- **Falsificação verificada**: com o teste do `lg:hidden` escrito com `\b` no padrão PCRE, o `\b` foi interpretado como backspace e o teste falhou contra um arquivo correto — o erro apareceu como falha, não como falso verde, e o padrão foi corrigido.
+
+### Pendências
+
+- **Homologação visual (operador)**: recolher e expandir o menu no desktop e no mobile conferindo que só um dos dois botões aparece; abrir o painel com o console aberto e confirmar zero `icon name was not found`; forçar um CSRF inválido no `/signin/` (aguardar a sessão expirar ou limpar o cookie) e clicar em "Voltar" verificando que a tela de login recarrega com token novo em vez de repetir o erro.
+- **Ícones do projeto dependem de dois passos fora deste repositório**: o `ModulosData.json` alterado é o do `conn2flow-site`, e o par só aparece no menu depois do deploy de recursos daquele projeto; para bancos já existentes, depois de `db:update` rodar a migração `20260821100000`. Enquanto nenhum dos dois rodar, o menu segue no vocabulário Fomantic — que agora é o caminho silencioso e correto, sem warning.
+- **Módulos do `conn2flow-site` fora do escopo do intake**: `checkout`, `host-manager`, `host-user-manager`, `pedidos`, `pro-manager` e `produtos` seguem sem `icone_tailwind`. Não geram mais warning (F4 cobre), mas desenham pelo Fomantic. O intake não os nomeia; ficam registrados aqui.
+- **Documentação de release neste mesmo working tree**: `CHANGELOG*`, `README*` e os dois workflows de release foram atualizados por uma sessão anterior e não fazem parte do escopo do req-125. As entradas de changelog que descreviam a F2 com os ids em português foram corrigidas para os ids reais.
+- Restrição Nível 1 respeitada: nenhum `git commit`, `git push` ou deploy executado.

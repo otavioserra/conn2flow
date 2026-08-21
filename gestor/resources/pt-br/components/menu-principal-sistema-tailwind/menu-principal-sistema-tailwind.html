@@ -1,5 +1,5 @@
 <!-- conteiner < -->
-<div class="flex h-full flex-col">
+<div class="flex min-h-0 flex-1 flex-col">
     <div class="px-3 pb-3">
         <div class="relative">
             <input type="text" id="gestor-menu-filtro" autocomplete="off" placeholder="Filtre os módulos..."
@@ -10,7 +10,7 @@
         <p data-menu-vazio class="mt-2 hidden rounded-md bg-slate-800 px-3 py-2 text-xs text-slate-300">Nenhum módulo
             encontrado.</p>
     </div>
-    <nav class="flex-1 space-y-4 overflow-y-auto px-3 pb-4" aria-label="Módulos">
+    <nav class="min-h-0 flex-1 space-y-4 overflow-y-auto px-3 pb-16" aria-label="Módulos">
         <!-- itemContCel < -->
         <div data-menu-grupo>#itemCont#</div><!-- itemContCel > -->
     </nav>
@@ -28,8 +28,8 @@
 <!-- item < --><a data-menu-item href="#link#"
     class="group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white#class#">
     <span class="flex w-5 shrink-0 justify-center text-slate-400 group-hover:text-white" aria-hidden="true">
-        <!-- icon < --><i class="#icon# icon"></i><!-- icon > -->
-        <!-- icon-2 < --><i class="#icon# icon"></i><i class="#icon-2# icon"></i><!-- icon-2 > -->
+        <!-- icon < --><i #icon-lucide# class="#icon# icon"></i><!-- icon > -->
+        <!-- icon-2 < --><i #icon-lucide# class="#icon# icon"></i><i #icon-2-lucide# class="#icon-2# icon"></i><!-- icon-2 > -->
     </span>
     <span data-menu-item-nome class="truncate">#nome#</span>
 </a><!-- item > -->

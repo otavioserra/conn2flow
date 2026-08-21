@@ -268,4 +268,48 @@ final class PerfilUsuarioTelasPublicasTest extends TestCase
                 "Fomantic no layout público ({$lang})");
         }
     }
+
+    // ===== Paleta azul Conn2Flow (req-124 F6)
+
+    /**
+     * As telas públicas nasceram no BATCH-121 com o verde herdado do SnapPhoton. No Core, verde é
+     * SEMÂNTICA — diz "deu certo", "está ativo" — e nunca identidade: botão primário, link, anel de
+     * foco e cor de controle marcado são azul Conn2Flow.
+     *
+     * O teste não proíbe emerald: proíbe as utilities de AÇÃO em emerald. Os tons de feedback
+     * (`bg-emerald-50`, `border-emerald-200`, `text-emerald-800` dos banners de sucesso) continuam
+     * permitidos, e é justamente por isso que a lista abaixo é de prefixos, não a palavra solta.
+     */
+    #[DataProvider('paginasProvider')]
+    public function testUsaPaletaAzulConn2FlowNasAcoes(string $lang, string $id): void
+    {
+        $html = self::html($lang, $id);
+
+        $proibidas = [
+            'bg-emerald-600', 'bg-emerald-700', 'bg-emerald-800',
+            'border-emerald-600', 'ring-emerald-600', 'ring-emerald-500',
+            'text-emerald-600', 'text-emerald-700',
+        ];
+
+        foreach ($proibidas as $classe) {
+            self::assertStringNotContainsString($classe, $html,
+                "Verde de ação (`{$classe}`) em {$lang}/{$id}: a paleta do Core é azul Conn2Flow.");
+        }
+    }
+
+    /**
+     * O contrapeso do teste acima: sem ele, apagar o verde e não pôr azul nenhum passaria.
+     */
+    public function testBotaoPrimarioDasTelasComFormularioEhAzul(): void
+    {
+        // Só as telas que de fato têm um botão primário próprio na marcação.
+        $comBotao = ['acessar-sistema', 'cadastrar-no-sistema', 'esqueceu-a-senha', 'redefinir-senha'];
+
+        foreach (self::IDIOMAS as $lang) {
+            foreach ($comBotao as $id) {
+                self::assertStringContainsString('bg-sky-600', self::html($lang, $id),
+                    "Botão primário sem azul Conn2Flow em {$lang}/{$id}");
+            }
+        }
+    }
 }

@@ -10910,6 +10910,15 @@
     {
         "language": "pt-br",
         "modulo": "perfil-usuario",
+        "id": "restrict-area-back-label",
+        "valor": "Voltar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "perfil-usuario",
         "id": "user-permited-chars",
         "valor": "letras, números, '.' e apenas um '@'",
         "tipo": "string",
@@ -12387,7 +12396,7 @@
         "language": "pt-br",
         "modulo": "perfil-usuario",
         "id": "classe-botao-ok",
-        "valor": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
+        "valor": "inline-flex items-center gap-2 rounded-lg border border-sky-600 bg-sky-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-700",
         "tipo": "string",
         "grupo": null,
         "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
@@ -12432,7 +12441,7 @@
         "language": "pt-br",
         "modulo": "perfil-usuario",
         "id": "classe-publico-campo",
-        "valor": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600\/20 focus:outline-none",
+        "valor": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-2 focus:ring-sky-600\/20 focus:outline-none",
         "tipo": "string",
         "grupo": null,
         "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
@@ -13081,6 +13090,15 @@
         "modulo": "perfil-usuario",
         "id": "restrict-area-info-title",
         "valor": "Provisional Change Authorization",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "perfil-usuario",
+        "id": "restrict-area-back-label",
+        "valor": "Back",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -14565,7 +14583,7 @@
         "language": "en",
         "modulo": "perfil-usuario",
         "id": "classe-botao-ok",
-        "valor": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
+        "valor": "inline-flex items-center gap-2 rounded-lg border border-sky-600 bg-sky-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-700",
         "tipo": "string",
         "grupo": null,
         "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
@@ -14610,7 +14628,7 @@
         "language": "en",
         "modulo": "perfil-usuario",
         "id": "classe-publico-campo",
-        "valor": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600\/20 focus:outline-none",
+        "valor": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-2 focus:ring-sky-600\/20 focus:outline-none",
         "tipo": "string",
         "grupo": null,
         "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."

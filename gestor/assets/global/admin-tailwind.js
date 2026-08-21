@@ -41,9 +41,44 @@
         }
     }
 
+    // req-124 F2: o menu Tailwind escreve os ícones dos módulos como `<i data-lucide="…">` — o
+    // vocabulário que `modulos.icone_tailwind` guarda. Quem troca esses marcadores por SVG é o
+    // `lucide.createIcons()`. O layout carrega o pacote com `defer`, então ele já executou quando o
+    // DOMContentLoaded chega aqui; o listener de `load` é a rede de segurança para o caso do CDN
+    // demorar ou o script ser injetado async por um projeto derivado. Sem Lucide o menu perde só os
+    // ícones, nunca a navegação.
+    var LUCIDE_NOME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+    // req-125 F4: segunda camada do saneamento. `gestor_pagina_menu_icone_lucide_atributo()` já não
+    // emite `data-lucide` para nome que o Lucide não consegue endereçar, mas o menu não é a única
+    // origem possível de marcação no painel — um componente sobrescrito por projeto, um widget ou um
+    // módulo distribuído podem escrever o atributo por conta própria, com o nome composto do
+    // Fomantic dentro. `createIcons()` reclama uma vez POR ELEMENTO, então bastam alguns itens para
+    // encher o console. Remover o atributo antes da chamada mantém o `<i>` intacto e deixa a folha
+    // do Fomantic desenhar pela classe, que é o fallback já existente.
+    function sanearIcones(raiz) {
+        var alvos = (raiz || document).querySelectorAll('[data-lucide]');
+
+        for (var i = 0; i < alvos.length; i++) {
+            var nome = alvos[i].getAttribute('data-lucide');
+            if (!nome || !LUCIDE_NOME.test(nome.trim())) alvos[i].removeAttribute('data-lucide');
+        }
+    }
+
+    function desenharIcones() {
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            sanearIcones(document);
+            window.lucide.createIcons();
+            return true;
+        }
+        return false;
+    }
+
     function iniciar() {
         var shell = document.getElementById('c2f-admin-shell');
         if (!shell) return;
+
+        if (!desenharIcones()) window.addEventListener('load', desenharIcones);
 
         var sidebar = shell.querySelector('[data-admin-sidebar]');
         var conteudo = shell.querySelector('[data-admin-conteudo]');
@@ -52,8 +87,20 @@
         var btnAbrir = shell.querySelector('[data-admin-abrir]');
         var btnFechar = shell.querySelector('[data-admin-fechar]');
         var btn3d = shell.querySelector('[data-admin-dashboard3d]');
+        var principal = shell.querySelector('[data-admin-main]');
 
         if (!sidebar || !conteudo) return;
+
+        // req-124 F3: a largura de leitura (`max-w-7xl`) faz sentido enquanto a barra ocupa a
+        // esquerda. Com o menu recolhido ela deixaria de novo uma faixa vazia — agora nos dois lados,
+        // porque o `mx-auto` centraliza a coluna. O `maxWidth` inline vence a utility sem depender da
+        // ordem em que o Tailwind emitiu `max-w-7xl` e `max-w-none`.
+        var larguraLeituraPadrao = principal ? principal.style.maxWidth : '';
+
+        function aplicarLarguraConteudo(expandido) {
+            if (!principal) return;
+            principal.style.maxWidth = expandido ? 'none' : larguraLeituraPadrao;
+        }
 
         var store = armazenamento();
         var larguraMin = lerNumero(shell.getAttribute('data-menu-largura-min'), 220);
@@ -69,11 +116,21 @@
             return Math.min(larguraMax, Math.max(larguraMin, lerNumero(valor, larguraPadrao)));
         }
 
+        // req-124 F3: `marginLeft = ''` NÃO zera o recuo — apenas devolve o controle à utility
+        // `lg:ml-[260px]` que o layout aplica para o conteúdo já nascer no lugar certo em desktop. Era
+        // essa utility, sobrevivendo ao inline style removido, que deixava a faixa vazia de 260px ao
+        // recolher o menu. Zerar explicitamente é o que faz o conteúdo alcançar a borda esquerda.
+        function recuarConteudo(margem) {
+            conteudo.style.marginLeft = margem === 0 ? '0px' : margem + 'px';
+        }
+
         function aplicarLargura(largura) {
             largura = Math.min(larguraMax, Math.max(larguraMin, largura));
             sidebar.style.width = largura + 'px';
             // Em mobile a barra é overlay: empurrar o conteúdo deixaria a página rolando na horizontal.
-            conteudo.style.marginLeft = (ehMobile() || estaFechado()) ? '' : largura + 'px';
+            var semRecuo = (ehMobile() || estaFechado());
+            recuarConteudo(semRecuo ? 0 : largura);
+            aplicarLarguraConteudo(semRecuo);
             return largura;
         }
 
@@ -81,20 +138,49 @@
             return sidebar.classList.contains('-translate-x-full');
         }
 
+        // req-125 F3: só o botão CONTEXTUAL fica em tela — "abrir" enquanto o menu está recolhido,
+        // "fechar" enquanto está expandido. Antes os dois coexistiam no desktop, cada um num canto,
+        // e a barra oferecia duas ações contraditórias ao mesmo tempo.
+        //
+        // A classe `hidden` sozinha NÃO esconde estes dois botões. Ambos são `inline-flex`, e no
+        // bundle do layout `.inline-flex` é emitida DEPOIS de `.hidden` — mesma especificidade,
+        // mesma camada, ganha a última: o botão seguiria visível com a classe aplicada. Quem decide
+        // é o atributo booleano `hidden`, que o preflight do Tailwind serve como
+        // `display:none!important` em `@layer base` — e `!important` inverte a ordem das camadas,
+        // então ele vence qualquer utility. A classe continua sendo escrita porque é o estado que a
+        // marcação declara e o que os testes leem.
+        function alternarVisibilidade(elemento, oculto) {
+            if (!elemento) return;
+            elemento.classList.toggle('hidden', !!oculto);
+            elemento.hidden = !!oculto;
+        }
+
+        function sincronizarBotoes(fechado) {
+            alternarVisibilidade(btnAbrir, !fechado);
+            alternarVisibilidade(btnFechar, !!fechado);
+        }
+
         function abrir() {
             sidebar.classList.remove('-translate-x-full');
+            sincronizarBotoes(false);
             if (ehMobile()) {
                 if (overlay) overlay.classList.remove('hidden');
+                // Overlay: o conteúdo fica onde está, mas segue sem recuo herdado da utility.
+                recuarConteudo(0);
+                aplicarLarguraConteudo(true);
             } else {
-                conteudo.style.marginLeft = larguraSalva() + 'px';
+                recuarConteudo(larguraSalva());
+                aplicarLarguraConteudo(false);
                 if (store) store.setItem(CHAVE_FECHADO, 'false');
             }
         }
 
         function fechar() {
             sidebar.classList.add('-translate-x-full');
+            sincronizarBotoes(true);
             if (overlay) overlay.classList.add('hidden');
-            conteudo.style.marginLeft = '';
+            recuarConteudo(0);
+            aplicarLarguraConteudo(true);
             if (!ehMobile() && store) store.setItem(CHAVE_FECHADO, 'true');
         }
 
@@ -109,6 +195,14 @@
         // estado real é conhecido, para o controle passar a ser só do JS.
 
         sidebar.classList.remove('lg:translate-x-0');
+
+        // req-125 F3: o botão "abrir" nasce com `lg:hidden` pela mesma razão — no desktop o menu
+        // nasce expandido, e sem isso o botão apareceria por um quadro ao lado do "fechar". A partir
+        // daqui quem decide é `sincronizarBotoes()`, e a utility PRECISA sair: `lg:hidden` mora numa
+        // media query emitida depois de `.inline-flex`, então ela venceria o JS no desktop e o botão
+        // nunca reapareceria ao recolher o menu.
+        if (btnAbrir) btnAbrir.classList.remove('lg:hidden');
+
         aplicarLargura(larguraSalva());
 
         if (ehMobile()) {
@@ -131,10 +225,12 @@
         }
 
         window.addEventListener('resize', function () {
-            if (ehMobile()) {
-                conteudo.style.marginLeft = '';
-            } else if (!estaFechado()) {
-                conteudo.style.marginLeft = larguraSalva() + 'px';
+            if (ehMobile() || estaFechado()) {
+                recuarConteudo(0);
+                aplicarLarguraConteudo(true);
+            } else {
+                recuarConteudo(larguraSalva());
+                aplicarLarguraConteudo(false);
             }
         });
 

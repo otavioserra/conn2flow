@@ -5,6 +5,16 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+### Added
+- **Mapeamento de Ícones para Módulos Adicionais (BATCH-127 / req-125)**: Pares de ícones Fomantic e Lucide para os módulos servidos por projetos derivados — Catálogo 3D (`3d-catalog`, `3d-catalog-groups`, `3d-catalog-items`), Conexões Sociais (`social-connections`), Gateways de Pagamentos (`gateways-pagamentos`), Publicador de Mídias Sociais (`publisher-social-media`), Social Apps (`social-apps`), Arquivos (`arquivos` / `admin-arquivos`) e Módulos Grupos Distribuído (`modulos-grupos-distribuido`). O núcleo entrega a migração idempotente `20260821100000_alter_modulos_update_icones_projetos`, que alcança bancos já existentes; o cadastro declarativo de cada módulo vive no `ModulosData.json` do projeto que o hospeda. Nomes conferidos contra os catálogos reais (Fomantic 2.9.4 e Lucide 0.544.0).
+
+### Changed
+- **Alternância de Visibilidade dos Botões de Abrir/Fechar Menu (BATCH-127 / req-125)**: Sincronização dinâmica no layout administrativo Tailwind (`layout-administrativo-tailwind`) e runtime `admin-tailwind.js`, garantindo que apenas o botão contextual correspondente esteja visível de acordo com o estado do menu (menu aberto = botão fechar visível; menu fechado/colapsado = botão abrir visível), tanto em desktop quanto mobile.
+
+### Fixed
+- **Recarregamento Limpo em Erro de CSRF/Sessão Expirada (BATCH-127 / req-125)**: Correção do loop de sessão expirada na resposta de CSRF inválido (`gestor_csrf_resposta_invalida()`), forçando recarregamento limpo da rota `/signin/` via `document.referrer` e impedindo a reciclagem de tokens expirados do histórico do navegador ao clicar em "Voltar".
+- **Eliminação de Warnings do Lucide no Console (BATCH-127 / req-125)**: Sanitização em duas camadas (PHP no roteamento do menu e JavaScript no `admin-tailwind.js` antes de `createIcons()`) para não injetar nomes compostos legados do Fomantic (ex.: `"comments outline"`, `"credit card outline"`) no atributo `data-lucide`, eliminando mensagens de alerta de ícone não encontrado no console do navegador.
+
 ## [2.9.0] - 2026-06-16
 
 ### Added

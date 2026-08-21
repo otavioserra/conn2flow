@@ -436,24 +436,24 @@
         "name": "Menu Principal Sistema Tailwind",
         "id": "menu-principal-sistema-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.5",
         "checksum": {
-            "html": "482d30474e9f3694204a51a43f663f44",
+            "html": "d359dd32722c9dc404bf0f13aa4602a5",
             "css": "",
             "css_precompiled": "",
-            "combined": "482d30474e9f3694204a51a43f663f44"
+            "combined": "d359dd32722c9dc404bf0f13aa4602a5"
         }
     },
     {
         "name": "Interface Formulário Edição Tailwind",
         "id": "interface-formulario-edicao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "74402e4e018ea2e2ca9fc0bcacf004cc",
+            "html": "0c3a5713b62f7f75caeaae11cabc9861",
             "css": "",
             "css_precompiled": "",
-            "combined": "74402e4e018ea2e2ca9fc0bcacf004cc"
+            "combined": "0c3a5713b62f7f75caeaae11cabc9861"
         }
     },
     {
@@ -472,12 +472,12 @@
         "name": "Interface Alerta Modal Tailwind",
         "id": "interface-alerta-modal-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "63becc09efe801a5ff62881bad05c807",
+            "html": "e993a23a5c0a78c944b982c601efe051",
             "css": "",
             "css_precompiled": "",
-            "combined": "63becc09efe801a5ff62881bad05c807"
+            "combined": "e993a23a5c0a78c944b982c601efe051"
         }
     },
     {

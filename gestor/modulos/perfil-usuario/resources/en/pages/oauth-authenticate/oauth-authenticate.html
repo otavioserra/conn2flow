@@ -8,9 +8,9 @@
             <p class="mt-1">@[[login-blocked-message]]@</p>
         </div>
         <div class="mt-6 space-y-1 text-center text-sm text-slate-600">
-            <p>@[[login-forgot-password-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+            <p>@[[login-forgot-password-label]]@ <a class="font-medium text-sky-700 underline-offset-2 hover:underline"
                     href="@[[pagina#url-raiz]]@forgot-password/">@[[login-forgot-password-button]]@</a></p>
-            <p>@[[login-new-register-label]]@ <a class="font-medium text-emerald-700 underline-offset-2 hover:underline"
+            <p>@[[login-new-register-label]]@ <a class="font-medium text-sky-700 underline-offset-2 hover:underline"
                     href="@[[pagina#url-raiz]]@signup/">@[[login-new-register-button]]@</a></p>
         </div>
         <!-- bloqueado-mensagem > -->
@@ -23,26 +23,26 @@
         <input type="hidden" name="login_method" id="login_method" value="#login-method-default#">
         <div>
             <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-usuario">@[[login-user-label]]@</label>
-            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="text" id="c2f-usuario" name="usuario" placeholder="@[[login-user-placeholder]]@" autocomplete="username" required>
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 focus:outline-none" type="text" id="c2f-usuario" name="usuario" placeholder="@[[login-user-placeholder]]@" autocomplete="username" required>
         </div>
         <!-- login-senha < -->
         <div class="password-login-field">
             <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-senha">@[[login-password-label]]@</label>
-            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="password" id="c2f-senha" name="senha"
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 focus:outline-none" type="password" id="c2f-senha" name="senha"
                 placeholder="@[[login-password-placeholder]]@" autocomplete="current-password" required>
         </div>
         <!-- login-senha > -->
         <div>
             <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-scope">@[[oauth-scope-label]]@</label>
-            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="text" id="c2f-scope" name="scope" placeholder="read,write" value="read">
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 focus:outline-none" type="text" id="c2f-scope" name="scope" placeholder="read,write" value="read">
         </div>
         <div>
             <label class="mb-1.5 block text-sm font-medium text-slate-700" for="c2f-url_redirect">@[[oauth-redirect-label]]@</label>
-            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none" type="url" id="c2f-url_redirect" name="url_redirect" placeholder="https://sua-app.com/callback">
+            <input class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/20 focus:outline-none" type="url" id="c2f-url_redirect" name="url_redirect" placeholder="https://sua-app.com/callback">
         </div>
         <input type="hidden" name="grant_type" value="client_credentials">
         <div class="hidden rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800" data-c2f-form-erros></div>
-        <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-600/40 focus-visible:outline-none active:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60 login-submit-button"
+        <button type="submit" class="w-full rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-700 focus-visible:ring-2 focus-visible:ring-sky-600/40 focus-visible:outline-none active:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60 login-submit-button"
             data-password-label="@[[oauth-authenticate-button]]@"
             data-email-label="@[[login-email-code-button]]@">@[[oauth-authenticate-button]]@</button>
         <input id="_gestor-autenticate" name="_gestor-autenticate" type="hidden" value="1">

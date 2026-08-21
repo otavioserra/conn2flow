@@ -1,12 +1,12 @@
 {
     "version": 1,
-    "system": "d9cc3a312cc65d40",
+    "system": "3386d5e242c554b0",
     "owners": {
         "configuracao": "d9322996d38e9b8c",
         "dashboard": "431d9008a60564a7",
         "datatables": "5648e2d8917a0a2b",
         "favicon": "8587a3f200e38cbe",
-        "global": "38ef3c53615a246a",
+        "global": "20a765c41db182fc",
         "images": "24911cddaa3f5975",
         "interface": "0a729592136178d6",
         "interface-v2": "ed5f03e2856538cc",

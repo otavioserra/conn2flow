@@ -33,3 +33,47 @@ body.c2f-admin-redimensionando [data-admin-sidebar],
 body.c2f-admin-redimensionando [data-admin-conteudo] {
     transition: none !important;
 }
+
+/*
+ * req-124 F1 — compensação de topo da Editbar (`#c2f-site-toolbar`).
+ *
+ * `gestor_dashboard_toolbar()` marca o <body> com `c2f-toolbar-ativa` sempre que injeta a barra, e o
+ * `dashboard.toolbar.js` desce o documento aplicando `margin-top:30px` no <html>. Esse deslocamento
+ * só alcança o FLUXO: `position:fixed` resolve contra o viewport e `position:sticky` gruda no
+ * scrollport, então a barra lateral e o cabeçalho voltariam para trás da Editbar. As regras abaixo
+ * reancoram os dois nos 30px da barra e devolvem a altura perdida ao shell, para o `min-h-screen`
+ * não gerar uma rolagem residual de exatamente 30px.
+ */
+
+body.c2f-toolbar-ativa [data-admin-sidebar],
+body.c2f-toolbar-ativa [data-admin-overlay] {
+    top: 30px;
+}
+
+body.c2f-toolbar-ativa [data-admin-conteudo] > header {
+    top: 30px;
+}
+
+body.c2f-toolbar-ativa #c2f-admin-shell,
+body.c2f-toolbar-ativa #c2f-admin-shell [data-admin-conteudo] {
+    min-height: calc(100vh - 30px);
+}
+
+/*
+ * req-124 F2 — dimensão do ícone Lucide no menu.
+ *
+ * O item do menu nasce como `<i data-lucide="X" class="X icon">`, servindo aos DOIS catálogos: se o
+ * nome existe no Lucide, `createIcons()` troca o <i> por um <svg> (que nasce 24x24 e precisa ser
+ * reduzido aqui); se não existe, o Lucide devolve o elemento intacto e a folha do Fomantic o desenha
+ * pela classe. É essa dupla camada que mantém o menu com ícones tanto num banco já migrado
+ * (`modulos.icone_tailwind` preenchido) quanto num que ainda não rodou a migração do req-086 e cai
+ * no vocabulário Fomantic legado.
+ *
+ * Nenhuma regra do `icon.min.css` do Fomantic começa sem `i.` — por isso o <svg> resultante pode
+ * herdar a classe `icon` sem ser afetado por ela.
+ */
+
+[data-admin-sidebar] nav svg {
+    width: 1rem;
+    height: 1rem;
+}

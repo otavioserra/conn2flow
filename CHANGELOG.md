@@ -5,6 +5,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- **Module Icon Mapping for Additional Modules (BATCH-127 / req-125)**: Fomantic and Lucide icon pairs for modules served by derived projects — 3D Catalog (`3d-catalog`, `3d-catalog-groups`, `3d-catalog-items`), Social Connections (`social-connections`), Payment Gateways (`gateways-pagamentos`), Social Media Publisher (`publisher-social-media`), Social Apps (`social-apps`), Files (`arquivos` / `admin-arquivos`), and Distributed Module Groups (`modulos-grupos-distribuido`). The core ships the idempotent migration `20260821100000_alter_modulos_update_icones_projetos`, which reaches existing databases; each module's declarative record lives in the hosting project's `ModulosData.json`. Names verified against the real catalogs (Fomantic 2.9.4 and Lucide 0.544.0).
+
+### Changed
+- **Open/Close Menu Button Visibility Toggling (BATCH-127 / req-125)**: Dynamic synchronization in Tailwind administrative layout (`layout-administrativo-tailwind`) and runtime `admin-tailwind.js`, ensuring contextual visibility where only the appropriate button is displayed based on menu state (expanded = close button visible; collapsed = open button visible) on desktop and mobile.
+
+### Fixed
+- **Clean Reload on CSRF / Expired Session Error (BATCH-127 / req-125)**: Resolved session-expired loops on invalid CSRF responses (`gestor_csrf_resposta_invalida()`) by forcing clean reload/redirect on `/signin/` via `document.referrer`, preventing the browser from recycling expired tokens from history cache.
+- **Lucide Console Warnings Elimination (BATCH-127 / req-125)**: Two-layer sanitization (PHP menu routing and JavaScript `admin-tailwind.js` before `createIcons()`) preventing legacy multi-word Fomantic icon names (e.g., `"comments outline"`, `"credit card outline"`) from being passed to `data-lucide`, eliminating "icon name was not found" console warnings.
+
 ## [2.9.0] - 2026-06-16
 
 ### Added

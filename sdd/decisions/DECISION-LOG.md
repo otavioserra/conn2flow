@@ -113,6 +113,13 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-107 | 2026-08-14 | accepted | Sitemap em assets, correção do 301, aba SEO no publisher-pages, isolamento do painel da Editbar e meta tags de SEO (BATCH-112). |
 | DEC-108 | 2026-08-14 | accepted | Extração incremental dos bridges privados e preservação temporária da cobertura de `snapphoton-system` (BATCH-115). |
 | DEC-109 | 2026-08-14 | accepted | Bundle Tailwind canônico e opt-in por página para impedir colisão entre sidecars independentes (BATCH-115). |
+| DEC-110 | 2026-08-14 | accepted | Governança de bundles Tailwind por recurso e compilação incremental (BATCH-114). |
+| DEC-111 | 2026-08-17 | accepted | Política de captura de CSS compilado na Editbar e delta contra cascata real (BATCH-117). |
+| DEC-112 | 2026-08-17 | accepted | Resolução de conflitos de display em layouts Tailwind e filtro fino de theme (BATCH-118). |
+| DEC-113 | 2026-08-18 | accepted | Arquitetura híbrida de layouts Tailwind e coexistência de componentes de interface (BATCH-119). |
+| DEC-114 | 2026-08-19 | accepted | Migração estruturada de telas públicas de identidade para Tailwind puro (BATCH-121). |
+| DEC-115 | 2026-08-20 | accepted | Customização de rótulos e ordenação de módulos administrativos em modulos-grupos (BATCH-125). |
+| DEC-116 | 2026-08-21 | accepted | Atualização Global da Documentação, Readmes, Changelogs e Workflows de Release (Gestor v2.9.39 e Instalador v1.5.6) (BATCH-127). |
 
 ---
 
@@ -933,3 +940,26 @@ a mesma condição para o CSS e o JS do Fomantic — um layout `tailwindcss` per
   regressão. Migrá-las é o caminho natural dos próximos lotes.
 - A dívida "decisão de arquitetura sobre Tailwind no painel administrativo", registrada no review de
   2026-08-15, está fechada.
+
+---
+
+## DEC-116 - 2026-08-21 - accepted
+
+Atualização Global da Documentação, Readmes, Changelogs e Workflows de Release (Gestor v2.9.39 e Instalador v1.5.6) (BATCH-127). Decisões desta rodada:
+
+1. **Sincronização Integrada da Linha de Lançamento**: Todas as notas de versão em `CHANGELOG.md` e `CHANGELOG-PT-BR.md` serão consolidadas na versão `[2.9.39] - 2026-08-21`, categorizando as grandes entregas dos lotes BATCH-049 a BATCH-126 (Live Editor, Layouts Tailwind v4, Pull System & Sync Declarativo, Suporte Híbrido a PDF e Streaming, PAT, PayPal & Stripe, CLI c2f).
+2. **READMEs Alinhados ao Release v2.9.39 e Instalador v1.5.6**: A seção "Última Versão" dos arquivos `README.md` e `README-PT-BR.md` passa a refletir a versão `v2.9.39` com seus destaques executivos, e os links e comandos de download passam a apontar para `instalador-v1.5.6/instalador.zip`.
+3. **Descritivos Estruturados de Release nos Workflows do GitHub Actions**: Os workflows `release-gestor.yml` e `release-instalador.yml` recebem corpos de release (`body: |`) estruturados e ricos em detalhes, permitindo geração automática de notas no GitHub Releases compatíveis com os runners Node 24.
+
+---
+
+## DEC-117 - 2026-08-21 - accepted
+
+Correção de Reload em Erro de CSRF/Sessão, Mapeamento de Ícones de Projetos, Alternância de Botões de Menu e Saneamento do Lucide (req-125 / BATCH-127). Decisões desta rodada:
+
+1. **Reload Limpo e Fim do Loop de Sessão no Login**: Na tela de erro de CSRF inválido/sessão expirada (`gestor_csrf_resposta_invalida()`), o botão "Voltar" passa a verificar a rota de origem (`/signin/`) e disparar recarregamento limpo / `location.replace`, garantindo a obtenção de um novo token CSRF e novo cookie de sessão no servidor, sem reciclar formulários expirados do histórico (bfcache) do navegador.
+2. **Mapeamento Canônico de Ícones de Módulos de Projetos Derivados**: Todos os módulos de extensões e projetos irmãos (`catalogo-3d`, `catalogo-3d-grupos`, `catalogo-3d-itens`, `conexoes-sociais`, `gateways-pagamentos`, `publicador-midias-sociais`, `social-apps`, `arquivos`, `admin-arquivos`, `modulos-grupos-distribuidos`) passam a declarar o par oficial de ícones Fomantic e Lucide (em formato kebab-case estrito) tanto em `ModulosData.json` quanto na migração Phinx `20260821100000_alter_modulos_update_icones_projetos.php`.
+3. **Alternância Contextual de Botões no Layout Administrativo Tailwind**: O botão `[data-admin-abrir]` recebe `lg:hidden` no HTML inicial para evitar visualização concorrente com o menu aberto no desktop; o runtime `admin-tailwind.js` alterna as classes `hidden` nos métodos `abrir()` e `fechar()`, mantendo visibilidade contextual exclusiva em mobile e desktop.
+4. **Saneamento em Duas Camadas do Lucide para Eliminar Warnings de Console**: Implementada validação de identificadores Lucide válidos (`/^[a-z0-9]+(?:-[a-z0-9]+)*$/`) no backend (`gestor_pagina_menu_icone_lucide_atributo`) e no frontend (`desenharIcones` em `admin-tailwind.js`), omitindo `data-lucide` para nomes compostos legados do Fomantic e mantendo o console do desenvolvedor 100% limpo.
+
+

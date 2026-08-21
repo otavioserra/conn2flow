@@ -39,14 +39,14 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
 ## Última Versão
 
-**v2.9.0 (16 Junho 2026)**
+**v2.9.39 (Agosto 2026)**
 
 **🎯 Principais Novidades:**
+- **Layouts Administrativo e Público em Tailwind CSS**: Nova interface administrativa responsiva com menu retrátil, redimensionador de barra lateral, busca em tempo real com navegação por teclado e suporte nativo ao catálogo de ícones Lucide.
+- **Hardening de Segurança e Zero Loop CSRF**: Validação CSRF com tokens CSPRNG, recarregamento limpo de sessão expirada na tela de login (`/signin/`) e proteção com cabeçalhos de segurança HTTP.
+- **Tokens de Acesso Pessoal (PAT) e Recuperação 2FA**: Gestão de tokens de API com escopos no painel do usuário e códigos de recuperação descartáveis para autenticação de dois fatores.
 - **Editor HTML Visual Avançado**: Toolbar flutuante com painel de estilos (20 grupos de formatação), paletas de cores, D&D com placeholders interativos, clipboard integrado (Copiar/Colar com atalhos Ctrl+C/V), ferramenta Embrulhar (Wrap) e renderizador de widgets AJAX.
-- **Segurança e Autenticação**: Suporte a autenticação de dois fatores (2FA via aplicativo/e-mail), login por e-mail sem senha (OTP), assistente interativo de configuração OAuth e perfis restritos de chaves de API com proteção 2FA.
 - **Suíte de Testes Automatizados**: Integração de testes automatizados (PHPUnit, Vitest, Playwright) rodando localmente e integrados no CI/CD do GitHub Actions.
-- **Publicador Índice e Curadoria Manual**: Curadoria manual com ordenação na listagem, busca inteligente com tratamento de acentuação Unicode, paginação dinâmica com métricas e prefixagem dinâmica da URL raiz em campos de imagem.
-- **Modularização de Código**: Extração das 26 simulações do editor para o arquivo independente `html-editor-modules.js`.
 
 Para o changelog completo, consulte [CHANGELOG-PT-BR.md](CHANGELOG-PT-BR.md).
 
@@ -57,7 +57,7 @@ Conn2Flow apresenta um **instalador web automatizado moderno** que simplifica o 
 ### Pré-requisitos
 
 - **Servidor Web**: Apache ou Nginx com suporte a PHP
-- **PHP**: Versão 8.0 ou superior com extensões necessárias (curl, zip, pdo_mysql, openssl, mbstring, pdo_sqlite)
+- **PHP**: Versão 8.1 ou superior com extensões necessárias (curl, zip, pdo_mysql, openssl, mbstring, pdo_sqlite)
 - **MySQL**: Versão 5.7 ou superior (ou equivalente MariaDB)
 - **Node.js & NPM**: Node.js (v20+) e NPM (v10+) necessários para execução de testes locais, vitest, playwright e compilação do Tailwind CSS CLI v4
 - **Permissões de Escrita**: Servidor web deve ter acesso de escrita ao diretório de instalação

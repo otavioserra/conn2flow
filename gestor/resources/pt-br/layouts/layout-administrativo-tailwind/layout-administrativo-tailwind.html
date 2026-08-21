@@ -10,12 +10,22 @@
     <link rel="icon" type="image/png" sizes="16x16" href="@[[pagina#url-raiz]]@favicon/favicon-16x16.png">
     <link rel="manifest" href="@[[pagina#url-raiz]]@favicon/site.webmanifest">
     <!--
-        Apenas a folha de ÍCONES do Fomantic, não o framework. A coluna `modulos.icone` guarda nomes
-        de ícone Fomantic para todos os módulos instalados; trocar essa fonte exigiria reescrever o
-        cadastro inteiro e quebraria plugins de terceiros. O CSS de layout continua 100% Tailwind.
+        Apenas a folha de ÍCONES do Fomantic, não o framework. Ela desenha os ícones ESTRUTURAIS
+        escritos à mão neste layout (abrir/fechar menu, atalho do site, dashboard 3D, versão): eles
+        são fixos e nunca vêm do cadastro. O CSS de layout continua 100% Tailwind.
     -->
     <link rel="stylesheet" type="text/css" media="all"
         href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/components/icon.min.css">
+    <!--
+        req-124 F2: os ícones dos MÓDULOS são outra história. `gestor_pagina_menu_icone()` entrega a
+        um menu Tailwind o conteúdo de `modulos.icone_tailwind`, que é vocabulário Lucide — e os dois
+        catálogos não se traduzem. Sem o Lucide carregado, o componente escrevia `class="blocks icon"`
+        contra a folha do Fomantic e o ícone sumia sem erro nenhum em 19 dos 33 módulos do menu (os
+        que sobreviviam eram apenas os nomes que coincidem por acaso nos dois catálogos: `user`,
+        `home`, `search`…). O `defer` garante execução antes do DOMContentLoaded que dispara o
+        `admin-tailwind.js`, que chama `lucide.createIcons()`.
+    -->
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
     <!-- pagina#css -->
     <!-- pagina#js -->
 </head>
@@ -64,7 +74,7 @@
             <header class="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3">
                 <div class="flex items-center gap-3">
                     <button type="button" data-admin-abrir title="Abrir menu"
-                        class="inline-flex size-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50">
+                        class="inline-flex size-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50 lg:hidden">
                         <i class="bars icon"></i>
                     </button>
                     <a href="@[[pagina#url-raiz]]@dashboard/" class="inline-flex items-center">
@@ -80,7 +90,7 @@
                 </div>
             </header>
 
-            <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
+            <main data-admin-main class="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
                 @[[pagina#corpo]]@
             </main>
         </div>

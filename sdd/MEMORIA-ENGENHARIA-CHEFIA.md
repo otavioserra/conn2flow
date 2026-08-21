@@ -22,6 +22,9 @@
 - **Geração de Mensagens de Commit, Tags e Notas de Release**:
   - **REGRA CRÍTICA**: Ao propor textos para commits ou notas de tags que serão repassados pelo usuário como argumentos para scripts no terminal, **sempre use aspas simples** para destacar termos internamente (ex: `'Adicionar todos os campos'`). Isso evita conflitos com as aspas duplas delimitadoras do comando e previne a quebra do parsing no Bash/PowerShell, impedindo commits truncados ou com nomes genéricos (como "todos").
 
+- **Envio de Prompts e Textos para Repasse (Botão Copiar com 1 Clique)**:
+  - **PREFERÊNCIA DO USUÁRIO**: Sempre que gerar um prompt, comando ou texto destinado a ser copiado e repassado para outro agente ou terminal, encapsular o conteúdo dentro de **blocos de código delimitados por crases triplas** (` ``` `). Isso ativa a caixa com botão de cópia nativo de 1 clique na interface do chat, eliminando a necessidade de seleção manual de texto.
+
 ---
 
 ## Restrições Técnicas
