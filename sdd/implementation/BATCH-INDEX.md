@@ -66,6 +66,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-124 | implemented-pending-homologation | Correção da População de Publicadores de Destino no Modal Mover Publicação (req-122) | VALIDATION-CHECKLIST.md#batch-124 |
 | BATCH-125 | implemented-pending-homologation | Customização de Menus Administrativos: Labels e Ordenação em Módulos Grupos e Override de Componentes por Projeto (req-123) | VALIDATION-CHECKLIST.md#batch-125 |
 | BATCH-127 | implemented-pending-homologation | Correção de Reload em Erro de CSRF/Sessão, Mapeamento de Ícones de Projetos, Alternância de Botões Abrir/Fechar Menu e Eliminação de Warnings do Lucide (req-125) | [BATCH-127.md](BATCH-127.md) |
+| BATCH-128 | ready-for-intake | Mapeamento Completo de Ícones Tailwind/Lucide para os Módulos Restantes do Projeto `conn2flow-site` (req-126) | [BATCH-128.md](BATCH-128.md) |
 
 
 
