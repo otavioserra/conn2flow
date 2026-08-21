@@ -13,6 +13,46 @@ require_once(__DIR__ . '/config.php');
 
 // =========================== Funções de Montagem da Página
 
+/**
+ * Resolve o ícone de um módulo no vocabulário do menu que está sendo desenhado (req-086).
+ *
+ * O mesmo módulo aparece em menus de frameworks diferentes: o painel legado desenha
+ * `<i class="credit card outline icon">` (Fomantic UI) e os layouts Tailwind desenham
+ * `<i data-lucide="credit-card">`. Os catálogos não se traduzem — um nome do Lucide colocado em
+ * `modulos.icone` simplesmente não existe no Fomantic e o ícone some da tela sem erro nenhum.
+ *
+ * `icone`/`icone2` seguem sendo o vocabulário Fomantic (o histórico e o padrão de toda instalação
+ * existente); `icone_tailwind`/`icone2_tailwind` guardam o par.
+ *
+ * O fallback para o campo legado quando o par não foi declarado vale só para o ícone PRINCIPAL: é o
+ * que preserva o menu de instalações Tailwind que hoje escrevem o nome do Lucide direto em `icone`.
+ * No ícone ANCORADO o fallback seria nocivo — `icone2` guarda modificadores de posicionamento do
+ * Fomantic ("bottom right corner list") que não existem no Lucide, e herdá-lo abriria a célula de
+ * dois ícones para desenhar um `<i>` sem alvo nenhum.
+ *
+ * @param array $modulo Registro do módulo vindo da tabela `modulos`.
+ * @param string $campo Campo base a resolver: `icone` ou `icone2`.
+ * @param bool $tailwind Se o menu em desenho usa o framework Tailwind.
+ *
+ * @return string Nome do ícone, ou string vazia quando o módulo não declara nenhum.
+ */
+function gestor_pagina_menu_icone($modulo, $campo, $tailwind){
+	$legado = isset($modulo[$campo]) && is_string($modulo[$campo]) ? trim($modulo[$campo]) : '';
+
+	if(!$tailwind){
+		return $legado;
+	}
+
+	$campoTailwind = $campo.'_tailwind';
+	$especifico = isset($modulo[$campoTailwind]) && is_string($modulo[$campoTailwind]) ? trim($modulo[$campoTailwind]) : '';
+
+	if($especifico !== ''){
+		return $especifico;
+	}
+
+	return $campo === 'icone' ? $legado : '';
+}
+
 function gestor_pagina_menu($params = false){
 	global $_GESTOR;
 	
@@ -49,6 +89,36 @@ function gestor_pagina_menu($params = false){
 			$componenteMenuId = $_GESTOR['project-admin-menu-components']['padrao'];
 		} elseif (isset($_GESTOR['project-admin-menu-components']['default'])) {
 			$componenteMenuId = $_GESTOR['project-admin-menu-components']['default'];
+		}
+	}
+
+	// req-086: Configuração dos itens PADRÃO do menu por projeto ($_GESTOR['project-admin-menu-config']).
+	//
+	// Dashboard e Sair não vêm da árvore de módulos: o motor os injeta sempre, no topo e no rodapé.
+	// Um layout autoral pode já resolver os dois por conta própria (dashboard na navegação, logout
+	// no menu do avatar) e aí o item do motor vira duplicata — mas o MESMO projeto continua servindo
+	// o painel genérico, onde os dois itens são a única saída. Por isso a chave é o layout, igual ao
+	// mapa de componentes acima, e não uma decisão global do projeto.
+	//
+	// Dentro de cada layout, `perfis` guarda exceções por perfil de usuário: um perfil listado usa a
+	// configuração dele, qualquer outro cai na do layout. Perfil administrativo pode assim manter o
+	// Dashboard e o Sair numa tela em que o assinante não os vê.
+	//
+	// A ausência da variável — e a de uma entrada para o layout corrente — mantém o comportamento
+	// histórico intacto.
+	$menuConfigProjeto = (isset($_GESTOR['project-admin-menu-config']) && is_array($_GESTOR['project-admin-menu-config']))
+		? $_GESTOR['project-admin-menu-config']
+		: Array();
+
+	$menuConfig = Array();
+
+	if($menuConfigProjeto){
+		if($layoutAtualId && isset($menuConfigProjeto[$layoutAtualId]) && is_array($menuConfigProjeto[$layoutAtualId])){
+			$menuConfig = $menuConfigProjeto[$layoutAtualId];
+		} elseif (isset($menuConfigProjeto['padrao']) && is_array($menuConfigProjeto['padrao'])) {
+			$menuConfig = $menuConfigProjeto['padrao'];
+		} elseif (isset($menuConfigProjeto['default']) && is_array($menuConfigProjeto['default'])) {
+			$menuConfig = $menuConfigProjeto['default'];
 		}
 	}
 
@@ -166,7 +236,22 @@ function gestor_pagina_menu($params = false){
 			"WHERE perfil='".$perfil."'"
 		);
 	}
-	
+
+	// req-086: identificador TEXTUAL do perfil corrente, unificando os três ramos acima — usuário de
+	// host com perfil de gestor próprio (`gestor_perfil`), usuário de host que herda o perfil do pai
+	// e usuário direto (`perfil`). É a chave usada pelas exceções por perfil da configuração de menu.
+	$menuPerfilId = isset($perfil) ? $perfil : (isset($gestor_perfil) ? $gestor_perfil : null);
+
+	if($menuPerfilId && !empty($menuConfig['perfis']) && is_array($menuConfig['perfis'])
+		&& isset($menuConfig['perfis'][$menuPerfilId]) && is_array($menuConfig['perfis'][$menuPerfilId])){
+		// A exceção SUBSTITUI a configuração do layout em vez de somar-se a ela: um perfil listado
+		// declara por inteiro o que vê, e omitir uma flag ali significa "não esconder", não "herdar".
+		$menuConfig = $menuConfig['perfis'][$menuPerfilId];
+	}
+
+	$menuOcultarDashboard = !empty($menuConfig['hide_dashboard']);
+	$menuOcultarLogout = !empty($menuConfig['hide_logout']) || !empty($menuConfig['hide_signout']);
+
 	// ===== Pegar dados de páginas e módulos
 	
 	$paginas = banco_select_name
@@ -182,18 +267,31 @@ function gestor_pagina_menu($params = false){
 		." AND language='".$_GESTOR['linguagem-codigo']."'"
 	);
 	
+	// req-086: as colunas do vocabulário Tailwind chegam por migração e o código pode alcançar um
+	// banco que ainda não a rodou. Sem o guard a consulta inteira falharia e o menu sumiria — o
+	// desfecho aceitável é o menu seguir desenhando com o vocabulário legado.
+	$camposModulos = Array(
+		'id_modulos',
+		'modulo_grupo_id', // campo textual
+		'id',
+		'nome',
+		'icone',
+		'icone2',
+		'titulo',
+		'plugin',
+	);
+
+	if(banco_campo_existe('icone_tailwind','modulos')){
+		$camposModulos[] = 'icone_tailwind';
+	}
+
+	if(banco_campo_existe('icone2_tailwind','modulos')){
+		$camposModulos[] = 'icone2_tailwind';
+	}
+
 	$modulos = banco_select_name
 	(
-		banco_campos_virgulas(Array(
-			'id_modulos',
-			'modulo_grupo_id', // campo textual
-			'id',
-			'nome',
-			'icone',
-			'icone2',
-			'titulo',
-			'plugin',
-		))
+		banco_campos_virgulas($camposModulos)
 		,
 		"modulos",
 		"WHERE nao_menu_principal IS NULL"
@@ -303,17 +401,24 @@ function gestor_pagina_menu($params = false){
 
 		$cel_aux = modelo_var_troca($cel_aux,"#class#",(isset($_GESTOR['modulo-id']) && $modulo['id'] == $_GESTOR['modulo-id'] ? $menuClasseAtiva : ''));
 		
-		if($modulo['icone2']){
+		// req-086: o vocabulário do ícone acompanha o framework do menu. A escolha é feita ANTES de
+		// decidir a célula porque é o ícone secundário RESOLVIDO que diz se há dois ícones a
+		// desenhar: um módulo com `icone2` só no vocabulário Fomantic não deve abrir a célula
+		// dupla num menu Tailwind, senão o segundo `<i>` sai sem alvo.
+		$moduloIcone = gestor_pagina_menu_icone($modulo,'icone',$menuTailwind);
+		$moduloIcone2 = gestor_pagina_menu_icone($modulo,'icone2',$menuTailwind);
+
+		if($moduloIcone2){
 			$cel_nome_icon = 'icon-2';
 			$cel_icon = $cel[$cel_nome_icon];
-			
-			$cel_icon = modelo_var_troca($cel_icon,"#icon-2#",($modulo['icone2'] ? $modulo['icone2'] : 'question circle outline'));
+
+			$cel_icon = modelo_var_troca($cel_icon,"#icon-2#",$moduloIcone2);
 		} else {
 			$cel_nome_icon = 'icon';
 			$cel_icon = $cel[$cel_nome_icon];
 		}
-		
-		$cel_icon = modelo_var_troca($cel_icon,"#icon#",($modulo['icone'] ? $modulo['icone'] : 'question circle outline'));
+
+		$cel_icon = modelo_var_troca($cel_icon,"#icon#",($moduloIcone ? $moduloIcone : ($menuTailwind ? 'circle-help' : 'question circle outline')));
 		
 		$cel_aux = modelo_var_troca($cel_aux,"<!-- icon -->",$cel_icon);
 		
@@ -371,15 +476,20 @@ function gestor_pagina_menu($params = false){
 	$menuConteiner = $cel['conteiner'];
 	
 	// ===== Incluir dashboard no conteiner
-	
-	$cel_simples = $cel['simples'];
-	$cel_simples = modelo_var_troca($cel_simples,"<!-- itemMenu -->",$dashboard);
-	
-	$cel_conteiner = $cel['itemContCel'];
-	$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$cel_simples);
-	
-	$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
-	
+
+	// req-086: com `hide_dashboard` a célula simples inteira é pulada. Preencher com string vazia
+	// não bastaria: o `itemContCel` continuaria no menu como um bloco vazio, com a borda e o
+	// espaçamento do grupo desenhados em volta de nada.
+	if(!$menuOcultarDashboard){
+		$cel_simples = $cel['simples'];
+		$cel_simples = modelo_var_troca($cel_simples,"<!-- itemMenu -->",$dashboard);
+
+		$cel_conteiner = $cel['itemContCel'];
+		$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$cel_simples);
+
+		$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
+	}
+
 	// ===== Incluir grupos no conteiner (em ordem de prioridade definida na consulta).
 	
 	if($modulos_grupos)
@@ -393,32 +503,37 @@ function gestor_pagina_menu($params = false){
 	}
 	
 	// ===== Incluir sair no conteiner
-	
-	$cel_nome = 'item';
-	$cel_aux = $cel[$cel_nome];
-	
-	$cel_aux = modelo_var_troca($cel_aux,"#nome#",gestor_variaveis(Array('id' => 'logout-label','modulo' => 'dashboard')));
-	$cel_aux = modelo_var_troca($cel_aux,"#class#",'');
-	
-	$cel_nome_icon = 'icon';
-	$cel_icon = $cel[$cel_nome_icon];
-	
-	$cel_icon = modelo_var_troca($cel_icon,"#icon#",'sign out alternate');
-	
-	$cel_aux = modelo_var_troca($cel_aux,"<!-- icon -->",$cel_icon);
-	
-	$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].'signout/');
-	
-	// ===== Incluir sair no conteiner
-	
-	$cel_simples = $cel['simples'];
-	$cel_simples = modelo_var_troca($cel_simples,"<!-- itemMenu -->",$cel_aux);
-	
-	$cel_conteiner = $cel['itemContCel'];
-	$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$cel_simples);
-	
-	$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
-	
+
+	// req-086: `hide_logout` (ou o apelido `hide_signout`) suprime o item de saída do rodapé. Um
+	// layout que já oferece o logout em outro lugar — menu do avatar, barra superior — passa a não
+	// repetir a mesma ação em dois pontos da mesma tela.
+	if(!$menuOcultarLogout){
+		$cel_nome = 'item';
+		$cel_aux = $cel[$cel_nome];
+
+		$cel_aux = modelo_var_troca($cel_aux,"#nome#",gestor_variaveis(Array('id' => 'logout-label','modulo' => 'dashboard')));
+		$cel_aux = modelo_var_troca($cel_aux,"#class#",'');
+
+		$cel_nome_icon = 'icon';
+		$cel_icon = $cel[$cel_nome_icon];
+
+		// req-086: o item de saída não vem da tabela `modulos`, então o vocabulário do ícone é
+		// escolhido aqui pelo mesmo critério dos demais itens.
+		$cel_icon = modelo_var_troca($cel_icon,"#icon#",($menuTailwind ? 'log-out' : 'sign out alternate'));
+
+		$cel_aux = modelo_var_troca($cel_aux,"<!-- icon -->",$cel_icon);
+
+		$cel_aux = modelo_var_troca_tudo($cel_aux,"#link#",$_GESTOR['url-raiz'].'signout/');
+
+		$cel_simples = $cel['simples'];
+		$cel_simples = modelo_var_troca($cel_simples,"<!-- itemMenu -->",$cel_aux);
+
+		$cel_conteiner = $cel['itemContCel'];
+		$cel_conteiner = modelo_var_troca($cel_conteiner,"#itemCont#",$cel_simples);
+
+		$menuConteiner = modelo_var_in($menuConteiner,'<!-- itemContCel -->',$cel_conteiner);
+	}
+
 	// ===== Remover celulas inúteis
 
 	$menuConteiner = modelo_var_troca($menuConteiner,'<!-- itemContCel -->','');
@@ -2408,11 +2523,15 @@ function gestor_roteador(){
 		);
 	}
 
-	// ===== Pegar o id também em ambiente de desenvolvimento afim de buscar o resource por id.
+	// ===== Identificador da página.
+	//
+	// Em ambiente de desenvolvimento o id serve para localizar o recurso em disco. req-086: ele
+	// passou a ser necessário em QUALQUER ambiente — é a chave por onde a configuração de projeto
+	// reconhece a rota (`project-page-tailwind-bundles`). Enquanto vinha só em desenvolvimento,
+	// `$paginas[0]['id']` chegava vazio em produção e toda decisão baseada nele virava no-op
+	// silencioso: o comportamento divergia entre os dois ambientes sem nada acusar.
 
-	if($_GESTOR['development-env']){
-		$campos[] = 'id';
-	}
+	$campos[] = 'id';
 
 	// ===== Buscar no banco de dados o alvo da requisição
 	
@@ -2641,6 +2760,28 @@ function gestor_roteador(){
 			$_GESTOR['pagina'] = $html;
 			$_GESTOR['pagina#titulo'] = $nome;
 			$_GESTOR['pagina#framework_css'] = $framework_css;
+			$_GESTOR['pagina#id'] = $id;
+
+			// req-086: bundle canônico do Tailwind declarado por PROJETO.
+			//
+			// O bundle tem DOIS lados: o build compila layout + página + dependências num CSS só
+			// (`tailwind_bundle` no manifesto) e o runtime precisa saber que deve usar esse CSS
+			// sozinho, descartando os sidecars (`tailwind-page-bundle`). Hoje o segundo lado é
+			// ligado à mão dentro do PHP de cada módulo — o que só serve a quem é dono do módulo.
+			//
+			// Um projeto que sobrescreve a página de um módulo do núcleo com um layout próprio
+			// precisa exatamente disso e não pode editar o núcleo: sem o flag, o CSS da página
+			// entra DEPOIS do layout e utilities sem variante (`hidden`) passam por cima das
+			// responsivas (`md:flex`) — o menu do cabeçalho desaparece no desktop, sem erro nenhum.
+			//
+			// Ligar o flag sem o bundle correspondente no build é o oposto e também quebra: os
+			// sidecars seriam descartados sem ninguém no lugar deles. Por isso a lista é declarada
+			// pelo projeto, ao lado do manifesto que a sustenta.
+			if(!empty($_GESTOR['project-page-tailwind-bundles']) && is_array($_GESTOR['project-page-tailwind-bundles'])){
+				if($id && in_array($id, $_GESTOR['project-page-tailwind-bundles'], true)){
+					$_GESTOR['tailwind-page-bundle'] = true;
+				}
+			}
 
 			// ===== req-110: metadados de compartilhamento social da página alimentam o OpenGraph
 			//       montado pelo BATCH-109 (gestor_open_graph_dados). Valor vazio cai no fallback.

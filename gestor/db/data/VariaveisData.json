@@ -9444,7 +9444,7 @@
         "language": "pt-br",
         "modulo": "modulos",
         "id": "form-icon-label",
-        "valor": "Ícone",
+        "valor": "Ícone (Fomantic UI)",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9453,7 +9453,7 @@
         "language": "pt-br",
         "modulo": "modulos",
         "id": "form-icon-placeholder",
-        "valor": "Ícone",
+        "valor": "Ex.: credit card outline",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9480,7 +9480,7 @@
         "language": "pt-br",
         "modulo": "modulos",
         "id": "form-icon-2-label",
-        "valor": "Ícone Ancorado",
+        "valor": "Ícone Ancorado (Fomantic UI)",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9489,7 +9489,43 @@
         "language": "pt-br",
         "modulo": "modulos",
         "id": "form-icon-2-placeholder",
-        "valor": "Ícone Ancorado",
+        "valor": "Ex.: bottom right corner cog",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "modulos",
+        "id": "form-icon-tailwind-label",
+        "valor": "Ícone (Tailwind CSS \/ Lucide)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "modulos",
+        "id": "form-icon-tailwind-placeholder",
+        "valor": "Ex.: credit-card",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "modulos",
+        "id": "form-icon-2-tailwind-label",
+        "valor": "Ícone Ancorado (Tailwind CSS \/ Lucide)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "modulos",
+        "id": "form-icon-2-tailwind-placeholder",
+        "valor": "Ex.: layers",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9651,7 +9687,7 @@
         "language": "en",
         "modulo": "modulos",
         "id": "form-icon-label",
-        "valor": "Icon",
+        "valor": "Icon (Fomantic UI)",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9660,7 +9696,7 @@
         "language": "en",
         "modulo": "modulos",
         "id": "form-icon-placeholder",
-        "valor": "Icon",
+        "valor": "e.g. credit card outline",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9687,7 +9723,7 @@
         "language": "en",
         "modulo": "modulos",
         "id": "form-icon-2-label",
-        "valor": "Anchored Icon",
+        "valor": "Anchored Icon (Fomantic UI)",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9696,7 +9732,7 @@
         "language": "en",
         "modulo": "modulos",
         "id": "form-icon-2-placeholder",
-        "valor": "Anchored Icon",
+        "valor": "e.g. bottom right corner cog",
         "tipo": "string",
         "grupo": null,
         "descricao": null

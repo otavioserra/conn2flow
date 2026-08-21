@@ -1,13 +1,30 @@
 $(document).ready(function(){
-	
+
+	// req-086: este arquivo nasceu para telas Fomantic e é servido em TODAS as rotas do módulo —
+	// inclusive nas migradas para Tailwind puro, onde o Fomantic não é carregado. Ali `$.fn.form` e
+	// `$.fn.checkbox` não existem e a chamada lança `TypeError`, abortando o resto do `ready()` e
+	// levando junto a lógica de produto que vem depois (alternador de método de login, 2FA, QR Code).
+	//
+	// Nas telas Tailwind quem valida e envia o formulário é `interface-tailwind.js`, que intercepta o
+	// `submit` nativo — então o caminho correto aqui é simplesmente NÃO chamar o plugin e deixar o
+	// envio seguir. As duas checagens abaixo separam o que é do Fomantic do que é do produto.
+	var temFormFomantic = (typeof $.fn.form === 'function');
+	var temCheckboxFomantic = (typeof $.fn.checkbox === 'function');
+
 	if($('#_gestor-form-signup').length > 0){
-		$('.radio.checkbox')
-			.checkbox();
-			
+		if(temCheckboxFomantic){
+			$('.radio.checkbox')
+				.checkbox();
+		}
+
 		var formSelector = '#_gestor-form-signup';
 		var googleRecaptchaDone = false;
 		var submitBtnClicked = false;
-		
+
+		// `$.formReiniciar` e `$.formSubmit` são do `interface.js` legado, que não é carregado nas
+		// telas Tailwind — ali o runtime é o `interface-tailwind.js`, e chamar estes helpers
+		// lançaria `TypeError` antes mesmo de o formulário existir na tela.
+		if(temFormFomantic && typeof $.formReiniciar === 'function')
 		$.formReiniciar({
 			formOnSuccessCalback : 'reCaptcha',
 			formOnSuccessCalbackFunc : function(){
@@ -55,17 +72,23 @@ $(document).ready(function(){
 			}
 			
 			submitBtnClicked = true;
-			
-			$(formSelector).form('submit');
+
+			if(temFormFomantic){
+				$(formSelector).form('submit');
+			}
 		});
 		
 	}
 	
 	var $authForm = $('#_gestor-form-logar').length > 0 ? $('#_gestor-form-logar') : $('#_gestor-form-autenticar');
 	if($authForm.length > 0){
-		$('.checkbox')
-			.checkbox();
-		
+		// Sem o plugin, o `<input type="checkbox">` nativo já é interativo por conta própria — o
+		// Fomantic só o substituía por um controle estilizado.
+		if(temCheckboxFomantic){
+			$('.checkbox')
+				.checkbox();
+		}
+
 		var formSelector2 = '#' + $authForm.attr('id');
 		var submitBtnClicked = false;
 		var setLoginMethod = function(method){
@@ -91,7 +114,10 @@ $(document).ready(function(){
 		});
 
 		setLoginMethod($(formSelector2).find('#login_method').val() || 'password');
-		
+
+		// A validação e o gancho do reCAPTCHA abaixo são do Fomantic. Em Tailwind, `interface-tailwind.js`
+		// valida pelas mesmas `gestor.interface.regrasValidacao` e intercepta o `submit` nativo.
+		if(temFormFomantic)
 		$(formSelector2)
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
@@ -128,17 +154,23 @@ $(document).ready(function(){
 			}
 			
 			submitBtnClicked = true;
-			
-			$(formSelector2).form('submit');
+
+			// Com Fomantic, o envio passa pelo `.form('submit')` para validar antes. Sem ele, o
+			// botão é `type="submit"` e o envio nativo segue sozinho — `interface-tailwind.js` já
+			// está escutando esse `submit`. Forçar algo aqui enviaria o formulário duas vezes.
+			if(temFormFomantic){
+				$(formSelector2).form('submit');
+			}
 		});
 	}
-	
+
 	if($('#_gestor-form-forgot-password').length > 0){
 		var formSelector3 = '#_gestor-form-forgot-password';
 		
 		var googleRecaptcha = false;
 		var submitBtnClicked = false;
-		
+
+		if(temFormFomantic)
 		$(formSelector3)
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
@@ -175,23 +207,28 @@ $(document).ready(function(){
 			}
 			
 			submitBtnClicked = true;
-			
-			$(formSelector2).form('submit');
+
+			// req-086: era `formSelector2` — a variável do bloco de LOGIN, que nesta tela nunca foi
+			// atribuída. `$(undefined).form(...)` lançava `TypeError` a cada clique no botão de
+			// recuperar senha, mesmo com o Fomantic presente.
+			if(temFormFomantic){
+				$(formSelector3).form('submit');
+			}
 		});
 	}
-	
+
 	if($('#_gestor-validar-usuario').length > 0){
 		
 	}
 	
-	if($('#_gestor-restrict-area').length > 0){
+	if($('#_gestor-restrict-area').length > 0 && temFormFomantic){
 		$('.ui.form')
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 			});
 	}
 
-	if($('#_gestor-redefine-password').length > 0){
+	if($('#_gestor-redefine-password').length > 0 && temFormFomantic){
 		$('#_gestor-form-redefine-password')
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),

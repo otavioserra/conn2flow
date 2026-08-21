@@ -25,7 +25,7 @@
                     "name": "OAuth 2.0 Authenticação",
                     "id": "oauth-authenticate",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "oauth-authenticate\/",
+                    "path": "oauth-authenticate/",
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
@@ -38,10 +38,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -52,13 +52,13 @@
                             "id": "perfil-usuario-login-metodos"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "OAuth 2.0 Verificação 2FA",
                     "id": "oauth-authenticate-2fa",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "oauth-authenticate-2fa\/",
+                    "path": "oauth-authenticate-2fa/",
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
@@ -71,10 +71,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -85,7 +85,7 @@
                             "id": "perfil-usuario-login-metodos"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Acessar Sistema",
@@ -98,16 +98,16 @@
                         "combined": "577361b39f641808b2042154fe69e1f9"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "signin\/",
+                    "path": "signin/",
                     "type": "system",
                     "option": "signin",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -118,14 +118,14 @@
                             "id": "perfil-usuario-login-metodos"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Verificação em Duas Etapas",
                     "id": "signin-2fa",
                     "version": "1.5",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "signin-2fa\/",
+                    "path": "signin-2fa/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
@@ -137,10 +137,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -151,14 +151,14 @@
                             "id": "perfil-usuario-login-metodos"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Login Social",
                     "id": "social-login",
                     "version": "1.4",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "social-login\/",
+                    "path": "social-login/",
                     "type": "system",
                     "option": "social-login",
                     "without_permission": true,
@@ -170,17 +170,17 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Callback OAuth",
                     "id": "oauth-callback",
                     "version": "1.4",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "oauth-callback\/",
+                    "path": "oauth-callback/",
                     "type": "system",
                     "option": "oauth-callback",
                     "without_permission": true,
@@ -192,10 +192,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Sair Sistema",
@@ -208,37 +208,37 @@
                         "combined": "b71983ce204302b4366e57456d905c63"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "signout\/",
+                    "path": "signout/",
                     "type": "system",
                     "option": "signout",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Perfil Usuário",
                     "id": "perfil-usuario",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "96c8808b17dc63af3248a907790fb43e",
+                        "html": "6ed00170400438047a8338ab2fc1bd8c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "96c8808b17dc63af3248a907790fb43e"
+                        "combined": "6ed00170400438047a8338ab2fc1bd8c"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "perfil-usuario\/",
+                    "path": "perfil-usuario/",
                     "type": "system",
                     "option": "editar",
                     "root": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
                         {
@@ -284,7 +284,7 @@
                             "id": "perfil-usuario-api-tokens"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Área Restrita",
@@ -297,7 +297,7 @@
                         "combined": "f5f1056569e2e4e8cc90045a28da15f5"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "restrict-area\/",
+                    "path": "restrict-area/",
                     "type": "system",
                     "option": "area-restrita",
                     "framework_css": "tailwindcss",
@@ -334,7 +334,7 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Validar Usuário",
@@ -347,16 +347,16 @@
                         "combined": "9ba20f61d477c5fb45deab801fa124b7"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "validate-user\/",
+                    "path": "validate-user/",
                     "type": "system",
                     "option": "validar-usuario",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Esqueceu a Senha",
@@ -369,16 +369,16 @@
                         "combined": "8f547e25eba2ce4d6140216c70949cce"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "forgot-password\/",
+                    "path": "forgot-password/",
                     "type": "system",
                     "option": "forgot-password",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Esqueceu a Senha Email Enviado",
@@ -391,16 +391,16 @@
                         "combined": "f1497a363baa8daf131265465dfb9fe2"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "forgot-password-confirmation\/",
+                    "path": "forgot-password-confirmation/",
                     "type": "system",
                     "option": "forgot-password-confirmation",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Redefinir Senha",
@@ -413,16 +413,16 @@
                         "combined": "811bff9ab661eb5da96a938a80c51ac4"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "redefine-password\/",
+                    "path": "redefine-password/",
                     "type": "system",
                     "option": "redefine-password",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Redefinir Senha Confirmação",
@@ -435,16 +435,16 @@
                         "combined": "ffeb073c310b42ca8c85a4369993cd2f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "redefine-password-confirmation\/",
+                    "path": "redefine-password-confirmation/",
                     "type": "system",
                     "option": "redefine-password-confirmation",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Cadastrar no Sistema",
@@ -457,16 +457,16 @@
                         "combined": "6f11bc890694de90f6afc17c864d2f97"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "signup\/",
+                    "path": "signup/",
                     "type": "system",
                     "option": "signup",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Confirmação de Email",
@@ -479,16 +479,16 @@
                         "combined": "5f8d418d2ebb52df323bd0110decba1f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "email-confirmation\/",
+                    "path": "email-confirmation/",
                     "type": "system",
                     "option": "confirmacao-email",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 }
             ],
             "variables": [
@@ -679,7 +679,7 @@
                 },
                 {
                     "id": "alert-password-invalid",
-                    "value": "Senha incorreta! Você tem mais <b>#tentativas#<\/b> tentativas, senão será desconectado automaticamente!",
+                    "value": "Senha incorreta! Você tem mais <b>#tentativas#</b> tentativas, senão será desconectado automaticamente!",
                     "type": "string"
                 },
                 {
@@ -689,7 +689,7 @@
                 },
                 {
                     "id": "alert-there-is-a-field",
-                    "value": "Já existe cadastro do campo  <b>#label#<\/b> com o mesmo valor: <b>#value#<\/b>. Favor escolher outro  <b>#label#<\/b> e tentar novamente.",
+                    "value": "Já existe cadastro do campo  <b>#label#</b> com o mesmo valor: <b>#value#</b>. Favor escolher outro  <b>#label#</b> e tentar novamente.",
                     "type": "string"
                 },
                 {
@@ -704,7 +704,7 @@
                 },
                 {
                     "id": "alert-user-or-password-invalid",
-                    "value": "Usuário e\/ou Senha inválidos. Favor tentar novamente.",
+                    "value": "Usuário e/ou Senha inválidos. Favor tentar novamente.",
                     "type": "string"
                 },
                 {
@@ -824,7 +824,7 @@
                 },
                 {
                     "id": "restrict-area-info",
-                    "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar<\/b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
+                    "value": "Favor informar a senha logo abaixo e depois clicar no botão <b>Enviar</b> para autorizar provisoriamente a modificação de algum dado sensível da sua conta. ",
                     "type": "string"
                 },
                 {
@@ -964,12 +964,12 @@
                 },
                 {
                     "id": "forgot-password-message-content",
-                    "value": "Se sim, preencha o campo <b>Email<\/b> e depois o campo <b>Confirme o Email<\/b>. Em seguida o sistema irá enviar uma mensagem no endereço de email informado. Siga as orientações desta mensagem afim de criar uma nova senha.",
+                    "value": "Se sim, preencha o campo <b>Email</b> e depois o campo <b>Confirme o Email</b>. Em seguida o sistema irá enviar uma mensagem no endereço de email informado. Siga as orientações desta mensagem afim de criar uma nova senha.",
                     "type": "string"
                 },
                 {
                     "id": "alert-user-email-invalid",
-                    "value": "Não existe nenhum cadastro no sistema com o email informado: <b>#email#<\/b> . Verifique se o email enviado foi informado corretamente e tente denovo.",
+                    "value": "Não existe nenhum cadastro no sistema com o email informado: <b>#email#</b> . Verifique se o email enviado foi informado corretamente e tente denovo.",
                     "type": "string"
                 },
                 {
@@ -984,7 +984,7 @@
                 },
                 {
                     "id": "forgot-password-confirmation-message-content",
-                    "value": "Foi enviado uma mensagem com instruções para alterar a sua senha no seguinte email: <b>#email#<\/b> . Favor acessar o seu cliente de emails e seguir as orientações enviadas.",
+                    "value": "Foi enviado uma mensagem com instruções para alterar a sua senha no seguinte email: <b>#email#</b> . Favor acessar o seu cliente de emails e seguir as orientações enviadas.",
                     "type": "string"
                 },
                 {
@@ -1009,7 +1009,7 @@
                 },
                 {
                     "id": "redefine-password-message-content",
-                    "value": "Se sim, preencha o campo <b>Senha<\/b> e depois o campo <b>Confirme a Senha<\/b>. Então, clique no botão <b>Redefinir<\/b> para alterar a sua senha.",
+                    "value": "Se sim, preencha o campo <b>Senha</b> e depois o campo <b>Confirme a Senha</b>. Então, clique no botão <b>Redefinir</b> para alterar a sua senha.",
                     "type": "string"
                 },
                 {
@@ -1129,7 +1129,7 @@
                 },
                 {
                     "id": "alert-recaptcha-invalid",
-                    "value": "A sua requisição <b>não<\/b> foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um <b>robô<\/b>. Favor tentar novamente, mas caso o problema persista, favor entrar em contato clicando <b>#url#<\/b>.",
+                    "value": "A sua requisição <b>não</b> foi aceita pois nosso sistema automático de segurança considerou a mesma sendo feita por um <b>robô</b>. Favor tentar novamente, mas caso o problema persista, favor entrar em contato clicando <b>#url#</b>.",
                     "type": "string"
                 },
                 {
@@ -1164,7 +1164,7 @@
                 },
                 {
                     "id": "reset-password",
-                    "value": "senha redefinida com sucesso! <b>IP: #ip# | USER_AGENT: #user-agent#<\/b>",
+                    "value": "senha redefinida com sucesso! <b>IP: #ip# | USER_AGENT: #user-agent#</b>",
                     "type": "string"
                 },
                 {
@@ -1529,7 +1529,7 @@
                 },
                 {
                     "id": "login-blocked-message",
-                    "value": "Não é possível acessar sua conta deste dispositivo por excesso de tentativas com usuário e\/ou senha inválidos. Tente novamente mais tarde ou de outra rede.",
+                    "value": "Não é possível acessar sua conta deste dispositivo por excesso de tentativas com usuário e/ou senha inválidos. Tente novamente mais tarde ou de outra rede.",
                     "type": "string"
                 },
                 {
@@ -1631,91 +1631,91 @@
                     "id": "classe-cartao",
                     "value": "rounded-xl border border-slate-200 bg-white p-4 shadow-sm",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-titulo",
                     "value": "mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-rotulo",
                     "value": "mb-1 block text-sm font-semibold text-slate-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-campo",
                     "value": "block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-botao",
                     "value": "inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-botao-ok",
                     "value": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-botao-alerta",
                     "value": "inline-flex items-center gap-2 rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-botao-mini",
                     "value": "inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-etiqueta",
                     "value": "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-ajuda",
                     "value": "text-sm text-slate-500",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-campo",
-                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600\/20 focus:outline-none",
+                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-rotulo",
                     "value": "mb-1.5 block text-sm font-medium text-slate-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-ok",
                     "value": "rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-secundario",
-                    "value": "flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400\/40 focus-visible:outline-none",
+                    "value": "flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400/40 focus-visible:outline-none",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-aba",
                     "value": "flex-1 rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 }
             ],
             "components": [
@@ -1724,15 +1724,15 @@
                     "id": "perfil-usuario-seguranca",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
-                    "version": "1.1",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "253b75fbe7277852f01d1c85f048bdeb",
+                        "html": "9936df9c4332b9c857b4f9e9a269fb93",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "253b75fbe7277852f01d1c85f048bdeb"
+                        "combined": "9936df9c4332b9c857b4f9e9a269fb93"
                     }
                 },
                 {
@@ -1740,15 +1740,15 @@
                     "id": "perfil-usuario-sessoes",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
-                    "version": "1.1",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "786ac999fd46a7505b0d8663dd6d0d90",
+                        "html": "668e857f688b292743ff479ef68fd4af",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "786ac999fd46a7505b0d8663dd6d0d90"
+                        "combined": "668e857f688b292743ff479ef68fd4af"
                     }
                 },
                 {
@@ -1756,15 +1756,15 @@
                     "id": "perfil-usuario-api-tokens",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
-                    "version": "1.1",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "4e239c1e3916f6d1ffa50902c05aad0c",
+                        "html": "1664f8902a6f5ce7f3e4211d337155f0",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "4e239c1e3916f6d1ffa50902c05aad0c"
+                        "combined": "1664f8902a6f5ce7f3e4211d337155f0"
                     }
                 },
                 {
@@ -1772,15 +1772,15 @@
                     "id": "perfil-usuario-2fa-campos",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
-                    "version": "1.1",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "f6b1ae1f52474c449d13e060347285b6",
+                        "html": "e6e1838b3bd68f1cac00d6e60190a4b9",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f6b1ae1f52474c449d13e060347285b6"
+                        "combined": "e6e1838b3bd68f1cac00d6e60190a4b9"
                     }
                 },
                 {
@@ -1788,9 +1788,9 @@
                     "id": "perfil-usuario-login-metodos",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
                     "version": "1.1",
                     "checksum": {
                         "html": "deaab732b308719b1f11eb1efe5d3b2a",
@@ -1808,7 +1808,7 @@
                     "name": "OAuth 2.0 Authentication",
                     "id": "oauth-authenticate",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "oauth-authenticate\/",
+                    "path": "oauth-authenticate/",
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
@@ -1821,10 +1821,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -1835,13 +1835,13 @@
                             "id": "perfil-usuario-login-metodos"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "OAuth 2.0 2FA Verification",
                     "id": "oauth-authenticate-2fa",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "oauth-authenticate-2fa\/",
+                    "path": "oauth-authenticate-2fa/",
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
@@ -1854,10 +1854,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -1868,7 +1868,7 @@
                             "id": "perfil-usuario-login-metodos"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Access System",
@@ -1881,16 +1881,16 @@
                         "combined": "577361b39f641808b2042154fe69e1f9"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "signin\/",
+                    "path": "signin/",
                     "type": "system",
                     "option": "signin",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -1901,14 +1901,14 @@
                             "id": "perfil-usuario-login-metodos"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Two-Step Verification",
                     "id": "signin-2fa",
                     "version": "1.5",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "signin-2fa\/",
+                    "path": "signin-2fa/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
@@ -1920,10 +1920,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -1934,14 +1934,14 @@
                             "id": "perfil-usuario-login-metodos"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Social Login",
                     "id": "social-login",
                     "version": "1.4",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "social-login\/",
+                    "path": "social-login/",
                     "type": "system",
                     "option": "social-login",
                     "without_permission": true,
@@ -1953,17 +1953,17 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "OAuth Callback",
                     "id": "oauth-callback",
                     "version": "1.4",
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "oauth-callback\/",
+                    "path": "oauth-callback/",
                     "type": "system",
                     "option": "oauth-callback",
                     "without_permission": true,
@@ -1975,10 +1975,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Logout System",
@@ -1991,37 +1991,37 @@
                         "combined": "b71983ce204302b4366e57456d905c63"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "signout\/",
+                    "path": "signout/",
                     "type": "system",
                     "option": "signout",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "User Profile",
                     "id": "perfil-usuario",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "96c8808b17dc63af3248a907790fb43e",
+                        "html": "6ed00170400438047a8338ab2fc1bd8c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "96c8808b17dc63af3248a907790fb43e"
+                        "combined": "6ed00170400438047a8338ab2fc1bd8c"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "perfil-usuario\/",
+                    "path": "perfil-usuario/",
                     "type": "system",
                     "option": "editar",
                     "root": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis.",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
                         {
@@ -2067,7 +2067,7 @@
                             "id": "perfil-usuario-api-tokens"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Restricted Area",
@@ -2080,7 +2080,7 @@
                         "combined": "f5f1056569e2e4e8cc90045a28da15f5"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "restrict-area\/",
+                    "path": "restrict-area/",
                     "type": "system",
                     "option": "area-restrita",
                     "framework_css": "tailwindcss",
@@ -2117,7 +2117,7 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-118\/119\/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
+                    "tailwind_dependencies_reason": "REQ-118/119/120: o HTML destes paineis vive em componentes do Sistema de Recursos e e montado em runtime pelo PHP; sem declara-los, o bundle sai sem as utilities deles."
                 },
                 {
                     "name": "Validate User",
@@ -2130,16 +2130,16 @@
                         "combined": "9ba20f61d477c5fb45deab801fa124b7"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "validate-user\/",
+                    "path": "validate-user/",
                     "type": "system",
                     "option": "validar-usuario",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Forgot Password",
@@ -2152,16 +2152,16 @@
                         "combined": "8f547e25eba2ce4d6140216c70949cce"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "forgot-password\/",
+                    "path": "forgot-password/",
                     "type": "system",
                     "option": "forgot-password",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Forgot Password Email Sent",
@@ -2174,16 +2174,16 @@
                         "combined": "f1497a363baa8daf131265465dfb9fe2"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "forgot-password-confirmation\/",
+                    "path": "forgot-password-confirmation/",
                     "type": "system",
                     "option": "forgot-password-confirmation",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Reset Password",
@@ -2196,16 +2196,16 @@
                         "combined": "811bff9ab661eb5da96a938a80c51ac4"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "redefine-password\/",
+                    "path": "redefine-password/",
                     "type": "system",
                     "option": "redefine-password",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Reset Password Confirmation",
@@ -2218,16 +2218,16 @@
                         "combined": "ffeb073c310b42ca8c85a4369993cd2f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "redefine-password-confirmation\/",
+                    "path": "redefine-password-confirmation/",
                     "type": "system",
                     "option": "redefine-password-confirmation",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Register in System",
@@ -2240,16 +2240,16 @@
                         "combined": "6f11bc890694de90f6afc17c864d2f97"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "signup\/",
+                    "path": "signup/",
                     "type": "system",
                     "option": "signup",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 },
                 {
                     "name": "Email Confirmation",
@@ -2262,16 +2262,16 @@
                         "combined": "5f8d418d2ebb52df323bd0110decba1f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
-                    "path": "email-confirmation\/",
+                    "path": "email-confirmation/",
                     "type": "system",
                     "option": "confirmacao-email",
                     "without_permission": true,
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.php",
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.php",
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
+                    "tailwind_sources_reason": "REQ-118/120: o modulo monta blocos em runtime e as classes utilitarias vivem nas VARIAVEIS do sistema (perfil-usuario.json) — sem escanear os dois, o precompiled sai sem as utilities desses paineis."
                 }
             ],
             "components": [
@@ -2280,15 +2280,15 @@
                     "id": "perfil-usuario-seguranca",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
-                    "version": "1.1",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "253b75fbe7277852f01d1c85f048bdeb",
+                        "html": "9936df9c4332b9c857b4f9e9a269fb93",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "253b75fbe7277852f01d1c85f048bdeb"
+                        "combined": "9936df9c4332b9c857b4f9e9a269fb93"
                     }
                 },
                 {
@@ -2296,15 +2296,15 @@
                     "id": "perfil-usuario-sessoes",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
-                    "version": "1.1",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "786ac999fd46a7505b0d8663dd6d0d90",
+                        "html": "668e857f688b292743ff479ef68fd4af",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "786ac999fd46a7505b0d8663dd6d0d90"
+                        "combined": "668e857f688b292743ff479ef68fd4af"
                     }
                 },
                 {
@@ -2312,15 +2312,15 @@
                     "id": "perfil-usuario-api-tokens",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
-                    "version": "1.1",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "4e239c1e3916f6d1ffa50902c05aad0c",
+                        "html": "1664f8902a6f5ce7f3e4211d337155f0",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "4e239c1e3916f6d1ffa50902c05aad0c"
+                        "combined": "1664f8902a6f5ce7f3e4211d337155f0"
                     }
                 },
                 {
@@ -2328,15 +2328,15 @@
                     "id": "perfil-usuario-2fa-campos",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
-                    "version": "1.1",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "f6b1ae1f52474c449d13e060347285b6",
+                        "html": "e6e1838b3bd68f1cac00d6e60190a4b9",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f6b1ae1f52474c449d13e060347285b6"
+                        "combined": "e6e1838b3bd68f1cac00d6e60190a4b9"
                     }
                 },
                 {
@@ -2344,9 +2344,9 @@
                     "id": "perfil-usuario-login-metodos",
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/perfil-usuario.json"
+                        "../../../../perfil-usuario.json"
                     ],
-                    "tailwind_sources_reason": "REQ-118\/120: as classes do componente vivem nas variaveis do sistema.",
+                    "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema.",
                     "version": "1.1",
                     "checksum": {
                         "html": "deaab732b308719b1f11eb1efe5d3b2a",
@@ -2544,7 +2544,7 @@
                 },
                 {
                     "id": "alert-password-invalid",
-                    "value": "Incorrect password! You have <b>#tentativas#<\/b> more attempts, otherwise you will be automatically disconnected!",
+                    "value": "Incorrect password! You have <b>#tentativas#</b> more attempts, otherwise you will be automatically disconnected!",
                     "type": "string"
                 },
                 {
@@ -2554,7 +2554,7 @@
                 },
                 {
                     "id": "alert-there-is-a-field",
-                    "value": "There is already a registration for the field <b>#label#<\/b> with the same value: <b>#value#<\/b>. Please choose another <b>#label#<\/b> and try again.",
+                    "value": "There is already a registration for the field <b>#label#</b> with the same value: <b>#value#</b>. Please choose another <b>#label#</b> and try again.",
                     "type": "string"
                 },
                 {
@@ -2569,7 +2569,7 @@
                 },
                 {
                     "id": "alert-user-or-password-invalid",
-                    "value": "Invalid username and\/or password. Please try again.",
+                    "value": "Invalid username and/or password. Please try again.",
                     "type": "string"
                 },
                 {
@@ -2689,7 +2689,7 @@
                 },
                 {
                     "id": "restrict-area-info",
-                    "value": "Please enter your password below and then click the <b>Send<\/b> button to provisionally authorize the modification of any sensitive data in your account.",
+                    "value": "Please enter your password below and then click the <b>Send</b> button to provisionally authorize the modification of any sensitive data in your account.",
                     "type": "string"
                 },
                 {
@@ -2829,12 +2829,12 @@
                 },
                 {
                     "id": "forgot-password-message-content",
-                    "value": "If yes, fill in the <b>Email<\/b> field and then the <b>Confirm Email<\/b> field. Then the system will send a message to the email address provided. Follow the instructions in this message to create a new password.",
+                    "value": "If yes, fill in the <b>Email</b> field and then the <b>Confirm Email</b> field. Then the system will send a message to the email address provided. Follow the instructions in this message to create a new password.",
                     "type": "string"
                 },
                 {
                     "id": "alert-user-email-invalid",
-                    "value": "There is no registration in the system with the email provided: <b>#email#<\/b>. Please check if the email sent was entered correctly and try again.",
+                    "value": "There is no registration in the system with the email provided: <b>#email#</b>. Please check if the email sent was entered correctly and try again.",
                     "type": "string"
                 },
                 {
@@ -2849,7 +2849,7 @@
                 },
                 {
                     "id": "forgot-password-confirmation-message-content",
-                    "value": "A message with instructions to change your password was sent to the following email: <b>#email#<\/b>. Please access your email client and follow the instructions sent.",
+                    "value": "A message with instructions to change your password was sent to the following email: <b>#email#</b>. Please access your email client and follow the instructions sent.",
                     "type": "string"
                 },
                 {
@@ -2874,7 +2874,7 @@
                 },
                 {
                     "id": "redefine-password-message-content",
-                    "value": "If yes, fill in the <b>Password<\/b> field and then the <b>Confirm Password<\/b> field. Then, click the <b>Reset<\/b> button to change your password.",
+                    "value": "If yes, fill in the <b>Password</b> field and then the <b>Confirm Password</b> field. Then, click the <b>Reset</b> button to change your password.",
                     "type": "string"
                 },
                 {
@@ -2994,7 +2994,7 @@
                 },
                 {
                     "id": "alert-recaptcha-invalid",
-                    "value": "Your request <b>was not<\/b> accepted because our automatic security system considered it to be made by a <b>robot<\/b>. Please try again, but if the problem persists, please contact us by clicking <b>#url#<\/b>.",
+                    "value": "Your request <b>was not</b> accepted because our automatic security system considered it to be made by a <b>robot</b>. Please try again, but if the problem persists, please contact us by clicking <b>#url#</b>.",
                     "type": "string"
                 },
                 {
@@ -3029,7 +3029,7 @@
                 },
                 {
                     "id": "reset-password",
-                    "value": "password reset successfully! <b>IP: #ip# | USER_AGENT: #user-agent#<\/b>",
+                    "value": "password reset successfully! <b>IP: #ip# | USER_AGENT: #user-agent#</b>",
                     "type": "string"
                 },
                 {
@@ -3394,7 +3394,7 @@
                 },
                 {
                     "id": "login-blocked-message",
-                    "value": "This device cannot access your account due to too many attempts with an invalid user and\/or password. Try again later or from another network.",
+                    "value": "This device cannot access your account due to too many attempts with an invalid user and/or password. Try again later or from another network.",
                     "type": "string"
                 },
                 {
@@ -3496,94 +3496,94 @@
                     "id": "classe-cartao",
                     "value": "rounded-xl border border-slate-200 bg-white p-4 shadow-sm",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-titulo",
                     "value": "mb-3 flex items-center gap-2 text-sm font-semibold text-slate-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-rotulo",
                     "value": "mb-1 block text-sm font-semibold text-slate-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-campo",
                     "value": "block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-botao",
                     "value": "inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-botao-ok",
                     "value": "inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-botao-alerta",
                     "value": "inline-flex items-center gap-2 rounded-lg border border-red-600 bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-botao-mini",
                     "value": "inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-etiqueta",
                     "value": "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-ajuda",
                     "value": "text-sm text-slate-500",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-campo",
-                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600\/20 focus:outline-none",
+                    "value": "w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-rotulo",
                     "value": "mb-1.5 block text-sm font-medium text-slate-700",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-ok",
                     "value": "rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-secundario",
-                    "value": "flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400\/40 focus-visible:outline-none",
+                    "value": "flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400/40 focus-visible:outline-none",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 },
                 {
                     "id": "classe-publico-aba",
                     "value": "flex-1 rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900",
                     "type": "string",
-                    "description": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+                    "description": "Classes utilitarias do painel (req-118/119/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
                 }
             ]
         }
     },
-    "asset_version": "545803eaa40688a8"
+    "asset_version": "90af6879989405f8"
 }

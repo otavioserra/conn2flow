@@ -36,7 +36,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos/",
+                    "path": "modulos\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -44,28 +44,30 @@
                 {
                     "name": "Módulos - Adicionar",
                     "id": "modulos-adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "9d81f949dae0fcb93847661ae0b4feea",
+                        "html": "148ef155bfcac50e960e482314dc1570",
                         "css": "",
-                        "combined": "9d81f949dae0fcb93847661ae0b4feea"
+                        "css_precompiled": "",
+                        "combined": "148ef155bfcac50e960e482314dc1570"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos/adicionar/",
+                    "path": "modulos\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
                 },
                 {
                     "name": "Módulos - Editar",
                     "id": "modulos-editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "d704c8f82c733a8fc4455ffd72f0c079",
+                        "html": "53d364ca0512ab61703cacc6bffc77af",
                         "css": "",
-                        "combined": "d704c8f82c733a8fc4455ffd72f0c079"
+                        "css_precompiled": "",
+                        "combined": "53d364ca0512ab61703cacc6bffc77af"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos/editar/",
+                    "path": "modulos\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -79,7 +81,7 @@
                         "combined": "7d77c18e83b0b24c2bdde93b29428dd5"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos/variaveis/",
+                    "path": "modulos\/variaveis\/",
                     "type": "system",
                     "option": "variaveis"
                 },
@@ -93,7 +95,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos/sincronizar-bancos/",
+                    "path": "modulos\/sincronizar-bancos\/",
                     "type": "system",
                     "option": "sincronizar-bancos"
                 },
@@ -107,7 +109,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos/copiar-variaveis/",
+                    "path": "modulos\/copiar-variaveis\/",
                     "type": "system",
                     "option": "copiar-variaveis"
                 }
@@ -140,12 +142,12 @@
                 },
                 {
                     "id": "form-icon-label",
-                    "value": "Ícone",
+                    "value": "Ícone (Fomantic UI)",
                     "type": "string"
                 },
                 {
                     "id": "form-icon-placeholder",
-                    "value": "Ícone",
+                    "value": "Ex.: credit card outline",
                     "type": "string"
                 },
                 {
@@ -160,12 +162,32 @@
                 },
                 {
                     "id": "form-icon-2-label",
-                    "value": "Ícone Ancorado",
+                    "value": "Ícone Ancorado (Fomantic UI)",
                     "type": "string"
                 },
                 {
                     "id": "form-icon-2-placeholder",
-                    "value": "Ícone Ancorado",
+                    "value": "Ex.: bottom right corner cog",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-tailwind-label",
+                    "value": "Ícone (Tailwind CSS \/ Lucide)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-tailwind-placeholder",
+                    "value": "Ex.: credit-card",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-2-tailwind-label",
+                    "value": "Ícone Ancorado (Tailwind CSS \/ Lucide)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-icon-2-tailwind-placeholder",
+                    "value": "Ex.: layers",
                     "type": "string"
                 },
                 {
@@ -243,7 +265,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos/",
+                    "path": "modulos\/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -251,28 +273,30 @@
                 {
                     "name": "Modules - Add",
                     "id": "modulos-adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "9d81f949dae0fcb93847661ae0b4feea",
+                        "html": "148ef155bfcac50e960e482314dc1570",
                         "css": "",
-                        "combined": "9d81f949dae0fcb93847661ae0b4feea"
+                        "css_precompiled": "",
+                        "combined": "148ef155bfcac50e960e482314dc1570"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos/adicionar/",
+                    "path": "modulos\/adicionar\/",
                     "type": "system",
                     "option": "adicionar"
                 },
                 {
                     "name": "Modules - Edit",
                     "id": "modulos-editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "d704c8f82c733a8fc4455ffd72f0c079",
+                        "html": "53d364ca0512ab61703cacc6bffc77af",
                         "css": "",
-                        "combined": "d704c8f82c733a8fc4455ffd72f0c079"
+                        "css_precompiled": "",
+                        "combined": "53d364ca0512ab61703cacc6bffc77af"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos/editar/",
+                    "path": "modulos\/editar\/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -286,7 +310,7 @@
                         "combined": "a7a5a699f6ddbf8448edcdfcd2e369ac"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos/variaveis/",
+                    "path": "modulos\/variaveis\/",
                     "type": "system",
                     "option": "variaveis"
                 },
@@ -300,7 +324,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos/sincronizar-bancos/",
+                    "path": "modulos\/sincronizar-bancos\/",
                     "type": "system",
                     "option": "sincronizar-bancos"
                 },
@@ -314,7 +338,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos/copiar-variaveis/",
+                    "path": "modulos\/copiar-variaveis\/",
                     "type": "system",
                     "option": "copiar-variaveis"
                 }
@@ -348,12 +372,12 @@
                 },
                 {
                     "id": "form-icon-label",
-                    "value": "Icon",
+                    "value": "Icon (Fomantic UI)",
                     "type": "string"
                 },
                 {
                     "id": "form-icon-placeholder",
-                    "value": "Icon",
+                    "value": "e.g. credit card outline",
                     "type": "string"
                 },
                 {
@@ -368,12 +392,12 @@
                 },
                 {
                     "id": "form-icon-2-label",
-                    "value": "Anchored Icon",
+                    "value": "Anchored Icon (Fomantic UI)",
                     "type": "string"
                 },
                 {
                     "id": "form-icon-2-placeholder",
-                    "value": "Anchored Icon",
+                    "value": "e.g. bottom right corner cog",
                     "type": "string"
                 },
                 {

@@ -449,6 +449,10 @@ function modulos_adicionar(){
 		$campo_nome = "modulo_grupo_id"; $post_nome = "grupo"; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "icone"; $post_nome = "icone"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "icone2"; $post_nome = "icone2"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		// req-086: o par Tailwind só entra quando a migração já correu — em banco antigo a coluna
+		// não existe e o INSERT inteiro falharia.
+		$campo_nome = "icone_tailwind"; $post_nome = "icone_tailwind"; 					if(!empty($_REQUEST[$post_nome]) && banco_campo_existe($campo_nome,$modulo['tabela']['nome']))		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "icone2_tailwind"; $post_nome = "icone2_tailwind"; 				if(!empty($_REQUEST[$post_nome]) && banco_campo_existe($campo_nome,$modulo['tabela']['nome']))		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "plugin"; $post_nome = "plugin"; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "nao_menu_principal"; $post_nome = "menu"; 						if($_REQUEST[$post_nome] == 'nao')		$campos[] = Array($campo_nome,'1',true);
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
@@ -563,6 +567,17 @@ function modulos_editar(){
 		'plugin',
 		'host',
 	);
+
+	// req-086: vocabulário Tailwind do ícone. Entra na lista só depois da migração — a projeção da
+	// tela e a comparação de alterações leem esta mesma lista, então o guard vale para as três.
+	$camposIconeTailwind = Array();
+
+	foreach(Array('icone_tailwind','icone2_tailwind') as $campoIconeTailwind){
+		if(banco_campo_existe($campoIconeTailwind,$modulo['tabela']['nome'])){
+			$camposBanco[] = $campoIconeTailwind;
+			$camposIconeTailwind[] = $campoIconeTailwind;
+		}
+	}
 	
 	$camposBancoPadrao = Array(
 		$modulo['tabela']['status'],
@@ -651,7 +666,18 @@ function modulos_editar(){
 		$campo_nome = "titulo"; $request_name = $campo_nome; $alteracoes_name = 'title'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "icone"; $request_name = $campo_nome; $alteracoes_name = 'icon'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "icone2"; $request_name = $campo_nome; $alteracoes_name = 'icon-2'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
-		
+
+		// req-086: mesma regra dos campos acima, aplicada só às colunas que a migração já criou.
+		foreach($camposIconeTailwind as $campo_nome){
+			$request_name = $campo_nome;
+			$alteracoes_name = ($campo_nome == 'icone_tailwind' ? 'icon-tailwind' : 'icon-2-tailwind');
+
+			if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){
+				$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'";
+				$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));
+			}
+		}
+
 		$campo_nome = "nao_menu_principal"; $request_name = 'menu'; $alteracoes_name = 'menu'; if((banco_select_campos_antes($campo_nome) ? 'nao' : 'sim' ) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."=" . (banco_escape_field($_REQUEST[$request_name]) == 'nao' ? '1' : 'NULL' ); $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => (banco_select_campos_antes($campo_nome) ? 'Não' : 'Sim'),'valor_depois' => (banco_escape_field($_REQUEST[$request_name])) == 'sim' ? 'Sim' : 'Não');}
 		
 		$campo_nome = "host"; $request_name = 'host'; $alteracoes_name = 'host'; if(banco_select_campos_antes($campo_nome) != ($_REQUEST[$request_name] == 'on' ? '1' : NULL)){
@@ -717,6 +743,10 @@ function modulos_editar(){
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#nome#',$nome);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#icone#',$icone);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#icone2#',$icone2);
+		// req-086: em banco anterior à migração o campo não vem na consulta e o marcador precisa ser
+		// resolvido mesmo assim — senão `#icone_tailwind#` aparece cru dentro do input.
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#icone_tailwind#',(isset($retorno_bd['icone_tailwind']) ? $retorno_bd['icone_tailwind'] : ''));
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#icone2_tailwind#',(isset($retorno_bd['icone2_tailwind']) ? $retorno_bd['icone2_tailwind'] : ''));
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#titulo#',$titulo);
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#checked#',($host ? 'checked' : ''));
 		
