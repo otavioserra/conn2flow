@@ -43,29 +43,32 @@ jobs:
         name: "Instalador ${{ steps.tag.outputs.TAG_NAME }}"
         make_latest: true
         body: |
-          ## 🛠️ Conn2Flow Instalador Release ${{ steps.tag.outputs.TAG_NAME }} (Gestor v2.9.x + Interface Moderna Tailwind)
-          
-          Instalador automático do sistema Conn2Flow com **suporte completo ao Gestor v2.9.x**, incluindo sistema multilíngue, layouts modernos em Tailwind CSS, hardening de segurança e arquitetura de plugins.
-          
-          ### ✨ Recursos e Compatibilidade:
-          - ✅ **Compatibilidade Gestor v2.9.x**: Suporte a layouts administrativos e públicos Tailwind CSS e Fomantic UI
-          - ✅ **Hardening de Segurança Integrado**: Validação CSRF com tokens CSPRNG, proteção de sessão e integridade com SHA-256
-          - ✅ **Sistema Multilíngue Completo**: Suporte total pt-br/en com detecção inteligente de idioma
-          - ✅ **Sistema Híbrido de Migração**: Execução automática de migrações Phinx com fallback SQL transacionado
-          - ✅ **Validação de Requisitos e Integridade**: Verificação de extensões PHP e permissões em tempo de instalação
-          
-          ### 🔧 Como usar:
-          1. Baixe o `instalador.zip` e confira o `instalador.zip.sha256`
-          2. Extraia em seu servidor web
-          3. Acesse via navegador: `http://seudominio.com/gestor-instalador/`
-          4. Siga o assistente de instalação
-          
-          ### 📋 Requisitos:
-          - PHP 8.1+ (recomendado PHP 8.3+)
+          ## 🛠️ Conn2Flow Instalador Release ${{ steps.tag.outputs.TAG_NAME }} (Compatibilidade com Gestor v2.9.x + Layouts Tailwind v4 + Hardening de Segurança)
+
+          Instalador web automatizado do sistema Conn2Flow com **suporte completo aos novos recursos do Gestor v2.9.x**, incluindo sistema multilíngue completo, suporte a layouts em Tailwind CSS v4, hardening avançado de segurança e arquitetura modular.
+
+          ### ✨ Recursos e Destaques desta Versão:
+          - ✅ **Compatibilidade Total com Gestor v2.9.x**: Suporte completo a instalações com layouts administrativos e públicos em Tailwind CSS v4 e Fomantic UI.
+          - ✅ **Hardening de Segurança Integrado**: Validação de integridade de pacotes com checksum SHA-256 (`instalador.zip.sha256`), tokens CSRF via CSPRNG e proteção reforçada de sessões.
+          - ✅ **Sistema Multilíngue Completo**: Suporte nativo aos idiomas Português (pt-br) e Inglês (en) durante a instalação e configuração inicial.
+          - ✅ **Sistema Híbrido de Migração de Banco**: Execução automática de migrações Phinx com fallback de schema SQL transacionado em lotes seguros.
+          - ✅ **Detecção Inteligente de Ambiente**: Reconhecimento automático de instalação em raiz de domínio ou subpastas com configuração transparente do `.htaccess`.
+          - ✅ **Auto-login e Conclusão Segura**: Configuração automática pós-instalação e remoção segura dos scripts de instalação após a conclusão.
+
+          ### 🔧 Como Usar:
+          1. Baixe o pacote `instalador.zip` e confira a integridade com `instalador.zip.sha256`
+          2. Extraia o conteúdo no diretório web do seu servidor (raiz ou subpasta `/gestor-instalador/`)
+          3. Acesse a URL pelo navegador (ex: `http://seu-dominio.com/gestor-instalador/`)
+          4. Siga as etapas guiadas pelo assistente de instalação web
+
+          ### 📋 Requisitos do Servidor:
+          - Servidor Web: Apache com `mod_rewrite` habilitado ou Nginx
+          - PHP 8.1+ (Recomendado PHP 8.3 ou 8.4)
           - MySQL 5.7+ ou MariaDB 10.2+
-          - Extensões: zip, curl, mbstring, openssl, pdo_mysql
+          - Extensões PHP obrigatórias: `curl, zip, pdo_mysql, openssl, mbstring, pdo_sqlite`
         draft: false
         prerelease: false
         files: |
           instalador.zip
           instalador.zip.sha256
+

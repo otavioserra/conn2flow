@@ -203,8 +203,45 @@ jobs:
           tag_name: ${{ steps.tag.outputs.TAG_NAME }}
           name: "Gestor ${{ steps.tag.outputs.TAG_NAME }}"
           make_latest: true
+          body: |
+            ## 🚀 Conn2Flow Gestor Release ${{ steps.tag.outputs.TAG_NAME }} (Live Editor + Layouts Tailwind v4 + Pull System + Suporte Híbrido a PDF e Streaming)
+
+            Esta versão consolida grandes inovações no core do Conn2Flow, incluindo o novo **Live Editor (Site Toolbar / Editbar)** com edição contextual in-place, modernização completa de **Layouts Administrativo e Público em Tailwind CSS v4** com paleta azul Conn2Flow (`sky`), **Sistema de Engenharia Reversa e Sincronização Declarativa (Pull Engine)**, suporte híbrido a visualizador de PDF (PDF.js / Google Viewer / Object), **Streaming de Mídia via HTTP Range (206)**, Personal Access Tokens (**PAT**) e novas bibliotecas de pagamento (**PayPal 3.1.0 e Stripe**).
+
+            ### 🎯 Novidades Principais desta Versão:
+            - ✅ **Live Editor e Site Toolbar (Editbar)**: Barra flutuante contextual no site publicado para edição in-place com mapeamento reativo ao DOM vivo, travas para widgets, escudo de proteção contra cliques acidentais e painéis integrados (Inserção "+", Modelos, Backups, Assistente IA com CodeMirror e Código Customizado).
+            - ✅ **Área de Transferência Persistente**: Armazenamento no `localStorage` permitindo copiar elementos e blocos estruturais em uma página e colar ou substituir em outra página/aba diferente.
+            - ✅ **Painel de Opções de Exibição do Editor**: Sidebar Lateral de CSS (classes Tailwind agrupadas por variante, classes customizadas, CSS inline CodeMirror, inspetor de computed style) e Barra Superior de Navegação (Element Navbar).
+            - ✅ **Modernização Visual e Layouts Tailwind v4**: Novo `layout-administrativo-tailwind` com menu responsivo Lucide Icons, redimensionamento dinâmico (220–450px) e filtro instantâneo por digitação/teclado. Novo `layout-pagina-sem-permissao-tailwind` com 15 telas de identidade migradas para Tailwind puro na paleta azul Conn2Flow (`sky`).
+            - ✅ **Painel de Perfil do Usuário**: Interface moderna em abas com gerenciamento e revogação de sessões ativas e histórico detalhado de acessos.
+            - ✅ **Sincronização Declarativa e Engenharia Reversa (Pull Engine)**: Motor de sincronização declarativa via `tables_config.json` e recuperação reversa de recursos via `_api/project/recover` com suporte a subpastas estruturadas (`<tabela>/<id>/<id>.<ext>`) e resolução inteligente de conflitos em `contents/`.
+            - ✅ **Mídia Embutida, Streaming e Suporte Híbrido a PDF**: Invólucro atômico `.conn2flow-embed-wrapper` com redimensionamento, leitor próprio baseado em PDF.js (`pdf-viewer.js`) com canvas/zoom/toolbar, suporte a Google Viewer e streaming de vídeo/áudio via cabeçalhos HTTP Range (206 Partial Content).
+            - ✅ **Gerenciador de Arquivos (Admin-Arquivos)**: Transição para árvore física de diretórios no disco, com upload e criação de pastas liberados dentro do seletor em modal (modo Picker/iframe) e persistência da última pasta navegada.
+            - ✅ **Novos Módulos e Funcionalidades**: Módulo `forms-search` (autocomplete AJAX), `pages-index` (destaques e paginação dinâmica), transferência de publicações entre publicadores no `publisher-pages` com registro automático de 301, e customização de labels/ordenação em `modulos-grupos`.
+            - ✅ **Gateways de Pagamento Integrados**: Biblioteca PayPal 3.1.0 com Checkout Transparente e Card Fields nativos, e biblioteca core Stripe completa (Payment Element, Billing, Assinaturas, Webhooks HMAC e Catálogo de Produtos/Preços).
+            - ✅ **Segurança e PAT**: Personal Access Tokens (`c2f_pat_`) com hash SHA-256 e códigos de recuperação 2FA (Recovery Codes), tolerância a schema drift com degradação graciosa e proteção contra CSRF ampla.
+            - ✅ **SEO, Sitemap XML e Robots**: Metadados dedicados de SEO/Open Graph por página, geração automática de `assets/sitemap.xml` e `assets/robots.txt`.
+            - ✅ **Subsistema CLI Moderno**: CLI orientada a objetos em `/cli` e binário `c2f` com catálogo completo de comandos.
+
+            ### 📦 Conteúdo da Release:
+            - Sistema gestor completo otimizado
+            - Migrações de banco de dados Phinx com execução automática
+            - Dependências Composer e assets compilados do Tailwind CSS CLI
+            - Verificação de integridade via checksum SHA-256 (`gestor.zip.sha256`)
+
+            ### 🔧 Como Usar / Atualizar:
+            1. Atualização automática via terminal: `c2f manager:update-all` ou `c2f project:update`
+            2. Ou use o [Conn2Flow Installer](https://github.com/otavioserra/conn2flow/releases) para instalação/atualização automatizada
+            3. Ou extraia o arquivo `gestor.zip` e execute as migrações de banco de dados
+
+            ### 📋 Requisitos do Ambiente:
+            - PHP 8.1+ (Recomendado PHP 8.3+)
+            - MySQL 5.7+ ou MariaDB 10.2+
+            - Extensões PHP: `curl, zip, pdo_mysql, openssl, mbstring, dom, json`
+            - Node.js 22+ / 24+ (para compilação local e testes)
           draft: false
           prerelease: false
           files: |
             gestor.zip
             gestor.zip.sha256
+
