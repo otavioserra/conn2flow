@@ -5,15 +5,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.9.39] - 2026-08-21
+
 ### Added
-- **Module Icon Mapping for Additional Modules (BATCH-127 / req-125)**: Fomantic and Lucide icon pairs for modules served by derived projects — 3D Catalog (`3d-catalog`, `3d-catalog-groups`, `3d-catalog-items`), Social Connections (`social-connections`), Payment Gateways (`gateways-pagamentos`), Social Media Publisher (`publisher-social-media`), Social Apps (`social-apps`), Files (`arquivos` / `admin-arquivos`), and Distributed Module Groups (`modulos-grupos-distribuido`). The core ships the idempotent migration `20260821100000_alter_modulos_update_icones_projetos`, which reaches existing databases; each module's declarative record lives in the hosting project's `ModulosData.json`. Names verified against the real catalogs (Fomantic 2.9.4 and Lucide 0.544.0).
+- **Live Editor & Site Toolbar (Editbar)**: Contextual floating toolbar on the published website enabling in-place editing with reactive live-DOM node mapping, widget locks, event isolation, and accidental click shield.
+- **Floating Panels & Modals in Live Editor**:
+  - Element Insertion ("+"): Contextual insertion of structural blocks, widgets, forms, and embeds.
+  - Session Templates & Backups: Instant snapshot creation and revision restore directly in the live editor.
+  - AI Assistant with CodeMirror: Prompt interface with embedded CodeMirror code editor and live streaming preview.
+  - Custom Code Panel: Direct editing of HTML, CSS (with live debounce), JavaScript, and Extra Head.
+- **Persistent Clipboard**: LocalStorage-backed clipboard allowing copying structural blocks and elements on one page and pasting or replacing them on another page or browser tab with automatic widget ID remapping.
+- **Visual Editor View Options Panel**:
+  - CSS Sidebar: Variant-grouped Tailwind classes, custom classes, inline CodeMirror CSS editor, and `getComputedStyle()` live inspector.
+  - Element Navbar: Navigation breadcrumb bar with selectable child node hierarchy.
+- **Tailwind CSS v4 Layouts Modernization**:
+  - New `layout-administrativo-tailwind`: Responsive sidebar with Lucide Icons, dynamic resizing (220–450px) persisted in `localStorage`, instant unaccented search filter, and full keyboard navigation (ArrowUp/ArrowDown/Esc).
+  - New `layout-pagina-sem-permissao-tailwind`: Public layout and migration of all 15 identity/authentication screens to pure Tailwind CSS using Conn2Flow blue (`sky`) palette.
+  - New User Profile Panel: Modern tabbed interface with active session management, remote session revocation, and detailed access history.
+- **Declarative Synchronization & Pull System (Reverse Engineering)**:
+  - Declarative sync engine configured via `tables_config.json` and `project_tables_config.json` supporting `sync_resources`, special field types (`json`, `file:<ext>`), `forcar_atualizacao`, `deletar`, and MD5 integrity checks.
+  - Reverse Pull Engine: Endpoint `/_api/project/recover`, script `recover-project.sh`, and resource decompiler supporting structured subdirectories (`<table_name>/<id>/<id>.<ext>`) and conflict resolution in `contents/`.
+- **Embedded Media, Streaming & Hybrid PDF Viewer**:
+  - Atomic embed wrapper (`.conn2flow-embed-wrapper`) with resize handles and click protection.
+  - Hybrid PDF viewer with native PDF.js runtime (`pdf-viewer.js` with canvas, zoom, and toolbar), Google Viewer, and `<object>` native fallback.
+  - Media streaming via HTTP Range headers (206 Partial Content) for Safari/iOS compatibility, space-in-filename sanitization, and responsive auto-sizing.
+- **Physical File Manager (Admin-Arquivos)**:
+  - Transition to physical filesystem folder hierarchy (full directory and subdirectory CRUD).
+  - Unlocked file uploads and folder creation inside picker modals (iframe mode) with persisted last-directory navigation.
+- **New Modules, Widgets & Features**:
+  - `forms-search` Module: Public search forms with optimized AJAX autocomplete and lens themes.
+  - `pages-index` Module: Index listing pages with highlights, filters, URL synchronization, and dynamic pagination.
+  - Transfer publications between publishers in `publisher-pages` with automated URL adjustments and 301 redirect registration.
+  - Admin module label and order customization in `modulos-grupos` with project-level component override support.
+  - Fomantic and Lucide icon pairs mapping for derived project modules via Phinx migration `20260821100000_alter_modulos_update_icones_projetos`.
+- **Payment Gateway Integrations**:
+  - PayPal Library 3.1.0: Native transparent checkout with Card Fields and Hosted Fields.
+  - Stripe Core Library: Complete Stripe integration (Payment Element, Billing, Subscriptions, HMAC Webhooks, and Product/Price catalog management).
+- **Security & Personal Access Tokens (PAT)**:
+  - Generation and validation of `c2f_pat_` tokens with SHA-256 hashing and 2FA recovery codes.
+  - Schema drift tolerance with graceful degradation gates (`gestor_schema_tabela_existe` and `gestor_schema_campo_existe`).
+- **SEO, Sitemap XML & Robots**:
+  - Dedicated SEO and Open Graph metadata per page/publication (`imagem_destaque`, `og_titulo`, `og_descricao`, `meta_descricao`, `meta_keywords`) with SEO tab in HTML Editor and Editbar.
+  - Dynamic sitemap generator delivering `assets/sitemap.xml` with non-indexable route filters and automatic 301 cleanup.
+  - Automated `assets/robots.txt` generation.
+- **Modern CLI Subsystem**: Object-oriented CLI in `/cli` and `c2f` binary with a complete command catalog.
 
 ### Changed
-- **Open/Close Menu Button Visibility Toggling (BATCH-127 / req-125)**: Dynamic synchronization in Tailwind administrative layout (`layout-administrativo-tailwind`) and runtime `admin-tailwind.js`, ensuring contextual visibility where only the appropriate button is displayed based on menu state (expanded = close button visible; collapsed = open button visible) on desktop and mobile.
+- **Resources and Variables Architecture**: Extracted HTML markup into `resources/` components and presentation utilities into system variables (`@[[classe-...]]@`).
+- **AI Autonomy Governance**: Formalized 3-Tier Autonomy Spectrum (Supervised, Monitored Autonomous, Headless Autonomous) and repo-wide Conn2Flow Skills catalog.
+- **Menu Button Toggling**: Contextual open/close button visibility toggling in Tailwind administrative layout and `admin-tailwind.js`.
 
 ### Fixed
-- **Clean Reload on CSRF / Expired Session Error (BATCH-127 / req-125)**: Resolved session-expired loops on invalid CSRF responses (`gestor_csrf_resposta_invalida()`) by forcing clean reload/redirect on `/signin/` via `document.referrer`, preventing the browser from recycling expired tokens from history cache.
-- **Lucide Console Warnings Elimination (BATCH-127 / req-125)**: Two-layer sanitization (PHP menu routing and JavaScript `admin-tailwind.js` before `createIcons()`) preventing legacy multi-word Fomantic icon names (e.g., `"comments outline"`, `"credit card outline"`) from being passed to `data-lucide`, eliminating "icon name was not found" console warnings.
+- **Clean Reload on CSRF / Expired Session**: `gestor_csrf_resposta_invalida()` forcing clean reload / `location.replace` when returning to `/signin/`, eliminating bfcache token expiration loops.
+- **Lucide Icon Console Warnings Elimination**: Two-layer sanitization in PHP and JS preventing legacy multi-word Fomantic names from reaching `data-lucide`.
+- **Search Crawler & Bot Cookie Loop Elimination**: Definite resolution of infinite redirect loops for search bots (`gestor_cookie_verificacao_desfecho`) and anti-indexing headers on system routes.
+- **PHP 8.5 Decoupling**: Elimination of false 429 errors during deploy by decoupling the 2.x line from PHP 8.5-exclusive syntax.
 
 ## [2.9.0] - 2026-06-16
 

@@ -5,15 +5,61 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [2.9.39] - 2026-08-21
+
 ### Added
-- **Mapeamento de Ícones para Módulos Adicionais (BATCH-127 / req-125)**: Pares de ícones Fomantic e Lucide para os módulos servidos por projetos derivados — Catálogo 3D (`3d-catalog`, `3d-catalog-groups`, `3d-catalog-items`), Conexões Sociais (`social-connections`), Gateways de Pagamentos (`gateways-pagamentos`), Publicador de Mídias Sociais (`publisher-social-media`), Social Apps (`social-apps`), Arquivos (`arquivos` / `admin-arquivos`) e Módulos Grupos Distribuído (`modulos-grupos-distribuido`). O núcleo entrega a migração idempotente `20260821100000_alter_modulos_update_icones_projetos`, que alcança bancos já existentes; o cadastro declarativo de cada módulo vive no `ModulosData.json` do projeto que o hospeda. Nomes conferidos contra os catálogos reais (Fomantic 2.9.4 e Lucide 0.544.0).
+- **Live Editor e Site Toolbar (Editbar)**: Barra flutuante contextual no site publicado permitindo edição in-place com mapeamento reativo de nós contra o DOM vivo, travas para widgets, isolamento de eventos e escudo de proteção contra cliques acidentais.
+- **Painéis Flutuantes e Modais no Live Editor**:
+  - Inserção de Elementos ("+"): Inserção contextual de blocos estruturais, widgets, formulários e embeds.
+  - Modelos de Sessão e Backups: Gravação e restauração instantânea de snapshots e revisões da página.
+  - Assistente IA com CodeMirror: Interface de prompts com editor CodeMirror integrado e visualização em tempo real.
+  - Painel de Código Customizado: Edição direta de HTML, CSS (com debounce ao vivo), JavaScript e Extra Head.
+- **Área de Transferência Persistente**: Armazenamento no `localStorage` permitindo copiar elementos e blocos estruturais em uma página e colar ou substituir em outra página/aba diferente, com remapeamento automático de identificadores de widget.
+- **Painel de Opções de Exibição do Editor**:
+  - Sidebar Lateral de CSS: Gestão de classes Tailwind agrupadas por variante, classes customizadas, CSS inline CodeMirror e inspetor de `getComputedStyle()`.
+  - Element Navbar: Barra de navegação com breadcrumb e árvore de nós filhos selecionáveis.
+- **Modernização de Layouts em Tailwind CSS v4**:
+  - Novo `layout-administrativo-tailwind`: Menu lateral responsivo com Lucide Icons, redimensionamento dinâmico (220–450px) com persistência em `localStorage`, filtro instantâneo por digitação sem acentuação e navegação por teclado (ArrowUp/ArrowDown/Esc).
+  - Novo `layout-pagina-sem-permissao-tailwind`: Layout público e migração completa de 15 telas de identidade e autenticação para Tailwind puro com paleta azul Conn2Flow (`sky`).
+  - Novo Painel de Perfil do Usuário: Interface moderna em abas com gerenciamento e revogação de sessões ativas e histórico de acessos.
+- **Sincronização Declarativa e Engenharia Reversa (Pull System)**:
+  - Sincronização declarativa via `tables_config.json` e `project_tables_config.json` com suporte a `sync_resources`, tipos especiais de campo (`json`, `file:<ext>`), diretivas `forcar_atualizacao`, `deletar` e validação por hash MD5.
+  - Sistema de Recuperação e Engenharia Reversa (Pull Engine): Endpoint `/_api/project/recover`, script `recover-project.sh` e descompilador de recursos com suporte a subpastas estruturadas (`<tabela>/<id>/<id>.<ext>`) e resolução inteligente de conflitos em `contents/`.
+- **Mídia Embutida, Streaming e Suporte Híbrido a PDF**:
+  - Mapeamento visual de embeds (`object`, `iframe`, `embed`, `video`, `audio`) com escudo protetor e redimensionamento visual.
+  - Visualizador de PDF híbrido com motor próprio baseado em PDF.js (`pdf-viewer.js` com canvas, zoom e barra de ferramentas), Google Viewer e fallback nativo `<object>`.
+  - Streaming de mídia via cabeçalhos HTTP Range (206 Partial Content) para áudio e vídeo no Safari/iOS, sanitização de nomes com espaços e dimensionamento inteligente.
+- **Gerenciador de Arquivos Físico (Admin-Arquivos)**:
+  - Transição para árvore física de diretórios no disco (CRUD completo de pastas e subpastas).
+  - Upload de arquivos e criação de pastas liberados dentro do seletor em modal (modo Picker/iframe), com persistência da última pasta navegada.
+- **Novos Módulos, Widgets e Funcionalidades**:
+  - Módulo `forms-search`: Formulários de busca pública com autocomplete AJAX e novos modelos de lupa.
+  - Módulo `pages-index`: Páginas de índice com destaques, filtros, sincronização de URL e paginação dinâmica.
+  - Transferência de publicações entre publicadores no `publisher-pages` com ajuste automático de URLs e criação de redirecionamentos 301.
+  - Customização de labels e ordenação de módulos em `modulos-grupos` com override por projeto.
+  - Mapeamento de pares de ícones Fomantic e Lucide para módulos de projetos derivados e migração Phinx `20260821100000_alter_modulos_update_icones_projetos`.
+- **Gateways de Pagamento Integrados**:
+  - Biblioteca PayPal 3.1.0: Checkout Transparente nativo com Card Fields e Hosted Fields.
+  - Biblioteca Core Stripe: Payment Element, Billing, Assinaturas, Webhooks HMAC e gerenciamento de Catálogo (Produtos e Preços).
+- **Segurança e Personal Access Tokens (PAT)**:
+  - Geração e validação de tokens `c2f_pat_` com hash SHA-256 e suporte a códigos de recuperação 2FA (Recovery Codes).
+  - Tolerância a schema drift com degradação graciosa (`gestor_schema_tabela_existe` e `gestor_schema_campo_existe`).
+- **SEO, Sitemap XML e Robots**:
+  - Metadados dedicados por página/publicação (`imagem_destaque`, `og_titulo`, `og_descricao`, `meta_descricao`, `meta_keywords`) e aba "SEO & Compartilhamento" no Editor HTML e Editbar.
+  - Sitemap XML dinâmico servido em `assets/sitemap.xml` com filtros inteligentes e sincronização automática de redirecionamentos 301.
+  - Geração automática de `assets/robots.txt`.
+- **Subsistema CLI Moderno**: CLI orientada a objetos em `/cli` e binário `c2f` com catálogo completo de comandos.
 
 ### Changed
-- **Alternância de Visibilidade dos Botões de Abrir/Fechar Menu (BATCH-127 / req-125)**: Sincronização dinâmica no layout administrativo Tailwind (`layout-administrativo-tailwind`) e runtime `admin-tailwind.js`, garantindo que apenas o botão contextual correspondente esteja visível de acordo com o estado do menu (menu aberto = botão fechar visível; menu fechado/colapsado = botão abrir visível), tanto em desktop quanto mobile.
+- **Arquitetura de Recursos e Variáveis**: Extração de marcação HTML para componentes em `resources/` e classes utilitárias para variáveis do sistema (`@[[classe-...]]@`).
+- **Governança de Autonomia de IA**: Formalização do espectro de 3 Níveis de Autonomia (Supervisionado, Autônomo Monitorado e Autônomo Headless) e catálogo de Skills Conn2Flow repo-wide.
+- **Alternância de Botões no Menu Administrativo**: Sincronização dinâmica no layout administrativo Tailwind (`layout-administrativo-tailwind`) e runtime `admin-tailwind.js`, garantindo visibilidade contextual dos botões abrir/fechar em desktop e mobile.
 
 ### Fixed
-- **Recarregamento Limpo em Erro de CSRF/Sessão Expirada (BATCH-127 / req-125)**: Correção do loop de sessão expirada na resposta de CSRF inválido (`gestor_csrf_resposta_invalida()`), forçando recarregamento limpo da rota `/signin/` via `document.referrer` e impedindo a reciclagem de tokens expirados do histórico do navegador ao clicar em "Voltar".
-- **Eliminação de Warnings do Lucide no Console (BATCH-127 / req-125)**: Sanitização em duas camadas (PHP no roteamento do menu e JavaScript no `admin-tailwind.js` antes de `createIcons()`) para não injetar nomes compostos legados do Fomantic (ex.: `"comments outline"`, `"credit card outline"`) no atributo `data-lucide`, eliminando mensagens de alerta de ícone não encontrado no console do navegador.
+- **Reload Limpo em Erro de CSRF / Sessão Expirada**: `gestor_csrf_resposta_invalida()` com recarregamento limpo / `location.replace` ao voltar para `/signin/`, eliminando loops de sessão expirada pelo bfcache do navegador.
+- **Eliminação de Warnings do Lucide**: Sanitização em duas camadas (PHP e JS) para não injetar nomes compostos legados do Fomantic em `data-lucide`.
+- **Isenção de Crawlers e Bots**: Fim definitivo do laço de verificação de cookies para robôs de busca (`gestor_cookie_verificacao_desfecho`) e headers anti-indexação em rotas de sistema.
+- **Desacoplamento PHP 8.5**: Eliminação do falso erro 429 no deploy, desacoplando a linha 2.x de recursos exclusivos do PHP 8.5.
 
 ## [2.9.0] - 2026-06-16
 
