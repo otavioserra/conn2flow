@@ -168,6 +168,7 @@ export function installJQueryStub({ ajax } = {}) {
     return new JQueryCollection([]);
   }
 
+  $.fn = JQueryCollection.prototype;
   $.ajax = ajaxMock;
   $.extend = function extend(...args) {
     let deep = false;

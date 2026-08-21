@@ -8,8 +8,8 @@ $(document).ready(function(){
 	// Nas telas Tailwind quem valida e envia o formulário é `interface-tailwind.js`, que intercepta o
 	// `submit` nativo — então o caminho correto aqui é simplesmente NÃO chamar o plugin e deixar o
 	// envio seguir. As duas checagens abaixo separam o que é do Fomantic do que é do produto.
-	var temFormFomantic = (typeof $.fn.form === 'function');
-	var temCheckboxFomantic = (typeof $.fn.checkbox === 'function');
+	var temFormFomantic = (typeof $ !== 'undefined' && typeof $.fn !== 'undefined' && typeof $.fn.form === 'function');
+	var temCheckboxFomantic = (typeof $ !== 'undefined' && typeof $.fn !== 'undefined' && typeof $.fn.checkbox === 'function');
 
 	if($('#_gestor-form-signup').length > 0){
 		if(temCheckboxFomantic){
