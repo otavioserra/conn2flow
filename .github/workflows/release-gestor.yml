@@ -23,10 +23,11 @@ jobs:
         ports:
           - 3306:3306
         options: >-
+          --tmpfs /var/lib/mysql:rw
           --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot123"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
+          --health-interval=2s
+          --health-timeout=2s
+          --health-retries=30
 
     steps:
       - name: Checkout code
@@ -37,6 +38,7 @@ jobs:
         with:
           php-version: '8.4'
           extensions: dom, json, libxml, mbstring, mysqli, pdo_mysql, openssl, tokenizer, xml, xmlwriter, zip, curl
+          ini-values: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M, memory_limit=512M
           coverage: none
           tools: composer:v2
 
@@ -64,9 +66,11 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
       - name: Install Node dependencies
-        run: npm ci
+        run: npm ci --prefer-offline
 
       - name: Install PHP test dependencies (root)
         run: composer install --no-interaction --prefer-dist
@@ -105,13 +109,9 @@ jobs:
       - name: Run Vitest (Frontend Tests)
         run: npm run test
 
-      - name: Install Playwright browser and OS dependencies
+      - name: Install Playwright browser
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
-
-      - name: Install Playwright OS dependencies if browser cached
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
+        run: npx playwright install chromium
 
       - name: Run Playwright (E2E Tests)
         run: npm run test:e2e
