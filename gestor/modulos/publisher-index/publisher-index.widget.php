@@ -413,14 +413,16 @@ function publisher_index_widget_unicode_escape($termo, $com_barra = false){
 }
 
 /**
- * req-041 §1.2: decodifica padrões de escape Unicode literais (`u00xx` ou `\u00xx`) de volta
- * para o caractere UTF-8 nativo. Corrige nomes/campos gravados de forma corrompida no banco.
+ * req-041 §1.2: decodifica padrões de escape Unicode literais (`\u00xx` ou `u00xx`) de volta
+ * para o caractere UTF-8 nativo. Corrige nomes/campos gravados de forma corrompida no banco,
+ * preservando palavras legítimas que contenham a letra 'u' seguida de caracteres hexadecimais (ex.: educacao).
  */
 function publisher_index_widget_corrigir_unicode($str){
 	if(!is_string($str) || $str === '') return $str;
 
-	return preg_replace_callback('/\\\\?u([0-9a-fA-F]{4})/i', function($m){
-		return mb_convert_encoding(pack('N', hexdec($m[1])), 'UTF-8', 'UCS-4BE');
+	return preg_replace_callback('/\\\\u([0-9a-fA-F]{4})|u00([0-9a-fA-F]{2})/i', function($m){
+		$hex = !empty($m[1]) ? $m[1] : ('00' . $m[2]);
+		return mb_convert_encoding(pack('N', hexdec($hex)), 'UTF-8', 'UCS-4BE');
 	}, $str);
 }
 

@@ -69,6 +69,8 @@ final class PublisherIndexWidgetTest extends TestCase
         self::assertSame('Título', publisher_index_widget_corrigir_unicode('Tu00edtulo'));
         self::assertSame('Título', publisher_index_widget_corrigir_unicode('T\\u00edtulo'));
         self::assertSame('Acentuação', publisher_index_widget_corrigir_unicode('Acentuau00e7u00e3o'));
+        self::assertSame('files/2018/02/a-educacao-e-o-pensamento-de-paulo-freire.jpg', publisher_index_widget_corrigir_unicode('files/2018/02/a-educacao-e-o-pensamento-de-paulo-freire.jpg'));
+        self::assertSame('educacao e educada', publisher_index_widget_corrigir_unicode('educacao e educada'));
     }
 
     public function testMetricasGlobaisERemocaoCondicionalDoBloco(): void
