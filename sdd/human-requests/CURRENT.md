@@ -1,6 +1,8 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-128.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-128.md) (BATCH-130 `in-progress`, 2026-08-24): Blindagem de banco_num_rows, Proteção na Consulta de Hosts em perfil-usuario e Eliminação de Warnings de Chaves Indefinidas no Core.
+  - [req-127.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-127.md) (BATCH-129 `implemented-pending-homologation`, 2026-08-24): Extrator semântico de tokens do Tailwind no Assistente de IA. `{{theme_tokens}}` injetado nos três escopos de edição; 78.485 → 1.482 bytes (98,11%) no contrato do `transformamp`. Aguarda homologação com um projeto de tema próprio.
   - [req-126.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-126.md) (BATCH-128 `ready-for-intake`, 2026-08-21): Mapeamento Completo de Ícones Tailwind/Lucide para os Módulos Restantes do Projeto `conn2flow-site`.
   - [req-125.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-125.md) (BATCH-127 `implemented-pending-homologation`, 2026-08-21): Correção de Reload em Erro de CSRF/Sessão, Mapeamento de Ícones de Módulos de Projetos, Alternância de Botões Abrir/Fechar Menu e Eliminação de Warnings do Lucide. Os ícones dos módulos de projeto foram gravados no `conn2flow-site` (ids reais); o núcleo entrega a migração idempotente `20260821100000`.
   - [req-124.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-124.md) (BATCH-126 `implemented-pending-homologation`, 2026-08-21): Correções no Layout Administrativo Tailwind, Menu do Gestor, Histórico do Perfil e Identidade Visual Azul Conn2Flow no Core.

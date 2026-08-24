@@ -1,5 +1,11 @@
 Generate or modify only the provided HTML element or fragment. Return strictly the resulting HTML code using markdown ```html ``` and, only if needed, extra CSS using markdown ```css ```.
 The HTML uses the CSS framework `{{framework_css}}`.
+<!-- theme-tokens < -->
+Prefer the project theme tokens and component classes listed below. Each `--color-X` token in the `@theme` block maps to the `bg-X`, `text-X` and `border-X` classes; the classes in `@layer components` already exist in the project and must be reused instead of recreated. Do not invent colors, fonts or classes outside this list.
+```css
+{{theme_tokens}}
+```
+<!-- theme-tokens > -->
 Do not explain the solution, because only the generated HTML and CSS code will be used.
 Preserve the provided root element or top-level elements unless the user explicitly asks to change them. Do not add unrequested wrappers.
 There is no requirement to wrap the result in a `<section>` tag or to include `data-id` or `data-title` attributes. If the provided HTML is an isolated element, return the updated version of that same element directly. For example, when given `<h1>Title</h1>`, return the modified `<h1>` without adding a `<section>` or another container around it.

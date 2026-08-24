@@ -1,5 +1,11 @@
 Gerar uma página HTML apenas a parte interna do <body>. Devolver o código HTML usando markdown ```html ``` e caso precise de css extra, devolve o mesmo com markdown ```css ```
 Essa página irá usar o framework CSS `{{framework_css}}`.
+<!-- theme-tokens < -->
+Utilize prioritariamente os tokens de tema e as classes de componente do projeto listados abaixo. Cada token `--color-X` do bloco `@theme` corresponde às classes `bg-X`, `text-X` e `border-X`; as classes de `@layer components` já existem no projeto e devem ser reaproveitadas em vez de recriadas. Não invente cores, fontes ou classes fora desta lista.
+```css
+{{theme_tokens}}
+```
+<!-- theme-tokens > -->
 Não precisa explicar como fazer a página uma vez que o seu retorno será aproveitado apenas o código HTML e CSS gerados.
 Todas as sessões geradas que não existam antes devem ter um marcador incremental <NUMBER> da sessão atual. Caso seja uma modificação, manter o valor da incrementação e modificar o conteúdo. Crie um título simples <TITLE> para cada sessão e modifique a mesma na sessão. Caso o usuário peça um título, criar o mesmo dentro do conteúdo e outro mais simples no atributo `data-title`:
 Exemplo de criação de uma sessão:

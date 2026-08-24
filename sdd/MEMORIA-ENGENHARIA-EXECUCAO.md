@@ -13,6 +13,36 @@
 
 ## Tarefas recentes
 
+### 2026-08-24 — BATCH-129: onde o recurso NASCE decide se a edição vale (req-127)
+
+- **`gestor/db/data/*Data.json` é ARTEFATO, nunca fonte.** O intake mandava editar `ModosIaData.json`;
+  a fonte real dos modos de IA é `gestor/modulos/<mod>/resources/<lang>/ai_modes/<id>/<id>.md`, e o
+  JSON é compilado por `atualizacao-dados-recursos.php` (`c2f resources:sync`). Editar o JSON à mão
+  seria desfeito no próximo sync — sem erro, sem aviso.
+- **`versao` de `ai_modes`/`ai_prompts` nunca incrementa** (bug pré-existente, não corrigido):
+  `carregarDadosExistentes()` indexa como `modos_ia`/`prompts_ia`, `versaoChecksumPrompt()` consulta
+  como `ai_modes`/`ai_prompts`. **Não bloqueia propagação**: o sync do banco decide pelo md5 do
+  ARQUIVO e faz UPSERT campo a campo; `modos_ia` tem `preserve_on_user_modified: []`, então o prompt
+  novo sobrescreve inclusive o que o operador editou no painel.
+- **Corte sequencial mata o namespace pequeno.** No `transformamp` são 63 cores contra 3
+  `--shadow-*`: o laço em ordem consome o orçamento nas cores e o outro namespace some inteiro.
+  Round-robin entre namespaces resolve; a saída volta à ordem natural depois.
+- **Marcador anexado DEPOIS do laço tem de caber no orçamento DO laço.** O `/* +N */` de restantes
+  fechava o `transformamp` em 1.502 bytes contra teto de 1.500. Reservar `strlen("\n/* +" . (total - i) . " */")`
+  a cada iteração é conservador e sempre suficiente (nunca fica curto por mudança de dígito).
+- **Bloco condicional em prompt: a tag tem de sair mesmo quando o marcador não está lá.** O modo é
+  editável no painel de IA e vive no banco. `modelo_tag_del()` sem par não corta nada e a tag vaza
+  literal para o payload; e com o par INVERTIDO ele corta por posição e leva o resto do prompt junto.
+  Guard de ordem antes, troca por vazio sempre depois.
+- **Heredoc via stdin nesta ferramenta é lido como cp1252 e come `\\n`.** Âncora de patch com escape
+  ou acento falha em silêncio (`replace` não casa). Escrever o script Python em ARQUIVO com o Write
+  e executá-lo — foi assim que os 8 patches deste lote foram aplicados sem corromper nada.
+- **`componentes.md` é CRLF; os outros `.md` de modo são LF.** Inserir bloco sem respeitar o fim de
+  linha do arquivo mistura os dois no mesmo recurso.
+- **Prompt só existe dentro da função que o envia.** Para provar o critério de aceite sem homologação
+  manual, o teste de integração declara um dublê de `ia_enviar_prompt()` (a suíte nunca carrega
+  `ia.php`) e inspeciona o que foi montado.
+
 ### 2026-08-21 — BATCH-127: onde o dado mora decide se a correção existe (req-125)
 
 - **Id inventado não cadastra nada, e não avisa.** A F2 do intake nomeia os módulos em português
@@ -44,20 +74,17 @@
 
 ### 2026-08-21 — BATCH-126: vocabulário errado não dá erro, dá tela vazia
 
-- **Nome de ícone é endereço DENTRO de um catálogo, e o catálogo depende do framework.** O item do
-  menu é `<i data-lucide="X" class="X icon">` e serve aos DOIS: `createIcons()` devolve o `<i>`
-  intacto quando o nome não existe, e toda regra do `icon.min.css` é prefixada com `i.icon` (não
-  alcança o `<svg>` convertido). **Valide sempre contra o catálogo REAL** — foi assim que 19 módulos
-  sem glifo e um `settings2` inválido apareceram.
-- **`style.marginLeft = ''` NÃO zera margem: devolve o controle à utility** (`lg:ml-[260px]`). Zere
-  explicitamente (`'0px'`). Mesma família do que o BATCH-127 encontrou com `hidden`/`inline-flex`.
-- **Item flex com `h-full` e `min-height:auto` não encolhe** e empurra o irmão para fora do viewport.
-  O par é `min-h-0 flex-1`, com `min-h-0` no filho que rola.
-- **`margin-top` no `<html>` não alcança `fixed`/`sticky`.** A compensação da Editbar é classe no
-  `<body>` (`c2f-toolbar-ativa`) + CSS que reancore cada elemento em `top:0`.
+- **Nome de ícone é endereço dentro de um catálogo, e o catálogo depende do framework.** `createIcons()`
+  devolve o `<i>` intacto quando o nome não existe, e `icon.min.css` prefixa tudo com `i.icon` (não
+  alcança o `<svg>` convertido). Validar contra o catálogo REAL — foi assim que 19 módulos sem glifo
+  apareceram.
+- **`style.marginLeft = ''` não zera margem: devolve o controle à utility.** Zere com `'0px'`. Mesma
+  família do `hidden` vs `inline-flex` do BATCH-127.
+- **`margin-top` no `<html>` não alcança `fixed`/`sticky`** (a compensação da Editbar é classe no
+  `<body>`); **item flex com `h-full` não encolhe** (o par é `min-h-0 flex-1`); **classe aplicada por
+  JS precisa do arquivo em `tailwind_sources`**, senão fica fora do bundle.
 - **Troca de marcador não pode casar marcação.** `modelo_var_troca($p,"<td>#historico#</td>",…)` só
-  funcionava no componente Fomantic; no Tailwind o `<td>` tem classes e o token cru ia para a tela.
-- **Classe aplicada por JS precisa do arquivo em `tailwind_sources`**, senão fica fora do bundle.
+  valia no Fomantic; no Tailwind o `<td>` tem classes e o token cru foi para a tela.
 - **Verde é semântica, não marca.** Sucesso/ativo é `emerald`; botão, link, foco e aba ativa são azul
   Conn2Flow (`sky`).
 

@@ -146,6 +146,442 @@ function html_editor_tailwind_browser_contract(){
 }
 
 /**
+ * Orçamento de bytes do bloco `{{theme_tokens}}` (req-127).
+ *
+ * Um número só governa o extrator e os testes. O alvo do lote é 1,5 KB (~350 tokens) contra os 78 KB
+ * do `browser-contract.css` do projeto `transformamp` — 98% de corte. O critério de aceite fixa o
+ * teto duro em 2 KB, então o default fica com folga deliberada abaixo dele.
+ *
+ * @return int
+ */
+function html_editor_ia_tokens_tema_limite(){
+	return 1500;
+}
+
+/**
+ * Namespaces de tema do Tailwind v4 aceitos no bloco `{{theme_tokens}}` (req-127).
+ *
+ * A ordem é a de EMISSÃO no bloco e o desempate do round-robin do corte. Cor vem primeiro porque
+ * é o token que a IA mais alucina quando não o recebe — o sintoma que abriu a req-127 é
+ * `bg-red-600` genérico no lugar de `bg-mp-red`.
+ *
+ * O intake cita `--color-*`, `--font-*` e `--spacing-*`. Os demais entram porque também viram utility
+ * com nome próprio no v4 (`--radius-*` → `rounded-*`, `--text-*` → `text-*`, `--shadow-*` →
+ * `shadow-*`) e sem eles a IA escreve o valor arbitrário `rounded-[12px]` em vez do token da marca.
+ * O custo é marginal: nos quatro contratos do ambiente local, nenhum desses namespaces passa de 10
+ * declarações somadas.
+ *
+ * Ficam de fora de propósito os namespaces autorais que não viram classe (`--art-*` do
+ * `transformamp`, por exemplo) e qualquer variável cujo valor seja um asset embutido — ver
+ * `html_editor_ia_tokens_tema_valor_util()`.
+ *
+ * @return array
+ */
+function html_editor_ia_tokens_tema_namespaces(){
+	return [
+		'--color-',
+		'--font-',
+		'--spacing-',
+		'--text-',
+		'--radius-',
+		'--shadow-',
+		'--breakpoint-',
+		'--container-',
+		'--leading-',
+		'--tracking-',
+	];
+}
+
+/**
+ * Decide se o VALOR de uma declaração de tema cabe no prompt (req-127).
+ *
+ * É aqui que mora a economia real. O `browser-contract.css` do `transformamp` tem 78 KB e 2.255
+ * linhas, mas o bloco `@theme` dele são ~70 declarações: o peso está nas `--art-*-mask`, que carregam
+ * SVG inteiro em `data:image/svg+xml` — uma só passa de 700 bytes e não ensina nada à IA, porque
+ * máscara não vira utility.
+ *
+ * O corte é pela FORMA do valor, não pelo nome: contrato futuro que embuta asset cai na mesma regra
+ * sem precisar de allowlist nova.
+ *
+ * @param string $valor valor da declaração, já sem o `;`.
+ * @return bool
+ */
+function html_editor_ia_tokens_tema_valor_util($valor){
+	$valor = trim((string)$valor);
+
+	if($valor === '') return false;
+
+	// Asset embutido: nunca vira utility e é o que estoura o orçamento.
+	if(stripos($valor,'data:') !== false) return false;
+
+	// `url()` curto (um webfont, por exemplo) passa; referência longa é o mesmo problema do data URI.
+	if(stripos($valor,'url(') !== false && strlen($valor) > 80) return false;
+
+	// Blindagem final contra valor longo de qualquer natureza (gradiente de várias paradas, filtro).
+	if(strlen($valor) > 120) return false;
+
+	return true;
+}
+
+/**
+ * Recorta o conteúdo do primeiro bloco `@theme` / `@theme static` do contrato (req-127).
+ *
+ * A varredura conta chaves em vez de usar regex guloso: o bloco é plano hoje, mas um `@media`
+ * aninhado dentro do tema faria um padrão do tipo `@theme[^}]*}` devolver metade do bloco em
+ * silêncio, e o sintoma seria a paleta chegando pela metade na IA — sem erro em lugar nenhum.
+ *
+ * @param string $css CSS do contrato, já sem comentários.
+ * @return string conteúdo interno do bloco, ou string vazia quando não houver `@theme`.
+ */
+function html_editor_ia_tokens_tema_bloco($css){
+	$css = (string)$css;
+
+	if(!preg_match('/@theme\b[^{]*\{/', $css, $m, PREG_OFFSET_CAPTURE)) return '';
+
+	$inicio = $m[0][1] + strlen($m[0][0]);
+	$nivel = 1;
+	$total = strlen($css);
+
+	for($i = $inicio; $i < $total; $i++){
+		$c = $css[$i];
+		if($c === '{'){ $nivel++; continue; }
+		if($c !== '}') continue;
+		$nivel--;
+		if($nivel === 0) return substr($css, $inicio, $i - $inicio);
+	}
+
+	// Contrato com chave desbalanceada: devolve o que há a partir do `@theme` em vez de nada.
+	return substr($css, $inicio);
+}
+
+/**
+ * Lista os nomes de classe declarados nos blocos `@layer components` do contrato (req-127).
+ *
+ * Só o NOME importa para o prompt. As 137 classes do `transformamp` ocupam 2,4 KB como lista de
+ * nomes e 1.873 linhas como CSS — e a IA não precisa saber o que `.tm-nav-link` faz, precisa saber
+ * que ela existe e que é o jeito certo de marcar um link do menu.
+ *
+ * Pseudo-classes, pseudo-elementos e seletores compostos são reduzidos à classe raiz e deduplicados:
+ * `.tm-nav-link::after` e `.tm-nav-link:hover` colapsam em `.tm-nav-link`.
+ *
+ * @param string $css CSS do contrato, já sem comentários.
+ * @return array lista de classes com o ponto, na ordem de aparição.
+ */
+function html_editor_ia_tokens_tema_componentes($css){
+	$css = (string)$css;
+	$classes = [];
+
+	if(!preg_match_all('/@layer\s+components\b[^{]*\{/', $css, $matches, PREG_OFFSET_CAPTURE)) return [];
+
+	$total = strlen($css);
+
+	foreach($matches[0] as $match){
+		$inicio = $match[1] + strlen($match[0]);
+		$nivel = 1;
+		$fim = $total;
+
+		for($i = $inicio; $i < $total; $i++){
+			$c = $css[$i];
+			if($c === '{'){ $nivel++; continue; }
+			if($c !== '}') continue;
+			$nivel--;
+			if($nivel === 0){ $fim = $i; break; }
+		}
+
+		$bloco = substr($css, $inicio, $fim - $inicio);
+
+		// Só classe em posição de seletor: início de linha, depois de vírgula ou depois de chave.
+		// Sem a âncora, `.5rem` dentro de um valor entraria na lista como se fosse componente.
+		if(!preg_match_all('/(?:^|[\s,{}])\.([A-Za-z_][A-Za-z0-9_-]*)/m', $bloco, $sel)) continue;
+
+		foreach($sel[1] as $nome){
+			$classe = '.' . $nome;
+			if(!isset($classes[$classe])) $classes[$classe] = true;
+		}
+	}
+
+	return array_keys($classes);
+}
+
+/**
+ * Resume um CSS qualquer na lista de nomes de classe que ele define (req-127).
+ *
+ * Serve o `{{css_compiled}}`, que é opt-in. O CSS compilado de uma página do Live Editor é o output
+ * do Tailwind: não tem `@theme` nem `@layer components`, tem `@layer utilities` com uma regra por
+ * classe usada — dezenas de KB para dizer o que cabe em algumas centenas de bytes de nomes.
+ *
+ * As utilities do v4 escapam o caractere especial no seletor (`.lg\:flex`, `.p-1\.5`), mas o que a
+ * IA escreve no atributo `class` é o nome DESESCAPADO. Sem desfazer a barra, o modelo copiaria
+ * `lg\:flex` para o HTML e a classe não existiria.
+ *
+ * @param string $css CSS a resumir.
+ * @param int|null $limiteBytes orçamento total; `null` usa `html_editor_ia_tokens_tema_limite()`.
+ * @return string lista de classes separadas por espaço, ou string vazia.
+ */
+function html_editor_ia_css_classes_resumir($css, $limiteBytes = null){
+	$css = (string)$css;
+	$limiteBytes = ($limiteBytes === null ? html_editor_ia_tokens_tema_limite() : (int)$limiteBytes);
+
+	if($css === '' || $limiteBytes <= 0) return '';
+
+	$css = preg_replace('/\/\*.*?\*\//s', ' ', $css);
+	if($css === null) return '';
+
+	if(!preg_match_all('/(?:^|[\s,{}>+~])\.((?:[A-Za-z_-]|\\\\.)(?:[A-Za-z0-9_-]|\\\\.)*)/m', $css, $m)) return '';
+
+	$classes = [];
+	foreach($m[1] as $nome){
+		$nome = preg_replace('/\\\\(.)/', '$1', $nome);
+		if($nome === '' || isset($classes[$nome])) continue;
+		$classes[$nome] = true;
+	}
+
+	$saida = '';
+	foreach(array_keys($classes) as $nome){
+		$trecho = ($saida === '' ? '' : ' ') . '.' . $nome;
+		if(strlen($saida) + strlen($trecho) > $limiteBytes) break;
+		$saida .= $trecho;
+	}
+
+	return $saida;
+}
+
+/**
+ * Monta o bloco `{{theme_tokens}}` a partir do CSS do contrato (req-127).
+ *
+ * Parte PURA do extrator — separada de `html_editor_ia_extrair_tokens_tema()` pelo mesmo motivo do
+ * par `html_editor_css_precompiled_concatenar()` / `..._baseline()` do req-117: o que decide o
+ * resultado não depende de disco nem de banco, então é o que os testes precisam alcançar.
+ *
+ * A saída é CSS puro, sem prosa. A instrução de USO ("prefira estas classes") vive no `.md` de cada
+ * modo de IA, que é o artefato multi-idioma — o bloco injetado tem de ser idêntico nos dois idiomas.
+ *
+ * @param string $css conteúdo do `browser-contract.css`.
+ * @param int|null $limiteBytes orçamento total; `null` usa `html_editor_ia_tokens_tema_limite()`.
+ * @return string bloco CSS compacto, ou string vazia quando não houver nada aproveitável.
+ */
+function html_editor_ia_tokens_tema_compilar($css, $limiteBytes = null){
+	$css = (string)$css;
+	$limiteBytes = ($limiteBytes === null ? html_editor_ia_tokens_tema_limite() : (int)$limiteBytes);
+
+	if($css === '' || $limiteBytes <= 0) return '';
+
+	// Comentários saem primeiro: o contrato do `transformamp` abre com 22 linhas de justificativa de
+	// arquitetura, e blocos como `/* ----- Header ----- */` separam cada família de componente.
+	$css = preg_replace('/\/\*.*?\*\//s', ' ', $css);
+	if($css === null) return '';
+
+	// ===== Declarações de tema
+
+	$bloco = html_editor_ia_tokens_tema_bloco($css);
+	$namespaces = html_editor_ia_tokens_tema_namespaces();
+	$porNamespace = [];
+
+	if($bloco !== '' && preg_match_all('/(--[A-Za-z0-9_-]+)\s*:\s*([^;]+);/', $bloco, $decls, PREG_SET_ORDER)){
+		foreach($decls as $decl){
+			$nome = $decl[1];
+			$valor = trim(preg_replace('/\s+/', ' ', $decl[2]));
+
+			if(!html_editor_ia_tokens_tema_valor_util($valor)) continue;
+
+			foreach($namespaces as $ordem => $prefixo){
+				if(strpos($nome, $prefixo) !== 0) continue;
+				if(!isset($porNamespace[$ordem])) $porNamespace[$ordem] = [];
+				$porNamespace[$ordem][$nome] = $nome . ': ' . $valor . ';';
+				break;
+			}
+		}
+	}
+
+	ksort($porNamespace);
+	foreach($porNamespace as $ordem => $grupo) $porNamespace[$ordem] = array_values($grupo);
+
+	$totalDeclaracoes = 0;
+	foreach($porNamespace as $grupo) $totalDeclaracoes += count($grupo);
+
+	// ===== Corte por orçamento
+	//
+	// Componentes recebem no máximo 40% do teto: sem a reserva, um contrato com muitas classes
+	// engoliria a paleta, que é justamente o que a req-127 existe para entregar.
+
+	$classes = html_editor_ia_tokens_tema_componentes($css);
+	$reservaComponentes = ($classes ? (int)floor($limiteBytes * 0.4) : 0);
+	$orcamentoTema = $limiteBytes - $reservaComponentes;
+
+	$saida = '';
+	$incluidasPorNamespace = [];
+	$totalIncluidas = 0;
+
+	if($totalDeclaracoes > 0){
+		// O corte é round-robin entre os namespaces, não sequencial. Medido no `transformamp`: 63
+		// cores contra 3 `--shadow-*` — numa varredura sequencial as cores consomem o orçamento
+		// inteiro e as sombras da marca, que são o único outro namespace do contrato, ficam de fora.
+		// Uma rodada por namespace garante que nenhuma família suma por ser pequena, e a família
+		// grande continua ficando com todo o resto do orçamento.
+		//
+		// `@theme {\n` + `\n}` = 11 bytes de moldura.
+		$disponivel = $orcamentoTema - 11;
+		$usado = 0;
+		$cursor = [];
+		foreach($porNamespace as $ordem => $grupo){ $cursor[$ordem] = 0; $incluidasPorNamespace[$ordem] = []; }
+
+		$avancou = true;
+		while($avancou){
+			$avancou = false;
+			foreach($porNamespace as $ordem => $grupo){
+				if(!isset($grupo[$cursor[$ordem]])) continue;
+				$linha = $grupo[$cursor[$ordem]];
+				// `\n` entre as declarações; a primeira não paga separador.
+				$custo = strlen($linha) + ($totalIncluidas ? 1 : 0);
+				if($usado + $custo > $disponivel) continue;
+				$incluidasPorNamespace[$ordem][] = $linha;
+				$cursor[$ordem]++;
+				$usado += $custo;
+				$totalIncluidas++;
+				$avancou = true;
+			}
+		}
+
+		if($totalIncluidas > 0){
+			// A saída volta à ordem natural (namespace, depois ordem de aparição no contrato): o
+			// round-robin decide QUEM entra, nunca em que ordem sai.
+			$temaIncluidas = [];
+			foreach($incluidasPorNamespace as $grupo) foreach($grupo as $linha) $temaIncluidas[] = $linha;
+
+			$saida .= "@theme {\n" . implode("\n", $temaIncluidas) . "\n}";
+			$restantes = $totalDeclaracoes - $totalIncluidas;
+			if($restantes > 0) $saida .= "\n/* +" . $restantes . " */";
+		}
+	}
+
+	// ===== Classes de `@layer components`
+
+	if($classes){
+		$abertura = ($saida === '' ? '' : "\n") . "@layer components {\n";
+		$fechamento = " {}\n}";
+		$disponivel = $limiteBytes - strlen($saida) - strlen($abertura) - strlen($fechamento);
+
+		$incluidas = [];
+		$usado = 0;
+
+		$totalClasses = count($classes);
+
+		foreach($classes as $i => $classe){
+			// `, ` entre as classes; a primeira não paga separador.
+			$custo = strlen($classe) + ($incluidas ? 2 : 0);
+
+			// O marcador `/* +N */` é anexado DEPOIS do laço, então ele também tem de caber no teto:
+			// sem esta reserva o `transformamp` fechava em 1.502 bytes contra o limite de 1.500. `N`
+			// aqui é o que sobraria parando AGORA — sempre >= o restante real, então a reserva nunca
+			// fica curta por mudança de dígito.
+			$marcador = strlen("\n/* +" . ($totalClasses - $i) . " */");
+
+			if($usado + $custo + $marcador > $disponivel) break;
+			$incluidas[] = $classe;
+			$usado += $custo;
+		}
+
+		if($incluidas){
+			$saida .= $abertura . implode(', ', $incluidas) . $fechamento;
+			$restantes = count($classes) - count($incluidas);
+			if($restantes > 0) $saida .= "\n/* +" . $restantes . " */";
+		}
+	}
+
+	return $saida;
+}
+
+/**
+ * Marcador do bloco condicional de tokens de tema nos `.md` dos modos de IA (req-127).
+ *
+ * @return string
+ */
+function html_editor_ia_theme_tokens_marcador(){
+	return 'theme-tokens';
+}
+
+/**
+ * Aplica (ou remove) a seção de tokens de tema no texto do modo de IA (req-127).
+ *
+ * Os `.md` dos modos cercam a diretriz com o par de marcadores da convenção do core
+ * (`<!-- theme-tokens < -->` / `<!-- theme-tokens > -->`). Projeto sem contrato de tema, ou fora do
+ * Tailwind, tem o bloco INTEIRO removido: mandar o modelo "usar prioritariamente" uma lista que
+ * chega em branco é pior do que não mandar nada — ele preenche a lacuna inventando.
+ *
+ * Quando há tokens, só os marcadores saem; a diretriz fica, porque é ela que ensina a derivar a
+ * utility do token (`--color-mp-red` → `bg-mp-red`). Sem essa frase o modelo escreve
+ * `style="color: var(--color-mp-red)"`, que funciona e não é o que o projeto usa.
+ *
+ * @param string $modo texto do modo de IA.
+ * @param string $theme_tokens saída de `html_editor_ia_extrair_tokens_tema()`.
+ * @return string
+ */
+function html_editor_ia_modo_theme_tokens_aplicar($modo, $theme_tokens){
+	$modo = (string)$modo;
+	$theme_tokens = (string)$theme_tokens;
+
+	$cel_nome = html_editor_ia_theme_tokens_marcador();
+	$tag_in = '<!-- '.$cel_nome.' < -->';
+	$tag_out = '<!-- '.$cel_nome.' > -->';
+
+	if($theme_tokens === ''){
+		// `modelo_tag_del()` corta de `tag_in` até `tag_out`, então marcador invertido faria ele
+		// cortar do lugar errado e levar o resto do prompt junto. O modo é EDITÁVEL no painel de IA:
+		// o par pode chegar fora de ordem, ou não chegar. Nos dois casos, o que não pode acontecer é
+		// a tag vazar literal para o payload, então a troca por vazio vem sempre depois.
+		$pos_in = strpos($modo,$tag_in);
+		$pos_out = strpos($modo,$tag_out);
+
+		if($pos_in !== false && $pos_out !== false && $pos_in < $pos_out){
+			$modo = modelo_tag_del($modo,$tag_in,$tag_out);
+		}
+
+		$modo = str_replace([$tag_in, $tag_out], '', $modo);
+
+		return modelo_var_troca_tudo($modo,'{{theme_tokens}}','');
+	}
+
+	// O `.md` do core é LF, mas o modo chega do banco e passa pelo CodeMirror do painel, que pode
+	// devolver CRLF. Remover o marcador junto da quebra que o segue evita a linha em branco nos dois.
+	$modo = str_replace([$tag_in."\r\n", $tag_out."\r\n", $tag_in."\n", $tag_out."\n", $tag_in, $tag_out], '', $modo);
+
+	return modelo_var_troca_tudo($modo,'{{theme_tokens}}',$theme_tokens);
+}
+
+/**
+ * Extrator semântico leve de tokens de tema para o Assistente de IA (req-127).
+ *
+ * O Assistente recebia `{{html}}`, `{{css}}` e `{{framework_css}}` — e `{{framework_css}}` é a string
+ * `tailwindcss`, que não diz NADA sobre a marca do projeto. Sem a paleta, o modelo escreve
+ * `bg-red-600` onde o projeto tem `bg-mp-red`, e o operador reescreve a mão a cada interação.
+ *
+ * Mandar o contrato bruto resolveria e custaria 78 KB (~20 mil tokens) POR interação. Este extrator
+ * devolve o mesmo conhecimento em ~1,5 KB: as declarações do `@theme` que viram utility e os nomes
+ * das classes de `@layer components`.
+ *
+ * Os dois editores caem aqui pelo mesmo caminho — `html_editor_ajax_ia_requests()` atende tanto o
+ * editor clássico quanto a Editbar (via `dashboard_ajax_site_toolbar_ia_request()`) —, e a resolução
+ * do arquivo é a mesma do runtime do Tailwind Browser: `contents/` do projeto tem precedência sobre
+ * `assets/` do core (`html_editor_tailwind_browser_contract()`, req-114/req-117).
+ *
+ * @param string|null $caminhoContrato caminho explícito do contrato; `null` resolve pelo projeto ativo.
+ * @param int|null $limiteBytes orçamento total; `null` usa `html_editor_ia_tokens_tema_limite()`.
+ * @return string bloco CSS compacto, ou string vazia quando não houver contrato aproveitável.
+ */
+function html_editor_ia_extrair_tokens_tema($caminhoContrato = null, $limiteBytes = null){
+	$css = '';
+
+	if($caminhoContrato !== null && $caminhoContrato !== ''){
+		if(!is_file($caminhoContrato)) return '';
+		$css = (string)file_get_contents($caminhoContrato);
+	} else {
+		$css = html_editor_tailwind_browser_contract();
+	}
+
+	return html_editor_ia_tokens_tema_compilar($css, $limiteBytes);
+}
+
+/**
  * Baseline de CSS pré-compilado do editor (req-117).
  *
  * O editor injeta esse CSS numa folha `data-c2f-tailwind-role="baseline"` dentro do iframe, e a
@@ -1249,6 +1685,29 @@ function html_editor_ajax_ia_requests(){
 	$modo = modelo_var_troca_tudo($modo,'{{html}}',$html);
 	$modo = modelo_var_troca_tudo($modo,'{{css}}',$css);
 	$modo = modelo_var_troca_tudo($modo,'{{framework_css}}',$framework_css);
+
+	// req-127: contexto de marca do projeto. `{{framework_css}}` sozinho diz apenas `tailwindcss`,
+	// e com isso o modelo escreve `bg-red-600` onde o projeto tem `bg-mp-red`. O extrator resolve o
+	// `browser-contract.css` do projeto ativo e devolve ~1,5 KB de paleta e classes de componente
+	// no lugar dos 78 KB do arquivo bruto.
+	//
+	// A troca acontece ANTES do switch de `target` e vale para os TRÊS escopos de edição: página
+	// inteira e sessão (editor clássico, via `html-editor-ia-requests`) e elemento isolado (Editbar,
+	// via `site-toolbar-ia-request` → `dashboard_ajax_site_toolbar_ia_request()`), porque os três
+	// entram por esta mesma função. O que muda entre eles é o `{{html}}`, nunca o tema.
+	//
+	// Custo zero para quem não usa: modo sem os marcadores nem a tag não sofre alteração alguma, e
+	// projeto sem contrato tem a seção inteira removida em vez de receber uma lista vazia.
+	$modo = html_editor_ia_modo_theme_tokens_aplicar($modo, html_editor_ia_extrair_tokens_tema());
+
+	// req-127: o CSS compilado da página (Live Editor) é opt-in e entra RESUMIDO — só os nomes das
+	// classes. O valor cru é o output inteiro do Tailwind e mandaria o payload de volta para a casa
+	// dos 20 mil tokens, que é exatamente o que este lote existe para evitar. Nenhum modo do core
+	// declara a tag hoje; ela existe para o operador que quiser o contexto num modo próprio.
+	if(strpos($modo,'{{css_compiled}}') !== false){
+		$css_compiled = (string)($_REQUEST['data']['css_compiled'] ?? '');
+		$modo = modelo_var_troca_tudo($modo,'{{css_compiled}}',html_editor_ia_css_classes_resumir($css_compiled));
+	}
 
 	// Modificar o modo por target
 	$target = $_REQUEST['target'] ?? '';

@@ -56,7 +56,7 @@
                     "name": "Componentes",
                     "target": "componentes",
                     "default": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "md": ""
                     }
@@ -289,7 +289,7 @@
                     "name": "Components",
                     "target": "componentes",
                     "default": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "md": ""
                     }

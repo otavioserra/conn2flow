@@ -120,6 +120,8 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-114 | 2026-08-19 | accepted | Migração estruturada de telas públicas de identidade para Tailwind puro (BATCH-121). |
 | DEC-115 | 2026-08-20 | accepted | Customização de rótulos e ordenação de módulos administrativos em modulos-grupos (BATCH-125). |
 | DEC-116 | 2026-08-21 | accepted | Atualização Global da Documentação, Readmes, Changelogs e Workflows de Release (Gestor v2.9.39 e Instalador v1.5.6) (BATCH-127). |
+| DEC-117 | 2026-08-21 | accepted | Correção de Reload em Erro de CSRF/Sessão, Mapeamento de Ícones de Projetos, Alternância de Botões de Menu e Saneamento do Lucide (BATCH-127). |
+| DEC-118 | 2026-08-24 | accepted | Extrator semântico de tokens do Tailwind para o Assistente de IA no Editor HTML (BATCH-129). |
 
 ---
 
@@ -962,4 +964,42 @@ Correção de Reload em Erro de CSRF/Sessão, Mapeamento de Ícones de Projetos,
 3. **Alternância Contextual de Botões no Layout Administrativo Tailwind**: O botão `[data-admin-abrir]` recebe `lg:hidden` no HTML inicial para evitar visualização concorrente com o menu aberto no desktop; o runtime `admin-tailwind.js` alterna as classes `hidden` nos métodos `abrir()` e `fechar()`, mantendo visibilidade contextual exclusiva em mobile e desktop.
 4. **Saneamento em Duas Camadas do Lucide para Eliminar Warnings de Console**: Implementada validação de identificadores Lucide válidos (`/^[a-z0-9]+(?:-[a-z0-9]+)*$/`) no backend (`gestor_pagina_menu_icone_lucide_atributo`) e no frontend (`desenharIcones` em `admin-tailwind.js`), omitindo `data-lucide` para nomes compostos legados do Fomantic e mantendo o console do desenvolvedor 100% limpo.
 
+---
 
+## DEC-118 - 2026-08-24 - accepted
+
+Extrator Semântico de Tokens do Tailwind para o Assistente de IA no Editor HTML (req-127 / BATCH-129).
+Decisões desta rodada:
+
+1. **Contexto de marca por extração, não por anexo**: o Assistente passa a receber a paleta e as
+   classes do projeto pela tag `{{theme_tokens}}`, alimentada por
+   `html_editor_ia_extrair_tokens_tema()`. O `browser-contract.css` bruto **não** é enviado: o do
+   `transformamp` tem 78.485 bytes (~20 mil tokens) e o extraído tem 1.482 (98,11% de corte).
+
+2. **O corte de valor é por FORMA, não por nome**: descarta-se qualquer declaração com `data:`,
+   `url()` acima de 80 bytes ou valor acima de 120 bytes. É o que remove os SVGs embutidos das
+   `--art-*-mask` sem precisar de allowlist por nome, e vale para contrato futuro sem manutenção.
+
+3. **O corte por orçamento é round-robin entre namespaces**: na varredura sequencial as 63 cores do
+   `transformamp` consomem o teto inteiro e o namespace pequeno do contrato desaparece. Uma rodada
+   por namespace garante representação de cada família; a saída volta à ordem natural, porque o
+   round-robin decide quem entra, nunca em que ordem sai.
+
+4. **A allowlist cobre todo namespace do v4 que vira utility com nome próprio**: além dos
+   `--color-*`, `--font-*` e `--spacing-*` citados no intake, entram `--text-`, `--radius-`,
+   `--shadow-`, `--breakpoint-`, `--container-`, `--leading-` e `--tracking-`. Sem eles a IA escreve
+   valor arbitrário (`rounded-[12px]`) em vez do token da marca, e o custo medido é marginal.
+
+5. **A diretriz é bloco condicional com o par de marcadores da convenção do core**: projeto sem
+   contrato, ou fora do Tailwind, tem a seção inteira removida por `modelo_tag_del()`. Prompt que
+   manda "usar prioritariamente" uma lista em branco é pior do que prompt sem a seção.
+
+6. **A frase-guia vive no `.md` do modo, o bloco injetado é CSS puro**: a instrução que ensina a
+   derivar a utility do token (`--color-mp-red` → `bg-mp-red`) é texto de produto e pertence ao
+   artefato multi-idioma; o valor injetado tem de ser idêntico nos dois idiomas.
+
+7. **`{{css_compiled}}` é opt-in e resumido a nomes de classe**: o valor cru é o output inteiro do
+   Tailwind e devolveria o payload à casa dos 20 mil tokens. Nenhum modo do core declara a tag.
+
+8. **A fonte dos modos é `resources/<lang>/ai_modes/<id>/<id>.md`**: `gestor/db/data/ModosIaData.json`
+   é artefato compilado por `atualizacao-dados-recursos.php` e nunca deve ser editado à mão.

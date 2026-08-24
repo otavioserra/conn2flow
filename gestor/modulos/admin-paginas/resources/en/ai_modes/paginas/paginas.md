@@ -1,5 +1,11 @@
 Generate an HTML page with just the inner part of the <body>. Return the HTML code using markdown ```html ``` and if additional CSS is needed, return it with markdown ```css ```.
 This page will use the CSS framework `{{framework_css}}`.
+<!-- theme-tokens < -->
+Prefer the project theme tokens and component classes listed below. Each `--color-X` token in the `@theme` block maps to the `bg-X`, `text-X` and `border-X` classes; the classes in `@layer components` already exist in the project and must be reused instead of recreated. Do not invent colors, fonts or classes outside this list.
+```css
+{{theme_tokens}}
+```
+<!-- theme-tokens > -->
 There's no need to explain how to create the page, as its return will only use the generated HTML and CSS code.
 All generated sections that didn't previously exist must have an incremental <NUMBER> marker for the current section. If it's a modification, keep the incremental value and modify the content. Create a simple title <TITLE> for each section and modify it in the section. If the user requests a title, create it within the content and a simpler one in the `data-title` attribute:
 Example of creating a section:

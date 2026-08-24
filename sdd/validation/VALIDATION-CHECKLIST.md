@@ -647,3 +647,75 @@ Uma sessão anterior deixou a F2 apontando para o lugar errado, e isso vale regi
 - **Módulos do `conn2flow-site` fora do escopo do intake**: `checkout`, `host-manager`, `host-user-manager`, `pedidos`, `pro-manager` e `produtos` seguem sem `icone_tailwind`. Não geram mais warning (F4 cobre), mas desenham pelo Fomantic. O intake não os nomeia; ficam registrados aqui.
 - **Documentação de release neste mesmo working tree**: `CHANGELOG*`, `README*` e os dois workflows de release foram atualizados por uma sessão anterior e não fazem parte do escopo do req-125. As entradas de changelog que descreviam a F2 com os ids em português foram corrigidas para os ids reais.
 - Restrição Nível 1 respeitada: nenhum `git commit`, `git push` ou deploy executado.
+
+---
+
+## BATCH-129 — Extrator Semântico de Tokens do Tailwind para o Assistente de IA (req-127)
+
+Alvo de falsificação do lote: **o payload que sai para a API de IA carrega a paleta e as classes do
+projeto ativo, e o acréscimo cabe em ~1,5 KB mesmo contra um contrato de 78 KB.**
+
+- [x] **Extrator (M1)**: `html_editor_ia_extrair_tokens_tema()` resolve o contrato pela mesma ordem
+  do runtime do Tailwind Browser (`contents/` do projeto na frente de `assets/` do core) e delega
+  para a parte pura `html_editor_ia_tokens_tema_compilar()`.
+- [x] **Injeção (M2)**: `{{theme_tokens}}` trocado em `html_editor_ajax_ia_requests()` antes do
+  switch de `target`, cobrindo os três escopos de edição pela mesma linha.
+- [x] **Modos (M3)**: diretriz nos 6 `.md` de `resources/<lang>/ai_modes/`, `version` 1.0 → 1.1 nos
+  `ai_modes` de `admin-paginas` e `admin-componentes`, `ModosIaData.json` recompilado.
+
+### Medição contra os contratos reais do ambiente local
+
+| Projeto | `browser-contract.css` | Extraído | Redução |
+| --- | ---: | ---: | ---: |
+| `transformamp` | 78.485 B (2.255 linhas) | 1.482 B | **98,11%** |
+| `photon` | 3.163 B | 1.307 B | 58,68% |
+| `conn2flow-site` | 274 B | 147 B | 46,35% |
+| core (`gestor/assets/`) | 143 B (só comentário) | 0 B | — |
+
+O `transformamp` é o caso que motivou o lote e o que prova o critério de aceite 2. Conferido na
+saída dele: zero ocorrências de `data:` e de `--art-` (os SVGs embutidos ficaram de fora), e os 3
+`--shadow-*` presentes ao lado das cores — que é o round-robin funcionando.
+
+### Evidência de Validação (BATCH-129)
+
+- `php -l` → **OK** em `gestor/bibliotecas/html-editor.php` e nos dois arquivos de teste novos.
+- `c2f resources:sync` → **2.652 recursos, 0 erros**. Os 4 avisos são os pré-existentes
+  (`html-editor-publisher-simulation`, `sessao-com-2-colunas-fomantic-ui`), sem relação com o lote.
+- `composer test` → **680/680**, 3.086 asserções, 4 skips de ambiente. Antes do lote: 630. A única
+  deprecation do PHPUnit é pré-existente — aparece igual rodando só `HtmlEditorBaselineTest`.
+- `npx vitest run` → **337/337** em 21 arquivos, inalterado. Nenhum JS foi tocado neste lote: o modo
+  de IA já viajava do CodeMirror para o backend, e a substituição é inteiramente server-side.
+- `ModosIaData.json` conferido depois do sync: os 6 modos (`paginas`, `paginas-editbar`,
+  `componentes` × `pt-br`/`en`) carregam `{{theme_tokens}}` e `file_version` 1.1.
+
+### Cobertura nova
+
+- `tests/Unit/PHP/HtmlEditorIaThemeTokensTest.php` (**39 casos**): declarações de tema, descarte de
+  data URI e de valor longo, `@theme` com e sem `static`, chave aninhada no bloco, comentários,
+  classes de `@layer components` com pseudo-classes colapsadas, orçamento contra um contrato
+  sintético de 30 KB+, round-robin, bloco condicional (LF e CRLF), resumo de classes com desescape,
+  e dois guardas de dados: os 6 `.md` declaram a seção com o par de marcadores na ordem certa, e o
+  `ModosIaData.json` compilado carrega a tag.
+- `tests/Integration/HtmlEditorIaRequestsThemeTokensTest.php` (**11 casos**): dispara
+  `html_editor_ajax_ia_requests()` de verdade com um dublê de `ia_enviar_prompt()` e inspeciona o
+  prompt montado. É o que verifica o critério de aceite 1 sem depender de homologação manual — o
+  prompt só existe dentro da função, é entregue ao servidor de IA e descartado. Cobre os três
+  escopos (`tudo`, `sessao`, `editbar-element`), o projeto sem contrato, o opt-in do
+  `{{css_compiled}}` e a integridade do envelope JSON de resposta.
+
+### Pendências
+
+- **Homologação (operador)**: abrir o Assistente de IA num projeto com tema próprio (`transformamp`
+  ou `photon`), pedir um bloco novo e conferir que o HTML gerado usa as classes da marca
+  (`bg-mp-red`, `text-mp-gold`) em vez de cores genéricas do Tailwind. Repetir pela Editbar sobre um
+  elemento isolado. É o critério de aceite 3, que depende do comportamento do modelo e não é
+  falsificável por teste automatizado.
+- **O prompt novo só chega ao ambiente depois do sync de banco.** `modos_ia` tem
+  `preserve_on_user_modified: []`, então o UPSERT sobrescreve o prompt — inclusive um que o operador
+  tenha editado no painel de IA. Comportamento pré-existente da tabela, registrado aqui porque este
+  lote é o primeiro a mexer nos prompts padrão desde que a Editbar existe.
+- **Bug pré-existente fora do escopo**: `versao` de `ai_modes`/`ai_prompts` nunca incrementa
+  (`carregarDadosExistentes()` indexa como `modos_ia`/`prompts_ia`, `versaoChecksumPrompt()` consulta
+  como `ai_modes`/`ai_prompts`). Não bloqueia o lote — o sync decide pelo md5 do arquivo e faz UPSERT
+  campo a campo. Detalhado em [BATCH-129.md](../implementation/BATCH-129.md).
+- Restrição Nível 1 respeitada: nenhum `git commit`, `git push` ou deploy executado.

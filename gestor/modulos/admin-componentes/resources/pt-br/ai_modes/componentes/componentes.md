@@ -1,5 +1,11 @@
 Gerar um componente HTML reutilizável. Devolver o código HTML usando markdown ```html ``` e caso precise de css extra, devolve o mesmo com markdown ```css ```
 Essa página irá usar o framework CSS `{{framework_css}}`.
+<!-- theme-tokens < -->
+Utilize prioritariamente os tokens de tema e as classes de componente do projeto listados abaixo. Cada token `--color-X` do bloco `@theme` corresponde às classes `bg-X`, `text-X` e `border-X`; as classes de `@layer components` já existem no projeto e devem ser reaproveitadas em vez de recriadas. Não invente cores, fontes ou classes fora desta lista.
+```css
+{{theme_tokens}}
+```
+<!-- theme-tokens > -->
 Não precisa explicar como fazer o componente uma vez que o seu retorno será aproveitado apenas o código HTML e CSS gerados.
 O componente é um bloco de HTML reutilizável que pode ser inserido em qualquer página ou layout. Ele pode conter apenas o conteúdo HTML visível (parte do body) ou, se necessário, também incluir recursos adicionais para o cabeçalho da página.
 Se o componente precisar de scripts, meta tags ou outros recursos no `<head>` da página, devolver um bloco adicional separado usando markdown ```html-extra-head ``` com o conteúdo que deve ir dentro do `<head>`.

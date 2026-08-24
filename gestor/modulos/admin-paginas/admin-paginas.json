@@ -68,7 +68,7 @@
                     "name": "Páginas",
                     "target": "paginas",
                     "default": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "md": ""
                     }
@@ -77,7 +77,7 @@
                     "id": "paginas-editbar",
                     "name": "Páginas (Editbar)",
                     "target": "paginas",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "md": ""
                     }
@@ -382,7 +382,7 @@
                     "name": "Pages",
                     "target": "paginas",
                     "default": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "md": ""
                     }
@@ -391,7 +391,7 @@
                     "id": "paginas-editbar",
                     "name": "Pages (Editbar)",
                     "target": "paginas",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "md": ""
                     }

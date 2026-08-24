@@ -322,12 +322,10 @@ function forms_submissions_interfaces_padroes(){
 						Array(
 							'id' => 'name',
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-name')),
-							'ordenar' => 'asc',
 						),
 						Array(
 							'id' => 'form_id',
 							'nome' => gestor_variaveis(['id' => 'table-column-form', 'modulo' => $_GESTOR['modulo-id']]),
-							'ordenar' => 'asc',
 							'formatar' => Array(
 								'id' => 'encapsular',
 								'capsula' => '<div class="ui basic label">#id#</div>',
@@ -337,7 +335,6 @@ function forms_submissions_interfaces_padroes(){
 						Array(
 							'id' => 'form_status',
 							'nome' => gestor_variaveis(['id' => 'table-column-status', 'modulo' => $_GESTOR['modulo-id']]),
-							'ordenar' => 'asc',
 							'formatar' => Array(
 								'id' => 'outroArray',
 								'campo_troca' => 'id',
@@ -349,7 +346,7 @@ function forms_submissions_interfaces_padroes(){
 							'id' => $modulo['tabela']['data_modificacao'],
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),
 							'formatar' => 'dataHora',
-							'nao_procurar' => true,
+							'ordenar' => 'desc',
 						),
 					),
 				),
