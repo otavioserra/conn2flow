@@ -10,7 +10,7 @@ global $_GESTOR;
 //      `gestor.htmlEditorVersao`).
 // A rotina de assets atualiza a URL quando qualquer arquivo proprietário muda, sem bump manual.
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => gestor_asset_version('interface', '1.5.12'),
+	'versao' => gestor_asset_version('interface', '1.5.14'),
 );
 
 // ===== Funções auxiliares
