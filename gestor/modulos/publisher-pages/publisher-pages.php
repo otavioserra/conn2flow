@@ -64,6 +64,55 @@ function publisher_pages_normalize_array($array) {
     return $array;
 }
 
+/**
+ * Retorna o HTML do template ativo vinculado a um publicador ativo.
+ */
+function publisher_pages_template_html_padrao($publisher_id){
+	global $_GESTOR;
+
+	if(!is_scalar($publisher_id) || trim((string)$publisher_id) === ''){
+		return '';
+	}
+
+	$publisher = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'publisher',
+		'campos' => Array('template_id'),
+		'extra' => "WHERE status='A' AND id='".banco_escape_field((string)$publisher_id)."'"
+			.' AND language="'.$_GESTOR['linguagem-codigo'].'"',
+	));
+
+	if(!$publisher || !is_array($publisher) || empty($publisher['template_id'])){
+		return '';
+	}
+
+	$template = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'templates',
+		'campos' => Array('html'),
+		'extra' => "WHERE status='A' AND id='".banco_escape_field((string)$publisher['template_id'])."'"
+			.' AND language="'.$_GESTOR['linguagem-codigo'].'" AND target="publisher"',
+	));
+
+	return ($template && is_array($template) && isset($template['html']) && is_string($template['html']))
+		? $template['html']
+		: '';
+}
+
+/**
+ * Preserva o HTML enviado pelo editor e usa o template somente quando o envio veio vazio.
+ */
+function publisher_pages_html_inclusao_resolver($html_enviado, $html_template){
+	$html_enviado = is_string($html_enviado) ? $html_enviado : '';
+	$html_template = is_string($html_template) ? $html_template : '';
+
+	if(trim($html_enviado) !== ''){
+		return $html_enviado;
+	}
+
+	return trim($html_template) !== '' ? $html_template : '';
+}
+
 // ===== Interfaces Principais
 
 function publisher_pages_adicionar(){
@@ -75,6 +124,13 @@ function publisher_pages_adicionar(){
 	
 	if(isset($_GESTOR['adicionar-banco'])){
 		$usuario = gestor_usuario();
+
+		// ===== Garantir HTML estrutural mesmo quando o editor ainda não inicializou
+
+		$publisher_id = isset($_REQUEST['publisher']) && is_scalar($_REQUEST['publisher']) ? (string)$_REQUEST['publisher'] : '';
+		$html_template_padrao = publisher_pages_template_html_padrao($publisher_id);
+		$_REQUEST['htmlWithValues'] = publisher_pages_html_inclusao_resolver($_REQUEST['htmlWithValues'] ?? '', $html_template_padrao);
+		$_REQUEST['html'] = publisher_pages_html_inclusao_resolver($_REQUEST['html'] ?? '', $html_template_padrao);
 		
 		// ===== Validação de campos obrigatórios
 		
@@ -95,6 +151,13 @@ function publisher_pages_adicionar(){
 					'regra' => 'selecao-obrigatorio',
 					'campo' => 'publisher',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-label')),
+				),
+				Array(
+					'regra' => 'texto-obrigatorio',
+					'campo' => 'htmlWithValues',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-html-label')),
+					'min' => 1,
+					'max' => PHP_INT_MAX,
 				)
 			)
 		));
@@ -154,7 +217,7 @@ function publisher_pages_adicionar(){
 		
 		// ===== Definir o publisher_id
 
-		$publisher_id = $_REQUEST['publisher'];
+		$publisher_id = (string)$_REQUEST['publisher'];
 
 		// ===== Campos gerais
 		
@@ -166,9 +229,9 @@ function publisher_pages_adicionar(){
 		$campo_nome = "layout_id"; $post_nome = 'layout';		 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "tipo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "framework_css"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "opcao"; $post_nome = 'pagina-opcao'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "caminho"; $post_nome = 'paginaCaminho'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "opcao"; $post_nome = 'pagina-opcao'; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "caminho"; $post_nome = 'paginaCaminho'; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		
 		$campo_nome = "html"; $post_nome = 'htmlWithValues'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -181,10 +244,10 @@ function publisher_pages_adicionar(){
 		$campo_nome = "meta_descricao"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "meta_keywords"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field(gestor_meta_keywords_normalizar($_REQUEST[$post_nome])));
 		
-		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
+		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		
 		if(gestor_acesso('permissao-pagina')){
-			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
+			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		}
 		
 		// ===== Campos comuns
@@ -1502,6 +1565,13 @@ function publisher_pages_clonar(){
 
 	if(isset($_GESTOR['adicionar-banco'])){
 		$usuario = gestor_usuario();
+
+		// ===== Garantir HTML estrutural também ao clonar registros antigos sem HTML
+
+		$publisher_id = isset($_REQUEST['publisher']) && is_scalar($_REQUEST['publisher']) ? (string)$_REQUEST['publisher'] : '';
+		$html_template_padrao = publisher_pages_template_html_padrao($publisher_id);
+		$_REQUEST['htmlWithValues'] = publisher_pages_html_inclusao_resolver($_REQUEST['htmlWithValues'] ?? '', $html_template_padrao);
+		$_REQUEST['html'] = publisher_pages_html_inclusao_resolver($_REQUEST['html'] ?? '', $html_template_padrao);
 		
 		// ===== Validação de campos obrigatórios
 		
@@ -1522,6 +1592,13 @@ function publisher_pages_clonar(){
 					'regra' => 'selecao-obrigatorio',
 					'campo' => 'publisher',
 					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-label')),
+				),
+				Array(
+					'regra' => 'texto-obrigatorio',
+					'campo' => 'htmlWithValues',
+					'label' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-html-label')),
+					'min' => 1,
+					'max' => PHP_INT_MAX,
 				)
 			)
 		));
@@ -1581,7 +1658,7 @@ function publisher_pages_clonar(){
 		
 		// ===== Definir o publisher_id
 
-		$publisher_id = $_REQUEST['publisher'];
+		$publisher_id = (string)$_REQUEST['publisher'];
 
 		// ===== Campos gerais
 		
@@ -1593,9 +1670,9 @@ function publisher_pages_clonar(){
 		$campo_nome = "layout_id"; $post_nome = 'layout';		 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "tipo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "framework_css"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "opcao"; $post_nome = 'pagina-opcao'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
-		$campo_nome = "caminho"; $post_nome = 'paginaCaminho'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "opcao"; $post_nome = 'pagina-opcao'; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		$campo_nome = "caminho"; $post_nome = 'paginaCaminho'; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		
 		$campo_nome = "html"; $post_nome = 'htmlWithValues'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -1608,10 +1685,10 @@ function publisher_pages_clonar(){
 		$campo_nome = "meta_descricao"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "meta_keywords"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field(gestor_meta_keywords_normalizar($_REQUEST[$post_nome])));
 		
-		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
+		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		
 		if(gestor_acesso('permissao-pagina')){
-			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
+			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		}
 		
 		// ===== Campos comuns
@@ -1711,6 +1788,7 @@ function publisher_pages_clonar(){
 	);
 	
 	if($_GESTOR['banco-resultado']){
+		$nome = (isset($retorno_bd['nome']) ? $retorno_bd['nome'] : '');
 		$caminho = (isset($retorno_bd['caminho']) ? $retorno_bd['caminho'] : '');
 		$publisher_id = (isset($retorno_bd['publisher_id']) ? $retorno_bd['publisher_id'] : '');
 		$layout_id = (isset($retorno_bd['layout_id']) ? $retorno_bd['layout_id'] : '');

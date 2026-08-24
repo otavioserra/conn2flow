@@ -650,6 +650,33 @@ Uma sessão anterior deixou a F2 apontando para o lugar errado, e isso vale regi
 
 ---
 
+## BATCH-130
+
+### Critérios automatizados
+
+- [x] `banco_num_rows(false)`, `banco_num_rows(null)` e objeto inválido retornam `0` sem `TypeError`.
+- [x] `banco_select()` valida `$res` antes de chamar `banco_num_rows()`.
+- [x] A redefinição de senha inicializa `$id_hosts = null` e protege a consulta com
+  `gestor_schema_tabela_existe('usuarios_gestores_hosts')`.
+- [x] `raiz` e `sem_permissao` usam `!empty()` nos fluxos de inclusão e clonagem em
+  `admin-paginas.php`.
+- [x] Layout sem `css_compiled` assume `''` em `gestor/gestor.php`.
+- [x] `php -l` limpo nos quatro arquivos de produção e em `Req128HardeningTest.php`.
+- [x] Teste focado: 5 testes, 8 asserções, sem warnings.
+- [x] Suíte completa: 685 testes, 3.094 asserções, 4 skips de ambiente. A única depreciação do
+  PHPUnit é preexistente em `TwoFactorTest::testHotpBateComVetoresRfc4226()`.
+- [x] `git diff --check` limpo.
+
+### Homologação pendente
+
+- [ ] Em instalação dedicada sem `usuarios_gestores_hosts`, redefinir uma senha e confirmar que a
+  senha é atualizada, o histórico é gravado sem host e o e-mail de confirmação é enviado.
+- [ ] Criar/editar página sem enviar `raiz` e `sem_permissao` e confirmar ausência de warnings no log.
+- [ ] Renderizar layout sem `css_compiled` e confirmar ausência de warning no log.
+- Restrição Nível 1 respeitada: nenhum `git commit`, `git push` ou deploy executado.
+
+---
+
 ## BATCH-129 — Extrator Semântico de Tokens do Tailwind para o Assistente de IA (req-127)
 
 Alvo de falsificação do lote: **o payload que sai para a API de IA carrega a paleta e as classes do

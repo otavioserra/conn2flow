@@ -2868,7 +2868,7 @@ function gestor_roteador(){
 				$layout = $layouts['html'];
 				$layout_css = $layouts['css'];
 				$layout_css_precompiled = $layouts['css_precompiled'] ?? '';
-				$layout_css_compiled = $layouts['css_compiled'];
+				$layout_css_compiled = $layouts['css_compiled'] ?? '';
 
 				// Live Editor (BATCH-085): backup de LAYOUT restaurado tem precedência.
 				if(isset($_GESTOR['site-toolbar-backup-layout-html'])){

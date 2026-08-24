@@ -221,7 +221,7 @@ function banco_linhas_afetadas(){
  *
  * @global array $_BANCO Configurações de conexão do banco.
  *
- * @param mysqli_result $result O resultado da query.
+ * @param mixed $result Resultado mysqli, remoto ou valor inválido retornado pela query.
  *
  * @return int O número de linhas no resultado.
  */
@@ -232,8 +232,15 @@ function banco_num_rows($result){
 	if($result instanceof BancoResultadoRemoto)
 		return $result->numRows();
 
-	if($_BANCO['tipo'] == "mysqli")
+	// Queries inválidas retornam false. No PHP 8.1+, repassar esse valor para mysqli_num_rows()
+	// lança TypeError em vez de apenas emitir um warning.
+	if(!($result instanceof mysqli_result))
+		return 0;
+
+	if(($_BANCO['tipo'] ?? '') == "mysqli")
 		return mysqli_num_rows($result);
+
+	return 0;
 }
 
 /**
@@ -481,7 +488,7 @@ function banco_select($params = false){
 		$res = banco_query($sql);
 		
 		// ===== Processar resultados se existirem
-		if(banco_num_rows($res)){
+		if($res && banco_num_rows($res)){
 			// ===== Obter lista com todos os nomes dos campos
 			if($camposVirgulas != '*'){
 				$campos_name = explode(',',$camposVirgulas);

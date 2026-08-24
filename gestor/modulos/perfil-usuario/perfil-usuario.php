@@ -3462,19 +3462,25 @@ function perfil_usuario_redefine_password(){
 			);
 			
 			// ===== Pegar a referência do host do usuário para incluir no histórico caso seja um usuário de um host.
-			
-			$usuarios_gestores_hosts = banco_select(Array(
-				'unico' => true,
-				'tabela' => 'usuarios_gestores_hosts',
-				'campos' => Array(
-					'id_hosts',
-				),
-				'extra' => 
-					"WHERE id_usuarios='".$id_usuarios."'"
-			));
-			
-			if($usuarios_gestores_hosts){
-				$id_hosts = $usuarios_gestores_hosts['id_hosts'];
+
+			$id_hosts = null;
+
+			// Sites dedicados não possuem esta tabela. O gate de schema evita que a redefinição
+			// de senha falhe por uma associação de host que só existe no ambiente multi-host.
+			if(gestor_schema_tabela_existe('usuarios_gestores_hosts')){
+				$usuarios_gestores_hosts = banco_select(Array(
+					'unico' => true,
+					'tabela' => 'usuarios_gestores_hosts',
+					'campos' => Array(
+						'id_hosts',
+					),
+					'extra' =>
+						"WHERE id_usuarios='".$id_usuarios."'"
+				));
+
+				if($usuarios_gestores_hosts){
+					$id_hosts = $usuarios_gestores_hosts['id_hosts'] ?? null;
+				}
 			}
 			
 			// ===== Pegar o IP do usuário.
@@ -3495,7 +3501,7 @@ function perfil_usuario_redefine_password(){
 			interface_historico_incluir(Array(
 				'id_numerico_manual' => $id_usuarios,
 				'id_usuarios_manual' => $id_usuarios,
-				'id_hosts_manual' => (isset($id_hosts) ? $id_hosts : null ),
+				'id_hosts_manual' => $id_hosts,
 				'alteracoes' => $alteracoes,
 			));
 			

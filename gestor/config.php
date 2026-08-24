@@ -368,14 +368,14 @@ if(isset($_GESTOR['ROOT_PATH']) && file_exists($_GESTOR['ROOT_PATH'].'config-pro
 // req-113: tokens de cache derivados do conteúdo. Ausência/JSON inválido mantém
 // compatibilidade com as versões semânticas antigas.
 $_GESTOR['asset-versions'] = [];
-$assetVersionsPath = $_GESTOR['assets-path'] . 'asset-versions.json';
-if(is_file($assetVersionsPath)){
+$assetVersionsPath = isset($_GESTOR['assets-path']) ? ($_GESTOR['assets-path'] . 'asset-versions.json') : '';
+if(!empty($assetVersionsPath) && is_file($assetVersionsPath)){
 	$assetVersions = json_decode((string)file_get_contents($assetVersionsPath), true);
 	if(is_array($assetVersions)) $_GESTOR['asset-versions'] = $assetVersions;
 }
-$_GESTOR['asset-version'] = $_GESTOR['asset-versions']['system'] ?? $_GESTOR['versao'];
-$projectAssetVersionPath = $_GESTOR['contents-path'] . 'asset-version.json';
-if(is_file($projectAssetVersionPath)){
+$_GESTOR['asset-version'] = $_GESTOR['asset-versions']['system'] ?? $_GESTOR['versao'] ?? '1.0.0';
+$projectAssetVersionPath = isset($_GESTOR['contents-path']) ? ($_GESTOR['contents-path'] . 'asset-version.json') : '';
+if(!empty($projectAssetVersionPath) && is_file($projectAssetVersionPath)){
 	$projectAssetVersion = json_decode((string)file_get_contents($projectAssetVersionPath), true);
 	if(is_array($projectAssetVersion) && !empty($projectAssetVersion['project'])){
 		$_GESTOR['project-asset-version'] = $projectAssetVersion['project'];

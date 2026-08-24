@@ -134,9 +134,12 @@ function publisher_adicionar(){
 
 	$countTemplates = 0;
 	$countTemplatesLinked = 0;
+	$template_id_options = '';
+	if($templates && is_array($templates))
 	foreach($templates as $template){
 		$disabled = '';
 		$countTemplates++;
+		if($templates_linked_publisher && is_array($templates_linked_publisher))
 		foreach($templates_linked_publisher as $linked){
 			if($template['id'] == $linked['t.id']){
 				$template['nome'] = '<kbd class="ui basic label">' . $template['nome'] . '</kbd><kbd class="ui teal icon label"><i class="exchange alternate small icon"></i></kbd><kbd class="ui basic label">' . $linked['p.name'] . '</kbd>';
@@ -465,14 +468,15 @@ function publisher_editar(){
 
 		$countTemplates = 0;
 		$countTemplatesLinked = 0;
-		if($templates)
+		$template_id_options = '';
+		if($templates && is_array($templates))
 		foreach($templates as $template){
 			$disabled = '';
 			$selected = '';
 			$countTemplates++;
 
 			if($template['id'] != $template_id)
-			if($templates_linked_publisher)
+			if($templates_linked_publisher && is_array($templates_linked_publisher))
 			foreach($templates_linked_publisher as $linked){
 				if($template['id'] == $linked['t.id']){
 					$template['nome'] = '<kbd class="ui basic label">' . $template['nome'] . '</kbd><kbd class="ui teal icon label"><i class="exchange alternate small icon"></i></kbd><kbd class="ui basic label">' . $linked['p.name'] . '</kbd>';
@@ -796,11 +800,12 @@ function publisher_clonar(){
 
 		$countTemplates = 0;
 		$countTemplatesLinked = 0;
-		if($templates)
+		$template_id_options = '';
+		if($templates && is_array($templates))
 		foreach($templates as $template){
 			$disabled = '';
 			$countTemplates++;
-			if($templates_linked_publisher)
+			if($templates_linked_publisher && is_array($templates_linked_publisher))
 			foreach($templates_linked_publisher as $linked){
 				if($template['id'] == $linked['t.id']){
 					$template['nome'] = '<kbd class="ui basic label">' . $template['nome'] . '</kbd><kbd class="ui teal icon label"><i class="exchange alternate small icon"></i></kbd><kbd class="ui basic label">' . $linked['p.name'] . '</kbd>';

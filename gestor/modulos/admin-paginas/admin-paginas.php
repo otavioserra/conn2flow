@@ -108,10 +108,10 @@ function admin_paginas_adicionar(){
 		// req-112: meta tags clássicas de SEO. Keywords passam pelo normalizador antes do banco.
 		$campo_nome = "meta_descricao"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "meta_keywords"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field(gestor_meta_keywords_normalizar($_REQUEST[$post_nome])));
-		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
+		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		
 		if(gestor_acesso('permissao-pagina')){
-			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
+			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		}
 		
 		// ===== Campos comuns
@@ -947,10 +947,10 @@ function admin_paginas_clonar(){
 		// req-112: meta tags clássicas de SEO. Keywords passam pelo normalizador antes do banco.
 		$campo_nome = "meta_descricao"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "meta_keywords"; $post_nome = $campo_nome;						if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field(gestor_meta_keywords_normalizar($_REQUEST[$post_nome])));
-		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
+		$campo_nome = "raiz"; $post_nome = $campo_nome; 								if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		
 		if(gestor_acesso('permissao-pagina')){
-			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,'1',true);
+			$campo_nome = "sem_permissao"; $post_nome = $campo_nome; 							if(!empty($_REQUEST[$post_nome]))		$campos[] = Array($campo_nome,'1',true);
 		}
 		
 		// ===== Campos comuns
