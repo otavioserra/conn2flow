@@ -1,7 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-130.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-130.md) (BATCH-132 `ready-for-intake`, 2026-08-24): Fallback Automático para Template de E-mail e Blindagem de Configurações Padrão no Módulo Forms.
+  - [req-130.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-130.md) (BATCH-132 `implemented-pending-homologation`, 2026-08-24): Fallback Automático para Template de E-mail, Blindagem de Configurações e Correção de CSRF/URL no Módulo Forms. Lint OK; testes PHP 7/7; testes JS 5/5; suíte PHP 697/697; suíte JS 342/342.
   - [req-129.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-129.md) (BATCH-131 `implemented-pending-homologation`, 2026-08-24): Blindagem e Correção de Inicialização em Publisher e Publisher Pages (Template Options, Nome na Clonagem e Prevenção de Publicações sem HTML). Lint OK; teste focado 5/5; suíte PHP 690/690.
   - [req-128.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-128.md) (BATCH-130 `implemented-pending-homologation`, 2026-08-24): Blindagem de banco_num_rows, proteção da consulta de hosts em perfil-usuario e eliminação de warnings de chaves indefinidas no core. Lint OK; teste focado 5/5; suíte PHP 685/685.
   - [req-127.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-127.md) (BATCH-129 `implemented-pending-homologation`, 2026-08-24): Extrator semântico de tokens do Tailwind no Assistente de IA. `{{theme_tokens}}` injetado nos três escopos de edição; 78.485 → 1.482 bytes (98,11%) no contrato do `transformamp`. Aguarda homologação com um projeto de tema próprio.

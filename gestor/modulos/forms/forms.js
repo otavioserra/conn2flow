@@ -15,6 +15,13 @@ $(document).ready(function () {
     var widgetCodeMirror = null;
     var fieldSortable = null;
 
+    function moduloUrl() {
+        var url = String(gestor.raiz || '') + String(gestor.moduloCaminho || '').replace(/^\/+/, '');
+        url = url.replace(/([^:])\/{2,}/g, '$1/');
+        if (url.charAt(url.length - 1) !== '/') url += '/';
+        return url;
+    }
+
     $('.menuForms .item').tab({
         context: '.forms-main-tabs',
         onLoad: function (tabPath) {
@@ -271,12 +278,13 @@ $(document).ready(function () {
     function loadTemplate(template_id) {
         $.ajax({
             type: 'POST',
-            url: gestor.raiz + gestor.moduloCaminho + '/',
+            url: moduloUrl(),
             dataType: 'json',
             data: {
                 opcao: gestor.moduloOpcao,
                 ajax: 'sim',
                 ajaxOpcao: 'template-load',
+                _csrf_token: (window.gestor && gestor.csrfToken) ? gestor.csrfToken : '',
                 params: { template_id: template_id }
             },
             success: function (dados) {
@@ -320,12 +328,13 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: gestor.raiz + gestor.moduloCaminho + '/',
+            url: moduloUrl(),
             dataType: 'json',
             data: {
                 opcao: gestor.moduloOpcao,
                 ajax: 'sim',
                 ajaxOpcao: 'widget-preview',
+                _csrf_token: (window.gestor && gestor.csrfToken) ? gestor.csrfToken : '',
                 params: {
                     html: html,
                     css: css,
@@ -367,16 +376,22 @@ $(document).ready(function () {
 
         $hidden.val(q).trigger('input').trigger('change');
 
-        if (!target || q.length < 1) { $results.empty().hide(); return; }
+        if (!target || q.length < 1) {
+            $hidden.val('').trigger('input').trigger('change');
+            $('#email_message_component').val('');
+            $results.empty().hide();
+            return;
+        }
 
         $.ajax({
             type: 'POST',
-            url: gestor.raiz + gestor.moduloCaminho + '/',
+            url: moduloUrl(),
             dataType: 'json',
             data: {
                 opcao: gestor.moduloOpcao,
                 ajax: 'sim',
                 ajaxOpcao: 'buscar-' + target,
+                _csrf_token: (window.gestor && gestor.csrfToken) ? gestor.csrfToken : '',
                 q: q
             },
             success: function (resp) {
@@ -408,6 +423,7 @@ $(document).ready(function () {
     $(document).on('click', '.sig-autocomplete .sig-clear', function () {
         var $box = $(this).closest('.sig-autocomplete');
         $box.find('.sig-hidden-value').val('').trigger('input').trigger('change');
+        $('#email_message_component').val('');
         $box.find('.sig-search-input').val('');
         $box.find('.sig-results').empty().hide();
     });

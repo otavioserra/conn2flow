@@ -6,6 +6,13 @@ $(document).ready(function () {
 		if (formObj.length > 0) {
 			var formStore = ('form' in gestor && gestor.form) ? gestor.form : null;
 
+			function defaultFormAction() {
+				var root = String((typeof gestor !== 'undefined' && gestor.raiz) ? gestor.raiz : '/');
+				root = root.replace(/([^:])\/{2,}/g, '$1/');
+				if (root.charAt(root.length - 1) !== '/') root += '/';
+				return root + 'forms-submissions-process/';
+			}
+
 			function ensureFormInstanceId(form, formKey, index) {
 				var instanceId = form.attr('data-form-instance-id');
 				if (instanceId) return instanceId;
@@ -49,7 +56,7 @@ $(document).ready(function () {
 					var normalized = $.extend(true, {}, data);
 
 					normalized.formId = pickScalar(normalized.formId, fallbackFormKey || '');
-					normalized.formAction = pickScalar(normalized.formAction, '');
+					normalized.formAction = pickScalar(normalized.formAction, defaultFormAction());
 					normalized.ajaxOpcao = pickScalar(normalized.ajaxOpcao, 'forms-process');
 					normalized.formStatus = pickScalar(normalized.formStatus, 'A');
 					normalized.framework = pickScalar(normalized.framework, 'tailwindcss');
@@ -558,14 +565,14 @@ $(document).ready(function () {
 				const formData = new FormData(form[0]);
 				var formId = (typeof data.formId === 'string' && data.formId.trim() !== '') ? data.formId.trim() : (form.attr('data-form-id') || '');
 				var ajaxOpcao = (typeof data.ajaxOpcao === 'string' && data.ajaxOpcao.trim() !== '') ? data.ajaxOpcao.trim() : 'forms-process';
-				var formAction = (typeof data.formAction === 'string' && data.formAction.trim() !== '') ? data.formAction.trim() : '';
+				var formAction = (typeof data.formAction === 'string' && data.formAction.trim() !== '') ? data.formAction.trim() : defaultFormAction();
 
 				formData.append('ajax', '1');
 				formData.append('ajaxOpcao', ajaxOpcao);
 				formData.append('_formId', formId);
 
 				$.ajax({
-					url: formAction || form.attr('action') || window.location.href,
+					url: formAction || form.attr('action') || defaultFormAction(),
 					type: 'POST',
 					data: formData,
 					processData: false,

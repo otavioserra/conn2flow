@@ -746,3 +746,19 @@ saída dele: zero ocorrências de `data:` e de `--art-` (os SVGs embutidos ficar
   como `ai_modes`/`ai_prompts`). Não bloqueia o lote — o sync decide pelo md5 do arquivo e faz UPSERT
   campo a campo. Detalhado em [BATCH-129.md](../implementation/BATCH-129.md).
 - Restrição Nível 1 respeitada: nenhum `git commit`, `git push` ou deploy executado.
+
+---
+
+## BATCH-132 — Fallback Automático para Template de E-mail, Blindagem de Configurações e Correção de CSRF/URL no Módulo Forms (req-130)
+
+- [x] Fallback robusto para template padrão `forms-prepared-email` implementado em `formulario.php` quando `message_component` estiver vazio, nulo ou inexistente.
+- [x] Processamento correto de tags (`#code#`, `#formName#`) e células repetíveis (`<!-- cel < -->`) com labels e valores sanitizados dos campos enviados.
+- [x] Sanitização e fallbacks para assunto (`subject` -> `forms-subject-emails`), `reply_to` e nome do remetente.
+- [x] Fallback consistente de `form_action` apontando para `forms-submissions-process/` quando não configurado.
+- [x] Normalização de URLs no painel administrativo de formulários (`moduloUrl()` em `forms.js`), eliminando duplicação de barras (`//`).
+- [x] Envio explícito do token `_csrf_token` em todas as chamadas AJAX do painel administrativo (`widget-preview`, `buscar-componentes`, `template-load`).
+- [x] Limpeza do valor do input hidden `#email_message_component` ao limpar a busca com `.sig-clear` ou apagar o texto no input de busca.
+- [x] Testes automatizados executados com 100% de aprovação: PHPUnit **697/697** (novos 7 testes em `Req130FormsHardeningTest.php`), Vitest **342/342** (novos 5 testes em `forms.admin-hardening.test.js`).
+- [x] Sintaxe limpa em `php -l`, `node --check` e `git diff --check`.
+- [ ] Homologação manual do envio de formulário com recebimento de e-mail e busca de componentes no painel — **operador**.
+

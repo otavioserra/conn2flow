@@ -41,15 +41,159 @@ function formulario_parse_limits($options){
 // ===== Funções auxiliares
 
 /**
+ * Normaliza uma string destinada a cabeçalhos de e-mail, removendo tags e quebras de linha.
+ */
+function formulario_email_cabecalho_normalizar($valor){
+	if(!is_scalar($valor)) return '';
+
+	$valor = strip_tags((string)$valor);
+	$valor = preg_replace('/[\r\n]+/', ' ', $valor);
+
+	return trim((string)$valor);
+}
+
+/**
+ * Resolve a action pública do formulário; vazio sempre aponta para o processador canônico.
+ */
+function formulario_form_action_resolver($form_action, $url_raiz){
+	$url_raiz = is_scalar($url_raiz) ? trim((string)$url_raiz) : '';
+	$url_raiz = rtrim($url_raiz, '/') . '/';
+	$form_action = is_scalar($form_action) ? trim((string)$form_action) : '';
+	$form_action = preg_replace('/[\x00-\x1F\x7F]+/', '', $form_action);
+
+	if($form_action === ''){
+		$form_action = 'forms-submissions-process/';
+	}
+
+	return $url_raiz . ltrim($form_action, '/');
+}
+
+/**
+ * Retorna o primeiro endereço de e-mail válido da lista de candidatos.
+ */
+function formulario_email_reply_to_resolver(...$candidatos){
+	foreach($candidatos as $candidato){
+		$email = formulario_email_cabecalho_normalizar($candidato);
+		if($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)){
+			return $email;
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Retorna o primeiro nome de remetente não vazio, já seguro para cabeçalho.
+ */
+function formulario_email_reply_to_nome_resolver(...$candidatos){
+	foreach($candidatos as $candidato){
+		$nome = formulario_email_cabecalho_normalizar($candidato);
+		if($nome !== '') return $nome;
+	}
+
+	return null;
+}
+
+/**
+ * Aplica o assunto padrão quando o valor configurado está vazio ou contém somente espaços.
+ */
+function formulario_email_assunto_resolver($assunto, $assunto_padrao){
+	$assunto = formulario_email_cabecalho_normalizar($assunto);
+	$assunto_padrao = formulario_email_cabecalho_normalizar($assunto_padrao);
+
+	return $assunto !== '' ? $assunto : $assunto_padrao;
+}
+
+/**
+ * Carrega o componente customizado e recua obrigatoriamente para forms-prepared-email se necessário.
+ */
+function formulario_email_mensagem_resolver($email_data, $carregar_componente = null){
+	$componente_id = is_array($email_data)
+		? formulario_email_cabecalho_normalizar($email_data['message_component'] ?? '')
+		: '';
+	$mensagem = '';
+	$carregar_componente = is_callable($carregar_componente)
+		? $carregar_componente
+		: static function($id){
+			return gestor_componente(Array('id' => $id));
+		};
+
+	if($componente_id !== ''){
+		$mensagem = $carregar_componente($componente_id);
+	}
+
+	if(!is_string($mensagem) || trim($mensagem) === ''){
+		$mensagem = $carregar_componente('forms-prepared-email');
+	}
+
+	return is_string($mensagem) ? $mensagem : '';
+}
+
+/**
+ * Preenche as variáveis gerais e a célula repetível do template de notificação.
+ */
+function formulario_email_template_processar($mensagem, $numero, $form_name, $fields, $dados){
+	if(!is_string($mensagem)) return '';
+
+	$mensagem = modelo_var_troca($mensagem, '#code#', (string)$numero);
+	$mensagem = modelo_var_troca($mensagem, '#formName#', (string)$form_name);
+	$fields = is_array($fields) ? $fields : Array();
+	$dados = is_array($dados) ? $dados : Array();
+
+	$cel_nome = 'cel';
+	$cel_template = modelo_tag_val($mensagem, '<!-- '.$cel_nome.' < -->', '<!-- '.$cel_nome.' > -->');
+	if(!is_string($cel_template) || $cel_template === '') return $mensagem;
+
+	$mensagem = modelo_tag_troca_val($mensagem, '<!-- '.$cel_nome.' < -->', '<!-- '.$cel_nome.' > -->', '<!-- '.$cel_nome.' -->');
+	$celulas_processadas = '';
+
+	foreach($fields as $field){
+		if(!is_array($field) || ($field['type'] ?? 'text') === 'password') continue;
+
+		$field_name = isset($field['name']) && is_scalar($field['name']) ? (string)$field['name'] : '';
+		if($field_name === '') continue;
+		$field_label = isset($field['label']) && is_scalar($field['label']) && trim((string)$field['label']) !== ''
+			? (string)$field['label']
+			: ucfirst($field_name);
+		$raw_value = $dados[$field_name] ?? '';
+		if(is_array($raw_value)){
+			$raw_value = implode(', ', array_map(static function($valor){
+				return is_scalar($valor) ? (string)$valor : '';
+			}, $raw_value));
+		} else if(!is_scalar($raw_value)){
+			$raw_value = '';
+		}
+		$raw_value = (string)$raw_value;
+
+		$field_value = htmlspecialchars($raw_value, ENT_QUOTES, 'UTF-8');
+		if(($field['type'] ?? '') === 'email' && filter_var($raw_value, FILTER_VALIDATE_EMAIL)){
+			$field_value_formatted = '<a href="mailto:'.htmlspecialchars($raw_value, ENT_COMPAT, 'UTF-8').'">'.htmlspecialchars($raw_value, ENT_COMPAT, 'UTF-8').'</a>';
+		} else {
+			$field_value_formatted = $field_value;
+		}
+
+		$plain_for_preview = ($field['type'] ?? '') === 'textarea'
+			? preg_replace("/\r\n|\r/", "\n", $field_value)
+			: strip_tags($field_value_formatted);
+		$preview = ($field['type'] ?? '') === 'textarea' ? nl2br($plain_for_preview) : $plain_for_preview;
+
+		$cel_aux = modelo_var_troca($cel_template, Array(
+			'#label#' => htmlspecialchars($field_label, ENT_QUOTES, 'UTF-8'),
+			'#valor#' => $preview,
+			'#valor_full#' => $field_value_formatted,
+		));
+		$celulas_processadas .= $cel_aux;
+	}
+
+	$mensagem = modelo_var_in($mensagem, '<!-- '.$cel_nome.' -->', $celulas_processadas);
+
+	return modelo_var_troca($mensagem, '<!-- '.$cel_nome.' -->', '');
+}
+
+/**
  * Inclui JavaScript da biblioteca de formulários na página.
  *
- * Carrega o arquivo JavaScript necessário para validações client-side.
- * Usa controle para incluir apenas uma vez por requisição.
- * 
  * @param array|false $params Parâmetros da função.
- * 
- * @param array $params['js_vars'] Array de variáveis JavaScript a serem incluídas (opcional).
- * 
  * @return void
  */
 function formulario_incluir_js($params = false){
@@ -237,7 +381,7 @@ function formulario_montar_js_vars($formIds, $formAjaxOpcao = null){
 
 		foreach($formIds as $fid){
 			// Reset por iteração para não vazar configuração de um formulário para outro
-			$formAction = null;
+			$formAction = formulario_form_action_resolver(null, $_GESTOR['url-raiz'] ?? '/');
 			$blockWrapper = null;
 			$googleRecaptchaActive = null;
 			$googleRecaptchaSite = null;
@@ -273,9 +417,7 @@ function formulario_montar_js_vars($formIds, $formAjaxOpcao = null){
         $forceRecaptchaV3 = false; // Padrão
         if($formDefinition){
             $schema = json_decode($formDefinition['fields_schema'], true);
-            if(isset($schema['form_action'])){
-                $formAction = $_GESTOR['url-raiz'] . $schema['form_action'];
-            }
+			$formAction = formulario_form_action_resolver($schema['form_action'] ?? null, $_GESTOR['url-raiz'] ?? '/');
              if(isset($schema['fields'])){
                 $fieldsDoJson = $schema['fields'];
             }
@@ -320,7 +462,7 @@ function formulario_montar_js_vars($formIds, $formAjaxOpcao = null){
         // ===== Montar as variáveis do formulário (indexadas pelo seu ID)
         $forms_js_vars[$fid] = [
             'formId' => $fid,
-            'formAction' => $formAction ?? $_GESTOR['url-raiz'] . 'forms-submissions-process/',
+			'formAction' => $formAction,
             'formStatus' => $formStatus,
             'ajaxOpcao' => $formAjaxOpcao ?? 'forms-process',
 			'serverTimestamp' => time(),
@@ -648,8 +790,16 @@ function formulario_processador($params = false){
             $fieldEmailValue = $_POST[$schema['field_email']];
         }
 
-		$responderPara = !empty($fieldEmailValue) ? $fieldEmailValue : (!empty($emailData) && isset($emailData['reply_to']) && !empty($emailData['reply_to']) ? $emailData['reply_to'] : (!empty($_CONFIG['email']['sender']['replyTo']) ? $_CONFIG['email']['sender']['replyTo'] : null));
-		$responderParaNome = isset($fieldNameValueFlag) ? $fieldNameValue : (!empty($emailData) && isset($emailData['reply_to_name']) && !empty($emailData['reply_to_name']) ? $emailData['reply_to_name'] : (!empty($_CONFIG['email']['sender']['replyToName']) ? $_CONFIG['email']['sender']['replyToName'] : null));
+		$responderPara = formulario_email_reply_to_resolver(
+			$fieldEmailValue,
+			$emailData['reply_to'] ?? null,
+			$_CONFIG['email']['sender']['replyTo'] ?? null
+		);
+		$responderParaNome = formulario_email_reply_to_nome_resolver(
+			isset($fieldNameValueFlag) ? $fieldNameValue : null,
+			$emailData['reply_to_name'] ?? null,
+			$_CONFIG['email']['sender']['replyToName'] ?? null
+		);
         
         // ===== Validar campos obrigatórios
         foreach($schema['fields'] as $field){
@@ -873,9 +1023,14 @@ function formulario_processador($params = false){
 		$defaultSender = null;
 	}
 			
-	$destinatariosTXT = !empty($emailData) && isset($emailData['recipients']) && !empty($emailData['recipients']) ? $emailData['recipients'] : $defaultSender;
+	$destinatariosTXT = isset($emailData['recipients']) && is_scalar($emailData['recipients'])
+		? trim(preg_replace('/[\r\n]+/', ' ', (string)$emailData['recipients']))
+		: '';
+	if($destinatariosTXT === ''){
+		$destinatariosTXT = is_scalar($defaultSender) ? trim((string)$defaultSender) : '';
+	}
 	
-	$destinatarios = explode(';',trim($destinatariosTXT));
+	$destinatarios = $destinatariosTXT !== '' ? explode(';', $destinatariosTXT) : Array();
 
 	if($destinatarios)
 	foreach($destinatarios as $destinatario){
@@ -901,78 +1056,22 @@ function formulario_processador($params = false){
 	
 	$numero = date('Ymd') . $form_last_id;
 
-	$assunto = !empty($emailData) && isset($emailData['subject']) ? $emailData['subject'] : gestor_variaveis(Array('id' => 'forms-subject-emails'));
+	$assunto = formulario_email_assunto_resolver(
+		$emailData['subject'] ?? '',
+		gestor_variaveis(Array('id' => 'forms-subject-emails'))
+	);
 	
 	$assunto = modelo_var_troca($assunto,"#code#",$numero);
 	$assunto = modelo_var_troca($assunto,"#formName#",$formName);
 
-	$mensagem = !empty($emailData) && isset($emailData['message_component']) ? gestor_componente(Array('id' => $emailData['message_component'])) : gestor_componente(Array('id' => 'forms-prepared-email'));
-	
-	$mensagem = modelo_var_troca($mensagem,"#code#",$numero);
-	$mensagem = modelo_var_troca($mensagem,"#formName#",$formName);
-
-	// ===== Processar template de email com campos do formulário
-	
-	// Extrair a célula 'cel' do modelo
-	$cel_nome = 'cel';
-	$cel[$cel_nome] = modelo_tag_val($mensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->');
-	$mensagem = modelo_tag_troca_val($mensagem,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
-	
-	// Preparar array de campos com labels e valores
-	$camposProcessados = [];
-	if($formDefinition && isset($schema['fields'])){
-		foreach($schema['fields'] as $field){
-			$fieldName = $field['name'];
-			// req-074 §6: não expor campos do tipo password no e-mail de notificação/confirmação.
-			if(($field['type'] ?? 'text') === 'password') continue;
-			$fieldLabel = isset($field['label']) ? $field['label'] : ucfirst($fieldName); // Fallback para o nome se não houver label
-			$fieldValue = '';
-			
-			// Encontrar o valor do campo nos dados enviados (original para formatação)
-			$rawValue = isset($_POST[$fieldName]) ? $_POST[$fieldName] : '';
-
-			// Formatações específicas por tipo
-			if($field['type'] === 'email' && filter_var($rawValue, FILTER_VALIDATE_EMAIL)){
-				// Converter email em link clicável (usar rawValue para preservar formatação limpa)
-				$fieldValueFormatted = '<a href="mailto:' . htmlspecialchars($rawValue, ENT_COMPAT, 'UTF-8') . '">' . htmlspecialchars($rawValue, ENT_COMPAT, 'UTF-8') . '</a>';
-			} else {
-				// Sanitizar o valor para prevenir XSS e injeções
-				$fieldValue = htmlspecialchars($rawValue, ENT_QUOTES, 'UTF-8');
-				
-				$fieldValueFormatted = $fieldValue;
-			}
-
-			// Para textarea preserve quebras de linha (usar $fieldValue - já sanitizado). Para outros tipos, remova tags.
-			if(isset($field['type']) && $field['type'] === 'textarea'){
-				$plainForPreview = preg_replace("/\r\n|\r/", "\n", $fieldValue);
-			} else {
-				$plainForPreview = strip_tags($fieldValueFormatted);
-			}
-
-			// Se for textarea, converter quebras para <br> para o email HTML (preview), mantendo #valor_full# com formatação completa
-			$preview = (isset($field['type']) && $field['type'] === 'textarea') ? nl2br($plainForPreview) : $plainForPreview;
-
-			$camposProcessados[] = [
-				'#label#' => $fieldLabel,
-				'#valor#' => $preview,
-				'#valor_full#' => $fieldValueFormatted
-			];
-		}
-	}
-	
-	// Processar cada campo na célula
-	$celulasProcessadas = '';
-	foreach($camposProcessados as $campo){
-		$cel_aux = $cel[$cel_nome];
-		$cel_aux = modelo_var_troca($cel_aux, $campo);
-		$celulasProcessadas .= $cel_aux;
-	}
-	
-	// Inserir células processadas de volta no modelo
-	$mensagem = modelo_var_in($mensagem,'<!-- '.$cel_nome.' -->',$celulasProcessadas);
-	
-	// Remover a célula original
-	$mensagem = modelo_var_troca($mensagem,'<!-- '.$cel_nome.' -->','');
+	$mensagem = formulario_email_mensagem_resolver($emailData);
+	$mensagem = formulario_email_template_processar(
+		$mensagem,
+		$numero,
+		$formName,
+		($formDefinition && isset($schema['fields'])) ? $schema['fields'] : Array(),
+		$_POST
+	);
 
 	// ===== Ponto de extensão: o módulo dono do formulário pode personalizar a mensagem antes do
 	// envio (marca, logotipo, rodapé). O core não conhece a configuração de cada módulo, então em

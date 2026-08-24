@@ -25,6 +25,14 @@ function forms_widget_schema($fields_schema) {
 	return $schema;
 }
 
+function forms_widget_form_action($form_action, $url_raiz = '/') {
+	$url_raiz = is_scalar($url_raiz) ? rtrim(trim((string)$url_raiz), '/') . '/' : '/';
+	$form_action = is_scalar($form_action) ? trim((string)$form_action) : '';
+	if ($form_action === '') $form_action = 'forms-submissions-process/';
+
+	return $url_raiz . ltrim($form_action, '/');
+}
+
 function forms_widget_replace_var($html, $name, $value) {
 	return preg_replace('/@?\[\['.preg_quote($name, '/').'\]\]@?/', (string)$value, $html);
 }
@@ -381,6 +389,8 @@ function forms_render_editor_html($params) {
 }
 
 function forms_widget_render_inline($params) {
+	global $_GESTOR;
+
 	$form_id = $params['form_id'] ?? ($params['grupo_slug'] ?? 'formulario');
 	$html = $params['html'] ?? '';
 	$schema = forms_widget_schema($params['fields_schema'] ?? '{}');
@@ -397,7 +407,8 @@ function forms_widget_render_inline($params) {
 	}
 
 	$html = forms_widget_replace_var($html, 'form_id', htmlspecialchars((string)$form_id, ENT_QUOTES, 'UTF-8'));
-	$html = forms_widget_replace_var($html, 'form_action', htmlspecialchars((string)($schema['form_action'] ?? ''), ENT_QUOTES, 'UTF-8'));
+	$form_action = forms_widget_form_action($schema['form_action'] ?? '', $_GESTOR['url-raiz'] ?? '/');
+	$html = forms_widget_replace_var($html, 'form_action', htmlspecialchars($form_action, ENT_QUOTES, 'UTF-8'));
 	$html = forms_widget_replace_var($html, 'force_recaptcha', !empty($schema['force_recaptcha']) ? 'true' : 'false');
 
 	return $html;

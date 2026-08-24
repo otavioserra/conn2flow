@@ -27,6 +27,20 @@
     var scriptsLoaded = false;
     var configSolicitada = false; // houve ao menos uma busca real de config (contexto de preview)
 
+    function csrfToken() {
+        if (gestor.csrfToken) return gestor.csrfToken;
+
+        try {
+            if (window.parent && window.parent !== window && window.parent.gestor) {
+                return window.parent.gestor.csrfToken || '';
+            }
+        } catch (_err) {
+            // O iframe normalmente é same-origin; em outro contexto, mantém o fallback vazio.
+        }
+
+        return '';
+    }
+
     function carregarScript(src, callback) {
         var s = document.createElement('script');
         s.src = src;
@@ -71,6 +85,7 @@
                 opcao: gestor.moduloOpcao,
                 ajax: 'sim',
                 ajaxOpcao: 'forms-render-editor-html',
+                _csrf_token: csrfToken(),
                 params: { form_id: formId }
             },
             success: function (resp) {
