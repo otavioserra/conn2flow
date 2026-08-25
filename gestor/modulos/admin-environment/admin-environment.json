@@ -175,11 +175,12 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.24",
+                    "version": "1.26",
                     "checksum": {
-                        "html": "7face9a20f0e8865411687dae7808f8c",
+                        "html": "dedb72c804fa2097e6a9d7ea87666f05",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "f057280a714578705d284510d0a6ca06"
+                        "css_precompiled": "",
+                        "combined": "c23a6354607d27da2712473f33aee746"
                     }
                 }
             ],
@@ -323,5 +324,5 @@
             ]
         }
     },
-    "asset_version": "06ffeafc4d6ddf28"
+    "asset_version": "1f7b036bbb8a16f8"
 }

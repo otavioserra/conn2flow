@@ -71,7 +71,7 @@ final class AiSyncCommand implements CommandInterface
     public function getHelp(): string
     {
         return "Usage: c2f ai:sync [options]\n\n" .
-               "Verifies the integrity and contracts of the 33 Core and SDD skills in .claude/, .cursor/, .gemini/ and .github/.\n\n" .
+               "Verifies the integrity and contracts of the 33 Core and SDD skills in .claude/, .cursor/, .gemini/, .github/ and .codex/.\n\n" .
                "Options:\n" .
                "  --verbose     Display details of each verified skill contract.";
     }
@@ -86,6 +86,7 @@ final class AiSyncCommand implements CommandInterface
             '.cursor/skills' => $this->rootPath . '/.cursor/skills',
             '.gemini/skills' => $this->rootPath . '/.gemini/skills',
             '.github/skills' => $this->rootPath . '/.github/skills',
+            '.codex/skills'  => $this->rootPath . '/.codex/skills',
         ];
 
         $totalSkillsFound = 0;

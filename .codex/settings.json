@@ -1,0 +1,6 @@
+{
+  "context": {
+    "files": ["CODEX.md", "AGENTS.md"],
+    "skills_directory": ".codex/skills"
+  }
+}

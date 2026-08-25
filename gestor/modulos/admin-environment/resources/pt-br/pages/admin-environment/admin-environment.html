@@ -51,6 +51,44 @@
                             placeholder="Ex: Meu Website">
                     </div>
 
+                    <!-- ===== Limpeza do HTML entregue ao navegador (req-132) ===== -->
+                    <h4 class="ui dividing header"><i class="code icon"></i> HTML entregue ao navegador</h4>
+                    <p class="ui grey text">Remove do código-fonte das páginas os comentários de
+                        desenvolvimento e a indentação. Numa página real isso reduz cerca de um terço do
+                        arquivo, e evita que anotações internas sobre a estrutura do sistema fiquem visíveis
+                        para quem abre o código-fonte. O conteúdo exibido não muda.</p>
+
+                    <div class="field">
+                        <label>Modo de limpeza</label>
+                        <select id="html_sanitize" name="html_sanitize" class="ui dropdown">
+                            <option value="auto" #html-sanitize-auto-selected#>Automático — limpa em produção, mantém legível no ambiente de desenvolvimento</option>
+                            <option value="on" #html-sanitize-on-selected#>Sempre ativo — inclusive no ambiente local, para conferir o resultado</option>
+                            <option value="off" #html-sanitize-off-selected#>Sempre desativado</option>
+                        </select>
+                        <div class="ui small grey text" style="margin-top:6px;">
+                            O conteúdo de <code>&lt;pre&gt;</code>, <code>&lt;textarea&gt;</code> e
+                            <code>&lt;script&gt;</code> nunca é alterado, e os comentários condicionais são
+                            preservados.
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>JavaScript embutido na página</label>
+                        <select id="html_sanitize_js" name="html_sanitize_js" class="ui dropdown">
+                            <option value="auto" #html-sanitize-js-auto-selected#>Limpar junto — remove comentários e indentação do JavaScript embutido</option>
+                            <option value="off" #html-sanitize-js-off-selected#>Não tocar no JavaScript</option>
+                        </select>
+                        <div class="ui small grey text" style="margin-top:6px;">
+                            A limpeza do JavaScript usa um leitor que reconhece strings, template
+                            literals e expressões regulares, então <code>//</code> dentro de uma URL ou
+                            de um texto não é confundido com comentário. Blocos
+                            <code>&lt;script&gt;</code> que guardam dados (<code>application/json</code>,
+                            <code>text/template</code>) nunca são processados. Esta chave existe
+                            separada para você poder desligar apenas esta parte diante de uma suspeita,
+                            sem devolver os comentários de HTML e CSS à página.
+                        </div>
+                    </div>
+
                     <!-- ===== Robôs e Rastreadores (req-111) ===== -->
                     <h4 class="ui dividing header"><i class="robot icon"></i> Robôs e Rastreadores</h4>
                     <p class="ui grey text">O sistema já reconhece os robôs mais comuns sem nenhuma

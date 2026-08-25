@@ -798,3 +798,32 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
   outra ordem. Candidato a requisicao propria.
 - [ ] Homologacao do operador: rodar `Projects - Update => Core` num projeto real e confirmar que os
   recursos alterados chegam ao banco e que paginas editadas pelo cliente permanecem intactas.
+
+## req-132 / BATCH-134 — limpeza do HTML na entrega
+
+- [x] `gestor_html_higienizar()` remove comentarios HTML, comentarios CSS e indentacao; entra na
+      ULTIMA etapa antes do `echo`, depois de toda injecao — varios marcadores do core SAO
+      comentarios HTML (`<!-- pagina#css -->`).
+- [x] Preservados: `<pre>` e `<textarea>` (espaco ali e conteudo), `<script>` (JS nao se limpa com
+      regex) e comentarios condicionais (sao instrucao). A quebra de linha permanece: entre
+      elementos inline ela e renderizada.
+- [x] Gate `HTML_SANITIZE` de tres estados; **valor desconhecido cai em `auto`, nao em `off`** —
+      chave digitada errado nao pode desligar em silencio a limpeza de um site em producao.
+- [x] Configuravel pela tela do `admin-environment` (aba Site), com gravacao restrita aos tres
+      valores validos.
+- [x] **Medido na pagina publica real do Photon** (138,7 KB, 490 elementos): 94,1 KB (**-32,1%**) em
+      1,06 ms; **arvore DOM identica** (mesmos elementos, ordem e atributos); `<script>` byte a byte
+      igual; 95 comentarios HTML e 45 de CSS a zero.
+- [x] A prova compara **arvore DOM**, nao contagem de texto: a primeira versao acusou um
+      `<template>` "perdido" que era mencao textual dentro de um comentario removido.
+- [x] `tests/Unit/PHP/HtmlSanitizeTest.php`: 17 testes, 24 assercoes. Suite **719/719** (702 antes).
+      Captura medida: sem a protecao de `<pre>`/`<textarea>`/`<script>`, a suite falha.
+
+### Pendente do operador (req-132)
+
+- [ ] Adicionar `HTML_SANITIZE=auto` ao template `gestor/autenticacoes.exemplo/dominio/.env` (regra
+      de permissao impede o agente de escrever `.env*`); `atualizacoes-sistema.php` faz o merge
+      aditivo para as instalacoes existentes.
+- [ ] Conferir a tela do `admin-environment`, salvar nos tres modos e inspecionar o codigo-fonte de
+      uma pagina publica com `on` no ambiente local.
+

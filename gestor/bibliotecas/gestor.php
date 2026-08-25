@@ -2546,4 +2546,322 @@ function gestor_modulos_dados($modulo_id = ''){
 	}
 }
 
+/**
+ * Decide se o HTML entregue ao navegador deve sair higienizado (req-132).
+ *
+ * Tres estados, lidos de `HTML_SANITIZE` no `.env` e editaveis pela tela do `admin-environment`:
+ *
+ * - `auto` (padrao): liga em producao e desliga no ambiente de desenvolvimento. E o comportamento
+ *   que quase sempre se quer — o visitante recebe a pagina limpa e quem desenvolve continua com o
+ *   HTML legivel para inspecionar;
+ * - `on`: liga sempre, inclusive no ambiente local. E assim que se CONFERE o resultado da limpeza
+ *   antes de publicar, sem precisar subir nada;
+ * - `off`: desliga sempre, inclusive em producao. Existe como escape para depurar um caso em que a
+ *   propria limpeza seja suspeita.
+ *
+ * Valor desconhecido cai em `auto`: uma chave digitada errado no `.env` nao pode desligar em
+ * silencio a limpeza de um site em producao.
+ */
+function gestor_pagina_higienizar_ativo(){
+	global $_GESTOR;
+
+	$modo = strtolower(trim((string)($_ENV['HTML_SANITIZE'] ?? 'auto')));
+
+	if($modo === 'on' || $modo === 'true' || $modo === '1') return true;
+	if($modo === 'off' || $modo === 'false' || $modo === '0') return false;
+
+	return empty($_GESTOR['development-env']);
+}
+
+/**
+ * Remove do HTML o que so interessa a quem escreveu o codigo (req-132).
+ *
+ * O que sai: comentarios de HTML, comentarios de CSS dentro de `<style>` e a indentacao. Numa
+ * pagina real do Photon isso e 36% do arquivo — 50 KB de 138 KB, em 140 blocos de comentario, boa
+ * parte deles nota de engenharia interna descrevendo a estrutura do sistema para qualquer visitante
+ * que abra o codigo-fonte.
+ *
+ * TRES COISAS SAO PRESERVADAS, E CADA UMA POR UM MOTIVO DIFERENTE:
+ *
+ * 1. `<pre>` e `<textarea>`: espaco em branco ali e CONTEUDO. Reindentar um bloco de codigo exibido
+ *    na tela ou o texto dentro de um campo muda o que o usuario le e o que ele envia de volta.
+ * 2. `<script>`: JavaScript nao se limpa com expressao regular. Um `//` dentro de uma string, uma
+ *    expressao regular com `/*`, um template literal com quebras de linha — qualquer um deles vira
+ *    codigo quebrado. O ganho nao paga o risco, e o JavaScript ja vai minificado por outro caminho.
+ * 3. Comentarios condicionais (`<!--[if ...]>`): sao INSTRUCAO, nao comentario. Removidos, o
+ *    conteudo que eles guardam passa a valer para todos os navegadores.
+ *
+ * A funcao e pura de proposito: recebe e devolve string, sem tocar em `$_GESTOR`. E o que torna
+ * possivel testa-la caso a caso, que e a unica forma honesta de mexer em algo que reescreve TODA
+ * pagina servida pelo sistema.
+ */
+function gestor_html_higienizar($html){
+	$html = (string) $html;
+	if($html === '') return $html;
+
+	// ===== 1. Poe a salvo o que nao pode ser tocado.
+	//
+	// Os blocos saem do texto e voltam no fim, trocados por marcadores que nenhuma das expressoes
+	// seguintes reconhece. Sem isso, seria preciso que cada expressao soubesse sozinha desviar de
+	// `<pre>`, `<textarea>` e `<script>` — e bastaria uma esquecer para o defeito aparecer numa
+	// pagina qualquer, muito depois.
+
+	$protegidos = Array();
+	$html = preg_replace_callback(
+		'#<(pre|textarea|script)\b[^>]*>.*?</\1\s*>#is',
+		function($m) use (&$protegidos){
+			$indice = count($protegidos);
+
+			// `<script>` de JavaScript tem o CONTEUDO higienizado antes de ser posto a salvo; `<pre>`
+			// e `<textarea>` entram intactos. Um `<script type="application/json">` ou
+			// `type="text/template"` NAO e JavaScript e passa direto: rodar o scanner nele estragaria
+			// dado ou markup que so estao ali guardados.
+			$bloco = $m[0];
+			if(strtolower($m[1]) === 'script' && gestor_pagina_higienizar_js_ativo() && gestor_html_script_e_javascript($m[0])){
+				$bloco = preg_replace_callback(
+					'#(<script\b[^>]*>)(.*?)(</script\s*>)#is',
+					function($p){ return $p[1].gestor_js_higienizar($p[2]).$p[3]; },
+					$bloco
+				);
+			}
+
+			$protegidos[$indice] = $bloco;
+			return '<!--c2f:protegido:'.$indice.'-->';
+		},
+		$html
+	);
+
+	// ===== 2. Comentarios de HTML, menos os condicionais e os proprios marcadores.
+
+	$html = preg_replace('/<!--(?!\[if)(?!<!)(?!c2f:protegido:)(?:(?!-->).)*-->/s', '', $html);
+
+	// ===== 3. Comentarios de CSS, apenas dentro de `<style>`.
+	//
+	// Restrito ao `<style>` de proposito: `/* */` fora dele nao e comentario de CSS, e uma
+	// expressao solta pelo documento inteiro acabaria comendo texto de conteudo.
+
+	$html = preg_replace_callback(
+		'#(<style\b[^>]*>)(.*?)(</style\s*>)#is',
+		function($m){
+			$css = preg_replace('#/\*(?:(?!\*/).)*\*/#s', '', $m[2]);
+			// Indentacao do CSS: a quebra de linha fica, e e ela que separa as regras.
+			$css = preg_replace('/\n[ \t]+/', "\n", $css);
+			$css = preg_replace('/\n{2,}/', "\n", $css);
+			return $m[1].$css.$m[3];
+		},
+		$html
+	);
+
+	// ===== 4. Indentacao do HTML.
+	//
+	// A quebra de linha PERMANECE, e isso nao e economia perdida — e correcao. Entre dois elementos
+	// em linha, o espaco em branco e renderizado: juntar `<span>a</span>` e `<span>b</span>` faria
+	// "ab" aparecer colado na tela. Trocar a indentacao inteira por um unico `\n` tira os bytes sem
+	// mudar uma linha do que o visitante enxerga.
+
+	$html = preg_replace('/\n[ \t]+/', "\n", $html);
+	$html = preg_replace('/[ \t]+\n/', "\n", $html);
+	$html = preg_replace('/\n{2,}/', "\n", $html);
+
+	// ===== 5. Devolve o que estava a salvo.
+
+	if(!empty($protegidos)){
+		$html = preg_replace_callback(
+			'/<!--c2f:protegido:(\d+)-->/',
+			function($m) use ($protegidos){
+				return isset($protegidos[(int)$m[1]]) ? $protegidos[(int)$m[1]] : '';
+			},
+			$html
+		);
+	}
+
+	return $html;
+}
+
+/**
+ * Remove comentarios e indentacao de JavaScript (req-132, 2a rodada).
+ *
+ * NAO E EXPRESSAO REGULAR, E UM SCANNER. A diferenca importa: em JavaScript, `//` e `/*` so sao
+ * comentario em UM dos cinco contextos possiveis. Nos outros quatro sao conteudo:
+ *
+ *     var url  = 'http://exemplo';       // dentro de string simples
+ *     var msg  = "diga barra-asterisco isso";  // dentro de string dupla
+ *     var t    = `linha // nao comenta`; // dentro de template literal
+ *     var re   = /[barra][asterisco]/;      // dentro de regex literal
+ *
+ * Uma expressao regular nao distingue esses casos, e o erro nao aparece no teste: aparece na
+ * pagina de alguem, como JavaScript truncado no meio. Por isso o texto e percorrido caractere a
+ * caractere, com estado.
+ *
+ * O CASO DIFICIL E A BARRA. `/` pode iniciar um regex literal ou ser divisao, e so o token
+ * anterior decide: depois de identificador, numero, `)` ou `]` e divisao; em qualquer outro lugar
+ * e regex. E a mesma heuristica que os minificadores usam.
+ *
+ * A QUEBRA DE LINHA PERMANECE, e aqui ela nao e cosmetica: JavaScript insere ponto e virgula
+ * automaticamente (ASI). Juntar duas linhas de codigo que dependem disso muda o programa. So a
+ * indentacao sai.
+ */
+function gestor_js_higienizar($js){
+	$js = (string) $js;
+	if($js === '') return $js;
+
+	$saida = '';
+	$total = strlen($js);
+	$i = 0;
+
+	// Ultimo caractere significativo ja emitido: e ele que decide se `/` abre regex ou divide.
+	$anterior = '';
+
+	while($i < $total){
+		$c = $js[$i];
+		$prox = ($i + 1 < $total) ? $js[$i + 1] : '';
+
+		// ----- Comentario de linha: some, mas a quebra fica (ASI).
+		if($c === '/' && $prox === '/'){
+			while($i < $total && $js[$i] !== "\n") $i++;
+			continue;
+		}
+
+		// ----- Comentario de bloco: some inteiro.
+		if($c === '/' && $prox === '*'){
+			$fim = strpos($js, '*/', $i + 2);
+			// Bloco nao fechado: o resto do arquivo era comentario. Sair aqui evita copiar lixo.
+			if($fim === false) break;
+			// Se o comentario tinha quebras de linha, uma precisa sobreviver: sem ela, duas
+			// instrucoes separadas apenas pelo comentario ficariam na mesma linha e a ASI mudaria.
+			if(strpos(substr($js, $i, $fim - $i), "\n") !== false) $saida .= "\n";
+			$i = $fim + 2;
+			continue;
+		}
+
+		// ----- Strings e template literals: copiados como estao, respeitando escape.
+		if($c === "'" || $c === '"' || $c === '`'){
+			$aspas = $c;
+			$saida .= $c;
+			$i++;
+			while($i < $total){
+				$d = $js[$i];
+				$saida .= $d;
+				if($d === '\\' && $i + 1 < $total){
+					$saida .= $js[$i + 1];
+					$i += 2;
+					continue;
+				}
+				$i++;
+				if($d === $aspas) break;
+			}
+			$anterior = $aspas;
+			continue;
+		}
+
+		// ----- Regex literal.
+		if($c === '/' && gestor_js_barra_inicia_regex($anterior)){
+			$saida .= $c;
+			$i++;
+			$dentroDeClasse = false;
+			while($i < $total){
+				$d = $js[$i];
+				$saida .= $d;
+				if($d === '\\' && $i + 1 < $total){
+					$saida .= $js[$i + 1];
+					$i += 2;
+					continue;
+				}
+				$i++;
+				// Dentro de `[...]` a barra nao fecha o literal: `/[/]/` e valido.
+				if($d === '[') $dentroDeClasse = true;
+				else if($d === ']') $dentroDeClasse = false;
+				else if($d === '/' && !$dentroDeClasse) break;
+			}
+			$anterior = '/';
+			continue;
+		}
+
+		// ----- Indentacao: apos quebra de linha, o espaco a esquerda nao significa nada.
+		if($c === "\n"){
+			$saida .= "\n";
+			$i++;
+			while($i < $total && ($js[$i] === ' ' || $js[$i] === "\t")) $i++;
+			$anterior = "\n";
+			continue;
+		}
+
+		$saida .= $c;
+		if($c !== ' ' && $c !== "\t" && $c !== "\r") $anterior = $c;
+		$i++;
+	}
+
+	// Linhas que ficaram vazias com a saida dos comentarios.
+	$saida = preg_replace('/[ \t]+\n/', "\n", $saida);
+	$saida = preg_replace('/\n{2,}/', "\n", $saida);
+
+	return $saida;
+}
+
+/**
+ * Decide se uma `/` abre um regex literal ou e o operador de divisao (req-132).
+ *
+ * Depois de um valor — identificador, numero, `)` ou `]` — a barra so pode ser divisao. Em
+ * qualquer outra posicao (inicio, apos operador, virgula, abre-parenteses, `return`...) ela abre
+ * um literal. Errar para o lado da divisao seria pior: o conteudo do regex passaria a ser lido
+ * como codigo, e um `//` dentro dele apagaria o resto da linha.
+ */
+function gestor_js_barra_inicia_regex($anterior){
+	if($anterior === '') return true;
+	if($anterior === ')' || $anterior === ']') return false;
+	// Identificador ou numero: `a / b`, `2 / 3`. Cobre tambem o fim de `foo.bar / 2`.
+	if(preg_match('/[A-Za-z0-9_$]/', $anterior)) return false;
+	return true;
+}
+
+/**
+ * Gate proprio para a limpeza do JavaScript (req-132, 2a rodada).
+ *
+ * Separado do `HTML_SANITIZE` de proposito. Remover comentario de HTML e de CSS e reversivel na
+ * pratica: no pior caso a pagina fica feia. Mexer em JavaScript e outra ordem de risco — um erro
+ * derruba a tela inteira. Uma chave propria permite desligar SO essa parte diante de uma suspeita,
+ * sem devolver os comentarios internos de HTML e CSS ao visitante.
+ *
+ * Segue a chave principal quando ausente: quem liga a limpeza espera que ela alcance tudo.
+ */
+function gestor_pagina_higienizar_js_ativo(){
+	$modo = strtolower(trim((string)($_ENV['HTML_SANITIZE_JS'] ?? 'auto')));
+
+	if($modo === 'off' || $modo === 'false' || $modo === '0') return false;
+	if($modo === 'on' || $modo === 'true' || $modo === '1') return true;
+
+	return true;
+}
+
+/**
+ * Diz se a tag `<script>` carrega JavaScript de verdade (req-132, 2a rodada).
+ *
+ * `<script>` e usado tambem como DEPOSITO: `type="application/json"` guarda dado,
+ * `type="text/template"` guarda markup, `type="text/x-handlebars"` guarda template. Nenhum deles e
+ * JavaScript, e passar o scanner por cima estragaria o conteudo — um `//` dentro de uma URL no
+ * JSON viraria comentario e o resto da linha desapareceria.
+ *
+ * Sem `type`, ou com os tipos que o HTML define como JavaScript, e codigo. `type="module"` tambem.
+ * Na duvida, NAO processa: deixar um comentario na pagina custa bytes; corromper um bloco de dados
+ * custa a funcionalidade.
+ */
+function gestor_html_script_e_javascript($tagCompleta){
+	if(!preg_match('#<script\b([^>]*)>#i', (string) $tagCompleta, $m)) return false;
+
+	// `src=` aponta para arquivo externo: nao ha conteudo inline a limpar.
+	if(preg_match('/\bsrc\s*=/i', $m[1])) return false;
+
+	if(!preg_match('/\btype\s*=\s*["\']?([^"\'\s>]+)/i', $m[1], $t)) return true;
+
+	$tipo = strtolower(trim($t[1]));
+
+	return in_array($tipo, array(
+		'module',
+		'text/javascript',
+		'application/javascript',
+		'text/ecmascript',
+		'application/ecmascript',
+	), true);
+}
+
 ?>

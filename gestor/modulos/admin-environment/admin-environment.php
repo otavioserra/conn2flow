@@ -14,6 +14,9 @@ function admin_environment_env_read(){
     // Isso evita conflito com a classe Dotenv que já foi usada no config.php
     $envData = [
         'SITE_NAME' => $_ENV['SITE_NAME'] ?? 'Conn2Flow',
+        // req-132: limpeza do HTML entregue ao navegador (auto|on|off).
+        'HTML_SANITIZE' => $_ENV['HTML_SANITIZE'] ?? 'auto',
+        'HTML_SANITIZE_JS' => $_ENV['HTML_SANITIZE_JS'] ?? 'auto',
         // req-111 (CR-001): tokens adicionais de robô, complementares à lista embutida do core.
         'CRAWLER_TOKENS_EXTRA_ATIVO' => $_ENV['CRAWLER_TOKENS_EXTRA_ATIVO'] ?? 'false',
         'CRAWLER_TOKENS_EXTRA' => $_ENV['CRAWLER_TOKENS_EXTRA'] ?? '',
@@ -286,6 +289,8 @@ function admin_environment_raiz(){
     
     $dados = [
         'site_name' => $envData['SITE_NAME'] ?? 'Conn2Flow',
+        'html_sanitize' => $envData['HTML_SANITIZE'] ?? 'auto',
+        'html_sanitize_js' => $envData['HTML_SANITIZE_JS'] ?? 'auto',
         'crawler_tokens_extra_ativo' => $envData['CRAWLER_TOKENS_EXTRA_ATIVO'] ?? 'false',
         'crawler_tokens_extra' => $envData['CRAWLER_TOKENS_EXTRA'] ?? '',
         'usuario_recaptcha_active' => $envData['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
@@ -404,6 +409,26 @@ function admin_environment_raiz(){
     // Site
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-name#', $dados['site_name']);
 
+    // req-132: o `selected` de cada opcao vem pronto do controlador. Montar isso no HTML exigiria
+    // logica no recurso, que nao e o lugar dela.
+    // O JavaScript tem chave propria: mexer nele e outra ordem de risco que remover comentario de
+    // HTML, e desliga-lo sozinho nao devolve os comentarios internos ao visitante.
+    foreach(array('auto','off') as $modoJs){
+        $_GESTOR['pagina'] = modelo_var_troca(
+            $_GESTOR['pagina'],
+            '#html-sanitize-js-'.$modoJs.'-selected#',
+            $dados['html_sanitize_js'] === $modoJs ? 'selected' : ''
+        );
+    }
+
+    foreach(array('auto','on','off') as $modoHtml){
+        $_GESTOR['pagina'] = modelo_var_troca(
+            $_GESTOR['pagina'],
+            '#html-sanitize-'.$modoHtml.'-selected#',
+            $dados['html_sanitize'] === $modoHtml ? 'selected' : ''
+        );
+    }
+
     // req-111 (CR-001): tokens de robô — estado do toggle, lista do operador e o baseline do core
     // exibido como referência (somente leitura), para o operador não recadastrar o que já existe.
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#crawler-tokens-extra-ativo#', $dados['crawler_tokens_extra_ativo']);
@@ -521,6 +546,12 @@ function admin_environment_ajax_salvar(){
     
     // Coletar dados do formulário — Site
     if(isset($_REQUEST['site_name'])) $data['SITE_NAME'] = $_REQUEST['site_name'];
+    // Restrito aos tres valores validos: qualquer outra coisa gravada aqui seria lida como
+    // `auto` pelo core, e a tela passaria a mostrar um estado que nao corresponde ao efeito.
+    if(isset($_REQUEST['html_sanitize']) && in_array($_REQUEST['html_sanitize'], array('auto','on','off'), true))
+        $data['HTML_SANITIZE'] = $_REQUEST['html_sanitize'];
+    if(isset($_REQUEST['html_sanitize_js']) && in_array($_REQUEST['html_sanitize_js'], array('auto','off'), true))
+        $data['HTML_SANITIZE_JS'] = $_REQUEST['html_sanitize_js'];
     if(isset($_REQUEST['crawler_tokens_extra_ativo'])) $data['CRAWLER_TOKENS_EXTRA_ATIVO'] = $_REQUEST['crawler_tokens_extra_ativo'];
     // Normaliza antes de gravar: o operador digita separando por vírgula, ; ou quebra de linha.
     if(isset($_REQUEST['crawler_tokens_extra'])) $data['CRAWLER_TOKENS_EXTRA'] = implode(',', gestor_crawler_tokens_normalizar($_REQUEST['crawler_tokens_extra']));

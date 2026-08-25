@@ -107,6 +107,9 @@ $(document).ready(function () {
             ajax: 'sim',
             ajaxOpcao: 'salvar',
             site_name: $('#site_name').val(),
+            // req-132: limpeza do HTML entregue ao navegador (auto|on|off).
+            html_sanitize: $('#html_sanitize').val(),
+            html_sanitize_js: $('#html_sanitize_js').val(),
             // req-111 (CR-001): tokens adicionais de robô, complementares à lista embutida do core.
             crawler_tokens_extra_ativo: $('#crawler_tokens_extra_ativo').parent().checkbox('is checked') ? 'true' : 'false',
             crawler_tokens_extra: $('#crawler_tokens_extra').val(),

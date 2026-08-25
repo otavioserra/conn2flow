@@ -13,6 +13,32 @@
 
 ## Tarefas recentes
 
+### 2026-08-25 — BATCH-134 (req-132): limpar o HTML sem quebrar a pagina
+
+- **`gestor/gestor.php` e `gestor/bibliotecas/gestor.php` sao arquivos DIFERENTES.** O primeiro e o
+  roteador e chama `gestor_start()` no fim — nao pode ser carregado por teste. O `tests/bootstrap.php`
+  carrega a **biblioteca**. Funcao que precisa de teste vai para la; o roteador so a chama.
+- **`bibliotecas/gestor.php` termina com `?>`.** Codigo acrescentado depois dessa tag vira texto
+  literal e a funcao simplesmente nao existe — sem erro de sintaxe e sem aviso.
+- **Contar ocorrencias de string nao prova integridade de HTML.** A primeira prova acusou um
+  `<template>` perdido que era mencao textual dentro de um comentario removido. Comparar a **arvore
+  DOM** (`DOMDocument` + XPath, elementos + atributos ordenados) acusa o que importa e nao inventa o
+  que nao houve.
+- **Em limpeza de HTML, cada excecao tem motivo proprio**: `<pre>`/`<textarea>` porque espaco ali e
+  conteudo; `<script>` porque JS nao se limpa com regex (um `//` em string, uma regex com `/*`);
+  condicionais porque sao INSTRUCAO. Tirar os blocos do texto e devolve-los por marcador e mais
+  seguro que ensinar cada expressao a desviar deles — basta uma esquecer.
+- **A quebra de linha nao e lixo**: entre elementos inline ela e renderizada. So a indentacao sai.
+- **Gate com valor invalido deve cair no modo SEGURO, nao no desligado.** `HTML_SANITIZE=talvez`
+  precisa limpar em producao: senao um erro de digitacao vira vazamento de comentario interno, e
+  ninguem liga uma coisa a outra.
+- **O update do sistema faz merge ADITIVO do `.env`** a partir de
+  `autenticacoes.exemplo/<dominio>/.env` (ver `atualizacoes-sistema.php`). Chave nova de ambiente
+  entra ali para chegar as instalacoes. **O agente e barrado por permissao em `.env*`** — a linha vai
+  para o operador aplicar.
+- **`admin-environment` e a tela que edita o `.env`.** Quando a demanda pedir "configuravel via
+  gestor" e a configuracao for de ambiente, o caminho e esse — nao uma tabela nova.
+
 ### 2026-08-24 — BATCH-129: onde o recurso NASCE decide se a edição vale (req-127)
 
 - **`gestor/db/data/*Data.json` é ARTEFATO, nunca fonte.** O intake mandava editar `ModosIaData.json`;

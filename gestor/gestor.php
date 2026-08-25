@@ -1145,6 +1145,12 @@ function gestor_pagina_ultimas_operacoes(){
 	global $_GESTOR;
 	
 	$_GESTOR['pagina'] = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $_GESTOR['pagina']);
+
+	// req-132: ultima etapa antes de a pagina ir para o navegador. Depois daqui nada mais e
+	// injetado, entao remover comentario e indentacao nao pode quebrar marcador nenhum do sistema.
+	if(gestor_pagina_higienizar_ativo()){
+		$_GESTOR['pagina'] = gestor_html_higienizar($_GESTOR['pagina']);
+	}
 }
 
 /**
