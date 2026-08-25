@@ -340,6 +340,30 @@ function naturalKeyColumns(string $tabela): array {
  * com essas regras são sobrescritos pelo deploy ignorando as proteções de project e user_modified
  * (e com reset de user_modified=0). Retorna lista vazia quando não há regras.
  */
+/**
+ * A coluna espelho de um campo preservado (`<campo>_updated`) está disponível para receber a
+ * versão que o sistema traria?
+ *
+ * req-131 (BATCH-133): a checagem anterior era `isset($exist[$dest]) || isset($row[$dest])`, e
+ * `isset(null)` é FALSO. A coluna espelho nasce `NULL` — e `comparacaoDados()` injeta
+ * `'html_updated' => null` no payload justamente para habilitar este mecanismo. O resultado era que
+ * a versão nova do sistema NÃO era gravada exatamente no caso que a coluna existe para atender: a
+ * PRIMEIRA divergência entre o que o usuário editou e o que o deploy traz. O conteúdo do usuário
+ * seguia protegido (isso nunca falhou), mas ele perdia a chance de ver e comparar o que mudaria.
+ *
+ * Quando o schema real da tabela é conhecido, ele é a fonte de verdade — assim uma tabela sem a
+ * coluna espelho nunca recebe o campo no UPDATE (o mesmo cuidado que o guard de `project` toma).
+ * Sem o schema (driver que não respondeu ao `SHOW COLUMNS`), cai na existência da chave.
+ *
+ * @param array<string,mixed> $exist Linha atual do banco.
+ * @param array<string,mixed> $row   Registro vindo do JSON.
+ * @param array<string,bool>|null $allowedCols Colunas reais da tabela, ou null se desconhecidas.
+ */
+function colunaEspelhoDisponivel(string $dest, array $exist, array $row, $allowedCols): bool {
+    if (is_array($allowedCols)) return isset($allowedCols[$dest]);
+    return array_key_exists($dest, $exist) || array_key_exists($dest, $row);
+}
+
 function forcarAtualizacaoLista(string $tabela): array {
     $m = schemaMetadata();
     $lista = $m['forcar_atualizacao'][$tabela] ?? [];
@@ -646,11 +670,11 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && $temPreserve && !$forced) {
                 $changedPreserved=false; foreach ($preserveCampos as $campo) {
                     if (array_key_exists($campo,$diff)) {
-                        if ($tabela==='variaveis' && $campo==='valor') { if (isset($exist['value_updated'])||isset($row['value_updated'])) $diff['value_updated']=$diff[$campo]; }
-                        else { $dest=$campo.'_updated'; if (isset($exist[$dest])||isset($row[$dest])) $diff[$dest]=$diff[$campo]; }
+                        if ($tabela==='variaveis' && $campo==='valor') { if (colunaEspelhoDisponivel('value_updated',$exist,$row,$allowedCols)) $diff['value_updated']=$diff[$campo]; }
+                        else { $dest=$campo.'_updated'; if (colunaEspelhoDisponivel($dest,$exist,$row,$allowedCols)) $diff[$dest]=$diff[$campo]; }
                         unset($diff[$campo]); $changedPreserved=true; }
                 }
-                if ($changedPreserved) { if (isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_unificado("USER_MODIFIED_PRESERVADO $tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']); }
+                if ($changedPreserved) { if (colunaEspelhoDisponivel('system_updated',$exist,$row,$allowedCols)) $diff['system_updated']=1; if ($debug) log_unificado("USER_MODIFIED_PRESERVADO $tabela pk=$pkVal", $GLOBALS['LOG_FILE_DB']); }
             }
             // Reset de user_modified=0 quando forçado (alinha o registro à base de código do deploy).
             if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
@@ -789,7 +813,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             aplicarPoliticaCssPrecompiled($diff, $exist, $project, $forced);
             // Sob atualização forçada NÃO preservamos campos do usuário (payload completo do JSON).
             if (isset($exist['user_modified']) && (int)$exist['user_modified']===1 && $temPreserve && !$forced) {
-                $changedPreserved=false; foreach ($preserveCampos as $campo){ if(array_key_exists($campo,$diff)){ if($tabela==='variaveis' && $campo==='valor'){ if(isset($exist['value_updated'])||isset($row['value_updated'])) $diff['value_updated']=$diff[$campo]; } else { $dest=$campo.'_updated'; if(isset($exist[$dest])||isset($row[$dest])) $diff[$dest]=$diff[$campo]; } unset($diff[$campo]); $changedPreserved=true; }} if($changedPreserved){ if(isset($exist['system_updated'])||isset($row['system_updated'])) $diff['system_updated']=1; if ($debug) log_unificado("USER_MODIFIED_PRESERVADO_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE_DB']); }}
+                $changedPreserved=false; foreach ($preserveCampos as $campo){ if(array_key_exists($campo,$diff)){ if($tabela==='variaveis' && $campo==='valor'){ if(colunaEspelhoDisponivel('value_updated',$exist,$row,$allowedCols)) $diff['value_updated']=$diff[$campo]; } else { $dest=$campo.'_updated'; if(colunaEspelhoDisponivel($dest,$exist,$row,$allowedCols)) $diff[$dest]=$diff[$campo]; } unset($diff[$campo]); $changedPreserved=true; }} if($changedPreserved){ if(colunaEspelhoDisponivel('system_updated',$exist,$row,$allowedCols)) $diff['system_updated']=1; if ($debug) log_unificado("USER_MODIFIED_PRESERVADO_NAT tabela=$tabela chave=$k", $GLOBALS['LOG_FILE_DB']); }}
             // Reset de user_modified=0 quando forçado (alinha o registro à base de código do deploy).
             if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
                 $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
@@ -880,16 +904,16 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                     foreach ($preserveCampos as $campo) {
                         if (!array_key_exists($campo, $diff)) continue;
                         if ($tabela === 'variaveis' && $campo === 'valor') {
-                            if (isset($exist['value_updated']) || isset($row['value_updated'])) $diff['value_updated'] = $diff[$campo];
+                            if (colunaEspelhoDisponivel('value_updated', $exist, $row, $allowedCols)) $diff['value_updated'] = $diff[$campo];
                         } else {
                             $dest = $campo . '_updated';
-                            if (isset($exist[$dest]) || isset($row[$dest])) $diff[$dest] = $diff[$campo];
+                            if (colunaEspelhoDisponivel($dest, $exist, $row, $allowedCols)) $diff[$dest] = $diff[$campo];
                         }
                         unset($diff[$campo]);
                         $changedPreserved = true;
                     }
                     if ($changedPreserved) {
-                        if (isset($exist['system_updated']) || isset($row['system_updated'])) $diff['system_updated'] = 1;
+                        if (colunaEspelhoDisponivel('system_updated', $exist, $row, $allowedCols)) $diff['system_updated'] = 1;
                         if ($debug) log_unificado("USER_MODIFIED_PRESERVADO_FALLBACK_NAT tabela=$tabela chave=$fallbackKey", $GLOBALS['LOG_FILE_DB']);
                     }
                 }

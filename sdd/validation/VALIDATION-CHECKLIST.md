@@ -762,3 +762,39 @@ saída dele: zero ocorrências de `data:` e de `--art-` (os SVGs embutidos ficar
 - [x] Sintaxe limpa em `php -l`, `node --check` e `git diff --check`.
 - [ ] Homologação manual do envio de formulário com recebimento de e-mail e busca de componentes no painel — **operador**.
 
+## BATCH-133
+
+Repasse da identidade do projeto ao atualizador de banco no deploy local (req-131).
+
+- [x] `updates-manager-database.sh` repassa `--project=$PROJECT_TARGET` ao atualizador **apenas
+  quando** recebeu `--project`; sem o parametro, a execucao segue sendo atualizacao normal do
+  nucleo e nao marca recurso algum.
+- [x] O identificador e validado com `^[a-zA-Z0-9_-]+$` antes de compor a linha executada por
+  `docker exec`, no mesmo criterio ja aplicado a `--tables`.
+- [x] `bash -n` no script: OK.
+- [x] `tests/Unit/PHP/ProjectIdentityPassthroughTest.php` (novo): **5 testes, 17 assercoes**.
+  - [x] **O defeito reproduzido**: sem identidade, o recurso marcado NAO e atualizado e a linha e
+    contada como "sem alteracao" — o relatorio fecha em sucesso sem nenhum aviso.
+  - [x] Com identidade, o recurso e atualizado e a marcacao e mantida.
+  - [x] Deploy de OUTRO projeto reescreve a marcacao (e quem publicou por ultimo).
+  - [x] **Garantia do operador**: com `user_modified = 1`, o conteudo do usuario e preservado e a
+    marcacao dele permanece MESMO no deploy de projeto; `system_updated` sobe para 1.
+  - [x] O repasse no script e condicionado, e o identificador e validado.
+- [x] Suite completa do nucleo: **702 testes, 3.174 assercoes**, sem regressao (1 deprecation e 4
+  skipped pre-existentes).
+- [x] **Ponta a ponta no ambiente local** (`snapphoton-local`): marcador acrescentado ao CSS de uma
+  pagina com `project` preenchido; deploy rodado **sem** `--force-all` e **sem**
+  `forcar_atualizacao`; o CSS chegou ao banco (`versao` 2 -> 3), com `project` preservado e
+  `user_modified` intacto em 0. O contorno declarativo criado no projeto foi removido.
+- [x] Tarefas do VS Code conferidas: `Projects - Update => Core` e
+  `Projects - Synchronize => Database -> ID` sao as corrigidas; `Projects - Deploy Project -> ID`
+  (caminho remoto) e `Manager - Synchronize => Database - Test Environment` (sem `--project`) nao
+  sao afetadas.
+- [ ] **Registrado, fora de escopo**: quando um recurso com `user_modified = 1` recebe versao nova,
+  o valor novo so vai para `<campo>_updated` se a coluna JA tiver valor (`isset(null)` e falso). Com
+  a coluna em `NULL` — o caso comum na primeira divergencia — a versao nova e descartada em vez de
+  ficar disponivel para comparacao. O conteudo do usuario segue protegido. O comportamento atual foi
+  FIXADO por teste; troca-lo altera o que o deploy grava em toda base em producao e e decisao de
+  outra ordem. Candidato a requisicao propria.
+- [ ] Homologacao do operador: rodar `Projects - Update => Core` num projeto real e confirmar que os
+  recursos alterados chegam ao banco e que paginas editadas pelo cliente permanecem intactas.

@@ -154,6 +154,31 @@ if [ "$FORCE_ALL" = true ]; then
   log "Force all tables: enabled"
 fi
 
+# req-131 (BATCH-133): repassar a identidade do projeto ao atualizador.
+#
+# `sincronizarTabela()` lê `CLI_OPTS['project']` e é ele que separa os dois fluxos documentados em
+# CONN2FLOW-PROJECT-DATABASE-PROTECTION.md:
+#
+#   - deploy DE projeto  -> sobrescreve o recurso e o marca com o id do projeto;
+#   - atualização normal -> respeita a marcação e não toca em recurso de projeto.
+#
+# Este script recebia `--project` (usa-o para resolver o dockerPath) e NÃO o repassava ao PHP. O
+# deploy local de um projeto era então tratado como atualização normal e ficava bloqueado pela
+# marcação que ele mesmo havia gravado: a alteração parava no `Data.json`, o relatório contava a
+# linha como "sem alteração" e a rotina terminava com sucesso. Nenhum aviso em lugar nenhum.
+#
+# O caminho remoto nunca teve o defeito — `api.php` monta `CLI_OPTS['project']` a partir do
+# cabeçalho `X-Project-ID`. Era uma assimetria entre os dois deploys do MESMO projeto.
+if [ -n "$PROJECT_TARGET" ]; then
+  # Mesma validação do `--tables`: o valor entra numa linha de comando executada por `docker exec`.
+  if [[ ! "$PROJECT_TARGET" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+    log_error "Invalid project identifier. Use only letters, digits, hyphen or underscore."
+    exit 1
+  fi
+  PHP_ARGS="$PHP_ARGS --project=$PROJECT_TARGET"
+  log "Project deploy: resources will be overwritten and marked with '$PROJECT_TARGET'"
+fi
+
 if docker exec conn2flow-app bash -c "php ${PHP_SCRIPT} ${PHP_ARGS}"; then
   log_success "Database updates completed successfully!"
 else
