@@ -25,7 +25,16 @@ use PHPUnit\Framework\TestCase;
  * Estes testes fixam a regra nos dois modos e o repasse do script, que é o elo que faltava.
  *
  * Mesma infraestrutura do `ForcarAtualizacaoTest`: PDO SQLite em memória e contrato temporário.
+ *
+ * **Processos isolados de propósito.** `schemaMetadata()` guarda o contrato numa `static`, lida do
+ * primeiro `DB_DATA_DIR` que chegar no processo. Duas classes de teste com contratos próprios fazem
+ * a segunda ler o contrato da primeira, e a suíte passa a depender da ORDEM de execução — foi o que
+ * aconteceu na primeira versão deste arquivo, que deixou o `ForcarAtualizacaoTest` vermelho sem
+ * nenhuma alteração nele.
+ *
  */
+#[PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses]
+#[PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
 final class ProjectIdentityPassthroughTest extends TestCase
 {
     private static string $tmpDir = '';
@@ -145,11 +154,9 @@ final class ProjectIdentityPassthroughTest extends TestCase
      *
      * Só `forcar_atualizacao`, declarado item a item, atravessa esta proteção.
      *
-     * **Observação registrada, não alterada:** o valor novo só é copiado para `html_updated` quando
-     * essa coluna já tem algum valor — a condição no núcleo usa `isset()`, e `isset(null)` é falso.
-     * Com a coluna em `NULL` (o caso comum na primeira divergência), a versão nova é descartada em
-     * vez de ficar disponível para comparação. Mudar isso altera o que o deploy grava em toda base
-     * em produção e é decisão de outra ordem — fora do escopo desta requisição.
+     * O valor novo fica disponível em `html_updated` para a tela oferecer a comparação. Antes da
+     * correção do BATCH-133 ele era DESCARTADO quando a coluna estava `NULL` — exatamente o caso da
+     * primeira divergência entre o que o usuário editou e o que o deploy traz.
      */
     public function testDeployDeProjetoNaoSobrescreveOQueOUsuarioEditou(): void
     {
@@ -159,8 +166,11 @@ final class ProjectIdentityPassthroughTest extends TestCase
         self::assertSame('HTML ANTIGO', $out['linha']['html'], 'a edição do usuário foi sobrescrita');
         self::assertSame(1, (int) $out['linha']['user_modified'], 'a marcação do usuário foi apagada');
         self::assertSame(1, (int) $out['linha']['system_updated'], 'a tela não saberia que há versão nova');
-        // O comportamento atual, fixado para que uma mudança futura seja deliberada e não acidental.
-        self::assertNull($out['linha']['html_updated']);
+        self::assertSame(
+            'HTML NOVO',
+            $out['linha']['html_updated'],
+            'a versão do sistema foi descartada em vez de ficar disponível para comparação'
+        );
     }
 
     /**

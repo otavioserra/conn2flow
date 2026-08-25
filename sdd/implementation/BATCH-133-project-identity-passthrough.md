@@ -52,23 +52,52 @@ o cache de checksums por tabela; não desliga a proteção de projeto e, portant
 caso. `forcar_atualizacao` resolve item a item, mas **atravessa a proteção de `user_modified` e a
 reseta para 0** — usá-lo rotineiramente colocaria em risco as páginas editadas pelo cliente.
 
-### Observação registrada, deliberadamente fora do escopo
+## 3. [x] Coluna espelho descartada quando estava `NULL`
 
-Quando um recurso com `user_modified = 1` recebe versão nova do sistema, o valor novo só é copiado
-para o campo `<campo>_updated` se **essa coluna já tiver algum valor**:
+Achado durante a validação do item anterior e corrigido a pedido do operador.
+
+Quando um recurso com `user_modified = 1` recebia versão nova do sistema, o valor novo só era
+copiado para `<campo>_updated` se **essa coluna já tivesse algum valor**:
 
 ```php
 $dest = $campo.'_updated';
 if (isset($exist[$dest]) || isset($row[$dest])) $diff[$dest] = $diff[$campo];
 ```
 
-`isset(null)` é falso. Com a coluna em `NULL` — o caso comum na primeira divergência — a versão nova
-é **descartada** em vez de ficar disponível para comparação na tela. O conteúdo do usuário continua
-protegido (que é o essencial), mas ele perde a chance de ver o que o sistema traria.
+`isset(null)` é **falso**, e a coluna espelho nasce `NULL`. Pior: `comparacaoDados()` injeta
+`'html_updated' => null` no payload **justamente para habilitar esse mecanismo** — a injeção só faz
+sentido com verificação por existência de chave. O resultado era que a versão do sistema não era
+guardada exatamente no caso que a coluna existe para atender: a **primeira** divergência entre o que
+o usuário editou e o que o deploy traz. O conteúdo do usuário seguia protegido (isso nunca falhou),
+mas ele perdia a chance de ver e comparar o que mudaria.
 
-Trocar `isset()` por `array_key_exists()` muda o que o deploy grava em toda base em produção e é
-decisão de outra ordem. O comportamento atual foi **fixado por teste** para que uma mudança futura
-seja deliberada e não acidental. Candidato a requisição própria.
+* Novo helper `colunaEspelhoDisponivel()`, aplicado aos **três** caminhos de sincronização (PK,
+  chave natural e fallback) e às três variantes (`value_updated`, `<campo>_updated`,
+  `system_updated`).
+* Quando o schema real da tabela é conhecido, **ele** é a fonte de verdade — assim uma tabela sem a
+  coluna espelho nunca recebe o campo no `UPDATE` (mesmo cuidado do guard de `project`). Sem o
+  schema, cai na existência da chave.
+
+### O que este achado NÃO resolve, e é comportamento de projeto
+
+`preserve_on_user_modified` de `paginas` protege `nome`, `layout_id`, `caminho`, `framework_css`,
+`sem_permissao`, `html`, `css` e `css_compiled`. Só `html` e `css` têm coluna espelho no schema.
+
+Portanto, num recurso com `user_modified = 1`, alterar pelo código o **nome** ou o **caminho** de uma
+página continua não chegando ao banco — e agora sem nem sequer ficar disponível para comparação,
+porque não há `nome_updated`. O único rastro é `system_updated = 1`.
+
+**Medido no ambiente local**, com a página `snapphoton-system-tokens`:
+
+| Cenário | `nome` alterado só no código | Resultado |
+| --- | --- | --- |
+| `user_modified = 0` | sim | **chega ao banco** (`versao` 2 → 3) |
+| `user_modified = 1` | sim | **não chega**; `system_updated` sobe para 1 e o valor novo é descartado |
+
+Isso é a proteção funcionando como projetada — não é defeito. Mas explica o sintoma de "alterei um
+valor do recurso e ele não mudou": basta que aquele recurso tenha sido editado uma vez pela
+interface. Ampliar as colunas espelho, ou expor a divergência na tela, é decisão de produto e fica
+registrada como candidata a requisição própria.
 
 ---
 
@@ -86,7 +115,10 @@ seja deliberada e não acidental. Candidato a requisição própria.
 ## Validação
 
 - `bash -n` no script: OK.
-- `tests/Unit/PHP/ProjectIdentityPassthroughTest.php`: **5 testes, 17 asserções**, verdes.
+- `tests/Unit/PHP/ProjectIdentityPassthroughTest.php`: **5 testes, 18 asserções**, verdes. A classe
+  roda em **processos isolados**: `schemaMetadata()` guarda o contrato numa `static` lida do primeiro
+  `DB_DATA_DIR` do processo, e sem o isolamento a segunda classe de teste lê o contrato da primeira —
+  o `ForcarAtualizacaoTest` ficou vermelho, sem nenhuma alteração nele, na primeira versão do arquivo.
 - Suíte completa do núcleo: **702 testes, 3.174 asserções**, sem regressão (1 deprecation e 4
   skipped pré-existentes).
 - **Validação ponta a ponta no ambiente local** (projeto `snapphoton-local`): um marcador foi
