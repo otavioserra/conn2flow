@@ -13,34 +13,62 @@ user-invocable: false
 
 ---
 
-## 🔍 1. Como Funciona o Pipeline de Inspeção Autônoma
+## 🔄 Ciclo de Vida Canônico de 5 Etapas
 
-No ambiente de desenvolvimento local (`$_GESTOR['development-env'] === true`), o framework disponibiliza ferramentas para que o agente inspecione o runtime de forma 100% autônoma:
-
-### Passo 1: Autenticação de Sessão Server-Side (`auth:cookie`)
-Para rotas autenticadas do Gestor (ex: `/admin/`, `/dashboard/`, `/chat-intelligence/`):
-```bash
-./c2f auth:cookie --user=admin --project=meu-projeto
+```mermaid
+graph LR
+    S1["1. Sincronizar Mirror<br/>c2f project:sync-core"] --> S2["2. Ativar Modo Dev<br/>c2f env:set development"]
+    S2 --> S3["3. Gerar Sessão<br/>c2f auth:cookie --project"]
+    S3 --> S4["4. Inspecionar Tela<br/>c2f page:inspect"]
+    S4 --> S5["5. Restaurar Ambiente<br/>c2f env:set production"]
 ```
-* **O que faz**: Gera o token JWT de sessão server-side e grava o cookie jar em `temp/agent-cookies.txt`.
 
-### Passo 2: Inspeção Headless via CLI (`page:inspect`)
-Execute o comando nativo de inspeção:
+### Protocolo Passo a Passo:
+
+#### Passo 1: Sincronização do Mirror (Se o Core foi modificado)
 ```bash
-./c2f page:inspect "http://localhost/modulo-rota/" --selector=".meu-elemento" --computed="display,opacity,transform" --screenshot
+./c2f project:sync-core <projectID>
 ```
-* **O que retorna**: JSON estruturado contendo:
-  - `status`: Código HTTP (ex: 200, 302, 403).
-  - `console_errors`: Array de erros capturados no console do navegador.
-  - `computed_style`: Estilos computados resolvidos pelo browser em tempo de execução real.
-  - `animations`: Estado das animações CSS ativas (`getAnimations()`).
-  - `screenshot`: Caminho do screenshot PNG gerado em `temp/`.
+*Garante que o espelho de teste local (`dev-environment/data/sites/localhost/<site>/`) possui as funções e bibliotecas mais recentes do Core.*
+
+#### Passo 2: Ativação do Modo de Desenvolvimento
+```bash
+./c2f env:set development --project=<projectID>
+```
+*Habilita leitura direta de recursos em disco (`resources/`) e relaxamento seguro de cookies em conexões HTTP locais.*
+
+#### Passo 3: Geração do Cookie Jar Server-Side
+```bash
+./c2f auth:cookie --project=<projectID>
+```
+*Gera `temp/agent-cookies.txt` com as credenciais de sessão assinadas pelo runtime dentro do container Docker.*
+
+#### Passo 4: Inspeção Visual e Coleta de Evidências
+```bash
+./c2f page:inspect "http://localhost/<site>/<rota>" --selector="<seletor>" --computed="display,opacity,transform" --screenshot
+```
+*Executa o Chrome Headless via Playwright, injeta os cookies da sessão e devolve JSON com status HTTP, erros de console JS, estilos computados e screenshot PNG.*
+
+#### Passo 5: Restauração do Ambiente (Tear Down Obrigatório)
+```bash
+./c2f env:set production --project=<projectID>
+```
+*Restaura o modo de produção no `.env` do projeto e encerra o ciclo de teste com segurança.*
+
+---
+
+## 🛠️ Guia de Resolução de Problemas (Troubleshooting)
+
+1. **`DB_HOST=mysql` & Conectividade de Banco**:
+   - Os comandos que acessam banco (`auth:cookie`, `db:test`) dependem do container Docker `conn2flow-app` / `mysql` ativo.
+2. **`503 .env not found`**:
+   - Se o projeto não localizar o arquivo `.env`, certifique-se de passar `--project=<projectID>` e verificar se `path_tests` está configurado corretamente em `dev-environment/data/environment.json`.
+3. **Falsos Negativos por Core Desatualizado**:
+   - Se uma nova função do core não for encontrada durante a execução da página no mirror, execute imediatamente o **Passo 1** (`./c2f project:sync-core <projectID>`).
 
 ---
 
 ## ⛔ Regras Invioláveis de Inspeção:
-1. **EXCLUSIVO PARA AMBIENTE LOCAL DE TESTES**: NUNCA execute inspeção ou scraping automatizado em URLs de produção.
+1. **EXCLUSIVO PARA AMBIENTE LOCAL DE TESTES**: NUNCA execute inspeção, auth ou scraping automatizado em URLs de produção.
 2. **Registro no SDD**: As evidências de inspeção (JSON do `page:inspect` e screenshots) DEVEM ser registradas diretamente no `VALIDATION-CHECKLIST.md` do repositório em vez de marcar "pendente do operador".
-3. **Alternância de Ambiente (`c2f env:set`)**:
-   - `c2f env:set development`: Força leitura dos arquivos físicos em `resources/`.
-   - `c2f env:set production`: Força leitura dos registros compilados no banco de dados.
+3. **Tear Down Obrigatório**: SEMPRE finalize restaurando o ambiente com `c2f env:set production --project=<projectID>`.
