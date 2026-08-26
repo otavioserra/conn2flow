@@ -11,6 +11,7 @@ use Conn2Flow\Cli\Contracts\OutputInterface;
 final class AiSyncCommand implements CommandInterface
 {
     private const REQUIRED_SKILLS = [
+        'c2f-agent-visual-inspection',
         'c2f-database-operations',
         'c2f-database-testing',
         'c2f-dev-scripts',
@@ -60,7 +61,7 @@ final class AiSyncCommand implements CommandInterface
 
     public function getDescription(): string
     {
-        return 'Synchronize and validate all 33 AI skills, rules and agent instructions across AI kits.';
+        return 'Synchronize and validate all 34 AI skills, rules and agent instructions across AI kits.';
     }
 
     public function getAliases(): array
@@ -71,7 +72,7 @@ final class AiSyncCommand implements CommandInterface
     public function getHelp(): string
     {
         return "Usage: c2f ai:sync [options]\n\n" .
-               "Verifies the integrity and contracts of the 33 Core and SDD skills in .claude/, .cursor/, .gemini/, .github/ and .codex/.\n\n" .
+               "Verifies the integrity and contracts of the 34 Core and SDD skills in .claude/, .cursor/, .gemini/, .github/ and .codex/.\n\n" .
                "Options:\n" .
                "  --verbose     Display details of each verified skill contract.";
     }
@@ -79,7 +80,7 @@ final class AiSyncCommand implements CommandInterface
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->title('Conn2Flow — AI Skills & Kits Synchronization');
-        $output->info('Validating 33 Skills and Contract blocks across active kits...');
+        $output->info('Validating 34 Skills and Contract blocks across active kits...');
 
         $skillDirs = [
             '.claude/skills' => $this->rootPath . '/.claude/skills',
@@ -155,7 +156,7 @@ final class AiSyncCommand implements CommandInterface
             return 1;
         }
 
-        $output->success("All 33 skills verified successfully across all active AI toolkits!");
+        $output->success("All 34 skills verified successfully across all active AI toolkits!");
         return 0;
     }
 }

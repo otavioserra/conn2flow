@@ -1,38 +1,30 @@
 ---
 name: c2f-resources-system
-description: "LEIA ANTES de criar ou editar qualquer um dos 11 tipos de recursos nativos (pages, layouts, components, templates, variables, ai_prompts, etc.). Se não ler: recursos não entram no build, perdem vínculos e quebram o deploy."
-user-invocable: false
----
-
-# ⚡ Gatilho Obrigatório
-- **TRIGGER**: Criar, estruturar ou alterar arquivos dentro das pastas `resources/<lang>/` de módulos ou projetos.
-- **SKIP APENAS SE**: Edição de arquivos não gerenciados pelo sistema de recursos (ex: scripts na raiz de `scripts/`).
-- **CONSEQUÊNCIA DE IGNORAR**: Recursos não sincronizados para o banco de dados SQL, ausência de compilação em `*Data.json`, quebra de layouts no site publicado e dados desatualizados.
-
----
-
-﻿---
-name: c2f-resources-system
-description: "Use ao criar, editar, compilar ou sincronizar recursos do Conn2Flow (paginas, layouts, componentes, templates, variaveis, prompts IA, formularios, widgets e tabelas declarativas)."
+description: "LEIA ANTES de criar ou editar qualquer um dos 11 tipos de recursos nativos (pages, layouts, components, templates, variables, ai_prompts, etc.). Se não ler: recursos não entram no build, perdem vínculos, mantêm cache stale de JS/CSS e quebram o deploy."
 user-invocable: false
 ---
 
 # Sistema de Recursos do Conn2Flow (`resources/`)
 
-Consulte e aplique as seguintes convenÃ§Ãµes ao manipular o Sistema de Recursos e a arquitetura de compilaÃ§Ã£o de dados do Conn2Flow.
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: Criar, estruturar ou alterar arquivos dentro das pastas `resources/<lang>/` de módulos ou projetos.
+- **SKIP APENAS SE**: Edição de arquivos não gerenciados pelo sistema de recursos (ex: scripts na raiz de `scripts/`).
+- **CONSEQUÊNCIA DE IGNORAR**: Recursos não sincronizados para o banco de dados SQL, ausência de compilação em `*Data.json`, mascaramento de bugs por cache stale de JavaScript/CSS e quebra de layouts no site publicado.
+
+---
 
 > [!WARNING]
-> **REGRA MANDATÃ“RIA DE ARQUIVOS HTML, CSS E MARKDOWN**:
-> NUNCA crie arquivos `.html`, `.css` ou `.md` soltos na raiz do projeto, em pastas pÃºblicas estÃ¡ticas ou na raiz de mÃ³dulos PHP!
-> TODO e QUALQUER conteÃºdo HTML, CSS ou Markdown para pÃ¡ginas, layouts, componentes, templates ou prompts no Conn2Flow DEVE OBRIGATORIAMENTE ser criado dentro da estrutura do **Sistema de Recursos** (`resources/`), para que possa ser compilado em `*Data.json` e sincronizado no Banco de Dados SQL pelo runtime.
+> **REGRA MANDATÓRIA DE ARQUIVOS HTML, CSS E MARKDOWN**:
+> NUNCA crie arquivos `.html`, `.css` ou `.md` soltos na raiz do projeto, em pastas públicas estáticas ou na raiz de módulos PHP!
+> TODO e QUALQUER conteúdo HTML, CSS ou Markdown para páginas, layouts, componentes, templates ou prompts no Conn2Flow DEVE OBRIGATORIAMENTE ser criado dentro da estrutura do **Sistema de Recursos** (`resources/`), para que possa ser compilado em `*Data.json` e sincronizado no Banco de Dados SQL pelo runtime.
 
-## 1. Arquitetura de Recursos (EdiÃ§Ã£o FÃ­sica -> CompilaÃ§Ã£o -> Banco)
+## 1. Arquitetura de Recursos (Edição Física -> Compilação -> Banco)
 
-* **Fonte (Source)**: Desenvolvedores criam/editam arquivos fÃ­sicos em `resources/<idioma>/<tipo>/<id>/<id>.<ext>`.
-* **Recursos de MÃ³dulo**: `modulos/<modulo-id>/resources/<idioma>/<tipo>/<id>/<id>.<ext>`.
-* **Natural Key**: O nome da pasta do recurso (`<id>`) Ã© a chave primÃ¡ria natural no Banco de Dados.
-* **CompilaÃ§Ã£o**: O script `atualizacao-dados-recursos.php` lÃª os fontes e gera arquivos estÃ¡ticos em `gestor/db/data/*Data.json` (`PaginasData.json`, `LayoutsData.json`, `ComponentesData.json`).
-* **SincronizaÃ§Ã£o**: O script `atualizacoes-banco-de-dados.php` aplica Upsert no Banco respeitando proteÃ§Ãµes de `user_modified = 1` e `project`.
+* **Fonte (Source)**: Desenvolvedores criam/editam arquivos físicos em `resources/<idioma>/<tipo>/<id>/<id>.<ext>`.
+* **Recursos de Módulo**: `modulos/<modulo-id>/resources/<idioma>/<tipo>/<id>/<id>.<ext>`.
+* **Natural Key**: O nome da pasta do recurso (`<id>`) é a chave primária natural no Banco de Dados.
+* **Compilação**: O comando `c2f resources:sync` lê os fontes e gera arquivos estáticos em `gestor/db/data/*Data.json` (`PaginasData.json`, `LayoutsData.json`, `ComponentesData.json`).
+* **Sincronização**: O runtime aplica Upsert no Banco respeitando proteções de `user_modified = 1` e `project`.
 
 ---
 
@@ -40,33 +32,41 @@ Consulte e aplique as seguintes convenÃ§Ãµes ao manipular o Sistema de Recur
 
 | Tipo | Tabela SQL | Arquivo Fonte | Uso |
 |---|---|---|---|
-| `pages` (paginas) | `paginas` | `<id>/<id>.html` + `<id>.css` | PÃ¡ginas com URL, vinculadas a layout via `id_layouts` |
-| `layouts` | `layouts` | `<id>/<id>.html` + `<id>.css` | Estrutura externa (header/footer) com slot de inserÃ§Ã£o |
-| `components` (componentes) | `componentes` | `<id>/<id>.html` + `<id>.css` | Blocos reutilizÃ¡veis de HTML/CSS |
-| `templates` | `templates` | `<id>/<id>.html` | Templates de email, notificaÃ§Ã£o, etc. |
-| `variables` (variaveis) | `variaveis` | `variables.json` | Mensagens, labels e textos multilÃ­ngues |
-| `ai_prompts` | `prompts` | `<id>/<id>.md` | Prompts e instruÃ§Ãµes de IA em Markdown |
+| `pages` (paginas) | `paginas` | `<id>/<id>.html` + `<id>.css` | Páginas com URL, vinculadas a layout via `id_layouts` |
+| `layouts` | `layouts` | `<id>/<id>.html` + `<id>.css` | Estrutura externa (header/footer) com slot de inserção |
+| `components` (componentes) | `componentes` | `<id>/<id>.html` + `<id>.css` | Blocos reutilizáveis de HTML/CSS |
+| `templates` | `templates` | `<id>/<id>.html` | Templates de email, notificação, etc. |
+| `variables` (variaveis) | `variaveis` | `variables.json` | Mensagens, labels e textos multilíngues |
+| `ai_prompts` | `prompts` | `<id>/<id>.md` | Prompts e instruções de IA em Markdown |
 | `ai_modes` | `modos` | `<id>/<id>.md` | System prompts e modos de IA |
 | `ai_prompts_targets` | `prompts_targets` | `<id>/<id>.md` | Targets de prompts de IA |
-| `forms` (formularios) | `formularios` | `<id>/<id>.html` | FormulÃ¡rios HTML reutilizÃ¡veis |
+| `forms` (formularios) | `formularios` | `<id>/<id>.html` | Formulários HTML reutilizáveis |
 | `widgets` | `widgets` | `<id>/<id>.html` + `<id>.css` | Widgets visuais de interface |
 
 ---
 
-## 3. ConvenÃ§Ãµes de HTML e SeÃ§Ãµes
+## 🏷️ 3. Regra Mandatória de Version Bump (Cache-Busting)
 
-* Em arquivos de pÃ¡gina (`pages/<id>/<id>.html`), adicione obrigatoriamente os atributos Ã s tags `<section>`:
-  ```html
-  <section class="text-center mb-16" data-id="1" data-title="hero">
-      <!-- ConteÃºdo da seÃ§Ã£o -->
-  </section>
-  ```
-  - `data-id`: Ãndice numÃ©rico sequencial iniciando em 1.
-  - `data-title`: Nome semÃ¢ntico simples da seÃ§Ã£o (ex: `hero`, `recursos`, `contato`).
+Ao criar ou editar qualquer script JavaScript (`<id>.js`) ou folha de estilo (`<id>.css`) em `resources/`:
+* O agente DEVE OBRIGATORIAMENTE realizar o **version bump** (incremento de versão, ex: `"versao": "1.0.0"` ➔ `"1.0.1"`) no arquivo de metadados do recurso (`<id>.json`) ou no manifest do módulo (`<modulo>.json`).
+* Isso assegura que, ao rodar `c2f resources:sync`, a query string `<script src="...&v=1.0.1">` seja atualizada, forçando o navegador a invalidar o cache antigo imediatamente e prevenindo erros por execução de assets obsoletos (*stale cache*).
 
 ---
 
-## 4. Extensibilidade DinÃ¢mica de Recursos
+## 4. Convenções de HTML e Seções
+
+* Em arquivos de página (`pages/<id>/<id>.html`), adicione obrigatoriamente os atributos às tags `<section>`:
+  ```html
+  <section class="text-center mb-16" data-id="1" data-title="hero">
+      <!-- Conteúdo da seção -->
+  </section>
+  ```
+  - `data-id`: Índice numérico sequencial iniciando em 1.
+  - `data-title`: Nome semântico simples da seção (ex: `hero`, `recursos`, `contato`).
+
+---
+
+## 5. Extensibilidade Dinâmica de Recursos
 
 Tabelas customizadas podem se tornar novos tipos de recursos automaticamente usando `sync_resources: true` em `tables_config.json` ou `<modulo>.json`:
 
@@ -91,10 +91,10 @@ Tabelas customizadas podem se tornar novos tipos de recursos automaticamente usa
 }
 ```
 
-Os `field_types` suportados sÃ£o:
-* `file:html` â€” Arquivo HTML fÃ­sico em `<id>/<id>.html`
-* `file:css` â€” Arquivo CSS fÃ­sico em `<id>/<id>.css`
-* `file:md` â€” Arquivo Markdown fÃ­sico em `<id>/<id>.md`
-* `json` â€” Dados JSON inline no metadado
+Os `field_types` suportados são:
+* `file:html` — Arquivo HTML físico em `<id>/<id>.html`
+* `file:css` — Arquivo CSS físico em `<id>/<id>.css`
+* `file:md` — Arquivo Markdown físico em `<id>/<id>.md`
+* `json` — Dados JSON inline no metadado
 
-A compilaÃ§Ã£o gera `[PascalCase]Data.json` (ex: `MinhaTabelaData.json`) automaticamente.
+A compilação gera `[PascalCase]Data.json` (ex: `MinhaTabelaData.json`) automaticamente.

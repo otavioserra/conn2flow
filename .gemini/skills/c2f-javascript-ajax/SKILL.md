@@ -238,3 +238,4 @@ $.ajax(ajax);
 2. **SEMPRE envie `opcao` e `ajaxOpcao`**: Identificam o contexto da página e a ação a ser roteada no `switch ($_GESTOR['ajax-opcao'])`.
 3. **Backend DEVE usar `interface_ajax_iniciar()` e `interface_ajax_finalizar()`**: Garante headers JSON corretos, limpeza de buffers e envelope padronizado.
 4. **Trate o erro 401 (Unauthorized)**: Redirecione imediatamente para `signin/` em caso de sessão expirada.
+5. **Version Bump Obrigatório**: Ao alterar qualquer script JavaScript em `resources/`, incremente a versão (`versao: "X.Y.Z"`) no `<id>.json` ou no manifest do módulo antes de executar `c2f resources:sync` para invalidar o cache do navegador.

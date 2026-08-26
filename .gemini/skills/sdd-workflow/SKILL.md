@@ -51,8 +51,8 @@ Se a tarefa apontar para `sdd/human-requests/*.md` ou para a pasta `sdd/human-re
 
 ## 📋 Protocolo de Transparência & Checklist Vivo (Live Todo List)
 
-- Ao iniciar qualquer requisição ou lote, renderize imediatamente a lista completa de tarefas (`Todo List`) com caixas de seleção `[ ]`.
-- A cada término de etapa/comando relevante, atualize e re-exiba a lista marcando `[x]` nas etapas concluídas e destacando a etapa atual (`⏳ [EM ANDAMENTO]`).
+- Ao iniciar qualquer requisição ou lote, renderize imediatamente a lista completa de tarefas (Todo List) com caixas de seleção [ ].
+- A cada término de etapa/comando relevante, atualize e re-exiba a lista marcando [x] nas etapas concluídas e destacando a etapa atual (⏳ [EM ANDAMENTO]).
 - Nunca execute sequências longas de comandos sem atualizar o status visual para o usuário.
 
 ## 🛡️ Espectro de 3 Níveis de Autonomia de IA
@@ -76,3 +76,9 @@ Se a tarefa apontar para `sdd/human-requests/*.md` ou para a pasta `sdd/human-re
    - Ativado quando a requisição contiver `modo: autonomo_headless`.
    - O agente executa toda a esteira em segundo plano isolado via MCP Hub / Git Worktrees, emitindo notificação e relatório consolidado apenas ao término.
 
+## 🔒 Regras Mandatórias de Concorrência Multi-Agente
+
+1. **Proibição Absoluta de `git add -A` e `git commit -a`**:
+   - O agente DEVE executar `git add <caminho-1> <caminho-2>` listando estritamente os arquivos tocados no seu lote aprovado, prevenindo que commits arrastem código concorrente ou arquivos de outros agentes.
+2. **Reserva e Releitura Atômica de Numeração de `req-XXX.md`**:
+   - O agente deve reler o diretório `sdd/human-requests/` imediatamente antes de criar arquivos para evitar colisão e sobrescrita de números de requisição.
