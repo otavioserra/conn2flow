@@ -197,7 +197,7 @@ jobs:
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           else
-            VERSION=$(php -r "include 'gestor/config.php'; echo \$_GESTOR['versao'] ?? '';")
+            VERSION=$(grep "versao" gestor/config.php | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+" | head -1)
             if [ -n "$VERSION" ]; then
               echo "TAG_NAME=gestor-v${VERSION}" >> $GITHUB_OUTPUT
             else
