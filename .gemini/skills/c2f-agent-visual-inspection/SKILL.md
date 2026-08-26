@@ -41,13 +41,15 @@ graph LR
 ```bash
 ./c2f auth:cookie --project=<projectID>
 ```
-*Gera `temp/agent-cookies.txt` com as credenciais de sessão assinadas pelo runtime dentro do container Docker.*
+*Gera `temp/agent-cookies.txt` com as credenciais de sessão autenticadas pelo runtime dentro do container Docker.*
 
-#### Passo 4: Inspeção Visual e Coleta de Evidências
+#### Passo 4: Inspeção Visual e Coleta de Evidências (HTML Verbatim com Bypass de Sanitização)
 ```bash
 ./c2f page:inspect "http://localhost/<site>/<rota>" --selector="<seletor>" --computed="display,opacity,transform" --screenshot
 ```
 *Executa o Chrome Headless via Playwright, injeta os cookies da sessão e devolve JSON com status HTTP, erros de console JS, estilos computados e screenshot PNG.*
+> [!NOTE]
+> Como a sessão do agente utiliza autenticação de administrador (`auth:cookie`), o sanitizador de HTML é **automaticamente bypassado** (`gestor_dashboard_toolbar_ativo() === true`). O agente recebe o HTML com comentários de arquitetura, seções (`data-id`, `data-title`) e marcadores de widgets (`<!-- widgets#... -->`) intactos.
 
 #### Passo 5: Restauração do Ambiente (Tear Down Obrigatório)
 ```bash
