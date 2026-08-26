@@ -7722,6 +7722,87 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "item-settings-title",
+        "valor": "Configurações da imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "item-settings-tooltip",
+        "valor": "Editar legenda e link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "item-settings-close",
+        "valor": "Concluir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "item-caption-placeholder",
+        "valor": "Legenda (opcional)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "item-caption-label",
+        "valor": "Legenda da imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "image-position-label",
+        "valor": "Alinhamento vertical da imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "image-position-center",
+        "valor": "Centro (Padrão)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "image-position-top",
+        "valor": "Topo \/ Acima",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "image-position-bottom",
+        "valor": "Fundo \/ Abaixo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "galleries",
         "id": "form-name-label",
@@ -7771,6 +7852,87 @@
         "modulo": "galleries",
         "id": "view-small-title",
         "valor": "Small thumbnails",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "item-settings-title",
+        "valor": "Image settings",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "item-settings-tooltip",
+        "valor": "Edit caption and link",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "item-settings-close",
+        "valor": "Done",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "item-caption-placeholder",
+        "valor": "Caption (optional)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "item-caption-label",
+        "valor": "Image caption",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "image-position-label",
+        "valor": "Vertical image alignment",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "image-position-center",
+        "valor": "Center (Default)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "image-position-top",
+        "valor": "Top",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "image-position-bottom",
+        "valor": "Bottom",
         "tipo": "string",
         "grupo": null,
         "descricao": null

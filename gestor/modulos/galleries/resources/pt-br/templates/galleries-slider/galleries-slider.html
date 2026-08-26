@@ -1,6 +1,7 @@
 <section class="conn2flow-gallery font-sans" data-id="1" data-title="gallery-slider" data-autoplay="@[[autoplay]]@"
     data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@"
-    data-height="@[[height]]@" data-margin-lateral="@[[margin_lateral]]@">
+    data-height="@[[height]]@" data-margin-lateral="@[[margin_lateral]]@"
+    data-image-position="@[[image_position]]@">
     <div class="relative rounded-lg overflow-hidden">
         <div class="gallery-slides-wrapper flex overflow-x-auto snap-x snap-mandatory scroll-smooth">
             <!-- item < -->
@@ -8,7 +9,8 @@
                 <a href="@[[item#link-url]]@" target="@[[item#link-target]]@"
                     class="block w-full h-full @[[item#link-css-classes]]@">
                     <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@"
-                        class="w-full object-cover" style="height: @[[height]]@px;">
+                        class="w-full object-cover @[[image_position_class]]@"
+                        style="height: @[[height]]@px; object-position: @[[image_position]]@;">
                 </a>
                 <figcaption
                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent text-white px-6 py-4 text-sm">

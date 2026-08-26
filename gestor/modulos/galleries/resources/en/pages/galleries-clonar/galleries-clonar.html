@@ -51,7 +51,9 @@
 </div>
 
 <!-- Gallery images list (batch curation, rendered by JS) -->
-<div id="gallery-items"></div>
+<div id="gallery-items" data-settings-title="@[[item-settings-title]]@"
+    data-settings-tooltip="@[[item-settings-tooltip]]@" data-settings-close="@[[item-settings-close]]@"
+    data-caption-placeholder="@[[item-caption-placeholder]]@" data-caption-label="@[[item-caption-label]]@"></div>
 
 <h4 class="ui dividing header">Display Controls</h4>
 
@@ -95,6 +97,14 @@
             <label>Side margin (px)</label>
             <input type="number" id="gallery-margin-lateral" min="0" step="1" value="0">
         </div>
+    </div>
+    <div class="field" style="max-width: 260px; margin-top: 10px;">
+        <label>@[[image-position-label]]@</label>
+        <select id="gallery-image-position" class="ui dropdown">
+            <option value="center">@[[image-position-center]]@</option>
+            <option value="top">@[[image-position-top]]@</option>
+            <option value="bottom">@[[image-position-bottom]]@</option>
+        </select>
     </div>
 </div>
 

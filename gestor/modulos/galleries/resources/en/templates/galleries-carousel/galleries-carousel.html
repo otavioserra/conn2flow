@@ -1,13 +1,15 @@
 <section class="conn2flow-gallery font-sans p-6" data-id="1" data-title="gallery-carousel"
     data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@" data-loop="@[[loop]]@"
-    data-height="@[[height]]@" data-margin-lateral="@[[margin_lateral]]@">
+    data-height="@[[height]]@" data-margin-lateral="@[[margin_lateral]]@"
+    data-image-position="@[[image_position]]@">
     <div class="relative">
         <div class="gallery-slides-wrapper flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scroll-smooth">
             <!-- item < -->
             <figure class="gallery-slide snap-center shrink-0 w-80">
                 <a href="@[[item#link-url]]@" target="@[[item#link-target]]@" class="block @[[item#link-css-classes]]@">
                     <img src="@[[item#img-src]]@" alt="@[[item#nome]]@" title="@[[item#nome]]@"
-                        class="w-80 object-cover rounded-lg shadow" style="height: @[[height]]@px;">
+                        class="w-80 object-cover @[[image_position_class]]@ rounded-lg shadow"
+                        style="height: @[[height]]@px; object-position: @[[image_position]]@;">
                 </a>
                 <figcaption class="mt-2 text-sm text-gray-600 text-center">@[[item#legenda]]@</figcaption>
             </figure>

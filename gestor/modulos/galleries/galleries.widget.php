@@ -47,6 +47,11 @@ function galleries_widget_bool($schema, $key, $default){
 	return ($v === 'true' || $v === '1' || $v === 'yes' || $v === 'on');
 }
 
+function galleries_widget_normalizar_image_position($position){
+	$position = strtolower(trim((string)$position));
+	return in_array($position, ['top', 'center', 'bottom'], true) ? $position : 'center';
+}
+
 // ===== Funções Principais
 
 function galleries_render($params){
@@ -492,6 +497,7 @@ function galleries_widget_resolver_globais($html, $schema){
 	if($height < 1) $height = 300;
 	$margin_lateral = isset($schema['margin_lateral']) ? (int)$schema['margin_lateral'] : 0;
 	if($margin_lateral < 0) $margin_lateral = 0;
+	$image_position = galleries_widget_normalizar_image_position($schema['image_position'] ?? 'center');
 
 	$map = [
 		'show_arrows'    => galleries_widget_bool($schema, 'show_arrows', true) ? 'true' : 'false',
@@ -501,6 +507,8 @@ function galleries_widget_resolver_globais($html, $schema){
 		'loop'           => galleries_widget_bool($schema, 'loop', true) ? 'true' : 'false',
 		'height'         => (string)$height,
 		'margin_lateral' => (string)$margin_lateral,
+		'image_position' => $image_position,
+		'image_position_class' => 'object-'.$image_position,
 	];
 
 	return preg_replace_callback('/@?\[\[([a-zA-Z0-9_\-]+)\]\]@?/', function($m) use ($map){

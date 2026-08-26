@@ -66,6 +66,8 @@ function galleries_variaveis_template(){
 		// req-024 / DEC-037: controles globais de exibição (altura do container e margem lateral).
 		Array('id' => 'height', 'global' => true),
 		Array('id' => 'margin_lateral', 'global' => true),
+		Array('id' => 'image_position', 'global' => true),
+		Array('id' => 'image_position_class', 'global' => true),
 	);
 }
 
@@ -248,7 +250,7 @@ function galleries_adicionar(){
 
 	// ===== Schema inicial vazio para o JS reidratar UI
 
-	$schema_inicial = ['selected_items' => [], 'template_id' => ''];
+	$schema_inicial = ['selected_items' => [], 'template_id' => '', 'image_position' => 'center'];
 	$_GESTOR['pagina'] .= '<script>var galleries_initial_schema = '.json_encode($schema_inicial).';</script>';
 
 	// ===== HTML Editor (alvo galleries)

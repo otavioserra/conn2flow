@@ -1031,3 +1031,33 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [x] Guardas de regressão: `galleries.view-modes.test.js` **8/8**.
 - [x] Suítes após a rodada: Vitest **367/367**, PHPUnit **784/784**; console limpo.
 - [x] Screenshots: `temp/req-137-galleries-grid-medium.png`, `temp/req-137-galleries-grid-small.png`.
+
+---
+
+## BATCH-142 — Densidade, configuração rápida e alinhamento vertical no galleries (req-139)
+
+- [x] Modo médio: **6 cards por linha** em 1920 px e miniatura com **110 px**.
+- [x] Modo pequeno: **10 cards por linha** em 1920 px e miniatura com **65 px**.
+- [x] Geometria dos 18 cards idêntica antes/depois do hover nos dois modos (zero layout shift).
+- [x] Hover medido: borda azul, sombra `rgba(33,133,208,.22) 0 4px 14px`, backdrop
+      `rgba(0,0,0,.55)`, raio 4 px, overlay absoluto e `opacity:1`/`pointer-events:auto`.
+- [x] Overlay exibe handle, engrenagem e remover; o modo grande mantém a curadoria detalhada.
+- [x] Modal rápido pt-BR abriu no card correto e persistiu legenda, `link-custom`, URL e `_blank`.
+- [x] `image_position` aceita só `top|center|bottom`; valor inválido/legado cai em `center`.
+- [x] Preview real recebeu `top` e `bottom`; estilo computado nas 18 imgs foi `50% 0%` e
+      `50% 100%`. Os oito templates (`pt-br`/`en`, quatro modelos) estão cobertos pelo renderer PHP.
+- [x] Seis CRUDs localizados e 18 variáveis novas (nove por idioma), sem texto novo literal no modal.
+- [x] Testes focados: Vitest **7/7**; PHPUnit **5/5**, **74 asserções**.
+- [x] Suítes: Vitest **366/366**; PHPUnit **789/789**, **3.497 asserções**, 1 depreciação e
+      4 skips preexistentes.
+- [x] `node --check` 2/2; `php -l` 3/3; JSON válido; `git diff --check` limpo.
+- [x] `resources:sync`: **2.678** recursos, 233/233 Tailwind em cache na rodada final, zero erros.
+- [x] Screenshots: `temp/req-139-medium-overlay.png`, `temp/req-139-quick-settings.png`,
+      `temp/req-139-small-bottom.png`; console e `pageerror` vazios.
+- [x] Review findings-first: `pointer-events` do overlay no hover corrigido e coberto; nenhum finding
+      aberto.
+- [x] A base Photon estava vazia/stale e o dry-run avançou checksums sem aplicar recursos. Para não
+      forçar recursos do tenant, a prova carregou no editor os arquivos versionados deste lote e usou
+      o endpoint PHP/widget JS reais; nenhuma galeria foi persistida.
+- [x] Tear down: `snapphoton-local` confirmado em `PRODUCTION` (`DEVELOPMENT_ENV=false`).
+- [x] Nível 1: nenhum commit, push ou deploy remoto.

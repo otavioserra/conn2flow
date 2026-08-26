@@ -17,6 +17,7 @@
 
 // BATCH-140 (req-137): modos de tamanho das miniaturas da lista curada.
 var GALLERIES_VIEWS = ['large', 'medium', 'small'];
+var GALLERIES_IMAGE_POSITIONS = ['top', 'center', 'bottom'];
 
 // Valor desconhecido cai em 'large' e nunca em erro: a preferência vem do localStorage, que pode
 // trazer lixo de versão anterior, de outra aba ou de edição manual pelo próprio usuário.
@@ -24,11 +25,18 @@ function galleriesNormalizarView(view) {
     return GALLERIES_VIEWS.indexOf(view) === -1 ? 'large' : view;
 }
 
+function galleriesNormalizarImagePosition(position) {
+    position = (typeof position === 'string') ? position.toLowerCase().trim() : '';
+    return GALLERIES_IMAGE_POSITIONS.indexOf(position) === -1 ? 'center' : position;
+}
+
 // Exposição para testes (Node) sem quebrar o browser.
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         GALLERIES_VIEWS: GALLERIES_VIEWS,
-        galleriesNormalizarView: galleriesNormalizarView
+        GALLERIES_IMAGE_POSITIONS: GALLERIES_IMAGE_POSITIONS,
+        galleriesNormalizarView: galleriesNormalizarView,
+        galleriesNormalizarImagePosition: galleriesNormalizarImagePosition
     };
 }
 
@@ -42,7 +50,9 @@ $(document).ready(function () {
         var css = ''
             + '#gallery-items{margin-top:12px;display:flex;flex-direction:column;gap:8px;}'
             + '.gallery-item{display:flex;align-items:center;gap:12px;padding:8px 10px;background:#fff;'
-            + 'border:1px solid #e0e0e0;border-radius:4px;}'
+            + 'border:1px solid #e0e0e0;border-radius:4px;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;}'
+            + '.gallery-item:not(.gallery-settings-form):hover,.gallery-item:not(.gallery-settings-form):focus-within{'
+            + 'border-color:#2185d0;box-shadow:0 4px 14px rgba(33,133,208,0.22);}'
             + '.gallery-item.sortable-drag,.gallery-item.sortable-ghost{opacity:0.6;}'
             + '.gallery-item-handle{cursor:grab;opacity:0.6;}'
             + '.gallery-item-handle:active{cursor:grabbing;}'
@@ -50,8 +60,14 @@ $(document).ready(function () {
             + '.gallery-item-body{flex:1;min-width:0;}'
             + '.gallery-item-name{font-size:12px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px;}'
             + '.gallery-item-caption{width:100%;}'
-            + '.gallery-item-remove{cursor:pointer;opacity:0.6;color:#db2828;}'
-            + '.gallery-item-remove:hover{opacity:1;}'
+            + '.gallery-item-actions{display:flex;align-items:center;gap:4px;margin-left:auto;}'
+            + '.gallery-item-actions .button{margin:0;}'
+            + '.gallery-item-settings{display:none!important;}'
+            + '.gallery-item-remove{cursor:pointer;}'
+            + '.gallery-settings-form{display:block;padding:0;border:0;box-shadow:none;}'
+            + '.gallery-settings-form .gallery-item-caption{box-sizing:border-box;margin-bottom:10px;}'
+            + '.gallery-settings-form .gallery-item-link-toggle{display:none;}'
+            + '.gallery-settings-form .gallery-item-link-fields{display:block;margin-top:0;}'
             + '.gallery-empty{padding:14px;color:#999;font-style:italic;text-align:center;'
             + 'border:1px dashed #ccc;border-radius:4px;background:#fafafa;}'
             // req-024: painel retrátil "Configurar Link" de cada imagem.
@@ -89,47 +105,48 @@ $(document).ready(function () {
             // relê a ordem física do DOM, continua devolvendo a sequência correta sem nenhuma
             // condicional por modo.
             + '#gallery-items.view-medium,#gallery-items.view-small{flex-direction:row;flex-wrap:wrap;'
-            + 'align-items:flex-start;gap:6px;}'
+            + 'align-items:flex-start;}'
+            + '#gallery-items.view-medium{gap:8px;}'
+            + '#gallery-items.view-small{gap:6px;}'
             + '#gallery-items.view-medium .gallery-item,#gallery-items.view-small .gallery-item{'
             + 'flex-direction:column;align-items:stretch;position:relative;gap:3px;box-sizing:border-box;}'
-            + '#gallery-items.view-medium .gallery-item{width:calc(25% - 6px);padding:6px;}'
-            + '#gallery-items.view-small .gallery-item{width:calc(12.5% - 6px);padding:4px;}'
+            + '#gallery-items.view-medium .gallery-item{width:calc(16.666% - 8px);padding:6px;}'
+            + '#gallery-items.view-small .gallery-item{width:calc(10% - 6px);padding:4px;}'
             + '#gallery-items.view-medium .gallery-item-thumb{width:100%;height:110px;}'
-            + '#gallery-items.view-small .gallery-item-thumb{width:100%;height:64px;}'
+            + '#gallery-items.view-small .gallery-item-thumb{width:100%;height:65px;}'
             + '#gallery-items.view-medium .gallery-item-name{font-size:11px;margin-bottom:0;}'
             + '#gallery-items.view-small .gallery-item-name{font-size:10px;margin-bottom:0;text-align:center;}'
-            + '#gallery-items.view-medium .gallery-item-caption{font-size:11px;padding:3px 5px;}'
-            + '#gallery-items.view-medium .gallery-item-link-toggle{font-size:10px;margin-top:2px;}'
-            // No modo pequeno a caixa é só miniatura + nome: legenda e painel de link exigem largura
+            + '#gallery-items.view-medium .gallery-item-caption,#gallery-items.view-medium .gallery-item-link-wrap,'
+            // Nos modos compactos a caixa é só miniatura + nome: legenda e painel de link exigem largura
             // que não existe ali. Os valores continuam vivos no array `items` (a serialização lê de
             // lá, não do DOM), então esconder não perde nada — basta voltar ao modo grande para editar.
-            + '#gallery-items.view-small .gallery-item-caption,'
-            + '#gallery-items.view-small .gallery-item-link-toggle,'
-            + '#gallery-items.view-small .gallery-item-link-fields{display:none;}'
+            + '#gallery-items.view-small .gallery-item-caption,#gallery-items.view-small .gallery-item-link-wrap{display:none;}'
             // Controles sobre a miniatura, revelados no hover — mesma técnica do `admin-arquivos`:
             // `position:absolute` mantém a caixa com EXATAMENTE as mesmas medidas com e sem o mouse,
             // então a grade não estremece quando o cursor passa por cima.
-            + '#gallery-items.view-medium .gallery-item-handle,'
-            + '#gallery-items.view-medium .gallery-item-remove,'
-            + '#gallery-items.view-small .gallery-item-handle,'
-            + '#gallery-items.view-small .gallery-item-remove{position:absolute;top:8px;z-index:4;'
-            + 'width:22px;height:22px;margin:0;display:flex;align-items:center;justify-content:center;'
-            + 'border-radius:4px;background:rgba(0,0,0,0.62);color:#fff;opacity:0;'
-            + 'transition:opacity .15s ease-in-out;font-size:12px;}'
-            + '#gallery-items.view-medium .gallery-item-handle,'
-            + '#gallery-items.view-small .gallery-item-handle{left:8px;cursor:grab;}'
-            + '#gallery-items.view-medium .gallery-item-remove,'
-            + '#gallery-items.view-small .gallery-item-remove{right:8px;color:#ff8b8b;}'
-            + '#gallery-items.view-medium .gallery-item:hover .gallery-item-handle,'
-            + '#gallery-items.view-medium .gallery-item:hover .gallery-item-remove,'
-            + '#gallery-items.view-small .gallery-item:hover .gallery-item-handle,'
-            + '#gallery-items.view-small .gallery-item:hover .gallery-item-remove{opacity:1;}'
-            + '#gallery-items.view-medium .gallery-item-remove:hover,'
-            + '#gallery-items.view-small .gallery-item-remove:hover{background:#db2828;color:#fff;}'
+            + '#gallery-items.view-medium .gallery-item-actions,#gallery-items.view-small .gallery-item-actions{'
+            + 'position:absolute;display:flex;align-items:center;justify-content:center;gap:6px;'
+            + 'left:6px;right:6px;background:rgba(0,0,0,0.55);border-radius:4px;opacity:0;'
+            + 'pointer-events:none;transition:opacity .15s ease-in-out;z-index:4;}'
+            + '#gallery-items.view-medium .gallery-item-actions{top:6px;height:110px;}'
+            + '#gallery-items.view-small .gallery-item-actions{top:4px;left:4px;right:4px;height:65px;}'
+            + '#gallery-items.view-medium .gallery-item:hover .gallery-item-actions,'
+            + '#gallery-items.view-medium .gallery-item:focus-within .gallery-item-actions,'
+            + '#gallery-items.view-small .gallery-item:hover .gallery-item-actions,'
+            + '#gallery-items.view-small .gallery-item:focus-within .gallery-item-actions{opacity:1;pointer-events:auto;}'
+            + '#gallery-items.view-medium .gallery-item-actions .button,'
+            + '#gallery-items.view-small .gallery-item-actions .button{pointer-events:auto;margin:0;border-radius:999px;'
+            + 'background:rgba(255,255,255,0.92);color:rgba(0,0,0,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.35);}'
+            + '#gallery-items.view-medium .gallery-item-actions .button:hover,'
+            + '#gallery-items.view-small .gallery-item-actions .button:hover{background:#fff;color:rgba(0,0,0,0.95);}'
+            + '#gallery-items.view-medium .gallery-item-settings,#gallery-items.view-small .gallery-item-settings{display:inline-flex!important;}'
+            + '#gallery-items.view-medium .gallery-item-actions .red.button,'
+            + '#gallery-items.view-small .gallery-item-actions .red.button{background:#db2828;color:#fff;}'
+            + '#gallery-items.view-medium .gallery-item-actions .blue.button,'
+            + '#gallery-items.view-small .gallery-item-actions .blue.button{background:#2185d0;color:#fff;}'
             // Enquanto o Sortable arrasta, o cursor sai do card de origem e o overlay sumiria no meio
             // do gesto; a classe do próprio Sortable mantém os controles à vista até soltar.
-            + '#gallery-items .gallery-item.sortable-chosen .gallery-item-handle,'
-            + '#gallery-items .gallery-item.sortable-chosen .gallery-item-remove{opacity:1;}'
+            + '#gallery-items .gallery-item.sortable-chosen .gallery-item-actions{opacity:1;}'
             // Telas estreitas: menos colunas, senão o card fica menor que a própria miniatura.
             + '@media only screen and (max-width:991px){'
             + '#gallery-items.view-medium .gallery-item{width:calc(33.33% - 6px);}'
@@ -138,7 +155,7 @@ $(document).ready(function () {
             + '#gallery-items.view-medium .gallery-item{width:calc(50% - 6px);}'
             + '#gallery-items.view-small .gallery-item{width:calc(33.33% - 6px);}}'
             + '@media (prefers-reduced-motion:reduce){'
-            + '#gallery-items .gallery-item-handle,#gallery-items .gallery-item-remove{transition:none;}}';
+            + '#gallery-items .gallery-item,#gallery-items .gallery-item-actions{transition:none;}}';
         var style = document.createElement('style');
         style.id = 'galleries-styles';
         style.type = 'text/css';
@@ -293,6 +310,11 @@ $(document).ready(function () {
     $(document).on('change', '#gallery-show-arrows, #gallery-show-dots, #gallery-autoplay, #gallery-loop', function () { serializeAndPreview(); });
     $(document).on('input change', '#gallery-autoplay-speed', function () { serializeAndPreview(); });
     $(document).on('input change', '#gallery-height, #gallery-margin-lateral', function () { serializeAndPreview(); });
+    $(document).on('change', '#gallery-image-position', function () {
+        schema.image_position = galleriesNormalizarImagePosition($(this).val());
+        $('#gallery-items .gallery-item-thumb').css('object-position', schema.image_position);
+        serializeAndPreview();
+    });
 
     // Hook global usado pelo html-editor-interface.js ao detectar mudança no CodeMirror HTML.
     window.updatedCodeMirrorHtml = function () { scheduleWidgetPreview(false); };
@@ -414,6 +436,10 @@ $(document).ready(function () {
         return (typeof gestor !== 'undefined' && gestor.language === 'pt-br');
     }
 
+    function galleryUiText(name) {
+        return String($('#gallery-items').attr('data-' + name) || '');
+    }
+
     function toggleTemplateOptionsWrapper() {
         if ($template.val()) $('.template-options-wrapper').show();
         else $('.template-options-wrapper').hide();
@@ -493,12 +519,18 @@ $(document).ready(function () {
     function buildItemRow(it) {
         var $row = $('<div class="gallery-item"></div>').attr('data-id', it.id);
 
-        $row.append('<i class="bars icon gallery-item-handle" title="' + (isPtBr() ? 'Arraste para reordenar' : 'Drag to reorder') + '"></i>');
-
         var $thumb = $('<img class="gallery-item-thumb">').attr('alt', it.nome || '');
         if (it.imgSrc) $thumb.attr('src', it.imgSrc);
+        $thumb.css('object-position', galleriesNormalizarImagePosition($('#gallery-image-position').val() || schema.image_position));
         $row.append($thumb);
 
+        var $actions = $('<div class="gallery-item-actions"></div>');
+        $actions.append($('<button type="button" class="ui mini icon button gallery-item-handle"><i class="bars icon"></i></button>')
+            .attr('title', isPtBr() ? 'Arraste para reordenar' : 'Drag to reorder'));
+        $actions.append($('<button type="button" class="ui mini icon blue button gallery-item-settings"><i class="cog icon"></i></button>')
+            .attr('title', galleryUiText('settings-tooltip')));
+        $actions.append($('<button type="button" class="ui mini icon red button gallery-item-remove"><i class="trash alternate icon"></i></button>')
+            .attr('title', isPtBr() ? 'Remover' : 'Remove'));
         var $body = $('<div class="gallery-item-body"></div>');
         $body.append($('<div class="gallery-item-name"></div>').text(it.nome || it.caminho || ''));
 
@@ -508,10 +540,45 @@ $(document).ready(function () {
         $body.append($caption);
         $body.append(buildLinkPanel(it));
         $row.append($body);
-
-        $row.append('<i class="trash alternate icon gallery-item-remove" title="' + (isPtBr() ? 'Remover' : 'Remove') + '"></i>');
+        $row.append($actions);
 
         return $row;
+    }
+
+    function openItemSettings(itemId) {
+        var idx = indexOfId(itemId);
+        if (idx < 0) return;
+
+        var it = items[idx];
+        var $modal = $('<div class="ui small modal gallery-item-settings-modal"></div>');
+        $modal.append($('<div class="header"></div>').text(galleryUiText('settings-title')));
+
+        var $content = $('<div class="content"></div>');
+        var $form = $('<div class="gallery-item gallery-settings-form"></div>').attr('data-id', it.id);
+        var $caption = $('<input type="text" class="gallery-item-caption">')
+            .attr('placeholder', galleryUiText('caption-placeholder'))
+            .val(it.legenda || '');
+        $form.append(fieldWrap(galleryUiText('caption-label'), $caption));
+        var $linkPanel = buildLinkPanel(it);
+        $linkPanel.find('.gallery-item-link-fields').show();
+        $form.append($linkPanel);
+        $content.append($form);
+        $modal.append($content);
+
+        var $actions = $('<div class="actions"></div>');
+        $actions.append($('<button type="button" class="ui primary approve button"></button>')
+            .text(galleryUiText('settings-close')));
+        $modal.append($actions);
+        $('body').append($modal);
+
+        $modal.modal({
+            autofocus: false,
+            onHidden: function () {
+                renderItems();
+                scheduleWidgetPreview(true);
+                $modal.remove();
+            }
+        }).modal('show');
     }
 
     // ===== req-024: painel "Configurar Link" de cada imagem
@@ -849,6 +916,12 @@ $(document).ready(function () {
         serializeAndPreview();
     });
 
+    $(document).on('click', '.gallery-item-settings', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openItemSettings($(this).closest('.gallery-item').attr('data-id'));
+    });
+
     // req-024: alternar o painel "Configurar Link".
     $(document).on('click', '.gallery-item-link-toggle', function () {
         $(this).siblings('.gallery-item-link-fields').slideToggle(150);
@@ -936,6 +1009,7 @@ $(document).ready(function () {
         out.height = (h >= 1) ? h : 300;
         var ml = parseInt($('#gallery-margin-lateral').val(), 10);
         out.margin_lateral = (!isNaN(ml) && ml >= 0) ? ml : 0;
+        out.image_position = galleriesNormalizarImagePosition($('#gallery-image-position').val() || schema.image_position);
         return out;
     }
 
@@ -957,6 +1031,7 @@ $(document).ready(function () {
         $('#gallery-height').val((hh >= 1) ? hh : 300);
         var mm = parseInt(schema.margin_lateral, 10);
         $('#gallery-margin-lateral').val((!isNaN(mm) && mm >= 0) ? mm : 0);
+        $('#gallery-image-position').val(galleriesNormalizarImagePosition(schema.image_position));
     }
 
     function scheduleWidgetPreview(immediate, force) {

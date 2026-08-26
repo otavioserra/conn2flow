@@ -20,6 +20,11 @@ $(document).ready(function () {
         if ($gallery.data('c2fGalleryReady')) return;     // evita dupla inicialização
         $gallery.data('c2fGalleryReady', true);
 
+        var imagePosition = String($gallery.attr('data-image-position') || 'center').toLowerCase();
+        if (['top', 'center', 'bottom'].indexOf(imagePosition) === -1) imagePosition = 'center';
+        $gallery.attr('data-image-position', imagePosition);
+        $gallery.find('img').css('object-position', imagePosition);
+
         // ===== Configuração de Altura e Margens Dinâmicas
         var height = parseInt($gallery.data('height'), 10);
         if (!isNaN(height) && height >= 1) {
