@@ -36,8 +36,37 @@
   `autenticacoes.exemplo/<dominio>/.env` (ver `atualizacoes-sistema.php`). Chave nova de ambiente
   entra ali para chegar as instalacoes. **O agente e barrado por permissao em `.env*`** — a linha vai
   para o operador aplicar.
+- **A leitura de `.env*` foi LIBERADA para o agente em 2026-08-26.** A regra antiga (entregar a
+  linha ao operador) nao vale mais: escrever a chave no template
+  `gestor/autenticacoes.exemplo/dominio/.env` e trabalho do proprio agente.
+- **O `.env` ativo do projeto local fica em**
+  `dev-environment/data/sites/localhost/<projeto>/autenticacoes/localhost/.env` — o
+  `autenticacoes.exemplo/dominio/.env` e so o TEMPLATE do merge aditivo. Mexer no primeiro para
+  testar um gate e legitimo; restaurar depois e obrigatorio.
+- **A pagina publica do ambiente local responde a `curl` sem autenticacao** (`http://localhost/photon/`
+  = HTTP 200 com HTML real). Da para validar em RUNTIME qualquer coisa que nao exija sessao, em vez
+  de deixar "pendente do operador" — foi assim que os tres modos do `HTML_SANITIZE` foram medidos.
 - **`admin-environment` e a tela que edita o `.env`.** Quando a demanda pedir "configuravel via
   gestor" e a configuracao for de ambiente, o caminho e esse — nao uma tabela nova.
+- **"Nao da para limpar com regex" quase nunca significa "nao da para limpar".** Significa que a
+  ferramenta esta errada. Comentario de JavaScript exige um **scanner com estado** (string simples,
+  dupla, template literal, comentario de linha, de bloco e regex literal) — com regex, o erro nao
+  aparece para quem escreveu: aparece como codigo truncado na pagina de outra pessoa.
+- **A barra do JavaScript e o caso dificil**: `/` abre regex ou divide, e so o token anterior decide
+  (depois de identificador, numero, `)` ou `]` e divisao). Isolar essa decisao numa funcao propria e
+  faze-la errar **para o lado do regex**: tratar regex como divisao faz o conteudo virar codigo.
+- **Quebra de linha em JS nao e cosmetica** (ASI): juntar linhas muda o programa. So a indentacao
+  sai, e comentario de bloco com quebras precisa deixar uma quebra no lugar.
+- **`<script>` tambem e deposito**: `application/json` e `text/template` guardam dado e markup.
+  Rodar limpeza de codigo neles corrompe conteudo. Na duvida, nao processar.
+- **Validar minificacao comparando strings nao prova nada.** Rodar `node --check` em cada bloco
+  inline da pagina ja limpa e o que afirma que o resultado **ainda e um programa valido**.
+- **Docblock PHP nao pode conter a sequencia de fecha-comentario** num exemplo de codigo: ela fecha
+  o proprio comentario e o parse quebra longe dali.
+- **Heredoc do Bash destroi barras invertidas e escapes** (`\b` virou byte 0x08 numa regex PHP).
+  Para codigo com regex ou strings escapadas: escrever em arquivo separado, ou montar com
+  `chr(92)`/`chr(39)` no Python, ou editar por indice de linha.
+
 
 ### 2026-08-24 — BATCH-129: onde o recurso NASCE decide se a edição vale (req-127)
 
@@ -69,50 +98,24 @@
   manual, o teste de integração declara um dublê de `ia_enviar_prompt()` (a suíte nunca carrega
   `ia.php`) e inspeciona o que foi montado.
 
-### 2026-08-21 — BATCH-127: onde o dado mora decide se a correção existe (req-125)
+### 2026-08-21 — BATCH-127 (req-125)
 
-- **Id inventado não cadastra nada, e não avisa.** A F2 do intake nomeia os módulos em português
-  (`catalogo-3d`, `conexoes-sociais`), mas os ids REAIS são os do `conn2flow-site`: `3d-catalog`,
-  `social-connections`, `publisher-social-media` e `modulos-grupos-distribuido` (SINGULAR). Gravar o
-  par no `ModulosData.json` do NÚCLEO com id em português cria linha órfã em `modulos` de todo
-  ambiente — sem página associada, o menu a descarta em silêncio e o ícone continua faltando.
-  **Ícone de módulo de projeto se grava no `*Data.json` do projeto; a migração no núcleo é o que
-  alcança bancos já existentes** (UPDATE sem correspondência = zero linhas, então rodar no núcleo é
-  inócuo por construção).
-- **`classList.add('hidden')` NÃO esconde um `inline-flex`.** No bundle, `.inline-flex` é emitida
-  depois de `.hidden`: mesma especificidade, mesma camada, ganha a última. Quem apaga é o atributo
-  booleano `hidden` — o preflight o serve como `display:none!important` em `@layer base`, e
-  `!important` INVERTE a ordem das camadas. Vale para `lg:hidden` também: é media query emitida
-  depois, então precisa ser removida no boot (igual ao `lg:translate-x-0` da barra lateral) para o
-  runtime conseguir mostrar o botão de novo.
-- **Atributo vazio não é omissão.** `createIcons()` seleciona `[data-lucide]` pela PRESENÇA do
-  atributo: `data-lucide=""` gera o mesmo warning que o nome errado. O backend precisa montar o
-  ATRIBUTO INTEIRO (marcador `#icon-lucide#` no template), nunca só o valor.
-- **Função pura no bootstrap é função não testável.** `gestor/gestor.php` termina em
-  `gestor_start()` e não pode ser incluído por um caso de teste — o que sobra é procurar o nome da
-  função no arquivo, e isso passa mesmo com o corpo errado. O lar é `gestor/bibliotecas/gestor.php`,
-  carregada pelo `config.php`.
-- **Comentário que cita o código antigo quebra o guard que procura por ele.** O mesmo tipo de
-  armadilha do marcador citado dentro do layout: o teste acusou código que já não existia.
-- **Cuidado com heredoc e barra invertida nesta ferramenta**: uma sequência de escape de padrão PCRE (o word-boundary) virou 0x08
-  dentro do arquivo e o teste falhou contra código correto. Varrer caracteres de controle depois de
-  editar por script.
+Integral em `implementation/BATCH-127.md`. Destilado: onde o dado MORA decide se a correcao existe —
+icone de modulo de projeto vive no banco do projeto, entao migracao no core nao o alcanca; `hidden`
+perde para `inline-flex` de utility mais especifica; e recarregar a pagina em erro de CSRF sem
+limpar o estado repete o erro em looping.
 
-### 2026-08-21 — BATCH-126: vocabulário errado não dá erro, dá tela vazia
 
-- **Nome de ícone é endereço dentro de um catálogo, e o catálogo depende do framework.** `createIcons()`
-  devolve o `<i>` intacto quando o nome não existe, e `icon.min.css` prefixa tudo com `i.icon` (não
-  alcança o `<svg>` convertido). Validar contra o catálogo REAL — foi assim que 19 módulos sem glifo
-  apareceram.
-- **`style.marginLeft = ''` não zera margem: devolve o controle à utility.** Zere com `'0px'`. Mesma
-  família do `hidden` vs `inline-flex` do BATCH-127.
-- **`margin-top` no `<html>` não alcança `fixed`/`sticky`** (a compensação da Editbar é classe no
-  `<body>`); **item flex com `h-full` não encolhe** (o par é `min-h-0 flex-1`); **classe aplicada por
-  JS precisa do arquivo em `tailwind_sources`**, senão fica fora do bundle.
-- **Troca de marcador não pode casar marcação.** `modelo_var_troca($p,"<td>#historico#</td>",…)` só
-  valia no Fomantic; no Tailwind o `<td>` tem classes e o token cru foi para a tela.
-- **Verde é semântica, não marca.** Sucesso/ativo é `emerald`; botão, link, foco e aba ativa são azul
-  Conn2Flow (`sky`).
+### 2026-08-21 — BATCH-126 (req-124)
+
+Integral em `implementation/BATCH-126.md`. Destilado: nome de icone e endereco num catalogo, e
+`createIcons()` devolve o `<i>` intacto quando o nome nao existe — validar contra o catalogo REAL;
+`style.marginLeft = ''` devolve o controle a utility em vez de zerar (use `'0px'`); `margin-top` no
+`<html>` nao alcanca `fixed`/`sticky`; item flex com `h-full` nao encolhe (o par e `min-h-0 flex-1`);
+classe aplicada por JS precisa do arquivo em `tailwind_sources`; troca de marcador nao pode casar
+marcacao (o `<td>` ganhou classes no Tailwind e o token cru foi para a tela); verde e semantica
+(sucesso/ativo `emerald`), botao/link/foco sao azul Conn2Flow (`sky`).
+
 
 ## Pendências e Histórico
 

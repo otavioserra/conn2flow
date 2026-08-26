@@ -819,11 +819,51 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [x] `tests/Unit/PHP/HtmlSanitizeTest.php`: 17 testes, 24 assercoes. Suite **719/719** (702 antes).
       Captura medida: sem a protecao de `<pre>`/`<textarea>`/`<script>`, a suite falha.
 
+- [x] **2a rodada (JavaScript embutido)**: a 1a rodada preservava `<script>` inteiro alegando que
+      "JS nao se limpa com regex". A frase e verdadeira, a conclusao estava errada — nao se limpa
+      com regex, limpa-se com **scanner**. `gestor_js_higienizar()` percorre o texto com estado
+      (string simples, dupla, template literal, comentario de linha, de bloco e regex literal).
+- [x] A decisao dificil (barra abre regex ou divide?) esta isolada em
+      `gestor_js_barra_inicia_regex()` e erra **para o lado do regex** de proposito: tratar regex
+      como divisao faria seu conteudo virar codigo, e um `//` dentro dele apagaria a linha.
+- [x] **A quebra de linha permanece por causa da ASI**: juntar duas linhas que dependem de ponto e
+      virgula automatico mudaria o programa. Comentario de bloco com quebras deixa uma quebra.
+- [x] **Nem todo `<script>` e JavaScript**: `application/json` e `text/template` sao deposito, e
+      passam intactos (`gestor_html_script_e_javascript()`). Na duvida, nao processa.
+- [x] Chave propria `HTML_SANITIZE_JS` (auto|off) — mexer em JS e outra ordem de risco; da para
+      desligar so essa parte sem devolver os comentarios de HTML e CSS ao visitante.
+- [x] **Medido na pagina real**: 138,7 -> **92,3 KB (-33,5%)** em 2,06 ms; **arvore DOM identica**
+      (490 elementos); **2/2 blocos JS inline aprovados no `node --check`** — a unica forma honesta
+      de afirmar que o scanner nao quebrou codigo, ja que comparar strings so diria que algo mudou.
+- [x] `HtmlSanitizeTest`: de 17 para **35 testes, 57 assercoes**. Suite **737/737** (719 antes).
+      Os 18 novos sao casos-armadilha: `//` em URL, `/*` em string, template com quebras, `/\/\*/`,
+      `/[/]/`, divisao x regex, aspa escapada, bloco nao fechado, ASI, json, template, `src=`,
+      `module` e o gate desligando so o JS.
+- [x] **Um teste mudou de contrato**: `testJavaScriptNaoEAlteradoDeFormaAlguma` virou
+      `testJavaScriptPerdeComentariosMasNaoPerdeSemantica` — afirma algo mais forte que "nao mexe":
+      **mexe, e nao quebra**.
+
+- [x] **`HTML_SANITIZE=auto` e `HTML_SANITIZE_JS=auto` no template**
+      `gestor/autenticacoes.exemplo/dominio/.env` (secao `Site`, ao lado de `SITE_NAME`), com o
+      comentario de cada modo. O bloqueio do agente a `.env*` foi removido pelo operador em
+      2026-08-26 e a chave foi escrita pelo proprio agente. `atualizacoes-sistema.php` faz o merge
+      aditivo para as instalacoes existentes.
+- [x] **VALIDADO EM RUNTIME REAL**, na pagina publica servida pelo ambiente local
+      (`http://localhost/photon/`) — nao em arquivo salvo:
+
+      | modo | tamanho | comentarios HTML | linhas indentadas |
+      | --- | --- | --- | --- |
+      | `auto` (com `DEVELOPMENT_ENV=false`) | **82,9 KB** | **0** | **0** |
+      | `off` | 111,7 KB | 22 | 1647 |
+      | `on` | **82,9 KB** | **0** | **0** |
+
+      Reducao medida de **25,8%** na home publica, com `<title>`, `<body>`, folhas de estilo e
+      `<script>` todos presentes. O `.env` do ambiente local foi restaurado ao estado original e a
+      pagina volta a responder HTTP 200.
+
 ### Pendente do operador (req-132)
 
-- [ ] Adicionar `HTML_SANITIZE=auto` ao template `gestor/autenticacoes.exemplo/dominio/.env` (regra
-      de permissao impede o agente de escrever `.env*`); `atualizacoes-sistema.php` faz o merge
-      aditivo para as instalacoes existentes.
-- [ ] Conferir a tela do `admin-environment`, salvar nos tres modos e inspecionar o codigo-fonte de
-      uma pagina publica com `on` no ambiente local.
+- [ ] Conferir a tela do `admin-environment` (aba Site): os dois selects aparecem, salvam e o valor
+      escolhido volta selecionado ao reabrir. **Unico item que ainda depende de tela** — o efeito da
+      configuracao ja esta validado acima.
 

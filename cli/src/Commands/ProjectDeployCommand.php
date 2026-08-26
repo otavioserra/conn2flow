@@ -32,7 +32,7 @@ final class ProjectDeployCommand extends BaseProcessCommand
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $project = $input->getArgument(0);
+        $project = $input->getOption('project') ?? $input->getArgument(0);
         $contents = $input->getOption('contents', 'Sim');
         $title = $project ? "Project [{$project}]" : "Current Project";
         $output->title("Conn2Flow — Deploy {$title}");

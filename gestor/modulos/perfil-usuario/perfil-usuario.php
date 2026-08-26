@@ -1385,7 +1385,7 @@ function perfil_usuario_signout(){
 			'expires' => time() - 3600,
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
-			'secure' => true,
+			'secure' => gestor_cookie_is_secure(),
 			'httponly' => true,
 			'samesite' => 'Lax',
 		]);
@@ -1396,7 +1396,7 @@ function perfil_usuario_signout(){
 			'expires' => time() - 3600,
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
-			'secure' => true,
+			'secure' => gestor_cookie_is_secure(),
 			'httponly' => true,
 			'samesite' => 'Lax',
 		]);

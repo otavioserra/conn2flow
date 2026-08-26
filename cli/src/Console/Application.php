@@ -7,12 +7,15 @@ namespace Conn2Flow\Cli\Console;
 use Conn2Flow\Cli\Commands\AiMcpSetupCommand;
 use Conn2Flow\Cli\Commands\AiPruneMemoriesCommand;
 use Conn2Flow\Cli\Commands\AiSyncCommand;
+use Conn2Flow\Cli\Commands\AuthCookieCommand;
 use Conn2Flow\Cli\Commands\DbTestCommand;
 use Conn2Flow\Cli\Commands\DbUpdateCommand;
 use Conn2Flow\Cli\Commands\DockerLogsCommand;
 use Conn2Flow\Cli\Commands\DockerPhpVersionCommand;
 use Conn2Flow\Cli\Commands\DockerStatusCommand;
 use Conn2Flow\Cli\Commands\DockerTruncateLogsCommand;
+use Conn2Flow\Cli\Commands\EnvSetCommand;
+use Conn2Flow\Cli\Commands\EnvStatusCommand;
 use Conn2Flow\Cli\Commands\HelpCommand;
 use Conn2Flow\Cli\Commands\InstallerBuildCommand;
 use Conn2Flow\Cli\Commands\InstallerNewCommand;
@@ -24,6 +27,7 @@ use Conn2Flow\Cli\Commands\ManagerReleaseCommand;
 use Conn2Flow\Cli\Commands\ManagerSyncFilesCommand;
 use Conn2Flow\Cli\Commands\ManagerUpdateAllCommand;
 use Conn2Flow\Cli\Commands\ModuleCreateCommand;
+use Conn2Flow\Cli\Commands\PageInspectCommand;
 use Conn2Flow\Cli\Commands\PluginBuildCommand;
 use Conn2Flow\Cli\Commands\PluginCommitCommand;
 use Conn2Flow\Cli\Commands\PluginReleaseCommand;
@@ -108,6 +112,16 @@ final class Application
         $this->register(new DockerLogsCommand());
         $this->register(new DockerTruncateLogsCommand());
         $this->register(new TailwindFixSpacingCommand($this->rootPath));
+
+        // Environment
+        $this->register(new EnvStatusCommand($this->rootPath));
+        $this->register(new EnvSetCommand($this->rootPath));
+
+        // Auth
+        $this->register(new AuthCookieCommand($this->rootPath));
+
+        // Inspect
+        $this->register(new PageInspectCommand($this->rootPath));
     }
 
     public function register(CommandInterface $command): void

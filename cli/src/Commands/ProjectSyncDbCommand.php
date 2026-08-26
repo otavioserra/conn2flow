@@ -31,7 +31,7 @@ final class ProjectSyncDbCommand extends BaseProcessCommand
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $project = $input->getArgument(0);
+        $project = $input->getOption('project') ?? $input->getArgument(0);
         if (!$project) {
             $output->error("Project ID is required. Example: c2f project:sync-db lumix");
             return 1;

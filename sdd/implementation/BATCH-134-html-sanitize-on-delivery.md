@@ -178,11 +178,30 @@ gate desligando só o JavaScript.
 era preservado byte a byte. Foi reescrito como `testJavaScriptPerdeComentariosMasNaoPerdeSemantica`
 — o que se afirma agora é mais forte do que "não mexe": **mexe, e não quebra**.
 
+## Validado em runtime, não só em teste
+
+Com o bloqueio a `.env*` removido pelo operador (2026-08-26), o gate foi exercitado **na página
+realmente servida** pelo ambiente local, e não sobre um arquivo salvo:
+
+| modo | tamanho | comentários HTML | linhas indentadas |
+| --- | --- | --- | --- |
+| `auto` (com `DEVELOPMENT_ENV=false`) | **82,9 KB** | **0** | **0** |
+| `off` | 111,7 KB | 22 | 1647 |
+| `on` | **82,9 KB** | **0** | **0** |
+
+`<title>`, `<body>`, folhas de estilo e `<script>` presentes nos três casos. O `.env` local foi
+restaurado ao estado original ao fim do teste, e a página voltou a responder HTTP 200.
+
+Isto fecha a distância que existia entre o teste unitário e a realidade: até aqui, tudo o que se
+sabia era que a função transformava uma string de um jeito previsto. Agora se sabe que **o Gestor a
+chama, no momento certo, e que a chave do `.env` governa o resultado**.
+
 ### Pendente do operador
 
-- **A linha do `.env`**: o agente é impedido por regra de permissão de escrever `.env*`. Adicionar
-  ao template `gestor/autenticacoes.exemplo/dominio/.env`, de onde `atualizacoes-sistema.php` faz
-  merge aditivo para as instalações:
+- ~~A linha do `.env`~~ — **resolvido em 2026-08-26**: o operador removeu o bloqueio e o próprio
+  agente escreveu as duas chaves na seção `Site` do template
+  `gestor/autenticacoes.exemplo/dominio/.env`, de onde `atualizacoes-sistema.php` faz merge aditivo
+  para as instalações:
 
   ```
   # Limpeza do HTML entregue ao navegador: auto | on | off

@@ -31,7 +31,7 @@ final class ProjectSyncResourcesCommand extends BaseProcessCommand
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $project = $input->getArgument(0);
+        $project = $input->getOption('project') ?? $input->getArgument(0);
         $title = $project ? "Project [{$project}]" : "Current Project";
         $output->title("Conn2Flow — Synchronize Resources for {$title}");
 

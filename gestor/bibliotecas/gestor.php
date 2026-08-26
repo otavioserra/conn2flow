@@ -2244,6 +2244,38 @@ function gestor_componentes_incluir_pagina($params = false){
  * @global array $_CONFIG Configurações do sistema.
  * @return void
  */
+/**
+ * Determina se cookies devem ser emitidos com o atributo Secure.
+ *
+ * Regras (fail-secure / defesa em profundidade):
+ *  1. HTTPS ativo (direto ou via reverse proxy) → true
+ *  2. development-env === false (produção, padrão) → true
+ *  3. HTTP puro + development-env === true → false (único cenário permissivo)
+ *
+ * @return bool
+ */
+function gestor_cookie_is_secure(): bool
+{
+	global $_GESTOR;
+
+	// 1. HTTPS detectado (direto ou via reverse proxy)
+	$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+		|| (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443)
+		|| (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https');
+
+	if($isHttps){
+		return true;
+	}
+
+	// 2. Modo produção (padrão) → sempre secure
+	if(empty($_GESTOR['development-env'])){
+		return true;
+	}
+
+	// 3. HTTP puro + modo desenvolvimento → permite cookie não-secure
+	return false;
+}
+
 function gestor_sessao_iniciar(){
 	global $_GESTOR;
 	global $_CONFIG;
@@ -2256,7 +2288,7 @@ function gestor_sessao_iniciar(){
 			'expires' => time() + $_CONFIG['session-lifetime'],
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
-			'secure' => true,
+			'secure' => gestor_cookie_is_secure(),
 			'httponly' => true,
 			'samesite' => 'Lax',
 		]);
@@ -2387,7 +2419,7 @@ function gestor_sessao_del(){
 		'expires' => time() - 3600,
 		'path' => '/',
 		'domain' => $_SERVER['SERVER_NAME'],
-		'secure' => true,
+		'secure' => gestor_cookie_is_secure(),
 		'httponly' => true,
 		'samesite' => 'Lax',
 	]);

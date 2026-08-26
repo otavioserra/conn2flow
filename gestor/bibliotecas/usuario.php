@@ -206,7 +206,7 @@ function usuario_gerar_token_autorizacao($params = false){
 			'expires' => $expiration,
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
-			'secure' => true, // Apenas HTTPS
+			'secure' => gestor_cookie_is_secure(), // Apenas HTTPS
 			'httponly' => true, // Não acessível via JavaScript
 			'samesite' => 'Lax', // Proteção CSRF
 		]);
@@ -230,7 +230,7 @@ function usuario_gerar_token_autorizacao($params = false){
 				'expires' => $expiration,
 				'path' => '/',
 				'domain' => $_SERVER['SERVER_NAME'],
-				'secure' => true, // Apenas HTTPS
+				'secure' => gestor_cookie_is_secure(), // Apenas HTTPS
 				'httponly' => true, // Não acessível via JavaScript
 				'samesite' => 'Lax', // Proteção CSRF
 			]);

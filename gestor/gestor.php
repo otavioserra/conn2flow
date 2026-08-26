@@ -1458,7 +1458,7 @@ function gestor_cookie_verificacao($exigirSessao = false){
 			'expires' => '0',
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
-			'secure' => true,
+			'secure' => gestor_cookie_is_secure(),
 			'httponly' => true,
 			'samesite' => 'Lax',
 		]);
@@ -1703,7 +1703,7 @@ function gestor_permissao_token_processar(){
 		'expires' => time() - 3600,
 		'path' => '/',
 		'domain' => $_SERVER['SERVER_NAME'],
-		'secure' => true,
+		'secure' => gestor_cookie_is_secure(),
 		'httponly' => true,
 		'samesite' => 'Lax',
 	]);
