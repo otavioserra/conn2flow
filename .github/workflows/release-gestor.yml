@@ -193,7 +193,17 @@ jobs:
 
       - name: Get tag name
         id: tag
-        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          else
+            VERSION=$(php -r "include 'gestor/config.php'; echo \$_GESTOR['versao'] ?? '';")
+            if [ -n "$VERSION" ]; then
+              echo "TAG_NAME=gestor-v${VERSION}" >> $GITHUB_OUTPUT
+            else
+              echo "TAG_NAME=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+            fi
+          fi
 
       - name: Create Release
         id: create_release
