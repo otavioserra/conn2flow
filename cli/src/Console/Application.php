@@ -27,6 +27,7 @@ use Conn2Flow\Cli\Commands\ManagerReleaseCommand;
 use Conn2Flow\Cli\Commands\ManagerSyncFilesCommand;
 use Conn2Flow\Cli\Commands\ManagerUpdateAllCommand;
 use Conn2Flow\Cli\Commands\ModuleCreateCommand;
+use Conn2Flow\Cli\Commands\MotionCommand;
 use Conn2Flow\Cli\Commands\PageInspectCommand;
 use Conn2Flow\Cli\Commands\PluginBuildCommand;
 use Conn2Flow\Cli\Commands\PluginCommitCommand;
@@ -122,6 +123,9 @@ final class Application
 
         // Inspect
         $this->register(new PageInspectCommand($this->rootPath));
+
+        // Accessibility / OS preferences
+        $this->register(new MotionCommand());
     }
 
     public function register(CommandInterface $command): void

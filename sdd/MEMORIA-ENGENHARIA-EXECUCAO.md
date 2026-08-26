@@ -13,6 +13,16 @@
 
 ## Tarefas recentes
 
+### 2026-08-26 — BATCH-137 (req-135): motion do SO pelo CLI
+
+- O dispatcher resolve aliases sem trocar `InputInterface::getCommandName()`; um único comando pode
+  decidir `status|on|off|toggle` pelo nome original.
+- No Windows, `SPI_SETCLIENTAREAANIMATION` recebe o booleano no `PVOID` (`IntPtr 0|1`), usa
+  `EntryPoint="SystemParametersInfoW"` e flags `3`; não tocar em `MinAnimate` nem no Registro.
+- Mudança de preferência do SO pode falhar com `ERROR_ACCESS_DENIED` dentro do sandbox. Validação
+  real deve capturar o estado, executar fora do sandbox e restaurar em `finally`.
+- Runner de processo injetável permite cobrir Linux/macOS e aliases sem mutar a estação no PHPUnit.
+
 ### 2026-08-26 — BATCH-136 (req-134): CLI opera no mirror, não na fonte
 
 - `path_tests`/`target` são a **raiz completa do Gestor** no mirror (`.../photon/config.php`); não acrescentar `/gestor`. Resolução: `path_tests → target → path`, aceitando também raiz com `gestor/config.php`.
@@ -33,12 +43,6 @@
 - `gestor/db/data/*Data.json` é artefato; modos de IA nascem em `resources/<lang>/ai_modes/` e são compilados por `resources:sync`.
 - Orçamento deve distribuir vagas por namespace (round-robin); marcador de itens restantes também entra no teto.
 - Bloco condicional de prompt valida a ordem dos marcadores e remove a tag mesmo sem o par no conteúdo editável.
-
-### 2026-08-21 — BATCH-127/126 (req-125/124): interface e projeto
-
-- Onde o dado mora decide se a correção existe: ícone de módulo de projeto vive no banco do projeto; migração só no core não o alcança.
-- `hidden` pode perder para display mais específico; `style.marginLeft = ''` devolve controle à cascata; classe aplicada por JS precisa estar nas fontes Tailwind.
-- Nome de ícone é endereço em catálogo: valide contra o catálogo real antes de `createIcons()`.
 
 ## Pendências e histórico
 

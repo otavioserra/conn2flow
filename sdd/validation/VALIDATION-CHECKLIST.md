@@ -887,3 +887,25 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [x] Review findings-first: sem findings.
 - [x] Memória de execução medida e podada no fechamento; métricas registradas no BATCH-136.
 - [x] Nível 1 respeitado: nenhum commit, push ou deploy.
+
+---
+
+## BATCH-137 — Controle de animações do SO via CLI (req-135)
+
+- [x] `motion:status`, `motion:on`, `motion:off` e `motion:toggle` registrados no dispatcher.
+- [x] Aliases `motion:get` e `anim:status|on|off|toggle` cobertos por teste e help real.
+- [x] Windows usa somente `SystemParametersInfoW`, com `SPI_GETCLIENTAREAANIMATION` (`0x1042`),
+      `SPI_SETCLIENTAREAANIMATION` (`0x1043`) e flags `SPIF_UPDATEINIFILE | SPIF_SENDCHANGE` (`3`).
+- [x] Guardas automatizadas confirmam ausência de `MinAnimate`, `UserPreferencesMask` e Registro.
+- [x] Linux usa `gsettings org.gnome.desktop.interface enable-animations`; macOS usa
+      `defaults com.apple.universalaccess reduceMotion`, com inversão semântica coberta.
+- [x] Plataforma não suportada emite mensagem informativa e retorna `0` sem executar processo.
+- [x] `php -l`: 3/3 arquivos limpos.
+- [x] PHPUnit focado: **9/9**, 39 asserções.
+- [x] PHPUnit completo: **774/774**, 3.324 asserções, 4 skips e 1 depreciação preexistente.
+- [x] Runtime Windows real: estado inicial `ON`; toggle confirmou `OFF`; restauração em `finally`
+      confirmou `ON` novamente. O navegador recebe lembrete de recarregar a aba com `F5`.
+- [x] `git diff --check` limpo; review findings-first sem findings.
+- [ ] Runtime Linux/GNOME e macOS — indisponíveis na estação Windows atual; contratos nativos estão
+      cobertos por runner injetado sem mutar a preferência do operador durante o PHPUnit.
+- [x] Nível 1 respeitado: nenhum commit, push ou deploy.
