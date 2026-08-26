@@ -76,9 +76,29 @@ Se a tarefa apontar para `sdd/human-requests/*.md` ou para a pasta `sdd/human-re
    - Ativado quando a requisição contiver `modo: autonomo_headless`.
    - O agente executa toda a esteira em segundo plano isolado via MCP Hub / Git Worktrees, emitindo notificação e relatório consolidado apenas ao término.
 
-## 🔒 Regras Mandatórias de Concorrência Multi-Agente
+## 🔒 Regras Mandatórias de Concorrência & Reserva Atômica de Requisições (`req-XXX.md`)
 
 1. **Proibição Absoluta de `git add -A` e `git commit -a`**:
    - O agente DEVE executar `git add <caminho-1> <caminho-2>` listando estritamente os arquivos tocados no seu lote aprovado, prevenindo que commits arrastem código concorrente ou arquivos de outros agentes.
-2. **Reserva e Releitura Atômica de Numeração de `req-XXX.md`**:
-   - O agente deve reler o diretório `sdd/human-requests/` imediatamente antes de criar arquivos para evitar colisão e sobrescrita de números de requisição.
+2. **Protocolo de Reserva Atômica para Criação de `req-XXX.md`**:
+   - Qualquer agente (Arquiteto ou Executor) está autorizado a criar novos arquivos `req-XXX.md` quando instruído pelo usuário no chat ou ao levantar uma demanda técnica essencial, seguindo estritamente:
+     1. Executar `git pull origin <branch>` para obter o estado mais recente.
+     2. Reler atomicamente o diretório `sdd/human-requests/` para identificar o próximo número sequencial vago.
+     3. Criar o arquivo `req-XXX.md`, atualizar `sdd/human-requests/CURRENT.md` e commitar/pushar imediatamente:
+        ```bash
+        git add sdd/human-requests/req-XXX.md sdd/human-requests/CURRENT.md
+        git commit -m "docs(sdd): reserve REQ-XXX for <titulo>"
+        git push origin <branch>
+        ```
+
+## 🧠 Camadas Canônicas de Memória
+
+1. **Memória do Repositório (`sdd/MEMORIA-ENGENHARIA-EXECUCAO.md` — Git Compartilhado)**:
+   - Fatos técnicos objetivos do software: bugs resolvidos no core, hacks temporários de build/banco, particularidades de compilação CSS/Tailwind, comandos CLI descobertos e lições aprendidas. Visível a todos os agentes e desenvolvedores.
+2. **Memória Privada da Ferramenta de IA (Local)**:
+   - Preferências subjetivas de interação do operador (estilo de resposta, atalhos de prompt, idioma preferido).
+
+## ⚖️ Princípio da Autoridade do Código e da SPEC sobre Memórias
+
+- Toda anotação de restrição técnica em memória deve carregar a data de registro (`YYYY-MM-DD`).
+- O código-fonte real, as configurações vigentes (`settings.json`, `.env`), os schemas e os arquivos normativos (`sdd/SPEC.md`, `sdd/0X-*.md`) possuem **autoridade absoluta** sobre anotações de memórias passadas. Se uma restrição mudar no projeto, a anotação antiga em memória deve ser invalidada e atualizada.
