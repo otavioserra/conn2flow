@@ -38,21 +38,6 @@ fi
 
 echo "Nova versão é: $NEW_VERSION"
 
-## Remove todas as tags antigas do padrão gestor-v2.7.* localmente e remotamente
-set +e
-OLD_TAGS=$(git tag | grep "^gestor-v2.7")
-if [ -n "$OLD_TAGS" ]; then
-  echo "Removendo todas as tags antigas do padrão gestor-v2.7.*: $OLD_TAGS"
-  for tag in $OLD_TAGS; do
-    if [ -n "$tag" ]; then
-      git tag -d "$tag"
-      git push --delete origin "$tag"
-      gh release delete "$tag" --yes
-    fi
-  done
-fi
-set -e
-
 # 2. Adiciona, commita e cria uma tag anotada no Git com mensagens distintas
 echo "Criando commit e tag para a versão gestor-v$NEW_VERSION..."
 # Adiciona ao stage o config.php modificado E quaisquer outras alterações
@@ -64,5 +49,9 @@ git tag -a "gestor-v$NEW_VERSION" -m "$TAG_SUMMARY"
 
 echo "Release gestor-v$NEW_VERSION criado com sucesso!"
 
-git push
-git push --tags
+CURRENT_BRANCH=$(git branch --show-current)
+if [ -z "$CURRENT_BRANCH" ]; then
+  echo "Erro: Não é possível publicar uma release a partir de um HEAD destacado."
+  exit 1
+fi
+git push --atomic origin "$CURRENT_BRANCH" "gestor-v$NEW_VERSION"

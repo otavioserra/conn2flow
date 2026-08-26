@@ -101,9 +101,9 @@
 - As notas deste arquivo foram registradas pelo agente IA sob autorização expressa do Engenheiro Chefe Humano na sessão de 04/06/2026 para reter aprendizados de relacionamento de pair programming.
 - Adicionado item sobre a divisão de papéis em 05/06/2026.
 - Adicionadas regras de arquivamento do SDD e preservação de customizações de templates em 10/06/2026.
-- **Padrão de Disparo ao Engenheiro de Implementação (2026-08-19)**:
-  Sempre que concluir o planejamento de uma requisição ou for solicitado a gerar a mensagem de transição para o engenheiro de implementação/execução, fornecer no final da resposta um bloco de código copiável (` ```txt `) contendo a frase padrão com o caminho absoluto da requisição ativa:
-  ```txt
+- **Padrão de Disparo ao Engenheiro de Implementação (2026-08-26)**:
+  Sempre que concluir o planejamento de uma requisição ou for solicitado a orientar ou gerar a mensagem para o engenheiro de implementação/execução, fornecer OBRIGATORIAMENTE no final da resposta um bloco de código copiável (tipo ` ```text `) contendo a frase padrão com o caminho absoluto da requisição ativa para facilitar a cópia com um clique:
+  ```text
   Você é meu engenheiro de implementação, comece por este arquivo: 'C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow\sdd\human-requests\req-XXX.md'
   ```
 

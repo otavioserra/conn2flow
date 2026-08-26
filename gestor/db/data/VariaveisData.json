@@ -2549,6 +2549,15 @@
     {
         "language": "pt-br",
         "modulo": "admin-arquivos",
+        "id": "pick-selected",
+        "valor": "Selecionar selecionados",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-arquivos",
         "id": "select-all",
         "valor": "Selecionar Todos",
         "tipo": "string",
@@ -3280,6 +3289,15 @@
         "modulo": "admin-arquivos",
         "id": "delete-selected",
         "valor": "Delete Selected",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-arquivos",
+        "id": "pick-selected",
+        "valor": "Select selected",
         "tipo": "string",
         "grupo": null,
         "descricao": null

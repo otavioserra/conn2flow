@@ -41,8 +41,12 @@
 
     <div class="ui yellow message hidden c2f-selection-bar" id="c2f-selection-bar">
         <span><b id="c2f-selection-count">0</b> @[[selected-count-label]]@</span>
-        <button class="ui right floated mini red button" id="c2f-delete-selected"><i class="trash icon"></i>
-            @[[delete-selected]]@</button>
+        <div class="c2f-selection-actions">
+            <button class="ui mini primary button hidden" id="c2f-pick-selected"><i class="check icon"></i>
+                @[[pick-selected]]@</button>
+            <button class="ui mini red button" id="c2f-delete-selected"><i class="trash icon"></i>
+                @[[delete-selected]]@</button>
+        </div>
     </div>
 
     <div class="ui styled fluid accordion c2f-filter-accordion">

@@ -111,28 +111,15 @@ ORIGINAL_DIR="$(pwd)"
 # Entra no diretório do plugin para garantir contexto git correto
 cd "$PLUGIN_DIR"
 
-## Remove todas as tags antigas do padrão plugin-${PLUGIN_ID}-v* localmente e remotamente
-set +e
-OLD_TAGS=$(git tag | grep "^plugin-${PLUGIN_ID}-v")
-if [ -n "$OLD_TAGS" ]; then
-  echo "Removendo todas as tags antigas do padrão plugin-${PLUGIN_ID}-v*: $OLD_TAGS"
-  for tag in $OLD_TAGS; do
-    if [ -n "$tag" ]; then
-      git tag -d "$tag"
-      git push --delete origin "$tag"
-      if command -v gh >/dev/null 2>&1; then
-        gh release delete "$tag" --yes
-      fi
-    fi
-  done
-fi
-set -e
-
 # Adiciona todas as alterações do plugin
 git add .
 git commit -m "[$PLUGIN_ID][$PLUGIN_NAME] $COMMIT_MSG (v$NEW_VERSION)"
 git tag -a "plugin-${PLUGIN_ID}-v$NEW_VERSION" -m "[$PLUGIN_ID][$PLUGIN_NAME] $TAG_SUM (v$NEW_VERSION)"
-git push
-git push --tags
+CURRENT_BRANCH=$(git branch --show-current)
+if [ -z "$CURRENT_BRANCH" ]; then
+  echo "Erro: Não é possível publicar uma release a partir de um HEAD destacado."
+  exit 1
+fi
+git push --atomic origin "$CURRENT_BRANCH" "plugin-${PLUGIN_ID}-v$NEW_VERSION"
 # Volta para o diretório original
 cd "$ORIGINAL_DIR"

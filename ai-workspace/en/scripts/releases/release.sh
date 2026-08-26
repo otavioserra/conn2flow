@@ -50,32 +50,6 @@ echo "New version is: $NEW_VERSION"
 echo "Generating resources and asset cache tokens..."
 php gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php
 
-## Removes all old tags matching the same major.minor series as NEW_VERSION
-VERSION_MAJOR=$(echo "$NEW_VERSION" | cut -d'.' -f1)
-VERSION_MINOR=$(echo "$NEW_VERSION" | cut -d'.' -f2)
-
-if [ -z "$VERSION_MAJOR" ] || [ -z "$VERSION_MINOR" ]; then
-  echo "Error: Invalid version format returned by version.php: $NEW_VERSION"
-  exit 1
-fi
-
-TAG_SERIES="${VERSION_MAJOR}.${VERSION_MINOR}"
-OLD_TAG_PATTERN="gestor-v${TAG_SERIES}.*"
-
-set +e
-OLD_TAGS=$(git tag --list "$OLD_TAG_PATTERN")
-if [ -n "$OLD_TAGS" ]; then
-  echo "Removing all old tags matching $OLD_TAG_PATTERN: $OLD_TAGS"
-  for tag in $OLD_TAGS; do
-    if [ -n "$tag" ]; then
-      git tag -d "$tag"
-      git push --delete origin "$tag"
-      gh release delete "$tag" --yes
-    fi
-  done
-fi
-set -e
-
 # 2. Adds, commits, and creates an annotated Git tag with distinct messages
 echo "Creating commit and tag for version gestor-v$NEW_VERSION..."
 # Never commit local release artifacts by accident.
@@ -89,8 +63,12 @@ git tag -a "gestor-v$NEW_VERSION" -m "$TAG_SUMMARY"
 
 echo "Release gestor-v$NEW_VERSION created successfully!"
 
-git push
-git push --tags
+CURRENT_BRANCH=$(git branch --show-current)
+if [ -z "$CURRENT_BRANCH" ]; then
+  echo "Error: Cannot publish a release from a detached HEAD."
+  exit 1
+fi
+git push --atomic origin "$CURRENT_BRANCH" "gestor-v$NEW_VERSION"
 
 if [ "$RELEASE_MODE" = "manual" ]; then
   TAG_NAME="gestor-v$NEW_VERSION"

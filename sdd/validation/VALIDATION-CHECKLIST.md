@@ -926,3 +926,19 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [x] `git diff --check` limpo e review findings-first sem findings.
 - [x] Ambiente Photon restaurado e confirmado em produção (`DEVELOPMENT_ENV=false`).
 - [x] Nível 1 respeitado: nenhum commit, push ou deploy remoto.
+
+---
+
+## BATCH-139 — Limpeza pós-sucesso de releases antigas (req-136)
+
+- [x] Os cinco scripts locais não excluem tags ou releases antigas antes da publicação.
+- [x] Branch atual e nova tag são enviadas juntas por `git push --atomic`.
+- [x] Os workflows de Gestor e Instalador carregam o histórico completo de tags.
+- [x] A limpeza aparece imediatamente após `Create Release` e está protegida por `if: success()`.
+- [x] A tag atual é preservada e somente tags/releases anteriores dos padrões
+      `gestor-v${TAG_SERIES}.*` ou `instalador-v${TAG_SERIES}.*` são removidas.
+- [x] Simulação multi-série preserva outros minors, majors e famílias de tags.
+- [x] `bash -n` aprova os cinco scripts e os dois YAMLs são parseados com sucesso.
+- [x] `git diff --check` limpo.
+- [x] Memória de execução medida em **3.820 bytes / 49 linhas**; nenhuma poda necessária.
+- [x] Nível 1 respeitado: nenhum commit, push, deploy ou mutação remota.

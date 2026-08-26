@@ -39,10 +39,18 @@
     <i class="bars icon"></i> to reorder.
 </div>
 
-<div class="ui segment">
+<div class="ui segment gallery-toolbar">
     <button type="button" class="ui blue button" id="btn-select-images">
         <i class="folder open icon"></i> Select Images from Server
     </button>
+    <div class="ui mini icon buttons c2f-gallery-views" id="c2f-gallery-views">
+        <button type="button" class="ui button active" data-view="large" title="@[[view-large-title]]@"><i
+                class="th large icon"></i></button>
+        <button type="button" class="ui button" data-view="medium" title="@[[view-medium-title]]@"><i
+                class="th icon"></i></button>
+        <button type="button" class="ui button" data-view="small" title="@[[view-small-title]]@"><i
+                class="grid layout icon"></i></button>
+    </div>
 </div>
 
 <!-- Gallery images list (batch curation, rendered by JS) -->

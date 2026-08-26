@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.7",
+    "versao": "1.1.8",
     "bibliotecas": [
         "interface",
         "html",
@@ -36,11 +36,12 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.14",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "4f9ea0696dafd4f3af6eff7f182bd190",
-                        "css": "bbe2a69f3835dd001be8f6ef7202ee89",
-                        "combined": "8a8af1144f70baf21fcfebbc820b2bc1"
+                        "html": "6c62f332f08ba17ad7f6b2b07bf86469",
+                        "css": "f3b1f04418fd7979ad9ecbf3e5285634",
+                        "css_precompiled": "",
+                        "combined": "b9e7053986224069572f522056f7a218"
                     }
                 },
                 {
@@ -411,6 +412,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "pick-selected",
+                    "value": "Selecionar selecionados",
+                    "type": "string"
+                },
+                {
                     "id": "select-all",
                     "value": "Selecionar Todos",
                     "type": "string"
@@ -508,11 +514,12 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.14",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "4f9ea0696dafd4f3af6eff7f182bd190",
-                        "css": "bbe2a69f3835dd001be8f6ef7202ee89",
-                        "combined": "8a8af1144f70baf21fcfebbc820b2bc1"
+                        "html": "6c62f332f08ba17ad7f6b2b07bf86469",
+                        "css": "f3b1f04418fd7979ad9ecbf3e5285634",
+                        "css_precompiled": "",
+                        "combined": "b9e7053986224069572f522056f7a218"
                     }
                 },
                 {
@@ -883,6 +890,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "pick-selected",
+                    "value": "Select selected",
+                    "type": "string"
+                },
+                {
                     "id": "select-all",
                     "value": "Select All",
                     "type": "string"
@@ -970,5 +982,5 @@
             ]
         }
     },
-    "asset_version": "24611d3978249205"
+    "asset_version": "aed171f778b74751"
 }

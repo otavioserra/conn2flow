@@ -1,6 +1,8 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-137.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-137.md) (BATCH-140 `ready-for-intake`, 2026-08-26): Seleção em Lote no Iframe do Admin-Arquivos, Overlay Fixo nos Modos Compactos e Controle de Tamanhos no Galleries.
+  - [req-136.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-136.md) (BATCH-139 `ready-for-intake`, 2026-08-26): Desacoplamento da Limpeza de Releases Antigas dos Scripts Locais e Migração Pós-Sucesso para o GitHub Actions.
   - [req-111.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-111.md) (BATCH-138 `implemented-pending-homologation`, 2026-08-26): Desativação do Sanitize HTML para Administradores no Live Editor e Mapeamento de Widgets Vazios/Layout.
   - [req-135.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-135.md) (BATCH-137 `implemented-pending-homologation`, 2026-08-26): Controle de Animações do Sistema Operacional via CLI (c2f motion:on|off|status) para Validação de prefers-reduced-motion. Lint OK; 9 novos testes; suíte PHP 774/774; suíte JS 342/342.
   - [req-134.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-134.md) (BATCH-136 `implemented-pending-homologation`, 2026-08-26): Resolução de Path de Mirrors de Projetos em auth:cookie e env:*, Execução via Docker e Suporte a path_tests. Lint OK; 7 novos testes; suíte PHP 765/765; suíte JS 342/342.

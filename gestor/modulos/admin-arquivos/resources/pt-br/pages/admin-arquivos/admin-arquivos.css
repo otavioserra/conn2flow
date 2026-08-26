@@ -31,6 +31,16 @@
     display: none !important;
 }
 
+.c2f-selection-bar .c2f-selection-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.c2f-selection-bar .c2f-selection-actions .button.hidden {
+    display: none !important;
+}
+
 /* ===== Busca instantânea ===== */
 
 .c2f-search-box {
@@ -76,7 +86,9 @@
     position: absolute;
     top: 6px;
     left: 6px;
-    z-index: 3;
+    /* Acima do overlay de ações dos modos compactos (z-index 4): marcar o item precisa continuar
+       possível justamente enquanto o mouse está sobre o card. */
+    z-index: 5;
     background: rgba(255, 255, 255, .85);
     border-radius: 4px;
     padding: 1px 3px;
@@ -162,14 +174,8 @@
 
 .view-medium .c2f-sub.c2f-col-type,
 .view-medium .c2f-sub.c2f-col-size,
-.view-small .c2f-sub,
-.view-medium .c2f-actions {
+.view-small .c2f-sub {
     display: none;
-}
-
-.view-medium .c2f-item:hover .c2f-actions {
-    display: flex;
-    justify-content: center;
 }
 
 /* ===== Modo PEQUENO (ícones pequenos) ===== */
@@ -191,14 +197,107 @@
     font-weight: 500;
 }
 
+/* ===== Overlay de ações dos modos compactos (BATCH-140) =====
+
+   Antes, `.c2f-actions` alternava entre `display: none` e `display: flex` no hover. Como o elemento
+   está NO FLUXO do card, aparecer aumentava a altura do `.c2f-item` e empurrava toda a grade: o grid
+   inteiro tremia a cada passagem do mouse. Aqui a barra sai do fluxo (`position: absolute`) e cobre
+   exatamente a área da miniatura, então largura e altura do card são as MESMAS com e sem hover.
+
+   `pointer-events` fica em `none` no contêiner e só é liberado nos botões: assim a área vazia do
+   overlay continua entregando o clique para a miniatura (abrir galeria / entrar na pasta) e para o
+   checkbox, que é o comportamento já existente. */
+
+.view-medium .c2f-actions,
 .view-small .c2f-actions {
-    display: none;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, .55);
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease-in-out;
+    z-index: 4;
 }
 
-.view-small .c2f-item:hover .c2f-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 4px;
+/* O overlay é ancorado no `.c2f-item` (que já é `position: relative`) e recortado sobre a miniatura:
+   deslocamento igual ao padding do card, altura igual à do `.c2f-thumb` do modo. */
+.view-medium .c2f-actions {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    height: 110px;
+}
+
+.view-small .c2f-actions {
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    height: 64px;
+}
+
+.view-medium .c2f-item:hover .c2f-actions,
+.view-medium .c2f-item:focus-within .c2f-actions,
+.view-small .c2f-item:hover .c2f-actions,
+.view-small .c2f-item:focus-within .c2f-actions {
+    opacity: 1;
+}
+
+.view-medium .c2f-item:hover .c2f-actions .button,
+.view-medium .c2f-item:focus-within .c2f-actions .button,
+.view-small .c2f-item:hover .c2f-actions .button,
+.view-small .c2f-item:focus-within .c2f-actions .button {
+    pointer-events: auto;
+}
+
+/* Contraste dos botões sobre o fundo escuro do overlay. */
+.view-medium .c2f-actions .button,
+.view-small .c2f-actions .button {
+    margin: 0;
+    background: rgba(255, 255, 255, .92);
+    color: rgba(0, 0, 0, .8);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
+}
+
+.view-medium .c2f-actions .button:hover,
+.view-small .c2f-actions .button:hover {
+    background: #fff;
+    color: rgba(0, 0, 0, .95);
+}
+
+.view-medium .c2f-actions .red.button,
+.view-small .c2f-actions .red.button {
+    background: #db2828;
+    color: #fff;
+}
+
+.view-medium .c2f-actions .red.button:hover,
+.view-small .c2f-actions .red.button:hover {
+    background: #d01919;
+    color: #fff;
+}
+
+.view-medium .c2f-actions .blue.button,
+.view-small .c2f-actions .blue.button {
+    background: #2185d0;
+    color: #fff;
+}
+
+.view-medium .c2f-actions .blue.button:hover,
+.view-small .c2f-actions .blue.button:hover {
+    background: #1678c2;
+    color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .view-medium .c2f-actions,
+    .view-small .c2f-actions {
+        transition: none;
+    }
 }
 
 /* ===== Modo LISTAGEM (tabela/linha compacta) ===== */

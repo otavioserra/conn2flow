@@ -354,7 +354,9 @@ $(document).ready(function () {
 		function navegar(dir) {
 			estado.dir = dir || '';
 			estado.pagina = 0;
-			estado.selecionados = {};
+			// BATCH-140: trocar de pasta zera a seleção também no DOM — antes o "selecionar todos" ficava
+			// marcado sobre uma lista vazia de selecionados, o que ficou visível com o botão de despacho.
+			limparSelecao();
 			if ($busca && $busca.length) $busca.val(''); // busca é por pasta
 			carregar(false);
 		}
@@ -599,10 +601,26 @@ $(document).ready(function () {
 
 		// ===== Seleção em lote
 
+		// BATCH-140: o registro guarda o payload COMPLETO do item, e não apenas caminho/tipo. O despacho
+		// em lote precisa dos mesmos campos do envio individual (`.c2f-select`) e o item pode já não estar
+		// no DOM quando o clique acontece — a busca instantânea, um novo filtro ou uma nova página
+		// re-renderizam a lista sem limpar `estado.selecionados`. Campos extras não afetam a exclusão:
+		// `admin_arquivos_ajax_excluir()` lê somente `caminho` e `tipo`.
+		function registroSelecionado($item) {
+			return {
+				caminho: $item.attr('data-caminho'),
+				tipo: $item.attr('data-tipo'),
+				nome: $item.attr('data-nome'),
+				mime: $item.attr('data-mime') || '',
+				imgSrc: $item.find('.c2f-img').attr('src') || '',
+				data: $item.find('.c2f-col-date').text()
+			};
+		}
+
 		$lista.on('change', '.c2f-sel', function () {
 			var $item = $(this).closest('.c2f-item');
 			var cam = $item.attr('data-caminho');
-			if (this.checked) estado.selecionados[cam] = { caminho: cam, tipo: $item.attr('data-tipo') };
+			if (this.checked) estado.selecionados[cam] = registroSelecionado($item);
 			else delete estado.selecionados[cam];
 			atualizarBarraSelecao();
 		});
@@ -614,11 +632,55 @@ $(document).ready(function () {
 			});
 		});
 
+		// Somente arquivos são despachados ao módulo consumidor: pasta não é conteúdo selecionável.
+		function arquivosSelecionados() {
+			var arquivos = [];
+			for (var k in estado.selecionados) {
+				if (!estado.selecionados.hasOwnProperty(k)) continue;
+				if (estado.selecionados[k].tipo === 'pasta') continue;
+				arquivos.push(estado.selecionados[k]);
+			}
+			return arquivos;
+		}
+
 		function atualizarBarraSelecao() {
 			var n = Object.keys(estado.selecionados).length;
 			$('#c2f-selection-count').text(n);
 			$('#c2f-selection-bar').toggleClass('hidden', n === 0);
+			// O despacho em lote só existe no modo picker (iframe); fora dele não há pai para receber.
+			$('#c2f-pick-selected').toggleClass('hidden', !cfg.paginaIframe || arquivosSelecionados().length === 0);
 		}
+
+		// Zera a seleção no estado E no DOM (itens e "selecionar todos"), para que o próximo lote comece limpo.
+		function limparSelecao() {
+			estado.selecionados = {};
+			$lista.find('.c2f-sel').prop('checked', false).closest('.ui.checkbox').checkbox('set unchecked');
+			$('#c2f-select-all').prop('checked', false).closest('.ui.checkbox').checkbox('set unchecked');
+			atualizarBarraSelecao();
+		}
+
+		$('#c2f-pick-selected').on('click', function () {
+			var arquivos = arquivosSelecionados();
+			if (arquivos.length === 0) return;
+
+			// Uma mensagem POR arquivo, e não um array numa mensagem só: os seis consumidores do canal
+			// (galleries, html-editor, html-editor-interface, interface-v2 e dashboard.toolbar) leem um
+			// objeto único por evento. Enviar array quebraria todos eles de uma vez.
+			for (var i = 0; i < arquivos.length; i++) {
+				var item = arquivos[i];
+				var dados = {
+					id: item.caminho,
+					caminho: item.caminho,
+					imgSrc: item.imgSrc,
+					nome: item.nome,
+					data: item.data,
+					tipo: item.mime
+				};
+				window.parent.postMessage(JSON.stringify({ moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) }), '*');
+			}
+
+			limparSelecao();
+		});
 
 		$('#c2f-delete-selected').on('click', function () {
 			var itens = [];

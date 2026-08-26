@@ -46,22 +46,7 @@ fi
 echo "New installer version is: $NEW_VERSION"
 
 
-# 2. Removes all old tags matching installer-v* pattern locally and remotely
-set +e
-OLD_TAGS=$(git tag | grep "^instalador-v[0-9]")
-if [ -n "$OLD_TAGS" ]; then
-  echo "Removing all old tags matching installer-v* pattern: $OLD_TAGS"
-  for tag in $OLD_TAGS; do
-    if [ -n "$tag" ]; then
-      git tag -d "$tag"
-      git push --delete origin "$tag"
-      gh release delete "$tag" --yes
-    fi
-  done
-fi
-set -e
-
-# 3. Adds, commits, and creates an annotated Git tag with distinct messages
+# 2. Adds, commits, and creates an annotated Git tag with distinct messages
 echo "Creating commit and tag for version installer-v$NEW_VERSION..."
 # Never commit local release artifacts by accident.
 rm -f gestor.zip gestor.zip.sha256 instalador.zip
@@ -71,8 +56,12 @@ git tag -a "instalador-v$NEW_VERSION" -m "$TAG_SUMMARY"
 
 echo "Release installer-v$NEW_VERSION created successfully!"
 
-git push
-git push --tags
+CURRENT_BRANCH=$(git branch --show-current)
+if [ -z "$CURRENT_BRANCH" ]; then
+  echo "Error: Cannot publish a release from a detached HEAD."
+  exit 1
+fi
+git push --atomic origin "$CURRENT_BRANCH" "instalador-v$NEW_VERSION"
 
 if [ "$RELEASE_MODE" = "manual" ]; then
   TAG_NAME="instalador-v$NEW_VERSION"
