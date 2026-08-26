@@ -180,7 +180,11 @@ function admin_arquivos_arquivo_dados($rel, $abs){
 		'caminho' => $rel,
 		'url' => $_GESTOR['url-full'] . $rel,
 		'tipo' => $tipo,
-		'mime' => $tipo . '/' . strtolower(pathinfo($nome, PATHINFO_EXTENSION)),
+		// req-138: MIME real pela biblioteca. Antes era `$tipo . '/' . extensao`, que produzia
+		// `image/jpg` (real: `image/jpeg`) e `file/pdf` (real: `application/pdf`) — valor exibido
+		// cru ao usuário no picker. O prefixo de família continua o mesmo, então o teste
+		// `/^image\//` dos consumidores segue válido.
+		'mime' => arquivo_mime_por_extensao($nome),
 		'mtime' => $mtime,
 		'data' => interface_formatar_dado(Array('dado' => date('Y-m-d H:i:s', $mtime), 'formato' => 'dataHora')),
 		'size' => $size,

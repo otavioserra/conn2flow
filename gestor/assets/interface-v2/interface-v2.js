@@ -468,7 +468,12 @@ $(document).ready(function () {
 
                     const dados = JSON.parse(decodeURI(data.data));
 
-                    if (dados.tipo?.match(/image\//) === 'image/') {
+                    // req-138: a guarda anterior comparava o RETORNO de String.match() com a
+                    // string do prefixo. Sem a flag `g`, match() devolve um array (ou null), nunca
+                    // uma string — a comparação estrita era sempre falsa, o ramo de sucesso nunca
+                    // executava e toda imagem válida caía no `else` com "não é uma imagem".
+                    // Agora usa o mesmo teste de prefixo dos demais consumidores do canal.
+                    if (dados.tipo && /^image\//.test(dados.tipo)) {
                         const $pai = this.#objPai;
                         $pai.find('input._gestor-widgetImage-file-id').val(dados.id);
                         $pai.find('input._gestor-widgetImage-file-caminho').val(dados.caminho);

@@ -226,6 +226,70 @@ if (!function_exists('arquivo_tipo_por_extensao')) {
 	}
 }
 
+if (!function_exists('arquivo_mime_por_extensao')) {
+	/**
+	 * Resolve o MIME type real de um arquivo a partir da extensão, sem depender de
+	 * `mime_content_type` (que exige o arquivo em disco e a extensão fileinfo ativa).
+	 *
+	 * Complementa `arquivo_tipo_por_extensao()`, que devolve o rótulo interno de família
+	 * (image/video/audio/file) usado na interface. São coisas diferentes: `file/pdf` é um
+	 * rótulo interno concatenado, `application/pdf` é o MIME.
+	 *
+	 * INVARIANTE: toda extensão que `arquivo_tipo_por_extensao()` classifica como `image`,
+	 * `video` ou `audio` devolve aqui um MIME com o MESMO prefixo. Os consumidores do canal
+	 * `postMessage` do gerenciador de arquivos decidem se aceitam o arquivo testando
+	 * `/^image\//` — mudar o prefixo os quebraria de uma só vez. Coberto por teste.
+	 *
+	 * @param string $nome Nome do arquivo (com ou sem caminho).
+	 * @return string MIME type; `application/octet-stream` para extensão desconhecida.
+	 */
+	function arquivo_mime_por_extensao($nome) {
+		$ext = strtolower(pathinfo((string)$nome, PATHINFO_EXTENSION));
+
+		$mimes = array(
+			// Imagens — espelham a lista de `arquivo_tipo_por_extensao()`.
+			'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png',
+			'gif' => 'image/gif', 'webp' => 'image/webp', 'bmp' => 'image/bmp',
+			'svg' => 'image/svg+xml', 'ico' => 'image/x-icon', 'avif' => 'image/avif',
+			'tiff' => 'image/tiff', 'tif' => 'image/tiff',
+
+			// Vídeos
+			'mp4' => 'video/mp4', 'm4v' => 'video/mp4', 'webm' => 'video/webm',
+			'ogv' => 'video/ogg', 'mov' => 'video/quicktime', 'avi' => 'video/x-msvideo',
+			'mkv' => 'video/x-matroska', 'wmv' => 'video/x-ms-wmv', 'flv' => 'video/x-flv',
+			'3gp' => 'video/3gpp',
+
+			// Áudios
+			'mp3' => 'audio/mpeg', 'wav' => 'audio/wav', 'ogg' => 'audio/ogg',
+			'oga' => 'audio/ogg', 'flac' => 'audio/flac', 'aac' => 'audio/aac',
+			'm4a' => 'audio/mp4', 'wma' => 'audio/x-ms-wma', 'opus' => 'audio/opus',
+
+			// Documentos e dados
+			'pdf' => 'application/pdf', 'json' => 'application/json',
+			'xml' => 'application/xml', 'csv' => 'text/csv', 'txt' => 'text/plain',
+			'md' => 'text/markdown', 'html' => 'text/html', 'htm' => 'text/html',
+			'css' => 'text/css', 'js' => 'text/javascript', 'rtf' => 'application/rtf',
+			'doc' => 'application/msword',
+			'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+			'xls' => 'application/vnd.ms-excel',
+			'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			'ppt' => 'application/vnd.ms-powerpoint',
+			'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+
+			// Compactados
+			'zip' => 'application/zip', 'rar' => 'application/vnd.rar',
+			'7z' => 'application/x-7z-compressed', 'gz' => 'application/gzip',
+			'tar' => 'application/x-tar',
+
+			// Fontes
+			'woff' => 'font/woff', 'woff2' => 'font/woff2', 'ttf' => 'font/ttf',
+			'otf' => 'font/otf', 'eot' => 'application/vnd.ms-fontobject',
+		);
+
+		return isset($mimes[$ext]) ? $mimes[$ext] : 'application/octet-stream';
+	}
+}
+
 // ===== Funções principais
 
 

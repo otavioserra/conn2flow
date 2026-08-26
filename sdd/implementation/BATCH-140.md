@@ -78,7 +78,7 @@ nos modos compactos e permitir encolher as miniaturas da lista curada.
   `view-{large,medium,small}-title` ×2 idiomas) compiladas em `VariaveisData.json`.
 - `c2f manager:update-all`: pipeline completo aprovado; banco local com `paginas +2 ~254` e
   `variaveis +300 ~8`, **0 órfãos**.
-- Validação visual autônoma (`temp/req137-visual.mjs`, Playwright + `c2f auth:cookie`): **19/19**
+- Validação visual autônoma (script Playwright efêmero + `c2f auth:cookie`, executado localmente): **19/19**
   checagens aprovadas, console **sem erros** em todas as telas. Destaques medidos:
   - modo `medium`: card `208x174` idêntico com e sem hover, mesmos `x`/`y` em todos os cards;
   - modo `small`: card `120x98` idêntico com e sem hover;
@@ -114,7 +114,42 @@ nos modos compactos e permitir encolher as miniaturas da lista curada.
 - Revalidado após a troca: `resources:sync` 0 erros, `variaveis ~2` no banco local e **19/19**
   checagens visuais, com o rótulo lido do DOM como `"Incluir Selecionados"`.
 
-## Achado fora do escopo (não corrigido — exige novo intake)
+## Retorno de homologação — item 3 refeito (a grade que faltava)
+
+A primeira entrega do item 3 **encolhia apenas a miniatura**, mantendo uma foto por linha: a caixa
+`.gallery-item` continuava ocupando a largura inteira da área disponível, então trocar de modo quase
+não mudava a densidade da tela. A chefia apontou o erro de interpretação, e o correto é a **CAIXA**
+encolher para as fotos se acomodarem lado a lado, em linhas e colunas.
+
+- `#gallery-items` nos modos compactos passa a `flex-direction: row` + `flex-wrap: wrap`; a
+  `.gallery-item` vira card vertical com largura fracionária (`25%` no médio, `12.5%` no pequeno,
+  reduzindo para 3 e 5 colunas em telas médias e 2 e 3 em telas estreitas).
+- **Ordem de leitura**: a ordem visual da grade é a própria ordem do DOM — esquerda para a direita,
+  descendo ao fim da linha. Como o `onEnd` do Sortable já relê a ordem física do DOM, a reordenação
+  continua correta **sem nenhuma condicional por modo**. Verificado por arraste real, inclusive
+  atravessando a quebra de linha.
+- **Controles em overlay**, como no `admin-arquivos`: handle e remover saem do fluxo
+  (`position: absolute`) sobre a miniatura e aparecem no hover, então a grade não estremece.
+  `.sortable-chosen` mantém os controles à vista durante o arraste, quando o cursor deixa o card.
+- **Modo pequeno esconde legenda e painel de link**: não cabem numa caixa de 147px. Nada se perde —
+  a serialização lê do array `items` em memória, não do DOM; basta voltar ao modo grande para editar.
+- Medido no runtime: caixa **1222x158** (grande, 1 por linha) → **300x190** (médio, **4 por linha**)
+  → **147x97** (pequeno, **8 por linha**).
+
+### Evidências da segunda rodada
+
+- Roteiro de grade (Playwright, executado localmente): **12/12** checagens, console limpo. Cobre a densidade por modo, o
+  encolhimento da caixa, a ordem de leitura, a estabilidade da grade no hover e o **arraste real**
+  (`f1,f2,f3,f4,…` → `f2,f3,f4,f1,…`).
+- Roteiro de ordem serializada (Playwright, executado localmente): **2/2**. Prova o que o DOM sozinho não prova — interceptando o
+  payload enviado ao servidor, a ordem **serializada** (`f8,f1,f2,f3,f4,f5,f6,f7`) é idêntica à
+  ordem exibida depois de arrastar o último item para o começo, atravessando a quebra de linha.
+- Guardas de regressão no `galleries.view-modes.test.js` (**8/8**): exigem `flex-wrap` nos modos
+  compactos, proíbem `flex-wrap` no modo grande, e travam o overlay em `position: absolute`.
+- Suítes após a rodada: Vitest **367/367**, PHPUnit **784/784**.
+- Screenshots: `temp/req-137-galleries-grid-medium.png`, `temp/req-137-galleries-grid-small.png`.
+
+## Achados fora do escopo — promovidos para `req-138` / BATCH-141 (já corrigidos lá)
 
 - **`admin-arquivos` não devolve MIME real, e sim `<tipo>/<extensão>` concatenado**
   ([admin-arquivos.php:183](../../gestor/modulos/admin-arquivos/admin-arquivos.php#L183)):

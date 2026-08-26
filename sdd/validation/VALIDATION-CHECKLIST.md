@@ -983,3 +983,51 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [x] Ambiente local restaurado (`DEVELOPMENT_ENV=false` confirmado por `c2f env:status`).
 - [x] `git diff --check` limpo.
 - [x] Nível 1 respeitado: nenhum commit, push ou deploy remoto.
+
+---
+
+## BATCH-141 — MIME real e guarda de imagem no interface-v2 (req-138)
+
+- [x] `arquivo_mime_por_extensao()` criada na biblioteca `arquivo.php`, ao lado de
+      `arquivo_tipo_por_extensao()`, resolvendo só por extensão (sem tocar no disco).
+- [x] `admin-arquivos.php:183` deixou de concatenar rótulo interno com extensão.
+- [x] MIMEs que divergiam agora corretos: `image/jpeg`, `image/svg+xml`, `image/x-icon`,
+      `audio/mpeg`, `video/quicktime`, `application/pdf`, `application/json`.
+- [x] Casos que já coincidiam preservados sem regressão (`image/png`, `video/mp4`, `image/webp`).
+- [x] **Invariante de prefixo** verificada por teste sobre as **29 extensões** reais de
+      `arquivo_tipo_por_extensao()`: família `image`/`video`/`audio` sempre devolve o mesmo prefixo.
+- [x] Fallback `application/octet-stream` para extensão desconhecida, ausente ou arquivo sem ponto.
+- [x] Caixa da extensão ignorada (`FOTO.JPG`) e caminho completo aceito (`docs/2026/Manual.PDF`).
+- [x] Nenhum consumidor depende do prefixo `file/` (verificado por varredura antes da troca).
+- [x] `interface-v2.js`: guarda trocada por `/^image\//.test(dados.tipo)`, igual aos demais.
+- [x] Teste demonstra que a guarda antiga era sempre falsa e que a nova aceita os 9 MIMEs de imagem.
+- [x] Guarda estática impede reintroduzir a comparação quebrada nos **4** consumidores do canal.
+- [x] Comentário do `interface-v2.js` reescrito em prosa: citar o código defeituoso literalmente
+      disparava o próprio teste de regressão.
+- [x] Lint: `php -l` 2/2, `node --check` 1/1.
+- [x] Testes focados novos **14/14** (PHP 8/8 com 97 asserções + JS 6/6).
+- [x] Suítes: PHPUnit **784/784** e Vitest **363/363**, sem regressão.
+- [x] Runtime local: `asset-version.json` sai como `application/json` (antes `file/json`); nenhum
+      item com prefixo `file/` na listagem; despacho em lote do BATCH-140 intacto; console limpo.
+- [x] `git diff --check` limpo.
+- [x] Nível 1 respeitado: nenhum commit, push ou deploy remoto.
+
+### BATCH-140 — segunda rodada: a grade que faltava no item 3 (retorno de homologação)
+
+- [x] Modos compactos usam `flex-direction: row` + `flex-wrap: wrap`: a lista vira GRADE.
+- [x] A **caixa** encolhe, não só a miniatura: `1222x158` → `300x190` (médio) → `147x97` (pequeno).
+- [x] Densidade medida no runtime: 1 por linha (grande), **4 por linha** (médio), **8 por linha** (pequeno).
+- [x] Modo grande preservado como lista de curadoria detalhada (sem `flex-wrap`).
+- [x] Ordem visual da grade = ordem do DOM: esquerda → direita, descendo ao fim da linha.
+- [x] Arraste real reordena na grade (`f1,f2,f3,f4…` → `f2,f3,f4,f1…`).
+- [x] Arraste atravessando a quebra de linha (último → primeiro) funciona.
+- [x] **Ordem serializada para o servidor idêntica à exibida** após o arraste, verificada
+      interceptando o payload (`f8,f1,f2,f3,f4,f5,f6,f7`) — o DOM sozinho não provaria isso.
+- [x] Controles (handle e remover) em overlay `position: absolute`, revelados no hover.
+- [x] A grade não estremece no hover: 10 caixas com `w`/`h`/`x`/`y` idênticos.
+- [x] `.sortable-chosen` mantém os controles visíveis durante o arraste.
+- [x] Modo pequeno esconde legenda e painel de link; valores preservados no array `items`.
+- [x] Colunas reduzem em telas médias (3/5) e estreitas (2/3).
+- [x] Guardas de regressão: `galleries.view-modes.test.js` **8/8**.
+- [x] Suítes após a rodada: Vitest **367/367**, PHPUnit **784/784**; console limpo.
+- [x] Screenshots: `temp/req-137-galleries-grid-medium.png`, `temp/req-137-galleries-grid-small.png`.

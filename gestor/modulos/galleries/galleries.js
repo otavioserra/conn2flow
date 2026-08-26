@@ -79,20 +79,66 @@ $(document).ready(function () {
             // esquerda e o seletor de tamanho à direita. Flex em vez do `right floated` do Fomantic
             // porque o segmento não tem clearfix garantido e o float sairia da caixa.
             + '.gallery-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}'
-            // Modos de visualização: só as MEDIDAS mudam. A estrutura da linha, o handle de arraste e
-            // os campos continuam idênticos nos três modos, para que o Sortable.js e os listeners
-            // delegados sigam funcionando sem qualquer condicional por modo.
-            + '#gallery-items.view-medium .gallery-item{padding:6px 8px;gap:8px;}'
-            + '#gallery-items.view-medium .gallery-item-thumb{width:120px;height:85px;}'
-            + '#gallery-items.view-medium .gallery-item-name{font-size:11px;margin-bottom:3px;}'
-            + '#gallery-items.view-medium .gallery-item-caption{font-size:12px;padding:4px 6px;}'
-            + '#gallery-items.view-medium .gallery-item-link-toggle{font-size:11px;margin-top:4px;}'
-            + '#gallery-items.view-small .gallery-item{padding:4px 6px;gap:6px;}'
-            + '#gallery-items.view-small .gallery-item-thumb{width:70px;height:50px;}'
-            + '#gallery-items.view-small .gallery-item-name{font-size:10px;margin-bottom:2px;}'
-            + '#gallery-items.view-small .gallery-item-caption{font-size:11px;padding:3px 5px;}'
-            + '#gallery-items.view-small .gallery-item-link-toggle{font-size:10px;margin-top:2px;}'
-            + '#gallery-items.view-small .gallery-item-link-fields{padding:8px;}';
+            // BATCH-140 (homologação): os modos compactos transformam a LISTA EM GRADE. Antes cada
+            // foto ocupava uma linha inteira da largura disponível — encolher só a miniatura não
+            // resolvia nada, porque a CAIXA continuava com uma foto por linha. Agora a caixa encolhe
+            // e vira card, e as fotos se acomodam lado a lado, em linhas e colunas.
+            //
+            // A ordem visual da grade é a ordem do DOM: esquerda para a direita, descendo ao fim da
+            // linha — leitura de livro. É o mesmo array `items`, então o `onEnd` do Sortable, que
+            // relê a ordem física do DOM, continua devolvendo a sequência correta sem nenhuma
+            // condicional por modo.
+            + '#gallery-items.view-medium,#gallery-items.view-small{flex-direction:row;flex-wrap:wrap;'
+            + 'align-items:flex-start;gap:6px;}'
+            + '#gallery-items.view-medium .gallery-item,#gallery-items.view-small .gallery-item{'
+            + 'flex-direction:column;align-items:stretch;position:relative;gap:3px;box-sizing:border-box;}'
+            + '#gallery-items.view-medium .gallery-item{width:calc(25% - 6px);padding:6px;}'
+            + '#gallery-items.view-small .gallery-item{width:calc(12.5% - 6px);padding:4px;}'
+            + '#gallery-items.view-medium .gallery-item-thumb{width:100%;height:110px;}'
+            + '#gallery-items.view-small .gallery-item-thumb{width:100%;height:64px;}'
+            + '#gallery-items.view-medium .gallery-item-name{font-size:11px;margin-bottom:0;}'
+            + '#gallery-items.view-small .gallery-item-name{font-size:10px;margin-bottom:0;text-align:center;}'
+            + '#gallery-items.view-medium .gallery-item-caption{font-size:11px;padding:3px 5px;}'
+            + '#gallery-items.view-medium .gallery-item-link-toggle{font-size:10px;margin-top:2px;}'
+            // No modo pequeno a caixa é só miniatura + nome: legenda e painel de link exigem largura
+            // que não existe ali. Os valores continuam vivos no array `items` (a serialização lê de
+            // lá, não do DOM), então esconder não perde nada — basta voltar ao modo grande para editar.
+            + '#gallery-items.view-small .gallery-item-caption,'
+            + '#gallery-items.view-small .gallery-item-link-toggle,'
+            + '#gallery-items.view-small .gallery-item-link-fields{display:none;}'
+            // Controles sobre a miniatura, revelados no hover — mesma técnica do `admin-arquivos`:
+            // `position:absolute` mantém a caixa com EXATAMENTE as mesmas medidas com e sem o mouse,
+            // então a grade não estremece quando o cursor passa por cima.
+            + '#gallery-items.view-medium .gallery-item-handle,'
+            + '#gallery-items.view-medium .gallery-item-remove,'
+            + '#gallery-items.view-small .gallery-item-handle,'
+            + '#gallery-items.view-small .gallery-item-remove{position:absolute;top:8px;z-index:4;'
+            + 'width:22px;height:22px;margin:0;display:flex;align-items:center;justify-content:center;'
+            + 'border-radius:4px;background:rgba(0,0,0,0.62);color:#fff;opacity:0;'
+            + 'transition:opacity .15s ease-in-out;font-size:12px;}'
+            + '#gallery-items.view-medium .gallery-item-handle,'
+            + '#gallery-items.view-small .gallery-item-handle{left:8px;cursor:grab;}'
+            + '#gallery-items.view-medium .gallery-item-remove,'
+            + '#gallery-items.view-small .gallery-item-remove{right:8px;color:#ff8b8b;}'
+            + '#gallery-items.view-medium .gallery-item:hover .gallery-item-handle,'
+            + '#gallery-items.view-medium .gallery-item:hover .gallery-item-remove,'
+            + '#gallery-items.view-small .gallery-item:hover .gallery-item-handle,'
+            + '#gallery-items.view-small .gallery-item:hover .gallery-item-remove{opacity:1;}'
+            + '#gallery-items.view-medium .gallery-item-remove:hover,'
+            + '#gallery-items.view-small .gallery-item-remove:hover{background:#db2828;color:#fff;}'
+            // Enquanto o Sortable arrasta, o cursor sai do card de origem e o overlay sumiria no meio
+            // do gesto; a classe do próprio Sortable mantém os controles à vista até soltar.
+            + '#gallery-items .gallery-item.sortable-chosen .gallery-item-handle,'
+            + '#gallery-items .gallery-item.sortable-chosen .gallery-item-remove{opacity:1;}'
+            // Telas estreitas: menos colunas, senão o card fica menor que a própria miniatura.
+            + '@media only screen and (max-width:991px){'
+            + '#gallery-items.view-medium .gallery-item{width:calc(33.33% - 6px);}'
+            + '#gallery-items.view-small .gallery-item{width:calc(20% - 6px);}}'
+            + '@media only screen and (max-width:767px){'
+            + '#gallery-items.view-medium .gallery-item{width:calc(50% - 6px);}'
+            + '#gallery-items.view-small .gallery-item{width:calc(33.33% - 6px);}}'
+            + '@media (prefers-reduced-motion:reduce){'
+            + '#gallery-items .gallery-item-handle,#gallery-items .gallery-item-remove{transition:none;}}';
         var style = document.createElement('style');
         style.id = 'galleries-styles';
         style.type = 'text/css';
