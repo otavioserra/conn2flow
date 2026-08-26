@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.4",
+    "versao": "1.0.5",
     "bibliotecas": [
         "interface",
         "html",
@@ -99,7 +99,7 @@
                     "name": "Galerias - Listar",
                     "id": "galleries",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/",
+                    "path": "galleries/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -114,7 +114,7 @@
                     "name": "Galerias - Adicionar",
                     "id": "galleries-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/adicionar\/",
+                    "path": "galleries/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.7",
@@ -129,7 +129,7 @@
                     "name": "Galerias - Editar",
                     "id": "galleries-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/editar\/",
+                    "path": "galleries/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.7",
@@ -144,7 +144,7 @@
                     "name": "Galerias - Clonar",
                     "id": "galleries-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/clonar\/",
+                    "path": "galleries/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.7",
@@ -170,6 +170,21 @@
                 {
                     "id": "form-fields_schema-label",
                     "value": "Imagens da Galeria",
+                    "type": "string"
+                },
+                {
+                    "id": "view-large-title",
+                    "value": "Miniaturas grandes",
+                    "type": "string"
+                },
+                {
+                    "id": "view-medium-title",
+                    "value": "Miniaturas médias",
+                    "type": "string"
+                },
+                {
+                    "id": "view-small-title",
+                    "value": "Miniaturas pequenas",
                     "type": "string"
                 }
             ]
@@ -256,7 +271,7 @@
                     "name": "Galleries - List",
                     "id": "galleries",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/",
+                    "path": "galleries/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -271,7 +286,7 @@
                     "name": "Galleries - Add",
                     "id": "galleries-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/adicionar\/",
+                    "path": "galleries/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.7",
@@ -286,7 +301,7 @@
                     "name": "Galleries - Edit",
                     "id": "galleries-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/editar\/",
+                    "path": "galleries/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.7",
@@ -301,7 +316,7 @@
                     "name": "Galleries - Clone",
                     "id": "galleries-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/clonar\/",
+                    "path": "galleries/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.7",
@@ -328,9 +343,24 @@
                     "id": "form-fields_schema-label",
                     "value": "Gallery images",
                     "type": "string"
+                },
+                {
+                    "id": "view-large-title",
+                    "value": "Large thumbnails",
+                    "type": "string"
+                },
+                {
+                    "id": "view-medium-title",
+                    "value": "Medium thumbnails",
+                    "type": "string"
+                },
+                {
+                    "id": "view-small-title",
+                    "value": "Small thumbnails",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "de8dae87b91917e3"
+    "asset_version": "fa3e8fa614f1616a"
 }

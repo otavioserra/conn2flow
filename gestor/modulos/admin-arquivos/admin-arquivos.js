@@ -52,6 +52,39 @@ function adminArquivosTipoPorNome(nome) {
 	return 'file';
 }
 
+// BATCH-140 (req-137): regras do despacho em lote no modo picker.
+
+// Só arquivos são despachados ao módulo consumidor — pasta não é conteúdo selecionável.
+function adminArquivosArquivosSelecionados(selecionados) {
+	var arquivos = [];
+	for (var k in selecionados) {
+		if (!Object.prototype.hasOwnProperty.call(selecionados, k)) continue;
+		if (!selecionados[k] || selecionados[k].tipo === 'pasta') continue;
+		arquivos.push(selecionados[k]);
+	}
+	return arquivos;
+}
+
+// O botão de despacho em lote só existe dentro do iframe: fora dele não há pai para receber a
+// mensagem, e a ação individual da listagem normal é copiar a URL, não selecionar.
+function adminArquivosPickVisivel(paginaIframe, arquivos) {
+	return !!paginaIframe && (arquivos || []).length > 0;
+}
+
+// Mesmo contrato do envio individual (`.c2f-select`): o consumidor não distingue origem.
+// `tipo` carrega o MIME (é o que os consumidores testam com /image\//), não 'arquivo'/'pasta'.
+function adminArquivosPayloadPicker(item) {
+	item = item || {};
+	return {
+		id: item.caminho || '',
+		caminho: item.caminho || '',
+		imgSrc: item.imgSrc || '',
+		nome: item.nome || '',
+		data: item.data || '',
+		tipo: item.mime || ''
+	};
+}
+
 // Exposição para testes (Node) sem quebrar o browser.
 if (typeof module !== 'undefined' && module.exports) {
 	module.exports = {
@@ -59,7 +92,10 @@ if (typeof module !== 'undefined' && module.exports) {
 		adminArquivosEsc: adminArquivosEsc,
 		adminArquivosJoin: adminArquivosJoin,
 		adminArquivosExtensaoPerigosa: adminArquivosExtensaoPerigosa,
-		adminArquivosTipoPorNome: adminArquivosTipoPorNome
+		adminArquivosTipoPorNome: adminArquivosTipoPorNome,
+		adminArquivosArquivosSelecionados: adminArquivosArquivosSelecionados,
+		adminArquivosPickVisivel: adminArquivosPickVisivel,
+		adminArquivosPayloadPicker: adminArquivosPayloadPicker
 	};
 }
 
@@ -261,6 +297,20 @@ $(document).ready(function () {
 			}
 
 			$lista.find('.ui.checkbox').checkbox();
+
+			// BATCH-140: todo re-render (trocar de modo, filtrar, paginar) reconstrói o HTML e os
+			// checkboxes nascem desmarcados — enquanto `estado.selecionados` continua cheio. A barra
+			// dizia "2 selecionados" sobre duas caixas visualmente vazias, e o despacho em lote
+			// mandaria itens que o usuário já não via marcados. Reflete o estado de volta no DOM.
+			$lista.find('.c2f-item').each(function () {
+				var $item = $(this);
+				// `hasOwnProperty` e não truthiness: nome de arquivo é livre, e um item chamado
+				// `constructor` ou `toString` acharia a propriedade herdada de Object.prototype e
+				// nasceria marcado sem nunca ter sido selecionado.
+				var cam = $item.attr('data-caminho');
+				if (!Object.prototype.hasOwnProperty.call(estado.selecionados, cam)) return;
+				$item.find('.c2f-sel').prop('checked', true).closest('.ui.checkbox').checkbox('set checked');
+			});
 
 			// Estado vazio
 			var vazio = pastas.length === 0 && arquivos.length === 0 && estado.pagina === 0;
@@ -632,23 +682,15 @@ $(document).ready(function () {
 			});
 		});
 
-		// Somente arquivos são despachados ao módulo consumidor: pasta não é conteúdo selecionável.
 		function arquivosSelecionados() {
-			var arquivos = [];
-			for (var k in estado.selecionados) {
-				if (!estado.selecionados.hasOwnProperty(k)) continue;
-				if (estado.selecionados[k].tipo === 'pasta') continue;
-				arquivos.push(estado.selecionados[k]);
-			}
-			return arquivos;
+			return adminArquivosArquivosSelecionados(estado.selecionados);
 		}
 
 		function atualizarBarraSelecao() {
 			var n = Object.keys(estado.selecionados).length;
 			$('#c2f-selection-count').text(n);
 			$('#c2f-selection-bar').toggleClass('hidden', n === 0);
-			// O despacho em lote só existe no modo picker (iframe); fora dele não há pai para receber.
-			$('#c2f-pick-selected').toggleClass('hidden', !cfg.paginaIframe || arquivosSelecionados().length === 0);
+			$('#c2f-pick-selected').toggleClass('hidden', !adminArquivosPickVisivel(cfg.paginaIframe, arquivosSelecionados()));
 		}
 
 		// Zera a seleção no estado E no DOM (itens e "selecionar todos"), para que o próximo lote comece limpo.
@@ -667,15 +709,7 @@ $(document).ready(function () {
 			// (galleries, html-editor, html-editor-interface, interface-v2 e dashboard.toolbar) leem um
 			// objeto único por evento. Enviar array quebraria todos eles de uma vez.
 			for (var i = 0; i < arquivos.length; i++) {
-				var item = arquivos[i];
-				var dados = {
-					id: item.caminho,
-					caminho: item.caminho,
-					imgSrc: item.imgSrc,
-					nome: item.nome,
-					data: item.data,
-					tipo: item.mime
-				};
+				var dados = adminArquivosPayloadPicker(arquivos[i]);
 				window.parent.postMessage(JSON.stringify({ moduloId: gestor.moduloId, moduloOpcao: gestor.moduloOpcao, data: JSON.stringify(dados) }), '*');
 			}
 

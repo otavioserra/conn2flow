@@ -413,7 +413,7 @@
                 },
                 {
                     "id": "pick-selected",
-                    "value": "Selecionar selecionados",
+                    "value": "Incluir Selecionados",
                     "type": "string"
                 },
                 {
@@ -891,7 +891,7 @@
                 },
                 {
                     "id": "pick-selected",
-                    "value": "Select selected",
+                    "value": "Add Selected",
                     "type": "string"
                 },
                 {
@@ -982,5 +982,5 @@
             ]
         }
     },
-    "asset_version": "aed171f778b74751"
+    "asset_version": "1cca03a7b38d7297"
 }

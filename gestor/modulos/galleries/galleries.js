@@ -13,6 +13,25 @@
  *
  * Contrato de cada item: { id, caminho, imgSrc, nome, legenda }.
  */
+// ===== Helper puro (compartilhado)
+
+// BATCH-140 (req-137): modos de tamanho das miniaturas da lista curada.
+var GALLERIES_VIEWS = ['large', 'medium', 'small'];
+
+// Valor desconhecido cai em 'large' e nunca em erro: a preferência vem do localStorage, que pode
+// trazer lixo de versão anterior, de outra aba ou de edição manual pelo próprio usuário.
+function galleriesNormalizarView(view) {
+    return GALLERIES_VIEWS.indexOf(view) === -1 ? 'large' : view;
+}
+
+// Exposição para testes (Node) sem quebrar o browser.
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        GALLERIES_VIEWS: GALLERIES_VIEWS,
+        galleriesNormalizarView: galleriesNormalizarView
+    };
+}
+
 $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length === 0 && $('#_gestor-interface-insert-dados').length === 0) return;
 
@@ -55,7 +74,25 @@ $(document).ready(function () {
             + '.gallery-item-link-suggestion{padding:7px 10px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f0f0;}'
             + '.gallery-item-link-suggestion:hover{background:#f3f7fb;}'
             + '.gallery-item-link-suggestion.disabled{opacity:0.5;cursor:not-allowed;background:#f7f7f7;}'
-            + '.gallery-suggestion-empty{padding:7px 10px;font-size:12px;color:#999;}';
+            + '.gallery-suggestion-empty{padding:7px 10px;font-size:12px;color:#999;}'
+            // BATCH-140 (req-137): barra de ferramentas da lista curada — o botão de adicionar à
+            // esquerda e o seletor de tamanho à direita. Flex em vez do `right floated` do Fomantic
+            // porque o segmento não tem clearfix garantido e o float sairia da caixa.
+            + '.gallery-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}'
+            // Modos de visualização: só as MEDIDAS mudam. A estrutura da linha, o handle de arraste e
+            // os campos continuam idênticos nos três modos, para que o Sortable.js e os listeners
+            // delegados sigam funcionando sem qualquer condicional por modo.
+            + '#gallery-items.view-medium .gallery-item{padding:6px 8px;gap:8px;}'
+            + '#gallery-items.view-medium .gallery-item-thumb{width:120px;height:85px;}'
+            + '#gallery-items.view-medium .gallery-item-name{font-size:11px;margin-bottom:3px;}'
+            + '#gallery-items.view-medium .gallery-item-caption{font-size:12px;padding:4px 6px;}'
+            + '#gallery-items.view-medium .gallery-item-link-toggle{font-size:11px;margin-top:4px;}'
+            + '#gallery-items.view-small .gallery-item{padding:4px 6px;gap:6px;}'
+            + '#gallery-items.view-small .gallery-item-thumb{width:70px;height:50px;}'
+            + '#gallery-items.view-small .gallery-item-name{font-size:10px;margin-bottom:2px;}'
+            + '#gallery-items.view-small .gallery-item-caption{font-size:11px;padding:3px 5px;}'
+            + '#gallery-items.view-small .gallery-item-link-toggle{font-size:10px;margin-top:2px;}'
+            + '#gallery-items.view-small .gallery-item-link-fields{padding:8px;}';
         var style = document.createElement('style');
         style.id = 'galleries-styles';
         style.type = 'text/css';
@@ -175,6 +212,34 @@ $(document).ready(function () {
 
     renderItems();
     initSortable();
+
+    // ===== BATCH-140 (req-137): tamanho das miniaturas da lista curada
+    //
+    // Galerias com dezenas ou centenas de fotos ficavam impraticáveis de reordenar com a miniatura
+    // fixa em 200x140. A classe de modo vive no CONTÊINER (`#gallery-items`), não nas linhas: assim
+    // `renderItems()` pode esvaziar e reconstruir a lista à vontade sem perder o modo escolhido.
+
+    var LS_GALLERY_VIEW = gestor.moduloId + 'GalleryView';
+
+    function aplicarGalleryView(view) {
+        view = galleriesNormalizarView(view);
+        $('#gallery-items').removeClass('view-large view-medium view-small').addClass('view-' + view);
+        $('#c2f-gallery-views button').removeClass('active');
+        $('#c2f-gallery-views button[data-view="' + view + '"]').addClass('active');
+    }
+
+    $(document).on('click', '#c2f-gallery-views button', function (e) {
+        e.preventDefault();
+        var view = $(this).attr('data-view');
+        // localStorage pode lançar (modo privado, cota, site data bloqueado): a troca de modo não
+        // pode falhar por causa da persistência da preferência.
+        try { localStorage.setItem(LS_GALLERY_VIEW, view); } catch (err) { }
+        aplicarGalleryView(view);
+    });
+
+    var galleryViewSalva = 'large';
+    try { galleryViewSalva = localStorage.getItem(LS_GALLERY_VIEW) || 'large'; } catch (err) { }
+    aplicarGalleryView(galleryViewSalva);
 
     // req-019: hidratar os controles de exibição e ativar os checkboxes Fomantic + listeners.
     hydrateGalleryControls();

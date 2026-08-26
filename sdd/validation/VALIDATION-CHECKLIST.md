@@ -942,3 +942,44 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [x] `git diff --check` limpo.
 - [x] Memória de execução medida em **3.820 bytes / 49 linhas**; nenhuma poda necessária.
 - [x] Nível 1 respeitado: nenhum commit, push, deploy ou mutação remota.
+
+---
+
+## BATCH-140 — Seleção em lote no picker, overlay fixo e tamanhos no galleries (req-137)
+
+- [x] `#c2f-pick-selected` existe nas duas páginas (`pt-br` e `en`) e o rótulo vem do sistema de
+      variáveis (`pick-selected`), sem literal hardcoded.
+- [x] Rótulo definido pela chefia: `"Incluir Selecionados"` / `"Add Selected"` — pareado com
+      `"Excluir Selecionados"` e lido do DOM na revalidação visual.
+- [x] Fora do iframe o botão permanece oculto **mesmo com item marcado e a barra visível**
+      (`display: none`, barra `flex`, contador `1`).
+- [x] No picker o botão só aparece depois de haver ao menos um **arquivo** marcado.
+- [x] "Selecionar Todos" no picker (1 pasta + 1 arquivo) revela o botão; o despacho emite
+      **1 mensagem** — a pasta fica de fora.
+- [x] Uma mensagem `postMessage` **por arquivo**, preservando o contrato dos seis consumidores
+      (`galleries`, `html-editor`, `html-editor-interface`, `interface-v2`, `dashboard.toolbar`).
+- [x] Payload idêntico ao envio individual: `{id, caminho, imgSrc, nome, data, tipo}` com o MIME
+      em `tipo`; campos ausentes viram string vazia (não somem no `JSON.stringify`).
+- [x] Após o despacho a seleção é zerada no estado e no DOM, e o botão recolhe.
+- [x] Modo `medium`: card **208x174** com `width`/`height`/`x`/`y` idênticos com e sem hover.
+- [x] Modo `small`: card **120x98** com geometria idêntica com e sem hover.
+- [x] Overlay `position: absolute`, `display: flex`, `z-index: 4`, `opacity` 1 no hover e 0 fora,
+      com `pointer-events: none` no contêiner (a miniatura e o checkbox seguem clicáveis).
+- [x] `.c2f-check` em `z-index: 5`, acima do overlay — o item continua marcável sob o cursor.
+- [x] Marcação dos checkboxes sobrevive à troca de modo (2 marcados antes e depois, contador `2`).
+- [x] `galleries`: três botões `large`/`medium`/`small`, `type="button"` (não submetem o formulário)
+      e tooltips resolvidas pelas variáveis `view-*-title` nos dois idiomas.
+- [x] Miniaturas medidas no runtime: **140px** (grande), **85px** (médio) e **50px** (pequeno).
+- [x] Preferência persiste em `localStorage` e é restaurada no reload; valor corrompido cai em
+      `view-large` sem gerar classe inválida.
+- [x] Console **sem erros** em todas as telas inspecionadas; HTTP 200.
+- [x] Lint: `node --check` 2/2, `php -l` 2/2, JSON 4/4.
+- [x] Testes focados novos **12/12**; Vitest **357/357**; PHPUnit **776/776**.
+- [x] Review findings-first: leitura de `estado.selecionados[caminho]` por truthiness trocada por
+      `hasOwnProperty` — um arquivo chamado `constructor` nasceria marcado; coberto por teste.
+- [x] `c2f resources:sync` 2.660 recursos / 0 erros; `c2f manager:update-all` com 0 órfãos.
+- [x] Evidências: `temp/req-137-picker-selecao.png`, `temp/req-137-overlay-medium.png`,
+      `temp/req-137-galleries-views.png`, `temp/req-137-admin-arquivos-picker.png`.
+- [x] Ambiente local restaurado (`DEVELOPMENT_ENV=false` confirmado por `c2f env:status`).
+- [x] `git diff --check` limpo.
+- [x] Nível 1 respeitado: nenhum commit, push ou deploy remoto.

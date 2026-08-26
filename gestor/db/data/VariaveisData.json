@@ -2550,7 +2550,7 @@
         "language": "pt-br",
         "modulo": "admin-arquivos",
         "id": "pick-selected",
-        "valor": "Selecionar selecionados",
+        "valor": "Incluir Selecionados",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -3297,7 +3297,7 @@
         "language": "en",
         "modulo": "admin-arquivos",
         "id": "pick-selected",
-        "valor": "Select selected",
+        "valor": "Add Selected",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -7695,6 +7695,33 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "view-large-title",
+        "valor": "Miniaturas grandes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "view-medium-title",
+        "valor": "Miniaturas médias",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "view-small-title",
+        "valor": "Miniaturas pequenas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "galleries",
         "id": "form-name-label",
@@ -7717,6 +7744,33 @@
         "modulo": "galleries",
         "id": "form-fields_schema-label",
         "valor": "Gallery images",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "view-large-title",
+        "valor": "Large thumbnails",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "view-medium-title",
+        "valor": "Medium thumbnails",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "view-small-title",
+        "valor": "Small thumbnails",
         "tipo": "string",
         "grupo": null,
         "descricao": null

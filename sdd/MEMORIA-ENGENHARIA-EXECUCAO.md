@@ -13,6 +13,21 @@
 
 ## Tarefas recentes
 
+### 2026-08-26 — BATCH-140 (req-137): picker em lote e overlay sem layout shift
+
+- O canal `postMessage` do `admin-arquivos` tem SEIS consumidores (`galleries`, `html-editor`,
+  `html-editor-interface`, `interface-v2`, `dashboard.toolbar`) e todos leem UM objeto por evento.
+  Despacho em lote = N mensagens, nunca um array. `tipo` carrega o MIME, não 'arquivo'/'pasta'.
+- Layout shift no hover morre trocando `display:none/flex` por `position:absolute` + `opacity`: fora
+  do fluxo, as medidas do card param de depender do mouse. O overlay exige `pointer-events: none` no
+  contêiner (`auto` só nos botões) e z-index maior no que estava sob ele (checkbox).
+- `renderLista()` reconstrói o HTML a cada troca de modo, filtro ou página: o estado de seleção
+  precisa ser reaplicado no DOM, senão a barra conta itens que o usuário vê desmarcados.
+- Fomantic: `checkbox('set checked')` NÃO dispara o `change` nativo que o módulo escuta; em teste
+  headless clique no `.ui.checkbox` (o `<label>` de rótulo vazio tem altura 0 e o Playwright recusa).
+  `c2f page:inspect` só mede estado estático — hover/clique/reload pedem script Playwright próprio,
+  que precisa ficar DENTRO do repositório para resolver o módulo (`temp/` é git-ignored).
+
 ### 2026-08-26 — BATCH-137 (req-135): motion do SO pelo CLI
 
 - O dispatcher resolve aliases sem trocar `InputInterface::getCommandName()`; um único comando pode
@@ -31,18 +46,6 @@
 - `proc_open()` aceita array de argumentos: evita escape de shell e permite runner injetável. Cobrir em teste Docker ativo e fallback local.
 - `.env` de mirror é estado concorrente: capture, altere, restaure e confira depois. Neste lote mudou externamente após a restauração; o bootstrap não contém escritor e o agente preservou o valor mais recente.
 - Acesso ao named pipe Docker pode exigir escalonamento. Não interpretar `permission denied` como container parado nem substituir a prova ponta a ponta por fallback local.
-
-### 2026-08-25 — BATCH-134 (req-132): limpeza na última etapa
-
-- `gestor/gestor.php` é roteador e chama `gestor_start()`; função testável fica em `gestor/bibliotecas/gestor.php`, antes do `?>` final.
-- Compare árvore DOM, não contagem de strings. Preserve `<pre>`/`<textarea>`, condicionais e quebras entre elementos inline.
-- JavaScript exige scanner de estados, preservação de ASI e exclusão de `application/json`/`text/template`; valide o resultado com `node --check`.
-
-### 2026-08-24 — BATCH-129 (req-127): onde o recurso nasce decide se persiste
-
-- `gestor/db/data/*Data.json` é artefato; modos de IA nascem em `resources/<lang>/ai_modes/` e são compilados por `resources:sync`.
-- Orçamento deve distribuir vagas por namespace (round-robin); marcador de itens restantes também entra no teto.
-- Bloco condicional de prompt valida a ordem dos marcadores e remove a tag mesmo sem o par no conteúdo editável.
 
 ## Pendências e histórico
 
