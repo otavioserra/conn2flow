@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace Conn2Flow\Cli\Commands;
 
+use Closure;
 use Conn2Flow\Cli\Contracts\CommandInterface;
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
+use Conn2Flow\Cli\Support\ProjectEnvironmentResolver;
+use RuntimeException;
 
 final class AuthCookieCommand implements CommandInterface
 {
-    private string $rootPath;
+    private const CONTAINER_NAME = 'conn2flow-app';
 
-    public function __construct(string $rootPath)
+    private string $rootPath;
+    private Closure $processRunner;
+
+    public function __construct(string $rootPath, ?callable $processRunner = null)
     {
-        $this->rootPath = $rootPath;
+        $this->rootPath = rtrim($rootPath, '/\\');
+        $this->processRunner = $processRunner !== null
+            ? Closure::fromCallable($processRunner)
+            : Closure::fromCallable([$this, 'runProcess']);
     }
 
     public function getName(): string
@@ -42,7 +51,7 @@ Also prints the Cookie header string to stdout.
 
 Options:
   --user       User identifier (name or ID). Default: 'admin' (ID 1)
-  --project    Project ID for URL resolution (optional)
+  --project    Project ID. Uses its test mirror and Docker mount when available
   --out        Output cookie jar path. Default: temp/agent-cookies.txt
 HELP;
     }
@@ -51,190 +60,304 @@ HELP;
     {
         $output->title('Conn2Flow — Generate Authentication Cookies');
 
-        $userIdent = $input->getOption('user', 'admin');
-        $outPath = $input->getOption('out', 'temp/agent-cookies.txt');
+        $userIdent = (string)$input->getOption('user', 'admin');
+        $outPath = (string)$input->getOption('out', 'temp/agent-cookies.txt');
         $projectId = $input->getOption('project');
-
-        // Resolve absolute output path
-        if (!str_starts_with($outPath, '/') && !str_starts_with($outPath, DIRECTORY_SEPARATOR) && !preg_match('/^[A-Za-z]:/', $outPath)) {
-            $outPath = $this->rootPath . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $outPath);
-        }
-
-        // Ensure output directory exists
-        $outDir = dirname($outPath);
-        if (!is_dir($outDir)) {
-            mkdir($outDir, 0755, true);
-        }
-
-        // Bootstrap Gestor environment
         $gestorPath = $this->rootPath . DIRECTORY_SEPARATOR . 'gestor';
-        $configFile = $gestorPath . DIRECTORY_SEPARATOR . 'config.php';
+        $dockerPath = null;
+        $accessUrl = 'http://localhost/';
+        $host = 'localhost';
 
+        if (is_string($projectId) && $projectId !== '') {
+            try {
+                $project = (new ProjectEnvironmentResolver($this->rootPath))->resolve($projectId);
+            } catch (RuntimeException $exception) {
+                $output->error($exception->getMessage());
+                return 1;
+            }
+
+            $gestorPath = $project['gestorPath'];
+            $dockerPath = $project['dockerPath'];
+            $accessUrl = $project['accessUrl'];
+            $host = $project['host'];
+        }
+
+        $configFile = $gestorPath . DIRECTORY_SEPARATOR . 'config.php';
         if (!is_file($configFile)) {
             $output->error("Gestor config.php not found at: {$configFile}");
             return 1;
         }
 
-        // Set required server variables if not present
-        $_SERVER['SERVER_NAME'] = $_SERVER['SERVER_NAME'] ?? 'localhost';
-        $_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'] ?? '/';
-        $_SERVER['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'] ?? 'Conn2Flow-CLI/1.0';
-
-        // Set up the index path required by config.php
-        global $_INDEX;
-        $_INDEX = $_INDEX ?? [];
-        $_INDEX['sistemas-dir'] = $gestorPath . '/';
-
-        $output->info('Bootstrapping Gestor environment...');
-
-        try {
-            require_once $configFile;
-        } catch (\Throwable $e) {
-            $output->error('Failed to load config.php: ' . $e->getMessage());
+        $outPath = $this->absoluteOutputPath($outPath);
+        $outDir = dirname($outPath);
+        if (!is_dir($outDir) && !mkdir($outDir, 0755, true) && !is_dir($outDir)) {
+            $output->error("Unable to create output directory at: {$outDir}");
             return 1;
         }
 
-        global $_CONFIG, $_GESTOR;
+        $generator = $this->rootPath . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR . 'scripts'
+            . DIRECTORY_SEPARATOR . 'auth-cookie-generator.php';
+        if (!is_file($generator)) {
+            $output->error("Authentication cookie generator not found at: {$generator}");
+            return 1;
+        }
 
-        // Load required libraries
-        $libs = ['banco', 'gestor', 'usuario', 'seguranca', 'ip'];
-        foreach ($libs as $lib) {
-            $libFile = $gestorPath . DIRECTORY_SEPARATOR . 'bibliotecas' . DIRECTORY_SEPARATOR . $lib . '.php';
-            if (is_file($libFile)) {
-                require_once $libFile;
+        $output->info("Using Gestor path: {$gestorPath}");
+        $resultPath = null;
+
+        try {
+            if ($dockerPath !== null && !$this->isInsideContainer() && $this->isContainerRunning()) {
+                $output->info('Generating token inside Docker container conn2flow-app...');
+                $resultPath = $this->generateInDocker(
+                    $generator,
+                    $gestorPath,
+                    $dockerPath,
+                    $host,
+                    $userIdent,
+                    $output
+                );
+            } else {
+                $output->info('Generating token with the local PHP runtime...');
+                $resultPath = $this->generateLocally($generator, $gestorPath, $host, $userIdent, $output);
+            }
+
+            if ($resultPath === null) {
+                return 1;
+            }
+
+            $result = $this->readGeneratorResult($resultPath, $output);
+            if ($result === null) {
+                return 1;
+            }
+
+            $cookieJar = $this->buildCookieJar($result);
+            if (file_put_contents($outPath, $cookieJar, LOCK_EX) === false) {
+                $output->error("Unable to write cookie jar at: {$outPath}");
+                return 1;
+            }
+
+            $cookieHeader = "Cookie: {$result['cookieAuthName']}={$result['tokenJWT']}; "
+                . "{$result['sessionAuthName']}={$result['sessionId']}";
+
+            $output->success("User found: {$result['userName']} (ID: {$result['userId']})");
+            $output->section('Cookie Jar');
+            $output->success("Written to: {$outPath}");
+            $output->section('HTTP Header');
+            $output->writeln($cookieHeader);
+            $output->section('Usage Examples');
+            $output->writeln("  curl -b {$outPath} {$accessUrl}");
+            $output->writeln("  curl -H \"{$cookieHeader}\" {$accessUrl}");
+            $output->writeln('');
+            $output->info('Token expires: ' . date('Y-m-d H:i:s', (int)$result['expiration']));
+
+            return 0;
+        } finally {
+            if ($resultPath !== null && is_file($resultPath)) {
+                unlink($resultPath);
             }
         }
+    }
 
-        // Connect to database
-        try {
-            if (function_exists('banco_conectar')) {
-                banco_conectar();
-            }
-        } catch (\Throwable $e) {
-            $output->error('Database connection failed: ' . $e->getMessage());
-            return 1;
+    private function absoluteOutputPath(string $path): string
+    {
+        if (str_starts_with($path, '/') || str_starts_with($path, '\\') || preg_match('/^[A-Za-z]:/', $path)) {
+            return $path;
         }
 
-        // Find user
-        $output->info("Looking up user: {$userIdent}");
-        $whereClause = is_numeric($userIdent)
-            ? "WHERE id_usuarios='{$userIdent}'"
-            : "WHERE nome='{$userIdent}' OR id_usuarios='1'";
+        return $this->rootPath . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+    }
 
-        try {
-            $usuario = banco_select([
-                'unico' => true,
-                'tabela' => 'usuarios',
-                'campos' => ['id_usuarios', 'nome'],
-                'extra' => $whereClause,
-            ]);
-        } catch (\Throwable $e) {
-            $output->error('Failed to query user: ' . $e->getMessage());
-            return 1;
-        }
+    private function isInsideContainer(): bool
+    {
+        return is_file('/.dockerenv') || getenv('CONN2FLOW_IN_DOCKER') === '1';
+    }
 
-        if (!$usuario) {
-            $output->error("User '{$userIdent}' not found in database.");
-            return 1;
-        }
-
-        $userId = $usuario['id_usuarios'];
-        $userName = $usuario['nome'];
-        $output->success("User found: {$userName} (ID: {$userId})");
-
-        // Generate JWT token
-        $output->info('Generating JWT token...');
-
-        $expiration = time() + ($_CONFIG['cookie-lifetime'] ?? 1296000);
-        $opensslPath = $_GESTOR['openssl-path'] ?? ($gestorPath . DIRECTORY_SEPARATOR . 'openssl' . DIRECTORY_SEPARATOR);
-        $keyPublicPath = $opensslPath . 'publica.key';
-
-        if (!is_file($keyPublicPath)) {
-            $output->error("Public key not found at: {$keyPublicPath}");
-            return 1;
-        }
-
-        $chavePublica = file_get_contents($keyPublicPath);
-        $tokenPubId = md5(uniqid((string)rand(), true));
-        $hashAlgo = $_CONFIG['usuario-hash-algo'] ?? 'sha256';
-        $hashPassword = $_CONFIG['usuario-hash-password'] ?? '';
-        $pubIDValidation = hash_hmac($hashAlgo, $tokenPubId, $hashPassword);
-
-        $tokenJWT = usuario_gerar_jwt([
-            'host' => $_SERVER['SERVER_NAME'],
-            'expiration' => $expiration,
-            'chavePublica' => $chavePublica,
-            'pubID' => $tokenPubId,
+    private function isContainerRunning(): bool
+    {
+        $result = $this->callProcess([
+            'docker',
+            'inspect',
+            '--format={{.State.Running}}',
+            self::CONTAINER_NAME,
         ]);
 
-        if (!$tokenJWT) {
-            $output->error('Failed to generate JWT token. Check OpenSSL keys.');
-            return 1;
+        return $result['code'] === 0 && trim($result['stdout']) === 'true';
+    }
+
+    private function generateLocally(
+        string $generator,
+        string $gestorPath,
+        string $host,
+        string $userIdent,
+        OutputInterface $output
+    ): ?string {
+        $resultPath = tempnam(sys_get_temp_dir(), 'c2f-auth-cookie-');
+        if ($resultPath === false) {
+            $output->error('Unable to reserve a temporary result file.');
+            return null;
         }
 
-        // Delete old CLI-generated tokens for this user
-        banco_delete('usuarios_tokens', "WHERE user_agent='Conn2Flow-CLI/1.0' AND id_usuarios='{$userId}'");
+        $result = $this->callProcess([
+            PHP_BINARY,
+            $generator,
+            '--gestor=' . $gestorPath,
+            '--host=' . $host,
+            '--user=' . $userIdent,
+            '--result=' . $resultPath,
+        ]);
 
-        // Insert token record in database
-        $ip = function_exists('ip_get') ? ip_get() : '127.0.0.1';
-        $campos = [];
-        $campos[] = ['id_usuarios', $userId, null];
-        $campos[] = ['pubID', $tokenPubId, null];
-        $campos[] = ['pubIDValidation', $pubIDValidation, null];
-        $campos[] = ['expiration', $expiration, null];
-        $campos[] = ['ip', $ip, null];
-        $campos[] = ['user_agent', 'Conn2Flow-CLI/1.0', null];
-        $campos[] = ['data_criacao', 'NOW()', true];
-        banco_insert_name($campos, 'usuarios_tokens');
+        if ($result['code'] !== 0) {
+            @unlink($resultPath);
+            $output->error('Authentication cookie generation failed: ' . trim($result['stderr'] ?: $result['stdout']));
+            return null;
+        }
 
-        // Generate session ID
-        $sessionId = function_exists('seguranca_token_aleatorio')
-            ? seguranca_token_aleatorio(32)
-            : bin2hex(random_bytes(16));
+        return $resultPath;
+    }
 
-        // Build cookie names
-        $cookieAuthName = $_CONFIG['cookie-authname'] ?? '_C2FCID';
-        $sessionAuthName = $_CONFIG['session-authname'] ?? '_C2FSID';
-        $serverName = $_SERVER['SERVER_NAME'];
+    private function generateInDocker(
+        string $generator,
+        string $gestorPath,
+        string $dockerPath,
+        string $host,
+        string $userIdent,
+        OutputInterface $output
+    ): ?string {
+        $tempDir = $gestorPath . DIRECTORY_SEPARATOR . 'temp';
+        if (!is_dir($tempDir) && !mkdir($tempDir, 0755, true) && !is_dir($tempDir)) {
+            $output->error("Unable to create project temp directory at: {$tempDir}");
+            return null;
+        }
 
-        // Resolve URL for project
-        $accessUrl = 'http://' . $serverName . '/';
-        if ($projectId) {
-            $envJsonPath = $this->rootPath . DIRECTORY_SEPARATOR . 'dev-environment' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'environment.json';
-            if (is_file($envJsonPath)) {
-                $envJson = json_decode(file_get_contents($envJsonPath), true);
-                if (isset($envJson['devProjects'][$projectId]['url'])) {
-                    $accessUrl = $envJson['devProjects'][$projectId]['url'];
-                }
+        $suffix = getmypid() . '-' . bin2hex(random_bytes(4));
+        $containerScript = '/tmp/c2f-auth-cookie-' . $suffix . '.php';
+        $hostResult = $tempDir . DIRECTORY_SEPARATOR . '.c2f-auth-cookie-' . $suffix . '.json';
+        $dockerResult = rtrim($dockerPath, '/') . '/temp/.c2f-auth-cookie-' . $suffix . '.json';
+
+        $copyResult = $this->callProcess([
+            'docker',
+            'cp',
+            $generator,
+            self::CONTAINER_NAME . ':' . $containerScript,
+        ]);
+        if ($copyResult['code'] !== 0) {
+            $output->error('Unable to copy cookie generator into Docker: ' . trim($copyResult['stderr']));
+            return null;
+        }
+
+        try {
+            $execResult = $this->callProcess([
+                'docker',
+                'exec',
+                self::CONTAINER_NAME,
+                'php',
+                $containerScript,
+                '--gestor=' . rtrim($dockerPath, '/'),
+                '--host=' . $host,
+                '--user=' . $userIdent,
+                '--result=' . $dockerResult,
+            ]);
+
+            if ($execResult['code'] !== 0) {
+                @unlink($hostResult);
+                $output->error('Docker cookie generation failed: ' . trim($execResult['stderr'] ?: $execResult['stdout']));
+                return null;
             }
+        } finally {
+            $this->callProcess(['docker', 'exec', self::CONTAINER_NAME, 'rm', '-f', $containerScript]);
         }
 
-        // Write Netscape cookie jar
-        $domain = $serverName;
-        $expStr = (string)$expiration;
+        if (!is_file($hostResult)) {
+            $output->error("Docker generator did not create its result at: {$hostResult}");
+            return null;
+        }
+
+        return $hostResult;
+    }
+
+    /** @return array<string, mixed>|null */
+    private function readGeneratorResult(string $path, OutputInterface $output): ?array
+    {
+        $contents = file_get_contents($path);
+        $result = $contents !== false ? json_decode($contents, true) : null;
+        $required = [
+            'userId',
+            'userName',
+            'expiration',
+            'domain',
+            'cookieAuthName',
+            'sessionAuthName',
+            'tokenJWT',
+            'sessionId',
+        ];
+
+        if (!is_array($result) || array_diff($required, array_keys($result)) !== []) {
+            $output->error('Authentication cookie generator returned an invalid result.');
+            return null;
+        }
+
+        return $result;
+    }
+
+    /** @param array<string, mixed> $result */
+    private function buildCookieJar(array $result): string
+    {
+        $expiration = (string)$result['expiration'];
         $cookieJar = "# Netscape HTTP Cookie File\n";
-        $cookieJar .= "# Generated by c2f auth:cookie on " . date('Y-m-d H:i:s') . "\n";
-        $cookieJar .= "# User: {$userName} (ID: {$userId})\n";
-        $cookieJar .= "{$domain}\tFALSE\t/\tFALSE\t{$expStr}\t{$cookieAuthName}\t{$tokenJWT}\n";
-        $cookieJar .= "{$domain}\tFALSE\t/\tFALSE\t{$expStr}\t{$sessionAuthName}\t{$sessionId}\n";
+        $cookieJar .= '# Generated by c2f auth:cookie on ' . date('Y-m-d H:i:s') . "\n";
+        $cookieJar .= "# User: {$result['userName']} (ID: {$result['userId']})\n";
+        $cookieJar .= "{$result['domain']}\tFALSE\t/\tFALSE\t{$expiration}\t{$result['cookieAuthName']}\t{$result['tokenJWT']}\n";
+        $cookieJar .= "{$result['domain']}\tFALSE\t/\tFALSE\t{$expiration}\t{$result['sessionAuthName']}\t{$result['sessionId']}\n";
 
-        file_put_contents($outPath, $cookieJar);
+        return $cookieJar;
+    }
 
-        // Output results
-        $output->section('Cookie Jar');
-        $output->success("Written to: {$outPath}");
+    /**
+     * @param list<string> $command
+     * @return array{code: int, stdout: string, stderr: string}
+     */
+    private function callProcess(array $command): array
+    {
+        $runner = $this->processRunner;
+        $result = $runner($command);
 
-        $output->section('HTTP Header');
-        $cookieHeader = "Cookie: {$cookieAuthName}={$tokenJWT}; {$sessionAuthName}={$sessionId}";
-        $output->writeln($cookieHeader);
+        if (!is_array($result) || !isset($result['code'], $result['stdout'], $result['stderr'])) {
+            throw new RuntimeException('Process runner returned an invalid result.');
+        }
 
-        $output->section('Usage Examples');
-        $output->writeln("  curl -b {$outPath} {$accessUrl}");
-        $output->writeln("  curl -H \"{$cookieHeader}\" {$accessUrl}");
+        return [
+            'code' => (int)$result['code'],
+            'stdout' => (string)$result['stdout'],
+            'stderr' => (string)$result['stderr'],
+        ];
+    }
 
-        $output->writeln('');
-        $output->info('Token expires: ' . date('Y-m-d H:i:s', $expiration));
+    /**
+     * @param list<string> $command
+     * @return array{code: int, stdout: string, stderr: string}
+     */
+    private function runProcess(array $command): array
+    {
+        $process = proc_open($command, [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ], $pipes, $this->rootPath);
 
-        return 0;
+        if (!is_resource($process)) {
+            return ['code' => 1, 'stdout' => '', 'stderr' => 'Failed to start process.'];
+        }
+
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+
+        return [
+            'code' => proc_close($process),
+            'stdout' => $stdout !== false ? $stdout : '',
+            'stderr' => $stderr !== false ? $stderr : '',
+        ];
     }
 }

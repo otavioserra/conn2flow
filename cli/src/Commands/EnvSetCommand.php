@@ -7,6 +7,8 @@ namespace Conn2Flow\Cli\Commands;
 use Conn2Flow\Cli\Contracts\CommandInterface;
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
+use Conn2Flow\Cli\Support\ProjectEnvironmentResolver;
+use RuntimeException;
 
 final class EnvSetCommand implements CommandInterface
 {
@@ -36,8 +38,8 @@ final class EnvSetCommand implements CommandInterface
     {
         return <<<HELP
 Usage:
-  c2f env:set development    Set DEVELOPMENT_ENV=true
-  c2f env:set production     Set DEVELOPMENT_ENV=false
+  c2f env:set development [--project=ID]    Set DEVELOPMENT_ENV=true
+  c2f env:set production [--project=ID]     Set DEVELOPMENT_ENV=false
   c2f dev:on                 Shortcut for env:set development
   c2f dev:off                Shortcut for env:set production
   c2f env:toggle             Toggle current value
@@ -48,7 +50,18 @@ HELP;
     {
         $output->title('Conn2Flow — Set Environment Mode');
 
+        $projectId = $input->getOption('project');
         $envFile = $this->rootPath . DIRECTORY_SEPARATOR . '.env';
+
+        if (is_string($projectId) && $projectId !== '') {
+            try {
+                $project = (new ProjectEnvironmentResolver($this->rootPath))->resolve($projectId);
+                $envFile = $project['envFile'];
+            } catch (RuntimeException $exception) {
+                $output->error($exception->getMessage());
+                return 1;
+            }
+        }
 
         if (!is_file($envFile)) {
             $output->error(".env file not found at: {$envFile}");

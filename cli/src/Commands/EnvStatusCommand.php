@@ -7,6 +7,8 @@ namespace Conn2Flow\Cli\Commands;
 use Conn2Flow\Cli\Contracts\CommandInterface;
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
+use Conn2Flow\Cli\Support\ProjectEnvironmentResolver;
+use RuntimeException;
 
 final class EnvStatusCommand implements CommandInterface
 {
@@ -34,15 +36,28 @@ final class EnvStatusCommand implements CommandInterface
 
     public function getHelp(): string
     {
-        return "Usage: c2f env:status\n\nShows the current DEVELOPMENT_ENV flag, project target, and related configuration.";
+        return "Usage: c2f env:status [--project=ID]\n\nShows the current DEVELOPMENT_ENV flag, project target, and related configuration.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->title('Conn2Flow — Environment Status');
 
-        // Read .env file
+        $projectId = $input->getOption('project');
+        $project = null;
         $envFile = $this->rootPath . DIRECTORY_SEPARATOR . '.env';
+
+        if (is_string($projectId) && $projectId !== '') {
+            try {
+                $project = (new ProjectEnvironmentResolver($this->rootPath))->resolve($projectId);
+                $envFile = $project['envFile'];
+            } catch (RuntimeException $exception) {
+                $output->error($exception->getMessage());
+                return 1;
+            }
+        }
+
+        // Read .env file
         $envVars = [];
         if (is_file($envFile)) {
             $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -97,8 +112,8 @@ final class EnvStatusCommand implements CommandInterface
         // Show project target
         if ($envJson) {
             $output->section('Project Target');
-            $projectTarget = $envJson['devEnvironment']['projectTarget'] ?? '(not set)';
-            $accessUrl = $envJson['devEnvironment']['accessURL'] ?? '(not set)';
+            $projectTarget = $project['id'] ?? $envJson['devEnvironment']['projectTarget'] ?? '(not set)';
+            $accessUrl = $project['accessUrl'] ?? $envJson['devEnvironment']['accessURL'] ?? '(not set)';
             $output->writeln("  Project: {$projectTarget}");
             $output->writeln("  Access URL: {$accessUrl}");
 

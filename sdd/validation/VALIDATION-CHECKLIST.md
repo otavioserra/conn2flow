@@ -867,3 +867,23 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
       escolhido volta selecionado ao reabrir. **Unico item que ainda depende de tela** — o efeito da
       configuracao ja esta validado acima.
 
+---
+
+## BATCH-136 — Mirrors de projeto em `auth:cookie` e `env:*` (req-134)
+
+- [x] Resolução compartilhada de `devProjects[ID]` com precedência `path_tests → target → path`.
+- [x] Conversão de paths MSYS (`/c/...`) para paths nativos no host Windows.
+- [x] Derivação do mount `/var/www/sites/...` a partir do mirror em `dev-environment/data/sites`.
+- [x] Busca do `.env` em `autenticacoes/<host>/.env`, com fallback para `<gestor>/.env`.
+- [x] `env:status --project=snapphoton-local` apontou para o `.env` do mirror Photon.
+- [x] `env:set development --project=snapphoton-local` alterou somente o mirror; restauração do valor
+      original foi confirmada no mesmo ciclo de teste.
+- [x] `auth:cookie --project=snapphoton-local` detectou `conn2flow-app`, executou o gerador dentro do
+      container e gravou `temp/agent-cookies.txt` no host.
+- [x] Temporários do gerador removidos em sucesso e erro; zero resíduos `.c2f-auth-cookie-*`.
+- [x] `php -l`: 7/7 arquivos limpos; `git diff --check`: limpo.
+- [x] Testes focados: 14 testes, 36 asserções.
+- [x] Suíte PHPUnit: **765/765**, 3.285 asserções, 4 skips de ambiente e 1 depreciação preexistente.
+- [x] Review findings-first: sem findings.
+- [x] Memória de execução medida e podada no fechamento; métricas registradas no BATCH-136.
+- [x] Nível 1 respeitado: nenhum commit, push ou deploy.
