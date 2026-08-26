@@ -301,6 +301,20 @@
 		return box;
 	}
 
+	function markWidgetParent(parent, wgid, markerHtml, parsed) {
+		parent.setAttribute('data-c2f-widget-id', wgid);
+		parent.setAttribute('data-c2f-widget-parent', '1');
+		parent.setAttribute('data-c2f-widget-root', '1');
+		parent.setAttribute('data-c2f-marker', b64encode(markerHtml));
+		parent.setAttribute('data-widget-type', parsed.type);
+		parent.setAttribute('data-widget-slug', parsed.slug);
+		parent.setAttribute('contenteditable', 'false');
+		try {
+			var position = window.getComputedStyle(parent).position;
+			if (position === 'static' || !position || position === '') { parent.style.position = 'relative'; }
+		} catch (e) { /* noop */ }
+	}
+
 	// Marca os atributos do elemento vivo cujo valor original contém variável(is).
 	function mapAttributes(liveEl, rawEl) {
 		if (!rawEl.attributes) { return; }
@@ -403,11 +417,16 @@
 						if (nn.nodeType === 3 && String(nn.nodeValue).trim() !== '') { otherContent = true; break; }
 						if (nn.nodeType === 8 && isWidgetOpen(nn)) { otherContent = true; break; }
 					}
-					var parentOk = liveParent.nodeType === 1 && liveParent !== mapRoot && liveParent !== document.body
-						&& liveParent.id !== 'c2f-page-content' && liveParent.id !== 'c2f-layout-root'
+					var editableLayoutRoot = liveParent === mapRoot && liveParent.id === LAYOUT_ROOT_ID;
+					var parentOk = liveParent.nodeType === 1 && (liveParent !== mapRoot || editableLayoutRoot)
+						&& liveParent !== document.body && liveParent.id !== 'c2f-page-content'
+						&& (liveParent.id !== LAYOUT_ROOT_ID || editableLayoutRoot)
 						&& liveParent.id !== 'c2f-raw-content';
 
-					if (rootEls.length > 1 && !otherContent && parentOk) {
+					if (rootEls.length === 0 && !otherContent && liveParent.nodeType === 1
+						&& liveParent !== document.body && liveParent.id !== 'c2f-raw-content') {
+						markWidgetParent(liveParent, wgid, markerHtml, parsed);
+					} else if (rootEls.length > 1 && !otherContent && parentOk) {
 						// Modo-pai: o innerHTML do pai é trocado pelo marcador no save (preserva a tag).
 						liveParent.setAttribute('data-c2f-widget-id', wgid);
 						liveParent.setAttribute('data-c2f-widget-parent', '1');
@@ -592,7 +611,10 @@
 
 		// 2) Widgets marcados sem wrapper — agrupa por data-c2f-widget-id.
 		var widgetGroups = {};
-		Array.prototype.forEach.call(clone.querySelectorAll('[data-c2f-widget-id]'), function (el) {
+		var widgetNodes = [];
+		if (clone.matches && clone.matches('[data-c2f-widget-id]')) { widgetNodes.push(clone); }
+		widgetNodes = widgetNodes.concat(Array.prototype.slice.call(clone.querySelectorAll('[data-c2f-widget-id]')));
+		Array.prototype.forEach.call(widgetNodes, function (el) {
 			var gid = el.getAttribute('data-c2f-widget-id');
 			(widgetGroups[gid] = widgetGroups[gid] || []).push(el);
 		});

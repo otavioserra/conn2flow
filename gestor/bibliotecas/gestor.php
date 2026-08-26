@@ -2597,6 +2597,12 @@ function gestor_modulos_dados($modulo_id = ''){
 function gestor_pagina_higienizar_ativo(){
 	global $_GESTOR;
 
+	// req-111 / BATCH-138: os comentarios de widget e a formatacao original fazem parte do
+	// contrato do Live Editor. Este bypass e absoluto, inclusive com HTML_SANITIZE=on.
+	if(function_exists('gestor_dashboard_toolbar_ativo') && gestor_dashboard_toolbar_ativo()){
+		return false;
+	}
+
 	$modo = strtolower(trim((string)($_ENV['HTML_SANITIZE'] ?? 'auto')));
 
 	if($modo === 'on' || $modo === 'true' || $modo === '1') return true;

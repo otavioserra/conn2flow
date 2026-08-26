@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-111.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-111.md) (BATCH-138 `implemented-pending-homologation`, 2026-08-26): Desativação do Sanitize HTML para Administradores no Live Editor e Mapeamento de Widgets Vazios/Layout.
   - [req-135.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-135.md) (BATCH-137 `implemented-pending-homologation`, 2026-08-26): Controle de Animações do Sistema Operacional via CLI (c2f motion:on|off|status) para Validação de prefers-reduced-motion. Lint OK; 9 novos testes; suíte PHP 774/774; suíte JS 342/342.
   - [req-134.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-134.md) (BATCH-136 `implemented-pending-homologation`, 2026-08-26): Resolução de Path de Mirrors de Projetos em auth:cookie e env:*, Execução via Docker e Suporte a path_tests. Lint OK; 7 novos testes; suíte PHP 765/765; suíte JS 342/342.
   - [req-133.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-133.md) (BATCH-135 `implemented-pending-homologation`, 2026-08-26): Emissão Condicional de Cookies em Modo de Desenvolvimento, Comandos CLI de Gestão de Ambiente (env), Autenticação (auth:cookie) e Inspeção Headless (page:inspect). Lint OK; 21 novos testes; suíte PHP 758/758; suíte JS 342/342.

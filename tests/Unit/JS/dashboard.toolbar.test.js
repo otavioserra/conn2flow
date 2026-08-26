@@ -132,6 +132,44 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
     expect((out.match(/ < -->/g) || []).length).toBe(2);
   });
 
+  it('req-111 - widget vazio deve mapear e reconstruir o conteiner pai', () => {
+    const sig = 'pages-index->render({"grupo_slug":"sem-registros"})';
+    const root = createEl('<section id="empty">' + OPEN(sig) + CLOSE(sig) + '</section>', 'c2f-page-content');
+    const backup = createEl('<section id="empty">' + OPEN(sig) + CLOSE(sig) + '</section>');
+
+    T.runMap(root, backup);
+    const section = root.querySelector('#empty');
+
+    expect(section.getAttribute('data-c2f-widget-parent')).toBe('1');
+    expect(section.getAttribute('data-c2f-widget-root')).toBe('1');
+    expect(section.getAttribute('data-widget-type')).toBe('pages-index');
+    expect(section.getAttribute('data-widget-slug')).toBe('sem-registros');
+    expect(section.getAttribute('data-c2f-marker')).toBeTruthy();
+
+    const out = T.reconstruct(root);
+    expect(out).toContain('<section id="empty">' + OPEN(sig) + CLOSE(sig) + '</section>');
+    expect(out).not.toContain('data-c2f-widget');
+    expect(out).not.toContain('contenteditable');
+  });
+
+  it('req-111 - widget direto no layout mapeia a raiz e salva sem anotacoes', () => {
+    const sig = 'menus->render({"grupo_slug":"layout"})';
+    const html = OPEN(sig) + '<header>Topo</header><main>Corpo</main>' + CLOSE(sig);
+    const root = createEl(html, 'c2f-layout-root');
+    const backup = createEl(html);
+
+    T.runMap(root, backup);
+
+    expect(root.getAttribute('data-c2f-widget-parent')).toBe('1');
+    expect(root.getAttribute('data-c2f-widget-root')).toBe('1');
+    expect(root.querySelector('header').getAttribute('data-c2f-widget-id')).toBeNull();
+
+    const out = T.reconstruct(root);
+    expect(out).toBe(html);
+    expect(out).not.toContain('data-c2f-widget');
+    expect(out).not.toContain('contenteditable');
+  });
+
   // ===== BATCH-082 =====
 
   it('§1 — ponte de widget: c2f-he:widget-render → AJAX → posta c2f-he:widget-rendered', async () => {

@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
+if (!function_exists('gestor_dashboard_toolbar_ativo')) {
+    function gestor_dashboard_toolbar_ativo(): bool
+    {
+        return !empty($GLOBALS['c2f_test_dashboard_toolbar_ativo']);
+    }
+}
+
 /**
  * Higienização do HTML entregue ao navegador (req-132 / BATCH-134).
  *
@@ -165,6 +172,26 @@ final class HtmlSanitizeTest extends TestCase
         global $_GESTOR;
         $_ENV['HTML_SANITIZE'] = 'talvez';
         $_GESTOR['development-env'] = false;
+        self::assertTrue(gestor_pagina_higienizar_ativo());
+    }
+
+    public function testLiveEditorDesligaSanitizeMesmoForcadoOnEmProducao(): void
+    {
+        global $_GESTOR;
+        $_ENV['HTML_SANITIZE'] = 'on';
+        $_GESTOR['development-env'] = false;
+        $GLOBALS['c2f_test_dashboard_toolbar_ativo'] = true;
+
+        self::assertFalse(gestor_pagina_higienizar_ativo());
+    }
+
+    public function testProducaoSemLiveEditorContinuaHigienizada(): void
+    {
+        global $_GESTOR;
+        $_ENV['HTML_SANITIZE'] = 'auto';
+        $_GESTOR['development-env'] = false;
+        $GLOBALS['c2f_test_dashboard_toolbar_ativo'] = false;
+
         self::assertTrue(gestor_pagina_higienizar_ativo());
     }
 
@@ -330,6 +357,7 @@ final class HtmlSanitizeTest extends TestCase
     protected function tearDown(): void
     {
         unset($_ENV['HTML_SANITIZE']);
+        unset($GLOBALS['c2f_test_dashboard_toolbar_ativo']);
         parent::tearDown();
     }
 }

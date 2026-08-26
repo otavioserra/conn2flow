@@ -909,3 +909,20 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [ ] Runtime Linux/GNOME e macOS — indisponíveis na estação Windows atual; contratos nativos estão
       cobertos por runner injetado sem mutar a preferência do operador durante o PHPUnit.
 - [x] Nível 1 respeitado: nenhum commit, push ou deploy.
+
+---
+
+## BATCH-138 — Preservação do HTML no Live Editor e widgets vazios (req-111)
+
+- [x] Gate PHP desliga a higienização quando a Dashboard Site Toolbar está ativa.
+- [x] Visitante/fluxo sem toolbar mantém o contrato vigente de `HTML_SANITIZE`.
+- [x] Widget vazio delimitado por comentários é mapeado no contêiner pai e reconstruído no save.
+- [x] Widget diretamente no `#c2f-layout-root` é selecionável e reconstruído sem atributos internos.
+- [x] Testes focados PHP (**37/37**) e JS (**31/31**) aprovados.
+- [x] Suítes PHPUnit (**776/776**) e Vitest (**345/345**) aprovadas.
+- [x] Runtime Photon em produção: anônimo sem comentários/marcadores/indentação; administrador com
+      HTML original, toolbar e marcadores; Playwright abriu o modo de edição sem erros de console.
+- [x] Screenshot: `temp/req-111-live-editor.png`.
+- [x] `git diff --check` limpo e review findings-first sem findings.
+- [x] Ambiente Photon restaurado e confirmado em produção (`DEVELOPMENT_ENV=false`).
+- [x] Nível 1 respeitado: nenhum commit, push ou deploy remoto.
