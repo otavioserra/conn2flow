@@ -66,6 +66,58 @@ if (!function_exists('assets_externos_registro')) {
 				'css' => Array(),
 				'js' => Array('fp.min.js'),
 			),
+			'jquery' => Array(
+				// Estava em QUATRO lugares, com TRÊS versões e QUATRO hosts: 3.5.1 de
+				// `ajax.googleapis.com` em `gestor.php` (toda página do gestor), 3.7.1 de jsdelivr no
+				// editor HTML, 3.7.1 de cdnjs na toolbar e 3.6.0 de jsdelivr no widget de idioma. Duas
+				// versões na mesma tela quebram plugins de um jeito difícil de diagnosticar, porque
+				// quem carrega por último vence.
+				'versao' => '3.7.1',
+				'cdn' => 'https://cdn.jsdelivr.net/npm/jquery@{v}/dist/{f}',
+				'css' => Array(),
+				'js' => Array('jquery.min.js'),
+			),
+			'codemirror' => Array(
+				'versao' => '5.65.20',
+				'cdn' => 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/{v}/{f}',
+				'css' => Array(
+					'codemirror.min.css',
+					'theme/tomorrow-night-bright.css',
+					'addon/dialog/dialog.css',
+					'addon/display/fullscreen.css',
+					'addon/search/matchesonscrollbar.css',
+				),
+				// A ORDEM importa: `codemirror.min.js` define o objeto que todo addon estende.
+				'js' => Array(
+					'codemirror.min.js',
+					'addon/selection/active-line.js',
+					'addon/dialog/dialog.js',
+					'addon/search/searchcursor.js',
+					'addon/search/search.js',
+					'addon/scroll/annotatescrollbar.js',
+					'addon/search/matchesonscrollbar.js',
+					'addon/search/jump-to-line.js',
+					'addon/edit/matchbrackets.js',
+					'addon/display/fullscreen.js',
+					'mode/xml/xml.js',
+					'mode/css/css.js',
+					'mode/htmlmixed/htmlmixed.js',
+					'mode/javascript/javascript.js',
+					'mode/markdown/markdown.js',
+				),
+			),
+			'fomantic-ui' => Array(
+				'versao' => '2.9.4',
+				'cdn' => 'https://cdn.jsdelivr.net/npm/fomantic-ui@{v}/dist/{f}',
+				'css' => Array('semantic.min.css'),
+				'js' => Array('semantic.min.js'),
+			),
+			'quill' => Array(
+				'versao' => '2.0.3',
+				'cdn' => 'https://cdn.jsdelivr.net/npm/quill@{v}/dist/{f}',
+				'css' => Array('quill.snow.css'),
+				'js' => Array('quill.min.js'),
+			),
 		);
 	}
 }

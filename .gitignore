@@ -40,6 +40,15 @@ config.local.php
 node_modules/
 vendor/
 
+# req-143 / BATCH-146: `vendor/` acima existe para o Composer, mas também engolia
+# `gestor/assets/vendor/` — as bibliotecas de terceiros servidas ao NAVEGADOR.
+#
+# Ignorá-las faria a migração sair do CDN apenas na máquina de quem rodou `c2f assets:vendor`:
+# em produção os arquivos não existiriam e o resolvedor cairia no fallback de CDN em silêncio,
+# com o código parecendo migrado. São 2,9 MB versionados em troca de o que roda em produção ser
+# exatamente o que foi revisado, sem depender de rede no momento do deploy.
+!gestor/assets/vendor/
+
 # Cache
 cache/
 *.cache

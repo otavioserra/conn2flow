@@ -913,7 +913,21 @@ function gestor_pagina_css(){
 	$css_global = '';
 
 	$css_padrao = Array();
-	if($fomantic_ui_included) $css_padrao[] = '<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css" />';
+
+	// req-143 / BATCH-146: mesma resolução do JS — registro de assets externos, disco primeiro.
+	if($fomantic_ui_included){
+		if(!function_exists('assets_externos_tags') && !empty($_GESTOR['bibliotecas-path'])){
+			require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+		}
+
+		$tagsFomanticCss = assets_externos_tags(
+			'fomantic-ui',
+			($_GESTOR['assets-path'] ?? '').'vendor'.DIRECTORY_SEPARATOR,
+			($_GESTOR['url-raiz'] ?? '/').'vendor/'
+		);
+
+		foreach($tagsFomanticCss['css'] as $tag){ $css_padrao[] = $tag; }
+	}
 
 	if(!isset($_GESTOR['css-precompiled'])) $_GESTOR['css-precompiled'] = Array();
 	if(!isset($_GESTOR['css-compiled'])) $_GESTOR['css-compiled'] = Array();
@@ -993,9 +1007,28 @@ function gestor_pagina_extra_head_e_javascript(){
 	// ===== Inclusão de bibliotecas javascript
 	
 	$js_global_includes = '';
-	$js_padrao[] = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>'; // jQuery
 
-	if($fomantic_ui_included) $js_padrao[] = '<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>'; // Semantic-UI
+	// req-143 / BATCH-146: jQuery e Fomantic-UI vêm do registro de assets externos, servidos do
+	// disco quando `assets/vendor/` existe e do CDN enquanto não existir.
+	//
+	// O jQuery daqui era 3.5.1 vindo de `ajax.googleapis.com` e valia para TODA página do gestor,
+	// enquanto o editor HTML injetava 3.7.1 de jsdelivr e a toolbar 3.7.1 de cdnjs. Três versões,
+	// três hosts: numa tela que carregasse mais de uma, a última vencia e plugins registrados na
+	// anterior sumiam — falha intermitente e difícil de rastrear.
+	if(!function_exists('assets_externos_tags') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+
+	$vendorFisico = ($_GESTOR['assets-path'] ?? '').'vendor'.DIRECTORY_SEPARATOR;
+	$vendorPublico = ($_GESTOR['url-raiz'] ?? '/').'vendor/';
+
+	$tagsJquery = assets_externos_tags('jquery', $vendorFisico, $vendorPublico);
+	foreach($tagsJquery['js'] as $tag){ $js_padrao[] = $tag; }
+
+	if($fomantic_ui_included){
+		$tagsFomantic = assets_externos_tags('fomantic-ui', $vendorFisico, $vendorPublico);
+		foreach($tagsFomantic['js'] as $tag){ $js_padrao[] = $tag; }
+	}
 
 	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'global/global.js?v='.gestor_asset_version('global').'"></script>'; // Global JS
 	

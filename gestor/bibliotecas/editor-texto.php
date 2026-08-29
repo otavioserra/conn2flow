@@ -28,6 +28,24 @@ $_GESTOR['biblioteca-editor-texto'] = Array(
 
 // ===== Configuração
 
+if (!function_exists('editor_texto_assets_externos_carregar')) {
+	/**
+	 * Garante que o registro de assets externos esteja carregado.
+	 *
+	 * Sem isto o `function_exists()` dos pontos de uso falhava em silêncio e o editor caía no CDN
+	 * mesmo com os arquivos já presentes em `assets/vendor/` — a migração parecia feita e não era.
+	 */
+	function editor_texto_assets_externos_carregar() {
+		global $_GESTOR;
+
+		if (function_exists('assets_externos_registro')) return;
+		if (empty($_GESTOR['bibliotecas-path'])) return;
+
+		$arquivo = $_GESTOR['bibliotecas-path'].'assets-externos.php';
+		if (is_file($arquivo)) require_once($arquivo);
+	}
+}
+
 if (!function_exists('editor_texto_versao_cdn')) {
 	/**
 	 * Versão do Quill servida pelo CDN.
@@ -42,8 +60,21 @@ if (!function_exists('editor_texto_versao_cdn')) {
 		global $_GESTOR;
 
 		$versao = isset($_GESTOR['editor-texto-versao']) ? trim((string)$_GESTOR['editor-texto-versao']) : '';
+		if($versao !== '') return $versao;
 
-		return $versao !== '' ? $versao : '2';
+		// req-143 / BATCH-146: o default sai do REGISTRO de assets externos, para haver uma única
+		// fonte da versão. O default anterior era `'2'` — uma faixa, não uma versão: qualquer
+		// publicação 2.x entrava em produção sem revisão, exatamente o problema que este lote existe
+		// para eliminar. E como `quill-content.css` é gerado a partir DESTA versão, uma faixa aqui
+		// significa o editor e a página publicada podendo desenhar diferente sem ninguém ter mexido.
+		editor_texto_assets_externos_carregar();
+
+		if(function_exists('assets_externos_registro')){
+			$registro = assets_externos_registro();
+			if(isset($registro['quill']['versao'])) return (string)$registro['quill']['versao'];
+		}
+
+		return '2.0.3';
 	}
 }
 
@@ -59,19 +90,41 @@ if (!function_exists('editor_texto_assets_editor')) {
 	 * @param string $versaoAsset Versão dos assets do core, para cache-bust.
 	 * @return array{css: list<string>, javascript: list<string>}
 	 */
-	function editor_texto_assets_editor($urlRaiz = '', $versaoAsset = '') {
+	function editor_texto_assets_editor($urlRaiz = '', $versaoAsset = '', $vendorFisico = '', $vendorPublico = '') {
+		editor_texto_assets_externos_carregar();
+
 		$versaoCdn = editor_texto_versao_cdn();
+
+		// req-143 / BATCH-146: as URLs do Quill vêm do registro de assets externos, que serve do
+		// disco quando `assets/vendor/` existe e do CDN enquanto não existir. A versão continua
+		// saindo de `editor_texto_versao_cdn()` porque `quill-content.css` é gerado a partir DELA:
+		// divergir entre as duas faz o editor e a página publicada desenharem diferente.
+		$tagsQuill = function_exists('assets_externos_tags')
+			? assets_externos_tags('quill', $vendorFisico, $vendorPublico)
+			: Array('css' => Array(), 'js' => Array());
+
+		$cssQuill = $tagsQuill['css']
+			? $tagsQuill['css'][0]
+			: '<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@'.$versaoCdn.'/dist/quill.snow.css" />';
+
+		// O papel marca a folha como "do Quill" para a auditoria de CSS e para o desmonte por papel
+		// (req-117): sem ele esta folha vira CSS anônimo no meio da cascata.
+		$cssQuill = str_replace(' />', ' data-c2f-css-role="quill" />', $cssQuill);
+
+		$jsQuill = $tagsQuill['js']
+			? $tagsQuill['js'][0]
+			: '<script src="https://cdn.jsdelivr.net/npm/quill@'.$versaoCdn.'/dist/quill.min.js"></script>';
 
 		return Array(
 			'css' => Array(
 				// Tema do editor: barra de ferramentas, seleção, tooltip de link.
-				'<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@'.$versaoCdn.'/dist/quill.snow.css" data-c2f-css-role="quill" />',
+				$cssQuill,
 				// O MESMO CSS de conteúdo que a página publicada recebe: é o que garante que o
 				// alinhamento, a indentação e as listas apareçam no editor como aparecerão no site.
 				'<link rel="stylesheet" type="text/css" media="all" href="'.$urlRaiz.'interface/quill-content.css?v='.$versaoAsset.'" data-c2f-css-role="quill" />',
 			),
 			'javascript' => Array(
-				'<script src="https://cdn.jsdelivr.net/npm/quill@'.$versaoCdn.'/dist/quill.min.js"></script>',
+				$jsQuill,
 				// Runtime compartilhado: cria os editores sobre `<textarea>` e mantém o campo do
 				// formulário sincronizado. Sem ele, cada tela repetiria a configuração do editor.
 				'<script src="'.$urlRaiz.'interface/editor-texto.js?v='.$versaoAsset.'"></script>',
@@ -166,7 +219,12 @@ if (!function_exists('editor_texto_incluir')) {
 		}
 
 		$versaoAsset = function_exists('gestor_asset_version') ? gestor_asset_version('interface') : '1.0.0';
-		$assets = editor_texto_assets_editor($_GESTOR['url-raiz'] ?? '/', $versaoAsset);
+		$assets = editor_texto_assets_editor(
+			$_GESTOR['url-raiz'] ?? '/',
+			$versaoAsset,
+			($_GESTOR['assets-path'] ?? '').'vendor'.DIRECTORY_SEPARATOR,
+			($_GESTOR['url-raiz'] ?? '/').'vendor/'
+		);
 
 		foreach ($assets['css'] as $tag) {
 			gestor_pagina_css_incluir($tag);
