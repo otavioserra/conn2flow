@@ -201,7 +201,12 @@ function publisher_highlights_adicionar(){
 
 	gestor_pagina_javascript_incluir();
 	// req-014: Sortable.js (CDN) para reordenação drag-and-drop das tags de curadoria manual.
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 
 	// ===== Interface adicionar finalizar opções
 
@@ -531,7 +536,12 @@ function publisher_highlights_editar(){
 
 	gestor_pagina_javascript_incluir();
 	// req-014: Sortable.js (CDN) para reordenação drag-and-drop das tags de curadoria manual.
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 
 	// ===== Interface editar finalizar opções
 
@@ -793,7 +803,12 @@ function publisher_highlights_clonar(){
 
 	gestor_pagina_javascript_incluir();
 	// req-014: Sortable.js (CDN) para reordenação drag-and-drop das tags de curadoria manual.
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 
 	$_GESTOR['interface']['clonar']['finalizar'] = Array(
 		'formulario' => Array(

@@ -271,7 +271,12 @@ function galleries_adicionar(){
 
 	// ===== Inclusão Módulo JS
 
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 	gestor_pagina_javascript_incluir();
 
 	// ===== Interface adicionar finalizar opções
@@ -570,7 +575,12 @@ function galleries_editar(){
 
 	// ===== Inclusão Módulo JS
 
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 	gestor_pagina_javascript_incluir();
 
 	// ===== Interface editar finalizar opções
@@ -789,7 +799,12 @@ function galleries_clonar(){
 		gestor_redirecionar_raiz();
 	}
 
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 	gestor_pagina_javascript_incluir();
 
 	$_GESTOR['interface']['clonar']['finalizar'] = Array(

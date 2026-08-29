@@ -292,7 +292,12 @@ function forms_search_adicionar() {
 	$schema = forms_search_schema_default();
 	forms_search_prepare_editor_page($schema);
 	gestor_pagina_javascript_incluir();
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 	forms_search_interface_finalizar('adicionar');
 }
 
@@ -438,7 +443,12 @@ function forms_search_editar() {
 
 	forms_search_prepare_editor_page($schema, $html, $css, $css_compiled, $html_extra_head, 'editar');
 	gestor_pagina_javascript_incluir();
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 	forms_search_interface_finalizar('editar', $id, forms_search_meta_dados($retorno_bd, $modulo), $retorno_bd[$modulo['tabela']['status']] ?? '', $module);
 }
 
@@ -501,7 +511,12 @@ function forms_search_clonar() {
 
 	forms_search_prepare_editor_page($schema, $html, $css, $css_compiled, $html_extra_head, 'adicionarEditar');
 	gestor_pagina_javascript_incluir();
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 	forms_search_interface_finalizar('clonar', $id, forms_search_meta_dados($retorno_bd, $modulo), $retorno_bd[$modulo['tabela']['status']] ?? '', $module);
 }
 

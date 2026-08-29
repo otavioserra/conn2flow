@@ -2670,7 +2670,12 @@ function dashboard_pagina_inicial(){
 	
 	// ===== Inclusão SortableJS para drag-and-drop
 	
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>');
+	// req-143: a versão vem do registro em `bibliotecas/assets-externos.php`. Estava `@latest`, o
+	// que fazia qualquer publicação no npm entrar em produção sem revisão.
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
 	
 	gestor_pagina_javascript_incluir();
 
