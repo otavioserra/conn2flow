@@ -70,6 +70,21 @@ graph LR
 
 ---
 
+## 🎨 Auditoria de CSS em Telas Inspecionadas
+
+Após a inspeção visual (Passo 4), o agente pode complementar a validação com auditoria de CSS para identificar classes órfãs, CSS derivado desatualizado ou dívida técnica de classes Tailwind em PHP/JS:
+
+```bash
+./c2f css:audit --url=<rota-inspecionada>
+```
+
+Este comando audita a página composta real (layout + componentes renderizados) e mapeia:
+- Classes CSS declaradas mas não utilizadas no HTML renderizado.
+- Classes Tailwind geradas dinamicamente por PHP/JS (dívida técnica).
+- Divergências entre `css_compiled` no banco e o CSS que deveria ser derivado do HTML atual.
+
+---
+
 ## ⛔ Regras Invioláveis de Inspeção:
 1. **EXCLUSIVO PARA AMBIENTE LOCAL DE TESTES**: NUNCA execute inspeção, auth ou scraping automatizado em URLs de produção.
 2. **Registro no SDD**: As evidências de inspeção (JSON do `page:inspect` e screenshots) DEVEM ser registradas diretamente no `VALIDATION-CHECKLIST.md` do repositório em vez de marcar "pendente do operador".

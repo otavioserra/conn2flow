@@ -53,6 +53,27 @@ Ao criar ou editar qualquer script JavaScript (`<id>.js`) ou folha de estilo (`<
 
 ---
 
+## 🗄️ 3.1. Fonte da Verdade em Runtime (Banco vs Disco)
+
+> [!IMPORTANT]
+> O runtime do Conn2Flow serve HTML e CSS exclusivamente do **BANCO DE DADOS** (`gestor.php:2782`). O diretório `resources/` é lido diretamente apenas sob `DEVELOPMENT_ENV=true`.
+
+**Fluxo Arquitetural**:
+```
+resources/ (disco) → c2f resources:sync → *Data.json → Upsert no Banco SQL → Runtime serve do Banco
+```
+
+* **Disco (`resources/`)**: É a **semente de compilação** — a fonte de autoria onde desenvolvedores criam e editam.
+* **Banco de Dados**: É a **fonte da verdade em runtime** — o que o visitante vê e o que o Gestor edita.
+* **Pipeline Oficial**: Alterações em disco SÓ chegam ao runtime após execução de `c2f manager:update-all` (para o sistema) ou `c2f project:update-all <id>` (para projetos).
+
+**Ao investigar o comportamento de uma página publicada:**
+1. Inspecione o banco PRIMEIRO (tabelas `paginas`, `layouts`, `componentes`).
+2. Compare com `resources/` para identificar divergências.
+3. NUNCA assuma que o conteúdo em disco é o que está sendo servido.
+
+---
+
 ## 4. Convenções de HTML e Seções
 
 * Em arquivos de página (`pages/<id>/<id>.html`), adicione obrigatoriamente os atributos às tags `<section>`:
