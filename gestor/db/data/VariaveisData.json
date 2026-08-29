@@ -83,8 +83,8 @@
     {
         "language": "pt-br",
         "modulo": "configuracao",
-        "id": "variable-type-tinymce-label",
-        "valor": "TinyMCE",
+        "id": "variable-type-editor-texto-label",
+        "valor": "Editor de texto",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -1064,8 +1064,8 @@
     {
         "language": "en",
         "modulo": "configuracao",
-        "id": "variable-type-tinymce-label",
-        "valor": "TinyMCE",
+        "id": "variable-type-editor-texto-label",
+        "valor": "Text editor",
         "tipo": "string",
         "grupo": null,
         "descricao": null

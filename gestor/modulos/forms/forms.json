@@ -79,11 +79,11 @@
                     "redirects": {
                         "success": {
                             "type": "url",
-                            "path": "your-page/success/"
+                            "path": "your-page\/success\/"
                         },
                         "error": {
                             "type": "url",
-                            "path": "your-page/error/"
+                            "path": "your-page\/error\/"
                         }
                     },
                     "fields": [
@@ -139,11 +139,12 @@
                     "id": "forms-contato-basico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "8753c36322442ae89b747f38fe605fb6",
+                        "html": "6558ae285389a6c924fc47da2761a45c",
                         "css": "",
-                        "combined": "8753c36322442ae89b747f38fe605fb6"
+                        "css_precompiled": "",
+                        "combined": "6558ae285389a6c924fc47da2761a45c"
                     }
                 },
                 {
@@ -151,11 +152,12 @@
                     "id": "forms-newsletter-newsletter",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "4bf6bdafaef9e8f15e16c491a282f65d",
+                        "html": "abaff8075fe73ea59651fc0704f3ee27",
                         "css": "",
-                        "combined": "4bf6bdafaef9e8f15e16c491a282f65d"
+                        "css_precompiled": "",
+                        "combined": "abaff8075fe73ea59651fc0704f3ee27"
                     }
                 },
                 {
@@ -163,11 +165,12 @@
                     "id": "forms-registro-usuario",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "b8f6a4b275bd7d992b87541060e9e9d4",
+                        "html": "59b284421b35c9107e27a32641d9f2f8",
                         "css": "",
-                        "combined": "b8f6a4b275bd7d992b87541060e9e9d4"
+                        "css_precompiled": "",
+                        "combined": "59b284421b35c9107e27a32641d9f2f8"
                     }
                 },
                 {
@@ -175,11 +178,12 @@
                     "id": "forms-pesquisa-satisfacao",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "ec713cf91f1e9f8ee6326d59a41997ef",
+                        "html": "a1e0b81519818a26babcca86f67a7b78",
                         "css": "",
-                        "combined": "ec713cf91f1e9f8ee6326d59a41997ef"
+                        "css_precompiled": "",
+                        "combined": "a1e0b81519818a26babcca86f67a7b78"
                     }
                 },
                 {
@@ -187,11 +191,12 @@
                     "id": "forms-suporte-tecnico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "7369fec0015bad20f27abb1501d2f33c",
+                        "html": "4e297360c0274cffe73b6a3c1e727a02",
                         "css": "",
-                        "combined": "7369fec0015bad20f27abb1501d2f33c"
+                        "css_precompiled": "",
+                        "combined": "4e297360c0274cffe73b6a3c1e727a02"
                     }
                 }
             ],
@@ -200,7 +205,7 @@
                     "name": "Formulários Listar",
                     "id": "forms-list",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/",
+                    "path": "forms\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -215,7 +220,7 @@
                     "name": "Formulários Visualizar",
                     "id": "forms-view",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/view/",
+                    "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
                     "version": "1.10",
@@ -229,7 +234,7 @@
                     "name": "Formulários Adicionar",
                     "id": "forms-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/adicionar/",
+                    "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.11",
@@ -243,7 +248,7 @@
                     "name": "Formulários Editar",
                     "id": "forms-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/editar/",
+                    "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.9",
@@ -257,7 +262,7 @@
                     "name": "Formulários Clonar",
                     "id": "forms-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/clonar/",
+                    "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.8",
@@ -271,7 +276,7 @@
                     "name": "Forms Test Email Page",
                     "id": "forms-test-email-page",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "forms/test-email-page/",
+                    "path": "forms\/test-email-page\/",
                     "type": "system",
                     "option": "test-email-page",
                     "framework_css": "tailwindcss",
@@ -364,11 +369,11 @@
                     "redirects": {
                         "success": {
                             "type": "url",
-                            "path": "your-page/success/"
+                            "path": "your-page\/success\/"
                         },
                         "error": {
                             "type": "url",
-                            "path": "your-page/error/"
+                            "path": "your-page\/error\/"
                         }
                     },
                     "fields": [
@@ -424,11 +429,12 @@
                     "id": "forms-contato-basico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "07a6c123f9a7d70029f71c504651d59e",
+                        "html": "dc4437f0ff6309b28132ce4e2b50b8ac",
                         "css": "",
-                        "combined": "07a6c123f9a7d70029f71c504651d59e"
+                        "css_precompiled": "",
+                        "combined": "dc4437f0ff6309b28132ce4e2b50b8ac"
                     }
                 },
                 {
@@ -436,11 +442,12 @@
                     "id": "forms-newsletter-newsletter",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "64c9e2af0bf687f8690b0175508e237b",
+                        "html": "4e168e306c8697b3cc8cf1482071c2f1",
                         "css": "",
-                        "combined": "64c9e2af0bf687f8690b0175508e237b"
+                        "css_precompiled": "",
+                        "combined": "4e168e306c8697b3cc8cf1482071c2f1"
                     }
                 },
                 {
@@ -448,11 +455,12 @@
                     "id": "forms-registro-usuario",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "5acd05ef9330c9bb456b5518bb430939",
+                        "html": "95f3a70fc234fa14bfc139435e64de40",
                         "css": "",
-                        "combined": "5acd05ef9330c9bb456b5518bb430939"
+                        "css_precompiled": "",
+                        "combined": "95f3a70fc234fa14bfc139435e64de40"
                     }
                 },
                 {
@@ -460,11 +468,12 @@
                     "id": "forms-pesquisa-satisfacao",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "fc0894afbab9cf3672a0e679f04f7069",
+                        "html": "c507f3e698453f40ce1fbbae6fb4881c",
                         "css": "",
-                        "combined": "fc0894afbab9cf3672a0e679f04f7069"
+                        "css_precompiled": "",
+                        "combined": "c507f3e698453f40ce1fbbae6fb4881c"
                     }
                 },
                 {
@@ -472,11 +481,12 @@
                     "id": "forms-suporte-tecnico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "f1e9e7d4c43fcf902a1e2f2d0cb268cd",
+                        "html": "16b67573d441c301ef899efa83a30b5f",
                         "css": "",
-                        "combined": "f1e9e7d4c43fcf902a1e2f2d0cb268cd"
+                        "css_precompiled": "",
+                        "combined": "16b67573d441c301ef899efa83a30b5f"
                     }
                 }
             ],
@@ -485,7 +495,7 @@
                     "name": "Forms List",
                     "id": "forms-list",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/",
+                    "path": "forms\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -500,7 +510,7 @@
                     "name": "Forms View",
                     "id": "forms-view",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/view/",
+                    "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
                     "version": "1.13",
@@ -514,7 +524,7 @@
                     "name": "Forms Add",
                     "id": "forms-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/adicionar/",
+                    "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.13",
@@ -528,7 +538,7 @@
                     "name": "Forms Edit",
                     "id": "forms-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/editar/",
+                    "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.11",
@@ -542,7 +552,7 @@
                     "name": "Forms Clone",
                     "id": "forms-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms/clonar/",
+                    "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.10",
@@ -556,7 +566,7 @@
                     "name": "Forms Test Email Page",
                     "id": "forms-test-email-page",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "forms/test-email-page/",
+                    "path": "forms\/test-email-page\/",
                     "type": "system",
                     "option": "test-email-page",
                     "framework_css": "tailwindcss",

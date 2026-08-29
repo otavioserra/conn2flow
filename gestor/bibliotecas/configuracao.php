@@ -24,7 +24,7 @@ $_GESTOR['biblioteca-configuracao']							=	Array(
 		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-css-label')),					'valor' => 'css',				),
 		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-js-label')),					'valor' => 'js',				),
 		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-html-label')),					'valor' => 'html',				),
-		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-tinymce-label')),				'valor' => 'tinymce',			),
+		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-editor-texto-label')),		'valor' => 'editor-texto',	),
 		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-datas-multiplas-label')),		'valor' => 'datas-multiplas',	),
 		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-data-label')),					'valor' => 'data',				),
 		Array(	'texto' => gestor_variaveis(Array('modulo' => 'configuracao','id' => 'variable-type-data-hora-label')),				'valor' => 'data-hora',			),
@@ -32,6 +32,27 @@ $_GESTOR['biblioteca-configuracao']							=	Array(
 );
 
 // ===== Funções auxiliares
+
+if(!function_exists('configuracao_campo_tipo')){
+	/**
+	 * Normaliza o tipo de um campo de configuração (req-144 / BATCH-147).
+	 *
+	 * O tipo `tinymce` foi renomeado para `editor-texto` quando o editor licenciado saiu do sistema:
+	 * o nome de um tipo de campo não deveria carregar a marca de um fornecedor, e o campo hoje é
+	 * servido pelo Quill via `bibliotecas/editor-texto.php`.
+	 *
+	 * A migração renomeia os dados gravados, mas o alias precisa existir mesmo assim: entre o deploy
+	 * do código e a aplicação da migração há uma janela em que o banco ainda diz `tinymce`. Sem o
+	 * alias, `$campo[$variavel['tipo']]` erra a chave e o campo some da tela — uma variável de
+	 * conteúdo sumindo em silêncio, que é pior do que um erro visível.
+	 *
+	 * @param string $tipo Tipo gravado no banco.
+	 * @return string Tipo canônico.
+	 */
+	function configuracao_campo_tipo($tipo){
+		return ((string)$tipo === 'tinymce') ? 'editor-texto' : (string)$tipo;
+	}
+}
 
 // ===== Funções principais
 
@@ -310,7 +331,9 @@ function configuracao_administracao($params = false){
 				// Substituir variáveis do template com dados do banco
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelID#",$variavel['id_variaveis']);
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelNum#",(string)$count);
-				$cel_aux = modelo_var_troca($cel_aux,"#variavelTipo#",$variavel['tipo']);
+				$variavelTipo = configuracao_campo_tipo($variavel['tipo']);
+
+				$cel_aux = modelo_var_troca($cel_aux,"#variavelTipo#",$variavelTipo);
 				$cel_aux = modelo_var_troca($cel_aux,"#variavelNome#",$variavel['id']);
 				
 				// ===== Mostrar ou esconder campo descrição conforme existência
@@ -349,12 +372,12 @@ function configuracao_administracao($params = false){
 				
 				// ===== Incluir o campo específico conforme tipo da variável
 				
-				$campo_aux = $campo[$variavel['tipo']];
+				$campo_aux = isset($campo[$variavelTipo]) ? $campo[$variavelTipo] : '';
 				
 				// ===== Popular dados específicos conforme tipo do campo
 				// Tratamento especial para bool, string e outros tipos
 				
-				switch($variavel['tipo']){
+				switch($variavelTipo){
 					case 'bool':
 						// Checkbox: remove checked se valor for falso
 						if(!$variavel['valor']){

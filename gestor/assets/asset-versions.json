@@ -1,8 +1,8 @@
 {
     "version": 1,
-    "system": "635311bd4ba6029a",
+    "system": "66174b7487eaa6d9",
     "owners": {
-        "configuracao": "62287d9ff04b2913",
+        "configuracao": "8c2e615a2bd52227",
         "dashboard": "431d9008a60564a7",
         "datatables": "5648e2d8917a0a2b",
         "favicon": "8587a3f200e38cbe",
@@ -16,7 +16,6 @@
         "stripe": "0742219cf69a423b",
         "tailwindcss": "1c0e3f13035b98e8",
         "templates": "4dd6d231504de973",
-        "tinymce": "f352d7045af6c5bf",
         "widgets": "f47dbd91fa6277cc"
     }
 }

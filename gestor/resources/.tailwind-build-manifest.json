@@ -1458,6 +1458,17 @@
             "safelist": [],
             "built_at": "2026-08-29T13:04:37+00:00"
         },
+        "module|galleries|en|templates|galleries-estados": {
+            "fingerprint": "ddb8ccf3dc460040e3760f415eb7a739c7fb0f076e63642d433f41824be58b48",
+            "output_hash": "48712237e14fab0e4d4bcd6a66d4b8866cb14872225f66fc699547b47c1efced",
+            "output": "modulos/galleries/resources/en/templates/galleries-estados/galleries-estados.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/en/templates/galleries-estados/galleries-estados.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-29T16:10:56+00:00"
+        },
         "module|galleries|en|templates|galleries-grid": {
             "fingerprint": "9d04bce361e2b2e34a3968467f05ee3c2ab899da00b9994472170022eaf8ece7",
             "output_hash": "2bdf904a988ab5874089128c1ed2efdaf455a9815c2d229fcca020a96a5e6a29",
@@ -1501,6 +1512,17 @@
             ],
             "safelist": [],
             "built_at": "2026-08-29T13:04:39+00:00"
+        },
+        "module|galleries|pt-br|templates|galleries-estados": {
+            "fingerprint": "b2b038ed8084aa21f1212d07d9cae24d6efbe674b0471fa112f620d084543029",
+            "output_hash": "48712237e14fab0e4d4bcd6a66d4b8866cb14872225f66fc699547b47c1efced",
+            "output": "modulos/galleries/resources/pt-br/templates/galleries-estados/galleries-estados.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/galleries/resources/pt-br/templates/galleries-estados/galleries-estados.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-08-29T16:10:56+00:00"
         },
         "module|galleries|pt-br|templates|galleries-grid": {
             "fingerprint": "d6bfebd109b3b5a901fed60a89c7c4bf3467e27b188214370f065b01b4cdf46e",

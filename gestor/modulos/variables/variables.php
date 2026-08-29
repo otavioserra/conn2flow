@@ -97,36 +97,20 @@ function variables_raiz(){
 			'id' => $modulo['tabela']['id'],
 			'status' => $modulo['tabela']['status'],
 		),
-		'botoes' => Array(
-			'adicionar' => Array(
-				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/adicionar/',
-				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-insert')),
-				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-insert')),
-				'icon' => 'plus circle',
-				'cor' => 'blue',
-			),
-			'editar' => Array(
-				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id,
-				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-edit')),
-				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-edit')),
-				'icon' => 'edit',
-				'cor' => 'blue',
-			),
-			'status' => Array(
-				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=status&'.$modulo['tabela']['status'].'='.($status_atual == 'A' ? 'I' : 'A' ).'&'.$modulo['tabela']['id'].'='.$id.'&redirect='.urlencode($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id),
-				'rotulo' => ($status_atual == 'A' ? gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-desactive')) : gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-active')) ),
-				'tooltip' => ($status_atual == 'A' ? gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-desactive')) : gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-active'))),
-				'icon' => ($status_atual == 'A' ? 'eye' : 'eye slash' ),
-				'cor' => ($status_atual == 'A' ? 'green' : 'brown' ),
-			),
-			'excluir' => Array(
-				'url' => $_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/?opcao=excluir&'.$modulo['tabela']['id'].'='.$id,
-				'rotulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'label-button-delete')),
-				'tooltip' => gestor_variaveis(Array('modulo' => 'interface','id' => 'tooltip-button-delete')),
-				'icon' => 'trash alternate',
-				'cor' => 'red',
-			),
-		),
+		// req-144 / BATCH-147: esta tela NÃO é um CRUD de módulos — ela edita as VARIÁVEIS de um
+		// módulo, e a inclusão de variável já acontece dentro dela (o card `adicionar` de
+		// `configuracao_administracao`). Os quatro botões que existiam aqui vieram por cópia do
+		// scaffold CRUD e apontavam todos para a tabela `modulos`:
+		//
+		//   adicionar -> `variables/adicionar/`  : página que nunca existiu (404/redirect)
+		//   editar    -> `variables/editar/`     : página que nunca existiu, e redundante — esta tela
+		//                                          JÁ é a de edição (`interface-opcao = alteracoes`)
+		//   status    -> `?opcao=status`         : DESATIVAVA o módulo inteiro (`modulos.status = 'I'`)
+		//   excluir   -> `?opcao=excluir`        : EXCLUÍA o módulo inteiro (`modulos.status = 'D'`)
+		//
+		// Os dois últimos são o achado grave: um clique em "Excluir" na tela de variáveis do
+		// `usuarios-perfis` apagava o módulo `usuarios-perfis`. Criar as páginas faltantes teria
+		// mantido de pé duas ações destrutivas que esta tela nunca deveria oferecer.
 		'formulario' => Array(
 			'validacao' => Array(
 				Array(

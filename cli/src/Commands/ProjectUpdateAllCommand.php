@@ -6,6 +6,7 @@ namespace Conn2Flow\Cli\Commands;
 
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
+use Conn2Flow\Cli\Console\Input;
 
 final class ProjectUpdateAllCommand extends BaseProcessCommand
 {
@@ -80,8 +81,18 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         // rodar", que é exatamente a classe de falha que o req-141 existe para eliminar. Ela é
         // condicionada: sem Tailwind CLI ou sem a coluna de procedência, apenas avisa e segue.
         $output->section("6/6 Regenerando CSS derivado ({$project})");
+
+        // O projeto chega a este comando como ARGUMENTO (`c2f project:update-all transformamp-local`),
+        // mas o `css:rebuild` o lê como OPÇÃO (`--project=`). Repassar o mesmo `$input` fazia a etapa
+        // cair no default — o ambiente de teste do SISTEMA — e regenerar a base errada: o pipeline
+        // do projeto reportava sucesso sem ter tocado no CSS do projeto. Aqui o id é declarado.
+        $argv = ['css:rebuild', '--project=' . $project];
+        if ($input->hasOption('confirmar-remoto')) {
+            $argv[] = '--confirmar-remoto';
+        }
+
         $cssCmd = new CssRebuildCommand($this->rootPath);
-        $code = $cssCmd->execute($input, $output);
+        $code = $cssCmd->execute(new Input($argv), $output);
         if ($code !== 0) {
             $output->warning(
                 'A regeneração do CSS não completou. As demais etapas foram aplicadas, mas recursos '

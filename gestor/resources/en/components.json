@@ -252,11 +252,12 @@
     {
         "name": "Configuration - Fields",
         "id": "configuracao-campos",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "45a915e84a76338ed115f59736b25d04",
+            "html": "99affcafe43354d5089cd8a74745444b",
             "css": "4183f8ca0236bdb2a6b7d5fd983eba86",
-            "combined": "5fd7d67ea8f61cf5ed8c08c1e9c5c075"
+            "css_precompiled": "",
+            "combined": "d94c6cd7c467538800971228f2d4e548"
         }
     },
     {

@@ -220,10 +220,8 @@ $(document).ready(function () {
 				obj.find('.ui.calendar.data').calendar('set date', dataHora);
 			}
 
-			if (obj.find('.tinymce').length > 0 && window.EditorTexto) {
-				// `.tinymce` continua sendo o gancho no markup: trocá-lo exigiria migrar os dados dos
-				// campos já cadastrados, o que é escopo de outro lote.
-				window.EditorTexto.iniciar('textarea.tinymce', obj.get(0), editorTextoOpcoes);
+			if (obj.find('.editor-texto').length > 0 && window.EditorTexto) {
+				window.EditorTexto.iniciar('textarea.editor-texto', obj.get(0), editorTextoOpcoes);
 			}
 
 			if (obj.find('.js').length > 0 || obj.find('.html').length > 0 || obj.find('.css').length > 0) {
@@ -284,7 +282,7 @@ $(document).ready(function () {
 
 			if (window.EditorTexto) {
 				$('.variavelCont').each(function () {
-					window.EditorTexto.iniciar('textarea.tinymce', this, editorTextoOpcoes);
+					window.EditorTexto.iniciar('textarea.editor-texto', this, editorTextoOpcoes);
 				});
 			}
 
@@ -344,7 +342,7 @@ $(document).ready(function () {
 					campoValor = campoAtual.find('input.calendarInput').val();
 					return false;
 					break;
-				case 'tinymce':
+				case 'editor-texto':
 					// req-142: o valor vem do textarea, que o editor mantém sincronizado — funciona
 					// igual com ou sem o Quill carregado.
 					campoValor = window.EditorTexto
@@ -367,7 +365,7 @@ $(document).ready(function () {
 				if (!campoValor) campoObj.find('input').prop('checked', false);
 				break;
 			case 'text':
-			case 'tinymce':
+			case 'editor-texto':
 			case 'js':
 			case 'css':
 			case 'html':
@@ -514,7 +512,7 @@ $(document).ready(function () {
 			case 'bool':
 				valor = valorObj.find('input').prop('checked');
 				break;
-			case 'tinymce':
+			case 'editor-texto':
 				valor = window.EditorTexto
 					? window.EditorTexto.obterValor(valorObj.find('textarea').get(0) || valorObj.get(0))
 					: valorObj.find('textarea').val();
@@ -574,7 +572,7 @@ $(document).ready(function () {
 				campo.find('input').prop('checked', valor);
 				break;
 			case 'text':
-			case 'tinymce':
+			case 'editor-texto':
 			case 'css':
 			case 'js':
 			case 'html':
@@ -623,8 +621,8 @@ $(document).ready(function () {
 			obj2.parents('.editar').remove();
 
 			switch (variavelTipo) {
-				case 'tinymce':
-					var campo2 = $('.camposModelos').find('.campo.tinymce').clone();
+				case 'editor-texto':
+					var campo2 = $('.camposModelos').find('.campo.editor-texto').clone();
 
 					campo2.attr('name', 'valor-' + num);
 					campo2.html(valor);
@@ -905,7 +903,7 @@ $(document).ready(function () {
 				case 'bool':
 					valorObj.find('input').prop('checked', valorPadrao);
 					break;
-				case 'tinymce':
+				case 'editor-texto':
 					if (window.EditorTexto) {
 						window.EditorTexto.definirValor(valorObj.find('textarea').get(0) || valorObj.get(0), valorPadrao);
 					} else {

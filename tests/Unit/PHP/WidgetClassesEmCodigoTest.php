@@ -64,25 +64,87 @@ final class WidgetClassesEmCodigoTest extends TestCase
         }
     }
 
-    public function testAResolucaoDeLinkRecebeOTemplatePorParametro(): void
+    public function testAResolucaoDeLinkRecebeAAparenciaJaResolvida(): void
     {
         // Blindagem da classe de bug que já ocorreu duas vezes neste lote: o corpo da função usa uma
         // variável que a assinatura não declara. O PHP só emite warning, e o comportamento some.
         $codigo = (string)file_get_contents(self::widget('galleries', 'galleries.widget.php'));
 
-        self::assertMatchesRegularExpression(
-            '/function galleries_widget_resolver_link\([^)]*\$template_html[^)]*\)/',
-            $codigo,
-            'resolver_link precisa declarar $template_html na assinatura'
-        );
-        self::assertMatchesRegularExpression(
-            '/function galleries_widget_resolver_item_vars\([^)]*\$template_html[^)]*\)/',
-            $codigo,
-            'resolver_item_vars precisa declarar $template_html na assinatura'
-        );
+        foreach (['galleries_widget_resolver_link', 'galleries_widget_resolver_item_vars'] as $fn) {
+            self::assertMatchesRegularExpression(
+                '/function ' . $fn . '\([^)]*\$css_link_desabilitado[^)]*\)/',
+                $codigo,
+                $fn . ' precisa declarar $css_link_desabilitado na assinatura'
+            );
+        }
 
-        // E a chamada precisa passar uma variável que exista no escopo de quem chama.
-        self::assertStringContainsString('$publicadorCache, $html_template)', $codigo);
+        // A aparência é resolvida UMA vez, fora do laço: ela não varia entre os itens, e o degrau 2
+        // da cadeia consulta o banco.
+        self::assertSame(
+            1,
+            substr_count($codigo, '= galleries_widget_css_link_desabilitado('),
+            'a resolução deve acontecer uma única vez, fora do laço de itens'
+        );
+        self::assertStringContainsString('$cssLinkDesabilitado = $estadoSemLink[', $codigo);
+
+        // E o CSS do recurso que forneceu as classes entra na página: classe sem regra é a mesma
+        // falha silenciosa, só que um degrau adiante.
+        self::assertStringContainsString('$estadoSemLink[' . "'css'" . ']', $codigo);
+    }
+
+    public function testACadeiaDeResolucaoAlcancaOTemplateDeOrigemEODefaultDoCore(): void
+    {
+        // O bug real: a galeria não renderiza a partir do template, e sim de uma CÓPIA congelada dele
+        // em `galleries.html`, com `user_modified = 1` — que por design bloqueia o sync. Corrigir o
+        // recurso não bastava, e foi por isso que a home continuou com cursor de mão.
+        $codigo = (string)file_get_contents(self::widget('galleries', 'galleries.widget.php'));
+
+        self::assertStringContainsString('function galleries_widget_css_link_desabilitado(', $codigo);
+
+        // Degrau 2: o template de origem declarado no schema.
+        self::assertStringContainsString("\$schema['template_id']", $codigo);
+        // Degrau 3: o padrão do core, para o template de projeto que esquecer o marcador.
+        self::assertStringContainsString("'galleries-estados'", $codigo);
+    }
+
+    public function testORecursoDeEstadosPadraoExisteEDeclaraOEstadoSemLink(): void
+    {
+        // Sem este recurso a cadeia perde o último degrau em silêncio: nenhuma classe seria aplicada
+        // e a imagem sem link voltaria a parecer clicável.
+        $encontrados = 0;
+
+        foreach (['pt-br', 'en'] as $lang) {
+            $arquivo = CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR
+                . 'galleries' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $lang
+                . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'galleries-estados'
+                . DIRECTORY_SEPARATOR . 'galleries-estados.html';
+
+            self::assertFileExists($arquivo);
+
+            $html = (string)file_get_contents($arquivo);
+            self::assertStringContainsString('<!-- link-disabled-css < -->', $html);
+            self::assertStringContainsString('cursor-default', $html);
+            $encontrados++;
+        }
+
+        self::assertSame(2, $encontrados);
+
+        // `target` próprio: senão o recurso interno apareceria no dropdown de modelos do painel.
+        $manifesto = json_decode((string)file_get_contents(
+            CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR
+            . 'galleries' . DIRECTORY_SEPARATOR . 'galleries.json'
+        ), true);
+
+        foreach (['pt-br', 'en'] as $lang) {
+            $alvo = null;
+            foreach ($manifesto['resources'][$lang]['templates'] as $t) {
+                if (($t['id'] ?? '') === 'galleries-estados') {
+                    $alvo = $t;
+                }
+            }
+            self::assertNotNull($alvo, 'galleries-estados nao registrado em ' . $lang);
+            self::assertSame('galleries-estados', $alvo['target']);
+        }
     }
 
     public function testNenhumArquivoDoCoreTemByteDeControle(): void

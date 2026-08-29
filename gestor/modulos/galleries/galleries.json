@@ -96,6 +96,19 @@
                         "css_precompiled": "",
                         "combined": "d75ee910b1a10d69ffade022859477fe"
                     }
+                },
+                {
+                    "name": "Galeria - Estados padrão (interno)",
+                    "id": "galleries-estados",
+                    "target": "galleries-estados",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "41ae9c4a8c79166a3e9781f48ca6ee4d",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "41ae9c4a8c79166a3e9781f48ca6ee4d"
+                    }
                 }
             ],
             "pages": [
@@ -316,6 +329,19 @@
                         "css": "1f9b0bae0cb2fbc149e45797cc5c50c0",
                         "css_precompiled": "",
                         "combined": "6d6c03bcb7838df8ecfc22dde7430c62"
+                    }
+                },
+                {
+                    "name": "Gallery - Default states (internal)",
+                    "id": "galleries-estados",
+                    "target": "galleries-estados",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "41ae9c4a8c79166a3e9781f48ca6ee4d",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "41ae9c4a8c79166a3e9781f48ca6ee4d"
                     }
                 }
             ],

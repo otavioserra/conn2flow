@@ -54,8 +54,8 @@
         "modulo": "configuracao"
     },
     {
-        "id": "variable-type-tinymce-label",
-        "value": "TinyMCE",
+        "id": "variable-type-editor-texto-label",
+        "value": "Editor de texto",
         "type": "string",
         "modulo": "configuracao"
     },

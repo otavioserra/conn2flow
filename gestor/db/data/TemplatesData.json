@@ -2520,6 +2520,21 @@
         "checksum": "{\"html\":\"ccdbbd9ad509c543b144d08b7af9aa05\",\"css\":\"1f9b0bae0cb2fbc149e45797cc5c50c0\",\"css_precompiled\":\"5d37b110f1099c5b0d9364c8c2da2c71\",\"combined\":\"c0d02f0d42147c1b39bea1ecad76e7bd\"}"
     },
     {
+        "nome": "Galeria - Estados padrão (interno)",
+        "id": "galleries-estados",
+        "target": "galleries-estados",
+        "thumbnail": null,
+        "language": "pt-br",
+        "html": "<!--\n    Estados visuais padrão do módulo `galleries` (req-141 \/ BATCH-147).\n\n    Este recurso não desenha galeria nenhuma: ele existe para que a APARÊNCIA de um estado tenha um\n    dono único e visível ao compilador Tailwind. O widget só chega aqui quando nem o HTML da galeria\n    nem o template de origem declaram o estado — o caso do template de projeto que esquece o\n    marcador, que foi como a home do `transformamp` publicou imagens sem link com cursor de mão.\n\n    `target` próprio (`galleries-estados`) mantém este recurso fora do dropdown de modelos do painel.\n-->\n\n<!-- link-disabled-css < -->pointer-events-none cursor-default<!-- link-disabled-css > -->\n",
+        "css": null,
+        "css_precompiled": "\/*! tailwindcss v4.3.0 | MIT License | https:\/\/tailwindcss.com *\/\n@layer utilities{.pointer-events-none{pointer-events:none}.cursor-default{cursor:default}}",
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"41ae9c4a8c79166a3e9781f48ca6ee4d\",\"css\":\"\",\"css_precompiled\":\"6d2dd9b2f26ab46d328fefa3a183db58\",\"combined\":\"2408937bd41763053fb9f66e41a50da1\"}"
+    },
+    {
         "nome": "Gallery - Grid",
         "id": "galleries-grid",
         "target": "galleries",
@@ -2578,6 +2593,21 @@
         "versao": 1,
         "file_version": "1.8",
         "checksum": "{\"html\":\"4235c7c2825cd8793001bebd8466252a\",\"css\":\"1f9b0bae0cb2fbc149e45797cc5c50c0\",\"css_precompiled\":\"5d37b110f1099c5b0d9364c8c2da2c71\",\"combined\":\"1f55f0d3be1882e072fc1628ad0f34e4\"}"
+    },
+    {
+        "nome": "Gallery - Default states (internal)",
+        "id": "galleries-estados",
+        "target": "galleries-estados",
+        "thumbnail": null,
+        "language": "en",
+        "html": "<!--\n    Estados visuais padrão do módulo `galleries` (req-141 \/ BATCH-147).\n\n    Este recurso não desenha galeria nenhuma: ele existe para que a APARÊNCIA de um estado tenha um\n    dono único e visível ao compilador Tailwind. O widget só chega aqui quando nem o HTML da galeria\n    nem o template de origem declaram o estado — o caso do template de projeto que esquece o\n    marcador, que foi como a home do `transformamp` publicou imagens sem link com cursor de mão.\n\n    `target` próprio (`galleries-estados`) mantém este recurso fora do dropdown de modelos do painel.\n-->\n\n<!-- link-disabled-css < -->pointer-events-none cursor-default<!-- link-disabled-css > -->\n",
+        "css": null,
+        "css_precompiled": "\/*! tailwindcss v4.3.0 | MIT License | https:\/\/tailwindcss.com *\/\n@layer utilities{.pointer-events-none{pointer-events:none}.cursor-default{cursor:default}}",
+        "framework_css": "tailwindcss",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"41ae9c4a8c79166a3e9781f48ca6ee4d\",\"css\":\"\",\"css_precompiled\":\"6d2dd9b2f26ab46d328fefa3a183db58\",\"combined\":\"2408937bd41763053fb9f66e41a50da1\"}"
     },
     {
         "nome": "Menu - Horizontal (Navbar)",

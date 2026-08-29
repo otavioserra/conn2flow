@@ -171,11 +171,22 @@ function galleries_widget_render_inline($params){
 	$paginasMap = galleries_widget_carregar_paginas(array_keys($page_ids));
 	$publicadorCache = [];
 
+	// req-141 / BATCH-147: a aparência do item sem link é resolvida UMA vez (ela é constante para
+	// todos os itens), percorrendo a cadeia de recursos até achar quem a declara.
+	$estadoSemLink = galleries_widget_css_link_desabilitado($html_template, $schema);
+	$cssLinkDesabilitado = $estadoSemLink['classes'];
+
+	// A regra CSS do recurso que forneceu as classes entra na página: o compilador varre recursos,
+	// e o HTML do widget só existe em runtime — ele nunca chegaria até lá sozinho.
+	if($estadoSemLink['css'] !== ''){
+		$css_compiled = trim($css_compiled."
+".$estadoSemLink['css']);
+	}
+
 	$itensRendered = '';
 	foreach($selected_items as $item){
 		if(!is_array($item)) continue;
-		// O HTML do template vai junto: é dele que sai a aparência do item sem link (req-141).
-		$vars = galleries_widget_resolver_item_vars($item, $paginasMap, $publicadorCache, $html_template);
+		$vars = galleries_widget_resolver_item_vars($item, $paginasMap, $publicadorCache, $cssLinkDesabilitado);
 		$itensRendered .= galleries_widget_aplicar_vars($templates['item'], $vars);
 	}
 
@@ -208,7 +219,7 @@ function galleries_widget_render_inline($params){
  * @param array $publicadorCache Cache (por referência) das publicações mais recentes resolvidas.
  * @return array
  */
-function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicadorCache = [], $template_html = ''){
+function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicadorCache = [], $css_link_desabilitado = ''){
 	global $_GESTOR;
 
 	$caminho = isset($item['caminho']) ? (string)$item['caminho'] : '';
@@ -223,7 +234,7 @@ function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicad
 	}
 
 	// req-024 / DEC-037: link individual da imagem.
-	$link = galleries_widget_resolver_link($item, $paginasMap, $publicadorCache, $template_html);
+	$link = galleries_widget_resolver_link($item, $paginasMap, $publicadorCache, $css_link_desabilitado);
 
 	return [
 		'img-src'          => $src,
@@ -234,6 +245,104 @@ function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicad
 		'link-target'      => $link['target'],
 		'link-css-classes' => $link['css_classes'],
 	];
+}
+
+/**
+ * req-141 / BATCH-147: resolve a APARÊNCIA do item sem link percorrendo a cadeia de recursos.
+ *
+ * O bug que motivou a cadeia. A galeria NÃO renderiza a partir do template: ela guarda em
+ * `galleries.html` uma CÓPIA do template, tirada no momento em que o operador escolheu o modelo no
+ * painel. Essa cópia congela ali e ganha `user_modified = 1`, que por design bloqueia o sync de
+ * recursos. Resultado medido: as classes foram acrescentadas aos quatro templates do core e a home
+ * do `transformamp` continuou com as imagens sem link mostrando cursor de mão — porque quem renderiza
+ * ali é o template do PROJETO (`galeria-home`), e o que o widget lê é a cópia congelada dele.
+ *
+ * A cadeia existe para que corrigir o RECURSO baste, sem exigir que o operador reescolha o modelo em
+ * cada galeria já publicada:
+ *
+ *  1. o próprio HTML da galeria — permite override por galeria;
+ *  2. o template de origem (`fields_schema.template_id`) — alcança as cópias congeladas;
+ *  3. `galleries-estados`, o padrão do core — rede de segurança para o template de projeto que
+ *     esquecer de declarar o estado, que é exatamente o caso do `galeria-home`.
+ *
+ * Em nenhum degrau a classe nasce em PHP: os três são recursos, e portanto visíveis ao compilador
+ * Tailwind. O terceiro degrau usa `target` próprio para não aparecer no dropdown de modelos.
+ *
+ * @param string $html_template HTML efetivamente renderizado (a cópia da galeria).
+ * @param array  $schema        `fields_schema` decodificado (traz o `template_id` de origem).
+ * @return string Classes CSS do estado "sem link" (vazio quando nenhum recurso declara).
+ */
+function galleries_widget_css_link_desabilitado($html_template, $schema){
+	static $cache = Array();
+
+	$marcaIni = '<!-- link-disabled-css < -->';
+	$marcaFim = '<!-- link-disabled-css > -->';
+
+	$vazio = Array('classes' => '', 'css' => '');
+
+	// 1) o próprio HTML da galeria. O CSS dela já acompanha o registro, nada extra a incluir.
+	$classes = trim((string)modelo_tag_val($html_template, $marcaIni, $marcaFim));
+	if($classes !== '') return Array('classes' => $classes, 'css' => '');
+
+	// 2) o template de origem — o degrau que alcança as cópias congeladas.
+	// 3) `galleries-estados` — o padrão do core.
+	$template_id = isset($schema['template_id']) ? (string)$schema['template_id'] : '';
+
+	foreach(Array($template_id, 'galleries-estados') as $alvo){
+		if($alvo === '') continue;
+
+		if(!isset($cache[$alvo])){
+			$cache[$alvo] = $vazio;
+
+			$registro = galleries_widget_buscar_template($alvo);
+			if($registro !== null){
+				$classes = trim((string)modelo_tag_val((string)$registro['html'], $marcaIni, $marcaFim));
+				if($classes !== ''){
+					// O CSS vem junto: a classe sem regra é a mesma falha silenciosa de antes, só que
+					// um degrau adiante. Quem declara a aparência declara também como ela é desenhada.
+					$cache[$alvo] = Array('classes' => $classes, 'css' => (string)$registro['css']);
+				}
+			}
+		}
+
+		if($cache[$alvo]['classes'] !== '') return $cache[$alvo];
+	}
+
+	return $vazio;
+}
+
+/**
+ * Lê o HTML e o CSS derivado de um template pelo id, na linguagem corrente.
+ *
+ * Isolado para que a cadeia acima seja testável sem banco (a função é substituída no teste) e para
+ * que a busca aconteça apenas quando o degrau anterior falhou.
+ *
+ * @param string $template_id
+ * @return string HTML do template, ou string vazia.
+ */
+function galleries_widget_buscar_template($template_id){
+	global $_GESTOR;
+
+	if($template_id === '' || !function_exists('banco_select')) return null;
+
+	$registro = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'templates',
+		'campos' => Array('html', 'css_precompiled', 'css_compiled'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($template_id)."'"
+			." AND status='A'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+	));
+
+	if(!$registro || !isset($registro['html'])) return null;
+
+	// `css_compiled` é o cache do navegador e `css_precompiled` o derivado offline; qualquer um
+	// serve, desde que traga a regra das classes declaradas no HTML deste mesmo recurso.
+	$css = (string)($registro['css_compiled'] ?? '');
+	if(trim($css) === '') $css = (string)($registro['css_precompiled'] ?? '');
+
+	return Array('html' => (string)$registro['html'], 'css' => $css);
 }
 
 /**
@@ -248,7 +357,7 @@ function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicad
  *
  * @return array ['url' => ..., 'target' => '_self'|'_blank', 'css_classes' => ...]
  */
-function galleries_widget_resolver_link($item, $paginasMap, &$publicadorCache, $template_html = ''){
+function galleries_widget_resolver_link($item, $paginasMap, &$publicadorCache, $css_link_desabilitado = ''){
 	$type   = isset($item['link_type']) ? (string)$item['link_type'] : 'nenhum';
 	$target = isset($item['link_target']) ? (string)$item['link_target'] : '_self';
 	$css    = isset($item['link_css_classes']) ? (string)$item['link_css_classes'] : '';
@@ -285,9 +394,8 @@ function galleries_widget_resolver_link($item, $paginasMap, &$publicadorCache, $
 	// compilador Tailwind, que varre recursos — foi assim que `cursor-default` chegou à home sem
 	// regra nenhuma, a única utility órfã real medida no acervo. O código decide o ESTADO (não tem
 	// link); o recurso declara a APARÊNCIA desse estado, e é ele que o compilador enxerga.
-	if($type === 'nenhum'){
-		$cssDesabilitado = trim((string)modelo_tag_val($template_html, '<!-- link-disabled-css < -->', '<!-- link-disabled-css > -->'));
-		if($cssDesabilitado !== '') $css = trim($css.' '.$cssDesabilitado);
+	if($type === 'nenhum' && $css_link_desabilitado !== ''){
+		$css = trim($css.' '.$css_link_desabilitado);
 	}
 
 	return ['url' => $url, 'target' => $target, 'css_classes' => $css];
