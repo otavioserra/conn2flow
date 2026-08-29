@@ -3,29 +3,15 @@ $(document).ready(function () {
 	var eventDates = [];
 
 	function configuracao_tipos_plugins(obj = null) {
-		// ===== TinyMCE opções.
+		// ===== Editor de texto (req-142).
+		//
+		// O editor era o TinyMCE, licenciado e carregado do `cdn.tiny.cloud` com a chave de API
+		// versionada no repositório. A configuração agora vive em `interface/editor-texto.js`, par do
+		// `bibliotecas/editor-texto.php`: nenhuma tela repete opções de editor.
+		var editorTextoOpcoes = { altura: '450px' };
 
-		var tinySettings = {
-			menubar: false,
-			selector: 'textarea.tinymce',
-			toolbar: 'code | bold italic underline | link image | alignleft aligncenter alignright alignjustify | styleselect fontselect fontsizeselect',
-			plugins: "image link code",
-			directionality: 'pt_BR',
-			min_height: 450,
-			language: 'pt_BR',
-			language_url: gestor.raiz + 'tinymce/langs/pt_BR.js',
-			font_formats: 'Verdana=Verdana;Arial=arial,helvetica,sans-serif;',
-			branding: false,
-			valid_elements: '*[*]',
-			init_instance_callback: tinyMCEReady
-		};
-
-		function tinyMCEReady() {
-
-		}
-
-		if (!gestor.configuracao.tinySettings) {
-			gestor.configuracao.tinySettings = {
+		if (!gestor.configuracao.editorTexto) {
+			gestor.configuracao.editorTexto = {
 				totalEditors: 0,
 			};
 		}
@@ -234,15 +220,10 @@ $(document).ready(function () {
 				obj.find('.ui.calendar.data').calendar('set date', dataHora);
 			}
 
-			if (obj.find('.tinymce').length > 0) {
-				gestor.configuracao.tinySettings.totalEditors++;
-
-				var id = gestor.configuracao.tinySettings.totalEditors;
-				obj.find('.tinymce').attr('id', 'tinymce-' + id);
-
-				var ed = new tinymce.Editor('tinymce-' + id, tinySettings, tinymce.EditorManager);
-
-				ed.render();
+			if (obj.find('.tinymce').length > 0 && window.EditorTexto) {
+				// `.tinymce` continua sendo o gancho no markup: trocá-lo exigiria migrar os dados dos
+				// campos já cadastrados, o que é escopo de outro lote.
+				window.EditorTexto.iniciar('textarea.tinymce', obj.get(0), editorTextoOpcoes);
 			}
 
 			if (obj.find('.js').length > 0 || obj.find('.html').length > 0 || obj.find('.css').length > 0) {
@@ -301,16 +282,11 @@ $(document).ready(function () {
 			});
 			$('.variavelCont').find('.ui.calendar.multiplo').calendar(calendarDatasMultiplasOpt);
 
-			$('.variavelCont').find('.tinymce').each(function () {
-				gestor.configuracao.tinySettings.totalEditors++;
-
-				var id = gestor.configuracao.tinySettings.totalEditors;
-				$(this).attr('id', 'tinymce-' + id);
-
-				var ed = new tinymce.Editor('tinymce-' + id, tinySettings, tinymce.EditorManager);
-
-				ed.render();
-			});
+			if (window.EditorTexto) {
+				$('.variavelCont').each(function () {
+					window.EditorTexto.iniciar('textarea.tinymce', this, editorTextoOpcoes);
+				});
+			}
 
 			$('.variavelCont').find('.js,.html,.css').each(function () {
 				if ($(this).hasClass('js')) codeMirrorSettings.mode = 'javascript';
@@ -369,7 +345,11 @@ $(document).ready(function () {
 					return false;
 					break;
 				case 'tinymce':
-					campoValor = tinymce.get(campoAtual.attr('id')).getContent();
+					// req-142: o valor vem do textarea, que o editor mantém sincronizado — funciona
+					// igual com ou sem o Quill carregado.
+					campoValor = window.EditorTexto
+						? window.EditorTexto.obterValor(campoAtual.find('textarea').get(0) || campoAtual.get(0))
+						: campoAtual.find('textarea').val();
 					return false;
 					break;
 			}
@@ -535,7 +515,9 @@ $(document).ready(function () {
 				valor = valorObj.find('input').prop('checked');
 				break;
 			case 'tinymce':
-				valor = tinymce.get(valorObj.attr('id')).getContent();
+				valor = window.EditorTexto
+					? window.EditorTexto.obterValor(valorObj.find('textarea').get(0) || valorObj.get(0))
+					: valorObj.find('textarea').val();
 				break;
 			case 'js':
 			case 'css':
@@ -924,7 +906,11 @@ $(document).ready(function () {
 					valorObj.find('input').prop('checked', valorPadrao);
 					break;
 				case 'tinymce':
-					tinymce.get(valorObj.attr('id')).setContent(valorPadrao);
+					if (window.EditorTexto) {
+						window.EditorTexto.definirValor(valorObj.find('textarea').get(0) || valorObj.get(0), valorPadrao);
+					} else {
+						valorObj.find('textarea').val(valorPadrao);
+					}
 					break;
 				case 'js':
 				case 'css':

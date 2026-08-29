@@ -1184,59 +1184,59 @@
             "built_at": "2026-08-29T11:32:28+00:00"
         },
         "module|forms-search|en|templates|forms-search-contato-basico": {
-            "fingerprint": "a94d069f252fdef94bf24c143a372455effd81e0bad91d211fe911277664ea9f",
-            "output_hash": "5bc92e97c3d8017a9484115903a5dc0f008f01d4cc08208955de338c04f40932",
+            "fingerprint": "f1beafe40302e023fdf2d2dfcbda5ac74e6804397c92ebc96d3f3017da6b3b22",
+            "output_hash": "a5c92ae0648438489827df600f428390957fe1ce261f6b0918b5077db32b9153",
             "output": "modulos/forms-search/resources/en/templates/forms-search-contato-basico/forms-search-contato-basico.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/en/templates/forms-search-contato-basico/forms-search-contato-basico.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:28+00:00"
+            "built_at": "2026-08-29T13:37:00+00:00"
         },
         "module|forms-search|en|templates|forms-search-newsletter-newsletter": {
-            "fingerprint": "55514507ce23d67548bbfc8d2de6c864a9c60b5261bc0da33ce5606e34cf9f27",
-            "output_hash": "87b55154f3e493f89a2441c5e00f2e179d2cac287ea53525d9698759553a8762",
+            "fingerprint": "622c5c84d6a7aeef5e66447c081727097e6697963305bccd5162d806b63d6989",
+            "output_hash": "d953feab65b5a3f288a95dc52906b12d918b19e2a9daa2dea2bfa108ab652cf9",
             "output": "modulos/forms-search/resources/en/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/en/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:29+00:00"
+            "built_at": "2026-08-29T13:37:01+00:00"
         },
         "module|forms-search|en|templates|forms-search-pesquisa-satisfacao": {
-            "fingerprint": "2c2413329831130ec9e55457229f70e43133f2faaf96677d67b09f06d2c9560f",
-            "output_hash": "16046463a5893e80e3e116d85eb2b84e8f44ec254552324e9dabaa996640b4b3",
+            "fingerprint": "c609323f5e5578d4d4a7a0a18f7ed6b3c52ab1b028e664cb7d329b5796adbf2b",
+            "output_hash": "2b928da4504b462858c76ee7d3ed436a2e24370a6fc9b0e137ea69d33b535950",
             "output": "modulos/forms-search/resources/en/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/en/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:29+00:00"
+            "built_at": "2026-08-29T13:37:01+00:00"
         },
         "module|forms-search|en|templates|forms-search-registro-usuario": {
-            "fingerprint": "84a6d8a44874317c04261bfe3e4baaaa13bd04d880776a7edb55d8f0712076d8",
-            "output_hash": "b7c4b0e13b9c7883cca01a4f778e561adf78756dd7dd32c0d002d4266ef3eab9",
+            "fingerprint": "1ab5804f6cb386923c1905ab4b847cc326eec2cf8ee1ee82bf1ab3cad475c5d0",
+            "output_hash": "84e9586653acdfcd6c2c10d4e0d67e1631f4f7695d8504edad8bf1e4ca6dfc42",
             "output": "modulos/forms-search/resources/en/templates/forms-search-registro-usuario/forms-search-registro-usuario.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/en/templates/forms-search-registro-usuario/forms-search-registro-usuario.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:30+00:00"
+            "built_at": "2026-08-29T13:37:01+00:00"
         },
         "module|forms-search|en|templates|forms-search-suporte-tecnico": {
-            "fingerprint": "1582eb9dfec20efd96ea2c40d9c7314bcae5ca298090e76919476cad98dfe2d5",
-            "output_hash": "43b67fc69a4560b0388e9ec7f037f2f0cc7f3ec38064d57bbf1c91f40e8fc5f4",
+            "fingerprint": "6892b0acc9d49a9314b482f77f5c7066203eec15cfcee1128b6797e901a69240",
+            "output_hash": "98f30b2e063a3357c509707ede8658e36cdd087e0442e1a240ecd8918abcebac",
             "output": "modulos/forms-search/resources/en/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/en/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:30+00:00"
+            "built_at": "2026-08-29T13:37:02+00:00"
         },
         "module|forms-search|pt-br|layouts|pagina-simples-tailwindcss": {
             "fingerprint": "b1bda39014d9f41de7a6db3cfbb4e09d42f80feae972ebee73a9d87cc16c68b6",
@@ -1250,59 +1250,59 @@
             "built_at": "2026-08-29T11:32:31+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-contato-basico": {
-            "fingerprint": "d0fafd032263d13726714a0f8660ae581edec7dd5303329a4159cb0b660fcd52",
-            "output_hash": "5bc92e97c3d8017a9484115903a5dc0f008f01d4cc08208955de338c04f40932",
+            "fingerprint": "e5a86492c6a3f176af6723ff1d7bbea7f410508f582a71d4c1932d67034c7a77",
+            "output_hash": "a5c92ae0648438489827df600f428390957fe1ce261f6b0918b5077db32b9153",
             "output": "modulos/forms-search/resources/pt-br/templates/forms-search-contato-basico/forms-search-contato-basico.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/pt-br/templates/forms-search-contato-basico/forms-search-contato-basico.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:31+00:00"
+            "built_at": "2026-08-29T13:37:02+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-newsletter-newsletter": {
-            "fingerprint": "b5e3f9857bc95e12d45635080be920a43c8314e173e72a04c79a251226947ced",
-            "output_hash": "87b55154f3e493f89a2441c5e00f2e179d2cac287ea53525d9698759553a8762",
+            "fingerprint": "dd1522f616afe4adcf5b79ffc9b8dcc6293875fc702e38d643f9d2d0f46a4186",
+            "output_hash": "d953feab65b5a3f288a95dc52906b12d918b19e2a9daa2dea2bfa108ab652cf9",
             "output": "modulos/forms-search/resources/pt-br/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/pt-br/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:31+00:00"
+            "built_at": "2026-08-29T13:37:03+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-pesquisa-satisfacao": {
-            "fingerprint": "41a66f3716090caec4838ff69afe27e6da308c4b7d4c5f1c5bee11c7f048e4b2",
-            "output_hash": "16046463a5893e80e3e116d85eb2b84e8f44ec254552324e9dabaa996640b4b3",
+            "fingerprint": "aaea2431b1376bc1cbb4436377e30d146a80c2229cc63a8ef084bd93937d7e6e",
+            "output_hash": "2b928da4504b462858c76ee7d3ed436a2e24370a6fc9b0e137ea69d33b535950",
             "output": "modulos/forms-search/resources/pt-br/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/pt-br/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:32+00:00"
+            "built_at": "2026-08-29T13:37:03+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-registro-usuario": {
-            "fingerprint": "dfc384f1a1fd364a6f14fc73ff0a4b3892c30ad388e609ffaa17d990d93ecf6f",
-            "output_hash": "b7c4b0e13b9c7883cca01a4f778e561adf78756dd7dd32c0d002d4266ef3eab9",
+            "fingerprint": "1a85ee0e9b40c9c97c1a995a6329a49b3123fba4bdaf70d0fd27c63c370a4ab8",
+            "output_hash": "84e9586653acdfcd6c2c10d4e0d67e1631f4f7695d8504edad8bf1e4ca6dfc42",
             "output": "modulos/forms-search/resources/pt-br/templates/forms-search-registro-usuario/forms-search-registro-usuario.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/pt-br/templates/forms-search-registro-usuario/forms-search-registro-usuario.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:33+00:00"
+            "built_at": "2026-08-29T13:37:03+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-suporte-tecnico": {
-            "fingerprint": "6a58317e1f95cb846f4110cbdb6948474055d1b5b3c8aca89163aa24601cb2aa",
-            "output_hash": "43b67fc69a4560b0388e9ec7f037f2f0cc7f3ec38064d57bbf1c91f40e8fc5f4",
+            "fingerprint": "47bb28d8511e6b4fcea5ba43e02368fc609a8790204b49b0fb9ec76108a267a4",
+            "output_hash": "98f30b2e063a3357c509707ede8658e36cdd087e0442e1a240ecd8918abcebac",
             "output": "modulos/forms-search/resources/pt-br/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms-search/resources/pt-br/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:33+00:00"
+            "built_at": "2026-08-29T13:37:04+00:00"
         },
         "module|forms|en|pages|forms-test-email-page": {
             "fingerprint": "fc5bd1b48b2f47ccd6f205673d6ab837604140b1fc4c5cc87eb136f8c8f2ad1d",
@@ -1316,59 +1316,59 @@
             "built_at": "2026-08-29T11:32:33+00:00"
         },
         "module|forms|en|templates|forms-contato-basico": {
-            "fingerprint": "3b60989232d7197362cef542aebbf5172a9e2500cd0b25ff6d74e46094b52997",
-            "output_hash": "b2dbd940928e35494da33a04ddc27a89e62770b3300a6a3c230254d0c28755ba",
+            "fingerprint": "0ba359f8cfe68952d795195608abea044f64e77ee58f1f1917bab3dd8da47c32",
+            "output_hash": "e7d364978a2ee153c42e63146e540eec8cd499ddfed6f1bdb883ab5fa68c10ef",
             "output": "modulos/forms/resources/en/templates/forms-contato-basico/forms-contato-basico.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/en/templates/forms-contato-basico/forms-contato-basico.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:34+00:00"
+            "built_at": "2026-08-29T13:37:04+00:00"
         },
         "module|forms|en|templates|forms-newsletter-newsletter": {
-            "fingerprint": "b12f9a276d8e41b67598fcddffea891bebedf50c3d9d12e0d7a7f93ce783c945",
-            "output_hash": "f6aab24f343149c9b0a69e61de2c2029a3a02f9adcd4c415ca23eebcf6e165fe",
+            "fingerprint": "e42493294ba61243b8fd4b77c97b3cd5b9f968092da854a03380844999b261d4",
+            "output_hash": "66de45828a4984ccb2d5cf53001da471d5cb46febfa8fd9e5cf844601a4ec9d4",
             "output": "modulos/forms/resources/en/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/en/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:34+00:00"
+            "built_at": "2026-08-29T13:37:05+00:00"
         },
         "module|forms|en|templates|forms-pesquisa-satisfacao": {
-            "fingerprint": "c373e48ea08aaccfc103dd93b5ed2cd9b11dbe3e4365871ac264944840fb6a28",
-            "output_hash": "32afdd27a8eac914de86fa5cdf6d0e0030f358eece558efff8e261d86279b257",
+            "fingerprint": "9fb3ff4e9600ff041f2bee0553f3dbb269b15ed241e581556036375729ff0b4d",
+            "output_hash": "7ad910478776f1e07992734b468b9d9e3982091be96981e150ce2456f7d0c74b",
             "output": "modulos/forms/resources/en/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/en/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:35+00:00"
+            "built_at": "2026-08-29T13:37:05+00:00"
         },
         "module|forms|en|templates|forms-registro-usuario": {
-            "fingerprint": "85351fcc43c6d7f3e8b20b9c33f1e1bce323443933c43b128243715390ea50de",
-            "output_hash": "2e125175ddec38a928d23e3a2adee945f8930edb8f6b1326fbee2728607fc60e",
+            "fingerprint": "328da907008912e7e2fe14bffb3ccadf7b3bf685f27fd9089c4ad47d6d9db606",
+            "output_hash": "d1cdb4bc35a7f481f2e32c98d6d95e09d092e30cc932edb5e8b3c5e382a319e3",
             "output": "modulos/forms/resources/en/templates/forms-registro-usuario/forms-registro-usuario.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/en/templates/forms-registro-usuario/forms-registro-usuario.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:35+00:00"
+            "built_at": "2026-08-29T13:37:05+00:00"
         },
         "module|forms|en|templates|forms-suporte-tecnico": {
-            "fingerprint": "83faa9817760ce7d15bfb471422f91e819f1045e153c6716ba71087d40396a11",
-            "output_hash": "7cdff85e7089dd7b73e45850bf45f6da5eefd7cc65d4833ce36826f7deac6449",
+            "fingerprint": "86f09c894bde47a4d7a692d6cfc19d6c22309ddd1a7e330b8b990041c7385403",
+            "output_hash": "6f8fe3084e63b5ea0199593283f97034f436bced84d30e8ccbbe685a93912c66",
             "output": "modulos/forms/resources/en/templates/forms-suporte-tecnico/forms-suporte-tecnico.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/en/templates/forms-suporte-tecnico/forms-suporte-tecnico.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:35+00:00"
+            "built_at": "2026-08-29T13:37:06+00:00"
         },
         "module|forms|pt-br|layouts|pagina-simples-tailwindcss": {
             "fingerprint": "4e2eadcb10c3fea3dc1370794e23062cbbcd0b05f3b2423b8a12485e38c5a9d5",
@@ -1393,59 +1393,59 @@
             "built_at": "2026-08-29T11:32:36+00:00"
         },
         "module|forms|pt-br|templates|forms-contato-basico": {
-            "fingerprint": "1b74fff9e041af5f4b017d492631c5e8da3ba76de94de6bc0b0092538bc38aa9",
-            "output_hash": "b2dbd940928e35494da33a04ddc27a89e62770b3300a6a3c230254d0c28755ba",
+            "fingerprint": "e24f37e7f23bdcfbda6ef101e59102fe70317176837b53fdaf2dfaee6b2605d1",
+            "output_hash": "e7d364978a2ee153c42e63146e540eec8cd499ddfed6f1bdb883ab5fa68c10ef",
             "output": "modulos/forms/resources/pt-br/templates/forms-contato-basico/forms-contato-basico.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/pt-br/templates/forms-contato-basico/forms-contato-basico.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:37+00:00"
+            "built_at": "2026-08-29T13:37:06+00:00"
         },
         "module|forms|pt-br|templates|forms-newsletter-newsletter": {
-            "fingerprint": "a365f5fcba403595c10403e237f07626316953284ba7d9e74b0142d7f966e5a9",
-            "output_hash": "f6aab24f343149c9b0a69e61de2c2029a3a02f9adcd4c415ca23eebcf6e165fe",
+            "fingerprint": "5d51c5dcb10cfe86436a9be7934487d69cee87b8cb90bf496fc5f1640e587830",
+            "output_hash": "66de45828a4984ccb2d5cf53001da471d5cb46febfa8fd9e5cf844601a4ec9d4",
             "output": "modulos/forms/resources/pt-br/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/pt-br/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:37+00:00"
+            "built_at": "2026-08-29T13:37:07+00:00"
         },
         "module|forms|pt-br|templates|forms-pesquisa-satisfacao": {
-            "fingerprint": "0cc94b8637f0f95e3b9cb6d9910b21e825fe4cb1ed1932c0226476f1762f2afb",
-            "output_hash": "32afdd27a8eac914de86fa5cdf6d0e0030f358eece558efff8e261d86279b257",
+            "fingerprint": "f729b74941be073d94f0e7e55f73ab439b40331689ba7395c0dbc72140931053",
+            "output_hash": "7ad910478776f1e07992734b468b9d9e3982091be96981e150ce2456f7d0c74b",
             "output": "modulos/forms/resources/pt-br/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/pt-br/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:38+00:00"
+            "built_at": "2026-08-29T13:37:07+00:00"
         },
         "module|forms|pt-br|templates|forms-registro-usuario": {
-            "fingerprint": "819bb601a3043ef66bf2456b883393f33de1428a6e7956b2a2d4ef6988199b49",
-            "output_hash": "2e125175ddec38a928d23e3a2adee945f8930edb8f6b1326fbee2728607fc60e",
+            "fingerprint": "1f6afa4bdd4af7a64472d1eff520826ee765b035f388b8007e1a13c19e6049e7",
+            "output_hash": "d1cdb4bc35a7f481f2e32c98d6d95e09d092e30cc932edb5e8b3c5e382a319e3",
             "output": "modulos/forms/resources/pt-br/templates/forms-registro-usuario/forms-registro-usuario.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/pt-br/templates/forms-registro-usuario/forms-registro-usuario.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:38+00:00"
+            "built_at": "2026-08-29T13:37:07+00:00"
         },
         "module|forms|pt-br|templates|forms-suporte-tecnico": {
-            "fingerprint": "6dda62bb117e0dd5faef101a4fedbc220641a9e88d01b5f825d58abb6152a13b",
-            "output_hash": "7cdff85e7089dd7b73e45850bf45f6da5eefd7cc65d4833ce36826f7deac6449",
+            "fingerprint": "e6c4f009327fb100fcce3fef209fe3e2ed917ae825b85310997e631d394abc9b",
+            "output_hash": "6f8fe3084e63b5ea0199593283f97034f436bced84d30e8ccbbe685a93912c66",
             "output": "modulos/forms/resources/pt-br/templates/forms-suporte-tecnico/forms-suporte-tecnico.precompiled.css",
             "tailwind_version": "unknown",
             "sources": [
                 "modulos/forms/resources/pt-br/templates/forms-suporte-tecnico/forms-suporte-tecnico.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:38+00:00"
+            "built_at": "2026-08-29T13:37:08+00:00"
         },
         "module|galleries|en|templates|galleries-carousel": {
             "fingerprint": "594f87c984977b1365e059e6ac1d16bdc1b7347f5fd9284195104e191c753987",

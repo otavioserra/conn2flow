@@ -72,6 +72,9 @@ if (!function_exists('editor_texto_assets_editor')) {
 			),
 			'javascript' => Array(
 				'<script src="https://cdn.jsdelivr.net/npm/quill@'.$versaoCdn.'/dist/quill.min.js"></script>',
+				// Runtime compartilhado: cria os editores sobre `<textarea>` e mantém o campo do
+				// formulário sincronizado. Sem ele, cada tela repetiria a configuração do editor.
+				'<script src="'.$urlRaiz.'interface/editor-texto.js?v='.$versaoAsset.'"></script>',
 			),
 		);
 	}

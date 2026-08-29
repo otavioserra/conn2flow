@@ -858,7 +858,15 @@ $(document).ready(function () {
                             CodeMirrorHtml.getDoc().setValue(valor);
                             CodeMirrorHtml.refresh();
                         } else {
-                            tinymce.activeEditor.setContent(valor, { format: 'raw' });
+                            // req-142: o editor de texto passou a ser o Quill, exposto pela
+                            // biblioteca compartilhada. A guarda evita quebrar a tela quando este
+                            // caminho é alcançado numa página que não carregou o editor.
+                            if (window.EditorTexto && window.EditorTexto.instancias.length > 0) {
+                                var alvo = window.EditorTexto.instancias[0].textarea;
+                                window.EditorTexto.definirValor(alvo, valor);
+                            } else {
+                                console.warn('Editor de texto indisponível: valor não aplicado.');
+                            }
                         }
                     } else {
                         CodeMirrorHtml.getDoc().setValue(valor);

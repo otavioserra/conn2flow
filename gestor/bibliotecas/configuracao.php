@@ -459,9 +459,17 @@ function configuracao_administracao($params = false){
 		
 		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>';
 		
-		// ===== Inclusão do TinyMCE
+		// ===== Editor de texto (req-142)
+		//
+		// Era o TinyMCE, licenciado, carregado do `cdn.tiny.cloud` com a chave de API versionada no
+		// repositório. Agora a inclusão passa pela biblioteca `editor-texto`, que também é quem sabe
+		// a versão do Quill e o CSS de conteúdo — o mesmo que a página publicada recebe.
 		
-		$_GESTOR['javascript'][] = '<script src="https://cdn.tiny.cloud/1/puqfgloszrueuf7nkzrlzxqbc0qihojtiq46oikukhty0jw9/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>';
+		if(!function_exists('editor_texto_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+			require_once($_GESTOR['bibliotecas-path'].'editor-texto.php');
+		}
+		
+		if(function_exists('editor_texto_incluir')) editor_texto_incluir();
 		
 		// ===== Inclusão do CodeMirror
 		
