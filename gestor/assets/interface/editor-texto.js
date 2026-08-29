@@ -21,6 +21,21 @@
         /** Instâncias criadas, para que a tela possa lê-las se precisar. */
         instancias: [],
 
+        /**
+         * Formatos de APARÊNCIA que a colagem não pode trazer de fora (req-143 / colagem suja).
+         *
+         * Quem cola de um site ou do Google Docs traz junto o tema da origem. Medido numa página
+         * publicada do Transforma MP: seis trechos com
+         * `background-color: rgb(255,255,255); color: rgb(34,34,34)` — o fundo branco e o cinza do
+         * site de origem, dentro de um artigo cujo layout tem fundo próprio. O texto ficava com
+         * "manchas" brancas que o operador não pediu e não conseguia remover pela barra.
+         *
+         * O corte é só na COLAGEM: o que o operador aplicar depois pela barra de ferramentas
+         * continua valendo. Estrutura (parágrafo, lista, título, citação, link, alinhamento) e
+         * ênfase (negrito, itálico, sublinhado) NUNCA são removidas — são o motivo de colar.
+         */
+        formatosImportadosProibidos: ['background', 'color', 'font', 'size'],
+
         /** Barra de ferramentas equivalente à que o TinyMCE oferecia nas variáveis. */
         toolbarPadrao: [
             [{ header: [1, 2, 3, 4, false] }],
@@ -72,6 +87,10 @@
                 modules: { toolbar: opcoes.toolbar || EditorTexto.toolbarPadrao }
             });
 
+            if (opcoes.limparColagem !== false) {
+                EditorTexto.limparColagem(quill, opcoes.formatosProibidos);
+            }
+
             if (textarea.value) {
                 quill.clipboard.dangerouslyPasteHTML(textarea.value);
             }
@@ -118,6 +137,49 @@
             }
 
             return criados;
+        },
+
+        /**
+         * Faz o editor descartar formatação de APARÊNCIA vinda de fora ao colar.
+         *
+         * O Quill converte todo conteúdo colado num Delta antes de inserir; o matcher roda nessa
+         * conversão e apaga os atributos indesejados. Fazer isso aqui, e não depois no HTML salvo,
+         * evita que o lixo chegue a existir no banco.
+         *
+         * @param {Object} quill Instância do editor.
+         * @param {string[]} [proibidos] Sobrescreve a lista padrão.
+         */
+        limparColagem: function (quill, proibidos) {
+            if (!quill || !quill.clipboard || typeof quill.clipboard.addMatcher !== 'function') {
+                return;
+            }
+
+            var lista = proibidos || EditorTexto.formatosImportadosProibidos;
+
+            quill.clipboard.addMatcher(Node.ELEMENT_NODE, function (node, delta) {
+                if (!delta || !delta.ops) {
+                    return delta;
+                }
+
+                for (var i = 0; i < delta.ops.length; i++) {
+                    var atributos = delta.ops[i].attributes;
+                    if (!atributos) {
+                        continue;
+                    }
+
+                    for (var j = 0; j < lista.length; j++) {
+                        delete atributos[lista[j]];
+                    }
+
+                    // Operação que ficou sem atributo nenhum não precisa carregar o objeto vazio —
+                    // é o que faz o `<span>` importado desaparecer em vez de virar span vazio.
+                    if (Object.keys(atributos).length === 0) {
+                        delete delta.ops[i].attributes;
+                    }
+                }
+
+                return delta;
+            });
         },
 
         /**

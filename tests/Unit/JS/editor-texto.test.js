@@ -23,11 +23,21 @@ function QuillFake(container) {
 
     this.on = (evento, fn) => { this.handlers[evento] = fn; };
     this.setText = (texto) => { this.root.innerHTML = texto === '' ? '<p><br></p>' : texto; };
+    this.matchers = [];
     this.clipboard = {
+        addMatcher: (seletor, fn) => { this.matchers.push(fn); },
         dangerouslyPasteHTML: (html) => {
             this.root.innerHTML = html;
             if (this.handlers['text-change']) this.handlers['text-change']();
         },
+    };
+    // Roda os matchers sobre um Delta, como o Quill faz ao colar.
+    this.simularColagem = (delta) => {
+        let resultado = delta;
+        for (const fn of this.matchers) {
+            resultado = fn(document.createElement('span'), resultado);
+        }
+        return resultado;
     };
     // Simula digitação do operador.
     this.digitar = (html) => {
@@ -152,6 +162,62 @@ describe('EditorTexto — ponte entre o Quill e o formulário', () => {
         EditorTexto.definirValor(textarea, '<p>c</p>');
         expect(textarea.value).toBe('<p>c</p>');
         expect(quill.root.innerHTML).toBe('<p>c</p>');
+    });
+
+    it('remove a aparencia importada ao colar, preservando estrutura e enfase', () => {
+        // Caso REAL medido em `/artigos/-arrolamento-sumario/`: seis trechos colados de fora
+        // trouxeram `background-color: rgb(255,255,255); color: rgb(34,34,34)` — o fundo branco e o
+        // cinza do site de origem, dentro de um artigo com layout próprio.
+        const EditorTexto = carregarRuntime();
+        const textarea = montarCampo('');
+        const quill = EditorTexto.criar(textarea);
+
+        const colado = quill.simularColagem({
+            ops: [
+                { insert: 'texto colado', attributes: { background: '#ffffff', color: '#222222', bold: true } },
+                { insert: 'em lista', attributes: { list: 'bullet' } },
+                { insert: 'link', attributes: { link: 'https://exemplo.org', italic: true } },
+            ],
+        });
+
+        // aparência da origem sai
+        expect(colado.ops[0].attributes.background).toBeUndefined();
+        expect(colado.ops[0].attributes.color).toBeUndefined();
+
+        // o que dá sentido ao texto fica
+        expect(colado.ops[0].attributes.bold).toBe(true);
+        expect(colado.ops[1].attributes.list).toBe('bullet');
+        expect(colado.ops[2].attributes.link).toBe('https://exemplo.org');
+        expect(colado.ops[2].attributes.italic).toBe(true);
+    });
+
+    it('descarta o objeto de atributos quando so havia aparencia', () => {
+        // É isso que faz o `<span>` importado sumir em vez de virar um span vazio no HTML salvo.
+        const EditorTexto = carregarRuntime();
+        const textarea = montarCampo('');
+        const quill = EditorTexto.criar(textarea);
+
+        const colado = quill.simularColagem({
+            ops: [{ insert: 'so tinha cor', attributes: { background: '#fff', color: '#222' } }],
+        });
+
+        expect(colado.ops[0].attributes).toBeUndefined();
+    });
+
+    it('permite desligar a limpeza e customizar a lista', () => {
+        const EditorTexto = carregarRuntime();
+
+        const semLimpeza = EditorTexto.criar(montarCampo(''), { limparColagem: false });
+        expect(semLimpeza.matchers.length).toBe(0);
+
+        // Lista própria: aqui só `size` deve cair.
+        const custom = EditorTexto.criar(montarCampo(''), { formatosProibidos: ['size'] });
+        const colado = custom.simularColagem({
+            ops: [{ insert: 'x', attributes: { size: 'huge', color: '#f00' } }],
+        });
+
+        expect(colado.ops[0].attributes.size).toBeUndefined();
+        expect(colado.ops[0].attributes.color).toBe('#f00');
     });
 
     it('iniciar cria um editor por campo do contexto informado', () => {
