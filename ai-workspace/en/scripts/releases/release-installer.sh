@@ -9,7 +9,7 @@
 # 4. Creates a Git tag with the new version
 
 # Ensures the script stops if any command fails
-set -e
+set -euo pipefail
 
 # Checks if the release type (patch, minor, major) was passed as an argument
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
@@ -27,14 +27,47 @@ CONFIG_FILE="gestor-instalador/index.php"
 VERSION_SCRIPT="ai-workspace/en/scripts/releases/version-installer.php"
 WORKFLOW_FILE=".github/workflows/release-instalador.yml"
 
+if [[ ! "$RELEASE_TYPE" =~ ^(patch|minor|major)$ ]]; then
+  echo "Error: Invalid release type '$RELEASE_TYPE'. Use patch, minor or major."
+  exit 1
+fi
+
 if [ "$RELEASE_MODE" != "automatic" ] && [ "$RELEASE_MODE" != "manual" ]; then
   echo "Error: Invalid release mode '$RELEASE_MODE'. Use automatic or manual."
   exit 1
 fi
 
+if [ ! -f "$CONFIG_FILE" ] || [ ! -f "$VERSION_SCRIPT" ] || [ ! -f "$WORKFLOW_FILE" ]; then
+  echo "Error: Run this command from the Conn2Flow Core repository root."
+  exit 1
+fi
+
+if [ -n "$(git status --porcelain --untracked-files=all)" ]; then
+  echo "Error: The working tree must be clean before starting a release."
+  exit 1
+fi
+
+CURRENT_BRANCH=$(git branch --show-current)
+if [ -z "$CURRENT_BRANCH" ]; then
+  echo "Error: Cannot publish a release from a detached HEAD."
+  exit 1
+fi
+
+NEXT_VERSION=$(php "$VERSION_SCRIPT" "$RELEASE_TYPE" --dry-run)
+TAG_NAME="instalador-v$NEXT_VERSION"
+if git rev-parse -q --verify "refs/tags/$TAG_NAME" >/dev/null; then
+  echo "Error: Tag $TAG_NAME already exists."
+  exit 1
+fi
+
+if [ "$RELEASE_MODE" = "manual" ]; then
+  command -v gh >/dev/null 2>&1 || { echo "Error: GitHub CLI (gh) is required for manual releases."; exit 1; }
+  gh auth status >/dev/null
+fi
+
 # 1. Runs the PHP script to update the version in index.php
 echo "Updating installer version ($RELEASE_TYPE)..."
-NEW_VERSION=$(php $VERSION_SCRIPT $RELEASE_TYPE)
+NEW_VERSION=$(php "$VERSION_SCRIPT" "$RELEASE_TYPE")
 
 # Checks if the PHP script executed successfully.
 # It will return a non-empty version string on success.
@@ -48,19 +81,18 @@ echo "New installer version is: $NEW_VERSION"
 
 # 2. Adds, commits, and creates an annotated Git tag with distinct messages
 echo "Creating commit and tag for version installer-v$NEW_VERSION..."
-# Never commit local release artifacts by accident.
-rm -f gestor.zip gestor.zip.sha256 instalador.zip
-git add .
+CHANGED_PATHS=$(git status --porcelain --untracked-files=all | sed 's/^...//')
+if [ "$CHANGED_PATHS" != "$CONFIG_FILE" ]; then
+  echo "Error: Installer release changed unexpected paths:"
+  printf '%s\n' "$CHANGED_PATHS"
+  exit 1
+fi
+git add -- "$CONFIG_FILE"
 git commit -m "$COMMIT_DETAILS"
 git tag -a "instalador-v$NEW_VERSION" -m "$TAG_SUMMARY"
 
 echo "Release installer-v$NEW_VERSION created successfully!"
 
-CURRENT_BRANCH=$(git branch --show-current)
-if [ -z "$CURRENT_BRANCH" ]; then
-  echo "Error: Cannot publish a release from a detached HEAD."
-  exit 1
-fi
 git push --atomic origin "$CURRENT_BRANCH" "instalador-v$NEW_VERSION"
 
 if [ "$RELEASE_MODE" = "manual" ]; then

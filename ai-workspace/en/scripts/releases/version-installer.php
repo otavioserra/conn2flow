@@ -10,6 +10,11 @@ if ($lines === false) {
 }
 
 $updateType = $argv[1] ?? 'patch'; // 'patch', 'minor', 'major'
+$dryRun = in_array('--dry-run', $argv, true);
+if (!in_array($updateType, ['patch', 'minor', 'major'], true)) {
+    fwrite(STDERR, "Error: Invalid update type '$updateType'. Use patch, minor or major.\n");
+    exit(1);
+}
 
 $versionUpdated = false;
 $newVersion = '';
@@ -35,7 +40,6 @@ foreach ($lines as $i => $line) {
                     $patch = 0;
                     break;
                 case 'patch':
-                default:
                     $patch++;
                     break;
             }
@@ -53,6 +57,10 @@ foreach ($lines as $i => $line) {
 }
  
 if ($versionUpdated) {
+    if ($dryRun) {
+        echo $newVersion;
+        exit(0);
+    }
     file_put_contents($configPath, implode('', $lines));
     // Prints the new version so the release script can capture it
     echo $newVersion;
