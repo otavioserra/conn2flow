@@ -99,7 +99,13 @@ final class AssetsVendorCommand implements CommandInterface
 
         foreach ($registro as $nome => $lib) {
             $versao = (string)($lib['versao'] ?? '');
-            $arquivos = array_merge((array)($lib['css'] ?? []), (array)($lib['js'] ?? []));
+            // `arquivos` sao dependencias que a propria biblioteca pede (fontes, sprites): nao viram
+            // tag, mas SEM elas a biblioteca local esta incompleta e falha de um jeito visivel.
+            $arquivos = array_merge(
+                (array)($lib['css'] ?? []),
+                (array)($lib['js'] ?? []),
+                (array)($lib['arquivos'] ?? [])
+            );
 
             $output->section("{$nome}@{$versao} (" . count($arquivos) . ' arquivos)');
 

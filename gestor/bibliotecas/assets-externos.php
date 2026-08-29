@@ -111,6 +111,37 @@ if (!function_exists('assets_externos_registro')) {
 				'cdn' => 'https://cdn.jsdelivr.net/npm/fomantic-ui@{v}/dist/{f}',
 				'css' => Array('semantic.min.css'),
 				'js' => Array('semantic.min.js'),
+				// `arquivos`: baixados junto, mas SEM virar tag — o CSS os pede sozinho, por caminho
+				// RELATIVO a ele próprio. Servido do CDN, `url(themes/...)` resolvia contra o domínio
+				// do CDN; servido do disco, passa a resolver contra `vendor/fomantic-ui/2.9.4/`. Sem
+				// estes arquivos os ÍCONES DO GESTOR SOMEM — foi o que aconteceu ao migrar o CSS sem
+				// eles. A biblioteca só está local de verdade quando tudo que ela pede está local.
+				//
+				// O Lato vem junto: com estes arquivos, o Fomantic deixa de buscar a fonte fora.
+				'arquivos' => Array(
+					'themes/default/assets/fonts/Lato-Bold.woff2',
+					'themes/default/assets/fonts/Lato-Bold.woff',
+					'themes/default/assets/fonts/Lato-BoldItalic.woff2',
+					'themes/default/assets/fonts/Lato-BoldItalic.woff',
+					'themes/default/assets/fonts/Lato-Italic.woff2',
+					'themes/default/assets/fonts/Lato-Italic.woff',
+					'themes/default/assets/fonts/Lato-Regular.woff2',
+					'themes/default/assets/fonts/Lato-Regular.woff',
+					'themes/default/assets/fonts/LatoLatin-Bold.woff2',
+					'themes/default/assets/fonts/LatoLatin-Bold.woff',
+					'themes/default/assets/fonts/LatoLatin-BoldItalic.woff2',
+					'themes/default/assets/fonts/LatoLatin-BoldItalic.woff',
+					'themes/default/assets/fonts/LatoLatin-Italic.woff2',
+					'themes/default/assets/fonts/LatoLatin-Italic.woff',
+					'themes/default/assets/fonts/LatoLatin-Regular.woff2',
+					'themes/default/assets/fonts/LatoLatin-Regular.woff',
+					'themes/default/assets/fonts/brand-icons.woff2',
+					'themes/default/assets/fonts/brand-icons.woff',
+					'themes/default/assets/fonts/icons.woff2',
+					'themes/default/assets/fonts/icons.woff',
+					'themes/default/assets/fonts/outline-icons.woff2',
+					'themes/default/assets/fonts/outline-icons.woff',
+				),
 			),
 			'quill' => Array(
 				'versao' => '2.0.3',
