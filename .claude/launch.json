@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "autoVerify": true,
+  "configurations": [
+    {
+      "name": "conn2flow-local",
+      "url": "http://localhost"
+    }
+  ]
+}

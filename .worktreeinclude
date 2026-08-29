@@ -1,0 +1,4 @@
+.env
+.env.local
+dev-environment/data/environment.json
+temp/agent-cookies.txt
