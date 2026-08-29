@@ -1,0 +1,25 @@
+{
+  "title": "⚡ Ações Locais do Projeto",
+  "actions": [
+    {
+      "label": "🌿 Sincronizar Todos os Worktrees",
+      "icon": "git-branch",
+      "description": "Atualiza o estado e variáveis de ambiente em múltiplos worktrees locais",
+      "type": "terminal",
+      "command": "powershell -NoProfile -Command \"Write-Host 'Sincronizando worktrees locais...' -ForegroundColor Cyan\""
+    },
+    {
+      "label": "🧹 Limpeza de Cache & Temporários",
+      "icon": "trash",
+      "description": "Remove arquivos temporários e caches de build",
+      "type": "terminal",
+      "command": "powershell -NoProfile -Command \"Write-Host 'Limpando caches temporários...' -ForegroundColor Green\""
+    },
+    {
+      "label": "📄 Abrir Guia Local do Projeto",
+      "icon": "file-text",
+      "type": "file",
+      "path": "README.md"
+    }
+  ]
+}
