@@ -126,6 +126,9 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-120 | 2026-08-29 | accepted | Aparência de estado resolvida por CADEIA DE RECURSOS no galleries, com o CSS acompanhando as classes (BATCH-147). |
 | DEC-121 | 2026-08-29 | accepted | A tela `variables` não oferece ações sobre a tabela `modulos`; tipo de campo passa a ser `editor-texto` (BATCH-147). |
 | DEC-122 | 2026-08-29 | accepted | Assets de terceiros versionados em `gestor/assets/vendor/`, com verificação de certificado inegociável no download (BATCH-146). |
+| DEC-123 | 2026-08-29 | accepted | Uma biblioteca local inclui também o que ela própria pede: chave `arquivos` no registro (BATCH-148). |
+| DEC-124 | 2026-08-29 | accepted | Fontes hospedadas pelo projeto, com filtro de subset e `unicode-range` preservado (BATCH-148). |
+| DEC-125 | 2026-08-29 | accepted | Minificar é build; escolher o arquivo é resolução — nunca transformar o corpo na entrega (BATCH-148). |
 
 ---
 
@@ -1139,3 +1142,79 @@ de já ter migrado.
 
 5. **A ordem de carga é propriedade do registro**: `codemirror.min.js` define o objeto que todo
    addon estende. Eram 161 tags em 7 arquivos, cada cópia com sua própria lista e ordem.
+
+## DEC-123 - 2026-08-29 - accepted
+
+**Uma biblioteca local inclui também o que ela própria pede (BATCH-148).**
+
+O BATCH-146 migrou o CSS do Fomantic para o disco e os ícones do layout administrativo sumiram. O
+`semantic.min.css` pede as fontes por caminho RELATIVO a ele próprio; servido do CDN isso resolvia
+contra o domínio do CDN, servido do disco passou a resolver contra `vendor/fomantic-ui/2.9.4/` — onde
+os arquivos não existiam.
+
+**Decisões:**
+
+1. **O registro ganha a chave `arquivos`**: dependências que a biblioteca pede sozinha (fontes,
+   sprites) e que NÃO viram tag. Migrar apenas o que aparece em `<link>`/`<script>` deixa a metade
+   invisível para trás, e a falha é visível para o usuário e silenciosa para o servidor.
+
+2. **A régua é "tudo que ela pede está local"**, não "os arquivos que eu listei estão local". Foram
+   22 arquivos no caso do Fomantic — e o Lato veio junto, eliminando mais uma busca externa.
+
+## DEC-124 - 2026-08-29 - accepted
+
+**Fontes hospedadas pelo próprio projeto, com filtro de subset (BATCH-148).**
+
+Um `<link>` para `fonts.googleapis.com` faz o navegador de cada visitante entregar ao Google IP,
+`Referer` e `User-Agent` antes de qualquer consentimento. Precedente: Landgericht München I, 2022
+(Az. 3 O 17493/20). Licença não é obstáculo: OFL e Apache 2.0 permitem hospedar.
+
+**Decisões:**
+
+1. **O comando descobre as URLs nos recursos em vez de exigir uma lista**: acrescentar uma família ao
+   layout e rodar o comando basta, e a declaração não pode divergir do que os layouts realmente pedem.
+
+2. **User-Agent moderno é requisito, não detalhe**: o Google decide o formato por ele. Sem um
+   moderno, devolve `ttf` — várias vezes maior, sem a compressão que justifica o formato web.
+
+3. **Filtra subsets, preserva `unicode-range`**: das 78 faces devolvidas, 50 eram cirílico, grego e
+   vietnamita. Mas o `unicode-range` das 28 restantes é preservado — é ele que faz o navegador baixar
+   só o subset necessário. Removê-lo transformaria a economia em desperdício de banda do visitante.
+
+4. **Escreve na FONTE do projeto, não no espelho**: `resolve()` prefere `path_tests`, mas o pipeline
+   lê e o deploy publica `path`. Gravar no espelho faria o trabalho sumir no próximo sync, sem erro.
+
+5. **O `@import` era o pior caso**: no CSS de destaques, além de vazar dados, ele BLOQUEAVA a
+   renderização até a resposta do Google chegar.
+
+## DEC-125 - 2026-08-29 - accepted
+
+**Minificar é build; escolher o arquivo é resolução — nunca transformar o corpo na entrega
+(BATCH-148).**
+
+A sugestão original era minificar no `arquivo-estatico.php`. O controlador ganhou no BATCH-100
+`Content-Length`, `Accept-Ranges`, `ETag` e `304`, e os quatro dependem de o corpo entregue ser
+exatamente o arquivo em disco.
+
+**Decisões:**
+
+1. **As duas responsabilidades ficam separadas**: `c2f assets:minify` produz o derivado no build;
+   `arquivo_estatico_preferir_minificado()` apenas ESCOLHE qual arquivo enviar. O envio continua
+   sendo um envio de arquivo, e as quatro garantias seguem corretas — medido: `Content-Length` 17305
+   batendo byte a byte, `304` no `If-None-Match`, `206` com 100 bytes no `Range`.
+
+2. **O minificado é derivado, irmão de `css_precompiled`** (CR-002): gerado por build, nunca editado
+   à mão, sempre recalculável, com procedência (`sha1` do fonte) registrada em manifesto.
+
+3. **A escolha acontece DEPOIS da autorização**: o containment continua decidido num lugar só.
+
+4. **Em desenvolvimento serve o fonte**: depurar com nomes destruídos pelo `--mangle` é pior que
+   baixar alguns KB a mais — e isso torna inofensivo o derivado envelhecer enquanto alguém edita,
+   porque quem edita está em dev.
+
+5. **`node --check` obrigatório antes de gravar**: sintaxe inválida quebraria a tela sem sinal no
+   servidor, e o arquivo de autoria — maior, porém correto — é sempre a alternativa preferível. O
+   limite fica declarado: isso valida sintaxe, não semântica.
+
+6. **A etapa entra no pipeline, não fatal**: fora dele viraria "alguém precisa lembrar", e derivado
+   velho serviria código antigo com cara de novo. Máquina sem Node continua rodando o pipeline.

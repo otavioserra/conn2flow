@@ -1366,3 +1366,27 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [x] PHPUnit **902/902** (16 novos); Vitest **378/378**.
 - [ ] Homologação visual do operador (galeria da home, tela de variáveis, campo de editor de texto).
 - [ ] Deploy em produção — a home publicada ainda tem o comportamento antigo.
+
+## BATCH-148 — Fontes do projeto e minificação de JavaScript (req-143, req-145)
+
+- [x] Regressão dos ícones do gestor corrigida: 22 arquivos de fonte do Fomantic baixados; as quatro
+      principais (`icons`, `outline-icons`, `brand-icons`, `LatoLatin-Regular`) respondem **200**.
+- [x] `/transformamp/dashboard/` HTTP 200 com 211 ícones no HTML.
+- [x] Google Fonts: 78 faces devolvidas → **28 mantidas**, 50 descartadas por subset; 28 arquivos
+      (1,1 MB) + `fonts.css` gravados na FONTE do projeto.
+- [x] `<link>`/`preconnect` removidos de 7 layouts e `@import` removido de 1 CSS; **0** referências a
+      `fonts.googleapis.com`/`fonts.gstatic.com` nos recursos do projeto.
+- [x] `project/fonts/fonts.css` responde 200 `text/css`; as fontes respondem 200 `font/woff2`.
+- [x] Varredura de páginas (`/`, `/home-alternativa/`, `/artigos/`, `/dashboard/`): **zero**
+      requisição a domínio externo.
+- [x] Minificação: **64/64** arquivos, 0 falhas, **1.588,3 KB → 739,5 KB (-53%)**.
+- [x] Garantias HTTP preservadas em `interface.js`: `Content-Length: 17305` (bate byte a byte com o
+      derivado), `ETag: "6a931b9f-4399"` (0x4399 = 17305), **304** com `If-None-Match`, **206** com
+      100 bytes em `Range: bytes=0-99`.
+- [x] `node --check` em todos os 7 JS entregues no dashboard: 7/7 válidos.
+- [x] Telas em 200: `/dashboard/`, `/variables/?id=usuarios-perfis`, `/admin-paginas/`, `/`.
+- [x] Etapa integrada aos pipelines (manager 5/5, project 7/7), não fatal sem Node.
+- [x] PHPUnit **918/918** (16 novos); Vitest **378/378**.
+- [ ] Homologação visual do operador: ícones do gestor, tipografia do site público, editor de texto.
+- [ ] Commit no repositório `transformamp` (7 layouts, 1 CSS, 29 arquivos de fonte) — autorização de
+      commit foi dada para o `conn2flow`, não para ele.

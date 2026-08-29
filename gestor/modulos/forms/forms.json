@@ -79,11 +79,11 @@
                     "redirects": {
                         "success": {
                             "type": "url",
-                            "path": "your-page\/success\/"
+                            "path": "your-page/success/"
                         },
                         "error": {
                             "type": "url",
-                            "path": "your-page\/error\/"
+                            "path": "your-page/error/"
                         }
                     },
                     "fields": [
@@ -205,7 +205,7 @@
                     "name": "Formulários Listar",
                     "id": "forms-list",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/",
+                    "path": "forms/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -220,7 +220,7 @@
                     "name": "Formulários Visualizar",
                     "id": "forms-view",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/view\/",
+                    "path": "forms/view/",
                     "type": "system",
                     "option": "visualizar",
                     "version": "1.10",
@@ -234,7 +234,7 @@
                     "name": "Formulários Adicionar",
                     "id": "forms-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/adicionar\/",
+                    "path": "forms/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.11",
@@ -248,7 +248,7 @@
                     "name": "Formulários Editar",
                     "id": "forms-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/editar\/",
+                    "path": "forms/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.9",
@@ -262,7 +262,7 @@
                     "name": "Formulários Clonar",
                     "id": "forms-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/clonar\/",
+                    "path": "forms/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.8",
@@ -276,7 +276,7 @@
                     "name": "Forms Test Email Page",
                     "id": "forms-test-email-page",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "forms\/test-email-page\/",
+                    "path": "forms/test-email-page/",
                     "type": "system",
                     "option": "test-email-page",
                     "framework_css": "tailwindcss",
@@ -369,11 +369,11 @@
                     "redirects": {
                         "success": {
                             "type": "url",
-                            "path": "your-page\/success\/"
+                            "path": "your-page/success/"
                         },
                         "error": {
                             "type": "url",
-                            "path": "your-page\/error\/"
+                            "path": "your-page/error/"
                         }
                     },
                     "fields": [
@@ -495,7 +495,7 @@
                     "name": "Forms List",
                     "id": "forms-list",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/",
+                    "path": "forms/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -510,7 +510,7 @@
                     "name": "Forms View",
                     "id": "forms-view",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/view\/",
+                    "path": "forms/view/",
                     "type": "system",
                     "option": "visualizar",
                     "version": "1.13",
@@ -524,7 +524,7 @@
                     "name": "Forms Add",
                     "id": "forms-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/adicionar\/",
+                    "path": "forms/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.13",
@@ -538,7 +538,7 @@
                     "name": "Forms Edit",
                     "id": "forms-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/editar\/",
+                    "path": "forms/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.11",
@@ -552,7 +552,7 @@
                     "name": "Forms Clone",
                     "id": "forms-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms\/clonar\/",
+                    "path": "forms/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.10",
@@ -566,7 +566,7 @@
                     "name": "Forms Test Email Page",
                     "id": "forms-test-email-page",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "forms\/test-email-page\/",
+                    "path": "forms/test-email-page/",
                     "type": "system",
                     "option": "test-email-page",
                     "framework_css": "tailwindcss",
@@ -612,5 +612,5 @@
             ]
         }
     },
-    "asset_version": "4eeed3cf9a3997a5"
+    "asset_version": "408e937de58de836"
 }

@@ -63,7 +63,7 @@
                 "id": "id-do-formulario",
                 "description": "Descrição do formulário.",
                 "fields_schema": {
-                    "form_action": "pages-index-search\/",
+                    "form_action": "pages-index-search/",
                     "fields": [
                         {
                             "type": "select",
@@ -175,7 +175,7 @@
                     "name": "Formulários Listar",
                     "id": "forms-search-list",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/",
+                    "path": "forms-search/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -190,7 +190,7 @@
                     "name": "Formulários Visualizar",
                     "id": "forms-search-view",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/view\/",
+                    "path": "forms-search/view/",
                     "type": "system",
                     "option": "visualizar",
                     "version": "1.11",
@@ -204,7 +204,7 @@
                     "name": "Formulários Adicionar",
                     "id": "forms-search-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/adicionar\/",
+                    "path": "forms-search/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.14",
@@ -218,7 +218,7 @@
                     "name": "Formulários Editar",
                     "id": "forms-search-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/editar\/",
+                    "path": "forms-search/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.12",
@@ -232,7 +232,7 @@
                     "name": "Formulários Clonar",
                     "id": "forms-search-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/clonar\/",
+                    "path": "forms-search/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.11",
@@ -308,7 +308,7 @@
                 "id": "form-id",
                 "description": "Form description.",
                 "fields_schema": {
-                    "form_action": "pages-index-search\/",
+                    "form_action": "pages-index-search/",
                     "fields": [
                         {
                             "type": "select",
@@ -420,7 +420,7 @@
                     "name": "Forms List",
                     "id": "forms-search-list",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/",
+                    "path": "forms-search/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -435,7 +435,7 @@
                     "name": "Forms View",
                     "id": "forms-search-view",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/view\/",
+                    "path": "forms-search/view/",
                     "type": "system",
                     "option": "visualizar",
                     "version": "1.14",
@@ -449,7 +449,7 @@
                     "name": "Forms Add",
                     "id": "forms-search-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/adicionar\/",
+                    "path": "forms-search/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.16",
@@ -463,7 +463,7 @@
                     "name": "Forms Edit",
                     "id": "forms-search-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/editar\/",
+                    "path": "forms-search/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.14",
@@ -477,7 +477,7 @@
                     "name": "Forms Clone",
                     "id": "forms-search-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "forms-search\/clonar\/",
+                    "path": "forms-search/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.13",
@@ -522,5 +522,5 @@
             ]
         }
     },
-    "asset_version": "d7d4da0a12d85d0e"
+    "asset_version": "b71de8deee13f32a"
 }

@@ -116,7 +116,7 @@
                     "name": "Galerias - Listar",
                     "id": "galleries",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/",
+                    "path": "galleries/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -131,7 +131,7 @@
                     "name": "Galerias - Adicionar",
                     "id": "galleries-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/adicionar\/",
+                    "path": "galleries/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.8",
@@ -146,7 +146,7 @@
                     "name": "Galerias - Editar",
                     "id": "galleries-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/editar\/",
+                    "path": "galleries/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.8",
@@ -161,7 +161,7 @@
                     "name": "Galerias - Clonar",
                     "id": "galleries-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/clonar\/",
+                    "path": "galleries/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.8",
@@ -241,12 +241,12 @@
                 },
                 {
                     "id": "image-position-top",
-                    "value": "Topo \/ Acima",
+                    "value": "Topo / Acima",
                     "type": "string"
                 },
                 {
                     "id": "image-position-bottom",
-                    "value": "Fundo \/ Abaixo",
+                    "value": "Fundo / Abaixo",
                     "type": "string"
                 }
             ]
@@ -350,7 +350,7 @@
                     "name": "Galleries - List",
                     "id": "galleries",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/",
+                    "path": "galleries/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -365,7 +365,7 @@
                     "name": "Galleries - Add",
                     "id": "galleries-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/adicionar\/",
+                    "path": "galleries/adicionar/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.8",
@@ -380,7 +380,7 @@
                     "name": "Galleries - Edit",
                     "id": "galleries-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/editar\/",
+                    "path": "galleries/editar/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.8",
@@ -395,7 +395,7 @@
                     "name": "Galleries - Clone",
                     "id": "galleries-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries\/clonar\/",
+                    "path": "galleries/clonar/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.8",
@@ -486,5 +486,5 @@
             ]
         }
     },
-    "asset_version": "d0c6a0fa84665602"
+    "asset_version": "cb3a8ed7fa9ac8f8"
 }

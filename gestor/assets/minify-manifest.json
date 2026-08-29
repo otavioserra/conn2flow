@@ -1,0 +1,322 @@
+{
+    "gestor/assets/configuracao/configuracao.js": {
+        "sha1": "49e26c3afb4cc1b9523939961f14b0bca2bf8d0e",
+        "origem": 30638,
+        "minificado": 16328
+    },
+    "gestor/assets/dashboard/dashboard-3d-camera.js": {
+        "sha1": "7062c0e48afc24439bf6565639b524472886abef",
+        "origem": 19678,
+        "minificado": 5491
+    },
+    "gestor/assets/dashboard/dashboard-3d-cards.js": {
+        "sha1": "d6bde171b7897f99326a380780e093d2e39e0eb2",
+        "origem": 19653,
+        "minificado": 6182
+    },
+    "gestor/assets/dashboard/dashboard-3d-config.js": {
+        "sha1": "2390ef329893be4e3339e25603abdce032846ac5",
+        "origem": 12158,
+        "minificado": 2865
+    },
+    "gestor/assets/dashboard/dashboard-3d-geometry.js": {
+        "sha1": "f37f2bdabd6aee5be8b87bdfe332b09fc82055b7",
+        "origem": 56347,
+        "minificado": 19924
+    },
+    "gestor/assets/dashboard/dashboard-3d-main.js": {
+        "sha1": "3dcdc6c2085a3c688a7c8a0889cd6ae97b0cbc67",
+        "origem": 8572,
+        "minificado": 3914
+    },
+    "gestor/assets/dashboard/dashboard-3d-ui.js": {
+        "sha1": "f9faedc1e19b5f322b3037c1b14c91c52c28a18c",
+        "origem": 26875,
+        "minificado": 12990
+    },
+    "gestor/assets/global/admin-tailwind.js": {
+        "sha1": "304dd85165ef2139449e6c882eda21506980b8cb",
+        "origem": 16449,
+        "minificado": 4754
+    },
+    "gestor/assets/global/admin.js": {
+        "sha1": "e19154482a728143aa064ba28293cb6ab00b8316",
+        "origem": 5959,
+        "minificado": 1782
+    },
+    "gestor/assets/global/global.js": {
+        "sha1": "39e46e64df704630e852e5649c75750574ab9c34",
+        "origem": 21467,
+        "minificado": 9095
+    },
+    "gestor/assets/interface-v2/interface-v2.js": {
+        "sha1": "e84b36b5209a2b8a3de6b31d424e1f0ebba96eac",
+        "origem": 39101,
+        "minificado": 13265
+    },
+    "gestor/assets/interface/editor-texto.js": {
+        "sha1": "3a4a2787e357221082a3ec7566bc939804c7a12c",
+        "origem": 10321,
+        "minificado": 2320
+    },
+    "gestor/assets/interface/formulario.js": {
+        "sha1": "f7ce99bdd82c6c017443b7e6db8d39de8ebac5ba",
+        "origem": 27714,
+        "minificado": 12930
+    },
+    "gestor/assets/interface/html-editor-helper.js": {
+        "sha1": "fbae2a94586a9c2676c1bf0fc7534e6a10669cca",
+        "origem": 4173,
+        "minificado": 1296
+    },
+    "gestor/assets/interface/html-editor-interface.js": {
+        "sha1": "03badee34abca0d66c351c8a5958572d60d0773e",
+        "origem": 132711,
+        "minificado": 57689
+    },
+    "gestor/assets/interface/html-editor-modules.js": {
+        "sha1": "7c5934089d8e0b3279282539f010b461ec4dcea6",
+        "origem": 34679,
+        "minificado": 17288
+    },
+    "gestor/assets/interface/html-editor-visual-controls.js": {
+        "sha1": "91485473175aab9950a552c41f324f9039b07844",
+        "origem": 25872,
+        "minificado": 12197
+    },
+    "gestor/assets/interface/html-editor.js": {
+        "sha1": "c72a456b16d09582dc574b21cad81f7acf943d24",
+        "origem": 352978,
+        "minificado": 187771
+    },
+    "gestor/assets/interface/ia.js": {
+        "sha1": "1d842ac569c32dcd8d7e090849c68b1519bc1d47",
+        "origem": 18290,
+        "minificado": 8496
+    },
+    "gestor/assets/interface/interface-tailwind.js": {
+        "sha1": "c576d94713c53b4a065ffc50be7b1626a255dadc",
+        "origem": 11083,
+        "minificado": 3721
+    },
+    "gestor/assets/interface/interface.js": {
+        "sha1": "8b30c47a7ec33b52ff4d28ca832d2a1b53a630b1",
+        "origem": 31379,
+        "minificado": 17305
+    },
+    "gestor/assets/interface/pdf-viewer.js": {
+        "sha1": "6aa8f3569e666c772d4248233d566aa7a02bf394",
+        "origem": 12091,
+        "minificado": 5864
+    },
+    "gestor/assets/paypal/paypal.js": {
+        "sha1": "f6cb18f2d4aea6164a2b9c36ddedc6f9f86cb607",
+        "origem": 18804,
+        "minificado": 9510
+    },
+    "gestor/assets/stripe/stripe.js": {
+        "sha1": "0e1e436eb9b682f6976e3ac7648acabe73155c25",
+        "origem": 6796,
+        "minificado": 3081
+    },
+    "gestor/assets/widgets/widgets.js": {
+        "sha1": "d14b904c17f0cccb7d76ba38a9e225354ca3a203",
+        "origem": 1969,
+        "minificado": 1020
+    },
+    "gestor/modulos/admin-arquivos/admin-arquivos.js": {
+        "sha1": "e024c973a00969261abc3e7810270efb3229eb16",
+        "origem": 40525,
+        "minificado": 24338
+    },
+    "gestor/modulos/admin-atualizacoes/admin-atualizacoes.js": {
+        "sha1": "e00610cad2764f6de5e303f2dafe458bbe4ab13d",
+        "origem": 13546,
+        "minificado": 6649
+    },
+    "gestor/modulos/admin-categorias/admin-categorias.js": {
+        "sha1": "f6957c044858adcf40146f30a2f632b2742e76c1",
+        "origem": 375,
+        "minificado": 291
+    },
+    "gestor/modulos/admin-componentes/admin-componentes.js": {
+        "sha1": "8c3e0fdd7e1c17c1d0648aa36dcd11ea14e5d588",
+        "origem": 112,
+        "minificado": 32
+    },
+    "gestor/modulos/admin-environment/admin-environment.js": {
+        "sha1": "8e71530e7c6f9a810a0b91dc1d2456f426c4f26e",
+        "origem": 29221,
+        "minificado": 15268
+    },
+    "gestor/modulos/admin-ia/admin-ia.js": {
+        "sha1": "425740cf34fbc9dfda0adeb34687df79e3dd5ac7",
+        "origem": 23935,
+        "minificado": 11256
+    },
+    "gestor/modulos/admin-layouts/admin-layouts.js": {
+        "sha1": "8c3e0fdd7e1c17c1d0648aa36dcd11ea14e5d588",
+        "origem": 112,
+        "minificado": 32
+    },
+    "gestor/modulos/admin-modos-ia/admin-modos-ia.js": {
+        "sha1": "d4d3cb187dfa9279dee0adb958445891ddd16f73",
+        "origem": 1106,
+        "minificado": 501
+    },
+    "gestor/modulos/admin-paginas/admin-paginas.js": {
+        "sha1": "ceee087bf1f101fe3bd92cdd57184d3796267fe8",
+        "origem": 6663,
+        "minificado": 3535
+    },
+    "gestor/modulos/admin-plugins/admin-plugins.js": {
+        "sha1": "ffc760f1899ed488edd46d11e7c4bc3a5c643b7c",
+        "origem": 4683,
+        "minificado": 2595
+    },
+    "gestor/modulos/admin-prompts-ia/admin-prompts-ia.js": {
+        "sha1": "d4d3cb187dfa9279dee0adb958445891ddd16f73",
+        "origem": 1106,
+        "minificado": 501
+    },
+    "gestor/modulos/admin-templates/admin-templates.js": {
+        "sha1": "2b3b6f5ca3c1dc8ffafa170e34dd53e3a5ff861b",
+        "origem": 1029,
+        "minificado": 417
+    },
+    "gestor/modulos/contatos/contatos.js": {
+        "sha1": "89374a99466b356bf4a3dc7356dfda1648adf2b1",
+        "origem": 37,
+        "minificado": 32
+    },
+    "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
+        "sha1": "29cfd666ffac20ffcefeda8655f38b832406cc86",
+        "origem": 17198,
+        "minificado": 5440
+    },
+    "gestor/modulos/dashboard/dashboard.js": {
+        "sha1": "22a39993979feeeda18dbb98162ca1918d1297f9",
+        "origem": 19992,
+        "minificado": 7309
+    },
+    "gestor/modulos/dashboard/dashboard.toolbar.js": {
+        "sha1": "707e75d941e96389e017eb7a5a6525618f43c9c8",
+        "origem": 93542,
+        "minificado": 45306
+    },
+    "gestor/modulos/forms-search/forms-search.js": {
+        "sha1": "57adad2c4810242008cb543ea9e90a0f9181a216",
+        "origem": 20012,
+        "minificado": 10794
+    },
+    "gestor/modulos/forms-search/forms-search.widget.js": {
+        "sha1": "90879e74583c0c7f358828b856e6275318babf91",
+        "origem": 11868,
+        "minificado": 6133
+    },
+    "gestor/modulos/forms-submissions/forms-submissions.js": {
+        "sha1": "b7c162a143a9412c7d065508fdd52b8bf2338e10",
+        "origem": 4529,
+        "minificado": 1996
+    },
+    "gestor/modulos/forms/forms.js": {
+        "sha1": "6ecf1adc4f4353f98a54affc704f57d706ac8c98",
+        "origem": 23165,
+        "minificado": 13279
+    },
+    "gestor/modulos/forms/forms.widget.js": {
+        "sha1": "b50ad5f0de5a5009157bcdc53d5dfbaddf3ff046",
+        "origem": 6417,
+        "minificado": 1451
+    },
+    "gestor/modulos/galleries/galleries.js": {
+        "sha1": "af68b0656ddc5b1f11d5b61cbda11a010e76e835",
+        "origem": 58215,
+        "minificado": 30037
+    },
+    "gestor/modulos/galleries/galleries.widget.js": {
+        "sha1": "11c8895c0536afaf5551a18b2d2255e109dfb295",
+        "origem": 4767,
+        "minificado": 1668
+    },
+    "gestor/modulos/menus/menus.js": {
+        "sha1": "1eece85ae3523b46f678ab4cfb4968dacc037fb7",
+        "origem": 70890,
+        "minificado": 33833
+    },
+    "gestor/modulos/menus/menus.widget.js": {
+        "sha1": "8233484948f3387cf6a11cf7a05926ae4870ab11",
+        "origem": 1908,
+        "minificado": 733
+    },
+    "gestor/modulos/modulos-grupos/modulos-grupos.js": {
+        "sha1": "726e316ba3049b3ca7efe84733562299b4450088",
+        "origem": 146,
+        "minificado": 120
+    },
+    "gestor/modulos/modulos-operacoes/modulos-operacoes.js": {
+        "sha1": "726e316ba3049b3ca7efe84733562299b4450088",
+        "origem": 146,
+        "minificado": 120
+    },
+    "gestor/modulos/modulos/modulos.js": {
+        "sha1": "ed0f82633ef4aea98d9ed6edce01c659e2d480b0",
+        "origem": 183,
+        "minificado": 154
+    },
+    "gestor/modulos/pages-index/pages-index.js": {
+        "sha1": "7c2efc7afb03530fc0b4483b5bdce03786cf0c86",
+        "origem": 45072,
+        "minificado": 18212
+    },
+    "gestor/modulos/pages-index/pages-index.widget.js": {
+        "sha1": "34aea3be934be9fd1b8bb3f7f2ef3b8dcbb559c2",
+        "origem": 13064,
+        "minificado": 5338
+    },
+    "gestor/modulos/perfil-usuario/perfil-usuario.js": {
+        "sha1": "a86c15349fe6905be66ae5ce806ae17f63cef83f",
+        "origem": 28812,
+        "minificado": 14041
+    },
+    "gestor/modulos/publisher-highlights/publisher-highlights.js": {
+        "sha1": "95c22783a3c703da02cb26577164c878523215e7",
+        "origem": 40535,
+        "minificado": 16195
+    },
+    "gestor/modulos/publisher-index/publisher-index.js": {
+        "sha1": "15a074366393be65b41876b4b42c29b57f4c9b8b",
+        "origem": 44402,
+        "minificado": 18117
+    },
+    "gestor/modulos/publisher-index/publisher-index.widget.js": {
+        "sha1": "4e3ebac05a848645699b78ccc0a090095a8ac397",
+        "origem": 6484,
+        "minificado": 1868
+    },
+    "gestor/modulos/publisher-pages/publisher-pages.js": {
+        "sha1": "2eb7db31771837a8eff1885b37dcbc66d71a3717",
+        "origem": 17540,
+        "minificado": 9124
+    },
+    "gestor/modulos/publisher/publisher.js": {
+        "sha1": "77dff0767e201b82dac5a60ee37e47d8d0542abc",
+        "origem": 26556,
+        "minificado": 11719
+    },
+    "gestor/modulos/usuarios-perfis/usuarios-perfis.js": {
+        "sha1": "e64bf031b4617f788355afb833e41a178352578a",
+        "origem": 645,
+        "minificado": 493
+    },
+    "gestor/modulos/usuarios/usuarios.js": {
+        "sha1": "5383d63ad3c2f28727ee5cf5252d8b2e9e079950",
+        "origem": 1903,
+        "minificado": 1051
+    },
+    "gestor/modulos/variables/variables.js": {
+        "sha1": "3f816e758a15075aa01cdc189e031ab21dbb1d0f",
+        "origem": 252,
+        "minificado": 151
+    }
+}

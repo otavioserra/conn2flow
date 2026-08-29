@@ -36,7 +36,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos\/",
+                    "path": "modulos/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -52,7 +52,7 @@
                         "combined": "148ef155bfcac50e960e482314dc1570"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos\/adicionar\/",
+                    "path": "modulos/adicionar/",
                     "type": "system",
                     "option": "adicionar"
                 },
@@ -67,7 +67,7 @@
                         "combined": "53d364ca0512ab61703cacc6bffc77af"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos\/editar\/",
+                    "path": "modulos/editar/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -81,7 +81,7 @@
                         "combined": "7d77c18e83b0b24c2bdde93b29428dd5"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos\/variaveis\/",
+                    "path": "modulos/variaveis/",
                     "type": "system",
                     "option": "variaveis"
                 },
@@ -95,7 +95,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos\/sincronizar-bancos\/",
+                    "path": "modulos/sincronizar-bancos/",
                     "type": "system",
                     "option": "sincronizar-bancos"
                 },
@@ -109,7 +109,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos\/copiar-variaveis\/",
+                    "path": "modulos/copiar-variaveis/",
                     "type": "system",
                     "option": "copiar-variaveis"
                 }
@@ -172,7 +172,7 @@
                 },
                 {
                     "id": "form-icon-tailwind-label",
-                    "value": "Ícone (Tailwind CSS \/ Lucide)",
+                    "value": "Ícone (Tailwind CSS / Lucide)",
                     "type": "string"
                 },
                 {
@@ -182,7 +182,7 @@
                 },
                 {
                     "id": "form-icon-2-tailwind-label",
-                    "value": "Ícone Ancorado (Tailwind CSS \/ Lucide)",
+                    "value": "Ícone Ancorado (Tailwind CSS / Lucide)",
                     "type": "string"
                 },
                 {
@@ -265,7 +265,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos\/",
+                    "path": "modulos/",
                     "type": "system",
                     "option": "listar",
                     "root": true
@@ -281,7 +281,7 @@
                         "combined": "148ef155bfcac50e960e482314dc1570"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos\/adicionar\/",
+                    "path": "modulos/adicionar/",
                     "type": "system",
                     "option": "adicionar"
                 },
@@ -296,7 +296,7 @@
                         "combined": "53d364ca0512ab61703cacc6bffc77af"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos\/editar\/",
+                    "path": "modulos/editar/",
                     "type": "system",
                     "option": "editar"
                 },
@@ -310,7 +310,7 @@
                         "combined": "a7a5a699f6ddbf8448edcdfcd2e369ac"
                     },
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "modulos\/variaveis\/",
+                    "path": "modulos/variaveis/",
                     "type": "system",
                     "option": "variaveis"
                 },
@@ -324,7 +324,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos\/sincronizar-bancos\/",
+                    "path": "modulos/sincronizar-bancos/",
                     "type": "system",
                     "option": "sincronizar-bancos"
                 },
@@ -338,7 +338,7 @@
                         "combined": ""
                     },
                     "layout": "layout-pagina-sem-permissao",
-                    "path": "modulos\/copiar-variaveis\/",
+                    "path": "modulos/copiar-variaveis/",
                     "type": "system",
                     "option": "copiar-variaveis"
                 }
@@ -463,5 +463,5 @@
             ]
         }
     },
-    "asset_version": "26d9afcab843b663"
+    "asset_version": "4d81aed6970f9384"
 }

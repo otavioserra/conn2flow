@@ -1,21 +1,21 @@
 {
     "version": 1,
-    "system": "b9286ba284054064",
+    "system": "780d1cd38fe4174c",
     "owners": {
-        "configuracao": "8c2e615a2bd52227",
-        "dashboard": "431d9008a60564a7",
+        "configuracao": "d32af0e059cd79e1",
+        "dashboard": "4c3b7b1f3afe70a0",
         "datatables": "5648e2d8917a0a2b",
         "favicon": "8587a3f200e38cbe",
-        "global": "20a765c41db182fc",
+        "global": "110b20a1b8ac8636",
         "images": "24911cddaa3f5975",
-        "interface": "4da13509d1b8379a",
-        "interface-v2": "2f533e9b0fbbaeae",
+        "interface": "474d12f7e93ea310",
+        "interface-v2": "314284c0998ee08b",
         "jQuery-File-Upload-10.32.0": "b4d1102d60e5702c",
         "jQuery-Mask-Plugin-v1.14.16": "7c1dba1bc4269bbe",
-        "paypal": "06a0ea32c33e8b94",
-        "stripe": "0742219cf69a423b",
+        "paypal": "cbfd3a1b46258e21",
+        "stripe": "62ada1759544f5a7",
         "tailwindcss": "1c0e3f13035b98e8",
         "templates": "4dd6d231504de973",
-        "widgets": "f47dbd91fa6277cc"
+        "widgets": "27bd1142f936916f"
     }
 }

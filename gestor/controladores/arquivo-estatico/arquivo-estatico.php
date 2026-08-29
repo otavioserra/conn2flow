@@ -413,6 +413,41 @@ function arquivo_estatico_resolver_nome_sanitizado($base, $caminhoRelativo){
 	return $divergiu ? $atual : false;
 }
 
+/**
+ * req-145 / BATCH-148: prefere o derivado minificado, quando ele existe.
+ *
+ * A minificação acontece no BUILD (`c2f assets:minify`), nunca aqui. Este ponto apenas ESCOLHE
+ * qual arquivo enviar, e por isso todas as garantias que o BATCH-100 deu ao controlador continuam
+ * valendo: `Content-Length`, `Accept-Ranges`, `ETag` e `304` são calculados sobre o arquivo
+ * realmente escolhido. Transformar o corpo na resposta é que teria quebrado as quatro.
+ *
+ * Em ambiente de desenvolvimento o derivado é ignorado de propósito: depurar JavaScript com nomes
+ * de variável destruídos pelo `--mangle` é pior do que baixar alguns KB a mais. Isso também torna
+ * inofensivo o derivado ficar velho enquanto alguém edita o fonte — quem edita está em dev.
+ *
+ * @param string $file Caminho físico do arquivo de autoria.
+ * @param string $ext Extensão requisitada.
+ * @return string O derivado quando ele deve ser servido; o próprio arquivo caso contrário.
+ */
+function arquivo_estatico_preferir_minificado($file, $ext){
+	global $_GESTOR;
+
+	if($ext !== 'js') return $file;
+	if(!empty($_GESTOR['development-env'])) return $file;
+
+	// Um derivado nunca tem derivado: `x.min.js` é servido como ele mesmo.
+	if(substr($file, -7) === '.min.js') return $file;
+
+	$minificado = preg_replace('/\.js$/', '.min.js', $file);
+
+	// Arquivo vazio significa minificação interrompida no meio: o de autoria é maior, porém correto.
+	if($minificado !== null && is_file($minificado) && filesize($minificado) > 0){
+		return $minificado;
+	}
+
+	return $file;
+}
+
 function arquivo_estatico_start(){
 	global $_GESTOR;
 	global $_INDEX;
@@ -480,7 +515,9 @@ function arquivo_estatico_start(){
 		
 		$fileResolvido = arquivo_estatico_resolver_autorizado($file, $basesAutorizadas);
 		if($fileResolvido !== false){
-			arquivo_estatico_enviar($fileResolvido, $ext);
+			// A escolha do derivado acontece DEPOIS da autorização, sobre o caminho já validado: o
+			// containment continua sendo decidido num lugar só.
+			arquivo_estatico_enviar(arquivo_estatico_preferir_minificado($fileResolvido, $ext), $ext);
 		}
 
 		// ===== Arquivos gerenciado pelos usuários via módulo arquivos.

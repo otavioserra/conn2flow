@@ -44,6 +44,7 @@ use Conn2Flow\Cli\Commands\ProjectUpdateAllCommand;
 use Conn2Flow\Cli\Commands\ProjectUpdateSystemCommand;
 use Conn2Flow\Cli\Commands\CssAuditCommand;
 use Conn2Flow\Cli\Commands\AssetsFontsCommand;
+use Conn2Flow\Cli\Commands\AssetsMinifyCommand;
 use Conn2Flow\Cli\Commands\AssetsVendorCommand;
 use Conn2Flow\Cli\Commands\CssRebuildCommand;
 use Conn2Flow\Cli\Commands\ResourcesSyncCommand;
@@ -76,6 +77,7 @@ final class Application
         $this->register(new CssRebuildCommand($this->rootPath));
         $this->register(new AssetsVendorCommand($this->rootPath));
         $this->register(new AssetsFontsCommand($this->rootPath));
+        $this->register(new AssetsMinifyCommand($this->rootPath));
         $this->register(new DbTestCommand($this->rootPath));
         $this->register(new DbUpdateCommand($this->rootPath));
 

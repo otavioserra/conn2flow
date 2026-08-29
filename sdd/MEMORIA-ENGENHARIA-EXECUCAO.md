@@ -70,6 +70,25 @@
 - **Tela do scaffold CRUD copiada carrega ações que não pertencem a ela**: a tela `variables` oferecia
   `excluir` sobre a tabela `modulos`. Ao herdar `interface`, checar QUAL tabela os botões alcançam.
 
+### 2026-08-29 — BATCH-148: assets locais completos, fontes e minificação
+
+- **Migrar um CSS de terceiro sem os arquivos que ele pede quebra em silêncio**: `semantic.min.css`
+  referencia as fontes por caminho RELATIVO. Do CDN resolvia; do disco passou a resolver contra
+  `vendor/<lib>/<versao>/` e os ÍCONES DO GESTOR SUMIRAM. Ao vendorizar, extrair os `url()` relativos
+  do próprio CSS e baixar também.
+- **PHP CLI do Windows não tem CA bundle**: HTTPS falha com `unable to get local issuer certificate`.
+  Cair para o binário `curl` do sistema; NUNCA `CURLOPT_SSL_VERIFYPEER => false`.
+- **Google Fonts decide o formato pelo User-Agent**: sem um moderno, devolve `ttf` em vez de `woff2`.
+- **`ProjectEnvironmentResolver::resolve()` devolve o ESPELHO** (`path_tests`). Comando que ESCREVE
+  no projeto precisa de `config['path']` — gravar no espelho some no próximo sync, sem erro nenhum.
+- **Minificar na entrega quebra quatro garantias de HTTP**: `Content-Length`, `Range`, `ETag` e
+  `304` dependem de o corpo ser o arquivo em disco. Separar MINIFICAR (build) de ESCOLHER
+  (resolução) entrega o mesmo ganho sem custo — medido, o `Content-Length` bate byte a byte.
+- **`terser` e `esbuild` já estão em devDependencies**: não instalar minificador novo.
+- **Documento de intake que se contradiz é pior que um errado**: ao corrigir uma afirmação medida
+  (os 925 KB do DataTables nunca foram entregues), varrer o arquivo inteiro atrás dos trechos que
+  ainda repetiam a versão antiga.
+
 ## Pendências e histórico
 
 - Detalhes integrais vivem nos BATCHes e em `sdd/validation/`; histórico antigo está em `archive/`.
