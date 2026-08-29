@@ -41,6 +41,9 @@ Invoque explicitamente a skill correspondente ANTES de editar código ou fechar 
      * ⛔ **REGRA INVIOLÁVEL DE SEGURANÇA: NUNCA REALIZAR DEPLOY AUTOMÁTICO EM AMBIENTE DE PRODUÇÃO OU SERVIDORES REMOTOS.**
      * Commit semântico e push na branch de trabalho.
      * Relatório final com logs de execução e evidências de validação.
+   - **Goal Mode (`/goal`) para Execução Contínua**:
+     * Em tarefas complexas ou fatias que exigem múltiplos ciclos de teste e correção, ative o comando `/goal` no prompt do Gemini / Antigravity.
+     * O agente permanece em loop contínuo até satisfazer deterministamente todas as condições do `VALIDATION-CHECKLIST.md`.
 
 3. **Nível 3: AUTÔNOMO HEADLESS (Background Silencioso / Black-Box)**:
    - Ativado quando a requisição contiver `modo: autonomo_headless`.
