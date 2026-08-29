@@ -48,6 +48,28 @@
 - `image_position` exige allowlist idêntica no CRUD, PHP e widget JS.
 - Dry-run do atualizador avança checksums sem aplicar linhas: não usar `force-all` sobre tenant.
 
+### 2026-08-29 — BATCH-146/147: cópias congeladas, alvo do CLI e assets locais
+
+- **Widget de galeria NÃO renderiza do template**: `galleries.html` guarda uma CÓPIA tirada quando o
+  operador escolheu o modelo, com `user_modified = 1` — corrigir o template do core não alcança as
+  galerias existentes. Antes de "corrigir o recurso", conferir de onde o runtime realmente lê.
+- **Corrigir a classe sem corrigir o CSS é meio caminho**: HTML gerado por widget só existe em
+  runtime e nunca chega ao compilador Tailwind. Quem emite a classe precisa emitir a regra junto.
+- **Delegar comando do CLI reaproveitando `$input` erra o alvo**: `project:update-all` recebe o
+  projeto como ARGUMENTO e `css:rebuild` o lê como OPÇÃO — a etapa regenerava a base do SISTEMA
+  reportando "analisados: 235 | regenerados: 0". Números plausíveis, base errada: sempre conferir a
+  linha "alvo da gravação".
+- **PHP CLI no Windows não tem CA bundle**: todo HTTPS falha com `unable to get local issuer
+  certificate`. A saída é cair para o binário `curl` do sistema, nunca `CURLOPT_SSL_VERIFYPEER =>
+  false`.
+- **`vendor/` no `.gitignore` engole `gestor/assets/vendor/`**: sem exceção explícita, a migração de
+  CDN vale só na máquina local e produção cai no fallback em silêncio.
+- **Regex "por arquivo" apaga blocos repetidos**: ao trocar um bloco de tags por uma chamada, tratar
+  cada bloco CONTÍGUO — três arquivos tinham dois blocos e o segundo sumiu sem substituto. Conferir
+  paridade blocos↔chamadas depois.
+- **Tela do scaffold CRUD copiada carrega ações que não pertencem a ela**: a tela `variables` oferecia
+  `excluir` sobre a tabela `modulos`. Ao herdar `interface`, checar QUAL tabela os botões alcançam.
+
 ## Pendências e histórico
 
 - Detalhes integrais vivem nos BATCHes e em `sdd/validation/`; histórico antigo está em `archive/`.

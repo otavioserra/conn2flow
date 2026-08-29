@@ -1329,3 +1329,40 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
   HTTP nas páginas existentes, não pela tela de criação.
 - Fases seguintes do CR-002 (publisher-pages extrair CSS; baseline com dependências).
 - Nível 1: nenhum commit, push ou deploy remoto.
+
+## BATCH-146 — Assets de terceiros servidos do disco (req-143)
+
+- [x] `c2f assets:vendor` baixa **28/28** arquivos (2,9 MB), nenhum corpo HTML de erro gravado
+      (varredura por `<!doctype`/`<html>` nos 28 arquivos: 0 suspeitos).
+- [x] Verificação de certificado ligada: o PHP cURL falhou com `unable to get local issuer
+      certificate` e a cadeia caiu para o `curl` do sistema. Nenhum `VERIFYPEER => false` no código.
+- [x] URLs locais resolvem no runtime: `vendor/jquery/3.7.1/jquery.min.js` 200/87.533 B,
+      `vendor/codemirror/5.65.20/codemirror.min.js` 200/170.536 B,
+      `vendor/quill/2.0.3/quill.snow.css` 200/24.606 B.
+- [x] O pipeline propaga `vendor/` para o espelho do projeto (7 bibliotecas presentes).
+- [x] Tela `variables/?id=usuarios-perfis`: **26 assets do disco, 0 do CDN**.
+- [x] Home pública: nenhum CDN de biblioteca; resta `fonts.googleapis.com` (fontes).
+- [x] 161 tags de CodeMirror removidas de 7 arquivos PHP, com **paridade blocos↔chamadas** conferida
+      por arquivo (2 blocos → 2 chamadas em `admin-atualizacoes`, `admin-modos-ia`,
+      `admin-prompts-ia`).
+- [x] PHPUnit **902/902** (5 novos em `AssetsExternosTest`); Vitest **378/378**.
+- [ ] Homologação visual do operador (editor HTML, telas com CodeMirror, modais do Fomantic).
+
+## BATCH-147 — Cadeia de recursos no galleries, tela de variáveis e alvo do css:rebuild (req-144)
+
+- [x] Home local: **6 âncoras** com `pointer-events-none cursor-default` **e** a regra
+      `.cursor-default{cursor:default}` entregue na página (antes: 0 e 0).
+- [x] `galleries-estados` sincronizado nos dois idiomas com `target='galleries-estados'` (fora do
+      dropdown de modelos) e `css_precompiled` de 156 B contendo as duas regras.
+- [x] `variables/?id=usuarios-perfis` HTTP **200**, com **0** links para `adicionar/`, `editar/`,
+      `opcao=status` ou `opcao=excluir`; card de inclusão de variável preservado.
+- [x] Tipo renomeado ponta a ponta: `<option value="editor-texto">Editor de texto`,
+      `class="campo editor-texto"`, **0** ocorrências de `tinymce` no HTML servido.
+- [x] Migração Phinx aplicada: 1 rótulo por idioma, 0 órfãos.
+- [x] Alias de leitura coberto por teste (`configuracao_campo_tipo('tinymce') === 'editor-texto'`).
+- [x] Estágio 6/6 do `project:update-all` grava em `base 'transformamp'` com `local: true` (antes
+      gravava em `conn2flow` reportando sucesso).
+- [x] Nenhum byte de controle nos arquivos tocados (armadilha recorrente do heredoc de Python).
+- [x] PHPUnit **902/902** (16 novos); Vitest **378/378**.
+- [ ] Homologação visual do operador (galeria da home, tela de variáveis, campo de editor de texto).
+- [ ] Deploy em produção — a home publicada ainda tem o comportamento antigo.

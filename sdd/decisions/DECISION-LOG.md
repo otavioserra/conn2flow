@@ -123,6 +123,9 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-117 | 2026-08-21 | accepted | Correção de Reload em Erro de CSRF/Sessão, Mapeamento de Ícones de Projetos, Alternância de Botões de Menu e Saneamento do Lucide (BATCH-127). |
 | DEC-118 | 2026-08-24 | accepted | Extrator semântico de tokens do Tailwind para o Assistente de IA no Editor HTML (BATCH-129). |
 | DEC-119 | 2026-08-28 | accepted | Correspondência por nome sanitizado no controlador estático e desempate de colisão sem espaço (BATCH-143). |
+| DEC-120 | 2026-08-29 | accepted | Aparência de estado resolvida por CADEIA DE RECURSOS no galleries, com o CSS acompanhando as classes (BATCH-147). |
+| DEC-121 | 2026-08-29 | accepted | A tela `variables` não oferece ações sobre a tabela `modulos`; tipo de campo passa a ser `editor-texto` (BATCH-147). |
+| DEC-122 | 2026-08-29 | accepted | Assets de terceiros versionados em `gestor/assets/vendor/`, com verificação de certificado inegociável no download (BATCH-146). |
 
 ---
 
@@ -1046,3 +1049,93 @@ Decisões desta rodada:
 8. **Os nomes legados no disco não são renomeados por este lote**: renomear em massa é mudança de
    DADOS, com risco de quebrar referências já gravadas em páginas publicadas. O fallback os mantém
    servidos; a normalização fica para intake próprio se a chefia quiser encerrar o custo de I/O.
+
+## DEC-120 - 2026-08-29 - accepted
+
+**Aparência de estado no `galleries` resolvida por cadeia de recursos, com o CSS acompanhando as
+classes (BATCH-147).**
+
+O BATCH-144 acrescentou `pointer-events-none cursor-default` aos quatro templates do core e a home
+continuou publicando imagens sem link com cursor de mão. Duas razões medidas:
+
+1. A galeria **não renderiza a partir do template**. Ela guarda em `galleries.html` uma cópia,
+   tirada quando o operador escolheu o modelo, que congela com `user_modified = 1` — a flag que por
+   design bloqueia o sync de recursos.
+2. O template em uso na home do `transformamp` é do **projeto** (`galeria-home`), fora do alcance de
+   qualquer correção feita no core.
+
+**Decisões:**
+
+1. **A resolução é uma cadeia de RECURSOS, não um default em PHP**: HTML da própria galeria →
+   template de origem (`fields_schema.template_id`) → `galleries-estados`, novo recurso do core. O
+   segundo degrau é o que alcança as cópias congeladas, permitindo que corrigir o recurso baste, sem
+   exigir que o operador reescolha o modelo em cada galeria já publicada. Nenhum degrau escreve
+   classe em PHP: os três são recursos e o compilador Tailwind os enxerga.
+
+2. **O recurso que declara as classes declara também o CSS delas**: com a cadeia no lugar, as seis
+   âncoras receberam as classes e `.cursor-default` ficou **sem regra nenhuma** na página — o HTML do
+   widget só existe em runtime e nunca chega ao compilador. Emitir as classes sem a regra é a mesma
+   falha silenciosa de antes, um degrau adiante.
+
+3. **`galleries-estados` usa `target` próprio**: o dropdown de modelos filtra por
+   `target='galleries'`; um recurso interno com o mesmo alvo apareceria como opção de galeria.
+
+4. **A resolução acontece uma vez, fora do laço de itens**: ela é constante para todos os itens, e o
+   degrau 2 consulta o banco.
+
+## DEC-121 - 2026-08-29 - accepted
+
+**A tela `variables` não oferece ações sobre a tabela `modulos`; o tipo de campo passa a ser
+`editor-texto` (BATCH-147).**
+
+O relato foi de 404 em `variables/adicionar/` e `variables/editar/`. As páginas de fato nunca
+existiram, mas os quatro botões herdados do scaffold CRUD apontavam **todos** para a tabela
+`modulos`: `status` desativava e `excluir` aplicava `status='D'` no módulo inteiro. Um clique em
+"Excluir" na tela de variáveis do `usuarios-perfis` apagava o módulo `usuarios-perfis`.
+
+**Decisões:**
+
+1. **Remover os quatro botões em vez de criar as páginas faltantes**: criar `adicionar/` e `editar/`
+   atenderia o pedido literal e deixaria de pé duas ações destrutivas. Esta tela edita as VARIÁVEIS
+   de um módulo, já é a tela de edição (`interface-opcao = alteracoes`) e já inclui variável pelo
+   card `adicionar` de `configuracao_administracao()`.
+
+2. **O tipo de campo descreve o que o campo é, não quem o fabrica**: `tinymce` → `editor-texto`.
+   Enquanto o nome do fornecedor for a chave, cada troca de editor vira ou uma mentira na interface
+   ou uma migração de dados.
+
+3. **O alias de leitura não é preguiça, é a janela do deploy**: `configuracao_campo_tipo()` trata
+   `tinymce` como `editor-texto`. Entre o deploy do código e a aplicação da migração o banco ainda
+   diz `tinymce`, e sem o alias `$campo[$tipo]` erra a chave e o campo **some da tela** — pior que um
+   erro visível. A migração encerra a dívida; o alias cobre o intervalo.
+
+## DEC-122 - 2026-08-29 - accepted
+
+**Assets de terceiros versionados em `gestor/assets/vendor/`, com verificação de certificado
+inegociável no download (BATCH-146).**
+
+`assets-externos.php` já resolvia "local primeiro, CDN como fallback", mas `assets/vendor/` nunca
+existiu: o fallback era o único caminho e o sistema seguia 100% dependente de CDN, com a aparência
+de já ter migrado.
+
+**Decisões:**
+
+1. **Verificação de certificado nunca é desligada**: o PHP CLI do Windows não traz CA bundle e as 28
+   baixas falharam de uma vez com `unable to get local issuer certificate`. `CURLOPT_SSL_VERIFYPEER
+   => false` está descartado: são arquivos servidos como biblioteca em toda tela do gestor, e
+   baixá-los por canal não verificado é pior do que continuar no CDN. A cadeia cai para o binário
+   `curl` do sistema, que valida contra o repositório de certificados do SO.
+
+2. **Só HTTP 200 vira arquivo**: um 404 do CDN devolve corpo HTML. Gravá-lo com nome de biblioteca
+   faria o resolvedor servi-lo como válido, e a tela quebraria sem nenhuma pista de rede.
+
+3. **Os assets são versionados**: o `vendor/` do Composer no `.gitignore` também os engolia, o que
+   faria a migração valer só na máquina de quem rodou o comando — em produção o resolvedor cairia no
+   CDN em silêncio. São 2,9 MB em troca de o que roda em produção ser o que foi revisado.
+
+4. **Versão é versão, não faixa**: `quill@2` permitia qualquer publicação 2.x entrar sem revisão. E
+   como `quill-content.css` é gerado a partir dessa versão, a faixa permitia o editor e a página
+   publicada divergirem sem ninguém ter mexido em nada. A versão passa a sair do registro.
+
+5. **A ordem de carga é propriedade do registro**: `codemirror.min.js` define o objeto que todo
+   addon estende. Eram 161 tags em 7 arquivos, cada cópia com sua própria lista e ordem.
