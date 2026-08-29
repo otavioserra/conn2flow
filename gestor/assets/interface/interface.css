@@ -1,56 +1,80 @@
 
 
 /* ===========================================================================
-   req-147 — Listagem com scroll horizontal em vez de colapso
+   req-147 — Listagem larga rola na JANELA, nao numa caixa
 
-   A caixa envolve APENAS a tabela, e nao o wrapper do DataTables. Em CSS nao
-   existe rolar num eixo so: quando um eixo e `auto`, o navegador converte o
-   `visible` do outro em `auto` tambem. Aplicado ao wrapper, o `overflow-x`
-   trazia junto um scroll VERTICAL que engolia o scroll da pagina.
+   Primeira versao envolveu a tabela numa caixa com `overflow-x`. Funcionava,
+   mas a barra dela nasce no rodape da TABELA: numa listagem longa, quem nao
+   conhece o sistema precisava descer a pagina inteira para descobrir que havia
+   rolagem lateral. A barra da janela fica sempre no rodape da JANELA, onde todo
+   mundo ja procura.
 
-   Envolvendo so a tabela, o eixo vertical pode ser `hidden` sem prejuizo — a
-   tabela nao transborda verticalmente — e a busca, o seletor de quantidade e a
-   paginacao ficam FORA da caixa, com os dropdowns livres.
+   Entao a tabela ESTOURA a largura da pagina de proposito e quem rola e o
+   documento. A classe entra no `<body>` pelo JS, no evento `init.dt`, e so
+   quando a janela nasce com largura >= 1200px.
 
-   O `<div>` e criado pelo JS no evento `init.dt`, unico momento em que a tabela
-   ja existe no DOM, e so quando a janela nasce com largura >= 1200px.
+   `overflow-x: visible` no body e nos contentores intermediarios e o que
+   permite o estouro: um `hidden` em qualquer ancestral CORTA a tabela em vez de
+   deixar rolar, e o efeito e uma listagem truncada sem nenhum aviso.
 
-   `width: auto` derruba o `width: 100%` que o DataTables escreve inline: sem
-   isso a tabela se espreme para caber e o scroll nunca aparece. O `min-width`
-   garante que uma tabela estreita continue ocupando a caixa inteira.
+   `width: auto` derruba o `width: 100%` que o DataTables escreve inline (ele o
+   reaplica no `initComplete`, dai o `!important`). O `min-width` garante que uma
+   tabela estreita continue ocupando a caixa inteira.
 
-   `white-space: nowrap` e o que da largura REAL as colunas — e ele que faz o
-   campo longo continuar legivel e empurra a tabela para alem do conteiner, que
-   e exatamente o comportamento pedido. Sem ele o texto quebra em varias linhas
-   e a tabela volta a caber, tornando o scroll inutil.
+   `white-space: nowrap` e o que da largura REAL as colunas: sem ele o texto
+   quebra, a tabela volta a caber e nao ha o que rolar — justamente o caso dos
+   campos longos que motivaram o pedido.
    =========================================================================== */
 
-.listagem-scroll-horizontal {
-    overflow-x: auto;
-    overflow-y: hidden;
+body.listagem-scroll-horizontal {
+    overflow-x: visible;
 }
 
-.listagem-scroll-horizontal > table.dataTable {
+body.listagem-scroll-horizontal .dataTables_wrapper,
+body.listagem-scroll-horizontal .dataTables_wrapper > table.dataTable {
+    overflow-x: visible;
+}
+
+body.listagem-scroll-horizontal table.dataTable {
     width: auto !important;
     min-width: 100%;
 }
 
-.listagem-scroll-horizontal > table.dataTable > thead > tr > th,
-.listagem-scroll-horizontal > table.dataTable > tbody > tr > td {
+body.listagem-scroll-horizontal table.dataTable > thead > tr > th,
+body.listagem-scroll-horizontal table.dataTable > tbody > tr > td {
     white-space: nowrap;
 }
 
-/* A barra de rolagem fica visivel: uma listagem que rola sem indicar isso
-   parece uma listagem truncada. */
-.listagem-scroll-horizontal {
-    scrollbar-width: thin;
+/* A coluna de acoes e a primeira (req-147). O destaque vale SEMPRE, nao so quando a
+   tabela rola: e ela que ancora a leitura de cada linha, e um tom proprio a
+   separa das colunas de dado.
+
+   O fundo precisa ser OPACO — com a tabela rolada, o conteudo das outras colunas
+   passa por baixo dela. Foi isso que deixou a celula branca enquanto o resto era
+   cinza: o `#fff` estava ali por necessidade tecnica, sem intencao visual. */
+
+table.dataTable > thead > tr > th:first-child {
+    background: #eaeef3;
+    box-shadow: inset -1px 0 0 rgba(34, 36, 38, .15);
 }
 
-.listagem-scroll-horizontal::-webkit-scrollbar {
-    height: 10px;
+table.dataTable > tbody > tr > td:first-child {
+    background: #f4f6f9;
+    box-shadow: inset -1px 0 0 rgba(34, 36, 38, .1);
 }
 
-.listagem-scroll-horizontal::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, .25);
-    border-radius: 5px;
+/* O hover da linha precisa alcancar a coluna ancorada tambem, senao ela parece
+   "morta" enquanto o resto da linha reage ao mouse. */
+table.dataTable > tbody > tr:hover > td:first-child {
+    background: #e8edf4;
+}
+
+/* `sticky` so entra quando ha rolagem, e so funciona se nenhum ancestral tiver
+   `overflow` diferente de `visible` — a mesma condicao do estouro acima, entao as
+   duas coisas se sustentam pelo mesmo motivo. */
+body.listagem-scroll-horizontal table.dataTable > thead > tr > th:first-child,
+body.listagem-scroll-horizontal table.dataTable > tbody > tr > td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
 }

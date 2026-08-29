@@ -588,11 +588,12 @@ $(document).ready(function () {
                 : 1200;
             const preferirScrollHorizontal = window.innerWidth >= listagemLarguraSemColapso;
 
-            // Envolve APENAS a tabela: aplicado ao wrapper, o `overflow-x` traria junto um scroll
-            // vertical (em CSS nao existe rolar num eixo so) e prenderia busca e paginacao na caixa.
+            // A rolagem e da JANELA: a barra de uma caixa em volta da tabela nasce no rodape DELA, e
+            // numa listagem longa so aparece depois de descer a pagina. A da janela fica onde todo
+            // mundo ja procura.
             $('#' + this.#tableId).on('init.dt', function () {
-                if (preferirScrollHorizontal && !$(this).parent().hasClass('listagem-scroll-horizontal')) {
-                    $(this).wrap('<div class="listagem-scroll-horizontal"></div>');
+                if (preferirScrollHorizontal) {
+                    $('body').addClass('listagem-scroll-horizontal');
                 }
             });
 
@@ -601,6 +602,8 @@ $(document).ready(function () {
                 serverSide: true,
                 responsive: preferirScrollHorizontal ? false : {
                     details: {
+                        // Coluna 1 (o nome), nao a 0: com as opcoes na primeira posicao, o padrao
+                        // punha o controle "+" na mesma celula dos botoes de acao.
                         display: $.fn.dataTable.Responsive.display.modal({
                             header: (row) => {
                                 const data = row.data();
@@ -628,9 +631,10 @@ $(document).ready(function () {
                     },
                 },
                 columnDefs: [
-                    { responsivePriority: 1, targets: 0 },
+                    // req-147: coluna de OPCOES na primeira posicao (era `targets: -1`).
+                    { responsivePriority: 1, targets: 1 },
                     {
-                        targets: -1,
+                        targets: 0,
                         responsivePriority: 2,
                         className: 'dt-head-center',
                         render: (data, type, row) => this.#renderActions(data, row, lista),
@@ -660,7 +664,7 @@ $(document).ready(function () {
                     // Ocultar coluna opções se não há ações
                     if (!lista.opcoes) {
                         const dtInstance = $('#' + this.#tableId).DataTable();
-                        dtInstance.column(-1).visible(false);
+                        dtInstance.column(0).visible(false);
                     }
 
                     // Largura 100%

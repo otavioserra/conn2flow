@@ -31,6 +31,17 @@ final class ListagemScrollHorizontalTest extends TestCase
         ];
     }
 
+    /**
+     * O JavaScript sem os comentarios de linha.
+     *
+     * Asserir "nao contem X" sobre o arquivo inteiro bate no proprio comentario que EXPLICA a
+     * mudanca de X — o teste falha por o codigo estar bem documentado, nao por estar errado.
+     */
+    private static function jsSemComentarios(string $relativo): string
+    {
+        return (string)preg_replace('#^\s*//.*$#m', '', self::asset($relativo));
+    }
+
     private static function asset(string $relativo): string
     {
         return (string)file_get_contents(
@@ -67,16 +78,12 @@ final class ListagemScrollHorizontalTest extends TestCase
         $codigo = self::asset($js);
 
         self::assertStringContainsString("on('init.dt'", $codigo);
-        self::assertStringContainsString('.wrap(', $codigo);
-        self::assertStringContainsString('listagem-scroll-horizontal', $codigo);
+        self::assertStringContainsString("$('body').addClass('listagem-scroll-horizontal')", $codigo);
 
-        // A caixa envolve APENAS a tabela. Aplicar o overflow ao wrapper trazia junto um scroll
-        // VERTICAL — em CSS nao existe rolar num eixo so — que engolia o scroll da pagina, e ainda
-        // prendia busca e paginacao dentro da caixa.
-        self::assertStringNotContainsString(
-            "closest('.dataTables_wrapper').addClass('listagem-scroll-horizontal')",
-            $codigo
-        );
+        // Quem rola e a JANELA, nao uma caixa em volta da tabela. A barra de uma caixa nasce no
+        // rodape DELA: numa listagem longa, quem nao conhece o sistema precisava descer a pagina
+        // inteira para descobrir que havia rolagem lateral.
+        self::assertStringNotContainsString('.wrap(', self::jsSemComentarios($js));
     }
 
     #[DataProvider('interfaces')]
@@ -86,13 +93,35 @@ final class ListagemScrollHorizontalTest extends TestCase
         // sem erro nenhum no console.
         $folha = self::asset($css);
 
-        self::assertStringContainsString('.listagem-scroll-horizontal', $folha);
-        self::assertStringContainsString('overflow-x: auto', $folha);
+        self::assertStringContainsString('body.listagem-scroll-horizontal', $folha);
 
-        // O eixo vertical precisa ser explicito: com `visible` o navegador o converte em `auto` e a
-        // tabela ganha um scroll vertical proprio, que rouba o scroll da pagina.
-        self::assertStringContainsString('overflow-y: hidden', $folha);
-        self::assertStringNotContainsString('overflow-y: visible', $folha);
+        // `visible` nos ancestrais e o que PERMITE o estouro. Um `hidden` em qualquer um deles corta
+        // a tabela em vez de deixar rolar, e o efeito e uma listagem truncada sem nenhum aviso.
+        self::assertStringContainsString('overflow-x: visible', $folha);
+        self::assertStringNotContainsString('overflow-x: auto', $folha);
+    }
+
+    #[DataProvider('interfaces')]
+    public function testAColunaDeAcoesFicaAncoradaNaBordaEsquerda(string $js, string $css): void
+    {
+        // Sem `sticky`, rolar para a direita levaria embora justamente a coluna que foi movida para
+        // a frente para ficar sempre alcancavel.
+        $folha = self::asset($css);
+
+        self::assertStringContainsString('position: sticky', $folha);
+        self::assertStringContainsString('left: 0', $folha);
+    }
+
+    #[DataProvider('interfaces')]
+    public function testOColunaDeOpcoesEAPrimeiraNoRenderizador(string $js): void
+    {
+        // A coluna de opcoes passou para a primeira posicao (`interface.php`), entao o renderizador
+        // dos botoes e a ocultacao quando nao ha acoes seguem junto — eram `-1`.
+        $codigo = self::jsSemComentarios($js);
+
+        self::assertStringNotContainsString('targets: -1', $codigo);
+        self::assertStringNotContainsString('column(-1)', $codigo);
+        self::assertStringContainsString('column(0)', $codigo);
     }
 
     #[DataProvider('interfaces')]

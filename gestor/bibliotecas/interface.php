@@ -5242,6 +5242,33 @@ function interface_listar_tabela($params = false){
 			$orderDefault = false;
 			$count = 0;
 			
+			// ===== Coluna opções — PRIMEIRA posição (req-147).
+			//
+			// Ela ficava por último. Com a listagem rolando na horizontal, "por último" passou a
+			// significar "fora da tela": o operador precisava rolar até o fim de uma tabela larga
+			// para alcançar editar e excluir, em toda linha. Na primeira posição as ações ficam
+			// ancoradas onde a leitura começa, e continuam visíveis com a tabela rolada.
+			//
+			// A ordem aqui define a ordem das colunas no DataTables, e ela precisa casar com a ordem
+			// dos `<th>`: por isso o cabeçalho também sai daqui, antes do laço.
+			$row = '
+				<th>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'list-column-options')).'</th>';
+			
+			$tabela_cabecalho = modelo_var_in($tabela_cabecalho,"#rows#",$row);
+			if(isset($tabela['rodape'])) $tabela_rodape = modelo_var_in($tabela_rodape,"#rows#",$row);
+			
+			$interface['columns'][] = Array(
+				'data' => $banco['id'],
+				'name' => gestor_variaveis(Array('modulo' => 'interface','id' => 'list-column-options')),
+				'orderable' => false,
+				'searchable' => false,
+			);
+			
+			// A partir daqui as colunas de dados começam no ÍNDICE 1 do DataTables, e não mais no 0.
+			// `$count` continua contando a partir de zero para a leitura do array de configuração; o
+			// deslocamento entra apenas onde o índice vira posição de coluna (a ordenação).
+			$deslocamentoOpcoes = 1;
+			
 			foreach($tabela['colunas'] as $coluna){
 				$row = '
 				<th>'.$coluna['nome'].'</th>';
@@ -5265,7 +5292,7 @@ function interface_listar_tabela($params = false){
 						$ordem = 'desc';
 					}
 					
-					$order[] = Array($count,$ordem);
+					$order[] = Array($count + $deslocamentoOpcoes,$ordem);
 					$orderBanco .= (strlen($orderBanco) > 0 ? ',':'').$coluna['id'].' '.$ordem;
 				}
 				
@@ -5301,21 +5328,6 @@ function interface_listar_tabela($params = false){
 				);
 			}
 			
-			// ===== Coluna opções com os botões de ações 
-			
-			$row = '
-				<th>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'list-column-options')).'</th>';
-			
-			$tabela_cabecalho = modelo_var_in($tabela_cabecalho,"#rows#",$row);
-			if(isset($tabela['rodape'])) $tabela_rodape = modelo_var_in($tabela_rodape,"#rows#",$row);
-			
-			$interface['columns'][] = Array(
-				'data' => $banco['id'],
-				'name' => gestor_variaveis(Array('modulo' => 'interface','id' => 'list-column-options')),
-				'orderable' => false,
-				'searchable' => false,
-			);
-			
 			// =====
 			
 			if($order){
@@ -5323,8 +5335,10 @@ function interface_listar_tabela($params = false){
 				
 				$banco['order'] = ' ORDER BY '.$orderBanco;
 			} else {
+				// Índice 1, e não 0: a coluna 0 agora é a de opções, que é `orderable: false` — ordenar
+				// por ela faria o DataTables recusar a ordenação inicial em silêncio.
 				$interface['order'] = Array(Array(
-					0,'asc'
+					$deslocamentoOpcoes,'asc'
 				));
 				
 				$banco['order'] = ' ORDER BY '.$orderDefault.' asc';
@@ -5372,6 +5386,19 @@ function interface_listar_tabela($params = false){
 				
 				if($tabela){
 					$id_without_format = $dado[$banco['id']];
+					
+					// req-147: a célula de OPÇÕES vem primeiro, na mesma ordem do cabeçalho.
+					//
+					// Este é o `<tbody>` que o servidor entrega antes de o JavaScript rodar
+					// (`deferLoading`). Ele precisa casar coluna a coluna com os `<th>`: quando só o
+					// cabeçalho foi reordenado, a primeira renderização saiu inteira deslocada em uma
+					// posição — o status aparecendo sob "Data Modificação" e a coluna de ações
+					// mostrando o id como texto.
+					$row = '
+				<td>'.$id_without_format.'</td>';
+					
+					$col = modelo_var_in($col,"#rows#",$row);
+					
 					foreach($tabela['colunas'] as $coluna){
 						if(isset($coluna['formatar'])){
 							$dado[$coluna['id']] = interface_formatar_dado(Array(
@@ -5392,11 +5419,6 @@ function interface_listar_tabela($params = false){
 					
 						$col = modelo_var_in($col,"#rows#",$row);
 					}
-					
-					$row = '
-				<td>'.$id_without_format.'</td>';
-					
-					$col = modelo_var_in($col,"#rows#",$row);
 				}
 				
 				$col = modelo_var_troca($col,"#rows#",'');

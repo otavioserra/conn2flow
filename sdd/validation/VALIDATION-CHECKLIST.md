@@ -1423,3 +1423,22 @@ Medido em navegador real (Playwright) em `/admin-paginas/`:
 - [x] Vale para as duas interfaces (`interface` e `interface-v2`).
 - [x] PHPUnit **938/938** (10 novos); Vitest **378/378**.
 - [ ] Homologação visual do operador em telas de listagem variadas.
+
+### BATCH-149 (parte 3) — Rolagem na janela e ações na primeira coluna (req-147, 2ª rodada)
+
+- [x] A rolagem é da **JANELA**: documento 1920px contra viewport de 1400px; a caixa em volta da
+      tabela deixou de existir.
+- [x] Primeira coluna é **Opções**, com os botões, e `position: sticky`.
+- [x] Destaque visual: cabeçalho `rgb(234,238,243)` contra `rgb(249,250,251)` das demais; célula
+      `rgb(244,246,249)` contra transparente.
+- [x] **Alinhamento em 7 telas** (`admin-paginas`, `usuarios`, `publisher`, `modulos`,
+      `admin-componentes`, `admin-layouts`, `menus`): número de cabeçalhos igual ao de células.
+- [x] Correção do deslocamento: `interface.php` monta a tabela em DOIS lugares (cabeçalho/`columns` e
+      o `<tbody>` do `deferLoading`); os dois foram reordenados.
+- [x] Botão de status recuperado (`editar`, `clonar`, `desativar` presentes).
+- [x] Ordenação preservada: `Opções` como `sorting_disabled` e `Nome` como `sorting_asc`.
+- [x] A/B contra o commit anterior: a sobreposição do controle `+` com os botões no mobile **não é
+      regressão deste lote** — o baseline se comporta igual.
+- [x] `responsive.details.type = 'column'` foi tentado e **revertido**: quebrava a expansão.
+- [x] PHPUnit **942/942** (14 no arquivo do lote); Vitest **378/378**.
+- [ ] Homologação visual do operador em telas de listagem variadas.

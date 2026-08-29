@@ -964,19 +964,18 @@ $(document).ready(function () {
 					: 1200;
 				var preferirScrollHorizontal = window.innerWidth >= listagemLarguraSemColapso;
 
-				// A caixa de rolagem envolve APENAS a tabela, e nao o wrapper do DataTables.
+				// A rolagem e da JANELA, nao de uma caixa em volta da tabela.
 				//
-				// Dois motivos. Primeiro: em CSS nao existe rolar num eixo so — quando um eixo e
-				// `auto`, o navegador converte o `visible` do outro em `auto` tambem. Aplicado ao
-				// wrapper, o `overflow-x` trazia junto um scroll VERTICAL que engolia o scroll da
-				// pagina. Segundo: o wrapper guarda a busca, o seletor de quantidade e a paginacao;
-				// prende-los numa caixa com `overflow` cortaria os dropdowns deles.
+				// A caixa funcionava, mas a barra dela nasce no rodape da TABELA: numa listagem longa,
+				// quem nao conhece o sistema precisava primeiro descer a pagina para descobrir que
+				// havia rolagem lateral. A barra da janela fica sempre no rodape da JANELA, no lugar
+				// onde todo mundo ja procura.
 				//
-				// Envolvendo so a tabela, o eixo vertical pode ser `hidden` sem prejuizo (a tabela nao
-				// transborda verticalmente) e os controles ficam de fora, livres.
+				// Entao a tabela estoura a largura da pagina de proposito, e quem rola e o documento.
+				// A classe vai no BODY porque e ele que precisa parar de conter a tabela.
 				$('#' + dataTableName).on('init.dt', function () {
-					if (preferirScrollHorizontal && !$(this).parent().hasClass('listagem-scroll-horizontal')) {
-						$(this).wrap('<div class="listagem-scroll-horizontal"></div>');
+					if (preferirScrollHorizontal) {
+						$('body').addClass('listagem-scroll-horizontal');
 					}
 				});
 
@@ -985,6 +984,11 @@ $(document).ready(function () {
 					"serverSide": true,
 					responsive: preferirScrollHorizontal ? false : {
 						details: {
+							// O controle "+" vai para a coluna 1 (o nome), e nao para a 0.
+							//
+							// Com a coluna de opcoes na primeira posicao (req-147), o padrao do
+							// Responsive colocava o controle na MESMA celula dos botoes de acao: um
+							// clique para editar virava tambem um clique para expandir a linha.
 							display: $.fn.dataTable.Responsive.display.modal({
 								header: function (row) {
 									var data = row.data();
@@ -1013,12 +1017,14 @@ $(document).ready(function () {
 						}
 					},
 					columnDefs: [
+						// req-147: a coluna de OPCOES passou para a primeira posicao (`interface.php`),
+						// entao o renderizador dos botoes segue junto: era `targets: -1`.
 						{
 							responsivePriority: 1,
-							targets: 0
+							targets: 1
 						},
 						{
-							targets: -1,
+							targets: 0,
 							responsivePriority: 2,
 							className: 'dt-head-center',
 							render: function (data, type, row, meta) {
@@ -1087,7 +1093,7 @@ $(document).ready(function () {
 						// ===== Quando terminar de ler, caso não haja opções, ocultar a coluna opções
 
 						if (!lista.opcoes) {
-							var opcoes = dtableInstance.column(-1);
+							var opcoes = dtableInstance.column(0);
 							opcoes.visible(false);
 						}
 
