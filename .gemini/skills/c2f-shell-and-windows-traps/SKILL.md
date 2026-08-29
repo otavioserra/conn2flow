@@ -1,6 +1,6 @@
 ---
 name: c2f-shell-and-windows-traps
-description: "LEIA ANTES de executar comandos Docker, cURL, scripts Python/Node de edição ou chamadas POST no ambiente Windows/Git Bash. Se não ler: caminhos corrompidos por path conversion do MSYS, uploads falhando silenciosamente, heredocs com bytes de controle e formulários rejeitados pelo Gestor."
+description: "LEIA ANTES de executar comandos Docker, cURL, scripts Python/Node de edição ou chamadas POST no ambiente Windows/Git Bash. Se não ler: caminhos corrompidos por path conversion do MSYS, uploads falhando silenciosamente, heredocs com bytes de controle, concorrência travando processos PHP e mascarando warnings e formulários rejeitados pelo Gestor."
 user-invocable: false
 ---
 
@@ -9,11 +9,11 @@ user-invocable: false
 # ⚡ Gatilho Obrigatório
 - **TRIGGER**: Executar comandos Docker (`docker exec`), cURL com upload/POST, scripts Python/Node que geram arquivos, ou chamadas POST para formulários do Gestor no ambiente Windows/Git Bash.
 - **SKIP APENAS SE**: Tarefas puramente de leitura de código ou edição de arquivos sem execução de shell.
-- **CONSEQUÊNCIA DE IGNORAR**: Caminhos Linux corrompidos para `C:/Program Files/Git/...`, uploads interpretados como leitura de arquivo local, heredocs com `\b`/`\s` convertidos em bytes de controle, e formulários rejeitados silenciosamente por falta de campos ocultos.
+- **CONSEQUÊNCIA DE IGNORAR**: Caminhos Linux corrompidos para `C:/Program Files/Git/...`, uploads interpretados como leitura de arquivo local, heredocs com `\b`/`\s` convertidos em bytes de controle, concorrência travando processos PHP e engolindo warnings vitais, e formulários rejeitados silenciosamente por falta de campos ocultos.
 
 ---
 
-## ⛔ As 5 Armadilhas Críticas
+## ⛔ As 6 Armadilhas Críticas
 
 ### 1. Conversão Automática de Caminhos no Git Bash (MSYS Path Conversion)
 
@@ -112,3 +112,16 @@ curl --form-string "_gestor-atualizar=1" \
 | `_gestor-atualizar` | `1` | Sinaliza que o POST é uma atualização válida |
 | `_gestor-registro-id` | ID numérico | Identifica o registro alvo no banco |
 | `ajax` | `sim` | (Se AJAX) Previne redirecionamento e retorna JSON |
+
+---
+
+### 6. Paralelismo Concorrente em Comandos de Compilação em Lote (Supressão de Warnings PHP)
+
+**Problema**: Executar múltiplos comandos pesados de compilação, sincronização ou banco simultaneamente (`css:rebuild`, `resources:sync`, `project:update-all`, `manager:update-all`, `db:migrate`) no mesmo ambiente Windows/Docker gera disputas de I/O, trava o container e mascara erros de runtime críticos. Quando executados em background ou com buffers suprimidos, warnings e notices do PHP não chegam ao terminal.
+
+*Caso Real Documentado*: Um bug na assinatura de método (`$fontesExtras` sem parâmetro declarado) permaneceu invisível por horas no Core — as classes Tailwind declaradas em `tailwind_sources` eram descartadas silenciosamente e o terminal não exibia nenhum erro porque o comando rodava em segundo plano com buffer engolindo os avisos do PHP.
+
+**Solução Obrigatória**:
+1. **Execução Sequencial Exclusiva**: NUNCA execute dois comandos de compilação ou pipeline em paralelo no mesmo container. Execute um de cada vez, aguardando o término (`exit code 0`).
+2. **Foreground Obrigatório**: Mantenha os comandos rodando em foreground com saída direta no terminal.
+3. **Sem Buffer / Expor Warnings**: Não use redirecionamentos cegos (`> /dev/null 2>&1`). Se um warning do PHP for disparado (ex: `Undefined variable`, `ArgumentCountError`), ele DEVE aparecer no terminal para resolução imediata.
