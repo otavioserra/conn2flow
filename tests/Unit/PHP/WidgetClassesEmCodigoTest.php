@@ -85,6 +85,35 @@ final class WidgetClassesEmCodigoTest extends TestCase
         self::assertStringContainsString('$publicadorCache, $html_template)', $codigo);
     }
 
+    public function testNenhumArquivoDoCoreTemByteDeControle(): void
+    {
+        // Armadilha do ambiente (documentada em `c2f-shell-and-windows-traps`): heredoc de Python
+        // converte `` e `\s` em BYTE DE CONTROLE dentro do arquivo gerado. O PHP não reclama, o
+        // lint passa, e a regex silenciosamente deixa de casar — foi assim que
+        // `/<input[^>]*>/` virou `/<input<0x08>[^>]*>/` e o campo de senha perdeu o botão.
+        $alvos = array_merge(
+            glob(CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . '*'
+                . DIRECTORY_SEPARATOR . '*.php') ?: [],
+            glob(CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'bibliotecas' . DIRECTORY_SEPARATOR . '*.php') ?: [],
+            glob(CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'controladores' . DIRECTORY_SEPARATOR . 'agents'
+                . DIRECTORY_SEPARATOR . 'arquitetura' . DIRECTORY_SEPARATOR . '*.php') ?: []
+        );
+
+        self::assertNotEmpty($alvos);
+
+        $suspeitos = [];
+        foreach ($alvos as $arquivo) {
+            $conteudo = (string)file_get_contents($arquivo);
+
+            // Tab (0x09), LF (0x0A) e CR (0x0D) são legítimos; o resto abaixo de 0x20 não é.
+            if (preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', $conteudo)) {
+                $suspeitos[] = basename($arquivo);
+            }
+        }
+
+        self::assertSame([], $suspeitos, 'byte de controle encontrado em: ' . implode(', ', $suspeitos));
+    }
+
     public function testNenhumWidgetDeclaraFontesTailwindApontandoParaCodigo(): void
     {
         // `tailwind_sources` para `.php`/`.js` é o remendo que mantém viva a classe em código: o

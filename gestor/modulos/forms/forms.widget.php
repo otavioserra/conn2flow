@@ -42,7 +42,7 @@ function forms_widget_block($html, $name, $keep) {
 	return preg_replace($pattern, $keep ? '$1' : '', $html);
 }
 
-function forms_widget_options_html($field) {
+function forms_widget_options_html($field, $template = '') {
 	$options = $field['options'] ?? [];
 	$type = $field['type'] ?? 'select';
 	$name = $field['name'] ?? '';
@@ -73,14 +73,39 @@ function forms_widget_options_html($field) {
 			}
 		}
 
+		// req-141: o markup da opção vem do TEMPLATE, não daqui. Classe escrita em PHP é invisível
+		// para o compilador Tailwind, que varre recursos — e o campo renderiza sem estilo no site.
 		if ($type === 'radio' || $type === 'checkbox') {
 			$input_name = htmlspecialchars((string)$name, ENT_QUOTES, 'UTF-8').($type === 'checkbox' ? '[]' : '');
-			$html .= '<label class="inline-flex items-center mr-4 mb-2 cursor-pointer">'
-				.'<input type="'.$type.'" name="'.$input_name.'" value="'.htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8').'" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" '.$required.'>'
-				.'<span class="ml-2 text-sm text-gray-700">'.htmlspecialchars((string)$label, ENT_QUOTES, 'UTF-8').'</span>'
-				.'</label>';
+			$modelo = trim((string)modelo_tag_val($template, '<!-- option-choice < -->', '<!-- option-choice > -->'));
+
+			// Template gravado antes desta mudança não tem o marcador. Sem este fallback, todo campo
+			// radio/checkbox de projeto existente renderizaria VAZIO — regressão silenciosa no site.
+			if ($modelo === '') {
+				$modelo = '<label class="inline-flex items-center mr-4 mb-2 cursor-pointer">'
+					.'<input type="@[[option#type]]@" name="@[[option#name]]@" value="@[[option#value]]@"'
+					.' class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" @[[option#required]]@>'
+					.'<span class="ml-2 text-sm text-gray-700">@[[option#label]]@</span></label>';
+			}
+
+			$item = str_replace(
+				Array('@[[option#type]]@', '@[[option#name]]@', '@[[option#value]]@', '@[[option#required]]@', '@[[option#label]]@'),
+				Array($type, $input_name, htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'), $required, htmlspecialchars((string)$label, ENT_QUOTES, 'UTF-8')),
+				$modelo
+			);
+
+			$html .= $item;
 		} else {
-			$html .= '<option value="'.htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars((string)$label, ENT_QUOTES, 'UTF-8').'</option>';
+			$modelo = trim((string)modelo_tag_val($template, '<!-- option-select < -->', '<!-- option-select > -->'));
+			if ($modelo === '') {
+				$modelo = '<option value="@[[option#value]]@">@[[option#label]]@</option>';
+			}
+
+			$html .= str_replace(
+				Array('@[[option#value]]@', '@[[option#label]]@'),
+				Array(htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'), htmlspecialchars((string)$label, ENT_QUOTES, 'UTF-8')),
+				$modelo
+			);
 		}
 	}
 	return $html;
@@ -163,15 +188,42 @@ function forms_widget_add_tag_class($html, $tag, $class) {
  * O botão usa a classe `.forms-password-toggle` e o ícone `eye` (Fomantic) com estilos inline
  * para funcionar também em páginas Tailwind / CSS Vanilla sem depender do framework ativo.
  */
-function forms_widget_wrap_password($html) {
-	return preg_replace_callback('/<input\b[^>]*>/i', function ($m) {
-		$input = $m[0];
-		$iconEye = '<svg class="forms-password-icon-eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12 18 18.75 12 18.75 2.25 12 2.25 12Z"></path><circle cx="12" cy="12" r="3.25"></circle></svg>';
-		$iconEyeSlash = '<svg class="forms-password-icon-eye-slash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;"><path d="M3 3l18 18"></path><path d="M10.58 10.58A2 2 0 0 0 10 12a2 2 0 0 0 3.42 1.42"></path><path d="M9.88 5.09A10.94 10.94 0 0 1 12 4.88c6 0 9.75 7.12 9.75 7.12a20.3 20.3 0 0 1-4.04 4.95"></path><path d="M6.61 6.61A20.78 20.78 0 0 0 2.25 12S6 19.12 12 19.12c1.76 0 3.3-.38 4.65-.97"></path></svg>';
-		$toggle = '<button type="button" class="forms-password-toggle" aria-label="Mostrar/ocultar senha" tabindex="-1"'
-			.' style="position:absolute;top:50%;right:0.75rem;transform:translateY(-50%);background:transparent;border:0;cursor:pointer;padding:0;line-height:1;color:#6b7280;">'
-			.$iconEye.$iconEyeSlash.'</button>';
-		return '<div class="forms-password-wrapper" style="position:relative;">'.$input.$toggle.'</div>';
+function forms_widget_wrap_password($html, $template = '') {
+	// req-141: o markup do botão vem do TEMPLATE. Mesmo sem utility Tailwind aqui, HTML em PHP é o
+	// que a norma proíbe — e é por esse caminho que classe some do alcance do compilador.
+	$modelo = trim((string)modelo_tag_val($template, '<!-- password-toggle < -->', '<!-- password-toggle > -->'));
+
+	// Template anterior a esta mudança não declara o bloco: sem o fallback, o campo de senha perde o
+	// botão de mostrar/ocultar em todo projeto já existente. As classes aqui são hooks de JS, não
+	// utilities — o compilador Tailwind não precisa enxergá-las.
+	if ($modelo === '') {
+		$modelo = '<div class="forms-password-wrapper" style="position:relative;">@[[password#input]]@'
+			.'<button type="button" class="forms-password-toggle" aria-label="@[[password#aria]]@" tabindex="-1"'
+			.' style="position:absolute;top:50%;right:0.75rem;transform:translateY(-50%);background:transparent;'
+			.'border:0;cursor:pointer;padding:0;line-height:1;color:#6b7280;">'
+			.'<svg class="forms-password-icon-eye" viewBox="0 0 24 24" width="18" height="18" fill="none"'
+			.' stroke="currentColor" stroke-width="1.8" aria-hidden="true">'
+			.'<path d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12 18 18.75 12 18.75 2.25 12 2.25 12Z"></path>'
+			.'<circle cx="12" cy="12" r="3.25"></circle></svg>'
+			.'<svg class="forms-password-icon-eye-slash" viewBox="0 0 24 24" width="18" height="18" fill="none"'
+			.' stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="display:none;">'
+			.'<path d="M3 3l18 18"></path>'
+			.'<path d="M10.58 10.58A2 2 0 0 0 10 12a2 2 0 0 0 3.42 1.42"></path>'
+			.'<path d="M9.88 5.09A10.94 10.94 0 0 1 12 4.88c6 0 9.75 7.12 9.75 7.12a20.3 20.3 0 0 1-4.04 4.95"></path>'
+			.'<path d="M6.61 6.61A20.78 20.78 0 0 0 2.25 12S6 19.12 12 19.12c1.76 0 3.3-.38 4.65-.97"></path></svg>'
+			.'</button></div>';
+	}
+
+	return preg_replace_callback('/<input\b[^>]*>/i', function ($m) use ($modelo) {
+		$aria = function_exists('gestor_variaveis')
+			? (string)gestor_variaveis(Array('modulo' => 'forms', 'id' => 'password-toggle-aria'))
+			: '';
+
+		return str_replace(
+			Array('@[[password#input]]@', '@[[password#aria]]@'),
+			Array($m[0], $aria),
+			$modelo
+		);
 	}, $html, 1);
 }
 
@@ -204,7 +256,7 @@ function forms_widget_render_field($template, $field) {
 	$html = forms_widget_replace_var($html, 'item#type', htmlspecialchars($inputType, ENT_QUOTES, 'UTF-8'));
 	$html = forms_widget_replace_var($html, 'item#required', $required);
 	$html = forms_widget_replace_var($html, 'item#value', htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'));
-	$html = forms_widget_replace_var($html, 'item#options', forms_widget_options_html($field));
+	$html = forms_widget_replace_var($html, 'item#options', forms_widget_options_html($field, $template));
 
 	$html = forms_widget_block($html, 'type-select', $type === 'select');
 	$html = forms_widget_block($html, 'type-textarea', $type === 'textarea');
@@ -243,7 +295,7 @@ function forms_widget_render_field($template, $field) {
 		// Sem `autocomplete`, o Chrome alerta no console e pode sugerir a senha salva do site num
 		// campo de cadastro. `new-password` é o valor correto para criação/confirmação de senha.
 		$html = forms_widget_inject_tag_attrs($html, 'input', ' autocomplete="new-password"');
-		$html = forms_widget_wrap_password($html);
+		$html = forms_widget_wrap_password($html, $template);
 	}
 
 	return $html;
