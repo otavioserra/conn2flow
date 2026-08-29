@@ -1408,3 +1408,18 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [x] PHPUnit **928/928** (8 novos); Vitest **378/378**.
 - [ ] Homologação visual: `/perfil-usuario/` e `/restrict-area/`.
 - [ ] Pendente separado: o `css_precompiled` do layout não é entregue em páginas de módulo.
+
+### BATCH-149 (parte 2) — Scroll horizontal na listagem (req-147)
+
+Medido em navegador real (Playwright) em `/admin-paginas/`:
+
+- [x] **1400px**: caixa criada, rola na horizontal, tabela **2819px** em caixa de **1092px**,
+      **0 botões "+"** (nenhuma coluna colapsada).
+- [x] **1400px**: `overflow-y` computado é `hidden`, a caixa **não** rola na vertical e o scroll
+      vertical da **página** continua funcionando — o defeito reportado na 1ª rodada.
+- [x] Filhos da caixa: `["TABLE"]`. Busca, seletor de quantidade, informação e paginação ficam
+      **fora** dela (confirmado elemento a elemento).
+- [x] **900px**: caixa não é criada e o colapso responsivo é preservado (**25 botões "+"**).
+- [x] Vale para as duas interfaces (`interface` e `interface-v2`).
+- [x] PHPUnit **938/938** (10 novos); Vitest **378/378**.
+- [ ] Homologação visual do operador em telas de listagem variadas.

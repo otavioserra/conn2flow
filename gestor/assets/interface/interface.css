@@ -1,0 +1,56 @@
+
+
+/* ===========================================================================
+   req-147 — Listagem com scroll horizontal em vez de colapso
+
+   A caixa envolve APENAS a tabela, e nao o wrapper do DataTables. Em CSS nao
+   existe rolar num eixo so: quando um eixo e `auto`, o navegador converte o
+   `visible` do outro em `auto` tambem. Aplicado ao wrapper, o `overflow-x`
+   trazia junto um scroll VERTICAL que engolia o scroll da pagina.
+
+   Envolvendo so a tabela, o eixo vertical pode ser `hidden` sem prejuizo — a
+   tabela nao transborda verticalmente — e a busca, o seletor de quantidade e a
+   paginacao ficam FORA da caixa, com os dropdowns livres.
+
+   O `<div>` e criado pelo JS no evento `init.dt`, unico momento em que a tabela
+   ja existe no DOM, e so quando a janela nasce com largura >= 1200px.
+
+   `width: auto` derruba o `width: 100%` que o DataTables escreve inline: sem
+   isso a tabela se espreme para caber e o scroll nunca aparece. O `min-width`
+   garante que uma tabela estreita continue ocupando a caixa inteira.
+
+   `white-space: nowrap` e o que da largura REAL as colunas — e ele que faz o
+   campo longo continuar legivel e empurra a tabela para alem do conteiner, que
+   e exatamente o comportamento pedido. Sem ele o texto quebra em varias linhas
+   e a tabela volta a caber, tornando o scroll inutil.
+   =========================================================================== */
+
+.listagem-scroll-horizontal {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.listagem-scroll-horizontal > table.dataTable {
+    width: auto !important;
+    min-width: 100%;
+}
+
+.listagem-scroll-horizontal > table.dataTable > thead > tr > th,
+.listagem-scroll-horizontal > table.dataTable > tbody > tr > td {
+    white-space: nowrap;
+}
+
+/* A barra de rolagem fica visivel: uma listagem que rola sem indicar isso
+   parece uma listagem truncada. */
+.listagem-scroll-horizontal {
+    scrollbar-width: thin;
+}
+
+.listagem-scroll-horizontal::-webkit-scrollbar {
+    height: 10px;
+}
+
+.listagem-scroll-horizontal::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .25);
+    border-radius: 5px;
+}

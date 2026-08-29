@@ -581,10 +581,25 @@ $(document).ready(function () {
                 language = { url: gestor.raiz + 'datatables/1.10.23/pt_br.json' };
             }
 
+            // req-147: mesma regra do `interface.js` — em tela larga a listagem rola na horizontal
+            // em vez de colapsar as colunas atras de um botao "+".
+            const listagemLarguraSemColapso = (window.gestor && gestor.listagemLarguraSemColapso)
+                ? parseInt(gestor.listagemLarguraSemColapso, 10)
+                : 1200;
+            const preferirScrollHorizontal = window.innerWidth >= listagemLarguraSemColapso;
+
+            // Envolve APENAS a tabela: aplicado ao wrapper, o `overflow-x` traria junto um scroll
+            // vertical (em CSS nao existe rolar num eixo so) e prenderia busca e paginacao na caixa.
+            $('#' + this.#tableId).on('init.dt', function () {
+                if (preferirScrollHorizontal && !$(this).parent().hasClass('listagem-scroll-horizontal')) {
+                    $(this).wrap('<div class="listagem-scroll-horizontal"></div>');
+                }
+            });
+
             this.#instance = $('#' + this.#tableId).DataTable({
                 processing: true,
                 serverSide: true,
-                responsive: {
+                responsive: preferirScrollHorizontal ? false : {
                     details: {
                         display: $.fn.dataTable.Responsive.display.modal({
                             header: (row) => {

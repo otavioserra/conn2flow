@@ -946,10 +946,44 @@ $(document).ready(function () {
 					}
 				}
 
+				// req-147: em tela larga a listagem ROLA na horizontal em vez de COLAPSAR.
+				//
+				// O `responsive` do DataTables esconde colunas assim que a tabela nao cabe e devolve o
+				// conteudo atras de um botao "+", registro a registro. Numa tela de 1200px ou mais isso
+				// tira da vista dados que caberiam com um arrasto lateral, e obriga a abrir um modal por
+				// linha so para comparar dois registros. Com campos longos o efeito piora: a tabela
+				// colapsa cedo justamente quando ha mais o que ver.
+				//
+				// Abaixo do limiar o colapso continua valendo: em celular, rolar uma tabela de dez
+				// colunas e pior do que abrir o detalhe.
+				//
+				// A escolha e feita na CRIACAO e nao acompanha o redimensionamento da janela: trocar de
+				// modo exige destruir e recriar a tabela, o que perderia pagina, busca e ordenacao.
+				var listagemLarguraSemColapso = (window.gestor && gestor.listagemLarguraSemColapso)
+					? parseInt(gestor.listagemLarguraSemColapso, 10)
+					: 1200;
+				var preferirScrollHorizontal = window.innerWidth >= listagemLarguraSemColapso;
+
+				// A caixa de rolagem envolve APENAS a tabela, e nao o wrapper do DataTables.
+				//
+				// Dois motivos. Primeiro: em CSS nao existe rolar num eixo so — quando um eixo e
+				// `auto`, o navegador converte o `visible` do outro em `auto` tambem. Aplicado ao
+				// wrapper, o `overflow-x` trazia junto um scroll VERTICAL que engolia o scroll da
+				// pagina. Segundo: o wrapper guarda a busca, o seletor de quantidade e a paginacao;
+				// prende-los numa caixa com `overflow` cortaria os dropdowns deles.
+				//
+				// Envolvendo so a tabela, o eixo vertical pode ser `hidden` sem prejuizo (a tabela nao
+				// transborda verticalmente) e os controles ficam de fora, livres.
+				$('#' + dataTableName).on('init.dt', function () {
+					if (preferirScrollHorizontal && !$(this).parent().hasClass('listagem-scroll-horizontal')) {
+						$(this).wrap('<div class="listagem-scroll-horizontal"></div>');
+					}
+				});
+
 				var dtableInstance = $('#' + dataTableName).DataTable({
 					"processing": true,
 					"serverSide": true,
-					responsive: {
+					responsive: preferirScrollHorizontal ? false : {
 						details: {
 							display: $.fn.dataTable.Responsive.display.modal({
 								header: function (row) {
