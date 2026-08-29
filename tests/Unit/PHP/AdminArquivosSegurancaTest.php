@@ -171,6 +171,67 @@ final class AdminArquivosSegurancaTest extends TestCase
         self::assertSame('a/b/mini/c.png', arquivo_mini_caminho_relativo('a/b/c.png'));
     }
 
+    // ===== arquivo_nome_colisao (BATCH-143 / req-140) =====
+
+    public function testColisaoUsaHifenENuncaEspaco(): void
+    {
+        self::assertSame('foto-(1).jpg', arquivo_nome_colisao('foto', 'jpg', 1));
+        self::assertSame('foto-(2).jpg', arquivo_nome_colisao('foto', 'jpg', 2));
+        self::assertSame('leia-me-(1)', arquivo_nome_colisao('leia-me', '', 1));
+    }
+
+    public function testColisaoNuncaProduzEspacoParaNenhumIndice(): void
+    {
+        // O espaço era a causa-raiz do 404: o disco guardava `foto (1).jpg` e a URL publicada
+        // apontava para `foto-(1).jpg`.
+        for ($i = 1; $i <= 25; $i++) {
+            $nome = arquivo_nome_colisao('Ela', 'webp', $i);
+            self::assertStringNotContainsString(' ', $nome, 'indice '.$i);
+            self::assertSame('Ela-('.$i.').webp', $nome);
+        }
+    }
+
+    public function testColisaoEhIdempotenteSobASanitizacao(): void
+    {
+        // A invariante que fecha o bug: o nome gravado no disco tem que sobreviver à sanitização
+        // aplicada por quem monta a URL, senão a divergência volta pela porta dos fundos.
+        foreach (['foto', 'Ela', 'leia-me', 'a-b-c', 'nome-'] as $base) {
+            $nome = arquivo_nome_colisao($base, 'png', 3);
+            self::assertSame($nome, arquivo_nome_sanitizar($nome), 'base '.$base);
+        }
+    }
+
+    public function testColisaoColapsaHifenDuplicadoDeNomeBaseTerminadoEmHifen(): void
+    {
+        // `nome-` + `-(1)` daria `nome--(1)`, que a sanitização reduz a `nome-(1)`.
+        self::assertSame('nome-(1).png', arquivo_nome_colisao('nome-', 'png', 1));
+    }
+
+    public function testArquivoDeColisaoContinuaAlcancavelPelaUrlQueOSistemaPublica(): void
+    {
+        // Blindagem do req-140 pelo COMPORTAMENTO, e nao pela formula: grava o arquivo com o nome
+        // que o desempate produz e o procura pelo caminho que os consumidores publicam. Com o
+        // sufixo antigo (` (1)`) o disco guardava `x (1).png` e a pagina pedia `x-(1).png`; este
+        // teste falha de novo se o espaco voltar, com ou sem a funcao atual.
+        $dir = self::$baseDir . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . '2026';
+
+        $nomeGravado = arquivo_nome_colisao('captura-de-tela', 'png', 1);
+        file_put_contents($dir . DIRECTORY_SEPARATOR . $nomeGravado, 'x');
+
+        // O caminho que a pagina monta passa pela sanitizacao canonica.
+        $urlPublicada = arquivo_caminho_relativo_seguro('files/2026/' . $nomeGravado);
+        self::assertNotFalse($urlPublicada);
+
+        $alvo = arquivo_caminho_resolver(self::$baseDir, $urlPublicada);
+        self::assertNotFalse($alvo);
+        self::assertFileExists(
+            $alvo,
+            'A URL publicada (' . $urlPublicada . ') nao encontrou o arquivo gravado (' . $nomeGravado . ').'
+        );
+
+        @unlink($dir . DIRECTORY_SEPARATOR . $nomeGravado);
+    }
+
     // ===== arquivo_tipo_por_extensao =====
 
     public function testTipoPorExtensao(): void

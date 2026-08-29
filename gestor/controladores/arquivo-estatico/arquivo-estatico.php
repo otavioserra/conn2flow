@@ -292,6 +292,127 @@ function arquivo_estatico_enviar($file, $ext){
 	exit;
 }
 
+/**
+ * Variantes textuais do caminho requisitado (BATCH-143 / req-140).
+ *
+ * Função PURA (testável): não toca disco nem envia cabeçalho.
+ *
+ * A reescrita do Apache do gestor usa a flag `[B]`, então o PHP já recebe o caminho decodificado e
+ * `Ela%20(1).webp` chega como `Ela (1).webp`. Onde essa flag não estiver presente (servidor de
+ * terceiro, proxy ou nginx com regra própria) o percent-encoding chega literal e nenhum arquivo
+ * casa. Decodificar uma vez cobre esse ambiente sem custo e sem afrouxar a validação — a variante
+ * só entra na lista depois de passar pela mesma guarda de traversal do caminho original.
+ *
+ * @param string $caminhoTotal Caminho requisitado, como chegou do roteador.
+ * @return array Caminhos candidatos, do mais provável ao menos, sem repetição.
+ */
+function arquivo_estatico_caminho_variantes($caminhoTotal){
+	$caminhoTotal = (string)$caminhoTotal;
+	$variantes = Array($caminhoTotal);
+
+	$decodificado = rawurldecode($caminhoTotal);
+	if($decodificado !== $caminhoTotal && arquivo_estatico_caminho_valido($decodificado)){
+		$variantes[] = $decodificado;
+	}
+
+	return $variantes;
+}
+
+/**
+ * Localiza, dentro de um diretório, a entrada cujo nome FÍSICO produz o segmento requisitado ao
+ * passar por `arquivo_nome_sanitizar()` (BATCH-143).
+ *
+ * A comparação é pelo resultado da sanitização, e não por uma troca adivinhada de hífen por
+ * espaço: `Foto-Final-de-Praia.webp` pode ter nascido de `Foto-Final de Praia.webp`, e tentar as
+ * combinações de hífen custaria 2^n testes de disco por requisição — um DoS barato, já que a URL é
+ * do atacante. Aqui o custo é uma listagem do diretório, e só no caminho que já daria 404.
+ *
+ * @param string $diretorio Diretório físico onde procurar.
+ * @param string $segmento Segmento requisitado na URL.
+ * @param bool $ehArquivo true quando o segmento é o último (arquivo); false para diretório.
+ * @return string|false Nome físico correspondente ou false.
+ */
+function arquivo_estatico_entrada_por_nome_sanitizado($diretorio, $segmento, $ehArquivo){
+	if(!function_exists('arquivo_nome_sanitizar')) return false;
+
+	$entradas = @scandir($diretorio);
+	if($entradas === false) return false;
+
+	// `scandir()` devolve em ordem alfabética: se duas entradas físicas sanitizam para a mesma URL
+	// (`Ela (1).webp` e `Ela  (1).webp`), a escolha é sempre a mesma. Duas fontes para uma URL é
+	// ambiguidade do dado, não da resolução — o que se pode garantir aqui é determinismo.
+	foreach($entradas as $entrada){
+		// `.`, `..` e o nome exato já foram descartados por quem chamou.
+		if($entrada === '.' || $entrada === '..' || $entrada === $segmento) continue;
+		if(arquivo_nome_sanitizar($entrada) !== $segmento) continue;
+
+		$caminho = $diretorio.'/'.$entrada;
+		if($ehArquivo ? is_file($caminho) : is_dir($caminho)) return $entrada;
+	}
+
+	return false;
+}
+
+/**
+ * Reconstrói o caminho físico de um arquivo cujo nome em disco diverge da URL publicada (BATCH-143).
+ *
+ * Arquivos gravados antes desta correção mantêm espaço no nome (`Ela (1).webp`), mas os consumidores
+ * publicam a URL já sanitizada (`Ela-(1).webp`) — `realpath()` falhava e o controlador devolvia 404
+ * para um arquivo que estava lá. A resolução é segmento a segmento, então vale igualmente para a
+ * pasta de miniaturas (`mini/Ela-(1).webp`) e para diretórios com espaço no nome.
+ *
+ * O retorno ainda precisa passar por `arquivo_estatico_resolver_autorizado()`: esta função descobre
+ * o nome, não autoriza o envio.
+ *
+ * @param string $base Raiz autorizada (`$_GESTOR['contents-path']`).
+ * @param string $caminhoRelativo Caminho requisitado.
+ * @return string|false Caminho físico divergente encontrado, ou false.
+ */
+function arquivo_estatico_resolver_nome_sanitizado($base, $caminhoRelativo){
+	$segmentos = Array();
+	foreach(explode('/', str_replace('\\', '/', (string)$caminhoRelativo)) as $seg){
+		if($seg === '' || $seg === '.') continue;
+		if($seg === '..') return false;
+		$segmentos[] = $seg;
+	}
+
+	if(!$segmentos) return false;
+
+	$atual = rtrim(str_replace('\\', '/', (string)$base), '/');
+	if($atual === '' || !is_dir($atual)) return false;
+
+	$ultimo = count($segmentos) - 1;
+	$divergiu = false;
+
+	foreach($segmentos as $indice => $seg){
+		$ehArquivo = ($indice === $ultimo);
+		$candidato = $atual.'/'.$seg;
+
+		if($ehArquivo ? is_file($candidato) : is_dir($candidato)){
+			$atual = $candidato;
+			continue;
+		}
+
+		// O hífen é a assinatura do defeito tratado aqui: espaço (e todo caractere proibido) vira
+		// hífen na sanitização. Exigi-lo faz as varreduras automáticas de 404 (`/wp-login.php`,
+		// `/.env`) pararem antes de listar diretório, que é a parte cara.
+		//
+		// Fica de fora o nome cuja única divergência é a APARA das pontas (`-foto.webp` no disco
+		// publicado como `foto.webp`). Isso não nasce do upload, que já grava o nome sanitizado, e
+		// custaria uma listagem de diretório em todo 404 do site para ser coberto.
+		if(strpos($seg, '-') === false) return false;
+
+		$fisico = arquivo_estatico_entrada_por_nome_sanitizado($atual, $seg, $ehArquivo);
+		if($fisico === false) return false;
+
+		$atual = $atual.'/'.$fisico;
+		$divergiu = true;
+	}
+
+	// Caminho sem divergência alguma já teria sido resolvido pela busca direta.
+	return $divergiu ? $atual : false;
+}
+
 function arquivo_estatico_start(){
 	global $_GESTOR;
 	global $_INDEX;
@@ -364,11 +485,39 @@ function arquivo_estatico_start(){
 
 		// ===== Arquivos gerenciado pelos usuários via módulo arquivos.
 
-		$file = $_GESTOR['contents-path'].$_GESTOR['caminho-total'];
+		$variantes = arquivo_estatico_caminho_variantes($caminhoTotal);
 
-		$fileResolvido = arquivo_estatico_resolver_autorizado($file, $basesAutorizadas);
-		if($fileResolvido !== false){
-			arquivo_estatico_enviar($fileResolvido, $ext);
+		foreach($variantes as $variante){
+			$fileResolvido = arquivo_estatico_resolver_autorizado($_GESTOR['contents-path'].$variante, $basesAutorizadas);
+			if($fileResolvido !== false){
+				arquivo_estatico_enviar($fileResolvido, $ext);
+			}
+		}
+
+		// ===== Compatibilidade retroativa de nomes (BATCH-143 / req-140).
+		//
+		// Arquivos gravados antes desta correção mantêm espaço no nome, mas a URL publicada pelos
+		// consumidores já vem sanitizada (com hífen). Sem hífen nenhum no caminho não há divergência
+		// possível — a sanitização só PRODUZ hífen — e nem vale carregar a biblioteca.
+		$podeDivergir = false;
+		foreach($variantes as $variante){
+			if(strpos($variante, '-') !== false){ $podeDivergir = true; break; }
+		}
+
+		if($podeDivergir){
+			if(!function_exists('arquivo_nome_sanitizar') && !empty($_GESTOR['bibliotecas-path'])){
+				require_once($_GESTOR['bibliotecas-path'].'arquivo.php');
+			}
+
+			foreach($variantes as $variante){
+				$fisico = arquivo_estatico_resolver_nome_sanitizado($_GESTOR['contents-path'], $variante);
+				if($fisico === false) continue;
+
+				$fileResolvido = arquivo_estatico_resolver_autorizado($fisico, $basesAutorizadas);
+				if($fileResolvido !== false){
+					arquivo_estatico_enviar($fileResolvido, $ext);
+				}
+			}
 		}
 	}
 	

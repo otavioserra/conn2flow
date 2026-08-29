@@ -717,7 +717,10 @@ function admin_arquivos_ajax_upload_file(){
 	$nomeFinal = $nomeSeguro;
 	$i = 1;
 	while (is_file($absDir . DIRECTORY_SEPARATOR . $nomeFinal)) {
-		$nomeFinal = $nomeBase . ' (' . $i . ')' . ($ext !== '' ? '.' . $ext : '');
+		// BATCH-143 (req-140): o desempate sai da biblioteca porque o nome precisa nascer idêntico ao
+		// que a sanitização devolve — o sufixo com espaço gravava `foto (1).jpg` e a URL publicada
+		// apontava para `foto-(1).jpg`, que não existia no disco.
+		$nomeFinal = arquivo_nome_colisao($nomeBase, $ext, $i);
 		$i++;
 	}
 

@@ -66,6 +66,35 @@ if (!function_exists('arquivo_nome_sanitizar')) {
 	}
 }
 
+if (!function_exists('arquivo_nome_colisao')) {
+	/**
+	 * Nome de desempate quando o arquivo enviado colide com um já existente na pasta.
+	 *
+	 * BATCH-143 (req-140): o sufixo nasce com HÍFEN, e não com espaço. O nome gravado em disco
+	 * precisa ser idêntico ao que `arquivo_nome_sanitizar()` devolveria para ele, porque é essa a
+	 * forma que os consumidores (`interface.php`, `publisher-pages`, widgets) publicam na URL. Um
+	 * `foto (1).jpg` no disco virava `foto-(1).jpg` na página e o controlador estático respondia
+	 * 404 — o arquivo existia, mas com outro nome.
+	 *
+	 * O resultado passa pela própria sanitização para ficar IDEMPOTENTE: um nome-base terminado em
+	 * hífen produziria `base--(1)`, que a sanitização colapsaria para `base-(1)` e reabriria a
+	 * mesma divergência.
+	 *
+	 * @param string $nomeBase Nome já higienizado, sem extensão.
+	 * @param string $ext Extensão sem o ponto (string vazia quando não há).
+	 * @param int $indice Contador de desempate (1, 2, 3...).
+	 * @return string Nome final higienizado.
+	 */
+	function arquivo_nome_colisao($nomeBase, $ext, $indice) {
+		$ext = (string)$ext;
+		$nome = (string)$nomeBase . '-(' . (int)$indice . ')' . ($ext !== '' ? '.' . $ext : '');
+
+		$sanitizado = arquivo_nome_sanitizar($nome);
+
+		return $sanitizado !== '' ? $sanitizado : $nome;
+	}
+}
+
 if (!function_exists('arquivo_extensao_perigosa')) {
 	/**
 	 * Verifica se a extensão de um nome de arquivo é executável/perigosa e deve
