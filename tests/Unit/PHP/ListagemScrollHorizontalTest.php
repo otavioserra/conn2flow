@@ -125,6 +125,51 @@ final class ListagemScrollHorizontalTest extends TestCase
     }
 
     #[DataProvider('interfaces')]
+    public function testODestaqueUsaAPaletaDaMarca(string $js, string $css): void
+    {
+        // As duas cores saem do proprio logo (`assets/images/logo-principal.png`), medidas por
+        // contagem de pixels: ciano #18a8c0 (14.283 px) e azul-marinho #182840 (4.529 px). Ficam em
+        // variaveis para que trocar a identidade seja uma edicao so.
+        $folha = self::asset($css);
+
+        self::assertStringContainsString('--c2f-marca-ciano: #18a8c0', $folha);
+        self::assertStringContainsString('--c2f-marca-navy: #182840', $folha);
+
+        // E o destaque REALMENTE usa as variaveis, em vez de repetir o hex.
+        self::assertStringContainsString('var(--c2f-marca-ciano-claro)', $folha);
+        self::assertStringContainsString('var(--c2f-marca-ciano-veu)', $folha);
+    }
+
+    #[DataProvider('interfaces')]
+    public function testOsBotoesSeguemBrancosComHoverDaMarca(string $js, string $css): void
+    {
+        // A coluna inteira ja e a area destacada; pintar os botoes competiria com os icones, que sao
+        // o que o operador procura. O destaque deles vem no hover.
+        $folha = self::asset($css);
+
+        $trecho = substr($folha, (int)strpos($folha, 'td:first-child .ui.button'));
+
+        self::assertStringContainsString('background: #fff', $trecho);
+        self::assertStringContainsString(':hover', $trecho);
+        self::assertStringContainsString('var(--c2f-marca-ciano)', $trecho);
+        self::assertStringContainsString('transform: translateY(-1px)', $trecho);
+    }
+
+    #[DataProvider('interfaces')]
+    public function testOFundoDaColunaEOpaco(string $js, string $css): void
+    {
+        // Com a tabela rolada, o conteudo das outras colunas passa POR BAIXO da coluna ancorada. Um
+        // fundo `rgba` ou `transparent` deixaria o texto atravessar, e o efeito e ilegivel.
+        $folha = self::asset($css);
+
+        $ini = (int)strpos($folha, 'table.dataTable > tbody > tr > td:first-child {');
+        $trecho = substr($folha, $ini, 200);
+
+        self::assertStringContainsString('background: var(--c2f-marca-ciano-veu)', $trecho);
+        self::assertStringNotContainsString('transparent', $trecho);
+    }
+
+    #[DataProvider('interfaces')]
     public function testATabelaGanhaLarguraRealEmVezDeSeEspremer(string $js, string $css): void
     {
         $folha = self::asset($css);

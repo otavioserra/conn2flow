@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "system": "8c00b44afd8bb9fb",
+    "system": "dcd671bb863a244d",
     "owners": {
         "configuracao": "d32af0e059cd79e1",
         "dashboard": "4c3b7b1f3afe70a0",
@@ -8,8 +8,8 @@
         "favicon": "8587a3f200e38cbe",
         "global": "110b20a1b8ac8636",
         "images": "24911cddaa3f5975",
-        "interface": "be3e3379a7c094eb",
-        "interface-v2": "036b02477c5caca5",
+        "interface": "5e48c41e327ddf2b",
+        "interface-v2": "9b8973970cb83705",
         "jQuery-File-Upload-10.32.0": "b4d1102d60e5702c",
         "jQuery-Mask-Plugin-v1.14.16": "7c1dba1bc4269bbe",
         "paypal": "cbfd3a1b46258e21",

@@ -45,28 +45,65 @@ body.listagem-scroll-horizontal table.dataTable > tbody > tr > td {
     white-space: nowrap;
 }
 
-/* A coluna de acoes e a primeira (req-147). O destaque vale SEMPRE, nao so quando a
-   tabela rola: e ela que ancora a leitura de cada linha, e um tom proprio a
-   separa das colunas de dado.
+/* ---------------------------------------------------------------------------
+   Coluna de acoes: destaque na paleta da marca (req-147)
 
-   O fundo precisa ser OPACO — com a tabela rolada, o conteudo das outras colunas
-   passa por baixo dela. Foi isso que deixou a celula branca enquanto o resto era
-   cinza: o `#fff` estava ali por necessidade tecnica, sem intencao visual. */
+   As duas cores saem do proprio logo (`assets/images/logo-principal.png`),
+   medidas por contagem de pixels: o ciano #18a8c0 domina o simbolo e o "2", e o
+   azul-marinho #182840 forma o quadrado e o texto. Ficam como variaveis para que
+   uma futura troca de identidade seja uma edicao so, e nao uma cacada por hex
+   espalhado pela folha.
+
+   O fundo da coluna precisa ser OPACO: com a tabela rolada, o conteudo das
+   outras colunas passa por baixo dela. Por isso os tons sao claros e chapados,
+   nunca `rgba` sobre transparente.
+
+   Os BOTOES seguem brancos de proposito. A coluna inteira ja e a area destacada;
+   pintar os botoes tambem competiria com os icones, que sao o que o operador
+   procura. O destaque deles vem no hover.
+   --------------------------------------------------------------------------- */
+
+:root {
+    --c2f-marca-ciano: #18a8c0;
+    --c2f-marca-navy: #182840;
+    --c2f-marca-ciano-claro: #e6f4f8;
+    --c2f-marca-ciano-veu: #f2fafc;
+}
 
 table.dataTable > thead > tr > th:first-child {
-    background: #eaeef3;
-    box-shadow: inset -1px 0 0 rgba(34, 36, 38, .15);
+    background: var(--c2f-marca-ciano-claro);
+    color: var(--c2f-marca-navy);
+    /* A linha ciano embaixo marca a coluna sem precisar de mais peso de cor. */
+    box-shadow: inset -1px 0 0 rgba(24, 40, 64, .18), inset 0 -2px 0 var(--c2f-marca-ciano);
 }
 
 table.dataTable > tbody > tr > td:first-child {
-    background: #f4f6f9;
-    box-shadow: inset -1px 0 0 rgba(34, 36, 38, .1);
+    background: var(--c2f-marca-ciano-veu);
+    box-shadow: inset -1px 0 0 rgba(24, 40, 64, .12);
 }
 
-/* O hover da linha precisa alcancar a coluna ancorada tambem, senao ela parece
-   "morta" enquanto o resto da linha reage ao mouse. */
+/* O hover da linha precisa alcancar a coluna ancorada, senao ela parece "morta"
+   enquanto o resto da linha reage ao mouse. */
 table.dataTable > tbody > tr:hover > td:first-child {
-    background: #e8edf4;
+    background: var(--c2f-marca-ciano-claro);
+}
+
+/* Botoes: fundo branco em repouso; no hover ganham a cor da marca e um leve
+   deslocamento, para o alvo ficar obvio antes do clique. */
+table.dataTable > tbody > tr > td:first-child .ui.button {
+    background: #fff;
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+
+table.dataTable > tbody > tr > td:first-child .ui.button:hover {
+    background: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 1px var(--c2f-marca-ciano), 0 2px 6px rgba(24, 40, 64, .18);
+}
+
+table.dataTable > tbody > tr > td:first-child .ui.button:active {
+    transform: translateY(0);
+    box-shadow: 0 0 0 1px var(--c2f-marca-navy);
 }
 
 /* `sticky` so entra quando ha rolagem, e so funciona se nenhum ancestral tiver
