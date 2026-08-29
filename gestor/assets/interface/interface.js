@@ -993,7 +993,9 @@ $(document).ready(function () {
 								header: function (row) {
 									var data = row.data();
 
-									return 'Detalhes do registro: ' + data[lista.id];
+									// `acoesId` traz o id SEM formatacao; `lista.id` pode colidir com uma coluna de dado
+									// que exiba o mesmo campo ja envolvido em HTML.
+									return 'Detalhes do registro: ' + (data[lista.acoesId] || data[lista.id]);
 								}
 							}),
 							renderer: $.fn.dataTable.Responsive.renderer.tableAll({

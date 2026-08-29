@@ -1,4 +1,10 @@
 <?php
+
+// req-147: chave da coluna de ações nas listagens.
+//
+// Nome improvável de colidir com campo de tabela, porque o valor dela viaja no mesmo objeto de
+// dados que os campos do registro.
+if(!defined('INTERFACE_COLUNA_ACOES')) define('INTERFACE_COLUNA_ACOES', '_gestor_acoes_id');
 /**
  * Biblioteca de Interface Administrativa
  * 
@@ -5149,6 +5155,11 @@ function interface_listar_ajax($params = false){
 		foreach($tabela_bd as $dado){
 			if($tabela){
 				$row = Array();
+				
+				// Antes do laço: `interface_formatar_dado()` MUTA `$dado[...]`, e um campo formatado
+				// aqui viraria HTML dentro do `href` dos botões.
+				$row[INTERFACE_COLUNA_ACOES] = $dado[$banco['id']];
+				
 				foreach($tabela['colunas'] as $coluna){
 					if(isset($coluna['formatar'])){
 						$dado[$coluna['id']] = interface_formatar_dado(Array(
@@ -5257,8 +5268,20 @@ function interface_listar_tabela($params = false){
 			$tabela_cabecalho = modelo_var_in($tabela_cabecalho,"#rows#",$row);
 			if(isset($tabela['rodape'])) $tabela_rodape = modelo_var_in($tabela_rodape,"#rows#",$row);
 			
+			// A coluna de ações usa chave PRÓPRIA, e não o campo `id` do registro.
+			//
+			// Usando `id`, ela colidia com qualquer coluna de dado que também exibisse o id — e há
+			// listagens assim (o `subscriptions-plans` mostra o slug numa coluna "Slug"). Quando duas
+			// colunas declaram o mesmo `data`, a ÚLTIMA vence ao montar a linha. Enquanto a coluna de
+			// ações era a última o acidente ficava escondido; ao movê-la para a frente, o valor que
+			// chegava aos botões passou a ser o da outra coluna — JÁ FORMATADO, com HTML dentro.
+			//
+			// O resultado era `href="editar/?id=<div class=...>slug</div>"`: a tag fechava no meio do
+			// atributo e o resto do botão virava texto na tela.
+			//
+			// Chave própria elimina a colisão independentemente da ordem das colunas.
 			$interface['columns'][] = Array(
-				'data' => $banco['id'],
+				'data' => INTERFACE_COLUNA_ACOES,
 				'name' => gestor_variaveis(Array('modulo' => 'interface','id' => 'list-column-options')),
 				'orderable' => false,
 				'searchable' => false,
@@ -5443,6 +5466,8 @@ function interface_listar_tabela($params = false){
 			'lista' => Array(
 				'url' => $caminho,
 				'id' => $banco['id'],
+				// req-147: chave da coluna de ações, para o JavaScript ler o id SEM formatação.
+				'acoesId' => INTERFACE_COLUNA_ACOES,
 				'status' => (isset($banco['status']) ? $banco['status'] : false),
 				'deferLoading' => $interface['totalRegistros'],
 				'pageLength' => $interface['registrosPorPagina'],

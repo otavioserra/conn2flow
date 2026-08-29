@@ -124,6 +124,58 @@ final class ListagemScrollHorizontalTest extends TestCase
         self::assertStringContainsString('column(0)', $codigo);
     }
 
+    public function testAColunaDeAcoesTemChavePropriaEnaoOCampoId(): void
+    {
+        // A regressao que isso previne: usando `id`, a coluna de acoes colide com qualquer coluna de
+        // dado que exiba o mesmo campo — e existem listagens assim (`subscriptions-plans` do Photon
+        // mostra o slug numa coluna "Slug", com `formatar` que o envolve em `<div class="ui basic
+        // label">`).
+        //
+        // Quando duas colunas declaram o mesmo `data`, a ULTIMA vence ao montar a linha. Enquanto a
+        // coluna de acoes era a ultima o acidente ficava escondido; ao move-la para a frente, o valor
+        // que chegava aos botoes passou a ser o da outra coluna, JA FORMATADO. O resultado era
+        // `href="editar/?id=<div class=...>slug</div>"`: a tag fechava no meio do atributo e o resto
+        // do botao virava texto na tela.
+        $codigo = (string)file_get_contents(
+            CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'bibliotecas' . DIRECTORY_SEPARATOR . 'interface.php'
+        );
+
+        self::assertStringContainsString("define('INTERFACE_COLUNA_ACOES'", $codigo);
+        self::assertStringContainsString("'data' => INTERFACE_COLUNA_ACOES", $codigo);
+    }
+
+    public function testOValorDasAcoesEGravadoAntesDaFormatacao(): void
+    {
+        // `interface_formatar_dado()` MUTA `$dado[...]`. Alimentar a chave depois do laco entregaria
+        // aos botoes um valor ja envolvido em HTML.
+        $codigo = (string)file_get_contents(
+            CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'bibliotecas' . DIRECTORY_SEPARATOR . 'interface.php'
+        );
+
+        $posGravacao = strpos($codigo, '$row[INTERFACE_COLUNA_ACOES] = $dado[$banco[');
+        $posLaco = strpos($codigo, "foreach(\$tabela['colunas'] as \$coluna){", (int)$posGravacao);
+
+        self::assertIsInt($posGravacao);
+        self::assertIsInt($posLaco);
+        self::assertLessThan($posLaco, $posGravacao, 'a chave das acoes deve ser gravada ANTES do laco');
+    }
+
+    public function testOTbodyInicialUsaOIdSemFormatacao(): void
+    {
+        // O `<tbody>` que o servidor entrega antes do JavaScript (`deferLoading`) tem o mesmo risco:
+        // a variavel existe justamente porque o laco adiante muta `$dado`.
+        $codigo = (string)file_get_contents(
+            CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'bibliotecas' . DIRECTORY_SEPARATOR . 'interface.php'
+        );
+
+        $posCaptura = strpos($codigo, '$id_without_format = $dado[$banco[');
+        $posUso = strpos($codigo, "<td>'.\$id_without_format.'</td>");
+
+        self::assertIsInt($posCaptura);
+        self::assertIsInt($posUso);
+        self::assertLessThan($posUso, $posCaptura, 'o id precisa ser capturado antes de ser usado');
+    }
+
     #[DataProvider('interfaces')]
     public function testODestaqueUsaAPaletaDaMarca(string $js, string $css): void
     {
