@@ -1390,3 +1390,21 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
 - [ ] Homologação visual do operador: ícones do gestor, tipografia do site público, editor de texto.
 - [ ] Commit no repositório `transformamp` (7 layouts, 1 CSS, 29 arquivos de fonte) — autorização de
       commit foi dada para o `conn2flow`, não para ele.
+
+## BATCH-149 — Escopo do css:rebuild e assets locais no layout Tailwind
+
+- [x] `/perfil-usuario/` recuperada: CSS entregue **8.757 → 26.053 B**, classes sem regra
+      **192 → 96** (as 96 restantes são o layout `layout-administrativo-tailwind`, cujo
+      `css_precompiled` nunca foi entregue em páginas de módulo — **pré-existente**, confirmado por
+      `/restrict-area/` ter o mesmo sintoma e por `gestor.php` não ter sido tocado nesse ponto).
+- [x] `paginas.css_precompiled` de `perfil-usuario` bate **byte a byte** com o disco: 25.276.
+- [x] Escopo do regenerador: 17 de 1.446 recursos têm `user_modified = 1`; os outros 1.429 deixaram
+      de ser reescritos.
+- [x] `fomantic-icon` e `lucide` registrados e baixados (8 arquivos); layout aponta para o disco.
+- [x] Fontes de ícone do componente respondem 200 (`icon.min.css` 108.483 B, `icons.woff2` 78.268 B).
+- [x] Varredura de sete telas (`/`, `/artigos/`, `/dashboard/`, `/perfil-usuario/`, `/restrict-area/`,
+      `/admin-paginas/`, `/variables/`): **zero** requisição a domínio externo.
+- [x] Galeria da home segue correta: 6 âncoras + regra `.cursor-default`.
+- [x] PHPUnit **928/928** (8 novos); Vitest **378/378**.
+- [ ] Homologação visual: `/perfil-usuario/` e `/restrict-area/`.
+- [ ] Pendente separado: o `css_precompiled` do layout não é entregue em páginas de módulo.

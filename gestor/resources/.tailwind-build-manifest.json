@@ -95,7 +95,7 @@
             "built_at": "2026-08-29T11:31:49+00:00"
         },
         "global||en|layouts|layout-administrativo-tailwind": {
-            "fingerprint": "d06490dbb6663e9a6745c45cd587ee16c63276ee062d559231831468dd7f4a0e",
+            "fingerprint": "c08fcbc3b432577e98398c645a4a9e8a2619816aae18603d27b0cc4a1239f3e8",
             "output_hash": "e8d07f7c6f9b7618d0d8bb8cfbd620d05ad3120904fe240489de8c11f6d86b4c",
             "output": "resources//en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.precompiled.css",
             "tailwind_version": "unknown",
@@ -109,7 +109,7 @@
                 "resources/en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:31:49+00:00"
+            "built_at": "2026-08-29T21:12:43+00:00"
         },
         "global||en|layouts|layout-iframe-tailwindcss": {
             "fingerprint": "268c4258216d199ba71748fd44fa656ac84ad0fc71dbd1c85fc519d0a7d79910",
@@ -618,7 +618,7 @@
             "built_at": "2026-08-29T11:32:08+00:00"
         },
         "global||pt-br|layouts|layout-administrativo-tailwind": {
-            "fingerprint": "d919ab0a5087498928f129c8ba9695912fa7c70d2bfabd5cf5a9746d41089e5c",
+            "fingerprint": "505a6b22fbff666bd654a7b32058a49d827badf949746627c437020f790d71e3",
             "output_hash": "2efd7122420fc299c657ed9a34edda27122ef459e7229b747240cb4b82d88eb9",
             "output": "resources//pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.precompiled.css",
             "tailwind_version": "unknown",
@@ -632,7 +632,7 @@
                 "resources/pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:09+00:00"
+            "built_at": "2026-08-29T21:12:43+00:00"
         },
         "global||pt-br|layouts|layout-iframe-tailwindcss": {
             "fingerprint": "8c62c3b2dfbc281f25e1a89d28fedb64787c602d5b5c81f3440ae4ac9c7a3e0d",
@@ -1909,7 +1909,7 @@
             "built_at": "2026-08-29T17:51:40+00:00"
         },
         "module|perfil-usuario|en|pages|Area-restrita": {
-            "fingerprint": "a1a235e2e0a8d493044fd029a46ba459594027855b4acbf0ab8fe594f8f67cc9",
+            "fingerprint": "1cf6054578582cacc26468568d1f3e716a99f8ea9a2a6bdcd9b4aa66930c2d21",
             "output_hash": "00dd9ccb8edc5f4fb5d43dbc794eeb64d5bd0914e61b6a759f56058fbdb8678f",
             "output": "modulos/perfil-usuario/resources/en/pages/Area-restrita/Area-restrita.precompiled.css",
             "tailwind_version": "unknown",
@@ -1924,7 +1924,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:32:55+00:00"
+            "built_at": "2026-08-29T21:12:44+00:00"
         },
         "module|perfil-usuario|en|pages|acessar-sistema": {
             "fingerprint": "d5cfaaf97dd36c3306c6930bc30b484e0fa57abb319ddafe2a72666a48eb4e16",
@@ -2045,7 +2045,7 @@
             "built_at": "2026-08-29T17:51:45+00:00"
         },
         "module|perfil-usuario|en|pages|perfil-usuario": {
-            "fingerprint": "70e437635c5b589ac07f9e33cc3fd121b9d9830ceedf9f6a0219ddb84b6d2c51",
+            "fingerprint": "497cf6f2c36422a3b75ef82cbf62e5355b1ce993bb03a01788fc9dd22fe90c74",
             "output_hash": "a0b84887e10195c2831a90f8c1f7875f6e421af72e6d914d347a6c9f199e4683",
             "output": "modulos/perfil-usuario/resources/en/pages/perfil-usuario/perfil-usuario.precompiled.css",
             "tailwind_version": "unknown",
@@ -2066,7 +2066,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T17:51:45+00:00"
+            "built_at": "2026-08-29T21:12:44+00:00"
         },
         "module|perfil-usuario|en|pages|redefinir-senha": {
             "fingerprint": "8130b33134c0ea4352983359d19683315b7a35b00fb408392ff5039f9dcee203",
@@ -2220,7 +2220,7 @@
             "built_at": "2026-08-29T17:51:51+00:00"
         },
         "module|perfil-usuario|pt-br|pages|Area-restrita": {
-            "fingerprint": "8d2a0abced205b378c25008d96cde23d67bd3565bdb5ca7af5f1989160d912fb",
+            "fingerprint": "f8e1afe13bf624f7ea607706c01a1bde3ab1d91263398e6314784b127483f27a",
             "output_hash": "54bf052c6b717f13b9eca5d3a8e2249744518624fe27e92c5dcd7d13999f5a2f",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/Area-restrita/Area-restrita.precompiled.css",
             "tailwind_version": "unknown",
@@ -2235,7 +2235,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T11:33:05+00:00"
+            "built_at": "2026-08-29T21:12:44+00:00"
         },
         "module|perfil-usuario|pt-br|pages|acessar-sistema": {
             "fingerprint": "f8a81a1775983f5bc1505e6eb97ea638d68257bd475671433b4c12c91d7ccfec",
@@ -2356,7 +2356,7 @@
             "built_at": "2026-08-29T17:51:54+00:00"
         },
         "module|perfil-usuario|pt-br|pages|perfil-usuario": {
-            "fingerprint": "651ffd0d77938a1ba46f0927103e24433ac34ab350942b7ba7a28a5f9c3d8b66",
+            "fingerprint": "0873d8d5f62b4a7c081d0aa998474c828a97c759d007276a6b4bf9ac892b45b6",
             "output_hash": "ea03208b601c5c97564d1f1553f863c003bdfd1112a08551beeeaeb30d2802f1",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/perfil-usuario/perfil-usuario.precompiled.css",
             "tailwind_version": "unknown",
@@ -2377,7 +2377,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-08-29T17:51:55+00:00"
+            "built_at": "2026-08-29T21:12:45+00:00"
         },
         "module|perfil-usuario|pt-br|pages|redefinir-senha": {
             "fingerprint": "5e2aeaafa102ffcbbb23e3c0fec75a01530f2883b9a064e98ad355878f612924",

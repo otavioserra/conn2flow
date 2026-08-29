@@ -187,6 +187,66 @@ final class AssetsExternosTest extends TestCase
         self::assertStringContainsString('assets_externos_registro()', $editor);
     }
 
+    public function testAVersaoNoLayoutAcompanhaORegistro(): void
+    {
+        // Recurso HTML nao chama PHP: o layout Tailwind do gestor escreve o caminho do asset local
+        // com a versao dentro (`vendor/<lib>/<versao>/...`). Se alguem subir a versao no registro e
+        // esquecer o layout, o arquivo some com 404 e a tela perde os icones em silencio — que foi
+        // exatamente a falha corrigida em DEC-123.
+        $registro = assets_externos_registro();
+
+        $esperados = [
+            'fomantic-icon' => 'vendor/fomantic-icon/' . $registro['fomantic-icon']['versao'] . '/',
+            'lucide' => 'vendor/lucide/' . $registro['lucide']['versao'] . '/',
+        ];
+
+        foreach (['pt-br', 'en'] as $lang) {
+            $layout = (string)file_get_contents(
+                CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $lang
+                . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . 'layout-administrativo-tailwind'
+                . DIRECTORY_SEPARATOR . 'layout-administrativo-tailwind.html'
+            );
+
+            foreach ($esperados as $nome => $prefixo) {
+                self::assertStringContainsString($prefixo, $layout, $nome . ' em ' . $lang);
+            }
+
+            self::assertStringNotContainsString('cdn.jsdelivr', $layout, $lang);
+        }
+    }
+
+    public function testOsArquivosDeclaradosExistemNoDisco(): void
+    {
+        // `assets_externos_url()` cai no CDN em silencio quando o arquivo local falta. O teste
+        // transforma esse silencio em falha de suite.
+        $vendor = CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'vendor';
+
+        if (!is_dir($vendor)) {
+            self::markTestSkipped('assets/vendor ainda nao foi populado (rode `c2f assets:vendor`).');
+        }
+
+        $ausentes = [];
+        foreach (assets_externos_registro() as $nome => $lib) {
+            $arquivos = array_merge(
+                (array)($lib['css'] ?? []),
+                (array)($lib['js'] ?? []),
+                (array)($lib['arquivos'] ?? [])
+            );
+
+            foreach ($arquivos as $arquivo) {
+                $caminho = $vendor . DIRECTORY_SEPARATOR . $nome . DIRECTORY_SEPARATOR
+                    . $lib['versao'] . DIRECTORY_SEPARATOR
+                    . str_replace('/', DIRECTORY_SEPARATOR, $arquivo);
+
+                if (!is_file($caminho) || filesize($caminho) === 0) {
+                    $ausentes[] = $nome . '/' . $arquivo;
+                }
+            }
+        }
+
+        self::assertSame([], $ausentes, 'faltando em vendor/: ' . implode(', ', array_slice($ausentes, 0, 10)));
+    }
+
     public function testNenhumAssetDeTerceiroUsaLatestNoCore(): void
     {
         // Varre além do Sortable: qualquer `@latest` novo em módulo ou biblioteca falha aqui.

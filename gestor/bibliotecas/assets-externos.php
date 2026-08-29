@@ -143,6 +143,32 @@ if (!function_exists('assets_externos_registro')) {
 					'themes/default/assets/fonts/outline-icons.woff',
 				),
 			),
+			'fomantic-icon' => Array(
+				// Só o componente de ícones, para o layout Tailwind do gestor: ele não carrega o
+				// Fomantic inteiro (2,1 MB) só para desenhar ícone.
+				//
+				// As fontes vão junto pelo mesmo motivo do `fomantic-ui`: o CSS as pede por caminho
+				// relativo, e sem elas os ícones somem (DEC-123). Aqui o relativo sobe um nível
+				// (`../../themes/...`), porque o CSS mora em `dist/components/`.
+				'versao' => '2.9.4',
+				'cdn' => 'https://cdn.jsdelivr.net/npm/fomantic-ui@{v}/dist/{f}',
+				'css' => Array('components/icon.min.css'),
+				'js' => Array(),
+				'arquivos' => Array(
+					'themes/default/assets/fonts/icons.woff2',
+					'themes/default/assets/fonts/icons.woff',
+					'themes/default/assets/fonts/outline-icons.woff2',
+					'themes/default/assets/fonts/outline-icons.woff',
+					'themes/default/assets/fonts/brand-icons.woff2',
+					'themes/default/assets/fonts/brand-icons.woff',
+				),
+			),
+			'lucide' => Array(
+				'versao' => '0.544.0',
+				'cdn' => 'https://cdn.jsdelivr.net/npm/lucide@{v}/dist/umd/{f}',
+				'css' => Array(),
+				'js' => Array('lucide.min.js'),
+			),
 			'quill' => Array(
 				'versao' => '2.0.3',
 				'cdn' => 'https://cdn.jsdelivr.net/npm/quill@{v}/dist/{f}',

@@ -129,6 +129,8 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-123 | 2026-08-29 | accepted | Uma biblioteca local inclui também o que ela própria pede: chave `arquivos` no registro (BATCH-148). |
 | DEC-124 | 2026-08-29 | accepted | Fontes hospedadas pelo projeto, com filtro de subset e `unicode-range` preservado (BATCH-148). |
 | DEC-125 | 2026-08-29 | accepted | Minificar é build; escolher o arquivo é resolução — nunca transformar o corpo na entrega (BATCH-148). |
+| DEC-126 | 2026-08-29 | accepted | O `css:rebuild` regenera apenas recursos editados online (`user_modified=1`) (BATCH-149). |
+| DEC-127 | 2026-08-29 | accepted | Assets locais também no layout administrativo Tailwind, com guarda de versão (BATCH-149). |
 
 ---
 
@@ -1218,3 +1220,53 @@ exatamente o arquivo em disco.
 
 6. **A etapa entra no pipeline, não fatal**: fora dele viraria "alguém precisa lembrar", e derivado
    velho serviria código antigo com cara de novo. Máquina sem Node continua rodando o pipeline.
+
+## DEC-126 - 2026-08-29 - accepted
+
+**O `css:rebuild` regenera apenas o que foi editado ONLINE (BATCH-149).**
+
+A tela `/perfil-usuario/` apareceu sem estilo depois do BATCH-148. Dois defeitos somados, ambos meus:
+
+1. `regenerarFontesDeclaradas()` só lia `<id>.json` (metadado por recurso). O `perfil-usuario` não
+   tem esse arquivo: as 15 páginas dele declaram `tailwind_sources` no MANIFESTO DO MÓDULO. A função
+   devolvia lista vazia e a regeneração descartava as utilities montadas em PHP/JS.
+2. Mesmo com as fontes lidas, o resultado (13.429 bytes) continuava menor que o do build offline
+   (25.276), porque o `resources:sync` compila com o contexto completo do projeto.
+
+**Decisões:**
+
+1. **O escopo do `css:rebuild` é `user_modified = 1`**: o problema que o req-141 descreve existe SÓ
+   quando o HTML do banco divergiu do HTML do disco. Para `user_modified = 0`, o build offline já
+   compilou do MESMO HTML, com mais contexto. Regenerar ali não corrige nada e troca um CSS completo
+   por um mais pobre. Medido: 17 de 1.446 recursos precisavam de regeneração; os outros 1.429 eram
+   dano puro.
+
+2. **`--todos` continua alcançando o acervo**, para auditoria e recuperação.
+
+3. **As fontes declaradas são lidas também do manifesto do módulo**, mantendo o containment
+   (`realpath` preso à raiz do gestor): a origem da declaração muda, a guarda não.
+
+4. **A lição registrada**: uma etapa de pipeline que REESCREVE derivados precisa de escopo mínimo
+   demonstrável. A minha reescrevia 1.446 registros para consertar 17, e o excesso era invisível —
+   o comando reportava sucesso.
+
+## DEC-127 - 2026-08-29 - accepted
+
+**Assets locais também no layout administrativo Tailwind, com guarda de versão (BATCH-149).**
+
+O inventário do BATCH-146 procurou `dist/semantic.min.css` e não viu
+`dist/components/icon.min.css` — outro caminho do mesmo pacote, usado pelo layout Tailwind do gestor.
+O `lucide` estava ao lado, também por CDN.
+
+**Decisões:**
+
+1. **`fomantic-icon` é entrada própria no registro**: o layout precisa só do componente de ícones, e
+   carregar os 2,1 MB do Fomantic inteiro para desenhar ícone seria pior que o CDN. As fontes vão
+   junto (DEC-123), com o relativo correto para `dist/components/` (`../themes/...`).
+
+2. **Recurso HTML não chama PHP**, então o layout escreve o caminho com a versão dentro. O risco é a
+   versão do registro e a do layout divergirem, produzindo 404 silencioso — exatamente a falha dos
+   ícones. Por isso existe teste que compara as duas.
+
+3. **Teste que exige o arquivo no disco para cada entrada do registro**: `assets_externos_url()` cai
+   no CDN em silêncio quando o local falta; a suíte transforma esse silêncio em falha.

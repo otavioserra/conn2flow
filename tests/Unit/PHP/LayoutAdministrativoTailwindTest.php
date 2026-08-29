@@ -125,8 +125,11 @@ final class LayoutAdministrativoTailwindTest extends TestCase
             "Layout administrativo não carrega o Lucide ({$lang})"
         );
 
-        // A folha do Fomantic continua necessária: os ícones ESTRUTURAIS do layout são dela.
-        self::assertStringContainsString('fomantic-ui', $html);
+        // A folha de ícones do Fomantic continua necessária: os ícones ESTRUTURAIS do layout são
+        // dela. Desde o BATCH-149 ela vem do disco (`vendor/fomantic-icon/`), não do CDN — e é só o
+        // COMPONENTE de ícones, para o layout não carregar os 2,1 MB do Fomantic inteiro.
+        self::assertStringContainsString('fomantic-icon', $html);
+        self::assertStringNotContainsString('cdn.jsdelivr', $html);
     }
 
     /**

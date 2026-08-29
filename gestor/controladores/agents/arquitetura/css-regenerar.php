@@ -217,14 +217,47 @@ function regenerarFontesDeclaradas(string $gestorPath, string $tabela, string $i
     $dir = $base . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $lang
         . DIRECTORY_SEPARATOR . $tipos[$tabela] . DIRECTORY_SEPARATOR . $id;
 
+    $metadata = null;
+
+    // 1) metadado por recurso (`<id>.json` ao lado do HTML).
     $json = $dir . DIRECTORY_SEPARATOR . $id . '.json';
-    if (!is_file($json)) {
-        return [];  // conteúdo criado só no banco não tem metadado — e não precisa ter
+    if (is_file($json)) {
+        $decodificado = json_decode((string)file_get_contents($json), true);
+        if (is_array($decodificado)) {
+            $metadata = $decodificado;
+        }
     }
 
-    $metadata = json_decode((string)file_get_contents($json), true);
+    // 2) manifesto do MÓDULO — e este é o caminho que a maioria dos recursos usa de verdade.
+    //
+    // O `perfil-usuario` não tem `<id>.json` nenhum: as 15 páginas dele declaram `tailwind_sources`
+    // dentro de `modulos/perfil-usuario/perfil-usuario.json`, em `resources.<lang>.pages[]`. Ler só
+    // o metadado por recurso fazia esta função devolver lista VAZIA para todas elas, e a regeneração
+    // recompilava a partir do HTML apenas — descartando as utilities montadas em PHP/JS.
+    //
+    // O sintoma era a tela do perfil sem estilo: 25.276 bytes de CSS correto no disco viravam 7.980
+    // no banco, e a página servia 192 das 247 classes sem regra nenhuma. Silencioso: o comando
+    // reportava sucesso, porque do ponto de vista dele nada falhou.
+    if ($metadata === null && $modulo !== '') {
+        $manifesto = $base . DIRECTORY_SEPARATOR . $modulo . '.json';
+
+        if (is_file($manifesto)) {
+            $decodificado = json_decode((string)file_get_contents($manifesto), true);
+            $entradas = $decodificado['resources'][$lang][$tipos[$tabela]] ?? null;
+
+            if (is_array($entradas)) {
+                foreach ($entradas as $entrada) {
+                    if (is_array($entrada) && ($entrada['id'] ?? null) === $id) {
+                        $metadata = $entrada;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     if (!is_array($metadata)) {
-        return [];
+        return [];  // conteúdo criado só no banco não tem metadado — e não precisa ter
     }
 
     $fontes = [];
@@ -381,6 +414,24 @@ foreach ($tabelas as $tabela) {
     $where = "status!='D'";
     if ($soId !== '') {
         $where .= " AND id='" . $conexao->real_escape_string($soId) . "'";
+    }
+
+    // ESCOPO: por padrão só os recursos editados ONLINE (req-141 / BATCH-149).
+    //
+    // O problema que o req-141 descreve existe apenas quando o HTML do banco divergiu do HTML do
+    // disco — ou seja, quando alguém editou pelo gestor. Para `user_modified = 0`, o build offline
+    // (`resources:sync`) já compilou o CSS a partir do MESMO HTML, com o contexto completo do
+    // projeto: tema, plugins (`@tailwindcss/typography`) e as fontes declaradas em
+    // `tailwind_sources`. Regenerar ali não corrige nada e ainda substitui um CSS mais completo por
+    // um mais pobre.
+    //
+    // Medido no `transformamp`: 17 de 1.446 recursos têm `user_modified = 1`. Regenerar os 1.429
+    // restantes derrubou a página `perfil-usuario` de 25.276 para 13.429 bytes de CSS e deixou a
+    // tela sem estilo — em silêncio, com o comando reportando sucesso.
+    //
+    // `--todos` continua alcançando o acervo inteiro, para auditoria e recuperação.
+    if (!$todos && regenerarTemColuna($conexao, $tabela, 'user_modified')) {
+        $where .= " AND user_modified=1";
     }
 
     $res = $conexao->query("SELECT {$campos} FROM `{$tabela}` WHERE {$where}");

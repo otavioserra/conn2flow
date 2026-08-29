@@ -15,7 +15,7 @@
         and never come from the module registry. Layout CSS stays 100% Tailwind.
     -->
     <link rel="stylesheet" type="text/css" media="all"
-        href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/components/icon.min.css">
+        href="@[[pagina#url-raiz]]@vendor/fomantic-icon/2.9.4/components/icon.min.css">
     <!--
         req-124 F2: module icons are a different story. `gestor_pagina_menu_icone()` hands a Tailwind
         menu the contents of `modulos.icone_tailwind`, which is Lucide vocabulary — and the two
@@ -25,7 +25,7 @@
         `search`…). `defer` guarantees it runs before the DOMContentLoaded that boots
         `admin-tailwind.js`, which calls `lucide.createIcons()`.
     -->
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <script defer src="@[[pagina#url-raiz]]@vendor/lucide/0.544.0/lucide.min.js"></script>
     <!-- pagina#css -->
     <!-- pagina#js -->
 </head>

@@ -15,7 +15,7 @@
         são fixos e nunca vêm do cadastro. O CSS de layout continua 100% Tailwind.
     -->
     <link rel="stylesheet" type="text/css" media="all"
-        href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/components/icon.min.css">
+        href="@[[pagina#url-raiz]]@vendor/fomantic-icon/2.9.4/components/icon.min.css">
     <!--
         req-124 F2: os ícones dos MÓDULOS são outra história. `gestor_pagina_menu_icone()` entrega a
         um menu Tailwind o conteúdo de `modulos.icone_tailwind`, que é vocabulário Lucide — e os dois
@@ -25,7 +25,7 @@
         `home`, `search`…). O `defer` garante execução antes do DOMContentLoaded que dispara o
         `admin-tailwind.js`, que chama `lucide.createIcons()`.
     -->
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <script defer src="@[[pagina#url-raiz]]@vendor/lucide/0.544.0/lucide.min.js"></script>
     <!-- pagina#css -->
     <!-- pagina#js -->
 </head>
