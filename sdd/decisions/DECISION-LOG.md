@@ -122,6 +122,7 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-116 | 2026-08-21 | accepted | Atualização Global da Documentação, Readmes, Changelogs e Workflows de Release (Gestor v2.9.39 e Instalador v1.5.6) (BATCH-127). |
 | DEC-117 | 2026-08-21 | accepted | Correção de Reload em Erro de CSRF/Sessão, Mapeamento de Ícones de Projetos, Alternância de Botões de Menu e Saneamento do Lucide (BATCH-127). |
 | DEC-118 | 2026-08-24 | accepted | Extrator semântico de tokens do Tailwind para o Assistente de IA no Editor HTML (BATCH-129). |
+| DEC-119 | 2026-08-28 | accepted | Correspondência por nome sanitizado no controlador estático e desempate de colisão sem espaço (BATCH-143). |
 
 ---
 
@@ -1003,3 +1004,45 @@ Decisões desta rodada:
 
 8. **A fonte dos modos é `resources/<lang>/ai_modes/<id>/<id>.md`**: `gestor/db/data/ModosIaData.json`
    é artefato compilado por `atualizacao-dados-recursos.php` e nunca deve ser editado à mão.
+
+## DEC-119 - 2026-08-28 - accepted
+
+404 em imagens estáticas com hífen/espaço e colisão de upload sem espaço (req-140 / BATCH-143).
+Decisões desta rodada:
+
+1. **A correspondência é pelo RESULTADO da sanitização, não por troca adivinhada de hífen por
+   espaço**: o intake sugeria `preg_replace('/-(?=\(\d+\))/', ' ', ...)` ou substituição controlada
+   de hífens. Nenhuma das duas alcança um nome que tenha hífen real E espaço
+   (`Foto-Final de Praia.webp` publicado como `Foto-Final-de-Praia.webp`), e testar as combinações
+   de hífen custa 2^n acessos a disco numa string que o requisitante controla — um DoS barato.
+   Comparar `arquivo_nome_sanitizar($entradaFisica) === $segmentoPedido` acha o arquivo exatamente
+   quando ele é o que geraria aquela URL. O critério de aceite é o comportamento, e o mecanismo
+   escolhido cobre estritamente mais casos do que o sugerido.
+
+2. **A resolução é segmento a segmento**: miniatura (`mini/Ela-(1).webp`) e diretório com espaço
+   (`Minha Pasta/`) caem no mesmo mecanismo, sem código dedicado a cada caso.
+
+3. **Duas guardas por hífen antes de listar diretório**: a sanitização só PRODUZ hífen, então um
+   caminho sem hífen nenhum não pode divergir de um nome físico. O fallback inteiro fica atrás dessa
+   checagem (nem carrega a biblioteca) e cada segmento a repete antes do `scandir`. As varreduras
+   automáticas de 404 param sem custo de I/O.
+
+4. **O fallback descobre o nome; não autoriza o envio**: o caminho encontrado continua passando por
+   `arquivo_estatico_resolver_autorizado()`. A garantia de containment permanece num único lugar.
+
+5. **O fallback fica restrito ao ramo de `contents-path`**: `assets/` e `modulos/` não recebem nome
+   escolhido por usuário e não têm o problema; estender o mecanismo a eles só ampliaria superfície.
+
+6. **`rawurldecode` é variante, não substituto**: a reescrita do gestor usa a flag `[B]` e o PHP já
+   recebe o caminho decodificado, então a Tentativa 1 do intake é inócua neste ambiente — mas cobre
+   servidor sem essa flag. A variante só entra depois de passar pela mesma guarda de traversal.
+
+7. **O desempate de colisão mora na biblioteca e sanitiza o próprio resultado**:
+   `arquivo_nome_colisao()` nasce ao lado de `arquivo_nome_sanitizar()`, mesmo precedente do
+   `arquivo_mime_por_extensao()` no BATCH-141. Trocar apenas o espaço por hífen não bastaria: um
+   nome-base terminado em hífen produziria `base--(1)`, que a sanitização colapsa para `base-(1)`,
+   reabrindo a mesma divergência. A invariante do contrato é `sanitizar(n) === n`, e ela virou teste.
+
+8. **Os nomes legados no disco não são renomeados por este lote**: renomear em massa é mudança de
+   DADOS, com risco de quebrar referências já gravadas em páginas publicadas. O fallback os mantém
+   servidos; a normalização fica para intake próprio se a chefia quiser encerrar o custo de I/O.

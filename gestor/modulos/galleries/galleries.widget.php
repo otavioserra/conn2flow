@@ -174,7 +174,8 @@ function galleries_widget_render_inline($params){
 	$itensRendered = '';
 	foreach($selected_items as $item){
 		if(!is_array($item)) continue;
-		$vars = galleries_widget_resolver_item_vars($item, $paginasMap, $publicadorCache);
+		// O HTML do template vai junto: é dele que sai a aparência do item sem link (req-141).
+		$vars = galleries_widget_resolver_item_vars($item, $paginasMap, $publicadorCache, $html_template);
 		$itensRendered .= galleries_widget_aplicar_vars($templates['item'], $vars);
 	}
 
@@ -207,7 +208,7 @@ function galleries_widget_render_inline($params){
  * @param array $publicadorCache Cache (por referência) das publicações mais recentes resolvidas.
  * @return array
  */
-function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicadorCache = []){
+function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicadorCache = [], $template_html = ''){
 	global $_GESTOR;
 
 	$caminho = isset($item['caminho']) ? (string)$item['caminho'] : '';
@@ -222,7 +223,7 @@ function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicad
 	}
 
 	// req-024 / DEC-037: link individual da imagem.
-	$link = galleries_widget_resolver_link($item, $paginasMap, $publicadorCache);
+	$link = galleries_widget_resolver_link($item, $paginasMap, $publicadorCache, $template_html);
 
 	return [
 		'img-src'          => $src,
@@ -247,7 +248,7 @@ function galleries_widget_resolver_item_vars($item, $paginasMap = [], &$publicad
  *
  * @return array ['url' => ..., 'target' => '_self'|'_blank', 'css_classes' => ...]
  */
-function galleries_widget_resolver_link($item, $paginasMap, &$publicadorCache){
+function galleries_widget_resolver_link($item, $paginasMap, &$publicadorCache, $template_html = ''){
 	$type   = isset($item['link_type']) ? (string)$item['link_type'] : 'nenhum';
 	$target = isset($item['link_target']) ? (string)$item['link_target'] : '_self';
 	$css    = isset($item['link_css_classes']) ? (string)$item['link_css_classes'] : '';
@@ -278,10 +279,15 @@ function galleries_widget_resolver_link($item, $paginasMap, &$publicadorCache){
 
 	if($target === '') $target = '_self';
 
-	// req-025 / DEC-038: imagem sem link configurado não deve parecer clicável. Adiciona as
-	// classes utilitárias do Tailwind que desabilitam o clique e mantêm o cursor padrão na <a>.
+	// req-025 / DEC-038: imagem sem link configurado não deve parecer clicável.
+	//
+	// req-141: as classes vêm do TEMPLATE, não daqui. Classe escrita em PHP é invisível para o
+	// compilador Tailwind, que varre recursos — foi assim que `cursor-default` chegou à home sem
+	// regra nenhuma, a única utility órfã real medida no acervo. O código decide o ESTADO (não tem
+	// link); o recurso declara a APARÊNCIA desse estado, e é ele que o compilador enxerga.
 	if($type === 'nenhum'){
-		$css = trim($css.' pointer-events-none cursor-default');
+		$cssDesabilitado = trim((string)modelo_tag_val($template_html, '<!-- link-disabled-css < -->', '<!-- link-disabled-css > -->'));
+		if($cssDesabilitado !== '') $css = trim($css.' '.$cssDesabilitado);
 	}
 
 	return ['url' => $url, 'target' => $target, 'css_classes' => $css];

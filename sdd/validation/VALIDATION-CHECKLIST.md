@@ -1061,3 +1061,271 @@ Repasse da identidade do projeto ao atualizador de banco no deploy local (req-13
       o endpoint PHP/widget JS reais; nenhuma galeria foi persistida.
 - [x] Tear down: `snapphoton-local` confirmado em `PRODUCTION` (`DEVELOPMENT_ENV=false`).
 - [x] Nível 1: nenhum commit, push ou deploy remoto.
+
+---
+## BATCH-143 — 404 em imagens estáticas com hífen/espaço e colisão de upload sem espaço (req-140, 2026-08-28)
+
+### Reprodução do defeito (medida, não inferida)
+
+- [x] Fixtures gravadas com o nome legado (`contents/Ela (1).webp` e `contents/mini/Ela (1).webp`) no
+      ambiente local `transformamp` (`http://localhost/transformamp/`).
+- [x] Com o controlador **no estado do HEAD**: `GET /Ela-(1).webp` → **404**, `GET /mini/Ela-(1).webp`
+      → **404**, `GET /Ela%20(1).webp` → **200**. É exatamente a assinatura relatada em produção.
+- [x] Com o controlador corrigido, as mesmas URLs: **200 / 200**, `Content-Type: image/webp`.
+
+### Módulo 1 — fallback no controlador estático
+
+- [x] `/Ela-(1).webp` → **200**; `/mini/Ela-(1).webp` → **200** (critérios de aceite 1 e 2).
+- [x] `/Ela%20(1).webp` e `/mini/Ela%20(1).webp` seguem **200**: nenhuma regressão no que já servia.
+- [x] Multi-segmento: `Minha Pasta/foto teste.webp` no disco, pedido como
+      `/Minha-Pasta/foto-teste.webp` → **200**. Diretório com espaço cai no mesmo mecanismo.
+- [x] Cache e streaming preservados NO caminho de fallback: `ETag: "6a91a577-23"`,
+      `Cache-Control: public, max-age=86400, stale-while-revalidate=604800`, `Accept-Ranges: bytes`,
+      `Last-Modified` presente; `If-None-Match` → **304**; `Range: bytes=0-9` → **206** com
+      `Content-Range: bytes 0-9/35`.
+- [x] 404 legítimo continua 404 (`/nao-existe-mesmo.webp`), sem 500 e sem mudança de corpo.
+- [x] Home do site segue **200** depois da mudança.
+
+### Módulo 2 — colisão de upload
+
+- [x] Loop real da colisão executado dentro do container contra disco de verdade: `Ela.webp` →
+      `Ela-(1).webp` → `Ela-(2).webp` → `Ela-(3).webp`, todos sem espaço e todos idempotentes sob a
+      sanitização.
+- [x] **Upload real autenticado** (cookie de `c2f auth:cookie --project=transformamp` + token CSRF da
+      página do módulo, `POST multipart` em `admin-arquivos/`): três envios do mesmo `Ela.webp`
+      responderam `caminho` = `req140/Ela.webp`, `req140/Ela-(1).webp`, `req140/Ela-(2).webp`.
+- [x] Os três nomes conferidos no disco e servidos por HTTP em **200** pelo caminho DIRETO, sem
+      passar pelo fallback (critério de aceite 3).
+
+### Blindagem de regressão
+
+- [x] Os 18 casos das funções novas falham contra o HEAD, mas por função ausente — falha fraca. Por
+      isso foi acrescentado `testArquivoDeColisaoContinuaAlcancavelPelaUrlQueOSistemaPublica`, que
+      grava o arquivo com o nome do desempate e o procura pelo caminho que os consumidores publicam.
+- [x] Reintroduzindo o comportamento do HEAD (sufixo com espaço e sem sanitização final):
+      **5 falhas**, com a mensagem `A URL publicada (files/2026/captura-de-tela-(1).png) nao encontrou
+      o arquivo gravado (captura-de-tela (1).png).` — o defeito descrito por si mesmo.
+- [x] Correção restaurada e suíte reconferida.
+
+### Suítes e lint
+
+- [x] `php -l`: 3 arquivos de produção e 2 de teste, sem erro.
+- [x] Testes focados novos: **19** (`AdminArquivosSegurancaTest` 22/22 com os 5 novos;
+      `ArquivoEstaticoNomeSanitizadoTest` 14/14).
+- [x] PHPUnit: **808/808**, 3.589 asserções (789 antes do lote), 1 depreciação e 4 skips
+      preexistentes — a depreciação é do próprio `--filter` do PHPUnit 11 e aparece também em lotes
+      não relacionados.
+- [x] Vitest: **366/366**, 25/25 arquivos (nenhum JavaScript ou JSON foi tocado neste lote). O
+      runner imprime `Unhandled 'error' event` vindo do `happy-dom` ao tentar rede real em
+      `BrowserWindow.fetch`/`BrowserFrameNavigator` nos testes de iframe — ruído de ambiente,
+      preexistente e sem teste falhando.
+
+### Segurança
+
+- [x] Traversal recusado nas duas portas novas: `../Ela-(1).webp`, `mini/../../Ela-(1).webp` e a
+      variante `%2e%2e%2f` decodificada — esta última só entra na lista de candidatos depois de passar
+      pela mesma guarda do caminho original.
+- [x] `pasta%5carquivo.webp` (barra invertida percent-encoded) também recusado.
+- [x] O fallback não autoriza envio: o caminho encontrado continua passando por
+      `arquivo_estatico_resolver_autorizado()`, coberto por teste com base autorizada e não autorizada.
+- [x] O fallback não alcança `assets/` nem `modulos/`, que não recebem nome de usuário.
+- [x] Custo de I/O contido: sem hífen no caminho o fallback nem carrega a biblioteca, e cada segmento
+      repete a checagem antes do `scandir`.
+
+### Review findings-first
+
+- [x] **Finding tratado**: a guarda `strpos($caminhoTotal, '-')` olhava só o caminho ORIGINAL, então
+      `%2D` (hífen percent-encoded) escaparia dela e o fallback nunca rodaria. Passou a testar todas
+      as variantes.
+- [x] **Finding documentado, não corrigido**: a guarda por hífen não alcança o nome cuja única
+      divergência é a APARA das pontas (`-foto.webp` no disco publicado como `foto.webp`). Esse nome
+      não nasce do upload, que já grava sanitizado, e cobri-lo exigiria listar diretório em todo 404
+      do site. Registrado no comentário da função e nas limitações do BATCH-143.
+- [x] Ambiguidade de duas entradas físicas para a mesma URL resolve pela ordem do `scandir`
+      (alfabética): determinística, e a ambiguidade é do dado, não da resolução.
+- [x] Nenhum finding aberto.
+
+### Pendências e limitações
+
+- Arquivos legados seguem no disco com espaço; cada requisição a eles paga uma listagem de
+      diretório. Normalizá-los em massa é mudança de DADOS e fica para intake próprio.
+- Miniatura automática não foi exercitada no upload real porque o WebP sintético de 35 bytes usado
+      como payload não é decodível pelo GD; o caminho `/mini/...` foi validado pela fixture física.
+
+### Tear down
+
+- [x] Fixtures e a pasta `req140/` removidas do `contents` local; `contents` conferido de volta ao
+      conteúdo original; cookie de teste apagado.
+- [x] Espelho local `dev-environment/.../transformamp` sincronizado com a fonte (não versionado).
+- [x] Nível 1: nenhum commit, push ou deploy remoto.
+
+---
+## BATCH-144 — Procedência do CSS derivado, Quill e auditoria/regeneração (req-141 / CR-002, 2026-08-28)
+
+### Diagnóstico medido (ambiente local, `DEVELOPMENT_ENV=false` = caminho de produção)
+
+- [x] Runtime lê do BANCO (`gestor.php:2782`); disco só em modo de desenvolvimento. Confirmado no
+      código e pelo `.env` do `transformamp`.
+- [x] Cobertura na resposta HTTP: **80/248** classes sem CSS na home; **85/182** no artigo.
+- [x] `c2f css:audit`: **1.279 de 1.410** recursos Tailwind com ao menos uma classe sem regra.
+- [x] O HTML da página de publicação JÁ contém as classes do template (expandido no salvamento) —
+      o Módulo 1 do intake (injetar CSS do template) não resolveria; falta o CSS da própria página.
+- [x] `paginas` de publicação nascem com `css_precompiled=0` e `css_compiled=0`.
+- [x] 40 recursos declaram `tailwind_sources` de PHP/JS, **todos do `perfil-usuario`**.
+
+### Quill
+
+- [x] Reprodução: `/artigos/teste-de-artigo/` entregava `.ql-indent-1` **sem nenhuma regra**, e não
+      carregava `quill.snow.css`. As classes que funcionavam vinham de um `css_compiled` contaminado.
+- [x] Datação: todos os registros contaminados são de junho/julho; os papéis entraram em 17/08
+      (req-117). É resíduo histórico, **não** bug ativo — correção da minha hipótese inicial.
+- [x] `quill-content.css`: 134 regras da fonte oficial v2.0.3, sem `!important`, sem UI da toolbar.
+- [x] Injeção condicional verificada em runtime: página COM Quill inclui o asset; página SEM Quill
+      não inclui (0 ocorrências). Asset servido em **HTTP 200**, `text/css`, 10.861 bytes.
+- [x] Depois: as 4 classes `ql-*` da página passaram a estar **todas cobertas**.
+
+### Procedência
+
+- [x] Testado contra o banco real: assinar → **COERENTE**; editar HTML → **STALE**; recompilar o
+      layout com HTML intacto → **STALE** (o cenário que não tinha sinal algum).
+- [x] Coluna `css_source_hash` criada nas 4 tabelas (migração + aplicada no ambiente local).
+- [x] Política de atualização: assinatura invalidada quando o deploy toca autoria ou derivado, sem
+      apagar CSS. Coberta nos três caminhos de update.
+
+### Regeneração
+
+- [x] `/artigos/teste-de-pagina/` medido por HTTP: **85 → 13** classes sem CSS.
+- [x] Lote de 80 páginas: **1.538 → 291 (-81%)**; 25 melhoraram, 0 pioraram após o ajuste dos
+      marcadores.
+- [x] `layouts` stale: **14 → 0**.
+- [x] As 13 restantes são `prose-*`: o projeto usa as classes mas **não tem `@tailwindcss/typography`
+      instalado** — dependência ausente do projeto, não falha do mecanismo.
+- [x] Modo `--url` (HTML renderizado) produz CSS mais completo (13.745 vs 9.033 bytes na mesma
+      página) sem depender de `tailwind_sources`.
+
+### Correções de rumo durante o lote
+
+- [x] A primeira versão do auditor contava recursos Fomantic (que recebem a folha por CDN) e o
+      número saía inflado e falso; corrigido antes de reportar.
+- [x] `group`/`peer` são marcadores sem regra própria: excluídos da métrica, senão 4 páginas
+      apareciam como "pioradas" sem nada ter piorado.
+- [x] Em `classList.toggle(classe, condicao)`, só o primeiro argumento é classe — ler o segundo
+      inventava `data-perfil-painel` como se fosse classe.
+- [x] `regenerarFontesDeclaradas()` chegou a ficar CHAMADA sem estar definida (um assert abortou a
+      gravação); detectado pelo próprio teste do `perfil-usuario` e corrigido.
+
+### Dívida identificada
+
+- [x] `perfil-usuario.js`: **26 classes Tailwind montadas em runtime** — a razão das 40 declarações
+      do módulo e do seu histórico de quebrar a cada atualização.
+- [x] `perfil-usuario.php`: **0 classes** — a declaração apontando para ele é obsoleta.
+- [x] Outros 6 arquivos com classes semânticas próprias (menos críticas), listados por `css:audit`.
+
+### Suítes e lint
+
+- [x] `php -l` em todos os arquivos tocados; `node --check` no `html-editor-interface.js`.
+- [x] Testes focados novos: **46** (`QuillConteudoTest` 11, `CssProcedenciaTest` 19,
+      `CssProcedenciaPoliticaTest` 9, `CssRegeneracaoTest` 8, mais um de marcadores).
+- [x] PHPUnit **855/855**; Vitest **366/366**.
+
+
+### Fase 4 — carimbo no salvamento (2026-08-28)
+
+- [x] 10 pontos de gravação carimbados em 5 módulos; teste estrutural garante que ponto novo sem
+      carimbo quebra a suíte.
+- [x] `publisher-pages` herda o `css_precompiled` do template no adicionar, editar e clonar.
+- [x] Helper degrada com segurança sem schema/banco (devolve string vazia, não explode).
+- [x] Nenhum módulo grava `css_precompiled` vindo do formulário — o derivado continua sendo escrito
+      só pelo compilador e pela herança.
+- [x] PHPUnit **861/861** após a fase 4.
+- [ ] **Não verificado em runtime**: o carimbo pelo salvamento da TELA. O POST reconstruído por
+      script não representa o formulário fielmente (o `admin-paginas/editar` gravou um HTML menor
+      que o enviado e não passou pelo carimbo), então a cobertura da fase 4 é unitária e estrutural.
+      Precisa de homologação com salvamento manual pela interface.
+
+### Incidente durante o teste E2E
+
+- [x] Ao restaurar o HTML da home após o teste, uma variável de ambiente não exportada fez o script
+      ler um arquivo inexistente e **zerar o campo `html`** de `transforma-mp-raiz`. Detectado na
+      mesma execução (o próprio script imprimiu "0 bytes") e restaurado do backup tirado antes do
+      teste.
+- [x] Conferido ao final: `html` byte a byte idêntico ao backup (md5 `9053904728759271`, 5.392
+      bytes), sem resíduo do marcador de teste, home e artigo em HTTP 200.
+
+
+### Pipeline oficial executado e defeito capturado em flagrante (2026-08-29)
+
+- [x] `c2f manager:update-all`: +18 variáveis, ~16 atualizações, 0 órfãos.
+- [x] `c2f project:update-all transformamp-local` (alvo `local: true`): ~20 atualizações, 0 órfãos.
+- [x] Consistência core↔mirror: 11 divergências → **6**, todas com o MIRROR mais novo (comportamento
+      pretendido do `rsync -u`); 0 arquivos ausentes.
+- [x] Migração aplicada pelo caminho oficial: `phinxlog 20260828100000 AddCssSourceHashToResourceTables`
+      (substituiu o `ALTER TABLE` manual que eu havia feito).
+- [x] **O deploy oficial reproduziu o híbrido**, medido logo após o pipeline no `template-artigo`:
+
+      user_modified   = 1                                (editado online)
+      html            = 5890 bytes,  TEM border-r-2      (autoria do usuário, preservada)
+      css_precompiled = 8286 bytes,  SEM border-r-2      (derivado do sistema, sobrescrito)
+      arquivo no disco:              SEM border-r-2      (fonte do CSS que entrou)
+      css_source_hash = (nenhuma)                        (política M2 marcou STALE)
+
+      É a demonstração direta do CR-002: autoria preservada + derivado sobrescrito = estado que
+      ninguém compilou. A diferença em relação a antes é que agora ele fica REGISTRADO como stale,
+      em vez de ser servido em silêncio.
+- [x] Conclusão operacional: **todo deploy que preserva autoria precisa ser seguido de
+      `c2f css:rebuild`**, senão o acervo volta ao híbrido.
+
+### Trava de alvo por `local` (environment.json)
+
+- [x] `devProjects.<id>.local` passou a ser a autoridade sobre gravação sem autorização.
+- [x] `c2f css:rebuild` imprime `projeto | local | url` antes de qualquer escrita.
+- [x] Verificado nos dois sentidos: `transformamp-local` (local=true) prossegue;
+      `transformamp` (local=false, `https://novo.transformamp.com/`) é **recusado** com instrução de
+      pedir autorização e usar `--confirmar-remoto`.
+- [x] Motivo: os pares `<projeto>` / `<projeto>-local` compartilham o mesmo `path_tests`, então só a
+      configuração os distingue — e `deploy-project-v2.sh` envia para `PROJECT_URL/_api/project/update`.
+
+### Correção de rumo registrada
+
+- [x] Antes desta rodada eu havia sincronizado o core **copiando arquivos à mão**, o que não executa
+      compilação de recursos, migrações nem sincronização de banco. As medições anteriores foram
+      feitas sobre um ambiente que o pipeline oficial nunca teria produzido.
+
+
+### Rebuild completo do acervo e estado final (2026-08-29)
+
+- [x] `c2f css:rebuild --project=transformamp-local` sobre todo o acervo: **1.412 analisados,
+      1.285 regenerados, 127 já coerentes, 362 fora do Tailwind, 0 erros**.
+- [x] Auditoria final: **stale = 0** e **sem CSS próprio = 0** em paginas, layouts, componentes e
+      templates. Antes: 1.114 páginas e 177 templates stale.
+- [x] Página do operador (`/artigos/teste-de-pagina-do-quill/`): as 8 classes da legenda
+      (`ml-auto`, `text-right`, `border-r-2`, `pr-4`, `italic`, `opacity-70`, `leading-relaxed`,
+      `font-medium`) e as 7 classes `ql-*` estão **todas cobertas**.
+- [x] Das 12 classes órfãs que restam na página, **nenhuma é utility**: 11 são `prose-*`
+      (`@tailwindcss/typography` não instalado no projeto) e 1 é hook semântico.
+- [x] Ressalva honesta sobre a métrica agregada: 11.416 → 11.378 classes sem definição no acervo
+      (só 4 recursos melhoraram). NÃO é o rebuild falhando — o ganho real ocorreu quando os recursos
+      passaram a ter CSS próprio; o que resta é majoritariamente hook semântico e `prose-*`, que
+      nenhuma regeneração resolve. A métrica a acompanhar daqui em diante é `stale` e a auditoria por
+      página (`css:audit --url=`), não o total agregado.
+
+### Bug encontrado por execução em foreground
+
+- [x] `regenerarCompilar()` estava sem o parâmetro `$fontesExtras`; o `foreach` usava variável
+      indefinida e as `tailwind_sources` nunca eram aplicadas. O PHP só emitia warning, que o log em
+      background engolia. Apareceu quando o operador apontou que execuções concorrentes travavam o
+      processo e passei a rodar em foreground. Corrigido e coberto por teste da assinatura.
+
+### Suítes
+
+- [x] PHPUnit **865/865**; Vitest **366/366**; `php -l` limpo nos 5 arquivos desta rodada.
+
+### Pendências
+
+- ~~Regenerar o acervo completo~~ (feito: 1.285 recursos)
+- Regenerar o acervo completo (105 recursos feitos; o restante é tempo de CLI).
+- Criação de página pela UI não foi concluída no E2E: o POST de `admin-paginas/adicionar` responde
+  302 de volta ao formulário (validação do form), então o ciclo foi provado contra o banco e por
+  HTTP nas páginas existentes, não pela tela de criação.
+- Fases seguintes do CR-002 (publisher-pages extrair CSS; baseline com dependências).
+- Nível 1: nenhum commit, push ou deploy remoto.

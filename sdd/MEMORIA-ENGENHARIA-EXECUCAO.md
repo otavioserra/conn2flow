@@ -13,30 +13,40 @@
 
 ## Tarefas recentes
 
+### 2026-08-28 — BATCH-144 (req-141): autoria x derivado no CSS
+
+- Runtime serve TUDO do banco (`gestor.php:2782`); disco só com `DEVELOPMENT_ENV=true`. O compilador
+  offline varre `resources/` — por isso o CSS entregue vinha de um HTML que não é o entregue.
+- `html`/`css` são AUTORIA; `css_precompiled`/`css_compiled` são DERIVADOS e sempre recalculáveis.
+  Preservar derivado como autoria (o que `preserve_on_user_modified` fazia) cria híbrido incoerente.
+- Publicação nasce no banco e nunca teve arquivo: o CLI jamais a alcança. Ela herda o CSS do template.
+- Medir cobertura = classes do HTML sem regra em nenhuma folha. Filtre `framework_css=tailwindcss`
+  (Fomantic vem por CDN) e ignore `group`/`peer` (marcadores sem regra própria).
+- `c2f css:audit` e `c2f css:rebuild --url` (compila do HTML RENDERIZADO, sem depender de
+  `tailwind_sources`). O Tailwind CLI precisa do input DENTRO da árvore com `node_modules`.
+- Escape em heredoc Python: barra-b e barra-s viram BYTES DE CONTROLE na string. Use raw string
+  ou chr(92), e confira o arquivo depois — assert que falha no meio deixa funcao chamada e nao definida.
+
+### 2026-08-28 — BATCH-143 (req-140): URL sanitizada x nome físico
+
+- `arquivo_nome_sanitizar()` troca espaço por hífen e colapsa `--`. Qualquer nome que o sistema
+  GRAVA precisa satisfazer `sanitizar(n) === n`, senão a URL publicada aponta para outro arquivo.
+- O controlador estático não carrega `bibliotecas/arquivo.php`: o bootstrap só inclui `banco`,
+  `gestor`, `modelo` e `hooks`. Use `require_once $_GESTOR['bibliotecas-path'].'arquivo.php'`.
+- A reescrita do `.htaccess` usa a flag `[B]`, então `caminho-total` chega JÁ decodificado; `%20`
+  só sobrevive literal em servidor sem essa flag.
+- Para casar URL com nome físico divergente, compare pelo RESULTADO da sanitização de cada entrada
+  do diretório. Adivinhar a troca de hífen custa 2^n acessos a disco e ainda perde nome misto.
+- POST autenticado exige CSRF mesmo com `ajax=sim` (req-107; a skill de AJAX está desatualizada):
+  leia o `<meta name="csrf-token">` da página e mande em `X-CSRF-Token`. O `curl` do Git Bash não
+  resolve `/tmp` em `-F @arquivo` — use caminho no formato Windows.
+
 ### 2026-08-26 — BATCH-142 (req-139): galleries denso, modal e corte vertical
 
-- Grade compacta exige largura fracionária no card e `flex-wrap`: desktop validado em 6×110 px
-  (médio) e 10×65 px (pequeno), mantendo os breakpoints 3/5 e 2/3.
-- Overlay sem layout shift: absoluto, `opacity` e backdrop; no hover o contêiner precisa trocar
-  também para `pointer-events:auto` — deixar `none` apenas nos botões funcionava, mas divergia da spec.
-- Edição rápida pode reutilizar os listeners delegados do card: o item é atualizado sincronicamente,
-  o debounce cuida dos inputs e `onHidden` reconstrói a lista e força o preview.
-- `image_position` precisa de allowlist idêntica no CRUD, PHP e widget JS. O template recebe valor,
-  classe `object-*` e `data-image-position`; o JS público reaplica antes do early return dos modelos.
-- Em validação local, um dry-run do atualizador avançou checksums sem aplicar linhas. Não usar
-  `force-all` sobre tenant: carregue no editor o recurso versionado e registre a limitação.
-
-### 2026-08-26 — BATCH-140/141 (req-137/138): picker, grade e MIME
-
-- O `postMessage` do `admin-arquivos` tem seis consumidores: lote = N mensagens de um objeto, não array.
-- `renderLista()` reconstrói o DOM; seleção deve ser reaplicada e lida com `hasOwnProperty`.
-- Ordem visual/DOM não prova o array privado: intercepte o payload depois do Sortable.
-- MIME nasce de um mapa único por extensão; teste a invariante prefixo↔família sobre o mapa real.
-
-### 2026-08-26 — BATCH-137 (req-135): motion do SO pelo CLI
-
-- Dispatcher mantém o nome original do alias; comandos podem decidir `status|on|off|toggle` por ele.
-- Preferência do SO pode exigir execução fora do sandbox; capture e restaure o estado em `finally`.
+- Grade compacta exige largura fracionária no card e `flex-wrap` (6×110 px e 10×65 px medidos);
+  overlay sem layout shift precisa de `pointer-events:auto` no contêiner ao hover.
+- `image_position` exige allowlist idêntica no CRUD, PHP e widget JS.
+- Dry-run do atualizador avança checksums sem aplicar linhas: não usar `force-all` sobre tenant.
 
 ## Pendências e histórico
 

@@ -896,6 +896,283 @@ function gestor_pdf_viewer_assets($urlRaiz = '', $versao = ''){
 	);
 }
 
+/**
+ * Classes efetivamente usadas no markup (BATCH-144 / req-141).
+ *
+ * Base da auditoria de cobertura: comparar o que o HTML PEDE com o que o CSS entregue DEFINE é a
+ * única medida direta de "a página chegou estilizada?". Foi assim que se mediu 47% das classes sem
+ * CSS em `/artigos/teste-de-pagina/` — número que nenhum log do sistema mostrava.
+ *
+ * Função PURA (testável).
+ *
+ * @param string $html HTML da página ou do recurso.
+ * @return array Lista de classes distintas, sem repetição.
+ */
+function gestor_css_classes_usadas($html){
+	if(!is_string($html) || $html === '') return Array();
+
+	if(!preg_match_all('/class\s*=\s*("|\')([^"\']*)\1/i', $html, $matches, PREG_SET_ORDER)) return Array();
+
+	$classes = Array();
+	foreach($matches as $match){
+		foreach(preg_split('/\s+/', trim($match[2])) as $classe){
+			if($classe === '') continue;
+			// Marcadores de template (`@[[VAR]]@`, `[[item#x]]`, `{{x}}`) não são classes: entram no
+			// HTML antes da substituição e contariam como descoberta falsa.
+			if(strpos($classe, '[') !== false || strpos($classe, '{') !== false || strpos($classe, '@') !== false) continue;
+			$classes[$classe] = true;
+		}
+	}
+
+	return array_keys($classes);
+}
+
+/**
+ * Classes definidas por uma folha de estilo (BATCH-144 / req-141).
+ *
+ * O Tailwind escapa os caracteres especiais do seletor (`.md\:flex`, `.w-1\/2`), então a comparação
+ * com o HTML exige desescapar — sem isso toda utility com variante apareceria como descoberta.
+ *
+ * Função PURA (testável).
+ *
+ * @param string $css CSS concatenado das folhas entregues.
+ * @return array Lista de classes distintas definidas.
+ */
+function gestor_css_classes_definidas($css){
+	if(!is_string($css) || $css === '') return Array();
+
+	if(!preg_match_all('/\.((?:[A-Za-z0-9_-]|\\\\.)+)/', $css, $matches)) return Array();
+
+	$classes = Array();
+	foreach($matches[1] as $bruto){
+		$classe = preg_replace('/\\\\(.)/', '$1', $bruto);
+		if($classe === '' || $classe === null) continue;
+		$classes[$classe] = true;
+	}
+
+	return array_keys($classes);
+}
+
+/**
+ * Classes que o HTML usa e nenhuma folha define (BATCH-144 / req-141).
+ *
+ * É o sintoma que o operador vê como "quebrou o layout": a classe existe no markup, o navegador não
+ * encontra regra nenhuma para ela e o elemento cai no estilo padrão.
+ *
+ * Função PURA (testável).
+ *
+ * @param string $html HTML entregue.
+ * @param string $css CSS entregue.
+ * @return array Classes sem definição, em ordem estável.
+ */
+function gestor_css_classes_descobertas($html, $css){
+	$usadas = gestor_css_classes_usadas($html);
+	if(!$usadas) return Array();
+
+	$definidas = array_flip(gestor_css_classes_definidas($css));
+
+	// `group` e `peer` são MARCADORES de variante: existem para que `group-hover:*` e `peer-checked:*`
+	// tenham um ancestral/irmão a que se referir, e o Tailwind não emite regra própria para elas. Sem
+	// esta exceção, toda página que usa `group` sem nenhuma variante correspondente aparece como
+	// defeituosa — ruído que faz a métrica acusar piora onde nada piorou.
+	$marcadores = Array('group' => true, 'peer' => true);
+
+	$descobertas = Array();
+	foreach($usadas as $classe){
+		if(isset($marcadores[$classe])) continue;
+		if(!isset($definidas[$classe])) $descobertas[] = $classe;
+	}
+
+	sort($descobertas);
+
+	return $descobertas;
+}
+
+/**
+ * Classes de estilo embutidas em código PHP/JS (BATCH-144 / req-141).
+ *
+ * A norma do projeto é que PHP e JavaScript não carreguem HTML nem classe: o markup vive em
+ * COMPONENTES, lidos pelo gestor e incluídos onde for preciso. Quando o código monta classe em
+ * runtime (`classList.add('w-0','bg-slate-300')`), o compilador não a encontra pelo HTML — e a
+ * saída era declarar o próprio arquivo em `tailwind_sources`, uma lista MANUAL que, esquecida,
+ * derruba o estilo em silêncio. Medido no acervo: 40 recursos apoiados nessa declaração, todos do
+ * `perfil-usuario`, o mesmo módulo que quebrava a cada atualização de sistema.
+ *
+ * Esta função encontra a dívida para que ela possa ser eliminada, em vez de administrada.
+ *
+ * Função PURA (testável).
+ *
+ * @param string $codigo Conteúdo de um arquivo PHP ou JS.
+ * @return array Classes distintas encontradas, em ordem estável.
+ */
+function gestor_css_classes_em_codigo($codigo){
+	if(!is_string($codigo) || $codigo === '') return Array();
+
+	$classes = Array();
+
+	// 1) `class="..."` literal dentro de string de código.
+	if(preg_match_all('/class\s*=\s*\\\\?["\']([^"\']*)["\']/i', $codigo, $m)){
+		foreach($m[1] as $lista){
+			foreach(preg_split('/\s+/', trim($lista)) as $classe){
+				if($classe !== '') $classes[$classe] = true;
+			}
+		}
+	}
+
+	// 2) `classList.add('a','b')` / `remove` / `toggle` — o padrão que o JS usa para estado visual.
+	//    Em `toggle(classe, condicao)` só o PRIMEIRO argumento é classe: o segundo é a condição, e
+	//    lê-lo como classe inventava nomes que não existem (`data-perfil-painel` veio daí).
+	if(preg_match_all('/classList\.(add|remove|toggle)\s*\(([^)]*)\)/i', $codigo, $m, PREG_SET_ORDER)){
+		foreach($m as $ocorrencia){
+			$metodo = strtolower($ocorrencia[1]);
+			if(!preg_match_all('/["\']([^"\']+)["\']/', $ocorrencia[2], $itens)) continue;
+
+			$encontradas = ($metodo === 'toggle') ? array_slice($itens[1], 0, 1) : $itens[1];
+			foreach($encontradas as $classe){
+				$classe = trim($classe);
+				if($classe !== '') $classes[$classe] = true;
+			}
+		}
+	}
+
+	// 3) `className = 'a b'` (atribuição direta).
+	if(preg_match_all('/className\s*=\s*["\']([^"\']*)["\']/i', $codigo, $m)){
+		foreach($m[1] as $lista){
+			foreach(preg_split('/\s+/', trim($lista)) as $classe){
+				if($classe !== '') $classes[$classe] = true;
+			}
+		}
+	}
+
+	$classes = array_keys($classes);
+	sort($classes);
+
+	return $classes;
+}
+
+/**
+ * Assinatura de procedência do CSS derivado (BATCH-144 / req-141 / CR-002).
+ *
+ * `html` e `css` são AUTORIA; `css_precompiled` e `css_compiled` são DERIVADOS dela. O sistema
+ * tratava os quatro como campos independentes, escritos por três produtores em momentos diferentes
+ * (compilador offline, editor online e política de atualização do deploy) — e nenhum registrava de
+ * QUE entrada o CSS tinha sido derivado. Sem isso é impossível saber se o conjunto é coerente, e o
+ * runtime entrega HTML de uma origem com CSS de outra sem emitir erro nenhum.
+ *
+ * A assinatura fecha esse buraco: quem gera o derivado carimba as entradas que usou; quem consome
+ * recalcula e compara. Divergiu, o derivado está STALE — e isso vira informação, não surpresa.
+ *
+ * O baseline entra no cálculo porque o `css_compiled` gravado é um DELTA contra a cascata vigente:
+ * recompilar o layout muda o que o delta precisa conter, mesmo que o HTML da página não mude.
+ *
+ * Função PURA (testável): não toca em `$_GESTOR`, banco ou disco.
+ *
+ * @param array $params
+ * @param string $params['html'] HTML autoral do recurso.
+ * @param string $params['css'] CSS autoral do recurso.
+ * @param string $params['baseline'] Cascata sob a qual o derivado foi gerado (CSS do layout).
+ * @return string Assinatura versionada, ou string vazia quando não há autoria nenhuma.
+ */
+function gestor_css_procedencia_assinatura($params = false){
+	$html = '';
+	$css = '';
+	$baseline = '';
+
+	if(is_array($params)){
+		$html = isset($params['html']) ? (string)$params['html'] : '';
+		$css = isset($params['css']) ? (string)$params['css'] : '';
+		$baseline = isset($params['baseline']) ? (string)$params['baseline'] : '';
+	}
+
+	// Recurso sem autoria nenhuma não tem o que assinar: devolver um hash aqui faria um registro
+	// vazio parecer íntegro.
+	if($html === '' && $css === '') return '';
+
+	// O separador não pode ocorrer no conteúdo, senão mover bytes de um campo para o outro daria a
+	// mesma assinatura (`ab`+`c` colidindo com `a`+`bc`).
+	$partes = Array(sha1($html), sha1($css), sha1($baseline));
+
+	// O prefixo de versão permite trocar o algoritmo depois sem confundir assinatura antiga com
+	// divergência real: quem lê sabe que `v1` foi calculado por esta regra.
+	return 'v1:'.sha1(implode("\x1f", $partes));
+}
+
+/**
+ * Par `campo=valor` da procedência, pronto para entrar num INSERT/UPDATE de recurso (req-141).
+ *
+ * Todo módulo que grava recurso (`admin-paginas`, `admin-layouts`, `admin-componentes`,
+ * `admin-templates`, `publisher-pages`) precisa carimbar a procedência do que gravou — senão o
+ * recurso nasce sem assinatura, conta como stale para sempre e a auditoria nunca zera.
+ *
+ * Resolve o baseline sozinho a partir do layout, porque é essa a cascata sob a qual o CSS do recurso
+ * vale: recompilar o layout depois passa a invalidar este carimbo, que é exatamente o sinal que
+ * faltava quando "mexi no layout e a página ficou com o CSS antigo".
+ *
+ * Devolve string vazia quando não há o que assinar ou quando a coluna ainda não existe no schema —
+ * assim o chamador pode concatenar sem checar nada.
+ *
+ * @param string $html HTML autoral que está sendo gravado.
+ * @param string $css CSS autoral que está sendo gravado.
+ * @param string $layout_id Layout do recurso; vazio para layouts (eles SÃO a base).
+ * @param string $tabela Tabela de destino, para checar a coluna.
+ * @return string Assinatura, ou string vazia.
+ */
+function gestor_css_procedencia_para_recurso($html, $css, $layout_id = '', $tabela = 'paginas'){
+	global $_GESTOR;
+
+	// `gestor_schema_campo_existe()` é a checagem canônica do core: faz cache por tabela.campo e
+	// engole exceção de driver. Chamar `banco_campo_existe()` direto aqui repetiria um SHOW COLUMNS a
+	// cada gravação e deixaria um erro de conexão derrubar o salvamento inteiro por causa do carimbo.
+	if(!function_exists('gestor_schema_campo_existe') || !gestor_schema_campo_existe('css_source_hash', $tabela)) return '';
+
+	$baseline = '';
+
+	if(is_scalar($layout_id) && trim((string)$layout_id) !== ''){
+		$layout = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'layouts',
+			'campos' => Array('css_precompiled'),
+			'extra' => "WHERE id='".banco_escape_field((string)$layout_id)."'"
+				.' AND language="'.$_GESTOR['linguagem-codigo'].'" AND status!="D"',
+		));
+
+		if($layout && is_array($layout) && isset($layout['css_precompiled'])){
+			$baseline = (string)$layout['css_precompiled'];
+		}
+	}
+
+	return gestor_css_procedencia_assinatura(Array(
+		'html' => (string)$html,
+		'css' => (string)$css,
+		'baseline' => $baseline,
+	));
+}
+
+/**
+ * O CSS derivado corresponde à autoria vigente? (BATCH-144 / req-141)
+ *
+ * Assinatura AUSENTE devolve `false` deliberadamente: todo o acervo gravado antes desta mudança não
+ * tem carimbo, e tratá-lo como íntegro esconderia exatamente o que este mecanismo existe para
+ * revelar. Quem chama decide o que fazer com um stale (logar, regenerar, avisar) — aqui só se
+ * responde a pergunta.
+ *
+ * Função PURA (testável).
+ *
+ * @param string $assinaturaGravada Valor da coluna `css_source_hash`.
+ * @param array $params Mesmas entradas de gestor_css_procedencia_assinatura().
+ * @return bool true quando o derivado corresponde à autoria.
+ */
+function gestor_css_procedencia_valida($assinaturaGravada, $params = false){
+	$assinaturaGravada = trim((string)$assinaturaGravada);
+	if($assinaturaGravada === '') return false;
+
+	$atual = gestor_css_procedencia_assinatura($params);
+	if($atual === '') return false;
+
+	return hash_equals($atual, $assinaturaGravada);
+}
+
+
 /** Monta a condição agrupada de IDs usada pela inclusão múltipla de componentes. */
 function gestor_componente_ids_condicao($ids, $escape = null){
 	if($escape === null) $escape = 'banco_escape_field';

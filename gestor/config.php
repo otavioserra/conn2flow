@@ -335,6 +335,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'plugins-installer' => Array('plugins-installer.php'),
 	'ia' => Array('ia.php'),
     'html-editor' => Array('html-editor.php'),
+    'editor-texto' => Array('editor-texto.php'),
     'sitemap' => Array('sitemap.php'),
     'oauth2' => Array('oauth2.php'),
     '2fa' => Array('2fa.php'),

@@ -50,12 +50,12 @@
                     "id": "galleries-grid",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "fb32fcac86f57a553a53f189c03f179e",
+                        "html": "c2064b569ff8edd800e47552ec5b9eb4",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "fb32fcac86f57a553a53f189c03f179e"
+                        "combined": "c2064b569ff8edd800e47552ec5b9eb4"
                     }
                 },
                 {
@@ -63,12 +63,12 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "753650ebef39f401113d1441cc6c2140",
+                        "html": "e935f21723ee889774a4b50537f9f0ed",
                         "css": "bb97520c4c9f21b01a7889f507be0810",
                         "css_precompiled": "",
-                        "combined": "f0b1c4c55b7e0a56f399f9ac6904f146"
+                        "combined": "e5ecf67d86a595c58d8fc45cb4b0796c"
                     }
                 },
                 {
@@ -76,12 +76,12 @@
                     "id": "galleries-masonry",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "75a7668cc306f002fbba73a988d2cdf3",
+                        "html": "971118fd28d1856380a70f17b08d364f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "75a7668cc306f002fbba73a988d2cdf3"
+                        "combined": "971118fd28d1856380a70f17b08d364f"
                     }
                 },
                 {
@@ -89,12 +89,12 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "626a172a1b1b925b091bbf5c36756877",
+                        "html": "ccdbbd9ad509c543b144d08b7af9aa05",
                         "css": "1f9b0bae0cb2fbc149e45797cc5c50c0",
                         "css_precompiled": "",
-                        "combined": "fd2d8591a82c0cac49495ba2a340c4d9"
+                        "combined": "d75ee910b1a10d69ffade022859477fe"
                     }
                 }
             ],
@@ -103,7 +103,7 @@
                     "name": "Galerias - Listar",
                     "id": "galleries",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/",
+                    "path": "galleries\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -118,7 +118,7 @@
                     "name": "Galerias - Adicionar",
                     "id": "galleries-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/adicionar/",
+                    "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.8",
@@ -133,7 +133,7 @@
                     "name": "Galerias - Editar",
                     "id": "galleries-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/editar/",
+                    "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.8",
@@ -148,7 +148,7 @@
                     "name": "Galerias - Clonar",
                     "id": "galleries-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/clonar/",
+                    "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.8",
@@ -228,12 +228,12 @@
                 },
                 {
                     "id": "image-position-top",
-                    "value": "Topo / Acima",
+                    "value": "Topo \/ Acima",
                     "type": "string"
                 },
                 {
                     "id": "image-position-bottom",
-                    "value": "Fundo / Abaixo",
+                    "value": "Fundo \/ Abaixo",
                     "type": "string"
                 }
             ]
@@ -271,12 +271,12 @@
                     "id": "galleries-grid",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "45710d35e1a2ce7214956a76b1824b98",
+                        "html": "8adefca7023808b49ed5cdbb9b5dfa30",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "45710d35e1a2ce7214956a76b1824b98"
+                        "combined": "8adefca7023808b49ed5cdbb9b5dfa30"
                     }
                 },
                 {
@@ -284,12 +284,12 @@
                     "id": "galleries-carousel",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "88fa79ef1d418166d7ba50eeb4ea6a52",
+                        "html": "ebb0c1b46510f1616c4cbc781ed8a137",
                         "css": "bb97520c4c9f21b01a7889f507be0810",
                         "css_precompiled": "",
-                        "combined": "da872b9b19b6f200f7a0c742b7e8fe7d"
+                        "combined": "adbd5d8e1418ee656515e4faf4903778"
                     }
                 },
                 {
@@ -297,12 +297,12 @@
                     "id": "galleries-masonry",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "4c9f9a2661fd6bd604af04265cdd1c53",
+                        "html": "a736298254857ddfa56c615e42903d40",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "4c9f9a2661fd6bd604af04265cdd1c53"
+                        "combined": "a736298254857ddfa56c615e42903d40"
                     }
                 },
                 {
@@ -310,12 +310,12 @@
                     "id": "galleries-slider",
                     "target": "galleries",
                     "framework_css": "tailwindcss",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "f01cbb6833a70b0ffef61e9754530203",
+                        "html": "4235c7c2825cd8793001bebd8466252a",
                         "css": "1f9b0bae0cb2fbc149e45797cc5c50c0",
                         "css_precompiled": "",
-                        "combined": "212a833ec84e79c0d399aa61cb15ad90"
+                        "combined": "6d6c03bcb7838df8ecfc22dde7430c62"
                     }
                 }
             ],
@@ -324,7 +324,7 @@
                     "name": "Galleries - List",
                     "id": "galleries",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/",
+                    "path": "galleries\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -339,7 +339,7 @@
                     "name": "Galleries - Add",
                     "id": "galleries-adicionar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/adicionar/",
+                    "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.8",
@@ -354,7 +354,7 @@
                     "name": "Galleries - Edit",
                     "id": "galleries-editar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/editar/",
+                    "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.8",
@@ -369,7 +369,7 @@
                     "name": "Galleries - Clone",
                     "id": "galleries-clonar",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/clonar/",
+                    "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.8",

@@ -978,8 +978,8 @@ $(document).ready(function () {
 
         if (publisherPage || publisherQuillClassDetected) {
             tailwindConfigScript += `
-                <link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />
-                <style>
+                <link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" data-c2f-css-role="quill" />
+                <style data-c2f-css-role="quill">
                     .ql-editor {
                         font-family: Lato, system-ui, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
                         font-size: 16px !important;
@@ -1812,8 +1812,8 @@ $(document).ready(function () {
 
         if (publisherPage || publisherQuillClassDetected) {
             tailwindConfigScript += `
-                <link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />
-                <style>
+                <link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" data-c2f-css-role="quill" />
+                <style data-c2f-css-role="quill">
                     .ql-editor {
                         font-family: Lato, system-ui, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
                         font-size: 16px !important;

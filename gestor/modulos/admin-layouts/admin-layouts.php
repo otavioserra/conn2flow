@@ -61,6 +61,18 @@ function admin_layouts_adicionar(){
 		$campo_nome = "html"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css_compiled"; $post_nome = $campo_nome; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome])); // Novo campo
+
+		// req-141 / CR-002: carimba a procedência do CSS gravado. Sem o carimbo o recurso nasce sem
+		// procedência conhecida, conta como stale para sempre e a auditoria nunca zera.
+		$procedenciaCss = gestor_css_procedencia_para_recurso(
+			(isset($_REQUEST['html']) ? $_REQUEST['html'] : ''),
+			(isset($_REQUEST['css']) ? $_REQUEST['css'] : ''),
+			'',
+			'layouts'
+		);
+
+		if($procedenciaCss !== '') $campos[] = Array('css_source_hash',banco_escape_field($procedenciaCss));
+
 		
 		// ===== Campos comuns
 		
@@ -226,6 +238,18 @@ function admin_layouts_editar(){
 		$campo_nome = "html"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label'); if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => banco_select_campos_antes($campo_nome));}}
 		$campo_nome = "css"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label'); if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => banco_select_campos_antes($campo_nome));}}
 		$campo_nome = "css_compiled"; $request_name = $campo_nome; $alteracoes_name = 'css-compiled'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label'); if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => banco_select_campos_antes($campo_nome));}} // Novo campo
+
+		// req-141 / CR-002: o carimbo acompanha a autoria que fica gravada — o valor enviado quando ele
+		// veio, o valor atual quando o campo não foi tocado nesta edição.
+		$procedenciaCss = gestor_css_procedencia_para_recurso(
+			(isset($_REQUEST['html']) ? $_REQUEST['html'] : banco_select_campos_antes('html')),
+			(isset($_REQUEST['css']) ? $_REQUEST['css'] : banco_select_campos_antes('css')),
+			'',
+			'layouts'
+		);
+
+		if($procedenciaCss !== '') $editar['dados'][] = "css_source_hash='".banco_escape_field($procedenciaCss)."'";
+
 		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
 		

@@ -740,6 +740,32 @@ function gestor_pagina_pdf_viewer(){
 	}
 }
 
+/**
+ * CSS de conteúdo do editor Quill (BATCH-144 / req-141).
+ *
+ * Mesmo padrão do PDF.js acima: o asset entra SÓ nas páginas que realmente publicam conteúdo
+ * formatado no Quill, nunca no site inteiro. A detecção roda sobre o HTML final (depois dos
+ * widgets), porque conteúdo Quill também chega por widget de publicação.
+ */
+function gestor_pagina_quill(){
+	global $_GESTOR;
+
+	if(!isset($_GESTOR['pagina'])) return;
+
+	// A biblioteca do editor de texto é a autoridade sobre o Quill: detecção, versão e assets. Ela é
+	// carregada sob demanda porque a esmagadora maioria das páginas não publica conteúdo do editor.
+	if(!function_exists('editor_texto_conteudo_detectar') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'editor-texto.php');
+	}
+
+	if(!function_exists('editor_texto_conteudo_detectar')) return;
+	if(!editor_texto_conteudo_detectar($_GESTOR['pagina'])) return;
+
+	foreach(editor_texto_assets_publicacao($_GESTOR['url-raiz'],gestor_asset_version('interface')) as $asset){
+		$_GESTOR['css'][] = $asset;
+	}
+}
+
 function gestor_pagina_widgets_ajax(){
 	global $_GESTOR;
 
@@ -2952,6 +2978,10 @@ function gestor_roteador(){
 			// ===== Motor de exibição PDF.js (req-096): assets incluídos só se a página usa o leitor.
 
 			gestor_pagina_pdf_viewer();
+
+			// ===== CSS de conteúdo do Quill (req-141): só quando a página publica esse conteúdo.
+
+			gestor_pagina_quill();
 
 			// ===== Inclusão de bibliotecas globais de uma página
 

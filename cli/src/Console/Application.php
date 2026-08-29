@@ -42,6 +42,8 @@ use Conn2Flow\Cli\Commands\ProjectSyncFilesCommand;
 use Conn2Flow\Cli\Commands\ProjectSyncResourcesCommand;
 use Conn2Flow\Cli\Commands\ProjectUpdateAllCommand;
 use Conn2Flow\Cli\Commands\ProjectUpdateSystemCommand;
+use Conn2Flow\Cli\Commands\CssAuditCommand;
+use Conn2Flow\Cli\Commands\CssRebuildCommand;
 use Conn2Flow\Cli\Commands\ResourcesSyncCommand;
 use Conn2Flow\Cli\Commands\TailwindFixSpacingCommand;
 use Conn2Flow\Cli\Contracts\CommandInterface;
@@ -68,6 +70,8 @@ final class Application
 
         // Resources & DB
         $this->register(new ResourcesSyncCommand($this->rootPath));
+        $this->register(new CssAuditCommand($this->rootPath));
+        $this->register(new CssRebuildCommand($this->rootPath));
         $this->register(new DbTestCommand($this->rootPath));
         $this->register(new DbUpdateCommand($this->rootPath));
 

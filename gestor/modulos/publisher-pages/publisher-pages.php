@@ -100,6 +100,93 @@ function publisher_pages_template_html_padrao($publisher_id){
 }
 
 /**
+ * CSS derivado de uma publicação, herdado do template que a gerou (req-141 / CR-002).
+ *
+ * Publicação nasce no BANCO: nunca teve arquivo em `resources/`, então o compilador offline nunca a
+ * vê e o `css_precompiled` dela ficava NULL para sempre. Medido no `transformamp`: as páginas de
+ * publicação vinham com `css_precompiled=0` E `css_compiled=0` — servidas sem uma única utility
+ * própria, sobrevivendo só do que o layout por acaso já tinha.
+ *
+ * O HTML da publicação é o template com os valores substituídos, e substituir valor não cria classe
+ * nova: o CSS do template cobre a publicação. Herdar aqui faz o conteúdo NOVO nascer correto, sem
+ * depender de rodar `c2f css:rebuild` depois.
+ *
+ * O que o valor do usuário traz de diferente é formatação do Quill (`ql-*`), e essa vem do asset de
+ * sistema `quill-content.css`, não daqui.
+ *
+ * @param string $publisher_id Publicador da página.
+ * @param string $layout_id Layout da página (a cascata sob a qual o CSS vale).
+ * @param string $html HTML final gravado.
+ * @param string $css CSS autoral gravado.
+ * @return array{css_precompiled:string, css_source_hash:string} Vazios quando não há o que herdar.
+ */
+function publisher_pages_css_derivado($publisher_id, $layout_id, $html, $css){
+	global $_GESTOR;
+
+	$vazio = Array('css_precompiled' => '', 'css_source_hash' => '');
+
+	if(!is_scalar($publisher_id) || trim((string)$publisher_id) === '') return $vazio;
+	if(!function_exists('gestor_css_procedencia_assinatura')) return $vazio;
+
+	$publisher = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'publisher',
+		'campos' => Array('template_id'),
+		'extra' => "WHERE status='A' AND id='".banco_escape_field((string)$publisher_id)."'"
+			.' AND language="'.$_GESTOR['linguagem-codigo'].'"',
+	));
+
+	if(!$publisher || !is_array($publisher) || empty($publisher['template_id'])) return $vazio;
+
+	$template = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'templates',
+		'campos' => Array('css_precompiled'),
+		'extra' => "WHERE status='A' AND id='".banco_escape_field((string)$publisher['template_id'])."'"
+			.' AND language="'.$_GESTOR['linguagem-codigo'].'" AND target="publisher"',
+	));
+
+	$css_precompiled = ($template && is_array($template) && isset($template['css_precompiled']))
+		? (string)$template['css_precompiled']
+		: '';
+
+	if(trim($css_precompiled) === '') return $vazio;
+
+	// A assinatura tem de refletir a cascata REAL da página, senão ela nasceria "coerente" contra um
+	// baseline que não é o dela e o `css:audit` deixaria de apontar quando o layout mudasse.
+	//
+	// O CSS DO TEMPLATE entra junto porque a publicação o HERDA: regenerar o template muda o que a
+	// página deveria estar servindo, mesmo com o HTML dela intacto. Sem isso a página continuaria
+	// "coerente" enquanto exibia o CSS antigo — foi assim que uma publicação recém-criada herdou um
+	// `css_precompiled` desatualizado e a legenda saiu sem alinhamento, apesar do carimbo estar lá.
+	$baseline = $css_precompiled;
+
+	if(is_scalar($layout_id) && trim((string)$layout_id) !== ''){
+		$layout = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'layouts',
+			'campos' => Array('css_precompiled'),
+			'extra' => "WHERE id='".banco_escape_field((string)$layout_id)."'"
+				.' AND language="'.$_GESTOR['linguagem-codigo'].'" AND status!="D"',
+		));
+
+		if($layout && is_array($layout) && isset($layout['css_precompiled'])){
+			$baseline .= "
+".(string)$layout['css_precompiled'];
+		}
+	}
+
+	return Array(
+		'css_precompiled' => $css_precompiled,
+		'css_source_hash' => gestor_css_procedencia_assinatura(Array(
+			'html' => (string)$html,
+			'css' => (string)$css,
+			'baseline' => $baseline,
+		)),
+	);
+}
+
+/**
  * Preserva o HTML enviado pelo editor e usa o template somente quando o envio veio vazio.
  */
 function publisher_pages_html_inclusao_resolver($html_enviado, $html_template){
@@ -237,6 +324,24 @@ function publisher_pages_adicionar(){
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css_compiled"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "html_extra_head"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+
+		// req-141 / CR-002: a publicação herda o CSS do template que a gerou e já nasce com procedência
+		// assinada. Sem isto ela nascia com `css_precompiled` e `css_compiled` vazios — o compilador
+		// offline nunca a alcança, porque ela não existe em `resources/`.
+		$derivado = publisher_pages_css_derivado(
+			$publisher_id,
+			(isset($_REQUEST['layout']) ? $_REQUEST['layout'] : ''),
+			(isset($_REQUEST['htmlWithValues']) ? $_REQUEST['htmlWithValues'] : ''),
+			(isset($_REQUEST['css']) ? $_REQUEST['css'] : '')
+		);
+
+		if($derivado['css_precompiled'] !== ''){
+			$campos[] = Array('css_precompiled',banco_escape_field($derivado['css_precompiled']));
+
+			if($derivado['css_source_hash'] !== '' && banco_campo_existe('css_source_hash','paginas')){
+				$campos[] = Array('css_source_hash',banco_escape_field($derivado['css_source_hash']));
+			}
+		}
 		// req-112: metadados de SEO/compartilhamento.
 		$campo_nome = "imagem_destaque"; $post_nome = 'imagem_destaque-caminho';		if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "og_titulo"; $post_nome = $campo_nome;							if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -516,8 +621,11 @@ function publisher_pages_adicionar(){
 
 	// ===== Inclusão Quill
 
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />');
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.min.js"></script>');
+	// req-141: tudo do editor de texto vem da biblioteca — versão do Quill, CSS do editor, CSS de
+	// conteúdo e paridade visual com a página publicada. Trocar qualquer um desses detalhes passa a
+	// ser uma alteração em `bibliotecas/editor-texto.php`, não uma caçada por módulo.
+	editor_texto_incluir();
+
 
 	// ===== Inclusão Módulo JS
 	
@@ -858,6 +966,17 @@ function publisher_pages_editar(){
 		$campo_nome = "html"; $request_name = 'htmlWithValues'; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "css"; $request_name = $campo_nome; $alteracoes_name = $campo_nome; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}}
 		$campo_nome = "css_compiled"; $request_name = $campo_nome; $alteracoes_name = 'css-compiled'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}} // Novo campo
+
+		// req-141 / CR-002: reassina a procedência com a autoria que fica gravada nesta edição.
+		$procedenciaCss = gestor_css_procedencia_para_recurso(
+			(isset($_REQUEST['htmlWithValues']) ? $_REQUEST['htmlWithValues'] : banco_select_campos_antes('html')),
+			(isset($_REQUEST['css']) ? $_REQUEST['css'] : banco_select_campos_antes('css')),
+			(isset($_REQUEST['layout']) ? $_REQUEST['layout'] : banco_select_campos_antes('layout_id')),
+			'paginas'
+		);
+
+		if($procedenciaCss !== '') $editar['dados'][] = "css_source_hash='".banco_escape_field($procedenciaCss)."'";
+
 		$campo_nome = "html_extra_head"; $request_name = $campo_nome; $alteracoes_name = 'html-extra-head'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label');if(banco_select_campos_antes($campo_nome)){ $backups[] = Array('campo' => $campo_nome,'valor' => addslashes(banco_select_campos_antes($campo_nome)));}} // Novo campo
 		
 		// ===== Se houve alterações, modificar no banco de dados junto com campos padrões de atualização
@@ -1348,8 +1467,11 @@ function publisher_pages_editar(){
 
 	// ===== Inclusão Quill
 
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />');
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.min.js"></script>');
+	// req-141: tudo do editor de texto vem da biblioteca — versão do Quill, CSS do editor, CSS de
+	// conteúdo e paridade visual com a página publicada. Trocar qualquer um desses detalhes passa a
+	// ser uma alteração em `bibliotecas/editor-texto.php`, não uma caçada por módulo.
+	editor_texto_incluir();
+
 	
 	// ===== Inclusão Módulo JS
 	
@@ -1677,6 +1799,23 @@ function publisher_pages_clonar(){
 		$campo_nome = "html"; $post_nome = 'htmlWithValues'; 							if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css"; $post_nome = $campo_nome; 									if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "css_compiled"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+
+		// req-141 / CR-002: o clone herda o CSS do template, como o adicionar.
+		$derivado = publisher_pages_css_derivado(
+			$publisher_id,
+			(isset($_REQUEST['layout']) ? $_REQUEST['layout'] : ''),
+			(isset($_REQUEST['htmlWithValues']) ? $_REQUEST['htmlWithValues'] : ''),
+			(isset($_REQUEST['css']) ? $_REQUEST['css'] : '')
+		);
+
+		if($derivado['css_precompiled'] !== ''){
+			$campos[] = Array('css_precompiled',banco_escape_field($derivado['css_precompiled']));
+
+			if($derivado['css_source_hash'] !== '' && banco_campo_existe('css_source_hash','paginas')){
+				$campos[] = Array('css_source_hash',banco_escape_field($derivado['css_source_hash']));
+			}
+		}
+
 		$campo_nome = "html_extra_head"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		// req-112: metadados de SEO/compartilhamento.
 		$campo_nome = "imagem_destaque"; $post_nome = 'imagem_destaque-caminho';		if(!empty($_REQUEST[$post_nome]))	$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -2034,8 +2173,11 @@ function publisher_pages_clonar(){
 
 	// ===== Inclusão Quill
 
-	gestor_pagina_css_incluir('<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" />');
-	gestor_pagina_javascript_incluir('<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.min.js"></script>');
+	// req-141: tudo do editor de texto vem da biblioteca — versão do Quill, CSS do editor, CSS de
+	// conteúdo e paridade visual com a página publicada. Trocar qualquer um desses detalhes passa a
+	// ser uma alteração em `bibliotecas/editor-texto.php`, não uma caçada por módulo.
+	editor_texto_incluir();
+
 	
 	// ===== Inclusão Módulo JS
 	

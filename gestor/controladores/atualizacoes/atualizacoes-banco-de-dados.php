@@ -325,6 +325,47 @@ function aplicarPoliticaCssPrecompiled(array &$diff, array $existente, $project,
     }
 }
 
+/**
+ * Invalida a procedência do CSS derivado quando a atualização mexe na autoria ou no derivado.
+ *
+ * req-141 / CR-002. `html` e `css` são AUTORIA; `css_precompiled` e `css_compiled` são DERIVADOS.
+ * Quando um recurso está `user_modified=1`, a autoria do usuário é preservada e a versão do sistema
+ * vai para a coluna espelho — mas o `css_precompiled` do sistema ENTRA, porque não é campo
+ * preservado. O registro passa a ter HTML de uma origem e CSS derivado de outra: um estado que
+ * ninguém compilou e ninguém testou, servido sem erro nenhum. Era o caso relatado no
+ * `perfil-usuario` ("atualizo o sistema e estraga o que fiz").
+ *
+ * A correção NÃO é apagar CSS — em produção não há como recompilar na hora, e apagar deixaria a
+ * página sem estilo. É marcar: a assinatura vai a NULL e o recurso passa a aparecer como stale na
+ * auditoria e para a regeneração, mantendo o CSS atual enquanto isso (degradação graciosa).
+ *
+ * @param array $diff Diferenças que serão gravadas (alterado por referência).
+ * @param array $existente Linha atual do banco.
+ * @param array<string,bool>|null $allowedCols Colunas reais da tabela, ou null se desconhecidas.
+ */
+function aplicarPoliticaProcedenciaCss(array &$diff, array $existente, $allowedCols): void {
+    // Tabela sem a coluna (acervo anterior à migração) segue exatamente como antes.
+    if (is_array($allowedCols) && !isset($allowedCols['css_source_hash'])) return;
+    if (!is_array($allowedCols) && !array_key_exists('css_source_hash', $existente)) return;
+
+    // Quem gerou o CSS já carimbou a procedência nesta mesma gravação: não sobrescrever.
+    if (array_key_exists('css_source_hash', $diff)) return;
+
+    // Sem assinatura gravada o recurso já conta como stale — nada a invalidar.
+    if (($existente['css_source_hash'] ?? null) === null) return;
+
+    // As colunas espelho entram na lista porque sinalizam autoria preservada COM divergência: o
+    // sistema trouxe outra versão do HTML, então o derivado atual deixou de corresponder ao par.
+    $entradas = ['html', 'css', 'css_precompiled', 'css_compiled', 'html_updated', 'css_updated'];
+
+    foreach ($entradas as $campo) {
+        if (array_key_exists($campo, $diff)) {
+            $diff['css_source_hash'] = null;
+            return;
+        }
+    }
+}
+
 /** Colunas da chave natural de uma tabela (vazio quando a estratégia não é natural_key). */
 function naturalKeyColumns(string $tabela): array {
     $meta = tabelaMeta($tabela);
@@ -680,6 +721,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
                 $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
             }
+            aplicarPoliticaProcedenciaCss($diff, $exist, $allowedCols);
             // req-086: Forçar inclusão de data_modificacao no diff para evitar que o trigger
             // ON UPDATE CURRENT_TIMESTAMP do MySQL sobrescreva a data customizada do JSON.
             if ($diff) {
@@ -818,6 +860,7 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
                 $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
             }
+            aplicarPoliticaProcedenciaCss($diff, $exist, $allowedCols);
             // req-086: Forçar inclusão de data_modificacao no diff para evitar que o trigger
             // ON UPDATE CURRENT_TIMESTAMP do MySQL sobrescreva a data customizada do JSON.
             if ($diff) {
@@ -921,7 +964,8 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
                 if ($forced && isset($exist['user_modified']) && (int)$exist['user_modified']===1 && (!is_array($allowedCols) || isset($allowedCols['user_modified']))) {
                     $diff['user_modified'] = 0; $oldVals['user_modified'] = $exist['user_modified'];
                 }
-                // req-086: Forçar inclusão de data_modificacao no diff para evitar que o trigger
+                aplicarPoliticaProcedenciaCss($diff, $exist, $allowedCols);
+            // req-086: Forçar inclusão de data_modificacao no diff para evitar que o trigger
                 // ON UPDATE CURRENT_TIMESTAMP do MySQL sobrescreva a data customizada do JSON.
                 if ($diff) {
                     if (isset($row['data_modificacao']) && is_array($allowedCols) && isset($allowedCols['data_modificacao']) && !isset($diff['data_modificacao'])) {
