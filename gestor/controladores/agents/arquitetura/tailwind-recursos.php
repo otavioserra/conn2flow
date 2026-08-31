@@ -240,6 +240,24 @@ function tailwind_recursos_sources(array $metadata, string $resourceDir): array
  *
  * @return list<string>
  */
+/**
+ * Componentes que a biblioteca de interface injeta em runtime, em qualquer tela (req-148).
+ *
+ * São as variantes TAILWIND: `interface_componente_variante()` escolhe a variante conforme o
+ * framework da página, e uma página Fomantic não precisa destas utilities (elas já vêm da folha
+ * global do Fomantic).
+ *
+ * @return list<string>
+ */
+function tailwind_recursos_modais_de_sistema(): array
+{
+    return [
+        'interface-alerta-modal-tailwind',      // interface_alerta() — qualquer tela com alerta
+        'interface-carregando-modal-tailwind',  // dimmer de carregamento das chamadas AJAX
+        'interface-delecao-modal-tailwind',     // confirmação de exclusão nas listagens
+    ];
+}
+
 function tailwind_recursos_dependencies(array $metadata, string $scope, ?string $module, string $language, string $type): array
 {
     global $GESTOR_DIR;
@@ -276,6 +294,36 @@ function tailwind_recursos_dependencies(array $metadata, string $scope, ?string 
         }
     }
 
+    // ===== Modais de sistema: dependência AUTOMÁTICA de toda página Tailwind (req-148).
+    //
+    // `interface_alerta()` injeta `interface-alerta-modal` em QUALQUER página onde um alerta
+    // dispare — não só nas que se lembraram de declará-lo. Enquanto a declaração era manual, a
+    // lista era uma lista de EXCEÇÕES, e bastava ela estar incompleta uma vez para a tela quebrar.
+    //
+    // Foi o que aconteceu no `signin` do Photon: `perfil-usuario` e `Area-restrita` declaravam os
+    // modais, `acessar-sistema` não. Com senha inválida, o modal aparecia SEM regra nenhuma —
+    // `shadow-xl` virava `box-shadow: none` e `bg-sky-600` virava `rgba(0,0,0,0)`, deixando o botão
+    // "Ok" com texto branco sobre fundo transparente, ilegível.
+    //
+    // Nas variantes Fomantic o problema nunca existiu: as classes delas vivem na folha global do
+    // Fomantic. É uma armadilha exclusiva do Tailwind, onde cada utility precisa ser compilada.
+    //
+    // Anexar aqui torna a cobertura estrutural: nenhuma página nova precisa lembrar de nada.
+    // `opcional` porque a ausência aqui não é erro: uma instalação pode não ter o componente
+    // naquele idioma. Medido no Photon, que traz os modais em `pt-br` e não em `en` — exigi-los
+    // abortava a compilação do projeto inteiro. Dependência DECLARADA continua falhando alto, que é
+    // o certo: ali a ausência significa erro de digitação.
+    if ($type === 'pages') {
+        foreach (tailwind_recursos_modais_de_sistema() as $modalId) {
+            $dependencies[] = [
+                'type' => 'components',
+                'id' => $modalId,
+                'scope' => 'global',
+                'opcional' => true,
+            ];
+        }
+    }
+
     $resolved = [];
     foreach ($dependencies as $dependency) {
         if (!is_array($dependency)) {
@@ -287,6 +335,10 @@ function tailwind_recursos_dependencies(array $metadata, string $scope, ?string 
         }
         $candidate = tailwind_recursos_dependency_path($dependency);
         if ($candidate === null || !is_file($candidate)) {
+            if (!empty($dependency['opcional'])) {
+                continue;
+            }
+
             $id = (string)($dependency['id'] ?? '(sem id)');
             throw new RuntimeException("Dependência Tailwind do Gestor não encontrada: {$id}");
         }

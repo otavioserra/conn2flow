@@ -1442,3 +1442,23 @@ Medido em navegador real (Playwright) em `/admin-paginas/`:
 - [x] `responsive.details.type = 'column'` foi tentado e **revertido**: quebrava a expansão.
 - [x] PHPUnit **942/942** (14 no arquivo do lote); Vitest **378/378**.
 - [ ] Homologação visual do operador em telas de listagem variadas.
+
+## BATCH-150 — Modais de sistema nas páginas Tailwind (req-148)
+
+- [x] Reproduzido em navegador real (Playwright), com senha inválida em `/photon/signin/`:
+      **7 de 12 classes do modal sem regra** antes da correção.
+- [x] Depois: **0 classes sem regra**; `shadow-xl` com sombra completa, `bg-sky-600` em
+      `oklch(0.588 0.158 241.966)`, `max-w-md` em **448px** (era 361px sem limite).
+- [x] Confirmação visual: cartão branco com título, mensagem e botão azul legível.
+- [x] 34 recursos recompilados no core; `manager:update-all`, `project:update-all snapphoton-local`
+      e `project:update-all transformamp-local` passam.
+- [x] Dependência automática é `opcional`: a versão estrita abortou a compilação do Photon com
+      `Dependência Tailwind do Gestor não encontrada: interface-alerta-modal-tailwind` (o projeto
+      traz os componentes em `pt-br` e não em `en`).
+- [x] Dependência **declarada** continua falhando alto — coberto por teste.
+- [x] Guarda de sincronia: teste compara o switch de `interface_componentes_incluir()` com a lista do
+      compilador, para um modal novo não nascer sem estilo.
+- [x] PHPUnit **955/955** (4 novos + 1 existente atualizado); Vitest **378/378**.
+- [ ] Homologação visual do operador: alerta, dimmer de carregamento e confirmação de exclusão.
+- [ ] Observação: o Photon não tem os componentes do core em `en`. Se for usar inglês, a sincronização
+      de core precisa trazê-los.

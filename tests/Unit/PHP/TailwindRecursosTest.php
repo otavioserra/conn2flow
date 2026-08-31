@@ -189,7 +189,17 @@ final class TailwindRecursosTest extends TestCase
             else $GESTOR_DIR = $previous;
         }
 
-        self::assertCount(5, $resolved);
+        // 4 declaradas + o layout do bundle + os 3 modais de sistema (req-148), que toda página
+        // passou a receber automaticamente porque `interface_alerta()` pode injectá-los em qualquer
+        // tela. Antes eram 5; a diferença é exatamente a cobertura nova.
+        self::assertCount(8, $resolved);
+
+        $nomes = array_map(fn($p) => basename($p, '.html'), $resolved);
+        foreach (['interface-alerta-modal-tailwind', 'interface-carregando-modal-tailwind',
+                  'interface-delecao-modal-tailwind'] as $modal) {
+            self::assertContains($modal, $nomes, 'modal de sistema ausente: ' . $modal);
+        }
+
         self::assertTrue((bool)array_filter($resolved, fn($path) => str_ends_with(
             str_replace('\\', '/', $path),
             '/resources/pt-br/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html'
