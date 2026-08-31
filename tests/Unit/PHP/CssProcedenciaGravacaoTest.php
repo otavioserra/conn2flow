@@ -87,7 +87,22 @@ final class CssProcedenciaGravacaoTest extends TestCase
     {
         // Sem banco (ou antes da migração) a função não pode explodir nem inventar assinatura: o
         // salvamento do recurso não pode falhar por causa do carimbo.
-        self::assertSame('', gestor_css_procedencia_para_recurso('<div class="flex"></div>', '', '', 'paginas'));
+        global $_GESTOR;
+        $schemaOriginal = $_GESTOR['schema-campos'] ?? null;
+
+        try {
+            $_GESTOR['schema-campos']['paginas.css_source_hash'] = false;
+            self::assertSame('', gestor_css_procedencia_para_recurso('<div class="flex"></div>', '', '', 'paginas'));
+
+            // Também degrada graciosamente se a tabela inteira não existir
+            self::assertSame('', gestor_css_procedencia_para_recurso('<div class="flex"></div>', '', '', 'tabela_inexistente'));
+        } finally {
+            if ($schemaOriginal === null) {
+                unset($_GESTOR['schema-campos']);
+            } else {
+                $_GESTOR['schema-campos'] = $schemaOriginal;
+            }
+        }
     }
 
     public function testHelperNaoAssinaRecursoSemAutoria(): void
