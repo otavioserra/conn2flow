@@ -55,6 +55,22 @@ fi
 
 NEXT_VERSION=$(php "$VERSION_SCRIPT" "$RELEASE_TYPE" --dry-run)
 TAG_NAME="gestor-v$NEXT_VERSION"
+
+RELEASE_DOCS=(README.md README-PT-BR.md CHANGELOG.md)
+for release_doc in "${RELEASE_DOCS[@]}"; do
+  if [ ! -s "$release_doc" ]; then
+    echo "Error: Required release documentation is missing or empty: $release_doc"
+    exit 1
+  fi
+done
+if ! find .github/workflows -maxdepth 1 -type f \( -name '*.yml' -o -name '*.yaml' \) -print -quit | grep -q .; then
+  echo "Error: No GitHub Actions workflow was found for release verification."
+  exit 1
+fi
+grep -Fq "v$NEXT_VERSION" README.md || { echo "Error: README.md is not synchronized with v$NEXT_VERSION."; exit 1; }
+grep -Fq "v$NEXT_VERSION" README-PT-BR.md || { echo "Error: README-PT-BR.md is not synchronized with v$NEXT_VERSION."; exit 1; }
+grep -Fq "[$NEXT_VERSION]" CHANGELOG.md || { echo "Error: CHANGELOG.md has no $NEXT_VERSION release entry."; exit 1; }
+
 if git rev-parse -q --verify "refs/tags/$TAG_NAME" >/dev/null; then
   echo "Error: Tag $TAG_NAME already exists."
   exit 1

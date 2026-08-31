@@ -73,5 +73,21 @@
     "error_seeder_failed": "Falha ao executar seeders: ",
     "error_sql_schema_not_found": "Arquivo de schema SQL não encontrado: ",
     "error_read_sql_file": "Erro ao ler arquivo SQL: ",
-    "error_sql_execution": "Erro ao executar SQL: "
+    "error_sql_execution": "Erro ao executar SQL: ",
+    "security_key_title": "Instalador protegido",
+    "security_key_instructions": "Para continuar a instalação, consulte o arquivo 'install-key.txt' gerado no servidor e digite a chave de segurança.",
+    "security_key_generated": "Uma nova chave de segurança acabou de ser gerada no diretório do instalador com permissão restrita (0600).",
+    "security_key_label": "Chave de segurança:",
+    "security_key_button": "Desbloquear instalador",
+    "security_key_invalid": "Chave de segurança inválida.",
+    "security_key_required": "Informe a chave de segurança do instalador antes de continuar.",
+    "installer_locked_title": "Instalador bloqueado",
+    "installer_locked": "Uma instalação já está em andamento neste servidor. Aguarde a conclusão.",
+    "error_install_token_invalid": "Token do instalador inválido.",
+    "web_server_label": "Servidor Web",
+    "web_server_nginx": "Nginx",
+    "web_server_apache": "Apache",
+    "web_server_detected": "Servidor detectado automaticamente:",
+    "web_server_not_detected": "Não foi possível detectar o servidor web. Selecione manualmente.",
+    "web_server_mismatch": "A seleção diverge do servidor detectado. Prossiga apenas se houver proxy reverso ou se você tiver certeza da configuração."
 }

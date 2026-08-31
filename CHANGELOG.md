@@ -5,6 +5,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.9.51] - 2026-08-26
+
+### Added
+- Batch selection in the embedded file picker, responsive gallery density controls, and quick editing for captions and links.
+- Vertical image positioning (`top`, `center`, or `bottom`) across gallery administration, templates, and public widgets.
+
+### Changed
+- Gallery grids now support compact 6-column and 10-column layouts with fixed, predictable thumbnail proportions.
+- Release cleanup moved from local scripts to post-success GitHub Actions jobs with atomic branch-and-tag pushes.
+
+### Fixed
+- MIME normalization and image validation in the administrative interface.
+- Live Editor delivery for empty widgets and trusted administrator HTML.
+
 ## [2.9.39] - 2026-08-21
 
 ### Added

@@ -39,7 +39,7 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
 ## Última Versão
 
-**v2.9.39 (Agosto 2026)**
+**v2.9.51 (Agosto 2026)**
 
 **🎯 Principais Novidades:**
 - **Layouts Administrativo e Público em Tailwind CSS**: Nova interface administrativa responsiva com menu retrátil, redimensionador de barra lateral, busca em tempo real com navegação por teclado e suporte nativo ao catálogo de ícones Lucide.
@@ -67,16 +67,16 @@ Conn2Flow apresenta um **instalador web automatizado moderno** que simplifica o 
 1. **Baixe o Instalador**
 
    **Download Direto:**
-   - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v1.5.2](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip)
+   - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v1.5.6](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.6/instalador.zip)
       
    **Linux/macOS:**
    ```bash
-   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip
+   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.6/instalador.zip
    ```
 
    **Windows PowerShell:**
    ```powershell
-   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip" -OutFile "instalador.zip"
+   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.6/instalador.zip" -OutFile "instalador.zip"
    ```
 
    **Sempre o Último Instalador:**

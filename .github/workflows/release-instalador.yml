@@ -17,6 +17,23 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+
+    - name: Verify synchronized release documentation
+      shell: bash
+      run: |
+        if [[ "$GITHUB_REF_NAME" == instalador-v* ]]; then
+          VERSION="${GITHUB_REF_NAME#instalador-v}"
+        else
+          VERSION=$(sed -n "s/.*\['versao'\].*'\([0-9][0-9.]*\)'.*/\1/p" gestor-instalador/index.php | head -n 1)
+        fi
+        test -s README.md
+        test -s README-PT-BR.md
+        test -s CHANGELOG.md
+        test -n "$(find .github/workflows -maxdepth 1 -type f \( -name '*.yml' -o -name '*.yaml' \) -print -quit)"
+        find .github/workflows -maxdepth 1 -type f \( -name '*.yml' -o -name '*.yaml' \) -print0 |
+          while IFS= read -r -d '' workflow; do test -s "$workflow"; done
+        grep -Fq "instalador-v$VERSION" README.md
+        grep -Fq "instalador-v$VERSION" README-PT-BR.md
       
     - name: Create instalador.zip + checksum
       run: |

@@ -94,7 +94,37 @@
                             </p>
                         </div>
                     </div>
-                    
+
+                    <!-- Servidor Web - o core depende de `_gestor-caminho`, injetado de formas diferentes em cada servidor -->
+                    <div class="mb-4">
+                        <div>
+                            <label for="web_server" class="block text-gray-700 text-sm font-bold mb-2">
+                                <span data-translate="web_server_label">Servidor Web</span>
+                            </label>
+                            <div class="flex items-center space-x-4" id="web-server-options" data-detected="<?= htmlspecialchars((string)($detectedWebServer ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                                <label class="flex items-center">
+                                    <input type="radio" id="web_server_nginx" name="web_server" value="nginx" class="mr-2" <?= (($detectedWebServer ?? '') === 'nginx') ? 'checked' : '' ?>>
+                                    <span data-translate="web_server_nginx">Nginx</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" id="web_server_apache" name="web_server" value="apache" class="mr-2" <?= (($detectedWebServer ?? '') !== 'nginx') ? 'checked' : '' ?>>
+                                    <span data-translate="web_server_apache">Apache</span>
+                                </label>
+                            </div>
+                            <p class="text-gray-600 text-xs mt-1">
+                                <?php if (!empty($detectedWebServer)): ?>
+                                    <span data-translate="web_server_detected"><?= __('web_server_detected', 'Servidor detectado automaticamente:') ?></span>
+                                    <strong><?= htmlspecialchars((string)$detectedWebServer, ENT_QUOTES, 'UTF-8') ?></strong>
+                                <?php else: ?>
+                                    <span data-translate="web_server_not_detected"><?= __('web_server_not_detected', 'Não foi possível detectar o servidor web. Selecione manualmente.') ?></span>
+                                <?php endif; ?>
+                            </p>
+                            <p id="web-server-warning" class="hidden mt-2 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 text-xs">
+                                <span data-translate="web_server_mismatch"><?= __('web_server_mismatch', 'A seleção diverge do servidor detectado. Prossiga apenas se houver proxy reverso ou se você tiver certeza da configuração.') ?></span>
+                            </p>
+                        </div>
+                    </div>
+
                     <!-- Clean Install Option - Full Width -->
                     <div class="mb-4">
                         <div>

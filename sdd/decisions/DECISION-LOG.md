@@ -131,6 +131,7 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-125 | 2026-08-29 | accepted | Minificar é build; escolher o arquivo é resolução — nunca transformar o corpo na entrega (BATCH-148). |
 | DEC-126 | 2026-08-29 | accepted | O `css:rebuild` regenera apenas recursos editados online (`user_modified=1`) (BATCH-149). |
 | DEC-127 | 2026-08-29 | accepted | Assets locais também no layout administrativo Tailwind, com guarda de versão (BATCH-149). |
+| DEC-128 | 2026-08-30 | accepted | Dependências Tailwind de sistema: declarada falha alto, automática degrada em silêncio (BATCH-150). |
 
 ---
 
@@ -1270,3 +1271,20 @@ O `lucide` estava ao lado, também por CDN.
 
 3. **Teste que exige o arquivo no disco para cada entrada do registro**: `assets_externos_url()` cai
    no CDN em silêncio quando o local falta; a suíte transforma esse silêncio em falha.
+
+## DEC-128 - 2026-08-30 - accepted
+
+**Dependências Tailwind de sistema: declarada falha alto, automática degrada em silêncio (BATCH-150).**
+
+O modal de alerta (`interface_alerta()`) aparecia sem estilo na tela de login do Photon (`/photon/signin/`): botão com texto branco sobre fundo transparente, sem sombra e sem limite de largura (7 de 12 classes sem regra). O CSS do modal existia compilado em banco e disco (4.694 B), mas não pertencia à compilação daquela página. O modal é injetado dinamicamente em runtime, e a compilação por recurso dependia de declaração manual em `tailwind_dependencies` em cada página — uma lista de exceções que bastou falhar em `acessar-sistema` para quebrar a interface.
+
+Ao transformar os três modais de sistema injetados em runtime (`interface-alerta-modal-tailwind`, `interface-carregamento-dimmer-tailwind`, `interface-confirmacao-exclusao-modal-tailwind`) em dependências automáticas de toda página Tailwind no compilador (`tailwind_recursos_dependencies()`), a compilação estrita abortou todo o build do Photon com erro fatal, pois o projeto local traz os componentes em `pt-br` e não em `en`.
+
+**Decisões:**
+
+1. **Modais de sistema injetados em runtime são dependência automática de toda página Tailwind**: nenhuma página precisa declarar manualmente os componentes que o próprio core pode injetar por função global (`interface_alerta()`, dimmers ou confirmações).
+2. **Distinção de severidade entre dependência declarada e automática**:
+   - **Dependência declarada** pelo desenvolvedor continua **falhando alto** com erro fatal: a ausência indica erro de digitação, dependência quebrada ou caminho incorreto no manifesto/metadado.
+   - **Dependência automática** injetada pelo framework é marcada como `opcional: true` e **degrada em silêncio**: quem a inseriu foi o sistema e não o autor da página. Em ambientes/idiomas onde o componente ainda não existe ou não foi sincronizado (ex: ausência de variantes `en`), a compilação segue sem abortar a esteira.
+3. **Guarda de sincronia na suíte de testes**: teste unitário compara o mapa de injeção em runtime de `interface_componentes_incluir()` com a lista de modais automáticos do compilador, impedindo que um novo modal de sistema nasça sem estilo no Tailwind.
+

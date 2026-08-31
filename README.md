@@ -30,7 +30,7 @@ For detailed technical information and development guides, see:
 
 ## Latest Version
 
-**v2.9.39 (August 2026)**
+**v2.9.51 (August 2026)**
 
 **🎯 Key Features & Highlights:**
 - **Tailwind CSS Administrative & Public Layouts**: Modern responsive administrative layout with collapsible sidebar, real-time drag resizer, live search with full keyboard navigation, and native Lucide icon catalog support.
@@ -58,16 +58,16 @@ Conn2Flow features a modern **automated web installer** that simplifies the inst
 1. **Download the Installer**
 
    **Direct Download:**
-   - Click in the next link to download the `instalador.zip`: [Download Installer v1.5.2](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip)
+   - Click in the next link to download the `instalador.zip`: [Download Installer v1.5.6](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.6/instalador.zip)
 
    **Linux/macOS:**
    ```bash
-   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip
+   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.6/instalador.zip
    ```
 
    **Windows PowerShell:**
    ```powershell
-   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.2/instalador.zip" -OutFile "instalador.zip"
+   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.6/instalador.zip" -OutFile "instalador.zip"
    ```
 
    **Always Latest Installer:**

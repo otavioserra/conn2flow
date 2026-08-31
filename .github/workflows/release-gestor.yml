@@ -36,6 +36,24 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Verify synchronized release documentation
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_NAME" == gestor-v* ]]; then
+            VERSION="${GITHUB_REF_NAME#gestor-v}"
+          else
+            VERSION=$(sed -n "s/.*\['versao'\].*'\([0-9][0-9.]*\)'.*/\1/p" gestor/config.php | head -n 1)
+          fi
+          test -s README.md
+          test -s README-PT-BR.md
+          test -s CHANGELOG.md
+          test -n "$(find .github/workflows -maxdepth 1 -type f \( -name '*.yml' -o -name '*.yaml' \) -print -quit)"
+          find .github/workflows -maxdepth 1 -type f \( -name '*.yml' -o -name '*.yaml' \) -print0 |
+            while IFS= read -r -d '' workflow; do test -s "$workflow"; done
+          grep -Fq "v$VERSION" README.md
+          grep -Fq "v$VERSION" README-PT-BR.md
+          grep -Fq "[$VERSION]" CHANGELOG.md
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:

@@ -128,6 +128,23 @@ document.addEventListener('DOMContentLoaded', function () {
         // Inicializa a sincronização dos domínios
         syncDomainFields();
 
+        // Avisa quando o servidor web escolhido diverge do detectado no ambiente.
+        // O aviso não impede a instalação: proxy reverso é um cenário legítimo.
+        const webServerOptions = document.getElementById('web-server-options');
+        const webServerWarning = document.getElementById('web-server-warning');
+        if (webServerOptions && webServerWarning) {
+            const detectedWebServer = webServerOptions.dataset.detected || '';
+            const refreshWebServerWarning = () => {
+                const selected = form.querySelector('input[name="web_server"]:checked');
+                const divergente = detectedWebServer !== '' && selected && selected.value !== detectedWebServer;
+                webServerWarning.classList.toggle('hidden', !divergente);
+            };
+            form.querySelectorAll('input[name="web_server"]').forEach(radio => {
+                radio.addEventListener('change', refreshWebServerWarning);
+            });
+            refreshWebServerWarning();
+        }
+
         form.addEventListener('submit', function (event) {
             event.preventDefault();
 
@@ -256,7 +273,16 @@ async function runInstallation(initialFormData) {
             });
 
             if (!response.ok) {
-                throw new Error(`Erro do servidor: ${response.statusText}`);
+                // Trava de concorrência (423) e chave de segurança (403) respondem em JSON:
+                // sem ler o corpo o operador veria apenas o código HTTP.
+                let mensagemServidor = '';
+                try {
+                    const erroJson = JSON.parse(await response.text());
+                    mensagemServidor = erroJson && erroJson.message ? erroJson.message : '';
+                } catch (ignore) {
+                    mensagemServidor = '';
+                }
+                throw new Error(mensagemServidor || `Erro do servidor: ${response.statusText}`);
             }
 
             // Tenta ler a resposta como texto primeiro para detectar erros PHP

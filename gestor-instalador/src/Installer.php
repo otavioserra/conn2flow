@@ -1,11 +1,19 @@
 <?php
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'InstallerGuard.php';
+// O instalador emite mensagens traduzidas em qualquer entrada (web, CLI ou teste),
+// então carrega o tradutor por conta própria em vez de depender da ordem de require.
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Translator.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'helpers.php';
+
 class Installer
 {
     private $data;
     private $baseDir;
     private $tempDir;
     private $logFile;
+    private $webServer;
+    private $avisos = [];
 
     public function __construct(array $postData)
     {
@@ -13,9 +21,18 @@ class Installer
         $this->baseDir = realpath(dirname(__DIR__)); // Diretório do instalador robusto
         $this->tempDir = $this->baseDir . DIRECTORY_SEPARATOR . 'temp';
         $this->logFile = $this->baseDir . DIRECTORY_SEPARATOR . 'installer.log';
-        
+
+        // Servidor web declarado no payload; sem declaração, vale o detectado no ambiente.
+        $detectado = InstallerGuard::detectWebServer();
+        $this->webServer = InstallerGuard::normalizeWebServer(
+            $this->data['web_server'] ?? '',
+            $detectado !== '' ? $detectado : 'apache'
+        );
+        $this->data['web_server'] = $this->webServer;
+
         // Inicia o log
         $this->log("=== Iniciando instalação em " . date('Y-m-d H:i:s') . " ===");
+        $this->log("Servidor web selecionado: {$this->webServer}" . ($detectado !== '' ? " (detectado: {$detectado})" : ' (não detectado no ambiente)'));
     }
 
     /**
@@ -67,6 +84,7 @@ class Installer
     private function validate_input()
     {
         $this->log("Iniciando validação dos dados de entrada");
+        $this->assertSecurityKey();
         $this->log("Caminho de instalação solicitado: " . ($this->data['install_path'] ?? 'não informado'));
         $this->log("SSL habilitado: " . ($this->data['ssl_enabled'] ?? 'não informado'));
         
@@ -209,11 +227,14 @@ class Installer
         // Instalação sucesso!
         $this->log("✅ Instalação concluída com sucesso! ✅");
 
-        return [
+        $resposta = [
             'status' => 'finished',
             'message' => __('progress_configuring'),
             'redirect_url' => './instalacao-sucesso/'
         ];
+        if (!empty($this->avisos)) $resposta['warnings'] = $this->avisos;
+
+        return $resposta;
     }
 
     /**
@@ -744,7 +765,11 @@ class Installer
     private function setupPublicAccess()
     {
         $this->log("Configurando acesso público...");
-        
+
+        // A sonda roda antes de o index.php do instalador ser substituído pelo
+        // front-controller do gestor; depois da troca ela não teria como responder.
+        $sondaRewrite = $this->webServer === 'apache' ? null : $this->probeRewrite($this->detectUrlRaiz());
+
         // Os arquivos processados ficam na própria pasta do instalador
         $targetPath = $this->baseDir;
         
@@ -783,11 +808,16 @@ class Installer
                 $this->log("Arquivo source index.php não encontrado: {$sourceIndex}", 'ERROR');
             }
 
-            // Processa e salva o .htaccess na pasta do instalador
+            // Processa e salva o .htaccess na pasta do instalador (exclusivo do Apache)
             $sourceHtaccess = $publicAccessPath . '/.htaccess';
             $targetHtaccess = $targetPath . '/.htaccess';
-            
-            if (file_exists($sourceHtaccess)) {
+
+            if ($this->webServer !== 'apache') {
+                // No Nginx o .htaccess é inerte: em vez de forçá-lo, o instalador registra o
+                // snippet equivalente e verifica se o front-controller recebe `_gestor-caminho`.
+                $this->log("Servidor Nginx selecionado - .htaccess do Apache não será gravado.");
+                $this->setupNginxFrontController($sondaRewrite);
+            } elseif (file_exists($sourceHtaccess)) {
                 $htaccessContent = file_get_contents($sourceHtaccess);
 
                 // Nova detecção robusta de subpasta
@@ -854,11 +884,13 @@ class Installer
             'public-access'
         ];
         
-        // O log e o lock são removidos por último para não deixar credenciais/resíduos.
+        // O log, o lock e a chave de segurança são removidos por último para não
+        // deixar credenciais nem resíduos executáveis na pasta pública.
         $filesToRemove = [
             'teste-seguranca.txt',
             '.env.debug',
-            'install.lock',
+            InstallerGuard::LOCK_FILE,
+            InstallerGuard::KEY_FILE,
             'installer.log'
         ];
         
@@ -1352,89 +1384,260 @@ body {
         }
     }
 
+    /** Registra um aviso não fatal que acompanha o resultado da instalação. */
+    private function addWarning($mensagem)
+    {
+        $this->avisos[] = $mensagem;
+        $this->log('⚠️  ' . $mensagem, 'WARNING');
+    }
+
+    /** Avisos acumulados durante a instalação. */
+    public function getWarnings()
+    {
+        return $this->avisos;
+    }
+
     /**
-     * Detecta automaticamente o URL_RAIZ baseado no caminho atual do instalador
+     * Exige a chave de segurança pré-instalação.
+     * No modo web o desbloqueio acontece em index.php, antes de qualquer etapa; aqui é
+     * tratada a execução CLI/headless, onde `skip_security_key` é aceito.
+     */
+    private function assertSecurityKey()
+    {
+        $chaveExiste = InstallerGuard::readKey($this->baseDir) !== '';
+
+        if (!InstallerGuard::isCli()) {
+            if (!empty($this->data['skip_security_key'])) {
+                $this->log('skip_security_key ignorado: aceito apenas em execução CLI local.', 'WARNING');
+            }
+            return;
+        }
+
+        if (isset($this->data['skip_security_key']) && (string)$this->data['skip_security_key'] === '1') {
+            $this->log('Chave de segurança dispensada por skip_security_key em execução CLI local.');
+            return;
+        }
+
+        if (InstallerGuard::validateKey($this->baseDir, $this->data['install_key'] ?? '')) {
+            $this->log('Chave de segurança validada na execução CLI.');
+            return;
+        }
+
+        if (!$chaveExiste) {
+            $this->log('Nenhuma chave de segurança presente no instalador; execução CLI local liberada.');
+            return;
+        }
+
+        $this->log('Chave de segurança ausente ou inválida na execução CLI.', 'ERROR');
+        throw new Exception(__('security_key_invalid', 'Chave de segurança inválida.'));
+    }
+
+    /** Normaliza um URL_RAIZ para o formato `/` ou `/subpasta/`. */
+    private function normalizeUrlRaiz($value)
+    {
+        $value = trim((string)$value);
+        if ($value === '') return '';
+
+        $value = str_replace(DIRECTORY_SEPARATOR, '/', $value);
+        if (substr($value, 0, 1) !== '/') $value = '/' . $value;
+        if (substr($value, -1) !== '/') $value .= '/';
+
+        return preg_replace('#/+#', '/', $value);
+    }
+
+    /**
+     * Grava o snippet de front-controller do Nginx e reporta o resultado da sonda de rewrite.
+     * O arquivo vai para o diretório de instalação (fora da pasta pública) para não ficar
+     * acessível pela web depois que o instalador se remove.
+     */
+    private function setupNginxFrontController($sondaRewrite = null)
+    {
+        $urlRaiz = $this->detectUrlRaiz();
+        $destinoBase = rtrim((string)($this->data['install_path'] ?? ''), DIRECTORY_SEPARATOR . '/');
+        if ($destinoBase === '' || !is_dir($destinoBase)) $destinoBase = $this->baseDir;
+
+        $arquivo = $destinoBase . DIRECTORY_SEPARATOR . 'nginx-conn2flow.conf.example';
+        if (file_put_contents($arquivo, $this->getNginxSnippet($urlRaiz)) === false) {
+            $this->addWarning('Não foi possível gravar o snippet de configuração do Nginx.');
+        } else {
+            @chmod($arquivo, 0640);
+            $this->log("Snippet de configuração do Nginx gravado em {$arquivo}");
+        }
+
+        if ($sondaRewrite === true) {
+            $this->log('✅ Rewrite do Nginx confirmado: _gestor-caminho chega ao front-controller.');
+        } elseif ($sondaRewrite === false) {
+            $this->addWarning('O Nginx não repassou _gestor-caminho ao front-controller. Aplique o nginx-conn2flow.conf.example e recarregue o Nginx.');
+        } else {
+            $this->addWarning('Não foi possível verificar o rewrite do Nginx automaticamente. Confirme que a diretiva de front-controller está aplicada.');
+        }
+    }
+
+    /** Conteúdo do snippet Nginx equivalente ao .htaccess do Apache. */
+    private function getNginxSnippet($urlRaiz)
+    {
+        $urlRaiz = $this->normalizeUrlRaiz($urlRaiz);
+        if ($urlRaiz === '') $urlRaiz = '/';
+
+        $snippet = <<<'NGINX'
+# Conn2Flow - front-controller do Nginx.
+# Inclua estes blocos no `server` do dominio e recarregue: nginx -t && systemctl reload nginx
+# O nome `_gestor-caminho` e obrigatorio: sem ele o core interpreta toda requisicao como raiz.
+
+location @C2F_RAIZ@ {
+    try_files $uri $uri/ @c2f_rewrite;
+
+    location ~* ^.+\.(jpeg|jpg|png|webp|gif|bmp|ico|svg|css|js)$ {
+        expires max;
+        # Assets do Conn2Flow sao servidos pelo controlador arquivo-estatico quando
+        # nao existem em disco; sem este try_files o Nginx devolveria 404.
+        try_files $uri @c2f_rewrite;
+    }
+
+    location ~ [^/]\.php(/|$) {
+        try_files $uri =404;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    }
+}
+
+location @c2f_rewrite {
+    # A interrogacao final impede que o Nginx reanexe a query string original.
+    rewrite ^@C2F_RAIZ@(.*)$ @C2F_RAIZ@index.php?_gestor-caminho=$1&$args? last;
+}
+NGINX;
+
+        return str_replace('@C2F_RAIZ@', $urlRaiz, $snippet) . PHP_EOL;
+    }
+
+    /**
+     * Confirma que o servidor web injeta `_gestor-caminho` no front-controller.
+     * Roda apenas em CLI: no modo web a requisicao atingiria o mesmo pool PHP-FPM que
+     * conduz a instalação, com risco de esgotar os workers e travar o processo.
+     * Devolve true, false, ou null quando não foi possível concluir a checagem.
+     */
+    private function probeRewrite($urlRaiz)
+    {
+        if (!InstallerGuard::isCli()) return null;
+        if (!function_exists('curl_init')) return null;
+
+        $domain = trim((string)($this->data['domain'] ?? ''));
+        if ($domain === '') return null;
+
+        $urlRaiz = $this->normalizeUrlRaiz($urlRaiz);
+        if ($urlRaiz === '') $urlRaiz = '/';
+
+        $ssl = !(empty($this->data['ssl_enabled']) || (string)$this->data['ssl_enabled'] === '0');
+        $url = ($ssl ? 'https://' : 'http://') . $domain . $urlRaiz . InstallerGuard::REWRITE_PROBE;
+
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 5,
+            CURLOPT_CONNECTTIMEOUT => 3,
+            CURLOPT_FOLLOWLOCATION => false,
+            // Sonda local contra o próprio host recém-provisionado: certificados
+            // autoassinados são a regra e a resposta apenas alimenta um aviso.
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => 0,
+        ]);
+        $corpo = curl_exec($ch);
+        $erro = curl_error($ch);
+        curl_close($ch);
+
+        if ($corpo === false) {
+            $this->log("Sonda de rewrite não concluída em {$url}: {$erro}", 'WARNING');
+            return null;
+        }
+
+        return strpos((string)$corpo, InstallerGuard::REWRITE_PROBE_OK) !== false;
+    }
+
+    /**
+     * Determina o URL_RAIZ do gestor.
+     * Precedência: `url_raiz` do payload, `document_root` conhecido e, só então, as
+     * heurísticas de `$_SERVER`. Em CLI as heurísticas são ignoradas porque apontariam
+     * para o caminho físico do runner, gravando um caminho de disco no .env.
      */
     private function detectUrlRaiz()
     {
-        $this->log("=== Iniciando detecção de URL_RAIZ (baseada no arquivo principal) ===");
-        // Log de variáveis relevantes
-        $serverVars = [
-            'REQUEST_URI' => $_SERVER['REQUEST_URI'] ?? 'não definido',
-            'SCRIPT_NAME' => $_SERVER['SCRIPT_NAME'] ?? 'não definido',
-            'PHP_SELF' => $_SERVER['PHP_SELF'] ?? 'não definido',
-            'DOCUMENT_ROOT' => $_SERVER['DOCUMENT_ROOT'] ?? 'não definido',
-            'SCRIPT_FILENAME' => $_SERVER['SCRIPT_FILENAME'] ?? 'não definido'
-        ];
-        foreach ($serverVars as $var => $value) {
-            $this->log("Variável {$var}: {$value}");
+        $this->log("=== Iniciando detecção de URL_RAIZ ===");
+
+        // 1) Valor explícito do payload (instalações headless e orquestradas).
+        $urlRaizPayload = $this->normalizeUrlRaiz($this->data['url_raiz'] ?? '');
+        if ($urlRaizPayload !== '') {
+            $this->log("✅ URL_RAIZ informado no payload: {$urlRaizPayload}");
+            return $urlRaizPayload;
         }
 
-        // Preferencialmente usar SCRIPT_FILENAME (arquivo principal em execução)
-        $mainFile = $_SERVER['SCRIPT_FILENAME'] ?? null;
-        $mainName = $_SERVER['SCRIPT_NAME'] ?? null;
-        $docRoot = $_SERVER['DOCUMENT_ROOT'] ?? null;
-
-        if ($mainFile && $docRoot) {
-            $mainDir = dirname(realpath($mainFile));
+        // 2) DocumentRoot conhecido: o caminho relativo sai da pasta do instalador.
+        $docRoot = (string)($this->data['document_root'] ?? ($_SERVER['DOCUMENT_ROOT'] ?? ''));
+        if ($docRoot !== '') {
             $docRootReal = realpath($docRoot);
-            $this->log("SCRIPT_FILENAME: {$mainFile}");
-            $this->log("DOCUMENT_ROOT: {$docRootReal}");
-            $this->log("Diretório do arquivo principal: {$mainDir}");
+            $baseReal = realpath($this->baseDir);
+            $this->log("DOCUMENT_ROOT considerado: " . ($docRootReal ?: $docRoot));
+            $this->log("Diretório do instalador: " . ($baseReal ?: $this->baseDir));
 
-            // Se está na raiz física
-            if ($mainDir === $docRootReal) {
-                $this->log("✅ Arquivo principal está na raiz física, retornando '/'");
-                return '/';
-            }
-            // Calcula caminho relativo
-            if (strpos($mainDir, $docRootReal) === 0) {
-                $relativePath = substr($mainDir, strlen($docRootReal));
-                $relativePath = str_replace('\\', '/', $relativePath);
-                $this->log("Caminho relativo do arquivo principal: {$relativePath}");
-                if (!empty($relativePath) && $relativePath !== '/') {
-                    $urlRaiz = $relativePath . '/';
-                    $this->log("✅ Subpasta detectada via arquivo principal: {$urlRaiz}");
-                    return $urlRaiz;
+            if ($docRootReal && $baseReal) {
+                if ($docRootReal === $baseReal) {
+                    $this->log("✅ Instalador na raiz do DocumentRoot, retornando '/'");
+                    return '/';
+                }
+                if (strpos($baseReal, $docRootReal . DIRECTORY_SEPARATOR) === 0) {
+                    $relativo = substr($baseReal, strlen($docRootReal));
+                    $urlRaiz = $this->normalizeUrlRaiz($relativo);
+                    if ($urlRaiz !== '') {
+                        $this->log("✅ Subpasta detectada pelo DocumentRoot: {$urlRaiz}");
+                        return $urlRaiz;
+                    }
                 }
             }
         }
 
-        // Fallback: usar SCRIPT_NAME
+        // 3) Em CLI não há requisição HTTP: `$_SERVER` descreveria o runner, não o site.
+        if (InstallerGuard::isCli()) {
+            $this->log("Execução CLI sem url_raiz ou document_root utilizáveis: assumindo '/'", 'WARNING');
+            return '/';
+        }
+
+        // 4) Fallback web: usar SCRIPT_NAME
+        $mainName = $_SERVER['SCRIPT_NAME'] ?? null;
         if ($mainName) {
             $dirPath = dirname($mainName);
             $this->log("Diretório do SCRIPT_NAME: {$dirPath}");
             if ($dirPath !== '/' && !empty($dirPath) && $dirPath !== '.') {
-                $urlRaiz = $dirPath . '/';
+                $urlRaiz = $this->normalizeUrlRaiz($dirPath);
                 $this->log("✅ Subpasta detectada via SCRIPT_NAME: {$urlRaiz}");
                 return $urlRaiz;
             }
         }
 
-        // Fallback: usar REQUEST_URI
+        // 5) Fallback web: usar REQUEST_URI
         if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
             $requestUri = $_SERVER['REQUEST_URI'];
             $this->log("Analisando REQUEST_URI: {$requestUri}");
             $path = parse_url($requestUri, PHP_URL_PATH);
-            $dirPath = dirname($path);
+            $dirPath = dirname((string)$path);
             $this->log("Diretório do caminho: {$dirPath}");
             if ($dirPath !== '/' && !empty($dirPath) && $dirPath !== '.') {
-                $urlRaiz = $dirPath . '/';
+                $urlRaiz = $this->normalizeUrlRaiz($dirPath);
                 $this->log("✅ Subpasta detectada via REQUEST_URI: {$urlRaiz}");
                 return $urlRaiz;
             }
         }
 
-        // Fallback: padrões conhecidos de pastas
+        // 6) Fallback web: padrões conhecidos de pastas de instalação
         $possiblePaths = ['instalador', 'install', 'setup', 'installer'];
-        $mainDirName = $mainFile ? basename(dirname($mainFile)) : '';
-        $parentDirName = $mainFile ? basename(dirname(dirname($mainFile))) : '';
-        $this->log("Nome do diretório principal: {$mainDirName}");
-        $this->log("Nome do diretório pai do principal: {$parentDirName}");
+        $mainDirName = basename((string)$this->baseDir);
+        $parentDirName = basename(dirname((string)$this->baseDir));
+        $this->log("Nome do diretório do instalador: {$mainDirName}");
+        $this->log("Nome do diretório pai: {$parentDirName}");
         foreach ($possiblePaths as $folder) {
             if ($mainDirName === $folder || $parentDirName === $folder) {
                 $urlRaiz = '/' . $folder . '/';
-                $this->log("✅ Subpasta detectada por nome de diretório principal: {$urlRaiz}");
+                $this->log("✅ Subpasta detectada por nome de diretório: {$urlRaiz}");
                 return $urlRaiz;
             }
         }
