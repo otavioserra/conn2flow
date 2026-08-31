@@ -4,6 +4,9 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 
 ## 📋 Arquivos Principais
 
+### 🧭 Visão & Conceito
+- **[Visão: Do CMS ao Backend-para-Agentes](visao/README.md)** - Visão de produto, governança em Tríade, a frota multi-repositório e o roteiro do Gateway de IA
+
 ### 🎯 Visão Geral & Ambiente
 - **[CONN2FLOW-AMBIENTE-DESENVOLVIMENTO.md](CONN2FLOW-AMBIENTE-DESENVOLVIMENTO.md)** - Setup completo de desenvolvimento, arquitetura de pastas, suíte de testes e tarefas VS Code
 - **[CONN2FLOW-SISTEMA-CONHECIMENTO.md](CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Conhecimento geral do sistema completo

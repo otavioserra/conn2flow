@@ -4,6 +4,9 @@ This folder contains all detailed technical documentation of the Conn2Flow proje
 
 ## 📋 Main Files
 
+### 🧭 Vision & Concept
+- **[Vision: From CMS to Backend-for-Agents](vision/README.md)** - Product vision, Triad governance, the multi-repository fleet, and the AI Gateway roadmap
+
 ### 🎯 Overview & Environment
 - **[CONN2FLOW-DEVELOPMENT-ENVIRONMENT.md](CONN2FLOW-DEVELOPMENT-ENVIRONMENT.md)** - Full development setup, directory layout, test suites & VS Code tasks
 - **[CONN2FLOW-KNOWLEDGE-SYSTEM.md](CONN2FLOW-KNOWLEDGE-SYSTEM.md)** - General knowledge of the complete system
