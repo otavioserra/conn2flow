@@ -94,6 +94,12 @@ Se a tarefa apontar para `sdd/human-requests/*.md` ou para a pasta `sdd/human-re
         git commit -m "docs(sdd): reserve REQ-XXX for <titulo>"
         git push origin <branch>
         ```
+3. **Identificação Obrigatória de Repositório nos Handoffs**:
+   - Todo handoff humano-agente ou inter-agentes deve explicitar no topo da mensagem o identificador e o caminho absoluto da raiz do repositório alvo:
+     * **Projeto**: `<nome-do-projeto>`
+     * **Caminho Raiz**: `<caminho-absoluto-da-raiz>`
+     * **Requisição**: `REQ-XXX` | **Batch**: `BATCH-YYY`
+   - Previne que agentes executores ou revisores operem no repositório incorreto em ambientes com múltiplos workspaces abertos.
 
 ## 🧠 Camadas Canônicas de Memória
 

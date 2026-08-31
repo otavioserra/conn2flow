@@ -57,6 +57,19 @@ A configuração `.gemini/hooks.json` contém hooks determinísticos de ciclo de
 
 ---
 
+## ⚡ Protocolo de Inicialização Zero-Prompt (Auto-Boot)
+
+Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `"chefe"`, `"inicia"`, `"bora"`, `"executa"`, `"status"`):
+1. **Identificação Automática**: O agente assume imediatamente o contexto do repositório local.
+2. **Leitura Mandatória de `CURRENT.md`**: O agente abre `sdd/human-requests/CURRENT.md` para inspecionar o ponteiro da requisição ativa (`req-XXX.md`), o lote correspondente e o modo de autonomia (`supervisionado`, `autonomo_monitorado` ou `autonomo_headless`).
+3. **Ativação Automática por Papel**:
+   - **No Antigravity (Arquiteto Master / Engenheiro Chefe)**: Ativa `c2f-architect-master`, lê `sdd/MEMORIA-ENGENHARIA-CHEFIA.md`, verifica pendências e propõe o próximo plano estratégico ao usuário.
+   - **No VS Code / Claude Code / Codex (Executor Tático)**: Ativa `c2f-executor-agent`, renderiza de imediato a **Live Todo List (`[ ]` ➔ `[x]`)** a partir da requisição ativa e inicia a implementação do menor slice aprovado.
+   - **No Revisor (Auditor de Qualidade)**: Ativa `c2f-reviewer-agent`, audita diffs e valida contratos de segurança/skills.
+4. **Integração MCP Automática**: Utiliza o MCP Hub (`conn2flow-hub`) para operações de CLI (`c2f_run_command`), despacho (`dispatch_task`) e recibos de conclusão (`report_completion`).
+
+---
+
 ## 🛡️ Regras Invioláveis de Governança
 
 1. **Fronteira de Escrita**: Respeite a divisão entre área normativa (apenas leitura para executores) e área de implementação.
@@ -64,6 +77,8 @@ A configuração `.gemini/hooks.json` contém hooks determinísticos de ciclo de
 3. **Reserva Atômica de Requisições**: Ao criar uma nova requisição, verificar a sequência existente em `sdd/human-requests/` após `git pull`, commitando e enviando para o repositório imediatamente para evitar colisões entre agentes.
 4. **Fonte da Verdade em Runtime**: O runtime serve HTML e CSS exclusivamente do banco de dados SQL. `resources/` é a semente de autoria.
 5. **Version Bump Mandatório**: Ao alterar scripts JS ou estilos estáticos, incremente a versão no metadado `<id>.json` do recurso.
+6. **Identificação de Repositório em Prompts para Agentes**: Sempre que o Macro-Arquiteto preparar mensagens para o usuário repassar a agentes executores ou revisores, DEVE incluir o identificador e o caminho absoluto da raiz do repositório alvo para evitar confusão de contexto em sessões com múltiplos repositórios abertos.
+
 
 ---
 

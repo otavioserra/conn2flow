@@ -63,6 +63,19 @@ Todas as **36 skills** do framework estão disponíveis em `.codex/skills/` (e `
 
 ---
 
+## ⚡ Protocolo de Inicialização Zero-Prompt (Auto-Boot)
+
+Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `"chefe"`, `"inicia"`, `"bora"`, `"executa"`, `"status"`):
+1. **Identificação Automática**: O agente assume imediatamente o contexto do repositório local.
+2. **Leitura Mandatória de `CURRENT.md`**: O agente abre `sdd/human-requests/CURRENT.md` para inspecionar o ponteiro da requisição ativa (`req-XXX.md`), o lote correspondente e o modo de autonomia (`supervisionado`, `autonomo_monitorado` ou `autonomo_headless`).
+3. **Ativação Automática por Papel**:
+   - **No Antigravity (Arquiteto Master / Engenheiro Chefe)**: Ativa `c2f-architect-master`, lê `sdd/MEMORIA-ENGENHARIA-CHEFIA.md`, verifica pendências e propõe o próximo plano estratégico ao usuário.
+   - **No VS Code / Claude Code / Codex (Executor Tático)**: Ativa `c2f-executor-agent`, renderiza de imediato a **Live Todo List (`[ ]` ➔ `[x]`)** a partir da requisição ativa e inicia a implementação do menor slice aprovado.
+   - **No Revisor (Auditor de Qualidade)**: Ativa `c2f-reviewer-agent`, audita diffs e valida contratos de segurança/skills.
+4. **Integração MCP Automática**: Utiliza o MCP Hub (`conn2flow-hub`) para operações de CLI (`c2f_run_command`), despacho (`dispatch_task`) e recibos de conclusão (`report_completion`).
+
+---
+
 ## 🛡️ Regras Invioláveis de Governança
 
 1. **Proibição Absoluta de `git add -A` e `git add .`**: Commits devem SEMPRE listar arquivos específicos (`git add <caminhos-especificos>`).
@@ -71,3 +84,5 @@ Todas as **36 skills** do framework estão disponíveis em `.codex/skills/` (e `
 4. **Fonte da Verdade em Runtime**: O runtime serve HTML e CSS exclusivamente do banco de dados SQL. `resources/` é a semente de autoria.
 5. **Version Bump Mandatório**: Ao alterar scripts JS ou estilos estáticos, incremente a versão no metadado `<id>.json` do recurso.
 6. **Goal Mode (`/goal`)**: Utilize `/goal` no prompt para execução ininterrupta de fatias complexas no modo Autônomo Monitorado até cumprimento de todos os critérios de aceite do `VALIDATION-CHECKLIST.md`.
+7. **Identificação de Repositório em Handoffs e Prompts**: Sempre explicitar o identificador do projeto e o caminho absoluto da raiz do repositório alvo nas mensagens de acionamento para outros agentes.
+
