@@ -4,9 +4,15 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 
 ## 📋 Arquivos Principais
 
-### 🎯 Visão Geral
+### 🎯 Visão Geral & Ambiente
+- **[CONN2FLOW-AMBIENTE-DESENVOLVIMENTO.md](CONN2FLOW-AMBIENTE-DESENVOLVIMENTO.md)** - Setup completo de desenvolvimento, arquitetura de pastas, suíte de testes e tarefas VS Code
 - **[CONN2FLOW-SISTEMA-CONHECIMENTO.md](CONN2FLOW-SISTEMA-CONHECIMENTO.md)** - Conhecimento geral do sistema completo
+- **[CONN2FLOW-GESTOR-DETALHAMENTO.md](CONN2FLOW-GESTOR-DETALHAMENTO.md)** - Detalhamento técnico do Gestor e arquitetura de camadas
 - **[CONN2FLOW-CHANGELOG-HISTORY.md](CONN2FLOW-CHANGELOG-HISTORY.md)** - Histórico detalhado de mudanças e evolução do projeto
+
+### 📜 Registros Históricos de Mudanças
+- **[CHANGELOG-archive-v2-legacy.md](changelogs/CHANGELOG-archive-v2-legacy.md)** - Arquivo histórico de notas de versão da linha v2 legada (v2.0.21 a v2.8.4)
+- **[CHANGELOG-archive-v1.md](changelogs/CHANGELOG-archive-v1.md)** - Arquivo histórico de notas de versão da série v1 inicial (v1.0.0 a v1.16.0)
 
 ### 🛠️ Por Área/Módulo
 - **[CONN2FLOW-INSTALADOR-DETALHADO.md](CONN2FLOW-INSTALADOR-DETALHADO.md)** - Sistema de instalação completo
@@ -20,7 +26,7 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 - **[CONN2FLOW-FRAMEWORK-CSS.md](CONN2FLOW-FRAMEWORK-CSS.md)** - Sistema de frameworks CSS (TailwindCSS e FomanticUI)
 - **[CONN2FLOW-SISTEMA-PREVIEW-MODALS.md](CONN2FLOW-SISTEMA-PREVIEW-MODALS.md)** - Sistema de preview com modals responsivos
 
-### � Sistema de Plugins
+### 🧩 Sistema de Plugins & Infraestrutura
 - **[CONN2FLOW-PLUGIN-ARCHITECTURE.md](CONN2FLOW-PLUGIN-ARCHITECTURE.md)** - Arquitetura completa do sistema de plugins e guia de desenvolvimento
 - **[CONN2FLOW-PLUGIN-INSTALADOR-FLUXO.md](CONN2FLOW-PLUGIN-INSTALADOR-FLUXO.md)** - Fluxo de instalação e gerenciamento de plugins
 - **[CONN2FLOW-ADAPTACAO-POS-INSTALACAO.md](CONN2FLOW-ADAPTACAO-POS-INSTALACAO.md)** - Adaptações necessárias após instalação
@@ -40,9 +46,8 @@ Esta pasta contém toda a documentação técnica detalhada do projeto Conn2Flow
 ```
 Sempre leia primeiro:
 1. CONN2FLOW-SISTEMA-CONHECIMENTO.md (contexto geral)
-2. CONN2FLOW-CHANGELOG-HISTORY.md (histórico de evolução)
-3. CONN2FLOW[ÁREA]-DETALHADO.md ou outro arquivo específico da área (ex: LAYOUTS-PAGINAS-COMPONENTES, MODULOS, ROTEAMENTO, etc)
-4. Consulte também os arquivos específicos para entender o contexto atual dos sistemas.
+2. CONN2FLOW-AMBIENTE-DESENVOLVIMENTO.md (estrutura física do repo e comandos de terminal)
+3. CONN2FLOW[ÁREA]-DETALHADO.md (subsistema específico sob intervenção)
 ```
 
 ### Para Desenvolvimento
@@ -51,15 +56,6 @@ Sempre leia primeiro:
 - Use como referência para novos desenvolvimentos
 - O changelog histórico ajuda a entender decisões passadas
 
-## 📊 Estrutura da Documentação
-
-- **Sistema Core**: Conhecimento geral e changelog
-- **Módulos Funcionais**: Instalador, módulos, roteamento, layouts
-- **Automação**: Exportação, atualizações, preview, GitHub Actions CI/CD
-- **Especializados**: Multilíngue, frameworks CSS, adaptações, ambiente Docker
-- **Integrações**: PayPal, gateways de pagamento
-
 ---
-**Última atualização:** 31 de janeiro, 2026  
-**Estrutura:** ai-workspace/docs/  
-**Total de arquivos:** 26 documentos técnicos
+**Última atualização:** Agosto de 2026  
+**Estrutura:** ai-workspace/pt-br/docs/  

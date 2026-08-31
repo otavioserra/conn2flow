@@ -4,9 +4,15 @@ This folder contains all detailed technical documentation of the Conn2Flow proje
 
 ## 📋 Main Files
 
-### 🎯 Overview
+### 🎯 Overview & Environment
+- **[CONN2FLOW-DEVELOPMENT-ENVIRONMENT.md](CONN2FLOW-DEVELOPMENT-ENVIRONMENT.md)** - Full development setup, directory layout, test suites & VS Code tasks
 - **[CONN2FLOW-KNOWLEDGE-SYSTEM.md](CONN2FLOW-KNOWLEDGE-SYSTEM.md)** - General knowledge of the complete system
+- **[CONN2FLOW-MANAGER-DETAILS.md](CONN2FLOW-MANAGER-DETAILS.md)** - Manager detailed technical documentation and core systems
 - **[CONN2FLOW-CHANGELOG-HISTORY.md](CONN2FLOW-CHANGELOG-HISTORY.md)** - Detailed history of changes and project evolution
+
+### 📜 Historical Changelogs
+- **[CHANGELOG-archive-v2-legacy.md](changelogs/CHANGELOG-archive-v2-legacy.md)** - Archived release notes for v2.x legacy line (v2.0.21 to v2.8.4)
+- **[CHANGELOG-archive-v1.md](changelogs/CHANGELOG-archive-v1.md)** - Archived release notes for v1.x initial line (v1.0.0 to v1.16.0)
 
 ### 🛠️ By Area/Module
 - **[CONN2FLOW-INSTALLER-DETAILED.md](CONN2FLOW-INSTALLER-DETAILED.md)** - Complete installation system
@@ -20,7 +26,7 @@ This folder contains all detailed technical documentation of the Conn2Flow proje
 - **[CONN2FLOW-CSS-FRAMEWORK.md](CONN2FLOW-CSS-FRAMEWORK.md)** - CSS Framework System (TailwindCSS and FomanticUI)
 - **[CONN2FLOW-PREVIEW-MODALS-SYSTEM.md](CONN2FLOW-PREVIEW-MODALS-SYSTEM.md)** - Preview system with responsive modals
 
-### � Plugin System
+### 🧩 Plugin System & Infrastructure
 - **[CONN2FLOW-PLUGIN-ARCHITECTURE.md](CONN2FLOW-PLUGIN-ARCHITECTURE.md)** - Complete plugin system architecture and development guide
 - **[CONN2FLOW-PLUGIN-INSTALLER-FLOW.md](CONN2FLOW-PLUGIN-INSTALLER-FLOW.md)** - Plugin installation and management flow
 - **[CONN2FLOW-POST-INSTALLATION-ADAPTATION.md](CONN2FLOW-POST-INSTALLATION-ADAPTATION.md)** - Adaptations required after installation
@@ -40,26 +46,16 @@ This folder contains all detailed technical documentation of the Conn2Flow proje
 ```
 Always read first:
 1. CONN2FLOW-KNOWLEDGE-SYSTEM.md (general context)
-2. CONN2FLOW-CHANGELOG-HISTORY.md (evolution history)
-3. CONN2FLOW[AREA]-DETAILED.md or another area-specific file (e.g., LAYOUTS-PAGES-COMPONENTS, MODULES, ROUTING, etc.)
-4. Also consult specific files to understand the current context of the systems.
+2. CONN2FLOW-DEVELOPMENT-ENVIRONMENT.md (repository structure and commands)
+3. CONN2FLOW[AREA]-DETAILED.md (specific subsystem under study)
 ```
 
 ### For Development
 - Consult the specific documentation of the area you are working on
 - Keep files updated after important changes
 - Use as a reference for new developments
-- The historical changelog helps understand past decisions
-
-## 📊 Documentation Structure
-
-- **Core System**: General knowledge and changelog
-- **Functional Modules**: Installer, modules, routing, layouts
-- **Automation**: Export, updates, preview, GitHub Actions CI/CD
-- **Specialized**: Multilingual, CSS frameworks, adaptations, Docker environment
-- **Integrations**: PayPal, payment gateways
+- The historical changelogs help understand past decisions
 
 ---
-**Last update:** January 31, 2026  
-**Structure:** ai-workspace/docs/  
-**Total files:** 27 technical documents
+**Last update:** August 2026  
+**Structure:** ai-workspace/en/docs/  

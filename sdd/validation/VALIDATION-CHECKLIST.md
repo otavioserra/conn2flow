@@ -1462,3 +1462,34 @@ Medido em navegador real (Playwright) em `/admin-paginas/`:
 - [ ] Homologação visual do operador: alerta, dimmer de carregamento e confirmação de exclusão.
 - [ ] Observação: o Photon não tem os componentes do core em `en`. Se for usar inglês, a sincronização
       de core precisa trazê-los.
+
+## BATCH-153 — Poda e Modularização dos READMEs e CHANGELOGs da Raiz (req-151)
+
+- [x] Contagem de linhas dos arquivos da raiz abaixo do teto de 150 linhas:
+      - `README.md`: 91 linhas (redução de 605 para 91, -85.0%)
+      - `README-PT-BR.md`: 91 linhas (redução de 612 para 91, -85.1%)
+      - `CHANGELOG.md`: 128 linhas (redução de 409 para 128, -68.7%)
+      - `CHANGELOG-PT-BR.md`: 128 linhas (redução de 730 para 128, -82.5%)
+      - Total da raiz: 2.356 -> 438 linhas (-81.4%).
+- [x] Manuais detalhados de desenvolvimento e arquitetura do repositório criados e indexados:
+      - `ai-workspace/en/docs/CONN2FLOW-DEVELOPMENT-ENVIRONMENT.md`
+      - `ai-workspace/pt-br/docs/CONN2FLOW-AMBIENTE-DESENVOLVIMENTO.md`
+      - Catálogos `ai-workspace/{en,pt-br}/docs/README.md` atualizados.
+- [x] Arquivamento de versões legadas de changelog realizado:
+      - `ai-workspace/en/docs/changelogs/CHANGELOG-archive-v2-legacy.md` (`[2.8.4]` a `[2.0.21]`)
+      - `ai-workspace/en/docs/changelogs/CHANGELOG-archive-v1.md` (`[1.16.0]` a `[1.0.0]`)
+      - `ai-workspace/pt-br/docs/changelogs/CHANGELOG-archive-v2-legacy.md` (`[2.8.4]` a `[2.0.21]`)
+      - `ai-workspace/pt-br/docs/changelogs/CHANGELOG-archive-v1.md` (`[1.16.0]` a `[1.0.0]`)
+      - Raiz retém apenas a linha corrente (`2.10.x`) e a anterior (`2.9.x`).
+- [x] Release gates validados sem regressão:
+      - `grep -Fq "v2.10.0" README.md` (OK, linha 11)
+      - `grep -Fq "v2.10.0" README-PT-BR.md` (OK, linha 11)
+      - `grep -Fq "[2.10.0]" CHANGELOG.md` (OK, linha 8)
+      - `grep -Fq "instalador-v2.0.0" README.md` (OK)
+      - `grep -Fq "instalador-v2.0.0" README-PT-BR.md` (OK)
+      - `php ai-workspace/en/scripts/releases/version.php patch --dry-run`: 2.10.1 (OK)
+- [x] Links relativos entre a raiz e `ai-workspace/` verificados (24/24 links existentes).
+- [x] Suítes automatizadas executadas:
+      - PHPUnit (`composer test`): 965/965 testes passando, 4.192 asserções, 0 falhas.
+      - Vitest (`npm run test`): 26 arquivos, 378/378 testes passando, 0 falhas.
+
