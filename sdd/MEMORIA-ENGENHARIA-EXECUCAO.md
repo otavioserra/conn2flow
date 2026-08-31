@@ -88,6 +88,10 @@
 - **Documento de intake que se contradiz é pior que um errado**: ao corrigir uma afirmação medida
   (os 925 KB do DataTables nunca foram entregues), varrer o arquivo inteiro atrás dos trechos que
   ainda repetiam a versão antiga.
+- **Release do gestor valida documentação antes de alterar a versão**: `manager:release patch`
+  calcula a próxima versão de `config.php` em dry-run e exige `v<versao>` nos dois READMEs e
+  `[<versao>]` em `CHANGELOG.md`. Atualize e registre esses documentos num commit preparatório;
+  o script exige árvore limpa e incrementa `config.php` no commit/tag final.
 
 ## Pendências e histórico
 

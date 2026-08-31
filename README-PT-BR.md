@@ -8,14 +8,14 @@ O Conn2Flow é um Sistema de Gestão de Conteúdo (CMS) modular e de alta perfor
 
 ## 🆕 Última Versão
 
-**v2.10.0 (Agosto de 2026)** *(Base atual: v2.9.51)*
+**v2.10.1 (Agosto de 2026)** *(Base atual: v2.9.51)*
 
-- **Dependências de Sistema Automáticas no Tailwind**: Modais e dimmers (`interface_alerta`, modais de confirmação) são automaticamente reconhecidos e estilizados em todas as páginas Tailwind, sem necessidade de declaração manual de dependência.
-- **Assets Externos Locais & Zero CDN**: Todas as bibliotecas de frontend (jQuery, SortableJS, DataTables, Quill, Lucide) e fontes Google Fonts são hospedadas localmente no disco, eliminando riscos de supply-chain e latência de rede externa.
-- **Minificação de Assets no Build**: Minificação nativa via Terser/CSS integrada ao comando `./c2f manager:update-all` e aos fluxos de release, reduzindo o tráfego de scripts e estilos em mais de 50%.
-- **Tabelas Administrativas Responsivas**: Rolagem horizontal contida em viewports largos (>=1200px), evitando armadilhas de rolagem vertical nas páginas administrativas.
-- **Segurança Reforçada & Recuperação de Sessão**: Validação rigorosa de CSRF com tokens CSPRNG, cabeçalhos de segurança HTTP, recuperação limpa de sessão expirada em `/signin/` e Tokens de Acesso Pessoal (PAT) com escopos dedicados.
-- **Compatibilidade com o Instalador Web v2**: Integração total com a distribuição automatizada do [Instalador v2.0.0](https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.0.0/instalador.zip).
+- **Documentação de Raiz Enxuta**: Resumos do README e changelog ficam concisos, enquanto os manuais de ambiente de desenvolvimento e notas de release legadas passam a viver na documentação do workspace de IA.
+- **Inicialização do Fluxo de Agentes**: Inicialização sem prompt e identificação explícita do repositório tornam os handoffs entre múltiplos repositórios mais previsíveis.
+
+### Releases 2.10.x Anteriores
+
+- **v2.10.0**: Dependências automáticas de sistema no Tailwind, assets externos e Google Fonts hospedados localmente, minificação de assets no build, tabelas administrativas responsivas, segurança e recuperação de sessão reforçadas e compatibilidade com o Instalador Web v2.
 
 Para ver o registro completo de mudanças, consulte o [CHANGELOG-PT-BR.md](CHANGELOG-PT-BR.md).
 

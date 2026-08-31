@@ -5,6 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.1] - 2026-08-31
+
+### Added
+- Zero-prompt agent initialization and explicit repository identification for clearer multi-repository development handoffs.
+
+### Changed
+- Streamlined root README and changelog documentation, moving detailed development-environment guidance and legacy release notes into dedicated AI workspace documents.
+
 ## [2.10.0] - 2026-08-31
 
 ### Added

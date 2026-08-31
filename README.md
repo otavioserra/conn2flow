@@ -8,14 +8,14 @@ Conn2Flow is a high-performance, modular Content Management System (CMS) built w
 
 ## 🆕 Latest Version
 
-**v2.10.0 (August 2026)** *(Current base: v2.9.51)*
+**v2.10.1 (August 2026)** *(Current base: v2.9.51)*
 
-- **Automatic Tailwind System Dependencies**: Modals and dimmers (`interface_alerta`, confirmation modals) are automatically recognized and styled in all Tailwind pages without manual dependency declarations.
-- **Self-Hosted External Assets & Zero CDN**: All frontend libraries (jQuery, SortableJS, DataTables, Quill, Lucide) and Google Fonts are hosted locally from disk, eliminating supply-chain vulnerabilities and external network latency.
-- **Build-Time Asset Minification**: Automated Terser/CSS minification integrated into `./c2f manager:update-all` and release workflows, reducing asset sizes by over 50%.
-- **Responsive Admin Tables & Workspaces**: Contained horizontal table scrolling on wide viewports (>=1200px) and resizable sidebar navigation with localStorage persistence.
-- **Hardened Security & Session Recovery**: CSRF validation using CSPRNG tokens, strict HTTP headers, seamless expired session recovery on `/signin/`, and scoped Personal Access Tokens (PAT).
-- **Web Installer v2 Compatibility**: Full integration with the automated [Web Installer v2.0.0](https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.0.0/instalador.zip).
+- **Focused Root Documentation**: README and changelog summaries now stay concise, while detailed development-environment guides and legacy release notes live in the AI workspace documentation.
+- **Agent Workflow Bootstrap**: Zero-prompt initialization and explicit repository identification make multi-repository development handoffs more predictable.
+
+### Previous 2.10.x Releases
+
+- **v2.10.0**: Automatic Tailwind system dependencies, self-hosted external assets and Google Fonts, build-time asset minification, responsive administrative tables, hardened security and session recovery, and Web Installer v2 compatibility.
 
 For complete version details, see [CHANGELOG.md](CHANGELOG.md).
 

@@ -5,6 +5,14 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.1] - 2026-08-31
+
+### Added
+- Inicialização de agentes sem prompt e identificação explícita do repositório para handoffs mais claros entre múltiplos repositórios.
+
+### Changed
+- Documentação de README e changelog da raiz enxugada, com guias detalhados de ambiente de desenvolvimento e notas de release legadas movidos para documentos dedicados no workspace de IA.
+
 ## [2.10.0] - 2026-08-31
 
 ### Added
