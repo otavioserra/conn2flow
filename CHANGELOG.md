@@ -5,6 +5,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.0] - 2026-08-31
+
+### Added
+- Automatic Tailwind system dependencies: System runtime modals (`interface_alerta`, dimmer, confirmation modal) are now automatically included as dependencies for all Tailwind pages without manual configuration.
+- Local external assets library: Self-hosted SortableJS, DataTables, and jQuery eliminating public CDN dependencies for enhanced privacy and supply-chain resilience.
+- Build-time minification pipeline: Native JS/CSS minification at build time reducing asset payloads by over 50%.
+- Compatibility with Web Installer v2.0.0: Fully integrated with installer locks, timeout resumption, and refined Nginx/Apache detection.
+
+### Changed
+- Responsive admin data tables: Horizontal scroll container on screens >=1200px preventing unwanted vertical traps.
+- Standardized text editor field types from legacy `tinymce` to `editor-texto`.
+
+### Fixed
+- Modal styling in login and public Tailwind pages when system alerts are triggered.
+- Fixed template resolution in gallery modules ensuring changes reach live pages.
+
 ## [2.9.51] - 2026-08-26
 
 ### Added

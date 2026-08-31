@@ -39,9 +39,14 @@ Para informações técnicas detalhadas e guias de desenvolvimento, consulte:
 
 ## Última Versão
 
-**v2.9.51 (Agosto 2026)**
+**v2.10.0 (Agosto 2026)** *(Base corrente: v2.9.51)*
 
 **🎯 Principais Novidades:**
+- **Dependências Tailwind de Sistema Automáticas**: Modais e dimmers de interface (`interface_alerta`, modais de confirmação) tornaram-se dependências automáticas em todas as páginas Tailwind, eliminando quebras de layout por esquecimento de declaração.
+- **Assets Externos Locais e Privacidade**: Bibliotecas de terceiros (SortableJS, DataTables, jQuery) empacotadas localmente no core, eliminando requisições a CDNs públicos e mitigando riscos de supply chain.
+- **Minificação de JS e CSS no Build**: Pipeline nativo de minificação de código próprio reduzindo em mais de 50% o tamanho dos assets sem custos de CPU na entrega em runtime.
+- **Tabelas Administrativas Responsivas**: Caixa de rolagem horizontal contida em resoluções largas (>=1200px) sem gerar rolagem vertical acidental na página.
+- **Compatibilidade com Instalador v2**: Integração total ao novo Instalador Web Automatizado v2.0.0 com travas de concorrência e detecção de servidores Nginx/Apache.
 - **Layouts Administrativo e Público em Tailwind CSS**: Nova interface administrativa responsiva com menu retrátil, redimensionador de barra lateral, busca em tempo real com navegação por teclado e suporte nativo ao catálogo de ícones Lucide.
 - **Hardening de Segurança e Zero Loop CSRF**: Validação CSRF com tokens CSPRNG, recarregamento limpo de sessão expirada na tela de login (`/signin/`) e proteção com cabeçalhos de segurança HTTP.
 - **Tokens de Acesso Pessoal (PAT) e Recuperação 2FA**: Gestão de tokens de API com escopos no painel do usuário e códigos de recuperação descartáveis para autenticação de dois fatores.
@@ -67,16 +72,16 @@ Conn2Flow apresenta um **instalador web automatizado moderno** que simplifica o 
 1. **Baixe o Instalador**
 
    **Download Direto:**
-   - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v1.5.6](https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.6/instalador.zip)
+   - Clique no próximo link para baixar o `instalador.zip`: [Download Instalador v2.0.0](https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.0.0/instalador.zip)
       
    **Linux/macOS:**
    ```bash
-   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.6/instalador.zip
+   curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.0.0/instalador.zip
    ```
 
    **Windows PowerShell:**
    ```powershell
-   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v1.5.6/instalador.zip" -OutFile "instalador.zip"
+   Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.0.0/instalador.zip" -OutFile "instalador.zip"
    ```
 
    **Sempre o Último Instalador:**

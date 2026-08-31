@@ -5,6 +5,36 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [2.10.0] - 2026-08-31
+
+### Added
+- **Dependências Tailwind de Sistema Automáticas**: Modais de interface do sistema (`interface_alerta`, dimmer de carregamento e modal de confirmação) são injetados automaticamente como dependências em todas as páginas Tailwind.
+- **Biblioteca de Assets Externos Locais**: Remoção da dependência em tempo de execução de CDNs externos (SortableJS, DataTables e jQuery servidos localmente com integridade e privacidade).
+- **Minificação Nativa no Build**: Otimização de scripts e estilos no processo de build reduzindo em mais de 50% o tráfego de rede sem impacto em CPU no runtime.
+- **Compatibilidade com Instalador v2.0.0**: Suporte completo à nova arquitetura do instalador web com travas de sessão, retomada após timeout e detecção de servidores Nginx/Apache.
+
+### Changed
+- **Tabelas Administrativas Responsivas**: Caixa de rolagem horizontal em telas >=1200px isolada para a tabela, evitando captura de scroll vertical da página.
+- **Campos de Formulário Padronizados**: Migração do tipo de campo legado `tinymce` para `editor-texto`.
+
+### Fixed
+- Estilização de modais em páginas Tailwind públicas/autenticação ao invocar alertas globais.
+- Preservação e resolução de templates modificados em galerias e publicadores.
+
+## [2.9.51] - 2026-08-26
+
+### Added
+- Seleção em lote no seletor de arquivos embutido, controles responsivos de densidade em galerias e edição rápida de legendas e links.
+- Posicionamento vertical de imagem (`top`, `center` ou `bottom`) na administração, templates e widgets públicos.
+
+### Changed
+- Grades de galeria agora suportam layouts compactos de 6 e 10 colunas com proporções fixas de miniaturas.
+- Limpeza de release migrada de scripts locais para GitHub Actions com push atômico de branch e tag.
+
+### Fixed
+- Normalização MIME e validação de imagem na interface administrativa.
+- Entrega do Live Editor para widgets vazios e HTML de administrador confiável.
+
 ## [2.9.39] - 2026-08-21
 
 ### Added

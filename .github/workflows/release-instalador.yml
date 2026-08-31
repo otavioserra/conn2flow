@@ -62,17 +62,22 @@ jobs:
         name: "Instalador ${{ steps.tag.outputs.TAG_NAME }}"
         make_latest: true
         body: |
-          ## 🛠️ Conn2Flow Instalador Release ${{ steps.tag.outputs.TAG_NAME }} (Compatibilidade com Gestor v2.9.x + Layouts Tailwind v4 + Hardening de Segurança)
+          ## 🛠️ Conn2Flow Instalador Release ${{ steps.tag.outputs.TAG_NAME }} (Instalador Web Automatizado v2.0.0)
 
-          Instalador web automatizado do sistema Conn2Flow com **suporte completo aos novos recursos do Gestor v2.9.x**, incluindo sistema multilíngue completo, suporte a layouts em Tailwind CSS v4, hardening avançado de segurança e arquitetura modular.
+          Instalador web automatizado de última geração com **proteção ativa contra concorrência**, suporte aprimorado a múltiplos servidores web (Apache e Nginx) e compatibilidade total com a linha **Gestor v2.10.x**.
 
-          ### ✨ Recursos e Destaques desta Versão:
-          - ✅ **Compatibilidade Total com Gestor v2.9.x**: Suporte completo a instalações com layouts administrativos e públicos em Tailwind CSS v4 e Fomantic UI.
-          - ✅ **Hardening de Segurança Integrado**: Validação de integridade de pacotes com checksum SHA-256 (`instalador.zip.sha256`), tokens CSRF via CSPRNG e proteção reforçada de sessões.
-          - ✅ **Sistema Multilíngue Completo**: Suporte nativo aos idiomas Português (pt-br) e Inglês (en) durante a instalação e configuração inicial.
-          - ✅ **Sistema Híbrido de Migração de Banco**: Execução automática de migrações Phinx com fallback de schema SQL transacionado em lotes seguros.
-          - ✅ **Detecção Inteligente de Ambiente**: Reconhecimento automático de instalação em raiz de domínio ou subpastas com configuração transparente do `.htaccess`.
-          - ✅ **Auto-login e Conclusão Segura**: Configuração automática pós-instalação e remoção segura dos scripts de instalação após a conclusão.
+          ### ✨ Novidades Principais desta Versão (v2.0.0):
+          - ✅ **Trava Concorrente e Proteção de Sessão (`InstallerGuard`)**: Trava atômica de sessão com chave de segurança SHA-256, expiração defensiva por timeout (30 minutos) e proteção contra múltiplas instalações simultâneas.
+          - ✅ **Detecção Avançada de Servidor Web**: Identificação e normalização dinâmica de servidores Apache e Nginx, com geração nativa de snippets otimizados de rewrite (`@c2f_rewrite` com `try_files` e tratamento de query strings).
+          - ✅ **Resolução Canônica de Raiz de Instalação**: Detecção infalível da `url_raiz` em execuções web ou headless/CLI, preservando subpastas sem vazamento de caminhos físicos do servidor.
+          - ✅ **Limpeza Defensiva Pós-Instalação**: Remoção atômica e segura de chaves temporárias, travas e fontes do instalador após o bootstrap inicial.
+          - ✅ **Compatibilidade Nativa com Gestor v2.10.x**: Suporte a layouts Tailwind v4 compilados, banco de dados transacionado e assets locais.
+
+          ### 🌟 Recursos e Destaques Consolidados:
+          - **Validação de Integridade**: Checksum SHA-256 (`instalador.zip.sha256`) e verificação rigorosa de integridade de pacote.
+          - **Sistema Multilíngue Completo**: Suporte nativo aos idiomas Português (`pt-br`) e Inglês (`en`).
+          - **Migrações Híbridas de Banco**: Execução automatizada de migrações Phinx com fallback de schema SQL transacionado.
+          - **Auto-login Seguro**: Conclusão da instalação com login administrativo instantâneo e transição suave para o painel.
 
           ### 🔧 Como Usar:
           1. Baixe o pacote `instalador.zip` e confira a integridade com `instalador.zip.sha256`
