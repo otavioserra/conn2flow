@@ -125,6 +125,35 @@
                         </div>
                     </div>
 
+                    <!-- Pré-requisitos do servidor (REQ-027): confirma que o rewrite entrega
+                         `_gestor-caminho` ao front-controller antes de iniciar a instalação. -->
+                    <div class="mb-4" id="rewrite-healthcheck" data-api-url="?api=rewrite-probe">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            <span data-translate="healthcheck_title"><?= __('healthcheck_title', 'Pré-requisitos do servidor') ?></span>
+                        </label>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <span id="rewrite-badge" class="inline-flex items-center rounded-full px-3 py-1 text-xs font-bold bg-gray-200 text-gray-700">
+                                <span data-translate="healthcheck_checking"><?= __('healthcheck_checking', 'Verificando o rewrite...') ?></span>
+                            </span>
+                            <button type="button" id="rewrite-recheck-btn" class="text-xs text-blue-600 hover:underline disabled:opacity-50">
+                                <span data-translate="healthcheck_recheck"><?= __('healthcheck_recheck', 'Verificar novamente') ?></span>
+                            </button>
+                        </div>
+                        <p id="rewrite-hint" class="text-gray-600 text-xs mt-1"></p>
+
+                        <div id="rewrite-help" class="hidden mt-3 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+                            <p class="text-sm font-semibold text-yellow-800" id="rewrite-help-title"></p>
+                            <p class="mt-1 text-xs text-yellow-700" id="rewrite-help-text"></p>
+                            <div class="mt-3 flex items-center justify-between gap-2">
+                                <span id="rewrite-sample-file" class="text-xs text-yellow-700 break-all"></span>
+                                <button type="button" id="copy-nginx-btn" class="flex-shrink-0 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold py-1 px-3 rounded">
+                                    <span data-translate="healthcheck_copy"><?= __('healthcheck_copy', 'Copiar configuração') ?></span>
+                                </button>
+                            </div>
+                            <pre id="rewrite-snippet" class="mt-2 max-h-64 overflow-auto rounded bg-gray-900 p-3 text-xs text-green-200 whitespace-pre"></pre>
+                        </div>
+                    </div>
+
                     <!-- Clean Install Option - Full Width -->
                     <div class="mb-4">
                         <div>

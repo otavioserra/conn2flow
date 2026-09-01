@@ -240,6 +240,25 @@ else
     log_warning "Continuing with deploy (data may be outdated)"
 fi
 
+# req-028: publish processed static assets into the local DocumentRoot (public_html/dist/).
+#
+# This publishes the LOCAL DocumentRoot only. On the remote server the same publication happens
+# through `c2f project:update-all`, which runs there and has the publish step in its pipeline.
+# A missing PUBLIC_PATH is not an error: the install simply keeps serving every asset through the
+# `arquivo-estatico` controller.
+log "Publishing static assets to public_html/dist/..."
+C2F_BIN="$PROJECT_ROOT/cli/c2f.php"
+
+if [ -f "$C2F_BIN" ]; then
+    if php "$C2F_BIN" assets:publish --opcional; then
+        log_success "Static assets published."
+    else
+        log_warning "Asset publication did not complete; URLs still resolve via arquivo-estatico"
+    fi
+else
+    log_warning "CLI not found at $C2F_BIN — skipping asset publication"
+fi
+
 # Create temporary directory if it doesn't exist
 if [ ! -d "$TEMP_DIR" ]; then
     mkdir -p "$TEMP_DIR"

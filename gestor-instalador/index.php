@@ -16,7 +16,7 @@ require_once __DIR__ . '/src/helpers.php';
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR_INSTALADOR['versao']								=	'2.0.0'; // Versão do gestor instalador.
+$_GESTOR_INSTALADOR['versao']								=	InstallerGuard::VERSION; // Versão do gestor instalador (2.1.0).
 
 // ===== Sonda de rewrite: responde antes da sessão e da trava para que o instalador
 // possa confirmar que o servidor web injeta `_gestor-caminho` no front-controller.
@@ -157,6 +157,46 @@ if (!InstallerGuard::lockAcquire($installerLockPath, $installToken)) {
         . '<h1>' . htmlspecialchars(__('installer_locked_title', 'Instalador bloqueado'), ENT_QUOTES, 'UTF-8') . '</h1>'
         . '<p>' . htmlspecialchars($mensagemTrava, ENT_QUOTES, 'UTF-8') . '</p>'
         . '</body></html>';
+    exit;
+}
+
+// ===== API de pré-requisitos do instalador (REQ-027)
+// Rota canônica: `gestor-instalador/api/rewrite-probe`. Ela depende do próprio rewrite,
+// que é justamente o que a sonda diagnostica, então `?api=rewrite-probe` é aceito como
+// caminho determinístico — sempre alcançável pelo front-controller do instalador.
+$apiRoute = InstallerGuard::resolveApiRoute($_REQUEST, $_SERVER);
+if ($apiRoute === InstallerGuard::API_REWRITE_PROBE) {
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Cache-Control: no-store');
+
+    $apiToken = (string)($_REQUEST['install_token'] ?? '');
+    if ($apiToken === '' || !hash_equals($installToken, $apiToken)) {
+        send_json_error(__('error_install_token_invalid', 'Token do instalador inválido.'), 403);
+    }
+
+    require_once __DIR__ . '/src/Installer.php';
+
+    // O modo debug preenche o que o formulário ainda não informou (domínio, servidor web).
+    $apiInput = $_REQUEST;
+    foreach ($debugData as $debugKey => $debugValue) {
+        if (!isset($apiInput[$debugKey])) $apiInput[$debugKey] = $debugValue;
+    }
+
+    // O navegador é quem executa a sonda HTTP; o PHP apenas registra o veredito.
+    $apiOpcoes = [];
+    if (isset($_REQUEST['rewrite_ok']) && (string)$_REQUEST['rewrite_ok'] !== '') {
+        $apiOpcoes['rewrite_ok'] = in_array((string)$_REQUEST['rewrite_ok'], ['1', 'true', 'ok'], true);
+    }
+
+    try {
+        $apiInstaller = new Installer($apiInput);
+        echo json_encode(
+            $apiInstaller->rewriteProbeReport($apiOpcoes),
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+        );
+    } catch (Exception $e) {
+        send_json_error($e->getMessage(), 500);
+    }
     exit;
 }
 

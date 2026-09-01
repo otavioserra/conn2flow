@@ -448,7 +448,7 @@ function formulario_montar_js_vars($formIds, $formAjaxOpcao = null){
         // ===== Inclusão Módulo JS
         
         $versao = isset($_GESTOR['biblioteca-formulario']['versao']) ? $_GESTOR['biblioteca-formulario']['versao'] : '1.0.0';
-        gestor_pagina_javascript_incluir('<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$versao.'"></script>');
+        gestor_pagina_javascript_incluir(recursos_tag_js('interface/interface.js', $versao));
         gestor_pagina_javascript_incluir();
         
         // ===== Fallback para redirects padrão se não definidos

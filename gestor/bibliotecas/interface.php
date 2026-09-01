@@ -1184,7 +1184,7 @@ function interface_assets_incluir(){
 	$versao = $_GESTOR['biblioteca-interface']['versao'];
 
 	if(gestor_framework_css_atual()['modo'] === 'tailwindcss'){
-		$asset = '<script src="'.$_GESTOR['url-raiz'].'interface/interface-tailwind.js?v='.$versao.'"></script>';
+		$asset = recursos_tag_js('interface/interface-tailwind.js', $versao);
 
 		if(!in_array($asset,$_GESTOR['javascript'] ?? Array(),true)){
 			$_GESTOR['javascript'][] = $asset;
@@ -1193,8 +1193,8 @@ function interface_assets_incluir(){
 		return;
 	}
 
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$versao.'" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'interface/interface.js?v='.$versao.'"></script>';
+	$_GESTOR['css'][] = recursos_tag_css('interface/interface.css', $versao);
+	$_GESTOR['javascript'][] = recursos_tag_js('interface/interface.js', $versao);
 }
 
 // =========================== Variantes por framework CSS (req-118)
@@ -5587,8 +5587,8 @@ function interface_listar_finalizar($params = false){
 	
 	// ===== Inclusão Data Table
 	
-	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'datatables/datatables.min.css" />';
-	$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'datatables/datatables.min.js"></script>';
+	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.recursos_url('datatables/datatables.min.css').'" />';
+	$_GESTOR['javascript'][] = '<script src="'.recursos_url('datatables/datatables.min.js').'"></script>';
 	
 	// ===== Inclusão Interface
 	

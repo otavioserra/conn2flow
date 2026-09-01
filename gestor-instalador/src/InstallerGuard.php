@@ -6,6 +6,9 @@
 
 class InstallerGuard
 {
+    /** Versão corrente do gestor instalador. Fonte única para o index e o runner headless. */
+    const VERSION = '2.1.0';
+
     /** Arquivo com a chave de segurança exigida antes de liberar o formulário. */
     const KEY_FILE = 'install-key.txt';
 
@@ -20,6 +23,12 @@ class InstallerGuard
 
     /** Resposta devolvida pelo instalador quando a sonda de rewrite chega até ele. */
     const REWRITE_PROBE_OK = 'C2F_REWRITE_OK';
+
+    /** Rota da API de pré-requisitos que reporta o estado do rewrite. */
+    const API_REWRITE_PROBE = 'api/rewrite-probe';
+
+    /** Arquivo de exemplo de VirtualHost Nginx entregue ao operador (REQ-027). */
+    const NGINX_SAMPLE_FILE = 'nginx-vhost.conf.sample';
 
     public static function isCli()
     {
@@ -128,6 +137,40 @@ class InstallerGuard
         if (!self::lockOwner($path, $token)) return false;
 
         return @unlink($path);
+    }
+
+    /**
+     * Resolve qual rota de API o instalador deve atender na requisição corrente.
+     *
+     * A rota canônica é `gestor-instalador/api/rewrite-probe`, mas ela só existe quando o
+     * rewrite está ativo — exatamente a condição que a sonda precisa diagnosticar. Por isso
+     * `?api=rewrite-probe` é aceito como caminho determinístico: ele chega ao
+     * front-controller do instalador mesmo em servidores sem rewrite configurado.
+     * Devolve '' quando nenhuma rota de API foi solicitada.
+     */
+    public static function resolveApiRoute(array $request, array $server = [])
+    {
+        $candidatos = [];
+
+        $caminho = (string)($request['_gestor-caminho'] ?? '');
+        if ($caminho !== '') $candidatos[] = $caminho;
+
+        $api = (string)($request['api'] ?? '');
+        if ($api !== '') $candidatos[] = 'api/' . $api;
+
+        $pathInfo = (string)($server['PATH_INFO'] ?? '');
+        if ($pathInfo !== '') $candidatos[] = $pathInfo;
+
+        $sufixo = '/' . self::API_REWRITE_PROBE;
+        foreach ($candidatos as $candidato) {
+            $normalizado = str_replace(DIRECTORY_SEPARATOR, '/', (string)$candidato);
+            $normalizado = strtolower(trim(preg_replace('#/+#', '/', $normalizado), '/'));
+            if ($normalizado === '') continue;
+            if ($normalizado === self::API_REWRITE_PROBE) return self::API_REWRITE_PROBE;
+            if (substr($normalizado, -strlen($sufixo)) === $sufixo) return self::API_REWRITE_PROBE;
+        }
+
+        return '';
     }
 
     /** Descobre o servidor web em execução. Devolve '' quando não é possível concluir. */

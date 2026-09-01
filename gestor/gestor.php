@@ -572,7 +572,7 @@ function gestor_pagina_menu($params = false){
 
 	$menuAsset = ($menuTailwind ? 'global/admin-tailwind.js' : 'global/admin.js');
 
-	$menuConteiner .= "\n".'<script src="'.$_GESTOR['url-raiz'].$menuAsset.'?v='.gestor_asset_version('global').'"></script>';
+	$menuConteiner .= "\n".recursos_tag_js($menuAsset, gestor_asset_version('global'));
 
 	// ===== Retornar o conteiner.
 
@@ -966,7 +966,7 @@ function gestor_pagina_css_incluir($css = false){
 	global $_GESTOR;
 	
 	if(!$css){
-		$_GESTOR['css-fim'][] = $css = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/css.css?v='.gestor_modulo_asset_version($_GESTOR['modulo-id']).'">';
+		$_GESTOR['css-fim'][] = $css = recursos_tag_css($_GESTOR['modulo-id'].'/css.css', gestor_modulo_asset_version($_GESTOR['modulo-id']));
 		
 		// ===== Verifica se já foi adicionado este css, se sim, remover o último que foi adicionado.
 		if(!isset($_GESTOR['css-fim-adicionados'])){
@@ -1030,7 +1030,7 @@ function gestor_pagina_extra_head_e_javascript(){
 		foreach($tagsFomantic['js'] as $tag){ $js_padrao[] = $tag; }
 	}
 
-	$js_padrao[] = '<script src="'.$_GESTOR['url-raiz'].'global/global.js?v='.gestor_asset_version('global').'"></script>'; // Global JS
+	$js_padrao[] = recursos_tag_js('global/global.js', gestor_asset_version('global')); // Global JS
 	
 	if(!isset($_GESTOR['html-extra-head'])) $_GESTOR['html-extra-head'] = Array();
 	if(!isset($_GESTOR['javascript'])) $_GESTOR['javascript'] = Array();
@@ -1147,26 +1147,26 @@ function gestor_pagina_javascript_incluir($js = false,$id = false, $retornar = f
 			return;
 		}
 		if(isset($_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'])){
-			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js?v='.gestor_modulo_asset_version($_GESTOR['modulo-id']).'"></script>';
 			$js_id = $_GESTOR['modulo#'.$_GESTOR['modulo-id']]['plugin'].'/'.$_GESTOR['modulo-id'].'/js.js';
+			$js_script = recursos_tag_js($js_id, gestor_modulo_asset_version($_GESTOR['modulo-id']));
 		} else {
-			$js_script = '<script src="'.$_GESTOR['url-raiz'].$_GESTOR['modulo-id'].'/js.js?v='.gestor_modulo_asset_version($_GESTOR['modulo-id']).'"></script>';
 			$js_id = $_GESTOR['modulo-id'].'/js.js';
+			$js_script = recursos_tag_js($js_id, gestor_modulo_asset_version($_GESTOR['modulo-id']));
 		}
 	} elseif(gettype($js) == 'array') {
 		$tipo = (isset($js['tipo']) ? $js['tipo'] : '');
 		$modulo_id = (isset($js['modulo_id']) ? $js['modulo_id'] : 'undefined');
 		$versao = (isset($js['asset_version']) ? $js['asset_version'] : (isset($_GESTOR['modulo#'.$modulo_id]) ? gestor_modulo_asset_version($modulo_id) : (isset($js['versao']) ? $js['versao'] : gestor_asset_version())));
 		
-		$js_script = '<script src="'.$_GESTOR['url-raiz'].$modulo_id.'/'.$tipo.'.js?v='.$versao.'"></script>';
 		$js_id = $modulo_id.'/'.$tipo.'.js';
+		$js_script = recursos_tag_js($js_id, $versao);
 	} else {
 		switch($js){
 			case 'biblioteca':
 				if (is_array($id)) {
-					$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.(isset($id['caminho']) ? $id['caminho'] : '').'.js?v='.gestor_asset_version('interface', $_GESTOR['biblioteca-'.(isset($id['biblioteca']) ? $id['biblioteca'] : '')]['versao'] ?? null).'"></script>';
+					$js = recursos_tag_js('interface/'.(isset($id['caminho']) ? $id['caminho'] : '').'.js', gestor_asset_version('interface', $_GESTOR['biblioteca-'.(isset($id['biblioteca']) ? $id['biblioteca'] : '')]['versao'] ?? null));
                 } else {
-					$js = '<script src="'.$_GESTOR['url-raiz'].'interface/'.$id.'.js?v='.gestor_asset_version('interface', $_GESTOR['biblioteca-'.$id]['versao'] ?? null).'"></script>';
+					$js = recursos_tag_js('interface/'.$id.'.js', gestor_asset_version('interface', $_GESTOR['biblioteca-'.$id]['versao'] ?? null));
                 }
 			break;
 		}
@@ -2329,6 +2329,9 @@ function gestor_roteador_erro($params = false){
 						gestor_redirecionar('signin');
 					break;
 					case 404:
+						if(gestor_roteador_erro_terminal($codigo, (isset($_GESTOR['caminho-total']) ? $_GESTOR['caminho-total'] : ''))){
+							exit;
+						}
 						gestor_redirecionar('404');
 					break;
 				}
@@ -2680,6 +2683,10 @@ function gestor_roteador(){
 
 	if(isset($paginas)){
 		// ===== Definir o módulo alvo da página.
+		// A pagina 404 existente deve renderizar seu conteudo sem transformar o erro em HTTP 200.
+		$pagina_status_http = gestor_roteador_pagina_status_http($caminho);
+		if($pagina_status_http !== null) http_response_code($pagina_status_http);
+
 		$_GESTOR['modulo'] = $paginas[0]['modulo'];
 
 		// ===== Verificar linguagens de uma página

@@ -448,13 +448,49 @@ function arquivo_estatico_preferir_minificado($file, $ext){
 	return $file;
 }
 
+/**
+ * Remove o prefixo `dist/` de um caminho requisitado (req-028).
+ *
+ * Função PURA. Os assets publicados em `public_html/dist/` são servidos direto pelo servidor web;
+ * uma requisição a `/dist/...` só chega ao PHP quando o arquivo NÃO está publicado — ambiente de
+ * desenvolvimento, asset novo ainda não publicado, ou instalação sem o pipeline executado. Nesses
+ * casos o controlador resolve o mesmo caminho na árvore do gestor, e a página continua funcionando
+ * sem republicar nada. `dist` passa a ser um primeiro segmento reservado.
+ *
+ * @param string $caminhoTotal Caminho requisitado.
+ * @return string Caminho sem o prefixo, ou o próprio caminho quando não há prefixo.
+ */
+function arquivo_estatico_sem_prefixo_dist($caminhoTotal){
+	$caminhoTotal = (string)$caminhoTotal;
+	$prefixo = 'dist/';
+
+	if(strncasecmp($caminhoTotal, $prefixo, strlen($prefixo)) !== 0) return $caminhoTotal;
+
+	$restante = substr($caminhoTotal, strlen($prefixo));
+
+	// `dist/` sozinho, ou `dist/dist/...`, não descreve nenhum asset do gestor.
+	return ($restante === '' || $restante === false) ? $caminhoTotal : $restante;
+}
+
 function arquivo_estatico_start(){
 	global $_GESTOR;
 	global $_INDEX;
-	
+
 	if(isset($_GESTOR['arquivo-estatico'])){
 		$caminhoTotal = (string)($_GESTOR['caminho-total'] ?? '');
 		if(!arquivo_estatico_caminho_valido($caminhoTotal)) arquivo_estatico_404();
+
+		// Fallback transparente do `dist/`: reescreve o estado do roteador para o caminho de
+		// origem antes de qualquer resolução, para que todas as regras abaixo continuem valendo
+		// sem duplicação — inclusive as bases autorizadas e o containment.
+		$caminhoSemDist = arquivo_estatico_sem_prefixo_dist($caminhoTotal);
+		if($caminhoSemDist !== $caminhoTotal){
+			$caminhoTotal = $caminhoSemDist;
+			$_GESTOR['caminho-total'] = $caminhoTotal;
+			$_GESTOR['caminho'] = explode('/', strtolower($caminhoTotal));
+			$_GESTOR['arquivo-estatico']['alvo'] = $_GESTOR['caminho'][0] ?? null;
+			$_GESTOR['arquivo-estatico']['alvo2'] = $_GESTOR['caminho'][1] ?? null;
+		}
 
 		$basesAutorizadas = Array(
 			$_GESTOR['assets-path'],

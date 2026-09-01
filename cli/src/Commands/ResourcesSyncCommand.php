@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Conn2Flow\Cli\Commands;
 
+use Conn2Flow\Cli\Console\Input;
 use Conn2Flow\Cli\Contracts\CommandInterface;
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
@@ -80,6 +81,18 @@ final class ResourcesSyncCommand implements CommandInterface
 
         if ($exitCode === 0) {
             $output->success('All native resources successfully synchronized into Data.json!');
+
+            // req-028: os assets recém-compilados precisam chegar ao DocumentRoot público, senão
+            // o servidor web continua entregando a versão anterior de `dist/` enquanto o banco já
+            // aponta para a nova. A publicação é idempotente; sem PUBLIC_PATH ela apenas informa.
+            $publishCmd = new AssetsPublishCommand($this->rootPath);
+            if ($publishCmd->execute(new Input(['--opcional']), $output) !== 0) {
+                $output->warning(
+                    'A publicação em dist/ não completou. Os recursos foram sincronizados e as URLs '
+                    . 'continuam resolvendo pelo controlador arquivo-estatico.'
+                );
+            }
+
             return 0;
         }
 

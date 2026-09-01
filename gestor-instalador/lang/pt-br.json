@@ -89,5 +89,21 @@
     "web_server_apache": "Apache",
     "web_server_detected": "Servidor detectado automaticamente:",
     "web_server_not_detected": "Não foi possível detectar o servidor web. Selecione manualmente.",
-    "web_server_mismatch": "A seleção diverge do servidor detectado. Prossiga apenas se houver proxy reverso ou se você tiver certeza da configuração."
+    "web_server_mismatch": "A seleção diverge do servidor detectado. Prossiga apenas se houver proxy reverso ou se você tiver certeza da configuração.",
+    "healthcheck_title": "Pré-requisitos do servidor",
+    "healthcheck_checking": "Verificando o rewrite...",
+    "healthcheck_recheck": "Verificar novamente",
+    "healthcheck_ok": "Rewrite {server}: OK",
+    "healthcheck_fail": "Rewrite {server}: inativo",
+    "healthcheck_unknown": "Rewrite {server}: não verificado",
+    "healthcheck_hint_ok": "O servidor repassa o parâmetro _gestor-caminho ao front-controller. Pode prosseguir com a instalação.",
+    "healthcheck_hint_fail": "Sem o rewrite o Conn2Flow interpreta toda requisição como raiz e as rotas internas retornam 404.",
+    "healthcheck_hint_unknown": "Não foi possível concluir a verificação automática. Confirme manualmente a regra de front-controller do servidor.",
+    "healthcheck_apache_help": "No Apache o instalador grava o .htaccess automaticamente. Se a verificação falhar, confirme que o mod_rewrite está ativo e que o VirtualHost usa AllowOverride All.",
+    "healthcheck_nginx_help_title": "O Nginx ainda não repassa o caminho ao Conn2Flow",
+    "healthcheck_nginx_help_text": "Copie o bloco abaixo para o server do seu domínio, ajuste o fastcgi_pass conforme o seu PHP-FPM e recarregue o serviço com: nginx -t && systemctl reload nginx. Depois clique em Verificar novamente.",
+    "healthcheck_copy": "Copiar configuração",
+    "healthcheck_copied": "Copiado!",
+    "healthcheck_sample_file": "Exemplo completo salvo no servidor:",
+    "healthcheck_error": "Não foi possível executar a verificação de pré-requisitos."
 }

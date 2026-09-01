@@ -121,13 +121,13 @@ if (!function_exists('editor_texto_assets_editor')) {
 				$cssQuill,
 				// O MESMO CSS de conteúdo que a página publicada recebe: é o que garante que o
 				// alinhamento, a indentação e as listas apareçam no editor como aparecerão no site.
-				'<link rel="stylesheet" type="text/css" media="all" href="'.$urlRaiz.'interface/quill-content.css?v='.$versaoAsset.'" data-c2f-css-role="quill" />',
+				recursos_tag_css('interface/quill-content.css', $versaoAsset, 'data-c2f-css-role="quill"', $urlRaiz),
 			),
 			'javascript' => Array(
 				$jsQuill,
 				// Runtime compartilhado: cria os editores sobre `<textarea>` e mantém o campo do
 				// formulário sincronizado. Sem ele, cada tela repetiria a configuração do editor.
-				'<script src="'.$urlRaiz.'interface/editor-texto.js?v='.$versaoAsset.'"></script>',
+				recursos_tag_js('interface/editor-texto.js', $versaoAsset, '', $urlRaiz),
 			),
 		);
 	}
@@ -332,7 +332,7 @@ if (!function_exists('editor_texto_assets_publicacao')) {
 	 */
 	function editor_texto_assets_publicacao($urlRaiz = '', $versao = '') {
 		return Array(
-			'<link rel="stylesheet" type="text/css" media="all" href="'.$urlRaiz.'interface/quill-content.css?v='.$versao.'" data-c2f-css-role="quill" />',
+			recursos_tag_css('interface/quill-content.css', $versao, 'data-c2f-css-role="quill"', $urlRaiz),
 		);
 	}
 }

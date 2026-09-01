@@ -12,6 +12,12 @@ const applyTranslations = (langData) => {
     });
     // Caso especial para o título do documento
     document.title = translations.page_title || document.title;
+
+    // O health check escreve textos por JS (badge e caixa de ajuda), fora do alcance de
+    // [data-translate]; ele se redesenha sozinho quando o idioma muda.
+    if (typeof window.conn2flowRenderHealthcheck === 'function') {
+        window.conn2flowRenderHealthcheck();
+    }
 };
 
 // Função para buscar o arquivo de idioma e aplicá-lo
@@ -143,6 +149,165 @@ document.addEventListener('DOMContentLoaded', function () {
                 radio.addEventListener('change', refreshWebServerWarning);
             });
             refreshWebServerWarning();
+        }
+
+        // --- Health check de pré-requisitos do rewrite (REQ-027) ---
+        // A sonda HTTP é executada pelo NAVEGADOR: o instalador roda dentro do mesmo pool
+        // PHP-FPM e uma requisição do PHP a si mesmo pode esgotar os workers. O backend só
+        // monta o plano da sonda, gera o snippet/vhost de exemplo e registra o veredito.
+        const healthcheck = document.getElementById('rewrite-healthcheck');
+        if (healthcheck) {
+            const badge = document.getElementById('rewrite-badge');
+            const hint = document.getElementById('rewrite-hint');
+            const help = document.getElementById('rewrite-help');
+            const helpTitle = document.getElementById('rewrite-help-title');
+            const helpText = document.getElementById('rewrite-help-text');
+            const snippetEl = document.getElementById('rewrite-snippet');
+            const sampleFileEl = document.getElementById('rewrite-sample-file');
+            const recheckBtn = document.getElementById('rewrite-recheck-btn');
+            const copyBtn = document.getElementById('copy-nginx-btn');
+            const copyBtnLabel = copyBtn.querySelector('span') || copyBtn;
+            const apiUrl = healthcheck.dataset.apiUrl || '?api=rewrite-probe';
+
+            let ultimoRelatorio = null;
+
+            const t = (chave, padrao) => translations[chave] || padrao;
+            const nomeServidor = (valor) => (valor === 'nginx' ? 'Nginx' : 'Apache');
+
+            const setBadge = (texto, classes) => {
+                badge.className = 'inline-flex items-center rounded-full px-3 py-1 text-xs font-bold ' + classes;
+                badge.textContent = texto;
+            };
+
+            const pedirRelatorio = async (rewriteOk) => {
+                const dados = new FormData();
+                dados.append('api', 'rewrite-probe');
+                dados.append('install_token', window.conn2flowInstallToken || '');
+                dados.append('lang', currentLang);
+
+                const servidor = form.querySelector('input[name="web_server"]:checked');
+                if (servidor) dados.append('web_server', servidor.value);
+                const dominio = document.getElementById('domain');
+                if (dominio) dados.append('domain', dominio.value.trim());
+                const ssl = form.querySelector('input[name="ssl_enabled"]:checked');
+                if (ssl) dados.append('ssl_enabled', ssl.value);
+                if (rewriteOk === true || rewriteOk === false) {
+                    dados.append('rewrite_ok', rewriteOk ? '1' : '0');
+                }
+
+                const resposta = await fetch(apiUrl, { method: 'POST', body: dados, cache: 'no-store' });
+                const texto = await resposta.text();
+
+                let json;
+                try {
+                    json = JSON.parse(texto);
+                } catch (erro) {
+                    throw new Error(t('healthcheck_error', 'Não foi possível executar a verificação de pré-requisitos.'));
+                }
+                if (!resposta.ok || json.status === 'error') {
+                    throw new Error(json.message || t('healthcheck_error', 'Não foi possível executar a verificação de pré-requisitos.'));
+                }
+
+                return json;
+            };
+
+            // Devolve true/false conforme a sonda, ou null quando nem a requisição saiu.
+            const sondarNoNavegador = async (relatorio) => {
+                const separador = String(relatorio.probe_url).indexOf('?') === -1 ? '?' : '&';
+                const alvo = relatorio.probe_url + separador + '_c2f=' + Date.now();
+                try {
+                    const resposta = await fetch(alvo, { cache: 'no-store' });
+                    if (!resposta.ok) return false;
+                    const corpo = await resposta.text();
+                    return corpo.indexOf(relatorio.probe_expected) !== -1;
+                } catch (erro) {
+                    return null;
+                }
+            };
+
+            const renderizar = () => {
+                if (!ultimoRelatorio) return;
+
+                const servidor = nomeServidor(ultimoRelatorio.web_server);
+                const ehApache = ultimoRelatorio.web_server === 'apache';
+                help.classList.add('hidden');
+
+                if (ultimoRelatorio.rewrite_ok === true) {
+                    setBadge(t('healthcheck_ok', 'Rewrite {server}: OK').replace('{server}', servidor), 'bg-green-100 text-green-800');
+                    hint.textContent = t('healthcheck_hint_ok', '');
+                    return;
+                }
+
+                if (ultimoRelatorio.rewrite_ok === false) {
+                    setBadge(t('healthcheck_fail', 'Rewrite {server}: inativo').replace('{server}', servidor), 'bg-red-100 text-red-800');
+                    hint.textContent = t('healthcheck_hint_fail', '');
+                } else {
+                    setBadge(t('healthcheck_unknown', 'Rewrite {server}: não verificado').replace('{server}', servidor), 'bg-gray-200 text-gray-700');
+                    hint.textContent = t('healthcheck_hint_unknown', '');
+                }
+
+                if (ehApache) {
+                    helpTitle.textContent = t('healthcheck_title', 'Pré-requisitos do servidor');
+                    helpText.textContent = t('healthcheck_apache_help', '');
+                    snippetEl.textContent = '';
+                    snippetEl.classList.add('hidden');
+                    copyBtn.classList.add('hidden');
+                    sampleFileEl.textContent = '';
+                    help.classList.remove('hidden');
+                    return;
+                }
+
+                helpTitle.textContent = t('healthcheck_nginx_help_title', '');
+                helpText.textContent = t('healthcheck_nginx_help_text', '');
+                snippetEl.textContent = ultimoRelatorio.snippet || '';
+                snippetEl.classList.remove('hidden');
+                copyBtn.classList.remove('hidden');
+                sampleFileEl.textContent = ultimoRelatorio.sample_file
+                    ? t('healthcheck_sample_file', 'Exemplo completo salvo no servidor:') + ' ' + ultimoRelatorio.sample_file
+                    : '';
+                help.classList.remove('hidden');
+            };
+
+            const executarHealthcheck = async () => {
+                recheckBtn.disabled = true;
+                ultimoRelatorio = null;
+                setBadge(t('healthcheck_checking', 'Verificando o rewrite...'), 'bg-gray-200 text-gray-700');
+                hint.textContent = '';
+                help.classList.add('hidden');
+
+                try {
+                    let relatorio = await pedirRelatorio(null);
+                    if (relatorio.rewrite_ok === null || relatorio.rewrite_ok === undefined) {
+                        const resultado = await sondarNoNavegador(relatorio);
+                        // Reenvia o veredito para que ele fique registrado no installer.log.
+                        if (resultado !== null) relatorio = await pedirRelatorio(resultado);
+                    }
+                    ultimoRelatorio = relatorio;
+                    renderizar();
+                } catch (erro) {
+                    setBadge(t('healthcheck_error', 'Não foi possível executar a verificação de pré-requisitos.'), 'bg-red-100 text-red-800');
+                    hint.textContent = erro.message || '';
+                } finally {
+                    recheckBtn.disabled = false;
+                }
+            };
+
+            // Permite que applyTranslations redesenhe os textos escritos por JS.
+            window.conn2flowRenderHealthcheck = renderizar;
+
+            recheckBtn.addEventListener('click', executarHealthcheck);
+            copyBtn.addEventListener('click', function () {
+                navigator.clipboard.writeText(snippetEl.textContent || '').then(() => {
+                    const original = copyBtnLabel.textContent;
+                    copyBtnLabel.textContent = t('healthcheck_copied', 'Copiado!');
+                    setTimeout(() => { copyBtnLabel.textContent = original; }, 2000);
+                });
+            });
+            form.querySelectorAll('input[name="web_server"]').forEach(radio => {
+                radio.addEventListener('change', executarHealthcheck);
+            });
+
+            executarHealthcheck();
         }
 
         form.addEventListener('submit', function (event) {

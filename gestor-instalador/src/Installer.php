@@ -886,9 +886,12 @@ class Installer
         
         // O log, o lock e a chave de segurança são removidos por último para não
         // deixar credenciais nem resíduos executáveis na pasta pública.
+        // A cópia do vhost de exemplo gerada no health check fica na pasta pública; a que
+        // interessa ao operador é a gravada em `install_path`, que não é tocada aqui.
         $filesToRemove = [
             'teste-seguranca.txt',
             '.env.debug',
+            InstallerGuard::NGINX_SAMPLE_FILE,
             InstallerGuard::LOCK_FILE,
             InstallerGuard::KEY_FILE,
             'installer.log'
@@ -1464,6 +1467,9 @@ body {
             $this->log("Snippet de configuração do Nginx gravado em {$arquivo}");
         }
 
+        // VirtualHost completo pronto para copiar (REQ-027), ao lado do snippet parcial.
+        $this->writeNginxVhostSample($urlRaiz, $destinoBase);
+
         if ($sondaRewrite === true) {
             $this->log('✅ Rewrite do Nginx confirmado: _gestor-caminho chega ao front-controller.');
         } elseif ($sondaRewrite === false) {
@@ -1473,7 +1479,11 @@ body {
         }
     }
 
-    /** Conteúdo do snippet Nginx equivalente ao .htaccess do Apache. */
+    /**
+     * Conteúdo do snippet Nginx equivalente ao .htaccess do Apache.
+     * Contrato validado no BATCH-020: `break` na named location preserva `REQUEST_URI`,
+     * fixa o script PHP e evita uma segunda seleção de location.
+     */
     private function getNginxSnippet($urlRaiz)
     {
         $urlRaiz = $this->normalizeUrlRaiz($urlRaiz);
@@ -1499,17 +1509,217 @@ location @C2F_RAIZ@ {
         include /etc/nginx/fastcgi_params;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_pass @C2F_FPM@;
     }
 }
 
 location @c2f_rewrite {
-    # A interrogacao final impede que o Nginx reanexe a query string original.
-    rewrite ^@C2F_RAIZ@(.*)$ @C2F_RAIZ@index.php?_gestor-caminho=$1&$args? last;
+    # `break` mantem o processamento nesta location: por isso o FastCGI e despachado
+    # aqui mesmo. A interrogacao final impede que o Nginx reanexe a query string original.
+    rewrite ^@C2F_RAIZ@(.*)$ @C2F_RAIZ@index.php?_gestor-caminho=$1&$args? break;
+    include /etc/nginx/fastcgi_params;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_NAME @C2F_RAIZ@index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root@C2F_RAIZ@index.php;
+    fastcgi_pass @C2F_FPM@;
 }
 NGINX;
 
-        return str_replace('@C2F_RAIZ@', $urlRaiz, $snippet) . PHP_EOL;
+        return str_replace(
+            ['@C2F_RAIZ@', '@C2F_FPM@'],
+            [$urlRaiz, $this->detectPhpFpmBackend()],
+            $snippet
+        ) . PHP_EOL;
+    }
+
+    /**
+     * Descobre o backend PHP-FPM mais provável para o snippet.
+     * O HestiaCP cria um pool por domínio; fora dele vale o socket de maior versão.
+     */
+    private function detectPhpFpmBackend()
+    {
+        $candidatos = [];
+        foreach (['/run/php', '/var/run/php', '/run/php-fpm', '/var/run/php-fpm'] as $diretorio) {
+            if (!is_dir($diretorio)) continue;
+            foreach ((array)glob($diretorio . '/*.sock') as $socket) {
+                $candidatos[] = $socket;
+            }
+        }
+
+        if (empty($candidatos)) return 'unix:/run/php/php8.3-fpm.sock';
+
+        $dominio = trim((string)($this->data['domain'] ?? ''));
+        if ($dominio !== '') {
+            foreach ($candidatos as $socket) {
+                if (strpos(basename($socket), $dominio) !== false) return 'unix:' . $socket;
+            }
+        }
+
+        natsort($candidatos);
+        $candidatos = array_values($candidatos);
+
+        return 'unix:' . end($candidatos);
+    }
+
+    /** VirtualHost Nginx completo, pronto para copiar e colar (REQ-027). */
+    private function getNginxVhostSample($urlRaiz)
+    {
+        $urlRaiz = $this->normalizeUrlRaiz($urlRaiz);
+        if ($urlRaiz === '') $urlRaiz = '/';
+
+        $dominio = trim((string)($this->data['domain'] ?? ''));
+        if ($dominio === '') $dominio = 'exemplo.com';
+
+        $docRoot = trim((string)($this->data['document_root'] ?? ''));
+        if ($docRoot === '') $docRoot = str_replace(DIRECTORY_SEPARATOR, '/', (string)$this->baseDir);
+        $docRoot = rtrim($docRoot, '/');
+
+        $cabecalho = <<<'NGINX'
+# Conn2Flow @C2F_VERSAO@ - exemplo de VirtualHost Nginx.
+# Ajuste `server_name`, `root` e `fastcgi_pass` conforme o seu servidor, aplique em
+# /etc/nginx/sites-available/ e recarregue: nginx -t && systemctl reload nginx
+
+server {
+    listen 80;
+    server_name @C2F_DOMINIO@;
+    root @C2F_DOCROOT@;
+    index index.php index.html;
+
+    # O gestor fica fora da pasta publica; arquivos ocultos nunca sao servidos.
+    location ~ /\.(?!well-known/) {
+        deny all;
+        return 404;
+    }
+
+NGINX;
+
+        $rodape = PHP_EOL . '}' . PHP_EOL;
+
+        $cabecalho = str_replace(
+            ['@C2F_VERSAO@', '@C2F_DOMINIO@', '@C2F_DOCROOT@'],
+            [InstallerGuard::VERSION, $dominio, $docRoot],
+            $cabecalho
+        );
+
+        // O snippet entra indentado dentro do bloco `server`.
+        $corpo = $this->getNginxSnippet($urlRaiz);
+        $corpo = preg_replace('/^(?!$)/m', '    ', rtrim($corpo));
+
+        return $cabecalho . PHP_EOL . $corpo . $rodape;
+    }
+
+    /**
+     * Grava `nginx-vhost.conf.sample` e devolve o caminho gravado ('' em caso de falha).
+     * Preferimos o diretório de instalação (fora da pasta pública); quando ele ainda não
+     * existe — caso do health check antes da instalação — o arquivo fica na pasta do
+     * instalador, que é removida inteira em `cleanupInstallerFiles()`.
+     */
+    private function writeNginxVhostSample($urlRaiz, $destinoBase = null)
+    {
+        if ($destinoBase === null) {
+            $destinoBase = rtrim((string)($this->data['install_path'] ?? ''), DIRECTORY_SEPARATOR . '/');
+            if ($destinoBase === '' || !is_dir($destinoBase)) $destinoBase = $this->baseDir;
+        }
+
+        $arquivo = $destinoBase . DIRECTORY_SEPARATOR . InstallerGuard::NGINX_SAMPLE_FILE;
+        if (file_put_contents($arquivo, $this->getNginxVhostSample($urlRaiz)) === false) {
+            $this->addWarning('Não foi possível gravar o ' . InstallerGuard::NGINX_SAMPLE_FILE . '.');
+            return '';
+        }
+
+        @chmod($arquivo, 0640);
+        $this->log("VirtualHost de exemplo do Nginx gravado em {$arquivo}");
+
+        return $arquivo;
+    }
+
+    /**
+     * Garante que o Apache tenha o `.htaccess` de rewrite já durante o health check.
+     * O redirect para HTTPS é removido nesta cópia provisória: o operador pode estar em
+     * HTTP puro e a sonda receberia um 301 em vez do resultado do rewrite. O arquivo
+     * definitivo é reescrito por `setupPublicAccess()` no fim da instalação.
+     */
+    private function ensureApacheRewrite()
+    {
+        $destino = $this->baseDir . DIRECTORY_SEPARATOR . '.htaccess';
+        if (is_file($destino)) {
+            $this->log('.htaccess já presente na pasta do instalador.');
+            return ['acao' => 'existente', 'arquivo' => $destino];
+        }
+
+        $origem = $this->baseDir . DIRECTORY_SEPARATOR . 'public-access' . DIRECTORY_SEPARATOR . '.htaccess';
+        if (!is_file($origem)) {
+            $this->addWarning('Modelo de .htaccess não encontrado em public-access/.');
+            return ['acao' => 'indisponivel', 'arquivo' => ''];
+        }
+
+        $conteudo = (string)file_get_contents($origem);
+        $conteudo = preg_replace('/^\s*RewriteCond\s+%\{HTTPS\}\s+off.*$/m', '', $conteudo);
+        $conteudo = preg_replace('/^\s*RewriteRule\s+\^\(\.\*\)\$\s+https:.*$/m', '', $conteudo);
+        $conteudo = preg_replace("/\n{3,}/", "\n\n", $conteudo);
+
+        if (file_put_contents($destino, $conteudo) === false) {
+            $this->addWarning('Não foi possível gravar o .htaccess na pasta do instalador.');
+            return ['acao' => 'falhou', 'arquivo' => ''];
+        }
+
+        $this->log("Arquivo .htaccess provisório gravado em {$destino}");
+
+        return ['acao' => 'criado', 'arquivo' => $destino];
+    }
+
+    /**
+     * Relatório de pré-requisitos do rewrite consumido pelo health check (REQ-027).
+     *
+     * A sonda HTTP nunca é disparada pelo próprio PHP-FPM em modo web: o instalador roda
+     * dentro do mesmo pool e uma requisição a si mesmo pode esgotar os workers. Em modo web
+     * quem sonda é o navegador, que devolve o veredito em `rewrite_ok`. Em CLI/headless não
+     * há navegador, então o próprio instalador executa `probeRewrite()`.
+     */
+    public function rewriteProbeReport(array $opcoes = [])
+    {
+        $urlRaiz = $this->detectUrlRaiz();
+        if ($urlRaiz === '') $urlRaiz = '/';
+
+        $relatorio = [
+            'status' => 'success',
+            'versao' => InstallerGuard::VERSION,
+            'web_server' => $this->webServer,
+            'web_server_detectado' => InstallerGuard::detectWebServer(),
+            'url_raiz' => $urlRaiz,
+            'probe_url' => $urlRaiz . InstallerGuard::REWRITE_PROBE,
+            'probe_expected' => InstallerGuard::REWRITE_PROBE_OK,
+            'rewrite_ok' => null,
+            'origem' => 'pendente',
+            'snippet' => '',
+            'sample_file' => '',
+            'htaccess' => null,
+        ];
+
+        if ($this->webServer === 'apache') {
+            $relatorio['htaccess'] = $this->ensureApacheRewrite();
+        } else {
+            $relatorio['snippet'] = $this->getNginxSnippet($urlRaiz);
+            $arquivo = $this->writeNginxVhostSample($urlRaiz);
+            $relatorio['sample_file'] = $arquivo === '' ? '' : basename($arquivo);
+        }
+
+        if (array_key_exists('rewrite_ok', $opcoes) && $opcoes['rewrite_ok'] !== null) {
+            $relatorio['rewrite_ok'] = (bool)$opcoes['rewrite_ok'];
+            $relatorio['origem'] = 'cliente';
+        } elseif (InstallerGuard::isCli()) {
+            $relatorio['rewrite_ok'] = $this->probeRewrite($urlRaiz);
+            $relatorio['origem'] = $relatorio['rewrite_ok'] === null ? 'indisponivel' : 'servidor';
+        }
+
+        $veredito = $relatorio['rewrite_ok'] === null
+            ? 'indeterminado'
+            : ($relatorio['rewrite_ok'] ? 'ativo' : 'inativo');
+        $this->log("Health check de rewrite ({$this->webServer}, origem {$relatorio['origem']}): {$veredito}");
+
+        $relatorio['avisos'] = $this->getWarnings();
+
+        return $relatorio;
     }
 
     /**

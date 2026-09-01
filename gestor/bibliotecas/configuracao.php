@@ -480,7 +480,7 @@ function configuracao_administracao($params = false){
 		
 		// ===== Inclusão do jQuery-Mask-Plugin
 		
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js"></script>';
+		$_GESTOR['javascript'][] = '<script src="'.recursos_url('jQuery-Mask-Plugin-v1.14.16/jquery.mask.min.js').'"></script>';
 		
 		// ===== Editor de texto (req-142)
 		//
@@ -503,7 +503,7 @@ function configuracao_administracao($params = false){
 		
 		// ===== Inclusão configuracao javascript
 		
-		$_GESTOR['javascript'][] = '<script src="'.$_GESTOR['url-raiz'].'configuracao/configuracao.js?v='.$_GESTOR['biblioteca-configuracao']['versao'].'"></script>';
+		$_GESTOR['javascript'][] = recursos_tag_js('configuracao/configuracao.js', $_GESTOR['biblioteca-configuracao']['versao']);
 		
 		// ===== Configuração Javascript Vars
 		

@@ -16,6 +16,13 @@
 
 global $_GESTOR;
 
+// req-028: todos os geradores de tag <script>/<link> resolvem a URL por `recursos_url()`.
+// O `config.php` já carrega a biblioteca no fluxo normal; o guard cobre as entradas que
+// montam o $_GESTOR por conta própria (CLI de pipeline e bootstrap de testes).
+if(!function_exists('recursos_url')){
+	require_once(__DIR__ . DIRECTORY_SEPARATOR . 'recursos.php');
+}
+
 $_GESTOR['biblioteca-gestor']							=	Array(
 	'versao' => '1.0.0',
 );
@@ -565,6 +572,32 @@ function gestor_pagina_rota_sistema($caminho = ''){
 	}
 
 	return false;
+}
+
+/**
+ * Detecta o fallback terminal da rota de erro para impedir redirecionamento 404 -> 404.
+ *
+ * A pagina de erro normalmente e um recurso do banco. Se esse recurso ainda nao foi
+ * sincronizado, redirecionar novamente para a mesma rota cria um loop HTTP infinito.
+ *
+ * @param int|string $codigo Codigo HTTP em processamento.
+ * @param mixed $caminho Caminho atual recebido pelo roteador.
+ * @return bool
+ */
+function gestor_roteador_erro_terminal($codigo, $caminho = ''){
+	if((int)$codigo !== 404 || !is_string($caminho)) return false;
+
+	return trim(strtolower(trim($caminho)), '/') === '404';
+}
+
+/**
+ * Retorna o status HTTP que deve ser preservado ao renderizar uma pagina de erro existente.
+ *
+ * @param mixed $caminho Caminho da pagina encontrada pelo roteador.
+ * @return int|null Status HTTP explicito ou null para paginas comuns.
+ */
+function gestor_roteador_pagina_status_http($caminho = ''){
+	return gestor_roteador_erro_terminal(404, $caminho) ? 404 : null;
 }
 
 /**

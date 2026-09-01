@@ -89,5 +89,21 @@
     "web_server_apache": "Apache",
     "web_server_detected": "Automatically detected server:",
     "web_server_not_detected": "The web server could not be detected. Please select it manually.",
-    "web_server_mismatch": "The selection differs from the detected server. Continue only if there is a reverse proxy or if you are sure about the configuration."
+    "web_server_mismatch": "The selection differs from the detected server. Continue only if there is a reverse proxy or if you are sure about the configuration.",
+    "healthcheck_title": "Server prerequisites",
+    "healthcheck_checking": "Checking rewrite...",
+    "healthcheck_recheck": "Check again",
+    "healthcheck_ok": "{server} rewrite: OK",
+    "healthcheck_fail": "{server} rewrite: inactive",
+    "healthcheck_unknown": "{server} rewrite: not verified",
+    "healthcheck_hint_ok": "The server forwards the _gestor-caminho parameter to the front controller. You may proceed with the installation.",
+    "healthcheck_hint_fail": "Without the rewrite, Conn2Flow reads every request as the root path and internal routes return 404.",
+    "healthcheck_hint_unknown": "The automatic check could not be completed. Please confirm the server front-controller rule manually.",
+    "healthcheck_apache_help": "On Apache the installer writes the .htaccess automatically. If the check fails, make sure mod_rewrite is enabled and the VirtualHost uses AllowOverride All.",
+    "healthcheck_nginx_help_title": "Nginx is not forwarding the path to Conn2Flow yet",
+    "healthcheck_nginx_help_text": "Copy the block below into your domain server block, adjust fastcgi_pass to match your PHP-FPM and reload the service with: nginx -t && systemctl reload nginx. Then click Check again.",
+    "healthcheck_copy": "Copy configuration",
+    "healthcheck_copied": "Copied!",
+    "healthcheck_sample_file": "Full example saved on the server:",
+    "healthcheck_error": "The prerequisite check could not be executed."
 }

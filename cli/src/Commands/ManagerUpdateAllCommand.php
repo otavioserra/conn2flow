@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Conn2Flow\Cli\Commands;
 
+use Conn2Flow\Cli\Console\Input;
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
 
@@ -34,7 +35,7 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
         $output->title('Conn2Flow — Full Manager Update Pipeline');
 
         // 1. Resources
-        $output->section('1/5 Sincronizando Recursos (Data.json)');
+        $output->section('1/6 Sincronizando Recursos (Data.json)');
         $resCmd = new ResourcesSyncCommand($this->rootPath);
         $code = $resCmd->execute($input, $output);
         if ($code !== 0) {
@@ -43,7 +44,7 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
         }
 
         // 2. Files
-        $output->section('2/5 Sincronizando Arquivos com Ambiente de Testes');
+        $output->section('2/6 Sincronizando Arquivos com Ambiente de Testes');
         $filesCmd = new ManagerSyncFilesCommand($this->rootPath);
         $code = $filesCmd->execute($input, $output);
         if ($code !== 0) {
@@ -52,7 +53,7 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
         }
 
         // 3. Database
-        $output->section('3/5 Sincronizando Banco de Dados');
+        $output->section('3/6 Sincronizando Banco de Dados');
         $dbCmd = new DbUpdateCommand($this->rootPath);
         $code = $dbCmd->execute($input, $output);
         if ($code !== 0) {
@@ -66,7 +67,7 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
         // CSS derivado com o que veio do disco: o registro fica com HTML de uma origem e CSS de
         // outra. Regenerar aqui fecha o ciclo no mesmo comando, em vez de depender de alguém
         // lembrar de rodar depois.
-        $output->section('4/5 Regenerando CSS derivado');
+        $output->section('4/6 Regenerando CSS derivado');
         $cssCmd = new CssRebuildCommand($this->rootPath);
         $code = $cssCmd->execute($input, $output);
         if ($code !== 0) {
@@ -84,12 +85,27 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
         // pipeline pelo mesmo motivo da etapa anterior: fora dele viraria "alguém precisa lembrar",
         // e um derivado velho serviria código antigo com cara de novo. Sem `terser` a etapa apenas
         // avisa — o sistema volta a servir o arquivo de autoria, maior porém correto.
-        $output->section('5/5 Minificando JavaScript de autoria');
+        $output->section('5/6 Minificando JavaScript de autoria');
         $minCmd = new AssetsMinifyCommand($this->rootPath);
         $code = $minCmd->execute($input, $output);
         if ($code !== 0) {
             $output->warning(
                 'A minificação não completou. O sistema continua servindo o JavaScript de autoria.'
+            );
+        }
+
+        // 6. Publicação dos assets em `public_html/dist/` (req-028).
+        //
+        // Última etapa por dependência real: publica o resultado da minificação e do CSS derivado,
+        // não o estado anterior a eles. Sem DocumentRoot declarado a etapa apenas informa — a
+        // instalação continua servindo tudo pelo controlador `arquivo-estatico`.
+        $output->section('6/6 Publicando assets estáticos em dist/');
+        $publishCmd = new AssetsPublishCommand($this->rootPath);
+        $code = $publishCmd->execute(new Input(['--opcional']), $output);
+        if ($code !== 0) {
+            $output->warning(
+                'A publicação de assets não completou. O site segue funcionando: as URLs caem no '
+                . 'controlador arquivo-estatico, apenas sem a entrega direta pelo servidor web.'
             );
         }
 

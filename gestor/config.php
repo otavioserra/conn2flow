@@ -387,4 +387,39 @@ if(!isset($_GESTOR['project-asset-version'])){
 	$_GESTOR['project-asset-version'] = $_GESTOR['project-version'] ?? $_GESTOR['asset-version'];
 }
 
+// ===== req-028: assets estáticos publicados em `public_html/dist/`.
+//
+// O gestor mora fora da pasta pública, então o `dist/` é a única porta por onde o servidor web
+// entrega um asset sem acionar o PHP-FPM. `PUBLIC_PATH` existe para o modo CLI e para instalações
+// cujo DocumentRoot não é descoberto pelo `$_SERVER`; no fluxo web o DocumentRoot já basta.
+$_GESTOR['public-path'] = '';
+$publicPathDeclarado = trim((string)($_ENV['PUBLIC_PATH'] ?? ''));
+if($publicPathDeclarado === '') $publicPathDeclarado = (string)($_SERVER['DOCUMENT_ROOT'] ?? '');
+if($publicPathDeclarado !== ''){
+	$publicPathDeclarado = rtrim(str_replace('\\', '/', $publicPathDeclarado), '/');
+	if(is_dir($publicPathDeclarado)) $_GESTOR['public-path'] = $publicPathDeclarado.'/';
+}
+
+$_GESTOR['dist-path'] = ($_GESTOR['public-path'] === '') ? '' : ($_GESTOR['public-path'].'dist/');
+// O roteador acrescenta o prefixo de idioma a `url-raiz`; o `dist/` é único por instalação, senão
+// o mesmo arquivo físico existiria em uma URL por idioma e o cache do navegador se multiplicaria.
+$_GESTOR['dist-url'] = ($_GESTOR['url-raiz-sem-lang'] ?? '/').'dist/';
+
+$_GESTOR['dist-manifest'] = [];
+// O manifesto e oculto (`.manifest.json`): ele inventaria o build e nao deve ser legivel pela web.
+$distManifestPath = ($_GESTOR['dist-path'] === '') ? '' : ($_GESTOR['dist-path'].'.manifest.json');
+if($distManifestPath !== '' && is_file($distManifestPath)){
+	$distManifest = json_decode((string)file_get_contents($distManifestPath), true);
+	if(is_array($distManifest) && isset($distManifest['arquivos']) && is_array($distManifest['arquivos'])){
+		$_GESTOR['dist-manifest'] = $distManifest['arquivos'];
+	}
+}
+
+// Em desenvolvimento o fonte tem precedência: editar um asset não pode exigir republicação para
+// aparecer na tela. `ASSETS_DIST` permite forçar qualquer um dos dois lados.
+$_GESTOR['dist-ativo'] = !empty($_GESTOR['dist-manifest'])
+	&& filter_var($_ENV['ASSETS_DIST'] ?? !$_GESTOR['development-env'], FILTER_VALIDATE_BOOLEAN);
+
+require_once($_GESTOR['bibliotecas-path'].'recursos.php');
+
 ?>

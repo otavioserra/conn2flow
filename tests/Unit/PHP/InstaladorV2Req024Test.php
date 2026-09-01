@@ -75,12 +75,19 @@ final class InstaladorV2Req024Test extends TestCase
         return $reflexao->invokeArgs($installer, $argumentos);
     }
 
-    public function testInstaladorDeclaraVersaoDoisPontoZero(): void
+    public function testInstaladorDeclaraVersaoPelaConstanteDoGuard(): void
     {
+        // REQ-027: a versão passou a ter fonte única em InstallerGuard::VERSION para que o
+        // runner headless devolva o mesmo número que o instalador web anuncia.
         $indexPath = CONN2FLOW_ROOT . DIRECTORY_SEPARATOR . 'gestor-instalador' . DIRECTORY_SEPARATOR . 'index.php';
         $conteudo = (string) file_get_contents($indexPath);
 
-        self::assertMatchesRegularExpression("/\\\$_GESTOR_INSTALADOR\\['versao'\\]\s*=\s*'2\.0\.0'/", $conteudo);
+        self::assertMatchesRegularExpression(
+            "/\\\$_GESTOR_INSTALADOR\\['versao'\\]\s*=\s*InstallerGuard::VERSION/",
+            $conteudo
+        );
+        self::assertMatchesRegularExpression('/^2\.\d+\.\d+$/', InstallerGuard::VERSION);
+        self::assertGreaterThanOrEqual(0, version_compare(InstallerGuard::VERSION, '2.0.0'));
     }
 
     public function testChaveDeSegurancaEGeradaComTrintaEDoisHexadecimais(): void
@@ -229,8 +236,9 @@ final class InstaladorV2Req024Test extends TestCase
 
         self::assertStringContainsString('location @c2f_rewrite', $snippet);
         self::assertStringContainsString('_gestor-caminho=$1', $snippet);
-        // A interrogação final evita que o Nginx reanexe os argumentos originais.
-        self::assertStringContainsString('&$args? last;', $snippet);
+        // REQ-027 / BATCH-020: `break` mantém o processamento na named location, que despacha
+        // o FastCGI ali mesmo. A interrogação final evita que o Nginx reanexe os argumentos.
+        self::assertStringContainsString('&$args? break;', $snippet);
         // Assets inexistentes em disco precisam alcançar o controlador arquivo-estatico.
         self::assertStringContainsString('try_files $uri @c2f_rewrite;', $snippet);
     }
