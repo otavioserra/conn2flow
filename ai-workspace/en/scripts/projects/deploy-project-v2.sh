@@ -86,8 +86,18 @@ upload_zip() {
     log "API URL: $api_url"
     log "File size: $(du -h "$zip_file" | cut -f1)"
 
+    # Smart SSL verification: uses local CA if present, or -k for .local, strict for production
+    local ssl_opts=()
+    local is_local=$(jq -r ".devProjects.\"$project_target\".local // false" "$ENV_FILE" 2>/dev/null)
+    local ca_file="$HOME/.conn2flow-lab-ca.crt"
+    if [ -f "$ca_file" ]; then
+        ssl_opts+=(--cacert "$ca_file")
+    elif [ "$is_local" = "true" ] || [[ "$api_url" == *".local"* ]]; then
+        ssl_opts+=(-k)
+    fi
+
     # Use curl to upload multipart/form-data
-    response=$(curl -k -s -w "\n%{http_code}" \
+    response=$(curl "${ssl_opts[@]}" -s -w "\n%{http_code}" \
         -H "Authorization: Bearer $token" \
         -H "X-Project-ID: $project_target" \
         -F "project_zip=@$zip_file" \
