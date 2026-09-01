@@ -1493,3 +1493,62 @@ Medido em navegador real (Playwright) em `/admin-paginas/`:
       - PHPUnit (`composer test`): 965/965 testes passando, 4.192 asserções, 0 falhas.
       - Vitest (`npm run test`): 26 arquivos, 378/378 testes passando, 0 falhas.
 
+
+---
+
+## BATCH-047 — Preflight do Instalador, Sonda HTTP Anti-Deadlock e Contrato CLI (req-045)
+
+> Evidências completas, decisões técnicas e tabelas de simulação em [batch-047.md](../implementation/batch-047.md).
+
+### 1. Checklist de Aceite Técnico
+
+- [x] `releaseManager.ts` lê a versão do `gestor-instalador` a partir de `InstallerGuard.php` sem falha de preflight.
+- [x] Fallback retrocompatível para o literal do `index.php` (instalador v1) preservado e testado.
+- [x] `version-installer.php` (en) e `version-instalador.php` (pt-br) incrementam `const VERSION` em `InstallerGuard.php` e sincronizam o comentário do `index.php`.
+- [x] `release-installer.sh` / `release-instalador.sh` aceitam os dois caminhos no staging e barram caminhos alheios.
+- [x] Regra Anti-Deadlock de Sonda HTTP formalizada em `c2f-html-css-pages-and-components` §3 e `c2f-dev-scripts` §4.
+- [x] Contrato `Conn2Flow\Cli\Contracts\CommandInterface` / `BaseProcessCommand` formalizado em `c2f-dev-scripts` §3 e em `cli/CLAUDE.md`.
+- [x] Suíte automatizada da extensão 100% verde.
+- [x] Formulário "Preparar Release do Instalador" monta com `canPrepare: true` e exibe versão atual `2.1.0`, próximo incremento `2.1.1` e tag `instalador-v2.1.1` (validado headless — Teste 8).
+- [ ] Conferência visual da pintura do painel no VS Code — resíduo que exige a janela da IDE, não exercitável headless.
+
+### 2. Evidências de Validação
+
+#### Teste 1: Suíte da extensão
+* **Comando**: `npm test` em `vscode-extension/`
+* **Evidência**: 76/76 testes passando, 0 falhas, compilação TypeScript limpa (66 anteriores + 10 novos em `test/releaseVersionSource.test.cjs`).
+
+#### Teste 2: Preflight real contra o Core
+* **Evidência**: `installer` resolve `2.1.0` em `gestor-instalador/src/InstallerGuard.php` → tag `instalador-v2.1.1`; `manager` resolve `2.10.1` em `gestor/config.php` → tag `gestor-v2.10.2`. Ambos com preflight OK.
+
+#### Teste 3: Scripts de versão do Core em sandbox isolado
+* **Comandos**: `php -l`; `version-installer.php {patch,minor,major} --dry-run`; execução real em sandbox.
+* **Evidência**: dry-run `2.1.1` / `2.2.0` / `3.0.0` sem escrita; escrita real muda `const VERSION` **e** o comentário `(x.y.z)` do `index.php`, com `diff` integral confirmando que nenhuma outra linha foi tocada; fallback v1 `1.9.4` → `1.9.5`; tipo inválido e ausência de fonte retornam `exit=1`.
+
+#### Teste 4: Guarda de caminhos do release
+* **Comando**: `bash -n` + simulação da lista de permissão.
+* **Evidência**: libera `{guard+index}`, `{index}` e `{guard}`; bloqueia caminho alheio (`gestor/config.php`) e árvore limpa.
+
+#### Teste 5: Integridade das skills
+* **Comando**: `php cli/c2f.php ai:sync` no Core.
+* **Evidência**: 36/36 skills verificadas em `.claude`, `.cursor`, `.gemini`, `.github` e `.codex` — `✔ Verified` em todos, exit 0.
+
+#### Teste 6: Paridade das cópias propagadas
+* **Evidência**: `c2f-dev-scripts` (21 cópias) e `c2f-html-css-pages-and-components` (24 cópias) com 1 hash único cada; `cli/CLAUDE.md` com 1 hash único em 4 cópias; nenhum resíduo de "Padrão Symfony Console" nos dois repositórios.
+
+#### Teste 7: Empacotamento
+* **Comando**: `npx vsce package`
+* **Evidência**: `conn2flow-tools-1.0.0.vsix` (67 arquivos, 159.96 KB) gerado para homologação local. Nenhum commit, push, deploy ou release executado.
+
+#### Teste 8: Harness headless do formulário de release
+* **Método**: reprodução do caminho de dados de `ReleaseManager.prepare('installer')` + `diagnose()` sobre `out/releasePolicy.js` e o repositório Core real.
+* **Evidência**: `currentVersion=2.1.0`, `nextVersion=2.1.1`, `tag=instalador-v2.1.1`, `command=./c2f installer:release patch ...`, `requiredFilesReady=true`, `canPrepare=true`; reatividade do `semverPreview` confere em `patch` (2.1.1), `minor` (2.2.0) e `major` (3.0.0). Blockers residuais (`permission-unknown`, `dirty-tree`, `draft-missing`) são estados de ambiente esperados.
+
+### 3. Achado fora do escopo — drift dos READMEs do Core
+
+O gate documental passou a acusar `README:installer-version`. **Não é regressão deste lote.** Com `readVersion` devolvendo `undefined`, `inspectReleaseDocumentContents()` recebia `installerVersion = undefined` e pulava a checagem do README; com a versão resolvendo, a checagem ativou e revelou drift pré-existente:
+
+- Tag `instalador-v2.1.0` publicada no repositório.
+- `README.md` (155/159/163) e `README-PT-BR.md` (160/164/168) ainda apontam downloads para `instalador-v2.0.0`.
+
+Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execução** da release do instalador (a preparação do formulário não é afetada). Como a mudança altera URLs de download voltadas ao usuário final e a curadoria dos READMEs é do Arquiteto (`MEMORIA-ENGENHARIA-CHEFIA.md` §1), **nenhum README foi alterado**. Decisão pendente do Humano-no-Loop.

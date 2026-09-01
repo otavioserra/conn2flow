@@ -3,7 +3,7 @@
 # Executar: bash ./ai-workspace/pt-br/scripts/releases/release-instalador.sh TIPO "TAG_MSG" "COMMIT_MSG"
 
 # Script para automatizar o processo de release do GESTOR-INSTALADOR:
-# 1. Atualiza a versão no index.php
+# 1. Atualiza a versão canônica em src/InstallerGuard.php (e o comentário em index.php)
 # 2. Adiciona as mudanças ao Git
 # 3. Cria um commit padronizado
 # 4. Cria uma tag Git com a nova versão
@@ -22,10 +22,12 @@ fi
 RELEASE_TYPE=$1
 TAG_SUMMARY=$2
 COMMIT_DETAILS=$3
+# Fonte canônica de versão do instalador v2 e front controller que a espelha em comentário.
+GUARD_FILE="gestor-instalador/src/InstallerGuard.php"
 CONFIG_FILE="gestor-instalador/index.php"
 VERSION_SCRIPT="ai-workspace/pt-br/scripts/releases/version-instalador.php"
 
-# 1. Roda o script PHP para atualizar a versão no index.php
+# 1. Roda o script PHP para atualizar a versão canônica no InstallerGuard.php
 echo "Atualizando a versão do instalador ($RELEASE_TYPE)..."
 NEW_VERSION=$(php $VERSION_SCRIPT $RELEASE_TYPE)
 
@@ -41,7 +43,12 @@ echo "Nova versão do instalador é: $NEW_VERSION"
 
 # 2. Adiciona, commita e cria uma tag anotada no Git com mensagens distintas
 echo "Criando commit e tag para a versão instalador-v$NEW_VERSION..."
-git add .
+# Governança de concorrência multi-agente: nunca use `git add .` ou `git add -A` aqui.
+# O bump toca apenas a constante canônica e, quando existir, o comentário espelhado no index.
+if [ -f "$GUARD_FILE" ]; then
+  git add -- "$GUARD_FILE"
+fi
+git add -- "$CONFIG_FILE"
 git commit -m "$COMMIT_DETAILS"
 git tag -a "instalador-v$NEW_VERSION" -m "$TAG_SUMMARY"
 

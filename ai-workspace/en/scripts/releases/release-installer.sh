@@ -3,7 +3,7 @@
 # Run: bash ./ai-workspace/en/scripts/releases/release-installer.sh TYPE "TAG_MSG" "COMMIT_MSG" [automatic|manual]
 
 # Script to automate the GESTOR-INSTALLER release process:
-# 1. Updates the version in index.php
+# 1. Updates the canonical version in src/InstallerGuard.php (and the comment in index.php)
 # 2. Adds changes to Git
 # 3. Creates a standardized commit
 # 4. Creates a Git tag with the new version
@@ -23,6 +23,8 @@ RELEASE_TYPE=$1
 TAG_SUMMARY=$2
 COMMIT_DETAILS=$3
 RELEASE_MODE=${4:-automatic}
+# Canonical version source of the installer v2 plus the front controller that mirrors it in a comment.
+GUARD_FILE="gestor-instalador/src/InstallerGuard.php"
 CONFIG_FILE="gestor-instalador/index.php"
 VERSION_SCRIPT="ai-workspace/en/scripts/releases/version-installer.php"
 WORKFLOW_FILE=".github/workflows/release-instalador.yml"
@@ -80,7 +82,7 @@ if [ "$RELEASE_MODE" = "manual" ]; then
   gh auth status >/dev/null
 fi
 
-# 1. Runs the PHP script to update the version in index.php
+# 1. Runs the PHP script to update the canonical version in InstallerGuard.php
 echo "Updating installer version ($RELEASE_TYPE)..."
 NEW_VERSION=$(php "$VERSION_SCRIPT" "$RELEASE_TYPE")
 
@@ -96,11 +98,21 @@ echo "New installer version is: $NEW_VERSION"
 
 # 2. Adds, commits, and creates an annotated Git tag with distinct messages
 echo "Creating commit and tag for version installer-v$NEW_VERSION..."
+# The version bump touches the canonical constant in InstallerGuard.php and, when present,
+# the descriptive comment mirrored in index.php. Any other path means the tree drifted.
 CHANGED_PATHS=$(git status --porcelain --untracked-files=all | sed 's/^...//')
-if [ "$CHANGED_PATHS" != "$CONFIG_FILE" ]; then
-  echo "Error: Installer release changed unexpected paths:"
-  printf '%s\n' "$CHANGED_PATHS"
+if [ -z "$CHANGED_PATHS" ]; then
+  echo "Error: Installer release did not change the version source."
   exit 1
+fi
+UNEXPECTED_PATHS=$(printf '%s\n' "$CHANGED_PATHS" | grep -vxF -e "$GUARD_FILE" -e "$CONFIG_FILE" || true)
+if [ -n "$UNEXPECTED_PATHS" ]; then
+  echo "Error: Installer release changed unexpected paths:"
+  printf '%s\n' "$UNEXPECTED_PATHS"
+  exit 1
+fi
+if [ -f "$GUARD_FILE" ]; then
+  git add -- "$GUARD_FILE"
 fi
 git add -- "$CONFIG_FILE"
 git commit -m "$COMMIT_DETAILS"
