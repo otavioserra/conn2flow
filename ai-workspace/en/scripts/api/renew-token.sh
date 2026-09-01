@@ -147,7 +147,7 @@ REFRESH_URL=$(normalize_url "$PROJECT_URL" "/_api/oauth/refresh")
 log "Trying to renew tokens via: $REFRESH_URL"
 
 # Make refresh request
-RESPONSE=$(curl -k -s -X POST "$REFRESH_URL" \
+RESPONSE=$(curl --ssl-no-revoke -k -s -X POST "$REFRESH_URL" \
     -H "Content-Type: application/json" \
     -d "{\"refresh_token\": \"$REFRESH_TOKEN\"}" 2>/dev/null)
 
