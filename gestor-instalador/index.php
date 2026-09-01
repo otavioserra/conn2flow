@@ -16,7 +16,7 @@ require_once __DIR__ . '/src/helpers.php';
 
 // ===== Definições de variáveis gerais do gestor.
 
-$_GESTOR_INSTALADOR['versao']								=	InstallerGuard::VERSION; // Versão do gestor instalador (2.1.0).
+$_GESTOR_INSTALADOR['versao']								=	InstallerGuard::VERSION; // Versão do gestor instalador (2.1.1).
 
 // ===== Sonda de rewrite: responde antes da sessão e da trava para que o instalador
 // possa confirmar que o servidor web injeta `_gestor-caminho` no front-controller.
