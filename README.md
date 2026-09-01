@@ -152,15 +152,15 @@ framework and its MCP Hub.
 Conn2Flow features a modern automated web installer that prepares database schemas, seeds initial administration data, and generates encryption keys.
 
 ### 1. Download & Extract
-Download the official `instalador-v2.0.0` distribution:
+Download the official `instalador-v2.1.0` distribution:
 
 ```bash
 # Linux/macOS
-curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.0.0/instalador.zip
+curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.1.0/instalador.zip
 unzip instalador.zip -d /var/www/html/
 
 # Windows PowerShell
-Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.0.0/instalador.zip" -OutFile "instalador.zip"
+Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.1.0/instalador.zip" -OutFile "instalador.zip"
 Expand-Archive -Path "instalador.zip" -DestinationPath "C:\xampp\htdocs\"
 ```
 
