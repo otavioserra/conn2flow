@@ -157,15 +157,15 @@ e seu MCP Hub.
 O Conn2Flow disponibiliza um assistente web automatizado de instalação que configura o banco de dados, popula tabelas essenciais e gera as chaves de criptografia.
 
 ### 1. Download e Extração
-Baixe o pacote oficial da release `instalador-v2.1.1`:
+Baixe o pacote oficial da release `instalador-v2.1.2`:
 
 ```bash
 # Linux/macOS
-curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.1.1/instalador.zip
+curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.1.2/instalador.zip
 unzip instalador.zip -d /var/www/html/
 
-# Windows PowerShell
-Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.1.1/instalador.zip" -OutFile "instalador.zip"
+# Windows (PowerShell)
+Invoke-WebRequest -Uri "https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.1.2/instalador.zip" -OutFile "instalador.zip"
 Expand-Archive -Path "instalador.zip" -DestinationPath "C:\xampp\htdocs\"
 ```
 
