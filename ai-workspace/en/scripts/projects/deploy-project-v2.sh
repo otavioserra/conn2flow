@@ -87,7 +87,7 @@ upload_zip() {
     log "File size: $(du -h "$zip_file" | cut -f1)"
 
     # Use curl to upload multipart/form-data
-    response=$(curl -s -w "\n%{http_code}" \
+    response=$(curl -k -s -w "\n%{http_code}" \
         -H "Authorization: Bearer $token" \
         -H "X-Project-ID: $project_target" \
         -F "project_zip=@$zip_file" \
