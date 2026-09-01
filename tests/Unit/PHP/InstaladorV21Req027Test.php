@@ -87,7 +87,7 @@ final class InstaladorV21Req027Test extends TestCase
 
     public function testInstaladorAnunciaVersaoDoisPontoUm(): void
     {
-        self::assertSame('2.1.1', InstallerGuard::VERSION);
+        self::assertSame('2.1.2', InstallerGuard::VERSION);
         self::assertSame('api/rewrite-probe', InstallerGuard::API_REWRITE_PROBE);
         self::assertSame('nginx-vhost.conf.sample', InstallerGuard::NGINX_SAMPLE_FILE);
     }

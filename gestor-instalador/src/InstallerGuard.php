@@ -7,7 +7,7 @@
 class InstallerGuard
 {
     /** Versão corrente do gestor instalador. Fonte única para o index e o runner headless. */
-    const VERSION = '2.1.1';
+    const VERSION = '2.1.2';
 
     /** Arquivo com a chave de segurança exigida antes de liberar o formulário. */
     const KEY_FILE = 'install-key.txt';

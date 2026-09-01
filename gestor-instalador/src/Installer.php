@@ -1231,13 +1231,14 @@ body {
             } else {
                 $this->log("Resposta da API inválida - não é um array", 'WARNING');
             }
-        } else {
-            $this->log("Falha na requisição da API: HTTP {$httpCode}", 'WARNING');
         }
-        
-        // Se chegou até aqui, a API falhou ou não encontrou releases
-        $this->log("❌ Falha ao buscar releases via API do GitHub", 'ERROR');
-        throw new Exception(__('error_github_api_failed', 'Não foi possível acessar os releases do GitHub. Verifique sua conexão com a internet e tente novamente.'));
+
+        // Se a API do GitHub estiver inacessível ou com rate limit (ex: HTTP 403), usa o último release estável conhecido
+        $defaultFallbackTag = 'gestor-v2.10.1';
+        $defaultFallbackUrl = "https://github.com/otavioserra/conn2flow/releases/download/{$defaultFallbackTag}/gestor.zip";
+        $this->log("⚠️ API do GitHub retornou HTTP {$httpCode} ou falhou. Usando release estável de fallback: {$defaultFallbackTag}", 'WARNING');
+        $this->log("URL do download fallback: {$defaultFallbackUrl}");
+        return $defaultFallbackUrl;
     }
 
     // Métodos de seeders removidos.
