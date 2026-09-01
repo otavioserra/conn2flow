@@ -1,6 +1,6 @@
 #!/bin/bash
-# Script to run database migrations/updates inside the Docker environment
-# Reads the Docker path dynamically from environment.json
+# Script to run database migrations/updates in Docker or directly on the host
+# Resolves the execution mode dynamically from environment.json
 #
 # Usage:
 #   bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh
@@ -25,8 +25,12 @@ LOCAL_DOCKER_ROOT="$PROJECT_ROOT/dev-environment/data/sites/"
 DOCKER_ROOT="/var/www/sites/"
 
 PROJECT_TARGET_OVERRIDE=""
+PROJECT_TARGET=""
 FORCE_ALL=false
 TABLES=""
+EXECUTION_MODE="docker"
+PATH_DOCKER=""
+PATH_HOST=""
 
 usage() {
   echo "Usage: $0 [--project|-p PROJECT_ID] [--tables TABLE_A,TABLE_B] [--force-all]"
@@ -88,6 +92,12 @@ if [ -n "$PROJECT_TARGET_OVERRIDE" ]; then
   PROJECT_TARGET="$PROJECT_TARGET_OVERRIDE"
   log "Project specified via argument: $PROJECT_TARGET"
 
+  # The identifier is interpolated into jq expressions and later forwarded to PHP.
+  if [[ ! "$PROJECT_TARGET" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+    log_error "Invalid project identifier. Use only letters, digits, hyphen or underscore."
+    exit 1
+  fi
+
   PROJECT_EXISTS=$(jq -r ".devProjects.\"$PROJECT_TARGET\" | length" "$ENV_JSON" 2>/dev/null || echo "0")
   if [ "$PROJECT_EXISTS" = "0" ] || [ -z "$PROJECT_EXISTS" ]; then
     log_error "Project '$PROJECT_TARGET' not found in environment.json (devProjects)."
@@ -108,15 +118,27 @@ if [ -n "$PROJECT_TARGET_OVERRIDE" ]; then
       "$LOCAL_DOCKER_ROOT"*)
         RELATIVE_DOCKER_PATH="${TARGET_PATH#"$LOCAL_DOCKER_ROOT"}"
         PATH_DOCKER="${DOCKER_ROOT}${RELATIVE_DOCKER_PATH}"
+        EXECUTION_MODE="docker"
         ;;
       *)
-        log_error "Could not derive dockerPath for '$PROJECT_TARGET' from test path: $TARGET_PATH"
-        exit 1
+        HOST_PHP_SCRIPT="${TARGET_PATH}controladores/atualizacoes/atualizacoes-banco-de-dados.php"
+        if [ -f "$HOST_PHP_SCRIPT" ]; then
+          PATH_HOST="$TARGET_PATH"
+          EXECUTION_MODE="host"
+        else
+          log_error "Project '$PROJECT_TARGET' has neither dockerPath nor an executable host target: $TARGET_PATH"
+          exit 1
+        fi
         ;;
     esac
 
-    log "dockerPath derived from project target/path_tests"
+    if [ "$EXECUTION_MODE" = "docker" ]; then
+      log "dockerPath derived from project target/path_tests"
+    else
+      log "Host execution selected from project target/path_tests"
+    fi
   else
+    EXECUTION_MODE="docker"
     log "dockerPath read from project configuration"
   fi
 else
@@ -127,30 +149,37 @@ else
   fi
 fi
 
-PATH_DOCKER="${PATH_DOCKER%/}/"
+if [ "$EXECUTION_MODE" = "host" ]; then
+  PATH_HOST="${PATH_HOST%/}/"
+  PHP_SCRIPT="${PATH_HOST}controladores/atualizacoes/atualizacoes-banco-de-dados.php"
+  log "Host Path: $PATH_HOST"
+else
+  PATH_DOCKER="${PATH_DOCKER%/}/"
 
-if [ -z "$PATH_DOCKER" ] || [ "$PATH_DOCKER" = "/" ] || [ "$PATH_DOCKER" = "null/" ]; then
-  log_error "'dockerPath' not set in environment.json and could not be derived"
-  exit 1
+  if [ -z "$PATH_DOCKER" ] || [ "$PATH_DOCKER" = "/" ] || [ "$PATH_DOCKER" = "null/" ]; then
+    log_error "'dockerPath' not set in environment.json and could not be derived"
+    exit 1
+  fi
+
+  PHP_SCRIPT="${PATH_DOCKER}controladores/atualizacoes/atualizacoes-banco-de-dados.php"
+  log "Docker Path: $PATH_DOCKER"
 fi
 
-PHP_SCRIPT="${PATH_DOCKER}controladores/atualizacoes/atualizacoes-banco-de-dados.php"
-
-log "Docker Path: $PATH_DOCKER"
+log "Execution Mode: $EXECUTION_MODE"
 log "PHP Script: $PHP_SCRIPT"
 log "Running database updates..."
 
-PHP_ARGS="--debug --log-diff"
+PHP_ARGS=(--debug --log-diff)
 if [ -n "$TABLES" ]; then
   if [[ ! "$TABLES" =~ ^[a-zA-Z0-9_,]+$ ]]; then
     log_error "Invalid --tables value. Use only table names separated by commas."
     exit 1
   fi
-  PHP_ARGS="$PHP_ARGS --tables=$TABLES"
+  PHP_ARGS+=("--tables=$TABLES")
   log "Tables filter: $TABLES"
 fi
 if [ "$FORCE_ALL" = true ]; then
-  PHP_ARGS="$PHP_ARGS --force-all"
+  PHP_ARGS+=(--force-all)
   log "Force all tables: enabled"
 fi
 
@@ -170,16 +199,25 @@ fi
 # O caminho remoto nunca teve o defeito — `api.php` monta `CLI_OPTS['project']` a partir do
 # cabeçalho `X-Project-ID`. Era uma assimetria entre os dois deploys do MESMO projeto.
 if [ -n "$PROJECT_TARGET" ]; then
-  # Mesma validação do `--tables`: o valor entra numa linha de comando executada por `docker exec`.
-  if [[ ! "$PROJECT_TARGET" =~ ^[a-zA-Z0-9_-]+$ ]]; then
-    log_error "Invalid project identifier. Use only letters, digits, hyphen or underscore."
-    exit 1
-  fi
-  PHP_ARGS="$PHP_ARGS --project=$PROJECT_TARGET"
+  # O identificador já foi validado antes de ser interpolado em jq ou repassado ao PHP.
+  PHP_ARGS+=("--project=$PROJECT_TARGET")
   log "Project deploy: resources will be overwritten and marked with '$PROJECT_TARGET'"
 fi
 
-if docker exec conn2flow-app bash -c "php ${PHP_SCRIPT} ${PHP_ARGS}"; then
+if [ "$EXECUTION_MODE" = "host" ] && ! command -v php >/dev/null 2>&1; then
+  log_error "PHP CLI is required for host execution."
+  exit 1
+fi
+
+run_database_update() {
+  if [ "$EXECUTION_MODE" = "host" ]; then
+    (cd "$PATH_HOST" && php "$PHP_SCRIPT" "${PHP_ARGS[@]}")
+  else
+    docker exec conn2flow-app php "$PHP_SCRIPT" "${PHP_ARGS[@]}"
+  fi
+}
+
+if run_database_update; then
   log_success "Database updates completed successfully!"
 else
   log_error "An error occurred during database updates."

@@ -22,7 +22,7 @@ services:
       context: .
       dockerfile: Dockerfile.php85
     container_name: conn2flow-app-php85-pgsql
-    restart: unless-stopped
+    restart: "no"
     ports:
       - "80:80"
     volumes:
@@ -73,7 +73,7 @@ services:
   postgres:
     image: postgres:17-alpine
     container_name: conn2flow-postgres
-    restart: unless-stopped
+    restart: "no"
     environment:
       POSTGRES_DB: conn2flow
       POSTGRES_USER: conn2flow_user
@@ -90,7 +90,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: conn2flow-pgadmin
-    restart: unless-stopped
+    restart: "no"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@conn2flow.com
       PGADMIN_DEFAULT_PASSWORD: admin123

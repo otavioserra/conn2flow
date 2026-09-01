@@ -3,7 +3,7 @@ services:
   app:
     build: .
     container_name: conn2flow-app
-    restart: unless-stopped
+    restart: "no"
     ports:
       - "80:80"
     volumes:
@@ -61,7 +61,7 @@ services:
   mysql:
     image: mysql:8.0
     container_name: conn2flow-mysql
-    restart: unless-stopped
+    restart: "no"
     environment:
       MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: conn2flow
@@ -79,7 +79,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: conn2flow-phpmyadmin
-    restart: unless-stopped
+    restart: "no"
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306

@@ -1496,6 +1496,24 @@ Medido em navegador real (Playwright) em `/admin-paginas/`:
 
 ---
 
+## BATCH-154 — Paridade bare-metal no `project:update-all` (req-152)
+
+- [x] `updates-manager-database.sh` aprovado por `bash -n` no Windows/Git Bash e no Lab Linux.
+- [x] Modo Docker preservado quando `dockerPath` é explícito ou derivável.
+- [x] Execução direta `docker exec conn2flow-app php ... --help` aprovada no container local.
+- [x] Modo host condicionado à existência do atualizador PHP em `target/path_tests`.
+- [x] PHP host executado em subshell a partir da raiz do Gestor.
+- [x] Identificador validado antes das expressões jq; argumentos separados em array Bash.
+- [x] Bootstrap `phinx.php` compartilha `$_GESTOR` global no contexto CLI.
+- [x] Testes focados: 10/10, 30 asserções.
+- [x] PHPUnit completa: 1008/1008, 4.347 asserções, 4 skips esperados, 0 falhas.
+- [x] Lab HestiaCP: `c2f project:update-all snapphoton-lab` concluiu 5/5.
+- [x] Repetição idempotente: `+0 ~0 =19`, `TRANSACAO_COMMIT`, pipeline 5/5.
+- [x] Backups reversíveis do script e do `phinx.php` preservados em `/root/` no Lab.
+- [ ] Homologação humana do diff do BATCH-154.
+
+---
+
 ## BATCH-047 — Preflight do Instalador, Sonda HTTP Anti-Deadlock e Contrato CLI (req-045)
 
 > Evidências completas, decisões técnicas e tabelas de simulação em [batch-047.md](../implementation/batch-047.md).

@@ -190,7 +190,7 @@ final class ProjectIdentityPassthroughTest extends TestCase
         $conteudo = (string) file_get_contents($script);
 
         self::assertStringContainsString(
-            'PHP_ARGS="$PHP_ARGS --project=$PROJECT_TARGET"',
+            'PHP_ARGS+=("--project=$PROJECT_TARGET")',
             $conteudo,
             'o script não repassa a identidade do projeto ao atualizador'
         );
@@ -198,7 +198,7 @@ final class ProjectIdentityPassthroughTest extends TestCase
         // O repasse é CONDICIONADO: sem `--project`, a execução é uma atualização normal do núcleo
         // e não pode marcar recurso nenhum como sendo de projeto.
         self::assertMatchesRegularExpression(
-            '/if \[ -n "\$PROJECT_TARGET" \]; then\s*\n(?:.*\n)*?\s*PHP_ARGS="\$PHP_ARGS --project=\$PROJECT_TARGET"/',
+            '/if \[ -n "\$PROJECT_TARGET" \]; then\s*\n(?:.*\n)*?\s*PHP_ARGS\+=\("--project=\$PROJECT_TARGET"\)/',
             $conteudo,
             'o repasse precisa estar condicionado à presença do projeto'
         );

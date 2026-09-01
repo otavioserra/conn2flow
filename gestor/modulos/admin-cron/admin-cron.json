@@ -1,0 +1,883 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "cron"
+    ],
+    "tabela": {
+        "nome": "cron_tarefas",
+        "id": "id",
+        "id_numerico": "id_cron_tarefas",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "resources": {
+        "pt-br": {
+            "pages": [
+                {
+                    "name": "Rotinas Automáticas",
+                    "id": "admin-cron",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "admin-cron/",
+                    "type": "system",
+                    "option": "painel",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": ""
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "../../../../admin-cron.js"
+                    ],
+                    "tailwind_sources_reason": "REQ-032: as etiquetas de status e de frequência das linhas são montadas em runtime pelo admin-cron.js a partir do JSON do backend; sem escanear o script, o precompiled sai sem as utilities dessas etiquetas."
+                }
+            ],
+            "variables": [
+                {
+                    "id": "page-title",
+                    "value": "Rotinas Automáticas",
+                    "type": "string"
+                },
+                {
+                    "id": "page-subtitle",
+                    "value": "Agendamento e execução das tarefas do sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "card-total-label",
+                    "value": "Tarefas cadastradas",
+                    "type": "string"
+                },
+                {
+                    "id": "card-active-label",
+                    "value": "Tarefas ativas",
+                    "type": "string"
+                },
+                {
+                    "id": "card-executions-label",
+                    "value": "Execuções nas últimas 24h",
+                    "type": "string"
+                },
+                {
+                    "id": "card-scheduler-label",
+                    "value": "Agendador do servidor",
+                    "type": "string"
+                },
+                {
+                    "id": "scheduler-detected",
+                    "value": "Detectado",
+                    "type": "string"
+                },
+                {
+                    "id": "scheduler-not-detected",
+                    "value": "Não detectado",
+                    "type": "string"
+                },
+                {
+                    "id": "button-sync-modules",
+                    "value": "Sincronizar Módulos (.json)",
+                    "type": "string"
+                },
+                {
+                    "id": "button-new-task",
+                    "value": "Nova tarefa",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-search-placeholder",
+                    "value": "Buscar por nome, identificador ou callback",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-frequency-label",
+                    "value": "Frequência",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-module-label",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-frequency-all",
+                    "value": "Todas as frequências",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-module-all",
+                    "value": "Todos os módulos",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-minutario",
+                    "value": "A cada 10 minutos",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-horario",
+                    "value": "De hora em hora",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-diario",
+                    "value": "Diária",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-mensal",
+                    "value": "Mensal",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-customizado",
+                    "value": "Personalizada",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-task",
+                    "value": "Tarefa",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-module",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-frequency",
+                    "value": "Frequência",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-last-run",
+                    "value": "Último disparo",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-duration",
+                    "value": "Duração",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-actions",
+                    "value": "Ações",
+                    "type": "string"
+                },
+                {
+                    "id": "table-empty",
+                    "value": "Nenhuma tarefa encontrada para os filtros aplicados.",
+                    "type": "string"
+                },
+                {
+                    "id": "action-run-now",
+                    "value": "Disparar agora",
+                    "type": "string"
+                },
+                {
+                    "id": "action-pause",
+                    "value": "Pausar",
+                    "type": "string"
+                },
+                {
+                    "id": "action-activate",
+                    "value": "Ativar",
+                    "type": "string"
+                },
+                {
+                    "id": "action-edit",
+                    "value": "Editar",
+                    "type": "string"
+                },
+                {
+                    "id": "action-logs",
+                    "value": "Ver logs",
+                    "type": "string"
+                },
+                {
+                    "id": "action-delete",
+                    "value": "Excluir",
+                    "type": "string"
+                },
+                {
+                    "id": "status-sucesso",
+                    "value": "Sucesso",
+                    "type": "string"
+                },
+                {
+                    "id": "status-erro",
+                    "value": "Erro",
+                    "type": "string"
+                },
+                {
+                    "id": "status-aviso",
+                    "value": "Aviso",
+                    "type": "string"
+                },
+                {
+                    "id": "status-never-run",
+                    "value": "Nunca executada",
+                    "type": "string"
+                },
+                {
+                    "id": "state-paused",
+                    "value": "Pausada",
+                    "type": "string"
+                },
+                {
+                    "id": "origin-modulo",
+                    "value": "Declarada no módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "origin-manual",
+                    "value": "Criada no painel",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-new-title",
+                    "value": "Nova tarefa avulsa",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-edit-title",
+                    "value": "Editar tarefa",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-label",
+                    "value": "Identificador",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-hint",
+                    "value": "Use letras minúsculas, números e hífens.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-description-label",
+                    "value": "Descrição",
+                    "type": "string"
+                },
+                {
+                    "id": "form-frequency-label",
+                    "value": "Frequência",
+                    "type": "string"
+                },
+                {
+                    "id": "form-cron-expression-label",
+                    "value": "Expressão cron",
+                    "type": "string"
+                },
+                {
+                    "id": "form-cron-expression-hint",
+                    "value": "Cinco campos, como em 0 3 * * *. Obrigatória na frequência personalizada.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-callback-label",
+                    "value": "Função de callback",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Módulo",
+                    "type": "string"
+                },
+                {
+                    "id": "form-parameters-label",
+                    "value": "Parâmetros (JSON)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-active-label",
+                    "value": "Tarefa ativa",
+                    "type": "string"
+                },
+                {
+                    "id": "form-readonly-notice",
+                    "value": "Esta tarefa é declarada no arquivo do módulo. Nome, descrição e callback são somente leitura; alterações de agendamento e de estado são preservadas na sincronização.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-save",
+                    "value": "Salvar",
+                    "type": "string"
+                },
+                {
+                    "id": "button-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "button-close",
+                    "value": "Fechar",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-title",
+                    "value": "Histórico da última execução",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-last-run",
+                    "value": "Disparo",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-duration",
+                    "value": "Duração",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-status",
+                    "value": "Resultado",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-output",
+                    "value": "Saída",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-empty",
+                    "value": "Esta tarefa ainda não foi executada.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-sync-success",
+                    "value": "Módulos sincronizados.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-run-success",
+                    "value": "Tarefa executada.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-toggle-success",
+                    "value": "Estado da tarefa atualizado.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-save-success",
+                    "value": "Tarefa salva.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-delete-success",
+                    "value": "Tarefa excluída.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-confirm-delete",
+                    "value": "Excluir esta tarefa em definitivo?",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-generic",
+                    "value": "Não foi possível concluir a operação.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-task-not-found",
+                    "value": "Tarefa não encontrada.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-required-fields",
+                    "value": "Preencha identificador, nome e função de callback.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-id",
+                    "value": "Identificador inválido. Use letras minúsculas, números e hífens.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-frequency",
+                    "value": "Frequência inválida.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-cron",
+                    "value": "Expressão cron inválida. Informe cinco campos.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-callback",
+                    "value": "Nome de função de callback inválido.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-parameters",
+                    "value": "Os parâmetros precisam ser um JSON válido.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-duplicate-id",
+                    "value": "Já existe uma tarefa com este identificador.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-module-task-readonly",
+                    "value": "Tarefas declaradas em módulos não podem ser excluídas pelo painel. Remova a declaração do arquivo do módulo e sincronize.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-module-task-fields",
+                    "value": "Nome, descrição e callback de tarefas de módulo são definidos no arquivo do módulo.",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "pages": [
+                {
+                    "name": "Scheduled Tasks",
+                    "id": "admin-cron",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "admin-cron/",
+                    "type": "system",
+                    "option": "painel",
+                    "root": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": ""
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_sources": [
+                        "../../../../admin-cron.js"
+                    ],
+                    "tailwind_sources_reason": "REQ-032: status and frequency badges are built at runtime by admin-cron.js from the backend JSON; without scanning the script the precompiled bundle misses those utilities."
+                }
+            ],
+            "variables": [
+                {
+                    "id": "page-title",
+                    "value": "Scheduled Tasks",
+                    "type": "string"
+                },
+                {
+                    "id": "page-subtitle",
+                    "value": "Scheduling and execution of system routines",
+                    "type": "string"
+                },
+                {
+                    "id": "card-total-label",
+                    "value": "Registered tasks",
+                    "type": "string"
+                },
+                {
+                    "id": "card-active-label",
+                    "value": "Active tasks",
+                    "type": "string"
+                },
+                {
+                    "id": "card-executions-label",
+                    "value": "Runs in the last 24h",
+                    "type": "string"
+                },
+                {
+                    "id": "card-scheduler-label",
+                    "value": "Server scheduler",
+                    "type": "string"
+                },
+                {
+                    "id": "scheduler-detected",
+                    "value": "Detected",
+                    "type": "string"
+                },
+                {
+                    "id": "scheduler-not-detected",
+                    "value": "Not detected",
+                    "type": "string"
+                },
+                {
+                    "id": "button-sync-modules",
+                    "value": "Sync Modules (.json)",
+                    "type": "string"
+                },
+                {
+                    "id": "button-new-task",
+                    "value": "New task",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-search-placeholder",
+                    "value": "Search by name, identifier or callback",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-frequency-label",
+                    "value": "Frequency",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-frequency-all",
+                    "value": "All frequencies",
+                    "type": "string"
+                },
+                {
+                    "id": "filter-module-all",
+                    "value": "All modules",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-minutario",
+                    "value": "Every 10 minutes",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-horario",
+                    "value": "Hourly",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-diario",
+                    "value": "Daily",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-mensal",
+                    "value": "Monthly",
+                    "type": "string"
+                },
+                {
+                    "id": "freq-customizado",
+                    "value": "Custom",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-task",
+                    "value": "Task",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-module",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-frequency",
+                    "value": "Frequency",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-last-run",
+                    "value": "Last run",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-duration",
+                    "value": "Duration",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "table-col-actions",
+                    "value": "Actions",
+                    "type": "string"
+                },
+                {
+                    "id": "table-empty",
+                    "value": "No task matches the current filters.",
+                    "type": "string"
+                },
+                {
+                    "id": "action-run-now",
+                    "value": "Run now",
+                    "type": "string"
+                },
+                {
+                    "id": "action-pause",
+                    "value": "Pause",
+                    "type": "string"
+                },
+                {
+                    "id": "action-activate",
+                    "value": "Activate",
+                    "type": "string"
+                },
+                {
+                    "id": "action-edit",
+                    "value": "Edit",
+                    "type": "string"
+                },
+                {
+                    "id": "action-logs",
+                    "value": "View logs",
+                    "type": "string"
+                },
+                {
+                    "id": "action-delete",
+                    "value": "Delete",
+                    "type": "string"
+                },
+                {
+                    "id": "status-sucesso",
+                    "value": "Success",
+                    "type": "string"
+                },
+                {
+                    "id": "status-erro",
+                    "value": "Error",
+                    "type": "string"
+                },
+                {
+                    "id": "status-aviso",
+                    "value": "Warning",
+                    "type": "string"
+                },
+                {
+                    "id": "status-never-run",
+                    "value": "Never run",
+                    "type": "string"
+                },
+                {
+                    "id": "state-paused",
+                    "value": "Paused",
+                    "type": "string"
+                },
+                {
+                    "id": "origin-modulo",
+                    "value": "Declared in module",
+                    "type": "string"
+                },
+                {
+                    "id": "origin-manual",
+                    "value": "Created in panel",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-new-title",
+                    "value": "New standalone task",
+                    "type": "string"
+                },
+                {
+                    "id": "modal-edit-title",
+                    "value": "Edit task",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-label",
+                    "value": "Identifier",
+                    "type": "string"
+                },
+                {
+                    "id": "form-id-hint",
+                    "value": "Use lowercase letters, numbers and hyphens.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-description-label",
+                    "value": "Description",
+                    "type": "string"
+                },
+                {
+                    "id": "form-frequency-label",
+                    "value": "Frequency",
+                    "type": "string"
+                },
+                {
+                    "id": "form-cron-expression-label",
+                    "value": "Cron expression",
+                    "type": "string"
+                },
+                {
+                    "id": "form-cron-expression-hint",
+                    "value": "Five fields, such as 0 3 * * *. Required for custom frequency.",
+                    "type": "string"
+                },
+                {
+                    "id": "form-callback-label",
+                    "value": "Callback function",
+                    "type": "string"
+                },
+                {
+                    "id": "form-module-label",
+                    "value": "Module",
+                    "type": "string"
+                },
+                {
+                    "id": "form-parameters-label",
+                    "value": "Parameters (JSON)",
+                    "type": "string"
+                },
+                {
+                    "id": "form-active-label",
+                    "value": "Task active",
+                    "type": "string"
+                },
+                {
+                    "id": "form-readonly-notice",
+                    "value": "This task is declared in the module file. Name, description and callback are read-only; schedule and state changes are preserved across synchronization.",
+                    "type": "string"
+                },
+                {
+                    "id": "button-save",
+                    "value": "Save",
+                    "type": "string"
+                },
+                {
+                    "id": "button-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "button-close",
+                    "value": "Close",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-title",
+                    "value": "Last execution history",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-last-run",
+                    "value": "Run at",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-duration",
+                    "value": "Duration",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-status",
+                    "value": "Result",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-output",
+                    "value": "Output",
+                    "type": "string"
+                },
+                {
+                    "id": "logs-empty",
+                    "value": "This task has not run yet.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-sync-success",
+                    "value": "Modules synchronized.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-run-success",
+                    "value": "Task executed.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-toggle-success",
+                    "value": "Task state updated.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-save-success",
+                    "value": "Task saved.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-delete-success",
+                    "value": "Task deleted.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-confirm-delete",
+                    "value": "Permanently delete this task?",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-generic",
+                    "value": "The operation could not be completed.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-task-not-found",
+                    "value": "Task not found.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-required-fields",
+                    "value": "Fill in identifier, name and callback function.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-id",
+                    "value": "Invalid identifier. Use lowercase letters, numbers and hyphens.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-frequency",
+                    "value": "Invalid frequency.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-cron",
+                    "value": "Invalid cron expression. Provide five fields.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-callback",
+                    "value": "Invalid callback function name.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-invalid-parameters",
+                    "value": "Parameters must be valid JSON.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-duplicate-id",
+                    "value": "A task with this identifier already exists.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-module-task-readonly",
+                    "value": "Tasks declared in modules cannot be deleted from the panel. Remove the declaration from the module file and synchronize.",
+                    "type": "string"
+                },
+                {
+                    "id": "api-error-module-task-fields",
+                    "value": "Name, description and callback of module tasks are defined in the module file.",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

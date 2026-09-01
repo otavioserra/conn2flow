@@ -79,6 +79,24 @@
                 "insert_only": false
             },
             "deletar": []
+        },
+        "cron_tarefas": {
+            "nome": "cron_tarefas",
+            "id": "id",
+            "id_numerico": "id_cron_tarefas",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": [
+                    "id"
+                ],
+                "preserve_on_user_modified": [
+                    "ativo",
+                    "expressao_cron",
+                    "parametros"
+                ],
+                "insert_only": false
+            },
+            "deletar": []
         }
     }
 }

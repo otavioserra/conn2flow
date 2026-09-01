@@ -31,6 +31,10 @@ if ($isInstalling) {
     }
 } else {
     // CONTEXTO DE PRODUÇÃO: Carrega config.php normalmente
+    // req-152: este arquivo também é requerido dentro de migracoes(). Sem o vínculo global,
+    // config.php reconstruía $_GESTOR apenas no escopo da função enquanto as bibliotecas já
+    // consultavam o estado global parcial criado pelo atualizador CLI.
+    global $_GESTOR;
     require_once $configPath;
 
     global $_BANCO;

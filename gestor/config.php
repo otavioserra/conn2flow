@@ -19,16 +19,20 @@ $_GESTOR['variavel-global']						=	Array(
 	'closeText' => ']]', // Fechamento de uma variável na definição da mesma
 );
 
-if (php_sapi_name() === 'cli') {
+if(isset($_CRON)){
+	// Ambiente de execução via CRON.
+	// req-032: este ramo precisa vir ANTES do teste de CLI. O cron.php também roda sob o SAPI
+	// cli, então na ordem anterior o ramo genérico vencia e SERVER_NAME era fixado em
+	// 'localhost' — o host resolvido pelo cron era descartado e o .env carregado vinha da
+	// primeira pasta de autenticacoes/, não da do domínio agendado.
+	$_SERVER['SERVER_NAME'] = $_CRON['SERVER_NAME'];
+	$_GESTOR['ROOT_PATH'] = $_CRON['ROOT_PATH'];
+} else if (php_sapi_name() === 'cli') {
 	// Ambiente de linha de comando (usado por Phinx, scripts, etc.)
 	// Define o ROOT_PATH de forma absoluta e confiável a partir da localização deste arquivo.
 	$_GESTOR['ROOT_PATH'] = __DIR__ . '/';
 	// Define um SERVER_NAME padrão para a lógica de configuração funcionar.
 	$_SERVER['SERVER_NAME'] = 'localhost';
-} else if(isset($_CRON)){
-	// Ambiente de execução via CRON
-	$_SERVER['SERVER_NAME'] = $_CRON['SERVER_NAME'];
-	$_GESTOR['ROOT_PATH'] = $_CRON['ROOT_PATH'];
 } else {
 	// Ambiente de execução via Web (Apache, etc.)
 	$_GESTOR['ROOT_PATH'] = $_INDEX['sistemas-dir'];
@@ -344,6 +348,9 @@ $_GESTOR['bibliotecas-dados'] = Array(
     'oauth' => Array('oauth.php'),
     'seguranca' => Array('seguranca.php'),
     'modulo-distribuido' => Array('modulo-distribuido.php'),
+    // req-032: executor e vocabulário das rotinas automáticas, compartilhados entre a engine
+    // gestor/cron.php e o módulo administrativo admin-cron.
+    'cron' => Array('cron.php'),
 );
 
 // Bibliotecas principais do sistema
@@ -357,7 +364,16 @@ foreach($_GESTOR['bibliotecas'] as $_biblioteca){
 
         if($_caminhos)
         foreach($_caminhos as $_caminho){
-            require_once($_GESTOR['modulos-bibliotecas'].$_caminho);
+            // req-032: preferir o caminho ABSOLUTO. O relativo ('bibliotecas/...') só resolve
+            // quando o CWD é a pasta do gestor — não é o caso do agendador do HestiaCP, que
+            // invoca `/usr/bin/php /home/<user>/web/<dominio>/conn2flow-gestor/cron.php` a
+            // partir do home do usuário. O fallback relativo permanece para instalações que
+            // carreguem o config sem ROOT_PATH resolvido.
+            if(isset($_GESTOR['bibliotecas-path']) && file_exists($_GESTOR['bibliotecas-path'].$_caminho)){
+                require_once($_GESTOR['bibliotecas-path'].$_caminho);
+            } else {
+                require_once($_GESTOR['modulos-bibliotecas'].$_caminho);
+            }
         }
     }
 }

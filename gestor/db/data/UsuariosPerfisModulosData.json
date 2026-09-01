@@ -93,6 +93,10 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "admin-cron"
+    },
+    {
+        "perfil": "administradores",
         "modulo": "publisher"
     },
     {

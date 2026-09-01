@@ -49,6 +49,10 @@ global $SYSTEM_PATH, $BASE_PATH, $GESTOR_DIR, $RESOURCES_DIR, $MODULES_DIR, $DB_
 $SYSTEM_PATH = realpath(__DIR__ . '/../../../../') . DIRECTORY_SEPARATOR; // raiz do repositório
 
 require_once $SYSTEM_PATH . 'gestor/bibliotecas/lang.php';
+// req-032: vocabulario de frequencias e derivacao da expressao cron. A biblioteca e a fonte
+// unica compartilhada com a engine gestor/cron.php e com o painel admin-cron; suas funcoes de
+// execucao dependem de banco, mas nenhuma delas e chamada nesta compilacao.
+require_once $SYSTEM_PATH . 'gestor/bibliotecas/cron.php';
 // Biblioteca de logs (pode ser adaptada futuramente). Se não existir função, definimos fallback simples.
 // Carregar biblioteca de log original
 $LOG_LIB_PATH = $SYSTEM_PATH . 'gestor/bibliotecas/log.php';
@@ -486,8 +490,8 @@ function coletarRecursos(array $existentes, array $map): array {
     global $RESOURCES_DIR, $MODULES_DIR, $LOG_FILE, $DB_DATA_DIR;
     $languages = array_keys($map['languages']);
 
-    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = $templates = $forms = $widgets = [];
-    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'alvos_ia'=>[], 'modos_ia'=>[], 'templates'=>[], 'forms'=>[], 'widgets'=>[] ];
+    $layouts = $paginas = $componentes = $variaveis = $prompts_ia = $alvos_ia = $modos_ia = $templates = $forms = $widgets = $cron_tarefas = [];
+    $orphans = [ 'layouts'=>[], 'paginas'=>[], 'componentes'=>[], 'variaveis'=>[], 'prompts_ia'=>[], 'alvos_ia'=>[], 'modos_ia'=>[], 'templates'=>[], 'forms'=>[], 'widgets'=>[], 'cron_tarefas'=>[] ];
 
     // Índices de unicidade
     $idxLayouts = [];              // lang|id
@@ -501,6 +505,7 @@ function coletarRecursos(array $existentes, array $map): array {
     $idxVariaveis = [];            // lang|mod|id => groups[]
     $idxForms = [];               // lang|mod|id
     $idxWidgets = [];             // lang|id
+    $idxCronTarefas = [];         // id (a tarefa agendada não é um recurso por idioma)
 
     // Helper versão + checksum reutilizando existente
     $versaoChecksum = function(string $tipo, string $chave, ?string $html, ?string $css, ?string $cssPrecompiled = null) use (&$existentes) : array {
@@ -715,12 +720,83 @@ function coletarRecursos(array $existentes, array $map): array {
     }
 
     // ---------- Módulos ----------
+    // req-032 (BATCH-026): índice das tarefas de cron já compiladas, para reusar `versao` quando
+    // o checksum da declaração não mudou (mesmo contrato dos demais recursos).
+    $cronExistente = [];
+    foreach ((jsonRead($DB_DATA_DIR.'CronTarefasData.json') ?? []) as $cr) {
+        if (is_array($cr) && isset($cr['id'])) $cronExistente[(string)$cr['id']] = $cr;
+    }
+
     if (is_dir($MODULES_DIR)) {
         $mods = glob($MODULES_DIR.'*',GLOB_ONLYDIR) ?: [];
         foreach ($mods as $modPath) {
             $modId = basename($modPath);
             $jsonFile = $modPath.DIRECTORY_SEPARATOR.$modId.'.json';
             $data = jsonRead($jsonFile); if(!$data) continue;
+
+            // req-032 (BATCH-026): chave declarativa "cron" na RAIZ do manifesto do módulo.
+            // Diferente dos demais recursos, a tarefa agendada não é multi-idioma: ela descreve
+            // um callback PHP e a frequência do despacho, não conteúdo apresentável. Por isso é
+            // lida uma vez por módulo, fora do laço de idiomas, e sua unicidade é global por id.
+            foreach ((is_array($data['cron'] ?? null) ? $data['cron'] : []) as $tarefa) {
+                if (!is_array($tarefa)) continue;
+                $tid = isset($tarefa['id']) ? trim((string)$tarefa['id']) : '';
+                if ($tid === '') { $orphans['cron_tarefas'][] = $tarefa+['_motivo'=>'sem id','modulo'=>$modId]; continue; }
+                if (isset($idxCronTarefas[$tid])) { $orphans['cron_tarefas'][] = $tarefa+['_motivo'=>'duplicidade id','modulo'=>$modId]; continue; }
+
+                $callback = isset($tarefa['funcao']) ? trim((string)$tarefa['funcao']) : '';
+                if ($callback === '') { $orphans['cron_tarefas'][] = $tarefa+['_motivo'=>'sem funcao de callback','modulo'=>$modId]; continue; }
+
+                $frequencia = strtolower(trim((string)($tarefa['frequencia'] ?? 'diario')));
+                if (!in_array($frequencia, cron_frequencias_validas(), true)) {
+                    $orphans['cron_tarefas'][] = $tarefa+['_motivo'=>'frequencia invalida: '.$frequencia,'modulo'=>$modId];
+                    continue;
+                }
+
+                $expressao = cron_expressao_declarada($tarefa, $frequencia);
+                if ($expressao === null) {
+                    $orphans['cron_tarefas'][] = $tarefa+['_motivo'=>'expressao_cron ausente ou invalida','modulo'=>$modId];
+                    continue;
+                }
+
+                $idxCronTarefas[$tid] = true;
+
+                $parametros = (isset($tarefa['parametros']) && is_array($tarefa['parametros']))
+                    ? json_encode($tarefa['parametros'], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES)
+                    : null;
+
+                $cronData = [
+                    'id'              => $tid,
+                    'nome'            => (string)($tarefa['nome'] ?? $tid),
+                    'descricao'       => isset($tarefa['descricao']) ? (string)$tarefa['descricao'] : null,
+                    'modulo'          => $modId,
+                    'frequencia'      => $frequencia,
+                    'expressao_cron'  => $expressao,
+                    'funcao_callback' => $callback,
+                    'parametros'      => $parametros,
+                    'ativo'           => (isset($tarefa['ativo']) && !$tarefa['ativo']) ? 0 : 1,
+                    'origem'          => 'modulo',
+                    'status'          => (string)($tarefa['status'] ?? 'A'),
+                    'user_modified'   => 0,
+                ];
+
+                // A versão só avança quando a DECLARAÇÃO muda. Estado de execução (ultimo_disparo,
+                // ultima_duracao_ms, ...) nunca entra no checksum: senão todo tick do cron
+                // provocaria um bump de versão e um UPDATE no próximo deploy.
+                $cronChecksum = md5(json_encode($cronData, JSON_UNESCAPED_UNICODE));
+                $versao = 1;
+                if (isset($cronExistente[$tid])) {
+                    $antiga = (int)($cronExistente[$tid]['versao'] ?? 1);
+                    $versao = (($cronExistente[$tid]['checksum'] ?? null) === $cronChecksum) ? $antiga : $antiga + 1;
+                }
+                $cronData['versao'] = $versao;
+                $cronData['checksum'] = $cronChecksum;
+
+                if (isset($tarefa['data_criacao'])) $cronData['data_criacao'] = $tarefa['data_criacao'];
+                if (isset($tarefa['data_modificacao'])) $cronData['data_modificacao'] = $tarefa['data_modificacao'];
+
+                $cron_tarefas[] = $cronData;
+            }
             foreach ($languages as $lang) {
                 if(empty($data['resources'][$lang])) continue;
                 $res = $data['resources'][$lang];
@@ -853,6 +929,9 @@ function coletarRecursos(array $existentes, array $map): array {
     $reservadas = [
         'layouts'=>true,'paginas'=>true,'componentes'=>true,'templates'=>true,'variaveis'=>true,
         'prompts_ia'=>true,'modos_ia'=>true,'alvos_ia'=>true,'forms'=>true,'widgets'=>true,
+        // req-032: cron_tarefas tem coletor dedicado (chave "cron" na raiz do manifesto), então
+        // a varredura genérica por idioma não pode reescrever o arquivo dele.
+        'cron_tarefas'=>true,
     ];
     $existDinamicoCache = [];
     foreach (coletarConfigsTabelas() as [$cfg, $src]) {
@@ -919,6 +998,7 @@ function coletarRecursos(array $existentes, array $map): array {
         'targetsData'=>$alvos_ia,
         'formsData'=>$forms,
         'widgetsData'=>$widgets,
+        'cronTarefasData'=>$cron_tarefas,
         'dynamicTablesData'=>$dynamicTablesData,
         'orphans'=>$orphans,
     ];
@@ -942,6 +1022,8 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     jsonWrite($DB_DATA_DIR.'ModosIaData.json', $recursos['modesData']);
     // req-066 (BATCH-066): tabela global `widgets` (categorias/tipos de widget do sistema).
     jsonWrite($DB_DATA_DIR.'WidgetsData.json', $recursos['widgetsData'] ?? []);
+    // req-032 (BATCH-026): tabela global `cron_tarefas` (rotinas automáticas declaradas nos módulos).
+    jsonWrite($DB_DATA_DIR.'CronTarefasData.json', $recursos['cronTarefasData'] ?? []);
     // Tabelas dinâmicas (sync_resources): gera [PascalCase]Data.json para cada tabela coletada.
     foreach (($recursos['dynamicTablesData'] ?? []) as $tabela => $linhas) {
         if (!is_string($tabela) || !preg_match('/^[a-z0-9_]+$/', $tabela)) {
@@ -958,6 +1040,9 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
         $k = strtolower($T);
         jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
     }
+    // req-032 (BATCH-026): a chave de órfãos de cron é 'cron_tarefas' e não sobrevive ao
+    // strtolower() do laço acima, que assume PascalCase sem separador.
+    jsonWrite($orphDir.'CronTarefasData.json', $recursos['orphans']['cron_tarefas'] ?? []);
     log_disco_local('Dados persistidos + órfãos.', $LOG_FILE);
 }
 
@@ -965,7 +1050,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
 
 function validarDuplicidades(array $recursos): array {
     $erros = [];
-    foreach (['layouts','paginas','componentes','templates','variaveis','prompts_ia','alvos_ia','modos_ia','forms','widgets'] as $t) {
+    foreach (['layouts','paginas','componentes','templates','variaveis','prompts_ia','alvos_ia','modos_ia','forms','widgets','cron_tarefas'] as $t) {
         $q = count($recursos['orphans'][$t] ?? []); if($q>0) $erros[] = "$t: $q órfãos";
     }
     return $erros;
@@ -979,7 +1064,7 @@ function aplicarErrosOrigem(array $dupsMeta, array $originsIndex): void { /* V2:
 
 function reporteFinal(array $recursos, array $erros): void {
     global $LOG_FILE;
-    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['templatesData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['modesData']) + count($recursos['targetsData']) + count($recursos['formsData']) + count($recursos['widgetsData'] ?? []);
+    $total = count($recursos['layoutsData']) + count($recursos['pagesData']) + count($recursos['componentsData']) + count($recursos['templatesData']) + count($recursos['variablesData']) + count($recursos['promptsData']) + count($recursos['modesData']) + count($recursos['targetsData']) + count($recursos['formsData']) + count($recursos['widgetsData'] ?? []) + count($recursos['cronTarefasData'] ?? []);
     $totalOrphans = 0; foreach ($recursos['orphans'] as $lst) { $totalOrphans += count($lst); }
 
     $msg = "♻️  Relatório Final:".PHP_EOL.
@@ -993,6 +1078,7 @@ function reporteFinal(array $recursos, array $erros): void {
            "➡️  Alvos IA: ".count($recursos['targetsData']).PHP_EOL.
            "➡️  Formulários: ".count($recursos['formsData']).PHP_EOL.
            "➡️  Widgets: ".count($recursos['widgetsData'] ?? []).PHP_EOL.
+           "➡️  Tarefas de Cron: ".count($recursos['cronTarefasData'] ?? []).PHP_EOL.
            "Σ TOTAL: $total".PHP_EOL;
 
     $tailwind = $recursos['tailwindStats'] ?? null;
