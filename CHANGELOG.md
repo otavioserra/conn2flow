@@ -5,6 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.2] - 2026-09-02
+
+### Added
+- Cron Tasks Engine & Module (`admin-cron`): Implemented the automated background task engine (`cron.php`), database migration (`cron_tarefas` table), and admin CRUD interfaces (REQ-152 / BATCH-154 e REQ-032 / BATCH-026).
+
+### Fixed
+- Windows TLS/SSL Compatibility: Added `--ssl-no-revoke` flag for curl operations to prevent Schannel certificate revocation check failures during deployment and token renewal on Windows systems.
+
 ## [2.10.1] - 2026-08-31
 
 ### Added

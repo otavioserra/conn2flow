@@ -75,13 +75,15 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.1 (Agosto de 2026)** *(Base atual: v2.9.51)*
+**v2.10.2 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Documentação de Raiz Enxuta**: Resumos do README e changelog ficam concisos, enquanto os manuais de ambiente de desenvolvimento e notas de release legadas passam a viver na documentação do workspace de IA.
-- **Inicialização do Fluxo de Agentes**: Inicialização sem prompt e identificação explícita do repositório tornam os handoffs entre múltiplos repositórios mais previsíveis.
+- **Engine de Tarefas Cron (`admin-cron`)**: Motor completo de execução de cron (`cron.php`) e CRUD administrativo para gerenciamento de tarefas agendadas (`cron_tarefas`).
+- **Compatibilidade TLS/SSL no Windows**: Adicionada flag `--ssl-no-revoke` em operações curl para evitar falhas de revogação no Schannel em ambientes Windows.
+- **Documentação de Raiz Enxuta**: Resumos no README e changelog mantidos concisos.
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.1**: Inicialização do fluxo de agentes sem prompt, identificação explícita do repositório e enxugamento da documentação.
 - **v2.10.0**: Dependências automáticas de sistema no Tailwind, assets externos e Google Fonts hospedados localmente, minificação de assets no build, tabelas administrativas responsivas, segurança e recuperação de sessão reforçadas e compatibilidade com o Instalador Web v2.
 
 Para ver o registro completo de mudanças, consulte o [CHANGELOG-PT-BR.md](CHANGELOG-PT-BR.md).

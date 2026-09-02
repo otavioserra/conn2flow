@@ -5,6 +5,14 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.2] - 2026-09-02
+
+### Added
+- Engine e Módulo de Tarefas Cron (`admin-cron`): Implementado o motor autônomo de execução de tarefas agendadas em segundo plano (`cron.php`), migração do banco (`cron_tarefas`) e interface CRUD de gerenciamento (REQ-152 / BATCH-154 e REQ-032 / BATCH-026).
+
+### Fixed
+- Compatibilidade TLS/SSL no Windows: Adicionada a flag `--ssl-no-revoke` em requisições curl para evitar falhas de revogação do Schannel durante o deploy e renovação de tokens no Windows.
+
 ## [2.10.1] - 2026-08-31
 
 ### Added

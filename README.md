@@ -71,14 +71,16 @@ content workflows.
 
 ## 🆕 Latest Version
 
-**v2.10.1 (August 2026)** *(Current base: v2.9.51)*
+**v2.10.2 (September 2026)** *(Current base: v2.9.51)*
 
-- **Focused Root Documentation**: README and changelog summaries now stay concise, while detailed development-environment guides and legacy release notes live in the AI workspace documentation.
-- **Agent Workflow Bootstrap**: Zero-prompt initialization and explicit repository identification make multi-repository development handoffs more predictable.
+- **Cron Tasks Engine (`admin-cron`)**: Complete cron execution engine (`cron.php`) and administration CRUD for automated tasks (`cron_tarefas` table).
+- **Windows TLS/SSL Compatibility**: Added `--ssl-no-revoke` flag for curl operations to prevent Schannel revocation check failures in Windows environments.
+- **Focused Root Documentation**: README and changelog summaries remain concise, with detailed guides in the AI workspace.
 
 ### Previous 2.10.x Releases
 
-- **v2.10.0**: Automatic Tailwind system dependencies, self-hosted external assets and Google Fonts, build-time asset minification, responsive administrative tables, hardened security and session recovery, and Web Installer v2 compatibility.
+- **v2.10.1**: Zero-prompt agent bootstrap, explicit repository identification, and streamlined root documentation.
+- **v2.10.0**: Automatic Tailwind system dependencies, self-hosted external assets and Google Fonts, build-time asset minification, responsive administrative tables, hardened security, and Web Installer v2 compatibility.
 
 For complete version details, see [CHANGELOG.md](CHANGELOG.md).
 
