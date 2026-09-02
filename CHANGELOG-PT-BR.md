@@ -5,6 +5,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.6] - 2026-09-02
+
+### Changed
+- Esteira CI/CD de Release: Removidas as etapas redundantes de compilação remota de recursos Tailwind em `.github/workflows/release-gestor.yml` para consumir diretamente os artefatos pré-compilados do release local (`req-156` / `BATCH-159`).
+
 ## [2.10.5] - 2026-09-02
 
 ### Added

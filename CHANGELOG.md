@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.6] - 2026-09-02
+
+### Changed
+- CI/CD Build Pipeline: Removed redundant remote Tailwind compilation steps from `.github/workflows/release-gestor.yml` to rely directly on pre-compiled and tested release artifacts (`req-156` / `BATCH-159`).
+
 ## [2.10.5] - 2026-09-02
 
 ### Added

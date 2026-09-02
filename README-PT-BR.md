@@ -75,14 +75,15 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.5 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.6 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
+- **Otimização da Esteira CI/CD**: Remoção de etapas redundantes de compilação remota de recursos Tailwind no GitHub Actions (`release-gestor.yml`), consumindo diretamente os artefatos pré-compilados e validados no release local (`req-156` / `BATCH-159`).
 - **Paridade Visual Estrita no Tailwind CSS**: Documentação da governança de paridade visual entre Páginas Públicas, Pré-Visualizador e Editor HTML Visual (`req-156` / `BATCH-158`).
 - **Limiares de Memory Gardening & Sincronização de Skills**: Limiares de jardinagem de memória atualizados para 50KB/75KB e catálogo de skills sincronizado.
-- **Idempotência de Checksum MD5 Multiplataforma**: Normalização de fim de linha em LF na compilação de recursos e testes de integridade tolerantes a CRLF/LF (`req-155` / `BATCH-157`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.5**: Documentação de paridade visual estrita do Tailwind e atualização dos limiares de memory gardening.
 - **v2.10.4**: Idempotência de checksum MD5 multiplataforma e normalização de finais de linha.
 - **v2.10.3**: Correção da cascata no preview de templates e ajustes iniciais nos checksums de recursos.
 - **v2.10.2**: Compatibilidade TLS/SSL com `--ssl-no-revoke` no Windows e integração inicial do motor cron.
