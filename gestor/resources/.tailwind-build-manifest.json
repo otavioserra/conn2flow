@@ -1053,7 +1053,7 @@
             "built_at": "2026-09-02T13:54:16+00:00"
         },
         "module|admin-cron|en|pages|admin-cron": {
-            "fingerprint": "49b5de0d24479a3c96a959f6dde42b23f17d6eaaf08ae5444ceef87ff48e5c6d",
+            "fingerprint": "aab7101222bfafc7465565383e03fae987c6a67ec7a30f7e81484dad76727180",
             "output_hash": "c5b395982f386ef615db23bc6ff77614b18a889ed59e7a3b4558c99aaafce54a",
             "output": "modulos/admin-cron/resources/en/pages/admin-cron/admin-cron.precompiled.css",
             "tailwind_version": "unknown",
@@ -1065,10 +1065,10 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T13:54:16+00:00"
+            "built_at": "2026-09-02T14:06:33+00:00"
         },
         "module|admin-cron|pt-br|pages|admin-cron": {
-            "fingerprint": "ef46379e40892b4ab59b07a1ab94bee8adb2d47f982fd53eff2a971b5f52b402",
+            "fingerprint": "630bd61790d0c1485de7cfb469c82cef55e3b70360dfd31cdc86a0520134728c",
             "output_hash": "c5b395982f386ef615db23bc6ff77614b18a889ed59e7a3b4558c99aaafce54a",
             "output": "modulos/admin-cron/resources/pt-br/pages/admin-cron/admin-cron.precompiled.css",
             "tailwind_version": "unknown",
@@ -1080,7 +1080,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T13:54:17+00:00"
+            "built_at": "2026-09-02T14:06:33+00:00"
         },
         "module|contatos|pt-br|components|base-email": {
             "fingerprint": "73177c3c52b923953b455322f393febeef91ae484edad061fdcb7aab6c70636d",

@@ -361,6 +361,33 @@ final class AdminCronReq032Test extends TestCase
     }
 
     /**
+     * Os dois md5 possíveis do mesmo arquivo: com LF e com CRLF.
+     *
+     * req-155 — `buildChecksum()` calcula o md5 dos BYTES lidos do disco, e o disco não é o mesmo
+     * em todo lugar. O repositório guarda o HTML com LF (`i/lf`) e o `core.autocrlf` do Windows
+     * entrega CRLF na árvore de trabalho (`w/crlf`): o compilador rodando aqui grava o md5 de
+     * CRLF, e o runner Linux do CI compara com o de LF. São 233 quebras de linha neste arquivo —
+     * 233 bytes de diferença, hash completamente distinto, e um pipeline eternamente "divergente"
+     * sem que nada esteja errado com o recurso.
+     *
+     * Regravar o hash no Windows (o que a req-155 propunha) não fecha o laço: o valor novo é de
+     * novo o de CRLF. Aceitar as duas formas mantém a asserção forte — um valor digitado à mão
+     * não bate com nenhuma delas — e a torna independente de plataforma.
+     *
+     * @return list<string>
+     */
+    private static function md5DoArquivoEmAmbasAsQuebras(string $caminho): array
+    {
+        $bytes = (string)file_get_contents($caminho);
+        $lf = str_replace("\r\n", "\n", $bytes);
+
+        return array_values(array_unique([
+            md5($lf),
+            md5(str_replace("\n", "\r\n", $lf)),
+        ]));
+    }
+
+    /**
      * REQ-035 / BATCH-157 — o checksum é DERIVADO, e a asserção precisa refletir isso.
      *
      * A versão anterior exigia string vazia, na leitura de que um valor ali só poderia ter sido
@@ -390,9 +417,9 @@ final class AdminCronReq032Test extends TestCase
             // Vazio = ainda não compilado, e o pipeline calcula no próximo sync. Preenchido só
             // pode ser o md5 do HTML que está em disco.
             if ($checksum['html'] !== '') {
-                self::assertSame(
-                    md5_file($html),
+                self::assertContains(
                     $checksum['html'],
+                    self::md5DoArquivoEmAmbasAsQuebras($html),
                     "[{$lang}] checksum html divergente do arquivo — valor não veio da compilação"
                 );
             }

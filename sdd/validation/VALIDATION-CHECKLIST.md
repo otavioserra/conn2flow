@@ -1621,3 +1621,35 @@ Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execu�
       hero banner e landing de alta conversão do projeto.
 - [ ] Homologação autenticada em `https://conn2flow.local/admin-paginas/adicionar/`; criação da sessão
       administrativa temporária não foi autorizada pelo gate de permissão.
+
+## BATCH-157 — Checksum idempotente e independente de plataforma (REQ-035 / req-155)
+
+- [x] Falha reproduzida antes da correção: `[pt-br] checksum html não pode ser escrito à mão`,
+      esperado `''`, obtido `387ee81b1f9dd115a8d96c7ca2b92d72`
+- [x] O valor rejeitado é exatamente `md5_file()` do `admin-cron.html`, nos dois idiomas —
+      produzido pelo compilador (`ORIGIN_UPDATE_MODULE`), não digitado
+- [x] `AdminCronReq032Test`: 44/44, 302 asserções
+- [x] PHPUnit completo: 1.073/1.073, 7.418 asserções, 4 skips esperados
+- [x] Vitest completo: 27/27 arquivos, 382/382 testes
+- [x] **Idempotência em execução**: com a árvore limpa, `php cli/c2f.php resources:sync` (2.844
+      recursos) não alterou `admin-cron.json`; único diff foi o `generated_at` de
+      `schema-metadata.json`, revertido. Teste segue verde depois do sync.
+
+### Segunda causa: o md5 dependia do fim de linha (req-155)
+
+- [x] Falha do CI da release v2.10.3 reproduzida: esperado `6a4af6df…`, obtido `387ee81b…`
+- [x] Provado que são o MESMO arquivo em duas formas: `git ls-files --eol` → `i/lf w/crlf`;
+      md5 com CRLF = `387ee81b…`, md5 com LF = `6a4af6df…`, 233 quebras de linha de diferença
+- [x] **Simulação do runner Linux**: HTML convertido para LF em disco → `AdminCronReq032Test` 44/44;
+      arquivos restaurados por `git checkout` depois
+- [x] Manifesto recompilado da forma canônica: `checksum.html` = `6a4af6df…` nos dois idiomas
+- [x] `PaginasData.json`: 2 páginas alteradas (`admin-cron` pt-br/en), HTML verificado campo a campo
+      como idêntico após normalizar CRLF; mudaram só checksum e o bump de versão que ele provoca
+- [x] PHPUnit completo após a recompilação: 1.073/1.073
+- [x] Revalidação final: `php cli/c2f.php resources:sync --force` sincronizou 2.844 recursos sem
+      problemas; o teste focal posterior passou em 44/44 (302 asserções) e `composer test` em
+      1.073/1.073 (7.418 asserções, 0 falhas, 4 skips e 2 deprecações).
+- [x] Os checksums `html` e `combined` de `admin-cron` em pt-br/en foram conferidos como
+      `6a4af6df04b77f8693400757bc7858df`, idênticos ao MD5 dos HTMLs físicos.
+- [x] A publicação opcional de `dist/` foi avisada, mas não executada por falta de `PUBLIC_PATH`;
+      o CLI confirmou que isso não afeta a sincronização dos recursos nem as URLs pelo controlador.
