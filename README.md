@@ -71,14 +71,15 @@ content workflows.
 
 ## 🆕 Latest Version
 
-**v2.10.7 (September 2026)** *(Current base: v2.9.51)*
+**v2.10.8 (September 2026)** *(Current base: v2.9.51)*
 
-- **GitHub Actions Node 24 Upgrade**: Updated workflow actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v2.2.1`) in `release-gestor.yml` and `release-instalador.yml` for native Node 24 support (`req-157` / `BATCH-160`).
-- **CI/CD Build Pipeline Streamlining**: Removed redundant remote Tailwind resource compilation stages from GitHub Actions, consuming pre-compiled artifacts directly from local release (`req-156` / `BATCH-159`).
-- **Strict Visual Parity & Architecture Docs for Tailwind**: Documented strict visual parity governance for Tailwind CSS across public pages, live preview iframe, and Visual HTML Editor (`req-156` / `BATCH-158`).
+- **GitHub Actions Full Node 24 Migration**: `softprops/action-gh-release` updated to `v3` (Node 24 native), completing the full migration of all workflow actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`) — definitively eliminating all Node 20 deprecation warnings (`req-157` / `BATCH-160`).
+- **CI/CD Build Pipeline Streamlining**: GitHub Actions now consumes pre-compiled release artifacts directly without redundant remote Tailwind recompilation (`req-156` / `BATCH-159`).
+- **Strict Visual Parity & CSS Isolation**: Governance and isolation of Tailwind CSS in the visual editor iframe and public pages (`req-156` / `BATCH-158`).
 
 ### Previous 2.10.x Releases
 
+- **v2.10.7**: Partial GitHub Actions Node 24 upgrade (`checkout@v5`, `setup-node@v5`, `cache@v5`).
 - **v2.10.6**: CI/CD build pipeline streamlining and redundant step removal.
 - **v2.10.5**: Strict visual parity documentation for Tailwind CSS and memory gardening thresholds update.
 - **v2.10.4**: Cross-platform resource MD5 checksum idempotency and line ending normalization.

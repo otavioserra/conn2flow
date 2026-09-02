@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.8] - 2026-09-02
+
+### Changed
+- GitHub Actions Infrastructure: Updated `softprops/action-gh-release` to `v3` (Node 24 native), completing the full migration of all workflow actions to Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`) in `release-gestor.yml` and `release-instalador.yml` (`req-157` / `BATCH-160`).
+
 ## [2.10.7] - 2026-09-02
 
 ### Changed

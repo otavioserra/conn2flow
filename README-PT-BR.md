@@ -75,14 +75,15 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.7 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.8 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Atualização do GitHub Actions para Node 24**: Atualizadas as actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v2.2.1`) nos workflows `release-gestor.yml` e `release-instalador.yml` para suporte nativo ao Node 24 (`req-157` / `BATCH-160`).
-- **Otimização da Esteira CI/CD**: Remoção de etapas redundantes de compilação remota de recursos Tailwind no GitHub Actions, consumindo diretamente os artefatos pré-compilados e validados no release local (`req-156` / `BATCH-159`).
-- **Paridade Visual Estrita no Tailwind CSS**: Documentação da governança de paridade visual entre Páginas Públicas, Pré-Visualizador e Editor HTML Visual (`req-156` / `BATCH-158`).
+- **Migração Completa das GitHub Actions para Node 24**: `softprops/action-gh-release` atualizado para `v3` (Node 24 nativo), completando a migração total de todas as actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`) e eliminando definitivamente os avisos de depreciação do Node 20 (`req-157` / `BATCH-160`).
+- **Otimização da Esteira CI/CD**: GitHub Actions consome diretamente os artefatos pré-compilados localmente, sem recompilação remota redundante de recursos Tailwind (`req-156` / `BATCH-159`).
+- **Paridade Visual Estrita e Isolamento de CSS**: Governança e isolamento de Tailwind CSS no iframe do editor visual e nas páginas públicas (`req-156` / `BATCH-158`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.7**: Atualização parcial das GitHub Actions para Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`).
 - **v2.10.6**: Otimização do pipeline CI/CD e remoção de etapas redundantes.
 - **v2.10.5**: Documentação de paridade visual estrita do Tailwind e atualização dos limiares de memory gardening.
 - **v2.10.4**: Idempotência de checksum MD5 multiplataforma e normalização de finais de linha.

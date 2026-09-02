@@ -219,12 +219,12 @@ jobs:
 
             Esta versão traz importantes avanços em performance, governança de CI/CD, atualizações de infraestrutura de workflows e resiliência visual no editor.
 
-            ### 🎯 Novidades Principais desta Versão (v2.10.7):
-            - ✅ **Atualização da Infraestrutura de CI/CD (Node 24)**: GitHub Actions atualizadas para os runners nativos de Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v2.2.1`), eliminando totalmente avisos de depreciação do Node 20.
-            - ✅ **Otimização do Pipeline de Build**: Remoção de etapas redundantes de compilação remota de recursos no CI, consumindo diretamente os artefatos pré-compilados e validados no release local.
-            - ✅ **Paridade Visual Estrita no Tailwind CSS**: Governança e isolamento visual de CSS no iframe do editor e páginas públicas (`req-156` / `BATCH-158`).
-            - ✅ **Engine de Tarefas Cron (`admin-cron`)**: Motor autônomo de execução de cron (`cron.php`) e CRUD administrativo para agendamento de tarefas (`cron_tarefas`).
-            - ✅ **Idempotência de Checksums Multiplataforma**: Normalização de quebras de linha (LF/CRLF) para asserção determinística em ambientes Linux/Windows.
+            ### 🎯 Novidades Principais desta Versão (v2.10.8):
+            - ✅ **Atualização Final da Infraestrutura de CI/CD (Node 24)**: `softprops/action-gh-release` atualizado para `v3` (Node 24 nativo), completando a migração iniciada na `v2.10.7` — elimina definitivamente todos os avisos de depreciação do Node 20 nos workflows de release.
+            - ✅ **GitHub Actions Totalmente Modernizadas**: Stack completo de actions em Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`) em `release-gestor.yml` e `release-instalador.yml`.
+            - ✅ **Otimização do Pipeline de Build**: CI/CD consome diretamente artefatos pré-compilados localmente, sem recompilação redundante de recursos Tailwind.
+            - ✅ **Paridade Visual Estrita no Tailwind CSS**: Isolamento visual de CSS no iframe do editor e governança de paridade nas páginas públicas.
+            - ✅ **Idempotência de Checksums Multiplataforma**: Normalização LF/CRLF para asserções determinísticas em runners Linux e Windows.
 
             ### 🌟 Destaques Consolidados das Versões Recentes:
             - **Live Editor e Site Toolbar (Editbar)**: Barra flutuante contextual no site publicado para edição in-place com mapeamento reativo ao DOM vivo.
