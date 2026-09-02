@@ -70,9 +70,9 @@
         "minificado": 1296
     },
     "gestor/assets/interface/html-editor-interface.js": {
-        "sha1": "03badee34abca0d66c351c8a5958572d60d0773e",
-        "origem": 132711,
-        "minificado": 57689
+        "sha1": "59eeb9d720b1af3e88dfc07d8665908cb0bd37c6",
+        "origem": 134125,
+        "minificado": 57741
     },
     "gestor/assets/interface/html-editor-modules.js": {
         "sha1": "7c5934089d8e0b3279282539f010b461ec4dcea6",
@@ -143,6 +143,11 @@
         "sha1": "8c3e0fdd7e1c17c1d0648aa36dcd11ea14e5d588",
         "origem": 112,
         "minificado": 32
+    },
+    "gestor/modulos/admin-cron/admin-cron.js": {
+        "sha1": "cebc996c2332a2e88d04b5720a11928c47d53f62",
+        "origem": 19656,
+        "minificado": 10267
     },
     "gestor/modulos/admin-environment/admin-environment.js": {
         "sha1": "8e71530e7c6f9a810a0b91dc1d2456f426c4f26e",

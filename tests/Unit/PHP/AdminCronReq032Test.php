@@ -360,13 +360,60 @@ final class AdminCronReq032Test extends TestCase
         }
     }
 
-    public function testChecksumsNascemVaziosParaOPipelineCalcular(): void
+    /**
+     * REQ-035 / BATCH-157 — o checksum é DERIVADO, e a asserção precisa refletir isso.
+     *
+     * A versão anterior exigia string vazia, na leitura de que um valor ali só poderia ter sido
+     * escrito à mão. Está errado: `atualizacao-dados-recursos.php` grava o `md5` do HTML de volta
+     * no manifesto do módulo como histórico incremental (ORIGIN_UPDATE_MODULE). Zerar o campo
+     * fazia o CI passar por uma tarde — o `./c2f resources:sync` seguinte o preenchia de novo e a
+     * suíte voltava a quebrar, agora acusando o próprio pipeline de escrita manual.
+     *
+     * O invariante real é a COINCIDÊNCIA: um checksum presente tem de ser o md5 do arquivo que
+     * ele descreve. Assim um valor digitado à mão continua sendo reprovado, e a sincronização
+     * passa a ser idempotente.
+     */
+    public function testChecksumHtmlCoincideComMd5DoArquivo(): void
     {
         $manifesto = self::manifesto();
 
         foreach (['pt-br', 'en'] as $lang) {
-            foreach ($manifesto['resources'][$lang]['pages'][0]['checksum'] as $tipo => $valor) {
-                self::assertSame('', $valor, "[{$lang}] checksum {$tipo} não pode ser escrito à mão");
+            $pagina = $manifesto['resources'][$lang]['pages'][0];
+            $checksum = $pagina['checksum'];
+
+            $html = self::moduloPath(
+                'resources' . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . 'pages'
+                . DIRECTORY_SEPARATOR . 'admin-cron' . DIRECTORY_SEPARATOR . 'admin-cron.html'
+            );
+            self::assertFileExists($html, "[{$lang}] HTML do recurso ausente");
+
+            // Vazio = ainda não compilado, e o pipeline calcula no próximo sync. Preenchido só
+            // pode ser o md5 do HTML que está em disco.
+            if ($checksum['html'] !== '') {
+                self::assertSame(
+                    md5_file($html),
+                    $checksum['html'],
+                    "[{$lang}] checksum html divergente do arquivo — valor não veio da compilação"
+                );
+            }
+
+            // Nenhum campo aceita texto arbitrário: ou está vazio, ou é um md5.
+            foreach ($checksum as $tipo => $valor) {
+                self::assertMatchesRegularExpression(
+                    '/^(|[0-9a-f]{32})$/',
+                    (string)$valor,
+                    "[{$lang}] checksum {$tipo} não é vazio nem um md5"
+                );
+            }
+
+            // `combined` é md5(html . css . css_precompiled): sem CSS ele colapsa no md5 do HTML.
+            // Divergir aqui significaria que um dos três foi editado isoladamente.
+            if ($checksum['css'] === '' && ($checksum['css_precompiled'] ?? '') === '') {
+                self::assertSame(
+                    $checksum['html'],
+                    $checksum['combined'],
+                    "[{$lang}] combined precisa colapsar no checksum html quando não há CSS"
+                );
             }
         }
     }

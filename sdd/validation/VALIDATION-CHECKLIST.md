@@ -1596,3 +1596,28 @@ Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execu�
 - [ ] req-153: o checksum zerado e repreenchido pelo compilador (`ORIGIN_UPDATE_MODULE`) a cada
       `project:update-all`. `md5_file(admin-cron.html)` e exatamente o valor que o teste rejeita —
       ele nunca foi escrito a mao. Teste e compilador estao em conflito; decisao normativa pendente.
+
+## BATCH-156 — Integridade visual dos templates Tailwind (req-154)
+
+### Automatizado
+
+- [x] 72/72 registros por idioma com HTML e thumbnail válidos; 36/36 templates Tailwind por idioma
+      com sidecar não vazio.
+- [x] Utilities essenciais usadas (`p-*`, `m-*`, `gap-*`, `space-*`, `bg-*`, `rounded-*`,
+      `shadow-*`) presentes nos sidecars: 2/2 testes, 2.695 asserções.
+- [x] Preview Tailwind sem `semantic.min.css`, mantendo jQuery/Fomantic JS para widgets legados.
+- [x] Inserção de seção concatena o novo sidecar ao baseline; substituição integral troca o baseline.
+- [x] `node --check` e `php -l` aprovados.
+- [x] `assets:minify --verificar`: 65 fontes, 0 derivados desatualizados.
+- [x] `resources:sync --force`: 237/237 recursos recompilados, 0 erros; repetição com 237/237 em cache.
+- [x] Vitest completo: 27/27 arquivos, 382/382 testes.
+- [x] PHPUnit completo: 1.073/1.073 testes, 7.418 asserções, 4 skips esperados.
+
+### Visual
+
+- [x] A/B Chromium reproduziu a colisão: com Fomantic, `py-20` = 70px, `gap-12` = 42px e CTA
+      transparente; isolado, os valores voltam a 80px, 48px e fundo branco.
+- [x] Amostras conferidas contra thumbnails: CTA gradiente, seção de 3 colunas, hero moderno,
+      hero banner e landing de alta conversão do projeto.
+- [ ] Homologação autenticada em `https://conn2flow.local/admin-paginas/adicionar/`; criação da sessão
+      administrativa temporária não foi autorizada pelo gate de permissão.

@@ -476,7 +476,10 @@ $(document).ready(function () {
         if (typeof CodeMirrorCssCompiled !== 'undefined') {
             CodeMirrorCssCompiled.getDoc().setValue(modelo.css_compiled ?? '');
         }
-        window.htmlEditorCssPrecompiled = modelo.css_precompiled ?? '';
+        window.htmlEditorCssPrecompiled = htmlEditorCssPrecompiledAtualizar(
+            modelo.css_precompiled ?? '',
+            tipo_modificacao === 'sessao'
+        );
 
         // Mudar para a aba de visualização da página
         const autoPreview = $('.page-modification-auto-preview').checkbox('is checked');
@@ -940,6 +943,39 @@ $(document).ready(function () {
             console.warn('Nao foi possivel carregar o contrato Tailwind do editor:', error);
             return '';
         }
+    }
+
+    // req-154: uma seção traz somente as utilities do próprio fragmento. Ao inseri-la em uma
+    // página existente, substituir o baseline fazia todo o restante depender do build assíncrono
+    // do Tailwind Browser. Preservamos a cascata já conhecida e acrescentamos o sidecar da seção.
+    function htmlEditorCssPrecompiledAtualizar(novoCss, preservarAtual) {
+        const editorConfig = gestor.html_editor || {};
+        const inicial = htmlEditorDecodeBase64(editorConfig.cssPrecompiledBase64 || '');
+        const atual = (typeof window.htmlEditorCssPrecompiled === 'string')
+            ? window.htmlEditorCssPrecompiled
+            : inicial;
+        const novo = (typeof novoCss === 'string') ? novoCss : '';
+
+        if (!preservarAtual) return novo;
+        if (!atual) return novo;
+        if (!novo || atual === novo || atual.endsWith('\n' + novo)) return atual;
+
+        return atual + '\n' + novo;
+    }
+
+    // req-154: o output pré-compilado do Tailwind usa cascade layers. O Fomantic é uma folha sem
+    // camada e, se carregado no mesmo iframe, vence utilities como padding, background e shadow.
+    // O preview deve carregar exatamente um framework visual por vez.
+    function htmlEditorPreviewFrameworkIncludes(framework) {
+        const scripts = `<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"><\/script>
+            <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"><\/script>`;
+
+        // jQuery e os plugins permanecem disponíveis para scripts/widgets legados; somente a folha
+        // visual concorrente precisa sair do iframe Tailwind.
+        if (framework === 'tailwindcss') return scripts;
+
+        return `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
+            ${scripts}`;
     }
 
     function tailwindPreviewIncludes() {
@@ -1845,9 +1881,7 @@ $(document).ready(function () {
         if (alvoPreview === 'layouts') {
             let fullHtml = htmlDoUsuario;
             let layoutIncludes = tailwindConfigScript + '\n';
-            layoutIncludes += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">\n`;
-            layoutIncludes += `<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"><\/script>\n`;
-            layoutIncludes += `<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"><\/script>\n`;
+            layoutIncludes += htmlEditorPreviewFrameworkIncludes(framework) + '\n';
             layoutIncludes += cssDoUsuario + '\n';
             // req-044 §3/§4: widgetsToAjax + scripts controladores dos widgets presentes.
             layoutIncludes += widgetAssetsHead;
@@ -1873,9 +1907,7 @@ $(document).ready(function () {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<title>${iframeTitle}</title>
 				${tailwindConfigScript}
-				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
-				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>
+				${htmlEditorPreviewFrameworkIncludes(framework)}
 				${widgetPreviewScript}
 				${widgetAssetsHead}
 				${montarPdfViewerHead(htmlDoUsuario)}
