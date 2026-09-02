@@ -139,26 +139,6 @@ jobs:
 
       # ===== BUILD & RELEASE STAGE (Executado imediatamente no mesmo runner após os testes) =====
 
-      - name: Generate resources and per-resource Tailwind CSS
-        run: |
-          php gestor/controladores/agents/arquitetura/atualizacao-dados-recursos.php
-          echo "Resource updates generated successfully"
-
-      - name: Commit Resources Updates
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add gestor/db/data/*.json
-          git add gestor/db/orphans/*.json
-          git add gestor/resources/*
-          git add gestor/resources/.tailwind-build-manifest.json
-          git add gestor/modulos/*/*.json
-          git add gestor/modulos/*/resources
-          git add gestor/assets/tailwindcss/*.css
-          git add gestor/assets/asset-versions.json
-          git add gestor/contents/asset-version.json
-          git diff --cached --quiet || git commit -m "Auto-update resources for release ${{ github.ref_name }}"
-
       - name: Remove resource files
         run: |
           # Remove all resource files and directory to make installation lighter

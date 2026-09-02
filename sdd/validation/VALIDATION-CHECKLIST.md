@@ -1653,3 +1653,22 @@ Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execu�
       `6a4af6df04b77f8693400757bc7858df`, idênticos ao MD5 dos HTMLs físicos.
 - [x] A publicação opcional de `dist/` foi avisada, mas não executada por falta de `PUBLIC_PATH`;
       o CLI confirmou que isso não afeta a sincronização dos recursos nem as URLs pelo controlador.
+
+## BATCH-159 — Recompilação redundante de recursos no release do Gestor (req-156)
+
+- [x] Removidas de `.github/workflows/release-gestor.yml` as etapas `Generate resources and
+      per-resource Tailwind CSS` e `Commit Resources Updates`.
+- [x] O job parte de Playwright para `Remove resource files` e para a criação de `gestor.zip`, usando
+      diretamente os derivados commitados pelo release local.
+- [x] `.github/workflows/release-instalador.yml` conferido: não contém chamada a compilador de
+      recursos nem commit de recursos no runner.
+- [x] Validação YAML: `npx --yes yaml-lint .github/workflows/release-gestor.yml
+      .github/workflows/release-instalador.yml` — sucesso.
+- [x] Busca negativa pelos dois nomes de etapa e por `atualizacao-dados-recursos.php` nos dois
+      workflows — nenhuma ocorrência.
+- [x] `composer test` — **1.073/1.073** testes, **7.418** asserções, 4 skips e 2 deprecações,
+      sem falhas.
+- [x] `npm run test` — **27/27** arquivos, **382/382** testes, exit code 0. Avisos conhecidos de
+      `ECONNREFUSED 127.0.0.1:3000` no teardown do happy-dom não falharam a suíte.
+- [x] `git diff --check` — sem erros de espaço em branco.
+- [x] Nenhum commit, push, deploy ou release executado.

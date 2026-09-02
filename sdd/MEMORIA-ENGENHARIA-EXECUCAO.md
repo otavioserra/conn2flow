@@ -13,6 +13,19 @@
 
 ## Tarefas recentes
 
+### 2026-09-02 — BATCH-159 (req-156): release remoto consome derivados locais
+
+- O `manager:release` local é a fronteira de geração dos derivados de recursos Tailwind. O workflow
+  `release-gestor.yml` deve apenas testar o estado commitado, remover fontes de autoria e empacotar;
+  recompilar no runner Linux invalida o cache gerado no Windows e pode criar um ZIP posterior aos
+  testes.
+- Remover junto `Generate resources and per-resource Tailwind CSS` e `Commit Resources Updates`:
+  manter só a primeira elimina a recompilação, mas ainda deixaria um commit remoto sem propósito.
+  `release-instalador.yml` já segue esse padrão enxuto.
+- Validação registrada: YAML lint nos dois workflows; PHPUnit 1073/1073; Vitest 382/382. O Vitest
+  pode imprimir `ECONNREFUSED 127.0.0.1:3000` em teardown do happy-dom e ainda encerrar com sucesso;
+  conferir o resumo final e o exit code antes de classificar como falha.
+
 ### 2026-09-02 — BATCH-157 (REQ-035 / req-155): checksum derivado E dependente do fim de linha
 
 - **O checksum do recurso é DERIVADO, não autoria.** `atualizacao-dados-recursos.php` grava o md5 do
