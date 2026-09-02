@@ -65,6 +65,7 @@ HELP;
         $projectId = $input->getOption('project');
         $gestorPath = $this->rootPath . DIRECTORY_SEPARATOR . 'gestor';
         $dockerPath = null;
+        $ssh = null;
         $accessUrl = 'http://localhost/';
         $host = 'localhost';
 
@@ -78,12 +79,16 @@ HELP;
 
             $gestorPath = $project['gestorPath'];
             $dockerPath = $project['dockerPath'];
+            $ssh = is_array($project['ssh'] ?? null) ? $project['ssh'] : null;
             $accessUrl = $project['accessUrl'];
             $host = $project['host'];
         }
 
+        // Em `deploy_mode: "ssh"` o Gestor com `.env` e banco está na VM; o caminho local é o
+        // repositório de autoria e não tem `config.php`. Exigi-lo aqui bloqueava toda a
+        // homologação de rota autenticada depois da migração para o HestiaCP (req-034).
         $configFile = $gestorPath . DIRECTORY_SEPARATOR . 'config.php';
-        if (!is_file($configFile)) {
+        if ($ssh === null && !is_file($configFile)) {
             $output->error("Gestor config.php not found at: {$configFile}");
             return 1;
         }
@@ -106,7 +111,10 @@ HELP;
         $resultPath = null;
 
         try {
-            if ($dockerPath !== null && !$this->isInsideContainer() && $this->isContainerRunning()) {
+            if ($ssh !== null) {
+                $output->info("Generating token over SSH on {$ssh['user']}@{$ssh['host']}:{$ssh['path']}...");
+                $resultPath = $this->generateOverSsh($generator, $ssh, $host, $userIdent, $output);
+            } elseif ($dockerPath !== null && !$this->isInsideContainer() && $this->isContainerRunning()) {
                 $output->info('Generating token inside Docker container conn2flow-app...');
                 $resultPath = $this->generateInDocker(
                     $generator,
@@ -213,6 +221,98 @@ HELP;
         }
 
         return $resultPath;
+    }
+
+    /**
+     * Gera o token na VM que hospeda o Gestor publicado.
+     *
+     * Mesma coreografia do caminho Docker — copia o gerador, executa, lê o JSON de volta —,
+     * trocando `docker cp`/`docker exec` por `scp`/`ssh`. O gerador roda sob o usuário dono do
+     * docroot (`ssh_run_as`), porque é ele que enxerga o `.env` e o banco do tenant.
+     *
+     * @param array{user: string, host: string, port: int, path: string, runAs: ?string, sudo: bool} $ssh
+     */
+    private function generateOverSsh(
+        string $generator,
+        array $ssh,
+        string $host,
+        string $userIdent,
+        OutputInterface $output
+    ): ?string {
+        $alvo = $ssh['user'] . '@' . $ssh['host'];
+        $porta = (string)$ssh['port'];
+        $sufixo = getmypid() . '-' . bin2hex(random_bytes(4));
+        $scriptRemoto = '/tmp/c2f-auth-cookie-' . $sufixo . '.php';
+        $resultadoRemoto = '/tmp/c2f-auth-cookie-' . $sufixo . '.json';
+
+        $copia = $this->callProcess([
+            'scp', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=15',
+            '-P', $porta, $generator, $alvo . ':' . $scriptRemoto,
+        ]);
+        if ($copia['code'] !== 0) {
+            $output->error('Unable to copy cookie generator over SSH: ' . trim($copia['stderr'] ?: $copia['stdout']));
+            return null;
+        }
+
+        $resultPath = null;
+
+        try {
+            $php = 'php ' . escapeshellarg($scriptRemoto)
+                . ' --gestor=' . escapeshellarg($ssh['path'])
+                . ' --host=' . escapeshellarg($host)
+                . ' --user=' . escapeshellarg($userIdent)
+                . ' --result=' . escapeshellarg($resultadoRemoto);
+
+            if (is_string($ssh['runAs']) && $ssh['runAs'] !== '') {
+                if (preg_match('/^[A-Za-z0-9._-]+$/', $ssh['runAs']) !== 1) {
+                    $output->error("Invalid ssh_run_as value: {$ssh['runAs']}");
+                    return null;
+                }
+                $php = 'sudo -u ' . escapeshellarg($ssh['runAs']) . ' ' . $php;
+            }
+
+            // O JSON nasce com a posse de quem rodou o gerador; sem isto o `scp` de volta,
+            // feito pela conta SSH, esbarra na permissão do próprio arquivo que acabou de criar.
+            $comando = 'cd ' . escapeshellarg($ssh['path']) . ' && ' . $php
+                . ' && sudo chmod 0644 ' . escapeshellarg($resultadoRemoto);
+
+            $execucao = $this->callProcess([
+                'ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=15',
+                '-p', $porta, $alvo, '--', $comando,
+            ]);
+            if ($execucao['code'] !== 0) {
+                $output->error(
+                    'Authentication cookie generation failed over SSH: '
+                    . trim($execucao['stderr'] ?: $execucao['stdout'])
+                );
+                return null;
+            }
+
+            $resultPath = tempnam(sys_get_temp_dir(), 'c2f-auth-cookie-');
+            if ($resultPath === false) {
+                $output->error('Unable to reserve a temporary result file.');
+                return null;
+            }
+
+            $retorno = $this->callProcess([
+                'scp', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=15',
+                '-P', $porta, $alvo . ':' . $resultadoRemoto, $resultPath,
+            ]);
+            if ($retorno['code'] !== 0) {
+                @unlink($resultPath);
+                $output->error('Unable to retrieve the cookie result over SSH: ' . trim($retorno['stderr']));
+                return null;
+            }
+
+            return $resultPath;
+        } finally {
+            // O gerador e o JSON carregam credencial de sessão: não podem sobrar em /tmp da VM.
+            $this->callProcess([
+                'ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=15',
+                '-p', $porta, $alvo, '--',
+                'sudo rm -f ' . escapeshellarg($scriptRemoto) . ' ' . escapeshellarg($resultadoRemoto),
+            ]);
+        }
     }
 
     private function generateInDocker(

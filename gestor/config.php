@@ -31,8 +31,15 @@ if(isset($_CRON)){
 	// Ambiente de linha de comando (usado por Phinx, scripts, etc.)
 	// Define o ROOT_PATH de forma absoluta e confiável a partir da localização deste arquivo.
 	$_GESTOR['ROOT_PATH'] = __DIR__ . '/';
-	// Define um SERVER_NAME padrão para a lógica de configuração funcionar.
-	$_SERVER['SERVER_NAME'] = 'localhost';
+	// req-034: 'localhost' é PADRÃO, não imposição. A atribuição incondicional descartava o
+	// host que o chamador já havia declarado, e o efeito não era só o `.env`: o sufixo de
+	// cookie/sessão nasce de basename($domainBase), então uma sessão gerada por CLI para
+	// `conn2flow.local` saía nomeada `_C2FCID_421AA90E` (md5 de 'localhost') enquanto o site
+	// lia `_C2FCID_05B11065` — o cookie chegava e era ignorado, com redirecionamento para
+	// /signin e nenhum erro em lugar nenhum. Mesma família do que o req-032 corrigiu no cron.
+	if (!isset($_SERVER['SERVER_NAME']) || trim((string)$_SERVER['SERVER_NAME']) === '') {
+		$_SERVER['SERVER_NAME'] = 'localhost';
+	}
 } else {
 	// Ambiente de execução via Web (Apache, etc.)
 	$_GESTOR['ROOT_PATH'] = $_INDEX['sistemas-dir'];

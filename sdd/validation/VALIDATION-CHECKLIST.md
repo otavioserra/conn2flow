@@ -1570,3 +1570,29 @@ O gate documental passou a acusar `README:installer-version`. **Não é regress�
 - `README.md` (155/159/163) e `README-PT-BR.md` (160/164/168) ainda apontam downloads para `instalador-v2.0.0`.
 
 Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execução** da release do instalador (a preparação do formulário não é afetada). Como a mudança altera URLs de download voltadas ao usuário final e a curadoria dos READMEs é do Arquiteto (`MEMORIA-ENGENHARIA-CHEFIA.md` §1), **nenhum README foi alterado**. Decisão pendente do Humano-no-Loop.
+
+## BATCH-155 - req-153 / REQ-034 (transporte SSH e bootstrap CLI por host)
+
+### Automatizado
+
+- [x] `bash -n` em project-transport.sh, sync-core-to-project.sh, synchronize-project.sh e updates-manager-database.sh
+- [x] `php -l` em config.php, ProjectEnvironmentResolver.php, CssRebuildCommand.php e AuthCookieCommand.php
+- [x] `ProjectSshDeployReq034Test` — 19/19, 64 assercoes
+- [x] `AdminCronReq032Test` — 44/44 (req-153)
+- [x] PHPUnit completa — **1071/1071**, 4.717 assercoes, 4 skips esperados, 0 falhas
+
+### Runtime no Lab (`conn2flow-site-local` -> 192.168.1.108)
+
+- [x] `project:sync-core` via SSH — 17 MB transferidos, posse devolvida a admin:admin
+- [x] `project:sync-db` via SSH — TRANSACAO_COMMIT, `+166 ~247 =2434`
+- [x] `project:update-all` etapas 1 a 5 em SUCCESS, executado duas vezes (`+5 ~6 =2952` na repeticao)
+- [x] `auth:cookie --project=conn2flow-site-local` gerando sessao pela VM com sufixo de cookie correto
+- [x] Modo local preservado: `PT_RSYNC_OPTS` vazio mantem a linha de rsync anterior (coberto por teste)
+
+### Ressalvas registradas no batch
+
+- [ ] `css:rebuild` e `assets:publish` nao alcancam a VM: operam sobre Gestor em disco local. O
+      pipeline avisa e segue. A VM nao tem `tailwindcss` nem `terser` instalados.
+- [ ] req-153: o checksum zerado e repreenchido pelo compilador (`ORIGIN_UPDATE_MODULE`) a cada
+      `project:update-all`. `md5_file(admin-cron.html)` e exatamente o valor que o teste rejeita —
+      ele nunca foi escrito a mao. Teste e compilador estao em conflito; decisao normativa pendente.

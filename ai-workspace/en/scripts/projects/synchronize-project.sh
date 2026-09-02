@@ -31,6 +31,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 
+# Transporte de deploy (req-034): destino local ou VM HestiaCP via SSH/rsync.
+# shellcheck source=../lib/project-transport.sh
+. "$SCRIPT_DIR/../lib/project-transport.sh"
+
 # Defaults
 MODE="default"
 PROJECT_TARGET_OVERRIDE=""
@@ -108,22 +112,32 @@ if [ -z "$ORIGEM" ] || [ "$ORIGEM" = "null" ]; then
   exit 1
 fi
 
-# Read destination (target) from environment.json for this project.
-# Fallback to path_tests when target is not defined or is empty.
-TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".target // empty" "$ENV_FILE" 2>/dev/null)
-if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
-  TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".path_tests // empty" "$ENV_FILE" 2>/dev/null)
-fi
-if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
-  log_error "Target path for project '$PROJECT_TARGET' not defined in environment.json (devProjects.<id>.target or devProjects.<id>.path_tests)"
-  exit 1
+# Resolve the deploy transport before the destination: with deploy_mode "ssh"
+# there is no local target/path_tests to read, and demanding one aborted the
+# pipeline for every project migrated to the HestiaCP VM (req-034).
+project_transport_resolve "$ENV_FILE" "$PROJECT_TARGET" || exit 1
+
+if project_transport_is_ssh; then
+  project_transport_check || exit 1
+  DESTINO="$PT_DEST"
+else
+  # Read destination (target) from environment.json for this project.
+  # Fallback to path_tests when target is not defined or is empty.
+  TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".target // empty" "$ENV_FILE" 2>/dev/null)
+  if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
+    TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".path_tests // empty" "$ENV_FILE" 2>/dev/null)
+  fi
+  if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
+    log_error "Target path for project '$PROJECT_TARGET' not defined in environment.json (devProjects.<id>.target, devProjects.<id>.path_tests or deploy_mode \"ssh\")"
+    exit 1
+  fi
+
+  TARGET_PATH="${TARGET_PATH%/}"
+  DESTINO="$TARGET_PATH"
 fi
 
-# Normalize paths (remove trailing slashes to avoid double '//' in rsync)
+# Normalize source path (remove trailing slash to avoid double '//' in rsync)
 ORIGEM="${ORIGEM%/}"
-TARGET_PATH="${TARGET_PATH%/}"
-
-DESTINO="$TARGET_PATH"
 
 log "Source: $ORIGEM"
 log "Destination: $DESTINO"
@@ -145,7 +159,9 @@ ASSET_SCRIPT="$PROJECT_ROOT/gestor/controladores/agents/arquitetura/atualizacao-
 php "$ASSET_SCRIPT" --root="$ORIGEM"
 
 # Ensure destination exists
-if [ ! -d "$DESTINO" ]; then
+if project_transport_is_ssh; then
+  project_transport_ensure_dest || exit 1
+elif [ ! -d "$DESTINO" ]; then
   log_warning "Destination does not exist. Creating: $DESTINO"
   mkdir -p "$DESTINO"
 fi
@@ -156,15 +172,16 @@ if should_exclude_contents; then
   RSYNC_EXCLUDES+=(--exclude 'contents/')
 fi
 
+# Em transporte local PT_RSYNC_OPTS está vazio e a linha é a de sempre.
 case "$MODE" in
   default|"")
-    CMD=(rsync -avu "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
+    CMD=(rsync -avu "${PT_RSYNC_OPTS[@]}" "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
     ;;
   checksum)
-    CMD=(rsync -av --checksum "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
+    CMD=(rsync -av --checksum "${PT_RSYNC_OPTS[@]}" "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
     ;;
   force)
-    CMD=(rsync -av --ignore-times "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
+    CMD=(rsync -av --ignore-times "${PT_RSYNC_OPTS[@]}" "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
     ;;
   *)
     log_error "Invalid mode: $MODE"; exit 1;
@@ -179,6 +196,8 @@ if [ $RSYNC_EXIT -ne 0 ]; then
   log_error "rsync finished with exit code $RSYNC_EXIT"
   exit $RSYNC_EXIT
 fi
+
+project_transport_finalize || exit 1
 
 log_success "Project synchronized to: $DESTINO"
 log "Tip: run '🗃️ Projects - Synchronize => Resources - Local' task if you need to rebuild resources for the project."

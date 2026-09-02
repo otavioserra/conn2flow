@@ -34,6 +34,8 @@ final class ProjectEnvironmentResolver
      *   envFile: string,
      *   host: string,
      *   accessUrl: string,
+     *   deployMode: string,
+     *   ssh: ?array{user: string, host: string, port: int, path: string, runAs: ?string, sudo: bool},
      *   config: array<string, mixed>
      * }
      */
@@ -54,6 +56,13 @@ final class ProjectEnvironmentResolver
                 "Project '{$projectId}' has no path_tests, target, or path configured in environment.json."
             );
         }
+
+        // `deploy_mode: "ssh"` (req-034) diz que o Gestor publicado vive numa VM. O caminho acima
+        // continua sendo o do repositório de autoria — é dele que o compilador lê —, mas quem
+        // precisa do Gestor EM EXECUÇÃO (`.env`, banco, CSS derivado) tem de saber que ele não
+        // está no disco local. Sem esta distinção, o comando abre um caminho válido, não acha o
+        // `.env` e reporta "arquivo ausente" quando a causa real é o transporte.
+        $deployMode = strtolower($this->stringValue($project['deploy_mode'] ?? null) ?? 'local');
 
         $gestorPath = $this->normalizeHostPath($configuredPath);
         if (!is_file($gestorPath . DIRECTORY_SEPARATOR . 'config.php')) {
@@ -76,7 +85,38 @@ final class ProjectEnvironmentResolver
             'envFile' => $this->resolveEnvFile($gestorPath, $host),
             'host' => $host,
             'accessUrl' => $accessUrl,
+            'deployMode' => $deployMode,
+            'ssh' => $deployMode === 'ssh' ? $this->resolveSshTarget($project, $projectId) : null,
             'config' => $project,
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $project
+     * @return array{user: string, host: string, port: int, path: string, runAs: ?string, sudo: bool}
+     */
+    private function resolveSshTarget(array $project, string $projectId): array
+    {
+        $user = $this->stringValue($project['ssh_user'] ?? null);
+        $host = $this->stringValue($project['ssh_host'] ?? null);
+        $path = $this->stringValue($project['ssh_target_path'] ?? null);
+
+        if ($user === null || $host === null || $path === null) {
+            throw new RuntimeException(
+                "Project '{$projectId}' declares deploy_mode \"ssh\" but is missing ssh_user, "
+                . 'ssh_host or ssh_target_path in environment.json.'
+            );
+        }
+
+        $port = (int)($project['ssh_port'] ?? 22);
+
+        return [
+            'user' => $user,
+            'host' => $host,
+            'port' => $port > 0 ? $port : 22,
+            'path' => rtrim($path, '/'),
+            'runAs' => $this->stringValue($project['ssh_run_as'] ?? null),
+            'sudo' => filter_var($project['ssh_sudo'] ?? false, FILTER_VALIDATE_BOOLEAN),
         ];
     }
 

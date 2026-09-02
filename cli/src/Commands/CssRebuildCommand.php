@@ -86,6 +86,21 @@ final class CssRebuildCommand implements CommandInterface
             $output->write("  projeto: {$projectId} | local: " . ($ehLocal ? 'true' : 'false')
                 . ' | url: ' . (string)($resolvido['accessUrl'] ?? '?') . PHP_EOL);
 
+            // Projeto publicado por SSH: o `.env`, o banco e o CSS derivado estão na VM, e este
+            // comando só sabe operar sobre um Gestor no disco local. Dizer isso aqui evita que o
+            // agente PHP falhe adiante com "ERRO: .env do gestor nao encontrado", que aponta para
+            // um arquivo ausente quando o que falta é o transporte.
+            $ssh = is_array($resolvido['ssh'] ?? null) ? $resolvido['ssh'] : null;
+            if ($ssh !== null && !is_file($envFile)) {
+                $output->error(
+                    "Projeto '{$projectId}' usa deploy_mode \"ssh\": o Gestor em execução está em "
+                    . "{$ssh['user']}@{$ssh['host']}:{$ssh['path']} e não há `.env` no repositório "
+                    . 'de autoria para regenerar o CSS derivado a partir daqui. Rode o comando na '
+                    . 'VM, ou informe --gestor=/caminho/local com um Gestor configurado.'
+                );
+                return 1;
+            }
+
             if (!$ehLocal && !$input->getOption('confirmar-remoto')) {
                 $output->error(
                     "Projeto '{$projectId}' está marcado como local=false em environment.json ("

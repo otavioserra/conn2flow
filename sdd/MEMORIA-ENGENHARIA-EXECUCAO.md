@@ -13,6 +13,25 @@
 
 ## Tarefas recentes
 
+### 2026-09-02 — BATCH-155 (req-153 / REQ-034): transporte SSH e host no bootstrap CLI
+
+- **O ambiente mudou**: os tenants do Gestor saíram do `conn2flow-app` para uma VM Ubuntu + HestiaCP
+  em `192.168.1.108`. Antes de escrever `docker exec conn2flow-app`, confira `docker ps` — o
+  container não existe mais. SSH por chave para `otavio` funciona não interativo e tem sudo sem senha.
+- **`config.php` impunha `SERVER_NAME = 'localhost'` no ramo CLI**, e o estrago não era o `.env`: o
+  sufixo de cookie sai de `basename($domainBase)`, então sessão gerada por CLI para outro host nasce
+  com nome que o site nunca lê. O cookie chega e é IGNORADO — só um 302 para /signin, sem erro.
+  Mesma família da req-032 no cron. Ao mexer em bootstrap, veja o que cada ramo SOBRESCREVE.
+- **`user@host:/caminho` do rsync atravessa o Git Bash intacto** — o `MSYS_NO_PATHCONV=1` do
+  `docker exec` não é necessário aqui. Confirme com `--dry-run` antes de um sync grande.
+- **rsync remoto precisa de `--rsync-path="sudo rsync"` E `chown` depois**: a conta SSH não é dona do
+  docroot, e sem devolver a posse os arquivos novos ficam `root:root` e o PHP-FPM do tenant não lê.
+- **`ssh` concatena os argumentos e o SERVIDOR os entrega ao shell dele.** Montar a linha local como
+  array não protege nada: cite cada argumento remoto com `printf %q` / `escapeshellarg()`.
+- **Checksum de recurso em `<modulo>.json` é do compilador, não do autor.**
+  `atualizacao-dados-recursos.php` grava `ORIGIN_UPDATE_MODULE` como histórico incremental. Zerar o
+  campo (req-153) faz o CI passar, mas o próximo `project:update-all` o preenche de novo.
+
 ### 2026-08-28 — BATCH-144 (req-141): autoria x derivado no CSS
 
 - Runtime serve TUDO do banco (`gestor.php:2782`); disco só com `DEVELOPMENT_ENV=true`. O compilador
@@ -26,27 +45,6 @@
   `tailwind_sources`). O Tailwind CLI precisa do input DENTRO da árvore com `node_modules`.
 - Escape em heredoc Python: barra-b e barra-s viram BYTES DE CONTROLE na string. Use raw string
   ou chr(92), e confira o arquivo depois — assert que falha no meio deixa funcao chamada e nao definida.
-
-### 2026-08-28 — BATCH-143 (req-140): URL sanitizada x nome físico
-
-- `arquivo_nome_sanitizar()` troca espaço por hífen e colapsa `--`. Qualquer nome que o sistema
-  GRAVA precisa satisfazer `sanitizar(n) === n`, senão a URL publicada aponta para outro arquivo.
-- O controlador estático não carrega `bibliotecas/arquivo.php`: o bootstrap só inclui `banco`,
-  `gestor`, `modelo` e `hooks`. Use `require_once $_GESTOR['bibliotecas-path'].'arquivo.php'`.
-- A reescrita do `.htaccess` usa a flag `[B]`, então `caminho-total` chega JÁ decodificado; `%20`
-  só sobrevive literal em servidor sem essa flag.
-- Para casar URL com nome físico divergente, compare pelo RESULTADO da sanitização de cada entrada
-  do diretório. Adivinhar a troca de hífen custa 2^n acessos a disco e ainda perde nome misto.
-- POST autenticado exige CSRF mesmo com `ajax=sim` (req-107; a skill de AJAX está desatualizada):
-  leia o `<meta name="csrf-token">` da página e mande em `X-CSRF-Token`. O `curl` do Git Bash não
-  resolve `/tmp` em `-F @arquivo` — use caminho no formato Windows.
-
-### 2026-08-26 — BATCH-142 (req-139): galleries denso, modal e corte vertical
-
-- Grade compacta exige largura fracionária no card e `flex-wrap` (6×110 px e 10×65 px medidos);
-  overlay sem layout shift precisa de `pointer-events:auto` no contêiner ao hover.
-- `image_position` exige allowlist idêntica no CRUD, PHP e widget JS.
-- Dry-run do atualizador avança checksums sem aplicar linhas: não usar `force-all` sobre tenant.
 
 ### 2026-08-29 — BATCH-146/147: cópias congeladas, alvo do CLI e assets locais
 
@@ -69,30 +67,3 @@
   paridade blocos↔chamadas depois.
 - **Tela do scaffold CRUD copiada carrega ações que não pertencem a ela**: a tela `variables` oferecia
   `excluir` sobre a tabela `modulos`. Ao herdar `interface`, checar QUAL tabela os botões alcançam.
-
-### 2026-08-29 — BATCH-148: assets locais completos, fontes e minificação
-
-- **Migrar um CSS de terceiro sem os arquivos que ele pede quebra em silêncio**: `semantic.min.css`
-  referencia as fontes por caminho RELATIVO. Do CDN resolvia; do disco passou a resolver contra
-  `vendor/<lib>/<versao>/` e os ÍCONES DO GESTOR SUMIRAM. Ao vendorizar, extrair os `url()` relativos
-  do próprio CSS e baixar também.
-- **PHP CLI do Windows não tem CA bundle**: HTTPS falha com `unable to get local issuer certificate`.
-  Cair para o binário `curl` do sistema; NUNCA `CURLOPT_SSL_VERIFYPEER => false`.
-- **Google Fonts decide o formato pelo User-Agent**: sem um moderno, devolve `ttf` em vez de `woff2`.
-- **`ProjectEnvironmentResolver::resolve()` devolve o ESPELHO** (`path_tests`). Comando que ESCREVE
-  no projeto precisa de `config['path']` — gravar no espelho some no próximo sync, sem erro nenhum.
-- **Minificar na entrega quebra quatro garantias de HTTP**: `Content-Length`, `Range`, `ETag` e
-  `304` dependem de o corpo ser o arquivo em disco. Separar MINIFICAR (build) de ESCOLHER
-  (resolução) entrega o mesmo ganho sem custo — medido, o `Content-Length` bate byte a byte.
-- **`terser` e `esbuild` já estão em devDependencies**: não instalar minificador novo.
-- **Documento de intake que se contradiz é pior que um errado**: ao corrigir uma afirmação medida
-  (os 925 KB do DataTables nunca foram entregues), varrer o arquivo inteiro atrás dos trechos que
-  ainda repetiam a versão antiga.
-- **Release do gestor valida documentação antes de alterar a versão**: `manager:release patch`
-  calcula a próxima versão de `config.php` em dry-run e exige `v<versao>` nos dois READMEs e
-  `[<versao>]` em `CHANGELOG.md`. Atualize e registre esses documentos num commit preparatório;
-  o script exige árvore limpa e incrementa `config.php` no commit/tag final.
-
-## Pendências e histórico
-
-- Detalhes integrais vivem nos BATCHes e em `sdd/validation/`; histórico antigo está em `archive/`.

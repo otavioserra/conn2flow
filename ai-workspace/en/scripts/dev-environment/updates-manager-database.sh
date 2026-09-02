@@ -24,6 +24,10 @@ ENV_JSON="$PROJECT_ROOT/dev-environment/data/environment.json"
 LOCAL_DOCKER_ROOT="$PROJECT_ROOT/dev-environment/data/sites/"
 DOCKER_ROOT="/var/www/sites/"
 
+# Transporte de deploy (req-034): destino local ou VM HestiaCP via SSH.
+# shellcheck source=../lib/project-transport.sh
+. "$SCRIPT_DIR/../lib/project-transport.sh"
+
 PROJECT_TARGET_OVERRIDE=""
 PROJECT_TARGET=""
 FORCE_ALL=false
@@ -104,9 +108,22 @@ if [ -n "$PROJECT_TARGET_OVERRIDE" ]; then
     exit 1
   fi
 
+  # `deploy_mode: "ssh"` tem precedência sobre qualquer inferência de caminho: o
+  # Gestor do projeto vive na VM HestiaCP e o atualizador precisa rodar LÁ, onde
+  # estão o `.env`, o MariaDB e as migrações (req-034).
+  project_transport_resolve "$ENV_JSON" "$PROJECT_TARGET" || exit 1
+
+  if project_transport_is_ssh; then
+    project_transport_check || exit 1
+    EXECUTION_MODE="ssh"
+    log "SSH execution selected from deploy_mode (target: $PT_SSH_TARGET)"
+  fi
+
   PATH_DOCKER=$(jq -r ".devProjects.\"$PROJECT_TARGET\".dockerPath // empty" "$ENV_JSON" 2>/dev/null)
 
-  if [ -z "$PATH_DOCKER" ] || [ "$PATH_DOCKER" = "null" ]; then
+  if [ "$EXECUTION_MODE" = "ssh" ]; then
+    :
+  elif [ -z "$PATH_DOCKER" ] || [ "$PATH_DOCKER" = "null" ]; then
     TARGET_PATH=$(resolve_project_test_path "$PROJECT_TARGET")
     if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
       log_error "Could not determine project test path for '$PROJECT_TARGET' (devProjects.<id>.target or devProjects.<id>.path_tests)"
@@ -149,7 +166,13 @@ else
   fi
 fi
 
-if [ "$EXECUTION_MODE" = "host" ]; then
+if [ "$EXECUTION_MODE" = "ssh" ]; then
+  # Caminho RELATIVO à raiz do Gestor remoto: `project_transport_remote_exec`
+  # entra nela com `cd` antes de chamar o PHP, e o bootstrap do config.php exige
+  # esse diretório de trabalho (req-152).
+  PHP_SCRIPT="controladores/atualizacoes/atualizacoes-banco-de-dados.php"
+  log "Remote Path: $PT_SSH_TARGET:$PT_REMOTE_PATH"
+elif [ "$EXECUTION_MODE" = "host" ]; then
   PATH_HOST="${PATH_HOST%/}/"
   PHP_SCRIPT="${PATH_HOST}controladores/atualizacoes/atualizacoes-banco-de-dados.php"
   log "Host Path: $PATH_HOST"
@@ -210,7 +233,9 @@ if [ "$EXECUTION_MODE" = "host" ] && ! command -v php >/dev/null 2>&1; then
 fi
 
 run_database_update() {
-  if [ "$EXECUTION_MODE" = "host" ]; then
+  if [ "$EXECUTION_MODE" = "ssh" ]; then
+    project_transport_remote_exec php "$PHP_SCRIPT" "${PHP_ARGS[@]}"
+  elif [ "$EXECUTION_MODE" = "host" ]; then
     (cd "$PATH_HOST" && php "$PHP_SCRIPT" "${PHP_ARGS[@]}")
   else
     docker exec conn2flow-app php "$PHP_SCRIPT" "${PHP_ARGS[@]}"

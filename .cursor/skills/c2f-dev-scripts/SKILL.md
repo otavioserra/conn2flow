@@ -133,3 +133,64 @@ private function probeSelf($url)
    pré-validar tags e documentação antes da mutação.
 5. **Staging Git explícito**: scripts que commitam DEVEM listar os caminhos (`git add -- "$ARQUIVO"`). `git add .`
    e `git add -A` são proibidos: arrastam trabalho concorrente de outros agentes para o commit.
+
+---
+
+## Transporte de deploy: local ou SSH (req-034)
+
+Os scripts de projeto deixaram de assumir que o destino é um diretório do sistema
+de arquivos local. O transporte é **declarado**, não inferido, na entrada do
+projeto em `dev-environment/data/environment.json`:
+
+```jsonc
+"conn2flow-site-local": {
+  "path": "/c/.../conn2flow-site/gestor",   // fonte de autoria (Windows)
+  "deploy_mode": "ssh",                      // ausente ou "local" = comportamento antigo
+  "ssh_host": "192.168.1.108",
+  "ssh_user": "otavio",
+  "ssh_port": 22,
+  "ssh_target_path": "/home/admin/web/conn2flow.local/conn2flow-gestor",
+  "ssh_sudo": true,                          // rsync remoto sob sudo
+  "ssh_chown": "admin:admin",                // devolve a posse ao dono do docroot
+  "ssh_run_as": "admin"                      // usuário do PHP remoto
+}
+```
+
+Com `deploy_mode: "ssh"`, `target` e `path_tests` **não são lidos** — o destino é
+`ssh_target_path` na VM. Sem a chave, nada muda para os projetos Docker e
+bare-metal existentes.
+
+### Biblioteca compartilhada
+
+`ai-workspace/en/scripts/lib/project-transport.sh` centraliza a resolução. Quem
+precisar de um novo script com destino de projeto deve dar `source` nela em vez
+de reimplementar o `jq`:
+
+```bash
+. "$SCRIPT_DIR/../lib/project-transport.sh"
+project_transport_resolve "$ENV_FILE" "$PROJECT_ID" || exit 1
+if project_transport_is_ssh; then
+  project_transport_check || exit 1        # falha cedo, com diagnóstico
+  project_transport_ensure_dest || exit 1  # mkdir -p remoto
+  DESTINO="$PT_DEST"                       # usuario@host:/caminho
+fi
+rsync -av "${PT_RSYNC_OPTS[@]}" "$ORIGEM/" "$DESTINO/"
+project_transport_finalize                 # chown remoto
+```
+
+`PT_RSYNC_OPTS` fica **vazio** em transporte local, então a mesma linha serve aos
+dois modos. Para rodar um comando na raiz do Gestor remoto:
+`project_transport_remote_exec php <script> <args...>` (cita cada argumento; nunca
+monte a linha remota por interpolação).
+
+Já usam a lib: `projects/sync-core-to-project.sh`,
+`projects/synchronize-project.sh` e `dev-environment/updates-manager-database.sh`
+(que ganhou o `EXECUTION_MODE=ssh` ao lado de `docker` e `host`).
+
+### O que o `project:update-all` alcança e o que não alcança em SSH
+
+As etapas 1 a 5 (core, banco, recursos, arquivos, banco) operam na VM e devem
+terminar em `SUCCESS`. As etapas 6 e 8 (`css:rebuild` e `assets:publish`) rodam
+**localmente** e não têm `.env` no repositório de autoria: elas avisam e o
+pipeline segue. Não é falha de sincronização — é limite conhecido do transporte.
+Para CSS derivado de recurso editado online, rode o comando na VM.

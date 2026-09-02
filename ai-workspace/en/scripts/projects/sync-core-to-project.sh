@@ -23,6 +23,10 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 CORE_SOURCE="$PROJECT_ROOT/gestor"
 
+# Transporte de deploy (req-034): destino local ou VM HestiaCP via SSH/rsync.
+# shellcheck source=../lib/project-transport.sh
+. "$SCRIPT_DIR/../lib/project-transport.sh"
+
 PROJECT_TARGET_OVERRIDE=""
 
 usage() {
@@ -77,20 +81,30 @@ if [ "$PROJECT_EXISTS" = "0" ] || [ -z "$PROJECT_EXISTS" ]; then
   exit 1
 fi
 
-TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".target // empty" "$ENV_FILE" 2>/dev/null)
-if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
-  TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".path_tests // empty" "$ENV_FILE" 2>/dev/null)
-fi
-if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
-  log_error "Test path for project '$PROJECT_TARGET' not defined in environment.json (devProjects.<id>.target or devProjects.<id>.path_tests)"
-  exit 1
-fi
+# Resolve o transporte antes do destino: com deploy_mode "ssh" o Gestor do
+# projeto vive na VM HestiaCP e não existe target/path_tests local (req-034).
+project_transport_resolve "$ENV_FILE" "$PROJECT_TARGET" || exit 1
 
-TARGET_PATH="${TARGET_PATH%/}"
+if project_transport_is_ssh; then
+  project_transport_check || exit 1
+  project_transport_ensure_dest || exit 1
+  TARGET_PATH="$PT_DEST"
+else
+  TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".target // empty" "$ENV_FILE" 2>/dev/null)
+  if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
+    TARGET_PATH=$(jq -r ".devProjects.\"$PROJECT_TARGET\".path_tests // empty" "$ENV_FILE" 2>/dev/null)
+  fi
+  if [ -z "$TARGET_PATH" ] || [ "$TARGET_PATH" = "null" ]; then
+    log_error "Test path for project '$PROJECT_TARGET' not defined in environment.json (devProjects.<id>.target, devProjects.<id>.path_tests or deploy_mode \"ssh\")"
+    exit 1
+  fi
 
-if [ ! -d "$TARGET_PATH" ]; then
-  log_error "Project test directory does not exist: $TARGET_PATH"
-  exit 1
+  TARGET_PATH="${TARGET_PATH%/}"
+
+  if [ ! -d "$TARGET_PATH" ]; then
+    log_error "Project test directory does not exist: $TARGET_PATH"
+    exit 1
+  fi
 fi
 
 # Generate Core resources, incremental Tailwind and cache tokens before syncing.
@@ -105,6 +119,7 @@ fi
 CMD=(
   rsync
   -avu
+  "${PT_RSYNC_OPTS[@]}"
   --exclude ".git/"
   --exclude "/logs/"
   --exclude "/temp/"
@@ -128,6 +143,7 @@ RUNTIME_CONTRACT_CMD=(
   rsync
   -avc
   --relative
+  "${PT_RSYNC_OPTS[@]}"
   "$CORE_SOURCE/./gestor.php"
   "$CORE_SOURCE/./bibliotecas/gestor.php"
   "$TARGET_PATH/"
@@ -135,6 +151,8 @@ RUNTIME_CONTRACT_CMD=(
 
 log "Synchronizing atomic runtime contract: gestor.php + bibliotecas/gestor.php"
 "${RUNTIME_CONTRACT_CMD[@]}"
+
+project_transport_finalize || exit 1
 
 log_success "Conn2Flow core synchronized to project test folder: $TARGET_PATH"
 

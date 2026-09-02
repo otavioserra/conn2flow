@@ -766,7 +766,7 @@
         "publisher_id": null,
         "status": "A",
         "versao": 1,
-        "file_version": "1.1",
+        "file_version": "1.3",
         "checksum": "{\"html\":\"387ee81b1f9dd115a8d96c7ca2b92d72\",\"css\":\"\",\"css_precompiled\":\"5548df835c88cfaf6d966f84359d7da7\",\"combined\":\"0ce2df294e07b6e81133b00cff8646f7\"}"
     },
     {
@@ -788,7 +788,7 @@
         "publisher_id": null,
         "status": "A",
         "versao": 1,
-        "file_version": "1.1",
+        "file_version": "1.3",
         "checksum": "{\"html\":\"387ee81b1f9dd115a8d96c7ca2b92d72\",\"css\":\"\",\"css_precompiled\":\"5548df835c88cfaf6d966f84359d7da7\",\"combined\":\"0ce2df294e07b6e81133b00cff8646f7\"}"
     },
     {
