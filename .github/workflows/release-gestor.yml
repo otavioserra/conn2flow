@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -64,7 +64,7 @@ jobs:
           tools: composer:v2
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: npm
@@ -74,7 +74,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -83,7 +83,7 @@ jobs:
 
       - name: Cache Playwright browser binaries
         id: playwright-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
@@ -207,7 +207,7 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -217,23 +217,21 @@ jobs:
           body: |
             ## 🚀 Conn2Flow Gestor Release ${{ steps.tag.outputs.TAG_NAME }}
 
-            Esta versão traz importantes avanços em performance, governança de assets e resiliência visual, além da integração com o novo **Conn2Flow Instalador Web v2.0.0**.
+            Esta versão traz importantes avanços em performance, governança de CI/CD, atualizações de infraestrutura de workflows e resiliência visual no editor.
 
-            ### 🎯 Novidades Principais desta Versão (v2.10.0):
-            - ✅ **Dependências Tailwind de Sistema Automáticas**: Modais de interface do sistema (`interface_alerta`, dimmer e modais de confirmação) são injetados automaticamente como dependências compiladas em todas as páginas Tailwind, garantindo estilo perfeito sem necessidade de declaração manual.
-            - ✅ **Biblioteca de Assets Externos Locais**: Remoção de dependências em tempo de execução de CDNs públicos (SortableJS, DataTables e jQuery servidos diretamente do core local), garantindo privacidade, conformidade e resiliência de supply-chain.
-            - ✅ **Minificação Nativa no Build**: Novo pipeline de minificação de scripts e estilos durante a esteira de build, gerando economia de mais de 50% em tráfego sem custos de processamento em tempo de execução.
-            - ✅ **Tabelas Administrativas Responsivas**: Caixa de rolagem horizontal otimizada para listagens largas (>=1200px), impedindo rolagem vertical acidental da página.
-            - ✅ **Compatibilidade Total com Instalador v2.0.0**: Suporte completo ao novo assistente de instalação web com travas de sessão concorrente, timeout defensivo e detecção automática de servidores Nginx e Apache.
+            ### 🎯 Novidades Principais desta Versão (v2.10.7):
+            - ✅ **Atualização da Infraestrutura de CI/CD (Node 24)**: GitHub Actions atualizadas para os runners nativos de Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v2.2.1`), eliminando totalmente avisos de depreciação do Node 20.
+            - ✅ **Otimização do Pipeline de Build**: Remoção de etapas redundantes de compilação remota de recursos no CI, consumindo diretamente os artefatos pré-compilados e validados no release local.
+            - ✅ **Paridade Visual Estrita no Tailwind CSS**: Governança e isolamento visual de CSS no iframe do editor e páginas públicas (`req-156` / `BATCH-158`).
+            - ✅ **Engine de Tarefas Cron (`admin-cron`)**: Motor autônomo de execução de cron (`cron.php`) e CRUD administrativo para agendamento de tarefas (`cron_tarefas`).
+            - ✅ **Idempotência de Checksums Multiplataforma**: Normalização de quebras de linha (LF/CRLF) para asserção determinística em ambientes Linux/Windows.
 
             ### 🌟 Destaques Consolidados das Versões Recentes:
-            - **Live Editor e Site Toolbar (Editbar)**: Barra flutuante contextual no site publicado para edição in-place com mapeamento reativo ao DOM vivo, travas para widgets e painéis integrados.
-            - **Área de Transferência Persistente**: Armazenamento no `localStorage` permitindo copiar e colar blocos estruturais entre páginas diferentes.
-            - **Modernização Visual e Layouts Tailwind v4**: Layout administrativo responsivo com navegação rápida por teclado e novo layout público na paleta azul Conn2Flow (`sky`).
-            - **Sincronização Declarativa e Engenharia Reversa (Pull Engine)**: Motor de sincronização declarativa e recuperação reversa de recursos.
-            - **Streaming de Mídia e Suporte Híbrido a PDF**: Suporte a streaming com HTTP Range (206) e leitor de PDF embutido (PDF.js / Google Viewer).
-            - **Gateways de Pagamento Integrados**: Bibliotecas PayPal 3.1.0 e Stripe nativas no core.
-            - **Segurança Reforçada**: Personal Access Tokens (PAT), autenticação de dois fatores (2FA com códigos de recuperação) e proteção CSRF ampla.
+            - **Live Editor e Site Toolbar (Editbar)**: Barra flutuante contextual no site publicado para edição in-place com mapeamento reativo ao DOM vivo.
+            - **Assets Externos Locais & Zero CDN**: Bibliotecas jQuery, SortableJS, DataTables, Quill e Lucide servidas localmente do disco.
+            - **Minificação Nativa no Build**: Pipeline de minificação nativa via Terser/CSS reduzindo o tamanho de assets em mais de 50%.
+            - **Layouts Tailwind v4 Modernizados**: Painel administrativo responsivo e telas de autenticação atualizadas.
+            - **Segurança Reforçada**: Personal Access Tokens (PAT) escopados, 2FA com TOTP/códigos de recuperação e proteção CSRF CSPRNG.
 
             ### 📦 Conteúdo da Release:
             - Sistema gestor completo otimizado

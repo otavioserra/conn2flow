@@ -71,14 +71,15 @@ content workflows.
 
 ## 🆕 Latest Version
 
-**v2.10.6 (September 2026)** *(Current base: v2.9.51)*
+**v2.10.7 (September 2026)** *(Current base: v2.9.51)*
 
-- **CI/CD Build Pipeline Streamlining**: Removed redundant remote Tailwind resource compilation stages from GitHub Actions (`release-gestor.yml`), consuming pre-compiled artifacts directly from local release (`req-156` / `BATCH-159`).
+- **GitHub Actions Node 24 Upgrade**: Updated workflow actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v2.2.1`) in `release-gestor.yml` and `release-instalador.yml` for native Node 24 support (`req-157` / `BATCH-160`).
+- **CI/CD Build Pipeline Streamlining**: Removed redundant remote Tailwind resource compilation stages from GitHub Actions, consuming pre-compiled artifacts directly from local release (`req-156` / `BATCH-159`).
 - **Strict Visual Parity & Architecture Docs for Tailwind**: Documented strict visual parity governance for Tailwind CSS across public pages, live preview iframe, and Visual HTML Editor (`req-156` / `BATCH-158`).
-- **Memory Gardening Thresholds & Skill Sync**: Updated memory gardening thresholds to 50KB/75KB and synchronized AI skill catalogs.
 
 ### Previous 2.10.x Releases
 
+- **v2.10.6**: CI/CD build pipeline streamlining and redundant step removal.
 - **v2.10.5**: Strict visual parity documentation for Tailwind CSS and memory gardening thresholds update.
 - **v2.10.4**: Cross-platform resource MD5 checksum idempotency and line ending normalization.
 - **v2.10.3**: Tailwind template preview cascading fix and resource integrity validation adjustments.

@@ -5,6 +5,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.7] - 2026-09-02
+
+### Changed
+- Infraestrutura de GitHub Actions: Atualizadas as ações `actions/checkout`, `actions/setup-node`, `actions/cache` e `softprops/action-gh-release` para suporte nativo ao Node 24 em `release-gestor.yml` e `release-instalador.yml` (`req-157` / `BATCH-160`).
+
 ## [2.10.6] - 2026-09-02
 
 ### Changed

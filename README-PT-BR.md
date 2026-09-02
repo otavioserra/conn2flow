@@ -75,14 +75,15 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.6 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.7 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Otimização da Esteira CI/CD**: Remoção de etapas redundantes de compilação remota de recursos Tailwind no GitHub Actions (`release-gestor.yml`), consumindo diretamente os artefatos pré-compilados e validados no release local (`req-156` / `BATCH-159`).
+- **Atualização do GitHub Actions para Node 24**: Atualizadas as actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v2.2.1`) nos workflows `release-gestor.yml` e `release-instalador.yml` para suporte nativo ao Node 24 (`req-157` / `BATCH-160`).
+- **Otimização da Esteira CI/CD**: Remoção de etapas redundantes de compilação remota de recursos Tailwind no GitHub Actions, consumindo diretamente os artefatos pré-compilados e validados no release local (`req-156` / `BATCH-159`).
 - **Paridade Visual Estrita no Tailwind CSS**: Documentação da governança de paridade visual entre Páginas Públicas, Pré-Visualizador e Editor HTML Visual (`req-156` / `BATCH-158`).
-- **Limiares de Memory Gardening & Sincronização de Skills**: Limiares de jardinagem de memória atualizados para 50KB/75KB e catálogo de skills sincronizado.
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.6**: Otimização do pipeline CI/CD e remoção de etapas redundantes.
 - **v2.10.5**: Documentação de paridade visual estrita do Tailwind e atualização dos limiares de memory gardening.
 - **v2.10.4**: Idempotência de checksum MD5 multiplataforma e normalização de finais de linha.
 - **v2.10.3**: Correção da cascata no preview de templates e ajustes iniciais nos checksums de recursos.
