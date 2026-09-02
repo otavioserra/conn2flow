@@ -5,6 +5,14 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.5] - 2026-09-02
+
+### Added
+- Documentação para paridade visual estrita do Tailwind CSS entre Página Pública, Pré-Visualizador e Editor HTML Visual (`req-156` / `BATCH-158`).
+
+### Changed
+- Limiares de memory gardening atualizados para 50KB/75KB e catálogo de skills de IA sincronizado.
+
 ## [2.10.4] - 2026-09-02
 
 ### Fixed

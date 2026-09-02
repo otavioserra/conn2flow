@@ -5,6 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.5] - 2026-09-02
+
+### Added
+- Strict visual parity documentation for Tailwind CSS across Public Page, Pre-Viewer, and Visual HTML Editor (`req-156` / `BATCH-158`).
+
+### Changed
+- Memory gardening thresholds updated to 50KB/75KB and synchronized AI skill catalog.
+
 ## [2.10.4] - 2026-09-02
 
 ### Fixed

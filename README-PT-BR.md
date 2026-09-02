@@ -75,14 +75,15 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.4 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.5 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Idempotência de Checksum MD5 Multiplataforma**: Normalização de quebras de linha (LF vs CRLF) na compilação de recursos e atualização do `AdminCronReq032Test` para asserção de checksums tolerante ao ambiente de CI (`req-155` / `BATCH-157`).
-- **Correção da Cascata no Preview de Templates Tailwind**: Isolamento de regras conflitantes do Fomantic CSS no iframe do editor visual e preservação das utilities de baseline da página durante a inserção de seções (`req-154` / `BATCH-156`).
-- **Engine de Tarefas Cron (`admin-cron`)**: Motor completo de execução de tarefas agendadas (`cron.php`) e interface CRUD de administração (`cron_tarefas`).
+- **Paridade Visual Estrita no Tailwind CSS**: Documentação da governança de paridade visual entre Páginas Públicas, Pré-Visualizador e Editor HTML Visual (`req-156` / `BATCH-158`).
+- **Limiares de Memory Gardening & Sincronização de Skills**: Limiares de jardinagem de memória atualizados para 50KB/75KB e catálogo de skills sincronizado.
+- **Idempotência de Checksum MD5 Multiplataforma**: Normalização de fim de linha em LF na compilação de recursos e testes de integridade tolerantes a CRLF/LF (`req-155` / `BATCH-157`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.4**: Idempotência de checksum MD5 multiplataforma e normalização de finais de linha.
 - **v2.10.3**: Correção da cascata no preview de templates e ajustes iniciais nos checksums de recursos.
 - **v2.10.2**: Compatibilidade TLS/SSL com `--ssl-no-revoke` no Windows e integração inicial do motor cron.
 - **v2.10.1**: Inicialização do fluxo de agentes sem prompt, identificação explícita do repositório e enxugamento da documentação.
