@@ -75,14 +75,15 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.2 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.3 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Engine de Tarefas Cron (`admin-cron`)**: Motor completo de execução de cron (`cron.php`) e CRUD administrativo para gerenciamento de tarefas agendadas (`cron_tarefas`).
-- **Compatibilidade TLS/SSL no Windows**: Adicionada flag `--ssl-no-revoke` em operações curl para evitar falhas de revogação no Schannel em ambientes Windows.
-- **Documentação de Raiz Enxuta**: Resumos no README e changelog mantidos concisos.
+- **Correção da Cascata no Preview de Templates Tailwind**: Isolamento de regras conflitantes do Fomantic CSS no iframe do editor visual e preservação das utilities de baseline da página durante a inserção de seções (`req-154` / `BATCH-156`).
+- **Correção na Validação de Integridade de Recursos**: Zerados checksums manuais em `admin-cron` garantindo cálculo automático determinístico na compilação (`req-153` / `BATCH-155`).
+- **Engine de Tarefas Cron (`admin-cron`)**: Motor completo de execução de tarefas agendadas (`cron.php`) e interface CRUD de administração (`cron_tarefas`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.2**: Compatibilidade TLS/SSL com `--ssl-no-revoke` no Windows e integração inicial do motor cron.
 - **v2.10.1**: Inicialização do fluxo de agentes sem prompt, identificação explícita do repositório e enxugamento da documentação.
 - **v2.10.0**: Dependências automáticas de sistema no Tailwind, assets externos e Google Fonts hospedados localmente, minificação de assets no build, tabelas administrativas responsivas, segurança e recuperação de sessão reforçadas e compatibilidade com o Instalador Web v2.
 

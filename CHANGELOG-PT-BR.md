@@ -5,6 +5,15 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.3] - 2026-09-02
+
+### Added
+- Suíte automatizada de testes de integridade dos templates Tailwind (`TemplatesTailwindIntegrityTest`) cobrindo HTML, sidecars e utilities essenciais de todos os 72 modelos (`req-154` / `BATCH-156`).
+
+### Fixed
+- Cascata no Preview de Templates Tailwind: Isolada a folha visual do Fomantic CSS no iframe do editor para evitar que regras sem camada vençam as utilities do Tailwind, e preservado o baseline da página na inserção de seções (`req-154` / `BATCH-156`).
+- Gate de Validação de Checksum de Recursos: Zerados os checksums manuais em `admin-cron` permitindo o cálculo determinístico no build (`req-153` / `BATCH-155`).
+
 ## [2.10.2] - 2026-09-02
 
 ### Added

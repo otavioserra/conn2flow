@@ -5,6 +5,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.3] - 2026-09-02
+
+### Added
+- Automated Tailwind template integrity test suite (`TemplatesTailwindIntegrityTest`) covering HTML, sidecars, and essential utility classes across all 72 templates (`req-154` / `BATCH-156`).
+
+### Fixed
+- Tailwind Live Editor Preview Cascading: Isolated unlayered Fomantic CSS stylesheets inside Tailwind template previews and preserved page baseline utility styles when inserting sections (`req-154` / `BATCH-156`).
+- Resource Checksum Integrity Gate: Cleared manual checksum entries in `admin-cron` metadata to enable deterministic build calculation (`req-153` / `BATCH-155`).
+
 ## [2.10.2] - 2026-09-02
 
 ### Added
