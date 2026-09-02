@@ -9,6 +9,11 @@ use Conn2Flow\Cli\Contracts\OutputInterface;
 
 final class AiPruneMemoriesCommand extends BaseProcessCommand
 {
+    private const WARNING_BYTES = 50 * 1024;
+    private const WARNING_LINES = 200;
+    private const CRITICAL_BYTES = 75 * 1024;
+    private const CRITICAL_LINES = 300;
+
     public function getName(): string
     {
         return 'ai:prune-memories';
@@ -16,7 +21,7 @@ final class AiPruneMemoriesCommand extends BaseProcessCommand
 
     public function getDescription(): string
     {
-        return 'Execute Memory Gardening on MEMORIA-ENGENHARIA-EXECUCAO.md (35KB alert, 50KB max ceiling).';
+        return 'Validate Memory Gardening thresholds (50KB warning, 75KB mandatory ceiling).';
     }
 
     public function getAliases(): array
@@ -27,7 +32,7 @@ final class AiPruneMemoriesCommand extends BaseProcessCommand
     public function getHelp(): string
     {
         return "Usage: c2f ai:prune-memories\n\n" .
-               "Validates that sdd/MEMORIA-ENGENHARIA-EXECUCAO.md is kept under 50KB / 150 lines (alert at 35KB / 100 lines).";
+               "Validates sdd/MEMORIA-ENGENHARIA-EXECUCAO.md with a 50KB / 200-line warning, a 75KB / 300-line mandatory pruning ceiling, and a ~25KB post-pruning target.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -45,17 +50,17 @@ final class AiPruneMemoriesCommand extends BaseProcessCommand
 
         $output->info("Current Memory File: {$size} bytes ({$lines} lines)");
 
-        if ($size > 51200 || $lines > 150) {
-            $output->warning("Memory file exceeds the 50KB / 150 lines ceiling ({$size}B, {$lines} lines). Please prune older completed tasks to ~15KB (12-15 tasks).");
+        if ($size >= self::CRITICAL_BYTES || $lines >= self::CRITICAL_LINES) {
+            $output->warning("Memory file reached the 75KB / 300-line mandatory ceiling ({$size}B, {$lines} lines). Prune to ~25KB while preserving 20-25 recent tasks and learnings.");
             return 1;
         }
 
-        if ($size > 35840 || $lines > 100) {
-            $output->info("Memory file is approaching limit ({$size}B, {$lines} lines). Consider scheduling memory pruning soon.");
+        if ($size >= self::WARNING_BYTES || $lines >= self::WARNING_LINES) {
+            $output->info("Memory file reached the 50KB / 200-line preventive warning ({$size}B, {$lines} lines). Schedule gardening; do not prune automatically before the mandatory ceiling.");
             return 0;
         }
 
-        $output->success("Memory file is healthy ({$size}B, {$lines} lines) and within the 35KB-50KB ceiling!");
+        $output->success("Memory file is healthy ({$size}B, {$lines} lines). Pruning below 50KB / 200 lines is prohibited.");
         return 0;
     }
 }

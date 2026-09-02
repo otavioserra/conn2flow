@@ -1,7 +1,7 @@
 # Memória de Engenharia — Execução
 
 > **Propósito**: contexto operacional recente; regras consolidadas vivem nas skills.
-> **Política**: preservar 3 a 5 tarefas, mirar 3–4,5 KB e podar antes de 5 KB / 50 linhas.
+> **Política**: é proibido podar abaixo de 50 KB / 200 linhas; emitir alerta preventivo nesse patamar, podar obrigatoriamente ao atingir 75 KB / 300 linhas e mirar ~25 KB, preservando 20 a 25 tarefas e aprendizados recentes. O fim da sessão ou do batch não aciona poda.
 
 ## Skills Core destiladas
 

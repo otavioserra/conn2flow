@@ -15,6 +15,8 @@ user-invocable: false
 
 Use esta skill quando o projeto for guiado por sdd versionados.
 
+> 🚫 **Bloqueio de Memory Gardening**: não invoque nem pode a memória de execução apenas por encerrar uma sessão ou concluir um batch. Abaixo de 50 KB e 200 linhas o arquivo está saudável e não deve ser reescrito; em 50 KB / 200 linhas há somente alerta preventivo, e a poda é obrigatória apenas em 75 KB / 300 linhas.
+
 ## Leitura mínima inicial
 
 Comece por `sdd/README.md`, `sdd/process/00-START-HERE.md`, `sdd/process/01-WORKFLOW.md`, `sdd/implementation/BATCH-INDEX.md`, o batch atual, `sdd/validation/VALIDATION-CHECKLIST.md` e `sdd/decisions/DECISION-LOG.md`.

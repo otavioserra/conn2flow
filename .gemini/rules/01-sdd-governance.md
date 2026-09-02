@@ -19,5 +19,5 @@
 - Todo deploy ou atualização de projeto/sistema DEVE finalizar com `c2f css:rebuild` para assegurar sincronia entre autoria e classes derivadas do Tailwind v4.
 
 ## 6. Gestão de Memórias de Engenharia
-- Respeite os tetos canônicos de memória: 35 KB (alerta), 50 KB (teto de poda mandatório) e ~15 KB (alvo pós-poda).
+- Respeite os tetos canônicos de memória: poda proibida abaixo de 50 KB / 200 linhas, alerta nesse patamar, teto mandatório em 75 KB / 300 linhas e alvo pós-poda de ~25 KB com 20 a 25 tarefas recentes.
 - Nunca modifique `MEMORIA-ENGENHARIA-CHEFIA.md` sem autorização expressa do usuário humano.
