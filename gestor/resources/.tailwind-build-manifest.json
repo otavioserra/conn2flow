@@ -1052,6 +1052,36 @@
             "safelist": [],
             "built_at": "2026-08-29T11:32:24+00:00"
         },
+        "module|admin-cron|en|pages|admin-cron": {
+            "fingerprint": "49b5de0d24479a3c96a959f6dde42b23f17d6eaaf08ae5444ceef87ff48e5c6d",
+            "output_hash": "c5b395982f386ef615db23bc6ff77614b18a889ed59e7a3b4558c99aaafce54a",
+            "output": "modulos/admin-cron/resources/en/pages/admin-cron/admin-cron.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/admin-cron/resources/en/pages/admin-cron/admin-cron.html",
+                "modulos/admin-cron/admin-cron.js",
+                "resources/en/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/en/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-09-01T20:05:18+00:00"
+        },
+        "module|admin-cron|pt-br|pages|admin-cron": {
+            "fingerprint": "ef46379e40892b4ab59b07a1ab94bee8adb2d47f982fd53eff2a971b5f52b402",
+            "output_hash": "c5b395982f386ef615db23bc6ff77614b18a889ed59e7a3b4558c99aaafce54a",
+            "output": "modulos/admin-cron/resources/pt-br/pages/admin-cron/admin-cron.precompiled.css",
+            "tailwind_version": "unknown",
+            "sources": [
+                "modulos/admin-cron/resources/pt-br/pages/admin-cron/admin-cron.html",
+                "modulos/admin-cron/admin-cron.js",
+                "resources/pt-br/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/pt-br/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-09-01T20:05:19+00:00"
+        },
         "module|contatos|pt-br|components|base-email": {
             "fingerprint": "73177c3c52b923953b455322f393febeef91ae484edad061fdcb7aab6c70636d",
             "output_hash": "4425a640e4469dc9a9007324ccec221be32bcc479c36559b67b4b1f0f2a3d6eb",

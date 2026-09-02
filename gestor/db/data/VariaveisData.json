@@ -4681,6 +4681,1464 @@
     },
     {
         "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "page-title",
+        "valor": "Rotinas Automáticas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "page-subtitle",
+        "valor": "Agendamento e execução das tarefas do sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "card-total-label",
+        "valor": "Tarefas cadastradas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "card-active-label",
+        "valor": "Tarefas ativas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "card-executions-label",
+        "valor": "Execuções nas últimas 24h",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "card-scheduler-label",
+        "valor": "Agendador do servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "scheduler-detected",
+        "valor": "Detectado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "scheduler-not-detected",
+        "valor": "Não detectado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "button-sync-modules",
+        "valor": "Sincronizar Módulos (.json)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "button-new-task",
+        "valor": "Nova tarefa",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "filter-search-placeholder",
+        "valor": "Buscar por nome, identificador ou callback",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "filter-frequency-label",
+        "valor": "Frequência",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "filter-module-label",
+        "valor": "Módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "filter-frequency-all",
+        "valor": "Todas as frequências",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "filter-module-all",
+        "valor": "Todos os módulos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "freq-minutario",
+        "valor": "A cada 10 minutos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "freq-horario",
+        "valor": "De hora em hora",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "freq-diario",
+        "valor": "Diária",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "freq-mensal",
+        "valor": "Mensal",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "freq-customizado",
+        "valor": "Personalizada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "table-col-task",
+        "valor": "Tarefa",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "table-col-module",
+        "valor": "Módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "table-col-frequency",
+        "valor": "Frequência",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "table-col-last-run",
+        "valor": "Último disparo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "table-col-duration",
+        "valor": "Duração",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "table-col-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "table-col-actions",
+        "valor": "Ações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "table-empty",
+        "valor": "Nenhuma tarefa encontrada para os filtros aplicados.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "action-run-now",
+        "valor": "Disparar agora",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "action-pause",
+        "valor": "Pausar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "action-activate",
+        "valor": "Ativar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "action-edit",
+        "valor": "Editar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "action-logs",
+        "valor": "Ver logs",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "action-delete",
+        "valor": "Excluir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "status-sucesso",
+        "valor": "Sucesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "status-erro",
+        "valor": "Erro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "status-aviso",
+        "valor": "Aviso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "status-never-run",
+        "valor": "Nunca executada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "state-paused",
+        "valor": "Pausada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "origin-modulo",
+        "valor": "Declarada no módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "origin-manual",
+        "valor": "Criada no painel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "modal-new-title",
+        "valor": "Nova tarefa avulsa",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "modal-edit-title",
+        "valor": "Editar tarefa",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-id-label",
+        "valor": "Identificador",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-id-hint",
+        "valor": "Use letras minúsculas, números e hífens.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-name-label",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-description-label",
+        "valor": "Descrição",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-frequency-label",
+        "valor": "Frequência",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-cron-expression-label",
+        "valor": "Expressão cron",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-cron-expression-hint",
+        "valor": "Cinco campos, como em 0 3 * * *. Obrigatória na frequência personalizada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-callback-label",
+        "valor": "Função de callback",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-module-label",
+        "valor": "Módulo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-parameters-label",
+        "valor": "Parâmetros (JSON)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-active-label",
+        "valor": "Tarefa ativa",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "form-readonly-notice",
+        "valor": "Esta tarefa é declarada no arquivo do módulo. Nome, descrição e callback são somente leitura; alterações de agendamento e de estado são preservadas na sincronização.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "button-save",
+        "valor": "Salvar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "button-cancel",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "button-close",
+        "valor": "Fechar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "logs-title",
+        "valor": "Histórico da última execução",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "logs-last-run",
+        "valor": "Disparo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "logs-duration",
+        "valor": "Duração",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "logs-status",
+        "valor": "Resultado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "logs-output",
+        "valor": "Saída",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "logs-empty",
+        "valor": "Esta tarefa ainda não foi executada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "msg-sync-success",
+        "valor": "Módulos sincronizados.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "msg-run-success",
+        "valor": "Tarefa executada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "msg-toggle-success",
+        "valor": "Estado da tarefa atualizado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "msg-save-success",
+        "valor": "Tarefa salva.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "msg-delete-success",
+        "valor": "Tarefa excluída.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "msg-confirm-delete",
+        "valor": "Excluir esta tarefa em definitivo?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-generic",
+        "valor": "Não foi possível concluir a operação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-task-not-found",
+        "valor": "Tarefa não encontrada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-required-fields",
+        "valor": "Preencha identificador, nome e função de callback.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-id",
+        "valor": "Identificador inválido. Use letras minúsculas, números e hífens.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-frequency",
+        "valor": "Frequência inválida.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-cron",
+        "valor": "Expressão cron inválida. Informe cinco campos.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-callback",
+        "valor": "Nome de função de callback inválido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-parameters",
+        "valor": "Os parâmetros precisam ser um JSON válido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-duplicate-id",
+        "valor": "Já existe uma tarefa com este identificador.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-module-task-readonly",
+        "valor": "Tarefas declaradas em módulos não podem ser excluídas pelo painel. Remova a declaração do arquivo do módulo e sincronize.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
+        "id": "api-error-module-task-fields",
+        "valor": "Nome, descrição e callback de tarefas de módulo são definidos no arquivo do módulo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "page-title",
+        "valor": "Scheduled Tasks",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "page-subtitle",
+        "valor": "Scheduling and execution of system routines",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "card-total-label",
+        "valor": "Registered tasks",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "card-active-label",
+        "valor": "Active tasks",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "card-executions-label",
+        "valor": "Runs in the last 24h",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "card-scheduler-label",
+        "valor": "Server scheduler",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "scheduler-detected",
+        "valor": "Detected",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "scheduler-not-detected",
+        "valor": "Not detected",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "button-sync-modules",
+        "valor": "Sync Modules (.json)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "button-new-task",
+        "valor": "New task",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "filter-search-placeholder",
+        "valor": "Search by name, identifier or callback",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "filter-frequency-label",
+        "valor": "Frequency",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "filter-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "filter-frequency-all",
+        "valor": "All frequencies",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "filter-module-all",
+        "valor": "All modules",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "freq-minutario",
+        "valor": "Every 10 minutes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "freq-horario",
+        "valor": "Hourly",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "freq-diario",
+        "valor": "Daily",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "freq-mensal",
+        "valor": "Monthly",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "freq-customizado",
+        "valor": "Custom",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "table-col-task",
+        "valor": "Task",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "table-col-module",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "table-col-frequency",
+        "valor": "Frequency",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "table-col-last-run",
+        "valor": "Last run",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "table-col-duration",
+        "valor": "Duration",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "table-col-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "table-col-actions",
+        "valor": "Actions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "table-empty",
+        "valor": "No task matches the current filters.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "action-run-now",
+        "valor": "Run now",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "action-pause",
+        "valor": "Pause",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "action-activate",
+        "valor": "Activate",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "action-edit",
+        "valor": "Edit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "action-logs",
+        "valor": "View logs",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "action-delete",
+        "valor": "Delete",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "status-sucesso",
+        "valor": "Success",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "status-erro",
+        "valor": "Error",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "status-aviso",
+        "valor": "Warning",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "status-never-run",
+        "valor": "Never run",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "state-paused",
+        "valor": "Paused",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "origin-modulo",
+        "valor": "Declared in module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "origin-manual",
+        "valor": "Created in panel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "modal-new-title",
+        "valor": "New standalone task",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "modal-edit-title",
+        "valor": "Edit task",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-id-label",
+        "valor": "Identifier",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-id-hint",
+        "valor": "Use lowercase letters, numbers and hyphens.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-description-label",
+        "valor": "Description",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-frequency-label",
+        "valor": "Frequency",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-cron-expression-label",
+        "valor": "Cron expression",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-cron-expression-hint",
+        "valor": "Five fields, such as 0 3 * * *. Required for custom frequency.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-callback-label",
+        "valor": "Callback function",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-module-label",
+        "valor": "Module",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-parameters-label",
+        "valor": "Parameters (JSON)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-active-label",
+        "valor": "Task active",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "form-readonly-notice",
+        "valor": "This task is declared in the module file. Name, description and callback are read-only; schedule and state changes are preserved across synchronization.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "button-save",
+        "valor": "Save",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "button-cancel",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "button-close",
+        "valor": "Close",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "logs-title",
+        "valor": "Last execution history",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "logs-last-run",
+        "valor": "Run at",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "logs-duration",
+        "valor": "Duration",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "logs-status",
+        "valor": "Result",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "logs-output",
+        "valor": "Output",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "logs-empty",
+        "valor": "This task has not run yet.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "msg-sync-success",
+        "valor": "Modules synchronized.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "msg-run-success",
+        "valor": "Task executed.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "msg-toggle-success",
+        "valor": "Task state updated.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "msg-save-success",
+        "valor": "Task saved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "msg-delete-success",
+        "valor": "Task deleted.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "msg-confirm-delete",
+        "valor": "Permanently delete this task?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-generic",
+        "valor": "The operation could not be completed.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-task-not-found",
+        "valor": "Task not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-required-fields",
+        "valor": "Fill in identifier, name and callback function.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-id",
+        "valor": "Invalid identifier. Use lowercase letters, numbers and hyphens.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-frequency",
+        "valor": "Invalid frequency.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-cron",
+        "valor": "Invalid cron expression. Provide five fields.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-callback",
+        "valor": "Invalid callback function name.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-invalid-parameters",
+        "valor": "Parameters must be valid JSON.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-duplicate-id",
+        "valor": "A task with this identifier already exists.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-module-task-readonly",
+        "valor": "Tasks declared in modules cannot be deleted from the panel. Remove the declaration from the module file and synchronize.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "api-error-module-task-fields",
+        "valor": "Name, description and callback of module tasks are defined in the module file.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
         "modulo": "admin-environment",
         "id": "email-tests-head-title",
         "valor": "MODO DE DEBUG",

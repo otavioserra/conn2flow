@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-09-01T18:20:21+00:00",
+    "generated_at": "2026-09-01T20:22:05+00:00",
     "tables": {
         "alvos_ia": {
             "nome": "alvos_ia",
@@ -47,6 +47,23 @@
             ],
             "insert_only": false,
             "source": "module:admin-componentes"
+        },
+        "cron_tarefas": {
+            "nome": "cron_tarefas",
+            "id": "id",
+            "id_numerico": "id_cron_tarefas",
+            "data_file": "CronTarefasData.json",
+            "strategy": "natural_key",
+            "natural_key_columns": [
+                "id"
+            ],
+            "preserve_on_user_modified": [
+                "ativo",
+                "expressao_cron",
+                "parametros"
+            ],
+            "insert_only": false,
+            "source": "global:tables_config.json"
         },
         "forms": {
             "nome": "forms",
