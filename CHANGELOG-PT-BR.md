@@ -5,6 +5,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.4] - 2026-09-02
+
+### Fixed
+- Checksums MD5 Multiplataforma: Normalização de fim de linha em LF na compilação de recursos e atualização do `AdminCronReq032Test::testChecksumHtmlCoincideComMd5DoArquivo` para validação de checksums resiliente entre Windows (CRLF) e Linux CI (LF) (`req-155` / `BATCH-157`).
+
 ## [2.10.3] - 2026-09-02
 
 ### Added

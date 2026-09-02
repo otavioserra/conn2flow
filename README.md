@@ -71,14 +71,15 @@ content workflows.
 
 ## 🆕 Latest Version
 
-**v2.10.3 (September 2026)** *(Current base: v2.9.51)*
+**v2.10.4 (September 2026)** *(Current base: v2.9.51)*
 
+- **Cross-Platform Resource MD5 Checksum Idempotency**: Normalized line-ending line breaks (LF vs CRLF) in resource compilation and updated `AdminCronReq032Test` for cross-platform CI checksum assertion (`req-155` / `BATCH-157`).
 - **Tailwind Template Preview Cascading Fix**: Isolated competing legacy Fomantic CSS rules inside Tailwind live editor previews and preserved page baseline utility styles during section insertions (`req-154` / `BATCH-156`).
-- **Resource Integrity Validation Fix**: Zeromanual checksums in `admin-cron` resource metadata ensuring deterministic automated computation during resource compilation (`req-153` / `BATCH-155`).
 - **Cron Tasks Engine (`admin-cron`)**: Complete cron execution engine (`cron.php`) and administration CRUD for automated tasks (`cron_tarefas` table).
 
 ### Previous 2.10.x Releases
 
+- **v2.10.3**: Tailwind template preview cascading fix and resource integrity validation adjustments.
 - **v2.10.2**: Windows TLS/SSL `--ssl-no-revoke` compatibility and preliminary cron integration.
 - **v2.10.1**: Zero-prompt agent bootstrap, explicit repository identification, and streamlined root documentation.
 - **v2.10.0**: Automatic Tailwind system dependencies, self-hosted external assets and Google Fonts, build-time asset minification, responsive administrative tables, hardened security, and Web Installer v2 compatibility.

@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.4] - 2026-09-02
+
+### Fixed
+- Cross-Platform Resource MD5 Checksums: Normalized LF line endings during resource compilation and updated `AdminCronReq032Test::testChecksumHtmlCoincideComMd5DoArquivo` to assert checksums tolerantly across Windows (CRLF) and Linux CI (LF) environments (`req-155` / `BATCH-157`).
+
 ## [2.10.3] - 2026-09-02
 
 ### Added

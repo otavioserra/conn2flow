@@ -75,14 +75,15 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.3 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.4 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
+- **Idempotência de Checksum MD5 Multiplataforma**: Normalização de quebras de linha (LF vs CRLF) na compilação de recursos e atualização do `AdminCronReq032Test` para asserção de checksums tolerante ao ambiente de CI (`req-155` / `BATCH-157`).
 - **Correção da Cascata no Preview de Templates Tailwind**: Isolamento de regras conflitantes do Fomantic CSS no iframe do editor visual e preservação das utilities de baseline da página durante a inserção de seções (`req-154` / `BATCH-156`).
-- **Correção na Validação de Integridade de Recursos**: Zerados checksums manuais em `admin-cron` garantindo cálculo automático determinístico na compilação (`req-153` / `BATCH-155`).
 - **Engine de Tarefas Cron (`admin-cron`)**: Motor completo de execução de tarefas agendadas (`cron.php`) e interface CRUD de administração (`cron_tarefas`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.3**: Correção da cascata no preview de templates e ajustes iniciais nos checksums de recursos.
 - **v2.10.2**: Compatibilidade TLS/SSL com `--ssl-no-revoke` no Windows e integração inicial do motor cron.
 - **v2.10.1**: Inicialização do fluxo de agentes sem prompt, identificação explícita do repositório e enxugamento da documentação.
 - **v2.10.0**: Dependências automáticas de sistema no Tailwind, assets externos e Google Fonts hospedados localmente, minificação de assets no build, tabelas administrativas responsivas, segurança e recuperação de sessão reforçadas e compatibilidade com o Instalador Web v2.
