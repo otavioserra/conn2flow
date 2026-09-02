@@ -122,9 +122,19 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         // Última etapa por dependência real: publica o resultado da minificação e do CSS derivado,
         // não o estado anterior a eles. Sem DocumentRoot declarado a etapa apenas informa — o
         // projeto continua servindo tudo pelo controlador `arquivo-estatico`.
+        //
+        // req-050: o id do projeto é declarado aqui pelo mesmo motivo da etapa 6/8 — sem ele a
+        // publicação lia o `PUBLIC_PATH` do CORE e mandava o `dist/` do projeto para o
+        // DocumentRoot de outro site. Com `deploy_mode: "ssh"`, o destino é o `ssh_public_path`
+        // da VM, e o envio continua exigindo `--confirmar-remoto`.
         $output->section('8/8 Publicando assets estáticos em dist/');
+        $argvPublish = ['assets:publish', '--opcional', '--project=' . $project];
+        if ($input->hasOption('confirmar-remoto')) {
+            $argvPublish[] = '--confirmar-remoto';
+        }
+
         $publishCmd = new AssetsPublishCommand($this->rootPath);
-        $code = $publishCmd->execute(new Input(['--opcional']), $output);
+        $code = $publishCmd->execute(new Input($argvPublish), $output);
         if ($code !== 0) {
             $output->warning(
                 'A publicação de assets não completou. O projeto segue funcionando: as URLs caem no '

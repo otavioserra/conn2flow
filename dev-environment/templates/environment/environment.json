@@ -1,49 +1,60 @@
 {
-    "name": "Conn2Flow Development Environment",
-    "description": "Configuration file for the Conn2Flow development environment. Defines global variables and paths to be use on the tasks. Copy this file to `dev-environment/data` and modify it to your needs.",
-    "devEnvironment": {
-        "projectTarget": "project_ID",
-        "source": "",
-        "target": "",
-        "dockerPath": "/var/www/sites/localhost/conn2flow-gestor/",
-        "accessURL": "http://localhost/",
-        "tests": "tests",
-        "testsBuild": "tests/build",
-        "tailwindcss/cli": ""
+  "name": "Conn2Flow Development Environment",
+  "description": "Configuration file for the Conn2Flow development environment. Defines global variables and paths to be use on the tasks. Copy this file to `dev-environment/data` and modify it to your needs.",
+  "devEnvironment": {
+    "projectTarget": "project_ID",
+    "source": "",
+    "target": "",
+    "dockerPath": "/var/www/sites/localhost/conn2flow-gestor/",
+    "accessURL": "http://localhost/",
+    "tests": "tests",
+    "testsBuild": "tests/build",
+    "tailwindcss/cli": ""
+  },
+  "devInstallerEnvironment": {
+    "source": "",
+    "target": "",
+    "dockerPath": "/var/www/sites/localhost/public_html/"
+  },
+  "devPluginEnvironmentConfig": {
+    "public": {
+      "path": ""
     },
-    "devInstallerEnvironment": {
-        "source": "",
-        "target": "",
-        "dockerPath": "/var/www/sites/localhost/public_html/"
-    },
-    "devPluginEnvironmentConfig": {
-        "public": {
-            "path": ""
-        },
-        "private": {
-            "path": ""
-        }
-    },
-    "gemini": {
-        "apiKey": ""
-    },
-    "devProjects": {
-        "project_ID": {
-            "name": "Conn2Flow Project",
-            "path": "",
-            "path_tests": "",
-            "local": false,
-            "gitDeploy": false,
-            "gitDeployBaseRef": "HEAD",
-            "target": "",
-            "url": "",
-            "api": {
-                "access_token": "",
-                "refresh_token": "",
-                "token_type": "Bearer",
-                "expires_in": 3600,
-                "scope": "write read"
-            }
-        }
+    "private": {
+      "path": ""
     }
+  },
+  "gemini": {
+    "apiKey": ""
+  },
+  "devProjects": {
+    "project_ID": {
+      "name": "Conn2Flow Project",
+      "path": "",
+      "path_tests": "",
+      "local": false,
+      "gitDeploy": false,
+      "gitDeployBaseRef": "HEAD",
+      "target": "",
+      "deploy_mode": "local",
+      "ssh_user": "",
+      "ssh_host": "",
+      "ssh_port": 22,
+      "ssh_target_path": "",
+      "ssh_public_path": "",
+      "ssh_run_as": "",
+      "ssh_sudo": false,
+      "ssh_chown": "",
+      "ssh_identity": "",
+      "ssh_cli_entrypoint": "./c2f",
+      "url": "",
+      "api": {
+        "access_token": "",
+        "refresh_token": "",
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "scope": "write read"
+      }
+    }
+  }
 }
