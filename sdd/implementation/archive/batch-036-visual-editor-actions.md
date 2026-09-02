@@ -66,7 +66,7 @@ O lote foi quebrado nos seguintes slices funcionais:
     - Clipboard interno `this.clipboardElement`; métodos `copySelected()`, `pasteSelected()`, `updatePasteButton()` (mostra/oculta Colar e reposiciona a toolbar à direita), `toggleWrapMenu()`/`openWrapMenu()`/`closeWrapMenu()` e `wrapSelected(tag)` (replaceChild + appendChild, mantendo a seleção no elemento original).
     - Atalhos no iframe: `Ctrl/Cmd+C` (copia, só quando não há seleção de texto ativa — preserva a cópia nativa) e `Ctrl/Cmd+V` (cola); mensagens `c2f-he:copy`/`c2f-he:paste` no bus; `#html-editor-wrap-menu` registrado em `isEditorOwned`/`extractUserHtml`; fechamento do menu ao clicar fora, em `selectElement`/`clearSelection`/`hideChrome`/Esc.
   - `gestor/assets/interface/html-editor-visual-controls.js`: ações `ACT.COPY`/`ACT.PASTE` e atalhos `Ctrl+C`/`Ctrl+V` na janela pai (com guarda de input focado e seleção de texto), encaminhados por `postMessage` ao iframe.
-- Decisão: [DEC-050](../decisions/DECISION-LOG.md).
+- Decisão: [DEC-050](../../decisions/DECISION-LOG.md).
 - Pendência (operador): deploy `🗃️ Projects - Update => Core` + validação runtime:
   - Copiar (botão/Ctrl+C) habilita o botão Colar; Colar (botão/Ctrl+V) insere o clone como irmão inferior do alvo, repetível em vários alvos.
   - Embrulhar abre o popup de tags; escolher uma envolve o elemento e mantém a seleção no original (breadcrumb passa a mostrar o novo contêiner pai).

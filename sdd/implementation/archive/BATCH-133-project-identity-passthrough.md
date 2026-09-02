@@ -1,7 +1,7 @@
 # BATCH-133: Repasse da Identidade do Projeto ao Atualizador de Banco no Deploy Local
 
-Intake: [req-131.md](../human-requests/req-131.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-133](../validation/VALIDATION-CHECKLIST.md#batch-133)
+Intake: [req-131.md](../../human-requests/archive/req-131.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-133](../../validation/VALIDATION-CHECKLIST.md#batch-133)
 Status: `implemented-pending-homologation`
 
 Este lote corrige a assimetria entre os dois deploys do mesmo projeto: o remoto (via API) sempre

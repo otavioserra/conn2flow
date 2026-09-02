@@ -1,7 +1,7 @@
 # BATCH-090 — Gerenciador de Arquivos por Árvore Física e CRUD de Diretórios (req-090)
 
 Status: **complete** (validação estática) — deploy + homologação runtime pendentes com o operador.
-Intake: [req-090.md](../human-requests/req-090.md) · Decisão: [DEC-090](../decisions/DECISION-LOG.md#dec-090---2026-07-17---accepted)
+Intake: [req-090.md](../../human-requests/archive/req-090.md) · Decisão: [DEC-090](../../decisions/DECISION-LOG.md#dec-090---2026-07-17---accepted)
 
 ## Objetivo
 

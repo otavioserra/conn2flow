@@ -62,4 +62,4 @@ Desta forma, os repositórios permanecem limpos e isolados no disco local do des
     3. `🗃️ Projects - Synchronize => Database -> ID`
 
 ## Critérios de Aceitação e Validação
-Definidos em [VALIDATION-CHECKLIST.md](./validation/VALIDATION-CHECKLIST.md) sob o lote `BATCH-001`.
+Definidos em [VALIDATION-CHECKLIST.md](validation/VALIDATION-CHECKLIST.md) sob o lote `BATCH-001`.

@@ -3,7 +3,7 @@
 > [!IMPORTANT]
 > **Atenção (Engenheiro de Execução - BATCH-075)**: Lote em andamento. Há outro lote paralelo pendente de início (BATCH-076). **Foque exclusivamente nos slices descritos neste arquivo e ignore o BATCH-076.**
 
-- **Intake**: [req-075.md](../human-requests/req-075.md)
+- **Intake**: [req-075.md](../../human-requests/archive/req-075.md)
 - **Status**: in-progress
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-075
 

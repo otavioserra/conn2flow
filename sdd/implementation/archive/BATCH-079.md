@@ -1,8 +1,8 @@
 # BATCH-079 — Mapeamento no Pai de Widgets Múltiplos, Image Picker, Filtro/Agrupamento de Módulos e Backups Página×Layout
 
-- **Intake**: [req-079](../human-requests/req-079.md)
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-079](../validation/VALIDATION-CHECKLIST.md#batch-079)
-- **Decisão**: [DEC-081](../decisions/DECISION-LOG.md#dec-081---2026-07-10---accepted)
+- **Intake**: [req-079](../../human-requests/archive/req-079.md)
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-079](../../validation/VALIDATION-CHECKLIST.md#batch-079)
+- **Decisão**: [DEC-081](../../decisions/DECISION-LOG.md#dec-081---2026-07-10---accepted)
 - **Base**: refinamentos pós-teste do BATCH-077/BATCH-078 (Live Editor / Dashboard Site Toolbar).
 
 ## Escopo (8 itens)

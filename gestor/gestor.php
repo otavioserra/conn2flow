@@ -1123,6 +1123,11 @@ function gestor_pagina_extra_head_e_javascript(){
 		'moduloOpcao' => (isset($_GESTOR['opcao']) ? $_GESTOR['opcao'] : false ),
 		'widgetsToAjax' => (isset($_GESTOR['widgetsToAjax']) ? $_GESTOR['widgetsToAjax'] : null ),
 		'moduloCaminho' => $caminho,
+		// req-156: URLs das bibliotecas de terceiro que o JAVASCRIPT monta por conta própria —
+		// iframes de preview por `srcdoc`, Editbar e previews de widget. Elas nasciam com host e
+		// versão escritos à mão no cliente, fora do registro, e por isso sobreviveram ao BATCH-146.
+		// Aqui a mesma resolução do PHP (disco primeiro, CDN como fallback) chega ao cliente.
+		'assetsUrls' => (function_exists('assets_externos_urls_js') ? assets_externos_urls_js(Array('jquery','fomantic-ui','codemirror','quill','tailwindcss-browser')) : Array()),
 	);
 	
 	if($_GESTOR['paginaIframe']) $variaveis_js['paginaIframe'] = true;

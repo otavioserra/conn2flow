@@ -1,6 +1,6 @@
 # BATCH-115 — HTML dinâmico e Tailwind por recurso
 
-- **Intake**: [req-115](../human-requests/req-115.md)
+- **Intake**: [req-115](../../human-requests/archive/req-115.md)
 - **Status**: in-progress
 - **Data**: 2026-08-14
 

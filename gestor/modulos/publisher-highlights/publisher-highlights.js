@@ -638,8 +638,12 @@ $(document).ready(function () {
                     });
                 } else {
                     doc = '<!doctype html><html><head><meta charset="utf-8">';
-                    doc += `<!-- CDN do TailwindCSS v4 -->
-                    <script src="https://unpkg.com/@tailwindcss/browser@4.3.0"></script>`;
+                    // req-156: o compilador vem do registro de assets (disco primeiro), e nao
+                    // de `unpkg.com` com a versao escrita a mao — este preview compila as MESMAS
+                    // classes que o build offline, entao os dois tem de usar a mesma versao.
+                    const compilador = (window.gestorAssets && window.gestorAssets.url)
+                        ? window.gestorAssets.url('tailwindcss-browser', 'dist/index.global.js') : '';
+                    doc += `<script src="${compilador}"></script>`;
                     doc += '</head><body>' + (dados.html || '') + '</body></html>';
                 }
 

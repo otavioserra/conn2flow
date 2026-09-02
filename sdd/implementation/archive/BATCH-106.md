@@ -2,7 +2,7 @@
 
 ## Origem
 
-- Intake humano: [req-106.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-106.md).
+- Intake humano: [req-106.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/req-106.md).
 - Decisão: DEC-103.
 - Status: `complete`.
 - Data de fechamento: 2026-08-06.

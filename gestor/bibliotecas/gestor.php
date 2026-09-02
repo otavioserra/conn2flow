@@ -1100,21 +1100,34 @@ function gestor_css_classes_em_codigo($codigo){
  *
  * Função PURA (testável): não toca em `$_GESTOR`, banco ou disco.
  *
+ * O COMPILADOR entra no cálculo desde a req-156. O build offline sempre carimbou a versão do
+ * Tailwind no seu fingerprint (`tailwind_recursos_fingerprint()`), mas o derivado gravado ONLINE não
+ * carregava essa identidade — e a assimetria tem consequência medida: a página `teste-de-pagina`
+ * servia um `css_compiled` do Tailwind v3 (sem `@layer`, gradiente interpolado em sRGB) por cima de
+ * um layout pré-compilado em v4.3.0 (`@layer`, interpolação em oklab). Como HTML, CSS e baseline não
+ * mudaram desde a migração de major, a assinatura antiga classificaria o par como íntegro e o
+ * `css:rebuild` nunca o tocaria. Onze das dezenove páginas Tailwind daquele projeto estavam assim.
+ *
+ * Função PURA (testável): não toca em `$_GESTOR`, banco ou disco.
+ *
  * @param array $params
  * @param string $params['html'] HTML autoral do recurso.
  * @param string $params['css'] CSS autoral do recurso.
  * @param string $params['baseline'] Cascata sob a qual o derivado foi gerado (CSS do layout).
+ * @param string $params['compilador'] Versão do Tailwind que gerou o derivado.
  * @return string Assinatura versionada, ou string vazia quando não há autoria nenhuma.
  */
 function gestor_css_procedencia_assinatura($params = false){
 	$html = '';
 	$css = '';
 	$baseline = '';
+	$compilador = '';
 
 	if(is_array($params)){
 		$html = isset($params['html']) ? (string)$params['html'] : '';
 		$css = isset($params['css']) ? (string)$params['css'] : '';
 		$baseline = isset($params['baseline']) ? (string)$params['baseline'] : '';
+		$compilador = isset($params['compilador']) ? (string)$params['compilador'] : '';
 	}
 
 	// Recurso sem autoria nenhuma não tem o que assinar: devolver um hash aqui faria um registro
@@ -1123,11 +1136,39 @@ function gestor_css_procedencia_assinatura($params = false){
 
 	// O separador não pode ocorrer no conteúdo, senão mover bytes de um campo para o outro daria a
 	// mesma assinatura (`ab`+`c` colidindo com `a`+`bc`).
-	$partes = Array(sha1($html), sha1($css), sha1($baseline));
+	$partes = Array(sha1($html), sha1($css), sha1($baseline), sha1($compilador));
 
 	// O prefixo de versão permite trocar o algoritmo depois sem confundir assinatura antiga com
-	// divergência real: quem lê sabe que `v1` foi calculado por esta regra.
-	return 'v1:'.sha1(implode("\x1f", $partes));
+	// divergência real: quem lê sabe por qual regra cada uma foi calculada. `v2` acrescentou o
+	// compilador — e é de propósito que toda assinatura `v1` deixe de casar: o acervo carimbado sob
+	// a major anterior PRECISA ser reprocessado, e é o `css:rebuild` (que já opera sobre o que está
+	// stale) quem faz isso, sem migração de dados nem edição manual de banco.
+	return 'v2:'.sha1(implode("\x1f", $partes));
+}
+
+/**
+ * Versão do compilador Tailwind vigente, para a assinatura de procedência (req-156).
+ *
+ * Sai do registro de assets externos, que desde a req-156 é a fonte única do número — o mesmo que
+ * governa o `@tailwindcss/browser` do editor e da Editbar. Assim "o que compilou o derivado" e "o
+ * que compila agora" são lidos do mesmo lugar, e trocar a major invalida o acervo por consequência
+ * automática, não por alguém lembrar.
+ *
+ * @return string Versão, ou string vazia quando o registro não está disponível.
+ */
+function gestor_css_compilador_versao(){
+	global $_GESTOR;
+
+	if(!function_exists('assets_externos_registro') && !empty($_GESTOR['bibliotecas-path'])){
+		$caminho = $_GESTOR['bibliotecas-path'].'assets-externos.php';
+		if(is_file($caminho)) require_once($caminho);
+	}
+
+	if(!function_exists('assets_externos_registro')) return '';
+
+	$registro = assets_externos_registro();
+
+	return (string)($registro['tailwindcss-browser']['versao'] ?? '');
 }
 
 /**
@@ -1178,6 +1219,8 @@ function gestor_css_procedencia_para_recurso($html, $css, $layout_id = '', $tabe
 		'html' => (string)$html,
 		'css' => (string)$css,
 		'baseline' => $baseline,
+		// req-156: quem gera o derivado carimba também COM O QUE gerou.
+		'compilador' => gestor_css_compilador_versao(),
 	));
 }
 

@@ -67,7 +67,7 @@ Evidência automatizada reportada pelo executor em 2026-06-23 (ambiente: PHP 8.4
   - **Pós-correção**: `vendor/bin/phpunit tests/Unit/PHP/MenusWidgetConditionalVisibilityTest.php` → **OK (7 tests, 19 assertions)**, sem falhas e sem warnings.
   - Suíte PHP completa (`composer test`) → **OK (48 tests, 142 assertions, 4 skipped gated por banco)**, sem novas falhas (a única `PHPUnit Deprecation` é pré-existente e alheia a este slice).
 - Arquivo alterado: `gestor/modulos/menus/menus.widget.php` (apenas a função `menus_widget_condicao_valida`).
-- Decisão registrada: [DEC-065](../decisions/DECISION-LOG.md#dec-065---2026-06-24---accepted).
+- Decisão registrada: [DEC-065](../../decisions/DECISION-LOG.md#dec-065---2026-06-24---accepted).
 - Observação de escopo: o intake (req-057) cita "9 testes", mas a suíte real `MenusWidgetConditionalVisibilityTest` contém **7** testes — todos passam. Nenhum teste novo foi criado, pois o req descreve apenas a correção do widget; a divergência de contagem foi registrada para rastreabilidade.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 
@@ -413,7 +413,7 @@ Evidência automatizada reportada pelo executor em 2026-06-29 (ambiente: PHP 8.4
 - `node --check gestor/assets/interface/formulario.js` → OK.
 - `composer test` → **OK (67 tests, 255 assertions, 4 skipped gated por banco)**; a única `PHPUnit Deprecation` é pré-existente e alheia a este slice (sem regressão vs. baseline BATCH-068; nenhum teste novo — slice de fluxo de widget/JS público sem hooks de banco testáveis isoladamente).
 - Grep de sanidade: `_forms-submissions-controller` no `formulario.js` restou apenas no seletor inicial duplo; `forms.widget.js` removido e sem referências remanescentes (apenas o `require_once` de `forms.widget.php`, que é o renderer).
-- Decisão registrada: [DEC-072](../decisions/DECISION-LOG.md#dec-072---2026-06-29---accepted).
+- Decisão registrada: [DEC-072](../../decisions/DECISION-LOG.md#dec-072---2026-06-29---accepted).
 - Divergência de intake registrada: a prosa do req-069 §2 indicava `form.attr('id')`, porém **todos** os templates (clássico `contact.html` e os 5 de widget) usam `data-form-id` e nenhum define `id` no `<form>` — o JS lê `id` com fallback `data-form-id` para casar com as chaves de `gestor.form`.
 
 ### Pendências Runtime (com o operador)
@@ -604,7 +604,7 @@ Evidência automatizada reportada pelo executor em 2026-06-30 (ambiente: PHP 8.4
 
 ## BATCH-075 - Dashboard Site Toolbar, Agendamento de Páginas e Extensões do Editor HTML (req-075)
 
-Lote consolidado (6 metas) implementado em slices sequenciais. Plano em [BATCH-075.md](../implementation/BATCH-075.md).
+Lote consolidado (6 metas) implementado em slices sequenciais. Plano em [BATCH-075.md](../../implementation/archive/BATCH-075.md).
 
 ### Slice 1 — Meta 1: Botão "Acessar Site" no Layout Administrativo
 
@@ -781,7 +781,7 @@ Evidência automatizada reportada pelo executor em 2026-07-10:
   - **Atributos (caso de aceite — página raiz do sistema)**: `<a>`/`<img>` com `@[[pagina#url-raiz]]@` recebem `data-c2f-variable`; valor resolvido preservado no editor; no save os `@[[pagina#url-raiz]]@` são reconstruídos em `href`/`src`, `data-c2f-variable` removido e `<h1>` intacto.
   - **Variável de texto**: `@[[usuario#nome]]@` vira caixa protegida com o valor resolvido; save reconstrói o marcador no texto.
   - **Widget**: bloco de widget vira `.c2f-widget-box` atômica contendo o render vivo; `<footer>` fora da caixa preservado; save reconstrói o marcador `<!-- widgets#… -->` (com o mockup) e **não** grava o HTML renderizado.
-- Decisão registrada: [DEC-079](../decisions/DECISION-LOG.md#dec-079---2026-07-10---accepted).
+- Decisão registrada: [DEC-079](../../decisions/DECISION-LOG.md#dec-079---2026-07-10---accepted).
 - Arquivos: novo `dashboard.iframe-toolbar.js`; `dashboard.toolbar.js`; `dashboard.php`; `dashboard-site-toolbar.html` (pt-br/en); removido `dashboard.iframe.toolbar.js`.
 
 ### Pendências Runtime (com o operador)
@@ -817,7 +817,7 @@ Evidência automatizada reportada pelo executor em 2026-07-10 (ambiente: PHP 8.4
 - `php -l` → OK (2/2): `gestor/bibliotecas/html-editor.php`, `gestor/modulos/dashboard/dashboard.php`.
 - `composer test` → **OK (76 tests, 287 assertions, 4 skipped gated por banco)**; a única `PHPUnit Deprecation` é pré-existente e alheia a este slice. Sem regressão.
 - Sem teste unitário novo: slice de UI/CSS (precedente BATCH-066/068). As correções 1 e 2 são reconhecimento de classe via `closest` (baixo risco); a 3 é CSS. Instanciar `HtmlEditorClass` em happy-dom exigiria jQuery + bootstrap pesado do `init()` (frágil, jQuery ausente no node_modules); o motor de mapeamento já foi coberto no BATCH-077.
-- Decisão registrada: [DEC-080](../decisions/DECISION-LOG.md#dec-080---2026-07-10---accepted).
+- Decisão registrada: [DEC-080](../../decisions/DECISION-LOG.md#dec-080---2026-07-10---accepted).
 - Arquivos: `gestor/assets/interface/html-editor.js` (`isEditorOwned`, `resolveEditable`, `injectStyles`); `gestor/modulos/dashboard/dashboard.toolbar.js` (cache-bust); `gestor/bibliotecas/html-editor.php` (versão).
 
 #### Rodada 2 (R2) — Widgets Sem Wrapper, Aparência e Ícones SVG (2026-07-10)

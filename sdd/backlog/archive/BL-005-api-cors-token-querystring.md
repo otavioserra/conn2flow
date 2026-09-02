@@ -8,9 +8,9 @@
 
 ## Contexto observado
 
-1. **CORS liberado para qualquer origem**: `header('Access-Control-Allow-Origin: *')` fixo no topo do controlador ([api.php:14](../../gestor/controladores/api/api.php)). Combinado com respostas autenticadas por Bearer, qualquer site pode consumir a API do navegador do usuário.
-2. **Token aceito na query string**: `api_authenticate()` lê o token de `Authorization`, `X-API-Key` **e** `$_GET['token']` ([api.php:88](../../gestor/controladores/api/api.php)). Tokens em URL vazam em logs de servidor, histórico de proxy, Referer e histórico do navegador.
-3. **Rate limit em arquivo local** (100 req/h/IP) via cache em disco ([api.php:27-66](../../gestor/controladores/api/api.php)) — frágil em múltiplos servidores/containers e sujeito a corrida de arquivo.
+1. **CORS liberado para qualquer origem**: `header('Access-Control-Allow-Origin: *')` fixo no topo do controlador ([api.php:14](../../../gestor/controladores/api/api.php)). Combinado com respostas autenticadas por Bearer, qualquer site pode consumir a API do navegador do usuário.
+2. **Token aceito na query string**: `api_authenticate()` lê o token de `Authorization`, `X-API-Key` **e** `$_GET['token']` ([api.php:88](../../../gestor/controladores/api/api.php)). Tokens em URL vazam em logs de servidor, histórico de proxy, Referer e histórico do navegador.
+3. **Rate limit em arquivo local** (100 req/h/IP) via cache em disco ([api.php:27-66](../../../gestor/controladores/api/api.php)) — frágil em múltiplos servidores/containers e sujeito a corrida de arquivo.
 
 ## Proposta de melhoria (a validar)
 

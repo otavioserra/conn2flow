@@ -1,7 +1,7 @@
 # BATCH-120 — Personal Access Tokens e códigos de recuperação de 2FA
 
-Origem: [req-119.md](../human-requests/req-119.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-120](../validation/VALIDATION-CHECKLIST.md)
+Origem: [req-119.md](../../human-requests/archive/req-119.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-120](../../validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation` (implementado em 2026-08-18)
 
 Continuação direta do BATCH-119: a aba nova nasce no painel Tailwind já entregue.

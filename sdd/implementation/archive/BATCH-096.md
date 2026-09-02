@@ -1,6 +1,6 @@
 # BATCH-096 - Mapeamento Visual de Embeds, Proteção de Eventos, Suporte Híbrido a PDF e Modal Estruturado
 
-Intake: [req-096.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-096.md)
+Intake: [req-096.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/req-096.md)
 Decisão: DEC-092
 Validação: VALIDATION-CHECKLIST.md#batch-096
 

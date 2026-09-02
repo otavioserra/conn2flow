@@ -54,7 +54,7 @@ O lote foi quebrado nos seguintes slices funcionais:
   - `gestor/assets/interface/html-editor.js`:
     - `createInsertGhost(payload)` passa a construir o **nó real** (`buildElement`/`buildWidgetWrapper`) e anexá-lo ao `#html-editor-insert-ghost`; para widget dispara `requestWidgetRender(node)` (esqueleto segue o cursor já renderizado).
     - CSS do `#html-editor-insert-ghost`: contêiner limpo (fundo branco `rgba(255,255,255,0.95)`, borda sólida roxa, sombra projetada, `max-width:420px`/`max-height:60vh`, `overflow:hidden`); removidas as restrições `white-space:nowrap`/`text-overflow:ellipsis`/`padding` pequeno/cor roxa forçada; `pointer-events:none` no ghost e em todos os descendentes.
-- Decisão: [DEC-054](../decisions/DECISION-LOG.md).
+- Decisão: [DEC-054](../../decisions/DECISION-LOG.md).
 - Pendência (operador): deploy `🗃️ Projects - Update => Core` + validação runtime:
   - Voltar do editor visual (`previsualizarVoltar`) e confirmar que os widgets aparecem renderizados no pré-visualizador da página.
   - No modo de inserção, confirmar que o elemento/widget real (renderizado) acompanha o cursor dentro de uma caixa flutuante elegante.

@@ -1,7 +1,7 @@
 # BATCH-122 — Degradação graciosa quando a migração ainda não rodou
 
-Origem: observação do Chefe em 2026-08-18 sobre o BATCH-120 ([req-119.md](../human-requests/req-119.md))
-Validação: [VALIDATION-CHECKLIST.md#batch-122](../validation/VALIDATION-CHECKLIST.md)
+Origem: observação do Chefe em 2026-08-18 sobre o BATCH-120 ([req-119.md](../../human-requests/archive/req-119.md))
+Validação: [VALIDATION-CHECKLIST.md#batch-122](../../validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation` (implementado em 2026-08-18)
 
 ---

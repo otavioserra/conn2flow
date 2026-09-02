@@ -1,6 +1,6 @@
 # BATCH-059 — Refinamentos, Overrides de Projeto e Sincronização Inteligente de Contents (Pull System)
 
-- **Intake**: [req-059.md](../human-requests/req-059.md)
+- **Intake**: [req-059.md](../../human-requests/archive/req-059.md)
 - **Status**: complete
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-059
 

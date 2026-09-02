@@ -35,7 +35,7 @@ final class ProjectEnvironmentResolver
      *   host: string,
      *   accessUrl: string,
      *   deployMode: string,
-     *   ssh: ?array{user: string, host: string, port: int, path: string, runAs: ?string, sudo: bool},
+     *   ssh: ?array{user: string, host: string, port: int, path: string, runAs: ?string, sudo: bool, publicPath: ?string},
      *   config: array<string, mixed>
      * }
      */
@@ -93,7 +93,7 @@ final class ProjectEnvironmentResolver
 
     /**
      * @param array<string, mixed> $project
-     * @return array{user: string, host: string, port: int, path: string, runAs: ?string, sudo: bool}
+     * @return array{user: string, host: string, port: int, path: string, runAs: ?string, sudo: bool, publicPath: ?string}
      */
     private function resolveSshTarget(array $project, string $projectId): array
     {
@@ -117,7 +117,21 @@ final class ProjectEnvironmentResolver
             'path' => rtrim($path, '/'),
             'runAs' => $this->stringValue($project['ssh_run_as'] ?? null),
             'sudo' => filter_var($project['ssh_sudo'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            // req-050: docroot da VM. Sem ele o `assets:publish` não tem para onde publicar o
+            // `dist/` do projeto e cai no DocumentRoot do CORE — que serve outro site.
+            'publicPath' => $this->trimTrailingSlash($this->stringValue($project['ssh_public_path'] ?? null)),
         ];
+    }
+
+    private function trimTrailingSlash(?string $path): ?string
+    {
+        if ($path === null) {
+            return null;
+        }
+
+        $normalized = rtrim(str_replace('\\', '/', $path), '/');
+
+        return $normalized === '' ? null : $normalized;
     }
 
     /** @return array<string, mixed> */

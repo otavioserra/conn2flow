@@ -744,7 +744,7 @@ saída dele: zero ocorrências de `data:` e de `--art-` (os SVGs embutidos ficar
 - **Bug pré-existente fora do escopo**: `versao` de `ai_modes`/`ai_prompts` nunca incrementa
   (`carregarDadosExistentes()` indexa como `modos_ia`/`prompts_ia`, `versaoChecksumPrompt()` consulta
   como `ai_modes`/`ai_prompts`). Não bloqueia o lote — o sync decide pelo md5 do arquivo e faz UPSERT
-  campo a campo. Detalhado em [BATCH-129.md](../implementation/BATCH-129.md).
+  campo a campo. Detalhado em [BATCH-129.md](../implementation/archive/BATCH-129.md).
 - Restrição Nível 1 respeitada: nenhum `git commit`, `git push` ou deploy executado.
 
 ---
@@ -1672,3 +1672,51 @@ Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execu�
       `ECONNREFUSED 127.0.0.1:3000` no teardown do happy-dom não falharam a suíte.
 - [x] `git diff --check` — sem erros de espaço em branco.
 - [x] Nenhum commit, push, deploy ou release executado.
+
+## BATCH-158 — Paridade visual estrita entre página pública, pré-visualizador e editor visual (req-158)
+
+- [x] Diagnóstico das duas contaminações: folha Fomantic sem camada no editor vencendo utilities em `@layer`, e `html{font-size:14px}` encolhendo `rem` por 0,875.
+- [x] Isolamento do Fomantic em `@layer c2f-editor-chrome` e restauração de `html{font-size:16px}` fora de camada no editor visual.
+- [x] Ordem de camadas declarada formalmente no editor e no preview (`@layer c2f-editor-chrome, properties, theme, base, components, utilities;`).
+- [x] Eliminação de 24 tags em 4 CDNs no cliente (iframes, Editbar, previews de widget).
+- [x] Inclusão de `@tailwindcss/browser` e addons do CodeMirror no registro local de assets (DEC-122).
+- [x] Fingerprint de procedência de CSS derivado avançado para `v2:` com carimbo de compilador.
+- [x] Paridade nos 3 ambientes contra rota pública real: Editor vs Preview 15/15, Pública vs Preview 15/15.
+- [x] `c2f assets:vendor`: 0 falhas; `c2f assets:minify --verificar`: 0 desatualizados.
+- [x] `c2f resources:sync`: 2.844 recursos, 0 problemas.
+- [x] Homologação visual no CRUD (`admin-paginas/editar/`) confirmada pelo operador.
+
+## BATCH-160 — Animações de entrada dos templates de sessão (req-159)
+
+- [x] Diagnóstico: 4 templates aplicando `animate-fade-in-up` sem definição de `--animate-fade-in-up` no `@theme` v4 (descarte silencioso).
+- [x] Definição central de `--animate-fade-in` e `--animate-fade-in-up` com keyframes correspondentes em `gestor/assets/tailwindcss/system-input.css`.
+- [x] Recompilação dos contratos derivados (`browser-contract.css`) e recursos afetados via `resources:sync --force`.
+- [x] Verificação em Chromium: 14/14 animações ativas nos 4 templates, sem regressão nas nativas (`animate-pulse`, `animate-bounce`).
+- [x] Guarda automatizada contra utilities de animação sem regra compilada, validada por mutação.
+- [x] Homologação visual confirmada pelo operador.
+
+## BATCH-161 — CSS dos templates inseridos no runtime público (req-160)
+
+- [x] Diagnóstico de transição: sidecars de templates somados ao baseline entravam no conjunto de filtro de `HtmlEditorCssCapture`, descartando utilities exclusivas do template no `css_compiled`.
+- [x] Abordagem com persistência em POST de `css_precompiled` barrada corretamente por `CssProcedenciaGravacaoTest` (contrato CR-002 preservado).
+- [x] Separação do baseline em duas folhas no iframe: `baseline` (o que runtime público entrega, alvo do filtro) e `session-overlay` (sidecars da sessão, fora do filtro).
+- [x] Injeção do motor de captura no preview sem ativar UI de edição, com callback de conclusão para salvamento seguro.
+- [x] Observação e recarga dinâmica das folhas ao alternar layouts no select do formulário.
+- [x] PHPUnit completo: 1.096/1.096 testes, 7.547 asserções, 0 falhas.
+- [x] Vitest completo: 28/28 arquivos, 405/405 testes, 0 falhas.
+- [x] Homologação visual ponta a ponta confirmada pelo operador.
+
+## BATCH-162 — Requisição espúria de `{{thumbnail}}` no Editor HTML (req-161)
+
+- [x] Guarda focal reproduz a falha estrutural com a `<div>` ativa e passa após a migração para
+      `<template>` nos componentes `pt-br` e `en`.
+- [x] `$('#modelo-card-template').html()` continua disponibilizando o card e todos os placeholders
+      usados na interpolação JavaScript.
+- [x] `resources:sync --force` recompila 2.844 recursos sem erros e atualiza os dois registros para
+      `file_version=1.6` em
+      `gestor/db/data/ComponentesData.json`.
+- [x] Vitest completo: 28/28 arquivos, 408/408 testes, exit 0.
+- [x] PHPUnit completo: 1.096/1.096 testes, 7.547 asserções, exit 0.
+- [x] Sincronização executada no Lab com `project:sync-core` e `project:sync-db`: componente
+      `html-editor-modelos` atualizado para `file_version=1.6` com tag `<template>` no filesystem e
+      no MariaDB (`TEMPLATE_OK`), eliminando a ativação antecipada de `{{thumbnail}}` e o erro 404.

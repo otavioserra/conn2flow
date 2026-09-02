@@ -52,7 +52,7 @@
   - Teste da simulação JS de `menus` (réplica real del arquivo) — 7/7 asserts: 4 sub-itens mock sob o publicador, submenu, sem variáveis literais
   - Teste do widget `galleries` com stubs — 11/11 asserts: img-src absoluta preservada, relativa prefixada com url-raiz, legendas/nome, 2 blocos item, CSS injetado, no-item exibido só quando vazio
   - Teste da simulação JS de `galleries` (réplica real) — 6/6 asserts: 6 imagens Picsum, sem variáveis literais
-- Decisões registradas: [DEC-025](../decisions/DECISION-LOG.md) (tipo publicador + correções no menus) e [DEC-026](../decisions/DECISION-LOG.md) (módulo galleries)
+- Decisões registradas: [DEC-025](../../decisions/DECISION-LOG.md) (tipo publicador + correções no menus) e [DEC-026](../../decisions/DECISION-LOG.md) (módulo galleries)
 - Bug corrigido durante a implementação: `menus_widget_normalizar_itens` descartava `publisher_id`/`count`/`order_by`, impedindo a expansão do publicador (corrigido).
 - Harmonização com edição do Engenheiro Chefe: o `#item_type` do menus voltou a `<select>` nativo (correção do alternador, req-018 §1.2) — `currentItemType()` e o construtor do publicador passaram a ler valores via `.val()`/`option:selected`.
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
@@ -105,7 +105,7 @@
 - Arquivos alterados (galleries): `galleries.php`, `galleries.js`, `galleries.widget.php`, `galleries.json`, 6 páginas, `galleries-carousel`/`galleries-slider` (pt-br/en).
 - Arquivos criados (galleries): `galleries.widget.js`, `ai_modes/galleries/galleries.md` (pt-br/en).
 - Arquivos alterados (core compartilhado): `gestor/bibliotecas/html-editor.php` (flag `global` no `template_map` + casos `menus`/`galleries` no AJAX de IA) e `gestor/assets/interface/html-editor-interface.js` (simulação de target/separador no menus e de setas/dots/dot-item/globais nas galerias).
-- Decisões registradas: [DEC-027](../decisions/DECISION-LOG.md) a [DEC-031](../decisions/DECISION-LOG.md).
+- Decisões registradas: [DEC-027](../../decisions/DECISION-LOG.md) a [DEC-031](../../decisions/DECISION-LOG.md).
 - Versionamento: versões incrementadas nos recursos alterados (templates/páginas de menus e galerias, ai_mode de menus, `versao` dos módulos `menus` 1.0.1→1.0.2 e `galleries` 1.0.0→1.0.1); checksums mantidos intactos (recálculo automático pelo pipeline UPSERT).
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 - Pendência (com o operador): rodar `atualizacao-dados-recursos.php` / `🗃️ Projects - Update => Core` para registrar os novos templates, o componente atualizado, o alvo/modo de IA `galleries`, as variáveis e recalcular checksums; aplicar no ambiente de testes. Depois, validar manualmente:
@@ -175,7 +175,7 @@
   - `CHANGELOG.md`, `CHANGELOG-PT-BR.md` (seção `[2.8.0] - 2026-06-08`)
   - `README.md`, `README-PT-BR.md` (versão e destaques v2.8.0)
   - `.github/workflows/release-gestor.yml` (corpo da ação `Create Release` reescrito para v2.8.0)
-- Decisão registrada: [DEC-034](../decisions/DECISION-LOG.md#dec-034---2026-06-08---accepted)
+- Decisão registrada: [DEC-034](../../decisions/DECISION-LOG.md#dec-034---2026-06-08---accepted)
 - Pendência: rodar `🗃️ Projects - Update => Core` para recompilar as 6 páginas HTML alteradas e validar manualmente no Docker:
   - editar uma publicação com campo HTML sem tocar no editor e salvar → o conteúdo HTML é preservado (não esvazia)
   - selecionar um modelo no publisher exibe `#add-all-fields-btn`; clicar adiciona apenas os campos ainda não vinculados, com labels capitalizados (ex: `lista_signatarios` → `Lista Signatarios`)
@@ -207,7 +207,7 @@
   - `gestor/modulos/publisher-highlights/publisher-highlights.js` (refatorado callback AJAX success do `widget-preview`)
   - `gestor/modulos/menus/menus.js` (refatorado callback AJAX success do `widget-preview`)
   - `gestor/modulos/galleries/galleries.js` (refatorado callback AJAX success do `widget-preview`)
-- Decisão registrada: [DEC-035](../decisions/DECISION-LOG.md#dec-035---2026-06-09---accepted)
+- Decisão registrada: [DEC-035](../../decisions/DECISION-LOG.md#dec-035---2026-06-09---accepted)
 - Pendência:
   - Validar manualmente no ambiente local (Docker):
     - Pré-visualização do módulo Destaques carrega perfeitamente e aplica o CSS customizado e framework adequados.
@@ -235,7 +235,7 @@
 - Arquivos alterados:
   - `gestor/assets/interface/html-editor-interface.js` (refatorada a rotina de extração e filtragem da função `updateCSSCompiled`)
   - 9 arquivos de layout HTML in `gestor/resources/pt-br/templates/` (limpeza de CDNs de frameworks e placeholders)
-- Decisão registrada: [DEC-036](../decisions/DECISION-LOG.md#dec-036---2026-06-09---accepted)
+- Decisão registrada: [DEC-036](../../decisions/DECISION-LOG.md#dec-036---2026-06-09---accepted)
 - Pendência:
   - Testar manualmente no navegador (painel do Gestor):
     - Inserir tags HTML usando classes comuns (ex: `flex`, `hidden`). O painel CodeMirror "CSS Compilado" deve permanecer vazio.
@@ -281,7 +281,7 @@
   - Adição de link de Página, Customizado (`_blank`) e Última Publicação em imagens da galeria; conferir HTML renderizado no preview.
   - Ajuste de altura para 450px e margem lateral para 20px; conferir reflexo instantâneo no preview.
   - Verificação visual dos submenus do menu horizontal e das legendas no masonry.
-- Decisão registrada: [DEC-037](../decisions/DECISION-LOG.md#dec-037---2026-06-10---accepted)
+- Decisão registrada: [DEC-037](../../decisions/DECISION-LOG.md#dec-037---2026-06-10---accepted)
 
 ## BATCH-025 - Autocomplete de Páginas em Galerias, Ajuste do Menu Horizontal e Preparação Final de Release (req-025)
 
@@ -338,7 +338,7 @@
   - [x] Salvar o registro editado/clone e verificar no banco de dados que a coluna `template_id` e o `fields_schema` foram persistidos de forma limpa (sem o sufixo `-modificado`).
   - [x] Rodar uma consulta de IA no destaques e verificar que ela gera o bloco `<!-- no-item < -->` e suporta variáveis extras.
   - [x] Rodar uma consulta de IA nas galerias e confirmar que a IA gera as tags `<a>` de âncora envolvendo as imagens com os placeholders de link (`[[item#link-url]]`, `[[item#link-target]]`, `[[item#link-css-classes]]`).
-- [x] Decisão registrada: [DEC-039](../decisions/DECISION-LOG.md#dec-039---2026-06-10---accepted)
+- [x] Decisão registrada: [DEC-039](../../decisions/DECISION-LOG.md#dec-039---2026-06-10---accepted)
 
 ## BATCH-027 - Resolução de Framework CSS e Variáveis de Destaques de Modelo Modificado (req-027)
 
@@ -364,7 +364,7 @@
   - [x] Confirmar que o pré-visualizador (`live widget-preview`) funciona perfeitamente logo no carregamento inicial da edição de um registro com modelo `-modificado` nos três módulos.
   - [x] Mudar o modelo para o original e de volta para `-modificado`, conferindo que o previewer renderiza com o framework CSS correto (`gestor.html_editor.framework_css`).
   - [x] Abrir um registro de Destaques em `-modificado` e verificar que a aba de mapeamento de variáveis de item é populada instantaneamente com as variáveis extraídas localmente via regex.
-- [x] Decisão registrada: [DEC-040](../decisions/DECISION-LOG.md#dec-040---2026-06-10---accepted)
+- [x] Decisão registrada: [DEC-040](../../decisions/DECISION-LOG.md#dec-040---2026-06-10---accepted)
 
 ## BATCH-028 - Persistência de Estilos de Widgets e Novo Módulo Publicador Índice (req-028)
 
@@ -401,7 +401,7 @@
     - [ ] Filtragem em tempo real digitando na busca (confirmação do debounce e injeção do AJAX).
     - [ ] Ordenação alfabética e por data (asc/desc).
     - [ ] Clique em "Carregar Mais" injetando novos itens abaixo e sumindo com o botão quando não há mais dados.
-- [x] Decisão registrada: [DEC-041](../decisions/DECISION-LOG.md#dec-041---2026-06-11---accepted)
+- [x] Decisão registrada: [DEC-041](../../decisions/DECISION-LOG.md#dec-041---2026-06-11---accepted)
 
 ## BATCH-029 - Reestruturação e Otimização de Dados e Sincronização
 
@@ -491,7 +491,7 @@
   - `publisher-index-agenda` (Agenda) pt-br/en — cartões horizontais com bloco de data em destaque.
   - Ambos usam apenas variáveis garantidas (`[[item#url]]`/`[[item#titulo]]`/`[[item#data]]`), globais (`[[grupo_slug]]`/`[[publisher_id]]`/`[[items_per_page]]`/`[[ordenacao]]`/`[[page_count]]`/`[[page_total]]`) e os blocos `search-input`/`sort-select`/`item`/`no-item`/`load-more`; registrados in `publisher-index.json` (pt-br/en, `version` 1.0, checksums vazios para o pipeline calcular).
 - Versionamento: `versao` do módulo 1.0.0 → 1.1.0; templates lista/grid e páginas adicionar/editar/clonar 1.1 → 1.2; checksums mantidos (recálculo automático pelo pipeline UPSERT).
-- Decisão registrada: [DEC-055](../decisions/DECISION-LOG.md#dec-055---2026-06-15---accepted) (+ nota de execução sobre os 2 templates extras).
+- Decisão registrada: [DEC-055](../../decisions/DECISION-LOG.md#dec-055---2026-06-15---accepted) (+ nota de execução sobre os 2 templates extras).
 - [ ] Testes de interação manual no navegador — **pendentes com o operador** (após `🗃️ Projects - Update => Core` que registra os 2 novos templates, recompila as páginas/templates alterados e recalcula checksums):
   - [ ] Busca acentuada ("Títu") retorna publicações com Unicode corrompido no banco; títulos/campos exibidos com acentos corretos.
   - [ ] INNER JOIN remove a própria página de índice e páginas comuns sem registro em `publisher_pages`.
@@ -602,7 +602,7 @@ Itens marcados acima refletem o que é verificável estaticamente/por teste auto
   - `gestor/bibliotecas/html-editor.php` (Slice 5: inclusão de `html-editor-modules` antes do interface).
 - Arquivo criado:
   - `gestor/assets/interface/html-editor-modules.js` (Slice 5: 26 funções de simulação + constantes/estado, anexadas ao `window`).
-- Decisão registrada: [DEC-059](../decisions/DECISION-LOG.md#dec-059---2026-06-16---accepted).
+- Decisão registrada: [DEC-059](../../decisions/DECISION-LOG.md#dec-059---2026-06-16---accepted).
 - Testes manuais/runtime pendentes com o operador (após `🗃️ Projects - Update => Core`):
   - Inserir/editar widget cuja assinatura contenha `->` e aspas; salvar e voltar ao editor de código confirmando que a variável `[[widgets#...]]` (ou o comentário) volta **sem** corrupção (`&gt;`/`&amp;gt;`/`&quot;`).
   - Página com `galleries`/`publisher-index`/`menus`: confirmar `<script .../widget.js>` no `<head>` do preview (uma vez por módulo) e `window.gestor.widgetsToAjax` preenchido; interagir com busca/paginação do `publisher-index` sem erro 500.
@@ -629,7 +629,7 @@ Itens marcados acima refletem o que é verificável estaticamente/por teste auto
   - `gestor/assets/interface/html-editor.js` (correção do overlay: nova `convertWidgetVariablesToComments()` cirúrgica; `convertWidgetCommentsToWrappers()` não reescreve mais `document.body.innerHTML`).
   - `gestor/bibliotecas/html-editor.php` (`versao` da biblioteca `html-editor` bumpada pelo operador para cache-bust dos assets — 1.3.x no working tree; não alterada pelo executor).
 - Validação estática adicional: `node --check gestor/assets/interface/html-editor.js` → OK; Vitest 3/3 (baseline preservado).
-- Decisão registrada: [DEC-060](../decisions/DECISION-LOG.md#dec-060---2026-06-16---accepted).
+- Decisão registrada: [DEC-060](../../decisions/DECISION-LOG.md#dec-060---2026-06-16---accepted).
 - Testes manuais/runtime pendentes com o operador:
   - Carregar o Editor HTML Visual, abrir o console (F12) e confirmar ausência de `ReferenceError` ("Cannot access 'WIDGET_SCRIPT_MODULES'/'total_sessoes' before initialization").
   - Confirmar que a troca de abas e a pré-visualização de widgets continuam funcionando (inclusive abrindo direto na aba `visualizacao-pagina`).

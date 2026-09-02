@@ -166,6 +166,54 @@
 		token: csrfToken,
 		aplicarNoFormulario: aplicarCsrfNoFormulario
 	};
+
+	// req-156: resolvedor de assets de terceiro para o JavaScript.
+	//
+	// O BATCH-146 tirou o gestor do CDN, mas varreu as tags montadas no PHP. As que o CLIENTE monta
+	// — iframes de preview por `srcdoc`, Editbar e previews de widget — ficaram com host e versão
+	// escritos à mão, paralelos ao registro: `unpkg.com` para o Tailwind Browser em seis arquivos,
+	// `cdnjs` para jQuery e CodeMirror na Editbar. `gestor.assetsUrls` chega pronto do
+	// `assets_externos_urls_js()`, que aplica a regra do registro: disco primeiro, CDN só como
+	// fallback (DEC-122).
+	//
+	// A busca pela janela PAI existe pelo mesmo motivo do token de CSRF acima: um iframe `srcdoc`
+	// herda a origem, mas não as variáveis da página hospedeira.
+	function assetsUrlsMapa() {
+		try {
+			if (window.gestor && window.gestor.assetsUrls) return window.gestor.assetsUrls;
+		} catch (error) {
+			// gestor ausente nesta janela.
+		}
+
+		try {
+			if (window.parent && window.parent !== window && window.parent.gestor && window.parent.gestor.assetsUrls) {
+				return window.parent.gestor.assetsUrls;
+			}
+		} catch (error) {
+			// origem distinta: nada a fazer.
+		}
+
+		return {};
+	}
+
+	// Devolve string vazia quando o registro não conhece o arquivo, em vez de um CDN embutido: uma
+	// tag vazia falha de modo visível e rastreável, enquanto uma URL remota escrita aqui recriaria
+	// em silêncio a dependência que este trabalho remove.
+	function assetUrl(biblioteca, arquivo) {
+		var mapa = assetsUrlsMapa();
+		var lib = mapa[biblioteca] || {};
+		var url = lib[arquivo];
+
+		if (typeof url === 'string' && url !== '') return url;
+
+		try { console.warn('gestorAssets: asset nao resolvido pelo registro: ' + biblioteca + '/' + arquivo); } catch (e) { }
+		return '';
+	}
+
+	window.gestorAssets = {
+		url: assetUrl,
+		mapa: assetsUrlsMapa
+	};
 })();
 
 $(document).ready(function () {

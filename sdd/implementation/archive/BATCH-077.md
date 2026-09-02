@@ -1,8 +1,8 @@
 # BATCH-077 — Desacoplamento de Scripts do Iframe e Mapeamento Inteligente de Variáveis no Live Editor
 
-- **Intake**: [req-077](../human-requests/req-077.md)
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-077](../validation/VALIDATION-CHECKLIST.md#batch-077)
-- **Decisão**: [DEC-079](../decisions/DECISION-LOG.md#dec-079---2026-07-10---accepted)
+- **Intake**: [req-077](../../human-requests/archive/req-077.md)
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-077](../../validation/VALIDATION-CHECKLIST.md#batch-077)
+- **Decisão**: [DEC-079](../../decisions/DECISION-LOG.md#dec-079---2026-07-10---accepted)
 - **Base**: correções pós-teste visual do BATCH-075 (Dashboard Site Toolbar / edição in-place).
 
 ## Escopo (2 slices)

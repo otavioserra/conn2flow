@@ -1,8 +1,8 @@
 # BATCH-081 — CodeMirror no Assistente IA, Correção no Save, Dropdowns da Toolbar e Painel "+" em Duas Colunas
 
-- **Intake**: [req-081](../human-requests/req-081.md)
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-081](../validation/VALIDATION-CHECKLIST.md#batch-081)
-- **Decisão**: [DEC-083](../decisions/DECISION-LOG.md#dec-083---2026-07-11---accepted)
+- **Intake**: [req-081](../../human-requests/archive/req-081.md)
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-081](../../validation/VALIDATION-CHECKLIST.md#batch-081)
+- **Decisão**: [DEC-083](../../decisions/DECISION-LOG.md#dec-083---2026-07-11---accepted)
 - **Base**: extensão do Live Editor (barra flutuante + editbar do Dashboard Site Toolbar) pós BATCH-080.
 
 ## Escopo

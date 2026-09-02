@@ -2,11 +2,11 @@
 
 ## Origem
 
-Intake humano [req-004.md](../human-requests/req-004.md) - Correções e melhorias identificadas nos testes visuais/fluxo do módulo `publisher-highlights` entregue em [BATCH-002](batch-002-wrapped-widgets-and-highlights.md).
+Intake humano [req-004.md](../../human-requests/archive/req-004.md) - Correções e melhorias identificadas nos testes visuais/fluxo do módulo `publisher-highlights` entregue em [BATCH-002](batch-002-wrapped-widgets-and-highlights.md).
 
 ## Escopo do Lote
 
-Slice corretivo do módulo `publisher-highlights` sem mudar o requisito normativo de [03-wrapped-widgets-and-publisher-highlights.md](../03-wrapped-widgets-and-publisher-highlights.md). Adiciona uma extensão pequena ao `fields_schema` (`order_by`) e expande a integração com `html-editor` para variáveis `[[item#...]]`.
+Slice corretivo do módulo `publisher-highlights` sem mudar o requisito normativo de [03-wrapped-widgets-and-publisher-highlights.md](../../03-wrapped-widgets-and-publisher-highlights.md). Adiciona uma extensão pequena ao `fields_schema` (`order_by`) e expande a integração com `html-editor` para variáveis `[[item#...]]`.
 
 ---
 
@@ -62,4 +62,4 @@ Slice corretivo do módulo `publisher-highlights` sem mudar o requisito normativ
 
 ## Alvo de Validação
 
-Ver [VALIDATION-CHECKLIST.md#batch-003](../validation/VALIDATION-CHECKLIST.md#batch-003).
+Ver [VALIDATION-CHECKLIST.md#batch-003](../../validation/VALIDATION-CHECKLIST.md#batch-003).

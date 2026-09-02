@@ -1,8 +1,8 @@
 # BATCH-083 — Correções de Homologação do Live Editor: Hover dos Dropdowns, Preview de Dispositivo Fiel e Normalização de Variáveis no Save
 
-- **Intake**: [req-083](../human-requests/req-083.md) (formalizado pelo Chefe a partir das demandas diretas de homologação do BATCH-082).
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-083](../validation/VALIDATION-CHECKLIST.md#batch-083)
-- **Decisão**: [DEC-085](../decisions/DECISION-LOG.md#dec-085---2026-07-13---accepted)
+- **Intake**: [req-083](../../human-requests/archive/req-083.md) (formalizado pelo Chefe a partir das demandas diretas de homologação do BATCH-082).
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-083](../../validation/VALIDATION-CHECKLIST.md#batch-083)
+- **Decisão**: [DEC-085](../../decisions/DECISION-LOG.md#dec-085---2026-07-13---accepted)
 - **Base**: correções de homologação do Live Editor (Dashboard Site Toolbar) pós BATCH-082.
 
 ## Escopo

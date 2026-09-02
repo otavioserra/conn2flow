@@ -1,6 +1,6 @@
 # BATCH-117 — Paridade do Tailwind Browser CDN, Painel de Código na Editbar e Correção de Race Condition na Extração do CSS Compilado
 
-Intake: [req-117.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-117.md)
+Intake: [req-117.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/req-117.md)
 Validação: [VALIDATION-CHECKLIST.md#batch-117](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation` (implementado em 2026-08-17)
 
@@ -178,6 +178,6 @@ fora do escopo aprovado desta rodada.
 
 ### 4.7 Validação
 
-Evidência completa em [VALIDATION-CHECKLIST.md](../validation/VALIDATION-CHECKLIST.md#batch-117):
+Evidência completa em [VALIDATION-CHECKLIST.md](../../validation/VALIDATION-CHECKLIST.md#batch-117):
 PHPUnit **297/297**, Vitest **220/220**, gerador do core 175 recursos / 0 erros, sync + atualização de
 banco no `snapphoton-local` e `GET /photon/sobre/` → HTTP 200 com as marcações novas no `<head>`.

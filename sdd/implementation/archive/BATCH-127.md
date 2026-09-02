@@ -1,7 +1,7 @@
 # BATCH-127: Correção de Reload em CSRF, Mapeamento de Ícones de Projetos, Alternância de Botões de Menu e Saneamento do Lucide
 
-Intake: [req-125.md](../human-requests/req-125.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-127](../validation/VALIDATION-CHECKLIST.md)
+Intake: [req-125.md](../../human-requests/archive/req-125.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-127](../../validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation`
 
 Este lote corrige o laço de sessão expirada no login, mapeia os ícones dos módulos servidos por projetos derivados, sincroniza a visibilidade dos botões abrir/fechar menu e elimina os warnings do Lucide no console.

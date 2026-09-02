@@ -152,21 +152,21 @@ encolher para as fotos se acomodarem lado a lado, em linhas e colunas.
 ## Achados fora do escopo — promovidos para `req-138` / BATCH-141 (já corrigidos lá)
 
 - **`admin-arquivos` não devolve MIME real, e sim `<tipo>/<extensão>` concatenado**
-  ([admin-arquivos.php:183](../../gestor/modulos/admin-arquivos/admin-arquivos.php#L183)):
+  ([admin-arquivos.php:183](../../../gestor/modulos/admin-arquivos/admin-arquivos.php#L183)):
   `'mime' => $tipo . '/' . strtolower(pathinfo($nome, PATHINFO_EXTENSION))`, com `$tipo` limitado a
   `image|video|audio|file`. Produz `image/jpg` (o real é `image/jpeg`), `file/json` (`application/json`)
   e `file/pdf` (`application/pdf`); `image/png` e `video/mp4` acertam por coincidência.
   - **Por que não quebra hoje**: todos os consumidores testam apenas o PREFIXO (`/^image\//`), que
     está sempre correto para imagens. O sufixo nunca é comparado.
   - **Onde já incomoda**: o valor é exibido cru ao usuário em `.widgetImage-tipo`
-    ([interface-v2.js:480](../../gestor/assets/interface-v2/interface-v2.js#L480)) e em
-    `._html-editor-imagepick-tipo` ([html-editor-interface.js:1214](../../gestor/assets/interface/html-editor-interface.js#L1214)).
+    ([interface-v2.js:480](../../../gestor/assets/interface-v2/interface-v2.js#L480)) e em
+    `._html-editor-imagepick-tipo` ([html-editor-interface.js:1214](../../../gestor/assets/interface/html-editor-interface.js#L1214)).
   - **Risco futuro**: qualquer consumidor que compare MIME exato, ou que persista esse valor como
     `content-type` de um asset, falha em silêncio.
   - Anterior a este lote: o envio individual (`.c2f-select`) já usava exatamente o mesmo campo. O
     despacho em lote só replicou o contrato vigente.
 - **Comparação sempre falsa em `interface-v2.js`**
-  ([linha 471](../../gestor/assets/interface-v2/interface-v2.js#L471)):
+  ([linha 471](../../../gestor/assets/interface-v2/interface-v2.js#L471)):
   `if (dados.tipo?.match(/image\//) === 'image/')`. `String.prototype.match` sem flag `g` devolve um
   **array** (`['image/']`), nunca uma string, então `=== 'image/'` é sempre falso e o ramo de sucesso
   nunca executa — o `interface-v2` cai no `else` e alerta "Not an image" mesmo com imagem válida.

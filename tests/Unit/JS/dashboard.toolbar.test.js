@@ -335,7 +335,18 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
       tailwind_browser_contract: '@theme static { --color-x: red; }'
     };
 
-    it('injeta contrato e script do CDN em página Tailwind', () => {
+    // req-156: o compilador deixou de vir de `unpkg.com` com a versão escrita no código e passou a
+    // sair do registro de assets, publicado ao cliente em `gestor.assetsUrls` (disco primeiro,
+    // DEC-122). O que o teste trava agora é a PROCEDÊNCIA da URL, não um host remoto.
+    it('injeta contrato e o compilador resolvido pelo registro em página Tailwind', () => {
+      // `window.gestorAssets` é publicado por `global.js`, que na página real carrega antes da
+      // Editbar (entra em `$js_padrao`). Aqui ele é fornecido diretamente.
+      window.gestorAssets = {
+        url: (lib, arquivo) => (lib === 'tailwindcss-browser' && arquivo === 'dist/index.global.js')
+          ? '/vendor/tailwindcss-browser/4.3.0/dist/index.global.js'
+          : ''
+      };
+
       T.ensureTailwind(render);
 
       const contrato = document.getElementById('c2f-tw-contract');
@@ -347,7 +358,8 @@ describe('Live Editor - dashboard.toolbar.js (BATCH-079)', () => {
 
       const script = document.getElementById('c2f-tw-browser');
       expect(script).toBeTruthy();
-      expect(script.src).toContain('@tailwindcss/browser@4.3.0');
+      expect(script.getAttribute('src')).toBe('/vendor/tailwindcss-browser/4.3.0/dist/index.global.js');
+      expect(script.getAttribute('src')).not.toContain('unpkg.com');
     });
 
     it('não injeta nada em página que não usa Tailwind', () => {

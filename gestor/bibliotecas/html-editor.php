@@ -10,7 +10,7 @@ global $_GESTOR;
 //      `gestor.htmlEditorVersao`).
 // A rotina de assets atualiza a URL quando qualquer arquivo proprietário muda, sem bump manual.
 $_GESTOR['biblioteca-html-editor']							=	Array(
-	'versao' => gestor_asset_version('interface', '1.5.16'),
+	'versao' => gestor_asset_version('interface', '1.5.17'),
 );
 
 // ===== Funções auxiliares
@@ -117,8 +117,30 @@ function html_editor_publisher_controls($params = false){
  * @return string
  */
 function html_editor_tailwind_browser_version(){
+	$registro = html_editor_assets_registro();
+
+	// O registro de assets externos é a fonte única da versão desde a req-156: era ele que decidia
+	// de onde o arquivo vinha, mas o número ficava duplicado aqui. Duplicado, um dos dois envelhece.
+	if(isset($registro['tailwindcss-browser']['versao'])) return (string)$registro['tailwindcss-browser']['versao'];
+
 	return '4.3.0';
 }
+
+/**
+ * Registro de assets externos, carregado sob demanda (req-156).
+ *
+ * @return array
+ */
+function html_editor_assets_registro(){
+	global $_GESTOR;
+
+	if(!function_exists('assets_externos_registro') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+
+	return function_exists('assets_externos_registro') ? assets_externos_registro() : Array();
+}
+
 
 /**
  * Contrato de tema entregue ao Tailwind Browser (req-114, extraído em req-117).
@@ -640,6 +662,43 @@ function html_editor_css_precompiled_baseline($params = false){
 }
 
 /**
+ * CSS AUTORAL do layout — a folha que o runtime serve e o editor não recebia (req-160).
+ *
+ * `html_editor_css_precompiled_baseline()` acima lê do layout apenas `css_precompiled`. A coluna
+ * `css`, que é autoria do layout, nunca era lida: o editor montava a cascata do layout pela metade.
+ *
+ * O efeito é imediato e visível. O `layout-conn2flow-site` traz `body { background: #000; }` — na
+ * página publicada o fundo é preto, e no editor e no preview era branco. Toda seção de fundo
+ * transparente aparecia com uma cor no editor e outra no site.
+ *
+ * Devolve string vazia quando não há layout, coluna ou registro: o chamador concatena sem checar.
+ *
+ * @param string $layout_id Layout da página.
+ * @return string
+ */
+function html_editor_layout_css_autoral($layout_id){
+	global $_GESTOR;
+
+	$layout_id = (string)$layout_id;
+	if($layout_id === '') return '';
+
+	// Mesma degradação segura do baseline: projetar coluna inexistente devolve HTTP 500.
+	if(!function_exists('banco_campo_existe') || !banco_campo_existe('css','layouts')) return '';
+
+	$layout = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'layouts',
+		'campos' => Array('css'),
+		'extra' =>
+			"WHERE id='".banco_escape_field($layout_id)."'"
+			." AND language='".$_GESTOR['linguagem-codigo']."'"
+			." AND status!='D'",
+	));
+
+	return ($layout && isset($layout['css'])) ? (string)$layout['css'] : '';
+}
+
+/**
  * Concatena as camadas do baseline na ordem da cascata do runtime (req-117).
  *
  * Separada de `html_editor_css_precompiled_baseline()` por ser a única parte que não depende do
@@ -728,6 +787,7 @@ function html_editor_componente($params = false){
 	$html_editor = gestor_componente(Array(
 		'id' => 'html-editor',
 	));
+
 
 	// ===== Modificações do Editor HTML
 
@@ -865,6 +925,9 @@ function html_editor_componente($params = false){
 		// criada pelo usuário — que nunca passa pelo build offline e portanto tem
 		// `css_precompiled` vazio — não filtrava nada, e o `css_compiled` gravado carregava
 		// `@layer theme` e o Preflight inteiro por cima do que o layout já entrega.
+		// req-160: o CSS AUTORAL do layout. O runtime o serve; o editor não o recebia, e por isso o
+		// `body { background: #000; }` do layout pintava a página publicada e não o editor.
+		'layoutCssAutoralBase64' => base64_encode(html_editor_layout_css_autoral(isset($layout_id) ? $layout_id : '')),
 		'cssPrecompiledBase64' => base64_encode(html_editor_css_precompiled_baseline(Array(
 			'css_precompiled' => (isset($css_precompiled) ? $css_precompiled : ''),
 			'layout_id' => (isset($layout_id) ? $layout_id : ''),
@@ -1148,7 +1211,56 @@ function html_editor_ajax_interface($params = false){
         case 'html-editor-widgets-list': html_editor_ajax_widgets_list(); break;
         case 'html-editor-widget-render': html_editor_ajax_widget_render(); break;
         case 'html-editor-render-vars': html_editor_ajax_render_vars(); break;
+        case 'html-editor-layout-css': html_editor_ajax_layout_css(); break;
 	}
+}
+
+/**
+ * CSS do layout escolhido no formulário (req-160).
+ *
+ * O select de layout do CRUD muda a cascata da página, e o baseline entregue na abertura do editor
+ * deixa de valer no instante em que o operador troca de layout. Sem esta rota, ele veria a página
+ * sobre o layout ANTIGO até recarregar a tela — e salvaria um `css_compiled` derivado da cascata
+ * errada.
+ *
+ * Devolve as duas camadas separadas de propósito: `precompiled` entra no baseline (é contra ele que
+ * a captura filtra) e `autoral` entra fora dele, como no runtime.
+ */
+function html_editor_ajax_layout_css(){
+	global $_GESTOR;
+
+	$layout_id = isset($_REQUEST['params']['layout_id']) ? (string)$_REQUEST['params']['layout_id'] : '';
+
+	// Identificador de recurso: só o alfabeto de ids. Evita que a consulta receba qualquer coisa.
+	if($layout_id !== '' && preg_match('/^[A-Za-z0-9_-]+$/', $layout_id) !== 1){
+		$_GESTOR['ajax-json'] = Array('status' => 'Error', 'mensagem' => 'Layout inválido.');
+		return;
+	}
+
+	$precompiled = '';
+
+	if($layout_id !== '' && function_exists('banco_campo_existe') && banco_campo_existe('css_precompiled','layouts')){
+		$layout = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'layouts',
+			'campos' => Array('css_precompiled'),
+			'extra' =>
+				"WHERE id='".banco_escape_field($layout_id)."'"
+				." AND language='".$_GESTOR['linguagem-codigo']."'"
+				." AND status!='D'",
+		));
+
+		if($layout && isset($layout['css_precompiled'])) $precompiled = (string)$layout['css_precompiled'];
+	}
+
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data' => Array(
+			'layout_id' => $layout_id,
+			'precompiled' => $precompiled,
+			'autoral' => html_editor_layout_css_autoral($layout_id),
+		),
+	);
 }
 
 /**

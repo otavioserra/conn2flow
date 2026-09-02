@@ -66,7 +66,7 @@ O lote foi quebrado nos seguintes slices funcionais:
   - `applyHelperClass(group, cls)`: aplica a classe, remove conflitantes, re-renderiza o styler e dispara `afterDomMutation()`.
   - `syncHelperButtons(element)`: marca `.active` por grupo conforme a classe presente, com destaque de padrão (`text-left`/`rounded-none`/`bg-transparent`) quando nada do grupo está aplicado. Chamado dentro de `renderStyler()`.
   - `updateSelectionUI()`: alterna `.he-styler-stacked` quando `rect.width < 400`.
-- Decisão: [DEC-051](../decisions/DECISION-LOG.md).
+- Decisão: [DEC-051](../../decisions/DECISION-LOG.md).
 - Pendência (operador): deploy `🗃️ Projects - Update => Core` + validação runtime no navegador:
   - Painel de duas colunas no styler; empilha verticalmente em elementos estreitos (<400px).
   - Botões de alinhamento/padding/bordas aplicam classe exclusiva; paletas de cor trocam `text-*`/`bg-*` sem afetar alinhamento/tamanho.

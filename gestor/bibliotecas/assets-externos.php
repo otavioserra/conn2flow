@@ -98,6 +98,13 @@ if (!function_exists('assets_externos_registro')) {
 					'addon/search/matchesonscrollbar.js',
 					'addon/search/jump-to-line.js',
 					'addon/edit/matchbrackets.js',
+					// req-156: os dois abaixo eram usados APENAS pelo iframe do editor visual, que
+					// montava as tags do CodeMirror por conta própria e por isso nunca passou pelo
+					// registro. Sem eles aqui, migrar o iframe para o disco os deixaria caindo no
+					// CDN em silêncio — que é a falha que o `assets_externos_url()` produz quando o
+					// arquivo local não existe.
+					'addon/edit/closetag.js',
+					'addon/edit/closebrackets.js',
 					'addon/display/fullscreen.js',
 					'mode/xml/xml.js',
 					'mode/css/css.js',
@@ -175,6 +182,20 @@ if (!function_exists('assets_externos_registro')) {
 				'css' => Array('quill.snow.css'),
 				'js' => Array('quill.min.js'),
 			),
+			'tailwindcss-browser' => Array(
+				// req-156: compilador Tailwind que roda DENTRO do iframe do editor e do preview.
+				// Ficou de fora do BATCH-146 por ser a única biblioteca cuja tag nasce no JavaScript
+				// do cliente, e não numa inclusão PHP — o inventário daquele lote varreu as tags do
+				// servidor. Era o último ponto do gestor preso a `unpkg.com`.
+				//
+				// A versão tem de acompanhar a do build offline (`node_modules/tailwindcss`): o
+				// editor compila em runtime o que o pipeline compila offline, e uma major diferente
+				// entre os dois é exatamente a divergência que a req-156 mediu na página pública.
+				'versao' => '4.3.0',
+				'cdn' => 'https://unpkg.com/@tailwindcss/browser@{v}/{f}',
+				'css' => Array(),
+				'js' => Array('dist/index.global.js'),
+			),
 		);
 	}
 }
@@ -234,6 +255,64 @@ if (!function_exists('assets_externos_tags')) {
 		}
 
 		return $tags;
+	}
+}
+
+if (!function_exists('assets_externos_urls_map')) {
+	/**
+	 * Mapa `biblioteca => arquivo => URL` das bibliotecas pedidas (req-156).
+	 *
+	 * Existe porque nem toda tag nasce no PHP. Iframes de preview (`srcdoc`), a Editbar e os
+	 * previews de widget montam as suas no CLIENTE, e por isso escaparam do inventário do BATCH-146 e
+	 * seguiam presos a `unpkg.com` e `cdnjs.com` com versões próprias, paralelas ao registro. Este
+	 * mapa leva a MESMA resolução do `assets_externos_tags()` — disco primeiro, CDN só como fallback
+	 * (DEC-122) — para o JavaScript, sem que o cliente precise conhecer versão ou host.
+	 *
+	 * As URLs saem absolutas em relação à raiz: um `srcdoc` resolve caminho relativo contra a URL do
+	 * documento pai, que é a rota do módulo e não a raiz do site.
+	 *
+	 * @param list<string> $nomes Identificadores no registro; vazio devolve todas as bibliotecas.
+	 * @param string $vendorFisico Caminho físico de `assets/vendor/`.
+	 * @param string $vendorPublico URL pública de `vendor/`.
+	 * @return array<string, array<string, string>>
+	 */
+	function assets_externos_urls_map($nomes = Array(), $vendorFisico = '', $vendorPublico = '') {
+		$registro = assets_externos_registro();
+		$nomes = (array)$nomes;
+		if (!$nomes) $nomes = array_keys($registro);
+
+		$urls = Array();
+
+		foreach ($nomes as $nome) {
+			if (!isset($registro[$nome])) continue;
+
+			$lib = $registro[$nome];
+			$arquivos = array_merge((array)($lib['css'] ?? Array()), (array)($lib['js'] ?? Array()));
+
+			foreach ($arquivos as $arquivo) {
+				$urls[$nome][$arquivo] = assets_externos_url($lib, $nome, $arquivo, $vendorFisico, $vendorPublico);
+			}
+		}
+
+		return $urls;
+	}
+}
+
+if (!function_exists('assets_externos_urls_js')) {
+	/**
+	 * `assets_externos_urls_map()` resolvido com os caminhos do ambiente corrente (req-156).
+	 *
+	 * @param list<string> $nomes Identificadores no registro.
+	 * @return array<string, array<string, string>>
+	 */
+	function assets_externos_urls_js($nomes = Array()) {
+		global $_GESTOR;
+
+		return assets_externos_urls_map(
+			$nomes,
+			($_GESTOR['assets-path'] ?? '').'vendor'.DIRECTORY_SEPARATOR,
+			($_GESTOR['url-raiz'] ?? '/').'vendor/'
+		);
 	}
 }
 

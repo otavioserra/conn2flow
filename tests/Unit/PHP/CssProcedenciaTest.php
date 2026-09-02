@@ -28,6 +28,9 @@ final class CssProcedenciaTest extends TestCase
             'html' => self::HTML,
             'css' => self::CSS,
             'baseline' => self::BASELINE,
+            // req-156: versão do Tailwind que gerou o derivado. Fixa aqui para a suíte não depender
+            // do registro — o vínculo com o registro é coberto por ParidadeVisualReq156Test.
+            'compilador' => '4.3.0',
         ];
     }
 
@@ -39,7 +42,10 @@ final class CssProcedenciaTest extends TestCase
         $b = gestor_css_procedencia_assinatura(self::entradas());
 
         self::assertSame($a, $b);
-        self::assertStringStartsWith('v1:', $a, 'o prefixo de versão permite trocar o algoritmo depois');
+        // req-156 levou o algoritmo a `v2` ao acrescentar o compilador às entradas. O prefixo existe
+        // justamente para isto: assinatura antiga deixa de casar e o derivado entra para a fila do
+        // `css:rebuild`, em vez de ser confundida com divergência real de autoria.
+        self::assertStringStartsWith('v2:', $a, 'o prefixo de versão permite trocar o algoritmo depois');
     }
 
     public function testAssinaturaMudaComQualquerEntrada(): void
@@ -50,6 +56,9 @@ final class CssProcedenciaTest extends TestCase
             'html' => self::entradas(['html' => self::HTML . '<span class="italic">b</span>']),
             'css autoral' => self::entradas(['css' => self::CSS . ' .outro{}']),
             'baseline (layout recompilado)' => self::entradas(['baseline' => self::BASELINE . '.novo{}']),
+            // req-156: derivado gerado por outra major do Tailwind é stale mesmo com a autoria
+            // intacta — foi assim que CSS v3 seguiu sendo servido depois da migração para v4.
+            'compilador (outra major do Tailwind)' => self::entradas(['compilador' => '3.4.1']),
         ];
 
         foreach ($variacoes as $rotulo => $entradas) {

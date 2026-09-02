@@ -1,6 +1,6 @@
 # BATCH-109 — Cookies, Isenção de Crawlers, Auditoria de CSRF e Correções do Editor Visual
 
-Intake: [req-109.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-109.md)
+Intake: [req-109.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/req-109.md)
 Validação: [VALIDATION-CHECKLIST.md#batch-109](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/validation/VALIDATION-CHECKLIST.md)
 Decisão: DEC-104
 

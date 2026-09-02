@@ -1,8 +1,8 @@
 # BATCH-085 — Restauração de Backup Server-Side e Preview de Dispositivo com JS do Site (Live Editor, rodada 3)
 
 - **Intake**: demandas diretas do Engenheiro Chefe durante a homologação (sem req-XXX formal).
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-085](../validation/VALIDATION-CHECKLIST.md#batch-085)
-- **Decisão**: [DEC-086](../decisions/DECISION-LOG.md#dec-086---2026-07-13---accepted)
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-085](../../validation/VALIDATION-CHECKLIST.md#batch-085)
+- **Decisão**: [DEC-086](../../decisions/DECISION-LOG.md#dec-086---2026-07-13---accepted)
 - **Base**: correções de homologação do Live Editor pós BATCH-082/083 (BATCH-084 é a demanda paralela de datas, fora deste escopo).
 
 ## Escopo

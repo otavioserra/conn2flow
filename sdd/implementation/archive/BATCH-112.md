@@ -1,6 +1,6 @@
 # BATCH-112 — Sitemap em assets, 301, aba SEO no publisher-pages, isolamento da Editbar e meta tags
 
-Intake: [req-112.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-112.md)
+Intake: [req-112.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/req-112.md)
 Validação: [VALIDATION-CHECKLIST.md#batch-112](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/validation/VALIDATION-CHECKLIST.md)
 Decisão: DEC-107
 Depende de: BATCH-110 (colunas de metadados, biblioteca de sitemap, painel da Editbar)

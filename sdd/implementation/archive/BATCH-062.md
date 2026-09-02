@@ -1,6 +1,6 @@
 # BATCH-062 — Fallback de Idioma e Subpastas por ID em Recursos Dinâmicos
 
-- **Intake**: [req-062.md](../human-requests/req-062.md)
+- **Intake**: [req-062.md](../../human-requests/archive/req-062.md)
 - **Status**: complete
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-062
 

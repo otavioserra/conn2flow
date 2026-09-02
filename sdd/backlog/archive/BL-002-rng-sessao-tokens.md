@@ -10,13 +10,13 @@
 
 Identificadores sensíveis são gerados com `md5(uniqid(rand(), true))` / `md5(uniqid(mt_rand(), true))`:
 
-- ID de sessão: `gestor_sessao_iniciar()` → `md5(uniqid(rand(), true))` ([gestor.php:1358](../../gestor/bibliotecas/gestor.php)).
-- Cookie de verificação: `gestor_cookie_verificacao()` → `md5(uniqid(rand(), true))` ([gestor.php:1162](../../gestor/bibliotecas/gestor.php)).
-- `pubID` de access/refresh token OAuth2: `md5(uniqid(mt_rand(), true))` ([oauth2.php:89,124](../../gestor/bibliotecas/oauth2.php)).
+- ID de sessão: `gestor_sessao_iniciar()` → `md5(uniqid(rand(), true))` ([gestor.php:1358](../../../gestor/bibliotecas/gestor.php)).
+- Cookie de verificação: `gestor_cookie_verificacao()` → `md5(uniqid(rand(), true))` ([gestor.php:1162](../../../gestor/bibliotecas/gestor.php)).
+- `pubID` de access/refresh token OAuth2: `md5(uniqid(mt_rand(), true))` ([oauth2.php:89,124](../../../gestor/bibliotecas/oauth2.php)).
 
 `uniqid()` é baseado em timestamp (microtempo) e `rand()`/`mt_rand()` não são CSPRNG. O espaço de entropia real é pequeno e parcialmente previsível — abre margem para predição/fixação de sessão e adivinhação de `pubID` de token.
 
-**Inconsistência interna**: o token CSRF já usa a fonte correta — `bin2hex(random_bytes(32))` em [seguranca.php:109](../../gestor/bibliotecas/seguranca.php). O padrão seguro já existe no código; falta aplicá-lo aos demais.
+**Inconsistência interna**: o token CSRF já usa a fonte correta — `bin2hex(random_bytes(32))` em [seguranca.php:109](../../../gestor/bibliotecas/seguranca.php). O padrão seguro já existe no código; falta aplicá-lo aos demais.
 
 ## Proposta de melhoria (a validar)
 

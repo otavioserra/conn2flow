@@ -16,7 +16,7 @@ Convivem versões paralelas de componentes centrais, sinal de migrações inacab
 
 Consequências: dois padrões de acesso a dados e de UI ativos ao mesmo tempo, dobrando a superfície de manutenção e dificultando aplicar correções de segurança de forma consistente (uma correção precisa ser feita em dois lugares, ou é esquecida em um).
 
-Há também **código morto/legado** que confunde a leitura de segurança — ex.: `banco_smartstripslashes()` tem todo o corpo comentado e só faz `return (string)$str` ([banco.php:57-71](../../gestor/bibliotecas/banco.php)); o parâmetro `["cost" => 9]` passado a `password_hash(..., PASSWORD_ARGON2I, ...)` é ignorado pelo Argon2i (cost é do bcrypt) ([perfil-usuario.php:494](../../gestor/modulos/perfil-usuario/perfil-usuario.php)).
+Há também **código morto/legado** que confunde a leitura de segurança — ex.: `banco_smartstripslashes()` tem todo o corpo comentado e só faz `return (string)$str` ([banco.php:57-71](../../../gestor/bibliotecas/banco.php)); o parâmetro `["cost" => 9]` passado a `password_hash(..., PASSWORD_ARGON2I, ...)` é ignorado pelo Argon2i (cost é do bcrypt) ([perfil-usuario.php:494](../../../gestor/modulos/perfil-usuario/perfil-usuario.php)).
 
 ## Proposta de melhoria (a validar)
 

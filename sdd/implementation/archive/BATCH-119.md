@@ -1,7 +1,7 @@
 # BATCH-119 — Layout administrativo Tailwind, menu interativo e painel de perfil com sessões
 
-Origem: [req-118.md](../human-requests/req-118.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-119](../validation/VALIDATION-CHECKLIST.md)
+Origem: [req-118.md](../../human-requests/archive/req-118.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-119](../../validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation` (implementado em 2026-08-18)
 
 O intake foi ampliado pelo Chefe em 2026-08-18: além do painel de perfil, o lote passou a exigir um

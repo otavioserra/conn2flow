@@ -1,8 +1,8 @@
 # BATCH-093 — Renderização de Variáveis/Widgets no Editor HTML Clássico e Preview (igual à Editbar)
 
-- **Intake**: [req-093](../human-requests/req-093.md)
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-093](../validation/VALIDATION-CHECKLIST.md#batch-093)
-- **Decisão**: [DEC-091](../decisions/DECISION-LOG.md#dec-091---2026-07-20---accepted)
+- **Intake**: [req-093](../../human-requests/archive/req-093.md)
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-093](../../validation/VALIDATION-CHECKLIST.md#batch-093)
+- **Decisão**: [DEC-091](../../decisions/DECISION-LOG.md#dec-091---2026-07-20---accepted)
 - **Base**: estende a infra de caixas/mapeamento da Editbar (BATCH-077/082) ao Editor HTML Clássico.
 - **Status**: `complete` — itens 1 e 2 do req atendidos (editor visual + preview + publisher-pages via infra genérica). Refinamento opcional das variáveis LOCAIS em caixas no editor visual documentado como melhoria futura.
 

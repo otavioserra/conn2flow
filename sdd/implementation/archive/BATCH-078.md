@@ -1,8 +1,8 @@
 # BATCH-078 — Correções no Live Editor: Trava de Widgets, Submenu do Painel "+" e Isolamento de Estilos
 
-- **Intake**: [req-078](../human-requests/req-078.md)
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-078](../validation/VALIDATION-CHECKLIST.md#batch-078)
-- **Decisão**: [DEC-080](../decisions/DECISION-LOG.md#dec-080---2026-07-10---accepted)
+- **Intake**: [req-078](../../human-requests/archive/req-078.md)
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-078](../../validation/VALIDATION-CHECKLIST.md#batch-078)
+- **Decisão**: [DEC-080](../../decisions/DECISION-LOG.md#dec-080---2026-07-10---accepted)
 - **Base**: rodada de correções visuais/interação pós-homologação do BATCH-075/BATCH-077 (Dashboard Site Toolbar / Live Editor).
 
 ## Escopo (3 correções, motor compartilhado `html-editor.js`)

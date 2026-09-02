@@ -1,7 +1,7 @@
 # BATCH-130: Blindagem de banco_num_rows, Proteção na Consulta de Hosts em perfil-usuario e Eliminação de Warnings de Chaves Indefinidas no Core
 
-Intake: [req-128.md](../human-requests/req-128.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-130](../validation/VALIDATION-CHECKLIST.md#batch-130)
+Intake: [req-128.md](../../human-requests/archive/req-128.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-130](../../validation/VALIDATION-CHECKLIST.md#batch-130)
 Status: `implemented-pending-homologation`
 
 Este lote de implementação descreve as tarefas técnicas para mitigar os erros de execução reportados nos logs de produção do núcleo `conn2flow`, blindando o driver de banco de dados contra `TypeError` no PHP 8.1+, tornando defensiva a busca por hosts no perfil de usuário e sanando warnings de índices não definidos.

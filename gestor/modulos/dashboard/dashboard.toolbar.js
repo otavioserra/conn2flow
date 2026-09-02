@@ -87,6 +87,20 @@
 
 	// ===== Carregamento de dependências (jQuery + html-editor.js)
 
+	// req-156: a Editbar roda na PÁGINA PÚBLICA, onde `global.js` é carregado antes dela (entra em
+	// `$js_padrao`, à frente do bloco da barra). A guarda existe para a janela em que isso não vale:
+	// uma página servida de cache antigo, ou um layout de projeto que monte a própria ordem de
+	// scripts. Sem ela, um `gestorAssets` ausente derrubaria a barra inteira por TypeError, em vez
+	// de degradar no recurso que faltou.
+	function assetUrl(biblioteca, arquivo) {
+		if (window.gestorAssets && typeof window.gestorAssets.url === 'function') {
+			return window.gestorAssets.url(biblioteca, arquivo);
+		}
+
+		try { console.warn('Editbar: registro de assets indisponivel para ' + biblioteca + '/' + arquivo); } catch (e) { }
+		return '';
+	}
+
 	function loadScriptOnce(src, id, cb) {
 		if (id && document.getElementById(id)) { cb(); return; }
 		var s = document.createElement('script');
@@ -99,7 +113,9 @@
 
 	function ensureJQuery(cb) {
 		if (window.jQuery) { cb(); return; }
-		loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js', 'c2f-he-jq', cb);
+		// req-156: pelo registro de assets (disco primeiro). Era 3.7.1 de `cdnjs` escrito aqui,
+		// enquanto o resto do gestor ja servia a mesma versao do proprio disco.
+		loadScriptOnce(assetUrl('jquery', 'jquery.min.js'), 'c2f-he-jq', cb);
 	}
 
 	function loadCssOnce(href, id) {
@@ -123,18 +139,21 @@
 	// do modal do editor visual funcionar in-place (senão fica um textarea puro).
 	function ensureCodeMirror(cb) {
 		if (window.CodeMirror) { cb(); return; }
-		var base = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.20/';
-		loadCssOnce(base + 'codemirror.min.css', 'c2f-cm-css');
-		loadCssOnce(base + 'theme/tomorrow-night-bright.css', 'c2f-cm-theme');
+		// req-156: os arquivos saem do registro de assets (disco primeiro). A versao deixou de ser
+		// um literal aqui — era a terceira copia do numero, e copia e o que envelhece sem ninguem
+		// notar. A ORDEM importa: `codemirror.min.js` define o objeto que todo addon estende.
+		var cm = function (arquivo) { return assetUrl('codemirror', arquivo); };
+		loadCssOnce(cm('codemirror.min.css'), 'c2f-cm-css');
+		loadCssOnce(cm('theme/tomorrow-night-bright.css'), 'c2f-cm-theme');
 		loadScriptsSeq([
-			base + 'codemirror.min.js',
-			base + 'addon/selection/active-line.js',
-			base + 'addon/edit/matchbrackets.js',
-			base + 'mode/xml/xml.js',
-			base + 'mode/css/css.js',
-			base + 'mode/javascript/javascript.js',
-			base + 'mode/markdown/markdown.js',
-			base + 'mode/htmlmixed/htmlmixed.js'
+			cm('codemirror.min.js'),
+			cm('addon/selection/active-line.js'),
+			cm('addon/edit/matchbrackets.js'),
+			cm('mode/xml/xml.js'),
+			cm('mode/css/css.js'),
+			cm('mode/javascript/javascript.js'),
+			cm('mode/markdown/markdown.js'),
+			cm('mode/htmlmixed/htmlmixed.js')
 		], cb);
 	}
 
@@ -216,8 +235,10 @@
 			document.head.appendChild(estilo);
 		}
 
-		var versao = dados.tailwind_browser_version || '4.3.0';
-		loadScriptOnce('https://unpkg.com/@tailwindcss/browser@' + encodeURIComponent(versao), 'c2f-tw-browser', function () { });
+		// req-156: o compilador vem do registro (disco primeiro). A Editbar injeta Tailwind na
+		// PAGINA PUBLICA, entao ela e o build offline precisam da mesma versao — e a versao passa a
+		// sair de um lugar so, o registro, em vez de um literal por consumidor.
+		loadScriptOnce(assetUrl('tailwindcss-browser', 'dist/index.global.js'), 'c2f-tw-browser', function () { });
 	}
 
 	function activateEditor(content) {

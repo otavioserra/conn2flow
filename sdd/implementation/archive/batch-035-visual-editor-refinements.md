@@ -70,7 +70,7 @@ Este lote refina os controles de layout do Editor HTML Visual (janela do iframe,
     - `onHoverMove()`: guarda para não desenhar o hover azul quando o cursor está sobre o chrome do editor (evita conflito com o hover roxo dos breadcrumbs).
     - `isEditorOwned()`, `hideChrome()`, `clearSelection()` e `extractUserHtml()` atualizados com os 2 novos ids.
   - `gestor/assets/interface/html-editor-interface.js`: `sistemaSel` (fallback do save) inclui os 2 novos ids.
-- Decisão: [DEC-049](../decisions/DECISION-LOG.md).
+- Decisão: [DEC-049](../../decisions/DECISION-LOG.md).
 - Pendência (operador): deploy `🗃️ Projects - Update => Core` (sincroniza o asset) + validação runtime no navegador:
   - Toolbar aparece no canto **superior direito** do elemento selecionado.
   - Breadcrumb "Ancestrais:" e barra "Filhos:" empilhados abaixo do elemento (filhos com fundo mais claro, separador `|`).

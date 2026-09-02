@@ -14,9 +14,9 @@ O caminho físico do arquivo servido é montado por concatenação direta do cam
 $file = $_GESTOR['assets-path'].$_GESTOR['caminho-total'];   // e também contents-path
 if(file_exists($file)) arquivo_estatico_enviar($file, $ext);
 ```
-([arquivo-estatico.php:206,212,221](../../gestor/controladores/arquivo-estatico/arquivo-estatico.php))
+([arquivo-estatico.php:206,212,221](../../../gestor/controladores/arquivo-estatico/arquivo-estatico.php))
 
-`caminho-total` vem de `$_REQUEST['_gestor-caminho']` e é apenas `strtolower`+`explode('/')`, **sem rejeição de `..`** nem verificação de que o caminho resolvido permanece dentro de `assets/` ou `contents/` ([gestor.php:2482-2504](../../gestor/gestor.php)). A seleção de "arquivo estático" depende só de existir uma extensão (`pathinfo`).
+`caminho-total` vem de `$_REQUEST['_gestor-caminho']` e é apenas `strtolower`+`explode('/')`, **sem rejeição de `..`** nem verificação de que o caminho resolvido permanece dentro de `assets/` ou `contents/` ([gestor.php:2482-2504](../../../gestor/gestor.php)). A seleção de "arquivo estático" depende só de existir uma extensão (`pathinfo`).
 
 O `.htaccess`/rewrite provavelmente restringe a entrada na prática, mas o código de aplicação **não** valida contenção — defesa em profundidade ausente. Se o rewrite mudar, for contornado, ou `_gestor-caminho` puder ser injetado por query string, um caminho com `../` de extensão conhecida poderia escapar da raiz e ler arquivos como `.env`/chaves.
 

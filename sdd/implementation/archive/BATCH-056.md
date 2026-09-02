@@ -1,6 +1,6 @@
 # BATCH-056 — Sincronização Declarativa de Recursos, Deleção e Atualização Forçada (Módulos e Globais)
 
-- **Intake**: [req-056.md](../human-requests/req-056.md)
+- **Intake**: [req-056.md](../../human-requests/archive/req-056.md)
 - **Status**: complete (2026-06-23)
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-056
 - **Decisão**: DEC-064

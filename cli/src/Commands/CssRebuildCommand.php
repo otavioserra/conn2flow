@@ -8,6 +8,7 @@ use Conn2Flow\Cli\Contracts\CommandInterface;
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
 use Conn2Flow\Cli\Support\ProjectEnvironmentResolver;
+use Conn2Flow\Cli\Support\SshRemoteTransport;
 use Throwable;
 
 /**
@@ -57,7 +58,9 @@ final class CssRebuildCommand implements CommandInterface
                "  --todos       Rebuild every resource, not only the stale ones.\n" .
                "  --dry-run     Compile and report, writing nothing.
 " .
-               "  --confirmar-remoto  Required when the project has local=false in environment.json.";
+               "  --confirmar-remoto  Required when the project has local=false in environment.json,\n" .
+               "                      and to dispatch the rebuild inside a deploy_mode=\"ssh\" VM.\n" .
+               "  --simular-remoto    Print the SSH command line for the VM without executing it.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -91,15 +94,6 @@ final class CssRebuildCommand implements CommandInterface
             // agente PHP falhe adiante com "ERRO: .env do gestor nao encontrado", que aponta para
             // um arquivo ausente quando o que falta é o transporte.
             $ssh = is_array($resolvido['ssh'] ?? null) ? $resolvido['ssh'] : null;
-            if ($ssh !== null && !is_file($envFile)) {
-                $output->error(
-                    "Projeto '{$projectId}' usa deploy_mode \"ssh\": o Gestor em execução está em "
-                    . "{$ssh['user']}@{$ssh['host']}:{$ssh['path']} e não há `.env` no repositório "
-                    . 'de autoria para regenerar o CSS derivado a partir daqui. Rode o comando na '
-                    . 'VM, ou informe --gestor=/caminho/local com um Gestor configurado.'
-                );
-                return 1;
-            }
 
             if (!$ehLocal && !$input->getOption('confirmar-remoto')) {
                 $output->error(
@@ -109,6 +103,25 @@ final class CssRebuildCommand implements CommandInterface
                     . '--confirmar-remoto para prosseguir.'
                 );
                 return 1;
+            }
+
+            // req-050: o `.env`, o banco e o CSS derivado estão na VM. Em vez de recusar a etapa —
+            // que era o comportamento até aqui e deixava o pipeline 6/8 sempre em aviso —, o
+            // comando é executado DENTRO da VM, onde essas três coisas existem nativamente.
+            // O disparo remoto exige `--confirmar-remoto` mesmo em projeto local=true: a máquina
+            // alcançada não é esta, e a etapa reescreve CSS em massa lá.
+            if ($ssh !== null && !is_file($envFile)) {
+                if (!$input->getOption('confirmar-remoto')) {
+                    $output->error(
+                        "Projeto '{$projectId}' usa deploy_mode \"ssh\": o Gestor em execução está em "
+                        . "{$ssh['user']}@{$ssh['host']}:{$ssh['path']} e não há `.env` local. A "
+                        . 'regeneração pode ser disparada dentro da VM com --confirmar-remoto, ou '
+                        . 'informe --gestor=/caminho/local com um Gestor configurado.'
+                    );
+                    return 1;
+                }
+
+                return $this->regenerarViaSsh($resolvido, $projectId, $input, $output);
             }
         }
 
@@ -174,5 +187,100 @@ final class CssRebuildCommand implements CommandInterface
         }
 
         return $exitCode === 0 ? 0 : 1;
+    }
+
+    /**
+     * req-050 — dispara `c2f css:rebuild` DENTRO da VM, onde o `.env` e a conexão MySQL existem.
+     *
+     * @param array<string, mixed> $resolvido
+     */
+    private function regenerarViaSsh(
+        array $resolvido,
+        string $projectId,
+        InputInterface $input,
+        OutputInterface $output
+    ): int {
+        /** @var array<string, mixed> $ssh */
+        $ssh = $resolvido['ssh'];
+        /** @var array<string, mixed> $config */
+        $config = is_array($resolvido['config'] ?? null) ? $resolvido['config'] : [];
+
+        try {
+            $transport = new SshRemoteTransport($ssh, $config);
+        } catch (Throwable $e) {
+            $output->error($e->getMessage());
+            return 1;
+        }
+
+        // As opções que fazem sentido na VM são repassadas; `--project` não, porque lá o Gestor
+        // já É o alvo e reintroduzi-lo faria o comando remoto tentar resolver outro environment.
+        $argv = $transport->cliEntrypointArgv();
+        $argv[] = 'css:rebuild';
+
+        foreach (['tipo', 'id', 'limite'] as $opcao) {
+            $valor = $input->getOption($opcao);
+            if (is_string($valor) && $valor !== '') {
+                $argv[] = "--{$opcao}={$valor}";
+            }
+        }
+        foreach (['todos', 'dry-run'] as $flag) {
+            if ($input->hasOption($flag)) {
+                $argv[] = "--{$flag}";
+            }
+        }
+
+        $comando = $transport->buildRemoteCommand($argv);
+
+        $output->write('  transporte: ssh ' . $transport->describe() . PHP_EOL);
+        $output->write('  comando remoto: ' . $comando . PHP_EOL);
+
+        if ($input->hasOption('simular-remoto')) {
+            $output->info('Simulação: o comando acima não foi executado (--simular-remoto).');
+            return 0;
+        }
+
+        $codigo = $this->runShellCommand($comando, $output);
+        if ($codigo !== 0) {
+            $output->error(
+                "A regeneração remota do CSS falhou para '{$projectId}' (código {$codigo}). "
+                . 'Confirme o acesso SSH sem senha e a presença do CLI na raiz remota.'
+            );
+            return 1;
+        }
+
+        $output->success("CSS derivado regenerado dentro da VM para o projeto '{$projectId}'.");
+        return 0;
+    }
+
+    private function runShellCommand(string $comando, OutputInterface $output): int
+    {
+        $process = proc_open($comando, [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ], $pipes, $this->rootPath);
+
+        if (!is_resource($process)) {
+            $output->error('Não foi possível iniciar o processo SSH.');
+            return 1;
+        }
+
+        fclose($pipes[0]);
+
+        while ($linha = fgets($pipes[1])) {
+            $output->write($linha);
+        }
+        fclose($pipes[1]);
+
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+
+        $codigo = proc_close($process);
+
+        if ($codigo !== 0 && is_string($stderr) && trim($stderr) !== '') {
+            $output->error(trim($stderr));
+        }
+
+        return $codigo;
     }
 }

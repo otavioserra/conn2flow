@@ -1,6 +1,6 @@
 # BATCH-110 — Metadados da Página, Imagem de Destaque, UI na Editbar/Editor e Sitemap XML
 
-Intake: [req-110.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-110.md)
+Intake: [req-110.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/req-110.md)
 Validação: [VALIDATION-CHECKLIST.md#batch-110](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/validation/VALIDATION-CHECKLIST.md)
 Decisão: DEC-105
 Depende de: BATCH-109 (o consumo dos metadados é o `$_GESTOR['pagina#og']` de `gestor_open_graph_dados()`)

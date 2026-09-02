@@ -1,8 +1,8 @@
 # BATCH-088 — Criação dos Módulos/Widgets "forms-search" e "pages-index"
 
-- **Intake**: [req-088.md](../human-requests/req-088.md)
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-088](../validation/VALIDATION-CHECKLIST.md#batch-088)
-- **Decisão**: [DEC-089](../decisions/DECISION-LOG.md#dec-089---2026-07-15---accepted)
+- **Intake**: [req-088.md](../../human-requests/archive/req-088.md)
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-088](../../validation/VALIDATION-CHECKLIST.md#batch-088)
+- **Decisão**: [DEC-089](../../decisions/DECISION-LOG.md#dec-089---2026-07-15---accepted)
 - **Base**: clone de `gestor/modulos/forms/` (→ `forms-search`) e `gestor/modulos/publisher-index/` (→ `pages-index`).
 - **Fora de escopo**: req-089 (outro agente). Este batch trata apenas o req-088.
 

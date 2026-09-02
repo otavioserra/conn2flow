@@ -1,8 +1,8 @@
 # BATCH-082 — Carregamento de Widgets, Seleção de Modelos, Restauração de Backups e Isolamento Multi-usuário no Live Editor
 
-- **Intake**: [req-082](../human-requests/req-082.md)
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-082](../validation/VALIDATION-CHECKLIST.md#batch-082)
-- **Decisão**: [DEC-084](../decisions/DECISION-LOG.md#dec-084---2026-07-13---accepted)
+- **Intake**: [req-082](../../human-requests/archive/req-082.md)
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-082](../../validation/VALIDATION-CHECKLIST.md#batch-082)
+- **Decisão**: [DEC-084](../../decisions/DECISION-LOG.md#dec-084---2026-07-13---accepted)
 - **Base**: correções de homologação do Live Editor (barra flutuante + editbar do Dashboard Site Toolbar) pós BATCH-080/081.
 
 ## Escopo

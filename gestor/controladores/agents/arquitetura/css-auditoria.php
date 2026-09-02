@@ -280,6 +280,8 @@ foreach ($tabelas as $tabela) {
             'html' => $html,
             'css' => (string)($linha['css'] ?? ''),
             'baseline' => $baseline,
+            // req-156: sem isto a auditoria daria por integro um derivado de outra major.
+            'compilador' => gestor_css_compilador_versao(),
         ];
 
         $itens[] = [

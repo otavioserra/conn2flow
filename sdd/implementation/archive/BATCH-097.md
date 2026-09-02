@@ -1,6 +1,6 @@
 # BATCH-097 - Correções de Homologação do BATCH-096, Edição Avançada Separada e Embeds no Painel "+"
 
-Intake: [req-097.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-097.md)
+Intake: [req-097.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/req-097.md)
 Decisão: DEC-093
 Validação: VALIDATION-CHECKLIST.md#batch-097
 Evidência do defeito: [temp/html-output.html](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/temp/html-output.html)

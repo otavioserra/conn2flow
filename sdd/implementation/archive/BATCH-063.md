@@ -1,6 +1,6 @@
 # BATCH-063 — Depuração e Logging Explicativo na Descompilação de Arquivos
 
-- **Intake**: [req-063.md](../human-requests/req-063.md)
+- **Intake**: [req-063.md](../../human-requests/archive/req-063.md)
 - **Status**: in-progress
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-063
 

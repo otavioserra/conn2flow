@@ -1,6 +1,6 @@
 # BATCH-061 — Renomeação para project_tables_config.json e Filtragem de Manifesto
 
-- **Intake**: [req-061.md](../human-requests/req-061.md)
+- **Intake**: [req-061.md](../../human-requests/archive/req-061.md)
 - **Status**: complete
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-061
 

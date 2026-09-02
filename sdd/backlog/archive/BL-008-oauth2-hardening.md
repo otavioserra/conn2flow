@@ -8,8 +8,8 @@
 
 ## Contexto observado
 
-1. **`pubIDValidation` (HMAC) não é conferido na validação do access token**: `oauth2_validar_token()` valida a assinatura JWT e confere existência na tabela, mas **não** recomputa/compara o `pubIDValidation` ([oauth2.php:259-320](../../gestor/bibliotecas/oauth2.php)). Já o fluxo de refresh **confere** o HMAC ([oauth2.php:460-468](../../gestor/bibliotecas/oauth2.php)). Assimetria: a defesa extra existe mas não é aplicada no caminho mais usado (validação de acesso).
-2. **Limite de 5 tokens ativos nega login em vez de rotacionar**: `oauth2_gerar_token_client_credentials()` retorna `false` quando o usuário atinge `maximo-tokens-usuario` ([oauth2.php:53-63](../../gestor/bibliotecas/oauth2.php)). Na prática, logins repetidos (multi-dispositivo, app mobile do BATCH-008) passam a falhar silenciosamente até os tokens expirarem.
+1. **`pubIDValidation` (HMAC) não é conferido na validação do access token**: `oauth2_validar_token()` valida a assinatura JWT e confere existência na tabela, mas **não** recomputa/compara o `pubIDValidation` ([oauth2.php:259-320](../../../gestor/bibliotecas/oauth2.php)). Já o fluxo de refresh **confere** o HMAC ([oauth2.php:460-468](../../../gestor/bibliotecas/oauth2.php)). Assimetria: a defesa extra existe mas não é aplicada no caminho mais usado (validação de acesso).
+2. **Limite de 5 tokens ativos nega login em vez de rotacionar**: `oauth2_gerar_token_client_credentials()` retorna `false` quando o usuário atinge `maximo-tokens-usuario` ([oauth2.php:53-63](../../../gestor/bibliotecas/oauth2.php)). Na prática, logins repetidos (multi-dispositivo, app mobile do BATCH-008) passam a falhar silenciosamente até os tokens expirarem.
 
 ## Proposta de melhoria (a validar)
 

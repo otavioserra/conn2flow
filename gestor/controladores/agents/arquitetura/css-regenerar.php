@@ -462,7 +462,14 @@ foreach ($tabelas as $tabela) {
         $baseline = $layoutId !== '' ? ($cssLayouts[$layoutId . '|' . $lang] ?? '') : '';
         $cssAutoral = (string)($linha['css'] ?? '');
 
-        $entradas = ['html' => $html, 'css' => $cssAutoral, 'baseline' => $baseline];
+        // req-156: a versao do compilador entra na procedencia — derivado gerado por outra major
+        // do Tailwind e stale, ainda que HTML, CSS e baseline nao tenham mudado.
+        $entradas = [
+            'html' => $html,
+            'css' => $cssAutoral,
+            'baseline' => $baseline,
+            'compilador' => gestor_css_compilador_versao(),
+        ];
         $assinaturaGravada = $temHash ? (string)($linha['css_source_hash'] ?? '') : '';
 
         if (!$todos && gestor_css_procedencia_valida($assinaturaGravada, $entradas)) {

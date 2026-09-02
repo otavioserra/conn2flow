@@ -1,7 +1,7 @@
 # BATCH-126: Correções no Layout Administrativo Tailwind, Menu do Gestor, Histórico do Perfil e Identidade Visual Azul Conn2Flow no Core
 
-Intake: [req-124.md](../human-requests/req-124.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-126](../validation/VALIDATION-CHECKLIST.md)
+Intake: [req-124.md](../../human-requests/archive/req-124.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-126](../../validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation`
 
 Este lote executa as correções de layout administrativo, expansão do menu colapsado, completude dos ícones do menu, visibilidade do botão sair, isolamento do histórico no perfil e padronização da paleta azul Conn2Flow nas páginas de autenticação do Core.
@@ -87,4 +87,4 @@ converte. As duas camadas convivem sem interferência.
 
 `php -l` OK · `composer test` **581/581** · `npm run test` **331/331** · compilador de recursos sem
 erros. Detalhamento e pendências de homologação em
-[VALIDATION-CHECKLIST.md](../validation/VALIDATION-CHECKLIST.md#batch-126---layout-administrativo-tailwind-ícones-do-menu-histórico-do-perfil-e-paleta-azul-conn2flow-req-124-2026-08-21).
+[VALIDATION-CHECKLIST.md](../../validation/VALIDATION-CHECKLIST.md#batch-126---layout-administrativo-tailwind-ícones-do-menu-histórico-do-perfil-e-paleta-azul-conn2flow-req-124-2026-08-21).

@@ -1,7 +1,7 @@
 # BATCH-118 — Findings restantes do review de 2026-08-15 (F2, F3, F4, F7–F10)
 
-Origem: [REVIEW-2026-08-15-batches-111-112-115.md](../reviews/REVIEW-2026-08-15-batches-111-112-115.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-118](../validation/VALIDATION-CHECKLIST.md)
+Origem: [REVIEW-2026-08-15-batches-111-112-115.md](../../reviews/REVIEW-2026-08-15-batches-111-112-115.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-118](../../validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation` (implementado em 2026-08-17)
 
 Continuação direta do BATCH-117, que já havia fechado **F1** e **F4c**. Este lote fecha os findings

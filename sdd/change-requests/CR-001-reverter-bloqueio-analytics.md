@@ -89,7 +89,7 @@ o Googlebot**, que nunca chega a um `200` na home.
 
 ## Rastreabilidade
 
-- Intake original: [req-109.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-109.md)
+- Intake original: [req-109.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/archive/req-109.md)
 - Decisão revertida: DEC-104 §4 (recebe adendo apontando para cá)
 - Decisão nova: DEC-106
-- Implementação: [BATCH-111.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-111.md)
+- Implementação: [BATCH-111.md](file:///C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/archive/BATCH-111.md)

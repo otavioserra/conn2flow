@@ -8,9 +8,9 @@
 
 ## Contexto observado
 
-`downloadFile()` baixa o release do gestor com `CURLOPT_SSL_VERIFYPEER = false` ([Installer.php:435](../../gestor-instalador/src/Installer.php)) e `extractZip()` extrai o ZIP **sem verificar checksum/assinatura** ([Installer.php:454-472](../../gestor-instalador/src/Installer.php)). Ou seja, durante a instalação não há garantia de que o código baixado é autêntico.
+`downloadFile()` baixa o release do gestor com `CURLOPT_SSL_VERIFYPEER = false` ([Installer.php:435](../../../gestor-instalador/src/Installer.php)) e `extractZip()` extrai o ZIP **sem verificar checksum/assinatura** ([Installer.php:454-472](../../../gestor-instalador/src/Installer.php)). Ou seja, durante a instalação não há garantia de que o código baixado é autêntico.
 
-Isso contrasta com o **updater do core**, que já faz o certo: `atualizacoes-sistema.php` baixa o `.sha256` e chama `verifyZipSha256($zip,$shaFile)` antes de aplicar ([atualizacoes-sistema.php:703-713](../../gestor/controladores/atualizacoes/atualizacoes-sistema.php)). O instalador ficou para trás desse padrão.
+Isso contrasta com o **updater do core**, que já faz o certo: `atualizacoes-sistema.php` baixa o `.sha256` e chama `verifyZipSha256($zip,$shaFile)` antes de aplicar ([atualizacoes-sistema.php:703-713](../../../gestor/controladores/atualizacoes/atualizacoes-sistema.php)). O instalador ficou para trás desse padrão.
 
 ## Risco
 

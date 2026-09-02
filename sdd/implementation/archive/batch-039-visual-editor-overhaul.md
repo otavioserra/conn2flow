@@ -84,5 +84,5 @@ O lote foi quebrado nos seguintes slices funcionais:
   - `gestor/bibliotecas/html-editor.php`: rota AJAX `html-editor-widget-render` → `html_editor_ajax_widget_render()` (valida assinatura `modulo->func(...)`, `gestor_incluir_biblioteca('widgets')`, `widgets_get` em modo page-load).
   - `gestor/assets/interface/html-editor-visual-controls.js`: ponte AJAX (`c2f-he:widget-render` → AJAX → `c2f-he:widget-rendered`).
   - `gestor/assets/interface/html-editor-interface.js`: `sistemaSel` do save com os novos ids de overlay.
-- Decisão: [DEC-053](../decisions/DECISION-LOG.md).
+- Decisão: [DEC-053](../../decisions/DECISION-LOG.md).
 - Pendência (operador): deploy `🗃️ Projects - Update => Core` + validação runtime (seção Fundo + imagem de fundo; deselecionar/toggle; scroll preservado no undo/redo; breadcrumbs quebrando linha; ghost seguindo o cursor; highlight amarelo ao soltar dentro de contêiner; esqueleto de widget renderizado no preview).

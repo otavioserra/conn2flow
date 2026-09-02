@@ -1,6 +1,6 @@
 # BATCH-058 — Sistema de Recuperação e Engenharia Reversa de Recursos (Pull System)
 
-- **Intake**: [req-058.md](../human-requests/req-058.md)
+- **Intake**: [req-058.md](../../human-requests/archive/req-058.md)
 - **Status**: ready-for-intake
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-058
 

@@ -1,6 +1,6 @@
 # BATCH-065 — Suporte a Colunas Customizadas de ID em Recursos Dinâmicos
 
-- **Intake**: [req-065.md](../human-requests/req-065.md)
+- **Intake**: [req-065.md](../../human-requests/archive/req-065.md)
 - **Status**: in-progress
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-065
 

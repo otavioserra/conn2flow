@@ -1,7 +1,7 @@
 # BATCH-123 — Correção de rumo: HTML para o Sistema de Recursos e classes para as Variáveis
 
 Origem: correção do Chefe em 2026-08-18 sobre os BATCH-119/120/121
-Validação: [VALIDATION-CHECKLIST.md#batch-123](../validation/VALIDATION-CHECKLIST.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-123](../../validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation` (implementado em 2026-08-18)
 
 ---

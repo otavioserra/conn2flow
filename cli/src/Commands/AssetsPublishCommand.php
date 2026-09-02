@@ -7,6 +7,9 @@ namespace Conn2Flow\Cli\Commands;
 use Conn2Flow\Cli\Contracts\CommandInterface;
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
+use Conn2Flow\Cli\Support\ProjectEnvironmentResolver;
+use Conn2Flow\Cli\Support\SshRemoteTransport;
+use Throwable;
 
 /**
  * req-028 / BATCH-023 — publicação dos assets estáticos em `public_html/dist/`.
@@ -71,16 +74,20 @@ final class AssetsPublishCommand implements CommandInterface
 
     public function getHelp(): string
     {
-        return "Usage: c2f assets:publish [--public=PATH] [--dev] [--clean] [--dry-run]\n\n" .
+        return "Usage: c2f assets:publish [--project=ID] [--public=PATH] [--dev] [--clean] [--dry-run]\n\n" .
                "Copies the core and module assets to <public>/dist/, keeping the published path\n" .
                "identical to the public URL, and writes <public>/dist/.manifest.json with the SHA-1\n" .
                "of every published file (used as the cache-busting token in the HTML tags).\n\n" .
                "Options:\n" .
+               "  --project=ID   Resolve the DocumentRoot from environment.json (devProjects). With\n" .
+               "                 deploy_mode=\"ssh\", publishes locally and rsyncs into ssh_public_path.\n" .
                "  --public=PATH  DocumentRoot to publish into. Defaults to PUBLIC_PATH in gestor/.env.\n" .
                "  --dev          Publish the authored JavaScript instead of the .min.js derivative.\n" .
                "  --clean        Remove files under dist/ that are no longer in the manifest.\n" .
                "  --dry-run      Report what would be published, writing nothing.\n" .
-               "  --opcional     Used by pipelines: a missing DocumentRoot is reported, not an error.";
+               "  --opcional     Used by pipelines: a missing DocumentRoot is reported, not an error.\n" .
+               "  --confirmar-remoto  Required to push dist/ to a VM over SSH.\n" .
+               "  --simular-remoto    Print the rsync command line without executing it.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -89,7 +96,17 @@ final class AssetsPublishCommand implements CommandInterface
 
         $this->carregarContratoDeMapeamento();
 
-        $publicPath = $this->resolverPublicPath($input, $output);
+        $remoto = $this->resolverAlvoDeProjeto($input, $output);
+        if ($remoto === false) {
+            return $input->hasOption('opcional') ? 0 : 1;
+        }
+
+        // Publicação remota: o `dist/` é montado numa área de staging local e enviado por rsync,
+        // para que a etapa continue idempotente e verificável antes de tocar na VM.
+        $publicPath = $remoto !== null
+            ? $this->prepararStaging($remoto['staging'], $output)
+            : $this->resolverPublicPath($input, $output);
+
         if ($publicPath === null) {
             return $input->hasOption('opcional') ? 0 : 1;
         }
@@ -229,7 +246,149 @@ final class AssetsPublishCommand implements CommandInterface
             $output->success('Assets publicados em ' . $distPath);
         }
 
+        if ($remoto !== null) {
+            return $this->enviarParaVm($remoto, $distPath, $input, $output);
+        }
+
         return 0;
+    }
+
+    private function prepararStaging(string $staging, OutputInterface $output): ?string
+    {
+        $normalizado = rtrim(str_replace('\\', '/', $staging), '/') . '/';
+
+        if (!is_dir($normalizado) && !mkdir($normalizado, 0775, true) && !is_dir($normalizado)) {
+            $output->error("Não foi possível criar a área de staging: {$normalizado}");
+            return null;
+        }
+
+        return $normalizado;
+    }
+
+    /**
+     * req-050 — resolve o destino quando o alvo é um projeto do `environment.json`.
+     *
+     * Sem isto, o pipeline `project:update-all` chamava esta etapa sem alvo, ela lia o
+     * `PUBLIC_PATH` do `.env` do CORE e publicava o `dist/` do projeto no DocumentRoot de OUTRO
+     * site — ou, na ausência do `.env`, simplesmente pulava a etapa.
+     *
+     * @return array{staging: string, transport: SshRemoteTransport}|null|false
+     *         null = alvo local resolvido normalmente; false = erro já reportado.
+     */
+    private function resolverAlvoDeProjeto(InputInterface $input, OutputInterface $output): array|null|false
+    {
+        $projectId = (string)($input->getOption('project') ?? '');
+        if ($projectId === '') {
+            return null;
+        }
+
+        try {
+            $resolvido = (new ProjectEnvironmentResolver($this->rootPath))->resolve($projectId);
+        } catch (Throwable $e) {
+            $output->error($e->getMessage());
+            return false;
+        }
+
+        $ssh = is_array($resolvido['ssh'] ?? null) ? $resolvido['ssh'] : null;
+        if ($ssh === null) {
+            return null;
+        }
+
+        $config = is_array($resolvido['config'] ?? null) ? $resolvido['config'] : [];
+
+        try {
+            $transport = new SshRemoteTransport($ssh, $config);
+        } catch (Throwable $e) {
+            $output->error($e->getMessage());
+            return false;
+        }
+
+        if ($transport->publicPath() === null) {
+            $output->writeln("  Projeto '{$projectId}' usa deploy_mode \"ssh\" mas não declara "
+                . 'ssh_public_path: publicação ignorada, os assets seguem sendo servidos pelo '
+                . 'arquivo-estatico.');
+            return false;
+        }
+
+        // Alcançar outra máquina nunca é implícito, mesmo com local=true.
+        if (!$input->hasOption('confirmar-remoto') && !$input->hasOption('simular-remoto')) {
+            $output->error(
+                "Projeto '{$projectId}' publica em {$transport->describe()}. Enviar assets para a VM "
+                . 'exige --confirmar-remoto (ou --simular-remoto para apenas ver o comando).'
+            );
+            return false;
+        }
+
+        $staging = $this->rootPath . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR
+            . 'assets-publish' . DIRECTORY_SEPARATOR . $projectId . DIRECTORY_SEPARATOR;
+
+        return ['staging' => $staging, 'transport' => $transport];
+    }
+
+    /**
+     * @param array{staging: string, transport: SshRemoteTransport} $remoto
+     */
+    private function enviarParaVm(array $remoto, string $distPath, InputInterface $input, OutputInterface $output): int
+    {
+        $transport = $remoto['transport'];
+        $destino = $transport->publicPath() . '/dist';
+
+        $mkdir = $transport->buildEnsureDirectoryCommand($destino);
+        $rsync = $transport->buildRsyncCommand($distPath, $destino, $input->hasOption('clean'));
+
+        $output->writeln('');
+        $output->writeln('  destino remoto: ' . $transport->target() . ':' . $destino);
+        $output->writeln('  preparar:       ' . $mkdir);
+        $output->writeln('  enviar:         ' . $rsync);
+
+        if ($input->hasOption('simular-remoto') || $input->hasOption('dry-run')) {
+            $output->info('Simulação: os comandos acima não foram executados.');
+            return 0;
+        }
+
+        foreach ([$mkdir, $rsync] as $comando) {
+            $codigo = $this->runShellCommand($comando, $output);
+            if ($codigo !== 0) {
+                $output->error("Publicação remota falhou (código {$codigo}). Os assets locais "
+                    . 'foram gerados em ' . $distPath . ' e podem ser reenviados.');
+                return 1;
+            }
+        }
+
+        $output->success('Assets publicados em ' . $transport->target() . ':' . $destino);
+        return 0;
+    }
+
+    private function runShellCommand(string $comando, OutputInterface $output): int
+    {
+        $process = proc_open($comando, [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ], $pipes, $this->rootPath);
+
+        if (!is_resource($process)) {
+            $output->error('Não foi possível iniciar o processo de transporte.');
+            return 1;
+        }
+
+        fclose($pipes[0]);
+
+        while ($linha = fgets($pipes[1])) {
+            $output->write($linha);
+        }
+        fclose($pipes[1]);
+
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+
+        $codigo = proc_close($process);
+
+        if ($codigo !== 0 && is_string($stderr) && trim($stderr) !== '') {
+            $output->error(trim($stderr));
+        }
+
+        return $codigo;
     }
 
     /** Carrega o contrato de mapeamento compartilhado com o runtime do gestor. */

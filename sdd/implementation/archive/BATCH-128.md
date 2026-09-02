@@ -1,7 +1,7 @@
 # BATCH-128: Mapeamento de Ícones do `conn2flow-site`, Auto-Recolhimento do Menu no Resize, Ícone do Botão Sair e URL de Retorno na Área Restrita
 
-Intake: [req-126.md](../human-requests/req-126.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-128](../validation/VALIDATION-CHECKLIST.md)
+Intake: [req-126.md](../../human-requests/archive/req-126.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-128](../../validation/VALIDATION-CHECKLIST.md)
 Status: `ready-for-intake`
 
 Este lote conclui o mapeamento de ícones Lucide dos 6 módulos do `conn2flow-site`, implementa o fechamento responsivo automático no resize da janela, corrige o ícone de logout e torna dinâmica a URL de retorno na Área Restrita.

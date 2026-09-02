@@ -313,10 +313,11 @@
     {
         "name": "HTML Editor",
         "id": "html-editor",
-        "version": "1.12",
+        "version": "1.15",
         "checksum": {
             "html": "d92b8d4cb453fcc23b6453add584457d",
             "css": "1fb7d1b67165d5f5578c4130c5dcd1ef",
+            "css_precompiled": "",
             "combined": "874153ae6eb3a2715d5aa9cc9f035367"
         }
     },
@@ -353,11 +354,12 @@
     {
         "name": "HTML Editor Templates",
         "id": "html-editor-modelos",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "5a4b8b31336d644a1e757b6831d6ad16",
+            "html": "d6cf4ad76b2c1d359979161a0f0890dc",
             "css": "dea9254a7fff284b390256e4fbc84984",
-            "combined": "d26812a9c4ab3b6e68cacb767a3db50c"
+            "css_precompiled": "",
+            "combined": "23d1d3c1ea0f1ddcae79ab315b51641c"
         }
     },
     {

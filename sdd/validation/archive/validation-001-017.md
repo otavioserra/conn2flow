@@ -506,7 +506,7 @@
   - `gestor/modulos/publisher-highlights/resources/{pt-br,en}/pages/publisher-highlights-{adicionar,editar,clonar}/*.html` (6 páginas)
 - Arquivos removidos:
   - `gestor/assets/interface/jquery-custom-dropdown.js`
-- Decisão registrada: [DEC-021](../decisions/DECISION-LOG.md) (supera DEC-018/019/020)
+- Decisão registrada: [DEC-021](../../decisions/DECISION-LOG.md) (supera DEC-018/019/020)
 - Pendência: rodar `🗃️ Projects - Update => Core` para recompilar páginas/JS e validar manualmente no Docker:
   - digitar no campo de busca lista sugestões (Network mostra `publisher-pages-search`); item já selecionado fica desabilitado
   - clicar numa sugestão adiciona a tag ao final e atualiza o preview ao vivo
@@ -649,7 +649,7 @@
   - `gestor/modulos/menus/resources/{pt-br,en}/templates/menus-{dropdown,horizontal-navbar}/*.html` (gaps removidos)
 - Arquivos criados:
   - `gestor/resources/{pt-br,en}/components/html-editor-menus-simulation/html-editor-menus-simulation.html`
-- Decisão registrada: [DEC-024](../decisions/DECISION-LOG.md) (estende DEC-022/DEC-023; reutiliza a infraestrutura de variáveis `[[item#X]]` do html-editor)
+- Decisão registrada: [DEC-024](../../decisions/DECISION-LOG.md) (estende DEC-022/DEC-023; reutiliza a infraestrutura de variáveis `[[item#X]]` do html-editor)
 - Restrição respeitada: nenhum `git commit`/`git push` executado.
 - Pendência (com o operador): rodar `atualizacao-dados-recursos.php` / `🗃️ Projects - Update => Core` para registrar o novo componente em `ComponentesData.json`, recalcular checksums dos templates alterados e aplicar no ambiente de testes. Depois, validar manualmente:
   - editar um menu → aba "Editor HTML" → botões "Variáveis"/"Simular": "Simular" renderiza o template com a árvore mockada (com submenus); "Variáveis" lista `[[item#label/url/slug/css_classes/children]]`

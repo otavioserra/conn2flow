@@ -50,6 +50,13 @@ Se a tarefa apontar para `sdd/human-requests/*.md` ou para a pasta `sdd/human-re
 - Não reescreva os sdd numerados para comentários pequenos de review.
 - Não abra o próximo batch antes de o atual estar estável e revisável.
 
+## Regra dos 10 Ativos na Raiz e Integridade de Links
+
+- A raiz de `sdd/human-requests/` mantém no máximo **10 requisições** soltas (além de `CURRENT.md` e `README.md`); a raiz de `sdd/implementation/` mantém no máximo **10 relatórios de lote** (além de `BATCH-INDEX.md`). O excedente mais antigo vive em `archive/`.
+- Arquivar sem reescrever links é proibido: todo link de markdown em `BATCH-INDEX.md`, `VALIDATION-CHECKLIST.md`, `DECISION-LOG.md` e `CURRENT.md` deve continuar resolvendo após a movimentação.
+- Use `php cli/c2f.php ai:archive-sdd [--repo=PATH] [--keep=10] [--repair-links] [--dry-run]` do Core: ele move os excedentes, reescreve os links relativos e `file:///` e falha enquanto restar link órfão sob `sdd/`.
+- Não mova esses arquivos com `mv`/`Move-Item` manualmente.
+
 
 ## 📋 Protocolo de Transparência & Checklist Vivo (Live Todo List)
 

@@ -8,9 +8,9 @@
 
 ## Contexto observado
 
-1. **Sem autenticação e sem lock**: o `index.php` processa qualquer POST e executa a etapa pedida (`$installer->runStep($action)`) sem token/segredo ([index.php:100-123](../../gestor-instalador/index.php)). Enquanto os arquivos do instalador existirem no servidor, qualquer pessoa pode acioná-lo (reconfigurar `.env`, apontar para outro banco, sobrescrever arquivos).
-2. **Limpeza só no fim do caminho feliz**: a remoção dos arquivos do instalador acontece no passo final e **mantém `installer.log`** ([Installer.php:775](../../gestor-instalador/src/Installer.php)). Se a instalação falhar no meio, os arquivos permanecem acionáveis; e o `installer.log` residual (host de banco, caminhos, etapas) fica acessível via web.
-3. **`configureEnvFile()` usa `preg_replace` com a senha como replacement** ([Installer.php:499](../../gestor-instalador/src/Installer.php)): senhas contendo `$1`, `\` etc. podem ser corrompidas na gravação do `.env` (correção/robustez).
+1. **Sem autenticação e sem lock**: o `index.php` processa qualquer POST e executa a etapa pedida (`$installer->runStep($action)`) sem token/segredo ([index.php:100-123](../../../gestor-instalador/index.php)). Enquanto os arquivos do instalador existirem no servidor, qualquer pessoa pode acioná-lo (reconfigurar `.env`, apontar para outro banco, sobrescrever arquivos).
+2. **Limpeza só no fim do caminho feliz**: a remoção dos arquivos do instalador acontece no passo final e **mantém `installer.log`** ([Installer.php:775](../../../gestor-instalador/src/Installer.php)). Se a instalação falhar no meio, os arquivos permanecem acionáveis; e o `installer.log` residual (host de banco, caminhos, etapas) fica acessível via web.
+3. **`configureEnvFile()` usa `preg_replace` com a senha como replacement** ([Installer.php:499](../../../gestor-instalador/src/Installer.php)): senhas contendo `$1`, `\` etc. podem ser corrompidas na gravação do `.env` (correção/robustez).
 
 ## Proposta de melhoria (a validar)
 

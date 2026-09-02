@@ -1,8 +1,8 @@
 # BATCH-080 — Integração de Modelos de Sessão e Assistente IA no Live Editor
 
-- **Intake**: [req-080](../human-requests/req-080.md)
-- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-080](../validation/VALIDATION-CHECKLIST.md#batch-080)
-- **Decisão**: [DEC-082](../decisions/DECISION-LOG.md#dec-082---2026-07-10---accepted)
+- **Intake**: [req-080](../../human-requests/archive/req-080.md)
+- **Alvo de validação**: [VALIDATION-CHECKLIST.md#batch-080](../../validation/VALIDATION-CHECKLIST.md#batch-080)
+- **Decisão**: [DEC-082](../../decisions/DECISION-LOG.md#dec-082---2026-07-10---accepted)
 - **Base**: extensão do Live Editor (barra flutuante `#html-editor-floating-toolbar`) pós BATCH-079.
 
 ## Escopo

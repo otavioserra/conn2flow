@@ -45,9 +45,9 @@
         "minificado": 1782
     },
     "gestor/assets/global/global.js": {
-        "sha1": "39e46e64df704630e852e5649c75750574ab9c34",
-        "origem": 21467,
-        "minificado": 9095
+        "sha1": "c97acf02ac9c9aefbe7d951935d07a1f81db6bd7",
+        "origem": 23286,
+        "minificado": 9561
     },
     "gestor/assets/interface-v2/interface-v2.js": {
         "sha1": "96fc2a0fbbd13ae4cbf2309c2ffe48865098507a",
@@ -70,9 +70,9 @@
         "minificado": 1296
     },
     "gestor/assets/interface/html-editor-interface.js": {
-        "sha1": "59eeb9d720b1af3e88dfc07d8665908cb0bd37c6",
-        "origem": 134125,
-        "minificado": 57741
+        "sha1": "f5cc6e1242ed2452e44c62e7e4ee4a8b8cdc05f2",
+        "origem": 155527,
+        "minificado": 59714
     },
     "gestor/assets/interface/html-editor-modules.js": {
         "sha1": "7c5934089d8e0b3279282539f010b461ec4dcea6",
@@ -205,9 +205,9 @@
         "minificado": 7309
     },
     "gestor/modulos/dashboard/dashboard.toolbar.js": {
-        "sha1": "707e75d941e96389e017eb7a5a6525618f43c9c8",
-        "origem": 93542,
-        "minificado": 45306
+        "sha1": "c8567429196deaa5ac916212eeda56284ec97141",
+        "origem": 96822,
+        "minificado": 45434
     },
     "gestor/modulos/forms-search/forms-search.js": {
         "sha1": "57adad2c4810242008cb543ea9e90a0f9181a216",
@@ -235,9 +235,9 @@
         "minificado": 1451
     },
     "gestor/modulos/galleries/galleries.js": {
-        "sha1": "af68b0656ddc5b1f11d5b61cbda11a010e76e835",
-        "origem": 58215,
-        "minificado": 30037
+        "sha1": "0744a662b09a94a8ba6fb3ec915edfe162d68a0b",
+        "origem": 59835,
+        "minificado": 30061
     },
     "gestor/modulos/galleries/galleries.widget.js": {
         "sha1": "11c8895c0536afaf5551a18b2d2255e109dfb295",
@@ -245,9 +245,9 @@
         "minificado": 1668
     },
     "gestor/modulos/menus/menus.js": {
-        "sha1": "1eece85ae3523b46f678ab4cfb4968dacc037fb7",
-        "origem": 70890,
-        "minificado": 33833
+        "sha1": "04c35c0683e82c3a36e05df1fdd2f448471d16f2",
+        "origem": 72944,
+        "minificado": 33857
     },
     "gestor/modulos/menus/menus.widget.js": {
         "sha1": "8233484948f3387cf6a11cf7a05926ae4870ab11",
@@ -270,9 +270,9 @@
         "minificado": 154
     },
     "gestor/modulos/pages-index/pages-index.js": {
-        "sha1": "7c2efc7afb03530fc0b4483b5bdce03786cf0c86",
-        "origem": 45072,
-        "minificado": 18212
+        "sha1": "d11fcc17f1a7409834ecef7f43a290f5998d65b3",
+        "origem": 46498,
+        "minificado": 18236
     },
     "gestor/modulos/pages-index/pages-index.widget.js": {
         "sha1": "34aea3be934be9fd1b8bb3f7f2ef3b8dcbb559c2",
@@ -285,14 +285,14 @@
         "minificado": 14041
     },
     "gestor/modulos/publisher-highlights/publisher-highlights.js": {
-        "sha1": "95c22783a3c703da02cb26577164c878523215e7",
-        "origem": 40535,
-        "minificado": 16195
+        "sha1": "e92b3d190a91e867710c7f635b22fe1067e80143",
+        "origem": 41888,
+        "minificado": 16219
     },
     "gestor/modulos/publisher-index/publisher-index.js": {
-        "sha1": "15a074366393be65b41876b4b42c29b57f4c9b8b",
-        "origem": 44402,
-        "minificado": 18117
+        "sha1": "1d3be1a176164296719492d6b757eac4c1025021",
+        "origem": 45812,
+        "minificado": 18141
     },
     "gestor/modulos/publisher-index/publisher-index.widget.js": {
         "sha1": "4e3ebac05a848645699b78ccc0a090095a8ac397",

@@ -104,7 +104,7 @@ O lote foi quebrado nos seguintes slices funcionais:
   - `gestor/assets/interface/html-editor-interface.js` (2 edições cirúrgicas: remoção do handler antigo `.screenPagina`; uso de `htmlEditorGetCleanHtml()` no save com fallback).
   - `gestor/resources/{pt-br,en}/components/html-editor-visual-modal/html-editor-visual-modal.html` (botão "+", undo/redo, alças `.iframe-resize-handle-*`, `.iframe-resize-indicator`, wrapper `.iframe-preview-frame`).
   - `gestor/resources/{pt-br,en}/variables.json` (3 variáveis: `html-editor-add-element-tooltip`/`-undo-tooltip`/`-redo-tooltip`).
-- Decisões: design em [DEC-047](../decisions/DECISION-LOG.md#dec-047---2026-06-13---accepted); execução/divergências em [DEC-048](../decisions/DECISION-LOG.md#dec-048---2026-06-13---accepted).
+- Decisões: design em [DEC-047](../../decisions/DECISION-LOG.md#dec-047---2026-06-13---accepted); execução/divergências em [DEC-048](../../decisions/DECISION-LOG.md#dec-048---2026-06-13---accepted).
 - Pendências (com o operador, após `🗃️ Projects - Update => Core` que sincroniza os assets/componentes, compila o `VariaveisData.json` a partir do `variables.json` e recalcula checksums):
   - **Tags/seleção**: passar o mouse sobre `div`/`section`/contêineres mostra hover; clicar fixa o overlay roxo de seleção persistente; clicar no fundo limpa.
   - **Toolbar**: duplicar cria irmão idêntico; deletar pede `confirm()`; editar abre o modal (text/image/code).

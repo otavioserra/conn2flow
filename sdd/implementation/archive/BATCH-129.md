@@ -1,7 +1,7 @@
 # BATCH-129: Extrator Semântico de Tokens do Tailwind para o Assistente de IA no Editor HTML
 
-Intake: [req-127.md](../human-requests/req-127.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-129](../validation/VALIDATION-CHECKLIST.md)
+Intake: [req-127.md](../../human-requests/archive/req-127.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-129](../../validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation`
 
 O Assistente de IA recebia `{{html}}`, `{{css}}` e `{{framework_css}}` — e `{{framework_css}}` é a

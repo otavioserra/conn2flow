@@ -8,7 +8,7 @@
 
 ## Contexto observado
 
-A biblioteca `seguranca.php` implementa `gestor_csrf_token()` e `gestor_csrf_validar()` corretamente (token de 32 bytes, `hash_equals`) ([seguranca.php:105-128](../../gestor/bibliotecas/seguranca.php)). Porém, uma busca por uso em todo o `gestor/` retorna **apenas o próprio arquivo de definição** — nenhuma rota, formulário ou endpoint AJAX autenticado chama `gestor_csrf_validar()`.
+A biblioteca `seguranca.php` implementa `gestor_csrf_token()` e `gestor_csrf_validar()` corretamente (token de 32 bytes, `hash_equals`) ([seguranca.php:105-128](../../../gestor/bibliotecas/seguranca.php)). Porém, uma busca por uso em todo o `gestor/` retorna **apenas o próprio arquivo de definição** — nenhuma rota, formulário ou endpoint AJAX autenticado chama `gestor_csrf_validar()`.
 
 Ou seja, a defesa CSRF está pronta mas **desligada**. As ações de estado (mudança de dados no painel, AJAX autenticado por cookie) dependem só do cookie de sessão `SameSite=Lax`. `Lax` mitiga parte dos vetores, mas não cobre POST cross-site em todos os cenários nem navegadores antigos.
 

@@ -23,7 +23,18 @@ function extrairFuncao(nome, dependencias = '') {
 
 describe('html-editor-interface.js — preview de templates Tailwind (req-154)', () => {
   it('não mistura a folha sem camada do Fomantic no preview Tailwind', () => {
-    const includes = extrairFuncao('htmlEditorPreviewFrameworkIncludes');
+    // req-156: as URLs deixaram de ser literais de CDN e passam pelo registro de assets, então a
+    // função depende de `htmlEditorAssetUrl`/`htmlEditorBaseScripts`. Fornecidas aqui para manter a
+    // extração isolada — o que este teste afirma continua sendo sobre a CASCATA, não sobre a URL.
+    const includes = extrairFuncao(
+      'htmlEditorPreviewFrameworkIncludes',
+      "const MAPA = { 'jquery': { 'jquery.min.js': '/vendor/jquery/3.7.1/jquery.min.js' }, " +
+      "'fomantic-ui': { 'semantic.min.css': '/vendor/fomantic-ui/2.9.4/semantic.min.css', " +
+      "'semantic.min.js': '/vendor/fomantic-ui/2.9.4/semantic.min.js' } };" +
+      "function htmlEditorAssetUrl(b, a) { return (MAPA[b] || {})[a] || ''; }" +
+      "function htmlEditorBaseScripts() { return '<scr' + 'ipt src=\"' + htmlEditorAssetUrl('jquery', 'jquery.min.js') + '\"></scr' + 'ipt>'" +
+      " + '<scr' + 'ipt src=\"' + htmlEditorAssetUrl('fomantic-ui', 'semantic.min.js') + '\"></scr' + 'ipt>'; }"
+    );
 
     expect(includes('tailwindcss')).not.toContain('semantic.min.css');
     expect(includes('tailwindcss')).toContain('jquery.min.js');
@@ -70,5 +81,36 @@ describe('html-editor-interface.js — preview de templates Tailwind (req-154)',
       "const htmlEditorDecodeBase64 = () => '';"
     );
     expect(atualizarComAtual('SECAO', true)).toBe('PAGINA\nSECAO');
+  });
+});
+
+describe('html-editor-modelos — molde inerte dos cards (req-161)', () => {
+  const idiomas = ['pt-br', 'en'];
+
+  it('mantém o consumidor baseado em jQuery.html()', () => {
+    const code = fs.readFileSync(sourcePath, 'utf8');
+
+    expect(code).toContain("const template = $('#modelo-card-template').html();");
+  });
+
+  it.each(idiomas)('usa <template> no componente %s e preserva a interpolação', (idioma) => {
+    const componentPath = `gestor/resources/${idioma}/components/html-editor-modelos/html-editor-modelos.html`;
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = fs.readFileSync(componentPath, 'utf8');
+
+    const template = wrapper.querySelector('#modelo-card-template');
+
+    expect(template).toBeInstanceOf(HTMLTemplateElement);
+    expect(template.tagName).toBe('TEMPLATE');
+    expect(template.querySelector('img')).toBeNull();
+    expect(template.content.querySelector('img')).not.toBeNull();
+
+    const html = template.innerHTML;
+    expect(html).toContain('class="card modelo-card"');
+    expect(html).toContain('src="{{thumbnail}}"');
+    expect(html).toContain('data-modelo-id="{{id}}"');
+    expect(html).toContain('{{nome}}');
+    expect(html).toContain('{{target}}');
+    expect(html).toContain('{{language}}');
   });
 });

@@ -81,7 +81,7 @@ Estender o `fields_schema` do módulo `publisher-highlights` com a chave opciona
 - `date_asc` -> `ORDER BY p.data_modificacao ASC`
 - `date_desc` (padrão, retrocompatível) -> `ORDER BY p.data_modificacao DESC`
 
-A ordenação é ignorada quando `rule = 'manual'`, pois nesse caso a ordem é definida pelo array `selected_items`. Esta extensão é registrada em [03-wrapped-widgets-and-publisher-highlights.md](../03-wrapped-widgets-and-publisher-highlights.md).
+A ordenação é ignorada quando `rule = 'manual'`, pois nesse caso a ordem é definida pelo array `selected_items`. Esta extensão é registrada em [03-wrapped-widgets-and-publisher-highlights.md](../../03-wrapped-widgets-and-publisher-highlights.md).
 
 ## DEC-018 - 2026-05-26 - accepted
 

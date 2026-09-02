@@ -1,6 +1,6 @@
 # BATCH-060 — Pipeline de Metadados de Projeto e Desacoplamento (Pull System)
 
-- **Intake**: [req-060.md](../human-requests/req-060.md)
+- **Intake**: [req-060.md](../../human-requests/archive/req-060.md)
 - **Status**: complete
 - **Alvo de validação**: VALIDATION-CHECKLIST.md#batch-060
 

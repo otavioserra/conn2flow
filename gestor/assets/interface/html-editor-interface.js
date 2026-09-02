@@ -625,6 +625,10 @@ $(document).ready(function () {
             CodeMirrorHtml.setSize('100%', codermirrorHeight);
             codemirrors_instances.push(CodeMirrorHtml);
         }
+
+        // req-160: só faz sentido guardar o salvamento onde existe editor de HTML.
+        htmlEditorInterceptarSubmitParaGerarCss();
+        htmlEditorObservarTrocaDeLayout();
     }
 
     var codemirror_html_extra_head = document.getElementsByClassName("codemirror-html-extra-head");
@@ -963,24 +967,146 @@ $(document).ready(function () {
         return atual + '\n' + novo;
     }
 
+
     // req-154: o output pré-compilado do Tailwind usa cascade layers. O Fomantic é uma folha sem
     // camada e, se carregado no mesmo iframe, vence utilities como padding, background e shadow.
     // O preview deve carregar exatamente um framework visual por vez.
     function htmlEditorPreviewFrameworkIncludes(framework) {
-        const scripts = `<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"><\/script>
-            <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"><\/script>`;
+        const scripts = htmlEditorBaseScripts();
 
         // jQuery e os plugins permanecem disponíveis para scripts/widgets legados; somente a folha
         // visual concorrente precisa sair do iframe Tailwind.
         if (framework === 'tailwindcss') return scripts;
 
-        return `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
+        return `<link rel="stylesheet" href="${htmlEditorAssetUrl('fomantic-ui', 'semantic.min.css')}">
+            ${scripts}`;
+    }
+
+    // req-156: nomes das camadas do output do Tailwind v4, na ordem em que o próprio framework as
+    // emite. O chrome do editor entra ANTES de todas para nunca reger o conteúdo do usuário.
+    const HTML_EDITOR_CHROME_LAYER = 'c2f-editor-chrome';
+    const HTML_EDITOR_TAILWIND_LAYERS = ['properties', 'theme', 'base', 'components', 'utilities'];
+
+    // req-156: URL de uma biblioteca de terceiro para dentro do iframe, pelo registro de assets.
+    //
+    // O BATCH-146 tirou o gestor do CDN, mas o inventário daquele lote varreu as tags montadas no
+    // PHP — e as do iframe nascem AQUI, no cliente, o que as deixou de fora. `assetsUrls` chega do
+    // `html_editor_assets_urls()`, que resolve cada arquivo por `assets_externos_url()`: disco
+    // primeiro, CDN apenas quando o arquivo local não existe (DEC-122).
+    //
+    // O fallback devolve string vazia em vez de uma URL de CDN escrita à mão: uma tag vazia falha de
+    // modo visível e rastreável, enquanto um CDN embutido aqui recriaria em silêncio exatamente a
+    // dependência que este trabalho remove.
+    function htmlEditorAssetUrl(biblioteca, arquivo) {
+        // Fonte única: `window.gestorAssets` (global.js), alimentado por `gestor.assetsUrls`. O
+        // fallback direto ao objeto cobre o caso de o editor ser carregado sem o global — e evita
+        // que uma ausência do helper derrube a montagem inteira do iframe por TypeError.
+        if (window.gestorAssets && typeof window.gestorAssets.url === 'function') {
+            return window.gestorAssets.url(biblioteca, arquivo);
+        }
+
+        const mapa = (typeof gestor !== 'undefined' && gestor.assetsUrls) ? gestor.assetsUrls : {};
+        const url = (mapa[biblioteca] || {})[arquivo];
+
+        if (typeof url === 'string' && url !== '') return url;
+
+        console.warn('html-editor: asset nao resolvido pelo registro: ' + biblioteca + '/' + arquivo);
+        return '';
+    }
+
+    // req-156: tags do CodeMirror para o iframe, na ordem de carga do registro.
+    // `codemirror.min.js` define o objeto que todo addon estende (DEC-122, item 5).
+    const HTML_EDITOR_CODEMIRROR_CSS = [
+        'codemirror.min.css',
+        'theme/tomorrow-night-bright.css',
+        'addon/dialog/dialog.css',
+        'addon/display/fullscreen.css',
+    ];
+    const HTML_EDITOR_CODEMIRROR_JS = [
+        'codemirror.min.js',
+        'addon/selection/active-line.js',
+        'addon/edit/matchbrackets.js',
+        'addon/edit/closetag.js',
+        'addon/edit/closebrackets.js',
+        'addon/display/fullscreen.js',
+        'mode/xml/xml.js',
+        'mode/css/css.js',
+        'mode/javascript/javascript.js',
+        'mode/htmlmixed/htmlmixed.js',
+    ];
+
+    function htmlEditorCodemirrorIncludes() {
+        const css = HTML_EDITOR_CODEMIRROR_CSS
+            .map(f => `<link rel="stylesheet" type="text/css" href="${htmlEditorAssetUrl('codemirror', f)}" />`)
+            .join('\n            ');
+        const js = HTML_EDITOR_CODEMIRROR_JS
+            .map(f => `<script src="${htmlEditorAssetUrl('codemirror', f)}"><\/script>`)
+            .join('\n            ');
+
+        return `<!-- CodeMirror CSS -->\n            ${css}\n            <!-- CodeMirror JS -->\n            ${js}`;
+    }
+
+    // req-156: jQuery e o JS do Fomantic seguem no iframe para compatibilidade com widgets e
+    // scripts legados — o que muda é a procedência: registro, não CDN.
+    function htmlEditorBaseScripts() {
+        return `<script src="${htmlEditorAssetUrl('jquery', 'jquery.min.js')}"><\/script>
+            <script src="${htmlEditorAssetUrl('fomantic-ui', 'semantic.min.js')}"><\/script>`;
+    }
+
+    // req-156: fixa a ordem da cascata por declaração, e não por posição das folhas no `<head>`.
+    //
+    // Uma cascade layer é ordenada pela PRIMEIRA vez que seu nome aparece. Sem esta linha, a ordem
+    // passaria a depender de o Fomantic ser injetado antes ou depois do baseline — e o Tailwind
+    // Browser ainda registra camadas de forma assíncrona, quando compila. Declarando a ordem no topo
+    // do documento, mover qualquer folha deixa de ter efeito sobre quem vence.
+    function htmlEditorLayerOrderDeclaration(framework) {
+        if (framework !== 'tailwindcss') return '';
+
+        const ordem = [HTML_EDITOR_CHROME_LAYER].concat(HTML_EDITOR_TAILWIND_LAYERS).join(', ');
+
+        return `<style data-c2f-css-role="layer-order">@layer ${ordem};</style>`;
+    }
+
+    // req-156: includes de framework do EDITOR VISUAL (`editorHtmlVisual`).
+    //
+    // Difere do preview por uma razão de produto: o editor injeta a própria interface DENTRO do
+    // iframe (`#html-editor-modal` é um modal Fomantic, e `html-editor.js` chama `.modal()` sobre
+    // ele). Simplesmente remover a folha, como o preview faz, deixaria o modal de edição de texto,
+    // imagem e código sem estilo. A folha precisa ficar — mas parar de reger o conteúdo.
+    //
+    // Medido em Chromium sobre a página real, contra o preview: são DUAS contaminações distintas, e
+    // cada uma exige um mecanismo próprio.
+    //
+    //   1. CONFLITO DE CASCATA. Folha sem camada vence utilities em `@layer`, independentemente da
+    //      ordem: título 72px -> 24px, peso 900 -> 700, texto do CTA branco -> rgb(65,131,196).
+    //      Resolvido importando o Fomantic dentro de `@layer c2f-editor-chrome`.
+    //
+    //   2. UNIDADE `rem` REDEFINIDA. O Fomantic declara `html{font-size:14px}`. O Tailwind v4
+    //      dimensiona espaçamento, tipografia e raio em `rem`, então TODA medida encolhe por
+    //      exatamente 14/16 = 0,875: 72->63px, 128->112px, 48->42px, 16->14px. Nenhuma camada
+    //      corrige isso, porque não existe regra do Tailwind concorrendo por `html { font-size }` —
+    //      a do Fomantic vence por ausência de disputa. É preciso restaurar a raiz explicitamente.
+    //
+    // O reset fica FORA de camada de propósito: assim vence o Fomantic sem depender de ordem, e
+    // ainda perde para o CSS autoral do usuário, que é injetado depois e também sem camada.
+    function htmlEditorVisualFrameworkIncludes(framework) {
+        const scripts = htmlEditorBaseScripts();
+        const fomanticCss = htmlEditorAssetUrl('fomantic-ui', 'semantic.min.css');
+
+        if (framework !== 'tailwindcss') {
+            return `<link rel="stylesheet" href="${fomanticCss}">
+            ${scripts}`;
+        }
+
+        // `@import ... layer()` em vez de inlinar a folha: 1,7 MB por abertura do editor custaria
+        // mais que o problema que resolve, e o arquivo já vem do disco do próprio projeto.
+        return `<style data-c2f-css-role="editor-chrome">@import url("${fomanticCss}") layer(${HTML_EDITOR_CHROME_LAYER});</style>
+            <style data-c2f-css-role="editor-rem-reset">html{font-size:16px}</style>
             ${scripts}`;
     }
 
     function tailwindPreviewIncludes() {
         const editorConfig = gestor.html_editor || {};
-        const version = editorConfig.tailwindBrowserVersion || '4.3.0';
         const contract = htmlEditorDecodeBase64(editorConfig.tailwindBrowserContractBase64 || '');
         const initialBaseline = htmlEditorDecodeBase64(editorConfig.cssPrecompiledBase64 || '');
         const baseline = (typeof window.htmlEditorCssPrecompiled === 'string')
@@ -989,10 +1115,45 @@ $(document).ready(function () {
         const escapeStyleEnd = value => String(value || '').replace(/<\/style/gi, '<\\/style');
         const projectJavascript = editorConfig.projectJavascriptTailwindcss || '';
 
+        // req-160: o baseline é emitido em DUAS folhas, e a distinção decide o que é gravado.
+        //
+        // `baseline` marca o que o runtime público realmente entrega (layout + `css_precompiled` do
+        // recurso, ambos vindos do banco). `HtmlEditorCssCapture` filtra a captura contra ESSA folha:
+        // o que já está nela não precisa ser regravado em `css_compiled`.
+        //
+        // O sidecar de um template inserido na sessão é outra coisa. O BATCH-156 passou a somá-lo ao
+        // baseline para o editor renderizar certo — mas com isso ele entrou no filtro, e as regras do
+        // template deixaram de ser gravadas: sumiam do `css_compiled` sem estar em lugar nenhum que o
+        // runtime receba. Medido na página publicada: 8 utilities aplicadas sem regra alguma
+        // (`border-b-2`, `bg-gradient-to-t`, `list-none`, `ml-auto`…), todas fornecidas por sidecar.
+        //
+        // Separando as folhas, o iframe continua com a mesma cascata (as duas estão no documento, na
+        // mesma ordem) e a captura volta a gravar o que o runtime não tem. `css_precompiled` segue
+        // sendo DERIVADO e escrito só pelo compilador — o contrato do CR-002 fica intacto.
+        // req-160: o CSS AUTORAL do layout, que o runtime serve e o editor não recebia.
+        //
+        // Fica FORA do baseline de propósito. Duas razões: o baseline é o conjunto contra o qual a
+        // captura filtra, e o autoral não é derivado — incluí-lo ali faria a captura descartar
+        // regras achando que já existem, que é o mesmo erro do sidecar de template. E a posição
+        // importa: no runtime ele entra DEPOIS do pré-compilado, e é essa ordem que se reproduz.
+        //
+        // `window.htmlEditorLayoutCssAutoral` é atualizada quando o operador troca o layout no
+        // formulário — o baseline entregue na abertura deixa de valer naquele instante.
+        const layoutAutoral = (typeof window.htmlEditorLayoutCssAutoral === 'string')
+            ? window.htmlEditorLayoutCssAutoral
+            : htmlEditorDecodeBase64(editorConfig.layoutCssAutoralBase64 || '');
+
+        const overlaySessao = (baseline && initialBaseline && baseline.startsWith(initialBaseline))
+            ? baseline.slice(initialBaseline.length)
+            : (baseline === initialBaseline ? '' : baseline);
+        const baselineRuntime = overlaySessao ? initialBaseline : baseline;
+
         return `<!-- Tailwind browser usa o mesmo tema do build offline -->
-            ${baseline ? `<style data-c2f-tailwind-role="baseline">${escapeStyleEnd(baseline)}</style>` : ''}
+            ${baselineRuntime ? `<style data-c2f-tailwind-role="baseline">${escapeStyleEnd(baselineRuntime)}</style>` : ''}
+            ${overlaySessao.trim() ? `<style data-c2f-css-role="session-overlay">${escapeStyleEnd(overlaySessao)}</style>` : ''}
+            ${layoutAutoral.trim() ? `<style data-c2f-css-role="layout-authored">${escapeStyleEnd(layoutAutoral)}</style>` : ''}
             ${contract ? `<style type="text/tailwindcss" data-c2f-tailwind-role="browser-contract">${escapeStyleEnd(contract)}</style>` : ''}
-            <script src="https://unpkg.com/@tailwindcss/browser@${version}"><\/script>
+            <script src="${htmlEditorAssetUrl('tailwindcss-browser', 'dist/index.global.js')}"><\/script>
             ${projectJavascript}`;
     }
 
@@ -1022,7 +1183,7 @@ $(document).ready(function () {
 
         if (publisherPage || publisherQuillClassDetected) {
             tailwindConfigScript += `
-                <link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" data-c2f-css-role="quill" />
+                <link rel="stylesheet" type="text/css" media="all" href="${htmlEditorAssetUrl('quill', 'quill.snow.css')}" data-c2f-css-role="quill" />
                 <style data-c2f-css-role="quill">
                     .ql-editor {
                         font-family: Lato, system-ui, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -1042,26 +1203,10 @@ $(document).ready(function () {
                 </style>`;
         }
 
-        // CodeMirror CDN - mesma versão usada em html-editor.php
-        const codemirrorVersion = '5.65.20';
-        const codemirrorIncludes = `
-            <!-- CodeMirror CSS -->
-            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/codemirror.min.css" />
-            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/theme/tomorrow-night-bright.css" />
-            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/dialog/dialog.css" />
-            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/display/fullscreen.css" />
-            <!-- CodeMirror JS -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/codemirror.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/selection/active-line.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/edit/matchbrackets.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/edit/closetag.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/edit/closebrackets.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/addon/display/fullscreen.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/mode/xml/xml.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/mode/css/css.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/mode/javascript/javascript.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/${codemirrorVersion}/mode/htmlmixed/htmlmixed.js"></script>
-        `;
+        // req-156: as tags do CodeMirror saem do registro de assets (disco primeiro), na mesma
+        // ordem de carga que o resto do gestor usa. A versão deixou de ser um literal aqui: era a
+        // segunda cópia do número, e cópia é o que envelhece sem ninguém notar.
+        const codemirrorIncludes = htmlEditorCodemirrorIncludes();
 
         // Altura do CodeMirror no modal do editor HTML visual (pode ser ajustada)
         const codermirrorHtmlEditorHeight = 600;
@@ -1282,10 +1427,9 @@ $(document).ready(function () {
             // Includes para injetar no <head> do layout
             const editorHeadIncludes = `
                 <!-- html-editor-injected-start -->
+                ${htmlEditorLayerOrderDeclaration(framework)}
                 ${tailwindConfigScript}
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
-                <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"><\/script>
-                <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"><\/script>
+                ${htmlEditorVisualFrameworkIncludes(framework)}
                 ${codemirrorIncludes}
                 ${codemirrorInitScript}
                 ${htmlEditorVars}
@@ -1315,10 +1459,9 @@ $(document).ready(function () {
 				<meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<title>${iframeTitle}</title>
+				${htmlEditorLayerOrderDeclaration(framework)}
 				${tailwindConfigScript}
-				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
-				<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-				<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>
+				${htmlEditorVisualFrameworkIncludes(framework)}
 				${codemirrorInitScript}
 				${codemirrorIncludes}
 				${htmlEditorVars}
@@ -1570,9 +1713,177 @@ $(document).ready(function () {
     const CSS_COMPILED_TENTATIVAS = 40;
     const CSS_COMPILED_INTERVALO = 100;
 
-    function updateCSSCompiled(iframe, clean = false) {
+    // req-160: o layout pode ser TROCADO no editor a qualquer momento.
+    //
+    // O baseline e o CSS autoral chegam resolvidos na abertura da tela, para o layout que a página
+    // tinha naquele instante. Trocar o layout no select muda a cascata inteira: sem recarregar as
+    // duas camadas, o operador continuaria vendo a página sobre o layout ANTIGO — e, pior, salvaria
+    // um `css_compiled` derivado de uma cascata que não é a da página.
+    //
+    // As duas camadas voltam separadas da rota e vão para lugares diferentes: `precompiled` para o
+    // baseline (contra o qual a captura filtra) e `autoral` para fora dele, como no runtime.
+    function htmlEditorObservarTrocaDeLayout() {
+        const campo = $('select[name="layout"]');
+        if (!campo.length || campo.data('c2fLayoutCssBound')) return;
+        campo.data('c2fLayoutCssBound', true);
+
+        campo.on('change', function () {
+            const layoutId = $(this).val();
+            if (!layoutId) return;
+
+            $.ajax({
+                type: 'POST',
+                url: moduloUrl(),
+                data: {
+                    opcao: gestor.moduloOpcao,
+                    ajax: 'sim',
+                    ajaxOpcao: 'html-editor-layout-css',
+                    ajaxRegistroId: (('moduloRegistroId' in gestor) ? gestor.moduloRegistroId : false),
+                    params: { layout_id: layoutId }
+                },
+                dataType: 'json',
+                success: function (dados) {
+                    if (!dados || dados.status !== 'Ok' || !dados.data) return;
+
+                    window.htmlEditorLayoutCssAutoral = dados.data.autoral || '';
+
+                    // O baseline é `layout + recurso`: troca-se a parte do layout preservando o que
+                    // a sessão acumulou (sidecars de template já inseridos).
+                    const editorConfig = gestor.html_editor || {};
+                    const anterior = htmlEditorDecodeBase64(editorConfig.cssPrecompiledBase64 || '');
+                    const atual = (typeof window.htmlEditorCssPrecompiled === 'string')
+                        ? window.htmlEditorCssPrecompiled
+                        : anterior;
+                    const daSessao = atual.startsWith(anterior) ? atual.slice(anterior.length) : '';
+
+                    const novoBaseline = htmlEditorCssPrecompiledConcatenar(dados.data.precompiled || '', daSessao);
+                    window.htmlEditorCssPrecompiled = novoBaseline;
+                    editorConfig.cssPrecompiledBase64 = htmlEditorEncodeBase64(novoBaseline);
+
+                    // Remonta a visualização já sob o layout novo.
+                    try { previewHtml(); } catch (error) { /* editor ainda montando */ }
+                },
+                error: function () { /* mantém a cascata anterior: melhor que zerar */ }
+            });
+        });
+    }
+
+    // Espelha `html_editor_css_precompiled_concatenar()` do PHP: o layout vem primeiro.
+    function htmlEditorCssPrecompiledConcatenar(layout, recurso) {
+        layout = String(layout || '');
+        recurso = String(recurso || '');
+        if (layout === '') return recurso;
+        if (recurso === '') return layout;
+        return layout + '\n' + recurso;
+    }
+
+    function htmlEditorEncodeBase64(texto) {
+        try {
+            const bytes = new TextEncoder().encode(String(texto || ''));
+            let binario = '';
+            bytes.forEach(b => { binario += String.fromCharCode(b); });
+            return window.btoa(binario);
+        } catch (error) { return ''; }
+    }
+
+    // req-160: HTML que está no editor agora. Usado para saber se o CSS derivado ainda corresponde.
+    function htmlEditorHtmlAtual() {
+        try {
+            if (typeof CodeMirrorHtml !== 'undefined' && CodeMirrorHtml) return CodeMirrorHtml.getDoc().getValue();
+        } catch (error) { /* editor ainda não instanciado */ }
+        return null;
+    }
+
+    // req-160: o `css_compiled` vigente foi derivado do HTML que está na tela?
+    //
+    // Três situações distintas, e só a última justifica intervir:
+    //   - não há editor de HTML nesta tela  -> nada a verificar;
+    //   - o HTML não tem classe nenhuma     -> CSS vazio é legítimo (framework não-Tailwind, HTML puro);
+    //   - o HTML mudou depois da captura    -> o CSS é de outro conteúdo.
+    function htmlEditorCssCompiledDesatualizado() {
+        const html = htmlEditorHtmlAtual();
+        if (html === null) return false;
+        if (frameworkCSS() !== 'tailwindcss') return false;
+
+        // Sem classe no HTML não há utility a compilar; exigir CSS aqui travaria um save legítimo.
+        if (!/class\s*=\s*["'][^"']*[^\s"']/.test(html)) return false;
+
+        let compiled = '';
+        try { compiled = CodeMirrorCssCompiled.getDoc().getValue(); } catch (error) { return false; }
+
+        if (!compiled.trim()) return true;
+
+        // Havendo CSS, ele precisa ser DESTE HTML. `htmlEditorCssCompiledOrigem` é gravada pela
+        // captura; quando ela é nula (página recém-aberta, CSS vindo do banco) o valor do banco é
+        // aceito — quem o gravou foi uma captura anterior sobre o mesmo conteúdo.
+        if (typeof window.htmlEditorCssCompiledOrigem !== 'string') return false;
+
+        return window.htmlEditorCssCompiledOrigem !== html;
+    }
+
+    // req-160: em vez de recusar o save, gerar o que falta e então enviar.
+    //
+    // O defeito que isto fecha: a captura só acontece quando o iframe de visualização é montado.
+    // Quem criava a página pelos modelos, conferia noutra aba e salvava gravava `css_compiled`
+    // VAZIO — e a página publicada saía sem CSS nenhum, enquanto o CRUD parecia perfeito. Medido
+    // numa página criada do zero: 360 classes aplicadas, 0 byte gravado.
+    //
+    // Bloquear com mensagem resolveria, mas empurra para o operador um passo que a máquina sabe
+    // fazer: a compilação leva menos de um segundo. Então o submit é adiado, não cancelado — troca
+    // para a aba de visualização, aguarda a captura AVISAR que terminou (não um tempo fixo) e
+    // reenvia. Falhando a captura, o save prossegue: preservar o valor anterior já é o
+    // comportamento seguro, e travar a tela seria pior que gravar o que se tinha.
+    function htmlEditorInterceptarSubmitParaGerarCss() {
+        const formulario = document.querySelector('form.ui.form') || document.querySelector('form');
+        if (!formulario || formulario.dataset.c2fCssGuard === '1') return;
+        formulario.dataset.c2fCssGuard = '1';
+
+        formulario.addEventListener('submit', function (evento) {
+            // Reentrada: este é o envio que nós mesmos disparamos depois de gerar.
+            if (formulario.dataset.c2fCssGerando === 'concluido') {
+                formulario.dataset.c2fCssGerando = '';
+                return;
+            }
+            if (formulario.dataset.c2fCssGerando === '1') { evento.preventDefault(); evento.stopImmediatePropagation(); return; }
+            if (!htmlEditorCssCompiledDesatualizado()) return;
+
+            // Capture phase + stopImmediatePropagation: o handler de submit do `formulario.js` é
+            // registrado por jQuery (fase de bubble) e não chega a rodar.
+            evento.preventDefault();
+            evento.stopImmediatePropagation();
+            formulario.dataset.c2fCssGerando = '1';
+
+            const reenviar = () => {
+                formulario.dataset.c2fCssGerando = 'concluido';
+                const botao = $(formulario).data('clickedButton');
+                if (botao && botao.length) botao.trigger('click');
+                $(formulario).trigger('submit');
+            };
+
+            try {
+                // A troca de aba é o que monta o iframe — é ela que dispara a compilação.
+                $('.menuContainerPagina .item[data-tab="visualizacao-pagina"]').trigger('click');
+                previewHtml();
+                updateCSSCompiled($('#iframe-visualizacao-pagina'), false, reenviar);
+            } catch (error) {
+                console.warn('Nao foi possivel gerar o CSS antes do salvamento:', error);
+                reenviar();
+            }
+        }, true);
+    }
+
+    // req-160: `aoConcluir` avisa quem esperava a captura terminar.
+    //
+    // Existe para a trava de salvamento: em vez de recusar o save quando o CSS não foi gerado, o
+    // editor gera e SÓ ENTÃO envia. Sem um aviso de conclusão restaria cravar um tempo de espera —
+    // e tempo fixo erra nos dois sentidos: sobra na página pequena e falta na grande.
+    // Recebe `true` quando a captura gravou, `false` quando a janela esgotou.
+    function updateCSSCompiled(iframe, clean = false, aoConcluir = null) {
+        const avisar = ok => { if (typeof aoConcluir === 'function') aoConcluir(ok); };
+
         if (clean) {
             CodeMirrorCssCompiled.getDoc().setValue('');
+            avisar(true);
             return;
         }
 
@@ -1600,6 +1911,11 @@ $(document).ready(function () {
 
             if (resultado.ready) {
                 CodeMirrorCssCompiled.getDoc().setValue(resultado.css);
+                // req-160: marca DE QUE HTML este CSS foi derivado. É essa marca que permite saber,
+                // no save, se o CSS ainda corresponde ao conteúdo — sem ela só se sabe que existe
+                // algum CSS, não se ele é o certo.
+                window.htmlEditorCssCompiledOrigem = htmlEditorHtmlAtual();
+                avisar(true);
                 return;
             }
 
@@ -1612,6 +1928,7 @@ $(document).ready(function () {
             // o defeito que este bloco existe para impedir — foi assim que páginas inteiras
             // perderam as utilities do Tailwind (req-117).
             console.warn('CSS compilado nao ficou pronto a tempo (' + resultado.motivo + '); o valor anterior foi preservado.');
+            avisar(false);
         }
 
         setTimeout(() => capture(), CSS_COMPILED_INTERVALO);
@@ -1817,6 +2134,20 @@ $(document).ready(function () {
     function previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui', extraParams = {}) {
         // req-040: script que renderiza os widgets (comentários) dentro do pré-visualizador.
         const widgetPreviewScript = `<script>(${widgetPreviewBootstrap.toString()})();<\/script>`;
+        // req-160: o motor de captura precisa existir NESTE iframe.
+        //
+        // `updateCSSCompiled()` é chamado tanto pelo preview quanto pelo editor visual, mas
+        // `HtmlEditorCssCapture` vive em `html-editor.js`, que só era injetado no editor visual. No
+        // preview a captura falhava sempre com `motivo: 'sem-motor'` e, pela regra de preservação,
+        // mantinha o valor anterior — vazio numa página nova. Quem montasse a página pelos modelos,
+        // conferisse no preview e salvasse gravava `css_compiled` VAZIO, e a página publicada saía
+        // sem CSS nenhum. Medido: página criada do zero com 360 classes aplicadas e 0 bytes gravados.
+        //
+        // `__c2fHtmlEditorNoAutoInit` (BATCH-075) impede o motor de instanciar a UI de edição sobre
+        // o body — é o mesmo mecanismo que a Editbar usa. O preview segue sendo só visualização; o
+        // que passa a existir é a API de captura.
+        const capturaScript = `<script>window.__c2fHtmlEditorNoAutoInit = true;<\/script>
+            ${window.HtmlEditorHelper.variablesEnvironment().htmlEditorScriptPath}`;
         // req-044 §3/§4: includes de cabeçalho dos widgets presentes (widgetsToAjax + *.widget.js).
         const widgetAssetsHead = montarWidgetAssetsHead(htmlDoUsuario, extraParams.widgetsToAjax || null);
 
@@ -1856,7 +2187,7 @@ $(document).ready(function () {
 
         if (publisherPage || publisherQuillClassDetected) {
             tailwindConfigScript += `
-                <link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" data-c2f-css-role="quill" />
+                <link rel="stylesheet" type="text/css" media="all" href="${htmlEditorAssetUrl('quill', 'quill.snow.css')}" data-c2f-css-role="quill" />
                 <style data-c2f-css-role="quill">
                     .ql-editor {
                         font-family: Lato, system-ui, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -1880,8 +2211,13 @@ $(document).ready(function () {
         const alvoPreview = ('alvo' in gestor.html_editor ? gestor.html_editor.alvo : 'paginas');
         if (alvoPreview === 'layouts') {
             let fullHtml = htmlDoUsuario;
-            let layoutIncludes = tailwindConfigScript + '\n';
+            // req-156: a mesma declaração de ordem de camadas do editor visual, para que os dois
+            // ambientes resolvam a cascata pela mesma regra e não pela posição das folhas.
+            let layoutIncludes = htmlEditorLayerOrderDeclaration(framework) + '\n';
+            layoutIncludes += tailwindConfigScript + '\n';
             layoutIncludes += htmlEditorPreviewFrameworkIncludes(framework) + '\n';
+            // req-160: o preview de layout captura pelo mesmo caminho e precisa do mesmo motor.
+            layoutIncludes += capturaScript + '\n';
             layoutIncludes += cssDoUsuario + '\n';
             // req-044 §3/§4: widgetsToAjax + scripts controladores dos widgets presentes.
             layoutIncludes += widgetAssetsHead;
@@ -1906,8 +2242,10 @@ $(document).ready(function () {
 				<meta charset="UTF-8">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<title>${iframeTitle}</title>
+				${htmlEditorLayerOrderDeclaration(framework)}
 				${tailwindConfigScript}
 				${htmlEditorPreviewFrameworkIncludes(framework)}
+				${capturaScript}
 				${widgetPreviewScript}
 				${widgetAssetsHead}
 				${montarPdfViewerHead(htmlDoUsuario)}

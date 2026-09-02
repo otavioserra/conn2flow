@@ -1,7 +1,7 @@
 # BATCH-121 — Layout público Tailwind e migração das 15 telas de identidade
 
-Origem: [req-120.md](../human-requests/req-120.md)
-Validação: [VALIDATION-CHECKLIST.md#batch-121](../validation/VALIDATION-CHECKLIST.md)
+Origem: [req-120.md](../../human-requests/archive/req-120.md)
+Validação: [VALIDATION-CHECKLIST.md#batch-121](../../validation/VALIDATION-CHECKLIST.md)
 Status: `implemented-pending-homologation` (implementado em 2026-08-18)
 
 Fecha o programa de modernização do módulo `perfil-usuario`, iniciado no BATCH-119.
