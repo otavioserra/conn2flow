@@ -13,6 +13,32 @@
 
 ## Tarefas recentes
 
+### 2026-09-03 — BATCH-165 (REQ-038): script enfileirado que nunca rodava
+
+- **`<!-- pagina#js -->` esta no `<head>` de TODOS os layouts do gestor** (linha 30 de 102 no
+  `layout-administrativo-tailwind`). Todo modulo do core sobrevive a isso por acidente de estilo:
+  usa `$(document).ready` ou expoe um objeto global chamado por `onclick` inline. `admin-cron.js`
+  era o unico com logica de DOM no corpo de uma IIFE — `document.getElementById(...)` na primeira
+  instrucao devolvia `null` SEMPRE, a IIFE retornava cedo e a tela ficava estatica.
+- **"O script nunca foi injetado" e "o script rodou cedo demais" produzem a MESMA tela.** O intake
+  trazia o primeiro diagnostico; a chamada de `gestor_pagina_javascript_incluir()` estava la desde o
+  commit que criou o modulo. Antes de adicionar o que ja existe, confirme com `git log -S`.
+- **O contraste achou a causa mais rapido que ler o pipeline**: `perfil-usuario` usa o MESMO layout
+  Tailwind e funciona — a unica diferenca era o `$(document).ready`. Quando um caso funciona e outro
+  nao, compare os dois antes de investigar a infraestrutura.
+- **Expressao de funcao NOMEADA evita reindentar o arquivo inteiro.**
+  `(function iniciarPainelCron(){ if (readyState==='loading') { addEventListener('DOMContentLoaded',
+  iniciarPainelCron, {once:true}); return; } ... })()` referencia a si mesma: 8 linhas de diff em vez
+  de 503 reindentadas. O `{once:true}` tambem mantem o teste isolado — sem ele, os ouvintes de cada
+  caso se acumulam no mesmo `document` do happy-dom e um clique dispara N fetches.
+- **`.min.js` e a variante PREFERIDA em runtime.** Corrigir so o arquivo de autoria nao muda nada no
+  navegador: `assets:minify` faz parte da correcao, nao do fechamento. Confira com
+  `grep -o "DOMContentLoaded[^)]*)" <modulo>.min.js` que o minificador preservou a auto-referencia.
+- **Homologacao local de `/admin-cron/` nao e possivel hoje**: o mirror `conn2flow-gestor`
+  (projeto `project-test`) NAO esta montado em `dev-environment/data/sites/localhost/public_html/`,
+  e nenhum banco local (`conn2flow`, `conn2flow_new`, `conn2flow_site`) tem a pagina `admin-cron`
+  instalada. Validacao de tela desse modulo exige a VM.
+
 ### 2026-09-02 — BATCH-161, homologação: mais três causas na mesma paridade
 
 - **`sem-motor` na captura = `html-editor.js` ausente NAQUELE iframe.** `HtmlEditorCssCapture` só era

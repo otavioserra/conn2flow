@@ -760,4 +760,49 @@ final class AdminCronReq032Test extends TestCase
         self::assertDoesNotMatchRegularExpression('/\.hidden\s*=\s*(true|false)/', $js);
         self::assertStringContainsString("classList.toggle('hidden'", $js);
     }
+
+    // ===================== REQ-038 / BATCH-165: carregamento do controlador =====================
+
+    public function testPaginaEnfileiraOScriptDoModulo(): void
+    {
+        $php = (string)file_get_contents(self::moduloPath('admin-cron.php'));
+
+        // Sem esta chamada, `<!-- pagina#js -->` sai da página sem a tag do módulo e a tela vira
+        // HTML estático: tabela vazia e botões inertes.
+        self::assertMatchesRegularExpression(
+            '/function\s+admin_cron_painel\s*\(\s*\)\s*\{[^}]*gestor_pagina_javascript_incluir\s*\(\s*\)\s*;/s',
+            $php,
+            'admin_cron_painel() precisa enfileirar o javascript do módulo'
+        );
+    }
+
+    public function testControladorEsperaODomAntesDeLerOPainel(): void
+    {
+        $js = (string)file_get_contents(self::moduloPath('admin-cron.js'));
+
+        // O marcador `<!-- pagina#js -->` vive no `<head>` de TODOS os layouts do gestor, então
+        // este arquivo é avaliado antes de existir `<body>`. A primeira instrução que toca o DOM
+        // precisa vir DEPOIS da espera — senão `#admin-cron-painel` é sempre null (REQ-038).
+        $posEspera = strpos($js, "document.readyState === 'loading'");
+        $posLeitura = strpos($js, "document.getElementById('admin-cron-painel')");
+
+        self::assertIsInt($posEspera, 'o controlador precisa checar document.readyState');
+        self::assertIsInt($posLeitura, 'o controlador precisa buscar #admin-cron-painel');
+        self::assertLessThan(
+            $posLeitura,
+            $posEspera,
+            'a espera pelo DOM precisa preceder a leitura do painel'
+        );
+        self::assertStringContainsString("addEventListener('DOMContentLoaded'", $js);
+
+        // Todo layout do gestor precisa manter o marcador; sem ele nenhuma tag chega à página.
+        foreach (['pt-br', 'en'] as $lang) {
+            $layout = CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'resources'
+                . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . 'layouts'
+                . DIRECTORY_SEPARATOR . 'layout-administrativo-tailwind'
+                . DIRECTORY_SEPARATOR . 'layout-administrativo-tailwind.html';
+            self::assertFileExists($layout);
+            self::assertStringContainsString('<!-- pagina#js -->', (string)file_get_contents($layout), "[{$lang}] marcador de js");
+        }
+    }
 }

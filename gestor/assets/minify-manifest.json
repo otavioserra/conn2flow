@@ -145,9 +145,9 @@
         "minificado": 32
     },
     "gestor/modulos/admin-cron/admin-cron.js": {
-        "sha1": "cebc996c2332a2e88d04b5720a11928c47d53f62",
-        "origem": 19656,
-        "minificado": 10267
+        "sha1": "8607e56481fe3657d61718660cae3a9630c5dba7",
+        "origem": 20307,
+        "minificado": 10369
     },
     "gestor/modulos/admin-environment/admin-environment.js": {
         "sha1": "8e71530e7c6f9a810a0b91dc1d2456f426c4f26e",

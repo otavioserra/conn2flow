@@ -21,7 +21,7 @@
                     "name": "Rotinas Automáticas",
                     "id": "admin-cron",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-cron\/",
+                    "path": "admin-cron/",
                     "type": "system",
                     "option": "painel",
                     "root": true,
@@ -34,7 +34,7 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-cron.js"
+                        "../../../../admin-cron.js"
                     ],
                     "tailwind_sources_reason": "REQ-032: as etiquetas de status e de frequência das linhas são montadas em runtime pelo admin-cron.js a partir do JSON do backend; sem escanear o script, o precompiled sai sem as utilities dessas etiquetas."
                 }
@@ -453,7 +453,7 @@
                     "name": "Scheduled Tasks",
                     "id": "admin-cron",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-cron\/",
+                    "path": "admin-cron/",
                     "type": "system",
                     "option": "painel",
                     "root": true,
@@ -466,7 +466,7 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-cron.js"
+                        "../../../../admin-cron.js"
                     ],
                     "tailwind_sources_reason": "REQ-032: status and frequency badges are built at runtime by admin-cron.js from the backend JSON; without scanning the script the precompiled bundle misses those utilities."
                 }
@@ -880,5 +880,5 @@
             ]
         }
     },
-    "asset_version": "4f08e3c3ead6657a"
+    "asset_version": "9792fb3f9e62e42c"
 }

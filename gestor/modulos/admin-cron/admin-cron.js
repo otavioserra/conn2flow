@@ -9,8 +9,18 @@
  * Todo texto visível vem de atributos data-* preenchidos com variáveis do sistema — nenhum
  * literal de interface mora neste arquivo.
  */
-(function () {
+(function iniciarPainelCron() {
     'use strict';
+
+    // REQ-038 / BATCH-165: `gestor_pagina_javascript_incluir()` injeta a tag deste arquivo no
+    // marcador `<!-- pagina#js -->`, e esse marcador vive no `<head>` de TODOS os layouts do gestor
+    // (linha 30 de 102 no `layout-administrativo-tailwind`). Sem esta espera, a busca abaixo roda
+    // antes de existir `<body>`, devolve `null` SEMPRE e o painel nasce inerte — tabela vazia e
+    // botões sem ouvinte, indistinguível de um script que nunca foi carregado.
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', iniciarPainelCron, { once: true });
+        return;
+    }
 
     var painel = document.getElementById('admin-cron-painel');
     if (!painel) return;

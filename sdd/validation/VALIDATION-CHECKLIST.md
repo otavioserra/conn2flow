@@ -900,3 +900,26 @@ Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execu�
 - [x] Sincronização executada no Lab com `project:sync-core` e `project:sync-db`: componente
       `html-editor-modelos` atualizado para `file_version=1.6` com tag `<template>` no filesystem e
       no MariaDB (`TEMPLATE_OK`), eliminando a ativação antecipada de `{{thumbnail}}` e o erro 404.
+
+## BATCH-165 — Controlador do painel Admin Cron nunca chegava a rodar (REQ-038 / Pilar 4)
+
+- [x] Diagnóstico corrigido em relação ao intake: `admin_cron_painel()` **já** enfileirava o script
+      (`admin-cron.php:181`, desde o commit que criou o módulo). O defeito era de ORDEM: o marcador
+      `<!-- pagina#js -->` vive no `<head>` de todos os layouts (linha 30/102 no
+      `layout-administrativo-tailwind`) e a IIFE lia o DOM na primeira instrução — `#admin-cron-painel`
+      era sempre `null` e o painel nascia inerte.
+- [x] Regressão nova `tests/Unit/JS/admin-cron.painel.test.js` avalia o arquivo REAL com
+      `document.readyState === 'loading'` e `<body>` vazio; validada por mutação: **3 de 5 falhavam**
+      contra o arquivo anterior (tabela vazia, "Nova tarefa" inerte, "Sincronizar" sem requisição).
+- [x] Correção: espera por `DOMContentLoaded` com `{ once: true }`, preservando o caminho síncrono
+      quando o documento já está montado. Diff de 8 linhas, sem reindentar o arquivo.
+- [x] `assets:minify` regenerou `admin-cron.min.js` (19,8 KB -> 10,1 KB); a variante minificada é a
+      preferida em runtime, então a correção só tem efeito depois deste passo.
+- [x] Guardas em `AdminCronReq032Test`: a página continua enfileirando o script, a espera pelo DOM
+      precede a leitura do painel e os dois layouts mantêm `<!-- pagina#js -->`. 44 -> **46/46**.
+- [x] `php -l` em `admin-cron.php` sem erros.
+- [x] Vitest completo: 29/29 arquivos, **417/417** testes, 0 falhas.
+- [x] PHPUnit completo: **1.123/1.123** testes, 7.638 asserções, 0 falhas.
+- [ ] Homologação em runtime em `/admin-cron/`: pendente do operador. O mirror local
+      `conn2flow-gestor` (projeto `project-test`) não está montado em `public_html`, e nenhum banco
+      local tem a página `admin-cron` instalada — a validação de tela precisa da VM.
