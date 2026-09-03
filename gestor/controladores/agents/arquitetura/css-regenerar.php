@@ -64,6 +64,17 @@ $dryRun = !empty($args['dry-run']);
 $GLOBALS['CLI_ARGS'] = $args;
 $SYSTEM_PATH = realpath(__DIR__ . '/../../../../') . DIRECTORY_SEPARATOR;
 $GESTOR_DIR = $gestorPath . DIRECTORY_SEPARATOR;
+$globalNodeModules = '/opt/node-v22.22.3-linux-x64/lib/node_modules';
+if (is_dir($globalNodeModules)) {
+    $nodePath = getenv('NODE_PATH');
+    $nodePaths = is_string($nodePath) && $nodePath !== ''
+        ? explode(PATH_SEPARATOR, $nodePath)
+        : [];
+    if (!in_array($globalNodeModules, $nodePaths, true)) {
+        array_unshift($nodePaths, $globalNodeModules);
+        putenv('NODE_PATH=' . implode(PATH_SEPARATOR, $nodePaths));
+    }
+}
 $isProjectMode = is_file($GESTOR_DIR . 'contents' . DIRECTORY_SEPARATOR . 'tailwindcss'
     . DIRECTORY_SEPARATOR . 'input.css');
 

@@ -154,6 +154,16 @@ function tailwind_recursos_resolver_command(): ?array
 
     if ($localCandidates !== []) return [$localCandidates[0]];
 
+    // Instalações remotas enxutas podem expor o Tailwind apenas como binário global.
+    // Resolver o caminho absoluto evita depender da interpretação do shell no proc_open().
+    if (PHP_OS_FAMILY !== 'Windows') {
+        $which = tailwind_recursos_exec(['which', 'tailwindcss']);
+        if ($which['code'] === 0) {
+            $systemCandidate = trim(strtok($which['stdout'], "\r\n") ?: '');
+            if ($systemCandidate !== '' && is_file($systemCandidate)) return [$systemCandidate];
+        }
+    }
+
     return null;
 }
 

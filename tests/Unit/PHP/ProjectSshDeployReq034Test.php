@@ -147,6 +147,19 @@ final class ProjectSshDeployReq034Test extends TestCase
         }
     }
 
+    public function testSyncCorePublicaOCliEmInstalacoesSshEProjetoMestre(): void
+    {
+        $conteudo = self::conteudo(
+            self::scriptsRoot() . DIRECTORY_SEPARATOR . 'projects'
+            . DIRECTORY_SEPARATOR . 'sync-core-to-project.sh'
+        );
+
+        self::assertStringContainsString('project_transport_is_ssh || [[ "$PROJECT_TARGET" = "conn2flow-site"', $conteudo);
+        self::assertStringContainsString('"$PROJECT_ROOT/c2f"', $conteudo);
+        self::assertStringContainsString('"$PROJECT_ROOT/cli"', $conteudo);
+        self::assertStringContainsString('"${TARGET_PATH%/}/"', $conteudo);
+    }
+
     public function testSyncFilesPublicaOverlayDistribuidoIrmaoPeloMesmoTransporte(): void
     {
         $conteudo = self::conteudo(

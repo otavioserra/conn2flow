@@ -152,6 +152,23 @@ RUNTIME_CONTRACT_CMD=(
 log "Synchronizing atomic runtime contract: gestor.php + bibliotecas/gestor.php"
 "${RUNTIME_CONTRACT_CMD[@]}"
 
+# Instalações SSH e o projeto mestre precisam do console na própria raiz do
+# Gestor. O sync principal parte de gestor/, portanto o launcher e cli/ que
+# vivem na raiz do Core precisam de uma etapa explícita (REQ-053).
+if project_transport_is_ssh || [[ "$PROJECT_TARGET" = "conn2flow-site" || "$PROJECT_TARGET" = "conn2flow-site-local" ]]; then
+  CLI_SYNC_CMD=(
+    rsync
+    -avu
+    "${PT_RSYNC_OPTS[@]}"
+    "$PROJECT_ROOT/c2f"
+    "$PROJECT_ROOT/cli"
+    "${TARGET_PATH%/}/"
+  )
+
+  log "Synchronizing Core CLI launcher and cli/ directory"
+  "${CLI_SYNC_CMD[@]}"
+fi
+
 project_transport_finalize || exit 1
 
 log_success "Conn2Flow core synchronized to project test folder: $TARGET_PATH"

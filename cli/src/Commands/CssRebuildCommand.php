@@ -48,7 +48,7 @@ final class CssRebuildCommand implements CommandInterface
                "                       [--limite=N] [--todos] [--dry-run]\n\n" .
                "Compiles Tailwind against the HTML that the runtime actually serves (the database),\n" .
                "writes css_precompiled and stamps css_source_hash. Without --todos, only stale\n" .
-               "resources are rebuilt. Requires the Tailwind CLI (node_modules).\n\n" .
+               "resources are rebuilt. Requires the Tailwind CLI (local or available in PATH).\n\n" .
                "Options:\n" .
                "  --project=ID  Resolve the gestor path from environment.json (devProjects).\n" .
                "  --gestor=PATH Use this gestor path directly.\n" .
@@ -125,6 +125,12 @@ final class CssRebuildCommand implements CommandInterface
             }
         }
 
+        $scriptRelativePath = 'controladores/agents/arquitetura/css-regenerar.php';
+        $coreGestorPath = $this->rootPath . DIRECTORY_SEPARATOR . 'gestor';
+        $gestorSourcePath = is_file($coreGestorPath . DIRECTORY_SEPARATOR . $scriptRelativePath)
+            ? $coreGestorPath
+            : $this->rootPath;
+
         if ($gestorPath === '') {
             // Sem projeto declarado, o alvo é o ambiente de TESTE do sistema — que é para onde o
             // `manager:update-all` sincroniza. O `gestor/` do repositório é código-fonte: não tem
@@ -135,10 +141,10 @@ final class CssRebuildCommand implements CommandInterface
 
             $gestorPath = is_dir($ambienteSistema . DIRECTORY_SEPARATOR . 'autenticacoes')
                 ? $ambienteSistema
-                : $this->rootPath . DIRECTORY_SEPARATOR . 'gestor';
+                : $gestorSourcePath;
         }
 
-        $scriptPath = $this->rootPath . '/gestor/controladores/agents/arquitetura/css-regenerar.php';
+        $scriptPath = $gestorSourcePath . DIRECTORY_SEPARATOR . $scriptRelativePath;
         if (!file_exists($scriptPath)) {
             $output->error("CSS rebuild script not found at: {$scriptPath}");
             return 1;
@@ -214,22 +220,43 @@ final class CssRebuildCommand implements CommandInterface
 
         // As opções que fazem sentido na VM são repassadas; `--project` não, porque lá o Gestor
         // já É o alvo e reintroduzi-lo faria o comando remoto tentar resolver outro environment.
-        $argv = $transport->cliEntrypointArgv();
-        $argv[] = 'css:rebuild';
+        $opcoes = [];
 
         foreach (['tipo', 'id', 'limite'] as $opcao) {
             $valor = $input->getOption($opcao);
             if (is_string($valor) && $valor !== '') {
-                $argv[] = "--{$opcao}={$valor}";
+                $opcoes[] = "--{$opcao}={$valor}";
             }
         }
         foreach (['todos', 'dry-run'] as $flag) {
             if ($input->hasOption($flag)) {
-                $argv[] = "--{$flag}";
+                $opcoes[] = "--{$flag}";
             }
         }
 
-        $comando = $transport->buildRemoteCommand($argv);
+        $citar = static fn (array $argv): string => implode(
+            ' ',
+            array_map([$transport, 'posixQuote'], $argv)
+        );
+        $argumentosCli = array_merge(['css:rebuild'], $opcoes);
+        $argumentosFallback = array_merge([
+            'php',
+            'controladores/agents/arquitetura/css-regenerar.php',
+            '--gestor=.',
+        ], $opcoes);
+
+        // REQ-053: instalações completas recebem ./c2f na raiz; tenants antigos podem ter um
+        // c2f global ou somente o controlador PHP. A decisão acontece dentro da VM, sem depender
+        // da plataforma do shell que iniciou o SSH.
+        $estrategia = 'if [ -x ./c2f ]; then '
+            . $citar(array_merge(['./c2f'], $argumentosCli))
+            . '; elif command -v c2f >/dev/null 2>&1; then '
+            . $citar(array_merge(['c2f'], $argumentosCli))
+            . '; else '
+            . $citar($argumentosFallback)
+            . '; fi';
+
+        $comando = $transport->buildRemoteCommand(['sh', '-c', $estrategia]);
 
         $output->write('  transporte: ssh ' . $transport->describe() . PHP_EOL);
         $output->write('  comando remoto: ' . $comando . PHP_EOL);
@@ -243,7 +270,7 @@ final class CssRebuildCommand implements CommandInterface
         if ($codigo !== 0) {
             $output->error(
                 "A regeneração remota do CSS falhou para '{$projectId}' (código {$codigo}). "
-                . 'Confirme o acesso SSH sem senha e a presença do CLI na raiz remota.'
+                . 'Confirme o acesso SSH sem senha, o Tailwind CLI e o controlador PHP na raiz remota.'
             );
             return 1;
         }

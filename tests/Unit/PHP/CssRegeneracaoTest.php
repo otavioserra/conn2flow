@@ -85,6 +85,22 @@ final class CssRegeneracaoTest extends TestCase
         self::assertStringContainsString('$gestorPath = realpath($gestorPath)', $codigo);
     }
 
+    public function testRegeneradorPropagaONodePathGlobalQuandoDisponivel(): void
+    {
+        $codigo = (string)file_get_contents(self::script('css-regenerar.php'));
+
+        self::assertStringContainsString('/opt/node-v22.22.3-linux-x64/lib/node_modules', $codigo);
+        self::assertStringContainsString("putenv('NODE_PATH='", $codigo);
+    }
+
+    public function testCompiladorResolveTailwindGlobalPeloPath(): void
+    {
+        $codigo = (string)file_get_contents(self::script('tailwind-recursos.php'));
+
+        self::assertStringContainsString("tailwind_recursos_exec(['which', 'tailwindcss'])", $codigo);
+        self::assertStringContainsString("is_file(\$systemCandidate)", $codigo);
+    }
+
     public function testRegeneradorMantemAsCamadasDoBuildOffline(): void
     {
         // Layout carrega theme/base/preflight; recurso isolado importa só utilities. Divergir disso
@@ -151,6 +167,17 @@ final class CssRegeneracaoTest extends TestCase
         self::assertStringContainsString("\$config['local']", $codigo);
         self::assertStringContainsString('local=false', $codigo);
         self::assertStringContainsString('confirmar-remoto', $codigo);
+    }
+
+    public function testCssRebuildReconheceCheckoutCoreEInstalacaoPlana(): void
+    {
+        $cli = dirname(CONN2FLOW_GESTOR_ROOT) . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR
+            . 'src' . DIRECTORY_SEPARATOR . 'Commands' . DIRECTORY_SEPARATOR . 'CssRebuildCommand.php';
+        $codigo = (string)file_get_contents($cli);
+
+        self::assertStringContainsString("\$coreGestorPath = \$this->rootPath", $codigo);
+        self::assertStringContainsString("? \$coreGestorPath\n            : \$this->rootPath", $codigo);
+        self::assertStringContainsString("\$scriptPath = \$gestorSourcePath", $codigo);
     }
 
     public function testRegeneradorCarimbaAProcedenciaDoQueGera(): void

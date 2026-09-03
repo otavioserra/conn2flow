@@ -96,24 +96,30 @@ final class ProjectSshPublicPathReq050Test extends TestCase
 
         self::assertStringContainsString('-o BatchMode=yes', $comando);
         self::assertStringContainsString('-p 2222', $comando);
-        self::assertStringContainsString("cd '/home/tenant/web/exemplo.local/conn2flow-gestor'", $comando);
-        self::assertStringContainsString("'./c2f' 'css:rebuild' '--todos'", $comando);
+        self::assertComandoSshContem("cd '/home/tenant/web/exemplo.local/conn2flow-gestor'", $comando);
+        self::assertComandoSshContem("'./c2f' 'css:rebuild' '--todos'", $comando);
     }
 
     public function testValorHostilNoComandoRemotoNaoEscapaDaCitacao(): void
     {
         $transporte = new SshRemoteTransport(self::alvo(), []);
-        $comando = $transporte->buildRemoteCommand(['./c2f', 'css:rebuild', "--id=x'; rm -rf /; #"]);
+        $valorHostil = "--id=x'; rm -rf /; #";
+        $comando = $transporte->buildRemoteCommand(['./c2f', 'css:rebuild', $valorHostil]);
 
         // O apóstrofo é fechado, escapado e reaberto: o shell remoto vê UM argumento literal.
-        self::assertStringContainsString("'--id=x'\\''; rm -rf /; #'", $comando);
+        self::assertSame("'--id=x'\\''; rm -rf /; #'", $transporte->posixQuote($valorHostil));
 
         // O único `&&` da linha é o que separa o `cd` do comando declarado pelo CLI: o `;` e o
         // `#` do valor hostil ficaram dentro das aspas simples e nunca viram sintaxe do shell.
         self::assertSame(1, substr_count($comando, '&&'));
 
         // O comando declarado pelo CLI termina onde o valor hostil termina: nada depois dele.
-        self::assertStringEndsWith("'--id=x'\\''; rm -rf /; #'" . (DIRECTORY_SEPARATOR === '\\' ? '"' : "'"), $comando);
+        // escapeshellarg() aplica a camada externa adequada ao shell local (Windows ou POSIX).
+        $remotoEsperado = "cd " . $transporte->posixQuote('/home/tenant/web/exemplo.local/conn2flow-gestor')
+            . " && " . $transporte->posixQuote('./c2f')
+            . " " . $transporte->posixQuote('css:rebuild')
+            . " " . $transporte->posixQuote($valorHostil);
+        self::assertStringEndsWith(escapeshellarg($remotoEsperado), $comando);
     }
 
     public function testRunAsHostilEhRecusadoAntesDeChegarAoServidor(): void
@@ -129,7 +135,7 @@ final class ProjectSshPublicPathReq050Test extends TestCase
         $transporte = new SshRemoteTransport(self::alvo(['runAs' => 'tenant']), []);
         $comando = $transporte->buildRemoteCommand(['./c2f', 'css:rebuild']);
 
-        self::assertStringContainsString("sudo -u 'tenant' './c2f' 'css:rebuild'", $comando);
+        self::assertComandoSshContem("sudo -u 'tenant' './c2f' 'css:rebuild'", $comando);
     }
 
     public function testEntrypointRemotoAceitaFormaComposta(): void
@@ -207,7 +213,7 @@ final class ProjectSshPublicPathReq050Test extends TestCase
         $transporte = new SshRemoteTransport(self::alvo(), []);
         $comando = $transporte->buildEnsureDirectoryCommand('/home/tenant/web/exemplo.local/public_html/dist');
 
-        self::assertStringContainsString("mkdir -p '/home/tenant/web/exemplo.local/public_html/dist'", $comando);
+        self::assertComandoSshContem("mkdir -p '/home/tenant/web/exemplo.local/public_html/dist'", $comando);
     }
 
     // ===================== 5. Contratos dos comandos =====================
@@ -228,6 +234,9 @@ final class ProjectSshPublicPathReq050Test extends TestCase
 
         self::assertStringContainsString('regenerarViaSsh', $fonte);
         self::assertStringContainsString('buildRemoteCommand', $fonte);
+        self::assertStringContainsString('command -v c2f', $fonte);
+        self::assertStringContainsString('controladores/agents/arquitetura/css-regenerar.php', $fonte);
+        self::assertStringContainsString("'--gestor=.'", $fonte);
 
         // O disparo remoto nunca é implícito: a guarda de --confirmar-remoto precede a chamada.
         self::assertMatchesRegularExpression(
@@ -271,6 +280,14 @@ final class ProjectSshPublicPathReq050Test extends TestCase
     {
         self::assertFileExists($caminho);
         return (string) file_get_contents($caminho);
+    }
+
+    private static function assertComandoSshContem(string $trechoRemoto, string $comando): void
+    {
+        // escapeshellarg() envolve o comando remoto com aspas duplas no Windows e, em POSIX,
+        // reabre as aspas simples internas como '\''. Normalizar só essa camada externa mantém
+        // as asserções de conteúdo iguais nos dois runners sem enfraquecer os testes de injeção.
+        self::assertStringContainsString($trechoRemoto, str_replace("'\\''", "'", $comando));
     }
 
     /** @param array<string, mixed> $projeto */
