@@ -7,6 +7,8 @@ namespace Conn2Flow\Cli\Commands;
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
 use Conn2Flow\Cli\Console\Input;
+use Conn2Flow\Cli\Support\ProjectEnvironmentResolver;
+use Throwable;
 
 final class ProjectUpdateAllCommand extends BaseProcessCommand
 {
@@ -27,7 +29,9 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não]\n\nExecutes full 7-stage synchronization pipeline (the last stage rebuilds derived CSS).";
+        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto]\n\n"
+            . "Executes the full 8-stage synchronization pipeline. A deploy_mode=ssh project marked "
+            . "local=true receives remote confirmation automatically; production remains explicit.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -39,6 +43,25 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         }
 
         $contents = $input->getOption('contents', 'Sim');
+
+        // Uma VM declarada como `local: true` é ambiente de teste sob controle do operador. O
+        // pipeline completo pode autorizar suas duas etapas remotas (CSS e assets) sem produzir o
+        // falso warning que interrompia a etapa 6/8. Produção (`local: false`) continua dependendo
+        // de `--confirmar-remoto` explícito.
+        $autorizarVmLocal = false;
+        try {
+            $resolvido = (new ProjectEnvironmentResolver($this->rootPath))->resolve((string)$project);
+            $config = is_array($resolvido['config'] ?? null) ? $resolvido['config'] : [];
+            $autorizarVmLocal = ($resolvido['deployMode'] ?? '') === 'ssh'
+                && filter_var($config['local'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        } catch (Throwable) {
+            // Os comandos de cada etapa mantêm a responsabilidade de reportar configuração inválida.
+        }
+
+        $confirmarRemoto = $input->hasOption('confirmar-remoto') || $autorizarVmLocal;
+        if ($autorizarVmLocal && !$input->hasOption('confirmar-remoto')) {
+            $output->info("Projeto VM local '{$project}': --confirmar-remoto autorizado pelo pipeline.");
+        }
         $output->title("Conn2Flow — Full Update Pipeline for Project [{$project}]");
 
         // 1. Sync Core -> ID
@@ -87,7 +110,7 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         // cair no default — o ambiente de teste do SISTEMA — e regenerar a base errada: o pipeline
         // do projeto reportava sucesso sem ter tocado no CSS do projeto. Aqui o id é declarado.
         $argv = ['css:rebuild', '--project=' . $project];
-        if ($input->hasOption('confirmar-remoto')) {
+        if ($confirmarRemoto) {
             $argv[] = '--confirmar-remoto';
         }
 
@@ -129,7 +152,7 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         // da VM, e o envio continua exigindo `--confirmar-remoto`.
         $output->section('8/8 Publicando assets estáticos em dist/');
         $argvPublish = ['assets:publish', '--opcional', '--project=' . $project];
-        if ($input->hasOption('confirmar-remoto')) {
+        if ($confirmarRemoto) {
             $argvPublish[] = '--confirmar-remoto';
         }
 
