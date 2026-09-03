@@ -89,4 +89,19 @@ final class HtmlEditorBaselineTest extends TestCase
         // por `contents/tailwindcss/browser-contract.css`.
         self::assertIsString(html_editor_tailwind_browser_contract());
     }
+
+    public function testAtributoComVariavelResolvidaMantemDadosParaReversao(): void
+    {
+        global $_GESTOR;
+
+        $_GESTOR['url-raiz'] = '/';
+        $html = html_editor_boxes_variaveis('<img src="[[pagina#url-raiz]]images/logo.png">');
+
+        self::assertStringContainsString('src="/images/logo.png"', $html);
+        self::assertStringContainsString(
+            'data-c2f-orig-src="[[pagina#url-raiz]]images/logo.png"',
+            $html
+        );
+        self::assertStringContainsString('data-c2f-resolved-src="/images/logo.png"', $html);
+    }
 }

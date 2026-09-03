@@ -5581,7 +5581,17 @@ $(document).ready(function () {
          */
         extractUserHtml(widgetsToComments) {
             const container = document.createElement('div');
-            this.getUserContentNodes().forEach((n) => container.appendChild(n.cloneNode(true)));
+            this.getUserContentNodes().forEach((n) => {
+                if (n.nodeType !== Node.ELEMENT_NODE) {
+                    container.appendChild(n.cloneNode(true));
+                    return;
+                }
+                // req-162: `cloneNode(true)` pode iniciar o fetch de imagens e mídias no Blink/WebKit.
+                // O parser de `<template>` preserva o markup em conteúdo inerte, sem disparar a rede.
+                const template = document.createElement('template');
+                template.innerHTML = n.outerHTML;
+                container.appendChild(template.content);
+            });
 
             // Limpar quaisquer resíduos de UI no clone.
             container.querySelectorAll('#html-editor-floating-toolbar,#html-editor-hover-overlay,' +

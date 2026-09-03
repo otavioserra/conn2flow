@@ -57,6 +57,34 @@ describe('html-editor-interface.js — reversão de variáveis (req-093)', () =>
       '<span data-c2f-marker="' + b64('[[b]]') + '">2</span>';
     expect(reconstruct(html)).toBe('[[a]]-[[b]]');
   });
+
+  it('restaura atributo com variável somente quando o valor resolvido não foi editado', () => {
+    const html = '<img src="/images/logo.png" data-c2f-orig-src="[[pagina#url-raiz]]images/logo.png" ' +
+      'data-c2f-resolved-src="/images/logo.png">';
+    const out = reconstruct(html);
+    expect(out).toContain('src="[[pagina#url-raiz]]images/logo.png"');
+    expect(out).not.toContain('data-c2f-orig-src');
+    expect(out).not.toContain('data-c2f-resolved-src');
+  });
+
+  it('preserva edição manual de atributo e remove os metadados de restauração', () => {
+    const html = '<img src="/images/logo-novo.png" data-c2f-orig-src="[[pagina#url-raiz]]images/logo.png" ' +
+      'data-c2f-resolved-src="/images/logo.png">';
+    const out = reconstruct(html);
+    expect(out).toContain('src="/images/logo-novo.png"');
+    expect(out).not.toContain('data-c2f-orig-src');
+    expect(out).not.toContain('[[pagina#url-raiz]]images/logo.png');
+  });
+
+  it('renderiza variáveis antes de abrir o editor visual de layouts', () => {
+    const code = fs.readFileSync('gestor/assets/interface/html-editor-interface.js', 'utf8');
+    const start = code.indexOf("if (alvo === 'layouts')");
+    const end = code.indexOf('} else {', start);
+    const layouts = code.slice(start, end);
+
+    expect(layouts).toContain('htmlEditorRenderVars(htmlDoUsuario');
+    expect(layouts).toContain('abrirEditorVisualSrcdoc((data && data.boxes) || htmlDoUsuario');
+  });
 });
 
 /**

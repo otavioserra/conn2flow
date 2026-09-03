@@ -190,6 +190,18 @@
   sessão é ignorada com 302 silencioso. Checksum de `<modulo>.json` pertence ao compilador;
   `ORIGIN_UPDATE_MODULE` o repõe, então a guarda aceita vazio ou md5 coincidente com o arquivo.
 
+### 2026-09-02 — BATCH-164 (req-162): variáveis em atributos no editor visual
+
+- **Marcador em URL não pode entrar cru no DOM ativo.** Em `src`/`href`, o `#` de
+  `[[pagina#url-raiz]]` vira fragmento de URI e o navegador faz uma requisição para uma rota
+  truncada. Layouts ignoravam `htmlEditorRenderVars()` e eram o único ramo exposto.
+- **A restauração precisa ser condicional.** Guardar apenas o marcador original não permite saber
+  se o usuário alterou o atributo no editor. Anotar original e valor resolvido permite restaurar
+  só quando o valor ainda é o que o backend produziu; o dado manual sempre vence.
+- **`cloneNode(true)` não é neutro para mídia no Blink/WebKit.** Para a extração transitória,
+  serializar o elemento em um `<template>` preserva seu HTML e mantém imagens/vídeos inertes, sem
+  repetição de requisições.
+
 ### Histórico anterior
 
 BATCH-144 (autoria x derivado no CSS; runtime serve do banco, disco só com `DEVELOPMENT_ENV`) e

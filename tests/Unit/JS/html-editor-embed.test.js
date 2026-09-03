@@ -147,6 +147,14 @@ describe('html-editor.js — embeds e motores de PDF (BATCH-096)', () => {
     expect(wrapper.querySelector('video')).toBeTruthy();
   });
 
+  it('extrai mídia por template inerte, sem clonar diretamente nós que podem disparar rede', () => {
+    const ed = makeEditor('<img src="[[pagina#url-raiz]]images/logo.png"><video src="[[pagina#url-raiz]]video.mp4"></video>');
+    const clean = ed.getCleanHtml();
+
+    expect(clean).toContain('src="[[pagina#url-raiz]]images/logo.png"');
+    expect(clean).toContain('src="[[pagina#url-raiz]]video.mp4"');
+  });
+
   // ===== Detecção de tipo
 
   it('detecta os tipos de PDF (nativo, PDF.js e Google Viewer) e os tipos de mídia', () => {

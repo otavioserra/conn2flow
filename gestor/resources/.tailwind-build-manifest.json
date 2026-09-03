@@ -15,7 +15,7 @@
                 "resources//en/components/form-ui/form-ui.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:37:59+00:00"
+            "built_at": "2026-09-02T23:59:36+00:00"
         },
         "global||en|components|forms-prepared-email": {
             "fingerprint": "55752dcd882e87762c41bcf6c7b38c9ee4c9b57299d2fcc27df65930bbde1ddc",
@@ -26,7 +26,7 @@
                 "resources//en/components/forms-prepared-email/forms-prepared-email.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:00+00:00"
+            "built_at": "2026-09-02T23:59:36+00:00"
         },
         "global||en|components|interface-alerta-modal-tailwind": {
             "fingerprint": "c01e09644f5e4850dc5a43884cf9c971f39741602435e0dd73bb4db0be860f56",
@@ -37,7 +37,7 @@
                 "resources//en/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:00+00:00"
+            "built_at": "2026-09-02T23:59:37+00:00"
         },
         "global||en|components|interface-carregando-modal-tailwind": {
             "fingerprint": "94f1270e2919ef8949f27518c43996eec556945bcf2f0ddaeba3ea7b04cf38b7",
@@ -48,7 +48,7 @@
                 "resources//en/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:01+00:00"
+            "built_at": "2026-09-02T23:59:37+00:00"
         },
         "global||en|components|interface-delecao-modal-tailwind": {
             "fingerprint": "0a9a5e56536502b41f317b88dbb566fea87d44b0f9f8ad77bf1c6aea7ec33a01",
@@ -59,7 +59,7 @@
                 "resources//en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:01+00:00"
+            "built_at": "2026-09-02T23:59:37+00:00"
         },
         "global||en|components|interface-formulario-autorizacao-provisoria-tailwind": {
             "fingerprint": "6ea2b1887c59aa8e349a84d9854d2ab9914b9d3921871d181645ef375f354a70",
@@ -70,7 +70,7 @@
                 "resources//en/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:01+00:00"
+            "built_at": "2026-09-02T23:59:38+00:00"
         },
         "global||en|components|interface-formulario-edicao-tailwind": {
             "fingerprint": "3eb902e21c7d5815017506aed2a8ee29c985d8f154c333e2d80caaf6c3e73bde",
@@ -81,7 +81,7 @@
                 "resources//en/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:02+00:00"
+            "built_at": "2026-09-02T23:59:38+00:00"
         },
         "global||en|components|menu-principal-sistema-tailwind": {
             "fingerprint": "69deb8fda526be29e038c4053121eab66f42c3ebee50f257c319413a8fb541e2",
@@ -92,7 +92,7 @@
                 "resources//en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:02+00:00"
+            "built_at": "2026-09-02T23:59:39+00:00"
         },
         "global||en|layouts|layout-administrativo-tailwind": {
             "fingerprint": "5ec5ee337f85175a6feeb142bd4069e650ea226ca5aab965197d734ee9dc3637",
@@ -109,7 +109,7 @@
                 "resources/en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:02+00:00"
+            "built_at": "2026-09-02T23:59:39+00:00"
         },
         "global||en|layouts|layout-iframe-tailwindcss": {
             "fingerprint": "865e2bd80b19b88849e69f846f5513fa5bab448e31a27b7c130a03b0e8edfcad",
@@ -120,7 +120,7 @@
                 "resources//en/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:03+00:00"
+            "built_at": "2026-09-02T23:59:40+00:00"
         },
         "global||en|layouts|layout-pagina-sem-permissao-tailwind": {
             "fingerprint": "b9f836cbd641865b858f0c2721f44f03dbdb6b2a3acbfd416e3e4cab3e033df9",
@@ -131,7 +131,7 @@
                 "resources//en/layouts/layout-pagina-sem-permissao-tailwind/layout-pagina-sem-permissao-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:03+00:00"
+            "built_at": "2026-09-02T23:59:40+00:00"
         },
         "global||en|templates|componente-card-produto": {
             "fingerprint": "33d5ccec27273a5329f12ff03f5894cb58e5c56b40a165dc5c42243598b7b070",
@@ -142,7 +142,7 @@
                 "resources//en/templates/componente-card-produto/componente-card-produto.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:03+00:00"
+            "built_at": "2026-09-02T23:59:40+00:00"
         },
         "global||en|templates|componente-footer-completo": {
             "fingerprint": "c3168effca925a95f3824be033d5c0b88a4b01b6d753a85871208b862dfad850",
@@ -153,7 +153,7 @@
                 "resources//en/templates/componente-footer-completo/componente-footer-completo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:04+00:00"
+            "built_at": "2026-09-02T23:59:41+00:00"
         },
         "global||en|templates|componente-formulario-contato": {
             "fingerprint": "efd26a8c5647f0a52b690430da7425d3157672647f913974fdc06d0a16147ac7",
@@ -164,7 +164,7 @@
                 "resources//en/templates/componente-formulario-contato/componente-formulario-contato.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:04+00:00"
+            "built_at": "2026-09-02T23:59:41+00:00"
         },
         "global||en|templates|componente-header-navegacao": {
             "fingerprint": "2c4d76df382b41c7c323b94fdcea766d5af60f1d6d8c0f558fa3f3513d3b2507",
@@ -175,7 +175,7 @@
                 "resources//en/templates/componente-header-navegacao/componente-header-navegacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:05+00:00"
+            "built_at": "2026-09-02T23:59:42+00:00"
         },
         "global||en|templates|componente-hero-banner": {
             "fingerprint": "f4a32269bbae7453b80c72e3f820a9c94f5ec6a7bbded34185d2bbec30b0f955",
@@ -186,7 +186,7 @@
                 "resources//en/templates/componente-hero-banner/componente-hero-banner.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:05+00:00"
+            "built_at": "2026-09-02T23:59:42+00:00"
         },
         "global||en|templates|layout-blog-sidebar": {
             "fingerprint": "1d96ed1862681871ac99c690b77087f8771799aaa30d1b768bf75d581a923ec4",
@@ -197,7 +197,7 @@
                 "resources//en/templates/layout-blog-sidebar/layout-blog-sidebar.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:05+00:00"
+            "built_at": "2026-09-02T23:59:43+00:00"
         },
         "global||en|templates|layout-dashboard": {
             "fingerprint": "d87f4fdcabd0fa6a3f38a8b910e4016472f56de3bc13cfd44ee5680df8cb8102",
@@ -208,7 +208,7 @@
                 "resources//en/templates/layout-dashboard/layout-dashboard.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:06+00:00"
+            "built_at": "2026-09-02T23:59:43+00:00"
         },
         "global||en|templates|layout-landing-page": {
             "fingerprint": "2df7238a342bbec3b118e506778ed37280326c87806a9ffc32d966eb9d14f586",
@@ -219,7 +219,7 @@
                 "resources//en/templates/layout-landing-page/layout-landing-page.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:06+00:00"
+            "built_at": "2026-09-02T23:59:44+00:00"
         },
         "global||en|templates|layout-portfolio": {
             "fingerprint": "6be08dbb5c850a59036e03ac0f1d4e9d1dfb89a3fb9963997853167cb1b13762",
@@ -230,7 +230,7 @@
                 "resources//en/templates/layout-portfolio/layout-portfolio.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:06+00:00"
+            "built_at": "2026-09-02T23:59:44+00:00"
         },
         "global||en|templates|layout-site-institucional": {
             "fingerprint": "bb85c8a7feb4e89a9d1982cde0eecdc0fcdef8b586380d032aafaf2b68cd3045",
@@ -241,7 +241,7 @@
                 "resources//en/templates/layout-site-institucional/layout-site-institucional.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:07+00:00"
+            "built_at": "2026-09-02T23:59:44+00:00"
         },
         "global||en|templates|sessao-com-2-colunas": {
             "fingerprint": "4408477ec8e43c4956b0d7a553a1047f8403551cd643e6eb50af30f4e2d81117",
@@ -252,7 +252,7 @@
                 "resources//en/templates/sessao-com-2-colunas/sessao-com-2-colunas.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:07+00:00"
+            "built_at": "2026-09-02T23:59:45+00:00"
         },
         "global||en|templates|sessao-com-2-colunas-alternativo": {
             "fingerprint": "e8b9ce0b86e482ea917db9e0fdf4c24b057992feaeb3a40d61169c326fc45bf1",
@@ -263,7 +263,7 @@
                 "resources//en/templates/sessao-com-2-colunas-alternativo/sessao-com-2-colunas-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:07+00:00"
+            "built_at": "2026-09-02T23:59:45+00:00"
         },
         "global||en|templates|sessao-com-3-colunas": {
             "fingerprint": "9b02b29f8880cc4e663b85b00c7912a0b362f1af075902a887cc29eb3916e098",
@@ -274,7 +274,7 @@
                 "resources//en/templates/sessao-com-3-colunas/sessao-com-3-colunas.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:08+00:00"
+            "built_at": "2026-09-02T23:59:46+00:00"
         },
         "global||en|templates|sessao-com-3-colunas-alternativo": {
             "fingerprint": "7a2d2dd781d99cab8c4838333c8dc53c5c8621c3725501facd563295986bd13a",
@@ -285,7 +285,7 @@
                 "resources//en/templates/sessao-com-3-colunas-alternativo/sessao-com-3-colunas-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:08+00:00"
+            "built_at": "2026-09-02T23:59:46+00:00"
         },
         "global||en|templates|sessao-com-abas": {
             "fingerprint": "5473e1be14fd144d4bfefb2b11429e7543234d5c7f3b81c4db1199efc9e5c0c0",
@@ -296,7 +296,7 @@
                 "resources//en/templates/sessao-com-abas/sessao-com-abas.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:09+00:00"
+            "built_at": "2026-09-02T23:59:47+00:00"
         },
         "global||en|templates|sessao-com-abas-alternativo": {
             "fingerprint": "5b33cbf053fa1535c2714ff439fadeb05d489f3186faf5703967ddc0d2470b85",
@@ -307,7 +307,7 @@
                 "resources//en/templates/sessao-com-abas-alternativo/sessao-com-abas-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:09+00:00"
+            "built_at": "2026-09-02T23:59:47+00:00"
         },
         "global||en|templates|sessao-contato-mapa": {
             "fingerprint": "5d8cb034b551138b7a36eec1f569d8b0a13b7983f0f691128957b1b2cfe865f5",
@@ -318,7 +318,7 @@
                 "resources//en/templates/sessao-contato-mapa/sessao-contato-mapa.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:09+00:00"
+            "built_at": "2026-09-02T23:59:48+00:00"
         },
         "global||en|templates|sessao-contato-mapa-alternativo": {
             "fingerprint": "d92e35fbabf274723afa02fd5f8412664b9cceaadff06b5a104830b473ef45e9",
@@ -329,7 +329,7 @@
                 "resources//en/templates/sessao-contato-mapa-alternativo/sessao-contato-mapa-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:10+00:00"
+            "built_at": "2026-09-02T23:59:48+00:00"
         },
         "global||en|templates|sessao-cta-gradiente": {
             "fingerprint": "2484955f52768a9d1f1cd605ce9e2fbc082b5c1b23db500ae838461bad14ed39",
@@ -340,7 +340,7 @@
                 "resources//en/templates/sessao-cta-gradiente/sessao-cta-gradiente.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:10+00:00"
+            "built_at": "2026-09-02T23:59:49+00:00"
         },
         "global||en|templates|sessao-cta-gradiente-alternativo": {
             "fingerprint": "332d27ce009961509204096874e87c4e676da8bc6d16f5dcf4ddf3641c0d04e6",
@@ -351,7 +351,7 @@
                 "resources//en/templates/sessao-cta-gradiente-alternativo/sessao-cta-gradiente-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:10+00:00"
+            "built_at": "2026-09-02T23:59:49+00:00"
         },
         "global||en|templates|sessao-depoimentos-cards": {
             "fingerprint": "a5fde568d435468004844b1e701ba364aea0303b68094f6c23f9973ff15b22d0",
@@ -362,7 +362,7 @@
                 "resources//en/templates/sessao-depoimentos-cards/sessao-depoimentos-cards.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:11+00:00"
+            "built_at": "2026-09-02T23:59:49+00:00"
         },
         "global||en|templates|sessao-depoimentos-cards-alternativo": {
             "fingerprint": "9ad3d28d3020919bb399e22ad29ae198dc8f44418c5836823116ad735885bced",
@@ -373,7 +373,7 @@
                 "resources//en/templates/sessao-depoimentos-cards-alternativo/sessao-depoimentos-cards-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:11+00:00"
+            "built_at": "2026-09-02T23:59:50+00:00"
         },
         "global||en|templates|sessao-destaque": {
             "fingerprint": "c73f3e5242a7032a493baa7a02b36073a40ba4eba7b6dc18a903fcb2447864e8",
@@ -384,7 +384,7 @@
                 "resources//en/templates/sessao-destaque/sessao-destaque.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:12+00:00"
+            "built_at": "2026-09-02T23:59:50+00:00"
         },
         "global||en|templates|sessao-destaque-alternativo": {
             "fingerprint": "772a511aa9c793e1a0321adade0eab59f67f26e262155e025a2db221527da4de",
@@ -395,7 +395,7 @@
                 "resources//en/templates/sessao-destaque-alternativo/sessao-destaque-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:12+00:00"
+            "built_at": "2026-09-02T23:59:51+00:00"
         },
         "global||en|templates|sessao-faq-acordeao": {
             "fingerprint": "7c800e5e7c5b58327a932c4ba04b420186d139016924d1049b3c1c8074e4c400",
@@ -406,7 +406,7 @@
                 "resources//en/templates/sessao-faq-acordeao/sessao-faq-acordeao.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:12+00:00"
+            "built_at": "2026-09-02T23:59:51+00:00"
         },
         "global||en|templates|sessao-faq-acordeao-alternativo": {
             "fingerprint": "0c2dbfa7876648ff827765d12d2e3c6b08020863eebc77fe5fe71d45fe84785e",
@@ -417,7 +417,7 @@
                 "resources//en/templates/sessao-faq-acordeao-alternativo/sessao-faq-acordeao-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:13+00:00"
+            "built_at": "2026-09-02T23:59:52+00:00"
         },
         "global||en|templates|sessao-galeria-masonry": {
             "fingerprint": "b293bf3fce2342ba60ee5dc6f9926c72b3debe04c2921973ad1474702193bff0",
@@ -428,7 +428,7 @@
                 "resources//en/templates/sessao-galeria-masonry/sessao-galeria-masonry.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:13+00:00"
+            "built_at": "2026-09-02T23:59:52+00:00"
         },
         "global||en|templates|sessao-galeria-masonry-alternativo": {
             "fingerprint": "bffb0f0f36adf4f73ad26d88afebf1bb817c3825d274c2de116283e7ea82af88",
@@ -439,7 +439,7 @@
                 "resources//en/templates/sessao-galeria-masonry-alternativo/sessao-galeria-masonry-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:13+00:00"
+            "built_at": "2026-09-02T23:59:53+00:00"
         },
         "global||en|templates|sessao-hero-moderno": {
             "fingerprint": "e22eff74432837cb7c79482ea6c5eb1a86e6a8d716d254151c587a554f2e9253",
@@ -450,7 +450,7 @@
                 "resources//en/templates/sessao-hero-moderno/sessao-hero-moderno.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:14+00:00"
+            "built_at": "2026-09-02T23:59:53+00:00"
         },
         "global||en|templates|sessao-hero-moderno-alternativo": {
             "fingerprint": "d3c7d6dc3b4461b42ac3abd8c99503375dbe7d336dc3da2540052f13811e5d19",
@@ -461,7 +461,7 @@
                 "resources//en/templates/sessao-hero-moderno-alternativo/sessao-hero-moderno-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:14+00:00"
+            "built_at": "2026-09-02T23:59:54+00:00"
         },
         "global||en|templates|sessao-newsletter-minimalista": {
             "fingerprint": "afc98e3a3723aa357b79bae37ea932cb0b7fbbb20414db44223790f513ab2ffc",
@@ -472,7 +472,7 @@
                 "resources//en/templates/sessao-newsletter-minimalista/sessao-newsletter-minimalista.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:15+00:00"
+            "built_at": "2026-09-02T23:59:54+00:00"
         },
         "global||en|templates|sessao-newsletter-minimalista-alternativo": {
             "fingerprint": "fc2526fc5cc671f2af05802f12e9803eb89c4fb03bc3a42e9196e392d2ab86e6",
@@ -483,7 +483,7 @@
                 "resources//en/templates/sessao-newsletter-minimalista-alternativo/sessao-newsletter-minimalista-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:15+00:00"
+            "built_at": "2026-09-02T23:59:55+00:00"
         },
         "global||en|templates|sessao-recursos-grid": {
             "fingerprint": "e909473858b87552a8dc70ba494121dd58e60d7d05ad32ed4b7d996ba0d7cefe",
@@ -494,7 +494,7 @@
                 "resources//en/templates/sessao-recursos-grid/sessao-recursos-grid.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:15+00:00"
+            "built_at": "2026-09-02T23:59:55+00:00"
         },
         "global||en|templates|sessao-recursos-grid-alternativo": {
             "fingerprint": "94b37da15b0ad35ef2f87a1553269a482f69ceb69e589a9c68a4f0eb3f6a5dc4",
@@ -505,7 +505,7 @@
                 "resources//en/templates/sessao-recursos-grid-alternativo/sessao-recursos-grid-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:16+00:00"
+            "built_at": "2026-09-02T23:59:56+00:00"
         },
         "global||en|templates|sessao-stats-moderno": {
             "fingerprint": "8073ba5e181d834e81ce1db5bb21f1ff5ae34f1ba21e850b194dd40282766318",
@@ -516,7 +516,7 @@
                 "resources//en/templates/sessao-stats-moderno/sessao-stats-moderno.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:16+00:00"
+            "built_at": "2026-09-02T23:59:56+00:00"
         },
         "global||en|templates|sessao-stats-moderno-alternativo": {
             "fingerprint": "928517d00534e5dc4d81085c74f6133e4756b74d221e6507a3b48e7a8e8c4af7",
@@ -527,7 +527,7 @@
                 "resources//en/templates/sessao-stats-moderno-alternativo/sessao-stats-moderno-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:16+00:00"
+            "built_at": "2026-09-02T23:59:57+00:00"
         },
         "global||pt-br|components|form-ui": {
             "fingerprint": "8bdf083547ce9f76bb7a41f550f91e0521f19708d3d838f984cbb90afb2a7795",
@@ -538,7 +538,7 @@
                 "resources//pt-br/components/form-ui/form-ui.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:17+00:00"
+            "built_at": "2026-09-02T23:59:57+00:00"
         },
         "global||pt-br|components|forms-prepared-email": {
             "fingerprint": "03fa1cc0169d9475db88779fe45c9282ba69ef7adcddde793a02fca5a1f33e30",
@@ -549,7 +549,7 @@
                 "resources//pt-br/components/forms-prepared-email/forms-prepared-email.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:17+00:00"
+            "built_at": "2026-09-02T23:59:57+00:00"
         },
         "global||pt-br|components|interface-alerta-modal-tailwind": {
             "fingerprint": "1a6267af4835c72b57b6a044f4b4775e35b47ea658360c47e232c7e9691e7bf6",
@@ -560,7 +560,7 @@
                 "resources//pt-br/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:18+00:00"
+            "built_at": "2026-09-02T23:59:58+00:00"
         },
         "global||pt-br|components|interface-carregando-modal-tailwind": {
             "fingerprint": "843fd0cbb265d7d76eea742c287a30aabb860ec987b6cd64d3b4600ed7ff10e4",
@@ -571,7 +571,7 @@
                 "resources//pt-br/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:18+00:00"
+            "built_at": "2026-09-02T23:59:58+00:00"
         },
         "global||pt-br|components|interface-delecao-modal-tailwind": {
             "fingerprint": "4083e0d21e30e0defcabf75e7d9da500ecfbfe121cd905b601584066a3d1c2cd",
@@ -582,7 +582,7 @@
                 "resources//pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:18+00:00"
+            "built_at": "2026-09-02T23:59:59+00:00"
         },
         "global||pt-br|components|interface-formulario-autorizacao-provisoria-tailwind": {
             "fingerprint": "6f3fc005b112f91d5ec2686cbb14a76df9a66963f1a20180479ceb6f3d825d8e",
@@ -593,7 +593,7 @@
                 "resources//pt-br/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:19+00:00"
+            "built_at": "2026-09-02T23:59:59+00:00"
         },
         "global||pt-br|components|interface-formulario-edicao-tailwind": {
             "fingerprint": "3911738b0bea4c79661a7ea9dc2b302f2c4471e5e419e68410a021767deb187d",
@@ -604,7 +604,7 @@
                 "resources//pt-br/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:19+00:00"
+            "built_at": "2026-09-03T00:00:00+00:00"
         },
         "global||pt-br|components|menu-principal-sistema-tailwind": {
             "fingerprint": "b93ebad7aecf1d246106a442430778cf153a0937f2f7a06a992e18f2350eb713",
@@ -615,7 +615,7 @@
                 "resources//pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:19+00:00"
+            "built_at": "2026-09-03T00:00:00+00:00"
         },
         "global||pt-br|layouts|layout-administrativo-tailwind": {
             "fingerprint": "63d8b7ab0a0cdc0679e7a26b3d37a6ec94e2fbe082dcaf3e31a2372ac3dad217",
@@ -632,7 +632,7 @@
                 "resources/pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:20+00:00"
+            "built_at": "2026-09-03T00:00:01+00:00"
         },
         "global||pt-br|layouts|layout-iframe-tailwindcss": {
             "fingerprint": "cb63f4cf06068856e92788c0fcfa97cbe97864c78145c5148490614e0a4dc8a5",
@@ -643,7 +643,7 @@
                 "resources//pt-br/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:20+00:00"
+            "built_at": "2026-09-03T00:00:01+00:00"
         },
         "global||pt-br|layouts|layout-pagina-sem-permissao-tailwind": {
             "fingerprint": "3ce20b8a723e0e7b83f843d307ac7f748102d2462e3a9e7c671e7abe5285875d",
@@ -654,7 +654,7 @@
                 "resources//pt-br/layouts/layout-pagina-sem-permissao-tailwind/layout-pagina-sem-permissao-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:20+00:00"
+            "built_at": "2026-09-03T00:00:02+00:00"
         },
         "global||pt-br|templates|componente-card-produto": {
             "fingerprint": "94a6e741a254f0430a86503b702d98484ce1546aa17e2c5448ba7c2c09b45d0d",
@@ -665,7 +665,7 @@
                 "resources//pt-br/templates/componente-card-produto/componente-card-produto.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:21+00:00"
+            "built_at": "2026-09-03T00:00:02+00:00"
         },
         "global||pt-br|templates|componente-footer-completo": {
             "fingerprint": "4769791cf093263812b670566e144d7ceeb303ebbc375395148c834a71ad6b26",
@@ -676,7 +676,7 @@
                 "resources//pt-br/templates/componente-footer-completo/componente-footer-completo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:21+00:00"
+            "built_at": "2026-09-03T00:00:02+00:00"
         },
         "global||pt-br|templates|componente-formulario-contato": {
             "fingerprint": "3b8549ec7b656b485555bf09bfa70227c0f91d54131e78aa9e7bd4e24e8c2daa",
@@ -687,7 +687,7 @@
                 "resources//pt-br/templates/componente-formulario-contato/componente-formulario-contato.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:21+00:00"
+            "built_at": "2026-09-03T00:00:03+00:00"
         },
         "global||pt-br|templates|componente-header-navegacao": {
             "fingerprint": "ffa3afc3663f5cc07cafa1f36326bad7ae8eeae36073a8c6a605e9ce8a04fa6c",
@@ -698,7 +698,7 @@
                 "resources//pt-br/templates/componente-header-navegacao/componente-header-navegacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:22+00:00"
+            "built_at": "2026-09-03T00:00:03+00:00"
         },
         "global||pt-br|templates|componente-hero-banner": {
             "fingerprint": "717e87a63cebec7490e9c712fef0216c6d3b921d5ce0fd23193030a0804f1a30",
@@ -709,7 +709,7 @@
                 "resources//pt-br/templates/componente-hero-banner/componente-hero-banner.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:22+00:00"
+            "built_at": "2026-09-03T00:00:04+00:00"
         },
         "global||pt-br|templates|layout-blog-sidebar": {
             "fingerprint": "344d3aca7635e4f2c3e70317a2aec4d02293ef48777a7ecea1601c3a3cf7abf9",
@@ -720,7 +720,7 @@
                 "resources//pt-br/templates/layout-blog-sidebar/layout-blog-sidebar.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:23+00:00"
+            "built_at": "2026-09-03T00:00:04+00:00"
         },
         "global||pt-br|templates|layout-dashboard": {
             "fingerprint": "b378e67377c684124b29ec1071ae031892024fc912cd5d5604ca5de5ae8f7d4b",
@@ -731,7 +731,7 @@
                 "resources//pt-br/templates/layout-dashboard/layout-dashboard.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:23+00:00"
+            "built_at": "2026-09-03T00:00:05+00:00"
         },
         "global||pt-br|templates|layout-landing-page": {
             "fingerprint": "723bcba0079f19c27ae95ffd718cbd1e52df2154cccccb4b763b3d5f9b2003e0",
@@ -742,7 +742,7 @@
                 "resources//pt-br/templates/layout-landing-page/layout-landing-page.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:23+00:00"
+            "built_at": "2026-09-03T00:00:05+00:00"
         },
         "global||pt-br|templates|layout-portfolio": {
             "fingerprint": "1d207e0717a6bb2858c3f10c4971075322b59858ddee06c775aa4c1e453828c1",
@@ -753,7 +753,7 @@
                 "resources//pt-br/templates/layout-portfolio/layout-portfolio.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:24+00:00"
+            "built_at": "2026-09-03T00:00:06+00:00"
         },
         "global||pt-br|templates|layout-site-institucional": {
             "fingerprint": "277c5a63a80e00dc7493d4086a3630fa6624bf913c9531f6783ff3264ecf8da3",
@@ -764,7 +764,7 @@
                 "resources//pt-br/templates/layout-site-institucional/layout-site-institucional.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:24+00:00"
+            "built_at": "2026-09-03T00:00:06+00:00"
         },
         "global||pt-br|templates|sessao-com-2-colunas": {
             "fingerprint": "7d29387e8a89c90cec8cfab7deb8006b054916874f71bdb4e3c7381be39dc238",
@@ -775,7 +775,7 @@
                 "resources//pt-br/templates/sessao-com-2-colunas/sessao-com-2-colunas.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:25+00:00"
+            "built_at": "2026-09-03T00:00:07+00:00"
         },
         "global||pt-br|templates|sessao-com-2-colunas-alternativo": {
             "fingerprint": "c91807bd2ef49f73c80dd6511b947384e49a6aff3c426ff30506913b2a3039f1",
@@ -786,7 +786,7 @@
                 "resources//pt-br/templates/sessao-com-2-colunas-alternativo/sessao-com-2-colunas-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:25+00:00"
+            "built_at": "2026-09-03T00:00:08+00:00"
         },
         "global||pt-br|templates|sessao-com-3-colunas": {
             "fingerprint": "335600859e0e53cef2c0ff9c33d3645619b11fbc35d31265694e28cec700fac5",
@@ -797,7 +797,7 @@
                 "resources//pt-br/templates/sessao-com-3-colunas/sessao-com-3-colunas.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:25+00:00"
+            "built_at": "2026-09-03T00:00:08+00:00"
         },
         "global||pt-br|templates|sessao-com-3-colunas-alternativo": {
             "fingerprint": "8ad6a7a5972cbadc98652512b13267df79e0cd8759b646b42b1c40c8b4f03a7c",
@@ -808,7 +808,7 @@
                 "resources//pt-br/templates/sessao-com-3-colunas-alternativo/sessao-com-3-colunas-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:26+00:00"
+            "built_at": "2026-09-03T00:00:09+00:00"
         },
         "global||pt-br|templates|sessao-com-abas": {
             "fingerprint": "d4c6411aecd7721762fb9209807700afc72001c836eecef5047cc3a00c32ab49",
@@ -819,7 +819,7 @@
                 "resources//pt-br/templates/sessao-com-abas/sessao-com-abas.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:26+00:00"
+            "built_at": "2026-09-03T00:00:09+00:00"
         },
         "global||pt-br|templates|sessao-com-abas-alternativo": {
             "fingerprint": "de5e92d97173738a0203ea247de02b96839a10464e8b4e603962445c87236226",
@@ -830,7 +830,7 @@
                 "resources//pt-br/templates/sessao-com-abas-alternativo/sessao-com-abas-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:27+00:00"
+            "built_at": "2026-09-03T00:00:09+00:00"
         },
         "global||pt-br|templates|sessao-contato-mapa": {
             "fingerprint": "85c60a302614cee5d33b954f694bcd429d87de181e0759ecb49c8da1a66a2b7c",
@@ -841,7 +841,7 @@
                 "resources//pt-br/templates/sessao-contato-mapa/sessao-contato-mapa.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:27+00:00"
+            "built_at": "2026-09-03T00:00:10+00:00"
         },
         "global||pt-br|templates|sessao-contato-mapa-alternativo": {
             "fingerprint": "571c9280837169b0170c8a00691d0d4bfd2d20434a0f1f4fd83529de17027228",
@@ -852,7 +852,7 @@
                 "resources//pt-br/templates/sessao-contato-mapa-alternativo/sessao-contato-mapa-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:27+00:00"
+            "built_at": "2026-09-03T00:00:10+00:00"
         },
         "global||pt-br|templates|sessao-cta-gradiente": {
             "fingerprint": "6e748c078ea24c903e97d1f08fe2c325a01075b0ecdad27d0746c53edb886947",
@@ -863,7 +863,7 @@
                 "resources//pt-br/templates/sessao-cta-gradiente/sessao-cta-gradiente.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:28+00:00"
+            "built_at": "2026-09-03T00:00:11+00:00"
         },
         "global||pt-br|templates|sessao-cta-gradiente-alternativo": {
             "fingerprint": "91c2c3dbe1e09cdcb97b078400941809d48935bafc956ed26a0acfaadbdbcb29",
@@ -874,7 +874,7 @@
                 "resources//pt-br/templates/sessao-cta-gradiente-alternativo/sessao-cta-gradiente-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:28+00:00"
+            "built_at": "2026-09-03T00:00:11+00:00"
         },
         "global||pt-br|templates|sessao-depoimentos-cards": {
             "fingerprint": "97dab0719505fccb38446c089793a94ee806eb506674bdf42fdca6cc371ab4a4",
@@ -885,7 +885,7 @@
                 "resources//pt-br/templates/sessao-depoimentos-cards/sessao-depoimentos-cards.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:28+00:00"
+            "built_at": "2026-09-03T00:00:12+00:00"
         },
         "global||pt-br|templates|sessao-depoimentos-cards-alternativo": {
             "fingerprint": "bd2ec549fe00d93985fb42e188c7676bc956cc61e2da0f9065fdf773c5a0f69c",
@@ -896,7 +896,7 @@
                 "resources//pt-br/templates/sessao-depoimentos-cards-alternativo/sessao-depoimentos-cards-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:29+00:00"
+            "built_at": "2026-09-03T00:00:12+00:00"
         },
         "global||pt-br|templates|sessao-destaque": {
             "fingerprint": "830b6a5f1e9206e0147f2f4c46c8c0d2889446d3b7afcc31d7bec384889c4565",
@@ -907,7 +907,7 @@
                 "resources//pt-br/templates/sessao-destaque/sessao-destaque.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:29+00:00"
+            "built_at": "2026-09-03T00:00:13+00:00"
         },
         "global||pt-br|templates|sessao-destaque-alternativo": {
             "fingerprint": "6817e6629239ef7564e3df620c0c765db763209be28aa6740127ddbdf80b78fb",
@@ -918,7 +918,7 @@
                 "resources//pt-br/templates/sessao-destaque-alternativo/sessao-destaque-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:29+00:00"
+            "built_at": "2026-09-03T00:00:13+00:00"
         },
         "global||pt-br|templates|sessao-faq-acordeao": {
             "fingerprint": "0d11d347a94199a73bb963e07d3056182e835abed99092dedd2be238b0ab1be5",
@@ -929,7 +929,7 @@
                 "resources//pt-br/templates/sessao-faq-acordeao/sessao-faq-acordeao.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:30+00:00"
+            "built_at": "2026-09-03T00:00:14+00:00"
         },
         "global||pt-br|templates|sessao-faq-acordeao-alternativo": {
             "fingerprint": "80a0fad1f69c8bc6691489b6cc2ac3183e08b6f533468967b9c6e02d15b5fdbd",
@@ -940,7 +940,7 @@
                 "resources//pt-br/templates/sessao-faq-acordeao-alternativo/sessao-faq-acordeao-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:30+00:00"
+            "built_at": "2026-09-03T00:00:14+00:00"
         },
         "global||pt-br|templates|sessao-galeria-masonry": {
             "fingerprint": "2579279e8d08f77801879f0320b30acdef7882307ca272e34b75c8dee13c9694",
@@ -951,7 +951,7 @@
                 "resources//pt-br/templates/sessao-galeria-masonry/sessao-galeria-masonry.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:30+00:00"
+            "built_at": "2026-09-03T00:00:15+00:00"
         },
         "global||pt-br|templates|sessao-galeria-masonry-alternativo": {
             "fingerprint": "f72fdbf103e4c8137603cb68ebc93b94c10c4b41ff39ddbe259e1540a50cf04f",
@@ -962,7 +962,7 @@
                 "resources//pt-br/templates/sessao-galeria-masonry-alternativo/sessao-galeria-masonry-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:31+00:00"
+            "built_at": "2026-09-03T00:00:15+00:00"
         },
         "global||pt-br|templates|sessao-hero-moderno": {
             "fingerprint": "889c1e78801e1c65f7816f0a2ad9b8b8ac06306ab5dfe88284ccf902c318763d",
@@ -973,7 +973,7 @@
                 "resources//pt-br/templates/sessao-hero-moderno/sessao-hero-moderno.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:31+00:00"
+            "built_at": "2026-09-03T00:00:16+00:00"
         },
         "global||pt-br|templates|sessao-hero-moderno-alternativo": {
             "fingerprint": "6fbc7aaa796d4800effdedced49e9b564e09306aafcb114540e6a509581decc2",
@@ -984,7 +984,7 @@
                 "resources//pt-br/templates/sessao-hero-moderno-alternativo/sessao-hero-moderno-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:32+00:00"
+            "built_at": "2026-09-03T00:00:16+00:00"
         },
         "global||pt-br|templates|sessao-newsletter-minimalista": {
             "fingerprint": "3d6042ca6d9a1bf4c329935cf3783750e2da2023114e1277624ab331982e5001",
@@ -995,7 +995,7 @@
                 "resources//pt-br/templates/sessao-newsletter-minimalista/sessao-newsletter-minimalista.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:32+00:00"
+            "built_at": "2026-09-03T00:00:17+00:00"
         },
         "global||pt-br|templates|sessao-newsletter-minimalista-alternativo": {
             "fingerprint": "55293e8bfd8a02d4e51dcc6bd36391281b77bab56c6cade9efc18da930756096",
@@ -1006,7 +1006,7 @@
                 "resources//pt-br/templates/sessao-newsletter-minimalista-alternativo/sessao-newsletter-minimalista-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:32+00:00"
+            "built_at": "2026-09-03T00:00:17+00:00"
         },
         "global||pt-br|templates|sessao-recursos-grid": {
             "fingerprint": "0d10a80bf15f0be5ee61bfad8cc8ced28b45437483468c4958da1609f92180f2",
@@ -1017,7 +1017,7 @@
                 "resources//pt-br/templates/sessao-recursos-grid/sessao-recursos-grid.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:33+00:00"
+            "built_at": "2026-09-03T00:00:17+00:00"
         },
         "global||pt-br|templates|sessao-recursos-grid-alternativo": {
             "fingerprint": "74792807c2a77a30b0b66ab5137ff5f0268c7c27075400f355397a3176d16d39",
@@ -1028,7 +1028,7 @@
                 "resources//pt-br/templates/sessao-recursos-grid-alternativo/sessao-recursos-grid-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:33+00:00"
+            "built_at": "2026-09-03T00:00:18+00:00"
         },
         "global||pt-br|templates|sessao-stats-moderno": {
             "fingerprint": "05c46e97ef5a3040176a5a0b46c6ab2de07bca89270f3192869659966a28a6eb",
@@ -1039,7 +1039,7 @@
                 "resources//pt-br/templates/sessao-stats-moderno/sessao-stats-moderno.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:33+00:00"
+            "built_at": "2026-09-03T00:00:18+00:00"
         },
         "global||pt-br|templates|sessao-stats-moderno-alternativo": {
             "fingerprint": "b0614366727672d1a7005bc5adbcaee2da05cb489aad4f1e3d53dfab6b221269",
@@ -1050,7 +1050,7 @@
                 "resources//pt-br/templates/sessao-stats-moderno-alternativo/sessao-stats-moderno-alternativo.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:34+00:00"
+            "built_at": "2026-09-03T00:00:19+00:00"
         },
         "module|admin-cron|en|pages|admin-cron": {
             "fingerprint": "42600e314849801fc0edadda10e2fec9e36fb86c32cd3668ce2e3cb18eb9674d",
@@ -1065,7 +1065,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:34+00:00"
+            "built_at": "2026-09-03T00:00:20+00:00"
         },
         "module|admin-cron|pt-br|pages|admin-cron": {
             "fingerprint": "038ce55a70d6d7a618a468191a272280fd934d2ed3424c340d3150ebf0439c00",
@@ -1080,7 +1080,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:35+00:00"
+            "built_at": "2026-09-03T00:00:20+00:00"
         },
         "module|contatos|pt-br|components|base-email": {
             "fingerprint": "fd015c0bd780d6f7b9defd9bac12e3708c43b86fdf15c5d8b9d4f7a55791af67",
@@ -1091,7 +1091,7 @@
                 "modulos/contatos/resources/pt-br/components/base-email/base-email.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:35+00:00"
+            "built_at": "2026-09-03T00:00:21+00:00"
         },
         "module|dashboard|en|components|dashboard-site-toolbar-menu": {
             "fingerprint": "de7249171e471046c27ed039a53358fac611d8e16787a40b6a5388dc355ba88c",
@@ -1102,7 +1102,7 @@
                 "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu/dashboard-site-toolbar-menu.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:35+00:00"
+            "built_at": "2026-09-03T00:00:21+00:00"
         },
         "module|dashboard|en|components|dashboard-site-toolbar-menu-empty": {
             "fingerprint": "c8ac8319c7d61db6d6dd437974f7779b98fca2c63af7553fd3d6f6f81c7e8863",
@@ -1113,7 +1113,7 @@
                 "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu-empty/dashboard-site-toolbar-menu-empty.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:36+00:00"
+            "built_at": "2026-09-03T00:00:22+00:00"
         },
         "module|dashboard|en|components|dashboard-site-toolbar-menu-group": {
             "fingerprint": "006438446f97799a56fffb3a53ea6334463d507ec0f64bea816959aac1e60c95",
@@ -1124,7 +1124,7 @@
                 "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu-group/dashboard-site-toolbar-menu-group.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:36+00:00"
+            "built_at": "2026-09-03T00:00:22+00:00"
         },
         "module|dashboard|en|components|dashboard-site-toolbar-menu-item": {
             "fingerprint": "bf042d2338a565766bae20498e834ff41ffb60f56753b6dd643b68ca7f32cd03",
@@ -1135,7 +1135,7 @@
                 "modulos/dashboard/resources/en/components/dashboard-site-toolbar-menu-item/dashboard-site-toolbar-menu-item.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:36+00:00"
+            "built_at": "2026-09-03T00:00:23+00:00"
         },
         "module|dashboard|en|pages|dashboard-site-toolbar": {
             "fingerprint": "66b8113a3e5fdcec68a4307cfa12db6dba1029ab63fb216d19fde6b205597487",
@@ -1154,7 +1154,7 @@
                 "resources/en/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:37+00:00"
+            "built_at": "2026-09-03T00:00:23+00:00"
         },
         "module|dashboard|pt-br|components|dashboard-site-toolbar-menu": {
             "fingerprint": "e35aadcb5b9683fbcec3918e01388ee8c1e5b51401ea62d88c6ddaf57e434c3d",
@@ -1165,7 +1165,7 @@
                 "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu/dashboard-site-toolbar-menu.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:37+00:00"
+            "built_at": "2026-09-03T00:00:24+00:00"
         },
         "module|dashboard|pt-br|components|dashboard-site-toolbar-menu-empty": {
             "fingerprint": "02d6950d8ca913304885ff9ae56bc9be2ce16a01da06e835c6a234260867d2a8",
@@ -1176,7 +1176,7 @@
                 "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu-empty/dashboard-site-toolbar-menu-empty.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:37+00:00"
+            "built_at": "2026-09-03T00:00:25+00:00"
         },
         "module|dashboard|pt-br|components|dashboard-site-toolbar-menu-group": {
             "fingerprint": "9fe69667ec00db59c5b7ce5be79d8a69e952d5fbb45973627da698204a556190",
@@ -1187,7 +1187,7 @@
                 "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu-group/dashboard-site-toolbar-menu-group.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:38+00:00"
+            "built_at": "2026-09-03T00:00:25+00:00"
         },
         "module|dashboard|pt-br|components|dashboard-site-toolbar-menu-item": {
             "fingerprint": "91f1e8691004f6bcf649517f50df3ed12e05fe74ffcf6c0d43fdb3d712cb3048",
@@ -1198,7 +1198,7 @@
                 "modulos/dashboard/resources/pt-br/components/dashboard-site-toolbar-menu-item/dashboard-site-toolbar-menu-item.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:38+00:00"
+            "built_at": "2026-09-03T00:00:26+00:00"
         },
         "module|dashboard|pt-br|pages|dashboard-site-toolbar": {
             "fingerprint": "6f37796fe2d36e6b80b36d1c4a4337b280534dfc47bcf08ab034ece835b6bcc0",
@@ -1217,7 +1217,7 @@
                 "resources/pt-br/layouts/layout-iframe-tailwindcss/layout-iframe-tailwindcss.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:39+00:00"
+            "built_at": "2026-09-03T00:00:26+00:00"
         },
         "module|forms-search|en|templates|forms-search-contato-basico": {
             "fingerprint": "e3bb08a39701092c102cc06d3e8d1069dd30aa5956f16e7f4b225f9db4de1428",
@@ -1228,7 +1228,7 @@
                 "modulos/forms-search/resources/en/templates/forms-search-contato-basico/forms-search-contato-basico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:39+00:00"
+            "built_at": "2026-09-03T00:00:27+00:00"
         },
         "module|forms-search|en|templates|forms-search-newsletter-newsletter": {
             "fingerprint": "499510fc5af465a536fb1c3613971766e2ff79387b167bd12bd87bb9fe52dc23",
@@ -1239,7 +1239,7 @@
                 "modulos/forms-search/resources/en/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:39+00:00"
+            "built_at": "2026-09-03T00:00:27+00:00"
         },
         "module|forms-search|en|templates|forms-search-pesquisa-satisfacao": {
             "fingerprint": "69ff357834517d67da6b8169b9441964b3c549b3e09043f96f3f65499699e6ab",
@@ -1250,7 +1250,7 @@
                 "modulos/forms-search/resources/en/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:40+00:00"
+            "built_at": "2026-09-03T00:00:28+00:00"
         },
         "module|forms-search|en|templates|forms-search-registro-usuario": {
             "fingerprint": "37da5227dbba1bbd49068beffe6a7cf5de8fffb7b97ece34333fdd498184181f",
@@ -1261,7 +1261,7 @@
                 "modulos/forms-search/resources/en/templates/forms-search-registro-usuario/forms-search-registro-usuario.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:40+00:00"
+            "built_at": "2026-09-03T00:00:28+00:00"
         },
         "module|forms-search|en|templates|forms-search-suporte-tecnico": {
             "fingerprint": "b6d78ada5eb0b3c2b2ca68b22a7b4ca7a8fd1e533fb94a4f657f5771c04ff5ba",
@@ -1272,7 +1272,7 @@
                 "modulos/forms-search/resources/en/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:40+00:00"
+            "built_at": "2026-09-03T00:00:28+00:00"
         },
         "module|forms-search|pt-br|layouts|pagina-simples-tailwindcss": {
             "fingerprint": "24e6faa18e8f8b443aa959f512656e307e9efe4d2a5fb27a51ba9da899b0029b",
@@ -1283,7 +1283,7 @@
                 "modulos/forms-search/resources/pt-br/layouts/pagina-simples-tailwindcss/pagina-simples-tailwindcss.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:41+00:00"
+            "built_at": "2026-09-03T00:00:29+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-contato-basico": {
             "fingerprint": "9d5731618c782e4d6a3eaf6d2b5f95b8064946bcc46a91911d4f76b69461a438",
@@ -1294,7 +1294,7 @@
                 "modulos/forms-search/resources/pt-br/templates/forms-search-contato-basico/forms-search-contato-basico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:41+00:00"
+            "built_at": "2026-09-03T00:00:29+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-newsletter-newsletter": {
             "fingerprint": "7bffe0c91d82d01d81fa7ace7c90ad894321227a4902634a030e2f0c89a2bc2b",
@@ -1305,7 +1305,7 @@
                 "modulos/forms-search/resources/pt-br/templates/forms-search-newsletter-newsletter/forms-search-newsletter-newsletter.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:41+00:00"
+            "built_at": "2026-09-03T00:00:30+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-pesquisa-satisfacao": {
             "fingerprint": "255417062fb6613c564650ffa05c88b4aaf36d9d393b01e5d7ebb369e0f7e76b",
@@ -1316,7 +1316,7 @@
                 "modulos/forms-search/resources/pt-br/templates/forms-search-pesquisa-satisfacao/forms-search-pesquisa-satisfacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:42+00:00"
+            "built_at": "2026-09-03T00:00:30+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-registro-usuario": {
             "fingerprint": "04bd0ef67da9d8af9d4c7297f083956713342977fe71b0b948fea8e5636600c8",
@@ -1327,7 +1327,7 @@
                 "modulos/forms-search/resources/pt-br/templates/forms-search-registro-usuario/forms-search-registro-usuario.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:42+00:00"
+            "built_at": "2026-09-03T00:00:31+00:00"
         },
         "module|forms-search|pt-br|templates|forms-search-suporte-tecnico": {
             "fingerprint": "3e492b64021149c871b0727d6fde8ff5ff6e3673c838e89ea0aa441d82d9fcaf",
@@ -1338,7 +1338,7 @@
                 "modulos/forms-search/resources/pt-br/templates/forms-search-suporte-tecnico/forms-search-suporte-tecnico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:43+00:00"
+            "built_at": "2026-09-03T00:00:31+00:00"
         },
         "module|forms|en|pages|forms-test-email-page": {
             "fingerprint": "d37864e6665ecae71322e70fb07bcf13ea18b2de8e7aa518ce42bac0b8669b1b",
@@ -1352,7 +1352,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:43+00:00"
+            "built_at": "2026-09-03T00:00:32+00:00"
         },
         "module|forms|en|templates|forms-contato-basico": {
             "fingerprint": "21a3cc7fd970520d3a0bc7f407c1173c66b039e121b68db3d3cebde3baad2c09",
@@ -1363,7 +1363,7 @@
                 "modulos/forms/resources/en/templates/forms-contato-basico/forms-contato-basico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:43+00:00"
+            "built_at": "2026-09-03T00:00:32+00:00"
         },
         "module|forms|en|templates|forms-newsletter-newsletter": {
             "fingerprint": "7039aa5a1aae73dd52a845ef0de87410ced06bcc98fc09716cb36328d24d423b",
@@ -1374,7 +1374,7 @@
                 "modulos/forms/resources/en/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:44+00:00"
+            "built_at": "2026-09-03T00:00:33+00:00"
         },
         "module|forms|en|templates|forms-pesquisa-satisfacao": {
             "fingerprint": "74b8aeb9749dbea3f2b19016230a5b2631217d9264e02e46ac2cf5cf6f26f9da",
@@ -1385,7 +1385,7 @@
                 "modulos/forms/resources/en/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:44+00:00"
+            "built_at": "2026-09-03T00:00:33+00:00"
         },
         "module|forms|en|templates|forms-registro-usuario": {
             "fingerprint": "d1e27732adeed4d8a9748c2eea8eac0ccd67a2f2a3ef7e875f6cd213eb3e97ec",
@@ -1396,7 +1396,7 @@
                 "modulos/forms/resources/en/templates/forms-registro-usuario/forms-registro-usuario.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:45+00:00"
+            "built_at": "2026-09-03T00:00:34+00:00"
         },
         "module|forms|en|templates|forms-suporte-tecnico": {
             "fingerprint": "583c3bb024db2c205c06c871fde9d8127ba9ca3190116037336ad6c5eaac183d",
@@ -1407,7 +1407,7 @@
                 "modulos/forms/resources/en/templates/forms-suporte-tecnico/forms-suporte-tecnico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:45+00:00"
+            "built_at": "2026-09-03T00:00:34+00:00"
         },
         "module|forms|pt-br|layouts|pagina-simples-tailwindcss": {
             "fingerprint": "bca22234fbac87af4f99b538d916a6f81e6d9986f05dd1e47df01ea48953a2db",
@@ -1418,7 +1418,7 @@
                 "modulos/forms/resources/pt-br/layouts/pagina-simples-tailwindcss/pagina-simples-tailwindcss.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:45+00:00"
+            "built_at": "2026-09-03T00:00:35+00:00"
         },
         "module|forms|pt-br|pages|forms-test-email-page": {
             "fingerprint": "113ff5fd665599305346db8956f5f3a27d8a585b02093258f090e858ca1ff623",
@@ -1432,7 +1432,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:46+00:00"
+            "built_at": "2026-09-03T00:00:35+00:00"
         },
         "module|forms|pt-br|templates|forms-contato-basico": {
             "fingerprint": "64c34b0e0f15f0ff81d7c8aba0b587d5ff8eae0f936418a814d48fe03d31c8f1",
@@ -1443,7 +1443,7 @@
                 "modulos/forms/resources/pt-br/templates/forms-contato-basico/forms-contato-basico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:46+00:00"
+            "built_at": "2026-09-03T00:00:36+00:00"
         },
         "module|forms|pt-br|templates|forms-newsletter-newsletter": {
             "fingerprint": "c7c937cd5de21a0cdc05736798b2469b4538eaec375aaf258052a98d12fbbda6",
@@ -1454,7 +1454,7 @@
                 "modulos/forms/resources/pt-br/templates/forms-newsletter-newsletter/forms-newsletter-newsletter.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:46+00:00"
+            "built_at": "2026-09-03T00:00:36+00:00"
         },
         "module|forms|pt-br|templates|forms-pesquisa-satisfacao": {
             "fingerprint": "a7640657f78d7c4b7c56ce9bb8da8444d4150d805b47dcdde820365de81b533e",
@@ -1465,7 +1465,7 @@
                 "modulos/forms/resources/pt-br/templates/forms-pesquisa-satisfacao/forms-pesquisa-satisfacao.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:47+00:00"
+            "built_at": "2026-09-03T00:00:37+00:00"
         },
         "module|forms|pt-br|templates|forms-registro-usuario": {
             "fingerprint": "d4a4452411e61bb5bab355668a7e5fc791b85e32f5f542d8057c87b54caf1faa",
@@ -1476,7 +1476,7 @@
                 "modulos/forms/resources/pt-br/templates/forms-registro-usuario/forms-registro-usuario.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:47+00:00"
+            "built_at": "2026-09-03T00:00:37+00:00"
         },
         "module|forms|pt-br|templates|forms-suporte-tecnico": {
             "fingerprint": "b960ba3f84ce2cb5e5f79fd77334a9f97d38e641c91d4d81097d9c23b9f36039",
@@ -1487,7 +1487,7 @@
                 "modulos/forms/resources/pt-br/templates/forms-suporte-tecnico/forms-suporte-tecnico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:48+00:00"
+            "built_at": "2026-09-03T00:00:37+00:00"
         },
         "module|galleries|en|templates|galleries-carousel": {
             "fingerprint": "8bae7f0edf1c7f006414be6052ad7395546a55af2015080d96e7c9254eb40ad6",
@@ -1498,7 +1498,7 @@
                 "modulos/galleries/resources/en/templates/galleries-carousel/galleries-carousel.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:48+00:00"
+            "built_at": "2026-09-03T00:00:38+00:00"
         },
         "module|galleries|en|templates|galleries-estados": {
             "fingerprint": "a992123e01e1f7fb344791cd7b448663ba4290bf945c7562c13ef9baa7d482a7",
@@ -1509,7 +1509,7 @@
                 "modulos/galleries/resources/en/templates/galleries-estados/galleries-estados.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:48+00:00"
+            "built_at": "2026-09-03T00:00:38+00:00"
         },
         "module|galleries|en|templates|galleries-grid": {
             "fingerprint": "c4ef799298d0f40db7dc90e658324845310a31f1466e64610c4c4e05c9636a9d",
@@ -1520,7 +1520,7 @@
                 "modulos/galleries/resources/en/templates/galleries-grid/galleries-grid.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:49+00:00"
+            "built_at": "2026-09-03T00:00:39+00:00"
         },
         "module|galleries|en|templates|galleries-masonry": {
             "fingerprint": "9fac2135a9b5786e490b31b449bce3c21e28b23169f058c92f1bb65666059818",
@@ -1531,7 +1531,7 @@
                 "modulos/galleries/resources/en/templates/galleries-masonry/galleries-masonry.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:49+00:00"
+            "built_at": "2026-09-03T00:00:39+00:00"
         },
         "module|galleries|en|templates|galleries-slider": {
             "fingerprint": "90ef698832ce1830de061b592424796e65300a5887c39773c8c0a8e7eb78adfb",
@@ -1542,7 +1542,7 @@
                 "modulos/galleries/resources/en/templates/galleries-slider/galleries-slider.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:49+00:00"
+            "built_at": "2026-09-03T00:00:40+00:00"
         },
         "module|galleries|pt-br|templates|galleries-carousel": {
             "fingerprint": "0ff2981fc2e2b7e24233e9c950877d031779d034b4858092ec8b1a3d53030037",
@@ -1553,7 +1553,7 @@
                 "modulos/galleries/resources/pt-br/templates/galleries-carousel/galleries-carousel.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:50+00:00"
+            "built_at": "2026-09-03T00:00:40+00:00"
         },
         "module|galleries|pt-br|templates|galleries-estados": {
             "fingerprint": "1946d6d51d2645233f7bd9feb9d68d7371aae25c0392065683e4d9d9e3003a27",
@@ -1564,7 +1564,7 @@
                 "modulos/galleries/resources/pt-br/templates/galleries-estados/galleries-estados.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:50+00:00"
+            "built_at": "2026-09-03T00:00:41+00:00"
         },
         "module|galleries|pt-br|templates|galleries-grid": {
             "fingerprint": "efdbd6761a1beb42b8e3e431969c5ffe4f7f850c91effbd56ace0a33a5e9ebd4",
@@ -1575,7 +1575,7 @@
                 "modulos/galleries/resources/pt-br/templates/galleries-grid/galleries-grid.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:50+00:00"
+            "built_at": "2026-09-03T00:00:41+00:00"
         },
         "module|galleries|pt-br|templates|galleries-masonry": {
             "fingerprint": "399184c63db450a29c3d9389ac438db51df29552b77457038985e71e650743e4",
@@ -1586,7 +1586,7 @@
                 "modulos/galleries/resources/pt-br/templates/galleries-masonry/galleries-masonry.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:51+00:00"
+            "built_at": "2026-09-03T00:00:42+00:00"
         },
         "module|galleries|pt-br|templates|galleries-slider": {
             "fingerprint": "bc3ea198d36321e218ac81eb14e92717f1346164a51a44c7336f80f8416aff5f",
@@ -1597,7 +1597,7 @@
                 "modulos/galleries/resources/pt-br/templates/galleries-slider/galleries-slider.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:51+00:00"
+            "built_at": "2026-09-03T00:00:42+00:00"
         },
         "module|menus|en|templates|menus-breadcrumb": {
             "fingerprint": "b0cfa5c3ba397ef2ab04230b3bbfe95acbdab8ad8deaaf63f8890a98828c6c63",
@@ -1608,7 +1608,7 @@
                 "modulos/menus/resources/en/templates/menus-breadcrumb/menus-breadcrumb.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:51+00:00"
+            "built_at": "2026-09-03T00:00:43+00:00"
         },
         "module|menus|en|templates|menus-dropdown": {
             "fingerprint": "8b093e25f87e7a584ffe1bccf108f1add273ec10375e144bc6d81011c03446af",
@@ -1619,7 +1619,7 @@
                 "modulos/menus/resources/en/templates/menus-dropdown/menus-dropdown.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:52+00:00"
+            "built_at": "2026-09-03T00:00:43+00:00"
         },
         "module|menus|en|templates|menus-footer-colunas": {
             "fingerprint": "36a52ba1a0a8772d6dca9260b943dd60a096c0ec5fcdbcca18bd55d67bdc1777",
@@ -1630,7 +1630,7 @@
                 "modulos/menus/resources/en/templates/menus-footer-colunas/menus-footer-colunas.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:52+00:00"
+            "built_at": "2026-09-03T00:00:44+00:00"
         },
         "module|menus|en|templates|menus-horizontal-navbar": {
             "fingerprint": "1759d38d76450c267eb82c21b1dbccde7cc0ebd648dab895bbabb05d368d086b",
@@ -1641,7 +1641,7 @@
                 "modulos/menus/resources/en/templates/menus-horizontal-navbar/menus-horizontal-navbar.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:53+00:00"
+            "built_at": "2026-09-03T00:00:44+00:00"
         },
         "module|menus|en|templates|menus-mobile-hamburguer": {
             "fingerprint": "c66e9703d52eb3e60343018e3f17cc470ad16cac1d83367930124ff451fd5d49",
@@ -1652,7 +1652,7 @@
                 "modulos/menus/resources/en/templates/menus-mobile-hamburguer/menus-mobile-hamburguer.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:53+00:00"
+            "built_at": "2026-09-03T00:00:44+00:00"
         },
         "module|menus|en|templates|menus-vertical-sidebar": {
             "fingerprint": "7fdfe23db1459c8be6add4d52fc5b902d55d5745681cbc6aa4b3f5e010b0b170",
@@ -1663,7 +1663,7 @@
                 "modulos/menus/resources/en/templates/menus-vertical-sidebar/menus-vertical-sidebar.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:53+00:00"
+            "built_at": "2026-09-03T00:00:45+00:00"
         },
         "module|menus|pt-br|templates|menus-breadcrumb": {
             "fingerprint": "29e5e5e4ec4bc1a35ec6395c0526a9fba69a39227f9816508f256e2eab64bb09",
@@ -1674,7 +1674,7 @@
                 "modulos/menus/resources/pt-br/templates/menus-breadcrumb/menus-breadcrumb.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:54+00:00"
+            "built_at": "2026-09-03T00:00:45+00:00"
         },
         "module|menus|pt-br|templates|menus-dropdown": {
             "fingerprint": "ad3e138482ffa1d5d9773916e6f66f3f42efc4d24df92175bdedf4ea21331025",
@@ -1685,7 +1685,7 @@
                 "modulos/menus/resources/pt-br/templates/menus-dropdown/menus-dropdown.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:54+00:00"
+            "built_at": "2026-09-03T00:00:46+00:00"
         },
         "module|menus|pt-br|templates|menus-footer-colunas": {
             "fingerprint": "1394bbe98f525c7cb298bea37cc9ec4644a61a6bb16aca8b537c753031c9c586",
@@ -1696,7 +1696,7 @@
                 "modulos/menus/resources/pt-br/templates/menus-footer-colunas/menus-footer-colunas.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:54+00:00"
+            "built_at": "2026-09-03T00:00:46+00:00"
         },
         "module|menus|pt-br|templates|menus-horizontal-navbar": {
             "fingerprint": "d7ebb15693d461250525f68102572b0c2cacffb2683ce8c22220d9d90b5cf594",
@@ -1707,7 +1707,7 @@
                 "modulos/menus/resources/pt-br/templates/menus-horizontal-navbar/menus-horizontal-navbar.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:55+00:00"
+            "built_at": "2026-09-03T00:00:47+00:00"
         },
         "module|menus|pt-br|templates|menus-mobile-hamburguer": {
             "fingerprint": "9de0db58dd300ca4ac82755253b64a8c823e0fcca425adbcfed141599d58d348",
@@ -1718,7 +1718,7 @@
                 "modulos/menus/resources/pt-br/templates/menus-mobile-hamburguer/menus-mobile-hamburguer.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:55+00:00"
+            "built_at": "2026-09-03T00:00:47+00:00"
         },
         "module|menus|pt-br|templates|menus-vertical-sidebar": {
             "fingerprint": "3fa453eed479b674a9107b9d44d7f9ffd18e93ba56f8dc06a359cca76ce5c03d",
@@ -1729,7 +1729,7 @@
                 "modulos/menus/resources/pt-br/templates/menus-vertical-sidebar/menus-vertical-sidebar.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:56+00:00"
+            "built_at": "2026-09-03T00:00:47+00:00"
         },
         "module|pages-index|en|pages|pages-index-search": {
             "fingerprint": "ad2ee9d8a232a49a7d053918ce32a0bf589362962a479e08c60ef4645db31bbf",
@@ -1743,7 +1743,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:56+00:00"
+            "built_at": "2026-09-03T00:00:48+00:00"
         },
         "module|pages-index|en|templates|pages-index-agenda": {
             "fingerprint": "0540cef0b3a2dbd7f94451ea0166c6d9875bc2e903a0516af30ab88fa1720cdd",
@@ -1754,7 +1754,7 @@
                 "modulos/pages-index/resources/en/templates/pages-index-agenda/pages-index-agenda.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:56+00:00"
+            "built_at": "2026-09-03T00:00:48+00:00"
         },
         "module|pages-index|en|templates|pages-index-grid": {
             "fingerprint": "d82ed1cac6037443df889dd94680309267a849e4424201f8ed3c5451ba330431",
@@ -1765,7 +1765,7 @@
                 "modulos/pages-index/resources/en/templates/pages-index-grid/pages-index-grid.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:57+00:00"
+            "built_at": "2026-09-03T00:00:49+00:00"
         },
         "module|pages-index|en|templates|pages-index-grid-imagem": {
             "fingerprint": "1d59884517d0a9e89a19df5ec2c14cb94b78e01c2a81dda0b4bb10f17d75a1e4",
@@ -1776,7 +1776,7 @@
                 "modulos/pages-index/resources/en/templates/pages-index-grid-imagem/pages-index-grid-imagem.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:57+00:00"
+            "built_at": "2026-09-03T00:00:49+00:00"
         },
         "module|pages-index|en|templates|pages-index-lista": {
             "fingerprint": "1bbd317ff0903c64bc15dee1b4df6886733d9622f77defda09f3100bd8443031",
@@ -1787,7 +1787,7 @@
                 "modulos/pages-index/resources/en/templates/pages-index-lista/pages-index-lista.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:58+00:00"
+            "built_at": "2026-09-03T00:00:50+00:00"
         },
         "module|pages-index|en|templates|pages-index-lista-imagem": {
             "fingerprint": "69b55dbaf6ebe58475ca8f819a0db45abb6f5da4c66bb2dd17a8eb18c3f7b650",
@@ -1798,7 +1798,7 @@
                 "modulos/pages-index/resources/en/templates/pages-index-lista-imagem/pages-index-lista-imagem.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:58+00:00"
+            "built_at": "2026-09-03T00:00:50+00:00"
         },
         "module|pages-index|en|templates|pages-index-timeline": {
             "fingerprint": "56a316a93c4947529bff799b42b0899158f2e919af67615cbd1c17b087d5e4c0",
@@ -1809,7 +1809,7 @@
                 "modulos/pages-index/resources/en/templates/pages-index-timeline/pages-index-timeline.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:58+00:00"
+            "built_at": "2026-09-03T00:00:51+00:00"
         },
         "module|pages-index|pt-br|pages|pages-index-search": {
             "fingerprint": "48fc63562f14ee09f6ad0ad59d5bdecc715d3f6da11bdfc600c9522ea83c4879",
@@ -1823,7 +1823,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:59+00:00"
+            "built_at": "2026-09-03T00:00:51+00:00"
         },
         "module|pages-index|pt-br|templates|pages-index-agenda": {
             "fingerprint": "26ebacee876ab344cb0ae1e32665cbe62583f90c624c8cf35b693e6ece6e9387",
@@ -1834,7 +1834,7 @@
                 "modulos/pages-index/resources/pt-br/templates/pages-index-agenda/pages-index-agenda.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:59+00:00"
+            "built_at": "2026-09-03T00:00:52+00:00"
         },
         "module|pages-index|pt-br|templates|pages-index-grid": {
             "fingerprint": "729eac92eaa0338e633ebd8e51a40d9c63a02a6062e23d71a84268dcc7c100b3",
@@ -1845,7 +1845,7 @@
                 "modulos/pages-index/resources/pt-br/templates/pages-index-grid/pages-index-grid.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:38:59+00:00"
+            "built_at": "2026-09-03T00:00:52+00:00"
         },
         "module|pages-index|pt-br|templates|pages-index-grid-imagem": {
             "fingerprint": "a32998358c9df17b8c61f00f13e6561d227405dc0e6bec54b17072afa3db600a",
@@ -1856,7 +1856,7 @@
                 "modulos/pages-index/resources/pt-br/templates/pages-index-grid-imagem/pages-index-grid-imagem.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:00+00:00"
+            "built_at": "2026-09-03T00:00:53+00:00"
         },
         "module|pages-index|pt-br|templates|pages-index-lista": {
             "fingerprint": "8b32c6f6ddd46113f394fbafb1b9b6c269d33ba117252c89d80b800c5d558efb",
@@ -1867,7 +1867,7 @@
                 "modulos/pages-index/resources/pt-br/templates/pages-index-lista/pages-index-lista.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:00+00:00"
+            "built_at": "2026-09-03T00:00:53+00:00"
         },
         "module|pages-index|pt-br|templates|pages-index-lista-imagem": {
             "fingerprint": "663d8751c9a00f60997e542ba0cf89cc1cf8ec04dd616c9cf1467ed03065a6ed",
@@ -1878,7 +1878,7 @@
                 "modulos/pages-index/resources/pt-br/templates/pages-index-lista-imagem/pages-index-lista-imagem.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:00+00:00"
+            "built_at": "2026-09-03T00:00:53+00:00"
         },
         "module|pages-index|pt-br|templates|pages-index-timeline": {
             "fingerprint": "d000b7196332d9b0a27921418f152684dc0e5c1b1e5902193d9a4c9d1f4b43f3",
@@ -1889,7 +1889,7 @@
                 "modulos/pages-index/resources/pt-br/templates/pages-index-timeline/pages-index-timeline.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:01+00:00"
+            "built_at": "2026-09-03T00:00:54+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-2fa-campos": {
             "fingerprint": "52b0c325c7e8c63fa3633d7ca4bb2b7cfb0caf2053e6ec796a03dfd139b418a6",
@@ -1902,7 +1902,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:01+00:00"
+            "built_at": "2026-09-03T00:00:54+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-api-tokens": {
             "fingerprint": "0d4fd21846ec74ef31f0ccaa478a24675eece89b82fd08d884a4c49dc7231ecc",
@@ -1915,7 +1915,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:02+00:00"
+            "built_at": "2026-09-03T00:00:55+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-login-metodos": {
             "fingerprint": "51200350d14a9e922169b421ef2ca81671dc070d2ce90236a286c547f2334008",
@@ -1928,7 +1928,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:02+00:00"
+            "built_at": "2026-09-03T00:00:55+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-seguranca": {
             "fingerprint": "3c4cd9ee3cf7a15e3aa78fb6fb004a74a7b029d82828175170c31179b5f8da2a",
@@ -1941,7 +1941,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:03+00:00"
+            "built_at": "2026-09-03T00:00:56+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-sessoes": {
             "fingerprint": "743821fbe5d4f684da087af0fc6ee28cb3f17c893d006d270ef722dd76822855",
@@ -1954,7 +1954,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:03+00:00"
+            "built_at": "2026-09-03T00:00:57+00:00"
         },
         "module|perfil-usuario|en|pages|Area-restrita": {
             "fingerprint": "310a294d0dfe794a6320a28193914ba6f92b630cde3b870655cb01a752fcd24d",
@@ -1972,7 +1972,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:04+00:00"
+            "built_at": "2026-09-03T00:00:57+00:00"
         },
         "module|perfil-usuario|en|pages|acessar-sistema": {
             "fingerprint": "d2487ff4560c0fa2fbe42070d59a556c87a4d9368d0d537843a8abf8b27eaf13",
@@ -1991,7 +1991,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:04+00:00"
+            "built_at": "2026-09-03T00:00:58+00:00"
         },
         "module|perfil-usuario|en|pages|cadastrar-no-sistema": {
             "fingerprint": "b463ad713197e3838f2434cc58003d222f63c667ff1f419f737aa40582261d56",
@@ -2008,7 +2008,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:04+00:00"
+            "built_at": "2026-09-03T00:00:58+00:00"
         },
         "module|perfil-usuario|en|pages|confirmacao-de-email": {
             "fingerprint": "576f53157c789e9cdb359e6d676023227b360697e724ee2837036ec1b271184f",
@@ -2025,7 +2025,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:05+00:00"
+            "built_at": "2026-09-03T00:00:59+00:00"
         },
         "module|perfil-usuario|en|pages|esqueceu-a-senha": {
             "fingerprint": "449f42b1abf97b5760b03faf4ab0566801ee1e88c6d9b9831ebe686019311084",
@@ -2042,7 +2042,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:05+00:00"
+            "built_at": "2026-09-03T00:00:59+00:00"
         },
         "module|perfil-usuario|en|pages|esqueceu-a-senha-email-enviado": {
             "fingerprint": "23d22e2a06862fb677bc54a902016e25fa3bd777e755955f571f6e406de36dd0",
@@ -2059,7 +2059,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:06+00:00"
+            "built_at": "2026-09-03T00:01:00+00:00"
         },
         "module|perfil-usuario|en|pages|oauth-authenticate": {
             "fingerprint": "6357bbe376dec5757bded1f7454e1c744df8256337f445ba637f43c6a1dae3d1",
@@ -2078,7 +2078,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:06+00:00"
+            "built_at": "2026-09-03T00:01:00+00:00"
         },
         "module|perfil-usuario|en|pages|oauth-authenticate-2fa": {
             "fingerprint": "881c832cb66ed415a5ee284c29b8f23957e10f799f158df35705b6d6da676b54",
@@ -2097,7 +2097,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:07+00:00"
+            "built_at": "2026-09-03T00:01:01+00:00"
         },
         "module|perfil-usuario|en|pages|oauth-callback": {
             "fingerprint": "d445bd8a418c4256e34f4ea3b6d14fd1d5e9abc9335d22ad714122dd0aa0d496",
@@ -2114,7 +2114,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:07+00:00"
+            "built_at": "2026-09-03T00:01:01+00:00"
         },
         "module|perfil-usuario|en|pages|perfil-usuario": {
             "fingerprint": "4eefbf9e2176259c62442be532302547d2c9328c81d28c8caf8ed5aebf157a96",
@@ -2138,7 +2138,7 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:08+00:00"
+            "built_at": "2026-09-03T00:01:02+00:00"
         },
         "module|perfil-usuario|en|pages|redefinir-senha": {
             "fingerprint": "bb27d3d17d03bd48fee0508a809cb1d5088248bdc46b3f64b4fd7917e225ba8d",
@@ -2155,7 +2155,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:08+00:00"
+            "built_at": "2026-09-03T00:01:03+00:00"
         },
         "module|perfil-usuario|en|pages|redefinir-senha-confirmacao": {
             "fingerprint": "02aab285125d8f1d81cc9ded94315592399d1686485fa6016e10b1c46aa1e11a",
@@ -2172,7 +2172,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:09+00:00"
+            "built_at": "2026-09-03T00:01:03+00:00"
         },
         "module|perfil-usuario|en|pages|sair-sistema": {
             "fingerprint": "13e979bb68946412d8c7ae2b8e30b101436bd6e6b5f79f1c0826b58b62ab0647",
@@ -2189,7 +2189,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:09+00:00"
+            "built_at": "2026-09-03T00:01:04+00:00"
         },
         "module|perfil-usuario|en|pages|signin-2fa": {
             "fingerprint": "4a6aa111912ff38054931eb413b926cbbc137e4a02e615d708151e06442364b0",
@@ -2208,7 +2208,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:10+00:00"
+            "built_at": "2026-09-03T00:01:04+00:00"
         },
         "module|perfil-usuario|en|pages|social-login": {
             "fingerprint": "a2448cb8d2fe1b5be479ca67ba7ee013fc7464df75f0efb1b3ab3ac7f81dae87",
@@ -2225,7 +2225,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:10+00:00"
+            "built_at": "2026-09-03T00:01:05+00:00"
         },
         "module|perfil-usuario|en|pages|validar-usuario": {
             "fingerprint": "c308b06cd08b5da68d5722410a823cf1b817be5a3e8d1c45db3342c94e75448b",
@@ -2242,7 +2242,7 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:10+00:00"
+            "built_at": "2026-09-03T00:01:06+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-2fa-campos": {
             "fingerprint": "762118ccdcaa5088eb29537eb07a79603b6943b0705db9379185240a85962dc8",
@@ -2255,7 +2255,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:11+00:00"
+            "built_at": "2026-09-03T00:01:06+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-api-tokens": {
             "fingerprint": "d986681bbd2f84f4557b95b8f1cbe3780bbb1388d45cef215d926df4ed462d87",
@@ -2268,7 +2268,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:11+00:00"
+            "built_at": "2026-09-03T00:01:07+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-login-metodos": {
             "fingerprint": "38c18d3ac4e38444f96b298f9348a2aa7cdf6c3bc921491ea10a2b9472bb888d",
@@ -2281,7 +2281,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:12+00:00"
+            "built_at": "2026-09-03T00:01:07+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-seguranca": {
             "fingerprint": "14d3cbc08189e2e89d5033ae723b90ad93b1535565972cb22df48d0791d11bcb",
@@ -2294,7 +2294,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:12+00:00"
+            "built_at": "2026-09-03T00:01:08+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-sessoes": {
             "fingerprint": "9bbebaf64243798dfa5357e4b7b40c519bdd03e9ec2ddff9306282c9dafed961",
@@ -2307,7 +2307,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:12+00:00"
+            "built_at": "2026-09-03T00:01:08+00:00"
         },
         "module|perfil-usuario|pt-br|pages|Area-restrita": {
             "fingerprint": "0c678e22f71087f1729ca850e509aadfec0e9fc7ea1472ed93a527e63e94b25b",
@@ -2325,7 +2325,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:13+00:00"
+            "built_at": "2026-09-03T00:01:09+00:00"
         },
         "module|perfil-usuario|pt-br|pages|acessar-sistema": {
             "fingerprint": "acd987f470044141e99fea530a5c8dc3269328e1d0b0101418600e51bfa05286",
@@ -2344,7 +2344,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:13+00:00"
+            "built_at": "2026-09-03T00:01:09+00:00"
         },
         "module|perfil-usuario|pt-br|pages|cadastrar-no-sistema": {
             "fingerprint": "428fb7fcb3deb38f0ebeb18f2a22ed5366a3bacfe0207d4436f9035bb3ad6f27",
@@ -2361,7 +2361,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:14+00:00"
+            "built_at": "2026-09-03T00:01:10+00:00"
         },
         "module|perfil-usuario|pt-br|pages|confirmacao-de-email": {
             "fingerprint": "6d56aa0676c007e6c705600ac08b64f4965e25a3cffa1c63a7579db291a7ba5d",
@@ -2378,7 +2378,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:14+00:00"
+            "built_at": "2026-09-03T00:01:10+00:00"
         },
         "module|perfil-usuario|pt-br|pages|esqueceu-a-senha": {
             "fingerprint": "c05a869c20227024861abfbef762e1277a5f33c8bbfc9d6028dcb29b832df5b7",
@@ -2395,7 +2395,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:15+00:00"
+            "built_at": "2026-09-03T00:01:11+00:00"
         },
         "module|perfil-usuario|pt-br|pages|esqueceu-a-senha-email-enviado": {
             "fingerprint": "51157775d7f9e5f350bc2c68417caf5e87c515deced9da93013a3694e1d214fd",
@@ -2412,7 +2412,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:15+00:00"
+            "built_at": "2026-09-03T00:01:11+00:00"
         },
         "module|perfil-usuario|pt-br|pages|oauth-authenticate": {
             "fingerprint": "dc12f70a4c52eca8a4df366abac50d6885911046e09aca7598649a93e5f8dd16",
@@ -2431,7 +2431,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:15+00:00"
+            "built_at": "2026-09-03T00:01:12+00:00"
         },
         "module|perfil-usuario|pt-br|pages|oauth-authenticate-2fa": {
             "fingerprint": "e71d516a18938d04d86e5807c4ce6e239b61066971e2c44e8d32a18128be2c47",
@@ -2450,7 +2450,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:16+00:00"
+            "built_at": "2026-09-03T00:01:12+00:00"
         },
         "module|perfil-usuario|pt-br|pages|oauth-callback": {
             "fingerprint": "f472c9ff81fc705b29f9d3d269f06540a56db422dc649d7814fe80917243ef3b",
@@ -2467,7 +2467,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:16+00:00"
+            "built_at": "2026-09-03T00:01:13+00:00"
         },
         "module|perfil-usuario|pt-br|pages|perfil-usuario": {
             "fingerprint": "d2b4d16a112afa17822a854bd8c8a148403f69cce0a1ca8cd347ba1732a7c239",
@@ -2491,7 +2491,7 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:17+00:00"
+            "built_at": "2026-09-03T00:01:14+00:00"
         },
         "module|perfil-usuario|pt-br|pages|redefinir-senha": {
             "fingerprint": "ab944969696e7a0f53b4c15c024d174bf99b91603780b4ccb182264a99eed201",
@@ -2508,7 +2508,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:17+00:00"
+            "built_at": "2026-09-03T00:01:14+00:00"
         },
         "module|perfil-usuario|pt-br|pages|redefinir-senha-confirmacao": {
             "fingerprint": "4f3b618f9746b7ebaba63a798064cec5ad7c0cd4cfab5afe2306e046ed533e8f",
@@ -2525,7 +2525,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:18+00:00"
+            "built_at": "2026-09-03T00:01:15+00:00"
         },
         "module|perfil-usuario|pt-br|pages|sair-sistema": {
             "fingerprint": "067ab7637d56b28a4782c4b55bcc6b58a6f6f35caf2620252d08ae3e325672a4",
@@ -2542,7 +2542,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:18+00:00"
+            "built_at": "2026-09-03T00:01:15+00:00"
         },
         "module|perfil-usuario|pt-br|pages|signin-2fa": {
             "fingerprint": "daa6845ff2ec515e734029ddc1a6dcbd0d02635ee27a619ae0ed40025235004d",
@@ -2561,7 +2561,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:18+00:00"
+            "built_at": "2026-09-03T00:01:16+00:00"
         },
         "module|perfil-usuario|pt-br|pages|social-login": {
             "fingerprint": "c9b19b608867499b294ea96ef98d4f9c57b56953f7b8a132c88c74e9554ce768",
@@ -2578,7 +2578,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:19+00:00"
+            "built_at": "2026-09-03T00:01:17+00:00"
         },
         "module|perfil-usuario|pt-br|pages|validar-usuario": {
             "fingerprint": "d17fdc45275469f911aff6773ee5c726cd0f6972ddf119849afc7a1df1caa8be",
@@ -2595,7 +2595,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:19+00:00"
+            "built_at": "2026-09-03T00:01:17+00:00"
         },
         "module|publisher-highlights|en|templates|publisher-highlights-artigos-editorial": {
             "fingerprint": "5e084f1cc7fef8c718903edcc3301e67aed989c4e5511bdb04284819930de940",
@@ -2606,7 +2606,7 @@
                 "modulos/publisher-highlights/resources/en/templates/publisher-highlights-artigos-editorial/publisher-highlights-artigos-editorial.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:20+00:00"
+            "built_at": "2026-09-03T00:01:18+00:00"
         },
         "module|publisher-highlights|en|templates|publisher-highlights-destaque-principal-carousel": {
             "fingerprint": "bc6fdfd01e84816a028cbf49ad89b39dfeec00d25bfc97c378817a2e7637240e",
@@ -2617,7 +2617,7 @@
                 "modulos/publisher-highlights/resources/en/templates/publisher-highlights-destaque-principal-carousel/publisher-highlights-destaque-principal-carousel.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:20+00:00"
+            "built_at": "2026-09-03T00:01:18+00:00"
         },
         "module|publisher-highlights|en|templates|publisher-highlights-lives-video-destaque": {
             "fingerprint": "9bf05de117cf527aa792e2c77d375aaebd38a4a26b98045240f6ca79fef9d2a6",
@@ -2628,7 +2628,7 @@
                 "modulos/publisher-highlights/resources/en/templates/publisher-highlights-lives-video-destaque/publisher-highlights-lives-video-destaque.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:20+00:00"
+            "built_at": "2026-09-03T00:01:19+00:00"
         },
         "module|publisher-highlights|en|templates|publisher-highlights-notas-mosaico": {
             "fingerprint": "6e5d39b3e8de2857be130e6bbf76626597fce7ab3ca99081ef3f6f22109654bc",
@@ -2639,7 +2639,7 @@
                 "modulos/publisher-highlights/resources/en/templates/publisher-highlights-notas-mosaico/publisher-highlights-notas-mosaico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:21+00:00"
+            "built_at": "2026-09-03T00:01:19+00:00"
         },
         "module|publisher-highlights|en|templates|publisher-highlights-noticias-grid-cards": {
             "fingerprint": "91751eca920b9a036e99b72f3c839984f068b368b4de8160e59f84c446c5cae4",
@@ -2650,7 +2650,7 @@
                 "modulos/publisher-highlights/resources/en/templates/publisher-highlights-noticias-grid-cards/publisher-highlights-noticias-grid-cards.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:21+00:00"
+            "built_at": "2026-09-03T00:01:20+00:00"
         },
         "module|publisher-highlights|en|templates|publisher-highlights-noticias-lista-simples": {
             "fingerprint": "405a475d6f3f7327edc610e861a15eb05e34a327bff3ad6e97d5e1919cf0ad3e",
@@ -2661,7 +2661,7 @@
                 "modulos/publisher-highlights/resources/en/templates/publisher-highlights-noticias-lista-simples/publisher-highlights-noticias-lista-simples.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:21+00:00"
+            "built_at": "2026-09-03T00:01:20+00:00"
         },
         "module|publisher-highlights|pt-br|templates|publisher-highlights-artigos-editorial": {
             "fingerprint": "06c0bb8594a8e0eddc53fb7e710e0d4042c705bfef33936acebc9e963ae1dd1a",
@@ -2672,7 +2672,7 @@
                 "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-artigos-editorial/publisher-highlights-artigos-editorial.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:22+00:00"
+            "built_at": "2026-09-03T00:01:21+00:00"
         },
         "module|publisher-highlights|pt-br|templates|publisher-highlights-lives-video-destaque": {
             "fingerprint": "b71bfa0caccc3f5931283b625a6a891e35fc869c3070416d60c53a9cb7e52afe",
@@ -2683,7 +2683,7 @@
                 "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-lives-video-destaque/publisher-highlights-lives-video-destaque.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:22+00:00"
+            "built_at": "2026-09-03T00:01:21+00:00"
         },
         "module|publisher-highlights|pt-br|templates|publisher-highlights-notas-mosaico": {
             "fingerprint": "839bc0651e02aa869f4d544a9a7071121d4f918478fe8091f6969048119e615e",
@@ -2694,7 +2694,7 @@
                 "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-notas-mosaico/publisher-highlights-notas-mosaico.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:23+00:00"
+            "built_at": "2026-09-03T00:01:22+00:00"
         },
         "module|publisher-highlights|pt-br|templates|publisher-highlights-noticias-grid-cards": {
             "fingerprint": "aca2fc483a980bc75eeca5c831fbe6d7e987a33a7385d44ab2456b4369437e52",
@@ -2705,7 +2705,7 @@
                 "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-noticias-grid-cards/publisher-highlights-noticias-grid-cards.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:23+00:00"
+            "built_at": "2026-09-03T00:01:22+00:00"
         },
         "module|publisher-highlights|pt-br|templates|publisher-highlights-noticias-lista-simples": {
             "fingerprint": "258757c83ac29cd78d0a1b2b264b04809fcca22dccc53b732d4dc3cf7fcdda9e",
@@ -2716,7 +2716,7 @@
                 "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-noticias-lista-simples/publisher-highlights-noticias-lista-simples.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:23+00:00"
+            "built_at": "2026-09-03T00:01:23+00:00"
         },
         "module|publisher-highlights|pt-br|templates|publisher-highlights-principal-carousel": {
             "fingerprint": "3200f973a280a8240a452a68049cfa79b86b2ffe4cca1410b5ddc8632e8f75a7",
@@ -2727,7 +2727,7 @@
                 "modulos/publisher-highlights/resources/pt-br/templates/publisher-highlights-principal-carousel/publisher-highlights-principal-carousel.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:24+00:00"
+            "built_at": "2026-09-03T00:01:23+00:00"
         },
         "module|publisher-index|en|templates|publisher-index-agenda": {
             "fingerprint": "046ab4c3adc7a45f28d112d078e9001d758eab906523f5e65dcbb9e354847bfd",
@@ -2738,7 +2738,7 @@
                 "modulos/publisher-index/resources/en/templates/publisher-index-agenda/publisher-index-agenda.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:24+00:00"
+            "built_at": "2026-09-03T00:01:24+00:00"
         },
         "module|publisher-index|en|templates|publisher-index-grid": {
             "fingerprint": "7f5f3a795061ec073491cc243f5a1ddf304b072dceef2ca48ece7af9c74722b6",
@@ -2749,7 +2749,7 @@
                 "modulos/publisher-index/resources/en/templates/publisher-index-grid/publisher-index-grid.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:24+00:00"
+            "built_at": "2026-09-03T00:01:24+00:00"
         },
         "module|publisher-index|en|templates|publisher-index-grid-imagem": {
             "fingerprint": "ca0554d0c63f7c42b254ab3c5d019b47d311249c56237238392654cf54338281",
@@ -2760,7 +2760,7 @@
                 "modulos/publisher-index/resources/en/templates/publisher-index-grid-imagem/publisher-index-grid-imagem.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:25+00:00"
+            "built_at": "2026-09-03T00:01:25+00:00"
         },
         "module|publisher-index|en|templates|publisher-index-lista": {
             "fingerprint": "1794c863e987608fd28bbaf31e6b8f6aaf3823722da560c13167d1f22536b9fc",
@@ -2771,7 +2771,7 @@
                 "modulos/publisher-index/resources/en/templates/publisher-index-lista/publisher-index-lista.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:25+00:00"
+            "built_at": "2026-09-03T00:01:25+00:00"
         },
         "module|publisher-index|en|templates|publisher-index-lista-imagem": {
             "fingerprint": "e45c0ce9c3548ee23e2f832b84553b7b78ecdbe077bfe088cd41e99066df5283",
@@ -2782,7 +2782,7 @@
                 "modulos/publisher-index/resources/en/templates/publisher-index-lista-imagem/publisher-index-lista-imagem.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:25+00:00"
+            "built_at": "2026-09-03T00:01:26+00:00"
         },
         "module|publisher-index|en|templates|publisher-index-timeline": {
             "fingerprint": "6175ac98b090adf0f9235bc65f99687dde432e3aafaac1abcb5854bfea1dc634",
@@ -2793,7 +2793,7 @@
                 "modulos/publisher-index/resources/en/templates/publisher-index-timeline/publisher-index-timeline.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:26+00:00"
+            "built_at": "2026-09-03T00:01:26+00:00"
         },
         "module|publisher-index|pt-br|templates|publisher-index-agenda": {
             "fingerprint": "0a57af940ebcfeac903bfc56eb65473fcdef6912fe283f51c07ecba2b2680c34",
@@ -2804,7 +2804,7 @@
                 "modulos/publisher-index/resources/pt-br/templates/publisher-index-agenda/publisher-index-agenda.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:26+00:00"
+            "built_at": "2026-09-03T00:01:27+00:00"
         },
         "module|publisher-index|pt-br|templates|publisher-index-grid": {
             "fingerprint": "3ff76ee5a06467460b25c7571404d956284043df12da0782359fe4b0f34f67a8",
@@ -2815,7 +2815,7 @@
                 "modulos/publisher-index/resources/pt-br/templates/publisher-index-grid/publisher-index-grid.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:27+00:00"
+            "built_at": "2026-09-03T00:01:27+00:00"
         },
         "module|publisher-index|pt-br|templates|publisher-index-grid-imagem": {
             "fingerprint": "2a6a0106ff1b8b8b6ea0514de42ad1102d7b773e51ace53306b416b84ca367cd",
@@ -2826,7 +2826,7 @@
                 "modulos/publisher-index/resources/pt-br/templates/publisher-index-grid-imagem/publisher-index-grid-imagem.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:27+00:00"
+            "built_at": "2026-09-03T00:01:27+00:00"
         },
         "module|publisher-index|pt-br|templates|publisher-index-lista": {
             "fingerprint": "a3724aedcc07cc0b7d58ab66f3f2056b6c51dd4df74467a7b068fa6b7866c1f4",
@@ -2837,7 +2837,7 @@
                 "modulos/publisher-index/resources/pt-br/templates/publisher-index-lista/publisher-index-lista.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:27+00:00"
+            "built_at": "2026-09-03T00:01:28+00:00"
         },
         "module|publisher-index|pt-br|templates|publisher-index-lista-imagem": {
             "fingerprint": "64d3bb9dae82fc18420617dad5f7eb1060eafc22ee73395a6bfdff0341cfe083",
@@ -2848,7 +2848,7 @@
                 "modulos/publisher-index/resources/pt-br/templates/publisher-index-lista-imagem/publisher-index-lista-imagem.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:28+00:00"
+            "built_at": "2026-09-03T00:01:28+00:00"
         },
         "module|publisher-index|pt-br|templates|publisher-index-timeline": {
             "fingerprint": "aea825b2103c548e021cab87d1ccb5ea702088e57d3ad0b329f56b7837466167",
@@ -2859,7 +2859,7 @@
                 "modulos/publisher-index/resources/pt-br/templates/publisher-index-timeline/publisher-index-timeline.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:28+00:00"
+            "built_at": "2026-09-03T00:01:29+00:00"
         },
         "module|publisher|en|templates|noticias-imagem-destaque": {
             "fingerprint": "69956e79db483bf6fffebaec1a5c6a2661c95b959cbc846aff9fbe5a43129886",
@@ -2870,7 +2870,7 @@
                 "modulos/publisher/resources/en/templates/noticias-imagem-destaque/noticias-imagem-destaque.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:28+00:00"
+            "built_at": "2026-09-03T00:01:29+00:00"
         },
         "module|publisher|en|templates|noticias-simples": {
             "fingerprint": "3a701e9ebe8688eddcde60be42b6f8ba362d3646bc2df14f173ade93219a865d",
@@ -2881,7 +2881,7 @@
                 "modulos/publisher/resources/en/templates/noticias-simples/noticias-simples.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:29+00:00"
+            "built_at": "2026-09-03T00:01:30+00:00"
         },
         "module|publisher|pt-br|templates|noticias-imagem-destaque": {
             "fingerprint": "a56a3c126dc6ba4ffe197957d7c5292e1c77688deb0ca723ddbe9754d523b12a",
@@ -2892,7 +2892,7 @@
                 "modulos/publisher/resources/pt-br/templates/noticias-imagem-destaque/noticias-imagem-destaque.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:29+00:00"
+            "built_at": "2026-09-03T00:01:30+00:00"
         },
         "module|publisher|pt-br|templates|noticias-simples": {
             "fingerprint": "b7e3aae43d3028a356f2fa8e52de5dce1bd939151505de91607e972cd5da6d58",
@@ -2903,7 +2903,7 @@
                 "modulos/publisher/resources/pt-br/templates/noticias-simples/noticias-simples.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-02T22:39:30+00:00"
+            "built_at": "2026-09-03T00:01:31+00:00"
         }
     }
 }

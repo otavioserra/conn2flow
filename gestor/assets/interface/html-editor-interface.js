@@ -1502,13 +1502,12 @@ $(document).ready(function () {
         } catch (e) { cb(null); }
     }
 
-    // req-093: reverte as caixas de variável global (`.c2f-dyn-box`/`.c2f-var-box` com
-    // `data-c2f-marker`) ao MARCADOR original (o texto exato que entrou, ex.: `[[pagina#url-raiz]]`),
-    // para o save gravar as variáveis no banco em vez do valor renderizado. Espelha o
-    // `reconstructOriginal` da Editbar, mas SÓ para variáveis (os widgets já são revertidos a
-    // comentários pelo `htmlEditorGetCleanHtml` do motor). Early-return sem caixas → no-op seguro.
+    // req-093/162: reverte as caixas de variável e atributos resolvidos ao marcador original para o
+    // save gravar as variáveis no banco em vez do valor renderizado. Atributos só são restaurados
+    // quando ainda têm o valor resolvido pelo backend; uma edição manual do usuário prevalece.
     function htmlEditorReconstructVars(html) {
-        if (typeof html !== 'string' || html.indexOf('data-c2f-marker') === -1) return html;
+        if (typeof html !== 'string' || (html.indexOf('data-c2f-marker') === -1 &&
+            html.indexOf('data-c2f-orig-') === -1)) return html;
         var tmp = document.createElement('div');
         tmp.innerHTML = html;
         var boxes = tmp.querySelectorAll('[data-c2f-marker]');
@@ -1524,14 +1523,27 @@ $(document).ready(function () {
             map[token] = marker;
             if (box.parentNode) { box.parentNode.replaceChild(document.createTextNode(token), box); }
         });
+        Array.prototype.forEach.call(tmp.querySelectorAll('*'), function (element) {
+            Array.prototype.slice.call(element.attributes || []).forEach(function (attribute) {
+                var prefix = 'data-c2f-orig-';
+                if (attribute.name.indexOf(prefix) !== 0) return;
+                var name = attribute.name.slice(prefix.length);
+                var resolvedName = 'data-c2f-resolved-' + name;
+                var resolved = element.getAttribute(resolvedName);
+                if (resolved !== null && element.getAttribute(name) === resolved) {
+                    element.setAttribute(name, attribute.value);
+                }
+                element.removeAttribute(attribute.name);
+                element.removeAttribute(resolvedName);
+            });
+        });
         var out = tmp.innerHTML;
         Object.keys(map).forEach(function (token) { out = out.split(token).join(map[token]); });
         return out;
     }
     window.htmlEditorReconstructVars = htmlEditorReconstructVars;
 
-    // Monta o srcdoc do editor visual e abre o modal (reuso entre o fluxo síncrono de layouts e o
-    // assíncrono de páginas/componentes que primeiro renderiza as caixas de variável — req-093).
+    // Monta o srcdoc do editor visual e abre o modal depois da renderização de variáveis (req-093/162).
     function abrirEditorVisualSrcdoc(htmlParaEditor, cssDoUsuario, iframe) {
         const idFramework = frameworkCSS();
         iframe.attr('srcdoc', editorHtmlVisualConteudo(htmlParaEditor, cssDoUsuario, idFramework));
@@ -1569,7 +1581,11 @@ $(document).ready(function () {
             const doctypeMatch = fullHtml.match(/<!DOCTYPE[^>]*>/i);
             window._layoutDoctype = doctypeMatch ? doctypeMatch[0] : '<!DOCTYPE html>';
 
-            abrirEditorVisualSrcdoc(htmlDoUsuario, cssDoUsuario, iframe);
+            // req-162: layouts também precisam de variáveis resolvidas antes de entrar no srcdoc.
+            // Sem isso, `#` do marcador dentro de src/href vira fragmento de URL e provoca 404.
+            htmlEditorRenderVars(htmlDoUsuario, function (data) {
+                abrirEditorVisualSrcdoc((data && data.boxes) || htmlDoUsuario, cssDoUsuario, iframe);
+            });
         } else {
             // Para páginas/componentes, filtrar apenas o conteúdo do <body>
             const htmlDoUsuario = filtrarHtmlBody(CodeMirrorHtml.getDoc().getValue()).trim();

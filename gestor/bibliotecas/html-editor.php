@@ -1361,7 +1361,8 @@ function html_editor_resolver_variaveis($html){
 }
 
 // Envolve as variáveis GLOBAIS em caixas: em TEXTO vira `.c2f-var-box` (valor + marcador); em ATRIBUTO
-// resolve para o valor (visual correto). Variáveis desconhecidas (locais/simulação) ficam literais.
+// resolve para o valor e anota original/resolvido para a reversão condicional no save (req-162).
+// Variáveis desconhecidas (locais/simulação) ficam literais.
 function html_editor_boxes_variaveis($html){
 	$pattern = html_editor_var_pattern();
 	$parts = preg_split('/(<[^>]*>)/', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -1369,11 +1370,22 @@ function html_editor_boxes_variaveis($html){
 
 	foreach($parts as $i => $part){
 		if(($i % 2) === 1){
-			// Segmento de TAG (atributos): resolve para o valor.
-			$out .= preg_replace_callback($pattern, function($m){
-				if(stripos($m[1], 'widgets#') === 0) return $m[0];
-				$val = html_editor_resolver_var(trim($m[1]));
-				return ($val === null) ? $m[0] : $val;
+			// Segmento de TAG: resolve cada atributo e guarda as duas pontas do round-trip.
+			$out .= preg_replace_callback('/(\s)([^\s=\/>]+)(\s*=\s*)(["\'])(.*?)\4/s', function($attr) use ($pattern){
+				$name = $attr[2];
+				if(stripos($name, 'data-c2f-orig-') === 0 || stripos($name, 'data-c2f-resolved-') === 0) return $attr[0];
+				$original = $attr[5];
+				$resolved = preg_replace_callback($pattern, function($m){
+					if(stripos($m[1], 'widgets#') === 0) return $m[0];
+					$val = html_editor_resolver_var(trim($m[1]));
+					return ($val === null) ? $m[0] : $val;
+				}, $original);
+				if($resolved === $original) return $attr[0];
+				$escapedOriginal = htmlspecialchars($original, ENT_QUOTES, 'UTF-8');
+				$escapedResolved = htmlspecialchars($resolved, ENT_QUOTES, 'UTF-8');
+				return $attr[1].$name.$attr[3].$attr[4].$resolved.$attr[4]
+					.' data-c2f-orig-'.$name.'="'.$escapedOriginal.'"'
+					.' data-c2f-resolved-'.$name.'="'.$escapedResolved.'"';
 			}, $part);
 		} else {
 			// Segmento de TEXTO: cada variável GLOBAL vira caixa de destaque.
