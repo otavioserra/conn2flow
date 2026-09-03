@@ -13,7 +13,7 @@
 # 5. Handles token renewal on 401 errors
 #
 # Usage:
-#   bash update-system.sh [--project PROJECT_ID] [--mode MODE] [--tag TAG] [--dry-run] [--local] [--debug]
+#   bash update-system.sh [--project PROJECT_ID] [--mode MODE] [--tag TAG] [--dry-run] [--local] [--debug] [--insecure]
 #
 # Modes: full (default), only-files, only-db
 
@@ -77,6 +77,10 @@ NO_DB=""
 FORCE_ALL=""
 LOG_DIFF=""
 BACKUP=""
+FORCE_INSECURE=""
+CURL_INSECURE_ARGS=()
+API_CURL_EXIT=0
+API_CURL_ERROR=""
 
 # Argument parsing
 while [[ $# -gt 0 ]]; do
@@ -121,6 +125,10 @@ while [[ $# -gt 0 ]]; do
             BACKUP="1"
             shift
             ;;
+        --insecure)
+            FORCE_INSECURE="1"
+            shift
+            ;;
         --help|-h)
             echo ""
             echo -e "${BOLD}Conn2Flow - System Update via API${NC}"
@@ -138,6 +146,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --force-all           Force all database updates"
             echo "  --log-diff            Log detailed diffs for database"
             echo "  --backup              Create backup before update"
+            echo "  --insecure            Allow a self-signed TLS certificate (local development only)"
             echo "  --help, -h            Show this help"
             echo ""
             echo "Examples:"
@@ -215,18 +224,42 @@ api_call() {
         data="${data}&${extra_params}"
     fi
 
-    response=$(curl -s -w "\n%{http_code}" \
+    local curl_error_file
+    local response
+    curl_error_file=$(mktemp)
+    API_CURL_EXIT=0
+    API_CURL_ERROR=""
+
+    response=$(curl -sS -w "\n%{http_code}" \
+        "${CURL_INSECURE_ARGS[@]}" \
         -X POST \
         -H "Authorization: Bearer $token" \
         -H "Content-Type: application/x-www-form-urlencoded" \
         -d "$data" \
-        "$api_url" 2>/dev/null)
+        "$api_url" 2>"$curl_error_file") || API_CURL_EXIT=$?
+
+    API_CURL_ERROR=$(<"$curl_error_file")
+    rm -f "$curl_error_file"
 
     http_code=$(echo "$response" | tail -n1)
     response_body=$(echo "$response" | head -n -1)
 
     API_HTTP_CODE=$http_code
     API_RESPONSE=$response_body
+}
+
+print_api_failure() {
+    local step="$1"
+    log_error "$step failed (HTTP ${API_HTTP_CODE:-unknown}, cURL exit ${API_CURL_EXIT:-unknown})"
+    if [ -n "$API_CURL_ERROR" ]; then
+        log_error "cURL: $API_CURL_ERROR"
+    fi
+    if [ -n "$API_RESPONSE" ]; then
+        log_error "Response body:"
+        echo "$API_RESPONSE" | jq . 2>/dev/null || echo "$API_RESPONSE"
+    else
+        log_error "Response body: <empty>"
+    fi
 }
 
 # Parse JSON field from response
@@ -308,6 +341,12 @@ if [ -z "$PROJECT_URL" ] || [ "$PROJECT_URL" = "null" ]; then
     exit 1
 fi
 
+PROJECT_INSECURE=$(jq -r ".devProjects.\"$PROJECT_TARGET\".api.insecure_ssl // .devProjects.\"$PROJECT_TARGET\".insecure_ssl // false" "$ENV_FILE" 2>/dev/null)
+if [ -n "$FORCE_INSECURE" ] || [ "$PROJECT_INSECURE" = "true" ] || [[ "$PROJECT_URL" =~ ^https://[^/]*\.local([:/]|$) ]]; then
+    CURL_INSECURE_ARGS=(--insecure)
+    log_warning "TLS certificate verification disabled for this local development endpoint."
+fi
+
 # Get OAuth token
 log "Getting authentication token..."
 ACCESS_TOKEN=$(get_oauth_token "$PROJECT_TARGET")
@@ -351,7 +390,7 @@ log_step "Step 1/4: Starting update session..."
 api_call "$API_URL" "$ACCESS_TOKEN" "start" "$EXTRA_PARAMS"
 
 # Handle 401 - try token renewal
-if [ "$API_HTTP_CODE" -eq 401 ]; then
+if [ "$API_CURL_EXIT" -eq 0 ] && [ "$API_HTTP_CODE" -eq 401 ]; then
     if try_renew_token "$PROJECT_TARGET"; then
         api_call "$API_URL" "$ACCESS_TOKEN" "start" "$EXTRA_PARAMS"
     else
@@ -360,9 +399,8 @@ if [ "$API_HTTP_CODE" -eq 401 ]; then
     fi
 fi
 
-if [ "$API_HTTP_CODE" -ne 200 ]; then
-    log_error "Failed to start update session (HTTP $API_HTTP_CODE)"
-    echo "$API_RESPONSE" | jq . 2>/dev/null || echo "$API_RESPONSE"
+if [ "$API_CURL_EXIT" -ne 0 ] || [ "$API_HTTP_CODE" -ne 200 ]; then
+    print_api_failure "Starting update session"
     exit 1
 fi
 
@@ -394,15 +432,16 @@ if [ "$NEXT_STEP" = "deploy_files" ] || [ "$NEXT_STEP" = "deploy" ]; then
 
     api_call "$API_URL" "$ACCESS_TOKEN" "deploy" "sid=$SID"
 
-    if [ "$API_HTTP_CODE" -ne 200 ]; then
-        log_error "Deploy failed (HTTP $API_HTTP_CODE)"
-        echo "$API_RESPONSE" | jq . 2>/dev/null || echo "$API_RESPONSE"
+    if [ "$API_CURL_EXIT" -ne 0 ] || [ "$API_HTTP_CODE" -ne 200 ]; then
+        print_api_failure "Deploy"
         exit 1
     fi
 
     ERROR=$(json_field "$API_RESPONSE" '.data.error // empty')
     if [ -n "$ERROR" ] && [ "$ERROR" != "null" ]; then
         log_error "Deploy error: $ERROR"
+        log_error "Response body:"
+        echo "$API_RESPONSE" | jq . 2>/dev/null || echo "$API_RESPONSE"
         exit 1
     fi
 
@@ -429,9 +468,8 @@ if [ "$NEXT_STEP" = "database" ] || [ "$NEXT_STEP" = "db" ]; then
 
     api_call "$API_URL" "$ACCESS_TOKEN" "db" "sid=$SID"
 
-    if [ "$API_HTTP_CODE" -ne 200 ]; then
-        log_error "Database update failed (HTTP $API_HTTP_CODE)"
-        echo "$API_RESPONSE" | jq . 2>/dev/null || echo "$API_RESPONSE"
+    if [ "$API_CURL_EXIT" -ne 0 ] || [ "$API_HTTP_CODE" -ne 200 ]; then
+        print_api_failure "Database update"
         exit 1
     fi
 
@@ -442,6 +480,8 @@ if [ "$NEXT_STEP" = "database" ] || [ "$NEXT_STEP" = "db" ]; then
         log_warning "Database update skipped (mode: $UPDATE_MODE)"
     elif [ -n "$ERROR" ] && [ "$ERROR" != "null" ]; then
         log_error "Database error: $ERROR"
+        log_error "Response body:"
+        echo "$API_RESPONSE" | jq . 2>/dev/null || echo "$API_RESPONSE"
         log_warning "Continuing to finalize step..."
     else
         log_success "Database update completed!"
@@ -461,9 +501,8 @@ log_step "Step 4/4: Finalizing..."
 
 api_call "$API_URL" "$ACCESS_TOKEN" "finalize" "sid=$SID"
 
-if [ "$API_HTTP_CODE" -ne 200 ]; then
-    log_error "Finalize failed (HTTP $API_HTTP_CODE)"
-    echo "$API_RESPONSE" | jq . 2>/dev/null || echo "$API_RESPONSE"
+if [ "$API_CURL_EXIT" -ne 0 ] || [ "$API_HTTP_CODE" -ne 200 ]; then
+    print_api_failure "Finalize"
     exit 1
 fi
 

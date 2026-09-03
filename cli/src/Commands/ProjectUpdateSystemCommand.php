@@ -26,7 +26,9 @@ final class ProjectUpdateSystemCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f project:update-system [projectID]\n\nRuns update-system.sh [--project projectID]";
+        return "Usage: c2f project:update-system [projectID] [--insecure]\n\n" .
+            "Runs update-system.sh [--project projectID]. The --insecure flag is restricted to " .
+            "self-signed TLS endpoints in local development.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -43,6 +45,7 @@ final class ProjectUpdateSystemCommand extends BaseProcessCommand
         }
 
         $projectArg = $project ? "--project " . escapeshellarg($project) : "";
-        return $this->runShell("bash " . escapeshellarg($script) . " {$projectArg}", $output);
+        $insecureArg = $input->hasOption('insecure') ? ' --insecure' : '';
+        return $this->runShell("bash " . escapeshellarg($script) . " {$projectArg}{$insecureArg}", $output);
     }
 }

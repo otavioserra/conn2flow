@@ -49,6 +49,7 @@
       "ssh_cli_entrypoint": "./c2f",
       "url": "",
       "api": {
+        "insecure_ssl": false,
         "access_token": "",
         "refresh_token": "",
         "token_type": "Bearer",
