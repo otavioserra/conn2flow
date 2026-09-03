@@ -19,6 +19,10 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'admin-cron';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']]		=	json_decode(file_get_contents(__DIR__ . '/admin-cron.json'), true);
 
+// O despacho desacoplado vive num include sem efeito colateral para poder ser exercitado sem
+// abrir a interface (REQ-039).
+require_once __DIR__ . '/includes/admin-cron-dispatch.php';
+
 // ==== Auxiliares
 
 /**
@@ -375,6 +379,35 @@ function admin_cron_ajax_disparar(){
 	if(!$tarefa){
 		$_GESTOR['ajax-json'] = Array('status' => 'Erro', 'message' => admin_cron_var('api-error-task-not-found'));
 		return;
+	}
+
+	// Tarefa que reinicia servico do sistema NAO pode rodar dentro do worker web. O
+	// provisionamento HestiaCP chama `systemctl restart php8.5-fpm`: a reinicializacao derruba o
+	// proprio worker que atende esta requisicao, o nginx devolve 502 Bad Gateway e o
+	// provisionamento morre no meio, deixando tenant parcial para tras (REQ-039).
+	if(admin_cron_tarefa_desacoplada($tarefa)){
+		$disparo = admin_cron_disparar_em_background($tarefa);
+
+		if($disparo['ok']){
+			$tarefas = admin_cron_tarefas();
+
+			// Nenhum resultado e gravado aqui de proposito: quem registra duracao e status e o
+			// processo CLI, ao terminar. Escrever um status agora sobrescreveria o real.
+			$_GESTOR['ajax-json'] = Array(
+				'status' => 'Ok',
+				'message' => admin_cron_var('msg-run-detached'),
+				'data' => Array(
+					'desacoplada' => true,
+					'tarefas' => $tarefas,
+					'estatisticas' => admin_cron_estatisticas($tarefas),
+				),
+			);
+			return;
+		}
+
+		// Sem CLI ao alcance (Windows, proc_open bloqueado, cron.php ausente) o caminho sincrono
+		// segue valendo: e o comportamento de antes, e melhor que recusar o disparo.
+		cron_log_admin_fallback($tarefa['id'], $disparo['erro']);
 	}
 
 	$resultado = cron_tarefa_executar($tarefa);

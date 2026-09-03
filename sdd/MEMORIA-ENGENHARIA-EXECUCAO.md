@@ -13,6 +13,37 @@
 
 ## Tarefas recentes
 
+### 2026-09-03 — BATCH-166 (REQ-039): a rotina que matava o worker que a chamou
+
+- **O disparo manual e o tick agendado NAO sao o mesmo caminho.** A esteira de provisionamento do
+  HestiaCP chama `systemctl restart php8.5-fpm`. Pelo cron ela roda no CLI e sempre funcionou; pelo
+  botao "Disparar agora" ela roda DENTRO do pool FPM e a reinicializacao mata o proprio worker da
+  requisicao — `502 Bad Gateway` e tenant parcial deixado no painel. Ao portar uma rotina de CLI
+  para a tela, pergunte o que ela faz com o processo que a hospeda.
+- **`nohup` nao basta; `setsid` e a peca central.** Sem uma sessao nova, o filho continua no grupo de
+  processos do pool e o restart o mata junto com o pai. O `&` faz o `sh -c` retornar de imediato,
+  entao `proc_close()` nao bloqueia a resposta ao navegador.
+- **`PHP_BINARY` sob PHP-FPM aponta para o binario do POOL (`php-fpm`)**, nao para o CLI. Usa-lo
+  rodaria o cron sob o SAPI errado. A ordem correta e `config.cron_php_binary` ->
+  `PHP_BINDIR . '/php'` executavel -> `PHP_BINARY` so se o processo ja for CLI -> `php` no PATH.
+- **Nao coloque id de tarefa de modulo de projeto dentro do nucleo.** A REQ nomeava
+  `host-manager-provisionamento`, que vive no `conn2flow-site`. A decisao virou DECLARACAO da propria
+  tarefa (`parametros.execucao = "desacoplada"`), e um teste guarda a ausencia desse nome no nucleo.
+- **`parametros` do banco pode estar congelado.** A sincronizacao so o reescreve quando
+  `user_modified` esta vazio (D-036): basta o operador ter pausado a tarefa UMA vez para a
+  declaracao nova nunca chegar, reexpondo o 502 em silencio. Como a declaracao e de SEGURANCA, o
+  manifesto do modulo entrou como segunda fonte, com leitura pontual pelo campo `modulo` e o nome
+  validado por regex antes de virar caminho.
+- **Confirmado de novo: `<modulo>.php` termina em `<modulo>_start()` e abre a interface.** O primeiro
+  teste deste lote deu `Call to undefined function hook_do_action()` a partir de
+  `interface_finalizar()`. A saida e a mesma do BATCH-028 no host-manager: extrair para um include
+  sem efeito colateral (`includes/admin-cron-dispatch.php`).
+- **Nao grave status no caminho desacoplado.** Quem registra duracao e resultado e o processo CLI ao
+  terminar; um placeholder escrito no disparo sobrescreveria o resultado real.
+- **Indisponibilidade de CLI degrada, nao recusa.** Windows, `proc_open` bloqueado ou `cron.php`
+  ausente voltam ao caminho sincrono anterior, com o motivo em log — recusar o disparo seria
+  regressao onde ele funcionava.
+
 ### 2026-09-03 — BATCH-165 (REQ-038): script enfileirado que nunca rodava
 
 - **`<!-- pagina#js -->` esta no `<head>` de TODOS os layouts do gestor** (linha 30 de 102 no

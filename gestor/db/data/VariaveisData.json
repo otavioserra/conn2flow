@@ -5276,6 +5276,15 @@
     {
         "language": "pt-br",
         "modulo": "admin-cron",
+        "id": "msg-run-detached",
+        "valor": "Tarefa iniciada em segundo plano. O resultado aparece na listagem ao final da execução.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
         "id": "msg-toggle-success",
         "valor": "Estado da tarefa atualizado.",
         "tipo": "string",
@@ -5998,6 +6007,15 @@
         "modulo": "admin-cron",
         "id": "msg-run-success",
         "valor": "Task executed.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "msg-run-detached",
+        "valor": "Task started in the background. The result shows up in the list once it finishes.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

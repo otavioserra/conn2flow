@@ -371,6 +371,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "msg-run-detached",
+                    "value": "Tarefa iniciada em segundo plano. O resultado aparece na listagem ao final da execução.",
+                    "type": "string"
+                },
+                {
                     "id": "msg-toggle-success",
                     "value": "Estado da tarefa atualizado.",
                     "type": "string"
@@ -800,6 +805,11 @@
                 {
                     "id": "msg-run-success",
                     "value": "Task executed.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-run-detached",
+                    "value": "Task started in the background. The result shows up in the list once it finishes.",
                     "type": "string"
                 },
                 {

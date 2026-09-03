@@ -923,3 +923,37 @@ Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execu�
 - [ ] Homologação em runtime em `/admin-cron/`: pendente do operador. O mirror local
       `conn2flow-gestor` (projeto `project-test`) não está montado em `public_html`, e nenhum banco
       local tem a página `admin-cron` instalada — a validação de tela precisa da VM.
+
+## BATCH-166 — Disparo desacoplado do "Disparar agora" (REQ-039, Pilar 5)
+
+- [x] Causa confirmada: a rotina de provisionamento chama `systemctl restart php8.5-fpm` e, disparada
+      pelo painel, roda dentro do pool FPM — a reinicialização derruba o worker da própria requisição
+      (`502 Bad Gateway`) e o provisionamento morre no meio, deixando tenant parcial no HestiaCP.
+- [x] Decisão de desacoplar declarada pela tarefa (`parametros.execucao = "desacoplada"`), não por
+      lista fixa no núcleo. Teste `testNucleoNaoConheceModuloDeProjetoPeloNome` guarda a ausência do
+      id `host-manager-provisionamento` no código do núcleo.
+- [x] Manifesto do módulo como segunda fonte: `parametros` só é ressincronizado com `user_modified`
+      vazio (D-036), então uma tarefa já pausada pelo operador congelaria a versão antiga e reexporia
+      o 502 em silêncio. Nome do módulo validado por regex antes de virar caminho de arquivo.
+- [x] `setsid` no comando: sem sessão nova o filho continua no grupo de processos do pool e é morto
+      junto pelo restart. `escapeshellarg` em todos os argumentos.
+- [x] `PHP_BINARY` só é usado quando o processo já é CLI; sob FPM ele aponta para o binário do pool.
+- [x] Nenhum `cron_tarefa_registrar()` no caminho desacoplado — quem grava duração e status é o
+      processo CLI ao terminar.
+- [x] Ambiente sem CLI (Windows, `proc_open` bloqueado, `cron.php` ausente) degrada para o caminho
+      síncrono anterior, com o motivo em log.
+- [x] Funções extraídas para `includes/admin-cron-dispatch.php`, include sem efeito colateral:
+      `admin-cron.php` termina em `admin_cron_start()` e abrir a interface num teste produziu
+      `Call to undefined function hook_do_action()`.
+- [x] Guarda validada por mutação: removido o fallback de manifesto,
+      `testManifestoDoModuloValeQuandoOBancoEstaDesatualizado` acusa.
+- [x] `php -l` nos 2 arquivos PHP tocados: OK.
+- [x] `AdminCronReq039Test`: **13/13**, 24 asserções.
+- [x] PHPUnit completo: **1.142/1.142**, 7.690 asserções, 4 skipped, 0 falhas.
+- [x] Vitest completo: 29/29 arquivos, **417/417** testes, 0 falhas.
+- [x] `c2f resources:sync`: 2.846 recursos, 0 problemas. (A publicação em `dist/` não completou por
+      ausência de `PUBLIC_PATH` no ambiente — condição pré-existente; o próprio aviso confirma que os
+      recursos foram sincronizados e as URLs seguem resolvendo pelo `arquivo-estatico`.)
+- [ ] Homologação na VM Lab: disparar `host-manager-provisionamento` em `/admin-cron/` e confirmar
+      resposta imediata sem `502`, com o resultado surgindo na listagem ao fim do processo CLI.
+      Depende do `BATCH-032` do `conn2flow-site` implantado — é ele que declara o desacoplamento.
