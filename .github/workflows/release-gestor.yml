@@ -219,18 +219,18 @@ jobs:
 
             Esta versão traz importantes avanços em performance, governança de CI/CD, atualizações de infraestrutura de workflows e resiliência visual no editor.
 
-            ### 🎯 Novidades Principais desta Versão (v2.10.9):
-            - ✅ **Paridade Visual Total e Persistência de CSS Pré-compilado**: Resolução completa da paridade das 3 camadas Tailwind (páginas públicas, pré-visualizador e Live Editor), persistindo o baseline acumulado de templates inseridos e eliminando regras órfãs no runtime (`req-158`, `req-159`, `req-160`).
-            - ✅ **Eliminação de 404 e Blindagem de Templates no Editor HTML**: Migração dos cards de templates para `<template>` inerte (`req-161`) e interpolação defensiva de variáveis (`req-162`), eliminando requisições 404 espúrias no console do navegador (`{{thumbnail}}`).
-            - ✅ **Correção no Painel Admin Cron (`/admin-cron/`)**: Ajustada a inicialização do `admin-cron.js` com ouvinte em `DOMContentLoaded` (`BATCH-165` / `REQ-038`), garantindo carregamento da tabela de tarefas e interatividade dos botões.
-            - ✅ **Melhorias de Pipeline e Transporte SSH na CLI**: Suporte a SSH em `css:audit`, `assets:publish` e `project:update-all`, com auto-autorização da VM local e suporte a gestor distribuído com `chown` automático.
-            - ✅ **Stack de CI/CD 100% em Node 24**: Workflows de release do GitHub Actions rodando de ponta a ponta com `actions/checkout@v5`, `setup-node@v5`, `cache@v5` e `softprops/action-gh-release@v3`.
+            ### 🎯 Novidades Principais desta Versão (v2.10.10):
+            - ✅ **Disparo Desacoplado no Admin Cron (`setsid` CLI)**: Resolução de reinicialização de FPM sem `502 Bad Gateway` no botão "Disparar agora" (`BATCH-166` / `REQ-039`), desacoplando o processo sob sessão POSIX independente e retornando resposta imediata ao navegador.
+            - ✅ **Robustez no Pipeline de CSS & Tailwind Global**: Suporte ao Tailwind CSS global pelo PATH no Linux, propagação de `NODE_PATH` em `css-regenerar.php` e detecção automática de instalações planas vs checkout core em `c2f css:rebuild` (`REQ-053`).
+            - ✅ **Sincronização do Launcher CLI via SSH**: Sincronização automática do executável `c2f` e diretório `cli/` em deploys de projetos remotos SSH e projeto mestre via `sync-core-to-project.sh`.
+            - ✅ **Paridade Visual Total e Persistência de CSS Pré-compilado**: Resolução completa da paridade das 3 camadas Tailwind (páginas públicas, pré-visualizador e Live Editor) com baseline acumulado de templates inseridos.
+            - ✅ **Eliminação de 404 e Blindagem de Templates no Editor HTML**: Tags `<template>` inertes para cards de modelos (`req-161`) e resolução defensiva de variáveis em layouts (`req-162`).
 
             ### 🌟 Destaques Consolidados das Versões Recentes:
+            - **Admin Cron Aprimorado**: Inicialização com `DOMContentLoaded`, tabela responsiva e rotinas desacopladas.
+            - **Stack CI/CD 100% em Node 24**: Workflows de release rodando integralmente com `checkout@v5`, `setup-node@v5`, `cache@v5` e `action-gh-release@v3`.
             - **Live Editor e Site Toolbar (Editbar)**: Edição in-place com mapeamento reativo ao DOM vivo e cópia persistente entre páginas.
             - **Assets Externos Locais & Zero CDN**: Bibliotecas jQuery, SortableJS, DataTables, Quill e Lucide servidas diretamente do core local.
-            - **Minificação Nativa no Build**: Otimização automática de assets via Terser/CSS reduzindo transferências em mais de 50%.
-            - **Layouts Tailwind v4 Modernizados**: Telas administrativas responsivas e temas atualizados.
             - **Segurança Reforçada**: Personal Access Tokens (PAT), 2FA com TOTP e proteção CSRF CSPRNG.
 
             ### 📦 Conteúdo da Release:

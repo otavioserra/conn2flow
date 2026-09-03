@@ -75,16 +75,17 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.9 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.10 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Paridade Visual em 3 Camadas & Persistência de CSS**: Paridade integral entre páginas públicas, pré-visualizador e Live Editor, com persistência do baseline acumulado de templates inseridos e eliminação de regras CSS ausentes em runtime (`req-158`, `req-159`, `req-160`).
-- **Blindagem de Templates no Editor HTML & Prevenção de 404**: Migração dos cards de templates para tags inertes `<template>` (`req-161`) e resolução defensiva de variáveis (`req-162`), eliminando requisições 404 espúrias no navegador (`{{thumbnail}}`).
-- **Correção de Inicialização no Admin Cron**: Ajustado o ciclo de vida do `admin-cron.js` com `DOMContentLoaded` (`BATCH-165` / `REQ-038`), garantindo a renderização da tabela de tarefas e interatividade dos botões.
-- **Transporte SSH na CLI & Gestor Distribuído**: Suporte nativo a SSH em `css:audit`, `assets:publish` e `project:update-all`, com auto-autorização da VM local e permissões seguras via `chown`.
-- **Pipeline CI/CD 100% em Node 24**: Esteira do GitHub Actions rodando integralmente com ações nativas de Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`).
+- **Disparo Desacoplado no Admin Cron**: Desacoplamento de rotinas manuais em `/admin-cron/` via sessão CLI independente (`setsid`), prevenindo erro `502 Bad Gateway` ao reiniciar serviços como o PHP-FPM (`BATCH-166` / `REQ-039`).
+- **Suporte ao Tailwind Global e Pipeline de CSS**: Resolução automática do binário do Tailwind pelo PATH no Linux, propagação de `NODE_PATH` em `css-regenerar.php` e detecção de caminhos em instalações planas no `c2f css:rebuild` (`REQ-053`).
+- **Sincronização do Launcher c2f**: Sincronização automática do launcher CLI e diretório `cli/` em deploys de projetos remotos SSH e projeto mestre via `sync-core-to-project.sh`.
+- **Paridade Visual em 3 Camadas no Tailwind**: Paridade entre páginas públicas, pré-visualizador e Live Editor com persistência do baseline acumulado de templates.
+- **Blindagem de Templates no Editor HTML**: Tags `<template>` inertes para cards de modelos (`req-161`) e resolução defensiva de variáveis (`req-162`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.9**: Paridade Tailwind em 3 camadas, `<template>` inerte no editor HTML, correção de `DOMContentLoaded` no Admin Cron e transporte SSH na CLI.
 - **v2.10.8**: Migração completa das ações do GitHub Actions para Node 24 (`action-gh-release@v3`).
 - **v2.10.7**: Atualização parcial das GitHub Actions para Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`).
 - **v2.10.6**: Otimização do pipeline CI/CD e remoção de etapas redundantes.

@@ -71,16 +71,17 @@ content workflows.
 
 ## 🆕 Latest Version
 
-**v2.10.9 (September 2026)** *(Current base: v2.9.51)*
+**v2.10.10 (September 2026)** *(Current base: v2.9.51)*
 
-- **Tailwind Three-Layer Visual Parity & CSS Persistence**: Full parity across public pages, live preview iframe, and Live Editor, persisting accumulated template baselines and eliminating missing rules in runtime (`req-158`, `req-159`, `req-160`).
-- **HTML Editor Template Shielding & 404 Prevention**: Converted template cards to inert `<template>` tags (`req-161`) and added defensive variable resolution (`req-162`), eliminating spurious 404 network requests (`{{thumbnail}}`).
-- **Admin Cron Panel DOM Ready Fix**: Resolved initialization timing in `admin-cron.js` via `DOMContentLoaded` listener (`BATCH-165` / `REQ-038`), restoring task table rendering and action button interactions.
-- **SSH CLI Transport & Distributed Gestor**: Added SSH transport support to `css:audit`, `assets:publish` and `project:update-all` with automatic VM authorization and permissions management.
-- **Full Node 24 CI/CD Pipeline**: GitHub Actions workflows upgraded end-to-end to native Node 24 actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`).
+- **Admin Cron Detached Execution**: Decoupled manual task triggers in `/admin-cron/` via independent POSIX CLI sessions (`setsid`), preventing `502 Bad Gateway` timeouts when restarting system services such as PHP-FPM (`BATCH-166` / `REQ-039`).
+- **CSS Pipeline & Tailwind Global Support**: Enabled global Tailwind CSS resolution via system PATH on Linux, propagated `NODE_PATH` in `css-regenerar.php`, and added flat installation path detection in `c2f css:rebuild` (`REQ-053`).
+- **CLI Launcher Synchronization**: Automated synchronization of the `c2f` launcher executable and `cli/` directory to SSH-deployed projects and master project via `sync-core-to-project.sh`.
+- **Tailwind Three-Layer Visual Parity & CSS Persistence**: Full visual parity across public pages, live preview iframe, and Live Editor with accumulated baseline persistence.
+- **HTML Editor Template Shielding**: Converted template cards to inert `<template>` tags (`req-161`) and added defensive variable resolution (`req-162`).
 
 ### Previous 2.10.x Releases
 
+- **v2.10.9**: Three-layer Tailwind parity, inert `<template>` in HTML editor, Admin Cron `DOMContentLoaded` fix, SSH CLI transport.
 - **v2.10.8**: GitHub Actions full migration to native Node 24 actions (`action-gh-release@v3`).
 - **v2.10.7**: Partial GitHub Actions Node 24 upgrade (`checkout@v5`, `setup-node@v5`, `cache@v5`).
 - **v2.10.6**: CI/CD build pipeline streamlining and redundant step removal.

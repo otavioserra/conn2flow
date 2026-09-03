@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.10] - 2026-09-03
+
+### Added
+- Admin Cron: Decoupled manual task execution via independent POSIX CLI sessions (`setsid`), preventing `502 Bad Gateway` timeouts when restarting system services like PHP-FPM (`BATCH-166` / `REQ-039`).
+- CSS Pipeline & CLI: Global Tailwind CSS resolution via PATH on Linux, `NODE_PATH` propagation in `css-regenerar.php`, and flat-installation path detection in `c2f css:rebuild` (`REQ-053`).
+- Project Transport: Automated sync of `c2f` launcher executable and `cli/` directory to SSH targets and master project via `sync-core-to-project.sh`.
+
 ## [2.10.9] - 2026-09-03
 
 ### Added
