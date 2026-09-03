@@ -75,14 +75,17 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.8 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.9 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Migração Completa das GitHub Actions para Node 24**: `softprops/action-gh-release` atualizado para `v3` (Node 24 nativo), completando a migração total de todas as actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`) e eliminando definitivamente os avisos de depreciação do Node 20 (`req-157` / `BATCH-160`).
-- **Otimização da Esteira CI/CD**: GitHub Actions consome diretamente os artefatos pré-compilados localmente, sem recompilação remota redundante de recursos Tailwind (`req-156` / `BATCH-159`).
-- **Paridade Visual Estrita e Isolamento de CSS**: Governança e isolamento de Tailwind CSS no iframe do editor visual e nas páginas públicas (`req-156` / `BATCH-158`).
+- **Paridade Visual em 3 Camadas & Persistência de CSS**: Paridade integral entre páginas públicas, pré-visualizador e Live Editor, com persistência do baseline acumulado de templates inseridos e eliminação de regras CSS ausentes em runtime (`req-158`, `req-159`, `req-160`).
+- **Blindagem de Templates no Editor HTML & Prevenção de 404**: Migração dos cards de templates para tags inertes `<template>` (`req-161`) e resolução defensiva de variáveis (`req-162`), eliminando requisições 404 espúrias no navegador (`{{thumbnail}}`).
+- **Correção de Inicialização no Admin Cron**: Ajustado o ciclo de vida do `admin-cron.js` com `DOMContentLoaded` (`BATCH-165` / `REQ-038`), garantindo a renderização da tabela de tarefas e interatividade dos botões.
+- **Transporte SSH na CLI & Gestor Distribuído**: Suporte nativo a SSH em `css:audit`, `assets:publish` e `project:update-all`, com auto-autorização da VM local e permissões seguras via `chown`.
+- **Pipeline CI/CD 100% em Node 24**: Esteira do GitHub Actions rodando integralmente com ações nativas de Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.8**: Migração completa das ações do GitHub Actions para Node 24 (`action-gh-release@v3`).
 - **v2.10.7**: Atualização parcial das GitHub Actions para Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`).
 - **v2.10.6**: Otimização do pipeline CI/CD e remoção de etapas redundantes.
 - **v2.10.5**: Documentação de paridade visual estrita do Tailwind e atualização dos limiares de memory gardening.

@@ -71,14 +71,17 @@ content workflows.
 
 ## 🆕 Latest Version
 
-**v2.10.8 (September 2026)** *(Current base: v2.9.51)*
+**v2.10.9 (September 2026)** *(Current base: v2.9.51)*
 
-- **GitHub Actions Full Node 24 Migration**: `softprops/action-gh-release` updated to `v3` (Node 24 native), completing the full migration of all workflow actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`) — definitively eliminating all Node 20 deprecation warnings (`req-157` / `BATCH-160`).
-- **CI/CD Build Pipeline Streamlining**: GitHub Actions now consumes pre-compiled release artifacts directly without redundant remote Tailwind recompilation (`req-156` / `BATCH-159`).
-- **Strict Visual Parity & CSS Isolation**: Governance and isolation of Tailwind CSS in the visual editor iframe and public pages (`req-156` / `BATCH-158`).
+- **Tailwind Three-Layer Visual Parity & CSS Persistence**: Full parity across public pages, live preview iframe, and Live Editor, persisting accumulated template baselines and eliminating missing rules in runtime (`req-158`, `req-159`, `req-160`).
+- **HTML Editor Template Shielding & 404 Prevention**: Converted template cards to inert `<template>` tags (`req-161`) and added defensive variable resolution (`req-162`), eliminating spurious 404 network requests (`{{thumbnail}}`).
+- **Admin Cron Panel DOM Ready Fix**: Resolved initialization timing in `admin-cron.js` via `DOMContentLoaded` listener (`BATCH-165` / `REQ-038`), restoring task table rendering and action button interactions.
+- **SSH CLI Transport & Distributed Gestor**: Added SSH transport support to `css:audit`, `assets:publish` and `project:update-all` with automatic VM authorization and permissions management.
+- **Full Node 24 CI/CD Pipeline**: GitHub Actions workflows upgraded end-to-end to native Node 24 actions (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`).
 
 ### Previous 2.10.x Releases
 
+- **v2.10.8**: GitHub Actions full migration to native Node 24 actions (`action-gh-release@v3`).
 - **v2.10.7**: Partial GitHub Actions Node 24 upgrade (`checkout@v5`, `setup-node@v5`, `cache@v5`).
 - **v2.10.6**: CI/CD build pipeline streamlining and redundant step removal.
 - **v2.10.5**: Strict visual parity documentation for Tailwind CSS and memory gardening thresholds update.

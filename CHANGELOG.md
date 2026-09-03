@@ -5,6 +5,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.9] - 2026-09-03
+
+### Added
+- HTML Editor: Inert `<template>` wrapping for model cards (`req-161`) and defensive variable resolution in layouts (`req-162`), preventing browser 404 queries for `{{thumbnail}}`.
+- CLI & Pipeline: SSH transport in `css:audit`, `assets:publish` and `project:update-all`, plus distributed gestor support with remote `chown`.
+
+### Fixed
+- Admin Cron: Resolved `admin-cron.js` DOM execution timing via `DOMContentLoaded` listener (`BATCH-165` / `REQ-038`), restoring task dashboard and interactive triggers.
+- CSS Parity: Three-layer Tailwind CSS visual parity and accumulated baseline persistence for inserted templates (`req-158`, `req-159`, `req-160`).
+
 ## [2.10.8] - 2026-09-02
 
 ### Changed

@@ -5,6 +5,16 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.9] - 2026-09-03
+
+### Added
+- Editor HTML: Encapsulamento de cards de modelos em tags `<template>` inertes (`req-161`) e interpolação defensiva de variáveis em layouts (`req-162`), prevenindo requisições 404 por `{{thumbnail}}`.
+- CLI & Pipeline: Transporte SSH em `css:audit`, `assets:publish` e `project:update-all`, além de suporte a gestor distribuído com `chown` automático.
+
+### Fixed
+- Admin Cron: Inicialização correta de `admin-cron.js` com ouvinte de `DOMContentLoaded` (`BATCH-165` / `REQ-038`), restabelecendo a tabela de tarefas e interatividade dos botões.
+- Paridade CSS: Paridade visual em 3 camadas no Tailwind CSS e persistência de baseline acumulado de templates inseridos (`req-158`, `req-159`, `req-160`).
+
 ## [2.10.8] - 2026-09-02
 
 ### Changed

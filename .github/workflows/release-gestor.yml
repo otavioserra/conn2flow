@@ -219,19 +219,19 @@ jobs:
 
             Esta versão traz importantes avanços em performance, governança de CI/CD, atualizações de infraestrutura de workflows e resiliência visual no editor.
 
-            ### 🎯 Novidades Principais desta Versão (v2.10.8):
-            - ✅ **Atualização Final da Infraestrutura de CI/CD (Node 24)**: `softprops/action-gh-release` atualizado para `v3` (Node 24 nativo), completando a migração iniciada na `v2.10.7` — elimina definitivamente todos os avisos de depreciação do Node 20 nos workflows de release.
-            - ✅ **GitHub Actions Totalmente Modernizadas**: Stack completo de actions em Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`, `action-gh-release@v3`) em `release-gestor.yml` e `release-instalador.yml`.
-            - ✅ **Otimização do Pipeline de Build**: CI/CD consome diretamente artefatos pré-compilados localmente, sem recompilação redundante de recursos Tailwind.
-            - ✅ **Paridade Visual Estrita no Tailwind CSS**: Isolamento visual de CSS no iframe do editor e governança de paridade nas páginas públicas.
-            - ✅ **Idempotência de Checksums Multiplataforma**: Normalização LF/CRLF para asserções determinísticas em runners Linux e Windows.
+            ### 🎯 Novidades Principais desta Versão (v2.10.9):
+            - ✅ **Paridade Visual Total e Persistência de CSS Pré-compilado**: Resolução completa da paridade das 3 camadas Tailwind (páginas públicas, pré-visualizador e Live Editor), persistindo o baseline acumulado de templates inseridos e eliminando regras órfãs no runtime (`req-158`, `req-159`, `req-160`).
+            - ✅ **Eliminação de 404 e Blindagem de Templates no Editor HTML**: Migração dos cards de templates para `<template>` inerte (`req-161`) e interpolação defensiva de variáveis (`req-162`), eliminando requisições 404 espúrias no console do navegador (`{{thumbnail}}`).
+            - ✅ **Correção no Painel Admin Cron (`/admin-cron/`)**: Ajustada a inicialização do `admin-cron.js` com ouvinte em `DOMContentLoaded` (`BATCH-165` / `REQ-038`), garantindo carregamento da tabela de tarefas e interatividade dos botões.
+            - ✅ **Melhorias de Pipeline e Transporte SSH na CLI**: Suporte a SSH em `css:audit`, `assets:publish` e `project:update-all`, com auto-autorização da VM local e suporte a gestor distribuído com `chown` automático.
+            - ✅ **Stack de CI/CD 100% em Node 24**: Workflows de release do GitHub Actions rodando de ponta a ponta com `actions/checkout@v5`, `setup-node@v5`, `cache@v5` e `softprops/action-gh-release@v3`.
 
             ### 🌟 Destaques Consolidados das Versões Recentes:
-            - **Live Editor e Site Toolbar (Editbar)**: Barra flutuante contextual no site publicado para edição in-place com mapeamento reativo ao DOM vivo.
-            - **Assets Externos Locais & Zero CDN**: Bibliotecas jQuery, SortableJS, DataTables, Quill e Lucide servidas localmente do disco.
-            - **Minificação Nativa no Build**: Pipeline de minificação nativa via Terser/CSS reduzindo o tamanho de assets em mais de 50%.
-            - **Layouts Tailwind v4 Modernizados**: Painel administrativo responsivo e telas de autenticação atualizadas.
-            - **Segurança Reforçada**: Personal Access Tokens (PAT) escopados, 2FA com TOTP/códigos de recuperação e proteção CSRF CSPRNG.
+            - **Live Editor e Site Toolbar (Editbar)**: Edição in-place com mapeamento reativo ao DOM vivo e cópia persistente entre páginas.
+            - **Assets Externos Locais & Zero CDN**: Bibliotecas jQuery, SortableJS, DataTables, Quill e Lucide servidas diretamente do core local.
+            - **Minificação Nativa no Build**: Otimização automática de assets via Terser/CSS reduzindo transferências em mais de 50%.
+            - **Layouts Tailwind v4 Modernizados**: Telas administrativas responsivas e temas atualizados.
+            - **Segurança Reforçada**: Personal Access Tokens (PAT), 2FA com TOTP e proteção CSRF CSPRNG.
 
             ### 📦 Conteúdo da Release:
             - Sistema gestor completo otimizado
