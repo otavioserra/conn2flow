@@ -215,8 +215,23 @@ project_transport_check() {
 project_transport_ensure_dest() {
   project_transport_is_ssh || return 0
 
+  project_transport_ensure_remote_path "$PT_REMOTE_PATH"
+}
+
+# Garante um caminho complementar no mesmo host do Gestor. Usado para artefatos
+# do projeto que ficam ao lado da raiz publicada, como `gestor-distribuido/`.
+project_transport_ensure_remote_path() {
+  project_transport_is_ssh || return 0
+
+  local remote_path="$1"
+  case "$remote_path" in
+    /) pt_error "refusing to create the filesystem root"; return 1 ;;
+    /*) : ;;
+    *) pt_error "remote path must be absolute (got '$remote_path')"; return 1 ;;
+  esac
+
   local mkdir_cmd
-  mkdir_cmd="mkdir -p $(printf '%q' "$PT_REMOTE_PATH")"
+  mkdir_cmd="mkdir -p $(printf '%q' "$remote_path")"
   if _pt_truthy "$PT_SSH_SUDO"; then
     mkdir_cmd="sudo $mkdir_cmd"
   fi
@@ -228,16 +243,30 @@ project_transport_ensure_dest() {
 # novos como root:root e o pool PHP-FPM do tenant perde a leitura.
 project_transport_finalize() {
   project_transport_is_ssh || return 0
+
+  project_transport_finalize_path "$PT_REMOTE_PATH"
+}
+
+# Devolve a posse de um caminho complementar sincronizado pelo mesmo transporte.
+project_transport_finalize_path() {
+  project_transport_is_ssh || return 0
   [ -n "$PT_SSH_CHOWN" ] || return 0
+
+  local remote_path="$1"
+  case "$remote_path" in
+    /) pt_error "refusing to chown the filesystem root"; return 1 ;;
+    /*) : ;;
+    *) pt_error "remote path must be absolute (got '$remote_path')"; return 1 ;;
+  esac
 
   if [[ ! "$PT_SSH_CHOWN" =~ ^[a-zA-Z0-9._-]+(:[a-zA-Z0-9._-]+)?$ ]]; then
     pt_error "ssh_chown must be \"user\" or \"user:group\" (got '$PT_SSH_CHOWN')"
     return 1
   fi
 
-  pt_log "Restoring ownership to $PT_SSH_CHOWN on $PT_REMOTE_PATH"
+  pt_log "Restoring ownership to $PT_SSH_CHOWN on $remote_path"
   ssh "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" \
-    "sudo chown -R $(printf '%q' "$PT_SSH_CHOWN") $(printf '%q' "$PT_REMOTE_PATH")"
+    "sudo chown -R $(printf '%q' "$PT_SSH_CHOWN") $(printf '%q' "$remote_path")"
 }
 
 # Executa um comando na raiz do Gestor remoto, opcionalmente sob outro usuário.

@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Conn2Flow\Cli\Support\ProjectEnvironmentResolver;
 use PHPUnit\Framework\TestCase;
 
+require_once CONN2FLOW_ROOT . '/cli/src/Support/ProjectEnvironmentResolver.php';
+
 /**
  * REQ-034 / BATCH-155 — transporte SSH do pipeline de projeto.
  *
@@ -143,6 +145,29 @@ final class ProjectSshDeployReq034Test extends TestCase
             // Em transporte local o array é vazio e a linha é exatamente a de antes.
             self::assertStringContainsString('"${PT_RSYNC_OPTS[@]}"', $conteudo, $arquivo);
         }
+    }
+
+    public function testSyncFilesPublicaOverlayDistribuidoIrmaoPeloMesmoTransporte(): void
+    {
+        $conteudo = self::conteudo(
+            self::scriptsRoot() . DIRECTORY_SEPARATOR . 'projects'
+            . DIRECTORY_SEPARATOR . 'synchronize-project.sh'
+        );
+
+        self::assertStringContainsString('DISTRIBUTED_OVERLAY_SOURCE="$(dirname "$ORIGEM")/gestor-distribuido"', $conteudo);
+        self::assertStringContainsString('DISTRIBUTED_OVERLAY_REMOTE_PATH="$(dirname "$PT_REMOTE_PATH")/gestor-distribuido"', $conteudo);
+        self::assertStringContainsString('run_project_rsync "$DISTRIBUTED_OVERLAY_SOURCE" "$DISTRIBUTED_OVERLAY_DEST"', $conteudo);
+        self::assertStringContainsString('project_transport_finalize_path "$DISTRIBUTED_OVERLAY_REMOTE_PATH"', $conteudo);
+    }
+
+    public function testCaminhosComplementaresRemotosMantemGuardasDeSeguranca(): void
+    {
+        $conteudo = self::conteudo(self::lib());
+
+        self::assertStringContainsString('project_transport_ensure_remote_path', $conteudo);
+        self::assertStringContainsString('project_transport_finalize_path', $conteudo);
+        self::assertStringContainsString('refusing to create the filesystem root', $conteudo);
+        self::assertStringContainsString('refusing to chown the filesystem root', $conteudo);
     }
 
     public function testModoLocalContinuaLendoTargetEPathTests(): void

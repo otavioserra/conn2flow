@@ -173,31 +173,59 @@ if should_exclude_contents; then
 fi
 
 # Em transporte local PT_RSYNC_OPTS está vazio e a linha é a de sempre.
-case "$MODE" in
-  default|"")
-    CMD=(rsync -avu "${PT_RSYNC_OPTS[@]}" "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
-    ;;
-  checksum)
-    CMD=(rsync -av --checksum "${PT_RSYNC_OPTS[@]}" "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
-    ;;
-  force)
-    CMD=(rsync -av --ignore-times "${PT_RSYNC_OPTS[@]}" "${RSYNC_EXCLUDES[@]}" "$ORIGEM/" "$DESTINO/")
-    ;;
-  *)
-    log_error "Invalid mode: $MODE"; exit 1;
-    ;;
-esac
+run_project_rsync() {
+  local source="$1" destination="$2"
+  shift 2
+  local -a excludes=("$@") command=()
 
-log "Running: ${CMD[*]}"
-"${CMD[@]}"
-RSYNC_EXIT=$?
+  case "$MODE" in
+    default|"")
+      command=(rsync -avu "${PT_RSYNC_OPTS[@]}" "${excludes[@]}" "$source/" "$destination/")
+      ;;
+    checksum)
+      command=(rsync -av --checksum "${PT_RSYNC_OPTS[@]}" "${excludes[@]}" "$source/" "$destination/")
+      ;;
+    force)
+      command=(rsync -av --ignore-times "${PT_RSYNC_OPTS[@]}" "${excludes[@]}" "$source/" "$destination/")
+      ;;
+    *)
+      log_error "Invalid mode: $MODE"; return 1;
+      ;;
+  esac
 
-if [ $RSYNC_EXIT -ne 0 ]; then
-  log_error "rsync finished with exit code $RSYNC_EXIT"
-  exit $RSYNC_EXIT
-fi
+  log "Running: ${command[*]}"
+  "${command[@]}"
+}
+
+run_project_rsync "$ORIGEM" "$DESTINO" "${RSYNC_EXCLUDES[@]}"
 
 project_transport_finalize || exit 1
+
+# O projeto privado pode declarar um segundo plano distribuído ao lado de
+# `gestor/`. Ele precisa acompanhar o mesmo pipeline oficial: o Host Manager
+# lê esse diretório irmão para aplicar o overlay em cada tenant.
+DISTRIBUTED_OVERLAY_SOURCE="$(dirname "$ORIGEM")/gestor-distribuido"
+if [ -d "$DISTRIBUTED_OVERLAY_SOURCE" ]; then
+  if project_transport_is_ssh; then
+    DISTRIBUTED_OVERLAY_REMOTE_PATH="$(dirname "$PT_REMOTE_PATH")/gestor-distribuido"
+    DISTRIBUTED_OVERLAY_DEST="$PT_SSH_TARGET:$DISTRIBUTED_OVERLAY_REMOTE_PATH"
+    project_transport_ensure_remote_path "$DISTRIBUTED_OVERLAY_REMOTE_PATH" || exit 1
+  else
+    DISTRIBUTED_OVERLAY_DEST="$(dirname "$DESTINO")/gestor-distribuido"
+    if [ ! -d "$DISTRIBUTED_OVERLAY_DEST" ]; then
+      log_warning "Distributed overlay destination does not exist. Creating: $DISTRIBUTED_OVERLAY_DEST"
+      mkdir -p "$DISTRIBUTED_OVERLAY_DEST"
+    fi
+  fi
+
+  log "Distributed overlay source: $DISTRIBUTED_OVERLAY_SOURCE"
+  log "Distributed overlay destination: $DISTRIBUTED_OVERLAY_DEST"
+  run_project_rsync "$DISTRIBUTED_OVERLAY_SOURCE" "$DISTRIBUTED_OVERLAY_DEST" --exclude '.git/'
+
+  if project_transport_is_ssh; then
+    project_transport_finalize_path "$DISTRIBUTED_OVERLAY_REMOTE_PATH" || exit 1
+  fi
+fi
 
 log_success "Project synchronized to: $DESTINO"
 log "Tip: run '🗃️ Projects - Synchronize => Resources - Local' task if you need to rebuild resources for the project."
