@@ -13,6 +13,29 @@
 
 ## Tarefas recentes
 
+### 2026-09-03 — BATCH-167 (REQ-040): sessao nao e cgroup
+
+- **`setsid` NAO tira o processo do cgroup.** Ele cria sessao e grupo de processos novos; o cgroup
+  continua sendo o do pai. `systemctl restart php8.5-fpm` encerra a unidade INTEIRA, e o filho vai
+  junto. Para escapar de verdade: `systemd-run --scope` (cgroup proprio) ou `ssh` (cgroup de
+  sessao do `sshd`). Foi o erro do BATCH-166 — desacoplou do que nao importava.
+- **Sondar a capacidade, nao supor.** `systemd-run --scope` depende de autorizacao do systemd e o
+  pool roda sem privilegio: numa instalacao tipica ele e NEGADO. E a sonda precisa usar o MESMO
+  prefixo do disparo real — sondar com flags diferentes aprova uma configuracao que falha adiante,
+  em background, sem ninguem ver.
+- **Estrategia de fallback que nao protege precisa DIZER isso.** Manter `setsid` como ultimo
+  recurso e certo (a maioria dos disparos nao reinicia servico), anuncia-lo como protecao e pior
+  que nao ter protecao: esconde a exposicao.
+- **O nucleo NAO popula `$_GESTOR['config']`.** Essa chave e uma convencao que o config-loader do
+  Host Manager cria para si. Codigo do nucleo que le so dali fica inerte, sem erro visivel — foi o
+  caso de `cron_php_binary` e `cron_tarefas_desacopladas` do BATCH-166. Ler `$_ENV` -> `getenv()`
+  -> `$_GESTOR['config']`.
+- **Separar montagem de disponibilidade torna o comando testavel.** Uma funcao que monta a linha e
+  outra que verifica o binario: sem isso, nada de systemd e verificavel num host de
+  desenvolvimento Windows.
+- **Teste que conta ocorrencias acha assimetria de envelope.** A contagem de `'isolado' =>` no
+  arquivo revelou tres retornos de erro precoces sem as chaves que o sucesso declara.
+
 ### 2026-09-03 — BATCH-166 (REQ-039): a rotina que matava o worker que a chamou
 
 - **O disparo manual e o tick agendado NAO sao o mesmo caminho.** A esteira de provisionamento do

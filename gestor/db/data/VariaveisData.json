@@ -5285,6 +5285,15 @@
     {
         "language": "pt-br",
         "modulo": "admin-cron",
+        "id": "msg-run-detached-no-isolation",
+        "valor": "Tarefa iniciada em segundo plano, mas sem isolamento de cgroup neste servidor: um reinício de serviço pode interrompê-la. O agendamento automático retoma a execução.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-cron",
         "id": "msg-toggle-success",
         "valor": "Estado da tarefa atualizado.",
         "tipo": "string",
@@ -6016,6 +6025,15 @@
         "modulo": "admin-cron",
         "id": "msg-run-detached",
         "valor": "Task started in the background. The result shows up in the list once it finishes.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-cron",
+        "id": "msg-run-detached-no-isolation",
+        "valor": "Task started in the background, but without cgroup isolation on this server: a service restart may interrupt it. The scheduled run will resume it.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

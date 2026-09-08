@@ -376,6 +376,11 @@
                     "type": "string"
                 },
                 {
+                    "id": "msg-run-detached-no-isolation",
+                    "value": "Tarefa iniciada em segundo plano, mas sem isolamento de cgroup neste servidor: um reinício de serviço pode interrompê-la. O agendamento automático retoma a execução.",
+                    "type": "string"
+                },
+                {
                     "id": "msg-toggle-success",
                     "value": "Estado da tarefa atualizado.",
                     "type": "string"
@@ -810,6 +815,11 @@
                 {
                     "id": "msg-run-detached",
                     "value": "Task started in the background. The result shows up in the list once it finishes.",
+                    "type": "string"
+                },
+                {
+                    "id": "msg-run-detached-no-isolation",
+                    "value": "Task started in the background, but without cgroup isolation on this server: a service restart may interrupt it. The scheduled run will resume it.",
                     "type": "string"
                 },
                 {

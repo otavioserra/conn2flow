@@ -391,13 +391,23 @@ function admin_cron_ajax_disparar(){
 		if($disparo['ok']){
 			$tarefas = admin_cron_tarefas();
 
+			// `setsid` sozinho nao tira o processo do cgroup do pool: quando ele e a unica
+			// estrategia disponivel, o disparo acontece mas segue exposto a `systemctl restart
+			// php8.5-fpm`. Dizer isso ao operador e o que diferencia "rodando protegido" de
+			// "rodando e pode morrer" — e a fila agendada ainda o retomaria (REQ-040).
+			$mensagem = empty($disparo['isolado'])
+				? admin_cron_var('msg-run-detached-no-isolation')
+				: admin_cron_var('msg-run-detached');
+
 			// Nenhum resultado e gravado aqui de proposito: quem registra duracao e status e o
 			// processo CLI, ao terminar. Escrever um status agora sobrescreveria o real.
 			$_GESTOR['ajax-json'] = Array(
 				'status' => 'Ok',
-				'message' => admin_cron_var('msg-run-detached'),
+				'message' => $mensagem,
 				'data' => Array(
 					'desacoplada' => true,
+					'estrategia' => $disparo['estrategia'],
+					'isolado' => (bool)$disparo['isolado'],
 					'tarefas' => $tarefas,
 					'estatisticas' => admin_cron_estatisticas($tarefas),
 				),

@@ -957,3 +957,42 @@ Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execu�
 - [ ] Homologação na VM Lab: disparar `host-manager-provisionamento` em `/admin-cron/` e confirmar
       resposta imediata sem `502`, com o resultado surgindo na listagem ao fim do processo CLI.
       Depende do `BATCH-032` do `conn2flow-site` implantado — é ele que declara o desacoplamento.
+
+## BATCH-167 — Escape do cgroup do PHP-FPM no disparo desacoplado (REQ-040, Pilar 4)
+
+- [x] Causa do BATCH-166 não ter bastado: `setsid` cria sessão nova, e **sessão não é cgroup**. O
+      processo permanecia em `php8.5-fpm.service` e o `systemctl restart php8.5-fpm` do HestiaCP
+      encerrava todo o cgroup, matando o instalador no meio de `v-add-web-domain`.
+- [x] Dúvida do operador respondida: no momento da morte a tarefa **não** executa nem se remarca —
+      é morta sem chance de gravar. A conta fica reservada em `provisioning` sem ninguém rodando, e
+      o reaper do BATCH-032 a recupera após `stale_after_minutes` (30).
+- [x] Três estratégias, da mais isolada para a menos: `systemd-run` (escopo próprio sob
+      `system-cron.slice`), `ssh` (cgroup de sessão do `sshd`), `setsid` (sem isolamento).
+- [x] Escolha por **sondagem**, com o mesmo prefixo do disparo real — sondar com flags diferentes
+      aprovaria uma configuração que falharia adiante, em background e sem ninguém ver.
+- [x] `setsid` declarado como não-isolante: `admin_cron_disparo_isola_cgroup()` devolve `false` e a
+      resposta troca para `msg-run-detached-no-isolation`, avisando que um reinício pode
+      interromper e que o agendamento retoma.
+- [x] Montagem (`*_montar()`, puras) separada da disponibilidade (sondagem) — sem isso nada seria
+      verificável num host de desenvolvimento sem systemd.
+- [x] Escolha forçada por configuração lida **antes** do cache da sondagem.
+- [x] Achado: o núcleo não popula `$_GESTOR['config']` (convenção do config-loader do Host
+      Manager). `admin_cron_config()` lê `$_ENV` → `getenv()` → `$_GESTOR['config']`, tornando
+      efetivas também `CRON_PHP_BINARY` e `CRON_TAREFAS_DESACOPLADAS` do BATCH-166.
+- [x] Achado pelo próprio teste: três retornos de erro precoces não declaravam
+      `estrategia`/`isolado`. Envelope uniformizado.
+- [x] Valores de configuração que entram em linha de comando são validados (slice por regex, host
+      SSH por regex, porta por faixa) e `escapeshellarg` cobre o restante.
+- [x] `php -l` nos 2 arquivos PHP tocados: OK.
+- [x] `AdminCronReq040Test`: **16/16**, 39 asserções. `AdminCronReq039Test` sem regressão: 13/13.
+- [x] Guarda validada por mutação: marcar `setsid` como isolante faz
+      `testSetsidNaoContaComoIsolamentoDeCgroup` acusar.
+- [x] PHPUnit completo: **1.158/1.158**, 7.730 asserções, 4 skipped, 0 falhas.
+- [x] Vitest completo: 29/29 arquivos, **417/417** testes.
+- [x] `c2f resources:sync`: 2.848 recursos, 0 problemas.
+- [ ] Homologação na VM Lab: disparar `host-manager-provisionamento` e verificar **qual estratégia**
+      a resposta reporta. Vindo `setsid`, o isolamento não está disponível e o caminho a habilitar é
+      o SSH (`CRON_DISPATCH_SSH_HOST=127.0.0.1` + chave pública para o usuário do pool), que não
+      pede privilégio de systemd.
+- [ ] Confirmar em seguida que o provisionamento atravessa o restart do PHP-FPM e chega a `active`
+      sem passar pelo reaper.
