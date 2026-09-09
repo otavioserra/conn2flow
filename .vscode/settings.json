@@ -1,7 +1,7 @@
 {
     "php.validate.enable": true,
     "php.suggest.basic": false,
-    "php.executablePath": "C:\\tools\\php84\\php.exe",
+    "php.executablePath": "C:\\Users\\otavi\\AppData\\Local\\Microsoft\\WinGet\\Packages\\PHP.PHP.8.5_Microsoft.Winget.Source_8wekyb3d8bbwe\\php.exe",
     "intelephense.environment.phpVersion": "8.4.8",
     "files.associations": {
         "*.php": "php"
