@@ -713,6 +713,33 @@
     {
         "language": "pt-br",
         "modulo": null,
+        "id": "site-restricted-denied-title",
+        "valor": "Acesso restrito",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "site-restricted-denied-text",
+        "valor": "Este site está em acesso restrito e o seu perfil de usuário não está autorizado a acessá-lo. Entre com outra conta ou fale com o administrador.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "site-restricted-denied-signout",
+        "valor": "Sair e entrar com outra conta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
         "id": "html-editor-publisher-or-btn",
         "valor": "ou",
         "tipo": "string",
@@ -1687,6 +1714,33 @@
         "modulo": null,
         "id": "language-label-en",
         "valor": "English",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "site-restricted-denied-title",
+        "valor": "Restricted access",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "site-restricted-denied-text",
+        "valor": "This site is under restricted access and your user profile is not authorized to access it. Sign in with another account or contact the administrator.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "site-restricted-denied-signout",
+        "valor": "Sign out and use another account",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -6417,6 +6471,15 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "site-restricted-lockout",
+        "valor": "Não salvo: o acesso restrito bloquearia você mesmo. Inclua o seu próprio perfil de usuário entre os autorizados, ou deixe a lista vazia.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-environment",
         "id": "email-tests-head-title",
@@ -6655,6 +6718,15 @@
         "modulo": "admin-environment",
         "id": "jwt-rotate-error",
         "valor": "Error rotating JWT keys.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "site-restricted-lockout",
+        "valor": "Not saved: restricted access would lock you out. Add your own user profile to the authorized profiles, or leave the list empty.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

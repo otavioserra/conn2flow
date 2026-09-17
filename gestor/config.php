@@ -197,6 +197,12 @@ $_CONFIG = [
     'crawler-tokens-extra-ativo'        => filter_var($_ENV['CRAWLER_TOKENS_EXTRA_ATIVO'] ?? false, FILTER_VALIDATE_BOOLEAN),
     'crawler-tokens-extra'              => $_ENV['CRAWLER_TOKENS_EXTRA'] ?? '',
 
+    // req-163: Acesso Restrito ao Site (desenvolvimento, homologação, ambientes privados). Quando
+    // ativo, toda página exige login e o site sai do índice dos buscadores. `SITE_RESTRICTED_PROFILES`
+    // é a lista de `id_usuarios_perfis` autorizados; vazia, qualquer usuário logado entra.
+    'site-restricted-access'            => filter_var($_ENV['SITE_RESTRICTED_ACCESS'] ?? false, FILTER_VALIDATE_BOOLEAN),
+    'site-restricted-profiles'          => $_ENV['SITE_RESTRICTED_PROFILES'] ?? '',
+
     // Configurações do PayPal
     'paypal'  => [
         'default'                       => $_ENV['PAYPAL_DEFAULT'] ?? 'padrao',

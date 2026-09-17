@@ -15,6 +15,7 @@
 | [BL-011](BL-011-poda-pipeline-sync-allowlist.md) | Architecture/DevOps | OPEN | Poda segura por allowlist no pipeline de sincronização (req-146) | Planejado para baseline da Linha 3.0 | 2026-08-31 |
 | [BL-012](BL-012-migracao-painel-tailwind-desacoplamento-fomantic.md) | Architecture/UI | OPEN | Substituição integral do Fomantic UI por Tailwind CSS no painel administrativo e componentes UI | Planejado para o programa da Linha 3.0 | 2026-08-31 |
 | [BL-013](BL-013-modularizacao-readme-changelog-ai-workspace.md) | Documentation/Architecture | PROMOTED | Poda e modularização de README e CHANGELOG para eficiência de contexto de IA | Promovido para [req-151.md](../human-requests/archive/req-151.md) (BATCH-153) | 2026-08-31 |
+| [BL-014](BL-014-reset-cache-estatico-schemametadata-testes.md) | Reliability/Testing | OPEN | Desacoplamento do cache estático em `schemaMetadata()` para testes unitários | Registrado no BATCH-168; aguardando agendamento | 2026-09-17 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 

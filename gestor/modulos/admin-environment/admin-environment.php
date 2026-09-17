@@ -20,6 +20,9 @@ function admin_environment_env_read(){
         // req-111 (CR-001): tokens adicionais de robô, complementares à lista embutida do core.
         'CRAWLER_TOKENS_EXTRA_ATIVO' => $_ENV['CRAWLER_TOKENS_EXTRA_ATIVO'] ?? 'false',
         'CRAWLER_TOKENS_EXTRA' => $_ENV['CRAWLER_TOKENS_EXTRA'] ?? '',
+        // req-163: Acesso Restrito ao Site.
+        'SITE_RESTRICTED_ACCESS' => $_ENV['SITE_RESTRICTED_ACCESS'] ?? 'false',
+        'SITE_RESTRICTED_PROFILES' => $_ENV['SITE_RESTRICTED_PROFILES'] ?? '',
         'USUARIO_RECAPTCHA_ACTIVE' => $_ENV['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
         'USUARIO_RECAPTCHA_SITE' => $_ENV['USUARIO_RECAPTCHA_SITE'] ?? '',
         'USUARIO_RECAPTCHA_SERVER' => $_ENV['USUARIO_RECAPTCHA_SERVER'] ?? '',
@@ -274,6 +277,20 @@ function admin_environment_env_format_value($value){
     return $value;
 }
 
+/**
+ * Badge de perfil do Acesso Restrito ao Site (req-163). O JavaScript monta o mesmo markup ao
+ * adicionar um perfil pela busca — mudar um lado exige mudar o outro.
+ */
+function admin_environment_perfil_badge($perfilId, $perfilNome){
+    $perfilId = (string)$perfilId;
+    $rotulo = $perfilNome !== '' ? htmlspecialchars((string)$perfilNome, ENT_QUOTES, 'UTF-8').' ' : '';
+
+    return '<a class="ui blue label site-restricted-profile" data-id="'.htmlspecialchars($perfilId, ENT_QUOTES, 'UTF-8').'">'
+        . $rotulo.'<span class="detail">#'.htmlspecialchars($perfilId, ENT_QUOTES, 'UTF-8').'</span>'
+        . '<i class="delete icon site-restricted-profile-remove"></i>'
+        . '</a>';
+}
+
 // ===== Interfaces Principais
 
 function admin_environment_raiz(){
@@ -293,6 +310,8 @@ function admin_environment_raiz(){
         'html_sanitize_js' => $envData['HTML_SANITIZE_JS'] ?? 'auto',
         'crawler_tokens_extra_ativo' => $envData['CRAWLER_TOKENS_EXTRA_ATIVO'] ?? 'false',
         'crawler_tokens_extra' => $envData['CRAWLER_TOKENS_EXTRA'] ?? '',
+        'site_restricted_access' => $envData['SITE_RESTRICTED_ACCESS'] ?? 'false',
+        'site_restricted_profiles' => $envData['SITE_RESTRICTED_PROFILES'] ?? '',
         'usuario_recaptcha_active' => $envData['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
         'usuario_recaptcha_site' => $envData['USUARIO_RECAPTCHA_SITE'] ?? '',
         'usuario_recaptcha_server' => $envData['USUARIO_RECAPTCHA_SERVER'] ?? '',
@@ -369,6 +388,25 @@ function admin_environment_raiz(){
     }
     $dados['auth-api-profiles'] = $apiProfilesHtml;
 
+    // ===== req-163: badges dos perfis do Acesso Restrito ao Site.
+    //       Os nomes vêm da mesma consulta acima. Id que não existe mais no banco continua na lista
+    //       (aparece só como #id): sumir com ele em silêncio mudaria quem entra sem o operador ver.
+
+    $restritoIds = gestor_site_acesso_restrito_perfis((string)$dados['site_restricted_profiles']);
+    $perfisPorId = Array();
+    if($perfis){
+        foreach($perfis as $perfil){
+            $perfisPorId[(string)$perfil['id_usuarios_perfis']] = isset($perfil['nome']) && $perfil['nome'] !== '' ? $perfil['nome'] : $perfil['id'];
+        }
+    }
+
+    $restritoBadges = '';
+    foreach($restritoIds as $perfilId){
+        $restritoBadges .= admin_environment_perfil_badge($perfilId, $perfisPorId[$perfilId] ?? '');
+    }
+    $dados['site-restricted-profiles-badges'] = $restritoBadges;
+    $dados['site_restricted_profiles'] = implode(',', $restritoIds);
+
     // ===== Gerar opções de idioma
 
     $languages = $_GESTOR['languages'] ?? [];
@@ -423,6 +461,11 @@ function admin_environment_raiz(){
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#crawler-tokens-extra-ativo-checked#', $dados['crawler_tokens_extra_ativo'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#crawler-tokens-extra#', htmlspecialchars($dados['crawler_tokens_extra'], ENT_QUOTES, 'UTF-8'));
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#crawler-tokens-padrao#', htmlspecialchars(implode(', ', gestor_crawler_tokens_padrao()), ENT_QUOTES, 'UTF-8'));
+
+    // req-163: Acesso Restrito ao Site.
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-restricted-access-checked#', $dados['site_restricted_access'] === 'true' ? 'checked' : '');
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-restricted-profiles#', htmlspecialchars($dados['site_restricted_profiles'], ENT_QUOTES, 'UTF-8'));
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#site-restricted-profiles-badges#', $dados['site-restricted-profiles-badges']);
 
     // Usuário / reCAPTCHA
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-active#', $dados['usuario_recaptcha_active']);
@@ -544,6 +587,28 @@ function admin_environment_ajax_salvar(){
     // Normaliza antes de gravar: o operador digita separando por vírgula, ; ou quebra de linha.
     if(isset($_REQUEST['crawler_tokens_extra'])) $data['CRAWLER_TOKENS_EXTRA'] = implode(',', gestor_crawler_tokens_normalizar($_REQUEST['crawler_tokens_extra']));
 
+    // req-163: Acesso Restrito ao Site. Só `true`/`false` e ids inteiros chegam ao .env.
+    if(isset($_REQUEST['site_restricted_access']) && in_array($_REQUEST['site_restricted_access'], array('true','false'), true))
+        $data['SITE_RESTRICTED_ACCESS'] = $_REQUEST['site_restricted_access'];
+    if(isset($_REQUEST['site_restricted_profiles']))
+        $data['SITE_RESTRICTED_PROFILES'] = implode(',', gestor_site_acesso_restrito_perfis((string)$_REQUEST['site_restricted_profiles']));
+
+    // Trava contra autobloqueio: ligar a restrição com uma lista que não inclui o perfil de quem está
+    // salvando tranca o próprio operador para fora desta tela — e a única saída passaria a ser editar
+    // o .env à mão no servidor.
+    $restritoAtivo = ($data['SITE_RESTRICTED_ACCESS'] ?? 'false') === 'true';
+    $restritoPerfis = gestor_site_acesso_restrito_perfis($data['SITE_RESTRICTED_PROFILES'] ?? '');
+    if($restritoAtivo && !empty($restritoPerfis)){
+        $usuarioAtual = gestor_usuario();
+        if(!gestor_site_acesso_restrito_perfil_autorizado($usuarioAtual['id_usuarios_perfis'] ?? '', $restritoPerfis)){
+            $_GESTOR['ajax-json'] = [
+                'status' => 'error',
+                'message' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'site-restricted-lockout')),
+            ];
+            return;
+        }
+    }
+
     // Coletar dados do formulário — Usuário
     if(isset($_REQUEST['usuario_recaptcha_active'])) $data['USUARIO_RECAPTCHA_ACTIVE'] = $_REQUEST['usuario_recaptcha_active'];
     if(isset($_REQUEST['usuario_recaptcha_site'])) $data['USUARIO_RECAPTCHA_SITE'] = $_REQUEST['usuario_recaptcha_site'];
@@ -608,6 +673,44 @@ function admin_environment_ajax_salvar(){
             ? gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'save-success'))
             : gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'save-error'))
     ];
+}
+
+/**
+ * Autocomplete de perfis para o Acesso Restrito ao Site (req-163).
+ *
+ * Busca por nome ou slug entre os perfis ativos do idioma corrente; devolve no máximo 10.
+ */
+function admin_environment_ajax_buscar_perfis(){
+    global $_GESTOR;
+
+    $busca = trim((string)($_REQUEST['busca'] ?? ''));
+    $filtro = '';
+    if($busca !== ''){
+        $termo = banco_escape_field(addcslashes(mb_substr($busca, 0, 60), '%_'));
+        $filtro = " AND (nome LIKE '%".$termo."%' OR id LIKE '%".$termo."%' OR id_usuarios_perfis='".banco_escape_field($busca)."')";
+    }
+
+    $perfis = banco_select(Array(
+        'tabela' => 'usuarios_perfis',
+        'campos' => Array('id_usuarios_perfis', 'id', 'nome'),
+        'extra' => "WHERE status!='D' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'".$filtro." ORDER BY nome ASC LIMIT 10",
+    ));
+
+    $resultados = Array();
+    if($perfis){
+        foreach($perfis as $perfil){
+            $resultados[] = Array(
+                'id' => (string)$perfil['id_usuarios_perfis'],
+                'nome' => isset($perfil['nome']) && $perfil['nome'] !== '' ? (string)$perfil['nome'] : (string)$perfil['id'],
+                'slug' => (string)$perfil['id'],
+            );
+        }
+    }
+
+    $_GESTOR['ajax-json'] = Array(
+        'status' => 'Ok',
+        'data' => $resultados,
+    );
 }
 
 function admin_environment_ajax_testar_recaptcha(){
@@ -778,6 +881,7 @@ function admin_environment_start(){
         switch($_GESTOR['ajax-opcao']){
             case 'opcao': admin_environment_ajax_opcao(); break;
             case 'salvar': admin_environment_ajax_salvar(); break;
+            case 'buscar-perfis': admin_environment_ajax_buscar_perfis(); break;
             case 'testar-recaptcha': admin_environment_ajax_testar_recaptcha(); break;
             case 'testar-recaptcha-v2': admin_environment_ajax_testar_recaptcha_v2(); break;
             case 'testar-email': admin_environment_ajax_testar_email(); break;

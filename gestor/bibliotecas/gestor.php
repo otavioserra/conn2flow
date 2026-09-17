@@ -575,6 +575,135 @@ function gestor_pagina_rota_sistema($caminho = ''){
 }
 
 /**
+ * Acesso Restrito ao Site está ligado? (req-163 / BATCH-168)
+ *
+ * Lê `$_CONFIG` (populado pelo `config.php`) e cai para `$_ENV`/`getenv()` — o mesmo cuidado do
+ * BATCH-167: uma chave lida de um lugar só fica inerte, sem erro visível, onde aquele lugar não é
+ * populado.
+ *
+ * @return bool
+ */
+function gestor_site_acesso_restrito_ativo(){
+	global $_CONFIG;
+
+	if(is_array($_CONFIG ?? null) && array_key_exists('site-restricted-access', $_CONFIG)){
+		$valor = $_CONFIG['site-restricted-access'];
+	} else {
+		$valor = $_ENV['SITE_RESTRICTED_ACCESS'] ?? getenv('SITE_RESTRICTED_ACCESS');
+	}
+
+	return filter_var($valor, FILTER_VALIDATE_BOOLEAN);
+}
+
+/**
+ * Perfis (`id_usuarios_perfis`) autorizados pelo Acesso Restrito ao Site (req-163).
+ *
+ * Função PURA quando recebe o bruto; sem argumento lê a configuração corrente. Mantém apenas
+ * inteiros positivos, sem repetição — a lista vem de um `.env` editável à mão.
+ *
+ * @param string|array|null $bruto
+ * @return array Lista de ids como string.
+ */
+function gestor_site_acesso_restrito_perfis($bruto = null){
+	global $_CONFIG;
+
+	if($bruto === null){
+		$bruto = (is_array($_CONFIG ?? null) && array_key_exists('site-restricted-profiles', $_CONFIG))
+			? $_CONFIG['site-restricted-profiles']
+			: ($_ENV['SITE_RESTRICTED_PROFILES'] ?? getenv('SITE_RESTRICTED_PROFILES'));
+	}
+
+	if(is_array($bruto)) $bruto = implode(',', $bruto);
+	if(!is_string($bruto)) return Array();
+
+	$ids = Array();
+	foreach(preg_split('/[,;\s]+/', $bruto) as $parte){
+		if(!preg_match('/^[1-9][0-9]*$/', $parte)) continue;
+		if(!in_array($parte, $ids, true)) $ids[] = $parte;
+	}
+
+	return $ids;
+}
+
+/**
+ * Rotas que o Acesso Restrito ao Site NUNCA bloqueia (req-163).
+ *
+ * - Identidade: sem elas não há como fazer o próprio login (e bloquear o `signin/` seria laço).
+ * - `_api/`, `api/`, `_gateways/`: autenticam por token de máquina ou assinatura HMAC de webhook,
+ *   sem cookie de sessão; bloqueá-las derrubaria integrações externas.
+ * - Rotas de sistema (`cookies-is-mandatory/`, páginas de erro): o fluxo de cookie e a própria tela
+ *   de recusa precisam responder.
+ *
+ * Arquivos estáticos e os controladores `_api`/`_gateways` já saem do `gestor_config()` antes do
+ * roteador; estarem na lista é defesa em profundidade, não o mecanismo principal.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param string $caminho Caminho da requisição (`$_GESTOR['caminho-total']`).
+ * @return bool
+ */
+function gestor_site_acesso_restrito_rota_isenta($caminho = ''){
+	if(!is_string($caminho)) return false;
+
+	$normalizado = trim(strtolower(trim($caminho)), '/');
+
+	if(gestor_pagina_rota_sistema($normalizado)) return true;
+
+	$isentas = Array(
+		// Identidade (caminhos reais do módulo perfil-usuario).
+		'signin',
+		'signin-2fa',
+		'signout',
+		'signup',
+		'social-login',
+		'oauth-authenticate',
+		'oauth-authenticate-2fa',
+		'oauth-callback',
+		'validate-user',
+		'forgot-password',
+		'forgot-password-confirmation',
+		'redefine-password',
+		'redefine-password-confirmation',
+		'reset-password',
+		'email-confirmation',
+		// Nomes em português citados pelo intake (aliases de instalações antigas).
+		'esqueci-minha-senha',
+		'redefinir-senha',
+		'ativacao-de-conta',
+		'validar-email',
+		// Máquina a máquina.
+		'_api',
+		'api',
+		'_gateways',
+	);
+
+	foreach($isentas as $rota){
+		if($normalizado === $rota || strpos($normalizado, $rota.'/') === 0) return true;
+	}
+
+	return false;
+}
+
+/**
+ * Decide se um perfil entra no site restrito (req-163).
+ *
+ * Lista vazia = qualquer usuário logado. Perfil vazio/zero (anônimo) nunca é autorizado.
+ *
+ * Função PURA para ser testável isoladamente.
+ *
+ * @param string|int $perfilId `id_usuarios_perfis` do usuário autenticado.
+ * @param array $perfisAutorizados Saída de `gestor_site_acesso_restrito_perfis()`.
+ * @return bool
+ */
+function gestor_site_acesso_restrito_perfil_autorizado($perfilId, $perfisAutorizados){
+	$perfilId = trim((string)$perfilId);
+	if($perfilId === '' || $perfilId === '0') return false;
+	if(empty($perfisAutorizados)) return true;
+
+	return in_array($perfilId, array_map('strval', (array)$perfisAutorizados), true);
+}
+
+/**
  * Detecta o fallback terminal da rota de erro para impedir redirecionamento 404 -> 404.
  *
  * A pagina de erro normalmente e um recurso do banco. Se esse recurso ainda nao foi

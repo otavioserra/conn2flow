@@ -1065,7 +1065,11 @@ function gestor_pagina_extra_head_e_javascript(){
 	//       Fechado o laço, isto garante que o que já foi indexado saia — e que uma reincidência não
 	//       volte a poluir relatório e resultado de busca.
 
-	if(gestor_pagina_rota_sistema((string)($_GESTOR['caminho-total'] ?? ''))){
+	// req-163: com o Acesso Restrito ao Site ligado, o site INTEIRO sai do índice — inclusive o
+	// `signin/`, que é a única página que um robô consegue ver. Uma tag só, mesmo quando a rota também
+	// é de sistema.
+
+	if(gestor_site_acesso_restrito_ativo() || gestor_pagina_rota_sistema((string)($_GESTOR['caminho-total'] ?? ''))){
 		$_GESTOR['html-extra-head'][] = '<meta name="robots" content="noindex, nofollow">'."\n";
 		if(!headers_sent()) header('X-Robots-Tag: noindex, nofollow');
 	}
@@ -2529,6 +2533,101 @@ function gestor_site_toolbar_backup_aplicar(&$paginas){
 	$_GESTOR['javascript-vars']['siteToolbarBackupRestaurado'] = true;
 }
 
+/**
+ * Porteiro do Acesso Restrito ao Site (req-163 / BATCH-168).
+ *
+ * Com `SITE_RESTRICTED_ACCESS` ligado, toda rota não isenta exige sessão válida e, se houver lista
+ * em `SITE_RESTRICTED_PROFILES`, um perfil autorizado.
+ *
+ * O perfil é lido de `gestor_usuario()` — o registro do banco resolvido a partir do JWT validado —
+ * e NÃO de `gestor_usuario_perfil()`, que devolve o cookie `authprofile` sem assinatura: um cookie
+ * editável pelo próprio visitante não pode decidir quem entra.
+ *
+ * @return void Encerra a requisição quando bloqueia.
+ */
+function gestor_roteador_acesso_restrito(){
+	global $_GESTOR;
+
+	if(!gestor_site_acesso_restrito_ativo()) return;
+
+	// Vale para TODA resposta do site restrito, inclusive o redirecionamento e a recusa abaixo.
+	if(!headers_sent()) header('X-Robots-Tag: noindex, nofollow');
+
+	$caminho = rtrim((string)($_GESTOR['caminho-total'] ?? ''), '/').'/';
+
+	if(gestor_site_acesso_restrito_rota_isenta($caminho)) return;
+
+	if(!gestor_permissao_token()){
+		gestor_sessao_variavel("redirecionar-local", $caminho);
+
+		if(!empty($_GESTOR['ajax'])){
+			gestor_roteador_erro(Array(
+				'codigo' => 401,
+				'ajax' => $_GESTOR['ajax'],
+				'redirect' => 'signin/',
+				'auth_required' => true,
+			));
+		}
+
+		gestor_roteador_erro(Array(
+			'codigo' => 401,
+			'redirect' => 'signin/',
+		));
+	}
+
+	$usuario = gestor_usuario();
+
+	if(!gestor_site_acesso_restrito_perfil_autorizado($usuario['id_usuarios_perfis'] ?? '', gestor_site_acesso_restrito_perfis())){
+		gestor_roteador_acesso_restrito_negado();
+	}
+}
+
+/**
+ * Recusa de perfil não autorizado no site restrito (req-163).
+ *
+ * 403 em tela própria, e não redirecionamento: mandar um usuário JÁ logado para `signin/` faria o
+ * login devolvê-lo ao painel, que o recusaria de novo — laço. A saída oferecida é o `signout/`,
+ * para entrar com outra conta.
+ *
+ * @return void Encerra a requisição.
+ */
+function gestor_roteador_acesso_restrito_negado(){
+	global $_GESTOR;
+
+	http_response_code(403);
+	if(!headers_sent()) header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+
+	$titulo = gestor_variaveis(Array('id' => 'site-restricted-denied-title'));
+	$texto = gestor_variaveis(Array('id' => 'site-restricted-denied-text'));
+	$sair = gestor_variaveis(Array('id' => 'site-restricted-denied-signout'));
+
+	if(!empty($_GESTOR['ajax'])){
+		header('Content-Type: application/json; charset=UTF-8');
+		echo json_encode(Array('error' => 403, 'status' => 'error', 'message' => $texto), JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	$signout = rtrim((string)($_GESTOR['url-raiz'] ?? '/'), '/').'/signout/';
+
+	header('Content-Type: text/html; charset=UTF-8');
+	echo '<!DOCTYPE html>'."\n"
+		.'<html lang="'.htmlspecialchars((string)($_GESTOR['linguagem-codigo'] ?? 'pt-br'), ENT_QUOTES, 'UTF-8').'">'."\n"
+		.'<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+		.'<meta name="robots" content="noindex, nofollow"><title>'.htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8').'</title>'
+		.'<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;'
+		.'font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#f6f7f9;color:#1b1c1d}'
+		.'.c2f-box{max-width:520px;padding:32px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.12);text-align:center}'
+		.'h1{font-size:20px;margin:0 0 12px}p{margin:0 0 24px;line-height:1.5;color:#5b5f66}'
+		.'a{display:inline-block;padding:10px 22px;border-radius:6px;background:#2185d0;color:#fff;font-size:15px;text-decoration:none}'
+		.'</style></head>'."\n"
+		.'<body><div class="c2f-box"><h1>'.htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8').'</h1>'
+		.'<p>'.htmlspecialchars($texto, ENT_QUOTES, 'UTF-8').'</p>'
+		.'<a href="'.htmlspecialchars($signout, ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($sair, ENT_QUOTES, 'UTF-8').'</a>'
+		.'</div></body></html>';
+
+	exit;
+}
+
 function gestor_roteador(){
 	global $_GESTOR;
 	global $_INDEX;
@@ -2585,7 +2684,13 @@ function gestor_roteador(){
 			}
 		break;
 	}
-	
+
+	// ===== req-163: Acesso Restrito ao Site. Antes da consulta da página, de propósito: assim um
+	//       visitante sem login não distingue página existente de inexistente, e nem `sem_permissao`
+	//       nem `.ajax.public` abrem brecha.
+
+	gestor_roteador_acesso_restrito();
+
 	// ===== Definição dos campos necessários para retornar os dados da página
 	
 	if($_GESTOR['ajax']){

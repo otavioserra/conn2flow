@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.1",
+    "versao": "1.0.2",
     "bibliotecas": [
         "interface",
         "html"
@@ -17,11 +17,12 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.24",
+                    "version": "1.25",
                     "checksum": {
-                        "html": "8ab570538e8f97cae607188648f9714c",
+                        "html": "39cc7a5feb4fa61ce6e189913041539e",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
-                        "combined": "77d7b6b09a38f660be2b487104dd66dd"
+                        "css_precompiled": "",
+                        "combined": "2f56e5f69767e57fd970d8442e2f3766"
                     }
                 }
             ],
@@ -161,6 +162,11 @@
                     "id": "jwt-rotate-error",
                     "value": "Error rotating JWT keys.",
                     "type": "string"
+                },
+                {
+                    "id": "site-restricted-lockout",
+                    "value": "Not saved: restricted access would lock you out. Add your own user profile to the authorized profiles, or leave the list empty.",
+                    "type": "string"
                 }
             ]
         },
@@ -175,12 +181,12 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.26",
+                    "version": "1.27",
                     "checksum": {
-                        "html": "dedb72c804fa2097e6a9d7ea87666f05",
+                        "html": "301a984793e85ba5a2bc14ea0a42092f",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "c23a6354607d27da2712473f33aee746"
+                        "combined": "ebe491ef3ea9a815fed6105da170480b"
                     }
                 }
             ],
@@ -320,9 +326,14 @@
                     "id": "jwt-rotate-error",
                     "value": "Erro ao rotacionar as chaves JWT.",
                     "type": "string"
+                },
+                {
+                    "id": "site-restricted-lockout",
+                    "value": "Não salvo: o acesso restrito bloquearia você mesmo. Inclua o seu próprio perfil de usuário entre os autorizados, ou deixe a lista vazia.",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "273e4d005545b5c3"
+    "asset_version": "5bf6646705a86192"
 }

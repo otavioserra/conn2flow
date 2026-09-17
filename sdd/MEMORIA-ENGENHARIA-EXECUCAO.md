@@ -13,6 +13,14 @@
 
 ## Tarefas recentes
 
+### 2026-09-15 — BATCH-168 (req-163): XHR com CSRF e site restrito
+
+- **`gestor_usuario_perfil()` lê o cookie `authprofile`, que NÃO é assinado** — nunca use para autorizar; `gestor_usuario()` vem do JWT validado.
+- **`$.ajax` passa pelo envelope de `XMLHttpRequest.prototype`**: registre os cabeçalhos em `setRequestHeader` ou o token do prefilter duplica.
+- **PHP 8.5 do host (WinGet) sem `pdo_sqlite`/`OPENSSL_CONF`**: 16 erros falsos. Rode com `PHP_INI_SCAN_DIR=<ini temporário>` + `OPENSSL_CONF=<php>\extras\ssl\openssl.cnf`, sem editar o `php.ini`.
+- **`executionOrder="depends,defects"` alterna verde/2 falhas** em `ForcarAtualizacaoTest` (`static $meta` de `schemaMetadata()` congelado por `ProjectIdentityPassthroughTest`). Pré-existente; compare com `--order-by=default` e `--exclude-filter` antes de culpar o lote.
+- **`./c2f assets:minify` via Git Bash falha no `exec` do `npx`**; `php cli/c2f.php assets:minify` funciona.
+
 ### 2026-09-03 — BATCH-167 (REQ-040): sessao nao e cgroup
 
 - **`setsid` NAO tira o processo do cgroup.** Ele cria sessao e grupo de processos novos; o cgroup

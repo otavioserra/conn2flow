@@ -101,6 +101,144 @@ $(document).ready(function () {
         }
     });
 
+    // req-163: Acesso Restrito ao Site — autocomplete de perfis e badges removíveis.
+    //
+    // A lista autoritativa é o input oculto `#site_restricted_profiles` (ids separados por vírgula);
+    // os badges são só a representação. O markup do badge espelha `admin_environment_perfil_badge()`.
+
+    var $restritoBusca = $('#site_restricted_profiles_busca');
+    var $restritoResultados = $('#site-restricted-profiles-resultados');
+    var $restritoTags = $('#site-restricted-profiles-tags');
+    var $restritoIds = $('#site_restricted_profiles');
+    var restritoTimer = null;
+    var restritoSequencia = 0;
+
+    function restritoEscapar(texto) {
+        return $('<div>').text(texto == null ? '' : String(texto)).html();
+    }
+
+    function restritoLista() {
+        return String($restritoIds.val() || '').split(',').filter(function (id) { return /^[1-9][0-9]*$/.test(id); });
+    }
+
+    function restritoSincronizar() {
+        var ids = $restritoTags.find('.site-restricted-profile').map(function () {
+            return String($(this).attr('data-id'));
+        }).get();
+        $restritoIds.val(ids.join(','));
+    }
+
+    function restritoAdicionar(perfil) {
+        if (!perfil || !/^[1-9][0-9]*$/.test(String(perfil.id))) return;
+        if (restritoLista().indexOf(String(perfil.id)) !== -1) return;
+
+        $restritoTags.append(
+            '<a class="ui blue label site-restricted-profile" data-id="' + restritoEscapar(perfil.id) + '">'
+            + (perfil.nome ? restritoEscapar(perfil.nome) + ' ' : '')
+            + '<span class="detail">#' + restritoEscapar(perfil.id) + '</span>'
+            + '<i class="delete icon site-restricted-profile-remove"></i>'
+            + '</a>'
+        );
+        restritoSincronizar();
+    }
+
+    function restritoFecharResultados() {
+        $restritoResultados.hide().empty();
+    }
+
+    function restritoRenderizar(perfis) {
+        var jaAdicionados = restritoLista();
+        var disponiveis = (perfis || []).filter(function (perfil) {
+            return jaAdicionados.indexOf(String(perfil.id)) === -1;
+        });
+
+        $restritoResultados.empty();
+
+        if (!disponiveis.length) {
+            $restritoResultados.append('<div class="ui grey text" style="padding:8px;">' + restritoEscapar($restritoResultados.attr('data-sem-resultados')) + '</div>');
+        } else {
+            disponiveis.forEach(function (perfil) {
+                $('<div class="site-restricted-profile-resultado" style="padding:8px;cursor:pointer;border-radius:4px;"></div>')
+                    .html(restritoEscapar(perfil.nome) + ' <small class="ui grey text">' + restritoEscapar(perfil.slug) + ' #' + restritoEscapar(perfil.id) + '</small>')
+                    .data('perfil', perfil)
+                    .appendTo($restritoResultados);
+            });
+        }
+
+        $restritoResultados.show();
+    }
+
+    function restritoBuscar() {
+        var sequencia = ++restritoSequencia;
+
+        $.ajax({
+            type: 'POST',
+            url: window.location.href,
+            data: {
+                ajax: 'sim',
+                ajaxOpcao: 'buscar-perfis',
+                busca: $restritoBusca.val()
+            },
+            dataType: 'json',
+            success: function (dados) {
+                // Resposta de uma digitação anterior chegando depois da atual: descartar.
+                if (sequencia !== restritoSequencia) return;
+                if (dados && dados.status === 'Ok') {
+                    restritoRenderizar(dados.data);
+                } else {
+                    restritoFecharResultados();
+                }
+            },
+            error: function (txt) {
+                if (txt.status === 401) {
+                    window.open(gestor.raiz + (txt.responseJSON && txt.responseJSON.redirect ? txt.responseJSON.redirect : 'signin/'), '_self');
+                    return;
+                }
+                console.log('ERROR AJAX - buscar-perfis - Dados:', txt);
+                restritoFecharResultados();
+            }
+        });
+    }
+
+    $restritoBusca.on('input focus', function () {
+        clearTimeout(restritoTimer);
+        restritoTimer = setTimeout(restritoBuscar, 250);
+    });
+
+    $restritoBusca.on('keydown', function (evento) {
+        if (evento.key === 'Escape') restritoFecharResultados();
+        // Enter adiciona o primeiro resultado em vez de submeter o formulário.
+        if (evento.key === 'Enter') {
+            evento.preventDefault();
+            var primeiro = $restritoResultados.find('.site-restricted-profile-resultado').first();
+            if (primeiro.length) primeiro.trigger('mousedown');
+        }
+    });
+
+    // `mousedown` e não `click`: o blur do input fecharia a lista antes do click chegar.
+    $restritoResultados.on('mousedown', '.site-restricted-profile-resultado', function (evento) {
+        evento.preventDefault();
+        restritoAdicionar($(this).data('perfil'));
+        $restritoBusca.val('');
+        restritoFecharResultados();
+    });
+
+    $restritoResultados.on('mouseenter', '.site-restricted-profile-resultado', function () {
+        $(this).css('background', 'rgba(0,0,0,.05)');
+    }).on('mouseleave', '.site-restricted-profile-resultado', function () {
+        $(this).css('background', '');
+    });
+
+    $restritoBusca.on('blur', function () {
+        setTimeout(restritoFecharResultados, 150);
+    });
+
+    $restritoTags.on('click', '.site-restricted-profile-remove', function (evento) {
+        evento.preventDefault();
+        $(this).closest('.site-restricted-profile').remove();
+        restritoSincronizar();
+    });
+
     // Botão Salvar
     $('#btn-salvar').click(function () {
         var data = {
@@ -113,6 +251,9 @@ $(document).ready(function () {
             // req-111 (CR-001): tokens adicionais de robô, complementares à lista embutida do core.
             crawler_tokens_extra_ativo: $('#crawler_tokens_extra_ativo').parent().checkbox('is checked') ? 'true' : 'false',
             crawler_tokens_extra: $('#crawler_tokens_extra').val(),
+            // req-163: Acesso Restrito ao Site.
+            site_restricted_access: $('#site_restricted_access').parent().checkbox('is checked') ? 'true' : 'false',
+            site_restricted_profiles: $('#site_restricted_profiles').val(),
             usuario_recaptcha_active: $('#usuario_recaptcha_active').parent().checkbox('is checked') ? 'true' : 'false',
             usuario_recaptcha_site: $('#usuario_recaptcha_site').val(),
             usuario_recaptcha_server: $('#usuario_recaptcha_server').val(),

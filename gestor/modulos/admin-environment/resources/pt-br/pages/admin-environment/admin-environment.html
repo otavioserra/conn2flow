@@ -51,6 +51,44 @@
                             placeholder="Ex: Meu Website">
                     </div>
 
+                    <!-- ===== Acesso Restrito ao Site (req-163) ===== -->
+                    <h4 class="ui dividing header"><i class="lock icon"></i> Acesso Restrito ao Site</h4>
+                    <p class="ui grey text">Use em ambientes de desenvolvimento, testes, homologação ou
+                        sites privados. Com o acesso restrito ativo, todas as páginas passam a exigir login,
+                        inclusive as públicas, e o site inteiro é marcado para não ser indexado por
+                        buscadores (<code>noindex, nofollow</code>). As telas de login, as APIs, os webhooks
+                        de pagamento e os arquivos estáticos continuam funcionando.</p>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="site_restricted_access" name="site_restricted_access"
+                                #site-restricted-access-checked#>
+                            <label>Ativar acesso restrito ao site</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Perfis de usuário autorizados</label>
+                        <div class="site-restricted-profiles-busca" style="position:relative;">
+                            <div class="ui fluid icon input">
+                                <input type="text" id="site_restricted_profiles_busca"
+                                    placeholder="Digite o nome do perfil para buscar e adicionar" autocomplete="off">
+                                <i class="search icon"></i>
+                            </div>
+                            <div id="site-restricted-profiles-resultados" class="ui segment"
+                                data-sem-resultados="Nenhum perfil encontrado."
+                                style="display:none;position:absolute;left:0;right:0;z-index:20;margin-top:4px;padding:4px;max-height:260px;overflow:auto;"></div>
+                        </div>
+                        <input type="hidden" id="site_restricted_profiles" name="site_restricted_profiles"
+                            value="#site-restricted-profiles#">
+                        <div id="site-restricted-profiles-tags" style="margin-top:10px;">#site-restricted-profiles-badges#</div>
+                        <div class="ui small grey text" style="margin-top:6px;">
+                            Clique no <b>x</b> de um perfil para removê-lo. Com a lista vazia, qualquer usuário
+                            logado tem acesso. O seu próprio perfil precisa estar na lista para salvar — assim
+                            você não se tranca para fora desta tela.
+                        </div>
+                    </div>
+
                     <!-- ===== Limpeza do HTML entregue ao navegador (req-132) ===== -->
                     <h4 class="ui dividing header"><i class="code icon"></i> HTML entregue ao navegador</h4>
                     <p class="ui grey text">Remove do código-fonte das páginas os comentários de

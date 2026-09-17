@@ -424,6 +424,21 @@
         "type": "string"
     },
     {
+        "id": "site-restricted-denied-title",
+        "value": "Acesso restrito",
+        "type": "string"
+    },
+    {
+        "id": "site-restricted-denied-text",
+        "value": "Este site está em acesso restrito e o seu perfil de usuário não está autorizado a acessá-lo. Entre com outra conta ou fale com o administrador.",
+        "type": "string"
+    },
+    {
+        "id": "site-restricted-denied-signout",
+        "value": "Sair e entrar com outra conta",
+        "type": "string"
+    },
+    {
         "id": "html-editor-publisher-or-btn",
         "value": "ou",
         "type": "string"

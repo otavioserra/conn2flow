@@ -39,6 +39,44 @@
                             value="#site-name#" placeholder="Ex: My Website">
                     </div>
 
+                    <!-- ===== Restricted Site Access (req-163) ===== -->
+                    <h4 class="ui dividing header"><i class="lock icon"></i> Restricted Site Access</h4>
+                    <p class="ui grey text">Use it on development, testing, staging or private sites. With
+                        restricted access enabled, every page requires sign in, public pages included, and
+                        the whole site is flagged so search engines do not index it
+                        (<code>noindex, nofollow</code>). Sign in screens, APIs, payment webhooks and static
+                        files keep working.</p>
+
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="site_restricted_access" name="site_restricted_access"
+                                #site-restricted-access-checked#>
+                            <label>Enable restricted site access</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Authorized user profiles</label>
+                        <div class="site-restricted-profiles-busca" style="position:relative;">
+                            <div class="ui fluid icon input">
+                                <input type="text" id="site_restricted_profiles_busca"
+                                    placeholder="Type the profile name to search and add" autocomplete="off">
+                                <i class="search icon"></i>
+                            </div>
+                            <div id="site-restricted-profiles-resultados" class="ui segment"
+                                data-sem-resultados="No profile found."
+                                style="display:none;position:absolute;left:0;right:0;z-index:20;margin-top:4px;padding:4px;max-height:260px;overflow:auto;"></div>
+                        </div>
+                        <input type="hidden" id="site_restricted_profiles" name="site_restricted_profiles"
+                            value="#site-restricted-profiles#">
+                        <div id="site-restricted-profiles-tags" style="margin-top:10px;">#site-restricted-profiles-badges#</div>
+                        <div class="ui small grey text" style="margin-top:6px;">
+                            Click the <b>x</b> on a profile to remove it. With an empty list, any signed in user
+                            has access. Your own profile must be in the list to save, so you do not lock
+                            yourself out of this screen.
+                        </div>
+                    </div>
+
                     <!-- ===== Bots and Crawlers (req-111) ===== -->
                     <h4 class="ui dividing header"><i class="robot icon"></i> Bots and Crawlers</h4>
                     <p class="ui grey text">The system already recognizes the most common bots with no

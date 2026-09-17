@@ -180,3 +180,120 @@ describe('global.js - CSRF em formulários', () => {
     expect(valorDoCampo(form)).toBe('tok-9');
   });
 });
+
+/**
+ * req-163 (BATCH-168) — `XMLHttpRequest` cru. Uploads com progresso usam XHR porque `fetch` não
+ * expõe `upload.onprogress`; sem o envelope do prototype eles voltavam 403 com o usuário logado.
+ *
+ * O XHR do happy-dom é trocado por um dublê que só registra o que chegaria ao nativo, para que o
+ * teste observe os cabeçalhos efetivamente enviados sem abrir conexão.
+ */
+describe('global.js - CSRF em XMLHttpRequest', () => {
+  let xhrOriginal;
+  let assignOriginal;
+
+  class XhrFalso {
+    constructor() {
+      this.enviados = [];
+      this.ouvintes = {};
+      this.status = 0;
+      this.respostaCabecalhos = {};
+    }
+    open() { }
+    setRequestHeader(nome, valor) { this.enviados.push([nome, valor]); }
+    send() { }
+    addEventListener(evento, callback) { (this.ouvintes[evento] = this.ouvintes[evento] || []).push(callback); }
+    getResponseHeader(nome) { return this.respostaCabecalhos[nome] || null; }
+    disparar(evento) { (this.ouvintes[evento] || []).forEach((callback) => callback()); }
+  }
+
+  function cabecalhosCsrf(xhr) {
+    return xhr.enviados.filter(([nome]) => nome.toLowerCase() === 'x-csrf-token');
+  }
+
+  beforeEach(() => {
+    xhrOriginal = globalThis.XMLHttpRequest;
+    globalThis.XMLHttpRequest = class extends XhrFalso { };
+    window.XMLHttpRequest = globalThis.XMLHttpRequest;
+    assignOriginal = window.location.assign;
+  });
+
+  afterEach(() => {
+    globalThis.XMLHttpRequest = xhrOriginal;
+    window.XMLHttpRequest = xhrOriginal;
+  });
+
+  it('injeta X-CSRF-Token num POST de mesma origem', () => {
+    carregarGlobalJs({ token: 'tok-xhr-1' });
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', '/site/admin-arquivos/');
+    xhr.send(new FormData());
+
+    expect(cabecalhosCsrf(xhr)).toEqual([['X-CSRF-Token', 'tok-xhr-1']]);
+  });
+
+  it('não injeta em GET', () => {
+    carregarGlobalJs({ token: 'tok-xhr-2' });
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', '/site/admin-arquivos/');
+    xhr.send();
+
+    expect(cabecalhosCsrf(xhr)).toEqual([]);
+  });
+
+  it('não injeta em POST para outra origem', () => {
+    carregarGlobalJs({ token: 'tok-xhr-3' });
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', 'https://externo.test/upload');
+    xhr.send();
+
+    expect(cabecalhosCsrf(xhr)).toEqual([]);
+  });
+
+  it('não duplica nem sobrescreve o token informado manualmente (inclusive pelo prefilter do jQuery)', () => {
+    carregarGlobalJs({ token: 'tok-xhr-4' });
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', '/site/admin-arquivos/');
+    xhr.setRequestHeader('x-csrf-token', 'manual');
+    xhr.send();
+
+    expect(cabecalhosCsrf(xhr)).toEqual([['x-csrf-token', 'manual']]);
+  });
+
+  it('o envelope do prototype não é instalado duas vezes', () => {
+    carregarGlobalJs({ token: 'tok-xhr-5' });
+    const envelope = XMLHttpRequest.prototype.send;
+
+    // eslint-disable-next-line no-new-func
+    new Function(codigoDoIife())();
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/site/x/');
+    xhr.send();
+
+    expect(XMLHttpRequest.prototype.send).toBe(envelope);
+    expect(cabecalhosCsrf(xhr).length).toBe(1);
+  });
+
+  it('redireciona para o login em 401 com X-Gestor-Auth-Redirect', () => {
+    const assign = vi.fn();
+    Object.defineProperty(window.location, 'assign', { configurable: true, value: assign });
+    try {
+      carregarGlobalJs({ token: 'tok-xhr-6' });
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/site/admin-arquivos/');
+      xhr.send();
+
+      xhr.status = 401;
+      xhr.respostaCabecalhos['X-Gestor-Auth-Redirect'] = '/site/signin/';
+      xhr.disparar('load');
+
+      expect(assign).toHaveBeenCalledWith(new URL('/site/signin/', window.location.href).href);
+    } finally {
+      Object.defineProperty(window.location, 'assign', { configurable: true, value: assignOriginal });
+    }
+  });
+});

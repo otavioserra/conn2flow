@@ -19,6 +19,21 @@ No núcleo do framework (`gestor.php`), o modo AJAX só é ativado quando a requ
 * **Com `ajax: 'sim'`**: O Gestor popula `$_GESTOR['ajax'] = 'sim'`, lê `$_GESTOR['ajax-opcao']` (a partir do campo `ajaxOpcao`) e **desativa a exigência de token CSRF síncrono de formulário HTML**.
 * **Sem `ajax: 'sim'`**: O Gestor assume que se trata de uma submissão de formulário HTML tradicional, exige `$_GESTOR['token']` e **rejeita a requisição imediatamente com 403 Forbidden (`{"status":"error","message":"Token CSRF inválido ou ausente."}`)**.
 
+### Cobertura automática de CSRF e 401 pelo `global.js`
+
+`gestor/assets/global/global.js` injeta `X-CSRF-Token` em requisições mutáveis (`POST`, `PUT`, `PATCH`, `DELETE`) de **mesma origem** em TODOS os canais — não escreva o cabeçalho à mão:
+
+| Canal | Mecanismo |
+| --- | --- |
+| `$.ajax` | `jQuery.ajaxPrefilter` |
+| `fetch` | envelope de `window.fetch` |
+| Formulários | listener de `submit` em captura + envelope de `HTMLFormElement.prototype.submit` + handler delegado do jQuery |
+| **`XMLHttpRequest` cru** (req-163) | envelope de `XMLHttpRequest.prototype.open` / `setRequestHeader` / `send` (guarda `__c2fCsrf`) |
+
+- **Uploads com barra de progresso**: `fetch` não expõe `upload.onprogress`; use `new XMLHttpRequest()` normalmente — o token entra sozinho. Antes da req-163 esse caminho voltava **403** com o usuário logado.
+- Token definido manualmente (`xhr.setRequestHeader('X-CSRF-Token', ...)`, em qualquer caixa) **não é duplicado nem sobrescrito**. `GET` e cross-origin nunca recebem o token.
+- Resposta **401** com `X-Gestor-Auth-Redirect` redireciona para o login em `$.ajax`, `fetch` e `XMLHttpRequest`. Ainda assim trate o 401 no seu handler para destravar dimmers/spinners.
+
 ---
 
 ## 🏆 2. Padrão Canônico Frontend em JavaScript Vanilla (Gold Standard)

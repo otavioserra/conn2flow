@@ -150,6 +150,58 @@
 		};
 	}
 
+	// req-163: `XMLHttpRequest` cru. `fetch` não expõe `upload.onprogress`, então uploads com barra
+	// de progresso recorrem ao XHR — e voltavam 403 com o usuário logado, porque nem o prefilter do
+	// jQuery nem o envelope do fetch os alcançam. O `$.ajax` também passa por aqui (o jqXHR delega
+	// ao XHR nativo); o registro de cabeçalhos manuais evita duplicar o token que o prefilter já pôs.
+	if (typeof XMLHttpRequest !== 'undefined' && XMLHttpRequest.prototype && !XMLHttpRequest.prototype.__c2fCsrf) {
+		var xhrOpenOriginal = XMLHttpRequest.prototype.open;
+		var xhrSetRequestHeaderOriginal = XMLHttpRequest.prototype.setRequestHeader;
+		var xhrSendOriginal = XMLHttpRequest.prototype.send;
+
+		XMLHttpRequest.prototype.open = function (method, url) {
+			this.__c2fMetodo = method;
+			this.__c2fUrl = url;
+			this.__c2fCabecalhos = {};
+			return xhrOpenOriginal.apply(this, arguments);
+		};
+
+		XMLHttpRequest.prototype.setRequestHeader = function (nome, valor) {
+			if (this.__c2fCabecalhos && nome) this.__c2fCabecalhos[String(nome).toLowerCase()] = true;
+			return xhrSetRequestHeaderOriginal.apply(this, arguments);
+		};
+
+		XMLHttpRequest.prototype.send = function () {
+			var xhr = this;
+			try {
+				var jaInformado = xhr.__c2fCabecalhos && xhr.__c2fCabecalhos[CSRF_HEADER.toLowerCase()];
+				var token = csrfToken();
+				if (token && !jaInformado && metodoMutavel(xhr.__c2fMetodo) && mesmaOrigem(String(xhr.__c2fUrl || ''))) {
+					xhrSetRequestHeaderOriginal.call(xhr, CSRF_HEADER, token);
+					if (xhr.__c2fCabecalhos) xhr.__c2fCabecalhos[CSRF_HEADER.toLowerCase()] = true;
+				}
+				if (!xhr.__c2fOuvinte401) {
+					xhr.__c2fOuvinte401 = true;
+					xhr.addEventListener('load', function () {
+						if (xhr.status !== 401) return;
+						var destino = '';
+						try {
+							destino = xhr.getResponseHeader('X-Gestor-Auth-Redirect');
+						} catch (error) {
+							// Cabeçalho inacessível (CORS): sem destino confiável.
+						}
+						if (destino) redirecionarParaLogin(destino);
+					});
+				}
+			} catch (error) {
+				// Nunca impedir o envio por causa do token: o backend decide se aceita.
+			}
+			return xhrSendOriginal.apply(this, arguments);
+		};
+
+		XMLHttpRequest.prototype.__c2fCsrf = true;
+	}
+
 	document.addEventListener('submit', function (event) {
 		aplicarCsrfNoFormulario(event.target);
 	}, true);

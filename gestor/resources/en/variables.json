@@ -424,6 +424,21 @@
         "type": "string"
     },
     {
+        "id": "site-restricted-denied-title",
+        "value": "Restricted access",
+        "type": "string"
+    },
+    {
+        "id": "site-restricted-denied-text",
+        "value": "This site is under restricted access and your user profile is not authorized to access it. Sign in with another account or contact the administrator.",
+        "type": "string"
+    },
+    {
+        "id": "site-restricted-denied-signout",
+        "value": "Sign out and use another account",
+        "type": "string"
+    },
+    {
         "id": "html-editor-publisher-or-btn",
         "value": "or",
         "type": "string"
