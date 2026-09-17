@@ -31,6 +31,17 @@ docker exec conn2flow-app php C:/Program Files/Git/var/www/html/script.php
 MSYS_NO_PATHCONV=1 docker exec conn2flow-app php /var/www/html/script.php
 ```
 
+O mesmo mecanismo quebra transportes SSH com `rsync`. O MSYS2 converte uma origem local como
+`/c/Users/...` para `C:/Users/...`; como o `rsync` interpreta `C:` como especificação de host, um
+destino `usuario@host:/caminho` faz ambos os lados parecerem remotos e produz
+`The source and destination cannot both be remote`.
+
+**Solução obrigatória para rsync**: toda invocação deve usar `MSYS_NO_PATHCONV=1`, diretamente ou
+por helper compartilhado:
+```bash
+MSYS_NO_PATHCONV=1 rsync -avu "/c/Users/.../origem/" "usuario@host:/destino/"
+```
+
 > [!WARNING]
 > Esta armadilha é **silenciosa** — o comando executa sem erro visível, mas o caminho dentro do container está errado. O PHP simplesmente não encontra o arquivo e retorna um erro genérico.
 
