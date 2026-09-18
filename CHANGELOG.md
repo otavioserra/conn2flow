@@ -5,6 +5,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.11] - 2026-09-18
+
+### Added
+- Security: Native `XMLHttpRequest` interceptor in `global.js` providing transparent same-origin `X-CSRF-Token` header injection (`BATCH-168` / `req-163`).
+- Security: Automated restricted site gate redirecting unauthenticated visitors to `/acessar-sistema` with route preservation for password recovery (`BATCH-168` / `req-163`).
+- Transport: Prevented unwanted MSYS path conversions (`MSYS_NO_PATHCONV=1`) and paired cwRsync/Cygwin with flag `-T` to eliminate Windows pipe `dup()` failures (`BATCH-169`, `BATCH-171`).
+- Transport: Unified `sudo -u <tenant> sh -c` session encapsulation across Bash scripts and PHP CLI transport honoring restricted `750` permissions (`BATCH-172`, `BATCH-173`).
+- Security & CLI: ANSI escape sanitization in Windows Tailwind CLI version detector (`BATCH-170`) and decoupled rate limiting for validation errors vs authentication attempts (`BATCH-174`).
+
 ## [2.10.10] - 2026-09-03
 
 ### Added

@@ -71,16 +71,17 @@ content workflows.
 
 ## 🆕 Latest Version
 
-**v2.10.10 (September 2026)** *(Current base: v2.9.51)*
+**v2.10.11 (September 2026)** *(Current base: v2.9.51)*
 
-- **Admin Cron Detached Execution**: Decoupled manual task triggers in `/admin-cron/` via independent POSIX CLI sessions (`setsid`), preventing `502 Bad Gateway` timeouts when restarting system services such as PHP-FPM (`BATCH-166` / `REQ-039`).
-- **CSS Pipeline & Tailwind Global Support**: Enabled global Tailwind CSS resolution via system PATH on Linux, propagated `NODE_PATH` in `css-regenerar.php`, and added flat installation path detection in `c2f css:rebuild` (`REQ-053`).
-- **CLI Launcher Synchronization**: Automated synchronization of the `c2f` launcher executable and `cli/` directory to SSH-deployed projects and master project via `sync-core-to-project.sh`.
-- **Tailwind Three-Layer Visual Parity & CSS Persistence**: Full visual parity across public pages, live preview iframe, and Live Editor with accumulated baseline persistence.
-- **HTML Editor Template Shielding**: Converted template cards to inert `<template>` tags (`req-161`) and added defensive variable resolution (`req-162`).
+- **Transparent CSRF XHR Protection**: Built-in `XMLHttpRequest` interceptor in `global.js` automatically injects `X-CSRF-Token` headers into same-origin requests without affecting external analytics or third-party scripts (`BATCH-168` / `req-163`).
+- **Restricted Site Gate**: Native redirection to `/acessar-sistema` when `site_restrito = true` for unauthenticated visitors, preserving credential recovery routes and callbacks (`BATCH-168` / `req-163`).
+- **SSH Transport & Rsync Hardening**: Prevented Git Bash path conversions (`MSYS_NO_PATHCONV=1`) and paired cwRsync with Cygwin SSH using `-T` to eliminate Windows pipe `dup()` failures (`BATCH-169`, `BATCH-171`).
+- **Unified `sudo -u` Encapsulation**: Wrapped `cd` and remote commands within atomic `sudo -u <tenant> sh -c` sessions across Bash scripts and PHP CLI transport, honoring restricted `750` permissions on HestiaCP Linux hosts (`BATCH-172`, `BATCH-173`).
+- **Tailwind CLI ANSI Sanitization & Security Governance**: Sanitized ANSI escape codes in Windows Tailwind CLI version detection (`BATCH-170`), decoupled form validation penalties from credential failures, and added unlock time forecasts (`BATCH-174`).
 
 ### Previous 2.10.x Releases
 
+- **v2.10.10**: Decoupled Admin Cron POSIX execution (`setsid`), global Tailwind CLI support, and automated `c2f` launcher synchronization.
 - **v2.10.9**: Three-layer Tailwind parity, inert `<template>` in HTML editor, Admin Cron `DOMContentLoaded` fix, SSH CLI transport.
 - **v2.10.8**: GitHub Actions full migration to native Node 24 actions (`action-gh-release@v3`).
 - **v2.10.7**: Partial GitHub Actions Node 24 upgrade (`checkout@v5`, `setup-node@v5`, `cache@v5`).

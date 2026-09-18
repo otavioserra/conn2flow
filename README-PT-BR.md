@@ -75,16 +75,17 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.10 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.11 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Disparo Desacoplado no Admin Cron**: Desacoplamento de rotinas manuais em `/admin-cron/` via sessão CLI independente (`setsid`), prevenindo erro `502 Bad Gateway` ao reiniciar serviços como o PHP-FPM (`BATCH-166` / `REQ-039`).
-- **Suporte ao Tailwind Global e Pipeline de CSS**: Resolução automática do binário do Tailwind pelo PATH no Linux, propagação de `NODE_PATH` em `css-regenerar.php` e detecção de caminhos em instalações planas no `c2f css:rebuild` (`REQ-053`).
-- **Sincronização do Launcher c2f**: Sincronização automática do launcher CLI e diretório `cli/` em deploys de projetos remotos SSH e projeto mestre via `sync-core-to-project.sh`.
-- **Paridade Visual em 3 Camadas no Tailwind**: Paridade entre páginas públicas, pré-visualizador e Live Editor com persistência do baseline acumulado de templates.
-- **Blindagem de Templates no Editor HTML**: Tags `<template>` inertes para cards de modelos (`req-161`) e resolução defensiva de variáveis (`req-162`).
+- **Proteção CSRF XHR Transparente**: Interceptador nativo no `global.js` que injeta automaticamente o token CSRF (`X-CSRF-Token`) em requisições `XMLHttpRequest` de mesma origem, sem impactar scripts de terceiros ou analytics (`BATCH-168` / `req-163`).
+- **Camada de Acesso a Site Restrito**: Redirecionamento automático para `/acessar-sistema` sob `site_restrito = true` para sessões não autenticadas, com salvaguarda para recuperação de senha e callbacks (`BATCH-168` / `req-163`).
+- **Blindagem de Transporte SSH & Rsync**: Neutralização de conversão indevida de caminhos pelo Git Bash (`MSYS_NO_PATHCONV=1`) e pareamento cwRsync/Cygwin com `-T`, eliminando quebras `dup()` em pipes no Windows (`BATCH-169`, `BATCH-171`).
+- **Encapsulamento Unificado `sudo -u`**: Execução atômica de navegação `cd` e comando remoto sob `sudo -u <tenant> sh -c` nas camadas Bash e PHP CLI, atendendo permissões restritas `750` em servidores HestiaCP/Linux (`BATCH-172`, `BATCH-173`).
+- **Sanitização ANSI no Tailwind & Governança de Acessos**: Tratamento de caracteres ANSI no Tailwind CLI no Windows (`BATCH-170`), separação de limites entre erros de formulário e ataques de força bruta, e previsão de desbloqueio em logs (`BATCH-174`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.10**: Disparo desacoplado no Admin Cron via `setsid` CLI, Tailwind global pelo PATH e sincronização de launcher `c2f`.
 - **v2.10.9**: Paridade Tailwind em 3 camadas, `<template>` inerte no editor HTML, correção de `DOMContentLoaded` no Admin Cron e transporte SSH na CLI.
 - **v2.10.8**: Migração completa das ações do GitHub Actions para Node 24 (`action-gh-release@v3`).
 - **v2.10.7**: Atualização parcial das GitHub Actions para Node 24 (`checkout@v5`, `setup-node@v5`, `cache@v5`).

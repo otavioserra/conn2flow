@@ -5,6 +5,15 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.11] - 2026-09-18
+
+### Added
+- Segurança: Interceptador nativo de `XMLHttpRequest` no `global.js` injetando automaticamente o header `X-CSRF-Token` em chamadas `same-origin` (`BATCH-168` / `req-163`).
+- Segurança: Camada de site restrito redirecionando visitantes não autenticados para `/acessar-sistema` com preservação de rotas essenciais (`BATCH-168` / `req-163`).
+- Transporte: Blindagem de caminhos no Git Bash (`MSYS_NO_PATHCONV=1`) e pareamento cwRsync/Cygwin com flag `-T`, eliminando quebras `dup()` em pipes no Windows (`BATCH-169`, `BATCH-171`).
+- Transporte: Encapsulamento atômico de sessões sob `sudo -u <tenant> sh -c` nas camadas Bash e PHP CLI, atendendo permissões restritas `750` em servidores HestiaCP/Linux (`BATCH-172`, `BATCH-173`).
+- Segurança & CLI: Sanitização de escapes ANSI no Tailwind CLI no Windows (`BATCH-170`) e desacoplamento de limites de tentativas para erros de validação vs autenticação (`BATCH-174`).
+
 ## [2.10.10] - 2026-09-03
 
 ### Added
