@@ -139,51 +139,71 @@ curl --form-string "_gestor-atualizar=1" \
 
 ---
 
-### 7. rsync com `dup() in/out/err failed` em Pipes Win32/MSYS2
+### 7. `rsync: dup() in/out/err failed` — Pareamento de Runtimes cwRsync/SSH
 
-**Problema**: No Windows, a cadeia `PHP proc_open() -> bash -> rsync -> ssh` atravessa pipes
-anônimos Win32. A instalação Chocolatey/cwRsync usa runtime Cygwin, enquanto o `ssh` que o Git Bash
-resolve primeiro usa runtime MSYS2. Misturar esses executáveis no subprocesso de transporte faz o
-rsync 3.4.x falhar ao duplicar os descritores, emitindo `dup() in/out/err failed` e código 12.
+**Problema**: O `rsync` 3.4.x do pacote cwRsync (runtime Cygwin) usa pipes Win32 nativos. Quando o `ssh.exe` invocado vem do Git Bash (runtime MSYS2), os descritores não são compatíveis e o processo morre com:
+```
+rsync: dup() in/out/err failed
+rsync error: error in IPC code (code 14) at pipe.c(...)
+```
+O exit code 12 não produz mensagem legível sem `-v`.
 
 **Solução Obrigatória**:
-1. Pareie `rsync` e `ssh` do mesmo runtime. Para cwRsync/Chocolatey, exija o `ssh.exe` distribuído
-   no próprio pacote e falhe cedo se ele estiver ausente; não use o SSH do Git/MSYS2.
-2. Execute o SSH com `-T`: o protocolo binário do rsync não pode atravessar uma pseudo-TTY.
-3. Preserve `MSYS_NO_PATHCONV=1` e, para cwRsync, converta somente caminhos locais existentes de
-   `/c/...` para `/cygdrive/c/...`; destinos SSH e padrões de exclusão permanecem intactos.
-4. Preserve stdin/stdout/stderr do chamador. Nos testes do BATCH-171, `--blocking-io` e
-   `< /dev/null` não corrigiram o runtime incompatível e o redirecionamento não deve ser forçado.
-5. Um painel novo pode descartar handles stale em execução manual, mas não substitui o pareamento
-   de runtimes dentro do helper chamado por `proc_open()`.
+1. **Pareamento mandatório de runtimes**: Use o `ssh.exe` do próprio pacote cwRsync (`C:\cwrsync\bin\ssh.exe`), nunca o do Git Bash.
+2. **`-e` com flags SSH explícitas**: `-e "C:/cwrsync/bin/ssh.exe -T -i <chave>"`. A flag `-T` bloqueia pseudo-TTY (o protocolo binário do rsync não funciona com PTY).
+3. **`MSYS_NO_PATHCONV=1`** continua obrigatório (mesma razão da Armadilha 1).
+4. **Caminhos locais**: Converter para `/cygdrive/c/...` (formato Cygwin), nunca `/c/...` (MSYS2).
+
+```bash
+MSYS_NO_PATHCONV=1 rsync -avz \
+  -e "C:/cwrsync/bin/ssh.exe -T -i $HOME/.ssh/id_ed25519" \
+  "/cygdrive/c/Users/otavi/projeto/src/" \
+  "usuario@host:/opt/projeto/src/"
+```
+
+> [!WARNING]
+> O erro `dup()` aparece SOMENTE com o `ssh.exe` errado. A mensagem não menciona SSH — o diagnóstico natural é culpar o rsync ou as permissões.
 
 ---
 
-### 8. Cores ANSI em Saídas de Utilitários CLI
+### 8. Sequências ANSI em Saídas de Utilitários CLI (Cores Quebram Parsers)
 
-**Problema**: Binários multiplataforma podem emitir sequências ANSI mesmo quando a saída é
-capturada por `proc_open` ou outro subprocesso. Texto como
-`tailwindcss \x1b[34mv4.3.3\x1b[39m` quebra parsers que esperam a versão imediatamente após o
-espaço e pode gerar cache ou fingerprints diferentes entre Windows e Linux.
+**Problema**: Utilitários multiplataforma (Tailwind CLI, Vite, ESBuild) emitem sequências de cor ANSI mesmo quando capturados por `proc_open()`, `exec()` ou backticks. A saída de versão:
+```
+tailwindcss \x1b[34mv4.3.3\x1b[39m
+```
+quebra comparadores de versão (`version_compare()`, `semver.satisfies()`) e asserções em testes.
 
 **Solução Obrigatória**:
-1. Ao chamar uma CLI própria, prefira `NO_COLOR=1` ou `FORCE_COLOR=0` quando o binário respeitar
-   essas variáveis.
-2. Antes de aplicar regex ou comparar a saída, remova sequências ANSI, por exemplo com
-   `preg_replace('/\x1b\[[0-9;]*[a-zA-Z]/', '', $text)` em PHP.
-3. Cubra com teste ao menos uma saída sem cor e uma saída colorida real do Windows.
+1. **Variáveis de ambiente**: Definir `NO_COLOR=1` e/ou `FORCE_COLOR=0` antes de invocar o processo.
+2. **Higienização mandatória** antes de qualquer parsing ou comparação de versão:
+```php
+$limpo = preg_replace('/\x1b\[[0-9;]*[a-zA-Z]/', '', $saida_bruta);
+```
+```javascript
+const limpo = saidaBruta.replace(/\x1b\[[0-9;]*[a-zA-Z]/g, '');
+```
+3. **Asserts/testes**: Sempre higienizar ANTES de comparar, nunca confiar que a saída é texto puro.
+
+> [!WARNING]
+> A contaminação é **invisível** no terminal (que renderiza as cores) mas **quebradora** em strings capturadas. `"v4.3.3" !== "\x1b[34mv4.3.3\x1b[39m"` falha sem mensagem explicativa.
 
 ---
 
-### 9. `cd` Antes de `sudo -u` em Tenants SSH Restritos
+### 9. `cd` Antes de `sudo -u` em Tenants SSH Restritos (HestiaCP e Similares)
 
-**Problema**: Em servidores multi-tenant como HestiaCP, o usuário SSH de infraestrutura pode ter
-permissão para executar `sudo -u tenant`, mas não para atravessar um diretório `/home/tenant` com
-modo `750` ou `700`. Uma linha remota como `cd /home/tenant/... && sudo -u tenant php ...` falha no
-`cd` antes que a elevação seja aplicada.
+**Problema**: Em servidores multi-tenant (HestiaCP, cPanel, Plesk) com diretórios home em modo `750` ou `700`, o usuário SSH de deploy não tem permissão para entrar no diretório do tenant antes da elevação de privilégios:
+```bash
+# ❌ FALHA — cd executa como o usuário SSH, que não tem acesso a /home/tenant/
+cd /home/tenant/web/dominio.com && sudo -u tenant php artisan migrate
+```
 
-**Solução Obrigatória**:
-1. Quando houver `ssh_run_as`, encapsule a troca de diretório e o comando na mesma shell elevada:
-   `sudo -u tenant sh -c 'cd /home/tenant/... && php ...'`.
-2. Cite o caminho, o usuário e cada argumento do comando antes de montar a linha entregue ao SSH.
-3. Sem `ssh_run_as`, preserve a execução direta sob o usuário SSH autenticado.
+**Solução Obrigatória**: Encapsular a troca de diretório e o comando na mesma shell elevada:
+```bash
+# ✅ CORRETO — cd e php executam ambos como `tenant`
+sudo -u tenant sh -c 'cd /home/tenant/web/dominio.com && php artisan migrate'
+```
+
+> [!WARNING]
+> O erro é `Permission denied` no `cd`, não no `sudo`. O diagnóstico natural é culpar a configuração do sudo, mas o problema está na ordem das operações.
+
