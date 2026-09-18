@@ -130,12 +130,22 @@ final class ProjectSshPublicPathReq050Test extends TestCase
         new SshRemoteTransport(self::alvo(['runAs' => 'tenant; rm -rf /']), []);
     }
 
-    public function testRunAsValidoEntraComoSudoCitado(): void
+    public function testRunAsValidoEncapsulaDiretorioEComandoNaShellElevada(): void
     {
         $transporte = new SshRemoteTransport(self::alvo(['runAs' => 'tenant']), []);
         $comando = $transporte->buildRemoteCommand(['./c2f', 'css:rebuild']);
 
-        self::assertComandoSshContem("sudo -u 'tenant' './c2f' 'css:rebuild'", $comando);
+        $noDiretorio = "cd " . $transporte->posixQuote('/home/tenant/web/exemplo.local/conn2flow-gestor')
+            . " && " . $transporte->posixQuote('./c2f')
+            . " " . $transporte->posixQuote('css:rebuild');
+        $remotoEsperado = "sudo -u " . $transporte->posixQuote('tenant')
+            . " sh -c " . $transporte->posixQuote($noDiretorio);
+
+        self::assertStringEndsWith(escapeshellarg($remotoEsperado), $comando);
+        self::assertStringNotContainsString(
+            "cd '/home/tenant/web/exemplo.local/conn2flow-gestor' && sudo -u",
+            str_replace("'\\\\''", "'", $comando)
+        );
     }
 
     public function testEntrypointRemotoAceitaFormaComposta(): void

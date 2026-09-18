@@ -261,6 +261,9 @@ $_CONFIG = [
     'formularios-tempo-bloqueio-ip'         => (int)($_ENV['FORMULARIOS_TEMPO_BLOQUEIO_IP'] ?? 86400),
     'formularios-maximo-cadastros'          => (int)($_ENV['FORMULARIOS_MAXIMO_CADASTROS'] ?? 10),
     'formularios-maximo-cadastros-simples'  => (int)($_ENV['FORMULARIOS_MAXIMO_CADASTROS_SIMPLES'] ?? 3),
+    // req-169: erro de digitacao nao pode consumir a mesma cota de um envio valido. As falhas de
+    // VALIDACAO contam contra este teto folgado; abuso (reCAPTCHA reprovado) segue no teto acima.
+    'formularios-maximo-validacoes'         => (int)($_ENV['FORMULARIOS_MAXIMO_VALIDACOES'] ?? 40),
     'email' => [
         'ativo' => filter_var($_ENV['EMAIL_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN),
         'server' => [

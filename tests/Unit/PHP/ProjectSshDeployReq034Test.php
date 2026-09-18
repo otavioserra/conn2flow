@@ -114,6 +114,30 @@ final class ProjectSshDeployReq034Test extends TestCase
         self::assertStringContainsString('ssh_run_as must be a plain user name', $conteudo);
     }
 
+    public function testCdEComandoRemotoSaoExecutadosSobOUsuarioDoTenant(): void
+    {
+        $conteudo = self::conteudo(self::lib());
+
+        self::assertStringContainsString(
+            'command_in_workdir="cd $(printf \'%q\' "$PT_REMOTE_PATH") && $remote_cmd"',
+            $conteudo
+        );
+        self::assertStringContainsString(
+            'command_in_workdir="sudo -u $(printf \'%q\' "$PT_SSH_RUN_AS") sh -c $(printf \'%q\' "$command_in_workdir")"',
+            $conteudo,
+            'sudo precisa envolver a troca de diretorio e o comando, nao apenas o executavel final'
+        );
+        self::assertStringContainsString(
+            '"$PT_SSH_BIN" "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET"',
+            $conteudo
+        );
+        self::assertStringContainsString('"$command_in_workdir"', $conteudo);
+        self::assertStringNotContainsString(
+            'remote_cmd="sudo -u $(printf \'%q\' "$PT_SSH_RUN_AS") $remote_cmd"',
+            $conteudo
+        );
+    }
+
     // ===================== 2. Scripts do pipeline =====================
 
     /** @return list<array{0: string}> */
@@ -145,6 +169,53 @@ final class ProjectSshDeployReq034Test extends TestCase
             // Em transporte local o array é vazio e a linha é exatamente a de antes.
             self::assertStringContainsString('"${PT_RSYNC_OPTS[@]}"', $conteudo, $arquivo);
         }
+    }
+
+    public function testRsyncEhProtegidoContraConversaoDeCaminhoDoMsys(): void
+    {
+        $biblioteca = self::conteudo(self::lib());
+        self::assertStringContainsString(
+            'MSYS_NO_PATHCONV=1 "${command[@]}"',
+            $biblioteca,
+            'o helper compartilhado deve desabilitar a conversao de caminhos antes de executar rsync'
+        );
+
+        $syncCore = self::conteudo(
+            self::scriptsRoot() . DIRECTORY_SEPARATOR . 'projects'
+            . DIRECTORY_SEPARATOR . 'sync-core-to-project.sh'
+        );
+        self::assertSame(
+            3,
+            substr_count($syncCore, 'project_transport_run_rsync "${'),
+            'as tres chamadas rsync do sync do core devem usar o helper protegido'
+        );
+
+        $syncProjeto = self::conteudo(
+            self::scriptsRoot() . DIRECTORY_SEPARATOR . 'projects'
+            . DIRECTORY_SEPARATOR . 'synchronize-project.sh'
+        );
+        self::assertStringContainsString(
+            'project_transport_run_rsync "${command[@]}"',
+            $syncProjeto,
+            'o executor comum do sync de projeto deve usar o helper protegido'
+        );
+    }
+
+    public function testRsyncSshNoWindowsBlindaDescritoresHerdadosDoProcOpen(): void
+    {
+        $biblioteca = self::conteudo(self::lib());
+
+        self::assertStringContainsString('_pt_is_windows_posix()', $biblioteca);
+        self::assertStringContainsString('_pt_resolve_ssh_bin()', $biblioteca);
+        self::assertStringContainsString('/lib/rsync/tools/bin/ssh.exe', $biblioteca);
+        self::assertStringContainsString('UserKnownHostsFile=$PT_SSH_KNOWN_HOSTS', $biblioteca);
+        self::assertStringContainsString('cwRsync detected but its compatible SSH client was not found', $biblioteca);
+        self::assertStringContainsString('_pt_resolve_ssh_bin || return 1', $biblioteca);
+        self::assertStringContainsString('PT_RSYNC_OPTS=(-e "$PT_RSYNC_SSH_BIN ', $biblioteca);
+        self::assertStringContainsString('"$PT_SSH_BIN" "${PT_SSH_OPTS[@]}"', $biblioteca);
+        self::assertStringContainsString('command[$index]="/cygdrive/$drive$suffix"', $biblioteca);
+        self::assertStringContainsString('PT_SSH_OPTS=(-T ', $biblioteca);
+        self::assertStringNotContainsString('"$@" < /dev/null', $biblioteca);
     }
 
     public function testSyncCorePublicaOCliEmInstalacoesSshEProjetoMestre(): void

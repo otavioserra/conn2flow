@@ -13,7 +13,7 @@ user-invocable: false
 
 ---
 
-## ⛔ As 6 Armadilhas Críticas
+## ⛔ As 9 Armadilhas Críticas
 
 ### 1. Conversão Automática de Caminhos no Git Bash (MSYS Path Conversion)
 
@@ -136,3 +136,54 @@ curl --form-string "_gestor-atualizar=1" \
 1. **Execução Sequencial Exclusiva**: NUNCA execute dois comandos de compilação ou pipeline em paralelo no mesmo container. Execute um de cada vez, aguardando o término (`exit code 0`).
 2. **Foreground Obrigatório**: Mantenha os comandos rodando em foreground com saída direta no terminal.
 3. **Sem Buffer / Expor Warnings**: Não use redirecionamentos cegos (`> /dev/null 2>&1`). Se um warning do PHP for disparado (ex: `Undefined variable`, `ArgumentCountError`), ele DEVE aparecer no terminal para resolução imediata.
+
+---
+
+### 7. rsync com `dup() in/out/err failed` em Pipes Win32/MSYS2
+
+**Problema**: No Windows, a cadeia `PHP proc_open() -> bash -> rsync -> ssh` atravessa pipes
+anônimos Win32. A instalação Chocolatey/cwRsync usa runtime Cygwin, enquanto o `ssh` que o Git Bash
+resolve primeiro usa runtime MSYS2. Misturar esses executáveis no subprocesso de transporte faz o
+rsync 3.4.x falhar ao duplicar os descritores, emitindo `dup() in/out/err failed` e código 12.
+
+**Solução Obrigatória**:
+1. Pareie `rsync` e `ssh` do mesmo runtime. Para cwRsync/Chocolatey, exija o `ssh.exe` distribuído
+   no próprio pacote e falhe cedo se ele estiver ausente; não use o SSH do Git/MSYS2.
+2. Execute o SSH com `-T`: o protocolo binário do rsync não pode atravessar uma pseudo-TTY.
+3. Preserve `MSYS_NO_PATHCONV=1` e, para cwRsync, converta somente caminhos locais existentes de
+   `/c/...` para `/cygdrive/c/...`; destinos SSH e padrões de exclusão permanecem intactos.
+4. Preserve stdin/stdout/stderr do chamador. Nos testes do BATCH-171, `--blocking-io` e
+   `< /dev/null` não corrigiram o runtime incompatível e o redirecionamento não deve ser forçado.
+5. Um painel novo pode descartar handles stale em execução manual, mas não substitui o pareamento
+   de runtimes dentro do helper chamado por `proc_open()`.
+
+---
+
+### 8. Cores ANSI em Saídas de Utilitários CLI
+
+**Problema**: Binários multiplataforma podem emitir sequências ANSI mesmo quando a saída é
+capturada por `proc_open` ou outro subprocesso. Texto como
+`tailwindcss \x1b[34mv4.3.3\x1b[39m` quebra parsers que esperam a versão imediatamente após o
+espaço e pode gerar cache ou fingerprints diferentes entre Windows e Linux.
+
+**Solução Obrigatória**:
+1. Ao chamar uma CLI própria, prefira `NO_COLOR=1` ou `FORCE_COLOR=0` quando o binário respeitar
+   essas variáveis.
+2. Antes de aplicar regex ou comparar a saída, remova sequências ANSI, por exemplo com
+   `preg_replace('/\x1b\[[0-9;]*[a-zA-Z]/', '', $text)` em PHP.
+3. Cubra com teste ao menos uma saída sem cor e uma saída colorida real do Windows.
+
+---
+
+### 9. `cd` Antes de `sudo -u` em Tenants SSH Restritos
+
+**Problema**: Em servidores multi-tenant como HestiaCP, o usuário SSH de infraestrutura pode ter
+permissão para executar `sudo -u tenant`, mas não para atravessar um diretório `/home/tenant` com
+modo `750` ou `700`. Uma linha remota como `cd /home/tenant/... && sudo -u tenant php ...` falha no
+`cd` antes que a elevação seja aplicada.
+
+**Solução Obrigatória**:
+1. Quando houver `ssh_run_as`, encapsule a troca de diretório e o comando na mesma shell elevada:
+   `sudo -u tenant sh -c 'cd /home/tenant/... && php ...'`.
+2. Cite o caminho, o usuário e cada argumento do comando antes de montar a linha entregue ao SSH.
+3. Sem `ssh_run_as`, preserve a execução direta sob o usuário SSH autenticado.

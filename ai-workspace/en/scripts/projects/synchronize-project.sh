@@ -194,7 +194,7 @@ run_project_rsync() {
   esac
 
   log "Running: ${command[*]}"
-  "${command[@]}"
+  project_transport_run_rsync "${command[@]}"
 }
 
 run_project_rsync "$ORIGEM" "$DESTINO" "${RSYNC_EXCLUDES[@]}"

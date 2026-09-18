@@ -113,14 +113,14 @@ final class SshRemoteTransport
             throw new RuntimeException('A remote command needs at least one argument.');
         }
 
-        $remote = implode(' ', array_map([$this, 'posixQuote'], $argv));
+        $directory = $workingDirectory ?? $this->cliWorkingDirectory();
+        $remote = 'cd ' . $this->posixQuote($directory) . ' && '
+            . implode(' ', array_map([$this, 'posixQuote'], $argv));
 
         if ($this->runAs !== null) {
-            $remote = 'sudo -u ' . $this->posixQuote($this->runAs) . ' ' . $remote;
+            $remote = 'sudo -u ' . $this->posixQuote($this->runAs)
+                . ' sh -c ' . $this->posixQuote($remote);
         }
-
-        $directory = $workingDirectory ?? $this->cliWorkingDirectory();
-        $remote = 'cd ' . $this->posixQuote($directory) . ' && ' . $remote;
 
         return 'ssh ' . implode(' ', $this->sshOptions()) . ' ' . escapeshellarg($this->target())
             . ' ' . escapeshellarg($remote);

@@ -2,7 +2,7 @@
 
 - **Data**: 2026-09-02
 - **Intakes**: [req-158](../human-requests/req-158.md), [req-159](../human-requests/req-159.md), [req-160](../human-requests/req-160.md)
-- **Lotes**: [BATCH-158](../implementation/BATCH-158.md), [BATCH-160](../implementation/BATCH-160.md), [BATCH-161](../implementation/BATCH-161.md)
+- **Lotes**: [BATCH-158](../implementation/archive/BATCH-158.md), [BATCH-160](../implementation/BATCH-160.md), [BATCH-161](../implementation/BATCH-161.md)
 - **Estado**: os três `complete`, homologados pelo operador
 - **Validação final**: PHPUnit **1.096/1.096** (7.547 asserções) · Vitest **408/408**
 

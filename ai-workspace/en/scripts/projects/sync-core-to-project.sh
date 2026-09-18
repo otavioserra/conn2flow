@@ -132,7 +132,7 @@ log "Core source: $CORE_SOURCE"
 log "Project test destination: $TARGET_PATH"
 log "Running: ${CMD[*]}"
 
-"${CMD[@]}"
+project_transport_run_rsync "${CMD[@]}"
 
 # `rsync -u` preserva arquivos locais mais novos, o que é desejável para dados
 # específicos da instalação, mas não para este contrato runtime: gestor.php e
@@ -150,7 +150,7 @@ RUNTIME_CONTRACT_CMD=(
 )
 
 log "Synchronizing atomic runtime contract: gestor.php + bibliotecas/gestor.php"
-"${RUNTIME_CONTRACT_CMD[@]}"
+project_transport_run_rsync "${RUNTIME_CONTRACT_CMD[@]}"
 
 # Instalações SSH e o projeto mestre precisam do console na própria raiz do
 # Gestor. O sync principal parte de gestor/, portanto o launcher e cli/ que
@@ -166,7 +166,7 @@ if project_transport_is_ssh || [[ "$PROJECT_TARGET" = "conn2flow-site" || "$PROJ
   )
 
   log "Synchronizing Core CLI launcher and cli/ directory"
-  "${CLI_SYNC_CMD[@]}"
+  project_transport_run_rsync "${CLI_SYNC_CMD[@]}"
 fi
 
 project_transport_finalize || exit 1

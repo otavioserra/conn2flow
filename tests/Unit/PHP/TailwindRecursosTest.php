@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 if (!defined('SDD_NO_AUTORUN')) define('SDD_NO_AUTORUN', true);
@@ -56,6 +57,21 @@ final class TailwindRecursosTest extends TestCase
             $tokens,
             tailwind_recursos_normalizar_runner($tokens, ['C:/repo/node_modules/.bin/tailwindcss.cmd'])
         );
+    }
+
+    #[DataProvider('saidasDeVersaoDoTailwind')]
+    public function testExtraiVersaoDoTailwindDeSaidasComOuSemAnsi(string $output): void
+    {
+        self::assertSame('4.3.3', tailwind_recursos_cli_version_from_output($output));
+    }
+
+    public static function saidasDeVersaoDoTailwind(): array
+    {
+        return [
+            'linux sem cor' => ["tailwindcss v4.3.3\n"],
+            'windows com azul e reset' => ["\x1b[34mtailwindcss\x1b[39m \x1b[34mv4.3.3\x1b[39m\r\n"],
+            'somente a versao colorida' => ["tailwindcss \x1b[1;34mv4.3.3\x1b[0m\n"],
+        ];
     }
 
     public function testPreservaExecutavelTailwindAbsolutoConfigurado(): void

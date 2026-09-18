@@ -1211,7 +1211,16 @@ function gestor_pagina_javascript_incluir($js = false,$id = false, $retornar = f
 
 function gestor_pagina_ultimas_operacoes(){
 	global $_GESTOR;
-	
+
+	// req-169: marcadores que só podem ser resolvidos DEPOIS de `gestor_pagina_variaveis()`. Um
+	// módulo que troca o marcador enquanto monta a página não alcança o texto que vem de uma
+	// variável, porque a variável só é injetada adiante — foi assim que a data de liberação do
+	// bloqueio chegou literal às telas de login que usam `login-blocked-message` em vez do
+	// componente do núcleo. Registrando aqui, o mesmo marcador vale para as duas origens.
+	if(!empty($_GESTOR['pagina-marcadores-finais']) && is_array($_GESTOR['pagina-marcadores-finais'])){
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], $_GESTOR['pagina-marcadores-finais']);
+	}
+
 	$_GESTOR['pagina'] = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $_GESTOR['pagina']);
 
 	// req-132: ultima etapa antes de a pagina ir para o navegador. Depois daqui nada mais e

@@ -192,6 +192,12 @@ function tailwind_recursos_cli_version(array $command): string
 {
     $result = tailwind_recursos_exec(array_merge($command, ['--help']));
     $text = $result['stdout'] . "\n" . $result['stderr'];
+    return tailwind_recursos_cli_version_from_output($text);
+}
+
+function tailwind_recursos_cli_version_from_output(string $text): string
+{
+    $text = preg_replace('/\x1b\[[0-9;]*[a-zA-Z]/', '', $text) ?? $text;
     if (preg_match('/tailwindcss\s+v?([0-9]+(?:\.[0-9]+){1,3})/i', $text, $match)) return $match[1];
     return 'unknown';
 }

@@ -34,6 +34,8 @@
 #   PT_DEST              destino pronto para rsync ("usuario@host:/caminho")
 #   PT_SSH_RUN_AS        usuário para `sudo -u` na execução remota (opcional)
 #   PT_SSH_CHOWN         "dono:grupo" aplicado após o rsync (opcional)
+#   PT_SSH_BIN           cliente SSH compatível com o runtime do rsync
+#   PT_RSYNC_SSH_BIN     mesmo cliente no namespace aceito pelo rsync
 #   PT_SSH_OPTS[]        opções do binário ssh
 #   PT_RSYNC_OPTS[]      opções do rsync (transporte + privilégio)
 
@@ -53,11 +55,65 @@ PT_DEST=""
 PT_SSH_RUN_AS=""
 PT_SSH_CHOWN=""
 PT_SSH_SUDO="false"
+PT_SSH_BIN="ssh"
+PT_RSYNC_SSH_BIN="ssh"
+PT_SSH_KNOWN_HOSTS=""
+PT_RSYNC_CYGWIN="false"
 PT_SSH_OPTS=()
 PT_RSYNC_OPTS=()
 
 pt_log() { echo -e "\033[0;34m[transport]\033[0m $1"; }
 pt_error() { echo -e "\033[0;31m[ERROR]\033[0m $1" >&2; }
+
+# Git Bash/MSYS2/Cygwin share the Win32 descriptor layer that needs special
+# handling when this library is reached through PHP proc_open() pipes.
+_pt_is_windows_posix() {
+  local kernel
+  kernel=$(uname -s 2>/dev/null || true)
+  case "${OSTYPE:-}:$kernel" in
+    msys*:*|cygwin*:*|mingw*:*|*:MSYS*|*:MINGW*|*:CYGWIN*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+# cwRsync/Chocolatey is linked against Cygwin, while Git Bash ships an ssh.exe
+# linked against MSYS2. Spawning the latter from the former emits
+# "dup() in/out/err failed". Pair cwRsync with the OpenSSH from the same package
+# and fail early if that compatible client is missing.
+_pt_resolve_ssh_bin() {
+  local choco_root choco_root_posix rsync_bin bundled
+  PT_SSH_BIN="ssh"
+  PT_RSYNC_SSH_BIN="ssh"
+  PT_SSH_KNOWN_HOSTS=""
+  PT_RSYNC_CYGWIN="false"
+
+  _pt_is_windows_posix || return 0
+  command -v cygpath >/dev/null 2>&1 || return 0
+
+  rsync_bin=$(command -v rsync 2>/dev/null || true)
+  choco_root="${ChocolateyInstall:-}"
+  if [ -n "$choco_root" ]; then
+    choco_root_posix=$(cygpath -u "$choco_root")
+    bundled="$choco_root_posix/lib/rsync/tools/bin/ssh.exe"
+    case "$rsync_bin" in
+      "$choco_root_posix"/bin/rsync*)
+        PT_RSYNC_CYGWIN="true"
+        if [ -x "$bundled" ]; then
+          PT_SSH_BIN="$bundled"
+          PT_RSYNC_SSH_BIN="$(cygpath -m "$choco_root")/lib/rsync/tools/bin/ssh.exe"
+          if [ -f "$HOME/.ssh/known_hosts" ]; then
+            PT_SSH_KNOWN_HOSTS=$(cygpath -m "$HOME/.ssh/known_hosts")
+          fi
+          return 0
+        fi
+        pt_error "cwRsync detected but its compatible SSH client was not found at $bundled"
+        return 1
+        ;;
+    esac
+  fi
+
+  return 0
+}
 
 # Lê uma chave do projeto sem interpolar nada dentro da expressão jq.
 _pt_read_key() {
@@ -86,6 +142,10 @@ project_transport_resolve() {
   PT_SSH_RUN_AS=""
   PT_SSH_CHOWN=""
   PT_SSH_SUDO="false"
+  PT_SSH_BIN="ssh"
+  PT_RSYNC_SSH_BIN="ssh"
+  PT_SSH_KNOWN_HOSTS=""
+  PT_RSYNC_CYGWIN="false"
   PT_SSH_OPTS=()
   PT_RSYNC_OPTS=()
 
@@ -146,10 +206,16 @@ project_transport_resolve() {
   PT_MODE="ssh"
   PT_SSH_TARGET="${PT_SSH_USER}@${PT_SSH_HOST}"
   PT_DEST="${PT_SSH_TARGET}:${PT_REMOTE_PATH}"
+  _pt_resolve_ssh_bin || return 1
 
   # BatchMode: um pipeline que para num prompt de senha fica pendurado até o
   # timeout do chamador sem dizer por quê. Falhar na hora é o comportamento útil.
-  PT_SSH_OPTS=(-o BatchMode=yes -o ConnectTimeout=15 -p "$PT_SSH_PORT")
+  # -T makes the binary rsync protocol explicitly PTY-free. Allocating a PTY
+  # would transform the byte stream and can corrupt the transfer.
+  PT_SSH_OPTS=(-T -o BatchMode=yes -o ConnectTimeout=15 -p "$PT_SSH_PORT")
+  if [ -n "$PT_SSH_KNOWN_HOSTS" ]; then
+    PT_SSH_OPTS+=(-o "UserKnownHostsFile=$PT_SSH_KNOWN_HOSTS")
+  fi
 
   local identity
   identity=$(_pt_read_key "$env_file" "$project_id" "ssh_identity")
@@ -157,7 +223,7 @@ project_transport_resolve() {
     PT_SSH_OPTS+=(-i "$identity")
   fi
 
-  PT_RSYNC_OPTS=(-e "ssh ${PT_SSH_OPTS[*]}")
+  PT_RSYNC_OPTS=(-e "$PT_RSYNC_SSH_BIN ${PT_SSH_OPTS[*]}")
 
   # O usuário SSH normalmente NÃO é o dono do docroot no HestiaCP (lê, não
   # escreve). `--rsync-path` eleva apenas o processo remoto do rsync.
@@ -184,11 +250,35 @@ project_transport_dest() {
   fi
 }
 
+# Disable MSYS2 path conversion before rsync receives its arguments. Descriptor
+# compatibility is handled by pairing cwRsync with its bundled Cygwin OpenSSH;
+# stdin and rsync's I/O mode remain inherited for protocol setup.
+project_transport_run_rsync() {
+  local -a command=("$@")
+  local index argument drive suffix
+
+  # cwRsync uses Cygwin's /cygdrive/c namespace, while callers running in Git
+  # Bash provide /c paths. Rewrite only arguments that are real local paths;
+  # remote destinations and exclude patterns must remain byte-for-byte intact.
+  if _pt_truthy "$PT_RSYNC_CYGWIN"; then
+    for index in "${!command[@]}"; do
+      argument="${command[$index]}"
+      if [[ "$argument" =~ ^/([a-zA-Z])(/.*)?$ ]] && [ -e "$argument" ]; then
+        drive="${BASH_REMATCH[1],,}"
+        suffix="${BASH_REMATCH[2]:-}"
+        command[$index]="/cygdrive/$drive$suffix"
+      fi
+    done
+  fi
+
+  MSYS_NO_PATHCONV=1 "${command[@]}"
+}
+
 # Falha cedo e com diagnóstico: sem isto o erro aparece como um rsync 255 mudo.
 project_transport_check() {
   project_transport_is_ssh || return 0
 
-  if ! command -v ssh >/dev/null 2>&1; then
+  if ! command -v "$PT_SSH_BIN" >/dev/null 2>&1; then
     pt_error "ssh client not found in PATH"
     return 1
   fi
@@ -198,12 +288,12 @@ project_transport_check() {
   fi
 
   pt_log "Checking SSH transport to $PT_SSH_TARGET:$PT_SSH_PORT"
-  if ! ssh "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" true >/dev/null 2>&1; then
+  if ! "$PT_SSH_BIN" "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" true >/dev/null 2>&1; then
     pt_error "SSH connection to $PT_SSH_TARGET failed (BatchMode). Publish your key with ssh-copy-id."
     return 1
   fi
 
-  if ! ssh "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" "command -v rsync >/dev/null 2>&1"; then
+  if ! "$PT_SSH_BIN" "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" "command -v rsync >/dev/null 2>&1"; then
     pt_error "rsync not available on the remote host $PT_SSH_HOST"
     return 1
   fi
@@ -236,7 +326,7 @@ project_transport_ensure_remote_path() {
     mkdir_cmd="sudo $mkdir_cmd"
   fi
 
-  ssh "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" "$mkdir_cmd"
+  "$PT_SSH_BIN" "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" "$mkdir_cmd"
 }
 
 # Devolve a posse ao dono do docroot. Sem isto o rsync com sudo deixa arquivos
@@ -265,7 +355,7 @@ project_transport_finalize_path() {
   fi
 
   pt_log "Restoring ownership to $PT_SSH_CHOWN on $remote_path"
-  ssh "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" \
+  "$PT_SSH_BIN" "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" \
     "sudo chown -R $(printf '%q' "$PT_SSH_CHOWN") $(printf '%q' "$remote_path")"
 }
 
@@ -275,17 +365,18 @@ project_transport_finalize_path() {
 project_transport_remote_exec() {
   project_transport_is_ssh || return 1
 
-  local remote_cmd
+  local remote_cmd command_in_workdir
   remote_cmd=$(printf '%q ' "$@")
+  command_in_workdir="cd $(printf '%q' "$PT_REMOTE_PATH") && $remote_cmd"
 
   if [ -n "$PT_SSH_RUN_AS" ]; then
     if [[ ! "$PT_SSH_RUN_AS" =~ ^[a-zA-Z0-9._-]+$ ]]; then
       pt_error "ssh_run_as must be a plain user name (got '$PT_SSH_RUN_AS')"
       return 1
     fi
-    remote_cmd="sudo -u $(printf '%q' "$PT_SSH_RUN_AS") $remote_cmd"
+    command_in_workdir="sudo -u $(printf '%q' "$PT_SSH_RUN_AS") sh -c $(printf '%q' "$command_in_workdir")"
   fi
 
-  ssh "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" \
-    "cd $(printf '%q' "$PT_REMOTE_PATH") && $remote_cmd"
+  "$PT_SSH_BIN" "${PT_SSH_OPTS[@]}" "$PT_SSH_TARGET" \
+    "$command_in_workdir"
 }

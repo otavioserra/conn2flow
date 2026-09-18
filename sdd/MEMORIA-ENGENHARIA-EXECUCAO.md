@@ -290,6 +290,41 @@
   serializar o elemento em um `<template>` preserva seu HTML e mantém imagens/vídeos inertes, sem
   repetição de requisições.
 
+### 2026-09-18 — BATCH-174 (req-169): controle de acessos e suíte no ambiente `lab`
+
+- **Proteção antiabuso precisa distinguir erro humano de robô.** `formulario_acesso_falha()` era
+  chamada igual em validação de campo e em reCAPTCHA reprovado, então digitação errada queimava a
+  mesma cota de envios válidos. O parâmetro `origem` separa os dois tetos, com padrão `abuso` para
+  não alterar chamadores fora do núcleo.
+- **Mensagem de bloqueio sem prazo gera suporte.** `autenticacao_acesso_verificar()` passou a
+  devolver `tempo_bloqueio` e as telas substituem `#bloqueio_liberacao#` pela data e hora. Projetos
+  com tela de login própria precisam adotar o marcador para exibir o prazo.
+- **A suíte do núcleo deve rodar no `lab`, não no PHP do Windows.** O host Windows falha em
+  `CoreHelpersTest::testCriptografiaBasicaComChavesRsa` por ausência de `openssl.cnf` e exige
+  habilitar `pdo_sqlite`/`sqlite3` no php.ini. No `lab` (WSL Ubuntu com PHP 8.5 do HestiaCP), o
+  repositório é visível em `/mnt/c/...` e, após `apt-get install php8.5-sqlite3`, a suíte fecha
+  limpa: 1181 testes, 7828 asserções, 0 erros. Use o `lab` como ambiente de referência para
+  validação PHP; divergência ali é do código, divergência só no Windows é do ambiente.
+
+### 2026-09-18 — BATCH-175 (req-170) e correções do smoke test
+
+- **Marcador que depende de variável precisa ser trocado no fim do pipeline.**
+  `gestor_pagina_variaveis()` roda depois do controlador do módulo, então trocar um marcador enquanto
+  o módulo monta a página não alcança texto que só será injetado adiante. `pagina-marcadores-finais`,
+  aplicado em `gestor_pagina_ultimas_operacoes()`, resolve para as duas origens (componente e
+  variável). Vale para qualquer módulo com o mesmo problema.
+- **Em `perfil-usuario`, `pagina_celula($nome,false,true)` REMOVE a célula.** O ramo
+  `if($acesso['permitido'])` é o do acesso liberado, não o do bloqueio. Código novo que dependa do
+  estado de bloqueio vai no `else` — ou fora do `if`.
+- **Texto de tela pode estar em três lugares.** Componente do núcleo, página do módulo e variável. O
+  que um projeto renderiza depende de ele ter tela própria. Alterar só o componente não alcança quem
+  usa a variável; conferir no banco do projeto (`variaveis`, com `user_modified`) antes de dar como
+  entregue.
+- **Cache estático + reordenação do PHPUnit produz falha fantasma.** Teste que escreve o próprio
+  contrato precisa forçar a releitura; senão o primeiro a chamar fixa o estado para a classe toda e o
+  resultado passa a depender da rodada anterior. Validar sempre com DUAS execuções seguidas, sem
+  apagar `.phpunit.result.cache`.
+
 ### Histórico anterior
 
 BATCH-144 (autoria x derivado no CSS; runtime serve do banco, disco só com `DEVELOPMENT_ENV`) e

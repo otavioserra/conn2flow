@@ -1787,6 +1787,16 @@ function perfil_usuario_oauth_authenticate(){
 	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
 	
 	gestor_incluir_biblioteca('pagina');
+	// req-169: o bloqueio passa a dizer ATE QUANDO. Sem isso, o cliente legitimo que errou a senha
+	// fica sem saber se volta em minutos ou no dia seguinte, e abre chamado no suporte.
+	// req-106 §9: registrado como marcador FINAL, e nao trocado aqui. A mensagem pode vir do
+	// componente do nucleo ou da variavel `login-blocked-message` — e a variavel so entra na
+	// pagina depois deste ponto, entao a troca imediata nao alcancava as telas de projeto.
+	// Fica FORA do if: e o ramo `else` que mantem a mensagem de bloqueio na pagina (no ramo de cima,
+	// `pagina_celula(...,true)` REMOVE a celula porque o acesso esta liberado).
+	$_GESTOR['pagina-marcadores-finais']['#bloqueio_liberacao#'] =
+		!empty($acesso['tempo_bloqueio']) ? date('d/m/Y H:i', (int)$acesso['tempo_bloqueio']) : '';
+
 	if($acesso['permitido']){	
 		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	} else {
@@ -2214,6 +2224,16 @@ function perfil_usuario_signin(){
 	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
 	
 	gestor_incluir_biblioteca('pagina');
+	// req-169: o bloqueio passa a dizer ATE QUANDO. Sem isso, o cliente legitimo que errou a senha
+	// fica sem saber se volta em minutos ou no dia seguinte, e abre chamado no suporte.
+	// req-106 §9: registrado como marcador FINAL, e nao trocado aqui. A mensagem pode vir do
+	// componente do nucleo ou da variavel `login-blocked-message` — e a variavel so entra na
+	// pagina depois deste ponto, entao a troca imediata nao alcancava as telas de projeto.
+	// Fica FORA do if: e o ramo `else` que mantem a mensagem de bloqueio na pagina (no ramo de cima,
+	// `pagina_celula(...,true)` REMOVE a celula porque o acesso esta liberado).
+	$_GESTOR['pagina-marcadores-finais']['#bloqueio_liberacao#'] =
+		!empty($acesso['tempo_bloqueio']) ? date('d/m/Y H:i', (int)$acesso['tempo_bloqueio']) : '';
+
 	if($acesso['permitido']){	
 		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	} else {
@@ -3013,6 +3033,16 @@ function perfil_usuario_signup(){
 	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
 	
 	gestor_incluir_biblioteca('pagina');
+	// req-169: o bloqueio passa a dizer ATE QUANDO. Sem isso, o cliente legitimo que errou a senha
+	// fica sem saber se volta em minutos ou no dia seguinte, e abre chamado no suporte.
+	// req-106 §9: registrado como marcador FINAL, e nao trocado aqui. A mensagem pode vir do
+	// componente do nucleo ou da variavel `login-blocked-message` — e a variavel so entra na
+	// pagina depois deste ponto, entao a troca imediata nao alcancava as telas de projeto.
+	// Fica FORA do if: e o ramo `else` que mantem a mensagem de bloqueio na pagina (no ramo de cima,
+	// `pagina_celula(...,true)` REMOVE a celula porque o acesso esta liberado).
+	$_GESTOR['pagina-marcadores-finais']['#bloqueio_liberacao#'] =
+		!empty($acesso['tempo_bloqueio']) ? date('d/m/Y H:i', (int)$acesso['tempo_bloqueio']) : '';
+
 	if($acesso['permitido']){	
 		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	} else {
@@ -3314,6 +3344,16 @@ function perfil_usuario_forgot_password(){
 	// ===== Mostrar ou ocultar mensagem de bloqueio caso o IP esteja bloqueado.
 	
 	gestor_incluir_biblioteca('pagina');
+	// req-169: o bloqueio passa a dizer ATE QUANDO. Sem isso, o cliente legitimo que errou a senha
+	// fica sem saber se volta em minutos ou no dia seguinte, e abre chamado no suporte.
+	// req-106 §9: registrado como marcador FINAL, e nao trocado aqui. A mensagem pode vir do
+	// componente do nucleo ou da variavel `login-blocked-message` — e a variavel so entra na
+	// pagina depois deste ponto, entao a troca imediata nao alcancava as telas de projeto.
+	// Fica FORA do if: e o ramo `else` que mantem a mensagem de bloqueio na pagina (no ramo de cima,
+	// `pagina_celula(...,true)` REMOVE a celula porque o acesso esta liberado).
+	$_GESTOR['pagina-marcadores-finais']['#bloqueio_liberacao#'] =
+		!empty($acesso['tempo_bloqueio']) ? date('d/m/Y H:i', (int)$acesso['tempo_bloqueio']) : '';
+
 	if($acesso['permitido']){	
 		$cel_nome = 'bloqueado-mensagem'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	} else {

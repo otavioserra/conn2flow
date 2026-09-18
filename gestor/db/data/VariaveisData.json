@@ -13971,7 +13971,7 @@
         "language": "pt-br",
         "modulo": "perfil-usuario",
         "id": "login-blocked-message",
-        "valor": "Não é possível acessar sua conta deste dispositivo por excesso de tentativas com usuário e\/ou senha inválidos. Tente novamente mais tarde ou de outra rede.",
+        "valor": "Não é possível acessar sua conta deste dispositivo por excesso de tentativas com usuário e\/ou senha inválidos. Você poderá tentar novamente a partir de #bloqueio_liberacao# neste dispositivo, ou agora mesmo em outra rede.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -14016,7 +14016,7 @@
         "language": "pt-br",
         "modulo": "perfil-usuario",
         "id": "forgot-password-blocked-message",
-        "valor": "Não é possível alterar a sua senha neste dispositivo por excesso de tentativas com e-mails inválidos. Tente novamente mais tarde ou de outra rede.",
+        "valor": "Não é possível alterar a sua senha neste dispositivo por excesso de tentativas com e-mails inválidos. Você poderá tentar novamente a partir de #bloqueio_liberacao# neste dispositivo, ou agora mesmo em outra rede.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -16158,7 +16158,7 @@
         "language": "en",
         "modulo": "perfil-usuario",
         "id": "login-blocked-message",
-        "valor": "This device cannot access your account due to too many attempts with an invalid user and\/or password. Try again later or from another network.",
+        "valor": "This device cannot access your account due to too many attempts with an invalid user and\/or password. You can try again from #bloqueio_liberacao# on this device, or right now from another network.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -16203,7 +16203,7 @@
         "language": "en",
         "modulo": "perfil-usuario",
         "id": "forgot-password-blocked-message",
-        "valor": "You cannot reset your password from this device due to too many attempts with invalid e-mails. Try again later or from another network.",
+        "valor": "You cannot reset your password from this device due to too many attempts with invalid e-mails. You can try again from #bloqueio_liberacao# on this device, or right now from another network.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

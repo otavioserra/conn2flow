@@ -996,3 +996,77 @@ Enquanto não sincronizados, o gate `documentation-outdated` bloqueia a **execu�
       pede privilégio de systemd.
 - [ ] Confirmar em seguida que o provisionamento atravessa o restart do PHP-FPM e chega a `active`
       sem passar pelo reaper.
+
+## BATCH-169 — Blindagem de rsync contra MSYS Path Conversion (req-164)
+
+- [x] Helper `project_transport_run_rsync()` executa o array recebido com `MSYS_NO_PATHCONV=1`.
+- [x] As três chamadas rsync de `sync-core-to-project.sh` usam o helper compartilhado.
+- [x] `run_project_rsync()` protege as sincronizações principal e do overlay distribuído.
+- [x] Skill `c2f-shell-and-windows-traps` documenta a falha com `C:` e a solução obrigatória nos
+      cinco espelhos; hashes MD5 idênticos.
+- [x] `bash -n`: 3/3 scripts sem erro.
+- [x] Teste focado `ProjectSshDeployReq034Test`: 23/23, 85 asserções, exit 0.
+- [x] PHPUnit completo: 1.175/1.175, 7.798 asserções, 4 skipped, exit 0.
+- [x] Vitest completo: 29/29 arquivos, 423/423 testes, exit 0.
+- [x] `git diff --check`: sem erro; avisos LF→CRLF são da política do worktree.
+- [x] Homologação no Lab: `c2f project:sync-core conn2flow-site-local` sem o erro
+      `The source and destination cannot both be remote`.
+
+## BATCH-170 — Sanitização ANSI no Tailwind CLI e terminal rsync Windows (req-165)
+
+- [x] `tailwind_recursos_cli_version()` remove sequências ANSI antes de extrair a versão.
+- [x] Teste focado cobre saída Linux sem cor e duas saídas ANSI do Windows: **17/17**, 106
+      asserções, exit 0.
+- [x] Manifesto regenerado com `tailwind_version: "4.3.3"` no cabeçalho e nas 237 entradas.
+- [x] Segunda execução de `resources:sync`: **0 para compilar, 237 em cache**, 2.856 recursos,
+      exit 0.
+- [x] Skill documenta `dup() in/out/err failed`, painel novo do VS Code e sanitização ANSI nos
+      cinco espelhos; MD5 `67314EDC70AFB575D1C1AE815F44C5AC` idêntico.
+- [x] PHPUnit completo na ordem padrão: **1.178/1.178**, 7.801 asserções, 4 skipped, exit 0.
+- [x] Nenhum `php.ini`/`.env` alterado; configuração temporária de SQLite removida após a suíte.
+
+## BATCH-171 — Transporte rsync/SSH compatível entre Cygwin e MSYS2 (req-166)
+
+- [x] Causa comprovada: cwRsync/Chocolatey usa Cygwin e não pode abrir o SSH MSYS2 do Git Bash.
+- [x] Transporte Windows seleciona o SSH do próprio cwRsync, compartilha `known_hosts` do perfil e
+      falha cedo se o cliente compatível do pacote estiver ausente.
+- [x] `ssh -T` mantém o protocolo sem PTY; stdin/stdout/stderr permanecem herdados.
+- [x] Helper converte apenas caminhos locais existentes de `/c/...` para `/cygdrive/c/...` quando
+      cwRsync é detectado, preservando destinos SSH, exclusões e `MSYS_NO_PATHCONV=1`.
+- [x] As quatro rotas de rsync continuam passando pelo helper compartilhado.
+- [x] `bash -n`: 3/3 scripts sem erro.
+- [x] `ProjectSshDeployReq034Test`: **24/24**, 97 asserções, exit 0.
+- [x] Homologação SSH real: `c2f project:sync-core snapphoton-local` sincronizou core, contrato
+      runtime e CLI, restaurou ownership e encerrou com **exit 0**.
+- [x] PHPUnit completo em ordem padrão: **1.179/1.179**, 7.813 asserções, 4 skipped, exit 0.
+- [x] Skill replicada nos cinco espelhos com MD5
+      `8E41773EF817D6F590E5061479314A5A` idêntico.
+- [x] Configuração PHP temporária removida; nenhum `php.ini`/`.env` persistente alterado.
+
+## BATCH-172 — Elevação do diretório de trabalho no transporte SSH (req-167)
+
+- [x] `project_transport_remote_exec()` reúne `cd` e comando antes de aplicar `sudo -u`.
+- [x] Com `PT_SSH_RUN_AS`, a linha inteira executa por `sudo -u <tenant> sh -c`.
+- [x] Sem `PT_SSH_RUN_AS`, a execução permanece direta sob o usuário SSH.
+- [x] `bash -n` na biblioteca de transporte: exit 0.
+- [x] `ProjectSshDeployReq034Test`: **25/25**, 103 asserções, exit 0.
+- [x] Homologação SSH real: `c2f project:sync-db snapphoton-local` concluiu migrações e sync,
+      registrou `MANAGER_UPDATES_REGISTRADO id=44` e encerrou com **exit 0**, sem `Permission denied`.
+- [x] PHPUnit completo em ordem determinística: **1.180/1.180**, 7.819 asserções, 4 skipped,
+      exit 0.
+- [x] Skill replicada nos cinco espelhos com MD5
+      `DFED2102AC6A192B591FB7748E5B37CA` idêntico.
+- [x] Configuração PHP temporária removida; nenhum `php.ini`/`.env` persistente alterado.
+
+## BATCH-173 — Encapsulamento de `cd` sob `sudo -u` no CLI SSH (req-168)
+
+- [x] `SshRemoteTransport::buildRemoteCommand()` encapsula `cd` e comando na mesma shell elevada.
+- [x] Sem `runAs`, `SshRemoteTransport` preserva `cd <diretório> && <comando>`.
+- [x] `AuthCookieCommand::generateOverSsh()` encapsula `cd` e PHP sob `sudo -u <tenant> sh -c`.
+- [x] Testes focados: **23/23**, 77 asserções, exit 0.
+- [x] PHPUnit completo em ordem determinística: **1.181/1.181**, 7.830 asserções, 4 skipped,
+      exit 0.
+- [x] Pipeline real `project:update-all snapphoton-local --confirmar-remoto`: etapas **1/8–8/8**,
+      exit 0.
+- [x] Etapa 6/8: 2 recursos analisados, 2 regenerados, 0 erros e nenhum `Permission denied`.
+- [x] Configuração PHP temporária removida; nenhum `php.ini`/`.env` persistente alterado.

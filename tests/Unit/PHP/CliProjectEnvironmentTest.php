@@ -48,6 +48,16 @@ final class CliProjectEnvironmentTest extends TestCase
                     'path' => $this->mirrorPath,
                     'url' => 'http://localhost/photon/',
                 ],
+                'ssh-cookie' => [
+                    'path' => $this->testRoot . '/source/gestor',
+                    'url' => 'https://exemplo.local/',
+                    'deploy_mode' => 'ssh',
+                    'ssh_host' => '192.0.2.10',
+                    'ssh_user' => 'deploy',
+                    'ssh_port' => 2222,
+                    'ssh_target_path' => '/home/tenant/web/exemplo.local/conn2flow-gestor',
+                    'ssh_run_as' => 'tenant',
+                ],
             ],
         ];
         file_put_contents(
@@ -154,6 +164,53 @@ final class CliProjectEnvironmentTest extends TestCase
         self::assertSame(0, $code);
         self::assertSame(PHP_BINARY, $commands[1][0]);
         self::assertFalse($this->containsCommand($commands, ['docker', 'exec', 'conn2flow-app', 'php']));
+    }
+
+    public function testAuthCookieEncapsulaCdEPhpNaShellElevadaViaSsh(): void
+    {
+        $commands = [];
+        $runner = function (array $command) use (&$commands): array {
+            $commands[] = $command;
+
+            if (($command[0] ?? '') === 'scp') {
+                $origem = $command[count($command) - 2] ?? '';
+                if (is_string($origem) && str_contains($origem, '.json')) {
+                    $destino = $command[count($command) - 1];
+                    file_put_contents($destino, json_encode($this->generatorResult(), JSON_THROW_ON_ERROR));
+                }
+            }
+
+            return ['code' => 0, 'stdout' => '', 'stderr' => ''];
+        };
+
+        $outPath = $this->testRoot . '/temp/ssh-agent-cookies.txt';
+        $command = new AuthCookieCommand($this->testRoot, $runner);
+        $input = new Input(['c2f', 'auth:cookie', '--project=ssh-cookie', '--out=' . $outPath]);
+
+        ob_start();
+        $code = $command->execute($input, new Output());
+        ob_end_clean();
+
+        self::assertSame(0, $code);
+        self::assertFileExists($outPath);
+
+        $execucao = null;
+        foreach ($commands as $processo) {
+            $remoto = $processo[count($processo) - 1] ?? '';
+            if (($processo[0] ?? '') === 'ssh' && is_string($remoto) && str_contains($remoto, 'sudo chmod')) {
+                $execucao = $remoto;
+                break;
+            }
+        }
+
+        self::assertIsString($execucao);
+        self::assertStringStartsWith('sudo -u ', $execucao);
+        self::assertStringContainsString(' sh -c ', $execucao);
+        self::assertStringContainsString('cd ', $execucao);
+        self::assertStringContainsString('php ', $execucao);
+        self::assertLessThan(strpos($execucao, 'cd '), strpos($execucao, ' sh -c '));
+        self::assertLessThan(strpos($execucao, 'php '), strpos($execucao, 'cd '));
+        self::assertStringNotContainsString('cd "/home/tenant/web/exemplo.local/conn2flow-gestor" && sudo -u', $execucao);
     }
 
     /** @return array<string, mixed> */

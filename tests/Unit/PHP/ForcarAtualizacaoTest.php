@@ -48,6 +48,32 @@ final class ForcarAtualizacaoTest extends TestCase
         }
     }
 
+    /**
+     * Escreve o contrato (`schema-metadata.json`) do cenário e força sua releitura.
+     *
+     * req-170: cada teste desta classe precisa do PRÓPRIO contrato. Como `schemaMetadata()` guarda o
+     * conteúdo em `static`, o primeiro teste a chamá-la fixava o contrato para os demais — e o
+     * PHPUnit reordena os testes entre execuções (coloca os que falharam primeiro), então o
+     * resultado passava a depender da rodada anterior.
+     */
+    private static function escreverContrato(array $forcar = []): void
+    {
+        file_put_contents(self::$tmpDir . DIRECTORY_SEPARATOR . 'schema-metadata.json', (string) json_encode([
+            'generated_at' => date('c'),
+            'tables' => ['widgets_demo' => [
+                'nome' => 'widgets_demo', 'id' => 'id', 'id_numerico' => 'id_widgets_demo',
+                'data_file' => 'WidgetsDemoData.json', 'strategy' => 'natural_key',
+                'natural_key_columns' => ['language', 'id'],
+                // Inclui css_precompiled de propósito para simular contrato antigo em produção.
+                'preserve_on_user_modified' => ['html', 'css_precompiled'], 'insert_only' => false, 'source' => 'test',
+            ]],
+            'deletar' => [],
+            'forcar_atualizacao' => $forcar ? ['widgets_demo' => $forcar] : [],
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        schemaMetadata(true);
+    }
+
     public function testForcarAtualizacaoBypassaProtecoesEResetaUserModified(): void
     {
         $pdo = new PDO('sqlite::memory:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
@@ -63,21 +89,10 @@ final class ForcarAtualizacaoTest extends TestCase
             ('menu','pt-br','OLD D','OLD PRE D','A',0,'proj1')");
         $pkMenu = (int) $pdo->query("SELECT id_widgets_demo FROM widgets_demo WHERE id='menu'")->fetchColumn();
 
-        file_put_contents(self::$tmpDir . DIRECTORY_SEPARATOR . 'schema-metadata.json', (string) json_encode([
-            'generated_at' => date('c'),
-            'tables' => ['widgets_demo' => [
-                'nome' => 'widgets_demo', 'id' => 'id', 'id_numerico' => 'id_widgets_demo',
-                'data_file' => 'WidgetsDemoData.json', 'strategy' => 'natural_key',
-                'natural_key_columns' => ['language', 'id'],
-                // Inclui css_precompiled de propósito para simular contrato antigo em produção.
-                'preserve_on_user_modified' => ['html', 'css_precompiled'], 'insert_only' => false, 'source' => 'test',
-            ]],
-            'deletar' => [],
-            'forcar_atualizacao' => ['widgets_demo' => [
-                ['natural_key' => ['language' => 'pt-br', 'id' => 'hero']],
-                ['pk' => $pkMenu],
-            ]],
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        self::escreverContrato([
+            ['natural_key' => ['language' => 'pt-br', 'id' => 'hero']],
+            ['pk' => $pkMenu],
+        ]);
 
         $registros = [
             ['id' => 'hero', 'language' => 'pt-br', 'html' => 'CODE HTML', 'css_precompiled' => 'NEW PRE A', 'status' => 'A'],
@@ -128,6 +143,10 @@ final class ForcarAtualizacaoTest extends TestCase
         )');
         $pdo->exec("INSERT INTO widgets_demo (id,language,html,css_precompiled,status,user_modified,project)
             VALUES ('landing','pt-br','HTML DO USUARIO','PRE ANTIGO','A',1,'proj1')");
+
+        // req-170: contrato próprio, sem `forcar_atualizacao` — este cenário testa a proteção de
+        // `user_modified` num deploy normal, e não o bypass.
+        self::escreverContrato();
 
         $registros = [[
             'id' => 'landing',

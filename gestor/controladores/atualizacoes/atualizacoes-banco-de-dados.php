@@ -272,9 +272,13 @@ function tabelasAlteradasPorChecksum(array $atuais, array $anteriores): array {
  * Fonte única e dinâmica das regras antes hardcoded ($tabelasChaveNatural, $tabelasInsertOnly,
  * $preserveMap e a chave natural por tabela). Gerado por atualizacao-dados-recursos.php.
  */
-function schemaMetadata(): array {
+function schemaMetadata(bool $recarregar = false): array {
     global $DB_DATA_DIR;
     static $meta = null;
+    // req-170: o cache esta certo em producao, onde o contrato nao muda durante a execucao. Em teste,
+    // cada cenario escreve o seu proprio `schema-metadata.json` no mesmo processo, e o primeiro a
+    // chamar fixava o contrato para todos — fazendo o resultado depender da ordem de execucao.
+    if ($recarregar) $meta = null;
     if ($meta !== null) return $meta;
     $meta = ['tables' => [], 'deletar' => [], 'forcar_atualizacao' => []];
     $file = $DB_DATA_DIR . 'schema-metadata.json';

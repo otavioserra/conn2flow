@@ -1,6 +1,6 @@
 # BATCH-168 — CSRF em XMLHttpRequest e Acesso Restrito ao Site (req-163)
 
-- **Status**: implemented-pending-homologation
+- **Status**: complete
 - **Intake**: [req-163.md](../human-requests/req-163.md)
 - **Data**: 2026-09-15
 - **Classificação**: implementação de batch (segurança / governança do núcleo)

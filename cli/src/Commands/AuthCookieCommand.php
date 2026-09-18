@@ -263,17 +263,20 @@ HELP;
                 . ' --user=' . escapeshellarg($userIdent)
                 . ' --result=' . escapeshellarg($resultadoRemoto);
 
+            $comandoPhp = 'cd ' . escapeshellarg($ssh['path']) . ' && ' . $php;
+
             if (is_string($ssh['runAs']) && $ssh['runAs'] !== '') {
                 if (preg_match('/^[A-Za-z0-9._-]+$/', $ssh['runAs']) !== 1) {
                     $output->error("Invalid ssh_run_as value: {$ssh['runAs']}");
                     return null;
                 }
-                $php = 'sudo -u ' . escapeshellarg($ssh['runAs']) . ' ' . $php;
+                $comandoPhp = 'sudo -u ' . escapeshellarg($ssh['runAs'])
+                    . ' sh -c ' . escapeshellarg($comandoPhp);
             }
 
             // O JSON nasce com a posse de quem rodou o gerador; sem isto o `scp` de volta,
             // feito pela conta SSH, esbarra na permissão do próprio arquivo que acabou de criar.
-            $comando = 'cd ' . escapeshellarg($ssh['path']) . ' && ' . $php
+            $comando = $comandoPhp
                 . ' && sudo chmod 0644 ' . escapeshellarg($resultadoRemoto);
 
             $execucao = $this->callProcess([

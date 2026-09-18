@@ -732,6 +732,7 @@ function autenticacao_acesso_verificar($params = false){
 	$retorno = [
 		'permitido' => false,
 		'status' => 'livre',
+		'tempo_bloqueio' => null,
 	];
 	
 	if(isset($tipo)){
@@ -752,6 +753,9 @@ function autenticacao_acesso_verificar($params = false){
 			'tabela' => 'acessos',
 			'campos' => Array(
 				'status',
+				// req-169: a tela precisa dizer QUANDO libera. "Tente mais tarde" gera suporte e
+				// desconfianca, ainda mais com bloqueio de horas.
+				'tempo_bloqueio',
 			),
 			'extra' => 
 				"WHERE tipo='".$tipo."'"
@@ -760,6 +764,7 @@ function autenticacao_acesso_verificar($params = false){
 		
 		if($acessos){
 			$retorno['status'] = $acessos['status'];
+			$retorno['tempo_bloqueio'] = !empty($acessos['tempo_bloqueio']) ? (int)$acessos['tempo_bloqueio'] : null;
 			
 			switch($acessos['status']){
 				case 'bloqueado':
