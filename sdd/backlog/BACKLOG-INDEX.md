@@ -16,6 +16,9 @@
 | [BL-012](BL-012-migracao-painel-tailwind-desacoplamento-fomantic.md) | Architecture/UI | OPEN | Substituição integral do Fomantic UI por Tailwind CSS no painel administrativo e componentes UI | Planejado para o programa da Linha 3.0 | 2026-08-31 |
 | [BL-013](BL-013-modularizacao-readme-changelog-ai-workspace.md) | Documentation/Architecture | PROMOTED | Poda e modularização de README e CHANGELOG para eficiência de contexto de IA | Promovido para [req-151.md](../human-requests/archive/req-151.md) (BATCH-153) | 2026-08-31 |
 | [BL-014](BL-014-reset-cache-estatico-schemametadata-testes.md) | Reliability/Testing | OPEN | Desacoplamento do cache estático em `schemaMetadata()` para testes unitários | Registrado no BATCH-168; aguardando agendamento | 2026-09-17 |
+| [BL-015](BL-015-pipeline-projeto-nao-sincroniza-hooks.md) | Bug/DevOps | OPEN | Pipeline de projeto (`project:update-all`) não sincroniza a tabela `hooks` | Achado do BATCH-046 do conn2flow-site (REQ-053); aguardando agendamento | 2026-09-22 |
+| [BL-016](BL-016-paginas-301-status-e-query-string.md) | Bug/SEO | PROMOTED | Redirecionamento de `paginas_301` descarta a query string | Promovido para [req-173.md](../human-requests/req-173.md) (BATCH-178) | 2026-09-22 |
+| [BL-017](BL-017-forms-widget-vaza-blocos-fragmento.md) | Bug/UI | PROMOTED | Widget de formulários vaza os blocos-fragmento do template no HTML renderizado | Promovido para [req-173.md](../human-requests/req-173.md) (BATCH-178) | 2026-09-22 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 
