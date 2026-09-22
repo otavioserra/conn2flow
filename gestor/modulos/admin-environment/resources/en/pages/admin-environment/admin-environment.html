@@ -241,6 +241,22 @@
                         </button>
                     </div>
 
+                    <div class="field">
+                        <label>@[[captcha-provider-label]]@</label>
+                        <select id="captcha_provider" name="captcha_provider" class="ui dropdown" data-current="#captcha-provider#">
+                            <option value="none">@[[captcha-provider-none]]@</option>
+                            <option value="google-recaptcha">@[[captcha-provider-google]]@</option>
+                            <option value="cloudflare-turnstile">@[[captcha-provider-turnstile]]@</option>
+                        </select>
+                    </div>
+                    <div id="turnstile-section" class="hidden">
+                        <div class="field"><label>@[[turnstile-site-label]]@</label><input type="text" id="turnstile_site_key" value="#turnstile-site-key#"></div>
+                        <div class="field"><label>@[[turnstile-secret-label]]@</label><input type="password" id="turnstile_secret_key" value="#turnstile-secret-key#"></div>
+                        <div class="field"><label>@[[turnstile-mode-label]]@</label><select id="turnstile_mode" class="ui dropdown" data-current="#turnstile-mode#"><option value="managed">@[[turnstile-mode-managed]]@</option><option value="non-interactive">@[[turnstile-mode-non-interactive]]@</option><option value="invisible">@[[turnstile-mode-invisible]]@</option></select></div>
+                        <button type="button" class="ui blue button" id="btn-testar-turnstile">@[[turnstile-test-label]]@</button>
+                        <div id="turnstile-test-widget"></div>
+                    </div>
+                    <div id="google-recaptcha-section" class="hidden">
                     <!-- ===== reCAPTCHA Protection ===== -->
                     <h4 class="ui dividing header"><i class="shield icon"></i> reCAPTCHA Protection</h4>
 
@@ -307,6 +323,7 @@
                         <div class="field hidden" id="recaptcha-v2-container-wrapper">
                             <div id="recaptcha-v2-widget"></div>
                         </div>
+                    </div>
                     </div>
                 </form>
             </div>

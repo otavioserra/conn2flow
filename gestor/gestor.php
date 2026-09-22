@@ -2263,9 +2263,15 @@ function gestor_roteador_301_ou_404($params = false){
 			);
 
 			if($paginas){
+				// req-173: a URL aposentada costuma carregar contexto (`?plan=`, UTMs de campanha).
+				// Sem repassar a query string, quem clicou num anúncio de um plano específico cai
+				// na página genérica e a origem da campanha se perde. `gestor_querystring()` já
+				// descarta o `_gestor-caminho` interno do roteador e devolve vazio quando não há
+				// parâmetros, então o destino não ganha `?` órfão.
 				gestor_roteador_erro(Array(
 					'codigo' => 301,
 					'redirect' => $paginas[0]['caminho'],
+					'querystring' => true,
 				));
 			}
 		}

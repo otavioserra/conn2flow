@@ -67,6 +67,8 @@ $(document).ready(function () {
 					normalized.googleRecaptchaAction = pickScalar(normalized.googleRecaptchaAction, 'submit');
 					normalized.googleRecaptchaV2Active = toBool(normalized.googleRecaptchaV2Active, false);
 					normalized.googleRecaptchaV2Site = pickScalar(normalized.googleRecaptchaV2Site, '');
+					normalized.turnstileSiteKey = pickScalar(normalized.turnstileSiteKey, '');
+					normalized.turnstileMode = pickScalar(normalized.turnstileMode, 'managed');
 
 					if (normalized.ui && typeof normalized.ui === 'object') {
 						if (normalized.ui.texts && typeof normalized.ui.texts === 'object') {
@@ -126,6 +128,18 @@ $(document).ready(function () {
 			function initFormController(form, data) {
 				if (form.data('c2fFormControllerReady')) return;
 				form.data('c2fFormControllerReady', true);
+				if (data.turnstileSiteKey) {
+					var turnstileWidget = $('<div class="cf-turnstile" data-theme="auto"></div>');
+					turnstileWidget.attr('data-sitekey', data.turnstileSiteKey);
+					form.find('button[type="submit"]').first().before(turnstileWidget);
+					var turnstileAttempts = 0;
+					var turnstileWait = window.setInterval(function () {
+						if (window.turnstile && typeof window.turnstile.render === 'function') {
+							window.clearInterval(turnstileWait);
+							if (!turnstileWidget.find('iframe').length) form.data('turnstileWidgetId', window.turnstile.render(turnstileWidget[0], { sitekey: data.turnstileSiteKey, theme: 'auto' }));
+						} else if (++turnstileAttempts >= 50) window.clearInterval(turnstileWait);
+					}, 100);
+				}
 
 				// Verificar se o formulário está ativo
 				var normalizedFormStatus = (typeof data.formStatus === 'string')
@@ -586,11 +600,13 @@ $(document).ready(function () {
 							injectRecaptchaV2(form, data, clickedButton);
 						} else {
 							removeDimmer(form, data);
+							if (data.turnstileSiteKey && window.turnstile && form.data('turnstileWidgetId')) window.turnstile.reset(form.data('turnstileWidgetId'));
 							showError(response.message, data, clickedButton, form);
 						}
 					},
 					error: function (xhr, status, error) {
 						removeDimmer(form, data); // Remover dimmer
+						if (data.turnstileSiteKey && window.turnstile && form.data('turnstileWidgetId')) window.turnstile.reset(form.data('turnstileWidgetId'));
 						if (status === 'timeout') {
 							showError(getUiText(data, 'timeoutError', 'Tempo limite excedido.'), data, clickedButton, form);
 						} else {

@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.2",
+    "versao": "1.0.3",
     "bibliotecas": [
         "interface",
         "html"
@@ -13,16 +13,16 @@
                     "name": "Admin Environment",
                     "id": "admin-environment",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-environment/",
+                    "path": "admin-environment\/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.25",
+                    "version": "1.28",
                     "checksum": {
-                        "html": "39cc7a5feb4fa61ce6e189913041539e",
+                        "html": "471a7dc1eb45bf7139392b1f1968df7c",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "2f56e5f69767e57fd970d8442e2f3766"
+                        "combined": "5b74bcb45858ecbf0cfc339071373867"
                     }
                 }
             ],
@@ -69,6 +69,71 @@
                     "type": "string"
                 },
                 {
+                    "id": "turnstile-test-success",
+                    "value": "Turnstile keys and token are valid.",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-test-failed",
+                    "value": "Turnstile verification failed. Check the keys and try a new token.",
+                    "type": "string"
+                },
+                {
+                    "id": "captcha-provider-label",
+                    "value": "CAPTCHA provider",
+                    "type": "string"
+                },
+                {
+                    "id": "captcha-provider-none",
+                    "value": "Disabled",
+                    "type": "string"
+                },
+                {
+                    "id": "captcha-provider-google",
+                    "value": "Google reCAPTCHA",
+                    "type": "string"
+                },
+                {
+                    "id": "captcha-provider-turnstile",
+                    "value": "Cloudflare Turnstile",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-site-label",
+                    "value": "Turnstile Site Key",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-secret-label",
+                    "value": "Turnstile Secret Key",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-mode-label",
+                    "value": "Widget mode",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-mode-managed",
+                    "value": "Managed",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-mode-non-interactive",
+                    "value": "Non-interactive",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-mode-invisible",
+                    "value": "Invisible",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-test-label",
+                    "value": "Test Turnstile",
+                    "type": "string"
+                },
+                {
                     "id": "recaptcha-test-low-score",
                     "value": "reCAPTCHA score too low: {score}. Possible bot detected.",
                     "type": "string"
@@ -95,7 +160,7 @@
                 },
                 {
                     "id": "recaptcha-error-invalid-response",
-                    "value": "Token and/or Server Key (secret) is invalid.",
+                    "value": "Token and\/or Server Key (secret) is invalid.",
                     "type": "string"
                 },
                 {
@@ -177,16 +242,16 @@
                     "name": "Admin Environment",
                     "id": "admin-environment",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-environment/",
+                    "path": "admin-environment\/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.27",
+                    "version": "1.30",
                     "checksum": {
-                        "html": "301a984793e85ba5a2bc14ea0a42092f",
+                        "html": "3ae3911aff7caa3ef09bdca1081c770d",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "ebe491ef3ea9a815fed6105da170480b"
+                        "combined": "30341bf7fe846169cad1063e274dadda"
                     }
                 }
             ],
@@ -233,6 +298,71 @@
                     "type": "string"
                 },
                 {
+                    "id": "turnstile-test-success",
+                    "value": "Chaves e token do Turnstile válidos.",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-test-failed",
+                    "value": "Falha na verificação do Turnstile. Confira as chaves e gere outro token.",
+                    "type": "string"
+                },
+                {
+                    "id": "captcha-provider-label",
+                    "value": "Provedor de CAPTCHA",
+                    "type": "string"
+                },
+                {
+                    "id": "captcha-provider-none",
+                    "value": "Desativado",
+                    "type": "string"
+                },
+                {
+                    "id": "captcha-provider-google",
+                    "value": "Google reCAPTCHA",
+                    "type": "string"
+                },
+                {
+                    "id": "captcha-provider-turnstile",
+                    "value": "Cloudflare Turnstile",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-site-label",
+                    "value": "Site Key do Turnstile",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-secret-label",
+                    "value": "Secret Key do Turnstile",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-mode-label",
+                    "value": "Modo do widget",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-mode-managed",
+                    "value": "Gerenciado",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-mode-non-interactive",
+                    "value": "Não interativo",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-mode-invisible",
+                    "value": "Invisível",
+                    "type": "string"
+                },
+                {
+                    "id": "turnstile-test-label",
+                    "value": "Testar Turnstile",
+                    "type": "string"
+                },
+                {
                     "id": "recaptcha-test-low-score",
                     "value": "Score do reCAPTCHA muito baixo: {score}. Possível bot detectado.",
                     "type": "string"
@@ -259,7 +389,7 @@
                 },
                 {
                     "id": "recaptcha-error-invalid-response",
-                    "value": "Token e/ou Server Key (secret) de resposta é inválido.",
+                    "value": "Token e\/ou Server Key (secret) de resposta é inválido.",
                     "type": "string"
                 },
                 {
@@ -335,5 +465,5 @@
             ]
         }
     },
-    "asset_version": "5bf6646705a86192"
+    "asset_version": "7fd4e69bd53dd3e6"
 }

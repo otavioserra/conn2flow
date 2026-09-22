@@ -1892,8 +1892,8 @@
             "built_at": "2026-09-15T14:00:03+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-2fa-campos": {
-            "fingerprint": "25614195e99147342288f47458f3d9075678cc798aa78227ae521b464d84212d",
-            "output_hash": "28f766b57873941088bf2fd636ec433a4405e3bd211b5431de52573cfdc302aa",
+            "fingerprint": "69fa43ed2b09e9d543dae1fce15587c668c57ab4b138cafafcdc8783afe29d84",
+            "output_hash": "e2a6c3ca22984ff0729b47b9408f37ebc8b9b7362d849998d35ab7b12fe0f400",
             "output": "modulos/perfil-usuario/resources/en/components/perfil-usuario-2fa-campos/perfil-usuario-2fa-campos.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1902,11 +1902,11 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:23+00:00"
+            "built_at": "2026-09-22T17:43:57+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-api-tokens": {
-            "fingerprint": "eeaf84aa770948d2a29b41816476dce5d351a6b6133efe8f3be651163f6772ea",
-            "output_hash": "25f1a95230afcaa9b8913cc368babcfc7269b994aea880d912eb605ee0b5a5b1",
+            "fingerprint": "193ea250bed5d56234f6ee5bd27281f264e8d9fe56e14b901d6d25cd6296c085",
+            "output_hash": "aa37d2cfb56a354effd2a89ca5f3e46ed54d80258fce31c3035126c55aca4301",
             "output": "modulos/perfil-usuario/resources/en/components/perfil-usuario-api-tokens/perfil-usuario-api-tokens.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1915,11 +1915,11 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:24+00:00"
+            "built_at": "2026-09-22T17:43:57+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-login-metodos": {
-            "fingerprint": "26b2b64b0654053d2bee7c461de82297f3e0f002a0d3f9aadee38a9aae4b796b",
-            "output_hash": "f790dff8c0b818ee4572aacd82872eadb080073be937743b4f67f6c0b69959a4",
+            "fingerprint": "580ae0a36df1e00738fd66a455bbd45ce9a52e695ff61dfa7ffee719bc2cae5d",
+            "output_hash": "afee22b22178c805917e4a31100d3404decd2af2f1856618fca8f7714e73b108",
             "output": "modulos/perfil-usuario/resources/en/components/perfil-usuario-login-metodos/perfil-usuario-login-metodos.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1928,11 +1928,11 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:24+00:00"
+            "built_at": "2026-09-22T17:43:57+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-seguranca": {
-            "fingerprint": "95c2b63da0af42e85bd0ed48a7604e66e3fd57362500421dff039e664306da0d",
-            "output_hash": "614a604e62734eb02a888c815514df183c99eef0e56325aeeddcd61c462a2e9d",
+            "fingerprint": "774e0e2c901128157394eec6b1deb5696ef4178f822abd09a7e5b3356aa0e94d",
+            "output_hash": "3c28892b4e64eccfc729f95eb10c8c0eef214e873034679bae49efa275dd336b",
             "output": "modulos/perfil-usuario/resources/en/components/perfil-usuario-seguranca/perfil-usuario-seguranca.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1941,11 +1941,11 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:24+00:00"
+            "built_at": "2026-09-22T17:43:58+00:00"
         },
         "module|perfil-usuario|en|components|perfil-usuario-sessoes": {
-            "fingerprint": "39009d2d609f148eaabcfdfc656b9e0aa9a79b2c04f01ce3426763064decee3f",
-            "output_hash": "b665507f48f4464f53d046b4330da00f957c7ef121421ed5515d596bb2b48f17",
+            "fingerprint": "32b084dc22ce756b908a616b3f7104cd5e3a0a40a9b360e1d710c51edb711398",
+            "output_hash": "4f09822557ce700fded74605057fd8654e20d89e19ef01921184b2429b6f8806",
             "output": "modulos/perfil-usuario/resources/en/components/perfil-usuario-sessoes/perfil-usuario-sessoes.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1954,7 +1954,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:24+00:00"
+            "built_at": "2026-09-22T17:43:58+00:00"
         },
         "module|perfil-usuario|en|pages|Area-restrita": {
             "fingerprint": "a3adcebaa649c96e309b74c111427f51f927ec948883d0792b4ca6a5413e8089",
@@ -1975,8 +1975,8 @@
             "built_at": "2026-09-15T14:00:05+00:00"
         },
         "module|perfil-usuario|en|pages|acessar-sistema": {
-            "fingerprint": "34c24615730243fee6bc4e5d9c5923e192de922c1368d79e67d1129efdbc4feb",
-            "output_hash": "e25db94a7f9fbb750254989e20b55fe727ce788540bc7bb4558b527bc31c6641",
+            "fingerprint": "44fa974d93f0a2b75187d0737bbddfaa20ada939203a22e0e280d1751c0e6f27",
+            "output_hash": "6db1dc6d1e3540d4f597b1744208453e5bfd69ef8e5380a188ee63d32a5a5c24",
             "output": "modulos/perfil-usuario/resources/en/pages/acessar-sistema/acessar-sistema.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -1991,11 +1991,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:04+00:00"
+            "built_at": "2026-09-22T17:59:56+00:00"
         },
         "module|perfil-usuario|en|pages|cadastrar-no-sistema": {
-            "fingerprint": "74c2e0fd93c651ef42f22dbe84084cfbe5dc50dc6395afa6a743cae06e491312",
-            "output_hash": "821b2bafb22c69b349aa741e74ba44663fe576f6377022f52d986716b1f1d696",
+            "fingerprint": "9dcf9887cbdd19b40f34014042a4b0fb106c88e5f7a9fc8aafe9c9905c8c48ca",
+            "output_hash": "97bb0c5e713b2f94049078c05395ad6cd64206d5bcc7f1c65dff9eae9a37fcf8",
             "output": "modulos/perfil-usuario/resources/en/pages/cadastrar-no-sistema/cadastrar-no-sistema.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2008,11 +2008,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:04+00:00"
+            "built_at": "2026-09-22T17:59:56+00:00"
         },
         "module|perfil-usuario|en|pages|confirmacao-de-email": {
-            "fingerprint": "fb817a8408970deb83b9c988dc7bd24e6b2938fb1cb3c04f366b6361bd5b79de",
-            "output_hash": "eda3e7e51864fbbef5ef8fc719c9015bff9f1c0c02659ce66cdbe3ec30bd589d",
+            "fingerprint": "2a12dbd8e8d9b66ea0281725c60b87ef149f23c9c3f59677dd82e2725a1225dd",
+            "output_hash": "d1ca68dd15dd8dbc9e51d6d2c41b2dea5ba3768fa5c1b33d9e7e75ca0e960f5d",
             "output": "modulos/perfil-usuario/resources/en/pages/confirmacao-de-email/confirmacao-de-email.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2025,11 +2025,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:05+00:00"
+            "built_at": "2026-09-22T17:59:56+00:00"
         },
         "module|perfil-usuario|en|pages|esqueceu-a-senha": {
-            "fingerprint": "5cea85491c3dd3ffa1e7b4f2f4a44e8eb2a9cdb36ecf2c1e80813363740e9723",
-            "output_hash": "30f4f98413b3a6d89cbf0ce186c4cf4b5e067270f140bede01dd53b2d495ce91",
+            "fingerprint": "2a9877b1d838cf12e458d85845e07a99fae026141a240b65d50e7fa936b90929",
+            "output_hash": "378455c0d90f4876e6a48b80b3481e3943bd3f4abde46f05e5eebaa002dd499b",
             "output": "modulos/perfil-usuario/resources/en/pages/esqueceu-a-senha/esqueceu-a-senha.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2042,11 +2042,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:05+00:00"
+            "built_at": "2026-09-22T17:59:56+00:00"
         },
         "module|perfil-usuario|en|pages|esqueceu-a-senha-email-enviado": {
-            "fingerprint": "0616c6b26c1f5eec89e8bc6b0d474ae6af4ac014506cb6f41cd8f3d0e50bed0c",
-            "output_hash": "f8587ed1dc6c4daba6df5947e1fb0c294a2940a0392b256cd8b870264f7c8e9d",
+            "fingerprint": "73f4d3e77fcbf103928cb4b80ec447b0aaf81f5e5f4b14cdbd20d9f47df425a4",
+            "output_hash": "47470f6fed5154af7598e31ba6105aa2852cdccb0b37f8bc2133b337a82e7568",
             "output": "modulos/perfil-usuario/resources/en/pages/esqueceu-a-senha-email-enviado/esqueceu-a-senha-email-enviado.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2059,11 +2059,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:05+00:00"
+            "built_at": "2026-09-22T17:59:57+00:00"
         },
         "module|perfil-usuario|en|pages|oauth-authenticate": {
-            "fingerprint": "2c9eee46c7c4db5ff9835b3ad55d2fa2d9b0bb918b9f0b1a2c6b3b359eba55df",
-            "output_hash": "bb99520bec055ef5324a0715225b3b0bbe48717c7e8af7de690bf1d8e5da7b8e",
+            "fingerprint": "e33a167dcb2398fa15a9e328bee89d2dee6cb60acfa8d47b361a4547709cdf2f",
+            "output_hash": "3c9347d06547b1805ff7316de88a12b797e2572b7ab1e3b843a2745381edac04",
             "output": "modulos/perfil-usuario/resources/en/pages/oauth-authenticate/oauth-authenticate.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2078,11 +2078,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:05+00:00"
+            "built_at": "2026-09-22T17:59:57+00:00"
         },
         "module|perfil-usuario|en|pages|oauth-authenticate-2fa": {
-            "fingerprint": "fdde447b3de9c1cf846ed9435d5c38e3939d3e16cc4425c49f19a433957a9391",
-            "output_hash": "bfe958c1516472d21128814d9d2a76121f6b34b4e084c094ad2bf63146e8c6c2",
+            "fingerprint": "cd548e6a1911c54d363ec8461c0c3f8a706f14cf434a1a576a6d01cefd320dad",
+            "output_hash": "97979798e4dc5b74466ba15a7c2d32264d3cac713e2d8b870fbe8f366ab99c52",
             "output": "modulos/perfil-usuario/resources/en/pages/oauth-authenticate-2fa/oauth-authenticate-2fa.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2097,11 +2097,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:06+00:00"
+            "built_at": "2026-09-22T17:59:57+00:00"
         },
         "module|perfil-usuario|en|pages|oauth-callback": {
-            "fingerprint": "5f7a0a7c069e6820fd092cceffa0cc046dcf2e10523fba838559594ae225fa7b",
-            "output_hash": "394b939e6ef4003fced14008630762e2fa95346200110f9517319a9a474d98a9",
+            "fingerprint": "726df058dc10f34973e2da0935a238d44089f6a18849a3fc84a40d97c49f85f4",
+            "output_hash": "4b007bdf4e7098ab6cfd541213c0b6bb4742e2011ec5ba38987a55ebab14323a",
             "output": "modulos/perfil-usuario/resources/en/pages/oauth-callback/oauth-callback.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2114,11 +2114,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:06+00:00"
+            "built_at": "2026-09-22T17:59:57+00:00"
         },
         "module|perfil-usuario|en|pages|perfil-usuario": {
-            "fingerprint": "f08492f2150306539e6d8d1c50a06433d4df370029e6f2b103a95a92cc52eddd",
-            "output_hash": "ba12eb8cb1c35d805fa461b75345fff563334a270abbec7507fa4268a1cced9e",
+            "fingerprint": "bb6a6822e8417e63f3b87c7baa59716292a8194ed72dd25860ce75a93e9755e4",
+            "output_hash": "272e581f483e867b8128ea343191db542f95f451f6720a0c5d92f8b946e98be6",
             "output": "modulos/perfil-usuario/resources/en/pages/perfil-usuario/perfil-usuario.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2138,11 +2138,11 @@
                 "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:06+00:00"
+            "built_at": "2026-09-22T17:59:58+00:00"
         },
         "module|perfil-usuario|en|pages|redefinir-senha": {
-            "fingerprint": "7754a648d7cc9f0ad03a5d21bf544dec7beb3212e7f0d1cd66a9f4e879d44eb4",
-            "output_hash": "6cd4f593531361a3d7652a31a54ef1cf6e7cc8c46327e6d725dc66e941c5b239",
+            "fingerprint": "2f90631437700fc241e79e5b480fecd86e4028fed1c6e23e0f14839c0422dfd6",
+            "output_hash": "69a34a1c3322e8daf96c914d9bd4203b29996708e176f9bb740eacb68676b91f",
             "output": "modulos/perfil-usuario/resources/en/pages/redefinir-senha/redefinir-senha.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2155,11 +2155,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:06+00:00"
+            "built_at": "2026-09-22T17:59:58+00:00"
         },
         "module|perfil-usuario|en|pages|redefinir-senha-confirmacao": {
-            "fingerprint": "487e178e1a67f822280d64eae88fd76bf865228ea632074f247592e7a7ba257a",
-            "output_hash": "671cdafa0ad0b8a212ea806bf56dfc88b2aeca8038e60f476ccccaafa80fe10d",
+            "fingerprint": "8a96a1e692e5bf684839b74999ba4d881017e084f2b6f1143975043b17251378",
+            "output_hash": "a88b1bf79e67c7a9a5380e4d109af39ce0401b73d25f19940526cb4e5b17c629",
             "output": "modulos/perfil-usuario/resources/en/pages/redefinir-senha-confirmacao/redefinir-senha-confirmacao.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2172,11 +2172,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:07+00:00"
+            "built_at": "2026-09-22T17:59:58+00:00"
         },
         "module|perfil-usuario|en|pages|sair-sistema": {
-            "fingerprint": "47e78b88397c436f611b5de06d96971b7f3695e1e4490ee11d23b5a9fb861aac",
-            "output_hash": "394b939e6ef4003fced14008630762e2fa95346200110f9517319a9a474d98a9",
+            "fingerprint": "6975ac077f721e3c94dfefff0d707d600b7472641b2c4acc1ec0006657ef930c",
+            "output_hash": "4b007bdf4e7098ab6cfd541213c0b6bb4742e2011ec5ba38987a55ebab14323a",
             "output": "modulos/perfil-usuario/resources/en/pages/sair-sistema/sair-sistema.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2189,11 +2189,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:07+00:00"
+            "built_at": "2026-09-22T17:59:58+00:00"
         },
         "module|perfil-usuario|en|pages|signin-2fa": {
-            "fingerprint": "81ae6af48a4700679f258cf03174c69882ee5587492d665ad8c41d291de407c5",
-            "output_hash": "bfe958c1516472d21128814d9d2a76121f6b34b4e084c094ad2bf63146e8c6c2",
+            "fingerprint": "4582d203883e7852fbc6c7b0e890fbfbee5dad5977cf4f7a6f5e3289bd9c73be",
+            "output_hash": "97979798e4dc5b74466ba15a7c2d32264d3cac713e2d8b870fbe8f366ab99c52",
             "output": "modulos/perfil-usuario/resources/en/pages/signin-2fa/signin-2fa.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2208,11 +2208,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:07+00:00"
+            "built_at": "2026-09-22T17:59:58+00:00"
         },
         "module|perfil-usuario|en|pages|social-login": {
-            "fingerprint": "889730f1e85c09111d3f5b55d4a181c681a68e09e0f47c1c4fa284bfbc309c22",
-            "output_hash": "394b939e6ef4003fced14008630762e2fa95346200110f9517319a9a474d98a9",
+            "fingerprint": "97b800c99a626e90cfb701b025edc4cd305ee25bb7b559f67dcdfa830dbb9492",
+            "output_hash": "4b007bdf4e7098ab6cfd541213c0b6bb4742e2011ec5ba38987a55ebab14323a",
             "output": "modulos/perfil-usuario/resources/en/pages/social-login/social-login.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2225,11 +2225,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:07+00:00"
+            "built_at": "2026-09-22T17:59:59+00:00"
         },
         "module|perfil-usuario|en|pages|validar-usuario": {
-            "fingerprint": "c0ade77321ed67f31f575708587d44cb9b81623d80356bc84c35bbf8c0a4b497",
-            "output_hash": "e88f633c6658a61c378d18a7a72b401d841e1a92a51bb209a5a74e82b47949e2",
+            "fingerprint": "a09af862bf435c2174cce16e0649455b8c6589fd627a570472afdc3124442bbd",
+            "output_hash": "d9b332e0f55cbdc5c242787f9e60e779eaf4d7a517f007702f6ba267d2efaeef",
             "output": "modulos/perfil-usuario/resources/en/pages/validar-usuario/validar-usuario.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2242,11 +2242,11 @@
                 "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:08+00:00"
+            "built_at": "2026-09-22T17:59:59+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-2fa-campos": {
-            "fingerprint": "c2ed229d22f32b603c289ce9b6633185da9334218887083e474f4de9ca928e6e",
-            "output_hash": "28f766b57873941088bf2fd636ec433a4405e3bd211b5431de52573cfdc302aa",
+            "fingerprint": "ecb0d0d2851304a0c477999282f86c4dcf01c0f8568a39faf8c71f8cbac73259",
+            "output_hash": "e2a6c3ca22984ff0729b47b9408f37ebc8b9b7362d849998d35ab7b12fe0f400",
             "output": "modulos/perfil-usuario/resources/pt-br/components/perfil-usuario-2fa-campos/perfil-usuario-2fa-campos.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2255,11 +2255,11 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:28+00:00"
+            "built_at": "2026-09-22T17:44:02+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-api-tokens": {
-            "fingerprint": "f6d66e8709c122f5fbf7a28026271aa6ebc8e3d004dfd00621eec72f15442f1c",
-            "output_hash": "25f1a95230afcaa9b8913cc368babcfc7269b994aea880d912eb605ee0b5a5b1",
+            "fingerprint": "f311e224afc4155dc2994f96f2f8edc76a0ffadb3dc2ffe7e8f7674ab22632c3",
+            "output_hash": "aa37d2cfb56a354effd2a89ca5f3e46ed54d80258fce31c3035126c55aca4301",
             "output": "modulos/perfil-usuario/resources/pt-br/components/perfil-usuario-api-tokens/perfil-usuario-api-tokens.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2268,11 +2268,11 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:28+00:00"
+            "built_at": "2026-09-22T17:44:02+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-login-metodos": {
-            "fingerprint": "f56298ee0cb9383b2bcea9b0716582b64f006a7482ec9617eb30fb77ee5512a2",
-            "output_hash": "f790dff8c0b818ee4572aacd82872eadb080073be937743b4f67f6c0b69959a4",
+            "fingerprint": "6f6db2f8d24764f16bcdcb37d9146e750ef71cbd81e4f735499661f22a2a8e36",
+            "output_hash": "afee22b22178c805917e4a31100d3404decd2af2f1856618fca8f7714e73b108",
             "output": "modulos/perfil-usuario/resources/pt-br/components/perfil-usuario-login-metodos/perfil-usuario-login-metodos.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2281,11 +2281,11 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:29+00:00"
+            "built_at": "2026-09-22T17:44:03+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-seguranca": {
-            "fingerprint": "ae626fea9e0044167fa528bd247ac07c1bb6c59666805bd680b86d4964b78efa",
-            "output_hash": "614a604e62734eb02a888c815514df183c99eef0e56325aeeddcd61c462a2e9d",
+            "fingerprint": "19bf86a845b1298c754b1c6be3907ac73f8ced5eb76d4410a5f36f28842c3eb6",
+            "output_hash": "3c28892b4e64eccfc729f95eb10c8c0eef214e873034679bae49efa275dd336b",
             "output": "modulos/perfil-usuario/resources/pt-br/components/perfil-usuario-seguranca/perfil-usuario-seguranca.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2294,11 +2294,11 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:29+00:00"
+            "built_at": "2026-09-22T17:44:03+00:00"
         },
         "module|perfil-usuario|pt-br|components|perfil-usuario-sessoes": {
-            "fingerprint": "ac1a41d86247e4008d54286fb475e7a7041b0a1983dd4f6cd73342829012a321",
-            "output_hash": "b665507f48f4464f53d046b4330da00f957c7ef121421ed5515d596bb2b48f17",
+            "fingerprint": "9d699ca689c23a95c3d80e6e4fddf39f583a2f3ff8430fae32328cde8f8620e0",
+            "output_hash": "4f09822557ce700fded74605057fd8654e20d89e19ef01921184b2429b6f8806",
             "output": "modulos/perfil-usuario/resources/pt-br/components/perfil-usuario-sessoes/perfil-usuario-sessoes.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2307,7 +2307,7 @@
                 "modulos/perfil-usuario/perfil-usuario.json"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T13:52:29+00:00"
+            "built_at": "2026-09-22T17:44:03+00:00"
         },
         "module|perfil-usuario|pt-br|pages|Area-restrita": {
             "fingerprint": "3136505dea7034b6787576abb6048d6dc20b1f965cd4422c32a37f80d8cf7a44",
@@ -2328,8 +2328,8 @@
             "built_at": "2026-09-15T14:00:10+00:00"
         },
         "module|perfil-usuario|pt-br|pages|acessar-sistema": {
-            "fingerprint": "c3955c6657e7980f93be91dc1a55db1a62006812df39959c383a546e3f02f141",
-            "output_hash": "e25db94a7f9fbb750254989e20b55fe727ce788540bc7bb4558b527bc31c6641",
+            "fingerprint": "9fe3ed21dee8970255a4b4cf56b6529cb658b14adf79f101863ad67ef39a84d7",
+            "output_hash": "6db1dc6d1e3540d4f597b1744208453e5bfd69ef8e5380a188ee63d32a5a5c24",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/acessar-sistema/acessar-sistema.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2344,11 +2344,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:08+00:00"
+            "built_at": "2026-09-22T17:59:59+00:00"
         },
         "module|perfil-usuario|pt-br|pages|cadastrar-no-sistema": {
-            "fingerprint": "f4d621afc1e8e0472feed36418b5cf28bb22c46b09132629838c57e2fd403686",
-            "output_hash": "821b2bafb22c69b349aa741e74ba44663fe576f6377022f52d986716b1f1d696",
+            "fingerprint": "61047d18020c59c7b08dcb30570665eff807072dd96fed4919eee471cd03f142",
+            "output_hash": "97bb0c5e713b2f94049078c05395ad6cd64206d5bcc7f1c65dff9eae9a37fcf8",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/cadastrar-no-sistema/cadastrar-no-sistema.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2361,11 +2361,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:08+00:00"
+            "built_at": "2026-09-22T17:59:59+00:00"
         },
         "module|perfil-usuario|pt-br|pages|confirmacao-de-email": {
-            "fingerprint": "5ad4673f14b20e274628bc4e403880be08a8549c8bd075fc25d5c0166cfc60a5",
-            "output_hash": "eda3e7e51864fbbef5ef8fc719c9015bff9f1c0c02659ce66cdbe3ec30bd589d",
+            "fingerprint": "c4d2571aaab40ea83177fef4c96bab6eaaba05c72ede3eff9ec90360f22675d8",
+            "output_hash": "d1ca68dd15dd8dbc9e51d6d2c41b2dea5ba3768fa5c1b33d9e7e75ca0e960f5d",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/confirmacao-de-email/confirmacao-de-email.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2378,11 +2378,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:08+00:00"
+            "built_at": "2026-09-22T18:00:00+00:00"
         },
         "module|perfil-usuario|pt-br|pages|esqueceu-a-senha": {
-            "fingerprint": "b984f2a4498d3b0140d2e5db41da5e4aaf4c39aa136579ff75bfa6a7f9cb6e99",
-            "output_hash": "30f4f98413b3a6d89cbf0ce186c4cf4b5e067270f140bede01dd53b2d495ce91",
+            "fingerprint": "9995eea267c22c63cb0eb01df5edc1611dc62353a7d9d5921e5bfda9b894ab11",
+            "output_hash": "378455c0d90f4876e6a48b80b3481e3943bd3f4abde46f05e5eebaa002dd499b",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/esqueceu-a-senha/esqueceu-a-senha.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2395,11 +2395,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:09+00:00"
+            "built_at": "2026-09-22T18:00:00+00:00"
         },
         "module|perfil-usuario|pt-br|pages|esqueceu-a-senha-email-enviado": {
-            "fingerprint": "20bb3a5811915dbbc8436a7122414651cd27803d1be7dd35a896d55773beb39e",
-            "output_hash": "f8587ed1dc6c4daba6df5947e1fb0c294a2940a0392b256cd8b870264f7c8e9d",
+            "fingerprint": "e8ac2a205071d830add51c0be8e85b7532376bf10f7a6ea6ce61e3515a5bae34",
+            "output_hash": "47470f6fed5154af7598e31ba6105aa2852cdccb0b37f8bc2133b337a82e7568",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/esqueceu-a-senha-email-enviado/esqueceu-a-senha-email-enviado.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2412,11 +2412,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:09+00:00"
+            "built_at": "2026-09-22T18:00:00+00:00"
         },
         "module|perfil-usuario|pt-br|pages|oauth-authenticate": {
-            "fingerprint": "49c2d45fa5c41df848d64734ee84da359741d66e0ba3b0751eccc9e1ddfae39e",
-            "output_hash": "bb99520bec055ef5324a0715225b3b0bbe48717c7e8af7de690bf1d8e5da7b8e",
+            "fingerprint": "4cb443a0fa46c544d64eb15c2c1ee4a1afaeaa178ada700d6fb9920b8ce20a0b",
+            "output_hash": "3c9347d06547b1805ff7316de88a12b797e2572b7ab1e3b843a2745381edac04",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/oauth-authenticate/oauth-authenticate.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2431,11 +2431,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:09+00:00"
+            "built_at": "2026-09-22T18:00:00+00:00"
         },
         "module|perfil-usuario|pt-br|pages|oauth-authenticate-2fa": {
-            "fingerprint": "c9c08d4889eb5ddb2bf6366da713e6ec55cb39127584ab8a564b96df43d6bb2d",
-            "output_hash": "bfe958c1516472d21128814d9d2a76121f6b34b4e084c094ad2bf63146e8c6c2",
+            "fingerprint": "c87eb6c7d584ec1b147944da0b6c5b26eda861a87f75619f8c9047031c2d2f5d",
+            "output_hash": "97979798e4dc5b74466ba15a7c2d32264d3cac713e2d8b870fbe8f366ab99c52",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/oauth-authenticate-2fa/oauth-authenticate-2fa.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2450,11 +2450,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:09+00:00"
+            "built_at": "2026-09-22T18:00:00+00:00"
         },
         "module|perfil-usuario|pt-br|pages|oauth-callback": {
-            "fingerprint": "07612572c867cfece6e5cf369ab861463ddb98e214b64fc845c503ec6ae7f595",
-            "output_hash": "394b939e6ef4003fced14008630762e2fa95346200110f9517319a9a474d98a9",
+            "fingerprint": "8216407c0d617a938dea6ab8ebbdc70b1b5e4c642fc3f8c05c15a6166c28d8c8",
+            "output_hash": "4b007bdf4e7098ab6cfd541213c0b6bb4742e2011ec5ba38987a55ebab14323a",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/oauth-callback/oauth-callback.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2467,11 +2467,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:10+00:00"
+            "built_at": "2026-09-22T18:00:01+00:00"
         },
         "module|perfil-usuario|pt-br|pages|perfil-usuario": {
-            "fingerprint": "96e5079b7b814a4024fc11c6c4c383be7e9dbcfc0d7ac6ead2d25ffb06b64018",
-            "output_hash": "3c4e5052e062fd99f1beef19e8da80c5dcf8df7716775a7a7c221873149bda4e",
+            "fingerprint": "fc65e361369e246064a312f8c563d0d846787a172ce4113353b5440f5e97bba3",
+            "output_hash": "2986e9f132bfc8aebe711185f9154afe53f5b3ee9707a9f9dab957fd9dc217d5",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/perfil-usuario/perfil-usuario.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2491,11 +2491,11 @@
                 "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:10+00:00"
+            "built_at": "2026-09-22T18:00:01+00:00"
         },
         "module|perfil-usuario|pt-br|pages|redefinir-senha": {
-            "fingerprint": "5a870cb6dfbcee7a5e47c98eedb6894d23cc4552f8172504f28e1a7bc0c182b9",
-            "output_hash": "6cd4f593531361a3d7652a31a54ef1cf6e7cc8c46327e6d725dc66e941c5b239",
+            "fingerprint": "d2458c2bfaf1d106ee9eda750bddc90a1a2ea7e61813dee2a65f655967c0ad9a",
+            "output_hash": "69a34a1c3322e8daf96c914d9bd4203b29996708e176f9bb740eacb68676b91f",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/redefinir-senha/redefinir-senha.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2508,11 +2508,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:10+00:00"
+            "built_at": "2026-09-22T18:00:01+00:00"
         },
         "module|perfil-usuario|pt-br|pages|redefinir-senha-confirmacao": {
-            "fingerprint": "31c0674c682720bb29503cf2d6f64edb9a8ea35f019135be41eedfc4e616dfee",
-            "output_hash": "671cdafa0ad0b8a212ea806bf56dfc88b2aeca8038e60f476ccccaafa80fe10d",
+            "fingerprint": "56d937c924efda1331b8b3ddcfb9ce3f5c4d30e3562cc34721cafc5df4d127fe",
+            "output_hash": "a88b1bf79e67c7a9a5380e4d109af39ce0401b73d25f19940526cb4e5b17c629",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/redefinir-senha-confirmacao/redefinir-senha-confirmacao.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2525,11 +2525,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:10+00:00"
+            "built_at": "2026-09-22T18:00:01+00:00"
         },
         "module|perfil-usuario|pt-br|pages|sair-sistema": {
-            "fingerprint": "e83d9160d306a433c1793687af41d6e63ee003ced6bbeb273b370960c9a1922b",
-            "output_hash": "394b939e6ef4003fced14008630762e2fa95346200110f9517319a9a474d98a9",
+            "fingerprint": "ca285437e6e2314b09e0d8cf6790f9cbd38b17bb4ccd7da1f8331c420c67effc",
+            "output_hash": "4b007bdf4e7098ab6cfd541213c0b6bb4742e2011ec5ba38987a55ebab14323a",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/sair-sistema/sair-sistema.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2542,11 +2542,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:11+00:00"
+            "built_at": "2026-09-22T18:00:02+00:00"
         },
         "module|perfil-usuario|pt-br|pages|signin-2fa": {
-            "fingerprint": "b2a0eca2ad386526862c8980b66a7f1a5fedc42f257aaf1b211a1f5a75e7d3ea",
-            "output_hash": "bfe958c1516472d21128814d9d2a76121f6b34b4e084c094ad2bf63146e8c6c2",
+            "fingerprint": "fd7322e18e294c576e746a3932987fe8ebe1f8369f5c2f9cace30d30f8d41d35",
+            "output_hash": "97979798e4dc5b74466ba15a7c2d32264d3cac713e2d8b870fbe8f366ab99c52",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/signin-2fa/signin-2fa.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2561,11 +2561,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:11+00:00"
+            "built_at": "2026-09-22T18:00:02+00:00"
         },
         "module|perfil-usuario|pt-br|pages|social-login": {
-            "fingerprint": "af66e6455b922a625ed88c4c62e796ffe7b1a407d23265c5b0bde259c0211242",
-            "output_hash": "394b939e6ef4003fced14008630762e2fa95346200110f9517319a9a474d98a9",
+            "fingerprint": "639ba16ecdb20cfcd7c09fd303b1c09203e06ed3e7e9f30b1eaf63a89556e257",
+            "output_hash": "4b007bdf4e7098ab6cfd541213c0b6bb4742e2011ec5ba38987a55ebab14323a",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/social-login/social-login.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2578,11 +2578,11 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:11+00:00"
+            "built_at": "2026-09-22T18:00:02+00:00"
         },
         "module|perfil-usuario|pt-br|pages|validar-usuario": {
-            "fingerprint": "03f1bd469f1dafff9519c5730ee35d5d533de1a971d7764b8ff58072dc0dc50d",
-            "output_hash": "e88f633c6658a61c378d18a7a72b401d841e1a92a51bb209a5a74e82b47949e2",
+            "fingerprint": "eb5bafa8f2045bc4c8b19b1c6279c8f15185c87f51f65633756a294ea0affc99",
+            "output_hash": "d9b332e0f55cbdc5c242787f9e60e779eaf4d7a517f007702f6ba267d2efaeef",
             "output": "modulos/perfil-usuario/resources/pt-br/pages/validar-usuario/validar-usuario.precompiled.css",
             "tailwind_version": "4.3.3",
             "sources": [
@@ -2595,7 +2595,7 @@
                 "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html"
             ],
             "safelist": [],
-            "built_at": "2026-09-18T14:19:11+00:00"
+            "built_at": "2026-09-22T18:00:02+00:00"
         },
         "module|publisher-highlights|en|templates|publisher-highlights-artigos-editorial": {
             "fingerprint": "8d9ab8b68dc034a42d8546cdc6cc74cefc00781406a80e9dfc81ddd1dee30072",

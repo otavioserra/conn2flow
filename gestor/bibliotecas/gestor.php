@@ -2497,9 +2497,30 @@ function gestor_redirecionar($local = false,$queryString = '',$externo = false){
 		}
 	}
 	
-	header("Location: ".$local.(existe($queryString) ? '?'.$queryString : ''));
+	header("Location: ".gestor_redirecionar_montar_url($local,$queryString));
 	exit;
 	
+}
+
+/**
+ * Monta a URL de destino de um redirecionamento (req-173).
+ *
+ * Isolada de `gestor_redirecionar()` para ser verificável sem `header()`/`exit`: é aqui que mora a
+ * regra de juntar destino e query string. O destino pode já trazer parâmetros — um caminho de
+ * página com `?` embutido ou uma URL externa montada com query —, e concatenar `?` nesse caso
+ * produziria `...?a=1?b=2`, que o navegador entrega como um único parâmetro com valor sujo.
+ *
+ * @param string $local       Destino já resolvido (interno ou externo).
+ * @param string $queryString Query string a anexar, com ou sem `?`/`&` à frente.
+ * @return string URL final; sem query string, o destino sai intacto (nenhum `?` órfão).
+ */
+function gestor_redirecionar_montar_url($local,$queryString = ''){
+	$local = (string)$local;
+	$queryString = ltrim((string)$queryString, '?&');
+
+	if(!existe($queryString)) return $local;
+
+	return $local . (strpos($local, '?') === false ? '?' : '&') . $queryString;
 }
 
 /**

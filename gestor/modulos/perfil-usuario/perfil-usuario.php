@@ -5,6 +5,64 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'perfil-usuario';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/perfil-usuario.json'), true);
 
+/**
+ * Avalia o CAPTCHA das telas de autenticação e informa quando o Google v2 deve assumir o fluxo.
+ * O callable existe para que os testes cubram a máquina de estados sem acessar serviços externos.
+ */
+function perfil_usuario_captcha_avaliar(array $acesso, string $action, ?callable $validar = null): array{
+	global $_CONFIG;
+
+	$provider = $_CONFIG['captcha-provider'] ?? (!empty($_CONFIG['usuario-recaptcha-active']) ? 'google-recaptcha' : 'none');
+	$captchaExigido = $provider === 'cloudflare-turnstile'
+		|| ($provider === 'google-recaptcha' && ($acesso['status'] ?? 'livre') != 'livre');
+
+	if(!$captchaExigido) return ['status' => 'valid'];
+
+	if($validar === null){
+		gestor_incluir_biblioteca('seguranca');
+		$validar = 'gestor_captcha_validar';
+	}
+
+	$v2Ativo = $provider === 'google-recaptcha' && !empty($_CONFIG['usuario-recaptcha-v2-active']);
+	$v2Token = $_POST['g-recaptcha-response'] ?? '';
+
+	if($v2Ativo && is_string($v2Token) && trim($v2Token) !== ''){
+		return $validar(null, ['v2' => true])
+			? ['status' => 'valid', 'version' => 'v2']
+			: ['status' => 'require_v2'];
+	}
+
+	if($validar(null, ['action' => $action])) return ['status' => 'valid', 'version' => 'v3'];
+
+	return ['status' => $v2Ativo ? 'require_v2' : 'invalid'];
+}
+
+/** Inclui somente os assets do degrau de CAPTCHA que a resposta atual precisa renderizar. */
+function perfil_usuario_captcha_assets(array $acesso, bool $exigirV2 = false): void{
+	global $_CONFIG, $_GESTOR;
+
+	$provider = $_CONFIG['captcha-provider'] ?? (!empty($_CONFIG['usuario-recaptcha-active']) ? 'google-recaptcha' : 'none');
+	if($provider === 'cloudflare-turnstile'){
+		$_GESTOR['javascript-vars']['turnstileSiteKey'] = $_CONFIG['turnstile-site-key'] ?? '';
+		$_GESTOR['javascript-vars']['turnstileMode'] = $_CONFIG['turnstile-mode'] ?? 'managed';
+		gestor_pagina_javascript_incluir('<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>');
+		return;
+	}
+
+	if($provider !== 'google-recaptcha' || ($acesso['status'] ?? 'livre') == 'livre') return;
+
+	if($exigirV2){
+		$_GESTOR['javascript-vars']['googleRecaptchaV2Required'] = true;
+		$_GESTOR['javascript-vars']['googleRecaptchaV2Site'] = $_CONFIG['usuario-recaptcha-v2-site'] ?? '';
+		gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>');
+		return;
+	}
+
+	$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
+	$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'] ?? '';
+	gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.htmlspecialchars($_GESTOR['javascript-vars']['googleRecaptchaSite'], ENT_QUOTES, 'UTF-8').'"></script>');
+}
+
 function perfil_usuario_area_restrita(){
 	global $_GESTOR;
 	global $_CONFIG;
@@ -1561,41 +1619,11 @@ function perfil_usuario_oauth_authenticate(){
 		
 		// ===== Google reCAPTCHA v3
 		
-		$recaptchaValido = false;
+		$captchaResultado = perfil_usuario_captcha_avaliar($acesso, 'logar');
+		$recaptchaValido = $captchaResultado['status'] === 'valid';
+		$captchaV2Exigido = $captchaResultado['status'] === 'require_v2';
 		
-		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-			if($_CONFIG['usuario-recaptcha-active']){
-				// ===== Variáveis de comparação do reCAPTCHA
-				
-				$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
-				
-				$token = $_REQUEST['token'];
-				$action = $_REQUEST['action'];
-				
-				// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
-				
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('secret' => $recaptchaSecretKey, 'response' => $token)));
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				$response = curl_exec($ch);
-				curl_close($ch);
-				$arrResponse = json_decode($response, true);
-				
-				// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
-				
-				if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5) {
-					$recaptchaValido = true;
-				}
-			} else {
-				$recaptchaValido = true;
-			}
-		} else {
-			$recaptchaValido = true;
-		}
-		
-		$user_invalid = true;
+		$user_invalid = !$captchaV2Exigido;
 		
 		if($recaptchaValido){
 			// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
@@ -1695,7 +1723,7 @@ function perfil_usuario_oauth_authenticate(){
 			} else {
 				$metodo_indisponivel = true;
 			}
-		} else {
+		} elseif(!$captchaV2Exigido) {
 			// ===== Se o recaptcha for inválido, alertar o usuário.
 			
 			sleep(3);
@@ -1716,7 +1744,7 @@ function perfil_usuario_oauth_authenticate(){
 	
 		// ===== Se o usuário for inválido, redirecionar oauth-authenticate.
 		
-		if($user_invalid){
+		if(!$captchaV2Exigido && $user_invalid){
 			autenticacao_acesso_falha(['tipo' => 'oauth2']);
 			
 			sleep(3);
@@ -1748,9 +1776,9 @@ function perfil_usuario_oauth_authenticate(){
 
 		// ===== Se o usuário for válido e gerou o token corretamente, redirecionar para o local pretendido se houver, senão retornar JSON.
 
-		if(isset($tokens) && $tokens){
+		if(!$captchaV2Exigido && isset($tokens) && $tokens){
 			perfil_usuario_oauth_entregar_tokens($tokens, $url_redirect);
-		} else {
+		} elseif(!$captchaV2Exigido) {
 			// ===== Erro de autenticação
 			
 			$error_response = Array(
@@ -1803,16 +1831,8 @@ function perfil_usuario_oauth_authenticate(){
 		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	}
 
-	// ===== Incluir google reCAPTCHA caso ativo
-	
-	if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-		if($_CONFIG['usuario-recaptcha-active']){
-			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
-			
-			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
-		}
-	}
+	// ===== Incluir o provedor ativo nas telas de autenticação.
+	perfil_usuario_captcha_assets($acesso, !empty($captchaV2Exigido));
 	
 	// ===== Inclusão Módulo JS
 	
@@ -2013,41 +2033,11 @@ function perfil_usuario_signin(){
 		
 		// ===== Google reCAPTCHA v3
 		
-		$recaptchaValido = false;
+		$captchaResultado = perfil_usuario_captcha_avaliar($acesso, 'logar');
+		$recaptchaValido = $captchaResultado['status'] === 'valid';
+		$captchaV2Exigido = $captchaResultado['status'] === 'require_v2';
 		
-		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-			if($_CONFIG['usuario-recaptcha-active']){
-				// ===== Variáveis de comparação do reCAPTCHA
-				
-				$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
-				
-				$token = $_REQUEST['token'];
-				$action = $_REQUEST['action'];
-				
-				// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
-				
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('secret' => $recaptchaSecretKey, 'response' => $token)));
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				$response = curl_exec($ch);
-				curl_close($ch);
-				$arrResponse = json_decode($response, true);
-				
-				// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
-				
-				if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5) {
-					$recaptchaValido = true;
-				}
-			} else {
-				$recaptchaValido = true;
-			}
-		} else {
-			$recaptchaValido = true;
-		}
-		
-		$user_invalid = true;
+		$user_invalid = !$captchaV2Exigido;
 		
 		if($recaptchaValido){
 			// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
@@ -2166,7 +2156,7 @@ function perfil_usuario_signin(){
 					}
 				}
 			}
-		} else {
+		} elseif(!$captchaV2Exigido) {
 			// ===== Se o recaptcha for inválido, alertar o usuário.
 			
 			sleep(3);
@@ -2187,7 +2177,7 @@ function perfil_usuario_signin(){
 	
 		// ===== Se o usuário for inválido, redirecionar signin.
 		
-		if($user_invalid){
+		if(!$captchaV2Exigido && $user_invalid){
 			autenticacao_acesso_falha(['tipo' => 'login']);
 			
 			sleep(3);
@@ -2209,10 +2199,12 @@ function perfil_usuario_signin(){
 		
 		// ===== Se o usuário for válido, redirecionar para o local pretendido se houver, senão para dashboard.
 		
-		if(existe(gestor_sessao_variavel("redirecionar-local"))){
-			gestor_redirecionar();
-		} else {
-			gestor_redirecionar('dashboard/');
+		if(!$captchaV2Exigido){
+			if(existe(gestor_sessao_variavel("redirecionar-local"))){
+				gestor_redirecionar();
+			} else {
+				gestor_redirecionar('dashboard/');
+			}
 		}
 	}
 	
@@ -2240,16 +2232,8 @@ function perfil_usuario_signin(){
 		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	}
 	
-	// ===== Incluir google reCAPTCHA caso ativo
-	
-	if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-		if($_CONFIG['usuario-recaptcha-active']){
-			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
-			
-			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
-		}
-	}
+	// ===== Incluir o provedor ativo nas telas de autenticação.
+	perfil_usuario_captcha_assets($acesso, !empty($captchaV2Exigido));
 	
 	// ===== Inclusão Módulo JS
 	
@@ -2715,39 +2699,9 @@ function perfil_usuario_signup(){
 		
 		// ===== Google reCAPTCHA v3
 		
-		$recaptchaValido = false;
-		
-		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-			if($_CONFIG['usuario-recaptcha-active']){
-				// ===== Variáveis de comparação do reCAPTCHA
-				
-				$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
-				
-				$token = $_POST['token'];
-				$action = $_POST['action'];
-				
-				// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
-				
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('secret' => $recaptchaSecretKey, 'response' => $token)));
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				$response = curl_exec($ch);
-				curl_close($ch);
-				$arrResponse = json_decode($response, true);
-				
-				// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
-				
-				if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5) {
-					$recaptchaValido = true;
-				}
-			} else {
-				$recaptchaValido = true;
-			}
-		} else {
-			$recaptchaValido = true;
-		}
+		$captchaResultado = perfil_usuario_captcha_avaliar($acesso, 'signup');
+		$recaptchaValido = $captchaResultado['status'] === 'valid';
+		$captchaV2Exigido = $captchaResultado['status'] === 'require_v2';
 		
 		if($recaptchaValido){
 			// ===== Definição do identificador
@@ -2988,8 +2942,9 @@ function perfil_usuario_signup(){
 			
 			} // fim do if($enviar_email_signup)
 			
-		} else {
+		} elseif(!$captchaV2Exigido) {
 			// ===== Se o recaptcha for inválido, alertar o usuário.
+			autenticacao_acesso_falha(['tipo' => 'signup']);
 			
 			sleep(3);
 			
@@ -3007,18 +2962,20 @@ function perfil_usuario_signup(){
 			gestor_redirecionar('signup/',gestor_querystring_before_submit());
 		}
 		
+		if(!$captchaV2Exigido){
 		// ===== Hook: signup.redirect — permite módulos redirecionarem o usuário após cadastro.
 		
-		$signup_redirect = 'dashboard/';
+			$signup_redirect = 'dashboard/';
 		
-		if(existe(gestor_sessao_variavel("redirecionar-local"))){
-			$signup_redirect = gestor_sessao_variavel("redirecionar-local");
-			gestor_sessao_variavel_del("redirecionar-local");
+			if(existe(gestor_sessao_variavel("redirecionar-local"))){
+				$signup_redirect = gestor_sessao_variavel("redirecionar-local");
+				gestor_sessao_variavel_del("redirecionar-local");
+			}
+		
+			$signup_redirect = hook_apply_filters('perfil-usuario', 'signup.redirect', $signup_redirect, $id_usuarios);
+		
+			gestor_redirecionar($signup_redirect);
 		}
-		
-		$signup_redirect = hook_apply_filters('perfil-usuario', 'signup.redirect', $signup_redirect, $id_usuarios);
-		
-		gestor_redirecionar($signup_redirect);
 	}
 
 	// ===== Hook pos_banco
@@ -3049,16 +3006,8 @@ function perfil_usuario_signup(){
 		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	}
 	
-	// ===== Incluir google reCAPTCHA caso ativo
-	
-	if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-		if($_CONFIG['usuario-recaptcha-active']){
-			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
-			
-			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
-		}
-	}
+	// ===== Incluir o provedor ativo nas telas de autenticação.
+	perfil_usuario_captcha_assets($acesso, !empty($captchaV2Exigido));
 	
 	// ===== Inclusão Módulo JS
 	
@@ -3164,41 +3113,11 @@ function perfil_usuario_forgot_password(){
 		
 		// ===== Google reCAPTCHA v3
 		
-		$recaptchaValido = false;
+		$captchaResultado = perfil_usuario_captcha_avaliar($acesso, 'forgotPassword');
+		$recaptchaValido = $captchaResultado['status'] === 'valid';
+		$captchaV2Exigido = $captchaResultado['status'] === 'require_v2';
 		
-		if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-			if($_CONFIG['usuario-recaptcha-active']){
-				// ===== Variáveis de comparação do reCAPTCHA
-				
-				$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
-				
-				$token = $_POST['token'];
-				$action = $_POST['action'];
-				
-				// ===== Chamada ao servidor do Google reCAPTCHA para conferência se o token enviado no formulário é válido.
-				
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('secret' => $recaptchaSecretKey, 'response' => $token)));
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				$response = curl_exec($ch);
-				curl_close($ch);
-				$arrResponse = json_decode($response, true);
-				
-				// ===== Verificar se o retorno do servidor é válido, senão não validar o reCAPTCHA
-				
-				if($arrResponse["success"] == '1' && $arrResponse["action"] == $action && $arrResponse["score"] >= 0.5) {
-					$recaptchaValido = true;
-				}
-			} else {
-				$recaptchaValido = true;
-			}
-		} else {
-			$recaptchaValido = true;
-		}
-		
-		$user_invalid = true;
+		$user_invalid = !$captchaV2Exigido;
 		
 		if($recaptchaValido){
 			// ===== Verificar se os dados enviados batem com algum usuário dentro do sistema
@@ -3310,7 +3229,7 @@ function perfil_usuario_forgot_password(){
 	
 		// ===== Se o usuário for inválido, redirecionar forgot-password.
 		
-		if($user_invalid){
+		if(!$captchaV2Exigido && $user_invalid){
 			autenticacao_acesso_falha(['tipo' => 'forgot-password']);
 			
 			sleep(3);
@@ -3335,7 +3254,7 @@ function perfil_usuario_forgot_password(){
 			}
 			
 			gestor_redirecionar('forgot-password/');
-		} else {
+		} elseif(!$captchaV2Exigido) {
 			gestor_sessao_variavel($_GESTOR['modulo'].'-'.'forgot-password-confirmation'.'-'.'email',$email);
 			gestor_redirecionar('forgot-password-confirmation/');
 		}
@@ -3360,16 +3279,8 @@ function perfil_usuario_forgot_password(){
 		$cel_nome = 'formulario'; $cel[$cel_nome] = pagina_celula($cel_nome,false,true);
 	}
 	
-	// ===== Incluir google reCAPTCHA caso ativo
-	
-	if(isset($_CONFIG['usuario-recaptcha-active']) && $acesso['status'] != 'livre'){
-		if($_CONFIG['usuario-recaptcha-active']){
-			$_GESTOR['javascript-vars']['googleRecaptchaActive'] = true;
-			$_GESTOR['javascript-vars']['googleRecaptchaSite'] = $_CONFIG['usuario-recaptcha-site'];
-			
-			gestor_pagina_javascript_incluir('<script src="https://www.google.com/recaptcha/api.js?render='.$_CONFIG['usuario-recaptcha-site'].'"></script>');
-		}
-	}
+	// ===== Incluir o provedor ativo nas telas de autenticação.
+	perfil_usuario_captcha_assets($acesso, !empty($captchaV2Exigido));
 	
 	// ===== Inclusão Módulo JS
 	
@@ -4341,6 +4252,6 @@ function perfil_usuario_start(){
 	}
 }
 
-perfil_usuario_start();
+if(!defined('CONN2FLOW_DISABLE_MODULE_START')) perfil_usuario_start();
 
 ?>

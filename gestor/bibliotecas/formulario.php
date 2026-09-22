@@ -430,17 +430,21 @@ function formulario_montar_js_vars($formIds, $formAjaxOpcao = null){
             $formStatus = $formDefinition['status'];
         }
 
+        $captchaProvider = $_CONFIG['captcha-provider'] ?? (!empty($_CONFIG['usuario-recaptcha-active']) ? 'google-recaptcha' : 'none');
+        if($captchaProvider === 'cloudflare-turnstile'){
+            $turnstileSiteKey = $_CONFIG['turnstile-site-key'] ?? '';
+            $turnstileMode = $_CONFIG['turnstile-mode'] ?? 'managed';
+            gestor_pagina_javascript_incluir('<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>');
+        }
         // ===== Incluir google reCAPTCHA caso ativo (v3 se status != 'livre' ou forçado)
-        if(isset($_CONFIG['usuario-recaptcha-active']) && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
-            if($_CONFIG['usuario-recaptcha-active']){
+        if($captchaProvider === 'google-recaptcha' && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
                 $googleRecaptchaActive = true;
                 $googleRecaptchaSite = $_CONFIG['usuario-recaptcha-site'];
                 $googleRecaptchaAction = str_replace('-', '_', $fid) . '_action';
-            }
         }
 
         // ===== Incluir google reCAPTCHA v2 caso ativo
-        if(isset($_CONFIG['usuario-recaptcha-v2-active']) && $_CONFIG['usuario-recaptcha-v2-active']){
+        if($captchaProvider === 'google-recaptcha' && !empty($_CONFIG['usuario-recaptcha-v2-active'])){
             $googleRecaptchaV2Active = true;
             $googleRecaptchaV2Site = $_CONFIG['usuario-recaptcha-v2-site'];
         }
@@ -472,6 +476,8 @@ function formulario_montar_js_vars($formIds, $formAjaxOpcao = null){
             'googleRecaptchaAction' => $googleRecaptchaAction ?? null,
             'googleRecaptchaV2Active' => $googleRecaptchaV2Active ?? null,
             'googleRecaptchaV2Site' => $googleRecaptchaV2Site ?? null,
+            'turnstileSiteKey' => $turnstileSiteKey ?? null,
+            'turnstileMode' => $turnstileMode ?? 'managed',
             'framework' => $_GESTOR['pagina#framework_css'] ?? null,
             'fields' => $fieldsDoJson,
             'prompts' => $form_ui_prompts,
@@ -666,32 +672,11 @@ function formulario_processador($params = false){
 		}
 	}
 	
-	$recaptchaValido = false;
-	if(isset($_CONFIG['usuario-recaptcha-active']) && $_CONFIG['usuario-recaptcha-active'] && ($acesso['status'] != 'livre' || $forceRecaptchaV3)){
-		$recaptchaSecretKey = $_CONFIG['usuario-recaptcha-server'];
-		$token = $_POST['token'] ?? null;
-		$action = $_POST['action'] ?? null;
-		
-		// Chamada reCAPTCHA v3
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['secret' => $recaptchaSecretKey, 'response' => $token]));
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$response = curl_exec($ch);
-		curl_close($ch);
-		$arrResponse = json_decode($response, true);
-
-		if(isset($arrResponse["success"]) && $arrResponse["success"] == '1' && isset($arrResponse["action"]) && $arrResponse["action"] == $action && isset($arrResponse["score"]) && $arrResponse["score"] >= 0.5){
-			$recaptchaValido = true;
-		} elseif(isset($arrResponse["score"]) && $arrResponse["score"] < 0.5 && isset($_CONFIG['usuario-recaptcha-v2-active']) && $_CONFIG['usuario-recaptcha-v2-active']){
-			$captchaV2Ativo = true;
-		} else {
-			$captchaV2Ativo = true;
-		}
-	} else {
-		$recaptchaValido = true;
-	}
+	gestor_incluir_biblioteca('seguranca');
+	$captchaProvider = $_CONFIG['captcha-provider'] ?? (!empty($_CONFIG['usuario-recaptcha-active']) ? 'google-recaptcha' : 'none');
+	$captchaExigido = $captchaProvider === 'cloudflare-turnstile' || ($captchaProvider === 'google-recaptcha' && ($acesso['status'] != 'livre' || $forceRecaptchaV3));
+	$recaptchaValido = !$captchaExigido || (bool)gestor_captcha_validar(null, ['action' => $_POST['action'] ?? null]);
+	$captchaV2Ativo = !$recaptchaValido && $captchaProvider === 'google-recaptcha' && !empty($_CONFIG['usuario-recaptcha-v2-active']);
 	
 	if(!$recaptchaValido && !$captchaV2Ativo){
 		formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
@@ -713,16 +698,7 @@ function formulario_processador($params = false){
 		}
 		
 		// Validar v2
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['secret' => $_CONFIG['usuario-recaptcha-v2-server'], 'response' => $recaptchaV2Response]));
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$response = curl_exec($ch);
-		curl_close($ch);
-		$arrResponse = json_decode($response, true);
-		
-		if(!isset($arrResponse["success"]) || !$arrResponse["success"]){ 
+		if(!gestor_captcha_validar($recaptchaV2Response, ['v2' => true])){
 			formulario_acesso_falha(['tipo' => $formId, 'maximoCadastros' => $maxCadastros, 'maximoCadastrosSimples' => $maxCadastrosSimples]);
 			$_GESTOR['ajax-json'] = Array(
 				'status' => 'error',

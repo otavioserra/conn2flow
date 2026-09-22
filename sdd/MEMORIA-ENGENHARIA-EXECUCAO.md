@@ -13,6 +13,24 @@
 
 ## Tarefas recentes
 
+### 2026-09-22 — BATCH-178 (req-173): o que o roteador esquece e o que o widget desenha sem querer
+
+- **`paginas_301` responde 301 de verdade** (`gestor_roteador_erro()` chama `http_response_code()`);
+  o que se perdia era a query string, porque a chamada do ramo 301 não passava `'querystring' => true`.
+  Medir antes de acusar: o BL-016 nasceu afirmando 302 e estava errado.
+- **Função que termina em `header()` + `exit` é inverificável.** A montagem da URL saiu para
+  `gestor_redirecionar_montar_url()` só por isso; a regra de `?` x `&` passou a ter teste.
+- **Os blocos-modelo dos templates de forms nunca foram usados.** `forms_widget_options_html()` e
+  `forms_widget_wrap_password()` procuram `option-choice`/`password-toggle` DENTRO do bloco `item`
+  (é o item que chega a `forms_widget_render_field()`), e nos templates do core eles estão FORA.
+  O widget sempre caiu nos modelos embutidos no PHP; o bloco do fim do arquivo só vazava para a tela.
+- **Limpeza de marcador tem de ser cirúrgica**: remover bloco desconhecido inteiro apagaria markup do
+  autor do template. Só os três blocos conhecidos saem inteiros; dos demais sai o comentário.
+- **A suíte no Windows falha em `CoreHelpersTest`** por `openssl.cnf` ausente (PHP 8.5 + OpenSSL 3.5),
+  independentemente do lote. Rodar no Lab (Linux, PHP 8.5.10) dá 1202/1202; não perseguir esse erro.
+- **`git diff --check` reclama de linha só com TAB**, e o estilo do `bibliotecas/gestor.php` usa TAB em
+  linha em branco. Em código novo, linha em branco vazia.
+
 ### 2026-09-15 — BATCH-168 (req-163): XHR com CSRF e site restrito
 
 - **`gestor_usuario_perfil()` lê o cookie `authprofile`, que NÃO é assinado** — nunca use para autorizar; `gestor_usuario()` vem do JWT validado.

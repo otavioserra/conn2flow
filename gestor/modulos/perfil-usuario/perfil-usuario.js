@@ -1,4 +1,91 @@
 $(document).ready(function(){
+	var captchaFormSelector = '#_gestor-form-logar, #_gestor-form-autenticar, #_gestor-form-signup, #_gestor-form-forgot-password';
+	var captchaActions = {
+		'_gestor-form-logar': 'logar',
+		'_gestor-form-autenticar': 'logar',
+		'_gestor-form-signup': 'signup',
+		'_gestor-form-forgot-password': 'forgotPassword'
+	};
+
+	function captchaCampo(form, nome, valor){
+		var campo = form.querySelector('input[name="' + nome + '"]');
+		if(!campo){
+			campo = document.createElement('input');
+			campo.type = 'hidden';
+			campo.name = nome;
+			form.appendChild(campo);
+		}
+		campo.value = valor;
+	}
+
+	function captchaEnviarNativo(form){
+		form.dataset.c2fCaptchaReady = 'true';
+		HTMLFormElement.prototype.submit.call(form);
+	}
+
+	function captchaInserirWidget(form, classe){
+		var widget = form.querySelector('.' + classe);
+		if(widget) return widget;
+		widget = document.createElement('div');
+		widget.className = classe;
+		var botao = form.querySelector('button[type="submit"]');
+		if(botao) botao.parentNode.insertBefore(widget, botao);
+		else form.appendChild(widget);
+		return widget;
+	}
+
+	function captchaAguardarApi(condicao, callback){
+		var tentativas = 0;
+		var timer = window.setInterval(function(){
+			if(condicao()){
+				window.clearInterval(timer);
+				callback();
+			} else if(++tentativas >= 100){
+				window.clearInterval(timer);
+			}
+		}, 100);
+	}
+
+	function captchaRenderizarWidgets(){
+		if(!window.gestor) return;
+		var forms = document.querySelectorAll(captchaFormSelector);
+
+		if(gestor.googleRecaptchaV2Required && gestor.googleRecaptchaV2Site){
+			Array.prototype.forEach.call(forms, function(form){
+				captchaInserirWidget(form, 'g-recaptcha-v2');
+			});
+			captchaAguardarApi(function(){ return window.grecaptcha && typeof window.grecaptcha.render === 'function'; }, function(){
+				Array.prototype.forEach.call(forms, function(form){
+					var widget = form.querySelector('.g-recaptcha-v2');
+					if(widget && !widget.dataset.widgetId){
+						widget.dataset.widgetId = String(window.grecaptcha.render(widget, {sitekey: gestor.googleRecaptchaV2Site}));
+					}
+				});
+			});
+		}
+
+		if(gestor.turnstileSiteKey){
+			Array.prototype.forEach.call(forms, function(form){
+				captchaInserirWidget(form, 'cf-turnstile');
+			});
+			captchaAguardarApi(function(){ return window.turnstile && typeof window.turnstile.render === 'function'; }, function(){
+				Array.prototype.forEach.call(forms, function(form){
+					var widget = form.querySelector('.cf-turnstile');
+					if(widget && !widget.dataset.widgetId){
+						var widgetId = window.turnstile.render(widget, {
+							sitekey: gestor.turnstileSiteKey,
+							theme: 'auto',
+							callback: function(token){
+								captchaCampo(form, 'cf-turnstile-response', token);
+								if(form.dataset.c2fCaptchaPending === 'true') captchaEnviarNativo(form);
+							}
+						});
+						widget.dataset.widgetId = String(widgetId);
+					}
+				});
+			});
+		}
+	}
 
 	// req-086: este arquivo nasceu para telas Fomantic e é servido em TODAS as rotas do módulo —
 	// inclusive nas migradas para Tailwind puro, onde o Fomantic não é carregado. Ali `$.fn.form` e
@@ -18,7 +105,6 @@ $(document).ready(function(){
 		}
 
 		var formSelector = '#_gestor-form-signup';
-		var googleRecaptchaDone = false;
 		var submitBtnClicked = false;
 
 		// `$.formReiniciar` e `$.formSubmit` são do `interface.js` legado, que não é carregado nas
@@ -28,32 +114,6 @@ $(document).ready(function(){
 		$.formReiniciar({
 			formOnSuccessCalback : 'reCaptcha',
 			formOnSuccessCalbackFunc : function(){
-				if('googleRecaptchaActive' in gestor){
-					var action = 'signup'; // Action 
-					var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
-					
-					if(submitBtnClicked){
-						if(!googleRecaptchaDone){
-							grecaptcha.ready(function() {
-								grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
-									$(formSelector).append('<input type="hidden" name="token" value="'+token+'">');
-									$(formSelector).append('<input type="hidden" name="action" value="'+action+'">');
-									
-									$.formSubmit({
-										id : 'formOnSuccessCalback',
-									});
-									
-									googleRecaptchaDone = true;
-								});
-							});
-						} else {
-							$.formSubmit({
-								id : 'formOnSuccessCalback',
-							});
-						}
-					}
-				}
-				
 				if(!submitBtnClicked){
 					return false;
 				} else {
@@ -122,24 +182,6 @@ $(document).ready(function(){
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 				onSuccess(event, fields){
-					if('googleRecaptchaActive' in gestor){
-						var action = 'logar'; // Action 
-						var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
-						
-						if(submitBtnClicked){
-							grecaptcha.ready(function() {
-								grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
-									$(formSelector2).append('<input type="hidden" name="token" value="'+token+'">');
-									$(formSelector2).append('<input type="hidden" name="action" value="'+action+'">');
-									
-									$(formSelector2).unbind('submit').submit();
-								});
-							});
-							
-							return false;
-						}
-					}
-					
 					if(!submitBtnClicked){
 						return false;
 					}
@@ -167,7 +209,6 @@ $(document).ready(function(){
 	if($('#_gestor-form-forgot-password').length > 0){
 		var formSelector3 = '#_gestor-form-forgot-password';
 		
-		var googleRecaptcha = false;
 		var submitBtnClicked = false;
 
 		if(temFormFomantic)
@@ -175,24 +216,6 @@ $(document).ready(function(){
 			.form({
 				fields : (gestor.interface.regrasValidacao ? gestor.interface.regrasValidacao : {}),
 				onSuccess(event, fields){
-					if('googleRecaptchaActive' in gestor){
-						var action = 'forgotPassword'; // Action 
-						var googleSiteKey = gestor.googleRecaptchaSite; // Google Site Key
-						
-						grecaptcha.ready(function() {
-							if(submitBtnClicked){
-								grecaptcha.execute(googleSiteKey, {action: action}).then(function(token) {
-									$(formSelector3).append('<input type="hidden" name="token" value="'+token+'">');
-									$(formSelector3).append('<input type="hidden" name="action" value="'+action+'">');
-									
-									$(formSelector3).unbind('submit').submit();
-								});
-								
-								return false;
-							}
-						});
-					}
-					
 					if(!submitBtnClicked){
 						return false;
 					}
@@ -216,6 +239,44 @@ $(document).ready(function(){
 			}
 		});
 	}
+
+	// O CAPTCHA acompanha o evento nativo depois que o runtime da interface validou o formulário.
+	// Assim o mesmo caminho atende Tailwind e Fomantic sem depender de `$.fn.form`.
+	Array.prototype.forEach.call(document.querySelectorAll(captchaFormSelector), function(form){
+		form.addEventListener('submit', function(event){
+			if(form.dataset.c2fCaptchaReady === 'true' || !window.gestor) return;
+			if(gestor.googleRecaptchaV2Required) return;
+
+			if(gestor.googleRecaptchaActive && gestor.googleRecaptchaSite){
+				if(form.querySelector('input[name="token"]')) return;
+				if(event.defaultPrevented) return;
+				event.preventDefault();
+				var action = captchaActions[form.id] || 'logar';
+				window.grecaptcha.ready(function(){
+					window.grecaptcha.execute(gestor.googleRecaptchaSite, {action: action}).then(function(token){
+						captchaCampo(form, 'token', token);
+						captchaCampo(form, 'action', action);
+						captchaEnviarNativo(form);
+					});
+				});
+				return;
+			}
+
+			if(gestor.turnstileSiteKey){
+				var token = form.querySelector('input[name="cf-turnstile-response"]');
+				if(token && token.value) return;
+				if(event.defaultPrevented) return;
+				event.preventDefault();
+				form.dataset.c2fCaptchaPending = 'true';
+				var widget = form.querySelector('.cf-turnstile');
+				if(widget && widget.dataset.widgetId && gestor.turnstileMode === 'invisible'){
+					window.turnstile.execute(widget.dataset.widgetId);
+				}
+			}
+		});
+	});
+
+	captchaRenderizarWidgets();
 
 	if($('#_gestor-validar-usuario').length > 0){
 		

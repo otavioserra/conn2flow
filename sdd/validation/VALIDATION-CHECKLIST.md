@@ -1,5 +1,39 @@
 # Validation Checklist
 
+## BATCH-178 — Query String em 301 e Expurgamento de Blocos no Widget Forms (req-173)
+
+- [x] Roteador 301 repassa `'querystring' => true` na chamada de `gestor_roteador_erro()` em `gestor/gestor.php`.
+- [x] Concatenação extraída para `gestor_redirecionar_montar_url()` em `gestor/bibliotecas/gestor.php`, tratando com segurança destinos já parametrizados (`&`), sem deixar `?` órfão.
+- [x] `forms_widget_limpar_fragmentos()` criada e aplicada no retorno de `forms_widget_render_inline()` em `gestor/modulos/forms/forms.widget.php`, expurgando `option-choice`, `option-select`, `password-toggle` e `<template>` vazio, além de sanitizar marcadores residuais `@[[item#*]]@`, `@[[option#*]]@` e `@[[password#*]]@`.
+- [x] Selects, rádios, checkboxes e alternância de visibilidade de senha permanecem 100% operacionais no formulário gerado.
+- [x] PHPUnit focado REQ-173: 12 testes, 33 asserções, exit 0 (`Req173Redirecionamento301Test` e `Req173FormsWidgetFragmentosTest`).
+- [x] PHPUnit completo: 1.202 testes, 7.881 asserções, 4 pulados, exit 0.
+- [x] Vitest: 30 arquivos, 426 testes, exit 0.
+- [x] `assets:minify --verificar`: 0 derivados desatualizados; `git diff --check`: exit 0.
+- [x] Runtime Lab (`conn2flow.local`): confirmado 301 preservando parâmetros/UTMs, checkout sem contorno renderizando 0 marcadores crus.
+
+## BATCH-177 — Fallback reCAPTCHA v3/v2 em autenticação Tailwind (req-172)
+
+- [x] Interceptador nativo cobre login, OAuth, cadastro e recuperação de senha, com ações fixas no cliente e submissão nativa após obter o token.
+- [x] Backend usa ação esperada definida pelo servidor e solicita reCAPTCHA v2 quando o v3 falha ou fica abaixo do score aceito.
+- [x] Resposta v2 é validada por `gestor_captcha_validar(null, ['v2' => true])` e, quando aprovada, libera a validação de credenciais.
+- [x] PHPUnit focado: 147 testes/825 asserções. PHPUnit completo: 1.190 testes/7.848 asserções, 4 pulados, exit 0.
+- [x] Vitest focado: 81 testes. Vitest completo: 30 arquivos/426 testes, exit 0.
+- [x] `php -l`, `node --check`, `assets:minify --verificar`, `resources:sync` e `git diff --check`: aprovados.
+- [x] Lab HestiaCP: `project:update-all conn2flow-site-local` concluiu oito estágios; Playwright confirmou v3 inválido → checkbox v2 → validação de credenciais em `conn2flow.local` com chaves oficiais de teste.
+- [x] Configuração temporária do Lab restaurada e review findings-first concluído sem finding bloqueante.
+
+## BATCH-176 — Cloudflare Turnstile (req-171)
+
+- [x] `php -l` nos 6 PHP alterados/criados e `node --check` nos 3 JS de autoria: sem erros.
+- [x] PHPUnit com `OPENSSL_CONF` válido: 1.187 testes, 7.843 asserções, 4 pulados, exit 0. Os 6 testes de `CaptchaTurnstileTest` cobrem sucesso, bloqueio, rede, JSON inválido, segredo inválido, token ausente e Google.
+- [x] Vitest: 423/423, exit 0.
+- [x] `assets:minify --verificar`: 0 derivados desatualizados; `resources:sync`: 2.882 recursos, exit 0; `git diff --check`: exit 0.
+- [x] Lab HestiaCP: `project:update-all conn2flow-site-local` concluiu 8 estágios; SQL `paginas` confirmou `admin-environment` em `en`/`pt-br` com Turnstile. `dist/` opcional não foi publicado por ausência de `PUBLIC_PATH`.
+- [x] Playwright em `https://conn2flow.local/` com chaves oficiais de teste: `/signin/`, `/signup/`, `/forgot-password/` e `/contact/` HTTP 200, widget e `cf-turnstile-response` presentes, zero erros de console. Capturas em `temp/batch-176-*-turnstile.png`.
+- [x] Painel: seletor e bloco Turnstile visíveis na aba Usuário; teste AJAX retornou “Chaves e token do Turnstile válidos.”; salvar retornou HTTP 200/`status=success` e gravou as quatro variáveis esperadas. `.env` do Lab restaurado após os testes.
+- [x] Limite da inspeção: o `page:inspect` padrão usa `networkidle`, que expirou com o script da Cloudflare; Playwright com `domcontentloaded` e captura visual confirmou a renderização. O helper `auth:cookie --project` falhou na montagem de aspas SSH no Windows; o gerador existente foi executado diretamente no Lab.
+
 Use este checklist para validar batches no conn2flow sem perder de vista o baseline operacional do repositÃ³rio.
 
 ## Onboarding SDD repo-wide

@@ -463,5 +463,45 @@ function forms_widget_render_inline($params) {
 	$html = forms_widget_replace_var($html, 'form_action', htmlspecialchars($form_action, ENT_QUOTES, 'UTF-8'));
 	$html = forms_widget_replace_var($html, 'force_recaptcha', !empty($schema['force_recaptcha']) ? 'true' : 'false');
 
+	// req-173: o template guarda no fim os blocos-modelo que este widget consome pela STRING
+	// (`option-choice`, `option-select`, `password-toggle`). O que está entre os marcadores é markup
+	// normal, então sem esta limpeza o navegador desenhava `<label>`, `<option>` e o botão de senha
+	// soltos no fim do formulário, com marcadores crus (`@[[option#type]]@`) à mostra.
+	return forms_widget_limpar_fragmentos($html);
+}
+
+/**
+ * Remove do HTML renderizado os blocos-modelo do template e marcadores não resolvidos (req-173).
+ *
+ * A limpeza acontece DEPOIS da substituição dos campos e das variáveis do formulário: os blocos são
+ * insumo do widget, não conteúdo da página. Só os três blocos conhecidos são removidos com o miolo;
+ * de marcadores de bloco desconhecidos removem-se apenas os comentários, preservando o markup de
+ * quem escreveu o template.
+ *
+ * @param string $html HTML já renderizado do formulário.
+ * @return string HTML sem blocos-modelo nem marcadores crus.
+ */
+function forms_widget_limpar_fragmentos($html) {
+	if (!is_string($html) || $html === '') return (string)$html;
+
+	foreach (['option-choice', 'option-select', 'password-toggle'] as $bloco) {
+		$marcador = preg_quote($bloco, '/');
+		$html = preg_replace(
+			'/<!--\s*' . $marcador . '\s*<\s*-->[\s\S]*?<!--\s*' . $marcador . '\s*>\s*-->/i',
+			'',
+			$html
+		);
+	}
+
+	// Template que embrulha os blocos em `<template>` (contorno adotado no conn2flow-site) fica com
+	// o invólucro vazio depois da remoção.
+	$html = preg_replace('/<template\b[^>]*>\s*<\/template>/i', '', $html);
+
+	// Comentários de bloco remanescentes: sai o marcador, fica o conteúdo.
+	$html = preg_replace('/<!--\s*[a-z0-9_#-]+\s*[<>]\s*-->/i', '', $html);
+
+	// Rede de segurança: nenhum marcador do widget chega ao cliente.
+	$html = preg_replace('/@?\[\[(?:item|option|password)#[a-z0-9_-]+\]\]@?/i', '', $html);
+
 	return $html;
 }

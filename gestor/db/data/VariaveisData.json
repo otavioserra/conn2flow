@@ -6302,6 +6302,123 @@
     {
         "language": "pt-br",
         "modulo": "admin-environment",
+        "id": "turnstile-test-success",
+        "valor": "Chaves e token do Turnstile válidos.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "turnstile-test-failed",
+        "valor": "Falha na verificação do Turnstile. Confira as chaves e gere outro token.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "captcha-provider-label",
+        "valor": "Provedor de CAPTCHA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "captcha-provider-none",
+        "valor": "Desativado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "captcha-provider-google",
+        "valor": "Google reCAPTCHA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "captcha-provider-turnstile",
+        "valor": "Cloudflare Turnstile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "turnstile-site-label",
+        "valor": "Site Key do Turnstile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "turnstile-secret-label",
+        "valor": "Secret Key do Turnstile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "turnstile-mode-label",
+        "valor": "Modo do widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "turnstile-mode-managed",
+        "valor": "Gerenciado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "turnstile-mode-non-interactive",
+        "valor": "Não interativo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "turnstile-mode-invisible",
+        "valor": "Invisível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
+        "id": "turnstile-test-label",
+        "valor": "Testar Turnstile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-environment",
         "id": "recaptcha-test-low-score",
         "valor": "Score do reCAPTCHA muito baixo: {score}. Possível bot detectado.",
         "tipo": "string",
@@ -6547,6 +6664,123 @@
         "modulo": "admin-environment",
         "id": "recaptcha-test-success",
         "valor": "reCAPTCHA test successful! Score: {score}",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "turnstile-test-success",
+        "valor": "Turnstile keys and token are valid.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "turnstile-test-failed",
+        "valor": "Turnstile verification failed. Check the keys and try a new token.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "captcha-provider-label",
+        "valor": "CAPTCHA provider",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "captcha-provider-none",
+        "valor": "Disabled",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "captcha-provider-google",
+        "valor": "Google reCAPTCHA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "captcha-provider-turnstile",
+        "valor": "Cloudflare Turnstile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "turnstile-site-label",
+        "valor": "Turnstile Site Key",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "turnstile-secret-label",
+        "valor": "Turnstile Secret Key",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "turnstile-mode-label",
+        "valor": "Widget mode",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "turnstile-mode-managed",
+        "valor": "Managed",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "turnstile-mode-non-interactive",
+        "valor": "Non-interactive",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "turnstile-mode-invisible",
+        "valor": "Invisible",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-environment",
+        "id": "turnstile-test-label",
+        "valor": "Test Turnstile",
         "tipo": "string",
         "grupo": null,
         "descricao": null

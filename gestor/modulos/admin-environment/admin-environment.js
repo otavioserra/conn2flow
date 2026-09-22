@@ -4,6 +4,53 @@ $(document).ready(function () {
         .dropdown()
         ;
 
+    var $captchaProvider = $('#captcha_provider');
+    var $turnstileMode = $('#turnstile_mode');
+    $captchaProvider.dropdown('set selected', $captchaProvider.attr('data-current') || 'none');
+    $turnstileMode.dropdown('set selected', $turnstileMode.attr('data-current') || 'managed');
+    function alternarCaptcha() {
+        var provider = $captchaProvider.val();
+        $('#google-recaptcha-section').toggleClass('hidden', provider !== 'google-recaptcha');
+        $('#turnstile-section').toggleClass('hidden', provider !== 'cloudflare-turnstile');
+    }
+    $captchaProvider.on('change', alternarCaptcha);
+    alternarCaptcha();
+
+    var turnstileTestWidgetId = null;
+    $('#btn-testar-turnstile').on('click', function () {
+        var siteKey = $('#turnstile_site_key').val().trim();
+        var secret = $('#turnstile_secret_key').val().trim();
+        var widget = document.getElementById('turnstile-test-widget');
+        if (!siteKey || !secret || !widget) return;
+        if (turnstileTestWidgetId && window.turnstile) window.turnstile.remove(turnstileTestWidgetId);
+        widget.innerHTML = '';
+        function renderizar() {
+            turnstileTestWidgetId = window.turnstile.render(widget, {
+                sitekey: siteKey,
+                callback: function (token) {
+                    $.ajax({
+                        url: window.location.href,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { ajax: 'sim', ajaxOpcao: 'testar-turnstile', turnstile_token: token, turnstile_secret_key: secret },
+                        success: function (result) {
+                            window.alert(result.message || '');
+                        }
+                    });
+                }
+            });
+        }
+        if (window.turnstile && typeof window.turnstile.render === 'function') renderizar();
+        else {
+            var script = document.createElement('script');
+            script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+            script.async = true;
+            script.defer = true;
+            script.onload = renderizar;
+            document.head.appendChild(script);
+        }
+    });
+
     // Codmirror para logs de tests de envio de emails em modo debug
 
     var codemirrors_instances = new Array();
@@ -255,6 +302,10 @@ $(document).ready(function () {
             site_restricted_access: $('#site_restricted_access').parent().checkbox('is checked') ? 'true' : 'false',
             site_restricted_profiles: $('#site_restricted_profiles').val(),
             usuario_recaptcha_active: $('#usuario_recaptcha_active').parent().checkbox('is checked') ? 'true' : 'false',
+            captcha_provider: $captchaProvider.val(),
+            turnstile_site_key: $('#turnstile_site_key').val(),
+            turnstile_secret_key: $('#turnstile_secret_key').val(),
+            turnstile_mode: $turnstileMode.val(),
             usuario_recaptcha_site: $('#usuario_recaptcha_site').val(),
             usuario_recaptcha_server: $('#usuario_recaptcha_server').val(),
             usuario_recaptcha_v2_active: $('#usuario_recaptcha_v2_active').parent().checkbox('is checked') ? 'true' : 'false',

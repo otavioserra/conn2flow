@@ -24,6 +24,10 @@ function admin_environment_env_read(){
         'SITE_RESTRICTED_ACCESS' => $_ENV['SITE_RESTRICTED_ACCESS'] ?? 'false',
         'SITE_RESTRICTED_PROFILES' => $_ENV['SITE_RESTRICTED_PROFILES'] ?? '',
         'USUARIO_RECAPTCHA_ACTIVE' => $_ENV['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
+        'CAPTCHA_PROVIDER' => !empty($_ENV['CAPTCHA_PROVIDER']) ? $_ENV['CAPTCHA_PROVIDER'] : (filter_var($_ENV['USUARIO_RECAPTCHA_ACTIVE'] ?? false, FILTER_VALIDATE_BOOLEAN) ? 'google-recaptcha' : 'none'),
+        'TURNSTILE_SITE_KEY' => $_ENV['TURNSTILE_SITE_KEY'] ?? '',
+        'TURNSTILE_SECRET_KEY' => $_ENV['TURNSTILE_SECRET_KEY'] ?? '',
+        'TURNSTILE_MODE' => $_ENV['TURNSTILE_MODE'] ?? 'managed',
         'USUARIO_RECAPTCHA_SITE' => $_ENV['USUARIO_RECAPTCHA_SITE'] ?? '',
         'USUARIO_RECAPTCHA_SERVER' => $_ENV['USUARIO_RECAPTCHA_SERVER'] ?? '',
         'USUARIO_RECAPTCHA_V2_ACTIVE' => $_ENV['USUARIO_RECAPTCHA_V2_ACTIVE'] ?? 'false',
@@ -126,23 +130,12 @@ function admin_environment_env_write($data){
 
 function admin_environment_test_recaptcha($token, $serverKey){
     global $_GESTOR;
-
-    // Verificar o token com a API do Google reCAPTCHA v3
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'secret' => $serverKey,
-        'response' => $token
-    ]));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    
-    $arrResponse = json_decode($response, true);
+    gestor_incluir_biblioteca('seguranca');
+    $arrResponse = gestor_captcha_validar($token, ['provider' => 'google-recaptcha', 'secret' => $serverKey, 'return_response' => true]);
+    if(!is_array($arrResponse)) $arrResponse = [];
     
     // Verificar se a resposta foi bem-sucedida
-    if ($arrResponse['success'] && isset($arrResponse['score'])) {
+    if (!empty($arrResponse['success']) && isset($arrResponse['score'])) {
         $score = $arrResponse['score'];
         $action = $arrResponse['action'] ?? '';
         
@@ -189,23 +182,12 @@ function admin_environment_test_recaptcha($token, $serverKey){
 
 function admin_environment_test_recaptcha_v2($token, $serverKey){
     global $_GESTOR;
-
-    // Verificar o token com a API do Google reCAPTCHA v2
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'secret' => $serverKey,
-        'response' => $token
-    ]));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    
-    $arrResponse = json_decode($response, true);
+    gestor_incluir_biblioteca('seguranca');
+    $arrResponse = gestor_captcha_validar($token, ['provider' => 'google-recaptcha', 'secret' => $serverKey, 'v2' => true, 'return_response' => true]);
+    if(!is_array($arrResponse)) $arrResponse = [];
     
     // Verificar se a resposta foi bem-sucedida (V2 não possui score)
-    if ($arrResponse['success']) {
+    if (!empty($arrResponse['success'])) {
         return [
             'success' => true,
             'hostname' => $arrResponse['hostname'] ?? '',
@@ -313,6 +295,10 @@ function admin_environment_raiz(){
         'site_restricted_access' => $envData['SITE_RESTRICTED_ACCESS'] ?? 'false',
         'site_restricted_profiles' => $envData['SITE_RESTRICTED_PROFILES'] ?? '',
         'usuario_recaptcha_active' => $envData['USUARIO_RECAPTCHA_ACTIVE'] ?? 'false',
+        'captcha_provider' => $envData['CAPTCHA_PROVIDER'] ?? 'none',
+        'turnstile_site_key' => $envData['TURNSTILE_SITE_KEY'] ?? '',
+        'turnstile_secret_key' => $envData['TURNSTILE_SECRET_KEY'] ?? '',
+        'turnstile_mode' => $envData['TURNSTILE_MODE'] ?? 'managed',
         'usuario_recaptcha_site' => $envData['USUARIO_RECAPTCHA_SITE'] ?? '',
         'usuario_recaptcha_server' => $envData['USUARIO_RECAPTCHA_SERVER'] ?? '',
         'usuario_recaptcha_v2_active' => $envData['USUARIO_RECAPTCHA_V2_ACTIVE'] ?? 'false',
@@ -469,6 +455,10 @@ function admin_environment_raiz(){
 
     // Usuário / reCAPTCHA
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-active#', $dados['usuario_recaptcha_active']);
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#captcha-provider#', htmlspecialchars($dados['captcha_provider'], ENT_QUOTES, 'UTF-8'));
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#turnstile-site-key#', htmlspecialchars($dados['turnstile_site_key'], ENT_QUOTES, 'UTF-8'));
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#turnstile-secret-key#', htmlspecialchars($dados['turnstile_secret_key'], ENT_QUOTES, 'UTF-8'));
+    $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#turnstile-mode#', htmlspecialchars($dados['turnstile_mode'], ENT_QUOTES, 'UTF-8'));
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-active-checked#', $dados['usuario_recaptcha_active'] === 'true' ? 'checked' : '');
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-site#', $dados['usuario_recaptcha_site']);
     $_GESTOR['pagina'] = modelo_var_troca($_GESTOR['pagina'], '#usuario-recaptcha-server#', $dados['usuario_recaptcha_server']);
@@ -610,6 +600,10 @@ function admin_environment_ajax_salvar(){
     }
 
     // Coletar dados do formulário — Usuário
+    if(isset($_REQUEST['captcha_provider']) && in_array($_REQUEST['captcha_provider'], ['none', 'google-recaptcha', 'cloudflare-turnstile'], true)) $data['CAPTCHA_PROVIDER'] = $_REQUEST['captcha_provider'];
+    if(isset($_REQUEST['turnstile_site_key'])) $data['TURNSTILE_SITE_KEY'] = $_REQUEST['turnstile_site_key'];
+    if(isset($_REQUEST['turnstile_secret_key'])) $data['TURNSTILE_SECRET_KEY'] = $_REQUEST['turnstile_secret_key'];
+    if(isset($_REQUEST['turnstile_mode']) && in_array($_REQUEST['turnstile_mode'], ['managed', 'non-interactive', 'invisible'], true)) $data['TURNSTILE_MODE'] = $_REQUEST['turnstile_mode'];
     if(isset($_REQUEST['usuario_recaptcha_active'])) $data['USUARIO_RECAPTCHA_ACTIVE'] = $_REQUEST['usuario_recaptcha_active'];
     if(isset($_REQUEST['usuario_recaptcha_site'])) $data['USUARIO_RECAPTCHA_SITE'] = $_REQUEST['usuario_recaptcha_site'];
     if(isset($_REQUEST['usuario_recaptcha_server'])) $data['USUARIO_RECAPTCHA_SERVER'] = $_REQUEST['usuario_recaptcha_server'];
@@ -711,6 +705,21 @@ function admin_environment_ajax_buscar_perfis(){
         'status' => 'Ok',
         'data' => $resultados,
     );
+}
+
+function admin_environment_ajax_testar_turnstile(){
+    global $_GESTOR;
+    gestor_incluir_biblioteca('seguranca');
+    $token = $_REQUEST['turnstile_token'] ?? '';
+    $secret = $_REQUEST['turnstile_secret_key'] ?? '';
+    $result = gestor_captcha_validar(is_string($token) ? $token : '', [
+        'provider' => 'cloudflare-turnstile',
+        'secret' => is_string($secret) ? $secret : '',
+    ]);
+    $_GESTOR['ajax-json'] = [
+        'status' => $result ? 'success' : 'error',
+        'message' => gestor_variaveis(['modulo' => $_GESTOR['modulo-id'], 'id' => $result ? 'turnstile-test-success' : 'turnstile-test-failed']),
+    ];
 }
 
 function admin_environment_ajax_testar_recaptcha(){
@@ -883,6 +892,7 @@ function admin_environment_start(){
             case 'salvar': admin_environment_ajax_salvar(); break;
             case 'buscar-perfis': admin_environment_ajax_buscar_perfis(); break;
             case 'testar-recaptcha': admin_environment_ajax_testar_recaptcha(); break;
+            case 'testar-turnstile': admin_environment_ajax_testar_turnstile(); break;
             case 'testar-recaptcha-v2': admin_environment_ajax_testar_recaptcha_v2(); break;
             case 'testar-email': admin_environment_ajax_testar_email(); break;
             case 'testar-paypal': admin_environment_ajax_testar_paypal(); break;

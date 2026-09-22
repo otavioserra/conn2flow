@@ -19,6 +19,56 @@ $_GESTOR['biblioteca-seguranca'] = Array(
 
 // ===== Helpers
 
+/** Valida o provedor configurado. O transporte pode ser injetado nos testes. */
+function gestor_captcha_validar(?string $token = null, array $opcoes = []): array|bool{
+    global $_CONFIG;
+
+    $provider = $opcoes['provider'] ?? ($_CONFIG['captcha-provider'] ?? (!empty($_CONFIG['usuario-recaptcha-active']) ? 'google-recaptcha' : 'none'));
+    if($provider === 'none') return true;
+    if(!in_array($provider, ['google-recaptcha', 'cloudflare-turnstile'], true)) return false;
+
+    $token = $token ?? ($_POST['cf-turnstile-response'] ?? $_POST['g-recaptcha-response'] ?? $_POST['token'] ?? '');
+    if(!is_string($token) || trim($token) === '') return false;
+
+    $secret = $opcoes['secret'] ?? ($provider === 'cloudflare-turnstile'
+        ? ($_CONFIG['turnstile-secret-key'] ?? '')
+        : (!empty($opcoes['v2']) ? ($_CONFIG['usuario-recaptcha-v2-server'] ?? '') : ($_CONFIG['usuario-recaptcha-server'] ?? '')));
+    if(!is_string($secret) || $secret === '') return false;
+
+    $url = $provider === 'cloudflare-turnstile'
+        ? 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
+        : 'https://www.google.com/recaptcha/api/siteverify';
+    $payload = ['secret' => $secret, 'response' => $token];
+    if($provider === 'cloudflare-turnstile' && !empty($_SERVER['REMOTE_ADDR'])){
+        $payload['remoteip'] = $_SERVER['REMOTE_ADDR'];
+    }
+
+    if(isset($opcoes['transport']) && is_callable($opcoes['transport'])){
+        $response = $opcoes['transport']($url, $payload);
+    } else {
+        $ch = curl_init($url);
+        if($ch === false) return false;
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($payload),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT => 5,
+        ]);
+        $response = curl_exec($ch);
+        curl_close($ch);
+    }
+    if(!is_string($response)) return false;
+    $result = json_decode($response, true);
+    if(!is_array($result)) return false;
+    if(($result['success'] ?? false) !== true) return !empty($opcoes['return_response']) ? $result : false;
+    if($provider === 'google-recaptcha' && empty($opcoes['v2'])){
+        if(array_key_exists('action', $opcoes) && (!is_string($opcoes['action']) || $opcoes['action'] === '' || ($result['action'] ?? null) !== $opcoes['action'])) return false;
+        if(array_key_exists('action', $opcoes) && ($result['score'] ?? 0) < 0.5) return false;
+    }
+    return $result;
+}
+
 /**
  * Gera um identificador hexadecimal com entropia criptograficamente segura.
  *
