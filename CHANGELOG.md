@@ -5,6 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.12] - 2026-09-22
+
+### Added
+- Security & Forms: Native Cloudflare Turnstile integration in `admin-environment`, authentication modules, and `forms` widget (`BATCH-176` / `req-171`).
+- Auth & Tailwind: Unified reCAPTCHA v3/v2 and Cloudflare Turnstile flow and fallback in Tailwind authentication views (`BATCH-177` / `req-172`).
+- Routing & Forms: Query string parameter preservation in 301 redirects and DOM containment for forms widget fragments (`BATCH-178` / `req-173`).
+- DevOps: Automatic `hooks` table synchronization during project deploys (`project:update-all`) and dedicated `project:sync-hooks` CLI command (`BATCH-179` / `req-174`).
+
 ## [2.10.11] - 2026-09-18
 
 ### Added

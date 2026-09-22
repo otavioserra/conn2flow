@@ -5,6 +5,14 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.12] - 2026-09-22
+
+### Added
+- Segurança & Formulários: Suporte nativo ao Cloudflare Turnstile no Core (`admin-environment`, módulo `auth` e widget `forms`) (`BATCH-176` / `req-171`).
+- Autenticação & Tailwind: Fluxo unificado e fallback de reCAPTCHA v3/v2 e Turnstile nas interfaces de login sob Tailwind CSS (`BATCH-177` / `req-172`).
+- Roteamento & Formulários: Preservação de query strings em redirecionamentos 301 e contenção estrutural de fragmentos no widget `forms` (`BATCH-178` / `req-173`).
+- DevOps: Sincronização automática da tabela `hooks` em deploys de projeto (`project:update-all`) e comando dedicado `project:sync-hooks` (`BATCH-179` / `req-174`).
+
 ## [2.10.11] - 2026-09-18
 
 ### Added

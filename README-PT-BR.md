@@ -75,16 +75,16 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.11 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.12 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Proteção CSRF XHR Transparente**: Interceptador nativo no `global.js` que injeta automaticamente o token CSRF (`X-CSRF-Token`) em requisições `XMLHttpRequest` de mesma origem, sem impactar scripts de terceiros ou analytics (`BATCH-168` / `req-163`).
-- **Camada de Acesso a Site Restrito**: Redirecionamento automático para `/acessar-sistema` sob `site_restrito = true` para sessões não autenticadas, com salvaguarda para recuperação de senha e callbacks (`BATCH-168` / `req-163`).
-- **Blindagem de Transporte SSH & Rsync**: Neutralização de conversão indevida de caminhos pelo Git Bash (`MSYS_NO_PATHCONV=1`) e pareamento cwRsync/Cygwin com `-T`, eliminando quebras `dup()` em pipes no Windows (`BATCH-169`, `BATCH-171`).
-- **Encapsulamento Unificado `sudo -u`**: Execução atômica de navegação `cd` e comando remoto sob `sudo -u <tenant> sh -c` nas camadas Bash e PHP CLI, atendendo permissões restritas `750` em servidores HestiaCP/Linux (`BATCH-172`, `BATCH-173`).
-- **Sanitização ANSI no Tailwind & Governança de Acessos**: Tratamento de caracteres ANSI no Tailwind CLI no Windows (`BATCH-170`), separação de limites entre erros de formulário e ataques de força bruta, e previsão de desbloqueio em logs (`BATCH-174`).
+- **Suporte Nativo ao Cloudflare Turnstile**: Integração nativa no core (`admin-environment`, módulo `auth` e widget `forms`) para proteção moderna contra bots (`BATCH-176` / `req-171`).
+- **Resiliência de Captcha em Telas Tailwind**: Suporte unificado com fallback automático para reCAPTCHA v3/v2 e Cloudflare Turnstile nas telas de login e cadastro em Tailwind CSS (`BATCH-177` / `req-172`).
+- **Preservação de Query Strings em 301 & Contenção no Forms**: Preservação estrita de parâmetros de URL em redirecionamentos 301 e isolamento defensivo de blocos HTML no widget `forms` (`BATCH-178` / `req-173`).
+- **Sincronização Automática da Tabela Hooks**: Deploy de projetos via `project:update-all` e comando dedicado `project:sync-hooks` sincronizam a tabela `hooks` automaticamente com o banco do projeto (`BATCH-179` / `req-174`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.11**: Proteção CSRF XHR transparente, camada de site restrito e blindagem de transporte SSH (`sudo -u`, cwRsync/Cygwin).
 - **v2.10.10**: Disparo desacoplado no Admin Cron via `setsid` CLI, Tailwind global pelo PATH e sincronização de launcher `c2f`.
 - **v2.10.9**: Paridade Tailwind em 3 camadas, `<template>` inerte no editor HTML, correção de `DOMContentLoaded` no Admin Cron e transporte SSH na CLI.
 - **v2.10.8**: Migração completa das ações do GitHub Actions para Node 24 (`action-gh-release@v3`).

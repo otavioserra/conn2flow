@@ -71,16 +71,16 @@ content workflows.
 
 ## 🆕 Latest Version
 
-**v2.10.11 (September 2026)** *(Current base: v2.9.51)*
+**v2.10.12 (September 2026)** *(Current base: v2.9.51)*
 
-- **Transparent CSRF XHR Protection**: Built-in `XMLHttpRequest` interceptor in `global.js` automatically injects `X-CSRF-Token` headers into same-origin requests without affecting external analytics or third-party scripts (`BATCH-168` / `req-163`).
-- **Restricted Site Gate**: Native redirection to `/acessar-sistema` when `site_restrito = true` for unauthenticated visitors, preserving credential recovery routes and callbacks (`BATCH-168` / `req-163`).
-- **SSH Transport & Rsync Hardening**: Prevented Git Bash path conversions (`MSYS_NO_PATHCONV=1`) and paired cwRsync with Cygwin SSH using `-T` to eliminate Windows pipe `dup()` failures (`BATCH-169`, `BATCH-171`).
-- **Unified `sudo -u` Encapsulation**: Wrapped `cd` and remote commands within atomic `sudo -u <tenant> sh -c` sessions across Bash scripts and PHP CLI transport, honoring restricted `750` permissions on HestiaCP Linux hosts (`BATCH-172`, `BATCH-173`).
-- **Tailwind CLI ANSI Sanitization & Security Governance**: Sanitized ANSI escape codes in Windows Tailwind CLI version detection (`BATCH-170`), decoupled form validation penalties from credential failures, and added unlock time forecasts (`BATCH-174`).
+- **Native Cloudflare Turnstile Support**: Full Turnstile integration across `admin-environment`, authentication modules, and the `forms` widget for frictionless bot protection (`BATCH-176` / `req-171`).
+- **Captcha Flow Resilience in Tailwind**: Unified fallback and execution flow for reCAPTCHA v3/v2 and Turnstile on Tailwind authentication views (`BATCH-177` / `req-172`).
+- **301 Query String Preservation & Form Widget Containment**: Preserved URL query parameters during 301 redirects and improved DOM boundary containment for forms widget fragments (`BATCH-178` / `req-173`).
+- **Automated Hooks Synchronization on Project Deploy**: Added automatic `hooks` table synchronization during `project:update-all` and standalone `project:sync-hooks` (`BATCH-179` / `req-174`).
 
 ### Previous 2.10.x Releases
 
+- **v2.10.11**: Transparent same-origin CSRF XHR protection, restricted site layer, and hardened SSH transport (`sudo -u`, cwRsync/Cygwin).
 - **v2.10.10**: Decoupled Admin Cron POSIX execution (`setsid`), global Tailwind CLI support, and automated `c2f` launcher synchronization.
 - **v2.10.9**: Three-layer Tailwind parity, inert `<template>` in HTML editor, Admin Cron `DOMContentLoaded` fix, SSH CLI transport.
 - **v2.10.8**: GitHub Actions full migration to native Node 24 actions (`action-gh-release@v3`).
