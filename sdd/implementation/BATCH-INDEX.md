@@ -114,6 +114,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-174 | complete | Controle de acessos — separar erro de validação de abuso e informar prazo de liberação (req-169) | [BATCH-174.md](BATCH-174.md) | `formulario_acesso_falha()` ganhou origem (`validacao` vs `abuso`), evitando que erro de digitação esgote cota de envios. Telas de bloqueio informam data/hora exata de liberação. Defaults atualizados no `.env`. PHPUnit **1.181/1.181**, homologação real aprovada. |
 | BATCH-175 | complete | Idempotência e isolamento no teste ForcarAtualizacaoTest (req-170) | [BATCH-175.md](BATCH-175.md) | `ForcarAtualizacaoTest` tornado idempotente, eliminando falhas fantasmas intermitentes em suítes sequenciais. PHPUnit **1.181/1.181** verde. |
 | BATCH-176 | ready-for-intake | Suporte nativo ao Cloudflare Turnstile no Core do Conn2Flow (req-171) | [BATCH-176.md](BATCH-176.md) | Alternativa moderna, gratuita e orientada à privacidade ao Google reCAPTCHA. Abstração unificada de validação no backend, injeção de assets e widget no frontend, suporte a formulários dinâmicos e autenticação, e configuração em admin-environment. |
+| BATCH-177 | ready-for-intake | Correção do Fluxo de reCAPTCHA v3/v2 e Turnstile em Telas de Autenticação Tailwind (req-172) | [BATCH-177.md](BATCH-177.md) | Desacopla execução do captcha do Fomantic para suportar Tailwind nativamente no perfil-usuario.js, e implementa fallback para reCAPTCHA v2 (checkbox) na autenticação quando o v3 falhar ou retornar score baixo. |
 
 ## Regra operacional
 
