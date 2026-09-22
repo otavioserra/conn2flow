@@ -13,6 +13,7 @@
  * Argumentos de linha de comando suportados:
  *
  * --project         : Define o ID do projeto para atualizações feitas via deploy de projeto.
+ * --hooks-only      : Sincroniza somente a tabela hooks e encerra.
  * --debug           : Ativa modo detalhado de logs e exibe operações passo a passo.
  * --log-diff        : Exibe detalhes das diferenças encontradas entre banco e JSON.
  * --dry-run         : Simula operações sem alterar o banco (apenas exibe o que seria feito).
@@ -54,10 +55,15 @@ require_once $BASE_PATH_DB . 'bibliotecas/lang.php';
 require_once $BASE_PATH_DB . 'bibliotecas/log.php';
 require_once $BASE_PATH_DB . 'bibliotecas/banco.php';
 require_once $BASE_PATH_DB . 'bibliotecas/gestor.php';
+require_once $BASE_PATH_DB . 'bibliotecas/hooks.php';
+require_once $BASE_PATH_DB . 'controladores/atualizacoes/atualizacoes-hooks.php';
 
 // Gestor 
 global $_GESTOR;
 if (!isset($_GESTOR)) $_GESTOR = [];
+$_GESTOR['ROOT_PATH'] = $_GESTOR['ROOT_PATH'] ?? $BASE_PATH_DB;
+$_GESTOR['modulos-path'] = $_GESTOR['modulos-path'] ?? $BASE_PATH_DB . 'modulos' . DIRECTORY_SEPARATOR;
+$_GESTOR['plugins-path'] = $_GESTOR['plugins-path'] ?? $BASE_PATH_DB . 'plugins' . DIRECTORY_SEPARATOR;
 $_GESTOR['logs-path'] = $BASE_PATH_DB . 'logs' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR;
 if (!is_dir($_GESTOR['logs-path'])) @mkdir($_GESTOR['logs-path'], 0775, true);
 set_lang('pt-br');
@@ -1222,7 +1228,15 @@ function dataFileNameFromTable(string $tabela): string {
     return $pascal . 'Data.json';
 }
 
-function relatorioFinal(array $resumo): void {
+function sincronizarHooksBanco(): array {
+    global $LOG_FILE_DB;
+
+    $resumo = atualizacoes_hooks_sincronizar();
+    log_unificado(tr('_hooks_sync_done', ['qtd' => $resumo['total']]), $LOG_FILE_DB);
+    return $resumo;
+}
+
+function relatorioFinal(array $resumo, array $hooks = []): void {
     global $LOG_FILE_DB;
     $totalIns=$totalUpd=$totalSame=$totalOrphans=0; foreach ($resumo as $r){$totalIns+=$r['inserted'];$totalUpd+=$r['updated'];$totalSame+=$r['same'];$totalOrphans+=$r['orphans'] ?? 0;}
     $msg = "📝 " . tr('_final_report') . PHP_EOL
@@ -1230,6 +1244,12 @@ function relatorioFinal(array $resumo): void {
     foreach ($resumo as $tab=>$r) {
         $msg .= sprintf("📦 %s => +%d ~%d =%d (órfãos: %d)" . PHP_EOL, $tab, $r['inserted'],$r['updated'],$r['same'],$r['orphans'] ?? 0);
     }
+    $msg .= tr('_hooks_summary', [
+        'total' => $hooks['total'] ?? 0,
+        'modulos' => $hooks['modulos'] ?? 0,
+        'plugins' => $hooks['plugins'] ?? 0,
+        'projeto' => $hooks['projeto'] ?? 0,
+    ]) . PHP_EOL;
     $msg .= "Σ TOTAL => +$totalIns ~{$totalUpd} ={$totalSame} | Órfãos Totais: {$totalOrphans}" . PHP_EOL;
     log_unificado($msg, $LOG_FILE_DB); if (PHP_SAPI === 'cli') echo $msg;
 }
@@ -1239,6 +1259,12 @@ function main(): int {
 
     try {
         log_unificado(tr('_process_start'), $LOG_FILE_DB);
+        if (!empty($CLI_OPTS['hooks-only'])) {
+            $resumoHooks = sincronizarHooksBanco();
+            relatorioFinal([], $resumoHooks);
+            log_unificado(tr('_process_end_success'), $LOG_FILE_DB);
+            return 0;
+        }
         if (!empty($CLI_OPTS['reverse'])) {
             // Modo reverso exporta dados e encerra
             $pdo = db();
@@ -1328,7 +1354,10 @@ function main(): int {
         } catch (Throwable $e) {
             log_unificado('WARN registrar manager_updates: '.encLog($e->getMessage()), $LOG_FILE_DB);
         }
-        relatorioFinal($resumo);
+        $resumoHooks = !empty($CLI_OPTS['dry-run'])
+            ? ['modulos' => 0, 'plugins' => 0, 'projeto' => 0, 'total' => 0]
+            : sincronizarHooksBanco();
+        relatorioFinal($resumo, $resumoHooks);
         if (empty($CLI_OPTS['defer-session-reset'])) {
             gestor_sessao_del_all(); // execução CLI: limpa imediatamente
         } else {

@@ -6,26 +6,26 @@ Execução da [req-174](../human-requests/req-174.md).
 
 ## Atividades e Checklist
 
-### 1. [ ] Controlador de Banco: Integração com `atualizacoes_hooks_sincronizar()`
-- [ ] Em `gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php`:
+### 1. [x] Controlador de Banco: Integração com `atualizacoes_hooks_sincronizar()`
+- [x] Em `gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php`:
   - Carregar `atualizacoes-hooks.php` e `hooks.php`.
   - Invocar `atualizacoes_hooks_sincronizar()` após a sincronização de dados e migrações.
   - Assegurar execução tanto no fluxo padrão quanto no modo `--project`.
   - Exibir métricas de hooks no resumo final (`relatorioFinal`).
 
-### 2. [ ] CLI do Framework: Comando `project:sync-hooks`
-- [ ] Criar comando `ProjectSyncHooksCommand` ou integrar atalho `c2f project:sync-hooks <projeto-id>`.
-- [ ] Implementar suporte aos 3 modos de execução (`ssh`, `host`, `docker`) com elevação segura (`sudo -u <tenant> sh -c`).
+### 2. [x] CLI do Framework: Comando `project:sync-hooks`
+- [x] Criar comando `ProjectSyncHooksCommand` ou integrar atalho `c2f project:sync-hooks <projeto-id>`.
+- [x] Implementar suporte aos 3 modos de execução (`ssh`, `host`, `docker`) com elevação segura (`sudo -u <tenant> sh -c`).
 
-### 3. [ ] Validação e Testes
-- [ ] Criar testes unitários no PHPUnit cobrindo:
+### 3. [x] Validação e Testes
+- [x] Criar testes unitários no PHPUnit cobrindo:
   - Invocação e idempotência da sincronização de hooks durante a rotina de banco com `--project`.
   - Comando CLI `project:sync-hooks`.
-- [ ] Executar suítes locais:
+- [x] Executar suítes locais:
   - `composer test` (PHPUnit completo).
   - `npx vitest run` (Vitest completo).
   - `git diff --check`.
-- [ ] Homologar no Lab HestiaCP (`conn2flow.local` / `snapphoton-local`):
+- [x] Homologar no Lab HestiaCP (`conn2flow.local` / `conn2flow-site-local`):
   - Executar `project:update-all` e verificar que a tabela `hooks` é atualizada sem intervenção manual.
 
 ---
@@ -41,8 +41,15 @@ Execução da [req-174](../human-requests/req-174.md).
 
 ## Evidências de Execução
 
-(A preencher pelo executor ao concluir)
+- `ProjectHooksSyncReq174Test`: **3 testes / 27 asserções**, exit 0. Cobertura comportamental da idempotência, expurgo ao remover a chave `hooks`, integração no fluxo `--project`, relatório e registro do comando dedicado.
+- `composer test` com `OPENSSL_CONF` explícito: **1.205 testes / 7.908 asserções**, 4 skips de ambiente, exit 0.
+- `npx vitest run`: **30 arquivos / 426 testes**, exit 0.
+- Sintaxe: `php -l` em todos os PHP alterados, `bash -n` no transporte e parse dos dois JSONs de idioma, todos com exit 0.
+- `php cli/c2f.php help`: `project:sync-hooks (sync:project-hooks)` registrado e visível.
+- `git diff --check`: exit 0.
+- Homologação Lab: Deploy executado em `conn2flow-site-local` com sucesso (`HTTP Code: 200`, `Hooks => total=80 (módulos=12, plugins=0, projeto=68)`, `Σ TOTAL => +0 ~0 =0`). Confirmação em runtime de sincronização automática e métricas no relatório final sem intervenção manual.
+- Review findings-first: nenhuma falha funcional, regressão ou drift bloqueante.
 
 ## Estado
 
-`ready-for-intake`
+complete

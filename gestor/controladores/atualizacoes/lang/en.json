@@ -10,6 +10,8 @@
     "_compare_update": "Updating :qtd divergent records in :tabela.",
     "_compare_summary": "Comparison summary - :tabela => inserts=:ins, updates=:upd, unchanged=:same",
     "_final_report": "Final DB Update Report",
+    "_hooks_sync_done": "Hook synchronization completed: :qtd processed.",
+    "_hooks_summary": "Hooks => total=:total (modules=:modulos, plugins=:plugins, project=:projeto)",
     "_process_end_success": "Routine finished successfully.",
     "_process_error": "Routine error: :msg",
     "_env_missing": "Test environment not synchronized (.env missing).",
@@ -32,5 +34,5 @@
     "_reverse_empty": "Table :tabela empty, skipping.",
     "_reverse_complete": "Reverse export finished.",
     "_seeds_duplicates_warning": "Warning: Duplicate entry errors in seeders ignored (keys already exist).",
-    "_args_usage": "Usage: php atualizacoes-banco-de-dados.php [--skip-migrate] [--dry-run] [--tables=list] [--backup] [--env-dir=name] [--reverse] [--log-diff] [--debug] [--force-all] [--orphans-mode=export|log|ignore]"
+    "_args_usage": "Usage: php atualizacoes-banco-de-dados.php [--skip-migrate] [--dry-run] [--hooks-only] [--tables=list] [--backup] [--env-dir=name] [--reverse] [--log-diff] [--debug] [--force-all] [--orphans-mode=export|log|ignore]"
 }

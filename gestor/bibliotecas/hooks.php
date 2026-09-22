@@ -398,7 +398,8 @@ function hook_has_filters(string $namespace, string $evento): bool {
  * @param string|null $plugin ID do plugin (null se não for de plugin)
  * @param array $hooks_config Seção "hooks" do JSON do módulo
  */
-function hooks_registrar_modulo(string $modulo, ?string $plugin, array $hooks_config): void {
+function hooks_registrar_modulo(string $modulo, ?string $plugin, array $hooks_config): int {
+    $total = 0;
     // 1. Limpar hooks antigos deste módulo (não de projeto)
     $moduloEscaped = banco_escape_field($modulo);
     banco_delete('hooks', "WHERE modulo='" . $moduloEscaped . "' AND projeto IS NULL");
@@ -408,7 +409,7 @@ function hooks_registrar_modulo(string $modulo, ?string $plugin, array $hooks_co
         foreach ($hooks_config['actions'] as $namespace => $eventos) {
             if (!is_array($eventos)) continue;
             foreach ($eventos as $evento => $callbackDef) {
-                hooks_inserir_callbacks($modulo, $plugin, $namespace, $evento, $callbackDef, 'action', null);
+                $total += hooks_inserir_callbacks($modulo, $plugin, $namespace, $evento, $callbackDef, 'action', null);
             }
         }
     }
@@ -418,28 +419,31 @@ function hooks_registrar_modulo(string $modulo, ?string $plugin, array $hooks_co
         foreach ($hooks_config['filters'] as $namespace => $eventos) {
             if (!is_array($eventos)) continue;
             foreach ($eventos as $evento => $callbackDef) {
-                hooks_inserir_callbacks($modulo, $plugin, $namespace, $evento, $callbackDef, 'filter', null);
+                $total += hooks_inserir_callbacks($modulo, $plugin, $namespace, $evento, $callbackDef, 'filter', null);
             }
         }
     }
+
+    return $total;
 }
 
 /**
  * Registra/atualiza os hooks do projeto (project/hooks/hooks.json).
  * Remove hooks de projeto antigos e re-insere os do JSON atual.
  */
-function hooks_registrar_projeto(): void {
+function hooks_registrar_projeto(): int {
     global $_GESTOR;
 
     $hooksJsonPath = $_GESTOR['ROOT_PATH'] . 'project/hooks/hooks.json';
+    $total = 0;
 
     if (!file_exists($hooksJsonPath)) {
-        return;
+        return 0;
     }
 
     $json = @json_decode(file_get_contents($hooksJsonPath), true);
     if (!$json) {
-        return;
+        return 0;
     }
 
     // 1. Limpar hooks de projeto antigos
@@ -450,7 +454,7 @@ function hooks_registrar_projeto(): void {
         foreach ($json['actions'] as $namespace => $eventos) {
             if (!is_array($eventos)) continue;
             foreach ($eventos as $evento => $callbackDef) {
-                hooks_inserir_callbacks(null, null, $namespace, $evento, $callbackDef, 'action', 1);
+                $total += hooks_inserir_callbacks(null, null, $namespace, $evento, $callbackDef, 'action', 1);
             }
         }
     }
@@ -460,10 +464,12 @@ function hooks_registrar_projeto(): void {
         foreach ($json['filters'] as $namespace => $eventos) {
             if (!is_array($eventos)) continue;
             foreach ($eventos as $evento => $callbackDef) {
-                hooks_inserir_callbacks(null, null, $namespace, $evento, $callbackDef, 'filter', 1);
+                $total += hooks_inserir_callbacks(null, null, $namespace, $evento, $callbackDef, 'filter', 1);
             }
         }
     }
+
+    return $total;
 }
 
 /**
@@ -478,7 +484,7 @@ function hooks_registrar_projeto(): void {
  * @param string $tipo 'action' ou 'filter'
  * @param int|null $projeto 1 se de projeto, null se de módulo
  */
-function hooks_inserir_callbacks(?string $modulo, ?string $plugin, string $namespace, string $evento, mixed $callbackDef, string $tipo, ?int $projeto): void {
+function hooks_inserir_callbacks(?string $modulo, ?string $plugin, string $namespace, string $evento, mixed $callbackDef, string $tipo, ?int $projeto): int {
     $callbacks = [];
 
     if (is_string($callbackDef)) {
@@ -544,4 +550,6 @@ function hooks_inserir_callbacks(?string $modulo, ?string $plugin, string $names
 
         banco_insert_name($campos, 'hooks');
     }
+
+    return count($callbacks);
 }

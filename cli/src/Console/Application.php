@@ -40,6 +40,7 @@ use Conn2Flow\Cli\Commands\ProjectRecoverCommand;
 use Conn2Flow\Cli\Commands\ProjectSyncCoreCommand;
 use Conn2Flow\Cli\Commands\ProjectSyncDbCommand;
 use Conn2Flow\Cli\Commands\ProjectSyncFilesCommand;
+use Conn2Flow\Cli\Commands\ProjectSyncHooksCommand;
 use Conn2Flow\Cli\Commands\ProjectSyncResourcesCommand;
 use Conn2Flow\Cli\Commands\ProjectUpdateAllCommand;
 use Conn2Flow\Cli\Commands\ProjectUpdateSystemCommand;
@@ -110,6 +111,7 @@ final class Application
         $this->register(new ProjectSyncResourcesCommand($this->rootPath));
         $this->register(new ProjectSyncFilesCommand($this->rootPath));
         $this->register(new ProjectSyncDbCommand($this->rootPath));
+        $this->register(new ProjectSyncHooksCommand($this->rootPath));
         $this->register(new ProjectUpdateAllCommand($this->rootPath));
         $this->register(new ProjectDeployCommand($this->rootPath));
         $this->register(new ProjectRecoverCommand($this->rootPath));

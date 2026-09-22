@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-179 — Sincronização automática de hooks em deploy de projeto (req-174)
+
+- [x] O fluxo normal de `atualizacoes-banco-de-dados.php`, com ou sem `--project`, executa `atualizacoes_hooks_sincronizar()` depois de migrações/dados.
+- [x] O resumo final reporta hooks processados por módulos, plugins, projeto e total.
+- [x] `project:sync-hooks <projeto-id>` está registrado e usa `--hooks-only` sobre o transporte compartilhado SSH/Host/Docker.
+- [x] Idempotência e remoção declarativa cobertas por teste comportamental: 3 testes, 27 asserções, exit 0.
+- [x] PHPUnit completo: 1.205 testes, 7.908 asserções, 4 pulados, exit 0 (com `OPENSSL_CONF` do PHP 8.5 explicitado).
+- [x] Vitest completo: 30 arquivos, 426 testes, exit 0.
+- [x] Sintaxe PHP/Bash/JSON e `git diff --check`: exit 0.
+- [x] Lab HestiaCP: Deploy em `conn2flow-site-local` concluiu com HTTP 200, `Hooks => total=80 (módulos=12, plugins=0, projeto=68)`, confirmando a sincronização automática de hooks sem necessidade de intervenção manual no banco.
+
 ## BATCH-178 — Query String em 301 e Expurgamento de Blocos no Widget Forms (req-173)
 
 - [x] Roteador 301 repassa `'querystring' => true` na chamada de `gestor_roteador_erro()` em `gestor/gestor.php`.

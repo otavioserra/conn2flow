@@ -6,6 +6,7 @@
 #   bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh
 #   bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh --project <PROJECT_ID>
 #   bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh --project <PROJECT_ID> --force-all
+#   bash ./ai-workspace/en/scripts/dev-environment/updates-manager-database.sh --project <PROJECT_ID> --hooks-only
 
 set -e
 
@@ -32,15 +33,17 @@ PROJECT_TARGET_OVERRIDE=""
 PROJECT_TARGET=""
 FORCE_ALL=false
 TABLES=""
+HOOKS_ONLY=false
 EXECUTION_MODE="docker"
 PATH_DOCKER=""
 PATH_HOST=""
 
 usage() {
-  echo "Usage: $0 [--project|-p PROJECT_ID] [--tables TABLE_A,TABLE_B] [--force-all]"
+  echo "Usage: $0 [--project|-p PROJECT_ID] [--tables TABLE_A,TABLE_B] [--force-all] [--hooks-only]"
   echo "  --project, -p    Project identifier"
   echo "  --tables         Restrict synchronization to a comma-separated table list"
   echo "  --force-all      Force all data tables even when manager_updates checksums match"
+  echo "  --hooks-only     Synchronize only hook registrations"
   echo "  --help, -h       Show this help"
 }
 
@@ -52,6 +55,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --force-all)
       FORCE_ALL=true
+      shift
+      ;;
+    --hooks-only)
+      HOOKS_ONLY=true
       shift
       ;;
     --tables)
@@ -204,6 +211,10 @@ fi
 if [ "$FORCE_ALL" = true ]; then
   PHP_ARGS+=(--force-all)
   log "Force all tables: enabled"
+fi
+if [ "$HOOKS_ONLY" = true ]; then
+  PHP_ARGS+=(--hooks-only)
+  log "Hooks-only synchronization: enabled"
 fi
 
 # req-131 (BATCH-133): repassar a identidade do projeto ao atualizador.
