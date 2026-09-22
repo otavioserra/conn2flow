@@ -1,7 +1,7 @@
 # BL-015 — Pipeline de projeto não sincroniza a tabela `hooks`
 
 - **Tipo**: Bug / DevOps / Hooks
-- **Status**: OPEN
+- **Status**: PROMOTED (promovido para [req-174.md](../human-requests/req-174.md), BATCH-179)
 - **Severidade sugerida**: ALTA (hook novo ou alterado fica inerte em silêncio depois de um deploy bem-sucedido)
 - **Origem**: Achado do BATCH-046 do `conn2flow-site` (REQ-053), 2026-09-22
 - **Componentes**: `ai-workspace/en/scripts/dev-environment/updates-manager-database.sh`,
