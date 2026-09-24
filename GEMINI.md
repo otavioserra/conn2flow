@@ -54,13 +54,26 @@ A configuração `.gemini/hooks.json` contém hooks determinísticos de ciclo de
 - **`PreToolUse`**: Intercepta comandos `run_command` via `pre-tool-guard.ps1`, bloqueando `git add -A` e cópias manuais para pastas de teste.
 - **`Stop`**: Intercepta o encerramento da sessão para validar se todos os itens da Live Todo List e do `VALIDATION-CHECKLIST.md` foram satisfeitos antes de encerrar o turno.
 - **Goal Mode (`/goal`)**: Utilize `/goal` no prompt para execução ininterrupta de fatias no modo Autônomo Monitorado até cumprimento de todos os critérios de aceite.
+- **Boost Mode (`/boost`)**: Utilize `/boost` para tarefas que exigem raciocínio analítico profundo, planejamento multi-etapa, múltiplas perspectivas e validação cruzada rigorosa.
+
+---
+
+## 📂 Configuração por Projeto (`.gemini/config.json`)
+
+O arquivo `.gemini/config.json` é o ponto canônico de configuração por projeto no Antigravity v2.16+:
+- **Discovery de Skills**: Aponta para `.gemini/skills/`, `.gemini/rules/` e `.gemini/agents/`.
+- **Preferências**: Idioma, modelo padrão e estilo de código.
+- **MCP Servers**: Registrados em `.gemini/mcp_config.json` (migrado de `.agents/mcp_config.json`).
+
+> [!IMPORTANT]
+> O diretório legado `.agents/` foi descontinuado. Todas as configurações de agentes, MCP e discovery vivem exclusivamente em `.gemini/`.
 
 ---
 
 ## ⚡ Protocolo de Inicialização Zero-Prompt (Auto-Boot)
 
 Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `"chefe"`, `"inicia"`, `"bora"`, `"executa"`, `"status"`):
-1. **Identificação Automática**: O agente assume imediatamente o contexto do repositório local.
+1. **Identificação Automática**: O agente assume imediatamente o contexto do repositório `conn2flow-ai-workspace` em `c:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-ai-workspace`.
 2. **Leitura Mandatória de `CURRENT.md`**: O agente abre `sdd/human-requests/CURRENT.md` para inspecionar o ponteiro da requisição ativa (`req-XXX.md`), o lote correspondente e o modo de autonomia (`supervisionado`, `autonomo_monitorado` ou `autonomo_headless`).
 3. **Ativação Automática por Papel**:
    - **No Antigravity (Arquiteto Master / Engenheiro Chefe)**: Ativa `c2f-architect-master`, lê `sdd/MEMORIA-ENGENHARIA-CHEFIA.md`, verifica pendências e propõe o próximo plano estratégico ao usuário.
@@ -77,14 +90,16 @@ Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `
 3. **Reserva Atômica de Requisições**: Ao criar uma nova requisição, verificar a sequência existente em `sdd/human-requests/` após `git pull`, commitando e enviando para o repositório imediatamente para evitar colisões entre agentes.
 4. **Fonte da Verdade em Runtime**: O runtime serve HTML e CSS exclusivamente do banco de dados SQL. `resources/` é a semente de autoria.
 5. **Version Bump Mandatório**: Ao alterar scripts JS ou estilos estáticos, incremente a versão no metadado `<id>.json` do recurso.
-6. **Identificação de Repositório em Prompts para Agentes**: Sempre que o Macro-Arquiteto preparar mensagens para o usuário repassar a agentes executores ou revisores, DEVE incluir o identificador e o caminho absoluto da raiz do repositório alvo para evitar confusão de contexto em sessões com múltiplos repositórios abertos.
+6. **Identificação de Repositório em Prompts para Agentes**: Sempre que o Macro-Arquiteto preparar mensagens para o usuário repassar a agentes executores ou revisores, DEVE incluir o identificador e o caminho absoluto da raiz do repositório alvo (ex: `conn2flow-ai-workspace` em `c:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-ai-workspace`) para evitar confusão de contexto em sessões com múltiplos repositórios abertos.
 
 
 ---
 
 ## 📦 Skills e Ferramentas
 
-O workspace possui **36 skills oficiais** em `.gemini/skills/` que seguem o padrão aberto de progressive disclosure (`SKILL.md`):
+O workspace possui **39 skills oficiais** em `.gemini/skills/` que seguem o padrão aberto de progressive disclosure (`SKILL.md`):
+- Papéis da Tríade SDD: `c2f-architect-master`, `c2f-executor-agent`, `c2f-reviewer-agent` (consulte [sdd/process/STARTER-PROMPTS.md](sdd/process/STARTER-PROMPTS.md) para modelos de abertura rápida de chat).
 - Planejamento e fluxo SDD: `sdd-workflow`, `start-sdd-slice`, `continue-sdd-batch`.
 - Mudanças e Governança: `raise-spec-change`, `sdd-memory-gardening`, `project-validation`.
 - Arquitetura do Core: `c2f-*` (29 skills para pipelines, recursos, banco, Docker, Tailwind, shell e Windows traps).
+

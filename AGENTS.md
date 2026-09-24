@@ -17,11 +17,17 @@
 
 ---
 
-## 📦 Configuração de Skills (36 Skills Oficiais)
+## 📦 Configuração de Skills (39 Skills Oficiais)
 
-Todas as **36 skills** do framework estão disponíveis em `.codex/skills/` (e `.claude/skills/`, `.gemini/skills/`, `.github/skills/`, `.cursor/skills/`) e seguem o padrão aberto de progressive disclosure (`SKILL.md`):
+Todas as **39 skills** do framework estão disponíveis em `.claude/skills/` e `.gemini/skills/` (com espelhamento nos demais clientes) e seguem o padrão aberto de progressive disclosure (`SKILL.md`):
 
-### 1. Skills Core do Framework (29 Skills):
+### 1. Skills de Papéis da Tríade SDD (3 Skills):
+> Consulte [sdd/process/STARTER-PROMPTS.md](sdd/process/STARTER-PROMPTS.md) para modelos de abertura rápida de chat prontos para copiar e colar.
+- `c2f-architect-master`: Arquiteto Master / Engenheiro Chefe (governança macro, documentação viva, backlog e restrição de edição direta).
+- `c2f-executor-agent`: Micro-Executor Tático (Live Todo List `[ ]` ➔ `[x]`, compilação oficial e obediência a contratos).
+- `c2f-reviewer-agent`: Revisor Técnico / Auditor de Qualidade (inspeção findings-first de `git diff`, CSRF, `variables.json`).
+
+### 2. Skills Core do Framework (29 Skills):
 - `c2f-agent-visual-inspection`
 - `c2f-database-operations`
 - `c2f-dev-scripts`
@@ -52,7 +58,7 @@ Todas as **36 skills** do framework estão disponíveis em `.codex/skills/` (e `
 - `c2f-quill-editor`
 - `c2f-assets-management`
 
-### 2. Skills de Governança e Workflow SDD (7 Skills):
+### 3. Skills de Governança e Workflow SDD (7 Skills):
 - `sdd-workflow`
 - `start-sdd-slice`
 - `continue-sdd-batch`
@@ -66,7 +72,7 @@ Todas as **36 skills** do framework estão disponíveis em `.codex/skills/` (e `
 ## ⚡ Protocolo de Inicialização Zero-Prompt (Auto-Boot)
 
 Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `"chefe"`, `"inicia"`, `"bora"`, `"executa"`, `"status"`):
-1. **Identificação Automática**: O agente assume imediatamente o contexto do repositório local.
+1. **Identificação Automática**: O agente assume imediatamente o contexto do repositório `conn2flow-ai-workspace` em `c:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-ai-workspace`.
 2. **Leitura Mandatória de `CURRENT.md`**: O agente abre `sdd/human-requests/CURRENT.md` para inspecionar o ponteiro da requisição ativa (`req-XXX.md`), o lote correspondente e o modo de autonomia (`supervisionado`, `autonomo_monitorado` ou `autonomo_headless`).
 3. **Ativação Automática por Papel**:
    - **No Antigravity (Arquiteto Master / Engenheiro Chefe)**: Ativa `c2f-architect-master`, lê `sdd/MEMORIA-ENGENHARIA-CHEFIA.md`, verifica pendências e propõe o próximo plano estratégico ao usuário.
@@ -84,5 +90,7 @@ Quando o usuário abrir um chat e enviar comandos curtos (ex: `"começa aí"`, `
 4. **Fonte da Verdade em Runtime**: O runtime serve HTML e CSS exclusivamente do banco de dados SQL. `resources/` é a semente de autoria.
 5. **Version Bump Mandatório**: Ao alterar scripts JS ou estilos estáticos, incremente a versão no metadado `<id>.json` do recurso.
 6. **Goal Mode (`/goal`)**: Utilize `/goal` no prompt para execução ininterrupta de fatias complexas no modo Autônomo Monitorado até cumprimento de todos os critérios de aceite do `VALIDATION-CHECKLIST.md`.
-7. **Identificação de Repositório em Handoffs e Prompts**: Sempre explicitar o identificador do projeto e o caminho absoluto da raiz do repositório alvo nas mensagens de acionamento para outros agentes.
+7. **Identificação de Repositório em Handoffs e Prompts**: Sempre explicitar o identificador do projeto e o caminho absoluto da raiz do repositório alvo (ex: `conn2flow-ai-workspace` em `c:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-ai-workspace`) nas mensagens de acionamento para outros agentes.
+8. **Boost Mode (`/boost`)**: Utilize `/boost` no prompt para tarefas que exigem raciocínio analítico profundo, planejamento multi-etapa, múltiplas perspectivas e validação cruzada rigorosa.
+9. **Configuração por Projeto em `.gemini/config.json`**: O arquivo `.gemini/config.json` é o ponto canônico de configuração por projeto no Antigravity v2.16+. O diretório legado `.agents/` foi descontinuado — todas as configurações, MCP servers e discovery vivem exclusivamente em `.gemini/`.
 

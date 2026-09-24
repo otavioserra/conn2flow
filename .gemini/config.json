@@ -1,0 +1,21 @@
+﻿{
+  "project": {
+    "name": "conn2flow",
+    "description": "Core do Framework Conn2Flow — Gestor, CLI, Pipelines e Runtime PHP.",
+    "version": "2.16.0"
+  },
+  "discovery": {
+    "skills": ".gemini/skills/",
+    "rules": ".gemini/rules/",
+    "agents": ".gemini/agents/"
+  },
+  "preferences": {
+    "language": "pt-br",
+    "defaultModel": "gemini-2.5-pro",
+    "codeStyle": {
+      "indentation": "spaces",
+      "indentSize": 2,
+      "lineEnding": "lf"
+    }
+  }
+}
