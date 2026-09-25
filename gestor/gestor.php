@@ -2643,6 +2643,44 @@ function gestor_roteador_acesso_restrito_negado(){
 	exit;
 }
 
+/**
+ * Rota `_gestor-csrf-token` (req-175): devolve o token CSRF ativo da sessão para a renovação
+ * silenciosa do `global.js`.
+ *
+ * Fica antes do porteiro do site restrito de propósito: ela só devolve o token da PRÓPRIA sessão,
+ * o mesmo que já vai na `<meta name="csrf-token">` de toda página, e é dela que a tela de login de
+ * um site restrito precisa para se recuperar. A decisão vive em `seguranca_csrf_token_resposta()`.
+ *
+ * @return void Encerra a requisição.
+ */
+function gestor_roteador_csrf_token(){
+	global $_GESTOR;
+	global $_CONFIG;
+
+	$cookieAuth = (string)($_CONFIG['cookie-authname'] ?? '');
+	$temCookieAuth = $cookieAuth !== '' && isset($_COOKIE[$cookieAuth]) && $_COOKIE[$cookieAuth] !== '';
+	$autenticado = $temCookieAuth && gestor_permissao_token() ? true : false;
+
+	$resposta = seguranca_csrf_token_resposta(Array(
+		'token' => $temCookieAuth && !$autenticado ? '' : gestor_csrf_token(),
+		'tem_cookie_auth' => $temCookieAuth,
+		'autenticado' => $autenticado,
+		'url_raiz' => (string)($_GESTOR['url-raiz'] ?? '/'),
+	));
+
+	// Login expirado: guarda de onde o usuário veio, como `gestor_permissao()` faz, para o signin
+	// devolvê-lo à mesma tela.
+	if($resposta['http'] === 401){
+		$retorno = seguranca_csrf_retorno_normalizar($_REQUEST['retorno'] ?? '');
+		if($retorno !== '') gestor_sessao_variavel('redirecionar-local', $retorno);
+	}
+
+	http_response_code($resposta['http']);
+	foreach($resposta['headers'] as $nome => $valor) header($nome.': '.$valor);
+	echo json_encode($resposta['corpo'], JSON_UNESCAPED_UNICODE);
+	exit;
+}
+
 function gestor_roteador(){
 	global $_GESTOR;
 	global $_INDEX;
@@ -2697,6 +2735,9 @@ function gestor_roteador(){
 				
 				header("Location: " . $_GESTOR['url-raiz'] . $url .(existe($queryString) ? '?'.$queryString : '')); exit;
 			}
+		break;
+		case SEGURANCA_CSRF_ROTA_TOKEN:
+			gestor_roteador_csrf_token();
 		break;
 	}
 
@@ -3321,6 +3362,10 @@ function gestor_csrf_resposta_invalida(){
 
 	$mensagem = 'Token CSRF inválido ou ausente.';
 
+	// req-175: marcador de máquina nos DOIS ramos. O `code` no JSON distingue CSRF vencido de um 403
+	// legítimo de ACL; o cabeçalho cobre `fetch`/XHR que não pedem JSON e recebem a página HTML.
+	header('X-Gestor-Csrf-Error: '.SEGURANCA_CSRF_ERRO_CODIGO);
+
 	$aceita = strtolower((string)($_SERVER['HTTP_ACCEPT'] ?? ''));
 	$requisicaoAjax = !empty($_REQUEST['ajax'])
 		|| strtolower((string)($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '')) === 'xmlhttprequest'
@@ -3328,7 +3373,7 @@ function gestor_csrf_resposta_invalida(){
 
 	if($requisicaoAjax){
 		header('Content-Type: application/json; charset=UTF-8');
-		echo json_encode(Array('status' => 'error', 'message' => $mensagem), JSON_UNESCAPED_UNICODE);
+		echo json_encode(seguranca_csrf_resposta_invalida_corpo($mensagem), JSON_UNESCAPED_UNICODE);
 		exit;
 	}
 

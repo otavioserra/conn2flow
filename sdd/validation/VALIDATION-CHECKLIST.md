@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-180 — Renovação silenciosa de CSRF e retry transparente (req-175)
+
+- [x] `gestor_csrf_resposta_invalida()` devolve `code: CSRF_INVALID_OR_EXPIRED` no JSON e o cabeçalho `X-Gestor-Csrf-Error` nos ramos JSON e HTML.
+- [x] Rota `_gestor-csrf-token/` isenta de CSRF: visitante e usuário logado recebem `200` com token; login expirado recebe `401 AUTH_EXPIRED` com `X-Gestor-Auth-Redirect`, sem token; resposta `no-store`.
+- [x] `global.js`: renovação única com fila; retry transparente em `fetch` e XHR (o que cobre o `$.ajax`); propagação para a `<meta>`, `gestor.csrfToken`, campos ocultos e a página hospedeira.
+- [x] 403 legítimo (ACL) não entra em retry; no máximo uma repetição por requisição; XHR síncrono e GET ficam fora.
+- [x] `visibilitychange` com limite de 30 s; a checagem proativa não redireciona.
+- [x] Cache-bust: `global.min.js` regenerado e owner `global` do `asset-versions.json` atualizado.
+- [x] PHPUnit focado 15/15; Vitest focado 23/23.
+- [x] PHPUnit completo 1.220/1.220 (4 skipped, `OPENSSL_CONF` explicitado), exit 0; Vitest completo 449/449, exit 0; `git diff --check` exit 0.
+- [ ] Homologação runtime (expirar sessão e confirmar retry transparente em tela real).
+
 ## BATCH-179 — Sincronização automática de hooks em deploy de projeto (req-174)
 
 - [x] O fluxo normal de `atualizacoes-banco-de-dados.php`, com ou sem `--project`, executa `atualizacoes_hooks_sincronizar()` depois de migrações/dados.

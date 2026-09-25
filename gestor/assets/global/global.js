@@ -95,6 +95,282 @@
 		if (destino) redirecionarParaLogin(destino);
 	}
 
+	// req-175: renovação silenciosa de CSRF (silent refresh) e repetição transparente (retry).
+	//
+	// Uma aba parada perde o token quando a sessão vence: o cookie de sessão expira em
+	// `SESSION_LIFETIME` e a linha no banco é varrida. A próxima ação mutável voltava 403 e o
+	// usuário via um erro técnico. Agora o 403 marcado com `CSRF_INVALID_OR_EXPIRED` busca um token
+	// novo em `_gestor-csrf-token/` e repete a requisição uma única vez. Um 403 SEM essa marca
+	// (ACL, perfil, site restrito) segue direto para quem chamou: nunca entra em retry.
+	var CSRF_ERRO_CODIGO = 'CSRF_INVALID_OR_EXPIRED';
+	var CSRF_ERRO_HEADER = 'X-Gestor-Csrf-Error';
+	var CSRF_ROTA = '_gestor-csrf-token/';
+	var CSRF_INTERVALO_MINIMO = 30000;
+
+	// Capturado antes do envelope abaixo: a renovação não pode passar pelo próprio interceptor.
+	var fetchNativo = window.fetch ? window.fetch.bind(window) : null;
+	var renovacaoCsrf = null;
+	var filaCsrf = [];
+	var ultimaRenovacaoCsrf = 0;
+
+	function gestorRaiz() {
+		try {
+			if (window.gestor && window.gestor.raiz) return String(window.gestor.raiz);
+		} catch (error) {
+			// gestor ausente nesta janela.
+		}
+
+		try {
+			if (window.parent && window.parent !== window && window.parent.gestor && window.parent.gestor.raiz) {
+				return String(window.parent.gestor.raiz);
+			}
+		} catch (error) {
+			// Acesso ao pai bloqueado.
+		}
+
+		return '/';
+	}
+
+	// O `retorno` deixa o backend gravar `redirecionar-local`, para o login devolver o usuário à
+	// mesma tela quando a sessão tiver expirado de vez.
+	function urlRenovacaoCsrf() {
+		var raiz = gestorRaiz();
+		if (raiz.charAt(raiz.length - 1) !== '/') raiz += '/';
+
+		var retorno = '';
+		try {
+			var caminho = String(window.location.pathname || '');
+			var base = new URL(raiz, window.location.href).pathname;
+			if (caminho.indexOf(base) === 0) retorno = caminho.slice(base.length);
+		} catch (error) {
+			// Sem caminho confiável (ex.: iframe srcdoc): o login usa o destino padrão.
+		}
+
+		return raiz + CSRF_ROTA + (retorno ? '?retorno=' + encodeURIComponent(retorno) : '');
+	}
+
+	function atualizarTokenNoDocumento(doc, token) {
+		if (!doc || typeof doc.querySelector !== 'function') return;
+
+		var meta = doc.querySelector('meta[name="csrf-token"]');
+		if (meta) meta.setAttribute('content', token);
+
+		// Campos ocultos já anexados: um `$(form).serialize()` posterior levaria o token vencido.
+		if (typeof doc.querySelectorAll === 'function') {
+			var campos = doc.querySelectorAll('input[name="' + CSRF_CAMPO + '"]');
+			for (var i = 0; i < campos.length; i++) campos[i].value = token;
+		}
+	}
+
+	// A <meta> vence `gestor.csrfToken` em `csrfToken()`, então as duas precisam mudar juntas — na
+	// janela atual e, dentro do iframe do editor, também na página hospedeira.
+	function aplicarNovoTokenCsrf(token) {
+		if (!token) return;
+
+		try {
+			atualizarTokenNoDocumento(document, token);
+		} catch (error) {
+			// Sem DOM: segue para as variáveis.
+		}
+
+		try {
+			if (window.gestor) window.gestor.csrfToken = token;
+		} catch (error) {
+			// gestor ausente nesta janela.
+		}
+
+		try {
+			if (window.parent && window.parent !== window) {
+				if (window.parent.gestor) window.parent.gestor.csrfToken = token;
+				atualizarTokenNoDocumento(window.parent.document, token);
+			}
+		} catch (error) {
+			// Pai de outra origem: nada a propagar.
+		}
+	}
+
+	function requisitarTokenCsrf() {
+		var url = urlRenovacaoCsrf();
+
+		if (fetchNativo) {
+			return fetchNativo(url, {
+				method: 'GET',
+				credentials: 'same-origin',
+				cache: 'no-store',
+				headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+			}).then(function (resposta) {
+				return resposta.json().catch(function () {
+					return null;
+				}).then(function (corpo) {
+					var destino = '';
+					try {
+						destino = resposta.headers.get('X-Gestor-Auth-Redirect') || '';
+					} catch (error) {
+						// Cabeçalho inacessível.
+					}
+					return { status: resposta.status, corpo: corpo, destino: destino };
+				});
+			});
+		}
+
+		return new Promise(function (resolve, reject) {
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', url, true);
+			xhr.setRequestHeader('Accept', 'application/json');
+			xhr.onload = function () {
+				var corpo = null;
+				try {
+					corpo = JSON.parse(xhr.responseText);
+				} catch (error) {
+					// Corpo não-JSON: tratado como falha abaixo.
+				}
+				resolve({ status: xhr.status, corpo: corpo, destino: xhr.getResponseHeader('X-Gestor-Auth-Redirect') || '' });
+			};
+			xhr.onerror = function () {
+				reject(new Error('csrf-refresh-network'));
+			};
+			xhr.send();
+		});
+	}
+
+	// Sessão de login encerrada de vez: leva ao login (o backend já guardou a tela de retorno). De
+	// dentro de um iframe, quem navega é a janela de cima — o iframe srcdoc não tem URL própria.
+	function recuperarSessaoExpirada(destino) {
+		try {
+			if (window.top && window.top !== window && window.top.gestorCsrf && window.top.gestorCsrf.recuperarSessao) {
+				window.top.gestorCsrf.recuperarSessao(destino);
+				return;
+			}
+		} catch (error) {
+			// Topo de outra origem: navega esta janela.
+		}
+
+		redirecionarParaLogin(destino || gestorRaiz() + 'signin/');
+	}
+
+	// Uma única renovação por vez. Quem chega enquanto ela corre entra na fila e recebe o MESMO
+	// token — N requisições falhando juntas disparam uma só chamada a `_gestor-csrf-token/`.
+	function renovarCsrf(opcoes) {
+		var redirecionar = !(opcoes && opcoes.redirecionar === false);
+		var promessa = new Promise(function (resolve, reject) {
+			filaCsrf.push({ resolve: resolve, reject: reject, redirecionar: redirecionar });
+		});
+
+		if (!renovacaoCsrf) {
+			ultimaRenovacaoCsrf = Date.now();
+			renovacaoCsrf = requisitarTokenCsrf().then(function (resultado) {
+				var corpo = resultado.corpo || {};
+				if (resultado.status === 200 && corpo.status === 'success' && corpo.token) {
+					aplicarNovoTokenCsrf(String(corpo.token));
+					return String(corpo.token);
+				}
+
+				var erro = new Error('csrf-refresh-failed');
+				erro.sessaoExpirada = resultado.status === 401 || corpo.code === 'AUTH_EXPIRED';
+				erro.destino = resultado.destino || (erro.sessaoExpirada ? gestorRaiz() + String(corpo.redirect || 'signin/') : '');
+				throw erro;
+			}).then(function (token) {
+				var fila = filaCsrf;
+				filaCsrf = [];
+				renovacaoCsrf = null;
+				fila.forEach(function (item) {
+					item.resolve(token);
+				});
+			}, function (erro) {
+				var fila = filaCsrf;
+				filaCsrf = [];
+				renovacaoCsrf = null;
+				var redirecionarAgora = erro && erro.sessaoExpirada && fila.some(function (item) {
+					return item.redirecionar;
+				});
+				if (redirecionarAgora) recuperarSessaoExpirada(erro.destino);
+				fila.forEach(function (item) {
+					item.reject(erro);
+				});
+			});
+		}
+
+		return promessa;
+	}
+
+	// Uma requisição que saiu com o token antigo e falhou DEPOIS de uma renovação já concluída não
+	// precisa de outra: basta repetir com o token atual.
+	function tokenParaNovaTentativa(tokenUsado) {
+		if (renovacaoCsrf) return renovarCsrf();
+
+		var atual = csrfToken();
+		if (atual && tokenUsado && atual !== tokenUsado) return Promise.resolve(atual);
+
+		return renovarCsrf();
+	}
+
+	function atualizarTokenNoCorpo(corpo, token) {
+		try {
+			if (typeof FormData !== 'undefined' && corpo instanceof FormData) {
+				if (corpo.has(CSRF_CAMPO)) corpo.set(CSRF_CAMPO, token);
+				return corpo;
+			}
+			if (typeof URLSearchParams !== 'undefined' && corpo instanceof URLSearchParams) {
+				if (corpo.has(CSRF_CAMPO)) corpo.set(CSRF_CAMPO, token);
+				return corpo;
+			}
+			if (typeof corpo === 'string' && corpo.indexOf(CSRF_CAMPO + '=') !== -1) {
+				return corpo.replace(new RegExp('(^|&)' + CSRF_CAMPO + '=[^&]*'), '$1' + CSRF_CAMPO + '=' + encodeURIComponent(token));
+			}
+		} catch (error) {
+			// Corpo desconhecido: vai como está; o cabeçalho já leva o token novo.
+		}
+		return corpo;
+	}
+
+	function corpoIndicaCsrf(corpo) {
+		return !!corpo && typeof corpo === 'object' && corpo.code === CSRF_ERRO_CODIGO;
+	}
+
+	function textoIndicaCsrf(texto) {
+		if (typeof texto !== 'string' || texto.indexOf(CSRF_ERRO_CODIGO) === -1) return false;
+		try {
+			return corpoIndicaCsrf(JSON.parse(texto));
+		} catch (error) {
+			return false;
+		}
+	}
+
+	function xhrFalhouPorCsrf(xhr) {
+		if (!xhr || xhr.status !== 403) return false;
+
+		try {
+			if (xhr.getResponseHeader(CSRF_ERRO_HEADER) === CSRF_ERRO_CODIGO) return true;
+		} catch (error) {
+			// Cabeçalho inacessível: tenta o corpo.
+		}
+
+		try {
+			if (xhr.responseType === 'json') return corpoIndicaCsrf(xhr.response);
+			if (!xhr.responseType || xhr.responseType === 'text') return textoIndicaCsrf(xhr.responseText);
+		} catch (error) {
+			// Corpo ilegível.
+		}
+
+		return false;
+	}
+
+	function respostaFalhouPorCsrf(resposta) {
+		if (!resposta || resposta.status !== 403) return Promise.resolve(false);
+
+		try {
+			if (resposta.headers && resposta.headers.get(CSRF_ERRO_HEADER) === CSRF_ERRO_CODIGO) return Promise.resolve(true);
+		} catch (error) {
+			// Cabeçalho inacessível: tenta o corpo.
+		}
+
+		if (typeof resposta.clone !== 'function') return Promise.resolve(false);
+
+		return resposta.clone().text().then(textoIndicaCsrf, function () {
+			return false;
+		});
+	}
+
 	// Todos os $.ajax do painel recebem o mesmo cabeçalho, inclusive módulos legados.
 	if (window.jQuery) {
 		window.jQuery.ajaxPrefilter(function (options, originalOptions, xhr) {
@@ -132,20 +408,54 @@
 	// Cobre os fluxos modernos que usam fetch diretamente.
 	if (window.fetch) {
 		var fetchOriginal = window.fetch.bind(window);
+		var tratarRespostaFetch = function (response) {
+			if (response.status === 401) {
+				var destino = response.headers.get('X-Gestor-Auth-Redirect');
+				if (destino) redirecionarParaLogin(destino);
+			}
+			return response;
+		};
+
 		window.fetch = function (input, init) {
 			init = init || {};
 			var token = csrfToken();
-			if (token && mesmaOrigem(input) && metodoMutavel(init.method)) {
+			var protegida = mesmaOrigem(input) && metodoMutavel(init.method);
+			if (token && protegida) {
 				var headers = new Headers(init.headers || {});
 				headers.set(CSRF_HEADER, token);
 				init.headers = headers;
 			}
-			return fetchOriginal(input, init).then(function (response) {
-				if (response.status === 401) {
-					var destino = response.headers.get('X-Gestor-Auth-Redirect');
-					if (destino) redirecionarParaLogin(destino);
+
+			// req-175: um `Request` só pode ser consumido uma vez; a cópia para o retry sai antes do
+			// envio. Corpo em stream não é repetível e fica fora do retry.
+			var reenvio = null;
+			if (protegida && !(typeof ReadableStream !== 'undefined' && init.body instanceof ReadableStream)) {
+				try {
+					reenvio = (typeof Request !== 'undefined' && input instanceof Request) ? input.clone() : input;
+				} catch (error) {
+					reenvio = null;
 				}
-				return response;
+			}
+
+			return fetchOriginal(input, init).then(function (response) {
+				if (reenvio === null || response.status !== 403) return tratarRespostaFetch(response);
+
+				return respostaFalhouPorCsrf(response).then(function (falhaCsrf) {
+					if (!falhaCsrf) return response;
+
+					return tokenParaNovaTentativa(token).then(function (novoToken) {
+						var novoInit = Object.assign({}, init);
+						var novosHeaders = new Headers(init.headers || {});
+						novosHeaders.set(CSRF_HEADER, novoToken);
+						novoInit.headers = novosHeaders;
+						novoInit.body = atualizarTokenNoCorpo(init.body, novoToken);
+						// Direto no fetch nativo: a repetição acontece uma única vez, sem laço.
+						return fetchOriginal(reenvio, novoInit).then(tratarRespostaFetch);
+					}, function () {
+						// Renovação impossível: quem chamou recebe o 403 original, como antes.
+						return response;
+					});
+				});
 			});
 		};
 	}
@@ -163,22 +473,99 @@
 			this.__c2fMetodo = method;
 			this.__c2fUrl = url;
 			this.__c2fCabecalhos = {};
+			// req-175: o necessário para reabrir o MESMO objeto no retry.
+			this.__c2fValores = [];
+			this.__c2fAbertura = Array.prototype.slice.call(arguments);
+			// Objeto reaproveitado pelo chamador para outra requisição volta a ter direito a um retry.
+			if (!this.__c2fReabrindo) this.__c2fCsrfRepetido = false;
+			this.__c2fReabrindo = false;
 			return xhrOpenOriginal.apply(this, arguments);
 		};
 
 		XMLHttpRequest.prototype.setRequestHeader = function (nome, valor) {
 			if (this.__c2fCabecalhos && nome) this.__c2fCabecalhos[String(nome).toLowerCase()] = true;
+			if (this.__c2fValores && nome) this.__c2fValores.push([String(nome), valor]);
 			return xhrSetRequestHeaderOriginal.apply(this, arguments);
+		};
+
+		var xhrDeveRepetirPorCsrf = function (xhr) {
+			if (xhr.__c2fCsrfRepetido || !xhr.__c2fAbertura) return false;
+			// XHR síncrono não pode esperar a renovação.
+			if (xhr.__c2fAbertura.length > 2 && xhr.__c2fAbertura[2] === false) return false;
+			if (!metodoMutavel(xhr.__c2fMetodo) || !mesmaOrigem(String(xhr.__c2fUrl || ''))) return false;
+			return xhrFalhouPorCsrf(xhr);
+		};
+
+		// Entrega ao chamador a resposta 403 original que o interceptor segurou.
+		var xhrLiberarFalha = function (xhr) {
+			xhr.__c2fCsrfSegurando = false;
+			['readystatechange', 'load', 'loadend'].forEach(function (tipo) {
+				try {
+					xhr.dispatchEvent(new Event(tipo));
+				} catch (error) {
+					// Sem dispatchEvent: nada mais a entregar.
+				}
+			});
+		};
+
+		// Sempre numa tarefa nova (setTimeout): uma microtask poderia reabrir o objeto entre o
+		// `readystatechange` e o `load` da resposta original, ainda em despacho.
+		var xhrRepetirComNovoToken = function (xhr) {
+			tokenParaNovaTentativa(xhr.__c2fTokenUsado).then(function (novoToken) {
+				setTimeout(function () {
+					var valores = xhr.__c2fValores || [];
+					xhr.__c2fCsrfSegurando = false;
+					xhr.__c2fReabrindo = true;
+					xhr.open.apply(xhr, xhr.__c2fAbertura);
+					valores.forEach(function (par) {
+						if (par[0].toLowerCase() !== CSRF_HEADER.toLowerCase()) xhr.setRequestHeader(par[0], par[1]);
+					});
+					xhr.setRequestHeader(CSRF_HEADER, novoToken);
+					xhr.send(atualizarTokenNoCorpo(xhr.__c2fCorpo, novoToken));
+				}, 0);
+			}, function () {
+				setTimeout(function () {
+					xhrLiberarFalha(xhr);
+				}, 0);
+			});
 		};
 
 		XMLHttpRequest.prototype.send = function () {
 			var xhr = this;
 			try {
+				xhr.__c2fCorpo = arguments[0];
 				var jaInformado = xhr.__c2fCabecalhos && xhr.__c2fCabecalhos[CSRF_HEADER.toLowerCase()];
 				var token = csrfToken();
 				if (token && !jaInformado && metodoMutavel(xhr.__c2fMetodo) && mesmaOrigem(String(xhr.__c2fUrl || ''))) {
 					xhrSetRequestHeaderOriginal.call(xhr, CSRF_HEADER, token);
 					if (xhr.__c2fCabecalhos) xhr.__c2fCabecalhos[CSRF_HEADER.toLowerCase()] = true;
+					if (xhr.__c2fValores) xhr.__c2fValores.push([CSRF_HEADER, token]);
+				}
+				xhr.__c2fTokenUsado = '';
+				(xhr.__c2fValores || []).forEach(function (par) {
+					if (par[0].toLowerCase() === CSRF_HEADER.toLowerCase()) xhr.__c2fTokenUsado = String(par[1]);
+				});
+
+				// req-175: ouvintes de CAPTURA no próprio XHR disparam antes dos ouvintes comuns e do
+				// `onload`/`onreadystatechange` (ordem at-target do DOM). No 403 de CSRF eles seguram
+				// o evento, renovam o token e reenviam o mesmo objeto: quem chamou — inclusive o
+				// jQuery — só enxerga a resposta da repetição.
+				if (!xhr.__c2fOuvinteCsrf && typeof xhr.addEventListener === 'function') {
+					xhr.__c2fOuvinteCsrf = true;
+					var interceptar = function (evento) {
+						if (xhr.readyState !== 4) return;
+						if (!xhr.__c2fCsrfSegurando && evento.type === 'readystatechange' && xhrDeveRepetirPorCsrf(xhr)) {
+							xhr.__c2fCsrfSegurando = true;
+							xhr.__c2fCsrfRepetido = true;
+							xhrRepetirComNovoToken(xhr);
+						}
+						if (xhr.__c2fCsrfSegurando && evento && typeof evento.stopImmediatePropagation === 'function') {
+							evento.stopImmediatePropagation();
+						}
+					};
+					xhr.addEventListener('readystatechange', interceptar, true);
+					xhr.addEventListener('load', interceptar, true);
+					xhr.addEventListener('loadend', interceptar, true);
 				}
 				if (!xhr.__c2fOuvinte401) {
 					xhr.__c2fOuvinte401 = true;
@@ -206,6 +593,42 @@
 		aplicarCsrfNoFormulario(event.target);
 	}, true);
 
+	// req-175: ao voltar para uma aba que ficou em segundo plano, o token é renovado ANTES do
+	// primeiro clique. Limitado a uma consulta a cada 30 s e só depois de 30 s fora de vista. A
+	// checagem proativa nunca redireciona para o login: se a sessão morreu, quem avisa é a próxima
+	// ação do usuário — assim um formulário meio preenchido não some só porque a aba ganhou foco.
+	var ocultoDesde = 0;
+
+	function aoMudarVisibilidade() {
+		if (document.visibilityState === 'hidden') {
+			ocultoDesde = Date.now();
+			return;
+		}
+		if (document.visibilityState !== 'visible' || !ocultoDesde) return;
+
+		var agora = Date.now();
+		var ausencia = agora - ocultoDesde;
+		ocultoDesde = 0;
+
+		if (ausencia < CSRF_INTERVALO_MINIMO || agora - ultimaRenovacaoCsrf < CSRF_INTERVALO_MINIMO) return;
+		if (!csrfToken()) return;
+
+		// Dentro de um iframe da mesma origem, a página hospedeira já faz essa checagem.
+		try {
+			if (window.parent && window.parent !== window && window.parent.gestorCsrf) return;
+		} catch (error) {
+			// Pai de outra origem: este frame cuida de si.
+		}
+
+		renovarCsrf({ redirecionar: false }).catch(function () {
+			// Silencioso: a próxima requisição mutável tenta de novo e trata a sessão expirada.
+		});
+	}
+
+	if (typeof document.addEventListener === 'function') {
+		document.addEventListener('visibilitychange', aoMudarVisibilidade);
+	}
+
 	// req-111 (CR-001): o neutralizador de `fbq`/`dataLayer`/`gtag` do req-109 §4 foi REMOVIDO.
 	// Nenhuma página do sistema bloqueia coletor de analytics — o problema original era o laço de
 	// redirecionamento de cookie empurrando clientes sem cookie para `cookies-is-mandatory/`, e ele
@@ -216,7 +639,12 @@
 		campo: CSRF_CAMPO,
 		header: CSRF_HEADER,
 		token: csrfToken,
-		aplicarNoFormulario: aplicarCsrfNoFormulario
+		aplicarNoFormulario: aplicarCsrfNoFormulario,
+		// req-175
+		codigoErro: CSRF_ERRO_CODIGO,
+		renovar: renovarCsrf,
+		aplicarToken: aplicarNovoTokenCsrf,
+		recuperarSessao: recuperarSessaoExpirada
 	};
 
 	// req-156: resolvedor de assets de terceiro para o JavaScript.

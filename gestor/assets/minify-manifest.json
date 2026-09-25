@@ -45,9 +45,9 @@
         "minificado": 1782
     },
     "gestor/assets/global/global.js": {
-        "sha1": "aebbf3d753abe42a9135025091380a372fa48da0",
-        "origem": 25513,
-        "minificado": 10583
+        "sha1": "97cbfd72ef4c775b60597e11949fde182b047c57",
+        "origem": 41032,
+        "minificado": 16841
     },
     "gestor/assets/interface-v2/interface-v2.js": {
         "sha1": "96fc2a0fbbd13ae4cbf2309c2ffe48865098507a",

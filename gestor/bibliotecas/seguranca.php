@@ -213,7 +213,118 @@ function seguranca_csrf_token_requisicao(){
 function seguranca_csrf_rota_isenta($caminho){
     if(!is_array($caminho) || !isset($caminho[0])) return false;
 
+    // req-175: a rota de renovação existe justamente para quem ficou SEM token válido; exigir
+    // o token nela tornaria a recuperação impossível. Ela só lê e devolve o token da própria sessão.
+    if($caminho[0] === SEGURANCA_CSRF_ROTA_TOKEN) return true;
+
     return $caminho[0] === '_api' || $caminho[0] === 'api';
+}
+
+// ===== req-175: renovação silenciosa de CSRF
+
+/** Código de máquina de CSRF ausente/vencido, lido pelos interceptores do `global.js`. */
+const SEGURANCA_CSRF_ERRO_CODIGO = 'CSRF_INVALID_OR_EXPIRED';
+
+/** Rota de sistema que devolve o token CSRF ativo da sessão. */
+const SEGURANCA_CSRF_ROTA_TOKEN = '_gestor-csrf-token';
+
+/**
+ * Corpo JSON da recusa por CSRF (req-107, `code` acrescentado na req-175).
+ *
+ * `status` e `message` seguem no contrato de antes; `code` permite ao frontend separar um token
+ * vencido (renovável) de um 403 legítimo de permissão, que nunca deve entrar em retry.
+ *
+ * @param string $mensagem Mensagem legível já existente.
+ * @return array
+ */
+function seguranca_csrf_resposta_invalida_corpo($mensagem){
+    return Array(
+        'status' => 'error',
+        'code' => SEGURANCA_CSRF_ERRO_CODIGO,
+        'message' => (string)$mensagem,
+    );
+}
+
+/**
+ * Decide a resposta da rota `_gestor-csrf-token` (req-175). Função PURA: o roteador só emite.
+ *
+ * - Sem cookie de autenticação: visitante. Recebe o token para seguir usando formulários públicos.
+ * - Cookie de autenticação presente e válido: token + `authenticated: true`.
+ * - Cookie presente mas JWT recusado: a sessão de login EXPIROU. 401 com `AUTH_EXPIRED` e o
+ *   cabeçalho `X-Gestor-Auth-Redirect`, o mesmo que o `global.js` já segue para o login. Sem
+ *   token: renovar o CSRF de uma sessão morta só faria o retry falhar de novo mais adiante.
+ *
+ * @param array $contexto token, tem_cookie_auth, autenticado, url_raiz.
+ * @return array ['http' => int, 'headers' => array, 'corpo' => array]
+ */
+function seguranca_csrf_token_resposta($contexto){
+    $c = is_array($contexto) ? $contexto : Array();
+    $temCookieAuth = !empty($c['tem_cookie_auth']);
+    $autenticado = $temCookieAuth && !empty($c['autenticado']);
+
+    $headers = Array(
+        'Content-Type' => 'application/json; charset=UTF-8',
+        'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+        'Pragma' => 'no-cache',
+    );
+
+    if($temCookieAuth && !$autenticado){
+        $raiz = rtrim(str_replace(Array("\r", "\n"), '', (string)($c['url_raiz'] ?? '/')), '/').'/';
+        $headers['X-Gestor-Auth-Redirect'] = $raiz.'signin/';
+
+        return Array(
+            'http' => 401,
+            'headers' => $headers,
+            'corpo' => Array(
+                'status' => 'error',
+                'code' => 'AUTH_EXPIRED',
+                'authenticated' => false,
+                'redirect' => 'signin/',
+            ),
+        );
+    }
+
+    return Array(
+        'http' => 200,
+        'headers' => $headers,
+        'corpo' => Array(
+            'status' => 'success',
+            'token' => (string)($c['token'] ?? ''),
+            'authenticated' => $autenticado,
+        ),
+    );
+}
+
+/**
+ * Normaliza o caminho de retorno enviado pelo cliente para o pós-login (req-175).
+ *
+ * Aceita apenas caminho RELATIVO à raiz do gestor: sem esquema, host, `//`, traversal ou
+ * quebra de linha. Qualquer outra coisa vira string vazia (e o login cai no destino padrão).
+ *
+ * @param mixed $retorno Valor bruto recebido.
+ * @return string Caminho terminado em `/`, ou ''.
+ */
+function seguranca_csrf_retorno_normalizar($retorno){
+    if(!is_string($retorno)) return '';
+
+    $retorno = trim($retorno);
+    if($retorno === '' || strlen($retorno) > 512) return '';
+    if(preg_match('/[\x00-\x1F\x7F\\\\]/', $retorno)) return '';
+    if(strpos($retorno, '//') !== false || strpos($retorno, ':') !== false) return '';
+
+    $caminho = (string)parse_url($retorno, PHP_URL_PATH);
+    $caminho = ltrim($caminho, '/');
+
+    $decodificado = $caminho;
+    for($i = 0; $i < 3; $i++){
+        $proximo = rawurldecode($decodificado);
+        if($proximo === $decodificado) break;
+        $decodificado = $proximo;
+    }
+    if(strpos($decodificado, '..') !== false) return '';
+    if($caminho === '') return '';
+
+    return rtrim($caminho, '/').'/';
 }
 
 /**
