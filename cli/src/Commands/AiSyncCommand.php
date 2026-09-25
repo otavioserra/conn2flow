@@ -16,6 +16,7 @@ final class AiSyncCommand implements CommandInterface
         'c2f-database-testing',
         'c2f-dev-scripts',
         'c2f-docker-environment',
+        'c2f-documentation',
         'c2f-documentation-governance',
         'c2f-environment-configuration',
         'c2f-gd-image-safety',
@@ -63,7 +64,7 @@ final class AiSyncCommand implements CommandInterface
 
     public function getDescription(): string
     {
-        return 'Synchronize and validate all 36 AI skills, rules and agent instructions across AI kits.';
+        return 'Synchronize and validate all 37 AI skills, rules and agent instructions across AI kits.';
     }
 
     public function getAliases(): array
@@ -74,7 +75,7 @@ final class AiSyncCommand implements CommandInterface
     public function getHelp(): string
     {
         return "Usage: c2f ai:sync [options]\n\n" .
-               "Verifies the integrity and contracts of the 36 Core and SDD skills in .claude/, .cursor/, .gemini/, .github/ and .codex/.\n\n" .
+               "Verifies the integrity and contracts of the 37 Core and SDD skills in .claude/, .cursor/, .gemini/, .github/ and .codex/.\n\n" .
                "Options:\n" .
                "  --verbose     Display details of each verified skill contract.";
     }
@@ -82,7 +83,7 @@ final class AiSyncCommand implements CommandInterface
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->title('Conn2Flow — AI Skills & Kits Synchronization');
-        $output->info('Validating 36 Skills and Contract blocks across active kits...');
+        $output->info('Validating 37 Skills and Contract blocks across active kits...');
 
         $skillDirs = [
             '.claude/skills' => $this->rootPath . '/.claude/skills',
@@ -158,7 +159,7 @@ final class AiSyncCommand implements CommandInterface
             return 1;
         }
 
-        $output->success("All 36 skills verified successfully across all active AI toolkits!");
+        $output->success("All 37 skills verified successfully across all active AI toolkits!");
         return 0;
     }
 }
