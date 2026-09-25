@@ -1,7 +1,7 @@
 # BATCH-169 — Blindagem de rsync contra MSYS Path Conversion (req-164)
 
 - **Status**: complete
-- **Intake**: [req-164.md](../human-requests/req-164.md)
+- **Intake**: [req-164.md](../../human-requests/archive/req-164.md)
 - **Data**: 2026-09-17
 - **Classificação**: implementação incremental de transporte SSH no Windows
 - **Modo de autonomia**: supervisionado (sem commit, push ou deploy)

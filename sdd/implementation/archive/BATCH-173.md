@@ -1,7 +1,7 @@
 # BATCH-173 — Encapsulamento de `cd` sob `sudo -u` no CLI SSH (req-168)
 
 - **Status**: complete
-- **Intake**: [req-168.md](../human-requests/req-168.md)
+- **Intake**: [req-168.md](../../human-requests/archive/req-168.md)
 - **Data**: 2026-09-17
 - **Classificação**: correção incremental dos executores SSH em PHP
 - **Modo de autonomia**: supervisionado (sem commit ou push)

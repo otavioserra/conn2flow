@@ -1,7 +1,7 @@
 # BATCH-170 — Sanitização ANSI no Tailwind CLI e governança de terminal rsync (req-165)
 
 - **Status**: complete
-- **Intake**: [req-165.md](../human-requests/req-165.md)
+- **Intake**: [req-165.md](../../human-requests/archive/req-165.md)
 - **Data**: 2026-09-17
 - **Classificação**: correção incremental de cache multiplataforma e governança Windows
 - **Modo de autonomia**: supervisionado (sem commit, push ou deploy)

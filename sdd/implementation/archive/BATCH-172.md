@@ -1,7 +1,7 @@
 # BATCH-172 — Elevação do diretório de trabalho no transporte SSH (req-167)
 
 - **Status**: complete
-- **Intake**: [req-167.md](../human-requests/req-167.md)
+- **Intake**: [req-167.md](../../human-requests/archive/req-167.md)
 - **Data**: 2026-09-17
 - **Classificação**: correção incremental do executor remoto de projetos
 - **Modo de autonomia**: supervisionado (sem commit ou push)

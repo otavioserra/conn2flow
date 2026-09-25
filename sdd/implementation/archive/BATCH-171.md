@@ -1,7 +1,7 @@
 # BATCH-171 — Transporte rsync/SSH compatível entre Cygwin e MSYS2 no Windows (req-166)
 
 - **Status**: complete
-- **Intake**: [req-166.md](../human-requests/req-166.md)
+- **Intake**: [req-166.md](../../human-requests/archive/req-166.md)
 - **Data**: 2026-09-17
 - **Classificação**: correção incremental do transporte SSH no Windows
 - **Modo de autonomia**: supervisionado (sem commit ou push)

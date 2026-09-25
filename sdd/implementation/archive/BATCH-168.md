@@ -1,7 +1,7 @@
 # BATCH-168 — CSRF em XMLHttpRequest e Acesso Restrito ao Site (req-163)
 
 - **Status**: complete
-- **Intake**: [req-163.md](../human-requests/req-163.md)
+- **Intake**: [req-163.md](../../human-requests/archive/req-163.md)
 - **Data**: 2026-09-15
 - **Classificação**: implementação de batch (segurança / governança do núcleo)
 - **Modo de autonomia**: supervisionado (sem commit, push ou deploy)
