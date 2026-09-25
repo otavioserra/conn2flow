@@ -583,9 +583,12 @@ final class DocsBuilder
     /** Troca `@[[publisher#<tipo>#<campo>]]@` pelo valor do campo (vazio se não houver). */
     public static function fill(string $template, array $fields): string
     {
-        return preg_replace_callback('/@\[\[publisher#[a-z]+#([a-z0-9_-]+)\]\]@/i', static function (array $m) use ($fields): string {
+        $html = preg_replace_callback('/@\[\[publisher#[a-z]+#([a-z0-9_-]+)\]\]@/i', static function (array $m) use ($fields): string {
             return $fields[strtolower($m[1])] ?? '';
         }, $template) ?? $template;
+
+        // Campo vazio deixa só a indentação do template na linha; não publicar espaço à direita.
+        return preg_replace('/[ \t]+$/m', '', $html) ?? $html;
     }
 
     private static function text(string $s): string
