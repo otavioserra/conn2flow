@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.13] - 2026-09-25
+
+### Added
+- Security & Core: Silent CSRF token renewal (`renovarCsrf()`) and transparent retry queue across `fetch`, `jQuery.ajax`, and `XMLHttpRequest` in `global.js` (`BATCH-180` / `req-175`).
+- Security & Core: Dedicated `_gestor-csrf-token` system endpoint in core router with `CSRF_INVALID_OR_EXPIRED` machine codes, header flagging, and route exemption (`BATCH-180` / `req-175`).
+- UX & Forms: Proactive CSRF token refresh on tab focus via `visibilitychange` listener, preventing session loss without premature form resets (`BATCH-180` / `req-175`).
+
 ## [2.10.12] - 2026-09-22
 
 ### Added

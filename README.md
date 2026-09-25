@@ -71,15 +71,17 @@ content workflows.
 
 ## 🆕 Latest Version
 
-**v2.10.12 (September 2026)** *(Current base: v2.9.51)*
+**v2.10.13 (September 2026)** *(Current base: v2.9.51)*
 
-- **Native Cloudflare Turnstile Support**: Full Turnstile integration across `admin-environment`, authentication modules, and the `forms` widget for frictionless bot protection (`BATCH-176` / `req-171`).
-- **Captcha Flow Resilience in Tailwind**: Unified fallback and execution flow for reCAPTCHA v3/v2 and Turnstile on Tailwind authentication views (`BATCH-177` / `req-172`).
-- **301 Query String Preservation & Form Widget Containment**: Preserved URL query parameters during 301 redirects and improved DOM boundary containment for forms widget fragments (`BATCH-178` / `req-173`).
-- **Automated Hooks Synchronization on Project Deploy**: Added automatic `hooks` table synchronization during `project:update-all` and standalone `project:sync-hooks` (`BATCH-179` / `req-174`).
+- **Silent CSRF Token Refresh & Transparent Retry**: Comprehensive background refresh engine (`renovarCsrf()`) in `global.js` with concurrent request queueing across `window.fetch`, `window.jQuery.ajax`, and `XMLHttpRequest`, automatically retrying expired requests without workflow interruption (`BATCH-180` / `req-175`).
+- **Proactive Tab Inactivity Recovery**: Integrated `visibilitychange` listener with intelligent throttling, validating CSRF tokens when users regain focus on dormant tabs without resetting in-progress forms (`BATCH-180` / `req-175`).
+- **Hardened Core CSRF Token Endpoint**: Standardized `_gestor-csrf-token` system route with deterministic `CSRF_INVALID_OR_EXPIRED` machine codes, header tagging, and defensive bypass logic (`BATCH-180` / `req-175`).
+- **Native Cloudflare Turnstile Support**: Built-in Turnstile integration across `admin-environment`, authentication modules, and the `forms` widget (`BATCH-176`).
+- **Automated Hooks Synchronization**: Seamless `hooks` table synchronization during `project:update-all` and via `project:sync-hooks` CLI (`BATCH-179`).
 
 ### Previous 2.10.x Releases
 
+- **v2.10.12**: Native Cloudflare Turnstile support, captcha fallback resilience, 301 query string preservation, and automated hooks deployment.
 - **v2.10.11**: Transparent same-origin CSRF XHR protection, restricted site layer, and hardened SSH transport (`sudo -u`, cwRsync/Cygwin).
 - **v2.10.10**: Decoupled Admin Cron POSIX execution (`setsid`), global Tailwind CLI support, and automated `c2f` launcher synchronization.
 - **v2.10.9**: Three-layer Tailwind parity, inert `<template>` in HTML editor, Admin Cron `DOMContentLoaded` fix, SSH CLI transport.

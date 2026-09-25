@@ -5,6 +5,13 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Não Lançado]
 
+## [2.10.13] - 2026-09-25
+
+### Added
+- Segurança & Core: Renovação silenciosa de CSRF (`renovarCsrf()`) com fila de retry automático sob `fetch`, `jQuery.ajax` e `XMLHttpRequest` no `global.js` (`BATCH-180` / `req-175`).
+- Segurança & Core: Rota de sistema `_gestor-csrf-token` no roteador do core com códigos de máquina `CSRF_INVALID_OR_EXPIRED`, marcação em cabeçalhos e isenção defensiva (`BATCH-180` / `req-175`).
+- UX & Formulários: Atualização proativa de CSRF ao retornar o foco à aba via evento `visibilitychange`, evitando perda de preenchimento em formulários (`BATCH-180` / `req-175`).
+
 ## [2.10.12] - 2026-09-22
 
 ### Added

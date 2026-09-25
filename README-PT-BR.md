@@ -75,15 +75,17 @@ IDE, orientados por API e assistidos por IA.
 
 ## 🆕 Última Versão
 
-**v2.10.12 (Setembro de 2026)** *(Base atual: v2.9.51)*
+**v2.10.13 (Setembro de 2026)** *(Base atual: v2.9.51)*
 
-- **Suporte Nativo ao Cloudflare Turnstile**: Integração nativa no core (`admin-environment`, módulo `auth` e widget `forms`) para proteção moderna contra bots (`BATCH-176` / `req-171`).
-- **Resiliência de Captcha em Telas Tailwind**: Suporte unificado com fallback automático para reCAPTCHA v3/v2 e Cloudflare Turnstile nas telas de login e cadastro em Tailwind CSS (`BATCH-177` / `req-172`).
-- **Preservação de Query Strings em 301 & Contenção no Forms**: Preservação estrita de parâmetros de URL em redirecionamentos 301 e isolamento defensivo de blocos HTML no widget `forms` (`BATCH-178` / `req-173`).
-- **Sincronização Automática da Tabela Hooks**: Deploy de projetos via `project:update-all` e comando dedicado `project:sync-hooks` sincronizam a tabela `hooks` automaticamente com o banco do projeto (`BATCH-179` / `req-174`).
+- **Renovação Silenciosa de CSRF e Retry Transparente**: Gerenciador de renovação em segundo plano (`renovarCsrf()`) no `global.js` com fila concorrente sob `window.fetch`, `window.jQuery.ajax` e `XMLHttpRequest`, reexecutando chamadas expiradas sem travar a navegação (`BATCH-180` / `req-175`).
+- **Recuperação Proativa em Abas em Segundo Plano**: Ouvinte de `visibilitychange` com controle de frequência, validando o token CSRF ao focar a aba e protegendo dados já preenchidos pelo usuário (`BATCH-180` / `req-175`).
+- **Endpoint Blindado de Token CSRF no Core**: Rota nativa `_gestor-csrf-token` no roteador do gestor com código de erro `CSRF_INVALID_OR_EXPIRED`, cabeçalho determinístico e isenção defensiva (`BATCH-180` / `req-175`).
+- **Suporte Nativo ao Cloudflare Turnstile**: Integração nativa no core (`admin-environment`, módulo `auth` e widget `forms`) para validação moderna contra bots (`BATCH-176`).
+- **Sincronização Automática da Tabela Hooks**: Sincronização automatizada da tabela `hooks` em deploys de projetos via `project:update-all` e comando dedicado `project:sync-hooks` (`BATCH-179`).
 
 ### Releases 2.10.x Anteriores
 
+- **v2.10.12**: Suporte ao Cloudflare Turnstile, resiliência de captchas em Tailwind, preservação de query strings em 301 e deploy automático de hooks.
 - **v2.10.11**: Proteção CSRF XHR transparente, camada de site restrito e blindagem de transporte SSH (`sudo -u`, cwRsync/Cygwin).
 - **v2.10.10**: Disparo desacoplado no Admin Cron via `setsid` CLI, Tailwind global pelo PATH e sincronização de launcher `c2f`.
 - **v2.10.9**: Paridade Tailwind em 3 camadas, `<template>` inerte no editor HTML, correção de `DOMContentLoaded` no Admin Cron e transporte SSH na CLI.
