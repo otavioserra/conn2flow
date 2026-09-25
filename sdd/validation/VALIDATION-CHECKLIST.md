@@ -1,5 +1,12 @@
 # Validation Checklist
 
+## BATCH-183 — Parser docs:build (req-178)
+
+- [x] `vendor/bin/phpunit --filter "DocsBuildReq178Test|DocsToolingReq177Test"`: 12/12 (84 asserções).
+- [x] Suíte completa no Windows: 1.231/1.232 — única falha `CoreHelpersTest` (openssl.cnf, ambiente).
+- [x] `docs:build --project=conn2flow-site-local` idempotente (2ª execução: 0 arquivos).
+- [x] Lab: `project:update-all` sem órfãos; HTTP 200 em `/docs/`, índices, 3 docs, `/en/docs/...` e `/docs/llms.txt`; `page:inspect` sem erros de console; screenshots pt-br/en conferidos (`temp/docs-*.png`).
+
 ## BATCH-181 e BATCH-182 — Limpeza do ai-workspace e ferramentas de documentação (req-176, req-177)
 
 - [x] Branch `legacy/ai-workspace-pre-docs` preserva `agents-history/`, `prompts/`, `templates/`; 179 arquivos removidos da `main`, `scripts/` intocado.

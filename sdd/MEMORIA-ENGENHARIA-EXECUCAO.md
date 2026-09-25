@@ -16,6 +16,19 @@
 
 ## Tarefas recentes
 
+### 2026-09-25 — BATCH-181/182/183 (req-176/177/178): docs como código
+
+- **Docs = Markdown em `ai-workspace/<lang>/docs/{guides,concepts,reference,whats-new}`**, mesmo caminho nos dois
+  idiomas; `c2f docs:audit` (ranking), `docs:extract` (bloco de funções) e `docs:build --project=<id>` (recursos).
+- **Página do Gestor interpreta `@[[x#y]]@` em qualquer HTML**: doc que MOSTRA marcador precisa de `&#64;[[`.
+  O build faz isso e só depois troca o token interno por `@[[pagina#url-raiz]]@`.
+- **Tailwind lê o texto bruto do HTML**: `[&_p]:x` sai `[&amp;_p]` no atributo e nunca é gerado. E `hidden`
+  perde para `inline-flex` na cascata v4 — esconda removendo o elemento.
+- **URL com extensão cai em `<gestor>/assets/`** (arquivo-estatico) — `/docs/llms.txt` sem rota nova.
+- **Busca do `publisher-index` é `JSON_SEARCH` em todos os `fields_values`** → texto completo de graça.
+- **Heredoc do Git Bash colapsou `\\` DE NOVO**, até com `<<'EOF'` + Python. Qualquer barra invertida: Edit/Write.
+- Parsedown 1.7.4 embutido em `cli/lib/parsedown/` com patch `?array $Block` (PHP 8.4+); ver README lá.
+
 ### 2026-09-25 — Planejamento FEAT-014 (docs Core + `/docs/` no site), sem código
 
 - **Publisher, publisher-pages, menus e publisher-index já viram recurso por arquivo** via

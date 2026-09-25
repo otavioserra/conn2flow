@@ -12,6 +12,7 @@ use Conn2Flow\Cli\Commands\AuthCookieCommand;
 use Conn2Flow\Cli\Commands\DbTestCommand;
 use Conn2Flow\Cli\Commands\DbUpdateCommand;
 use Conn2Flow\Cli\Commands\DocsAuditCommand;
+use Conn2Flow\Cli\Commands\DocsBuildCommand;
 use Conn2Flow\Cli\Commands\DocsExtractCommand;
 use Conn2Flow\Cli\Commands\DockerLogsCommand;
 use Conn2Flow\Cli\Commands\DockerPhpVersionCommand;
@@ -122,6 +123,7 @@ final class Application
         // Documentation (req-177 / req-178)
         $this->register(new DocsAuditCommand($this->rootPath));
         $this->register(new DocsExtractCommand($this->rootPath));
+        $this->register(new DocsBuildCommand($this->rootPath));
 
         // Installer
         $this->register(new InstallerSyncCommand($this->rootPath));
