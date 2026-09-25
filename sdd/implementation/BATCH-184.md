@@ -14,6 +14,8 @@ Execução da [req-179](../human-requests/req-179.md). Os módulos estão com o 
 
 | `guides/installation.md` (antecipado a pedido do Humano) | `CONN2FLOW-INSTALADOR-DETALHADO`, `CONN2FLOW-ADAPTACAO-POS-INSTALACAO` (+ en) | A doc antiga descrevia `checkSystemRequirements()`/`runMigrations()`/`runSeeds()`/`install()`, que **não existem**. O instalador não valida a versão do PHP nem as extensões. `releases/latest` do GitHub aponta para o `gestor-v*` (as duas séries usam `make_latest: true`), então o link "sempre o mais recente" usa a API filtrando `instalador-v*`: JS no template `docs-article` + comando testado. O fallback do instalador é fixo em `gestor-v2.10.1`. `CAPTCHA_PROVIDER` para Turnstile é `cloudflare-turnstile`. `getGestorPath()` tem `. DIRECTORY_SEPARATOR + 'gestor'` (TypeError, só no ramo sem `install_path`). O `PHP85-INSTALL-GUIDE` (en) fica para `guides/development-environment` (onda 4). |
 
+| `reference/libraries/interface.md` | `BIBLIOTECA-INTERFACE` / `LIBRARY-INTERFACE` | **Segurança (req-181):** SQL injection em `interface_listar_ajax()` (busca, colunas e ordenação vindas do `$_REQUEST`); excluir/status por GET sem CSRF; nome de coluna controlável em `verificar-campo`. A regex de `email-obrigatorio` rejeita e-mail que começa com dígito, com maiúsculas ou com `+`. `texto-obrigatorio` conta bytes. `$id` indefinido em `editar`/`alteracoes_finalizar` (inócuo). O docblock de `interface_verificar_campos` estava errado. |
+
 ## Ferramental ajustado no caminho
 
 - `docs:audit` não trata `reference/libraries/index.md` como biblioteca.
