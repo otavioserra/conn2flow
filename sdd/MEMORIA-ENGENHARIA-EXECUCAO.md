@@ -16,6 +16,16 @@
 
 ## Tarefas recentes
 
+### 2026-09-25 — Planejamento FEAT-014 (docs Core + `/docs/` no site), sem código
+
+- **Publisher, publisher-pages, menus e publisher-index já viram recurso por arquivo** via
+  `sync_resources` em `resources/project_tables_config.json` — comprovado no `transformamp`. Nenhum
+  desses módulos tem `hooks.api`; `/_api/{modulo}/{acao}` exige criar o hook.
+- **`ai-workspace/{en,pt-br}/scripts/` é código vivo** (83 referências de `cli/`, `.vscode` etc.,
+  inclusive `scripts/lib/project-transport.sh`). Limpeza do `ai-workspace` nunca inclui `scripts/`.
+- `publisher-index` não filtra por valor de campo; o Core não tem lib de Markdown nem dependência de runtime no `composer.json`.
+- Plano completo: `conn2flow-ai-workspace/sdd/backlog/FEAT-014-*.md` (+ `ARCH-007` para atualização de kits).
+
 ### 2026-09-25 — BATCH-180 (req-175): renovação silenciosa de CSRF
 
 - **O token CSRF não tem TTL: é variável de sessão.** O cookie de sessão vence `SESSION_LIFETIME`

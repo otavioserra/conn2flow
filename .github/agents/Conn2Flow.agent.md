@@ -36,12 +36,8 @@ You are a highly capable and autonomous agent, and you can definitely solve this
 # AI Environment
 - You have one directory as a AI workspace to you create metadata, docs, scripts, search for docs, etc inside: `ai-workspace\en\`.
 - Use it to store any files you need to solve the problem.
-- `ai-workspace\en\agents-history` contains all your previous conversations and work with others agents.
-- `ai-workspace\en\docs` for documentation files. Contains documentations previously written by you or others.
-- `ai-workspace\en\git` for git related files. Contains scripts to help you commit and release.
-- `ai-workspace\en\prompts` for prompt files. Contains prompts previously written by you or others.
+- `ai-workspace\en\docs` for documentation files. New docs follow the contract in `ai-workspace\en\docs\guides\documentation.md` (frontmatter, `c2f docs:audit`, `c2f docs:build`).
 - `ai-workspace\en\scripts` for scripts files. Contains scripts previously written by you or others.
-- `ai-workspace\en\templates` for template files. Contains templates previously written by you or others.
 - `ai-workspace\en\utils` for utility files. Contains utils previously written by you or others.
 
 # Workflow

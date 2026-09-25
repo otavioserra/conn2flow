@@ -1,5 +1,13 @@
 # Validation Checklist
 
+## BATCH-181 e BATCH-182 — Limpeza do ai-workspace e ferramentas de documentação (req-176, req-177)
+
+- [x] Branch `legacy/ai-workspace-pre-docs` preserva `agents-history/`, `prompts/`, `templates/`; 179 arquivos removidos da `main`, `scripts/` intocado.
+- [x] `php cli/c2f.php docs:audit --json`: 8 docs piloto (pt-br + en) com score 0; 0 erros.
+- [x] `php cli/c2f.php docs:extract --all --check`: exit 0.
+- [x] `vendor/bin/phpunit --filter DocsToolingReq177Test`: 8/8 (34 asserções).
+- [x] Suíte completa no Windows: 1.227/1.228 — única falha `CoreHelpersTest::testCriptografiaBasicaComChavesRsa` (`openssl.cnf` ausente no PHP WinGet, ambiente, conhecida).
+
 ## BATCH-180 — Renovação silenciosa de CSRF e retry transparente (req-175)
 
 - [x] `gestor_csrf_resposta_invalida()` devolve `code: CSRF_INVALID_OR_EXPIRED` no JSON e o cabeçalho `X-Gestor-Csrf-Error` nos ramos JSON e HTML.

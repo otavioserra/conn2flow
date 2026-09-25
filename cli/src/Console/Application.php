@@ -11,6 +11,8 @@ use Conn2Flow\Cli\Commands\AiSyncCommand;
 use Conn2Flow\Cli\Commands\AuthCookieCommand;
 use Conn2Flow\Cli\Commands\DbTestCommand;
 use Conn2Flow\Cli\Commands\DbUpdateCommand;
+use Conn2Flow\Cli\Commands\DocsAuditCommand;
+use Conn2Flow\Cli\Commands\DocsExtractCommand;
 use Conn2Flow\Cli\Commands\DockerLogsCommand;
 use Conn2Flow\Cli\Commands\DockerPhpVersionCommand;
 use Conn2Flow\Cli\Commands\DockerStatusCommand;
@@ -116,6 +118,10 @@ final class Application
         $this->register(new ProjectDeployCommand($this->rootPath));
         $this->register(new ProjectRecoverCommand($this->rootPath));
         $this->register(new ProjectUpdateSystemCommand($this->rootPath));
+
+        // Documentation (req-177 / req-178)
+        $this->register(new DocsAuditCommand($this->rootPath));
+        $this->register(new DocsExtractCommand($this->rootPath));
 
         // Installer
         $this->register(new InstallerSyncCommand($this->rootPath));
