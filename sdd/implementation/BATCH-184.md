@@ -1,0 +1,23 @@
+# BATCH-184: Migração do Acervo de Documentação — Onda 1 (fundação) e seguintes do primeiro agente
+
+Execução da [req-179](../human-requests/req-179.md). Os módulos estão com o segundo agente: [req-180](../human-requests/req-180.md) / [BATCH-185](BATCH-185.md).
+
+## Progresso
+
+| Doc (pt-br + en) | Legado removido | Achados do código |
+|---|---|---|
+| `reference/libraries/index.md` | — | O registro `bibliotecas-dados` tem `api-cliente` e `cpanel` sem arquivo (fatal se pedidos). `gestor_incluir_bibliotecas()` não valida nomes. |
+| `reference/libraries/variaveis.md` | `BIBLIOTECA-VARIAVEIS` / `LIBRARY-VARIABLES` | Biblioteca sem chamadores; nenhuma variável `_sistema` nos dados; SQL sem escape de `grupo`/`id`; sem filtro de idioma; `atualizar` não atualiza o cache. A doc antiga a apresentava como sistema de configuração, com casos de uso inventados. |
+| `reference/libraries/pagina.md` | `BIBLIOTECA-PAGINA` / `LIBRARY-PAGE` | Só `pagina_celula()` tem uso (`perfil-usuario`). O `strtolower()` de mascarar/desmascarar atua no padrão, não no nome. |
+| `reference/libraries/banco.md` | `BIBLIOTECA-BANCO` / `LIBRARY-DATABASE` / `BANCO-V2-DOCS` | A `banco-v2` foi removida da linha 2.x (req-108), e os `@deprecated` são resíduo. `'unico' => false` ainda devolve uma linha só. `banco_retirar_acentos()` gera maiúsculas (`migraCOes`). `banco_identificador()` faz DELETE físico de registros `status='D'`. `banco_delete_varios()` dá TypeError. 22 funções sem chamadores. |
+| `reference/libraries/gestor.md` | `BIBLIOTECA-GESTOR` / `LIBRARY-MANAGER` | `gestor_variaveis_alterar()` sem escape do valor; `gestor_variaveis_globais()` ignora o módulo; `gestor_layout()` sem escape e sem filtro de status; `gestor_componente()` sem filtro de status; sessões limpas em 1 de cada 51 requisições; `existe('0')` é true. |
+
+## Ferramental ajustado no caminho
+
+- `docs:audit` não trata `reference/libraries/index.md` como biblioteca.
+- O extrator ignora `@param tipo $params['chave']` (chave de array), que antes sobrescrevia o tipo real do parâmetro.
+
+## Validação
+
+- `docs:audit --json`: 0 erros. Os avisos restantes são só `missing:` (cobertura pendente).
+- PHPUnit das ferramentas de docs: 12/12.
