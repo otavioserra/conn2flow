@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsExtractCommand.php
   - cli/src/Commands/DocsBuildCommand.php
-verified_at: 5b4348ab
+verified_at: a6e51e29
 ---
 
 # How to write and publish documentation

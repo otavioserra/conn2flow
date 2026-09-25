@@ -264,7 +264,9 @@ final class PhpFunctionExtractor
         if ($doc === null) {
             return $out;
         }
-        if (preg_match_all('/@param\s+([^\s$]+)\s+&?(?:\.\.\.)?\$(\w+)/', $doc, $m, PREG_SET_ORDER)) {
+        // `\w++(?!\[)` ignora linhas como `@param string $params['codigo']`, que documentam
+        // chaves do array e não o parâmetro em si.
+        if (preg_match_all('/@param\s+([^\s$]+)\s+&?(?:\.\.\.)?\$(\w++)(?!\[)/', $doc, $m, PREG_SET_ORDER)) {
             foreach ($m as $p) {
                 $out['params'][$p[2]] = $p[1];
             }

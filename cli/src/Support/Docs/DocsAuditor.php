@@ -124,7 +124,7 @@ final class DocsAuditor
             $issues[] = ['severity' => 'error', 'message' => "Link quebrado: {$link}."];
         }
 
-        if (str_starts_with($rel, 'reference/libraries/')) {
+        if (str_starts_with($rel, 'reference/libraries/') && basename($rel) !== 'index.md') {
             $issues = array_merge($issues, $this->auditLibrary($lang, $rel, $content));
         }
 

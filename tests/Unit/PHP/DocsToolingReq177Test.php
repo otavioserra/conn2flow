@@ -73,13 +73,19 @@ if (!function_exists('lib_dois')) {
     /** @param int $n */
     function lib_dois(&$n, ?string $s = null): ?int { return 1; }
 }
+/**
+ * @param array|false $params
+ * @param string $params['codigo']
+ */
+function lib_quatro($params = false) {}
 class Foo { public function metodo() {} }
 $x = Foo::class;
 function lib_tres() {}
 PHP;
         $fns = PhpFunctionExtractor::extract($code);
 
-        self::assertSame(['lib_um', 'lib_dois', 'lib_tres'], array_column($fns, 'name'));
+        self::assertSame(['lib_um', 'lib_dois', 'lib_quatro', 'lib_tres'], array_column($fns, 'name'));
+        self::assertSame('lib_quatro(array|false $params = false)', PhpFunctionExtractor::signatureText($fns[2]), 'chaves $params[...] do docblock não são o parâmetro');
         self::assertSame('lib_um(string $a, array $b = [], ...$resto): string', PhpFunctionExtractor::signatureText($fns[0]));
         self::assertSame('lib_dois(int &$n, ?string $s = null): ?int', PhpFunctionExtractor::signatureText($fns[1]));
         self::assertSame(6, $fns[0]['line']);
