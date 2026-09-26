@@ -39,6 +39,8 @@ The keys are read only from `$_ENV`, not from `$_CONFIG`.
 > [!WARNING]
 > The automatic link by e-mail does not check `email_verified` (Google) or whether the e-mail was confirmed at the provider. A provider account with an unverified e-mail equal to a site user's would sign in as that user (req-181, item A8). The `state` is also not deleted after use.
 
+**Internal helpers** (used by the functions above; rarely called directly): `oauth_config()`.
+
 ## Functions
 
 <!-- c2f:extract:start -->

@@ -39,6 +39,8 @@ O roteador resolve isso sozinho (`gestor_pagina_quill()`): depois de montar a p�
 > [!NOTE]
 > A paridade define `color: var(--color-mp-ink, inherit)` dentro de `.ql-editor`. `--color-mp-ink` é um token de um projeto específico; nos demais, o valor cai no `inherit`. Para ajustar a cor do texto no editor, defina esse token no contrato do projeto ou use `--font-sans` e as variáveis próprias.
 
+**Auxiliares internos** (usados pelas funções acima; raramente chamados direto): `editor_texto_assets_externos_carregar()`, `editor_texto_versao_cdn()`, `editor_texto_assets_editor()`, `editor_texto_paridade_css()`.
+
 ## Funções
 
 <!-- c2f:extract:start -->

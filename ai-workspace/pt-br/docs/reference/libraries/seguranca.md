@@ -65,6 +65,8 @@ O IP usado é o `REMOTE_ADDR` cru, não o de [ip_get()](ip.md): atrás de proxy 
 - `seguranca_token_aleatorio($bytes = 32)`: hexadecimal com `random_bytes()`, mínimo de 16 bytes.
 - `seguranca_ip_bloco($ip = null)`, `seguranca_user_agent()`.
 
+**Auxiliares internos** (usados pelas funções acima; raramente chamados direto): `seguranca_csrf_rota_isenta()`, `seguranca_csrf_resposta_invalida_corpo()`, `seguranca_csrf_atualizador_transicao_isento()`, `seguranca_csrf_atualizador_status_isento()`, `seguranca_csrf_atualizador_sessao_legada_isento()`.
+
 ## Funções
 
 <!-- c2f:extract:start -->

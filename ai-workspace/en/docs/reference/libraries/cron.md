@@ -108,6 +108,8 @@ For compatibility, each tick also fires the `cron.<frequency>` hook ([hooks](../
 - `cron_expressao_declarada($tarefa, $frequencia)`: the final expression, or `null` if invalid.
 - `cron_tarefas_carregar($frequencia, $tarefaId, $todas, $campos)`: reads `cron_tarefas` (without deleted ones; without paused ones unless `$todas`).
 
+**Internal helpers** (used by the functions above; rarely called directly): `cron_callback_preparar()`, `cron_tarefa_registrar()`.
+
 ## Functions
 
 <!-- c2f:extract:start -->

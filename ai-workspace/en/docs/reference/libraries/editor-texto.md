@@ -39,6 +39,8 @@ The router takes care of it on its own (`gestor_pagina_quill()`): after assembli
 > [!NOTE]
 > The parity sets `color: var(--color-mp-ink, inherit)` inside `.ql-editor`. `--color-mp-ink` is a token from one specific project; elsewhere, the value falls back to `inherit`. To adjust the text color in the editor, define that token in the project contract or use `--font-sans` and your own variables.
 
+**Internal helpers** (used by the functions above; rarely called directly): `editor_texto_assets_externos_carregar()`, `editor_texto_versao_cdn()`, `editor_texto_assets_editor()`, `editor_texto_paridade_css()`.
+
 ## Functions
 
 <!-- c2f:extract:start -->

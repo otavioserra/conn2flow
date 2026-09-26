@@ -42,6 +42,8 @@ $ok = two_factor_validate_code($secret, $codigoDigitado);
 
 O `perfil-usuario` acrescenta os **códigos de recuperação** (req-119), tentados só quando o segundo fator falha e válidos uma vez cada.
 
+**Auxiliares internos** (usados pelas funções acima; raramente chamados direto): `two_factor_base32_encode()`, `two_factor_base32_decode()`, `two_factor_hotp()`.
+
 ## Funções
 
 <!-- c2f:extract:start -->

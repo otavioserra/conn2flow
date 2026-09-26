@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsExtractCommand.php
   - cli/src/Commands/DocsBuildCommand.php
-verified_at: a2cf13cd
+verified_at: 8f0af744
 ---
 
 # Como escrever e publicar a documentação
@@ -47,7 +47,7 @@ visibility: public          # public (padrão) | restricted (reservado)
 module: menus               # opcional: id do módulo documentado
 sources:                    # obrigatório em reference/: o código que a doc descreve
   - gestor/bibliotecas/modelo.php
-verified_at: 5b4348ab       # commit do Core contra o qual a doc foi conferida
+verified_at: 8f0af744
 ---
 ```
 

@@ -56,6 +56,8 @@ $map  = assets_externos_urls_js(['codemirror']);        // library => file => UR
 - `assets_externos_incluir()` adds the CSS tags through `gestor_pagina_css_incluir($tag)`, which pushes them onto the end-of-page **JavaScript** queue ([gestor.php](gestor.md)). The CSS works, but loads after the content.
 - The local URL uses `url-raiz`, which includes the language prefix when it is in the URL.
 
+**Internal helpers** (used by the functions above; rarely called directly): `assets_externos_registro()`, `assets_externos_url()`, `assets_externos_urls_map()`.
+
 ## Functions
 
 <!-- c2f:extract:start -->

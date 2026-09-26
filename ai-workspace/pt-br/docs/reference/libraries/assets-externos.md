@@ -56,6 +56,8 @@ $mapa = assets_externos_urls_js(['codemirror']);        // biblioteca => arquivo
 - `assets_externos_incluir()` põe as tags de CSS pela `gestor_pagina_css_incluir($tag)`, que as empilha na fila de **JavaScript** do fim da página ([gestor.php](gestor.md)). O CSS funciona, mas carrega depois do conteúdo.
 - A URL local usa `url-raiz`, que inclui o prefixo de idioma quando ele está na URL.
 
+**Auxiliares internos** (usados pelas funções acima; raramente chamados direto): `assets_externos_registro()`, `assets_externos_url()`, `assets_externos_urls_map()`.
+
 ## Funções
 
 <!-- c2f:extract:start -->

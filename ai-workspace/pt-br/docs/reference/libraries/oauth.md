@@ -39,6 +39,8 @@ As chaves são lidas só de `$_ENV`, não de `$_CONFIG`.
 > [!WARNING]
 > O vínculo automático por e-mail não confere `email_verified` (Google) nem se o e-mail foi confirmado no provedor. Uma conta de provedor com um e-mail não verificado igual ao de um usuário do site entraria como esse usuário (req-181, item A8). O `state` também não é apagado depois de usado.
 
+**Auxiliares internos** (usados pelas funções acima; raramente chamados direto): `oauth_config()`.
+
 ## Funções
 
 <!-- c2f:extract:start -->

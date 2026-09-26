@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsExtractCommand.php
   - cli/src/Commands/DocsBuildCommand.php
-verified_at: a2cf13cd
+verified_at: 8f0af744
 ---
 
 # How to write and publish documentation
@@ -47,7 +47,7 @@ visibility: public          # public (default) | restricted (reserved)
 module: menus               # optional: id of the documented module
 sources:                    # required in reference/: the code this doc describes
   - gestor/bibliotecas/modelo.php
-verified_at: 5b4348ab       # Core commit the doc was checked against
+verified_at: 8f0af744
 ---
 ```
 

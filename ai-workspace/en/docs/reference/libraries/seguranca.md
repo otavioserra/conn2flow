@@ -65,6 +65,8 @@ The IP used is the raw `REMOTE_ADDR`, not the one from [ip_get()](ip.md): behind
 - `seguranca_token_aleatorio($bytes = 32)`: hexadecimal from `random_bytes()`, at least 16 bytes.
 - `seguranca_ip_bloco($ip = null)`, `seguranca_user_agent()`.
 
+**Internal helpers** (used by the functions above; rarely called directly): `seguranca_csrf_rota_isenta()`, `seguranca_csrf_resposta_invalida_corpo()`, `seguranca_csrf_atualizador_transicao_isento()`, `seguranca_csrf_atualizador_status_isento()`, `seguranca_csrf_atualizador_sessao_legada_isento()`.
+
 ## Functions
 
 <!-- c2f:extract:start -->

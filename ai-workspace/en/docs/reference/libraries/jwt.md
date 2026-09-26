@@ -49,6 +49,8 @@ Other details:
 - The header's `alg` is ignored (verification is always HMAC-SHA256), which prevents algorithm-confusion attacks.
 - The secret keys are stored in plain text in the `variaveis` table: anyone who can read the database (or a backup) can issue tokens.
 
+**Internal helpers** (used by the functions above; rarely called directly): `jwt_base64url_encode()`, `jwt_base64url_decode()`, `jwt_rotation_days()`, `jwt_grace_hours()`, `jwt_keys_load()`, `jwt_keys_save()`, `jwt_nova_chave()`, `jwt_get_active_key()`.
+
 ## Functions
 
 <!-- c2f:extract:start -->

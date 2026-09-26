@@ -49,6 +49,8 @@ Outros detalhes:
 - O `alg` do cabeçalho é ignorado (a verificação é sempre HMAC-SHA256), o que evita o ataque de troca de algoritmo.
 - As chaves secretas ficam em texto claro na tabela `variaveis`: quem lê o banco (ou um *backup*) consegue emitir tokens.
 
+**Auxiliares internos** (usados pelas funções acima; raramente chamados direto): `jwt_base64url_encode()`, `jwt_base64url_decode()`, `jwt_rotation_days()`, `jwt_grace_hours()`, `jwt_keys_load()`, `jwt_keys_save()`, `jwt_nova_chave()`, `jwt_get_active_key()`.
+
 ## Funções
 
 <!-- c2f:extract:start -->
