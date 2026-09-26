@@ -192,6 +192,39 @@ final class DocsBuildReq178Test extends TestCase
         self::assertContains('pt-br:guides/a.md: link quebrado para nada.md.', $plan['errors']);
     }
 
+    public function testModuloDonoConfiguracaoTemplatesEStatus(): void
+    {
+        $this->project();
+        // Sem manifesto do módulo, vale o docs.config.json.
+        $this->file('site/docs.config.json', json_encode($this->config()));
+        [$cfg, $arquivo] = DocsBuilder::loadConfig($this->tmp . '/site');
+        self::assertStringEndsWith('/docs.config.json', $arquivo);
+        self::assertArrayNotHasKey('module', $cfg);
+        self::assertNull(DocsBuilder::statusPath($this->tmp . '/site', $cfg));
+
+        // Com o manifesto, ele vence, e o módulo passa a ser o dono.
+        $this->file('site/modulos/documentation/documentation.json', json_encode(['versao' => '1.0.0', 'docs' => $this->config()]));
+        $this->file('site/modulos/documentation/resources/pt-br/templates/art/art.html', "<main>MODULO</main>@[[publisher#html#conteudo]]@");
+        [$cfg, $arquivo] = DocsBuilder::loadConfig($this->tmp . '/site');
+        self::assertStringEndsWith('/modulos/documentation/documentation.json', $arquivo);
+        self::assertSame('documentation', $cfg['module']);
+
+        $plan = (new DocsBuilder(new DocsTree($this->tmp . '/core'), $this->tmp . '/site', $cfg))->plan();
+        self::assertSame([], $plan['errors']);
+        $paginas = array_column(json_decode($plan['write'][$this->tmp . '/site/resources/pt-br/pages.json'], true), null, 'id');
+        self::assertSame('documentation', $paginas['docs-reference-libraries-lib']['module']);
+        self::assertArrayNotHasKey('module', $paginas['outra-pagina'], 'páginas que não são das docs não mudam');
+        $html = $plan['write'][$this->tmp . '/site/resources/pt-br/pages/docs-reference-libraries-lib/docs-reference-libraries-lib.html'];
+        self::assertStringContainsString('<main>MODULO</main>', $html, 'o template do módulo vence o global');
+
+        $status = DocsBuilder::statusPath($this->tmp . '/site', $cfg);
+        self::assertSame($this->tmp . '/site/modulos/documentation/documentation.status.json', $status);
+        $json = json_decode(DocsBuilder::statusJson($plan, 'abc1234', 3, 0), true);
+        self::assertSame('abc1234', $json['core_commit']);
+        self::assertSame($plan['stats']['pages'], $json['pages']);
+        self::assertSame(count($plan['warnings']), $json['warnings_count']);
+    }
+
     private function project(): void
     {
         $doc = static fn (string $title, string $section, string $body, string $extra = ''): string => "---\ntitle: {$title}\ndescription: D\nsection: {$section}\nverified_at: abc\n{$extra}---\n# {$title}\n\n{$body}\n";

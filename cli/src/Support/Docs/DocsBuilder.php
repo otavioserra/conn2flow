@@ -7,7 +7,7 @@ namespace Conn2Flow\Cli\Support\Docs;
 /**
  * Planeja os recursos de sistema que publicam as docs num projeto (req-178).
  *
- * Entrada: a árvore Markdown do Core (DocsTree) e o `docs.config.json` do projeto.
+ * Entrada: a árvore Markdown do Core (DocsTree) e a configuração das docs do projeto (`loadConfig()`).
  * Saída: um plano puro — arquivos a gravar e pastas a remover — que o comando aplica ou
  * apenas lista (`--dry-run`). Nada é escrito aqui, o que torna o builder testável.
  *
@@ -39,7 +39,7 @@ final class DocsBuilder
     private array $warnings = [];
 
     /**
-     * @param array<string, mixed> $config conteúdo de docs.config.json
+     * @param array<string, mixed> $config configuração das docs (chave `docs` do módulo `documentation` ou `docs.config.json`)
      */
     /**
      * @param array<string, array<string, string>> $moduleNames Nome de cada módulo por idioma (`[idioma][id] => nome`),
@@ -236,6 +236,10 @@ final class DocsBuilder
                     'framework_css' => (string)($this->config['framework_css'] ?? 'tailwindcss'),
                     'without_permission' => true,
                 ];
+                // req-186: com um módulo dono configurado, a página pertence a ele no banco.
+                if ($this->module() !== '') {
+                    $entry['module'] = $this->module();
+                }
                 if ($p['publisher_id'] !== null) {
                     $entry['publisher_id'] = $p['publisher_id'];
                 }
@@ -704,7 +708,7 @@ final class DocsBuilder
                 return (string)$id;
             }
         }
-        $this->warnings[] = "{$rel}: seção '{$section}' sem publisher em docs.config.json — publicada como página comum.";
+        $this->warnings[] = "{$rel}: seção '{$section}' sem publisher na configuração das docs — publicada como página comum.";
 
         return null;
     }
@@ -715,8 +719,80 @@ final class DocsBuilder
         return (array)($this->config['labels'][$lang] ?? []);
     }
 
+    /** Módulo dono das docs no projeto (`module` da configuração), ou vazio. */
+    private function module(): string
+    {
+        $modulo = (string)($this->config['module'] ?? '');
+
+        return preg_match('/^[a-z0-9][a-z0-9_-]*$/', $modulo) ? $modulo : '';
+    }
+
+    /**
+     * Configuração das docs do projeto: a chave `docs` do manifesto do módulo `documentation` (req-186)
+     * ou, na falta dele, o `docs.config.json` da raiz do gestor.
+     *
+     * @return array{0: array<string, mixed>|null, 1: string} A configuração (ou null) e o arquivo lido.
+     */
+    public static function loadConfig(string $gestorPath): array
+    {
+        $gestorPath = rtrim(str_replace('\\', '/', $gestorPath), '/');
+        $manifesto = $gestorPath . '/modulos/documentation/documentation.json';
+        if (is_file($manifesto)) {
+            $dados = json_decode((string)file_get_contents($manifesto), true);
+            if (is_array($dados) && is_array($dados['docs'] ?? null)) {
+                return [$dados['docs'] + ['module' => 'documentation'], $manifesto];
+            }
+        }
+        $antigo = $gestorPath . '/docs.config.json';
+        $dados = is_file($antigo) ? json_decode((string)file_get_contents($antigo), true) : null;
+
+        return [is_array($dados) ? $dados : null, $antigo];
+    }
+
+    /** Onde gravar o resumo da geração: `modulos/<modulo>/documentation.status.json`, ou null sem módulo. */
+    public static function statusPath(string $gestorPath, array $config): ?string
+    {
+        $modulo = (string)($config['module'] ?? '');
+        if (!preg_match('/^[a-z0-9][a-z0-9_-]*$/', $modulo)) {
+            return null;
+        }
+        $dir = rtrim(str_replace('\\', '/', $gestorPath), '/') . '/modulos/' . $modulo;
+
+        return is_dir($dir) ? $dir . '/documentation.status.json' : null;
+    }
+
+    /**
+     * Resumo da geração lido pela tela do módulo no painel: quando, de que commit do core, quanto foi gerado
+     * e os avisos (inclusive as substituições do filtro do SDD).
+     *
+     * @param array{warnings: list<string>, stats: array<string, int>} $plan
+     */
+    public static function statusJson(array $plan, string $commit, int $changed, int $deleted): string
+    {
+        $avisos = array_values($plan['warnings'] ?? []);
+
+        return json_encode([
+            'generated_at' => date('c'),
+            'core_commit' => $commit,
+            'pages' => (int)($plan['stats']['pages'] ?? 0),
+            'publications' => (int)($plan['stats']['publications'] ?? 0),
+            'landings' => (int)($plan['stats']['landings'] ?? 0),
+            'files_changed' => $changed,
+            'folders_removed' => $deleted,
+            'warnings_count' => count($avisos),
+            'warnings' => array_slice($avisos, 0, 200),
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n";
+    }
+
     private function readTemplate(string $lang, string $id): ?string
     {
+        // req-186: os templates das docs podem morar nos recursos do módulo dono.
+        if ($this->module() !== '' && $id !== '') {
+            $noModulo = $this->gestorPath . '/modulos/' . $this->module() . '/resources/' . $lang . '/templates/' . $id . '/' . $id . '.html';
+            if (is_file($noModulo)) {
+                return (string)file_get_contents($noModulo);
+            }
+        }
         $path = $this->gestorPath . '/resources/' . $lang . '/templates/' . $id . '/' . $id . '.html';
         if ($id === '' || !is_file($path)) {
             $this->errors[] = "{$lang}: template '{$id}' não encontrado em {$path}.";

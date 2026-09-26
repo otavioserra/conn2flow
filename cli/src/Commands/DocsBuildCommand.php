@@ -37,11 +37,14 @@ final class DocsBuildCommand extends BaseProcessCommand
     public function getHelp(): string
     {
         return "Usage: c2f docs:build --project=<id> [--dry-run] [--source=<dir>]\n\n"
-            . "Reads <project gestor>/docs.config.json and ai-workspace/<lang>/docs/ (guides, concepts, reference,\n"
+            . "Reads the docs configuration (key 'docs' of <project gestor>/modulos/documentation/documentation.json,\n"
+            . "or <project gestor>/docs.config.json) and ai-workspace/<lang>/docs/ (guides, concepts, reference,\n"
             . "whats-new) and writes, per language, resources/<lang>/{pages,publisher_pages,menus}/ plus pages.json,\n"
             . "publisher-pages.json and menus.json (merged by id: only ids 'docs' and 'docs-*' are managed), and\n"
-            . "assets/docs/llms*.txt. With sdd.enabled in docs.config.json, also publishes filtered Core SDD\n"
-            . "documents (pt-br only) under /docs/sdd/. Broken docs links or invalid frontmatter abort the build.\n\n"
+            . "assets/docs/llms*.txt. With sdd.enabled in the configuration, also publishes filtered Core SDD\n"
+            . "documents (pt-br only) under /docs/sdd/. With 'module' set, pages belong to that module, templates\n"
+            . "are read from its resources first and modulos/<module>/documentation.status.json records the build.\n"
+            . "Broken docs links or invalid frontmatter abort the build.\n\n"
             . "Next step (local only): php cli/c2f.php project:update-all <id>";
     }
 
@@ -64,13 +67,15 @@ final class DocsBuildCommand extends BaseProcessCommand
         }
 
         $gestorPath = $project['gestorPath'];
-        $configFile = $gestorPath . DIRECTORY_SEPARATOR . 'docs.config.json';
-        $config = is_file($configFile) ? json_decode((string)file_get_contents($configFile), true) : null;
+        // req-186: a configuração mora no módulo `documentation` do projeto (chave `docs` do manifesto);
+        // o `docs.config.json` na raiz do gestor continua aceito como alternativa.
+        [$config, $configFile] = DocsBuilder::loadConfig($gestorPath);
         if (!is_array($config)) {
-            $output->error("docs.config.json missing or invalid at {$configFile}.");
+            $output->error("Docs configuration not found: neither modulos/documentation/documentation.json (key 'docs') nor docs.config.json in {$gestorPath}.");
 
             return 1;
         }
+        $output->info('Configuration: ' . str_replace('\\', '/', substr($configFile, strlen($gestorPath) + 1)));
 
         $source = $input->getOption('source');
         $tree = new DocsTree($this->rootPath, is_string($source) ? $source : null);
@@ -129,6 +134,15 @@ final class DocsBuildCommand extends BaseProcessCommand
         }
         foreach ($deleted as $dir) {
             $this->removeDir($dir);
+        }
+
+        // req-186: resumo da geração para a tela do módulo no painel. Só é regravado quando algo mudou,
+        // para uma geração sem mudanças não sujar o repositório do projeto.
+        $statusFile = DocsBuilder::statusPath($gestorPath, $config);
+        if ($statusFile !== null && ($changed !== [] || $deleted !== [] || !is_file($statusFile))) {
+            $commit = trim((string)@shell_exec('git -C ' . escapeshellarg($this->rootPath) . ' rev-parse --short HEAD'));
+            file_put_contents($statusFile, DocsBuilder::statusJson($plan, $commit, count($changed), count($deleted)));
+            $output->info('Status: ' . str_replace('\\', '/', substr($statusFile, strlen($gestorPath) + 1)));
         }
 
         $output->success(count($changed) === 0 && $deleted === [] ? 'Docs already up to date.' : 'Docs resources written.');
