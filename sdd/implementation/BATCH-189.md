@@ -2,7 +2,7 @@
 
 Execução da [req-185](../human-requests/req-185.md). Publicação no Lab pelo agente da [req-184](../human-requests/req-184.md) ([BATCH-188](BATCH-188.md)).
 
-**Status**: `implemented` (publicação visual vinculada à req-184).
+**Status**: `complete` (2026-09-26).
 
 ## O que mudou
 
@@ -26,3 +26,10 @@ Execução da [req-185](../human-requests/req-185.md). Publicação no Lab pelo 
 - `php cli/c2f.php docs:build --project=conn2flow-site-local --dry-run`: exit 0; 318 páginas, 303 publicações, 5 landings no plano; **nenhum arquivo escrito**.
 - `php -l` nos três arquivos PHP alterados: sem erros; `git diff --check` nos dois repositórios: exit 0.
 - Conferência do JS: nos dois templates, o cálculo usa os retângulos do link atual e de `[data-docs-scroll]` depois da expansão dos grupos e escreve somente `scroll.scrollTop`. O dry run leu os templates do projeto. A inspeção visual final no Lab acompanha a publicação da req-184, conforme §3 da requisição.
+
+## Publicação no Lab (2026-09-26, pelo agente da req-179, que assumiu o pipeline a pedido do Humano)
+
+- `docs:build --project=conn2flow-site-local`: 319 páginas, 304 publicações, 5 landings; `project:update-all`: sem órfãos.
+- Conferido por HTTP e `page:inspect` (0 erros de console): `/docs/sdd/` 200; menu centralizado no item atual (`/docs/reference/modules/usuarios/`); cartões anterior/próximo com o rótulo do menu e na ordem do menu (correção `fix(docs)` no DocsBuilder); descrições das funções no bloco; sem link de edição; callouts separados.
+- SDD publicado: 776 substituições do filtro; varredura do JSON e do `llms-full-pt-br.txt` sem IP real, e-mail, host de laboratório ou caminho de servidor.
+- Site: commit `84e4cca` (`feat/req-055`).

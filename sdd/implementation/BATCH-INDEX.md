@@ -123,10 +123,10 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-183 | complete | Parser `docs:build` Markdown → recursos Tailwind (req-178) | [BATCH-183.md](BATCH-183.md) | FEAT-014 fase 1. Parsedown em `cli/lib/`; idempotente; publicado no Lab (`conn2flow-site-local`, REQ-057/BATCH-050 do site); PHPUnit 12/12 docs, suíte 1.231/1.232 (CoreHelpersTest = openssl Windows). |
 | BATCH-184 | complete | Migração do acervo de docs — ondas 1 e 2 (req-179) | [BATCH-184.md](BATCH-184.md) | Conceitos da onda 1 e as 41 bibliotecas; legado zerado; achados de segurança A1–A11 na req-181. Concluído em 2026-09-26; pipeline das docs passa à req-184. |
 | BATCH-185 | complete | Documentação dos módulos do core — onda 3, segundo agente (req-180) | [BATCH-185.md](BATCH-185.md) | 32 módulos reescritos (pt-br + en), legado de módulos removido; auditoria final: 66 referências, nenhuma ausente, score 0. Publicação no site feita pelo BATCH-184. Concluído em 2026-09-26. |
-| BATCH-186 | pending | Docs do core — guias e referência de CLI e API, onda 4 (req-182) | [BATCH-186.md](BATCH-186.md) | Agente em outra infraestrutura. Sem pipeline. |
-| BATCH-187 | pending | Docs do core — conceitos, novidades e limpeza do legado, onda 5 (req-183) | [BATCH-187.md](BATCH-187.md) | Agente em outra infraestrutura. Sem pipeline. |
-| BATCH-188 | pending | Publicação do SDD do core e dono do pipeline das docs, onda 6 (req-184) | [BATCH-188.md](BATCH-188.md) | Agente em outra infraestrutura. Pipeline só depois do BATCH-184 `complete`. |
-| BATCH-189 | pending | Ajustes de navegação e referência nas docs online (req-185) | [BATCH-189.md](BATCH-189.md) | Agente em paralelo. Menu centralizado, anterior/próximo com rótulo do menu, descrição das funções, sem link de edição. Sem pipeline. |
+| BATCH-186 | complete | Docs do core — guias e referência de CLI e API, onda 4 (req-182) | [BATCH-186.md](BATCH-186.md) | Agente em outra infraestrutura. Sem pipeline. |
+| BATCH-187 | complete | Docs do core — conceitos, novidades e limpeza do legado, onda 5 (req-183) | [BATCH-187.md](BATCH-187.md) | Agente em outra infraestrutura. Sem pipeline. |
+| BATCH-188 | complete | Publicação do SDD do core e dono do pipeline das docs, onda 6 (req-184) | [BATCH-188.md](BATCH-188.md) | Agente em outra infraestrutura. Pipeline só depois do BATCH-184 `complete`. |
+| BATCH-189 | complete | Ajustes de navegação e referência nas docs online (req-185) | [BATCH-189.md](BATCH-189.md) | Agente em paralelo. Menu centralizado, anterior/próximo com rótulo do menu, descrição das funções, sem link de edição. Sem pipeline. |
 
 ## Regra operacional
 

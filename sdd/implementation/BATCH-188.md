@@ -2,7 +2,7 @@
 
 Execução da [req-184](../human-requests/req-184.md), por um agente em outra infraestrutura. Ondas irmãs: [BATCH-186](BATCH-186.md) (onda 4) e [BATCH-187](BATCH-187.md) (onda 5).
 
-**Status**: `in-progress`. O pipeline no Lab só pode começar depois do [BATCH-184](BATCH-184.md) `complete`.
+**Status**: `complete` (2026-09-26).
 
 ## Desenho
 
@@ -33,3 +33,10 @@ Execução da [req-184](../human-requests/req-184.md), por um agente em outra in
 - Abrir `/docs/sdd/` no Lab, navegar para um documento de cada pasta e conferir o menu SDD.
 - Conferir o índice `llms-pt-br.txt` e o conteúdo `llms-full-pt-br.txt` para as páginas do SDD.
 - Revisar os avisos de redaction/exclusão do build e buscar dados sensíveis no HTML gerado antes da publicação de produção.
+
+## Publicação no Lab (2026-09-26, pelo agente da req-179, que assumiu o pipeline a pedido do Humano)
+
+- `docs:build --project=conn2flow-site-local`: 319 páginas, 304 publicações, 5 landings; `project:update-all`: sem órfãos.
+- Conferido por HTTP e `page:inspect` (0 erros de console): `/docs/sdd/` 200; menu centralizado no item atual (`/docs/reference/modules/usuarios/`); cartões anterior/próximo com o rótulo do menu e na ordem do menu (correção `fix(docs)` no DocsBuilder); descrições das funções no bloco; sem link de edição; callouts separados.
+- SDD publicado: 776 substituições do filtro; varredura do JSON e do `llms-full-pt-br.txt` sem IP real, e-mail, host de laboratório ou caminho de servidor.
+- Site: commit `84e4cca` (`feat/req-055`).

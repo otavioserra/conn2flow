@@ -2,7 +2,7 @@
 
 Execução da [req-183](../human-requests/req-183.md), por um agente em outra infraestrutura. Ondas irmãs: [BATCH-186](BATCH-186.md) (onda 4) e [BATCH-188](BATCH-188.md) (onda 6).
 
-**Status**: `implemented-pending-upstream-cleanup` (onda 5 concluída; critério global `legacy=0` depende da onda 2).
+**Status**: `complete` (2026-09-26).
 
 ## Progresso
 
@@ -32,3 +32,7 @@ Execução da [req-183](../human-requests/req-183.md), por um agente em outra in
 - Verificação local: todos os links `.md` das novas páginas resolvem; as fontes declaradas nos 38 arquivos novos existem; `git diff --check` sem erros.
 - Verificação de links do acervo inteiro: 267 Markdown examinados, 10 links quebrados, todos nos quatro arquivos legados `BIBLIOTECA-{FORMULARIO,USUARIO}` / `LIBRARY-{FORM,USER}` que a onda 2 ainda deve substituir. Nenhum link quebrado foi introduzido nas páginas desta onda.
 - Publicação e pipeline não executados, por regra da req-183; pertencem à req-184.
+
+## Fechamento (2026-09-26)
+
+- Com a onda 2 concluída (BATCH-184), `legacy` = 0 nos dois idiomas; o critério global da req-183 foi atingido. Publicado no Lab junto com o BATCH-188.
