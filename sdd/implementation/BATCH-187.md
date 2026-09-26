@@ -23,7 +23,8 @@ Execução da [req-183](../human-requests/req-183.md), por um agente em outra in
 
 ## Commits
 
-- A preencher após os commits desta onda.
+- `047ccc78` — `docs(core): concepts and release notes (BATCH-187 / req-183)`; 38 páginas novas em pares pt-br/en, 51 arquivos legados removidos, READMEs revisados. Enviado a `origin/main`.
+- O commit de fechamento deste relatório registra o hash acima e a validação final.
 
 ## Validação
 
