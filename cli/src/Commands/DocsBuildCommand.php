@@ -40,7 +40,8 @@ final class DocsBuildCommand extends BaseProcessCommand
             . "Reads <project gestor>/docs.config.json and ai-workspace/<lang>/docs/ (guides, concepts, reference,\n"
             . "whats-new) and writes, per language, resources/<lang>/{pages,publisher_pages,menus}/ plus pages.json,\n"
             . "publisher-pages.json and menus.json (merged by id: only ids 'docs' and 'docs-*' are managed), and\n"
-            . "assets/docs/llms*.txt. Broken links or invalid frontmatter abort the build without writing.\n\n"
+            . "assets/docs/llms*.txt. With sdd.enabled in docs.config.json, also publishes filtered Core SDD\n"
+            . "documents (pt-br only) under /docs/sdd/. Broken docs links or invalid frontmatter abort the build.\n\n"
             . "Next step (local only): php cli/c2f.php project:update-all <id>";
     }
 

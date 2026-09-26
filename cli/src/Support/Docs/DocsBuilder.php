@@ -20,7 +20,7 @@ namespace Conn2Flow\Cli\Support\Docs;
  */
 final class DocsBuilder
 {
-    private const SECTION_ORDER = ['guides', 'concepts', 'reference', 'whats-new'];
+    private const SECTION_ORDER = ['guides', 'concepts', 'reference', 'whats-new', 'sdd'];
     private const JSON_FLAGS = JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE;
 
     private DocsTree $tree;
@@ -328,6 +328,12 @@ final class DocsBuilder
             $docs[$rel] = ['meta' => $fm['meta'], 'body' => $fm['body']];
         }
 
+        if ($lang === 'pt-br' && ($this->config['sdd']['enabled'] ?? false) === true) {
+            $source = (new SddSource())->collect($this->tree->rootPath());
+            $docs += $source['docs'];
+            array_push($this->warnings, ...$source['warnings']);
+        }
+
         return $docs;
     }
 
@@ -423,6 +429,9 @@ final class DocsBuilder
         if (str_ends_with($href, '.md')) {
             $target = DocsAuditor::resolve(dirname($rel), $href);
             if ($target === null || !isset($docs[$target])) {
+                if (str_starts_with($rel, 'sdd/')) {
+                    return '#';
+                }
                 $this->errors[] = "{$lang}:{$rel}: link quebrado para {$href}.";
 
                 return null;
@@ -430,7 +439,8 @@ final class DocsBuilder
 
             return MarkdownRenderer::URL_ROOT_TOKEN . $this->urlPath($target) . $frag;
         }
-        $repoTarget = DocsAuditor::resolve(dirname($this->tree->repoRelative($lang, $rel)), $href);
+        $sourcePath = str_starts_with($rel, 'sdd/') ? $rel : $this->tree->repoRelative($lang, $rel);
+        $repoTarget = DocsAuditor::resolve(dirname($sourcePath), $href);
         if ($repoTarget === null) {
             $this->errors[] = "{$lang}:{$rel}: link {$href} sai do repositório.";
 
@@ -509,7 +519,8 @@ final class DocsBuilder
             $html .= '</ul>';
         }
         if ($repo !== '') {
-            $html .= '<p><a href="' . $this->blobUrl($this->tree->repoRelative($lang, $rel)) . '" target="_blank" rel="noopener" class="' . DocsTheme::SOURCE_LINK . '">'
+            $sourcePath = str_starts_with($rel, 'sdd/') ? $rel : $this->tree->repoRelative($lang, $rel);
+            $html .= '<p><a href="' . $this->blobUrl($sourcePath) . '" target="_blank" rel="noopener" class="' . DocsTheme::SOURCE_LINK . '">'
                 . self::text((string)($labels['edit'] ?? 'Edit this page')) . ' →</a></p>';
         }
 

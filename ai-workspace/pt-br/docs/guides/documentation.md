@@ -142,6 +142,10 @@ php cli/c2f.php docs:build --project=conn2flow-site-local
   - o `llms.txt`.
 - **Publicação:** a partir daí o caminho é o de qualquer recurso. Rode `project:update-all` para sincronizar e reconstruir o CSS no ambiente **local**. O deploy de produção é feito pelo operador.
 
+### Fonte SDD do Core
+
+Quando `docs.config.json` define `"sdd": {"enabled": true}`, o mesmo build inclui documentos públicos de `conn2flow/sdd/` em `/docs/sdd/`, sob o publisher `docs-sdd`. Essa fonte é apenas em pt-br e deriva título, descrição e ordem do próprio Markdown, sem frontmatter. O build ignora `archive/`, `backlog/`, memórias e qualquer SDD de projetos. Antes de gerar páginas e `llms.txt`, substitui caminhos, IPs, e-mails, hosts e nomes privados; arquivos com credenciais ou chaves são excluídos com aviso no relatório. Confira os avisos do `--dry-run` antes de publicar.
+
 > [!IMPORTANT]
 > O build sobrescreve as páginas de documentação a cada execução. Correções feitas pelo painel se perdem; corrija sempre o Markdown.
 
