@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsExtractCommand.php
   - cli/src/Commands/DocsBuildCommand.php
-verified_at: 86350986
+verified_at: bd1b184d
 ---
 
 # How to write and publish documentation
@@ -134,7 +134,7 @@ php cli/c2f.php docs:build --project=conn2flow-site-local --dry-run
 php cli/c2f.php docs:build --project=conn2flow-site-local
 ```
 
-- **Configuration:** the command reads `docs.config.json` in the project's `gestor/` folder. It sets the languages, base path, layout, which publisher receives each section and the sidebar menu id.
+- **Configuration:** the command reads the `docs` key of the project's `documentation` module manifest (`gestor/modulos/documentation/documentation.json`) or, without it, `docs.config.json` in the `gestor/` folder. It sets the languages, base path, layout, which publisher receives each section and the sidebar menu id. With the module, generated pages belong to it, the `docs-article` and `docs-sidebar` templates are looked up first in the module resources and each build writes `documentation.status.json` in the module folder, shown by the module screen in the panel. Regeneration always happens through the CLI, in the development environment.
 - **What gets generated:** the Markdown becomes HTML with Tailwind classes and is written as the project's **system resources**:
   - publications (`publisher_pages`);
   - pages with a `publisher_id`;
@@ -144,7 +144,7 @@ php cli/c2f.php docs:build --project=conn2flow-site-local
 
 ### Core SDD source
 
-When `docs.config.json` sets `"sdd": {"enabled": true}`, the same build includes public documents from `conn2flow/sdd/` at `/docs/sdd/` under the `docs-sdd` publisher. This source is available in Portuguese only and derives titles, descriptions, and order from Markdown without frontmatter. The build skips `archive/`, `backlog/`, memory files, and SDD from projects. Before producing pages and `llms.txt`, it replaces paths, IP addresses, emails, hosts, and private project names; files containing credentials or private keys are excluded with a build warning. Review the `--dry-run` warnings before publishing.
+When the configuration sets `"sdd": {"enabled": true}`, the same build includes public documents from `conn2flow/sdd/` at `/docs/sdd/` under the `docs-sdd` publisher. This source is available in Portuguese only and derives titles, descriptions, and order from Markdown without frontmatter. The build skips `archive/`, `backlog/`, memory files, and SDD from projects. Before producing pages and `llms.txt`, it replaces paths, IP addresses, emails, hosts, and private project names; files containing credentials or private keys are excluded with a build warning. Review the `--dry-run` warnings before publishing.
 
 > [!IMPORTANT]
 > The build overwrites the documentation pages on every run. Fixes made in the admin panel are lost; always fix the Markdown.

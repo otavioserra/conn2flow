@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsExtractCommand.php
   - cli/src/Commands/DocsBuildCommand.php
-verified_at: 86350986
+verified_at: bd1b184d
 ---
 
 # Como escrever e publicar a documentação
@@ -134,7 +134,7 @@ php cli/c2f.php docs:build --project=conn2flow-site-local --dry-run
 php cli/c2f.php docs:build --project=conn2flow-site-local
 ```
 
-- **Configuração:** o comando lê `docs.config.json` na pasta `gestor/` do projeto. Ele define idiomas, caminho base, layout, qual publisher recebe cada seção e o id do menu lateral.
+- **Configuração:** o comando lê a chave `docs` do manifesto do módulo `documentation` do projeto (`gestor/modulos/documentation/documentation.json`) ou, na falta dele, o `docs.config.json` da pasta `gestor/`. Ela define idiomas, caminho base, layout, qual publisher recebe cada seção e o id do menu lateral. Com o módulo, as páginas geradas pertencem a ele, os templates `docs-article` e `docs-sidebar` são procurados primeiro nos recursos do módulo e cada geração grava `documentation.status.json` na pasta do módulo, que a tela do módulo no painel mostra. A regeneração é sempre pelo CLI, no ambiente de desenvolvimento.
 - **O que é gerado:** o Markdown vira HTML com classes Tailwind e é gravado como **recursos do sistema** do projeto:
   - publicações (`publisher_pages`);
   - páginas com `publisher_id`;
@@ -144,7 +144,7 @@ php cli/c2f.php docs:build --project=conn2flow-site-local
 
 ### Fonte SDD do Core
 
-Quando `docs.config.json` define `"sdd": {"enabled": true}`, o mesmo build inclui documentos públicos de `conn2flow/sdd/` em `/docs/sdd/`, sob o publisher `docs-sdd`. Essa fonte é apenas em pt-br e deriva título, descrição e ordem do próprio Markdown, sem frontmatter. O build ignora `archive/`, `backlog/`, memórias e qualquer SDD de projetos. Antes de gerar páginas e `llms.txt`, substitui caminhos, IPs, e-mails, hosts e nomes privados; arquivos com credenciais ou chaves são excluídos com aviso no relatório. Confira os avisos do `--dry-run` antes de publicar.
+Quando a configuração define `"sdd": {"enabled": true}`, o mesmo build inclui documentos públicos de `conn2flow/sdd/` em `/docs/sdd/`, sob o publisher `docs-sdd`. Essa fonte é apenas em pt-br e deriva título, descrição e ordem do próprio Markdown, sem frontmatter. O build ignora `archive/`, `backlog/`, memórias e qualquer SDD de projetos. Antes de gerar páginas e `llms.txt`, substitui caminhos, IPs, e-mails, hosts e nomes privados; arquivos com credenciais ou chaves são excluídos com aviso no relatório. Confira os avisos do `--dry-run` antes de publicar.
 
 > [!IMPORTANT]
 > O build sobrescreve as páginas de documentação a cada execução. Correções feitas pelo painel se perdem; corrija sempre o Markdown.
