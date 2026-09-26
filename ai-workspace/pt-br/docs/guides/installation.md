@@ -106,7 +106,7 @@ A configuração do site fica em `<pasta de instalação>/autenticacoes/<domíni
 - **E-mail:** vem desligado (`EMAIL_ACTIVE=false`), com `noreply@<domínio>` e sem senha. Configure `EMAIL_HOST`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_PORT` e `EMAIL_SECURE` e ligue `EMAIL_ACTIVE`, senão cadastro, recuperação de senha e formulários não enviam mensagens.
 - **Captcha:** vem desligado (`CAPTCHA_PROVIDER` vazio e `USUARIO_RECAPTCHA_ACTIVE=false`). Para Cloudflare Turnstile, defina `CAPTCHA_PROVIDER=cloudflare-turnstile`, `TURNSTILE_SITE_KEY` e `TURNSTILE_SECRET_KEY`; para Google reCAPTCHA, `CAPTCHA_PROVIDER=google-recaptcha` com chaves reais. Os valores `USUARIO_RECAPTCHA_*` gravados pelo instalador são **aleatórios** (preenchimento), e não chaves válidas do Google.
 - **HTTPS:** se você respondeu "Não" e depois instalou um certificado, restaure o redirecionamento no `.htaccess` ou no servidor.
-- **Rotinas automáticas:** agende o `cron.php` do Gestor no agendador do servidor (veja o módulo `admin-cron`).
+- **Rotinas automáticas:** o instalador **não** agenda nada. Registre no agendador do servidor um tick por frequência (`php gestor/cron.php frequencia=diario` etc.); veja [biblioteca cron.php](../reference/libraries/cron.md).
 
 A maior parte do `.env` também pode ser editada pelo painel, em *Ambiente*.
 

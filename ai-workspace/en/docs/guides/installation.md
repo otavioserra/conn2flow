@@ -106,7 +106,7 @@ The site configuration lives in `<installation folder>/autenticacoes/<domain>/.e
 - **E-mail:** disabled (`EMAIL_ACTIVE=false`), with `noreply@<domain>` and no password. Set `EMAIL_HOST`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_PORT` and `EMAIL_SECURE` and turn `EMAIL_ACTIVE` on, otherwise sign-up, password recovery and forms send no messages.
 - **Captcha:** disabled (`CAPTCHA_PROVIDER` empty and `USUARIO_RECAPTCHA_ACTIVE=false`). For Cloudflare Turnstile, set `CAPTCHA_PROVIDER=cloudflare-turnstile`, `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY`; for Google reCAPTCHA, `CAPTCHA_PROVIDER=google-recaptcha` with real keys. The `USUARIO_RECAPTCHA_*` values written by the installer are **random** (placeholders), not valid Google keys.
 - **HTTPS:** if you answered "No" and installed a certificate later, restore the redirect in `.htaccess` or in the server.
-- **Scheduled routines:** schedule the Gestor's `cron.php` in the server scheduler (see the `admin-cron` module).
+- **Scheduled routines:** the installer schedules **nothing**. Register one tick per frequency in the server scheduler (`php gestor/cron.php frequencia=diario` and so on); see the [cron.php library](../reference/libraries/cron.md).
 
 Most of `.env` can also be edited in the admin panel, under *Environment*.
 
