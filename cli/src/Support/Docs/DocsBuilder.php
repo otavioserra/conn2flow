@@ -122,6 +122,26 @@ final class DocsBuilder
 ";
     }
 
+    /**
+     * Põe a marcação do template do menu como mockup dentro de cada bloco `widgets#menus->render(...)`.
+     *
+     * O HTML do menu mora na tabela `menus`, que o `css:rebuild` não compila: uma classe usada só
+     * no menu não ganha CSS. Com o mockup na página, o Tailwind da página a enxerga; em runtime o
+     * widget troca o bloco inteiro pelo menu renderizado. Marcadores e comentários saem do mockup.
+     */
+    public static function withMenuMockup(string $articleTpl, string $menuTpl): string
+    {
+        $mockup = preg_replace('/<!--.*?-->/s', '', $menuTpl) ?? $menuTpl;
+        $mockup = preg_replace('/@\[\[[^\]]*\]\]@/', '', $mockup) ?? $mockup;
+        $mockup = trim(preg_replace("/\n\s*\n/", "\n", $mockup) ?? $mockup);
+
+        return preg_replace_callback(
+            '/(<!--\s*widgets#menus->render\([^)]*\)\s*<\s*-->)(.*?)(<!--\s*widgets#menus->render\([^)]*\)\s*>\s*-->)/s',
+            static fn (array $m): string => $m[1] . "\n" . $mockup . "\n" . $m[3],
+            $articleTpl
+        ) ?? $articleTpl;
+    }
+
     /** Comparação de rótulos sem acento, para a ordem alfabética do menu. */
     private static function semAcento(string $s): string
     {
@@ -149,6 +169,9 @@ final class DocsBuilder
 
             $articleTpl = $this->readTemplate($lang, (string)$this->config['article_template']);
             $menuTpl = $this->readTemplate($lang, (string)($this->config['menu']['template'] ?? ''));
+            if ($articleTpl !== null && $menuTpl !== null) {
+                $articleTpl = self::withMenuMockup($articleTpl, $menuTpl);
+            }
             if ($articleTpl === null || $menuTpl === null) {
                 continue;
             }

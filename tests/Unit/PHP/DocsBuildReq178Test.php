@@ -65,6 +65,29 @@ final class DocsBuildReq178Test extends TestCase
         self::assertStringContainsString('href="@[[pagina#url-raiz]]@docs/x/"', $html, 'só o link gerado pelo build fica ativo');
     }
 
+    public function testCalloutsSeguidosNaoSeFundem(): void
+    {
+        $r = new MarkdownRenderer(['WARNING' => 'Atenção', 'NOTE' => 'Nota'], static fn (string $h): ?string => null);
+        $html = $r->render("> [!WARNING]\n> Um.\n\n> [!NOTE]\n> Dois.\n")['html'];
+
+        self::assertSame(1, substr_count($html, 'data-callout="warning"'));
+        self::assertSame(1, substr_count($html, 'data-callout="note"'), 'o NOTE vira caixa própria');
+        self::assertStringNotContainsString('[!NOTE]', $html);
+    }
+
+    public function testMockupDoMenuLevaAsClassesParaAPagina(): void
+    {
+        $artigo = "<aside><!-- widgets#menus->render({\"grupo_slug\": \"docs-sidebar\"}) < -->\n<p>x</p>\n"
+            . "<!-- widgets#menus->render({\"grupo_slug\": \"docs-sidebar\"}) > --></aside>";
+        $menu = "<!-- menu-visible < -->\n<nav class=\"pl-8\"><!-- item < --><a href=\"@[[item#url]]@\">@[[item#label]]@</a><!-- item > --></nav>\n<!-- menu-visible > -->";
+        $html = DocsBuilder::withMenuMockup($artigo, $menu);
+
+        self::assertStringContainsString('<nav class="pl-8"><a href=""></a></nav>', $html);
+        self::assertStringNotContainsString('<p>x</p>', $html);
+        self::assertStringNotContainsString('@[[', $html);
+        self::assertSame(2, substr_count($html, 'widgets#menus->render'), 'os marcadores do widget continuam');
+    }
+
     public function testCaminhoDoCodigoENomesDosModulos(): void
     {
         self::assertSame('bibliotecas/cron.php', DocsBuilder::codePath('reference/libraries/cron.md', []));

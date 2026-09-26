@@ -81,6 +81,22 @@ final class MarkdownRenderer extends \Parsedown
         return str_replace(self::URL_ROOT_TOKEN, '@[[pagina#url-raiz]]@', $html);
     }
 
+    /**
+     * Uma linha em branco encerra a citação. O Parsedown juntava dois blocos `>` separados por
+     * linha em branco num só, e um `> [!NOTE]` logo depois de um `> [!WARNING]` sumia dentro dele.
+     *
+     * @param array<string, mixed> $Line
+     * @param array<string, mixed> $Block
+     */
+    protected function blockQuoteContinue($Line, array $Block)
+    {
+        if (isset($Block['interrupted'])) {
+            return null;
+        }
+
+        return parent::blockQuoteContinue($Line, $Block);
+    }
+
     /** @param array<string, mixed> $Element */
     protected function element(array $Element)
     {
