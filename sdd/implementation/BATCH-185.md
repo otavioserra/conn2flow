@@ -29,7 +29,7 @@ Terceiro grupo (2026-09-26), commit `b6839aa1`, enviado a `origin/main`:
 | `forms-search` | concluído | não havia | GET nativo para o índice, AJAX somente para sugestões; consulta sem janela de publicação e LIKE com curingas; logger de busca pode registrar duas vezes; tabela sem `css_precompiled` próprio. |
 | `galleries` | concluído | não havia | HTML do template é copiado ao registro; links de página/publicador não verificam ACL/agendamento; CSS para item sem link é recuperado da cópia/template/`galleries-estados`. |
 
-Quarto grupo (2026-09-26), commit a registrar após consolidação:
+Quarto grupo (2026-09-26), commit `45812d2e`, enviado a `origin/main`:
 
 | Módulo | pt-br/en | Legado | Achados |
 |---|---|---|---|
@@ -39,11 +39,21 @@ Quarto grupo (2026-09-26), commit a registrar após consolidação:
 | `modulos-operacoes` | concluído | módulo/manual removidos | `id` e `operacao` distintos; renomear `operacao` não propaga grants dos perfis; unicidade calculada no controlador, não declarada no SQL. |
 | `modulos` | concluído | módulo/manual removidos | `copiar-variaveis` retorna por guarda desativada; `sincronizar-bancos` tem rota JSON sem caso no switch; `nao_menu_principal` é visual, não ACL. |
 
+Quinto grupo (2026-09-26), commit a registrar após consolidação:
+
+| Módulo | pt-br/en | Legado | Achados |
+|---|---|---|---|
+| `modulos-grupos` | concluído | módulo/manual removidos | Renomear slug não propaga `modulos.modulo_grupo_id`; rótulo/ordem do menu e host não são ACL. |
+| `admin-arquivos` | concluído | módulo/manual removidos | Acervo em árvore física; `arquivos` é tabela legada; associação por hash de caminho; `dir` inválido no upload cai na raiz; exclusão recursiva física e miniaturas best effort. |
+| `admin-categorias` | concluído | módulo/manual removidos | Árvore por id numérico, sem idioma; herda módulo ao criar filho, mas edição não propaga; breadcrumb recursivo sem guarda de ciclo. |
+| `admin-componentes` | concluído | módulo/manual removidos | CSS/head incluídos por `gestor_componente`; slug renomeado não atualiza chamadas; CRUD carimba CSS sem compilar, runtime de desenvolvimento pode ler arquivo físico. |
+| `admin-layouts` | concluído | módulo/manual removidos | `gestor_layout` tem fallback mínimo; mudança de slug não propaga páginas; pré-compilado tem papel de cascata próprio; CRUD não compila CSS. |
+
 - [x] Ler req-180, req-179, contrato, piloto e governança aplicável.
 - [x] Executar auditoria inicial: 32 módulos ausentes; piloto menus com score 0 nos dois idiomas.
 - [x] Migrar páginas/publicação (publisher, publisher-index, publisher-highlights, admin-paginas, publisher-pages e pages-index).
 - [x] Migrar formulários e galerias.
-- [ ] Migrar usuários, perfis e permissões.
+- [x] Migrar usuários, perfis e permissões.
 - [ ] Migrar demais módulos.
 - [ ] Remover legados correspondentes e índices antigos autorizados.
 - [ ] Auditar todos os módulos e registrar commits/push por grupos de 3–5.
@@ -56,6 +66,7 @@ Escopo exclusivo: docs de módulos e este arquivo. Sem pipeline ou deploy, confo
 - Auditoria final do conjunto: pendente.
 - Segundo grupo: seis docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; `git diff --check` sem erro. Fontes conferidas em `837c383f`. O manual genérico `manual/modulos/paginas.md` permanece para a limpeza final conjunta prevista no §2 da req-180. Commit `7bf08fe1` enviado. O pull pré-commit foi recusado pela árvore concorrente; fetch confirmou zero commits remotos ausentes antes da consolidação com caminhos explícitos e `--only`.
 - Terceiro grupo: oito docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 22 módulos ausentes. Fontes conferidas em `7bf08fe1`. A auditoria geral ainda contém achados fora do escopo deste agente. Commit `b6839aa1` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou zero commits remotos ausentes e o commit foi limitado aos caminhos próprios com `--only`.
-- Quarto grupo: dez docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 17 módulos ausentes. Fontes conferidas em `b6839aa1`. Auditoria geral ainda contém achados fora deste escopo.
+- Quarto grupo: dez docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 17 módulos ausentes. Fontes conferidas em `b6839aa1`. Auditoria geral ainda contém achados fora deste escopo. Commit `45812d2e` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou zero commits remotos ausentes e o commit foi limitado aos caminhos próprios com `--only`.
+- Quinto grupo: dez docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 12 módulos ausentes. Fontes conferidas em `45812d2e`.
 - Primeiro grupo: `docs:audit --json` confirmou score 0 e nenhuma issue nas seis docs (três módulos, dois idiomas). `git diff --check` sem erros. Revisão estática de controladores, widgets, JS, metadados e migrations; sem execução runtime/deploy, conforme o escopo. Nenhum código alterado.
 - Git: `562ef169` enviado a `origin/main`. O `pull --rebase` pré-commit recusou a árvore com alterações concorrentes; `fetch origin main` + `rev-list HEAD...origin/main` confirmou `0 0` antes do commit. Commit limitado aos 11 caminhos próprios com `--only`; alterações do outro agente preservadas.
