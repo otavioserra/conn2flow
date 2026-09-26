@@ -49,7 +49,7 @@ Quinto grupo (2026-09-26), commit `a9a226e0`, enviado a `origin/main`:
 | `admin-componentes` | concluído | módulo/manual removidos | CSS/head incluídos por `gestor_componente`; slug renomeado não atualiza chamadas; CRUD carimba CSS sem compilar, runtime de desenvolvimento pode ler arquivo físico. |
 | `admin-layouts` | concluído | módulo/manual removidos | `gestor_layout` tem fallback mínimo; mudança de slug não propaga páginas; pré-compilado tem papel de cascata próprio; CRUD não compila CSS. |
 
-Sexto grupo (2026-09-26), commit pendente:
+Sexto grupo (2026-09-26), commit `c4e05805`, enviado a `origin/main`:
 
 | Módulo | pt-br/en | Legado | Achados |
 |---|---|---|---|
@@ -58,7 +58,7 @@ Sexto grupo (2026-09-26), commit pendente:
 | `admin-environment` | concluído | módulo/manual removidos | Grava .env sem conferir bytes escritos; modo debug de e-mail sai do envelope AJAX; restrição de acesso inclui guarda de autobloqueio; testes externos e rotação JWT têm efeitos reais. |
 | `contatos` | concluído | módulo/manual removidos | Formulário público usa `forms`/`forms_submissions`, sem tabela própria; rota de sucesso é recurso estático, sem caso PHP; componentes de e-mail diferem entre idiomas. |
 
-Sétimo grupo (2026-09-26), commit pendente:
+Sétimo grupo (2026-09-26), commit `98ac881d`, enviado a `origin/main`:
 
 | Módulo | pt-br/en | Legado | Achados |
 |---|---|---|---|
@@ -67,13 +67,22 @@ Sétimo grupo (2026-09-26), commit pendente:
 | `admin-plugins` | concluído | módulo/manual removidos | Instalação roda código e altera arquivos/banco; checksum só quando SHA-256 disponível; índice de `plugins.id` não é único nas migrations; também aceita execução via CLI. |
 | `interface` | concluído | não havia | Módulo só contém catálogo de variáveis pt-br/en; não tem controlador, rota nem tabela próprios; rótulos são usados pela biblioteca de interface compartilhada. |
 
+Oitavo grupo (2026-09-26), commit pendente:
+
+| Módulo | pt-br/en | Legado | Achados |
+|---|---|---|---|
+| `admin-ia` | concluído | módulo/manual removidos | Busca por id numérico concatena entrada na SQL em vários ramos; somente Gemini tem teste; modelos globais gravados em `ia_user_models` sem migration core encontrada e sem transação; JS de edição acessa checkbox opcional sem guarda. |
+| `admin-modos-ia` | concluído | módulo/manual removidos | Marcar modo como padrão limpa `prompts_ia`, não `modos_ia`; verificação AJAX também consulta prompts; UPDATE não filtra idioma. |
+| `admin-prompts-ia` | concluído | módulo/manual removidos | Padrão por alvo é limpo sem filtro de idioma/usuário, salvo se hook restringir; checagem AJAX também é global por alvo; criação grava proprietário mas edição/listagem não aplicam escopo próprio. |
+| `dashboard` | concluído | módulo/manual removidos | `dashboard-testes/` tem rota sem switch; filtro de permissão por página aceita por padrão sem handler; toolbar grava página/layout, backups/histórico e sitemap; layout é compartilhado; dashboard inicial remove página instalação-sucesso. |
+
 - [x] Ler req-180, req-179, contrato, piloto e governança aplicável.
 - [x] Executar auditoria inicial: 32 módulos ausentes; piloto menus com score 0 nos dois idiomas.
 - [x] Migrar páginas/publicação (publisher, publisher-index, publisher-highlights, admin-paginas, publisher-pages e pages-index).
 - [x] Migrar formulários e galerias.
 - [x] Migrar usuários, perfis e permissões.
-- [ ] Migrar demais módulos.
-- [ ] Remover legados correspondentes e índices antigos autorizados.
+- [x] Migrar demais módulos.
+- [x] Remover legados correspondentes e índices antigos autorizados.
 - [ ] Auditar todos os módulos e registrar commits/push por grupos de 3–5.
 
 Escopo exclusivo: docs de módulos e este arquivo. Sem pipeline ou deploy, conforme req-180 §4.
@@ -81,7 +90,9 @@ Escopo exclusivo: docs de módulos e este arquivo. Sem pipeline ou deploy, confo
 ## Validação
 
 - 2026-09-25: `php cli/c2f.php docs:audit --json` após redação de `publisher`: pt-br/en com score 0 e nenhuma issue. Fontes conferidas em `33ce53d9`. Isso valida metadados/fontes/links; não substitui revisão semântica nem encerra o lote.
-- Auditoria final do conjunto: pendente.
+- Auditoria final do conjunto: `docs:audit --json` registrou 33 referências por idioma (32 módulos da req-180 e o piloto `menus`), zero `reference/modules/*` com score > 0 e zero `missing:reference/modules/*`. Os caminhos legados de §2 foram removidos, incluindo genéricos e READMEs. Sem build/deploy, conforme §4. Fontes do último grupo conferidas em `98ac881d`.
+- Sexto grupo: oito docs pt-br/en com score 0, restavam oito ausências. Commit `c4e05805` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou `0 0` em `HEAD...origin/main` e commit usou caminhos explícitos com `--only`.
+- Sétimo grupo: oito docs pt-br/en com score 0, restavam quatro ausências. Commit `98ac881d` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou `0 0` e commit usou caminhos explícitos com `--only`.
 - Segundo grupo: seis docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; `git diff --check` sem erro. Fontes conferidas em `837c383f`. O manual genérico `manual/modulos/paginas.md` permanece para a limpeza final conjunta prevista no §2 da req-180. Commit `7bf08fe1` enviado. O pull pré-commit foi recusado pela árvore concorrente; fetch confirmou zero commits remotos ausentes antes da consolidação com caminhos explícitos e `--only`.
 - Terceiro grupo: oito docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 22 módulos ausentes. Fontes conferidas em `7bf08fe1`. A auditoria geral ainda contém achados fora do escopo deste agente. Commit `b6839aa1` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou zero commits remotos ausentes e o commit foi limitado aos caminhos próprios com `--only`.
 - Quarto grupo: dez docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 17 módulos ausentes. Fontes conferidas em `b6839aa1`. Auditoria geral ainda contém achados fora deste escopo. Commit `45812d2e` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou zero commits remotos ausentes e o commit foi limitado aos caminhos próprios com `--only`.
