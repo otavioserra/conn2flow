@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsExtractCommand.php
   - cli/src/Commands/DocsBuildCommand.php
-verified_at: 8f0af744
+verified_at: 86350986
 ---
 
 # How to write and publish documentation
@@ -48,7 +48,7 @@ label: "HTML templates"     # optional: short menu label (libraries)
 module: menus               # optional: id of the documented module
 sources:                    # required in reference/: the code this doc describes
   - gestor/bibliotecas/modelo.php
-verified_at: 8f0af744
+verified_at: 86350986
 ---
 ```
 

@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsExtractCommand.php
   - cli/src/Commands/DocsBuildCommand.php
-verified_at: 8f0af744
+verified_at: 86350986
 ---
 
 # Como escrever e publicar a documentação
@@ -48,7 +48,7 @@ label: "Modelos HTML"       # opcional: rótulo curto no menu (bibliotecas)
 module: menus               # opcional: id do módulo documentado
 sources:                    # obrigatório em reference/: o código que a doc descreve
   - gestor/bibliotecas/modelo.php
-verified_at: 8f0af744
+verified_at: 86350986
 ---
 ```
 
