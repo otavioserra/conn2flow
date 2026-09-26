@@ -103,7 +103,7 @@ O `.htaccess` não vale no Nginx. O arquivo de exemplo gravado na pasta de insta
 
 A configuração do site fica em `<pasta de instalação>/autenticacoes/<domínio>/.env`. Pontos que o instalador deixa para você:
 
-- **E-mail:** vem desligado (`EMAIL_ACTIVE=false`), com `noreply@<domínio>` e sem senha. Configure `EMAIL_HOST`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_PORT` e `EMAIL_SECURE` e ligue `EMAIL_ACTIVE`, senão cadastro, recuperação de senha e formulários não enviam mensagens.
+- **E-mail:** vem desligado (`EMAIL_ACTIVE=false`), com `noreply@<domínio>` e sem senha. Configure `EMAIL_HOST`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_PORT` e `EMAIL_SECURE` e ligue `EMAIL_ACTIVE`, senão cadastro, recuperação de senha e formulários não enviam mensagens. Só TLS implícito funciona: use a porta **465** com `EMAIL_SECURE=true` ([comunicacao.php](../reference/libraries/comunicacao.md)).
 - **Captcha:** vem desligado (`CAPTCHA_PROVIDER` vazio e `USUARIO_RECAPTCHA_ACTIVE=false`). Para Cloudflare Turnstile, defina `CAPTCHA_PROVIDER=cloudflare-turnstile`, `TURNSTILE_SITE_KEY` e `TURNSTILE_SECRET_KEY`; para Google reCAPTCHA, `CAPTCHA_PROVIDER=google-recaptcha` com chaves reais. Os valores `USUARIO_RECAPTCHA_*` gravados pelo instalador são **aleatórios** (preenchimento), e não chaves válidas do Google.
 - **HTTPS:** se você respondeu "Não" e depois instalou um certificado, restaure o redirecionamento no `.htaccess` ou no servidor.
 - **Rotinas automáticas:** o instalador **não** agenda nada. Registre no agendador do servidor um tick por frequência (`php gestor/cron.php frequencia=diario` etc.); veja [biblioteca cron.php](../reference/libraries/cron.md).
