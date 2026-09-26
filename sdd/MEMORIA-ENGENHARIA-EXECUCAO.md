@@ -16,6 +16,22 @@
 
 ## Tarefas recentes
 
+### 2026-09-26 — BATCH-184 (req-179): 41 bibliotecas e conceitos reescritos do código
+
+- **Doc legada não é fonte**: dezenas de afirmações falsas (funções inexistentes, checksum "SHA-256"
+  que é MD5, cron "por expressão"). Confirme rodando (`php -r`, `--help`) e cite o comportamento real.
+- **Classe usada só no template do menu não ganha CSS**: `menus` não passa pelo `css:rebuild`. O
+  `docs:build` injeta o template como mockup no bloco do widget (`DocsBuilder::withMenuMockup()`).
+  Medir com `c2f page:inspect --computed=...` antes de concluir que "está estilizado".
+- **Parsedown funde `>` separados por linha em branco**: `blockQuoteContinue()` sobrescrito no renderer.
+- **Extrator de docblock**: tipo com espaço (`array<string, int>`) exige leitura com colchetes balanceados.
+- **`EMAIL_SECURE=false` não desliga TLS** (`isset` na chave que sempre existe): só SMTPS/465 funciona.
+- **Deploy não regenera `sitemap.xml`** nem agenda o cron no servidor: as docs publicadas pelo pipeline
+  ficam fora do sitemap até uma edição no painel.
+- Achados de segurança da leitura: A1–A11 na `req-181` (nada corrigido; aguarda o Humano).
+- Trabalho paralelo: uma requisição por onda/tema (req-180, 182–185), com regras de escopo de arquivos
+  e **um único dono do pipeline**; a árvore de trabalho é compartilhada, então `git add` só dos seus caminhos.
+
 ### 2026-09-25 — BATCH-181/182/183 (req-176/177/178): docs como código
 
 - **Docs = Markdown em `ai-workspace/<lang>/docs/{guides,concepts,reference,whats-new}`**, mesmo caminho nos dois
