@@ -1,6 +1,6 @@
-# BATCH-186: Documentação do Core — Guias, Conceitos, CLI, API, Novidades e SDD (ondas 4 a 6)
+# BATCH-186: Documentação do Core — Guias e Referência de CLI e API (onda 4)
 
-Execução da [req-182](../human-requests/req-182.md), por um agente em outra infraestrutura. Continuação do [BATCH-184](BATCH-184.md) (req-179).
+Execução da [req-182](../human-requests/req-182.md), por um agente em outra infraestrutura. Ondas irmãs: [BATCH-187](BATCH-187.md) (onda 5) e [BATCH-188](BATCH-188.md) (onda 6).
 
 **Status**: `pending` (aguardando o agente).
 
