@@ -67,7 +67,7 @@ Sétimo grupo (2026-09-26), commit `98ac881d`, enviado a `origin/main`:
 | `admin-plugins` | concluído | módulo/manual removidos | Instalação roda código e altera arquivos/banco; checksum só quando SHA-256 disponível; índice de `plugins.id` não é único nas migrations; também aceita execução via CLI. |
 | `interface` | concluído | não havia | Módulo só contém catálogo de variáveis pt-br/en; não tem controlador, rota nem tabela próprios; rótulos são usados pela biblioteca de interface compartilhada. |
 
-Oitavo grupo (2026-09-26), commit pendente:
+Oitavo grupo (2026-09-26), commit `a8f58483`, enviado a `origin/main`:
 
 | Módulo | pt-br/en | Legado | Achados |
 |---|---|---|---|
@@ -83,7 +83,7 @@ Oitavo grupo (2026-09-26), commit pendente:
 - [x] Migrar usuários, perfis e permissões.
 - [x] Migrar demais módulos.
 - [x] Remover legados correspondentes e índices antigos autorizados.
-- [ ] Auditar todos os módulos e registrar commits/push por grupos de 3–5.
+- [x] Auditar todos os módulos e registrar commits/push por grupos de 3–5.
 
 Escopo exclusivo: docs de módulos e este arquivo. Sem pipeline ou deploy, conforme req-180 §4.
 
@@ -93,6 +93,7 @@ Escopo exclusivo: docs de módulos e este arquivo. Sem pipeline ou deploy, confo
 - Auditoria final do conjunto: `docs:audit --json` registrou 33 referências por idioma (32 módulos da req-180 e o piloto `menus`), zero `reference/modules/*` com score > 0 e zero `missing:reference/modules/*`. Os caminhos legados de §2 foram removidos, incluindo genéricos e READMEs. Sem build/deploy, conforme §4. Fontes do último grupo conferidas em `98ac881d`.
 - Sexto grupo: oito docs pt-br/en com score 0, restavam oito ausências. Commit `c4e05805` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou `0 0` em `HEAD...origin/main` e commit usou caminhos explícitos com `--only`.
 - Sétimo grupo: oito docs pt-br/en com score 0, restavam quatro ausências. Commit `98ac881d` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou `0 0` e commit usou caminhos explícitos com `--only`.
+- Oitavo grupo: oito docs pt-br/en com score 0 e zero ausências; 30 legados finais (módulos, manuais genéricos e READMEs) removidos. `git diff --cached --check` passou; commit `a8f58483` enviado. Pull pré-commit recusado pela árvore concorrente, fetch confirmou `0 0` e commit usou os 39 caminhos próprios com `--only`.
 - Segundo grupo: seis docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; `git diff --check` sem erro. Fontes conferidas em `837c383f`. O manual genérico `manual/modulos/paginas.md` permanece para a limpeza final conjunta prevista no §2 da req-180. Commit `7bf08fe1` enviado. O pull pré-commit foi recusado pela árvore concorrente; fetch confirmou zero commits remotos ausentes antes da consolidação com caminhos explícitos e `--only`.
 - Terceiro grupo: oito docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 22 módulos ausentes. Fontes conferidas em `7bf08fe1`. A auditoria geral ainda contém achados fora do escopo deste agente. Commit `b6839aa1` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou zero commits remotos ausentes e o commit foi limitado aos caminhos próprios com `--only`.
 - Quarto grupo: dez docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 17 módulos ausentes. Fontes conferidas em `b6839aa1`. Auditoria geral ainda contém achados fora deste escopo. Commit `45812d2e` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou zero commits remotos ausentes e o commit foi limitado aos caminhos próprios com `--only`.
