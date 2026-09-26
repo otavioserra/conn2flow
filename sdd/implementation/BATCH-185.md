@@ -58,6 +58,15 @@ Sexto grupo (2026-09-26), commit pendente:
 | `admin-environment` | concluído | módulo/manual removidos | Grava .env sem conferir bytes escritos; modo debug de e-mail sai do envelope AJAX; restrição de acesso inclui guarda de autobloqueio; testes externos e rotação JWT têm efeitos reais. |
 | `contatos` | concluído | módulo/manual removidos | Formulário público usa `forms`/`forms_submissions`, sem tabela própria; rota de sucesso é recurso estático, sem caso PHP; componentes de e-mail diferem entre idiomas. |
 
+Sétimo grupo (2026-09-26), commit pendente:
+
+| Módulo | pt-br/en | Legado | Achados |
+|---|---|---|---|
+| `admin-atualizacoes` | concluído | módulo/manual removidos | Detalhe de plano usa `$dir` indefinido; JSON anuncia metadados de tabela diferentes da migration; wrapper sobrescreve `$_GET`/`$_REQUEST`; atualização é real sem dry_run. |
+| `admin-cron` | concluído | não havia | Sincronização preserva estado operacional `user_modified`; tarefa de módulo só tem autoria no arquivo; cartão do agendador infere atividade, não lê crontab; background com setsid pode perder isolamento. |
+| `admin-plugins` | concluído | módulo/manual removidos | Instalação roda código e altera arquivos/banco; checksum só quando SHA-256 disponível; índice de `plugins.id` não é único nas migrations; também aceita execução via CLI. |
+| `interface` | concluído | não havia | Módulo só contém catálogo de variáveis pt-br/en; não tem controlador, rota nem tabela próprios; rótulos são usados pela biblioteca de interface compartilhada. |
+
 - [x] Ler req-180, req-179, contrato, piloto e governança aplicável.
 - [x] Executar auditoria inicial: 32 módulos ausentes; piloto menus com score 0 nos dois idiomas.
 - [x] Migrar páginas/publicação (publisher, publisher-index, publisher-highlights, admin-paginas, publisher-pages e pages-index).
