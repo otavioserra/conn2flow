@@ -145,8 +145,9 @@ function admin_atualizacoes_detalhe(): void {
                 .'<pre class="fallback-log" style="max-height:60vh;overflow:auto;">'.$safe.'</pre>';
         } else $conteudo = '<div class="ui warning message">'.gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>'updates-invalid-log']).'</div>';
     } elseif($plano){
-        $path = realpath($dir.$plano);
-        if($path && strpos($path,$dir)===0 && is_file($path)) {
+        // Os planos moram na pasta de logs; a variável `$dir` usada antes não existia neste escopo.
+        $path = realpath($dirLogs.$plano);
+        if($path && strpos($path,$dirLogs)===0 && is_file($path)) {
             $json = @file_get_contents($path);
             $safe = htmlspecialchars($json);
             $conteudo = '<div class="ui header">Plano: '.htmlspecialchars($plano).'</div>'
