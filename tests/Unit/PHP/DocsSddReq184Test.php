@@ -78,12 +78,20 @@ final class DocsSddReq184Test extends TestCase
         mkdir($templates . '/side', 0777, true);
         file_put_contents($templates . '/article/article.html', '<h1>@[[publisher#text#titulo]]@</h1>@[[publisher#html#conteudo]]@');
         file_put_contents($templates . '/side/side.html', '<nav>Menu</nav>');
+        $enTemplates = $this->root . '/site/resources/en/templates';
+        mkdir($enTemplates . '/article', 0777, true);
+        mkdir($enTemplates . '/side', 0777, true);
+        file_put_contents($enTemplates . '/article/article.html', '<h1>@[[publisher#text#titulo]]@</h1>@[[publisher#html#conteudo]]@');
+        file_put_contents($enTemplates . '/side/side.html', '<nav>Menu</nav>');
         $config = [
-            'languages' => ['pt-br'], 'base_path' => 'docs/', 'layout' => 'layout',
+            'languages' => ['pt-br', 'en'], 'base_path' => 'docs/', 'layout' => 'layout',
             'article_template' => 'article', 'menu' => ['id' => 'docs-sidebar', 'template' => 'side'],
             'sdd' => ['enabled' => true],
             'publishers' => ['docs-sdd' => ['sections' => ['sdd'], 'index_path' => 'sdd/', 'index_widget' => 'docs-sdd-index']],
-            'labels' => ['pt-br' => ['sections' => ['sdd' => 'SDD']]],
+            'labels' => [
+                'pt-br' => ['sections' => ['sdd' => 'SDD']],
+                'en' => ['landings' => ['docs-sdd' => ['title' => 'Core SDD', 'description' => 'Public SDD']]],
+            ],
             'site_url' => 'https://conn2flow.com/',
         ];
         $plan = (new DocsBuilder(new DocsTree($this->root), $this->root . '/site', $config))->plan();
@@ -97,6 +105,7 @@ final class DocsSddReq184Test extends TestCase
         self::assertStringNotContainsString('192.168.1.10', $flow);
         self::assertStringContainsString('[REDACTED]', $plan['write'][$this->root . '/site/assets/docs/llms-full-pt-br.txt']);
         self::assertStringContainsString('docs/sdd/', $plan['write'][$this->root . '/site/assets/docs/llms-pt-br.txt']);
+        self::assertStringContainsString('- [Core SDD](https://conn2flow.com/docs/sdd/): Public SDD', $plan['write'][$this->root . '/site/assets/docs/llms.txt']);
         $menus = json_decode($plan['write'][$this->root . '/site/resources/pt-br/menus.json'], true);
         self::assertSame('SDD', $menus[0]['fields_schema']['menus']['visible_to_all'][0]['label']);
     }

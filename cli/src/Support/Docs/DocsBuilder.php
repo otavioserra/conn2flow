@@ -634,6 +634,24 @@ final class DocsBuilder
             $out[$this->gestorPath . '/assets/docs/llms-full' . $suffix . '.txt'] = $full;
         }
 
+        $defaultLang = (string)($this->config['llms_default_language'] ?? 'en');
+        $hasSdd = false;
+        foreach (array_keys($byLang['pt-br'][0] ?? []) as $rel) {
+            if (str_starts_with($rel, 'sdd/')) {
+                $hasSdd = true;
+                break;
+            }
+        }
+        if ($defaultLang !== 'pt-br' && $hasSdd) {
+            $path = $this->gestorPath . '/assets/docs/llms.txt';
+            if (isset($out[$path])) {
+                $labels = $this->labels($defaultLang);
+                $title = (string)($labels['landings']['docs-sdd']['title'] ?? 'SDD');
+                $description = (string)($labels['landings']['docs-sdd']['description'] ?? '');
+                $out[$path] .= "\n## SDD\n\n- [{$title}](" . $site . $this->urlPath('sdd/index.md') . "): {$description}\n";
+            }
+        }
+
         return $out;
     }
 
