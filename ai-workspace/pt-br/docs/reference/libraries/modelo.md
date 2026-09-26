@@ -5,7 +5,7 @@ section: reference
 order: 20
 sources:
   - gestor/bibliotecas/modelo.php
-verified_at: 5b4348ab
+verified_at: c267f123
 ---
 
 # Biblioteca `modelo.php`
