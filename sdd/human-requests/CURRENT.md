@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-185.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-185.md) (BATCH-189 `pending`, 2026-09-26): Ajustes do Humano nas docs online — menu centralizado no item atual, anterior/próximo com o rótulo do menu, descrição das funções e parâmetros no bloco extraído, sem o link "Editar no GitHub". Ver [BATCH-189.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-189.md).
   - [req-184.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-184.md) (BATCH-188 `pending`, 2026-09-26): Onda 6 das docs — publicar o `sdd/` do core no site (filtro de conteúdo sensível) e ser o dono do pipeline das docs no Lab. Ver [BATCH-188.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-188.md).
   - [req-183.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-183.md) (BATCH-187 `pending`, 2026-09-26): Onda 5 das docs — conceitos, novidades e limpeza final do legado. Ver [BATCH-187.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-187.md).
   - [req-182.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-182.md) (BATCH-186 `pending`, 2026-09-26): Onda 4 das docs — guias e referência de CLI e API. Ver [BATCH-186.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-186.md).

@@ -126,6 +126,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-186 | pending | Docs do core — guias e referência de CLI e API, onda 4 (req-182) | [BATCH-186.md](BATCH-186.md) | Agente em outra infraestrutura. Sem pipeline. |
 | BATCH-187 | pending | Docs do core — conceitos, novidades e limpeza do legado, onda 5 (req-183) | [BATCH-187.md](BATCH-187.md) | Agente em outra infraestrutura. Sem pipeline. |
 | BATCH-188 | pending | Publicação do SDD do core e dono do pipeline das docs, onda 6 (req-184) | [BATCH-188.md](BATCH-188.md) | Agente em outra infraestrutura. Pipeline só depois do BATCH-184 `complete`. |
+| BATCH-189 | pending | Ajustes de navegação e referência nas docs online (req-185) | [BATCH-189.md](BATCH-189.md) | Agente em paralelo. Menu centralizado, anterior/próximo com rótulo do menu, descrição das funções, sem link de edição. Sem pipeline. |
 
 ## Regra operacional
 
