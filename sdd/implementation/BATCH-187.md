@@ -30,4 +30,5 @@ Execução da [req-183](../human-requests/req-183.md), por um agente em outra in
 
 - `docs:audit --json`: todos os 38 arquivos novos de `concepts/` e `whats-new/` com score 0; 1 erro, 3 warnings e `legacy=2` em cada idioma no acervo total. As quatro entradas legadas remanescentes são `BIBLIOTECA-FORMULARIO`, `BIBLIOTECA-USUARIO` e os pares en, da onda 2; o erro é o arquivo `formulario.md` pt-br ainda sem par en. Fora do escopo de edição da req-183.
 - Verificação local: todos os links `.md` das novas páginas resolvem; as fontes declaradas nos 38 arquivos novos existem; `git diff --check` sem erros.
+- Verificação de links do acervo inteiro: 267 Markdown examinados, 10 links quebrados, todos nos quatro arquivos legados `BIBLIOTECA-{FORMULARIO,USUARIO}` / `LIBRARY-{FORM,USER}` que a onda 2 ainda deve substituir. Nenhum link quebrado foi introduzido nas páginas desta onda.
 - Publicação e pipeline não executados, por regra da req-183; pertencem à req-184.
