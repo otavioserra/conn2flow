@@ -25,7 +25,7 @@ Mantém o `sitemap.xml` e o `robots.txt` do site. Os dois ficam em `gestor/asset
 
 ## Quando é atualizado
 
-- **Incremental**, a cada salvar, clonar, excluir ou trocar status no `admin-paginas`, no `publisher-pages` e na edição pelo Live Editor (`sitemap_sincronizar_por_id()`): só a URL daquela página entra, muda ou sai. Se o caminho mudou, a URL antiga sai antes de a nova entrar.
+- **Incremental**, a cada salvar, clonar, excluir ou trocar status no `admin-paginas`, no `publisher-pages` e na edição pelo Live Editor (`sitemap_sincronizar_por_id()`, que chama `sitemap_sincronizar_pagina()`): só a URL daquela página entra, muda ou sai. Se o caminho mudou, a URL antiga sai antes de a nova entrar.
 - **Completo** (`sitemap_gerar_completo()`), só quando o arquivo não existe, está corrompido ou a página editada sumiu do banco. A geração completa também regrava o `robots.txt`.
 
 > [!WARNING]

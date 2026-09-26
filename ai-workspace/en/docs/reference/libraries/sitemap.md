@@ -25,7 +25,7 @@ Maintains the site's `sitemap.xml` and `robots.txt`. Both live in `gestor/assets
 
 ## When it is updated
 
-- **Incrementally**, on every save, clone, delete or status change in `admin-paginas`, `publisher-pages` and Live Editor edits (`sitemap_sincronizar_por_id()`): only that page's URL is added, changed or removed. If the path changed, the old URL goes out before the new one comes in.
+- **Incrementally**, on every save, clone, delete or status change in `admin-paginas`, `publisher-pages` and Live Editor edits (`sitemap_sincronizar_por_id()`, which calls `sitemap_sincronizar_pagina()`): only that page's URL is added, changed or removed. If the path changed, the old URL goes out before the new one comes in.
 - **Fully** (`sitemap_gerar_completo()`), only when the file does not exist, is corrupted or the edited page vanished from the database. A full generation also rewrites `robots.txt`.
 
 > [!WARNING]
