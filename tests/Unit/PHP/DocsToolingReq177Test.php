@@ -91,6 +91,20 @@ PHP;
         self::assertSame(6, $fns[0]['line']);
     }
 
+    public function testExtratorLeTiposGenericosComEspacos(): void
+    {
+        $code = "<?php\n"
+            . "/**\n * @param list<string> \$nomes Nomes.\n * @param array<string, int> \$mapa\n"
+            . " * @return array{css: list<string>, js: list<string>}\n */\n"
+            . "function lib_tags(\$nomes, \$mapa){}\n";
+        $fns = PhpFunctionExtractor::extract($code);
+
+        self::assertSame(
+            'lib_tags(list<string> $nomes, array<string, int> $mapa): array{css: list<string>, js: list<string>}',
+            PhpFunctionExtractor::signatureText($fns[0])
+        );
+    }
+
     public function testExtratorBateComAsBibliotecasReaisDoCore(): void
     {
         $fns = PhpFunctionExtractor::extract((string)file_get_contents(CONN2FLOW_ROOT . '/gestor/bibliotecas/modelo.php'));

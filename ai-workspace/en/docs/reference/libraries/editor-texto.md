@@ -47,7 +47,7 @@ Reference generated from `gestor/bibliotecas/editor-texto.php` by `c2f docs:extr
 
 - `editor_texto_assets_externos_carregar()` — [line 38](../../../../../gestor/bibliotecas/editor-texto.php#L38)
 - `editor_texto_versao_cdn(): string` — [line 59](../../../../../gestor/bibliotecas/editor-texto.php#L59)
-- `editor_texto_assets_editor(string $urlRaiz = '', string $versaoAsset = '', $vendorFisico = '', $vendorPublico = ''): array{css:` — [line 93](../../../../../gestor/bibliotecas/editor-texto.php#L93)
+- `editor_texto_assets_editor(string $urlRaiz = '', string $versaoAsset = '', $vendorFisico = '', $vendorPublico = ''): array{css: list<string>, javascript: list<string>}` — [line 93](../../../../../gestor/bibliotecas/editor-texto.php#L93)
 - `editor_texto_paridade_css(string $contrato): string` — [line 153](../../../../../gestor/bibliotecas/editor-texto.php#L153)
 - `editor_texto_incluir(array $params = false): void` — [line 213](../../../../../gestor/bibliotecas/editor-texto.php#L213)
 - `editor_texto_conteudo_detectar(string $html): bool` — [line 271](../../../../../gestor/bibliotecas/editor-texto.php#L271)

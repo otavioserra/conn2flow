@@ -264,18 +264,51 @@ final class PhpFunctionExtractor
         if ($doc === null) {
             return $out;
         }
-        // `\w++(?!\[)` ignora linhas como `@param string $params['codigo']`, que documentam
-        // chaves do array e não o parâmetro em si.
-        if (preg_match_all('/@param\s+([^\s$]+)\s+&?(?:\.\.\.)?\$(\w++)(?!\[)/', $doc, $m, PREG_SET_ORDER)) {
-            foreach ($m as $p) {
-                $out['params'][$p[2]] = $p[1];
+        // O tipo é lido com colchetes balanceados: `array<string, array{css: list<string>}>` tem
+        // espaços por dentro e cortá-lo no primeiro espaço deixava `array<string,` na referência.
+        if (preg_match_all('/@param\s+/', $doc, $m, PREG_OFFSET_CAPTURE)) {
+            foreach ($m[0] as [$tag, $pos]) {
+                [$tipo, $fim] = self::readType($doc, $pos + strlen($tag));
+                // `\w++(?!\[)` ignora linhas como `@param string $params['codigo']`, que documentam
+                // chaves do array e não o parâmetro em si.
+                if ($tipo !== '' && preg_match('/\G\s+&?(?:\.\.\.)?\$(\w++)(?!\[)/', $doc, $n, 0, $fim)) {
+                    $out['params'][$n[1]] = $tipo;
+                }
             }
         }
-        if (preg_match('/@return\s+([^\s]+)/', $doc, $r)) {
-            $out['return'] = $r[1];
+        if (preg_match('/@return\s+/', $doc, $r, PREG_OFFSET_CAPTURE)) {
+            $out['return'] = self::readType($doc, $r[0][1] + strlen($r[0][0]))[0];
         }
 
         return $out;
+    }
+
+    /**
+     * Lê um tipo de docblock a partir de $pos, até o primeiro espaço fora de `<>`, `{}`, `()` e `[]`.
+     *
+     * @return array{0: string, 1: int} O tipo e a posição logo depois dele.
+     */
+    private static function readType(string $doc, int $pos): array
+    {
+        $profundidade = 0;
+        $tamanho = strlen($doc);
+        $i = $pos;
+        for (; $i < $tamanho; $i++) {
+            $c = $doc[$i];
+            // Um tipo nunca atravessa linhas: parar no `\n` impede que um `<` sem par engula o resto.
+            if ($c === "\n" || $c === "\r") {
+                break;
+            }
+            if ($c === '<' || $c === '{' || $c === '(' || $c === '[') {
+                $profundidade++;
+            } elseif (($c === '>' || $c === '}' || $c === ')' || $c === ']') && $profundidade > 0) {
+                $profundidade--;
+            } elseif ($profundidade === 0 && (ctype_space($c) || $c === '$')) {
+                break;
+            }
+        }
+
+        return [rtrim(substr($doc, $pos, $i - $pos)), $i];
     }
 
     /**

@@ -62,11 +62,11 @@ $mapa = assets_externos_urls_js(['codemirror']);        // biblioteca => arquivo
 
 Referência gerada a partir de `gestor/bibliotecas/assets-externos.php` por `c2f docs:extract` — 6 funções. Não edite dentro deste bloco.
 
-- `assets_externos_registro(): array<string,` — [linha 47](../../../../../gestor/bibliotecas/assets-externos.php#L47)
+- `assets_externos_registro(): array<string, array{versao: string, cdn: string, css: list<string>, js: list<string>}>` — [linha 47](../../../../../gestor/bibliotecas/assets-externos.php#L47)
 - `assets_externos_url(array $lib, string $nome, string $arquivo, string $vendorFisico, string $vendorPublico): string` — [linha 217](../../../../../gestor/bibliotecas/assets-externos.php#L217)
-- `assets_externos_tags(string $nome, string $vendorFisico = '', string $vendorPublico = ''): array{css:` — [linha 238](../../../../../gestor/bibliotecas/assets-externos.php#L238)
-- `assets_externos_urls_map(list<string> $nomes = Array(), string $vendorFisico = '', string $vendorPublico = ''): array<string,` — [linha 279](../../../../../gestor/bibliotecas/assets-externos.php#L279)
-- `assets_externos_urls_js(list<string> $nomes = Array()): array<string,` — [linha 308](../../../../../gestor/bibliotecas/assets-externos.php#L308)
+- `assets_externos_tags(string $nome, string $vendorFisico = '', string $vendorPublico = ''): array{css: list<string>, js: list<string>}` — [linha 238](../../../../../gestor/bibliotecas/assets-externos.php#L238)
+- `assets_externos_urls_map(list<string> $nomes = Array(), string $vendorFisico = '', string $vendorPublico = ''): array<string, array<string, string>>` — [linha 279](../../../../../gestor/bibliotecas/assets-externos.php#L279)
+- `assets_externos_urls_js(list<string> $nomes = Array()): array<string, array<string, string>>` — [linha 308](../../../../../gestor/bibliotecas/assets-externos.php#L308)
 - `assets_externos_incluir(string $nome): bool` — [linha 329](../../../../../gestor/bibliotecas/assets-externos.php#L329)
 
 <!-- c2f:extract:end -->

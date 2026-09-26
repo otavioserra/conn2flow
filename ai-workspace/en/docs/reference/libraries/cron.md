@@ -120,7 +120,7 @@ Reference generated from `gestor/bibliotecas/cron.php` by `c2f docs:extract` —
 - `cron_expressao_padrao(string $frequencia): string|null` — [line 60](../../../../../gestor/bibliotecas/cron.php#L60)
 - `cron_expressao_declarada(array $tarefa, string $frequencia): string|null` — [line 85](../../../../../gestor/bibliotecas/cron.php#L85)
 - `cron_callback_preparar(array $tarefa): string|null` — [line 126](../../../../../gestor/bibliotecas/cron.php#L126)
-- `cron_tarefa_executar(array $tarefa): array{status:` — [line 164](../../../../../gestor/bibliotecas/cron.php#L164)
+- `cron_tarefa_executar(array $tarefa): array{status: string, duracao: int, log: string}` — [line 164](../../../../../gestor/bibliotecas/cron.php#L164)
 - `cron_tarefa_registrar(string $id, string $status, int $duracaoMs, string $log): void` — [line 222](../../../../../gestor/bibliotecas/cron.php#L222)
 - `cron_tarefas_carregar(string|null $frequencia = null, string|null $tarefaId = null, bool $todas = false, array $campos = null): array` — [line 245](../../../../../gestor/bibliotecas/cron.php#L245)
 
