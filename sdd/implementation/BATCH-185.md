@@ -20,7 +20,7 @@ Segundo grupo (2026-09-25), commit `7bf08fe1`, enviado a `origin/main`:
 | `publisher-pages` | concluído | módulo/manual removidos | Publicador sem escape em INSERT; valores falsy omitidos; JSON vazio inválido; escritas sem transação; mover preserva campos/template/HTML/CSS e aceita destino inativo. |
 | `pages-index` | concluído | não havia | Filtro público sem janela de publicação; resumo decodificado sem escape final; JS herdado contém curadoria ignorada; cache/AbortController/URL/teclado; possível duplicidade de chamada ao logger. |
 
-Terceiro grupo (2026-09-26), commit a registrar após consolidação:
+Terceiro grupo (2026-09-26), commit `b6839aa1`, enviado a `origin/main`:
 
 | Módulo | pt-br/en | Legado | Achados |
 |---|---|---|---|
@@ -28,6 +28,16 @@ Terceiro grupo (2026-09-26), commit a registrar após consolidação:
 | `forms-submissions` | concluído | não havia | Resposta com falha de e-mail ainda define `responded`; busca de definição do formulário concatena `form_id`/idioma sem escape; estado de atendimento separado de `status`. |
 | `forms-search` | concluído | não havia | GET nativo para o índice, AJAX somente para sugestões; consulta sem janela de publicação e LIKE com curingas; logger de busca pode registrar duas vezes; tabela sem `css_precompiled` próprio. |
 | `galleries` | concluído | não havia | HTML do template é copiado ao registro; links de página/publicador não verificam ACL/agendamento; CSS para item sem link é recuperado da cópia/template/`galleries-estados`. |
+
+Quarto grupo (2026-09-26), commit a registrar após consolidação:
+
+| Módulo | pt-br/en | Legado | Achados |
+|---|---|---|---|
+| `perfil-usuario` | concluído | módulo, hooks e manual removidos | `signup.pos_banco` também é alcançável fora do POST e não recebe id; PAT permitido por `AUTH_API_ALLOWED_PROFILES` e exibido uma vez; sessões e PAT distintos; 2FA/OAuth/recuperação no mesmo controlador. |
+| `usuarios` | concluído | módulo/manual removidos | Ramo que propagaria perfil para hosts está desativado por flag fixa; status/exclusão removem `usuarios_tokens`, não PAT; duplicidade de login/e-mail conferida no PHP. |
+| `usuarios-perfis` | concluído | módulo/manual removidos | Criação limpa todos os perfis padrão mesmo sem marcar novo padrão e sem filtro de idioma; vínculos por slug, múltiplas consultas sem transação visível. |
+| `modulos-operacoes` | concluído | módulo/manual removidos | `id` e `operacao` distintos; renomear `operacao` não propaga grants dos perfis; unicidade calculada no controlador, não declarada no SQL. |
+| `modulos` | concluído | módulo/manual removidos | `copiar-variaveis` retorna por guarda desativada; `sincronizar-bancos` tem rota JSON sem caso no switch; `nao_menu_principal` é visual, não ACL. |
 
 - [x] Ler req-180, req-179, contrato, piloto e governança aplicável.
 - [x] Executar auditoria inicial: 32 módulos ausentes; piloto menus com score 0 nos dois idiomas.
@@ -45,6 +55,7 @@ Escopo exclusivo: docs de módulos e este arquivo. Sem pipeline ou deploy, confo
 - 2026-09-25: `php cli/c2f.php docs:audit --json` após redação de `publisher`: pt-br/en com score 0 e nenhuma issue. Fontes conferidas em `33ce53d9`. Isso valida metadados/fontes/links; não substitui revisão semântica nem encerra o lote.
 - Auditoria final do conjunto: pendente.
 - Segundo grupo: seis docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; `git diff --check` sem erro. Fontes conferidas em `837c383f`. O manual genérico `manual/modulos/paginas.md` permanece para a limpeza final conjunta prevista no §2 da req-180. Commit `7bf08fe1` enviado. O pull pré-commit foi recusado pela árvore concorrente; fetch confirmou zero commits remotos ausentes antes da consolidação com caminhos explícitos e `--only`.
-- Terceiro grupo: oito docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 22 módulos ausentes. Fontes conferidas em `7bf08fe1`. A auditoria geral ainda contém achados fora do escopo deste agente.
+- Terceiro grupo: oito docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 22 módulos ausentes. Fontes conferidas em `7bf08fe1`. A auditoria geral ainda contém achados fora do escopo deste agente. Commit `b6839aa1` enviado; pull pré-commit recusado pela árvore concorrente, fetch confirmou zero commits remotos ausentes e o commit foi limitado aos caminhos próprios com `--only`.
+- Quarto grupo: dez docs pt-br/en com score 0 e nenhuma issue em `docs:audit --json`; restam 17 módulos ausentes. Fontes conferidas em `b6839aa1`. Auditoria geral ainda contém achados fora deste escopo.
 - Primeiro grupo: `docs:audit --json` confirmou score 0 e nenhuma issue nas seis docs (três módulos, dois idiomas). `git diff --check` sem erros. Revisão estática de controladores, widgets, JS, metadados e migrations; sem execução runtime/deploy, conforme o escopo. Nenhum código alterado.
 - Git: `562ef169` enviado a `origin/main`. O `pull --rebase` pré-commit recusou a árvore com alterações concorrentes; `fetch origin main` + `rev-list HEAD...origin/main` confirmou `0 0` antes do commit. Commit limitado aos 11 caminhos próprios com `--only`; alterações do outro agente preservadas.
