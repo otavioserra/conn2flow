@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca modelo.php"
+label: "Modelos HTML"
 description: "Substituição de variáveis e manipulação de blocos delimitados em templates HTML — a base de toda a montagem de telas do Gestor."
 section: reference
 order: 20

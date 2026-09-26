@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca oauth2.php"
+label: "Tokens da API (OAuth2)"
 description: "Servidor de tokens da API do Gestor: access e refresh tokens assinados com a chave RSA, limite por usuário, validação do Bearer e renovação."
 section: reference
 order: 240

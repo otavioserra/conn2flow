@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca plugins.php"
+label: "Plugins (modelo)"
 description: "Um arquivo-modelo, sem uso: contém só a função de exemplo template_opcao()."
 section: reference
 order: 300

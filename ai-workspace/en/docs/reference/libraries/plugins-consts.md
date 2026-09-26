@@ -1,5 +1,6 @@
 ---
 title: "plugins-consts.php library"
+label: "Plugin constants"
 description: "Exit codes and execution states of the plugin installer, and plg_exit_code_label()."
 section: reference
 order: 310

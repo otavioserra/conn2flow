@@ -65,6 +65,23 @@ final class DocsBuildReq178Test extends TestCase
         self::assertStringContainsString('href="@[[pagina#url-raiz]]@docs/x/"', $html, 'só o link gerado pelo build fica ativo');
     }
 
+    public function testCaminhoDoCodigoENomesDosModulos(): void
+    {
+        self::assertSame('bibliotecas/cron.php', DocsBuilder::codePath('reference/libraries/cron.md', []));
+        self::assertSame('', DocsBuilder::codePath('reference/libraries/index.md', []));
+        self::assertSame('modulos/menus/', DocsBuilder::codePath('reference/modules/menus.md', ['module' => 'menus']));
+        self::assertSame('', DocsBuilder::codePath('concepts/hooks.md', ['module' => 'menus']));
+
+        $json = $this->tmp . '/ModulosData.json';
+        file_put_contents($json, json_encode([
+            ['language' => 'pt-br', 'id' => 'usuarios', 'nome' => 'Usuários'],
+            ['language' => 'en', 'id' => 'usuarios', 'nome' => 'Users'],
+            ['language' => 'en', 'id' => 'vazio', 'nome' => ' '],
+        ]));
+        self::assertSame(['pt-br' => ['usuarios' => 'Usuários'], 'en' => ['usuarios' => 'Users']], DocsBuilder::loadModuleNames($json));
+        self::assertSame([], DocsBuilder::loadModuleNames($this->tmp . '/nao-existe.json'));
+    }
+
     public function testBuilderGeraPublicacoesPaginasMenuLandingELlms(): void
     {
         $this->project();
@@ -89,6 +106,7 @@ final class DocsBuildReq178Test extends TestCase
         self::assertStringContainsString('href="@[[pagina#url-raiz]]@docs/guides/a/"', $html);
         self::assertStringContainsString('https://github.com/o/r/blob/main/gestor/bibliotecas/lib.php', $html);
         self::assertStringNotContainsString('c2f:extract', $html);
+        self::assertStringContainsString('bibliotecas/lib.php</code></p>', $html, 'selo com o caminho a partir da raiz do Gestor');
         self::assertStringNotContainsString('@[[publisher#', $html);
 
         $landing = $plan['write'][$this->tmp . '/site/resources/pt-br/pages/docs-reference/docs-reference.html'];

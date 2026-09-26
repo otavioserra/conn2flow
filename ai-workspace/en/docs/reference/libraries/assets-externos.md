@@ -1,5 +1,6 @@
 ---
 title: "assets-externos.php library"
+label: "External assets"
 description: "Single registry of third-party libraries (jQuery, Fomantic, CodeMirror, Quill, in-browser Tailwind…) with pinned versions, served from disk with a CDN only as a fallback."
 section: reference
 order: 250

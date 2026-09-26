@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca pagina.php"
+label: "Página"
 description: "Atalhos sobre $_GESTOR['pagina']: recortar células, trocar variáveis globais e mascarar marcadores para o banco."
 section: reference
 order: 100

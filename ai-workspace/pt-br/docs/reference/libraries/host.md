@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca host.php"
+label: "Hosts (legado)"
 description: "Legado do modo multi-host: host_url(), host_pub_id() e host_loja_nome() consultam tabelas que as instalações atuais não têm."
 section: reference
 order: 330

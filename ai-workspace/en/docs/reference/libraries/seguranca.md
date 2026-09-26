@@ -1,5 +1,6 @@
 ---
 title: "seguranca.php library"
+label: "Security"
 description: "Admin panel CSRF, CAPTCHA verification (reCAPTCHA and Turnstile), session User-Agent and IP checks, random tokens and normalization of the post-login return path."
 section: reference
 order: 40

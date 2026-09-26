@@ -1,5 +1,6 @@
 ---
 title: "hooks.php library"
+label: "Hooks"
 description: "Hooks API reference: hook_do_action, hook_apply_filters, hook_has_* and the registration functions used by the pipeline."
 section: reference
 order: 30

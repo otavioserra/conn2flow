@@ -1,5 +1,6 @@
 ---
 title: "geral.php library"
+label: "General"
 description: "A single function, geral_nl2br(), with no callers in the core."
 section: reference
 order: 220

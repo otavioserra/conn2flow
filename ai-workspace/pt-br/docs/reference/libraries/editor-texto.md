@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca editor-texto.php"
+label: "Editor de texto"
 description: "O editor de texto rico (Quill) no painel e o CSS que faz o conteúdo publicado ficar igual ao que o autor viu ao escrever."
 section: reference
 order: 260

@@ -1,5 +1,6 @@
 ---
 title: "oauth2.php library"
+label: "API tokens (OAuth2)"
 description: "Token server of the Gestor API: access and refresh tokens signed with the RSA key, a per-user limit, Bearer validation and renewal."
 section: reference
 order: 240

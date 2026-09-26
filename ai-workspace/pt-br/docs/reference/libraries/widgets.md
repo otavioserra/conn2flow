@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca widgets.php"
+label: "Widgets"
 description: "widgets_get(): como um marcador widgets# numa página vira o HTML devolvido por uma função de módulo, e como o mesmo widget responde por AJAX."
 section: reference
 order: 110

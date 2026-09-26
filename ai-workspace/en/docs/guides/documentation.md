@@ -44,6 +44,7 @@ description: "One sentence: shown in indexes, social sharing and llms.txt."
 section: reference          # guides | concepts | reference | whats-new (same as the folder)
 order: 20                   # position in the menu (default 100)
 visibility: public          # public (default) | restricted (reserved)
+label: "HTML templates"     # optional: short menu label (libraries)
 module: menus               # optional: id of the documented module
 sources:                    # required in reference/: the code this doc describes
   - gestor/bibliotecas/modelo.php
@@ -52,6 +53,8 @@ verified_at: 8f0af744
 ```
 
 `sources` and `verified_at` are what make drift measurable: if any source changes after `verified_at`, the doc climbs the `docs:audit` ranking.
+
+In the menu, a module doc shows the **module name** from the `modulos` table (the `nome` in `gestor/db/data/ModulosData.json`, in the doc language); the others use `label`, or `title` when there is no `label`. Library and module pages show at the top the code path from the Gestor root (`bibliotecas/<lib>.php`, `modulos/<id>/`), built by `docs:build`.
 
 ## How to write a doc
 

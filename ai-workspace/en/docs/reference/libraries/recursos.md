@@ -1,5 +1,6 @@
 ---
 title: "recursos.php library"
+label: "Asset URLs"
 description: "Static asset URLs: direct delivery from public_html/dist/ when the file was published, with a fallback to the arquivo-estatico controller."
 section: reference
 order: 120

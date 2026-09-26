@@ -55,5 +55,7 @@ final class DocsTheme
     public const NAV_LABEL = 'text-xs uppercase tracking-wider text-gray-500';
     public const NAV_TITLE = 'mt-1 font-semibold text-white';
     public const BADGE = 'inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300';
+    public const CODE_PATH = 'not-prose mb-6 flex flex-wrap items-center gap-2 text-sm';
+    public const CODE_PATH_LABEL = 'text-xs uppercase tracking-wider text-gray-500';
     public const SOURCE_LINK = 'font-mono text-xs text-gray-400 hover:text-[rgb(29,170,198)] transition-colors';
 }

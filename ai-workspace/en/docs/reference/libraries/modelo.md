@@ -1,5 +1,6 @@
 ---
 title: "modelo.php library"
+label: "HTML templates"
 description: "Variable replacement and delimited-block handling in HTML templates — the foundation of every screen the Gestor renders."
 section: reference
 order: 20

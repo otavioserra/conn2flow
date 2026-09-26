@@ -1,5 +1,6 @@
 ---
 title: "ip.php library"
+label: "Visitor IP"
 description: "Finding the visitor's IP (ip_get) and validating an address (ip_check), including the behavior behind a reverse proxy and a CDN."
 section: reference
 order: 200

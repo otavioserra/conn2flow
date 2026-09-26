@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca html.php"
+label: "HTML (DOM)"
 description: "Manipulação de um trecho HTML com DOMDocument: abrir, alterar atributos, texto e classes por nome de classe CSS, e devolver o HTML."
 section: reference
 order: 180

@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca variaveis.php"
+label: "Variáveis (legado)"
 description: "Leitura e gravação de variáveis de sistema (módulo _sistema) na tabela variaveis — biblioteca sem uso no core, distinta do sistema de textos gestor_variaveis()."
 section: reference
 order: 100

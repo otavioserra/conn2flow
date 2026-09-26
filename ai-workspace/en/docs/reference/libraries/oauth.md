@@ -1,5 +1,6 @@
 ---
 title: "oauth.php library"
+label: "Social login"
 description: "Social login with Google and Meta (Facebook): authorization URL with state, code exchange and profile reading."
 section: reference
 order: 230

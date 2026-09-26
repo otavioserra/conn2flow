@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca comunicacao.php"
+label: "E-mail"
 description: "Envio de e-mail por SMTP (PHPMailer) com o layout de e-mails do site, destinatários, anexos e imagens embutidas; e a página de impressão."
 section: reference
 order: 280

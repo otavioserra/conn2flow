@@ -1,5 +1,6 @@
 ---
 title: "pagina.php library"
+label: "Page"
 description: "Shortcuts over $_GESTOR['pagina']: cutting cells, replacing global variables and masking markers for the database."
 section: reference
 order: 100

@@ -1,5 +1,6 @@
 ---
 title: "arquivo.php library"
+label: "Files"
 description: "Pure functions for uploads and files: sanitizing names, blocking executable extensions, resolving paths without path traversal and deducing type and MIME."
 section: reference
 order: 190

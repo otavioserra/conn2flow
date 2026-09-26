@@ -1,5 +1,6 @@
 ---
 title: "editor-texto.php library"
+label: "Text editor"
 description: "The rich text editor (Quill) in the admin panel and the CSS that makes published content look the way the author saw it while writing."
 section: reference
 order: 260

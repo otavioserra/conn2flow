@@ -1,5 +1,6 @@
 ---
 title: "sitemap.php library"
+label: "Sitemap and robots.txt"
 description: "Generation and incremental updates of sitemap.xml and robots.txt: which pages go in, where the files live and when they are updated."
 section: reference
 order: 270

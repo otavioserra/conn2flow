@@ -73,7 +73,9 @@ final class DocsBuildCommand extends BaseProcessCommand
 
         $source = $input->getOption('source');
         $tree = new DocsTree($this->rootPath, is_string($source) ? $source : null);
-        $plan = (new DocsBuilder($tree, $gestorPath, $config))->plan();
+        // O rótulo do menu das docs de módulo é o nome do módulo na tabela `modulos` do core.
+        $moduleNames = DocsBuilder::loadModuleNames($this->rootPath . '/gestor/db/data/ModulosData.json');
+        $plan = (new DocsBuilder($tree, $gestorPath, $config, $moduleNames))->plan();
 
         foreach ($plan['warnings'] as $w) {
             $output->warning($w);

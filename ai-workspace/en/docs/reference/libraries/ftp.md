@@ -1,5 +1,6 @@
 ---
 title: "ftp.php library"
+label: "FTP"
 description: "An FTP/FTPS connection kept in $_GESTOR and uploading or downloading one file at a time. No callers in the core."
 section: reference
 order: 340

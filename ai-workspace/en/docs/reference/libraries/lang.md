@@ -1,5 +1,6 @@
 ---
 title: "lang.php library"
+label: "CLI translations"
 description: "JSON dictionaries and __t() for the messages of command-line scripts (updater, compiler, plugins). It is not the site translation."
 section: reference
 order: 210

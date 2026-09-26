@@ -1,5 +1,6 @@
 ---
 title: "cron.php library"
+label: "Scheduled routines"
 description: "Scheduled routines: declaring a task in the module, scheduling the ticks on the server and what the gestor/cron.php engine actually runs."
 section: reference
 order: 130

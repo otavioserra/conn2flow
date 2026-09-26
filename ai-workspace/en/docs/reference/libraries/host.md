@@ -1,5 +1,6 @@
 ---
 title: "host.php library"
+label: "Hosts (legacy)"
 description: "Legacy of the multi-host mode: host_url(), host_pub_id() and host_loja_nome() query tables that current installations do not have."
 section: reference
 order: 330

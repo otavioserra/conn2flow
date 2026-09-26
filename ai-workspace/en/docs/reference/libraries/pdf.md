@@ -1,5 +1,6 @@
 ---
 title: "pdf.php library"
+label: "PDF"
 description: "Loads tFPDF and offers pdf_voucher(), a fixed-layout voucher generator inherited from an old system and with no callers in the core."
 section: reference
 order: 320

@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca seguranca.php"
+label: "Segurança"
 description: "CSRF do painel, verificação de CAPTCHA (reCAPTCHA e Turnstile), checagem de User-Agent e IP da sessão, tokens aleatórios e normalização do retorno pós-login."
 section: reference
 order: 40

@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca recursos.php"
+label: "URLs de assets"
 description: "URLs de assets estáticos: entrega direta de public_html/dist/ quando o arquivo foi publicado, com fallback para o controlador arquivo-estatico."
 section: reference
 order: 120

@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca gestor.php"
+label: "Núcleo do Gestor"
 description: "O núcleo de apoio do Gestor: componentes e layouts, textos por módulo, recursos de página, SEO e OpenGraph, acesso restrito, redirecionamento, sessão em banco e higienização do HTML servido."
 section: reference
 order: 11

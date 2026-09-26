@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca cron.php"
+label: "Rotinas automáticas"
 description: "Rotinas automáticas: declarar uma tarefa no módulo, agendar os ticks no servidor e o que a engine gestor/cron.php realmente executa."
 section: reference
 order: 130

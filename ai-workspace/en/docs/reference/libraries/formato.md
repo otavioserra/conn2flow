@@ -1,5 +1,6 @@
 ---
 title: "formato.php library"
+label: "Formatting"
 description: "Conversions between the database format and the Brazilian one: dates, numbers with decimal comma and thousands separator, and the formato_dado() dispatcher."
 section: reference
 order: 170

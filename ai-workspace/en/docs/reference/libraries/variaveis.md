@@ -1,5 +1,6 @@
 ---
 title: "variaveis.php library"
+label: "Variables (legacy)"
 description: "Reading and writing system variables (module _sistema) in the variaveis table — a library unused by the core, distinct from the gestor_variaveis() text system."
 section: reference
 order: 100

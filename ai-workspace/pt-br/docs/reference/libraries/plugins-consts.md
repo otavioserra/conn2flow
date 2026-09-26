@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca plugins-consts.php"
+label: "Constantes de plugins"
 description: "Códigos de saída e estados de execução do instalador de plugins, e plg_exit_code_label()."
 section: reference
 order: 310

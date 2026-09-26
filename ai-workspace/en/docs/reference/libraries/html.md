@@ -1,5 +1,6 @@
 ---
 title: "html.php library"
+label: "HTML (DOM)"
 description: "Editing an HTML snippet with DOMDocument: open it, change attributes, text and classes by CSS class name, and return the HTML."
 section: reference
 order: 180

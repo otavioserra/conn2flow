@@ -29,6 +29,9 @@ final class DocsBuilder
     /** @var array<string, mixed> */
     private array $config;
 
+    /** @var array<string, array<string, string>> */
+    private array $moduleNames;
+
     /** @var list<string> */
     private array $errors = [];
 
@@ -38,11 +41,93 @@ final class DocsBuilder
     /**
      * @param array<string, mixed> $config conteúdo de docs.config.json
      */
-    public function __construct(DocsTree $tree, string $gestorPath, array $config)
+    /**
+     * @param array<string, array<string, string>> $moduleNames Nome de cada módulo por idioma (`[idioma][id] => nome`),
+     *        da tabela `modulos`: é o rótulo do menu das docs que declaram `module:` no frontmatter.
+     */
+    public function __construct(DocsTree $tree, string $gestorPath, array $config, array $moduleNames = [])
     {
         $this->tree = $tree;
         $this->gestorPath = rtrim(str_replace('\\', '/', $gestorPath), '/');
         $this->config = $config;
+        $this->moduleNames = $moduleNames;
+    }
+
+    /**
+     * Lê `[idioma][id] => nome` de um `ModulosData.json`. Arquivo ausente ou inválido devolve `[]`.
+     *
+     * @return array<string, array<string, string>>
+     */
+    public static function loadModuleNames(string $modulosDataJson): array
+    {
+        $dados = is_file($modulosDataJson) ? json_decode((string)file_get_contents($modulosDataJson), true) : null;
+        $nomes = [];
+        foreach (is_array($dados) ? $dados : [] as $m) {
+            if (is_array($m) && isset($m['language'], $m['id'], $m['nome']) && trim((string)$m['nome']) !== '') {
+                $nomes[(string)$m['language']][(string)$m['id']] = trim((string)$m['nome']);
+            }
+        }
+
+        return $nomes;
+    }
+
+    /**
+     * Rótulo de uma doc no menu: o nome do módulo (tabela `modulos`) quando ela declara `module:`,
+     * senão o `label:` do frontmatter, senão o título.
+     */
+    private function menuLabel(string $lang, array $doc): string
+    {
+        $modulo = (string)($doc['meta']['module'] ?? '');
+        if ($modulo !== '' && isset($this->moduleNames[$lang][$modulo])) {
+            return $this->moduleNames[$lang][$modulo];
+        }
+        $label = trim((string)($doc['meta']['label'] ?? ''));
+
+        return $label !== '' ? $label : (string)$doc['meta']['title'];
+    }
+
+    /**
+     * Caminho do código documentado, a partir da raiz do Gestor: `bibliotecas/<lib>.php` para a
+     * referência de bibliotecas e `modulos/<id>/` para a de módulos. Vazio para as demais docs.
+     */
+    public static function codePath(string $rel, array $meta): string
+    {
+        if (preg_match('#^reference/libraries/([a-z0-9_-]+)\.md$#', $rel, $m) && $m[1] !== 'index') {
+            return 'bibliotecas/' . $m[1] . '.php';
+        }
+        $modulo = (string)($meta['module'] ?? '');
+        if (str_starts_with($rel, 'reference/modules/') && preg_match('/^[a-z0-9_-]+$/', $modulo)) {
+            return 'modulos/' . $modulo . '/';
+        }
+
+        return '';
+    }
+
+    /**
+     * Selo com o caminho do código documentado, no topo do conteúdo (bibliotecas e módulos).
+     *
+     * @param array<string, mixed> $meta
+     * @param array<string, mixed> $labels
+     */
+    private function codePathHtml(string $rel, array $meta, array $labels): string
+    {
+        $caminho = self::codePath($rel, $meta);
+        if ($caminho === '') {
+            return '';
+        }
+
+        return '<p class="' . DocsTheme::CODE_PATH . '"><span class="' . DocsTheme::CODE_PATH_LABEL . '">'
+            . self::text((string)($labels['code_path'] ?? 'Path')) . '</span> <code class="' . DocsTheme::ELEMENTS['code'] . '">'
+            . self::text($caminho) . '</code></p>' . "
+";
+    }
+
+    /** Comparação de rótulos sem acento, para a ordem alfabética do menu. */
+    private static function semAcento(string $s): string
+    {
+        $t = function_exists('iconv') ? @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $s) : false;
+
+        return strtolower($t !== false ? $t : $s);
     }
 
     /**
@@ -291,7 +376,7 @@ final class DocsBuilder
             'titulo' => self::text((string)$doc['meta']['title']),
             'descricao' => self::text((string)($doc['meta']['description'] ?? '')),
             'secao' => self::text($sectionLabel),
-            'conteudo' => $rendered['html'],
+            'conteudo' => $this->codePathHtml($rel, $doc['meta'], $labels) . $rendered['html'],
             'sumario' => $this->tocHtml($rendered['toc'], $labels),
             'navegacao' => $this->navHtml($prev, $next, $docs, $labels),
             'verificacao' => $this->verificationHtml($lang, $rel, $doc['meta'], $labels),
@@ -462,7 +547,14 @@ final class DocsBuilder
                     if (basename($rel) === 'index.md') {
                         continue;
                     }
-                    $leaves[] = $item(self::pageId($rel), (string)$docs[$rel]['meta']['title']);
+                    $leaves[] = $item(self::pageId($rel), $this->menuLabel($lang, $docs[$rel]));
+                }
+                // Com o nome do módulo como rótulo, a ordem do título antigo deixa de fazer sentido.
+                if ($sub === 'modules' || $sub === 'libraries') {
+                    usort($leaves, static fn (array $a, array $b): int => strcasecmp(
+                        self::semAcento($a['label']),
+                        self::semAcento($b['label'])
+                    ));
                 }
                 if ($sub === '') {
                     array_push($children, ...$leaves);

@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca oauth.php"
+label: "Login social"
 description: "Login social com Google e Meta (Facebook): URL de autorização com state, troca do código e leitura do perfil."
 section: reference
 order: 230

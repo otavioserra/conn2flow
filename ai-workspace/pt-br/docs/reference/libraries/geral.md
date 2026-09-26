@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca geral.php"
+label: "Geral"
 description: "Uma única função, geral_nl2br(), sem chamadores no core."
 section: reference
 order: 220

@@ -1,5 +1,6 @@
 ---
 title: "widgets.php library"
+label: "Widgets"
 description: "widgets_get(): how a widgets# marker on a page becomes the HTML returned by a module function, and how the same widget answers over AJAX."
 section: reference
 order: 110

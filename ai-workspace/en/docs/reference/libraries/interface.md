@@ -1,5 +1,6 @@
 ---
 title: "interface.php library"
+label: "CRUD interface"
 description: "The CRUD engine of the admin modules: the start/finish cycle per option, DataTables listing, forms, validation, history, field backups, alerts and the Tailwind component variants."
 section: reference
 order: 12

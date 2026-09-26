@@ -1,5 +1,6 @@
 ---
 title: "banco.php library"
+label: "Database"
 description: "The Gestor database layer (MySQLi): connection, queries, structured SELECT, accumulated INSERT/UPDATE, unique identifiers and distributed mode."
 section: reference
 order: 10

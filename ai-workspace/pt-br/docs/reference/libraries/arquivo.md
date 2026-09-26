@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca arquivo.php"
+label: "Arquivos"
 description: "Funções puras para upload e arquivos: sanitizar nomes, barrar extensões executáveis, resolver caminhos sem path traversal e deduzir tipo e MIME."
 section: reference
 order: 190

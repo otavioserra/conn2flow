@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca interface.php"
+label: "Interface de CRUD"
 description: "O motor de CRUD dos módulos administrativos: ciclo iniciar/finalizar por opção, listagem com DataTables, formulários, validação, histórico, backups de campo, alertas e as variantes Tailwind dos componentes."
 section: reference
 order: 12

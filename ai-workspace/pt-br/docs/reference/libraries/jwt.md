@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca jwt.php"
+label: "JWT"
 description: "Tokens JWT HS256 com chaves simétricas versionadas no banco, rotação e período de carência. Não é o token de login do Gestor."
 section: reference
 order: 140

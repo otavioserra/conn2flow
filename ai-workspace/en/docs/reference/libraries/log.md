@@ -1,5 +1,6 @@
 ---
 title: "log.php library"
+label: "Logs"
 description: "log_disco() for daily files in gestor/logs/, log_backtrace() for diagnostics and the legacy functions that write to the historico table."
 section: reference
 order: 160

@@ -1,5 +1,6 @@
 ---
 title: "comunicacao.php library"
+label: "E-mail"
 description: "Sending e-mail over SMTP (PHPMailer) with the site's e-mail layout, recipients, attachments and embedded images; and the print page."
 section: reference
 order: 280

@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca banco.php"
+label: "Banco de dados"
 description: "A camada de banco de dados do Gestor (MySQLi): conexão, consultas, SELECT estruturado, INSERT/UPDATE acumulados, identificadores únicos e o modo distribuído."
 section: reference
 order: 10

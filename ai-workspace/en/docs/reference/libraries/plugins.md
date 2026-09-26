@@ -1,5 +1,6 @@
 ---
 title: "plugins.php library"
+label: "Plugins (template)"
 description: "A template file with no use: it contains only the sample function template_opcao()."
 section: reference
 order: 300

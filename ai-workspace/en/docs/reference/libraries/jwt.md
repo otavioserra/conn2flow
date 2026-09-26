@@ -1,5 +1,6 @@
 ---
 title: "jwt.php library"
+label: "JWT"
 description: "HS256 JWT tokens with versioned symmetric keys in the database, rotation and a grace period. It is not the Gestor login token."
 section: reference
 order: 140

@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca 2fa.php"
+label: "Dois fatores (2FA)"
 description: "Segundo fator de autenticação: TOTP compatível com aplicativos autenticadores e código de 6 dígitos por e-mail."
 section: reference
 order: 150

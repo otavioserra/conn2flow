@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca ip.php"
+label: "IP do visitante"
 description: "Descobrir o IP do visitante (ip_get) e validar um endereço (ip_check), com o comportamento atrás de proxy reverso e de CDN."
 section: reference
 order: 200

@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca formato.php"
+label: "Formatação"
 description: "Conversões entre o formato do banco e o brasileiro: datas, números com vírgula e milhar, e o despachante formato_dado()."
 section: reference
 order: 170

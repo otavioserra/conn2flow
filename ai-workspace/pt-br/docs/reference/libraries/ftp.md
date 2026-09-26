@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca ftp.php"
+label: "FTP"
 description: "Conexão FTP/FTPS guardada em $_GESTOR e envio ou download de um arquivo por vez. Sem chamadores no core."
 section: reference
 order: 340

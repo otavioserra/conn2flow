@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca log.php"
+label: "Logs"
 description: "log_disco() para arquivos diários em gestor/logs/, log_backtrace() para diagnóstico e as funções legadas que gravam na tabela historico."
 section: reference
 order: 160

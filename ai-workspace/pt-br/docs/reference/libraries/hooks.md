@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca hooks.php"
+label: "Hooks"
 description: "Referência da API de hooks: hook_do_action, hook_apply_filters, hook_has_* e as funções de registro usadas pelo pipeline."
 section: reference
 order: 30

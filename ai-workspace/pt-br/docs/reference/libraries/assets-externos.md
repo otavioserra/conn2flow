@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca assets-externos.php"
+label: "Assets externos"
 description: "Registro único das bibliotecas de terceiros (jQuery, Fomantic, CodeMirror, Quill, Tailwind no navegador…) com versão fixa, servidas do disco e com CDN só como fallback."
 section: reference
 order: 250

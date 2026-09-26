@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca pdf.php"
+label: "PDF"
 description: "Carrega o tFPDF e oferece pdf_voucher(), um gerador de voucher com layout fixo herdado de um sistema antigo e sem chamadores no core."
 section: reference
 order: 320

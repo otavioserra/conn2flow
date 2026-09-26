@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca sitemap.php"
+label: "Sitemap e robots.txt"
 description: "Geração e atualização incremental do sitemap.xml e do robots.txt: que páginas entram, onde os arquivos ficam e quando são atualizados."
 section: reference
 order: 270

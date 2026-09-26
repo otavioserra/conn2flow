@@ -44,6 +44,7 @@ description: "Uma frase: aparece nos índices, no compartilhamento e no llms.txt
 section: reference          # guides | concepts | reference | whats-new (igual à pasta)
 order: 20                   # posição no menu (padrão 100)
 visibility: public          # public (padrão) | restricted (reservado)
+label: "Modelos HTML"       # opcional: rótulo curto no menu (bibliotecas)
 module: menus               # opcional: id do módulo documentado
 sources:                    # obrigatório em reference/: o código que a doc descreve
   - gestor/bibliotecas/modelo.php
@@ -52,6 +53,8 @@ verified_at: 8f0af744
 ```
 
 `sources` e `verified_at` são o que torna a defasagem mensurável: se alguma fonte mudar depois do `verified_at`, a doc sobe no ranking do `docs:audit`.
+
+No menu, uma doc de módulo aparece com o **nome do módulo** da tabela `modulos` (o `nome` de `gestor/db/data/ModulosData.json`, no idioma da doc); as demais usam `label`, ou o `title` se não houver `label`. As páginas de bibliotecas e de módulos mostram no topo o caminho do código a partir da raiz do Gestor (`bibliotecas/<lib>.php`, `modulos/<id>/`), montado pelo `docs:build`.
 
 ## Como escrever uma doc
 

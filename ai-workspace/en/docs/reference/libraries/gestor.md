@@ -1,5 +1,6 @@
 ---
 title: "gestor.php library"
+label: "Gestor core"
 description: "The Gestor's support core: components and layouts, per-module texts, page resources, SEO and OpenGraph, restricted access, redirection, database-backed sessions and sanitization of the served HTML."
 section: reference
 order: 11

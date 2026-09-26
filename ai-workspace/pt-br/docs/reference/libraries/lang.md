@@ -1,5 +1,6 @@
 ---
 title: "Biblioteca lang.php"
+label: "Traduções do CLI"
 description: "Dicionários JSON e __t() para as mensagens dos scripts de linha de comando (atualizador, compilador, plugins). Não é a tradução do site."
 section: reference
 order: 210
