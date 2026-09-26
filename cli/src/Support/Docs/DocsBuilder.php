@@ -164,7 +164,7 @@ final class DocsBuilder
 
         foreach ($this->languages() as $lang) {
             $docs = $this->collect($lang);
-            $nav = $this->navigation($docs);
+            $nav = $this->navigation($docs, $lang);
             $resDir = $this->gestorPath . '/resources/' . $lang;
 
             $articleTpl = $this->readTemplate($lang, (string)$this->config['article_template']);
@@ -343,11 +343,20 @@ final class DocsBuilder
      * @param array<string, array{meta: array<string, mixed>, body: string}> $docs
      * @return list<string>
      */
-    private function navigation(array $docs): array
+    private function navigation(array $docs, string $lang = ''): array
     {
         $keys = array_keys($docs);
-        usort($keys, static function (string $a, string $b) use ($docs): int {
-            return self::sortKey($a, $docs[$a]['meta']) <=> self::sortKey($b, $docs[$b]['meta']);
+        usort($keys, function (string $a, string $b) use ($docs, $lang): int {
+            $ka = self::sortKey($a, $docs[$a]['meta']);
+            $kb = self::sortKey($b, $docs[$b]['meta']);
+            // Módulos e bibliotecas aparecem no menu em ordem alfabética do rótulo; o anterior/próximo
+            // do artigo precisa seguir a mesma ordem, senão "próximo" aponta para outro lugar do menu.
+            if ($lang !== '' && $ka[0] === $kb[0] && $ka[1] === $kb[1] && $ka[2] === 1 && $kb[2] === 1
+                && in_array($ka[1], ['modules', 'libraries'], true)) {
+                return strcasecmp(self::semAcento($this->menuLabel($lang, $docs[$a])), self::semAcento($this->menuLabel($lang, $docs[$b])));
+            }
+
+            return $ka <=> $kb;
         });
 
         return $keys;
@@ -555,7 +564,7 @@ final class DocsBuilder
         }
 
         $grouped = [];
-        foreach ($this->navigation($docs) as $rel) {
+        foreach ($this->navigation($docs, $lang) as $rel) {
             if ($rel === 'index.md') {
                 continue;
             }
