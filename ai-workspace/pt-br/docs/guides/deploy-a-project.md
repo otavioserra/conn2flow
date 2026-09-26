@@ -8,6 +8,7 @@ sources:
   - ai-workspace/en/scripts/projects/deploy-project-v2.sh
   - gestor/bibliotecas/cron.php
   - gestor/bibliotecas/sitemap.php
+  - gestor/bibliotecas/comunicacao.php
 verified_at: e5b61f8e
 ---
 
@@ -22,3 +23,5 @@ A etapa CSS pode falhar e emitir aviso sem abortar o retorno final do pipeline; 
 ## Pós-deploy
 
 O pipeline não cria o agendamento de `gestor/cron.php` no servidor: configure os ticks conforme a [referência cron](../reference/libraries/cron.md). O deploy também não regenera `sitemap.xml`; a biblioteca [sitemap](../reference/libraries/sitemap.md) atualiza páginas individualmente ao salvar ou permite regeneração completa. Planeje essa atualização ao publicar conteúdo novo. As páginas servidas em produção vêm do banco, como explica [recursos](../concepts/resources.md).
+
+Se o projeto envia e-mail, configure SMTPS com TLS implícito e porta 465. A [biblioteca de comunicação](../reference/libraries/comunicacao.md) ativa a criptografia mesmo quando `EMAIL_SECURE=false`; a configuração STARTTLS na porta 587 não funciona nesse fluxo.

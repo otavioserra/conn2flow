@@ -8,6 +8,7 @@ sources:
   - ai-workspace/en/scripts/projects/deploy-project-v2.sh
   - gestor/bibliotecas/cron.php
   - gestor/bibliotecas/sitemap.php
+  - gestor/bibliotecas/comunicacao.php
 verified_at: e5b61f8e
 ---
 
@@ -22,3 +23,5 @@ The CSS stage can fail with a warning without aborting the pipeline's final retu
 ## After deploy
 
 The pipeline does not create server scheduling for `gestor/cron.php`: configure ticks using the [cron reference](../reference/libraries/cron.md). Deploy also does not regenerate `sitemap.xml`; the [sitemap library](../reference/libraries/sitemap.md) updates individual pages on save or can perform full regeneration. Plan for it when publishing new content. Production pages are served from the database, as [resources](../concepts/resources.md) explains.
+
+If the project sends email, configure SMTPS with implicit TLS on port 465. The [communication library](../reference/libraries/comunicacao.md) enables encryption even when `EMAIL_SECURE=false`; STARTTLS on port 587 does not work in this flow.
