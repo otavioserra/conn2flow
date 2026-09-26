@@ -395,6 +395,14 @@ final class ProjectSshDeployReq034Test extends TestCase
 
         // O gerador e o JSON carregam credencial de sessão: não podem sobrar em /tmp da VM.
         self::assertStringContainsString('sudo rm -f ', $comando);
+
+        // req-186: o comando roda num `sh` da VM; `escapeshellarg()` segue o SO local e, no Windows,
+        // usa aspas duplas e apaga as internas — o gerador recebia `--gestor=` vazio.
+        $inicio = (int) strpos($comando, 'private function generateOverSsh(');
+        $fim = (int) strpos($comando, 'private function generateInDocker(');
+        $blocoSsh = substr($comando, $inicio, $fim - $inicio);
+        self::assertStringNotContainsString('escapeshellarg($', $blocoSsh);
+        self::assertStringContainsString("' --gestor=' . \$this->posixQuote(", $blocoSsh);
     }
 
     /** @param array<string, mixed> $projeto */

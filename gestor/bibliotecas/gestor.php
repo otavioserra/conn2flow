@@ -2110,8 +2110,12 @@ function gestor_variaveis_globais($params = false){
 			"variaveis",
 			"WHERE language='".$_GESTOR['linguagem-codigo']."'"
 			." AND id='".$id."'"
+			// req-186: sem ordem, um id repetido em vários módulos (ex.: `module-title`) devolvia o
+			// de um módulo qualquer. Preferência: a global, depois a do módulo atual, depois as demais.
+			." ORDER BY (modulo IS NULL) DESC"
+			.(isset($_GESTOR['modulo-id']) ? ", (modulo='".banco_escape_field($_GESTOR['modulo-id'])."') DESC" : "")
 		);
-		
+
 		if($variaveis){
 			$_GESTOR['variaveis']['_global_'][$id] = $variaveis[0]['valor'];
 		}

@@ -257,27 +257,27 @@ HELP;
         $resultPath = null;
 
         try {
-            $php = 'php ' . escapeshellarg($scriptRemoto)
-                . ' --gestor=' . escapeshellarg($ssh['path'])
-                . ' --host=' . escapeshellarg($host)
-                . ' --user=' . escapeshellarg($userIdent)
-                . ' --result=' . escapeshellarg($resultadoRemoto);
+            $php = 'php ' . $this->posixQuote($scriptRemoto)
+                . ' --gestor=' . $this->posixQuote($ssh['path'])
+                . ' --host=' . $this->posixQuote($host)
+                . ' --user=' . $this->posixQuote($userIdent)
+                . ' --result=' . $this->posixQuote($resultadoRemoto);
 
-            $comandoPhp = 'cd ' . escapeshellarg($ssh['path']) . ' && ' . $php;
+            $comandoPhp = 'cd ' . $this->posixQuote($ssh['path']) . ' && ' . $php;
 
             if (is_string($ssh['runAs']) && $ssh['runAs'] !== '') {
                 if (preg_match('/^[A-Za-z0-9._-]+$/', $ssh['runAs']) !== 1) {
                     $output->error("Invalid ssh_run_as value: {$ssh['runAs']}");
                     return null;
                 }
-                $comandoPhp = 'sudo -u ' . escapeshellarg($ssh['runAs'])
-                    . ' sh -c ' . escapeshellarg($comandoPhp);
+                $comandoPhp = 'sudo -u ' . $this->posixQuote($ssh['runAs'])
+                    . ' sh -c ' . $this->posixQuote($comandoPhp);
             }
 
             // O JSON nasce com a posse de quem rodou o gerador; sem isto o `scp` de volta,
             // feito pela conta SSH, esbarra na permissão do próprio arquivo que acabou de criar.
             $comando = $comandoPhp
-                . ' && sudo chmod 0644 ' . escapeshellarg($resultadoRemoto);
+                . ' && sudo chmod 0644 ' . $this->posixQuote($resultadoRemoto);
 
             $execucao = $this->callProcess([
                 'ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=15',
@@ -313,9 +313,18 @@ HELP;
             $this->callProcess([
                 'ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=15',
                 '-p', $porta, $alvo, '--',
-                'sudo rm -f ' . escapeshellarg($scriptRemoto) . ' ' . escapeshellarg($resultadoRemoto),
+                'sudo rm -f ' . $this->posixQuote($scriptRemoto) . ' ' . $this->posixQuote($resultadoRemoto),
             ]);
         }
+    }
+
+    /**
+     * Citação POSIX para o comando que roda na VM. `escapeshellarg()` segue o SO local: no Windows
+     * usa aspas duplas e apaga as internas, e o `sh -c` remoto recebia `--gestor= /caminho` (valor vazio).
+     */
+    private function posixQuote(string $value): string
+    {
+        return "'" . str_replace("'", "'\''", $value) . "'";
     }
 
     private function generateInDocker(
