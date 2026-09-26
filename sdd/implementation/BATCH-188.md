@@ -14,6 +14,7 @@ Execução da [req-184](../human-requests/req-184.md), por um agente em outra in
 ## Commits
 
 - Core `4a634bfd`: fonte SDD, filtro, testes e guia bilíngue (push em `main`).
+- Core `300b7d5f`: link para a landing SDD no `llms.txt` principal e teste (push em `main`).
 - Site `6a2c3ed`: configuração do publisher e índice SDD (push em `feat/req-055`).
 - Recursos gerados e validação do Lab pendentes da liberação do BATCH-184.
 
