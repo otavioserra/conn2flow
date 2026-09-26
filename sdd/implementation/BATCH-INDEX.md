@@ -121,8 +121,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-181 | complete | Snapshot e limpeza do legado do `ai-workspace` (req-176) | [BATCH-181.md](BATCH-181.md) | FEAT-014 fase 0. Branch local `legacy/ai-workspace-pre-docs`; remove `agents-history/`, `prompts/`, `templates/`; `scripts/` intocado. |
 | BATCH-182 | complete | Contrato de documentação, `docs:audit`, `docs:extract` e piloto bilíngue (req-177) | [BATCH-182.md](BATCH-182.md) | FEAT-014 fase 1. 8 docs piloto com score 0; PHPUnit 8/8. |
 | BATCH-183 | complete | Parser `docs:build` Markdown → recursos Tailwind (req-178) | [BATCH-183.md](BATCH-183.md) | FEAT-014 fase 1. Parsedown em `cli/lib/`; idempotente; publicado no Lab (`conn2flow-site-local`, REQ-057/BATCH-050 do site); PHPUnit 12/12 docs, suíte 1.231/1.232 (CoreHelpersTest = openssl Windows). |
-| BATCH-184 | in-progress | Migração do acervo de docs — onda 1: fundação (req-179) | [BATCH-184.md](BATCH-184.md) | FEAT-014 fase 2. Mapa completo legado → árvore nova na req-179. |
-| BATCH-185 | in-progress | Documentação dos módulos do core — onda 3, segundo agente (req-180) | [BATCH-185.md](BATCH-185.md) | FEAT-014 fase 2, em paralelo ao BATCH-184. Sem pipeline; publicação feita pelo BATCH-184. |
+| BATCH-184 | in-progress | Migração do acervo de docs — ondas 1, 2, 4, 5 e 6 (req-179) | [BATCH-184.md](BATCH-184.md) | FEAT-014 fase 2. Onda 1 concluída; onda 2 (bibliotecas) em 30/41. Achados de segurança na req-181 (A1–A8). |
+| BATCH-185 | complete | Documentação dos módulos do core — onda 3, segundo agente (req-180) | [BATCH-185.md](BATCH-185.md) | 32 módulos reescritos (pt-br + en), legado de módulos removido; auditoria final: 66 referências, nenhuma ausente, score 0. Publicação no site feita pelo BATCH-184. Concluído em 2026-09-26. |
 
 ## Regra operacional
 
