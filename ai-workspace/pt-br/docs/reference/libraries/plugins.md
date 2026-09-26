@@ -13,7 +13,7 @@ verified_at: a5ae8605
 
 Apesar do nome, **não tem relação com o sistema de plugins**. É um arquivo-modelo de biblioteca: registra `$_GESTOR['biblioteca-template']` e define `template_opcao($params)`, uma função vazia que mostra a convenção de parâmetros nomeados (`foreach($params as $var => $val) $$var = $val;`).
 
-Não está no registro `bibliotecas-dados` e nada a inclui. A instalação e a atualização de plugins ficam em `plugins-installer.php`, com as constantes de [plugins-consts.php](plugins-consts.md).
+Não está no registro `bibliotecas-dados` e nada a inclui. A instalação e a atualização de plugins ficam em [plugins-installer.php](plugins-installer.md), com as constantes de [plugins-consts.php](plugins-consts.md).
 
 ## Funções
 

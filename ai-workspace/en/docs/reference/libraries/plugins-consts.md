@@ -12,7 +12,7 @@ verified_at: a5ae8605
 
 # `plugins-consts.php` library
 
-Constants shared by the plugin installer (`plugins-installer.php`). Each one is only defined if it does not exist yet.
+Constants shared by the [plugin installer](plugins-installer.md). Each one is only defined if it does not exist yet.
 
 ## Exit codes
 

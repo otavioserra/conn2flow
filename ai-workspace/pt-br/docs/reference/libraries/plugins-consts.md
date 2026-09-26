@@ -12,7 +12,7 @@ verified_at: a5ae8605
 
 # Biblioteca `plugins-consts.php`
 
-Constantes compartilhadas pelo instalador de plugins (`plugins-installer.php`). Cada uma só é definida se ainda não existir.
+Constantes compartilhadas pelo [instalador de plugins](plugins-installer.md). Cada uma só é definida se ainda não existir.
 
 ## Códigos de saída
 

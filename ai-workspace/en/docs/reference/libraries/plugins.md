@@ -13,7 +13,7 @@ verified_at: a5ae8605
 
 Despite the name, it **has nothing to do with the plugin system**. It is a library template file: it registers `$_GESTOR['biblioteca-template']` and defines `template_opcao($params)`, an empty function that shows the named-parameter convention (`foreach($params as $var => $val) $$var = $val;`).
 
-It is not in the `bibliotecas-dados` registry and nothing includes it. Plugin installation and updates live in `plugins-installer.php`, with the constants of [plugins-consts.php](plugins-consts.md).
+It is not in the `bibliotecas-dados` registry and nothing includes it. Plugin installation and updates live in [plugins-installer.php](plugins-installer.md), with the constants of [plugins-consts.php](plugins-consts.md).
 
 ## Functions
 
