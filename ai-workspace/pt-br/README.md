@@ -23,7 +23,7 @@ A documentação nova segue o contrato descrito em [docs/guides/documentation.md
   - `php cli/c2f.php docs:extract` gera a referência das bibliotecas a partir do código;
   - `php cli/c2f.php docs:build --project=<id>` publica no site como recursos do sistema.
 
-Os arquivos antigos na raiz de `docs/` (em MAIÚSCULAS) são **legado**. Eles são migrados para a árvore nova em ondas, pela rotina de documentação, e aparecem como `legacy` no `docs:audit`.
+As páginas de conceitos e novidades já estão na árvore nova. Arquivos legados de bibliotecas ainda aparecem em `legacy` no `docs:audit` até a conclusão da onda correspondente.
 
 ## 🗄️ Histórico
 

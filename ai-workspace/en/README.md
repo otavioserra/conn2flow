@@ -22,7 +22,7 @@ New documentation follows the contract described in [docs/guides/documentation.m
   - `php cli/c2f.php docs:extract` generates library reference from the code;
   - `php cli/c2f.php docs:build --project=<id>` publishes to the website as system resources.
 
-The old files at the root of `docs/` (in UPPERCASE) are **legacy**. They are migrated into the new tree in waves by the documentation routine, and show up as `legacy` in `docs:audit`.
+Concept and release-note pages are now in the new tree. Legacy library files still appear in `legacy` in `docs:audit` until their migration wave is complete.
 
 ## 🗄️ History
 
