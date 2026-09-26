@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsBuildCommand.php
   - cli/src/Commands/DocsExtractCommand.php
-verified_at: e5b61f8e
+verified_at: ef6da761
 ---
 
 # CLI: Documentação
@@ -44,7 +44,8 @@ Usage: c2f docs:build --project=<id> [--dry-run] [--source=<dir>]
 Reads <project gestor>/docs.config.json and ai-workspace/<lang>/docs/ (guides, concepts, reference,
 whats-new) and writes, per language, resources/<lang>/{pages,publisher_pages,menus}/ plus pages.json,
 publisher-pages.json and menus.json (merged by id: only ids 'docs' and 'docs-*' are managed), and
-assets/docs/llms*.txt. Broken links or invalid frontmatter abort the build without writing.
+assets/docs/llms*.txt. With sdd.enabled in docs.config.json, also publishes filtered Core SDD
+documents (pt-br only) under /docs/sdd/. Broken docs links or invalid frontmatter abort the build.
 
 Next step (local only): php cli/c2f.php project:update-all <id>
 ```
