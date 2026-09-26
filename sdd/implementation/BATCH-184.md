@@ -25,6 +25,16 @@ Execução da [req-179](../human-requests/req-179.md). Os módulos estão com o 
 | `reference/libraries/2fa.md` | — | **Segurança (req-181 A5):** verificação do 2FA sem limite de tentativas, TOTP reutilizável na janela, reenvio de e-mail sem limite. |
 | `reference/libraries/{log,formato}.md` | `BIBLIOTECA-{LOG,FORMATO}` (+ en) | `log_disco()` relê e regrava o arquivo inteiro (lento e perde linhas em concorrência). `formato_data_hora_from_datetime_to_text()` troca os códigos dentro de palavras. `formato_colocar_char_meio_numero('7')` lança `ValueError`. |
 | `reference/libraries/{html,arquivo}.md` | `BIBLIOTECA-{HTML,ARQUIVO}` (+ en) | `html_finalizar()` desfaz o escape (`&lt;script&gt;` → `<script>`). **Segurança (req-181 A6):** upload de `.html`/`.svg` servido inline no domínio do site. |
+| `reference/libraries/{seguranca,oauth,oauth2}.md` | — | **Segurança (req-181 A7, A8):** checagem de User-Agent/IP da sessão contornável (marcas na sessão, "fail-safe"); login social vincula conta pelo e-mail sem `email_verified`. O `scope` dos tokens OAuth2 nunca é conferido. |
+| `reference/libraries/{assets-externos,editor-texto,sitemap}.md` | — | CSS de terceiros entra pela fila de JS. A paridade do Quill fixa `--color-mp-ink`, token de um projeto. **O deploy não atualiza o `sitemap.xml`** (no Lab, nenhuma URL de docs no sitemap). `robots.txt` não considera subpasta nem prefixo de idioma. |
+| `reference/libraries/comunicacao.md` | `BIBLIOTECA-COMUNICACAO` (+ en) | **Só SMTPS funciona**: `EMAIL_SECURE=false` não desliga a criptografia (teste por `isset`), porta 587 falha; guia de instalação ajustado. **Segurança (req-181 A9):** senha SMTP gravada no log de falha. |
+| `reference/libraries/{ia,configuracao,stripe,paypal}.md` | `BIBLIOTECA-{IA,CONFIGURACAO,PAYPAL}` (+ en) | **Segurança (req-181 A10):** prompts de IA editáveis/excluíveis sem conferir o dono. Só Gemini é suportado; o modelo de reserva no código não tem o prefixo `models/`. Salvar variáveis de módulo **apaga** as que não vieram no POST (perda com `max_input_vars`). Webhooks modulares do Stripe e PayPal são repassados sem validação. `paypal_formatar_data()` põe `Z` num horário local. |
+| `reference/libraries/{plugins-installer,modulo-distribuido}.md` | `BIBLIOTECA-PLUGINS-INSTALLER`, `CORRECOES-CHECKSUM-SHA256` (+ en) | SHA-256 do pacote só com `sha256_url`; `cred_ref` com o token cru é gravado no banco. **Segurança (req-181 A11):** o canal distribuído aceita reenvio (`timestamp`/`nonce` não conferidos) e qualquer SQL de uma instrução. |
+| `reference/libraries/{autenticacao,formulario,usuario,html-editor}.md` | `BIBLIOTECA-{AUTENTICACAO,FORMULARIO,USUARIO}` (+ en) | Token de login cifrado com a chave **pública** (o que protege é o `pubID` no banco). Controle de tentativas só por IP. O `timestamp` anti-reenvio dos formulários vem do navegador. Escopos dos tokens pessoais não são aplicados. |
+
+## Divisão do trabalho restante (2026-09-26)
+
+A pedido do Humano, uma requisição por onda, cada uma para um agente: [req-182](../human-requests/req-182.md) (onda 4, BATCH-186), [req-183](../human-requests/req-183.md) (onda 5, BATCH-187), [req-184](../human-requests/req-184.md) (onda 6 e dono do pipeline, BATCH-188) e [req-185](../human-requests/req-185.md) (ajustes de navegação pedidos pelo Humano, BATCH-189).
 
 ## Ferramental ajustado no caminho
 
@@ -33,5 +43,8 @@ Execução da [req-179](../human-requests/req-179.md). Os módulos estão com o 
 
 ## Validação
 
-- `docs:audit --json`: 0 erros. Os avisos restantes são só `missing:` (cobertura pendente).
-- PHPUnit das ferramentas de docs: 12/12.
+- `docs:audit --json` (2026-09-26, HEAD `3255d48c`): 0 erros; `legacy` = 0 nos dois idiomas; as 41 bibliotecas documentadas. Os avisos "bloco desatualizado" vêm do extrator em mudança pela req-185, que regenera os blocos.
+- PHPUnit das ferramentas de docs: `DocsBuildReq178Test` e `DocsToolingReq177Test` verdes (16 testes, 100 asserções) no último commit de ferramental deste batch.
+- Lab (`conn2flow-site-local`): `docs:build` + `project:update-all` rodados em 2026-09-26 com os módulos da req-180; `page:inspect` sem erros de console em `/docs/reference/libraries/cron/` e `/docs/reference/modules/usuarios/`.
+
+**Status**: `complete` (2026-09-26). O pipeline das docs passa ao agente da req-184.

@@ -1,5 +1,13 @@
 # Validation Checklist
 
+## BATCH-184 — Migração do acervo de docs, ondas 1 e 2 (req-179)
+
+- [x] `docs:audit --json`: 0 erros; `legacy` = 0 em pt-br e en; 41 bibliotecas e 4 conceitos da onda 1 documentados do código.
+- [x] PHPUnit das docs (`DocsBuildReq178Test`, `DocsToolingReq177Test`): 16/16 (100 asserções) no último commit de ferramental do batch.
+- [x] Comportamentos citados nas docs conferidos executando o código quando possível (`formato.php`, callouts, extrator).
+- [x] Lab: `docs:build` + `project:update-all conn2flow-site-local`; `page:inspect` sem erros de console em `/docs/reference/libraries/cron/` e `/docs/reference/modules/usuarios/`; screenshots conferidos.
+- [ ] Revisão manual do Humano no Lab (lista de testes no relatório final).
+
 ## BATCH-183 — Parser docs:build (req-178)
 
 - [x] `vendor/bin/phpunit --filter "DocsBuildReq178Test|DocsToolingReq177Test"`: 12/12 (84 asserções).
