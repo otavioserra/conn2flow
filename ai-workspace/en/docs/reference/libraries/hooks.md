@@ -40,11 +40,36 @@ Do not call these functions in a regular request: they rewrite the table. They a
 Reference generated from `gestor/bibliotecas/hooks.php` by `c2f docs:extract` — 7 functions. Do not edit inside this block.
 
 - `hook_do_action(string $namespace, string $evento, mixed ...$args): void` — [line 357](../../../../../gestor/bibliotecas/hooks.php#L357)
+  Executa todos os callbacks de action para um namespace+evento.
+  Parameters:
+  - `$namespace`: Namespace alvo (ex: 'paginas', 'global')
+  - `$evento`: Evento específico (ex: 'editar', 'adicionar')
+  - `$args`: Argumentos passados para os callbacks
 - `hook_apply_filters(string $namespace, string $evento, mixed $value, mixed ...$args): mixed` — [line 370](../../../../../gestor/bibliotecas/hooks.php#L370)
+  Aplica todos os filters para um namespace+evento, retornando o valor transformado.
+  Parameters:
+  - `$namespace`: Namespace alvo
+  - `$evento`: Evento específico
+  - `$value`: Valor a ser filtrado
+  - `$args`: Argumentos adicionais
+  Returns: Valor após aplicação de todos os filters
 - `hook_has_actions(string $namespace, string $evento): bool` — [line 377](../../../../../gestor/bibliotecas/hooks.php#L377)
+  Verifica se existem actions registradas para um namespace+evento.
 - `hook_has_filters(string $namespace, string $evento): bool` — [line 384](../../../../../gestor/bibliotecas/hooks.php#L384)
+  Verifica se existem filters registrados para um namespace+evento.
 - `hooks_registrar_modulo(string $modulo, ?string $plugin, array $hooks_config): int` — [line 401](../../../../../gestor/bibliotecas/hooks.php#L401)
+  Registra/atualiza os hooks de um módulo na tabela hooks. Remove hooks antigos do módulo que não estão mais no JSON. Fonte de verdade: arquivo JSON do módulo.
+  Parameters:
+  - `$modulo`: ID do módulo
+  - `$plugin`: ID do plugin (null se não for de plugin)
+  - `$hooks_config`: Seção "hooks" do JSON do módulo
 - `hooks_registrar_projeto(): int` — [line 434](../../../../../gestor/bibliotecas/hooks.php#L434)
+  Registra/atualiza os hooks do projeto (project/hooks/hooks.json). Remove hooks de projeto antigos e re-insere os do JSON atual.
 - `hooks_inserir_callbacks(?string $modulo, ?string $plugin, string $namespace, string $evento, mixed $callbackDef, string $tipo, ?int $projeto): int` — [line 487](../../../../../gestor/bibliotecas/hooks.php#L487)
+  Insere callback(s) na tabela hooks. Suporta: string simples, array de strings, ou objeto {callback, prioridade, habilitado}.
+  Parameters:
+  - `$callbackDef`: Definição do callback (string, array, ou assoc array)
+  - `$tipo`: 'action' ou 'filter'
+  - `$projeto`: 1 se de projeto, null se de módulo
 
 <!-- c2f:extract:end -->

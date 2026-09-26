@@ -37,5 +37,17 @@ Para PDFs novos, use o tFPDF direto em vez desta função.
 Referência gerada a partir de `gestor/bibliotecas/pdf.php` por `c2f docs:extract` — 1 funções. Não edite dentro deste bloco.
 
 - `pdf_voucher(array|false $params = false): string|void` — [linha 49](../../../../../gestor/bibliotecas/pdf.php#L49)
+  Gera um PDF de voucher com informações do serviço e QR Code.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['servicoImg']`: Caminho da imagem do serviço (obrigatório).
+  - `$params['qrCodeImg']`: Caminho da imagem do QR Code (obrigatório).
+  - `$params['voucherTitulo']`: Título do voucher (obrigatório).
+  - `$params['voucherSubtitulo']`: Subtítulo do voucher (opcional).
+  - `$params['nome']`: Nome do cliente (obrigatório).
+  - `$params['documento']`: Documento do cliente (obrigatório).
+  - `$params['telefone']`: Telefone do cliente (obrigatório).
+  - `$params['loteVariacao']`: Indica se é lote e variação (obrigatório).
+  Retorno: Caminho do arquivo PDF temporário ou void se parâmetros inválidos.
 
 <!-- c2f:extract:end -->

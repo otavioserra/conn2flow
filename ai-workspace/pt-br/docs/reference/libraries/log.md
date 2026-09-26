@@ -47,10 +47,56 @@ A tabela `historico` guarda quem mudou o quê. O caminho normal para gravá-la �
 Referência gerada a partir de `gestor/bibliotecas/log.php` por `c2f docs:extract` — 6 funções. Não edite dentro deste bloco.
 
 - `log_debugar(array|false $params = false): void` — [linha 60](../../../../../gestor/bibliotecas/log.php#L60)
+  Registra alterações para debug no histórico.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['alteracoes']`: []['id'] ID numérico do registro (opcional).
 - `log_controladores(array|false $params = false): void` — [linha 123](../../../../../gestor/bibliotecas/log.php#L123)
+  Registra log de alterações realizadas por controladores.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id_hosts']`: ID do host (obrigatório).
+  - `$params['controlador']`: ID do controlador (obrigatório).
+  - `$params['id']`: ID numérico do registro (obrigatório).
+  - `$params['alteracoes']`: []['modulo'] Módulo de origem (opcional).
+  - `$params['tabela']`: ['id_numerico'] Campo ID numérico (obrigatório).
+  - `$params['sem_id']`: Se true, não vincula ID ao histórico (opcional).
+  - `$params['versao']`: Versão manual do registro (opcional).
 - `log_usuarios(array|false $params = false): void` — [linha 202](../../../../../gestor/bibliotecas/log.php#L202)
+  Registra log de alterações realizadas por usuários do sistema.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id_hosts']`: ID do host (obrigatório).
+  - `$params['id_usuarios']`: ID do usuário do sistema (obrigatório).
+  - `$params['id']`: ID numérico do registro (obrigatório).
+  - `$params['alteracoes']`: []['modulo'] Módulo de origem (opcional).
+  - `$params['tabela']`: ['id_numerico'] Campo ID numérico (obrigatório).
+  - `$params['sem_id']`: Se true, não vincula ID ao histórico (opcional).
+  - `$params['versao']`: Versão manual do registro (opcional).
 - `log_hosts_usuarios(array|false $params = false): void` — [linha 281](../../../../../gestor/bibliotecas/log.php#L281)
+  Registra log de alterações realizadas por usuários de hosts.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id_hosts']`: ID do host (obrigatório).
+  - `$params['id_hosts_usuarios']`: ID do usuário do host (obrigatório).
+  - `$params['id']`: ID numérico do registro (obrigatório).
+  - `$params['alteracoes']`: []['modulo'] Módulo de origem (opcional).
+  - `$params['tabela']`: ['id_numerico'] Campo ID numérico (obrigatório).
+  - `$params['sem_id']`: Se true, não vincula ID ao histórico (opcional).
+  - `$params['versao']`: Versão manual do registro (opcional).
 - `log_backtrace(string $titulo = 'Encadeamento de chamada:', string $logFilename = 'gestor', bool $deleteFileAfter = false, array $contexto = Array()): string` — [linha 348](../../../../../gestor/bibliotecas/log.php#L348)
+  Registra o encadeamento de chamadas atual em arquivo de log.
+  Parâmetros:
+  - `$titulo`: Texto que antecede o rastreamento.
+  - `$logFilename`: Nome base do arquivo de log sem extensão.
+  - `$deleteFileAfter`: Se true, exclui o arquivo antes de gravar.
+  - `$contexto`: Metadados adicionais seguros para incluir no log.
+  Retorno: Rastreamento de chamadas em formato de texto.
 - `log_disco(string $msg, string $logFilename = "gestor", bool $deleteFileAfter = false): void` — [linha 408](../../../../../gestor/bibliotecas/log.php#L408)
+  Grava mensagens de log em arquivo de disco.
+  Parâmetros:
+  - `$msg`: Mensagem a ser gravada no log (obrigatório).
+  - `$logFilename`: Nome base do arquivo de log sem extensão (padrão: "gestor").
+  - `$deleteFileAfter`: Se true, exclui o arquivo antes de gravar (padrão: false).
 
 <!-- c2f:extract:end -->

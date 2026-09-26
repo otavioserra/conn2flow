@@ -75,22 +75,72 @@ The IP used is the raw `REMOTE_ADDR`, not the one from [ip_get()](ip.md): behind
 Reference generated from `gestor/bibliotecas/seguranca.php` by `c2f docs:extract` — 18 functions. Do not edit inside this block.
 
 - `gestor_captcha_validar(?string $token = null, array $opcoes = []): array|bool` — [line 23](../../../../../gestor/bibliotecas/seguranca.php#L23)
+  Valida o provedor configurado. O transporte pode ser injetado nos testes.
 - `seguranca_token_aleatorio(int $bytes = 32): string` — [line 78](../../../../../gestor/bibliotecas/seguranca.php#L78)
+  Gera um identificador hexadecimal com entropia criptograficamente segura.
+  Parameters:
+  - `$bytes`: Quantidade de bytes aleatórios (mínimo: 16 / 128 bits).
 - `seguranca_ip_bloco(string|null $ip = null): string` — [line 91](../../../../../gestor/bibliotecas/seguranca.php#L91)
+  Retorna o bloco de rede do IP (3 primeiros octetos no IPv4).
+  Parameters:
+  - `$ip`: IP a avaliar (padrão: REMOTE_ADDR).
+  Returns: Bloco de rede (ex.: "200.100.50") ou o IP original.
 - `seguranca_user_agent(): string` — [line 108](../../../../../gestor/bibliotecas/seguranca.php#L108)
+  Retorna o User-Agent atual (truncado).
 - `seguranca_sessao_registrar(): void` — [line 119](../../../../../gestor/bibliotecas/seguranca.php#L119)
+  Registra na sessão o User-Agent e o bloco de IP do cliente no momento do login.
 - `seguranca_sessao_validar(): bool` — [line 132](../../../../../gestor/bibliotecas/seguranca.php#L132)
+  Valida a conformidade do User-Agent e bloco de IP atuais com os registrados.
+  Returns: true se conforme (ou não registrado); false em discrepância suspeita.
 - `seguranca_sessao_invalidar(string|null $tokenPubId = null): void` — [line 152](../../../../../gestor/bibliotecas/seguranca.php#L152)
+  Invalida a sessão/token atual em caso de sequestro suspeito.
+  Parameters:
+  - `$tokenPubId`: pubID do token de autorização a remover.
 - `gestor_csrf_token(): string` — [line 168](../../../../../gestor/bibliotecas/seguranca.php#L168)
+  Obtém o token CSRF da sessão, gerando-o na primeira chamada.
 - `gestor_csrf_validar(string $token, $esperado = null): bool` — [line 185](../../../../../gestor/bibliotecas/seguranca.php#L185)
+  Valida um token CSRF recebido contra o armazenado na sessão.
+  Parameters:
+  - `$token`: Token recebido na requisição.
 - `seguranca_csrf_token_requisicao(): string` — [line 198](../../../../../gestor/bibliotecas/seguranca.php#L198)
+  Obtém o token CSRF enviado em campo de formulário ou cabeçalho HTTP.
 - `seguranca_csrf_rota_isenta(array $caminho): bool` — [line 213](../../../../../gestor/bibliotecas/seguranca.php#L213)
+  Informa se a rota usa autenticação M2M/Bearer e, portanto, não usa cookie de sessão. O canal distribuído é protegido por HMAC dentro do controlador da API.
+  Parameters:
+  - `$caminho`: Segmentos normalizados da rota.
 - `seguranca_csrf_resposta_invalida_corpo(string $mensagem): array` — [line 240](../../../../../gestor/bibliotecas/seguranca.php#L240)
+  Corpo JSON da recusa por CSRF (req-107, `code` acrescentado na req-175).
+  Parameters:
+  - `$mensagem`: Mensagem legível já existente.
 - `seguranca_csrf_token_resposta(array $contexto): array` — [line 260](../../../../../gestor/bibliotecas/seguranca.php#L260)
+  Decide a resposta da rota `_gestor-csrf-token` (req-175). Função PURA: o roteador só emite.
+  Parameters:
+  - `$contexto`: token, tem_cookie_auth, autenticado, url_raiz.
+  Returns: ['http' => int, 'headers' => array, 'corpo' => array]
 - `seguranca_csrf_retorno_normalizar(mixed $retorno): string` — [line 307](../../../../../gestor/bibliotecas/seguranca.php#L307)
+  Normaliza o caminho de retorno enviado pelo cliente para o pós-login (req-175).
+  Parameters:
+  - `$retorno`: Valor bruto recebido.
+  Returns: Caminho terminado em `/`, ou ''.
 - `seguranca_csrf_atualizador_transicao_isento(array $caminho, string $versao): bool` — [line 342](../../../../../gestor/bibliotecas/seguranca.php#L342)
+  Mantém compatibilidade somente no autoatualizador que introduziu o CSRF.
+  Parameters:
+  - `$caminho`: Segmentos normalizados da rota.
+  - `$versao`: Versão atual do Gestor.
 - `seguranca_csrf_atualizador_status_isento(array $caminho, array $requisicao): bool` — [line 360](../../../../../gestor/bibliotecas/seguranca.php#L360)
+  Reconhece a consulta de status do autoatualizador como operação de leitura.
+  Parameters:
+  - `$caminho`: Segmentos normalizados da rota.
+  - `$requisicao`: Parâmetros recebidos pela requisição.
 - `seguranca_csrf_atualizador_sessao_legada_isento(array $caminho, array $requisicao, string|null $rootPath = null, int|null $agora = null): bool` — [line 381](../../../../../gestor/bibliotecas/seguranca.php#L381)
+  Permite concluir uma sessao do autoatualizador iniciada por um cliente anterior ao CSRF. O SID aleatorio e o estado persistido limitam a isencao a uma transicao real, recente, inacabada e na etapa esperada.
+  Parameters:
+  - `$caminho`: Segmentos normalizados da rota.
+  - `$requisicao`: Parametros recebidos pela requisicao.
+  - `$rootPath`: Raiz fisica do Gestor (injetavel nos testes).
+  - `$agora`: Timestamp atual (injetavel nos testes).
 - `seguranca_csrf_requisicao_validar(): bool` — [line 429](../../../../../gestor/bibliotecas/seguranca.php#L429)
+  Exige CSRF em métodos mutáveis autenticados pelo cookie do painel.
+  Returns: true quando a requisição pode continuar.
 
 <!-- c2f:extract:end -->

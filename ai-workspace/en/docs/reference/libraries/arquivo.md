@@ -43,12 +43,47 @@ verified_at: 4c6d01f0
 Reference generated from `gestor/bibliotecas/arquivo.php` by `c2f docs:extract` — 8 functions. Do not edit inside this block.
 
 - `arquivo_nome_sanitizar(string $nome): string` — [line 39](../../../../../gestor/bibliotecas/arquivo.php#L39)
+  Higieniza um nome de arquivo ou pasta para uso seguro em sistemas de arquivos heterogêneos (Windows/Linux/rede).
+  Parameters:
+  - `$nome`: Nome cru informado pelo usuário ou upload.
+  Returns: Nome higienizado; string vazia quando nada sobra de válido.
 - `arquivo_nome_colisao(string $nomeBase, string $ext, int $indice): string` — [line 88](../../../../../gestor/bibliotecas/arquivo.php#L88)
+  Nome de desempate quando o arquivo enviado colide com um já existente na pasta.
+  Parameters:
+  - `$nomeBase`: Nome já higienizado, sem extensão.
+  - `$ext`: Extensão sem o ponto (string vazia quando não há).
+  - `$indice`: Contador de desempate (1, 2, 3...).
+  Returns: Nome final higienizado.
 - `arquivo_extensao_perigosa(string $nome): bool` — [line 106](../../../../../gestor/bibliotecas/arquivo.php#L106)
+  Verifica se a extensão de um nome de arquivo é executável/perigosa e deve ser bloqueada no upload, mesmo que o usuário tente burlar a extensão.
+  Parameters:
+  - `$nome`: Nome do arquivo (com extensão).
+  Returns: true quando a extensão é perigosa.
 - `arquivo_caminho_relativo_seguro(string $rel): string|false` — [line 147](../../../../../gestor/bibliotecas/arquivo.php#L147)
+  Normaliza um caminho relativo informado pelo cliente e garante que ele permanece dentro da árvore de conteúdos (previne path traversal).
+  Parameters:
+  - `$rel`: Caminho relativo cru (pode vir vazio = raiz).
+  Returns: Caminho relativo canônico com `/` (sem barra inicial/final),
 - `arquivo_caminho_resolver(string $base, string $rel): string|false` — [line 191](../../../../../gestor/bibliotecas/arquivo.php#L191)
+  Resolve o caminho absoluto de um relativo seguro sob uma base e confirma, via realpath quando o alvo existe, que ele não escapa da base.
+  Parameters:
+  - `$base`: Raiz absoluta de conteúdos (`$_GESTOR['contents-path']`).
+  - `$rel`: Caminho relativo (será validado por arquivo_caminho_relativo_seguro).
+  Returns: Caminho absoluto (com separador nativo) ou false se inseguro.
 - `arquivo_mini_caminho_relativo(string $rel): string` — [line 225](../../../../../gestor/bibliotecas/arquivo.php#L225)
+  Dado o caminho relativo de um arquivo, retorna o caminho relativo da sua miniatura na subpasta física `mini/` da mesma pasta.
+  Parameters:
+  - `$rel`: Caminho relativo do arquivo original.
+  Returns: Caminho relativo da miniatura (com `/`).
 - `arquivo_tipo_por_extensao(string $nome): string` — [line 244](../../../../../gestor/bibliotecas/arquivo.php#L244)
+  Classifica o "tipo" de um arquivo (image/video/audio/file) a partir da extensão, sem depender de `mime_content_type` (que exige o arquivo em disco).
+  Parameters:
+  - `$nome`: Nome do arquivo.
+  Returns: Um de: image, video, audio, file.
 - `arquivo_mime_por_extensao(string $nome): string` — [line 275](../../../../../gestor/bibliotecas/arquivo.php#L275)
+  Resolve o MIME type real de um arquivo a partir da extensão, sem depender de `mime_content_type` (que exige o arquivo em disco e a extensão fileinfo ativa).
+  Parameters:
+  - `$nome`: Nome do arquivo (com ou sem caminho).
+  Returns: MIME type; `application/octet-stream` para extensão desconhecida.
 
 <!-- c2f:extract:end -->

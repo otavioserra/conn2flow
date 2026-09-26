@@ -50,21 +50,68 @@ Mantém o `sitemap.xml` e o `robots.txt` do site. Os dois ficam em `gestor/asset
 Referência gerada a partir de `gestor/bibliotecas/sitemap.php` por `c2f docs:extract` — 17 funções. Não edite dentro deste bloco.
 
 - `sitemap_pagina_elegivel(array $pagina, int|null $agora = null): bool` — [linha 41](../../../../../gestor/bibliotecas/sitemap.php#L41)
+  Decide se uma página entra no sitemap.
+  Parâmetros:
+  - `$pagina`: Linha da tabela `paginas`.
+  - `$agora`: Timestamp de referência (padrão: `time()`), usado nos testes.
 - `sitemap_caminho_nao_indexavel(string $caminho): bool` — [linha 99](../../../../../gestor/bibliotecas/sitemap.php#L99)
+  Rotas públicas que NÃO são conteúdo indexável (req-112).
+  Parâmetros:
+  - `$caminho`: Caminho da página, em minúsculas.
 - `sitemap_robots_montar(array $params = Array()): string` — [linha 168](../../../../../gestor/bibliotecas/sitemap.php#L168)
+  Monta o conteúdo do `robots.txt`.
+  Parâmetros:
+  - `$params['sitemap']`: URL absoluta do sitemap (omitida quando vazia).
+  - `$params['disallow']`: Prefixos adicionais a barrar.
 - `sitemap_robots_caminho_arquivo(): string` — [linha 216](../../../../../gestor/bibliotecas/sitemap.php#L216)
+  Caminho físico do `robots.txt`.
 - `sitemap_robots_gravar(): bool` — [linha 226](../../../../../gestor/bibliotecas/sitemap.php#L226)
+  Grava o `robots.txt` apontando para o sitemap público.
 - `sitemap_xml_montar(array $urls = Array()): string` — [linha 256](../../../../../gestor/bibliotecas/sitemap.php#L256)
+  Monta o documento completo do sitemap a partir de uma lista de URLs.
+  Parâmetros:
+  - `$urls`: Lista de `['loc' => string, 'lastmod' => string|null]`.
+  Retorno: XML pronto para gravação.
 - `sitemap_data_w3c(string|null $data = null): string|null` — [linha 285](../../../../../gestor/bibliotecas/sitemap.php#L285)
+  Converte uma data do banco para o formato W3C exigido pelo protocolo de sitemap.
+  Retorno: `null` quando a data é inválida ou ausente (a tag é então omitida).
 - `sitemap_xml_upsert(string $xml, string $loc, string|null $lastmod = null): string` — [linha 305](../../../../../gestor/bibliotecas/sitemap.php#L305)
+  Insere ou atualiza a entrada de uma URL num sitemap existente (upsert incremental).
+  Parâmetros:
+  - `$xml`: XML atual.
+  - `$loc`: URL absoluta da página.
+  - `$lastmod`: Data de modificação.
+  Retorno: XML atualizado.
 - `sitemap_xml_remover(string $xml, string $loc): string` — [linha 336](../../../../../gestor/bibliotecas/sitemap.php#L336)
+  Remove a entrada de uma URL do sitemap (página excluída, despublicada ou que virou privada).
+  Parâmetros:
+  - `$xml`: XML atual.
+  - `$loc`: URL absoluta a remover.
+  Retorno: XML sem a entrada.
 - `sitemap_caminho_arquivo(): string` — [linha 368](../../../../../gestor/bibliotecas/sitemap.php#L368)
+  Caminho absoluto do arquivo `sitemap.xml` na raiz pública.
 - `sitemap_url_da_pagina(array $pagina): string` — [linha 397](../../../../../gestor/bibliotecas/sitemap.php#L397)
+  URL pública absoluta de uma página, respeitando o prefixo de idioma quando não for o padrão.
+  Parâmetros:
+  - `$pagina`: Linha da tabela `paginas`.
 - `sitemap_gravar(string $xml): bool` — [linha 421](../../../../../gestor/bibliotecas/sitemap.php#L421)
+  Grava o conteúdo do sitemap em disco.
 - `sitemap_conteudo_proprio(string $conteudo): bool` — [linha 446](../../../../../gestor/bibliotecas/sitemap.php#L446)
+  Reconhece um `sitemap.xml` gerado por ESTA biblioteca (F8 do review de 2026-08-15).
 - `sitemap_legado_remover(): bool` — [linha 472](../../../../../gestor/bibliotecas/sitemap.php#L472)
+  Apaga o `sitemap.xml` que versões anteriores gravavam na RAIZ pública (F8).
+  Retorno: True quando algo foi removido.
 - `sitemap_gerar_completo(): bool` — [linha 504](../../../../../gestor/bibliotecas/sitemap.php#L504)
+  Regenera o `sitemap.xml` inteiro a partir das páginas públicas ativas.
 - `sitemap_sincronizar_pagina(array $pagina, bool $remover = false, $caminhoAntigo = null): bool` — [linha 557](../../../../../gestor/bibliotecas/sitemap.php#L557)
+  Sincroniza UMA página no sitemap, criando o arquivo do zero quando ele ainda não existe.
+  Parâmetros:
+  - `$pagina`: Linha (ou dados equivalentes) da página alterada.
+  - `$remover`: Força a remoção da entrada (página excluída).
 - `sitemap_sincronizar_por_id(string $id, bool $remover = false, string|null $caminhoAntigo = null): bool` — [linha 597](../../../../../gestor/bibliotecas/sitemap.php#L597)
+  Recarrega os dados de uma página pelo identificador e sincroniza o sitemap.
+  Parâmetros:
+  - `$id`: Identificador textual da página.
+  - `$caminhoAntigo`: Caminho anterior, quando o slug mudou (req-112).
 
 <!-- c2f:extract:end -->

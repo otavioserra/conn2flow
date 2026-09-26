@@ -100,14 +100,75 @@ O mesmo par de funções resolve blocos condicionais: `modelo_tag_del()` apaga a
 Referência gerada a partir de `gestor/bibliotecas/modelo.php` por `c2f docs:extract` — 10 funções. Não edite dentro deste bloco.
 
 - `modelo_input_in(string $modelo, string $name_input_in, string $name_input_out, string $valor): string` — [linha 33](../../../../../gestor/bibliotecas/modelo.php#L33)
+  Substitui variáveis de input em um modelo HTML.
+  Parâmetros:
+  - `$modelo`: O template HTML onde as substituições serão feitas.
+  - `$name_input_in`: Nome do placeholder de entrada (ex: 'campo').
+  - `$name_input_out`: Nome do campo de saída que substituirá o placeholder.
+  - `$valor`: Valor a ser atribuído ao campo.
+  Retorno: Retorna o modelo com as variáveis substituídas.
 - `modelo_var_troca(string $modelo, string|array $var, string $valor = null): string` — [linha 57](../../../../../gestor/bibliotecas/modelo.php#L57)
+  Substitui a primeira ocorrência de uma variável em um modelo.
+  Parâmetros:
+  - `$modelo`: O template onde a substituição será feita.
+  - `$var`: A variável/placeholder a ser substituída, ou array de variáveis.
+  - `$valor`: O valor que substituirá a variável (ignorado se $var for array).
+  Retorno: Retorna o modelo com a primeira ocorrência da variável substituída.
 - `modelo_var_troca_fim(string $modelo, string $var, string $valor): string` — [linha 101](../../../../../gestor/bibliotecas/modelo.php#L101)
+  Substitui a última ocorrência de uma variável em um modelo.
+  Parâmetros:
+  - `$modelo`: O template onde a substituição será feita.
+  - `$var`: A variável/placeholder a ser substituída.
+  - `$valor`: O valor que substituirá a variável.
+  Retorno: Retorna o modelo com a última ocorrência da variável substituída.
 - `modelo_var_troca_tudo(string $modelo, string|array $var, string $valor = null): string` — [linha 137](../../../../../gestor/bibliotecas/modelo.php#L137)
+  Substitui todas as ocorrências de uma variável em um modelo.
+  Parâmetros:
+  - `$modelo`: O template onde as substituições serão feitas.
+  - `$var`: A variável/placeholder a ser substituída, ou array de variáveis.
+  - `$valor`: O valor que substituirá todas as ocorrências da variável (ignorado se $var for array).
+  Retorno: Retorna o modelo com todas as ocorrências da variável substituídas.
 - `modelo_var_in(string $modelo, string $var, string $valor): string` — [linha 165](../../../../../gestor/bibliotecas/modelo.php#L165)
+  Insere um valor antes da variável mantendo a variável no modelo.
+  Parâmetros:
+  - `$modelo`: O template onde a inserção será feita.
+  - `$var`: A variável/placeholder de referência.
+  - `$valor`: O valor a ser inserido antes da variável.
+  Retorno: Retorna o modelo com o valor inserido antes da variável.
 - `modelo_tag_val(string $modelo, string $tag_in, string $tag_out): string` — [linha 199](../../../../../gestor/bibliotecas/modelo.php#L199)
+  Extrai o conteúdo entre duas tags em um modelo.
+  Parâmetros:
+  - `$modelo`: O template de onde o conteúdo será extraído.
+  - `$tag_in`: A tag de abertura.
+  - `$tag_out`: A tag de fechamento.
+  Retorno: Retorna o conteúdo entre as tags ou string vazia se não encontrado.
 - `modelo_tag_in(string $modelo, string $tag_in, string $tag_out, string $valor): string` — [linha 231](../../../../../gestor/bibliotecas/modelo.php#L231)
+  Substitui um bloco delimitado por tags incluindo as próprias tags.
+  Parâmetros:
+  - `$modelo`: O template onde a substituição será feita.
+  - `$tag_in`: A tag de abertura do bloco.
+  - `$tag_out`: A tag de fechamento do bloco.
+  - `$valor`: O valor que substituirá todo o bloco (tags + conteúdo).
+  Retorno: Retorna o modelo com o bloco substituído pelo valor.
 - `modelo_tag_del(string $modelo, string $tag_in, string $tag_out): string` — [linha 267](../../../../../gestor/bibliotecas/modelo.php#L267)
+  Remove um bloco delimitado por tags incluindo as próprias tags.
+  Parâmetros:
+  - `$modelo`: O template de onde o bloco será removido.
+  - `$tag_in`: A tag de abertura do bloco a ser removido.
+  - `$tag_out`: A tag de fechamento do bloco a ser removido.
+  Retorno: Retorna o modelo sem o bloco especificado.
 - `modelo_tag_troca_val(string $modelo, string $tag_in, string $tag_out, string $valor): string` — [linha 305](../../../../../gestor/bibliotecas/modelo.php#L305)
+  Substitui apenas o conteúdo entre as tags, preservando as tags.
+  Parâmetros:
+  - `$modelo`: O template onde a substituição será feita.
+  - `$tag_in`: A tag de abertura (será preservada).
+  - `$tag_out`: A tag de fechamento (será preservada).
+  - `$valor`: O novo conteúdo que ficará entre as tags.
+  Retorno: Retorna o modelo com o conteúdo entre as tags substituído.
 - `modelo_abrir(string $modelo_local): string` — [linha 340](../../../../../gestor/bibliotecas/modelo.php#L340)
+  Carrega um arquivo de template e remove blocos de exclusão.
+  Parâmetros:
+  - `$modelo_local`: Caminho do arquivo de template a ser carregado.
+  Retorno: Retorna o conteúdo do template com os blocos de exclusão removidos.
 
 <!-- c2f:extract:end -->

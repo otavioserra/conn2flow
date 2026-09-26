@@ -45,6 +45,16 @@ Reading the chain from the right prevents the visitor from forging the IP by sen
 Reference generated from `gestor/bibliotecas/ip.php` by `c2f docs:extract` — 2 functions. Do not edit inside this block.
 
 - `ip_check(string $ip, bool $allow_private = false, array $proxy_ip = []): bool` — [line 36](../../../../../gestor/bibliotecas/ip.php#L36)
+  Valida um endereço IP.
+  Parameters:
+  - `$ip`: O endereço IP a ser validado.
+  - `$allow_private`: Se true, permite IPs de redes privadas como válidos. Padrão: false.
+  - `$proxy_ip`: Array de IPs de proxy confiáveis que devem ser excluídos da validação.
+  Returns: Retorna true se o IP for válido, false caso contrário.
 - `ip_get(bool $allow_private = false): string|null` — [line 67](../../../../../gestor/bibliotecas/ip.php#L67)
+  Obtém o endereço IP real do cliente.
+  Parameters:
+  - `$allow_private`: Se true, permite IPs privados como válidos. Padrão: false.
+  Returns: Retorna o IP do cliente ou null se nenhum IP válido for encontrado.
 
 <!-- c2f:extract:end -->

@@ -241,38 +241,220 @@ Other defects: `interface_editar_finalizar()` and `interface_alteracoes_finaliza
 Reference generated from `gestor/bibliotecas/interface.php` by `c2f docs:extract` — 58 functions. Do not edit inside this block.
 
 - `interface_data_hora_from_datetime_to_text(string $data_hora, string|false $format = false): string` — [line 38](../../../../../gestor/bibliotecas/interface.php#L38)
+  Converte data/hora do formato datetime (YYYY-MM-DD HH:MM:SS) para texto formatado.
+  Parameters:
+  - `$data_hora`: Data/hora no formato datetime (YYYY-MM-DD HH:MM:SS)
+  - `$format`: Formato personalizado usando marcadores ou false para formato padrão
+  Returns: Data/hora formatada ou string vazia se não houver data
 - `interface_data_from_datetime_to_text(string $data_hora): string` — [line 91](../../../../../gestor/bibliotecas/interface.php#L91)
+  Converte data do formato datetime (YYYY-MM-DD) para texto no formato brasileiro (DD/MM/YYYY).
+  Parameters:
+  - `$data_hora`: Data/hora no formato datetime (YYYY-MM-DD HH:MM:SS)
+  Returns: Data formatada (DD/MM/YYYY)
 - `interface_trocar_valor_outra_tabela(array|false $params = false): string|array` — [line 122](../../../../../gestor/bibliotecas/interface.php#L122)
+  Busca e substitui valores de um campo usando referência de outra tabela.
+  Parameters:
+  - `$params`: Parâmetros da função:
+  - `$params['tabela']`: ['where'] Condição WHERE adicional (opcional)
+  - `$params['tabela2']`: Configuração de tabela secundária (opcional)
+  - `$params['dado']`: Valor a ser buscado
+  - `$params['encapsular']`: Template para encapsular resultado (opcional)
+  Returns: Valor trocado, array de valores (se camposExtras) ou resultado encapsulado
 - `interface_trocar_valor_outro_conjunto(array|false $params = false): string` — [line 260](../../../../../gestor/bibliotecas/interface.php#L260)
+  Troca um valor por outro baseado em um conjunto de mapeamentos.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['dado']`: Dado que será verificado e potencialmente trocado.
+  - `$params['conjunto']`: Conjunto de mapeamentos com estrutura [['alvo' => 'valor1', 'troca' => 'novoValor1'], ...].
+  Returns: O valor trocado se encontrado no conjunto, ou o dado original caso contrário.
 - `interface_trocar_valor_outro_array(array|false $params = false): string` — [line 296](../../../../../gestor/bibliotecas/interface.php#L296)
+  Troca um valor por outro baseado em array de valores com campos específicos.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['dado']`: Dado que será verificado e potencialmente trocado.
+  - `$params['valores']`: Array de valores onde cada elemento contém os campos de troca e alvo.
+  - `$params['campo_troca']`: Nome do campo usado para comparação com o dado.
+  - `$params['campo_alvo']`: Nome do campo cujo valor será retornado em caso de correspondência.
+  Returns: O valor do campo alvo se encontrado, ou o dado original caso contrário.
 - `interface_encapsular_valor(array|false $params = false): string` — [line 331](../../../../../gestor/bibliotecas/interface.php#L331)
+  Encapsula um valor dentro de uma cápsula de texto.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['dado']`: Dado que será verificado e potencialmente trocado.
+  - `$params['capsula']`: Cápsula de texto onde a variável será substituída.
+  - `$params['variavel']`: Variável dentro da cápsula que será substituída pelo dado.
+  Returns: O valor encapsulado se encontrado, ou o dado original caso contrário.
 - `interface_formatar_telefone(string $telefone): string` — [line 356](../../../../../gestor/bibliotecas/interface.php#L356)
+  Formata um número de telefone para exibição.
+  Parameters:
+  - `$telefone`: Número de telefone (pode conter +, espaços, hífens, parênteses).
+  Returns: Telefone formatado ou valor original se não for possível formatar.
 - `interface_formatar_dado(array|false $params = false): string` — [line 437](../../../../../gestor/bibliotecas/interface.php#L437)
+  Formata um dado de acordo com o formato especificado.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['dado']`: Dado que será formatado.
+  - `$params['formato']`: ['valor_senao_existe'] Valor a retornar quando dado está vazio.
+  Returns: O dado formatado de acordo com as especificações, ou valor padrão se dado estiver vazio.
 - `interface_alerta(array|false $params = false): void|string` — [line 548](../../../../../gestor/bibliotecas/interface.php#L548)
+  Gerencia alertas de mensagens para o usuário na interface.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['msg']`: Mensagem a ser exibida como alerta.
+  - `$params['redirect']`: Se true, salva o alerta na sessão para exibição após redirecionamento.
+  - `$params['imprimir']`: Se true, imprime o HTML do alerta na tela.
+  Returns: Retorna HTML do alerta se $imprimir for true, caso contrário não retorna nada.
 - `interface_historico_incluir(array|false $params = false): void` — [line 639](../../../../../gestor/bibliotecas/interface.php#L639)
+  Inclui registros no histórico de alterações do sistema.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['alteracoes']`: []['tabela'] Tabela para conversão de IDs em nomes textuais.
+  - `$params['deletar']`: Se true, incrementa versão para registro de deleção.
+  - `$params['id_numerico_manual']`: ID numérico manual do registro.
+  - `$params['id_usuarios_manual']`: ID do usuário manual.
+  - `$params['id_hosts_manual']`: ID do host manual.
+  - `$params['modulo_id']`: ID do módulo a vincular manualmente.
+  - `$params['sem_id']`: ['versao'] Versão manual do registro quando sem_id está definido.
+  - `$params['tabela']`: ['id'] Se true, usa campo id ao invés de id_numerico.
 - `interface_historico(array|false $params = false): void` — [line 766](../../../../../gestor/bibliotecas/interface.php#L766)
+  Exibe o histórico de alterações de um registro do sistema.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['id']`: Identificador do registro a consultar o histórico.
+  - `$params['modulo']`: Identificador do módulo do registro.
+  - `$params['pagina']`: Página onde o histórico será implementado.
+  - `$params['sem_id']`: Se true, não filtra por ID no histórico.
+  - `$params['moduloVars']`: ['historico']['moduloIdExtra'] Módulo ID extra para trocar labels.
+  Returns: Exibe o HTML do histórico diretamente.
 - `interface_assets_incluir(): void` — [line 1181](../../../../../gestor/bibliotecas/interface.php#L1181)
+  Enfileira o runtime da interface administrativa adequado ao framework da requisição (req-118).
 - `interface_componente_variante(string $id, string|null $modo = null): string` — [line 1218](../../../../../gestor/bibliotecas/interface.php#L1218)
+  Devolve o id da variante Tailwind de um componente quando a requisição é Tailwind pura.
+  Parameters:
+  - `$id`: Id canônico do componente.
+  - `$modo`: Modo resolvido; quando omitido, usa o da requisição corrente.
+  Returns: Id a carregar.
 - `interface_componente_canonico(string $id): string` — [line 1239](../../../../../gestor/bibliotecas/interface.php#L1239)
+  Reduz o id de um componente à sua forma canônica (sem o sufixo de variante).
+  Parameters:
+  - `$id`: Id possivelmente sufixado.
+  Returns: Id canônico.
 - `interface_componentes_incluir(array|false $params = false): void` — [line 1258](../../../../../gestor/bibliotecas/interface.php#L1258)
+  Marca componentes para inclusão na interface.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['componente']`: Componente ou array de componentes a incluir
 - `interface_componentes(array|false $params = false): void` — [line 1300](../../../../../gestor/bibliotecas/interface.php#L1300)
+  Renderiza componentes marcados para inclusão na interface.
+  Parameters:
+  - `$params`: Parâmetros da função (não utilizado).
 - `interface_formulario_campos(array|false $params = false): void` — [line 1409](../../../../../gestor/bibliotecas/interface.php#L1409)
+  Gera campos de formulário dinamicamente para a interface.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['pagina']`: Página onde será incluído o campo (opcional).
+  - `$params['campos']`: Array de configurações de campos a serem gerados.
 - `interface_formulario_validacao(array|false $params = false): void` — [line 2260](../../../../../gestor/bibliotecas/interface.php#L2260)
+  Configura validações de formulário usando Semantic UI.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['pagina']`: Página onde aplicar a validação (opcional).
+  - `$params['campos']`: Array de campos com suas regras de validação.
 - `interface_validacao_campos_obrigatorios(array|false $params = false): void` — [line 2728](../../../../../gestor/bibliotecas/interface.php#L2728)
+  Valida campos obrigatórios server-side.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['redirect']`: URL de redirecionamento em caso de erro (opcional).
+  - `$params['campos']`: Array de campos a validar com suas regras
 - `interface_modulo_variavel_valor(array|false $params = false): mixed` — [line 2829](../../../../../gestor/bibliotecas/interface.php#L2829)
+  Obtém valor de variável do registro atual do módulo.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['variavel']`: Nome da variável/campo a obter (obrigatório).
+  Returns: Valor da variável solicitada.
 - `interface_backup_campo_incluir(array|false $params = false): void` — [line 2914](../../../../../gestor/bibliotecas/interface.php#L2914)
+  Registra backup de campo no banco de dados.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['campo']`: Nome do campo a fazer backup (obrigatório).
+  - `$params['id_numerico']`: ID numérico do registro (obrigatório).
+  - `$params['versao']`: Número da versão do backup (obrigatório).
+  - `$params['valor']`: Valor do campo a ser guardado (obrigatório).
+  - `$params['modulo']`: Nome do módulo (opcional, usa módulo atual se não fornecido).
+  - `$params['maxCopias']`: Máximo de cópias a manter (opcional, padrão 20).
 - `interface_backup_campo_select(array|false $params = false): void` — [line 3006](../../../../../gestor/bibliotecas/interface.php#L3006)
+  Renderiza dropdown de seleção de versões de backup de um campo.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['campo']`: Nome do campo no banco de dados (obrigatório).
+  - `$params['campo_form']`: Nome do campo no formulário (opcional, usa 'campo' se não fornecido).
+  - `$params['callback']`: Nome do evento callback JavaScript para sucesso (obrigatório).
+  - `$params['id_numerico']`: Identificador numérico do registro (obrigatório).
+  - `$params['modulo']`: Nome do módulo (opcional, usa módulo atual se não fornecido).
+  Returns: Renderiza HTML do dropdown diretamente.
 - `interface_verificar_campos(array|false $params = false): array` — [line 3129](../../../../../gestor/bibliotecas/interface.php#L3129)
+  Verifica alterações em campos comparando valores atuais com valores anteriores.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['campos']`: Lista de campos a verificar (obrigatório).
+  - `$params['valores_atuais']`: Valores atuais dos campos (obrigatório).
+  - `$params['valores_anteriores']`: Valores anteriores dos campos para comparação (obrigatório).
+  Returns: Lista de campos que foram alterados.
 - `interface_botoes_cabecalho(array|false $params = false): void` — [line 3196](../../../../../gestor/bibliotecas/interface.php#L3196)
+  Renderiza botões de ação no cabeçalho da interface administrativa.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['botoes']`: Array de botões a renderizar (obrigatório).
+  Returns: Renderiza HTML dos botões diretamente.
 - `interface_botoes_rodape(array|false $params = false): string` — [line 3243](../../../../../gestor/bibliotecas/interface.php#L3243)
+  Renderiza botões de ação no rodapé da interface administrativa.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['botoes_rodape']`: Array de botões a renderizar no rodapé (obrigatório).
+  Returns: HTML dos botões do rodapé.
 - `interface_ajax_backup_campo(array|false $params = false): void` — [line 3295](../../../../../gestor/bibliotecas/interface.php#L3295)
+  Processa requisição AJAX para restaurar backup de campo.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['campo']`: Nome do campo (via $_REQUEST ou parâmetro).
+  - `$params['id_numerico']`: ID numérico do registro (via $_REQUEST ou parâmetro).
+  - `$params['modulo']`: Nome do módulo (opcional, usa módulo atual se não fornecido).
+  Returns: Define $_GESTOR['ajax-json'] com o valor do campo.
 - `interface_ajax_historico_mais_resultados(): void` — [line 3405](../../../../../gestor/bibliotecas/interface.php#L3405)
+  Processa requisição AJAX para carregar mais resultados do histórico.
+  Returns: Define $_GESTOR['ajax-json'] com a próxima página do histórico.
 - `interface_ajax_listar(): void` — [line 3432](../../../../../gestor/bibliotecas/interface.php#L3432)
+  Processa requisição AJAX para listagem dinâmica de registros.
+  Returns: Define $_GESTOR['ajax-json'] com o HTML da listagem atualizada.
 - `interface_ajax_verificar_campo(): void` — [line 3451](../../../../../gestor/bibliotecas/interface.php#L3451)
+  Processa requisição AJAX para verificar existência de valor em campo.
+  Returns: Define $_GESTOR['ajax-json'] indicando se campo existe (true/false).
 - `interface_excluir_iniciar(array|false $params = false): void` — [line 3490](../../../../../gestor/bibliotecas/interface.php#L3490)
+  Inicializa a interface de exclusão de registro.
+  Parameters:
+  - `$params`: Parâmetros da função (não utilizado nesta função).
+  Returns: Prepara $_GESTOR para exclusão ou redireciona.
 - `interface_excluir_finalizar(array|false $params = false): void` — [line 3521](../../../../../gestor/bibliotecas/interface.php#L3521)
+  Finaliza a interface de exclusão de registro (exclusão lógica).
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['banco']`: Dados da tabela customizada (nome, id, status, where).
+  - `$params['historico']`: Se false, desativa inclusão no histórico (padrão: ativa).
+  - `$params['callbackFunction']`: Função callback a executar após exclusão.
+  Returns: Executa exclusão e redireciona para listagem.
 - `interface_status_iniciar(array|false $params = false): void` — [line 3637](../../../../../gestor/bibliotecas/interface.php#L3637)
+  Inicializa a interface de alteração de status de registro.
+  Parameters:
+  - `$params`: Parâmetros da função (não utilizado nesta função).
+  Returns: Prepara $_GESTOR para alteração de status ou redireciona.
 - `interface_status_finalizar(array|false $params = false): void` — [line 3672](../../../../../gestor/bibliotecas/interface.php#L3672)
+  Finaliza a interface de alteração de status de registro.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['banco']`: Dados da tabela customizada (nome, id, status, where).
+  - `$params['historico']`: Se false, desativa inclusão no histórico (padrão: ativa).
+  - `$params['callbackFunction']`: Função callback a executar após alteração.
+  Returns: Executa alteração de status e redireciona para listagem.
 - `interface_adicionar_iniciar($params = false)` — [line 3764](../../../../../gestor/bibliotecas/interface.php#L3764)
 - `interface_clonar_iniciar($params = false)` — [line 3774](../../../../../gestor/bibliotecas/interface.php#L3774)
 - `interface_adicionar_finalizar($params = false)` — [line 3802](../../../../../gestor/bibliotecas/interface.php#L3802)

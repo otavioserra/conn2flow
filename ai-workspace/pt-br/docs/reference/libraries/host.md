@@ -39,7 +39,23 @@ O único chamador no core é a `interface.php`, nos campos de imagem que procura
 Referência gerada a partir de `gestor/bibliotecas/host.php` por `c2f docs:extract` — 3 funções. Não edite dentro deste bloco.
 
 - `host_url(array|false $params = false): string|false` — [linha 38](../../../../../gestor/bibliotecas/host.php#L38)
+  Retorna a URL do host.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['opcao']`: Opção de retorno de URL ('full' para URL completa com https://).
+  - `$params['id_hosts']`: Identificador do host (opcional, usa o host atual se não fornecido).
+  Retorno: A URL do host no formato solicitado, ou false se o host não for encontrado.
 - `host_pub_id(array|false $params = false): string|false` — [linha 98](../../../../../gestor/bibliotecas/host.php#L98)
+  Retorna o identificador público (pubID) do host.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id_hosts']`: Identificador do host (opcional, usa o host atual se não fornecido).
+  Retorno: O identificador público do host, ou false se o host não for encontrado.
 - `host_loja_nome(array|false $params = false): string|false` — [linha 148](../../../../../gestor/bibliotecas/host.php#L148)
+  Retorna o nome da loja configurado para o host.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id_hosts']`: Identificador do host (opcional, usa o host atual se não fornecido).
+  Retorno: O nome da loja ou false se o host não for encontrado.
 
 <!-- c2f:extract:end -->

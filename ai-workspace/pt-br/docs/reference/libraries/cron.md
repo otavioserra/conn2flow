@@ -118,13 +118,34 @@ Para compatibilidade, cada tick também dispara o hook `cron.<frequencia>` ([hoo
 Referência gerada a partir de `gestor/bibliotecas/cron.php` por `c2f docs:extract` — 9 funções. Não edite dentro deste bloco.
 
 - `cron_frequencias_validas()` — [linha 24](../../../../../gestor/bibliotecas/cron.php#L24)
+  Frequências aceitas no despacho e na chave "cron" dos manifestos de módulo.
 - `cron_status_validos()` — [linha 31](../../../../../gestor/bibliotecas/cron.php#L31)
+  Resultados possíveis de uma execução.
 - `cron_expressao_valida(string $expressao): bool` — [linha 45](../../../../../gestor/bibliotecas/cron.php#L45)
+  Valida a FORMA de uma expressão cron de 5 campos.
 - `cron_expressao_padrao(string $frequencia): string|null` — [linha 60](../../../../../gestor/bibliotecas/cron.php#L60)
+  Expressão cron padrão de cada janela, usada quando a tarefa não declara uma.
+  Retorno: null para 'customizado', que não tem forma derivável.
 - `cron_expressao_declarada(array $tarefa, string $frequencia): string|null` — [linha 85](../../../../../gestor/bibliotecas/cron.php#L85)
+  Resolve a expressão cron de 5 campos de uma tarefa declarada.
+  Retorno: null quando a declaração é inválida.
 - `cron_callback_preparar(array $tarefa): string|null` — [linha 126](../../../../../gestor/bibliotecas/cron.php#L126)
+  Garante que o callback declarado exista antes de invocá-lo.
+  Parâmetros:
+  - `$tarefa`: Linha de cron_tarefas.
+  Retorno: Mensagem de erro, ou null quando o callback está disponível.
 - `cron_tarefa_executar(array $tarefa): array{status: string, duracao: int, log: string}` — [linha 164](../../../../../gestor/bibliotecas/cron.php#L164)
+  Executa uma tarefa e devolve o resultado normalizado.
+  Parâmetros:
+  - `$tarefa`: Linha de cron_tarefas.
 - `cron_tarefa_registrar(string $id, string $status, int $duracaoMs, string $log): void` — [linha 222](../../../../../gestor/bibliotecas/cron.php#L222)
+  Persiste o resultado da execução na própria linha da tarefa.
 - `cron_tarefas_carregar(string|null $frequencia = null, string|null $tarefaId = null, bool $todas = false, array $campos = null): array` — [linha 245](../../../../../gestor/bibliotecas/cron.php#L245)
+  Carrega as tarefas elegíveis do banco.
+  Parâmetros:
+  - `$frequencia`: Janela do tick; null quando o alvo é uma tarefa específica.
+  - `$tarefaId`: Disparo avulso, que ignora a janela mas não o estado ativo.
+  - `$todas`: Listagem administrativa: traz inclusive as pausadas.
+  - `$campos`: Colunas desejadas; o padrão cobre o despacho.
 
 <!-- c2f:extract:end -->

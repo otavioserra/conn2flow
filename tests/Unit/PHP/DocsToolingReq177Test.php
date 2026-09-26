@@ -132,6 +132,33 @@ PHP;
         self::assertStringNotContainsString('x_a', LibraryReference::withoutBlock($uma));
     }
 
+    public function testBlocoIncluiResumoParametrosChavesERetornoSemAlterarFuncaoSemDocblock(): void
+    {
+        $code = <<<'PHP'
+<?php
+/**
+ * Busca dados da página.
+ *
+ * A explicação longa não faz parte do resumo.
+ * @param array $params Opções da busca.
+ * @param string $params['slug'] Identificador da página.
+ * @return array Dados encontrados.
+ */
+function buscar($params) {}
+function simples($x) {}
+PHP;
+        $functions = PhpFunctionExtractor::extract($code);
+        self::assertSame('buscar(array $params): array', PhpFunctionExtractor::signatureText($functions[0]));
+        self::assertSame('Busca dados da página.', $functions[0]['description']);
+        self::assertSame(['$params' => 'Opções da busca.', "$" . "params['slug']" => 'Identificador da página.'], $functions[0]['paramDescriptions']);
+        self::assertSame('Dados encontrados.', $functions[0]['returnDescription']);
+        $block = LibraryReference::render($functions, 'gestor/bibliotecas/x.php', 'ai-workspace/pt-br/docs/reference/libraries/x.md', 'pt-br');
+        self::assertStringContainsString('  - `$params[\'slug\']`: Identificador da página.', $block);
+        self::assertStringContainsString('  Retorno: Dados encontrados.', $block);
+        self::assertStringContainsString('- `simples($x)` — [linha 11]', $block);
+        self::assertStringNotContainsString('  Parâmetros:', substr($block, strpos($block, '- `simples($x)`')));
+    }
+
     public function testResolveLinksRelativos(): void
     {
         self::assertSame('reference/modules/menus.md', DocsAuditor::resolve('reference/libraries', '../modules/menus.md'));

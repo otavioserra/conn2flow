@@ -202,80 +202,343 @@ Em produção, o HTML entregue sai sem comentários e sem indentação.
 Referência gerada a partir de `gestor/bibliotecas/gestor.php` por `c2f docs:extract` — 76 funções. Não edite dentro deste bloco.
 
 - `existe(mixed $dado = false): bool` — [linha 43](../../../../../gestor/bibliotecas/gestor.php#L43)
+  Verifica se um dado existe e não está vazio.
+  Parâmetros:
+  - `$dado`: Dado a ser verificado.
+  Retorno: True se existe e não está vazio, false caso contrário.
 - `gestor_asset_version($owner = null, $fallback = null)` — [linha 69](../../../../../gestor/bibliotecas/gestor.php#L69)
+  Resolve token de cache de um diretório de assets, com fallback semântico.
 - `gestor_modulo_asset_version($modulo)` — [linha 80](../../../../../gestor/bibliotecas/gestor.php#L80)
+  Resolve token de cache do módulo sem alterar sua versão semântica.
 - `gestor_framework_css_resolver(string|null $layoutFramework = null, string|null $paginaFramework = null): array{fomantic:bool,tailwind:bool,modo:string}` — [linha 112](../../../../../gestor/bibliotecas/gestor.php#L112)
+  Resolve o framework CSS efetivo de uma requisição a partir do layout E da página (req-118).
+  Parâmetros:
+  - `$layoutFramework`: Valor de `layouts.framework_css`.
+  - `$paginaFramework`: Valor de `paginas.framework_css`.
+  Retorno: `modo` é `fomantic-ui`, `tailwindcss` ou
 - `gestor_framework_css_atual(): array{fomantic:bool,tailwind:bool,modo:string}` — [linha 139](../../../../../gestor/bibliotecas/gestor.php#L139)
+  Atalho para a resolução de framework da requisição corrente.
 - `gestor_schema_tabela_existe(string $tabela): bool` — [linha 175](../../../../../gestor/bibliotecas/gestor.php#L175)
+  Diz se uma tabela existe no banco corrente.
+  Parâmetros:
+  - `$tabela`: Nome da tabela.
+  Retorno: False também quando o banco não pôde ser consultado (falha fechado: sem certeza de
 - `gestor_schema_campo_existe(string $campo, string $tabela): bool` — [linha 211](../../../../../gestor/bibliotecas/gestor.php#L211)
+  Diz se um campo existe em uma tabela do banco corrente.
+  Parâmetros:
+  - `$campo`: Nome da coluna.
+  - `$tabela`: Nome da tabela.
 - `gestor_css_precompiled_ordenar($styles)` — [linha 247](../../../../../gestor/bibliotecas/gestor.php#L247)
+  Ordena sidecars Tailwind pela responsabilidade na cascata.
 - `gestor_pagina_recursos_incluir(array $params = false)` — [linha 315](../../../../../gestor/bibliotecas/gestor.php#L315)
+  Inclui recursos de página (CSS, CSS compilado e HTML extra head) no pipeline global. Controla duplicidades via hash MD5 para evitar inclusão redundante quando múltiplos blocos do mesmo widget/componente são inseridos na mesma página (req-028 / DEC-041).
+  Parâmetros:
+  - `$params['css_precompiled_role']`: Papel opcional para diagnóstico no DOM.
 - `gestor_crawler_detectar(string|null $userAgent = null, $tokensExtra = null): bool` — [linha 399](../../../../../gestor/bibliotecas/gestor.php#L399)
+  Detecta crawlers/scrapers sociais e de busca pelo User-Agent (req-109 / BATCH-109).
+  Parâmetros:
+  - `$userAgent`: User-Agent da requisição ($_SERVER['HTTP_USER_AGENT']).
 - `gestor_crawler_tokens_padrao(): array` — [linha 430](../../../../../gestor/bibliotecas/gestor.php#L430)
+  Lista embutida de tokens de robô (req-109, ampliada no req-111 / CR-001).
 - `gestor_crawler_tokens_extra(): array` — [linha 504](../../../../../gestor/bibliotecas/gestor.php#L504)
+  Tokens adicionais definidos pelo operador em Ambiente → Configurações do Site (req-111 / CR-001).
 - `gestor_crawler_tokens_normalizar(string $bruto): array` — [linha 525](../../../../../gestor/bibliotecas/gestor.php#L525)
+  Converte o texto livre da configuração numa lista de tokens.
 - `gestor_pagina_rota_sistema(string $caminho = ''): bool` — [linha 555](../../../../../gestor/bibliotecas/gestor.php#L555)
+  Identifica páginas de sistema que NÃO devem receber scripts de rastreamento (req-109 / BATCH-109).
+  Parâmetros:
+  - `$caminho`: Caminho da página já normalizado (`$_GESTOR['caminho-total']` com barra final).
 - `gestor_site_acesso_restrito_ativo(): bool` — [linha 586](../../../../../gestor/bibliotecas/gestor.php#L586)
+  Acesso Restrito ao Site está ligado? (req-163 / BATCH-168)
 - `gestor_site_acesso_restrito_perfis(string|array|null $bruto = null): array` — [linha 607](../../../../../gestor/bibliotecas/gestor.php#L607)
+  Perfis (`id_usuarios_perfis`) autorizados pelo Acesso Restrito ao Site (req-163).
+  Retorno: Lista de ids como string.
 - `gestor_site_acesso_restrito_rota_isenta(string $caminho = ''): bool` — [linha 645](../../../../../gestor/bibliotecas/gestor.php#L645)
+  Rotas que o Acesso Restrito ao Site NUNCA bloqueia (req-163).
+  Parâmetros:
+  - `$caminho`: Caminho da requisição (`$_GESTOR['caminho-total']`).
 - `gestor_site_acesso_restrito_perfil_autorizado(string|int $perfilId, array $perfisAutorizados): bool` — [linha 698](../../../../../gestor/bibliotecas/gestor.php#L698)
+  Decide se um perfil entra no site restrito (req-163).
+  Parâmetros:
+  - `$perfilId`: `id_usuarios_perfis` do usuário autenticado.
+  - `$perfisAutorizados`: Saída de `gestor_site_acesso_restrito_perfis()`.
 - `gestor_roteador_erro_terminal(int|string $codigo, mixed $caminho = ''): bool` — [linha 716](../../../../../gestor/bibliotecas/gestor.php#L716)
+  Detecta o fallback terminal da rota de erro para impedir redirecionamento 404 -> 404.
+  Parâmetros:
+  - `$codigo`: Codigo HTTP em processamento.
+  - `$caminho`: Caminho atual recebido pelo roteador.
 - `gestor_roteador_pagina_status_http(mixed $caminho = ''): int|null` — [linha 728](../../../../../gestor/bibliotecas/gestor.php#L728)
+  Retorna o status HTTP que deve ser preservado ao renderizar uma pagina de erro existente.
+  Parâmetros:
+  - `$caminho`: Caminho da pagina encontrada pelo roteador.
+  Retorno: Status HTTP explicito ou null para paginas comuns.
 - `gestor_pagina_301_registrar(int|string $id_paginas, string $caminho): bool` — [linha 754](../../../../../gestor/bibliotecas/gestor.php#L754)
+  Registra um redirecionamento 301 de um caminho liberado por uma página (F10 do review 2026-08-15).
+  Parâmetros:
+  - `$id_paginas`: Id NUMÉRICO da página que liberou o caminho.
+  - `$caminho`: Caminho antigo.
+  Retorno: True quando uma linha foi inserida.
 - `gestor_open_graph_tags(array $params = false): array` — [linha 801](../../../../../gestor/bibliotecas/gestor.php#L801)
+  Monta as metatags OpenGraph do `<head>` (req-109 / BATCH-109).
+  Parâmetros:
+  - `$params['title']`: Título da página.
+  - `$params['description']`: Descrição/resumo.
+  - `$params['image']`: URL absoluta da imagem de compartilhamento.
+  - `$params['url']`: URL canônica da página.
+  - `$params['site_name']`: Nome do site.
+  - `$params['type']`: Tipo OpenGraph (padrão `website`).
+  - `$params['twitter']`: Emite também o par mínimo de Twitter Cards (padrão true).
+  Retorno: Lista de tags `<meta …>`.
 - `gestor_cookie_verificacao_desfecho(array $params = false): string` — [linha 860](../../../../../gestor/bibliotecas/gestor.php#L860)
+  Decide o desfecho da verificação de cookie do navegador (req-111 / CR-001).
+  Parâmetros:
+  - `$params['crawler']`: Requisição identificada como robô.
+  - `$params['tem_cookie']`: Já existe cookie de verificação ou de autenticação.
+  - `$params['exigir_sessao']`: Fluxo que precisa PROVAR o cookie (login/cadastro).
+  - `$params['caminho']`: Caminho da requisição corrente.
 - `gestor_pagina_og_do_registro(array $pagina = Array()): array` — [linha 885](../../../../../gestor/bibliotecas/gestor.php#L885)
+  Extrai os metadados OpenGraph gravados no registro da página (req-110 / BATCH-110).
+  Parâmetros:
+  - `$pagina`: Linha da tabela `paginas`.
 - `gestor_meta_seo_tags(array $params = false): array` — [linha 927](../../../../../gestor/bibliotecas/gestor.php#L927)
+  Monta as meta tags clássicas de SEO do `<head>` (req-112 / BATCH-112).
+  Parâmetros:
+  - `$params['keywords']`: Lista separada por vírgula.
+  Retorno: Lista de tags `<meta …>`.
 - `gestor_meta_keywords_normalizar(string|array $bruto): string` — [linha 955](../../../../../gestor/bibliotecas/gestor.php#L955)
+  Normaliza a lista de palavras-chave digitada pelo usuário (req-112 / BATCH-112).
 - `gestor_meta_seo_existe(string|array $html): bool` — [linha 988](../../../../../gestor/bibliotecas/gestor.php#L988)
+  Detecta se um HTML já traz metatags de descrição/keywords próprias (req-112 / BATCH-112).
 - `gestor_open_graph_existe(string|array $html): bool` — [linha 1006](../../../../../gestor/bibliotecas/gestor.php#L1006)
+  Detecta se um HTML já traz metatags OpenGraph próprias (req-109 / BATCH-109).
+  Parâmetros:
+  - `$html`: HTML (ou lista de trechos) já enfileirado para o `<head>`.
 - `gestor_pdf_viewer_detectar(string $html): bool` — [linha 1025](../../../../../gestor/bibliotecas/gestor.php#L1025)
+  Detecta se um HTML de página usa o motor de exibição PDF.js (req-096 / BATCH-096).
+  Parâmetros:
+  - `$html`: HTML da página já montada.
 - `gestor_pdf_viewer_assets(string $urlRaiz = '', string $versao = ''): array` — [linha 1054](../../../../../gestor/bibliotecas/gestor.php#L1054)
+  Tags de inclusão dos assets do motor PDF.js (req-096 / BATCH-096).
+  Parâmetros:
+  - `$urlRaiz`: Raiz pública do projeto ($_GESTOR['url-raiz']).
+  - `$versao`: Versão do sistema, usada para cache-bust.
+  Retorno: Lista de tags <script>.
 - `gestor_css_classes_usadas(string $html): array` — [linha 1073](../../../../../gestor/bibliotecas/gestor.php#L1073)
+  Classes efetivamente usadas no markup (BATCH-144 / req-141).
+  Parâmetros:
+  - `$html`: HTML da página ou do recurso.
+  Retorno: Lista de classes distintas, sem repetição.
 - `gestor_css_classes_definidas(string $css): array` — [linha 1103](../../../../../gestor/bibliotecas/gestor.php#L1103)
+  Classes definidas por uma folha de estilo (BATCH-144 / req-141).
+  Parâmetros:
+  - `$css`: CSS concatenado das folhas entregues.
+  Retorno: Lista de classes distintas definidas.
 - `gestor_css_classes_descobertas(string $html, string $css): array` — [linha 1130](../../../../../gestor/bibliotecas/gestor.php#L1130)
+  Classes que o HTML usa e nenhuma folha define (BATCH-144 / req-141).
+  Parâmetros:
+  - `$html`: HTML entregue.
+  - `$css`: CSS entregue.
+  Retorno: Classes sem definição, em ordem estável.
 - `gestor_css_classes_em_codigo(string $codigo): array` — [linha 1170](../../../../../gestor/bibliotecas/gestor.php#L1170)
+  Classes de estilo embutidas em código PHP/JS (BATCH-144 / req-141).
+  Parâmetros:
+  - `$codigo`: Conteúdo de um arquivo PHP ou JS.
+  Retorno: Classes distintas encontradas, em ordem estável.
 - `gestor_css_procedencia_assinatura(array $params = false): string` — [linha 1249](../../../../../gestor/bibliotecas/gestor.php#L1249)
+  Assinatura de procedência do CSS derivado (BATCH-144 / req-141 / CR-002).
+  Parâmetros:
+  - `$params['html']`: HTML autoral do recurso.
+  - `$params['css']`: CSS autoral do recurso.
+  - `$params['baseline']`: Cascata sob a qual o derivado foi gerado (CSS do layout).
+  - `$params['compilador']`: Versão do Tailwind que gerou o derivado.
+  Retorno: Assinatura versionada, ou string vazia quando não há autoria nenhuma.
 - `gestor_css_compilador_versao(): string` — [linha 1288](../../../../../gestor/bibliotecas/gestor.php#L1288)
+  Versão do compilador Tailwind vigente, para a assinatura de procedência (req-156).
+  Retorno: Versão, ou string vazia quando o registro não está disponível.
 - `gestor_css_procedencia_para_recurso(string $html, string $css, string $layout_id = '', string $tabela = 'paginas'): string` — [linha 1323](../../../../../gestor/bibliotecas/gestor.php#L1323)
+  Par `campo=valor` da procedência, pronto para entrar num INSERT/UPDATE de recurso (req-141).
+  Parâmetros:
+  - `$html`: HTML autoral que está sendo gravado.
+  - `$css`: CSS autoral que está sendo gravado.
+  - `$layout_id`: Layout do recurso; vazio para layouts (eles SÃO a base).
+  - `$tabela`: Tabela de destino, para checar a coluna.
+  Retorno: Assinatura, ou string vazia.
 - `gestor_css_procedencia_valida(string $assinaturaGravada, array $params = false): bool` — [linha 1370](../../../../../gestor/bibliotecas/gestor.php#L1370)
+  O CSS derivado corresponde à autoria vigente? (BATCH-144 / req-141)
+  Parâmetros:
+  - `$assinaturaGravada`: Valor da coluna `css_source_hash`.
+  - `$params`: Mesmas entradas de gestor_css_procedencia_assinatura().
+  Retorno: true quando o derivado corresponde à autoria.
 - `gestor_componente_ids_condicao($ids, $escape = null)` — [linha 1382](../../../../../gestor/bibliotecas/gestor.php#L1382)
+  Monta a condição agrupada de IDs usada pela inclusão múltipla de componentes.
 - `gestor_componente(array|false $params = false): string|array|false` — [linha 1416](../../../../../gestor/bibliotecas/gestor.php#L1416)
+  Renderiza um componente HTML/CSS dinâmico.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id']`: ID descritivo do componente (ou array de IDs).
+  - `$params['id_componentes']`: ID numérico do componente (alternativa ao 'id').
+  - `$params['modulo']`: Módulo específico (opcional).
+  - `$params['return_css']`: Se true, retorna array ['html' => ..., 'css' => ...], senão string HTML.
+  - `$params['modulosExtra']`: Módulos extras para busca de variáveis.
+  - `$params['linguagem']`: Código do idioma (padrão: idioma atual).
+  Retorno: HTML do componente ou array com HTML+CSS, ou false se não encontrado.
 - `gestor_layout(array|false $params = false): string|array|false` — [linha 1648](../../../../../gestor/bibliotecas/gestor.php#L1648)
+  Renderiza um layout HTML/CSS completo da página.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id']`: ID descritivo do layout (ou array de IDs).
+  - `$params['id_layouts']`: ID numérico do layout (alternativa ao 'id').
+  - `$params['return_css']`: Se true, retorna array ['html' => ..., 'css' => ...], senão string HTML.
+  - `$params['modulosExtra']`: Módulos extras para busca de variáveis.
+  Retorno: HTML do layout ou array com HTML+CSS, ou false se não encontrado.
 - `gestor_incluir_bibliotecas(): void` — [linha 1910](../../../../../gestor/bibliotecas/gestor.php#L1910)
+  Inclui todas as bibliotecas do sistema.
 - `gestor_incluir_biblioteca(string $biblioteca): void` — [linha 1937](../../../../../gestor/bibliotecas/gestor.php#L1937)
+  Inclui uma biblioteca específica do sistema.
+  Parâmetros:
+  - `$biblioteca`: Nome do arquivo da biblioteca (sem .php).
 - `gestor_variaveis(array|false $params = false): string|array` — [linha 1994](../../../../../gestor/bibliotecas/gestor.php#L1994)
+  Obtém variáveis do sistema por módulo e idioma.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['modulo']`: Módulo do sistema (padrão: '_global_').
+  - `$params['id']`: Identificador único da variável (obrigatório se não usar 'conjunto').
+  - `$params['conjunto']`: Se true, retorna todas as variáveis do módulo.
+  - `$params['padrao']`: Filtro de padrão regex para IDs (requer 'conjunto').
+  - `$params['reset']`: Se true, força releitura do banco de dados.
+  Retorno: Valor da variável, array de variáveis (se conjunto), ou string vazia.
 - `gestor_variaveis_globais(array|false $params = false): string|null` — [linha 2083](../../../../../gestor/bibliotecas/gestor.php#L2083)
+  Obtém uma variável global específica do sistema.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id']`: Identificador único da variável (obrigatório).
+  - `$params['reset']`: Se true, força releitura do banco de dados.
+  Retorno: Valor da variável ou NULL se não encontrada.
 - `gestor_variaveis_alterar(array|false $params = false): void` — [linha 2142](../../../../../gestor/bibliotecas/gestor.php#L2142)
+  Altera o valor de uma variável no banco de dados.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['modulo']`: Módulo do sistema da variável (obrigatório).
+  - `$params['id']`: Identificador único da variável (obrigatório).
+  - `$params['tipo']`: Tipo da variável: 'bool' ou outros (obrigatório).
+  - `$params['valor']`: Valor que deverá ser alterado.
+  - `$params['linguagem']`: Código do idioma (padrão: idioma atual).
 - `gestor_redirecionar_raiz(): void` — [linha 2191](../../../../../gestor/bibliotecas/gestor.php#L2191)
+  Redireciona para a página raiz do módulo atual.
 - `gestor_reload_url(): void` — [linha 2222](../../../../../gestor/bibliotecas/gestor.php#L2222)
+  Recarrega a URL atual.
 - `gestor_csrf_rotas_identidade(): array<int,string>` — [linha 2243](../../../../../gestor/bibliotecas/gestor.php#L2243)
+  Rotas públicas de identidade cujo formulário carrega um token CSRF de uso único.
+  Retorno: Primeiros segmentos de caminho, sem barras.
 - `gestor_csrf_destino_recarregamento(string $caminhoTotal, string|null $referer, string $urlRaiz): string` — [linha 2271](../../../../../gestor/bibliotecas/gestor.php#L2271)
+  Destino de recarregamento limpo para a tela de erro de CSRF (req-125 / BATCH-127).
+  Parâmetros:
+  - `$caminhoTotal`: Caminho da requisição corrente, já sem o prefixo de idioma.
+  - `$referer`: Conteúdo de `HTTP_REFERER`, se houver.
+  - `$urlRaiz`: Raiz do gestor, com barra final e com idioma quando houver.
+  Retorno: URL absoluta de destino ou '' quando indeterminado.
 - `gestor_pagina_menu_icone_lucide_valido(string $nome): bool` — [linha 2330](../../../../../gestor/bibliotecas/gestor.php#L2330)
+  Um nome é endereçável no catálogo do Lucide? (req-125 / BATCH-127)
+  Parâmetros:
+  - `$nome`: Valor já resolvido do ícone.
 - `gestor_pagina_menu_icone_lucide_atributo(string $nome): string` — [linha 2350](../../../../../gestor/bibliotecas/gestor.php#L2350)
+  Atributo `data-lucide` pronto para interpolação — ou string vazia (req-125 / BATCH-127).
+  Parâmetros:
+  - `$nome`: Valor já resolvido do ícone.
+  Retorno: `data-lucide="…"` ou ''.
 - `gestor_querystring_remover_variavel(string $queryString, string $removerVariavel = ''): string` — [linha 2368](../../../../../gestor/bibliotecas/gestor.php#L2368)
+  Remove uma variável específica da query string.
+  Parâmetros:
+  - `$queryString`: Query string completa (formato: var1=val1&var2=val2).
+  - `$removerVariavel`: Nome da variável a ser removida.
+  Retorno: Query string processada sem a variável removida.
 - `gestor_querystring_variavel(string $queryString, string $variavel = ''): string` — [linha 2397](../../../../../gestor/bibliotecas/gestor.php#L2397)
+  Obtém o valor de uma variável específica da query string.
+  Parâmetros:
+  - `$queryString`: Query string completa.
+  - `$variavel`: Nome da variável a buscar.
+  Retorno: Valor da variável ou string vazia se não encontrada.
 - `gestor_querystring_before_submit(string $fieldName = '_c2f_query_string_before_submit', string $default = ''): string` — [linha 2422](../../../../../gestor/bibliotecas/gestor.php#L2422)
+  Recupera a query string antes do envio do formulário via campo hidden.
+  Parâmetros:
+  - `$fieldName`: Nome do campo hidden enviado pelo formulário.
+  - `$default`: Valor padrão se o campo não estiver definido.
+  Retorno: Query string enviada no formulário, sem o "?" inicial.
 - `gestor_querystring(string $removerVariavel = ''): string` — [linha 2445](../../../../../gestor/bibliotecas/gestor.php#L2445)
+  Obtém a query string atual da requisição.
+  Parâmetros:
+  - `$removerVariavel`: Nome da variável adicional a remover (opcional).
+  Retorno: Query string processada.
 - `gestor_redirecionar(string|false $local = false, string $queryString = '', bool $externo = false): void` — [linha 2477](../../../../../gestor/bibliotecas/gestor.php#L2477)
+  Redireciona para um local específico.
+  Parâmetros:
+  - `$local`: Caminho de destino (false = usar sessão ou raiz).
+  - `$queryString`: Query string adicional.
+  - `$externo`: Se true, trata como URL externa (não adiciona url-raiz).
+  Retorno: (executa exit após redirecionar)
 - `gestor_redirecionar_montar_url(string $local, string $queryString = ''): string` — [linha 2517](../../../../../gestor/bibliotecas/gestor.php#L2517)
+  Monta a URL de destino de um redirecionamento (req-173).
+  Parâmetros:
+  - `$local`: Destino já resolvido (interno ou externo).
+  - `$queryString`: Query string a anexar, com ou sem `?`/`&` à frente.
+  Retorno: URL final; sem query string, o destino sai intacto (nenhum `?` órfão).
 - `gestor_pagina_variaveis_globais(array|false $params = false): string` — [linha 2542](../../../../../gestor/bibliotecas/gestor.php#L2542)
+  Substitui variáveis globais em HTML.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['html']`: HTML que será processado (obrigatório).
+  Retorno: HTML com variáveis substituídas.
 - `gestor_js_variavel_incluir(string $variavel, mixed $valor): void` — [linha 2637](../../../../../gestor/bibliotecas/gestor.php#L2637)
+  Inclui uma variável JavaScript global na página.
+  Parâmetros:
+  - `$variavel`: Nome da variável JavaScript.
+  - `$valor`: Valor da variável (será convertido para JSON).
 - `gestor_componentes_incluir(array|false $params = false): void` — [linha 2667](../../../../../gestor/bibliotecas/gestor.php#L2667)
+  Marca componentes para inclusão na página.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id']`: ID do componente individual.
+  - `$params['componentes']`: Array de IDs de componentes.
 - `gestor_componentes_incluir_pagina(array|false $params = false): void` — [linha 2708](../../../../../gestor/bibliotecas/gestor.php#L2708)
+  Renderiza componentes marcados na página.
+  Parâmetros:
+  - `$params`: Parâmetros da função (atualmente não utilizados).
 - `gestor_cookie_is_secure(): bool` — [linha 2760](../../../../../gestor/bibliotecas/gestor.php#L2760)
+  Determina se cookies devem ser emitidos com o atributo Secure.
 - `gestor_sessao_iniciar()` — [linha 2782](../../../../../gestor/bibliotecas/gestor.php#L2782)
 - `gestor_sessao_id(): int` — [linha 2816](../../../../../gestor/bibliotecas/gestor.php#L2816)
+  Obtém ou cria o ID numérico da sessão no banco de dados.
+  Retorno: ID numérico da sessão no banco de dados.
 - `gestor_sessao_del(): void` — [linha 2892](../../../../../gestor/bibliotecas/gestor.php#L2892)
+  Deleta a sessão atual do usuário.
 - `gestor_sessao_variavel(string $variavel, mixed $valor = NULL): mixed` — [linha 2943](../../../../../gestor/bibliotecas/gestor.php#L2943)
+  Obtém ou define uma variável de sessão.
+  Parâmetros:
+  - `$variavel`: Nome da variável de sessão.
+  - `$valor`: Valor a ser armazenado (NULL para apenas leitura).
+  Retorno: Valor da variável (em modo leitura) ou void (em modo escrita).
 - `gestor_sessao_variavel_del(string $variavel): void` — [linha 3011](../../../../../gestor/bibliotecas/gestor.php#L3011)
+  Remove uma variável específica da sessão.
+  Parâmetros:
+  - `$variavel`: Nome da variável a ser removida.
 - `gestor_sessao_del_all(): void` — [linha 3044](../../../../../gestor/bibliotecas/gestor.php#L3044)
+  Remove TODAS as sessões do sistema.
 - `gestor_modulos_dados(string $modulo_id = ''): array|null` — [linha 3067](../../../../../gestor/bibliotecas/gestor.php#L3067)
+  Pega os dados de um módulo.
+  Parâmetros:
+  - `$modulo_id`: ID do módulo.
+  Retorno: Dados do módulo ou null se não encontrado.
 - `gestor_pagina_higienizar_ativo()` — [linha 3100](../../../../../gestor/bibliotecas/gestor.php#L3100)
+  Decide se o HTML entregue ao navegador deve sair higienizado (req-132).
 - `gestor_html_higienizar($html)` — [linha 3139](../../../../../gestor/bibliotecas/gestor.php#L3139)
+  Remove do HTML o que so interessa a quem escreveu o codigo (req-132).
 - `gestor_js_higienizar($js)` — [linha 3245](../../../../../gestor/bibliotecas/gestor.php#L3245)
+  Remove comentarios e indentacao de JavaScript (req-132, 2a rodada).
 - `gestor_js_barra_inicia_regex($anterior)` — [linha 3350](../../../../../gestor/bibliotecas/gestor.php#L3350)
+  Decide se uma `/` abre um regex literal ou e o operador de divisao (req-132).
 - `gestor_pagina_higienizar_js_ativo()` — [linha 3368](../../../../../gestor/bibliotecas/gestor.php#L3368)
+  Gate proprio para a limpeza do JavaScript (req-132, 2a rodada).
 - `gestor_html_script_e_javascript($tagCompleta)` — [linha 3389](../../../../../gestor/bibliotecas/gestor.php#L3389)
+  Diz se a tag `<script>` carrega JavaScript de verdade (req-132, 2a rodada).
 
 <!-- c2f:extract:end -->

@@ -72,14 +72,57 @@ if ($r['status'] === 'success') {
 Reference generated from `gestor/bibliotecas/ia.php` by `c2f docs:extract` — 10 functions. Do not edit inside this block.
 
 - `ia_renderizar_prompt(array $params = false)` — [line 22](../../../../../gestor/bibliotecas/ia.php#L22)
+  Renderizar Prompt.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['alvo']`: Nome do alvo do pré-prompt.
+  - `$params['prompt_controls']`: Controles extras do prompt.
 - `ia_enviar_prompt($params = false)` — [line 252](../../../../../gestor/bibliotecas/ia.php#L252)
+  Enviar Prompt.
+  Parameters:
+  - `$var`: descrição.
+  - `$params['servidor_id']`: Identificador numérico do servidor IA.
+  - `$params['modelo']`: Nome do modelo IA.
+  - `$params['prompt']`: Prompt a ser enviado.
 - `ia_processar_retorno(array $params = false)` — [line 424](../../../../../gestor/bibliotecas/ia.php#L424)
+  Processar Retorno.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['dados_retorno']`: Dados retornados pela API de IA.
+  - `$params['formato']`: Formato desejado para o retorno (texto, json, html).
 - `ia_editor_dados(string $alvo): array` — [line 493](../../../../../gestor/bibliotecas/ia.php#L493)
+  Dados do assistente de IA para UI vanilla (Live Editor — BATCH-080).
+  Parameters:
+  - `$alvo`: Alvo do prompt/modo (ex.: 'paginas').
+  Returns: Estrutura `{status, data|message}`.
 - `ia_ajax_interface($params = false)` — [line 563](../../../../../gestor/bibliotecas/ia.php#L563)
 - `ia_ajax_prompts(array $params = false)` — [line 584](../../../../../gestor/bibliotecas/ia.php#L584)
+  AJAX Prompts.
+  Parameters:
+  - `$params`: Parâmetros da função.
 - `ia_ajax_modos(array $params = false)` — [line 645](../../../../../gestor/bibliotecas/ia.php#L645)
+  AJAX Modos.
+  Parameters:
+  - `$params`: Parâmetros da função.
 - `ia_ajax_prompt_edit(array $params = false)` — [line 709](../../../../../gestor/bibliotecas/ia.php#L709)
+  AJAX Prompt Edit.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['target']`: Nome do alvo do pré-prompt.
+  - `$params['prompt_id']`: Identificador do prompt IA.
+  - `$params['prompt']`: Conteúdo do prompt IA.
 - `ia_ajax_prompt_novo(array $params = false)` — [line 759](../../../../../gestor/bibliotecas/ia.php#L759)
+  AJAX Prompt Novo.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['target']`: Nome do alvo do pré-prompt.
+  - `$params['nome']`: Nome do prompt IA.
+  - `$params['prompt']`: Conteúdo do prompt IA.
 - `ia_ajax_prompt_del(array $params = false)` — [line 840](../../../../../gestor/bibliotecas/ia.php#L840)
+  AJAX Prompt Delete.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['target']`: Nome do alvo do pré-prompt.
+  - `$params['prompt_id']`: Identificador do prompt IA.
 
 <!-- c2f:extract:end -->

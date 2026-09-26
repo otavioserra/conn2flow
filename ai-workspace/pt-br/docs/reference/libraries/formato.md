@@ -62,18 +62,82 @@ Tipos: `float-para-texto`, `texto-para-float`, `int-para-texto`, `texto-para-int
 Referência gerada a partir de `gestor/bibliotecas/formato.php` por `c2f docs:extract` — 14 funções. Não edite dentro deste bloco.
 
 - `formato_data_hora_array(string $data_hora_padrao_datetime_ou_padrao_date): array` — [linha 33](../../../../../gestor/bibliotecas/formato.php#L33)
+  Converte uma data/hora no formato DATETIME ou DATE para array.
+  Parâmetros:
+  - `$data_hora_padrao_datetime_ou_padrao_date`: Data/hora no formato padrão do banco.
+  Retorno: Array com as chaves: dia, mes, ano, hora (opcional), min (opcional), seg (opcional).
 - `formato_data_hora_padrao_datetime(string $dataHora, bool $semHora = false): string` — [linha 75](../../../../../gestor/bibliotecas/formato.php#L75)
+  Converte data/hora do formato brasileiro para formato DATETIME do MySQL.
+  Parâmetros:
+  - `$dataHora`: Data/hora no formato brasileiro (DD/MM/YYYY HH:MM).
+  - `$semHora`: Se true, retorna apenas a data no formato DATE (YYYY-MM-DD).
+  Retorno: Data/hora no formato DATETIME ou DATE do MySQL.
 - `formato_data_hora_br_para_datetime(string $str): string|null` — [linha 96](../../../../../gestor/bibliotecas/formato.php#L96)
+  Converte data/hora para DATETIME do MySQL (YYYY-MM-DD HH:MM:SS), COM validação: retorna null quando vazio ou em formato inválido. Aceita DUAS formas — o formato brasileiro (DD/MM/AAAA [HH:MM[:SS]]) e o ISO do <input type="datetime-local"> (AAAA-MM-DD[THH:MM]). Sem a hora, assume 00:00. Ideal para campos opcionais de agendamento e datas retroativas (BATCH-075 / Meta 5).
+  Parâmetros:
+  - `$str`: Data/hora (BR ou ISO/datetime-local).
+  Retorno: DATETIME (YYYY-MM-DD HH:MM:SS) ou null quando vazio/inválido.
 - `formato_data_hora_datetime_para_input(string $str): string` — [linha 124](../../../../../gestor/bibliotecas/formato.php#L124)
+  Converte um DATETIME do MySQL para o valor de um <input type="datetime-local"> (Y-m-d\TH:i). Retorna '' quando vazio/nulo/zero (BATCH-075 / Meta 5 — pré-preencher as datas no formulário de edição).
+  Parâmetros:
+  - `$str`: DATETIME (YYYY-MM-DD HH:MM:SS).
+  Retorno: Valor no formato Y-m-d\TH:i ou '' quando vazio.
 - `formato_data_hora_from_datetime_to_text(string $data_hora, string|false $format = false): string` — [linha 143](../../../../../gestor/bibliotecas/formato.php#L143)
+  Converte data/hora do formato DATETIME do MySQL para texto formatado.
+  Parâmetros:
+  - `$data_hora`: Data/hora no formato DATETIME do MySQL.
+  - `$format`: Formato personalizado usando: D (dia), ME (mês), A (ano), H (hora), MI (minuto), S (segundo).
+  Retorno: Data/hora formatada ou string vazia se $data_hora for vazia.
 - `formato_data_from_datetime_to_text(string $data_hora): string` — [linha 196](../../../../../gestor/bibliotecas/formato.php#L196)
+  Converte data do formato DATETIME do MySQL para formato brasileiro.
+  Parâmetros:
+  - `$data_hora`: Data/hora no formato DATETIME do MySQL.
+  Retorno: Data no formato DD/MM/AAAA.
 - `formato_float_para_texto(float $float, bool $sem_descimal = false): string` — [linha 219](../../../../../gestor/bibliotecas/formato.php#L219)
+  Formata um número float para o formato brasileiro.
+  Parâmetros:
+  - `$float`: O número a ser formatado.
+  - `$sem_descimal`: Parâmetro não utilizado atualmente.
+  Retorno: Número formatado no padrão brasileiro.
 - `formato_texto_para_float(string $texto): string` — [linha 234](../../../../../gestor/bibliotecas/formato.php#L234)
+  Converte número do formato brasileiro para float.
+  Parâmetros:
+  - `$texto`: Número no formato brasileiro.
+  Retorno: Número no formato float (ponto como decimal).
 - `formato_int_para_texto(int $int): string` — [linha 270](../../../../../gestor/bibliotecas/formato.php#L270)
+  Formata um número inteiro para o formato brasileiro.
+  Parâmetros:
+  - `$int`: O número a ser formatado.
+  Retorno: Número formatado com separadores de milhares.
 - `formato_texto_para_int(string $texto): string` — [linha 284](../../../../../gestor/bibliotecas/formato.php#L284)
+  Remove formatação brasileira de um número inteiro.
+  Parâmetros:
+  - `$texto`: Número formatado no padrão brasileiro.
+  Retorno: Número sem formatação.
 - `formato_zero_a_esquerda(int|string $num, int $dig): string` — [linha 300](../../../../../gestor/bibliotecas/formato.php#L300)
+  Adiciona zeros à esquerda de um número.
+  Parâmetros:
+  - `$num`: O número a ser formatado.
+  - `$dig`: Quantidade total de dígitos desejada.
+  Retorno: Número com zeros à esquerda.
 - `formato_colocar_char_meio_numero(int|string $num, string $char = '-'): string` — [linha 328](../../../../../gestor/bibliotecas/formato.php#L328)
+  Insere um caractere no meio de um número.
+  Parâmetros:
+  - `$num`: O número a ser processado.
+  - `$char`: O caractere a ser inserido (padrão: '-').
+  Retorno: Número com caractere inserido no meio.
 - `formato_dado_para(string $tipo, mixed $valor): string` — [linha 356](../../../../../gestor/bibliotecas/formato.php#L356)
+  Aplica formatação a um dado conforme o tipo especificado.
+  Parâmetros:
+  - `$tipo`: Tipo de formatação a ser aplicada.
+  - `$valor`: Valor a ser formatado.
+  Retorno: Valor formatado ou string vazia se parâmetros inválidos.
 - `formato_dado(array|false $params = false): string` — [linha 391](../../../../../gestor/bibliotecas/formato.php#L391)
+  Formata um valor de acordo com o tipo especificado.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['valor']`: Valor a ser formatado (obrigatório).
+  - `$params['tipo']`: Tipo de formatação (obrigatório).
+  Retorno: Valor formatado ou string vazia se parâmetros inválidos.
 
 <!-- c2f:extract:end -->

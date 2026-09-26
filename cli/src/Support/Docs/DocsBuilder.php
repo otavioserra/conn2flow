@@ -407,7 +407,7 @@ final class DocsBuilder
             'secao' => self::text($sectionLabel),
             'conteudo' => $this->codePathHtml($rel, $doc['meta'], $labels) . $rendered['html'],
             'sumario' => $this->tocHtml($rendered['toc'], $labels),
-            'navegacao' => $this->navHtml($prev, $next, $docs, $labels),
+            'navegacao' => $this->navHtml($lang, $prev, $next, $docs, $labels),
             'verificacao' => $this->verificationHtml($lang, $rel, $doc['meta'], $labels),
             'markdown' => MarkdownRenderer::protectGestorMarkers(htmlspecialchars('# ' . $doc['meta']['title'] . "\n" . $body, ENT_QUOTES, 'UTF-8')),
         ];
@@ -472,19 +472,19 @@ final class DocsBuilder
      * @param array<string, array{meta: array<string, mixed>, body: string}> $docs
      * @param array<string, mixed> $labels
      */
-    private function navHtml(?string $prev, ?string $next, array $docs, array $labels): string
+    private function navHtml(string $lang, ?string $prev, ?string $next, array $docs, array $labels): string
     {
         if ($prev === null && $next === null) {
             return '';
         }
-        $card = function (?string $rel, string $label, string $align) use ($docs): string {
+        $card = function (?string $rel, string $label, string $align) use ($lang, $docs): string {
             if ($rel === null) {
                 return '<div class="flex-1"></div>';
             }
 
             return '<a href="' . MarkdownRenderer::URL_ROOT_TOKEN . $this->urlPath($rel) . '" class="' . DocsTheme::NAV_CARD . ' ' . $align . '">'
                 . '<p class="' . DocsTheme::NAV_LABEL . '">' . self::text($label) . '</p>'
-                . '<p class="' . DocsTheme::NAV_TITLE . '">' . self::text((string)$docs[$rel]['meta']['title']) . '</p></a>';
+                . '<p class="' . DocsTheme::NAV_TITLE . '">' . self::text($this->menuLabel($lang, $docs[$rel])) . '</p></a>';
         };
 
         return MarkdownRenderer::protectGestorMarkers('<nav class="mt-16 flex flex-col gap-4 sm:flex-row">'
@@ -518,12 +518,6 @@ final class DocsBuilder
             }
             $html .= '</ul>';
         }
-        if ($repo !== '') {
-            $sourcePath = str_starts_with($rel, 'sdd/') ? $rel : $this->tree->repoRelative($lang, $rel);
-            $html .= '<p><a href="' . $this->blobUrl($sourcePath) . '" target="_blank" rel="noopener" class="' . DocsTheme::SOURCE_LINK . '">'
-                . self::text((string)($labels['edit'] ?? 'Edit this page')) . ' →</a></p>';
-        }
-
         return MarkdownRenderer::protectGestorMarkers($html . '</div>');
     }
 

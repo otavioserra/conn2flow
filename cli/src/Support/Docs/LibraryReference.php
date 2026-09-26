@@ -17,8 +17,8 @@ final class LibraryReference
     public const END = '<!-- c2f:extract:end -->';
 
     private const LABELS = [
-        'pt-br' => ['intro' => 'Referência gerada a partir de `%s` por `c2f docs:extract` — %d funções. Não edite dentro deste bloco.', 'line' => 'linha'],
-        'en' => ['intro' => 'Reference generated from `%s` by `c2f docs:extract` — %d functions. Do not edit inside this block.', 'line' => 'line'],
+        'pt-br' => ['intro' => 'Referência gerada a partir de `%s` por `c2f docs:extract` — %d funções. Não edite dentro deste bloco.', 'line' => 'linha', 'params' => 'Parâmetros', 'return' => 'Retorno'],
+        'en' => ['intro' => 'Reference generated from `%s` by `c2f docs:extract` — %d functions. Do not edit inside this block.', 'line' => 'line', 'params' => 'Parameters', 'return' => 'Returns'],
     ];
 
     /**
@@ -34,6 +34,18 @@ final class LibraryReference
         foreach ($functions as $fn) {
             $lines[] = '- `' . PhpFunctionExtractor::signatureText($fn) . '` — ['
                 . $labels['line'] . ' ' . $fn['line'] . '](' . $toRoot . $sourceRel . '#L' . $fn['line'] . ')';
+            if (($fn['description'] ?? '') !== '') {
+                $lines[] = '  ' . $fn['description'];
+            }
+            if (($fn['paramDescriptions'] ?? []) !== []) {
+                $lines[] = '  ' . $labels['params'] . ':';
+                foreach ($fn['paramDescriptions'] as $name => $description) {
+                    $lines[] = '  - `' . $name . '`: ' . $description;
+                }
+            }
+            if (($fn['returnDescription'] ?? '') !== '') {
+                $lines[] = '  ' . $labels['return'] . ': ' . $fn['returnDescription'];
+            }
         }
         $lines[] = '';
         $lines[] = self::END;

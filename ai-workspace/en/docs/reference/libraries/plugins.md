@@ -22,5 +22,8 @@ It is not in the `bibliotecas-dados` registry and nothing includes it. Plugin in
 Reference generated from `gestor/bibliotecas/plugins.php` by `c2f docs:extract` — 1 functions. Do not edit inside this block.
 
 - `template_opcao(array|false $params = false): void` — [line 29](../../../../../gestor/bibliotecas/plugins.php#L29)
+  Gera uma opção de template (função exemplo/template).
+  Parameters:
+  - `$params`: Array de parâmetros nomeados ou false.
 
 <!-- c2f:extract:end -->

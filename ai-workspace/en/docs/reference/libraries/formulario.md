@@ -73,25 +73,86 @@ It builds the Fomantic UI rules for the form, with error texts from the variable
 Reference generated from `gestor/bibliotecas/formulario.php` by `c2f docs:extract` — 21 functions. Do not edit inside this block.
 
 - `formulario_parse_limits(mixed $options): array` — [line 28](../../../../../gestor/bibliotecas/formulario.php#L28)
+  Extrai diretivas de limite (min/max/step) das linhas do campo "Opções" de um campo de formulário. Aceita string multilinha ou array de linhas no formato `min:X`, `max:Y`, `step:Z`.
+  Parameters:
+  - `$options`: Conteúdo do campo options.
+  Returns: ['min'=>string|null, 'max'=>string|null, 'step'=>string|null]
 - `formulario_email_cabecalho_normalizar($valor)` — [line 46](../../../../../gestor/bibliotecas/formulario.php#L46)
+  Normaliza uma string destinada a cabeçalhos de e-mail, removendo tags e quebras de linha.
 - `formulario_form_action_resolver($form_action, $url_raiz)` — [line 58](../../../../../gestor/bibliotecas/formulario.php#L58)
+  Resolve a action pública do formulário; vazio sempre aponta para o processador canônico.
 - `formulario_email_reply_to_resolver(...$candidatos)` — [line 74](../../../../../gestor/bibliotecas/formulario.php#L74)
+  Retorna o primeiro endereço de e-mail válido da lista de candidatos.
 - `formulario_email_reply_to_nome_resolver(...$candidatos)` — [line 88](../../../../../gestor/bibliotecas/formulario.php#L88)
+  Retorna o primeiro nome de remetente não vazio, já seguro para cabeçalho.
 - `formulario_email_assunto_resolver($assunto, $assunto_padrao)` — [line 100](../../../../../gestor/bibliotecas/formulario.php#L100)
+  Aplica o assunto padrão quando o valor configurado está vazio ou contém somente espaços.
 - `formulario_email_mensagem_resolver($email_data, $carregar_componente = null)` — [line 110](../../../../../gestor/bibliotecas/formulario.php#L110)
+  Carrega o componente customizado e recua obrigatoriamente para forms-prepared-email se necessário.
 - `formulario_email_template_processar($mensagem, $numero, $form_name, $fields, $dados)` — [line 135](../../../../../gestor/bibliotecas/formulario.php#L135)
+  Preenche as variáveis gerais e a célula repetível do template de notificação.
 - `formulario_incluir_js(array|false $params = false): void` — [line 199](../../../../../gestor/bibliotecas/formulario.php#L199)
+  Inclui JavaScript da biblioteca de formulários na página.
+  Parameters:
+  - `$params`: Parâmetros da função.
 - `formulario_email_processar_imagens(string $html): array` — [line 229](../../../../../gestor/bibliotecas/formulario.php#L229)
+  Processa imagens locais no HTML do email para embedding automático.
+  Parameters:
+  - `$html`: HTML do email a ser processado.
+  Returns: Array com HTML processado e array de imagens para embedding.
 - `formulario_montar_js_vars(array $formIds, string|null $formAjaxOpcao = null): array` — [line 303](../../../../../gestor/bibliotecas/formulario.php#L303)
+  Monta as variáveis JS (gestor.form[id]) de um ou mais formulários.
+  Parameters:
+  - `$formIds`: Lista de IDs de formulário.
+  - `$formAjaxOpcao`: Opção AJAX (opcional).
+  Returns: Configurações indexadas por ID do formulário.
 - `formulario_controlador(array|false $params = false): void` — [line 510](../../../../../gestor/bibliotecas/formulario.php#L510)
+  Controlador de Formulários.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['formId']`: ID do formulário HTML (obrigatório).
+  - `$params['formAction']`: URL de ação do formulário (opcional).
+  - `$params['formAjaxOpcao']`: Opção AJAX (opcional).
 - `formulario_processador(array|false $params = false): void` — [line 563](../../../../../gestor/bibliotecas/formulario.php#L563)
+  Processador de Formulários.
+  Parameters:
+  - `$params`: Parâmetros da função.
 - `formulario_acesso_verificar(array|false $params = false): array` — [line 1123](../../../../../gestor/bibliotecas/formulario.php#L1123)
+  Verifica estado de acesso para formulários com proteção anti-spam.
+  Parameters:
+  - `$params`: Parâmetros (tipo obrigatório).
+  Returns: Estado do acesso com 'permitido' e 'status'.
 - `formulario_acesso_cadastrar(array|false $params = false): void` — [line 1191](../../../../../gestor/bibliotecas/formulario.php#L1191)
+  Cadastra tentativa de acesso para formulários com controle anti-spam.
+  Parameters:
+  - `$params`: Parâmetros (tipo obrigatório, antispam opcional, maximoCadastros opcional, maximoCadastrosSimples opcional).
 - `formulario_acesso_falha(array|false $params = false): void` — [line 1346](../../../../../gestor/bibliotecas/formulario.php#L1346)
+  Registra falha de acesso para formulários.
+  Parameters:
+  - `$params`: Parâmetros (tipo obrigatório, maximoCadastros opcional, maximoCadastrosSimples opcional).
 - `formulario_acessos_limpeza(array|false $params = false): void` — [line 1479](../../../../../gestor/bibliotecas/formulario.php#L1479)
+  Limpa registros antigos das tabelas de formulários.
+  Parameters:
+  - `$params`: Parâmetros da função.
 - `formulario_validacao(array|false $params = false): void` — [line 1531](../../../../../gestor/bibliotecas/formulario.php#L1531)
+  Configura validação de formulário com regras personalizadas.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['formId']`: ID do formulário HTML (obrigatório).
+  - `$params['validacao']`: []['comparacao'] Dados para regra 'email-comparacao' (opcional).
+  - `$params['regrasExtra']`: Regras adicionais além das padrões (opcional).
 - `formulario_validacao_campos_obrigatorios(array|false $params = false): void` — [line 1932](../../../../../gestor/bibliotecas/formulario.php#L1932)
+  Valida campos obrigatórios no servidor (server-side).
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['redirect']`: URL de redirecionamento em caso de erro (opcional, usa reload se omitido).
+  - `$params['campos']`: []['max'] Tamanho máximo para 'texto-obrigatorio' (opcional, padrão 100).
+  Returns: Exibe alerta e redireciona se validação falhar.
 - `formulario_google_recaptcha(): string|null` — [line 2020](../../../../../gestor/bibliotecas/formulario.php#L2020)
+  Obtém chave do site Google reCAPTCHA.
+  Returns: Chave pública do site reCAPTCHA ou null se desativado.
 - `formulario_google_recaptcha_tipo(): string|null` — [line 2089](../../../../../gestor/bibliotecas/formulario.php#L2089)
+  Obtém tipo de Google reCAPTCHA configurado.
+  Returns: 'recaptcha-v2' ou 'recaptcha-v3', ou null se desativado.
 
 <!-- c2f:extract:end -->

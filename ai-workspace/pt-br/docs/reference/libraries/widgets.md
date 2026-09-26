@@ -81,5 +81,11 @@ O comportamento no navegador vai num `meu-modulo.widget.js`. Quem o inclui na p�
 Referência gerada a partir de `gestor/bibliotecas/widgets.php` por `c2f docs:extract` — 1 funções. Não edite dentro deste bloco.
 
 - `widgets_get(array|false $params = false): string` — [linha 43](../../../../../gestor/bibliotecas/widgets.php#L43)
+  Processa e renderiza um widget completo por ID.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['id']`: Identificador único do widget (obrigatório).
+  - `$params['html']`: (opcional) HTML estático capturado entre os marcadores
+  Retorno: HTML processado e completo do widget ou string vazia se não encontrado.
 
 <!-- c2f:extract:end -->

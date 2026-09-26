@@ -73,26 +73,120 @@ Channel credential validation does not go through the attempt control.
 Reference generated from `gestor/bibliotecas/autenticacao.php` by `c2f docs:extract` — 22 functions. Do not edit inside this block.
 
 - `autenticacao_crypto_rand_secure(int $min, int $max): int` — [line 33](../../../../../gestor/bibliotecas/autenticacao.php#L33)
+  Gera um número aleatório criptograficamente seguro.
+  Parameters:
+  - `$min`: Valor mínimo (inclusivo).
+  - `$max`: Valor máximo (inclusivo).
+  Returns: Número aleatório seguro entre $min e $max.
 - `autenticacao_cliente_gerar_jwt(array|false $params = false): string|false` — [line 69](../../../../../gestor/bibliotecas/autenticacao.php#L69)
+  Gera um token JWT assinado com chave RSA para autenticação de cliente.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['host']`: Host de acesso do JWT (obrigatório).
+  - `$params['expiration']`: Timestamp de expiração do JWT (obrigatório).
+  - `$params['pubID']`: ID público do token para referência (obrigatório).
+  - `$params['chavePublica']`: Chave pública RSA para assinar (obrigatório).
+  Returns: Token JWT completo ou false em caso de erro.
 - `autenticacao_openssl_gerar_chaves(array|false $params = false): array|false` — [line 145](../../../../../gestor/bibliotecas/autenticacao.php#L145)
+  Gera par de chaves pública e privada OpenSSL com algoritmo RSA.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['tipo']`: Tipo da chave (RSA obrigatório).
+  - `$params['senha']`: Senha para encriptar a chave privada (opcional).
+  Returns: Array com 'publica' e 'privada', ou false em erro.
 - `autenticacao_gerar_senha(int $length = 32): string` — [line 298](../../../../../gestor/bibliotecas/autenticacao.php#L298)
+  Gera uma senha aleatória segura com caracteres variados.
+  Parameters:
+  - `$length`: Comprimento da senha (padrão: 32 caracteres).
+  Returns: Senha aleatória gerada.
 - `autenticacao_gerar_jwt_chave_publica(array|false $params = false): string|false` — [line 343](../../../../../gestor/bibliotecas/autenticacao.php#L343)
+  Gera JWT assinado com chave pública RSA.
+  Parameters:
+  - `$params`: Parâmetros (host, expiration, pubID, chavePublica obrigatórios).
+  Returns: Token JWT ou false em erro.
 - `autenticacao_gerar_jwt_chave_privada(array|false $params = false): string|false` — [line 408](../../../../../gestor/bibliotecas/autenticacao.php#L408)
+  Gera JWT assinado com chave privada RSA.
+  Parameters:
+  - `$params`: Parâmetros (host, expiration, pubID, chavePrivada, chavePrivadaSenha obrigatórios; payload opcional).
+  Returns: Token JWT ou false em erro.
 - `autenticacao_validar_jwt_chave_publica(array|false $params = false): array|string|false` — [line 480](../../../../../gestor/bibliotecas/autenticacao.php#L480)
+  Valida JWT usando chave pública RSA.
+  Parameters:
+  - `$params`: Parâmetros (token, chavePublica obrigatórios; retornarPayloadCompleto opcional).
+  - `$params['retornarPayloadCompleto']`: Se true, retorna o payload completo em vez de apenas o pubID.
+  Returns: Payload decodificado, pubID ou false se inválido.
 - `autenticacao_validar_jwt_chave_privada(array|false $params = false): array|false` — [line 569](../../../../../gestor/bibliotecas/autenticacao.php#L569)
+  Valida JWT usando chave privada RSA.
+  Parameters:
+  - `$params`: Parâmetros (token, chavePrivada, chavePrivadaSenha obrigatórios).
+  Returns: Payload decodificado ou false se inválido.
 - `autenticacao_cliente_gerar_token_validacao(array|false $params = false): array` — [line 657](../../../../../gestor/bibliotecas/autenticacao.php#L657)
+  Gera token JWT de validação para cliente.
+  Parameters:
+  - `$params`: Parâmetros (id_hosts obrigatório, pubID opcional).
+  Returns: Token gerado ou array vazio em erro.
 - `autenticacao_acesso_verificar(array|false $params = false): array` — [line 725](../../../../../gestor/bibliotecas/autenticacao.php#L725)
+  Verifica estado de acesso do usuário com proteção anti-spam.
+  Parameters:
+  - `$params`: Parâmetros (tipo obrigatório).
+  Returns: Estado do acesso com 'permitido', 'status' e 'mensagem' opcional.
 - `autenticacao_acesso_cadastrar(array|false $params = false): void` — [line 795](../../../../../gestor/bibliotecas/autenticacao.php#L795)
+  Cadastra tentativa de acesso do usuário para controle anti-spam.
+  Parameters:
+  - `$params`: Parâmetros (tipo obrigatório, antispam opcional).
 - `autenticacao_acesso_confirmar(array|false $params = false): void` — [line 914](../../../../../gestor/bibliotecas/autenticacao.php#L914)
+  Confirma acesso bem-sucedido do usuário.
+  Parameters:
+  - `$params`: Parâmetros (tipo obrigatório).
 - `autenticacao_acesso_falha(array|false $params = false): void` — [line 972](../../../../../gestor/bibliotecas/autenticacao.php#L972)
+  Registra falha de acesso do usuário.
+  Parameters:
+  - `$params`: Parâmetros (tipo obrigatório).
 - `autenticacao_acessos_limpeza(array|false $params = false): void` — [line 1086](../../../../../gestor/bibliotecas/autenticacao.php#L1086)
+  Limpa registros antigos da tabela de acessos.
+  Parameters:
+  - `$params`: Parâmetros da função.
 - `autenticacao_encriptar_chave_publica(array|false $params = false): string|false` — [line 1116](../../../../../gestor/bibliotecas/autenticacao.php#L1116)
+  Encripta valor usando chave pública RSA.
+  Parameters:
+  - `$params`: Parâmetros (valor, chavePublica obrigatórios).
+  Returns: Valor encriptado em base64 ou false em erro.
 - `autenticacao_encriptar_chave_privada(array|false $params = false): string|false` — [line 1164](../../../../../gestor/bibliotecas/autenticacao.php#L1164)
+  Encripta valor usando chave privada RSA.
+  Parameters:
+  - `$params`: Parâmetros (valor, chavePrivada, chavePrivadaSenha obrigatórios).
+  Returns: Valor encriptado em base64 ou false em erro.
 - `autenticacao_decriptar_chave_publica(array|false $params = false): string|false` — [line 1212](../../../../../gestor/bibliotecas/autenticacao.php#L1212)
+  Decripta valor usando chave pública RSA.
+  Parameters:
+  - `$params`: Parâmetros (criptografia, chavePublica obrigatórios).
+  Returns: Valor decriptado ou false em erro.
 - `autenticacao_decriptar_chave_privada(array|false $params = false): string|false` — [line 1266](../../../../../gestor/bibliotecas/autenticacao.php#L1266)
+  Decripta valor usando chave privada RSA.
+  Parameters:
+  - `$params`: Parâmetros (criptografia, chavePrivada, chavePrivadaSenha obrigatórios).
+  Returns: Valor decriptado ou false em erro.
 - `autenticacao_distribuido_validar_credenciais(string $usuario, string $senha): array` — [line 1329](../../../../../gestor/bibliotecas/autenticacao.php#L1329)
+  Valida as credenciais de um usuário para ativação/login do canal distribuído.
+  Parameters:
+  - `$usuario`: Login do usuário.
+  - `$senha`: Senha em texto plano.
+  Returns: ['valido' => bool, 'id_usuarios' => int|null, 'mensagem' => string|null]
 - `autenticacao_distribuido_gerar_tokens(int $id_usuarios): array|false` — [line 1367](../../../../../gestor/bibliotecas/autenticacao.php#L1367)
+  Gera os tokens de acesso e renovação (OAuth2) para o canal distribuído.
+  Parameters:
+  - `$id_usuarios`: ID do usuário já validado.
+  Returns: Tokens (access_token, refresh_token, expires_in, ...) ou false.
 - `autenticacao_distribuido_verificar_permissao_modulo(int $id_usuarios, string $modulo): bool` — [line 1397](../../../../../gestor/bibliotecas/autenticacao.php#L1397)
+  Verifica se o usuário tem permissão de acesso ao módulo alvo (controle por perfil).
+  Parameters:
+  - `$id_usuarios`: ID do usuário já autenticado.
+  - `$modulo`: Slug do módulo alvo (ex.: 'modulos-grupos-distribuido').
+  Returns: true se o usuário pode acessar o módulo.
 - `autenticacao_distribuido_token_ativo(string $token): bool` — [line 1505](../../../../../gestor/bibliotecas/autenticacao.php#L1505)
+  Verifica se um access token do canal distribuído está ativo e íntegro.
+  Parameters:
+  - `$token`: Access token a validar.
+  Returns: true se o token é válido e não expirou.
 
 <!-- c2f:extract:end -->

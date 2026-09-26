@@ -63,11 +63,32 @@ Referência gerada a partir de `gestor/bibliotecas/jwt.php` por `c2f docs:extrac
 - `jwt_rotation_days()` — [linha 40](../../../../../gestor/bibliotecas/jwt.php#L40)
 - `jwt_grace_hours()` — [linha 44](../../../../../gestor/bibliotecas/jwt.php#L44)
 - `jwt_keys_load(): array` — [linha 55](../../../../../gestor/bibliotecas/jwt.php#L55)
+  Carrega o conjunto de chaves JWT do banco.
+  Retorno: Lista de chaves (cada uma com key_id, key_secret, created_at, status).
 - `jwt_keys_save(array $keys): void` — [linha 78](../../../../../gestor/bibliotecas/jwt.php#L78)
+  Persiste o conjunto de chaves JWT no banco (insert ou update).
+  Parâmetros:
+  - `$keys`: Lista de chaves.
 - `jwt_nova_chave(string $status = 'active'): array` — [linha 106](../../../../../gestor/bibliotecas/jwt.php#L106)
+  Cria uma nova estrutura de chave JWT.
+  Parâmetros:
+  - `$status`: 'active' ou 'expired'.
+  Retorno: Chave gerada.
 - `jwt_get_active_key(): array` — [linha 120](../../../../../gestor/bibliotecas/jwt.php#L120)
+  Obtém a chave ativa; cria uma se ainda não existir.
+  Retorno: Chave ativa.
 - `jwt_generate_token(array $payload): string` — [linha 142](../../../../../gestor/bibliotecas/jwt.php#L142)
+  Gera um token JWT assinado com a chave ativa.
+  Parâmetros:
+  - `$payload`: Reivindicações do token.
+  Retorno: Token JWT (header.payload.signature).
 - `jwt_validate_token(string $token): array` — [linha 169](../../../../../gestor/bibliotecas/jwt.php#L169)
+  Valida um token JWT.
+  Parâmetros:
+  - `$token`: Token JWT.
+  Retorno: ['status' => 'Active'|'Grace', 'payload' => array]
 - `jwt_rotate_keys(): array` — [linha 216](../../../../../gestor/bibliotecas/jwt.php#L216)
+  Rotaciona as chaves JWT: marca a ativa como expirada, gera uma nova ativa e purga as chaves expiradas que já ultrapassaram o período de carência.
+  Retorno: A nova chave ativa.
 
 <!-- c2f:extract:end -->

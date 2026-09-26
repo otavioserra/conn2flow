@@ -52,12 +52,55 @@ Other side effects:
 Reference generated from `gestor/bibliotecas/html.php` by `c2f docs:extract` — 8 functions. Do not edit inside this block.
 
 - `html_iniciar(array|false $params = false): void` — [line 35](../../../../../gestor/bibliotecas/html.php#L35)
+  Inicializa objeto DOMDocument para manipulação HTML.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['valor']`: HTML a processar (obrigatório se gestor não definido).
+  - `$params['gestor']`: Se true, usa $_GESTOR['pagina'] como fonte (opcional).
 - `html_finalizar(array|false $params = false): string|void` — [line 70](../../../../../gestor/bibliotecas/html.php#L70)
+  Finaliza e retorna HTML do objeto DOM.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['gestor']`: Se true, grava em $_GESTOR['pagina'] (opcional).
+  Returns: HTML processado ou void se gestor=true.
 - `html_consulta(array|false $params = false): DOMNodeList` — [line 113](../../../../../gestor/bibliotecas/html.php#L113)
+  Executa consulta XPath no objeto DOM.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['valor']`: Expressão XPath (obrigatório).
+  Returns: Resultado da consulta ou lista vazia.
 - `html_atributo(array|false $params = false): string|void` — [line 145](../../../../../gestor/bibliotecas/html.php#L145)
+  Manipula atributos de elementos HTML.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['opcao']`: Operação: 'valor' ou 'mudar' (obrigatório).
+  - `$params['consulta']`: Nome da classe CSS (obrigatório).
+  - `$params['atributo']`: Nome do atributo (obrigatório).
+  - `$params['valor']`: Novo valor (obrigatório se opcao='mudar').
+  Returns: Valor do atributo se opcao='valor', void se 'mudar'.
 - `html_valor(array|false $params = false): void` — [line 202](../../../../../gestor/bibliotecas/html.php#L202)
+  Manipula valor (nodeValue) de elementos HTML.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['opcao']`: Operação: 'mudar' (obrigatório).
+  - `$params['consulta']`: Nome da classe CSS (obrigatório).
+  - `$params['valor']`: Novo valor textual (obrigatório).
 - `html_adicionar_classe(array|false $params = false): void` — [line 246](../../../../../gestor/bibliotecas/html.php#L246)
+  Adiciona classe CSS a elemento.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['consulta']`: Nome da classe CSS existente (obrigatório).
+  - `$params['classe']`: Nova classe a adicionar (obrigatório).
 - `html_elemento(array|false $params = false): void` — [line 287](../../../../../gestor/bibliotecas/html.php#L287)
+  Manipula estrutura de elementos HTML.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['opcao']`: Operação: 'excluir' (obrigatório).
+  - `$params['consulta']`: Nome da classe CSS (obrigatório).
 - `html_beautify(string $html): tidy` — [line 325](../../../../../gestor/bibliotecas/html.php#L325)
+  Formata e embeleza HTML usando Tidy.
+  Parameters:
+  - `$html`: HTML a formatar.
+  Returns: Objeto tidy com HTML formatado.
 
 <!-- c2f:extract:end -->

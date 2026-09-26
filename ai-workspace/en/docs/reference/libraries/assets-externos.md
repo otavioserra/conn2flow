@@ -66,10 +66,35 @@ $map  = assets_externos_urls_js(['codemirror']);        // library => file => UR
 Reference generated from `gestor/bibliotecas/assets-externos.php` by `c2f docs:extract` — 6 functions. Do not edit inside this block.
 
 - `assets_externos_registro(): array<string, array{versao: string, cdn: string, css: list<string>, js: list<string>}>` — [line 47](../../../../../gestor/bibliotecas/assets-externos.php#L47)
+  Registro central: nome => versão + arquivos.
 - `assets_externos_url(array $lib, string $nome, string $arquivo, string $vendorFisico, string $vendorPublico): string` — [line 217](../../../../../gestor/bibliotecas/assets-externos.php#L217)
+  URL de um arquivo da biblioteca: local quando existe, CDN como fallback.
+  Parameters:
+  - `$lib`: Entrada do registro.
+  - `$nome`: Identificador da biblioteca (subdiretório em `vendor/`).
+  - `$arquivo`: Nome do arquivo dentro da biblioteca.
+  - `$vendorFisico`: Caminho físico de `assets/vendor/` (com separador final).
+  - `$vendorPublico`: URL pública de `vendor/` (com barra final).
 - `assets_externos_tags(string $nome, string $vendorFisico = '', string $vendorPublico = ''): array{css: list<string>, js: list<string>}` — [line 238](../../../../../gestor/bibliotecas/assets-externos.php#L238)
+  Tags de uma biblioteca registrada.
+  Parameters:
+  - `$nome`: Identificador no registro.
+  - `$vendorFisico`: Caminho físico de `assets/vendor/`.
+  - `$vendorPublico`: URL pública de `vendor/`.
 - `assets_externos_urls_map(list<string> $nomes = Array(), string $vendorFisico = '', string $vendorPublico = ''): array<string, array<string, string>>` — [line 279](../../../../../gestor/bibliotecas/assets-externos.php#L279)
+  Mapa `biblioteca => arquivo => URL` das bibliotecas pedidas (req-156).
+  Parameters:
+  - `$nomes`: Identificadores no registro; vazio devolve todas as bibliotecas.
+  - `$vendorFisico`: Caminho físico de `assets/vendor/`.
+  - `$vendorPublico`: URL pública de `vendor/`.
 - `assets_externos_urls_js(list<string> $nomes = Array()): array<string, array<string, string>>` — [line 308](../../../../../gestor/bibliotecas/assets-externos.php#L308)
+  `assets_externos_urls_map()` resolvido com os caminhos do ambiente corrente (req-156).
+  Parameters:
+  - `$nomes`: Identificadores no registro.
 - `assets_externos_incluir(string $nome): bool` — [line 329](../../../../../gestor/bibliotecas/assets-externos.php#L329)
+  Inclui uma biblioteca de terceiro no pipeline da página.
+  Parameters:
+  - `$nome`: Identificador no registro (ex.: `sortablejs`).
+  Returns: false quando a biblioteca não está registrada.
 
 <!-- c2f:extract:end -->

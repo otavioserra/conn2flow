@@ -79,6 +79,32 @@ Devolve `true` se o servidor aceitou a mensagem e `false` em qualquer outro caso
 Referência gerada a partir de `gestor/bibliotecas/comunicacao.php` por `c2f docs:extract` — 2 funções. Não edite dentro deste bloco.
 
 - `comunicacao_impressao(array|false $params = false): void` — [linha 50](../../../../../gestor/bibliotecas/comunicacao.php#L50)
+  Prepara página para impressão armazenando dados na sessão.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['pagina']`: Conteúdo HTML da página a ser impressa (obrigatório).
+  - `$params['titulo']`: Título da página de impressão (opcional).
 - `comunicacao_email(array|false $params = false): bool|string` — [linha 137](../../../../../gestor/bibliotecas/comunicacao.php#L137)
+  Envia emails via SMTP usando PHPMailer.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['hostPersonalizacao']`: Permite configuração via módulo Comunicação (opcional).
+  - `$params['id_hosts']`: ID do host para comunicação (opcional).
+  - `$params['servidor']`: ['porta'] Porta SMTP (opcional).
+  - `$params['remetente']`: ['responderParaNome'] Nome para respostas (opcional).
+  - `$params['destinatarios']`: []['tipo'] Tipo: 'cc' ou 'bcc' (opcional, padrão TO).
+  - `$params['mensagem']`: ['anexos'] Arquivos anexos (opcional).
+  - `$params['EMAIL_TESTS']`: Modo teste com configs em runtime (opcional).
+  - `$params['EMAIL_DEBUG']`: Debug em modo teste (opcional).
+  - `$params['EMAIL_HOST']`: Host SMTP em modo teste (opcional).
+  - `$params['EMAIL_USER']`: Usuário SMTP em modo teste (opcional).
+  - `$params['EMAIL_PASS']`: Senha SMTP em modo teste (opcional).
+  - `$params['EMAIL_SECURE']`: SSL em modo teste (opcional).
+  - `$params['EMAIL_PORT']`: Porta em modo teste (opcional).
+  - `$params['EMAIL_FROM']`: Email origem em modo teste (opcional).
+  - `$params['EMAIL_FROM_NAME']`: Nome origem em modo teste (opcional).
+  - `$params['EMAIL_REPLY_TO']`: Email resposta em modo teste (opcional).
+  - `$params['EMAIL_REPLY_TO_NAME']`: Nome resposta em modo teste (opcional).
+  Retorno: True se enviado com sucesso, string com erro se falhar, false se email desativado.
 
 <!-- c2f:extract:end -->

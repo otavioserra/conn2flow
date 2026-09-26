@@ -36,8 +36,34 @@ if (ftp_conectar(['host' => 'ftp.exemplo.com', 'usuario' => $u, 'senha' => $s, '
 Referência gerada a partir de `gestor/bibliotecas/ftp.php` por `c2f docs:extract` — 4 funções. Não edite dentro deste bloco.
 
 - `ftp_conectar(array|false $params = false): bool` — [linha 41](../../../../../gestor/bibliotecas/ftp.php#L41)
+  Estabelece conexão com servidor FTP.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['usuario']`: Usuário da conta FTP (obrigatório).
+  - `$params['senha']`: Senha da conta FTP (obrigatório).
+  - `$params['host']`: Host/servidor FTP (obrigatório).
+  - `$params['secure']`: Se true, tenta conexão via FTP SSL (opcional).
+  Retorno: True se conexão estabelecida com sucesso, false caso contrário.
 - `ftp_fechar_conexao(array|false $params = false): bool|void` — [linha 90](../../../../../gestor/bibliotecas/ftp.php#L90)
+  Fecha a conexão FTP ativa.
+  Parâmetros:
+  - `$params`: Parâmetros da função (não utilizado atualmente).
+  Retorno: False se não houver conexão ativa, void após fechar.
 - `ftp_colocar_arquivo(array|false $params = false): bool|void` — [linha 125](../../../../../gestor/bibliotecas/ftp.php#L125)
+  Envia um arquivo para o servidor FTP.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['remoto']`: Caminho/nome do arquivo no servidor remoto (obrigatório).
+  - `$params['local']`: Caminho/nome do arquivo local (obrigatório).
+  - `$params['modoFTP']`: Modo de transferência: FTP_ASCII ou FTP_BINARY (opcional, padrão: FTP_BINARY).
+  Retorno: True se upload bem-sucedido, false caso contrário.
 - `ftp_pegar_arquivo(array|false $params = false): bool|void` — [linha 169](../../../../../gestor/bibliotecas/ftp.php#L169)
+  Baixa um arquivo do servidor FTP.
+  Parâmetros:
+  - `$params`: Parâmetros da função.
+  - `$params['remoto']`: Caminho/nome do arquivo no servidor remoto (obrigatório).
+  - `$params['local']`: Caminho/nome onde salvar o arquivo localmente (obrigatório).
+  - `$params['modoFTP']`: Modo de transferência: FTP_ASCII ou FTP_BINARY (opcional, padrão: FTP_BINARY).
+  Retorno: True se download bem-sucedido, false caso contrário.
 
 <!-- c2f:extract:end -->

@@ -52,12 +52,49 @@ $ok = two_factor_validate_code($secret, $typedCode);
 Reference generated from `gestor/bibliotecas/2fa.php` by `c2f docs:extract` — 8 functions. Do not edit inside this block.
 
 - `two_factor_base32_encode(string $data): string` — [line 33](../../../../../gestor/bibliotecas/2fa.php#L33)
+  Codifica uma string binária em Base32 (RFC 4648, sem padding).
+  Parameters:
+  - `$data`: Dados binários.
+  Returns: Texto Base32.
 - `two_factor_base32_decode(string $b32): string` — [line 57](../../../../../gestor/bibliotecas/2fa.php#L57)
+  Decodifica uma string Base32 (RFC 4648) para binário.
+  Parameters:
+  - `$b32`: Texto Base32.
+  Returns: Dados binários.
 - `two_factor_generate_secret(int $length = 16): string` — [line 87](../../../../../gestor/bibliotecas/2fa.php#L87)
+  Gera um segredo TOTP aleatório em Base32.
+  Parameters:
+  - `$length`: Quantidade de caracteres Base32 (padrão 16 = 80 bits).
+  Returns: Segredo Base32.
 - `two_factor_get_qr_code(string $email, string $secret): string` — [line 109](../../../../../gestor/bibliotecas/2fa.php#L109)
+  Monta a URI otpauth:// para renderização em QR Code.
+  Parameters:
+  - `$email`: E-mail / conta do usuário (rótulo da conta).
+  - `$secret`: Segredo Base32.
+  Returns: URI otpauth.
 - `two_factor_hotp(string $secret, int $counter): string` — [line 126](../../../../../gestor/bibliotecas/2fa.php#L126)
+  Calcula um código HOTP (RFC 4226) para um contador específico.
+  Parameters:
+  - `$secret`: Segredo Base32.
+  - `$counter`: Contador (no TOTP é floor(time()/30)).
+  Returns: Código de 6 dígitos.
 - `two_factor_validate_code(string $secret, string $code): bool` — [line 155](../../../../../gestor/bibliotecas/2fa.php#L155)
+  Valida um código TOTP informado pelo usuário, com tolerância de ±1 ciclo de 30s.
+  Parameters:
+  - `$secret`: Segredo Base32 do usuário.
+  - `$code`: Código de 6 dígitos informado.
+  Returns: true se o código for válido na janela de tempo.
 - `two_factor_email_send_code(int $usuario_id, string $email): bool` — [line 178](../../../../../gestor/bibliotecas/2fa.php#L178)
+  Gera um código numérico de 6 dígitos, grava-o no usuário com validade de 5 minutos e o envia por e-mail HTML.
+  Parameters:
+  - `$usuario_id`: ID do usuário (coluna id_usuarios).
+  - `$email`: E-mail de destino.
+  Returns: true se o e-mail foi enviado.
 - `two_factor_email_validate(int $usuario_id, string $code): bool` — [line 223](../../../../../gestor/bibliotecas/2fa.php#L223)
+  Valida o código 2FA enviado por e-mail, conferindo valor e prazo de validade. Em caso de sucesso, limpa o código para impedir reutilização.
+  Parameters:
+  - `$usuario_id`: ID do usuário (coluna id_usuarios).
+  - `$code`: Código de 6 dígitos informado.
+  Returns: true se o código for válido e estiver dentro do prazo.
 
 <!-- c2f:extract:end -->

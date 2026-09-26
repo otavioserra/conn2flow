@@ -81,5 +81,11 @@ Browser behavior goes in a `my-module.widget.js`. The widget function itself inc
 Reference generated from `gestor/bibliotecas/widgets.php` by `c2f docs:extract` — 1 functions. Do not edit inside this block.
 
 - `widgets_get(array|false $params = false): string` — [line 43](../../../../../gestor/bibliotecas/widgets.php#L43)
+  Processa e renderiza um widget completo por ID.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['id']`: Identificador único do widget (obrigatório).
+  - `$params['html']`: (opcional) HTML estático capturado entre os marcadores
+  Returns: HTML processado e completo do widget ou string vazia se não encontrado.
 
 <!-- c2f:extract:end -->

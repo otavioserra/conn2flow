@@ -45,7 +45,23 @@ The library is registered as `variaveis` in `$_GESTOR['bibliotecas-dados']`. The
 Reference generated from `gestor/bibliotecas/variaveis.php` by `c2f docs:extract` — 3 functions. Do not edit inside this block.
 
 - `variaveis_sistema(string $grupo, string|false $id = false): string|array|null` — [line 41](../../../../../gestor/bibliotecas/variaveis.php#L41)
+  Retorna variável(is) do sistema.
+  Parameters:
+  - `$grupo`: Grupo da variável (obrigatório).
+  - `$id`: ID específico da variável (opcional).
+  Returns: Se $id fornecido, retorna o valor da variável específica.
 - `variaveis_sistema_incluir(string $grupo, string $id, string $valor, string $tipo = 'string'): void` — [line 88](../../../../../gestor/bibliotecas/variaveis.php#L88)
+  Inclui uma nova variável do sistema.
+  Parameters:
+  - `$grupo`: Grupo da variável (obrigatório).
+  - `$id`: ID da variável (obrigatório).
+  - `$valor`: Valor que será incluído (obrigatório).
+  - `$tipo`: Tipo da variável (opcional, padrão: 'string').
 - `variaveis_sistema_atualizar(string $grupo, string $id, string $valor): void` — [line 132](../../../../../gestor/bibliotecas/variaveis.php#L132)
+  Atualiza o valor de uma variável do sistema.
+  Parameters:
+  - `$grupo`: Grupo da variável (obrigatório).
+  - `$id`: ID da variável (obrigatório).
+  - `$valor`: Novo valor que será atribuído (obrigatório).
 
 <!-- c2f:extract:end -->

@@ -49,11 +49,32 @@ The router takes care of it on its own (`gestor_pagina_quill()`): after assembli
 Reference generated from `gestor/bibliotecas/editor-texto.php` by `c2f docs:extract` — 7 functions. Do not edit inside this block.
 
 - `editor_texto_assets_externos_carregar()` — [line 38](../../../../../gestor/bibliotecas/editor-texto.php#L38)
+  Garante que o registro de assets externos esteja carregado.
 - `editor_texto_versao_cdn(): string` — [line 59](../../../../../gestor/bibliotecas/editor-texto.php#L59)
+  Versão do Quill servida pelo CDN.
 - `editor_texto_assets_editor(string $urlRaiz = '', string $versaoAsset = '', $vendorFisico = '', $vendorPublico = ''): array{css: list<string>, javascript: list<string>}` — [line 93](../../../../../gestor/bibliotecas/editor-texto.php#L93)
+  Tags de CSS e JavaScript do editor de texto.
+  Parameters:
+  - `$urlRaiz`: Raiz pública do projeto (`$_GESTOR['url-raiz']`).
+  - `$versaoAsset`: Versão dos assets do core, para cache-bust.
 - `editor_texto_paridade_css(string $contrato): string` — [line 153](../../../../../gestor/bibliotecas/editor-texto.php#L153)
+  CSS que dá à área de edição a aparência da página publicada.
+  Parameters:
+  - `$contrato`: Conteúdo do `browser-contract.css` do projeto (pode ser vazio).
+  Returns: Bloco `<style>` escopado, ou string vazia quando não há o que injetar.
 - `editor_texto_incluir(array $params = false): void` — [line 213](../../../../../gestor/bibliotecas/editor-texto.php#L213)
+  Inclui no pipeline da página tudo que o editor de texto precisa.
+  Parameters:
+  - `$params['paridade']`: Injeta os tokens do projeto na área de edição (padrão: true).
 - `editor_texto_conteudo_detectar(string $html): bool` — [line 271](../../../../../gestor/bibliotecas/editor-texto.php#L271)
+  Detecta conteúdo formatado pelo editor de texto no HTML final.
+  Parameters:
+  - `$html`: HTML final da página, já com widgets incluídos.
 - `editor_texto_assets_publicacao(string $urlRaiz = '', string $versao = ''): array` — [line 333](../../../../../gestor/bibliotecas/editor-texto.php#L333)
+  Tags do CSS de conteúdo entregue ao visitante.
+  Parameters:
+  - `$urlRaiz`: Raiz pública do projeto.
+  - `$versao`: Versão do asset, para cache-bust.
+  Returns: Lista de tags `<link>`.
 
 <!-- c2f:extract:end -->

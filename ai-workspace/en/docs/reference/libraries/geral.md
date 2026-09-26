@@ -24,5 +24,9 @@ Registered as `geral` in `bibliotecas-dados` (`gestor_incluir_biblioteca('geral'
 Reference generated from `gestor/bibliotecas/geral.php` by `c2f docs:extract` — 1 functions. Do not edit inside this block.
 
 - `geral_nl2br(string $string = ''): string` — [line 22](../../../../../gestor/bibliotecas/geral.php#L22)
+  Converte quebras de linha em tags HTML <br>.
+  Parameters:
+  - `$string`: A string onde as quebras de linha serão convertidas.
+  Returns: Retorna a string com as tags <br> incluídas, ou a string original se vazia.
 
 <!-- c2f:extract:end -->

@@ -60,13 +60,51 @@ The `dist/` folder uses `url-raiz-sem-lang`: the same file does not get one URL 
 Reference generated from `gestor/bibliotecas/recursos.php` by `c2f docs:extract` — 9 functions. Do not edit inside this block.
 
 - `recursos_caminho_normalizar(string $caminho): string` — [line 43](../../../../../gestor/bibliotecas/recursos.php#L43)
+  Normaliza um caminho de asset para a forma usada como chave do manifesto.
+  Parameters:
+  - `$caminho`: Caminho relativo do asset, como aparece na URL.
+  Returns: Caminho normalizado, ou '' quando o caminho é inválido.
 - `recursos_dist_ativo()` — [line 61](../../../../../gestor/bibliotecas/recursos.php#L61)
+  Indica se a instalação tem assets publicados e habilitados para entrega direta.
 - `recursos_publicado(string $caminho): bool` — [line 73](../../../../../gestor/bibliotecas/recursos.php#L73)
+  Informa se um asset consta no manifesto publicado em `dist/`.
+  Parameters:
+  - `$caminho`: Caminho relativo do asset (com ou sem query string).
 - `recursos_url(string $caminho, string|null $base = null): string` — [line 102](../../../../../gestor/bibliotecas/recursos.php#L102)
+  URL pública de um asset.
+  Parameters:
+  - `$caminho`: Caminho relativo do asset, opcionalmente com query string.
+  - `$base`: Raiz pública usada no fallback; null usa `url-raiz`.
+  Returns: URL pronta para o atributo `src`/`href`.
 - `recursos_versao(string $caminho, string|null $versaoPadrao = null): string` — [line 128](../../../../../gestor/bibliotecas/recursos.php#L128)
+  Token de cache busting de um asset publicado.
+  Parameters:
+  - `$caminho`: Caminho relativo do asset.
+  - `$versaoPadrao`: Versão usada quando o asset não está publicado.
 - `recursos_url_versionada(string $caminho, string|null $versao = null, string|null $base = null): string` — [line 149](../../../../../gestor/bibliotecas/recursos.php#L149)
+  URL de um asset já com o parâmetro de cache busting.
+  Parameters:
+  - `$caminho`: Caminho relativo do asset.
+  - `$versao`: Versão a usar quando o asset não está publicado.
+  - `$base`: Raiz pública do fallback; null usa `url-raiz`.
 - `recursos_tag_js(string $caminho, string|null $versao = null, string $extra = '', string|null $base = null): string` — [line 162](../../../../../gestor/bibliotecas/recursos.php#L162)
+  Tag `<script>` de um asset do gestor.
+  Parameters:
+  - `$caminho`: Caminho relativo do asset.
+  - `$versao`: Versão usada quando o asset não está publicado.
+  - `$extra`: Atributos adicionais já formatados (ex.: `defer`).
+  - `$base`: Raiz pública do fallback; null usa `url-raiz`.
 - `recursos_tag_css(string $caminho, string|null $versao = null, string $extra = '', string|null $base = null): string` — [line 177](../../../../../gestor/bibliotecas/recursos.php#L177)
+  Tag `<link rel="stylesheet">` de um asset do gestor.
+  Parameters:
+  - `$caminho`: Caminho relativo do asset.
+  - `$versao`: Versão usada quando o asset não está publicado.
+  - `$extra`: Atributos adicionais já formatados (ex.: `data-c2f-css-role="quill"`).
+  - `$base`: Raiz pública do fallback; null usa `url-raiz`.
 - `recursos_dist_mapear_fonte(string $relativo): string` — [line 204](../../../../../gestor/bibliotecas/recursos.php#L204)
+  Contrato de mapeamento entre o arquivo FONTE no gestor e o caminho publicado em `dist/`.
+  Parameters:
+  - `$relativo`: Caminho do arquivo relativo à raiz do gestor, com `/` como separador.
+  Returns: Caminho dentro de `dist/`, ou '' quando o arquivo não é publicável.
 
 <!-- c2f:extract:end -->

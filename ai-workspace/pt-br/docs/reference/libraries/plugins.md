@@ -22,5 +22,8 @@ Não está no registro `bibliotecas-dados` e nada a inclui. A instalação e a a
 Referência gerada a partir de `gestor/bibliotecas/plugins.php` por `c2f docs:extract` — 1 funções. Não edite dentro deste bloco.
 
 - `template_opcao(array|false $params = false): void` — [linha 29](../../../../../gestor/bibliotecas/plugins.php#L29)
+  Gera uma opção de template (função exemplo/template).
+  Parâmetros:
+  - `$params`: Array de parâmetros nomeados ou false.
 
 <!-- c2f:extract:end -->

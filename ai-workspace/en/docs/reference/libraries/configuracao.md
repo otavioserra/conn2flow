@@ -62,9 +62,42 @@ The screen hides parts with [html.php](html.md) (`html_adicionar_classe(... 'esc
 Reference generated from `gestor/bibliotecas/configuracao.php` by `c2f docs:extract` — 5 functions. Do not edit inside this block.
 
 - `configuracao_campo_tipo(string $tipo): string` — [line 52](../../../../../gestor/bibliotecas/configuracao.php#L52)
+  Normaliza o tipo de um campo de configuração (req-144 / BATCH-147).
+  Parameters:
+  - `$tipo`: Tipo gravado no banco.
+  Returns: Tipo canônico.
 - `configuracao_administracao_salvar(array|false $params = false): void` — [line 75](../../../../../gestor/bibliotecas/configuracao.php#L75)
+  Salva as configurações de administração de um módulo.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['modulo']`: Módulo alvo para filtrar as variáveis (obrigatório).
+  - `$params['linguagemCodigo']`: Linguagem das variáveis (obrigatório).
+  - `$params['tabela']`: Definições da tabela onde será atualizado o histórico (obrigatório).
 - `configuracao_administracao(array|false $params = false): void` — [line 262](../../../../../gestor/bibliotecas/configuracao.php#L262)
+  Exibe o widget de administração de configurações de um módulo.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['marcador']`: Marcador textual onde será incluído o widget (obrigatório).
+  - `$params['modulo']`: Módulo alvo para filtrar as variáveis (obrigatório).
+  - `$params['linguagemCodigo']`: Linguagem das variáveis (obrigatório).
 - `configuracao_hosts_salvar(array|false $params = false): array` — [line 542](../../../../../gestor/bibliotecas/configuracao.php#L542)
+  Salva as configurações de hosts para variáveis de um módulo.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['modulo']`: Módulo alvo para filtrar as variáveis (obrigatório).
+  - `$params['linguagemCodigo']`: Linguagem das variáveis (obrigatório).
+  - `$params['tabela']`: Definições da tabela onde será atualizado o histórico (obrigatório).
+  - `$params['grupos']`: Grupos alvos para filtrar as variáveis (opcional).
+  - `$params['plugin']`: Identificador do plugin relacionado (opcional).
+  Returns: Array de retorno com informações do processamento.
 - `configuracao_hosts_variaveis(array|false $params = false): array` — [line 822](../../../../../gestor/bibliotecas/configuracao.php#L822)
+  Retorna as variáveis de configuração de um módulo para um host específico.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['modulo']`: Módulo alvo para filtrar as variáveis (obrigatório).
+  - `$params['linguagemCodigo']`: Linguagem das variáveis (opcional, usa padrão do sistema).
+  - `$params['grupos']`: Grupos alvos para filtrar as variáveis (opcional).
+  - `$params['id_hosts']`: Identificador do host alvo (opcional, usa host atual).
+  Returns: Array de variáveis de configuração com valores mesclados do host.
 
 <!-- c2f:extract:end -->

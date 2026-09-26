@@ -49,11 +49,32 @@ The keys are read only from `$_ENV`, not from `$_CONFIG`.
 Reference generated from `gestor/bibliotecas/oauth.php` by `c2f docs:extract` — 7 functions. Do not edit inside this block.
 
 - `oauth_config(string $provider): array|false` — [line 30](../../../../../gestor/bibliotecas/oauth.php#L30)
+  Retorna a configuração de endpoints/credenciais de um provedor.
+  Parameters:
+  - `$provider`: 'google' ou 'meta'.
+  Returns: Configuração ou false se o provedor não for suportado.
 - `oauth_redirect_uri(string $provider): string` — [line 64](../../../../../gestor/bibliotecas/oauth.php#L64)
+  Monta a URI de callback do provedor (calculada a partir do domínio atual).
+  Parameters:
+  - `$provider`: 'google' ou 'meta'.
+  Returns: URI de redirecionamento (ex.: https://dominio/_api/auth/callback/google).
 - `oauth_redirect_url(string $provider): string|false` — [line 84](../../../../../gestor/bibliotecas/oauth.php#L84)
+  Gera o URL de redirecionamento para a tela de consentimento do provedor. Grava o `state` (proteção CSRF) e o provedor na sessão.
+  Parameters:
+  - `$provider`: 'google' ou 'meta'.
+  Returns: URL de autorização ou false se não configurado.
 - `oauth_validate_state(string $state): bool` — [line 114](../../../../../gestor/bibliotecas/oauth.php#L114)
+  Valida o parâmetro `state` retornado pelo provedor contra o gravado na sessão.
+  Parameters:
+  - `$state`: Valor recebido no callback.
+  Returns: true se conferir.
 - `oauth_http_post($url, $data)` — [line 123](../../../../../gestor/bibliotecas/oauth.php#L123)
 - `oauth_http_get($url, $bearer = null)` — [line 139](../../../../../gestor/bibliotecas/oauth.php#L139)
 - `oauth_authenticate_code(string $provider, string $code): array|false` — [line 168](../../../../../gestor/bibliotecas/oauth.php#L168)
+  Troca o código de autorização por um token de acesso e retorna o perfil verificado do usuário.
+  Parameters:
+  - `$provider`: 'google' ou 'meta'.
+  - `$code`: Código de autorização recebido no callback.
+  Returns: ['provider','uid','email','nome'] ou false em erro.
 
 <!-- c2f:extract:end -->

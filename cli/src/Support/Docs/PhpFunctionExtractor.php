@@ -9,8 +9,7 @@ namespace Conn2Flow\Cli\Support\Docs;
  *
  * Extrai o que é neutro de idioma — nome, parâmetros (tipo, referência, variádico, default),
  * tipo de retorno e linha —, completando tipos ausentes na assinatura com `@param`/`@return`
- * do docblock. A prosa do docblock NÃO entra: o código do Core a escreve em português e o
- * bloco é o mesmo nas docs pt-br e en.
+ * do docblock. Também preserva a prosa original das descrições para a referência gerada.
  */
 final class PhpFunctionExtractor
 {
@@ -70,6 +69,7 @@ final class PhpFunctionExtractor
 
             [$params, $return, $end] = self::signature($tokens, $j + 1);
             $docTypes = self::docTypes($lastDoc);
+            $prose = self::docProse($lastDoc);
             foreach ($params as &$p) {
                 if ($p['type'] === '' && isset($docTypes['params'][$p['name']])) {
                     $p['type'] = $docTypes['params'][$p['name']];
@@ -80,7 +80,8 @@ final class PhpFunctionExtractor
                 $return = $docTypes['return'];
             }
 
-            $functions[] = ['name' => $name, 'line' => $line, 'params' => $params, 'return' => $return];
+            $functions[] = ['name' => $name, 'line' => $line, 'params' => $params, 'return' => $return]
+                + $prose;
             $lastDoc = null;
             $i = $end;
         }
@@ -279,6 +280,49 @@ final class PhpFunctionExtractor
         if (preg_match('/@return\s+/', $doc, $r, PREG_OFFSET_CAPTURE)) {
             $out['return'] = self::readType($doc, $r[0][1] + strlen($r[0][0]))[0];
         }
+
+        return $out;
+    }
+
+    /** @return array{description: string, paramDescriptions: array<string, string>, returnDescription: string} */
+    private static function docProse(?string $doc): array
+    {
+        $out = ['description' => '', 'paramDescriptions' => [], 'returnDescription' => ''];
+        if ($doc === null) {
+            return $out;
+        }
+
+        $lines = preg_split('/\R/', $doc) ?: [];
+        $paragraph = [];
+        $inSummary = true;
+        foreach ($lines as $line) {
+            $line = preg_replace('/^\s*\/\*\*?\s?|\s*\*\/\s*$|^\s*\*\s?/', '', $line);
+            $line = trim((string)$line);
+            if ($inSummary) {
+                if ($line === '') {
+                    if ($paragraph !== []) {
+                        $inSummary = false;
+                    }
+                } elseif ($line[0] === '@') {
+                    $inSummary = false;
+                } else {
+                    $paragraph[] = $line;
+                }
+            }
+            if (preg_match('/^@param\s+/', $line, $tag, PREG_OFFSET_CAPTURE)) {
+                [$type, $end] = self::readType($line, strlen($tag[0][0]));
+                if ($type !== '' && preg_match('/\G\s+&?(?:\.\.\.)?(\$[A-Za-z_][A-Za-z_0-9]*(?:\[[^\]]+\])?)\s*(.*)$/', $line, $match, 0, $end)) {
+                    $description = trim($match[2]);
+                    if ($description !== '') {
+                        $out['paramDescriptions'][$match[1]] = $description;
+                    }
+                }
+            } elseif (preg_match('/^@return\s+/', $line, $tag, PREG_OFFSET_CAPTURE)) {
+                [, $end] = self::readType($line, strlen($tag[0][0]));
+                $out['returnDescription'] = trim(substr($line, $end));
+            }
+        }
+        $out['description'] = implode(' ', $paragraph);
 
         return $out;
     }

@@ -63,11 +63,50 @@ None of the variable functions has callers in the core today. Modules do the sam
 Reference generated from `gestor/bibliotecas/pagina.php` by `c2f docs:extract` — 7 functions. Do not edit inside this block.
 
 - `pagina_celula(string $nome, bool $comentario = false, bool $apagar = false): string` — [line 39](../../../../../gestor/bibliotecas/pagina.php#L39)
+  Extrai e processa célula de conteúdo da página.
+  Parameters:
+  - `$nome`: Nome da célula a extrair (obrigatório).
+  - `$comentario`: Se true, usa formato [[ ]], senão usa < > (padrão: false).
+  - `$apagar`: Se true, remove célula completamente, senão deixa marcador (padrão: false).
+  Returns: Conteúdo da célula ou string vazia.
 - `pagina_celula_trocar_variavel_valor(string $celula, string $variavel, string $valor, bool $variavelEspecifica = false): string` — [line 75](../../../../../gestor/bibliotecas/pagina.php#L75)
+  Substitui variável por valor em célula específica.
+  Parameters:
+  - `$celula`: Conteúdo da célula (obrigatório).
+  - `$variavel`: Nome da variável (obrigatório).
+  - `$valor`: Valor para substituir (opcional).
+  - `$variavelEspecifica`: Se true, usa variável literal sem marcadores (padrão: false).
+  Returns: Célula com variável substituída.
 - `pagina_celula_incluir(string $celula, string $valor): void` — [line 106](../../../../../gestor/bibliotecas/pagina.php#L106)
+  Inclui célula de conteúdo na página.
+  Parameters:
+  - `$celula`: Nome da célula (obrigatório).
+  - `$valor`: Valor a inserir (obrigatório).
 - `pagina_trocar_variavel_valor(string $variavel, string $valor, bool $variavelEspecifica = false): void` — [line 128](../../../../../gestor/bibliotecas/pagina.php#L128)
+  Substitui variável por valor na página.
+  Parameters:
+  - `$variavel`: Nome da variável (obrigatório).
+  - `$valor`: Valor para substituir (obrigatório).
+  - `$variavelEspecifica`: Se true, usa variável literal sem marcadores (padrão: false).
 - `pagina_trocar_variavel(array|false $params = false): string|null` — [line 160](../../../../../gestor/bibliotecas/pagina.php#L160)
+  Substitui variável por valor em código arbitrário.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['codigo']`: Código com variáveis (obrigatório).
+  - `$params['variavel']`: Nome da variável (obrigatório).
+  - `$params['valor']`: Valor para substituir (obrigatório).
+  Returns: Código com variável substituída ou null.
 - `pagina_variaveis_globais_mascarar(array|false $params = false): string` — [line 189](../../../../../gestor/bibliotecas/pagina.php#L189)
+  Mascara variáveis globais para armazenamento em banco.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['valor']`: Valor a mascarar (obrigatório).
+  Returns: Valor mascarado ou string vazia.
 - `pagina_variaveis_globais_desmascarar(array|false $params = false): string` — [line 223](../../../../../gestor/bibliotecas/pagina.php#L223)
+  Desmascara variáveis globais vindas do banco.
+  Parameters:
+  - `$params`: Parâmetros da função.
+  - `$params['valor']`: Valor a desmascarar (obrigatório).
+  Returns: Valor desmascarado ou string vazia.
 
 <!-- c2f:extract:end -->

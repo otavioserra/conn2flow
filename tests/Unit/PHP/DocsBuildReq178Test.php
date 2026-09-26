@@ -150,6 +150,29 @@ final class DocsBuildReq178Test extends TestCase
         self::assertContains('pt-br:guides/secreta.md: visibility restricted — não publicado.', $plan['warnings']);
     }
 
+    public function testCartoesUsamRotuloDoMenuESemLinkDeEdicao(): void
+    {
+        $this->project();
+        $guide = $this->tmp . '/core/ai-workspace/pt-br/docs/guides/a.md';
+        file_put_contents($guide, str_replace('section: guides', "section: guides\nlabel: Atalho", (string)file_get_contents($guide)));
+        $lib = $this->tmp . '/core/ai-workspace/pt-br/docs/reference/libraries/lib.md';
+        file_put_contents($lib, str_replace('section: reference', "section: reference\nmodule: menus\nlabel: Reserva", (string)file_get_contents($lib)));
+
+        $plan = (new DocsBuilder(new DocsTree($this->tmp . '/core'), $this->tmp . '/site', $this->config(),
+            ['pt-br' => ['menus' => 'Menus do sistema']]))->plan();
+        self::assertSame([], $plan['errors']);
+        $pages = json_decode($plan['write'][$this->tmp . '/site/resources/pt-br/publisher-pages.json'], true);
+        $byPage = array_column($pages, null, 'page_id');
+        $guideFields = array_column($byPage['docs-guides-a']['fields_values'], 'value', 'id');
+        $libFields = array_column($byPage['docs-reference-libraries-lib']['fields_values'], 'value', 'id');
+        self::assertStringContainsString('Menus do sistema', $guideFields['navegacao']);
+        self::assertStringNotContainsString('Reserva', $guideFields['navegacao']);
+        self::assertStringContainsString('Atalho', $libFields['navegacao']);
+        self::assertStringNotContainsString('Edit this page', $libFields['verificacao']);
+        self::assertStringContainsString('Verified against the code', $libFields['verificacao']);
+        self::assertStringContainsString('gestor/bibliotecas/lib.php', $libFields['verificacao']);
+    }
+
     public function testBuilderEIdempotenteELinkQuebradoAbortaOBuild(): void
     {
         $this->project();
