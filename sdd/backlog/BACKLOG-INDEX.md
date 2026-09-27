@@ -26,6 +26,7 @@
 | [BL-022](BL-022-configuracao-apaga-variaveis-post-truncado.md) | Bug/Data loss | IN-DISCUSSION | `configuracao`: POST truncado por `max_input_vars` apaga variáveis | Aguardando priorização (severidade alta) | 2026-09-26 |
 | [BL-023](BL-023-pipeline-etapa2-metadado-do-core.md) | Bug/DevOps | IN-DISCUSSION | Pipeline de projeto: etapa 2 sincroniza dados do projeto com o metadado do core (colisão em `menus`) | Aguardando priorização | 2026-09-26 |
 | [BL-024](BL-024-catalogo-bugs-menores-docs.md) | Bug/Maintainability | IN-DISCUSSION | Catálogo de bugs menores apontados nas docs (bibliotecas e módulos) | Humano escolhe itens para uma requisição de correções pequenas | 2026-09-26 |
+| [BL-025](BL-025-docs-removidas-seguem-publicadas.md) | Bug/Docs | IN-DISCUSSION | Página de docs removida continua publicada no banco (órfã ignorada pelo pipeline) | Decidir: `docs:build` alimenta a lista `deletar` ou 301 | 2026-09-27 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 
