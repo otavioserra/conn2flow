@@ -1,7 +1,7 @@
 # BL-017 — Widget de formulários vaza os blocos-fragmento do template no HTML renderizado
 
 - **Tipo**: Bug / UI / Formulários
-- **Status**: PROMOTED (promovido para [req-173.md](../human-requests/req-173.md), BATCH-178)
+- **Status**: PROMOTED (promovido para [req-173.md](../human-requests/archive/req-173.md), BATCH-178)
 - **Severidade sugerida**: BAIXA (não quebra o formulário, mas deixa marcador cru na página pública)
 - **Origem**: Achado do BATCH-047 do `conn2flow-site` (REQ-054), 2026-09-22
 - **Componentes**: `gestor/modulos/forms/forms.widget.php` (`forms_render`, `forms_widget_render_inline`),

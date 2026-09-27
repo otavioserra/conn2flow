@@ -1,6 +1,6 @@
 # BATCH-174: Controle de acessos — separar erro de validação de abuso e informar o prazo de liberação
 
-Execução da [req-169](../human-requests/req-169.md).
+Execução da [req-169](../../human-requests/archive/req-169.md).
 
 ---
 

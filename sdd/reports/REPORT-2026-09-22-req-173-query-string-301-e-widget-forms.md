@@ -2,7 +2,7 @@
 
 - **Data**: 2026-09-22
 - **Repositório**: `conn2flow` (core) · **Raiz**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow`
-- **Requisição**: [req-173](../human-requests/req-173.md) · **Lote**: [BATCH-178](../implementation/BATCH-178.md)
+- **Requisição**: [req-173](../human-requests/archive/req-173.md) · **Lote**: [BATCH-178](../implementation/archive/BATCH-178.md)
 - **Origem dos achados**: homologação do `conn2flow-site` (BATCH-046 e BATCH-047)
 - **Estado**: `implemented-pending-review` — **sem commit e sem push**, conforme a regra do despacho
 - **Executor**: agente de implementação (Claude Opus 5)

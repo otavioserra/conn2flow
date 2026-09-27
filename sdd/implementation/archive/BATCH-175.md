@@ -1,6 +1,6 @@
 # BATCH-175: `ForcarAtualizacaoTest` idempotente
 
-Execução da [req-170](../human-requests/req-170.md).
+Execução da [req-170](../../human-requests/archive/req-170.md).
 
 ---
 

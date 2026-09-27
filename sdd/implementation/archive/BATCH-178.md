@@ -1,6 +1,6 @@
 # BATCH-178: Preservação de Query Strings em Redirecionamentos 301 e Contenção de Blocos-Fragmento no Widget de Formulários
 
-Execução da [req-173](../human-requests/req-173.md).
+Execução da [req-173](../../human-requests/archive/req-173.md).
 
 ---
 

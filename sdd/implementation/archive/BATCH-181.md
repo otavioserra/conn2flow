@@ -1,6 +1,6 @@
 # BATCH-181: Snapshot e Limpeza do Legado do `ai-workspace`
 
-Execução da [req-176](../human-requests/req-176.md). FEAT-014, fase 0.
+Execução da [req-176](../../human-requests/archive/req-176.md). FEAT-014, fase 0.
 
 ## Atividades
 
@@ -18,4 +18,4 @@ Execução da [req-176](../human-requests/req-176.md). FEAT-014, fase 0.
 ## Validação
 
 - `git ls-tree -d legacy/ai-workspace-pre-docs ai-workspace/pt-br/` lista as três pastas.
-- A suíte PHPUnit roda no fechamento conjunto com o BATCH-182 e o BATCH-183 (ver [VALIDATION-CHECKLIST](../validation/VALIDATION-CHECKLIST.md)).
+- A suíte PHPUnit roda no fechamento conjunto com o BATCH-182 e o BATCH-183 (ver [VALIDATION-CHECKLIST](../../validation/VALIDATION-CHECKLIST.md)).

@@ -1,6 +1,6 @@
 # BATCH-179: Sincronização Automática da Tabela `hooks` no Pipeline de Deploy de Projeto (`project:update-all`)
 
-Execução da [req-174](../human-requests/req-174.md).
+Execução da [req-174](../../human-requests/archive/req-174.md).
 
 ---
 

@@ -1,6 +1,6 @@
 # BATCH-177: Correção do Fluxo de reCAPTCHA v3/v2 e Turnstile em Telas de Autenticação Tailwind
 
-Execução da [req-172](../human-requests/req-172.md).
+Execução da [req-172](../../human-requests/archive/req-172.md).
 
 ---
 

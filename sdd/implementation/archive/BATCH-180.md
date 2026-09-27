@@ -1,6 +1,6 @@
 # BATCH-180: Renovação Silenciosa de Token CSRF (Silent Refresh & Retry) e Recuperação Graciosa de Sessão no Core e `global.js`
 
-Execução da [req-175](../human-requests/req-175.md).
+Execução da [req-175](../../human-requests/archive/req-175.md).
 
 ---
 

@@ -1,7 +1,7 @@
 # BL-016 — Redirecionamento de `paginas_301` descarta a query string
 
 - **Tipo**: Bug / Roteamento / SEO
-- **Status**: PROMOTED (promovido para [req-173.md](../human-requests/req-173.md), BATCH-178)
+- **Status**: PROMOTED (promovido para [req-173.md](../human-requests/archive/req-173.md), BATCH-178)
 - **Severidade sugerida**: BAIXA (a URL aposentada redireciona certo, mas perde os parâmetros)
 - **Origem**: Análise da REQ-054 do `conn2flow-site` (descomissionamento do Pro Manager), 2026-09-22
 - **Componentes**: `gestor/gestor.php` (roteador, ~linha 2240; `gestor_roteador_erro()`),

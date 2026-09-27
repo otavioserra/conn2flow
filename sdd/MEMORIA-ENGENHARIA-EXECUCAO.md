@@ -16,6 +16,25 @@
 
 ## Tarefas recentes
 
+### 2026-09-26 — BATCH-190/191 (req-186/187): módulo `documentation` e deploy no Lab
+
+- **A tabela `templates` não tem coluna `modulo`**, apesar de a `natural_key_columns` do contrato
+  citar `modulo`. Templates de módulo vão para o `TemplatesData.json` como globais de mesmo id.
+  Migração que move recursos para um módulo só mexe em `paginas`.
+- **Migração nova só roda na 2ª rodada do `project:update-all`.** A etapa 2 (banco) roda antes da
+  etapa 4 (arquivos), com a migração ainda antiga no remoto. Migração corrigida: `project:sync-files`
+  antes de rodar de novo.
+- **`project:sync-core` sobrescreve o `db/data/` do projeto remoto com o do core**, inclusive o
+  `schema-metadata.json`. Na etapa 2, tabela só do projeto (`menus`) cai no modo `pk` com `id`
+  repetido entre idiomas e dá `Duplicate entry` (BL-023). Contorno: `project:sync-files` e depois
+  `project:sync-db`.
+- **`escapeshellarg()` não serve para comando que roda num `sh` remoto**: no Windows gera aspas
+  duplas e apaga as internas. Use citação POSIX (`SshRemoteTransport::posixQuote`).
+- **Consultar o banco do Lab:** não há `c2f db:query`. Script PHP somente leitura no scratchpad
+  (inclui `config.php` + `bibliotecas/banco.php`), `scp` para `/tmp`, `sudo -u admin php ...` e `rm`.
+- **`page:inspect` não devolve o HTML**, só status, erros de console, estilos e screenshot. Para ler
+  texto da página autenticada: `curl -sk -b temp/agent-cookies.txt <url>`.
+
 ### 2026-09-26 — BATCH-184 (req-179): 41 bibliotecas e conceitos reescritos do código
 
 - **Doc legada não é fonte**: dezenas de afirmações falsas (funções inexistentes, checksum "SHA-256"

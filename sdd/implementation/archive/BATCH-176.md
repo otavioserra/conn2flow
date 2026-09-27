@@ -1,6 +1,6 @@
 # BATCH-176: Suporte Nativo ao Cloudflare Turnstile no Core do Conn2Flow
 
-Execução da [req-171](../human-requests/req-171.md).
+Execução da [req-171](../../human-requests/archive/req-171.md).
 
 ---
 
