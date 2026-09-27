@@ -9,7 +9,7 @@ sources:
   - gestor/controladores/api/api-module-distributed.php
   - gestor/controladores/api/api-module-central.php
   - gestor/config.php
-verified_at: 900cbe77
+verified_at: ea442bea
 ---
 
 # Biblioteca `modulo-distribuido.php`

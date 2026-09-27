@@ -7,7 +7,7 @@ sources:
   - gestor/config.php
   - gestor/bibliotecas/gestor.php
   - gestor/bibliotecas/interface.php
-verified_at: a6e51e29
+verified_at: ea442bea
 ---
 
 # Gestor libraries
@@ -29,9 +29,6 @@ $_GESTOR['bibliotecas-dados'] = Array(
 ```
 
 Modules and functions request a library by its logical name, not by file.
-
-> [!WARNING]
-> The registry has two entries without a file: `api-cliente` (`api-cliente.php`) and `cpanel` (`cpanel.php`). Neither exists in `gestor/bibliotecas/`, and requesting either one ends in a `require_once` fatal error.
 
 ## What is always loaded
 

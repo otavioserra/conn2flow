@@ -7,7 +7,7 @@ sources:
   - gestor/config.php
   - gestor/bibliotecas/gestor.php
   - gestor/bibliotecas/interface.php
-verified_at: a6e51e29
+verified_at: ea442bea
 ---
 
 # Bibliotecas do Gestor
@@ -29,9 +29,6 @@ $_GESTOR['bibliotecas-dados'] = Array(
 ```
 
 É o nome lógico, e não o arquivo, que módulos e funções usam para pedir uma biblioteca.
-
-> [!WARNING]
-> O registro tem duas entradas sem arquivo: `api-cliente` (`api-cliente.php`) e `cpanel` (`cpanel.php`). Nenhum dos dois existe em `gestor/bibliotecas/`, e pedir qualquer um deles termina em erro fatal do `require_once`.
 
 ## O que já vem carregado
 

@@ -10,7 +10,7 @@ sources:
   - gestor/modulos/admin-atualizacoes/resources
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/db/migrations/20250814141000_create_atualizacoes_execucoes_table.php
-verified_at: c4e05805
+verified_at: ea442bea
 ---
 
 # admin-atualizacoes module
@@ -30,7 +30,7 @@ The atualizacoes_execucoes migration defines a numeric id, session_id, modo, rel
 ## Confirmed limitations
 
 > [!WARNING]
-> The ?plano= branch of admin_atualizacoes_detalhe() uses $dir without initializing it; plan viewing can fail even when the file exists. The JSON table metadata uses generic CRUD aliases that do not match the migration's columns; this screen queries history with explicit SQL.
+> The JSON table metadata uses generic CRUD aliases that do not match the migration's columns; this screen queries history with explicit SQL.
 
 > [!CAUTION]
 > call_system() replaces $_GET and $_REQUEST to simulate a call into the included controller. This flow can run a real update; dry_run is an optional flag, not the default behavior.

@@ -7,7 +7,7 @@ order: 11
 sources:
   - gestor/bibliotecas/gestor.php
   - gestor/config.php
-verified_at: a6e51e29
+verified_at: ea442bea
 ---
 
 # The `gestor.php` library
@@ -108,7 +108,7 @@ Interface texts live in the `variaveis` table, per `language` and `modulo`.
 - `gestor_variaveis_alterar(['modulo', 'id', 'tipo', 'valor', 'linguagem'])` updates the value. With `tipo = 'bool'`, it stores `1`/`NULL`.
 
 > [!WARNING]
-> `gestor_variaveis_globais()` **does not filter by module**: it returns the first variable with that id in any module and caches it as global. `gestor_variaveis_alterar()` puts `valor` into SQL **unescaped**, so an apostrophe breaks the query. `gestor_variaveis()` does not escape `modulo` either. None of the three updates the others' cache.
+> `gestor_variaveis_globais()` looks the id up in **every** module and caches the result as global. The preference order is: the global variable (null `modulo`), then the current module's, then any other. `gestor_variaveis_alterar()` puts `valor` into SQL **unescaped**, so an apostrophe breaks the query. `gestor_variaveis()` does not escape `modulo` either. None of the three updates the others' cache.
 
 `gestor_pagina_variaveis_globais(['html' => …])` resolves the `@[[…]]@` markers of an HTML, in this order:
 1. the current module's variables (`$_GESTOR['modulo-id']`);
@@ -414,7 +414,7 @@ Reference generated from `gestor/bibliotecas/gestor.php` by `c2f docs:extract` �
   - `$params['id']`: Identificador único da variável (obrigatório).
   - `$params['reset']`: Se true, força releitura do banco de dados.
   Returns: Valor da variável ou NULL se não encontrada.
-- `gestor_variaveis_alterar(array|false $params = false): void` — [line 2142](../../../../../gestor/bibliotecas/gestor.php#L2142)
+- `gestor_variaveis_alterar(array|false $params = false): void` — [line 2146](../../../../../gestor/bibliotecas/gestor.php#L2146)
   Altera o valor de uma variável no banco de dados.
   Parameters:
   - `$params`: Parâmetros da função.
@@ -423,122 +423,122 @@ Reference generated from `gestor/bibliotecas/gestor.php` by `c2f docs:extract` �
   - `$params['tipo']`: Tipo da variável: 'bool' ou outros (obrigatório).
   - `$params['valor']`: Valor que deverá ser alterado.
   - `$params['linguagem']`: Código do idioma (padrão: idioma atual).
-- `gestor_redirecionar_raiz(): void` — [line 2191](../../../../../gestor/bibliotecas/gestor.php#L2191)
+- `gestor_redirecionar_raiz(): void` — [line 2195](../../../../../gestor/bibliotecas/gestor.php#L2195)
   Redireciona para a página raiz do módulo atual.
-- `gestor_reload_url(): void` — [line 2222](../../../../../gestor/bibliotecas/gestor.php#L2222)
+- `gestor_reload_url(): void` — [line 2226](../../../../../gestor/bibliotecas/gestor.php#L2226)
   Recarrega a URL atual.
-- `gestor_csrf_rotas_identidade(): array<int,string>` — [line 2243](../../../../../gestor/bibliotecas/gestor.php#L2243)
+- `gestor_csrf_rotas_identidade(): array<int,string>` — [line 2247](../../../../../gestor/bibliotecas/gestor.php#L2247)
   Rotas públicas de identidade cujo formulário carrega um token CSRF de uso único.
   Returns: Primeiros segmentos de caminho, sem barras.
-- `gestor_csrf_destino_recarregamento(string $caminhoTotal, string|null $referer, string $urlRaiz): string` — [line 2271](../../../../../gestor/bibliotecas/gestor.php#L2271)
+- `gestor_csrf_destino_recarregamento(string $caminhoTotal, string|null $referer, string $urlRaiz): string` — [line 2275](../../../../../gestor/bibliotecas/gestor.php#L2275)
   Destino de recarregamento limpo para a tela de erro de CSRF (req-125 / BATCH-127).
   Parameters:
   - `$caminhoTotal`: Caminho da requisição corrente, já sem o prefixo de idioma.
   - `$referer`: Conteúdo de `HTTP_REFERER`, se houver.
   - `$urlRaiz`: Raiz do gestor, com barra final e com idioma quando houver.
   Returns: URL absoluta de destino ou '' quando indeterminado.
-- `gestor_pagina_menu_icone_lucide_valido(string $nome): bool` — [line 2330](../../../../../gestor/bibliotecas/gestor.php#L2330)
+- `gestor_pagina_menu_icone_lucide_valido(string $nome): bool` — [line 2334](../../../../../gestor/bibliotecas/gestor.php#L2334)
   Um nome é endereçável no catálogo do Lucide? (req-125 / BATCH-127)
   Parameters:
   - `$nome`: Valor já resolvido do ícone.
-- `gestor_pagina_menu_icone_lucide_atributo(string $nome): string` — [line 2350](../../../../../gestor/bibliotecas/gestor.php#L2350)
+- `gestor_pagina_menu_icone_lucide_atributo(string $nome): string` — [line 2354](../../../../../gestor/bibliotecas/gestor.php#L2354)
   Atributo `data-lucide` pronto para interpolação — ou string vazia (req-125 / BATCH-127).
   Parameters:
   - `$nome`: Valor já resolvido do ícone.
   Returns: `data-lucide="…"` ou ''.
-- `gestor_querystring_remover_variavel(string $queryString, string $removerVariavel = ''): string` — [line 2368](../../../../../gestor/bibliotecas/gestor.php#L2368)
+- `gestor_querystring_remover_variavel(string $queryString, string $removerVariavel = ''): string` — [line 2372](../../../../../gestor/bibliotecas/gestor.php#L2372)
   Remove uma variável específica da query string.
   Parameters:
   - `$queryString`: Query string completa (formato: var1=val1&var2=val2).
   - `$removerVariavel`: Nome da variável a ser removida.
   Returns: Query string processada sem a variável removida.
-- `gestor_querystring_variavel(string $queryString, string $variavel = ''): string` — [line 2397](../../../../../gestor/bibliotecas/gestor.php#L2397)
+- `gestor_querystring_variavel(string $queryString, string $variavel = ''): string` — [line 2401](../../../../../gestor/bibliotecas/gestor.php#L2401)
   Obtém o valor de uma variável específica da query string.
   Parameters:
   - `$queryString`: Query string completa.
   - `$variavel`: Nome da variável a buscar.
   Returns: Valor da variável ou string vazia se não encontrada.
-- `gestor_querystring_before_submit(string $fieldName = '_c2f_query_string_before_submit', string $default = ''): string` — [line 2422](../../../../../gestor/bibliotecas/gestor.php#L2422)
+- `gestor_querystring_before_submit(string $fieldName = '_c2f_query_string_before_submit', string $default = ''): string` — [line 2426](../../../../../gestor/bibliotecas/gestor.php#L2426)
   Recupera a query string antes do envio do formulário via campo hidden.
   Parameters:
   - `$fieldName`: Nome do campo hidden enviado pelo formulário.
   - `$default`: Valor padrão se o campo não estiver definido.
   Returns: Query string enviada no formulário, sem o "?" inicial.
-- `gestor_querystring(string $removerVariavel = ''): string` — [line 2445](../../../../../gestor/bibliotecas/gestor.php#L2445)
+- `gestor_querystring(string $removerVariavel = ''): string` — [line 2449](../../../../../gestor/bibliotecas/gestor.php#L2449)
   Obtém a query string atual da requisição.
   Parameters:
   - `$removerVariavel`: Nome da variável adicional a remover (opcional).
   Returns: Query string processada.
-- `gestor_redirecionar(string|false $local = false, string $queryString = '', bool $externo = false): void` — [line 2477](../../../../../gestor/bibliotecas/gestor.php#L2477)
+- `gestor_redirecionar(string|false $local = false, string $queryString = '', bool $externo = false): void` — [line 2481](../../../../../gestor/bibliotecas/gestor.php#L2481)
   Redireciona para um local específico.
   Parameters:
   - `$local`: Caminho de destino (false = usar sessão ou raiz).
   - `$queryString`: Query string adicional.
   - `$externo`: Se true, trata como URL externa (não adiciona url-raiz).
   Returns: (executa exit após redirecionar)
-- `gestor_redirecionar_montar_url(string $local, string $queryString = ''): string` — [line 2517](../../../../../gestor/bibliotecas/gestor.php#L2517)
+- `gestor_redirecionar_montar_url(string $local, string $queryString = ''): string` — [line 2521](../../../../../gestor/bibliotecas/gestor.php#L2521)
   Monta a URL de destino de um redirecionamento (req-173).
   Parameters:
   - `$local`: Destino já resolvido (interno ou externo).
   - `$queryString`: Query string a anexar, com ou sem `?`/`&` à frente.
   Returns: URL final; sem query string, o destino sai intacto (nenhum `?` órfão).
-- `gestor_pagina_variaveis_globais(array|false $params = false): string` — [line 2542](../../../../../gestor/bibliotecas/gestor.php#L2542)
+- `gestor_pagina_variaveis_globais(array|false $params = false): string` — [line 2546](../../../../../gestor/bibliotecas/gestor.php#L2546)
   Substitui variáveis globais em HTML.
   Parameters:
   - `$params`: Parâmetros da função.
   - `$params['html']`: HTML que será processado (obrigatório).
   Returns: HTML com variáveis substituídas.
-- `gestor_js_variavel_incluir(string $variavel, mixed $valor): void` — [line 2637](../../../../../gestor/bibliotecas/gestor.php#L2637)
+- `gestor_js_variavel_incluir(string $variavel, mixed $valor): void` — [line 2641](../../../../../gestor/bibliotecas/gestor.php#L2641)
   Inclui uma variável JavaScript global na página.
   Parameters:
   - `$variavel`: Nome da variável JavaScript.
   - `$valor`: Valor da variável (será convertido para JSON).
-- `gestor_componentes_incluir(array|false $params = false): void` — [line 2667](../../../../../gestor/bibliotecas/gestor.php#L2667)
+- `gestor_componentes_incluir(array|false $params = false): void` — [line 2671](../../../../../gestor/bibliotecas/gestor.php#L2671)
   Marca componentes para inclusão na página.
   Parameters:
   - `$params`: Parâmetros da função.
   - `$params['id']`: ID do componente individual.
   - `$params['componentes']`: Array de IDs de componentes.
-- `gestor_componentes_incluir_pagina(array|false $params = false): void` — [line 2708](../../../../../gestor/bibliotecas/gestor.php#L2708)
+- `gestor_componentes_incluir_pagina(array|false $params = false): void` — [line 2712](../../../../../gestor/bibliotecas/gestor.php#L2712)
   Renderiza componentes marcados na página.
   Parameters:
   - `$params`: Parâmetros da função (atualmente não utilizados).
-- `gestor_cookie_is_secure(): bool` — [line 2760](../../../../../gestor/bibliotecas/gestor.php#L2760)
+- `gestor_cookie_is_secure(): bool` — [line 2764](../../../../../gestor/bibliotecas/gestor.php#L2764)
   Determina se cookies devem ser emitidos com o atributo Secure.
-- `gestor_sessao_iniciar()` — [line 2782](../../../../../gestor/bibliotecas/gestor.php#L2782)
-- `gestor_sessao_id(): int` — [line 2816](../../../../../gestor/bibliotecas/gestor.php#L2816)
+- `gestor_sessao_iniciar()` — [line 2786](../../../../../gestor/bibliotecas/gestor.php#L2786)
+- `gestor_sessao_id(): int` — [line 2820](../../../../../gestor/bibliotecas/gestor.php#L2820)
   Obtém ou cria o ID numérico da sessão no banco de dados.
   Returns: ID numérico da sessão no banco de dados.
-- `gestor_sessao_del(): void` — [line 2892](../../../../../gestor/bibliotecas/gestor.php#L2892)
+- `gestor_sessao_del(): void` — [line 2896](../../../../../gestor/bibliotecas/gestor.php#L2896)
   Deleta a sessão atual do usuário.
-- `gestor_sessao_variavel(string $variavel, mixed $valor = NULL): mixed` — [line 2943](../../../../../gestor/bibliotecas/gestor.php#L2943)
+- `gestor_sessao_variavel(string $variavel, mixed $valor = NULL): mixed` — [line 2947](../../../../../gestor/bibliotecas/gestor.php#L2947)
   Obtém ou define uma variável de sessão.
   Parameters:
   - `$variavel`: Nome da variável de sessão.
   - `$valor`: Valor a ser armazenado (NULL para apenas leitura).
   Returns: Valor da variável (em modo leitura) ou void (em modo escrita).
-- `gestor_sessao_variavel_del(string $variavel): void` — [line 3011](../../../../../gestor/bibliotecas/gestor.php#L3011)
+- `gestor_sessao_variavel_del(string $variavel): void` — [line 3015](../../../../../gestor/bibliotecas/gestor.php#L3015)
   Remove uma variável específica da sessão.
   Parameters:
   - `$variavel`: Nome da variável a ser removida.
-- `gestor_sessao_del_all(): void` — [line 3044](../../../../../gestor/bibliotecas/gestor.php#L3044)
+- `gestor_sessao_del_all(): void` — [line 3048](../../../../../gestor/bibliotecas/gestor.php#L3048)
   Remove TODAS as sessões do sistema.
-- `gestor_modulos_dados(string $modulo_id = ''): array|null` — [line 3067](../../../../../gestor/bibliotecas/gestor.php#L3067)
+- `gestor_modulos_dados(string $modulo_id = ''): array|null` — [line 3071](../../../../../gestor/bibliotecas/gestor.php#L3071)
   Pega os dados de um módulo.
   Parameters:
   - `$modulo_id`: ID do módulo.
   Returns: Dados do módulo ou null se não encontrado.
-- `gestor_pagina_higienizar_ativo()` — [line 3100](../../../../../gestor/bibliotecas/gestor.php#L3100)
+- `gestor_pagina_higienizar_ativo()` — [line 3104](../../../../../gestor/bibliotecas/gestor.php#L3104)
   Decide se o HTML entregue ao navegador deve sair higienizado (req-132).
-- `gestor_html_higienizar($html)` — [line 3139](../../../../../gestor/bibliotecas/gestor.php#L3139)
+- `gestor_html_higienizar($html)` — [line 3143](../../../../../gestor/bibliotecas/gestor.php#L3143)
   Remove do HTML o que so interessa a quem escreveu o codigo (req-132).
-- `gestor_js_higienizar($js)` — [line 3245](../../../../../gestor/bibliotecas/gestor.php#L3245)
+- `gestor_js_higienizar($js)` — [line 3249](../../../../../gestor/bibliotecas/gestor.php#L3249)
   Remove comentarios e indentacao de JavaScript (req-132, 2a rodada).
-- `gestor_js_barra_inicia_regex($anterior)` — [line 3350](../../../../../gestor/bibliotecas/gestor.php#L3350)
+- `gestor_js_barra_inicia_regex($anterior)` — [line 3354](../../../../../gestor/bibliotecas/gestor.php#L3354)
   Decide se uma `/` abre um regex literal ou e o operador de divisao (req-132).
-- `gestor_pagina_higienizar_js_ativo()` — [line 3368](../../../../../gestor/bibliotecas/gestor.php#L3368)
+- `gestor_pagina_higienizar_js_ativo()` — [line 3372](../../../../../gestor/bibliotecas/gestor.php#L3372)
   Gate proprio para a limpeza do JavaScript (req-132, 2a rodada).
-- `gestor_html_script_e_javascript($tagCompleta)` — [line 3389](../../../../../gestor/bibliotecas/gestor.php#L3389)
+- `gestor_html_script_e_javascript($tagCompleta)` — [line 3393](../../../../../gestor/bibliotecas/gestor.php#L3393)
   Diz se a tag `<script>` carrega JavaScript de verdade (req-132, 2a rodada).
 
 <!-- c2f:extract:end -->

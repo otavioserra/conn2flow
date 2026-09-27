@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/variaveis.php
   - gestor/config.php
   - gestor/gestor.php
-verified_at: a6e51e29
+verified_at: ea442bea
 ---
 
 # Biblioteca `variaveis.php`

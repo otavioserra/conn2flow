@@ -7,7 +7,7 @@ sources:
   - gestor/gestor.php
   - gestor/config.php
   - gestor/bibliotecas/gestor.php
-verified_at: 3b099ff0
+verified_at: ea442bea
 ---
 
 # Arquitetura do Conn2Flow

@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/banco.php
   - gestor/config.php
   - gestor/bibliotecas/modulo-distribuido.php
-verified_at: a6e51e29
+verified_at: ea442bea
 ---
 
 # The `banco.php` library

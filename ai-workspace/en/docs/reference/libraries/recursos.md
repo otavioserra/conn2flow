@@ -7,7 +7,7 @@ order: 120
 sources:
   - gestor/bibliotecas/recursos.php
   - gestor/config.php
-verified_at: 8768245a
+verified_at: ea442bea
 ---
 
 # `recursos.php` library

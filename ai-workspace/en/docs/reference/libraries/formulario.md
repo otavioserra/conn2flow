@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/formulario.php
   - gestor/bibliotecas/seguranca.php
   - gestor/config.php
-verified_at: 1189dc2f
+verified_at: ea442bea
 ---
 
 # `formulario.php` library

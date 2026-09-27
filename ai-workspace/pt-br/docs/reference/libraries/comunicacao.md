@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/comunicacao.php
   - gestor/config.php
   - gestor/autenticacoes.exemplo/dominio/.env
-verified_at: 123b95df
+verified_at: ea442bea
 ---
 
 # Biblioteca `comunicacao.php`

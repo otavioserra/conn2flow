@@ -8,7 +8,7 @@ sources:
   - gestor/gestor.php
   - gestor/bibliotecas/gestor.php
   - gestor/bibliotecas/lang.php
-verified_at: 3b099ff0
+verified_at: ea442bea
 ---
 
 # Sistema multilíngue

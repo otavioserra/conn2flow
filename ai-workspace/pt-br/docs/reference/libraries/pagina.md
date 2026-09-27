@@ -7,7 +7,7 @@ order: 100
 sources:
   - gestor/bibliotecas/pagina.php
   - gestor/config.php
-verified_at: a6e51e29
+verified_at: ea442bea
 ---
 
 # Biblioteca `pagina.php`

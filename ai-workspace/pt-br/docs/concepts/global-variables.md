@@ -7,7 +7,7 @@ sources:
   - gestor/config.php
   - gestor/gestor.php
   - gestor/autenticacoes.exemplo/dominio/.env
-verified_at: 837c383f
+verified_at: ea442bea
 ---
 
 # Variáveis globais e configuração

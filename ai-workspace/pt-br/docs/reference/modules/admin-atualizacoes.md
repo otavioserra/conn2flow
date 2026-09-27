@@ -10,7 +10,7 @@ sources:
   - gestor/modulos/admin-atualizacoes/resources
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/db/migrations/20250814141000_create_atualizacoes_execucoes_table.php
-verified_at: c4e05805
+verified_at: ea442bea
 ---
 
 # Módulo admin-atualizacoes
@@ -30,7 +30,7 @@ A migration de atualizacoes_execucoes define id numérico, session_id, modo, rel
 ## Limitações confirmadas
 
 > [!WARNING]
-> No ramo ?plano=, admin_atualizacoes_detalhe() usa a variável $dir sem inicializá-la; o caminho de plano pode falhar mesmo quando o arquivo existe. A tabela descrita no JSON traz aliases genéricos de CRUD que não correspondem às colunas reais da migration; a tela consulta o histórico com SQL explícito.
+> A tabela descrita no JSON traz aliases genéricos de CRUD que não correspondem às colunas reais da migration; a tela consulta o histórico com SQL explícito.
 
 > [!CAUTION]
 > call_system() substitui $_GET e $_REQUEST para simular uma chamada ao controlador incluído. O fluxo pode executar atualização real; dry_run é uma flag opcional, não o comportamento padrão.

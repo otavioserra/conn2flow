@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/paypal.php
   - gestor/config.php
   - gestor/controladores/plataforma-gateways/plataforma-gateways.php
-verified_at: b1acb1b6
+verified_at: ea442bea
 ---
 
 # Biblioteca `paypal.php`

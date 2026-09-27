@@ -16,7 +16,7 @@ sources:
   - gestor/db/migrations/20250918120000_add_css_compiled_to_tables.php
   - gestor/db/migrations/20260814130000_add_css_precompiled_to_resource_tables.php
   - gestor/db/migrations/20260828100000_add_css_source_hash_to_resource_tables.php
-verified_at: 45812d2e
+verified_at: ea442bea
 ---
 
 # `admin-layouts` module

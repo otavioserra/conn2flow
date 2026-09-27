@@ -9,7 +9,7 @@ sources:
   - gestor/gestor.php
   - gestor/modulos/perfil-usuario/perfil-usuario.php
   - gestor/config.php
-verified_at: 558004f2
+verified_at: ea442bea
 ---
 
 # `autenticacao.php` library

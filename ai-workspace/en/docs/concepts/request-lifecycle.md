@@ -9,7 +9,7 @@ sources:
   - gestor-instalador/public-access/index.php
   - gestor-instalador/public-access/.htaccess
   - gestor/bibliotecas/seguranca.php
-verified_at: 82b0b6b8
+verified_at: ea442bea
 ---
 
 # Request lifecycle

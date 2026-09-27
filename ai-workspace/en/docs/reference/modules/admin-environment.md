@@ -9,7 +9,7 @@ sources:
   - gestor/modulos/admin-environment/admin-environment.json
   - gestor/modulos/admin-environment/resources
   - gestor/config.php
-verified_at: a9a226e0
+verified_at: ea442bea
 ---
 
 # admin-environment module
