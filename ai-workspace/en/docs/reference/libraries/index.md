@@ -7,7 +7,7 @@ sources:
   - gestor/config.php
   - gestor/bibliotecas/gestor.php
   - gestor/bibliotecas/interface.php
-verified_at: f3511524
+verified_at: 0ccf7099
 ---
 
 # Gestor libraries

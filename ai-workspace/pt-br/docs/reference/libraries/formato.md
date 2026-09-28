@@ -7,7 +7,7 @@ order: 170
 sources:
   - gestor/bibliotecas/formato.php
   - gestor/bibliotecas/interface.php
-verified_at: f3511524
+verified_at: 0ccf7099
 ---
 
 # Biblioteca `formato.php`

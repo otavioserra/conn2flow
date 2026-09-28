@@ -7,7 +7,7 @@ order: 12
 sources:
   - gestor/bibliotecas/interface.php
   - gestor/bibliotecas/seguranca.php
-verified_at: f3511524
+verified_at: 0ccf7099
 ---
 
 # Biblioteca `interface.php`

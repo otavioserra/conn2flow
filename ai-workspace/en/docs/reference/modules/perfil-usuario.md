@@ -13,7 +13,7 @@ sources:
   - gestor/db/migrations/20260706100000_add_two_factor_to_usuarios_table.php
   - gestor/db/migrations/20260706100010_create_usuarios_provedores_table.php
   - gestor/db/migrations/20260818100000_create_usuarios_api_tokens_table.php
-verified_at: b6839aa1
+verified_at: 0ccf7099
 ---
 
 # `perfil-usuario` module

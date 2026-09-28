@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/interface.php
   - gestor/bibliotecas/seguranca.php
   - gestor/controladores/api/api-module-distributed.php
-verified_at: f3511524
+verified_at: 0ccf7099
 ---
 
 # Segurança da IA e superfícies administrativas

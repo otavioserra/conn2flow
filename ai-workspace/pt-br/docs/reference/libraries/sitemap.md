@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/sitemap.php
   - gestor/modulos/admin-paginas/admin-paginas.php
   - gestor/modulos/publisher-pages/publisher-pages.php
-verified_at: c8c99168
+verified_at: 0ccf7099
 ---
 
 # Biblioteca `sitemap.php`
