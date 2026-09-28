@@ -108,3 +108,49 @@ Consulte e aplique as seguintes convenções ao realizar seleções, inserções
       }
   }
   ```
+
+---
+
+## 3. Concorrência e Patch Atômico em JSON (`JSON_MERGE_PATCH`)
+
+### 3.1 Proibição de Reescrita Integral de Campos JSON em Contextos Concorrentes
+
+- Em cenários com escritas concorrentes (ex: webhook de gateway de pagamento vs envio de formulário pelo usuário), **NUNCA** leia-modifique-reescreva colunas JSON inteiras como `fields_values`.
+- Isso causa **race conditions** onde um escritor sobrescreve as alterações do outro.
+- Exemplo do padrão **ERRADO**:
+```php
+// ❌ ERRADO — Race condition entre webhook e formulário
+$dados = json_decode(banco_select(...), true);
+$dados['status_pagamento'] = 'pago';
+banco_update_campo('fields_values', json_encode($dados));
+```
+
+### 3.2 Uso Mandatório de `JSON_MERGE_PATCH` (MariaDB 11.8+ / MySQL 8+)
+
+- Use `JSON_MERGE_PATCH()` para atualizações parciais atômicas:
+```php
+// ✅ CORRETO — Patch atômico sem race condition
+$patch = json_encode(['status_pagamento' => 'pago']);
+banco_update_campo('fields_values', "JSON_MERGE_PATCH(fields_values, '$patch')", true);
+banco_update_executar('tabela', "WHERE id='id-alvo'");
+```
+
+- O parâmetro `true` (sem aspas) é **CRÍTICO** pois `JSON_MERGE_PATCH()` é uma função SQL.
+
+### 3.3 Armadilha do `null` no `JSON_MERGE_PATCH` (RFC 7396)
+
+- Conforme RFC 7396, um valor `null` no patch **REMOVE a chave** do objeto alvo.
+- Isso significa que `{"campo": null}` vai **DELETAR** `campo` do JSON, NÃO definir como null.
+- **Validação Mandatória**: Sempre valide com `JSON_VALID()` antes de fazer o merge:
+```php
+// ✅ Validação defensiva antes do merge
+$patch = json_encode($dados_parciais);
+if ($patch !== null && $patch !== 'null') {
+    $sql = "UPDATE tabela SET fields_values = JSON_MERGE_PATCH(fields_values, '" . banco_escape_field($patch) . "') WHERE id='$id' AND JSON_VALID(fields_values)";
+}
+```
+
+- **Prevenção de Corrupção por NULL SQL**: Se a coluna em si for SQL `NULL` (não JSON `null`), `JSON_MERGE_PATCH(NULL, ...)` retorna `NULL`. Sempre garanta que a coluna tenha um default JSON válido (`'{}'`):
+```sql
+ALTER TABLE tabela MODIFY fields_values JSON NOT NULL DEFAULT '{}';
+```
