@@ -7,7 +7,7 @@ order: 260
 sources:
   - gestor/bibliotecas/editor-texto.php
   - gestor/gestor.php
-verified_at: 883d3243
+verified_at: ad58064f
 ---
 
 # Biblioteca `editor-texto.php`

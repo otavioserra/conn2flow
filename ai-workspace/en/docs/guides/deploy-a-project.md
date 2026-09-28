@@ -22,6 +22,6 @@ The CSS stage can fail with a warning without aborting the pipeline's final retu
 
 ## After deploy
 
-The pipeline does not create server scheduling for `gestor/cron.php`: configure ticks using the [cron reference](../reference/libraries/cron.md). Deploy also does not regenerate `sitemap.xml`; the [sitemap library](../reference/libraries/sitemap.md) updates individual pages on save or can perform full regeneration. Plan for it when publishing new content. Production pages are served from the database, as [resources](../concepts/resources.md) explains.
+The pipeline does not create server scheduling for `gestor/cron.php`: configure ticks using the [cron reference](../reference/libraries/cron.md). Deploying through the API regenerates the whole `sitemap.xml` after the database; SSH synchronization does not. Details in the [sitemap library](../reference/libraries/sitemap.md). Production pages are served from the database, as [resources](../concepts/resources.md) explains.
 
 If the project sends email, configure SMTPS with implicit TLS on port 465. The [communication library](../reference/libraries/comunicacao.md) enables encryption even when `EMAIL_SECURE=false`; STARTTLS on port 587 does not work in this flow.

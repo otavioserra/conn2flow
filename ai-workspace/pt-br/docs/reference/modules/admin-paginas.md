@@ -24,7 +24,7 @@ sources:
   - gestor/db/migrations/20260814130000_add_css_precompiled_to_resource_tables.php
   - gestor/db/migrations/20260828100000_add_css_source_hash_to_resource_tables.php
   - gestor/db/migrations/20250723165531_create_paginas_301_table.php
-verified_at: 837c383f
+verified_at: ad58064f
 ---
 
 # Módulo `admin-paginas`

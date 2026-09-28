@@ -18,6 +18,6 @@ A project keeps its own content, configuration, and resources over the shared Ge
 The compiler distinguishes global and project resources. In the database, records touched by a project deployment receive `project=<id>`; a later core update preserves project resources according to `schema-metadata.json`. Fields edited through the panel can be protected by `user_modified`; the new system version goes to `*_updated` fields until explicitly applied. See [resources](resources.md).
 
 > [!WARNING]
-> Project deployment does not automatically refresh `sitemap.xml`. After publishing or changing URLs, generate and publish the sitemap through its separate procedure and check the result.
+> Deploying through the API (`project:deploy`, route `/_api/project/update`) regenerates the whole `sitemap.xml` after updating the database. Direct SSH synchronization (`project:update-all` on a project with `deploy_mode: ssh`) does not go through that route and does not refresh it.
 
 Synchronizing files alone leaves database records and derived CSS at their previous version. Use the full update for changes to HTML, metadata, or resources.

@@ -30,7 +30,7 @@ Mantém o `sitemap.xml` e o `robots.txt` do site. Os dois ficam em `gestor/asset
 - **Completo** (`sitemap_gerar_completo()`), só quando o arquivo não existe, está corrompido ou a página editada sumiu do banco. A geração completa também regrava o `robots.txt`.
 
 > [!WARNING]
-> **O deploy não atualiza o sitemap.** Páginas criadas ou alteradas pelo pipeline (`project:update-all`, recursos de módulo, publicações geradas pelo `docs:build`) só entram quando alguém as edita no painel ou quando o arquivo é regenerado por inteiro. Para forçar, apague `gestor/assets/sitemap.xml` no servidor: a próxima edição de qualquer página o gera de novo. Nenhum comando do CLI faz isso hoje.
+> **O deploy pela API regenera o sitemap.** Depois do banco e dos hooks, `api_project_update()` chama `sitemap_gerar_completo()` no contexto HTTP do site, que conhece o domínio, e devolve `"sitemap": "updated"` na resposta. A sincronização por SSH (`project:update-all` com `deploy_mode: ssh`) roda o atualizador em CLI, sem o domínio, e não regenera: nesse caso, páginas novas só entram quando alguém as edita no painel ou no próximo deploy pela API.
 
 ## robots.txt
 

@@ -6,7 +6,7 @@ order: 50
 sources:
   - gestor/bibliotecas/widgets.php
   - gestor/gestor.php
-verified_at: 3b099ff0
+verified_at: ad58064f
 ---
 
 # Widgets

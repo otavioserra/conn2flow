@@ -7,7 +7,7 @@ sources:
   - gestor/bibliotecas/gestor.php
   - gestor/gestor.php
   - gestor/controladores/agents/arquitetura/tailwind-recursos.php
-verified_at: ea442bea
+verified_at: ad58064f
 ---
 
 # CSS and Tailwind

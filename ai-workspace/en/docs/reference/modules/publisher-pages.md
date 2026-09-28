@@ -27,7 +27,7 @@ sources:
   - gestor/db/migrations/20250723165531_create_paginas_301_table.php
   - gestor/db/migrations/20260127162100_create_publisher_pages_table.php
   - gestor/db/migrations/20260713130000_expand_publisher_pages_identifiers.php
-verified_at: 837c383f
+verified_at: ad58064f
 ---
 
 # `publisher-pages` module

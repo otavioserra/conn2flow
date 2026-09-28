@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/usuario.php
   - gestor/gestor.php
   - gestor/modulos/perfil-usuario/perfil-usuario.php
-verified_at: 3dcf5df7
+verified_at: ad58064f
 ---
 
 # `usuario.php` library

@@ -7,7 +7,7 @@ order: 110
 sources:
   - gestor/bibliotecas/widgets.php
   - gestor/gestor.php
-verified_at: a5ae8605
+verified_at: ad58064f
 ---
 
 # Biblioteca `widgets.php`

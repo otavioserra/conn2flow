@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsExtractCommand.php
   - cli/src/Commands/DocsBuildCommand.php
-verified_at: bd1b184d
+verified_at: ad58064f
 ---
 
 # How to write and publish documentation
@@ -144,7 +144,7 @@ php cli/c2f.php docs:build --project=conn2flow-site-local
 
 ### Core SDD source
 
-When the configuration sets `"sdd": {"enabled": true}`, the same build includes public documents from `conn2flow/sdd/` at `/docs/sdd/` under the `docs-sdd` publisher. This source is available in Portuguese only and derives titles, descriptions, and order from Markdown without frontmatter. The build skips `archive/`, `backlog/`, memory files, and SDD from projects. Before producing pages and `llms.txt`, it replaces paths, IP addresses, emails, hosts, and private project names; files containing credentials or private keys are excluded with a build warning. Review the `--dry-run` warnings before publishing.
+When the configuration sets `"sdd": {"enabled": true}`, the same build includes public documents from `conn2flow/sdd/` at `/docs/sdd/` under the `docs-sdd` publisher. This source is available in Portuguese only and derives titles, descriptions (as plain text, without Markdown markup), and order from Markdown without frontmatter. Each folder's `archive/` is published as an "Archive" subgroup at the end of the folder in the menu; the build skips `backlog/`, memory files, and SDD from projects. Before producing pages and `llms.txt`, it replaces paths, IP addresses, emails, hosts, and private project names; files containing credentials or private keys are excluded with a build warning. Review the `--dry-run` warnings before publishing.
 
 > [!IMPORTANT]
 > The build overwrites the documentation pages on every run. Fixes made in the admin panel are lost; always fix the Markdown.

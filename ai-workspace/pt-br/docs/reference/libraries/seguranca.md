@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/seguranca.php
   - gestor/gestor.php
   - gestor/bibliotecas/formulario.php
-verified_at: ffb8b0fa
+verified_at: ad58064f
 ---
 
 # Biblioteca `seguranca.php`

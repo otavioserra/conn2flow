@@ -4,7 +4,7 @@ description: "Project update upload and resource export."
 section: reference
 sources:
   - gestor/controladores/api/api.php
-verified_at: e5b61f8e
+verified_at: ad58064f
 ---
 
 # Project API
@@ -13,7 +13,7 @@ Both routes require a valid bearer token and POST.
 
 ## `/_api/project/update`
 
-Accepts `multipart/form-data` with a `project_zip` file; `X-Project-ID` supplies the project context. Only a `.zip` filename and files up to 100 MB are accepted. It extracts the archive under temporary logs, copies contents into the manager, updates the database, and synchronizes hooks. POST `full_log` includes detailed logs. JSON response data includes `file_size`, `updated_at`, `status`, `db_logs` and `full_log`.
+Accepts `multipart/form-data` with a `project_zip` file; `X-Project-ID` supplies the project context. Only a `.zip` filename and files up to 100 MB are accepted. It extracts the archive under temporary logs, copies contents into the manager, updates the database, synchronizes hooks, and regenerates `sitemap.xml`. POST `full_log` includes detailed logs. JSON response data includes `file_size`, `updated_at`, `status`, `db_logs`, `full_log` and `sitemap` (`updated`, `failed` or `error: …`; a sitemap failure does not fail the deploy).
 
 > [!WARNING]
 > The implementation extracts the ZIP before copying files. Treat this as a high privilege administrative operation and use the [deploy flow](../../guides/deploy-a-project.md). Security follow-up: req-181.
