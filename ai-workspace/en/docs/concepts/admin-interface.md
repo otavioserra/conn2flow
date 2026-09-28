@@ -13,7 +13,7 @@ verified_at: f3511524
 
 # Administrative interface
 
-The Gestor builds the menu from modules and groups available to the user. `gestor_pagina_menu()` selects `menu-principal-sistema-tailwind` for Tailwind screens and the classic menu otherwise. The Tailwind administrative layout provides the page structure; `interface.php` builds forms, listings, history, and alerts for modules using the standard CRUD interface.
+The Gestor builds the menu from modules and groups available to the user. `gestor_pagina_menu()` selects `menu-principal-sistema-tailwind` for Tailwind screens and the classic menu otherwise. The Tailwind administrative layout provides the page structure; `interface.php` builds forms, listings, history, and alerts for modules using the standard CRUD interface. On a Tailwind-only page, add, edit, the header/footer buttons and the modals use the Tailwind variant (req-190); the listing is still Fomantic, so the module keeps its listing page on the classic layout (BL-026).
 
 The layout and component editors use modals with an iframe preview. The iframe receives a separate document to show the resource with its own CSS cascade. What appears there depends on how the preview resolves HTML, CSS, and variables; check the published result after saving. Alert modals can also appear on public screens, so their Tailwind styles are system dependencies.
 

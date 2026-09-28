@@ -125,7 +125,8 @@ function sitemap_caminho_nao_indexavel($caminho){
 	// `contacts-success/`, `en/contacts-success/`, `subscription-checkout/error/` e
 	// `subscription-checkout/payment/` estavam indexadas. A intenção estava certa; a heurística não
 	// batia com a nomenclatura real.
-	$desfechos = Array('confirmation', 'success', 'error', 'failure', 'cancel');
+	// req-191: `cancelled`/`canceled` são os nomes reais das telas de desfecho do checkout.
+	$desfechos = Array('confirmation', 'success', 'error', 'failure', 'cancel', 'cancelled', 'canceled');
 
 	$segmentos = explode('/', $caminho);
 	$ultimo = end($segmentos);
@@ -138,7 +139,15 @@ function sitemap_caminho_nao_indexavel($caminho){
 
 	// `payment` só como etapa INTERMEDIÁRIA de um fluxo (`subscription-checkout/payment`). Sozinho na
 	// raiz ele pode ser conteúdo legítimo ("formas de pagamento"), então exige-se caminho composto.
-	if(count($segmentos) > 1 && in_array($ultimo, Array('payment', 'checkout', 'processing'), true)) return true;
+	if(count($segmentos) > 1 && in_array($ultimo, Array('payment', 'checkout', 'processing', 'download'), true)) return true;
+
+	// req-191: carrinho e checkout são fluxo de compra, não conteúdo — com ou sem prefixo de idioma
+	// (`cart/`, `en/checkout/`) e com prefixo de produto (`subscription-checkout/`). Medido no sitemap
+	// do e-commerce do conn2flow-site: `/cart/`, `/checkout/`, `/checkout/cancelled/`,
+	// `/checkout/download/` e `/subscription-checkout/` estavam indexados.
+	foreach(Array('cart', 'checkout') as $fluxo){
+		if($ultimo === $fluxo || substr($ultimo, -(strlen($fluxo) + 1)) === '-'.$fluxo) return true;
+	}
 
 	// Área administrativa que porventura esteja marcada como pública (ex.: emissões de teste).
 	$primeiro = $segmentos[0];

@@ -416,4 +416,17 @@ final class SitemapTest extends TestCase
             sitemap_robots_caminho_arquivo()
         );
     }
+
+    public function testFluxoDeCompraNaoEntraNoSitemap(): void
+    {
+        // req-191: medido no sitemap do e-commerce do conn2flow-site.
+        foreach (['cart', 'en/cart', 'checkout', 'en/checkout', 'checkout/cancelled', 'checkout/download',
+            'subscription-checkout', 'en/subscription-checkout', 'pedido/canceled'] as $caminho) {
+            self::assertTrue(sitemap_caminho_nao_indexavel($caminho), $caminho);
+        }
+        // Conteúdo continua entrando: a vitrine, o produto e um "download" na raiz.
+        foreach (['store', 'store/e-book', 'download', 'carteira', 'checkout-rapido-guia'] as $caminho) {
+            self::assertFalse(sitemap_caminho_nao_indexavel($caminho), $caminho);
+        }
+    }
 }

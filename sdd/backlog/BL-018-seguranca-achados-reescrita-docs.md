@@ -4,7 +4,7 @@
 - **Status**: IN-DISCUSSION
 - **Severidade sugerida**: CRÍTICA (A1) a BAIXA; ver cada item
 - **Origem**: leitura do código para a reescrita das docs (FEAT-014: req-179, req-182 a req-186), 2026-09-25/26
-- **Proposta já escrita**: [req-181.md](../human-requests/req-181.md) (`proposed`, sem código alterado)
+- **Proposta já escrita**: [req-181.md](../human-requests/archive/req-181.md) (`proposed`, sem código alterado)
 
 ## Resumo
 

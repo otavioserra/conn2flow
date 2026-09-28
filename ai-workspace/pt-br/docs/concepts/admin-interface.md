@@ -13,7 +13,7 @@ verified_at: f3511524
 
 # Interface administrativa
 
-O Gestor monta o menu a partir dos módulos e grupos disponíveis para o usuário. `gestor_pagina_menu()` escolhe o componente `menu-principal-sistema-tailwind` quando a tela usa Tailwind, ou o menu clássico nos demais casos. O layout administrativo Tailwind fornece a estrutura da página; `interface.php` monta formulários, listagens, histórico e alertas para módulos que usam o CRUD padrão.
+O Gestor monta o menu a partir dos módulos e grupos disponíveis para o usuário. `gestor_pagina_menu()` escolhe o componente `menu-principal-sistema-tailwind` quando a tela usa Tailwind, ou o menu clássico nos demais casos. O layout administrativo Tailwind fornece a estrutura da página; `interface.php` monta formulários, listagens, histórico e alertas para módulos que usam o CRUD padrão. Numa página só Tailwind, incluir, editar, os botões de cabeçalho/rodapé e os modais saem na variante Tailwind (req-190); a listagem ainda é Fomantic, então o módulo mantém a página de listagem no layout clássico (BL-026).
 
 As telas de edição de layouts e componentes usam modais com iframe de pré-visualização. O iframe recebe um documento separado para mostrar o recurso com sua própria cascata de CSS. O conteúdo visto ali depende do HTML, CSS e variáveis resolvidos pelo fluxo de preview; confirme o resultado publicado após salvar. Um modal de alerta pode aparecer também em telas públicas, por isso seus estilos Tailwind são dependências do sistema.
 

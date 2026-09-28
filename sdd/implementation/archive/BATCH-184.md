@@ -1,6 +1,6 @@
 # BATCH-184: Migração do Acervo de Documentação — Onda 1 (fundação) e seguintes do primeiro agente
 
-Execução da [req-179](../../human-requests/archive/req-179.md). Os módulos estão com o segundo agente: [req-180](../../human-requests/archive/req-180.md) / [BATCH-185](../BATCH-185.md).
+Execução da [req-179](../../human-requests/archive/req-179.md). Os módulos estão com o segundo agente: [req-180](../../human-requests/archive/req-180.md) / [BATCH-185](BATCH-185.md).
 
 ## Progresso
 
