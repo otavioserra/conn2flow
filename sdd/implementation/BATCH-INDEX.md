@@ -33,7 +33,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-192 | complete | Ajustes das docs online, sitemap no deploy e exclusão de órfãs (req-188) | [BATCH-192.md](BATCH-192.md) | Rota com ponto (whats-new 404), expandir/recolher tudo, arquivo do SDD publicado, resumo sem Markdown, sitemap no `/_api/project/update`, 17 órfãs excluídas pela lista `deletar`. |
 | BATCH-193 | complete | Segurança do `interface`: listagem sem SQL injection e excluir/status com CSRF (req-189) | [BATCH-193.md](BATCH-193.md) | A1 e A2 da req-181; teste com entrada maliciosa; Lab por `project:sync-core`. |
 | BATCH-194 | complete | Formulários do `interface` em Tailwind: inclusão, botões e exclusão (req-190) | [BATCH-194.md](BATCH-194.md) | Listagem segue Fomantic (BL-026). Validado pelo e-commerce do conn2flow-site no Lab. |
-| BATCH-195 | complete | Sitemap sem o fluxo de compra (req-191) | [BATCH-195.md](BATCH-195.md) | Achado do E2E do e-commerce do conn2flow-site: carrinho, checkout e desfechos indexados. |
+| BATCH-195 | complete | Sitemap sem o fluxo de compra e deploy por API sem estouro de memória (req-191) | [BATCH-195.md](BATCH-195.md) | Achado do E2E do e-commerce do conn2flow-site: carrinho, checkout e desfechos indexados. |
 
 ## Regra operacional
 

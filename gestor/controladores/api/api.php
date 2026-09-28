@@ -704,6 +704,33 @@ function api_call_system_update(array $params): array {
 
 // =========================== Funções Auxiliares para Manipulação de Arquivos
 
+/**
+ * Eleva o `memory_limit` até o mínimo pedido; nunca reduz (e `-1`, ilimitado, fica como está).
+ *
+ * @param string $minimo Valor no formato do php.ini (ex.: '1024M').
+ * @return string O limite em vigor depois da chamada.
+ */
+function api_memoria_minima($minimo) {
+    $bytes = function ($valor) {
+        $valor = trim((string)$valor);
+        if ($valor === '' || $valor === '-1') return -1;
+        $numero = (int)$valor;
+        switch (strtoupper(substr($valor, -1))) {
+            case 'G': return $numero * 1024 * 1024 * 1024;
+            case 'M': return $numero * 1024 * 1024;
+            case 'K': return $numero * 1024;
+        }
+        return $numero;
+    };
+
+    $atual = (string)ini_get('memory_limit');
+    $atualBytes = $bytes($atual);
+    if ($atualBytes !== -1 && $atualBytes < $bytes($minimo)) {
+        @ini_set('memory_limit', $minimo);
+    }
+    return (string)ini_get('memory_limit');
+}
+
 function api_executar_atualizacao_banco($project_path, $project_id = null, $full_log = false) {
     global $_GESTOR, $_BANCO;
 
@@ -713,6 +740,11 @@ function api_executar_atualizacao_banco($project_path, $project_id = null, $full
     if (!file_exists($script)) {
         throw new Exception('Script de atualização de banco não encontrado: ' . $script);
     }
+
+    // req-191: a sincronização carrega cada tabela inteira (`SELECT *` + `fetchAll`). Pelo CLI o limite
+    // de memória é folgado; aqui roda na requisição web (128 MB típico) e `paginas`, com HTML e CSS
+    // compilado de centenas de docs, estourou o limite (HTTP 500 no deploy do conn2flow-site).
+    api_memoria_minima('1024M');
 
     // Configurar opções CLI para execução inline
     $cli = [
