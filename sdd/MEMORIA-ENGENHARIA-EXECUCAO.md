@@ -16,6 +16,15 @@
 
 ## Tarefas recentes
 
+### 2026-09-28 — BATCH-194 (req-190): formulários do `interface` em Tailwind
+
+- Botões de cabeçalho/rodapé são montados em PHP (`interface_botoes_html`): as utilities só chegam ao
+  pré-compilado porque estão no `<template data-c2f-botoes>` dos componentes `interface-formulario-*-tailwind`.
+  Classe nova no PHP sem entrar lá sai sem estilo; o `InterfaceBotoesTailwindTest` confere.
+- O `interface-tailwind.js` não tinha o clique do `.excluir` (era do `interface.js`, que não carrega no modo
+  Tailwind) nem o token CSRF da req-189 na confirmação.
+- `resources:sync` também regenera os pré-compilados de layout e páginas que agregam o componente alterado.
+
 ### 2026-09-28 — BATCH-192 (req-188): rota com ponto, sitemap no deploy, exclusão de órfãs
 
 - **URL de página com ponto no último segmento dava 404.** O roteador usava `pathinfo()` no
