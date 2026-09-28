@@ -378,6 +378,10 @@ final class DocsBuilder
         $parts = explode('/', $rel);
         $section = array_search($parts[0], self::SECTION_ORDER, true);
         $sub = count($parts) > 2 ? $parts[1] : '';
+        // req-188: o `archive/` de uma pasta do SDD vem depois dos itens ativos dela ('~' ordena após letras).
+        if (self::emArquivo($rel)) {
+            $sub .= '/~archive';
+        }
         $isIndex = basename($rel) === 'index.md' ? 0 : 1;
 
         return [$section === false ? 99 : (int)$section, $sub, $isIndex, (int)($meta['order'] ?? 100), (string)$meta['title']];
@@ -584,11 +588,21 @@ final class DocsBuilder
             $children = [];
             foreach ($grouped[$section] as $sub => $rels) {
                 $leaves = [];
+                $archived = [];
                 foreach ($rels as $rel) {
                     if (basename($rel) === 'index.md') {
                         continue;
                     }
-                    $leaves[] = $item(self::pageId($rel), $this->menuLabel($lang, $docs[$rel]));
+                    $leaf = $item(self::pageId($rel), $this->menuLabel($lang, $docs[$rel]));
+                    if (self::emArquivo($rel)) {
+                        $archived[] = $leaf;
+                    } else {
+                        $leaves[] = $leaf;
+                    }
+                }
+                // Itens arquivados de uma pasta do SDD: subgrupo recolhível no fim da pasta.
+                if ($archived) {
+                    $leaves[] = $header($section . '/' . $sub . '/archive', (string)($labels['subsections']['archive'] ?? 'Archive'), $archived);
                 }
                 // Com o nome do módulo como rótulo, a ordem do título antigo deixa de fazer sentido.
                 if ($sub === 'modules' || $sub === 'libraries') {
@@ -680,6 +694,14 @@ final class DocsBuilder
         }
 
         return $noExt === '.' ? '' : $noExt;
+    }
+
+    /** `sdd/<pasta>/archive/<arquivo>.md`: histórico arquivado do SDD. */
+    private static function emArquivo(string $rel): bool
+    {
+        $parts = explode('/', $rel);
+
+        return count($parts) === 4 && $parts[0] === 'sdd' && $parts[2] === 'archive';
     }
 
     private function urlPath(string $rel): string

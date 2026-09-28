@@ -3295,7 +3295,12 @@ function gestor_config(){
 			array_pop($_GESTOR['caminho']);
 		}
 		
-		$_GESTOR['caminho-extensao'] = pathinfo($_GESTOR['caminho-total'], PATHINFO_EXTENSION);
+		// req-188: caminho terminado em barra é página, nunca arquivo. Sem isto, `docs/whats-new/2.10/`
+		// tinha a "extensão" `10` e ia para o servidor de estáticos (404); `2.10.0/` escapava só porque
+		// a extensão `0` é falsa no PHP.
+		$_GESTOR['caminho-extensao'] = substr($_GESTOR['caminho-total'], -1) === '/'
+			? ''
+			: pathinfo($_GESTOR['caminho-total'], PATHINFO_EXTENSION);
 	}
 
 	// Se não tem linguagem na URL verifique o cookie '$_CONFIG['cookie-language']' e defina $_GESTOR['linguagem-codigo'] se válido

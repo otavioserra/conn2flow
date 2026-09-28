@@ -352,6 +352,10 @@ function api_project_update() {
         require_once $_GESTOR['controladores-path'] . 'atualizacoes/atualizacoes-hooks.php';
         atualizacoes_hooks_sincronizar();
 
+        // req-188: o sitemap só era mantido pelas edições do painel; páginas que chegam pelo deploy
+        // ficavam de fora. Regenera depois de todas as páginas atualizadas.
+        $sitemap = api_project_sitemap_regenerar();
+
         // Limpar arquivos temporários
         api_remove_directory($extract_dir);
 
@@ -362,6 +366,7 @@ function api_project_update() {
             'status' => 'updated',
             'db_logs' => $db_logs,
             'full_log' => $full_log,
+            'sitemap' => $sitemap,
         ];
 
         api_response_success($response_data, 'Projeto atualizado com sucesso');
@@ -373,6 +378,26 @@ function api_project_update() {
         }
 
         api_response_error('Erro durante atualização do projeto: ' . $e->getMessage(), 500);
+    }
+}
+
+/**
+ * Regenera o `sitemap.xml` (e o `robots.txt`) a partir das páginas públicas do banco — req-188.
+ *
+ * Roda no contexto HTTP do deploy, em que `$_GESTOR['url-full-http']` já tem o domínio do site:
+ * gerar pelo CLI gravaria URLs `https://localhost/...`. Falha no sitemap não invalida o deploy.
+ *
+ * @return string 'updated', 'failed' ou 'error: <mensagem>'.
+ */
+function api_project_sitemap_regenerar(): string {
+    try {
+        gestor_incluir_biblioteca('sitemap');
+        if (!function_exists('sitemap_gerar_completo')) {
+            return 'failed';
+        }
+        return sitemap_gerar_completo() ? 'updated' : 'failed';
+    } catch (Throwable $e) {
+        return 'error: ' . $e->getMessage();
     }
 }
 

@@ -37,7 +37,9 @@ final class SddSource
             if (count($parts) > 1 && !in_array($parts[0], self::FOLDERS, true)) {
                 continue;
             }
-            if (count($parts) > 2 || preg_match('~(?:^|/)(?:archive|backlog|MEMORIA[^/]*)/|(?:^|/)MEMORIA[^/]*\.md$~i', $relative)) {
+            // req-188: o `archive/` de cada pasta também é publicado (histórico antigo); nada mais fundo.
+            $noArquivo = count($parts) === 3 && $parts[1] === 'archive';
+            if ((count($parts) > 2 && !$noArquivo) || preg_match('~(?:^|/)(?:backlog|MEMORIA[^/]*)/|(?:^|/)MEMORIA[^/]*\.md$~i', $relative)) {
                 continue;
             }
             $body = (string)file_get_contents($file->getPathname());
@@ -55,8 +57,13 @@ final class SddSource
             $description = '';
             foreach ($paragraphs as $paragraph) {
                 $candidate = trim(preg_replace('/\s+/', ' ', $paragraph) ?? $paragraph);
-                if ($candidate !== '' && !preg_match('/^(?:#|\||-|\*|>|```|<!--)/', $candidate)) {
-                    $description = mb_substr($candidate, 0, 180);
+                // Tabela, citação, bloco de código, comentário e régua não servem de resumo.
+                // Lista com marcador também não; parágrafo que começa em negrito (`**Origem**:`) serve.
+                if ($candidate === '' || preg_match('/^(?:#|\||>|```|<!--|-{3,}|\*{3,}|[-*+]\s)/', $candidate)) {
+                    continue;
+                }
+                $description = self::resumo($candidate);
+                if ($description !== '') {
                     break;
                 }
             }
@@ -71,6 +78,29 @@ final class SddSource
         }
         ksort($docs, SORT_STRING);
         return ['docs' => $docs, 'warnings' => $warnings];
+    }
+
+    /**
+     * Resumo em texto puro para o cabeçalho e o `<meta description>`: o parágrafo vem em Markdown e é
+     * exibido sem renderização, então `**`, crases e links apareciam crus (req-188).
+     */
+    public static function resumo(string $markdown, int $limite = 180): string
+    {
+        $texto = preg_replace('/^(?:[-*+]|\d+[.)])\s+/', '', trim($markdown)) ?? $markdown;
+        $texto = preg_replace('/!?\[([^\]]*)\]\([^)]*\)/', '$1', $texto) ?? $texto;
+        $texto = preg_replace('/(\*\*|__|\*|_|`)(\S(?:.*?\S)?)\1/u', '$2', $texto) ?? $texto;
+        $texto = str_replace(['**', '`'], '', $texto);
+        $texto = trim(preg_replace('/\s+/u', ' ', $texto) ?? $texto);
+        if (mb_strlen($texto) <= $limite) {
+            return $texto;
+        }
+        $corte = mb_substr($texto, 0, $limite);
+        $espaco = mb_strrpos($corte, ' ');
+        if ($espaco !== false && $espaco > $limite * 0.6) {
+            $corte = mb_substr($corte, 0, $espaco);
+        }
+
+        return rtrim($corte, " ,;:.-—(") . '…';
     }
 
     /** Retorna null quando não é seguro distinguir o segredo do texto público. */
