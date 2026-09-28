@@ -4,7 +4,7 @@ description: "Upload de atualização e exportação de recursos do projeto."
 section: reference
 sources:
   - gestor/controladores/api/api.php
-verified_at: ad58064f
+verified_at: de0e4549
 ---
 
 # API de projetos
