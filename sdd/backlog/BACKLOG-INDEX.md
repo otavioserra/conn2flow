@@ -20,13 +20,13 @@
 | [BL-016](BL-016-paginas-301-status-e-query-string.md) | Bug/SEO | PROMOTED | Redirecionamento de `paginas_301` descarta a query string | Promovido para [req-173.md](../human-requests/archive/req-173.md) (BATCH-178) | 2026-09-22 |
 | [BL-017](BL-017-forms-widget-vaza-blocos-fragmento.md) | Bug/UI | PROMOTED | Widget de formulários vaza os blocos-fragmento do template no HTML renderizado | Promovido para [req-173.md](../human-requests/archive/req-173.md) (BATCH-178) | 2026-09-22 |
 | [BL-018](BL-018-seguranca-achados-reescrita-docs.md) | Security | IN-DISCUSSION | Segurança: achados da reescrita das docs (req-181 A1–A11 e complementos: JWT, OAuth2, SQL em módulos, CDN) | Humano revisa item a item; aprovar ou dividir a req-181 | 2026-09-26 |
-| [BL-019](BL-019-sitemap-nao-atualizado-no-deploy.md) | Bug/SEO | IN-DISCUSSION | O deploy não atualiza o `sitemap.xml` | Decidir regeneração no contexto HTTP (CLI não conhece o domínio) | 2026-09-26 |
+| [BL-019](BL-019-sitemap-nao-atualizado-no-deploy.md) | Bug/SEO | IN-DISCUSSION | O deploy não atualiza o `sitemap.xml` | Parcial: deploy pela API regenera ([req-188.md](../human-requests/req-188.md), BATCH-192); falta a sincronização por SSH | 2026-09-28 |
 | [BL-020](BL-020-email-so-smtps-465.md) | Bug | IN-DISCUSSION | E-mail: só SMTPS/465 funciona; `EMAIL_SECURE` ignorado | Aguardando priorização | 2026-09-26 |
 | [BL-021](BL-021-cron-ignora-expressao-e-sobreposicao.md) | Bug/Feature | IN-DISCUSSION | Cron: `expressao_cron`/`hora` ignorados e sem trava de sobreposição | Aguardando priorização | 2026-09-26 |
 | [BL-022](BL-022-configuracao-apaga-variaveis-post-truncado.md) | Bug/Data loss | IN-DISCUSSION | `configuracao`: POST truncado por `max_input_vars` apaga variáveis | Aguardando priorização (severidade alta) | 2026-09-26 |
 | [BL-023](BL-023-pipeline-etapa2-metadado-do-core.md) | Bug/DevOps | IN-DISCUSSION | Pipeline de projeto: etapa 2 sincroniza dados do projeto com o metadado do core (colisão em `menus`) | Aguardando priorização | 2026-09-26 |
 | [BL-024](BL-024-catalogo-bugs-menores-docs.md) | Bug/Maintainability | IN-DISCUSSION | Catálogo de bugs menores apontados nas docs (bibliotecas e módulos) | Humano escolhe itens para uma requisição de correções pequenas | 2026-09-26 |
-| [BL-025](BL-025-docs-removidas-seguem-publicadas.md) | Bug/Docs | IN-DISCUSSION | Página de docs removida continua publicada no banco (órfã ignorada pelo pipeline) | Decidir: `docs:build` alimenta a lista `deletar` ou 301 | 2026-09-27 |
+| [BL-025](BL-025-docs-removidas-seguem-publicadas.md) | Bug/Docs | IN-DISCUSSION | Página de docs removida continua publicada no banco (órfã ignorada pelo pipeline) | Parcial: 17 órfãs excluídas pela lista `deletar` do site (req-188); rotina automática de exclusão fica com o Humano | 2026-09-28 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 

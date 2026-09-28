@@ -16,6 +16,20 @@
 
 ## Tarefas recentes
 
+### 2026-09-28 — BATCH-192 (req-188): rota com ponto, sitemap no deploy, exclusão de órfãs
+
+- **URL de página com ponto no último segmento dava 404.** O roteador usava `pathinfo()` no
+  caminho inteiro (`2.10/` → extensão `10`) e mandava para o servidor de estáticos. Agora caminho
+  terminado em `/` nunca é arquivo.
+- **Sitemap: só o deploy pela API (`project:deploy` → `/_api/project/update`) conhece o domínio.**
+  O `project:update-all` por SSH roda o atualizador em CLI, sem `config.php`; não gere sitemap ali.
+- **Excluir registro de tabela do core a partir do projeto:** bloco `"paginas": {"nome": "paginas",
+  "deletar": [...]}` no `resources/project_tables_config.json`. Os arquivos globais são lidos antes
+  dos módulos, então as regras de `paginas` continuam as do `admin-paginas`, e as listas `deletar`
+  são somadas. Chave natural de `paginas`: `language`, `modulo`, `id`.
+- **Todo `ai:archive-sdd` do core gera páginas órfãs no site** (a URL muda para `…/archive/…`).
+  Depois do `docs:build`, comparar o banco do Lab com `pages.json` e pôr as antigas no `deletar`.
+
 ### 2026-09-26 — BATCH-190/191 (req-186/187): módulo `documentation` e deploy no Lab
 
 - **A tabela `templates` não tem coluna `modulo`**, apesar de a `natural_key_columns` do contrato

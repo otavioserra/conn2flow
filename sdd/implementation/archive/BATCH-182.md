@@ -1,6 +1,6 @@
 # BATCH-182: Contrato de Documentação, `docs:audit`, `docs:extract` e Piloto Bilíngue
 
-Execução da [req-177](../human-requests/archive/req-177.md). FEAT-014, fase 1.
+Execução da [req-177](../../human-requests/archive/req-177.md). FEAT-014, fase 1.
 
 ## Atividades
 
