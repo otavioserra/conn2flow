@@ -451,12 +451,24 @@
         "name": "Interface Edit Form Tailwind",
         "id": "interface-formulario-edicao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "04733891cd9deb1df6e2b275a3c41cd5",
+            "html": "7850c0b0c58951e4bb80bdf48cf4dc65",
             "css": "",
             "css_precompiled": "",
-            "combined": "04733891cd9deb1df6e2b275a3c41cd5"
+            "combined": "7850c0b0c58951e4bb80bdf48cf4dc65"
+        }
+    },
+    {
+        "name": "Inclusion Form Interface Tailwind",
+        "id": "interface-formulario-inclusao-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "bf18e34ffdf1c3d6dbdb9fe20666aa07",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "bf18e34ffdf1c3d6dbdb9fe20666aa07"
         }
     },
     {

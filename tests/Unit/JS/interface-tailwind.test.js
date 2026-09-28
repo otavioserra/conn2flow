@@ -352,6 +352,40 @@ describe('Interface administrativa Tailwind (req-118)', () => {
 
       expect(window.open).toHaveBeenCalledWith('/admin-paginas/excluir/?id=7', '_self');
     });
+
+    // req-190: o botão `excluir` do cabeçalho em Tailwind (interface_botoes_html) não tem mais o
+    // `interface.js` legado para ligar o clique.
+    it('clique no botão excluir guarda o data-href e abre a confirmação', () => {
+      montarModais();
+      document.body.insertAdjacentHTML('beforeend', '<button type="button" class="excluir" data-href="/products/?opcao=excluir&id=7"><span>Excluir</span></button>');
+      T.iniciar();
+
+      document.querySelector('.excluir span').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+
+      expect(window.gestor.interface.excluir_url).toBe('/products/?opcao=excluir&id=7');
+      expect(document.querySelector('[data-c2f-modal="delecao"]').classList.contains('hidden')).toBe(false);
+    });
+
+    it('confirmar exclusão por GET leva o token CSRF da sessão (req-189)', () => {
+      window.gestor.csrfToken = 'tok 1';
+      window.gestor.interface.excluir_url = '/products/?opcao=excluir&id=7';
+      window.open = vi.fn();
+      montarModais();
+      T.iniciar();
+
+      document
+        .querySelector('[data-c2f-modal="delecao"] [data-c2f-modal-aprovar]')
+        .dispatchEvent(new window.Event('click', { bubbles: true }));
+
+      expect(window.open).toHaveBeenCalledWith('/products/?opcao=excluir&id=7&_csrf_token=tok%201', '_self');
+    });
+
+    it('URL que já tem token ou não é excluir/status fica como está', () => {
+      window.gestor.csrfToken = 'tok';
+      expect(T.urlCsrf('/x/?opcao=status&id=1&_csrf_token=a')).toBe('/x/?opcao=status&id=1&_csrf_token=a');
+      expect(T.urlCsrf('/x/edit/?id=1')).toBe('/x/edit/?id=1');
+      expect(T.urlCsrf('/x/?opcao=status&id=1')).toBe('/x/?opcao=status&id=1&_csrf_token=tok');
+    });
   });
 
   describe('Área Restrita (step-up auth)', () => {

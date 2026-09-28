@@ -68,6 +68,34 @@
         abrirModal(el);
     }
 
+    /**
+     * Mesmo contrato do `window.interfaceUrlCsrf` do `interface.js` (req-189, A2), que não é
+     * carregado no modo Tailwind: links GET de `opcao=excluir|status` levam o token da sessão.
+     */
+    function urlCsrf(url) {
+        url = String(url || '');
+        if (!/[?&]opcao=(excluir|status)(&|$)/.test(url) || /[?&]_csrf_token=/.test(url)) return url;
+        var token = (window.gestor && window.gestor.csrfToken) || '';
+        if (!token) return url;
+        return url + (url.indexOf('?') === -1 ? '?' : '&') + '_csrf_token=' + encodeURIComponent(token);
+    }
+
+    if (!window.interfaceUrlCsrf) window.interfaceUrlCsrf = urlCsrf;
+
+    // Botão `excluir` do cabeçalho/rodapé (interface_botoes_html): a URL vem em `data-href` e só é
+    // aberta depois da confirmação no modal de deleção — igual ao legado.
+    function ligarExclusao() {
+        document.addEventListener('click', function (evento) {
+            var botao = evento.target.closest ? evento.target.closest('.excluir[data-href]') : null;
+            if (!botao) return;
+            evento.preventDefault();
+            window.gestor = window.gestor || {};
+            gestor.interface = gestor.interface || {};
+            gestor.interface.excluir_url = botao.getAttribute('data-href');
+            deletarConfirmacao();
+        });
+    }
+
     function ligarModais() {
         var modais = document.querySelectorAll('[data-c2f-modal]');
 
@@ -81,7 +109,7 @@
             if (aprovar) {
                 aprovar.addEventListener('click', function () {
                     if (nome === 'delecao' && window.gestor && gestor.interface && gestor.interface.excluir_url) {
-                        window.open(gestor.interface.excluir_url, '_self');
+                        window.open(urlCsrf(gestor.interface.excluir_url), '_self');
                         return;
                     }
                     fecharModal(el);
@@ -254,6 +282,7 @@
     function iniciar() {
         ligarModais();
         ligarFormularios();
+        ligarExclusao();
 
         // O modal de Área Restrita nasce no HTML quando a autorização provisória expirou; abri-lo é
         // o que efetivamente bloqueia a tela.
@@ -286,6 +315,7 @@
         carregarFechar: carregarFechar,
         alerta: alerta,
         deletarConfirmacao: deletarConfirmacao,
+        urlCsrf: urlCsrf,
         validarFormulario: validarFormulario,
         regraValida: regraValida
     };

@@ -1,6 +1,6 @@
 # BATCH-184: Migração do Acervo de Documentação — Onda 1 (fundação) e seguintes do primeiro agente
 
-Execução da [req-179](../human-requests/archive/req-179.md). Os módulos estão com o segundo agente: [req-180](../human-requests/req-180.md) / [BATCH-185](BATCH-185.md).
+Execução da [req-179](../../human-requests/archive/req-179.md). Os módulos estão com o segundo agente: [req-180](../../human-requests/archive/req-180.md) / [BATCH-185](../BATCH-185.md).
 
 ## Progresso
 
@@ -34,7 +34,7 @@ Execução da [req-179](../human-requests/archive/req-179.md). Os módulos estã
 
 ## Divisão do trabalho restante (2026-09-26)
 
-A pedido do Humano, uma requisição por onda, cada uma para um agente: [req-182](../human-requests/req-182.md) (onda 4, BATCH-186), [req-183](../human-requests/req-183.md) (onda 5, BATCH-187), [req-184](../human-requests/req-184.md) (onda 6 e dono do pipeline, BATCH-188) e [req-185](../human-requests/req-185.md) (ajustes de navegação pedidos pelo Humano, BATCH-189).
+A pedido do Humano, uma requisição por onda, cada uma para um agente: [req-182](../../human-requests/req-182.md) (onda 4, BATCH-186), [req-183](../../human-requests/req-183.md) (onda 5, BATCH-187), [req-184](../../human-requests/req-184.md) (onda 6 e dono do pipeline, BATCH-188) e [req-185](../../human-requests/req-185.md) (ajustes de navegação pedidos pelo Humano, BATCH-189).
 
 ## Ferramental ajustado no caminho
 

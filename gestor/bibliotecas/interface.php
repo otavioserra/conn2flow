@@ -3195,41 +3195,13 @@ function interface_verificar_campos($params = false){
  */
 function interface_botoes_cabecalho($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
-	
-	$botoes_html = '';
-	
-	foreach($botoes as $id => $botao){
-		switch($id){
-			case 'excluir':
-				$botoes_html .= '
-		<div class="ui button excluir '.$botao['cor'].'" data-href="'.interface_url_csrf($botao['url']).'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
-			<i class="'.$botao['icon'].' icon"></i>
-			'.$botao['rotulo'].'
-		</div>';
-			break;
-			default:
-				if(isset($botao['callback'])){
-					$botoes_html .= '
-			<div class="ui button '.$botao['callback'].' '.$botao['cor'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
-				<i class="'.$botao['icon'].' icon"></i>
-				'.$botao['rotulo'].'
-			</div>';
-				} else {
-					$botoes_html .= '
-			<a class="ui button '.$botao['cor'].'" href="'.interface_url_csrf($botao['url']).'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
-				'.(isset($botao['icon2']) ? '<i class="icons"><i class="'.$botao['icon'].' icon"></i><i class="'.$botao['icon2'].' icon"></i></i>' : '<i class="'.$botao['icon'].' icon"></i>').'
-				'.$botao['rotulo'].'
-			</a>';
-			}
-		}
-	}
-	
-	return $botoes_html;
+
+	return interface_botoes_html(isset($botoes) ? $botoes : Array());
 }
 
 /**
  * Renderiza botões de ação no rodapé da interface administrativa.
- * 
+ *
  * Gera HTML para botões de ações (excluir, salvar, cancelar, etc.) que aparecem
  * no rodapé das páginas de edição/visualização. Estrutura e funcionalidade
  * similares aos botões do cabeçalho.
@@ -3237,41 +3209,153 @@ function interface_botoes_cabecalho($params = false){
  * @param array|false $params Parâmetros da função.
  * @param array $params['botoes_rodape'] Array de botões a renderizar no rodapé (obrigatório).
  *                                        Cada botão contém: cor, icon, rotulo, tooltip, url, callback.
- * 
+ *
  * @return string HTML dos botões do rodapé.
  */
 function interface_botoes_rodape($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
-	
+
+	return interface_botoes_html(isset($botoes_rodape) ? $botoes_rodape : Array());
+}
+
+/**
+ * Monta o HTML de um conjunto de botões (cabeçalho ou rodapé), no framework CSS da página.
+ *
+ * No modo Tailwind (req-190) sai um `<a>`/`<button>` com utilities e ícone Lucide; as classes
+ * vivem em `interface_botao_tailwind_classes()` e estão declaradas no `<template>` dos componentes
+ * `interface-formulario-*-tailwind`, que é o que as leva ao CSS pré-compilado. O contrato é o mesmo
+ * nos dois modos: `excluir` carrega a URL em `data-href` (o runtime abre o modal de deleção) e
+ * `callback` vira classe para o JS do módulo.
+ *
+ * @param array $botoes Botões por id: cor, icon, icon2, rotulo, tooltip, url, callback, target.
+ *
+ * @return string HTML dos botões.
+ */
+function interface_botoes_html($botoes){
+	$tailwind = gestor_framework_css_atual()['modo'] === 'tailwindcss';
 	$botoes_html = '';
-	
-	foreach($botoes_rodape as $id => $botao){
+
+	foreach((array)$botoes as $id => $botao){
+		$tooltip = htmlspecialchars((string)($botao['tooltip'] ?? ''), ENT_QUOTES, 'UTF-8');
+		$cor = (string)($botao['cor'] ?? '');
+		$rotulo = (string)($botao['rotulo'] ?? '');
+		$url = interface_url_csrf($botao['url'] ?? '');
+		$target = isset($botao['target']) ? ' target="'.$botao['target'].'"' : '';
+
+		if($tailwind){
+			$classes = interface_botao_tailwind_classes($id === 'excluir' ? 'red' : $cor);
+			$icone = interface_botao_tailwind_icone((string)($botao['icon'] ?? ''));
+			$conteudo = ($icone !== '' ? '<i data-lucide="'.$icone.'" class="size-4"></i>' : '').'<span>'.$rotulo.'</span>';
+
+			if($id === 'excluir'){
+				$botoes_html .= '
+		<button type="button" class="excluir '.$classes.'" data-href="'.$url.'" title="'.$tooltip.'" data-id="'.$id.'">'.$conteudo.'</button>';
+			} else if(isset($botao['callback'])){
+				$botoes_html .= '
+		<button type="button" class="'.$botao['callback'].' '.$classes.'" title="'.$tooltip.'" data-id="'.$id.'">'.$conteudo.'</button>';
+			} else {
+				$botoes_html .= '
+		<a class="'.$classes.'" href="'.$url.'" title="'.$tooltip.'" data-id="'.$id.'"'.$target.'>'.$conteudo.'</a>';
+			}
+			continue;
+		}
+
 		switch($id){
 			case 'excluir':
 				$botoes_html .= '
-		<div class="ui button excluir '.$botao['cor'].'" data-href="'.interface_url_csrf($botao['url']).'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+		<div class="ui button excluir '.$cor.'" data-href="'.$url.'" data-content="'.$tooltip.'" data-id="'.$id.'">
 			<i class="'.$botao['icon'].' icon"></i>
-			'.$botao['rotulo'].'
+			'.$rotulo.'
 		</div>';
 			break;
 			default:
 				if(isset($botao['callback'])){
 					$botoes_html .= '
-			<div class="ui button '.$botao['callback'].' '.$botao['cor'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+			<div class="ui button '.$botao['callback'].' '.$cor.'" data-content="'.$tooltip.'" data-id="'.$id.'">
 				<i class="'.$botao['icon'].' icon"></i>
-				'.$botao['rotulo'].'
+				'.$rotulo.'
 			</div>';
 				} else {
 					$botoes_html .= '
-			<a class="ui button '.$botao['cor'].'" href="'.interface_url_csrf($botao['url']).'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
+			<a class="ui button '.$cor.'" href="'.$url.'" data-content="'.$tooltip.'" data-id="'.$id.'"'.$target.'>
 				'.(isset($botao['icon2']) ? '<i class="icons"><i class="'.$botao['icon'].' icon"></i><i class="'.$botao['icon2'].' icon"></i></i>' : '<i class="'.$botao['icon'].' icon"></i>').'
-				'.$botao['rotulo'].'
+				'.$rotulo.'
 			</a>';
 			}
 		}
 	}
-	
+
 	return $botoes_html;
+}
+
+/**
+ * Classes Tailwind de um botão a partir da cor do Fomantic declarada no módulo (`blue`, `basic red`…).
+ *
+ * Quatro tons bastam para as ações do painel: primária, positiva, destrutiva e neutra. Qualquer
+ * classe nova aqui precisa entrar também no `<template data-c2f-botoes>` dos componentes
+ * `interface-formulario-*-tailwind`, senão sai sem estilo.
+ *
+ * @param string $cor Cor no vocabulário do Fomantic.
+ *
+ * @return string Classes Tailwind.
+ */
+function interface_botao_tailwind_classes($cor){
+	$base = 'inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors';
+	$cores = preg_split('/\s+/', strtolower(trim((string)$cor)));
+
+	if(in_array('basic', $cores, true)) return $base.' border-slate-300 bg-white text-slate-700 hover:bg-slate-50';
+	if(array_intersect($cores, Array('red', 'negative'))) return $base.' border-red-600 bg-red-600 text-white hover:bg-red-700';
+	if(array_intersect($cores, Array('green', 'positive', 'teal'))) return $base.' border-emerald-600 bg-emerald-600 text-white hover:bg-emerald-700';
+	if(array_intersect($cores, Array('blue', 'primary', 'violet'))) return $base.' border-sky-600 bg-sky-600 text-white hover:bg-sky-700';
+
+	return $base.' border-slate-300 bg-white text-slate-700 hover:bg-slate-50';
+}
+
+/**
+ * Traduz o nome de ícone do Fomantic para o equivalente do Lucide (carregado pelo layout Tailwind).
+ *
+ * Os catálogos não se correspondem um a um; ícone sem tradução sai vazio (o botão fica só com o
+ * rótulo) em vez de um `data-lucide` inválido.
+ *
+ * @param string $icone Nome do ícone no Fomantic.
+ *
+ * @return string Nome no Lucide ou ''.
+ */
+function interface_botao_tailwind_icone($icone){
+	$mapa = Array(
+		'plus' => 'plus',
+		'plus circle' => 'circle-plus',
+		'add' => 'plus',
+		'trash' => 'trash-2',
+		'trash alternate' => 'trash-2',
+		'trash alternate outline' => 'trash-2',
+		'eye' => 'eye',
+		'eye slash' => 'eye-off',
+		'edit' => 'pencil',
+		'edit outline' => 'pencil',
+		'list' => 'list',
+		'list alternate' => 'list',
+		'list alternate outline' => 'list',
+		'th list' => 'list',
+		'copy' => 'copy',
+		'clone' => 'copy',
+		'clone outline' => 'copy',
+		'save' => 'save',
+		'arrow left' => 'arrow-left',
+		'sync' => 'refresh-cw',
+		'sync alternate' => 'refresh-cw',
+		'redo' => 'refresh-cw',
+		'undo' => 'undo-2',
+		'external alternate' => 'external-link',
+		'history' => 'history',
+		'download' => 'download',
+		'upload' => 'upload',
+		'cog' => 'settings',
+		'cogs' => 'settings',
+	);
+
+	$icone = strtolower(trim((string)$icone));
+	return $mapa[$icone] ?? '';
 }
 
 // ===== Interfaces ajax
@@ -3854,7 +3938,7 @@ function interface_adicionar_finalizar($params = false){
 		// cor - String - Obrigatório - Cor do botão.
 
 	$pagina = gestor_componente(Array(
-		'id' => 'interface-formulario-inclusao',
+		'id' => interface_componente_variante('interface-formulario-inclusao'),
 	));
 	
 	$pagina = modelo_var_troca($pagina,"#titulo#",$_GESTOR['pagina#titulo']);

@@ -1,6 +1,6 @@
 # BATCH-185: Documentação dos Módulos do Core (onda 3, em paralelo)
 
-Execução da [req-180](../human-requests/req-180.md), pelo **segundo agente**. As regras de convivência estão na req-180, §4.
+Execução da [req-180](../human-requests/archive/req-180.md), pelo **segundo agente**. As regras de convivência estão na req-180, §4.
 
 ## Progresso
 
