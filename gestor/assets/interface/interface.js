@@ -1,3 +1,15 @@
+/**
+ * req-189 (A2): excluir e status por GET exigem o token CSRF da sessão na query. Acrescenta o token
+ * só nesses links e não duplica (links renderizados pelo servidor já vêm com ele).
+ */
+window.interfaceUrlCsrf = function (url) {
+    url = String(url || '');
+    if (!/[?&]opcao=(excluir|status)(&|$)/.test(url) || /[?&]_csrf_token=/.test(url)) return url;
+    var token = (window.gestor && window.gestor.csrfToken) || '';
+    if (!token) return url;
+    return url + (url.indexOf('?') === -1 ? '?' : '&') + '_csrf_token=' + encodeURIComponent(token);
+};
+
 $(document).ready(function () {
 	// ===== iFrame Comunication
 
@@ -305,7 +317,7 @@ $(document).ready(function () {
 	function deletar_confirmacao() {
 		$('.ui.modal.confirm._interfaceDelecaoModal').modal({
 			onApprove: function () {
-				window.open(gestor.interface.excluir_url, "_self");
+				window.open(window.interfaceUrlCsrf(gestor.interface.excluir_url), "_self");
 
 				return false;
 			}
@@ -1041,7 +1053,7 @@ $(document).ready(function () {
 
 											if (opcoes.opcao == 'status') {
 												if (opcoes.status_atual == status) {
-													botoes = botoes + '<a class="ui button ' + opcoes.cor + '" href="?opcao=' + opcoes.opcao + '&status=' + opcoes.status_mudar + '&id=' + data + '" data-content="' + opcoes.tooltip + '" data-id="' + id + '"><i class="' + opcoes.icon + ' icon"></i></a>';
+													botoes = botoes + '<a class="ui button ' + opcoes.cor + '" href="' + window.interfaceUrlCsrf('?opcao=' + opcoes.opcao + '&status=' + opcoes.status_mudar + '&id=' + data) + '" data-content="' + opcoes.tooltip + '" data-id="' + id + '"><i class="' + opcoes.icon + ' icon"></i></a>';
 												}
 											} else {
 												if (opcoes.url) {
@@ -1049,10 +1061,10 @@ $(document).ready(function () {
 												} else {
 													switch (id) {
 														case 'excluir':
-															botoes = botoes + '<div class="ui button ' + opcoes.cor + ' excluir" data-href="?opcao=' + opcoes.opcao + '&id=' + data + '" data-content="' + opcoes.tooltip + '" data-id="' + id + '"><i class="' + opcoes.icon + ' icon"></i></div>';
+															botoes = botoes + '<div class="ui button ' + opcoes.cor + ' excluir" data-href="' + window.interfaceUrlCsrf('?opcao=' + opcoes.opcao + '&id=' + data) + '" data-content="' + opcoes.tooltip + '" data-id="' + id + '"><i class="' + opcoes.icon + ' icon"></i></div>';
 															break;
 														default:
-															botoes = botoes + '<a class="ui button ' + opcoes.cor + '" href="?opcao=' + opcoes.opcao + '&id=' + data + '" data-content="' + opcoes.tooltip + '" data-id="' + id + '"><i class="' + opcoes.icon + ' icon"></i></a>';
+															botoes = botoes + '<a class="ui button ' + opcoes.cor + '" href="' + window.interfaceUrlCsrf('?opcao=' + opcoes.opcao + '&id=' + data) + '" data-content="' + opcoes.tooltip + '" data-id="' + id + '"><i class="' + opcoes.icon + ' icon"></i></a>';
 													}
 												}
 											}

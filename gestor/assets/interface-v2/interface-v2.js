@@ -1,4 +1,16 @@
 /**
+ * req-189 (A2): excluir e status por GET exigem o token CSRF da sessão na query. Acrescenta o token
+ * só nesses links e não duplica (links renderizados pelo servidor já vêm com ele).
+ */
+window.interfaceUrlCsrf = function (url) {
+    url = String(url || '');
+    if (!/[?&]opcao=(excluir|status)(&|$)/.test(url) || /[?&]_csrf_token=/.test(url)) return url;
+    var token = (window.gestor && window.gestor.csrfToken) || '';
+    if (!token) return url;
+    return url + (url.indexOf('?') === -1 ? '?' : '&') + '_csrf_token=' + encodeURIComponent(token);
+};
+
+/**
  * Interface V2 — Frontend OOP Module
  * 
  * Reescrita moderna da interface.js usando classes ES6+.
@@ -691,7 +703,7 @@ $(document).ready(function () {
             // Delete handler
             $(document.body).on('mouseup tap', '.excluir', (e) => {
                 if (e.which !== 1 && e.which !== 0 && e.which !== undefined) return false;
-                this.#deleteConfirm.setUrl($(e.currentTarget).attr('data-href'));
+                this.#deleteConfirm.setUrl(window.interfaceUrlCsrf($(e.currentTarget).attr('data-href')));
                 this.#deleteConfirm.show();
             });
 
@@ -719,14 +731,14 @@ $(document).ready(function () {
 
                 if (opc.opcao === 'status') {
                     if (opc.status_atual === status) {
-                        botoes += `<a class="ui button ${opc.cor}" href="?opcao=${opc.opcao}&status=${opc.status_mudar}&id=${data}" data-content="${opc.tooltip}" data-id="${id}"><i class="${opc.icon} icon"></i></a>`;
+                        botoes += `<a class="ui button ${opc.cor}" href="${window.interfaceUrlCsrf(`?opcao=${opc.opcao}&status=${opc.status_mudar}&id=${data}`)}" data-content="${opc.tooltip}" data-id="${id}"><i class="${opc.icon} icon"></i></a>`;
                     }
                 } else if (opc.url) {
                     botoes += `<a class="ui button ${opc.cor}" href="${opc.url}?id=${data}" data-content="${opc.tooltip}" data-id="${id}"><i class="${opc.icon} icon"></i></a>`;
                 } else if (id === 'excluir') {
-                    botoes += `<div class="ui button ${opc.cor} excluir" data-href="?opcao=${opc.opcao}&id=${data}" data-content="${opc.tooltip}" data-id="${id}"><i class="${opc.icon} icon"></i></div>`;
+                    botoes += `<div class="ui button ${opc.cor} excluir" data-href="${window.interfaceUrlCsrf(`?opcao=${opc.opcao}&id=${data}`)}" data-content="${opc.tooltip}" data-id="${id}"><i class="${opc.icon} icon"></i></div>`;
                 } else {
-                    botoes += `<a class="ui button ${opc.cor}" href="?opcao=${opc.opcao}&id=${data}" data-content="${opc.tooltip}" data-id="${id}"><i class="${opc.icon} icon"></i></a>`;
+                    botoes += `<a class="ui button ${opc.cor}" href="${window.interfaceUrlCsrf(`?opcao=${opc.opcao}&id=${data}`)}" data-content="${opc.tooltip}" data-id="${id}"><i class="${opc.icon} icon"></i></a>`;
                 }
             }
 
@@ -926,7 +938,7 @@ $(document).ready(function () {
             // Delete handler
             $(document.body).on('mouseup tap', '.excluir', (e) => {
                 if (e.which !== 1 && e.which !== 0 && e.which !== undefined) return false;
-                deleteConfirm.setUrl($(e.currentTarget).attr('data-href'));
+                deleteConfirm.setUrl(window.interfaceUrlCsrf($(e.currentTarget).attr('data-href')));
                 deleteConfirm.show();
             });
 

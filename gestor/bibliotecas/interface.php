@@ -3202,7 +3202,7 @@ function interface_botoes_cabecalho($params = false){
 		switch($id){
 			case 'excluir':
 				$botoes_html .= '
-		<div class="ui button excluir '.$botao['cor'].'" data-href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+		<div class="ui button excluir '.$botao['cor'].'" data-href="'.interface_url_csrf($botao['url']).'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
 			<i class="'.$botao['icon'].' icon"></i>
 			'.$botao['rotulo'].'
 		</div>';
@@ -3216,7 +3216,7 @@ function interface_botoes_cabecalho($params = false){
 			</div>';
 				} else {
 					$botoes_html .= '
-			<a class="ui button '.$botao['cor'].'" href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
+			<a class="ui button '.$botao['cor'].'" href="'.interface_url_csrf($botao['url']).'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
 				'.(isset($botao['icon2']) ? '<i class="icons"><i class="'.$botao['icon'].' icon"></i><i class="'.$botao['icon2'].' icon"></i></i>' : '<i class="'.$botao['icon'].' icon"></i>').'
 				'.$botao['rotulo'].'
 			</a>';
@@ -3249,7 +3249,7 @@ function interface_botoes_rodape($params = false){
 		switch($id){
 			case 'excluir':
 				$botoes_html .= '
-		<div class="ui button excluir '.$botao['cor'].'" data-href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
+		<div class="ui button excluir '.$botao['cor'].'" data-href="'.interface_url_csrf($botao['url']).'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'">
 			<i class="'.$botao['icon'].' icon"></i>
 			'.$botao['rotulo'].'
 		</div>';
@@ -3263,7 +3263,7 @@ function interface_botoes_rodape($params = false){
 			</div>';
 				} else {
 					$botoes_html .= '
-			<a class="ui button '.$botao['cor'].'" href="'.$botao['url'].'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
+			<a class="ui button '.$botao['cor'].'" href="'.interface_url_csrf($botao['url']).'" data-content="'.$botao['tooltip'].'" data-id="'.$id.'"'.(isset($botao['target']) ? ' target="'.$botao['target'].'"':'').'>
 				'.(isset($botao['icon2']) ? '<i class="icons"><i class="'.$botao['icon'].' icon"></i><i class="'.$botao['icon2'].' icon"></i></i>' : '<i class="'.$botao['icon'].' icon"></i>').'
 				'.$botao['rotulo'].'
 			</a>';
@@ -3487,12 +3487,43 @@ function interface_ajax_verificar_campo(){
  * 
  * @return void Prepara $_GESTOR para exclusão ou redireciona.
  */
+/**
+ * req-189 (A2): excluir e status agem por GET (`?opcao=excluir&id=…`), e a validação global de CSRF
+ * só cobre POST/PUT/PATCH/DELETE. Com o cookie `SameSite=Lax`, um link aberto por um administrador
+ * logado bastava para excluir ou desativar registros. Essas ações passam a exigir o token da sessão
+ * na query (`_csrf_token`); os links do painel já saem com ele (`interface_url_csrf()` e
+ * `window.interfaceUrlCsrf`). Sem o token: alerta e volta à raiz do módulo, sem alterar nada.
+ */
+function interface_acao_get_exigir_csrf(){
+	if(gestor_csrf_validar(seguranca_csrf_token_requisicao())) return;
+
+	interface_alerta(Array(
+		'redirect' => true,
+		'msg' => gestor_variaveis(Array('modulo' => 'interface', 'id' => 'alert-csrf-action-invalid')),
+	));
+	gestor_redirecionar_raiz();
+}
+
+/**
+ * Acrescenta o token CSRF da sessão a links de `opcao=excluir`/`opcao=status` (req-189, A2).
+ *
+ * @param string $url
+ * @return string
+ */
+function interface_url_csrf($url){
+	$url = (string)$url;
+	if(!preg_match('/[?&]opcao=(excluir|status)(&|$)/', $url) || preg_match('/[?&]_csrf_token=/', $url)) return $url;
+
+	return $url.(strpos($url, '?') === false ? '?' : '&').'_csrf_token='.urlencode(gestor_csrf_token());
+}
+
 function interface_excluir_iniciar($params = false){
 	global $_GESTOR;
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
 	if(isset($_REQUEST['id']) && $_SERVER['REQUEST_METHOD'] === 'GET'){
+		interface_acao_get_exigir_csrf();
 		$_GESTOR['modulo-registro-id'] = banco_escape_field($_REQUEST['id']);
 	}
 	
@@ -3640,6 +3671,7 @@ function interface_status_iniciar($params = false){
 	if($params)foreach($params as $var => $val)$$var = $val;
 	
 	if(isset($_REQUEST['id']) && $_SERVER['REQUEST_METHOD'] === 'GET'){
+		interface_acao_get_exigir_csrf();
 		$_GESTOR['modulo-registro-id'] = banco_escape_field($_REQUEST['id']);
 	}
 	
@@ -5008,6 +5040,18 @@ function interface_simples_finalizar($params = false){
 	}
 }
 
+/**
+ * Nome de coluna aceito em ORDER BY/WHERE da listagem: identificador simples (`nome`, `t.nome`),
+ * nunca a coluna de ações nem expressão. req-189 (A1).
+ *
+ * @param string $coluna
+ * @return bool
+ */
+function interface_listar_coluna_segura($coluna){
+	$coluna = (string)$coluna;
+	return $coluna !== '' && $coluna !== INTERFACE_COLUNA_ACOES && preg_match('/^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z_][A-Za-z0-9_]*)?$/', $coluna) === 1;
+}
+
 function interface_listar_ajax($params = false){
 	global $_GESTOR;
 	
@@ -5050,58 +5094,47 @@ function interface_listar_ajax($params = false){
 		$interface['registrosPorPagina'] = $length;
 	}
 	
-	if(isset($_REQUEST['columns'])){
-		$columns = $_REQUEST['columns'];
-	}
-	
-	if(isset($_REQUEST['columnsExtraSearch'])){
-		$columnsExtraSearch = $_REQUEST['columnsExtraSearch'];
-	}
-	
-	if(isset($_REQUEST['order'])){
+	// req-189 (A1): colunas, ordenação e busca vêm SÓ da configuração da listagem guardada na sessão
+	// do servidor (`interface_listar_tabela`). Antes, `columns[i][data]`, `columnsExtraSearch` e o termo
+	// de busca do `$_REQUEST` entravam direto no SQL: qualquer usuário com acesso a uma listagem lia
+	// outras tabelas. O `columns` enviado pelo DataTables só serve de índice.
+	$colunasServidor = (isset($interface['columns']) && is_array($interface['columns'])) ? array_values($interface['columns']) : Array();
+	$colunasExtraServidor = (isset($interface['columnsExtraSearch']) && is_array($interface['columnsExtraSearch'])) ? $interface['columnsExtraSearch'] : Array();
+
+	if(isset($_REQUEST['order']) && is_array($_REQUEST['order'])){
 		$orderBanco = '';
-		$order = $_REQUEST['order'];
-		
-		foreach($order as $o){
-			$col = $o['column'];
-			$dir = $o['dir'];
-			
-			if(!is_numeric($col)){
-				$col = '0';
-			}
-			
-			if($dir != 'asc'){
-				$dir = 'desc';
-			}
-			
-			$orderBanco .= (strlen($orderBanco) > 0 ? ',':'').$columns[$col]['data'].' '.$dir;
+
+		foreach($_REQUEST['order'] as $o){
+			if(!is_array($o) || !isset($o['column']) || !ctype_digit((string)$o['column'])) continue;
+			$coluna = $colunasServidor[(int)$o['column']] ?? null;
+			if(!$coluna || !interface_listar_coluna_segura($coluna['data'] ?? '') || (isset($coluna['orderable']) && $coluna['orderable'] === false)) continue;
+
+			$dir = (($o['dir'] ?? '') === 'asc') ? 'asc' : 'desc';
+			$orderBanco .= (strlen($orderBanco) > 0 ? ',':'').$coluna['data'].' '.$dir;
 		}
-		
-		$banco['order'] = ' ORDER BY '.$orderBanco;
+
+		if($orderBanco !== '') $banco['order'] = ' ORDER BY '.$orderBanco;
 	}
-	
-	if(isset($_REQUEST['search'])){
-		if(isset($_REQUEST['search']['value'])){
-			$search = $_REQUEST['search']['value'];
-			
-			if(strlen($search) > 0){
-				foreach($columns as $col){
-					if($col['searchable'] == "true"){
-						$procurar .= (strlen($procurar) > 0 ? ' OR ':'')."UCASE(".$col['data'].") LIKE UCASE('%".$search."%')";
-					}
-				}
-			}
-			
-			if(isset($columnsExtraSearch)){
-				if(strlen($search) > 0){
-					foreach($columnsExtraSearch as $col){
-						$procurar .= (strlen($procurar) > 0 ? ' OR ':'')."UCASE(".$col.") LIKE UCASE('%".$search."%')";
-					}
-				}
-			}
+
+	if(isset($_REQUEST['search']['value']) && is_string($_REQUEST['search']['value']) && $_REQUEST['search']['value'] !== ''){
+		// Termo escapado para o SQL e com `%`/`_` literais (a busca é "contém").
+		$termo = banco_escape_field(addcslashes($_REQUEST['search']['value'], '%_\\'));
+
+		$pesquisaveis = Array();
+		foreach($colunasServidor as $coluna){
+			if(isset($coluna['searchable']) && $coluna['searchable'] === false) continue;
+			$pesquisaveis[] = $coluna['data'] ?? '';
+		}
+		foreach($colunasExtraServidor as $coluna){
+			$pesquisaveis[] = $coluna;
+		}
+
+		foreach(array_unique($pesquisaveis) as $coluna){
+			if(!interface_listar_coluna_segura($coluna)) continue;
+			$procurar .= (strlen($procurar) > 0 ? ' OR ':'')."UCASE(".$coluna.") LIKE UCASE('%".$termo."%')";
 		}
 	}
-	
+
 	// ===== Dados do Banco
 	
 	if(isset($banco['status'])){

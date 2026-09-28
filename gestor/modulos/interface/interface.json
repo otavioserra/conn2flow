@@ -452,6 +452,11 @@
                     "id": "file-mime-type-unknown",
                     "value": "indefinido/indefinido",
                     "type": "string"
+                },
+                {
+                    "id": "alert-csrf-action-invalid",
+                    "value": "Ação recusada: o link não tem o token de segurança da sua sessão. Use os botões do painel.",
+                    "type": "string"
                 }
             ]
         },
@@ -908,6 +913,11 @@
                 {
                     "id": "file-mime-type-unknown",
                     "value": "unknown/unknown",
+                    "type": "string"
+                },
+                {
+                    "id": "alert-csrf-action-invalid",
+                    "value": "Action refused: the link lacks your session security token. Use the panel buttons.",
                     "type": "string"
                 }
             ]

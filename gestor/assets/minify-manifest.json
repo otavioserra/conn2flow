@@ -50,9 +50,9 @@
         "minificado": 16841
     },
     "gestor/assets/interface-v2/interface-v2.js": {
-        "sha1": "96fc2a0fbbd13ae4cbf2309c2ffe48865098507a",
-        "origem": 40487,
-        "minificado": 13524
+        "sha1": "0456a69f98872f9a0ab47f238de57570518806f7",
+        "origem": 41194,
+        "minificado": 13929
     },
     "gestor/assets/interface/editor-texto.js": {
         "sha1": "3a4a2787e357221082a3ec7566bc939804c7a12c",
@@ -100,9 +100,9 @@
         "minificado": 3721
     },
     "gestor/assets/interface/interface.js": {
-        "sha1": "9ed017576d9079667484e38d169592c668e319f3",
-        "origem": 33864,
-        "minificado": 17546
+        "sha1": "2be8c0874088c5b7c630db38e6dbfb118db2e3b1",
+        "origem": 34546,
+        "minificado": 17920
     },
     "gestor/assets/interface/pdf-viewer.js": {
         "sha1": "6aa8f3569e666c772d4248233d566aa7a02bf394",
