@@ -34,7 +34,7 @@ Falhou, a resposta é **403** com `{"status":"error","code":"CSRF_INVALID_OR_EXP
 | `seguranca_csrf_retorno_normalizar($r)` | Aceita só um caminho relativo (sem esquema, `//`, `:`, `..` mesmo codificado, nem controles) para voltar depois do login |
 
 > [!WARNING]
-> Requisições **GET** nunca são verificadas. Toda ação que altera dados precisa ser POST; as ações por GET da interface de CRUD são o item A2 da req-181. Uma página de projeto com caminho começando por `api/` também fica isenta.
+> Requisições **GET** nunca são verificadas. Toda ação que altera dados precisa ser POST. As exceções da interface de CRUD (excluir e status por GET) exigem o token na query, conferido por `interface_excluir_iniciar()`/`interface_status_iniciar()` (req-189). Uma página de projeto com caminho começando por `api/` também fica isenta.
 
 Em código próprio, formulários enviados por `fetch`/`$.ajax` já levam o token (o `global.js` o anexa). Num `<form>` HTML comum, inclua o campo:
 

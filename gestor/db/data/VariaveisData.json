@@ -10548,6 +10548,15 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "alert-csrf-action-invalid",
+        "valor": "Ação recusada: o link não tem o token de segurança da sua sessão. Use os botões do painel.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "interface",
         "id": "field-positive-value",
@@ -11353,6 +11362,15 @@
         "modulo": "interface",
         "id": "file-mime-type-unknown",
         "valor": "unknown\/unknown",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "alert-csrf-action-invalid",
+        "valor": "Action refused: the link lacks your session security token. Use the panel buttons.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

@@ -7,7 +7,7 @@ order: 12
 sources:
   - gestor/bibliotecas/interface.php
   - gestor/bibliotecas/seguranca.php
-verified_at: dd893291
+verified_at: f3511524
 ---
 
 # Biblioteca `interface.php`
@@ -134,7 +134,7 @@ $_GESTOR['interface']['listar']['finalizar'] = Array(
 - A **coluna de ações é a primeira** (req-147) e usa uma chave própria (`INTERFACE_COLUNA_ACOES`), para o id dos botões nunca vir de uma coluna formatada.
 - Colunas: `ordenar` (`asc`/`desc`), `nao_ordenar`, `nao_procurar`, `nao_visivel`, `className` e `formatar` (veja *Formatação*).
 - Registros com `status='D'` nunca aparecem. A página atual, o total e o tamanho da página ficam numa **variável de sessão por usuário** (`<modulo>-<opcao>-interface-<usuario>`), que as próximas chamadas AJAX usam.
-- A paginação, a busca e a ordenação seguintes vêm por AJAX (`ajax-opcao=listar`) em `interface_ajax_listar()` → `interface_listar_ajax()`. A busca faz `UCASE(coluna) LIKE UCASE('%termo%')` em cada coluna pesquisável e em `columnsExtraSearch` (por padrão, `id`).
+- A paginação, a busca e a ordenação seguintes vêm por AJAX (`ajax-opcao=listar`) em `interface_ajax_listar()` → `interface_listar_ajax()`. A busca faz `UCASE(coluna) LIKE UCASE('%termo%')` em cada coluna pesquisável e em `columnsExtraSearch` (por padrão, `id`). Colunas, ordenação e colunas extras vêm **só da configuração guardada na sessão** pelo servidor; o `columns` enviado pelo DataTables serve apenas de índice, nome de coluna precisa ser um identificador simples (`interface_listar_coluna_segura()`) e o termo é escapado, com `%` e `_` tratados como texto (req-189).
 
 ## Formulários
 
@@ -219,11 +219,7 @@ As funções auxiliares de formatação:
 
 ## Segurança e defeitos conhecidos
 
-> [!CAUTION]
-> **SQL injection na busca da listagem.** `interface_listar_ajax()` monta o `WHERE`/`ORDER BY` com o termo de busca (`search[value]`), os nomes de coluna (`columns[i][data]`) e `columnsExtraSearch` vindos do `$_REQUEST`, **sem escape nem lista de permissão**. Qualquer usuário com acesso a uma listagem consegue ler outras tabelas. Correção pendente (ver backlog de segurança).
-
-> [!CAUTION]
-> **`excluir` e `status` agem por GET** (`?opcao=excluir&id=…`), e a validação CSRF do core só cobre POST/PUT/PATCH/DELETE. Com o cookie `SameSite=Lax`, um link aberto por um administrador logado pode excluir ou desativar registros. Correção pendente.
+**Excluir e status exigem o token CSRF.** Essas duas ações agem por GET (`?opcao=excluir&id=…`, `?opcao=status&status=I&id=…`), e a validação global de CSRF só cobre POST/PUT/PATCH/DELETE. Por isso `interface_excluir_iniciar()` e `interface_status_iniciar()` chamam `interface_acao_get_exigir_csrf()`, que exige o token da sessão na query (`_csrf_token`); sem ele, mostram um alerta e voltam à raiz do módulo sem alterar nada (req-189). Os links do painel já saem com o token: `interface_url_csrf($url)` nos botões renderizados pelo servidor e `window.interfaceUrlCsrf(url)` nos links montados pelo `interface.js`/`interface-v2.js`. Link de excluir ou status montado à mão num módulo precisa passar por uma das duas.
 
 > [!WARNING]
 > `interface_verificar_campos()` põe o **nome da coluna** no SQL protegido só por `banco_escape_field()`, que não impede expressões sem aspas. O valor também chega **escapado duas vezes** pelo AJAX `verificar-campo`, então valores com apóstrofo nunca batem.
@@ -238,7 +234,7 @@ Outros defeitos: `interface_editar_finalizar()` e `interface_alteracoes_finaliza
 
 <!-- c2f:extract:start -->
 
-Referência gerada a partir de `gestor/bibliotecas/interface.php` por `c2f docs:extract` — 58 funções. Não edite dentro deste bloco.
+Referência gerada a partir de `gestor/bibliotecas/interface.php` por `c2f docs:extract` — 61 funções. Não edite dentro deste bloco.
 
 - `interface_data_hora_from_datetime_to_text(string $data_hora, string|false $format = false): string` — [linha 38](../../../../../gestor/bibliotecas/interface.php#L38)
   Converte data/hora do formato datetime (YYYY-MM-DD HH:MM:SS) para texto formatado.
@@ -429,12 +425,12 @@ Referência gerada a partir de `gestor/bibliotecas/interface.php` por `c2f docs:
 - `interface_ajax_verificar_campo(): void` — [linha 3451](../../../../../gestor/bibliotecas/interface.php#L3451)
   Processa requisição AJAX para verificar existência de valor em campo.
   Retorno: Define $_GESTOR['ajax-json'] indicando se campo existe (true/false).
-- `interface_excluir_iniciar(array|false $params = false): void` — [linha 3490](../../../../../gestor/bibliotecas/interface.php#L3490)
-  Inicializa a interface de exclusão de registro.
-  Parâmetros:
-  - `$params`: Parâmetros da função (não utilizado nesta função).
-  Retorno: Prepara $_GESTOR para exclusão ou redireciona.
-- `interface_excluir_finalizar(array|false $params = false): void` — [linha 3521](../../../../../gestor/bibliotecas/interface.php#L3521)
+- `interface_acao_get_exigir_csrf()` — [linha 3497](../../../../../gestor/bibliotecas/interface.php#L3497)
+  req-189 (A2): excluir e status agem por GET (`?opcao=excluir&id=…`), e a validação global de CSRF só cobre POST/PUT/PATCH/DELETE. Com o cookie `SameSite=Lax`, um link aberto por um administrador logado bastava para excluir ou desativar registros. Essas ações passam a exigir o token da sessão na query (`_csrf_token`); os links do painel já saem com ele (`interface_url_csrf()` e `window.interfaceUrlCsrf`). Sem o token: alerta e volta à raiz do módulo, sem alterar nada.
+- `interface_url_csrf(string $url): string` — [linha 3513](../../../../../gestor/bibliotecas/interface.php#L3513)
+  Acrescenta o token CSRF da sessão a links de `opcao=excluir`/`opcao=status` (req-189, A2).
+- `interface_excluir_iniciar($params = false)` — [linha 3520](../../../../../gestor/bibliotecas/interface.php#L3520)
+- `interface_excluir_finalizar(array|false $params = false): void` — [linha 3552](../../../../../gestor/bibliotecas/interface.php#L3552)
   Finaliza a interface de exclusão de registro (exclusão lógica).
   Parâmetros:
   - `$params`: Parâmetros da função.
@@ -442,12 +438,12 @@ Referência gerada a partir de `gestor/bibliotecas/interface.php` por `c2f docs:
   - `$params['historico']`: Se false, desativa inclusão no histórico (padrão: ativa).
   - `$params['callbackFunction']`: Função callback a executar após exclusão.
   Retorno: Executa exclusão e redireciona para listagem.
-- `interface_status_iniciar(array|false $params = false): void` — [linha 3637](../../../../../gestor/bibliotecas/interface.php#L3637)
+- `interface_status_iniciar(array|false $params = false): void` — [linha 3668](../../../../../gestor/bibliotecas/interface.php#L3668)
   Inicializa a interface de alteração de status de registro.
   Parâmetros:
   - `$params`: Parâmetros da função (não utilizado nesta função).
   Retorno: Prepara $_GESTOR para alteração de status ou redireciona.
-- `interface_status_finalizar(array|false $params = false): void` — [linha 3672](../../../../../gestor/bibliotecas/interface.php#L3672)
+- `interface_status_finalizar(array|false $params = false): void` — [linha 3704](../../../../../gestor/bibliotecas/interface.php#L3704)
   Finaliza a interface de alteração de status de registro.
   Parâmetros:
   - `$params`: Parâmetros da função.
@@ -455,30 +451,32 @@ Referência gerada a partir de `gestor/bibliotecas/interface.php` por `c2f docs:
   - `$params['historico']`: Se false, desativa inclusão no histórico (padrão: ativa).
   - `$params['callbackFunction']`: Função callback a executar após alteração.
   Retorno: Executa alteração de status e redireciona para listagem.
-- `interface_adicionar_iniciar($params = false)` — [linha 3764](../../../../../gestor/bibliotecas/interface.php#L3764)
-- `interface_clonar_iniciar($params = false)` — [linha 3774](../../../../../gestor/bibliotecas/interface.php#L3774)
-- `interface_adicionar_finalizar($params = false)` — [linha 3802](../../../../../gestor/bibliotecas/interface.php#L3802)
-- `interface_adicionar_incomum_iniciar($params = false)` — [linha 3920](../../../../../gestor/bibliotecas/interface.php#L3920)
-- `interface_adicionar_incomum_finalizar($params = false)` — [linha 3930](../../../../../gestor/bibliotecas/interface.php#L3930)
-- `interface_editar_incomum_iniciar($params = false)` — [linha 4019](../../../../../gestor/bibliotecas/interface.php#L4019)
-- `interface_editar_incomum_finalizar($params = false)` — [linha 4051](../../../../../gestor/bibliotecas/interface.php#L4051)
-- `interface_editar_iniciar($params = false)` — [linha 4218](../../../../../gestor/bibliotecas/interface.php#L4218)
-- `interface_editar_finalizar($params = false)` — [linha 4250](../../../../../gestor/bibliotecas/interface.php#L4250)
-- `interface_visualizar_iniciar($params = false)` — [linha 4436](../../../../../gestor/bibliotecas/interface.php#L4436)
-- `interface_visualizar_finalizar($params = false)` — [linha 4464](../../../../../gestor/bibliotecas/interface.php#L4464)
-- `interface_config_iniciar($params = false)` — [linha 4586](../../../../../gestor/bibliotecas/interface.php#L4586)
-- `interface_config_finalizar($params = false)` — [linha 4600](../../../../../gestor/bibliotecas/interface.php#L4600)
-- `interface_alteracoes_iniciar($params = false)` — [linha 4710](../../../../../gestor/bibliotecas/interface.php#L4710)
-- `interface_alteracoes_finalizar($params = false)` — [linha 4736](../../../../../gestor/bibliotecas/interface.php#L4736)
-- `interface_simples_iniciar($params = false)` — [linha 4902](../../../../../gestor/bibliotecas/interface.php#L4902)
-- `interface_simples_finalizar($params = false)` — [linha 4916](../../../../../gestor/bibliotecas/interface.php#L4916)
-- `interface_listar_ajax($params = false)` — [linha 5011](../../../../../gestor/bibliotecas/interface.php#L5011)
-- `interface_listar_tabela($params = false)` — [linha 5194](../../../../../gestor/bibliotecas/interface.php#L5194)
-- `interface_listar_iniciar($params = false)` — [linha 5499](../../../../../gestor/bibliotecas/interface.php#L5499)
-- `interface_listar_finalizar($params = false)` — [linha 5506](../../../../../gestor/bibliotecas/interface.php#L5506)
-- `interface_ajax_iniciar($params = false)` — [linha 5600](../../../../../gestor/bibliotecas/interface.php#L5600)
-- `interface_ajax_finalizar($params = false)` — [linha 5607](../../../../../gestor/bibliotecas/interface.php#L5607)
-- `interface_iniciar($params = false)` — [linha 5640](../../../../../gestor/bibliotecas/interface.php#L5640)
-- `interface_finalizar($params = false)` — [linha 5707](../../../../../gestor/bibliotecas/interface.php#L5707)
+- `interface_adicionar_iniciar($params = false)` — [linha 3796](../../../../../gestor/bibliotecas/interface.php#L3796)
+- `interface_clonar_iniciar($params = false)` — [linha 3806](../../../../../gestor/bibliotecas/interface.php#L3806)
+- `interface_adicionar_finalizar($params = false)` — [linha 3834](../../../../../gestor/bibliotecas/interface.php#L3834)
+- `interface_adicionar_incomum_iniciar($params = false)` — [linha 3952](../../../../../gestor/bibliotecas/interface.php#L3952)
+- `interface_adicionar_incomum_finalizar($params = false)` — [linha 3962](../../../../../gestor/bibliotecas/interface.php#L3962)
+- `interface_editar_incomum_iniciar($params = false)` — [linha 4051](../../../../../gestor/bibliotecas/interface.php#L4051)
+- `interface_editar_incomum_finalizar($params = false)` — [linha 4083](../../../../../gestor/bibliotecas/interface.php#L4083)
+- `interface_editar_iniciar($params = false)` — [linha 4250](../../../../../gestor/bibliotecas/interface.php#L4250)
+- `interface_editar_finalizar($params = false)` — [linha 4282](../../../../../gestor/bibliotecas/interface.php#L4282)
+- `interface_visualizar_iniciar($params = false)` — [linha 4468](../../../../../gestor/bibliotecas/interface.php#L4468)
+- `interface_visualizar_finalizar($params = false)` — [linha 4496](../../../../../gestor/bibliotecas/interface.php#L4496)
+- `interface_config_iniciar($params = false)` — [linha 4618](../../../../../gestor/bibliotecas/interface.php#L4618)
+- `interface_config_finalizar($params = false)` — [linha 4632](../../../../../gestor/bibliotecas/interface.php#L4632)
+- `interface_alteracoes_iniciar($params = false)` — [linha 4742](../../../../../gestor/bibliotecas/interface.php#L4742)
+- `interface_alteracoes_finalizar($params = false)` — [linha 4768](../../../../../gestor/bibliotecas/interface.php#L4768)
+- `interface_simples_iniciar($params = false)` — [linha 4934](../../../../../gestor/bibliotecas/interface.php#L4934)
+- `interface_simples_finalizar($params = false)` — [linha 4948](../../../../../gestor/bibliotecas/interface.php#L4948)
+- `interface_listar_coluna_segura(string $coluna): bool` — [linha 5050](../../../../../gestor/bibliotecas/interface.php#L5050)
+  Nome de coluna aceito em ORDER BY/WHERE da listagem: identificador simples (`nome`, `t.nome`), nunca a coluna de ações nem expressão. req-189 (A1).
+- `interface_listar_ajax($params = false)` — [linha 5055](../../../../../gestor/bibliotecas/interface.php#L5055)
+- `interface_listar_tabela($params = false)` — [linha 5227](../../../../../gestor/bibliotecas/interface.php#L5227)
+- `interface_listar_iniciar($params = false)` — [linha 5532](../../../../../gestor/bibliotecas/interface.php#L5532)
+- `interface_listar_finalizar($params = false)` — [linha 5539](../../../../../gestor/bibliotecas/interface.php#L5539)
+- `interface_ajax_iniciar($params = false)` — [linha 5633](../../../../../gestor/bibliotecas/interface.php#L5633)
+- `interface_ajax_finalizar($params = false)` — [linha 5640](../../../../../gestor/bibliotecas/interface.php#L5640)
+- `interface_iniciar($params = false)` — [linha 5673](../../../../../gestor/bibliotecas/interface.php#L5673)
+- `interface_finalizar($params = false)` — [linha 5740](../../../../../gestor/bibliotecas/interface.php#L5740)
 
 <!-- c2f:extract:end -->

@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/interface.php
   - gestor/bibliotecas/seguranca.php
   - gestor/controladores/api/api-module-distributed.php
-verified_at: 3b099ff0
+verified_at: f3511524
 ---
 
 # AI and administrative security

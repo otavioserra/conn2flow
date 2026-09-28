@@ -7,7 +7,7 @@ sources:
   - gestor/modulos/interface/interface.json
   - gestor/bibliotecas/interface.php
   - gestor/db/migrations/20250723165549_create_variaveis_table.php
-verified_at: c4e05805
+verified_at: f3511524
 ---
 
 # interface module

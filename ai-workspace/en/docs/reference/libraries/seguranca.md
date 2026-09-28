@@ -34,7 +34,7 @@ On failure, the answer is **403** with `{"status":"error","code":"CSRF_INVALID_O
 | `seguranca_csrf_retorno_normalizar($r)` | Accepts only a relative path (no scheme, `//`, `:`, `..` even encoded, or control characters) to return to after login |
 
 > [!WARNING]
-> **GET** requests are never checked. Every action that changes data must be a POST; the GET actions of the CRUD interface are item A2 of req-181. A project page whose path starts with `api/` is exempt too.
+> **GET** requests are never checked. Every action that changes data must be a POST. The CRUD interface exceptions (delete and status on GET) require the token in the query, checked by `interface_excluir_iniciar()`/`interface_status_iniciar()` (req-189). A project page whose path starts with `api/` is exempt too.
 
 In your own code, forms sent with `fetch`/`$.ajax` already carry the token (`global.js` attaches it). In a plain HTML `<form>`, include the field:
 

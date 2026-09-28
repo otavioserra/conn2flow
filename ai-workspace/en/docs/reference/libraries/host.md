@@ -7,7 +7,7 @@ order: 330
 sources:
   - gestor/bibliotecas/host.php
   - gestor/bibliotecas/interface.php
-verified_at: 8768245a
+verified_at: f3511524
 ---
 
 # `host.php` library

@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/interface.php
   - gestor/resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html
   - gestor/modulos/admin-layouts/resources/pt-br/components/modal-layout/modal-layout.html
-verified_at: ad58064f
+verified_at: f3511524
 ---
 
 # Interface administrativa
