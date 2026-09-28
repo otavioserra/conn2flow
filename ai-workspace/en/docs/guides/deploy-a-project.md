@@ -6,10 +6,11 @@ sources:
   - cli/src/Commands/ProjectUpdateAllCommand.php
   - cli/src/Commands/ProjectDeployCommand.php
   - ai-workspace/en/scripts/projects/deploy-project-v2.sh
+  - gestor/controladores/api/api.php
   - gestor/bibliotecas/cron.php
   - gestor/bibliotecas/sitemap.php
   - gestor/bibliotecas/comunicacao.php
-verified_at: e5b61f8e
+verified_at: 704306e5
 ---
 
 # Update and deploy a project
