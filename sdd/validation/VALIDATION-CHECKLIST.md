@@ -1,5 +1,11 @@
 ﻿# Validation Checklist
 
+## BATCH-197 — Ativação de parcelamento no PaymentIntent Stripe (req-193)
+
+- [x] Payload legado sem `payment_method_options` quando a opção não é informada.
+- [x] Opção habilitada serializa `payment_method_options[card][installments][enabled]`.
+- [x] Teste PHPUnit focado (3 testes/5 asserções), `php -l` e `git diff --check` aprovados.
+
 ## BATCH-184 — Migração do acervo de docs, ondas 1 e 2 (req-179)
 
 - [x] `docs:audit --json`: 0 erros; `legacy` = 0 em pt-br e en; 41 bibliotecas e 4 conceitos da onda 1 documentados do código.

@@ -16,6 +16,12 @@
 
 ## Tarefas recentes
 
+### 2026-09-29 — BATCH-197 (REQ-193): opção de parcelas em PaymentIntent
+
+- `stripe_criar_payment_intent()` aceita `installments` opt-in e só acrescenta `payment_method_options.card.installments.enabled=true` quando estritamente habilitado; sem a opção o payload anterior permanece igual.
+- Validação do escopo de biblioteca: PHPUnit 3 testes/5 asserções, `php -l` e `git diff --check` aprovados. País, limite máximo, juros e exibição no Payment Element pertencem ao consumidor e não foram homologados pela API/sandbox neste batch.
+- `ai:archive-sdd --keep=10 --repair-links` moveu REQ-183/BATCH-187 mas saiu com código 1 por seis links órfãos preexistentes; não reparar/reescrever esses arquivos sem escopo explícito.
+
 ### 2026-09-28 — BATCH-194 (req-190): formulários do `interface` em Tailwind
 
 - Botões de cabeçalho/rodapé são montados em PHP (`interface_botoes_html`): as utilities só chegam ao

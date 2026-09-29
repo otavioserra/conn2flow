@@ -25,7 +25,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-184 | complete | Migração do acervo de docs — ondas 1 e 2 (req-179) | [BATCH-184.md](archive/BATCH-184.md) | Conceitos da onda 1 e as 41 bibliotecas; legado zerado; achados de segurança A1–A11 na req-181. Concluído em 2026-09-26; pipeline das docs passa à req-184. |
 | BATCH-185 | complete | Documentação dos módulos do core — onda 3, segundo agente (req-180) | [BATCH-185.md](archive/BATCH-185.md) | 32 módulos reescritos (pt-br + en), legado de módulos removido; auditoria final: 66 referências, nenhuma ausente, score 0. Publicação no site feita pelo BATCH-184. Concluído em 2026-09-26. |
 | BATCH-186 | complete | Docs do core — guias e referência de CLI e API, onda 4 (req-182) | [BATCH-186.md](archive/BATCH-186.md) | Agente em outra infraestrutura. Sem pipeline. |
-| BATCH-187 | complete | Docs do core — conceitos, novidades e limpeza do legado, onda 5 (req-183) | [BATCH-187.md](BATCH-187.md) | Agente em outra infraestrutura. Sem pipeline. |
+| BATCH-187 | complete | Docs do core — conceitos, novidades e limpeza do legado, onda 5 (req-183) | [BATCH-187.md](archive/BATCH-187.md) | Agente em outra infraestrutura. Sem pipeline. |
 | BATCH-188 | complete | Publicação do SDD do core e dono do pipeline das docs, onda 6 (req-184) | [BATCH-188.md](BATCH-188.md) | Agente em outra infraestrutura. Pipeline só depois do BATCH-184 `complete`. |
 | BATCH-189 | complete | Ajustes de navegação e referência nas docs online (req-185) | [BATCH-189.md](BATCH-189.md) | Agente em paralelo. Menu centralizado, anterior/próximo com rótulo do menu, descrição das funções, sem link de edição. Sem pipeline. |
 | BATCH-190 | complete | Módulo `documentation` no conn2flow-site (req-186) | [BATCH-190.md](BATCH-190.md) | docs:build com módulo dono e status; tela `/documentation/`; migração das páginas; Lab 8/8; site `583acb0`. |
@@ -36,6 +36,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-195 | complete | Sitemap sem o fluxo de compra e deploy por API sem estouro de memória (req-191) | [BATCH-195.md](BATCH-195.md) | Achado do E2E do e-commerce do conn2flow-site: carrinho, checkout e desfechos indexados. |
 | BATCH-196 | complete | Cupom de desconto na criação de assinatura do Stripe (req-192) | [BATCH-196.md](BATCH-196.md) | `stripe_criar_assinatura()` com `coupon_id`; pedido pela REQ-069 do conn2flow-site (cupons nas assinaturas). |
 | BATCH-198 | complete | Hotfix: migrações obsoletas no ambiente em execução (req-194) | [BATCH-198.md](BATCH-198.md) | Limpeza por dono (core/projeto) no deploy por API, na atualização do sistema e no pipeline rsync; choques só registrados. Épico no BL-028. |
+| BATCH-197 | completed | Ativação opcional de parcelamento no PaymentIntent Stripe (req-193) | [BATCH-197.md](BATCH-197.md) | Extensão compartilhada para a REQ-072 do conn2flow-site; teste focado, lint e diff-check aprovados. |
 
 ## Regra operacional
 
