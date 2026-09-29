@@ -1,7 +1,7 @@
 # BL-028 — Atualização segura: core canibalizável, choques, exclusão de dados, backup e rollback
 
 - **Tipo**: Epic / Architecture
-- **Status**: IN-DISCUSSION
+- **Status**: IN-DISCUSSION — propostas A a G aprovadas pelo Humano em 2026-09-29 para permanecer no backlog (promoção a requisição quando ele decidir)
 - **Severidade sugerida**: ALTA (hoje uma atualização pode desfazer a customização de um projeto em silêncio, e não há volta)
 - **Origem**: Humano, 2026-09-29, junto com o hotfix [req-194](../human-requests/req-194.md) (migrações obsoletas)
 - **Componentes**: `controladores/atualizacoes/atualizacoes-sistema.php`, `atualizacoes-banco-de-dados.php`, `atualizacoes-migracoes.php`, `controladores/api/api.php` (`api_project_update`), `ai-workspace/en/scripts/projects/{deploy-project-v2,synchronize-project,sync-core-to-project}.sh`, `cli/src/Commands/ProjectUpdateAllCommand.php`
@@ -75,6 +75,16 @@ Em qualquer opção: **registro de choques** (tabela `atualizacoes_choques` ou J
 - Extrair em staging completo e trocar por `rename` de pastas (troca quase atômica) em vez de copiar arquivo a arquivo.
 - Trava de deploy por ambiente (arquivo de lock com dono, execução e TTL) respeitada por API, atualização do sistema e pipeline; no Lab, o lock também identifica o agente.
 
+### G. Diff e merge dos choques (pedido do Humano, 2026-09-29)
+
+Quando uma entrega vai sobrescrever um arquivo que está **diferente** no ar (o projeto sobre o core, o core sobre o projeto, ou uma edição feita no servidor), o sistema oferece:
+
+1. **Lista de choques + as duas cópias.** Antes de aplicar (ou em modo simulação), o ambiente devolve a lista dos arquivos em choque e um pacote com a versão **que vai ser publicada** e a versão **que está no ar** de cada um (com o hash e a camada de origem).
+2. **Diff e merge no repositório.** Um comando do CLI (ex.: `c2f update:conflicts <projeto> [--pull]`) baixa esse pacote para uma pasta local e abre o diff; a pessoa decide por arquivo: sobrescrever, manter o que está no ar ou **mesclar partes** (ex.: o usuário trocou só um texto). O resultado volta como resolução (`c2f update:resolve`) e a atualização aplica o arquivo mesclado.
+3. **Extensão VS Code do ai-workspace.** A extensão ganha a mesma função pelo CLI: listar choques, abrir o diff lado a lado no editor nativo, marcar a resolução e enviar.
+4. **Diff online.** O módulo `admin-atualizacoes` mostra os mesmos choques com diff no navegador e as mesmas três escolhas, para quem atualiza pelo painel (o Humano vai enviar o módulo para a análise).
+5. As resoluções ficam no registro de choques (A/B) e viram a regra das próximas atualizações daquele arquivo (ex.: "sempre manter a versão do projeto" até o core mudar de novo).
+
 ### F. Outros
 
 - Alinhar CLI e web da atualização do sistema (limpeza de `db/`).
@@ -89,7 +99,8 @@ Em qualquer opção: **registro de choques** (tabela `atualizacoes_choques` ou J
 2. Manifesto por camada (A) + registro de choques + política B.1.
 3. Backup seletivo + health check + rollback (D).
 4. Exclusão declarativa de dados (C).
-5. Avaliar overlay em runtime (B.2) como evolução.
+5. Diff e merge dos choques (G): CLI, extensão VS Code e `admin-atualizacoes`.
+6. Avaliar overlay em runtime (B.2) como evolução.
 
 ## Critérios de aceite (rascunho)
 
