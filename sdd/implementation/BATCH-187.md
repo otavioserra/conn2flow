@@ -1,6 +1,6 @@
 # BATCH-187: Documentação do Core — Conceitos, Novidades e Limpeza do Legado (onda 5)
 
-Execução da [req-183](../human-requests/req-183.md), por um agente em outra infraestrutura. Ondas irmãs: [BATCH-186](BATCH-186.md) (onda 4) e [BATCH-188](BATCH-188.md) (onda 6).
+Execução da [req-183](../human-requests/req-183.md), por um agente em outra infraestrutura. Ondas irmãs: [BATCH-186](archive/BATCH-186.md) (onda 4) e [BATCH-188](BATCH-188.md) (onda 6).
 
 **Status**: `complete` (2026-09-26).
 

@@ -329,7 +329,8 @@ function stripe_consultar_setup_intent($params = Array()){
  *
  * @param array $params ['customer_id' => obrig, 'price_id' => obrig, 'referencia' => opc,
  *                       'metadata' => opc, 'idempotency_key' => opc, 'trial_period_days' => opc,
- *                       'payment_method_id' => opc (método já salvo no Customer/assinatura)]
+ *                       'payment_method_id' => opc (método já salvo no Customer/assinatura),
+ *                       'coupon_id' => opc (coupon do Stripe aplicado como desconto; req-192)]
  * @return array|false ['id','status','client_secret','secret_type' => 'payment'|'setup','subscription_data'] ou false.
  */
 function stripe_criar_assinatura($params = Array()){
@@ -344,6 +345,10 @@ function stripe_criar_assinatura($params = Array()){
     );
     if(!empty($params['payment_method_id'])){
         $dados['default_payment_method'] = $params['payment_method_id'];
+    }
+    // Cupom de desconto: a duração (uma vez, N meses, para sempre) vem do próprio coupon do Stripe.
+    if(!empty($params['coupon_id'])){
+        $dados['discounts'] = Array(Array('coupon' => (string)$params['coupon_id']));
     }
 
     // Período de teste: o trial não vem do Price, precisa ser declarado aqui.
