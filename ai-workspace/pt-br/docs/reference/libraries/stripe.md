@@ -102,6 +102,7 @@ Referência gerada a partir de `gestor/bibliotecas/stripe.php` por `c2f docs:ext
   Cria um PaymentIntent para pagamento único no Payment Element.
   Parâmetros:
   - `$params`: ['valor' => decimal, 'moeda' => 'BRL', 'customer_id' => opc,
+  - Para habilitar parcelamento de cartão, informe `$params['installments']['enabled'] = true`. A biblioteca envia `payment_method_options[card][installments][enabled]=true`; sem essa opção, o payload padrão não muda. Limite de parcelas e política de juros ficam a cargo do projeto consumidor.
   Retorno: ['id','client_secret','status'] ou false.
 - `stripe_consultar_payment_intent($params = Array())` — [linha 292](../../../../../gestor/bibliotecas/stripe.php#L292)
 - `stripe_consultar_setup_intent(array $params = Array()): array|false` — [linha 309](../../../../../gestor/bibliotecas/stripe.php#L309)

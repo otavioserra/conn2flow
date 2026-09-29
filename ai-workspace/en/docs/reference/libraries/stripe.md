@@ -102,6 +102,7 @@ Reference generated from `gestor/bibliotecas/stripe.php` by `c2f docs:extract` �
   Cria um PaymentIntent para pagamento único no Payment Element.
   Parameters:
   - `$params`: ['valor' => decimal, 'moeda' => 'BRL', 'customer_id' => opc,
+  - To enable card installments, set `$params['installments']['enabled'] = true`. The library sends `payment_method_options[card][installments][enabled]=true`; without this option, the default payload is unchanged. The consuming project owns the installment limit and interest policy.
   Returns: ['id','client_secret','status'] ou false.
 - `stripe_consultar_payment_intent($params = Array())` — [line 292](../../../../../gestor/bibliotecas/stripe.php#L292)
 - `stripe_consultar_setup_intent(array $params = Array()): array|false` — [line 309](../../../../../gestor/bibliotecas/stripe.php#L309)

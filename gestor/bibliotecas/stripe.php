@@ -258,7 +258,8 @@ function stripe_obter_ou_criar_cliente($params = Array()){
  * Cria um PaymentIntent para pagamento único no Payment Element.
  *
  * @param array $params ['valor' => decimal, 'moeda' => 'BRL', 'customer_id' => opc,
- *                       'descricao' => opc, 'referencia' => opc (metadata), 'idempotency_key' => opc]
+ *                       'descricao' => opc, 'referencia' => opc (metadata), 'idempotency_key' => opc,
+ *                       'installments' => ['enabled' => true] opc]
  * @return array|false ['id','client_secret','status'] ou false.
  */
 function stripe_criar_payment_intent($params = Array()){
@@ -273,6 +274,11 @@ function stripe_criar_payment_intent($params = Array()){
     if(!empty($params['customer_id'])) $dados['customer'] = $params['customer_id'];
     if(!empty($params['descricao'])) $dados['description'] = $params['descricao'];
     if(!empty($params['referencia'])) $dados['metadata'] = Array('referencia' => $params['referencia']);
+    if(isset($params['installments']) && is_array($params['installments']) && ($params['installments']['enabled'] ?? false) === true){
+        $dados['payment_method_options'] = Array(
+            'card' => Array('installments' => Array('enabled' => 'true')),
+        );
+    }
 
     $resp = stripe_requisicao(Array(
         'endpoint' => '/v1/payment_intents',
