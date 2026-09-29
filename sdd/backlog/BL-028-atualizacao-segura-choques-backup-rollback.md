@@ -81,7 +81,7 @@ Quando uma entrega vai sobrescrever um arquivo que está **diferente** no ar (o 
 
 1. **Lista de choques + as duas cópias.** Antes de aplicar (ou em modo simulação), o ambiente devolve a lista dos arquivos em choque e um pacote com a versão **que vai ser publicada** e a versão **que está no ar** de cada um (com o hash e a camada de origem).
 2. **Diff e merge no repositório.** Um comando do CLI (ex.: `c2f update:conflicts <projeto> [--pull]`) baixa esse pacote para uma pasta local e abre o diff; a pessoa decide por arquivo: sobrescrever, manter o que está no ar ou **mesclar partes** (ex.: o usuário trocou só um texto). O resultado volta como resolução (`c2f update:resolve`) e a atualização aplica o arquivo mesclado.
-3. **Extensão VS Code do ai-workspace.** A extensão ganha a mesma função pelo CLI: listar choques, abrir o diff lado a lado no editor nativo, marcar a resolução e enviar.
+3. **Extensão VS Code do ai-workspace** (repositório `conn2flow-ai-workspace`, pasta `vscode-extension/`; a implementação lá fica referenciada daqui quando o item for promovido). A extensão ganha a mesma função pelo CLI: listar choques, abrir o diff lado a lado no editor nativo, marcar a resolução e enviar.
 4. **Diff online.** O módulo `admin-atualizacoes` mostra os mesmos choques com diff no navegador e as mesmas três escolhas, para quem atualiza pelo painel (o Humano vai enviar o módulo para a análise).
 5. As resoluções ficam no registro de choques (A/B) e viram a regra das próximas atualizações daquele arquivo (ex.: "sempre manter a versão do projeto" até o core mudar de novo).
 
