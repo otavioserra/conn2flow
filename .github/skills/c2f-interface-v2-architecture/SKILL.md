@@ -44,3 +44,30 @@ A biblioteca de interface dispara automaticamente os seguintes hooks por módulo
 - `{modulo-id}.editar.pre-banco` / `{modulo-id}.editar.banco`
 - `{modulo-id}.excluir.banco`
 - `{modulo-id}.status.banco`
+
+---
+
+## 4. Variantes Tailwind no Painel Administrativo
+
+Com a ativação de `layout-administrativo-tailwind` e `framework_css: tailwindcss`, o mecanismo `interface_componente_variante()` fornece variantes `-tailwind` para:
+
+| Componente | Variante Tailwind | Status |
+|---|---|---|
+| Formulários de **edição** | ✅ Disponível | Produção |
+| Formulários de **inclusão** (novo) | ✅ Disponível | Produção |
+| Modais (carregando, confirmação, alertas) | ✅ Disponível | Produção |
+| Botões de cabeçalho/rodapé (`interface_botoes_html`) | ✅ Disponível (ícones Lucide) | Produção |
+| **Listagem de registros** | ❌ Fomantic (`layout-administrativo-do-gestor`) | Backlog BL-026 |
+
+### 4.1 Armadilhas de Componente Tailwind
+
+1. **Botão de Exclusão**: O botão de exclusão em Tailwind exige a inclusão do script `gestor/assets/interface/interface-tailwind.js`, que escuta `.excluir[data-href]` e injeta o token CSRF na confirmação do modal.
+2. **Chave `tooltip`**: A chave `tooltip` ausente no array `$botoes` **deve ser inicializada** para evitar warnings de PHP (`Undefined index: tooltip`):
+```php
+// ✅ Inicialização defensiva de tooltip
+$botao['tooltip'] = $botao['tooltip'] ?? '';
+```
+3. **Ícones Lucide**: Os botões Tailwind usam ícones Lucide em vez de Fomantic/Semantic icons. Ao adicionar botões customizados, use o formato SVG inline do Lucide.
+
+> [!IMPORTANT]
+> A página de **listagem de registros permanece no layout Fomantic** (`layout-administrativo-do-gestor`) até a implementação do item de backlog BL-026. Não tente forçar classes Tailwind na listagem.

@@ -1,4 +1,4 @@
-﻿---
+---
 name: c2f-reviewer-agent
 description: "Ative no início de conversas onde o agente atua como Revisor Técnico e Auditor de Qualidade. Estabelece auditoria rigorosa findings-first, checagem de CSRF, validação de variables.json, integridade de skills e emissão de relatórios."
 user-invocable: true
@@ -51,3 +51,31 @@ Apresente a auditoria técnica rigorosamente na seguinte ordem:
 - [ ] **CSS & Tailwind**: Nenhuma classe Tailwind órfã ou não purgada (rodar ou verificar auditoria via `c2f css:audit`).
 - [ ] **Integridade Git**: Nenhum arquivo acidental ou fora do escopo foi commitado.
 - [ ] **Relatório Formal**: Registro das evidências e findings em `sdd/validation/review-YYY.md` e atualização do checklist.
+
+---
+
+## 🔀 Checklist de Auditoria para Integração de Módulos Concorrentes
+
+Ao auditar código desenvolvido concorrentemente por outros agentes ou branches paralelas, verifique obrigatoriamente:
+
+1. **Endpoints Públicos vs Administrativos**:
+   - Endpoints públicos (webhooks, APIs anônimas) devem utilizar `<modulo>.ajax.public.php` com validação de assinatura e sanitização estrita, **nunca** funções administrativas com `interface_ajax_*` que exigem autenticação de sessão.
+
+2. **Proteção contra Abuso e Criação de Contas**:
+   - Rate limiting por IP ativo (`gestor_sessao_delimitador()`) em endpoints de cadastro, login e checkout.
+   - Obrigatoriedade de aceite de termos de uso/privacidade persistido com timestamp e IP.
+
+3. **Arquitetura de Dados em Páginas**:
+   - **Anti-padrão Bloqueado**: Criar múltiplas linhas na tabela `paginas` por entidade do usuário (ex: uma página por produto).
+   - **Padrão Canônico**: Página única parametrizada (ex: `/store/<id>/` servida por uma única página controladora).
+
+4. **Identidade e Posse de E-mail**:
+   - Nunca vincular recursos, licenças ou compras diretamente a um endereço de e-mail sem verificação prévia de posse (token de confirmação ou checkout autenticado).
+
+5. **Consistência de Framework CSS**:
+   - Não permitir misturas desordenadas de Tailwind v4 e Fomantic na mesma tela sem declaração explícita de `interface_componente_variante()`. Proibir classes utilitárias não compiladas (verificar `c2f css:audit`).
+
+6. **Colisão de Funções e Sintaxe PHP**:
+   - Executar `php -l` em todos os arquivos modificados.
+   - Buscar declarações globais de funções com `grep -rn 'function '` para garantir que funções novas não colidam com bibliotecas do Core ao mesclar branches.
+

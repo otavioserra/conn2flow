@@ -63,3 +63,33 @@ Arquivo de credenciais e ambiente na raiz do projeto:
    ```
 3. **Fluxo Automático do Servidor**:
    - Valida OAuth ➔ Extrai ZIP na raiz ➔ Executa Upsert do Banco inline ➔ Limpa temporários ➔ Grava log.
+
+---
+
+## 5. Regras de Indexação do Sitemap (`sitemap.php`)
+
+O gerador `sitemap.php` inclui automaticamente todas as páginas ativas que possuam `sem_permissao = 1` (`without_permission: true`), filtradas pela função `sitemap_caminho_nao_indexavel()`.
+
+### 5.1 Rotas Excluídas Automaticamente do Sitemap
+
+Ficam sumariamente **excluídas** do sitemap:
+- **Desfechos transacionais**: `success`, `error`, `cancel`, `cancelled`, `confirmation`
+- **Sufixos de etapa transacional**: `.../payment`, `.../checkout`, `.../download`
+- **Rotas de fluxo de compra**: `cart`, `checkout`, `*-checkout`
+- **Páginas semente**: Páginas de template que originam rotas dinâmicas filhas (devem ter `without_permission` desmarcado na semente)
+
+### 5.2 Diretriz Normativa para Controle de Indexação
+
+1. **Remoção de Página Pública do Sitemap**:
+   - Desmarcar a opção `sem_permissao` no cadastro da página no Gestor, OU
+   - Aplicar um dos sufixos ou caminhos padronizados não-indexáveis.
+2. **Validação Obrigatória Pós-Deploy**:
+   - Sempre auditar a saída pública do sitemap para certificar que rotas de checkout, erro ou confirmação não estão expostas para indexação:
+   ```bash
+   curl -s https://<dominio>/sitemap.xml | grep -E 'checkout|success|cancel|error'
+   ```
+   *(A saída deve ser vazia).*
+
+> [!WARNING]
+> Indexar páginas de checkout ou desfechos transacionais expõe telas de erro ou formulários incompletos a robôs de busca (SEO), gerando tráfego fantasma e potenciais erros 400/500 no monitoramento.
+

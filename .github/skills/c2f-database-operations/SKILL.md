@@ -154,3 +154,37 @@ if ($patch !== null && $patch !== 'null') {
 ```sql
 ALTER TABLE tabela MODIFY fields_values JSON NOT NULL DEFAULT '{}';
 ```
+
+---
+
+## 4. Limpeza de Migrações Phinx Renumeradas
+
+### 4.1 Problema: Duplicate Migration Error
+
+A sincronização de arquivos do pipeline (`project:update-all`) opera em **modo aditivo** e **não remove** arquivos ausentes na origem. Quando uma migração Phinx é renumerada (ex: para resolver conflito de timestamp com outro agente), o arquivo com o nome antigo permanece no diretório de destino.
+
+```
+❌ Phinx aborta com erro fatal:
+"Duplicate migration - 20260915120000_create_orders_table has the same version as 20260915120000"
+```
+
+### 4.2 Diretriz Normativa
+
+Ao renumerar uma migração Phinx para resolver conflito de timestamp:
+
+1. **Remover manualmente** o arquivo com o nome antigo do diretório de destino (`gestor/db/migrations/` no ambiente remoto ou espelho) **antes** de rodar o pipeline.
+2. Em ambientes remotos, usar SSH para deletar:
+```bash
+ssh usuario@host "rm /path/to/gestor/db/migrations/YYYYMMDDHHIISS_old_name.php"
+```
+3. No espelho local:
+```bash
+rm dev-environment/data/sites/localhost/<site>/gestor/db/migrations/YYYYMMDDHHIISS_old_name.php
+```
+
+### 4.3 Regra de Desempate entre Agentes
+
+Em colisões de timestamp entre migrações criadas por agentes concorrentes, a regra de desempate determina que cada agente **renumere a própria migração** para um timestamp mais recente (nunca a do outro agente).
+
+> [!WARNING]
+> O erro `Duplicate migration` é **fatal** — o Phinx interrompe toda a execução de migrações, impedindo que migrações subsequentes sejam aplicadas. A limpeza manual é obrigatória.

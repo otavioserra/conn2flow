@@ -37,3 +37,41 @@ Sempre que utilizar uma documentação para orientar uma implementação ou cria
 
 - Ao adicionar novos parâmetros, funções centrais, hooks ou rotas, atualize a documentação correspondente sob `ai-workspace/` ou `sdd/`.
 - Registre depreciações ou quebras de contrato no log do lote (`batch-XXX.md`) e atualize os guias técnicos afetados.
+
+---
+
+## 4. Fluxo Mandatório Pós-Alteração de Código (`docs:audit`)
+
+Modificar qualquer arquivo de código listado no cabeçalho `sources:` de um documento técnico normativo invalida o campo `verified_at`, gerando avisos de fonte divergente no ecossistema.
+
+### 4.1 Sequência de 5 Etapas do Executor
+
+Após concluir alterações em código que afetam contratos públicos ou bibliotecas documentadas:
+
+1. **Auditar Fontes Afetadas**:
+   ```bash
+   ./c2f docs:audit
+   ```
+   *Lista todas as documentações cujas fontes de código declaradas foram modificadas.*
+
+2. **Sincronizar Conteúdo Textual**:
+   Atualizar o corpo das documentações que descrevem os comportamentos, parâmetros ou retornos alterados.
+
+3. **Atualizar Metadado `verified_at`**:
+   Atualizar o campo `verified_at:` no frontmatter do documento com o commit hash mais recente correspondente ao código verificado.
+
+4. **Extrair Novas Funções (se aplicável)**:
+   Se novas funções foram introduzidas em bibliotecas ou controladores:
+   ```bash
+   ./c2f docs:extract <biblioteca>
+   ```
+
+5. **Compilar Documentação para Publicação**:
+   Reconstruir os manifests e HTML das documentações do projeto:
+   ```bash
+   ./c2f docs:build --project=<id>
+   ```
+
+> [!IMPORTANT]
+> Nunca altere assinaturas de funções públicas ou tabelas de banco sem rodar `c2f docs:audit`. Documentações com `verified_at` obsoleto induzem outros agentes a erro por alucinação baseada em contratos antigos.
+

@@ -287,3 +287,35 @@ timeout 30 grep -rn 'padrão' --exclude-dir={node_modules,.git,vendor} .
 > [!CAUTION]
 > NUNCA execute `grep -rn` na raiz de repositórios com `node_modules` ou `.git` grandes. No Windows, o MSYS2 não tem kill automático por timeout — o processo pode travar indefinidamente.
 
+---
+
+### 12. Python `json.dumps()` Remove Escapes de Barra (`\/`) de JSON de Módulos PHP
+
+**Problema**: O PHP serializa JSON de módulos com escape de barra por padrão (`"products\/add\/"`). O `json.dumps()` do Python **não produz** escape de barra (`"products/add/"`), causando ruídos massivos no Git diff — todas as linhas com caminhos aparecem como alteradas, mesmo sem modificação semântica.
+
+**Solução Obrigatória**:
+1. **Detectar** se o arquivo original contém `\/` antes de reescrever.
+2. **Restaurar** o escape após `json.dumps()`:
+```python
+import json
+
+with open(json_path, 'r', encoding='utf-8') as f:
+    original = f.read()
+    data = json.loads(original)
+
+# Após modificações...
+output = json.dumps(data, indent=4, ensure_ascii=False)
+
+# Restaurar escape de barra nativo do PHP
+if '\\/' in original:
+    output = output.replace('/', '\\/')
+
+with open(json_path, 'w', encoding='utf-8', newline='') as f:
+    f.write(output)
+```
+
+3. **Sempre usar `ensure_ascii=False`** para preservar acentos e caracteres UTF-8.
+4. **Preservar line endings nativas** (LF vs CRLF) do arquivo original.
+
+> [!WARNING]
+> O impacto é **estético mas destrutivo para o workflow**: centenas de linhas alteradas no diff dificultam a revisão do Auditor de Qualidade e escondem mudanças reais em meio ao ruído.

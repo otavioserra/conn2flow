@@ -106,3 +106,33 @@ switch ($acao) {
         echo json_encode(['erro' => 'Ação inválida']);
 }
 ```
+
+---
+
+## 12. Regra de Sessão em Páginas Públicas (`without_permission: true`)
+
+- Em páginas marcadas com `without_permission: true`, o `gestor.php` **não executa** `gestor_permissao()`, fazendo com que `gestor_usuario()` retorne vazio mesmo para compradores autenticados.
+- **Diretriz Normativa**: Para identificar o usuário logado em páginas públicas, chame `gestor_permissao_token()`, **mas estritamente sob a condição de que o cookie de autenticação exista**:
+
+```php
+// ✅ CORRETO — verificação condicional do cookie antes de gestor_permissao_token()
+function identificar_usuario_publico() {
+    global $_CONFIG;
+    if (isset($_COOKIE[$_CONFIG['cookie-authname']])) {
+        gestor_permissao_token();
+        return gestor_usuario();
+    }
+    return null; // Visitante anônimo — sem redirecionamento
+}
+```
+
+```php
+// ❌ ERRADO — chamada incondicional força redirecionamento de visitantes anônimos
+function identificar_usuario_publico() {
+    gestor_permissao_token(); // Dispara gestor_cookie_verificacao() → redireciona para _gestor-cookie-verify
+    return gestor_usuario();
+}
+```
+
+> [!CAUTION]
+> Sem a checagem `isset($_COOKIE[...])`, a função `gestor_cookie_verificacao()` pode disparar um **redirecionamento forçado** do visitante anônimo para `_gestor-cookie-verify`, quebrando a experiência de navegação pública (loja, landing pages, checkout).

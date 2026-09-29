@@ -124,3 +124,50 @@ As tarefas definidas em `.vscode/tasks.json` são atalhos visuais para os comand
 * **Foreground Obrigatório**: Sempre execute comandos de compilação em foreground direto.
 * **Saída Desbufferizada**: Nunca redirecione saídas para descartar `stderr` (`2>&1 > /dev/null`). Permita que notices, warnings e stack traces do PHP sejam visíveis no terminal imediatamente para correções a quente.
 * **Ordem Estrita**: Espere um comando terminar com código de saída 0 antes de iniciar o próximo.
+
+---
+
+## 🗑️ Regra #6: Expurgo de Registros Órfãos no Deploy (Lista `deletar`)
+
+O pipeline de banco de dados opera em modo **upsert** e **não exclui** linhas que foram omitidas nas fontes JSON. Para remover páginas, blocos ou metadados obsoletos no deploy, registre explicitamente as chaves naturais no arquivo `project_tables_config.json`:
+
+```json
+{
+  "tabelas": {
+    "paginas": {
+      "deletar": ["language", "modulo", "id"]
+    },
+    "publisher_pages": {
+      "deletar": ["language", "page_id"]
+    }
+  }
+}
+```
+
+### 6.1 Páginas Semente (`without_permission`)
+
+Para páginas de template que geram instâncias filhas dinâmicas (ex: semente de produto `store/<id>/`), **remova** a propriedade `without_permission` da semente para que:
+- A semente em si não conste no sitemap (não é uma página pública real).
+- Apenas as páginas filhas públicas geradas a partir da semente constem no sitemap.
+
+---
+
+## 🧠 Regra #7: Diagnóstico de Estouro de Memória no Deploy via API
+
+O endpoint `/_api/project/update` executa a sincronização de banco com `SELECT *` e `fetchAll`. Em projetos com centenas de páginas, pode ocorrer estouro do `memory_limit` padrão de 128 MB, gerando HTTP 500 sem corpo descritivo.
+
+### Diagnóstico Obrigatório
+
+Diante de HTTP 500 no deploy via API:
+
+1. **Inspecionar imediatamente** o arquivo `conn2flow-gestor/logs/php-error.log` no servidor de destino.
+2. Buscar por `Allowed memory size of ... bytes exhausted`.
+3. O endpoint do Core foi ajustado para invocar `api_memoria_minima('1024M')`.
+
+```bash
+# Via SSH — verificar últimas linhas do log de erro
+ssh usuario@host "tail -50 /path/to/conn2flow-gestor/logs/php-error.log"
+```
+
+> [!TIP]
+> Se o estouro persistir, considere aumentar o `memory_limit` no `.htaccess` ou `php.ini` do servidor, ou otimizar as queries de sincronização para usar cursores em vez de `fetchAll`.

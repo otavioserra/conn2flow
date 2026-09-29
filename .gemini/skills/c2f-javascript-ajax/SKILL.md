@@ -248,6 +248,50 @@ $.ajax(ajax);
 
 ---
 
+## 5. Armadilha de Injeção de Scripts no `<head>` (`gestor_pagina_javascript_incluir`)
+
+A função PHP `gestor_pagina_javascript_incluir()` injeta os scripts dos módulos no elemento `<head>` da página HTML. Isso significa que o script é **executado antes do `<body>` ser parseado**.
+
+### 5.1 Proibição de Consultas Diretas ao DOM na Raiz do Script
+
+```javascript
+// ❌ ERRADO — DOM ainda não foi parseado, retorna null
+var form = document.getElementById('form-checkout');
+form.addEventListener('submit', handler); // TypeError: null
+
+// ✅ CORRETO — aguardar DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('form-checkout');
+    form.addEventListener('submit', handler);
+});
+```
+
+### 5.2 Preferência por Delegação de Eventos
+
+Para elementos que podem ser inseridos dinamicamente (widgets, componentes AJAX), use **delegação de eventos** no `document`:
+
+```javascript
+// ✅ CORRETO — delegação funciona mesmo para elementos futuros
+document.addEventListener('click', function(e) {
+    if (e.target.matches('.btn-adicionar-carrinho')) {
+        adicionarAoCarrinho(e.target.dataset.produtoId);
+    }
+});
+
+// ✅ CORRETO — submit com delegação
+document.addEventListener('submit', function(e) {
+    if (e.target.matches('#form-checkout')) {
+        e.preventDefault();
+        processarCheckout(e.target);
+    }
+});
+```
+
+> [!WARNING]
+> Sem `DOMContentLoaded` ou delegação, o formulário será submetido nativamente (POST síncrono) em vez de ser interceptado via AJAX, causando recarregamento completo da página e perda de estado.
+
+---
+
 ## ⛔ Regras Invioláveis de AJAX:
 1. **SEMPRE envie `ajax: 'sim'`**: Sem este campo, o backend dispara erro `403 Forbidden` por CSRF.
 2. **SEMPRE envie `opcao` e `ajaxOpcao`**: Identificam o contexto da página e a ação a ser roteada no `switch ($_GESTOR['ajax-opcao'])`.

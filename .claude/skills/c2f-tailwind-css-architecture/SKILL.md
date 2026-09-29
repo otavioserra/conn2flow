@@ -69,3 +69,44 @@ Apontar `tailwind_sources` para arquivos `.php` ou `.js` indica classes utilitá
 
 **Classificação**: Dívida técnica a eliminar.
 **Ação Corretiva**: Mover a geração de classes para componentes/templates dentro do Sistema de Recursos (`resources/`), onde o compilador Tailwind pode escaneá-las estaticamente.
+
+---
+
+## 📋 Registro Obrigatório de `tailwind_sources` e `tailwind_sources_reason`
+
+### Problema
+
+O compilador prévio de Tailwind analisa unicamente o HTML estático do recurso. Classes utilitárias montadas dinamicamente em PHP (ex: badges de status), manipuladas em JS (`classList.toggle('hidden')`) ou configuradas em JSON de módulos **não entram no bundle gerado**, causando falhas visuais silenciosas.
+
+### Diretriz Normativa
+
+Para páginas do gestor/site que utilizam classes Tailwind fora do HTML estático, declare os metadados no `<id>.json` do recurso:
+
+```json
+{
+  "tailwind_sources": [
+    "../../../../modulos/ecommerce/ecommerce-checkout.php"
+  ],
+  "tailwind_sources_reason": "Classes de badge de status (bg-green-100, text-red-600) são montadas em PHP com base no estado do pedido"
+}
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `tailwind_sources` | Sim | Array de caminhos relativos aos arquivos PHP/JS que contêm classes Tailwind dinâmicas |
+| `tailwind_sources_reason` | **Sim** | Justificativa textual para a inclusão — o build **acusa erro fatal** se a razão for omitida |
+
+### Alternativa em Bibliotecas do Core
+
+Para bibliotecas do Core que geram HTML com classes Tailwind, encapsule a paleta dinâmica num elemento `<template>` inerte no próprio componente HTML do recurso:
+
+```html
+<!-- Paleta de classes dinâmicas para o scanner Tailwind -->
+<template data-tailwind-palette>
+  <span class="bg-green-100 text-green-800 bg-red-100 text-red-800 bg-yellow-100 text-yellow-800"></span>
+</template>
+```
+
+> [!CAUTION]
+> Sem o registro de `tailwind_sources`, classes utilitárias usadas exclusivamente em PHP/JS são **eliminadas do CSS compilado** no build. O erro é silencioso — a página renderiza sem as classes, causando quebra visual sem mensagem de erro.
+

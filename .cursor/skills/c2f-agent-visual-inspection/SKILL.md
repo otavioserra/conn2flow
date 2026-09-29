@@ -85,7 +85,45 @@ Este comando audita a página composta real (layout + componentes renderizados) 
 
 ---
 
+## 🌐 Roteiro de Validação E2E em Ambientes com Acesso Remoto Restrito (Read-Only)
+
+Em ambientes de homologação/Lab onde o agente possui credenciais de leitura de logs e HTTP, mas **não permissão de escrita via SSH/SCP**, siga este protocolo de 8 etapas para validação completa:
+
+1. **Injeção de Sessão Administrativa via Cookie Jar**:
+   - Extrair a sessão administrativa com `./c2f auth:cookie --project=<id>` para o jar Netscape em `temp/agent-cookies.txt`.
+   - Injetar no Playwright via `context.addCookies()` para navegar por rotas restritas do painel.
+
+2. **Isolamento de Contextos de Navegação**:
+   - Manter contextos separados no navegador: um contexto limpo (incógnito) para simular o visitante anônimo e um contexto com cookies autenticados para o comprador/administrador.
+
+3. **Preenchimento de Componentes Seguros em iFrames**:
+   - Para elementos de pagamento embutidos (ex: Stripe Payment Element):
+   ```javascript
+   const iframe = page.frameLocator('#checkout-payment-element iframe').first();
+   await iframe.locator('input[name="number"]').fill('4242424242424242');
+   ```
+   - Aguardar sempre o estado habilitado do formulário antes de submeter.
+
+4. **Interceptação de Diálogos Nativos**:
+   - Configurar `page.on('dialog', d => d.accept())` para lidar com `window.confirm` ou `alert` nativos sem travar a automação.
+
+5. **Auditoria de Banco por Interface Administrativa**:
+   - Na impossibilidade de executar queries SQL diretas no servidor remoto, auditar estados navegando até as telas de detalhe do registro (ex: detalhe do pedido no Gestor) e inspecionando os valores renderizados.
+
+6. **Teste de Webhooks via Injeção HTTP Direta**:
+   - Disparar requisições POST com payloads autênticos do gateway diretamente no endpoint público (`.ajax.public.php`).
+   - Reenviar o mesmo payload e verificar na interface do pedido se o evento foi deduplicado (idempotência).
+
+7. **Auditoria de Tráfego de Rede (SDKs Externos)**:
+   - Monitorar requisições com `page.on('request', req => ...)` para certificar que SDKs pesados de terceiros (ex: PayPal) não são baixados quando outro gateway está ativo.
+
+8. **Sanitização de Logs e Saída de Console**:
+   - Mascarar tokens, chaves secretas de gateway e cookies de autenticação antes de registrar evidências no terminal ou arquivos de log.
+
+---
+
 ## ⛔ Regras Invioláveis de Inspeção:
 1. **EXCLUSIVO PARA AMBIENTE LOCAL DE TESTES**: NUNCA execute inspeção, auth ou scraping automatizado em URLs de produção.
 2. **Registro no SDD**: As evidências de inspeção (JSON do `page:inspect` e screenshots) DEVEM ser registradas diretamente no `VALIDATION-CHECKLIST.md` do repositório em vez de marcar "pendente do operador".
 3. **Tear Down Obrigatório**: SEMPRE finalize restaurando o ambiente com `c2f env:set production --project=<projectID>`.
+
