@@ -7,7 +7,7 @@ order: 310
 sources:
   - gestor/bibliotecas/stripe.php
   - gestor/controladores/plataforma-gateways/plataforma-gateways.php
-verified_at: 8a0afc77
+verified_at: 75067141
 ---
 
 # Biblioteca `stripe.php`
