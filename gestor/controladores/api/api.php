@@ -339,6 +339,10 @@ function api_project_update() {
             $project_content_dir = $extract_dir . DIRECTORY_SEPARATOR . $extracted_items[0];
         }
 
+        // req-194: migrações obsoletas do projeto saem antes da cópia (a cópia só sobrescreve e uma
+        // migração renomeada deixava a antiga, travando o Phinx em todos os deploys seguintes).
+        $migracoes = api_project_migracoes_limpar($project_content_dir, $project_path);
+
         // Copiar arquivos do projeto (sobrescrever existentes na raiz)
         api_copy_directory($project_content_dir, $project_path);
 
@@ -367,6 +371,7 @@ function api_project_update() {
             'db_logs' => $db_logs,
             'full_log' => $full_log,
             'sitemap' => $sitemap,
+            'migrations' => $migracoes,
         ];
 
         api_response_success($response_data, 'Projeto atualizado com sucesso');
@@ -379,6 +384,31 @@ function api_project_update() {
 
         api_response_error('Erro durante atualização do projeto: ' . $e->getMessage(), 500);
     }
+}
+
+/**
+ * Limpa as migrações obsoletas do projeto no servidor antes da cópia do pacote — req-194.
+ *
+ * A lista completa vem do manifesto que o `deploy-project-v2.sh` põe no pacote
+ * (`db/.c2f-migrations-projeto.json`); sem ele (pacote antigo ou parcial), só a cópia antiga de uma
+ * migração renomeada sai. O manifesto do pacote é copiado junto e vira a referência do próximo deploy.
+ *
+ * @return array ['removidos' => [...], 'choques' => [...], 'log' => [...]]
+ */
+function api_project_migracoes_limpar(string $pacote, string $raiz): array {
+    global $_GESTOR;
+    $pacote = rtrim($pacote, '/\\') . DIRECTORY_SEPARATOR;
+    require_once $_GESTOR['controladores-path'] . 'atualizacoes/atualizacoes-migracoes.php';
+    $chegando = atualizacoes_migracoes_listar($pacote . 'db' . DIRECTORY_SEPARATOR . 'migrations');
+    $completa = null;
+    $manifesto = $pacote . 'db' . DIRECTORY_SEPARATOR . '.c2f-migrations-projeto.json';
+    if (is_file($manifesto)) {
+        $json = json_decode((string)file_get_contents($manifesto), true);
+        if (is_array($json['files'] ?? null)) $completa = $json['files'];
+    }
+    if (!$chegando && $completa === null) return ['removidos' => [], 'choques' => [], 'log' => []];
+    $r = atualizacoes_migracoes_limpar(rtrim($raiz, '/\\') . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'migrations', 'projeto', $completa, $chegando, false);
+    return ['removidos' => $r['removidos'], 'choques' => $r['choques'], 'log' => atualizacoes_migracoes_log($r, 'projeto')];
 }
 
 /**

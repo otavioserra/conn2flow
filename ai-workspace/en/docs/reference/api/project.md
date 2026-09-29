@@ -13,7 +13,9 @@ Both routes require a valid bearer token and POST.
 
 ## `/_api/project/update`
 
-Accepts `multipart/form-data` with a `project_zip` file; `X-Project-ID` supplies the project context. Only a `.zip` filename and files up to 100 MB are accepted. It extracts the archive under temporary logs, copies contents into the manager, updates the database, synchronizes hooks, and regenerates `sitemap.xml`. POST `full_log` includes detailed logs. JSON response data includes `file_size`, `updated_at`, `status`, `db_logs`, `full_log` and `sitemap` (`updated`, `failed` or `error: …`; a sitemap failure does not fail the deploy).
+Accepts `multipart/form-data` with a `project_zip` file; `X-Project-ID` supplies the project context. Only a `.zip` filename and files up to 100 MB are accepted. It extracts the archive under temporary logs, copies contents into the manager, updates the database, synchronizes hooks, and regenerates `sitemap.xml`. POST `full_log` includes detailed logs. JSON response data includes `file_size`, `updated_at`, `status`, `db_logs`, `full_log` `sitemap` (`updated`, `failed` or `error: …`; a sitemap failure does not fail the deploy) and `migrations` (`removidos`, `choques`, `log`).
+
+Before copying, obsolete project migrations are removed from the server (req-194): those the project delivered before and no longer delivers — from the complete list in `db/.c2f-migrations-projeto.json`, which `deploy-project-v2.sh` adds to the package — and the old copy of a renamed migration. Core migrations are never deleted; the same version with another class is recorded as a clash and Phinx rejects it during the database update.
 
 > [!WARNING]
 > The implementation extracts the ZIP before copying files. Treat this as a high privilege administrative operation and use the [deploy flow](../../guides/deploy-a-project.md). Security follow-up: req-181.

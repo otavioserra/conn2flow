@@ -3,6 +3,7 @@ title: "CLI: Commands project"
 description: "Reference for project commands registered in the c2f console."
 section: reference
 sources:
+  - ai-workspace/en/scripts/projects/synchronize-project.sh
   - cli/src/Console/Application.php
   - cli/src/Commands/ProjectDeployCommand.php
   - cli/src/Commands/ProjectRecoverCommand.php
@@ -112,4 +113,4 @@ Runs update-system.sh [--project projectID]. The --insecure flag is restricted t
 
 ## Pipeline behavior
 
-`project:update-all` accepts a project id as argument or `--project`. It syncs Core, database, resources, files, then database again. It rebuilds CSS, minifies JS and publishes assets last. Failures in those last three stages become warnings and the command may still return success; inspect CSS and asset reports. SSH projects marked `local=true` receive automatic remote confirmation; others require `--confirmar-remoto`. `project:deploy` calls a Bash upload script for `/_api/project/update`; `project:recover` downloads data via `/_api/project/recover`. See the [deploy guide](../../guides/deploy-a-project.md).
+`project:update-all` accepts a project id as argument or `--project`. It syncs Core, database, resources, files, then database again. It rebuilds CSS, minifies JS and publishes assets last. Before the database stage, and again after the files are sent, it removes obsolete project migrations on the target (`synchronize-project.sh --migrations-only`, req-194): rsync deletes nothing and the target folder also holds the core migrations, so the cleanup is per owner and only reports clashes. Failures in those last three stages become warnings and the command may still return success; inspect CSS and asset reports. SSH projects marked `local=true` receive automatic remote confirmation; others require `--confirmar-remoto`. `project:deploy` calls a Bash upload script for `/_api/project/update`; `project:recover` downloads data via `/_api/project/recover`. See the [deploy guide](../../guides/deploy-a-project.md).

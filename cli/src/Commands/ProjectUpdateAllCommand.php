@@ -70,6 +70,15 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         $code = $coreCmd->execute($input, $output);
         if ($code !== 0) return $code;
 
+        // req-194: a etapa 2 roda o Phinx ANTES de os arquivos do projeto chegarem (etapa 4). Uma cópia
+        // antiga de migração renomeada, deixada no destino por um sync anterior, travava o Phinx aqui
+        // ("Duplicate migration") em todos os pipelines seguintes. A limpeza por dono roda no destino
+        // antes do banco; não é fatal (choques ficam no log e o Phinx dá a mensagem final).
+        $script = $this->rootPath . '/ai-workspace/en/scripts/projects/synchronize-project.sh';
+        if (file_exists($script)) {
+            $this->runShell(sprintf('bash %s --project %s --migrations-only', escapeshellarg($script), escapeshellarg($project)), $output);
+        }
+
         // 2. Sync DB
         $output->section("2/8 Atualizando Banco de Dados ({$project})");
         $dbCmd = new ProjectSyncDbCommand($this->rootPath);

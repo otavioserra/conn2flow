@@ -3,6 +3,7 @@ title: "CLI: Comandos project"
 description: "Referência dos comandos project registrados no console c2f."
 section: reference
 sources:
+  - ai-workspace/en/scripts/projects/synchronize-project.sh
   - cli/src/Console/Application.php
   - cli/src/Commands/ProjectDeployCommand.php
   - cli/src/Commands/ProjectRecoverCommand.php
@@ -112,4 +113,4 @@ Runs update-system.sh [--project projectID]. The --insecure flag is restricted t
 
 ## Comportamento do pipeline
 
-`project:update-all` passa o id do projeto por argumento ou `--project`. Primeiro sincroniza Core, banco, recursos, arquivos e banco novamente. Depois reconstrói CSS, minifica JS e publica assets. Falhas nas três últimas etapas viram avisos e o comando ainda pode retornar sucesso; confira os relatórios de CSS e assets. Projetos SSH marcados `local=true` recebem confirmação remota automática; outros exigem `--confirmar-remoto`. `project:deploy` chama o script Bash de upload para `/_api/project/update`; `project:recover` baixa dados por `/_api/project/recover`. Veja o [guia de deploy](../../guides/deploy-a-project.md).
+`project:update-all` passa o id do projeto por argumento ou `--project`. Primeiro sincroniza Core, banco, recursos, arquivos e banco novamente. Depois reconstrói CSS, minifica JS e publica assets. Antes da etapa de banco, e de novo depois do envio dos arquivos, remove no destino as migrações obsoletas do projeto (`synchronize-project.sh --migrations-only`, req-194): o rsync não apaga nada e a pasta do destino também tem as migrações do core, então a limpeza é por dono e só registra choques. Falhas nas três últimas etapas viram avisos e o comando ainda pode retornar sucesso; confira os relatórios de CSS e assets. Projetos SSH marcados `local=true` recebem confirmação remota automática; outros exigem `--confirmar-remoto`. `project:deploy` chama o script Bash de upload para `/_api/project/update`; `project:recover` baixa dados por `/_api/project/recover`. Veja o [guia de deploy](../../guides/deploy-a-project.md).

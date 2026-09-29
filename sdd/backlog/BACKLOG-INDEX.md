@@ -29,6 +29,7 @@
 | [BL-025](BL-025-docs-removidas-seguem-publicadas.md) | Bug/Docs | IN-DISCUSSION | Página de docs removida continua publicada no banco (órfã ignorada pelo pipeline) | Parcial: 17 órfãs excluídas pela lista `deletar` do site (req-188); rotina automática de exclusão fica com o Humano | 2026-09-28 |
 | [BL-026](BL-026-listagem-interface-tailwind.md) | Feature/Interface | IN-DISCUSSION | Listagem do `interface` (DataTables) em Tailwind; formulários e botões já têm variante (req-190) | Prevista para a versão 3.0 | 2026-09-28 |
 | [BL-027](BL-027-sincronizacao-banco-memoria.md) | Bug/Performance | IN-DISCUSSION | Sincronização de banco lê tabelas inteiras (`fetchAll`); deploy por API estourou 128 MB | Contornado na req-191 (memory_limit 1024M no endpoint) | 2026-09-28 |
+| [BL-028](BL-028-atualizacao-segura-choques-backup-rollback.md) | Epic/Architecture | IN-DISCUSSION | Atualização segura: core canibalizável com choques registrados, exclusão de dados no ambiente, backup, rollback e trava de deploy | Nasceu com o hotfix req-194 (migrações obsoletas) | 2026-09-29 |
 
 > Itens `PROMOTED` foram convertidos na requisição humana `sdd/human-requests/req-107.md` (BATCH-107) e arquivados em `sdd/backlog/archive/`.
 

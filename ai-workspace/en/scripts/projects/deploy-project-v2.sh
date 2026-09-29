@@ -386,6 +386,20 @@ create_zip_package() {
 
 create_zip_package
 
+# req-194: the package carries the COMPLETE list of project migrations (even in gitDeploy, which only
+# ships changed files). The server removes, before copying, the migrations it received from this
+# project before and that are gone now, so a renamed migration no longer leaves a duplicate behind.
+if [ -d "$PROJECT_PATH/db/migrations" ]; then
+    MANIFEST_DIR="$TEMP_DIR/${PROJECT_TARGET}_manifest"
+    rm -rf "$MANIFEST_DIR"
+    mkdir -p "$MANIFEST_DIR/db"
+    php -r '$f = array_values(array_filter(scandir($argv[1]) ?: [], function ($n) { return preg_match("/^[0-9]{14}_[a-z0-9_]+[.]php$/", $n); })); echo json_encode(["owner" => "projeto", "updated_at" => date("c"), "files" => $f], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);' "$PROJECT_PATH/db/migrations" > "$MANIFEST_DIR/db/.c2f-migrations-projeto.json"
+    (cd "$MANIFEST_DIR" && "7z" a -tzip "$ZIP_FILE" "db/.c2f-migrations-projeto.json" > /dev/null 2>&1) \
+        && log "Migration manifest added to the package (db/.c2f-migrations-projeto.json)." \
+        || log_warning "Could not add the migration manifest; the server will only drop renamed duplicates."
+    rm -rf "$MANIFEST_DIR"
+fi
+
 if [ ! -f "$ZIP_FILE" ]; then
     log_error "Failed to create ZIP package"
     exit 1

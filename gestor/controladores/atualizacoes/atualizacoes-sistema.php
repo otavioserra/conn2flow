@@ -466,6 +466,21 @@ function moverConteudoStaging(string $stagingRoot, string $basePath, array $prot
     closedir($dh);
     return $movidos;
 }
+/**
+ * req-194: remove do ambiente as migrações do core que o artefato novo não traz mais (ou a cópia antiga
+ * de uma migração renomeada). Arquivos do projeto ficam; conflito com eles vira choque no log.
+ * O helper vem da instalação ou, na primeira atualização que o traz, do próprio staging.
+ */
+function limparMigracoesCore(string $realRoot, string $basePath): void {
+    $helper = __DIR__.DIRECTORY_SEPARATOR.'atualizacoes-migracoes.php';
+    if(!is_file($helper)) $helper = $realRoot.'controladores'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'atualizacoes-migracoes.php';
+    if(!is_file($helper)) { logAtualizacao('Limpeza de migrações: helper ausente, etapa pulada','WARNING'); return; }
+    require_once $helper;
+    $chegando = atualizacoes_migracoes_listar($realRoot.'db'.DIRECTORY_SEPARATOR.'migrations');
+    if(!$chegando) return;
+    $r = atualizacoes_migracoes_limpar($basePath.'db'.DIRECTORY_SEPARATOR.'migrations', 'core', $chegando, $chegando, true);
+    foreach(atualizacoes_migracoes_log($r, 'core') as $linha) logAtualizacao($linha, $r['choques'] ? 'WARNING' : 'INFO');
+}
 function copiarRecursivo(string $src, string $dst): void {
     if(is_dir($src)) { if(!is_dir($dst)) @mkdir($dst,0775,true); $it=opendir($src); if($it){ while(($e=readdir($it))!==false){ if($e==='.'||$e==='..') continue; copiarRecursivo($src.DIRECTORY_SEPARATOR.$e,$dst.DIRECTORY_SEPARATOR.$e); } closedir($it);} }
     else { @copy($src,$dst); }
@@ -888,6 +903,7 @@ function main_update(array $argv): int {
                     logAtualizacao('Wipe pulado (modo padrão = overwrite). Use --wipe para ativar wipe completo','INFO');
                     $removidos = 0;
                 }
+                limparMigracoesCore($realRoot,$BASE_PATH);
                 $movidos = moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
                 logAtualizacao('Deploy concluído (itens movidos) count='.$movidos);
                 // Revalida críticos
@@ -1147,6 +1163,7 @@ function webDeployFiles(string $sid): array {
             logAtualizacao('WebDeployFiles: wipe pulado (modo padrão = overwrite). Use --wipe para ativar wipe completo','INFO');
             $removidos = 0;
         }
+        limparMigracoesCore($realRoot,$BASE_PATH);
         $movidos = moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
         logAtualizacao('WebDeployFiles: itens movidos count='.$movidos,'DEBUG');
         $stats = ['removed'=>$removidos,'copied'=>$movidos];

@@ -37,6 +37,7 @@ ENV_FILE="$PROJECT_ROOT/dev-environment/data/environment.json"
 
 # Defaults
 MODE="default"
+MIGRATIONS_ONLY=0
 PROJECT_TARGET_OVERRIDE=""
 CONTENTS_CHOICE="Sim"
 
@@ -51,6 +52,27 @@ should_exclude_contents() {
   esac
 }
 
+# req-194: rsync never deletes, and the target db/migrations also holds the core migrations, so a
+# mirror (--delete) is not an option. The cleanup runs ON THE TARGET, by owner: project migrations
+# delivered before and gone now, plus the old copy of a renamed migration. Clashes are only reported.
+clean_project_migrations() {
+  [ -d "$ORIGEM/db/migrations" ] || return 0
+  local list
+  list=$(ls "$ORIGEM/db/migrations" | grep -E '^[0-9]{14}_[a-z0-9_]+\.php$' | paste -sd, -)
+  [ -n "$list" ] || return 0
+  log "Cleaning obsolete project migrations on the target (req-194)..."
+  if project_transport_is_ssh; then
+    project_transport_remote_exec php controladores/atualizacoes/atualizacoes-migracoes.php \
+      --dir=db/migrations --dono=projeto "--lista=$list" \
+      || log_warning "Migration cleanup reported clashes or could not run (see above)."
+  elif [ -f "$DESTINO/controladores/atualizacoes/atualizacoes-migracoes.php" ]; then
+    (cd "$DESTINO" && php controladores/atualizacoes/atualizacoes-migracoes.php \
+      --dir=db/migrations --dono=projeto "--lista=$list") \
+      || log_warning "Migration cleanup reported clashes or could not run (see above)."
+  fi
+  return 0
+}
+
 usage(){
   echo "Usage: $0 [default|checksum|force] --project <PROJECT_ID> [--contents Sim|Nao]"
   echo "  --project, -p    Project identifier (overrides devEnvironment.projectTarget)"
@@ -58,6 +80,7 @@ usage(){
   echo "  default          Use date/time to decide (non-destructive)"
   echo "  checksum         Compare file contents by checksum"
   echo "  force            Overwrite files regardless of mtime"
+  echo "  --migrations-only  Only remove obsolete project migrations on the target (req-194)"
   echo "  --help, -h       Show this help"
 }
 
@@ -72,6 +95,8 @@ while [[ $# -gt 0 ]]; do
       MODE="$1"; shift;;
     --mode)
       MODE="$2"; shift 2;;
+    --migrations-only)
+      MIGRATIONS_ONLY=1; shift;;
     --help|-h)
       usage; exit 0;;
     *)
@@ -154,6 +179,11 @@ if [ ! -d "$ORIGEM" ]; then
   exit 1
 fi
 
+if [ "$MIGRATIONS_ONLY" = "1" ]; then
+  clean_project_migrations
+  exit 0
+fi
+
 # Files-only synchronization still needs fresh deterministic cache tokens.
 ASSET_SCRIPT="$PROJECT_ROOT/gestor/controladores/agents/arquitetura/atualizacao-versoes-assets.php"
 php "$ASSET_SCRIPT" --root="$ORIGEM"
@@ -200,6 +230,9 @@ run_project_rsync() {
 run_project_rsync "$ORIGEM" "$DESTINO" "${RSYNC_EXCLUDES[@]}"
 
 project_transport_finalize || exit 1
+
+# req-194: obsolete project migrations are removed on the target (see clean_project_migrations).
+clean_project_migrations
 
 # O projeto privado pode declarar um segundo plano distribuído ao lado de
 # `gestor/`. Ele precisa acompanhar o mesmo pipeline oficial: o Host Manager

@@ -35,6 +35,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-194 | complete | Formulários do `interface` em Tailwind: inclusão, botões e exclusão (req-190) | [BATCH-194.md](BATCH-194.md) | Listagem segue Fomantic (BL-026). Validado pelo e-commerce do conn2flow-site no Lab. |
 | BATCH-195 | complete | Sitemap sem o fluxo de compra e deploy por API sem estouro de memória (req-191) | [BATCH-195.md](BATCH-195.md) | Achado do E2E do e-commerce do conn2flow-site: carrinho, checkout e desfechos indexados. |
 | BATCH-196 | complete | Cupom de desconto na criação de assinatura do Stripe (req-192) | [BATCH-196.md](BATCH-196.md) | `stripe_criar_assinatura()` com `coupon_id`; pedido pela REQ-069 do conn2flow-site (cupons nas assinaturas). |
+| BATCH-198 | complete | Hotfix: migrações obsoletas no ambiente em execução (req-194) | [BATCH-198.md](BATCH-198.md) | Limpeza por dono (core/projeto) no deploy por API, na atualização do sistema e no pipeline rsync; choques só registrados. Épico no BL-028. |
 
 ## Regra operacional
 

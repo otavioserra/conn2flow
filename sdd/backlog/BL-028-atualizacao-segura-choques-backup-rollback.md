@@ -1,0 +1,99 @@
+# BL-028 — Atualização segura: core canibalizável, choques, exclusão de dados, backup e rollback
+
+- **Tipo**: Epic / Architecture
+- **Status**: IN-DISCUSSION
+- **Severidade sugerida**: ALTA (hoje uma atualização pode desfazer a customização de um projeto em silêncio, e não há volta)
+- **Origem**: Humano, 2026-09-29, junto com o hotfix [req-194](../human-requests/req-194.md) (migrações obsoletas)
+- **Componentes**: `controladores/atualizacoes/atualizacoes-sistema.php`, `atualizacoes-banco-de-dados.php`, `atualizacoes-migracoes.php`, `controladores/api/api.php` (`api_project_update`), `ai-workspace/en/scripts/projects/{deploy-project-v2,synchronize-project,sync-core-to-project}.sh`, `cli/src/Commands/ProjectUpdateAllCommand.php`
+
+## Princípio (definido pelo Humano)
+
+O core pode ser **canibalizado**: um projeto (e um plugin, que roda sobre o core) pode sobrepor **qualquer** arquivo do core — até o `index.php` — e mesmo assim continuar recebendo atualizações. Choques de arquivos e de tabelas são normais e permitidos; o sistema precisa **prever, registrar e tratar** esses choques, não impedi-los. Toda remoção (arquivos ou dados) acontece **no ambiente em execução**, nunca no repositório.
+
+## Diagnóstico (leitura do código em 2026-09-29)
+
+### Caminhos de entrega
+
+| Caminho | Como aplica arquivos | Remove algo? |
+|---|---|---|
+| Atualização do sistema (CLI) | extrai o release em staging e move/mescla por cima (`moverConteudoStaging`, merge recursivo de pastas); `--wipe` opcional apaga tudo menos `contents/ logs/ backups/ temp/ autenticacoes/` | apaga `db/` inteiro depois do banco |
+| Atualização do sistema (web, por etapas) | igual ao CLI | **não** apaga `db/` (diverge do CLI) |
+| Deploy de projeto por API (`/_api/project/update`) | extrai o ZIP e copia por cima (`api_copy_directory`) | nada (req-194 passou a limpar só migrações) |
+| Pipeline por rsync (`project:update-all`, Lab/VM) | `rsync -avu` sem `--delete` | nada (req-194: só migrações) |
+| Sync do core para projeto | `rsync -u` (arquivo local mais novo vence) | nada |
+
+### Achados
+
+1. **Sem registro de dono por arquivo.** Não há como saber se um arquivo do servidor veio do core, de um plugin ou do projeto. Consequência: o projeto sobrepõe um arquivo do core, a próxima **atualização do sistema sobrescreve a sobreposição sem aviso**, e o site roda com a versão do core até o próximo deploy do projeto (estado híbrido, silencioso).
+2. **Arquivos retirados nunca saem.** Um arquivo removido do core ou do projeto fica no servidor para sempre (só as migrações foram tratadas na req-194). Um controlador ou biblioteca órfão continua carregável.
+3. **Exclusão de dados é só imperativa.** O atualizador de banco faz UPSERT; remover registro exige declará-lo na lista `deletar` do `schema-metadata.json` (`executarDelecoes`). Recurso retirado do repositório (página, variável, template, widget) segue no banco; órfãos são só logados (`--orphans-mode`).
+4. **`--backup` quebra.** `atualizacoes-sistema.php` chama `backupTotal()`, que não existe em lugar nenhum: a atualização com backup morre com erro fatal. Não há backup de banco antes das migrações nem rollback de nenhum tipo.
+5. **Sem atomicidade nem trava.** A cópia por cima pode falhar no meio (estado híbrido). Nada impede dois deploys simultâneos no mesmo ambiente — no Lab, agentes em paralelo trocam o `path` do projeto e sobrescrevem o código um do outro.
+6. **Ordem do pipeline.** `project:update-all` roda o banco (etapa 2) antes de enviar os arquivos (etapa 4); qualquer lixo no destino trava a etapa 2 (foi assim que a migração duplicada bloqueou o Lab).
+7. **Choque de numeração entre agentes.** Duas migrações com a mesma versão criadas em paralelo (`20260929140000`) só aparecem no servidor, como erro do Phinx.
+8. **Plugins.** A sincronização de hooks apaga por id de módulo sem considerar o plugin: dois módulos com o mesmo id (core e plugin) apagam os hooks um do outro. Tabelas de plugin e de projeto não têm dono registrado.
+9. **Primeira execução da req-194.** Sem manifestos, a regra da migração renomeada não distingue os donos (limitação registrada no BATCH-198).
+
+## Propostas
+
+### A. Manifesto de instalação por camada (base de tudo)
+
+Cada entrega (core, cada plugin, projeto) grava no servidor um manifesto `caminho → hash` do que entregou (`installation/manifests/<camada>.json`, fora de `db/`). Com ele o atualizador sabe, para cada arquivo:
+
+- **intacto** (hash do core = hash no disco);
+- **sobreposto** (o projeto/plugin entregou outro conteúdo no mesmo caminho);
+- **editado localmente** (ninguém entregou o hash atual — alguém mexeu no servidor);
+- **retirado** (a camada entregou antes e não entrega mais).
+
+Generaliza o manifesto de migrações da req-194.
+
+### B. Política de choque (opções para o Humano decidir)
+
+1. **Precedência de camada no disco (recomendado agora).** Ordem `projeto > plugin > core`. A atualização do core **não sobrescreve** arquivo sobreposto: guarda a versão nova do core em `backups/overrides/<versão>/<caminho>` e registra o choque "o core mudou um arquivo que você sobrepôs", com diff. O projeto decide quando incorporar.
+2. **Overlay em runtime.** O projeto não escreve em cima do core: suas sobreposições ficam em `project/overrides/<caminho>` e o carregador resolve (`require` pela camada mais alta). Atualizar o core vira trocar a pasta do core inteira. Mais limpo, mas exige tocar todos os `require`/`include` do núcleo.
+3. **Patches.** O projeto guarda diffs sobre o core e o atualizador reaplica (merge em 3 vias). Flexível, mas frágil quando o core muda muito.
+
+Em qualquer opção: **registro de choques** (tabela `atualizacoes_choques` ou JSON + aba em `admin-atualizacoes`) com camada, caminho, tipo (arquivo, tabela, migração, hook), versões e resolução.
+
+### C. Exclusão de dados no ambiente em execução
+
+- Cada deploy leva o manifesto de **recursos** por dono (ids naturais por tabela: páginas, layouts, componentes, variáveis, templates, widgets, hooks).
+- O atualizador compara com o manifesto anterior do **mesmo dono** e remove (ou marca `status='D'`) o que saiu.
+- Registro editado online (`user_modified`) **não** é apagado: vira choque para decisão humana.
+- Modo simulação com relatório antes de aplicar; a lista `deletar` imperativa continua para casos pontuais.
+
+### D. Backup e rollback automáticos
+
+1. **Antes de aplicar:** snapshot só dos arquivos que serão sobrescritos ou removidos (não backup total) + dump das tabelas que as migrações e o sync vão tocar; tudo ligado ao id da execução em `atualizacoes_execucoes`.
+2. **Health check depois:** rotas-chave com HTTP 200, sem fatal no log, migrações sem pendência.
+3. **Rollback:** restaura o snapshot de arquivos automaticamente se o health check falhar; o banco volta pelo dump (automático quando só houve migrações da própria execução; confirmado pelo operador quando houve escrita de usuários no meio).
+4. Retenção de N execuções; comando `c2f update:rollback <execução>`.
+5. Corrigir o `backupTotal()` inexistente (achado 4) já no primeiro lote.
+
+### E. Atomicidade e trava
+
+- Extrair em staging completo e trocar por `rename` de pastas (troca quase atômica) em vez de copiar arquivo a arquivo.
+- Trava de deploy por ambiente (arquivo de lock com dono, execução e TTL) respeitada por API, atualização do sistema e pipeline; no Lab, o lock também identifica o agente.
+
+### F. Outros
+
+- Alinhar CLI e web da atualização do sistema (limpeza de `db/`).
+- Rever a ordem do `project:update-all` (banco antes dos arquivos).
+- `c2f db:check-migrations`: acusa versão duplicada, e classe duplicada entre core, plugins e projeto, **antes** do deploy (pre-commit ou pipeline), evitando o choque entre agentes.
+- Dono por hook e por tabela (achado 8).
+- Leitura de tabelas em streaming ([BL-027](BL-027-sincronizacao-banco-memoria.md)).
+
+## Fases sugeridas
+
+1. Corrigir `backupTotal`; trava de deploy; `db:check-migrations`; alinhar CLI/web.
+2. Manifesto por camada (A) + registro de choques + política B.1.
+3. Backup seletivo + health check + rollback (D).
+4. Exclusão declarativa de dados (C).
+5. Avaliar overlay em runtime (B.2) como evolução.
+
+## Critérios de aceite (rascunho)
+
+- Um projeto sobrepõe um arquivo do core, o core é atualizado: a sobreposição continua valendo, o choque aparece no painel com o diff da versão nova.
+- Um recurso removido do repositório some do banco no próximo deploy, exceto se editado online (vira choque).
+- Uma atualização que quebra o site volta sozinha ao estado anterior, com relatório.
+- Dois deploys no mesmo ambiente não rodam ao mesmo tempo.
