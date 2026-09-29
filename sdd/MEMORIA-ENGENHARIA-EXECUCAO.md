@@ -316,6 +316,17 @@
   resultado passa a depender da rodada anterior. Validar sempre com DUAS execuções seguidas, sem
   apagar `.phpunit.result.cache`.
 
+### 2026-09-29 — BATCH-198 (req-194): migrações obsoletas no ambiente em execução
+
+- **`db/migrations` do servidor tem dois donos.** A pasta do projeto (ex.: `conn2flow-site/gestor`)
+  só tem as migrações do projeto; as do core chegam pelo sync do core ou pela atualização do sistema.
+  Espelhar (`rsync --delete`) ou apagar a pasta antes de extrair apagaria as do outro dono. A limpeza é
+  por dono, com `db/.c2f-migrations-<core|projeto>.json` (`atualizacoes-migracoes.php`).
+- **`project:update-all` roda o banco (etapa 2) antes dos arquivos (etapa 4).** Lixo no destino trava a
+  etapa 2; por isso a limpeza roda entre a 1 e a 2 (`synchronize-project.sh --migrations-only`).
+- **`--backup` da atualização do sistema chama `backupTotal()`, que não existe** (fatal). Registrado
+  no BL-028, não corrigido no hotfix.
+
 ### Histórico anterior
 
 BATCH-144 (autoria x derivado no CSS; runtime serve do banco, disco só com `DEVELOPMENT_ENV`) e
