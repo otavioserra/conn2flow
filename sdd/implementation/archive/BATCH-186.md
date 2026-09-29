@@ -1,6 +1,6 @@
 # BATCH-186: Documentação do Core — Guias e Referência de CLI e API (onda 4)
 
-Execução da [req-182](../../human-requests/archive/req-182.md), por um agente em outra infraestrutura. Ondas irmãs: [BATCH-187](BATCH-187.md) (onda 5) e [BATCH-188](../BATCH-188.md) (onda 6).
+Execução da [req-182](../../human-requests/archive/req-182.md), por um agente em outra infraestrutura. Ondas irmãs: [BATCH-187](BATCH-187.md) (onda 5) e [BATCH-188](BATCH-188.md) (onda 6).
 
 **Status**: `complete` (documentação versionada; publicação do site pertence à req-184).
 

@@ -1,6 +1,6 @@
 # BATCH-189: Ajustes de Navegação e Referência nas Docs Online
 
-Execução da [req-185](../human-requests/req-185.md). Publicação no Lab pelo agente da [req-184](../human-requests/req-184.md) ([BATCH-188](BATCH-188.md)).
+Execução da [req-185](../../human-requests/archive/req-185.md). Publicação no Lab pelo agente da [req-184](../../human-requests/archive/req-184.md) ([BATCH-188](BATCH-188.md)).
 
 **Status**: `complete` (2026-09-26).
 

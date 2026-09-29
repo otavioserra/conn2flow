@@ -336,7 +336,11 @@ function stripe_consultar_setup_intent($params = Array()){
  * @param array $params ['customer_id' => obrig, 'price_id' => obrig, 'referencia' => opc,
  *                       'metadata' => opc, 'idempotency_key' => opc, 'trial_period_days' => opc,
  *                       'payment_method_id' => opc (método já salvo no Customer/assinatura),
- *                       'coupon_id' => opc (coupon do Stripe aplicado como desconto; req-192)]
+ *                       'coupon_id' => opc (coupon do Stripe aplicado como desconto; req-192),
+ *                       'add_invoice_items' => opc, lista de ['product' => prod_… obrig, 'amount' => decimal
+ *                       obrig (valor unitário, já com desconto), 'currency' => 'BRL', 'quantity' => 1]:
+ *                       cobranças avulsas na PRIMEIRA fatura da assinatura (produtos e frete de um
+ *                       carrinho misto; req-195). O cupom da assinatura não incide sobre elas.]
  * @return array|false ['id','status','client_secret','secret_type' => 'payment'|'setup','subscription_data'] ou false.
  */
 function stripe_criar_assinatura($params = Array()){
@@ -355,6 +359,26 @@ function stripe_criar_assinatura($params = Array()){
     // Cupom de desconto: a duração (uma vez, N meses, para sempre) vem do próprio coupon do Stripe.
     if(!empty($params['coupon_id'])){
         $dados['discounts'] = Array(Array('coupon' => (string)$params['coupon_id']));
+    }
+
+    // Itens avulsos na primeira fatura (req-195): com eles, mesmo uma assinatura em período de teste
+    // tem fatura inicial com valor — o cliente paga os produtos agora e o cartão fica salvo para as
+    // mensalidades. Item inválido (sem produto ou valor) é ignorado, nunca cobrado pela metade.
+    if(!empty($params['add_invoice_items']) && is_array($params['add_invoice_items'])){
+        $itens = Array();
+        foreach($params['add_invoice_items'] as $item){
+            if(!is_array($item) || empty($item['product']) || !isset($item['amount'])) continue;
+            $moeda = strtolower((string)($item['currency'] ?? 'brl'));
+            $centavos = function_exists('stripe_valor_menor_unidade')
+                ? stripe_valor_menor_unidade($item['amount'], $moeda)
+                : (int)round((float)$item['amount'] * 100);
+            if($centavos <= 0) continue;
+            $itens[] = Array(
+                'price_data' => Array('currency' => $moeda, 'product' => (string)$item['product'], 'unit_amount' => $centavos),
+                'quantity' => max(1, (int)($item['quantity'] ?? 1)),
+            );
+        }
+        if($itens) $dados['add_invoice_items'] = $itens;
     }
 
     // Período de teste: o trial não vem do Price, precisa ser declarado aqui.
