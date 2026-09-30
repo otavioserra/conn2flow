@@ -108,3 +108,32 @@ Quando uma entrega vai sobrescrever um arquivo que está **diferente** no ar (o 
 - Um recurso removido do repositório some do banco no próximo deploy, exceto se editado online (vira choque).
 - Uma atualização que quebra o site volta sozinha ao estado anterior, com relatório.
 - Dois deploys no mesmo ambiente não rodam ao mesmo tempo.
+
+## Parecer do Arquiteto (2026-09-30, depois do ciclo do e-commerce)
+
+**Recomendação:** promover em **três requisições**, nesta ordem.
+
+1. **Fase 1 agora, como hotfix curto** (1 lote):
+   - trava de deploy por ambiente;
+   - corrigir `backupTotal()`;
+   - `c2f db:check-migrations`;
+   - alinhar CLI e web.
+
+   A trava deixou de ser teórica. Em 2026-09-30 dois pipelines de agentes diferentes cruzaram no Lab duas vezes: um deles, meu, rodou mesmo depois de a checagem acusar o outro em execução. Um desses cruzamentos já tinha causado o erro 1020 do MariaDB. Hoje a proteção depende de disciplina de cada agente.
+2. **Fases 2 e 3 juntas** (A + B.1 + D), numa requisição de arquitetura com 2 ou 3 lotes:
+   - manifesto por camada, precedência `projeto > plugin > core` no disco e registro de choques;
+   - backup seletivo com health check e rollback.
+
+   É o que resolve os dois riscos altos (a sobreposição apagada em silêncio e a atualização sem volta). A deve vir antes de D, porque o backup seletivo precisa do manifesto para saber o que vai ser sobrescrito.
+3. **Fases 4 e 5 depois** (C e G), quando A estiver no ar há algumas versões:
+   - C, a exclusão declarativa, só é segura com manifesto de recursos confiável;
+   - G, o diff e merge no CLI, na extensão e no `admin-atualizacoes`, depende do registro de choques.
+
+   B.2 (overlay em runtime) continua como avaliação futura: custa mexer em todo `require` do núcleo e não é necessário para os critérios de aceite.
+
+**Achados do ciclo do e-commerce para somar ao F:**
+- **Página Tailwind nova sai sem CSS na primeira rodada do `project:update-all`:** o `*.precompiled.css` é gerado depois de o `PaginasData.json` ser montado, e a página vai para o banco com `css_precompiled` vazio. Precisou de uma segunda rodada nas REQ-078, 079 e 080 do site. Rever a ordem dentro da etapa de recursos, junto com a ordem banco → arquivos (achado 6).
+- **Trava do OneDrive no `rename` do Tailwind** ("arquivo em uso"): falha transitória, que se resolve repetindo. Um novo tentativa automática curta na substituição atômica evitaria rodar o pipeline inteiro de novo.
+
+**Fora do escopo do BL-028, mas vale uma requisição pequena no core:** o `banco_select` usa a expressão inteira como chave do resultado (`'COUNT(*) AS n'` vira a chave `'COUNT(*) AS n'`, não `n`). No site isso anulava, sem erro, dois limites de segurança (pedidos e CEP por IP) e a nota das avaliações. O core já contorna com `reset()` nos seus widgets. Proposta: o `banco_select` passar a usar o alias quando houver `AS`, mantendo também a chave antiga, para não quebrar quem já lê pela expressão.
+
