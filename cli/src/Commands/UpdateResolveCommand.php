@@ -38,10 +38,11 @@ final class UpdateResolveCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f update:resolve <projectID> <clashID> --acao=sobrescrever|manter|mesclar [--arquivo=PATH] [--local]\n\n"
+        return "Usage: c2f update:resolve <projectID> <clashID> --acao=sobrescrever|manter|mesclar [--arquivo=PATH] [--local] [--json]\n\n"
             . "  --acao      the decision (the clash lists which ones apply)\n"
             . "  --arquivo   merged file for --acao=mesclar (default: temp/conflicts/<project>/<id>/mesclado.<ext>)\n"
-            . "  --local     with mesclar, also writes the merge into the local project repository";
+            . "  --local     with mesclar, also writes the merge into the local project repository\n"
+            . "  --json      prints one JSON line: {ok, id, acao, resolvidos, local} or {ok: false, erro}";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -49,16 +50,23 @@ final class UpdateResolveCommand extends BaseProcessCommand
         $projectId = (string)($input->getOption('project') ?? $input->getArgument(0) ?? '');
         $id = (int)($input->getOption('id') ?? $input->getArgument(1) ?? 0);
         $acao = (string)($input->getOption('acao') ?? '');
-        if ($projectId === '' || $id <= 0 || !in_array($acao, self::ACOES, true)) {
-            $output->error($this->getHelp());
+        $json = $input->hasOption('json');
+        $falhar = function (string $mensagem) use ($json, $output): int {
+            if ($json) {
+                $output->writeln((string)json_encode(['ok' => false, 'erro' => $mensagem], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+            } else {
+                $output->error($mensagem);
+            }
             return 1;
+        };
+        if ($projectId === '' || $id <= 0 || !in_array($acao, self::ACOES, true)) {
+            return $falhar($this->getHelp());
         }
         try {
             $projeto = (new ProjectEnvironmentResolver($this->rootPath))->resolve($projectId);
             $api = new ProjectApiClient($projeto);
         } catch (Throwable $e) {
-            $output->error($e->getMessage());
-            return 1;
+            return $falhar($e->getMessage());
         }
 
         $corpo = ['id' => $id, 'acao' => $acao];
@@ -70,23 +78,26 @@ final class UpdateResolveCommand extends BaseProcessCommand
                 $arquivo = self::mescladoPadrao($this->rootPath . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . 'conflicts', $projectId, $id) ?? '';
             }
             if ($arquivo === '' || !is_file($arquivo)) {
-                $output->error('Arquivo mesclado não encontrado. Baixe com `c2f update:conflicts ' . $projectId . ' ' . $id . '` ou passe --arquivo.');
-                return 1;
+                return $falhar('Arquivo mesclado não encontrado. Baixe com `c2f update:conflicts ' . $projectId . ' ' . $id . '` ou passe --arquivo.');
             }
             $conteudo = (string)file_get_contents($arquivo);
             $corpo += self::corpoConteudo($conteudo);
             $meta = dirname($arquivo) . DIRECTORY_SEPARATOR . 'choque.json';
             $caminho = is_file($meta) ? (string)(json_decode((string)file_get_contents($meta), true)['caminho'] ?? '') : null;
-            $output->info('Mescla: ' . $arquivo);
+            if (!$json) {
+                $output->info('Mescla: ' . $arquivo);
+            }
         }
 
         $r = $api->request('POST', '_api/project/resolve', $corpo);
         if ($r['http'] !== 200) {
-            $output->error(ProjectApiClient::describeError($r));
-            return 1;
+            return $falhar(ProjectApiClient::describeError($r));
         }
         $dados = (array)($r['json']['data'] ?? []);
-        $output->success(sprintf('Choque %d: %s (%d linha(s) resolvida(s)).', $id, $acao, (int)($dados['resolvidos'] ?? 1)));
+        if (!$json) {
+            $output->success(sprintf('Choque %d: %s (%d linha(s) resolvida(s)).', $id, $acao, (int)($dados['resolvidos'] ?? 1)));
+        }
+        $gravadoLocal = null;
 
         if ($acao === 'mesclar' && $input->hasOption('local') && $conteudo !== null && $caminho) {
             $local = self::caminhoLocal((string)$projeto['gestorPath'], $caminho);
@@ -97,8 +108,15 @@ final class UpdateResolveCommand extends BaseProcessCommand
                     @mkdir(dirname($local), 0775, true);
                 }
                 file_put_contents($local, $conteudo);
-                $output->info('Mescla gravada no repositório local: ' . $local);
+                $gravadoLocal = $local;
+                if (!$json) {
+                    $output->info('Mescla gravada no repositório local: ' . $local);
+                }
             }
+        }
+        if ($json) {
+            $output->writeln((string)json_encode(['ok' => true, 'id' => $id, 'acao' => $acao, 'resolvidos' => (int)($dados['resolvidos'] ?? 1), 'local' => $gravadoLocal],
+                JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
         }
         return 0;
     }

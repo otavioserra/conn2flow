@@ -36,11 +36,12 @@ final class UpdateConflictsCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f update:conflicts <projectID> [clashID] [--todos] [--abrir]\n\n"
+        return "Usage: c2f update:conflicts <projectID> [clashID] [--todos] [--abrir] [--json]\n\n"
             . "  (no clashID)  lists pending clashes (--todos includes resolved ones)\n"
             . "  <clashID>     downloads live and new versions to temp/conflicts/<project>/<id>/\n"
             . "                (no-ar.<ext>, nova.<ext>, mesclado.<ext>)\n"
-            . "  --abrir       opens `code --diff no-ar nova` after downloading\n\n"
+            . "  --abrir       opens `code --diff no-ar nova` after downloading\n"
+            . "  --json        prints one JSON line: {ok, choques} or {ok, choque, arquivos, pasta}\n\n"
             . "Then decide with: c2f update:resolve <projectID> <clashID> --acao=sobrescrever|manter|mesclar";
     }
 
@@ -48,25 +49,35 @@ final class UpdateConflictsCommand extends BaseProcessCommand
     {
         $projectId = (string)($input->getOption('project') ?? $input->getArgument(0) ?? '');
         $id = (int)($input->getOption('id') ?? $input->getArgument(1) ?? 0);
-        if ($projectId === '') {
-            $output->error($this->getHelp());
+        $json = $input->hasOption('json');
+        $falhar = function (string $mensagem) use ($json, $output): int {
+            if ($json) {
+                self::emitirJson($output, ['ok' => false, 'erro' => $mensagem]);
+            } else {
+                $output->error($mensagem);
+            }
             return 1;
+        };
+        if ($projectId === '') {
+            return $falhar($this->getHelp());
         }
         try {
             $projeto = (new ProjectEnvironmentResolver($this->rootPath))->resolve($projectId);
             $api = new ProjectApiClient($projeto);
         } catch (Throwable $e) {
-            $output->error($e->getMessage());
-            return 1;
+            return $falhar($e->getMessage());
         }
 
         if ($id <= 0) {
             $r = $api->request('POST', '_api/project/conflicts', ['todos' => $input->hasOption('todos')]);
             if ($r['http'] !== 200) {
-                $output->error(ProjectApiClient::describeError($r));
-                return 1;
+                return $falhar(ProjectApiClient::describeError($r));
             }
             $lista = $r['json']['data']['choques'] ?? [];
+            if ($json) {
+                self::emitirJson($output, ['ok' => true, 'projeto' => $projectId, 'choques' => $lista]);
+                return 0;
+            }
             $output->title("Choques de {$projectId}: " . count($lista));
             if ($lista) {
                 $output->table(['id', 'motivo', 'camada', 'arquivo', 'versão', 'resolução', 'decisões'], array_map(function ($c) {
@@ -79,12 +90,17 @@ final class UpdateConflictsCommand extends BaseProcessCommand
 
         $r = $api->request('POST', '_api/project/conflicts', ['id' => $id]);
         if ($r['http'] !== 200) {
-            $output->error(ProjectApiClient::describeError($r));
-            return 1;
+            return $falhar(ProjectApiClient::describeError($r));
         }
         $d = (array)($r['json']['data'] ?? []);
         $pasta = self::gravarVersoes($this->rootPath . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . 'conflicts', $projectId, $id, $d);
         $c = (array)($d['choque'] ?? []);
+        if ($json) {
+            unset($c['diff']);
+            self::emitirJson($output, ['ok' => true, 'projeto' => $projectId, 'choque' => $c, 'binario' => (bool)($d['binario'] ?? false),
+                'pasta' => $pasta['pasta'], 'arquivos' => $pasta['arquivos']]);
+            return 0;
+        }
         $output->title("Choque {$id}: " . ($c['caminho'] ?? ''));
         $output->writeln('Motivo: ' . ($c['motivo'] ?? '') . ' | camada: ' . ($c['camada'] ?? '') . ' | dona: ' . ($c['camada_dona'] ?? '—'));
         $output->writeln('Decisões possíveis: ' . implode(', ', (array)($c['acoes'] ?? [])));
@@ -102,6 +118,12 @@ final class UpdateConflictsCommand extends BaseProcessCommand
             $output->info('Comparar: ' . $cmd);
         }
         return 0;
+    }
+
+    /** Saída `--json` (uma linha, para a extensão do VS Code e outros consumidores). */
+    private static function emitirJson(OutputInterface $output, array $dados): void
+    {
+        $output->writeln((string)json_encode($dados, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 
     /**

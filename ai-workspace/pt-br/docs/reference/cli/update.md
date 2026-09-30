@@ -38,7 +38,7 @@ O caminho depende do projeto no `environment.json`:
 Código: `cli/src/Commands/UpdateConflictsCommand.php` (req-199 / BATCH-205). Alias: `conflicts`.
 
 ```text
-Usage: c2f update:conflicts <projectID> [clashID] [--todos] [--abrir]
+Usage: c2f update:conflicts <projectID> [clashID] [--todos] [--abrir] [--json]
 ```
 
 Sem id, lista os choques pendentes do projeto pela API (`--todos` inclui os resolvidos). Com id, baixa as duas versões para `temp/conflicts/<projeto>/<id>/`: `no-ar.<ext>`, `nova.<ext>` e `mesclado.<ext>`, que começa como a versão no ar e não é apagado por um novo download. `--abrir` chama `code --diff no-ar nova`.
@@ -48,10 +48,12 @@ Sem id, lista os choques pendentes do projeto pela API (`--todos` inclui os reso
 Código: `cli/src/Commands/UpdateResolveCommand.php`. Alias: `resolve`.
 
 ```text
-Usage: c2f update:resolve <projectID> <clashID> --acao=sobrescrever|manter|mesclar [--arquivo=PATH] [--local]
+Usage: c2f update:resolve <projectID> <clashID> --acao=sobrescrever|manter|mesclar [--arquivo=PATH] [--local] [--json]
 ```
 
 Envia a decisão. `mesclar` manda o arquivo mesclado (padrão: o `mesclado.<ext>` baixado); `--local` grava a mesma mescla no repositório local do projeto, para a próxima entrega já levá-la.
+
+`--json` imprime uma linha JSON, para a extensão do VS Code e outros consumidores: a lista (`{ok, projeto, choques}`), o detalhe baixado (`{ok, choque, binario, pasta, arquivos}`) ou a resolução (`{ok, id, acao, resolvidos, local}`); erro sai como `{ok: false, erro}` com código 1.
 
 Os três comandos que falam com a API usam `api.access_token` do projeto e, opcionalmente, `api_resolve_ip` no `environment.json`: resolve o host da URL para esse IP (ambiente de teste sem DNS para o próprio nome; o certificado não é conferido nesse caso).
 

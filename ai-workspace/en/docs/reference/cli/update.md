@@ -38,7 +38,7 @@ The path depends on the project in `environment.json`:
 Code: `cli/src/Commands/UpdateConflictsCommand.php` (req-199 / BATCH-205). Alias: `conflicts`.
 
 ```text
-Usage: c2f update:conflicts <projectID> [clashID] [--todos] [--abrir]
+Usage: c2f update:conflicts <projectID> [clashID] [--todos] [--abrir] [--json]
 ```
 
 Without an id, lists the project's pending clashes through the API (`--todos` includes resolved ones). With an id, downloads both versions to `temp/conflicts/<project>/<id>/`: `no-ar.<ext>`, `nova.<ext>` and `mesclado.<ext>`, which starts as the live version and is not wiped by a new download. `--abrir` runs `code --diff no-ar nova`.
@@ -48,10 +48,12 @@ Without an id, lists the project's pending clashes through the API (`--todos` in
 Code: `cli/src/Commands/UpdateResolveCommand.php`. Alias: `resolve`.
 
 ```text
-Usage: c2f update:resolve <projectID> <clashID> --acao=sobrescrever|manter|mesclar [--arquivo=PATH] [--local]
+Usage: c2f update:resolve <projectID> <clashID> --acao=sobrescrever|manter|mesclar [--arquivo=PATH] [--local] [--json]
 ```
 
 Sends the decision. `mesclar` sends the merged file (default: the downloaded `mesclado.<ext>`); `--local` writes the same merge into the local project repository so the next delivery already carries it.
+
+`--json` prints one JSON line for the VS Code extension and other consumers: the list (`{ok, projeto, choques}`), the downloaded detail (`{ok, choque, binario, pasta, arquivos}`) or the resolution (`{ok, id, acao, resolvidos, local}`); errors come as `{ok: false, erro}` with exit code 1.
 
 The three commands that talk to the API use the project's `api.access_token` and, optionally, `api_resolve_ip` in `environment.json`: it resolves the URL host to that IP (test environment without DNS for its own name; the certificate is not checked in that case).
 
