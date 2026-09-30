@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-09-29T15:38:48-03:00",
+    "generated_at": "2026-09-30T15:44:36-03:00",
     "tables": {
         "alvos_ia": {
             "nome": "alvos_ia",
@@ -213,6 +213,7 @@
             "preserve_on_user_modified": [
                 "nome",
                 "layout_id",
+                "layouts_users_profiles",
                 "caminho",
                 "framework_css",
                 "sem_permissao",

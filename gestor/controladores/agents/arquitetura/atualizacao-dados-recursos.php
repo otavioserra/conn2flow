@@ -646,6 +646,10 @@ function coletarRecursos(array $existentes, array $map): array {
                     'file_version' => $p['version'] ?? null,
                     'checksum' => json_encode($cks,JSON_UNESCAPED_UNICODE)
                 ];
+                if (array_key_exists('layouts_users_profiles', $p)) {
+                    $paginaData['layouts_users_profiles'] = is_array($p['layouts_users_profiles'])
+                        ? json_encode($p['layouts_users_profiles'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : null;
+                }
                 if (isset($p['data_criacao'])) $paginaData['data_criacao'] = $p['data_criacao'];
                 if (isset($p['data_modificacao'])) $paginaData['data_modificacao'] = $p['data_modificacao'];
                 $paginas[] = $paginaData;
@@ -880,6 +884,10 @@ function coletarRecursos(array $existentes, array $map): array {
                             $kPath = $lang.'|'.strtolower(trim($path,'/')); if(isset($idxPaginasPath[$kPath])) { $orphans['paginas'][]=$item+['_motivo'=>'duplicidade caminho','language'=>$lang,'modulo'=>$modId]; continue; }
                             $idxPaginasId[$kId]=true; $idxPaginasPath[$kPath]=true; [$versao,$cks]=$versaoChecksum('paginas',$kId,$html,$css,$cssPrecompiled);
                             $modPageData = [ 'layout_id'=>$item['layout'] ?? null,'nome'=>$item['name'] ?? $id,'id'=>$id,'language'=>$lang,'caminho'=>$path,'tipo'=>$item['type'] ?? null,'modulo'=>$modId,'opcao'=>$item['option'] ?? null,'raiz'=>$item['root'] ?? null,'sem_permissao'=>$item['without_permission'] ?? null,'html'=>$html, 'html_extra_head' => $item['html_extra_head'] ?? null,'css'=>$css,'css_precompiled'=>$cssPrecompiled,'framework_css'=>getFrameworkCss($item),'publisher_id'=>$item['publisher_id'] ?? null,'status'=>$item['status'] ?? 'A','versao'=>$versao,'file_version'=>$item['version'] ?? null,'checksum'=>json_encode($cks,JSON_UNESCAPED_UNICODE) ];
+                            if (array_key_exists('layouts_users_profiles', $item)) {
+                                $modPageData['layouts_users_profiles'] = is_array($item['layouts_users_profiles'])
+                                    ? json_encode($item['layouts_users_profiles'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : null;
+                            }
                             if (isset($item['data_criacao'])) $modPageData['data_criacao'] = $item['data_criacao'];
                             if (isset($item['data_modificacao'])) $modPageData['data_modificacao'] = $item['data_modificacao'];
                             $paginas[] = $modPageData;

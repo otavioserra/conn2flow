@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.2",
+    "versao": "1.2.4",
     "bibliotecas": [
         "interface",
         "html",
@@ -23,6 +23,7 @@
             "preserve_on_user_modified": [
                 "nome",
                 "layout_id",
+                "layouts_users_profiles",
                 "caminho",
                 "framework_css",
                 "sem_permissao",
@@ -150,6 +151,28 @@
                         "css": "",
                         "combined": "839f0ad72ee1fb7559f79aa1fd0b2f53"
                     }
+                },
+                {
+                    "name": "Mapeamento de Layout por Perfil",
+                    "id": "layout-profile-mapping",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "f8cffe2ecdc3cc62e4f65e1ff95bc09d",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "f8cffe2ecdc3cc62e4f65e1ff95bc09d"
+                    }
+                },
+                {
+                    "name": "Linha de Layout por Perfil",
+                    "id": "layout-profile-row",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "846642cefd8a44d86588e9eb438cf997",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "846642cefd8a44d86588e9eb438cf997"
+                    }
                 }
             ],
             "pages": [
@@ -171,11 +194,12 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.23",
+                    "version": "1.27",
                     "checksum": {
-                        "html": "25b371db0bd45964b18f4e0b926cadce",
+                        "html": "0d67a92f978092cd0309e3d026deea67",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "5c313e1bbef1e075c93865b393b79733"
+                        "css_precompiled": "",
+                        "combined": "a7e46f6b8ecf48de78a467ad72c9ae4b"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/editar/",
@@ -185,11 +209,12 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.21",
+                    "version": "1.25",
                     "checksum": {
-                        "html": "250c7448e2dc834b8fb76d57de38e09a",
+                        "html": "5b46df8fa445b0c19f892f049e4cd028",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "01ee7fee394c6ef8f576f1645f152ce5"
+                        "css_precompiled": "",
+                        "combined": "133443218380bec4c8f4040c4fd845dc"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/adicionar/",
@@ -199,11 +224,12 @@
                 {
                     "name": "Admin Páginas - Clonar",
                     "id": "admin-paginas-clonar",
-                    "version": "1.3",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "4e12203c1b05caba974a29b20058cb41",
+                        "html": "5177c722340fa466e39915c02d79fb18",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "c1340f2d73471c199940c784d596778a"
+                        "css_precompiled": "",
+                        "combined": "116a950799e5d70c3766bbaffe7e67a6"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/clonar/",
@@ -212,6 +238,26 @@
                 }
             ],
             "variables": [
+                {
+                    "id": "profile-mapping-toggle",
+                    "value": "Mapear layouts por perfil de usuário",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-mapping-profile",
+                    "value": "Perfil de Usuário",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-mapping-add",
+                    "value": "Adicionar mapeamento",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-mapping-remove",
+                    "value": "Remover",
+                    "type": "string"
+                },
                 {
                     "id": "form-name-label",
                     "value": "Nome da Página",
@@ -474,11 +520,12 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.18",
+                    "version": "1.22",
                     "checksum": {
-                        "html": "42cbdfe9824f6168e935f4f1f340ae30",
+                        "html": "63ce5786a974e064feb00d8a8aa43fa1",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "73489433ea7e2be7527d9419cfe00bcf"
+                        "css_precompiled": "",
+                        "combined": "63273b5001144f005da1cbf9751fa1fb"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/editar/",
@@ -488,11 +535,12 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.19",
+                    "version": "1.23",
                     "checksum": {
-                        "html": "c285415c51661df02b612096498fbc9e",
+                        "html": "e28b56f551b827cf7c2199f0aba85948",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "8d3f0b1d43ba08809062d4babc638726"
+                        "css_precompiled": "",
+                        "combined": "972ba450d507f3f145de5160e6722406"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/adicionar/",
@@ -502,11 +550,12 @@
                 {
                     "name": "Admin Pages - Clone",
                     "id": "admin-paginas-clonar",
-                    "version": "1.3",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "6882050055c288e3010c26d5485da5ea",
+                        "html": "d374bb78d62a9dc0b8f148fee3014a07",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
-                        "combined": "f5eade867c092a01e3da77b522bd5e3d"
+                        "css_precompiled": "",
+                        "combined": "862bf38a18d1af599ff9e170b4fc40b1"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/clonar/",
@@ -524,9 +573,51 @@
                         "css": "",
                         "combined": "d0dae208d0c9c46f4041e52bb5e503df"
                     }
+                },
+                {
+                    "name": "Profile Layout Mapping",
+                    "id": "layout-profile-mapping",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "f8cffe2ecdc3cc62e4f65e1ff95bc09d",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "f8cffe2ecdc3cc62e4f65e1ff95bc09d"
+                    }
+                },
+                {
+                    "name": "Profile Layout Row",
+                    "id": "layout-profile-row",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "846642cefd8a44d86588e9eb438cf997",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "846642cefd8a44d86588e9eb438cf997"
+                    }
                 }
             ],
             "variables": [
+                {
+                    "id": "profile-mapping-toggle",
+                    "value": "Map layouts by user profile",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-mapping-profile",
+                    "value": "User profile",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-mapping-add",
+                    "value": "Add mapping",
+                    "type": "string"
+                },
+                {
+                    "id": "profile-mapping-remove",
+                    "value": "Remove",
+                    "type": "string"
+                },
                 {
                     "id": "form-name-label",
                     "value": "Page Name",
@@ -675,5 +766,5 @@
             ]
         }
     },
-    "asset_version": "a41ae598a237a43d"
+    "asset_version": "0787671bc5ae1f17"
 }

@@ -1,4 +1,26 @@
 $(document).ready(function () {
+	$(document).on('change', 'input[name="mapear_layouts_perfis"]', function () {
+		$(this).closest('.field').next('.layout-profile-fields').prop('hidden', !this.checked);
+	});
+	$(document).on('click', '.layout-profile-add', function () {
+		var fields = $(this).closest('.layout-profile-fields');
+		var nextId = fields.data('layoutProfileNextId');
+		if (typeof nextId !== 'number') {
+			nextId = 0;
+			fields.find('.layout-profile-rows select[id]').each(function () {
+				var match = this.id.match(/-(\d+)$/);
+				if (match) nextId = Math.max(nextId, Number(match[1]) + 1);
+			});
+		}
+		var row = $(fields.find('.layout-profile-template').html());
+		row.find('select[id]').each(function () { this.id = this.id.replace(/-template$/, '-' + nextId); });
+		fields.data('layoutProfileNextId', nextId + 1);
+		fields.find('.layout-profile-rows').append(row);
+		row.find('select.ui.dropdown').dropdown();
+	});
+	$(document).on('click', '.layout-profile-remove', function () {
+		$(this).closest('.layout-profile-row').remove();
+	});
 
 	function updateQueryStringParameter(uri, key, value) {
 		var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");

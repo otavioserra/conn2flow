@@ -9,6 +9,11 @@
         <label>&nbsp;</label>
     </div>
 </div>
+<div class="ui top attached tabular menu profile-tabs">
+    <a class="active item" data-tab="profile-modules">#modules-name#</a>
+    <a class="item" data-tab="profile-access">@[[access-tab-label]]@</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="profile-modules">
 <div class="ui dividing tiny header">#modules-name#</div>
 <!-- grupo < -->
 <div class="ui segment">
@@ -57,3 +62,9 @@
     </div>
 </div>
 <!-- grupo > -->
+</div>
+<div class="ui bottom attached tab segment" data-tab="profile-access">
+    <div class="field"><label>@[[home-page-label]]@</label>
+        #home-page-autocomplete#
+    </div>
+</div>

@@ -567,6 +567,14 @@ function descobrirPK(string $tabela, array $row): string {
  */
 function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $logDiffs = true, bool $simulate = false): array {
     if (empty($registros)) return ['inserted'=>0,'updated'=>0,'same'=>0,'orphans'=>0];
+    if ($tabela === 'paginas') {
+        foreach ($registros as &$registro) {
+            if (isset($registro['layouts_users_profiles']) && is_array($registro['layouts_users_profiles'])) {
+                $registro['layouts_users_profiles'] = json_encode($registro['layouts_users_profiles'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
+        }
+        unset($registro);
+    }
     $debug = !empty($GLOBALS['CLI_OPTS']['debug']);
     $project = $GLOBALS['CLI_OPTS']['project'] ?? null;
 

@@ -170,9 +170,9 @@
         "minificado": 501
     },
     "gestor/modulos/admin-paginas/admin-paginas.js": {
-        "sha1": "ceee087bf1f101fe3bd92cdd57184d3796267fe8",
-        "origem": 6663,
-        "minificado": 3535
+        "sha1": "9f028b82d088f6fea591279d2106bd71803af2fc",
+        "origem": 7684,
+        "minificado": 4343
     },
     "gestor/modulos/admin-plugins/admin-plugins.js": {
         "sha1": "ffc760f1899ed488edd46d11e7c4bc3a5c643b7c",
@@ -300,9 +300,9 @@
         "minificado": 1868
     },
     "gestor/modulos/publisher-pages/publisher-pages.js": {
-        "sha1": "2eb7db31771837a8eff1885b37dcbc66d71a3717",
-        "origem": 17540,
-        "minificado": 9124
+        "sha1": "861a6395421b20fcc433c3c38858d408a6cb8745",
+        "origem": 18561,
+        "minificado": 9932
     },
     "gestor/modulos/publisher/publisher.js": {
         "sha1": "77dff0767e201b82dac5a60ee37e47d8d0542abc",
@@ -310,9 +310,9 @@
         "minificado": 11719
     },
     "gestor/modulos/usuarios-perfis/usuarios-perfis.js": {
-        "sha1": "e64bf031b4617f788355afb833e41a178352578a",
-        "origem": 645,
-        "minificado": 493
+        "sha1": "3cde6cf35d2d73b229b23a522a4b19048aad7cb3",
+        "origem": 3612,
+        "minificado": 2171
     },
     "gestor/modulos/usuarios/usuarios.js": {
         "sha1": "5383d63ad3c2f28727ee5cf5252d8b2e9e079950",

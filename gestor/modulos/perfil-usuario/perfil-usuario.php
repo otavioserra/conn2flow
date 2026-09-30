@@ -2203,7 +2203,7 @@ function perfil_usuario_signin(){
 			if(existe(gestor_sessao_variavel("redirecionar-local"))){
 				gestor_redirecionar();
 			} else {
-				gestor_redirecionar('dashboard/');
+				gestor_redirecionar(perfil_usuario_destino_inicial($id_usuarios));
 			}
 		}
 	}
@@ -2318,6 +2318,21 @@ function perfil_usuario_2fa_limpar_sessao(){
 /**
  * Conclui o login gerando o token de autorização e redirecionando ao destino.
  */
+function perfil_usuario_destino_inicial($id_usuarios){
+	global $_GESTOR;
+	$usuario = banco_select(Array('unico' => true, 'tabela' => 'usuarios', 'campos' => Array('id_usuarios_perfis'),
+		'extra' => "WHERE id_usuarios='".(int)$id_usuarios."' AND status='A'"));
+	if(!$usuario || !$usuario['id_usuarios_perfis']) return 'dashboard/';
+	$perfil = banco_select(Array('unico' => true, 'tabela' => 'usuarios_perfis', 'campos' => Array('pagina_inicial'),
+		'extra' => "WHERE id_usuarios_perfis='".(int)$usuario['id_usuarios_perfis']."' AND status='A'"));
+	$caminho = trim((string)($perfil['pagina_inicial'] ?? ''));
+	if($caminho === '') return 'dashboard/';
+	$caminho = $caminho === '/' ? '/' : trim($caminho, '/').'/';
+	$pagina = banco_select(Array('unico' => true, 'tabela' => 'paginas', 'campos' => Array('caminho'),
+		'extra' => "WHERE caminho='".banco_escape_field($caminho)."' AND status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'"));
+	return $pagina ? $pagina['caminho'] : 'dashboard/';
+}
+
 function perfil_usuario_finalizar_login($id_usuarios, $permanecerLogado){
 	$id_usuarios = (int)$id_usuarios;
 
@@ -2335,7 +2350,7 @@ function perfil_usuario_finalizar_login($id_usuarios, $permanecerLogado){
 	if(existe(gestor_sessao_variavel('redirecionar-local'))){
 		gestor_redirecionar();
 	} else {
-		gestor_redirecionar('dashboard/');
+		gestor_redirecionar(perfil_usuario_destino_inicial($id_usuarios));
 	}
 }
 
@@ -3705,7 +3720,7 @@ function perfil_usuario_validar_usuario(){
 					if(existe(gestor_sessao_variavel("redirecionar-local"))){
 						gestor_redirecionar(false,$querystring);
 					} else {
-						gestor_redirecionar('dashboard/');
+						gestor_redirecionar(perfil_usuario_destino_inicial($_GESTOR['usuario-id'] ?? 0));
 					}
 				}
 			}

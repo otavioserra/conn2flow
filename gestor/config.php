@@ -340,6 +340,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'arquivo' => Array('arquivo.php'),
 	'ftp' => Array('ftp.php'),
 	'pagina' => Array('pagina.php'),
+	'paginas-layouts-perfis' => Array('paginas-layouts-perfis.php'),
 	'formato' => Array('formato.php'),
 	'configuracao' => Array('configuracao.php'),
 	'host' => Array('host.php'),

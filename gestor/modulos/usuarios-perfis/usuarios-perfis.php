@@ -5,6 +5,68 @@ global $_GESTOR;
 $_GESTOR['modulo-id']							=	'usuarios-perfis';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/usuarios-perfis.json'), true);
 
+function usuarios_perfis_pagina_inicial($caminho){
+	global $_GESTOR;
+	if(!is_scalar($caminho)) return null;
+	$caminho = trim((string)$caminho);
+	if($caminho === '') return null;
+	$caminho = $caminho === '/' ? '/' : trim($caminho, '/').'/';
+	$pagina = banco_select(Array(
+		'unico' => true,
+		'tabela' => 'paginas',
+		'campos' => Array('caminho'),
+		'extra' => "WHERE caminho='".banco_escape_field($caminho)."' AND status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'"
+	));
+	return $pagina ? $pagina['caminho'] : null;
+}
+
+function usuarios_perfis_rotulo_pagina($pagina){
+    return $pagina['nome'].' ('.$pagina['id'].' · '.$pagina['caminho'].')';
+}
+
+function usuarios_perfis_componente_pagina_inicial($selecionado = ''){
+    global $_GESTOR;
+    $selecionado = is_scalar($selecionado) ? trim((string)$selecionado) : '';
+    $rotulo = $selecionado;
+    if($selecionado !== ''){
+        $paginas = banco_select_name(banco_campos_virgulas(Array('id', 'nome', 'caminho')), 'paginas',
+            "WHERE caminho='".banco_escape_field($selecionado)."' AND status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' LIMIT 1");
+        if($paginas) $rotulo = usuarios_perfis_rotulo_pagina($paginas[0]);
+    }
+    $componente = gestor_componente(Array('id' => 'home-page-autocomplete', 'modulo' => $_GESTOR['modulo-id']));
+    $valores = Array(
+        '#home-page-selected-label#' => $rotulo,
+        '#home-page-selected-value#' => $selecionado,
+        '#home-page-search-placeholder#' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'home-page-search-placeholder')),
+        '#home-page-default-help#' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'home-page-placeholder')),
+        '#home-page-clear-label#' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'home-page-clear-label')),
+        '#home-page-no-results#' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'home-page-no-results')),
+        '#home-page-clear-hidden#' => $selecionado === '' ? 'hidden' : '',
+    );
+    foreach($valores as $marcador => $valor){
+        $componente = modelo_var_troca_tudo($componente, $marcador,
+            $marcador === '#home-page-clear-hidden#' ? $valor : htmlspecialchars((string)$valor, ENT_QUOTES, 'UTF-8'));
+    }
+    return $componente;
+}
+
+function usuarios_perfis_ajax_buscar_pagina_inicial(){
+    global $_GESTOR;
+    $busca = $_REQUEST['q'] ?? '';
+    $busca = is_scalar($busca) ? trim((string)$busca) : '';
+    $resultados = Array();
+    if(mb_strlen($busca, 'UTF-8') >= 2){
+        $busca = banco_escape_field(mb_substr($busca, 0, 100, 'UTF-8'));
+        $idioma = banco_escape_field($_GESTOR['linguagem-codigo']);
+        $paginas = banco_select_name(banco_campos_virgulas(Array('id', 'nome', 'caminho')), 'paginas',
+            "WHERE status='A' AND language='".$idioma."' AND (nome LIKE '%".$busca."%' OR id LIKE '%".$busca."%' OR caminho LIKE '%".$busca."%') ORDER BY nome ASC LIMIT 20");
+        foreach(($paginas ?: Array()) as $pagina){
+            $resultados[] = Array('value' => $pagina['caminho'], 'name' => usuarios_perfis_rotulo_pagina($pagina));
+        }
+    }
+    $_GESTOR['ajax-json'] = Array('status' => 'Ok', 'results' => $resultados);
+}
+
 function usuarios_perfis_adicionar(){
 	global $_GESTOR;
 	
@@ -47,6 +109,8 @@ function usuarios_perfis_adicionar(){
 		$campo_nome = "nome"; $post_nome = "nome"; 										if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 		$campo_nome = "padrao"; $post_nome = "padrao"; $campo_valor = '1';				if($_REQUEST[$post_nome] == 'on'){		$campos[] = Array($campo_nome,$campo_valor,true);}
+		$pagina_inicial = usuarios_perfis_pagina_inicial($_REQUEST['pagina_inicial'] ?? '');
+		if($pagina_inicial !== null) $campos[] = Array('pagina_inicial', banco_escape_field($pagina_inicial));
 		
 		// ===== Campos comuns
 		
@@ -193,7 +257,7 @@ function usuarios_perfis_adicionar(){
 	$cel_nome = 'items'; $cel[$cel_nome] = modelo_tag_val($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	$cel_nome = 'grupo'; $cel[$cel_nome] = modelo_tag_val($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 	
-	$pagina = modelo_var_troca($pagina,"#modules-name#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modules-name')));
+	$pagina = modelo_var_troca_tudo($pagina,"#modules-name#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modules-name')));
 	
 	$cel_nome = 'grupo';
 	$cel[$cel_nome] = modelo_var_troca($cel[$cel_nome],"#module-select-all#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'module-select-all')));
@@ -328,7 +392,7 @@ function usuarios_perfis_adicionar(){
 	
 	// ===== Atualizar página
 	
-	$_GESTOR['pagina'] = $pagina;
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($pagina, '#home-page-autocomplete#', usuarios_perfis_componente_pagina_inicial());
 	
 	// ===== Interface adicionar finalizar opções
 	
@@ -359,6 +423,7 @@ function usuarios_perfis_editar(){
 	$camposBanco = Array(
 		'nome',
 		'padrao',
+		'pagina_inicial',
 		$modulo['tabela']['id_numerico'],
 	);
 	
@@ -439,6 +504,10 @@ function usuarios_perfis_editar(){
 			$alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'filtro' => 'checkbox','valor_antes' => (banco_select_campos_antes($campo_nome) ? '1' : '0'),'valor_depois' => ($_REQUEST[$request_name] == 'on' ? '1' : '0'));
 			
 			$padrao = true;
+		}
+		$pagina_inicial = usuarios_perfis_pagina_inicial($_REQUEST['pagina_inicial'] ?? '');
+		if(banco_select_campos_antes('pagina_inicial') !== $pagina_inicial){
+			$editar['dados'][] = 'pagina_inicial='.($pagina_inicial === null ? 'NULL' : "'".banco_escape_field($pagina_inicial)."'");
 		}
 		
 		// ===== Pegar os dados atuais do registro no banco de dados.
@@ -989,7 +1058,7 @@ function usuarios_perfis_editar(){
 		$cel_nome = 'items'; $cel[$cel_nome] = modelo_tag_val($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 		$cel_nome = 'grupo'; $cel[$cel_nome] = modelo_tag_val($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $pagina = modelo_tag_in($pagina,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
 		
-		$pagina = modelo_var_troca($pagina,"#modules-name#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modules-name')));
+		$pagina = modelo_var_troca_tudo($pagina,"#modules-name#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'modules-name')));
 		
 		$cel_nome = 'grupo';
 		$cel[$cel_nome] = modelo_var_troca($cel[$cel_nome],"#module-select-all#",gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'module-select-all')));
@@ -1168,7 +1237,7 @@ function usuarios_perfis_editar(){
 		
 		// ===== Atualizar página
 		
-		$_GESTOR['pagina'] = $pagina;
+		$_GESTOR['pagina'] = modelo_var_troca_tudo($pagina, '#home-page-autocomplete#', usuarios_perfis_componente_pagina_inicial($retorno_bd['pagina_inicial'] ?? ''));
 	} else {
 		gestor_redirecionar_raiz();
 	}
@@ -1379,7 +1448,7 @@ function usuarios_perfis_start(){
 		interface_ajax_iniciar();
 		
 		switch($_GESTOR['ajax-opcao']){
-			//case 'opcao': usuarios_perfis_ajax_opcao(); break;
+			case 'buscar-pagina-inicial': usuarios_perfis_ajax_buscar_pagina_inicial(); break;
 		}
 		
 		interface_ajax_finalizar();

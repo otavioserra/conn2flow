@@ -4,6 +4,7 @@ global $_GESTOR;
 
 $_GESTOR['modulo-id']							=	'admin-paginas';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/admin-paginas.json'), true);
+gestor_incluir_biblioteca('paginas-layouts-perfis');
 
 // Datas de agendamento (BATCH-075/Meta 5) usam formato.php (formato_data_hora_br_para_datetime).
 gestor_incluir_biblioteca('formato');
@@ -91,6 +92,9 @@ function admin_paginas_adicionar(){
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 
 		$campo_nome = "layout_id"; $post_nome = 'layout';		 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		paginas_layouts_perfis_validar_layout_padrao($_REQUEST, $_GESTOR['modulo-id']);
+		$layoutsUsersProfiles = paginas_layouts_perfis_json($_REQUEST);
+		if($layoutsUsersProfiles !== null) $campos[] = Array('layouts_users_profiles', banco_escape_field($layoutsUsersProfiles));
 		$campo_nome = "tipo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "framework_css"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -178,6 +182,7 @@ function admin_paginas_adicionar(){
 
 	// ===== Inclusão Módulo JS
 	
+	$_GESTOR['pagina'] = paginas_layouts_perfis_formulario($_GESTOR['pagina'], $retorno_bd['layouts_users_profiles'] ?? null, $_GESTOR['modulo-id']);
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Interface adicionar finalizar opções
@@ -302,6 +307,7 @@ function admin_paginas_editar(){
 		'nome',
 		'caminho',
 		'layout_id', // substitui id_layouts
+		'layouts_users_profiles',
 		'modulo',
 		'tipo',
 		'opcao',
@@ -447,6 +453,9 @@ function admin_paginas_editar(){
 		// ===== Atualização dos demais campos.
 
 		$campo_nome = "layout_id"; $request_name = 'layout'; $alteracoes_name = 'layout'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
+		paginas_layouts_perfis_validar_layout_padrao($_REQUEST, $_GESTOR['modulo-id']);
+		$layoutsUsersProfiles = paginas_layouts_perfis_json($_REQUEST);
+		if(banco_select_campos_antes('layouts_users_profiles') !== $layoutsUsersProfiles) $editar['dados'][] = 'layouts_users_profiles='.($layoutsUsersProfiles === null ? 'NULL' : "'".banco_escape_field($layoutsUsersProfiles)."'");
 		$campo_nome = "tipo"; $request_name = $campo_nome; $alteracoes_name = 'type'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "framework_css"; $request_name = $campo_nome; $alteracoes_name = 'framework-css'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
 		$campo_nome = "modulo"; $request_name = $campo_nome; $alteracoes_name = 'module'; if(banco_select_campos_antes($campo_nome) != (isset($_REQUEST[$request_name]) ? $_REQUEST[$request_name] : NULL)){$editar['dados'][] = $campo_nome."='" . banco_escape_field($_REQUEST[$request_name]) . "'"; $alteracoes[] = Array('campo' => 'form-'.$alteracoes_name.'-label', 'valor_antes' => banco_select_campos_antes($campo_nome),'valor_depois' => banco_escape_field($_REQUEST[$request_name]));}
@@ -689,6 +698,7 @@ function admin_paginas_editar(){
 	
 	// ===== Inclusão Módulo JS
 	
+	$_GESTOR['pagina'] = paginas_layouts_perfis_formulario($_GESTOR['pagina'], $retorno_bd['layouts_users_profiles'] ?? null, $_GESTOR['modulo-id']);
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Interface editar finalizar opções
@@ -848,6 +858,7 @@ function admin_paginas_clonar(){
 	$camposBanco = Array(
 		'caminho',
 		'layout_id', // substitui id_layouts
+		'layouts_users_profiles',
 		'modulo',
 		'tipo',
 		'opcao',
@@ -954,6 +965,9 @@ function admin_paginas_clonar(){
 		$campo_nome = "id"; $campo_valor = $id; 										$campos[] = Array($campo_nome,$campo_valor,$campo_sem_aspas_simples);
 
 		$campo_nome = "layout_id"; $post_nome = 'layout';		 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
+		paginas_layouts_perfis_validar_layout_padrao($_REQUEST, $_GESTOR['modulo-id']);
+		$layoutsUsersProfiles = paginas_layouts_perfis_json($_REQUEST);
+		if($layoutsUsersProfiles !== null) $campos[] = Array('layouts_users_profiles', banco_escape_field($layoutsUsersProfiles));
 		$campo_nome = "tipo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "framework_css"; $post_nome = $campo_nome; 						if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
 		$campo_nome = "modulo"; $post_nome = $campo_nome; 								if($_REQUEST[$post_nome])		$campos[] = Array($campo_nome,banco_escape_field($_REQUEST[$post_nome]));
@@ -1109,6 +1123,7 @@ function admin_paginas_clonar(){
 	
 	// ===== Inclusão Módulo JS
 	
+	$_GESTOR['pagina'] = paginas_layouts_perfis_formulario($_GESTOR['pagina'], $retorno_bd['layouts_users_profiles'] ?? null, $_GESTOR['modulo-id']);
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Interface clonar finalizar opções
