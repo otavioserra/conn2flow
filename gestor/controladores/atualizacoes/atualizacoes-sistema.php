@@ -89,6 +89,9 @@ function logAtualizacao(string $msg, string $level = 'INFO', bool $force = false
     if (!empty($CONTEXT['session_log']) && is_string($CONTEXT['session_log'])) {
         @file_put_contents($CONTEXT['session_log'], $line, FILE_APPEND | LOCK_EX);
     }
+    // req-201: `--log-stdout` repete cada linha na saída padrão (a execução disparada pela API grava a saída
+    // num log próprio e lê dele o snapshot, a verificação e o rollback).
+    if (PHP_SAPI === 'cli' && in_array('--log-stdout', (array)($GLOBALS['argv'] ?? []), true)) echo $line;
 }
 
 // ----------------------------
@@ -222,6 +225,7 @@ function help(): void {
     echo "  --no-rollback           (req-198) Verifica, mas não volta os arquivos sozinho quando a verificação falha\n";
     echo "  --health-url=URL        (req-198) URL da verificação HTTP (padrão https://<domínio>/; .env ATUALIZACOES_SAUDE_URL)\n";
     echo "  --health-ip=IP          (req-198) Resolve o host da verificação para este IP (.env ATUALIZACOES_SAUDE_IP)\n";
+    echo "  --log-stdout            (req-201) Repete cada linha do log na saída padrão (execução disparada pela API)\n";
     echo "  --dry-run               Simula (gera plano, não aplica)\n";
     echo "  --no-verify             Desativa verificação SHA256 do arquivo gestor.zip\n";
     echo "  --force-all             Encaminha ao script de banco\n";
@@ -979,6 +983,9 @@ function main_update_executar(array $argv): int {
             $userArgs = reconstruirArgs($argv);
             // Garante que não exista antiga flag bootstrap
             $userArgs = array_values(array_filter($userArgs, fn($a)=>strpos($a,'--bootstrap-done')!==0 && strpos($a,'--lock-token')!==0));
+            // req-201: os argumentos de quem chamou vão escapados para a linha do filho (antes iam crus: um valor
+            // com `;` ou `&`, como uma URL vinda da API, viraria comando). Os internos abaixo já são escapados.
+            $userArgs = array_map('escapeshellarg', $userArgs);
             $userArgs[]='--bootstrap-done=1';
             // req-197: o filho adota a trava deste processo (quem libera é este processo, no fim).
             if(!empty($GLOBALS['C2F_DEPLOY_LOCK_TOKEN'])) $userArgs[]='--lock-token='.$GLOBALS['C2F_DEPLOY_LOCK_TOKEN'];
@@ -988,7 +995,9 @@ function main_update_executar(array $argv): int {
             if($CONTEXT['release_tag']) $userArgs[]='--tag='.escapeshellarg($CONTEXT['release_tag']);
             // Propaga no-verify se presente
             if(!empty($opts['no-verify'])) $userArgs[]='--no-verify';
-            $cmd = 'php '.escapeshellarg($destScript).' '.implode(' ',$userArgs);
+            // req-201: o mesmo PHP deste processo (o `php` do PATH pode ser outra versão, como no disparo pela API).
+            $phpCli = (PHP_SAPI === 'cli' && PHP_BINARY !== '') ? escapeshellarg(PHP_BINARY) : 'php';
+            $cmd = $phpCli.' '.escapeshellarg($destScript).' '.implode(' ',$userArgs);
             logAtualizacao('Bootstrap: reexecutando nova versão -> '.$cmd);
             passthru($cmd,$exit); // repassa saída direto
             logAtualizacao('Bootstrap: processo filho retornou exit='.$exit);

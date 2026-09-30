@@ -669,9 +669,79 @@ function api_handle_system() {
             api_system_update();
             break;
 
+        case 'rollback':
+            // req-201: o mesmo rollback do deploy de projeto (aceita `exec-<id>` da atualização do sistema).
+            api_project_rollback();
+            break;
+
         default:
             api_response_error('Sub-endpoint SYSTEM não encontrado: ' . $sub_endpoint, 404);
     }
+}
+
+/**
+ * `action=run` (req-201 / BATCH-209): dispara a atualização completa do sistema em segundo plano, pelo mesmo
+ * atualizador do CLI (trava de deploy, snapshot, dump, verificação e volta automática). Opções em
+ * `opcoes` (ou no próprio corpo): tag, only_files, only_db, no_db, dry_run, backup, no_verify, no_health,
+ * no_rollback, health_url, health_ip, force_all, tables, logs_retention_days, local_artifact, debug. Sem
+ * `tag`, o atualizador busca a última release do GitHub. Responde 202 com o id da execução.
+ */
+function api_system_run(array $corpo) {
+    global $_GESTOR;
+    $auth = api_authenticate(true);
+    require_once $_GESTOR['bibliotecas-path'] . 'atualizacoes-execucao.php';
+    require_once $_GESTOR['bibliotecas-path'] . 'deploy-lock.php';
+    $base = $_GESTOR['ROOT_PATH'];
+
+    $trava = deploy_lock_read(rtrim($base, '/\\') . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . 'deploy.lock');
+    if ($trava && !deploy_lock_expired($trava)) api_response_error('Outro deploy está em execução neste ambiente: ' . deploy_lock_describe($trava), 409);
+
+    $opcoes = is_array($corpo['opcoes'] ?? null) ? $corpo['opcoes'] : array_diff_key($corpo, ['action' => 1]);
+    $dominio = (string)($_SERVER['SERVER_NAME'] ?? '');
+    if ($dominio === '') api_response_error('Domínio da instalação indefinido (SERVER_NAME).', 500);
+    $a = atualizacoes_execucao_argv($opcoes, $dominio);
+    if ($a['recusadas']) api_response_error('Opção inválida ou desconhecida: ' . implode(', ', $a['recusadas']), 400, ['aceitas' => array_keys(ATUALIZACOES_EXECUCAO_OPCOES)]);
+
+    $id = atualizacoes_execucao_novo_id();
+    $php = atualizacoes_execucao_php_cli((string)($_ENV['ATUALIZACOES_PHP_CLI'] ?? ''));
+    $quem = 'api:' . (is_array($auth) ? (string)($auth['email'] ?? ($auth['id_usuarios'] ?? '?')) : '?');
+    $r = atualizacoes_execucao_disparar($base, $id, $a['argv'], ['quem' => $quem, 'opcoes' => $opcoes, 'php' => $php], $php);
+    if (!$r['ok']) api_response_error('Não foi possível disparar a atualização: ' . $r['erro'], 500);
+    api_response_success(['run' => $id, 'status' => 'running', 'argv' => $a['argv'], 'php' => $php], 'Atualização disparada em segundo plano', 202);
+}
+
+/** `action=run-status` (req-201): estado de uma execução disparada por `run`. */
+function api_system_run_status(string $id) {
+    global $_GESTOR;
+    api_authenticate(true);
+    require_once $_GESTOR['bibliotecas-path'] . 'atualizacoes-execucao.php';
+    if (!atualizacoes_execucao_id_valido($id)) api_response_error('Parâmetro "run" inválido.', 400);
+    $pasta = atualizacoes_execucao_pasta($_GESTOR['ROOT_PATH']);
+    if (!is_file($pasta . $id . '.json')) api_response_error('Execução não encontrada: ' . $id, 404);
+    $meta = json_decode((string)file_get_contents($pasta . $id . '.json'), true) ?: [];
+    $log = is_file($pasta . $id . '.log') ? (string)file_get_contents($pasta . $id . '.log') : '';
+    $exit = is_file($pasta . $id . '.exit') ? (string)file_get_contents($pasta . $id . '.exit') : null;
+    $estado = atualizacoes_execucao_estado($log, $exit);
+    api_response_success(['run' => $id, 'iniciado_em' => $meta['iniciado_em'] ?? null, 'quem' => $meta['quem'] ?? null, 'opcoes' => $meta['opcoes'] ?? []] + $estado, 'Execução ' . $id . ': ' . $estado['status']);
+}
+
+/** `action=runs` (req-201): últimas execuções disparadas pela API, com o estado. */
+function api_system_runs() {
+    global $_GESTOR;
+    api_authenticate(true);
+    require_once $_GESTOR['bibliotecas-path'] . 'atualizacoes-execucao.php';
+    $pasta = atualizacoes_execucao_pasta($_GESTOR['ROOT_PATH']);
+    $lista = [];
+    $arquivos = glob($pasta . 'run-*.json') ?: [];
+    rsort($arquivos);
+    foreach (array_slice($arquivos, 0, 20) as $f) {
+        $id = basename($f, '.json');
+        $exit = is_file($pasta . $id . '.exit') ? (string)file_get_contents($pasta . $id . '.exit') : null;
+        $e = atualizacoes_execucao_estado(is_file($pasta . $id . '.log') ? (string)file_get_contents($pasta . $id . '.log') : '', $exit);
+        $meta = json_decode((string)file_get_contents($f), true) ?: [];
+        $lista[] = ['run' => $id, 'iniciado_em' => $meta['iniciado_em'] ?? null, 'status' => $e['status'], 'codigo' => $e['codigo'], 'snapshot' => $e['snapshot']];
+    }
+    api_response_success(['total' => count($lista), 'runs' => $lista], count($lista) . ' execução(ões)');
 }
 
 function api_system_update() {
@@ -685,11 +755,17 @@ function api_system_update() {
         api_response_error('Método não permitido. Use POST.', 405);
     }
 
-    // Obter ação do POST ou da query string
-    $action = $_POST['action'] ?? $_REQUEST['action'] ?? null;
+    // Obter ação do POST ou da query string (ou do corpo JSON, nas ações da req-201)
+    $corpo = api_corpo_requisicao();
+    $action = $_POST['action'] ?? $_REQUEST['action'] ?? ($corpo['action'] ?? null);
     if (!$action) {
-        api_response_error('Parâmetro "action" é obrigatório. Ações válidas: start, deploy, db, finalize, status, cancel', 400);
+        api_response_error('Parâmetro "action" é obrigatório. Ações válidas: run, run-status, runs, start, deploy, db, finalize, status, cancel', 400);
     }
+
+    // req-201 / BATCH-209: atualização completa em segundo plano (o atualizador do CLI).
+    if ($action === 'run') api_system_run($corpo);
+    if ($action === 'run-status') api_system_run_status((string)($corpo['run'] ?? ''));
+    if ($action === 'runs') api_system_runs();
 
     $valid_actions = ['start', 'deploy', 'db', 'finalize', 'status', 'cancel'];
     if (!in_array($action, $valid_actions)) {

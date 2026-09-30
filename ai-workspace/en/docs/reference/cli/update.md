@@ -9,12 +9,23 @@ sources:
   - cli/src/Commands/UpdateConflictsCommand.php
   - cli/src/Commands/UpdateResolveCommand.php
   - cli/src/Support/ProjectApiClient.php
+  - cli/src/Commands/UpdateCoreCommand.php
 verified_at: 22018336
 ---
 
 # CLI: Updates
 
-The `update:*` family has 3 commands registered in Application.php.
+The `update:*` family has 4 commands registered in Application.php.
+
+## `update:core`
+
+Code: `cli/src/Commands/UpdateCoreCommand.php` (req-201 / BATCH-209).
+
+```text
+Usage: c2f update:core <projectID> [--tag=TAG] [--wait] [--status=RUN] [--runs] [--json] [update options]
+```
+
+Triggers the system update of **one** installation through the API (`action=run`) and, with `--wait`, follows it to the end; when the API is unavailable while files are swapped, it waits up to 5 minutes. `--status=RUN` shows a previous run; `--runs` lists recent ones. Update options are the API ones (`--tag`, `--backup`, `--no-health`, `--health-url`…). Without `--tag`, the server downloads the latest GitHub release. At the end it shows the snapshot, the check, the automatic restore and how to roll back with `update:rollback`. Mass updates stay outside the core, in each network's operations.
 
 ## `update:rollback`
 
