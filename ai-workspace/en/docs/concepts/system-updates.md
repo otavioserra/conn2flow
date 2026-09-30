@@ -40,6 +40,8 @@ The first delivery, without a manifest, behaves as before and records the baseli
 - only natural-key tables take part (pages, layouts, components, variables, templates…). The core only removes records without `project`, and a project only its own. What was created in the panel never entered a list, so it never leaves;
 - an owner's first delivery to a table only records the list. `--dry-run` only simulates; `--no-resource-removal` (in `atualizacoes-banco-de-dados.php`) turns it off. The imperative `deletar` list in `schema-metadata.json` still covers one-off cases.
 
+**File recovery (req-200).** `/_api/project/files` compares disk contents with the manifests and downloads differences. `c2f project:recover-files` uses the same three-action clash engine when a project file also changed in the local repository. The downloaded copy is the new version and decisions are recorded in `temp/recover-files/.../relatorio.json`. Core and plugin files are available for inspection without being applied to the local project.
+
 **Snapshot, check and rollback (req-198).** Before applying, the update keeps in `backups/atualizacoes/snapshots/exec-<id>/`:
 - only the files that will be overwritten or removed, the list of new ones and the manifests;
 - a database dump (`banco.sql.gz`, via `mysqldump`), before the database stage.

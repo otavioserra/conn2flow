@@ -40,6 +40,8 @@ A primeira entrega, sem manifesto, se comporta como antes e grava a linha de bas
 - valem só as tabelas de chave natural (páginas, layouts, componentes, variáveis, templates…). O core só retira registros sem `project`, e o projeto só os dele. O que foi criado no painel nunca entrou numa lista, então nunca sai;
 - a primeira entrega de um dono numa tabela só grava a lista. `--dry-run` só simula; `--no-resource-removal` (no `atualizacoes-banco-de-dados.php`) desliga. A lista imperativa `deletar` do `schema-metadata.json` continua para casos pontuais.
 
+**Descida de arquivos (req-200).** `/_api/project/files` compara disco e manifestos e permite baixar divergências. `c2f project:recover-files` usa o mesmo motor de três decisões quando o arquivo do projeto também mudou no repositório local; uma cópia baixada serve como versão nova e as decisões são registradas em `temp/recover-files/.../relatorio.json`. Arquivos do core e plugins ficam disponíveis para análise, sem serem aplicados ao projeto local.
+
 **Snapshot, verificação e rollback (req-198).** Antes de aplicar, a atualização guarda em `backups/atualizacoes/snapshots/exec-<id>/`:
 - só os arquivos que vão ser sobrescritos ou removidos, a lista dos novos e os manifestos;
 - o dump do banco (`banco.sql.gz`, pelo `mysqldump`), antes da etapa de banco.

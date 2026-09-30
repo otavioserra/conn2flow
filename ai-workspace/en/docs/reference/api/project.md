@@ -6,12 +6,18 @@ sources:
   - gestor/bibliotecas/instalacao-manifesto.php
   - ai-workspace/en/scripts/projects/project-file-manifest.php
   - gestor/controladores/api/api.php
-verified_at: ca4337fc
+verified_at: 152dfd72
 ---
 
 # Project API
 
-Both routes require a valid bearer token and POST.
+Project routes require a valid bearer token. `conflicts` also accepts GET; the other routes described here use POST.
+
+## `/_api/project/files`
+
+`POST` with optional JSON `{"camadas":["projeto"],"caminhos":["bibliotecas/"],"estados":["editado"]}`. Without filters, returns `data.arquivos` and `data.total` for differences between disk and per-layer manifests. Each item includes `camada`, `caminho`, `estado` (`editado`, `ausente`, or `fora-do-manifesto`), `hash_disco`, and `hash_manifesto`. For overlaps, the highest-precedence layer owns the path. Unowned files have `camada: null`.
+
+To download, send `{"baixar":true,"caminhos":["bibliotecas/a.php"]}` with **exact** inventory paths; the response is a ZIP containing those files. Missing files cannot be downloaded. Private or hidden paths, traversal (`..`), and links outside the installation are rejected; `autenticacoes/`, `.env`, `logs/`, `backups/`, `temp/`, and `installation/` are never exported. This route only reads and does not take a deploy lock. CLI: [`project:recover-files`](../cli/project.md).
 
 ## `/_api/project/update`
 
