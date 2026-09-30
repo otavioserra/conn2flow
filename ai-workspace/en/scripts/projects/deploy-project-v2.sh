@@ -400,6 +400,25 @@ if [ -d "$PROJECT_PATH/db/migrations" ]; then
     rm -rf "$MANIFEST_DIR"
 fi
 
+# req-198: the package also carries the COMPLETE file list of the project with hashes (even in
+# gitDeploy). The server records it as the project layer manifest: files the project stopped delivering
+# leave the server (or the core original comes back), and core updates never overwrite what the project
+# overrides — they keep the new core copy aside and record the clash.
+FILE_MANIFEST_SCRIPT="$SCRIPT_DIR/project-file-manifest.php"
+if [ -f "$FILE_MANIFEST_SCRIPT" ]; then
+    FILE_MANIFEST_DIR="$TEMP_DIR/${PROJECT_TARGET}_file_manifest"
+    rm -rf "$FILE_MANIFEST_DIR"
+    mkdir -p "$FILE_MANIFEST_DIR"
+    FILE_MANIFEST_VERSION=$(git -C "$PROJECT_PATH" rev-parse --short HEAD 2>/dev/null || date +'%Y%m%d-%H%M%S')
+    if php "$FILE_MANIFEST_SCRIPT" "$PROJECT_PATH" "$FILE_MANIFEST_VERSION" > "$FILE_MANIFEST_DIR/.c2f-manifest-projeto.json" \
+        && (cd "$FILE_MANIFEST_DIR" && "7z" a -tzip "$ZIP_FILE" ".c2f-manifest-projeto.json" > /dev/null 2>&1); then
+        log "File manifest added to the package (.c2f-manifest-projeto.json, version $FILE_MANIFEST_VERSION)."
+    else
+        log_warning "Could not add the file manifest; the server will only add and update files (no removals)."
+    fi
+    rm -rf "$FILE_MANIFEST_DIR"
+fi
+
 if [ ! -f "$ZIP_FILE" ]; then
     log_error "Failed to create ZIP package"
     exit 1

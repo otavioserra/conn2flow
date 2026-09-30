@@ -229,6 +229,96 @@
                     "id": "updates-advanced-options",
                     "value": "Opções Avançadas",
                     "type": "string"
+                },
+                {
+                    "id": "updates-clash-title",
+                    "value": "Choques das entregas",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-help",
+                    "value": "Arquivos que a atualização não sobrescreveu (sobrepostos pelo projeto ou por um plugin, ou editados no servidor) e retiradas que não puderam acontecer. A versão nova fica guardada em backups/overrides/.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-empty",
+                    "value": "Nenhum choque registrado.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-date",
+                    "value": "Data",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-layer",
+                    "value": "Camada",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-path",
+                    "value": "Arquivo",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-reason",
+                    "value": "Motivo",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-owner",
+                    "value": "Dono atual",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-version",
+                    "value": "Versão",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-resolution",
+                    "value": "Resolução",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-view",
+                    "value": "Ver diff",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-pending",
+                    "value": "Pendente",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-copy",
+                    "value": "Versão nova guardada em",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-not-found",
+                    "value": "Choque não encontrado.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-sobreposto",
+                    "value": "Sobreposto",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-editado",
+                    "value": "Editado no servidor",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-retirado-editado",
+                    "value": "Retirada de arquivo editado",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-original-ausente",
+                    "value": "Original do core ausente",
+                    "type": "string"
                 }
             ]
         },
@@ -446,6 +536,96 @@
                 {
                     "id": "updates-advanced-options",
                     "value": "Advanced Options",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-title",
+                    "value": "Delivery clashes",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-help",
+                    "value": "Files the update did not overwrite (overridden by the project or a plugin, or edited on the server) and removals that could not happen. The new version is kept under backups/overrides/.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-empty",
+                    "value": "No clash recorded.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-date",
+                    "value": "Date",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-layer",
+                    "value": "Layer",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-path",
+                    "value": "File",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-reason",
+                    "value": "Reason",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-owner",
+                    "value": "Current owner",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-version",
+                    "value": "Version",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-col-resolution",
+                    "value": "Resolution",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-view",
+                    "value": "View diff",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-pending",
+                    "value": "Pending",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-copy",
+                    "value": "New version kept at",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-not-found",
+                    "value": "Clash not found.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-sobreposto",
+                    "value": "Overridden",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-editado",
+                    "value": "Edited on the server",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-retirado-editado",
+                    "value": "Removal of an edited file",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-original-ausente",
+                    "value": "Core original missing",
                     "type": "string"
                 }
             ]

@@ -10,6 +10,7 @@ sources:
   - gestor/modulos/admin-atualizacoes/resources
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/db/migrations/20250814141000_create_atualizacoes_execucoes_table.php
+  - gestor/db/migrations/20260930210000_create_atualizacoes_choques_table.php
 verified_at: ea442bea
 ---
 
@@ -20,6 +21,8 @@ This module shows core-update sessions and history and forwards panel actions to
 ## How to use
 
 Open admin-atualizacoes/ to review recent executions and start or follow an update. Open admin-atualizacoes/detalhe/?log=<name> for a session log or ?plano=<name> for a plan. Both routes exist in pt-br and en. The former disparar page falls back to the listing and is not a route in JSON.
+
+**Delivery clashes (req-198).** The list shows the last 50 rows of `atualizacoes_choques`: date, layer and origin, file, reason (overridden, edited on the server, removal blocked by an edit), owner layer, version and resolution. "View diff" opens `admin-atualizacoes/detalhe/?choque=<id>`, with the diff and the path of the new version kept in `backups/overrides/`. Resolving (overwrite, keep, merge) comes with req-199; for now the screen only shows them.
 
 ## Technical reference
 

@@ -3798,6 +3798,168 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-title",
+        "valor": "Choques das entregas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-help",
+        "valor": "Arquivos que a atualização não sobrescreveu (sobrepostos pelo projeto ou por um plugin, ou editados no servidor) e retiradas que não puderam acontecer. A versão nova fica guardada em backups\/overrides\/.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-empty",
+        "valor": "Nenhum choque registrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-date",
+        "valor": "Data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-layer",
+        "valor": "Camada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-path",
+        "valor": "Arquivo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-reason",
+        "valor": "Motivo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-owner",
+        "valor": "Dono atual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-version",
+        "valor": "Versão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-resolution",
+        "valor": "Resolução",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-view",
+        "valor": "Ver diff",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-pending",
+        "valor": "Pendente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-copy",
+        "valor": "Versão nova guardada em",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-not-found",
+        "valor": "Choque não encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-sobreposto",
+        "valor": "Sobreposto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-editado",
+        "valor": "Editado no servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-retirado-editado",
+        "valor": "Retirada de arquivo editado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-original-ausente",
+        "valor": "Original do core ausente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-title",
@@ -4081,6 +4243,168 @@
         "modulo": "admin-atualizacoes",
         "id": "updates-advanced-options",
         "valor": "Advanced Options",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-title",
+        "valor": "Delivery clashes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-help",
+        "valor": "Files the update did not overwrite (overridden by the project or a plugin, or edited on the server) and removals that could not happen. The new version is kept under backups\/overrides\/.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-empty",
+        "valor": "No clash recorded.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-date",
+        "valor": "Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-layer",
+        "valor": "Layer",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-path",
+        "valor": "File",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-reason",
+        "valor": "Reason",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-owner",
+        "valor": "Current owner",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-version",
+        "valor": "Version",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-col-resolution",
+        "valor": "Resolution",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-view",
+        "valor": "View diff",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-pending",
+        "valor": "Pending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-copy",
+        "valor": "New version kept at",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-not-found",
+        "valor": "Clash not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-sobreposto",
+        "valor": "Overridden",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-editado",
+        "valor": "Edited on the server",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-retirado-editado",
+        "valor": "Removal of an edited file",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-original-ausente",
+        "valor": "Core original missing",
         "tipo": "string",
         "grupo": null,
         "descricao": null

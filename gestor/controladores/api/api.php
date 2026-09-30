@@ -356,14 +356,18 @@ function api_project_update() {
         // migração renomeada deixava a antiga, travando o Phinx em todos os deploys seguintes).
         $migracoes = api_project_migracoes_limpar($project_content_dir, $project_path);
 
-        // Copiar arquivos do projeto (sobrescrever existentes na raiz)
-        api_copy_directory($project_content_dir, $project_path);
+        // req-198: arquivos pela camada `projeto` do manifesto (precedência sobre o core, originais do core
+        // guardadas, o que o projeto deixou de entregar sai ou devolve a original do core).
+        $instalacao = api_project_aplicar_arquivos($project_content_dir, $project_path, (string)$project_id);
 
         // Parâmetro opcional full_log: quando ativo, retorna o log completo de debug do banco.
         $full_log = isset($_POST['full_log']) && filter_var($_POST['full_log'], FILTER_VALIDATE_BOOLEAN);
 
         // Executar atualização de banco de dados do projeto (inline, sem shell_exec)
         $db_logs = api_executar_atualizacao_banco($project_path, $project_id, $full_log);
+
+        // req-198: choques pendentes vão para a tabela depois do banco (a migração pode ter acabado de criá-la).
+        $instalacao['choques_gravados'] = api_project_choques_gravar($project_path);
 
         // Sincronizar hooks do projeto após atualização do banco
         require_once $_GESTOR['controladores-path'] . 'atualizacoes/atualizacoes-hooks.php';
@@ -385,6 +389,7 @@ function api_project_update() {
             'full_log' => $full_log,
             'sitemap' => $sitemap,
             'migrations' => $migracoes,
+            'installation' => $instalacao,
         ];
 
         api_response_success($response_data, 'Projeto atualizado com sucesso');
@@ -848,6 +853,71 @@ function api_filtrar_db_logs(array $dbLogs, bool $full_log): array {
         }
     }
     return array_values($resumo);
+}
+
+/**
+ * Aplica os arquivos do pacote pela camada `projeto` do manifesto de instalação — req-198 (BL-028 A/B.1).
+ *
+ * O pacote traz `.c2f-manifest-projeto.json` com TODOS os arquivos do projeto (também no gitDeploy, que
+ * só manda o que mudou): com ele, o que o projeto deixou de entregar sai do servidor ou devolve a
+ * original do core. Sem ele (pacote antigo), só acrescenta e atualiza. As pastas fora do manifesto
+ * (`contents/` e afins) continuam sendo copiadas como antes.
+ *
+ * @return array Resumo para a resposta: versao, primeira, escritos, preservados, retirados,
+ *               restaurados, choques (sem o diff), lista_completa.
+ */
+function api_project_aplicar_arquivos(string $pacote, string $raiz, string $projectId): array {
+    global $_GESTOR;
+    require_once $_GESTOR['bibliotecas-path'] . 'instalacao-manifesto.php';
+    $pacote = rtrim($pacote, '/\\') . DIRECTORY_SEPARATOR;
+    $lista = null;
+    $manifestoPacote = $pacote . '.c2f-manifest-projeto.json';
+    if (is_file($manifestoPacote)) {
+        $d = json_decode((string)file_get_contents($manifestoPacote), true);
+        if (is_array($d) && is_array($d['arquivos'] ?? null)) $lista = $d;
+        @unlink($manifestoPacote);
+    }
+    $versao = (string)($lista['versao'] ?? '');
+    if ($versao === '') $versao = date('Ymd-His');
+
+    $plano = instalacao_planejar($raiz, 'projeto', instalacao_mapa($pacote), false, null, $lista['arquivos'] ?? null);
+    $r = instalacao_aplicar($raiz, $pacote, 'projeto', $plano, $versao, 'copiar');
+
+    // Pastas que o manifesto não cobre seguem a cópia de sempre (menos `installation/`, que é do servidor).
+    foreach (INSTALACAO_PASTAS_FORA as $pasta) {
+        if ($pasta === 'installation' || !is_dir($pacote . $pasta)) continue;
+        api_copy_directory($pacote . $pasta, rtrim($raiz, '/\\') . DIRECTORY_SEPARATOR . $pasta);
+    }
+
+    instalacao_choques_registrar($raiz, 'api-project-update', 'projeto', $versao, $projectId !== '' ? $projectId . '@' . date('c') : null, $r['choques']);
+    return [
+        'versao' => $versao,
+        'primeira' => $plano['primeira'],
+        'lista_completa' => $lista !== null,
+        'escritos' => $r['escritos'],
+        'preservados' => $r['preservados'],
+        'retirados' => $r['retirados'],
+        'restaurados' => $r['restaurados'],
+        'choques' => array_map(function ($c) {
+            return ['caminho' => $c['caminho'], 'motivo' => $c['motivo'], 'camada_dona' => $c['camada_dona'], 'copia' => $c['copia']];
+        }, $r['choques']),
+    ];
+}
+
+/** Grava na tabela `atualizacoes_choques` os choques pendentes da instalação (req-198). */
+function api_project_choques_gravar(string $raiz): int {
+    if (!function_exists('instalacao_choques_gravar_pendentes')) return 0;
+    $existe = banco_query("SHOW TABLES LIKE 'atualizacoes_choques'");
+    if (!$existe || !banco_num_rows($existe)) return 0;
+    return instalacao_choques_gravar_pendentes($raiz, function (array $linha) {
+        // O mesmo choque ainda pendente não vira outra linha.
+        $ja = banco_query('SELECT 1 FROM atualizacoes_choques WHERE ' . instalacao_choque_pendente_filtro($linha, 'banco_escape_field') . ' LIMIT 1');
+        if ($ja && banco_num_rows($ja)) return true;
+        $campos = [];
+        foreach ($linha as $k => $v) $campos[] = [$k, $v === null ? 'NULL' : banco_escape_field((string)$v), $v === null];
+        banco_insert_name($campos, 'atualizacoes_choques');
+        return true;
+    });
 }
 
 function api_copy_directory($source, $destination) {

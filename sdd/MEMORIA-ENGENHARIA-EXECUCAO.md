@@ -16,6 +16,17 @@
 
 ## Tarefas recentes
 
+### 2026-09-30 — BATCH-202/203 (req-198): manifesto por camada, choques, snapshot e rollback
+
+- **Tenant isolado para testar atualização do sistema:** `project-test` → `c2f-teste.local` (usuário Hestia `c2ftest`) no Lab. Artefato montado da worktree sem composer, enviado para `conn2flow-github/` do tenant e aplicado com `atualizacoes-sistema.php --local-artifact --domain=c2f-teste.local` como `c2ftest`.
+- **Lab = WSL com Caddy (Docker) em 80/443; o nginx do Hestia fica no 8443.** Domínio fora do Caddyfile recebe 200 vazio do Caddy: não é o site. Vhost novo precisa de `listen 8443 ssl` sem IP (o template põe `192.168.178.206:`) para atender em `127.0.0.1:8443`.
+- **`/bin/sh` é o dash:** `set -o pipefail` sai com código 2 e o `2>/dev/null` esconde. Pipe que precisa de `pipefail` roda pelo bash.
+- **Verificação HTTP pós-atualização não pode forçar `127.0.0.1:443`:** Hestia de produção escuta no IP público. Ordem: DNS normal, `127.0.0.1`; sem conexão = aviso; `--health-url`/`--health-ip` para casos especiais. Esperar ~3 s: o OPcache do FPM serve o código antigo até `revalidate_freq`.
+- **Bootstrap do atualizador:** o pai roda o script INSTALADO; o filho, o novo. Biblioteca nova tem de vir do staging primeiro, senão o filho chama função que a instalada não tem. A linha de `atualizacoes_execucoes` é do filho.
+- **Dump antes do banco restaura a própria linha `running`:** depois de `--com-banco`, marcar a execução.
+- **`resources:sync` na worktree** reescreve tokens de asset de 31 módulos (CRLF) e para no Tailwind (sem CLI): para variável nova, inserir no `VariaveisData.json` sem reformatar (JSON indent 4, `\/`, CRLF) e desfazer o resto.
+- **Login do admin do tenant é o e-mail** (`usuario` = e-mail no instalador headless).
+
 ### 2026-09-30 — BATCH-201 (req-197): trava de deploy, backup, checagem de migrações
 
 - **Trava:** `gestor/bibliotecas/deploy-lock.php` é pura (sem Gestor), porque roda no atualizador independente, na API e no CLI. Criação atômica com `fopen 'x'`; trava vencida é tirada do caminho com `rename` atômico e assumida.

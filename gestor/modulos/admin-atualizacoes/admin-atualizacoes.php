@@ -115,6 +115,7 @@ function admin_atualizacoes_listar(): void {
     $comp = modelo_var_troca_tudo($comp,'#plano-link#',$planoLink);
     $comp = modelo_var_troca_tudo($comp,'#linhas#',$linhas);
     $comp = modelo_var_troca_tudo($comp,'#historico_linhas#',$historicoLinhas);
+    $comp .= admin_atualizacoes_choques_html(); // req-198
     $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#dynamic-content#',$comp);
     // Incluir CodeMirror assets também na página de lista (antes só detalhe/disparar) para log vivo
 	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
@@ -126,13 +127,70 @@ function admin_atualizacoes_listar(): void {
     if(function_exists('gestor_pagina_javascript_incluir')) gestor_pagina_javascript_incluir();
 }
 
+/**
+ * req-198: choques das entregas (tabela `atualizacoes_choques`) — sobreposições do projeto/plugin que a
+ * atualização do core preservou, edições no servidor e retiradas que não puderam acontecer. A resolução
+ * (sobrescrever, manter, mesclar) chega na req-199; aqui a lista e o diff.
+ */
+function admin_atualizacoes_choques_html(): string {
+    global $_GESTOR;
+    if(!function_exists('banco_query')) return '';
+    $existe = @banco_query("SHOW TABLES LIKE 'atualizacoes_choques'");
+    if(!$existe || !banco_num_rows($existe)) return '';
+    $v = function($id){ global $_GESTOR; return htmlspecialchars((string)gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>$id]), ENT_QUOTES, 'UTF-8'); };
+    $e = function($t){ return htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8'); };
+    $linhas = '';
+    $res = @banco_query("SELECT id_atualizacoes_choques,data_criacao,origem,camada,versao,caminho,motivo,camada_dona,resolucao FROM atualizacoes_choques ORDER BY id_atualizacoes_choques DESC LIMIT 50");
+    if($res) while($r = banco_fetch_assoc($res)){
+        $cor = in_array($r['motivo'], ['sobreposto'], true) ? 'blue' : 'orange';
+        $linhas .= '<tr>'
+            .'<td>'.$e($r['data_criacao']).'</td>'
+            .'<td>'.$e($r['camada']).'<br><small>'.$e($r['origem']).'</small></td>'
+            .'<td><code>'.$e($r['caminho']).'</code></td>'
+            .'<td><span class="ui '.$cor.' label">'.$v('updates-clash-'.$r['motivo']).'</span></td>'
+            .'<td>'.$e($r['camada_dona'] ?? '—').'</td>'
+            .'<td>'.$e($r['versao'] ?? '').'</td>'
+            .'<td>'.($r['resolucao'] ? $e($r['resolucao']) : $v('updates-clash-pending')).'</td>'
+            .'<td><a class="ui mini button" href="detalhe/?choque='.(int)$r['id_atualizacoes_choques'].'">'.$v('updates-clash-view').'</a></td>'
+            .'</tr>';
+    }
+    if($linhas === '') $linhas = '<tr><td colspan="8">'.$v('updates-clash-empty').'</td></tr>';
+    return '<div class="ui segment" data-atualizacoes-choques><h3 class="ui header">'.$v('updates-clash-title').'</h3>'
+        .'<p>'.$v('updates-clash-help').'</p>'
+        .'<table class="ui celled compact table"><thead><tr>'
+        .'<th>'.$v('updates-clash-col-date').'</th><th>'.$v('updates-clash-col-layer').'</th><th>'.$v('updates-clash-col-path').'</th>'
+        .'<th>'.$v('updates-clash-col-reason').'</th><th>'.$v('updates-clash-col-owner').'</th><th>'.$v('updates-clash-col-version').'</th>'
+        .'<th>'.$v('updates-clash-col-resolution').'</th><th></th></tr></thead><tbody>'.$linhas.'</tbody></table></div>';
+}
+
+/** req-198: detalhe de um choque (diff e onde está a versão nova). */
+function admin_atualizacoes_choque_detalhe(int $id): string {
+    global $_GESTOR;
+    $e = function($t){ return htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8'); };
+    $v = function($id){ global $_GESTOR; return htmlspecialchars((string)gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>$id]), ENT_QUOTES, 'UTF-8'); };
+    $res = @banco_query("SELECT * FROM atualizacoes_choques WHERE id_atualizacoes_choques=".(int)$id." LIMIT 1");
+    $r = $res ? banco_fetch_assoc($res) : null;
+    if(!$r) return '<div class="ui warning message">'.$v('updates-clash-not-found').'</div>';
+    $diff = (string)($r['diff'] ?? '');
+    return '<div class="ui header">'.$v('updates-clash-title').': <code>'.$e($r['caminho']).'</code></div>'
+        .'<div class="ui list">'
+        .'<div class="item"><b>'.$v('updates-clash-col-reason').':</b> '.$v('updates-clash-'.$r['motivo']).'</div>'
+        .'<div class="item"><b>'.$v('updates-clash-col-layer').':</b> '.$e($r['camada']).' ('.$e($r['origem']).'), '.$v('updates-clash-col-version').' '.$e($r['versao']).'</div>'
+        .'<div class="item"><b>'.$v('updates-clash-col-owner').':</b> '.$e($r['camada_dona'] ?? '—').'</div>'
+        .'<div class="item"><b>'.$v('updates-clash-copy').':</b> '.($r['copia'] ? '<code>'.$e($r['copia']).'</code>' : '—').'</div>'
+        .'</div>'
+        .($diff !== '' ? '<textarea class="codemirror-log" data-mode="diff" style="display:none;" rows="30">'.$e($diff).'</textarea><pre class="fallback-log" style="max-height:60vh;overflow:auto;">'.$e($diff).'</pre>' : '');
+}
+
 function admin_atualizacoes_detalhe(): void {
     global $_GESTOR;
     $dirLogs = admin_atualizacoes_logs_dir();
     $dirSess = admin_atualizacoes_temp_sessions_dir();
     $log = $_GET['log'] ?? null; $plano = $_GET['plano'] ?? null;
     $conteudo = '';
-    if($log){
+    if(isset($_GET['choque']) && ctype_digit((string)$_GET['choque'])){
+        $conteudo = admin_atualizacoes_choque_detalhe((int)$_GET['choque']);
+    } elseif($log){
         $path = realpath($dirLogs.$log);
         if((!$path || strpos($path,$dirLogs)!==0 || !is_file($path)) && is_file($dirSess.$log)) {
             $path = realpath($dirSess.$log);

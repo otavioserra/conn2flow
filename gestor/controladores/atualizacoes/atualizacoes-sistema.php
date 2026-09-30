@@ -175,6 +175,11 @@ function persist_existe_em_execucao(): bool {
     $rows = db_exec_select_rows("SELECT id_atualizacoes_execucoes FROM atualizacoes_execucoes WHERE status='running' ORDER BY started_at DESC LIMIT 1");
     return !empty($rows);
 }
+/** CLI: fecha a linha da execução com erro (antes ficava `running` quando a atualização falhava). */
+function atualizacoes_cli_falha(?int $execId, int $codigo, string $msg): void {
+    global $CONTEXT;
+    if($execId) persist_final_execucao($execId, $CONTEXT ?? [], $codigo, $msg);
+}
 function logErroCtx(string $msg): void { logAtualizacao($msg, 'ERROR', true); }
 
 // ----------------------------
@@ -212,6 +217,11 @@ function help(): void {
     echo "  --skip-download         Usa ZIP já existente em staging\n";
     echo "  --backup                Cria backup completo da instalação antes do deploy (exceto contents/, logs/, backups/, temp/, autenticacoes/)\n";
     echo "  (req-197) Toda atualização, menos --dry-run, roda com a trava de deploy do ambiente (temp/deploy.lock)\n";
+    echo "  --rollback=<exec-id>    (req-198) Volta os arquivos de uma execução pelo snapshot; com --com-banco, também o banco\n";
+    echo "  --no-health             (req-198) Pula a verificação pós-atualização (erro fatal novo / HTTP da raiz)\n";
+    echo "  --no-rollback           (req-198) Verifica, mas não volta os arquivos sozinho quando a verificação falha\n";
+    echo "  --health-url=URL        (req-198) URL da verificação HTTP (padrão https://<domínio>/; .env ATUALIZACOES_SAUDE_URL)\n";
+    echo "  --health-ip=IP          (req-198) Resolve o host da verificação para este IP (.env ATUALIZACOES_SAUDE_IP)\n";
     echo "  --dry-run               Simula (gera plano, não aplica)\n";
     echo "  --no-verify             Desativa verificação SHA256 do arquivo gestor.zip\n";
     echo "  --force-all             Encaminha ao script de banco\n";
@@ -506,6 +516,7 @@ function atualizacoes_trava_arquivo(): string { global $BASE_PATH; return $BASE_
 function backupTotal(string $basePath, string $backupDir, array $excludes): array {
     $basePath = rtrim($basePath, '/\\').DIRECTORY_SEPARATOR;
     $excludes[] = '#^backups/#';
+    $excludes[] = '#^installation/choques/#';
     if(!is_dir($backupDir) && !@mkdir($backupDir, 0775, true) && !is_dir($backupDir)) throw new ExtractionException('Backup: não foi possível criar '.$backupDir);
     $arquivos = 0; $bytes = 0;
     $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($basePath, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
@@ -521,6 +532,198 @@ function backupTotal(string $basePath, string $backupDir, array $excludes): arra
     }
     logAtualizacao('Backup total concluído: '.$arquivos.' arquivo(s), '.round($bytes / 1048576, 1).' MB em '.$backupDir);
     return [$arquivos, $bytes];
+}
+/**
+ * req-198: biblioteca do manifesto por camada — da instalação ou, na primeira atualização que a traz,
+ * do staging.
+ */
+function atualizacoes_manifesto_carregar(?string $stagingRoot = null): bool {
+    global $BASE_PATH;
+    if(function_exists('instalacao_planejar')) return true;
+    // A do pacote novo primeiro: é a versão que casa com este atualizador (a instalada pode ser anterior
+    // e não ter as funções que ele chama).
+    $candidatos = [$BASE_PATH.'bibliotecas'.DIRECTORY_SEPARATOR.'instalacao-manifesto.php'];
+    if($stagingRoot) array_unshift($candidatos, rtrim($stagingRoot, '/\\').DIRECTORY_SEPARATOR.'bibliotecas'.DIRECTORY_SEPARATOR.'instalacao-manifesto.php');
+    foreach($candidatos as $f){ if(is_file($f)){ require_once $f; return true; } }
+    return false;
+}
+/**
+ * req-198: aplica a precedência de camadas antes de mover o staging. Arquivo sobreposto por projeto ou
+ * plugin, ou editado no servidor, sai do staging (a versão nova fica em `backups/overrides/<versão>/`) e
+ * vira choque; o que o core deixou de entregar e está intacto sai do disco; o manifesto do core é gravado.
+ * Os choques ficam pendentes em `installation/choques/` e vão para a tabela depois da etapa de banco.
+ */
+function aplicarManifestoCore(string $realRoot, string $basePath): ?array {
+    global $CONTEXT;
+    if(!atualizacoes_manifesto_carregar($realRoot)){ logAtualizacao('Manifesto por camada: biblioteca ausente, etapa pulada','WARNING'); return null; }
+    $versao = (string)($CONTEXT['release_tag'] ?? '');
+    if($versao === '') $versao = date('Ymd-His');
+    $pacote = instalacao_mapa($realRoot, ['gestor.zip', 'gestor-local.zip', 'gestor.zip.sha256']);
+    $plano = instalacao_planejar($basePath, 'core', $pacote, true);
+    // req-198 / BATCH-203: snapshot seletivo (só o que muda) antes de mexer em qualquer arquivo.
+    if(function_exists('instalacao_snapshot_criar')){
+        $idSnap = !empty($CONTEXT['exec_id']) ? 'exec-'.$CONTEXT['exec_id'] : 'exec-'.date('Ymd-His');
+        $raizSnaps = $basePath.'backups'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'snapshots'.DIRECTORY_SEPARATOR;
+        $CONTEXT['snapshot_dir'] = $raizSnaps.$idSnap.DIRECTORY_SEPARATOR;
+        $c = instalacao_snapshot_criar($basePath, $plano, $CONTEXT['snapshot_dir'], ['versao' => $versao, 'exec_id' => $CONTEXT['exec_id'] ?? null]);
+        logAtualizacao(sprintf('Snapshot %s: %d sobrescrito(s), %d removido(s), %d novo(s)', $idSnap, $c['sobrescritos'], $c['removidos'], $c['novos']));
+        $podados = instalacao_snapshot_podar($raizSnaps, 5);
+        if($podados) logAtualizacao('Snapshots antigos removidos: '.$podados, 'DEBUG');
+    }
+    $r = instalacao_aplicar($basePath, $realRoot, 'core', $plano, $versao, 'preparar');
+    logAtualizacao(sprintf('Manifesto do core (%s): %d a escrever, %d preservado(s), %d retirado(s)%s', $versao, $r['escritos'], $r['preservados'], $r['retirados'], $plano['primeira'] ? ' — primeira entrega, linha de base gravada' : ''));
+    foreach($r['choques'] as $c) logAtualizacao('Choque ('.$c['motivo'].($c['camada_dona'] ? ', dono '.$c['camada_dona'] : '').'): '.$c['caminho'].($c['copia'] ? ' — versão nova em '.$c['copia'] : ''), 'WARNING');
+    instalacao_choques_registrar($basePath, 'update-system', 'core', $versao, isset($CONTEXT['exec_id']) ? (string)$CONTEXT['exec_id'] : null, $r['choques']);
+    $CONTEXT['installation'] = ['versao' => $versao, 'primeira' => $plano['primeira'], 'escritos' => $r['escritos'], 'preservados' => $r['preservados'], 'retirados' => $r['retirados'], 'choques' => count($r['choques'])];
+    return $r;
+}
+/** req-198: grava na tabela os choques pendentes (depois da etapa de banco, quando a tabela já existe). */
+function gravarChoquesPendentes(string $basePath): void {
+    if(!function_exists('instalacao_choques_gravar_pendentes') || !function_exists('banco_query')) return;
+    $existe = banco_query("SHOW TABLES LIKE 'atualizacoes_choques'");
+    if(!$existe || (function_exists('banco_num_rows') && !banco_num_rows($existe))) return;
+    $esc = fn($v) => function_exists('banco_escape_field') ? banco_escape_field((string)$v) : addslashes((string)$v);
+    $repetidos = 0;
+    $n = instalacao_choques_gravar_pendentes($basePath, function(array $linha) use ($esc, &$repetidos){
+        $ja = banco_query('SELECT 1 FROM atualizacoes_choques WHERE '.instalacao_choque_pendente_filtro($linha, $esc).' LIMIT 1');
+        if($ja && banco_num_rows($ja)){ $repetidos++; return true; }
+        $cols = []; $vals = [];
+        foreach($linha as $k => $v){ $cols[] = $k; $vals[] = $v === null ? 'NULL' : "'".$esc($v)."'"; }
+        return (bool)banco_query('INSERT INTO atualizacoes_choques ('.implode(',', $cols).') VALUES ('.implode(',', $vals).')');
+    });
+    if($n) logAtualizacao('Choques gravados em atualizacoes_choques: '.($n - $repetidos).($repetidos ? ' (mais '.$repetidos.' já pendente(s))' : ''), 'WARNING');
+}
+/**
+ * Comando de shell com `pipefail` (a falha do `mysqldump` não some atrás do `gzip`). O `/bin/sh` do Debian
+ * e do Ubuntu é o dash, que não tem `pipefail` e sai com código 2 no `set -o pipefail`; por isso usa o bash
+ * quando existe e, sem ele, o `sh` sem `pipefail` (o tamanho do arquivo ainda é conferido).
+ */
+function atualizacoes_shell_pipefail(string $cmd): array {
+    foreach(['/bin/bash', '/usr/bin/bash'] as $bash) if(is_executable($bash)) return [$bash, '-o', 'pipefail', '-c', $cmd];
+    return ['/bin/sh', '-c', $cmd];
+}
+/**
+ * req-198 / BATCH-203: dump do banco antes da etapa de banco, no snapshot da execução (gzip). A senha vai
+ * por `MYSQL_PWD` (não aparece na lista de processos). Sem `mysqldump`, segue com aviso.
+ */
+function backupBancoSnapshot(): ?string {
+    global $CONTEXT, $_BANCO;
+    $dir = $CONTEXT['snapshot_dir'] ?? null;
+    if(!$dir || empty($_BANCO['nome']) || !function_exists('proc_open')) return null;
+    $arquivo = rtrim($dir, '/\\').DIRECTORY_SEPARATOR.'banco.sql.gz';
+    $cmd = 'mysqldump --single-transaction --quick --routines --no-tablespaces -h '.escapeshellarg((string)$_BANCO['host']).' -u '.escapeshellarg((string)$_BANCO['usuario']).' '.escapeshellarg((string)$_BANCO['nome']).' | gzip -c > '.escapeshellarg($arquivo);
+    $env = array_merge($_ENV ?: [], ['MYSQL_PWD' => (string)($_BANCO['senha'] ?? ''), 'PATH' => getenv('PATH') ?: '/usr/bin:/bin']);
+    $proc = @proc_open(atualizacoes_shell_pipefail($cmd), [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, $env);
+    if(!is_resource($proc)){ logAtualizacao('Dump do banco: não foi possível iniciar o mysqldump','WARNING'); return null; }
+    stream_get_contents($pipes[1]); $erro = trim((string)stream_get_contents($pipes[2])); fclose($pipes[1]); fclose($pipes[2]);
+    $codigo = proc_close($proc);
+    if($codigo !== 0 || !is_file($arquivo) || filesize($arquivo) < 20){
+        logAtualizacao('Dump do banco falhou (código '.$codigo.'): '.substr($erro, 0, 300),'WARNING');
+        @unlink($arquivo);
+        return null;
+    }
+    if(function_exists('instalacao_snapshot_anotar')) instalacao_snapshot_anotar($dir, ['dump_banco' => 'banco.sql.gz']);
+    logAtualizacao('Dump do banco no snapshot: '.round(filesize($arquivo) / 1048576, 2).' MB');
+    return $arquivo;
+}
+/** Tamanho atual do log de erros do PHP (para achar fatais novos depois). */
+function saudeLogOffset(string $basePath): int {
+    $f = $basePath.'logs'.DIRECTORY_SEPARATOR.'php-error.log';
+    return is_file($f) ? (int)filesize($f) : 0;
+}
+/**
+ * req-198 / BATCH-203: verificação depois da atualização — sem erro fatal novo no log do PHP e a raiz
+ * do site respondendo abaixo de 500.
+ *
+ * A requisição HTTP vai para `https://<domínio>/<URL_RAIZ>` (ou `$opcoes['url']`, de `--health-url`).
+ * - Com `$opcoes['ip']` (`--health-ip`), o nome é resolvido só para esse IP.
+ * - Sem ele, tenta o DNS normal e, se não conectar, `127.0.0.1` (servidor sem DNS para o próprio nome).
+ * Sem conexão em nenhuma tentativa, o HTTP fica inconclusivo: vira aviso, não falha. Um servidor web
+ * pode escutar só no IP público (HestiaCP), e reprovar por isso voltaria toda atualização.
+ * Antes do HTTP espera `$opcoes['espera']` segundos (padrão 3): o OPcache do PHP-FPM revalida os arquivos
+ * a cada `opcache.revalidate_freq` (2 s por padrão) e, antes disso, serviria o código antigo.
+ * Sem cURL, só o log vale. `$opcoes['http']` substitui a requisição nos testes: fn(url, ip|null): int.
+ *
+ * @return array ['ok' => bool, 'motivos' => string[], 'http' => int|null, 'avisos' => string[]]
+ */
+function saudeVerificar(string $basePath, int $offsetLog, string $dominio, array $opcoes = []): array {
+    $motivos = []; $avisos = []; $http = null;
+    $f = $basePath.'logs'.DIRECTORY_SEPARATOR.'php-error.log';
+    if(is_file($f) && filesize($f) > $offsetLog){
+        $h = @fopen($f, 'r');
+        if($h){ fseek($h, $offsetLog); $novo = (string)stream_get_contents($h, 1048576); fclose($h);
+            if(preg_match_all('/PHP Fatal error:[^\n]*/', $novo, $m)) $motivos[] = 'Erro fatal novo no log: '.substr($m[0][0], 0, 300);
+        }
+    }
+    $pedir = $opcoes['http'] ?? (function_exists('curl_init') ? 'saudeHttp' : null);
+    $url = (string)($opcoes['url'] ?? '');
+    if($url === '' && $dominio !== '' && $dominio !== 'localhost'){
+        $raiz = '/'.trim((string)($_ENV['URL_RAIZ'] ?? '/'), '/');
+        $url = 'https://'.$dominio.($raiz === '/' ? '/' : $raiz.'/');
+    }
+    if($url !== '' && $pedir){
+        $espera = (int)($opcoes['espera'] ?? (isset($opcoes['http']) ? 0 : 3));
+        if($espera > 0) sleep($espera);
+        $ips = !empty($opcoes['ip']) ? [(string)$opcoes['ip']] : [null, '127.0.0.1'];
+        foreach($ips as $ip){
+            $http = (int)$pedir($url, $ip);
+            if($http !== 0) break;
+        }
+        if($http === 0){ $avisos[] = 'HTTP não verificado: sem conexão com '.$url.' ('.implode(', ', array_map(fn($i) => $i ?? 'DNS', $ips)).'); use --health-url/--health-ip'; $http = null; }
+        elseif($http >= 500) $motivos[] = 'HTTP '.$http.' em '.$url;
+    }
+    return ['ok' => !$motivos, 'motivos' => $motivos, 'http' => $http, 'avisos' => $avisos];
+}
+/** Código HTTP de `$url` (0 sem conexão). Com `$ip`, o host da URL é resolvido para ele. */
+function saudeHttp(string $url, ?string $ip): int {
+    $ch = curl_init($url);
+    $o = [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 25, CURLOPT_CONNECTTIMEOUT => 8, CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSL_VERIFYHOST => 0, CURLOPT_FOLLOWLOCATION => false];
+    if($ip !== null){
+        $u = parse_url($url);
+        $porta = (int)($u['port'] ?? ((($u['scheme'] ?? 'https') === 'http') ? 80 : 443));
+        $o[CURLOPT_RESOLVE] = [($u['host'] ?? '').':'.$porta.':'.$ip];
+    }
+    curl_setopt_array($ch, $o);
+    curl_exec($ch);
+    $codigo = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    curl_close($ch);
+    return $codigo;
+}
+/**
+ * req-198 / BATCH-203: rollback de uma execução pelo snapshot. Arquivos sempre; banco só com
+ * `$comBanco` (decisão do operador: pode haver escrita de usuários depois da atualização).
+ */
+function rollbackExecucao(string $basePath, string $id, bool $comBanco): int {
+    global $_BANCO;
+    $id = preg_replace('/[^A-Za-z0-9_-]/', '', $id);
+    if($id !== '' && strpos($id, 'exec-') !== 0) $id = 'exec-'.$id;
+    $dir = $basePath.'backups'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'snapshots'.DIRECTORY_SEPARATOR.$id.DIRECTORY_SEPARATOR;
+    if(!atualizacoes_manifesto_carregar() || !is_file($dir.'snapshot.json')){ echo "ERRO ROLLBACK: snapshot não encontrado: {$dir}\n"; return EXIT_GENERIC; }
+    if($comBanco && empty($_BANCO['nome'])){ echo "ERRO ROLLBACK: --com-banco precisa de --domain=<domínio> (configuração do banco)\n"; return EXIT_GENERIC; }
+    $r = instalacao_snapshot_restaurar($basePath, $dir);
+    if(isset($r['erro'])){ echo "ERRO ROLLBACK: {$r['erro']}\n"; return EXIT_GENERIC; }
+    $msg = sprintf('Rollback %s: %d arquivo(s) restaurado(s), %d novo(s) removido(s)%s', $id, $r['restaurados'], $r['removidos_novos'], $r['falhas'] ? ', falhas: '.implode(', ', array_slice($r['falhas'], 0, 10)) : '');
+    logAtualizacao($msg, $r['falhas'] ? 'WARNING' : 'INFO'); echo $msg."\n";
+    if($comBanco){
+        $dump = $dir.'banco.sql.gz';
+        if(!is_file($dump)){ echo "ERRO ROLLBACK: dump do banco ausente no snapshot\n"; return EXIT_ROLLBACK; }
+        $cmd = 'gunzip -c '.escapeshellarg($dump).' | mysql -h '.escapeshellarg((string)$_BANCO['host']).' -u '.escapeshellarg((string)$_BANCO['usuario']).' '.escapeshellarg((string)$_BANCO['nome']);
+        $env = array_merge($_ENV ?: [], ['MYSQL_PWD' => (string)($_BANCO['senha'] ?? ''), 'PATH' => getenv('PATH') ?: '/usr/bin:/bin']);
+        $proc = @proc_open(atualizacoes_shell_pipefail($cmd), [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, $env);
+        if(!is_resource($proc)){ echo "ERRO ROLLBACK: não foi possível restaurar o banco\n"; return EXIT_ROLLBACK; }
+        stream_get_contents($pipes[1]); $erro = trim((string)stream_get_contents($pipes[2])); fclose($pipes[1]); fclose($pipes[2]);
+        $codigo = proc_close($proc);
+        $txt = $codigo === 0 ? 'Banco restaurado do dump do snapshot.' : 'Falha ao restaurar o banco (código '.$codigo.'): '.substr($erro, 0, 300);
+        logAtualizacao($txt, $codigo === 0 ? 'INFO' : 'ERROR'); echo $txt."\n";
+        if($codigo !== 0) return EXIT_ROLLBACK;
+        // O dump foi feito com a linha desta execução aberta (`running`): depois de restaurar, ela fica marcada.
+        if(ctype_digit(substr($id, 5))) db_exec_update((int)substr($id, 5), ['status' => 'rolled-back', 'finished_at' => date('Y-m-d H:i:s'),
+            'error_message' => 'Revertida por --rollback='.$id.' --com-banco em '.date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
+    } else {
+        echo "Banco não foi tocado. Para voltar também o banco: --rollback={$id} --com-banco\n";
+    }
+    return EXIT_OK;
 }
 function copiarRecursivo(string $src, string $dst): void {
     if(is_dir($src)) { if(!is_dir($dst)) @mkdir($dst,0775,true); $it=opendir($src); if($it){ while(($e=readdir($it))!==false){ if($e==='.'||$e==='..') continue; copiarRecursivo($src.DIRECTORY_SEPARATOR.$e,$dst.DIRECTORY_SEPARATOR.$e); } closedir($it);} }
@@ -745,10 +948,40 @@ function main_update(array $argv): int {
     finally { deploy_lock_release($arquivo, $r['token']); }
 }
 
+/**
+ * req-198: no CLI, o atualizador roda sem o Gestor carregado — `$_BANCO` ficava vazio e a etapa de banco
+ * parava em "Configurações de banco não definidas" (o registro em `atualizacoes_execucoes` também não
+ * acontecia). Carrega o `config.php` da instalação com o domínio de `--domain`, que escolhe o `.env` em
+ * `autenticacoes/<domínio>/`. No fluxo web o Gestor já trouxe tudo e nada é feito.
+ */
+function atualizacoes_cli_carregar_config(array $opts): void {
+    global $_BANCO, $_GESTOR, $_CONFIG, $_INDEX, $BASE_PATH;
+    if(PHP_SAPI !== 'cli' || !empty($_BANCO['nome']) || defined('ATUALIZACOES_SISTEMA_SEM_EXECUCAO')) return;
+    $dominio = (string)($opts['domain'] ?? ($opts['env-dir'] ?? ''));
+    if($dominio === '' || $dominio === '1' || !is_file($BASE_PATH.'config.php')) return;
+    $_SERVER['SERVER_NAME'] = $_SERVER['SERVER_NAME'] ?? $dominio;
+    $_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'] ?? '/';
+    $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_HOST'] ?? $dominio;
+    $_INDEX = is_array($_INDEX ?? null) ? $_INDEX : [];
+    $_INDEX['sistemas-dir'] = $_INDEX['sistemas-dir'] ?? $BASE_PATH;
+    try {
+        require_once $BASE_PATH.'config.php';
+        if(is_file($BASE_PATH.'bibliotecas'.DIRECTORY_SEPARATOR.'banco.php')) require_once $BASE_PATH.'bibliotecas'.DIRECTORY_SEPARATOR.'banco.php';
+        if(function_exists('banco_conectar') && empty($_BANCO['conexao'])) banco_conectar();
+        logAtualizacao('CLI: configuração carregada de '.$dominio.' (banco '.($_BANCO['nome'] ?? '?').')', 'DEBUG');
+    } catch(Throwable $e){
+        logAtualizacao('CLI: não foi possível carregar a configuração da instalação: '.$e->getMessage(), 'WARNING');
+    }
+}
+
 function main_update_executar(array $argv): int {
     global $CONTEXT, $BASE_PATH, $LOGS_DIR;
     try {
         $opts=parseArgsUpdate($argv); if(isset($opts['help'])) { help(); return EXIT_OK; }
+        atualizacoes_cli_carregar_config($opts);
+        // req-198 / BATCH-203: rollback manual de uma execução (arquivos; banco com --com-banco).
+        if(!empty($opts['rollback']) && $opts['rollback'] !== true) return rollbackExecucao($BASE_PATH, (string)$opts['rollback'], !empty($opts['com-banco']));
+        $CONTEXT['saude_offset'] = saudeLogOffset($BASE_PATH);
         validarOpts($opts); $CONTEXT['opts']=$opts; $CONTEXT['debug']=!empty($opts['debug']);
         $dry = !empty($opts['dry-run']);
         $onlyFiles = !empty($opts['only-files']);
@@ -758,8 +991,10 @@ function main_update_executar(array $argv): int {
     // Retenção de logs (default 14 dias se não especificado)
     $retentionDays = isset($opts['logs-retention-days']) ? (int)$opts['logs-retention-days'] : 14;
     $CONTEXT['opts']['logs-retention-days']=$retentionDays;
-    // Persistência: início execução
-    $execId = persist_inicio_execucao($CONTEXT);
+    // Persistência: início execução. O processo do bootstrap só prepara e reexecuta a versão nova; a
+    // linha em atualizacoes_execucoes é do processo que faz o trabalho (uma linha por atualização, e é
+    // o id dela que nomeia o snapshot).
+    $execId = (empty($opts['bootstrap-done']) && !$onlyDb) ? null : persist_inicio_execucao($CONTEXT);
     if($execId) $CONTEXT['exec_id']=$execId;
         logAtualizacao('Iniciando atualização modo='.$CONTEXT['mode'].' dryRun='.($dry?'1':'0').' bootstrap='.(!empty($opts['bootstrap-done'])?'1':'0')); 
 
@@ -913,7 +1148,7 @@ function main_update_executar(array $argv): int {
             // Pastas protegidas (não removidas / não sobrescritas)
             // IMPORTANTE: 'autenticacoes/' contém configurações específicas por domínio (.env, chaves, etc.)
             // Mantemos 'autenticacoes.exemplo/' fora da lista para que novos templates continuem sendo distribuídos.
-            $excludes=['#^contents/#','#^logs/#','#^backups/#','#^temp/#','#^autenticacoes/#'];
+            $excludes=['#^contents/#','#^logs/#','#^backups/#','#^temp/#','#^autenticacoes/#','#^installation/#'];
             logAtualizacao('Pastas protegidas (excludes overwrite): contents/, logs/, backups/, temp/, autenticacoes/','DEBUG');
             if(!empty($opts['backup']) && !$dry){
                 $backupDir = $BASE_PATH.'backups'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'full'.DIRECTORY_SEPARATOR.date('Ymd-His').DIRECTORY_SEPARATOR;
@@ -968,7 +1203,8 @@ function main_update_executar(array $argv): int {
             mergeEnv($envAtual,$envTpl??'',$CONTEXT,$dry);
 
             // Deploy simplificado: remover tudo exceto diretórios protegidos e mover novo conteúdo
-            $protegidos = ['contents','logs','backups','temp','autenticacoes'];
+            // req-198: installation/ guarda os manifestos por camada, as originais e os choques.
+            $protegidos = ['contents','logs','backups','temp','autenticacoes','installation'];
             $wipeEnabled = !empty($opts['wipe']); // nova flag: default = false (overwrite)
             if(!$dry){
                 if($wipeEnabled){
@@ -980,6 +1216,7 @@ function main_update_executar(array $argv): int {
                     $removidos = 0;
                 }
                 limparMigracoesCore($realRoot,$BASE_PATH);
+                aplicarManifestoCore($realRoot,$BASE_PATH);
                 $movidos = moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
                 logAtualizacao('Deploy concluído (itens movidos) count='.$movidos);
                 // Revalida críticos
@@ -997,7 +1234,9 @@ function main_update_executar(array $argv): int {
 
         // ---------------- Banco ----------------
         if(!$onlyFiles && !$noDb){
+            if(!$dry) backupBancoSnapshot();
             executarAtualizacaoBanco($opts);
+            if(!$dry) gravarChoquesPendentes($BASE_PATH);
             if(!empty($execId)) persist_parcial_execucao($execId,$CONTEXT);
             hookAfterDb($CONTEXT);
             // req-197: `db/` fica (como no fluxo web). `db/migrations` tem dois donos (core e projeto) e o
@@ -1007,6 +1246,30 @@ function main_update_executar(array $argv): int {
         }
 
         hookAfterAll($CONTEXT);
+        // req-198 / BATCH-203: verificação depois da atualização; falhou, os arquivos voltam sozinhos.
+        if(!$dry && empty($opts['no-health']) && !empty($CONTEXT['snapshot_dir'])){
+            $saudeOpc = [
+                'url' => (string)($opts['health-url'] ?? ($_ENV['ATUALIZACOES_SAUDE_URL'] ?? '')),
+                'ip' => (string)($opts['health-ip'] ?? ($_ENV['ATUALIZACOES_SAUDE_IP'] ?? '')),
+            ];
+            $saude = saudeVerificar($BASE_PATH, (int)($CONTEXT['saude_offset'] ?? 0), (string)($opts['domain'] ?? ''), array_filter($saudeOpc));
+            $CONTEXT['saude'] = $saude;
+            foreach($saude['avisos'] as $aviso) logAtualizacao($aviso, 'WARNING', true);
+            if($saude['ok']) logAtualizacao('Verificação pós-atualização OK'.($saude['http'] ? ' (HTTP '.$saude['http'].')' : ''));
+            else {
+                logAtualizacao('Verificação pós-atualização FALHOU: '.implode(' | ', $saude['motivos']), 'ERROR', true);
+                if(empty($opts['no-rollback'])){
+                    $r = instalacao_snapshot_restaurar($BASE_PATH, $CONTEXT['snapshot_dir']);
+                    $msg = 'Rollback automático dos arquivos: '.($r['restaurados'] ?? 0).' restaurado(s), '.($r['removidos_novos'] ?? 0).' novo(s) removido(s). Banco não revertido; para reverter: --rollback='.basename(rtrim($CONTEXT['snapshot_dir'], '/\\')).' --com-banco';
+                    logAtualizacao($msg, 'ERROR', true); echo "ROLLBACK: ".$msg."\n";
+                    $depois = saudeVerificar($BASE_PATH, saudeLogOffset($BASE_PATH), (string)($opts['domain'] ?? ''), array_filter($saudeOpc));
+                    $txt = 'Depois do rollback: '.($depois['ok'] ? 'OK' : implode(' | ', $depois['motivos'])).($depois['http'] ? ' (HTTP '.$depois['http'].')' : '');
+                    logAtualizacao($txt, $depois['ok'] ? 'INFO' : 'ERROR', true); echo $txt."\n";
+                    if(!empty($execId)) persist_final_execucao($execId,$CONTEXT,EXIT_ROLLBACK,'Verificação pós-atualização falhou: '.implode(' | ', $saude['motivos']));
+                    return EXIT_ROLLBACK;
+                }
+            }
+        }
         $rel=renderRelatorioFinal($CONTEXT); logAtualizacao(trim($rel)); echo $rel;
         // Limpeza de staging sempre (a menos que usuário peça para manter) + poda de antigos
         $keepTemp = !empty($opts['keep-temp']);
@@ -1028,13 +1291,13 @@ function main_update_executar(array $argv): int {
         }
     if(!empty($execId)) persist_final_execucao($execId,$CONTEXT,0,null);
     return EXIT_OK;
-    } catch (DownloadException $e){ logErroCtx($e->getMessage()); echo "ERRO DOWNLOAD: ".$e->getMessage()."\n"; return EXIT_DOWNLOAD; }
-    catch (ExtractionException $e){ logErroCtx($e->getMessage()); echo "ERRO EXTRAÇÃO: ".$e->getMessage()."\n"; return EXIT_EXTRACTION; }
-    catch (EnvMergeException $e){ logErroCtx($e->getMessage()); echo "ERRO ENV: ".$e->getMessage()."\n"; return EXIT_ENV_MERGE; }
-    catch (DatabaseUpdateException $e){ logErroCtx($e->getMessage()); echo "ERRO BANCO: ".$e->getMessage()."\n"; return EXIT_DB_ERROR; }
-    catch (IntegrityException $e){ logErroCtx($e->getMessage()); echo "ERRO INTEGRIDADE: ".$e->getMessage()."\n"; return EXIT_INTEGRITY; }
-    catch (InvalidArgumentException $e){ logErroCtx($e->getMessage()); echo "ARGUMENTO INVÁLIDO: ".$e->getMessage()."\n"; return EXIT_GENERIC; }
-    catch (Throwable $t){ logErroCtx('Fatal: '.$t->getMessage()); echo "ERRO FATAL: ".$t->getMessage()."\n"; return EXIT_GENERIC; }
+    } catch (DownloadException $e){ logErroCtx($e->getMessage()); atualizacoes_cli_falha($execId ?? null, EXIT_DOWNLOAD, $e->getMessage()); echo "ERRO DOWNLOAD: ".$e->getMessage()."\n"; return EXIT_DOWNLOAD; }
+    catch (ExtractionException $e){ logErroCtx($e->getMessage()); atualizacoes_cli_falha($execId ?? null, EXIT_EXTRACTION, $e->getMessage()); echo "ERRO EXTRAÇÃO: ".$e->getMessage()."\n"; return EXIT_EXTRACTION; }
+    catch (EnvMergeException $e){ logErroCtx($e->getMessage()); atualizacoes_cli_falha($execId ?? null, EXIT_ENV_MERGE, $e->getMessage()); echo "ERRO ENV: ".$e->getMessage()."\n"; return EXIT_ENV_MERGE; }
+    catch (DatabaseUpdateException $e){ logErroCtx($e->getMessage()); atualizacoes_cli_falha($execId ?? null, EXIT_DB_ERROR, $e->getMessage()); echo "ERRO BANCO: ".$e->getMessage()."\n"; return EXIT_DB_ERROR; }
+    catch (IntegrityException $e){ logErroCtx($e->getMessage()); atualizacoes_cli_falha($execId ?? null, EXIT_INTEGRITY, $e->getMessage()); echo "ERRO INTEGRIDADE: ".$e->getMessage()."\n"; return EXIT_INTEGRITY; }
+    catch (InvalidArgumentException $e){ logErroCtx($e->getMessage()); atualizacoes_cli_falha($execId ?? null, EXIT_GENERIC, $e->getMessage()); echo "ARGUMENTO INVÁLIDO: ".$e->getMessage()."\n"; return EXIT_GENERIC; }
+    catch (Throwable $t){ logErroCtx('Fatal: '.$t->getMessage()); atualizacoes_cli_falha($execId ?? null, EXIT_GENERIC, 'Fatal: '.$t->getMessage()); echo "ERRO FATAL: ".$t->getMessage()."\n"; return EXIT_GENERIC; }
 }
 
 // Testes carregam as funções sem executar a atualização (req-197).
@@ -1238,7 +1501,7 @@ function webDeployFiles(string $sid): array {
     if($envTemplateRel){ if($envTemplateOriginalPath && file_exists($envTemplateOriginalPath)) $envTpl=$envTemplateOriginalPath; else { $reconstructed=$BASE_PATH.$envTemplateRel; if(file_exists($reconstructed)) $envTpl=$reconstructed; } }
     if(!$envTpl) $envTpl=localizarEnvTemplate($BASE_PATH,'dominio',!empty($opts['debug'])) ?? localizarEnvTemplate($BASE_PATH,$opts['domain']??'localhost',!empty($opts['debug']));
     if($envTpl) mergeEnv($envAtual,$envTpl,$CONTEXT,$dry); else logAtualizacao('WebDeployFiles: template .env não encontrado','WARNING');
-    $protegidos=['contents','logs','backups','temp','autenticacoes'];
+    $protegidos=['contents','logs','backups','temp','autenticacoes','installation'];
     $wipeEnabled = !empty($opts['wipe']); // respeita flag web --wipe (default = overwrite)
     if(!$dry){
         if(empty($BASE_PATH) || !is_dir($BASE_PATH)) {
@@ -1254,6 +1517,9 @@ function webDeployFiles(string $sid): array {
             $removidos = 0;
         }
         limparMigracoesCore($realRoot,$BASE_PATH);
+        if(!empty($st['exec_id'])) $CONTEXT['exec_id'] = $st['exec_id'];
+        if(!empty($st['release_tag'])) $CONTEXT['release_tag'] = $st['release_tag'];
+        aplicarManifestoCore($realRoot,$BASE_PATH);
         $movidos = moverConteudoStaging($realRoot,$BASE_PATH,$protegidos);
         logAtualizacao('WebDeployFiles: itens movidos count='.$movidos,'DEBUG');
         $stats = ['removed'=>$removidos,'copied'=>$movidos];
@@ -1262,7 +1528,9 @@ function webDeployFiles(string $sid): array {
     $CONTEXT['plan']=['stats'=>$stats];
     exportarPlanoJson($CONTEXT['plan'],$CONTEXT);
     $st['progress']['deploy_files']=['done'=>true,'stats'=>$stats,'ts'=>time()];
-    $st['stats']=$stats; $st['step']='deploy_files_done'; saveWebState($sid,$st);
+    $st['stats']=$stats; $st['step']='deploy_files_done';
+    if(!empty($CONTEXT['snapshot_dir'])) $st['snapshot_dir'] = $CONTEXT['snapshot_dir']; // req-198 / BATCH-203
+    saveWebState($sid,$st);
     if(!empty($st['exec_id'])) persist_parcial_execucao((int)$st['exec_id'],$CONTEXT);
     logAtualizacao('WebDeployFiles: concluído');
     // Se for download-only, não segue para database (termina em finalize)
@@ -1297,7 +1565,9 @@ function webDatabase(string $sid): array { global $CONTEXT, $BASE_PATH, $_GESTOR
         // do fluxo; caso contrário, o token CSRF validado acima desaparece antes
         // da chamada de finalize.
         $opts['defer-session-reset'] = true;
+        if(!empty($st['snapshot_dir'])){ $CONTEXT['snapshot_dir'] = $st['snapshot_dir']; backupBancoSnapshot(); }
         executarAtualizacaoBanco($opts);
+        gravarChoquesPendentes($BASE_PATH);
         $st['progress']['database']=['done'=>true,'ts'=>time()];
         $st['session_reset_pending']=true;
         saveWebState($sid,$st);

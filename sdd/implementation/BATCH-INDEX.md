@@ -39,8 +39,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-199 | complete | Itens avulsos na primeira fatura da assinatura Stripe (req-195) | [BATCH-199.md](BATCH-199.md) | `add_invoice_items` para o caixa central (REQ-071 do conn2flow-site): produtos e frete com a assinatura numa cobrança só. |
 | BATCH-197 | completed | Ativação opcional de parcelamento no PaymentIntent Stripe (req-193) | [BATCH-197.md](BATCH-197.md) | Extensão compartilhada para a REQ-072 do conn2flow-site; teste focado, lint e diff-check aprovados. |
 | BATCH-201 | complete | Atualização segura, fase 1: trava de deploy, backup total, `db:check-migrations`, CLI/web sem apagar `db/` (req-197) | [BATCH-201.md](BATCH-201.md) | Promovido do BL-028 em 2026-09-30. PHPUnit 21/21 do lote; trava testada contra o destino do Lab sem deploy (recusa, espera, Windows×WSL). Homologação humana pendente. |
-| BATCH-202 | ready-for-intake | Atualização segura, fase 2a: manifesto por camada, precedência e registro de choques (req-198) | — | Depois do BATCH-201. |
-| BATCH-203 | ready-for-intake | Atualização segura, fase 2b: backup seletivo, health check e rollback (req-198) | — | Depois do BATCH-202. |
+| BATCH-202 | complete | Atualização segura, fase 2a: manifesto por camada, precedência e registro de choques (req-198) | [BATCH-202.md](BATCH-202.md) | Sobreposto, editado, retirado e tela de choques validados no tenant isolado `project-test`. Homologação humana pendente. |
+| BATCH-203 | complete | Atualização segura, fase 2b: snapshot seletivo, verificação e rollback (req-198) | [BATCH-203.md](BATCH-203.md) | Dump, volta automática (código 6) e rollback com e sem banco validados no tenant. Homologação humana pendente. |
 
 ## Regra operacional
 
