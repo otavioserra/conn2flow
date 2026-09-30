@@ -4,7 +4,7 @@ description: "Upload de atualização e exportação de recursos do projeto."
 section: reference
 sources:
   - gestor/controladores/api/api.php
-verified_at: 2d9a8c71
+verified_at: eb96c5c7
 ---
 
 # API de projetos
@@ -14,6 +14,8 @@ Ambas as rotas exigem bearer token válido e método POST.
 ## `/_api/project/update`
 
 Recebe `multipart/form-data` com arquivo `project_zip`; o cabeçalho `X-Project-ID` informa o contexto do projeto. Aceita somente nome com extensão `.zip` e arquivo até 100 MB. Descompacta na área temporária de logs, copia o conteúdo para o gestor, executa a atualização do banco, sincroniza hooks e regenera o `sitemap.xml`. `full_log` no POST inclui logs detalhados. A resposta JSON informa `file_size`, `updated_at`, `status`, `db_logs`, `full_log` `sitemap` (`updated`, `failed` ou `error: …`; falha no sitemap não invalida o deploy) e `migrations` (`removidos`, `choques`, `log`).
+
+Roda com a trava de deploy do ambiente (`temp/deploy.lock`, req-197), a mesma da atualização do sistema: com outro deploy em execução, responde **HTTP 409** dizendo quem está com a trava, antes de receber o pacote. A trava é liberada no fim da requisição, também em erro.
 
 Antes da cópia, as migrações obsoletas do projeto saem do servidor (req-194): as que o projeto entregou antes e não entrega mais — pela lista completa em `db/.c2f-migrations-projeto.json`, que o `deploy-project-v2.sh` põe no pacote — e a cópia antiga de uma migração renomeada. Migrações do core nunca são apagadas; mesma versão com outra classe é registrada como choque e o Phinx recusa na atualização do banco.
 

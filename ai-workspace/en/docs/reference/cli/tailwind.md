@@ -5,7 +5,7 @@ section: reference
 sources:
   - cli/src/Console/Application.php
   - cli/src/Commands/TailwindFixSpacingCommand.php
-verified_at: e5b61f8e
+verified_at: eb96c5c7
 ---
 
 # CLI: Commands tailwind

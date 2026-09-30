@@ -14,7 +14,7 @@ sources:
   - cli/src/Commands/ProjectSyncResourcesCommand.php
   - cli/src/Commands/ProjectUpdateAllCommand.php
   - cli/src/Commands/ProjectUpdateSystemCommand.php
-verified_at: 2d9a8c71
+verified_at: eb96c5c7
 ---
 
 # CLI: Comandos project

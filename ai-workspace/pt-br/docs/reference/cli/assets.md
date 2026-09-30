@@ -9,7 +9,7 @@ sources:
   - cli/src/Commands/AssetsMinifyCommand.php
   - cli/src/Commands/AssetsPublishCommand.php
   - cli/src/Commands/AssetsVendorCommand.php
-verified_at: e5b61f8e
+verified_at: eb96c5c7
 ---
 
 # CLI: Assets

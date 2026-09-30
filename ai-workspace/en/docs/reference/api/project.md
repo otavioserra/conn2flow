@@ -4,7 +4,7 @@ description: "Project update upload and resource export."
 section: reference
 sources:
   - gestor/controladores/api/api.php
-verified_at: 2d9a8c71
+verified_at: eb96c5c7
 ---
 
 # Project API
@@ -14,6 +14,8 @@ Both routes require a valid bearer token and POST.
 ## `/_api/project/update`
 
 Accepts `multipart/form-data` with a `project_zip` file; `X-Project-ID` supplies the project context. Only a `.zip` filename and files up to 100 MB are accepted. It extracts the archive under temporary logs, copies contents into the manager, updates the database, synchronizes hooks, and regenerates `sitemap.xml`. POST `full_log` includes detailed logs. JSON response data includes `file_size`, `updated_at`, `status`, `db_logs`, `full_log` `sitemap` (`updated`, `failed` or `error: …`; a sitemap failure does not fail the deploy) and `migrations` (`removidos`, `choques`, `log`).
+
+Runs under the environment deploy lock (`temp/deploy.lock`, req-197), the same one as the system update: while another deploy is running it answers **HTTP 409**, saying who holds the lock, before processing the package. The lock is released at the end of the request, also on errors.
 
 Before copying, obsolete project migrations are removed from the server (req-194): those the project delivered before and no longer delivers — from the complete list in `db/.c2f-migrations-projeto.json`, which `deploy-project-v2.sh` adds to the package — and the old copy of a renamed migration. Core migrations are never deleted; the same version with another class is recorded as a clash and Phinx rejects it during the database update.
 

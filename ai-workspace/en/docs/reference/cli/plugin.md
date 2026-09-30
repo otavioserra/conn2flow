@@ -9,7 +9,7 @@ sources:
   - cli/src/Commands/PluginReleaseCommand.php
   - cli/src/Commands/PluginResourcesCommand.php
   - cli/src/Commands/PluginSyncCommand.php
-verified_at: e5b61f8e
+verified_at: eb96c5c7
 ---
 
 # CLI: Commands plugin
