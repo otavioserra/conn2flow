@@ -7,7 +7,7 @@ sources:
   - gestor/controladores/api/api-module-central.php
   - gestor/controladores/api/api-module-distributed.php
   - gestor/bibliotecas/modulo-distribuido.php
-verified_at: 5e61b186
+verified_at: 100adc3a
 ---
 
 # API de módulos distribuídos

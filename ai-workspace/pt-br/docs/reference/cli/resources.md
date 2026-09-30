@@ -5,7 +5,7 @@ section: reference
 sources:
   - cli/src/Console/Application.php
   - cli/src/Commands/ResourcesSyncCommand.php
-verified_at: eb96c5c7
+verified_at: 100adc3a
 ---
 
 # CLI: Comandos resources

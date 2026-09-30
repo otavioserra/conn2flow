@@ -5,7 +5,7 @@ section: reference
 sources:
   - gestor/controladores/api/api-auth.php
   - gestor/controladores/api/api.php
-verified_at: 5e61b186
+verified_at: 100adc3a
 ---
 
 # API de autenticação

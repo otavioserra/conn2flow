@@ -11,7 +11,7 @@ sources:
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/db/migrations/20250814141000_create_atualizacoes_execucoes_table.php
   - gestor/db/migrations/20260930210000_create_atualizacoes_choques_table.php
-verified_at: ea442bea
+verified_at: 100adc3a
 ---
 
 # Módulo admin-atualizacoes

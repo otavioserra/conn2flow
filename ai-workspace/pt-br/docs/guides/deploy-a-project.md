@@ -10,7 +10,7 @@ sources:
   - gestor/bibliotecas/cron.php
   - gestor/bibliotecas/sitemap.php
   - gestor/bibliotecas/comunicacao.php
-verified_at: 5e61b186
+verified_at: 100adc3a
 ---
 
 # Atualize e publique um projeto
