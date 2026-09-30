@@ -1,6 +1,9 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-197.md](req-197.md) (BATCH-201 `in-progress`, 2026-09-30): Atualização segura, fase 1 — trava de deploy, `backupTotal()`, `db:check-migrations`, CLI/web sem apagar `db/`, tentativa automática no Tailwind. Promovida do [BL-028](../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md).
+  - [req-198.md](req-198.md) (BATCH-202/203 `ready-for-intake`): Atualização segura, fase 2 — manifesto por camada, precedência `projeto > plugin > core`, registro de choques, backup seletivo, health check e rollback. Depois da req-197.
+  - [req-199.md](req-199.md) (lotes a definir, `ready-for-intake`): Atualização segura, fase 3 — exclusão declarativa de dados e diff/merge dos choques (CLI, extensão VS Code, painel). Depois da req-198.
   - [req-193.md](req-193.md) (BATCH-197 `in-progress`): Ativar parcelamento de cartão somente quando solicitado ao criar PaymentIntent avulso; extensão compartilhada para a REQ-072 do `conn2flow-site`.
   - [req-195.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-195.md) (BATCH-199 `complete`, 2026-09-29): `stripe_criar_assinatura()` aceita `add_invoice_items` (caixa central, REQ-071 do site). Ver [BATCH-199.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-199.md).
   - [req-194.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-194.md) (BATCH-198 `complete`, 2026-09-29): Hotfix — migrações obsoletas removidas no ambiente em execução, por dono (core/projeto), nos três caminhos de entrega; choques só registrados. Épico de atualização segura no [BL-028](../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md). Ver [BATCH-198.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-198.md).

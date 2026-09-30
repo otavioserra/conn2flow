@@ -38,6 +38,9 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-198 | complete | Hotfix: migrações obsoletas no ambiente em execução (req-194) | [BATCH-198.md](BATCH-198.md) | Limpeza por dono (core/projeto) no deploy por API, na atualização do sistema e no pipeline rsync; choques só registrados. Épico no BL-028. |
 | BATCH-199 | complete | Itens avulsos na primeira fatura da assinatura Stripe (req-195) | [BATCH-199.md](BATCH-199.md) | `add_invoice_items` para o caixa central (REQ-071 do conn2flow-site): produtos e frete com a assinatura numa cobrança só. |
 | BATCH-197 | completed | Ativação opcional de parcelamento no PaymentIntent Stripe (req-193) | [BATCH-197.md](BATCH-197.md) | Extensão compartilhada para a REQ-072 do conn2flow-site; teste focado, lint e diff-check aprovados. |
+| BATCH-201 | in-progress | Atualização segura, fase 1: trava de deploy, backup total, `db:check-migrations`, CLI/web sem apagar `db/` (req-197) | [BATCH-201.md](BATCH-201.md) | Promovido do BL-028 em 2026-09-30. Worktree `conn2flow-bl028`, branch `feat/req-197`. |
+| BATCH-202 | ready-for-intake | Atualização segura, fase 2a: manifesto por camada, precedência e registro de choques (req-198) | — | Depois do BATCH-201. |
+| BATCH-203 | ready-for-intake | Atualização segura, fase 2b: backup seletivo, health check e rollback (req-198) | — | Depois do BATCH-202. |
 
 ## Regra operacional
 
