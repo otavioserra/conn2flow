@@ -83,6 +83,78 @@ function instalacao_fora(string $rel): bool {
     return in_array($topo, INSTALACAO_PASTAS_FORA, true);
 }
 
+/** Caminho seguro para leitura ou extração: sem segmentos especiais, ocultos ou pastas privadas. */
+function instalacao_recuperacao_caminho_valido(string $rel): bool {
+    if ($rel === '' || strpos($rel, '\\') !== false || strpos($rel, "\0") !== false || $rel[0] === '/') return false;
+    foreach (explode('/', $rel) as $parte) {
+        if ($parte === '' || $parte === '.' || $parte === '..' || $parte[0] === '.' || strpos($parte, ':') !== false) return false;
+    }
+    return !instalacao_fora($rel);
+}
+
+/** Confere contenção, destino real e hash antes de colocar um arquivo no ZIP. */
+function instalacao_recuperacao_arquivo_seguro(string $base, string $rel, string $hash): ?string {
+    if (!instalacao_recuperacao_caminho_valido($rel)) return null;
+    $baseReal = realpath($base);
+    if (!$baseReal) return null;
+    $path = instalacao_caminho_base($base) . str_replace('/', DIRECTORY_SEPARATOR, $rel);
+    $real = realpath($path);
+    if (!$real || !is_file($real) || is_link($path) || strpos($real, rtrim($baseReal, '/\\') . DIRECTORY_SEPARATOR) !== 0) return null;
+    $resolvedRel = str_replace(DIRECTORY_SEPARATOR, '/', substr($real, strlen(rtrim($baseReal, '/\\')) + 1));
+    if (!instalacao_recuperacao_caminho_valido($resolvedRel)) return null;
+    return hash_equals($hash, (string)hash_file('sha256', $real)) ? $real : null;
+}
+
+/** Inventário de divergências, atribuído à camada dona de cada caminho. */
+function instalacao_recuperacao_inventario(string $base, array $camadas = [], array $caminhos = [], array $estados = []): array {
+    $manifestos = instalacao_manifestos($base);
+    $donos = [];
+    foreach ($manifestos as $camada => $manifesto) {
+        foreach ($manifesto['arquivos'] as $rel => $hash) {
+            if (!is_string($rel) || !instalacao_recuperacao_caminho_valido($rel)) continue;
+            if (!isset($donos[$rel]) || instalacao_nivel($camada) > instalacao_nivel($donos[$rel]['camada'])) {
+                $donos[$rel] = ['camada' => $camada, 'hash_manifesto' => $hash];
+            }
+        }
+    }
+    $disco = [];
+    $baseNormal = instalacao_caminho_base($base);
+    if (is_dir($baseNormal)) {
+        $tree = new RecursiveCallbackFilterIterator(
+            new RecursiveDirectoryIterator($baseNormal, FilesystemIterator::SKIP_DOTS),
+            static function ($file) use ($baseNormal) {
+                return !$file->isLink() && instalacao_recuperacao_caminho_valido(instalacao_rel($baseNormal, $file->getPathname()));
+            }
+        );
+        $it = new RecursiveIteratorIterator($tree);
+        foreach ($it as $file) {
+            $rel = instalacao_rel($baseNormal, $file->getPathname());
+            if (!$file->isFile()) continue;
+            $disco[$rel] = hash_file('sha256', $file->getPathname());
+        }
+    }
+    $out = [];
+    foreach ($donos as $rel => $d) {
+        $hashDisco = $disco[$rel] ?? null;
+        if ($hashDisco === $d['hash_manifesto']) continue;
+        $out[$rel] = ['camada' => $d['camada'], 'caminho' => $rel, 'estado' => $hashDisco === null ? 'ausente' : 'editado',
+            'hash_disco' => $hashDisco, 'hash_manifesto' => $d['hash_manifesto']];
+    }
+    foreach ($disco as $rel => $hash) {
+        if (isset($donos[$rel]) || !instalacao_recuperacao_caminho_valido($rel)) continue;
+        $out[$rel] = ['camada' => null, 'caminho' => $rel, 'estado' => 'fora-do-manifesto',
+            'hash_disco' => $hash, 'hash_manifesto' => null];
+    }
+    $out = array_filter($out, static function ($r) use ($camadas, $caminhos, $estados) {
+        if ($camadas && !in_array($r['camada'], $camadas, true)) return false;
+        if ($estados && !in_array($r['estado'], $estados, true)) return false;
+        foreach ($caminhos as $prefixo) if ($prefixo !== '' && ($r['caminho'] === $prefixo || strpos($r['caminho'], rtrim($prefixo, '/') . '/') === 0)) return true;
+        return !$caminhos;
+    });
+    ksort($out);
+    return array_values($out);
+}
+
 /**
  * Mapa `rel → sha256` de uma árvore (pacote no staging ou instalação).
  *
@@ -610,10 +682,11 @@ function instalacao_choque_versoes(string $base, array $choque): array {
  * @param array $choque Linha do registro: caminho, camada, motivo, copia, hash_novo.
  * @return array ['ok' => bool, 'erro' => string, 'acao' => string, 'hash_disco' => string|null]
  */
-function instalacao_choque_resolver(string $base, array $choque, string $acao, ?string $mesclado = null): array {
+function instalacao_choque_resolver(string $base, array $choque, string $acao, ?string $mesclado = null, bool $gravarRegras = true): array {
     $rel = (string)($choque['caminho'] ?? '');
     $falha = function (string $m) use ($acao) { return ['ok' => false, 'erro' => $m, 'acao' => $acao, 'hash_disco' => null]; };
-    if ($rel === '' || strpos($rel, '..') !== false || instalacao_fora($rel)) return $falha('caminho inválido');
+    if ($rel === '' || strpos($rel, '..') !== false || instalacao_fora($rel)
+        || ((!$gravarRegras || isset($choque['copia_externa'])) && !instalacao_recuperacao_caminho_valido($rel))) return $falha('caminho inválido');
     if (!in_array($acao, instalacao_choque_acoes($choque), true)) return $falha('decisão "' . $acao . '" não vale para um choque "' . ($choque['motivo'] ?? '') . '"');
     $b = instalacao_caminho_base($base);
     $alvo = $b . str_replace('/', DIRECTORY_SEPARATOR, $rel);
@@ -626,9 +699,16 @@ function instalacao_choque_resolver(string $base, array $choque, string $acao, ?
         if (($choque['motivo'] ?? '') === 'retirado-editado') {
             if (is_file($alvo) && !@unlink($alvo)) return $falha('não foi possível remover o arquivo');
         } else {
-            $v = instalacao_choque_versoes($base, $choque);
-            if ($v['nova'] === null) return $falha('a versão nova não está mais guardada (' . ($choque['copia'] ?? '—') . ')');
-            if (!$escrever($v['nova'])) return $falha('não foi possível escrever o arquivo');
+            if (isset($choque['copia_externa'])) {
+                $origem = (string)$choque['copia_externa'];
+                if (!is_file($origem) || !hash_equals((string)($choque['hash_novo'] ?? ''), (string)hash_file('sha256', $origem))) return $falha('cópia externa ausente ou alterada');
+                $nova = file_get_contents($origem);
+            } else {
+                $v = instalacao_choque_versoes($base, $choque);
+                $nova = $v['nova'];
+            }
+            if ($nova === null || $nova === false) return $falha('a versão nova não está mais guardada');
+            if (!$escrever($nova)) return $falha('não foi possível escrever o arquivo');
         }
     } elseif ($acao === 'mesclar') {
         if ($mesclado === null) return $falha('conteúdo mesclado ausente');
@@ -636,6 +716,7 @@ function instalacao_choque_resolver(string $base, array $choque, string $acao, ?
     }
 
     $hash = instalacao_hash_disco($base, $rel);
+    if (!$gravarRegras) return ['ok' => true, 'erro' => '', 'acao' => $acao, 'hash_disco' => $hash];
     $regras = instalacao_regras_ler($base);
     if ($acao === 'manter') {
         $regras[$rel] = ['acao' => 'manter', 'camada' => (string)($choque['camada'] ?? ''), 'motivo' => (string)($choque['motivo'] ?? ''),

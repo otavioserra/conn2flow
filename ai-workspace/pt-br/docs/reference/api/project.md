@@ -6,12 +6,18 @@ sources:
   - gestor/bibliotecas/instalacao-manifesto.php
   - ai-workspace/en/scripts/projects/project-file-manifest.php
   - gestor/controladores/api/api.php
-verified_at: ca4337fc
+verified_at: 152dfd72
 ---
 
 # API de projetos
 
-Ambas as rotas exigem bearer token válido e método POST.
+As rotas de projeto exigem bearer token válido. `conflicts` também aceita GET; as demais aqui descritas usam POST.
+
+## `/_api/project/files`
+
+`POST` com JSON opcional `{"camadas":["projeto"],"caminhos":["bibliotecas/"],"estados":["editado"]}`. Sem filtros, devolve `data.arquivos` e `data.total` para as divergências entre disco e manifestos por camada. Cada item informa `camada`, `caminho`, `estado` (`editado`, `ausente` ou `fora-do-manifesto`), `hash_disco` e `hash_manifesto`. Em sobreposição, a camada dona é a de maior precedência. Arquivos sem dono têm `camada: null`.
+
+Para baixar, envie `{"baixar":true,"caminhos":["bibliotecas/a.php"]}` com caminhos **exatos** do inventário: a resposta é um ZIP com esses arquivos. Arquivo ausente não pode ser baixado. Caminhos privados, ocultos, travessia (`..`) e links para fora da instalação são recusados; `autenticacoes/`, `.env`, `logs/`, `backups/`, `temp/` e `installation/` nunca saem. A rota apenas lê e não usa trava de deploy. Pelo CLI: [`project:recover-files`](../cli/project.md).
 
 ## `/_api/project/update`
 

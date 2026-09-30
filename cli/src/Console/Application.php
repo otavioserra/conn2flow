@@ -45,6 +45,7 @@ use Conn2Flow\Cli\Commands\PluginResourcesCommand;
 use Conn2Flow\Cli\Commands\PluginSyncCommand;
 use Conn2Flow\Cli\Commands\ProjectDeployCommand;
 use Conn2Flow\Cli\Commands\ProjectRecoverCommand;
+use Conn2Flow\Cli\Commands\ProjectRecoverFilesCommand;
 use Conn2Flow\Cli\Commands\ProjectSyncCoreCommand;
 use Conn2Flow\Cli\Commands\ProjectSyncDbCommand;
 use Conn2Flow\Cli\Commands\ProjectSyncFilesCommand;
@@ -128,6 +129,7 @@ final class Application
         $this->register(new ProjectUpdateAllCommand($this->rootPath));
         $this->register(new ProjectDeployCommand($this->rootPath));
         $this->register(new ProjectRecoverCommand($this->rootPath));
+        $this->register(new ProjectRecoverFilesCommand($this->rootPath));
         $this->register(new ProjectUpdateSystemCommand($this->rootPath));
 
         // Documentation (req-177 / req-178)

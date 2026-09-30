@@ -254,6 +254,10 @@ function api_handle_project() {
             api_project_recover();
             break;
 
+        case 'files':
+            api_project_files();
+            break;
+
         case 'rollback':
             api_project_rollback();
             break;
@@ -1096,6 +1100,59 @@ function api_project_rollback() {
 function api_corpo_requisicao(): array {
     $body = json_decode((string)file_get_contents('php://input'), true);
     return is_array($body) ? $body : array_merge($_GET, $_POST);
+}
+
+/** POST /_api/project/files: divergências por manifesto ou ZIP de caminhos explícitos. */
+function api_project_files() {
+    global $_GESTOR;
+    api_authenticate(true);
+    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') api_response_error('Método não permitido. Use POST.', 405);
+    require_once $_GESTOR['bibliotecas-path'] . 'instalacao-manifesto.php';
+    $body = api_corpo_requisicao();
+    foreach (['camadas', 'caminhos', 'estados'] as $campo) {
+        if (isset($body[$campo]) && (!is_array($body[$campo]) || count($body[$campo]) > 1000)) api_response_error($campo . ' inválido', 400);
+        foreach ($body[$campo] ?? [] as $valor) if (!is_string($valor)) api_response_error($campo . ' deve conter strings', 400);
+    }
+    $camadas = array_values(array_map('strval', $body['camadas'] ?? []));
+    $caminhos = array_values(array_map('strval', $body['caminhos'] ?? []));
+    $estados = array_values(array_map('strval', $body['estados'] ?? []));
+    $baixar = filter_var($body['baixar'] ?? false, FILTER_VALIDATE_BOOLEAN);
+    foreach ($caminhos as $rel) {
+        $testar = $baixar ? $rel : rtrim($rel, '/');
+        if (!instalacao_recuperacao_caminho_valido($testar)) api_response_error('caminho inválido', 400);
+    }
+    $raiz = $_GESTOR['ROOT_PATH'];
+    $itens = instalacao_recuperacao_inventario($raiz, $camadas, $caminhos, $estados);
+    if (!$baixar) {
+        api_response_success(['total' => count($itens), 'arquivos' => $itens]);
+    }
+    if (!$caminhos) api_response_error('Informe caminhos explícitos para baixar.', 400);
+    $selecionados = array_fill_keys($caminhos, true);
+    $itens = array_values(array_filter($itens, static function ($item) use ($selecionados) {
+        return isset($selecionados[$item['caminho']]) && $item['hash_disco'] !== null;
+    }));
+    if (count($itens) !== count($caminhos)) api_response_error('Um ou mais caminhos não são arquivos divergentes disponíveis.', 409);
+    if (!class_exists('ZipArchive')) api_response_error('Extensão ZIP indisponível.', 500);
+    $zipPath = tempnam(sys_get_temp_dir(), 'c2f-files-');
+    if ($zipPath === false) api_response_error('Falha ao preparar ZIP.', 500);
+    $zip = new ZipArchive();
+    if ($zip->open($zipPath, ZipArchive::OVERWRITE) !== true) { @unlink($zipPath); api_response_error('Falha ao criar ZIP.', 500); }
+    foreach ($itens as $item) {
+        $rel = $item['caminho'];
+        $arquivo = instalacao_recuperacao_arquivo_seguro($raiz, $rel, $item['hash_disco']);
+        if (!$arquivo || !$zip->addFile($arquivo, $rel)) {
+            $zip->close(); @unlink($zipPath); api_response_error('Arquivo alterado ou inseguro: ' . $rel, 409);
+        }
+    }
+    $zip->close();
+    while (ob_get_level() > 0) ob_end_clean();
+    http_response_code(200);
+    header('Content-Type: application/zip');
+    header('Content-Disposition: attachment; filename="project-files.zip"');
+    header('Content-Length: ' . filesize($zipPath));
+    readfile($zipPath);
+    @unlink($zipPath);
+    exit;
 }
 
 /**

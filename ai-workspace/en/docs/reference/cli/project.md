@@ -7,6 +7,7 @@ sources:
   - cli/src/Console/Application.php
   - cli/src/Commands/ProjectDeployCommand.php
   - cli/src/Commands/ProjectRecoverCommand.php
+  - cli/src/Commands/ProjectRecoverFilesCommand.php
   - cli/src/Commands/ProjectSyncCoreCommand.php
   - cli/src/Commands/ProjectSyncDbCommand.php
   - cli/src/Commands/ProjectSyncFilesCommand.php
@@ -14,7 +15,7 @@ sources:
   - cli/src/Commands/ProjectSyncResourcesCommand.php
   - cli/src/Commands/ProjectUpdateAllCommand.php
   - cli/src/Commands/ProjectUpdateSystemCommand.php
-verified_at: c8db1447
+verified_at: 152dfd72
 ---
 
 # CLI: Commands project
@@ -40,6 +41,14 @@ Usage: c2f project:recover [projectID] [--contents]
 
 Downloads and recovers remote project data into the local environment.
 ```
+
+## `project:recover-files`
+
+```text
+c2f project:recover-files <projectID> [--simular|--aplicar] [--camada=projeto|core|plugin:<id>] [--caminho=PATH --acao=sobrescrever|manter|mesclar --arquivo=PATH] [--json]
+```
+
+By default, simulates and downloads differences into `temp/recover-files/<project>/<run>/servidor/`, with `relatorio.json`. `--aplicar` copies project-layer files when the local file still matches the manifest hash. If the local file also changed, it reports the three valid actions; decide one file by repeating with `--aplicar --caminho=<path> --acao=<action>`. `mesclar` requires `--arquivo` with the merged result. Core and plugin files are downloaded for inspection without writing to the local repository. `--json` emits one structured line for tools.
 
 ## `project:sync-core`
 

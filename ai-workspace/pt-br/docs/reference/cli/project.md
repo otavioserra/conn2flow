@@ -7,6 +7,7 @@ sources:
   - cli/src/Console/Application.php
   - cli/src/Commands/ProjectDeployCommand.php
   - cli/src/Commands/ProjectRecoverCommand.php
+  - cli/src/Commands/ProjectRecoverFilesCommand.php
   - cli/src/Commands/ProjectSyncCoreCommand.php
   - cli/src/Commands/ProjectSyncDbCommand.php
   - cli/src/Commands/ProjectSyncFilesCommand.php
@@ -14,7 +15,7 @@ sources:
   - cli/src/Commands/ProjectSyncResourcesCommand.php
   - cli/src/Commands/ProjectUpdateAllCommand.php
   - cli/src/Commands/ProjectUpdateSystemCommand.php
-verified_at: c8db1447
+verified_at: 152dfd72
 ---
 
 # CLI: Comandos project
@@ -40,6 +41,14 @@ Usage: c2f project:recover [projectID] [--contents]
 
 Downloads and recovers remote project data into the local environment.
 ```
+
+## `project:recover-files`
+
+```text
+c2f project:recover-files <projectID> [--simular|--aplicar] [--camada=projeto|core|plugin:<id>] [--caminho=PATH --acao=sobrescrever|manter|mesclar --arquivo=PATH] [--json]
+```
+
+Por padrão, simula e baixa as divergências para `temp/recover-files/<projeto>/<execução>/servidor/`, com `relatorio.json`. `--aplicar` copia arquivos da camada `projeto` quando o local ainda tem o hash do manifesto. Se o local também mudou, informa as três ações válidas; para decidir um arquivo, repita com `--aplicar --caminho=<caminho> --acao=<ação>`. `mesclar` exige `--arquivo` com o resultado da mescla. `core` e plugins são baixados para análise, sem escrita no repositório local. `--json` emite uma linha estruturada para ferramentas.
 
 ## `project:sync-core`
 

@@ -9,7 +9,7 @@ sources:
   - gestor/controladores/atualizacoes/atualizacoes-migracoes.php
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php
-verified_at: ca4337fc
+verified_at: 152dfd72
 ---
 
 # System updates
@@ -31,6 +31,8 @@ After the database step, `db/` stays in place, in both CLI and web (req-197): th
 - **removes** what the core stopped delivering when it is intact; when it was edited, it becomes a `retirado-editado` clash.
 
 The first delivery, without a manifest, behaves as before and records the baseline. Clashes are stored in `installation/choques/` and, after the database stage, in the `atualizacoes_choques` table (the same clash still pending does not become another row on every update); the "Delivery clashes" section of `admin-atualizacoes` lists them with the diff, and the detail page holds the per-file decision: overwrite, keep or merge (req-199; also through the API and `c2f update:conflicts` / `update:resolve`). "Keep" becomes a rule for later deliveries of the same file, and a layer delivering the same content as before creates no clash. `installation/` is a protected folder.
+
+**File recovery (req-200).** `/_api/project/files` compares disk contents with the manifests and downloads differences. `c2f project:recover-files` uses the same three-action clash engine when a project file also changed in the local repository. The downloaded copy is the new version and decisions are recorded in `temp/recover-files/.../relatorio.json`. Core and plugin files are available for inspection without being applied to the local project.
 
 **Snapshot, check and rollback (req-198).** Before applying, the update keeps in `backups/atualizacoes/snapshots/exec-<id>/`:
 - only the files that will be overwritten or removed, the list of new ones and the manifests;

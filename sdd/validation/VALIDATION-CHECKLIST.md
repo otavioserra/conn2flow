@@ -1,5 +1,14 @@
 ﻿# Validation Checklist
 
+## BATCH-208 — Recuperação de arquivos do servidor (req-200)
+
+- [x] Inventário unitário: projeto editado, core ausente, precedência, arquivo fora do manifesto, filtros e pastas privadas.
+- [x] ZIP: teste de extração recusa `.env`, `autenticacoes/`, `logs/`, `backups/`, `temp/`, `..` e caminhos absolutos; confere hash do arquivo aceito.
+- [x] Motor comum: `manter`, `mesclar`, `sobrescrever` na descida sem regra de deploy local.
+- [x] PHPUnit focado da req-198/199 e testes novos: 54 testes, 264 asserções (dois avisos de depreciação).
+- [x] `docs:audit` sem avisos nos arquivos tocados; `git diff --check` limpo.
+- [ ] Homologação HTTP e CLI no tenant isolado depois que a rota nova for integrada ao ambiente. Nenhum deploy no tenant compartilhado durante este lote.
+
 ## BATCH-197 — Ativação de parcelamento no PaymentIntent Stripe (req-193)
 
 - [x] Payload legado sem `payment_method_options` quando a opção não é informada.

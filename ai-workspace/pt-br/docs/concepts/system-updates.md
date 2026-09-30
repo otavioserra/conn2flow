@@ -9,7 +9,7 @@ sources:
   - gestor/controladores/atualizacoes/atualizacoes-migracoes.php
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php
-verified_at: ca4337fc
+verified_at: 152dfd72
 ---
 
 # Atualizações do sistema
@@ -31,6 +31,8 @@ Depois do banco, `db/` fica no lugar, no CLI e no web (req-197): a pasta tem as 
 - **retira** o que o core deixou de entregar, se estiver intacto; editado, vira choque `retirado-editado`.
 
 A primeira entrega, sem manifesto, se comporta como antes e grava a linha de base. Os choques ficam em `installation/choques/` e, depois da etapa de banco, na tabela `atualizacoes_choques` (o mesmo choque ainda pendente não vira outra linha a cada atualização); a aba "Choques das entregas" do `admin-atualizacoes` mostra a lista e o diff, e no detalhe fica a decisão por arquivo: sobrescrever, manter ou mesclar (req-199; também pela API e por `c2f update:conflicts` / `update:resolve`). "Manter" vira regra para as próximas entregas do mesmo arquivo, e a camada que entrega o mesmo conteúdo de antes não gera choque. `installation/` é pasta protegida.
+
+**Descida de arquivos (req-200).** `/_api/project/files` compara disco e manifestos e permite baixar divergências. `c2f project:recover-files` usa o mesmo motor de três decisões quando o arquivo do projeto também mudou no repositório local; uma cópia baixada serve como versão nova e as decisões são registradas em `temp/recover-files/.../relatorio.json`. Arquivos do core e plugins ficam disponíveis para análise, sem serem aplicados ao projeto local.
 
 **Snapshot, verificação e rollback (req-198).** Antes de aplicar, a atualização guarda em `backups/atualizacoes/snapshots/exec-<id>/`:
 - só os arquivos que vão ser sobrescritos ou removidos, a lista dos novos e os manifestos;
