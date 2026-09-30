@@ -394,3 +394,141 @@ function instalacao_snapshot_podar(string $raiz, int $manter = 5): int {
     }
     return $removidas;
 }
+
+// ============================================================================ banco e verificação (req-198 / BATCH-204)
+// Compartilhado pela atualização do sistema (CLI) e pelo deploy de projeto por API.
+
+/**
+ * Pasta do snapshot de uma execução. Id só com dígitos vira `exec-<id>` (atualização do sistema); os
+ * outros (ex.: `api-20260930-120000-ab12`) valem como estão. Caracteres fora de `[A-Za-z0-9_-]` saem.
+ */
+function instalacao_snapshot_dir(string $base, string $id): ?string {
+    $id = preg_replace('/[^A-Za-z0-9_-]/', '', $id);
+    if ($id === '') return null;
+    if (ctype_digit($id)) $id = 'exec-' . $id;
+    return instalacao_caminho_base($base) . 'backups' . DIRECTORY_SEPARATOR . 'atualizacoes' . DIRECTORY_SEPARATOR . 'snapshots' . DIRECTORY_SEPARATOR . $id . DIRECTORY_SEPARATOR;
+}
+
+/**
+ * Comando de shell com `pipefail` (a falha do `mysqldump` não some atrás do `gzip`). O `/bin/sh` do Debian
+ * e do Ubuntu é o dash, que não tem `pipefail` e sai com código 2 no `set -o pipefail`; por isso usa o bash
+ * quando existe e, sem ele, o `sh` sem `pipefail` (o tamanho do arquivo ainda é conferido).
+ */
+function instalacao_shell_pipefail(string $cmd): array {
+    foreach (['/bin/bash', '/usr/bin/bash'] as $bash) if (is_executable($bash)) return [$bash, '-o', 'pipefail', '-c', $cmd];
+    return ['/bin/sh', '-c', $cmd];
+}
+
+/** Roda um pipe de shell com a senha do banco em `MYSQL_PWD`. @return array ['codigo' => int, 'erro' => string] */
+function instalacao_banco_processo(string $cmd, array $banco): array {
+    if (!function_exists('proc_open')) return ['codigo' => -1, 'erro' => 'proc_open indisponível'];
+    $env = array_merge($_ENV ?: [], ['MYSQL_PWD' => (string)($banco['senha'] ?? ''), 'PATH' => getenv('PATH') ?: '/usr/bin:/bin']);
+    $proc = @proc_open(instalacao_shell_pipefail($cmd), [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, $env);
+    if (!is_resource($proc)) return ['codigo' => -1, 'erro' => 'não foi possível iniciar o processo'];
+    stream_get_contents($pipes[1]);
+    $erro = trim((string)stream_get_contents($pipes[2]));
+    fclose($pipes[1]); fclose($pipes[2]);
+    return ['codigo' => proc_close($proc), 'erro' => $erro];
+}
+
+/**
+ * Dump do banco (`mysqldump --single-transaction`, gzip) em `<dir>/banco.sql.gz`, anotado no `snapshot.json`.
+ * `$banco`: host, usuario, senha, nome (o `$_BANCO` do Gestor).
+ *
+ * @return array ['ok' => bool, 'arquivo' => string|null, 'mb' => float, 'erro' => string]
+ */
+function instalacao_banco_dump(string $dir, array $banco): array {
+    if (empty($banco['nome'])) return ['ok' => false, 'arquivo' => null, 'mb' => 0.0, 'erro' => 'configuração do banco ausente'];
+    $arquivo = rtrim($dir, '/\\') . DIRECTORY_SEPARATOR . 'banco.sql.gz';
+    $cmd = 'mysqldump --single-transaction --quick --routines --no-tablespaces -h ' . escapeshellarg((string)($banco['host'] ?? 'localhost'))
+        . ' -u ' . escapeshellarg((string)($banco['usuario'] ?? '')) . ' ' . escapeshellarg((string)$banco['nome']) . ' | gzip -c > ' . escapeshellarg($arquivo);
+    $p = instalacao_banco_processo($cmd, $banco);
+    if ($p['codigo'] !== 0 || !is_file($arquivo) || filesize($arquivo) < 20) {
+        @unlink($arquivo);
+        return ['ok' => false, 'arquivo' => null, 'mb' => 0.0, 'erro' => 'código ' . $p['codigo'] . ($p['erro'] !== '' ? ': ' . substr($p['erro'], 0, 300) : '')];
+    }
+    instalacao_snapshot_anotar($dir, ['dump_banco' => 'banco.sql.gz']);
+    return ['ok' => true, 'arquivo' => $arquivo, 'mb' => round(filesize($arquivo) / 1048576, 2), 'erro' => ''];
+}
+
+/** Restaura `banco.sql.gz` no banco. @return array ['ok' => bool, 'erro' => string] */
+function instalacao_banco_restaurar(string $dump, array $banco): array {
+    if (!is_file($dump)) return ['ok' => false, 'erro' => 'dump do banco ausente no snapshot'];
+    if (empty($banco['nome'])) return ['ok' => false, 'erro' => 'configuração do banco ausente'];
+    $cmd = 'gunzip -c ' . escapeshellarg($dump) . ' | mysql -h ' . escapeshellarg((string)($banco['host'] ?? 'localhost'))
+        . ' -u ' . escapeshellarg((string)($banco['usuario'] ?? '')) . ' ' . escapeshellarg((string)$banco['nome']);
+    $p = instalacao_banco_processo($cmd, $banco);
+    return ['ok' => $p['codigo'] === 0, 'erro' => $p['codigo'] === 0 ? '' : 'código ' . $p['codigo'] . ($p['erro'] !== '' ? ': ' . substr($p['erro'], 0, 300) : '')];
+}
+
+/** Tamanho atual do log de erros do PHP (para achar fatais novos depois). */
+function instalacao_saude_log_offset(string $base): int {
+    $f = instalacao_caminho_base($base) . 'logs' . DIRECTORY_SEPARATOR . 'php-error.log';
+    return is_file($f) ? (int)filesize($f) : 0;
+}
+
+/**
+ * Verificação depois de uma entrega: sem erro fatal novo no log do PHP e a raiz do site respondendo
+ * abaixo de 500.
+ *
+ * A requisição HTTP vai para `https://<domínio>/<URL_RAIZ>` (ou `$opcoes['url']`).
+ * - Com `$opcoes['ip']`, o nome é resolvido só para esse IP.
+ * - Sem ele, tenta o DNS normal e, se não conectar, `127.0.0.1` (servidor sem DNS para o próprio nome).
+ * Sem conexão em nenhuma tentativa, o HTTP fica inconclusivo: vira aviso, não falha. Um servidor web
+ * pode escutar só no IP público (HestiaCP), e reprovar por isso voltaria toda entrega.
+ * Antes do HTTP espera `$opcoes['espera']` segundos (padrão 3): o OPcache do PHP-FPM revalida os arquivos
+ * a cada `opcache.revalidate_freq` (2 s por padrão) e, antes disso, serviria o código antigo.
+ * Sem cURL, só o log vale. `$opcoes['http']` substitui a requisição nos testes: fn(url, ip|null): int.
+ *
+ * @return array ['ok' => bool, 'motivos' => string[], 'http' => int|null, 'avisos' => string[]]
+ */
+function instalacao_saude_verificar(string $base, int $offsetLog, string $dominio, array $opcoes = []): array {
+    $motivos = []; $avisos = []; $http = null;
+    $f = instalacao_caminho_base($base) . 'logs' . DIRECTORY_SEPARATOR . 'php-error.log';
+    if (is_file($f) && filesize($f) > $offsetLog) {
+        $h = @fopen($f, 'r');
+        if ($h) {
+            fseek($h, $offsetLog); $novo = (string)stream_get_contents($h, 1048576); fclose($h);
+            if (preg_match_all('/PHP Fatal error:[^\n]*/', $novo, $m)) $motivos[] = 'Erro fatal novo no log: ' . substr($m[0][0], 0, 300);
+        }
+    }
+    $pedir = $opcoes['http'] ?? (function_exists('curl_init') ? 'instalacao_saude_http' : null);
+    $url = (string)($opcoes['url'] ?? '');
+    if ($url === '' && $dominio !== '' && $dominio !== 'localhost') {
+        $raiz = '/' . trim((string)($_ENV['URL_RAIZ'] ?? '/'), '/');
+        $url = 'https://' . $dominio . ($raiz === '/' ? '/' : $raiz . '/');
+    }
+    if ($url !== '' && $pedir) {
+        $espera = (int)($opcoes['espera'] ?? (isset($opcoes['http']) ? 0 : 3));
+        if ($espera > 0) sleep($espera);
+        $ips = !empty($opcoes['ip']) ? [(string)$opcoes['ip']] : [null, '127.0.0.1'];
+        foreach ($ips as $ip) {
+            $http = (int)$pedir($url, $ip);
+            if ($http !== 0) break;
+        }
+        if ($http === 0) {
+            $avisos[] = 'HTTP não verificado: sem conexão com ' . $url . ' (' . implode(', ', array_map(function ($i) { return $i ?? 'DNS'; }, $ips)) . '); use --health-url/--health-ip';
+            $http = null;
+        } elseif ($http >= 500) {
+            $motivos[] = 'HTTP ' . $http . ' em ' . $url;
+        }
+    }
+    return ['ok' => !$motivos, 'motivos' => $motivos, 'http' => $http, 'avisos' => $avisos];
+}
+
+/** Código HTTP de `$url` (0 sem conexão). Com `$ip`, o host da URL é resolvido para ele. */
+function instalacao_saude_http(string $url, ?string $ip): int {
+    $ch = curl_init($url);
+    $o = [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 25, CURLOPT_CONNECTTIMEOUT => 8, CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSL_VERIFYHOST => 0, CURLOPT_FOLLOWLOCATION => false];
+    if ($ip !== null) {
+        $u = parse_url($url);
+        $porta = (int)($u['port'] ?? ((($u['scheme'] ?? 'https') === 'http') ? 80 : 443));
+        $o[CURLOPT_RESOLVE] = [($u['host'] ?? '') . ':' . $porta . ':' . $ip];
+    }
+    curl_setopt_array($ch, $o);
+    curl_exec($ch);
+    $codigo = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    curl_close($ch);
+    return $codigo;
+}

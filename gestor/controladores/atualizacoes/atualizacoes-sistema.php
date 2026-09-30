@@ -538,10 +538,15 @@ function backupTotal(string $basePath, string $backupDir, array $excludes): arra
  * do staging.
  */
 function atualizacoes_manifesto_carregar(?string $stagingRoot = null): bool {
-    global $BASE_PATH;
+    global $BASE_PATH, $CONTEXT;
     if(function_exists('instalacao_planejar')) return true;
     // A do pacote novo primeiro: é a versão que casa com este atualizador (a instalada pode ser anterior
-    // e não ter as funções que ele chama).
+    // e não ter as funções que ele chama). Sem staging informado, usa o do contexto ou o `--staging-root`
+    // que o bootstrap passa ao filho: o primeiro a carregar fixa a versão para o processo inteiro.
+    if(!$stagingRoot) $stagingRoot = $CONTEXT['staging_root'] ?? null;
+    if(!$stagingRoot) foreach((array)($GLOBALS['argv'] ?? []) as $a){
+        if(strpos((string)$a, '--staging-root=') === 0) $stagingRoot = trim(substr((string)$a, 15), "\"' ");
+    }
     $candidatos = [$BASE_PATH.'bibliotecas'.DIRECTORY_SEPARATOR.'instalacao-manifesto.php'];
     if($stagingRoot) array_unshift($candidatos, rtrim($stagingRoot, '/\\').DIRECTORY_SEPARATOR.'bibliotecas'.DIRECTORY_SEPARATOR.'instalacao-manifesto.php');
     foreach($candidatos as $f){ if(is_file($f)){ require_once $f; return true; } }
@@ -594,131 +599,51 @@ function gravarChoquesPendentes(string $basePath): void {
     if($n) logAtualizacao('Choques gravados em atualizacoes_choques: '.($n - $repetidos).($repetidos ? ' (mais '.$repetidos.' já pendente(s))' : ''), 'WARNING');
 }
 /**
- * Comando de shell com `pipefail` (a falha do `mysqldump` não some atrás do `gzip`). O `/bin/sh` do Debian
- * e do Ubuntu é o dash, que não tem `pipefail` e sai com código 2 no `set -o pipefail`; por isso usa o bash
- * quando existe e, sem ele, o `sh` sem `pipefail` (o tamanho do arquivo ainda é conferido).
- */
-function atualizacoes_shell_pipefail(string $cmd): array {
-    foreach(['/bin/bash', '/usr/bin/bash'] as $bash) if(is_executable($bash)) return [$bash, '-o', 'pipefail', '-c', $cmd];
-    return ['/bin/sh', '-c', $cmd];
-}
-/**
- * req-198 / BATCH-203: dump do banco antes da etapa de banco, no snapshot da execução (gzip). A senha vai
- * por `MYSQL_PWD` (não aparece na lista de processos). Sem `mysqldump`, segue com aviso.
+ * req-198 / BATCH-203: dump do banco antes da etapa de banco, no snapshot da execução. O trabalho é da
+ * biblioteca (`instalacao_banco_dump`, compartilhada com o deploy por API).
  */
 function backupBancoSnapshot(): ?string {
     global $CONTEXT, $_BANCO;
     $dir = $CONTEXT['snapshot_dir'] ?? null;
-    if(!$dir || empty($_BANCO['nome']) || !function_exists('proc_open')) return null;
-    $arquivo = rtrim($dir, '/\\').DIRECTORY_SEPARATOR.'banco.sql.gz';
-    $cmd = 'mysqldump --single-transaction --quick --routines --no-tablespaces -h '.escapeshellarg((string)$_BANCO['host']).' -u '.escapeshellarg((string)$_BANCO['usuario']).' '.escapeshellarg((string)$_BANCO['nome']).' | gzip -c > '.escapeshellarg($arquivo);
-    $env = array_merge($_ENV ?: [], ['MYSQL_PWD' => (string)($_BANCO['senha'] ?? ''), 'PATH' => getenv('PATH') ?: '/usr/bin:/bin']);
-    $proc = @proc_open(atualizacoes_shell_pipefail($cmd), [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, $env);
-    if(!is_resource($proc)){ logAtualizacao('Dump do banco: não foi possível iniciar o mysqldump','WARNING'); return null; }
-    stream_get_contents($pipes[1]); $erro = trim((string)stream_get_contents($pipes[2])); fclose($pipes[1]); fclose($pipes[2]);
-    $codigo = proc_close($proc);
-    if($codigo !== 0 || !is_file($arquivo) || filesize($arquivo) < 20){
-        logAtualizacao('Dump do banco falhou (código '.$codigo.'): '.substr($erro, 0, 300),'WARNING');
-        @unlink($arquivo);
-        return null;
-    }
-    if(function_exists('instalacao_snapshot_anotar')) instalacao_snapshot_anotar($dir, ['dump_banco' => 'banco.sql.gz']);
-    logAtualizacao('Dump do banco no snapshot: '.round(filesize($arquivo) / 1048576, 2).' MB');
-    return $arquivo;
+    if(!$dir || empty($_BANCO['nome']) || !atualizacoes_manifesto_carregar()) return null;
+    $d = instalacao_banco_dump($dir, (array)$_BANCO);
+    if(!$d['ok']){ logAtualizacao('Dump do banco falhou ('.$d['erro'].')','WARNING'); return null; }
+    logAtualizacao('Dump do banco no snapshot: '.$d['mb'].' MB');
+    return $d['arquivo'];
 }
 /** Tamanho atual do log de erros do PHP (para achar fatais novos depois). */
 function saudeLogOffset(string $basePath): int {
-    $f = $basePath.'logs'.DIRECTORY_SEPARATOR.'php-error.log';
+    // Sem a biblioteca: roda no começo, antes de o staging estar no contexto.
+    $f = rtrim($basePath, '/\\').DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.'php-error.log';
     return is_file($f) ? (int)filesize($f) : 0;
 }
-/**
- * req-198 / BATCH-203: verificação depois da atualização — sem erro fatal novo no log do PHP e a raiz
- * do site respondendo abaixo de 500.
- *
- * A requisição HTTP vai para `https://<domínio>/<URL_RAIZ>` (ou `$opcoes['url']`, de `--health-url`).
- * - Com `$opcoes['ip']` (`--health-ip`), o nome é resolvido só para esse IP.
- * - Sem ele, tenta o DNS normal e, se não conectar, `127.0.0.1` (servidor sem DNS para o próprio nome).
- * Sem conexão em nenhuma tentativa, o HTTP fica inconclusivo: vira aviso, não falha. Um servidor web
- * pode escutar só no IP público (HestiaCP), e reprovar por isso voltaria toda atualização.
- * Antes do HTTP espera `$opcoes['espera']` segundos (padrão 3): o OPcache do PHP-FPM revalida os arquivos
- * a cada `opcache.revalidate_freq` (2 s por padrão) e, antes disso, serviria o código antigo.
- * Sem cURL, só o log vale. `$opcoes['http']` substitui a requisição nos testes: fn(url, ip|null): int.
- *
- * @return array ['ok' => bool, 'motivos' => string[], 'http' => int|null, 'avisos' => string[]]
- */
+/** req-198 / BATCH-203: verificação depois da atualização (ver `instalacao_saude_verificar`). */
 function saudeVerificar(string $basePath, int $offsetLog, string $dominio, array $opcoes = []): array {
-    $motivos = []; $avisos = []; $http = null;
-    $f = $basePath.'logs'.DIRECTORY_SEPARATOR.'php-error.log';
-    if(is_file($f) && filesize($f) > $offsetLog){
-        $h = @fopen($f, 'r');
-        if($h){ fseek($h, $offsetLog); $novo = (string)stream_get_contents($h, 1048576); fclose($h);
-            if(preg_match_all('/PHP Fatal error:[^\n]*/', $novo, $m)) $motivos[] = 'Erro fatal novo no log: '.substr($m[0][0], 0, 300);
-        }
-    }
-    $pedir = $opcoes['http'] ?? (function_exists('curl_init') ? 'saudeHttp' : null);
-    $url = (string)($opcoes['url'] ?? '');
-    if($url === '' && $dominio !== '' && $dominio !== 'localhost'){
-        $raiz = '/'.trim((string)($_ENV['URL_RAIZ'] ?? '/'), '/');
-        $url = 'https://'.$dominio.($raiz === '/' ? '/' : $raiz.'/');
-    }
-    if($url !== '' && $pedir){
-        $espera = (int)($opcoes['espera'] ?? (isset($opcoes['http']) ? 0 : 3));
-        if($espera > 0) sleep($espera);
-        $ips = !empty($opcoes['ip']) ? [(string)$opcoes['ip']] : [null, '127.0.0.1'];
-        foreach($ips as $ip){
-            $http = (int)$pedir($url, $ip);
-            if($http !== 0) break;
-        }
-        if($http === 0){ $avisos[] = 'HTTP não verificado: sem conexão com '.$url.' ('.implode(', ', array_map(fn($i) => $i ?? 'DNS', $ips)).'); use --health-url/--health-ip'; $http = null; }
-        elseif($http >= 500) $motivos[] = 'HTTP '.$http.' em '.$url;
-    }
-    return ['ok' => !$motivos, 'motivos' => $motivos, 'http' => $http, 'avisos' => $avisos];
-}
-/** Código HTTP de `$url` (0 sem conexão). Com `$ip`, o host da URL é resolvido para ele. */
-function saudeHttp(string $url, ?string $ip): int {
-    $ch = curl_init($url);
-    $o = [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 25, CURLOPT_CONNECTTIMEOUT => 8, CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_SSL_VERIFYHOST => 0, CURLOPT_FOLLOWLOCATION => false];
-    if($ip !== null){
-        $u = parse_url($url);
-        $porta = (int)($u['port'] ?? ((($u['scheme'] ?? 'https') === 'http') ? 80 : 443));
-        $o[CURLOPT_RESOLVE] = [($u['host'] ?? '').':'.$porta.':'.$ip];
-    }
-    curl_setopt_array($ch, $o);
-    curl_exec($ch);
-    $codigo = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-    curl_close($ch);
-    return $codigo;
+    if(!atualizacoes_manifesto_carregar()) return ['ok' => true, 'motivos' => [], 'http' => null, 'avisos' => ['Verificação indisponível: biblioteca instalacao-manifesto ausente']];
+    return instalacao_saude_verificar($basePath, $offsetLog, $dominio, $opcoes);
 }
 /**
  * req-198 / BATCH-203: rollback de uma execução pelo snapshot. Arquivos sempre; banco só com
  * `$comBanco` (decisão do operador: pode haver escrita de usuários depois da atualização).
+ * Aceita `exec-<id>`, só o número, ou o id de um snapshot do deploy por API (`api-…`).
  */
 function rollbackExecucao(string $basePath, string $id, bool $comBanco): int {
     global $_BANCO;
-    $id = preg_replace('/[^A-Za-z0-9_-]/', '', $id);
-    if($id !== '' && strpos($id, 'exec-') !== 0) $id = 'exec-'.$id;
-    $dir = $basePath.'backups'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'snapshots'.DIRECTORY_SEPARATOR.$id.DIRECTORY_SEPARATOR;
-    if(!atualizacoes_manifesto_carregar() || !is_file($dir.'snapshot.json')){ echo "ERRO ROLLBACK: snapshot não encontrado: {$dir}\n"; return EXIT_GENERIC; }
+    $dir = atualizacoes_manifesto_carregar() ? instalacao_snapshot_dir($basePath, $id) : null;
+    if(!$dir || !is_file($dir.'snapshot.json')){ echo "ERRO ROLLBACK: snapshot não encontrado: ".($dir ?? $id)."\n"; return EXIT_GENERIC; }
+    $id = basename(rtrim($dir, '/\\'));
     if($comBanco && empty($_BANCO['nome'])){ echo "ERRO ROLLBACK: --com-banco precisa de --domain=<domínio> (configuração do banco)\n"; return EXIT_GENERIC; }
     $r = instalacao_snapshot_restaurar($basePath, $dir);
     if(isset($r['erro'])){ echo "ERRO ROLLBACK: {$r['erro']}\n"; return EXIT_GENERIC; }
     $msg = sprintf('Rollback %s: %d arquivo(s) restaurado(s), %d novo(s) removido(s)%s', $id, $r['restaurados'], $r['removidos_novos'], $r['falhas'] ? ', falhas: '.implode(', ', array_slice($r['falhas'], 0, 10)) : '');
     logAtualizacao($msg, $r['falhas'] ? 'WARNING' : 'INFO'); echo $msg."\n";
     if($comBanco){
-        $dump = $dir.'banco.sql.gz';
-        if(!is_file($dump)){ echo "ERRO ROLLBACK: dump do banco ausente no snapshot\n"; return EXIT_ROLLBACK; }
-        $cmd = 'gunzip -c '.escapeshellarg($dump).' | mysql -h '.escapeshellarg((string)$_BANCO['host']).' -u '.escapeshellarg((string)$_BANCO['usuario']).' '.escapeshellarg((string)$_BANCO['nome']);
-        $env = array_merge($_ENV ?: [], ['MYSQL_PWD' => (string)($_BANCO['senha'] ?? ''), 'PATH' => getenv('PATH') ?: '/usr/bin:/bin']);
-        $proc = @proc_open(atualizacoes_shell_pipefail($cmd), [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, $env);
-        if(!is_resource($proc)){ echo "ERRO ROLLBACK: não foi possível restaurar o banco\n"; return EXIT_ROLLBACK; }
-        stream_get_contents($pipes[1]); $erro = trim((string)stream_get_contents($pipes[2])); fclose($pipes[1]); fclose($pipes[2]);
-        $codigo = proc_close($proc);
-        $txt = $codigo === 0 ? 'Banco restaurado do dump do snapshot.' : 'Falha ao restaurar o banco (código '.$codigo.'): '.substr($erro, 0, 300);
-        logAtualizacao($txt, $codigo === 0 ? 'INFO' : 'ERROR'); echo $txt."\n";
-        if($codigo !== 0) return EXIT_ROLLBACK;
+        $b = instalacao_banco_restaurar($dir.'banco.sql.gz', (array)$_BANCO);
+        $txt = $b['ok'] ? 'Banco restaurado do dump do snapshot.' : 'Falha ao restaurar o banco ('.$b['erro'].')';
+        logAtualizacao($txt, $b['ok'] ? 'INFO' : 'ERROR'); echo $txt."\n";
+        if(!$b['ok']) return EXIT_ROLLBACK;
         // O dump foi feito com a linha desta execução aberta (`running`): depois de restaurar, ela fica marcada.
-        if(ctype_digit(substr($id, 5))) db_exec_update((int)substr($id, 5), ['status' => 'rolled-back', 'finished_at' => date('Y-m-d H:i:s'),
+        if(strpos($id, 'exec-') === 0 && ctype_digit(substr($id, 5))) db_exec_update((int)substr($id, 5), ['status' => 'rolled-back', 'finished_at' => date('Y-m-d H:i:s'),
             'error_message' => 'Revertida por --rollback='.$id.' --com-banco em '.date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
     } else {
         echo "Banco não foi tocado. Para voltar também o banco: --rollback={$id} --com-banco\n";

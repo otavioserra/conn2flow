@@ -189,6 +189,17 @@ final class InstalacaoManifestoTest extends TestCase
         $this->assertSame("resolucao IS NULL AND caminho='a\\'b.php' AND camada='core' AND motivo='editado' AND hash_disco='h1' AND hash_novo IS NULL", $w);
     }
 
+    public function testPastaDoSnapshotPorId(): void
+    {
+        $s = DIRECTORY_SEPARATOR;
+        $raiz = '/inst' . $s . 'backups' . $s . 'atualizacoes' . $s . 'snapshots' . $s;
+        $this->assertSame($raiz . 'exec-12' . $s, instalacao_snapshot_dir('/inst', '12'));
+        $this->assertSame($raiz . 'exec-12' . $s, instalacao_snapshot_dir('/inst', 'exec-12'));
+        $this->assertSame($raiz . 'api-20260930-1200-ab' . $s, instalacao_snapshot_dir('/inst/', 'api-20260930-1200-ab'));
+        $this->assertSame($raiz . 'x' . $s, instalacao_snapshot_dir('/inst', '../x'), 'Sem subir de pasta.');
+        $this->assertNull(instalacao_snapshot_dir('/inst', '../'));
+    }
+
     public function testPodaMantemOsMaisRecentes(): void
     {
         $raiz = $this->raiz . 'snaps' . DIRECTORY_SEPARATOR;

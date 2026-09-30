@@ -41,7 +41,7 @@ Afterwards it checks for a new fatal error in `logs/php-error.log` and that the 
 - `--health-url=<url>` and `--health-ip=<ip>` (or `ATUALIZACOES_SAUDE_URL` and `ATUALIZACOES_SAUDE_IP` in `.env`) point to another address, for example an nginx on an internal port;
 - when no attempt connects, the HTTP check becomes a warning and does not fail (the server may listen only on its public IP);
 - it waits 3 s before the request, because the PHP-FPM OPcache still serves the old code for a few seconds.
- When the check fails, files are restored automatically (exit code 6). The database is restored only by operator decision: `--rollback=exec-<id> --com-banco`. `--rollback=exec-<id>` alone restores only the files; `--no-health` and `--no-rollback` turn off the check or the automatic restore. The 5 most recent snapshots are kept.
+ When the check fails, files are restored automatically (exit code 6). The database is restored only by operator decision: `--rollback=exec-<id> --com-banco`. `--rollback=exec-<id>` alone restores only the files; `--no-health` and `--no-rollback` turn off the check or the automatic restore. The 5 most recent snapshots are kept. The API project deploy does the same (`api-…` snapshots), and rollback can also be triggered from the development machine with [`c2f update:rollback`](../reference/cli/update.md) or `POST /_api/project/rollback` (BATCH-204).
 
 > [!WARNING]
 > Running only the file stage can leave SQL resources at an older version. For page or layout changes, finish the database update and rebuild derived CSS too.

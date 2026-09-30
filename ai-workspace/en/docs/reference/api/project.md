@@ -30,6 +30,18 @@ Before copying, obsolete project migrations are removed from the server (req-194
 > [!WARNING]
 > The implementation extracts the ZIP before copying files. Treat this as a high privilege administrative operation and use the [deploy flow](../../guides/deploy-a-project.md). Security follow-up: req-181.
 
+**Snapshot, check and automatic restore (req-198 / BATCH-204).** As in the system update:
+- before applying, it keeps in `backups/atualizacoes/snapshots/api-<date>-<suffix>/` what will be overwritten or removed, the list of new files and the manifests (the 5 most recent are kept); before the database step, the `banco.sql.gz` dump;
+- at the end, it checks for a new fatal error in `logs/php-error.log` and that the site root (through the request's own host) answers below 500. `health_url` and `health_ip` in the POST (or `ATUALIZACOES_SAUDE_URL` / `ATUALIZACOES_SAUDE_IP` in `.env`) point to another address; without a connection it is only a warning;
+- when the check fails, files come back from the snapshot and the response is **HTTP 500** with `details.status = "rolled_back"`, `snapshot`, `saude`, `rollback` and `depois_do_rollback`. The database is not restored automatically;
+- `no_health` and `no_rollback` in the POST turn off the check or the automatic restore.
+
+The success response includes `snapshot` (the id for rollback), `health` and, inside `installation`, `banco_dump`.
+
+## `/_api/project/rollback`
+
+`POST` with JSON `{"snapshot":"api-…","com_banco":false}` (or the same fields in the POST). Restores files from the snapshot (overwritten or removed files come back; new ones are removed) and, with `com_banco`, restores the dump. It also accepts system update snapshots (`exec-<id>`). It uses the same deploy lock (409 when another deploy is running); unknown snapshot: 404. The response includes `snapshot`, `restaurados`, `removidos_novos`, `falhas` and `banco`. From the CLI: [`c2f update:rollback`](../cli/update.md).
+
 ## `/_api/project/recover`
 
 Accepts JSON `{"tables":["paginas"],"recover_contents":false}` or CSV POST field `tables`. Without a list it exports all tables in the Core schema and the project's transient schema manifest. Returns `application/zip` with `*Data.json` files; `recover_contents` also includes `contents/`. Table names are normalized to lowercase letters, digits and underscores. The ZIP is removed after streaming.

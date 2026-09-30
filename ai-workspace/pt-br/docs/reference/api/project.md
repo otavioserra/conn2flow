@@ -30,6 +30,18 @@ Antes da cópia, as migrações obsoletas do projeto saem do servidor (req-194):
 > [!WARNING]
 > A implementação extrai o ZIP antes de copiar os arquivos. Trate o endpoint como operação administrativa de alto privilêgio e use o fluxo [de deploy](../../guides/deploy-a-project.md). Acompanhamento de segurança: req-181.
 
+**Snapshot, verificação e volta automática (req-198 / BATCH-204).** Como na atualização do sistema:
+- antes de aplicar, guarda em `backups/atualizacoes/snapshots/api-<data>-<sufixo>/` o que vai ser sobrescrito ou removido, a lista dos novos e os manifestos (ficam os 5 mais recentes); antes do banco, o dump `banco.sql.gz`;
+- no fim, verifica se há erro fatal novo no `logs/php-error.log` e se a raiz do site (pelo host da própria requisição) responde abaixo de 500. `health_url` e `health_ip` no POST (ou `ATUALIZACOES_SAUDE_URL` / `ATUALIZACOES_SAUDE_IP` no `.env`) apontam outro endereço; sem conexão, fica como aviso;
+- se a verificação falhar, os arquivos voltam do snapshot e a resposta é **HTTP 500** com `details.status = "rolled_back"`, `snapshot`, `saude`, `rollback` e `depois_do_rollback`. O banco não volta sozinho;
+- `no_health` e `no_rollback` no POST desligam a verificação ou a volta automática.
+
+A resposta de sucesso traz `snapshot` (o id para o rollback), `health` e, em `installation`, `banco_dump`.
+
+## `/_api/project/rollback`
+
+`POST` com JSON `{"snapshot":"api-…","com_banco":false}` (ou os mesmos campos no POST). Volta os arquivos pelo snapshot (os que foram sobrescritos ou removidos voltam; os novos saem) e, com `com_banco`, restaura o dump. Aceita também os snapshots da atualização do sistema (`exec-<id>`). Usa a mesma trava de deploy (409 com outro deploy em execução); snapshot inexistente: 404. A resposta traz `snapshot`, `restaurados`, `removidos_novos`, `falhas` e `banco`. Pelo CLI: [`c2f update:rollback`](../cli/update.md).
+
 ## `/_api/project/recover`
 
 Aceita JSON `{"tables":["paginas"],"recover_contents":false}` ou campo POST `tables` em CSV. Sem lista, exporta todas as tabelas do schema do core e do manifesto transitório do projeto. Retorna `application/zip` com arquivos `*Data.json`; com `recover_contents`, acrescenta `contents/`. A lista de nomes é normalizada para letras minúsculas, dígitos e sublinhado. O ZIP é removido após o streaming.

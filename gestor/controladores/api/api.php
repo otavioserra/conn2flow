@@ -254,6 +254,10 @@ function api_handle_project() {
             api_project_recover();
             break;
 
+        case 'rollback':
+            api_project_rollback();
+            break;
+
         default:
             api_response_error('Sub-endpoint PROJECT não encontrado: ' . $sub_endpoint, 404);
     }
@@ -314,6 +318,10 @@ function api_project_update() {
         deploy_lock_release($trava_arquivo, $trava['token']);
     });
 
+    // req-198 / BATCH-204: posição do log de erros antes da entrega (a verificação procura fatais novos).
+    require_once $_GESTOR['bibliotecas-path'] . 'instalacao-manifesto.php';
+    $saude_offset = instalacao_saude_log_offset($_GESTOR['ROOT_PATH']);
+
     // Criar diretório temporário para processamento
     $temp_dir = $_GESTOR['logs-path'] . 'temp_projects/';
     if (!is_dir($temp_dir)) {
@@ -359,6 +367,11 @@ function api_project_update() {
         // req-198: arquivos pela camada `projeto` do manifesto (precedência sobre o core, originais do core
         // guardadas, o que o projeto deixou de entregar sai ou devolve a original do core).
         $instalacao = api_project_aplicar_arquivos($project_content_dir, $project_path, (string)$project_id);
+        $snapshot_dir = instalacao_snapshot_dir($project_path, $instalacao['snapshot']);
+
+        // req-198 / BATCH-204: dump do banco no snapshot, antes da etapa de banco.
+        $dump = instalacao_banco_dump($snapshot_dir, (array)($GLOBALS['_BANCO'] ?? []));
+        $instalacao['banco_dump'] = $dump['ok'] ? ['ok' => true, 'mb' => $dump['mb']] : ['ok' => false, 'erro' => $dump['erro']];
 
         // Parâmetro opcional full_log: quando ativo, retorna o log completo de debug do banco.
         $full_log = isset($_POST['full_log']) && filter_var($_POST['full_log'], FILTER_VALIDATE_BOOLEAN);
@@ -380,6 +393,25 @@ function api_project_update() {
         // Limpar arquivos temporários
         api_remove_directory($extract_dir);
 
+        // req-198 / BATCH-204: verificação depois da entrega; falhou, os arquivos voltam do snapshot.
+        $saude = null;
+        if (!api_post_bool('no_health')) {
+            $saude = instalacao_saude_verificar($project_path, $saude_offset, '', api_project_saude_opcoes());
+            if (!$saude['ok'] && !api_post_bool('no_rollback')) {
+                $r = instalacao_snapshot_restaurar($project_path, $snapshot_dir);
+                $depois = instalacao_saude_verificar($project_path, instalacao_saude_log_offset($project_path), '', api_project_saude_opcoes());
+                api_response_error('Verificação pós-deploy falhou; arquivos voltaram ao estado anterior. O banco não foi revertido: use o rollback com com_banco.', 500, [
+                    'status' => 'rolled_back',
+                    'snapshot' => $instalacao['snapshot'],
+                    'saude' => $saude,
+                    'rollback' => ['restaurados' => $r['restaurados'] ?? 0, 'removidos_novos' => $r['removidos_novos'] ?? 0, 'falhas' => $r['falhas'] ?? []],
+                    'depois_do_rollback' => $depois,
+                    'installation' => $instalacao,
+                    'db_logs' => $db_logs,
+                ]);
+            }
+        }
+
         // Resposta de sucesso
         $response_data = [
             'file_size' => $uploaded_file['size'],
@@ -390,6 +422,8 @@ function api_project_update() {
             'sitemap' => $sitemap,
             'migrations' => $migracoes,
             'installation' => $instalacao,
+            'snapshot' => $instalacao['snapshot'],
+            'health' => $saude,
         ];
 
         api_response_success($response_data, 'Projeto atualizado com sucesso');
@@ -881,6 +915,14 @@ function api_project_aplicar_arquivos(string $pacote, string $raiz, string $proj
     if ($versao === '') $versao = date('Ymd-His');
 
     $plano = instalacao_planejar($raiz, 'projeto', instalacao_mapa($pacote), false, null, $lista['arquivos'] ?? null);
+
+    // req-198 / BATCH-204: snapshot seletivo antes de aplicar (o que vai ser sobrescrito ou removido,
+    // a lista dos novos e os manifestos), como na atualização do sistema. Ficam os 5 mais recentes.
+    $snapshot = 'api-' . date('Ymd-His') . '-' . bin2hex(random_bytes(2));
+    $snapDir = instalacao_snapshot_dir($raiz, $snapshot);
+    instalacao_snapshot_podar(dirname(rtrim($snapDir, '/\\')), 4);
+    $snap = instalacao_snapshot_criar($raiz, $plano, $snapDir, ['versao' => $versao, 'origem' => 'api-project-update', 'projeto' => $projectId]);
+
     $r = instalacao_aplicar($raiz, $pacote, 'projeto', $plano, $versao, 'copiar');
 
     // Pastas que o manifesto não cobre seguem a cópia de sempre (menos `installation/`, que é do servidor).
@@ -891,6 +933,8 @@ function api_project_aplicar_arquivos(string $pacote, string $raiz, string $proj
 
     instalacao_choques_registrar($raiz, 'api-project-update', 'projeto', $versao, $projectId !== '' ? $projectId . '@' . date('c') : null, $r['choques']);
     return [
+        'snapshot' => $snapshot,
+        'snapshot_itens' => $snap,
         'versao' => $versao,
         'primeira' => $plano['primeira'],
         'lista_completa' => $lista !== null,
@@ -902,6 +946,65 @@ function api_project_aplicar_arquivos(string $pacote, string $raiz, string $proj
             return ['caminho' => $c['caminho'], 'motivo' => $c['motivo'], 'camada_dona' => $c['camada_dona'], 'copia' => $c['copia']];
         }, $r['choques']),
     ];
+}
+
+/** Campo POST booleano (`1`, `true`, `on`…). */
+function api_post_bool(string $campo): bool {
+    return isset($_POST[$campo]) && filter_var($_POST[$campo], FILTER_VALIDATE_BOOLEAN);
+}
+
+/**
+ * Opções da verificação pós-deploy (req-198 / BATCH-204): URL da raiz do site pelo host da própria
+ * requisição, ou `health_url` / `health_ip` do POST, ou `ATUALIZACOES_SAUDE_URL` / `ATUALIZACOES_SAUDE_IP`.
+ */
+function api_project_saude_opcoes(): array {
+    $url = (string)($_POST['health_url'] ?? ($_ENV['ATUALIZACOES_SAUDE_URL'] ?? ''));
+    if ($url === '' && !empty($_SERVER['HTTP_HOST'])) {
+        $raiz = '/' . trim((string)($_ENV['URL_RAIZ'] ?? '/'), '/');
+        $url = 'https://' . preg_replace('/[^A-Za-z0-9.:\[\]-]/', '', (string)$_SERVER['HTTP_HOST']) . ($raiz === '/' ? '/' : $raiz . '/');
+    }
+    return array_filter(['url' => $url, 'ip' => (string)($_POST['health_ip'] ?? ($_ENV['ATUALIZACOES_SAUDE_IP'] ?? ''))]);
+}
+
+/**
+ * `POST /_api/project/rollback` (req-198 / BATCH-204): volta uma entrega pelo snapshot. Corpo JSON
+ * `{"snapshot":"api-…|exec-…","com_banco":false}` (ou os mesmos campos no POST). Arquivos sempre; banco só
+ * com `com_banco`. Usa a trava de deploy do ambiente.
+ */
+function api_project_rollback() {
+    global $_GESTOR;
+    api_authenticate(true);
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') api_response_error('Método não permitido. Use POST.', 405);
+    $body = json_decode((string)file_get_contents('php://input'), true);
+    $body = is_array($body) ? $body : $_POST;
+    $id = (string)($body['snapshot'] ?? '');
+    $comBanco = filter_var($body['com_banco'] ?? false, FILTER_VALIDATE_BOOLEAN);
+
+    require_once $_GESTOR['bibliotecas-path'] . 'instalacao-manifesto.php';
+    require_once $_GESTOR['bibliotecas-path'] . 'deploy-lock.php';
+    $raiz = $_GESTOR['ROOT_PATH'];
+    $dir = instalacao_snapshot_dir($raiz, $id);
+    if (!$dir || !is_file($dir . 'snapshot.json')) api_response_error('Snapshot não encontrado: ' . $id, 404);
+
+    $trava_arquivo = rtrim($raiz, '/\\') . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . 'deploy.lock';
+    $trava = deploy_lock_acquire($trava_arquivo, ['owner' => 'api-project-rollback', 'detail' => basename(rtrim($dir, '/\\'))]);
+    if (!$trava['ok']) api_response_error('Outro deploy está em execução neste ambiente: ' . deploy_lock_describe($trava['holder'] ?? null), 409);
+    register_shutdown_function(function () use ($trava_arquivo, $trava) { deploy_lock_release($trava_arquivo, $trava['token']); });
+
+    $r = instalacao_snapshot_restaurar($raiz, $dir);
+    if (isset($r['erro'])) api_response_error('Rollback: ' . $r['erro'], 500);
+    $banco = null;
+    if ($comBanco) {
+        $banco = instalacao_banco_restaurar($dir . 'banco.sql.gz', (array)($GLOBALS['_BANCO'] ?? []));
+        if (!$banco['ok']) api_response_error('Arquivos restaurados, mas o banco falhou: ' . $banco['erro'], 500, ['rollback' => $r]);
+    }
+    api_response_success([
+        'snapshot' => basename(rtrim($dir, '/\\')),
+        'restaurados' => $r['restaurados'],
+        'removidos_novos' => $r['removidos_novos'],
+        'falhas' => $r['falhas'],
+        'banco' => $comBanco ? 'restaurado' : 'não tocado',
+    ], 'Rollback concluído');
 }
 
 /** Grava na tabela `atualizacoes_choques` os choques pendentes da instalação (req-198). */

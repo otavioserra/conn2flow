@@ -41,7 +41,7 @@ Depois, verifica se há erro fatal novo no `logs/php-error.log` e se a raiz do s
 - `--health-url=<url>` e `--health-ip=<ip>` (ou `ATUALIZACOES_SAUDE_URL` e `ATUALIZACOES_SAUDE_IP` no `.env`) apontam outro endereço, por exemplo um nginx numa porta interna;
 - sem conexão em nenhuma tentativa, o HTTP fica como aviso e não reprova (o servidor pode escutar só no IP público);
 - espera 3 s antes da requisição, porque o OPcache do PHP-FPM ainda serve o código antigo por alguns segundos.
- Se a verificação falhar, os arquivos voltam sozinhos (código de saída 6). O banco só volta com decisão do operador: `--rollback=exec-<id> --com-banco`. `--rollback=exec-<id>` sozinho volta só os arquivos; `--no-health` e `--no-rollback` desligam a verificação ou a volta automática. Ficam os 5 snapshots mais recentes.
+ Se a verificação falhar, os arquivos voltam sozinhos (código de saída 6). O banco só volta com decisão do operador: `--rollback=exec-<id> --com-banco`. `--rollback=exec-<id>` sozinho volta só os arquivos; `--no-health` e `--no-rollback` desligam a verificação ou a volta automática. Ficam os 5 snapshots mais recentes. O deploy de projeto por API faz o mesmo (snapshots `api-…`), e o rollback também pode ser disparado da máquina de desenvolvimento com [`c2f update:rollback`](../reference/cli/update.md) ou por `POST /_api/project/rollback` (BATCH-204).
 
 > [!WARNING]
 > Executar só a etapa de arquivos pode deixar recursos SQL na versão antiga. Para mudanças de páginas ou layouts, conclua também atualização de banco e reconstrução do CSS derivado.

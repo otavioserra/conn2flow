@@ -61,11 +61,16 @@ A biblioteca é **pura** (sem Gestor): roda no atualizador, inclusive a partir d
 - `instalacao_snapshot_anotar()` acrescenta dados ao `snapshot.json`, por exemplo o dump do banco.
 - `instalacao_snapshot_podar($raiz, $manter)` mantém só os mais recentes.
 
+**Banco e verificação (BATCH-204)**, compartilhados pela atualização do sistema e pelo deploy por API:
+- `instalacao_snapshot_dir($base, $id)` dá a pasta do snapshot (id numérico vira `exec-<id>`; caracteres fora de `[A-Za-z0-9_-]` saem);
+- `instalacao_banco_dump($dir, $banco)` e `instalacao_banco_restaurar($dump, $banco)` fazem o dump e a restauração com `mysqldump`/`mysql`; `instalacao_banco_processo()` roda o pipe com a senha em `MYSQL_PWD`, e `instalacao_shell_pipefail()` usa o bash com `pipefail` quando existe (o `/bin/sh` do Debian é o dash);
+- `instalacao_saude_log_offset($base)` marca a posição do log antes da entrega; `instalacao_saude_verificar()` procura fatal novo e faz a requisição HTTP (DNS, depois `127.0.0.1`, sem conexão é aviso, espera o OPcache); `instalacao_saude_http()` faz uma requisição.
+
 ## Funções
 
 <!-- c2f:extract:start -->
 
-Referência gerada a partir de `gestor/bibliotecas/instalacao-manifesto.php` por `c2f docs:extract` — 20 funções. Não edite dentro deste bloco.
+Referência gerada a partir de `gestor/bibliotecas/instalacao-manifesto.php` por `c2f docs:extract` — 28 funções. Não edite dentro deste bloco.
 
 - `instalacao_caminho_base(string $base): string` — [linha 32](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L32)
 - `instalacao_manifesto_arquivo(string $base, string $camada): string` — [linha 34](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L34)
@@ -117,5 +122,23 @@ Referência gerada a partir de `gestor/bibliotecas/instalacao-manifesto.php` por
   Retorno: ['restaurados' => n, 'removidos_novos' => n, 'falhas' => rel[]] ou ['erro' => texto]
 - `instalacao_snapshot_podar(string $raiz, int $manter = 5): int` — [linha 386](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L386)
   Mantém só os `$manter` snapshots mais recentes numa pasta.
+- `instalacao_snapshot_dir(string $base, string $id): ?string` — [linha 405](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L405)
+  Pasta do snapshot de uma execução. Id só com dígitos vira `exec-<id>` (atualização do sistema); os outros (ex.: `api-20260930-120000-ab12`) valem como estão. Caracteres fora de `[A-Za-z0-9_-]` saem.
+- `instalacao_shell_pipefail(string $cmd): array` — [linha 417](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L417)
+  Comando de shell com `pipefail` (a falha do `mysqldump` não some atrás do `gzip`). O `/bin/sh` do Debian e do Ubuntu é o dash, que não tem `pipefail` e sai com código 2 no `set -o pipefail`; por isso usa o bash quando existe e, sem ele, o `sh` sem `pipefail` (o tamanho do arquivo ainda é conferido).
+- `instalacao_banco_processo(string $cmd, array $banco): array` — [linha 423](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L423)
+  Roda um pipe de shell com a senha do banco em `MYSQL_PWD`. @return array ['codigo' => int, 'erro' => string]
+- `instalacao_banco_dump(string $dir, array $banco): array` — [linha 440](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L440)
+  Dump do banco (`mysqldump --single-transaction`, gzip) em `<dir>/banco.sql.gz`, anotado no `snapshot.json`. `$banco`: host, usuario, senha, nome (o `$_BANCO` do Gestor).
+  Retorno: ['ok' => bool, 'arquivo' => string|null, 'mb' => float, 'erro' => string]
+- `instalacao_banco_restaurar(string $dump, array $banco): array` — [linha 455](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L455)
+  Restaura `banco.sql.gz` no banco. @return array ['ok' => bool, 'erro' => string]
+- `instalacao_saude_log_offset(string $base): int` — [linha 465](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L465)
+  Tamanho atual do log de erros do PHP (para achar fatais novos depois).
+- `instalacao_saude_verificar(string $base, int $offsetLog, string $dominio, array $opcoes = []): array` — [linha 485](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L485)
+  Verificação depois de uma entrega: sem erro fatal novo no log do PHP e a raiz do site respondendo abaixo de 500.
+  Retorno: ['ok' => bool, 'motivos' => string[], 'http' => int|null, 'avisos' => string[]]
+- `instalacao_saude_http(string $url, ?string $ip): int` — [linha 520](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L520)
+  Código HTTP de `$url` (0 sem conexão). Com `$ip`, o host da URL é resolvido para ele.
 
 <!-- c2f:extract:end -->
