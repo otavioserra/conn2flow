@@ -10,7 +10,7 @@ sources:
   - gestor/bibliotecas/cron.php
   - gestor/bibliotecas/sitemap.php
   - gestor/bibliotecas/comunicacao.php
-verified_at: 5e61b186
+verified_at: 253e8e04
 ---
 
 # Update and deploy a project

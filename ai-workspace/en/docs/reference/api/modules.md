@@ -4,7 +4,7 @@ description: "Authenticated dispatch to module API hooks."
 section: reference
 sources:
   - gestor/controladores/api/api.php
-verified_at: 5e61b186
+verified_at: 253e8e04
 ---
 
 # Module API

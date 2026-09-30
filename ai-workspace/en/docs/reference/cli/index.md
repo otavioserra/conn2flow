@@ -7,7 +7,7 @@ sources:
   - cli/src/Console/Application.php
   - cli/src/Console/Input.php
   - cli/src/Contracts/CommandInterface.php
-verified_at: eb96c5c7
+verified_at: 253e8e04
 ---
 
 # CLI c2f

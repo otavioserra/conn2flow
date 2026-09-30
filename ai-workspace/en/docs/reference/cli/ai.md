@@ -9,7 +9,7 @@ sources:
   - cli/src/Commands/AiMcpSetupCommand.php
   - cli/src/Commands/AiPruneMemoriesCommand.php
   - cli/src/Commands/AiSyncCommand.php
-verified_at: eb96c5c7
+verified_at: 253e8e04
 ---
 
 # CLI: AI and SDD

@@ -5,7 +5,7 @@ section: reference
 sources:
   - cli/src/Console/Application.php
   - cli/src/Commands/HelpCommand.php
-verified_at: eb96c5c7
+verified_at: 253e8e04
 ---
 
 # CLI: Commands help

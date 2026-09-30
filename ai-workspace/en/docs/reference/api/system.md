@@ -5,7 +5,7 @@ section: reference
 sources:
   - gestor/controladores/api/api.php
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
-verified_at: 5e61b186
+verified_at: 253e8e04
 ---
 
 # System update API
