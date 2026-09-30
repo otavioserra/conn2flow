@@ -6,7 +6,7 @@ section: reference
 order: 360
 sources:
   - gestor/bibliotecas/instalacao-manifesto.php
-verified_at: 152dfd72
+verified_at: b1a69317
 ---
 
 # Biblioteca `instalacao-manifesto.php`

@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/InstallerNewCommand.php
   - cli/src/Commands/InstallerReleaseCommand.php
   - cli/src/Commands/InstallerSyncCommand.php
-verified_at: c8db1447
+verified_at: b1a69317
 ---
 
 # CLI: Comandos installer

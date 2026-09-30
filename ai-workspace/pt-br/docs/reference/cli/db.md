@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DbCheckMigrationsCommand.php
   - cli/src/Commands/DbTestCommand.php
   - cli/src/Commands/DbUpdateCommand.php
-verified_at: c8db1447
+verified_at: b1a69317
 ---
 
 # CLI: Banco de dados

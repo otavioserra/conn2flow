@@ -9,7 +9,7 @@ sources:
   - cli/src/Commands/DockerPhpVersionCommand.php
   - cli/src/Commands/DockerStatusCommand.php
   - cli/src/Commands/DockerTruncateLogsCommand.php
-verified_at: c8db1447
+verified_at: b1a69317
 ---
 
 # CLI: Docker

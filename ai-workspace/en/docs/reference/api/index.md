@@ -4,7 +4,7 @@ description: "Core HTTP routes, authentication, response envelopes and endpoint 
 section: reference
 sources:
   - gestor/controladores/api/api.php
-verified_at: ca4337fc
+verified_at: b1a69317
 ---
 
 # HTTP API

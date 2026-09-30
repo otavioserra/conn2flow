@@ -8,7 +8,7 @@ sources:
   - cli/src/Commands/DocsAuditCommand.php
   - cli/src/Commands/DocsBuildCommand.php
   - cli/src/Commands/DocsExtractCommand.php
-verified_at: c8db1447
+verified_at: b1a69317
 ---
 
 # CLI: Documentation
