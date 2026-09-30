@@ -5,7 +5,7 @@ section: reference
 sources:
   - gestor/controladores/api/api.php
   - gestor/bibliotecas/oauth2.php
-verified_at: c8db1447
+verified_at: ca4337fc
 ---
 
 # OAuth2 API

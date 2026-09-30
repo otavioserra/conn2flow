@@ -6,7 +6,7 @@ sources:
   - gestor/controladores/api/api.php
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/bibliotecas/atualizacoes-execucao.php
-verified_at: c8db1447
+verified_at: ca4337fc
 ---
 
 # API de atualização do sistema
