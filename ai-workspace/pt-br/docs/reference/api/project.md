@@ -42,6 +42,14 @@ A resposta de sucesso traz `snapshot` (o id para o rollback), `health` e, em `in
 
 `POST` com JSON `{"snapshot":"api-…","com_banco":false}` (ou os mesmos campos no POST). Volta os arquivos pelo snapshot (os que foram sobrescritos ou removidos voltam; os novos saem) e, com `com_banco`, restaura o dump. Aceita também os snapshots da atualização do sistema (`exec-<id>`). Usa a mesma trava de deploy (409 com outro deploy em execução); snapshot inexistente: 404. A resposta traz `snapshot`, `restaurados`, `removidos_novos`, `falhas` e `banco`. Pelo CLI: [`c2f update:rollback`](../cli/update.md).
 
+## `/_api/project/conflicts` e `/_api/project/resolve`
+
+Choques das entregas desta instalação (req-199 / BATCH-205), com a mesma decisão do painel:
+- `conflicts` (GET ou POST): sem `id`, lista os pendentes (`todos=1` inclui os resolvidos; `limite` até 500), cada um com as decisões possíveis em `acoes`. Com `id`, devolve `choque`, `no_ar`, `nova` e `codificacao` (`texto` ou `base64`, para binário);
+- `resolve` (POST JSON): `{"id":12,"acao":"sobrescrever|manter|mesclar","conteudo":"…","codificacao":"texto|base64"}`; `conteudo` só no `mesclar`. Roda sob a trava de deploy; quem decidiu fica como `api:<e-mail do token>`. Decisão que não vale para o motivo, ou choque já resolvido: 422.
+
+Pelo CLI: [`c2f update:conflicts` e `c2f update:resolve`](../cli/update.md).
+
 ## `/_api/project/recover`
 
 Aceita JSON `{"tables":["paginas"],"recover_contents":false}` ou campo POST `tables` em CSV. Sem lista, exporta todas as tabelas do schema do core e do manifesto transitório do projeto. Retorna `application/zip` com arquivos `*Data.json`; com `recover_contents`, acrescenta `contents/`. A lista de nomes é normalizada para letras minúsculas, dígitos e sublinhado. O ZIP é removido após o streaming.

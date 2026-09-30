@@ -130,9 +130,9 @@
         "minificado": 24338
     },
     "gestor/modulos/admin-atualizacoes/admin-atualizacoes.js": {
-        "sha1": "e00610cad2764f6de5e303f2dafe458bbe4ab13d",
-        "origem": 13546,
-        "minificado": 6649
+        "sha1": "4ef4c0fd6921ee2a74c7468ead1226df7682f2d5",
+        "origem": 15512,
+        "minificado": 7826
     },
     "gestor/modulos/admin-categorias/admin-categorias.js": {
         "sha1": "f6957c044858adcf40146f30a2f632b2742e76c1",

@@ -34,4 +34,4 @@ Run php cli/c2f.php help to list commands. Application::registerBuiltInCommands(
 - [project (9)](project.md)
 - [resources (1)](resources.md)
 - [tailwind (1)](tailwind.md)
-- [update (1)](update.md)
+- [update (3)](update.md)

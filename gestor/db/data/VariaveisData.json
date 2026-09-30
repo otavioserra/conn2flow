@@ -3960,6 +3960,168 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions",
+        "valor": "Decisão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-act-sobrescrever",
+        "valor": "Sobrescrever com a versão nova",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-act-manter",
+        "valor": "Manter a do servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-act-mesclar",
+        "valor": "Mesclar…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-editado",
+        "valor": "O arquivo foi mudado no servidor. Sobrescrever põe a versão nova; manter fica com a do servidor (e as próximas entregas do mesmo arquivo seguem assim enquanto ele não mudar); mesclar grava o resultado que você montar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-sobreposto",
+        "valor": "Uma camada de cima (projeto ou plugin) é a dona deste arquivo. Manter fica com a versão dela; mesclar grava o resultado aqui. Para desfazer a sobreposição, remova o arquivo do repositório da camada dona.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-retirado-editado",
+        "valor": "A camada deixou de entregar o arquivo, mas ele foi editado no servidor. Sobrescrever aceita a retirada (o arquivo sai); manter deixa o arquivo.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-original-ausente",
+        "valor": "A versão original do core não estava guardada para restaurar. Confira o arquivo e marque como mantido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-merge-help",
+        "valor": "Edite à esquerda o resultado final (começa com a versão que está no ar). A versão nova fica à direita, só para leitura.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-merge-result",
+        "valor": "Resultado (vai para o servidor)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-merge-new",
+        "valor": "Versão nova (entrega)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-merge-save",
+        "valor": "Salvar mescla",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-confirm",
+        "valor": "Aplicar esta decisão no arquivo do servidor?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-resolved-ok",
+        "valor": "Decisão aplicada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-sobrescrever",
+        "valor": "Sobrescrito",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-manter",
+        "valor": "Mantido",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-mesclar",
+        "valor": "Mesclado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-manter-regra",
+        "valor": "Mantido (regra)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-title",
@@ -4405,6 +4567,168 @@
         "modulo": "admin-atualizacoes",
         "id": "updates-clash-original-ausente",
         "valor": "Core original missing",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions",
+        "valor": "Decision",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-act-sobrescrever",
+        "valor": "Overwrite with the new version",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-act-manter",
+        "valor": "Keep the server version",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-act-mesclar",
+        "valor": "Merge…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-editado",
+        "valor": "The file was changed on the server. Overwrite puts the new version in place; keep stays with the server version (and later deliveries of the same file keep it while it does not change); merge saves the result you build.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-sobreposto",
+        "valor": "An upper layer (project or plugin) owns this file. Keep stays with its version; merge saves the result here. To undo the override, remove the file from the owner layer repository.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-retirado-editado",
+        "valor": "The layer stopped delivering the file, but it was edited on the server. Overwrite accepts the removal (the file is deleted); keep leaves the file.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-actions-help-original-ausente",
+        "valor": "The original core version was not kept for restoring. Check the file and mark it as kept.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-merge-help",
+        "valor": "Edit the final result on the left (it starts with the version currently live). The new version is on the right, read-only.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-merge-result",
+        "valor": "Result (goes to the server)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-merge-new",
+        "valor": "New version (delivery)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-merge-save",
+        "valor": "Save merge",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-confirm",
+        "valor": "Apply this decision to the server file?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-resolved-ok",
+        "valor": "Decision applied.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-sobrescrever",
+        "valor": "Overwritten",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-manter",
+        "valor": "Kept",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-mesclar",
+        "valor": "Merged",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-clash-res-manter-regra",
+        "valor": "Kept (rule)",
         "tipo": "string",
         "grupo": null,
         "descricao": null

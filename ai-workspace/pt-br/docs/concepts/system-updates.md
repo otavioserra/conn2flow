@@ -30,7 +30,7 @@ Depois do banco, `db/` fica no lugar, no CLI e no web (req-197): a pasta tem as 
 - **preserva** um arquivo mudado no servidor sem que nenhuma camada tenha entregue aquele conteúdo (choque `editado`);
 - **retira** o que o core deixou de entregar, se estiver intacto; editado, vira choque `retirado-editado`.
 
-A primeira entrega, sem manifesto, se comporta como antes e grava a linha de base. Os choques ficam em `installation/choques/` e, depois da etapa de banco, na tabela `atualizacoes_choques` (o mesmo choque ainda pendente não vira outra linha a cada atualização); a aba "Choques das entregas" do `admin-atualizacoes` mostra a lista e o diff. `installation/` é pasta protegida.
+A primeira entrega, sem manifesto, se comporta como antes e grava a linha de base. Os choques ficam em `installation/choques/` e, depois da etapa de banco, na tabela `atualizacoes_choques` (o mesmo choque ainda pendente não vira outra linha a cada atualização); a aba "Choques das entregas" do `admin-atualizacoes` mostra a lista e o diff, e no detalhe fica a decisão por arquivo: sobrescrever, manter ou mesclar (req-199; também pela API e por `c2f update:conflicts` / `update:resolve`). "Manter" vira regra para as próximas entregas do mesmo arquivo, e a camada que entrega o mesmo conteúdo de antes não gera choque. `installation/` é pasta protegida.
 
 **Snapshot, verificação e rollback (req-198).** Antes de aplicar, a atualização guarda em `backups/atualizacoes/snapshots/exec-<id>/`:
 - só os arquivos que vão ser sobrescritos ou removidos, a lista dos novos e os manifestos;

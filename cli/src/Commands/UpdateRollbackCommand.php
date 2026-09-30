@@ -6,6 +6,7 @@ namespace Conn2Flow\Cli\Commands;
 
 use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
+use Conn2Flow\Cli\Support\ProjectApiClient;
 use Conn2Flow\Cli\Support\ProjectEnvironmentResolver;
 use Conn2Flow\Cli\Support\SshRemoteTransport;
 use Throwable;
@@ -14,7 +15,7 @@ use Throwable;
  * req-198 / BATCH-204: volta uma entrega pelo snapshot, a partir da máquina de desenvolvimento.
  *
  * - Projeto `deploy_mode: ssh` (Lab): roda `atualizacoes-sistema.php --rollback=<id>` no servidor, pelo SSH.
- * - Os outros: `POST /_api/project/rollback` com o token OAuth do projeto (`api.access_token`).
+ * - Os outros: `POST /_api/project/rollback` com o token do projeto (`api.access_token`; `api_resolve_ip` opcional).
  *
  * O id vem da resposta do deploy (`snapshot`, ex.: `api-20260930-120000-ab12`) ou do relatório da
  * atualização do sistema (`exec-12`, ou só `12`).
@@ -76,18 +77,31 @@ final class UpdateRollbackCommand extends BaseProcessCommand
             return $this->runShell($cmd, $output);
         }
 
-        $token = (string)($projeto['config']['api']['access_token'] ?? '');
-        $url = rtrim($projeto['accessUrl'], '/') . '/_api/project/rollback';
-        if ($token === '') {
-            $output->error("Projeto sem api.access_token no environment.json; gere o token no painel ou renove com ai-workspace/en/scripts/api/renew-token.sh.");
+        try {
+            $api = new ProjectApiClient($projeto);
+        } catch (Throwable $e) {
+            $output->error($e->getMessage());
             return 1;
         }
-        $output->info('API: ' . $url);
+        $output->info('API: ' . $api->url('_api/project/rollback'));
         if ($dry) {
-            $output->writeln(json_encode(self::corpoApi($snapshot, $comBanco)));
+            $output->writeln((string)json_encode(self::corpoApi($snapshot, $comBanco)));
             return 0;
         }
-        return $this->chamarApi($url, $token, $projectId, self::corpoApi($snapshot, $comBanco), $output);
+        $r = $api->request('POST', '_api/project/rollback', self::corpoApi($snapshot, $comBanco));
+        if ($r['http'] !== 200) {
+            $output->error(ProjectApiClient::describeError($r));
+            return 1;
+        }
+        $dados = (array)($r['json']['data'] ?? []);
+        $output->success(sprintf(
+            '%s: %d arquivo(s) restaurado(s), %d novo(s) removido(s); banco %s.',
+            $dados['snapshot'] ?? '',
+            (int)($dados['restaurados'] ?? 0),
+            (int)($dados['removidos_novos'] ?? 0),
+            (string)($dados['banco'] ?? '?')
+        ));
+        return 0;
     }
 
     /** Id aceito: `exec-<n>`, `<n>`, `api-…` e afins, só com `[A-Za-z0-9_-]`. */
@@ -114,49 +128,5 @@ final class UpdateRollbackCommand extends BaseProcessCommand
     public static function corpoApi(string $snapshot, bool $comBanco): array
     {
         return ['snapshot' => $snapshot, 'com_banco' => $comBanco];
-    }
-
-    private function chamarApi(string $url, string $token, string $projectId, array $corpo, OutputInterface $output): int
-    {
-        if (!function_exists('curl_init')) {
-            $output->error('A extensão cURL do PHP é necessária para o rollback pela API.');
-            return 1;
-        }
-        $ch = curl_init($url);
-        curl_setopt_array($ch, [
-            CURLOPT_POST => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 300,
-            CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $token, 'X-Project-ID: ' . $projectId, 'Content-Type: application/json'],
-            CURLOPT_POSTFIELDS => (string)json_encode($corpo),
-        ]);
-        $resposta = (string)curl_exec($ch);
-        $http = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-        $erro = curl_error($ch);
-        curl_close($ch);
-
-        if ($http === 0) {
-            $output->error('Sem resposta da API: ' . $erro);
-            return 1;
-        }
-        $json = json_decode($resposta, true);
-        $mensagem = is_array($json) ? (string)($json['message'] ?? '') : substr($resposta, 0, 300);
-        if ($http === 401) {
-            $output->error('Token recusado (401). Renove com ai-workspace/en/scripts/api/renew-token.sh e tente de novo.');
-            return 1;
-        }
-        if ($http >= 400) {
-            $output->error("HTTP {$http}: {$mensagem}");
-            return 1;
-        }
-        $dados = is_array($json) ? ($json['data'] ?? []) : [];
-        $output->success(sprintf(
-            '%s: %d arquivo(s) restaurado(s), %d novo(s) removido(s); banco %s.',
-            $dados['snapshot'] ?? '',
-            (int)($dados['restaurados'] ?? 0),
-            (int)($dados['removidos_novos'] ?? 0),
-            (string)($dados['banco'] ?? '?')
-        ));
-        return 0;
     }
 }

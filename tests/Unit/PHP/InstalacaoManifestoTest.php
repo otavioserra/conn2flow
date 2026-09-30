@@ -189,6 +189,110 @@ final class InstalacaoManifestoTest extends TestCase
         $this->assertSame("resolucao IS NULL AND caminho='a\\'b.php' AND camada='core' AND motivo='editado' AND hash_disco='h1' AND hash_novo IS NULL", $w);
     }
 
+    /** Core v1, edição no servidor e core v2: devolve o choque `editado` registrado. */
+    private function choqueEditado(string $v2 = "l1\nl2 core v2\n"): array
+    {
+        $this->entregar('core', ['a.php' => "l1\nl2\n"], 'v1');
+        file_put_contents($this->base . 'a.php', "l1 servidor\nl2\n");
+        [, $r] = $this->entregar('core', ['a.php' => $v2], 'v2');
+        $this->assertSame('editado', $r['choques'][0]['motivo']);
+        return $r['choques'][0] + ['camada' => 'core'];
+    }
+
+    public function testMesmaVersaoDaCamadaNaoRepeteOChoque(): void
+    {
+        $c = $this->choqueEditado();
+        // A mesma v2 de novo: nada novo a decidir, o disco fica e não há choque.
+        [$plano, $r] = $this->entregar('core', ['a.php' => "l1\nl2 core v2\n"], 'v2b');
+        $this->assertSame([], $r['choques']);
+        $this->assertNotContains('a.php', $plano['escrever']);
+        $this->assertSame("l1 servidor\nl2\n", $this->ler('a.php'));
+        // Depois de uma mescla, idem.
+        instalacao_choque_resolver($this->base, $c, 'mesclar', "mesclado\n");
+        [, $r2] = $this->entregar('core', ['a.php' => "l1\nl2 core v2\n"], 'v2c');
+        $this->assertSame([], $r2['choques']);
+        $this->assertSame("mesclado\n", $this->ler('a.php'));
+    }
+
+    public function testAcoesPorMotivo(): void
+    {
+        $this->assertSame(['sobrescrever', 'manter', 'mesclar'], instalacao_choque_acoes(['motivo' => 'editado']));
+        $this->assertSame(['manter', 'mesclar'], instalacao_choque_acoes(['motivo' => 'sobreposto']));
+        $this->assertSame(['sobrescrever', 'manter'], instalacao_choque_acoes(['motivo' => 'retirado-editado']));
+        $this->assertSame(['manter'], instalacao_choque_acoes(['motivo' => 'original-ausente']));
+    }
+
+    public function testVersoesDoChoque(): void
+    {
+        $c = $this->choqueEditado();
+        $v = instalacao_choque_versoes($this->base, $c);
+        $this->assertSame("l1 servidor\nl2\n", $v['no_ar']);
+        $this->assertSame("l1\nl2 core v2\n", $v['nova']);
+        $this->assertFalse($v['binario']);
+    }
+
+    public function testSobrescreverPoeAVersaoNova(): void
+    {
+        $c = $this->choqueEditado();
+        $r = instalacao_choque_resolver($this->base, $c, 'sobrescrever');
+        $this->assertTrue($r['ok'], $r['erro']);
+        $this->assertSame("l1\nl2 core v2\n", $this->ler('a.php'));
+        // Disco igual ao que o core entregou: a próxima entrega não acusa choque.
+        [, $r3] = $this->entregar('core', ['a.php' => "l1\nl2 core v3\n"], 'v3');
+        $this->assertSame([], $r3['choques']);
+        $this->assertSame("l1\nl2 core v3\n", $this->ler('a.php'));
+    }
+
+    public function testMesclarGravaOConteudoDado(): void
+    {
+        $c = $this->choqueEditado();
+        $this->assertFalse(instalacao_choque_resolver($this->base, $c, 'mesclar')['ok'], 'Sem conteúdo, recusa.');
+        $r = instalacao_choque_resolver($this->base, $c, 'mesclar', "l1 servidor\nl2 core v2\n");
+        $this->assertTrue($r['ok']);
+        $this->assertSame("l1 servidor\nl2 core v2\n", $this->ler('a.php'));
+        $this->assertSame([], instalacao_regras_ler($this->base), 'Mesclar não deixa regra.');
+    }
+
+    public function testManterViraRegraParaAProximaEntrega(): void
+    {
+        $c = $this->choqueEditado();
+        $this->assertTrue(instalacao_choque_resolver($this->base, $c, 'manter')['ok']);
+        $this->assertSame("l1 servidor\nl2\n", $this->ler('a.php'));
+        $this->assertSame('manter', instalacao_regras_ler($this->base)['a.php']['acao']);
+        // Nova versão do core: continua preservado, e o choque já nasce resolvido pela regra.
+        [, $r3] = $this->entregar('core', ['a.php' => "l1\nl2 core v3\n"], 'v3');
+        $this->assertSame("l1 servidor\nl2\n", $this->ler('a.php'));
+        $this->assertSame('manter-regra', $r3['choques'][0]['resolucao']);
+        // O servidor mudou de novo: a regra não vale mais e o choque volta a pedir decisão.
+        file_put_contents($this->base . 'a.php', "outra edição\n");
+        [, $r4] = $this->entregar('core', ['a.php' => "l1\nl2 core v4\n"], 'v4');
+        $this->assertArrayNotHasKey('resolucao', $r4['choques'][0]);
+    }
+
+    public function testDecisaoInvalidaECaminhoInvalido(): void
+    {
+        $this->assertFalse(instalacao_choque_resolver($this->base, ['caminho' => 'x.php', 'motivo' => 'sobreposto'], 'sobrescrever')['ok']);
+        $this->assertFalse(instalacao_choque_resolver($this->base, ['caminho' => '../fora.php', 'motivo' => 'editado'], 'manter')['ok']);
+        $this->assertFalse(instalacao_choque_resolver($this->base, ['caminho' => 'logs/x.log', 'motivo' => 'editado'], 'manter')['ok']);
+    }
+
+    public function testRetiradaAceitaRemoveOArquivo(): void
+    {
+        $this->entregar('core', ['a.php' => 'a', 'b.php' => 'b'], 'v1');
+        file_put_contents($this->base . 'b.php', 'b editado');
+        [, $r] = $this->entregar('core', ['a.php' => 'a'], 'v2');
+        $c = $r['choques'][0] + ['camada' => 'core'];
+        $this->assertSame('retirado-editado', $c['motivo']);
+        $this->assertTrue(instalacao_choque_resolver($this->base, $c, 'sobrescrever')['ok']);
+        $this->assertNull($this->ler('b.php'));
+    }
+
+    public function testFiltroComResolucaoAutomatica(): void
+    {
+        $w = instalacao_choque_pendente_filtro(['caminho' => 'a.php', 'camada' => 'core', 'motivo' => 'editado', 'hash_disco' => 'h', 'hash_novo' => 'n', 'resolucao' => 'manter-regra'], 'addslashes');
+        $this->assertStringStartsWith("resolucao='manter-regra' AND ", $w);
+    }
+
     public function testPastaDoSnapshotPorId(): void
     {
         $s = DIRECTORY_SEPARATOR;

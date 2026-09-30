@@ -42,6 +42,14 @@ The success response includes `snapshot` (the id for rollback), `health` and, in
 
 `POST` with JSON `{"snapshot":"api-…","com_banco":false}` (or the same fields in the POST). Restores files from the snapshot (overwritten or removed files come back; new ones are removed) and, with `com_banco`, restores the dump. It also accepts system update snapshots (`exec-<id>`). It uses the same deploy lock (409 when another deploy is running); unknown snapshot: 404. The response includes `snapshot`, `restaurados`, `removidos_novos`, `falhas` and `banco`. From the CLI: [`c2f update:rollback`](../cli/update.md).
 
+## `/_api/project/conflicts` and `/_api/project/resolve`
+
+Delivery clashes of this installation (req-199 / BATCH-205), with the same decision as the panel:
+- `conflicts` (GET or POST): without `id`, lists pending ones (`todos=1` includes resolved ones; `limite` up to 500), each with the possible decisions in `acoes`. With `id`, returns `choque`, `no_ar`, `nova` and `codificacao` (`texto` or `base64`, for binaries);
+- `resolve` (POST JSON): `{"id":12,"acao":"sobrescrever|manter|mesclar","conteudo":"…","codificacao":"texto|base64"}`; `conteudo` only for `mesclar`. It runs under the deploy lock; the decision is recorded as `api:<token e-mail>`. A decision not valid for the reason, or an already resolved clash: 422.
+
+From the CLI: [`c2f update:conflicts` and `c2f update:resolve`](../cli/update.md).
+
 ## `/_api/project/recover`
 
 Accepts JSON `{"tables":["paginas"],"recover_contents":false}` or CSV POST field `tables`. Without a list it exports all tables in the Core schema and the project's transient schema manifest. Returns `application/zip` with `*Data.json` files; `recover_contents` also includes `contents/`. Table names are normalized to lowercase letters, digits and underscores. The ZIP is removed after streaming.

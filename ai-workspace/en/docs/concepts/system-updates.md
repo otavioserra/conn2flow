@@ -30,7 +30,7 @@ After the database step, `db/` stays in place, in both CLI and web (req-197): th
 - **keeps** a file changed on the server when no layer delivered that content (`editado` clash);
 - **removes** what the core stopped delivering when it is intact; when it was edited, it becomes a `retirado-editado` clash.
 
-The first delivery, without a manifest, behaves as before and records the baseline. Clashes are stored in `installation/choques/` and, after the database stage, in the `atualizacoes_choques` table (the same clash still pending does not become another row on every update); the "Delivery clashes" section of `admin-atualizacoes` lists them with the diff. `installation/` is a protected folder.
+The first delivery, without a manifest, behaves as before and records the baseline. Clashes are stored in `installation/choques/` and, after the database stage, in the `atualizacoes_choques` table (the same clash still pending does not become another row on every update); the "Delivery clashes" section of `admin-atualizacoes` lists them with the diff, and the detail page holds the per-file decision: overwrite, keep or merge (req-199; also through the API and `c2f update:conflicts` / `update:resolve`). "Keep" becomes a rule for later deliveries of the same file, and a layer delivering the same content as before creates no clash. `installation/` is a protected folder.
 
 **Snapshot, check and rollback (req-198).** Before applying, the update keeps in `backups/atualizacoes/snapshots/exec-<id>/`:
 - only the files that will be overwritten or removed, the list of new ones and the manifests;

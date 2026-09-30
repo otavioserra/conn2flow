@@ -66,11 +66,17 @@ A biblioteca é **pura** (sem Gestor): roda no atualizador, inclusive a partir d
 - `instalacao_banco_dump($dir, $banco)` e `instalacao_banco_restaurar($dump, $banco)` fazem o dump e a restauração com `mysqldump`/`mysql`; `instalacao_banco_processo()` roda o pipe com a senha em `MYSQL_PWD`, e `instalacao_shell_pipefail()` usa o bash com `pipefail` quando existe (o `/bin/sh` do Debian é o dash);
 - `instalacao_saude_log_offset($base)` marca a posição do log antes da entrega; `instalacao_saude_verificar()` procura fatal novo e faz a requisição HTTP (DNS, depois `127.0.0.1`, sem conexão é aviso, espera o OPcache); `instalacao_saude_http()` faz uma requisição.
 
+**Resolução de choques (req-199 / BATCH-205).** Um motor para subir e descer, projeto e core:
+- `instalacao_choque_acoes($choque)` dá as decisões que valem para o motivo: `editado` → sobrescrever, manter, mesclar; `sobreposto` → manter, mesclar (desfazer a sobreposição é no repositório da camada dona); `retirado-editado` → sobrescrever (aceita a retirada) ou manter;
+- `instalacao_choque_versoes($base, $choque)` lê a versão no ar e a nova (cópia em `backups/overrides/`);
+- `instalacao_choque_resolver($base, $choque, $acao, $mesclado)` aplica no disco. `manter` grava regra em `installation/regras.json` (`instalacao_regras_ler()` / `instalacao_regras_gravar()`): a próxima entrega com o disco igual ao da decisão já nasce resolvida (`manter-regra`). Sobrescrever e mesclar apagam a regra;
+- o planejador não gera choque quando a camada entrega o mesmo conteúdo da entrega anterior: não há nada novo a decidir.
+
 ## Funções
 
 <!-- c2f:extract:start -->
 
-Referência gerada a partir de `gestor/bibliotecas/instalacao-manifesto.php` por `c2f docs:extract` — 28 funções. Não edite dentro deste bloco.
+Referência gerada a partir de `gestor/bibliotecas/instalacao-manifesto.php` por `c2f docs:extract` — 33 funções. Não edite dentro deste bloco.
 
 - `instalacao_caminho_base(string $base): string` — [linha 32](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L32)
 - `instalacao_manifesto_arquivo(string $base, string $camada): string` — [linha 34](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L34)
@@ -100,45 +106,59 @@ Referência gerada a partir de `gestor/bibliotecas/instalacao-manifesto.php` por
   - `$manifestos`: Manifestos atuais (null = lê do disco).
   - `$listaCompleta`: Mapa `rel → sha256` de TUDO que a camada entrega, quando o pacote
   Retorno: ['primeira' => bool, 'escrever' => rel[], 'preservar' => [rel => info], 'retirar' => rel[],
-- `instalacao_aplicar(string $base, string $pacoteRaiz, string $camada, array $plano, string $versao, string $modo = 'copiar'): array` — [linha 191](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L191)
+- `instalacao_aplicar(string $base, string $pacoteRaiz, string $camada, array $plano, string $versao, string $modo = 'copiar'): array` — [linha 202](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L202)
   Aplica o plano: guarda originais, escreve, preserva (cópia nova em `backups/overrides/`), retira, restaura e grava o manifesto. Os arquivos a escrever são COPIADOS do pacote (`$modo = 'copiar'`) ou apenas removidos do pacote quando preservados, para quem aplica por conta própria (`'preparar'`, usado pela atualização do sistema, que move o staging depois).
   Retorno: ['escritos' => n, 'preservados' => n, 'retirados' => n, 'restaurados' => n,
-- `instalacao_diff(string $antes, string $depois, string $rotulo = ''): ?string` — [linha 237](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L237)
+- `instalacao_diff(string $antes, string $depois, string $rotulo = ''): ?string` — [linha 248](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L248)
   Diff unificado curto entre dois textos (arquivo no ar × versão nova). Binário ou grande demais: só o aviso. Suficiente para o registro de choques; o merge fica para a req-199.
-- `instalacao_choques_registrar(string $base, string $origem, string $camada, string $versao, ?string $execucao, array $choques): ?string` — [linha 264](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L264)
+- `instalacao_choques_registrar(string $base, string $origem, string $camada, string $versao, ?string $execucao, array $choques): ?string` — [linha 275](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L275)
   Guarda os choques de uma entrega num JSON pendente (`installation/choques/*.pendente.json`). A gravação na tabela `atualizacoes_choques` acontece depois da etapa de banco (a tabela pode ainda não existir na etapa de arquivos) por `instalacao_choques_gravar_pendentes()`.
-- `instalacao_choque_pendente_filtro(array $linha, callable $escapar): string` — [linha 278](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L278)
+- `instalacao_choque_pendente_filtro(array $linha, callable $escapar): string` — [linha 289](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L289)
   Filtro SQL (sem o `WHERE`) de um choque igual ainda pendente: mesmo caminho, camada, motivo e hashes, sem resolução. Quem grava pula a linha quando ele existe, para a mesma situação não virar uma linha por atualização. `$escapar` escapa um valor para SQL.
-- `instalacao_choques_gravar_pendentes(string $base, callable $inserir): int` — [linha 293](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L293)
+- `instalacao_choques_gravar_pendentes(string $base, callable $inserir): int` — [linha 304](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L304)
   Grava os choques pendentes com `$inserir(array $linha): bool` (colunas de `atualizacoes_choques`) e renomeia cada arquivo para `.gravado.json`. Arquivo com falha continua pendente para a próxima vez.
   Retorno: Choques gravados.
-- `instalacao_snapshot_criar(string $base, array $plano, string $dir, array $meta = []): array` — [linha 323](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L323)
+- `instalacao_snapshot_criar(string $base, array $plano, string $dir, array $meta = []): array` — [linha 335](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L335)
   Snapshot seletivo antes de aplicar um plano: guarda só o que vai ser sobrescrito, removido ou restaurado (não a instalação inteira), a lista do que é novo (sai no rollback) e os manifestos atuais. Grava `<dir>/snapshot.json`.
   Retorno: ['sobrescritos' => n, 'removidos' => n, 'novos' => n]
-- `instalacao_snapshot_anotar(string $dir, array $dados): void` — [linha 351](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L351)
+- `instalacao_snapshot_anotar(string $dir, array $dados): void` — [linha 363](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L363)
   Acrescenta dados ao `snapshot.json` (ex.: caminho do dump do banco).
-- `instalacao_snapshot_restaurar(string $base, string $dir): array` — [linha 364](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L364)
+- `instalacao_snapshot_restaurar(string $base, string $dir): array` — [linha 376](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L376)
   Volta os arquivos ao estado do snapshot: tira os novos, devolve os sobrescritos e os removidos e restaura os manifestos. O banco é à parte (dump anotado no snapshot).
   Retorno: ['restaurados' => n, 'removidos_novos' => n, 'falhas' => rel[]] ou ['erro' => texto]
-- `instalacao_snapshot_podar(string $raiz, int $manter = 5): int` — [linha 386](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L386)
+- `instalacao_snapshot_podar(string $raiz, int $manter = 5): int` — [linha 398](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L398)
   Mantém só os `$manter` snapshots mais recentes numa pasta.
-- `instalacao_snapshot_dir(string $base, string $id): ?string` — [linha 405](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L405)
+- `instalacao_snapshot_dir(string $base, string $id): ?string` — [linha 417](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L417)
   Pasta do snapshot de uma execução. Id só com dígitos vira `exec-<id>` (atualização do sistema); os outros (ex.: `api-20260930-120000-ab12`) valem como estão. Caracteres fora de `[A-Za-z0-9_-]` saem.
-- `instalacao_shell_pipefail(string $cmd): array` — [linha 417](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L417)
+- `instalacao_shell_pipefail(string $cmd): array` — [linha 429](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L429)
   Comando de shell com `pipefail` (a falha do `mysqldump` não some atrás do `gzip`). O `/bin/sh` do Debian e do Ubuntu é o dash, que não tem `pipefail` e sai com código 2 no `set -o pipefail`; por isso usa o bash quando existe e, sem ele, o `sh` sem `pipefail` (o tamanho do arquivo ainda é conferido).
-- `instalacao_banco_processo(string $cmd, array $banco): array` — [linha 423](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L423)
+- `instalacao_banco_processo(string $cmd, array $banco): array` — [linha 435](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L435)
   Roda um pipe de shell com a senha do banco em `MYSQL_PWD`. @return array ['codigo' => int, 'erro' => string]
-- `instalacao_banco_dump(string $dir, array $banco): array` — [linha 440](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L440)
+- `instalacao_banco_dump(string $dir, array $banco): array` — [linha 452](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L452)
   Dump do banco (`mysqldump --single-transaction`, gzip) em `<dir>/banco.sql.gz`, anotado no `snapshot.json`. `$banco`: host, usuario, senha, nome (o `$_BANCO` do Gestor).
   Retorno: ['ok' => bool, 'arquivo' => string|null, 'mb' => float, 'erro' => string]
-- `instalacao_banco_restaurar(string $dump, array $banco): array` — [linha 455](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L455)
+- `instalacao_banco_restaurar(string $dump, array $banco): array` — [linha 467](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L467)
   Restaura `banco.sql.gz` no banco. @return array ['ok' => bool, 'erro' => string]
-- `instalacao_saude_log_offset(string $base): int` — [linha 465](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L465)
+- `instalacao_saude_log_offset(string $base): int` — [linha 477](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L477)
   Tamanho atual do log de erros do PHP (para achar fatais novos depois).
-- `instalacao_saude_verificar(string $base, int $offsetLog, string $dominio, array $opcoes = []): array` — [linha 485](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L485)
+- `instalacao_saude_verificar(string $base, int $offsetLog, string $dominio, array $opcoes = []): array` — [linha 497](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L497)
   Verificação depois de uma entrega: sem erro fatal novo no log do PHP e a raiz do site respondendo abaixo de 500.
   Retorno: ['ok' => bool, 'motivos' => string[], 'http' => int|null, 'avisos' => string[]]
-- `instalacao_saude_http(string $url, ?string $ip): int` — [linha 520](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L520)
+- `instalacao_saude_http(string $url, ?string $ip): int` — [linha 532](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L532)
   Código HTTP de `$url` (0 sem conexão). Com `$ip`, o host da URL é resolvido para ele.
+- `instalacao_regras_ler(string $base): array` — [linha 553](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L553)
+  Regras que as resoluções deixam (`installation/regras.json`): `rel → [acao, camada, motivo, hash_disco, hash_novo, em]`.
+- `instalacao_regras_gravar(string $base, array $regras): bool` — [linha 560](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L560)
+  Grava as regras de forma atômica.
+- `instalacao_choque_acoes(array $choque): array` — [linha 577](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L577)
+  Decisões possíveis para um choque, pelo motivo: - `editado` (mudança no servidor): sobrescrever com a versão nova, manter a do servidor ou mesclar; - `sobreposto` (a camada de cima é a dona): manter ou mesclar. Sobrescrever não vale aqui: a próxima entrega da camada dona escreveria de novo; o lugar de desfazer a sobreposição é o repositório dela; - `retirado-editado`: sobrescrever (aceita a retirada, o arquivo sai) ou manter; - `original-ausente`: manter.
+- `instalacao_choque_versoes(string $base, array $choque): array` — [linha 591](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L591)
+  As duas versões de um choque: a que está no ar (disco) e a nova (cópia guardada em `backups/overrides/`).
+  Retorno: ['no_ar' => string|null, 'nova' => string|null, 'binario' => bool]
+- `instalacao_choque_resolver(string $base, array $choque, string $acao, ?string $mesclado = null): array` — [linha 613](../../../../../gestor/bibliotecas/instalacao-manifesto.php#L613)
+  Aplica a decisão sobre um choque no disco e guarda a regra que vale nas próximas entregas. - `sobrescrever`: a versão nova (cópia) vai para o lugar; numa retirada, o arquivo sai; - `manter`: nada muda no disco; a regra faz a próxima entrega do mesmo conteúdo já nascer resolvida; - `mesclar`: `$mesclado` vai para o lugar (a próxima entrega com versão nova volta a pedir decisão).
+  Parâmetros:
+  - `$choque`: Linha do registro: caminho, camada, motivo, copia, hash_novo.
+  Retorno: ['ok' => bool, 'erro' => string, 'acao' => string, 'hash_disco' => string|null]
 
 <!-- c2f:extract:end -->

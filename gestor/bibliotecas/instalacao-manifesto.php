@@ -135,6 +135,13 @@ function instalacao_planejar(string $base, string $camada, array $pacote, bool $
         foreach ($m['arquivos'] as $rel => $h) $todos[$rel][$h] = $c;
     }
     $dono = function (array $grupo, string $rel): ?string { foreach ($grupo as $c => $arqs) if (isset($arqs[$rel])) return $c; return null; };
+    // req-199: "manter" decidido antes para este arquivo, com o disco ainda igual ao da decisão, vale de
+    // novo: o choque já nasce resolvido (a versão nova continua guardada em backups/overrides/).
+    $regras = instalacao_regras_ler($base);
+    $regra = function (string $rel, ?string $hDisco) use ($regras): array {
+        $r = $regras[$rel] ?? null;
+        return ($r && ($r['acao'] ?? '') === 'manter' && ($r['hash_disco'] ?? null) === $hDisco) ? ['resolucao' => 'manter-regra'] : [];
+    };
 
     $plano = ['primeira' => $anterior === null, 'escrever' => [], 'preservar' => [], 'retirar' => [], 'restaurar' => [],
         'originais' => [], 'retirar_choque' => [], 'manifesto' => []];
@@ -142,13 +149,17 @@ function instalacao_planejar(string $base, string $camada, array $pacote, bool $
     foreach ($pacote as $rel => $hNovo) {
         if (instalacao_fora($rel)) continue;
         $hDisco = instalacao_hash_disco($base, $rel);
+        // req-199: a camada entrega o mesmo conteúdo da entrega anterior e o disco é outro (sobreposto ou
+        // editado): não há nada novo a decidir. Fica como está, sem choque (antes virava choque a cada entrega,
+        // e voltava depois de uma mescla).
+        if ($anterior !== null && $hDisco !== null && $hDisco !== $hNovo && ($anterior[$rel] ?? null) === $hNovo) continue;
         $sup = $dono($superiores, $rel);
         if ($sup !== null && $hDisco !== null && $hDisco !== $hNovo) {
-            $plano['preservar'][$rel] = ['motivo' => 'sobreposto', 'camada_dona' => $sup, 'hash_disco' => $hDisco, 'hash_novo' => $hNovo];
+            $plano['preservar'][$rel] = ['motivo' => 'sobreposto', 'camada_dona' => $sup, 'hash_disco' => $hDisco, 'hash_novo' => $hNovo] + $regra($rel, $hDisco);
             continue;
         }
         if ($anterior !== null && $hDisco !== null && $hDisco !== $hNovo && ($anterior[$rel] ?? null) !== $hDisco && !isset($todos[$rel][$hDisco])) {
-            $plano['preservar'][$rel] = ['motivo' => 'editado', 'camada_dona' => null, 'hash_disco' => $hDisco, 'hash_novo' => $hNovo];
+            $plano['preservar'][$rel] = ['motivo' => 'editado', 'camada_dona' => null, 'hash_disco' => $hDisco, 'hash_novo' => $hNovo] + $regra($rel, $hDisco);
             continue;
         }
         // Camada superior sobrescrevendo a versão de uma inferior: guarda a original para restaurar.
@@ -165,7 +176,7 @@ function instalacao_planejar(string $base, string $camada, array $pacote, bool $
             $hDisco = instalacao_hash_disco($base, $rel);
             if ($hDisco === null) continue;
             if ($hDisco !== $hAnterior) {
-                $plano['retirar_choque'][$rel] = ['motivo' => 'retirado-editado', 'camada_dona' => null, 'hash_disco' => $hDisco, 'hash_novo' => null];
+                $plano['retirar_choque'][$rel] = ['motivo' => 'retirado-editado', 'camada_dona' => null, 'hash_disco' => $hDisco, 'hash_novo' => null] + $regra($rel, $hDisco);
                 continue;
             }
             $inf = $dono($inferiores, $rel);
@@ -276,7 +287,7 @@ function instalacao_choques_registrar(string $base, string $origem, string $cama
  * atualização. `$escapar` escapa um valor para SQL.
  */
 function instalacao_choque_pendente_filtro(array $linha, callable $escapar): string {
-    $w = ['resolucao IS NULL'];
+    $w = [empty($linha['resolucao']) ? 'resolucao IS NULL' : "resolucao='" . $escapar((string)$linha['resolucao']) . "'"];
     foreach (['caminho', 'camada', 'motivo', 'hash_disco', 'hash_novo'] as $k) {
         $v = $linha[$k] ?? null;
         $w[] = $v === null ? $k . ' IS NULL' : $k . "='" . $escapar((string)$v) . "'";
@@ -304,6 +315,7 @@ function instalacao_choques_gravar_pendentes(string $base, callable $inserir): i
                 'motivo' => (string)($c['motivo'] ?? ''), 'camada_dona' => $c['camada_dona'] ?? null, 'hash_disco' => $c['hash_disco'] ?? null,
                 'hash_novo' => $c['hash_novo'] ?? null, 'copia' => $c['copia'] ?? null, 'diff' => $c['diff'] ?? null,
             ];
+            if (!empty($c['resolucao'])) $linha['resolucao'] = (string)$c['resolucao'];
             if ($inserir($linha)) $total++; else $ok = false;
         }
         if ($ok) @rename($f, substr($f, 0, -strlen('.pendente.json')) . '.gravado.json');
@@ -531,4 +543,106 @@ function instalacao_saude_http(string $url, ?string $ip): int {
     $codigo = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
     curl_close($ch);
     return $codigo;
+}
+
+// ============================================================================ resolução de choques (req-199 / BATCH-205)
+// Um motor para os dois sentidos: a entrega (core, plugin, projeto) registra o choque; a decisão por
+// arquivo — sobrescrever, manter ou mesclar — é aplicada aqui, venha do painel, da API/CLI ou da extensão.
+
+/** Regras que as resoluções deixam (`installation/regras.json`): `rel → [acao, camada, motivo, hash_disco, hash_novo, em]`. */
+function instalacao_regras_ler(string $base): array {
+    $f = instalacao_caminho_base($base) . 'installation' . DIRECTORY_SEPARATOR . 'regras.json';
+    $d = is_file($f) ? json_decode((string)file_get_contents($f), true) : null;
+    return is_array($d['regras'] ?? null) ? $d['regras'] : [];
+}
+
+/** Grava as regras de forma atômica. */
+function instalacao_regras_gravar(string $base, array $regras): bool {
+    $dir = instalacao_caminho_base($base) . 'installation' . DIRECTORY_SEPARATOR;
+    if (!is_dir($dir) && !@mkdir($dir, 0775, true) && !is_dir($dir)) return false;
+    ksort($regras);
+    $tmp = $dir . 'regras.json.' . bin2hex(random_bytes(3)) . '.tmp';
+    if (@file_put_contents($tmp, json_encode(['atualizado_em' => date('c'), 'regras' => $regras], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) === false) return false;
+    return @rename($tmp, $dir . 'regras.json');
+}
+
+/**
+ * Decisões possíveis para um choque, pelo motivo:
+ * - `editado` (mudança no servidor): sobrescrever com a versão nova, manter a do servidor ou mesclar;
+ * - `sobreposto` (a camada de cima é a dona): manter ou mesclar. Sobrescrever não vale aqui: a próxima
+ *   entrega da camada dona escreveria de novo; o lugar de desfazer a sobreposição é o repositório dela;
+ * - `retirado-editado`: sobrescrever (aceita a retirada, o arquivo sai) ou manter;
+ * - `original-ausente`: manter.
+ */
+function instalacao_choque_acoes(array $choque): array {
+    switch ((string)($choque['motivo'] ?? '')) {
+        case 'editado': return ['sobrescrever', 'manter', 'mesclar'];
+        case 'sobreposto': return ['manter', 'mesclar'];
+        case 'retirado-editado': return ['sobrescrever', 'manter'];
+        default: return ['manter'];
+    }
+}
+
+/**
+ * As duas versões de um choque: a que está no ar (disco) e a nova (cópia guardada em `backups/overrides/`).
+ *
+ * @return array ['no_ar' => string|null, 'nova' => string|null, 'binario' => bool]
+ */
+function instalacao_choque_versoes(string $base, array $choque): array {
+    $base = instalacao_caminho_base($base);
+    $ler = function (?string $rel) use ($base) {
+        if ($rel === null || $rel === '' || strpos($rel, '..') !== false) return null;
+        $f = $base . str_replace('/', DIRECTORY_SEPARATOR, $rel);
+        return is_file($f) ? (string)file_get_contents($f) : null;
+    };
+    $noAr = $ler((string)($choque['caminho'] ?? ''));
+    $nova = $ler($choque['copia'] ?? null);
+    $binario = ($noAr !== null && strpos($noAr, "\0") !== false) || ($nova !== null && strpos($nova, "\0") !== false);
+    return ['no_ar' => $noAr, 'nova' => $nova, 'binario' => $binario];
+}
+
+/**
+ * Aplica a decisão sobre um choque no disco e guarda a regra que vale nas próximas entregas.
+ * - `sobrescrever`: a versão nova (cópia) vai para o lugar; numa retirada, o arquivo sai;
+ * - `manter`: nada muda no disco; a regra faz a próxima entrega do mesmo conteúdo já nascer resolvida;
+ * - `mesclar`: `$mesclado` vai para o lugar (a próxima entrega com versão nova volta a pedir decisão).
+ *
+ * @param array $choque Linha do registro: caminho, camada, motivo, copia, hash_novo.
+ * @return array ['ok' => bool, 'erro' => string, 'acao' => string, 'hash_disco' => string|null]
+ */
+function instalacao_choque_resolver(string $base, array $choque, string $acao, ?string $mesclado = null): array {
+    $rel = (string)($choque['caminho'] ?? '');
+    $falha = function (string $m) use ($acao) { return ['ok' => false, 'erro' => $m, 'acao' => $acao, 'hash_disco' => null]; };
+    if ($rel === '' || strpos($rel, '..') !== false || instalacao_fora($rel)) return $falha('caminho inválido');
+    if (!in_array($acao, instalacao_choque_acoes($choque), true)) return $falha('decisão "' . $acao . '" não vale para um choque "' . ($choque['motivo'] ?? '') . '"');
+    $b = instalacao_caminho_base($base);
+    $alvo = $b . str_replace('/', DIRECTORY_SEPARATOR, $rel);
+    $escrever = function (string $conteudo) use ($alvo) {
+        if (!is_dir(dirname($alvo))) @mkdir(dirname($alvo), 0775, true);
+        return @file_put_contents($alvo, $conteudo) !== false;
+    };
+
+    if ($acao === 'sobrescrever') {
+        if (($choque['motivo'] ?? '') === 'retirado-editado') {
+            if (is_file($alvo) && !@unlink($alvo)) return $falha('não foi possível remover o arquivo');
+        } else {
+            $v = instalacao_choque_versoes($base, $choque);
+            if ($v['nova'] === null) return $falha('a versão nova não está mais guardada (' . ($choque['copia'] ?? '—') . ')');
+            if (!$escrever($v['nova'])) return $falha('não foi possível escrever o arquivo');
+        }
+    } elseif ($acao === 'mesclar') {
+        if ($mesclado === null) return $falha('conteúdo mesclado ausente');
+        if (!$escrever($mesclado)) return $falha('não foi possível escrever o arquivo');
+    }
+
+    $hash = instalacao_hash_disco($base, $rel);
+    $regras = instalacao_regras_ler($base);
+    if ($acao === 'manter') {
+        $regras[$rel] = ['acao' => 'manter', 'camada' => (string)($choque['camada'] ?? ''), 'motivo' => (string)($choque['motivo'] ?? ''),
+            'hash_disco' => $hash, 'hash_novo' => $choque['hash_novo'] ?? null, 'em' => date('c')];
+    } else {
+        unset($regras[$rel]); // o disco mudou: uma regra antiga de "manter" não vale mais
+    }
+    instalacao_regras_gravar($base, $regras);
+    return ['ok' => true, 'erro' => '', 'acao' => $acao, 'hash_disco' => $hash];
 }

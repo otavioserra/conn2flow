@@ -11,6 +11,8 @@ sources:
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/db/migrations/20250814141000_create_atualizacoes_execucoes_table.php
   - gestor/db/migrations/20260930210000_create_atualizacoes_choques_table.php
+  - gestor/db/migrations/20260930220000_add_resolucao_fields_to_atualizacoes_choques.php
+  - gestor/bibliotecas/atualizacoes-choques.php
 verified_at: 100adc3a
 ---
 
@@ -22,7 +24,7 @@ Exibe sessões e histórico de atualizações do core e encaminha as ações do 
 
 Abra admin-atualizacoes/ para ver execuções recentes e iniciar ou acompanhar a atualização. Use admin-atualizacoes/detalhe/?log=<nome> para um log de sessão ou ?plano=<nome> para um plano. As duas rotas constam em pt-br e en. A página antiga disparar redireciona logicamente para a lista e não está declarada como rota no JSON.
 
-**Choques das entregas (req-198).** A lista mostra os últimos 50 registros de `atualizacoes_choques`: data, camada e origem, arquivo, motivo (sobreposto, editado no servidor, retirado com edição), camada dona, versão e resolução. "Ver diff" abre `admin-atualizacoes/detalhe/?choque=<id>`, com o diff e o caminho da versão nova guardada em `backups/overrides/`. A resolução (sobrescrever, manter, mesclar) fica para a req-199; por enquanto a tela só mostra.
+**Choques das entregas (req-198).** A lista mostra os últimos 50 registros de `atualizacoes_choques`: data, camada e origem, arquivo, motivo (sobreposto, editado no servidor, retirado com edição), camada dona, versão e resolução. "Ver diff" abre `admin-atualizacoes/detalhe/?choque=<id>`, com o diff e o caminho da versão nova guardada em `backups/overrides/`. No detalhe fica a decisão (req-199 / BATCH-205): os botões das decisões que valem para o motivo e, em "Mesclar…", um editor com o resultado à esquerda (começa com a versão no ar) e a versão nova à direita. A decisão vai por AJAX (`ajaxOpcao=choque-resolver`) para `atualizacoes_choques_resolver()`, a mesma função da API; resolvido, o detalhe mostra quando e por quem (`painel:<e-mail>`).
 
 ## Referência técnica
 

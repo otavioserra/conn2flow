@@ -41,6 +41,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-201 | complete | Atualização segura, fase 1: trava de deploy, backup total, `db:check-migrations`, CLI/web sem apagar `db/` (req-197) | [BATCH-201.md](BATCH-201.md) | Promovido do BL-028 em 2026-09-30. PHPUnit 21/21 do lote; trava testada contra o destino do Lab sem deploy (recusa, espera, Windows×WSL). Homologação humana pendente. |
 | BATCH-202 | complete | Atualização segura, fase 2a: manifesto por camada, precedência e registro de choques (req-198) | [BATCH-202.md](BATCH-202.md) | Sobreposto, editado, retirado e tela de choques validados no tenant isolado `project-test`. Homologação humana pendente. |
 | BATCH-203 | complete | Atualização segura, fase 2b: snapshot seletivo, verificação e rollback (req-198) | [BATCH-203.md](BATCH-203.md) | Dump, volta automática (código 6) e rollback com e sem banco validados no tenant. Homologação humana pendente. |
+| BATCH-205 | complete | Atualização segura, fase 3a: motor de choques — decisão por arquivo no painel, na API e no CLI (req-199) | [BATCH-205.md](BATCH-205.md) | Sobrescrever, manter (regra) e mesclar validados no tenant pelos três caminhos. Homologação humana pendente. |
 | BATCH-204 | complete | Atualização segura, fase 2c: snapshot, verificação e rollback no deploy por API; `c2f update:rollback` (req-198) | [BATCH-204.md](BATCH-204.md) | Deploy por API com volta automática, `/_api/project/rollback` e `c2f update:rollback` validados no tenant. Homologação humana pendente. |
 
 ## Regra operacional

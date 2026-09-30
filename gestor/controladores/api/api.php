@@ -258,6 +258,14 @@ function api_handle_project() {
             api_project_rollback();
             break;
 
+        case 'conflicts':
+            api_project_conflicts();
+            break;
+
+        case 'resolve':
+            api_project_resolve();
+            break;
+
         default:
             api_response_error('Sub-endpoint PROJECT não encontrado: ' . $sub_endpoint, 404);
     }
@@ -1005,6 +1013,67 @@ function api_project_rollback() {
         'falhas' => $r['falhas'],
         'banco' => $comBanco ? 'restaurado' : 'não tocado',
     ], 'Rollback concluído');
+}
+
+/** Corpo JSON da requisição, ou o POST/GET quando não é JSON. */
+function api_corpo_requisicao(): array {
+    $body = json_decode((string)file_get_contents('php://input'), true);
+    return is_array($body) ? $body : array_merge($_GET, $_POST);
+}
+
+/**
+ * `/_api/project/conflicts` (req-199 / BATCH-205): choques das entregas desta instalação.
+ * - sem `id`: lista (`todos=1` inclui os resolvidos; `limite`, até 500);
+ * - com `id`: detalhe com as duas versões (`no_ar`, `nova`; binário em base64) e o diff.
+ * Aceita GET ou POST (JSON ou formulário).
+ */
+function api_project_conflicts() {
+    global $_GESTOR;
+    api_authenticate(true);
+    $corpo = api_corpo_requisicao();
+    require_once $_GESTOR['bibliotecas-path'] . 'atualizacoes-choques.php';
+    if (!atualizacoes_choques_disponivel()) api_response_error('Registro de choques indisponível (migração da req-198 não aplicada).', 409);
+    if (!empty($corpo['id'])) {
+        $d = atualizacoes_choques_detalhe($_GESTOR['ROOT_PATH'], (int)$corpo['id']);
+        if (!$d) api_response_error('Choque não encontrado: ' . (int)$corpo['id'], 404);
+        api_response_success($d, 'Choque ' . (int)$corpo['id']);
+    }
+    $todos = filter_var($corpo['todos'] ?? false, FILTER_VALIDATE_BOOLEAN);
+    $lista = atualizacoes_choques_listar(!$todos, (int)($corpo['limite'] ?? 100));
+    api_response_success(['total' => count($lista), 'choques' => $lista], count($lista) . ' choque(s)');
+}
+
+/**
+ * `POST /_api/project/resolve` (req-199 / BATCH-205): decisão sobre um choque.
+ * Corpo: `{"id":12,"acao":"sobrescrever|manter|mesclar","conteudo":"…","codificacao":"texto|base64"}`
+ * (`conteudo` só no `mesclar`). Roda sob a trava de deploy. Quem decidiu fica como `api:<e-mail do token>`.
+ */
+function api_project_resolve() {
+    global $_GESTOR;
+    $auth = api_authenticate(true);
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') api_response_error('Método não permitido. Use POST.', 405);
+    $corpo = api_corpo_requisicao();
+    $id = (int)($corpo['id'] ?? 0);
+    $acao = (string)($corpo['acao'] ?? '');
+    $conteudo = isset($corpo['conteudo']) ? (string)$corpo['conteudo'] : null;
+    if ($conteudo !== null && ($corpo['codificacao'] ?? 'texto') === 'base64') {
+        $conteudo = base64_decode($conteudo, true);
+        if ($conteudo === false) api_response_error('conteudo em base64 inválido', 400);
+    }
+    if ($id <= 0 || $acao === '') api_response_error('Informe id e acao (sobrescrever, manter ou mesclar).', 400);
+
+    require_once $_GESTOR['bibliotecas-path'] . 'atualizacoes-choques.php';
+    require_once $_GESTOR['bibliotecas-path'] . 'deploy-lock.php';
+    if (!atualizacoes_choques_disponivel()) api_response_error('Registro de choques indisponível (migração da req-198 não aplicada).', 409);
+    $trava_arquivo = rtrim($_GESTOR['ROOT_PATH'], '/\\') . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . 'deploy.lock';
+    $trava = deploy_lock_acquire($trava_arquivo, ['owner' => 'api-project-resolve', 'detail' => 'choque ' . $id]);
+    if (!$trava['ok']) api_response_error('Outro deploy está em execução neste ambiente: ' . deploy_lock_describe($trava['holder'] ?? null), 409);
+    register_shutdown_function(function () use ($trava_arquivo, $trava) { deploy_lock_release($trava_arquivo, $trava['token']); });
+
+    $quem = 'api:' . (is_array($auth) ? (string)($auth['email'] ?? ($auth['id_usuarios'] ?? '?')) : '?');
+    $r = atualizacoes_choques_resolver($_GESTOR['ROOT_PATH'], $id, $acao, $conteudo, $quem);
+    if (!$r['ok']) api_response_error('Resolução recusada: ' . $r['erro'], $r['erro'] === 'choque não encontrado' ? 404 : 422);
+    api_response_success(['id' => $id, 'acao' => $r['acao'], 'resolvidos' => $r['resolvidos']], 'Choque resolvido');
 }
 
 /** Grava na tabela `atualizacoes_choques` os choques pendentes da instalação (req-198). */

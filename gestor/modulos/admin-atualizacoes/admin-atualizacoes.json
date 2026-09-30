@@ -319,6 +319,96 @@
                     "id": "updates-clash-original-ausente",
                     "value": "Original do core ausente",
                     "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions",
+                    "value": "Decisão",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-act-sobrescrever",
+                    "value": "Sobrescrever com a versão nova",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-act-manter",
+                    "value": "Manter a do servidor",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-act-mesclar",
+                    "value": "Mesclar…",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-editado",
+                    "value": "O arquivo foi mudado no servidor. Sobrescrever põe a versão nova; manter fica com a do servidor (e as próximas entregas do mesmo arquivo seguem assim enquanto ele não mudar); mesclar grava o resultado que você montar.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-sobreposto",
+                    "value": "Uma camada de cima (projeto ou plugin) é a dona deste arquivo. Manter fica com a versão dela; mesclar grava o resultado aqui. Para desfazer a sobreposição, remova o arquivo do repositório da camada dona.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-retirado-editado",
+                    "value": "A camada deixou de entregar o arquivo, mas ele foi editado no servidor. Sobrescrever aceita a retirada (o arquivo sai); manter deixa o arquivo.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-original-ausente",
+                    "value": "A versão original do core não estava guardada para restaurar. Confira o arquivo e marque como mantido.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-merge-help",
+                    "value": "Edite à esquerda o resultado final (começa com a versão que está no ar). A versão nova fica à direita, só para leitura.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-merge-result",
+                    "value": "Resultado (vai para o servidor)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-merge-new",
+                    "value": "Versão nova (entrega)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-merge-save",
+                    "value": "Salvar mescla",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-confirm",
+                    "value": "Aplicar esta decisão no arquivo do servidor?",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-resolved-ok",
+                    "value": "Decisão aplicada.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-sobrescrever",
+                    "value": "Sobrescrito",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-manter",
+                    "value": "Mantido",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-mesclar",
+                    "value": "Mesclado",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-manter-regra",
+                    "value": "Mantido (regra)",
+                    "type": "string"
                 }
             ]
         },
@@ -626,6 +716,96 @@
                 {
                     "id": "updates-clash-original-ausente",
                     "value": "Core original missing",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions",
+                    "value": "Decision",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-act-sobrescrever",
+                    "value": "Overwrite with the new version",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-act-manter",
+                    "value": "Keep the server version",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-act-mesclar",
+                    "value": "Merge…",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-editado",
+                    "value": "The file was changed on the server. Overwrite puts the new version in place; keep stays with the server version (and later deliveries of the same file keep it while it does not change); merge saves the result you build.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-sobreposto",
+                    "value": "An upper layer (project or plugin) owns this file. Keep stays with its version; merge saves the result here. To undo the override, remove the file from the owner layer repository.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-retirado-editado",
+                    "value": "The layer stopped delivering the file, but it was edited on the server. Overwrite accepts the removal (the file is deleted); keep leaves the file.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-actions-help-original-ausente",
+                    "value": "The original core version was not kept for restoring. Check the file and mark it as kept.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-merge-help",
+                    "value": "Edit the final result on the left (it starts with the version currently live). The new version is on the right, read-only.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-merge-result",
+                    "value": "Result (goes to the server)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-merge-new",
+                    "value": "New version (delivery)",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-merge-save",
+                    "value": "Save merge",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-confirm",
+                    "value": "Apply this decision to the server file?",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-resolved-ok",
+                    "value": "Decision applied.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-sobrescrever",
+                    "value": "Overwritten",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-manter",
+                    "value": "Kept",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-mesclar",
+                    "value": "Merged",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-clash-res-manter-regra",
+                    "value": "Kept (rule)",
                     "type": "string"
                 }
             ]

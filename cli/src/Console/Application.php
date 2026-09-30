@@ -12,6 +12,8 @@ use Conn2Flow\Cli\Commands\AuthCookieCommand;
 use Conn2Flow\Cli\Commands\DbTestCommand;
 use Conn2Flow\Cli\Commands\DbCheckMigrationsCommand;
 use Conn2Flow\Cli\Commands\UpdateRollbackCommand;
+use Conn2Flow\Cli\Commands\UpdateConflictsCommand;
+use Conn2Flow\Cli\Commands\UpdateResolveCommand;
 use Conn2Flow\Cli\Commands\DbUpdateCommand;
 use Conn2Flow\Cli\Commands\DocsAuditCommand;
 use Conn2Flow\Cli\Commands\DocsBuildCommand;
@@ -90,6 +92,8 @@ final class Application
         $this->register(new DbTestCommand($this->rootPath));
         $this->register(new DbCheckMigrationsCommand($this->rootPath));
         $this->register(new UpdateRollbackCommand($this->rootPath));
+        $this->register(new UpdateConflictsCommand($this->rootPath));
+        $this->register(new UpdateResolveCommand($this->rootPath));
         $this->register(new DbUpdateCommand($this->rootPath));
 
         // AI & SDD

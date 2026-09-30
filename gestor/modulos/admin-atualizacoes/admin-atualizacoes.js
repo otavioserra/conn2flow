@@ -1,4 +1,36 @@
 $(document).ready(function () {
+    // req-199 / BATCH-205: decisão sobre um choque (detalhe/?choque=<id>).
+    (function choqueDecisao() {
+        const box = $('[data-choque-decisao]');
+        if (!box.length) return;
+        const url = gestor.raiz + String(gestor.moduloCaminho).replace(/\/+$/, '') + '/';
+        const msg = box.find('[data-choque-msg]');
+        function mostrar(tipo, texto) { msg.removeClass('positive negative').addClass(tipo).text(texto).show(); }
+        function resolver(acao, conteudo) {
+            const dados = { opcao: gestor.moduloOpcao, ajax: 'sim', ajaxOpcao: 'choque-resolver', id: box.data('choque-id'), acao: acao };
+            if (conteudo !== undefined) dados.conteudo = conteudo;
+            box.find('button').addClass('disabled');
+            $.ajax({ type: 'POST', url: url, data: dados, dataType: 'json' })
+                .done(function (r) {
+                    if (r && r.status === 'Ok') { mostrar('positive', box.data('msg-ok')); setTimeout(function () { window.location.reload(); }, 900); }
+                    else { box.find('button').removeClass('disabled'); mostrar('negative', (r && r.message) || 'Erro'); }
+                })
+                .fail(function (x) {
+                    box.find('button').removeClass('disabled');
+                    if (x.status === 401) { window.location.href = gestor.raiz + 'signin/'; return; }
+                    mostrar('negative', 'HTTP ' + x.status);
+                });
+        }
+        box.on('click', '[data-choque-acao]', function () {
+            const acao = $(this).data('choque-acao');
+            if (acao === 'mesclar') { box.find('[data-choque-mescla]').slideToggle(150); return; }
+            if (window.confirm(box.data('msg-confirmar'))) resolver(acao);
+        });
+        box.on('click', '[data-choque-mesclar-salvar]', function () {
+            if (window.confirm(box.data('msg-confirmar'))) resolver('mesclar', box.find('[data-choque-conteudo]').val());
+        });
+    })();
+
     function adminAtualizacoesMain() {
         const root = $('#admin-atualizacoes-root');
         if (!root.length) return;

@@ -129,8 +129,8 @@ function admin_atualizacoes_listar(): void {
 
 /**
  * req-198: choques das entregas (tabela `atualizacoes_choques`) — sobreposições do projeto/plugin que a
- * atualização do core preservou, edições no servidor e retiradas que não puderam acontecer. A resolução
- * (sobrescrever, manter, mesclar) chega na req-199; aqui a lista e o diff.
+ * atualização do core preservou, edições no servidor e retiradas que não puderam acontecer. A decisão
+ * (sobrescrever, manter, mesclar) fica no detalhe (req-199).
  */
 function admin_atualizacoes_choques_html(): string {
     global $_GESTOR;
@@ -150,7 +150,7 @@ function admin_atualizacoes_choques_html(): string {
             .'<td><span class="ui '.$cor.' label">'.$v('updates-clash-'.$r['motivo']).'</span></td>'
             .'<td>'.$e($r['camada_dona'] ?? '—').'</td>'
             .'<td>'.$e($r['versao'] ?? '').'</td>'
-            .'<td>'.($r['resolucao'] ? $e($r['resolucao']) : $v('updates-clash-pending')).'</td>'
+            .'<td>'.($r['resolucao'] ? $v('updates-clash-res-'.$r['resolucao']) : $v('updates-clash-pending')).'</td>'
             .'<td><a class="ui mini button" href="detalhe/?choque='.(int)$r['id_atualizacoes_choques'].'">'.$v('updates-clash-view').'</a></td>'
             .'</tr>';
     }
@@ -163,7 +163,7 @@ function admin_atualizacoes_choques_html(): string {
         .'<th>'.$v('updates-clash-col-resolution').'</th><th></th></tr></thead><tbody>'.$linhas.'</tbody></table></div>';
 }
 
-/** req-198: detalhe de um choque (diff e onde está a versão nova). */
+/** req-198: detalhe de um choque (diff e onde está a versão nova); req-199: a decisão. */
 function admin_atualizacoes_choque_detalhe(int $id): string {
     global $_GESTOR;
     $e = function($t){ return htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8'); };
@@ -179,7 +179,49 @@ function admin_atualizacoes_choque_detalhe(int $id): string {
         .'<div class="item"><b>'.$v('updates-clash-col-owner').':</b> '.$e($r['camada_dona'] ?? '—').'</div>'
         .'<div class="item"><b>'.$v('updates-clash-copy').':</b> '.($r['copia'] ? '<code>'.$e($r['copia']).'</code>' : '—').'</div>'
         .'</div>'
-        .($diff !== '' ? '<textarea class="codemirror-log" data-mode="diff" style="display:none;" rows="30">'.$e($diff).'</textarea><pre class="fallback-log" style="max-height:60vh;overflow:auto;">'.$e($diff).'</pre>' : '');
+        .($diff !== '' ? '<textarea class="codemirror-log" data-mode="diff" style="display:none;" rows="30">'.$e($diff).'</textarea><pre class="fallback-log" style="max-height:60vh;overflow:auto;">'.$e($diff).'</pre>' : '')
+        .admin_atualizacoes_choque_decisao_html($r);
+}
+
+/**
+ * req-199 / BATCH-205: decisão sobre o choque — os botões das ações que valem para o motivo e o editor de
+ * mescla (começa com a versão que está no ar; a nova fica ao lado, só leitura). Resolvido: quem e quando.
+ */
+function admin_atualizacoes_choque_decisao_html(array $r): string {
+    global $_GESTOR;
+    $e = function($t){ return htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8'); };
+    $v = function($id){ global $_GESTOR; return htmlspecialchars((string)gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>$id]), ENT_QUOTES, 'UTF-8'); };
+    if(!empty($r['resolucao'])){
+        return '<div class="ui positive message" data-choque-resolvido>'.$v('updates-clash-res-'.$r['resolucao'])
+            .(!empty($r['resolvido_em']) ? ' — '.$e($r['resolvido_em']) : '').(!empty($r['resolvido_por']) ? ' ('.$e($r['resolvido_por']).')' : '').'</div>';
+    }
+    require_once $_GESTOR['bibliotecas-path'].'atualizacoes-choques.php';
+    $acoes = instalacao_choque_acoes($r);
+    $versoes = instalacao_choque_versoes($_GESTOR['ROOT_PATH'], $r);
+    $botoes = '';
+    foreach($acoes as $a){
+        $cor = $a === 'sobrescrever' ? 'orange' : ($a === 'mesclar' ? 'blue' : 'green');
+        $botoes .= '<button type="button" class="ui '.$cor.' button" data-choque-acao="'.$e($a).'">'.$v('updates-clash-act-'.$a).'</button>';
+    }
+    $mescla = '';
+    if(in_array('mesclar', $acoes, true) && !$versoes['binario']){
+        $mescla = '<div class="ui form" data-choque-mescla style="display:none;margin-top:1em;">'
+            .'<p>'.$v('updates-clash-merge-help').'</p>'
+            .'<div class="two fields">'
+            .'<div class="field"><label>'.$v('updates-clash-merge-result').'</label><textarea rows="22" data-choque-conteudo style="font-family:monospace;">'.$e($versoes['no_ar'] ?? '').'</textarea></div>'
+            .'<div class="field"><label>'.$v('updates-clash-merge-new').'</label><textarea rows="22" readonly style="font-family:monospace;">'.$e($versoes['nova'] ?? '').'</textarea></div>'
+            .'</div>'
+            .'<button type="button" class="ui primary button" data-choque-mesclar-salvar>'.$v('updates-clash-merge-save').'</button>'
+            .'</div>';
+    }
+    return '<div class="ui segment" data-choque-decisao data-choque-id="'.(int)$r['id_atualizacoes_choques'].'"'
+        .' data-msg-confirmar="'.$v('updates-clash-confirm').'" data-msg-ok="'.$v('updates-clash-resolved-ok').'">'
+        .'<h4 class="ui header">'.$v('updates-clash-actions').'</h4>'
+        .'<p>'.$v('updates-clash-actions-help-'.$r['motivo']).'</p>'
+        .'<div class="ui buttons" style="flex-wrap:wrap;gap:.5em;">'.$botoes.'</div>'
+        .$mescla
+        .'<div class="ui message" data-choque-msg style="display:none;"></div>'
+        .'</div>';
 }
 
 function admin_atualizacoes_detalhe(): void {
@@ -318,6 +360,21 @@ function admin_atualizacoes_ajax_update(){
     }
 }
 
+/** req-199 / BATCH-205: decisão sobre um choque pelo painel (mesmo motor da API). */
+function admin_atualizacoes_ajax_choque_resolver(){
+    global $_GESTOR;
+    require_once $_GESTOR['bibliotecas-path'].'atualizacoes-choques.php';
+    $id = (int)($_POST['id'] ?? 0);
+    $acao = (string)($_POST['acao'] ?? '');
+    $conteudo = isset($_POST['conteudo']) ? (string)$_POST['conteudo'] : null;
+    $u = function_exists('gestor_usuario') ? (array)gestor_usuario() : [];
+    $quem = 'painel:'.(string)($u['email'] ?? ($u['usuario'] ?? ($_GESTOR['usuario-id'] ?? '?')));
+    $r = atualizacoes_choques_resolver($_GESTOR['ROOT_PATH'], $id, $acao, $acao === 'mesclar' ? $conteudo : null, $quem);
+    $_GESTOR['ajax-json'] = $r['ok']
+        ? ['status' => 'Ok', 'data' => ['id' => $id, 'acao' => $r['acao'], 'resolvidos' => $r['resolvidos']]]
+        : ['status' => 'Erro', 'message' => $r['erro']];
+}
+
 // ================= Interface Principal =================
 
 function admin_atualizacoes_start(){
@@ -330,6 +387,7 @@ function admin_atualizacoes_start(){
 		
 		switch($_GESTOR['ajax-opcao']){
 			case 'update': admin_atualizacoes_ajax_update(); break;
+			case 'choque-resolver': admin_atualizacoes_ajax_choque_resolver(); break;
 		}
 		
 		interface_ajax_finalizar();

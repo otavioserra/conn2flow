@@ -27,6 +27,7 @@
 - **`resources:sync` na worktree** reescreve tokens de asset de 31 módulos (CRLF) e para no Tailwind (sem CLI): para variável nova, inserir no `VariaveisData.json` sem reformatar (JSON indent 4, `\/`, CRLF) e desfazer o resto.
 - **Login do admin do tenant é o e-mail** (`usuario` = e-mail no instalador headless).
 - **BATCH-204:** token de API do tenant = PAT (`c2f_pat_`) gerado pelo `perfil-usuario` (`ajaxOpcao=api-token-gerar`, o valor vem na RAIZ da resposta, não em `data`), gravado em `devProjects.project-test.api.access_token`. O Windows não resolve `c2f-teste.local`: chamar a API com `curl --resolve c2f-teste.local:8443:127.0.0.1`.
+- **BATCH-205:** `assets:minify` na worktree acusa dezenas de derivados "stale" só por CRLF (o manifesto tem sha1 do conteúdo em LF). Para um JS só: terser `--compress --mangle` sobre o conteúdo em LF e atualizar só a entrada dele no `minify-manifest.json`. `c2f` já tem `project:update-system` com alias `update:system`: a req-201 não pode usar esse nome.
 - **Nada que o filho do bootstrap chama no começo pode carregar a biblioteca instalada** (fixa a versão antiga pelo `function_exists`). E o bootstrap troca o atualizador instalado antes do filho rodar: atualizador de teste quebrado trava o tenant até recolocar o script à mão.
 
 ### 2026-09-30 — BATCH-201 (req-197): trava de deploy, backup, checagem de migrações
