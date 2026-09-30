@@ -10,6 +10,7 @@ use Conn2Flow\Cli\Commands\AiPruneMemoriesCommand;
 use Conn2Flow\Cli\Commands\AiSyncCommand;
 use Conn2Flow\Cli\Commands\AuthCookieCommand;
 use Conn2Flow\Cli\Commands\DbTestCommand;
+use Conn2Flow\Cli\Commands\DbCheckMigrationsCommand;
 use Conn2Flow\Cli\Commands\DbUpdateCommand;
 use Conn2Flow\Cli\Commands\DocsAuditCommand;
 use Conn2Flow\Cli\Commands\DocsBuildCommand;
@@ -86,6 +87,7 @@ final class Application
         $this->register(new AssetsMinifyCommand($this->rootPath));
         $this->register(new AssetsPublishCommand($this->rootPath));
         $this->register(new DbTestCommand($this->rootPath));
+        $this->register(new DbCheckMigrationsCommand($this->rootPath));
         $this->register(new DbUpdateCommand($this->rootPath));
 
         // AI & SDD

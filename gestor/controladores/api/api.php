@@ -301,6 +301,19 @@ function api_project_update() {
         api_response_error('Arquivo muito grande. Máximo permitido: 100MB', 400);
     }
 
+    // req-197: trava de deploy do ambiente — a mesma da atualização do sistema (`temp/deploy.lock`).
+    // Com outro deploy rodando, recusa com 409 dizendo quem é. A resposta sai por `exit` (dentro de
+    // api_response_*), que não executa `finally`: a liberação fica num shutdown function.
+    require_once $_GESTOR['bibliotecas-path'] . 'deploy-lock.php';
+    $trava_arquivo = rtrim($_GESTOR['ROOT_PATH'], '/\\') . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . 'deploy.lock';
+    $trava = deploy_lock_acquire($trava_arquivo, ['owner' => 'api-project-update', 'detail' => (string)$project_id]);
+    if (!$trava['ok']) {
+        api_response_error('Outro deploy está em execução neste ambiente: ' . deploy_lock_describe($trava['holder'] ?? null), 409);
+    }
+    register_shutdown_function(function () use ($trava_arquivo, $trava) {
+        deploy_lock_release($trava_arquivo, $trava['token']);
+    });
+
     // Criar diretório temporário para processamento
     $temp_dir = $_GESTOR['logs-path'] . 'temp_projects/';
     if (!is_dir($temp_dir)) {

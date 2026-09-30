@@ -20,7 +20,7 @@ Execute php cli/c2f.php help para listar os comandos. O console registra comando
 - [assets (4)](assets.md)
 - [auth (1)](auth.md)
 - [css (2)](css.md)
-- [db (2)](db.md)
+- [db (3)](db.md)
 - [docker (4)](docker.md)
 - [docs (3)](docs.md)
 - [env (2)](env.md)

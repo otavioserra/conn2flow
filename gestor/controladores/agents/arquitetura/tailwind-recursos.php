@@ -543,6 +543,22 @@ function tailwind_recursos_browser_contract(string $centralInput): array
     return ['path' => $path, 'hash' => $hash, 'content' => $content];
 }
 
+/**
+ * `rename` com novas tentativas curtas (req-197). No Windows, o OneDrive e o antivírus seguram o
+ * arquivo por instantes ("O arquivo já está sendo usado por outro processo"); sem isto, uma trava
+ * de milissegundos derrubava o pipeline inteiro na etapa de recursos. Espera 0,2 s, 0,4 s... até 5 vezes.
+ */
+function tailwind_recursos_rename(string $from, string $to, int $tentativas = 5): bool
+{
+    for ($i = 1; $i <= $tentativas; $i++) {
+        if ($i < $tentativas ? @rename($from, $to) : rename($from, $to)) return true;
+        clearstatcache(true, $from);
+        if (!file_exists($from)) return false;
+        usleep(200000 * $i);
+    }
+    return false;
+}
+
 function tailwind_recursos_atomic_write(string $path, string $content): void
 {
     $directory = dirname($path);
@@ -555,13 +571,13 @@ function tailwind_recursos_atomic_write(string $path, string $content): void
     $backup = null;
     if (is_file($path)) {
         $backup = $path . '.bak-' . getmypid() . '-' . bin2hex(random_bytes(3));
-        if (!rename($path, $backup)) {
+        if (!tailwind_recursos_rename($path, $backup)) {
             @unlink($new);
             throw new RuntimeException("Falha ao preparar substituição atômica: {$path}");
         }
     }
 
-    if (!rename($new, $path)) {
+    if (!tailwind_recursos_rename($new, $path)) {
         if ($backup !== null) @rename($backup, $path);
         @unlink($new);
         throw new RuntimeException("Falha ao publicar arquivo: {$path}");

@@ -96,9 +96,10 @@ Runs update-resource-data.sh [--project projectID]
 Source: `cli/src/Commands/ProjectUpdateAllCommand.php`.
 
 ```text
-Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto]
+Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto] [--no-wait] [--lock-wait=<minutes>]
 
 Executes the full 8-stage synchronization pipeline. A deploy_mode=ssh project marked local=true receives remote confirmation automatically; production remains explicit.
+req-197: checks migrations first (db:check-migrations) and runs under a deploy lock per target (SSH host+path or local folder, in GIT/.c2f-deploy-locks/). A second pipeline waits for the lock (default 30 min); --no-wait fails at once.
 ```
 
 ## `project:update-system`
@@ -114,3 +115,5 @@ Runs update-system.sh [--project projectID]. The --insecure flag is restricted t
 ## Pipeline behavior
 
 `project:update-all` accepts a project id as argument or `--project`. It syncs Core, database, resources, files, then database again. It rebuilds CSS, minifies JS and publishes assets last. Before the database stage, and again after the files are sent, it removes obsolete project migrations on the target (`synchronize-project.sh --migrations-only`, req-194): rsync deletes nothing and the target folder also holds the core migrations, so the cleanup is per owner and only reports clashes. Failures in those last three stages become warnings and the command may still return success; inspect CSS and asset reports. SSH projects marked `local=true` receive automatic remote confirmation; others require `--confirmar-remoto`. `project:deploy` calls a Bash upload script for `/_api/project/update`; `project:recover` downloads data via `/_api/project/recover`. See the [deploy guide](../../guides/deploy-a-project.md).
+
+**Deploy lock (req-197).** Before stage 1 the pipeline runs `db:check-migrations` for the project (a duplicated version or class stops everything before anything is sent). Then it takes the lock of the **target**: the SSH host and path, or the local folder. The lock lives in `GIT/.c2f-deploy-locks/`, a folder shared by every clone and worktree of the core, the same on Windows and WSL (`C2F_LOCK_DIR` overrides). A second pipeline for the same target waits for the lock, reporting every minute who holds it, up to `--lock-wait` minutes (default 30); `--no-wait` fails at once. The lock is released at the end, also when a stage fails. The system update and the API deploy use the environment lock (`temp/deploy.lock`); while it is alive they refuse (API: HTTP 409; CLI update: exit code 8).

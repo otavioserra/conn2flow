@@ -29,9 +29,11 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto]\n\n"
+        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto] [--no-wait] [--lock-wait=<minutes>]\n\n"
             . "Executes the full 8-stage synchronization pipeline. A deploy_mode=ssh project marked "
-            . "local=true receives remote confirmation automatically; production remains explicit.";
+            . "local=true receives remote confirmation automatically; production remains explicit.\n"
+            . "req-197: checks migrations first (db:check-migrations) and runs under a deploy lock per target "
+            . "(SSH host+path or local folder, in GIT/.c2f-deploy-locks/). A second pipeline waits for the lock (default 30 min); --no-wait fails at once.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -64,6 +66,80 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         }
         $output->title("Conn2Flow — Full Update Pipeline for Project [{$project}]");
 
+        // req-197: migração com versão ou classe duplicada travaria o Phinx no servidor (e todos os
+        // deploys seguintes). A checagem roda antes de qualquer envio.
+        $check = new DbCheckMigrationsCommand($this->rootPath);
+        if ($check->execute(new Input(['db:check-migrations', '--project=' . $project]), $output) !== 0) {
+            $output->error('Pipeline interrompido antes de enviar qualquer coisa: corrija as migrações acima.');
+            return 1;
+        }
+
+        // req-197: trava de deploy por projeto. Dois pipelines do mesmo projeto ao mesmo tempo (agentes
+        // em paralelo) cruzavam etapas no mesmo ambiente — o MariaDB chegou a devolver erro 1020. O
+        // segundo espera a trava liberar (com aviso periódico e limite), ou falha na hora com --no-wait.
+        $lock = $this->acquireLock((string)$project, $input, $output);
+        if ($lock === null) {
+            return 1;
+        }
+        try {
+            return $this->runStages((string)$project, $contents, $confirmarRemoto, $input, $output);
+        } finally {
+            deploy_lock_release($lock['file'], $lock['token']);
+        }
+    }
+
+    /**
+     * @return array{file: string, token: string}|null
+     */
+    private function acquireLock(string $project, InputInterface $input, OutputInterface $output): ?array
+    {
+        require_once $this->rootPath . '/gestor/bibliotecas/deploy-lock.php';
+        // A trava é do DESTINO, não do id: ids diferentes podem apontar para o mesmo ambiente (o mesmo
+        // Lab por SSH ou a mesma pasta local), e é o ambiente que não aguenta dois deploys juntos.
+        $target = $project;
+        try {
+            $resolved = (new ProjectEnvironmentResolver($this->rootPath))->resolve($project);
+            $ssh = $resolved['ssh'] ?? null;
+            $target = is_array($ssh)
+                ? 'ssh:' . $ssh['user'] . '@' . $ssh['host'] . ':' . $ssh['port'] . $ssh['path']
+                : 'local:' . strtolower(str_replace('\\', '/', (string)($resolved['gestorPath'] ?? $project)));
+        } catch (Throwable) {
+            // Sem configuração resolvível, a trava fica pelo id (as etapas reportam o erro real).
+        }
+        // Pasta comum a todos os clones e worktrees do core (irmã do repositório, a mesma no Windows e
+        // no WSL): cada worktree tem o seu `dev-environment/data/`, e as travas precisam se enxergar.
+        $dir = getenv('C2F_LOCK_DIR') ?: dirname($this->rootPath) . '/.c2f-deploy-locks';
+        $file = rtrim($dir, '/\\') . '/deploy-' . substr(sha1($target), 0, 16) . '.lock';
+        $owner = ['owner' => 'pipeline', 'detail' => 'project:update-all ' . $project . ' -> ' . $target];
+        $waitMinutes = $input->hasOption('no-wait') ? 0 : max(0, (int)$input->getOption('lock-wait', 30));
+        $deadline = time() + $waitMinutes * 60;
+        $lastNotice = 0;
+
+        while (true) {
+            $result = deploy_lock_acquire($file, $owner, 3 * 3600);
+            if ($result['ok']) {
+                if (!empty($result['stale'])) {
+                    $output->warning('Trava vencida assumida: ' . deploy_lock_describe($result['stale']));
+                }
+                return ['file' => $file, 'token' => $result['token']];
+            }
+            $holder = deploy_lock_describe($result['holder'] ?? null);
+            if (time() >= $deadline) {
+                $output->error("Outro pipeline deste projeto está em execução: {$holder}. "
+                    . ($waitMinutes > 0 ? "Esperei {$waitMinutes} min. " : '')
+                    . 'Tente de novo quando ele terminar.');
+                return null;
+            }
+            if (time() - $lastNotice >= 60) {
+                $output->info("Aguardando a trava do projeto ({$holder})...");
+                $lastNotice = time();
+            }
+            sleep(15);
+        }
+    }
+
+    private function runStages(string $project, mixed $contents, bool $confirmarRemoto, InputInterface $input, OutputInterface $output): int
+    {
         // 1. Sync Core -> ID
         $output->section("1/8 Sincronizando Core -> {$project}");
         $coreCmd = new ProjectSyncCoreCommand($this->rootPath);

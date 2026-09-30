@@ -17,6 +17,7 @@ const EXIT_ENV_MERGE    = 4;
 const EXIT_DB_ERROR     = 5;
 const EXIT_ROLLBACK     = 6; // Reservado Fase 2
 const EXIT_INTEGRITY    = 7; // Falha verificação integridade (checksum ZIP)
+const EXIT_LOCKED       = 8; // req-197: outro deploy em execução no ambiente (trava viva)
 
 // ----------------------------
 // Exceções customizadas
@@ -209,7 +210,8 @@ function help(): void {
     echo "  --no-db                 Pula banco (igual full sem DB)\n";
     echo "  --download-only         Baixa, extrai e gera plano sem aplicar\n";
     echo "  --skip-download         Usa ZIP já existente em staging\n";
-    echo "  --backup                Cria backup de arquivos alterados\n";
+    echo "  --backup                Cria backup completo da instalação antes do deploy (exceto contents/, logs/, backups/, temp/, autenticacoes/)\n";
+    echo "  (req-197) Toda atualização, menos --dry-run, roda com a trava de deploy do ambiente (temp/deploy.lock)\n";
     echo "  --dry-run               Simula (gera plano, não aplica)\n";
     echo "  --no-verify             Desativa verificação SHA256 do arquivo gestor.zip\n";
     echo "  --force-all             Encaminha ao script de banco\n";
@@ -481,6 +483,45 @@ function limparMigracoesCore(string $realRoot, string $basePath): void {
     $r = atualizacoes_migracoes_limpar($basePath.'db'.DIRECTORY_SEPARATOR.'migrations', 'core', $chegando, $chegando, true);
     foreach(atualizacoes_migracoes_log($r, 'core') as $linha) logAtualizacao($linha, $r['choques'] ? 'WARNING' : 'INFO');
 }
+/**
+ * req-197: biblioteca da trava de deploy — da instalação ou, na primeira atualização que a traz, do
+ * staging (o filho do bootstrap é o script novo rodando sobre a instalação antiga). Sem ela, a
+ * atualização segue sem trava, com aviso.
+ */
+function atualizacoes_trava_carregar(?string $stagingRoot = null): bool {
+    global $BASE_PATH;
+    if(function_exists('deploy_lock_acquire')) return true;
+    $candidatos = [$BASE_PATH.'bibliotecas'.DIRECTORY_SEPARATOR.'deploy-lock.php'];
+    if($stagingRoot) $candidatos[] = rtrim($stagingRoot, '/\\').DIRECTORY_SEPARATOR.'bibliotecas'.DIRECTORY_SEPARATOR.'deploy-lock.php';
+    foreach($candidatos as $f){ if(is_file($f)){ require_once $f; return true; } }
+    return false;
+}
+/** Arquivo da trava de deploy do ambiente (em `temp/`, pasta protegida no deploy). */
+function atualizacoes_trava_arquivo(): string { global $BASE_PATH; return $BASE_PATH.'temp'.DIRECTORY_SEPARATOR.'deploy.lock'; }
+/**
+ * req-197: backup completo da instalação antes do deploy (`--backup`). Copia tudo, menos as pastas
+ * protegidas que casam com `$excludes` (regex sobre o caminho relativo com `/`) e a própria
+ * `backups/`. Devolve [arquivos, bytes]. Erro de cópia derruba a atualização antes de mexer em algo.
+ */
+function backupTotal(string $basePath, string $backupDir, array $excludes): array {
+    $basePath = rtrim($basePath, '/\\').DIRECTORY_SEPARATOR;
+    $excludes[] = '#^backups/#';
+    if(!is_dir($backupDir) && !@mkdir($backupDir, 0775, true) && !is_dir($backupDir)) throw new ExtractionException('Backup: não foi possível criar '.$backupDir);
+    $arquivos = 0; $bytes = 0;
+    $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($basePath, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+    foreach($it as $item){
+        $rel = str_replace('\\', '/', substr($item->getPathname(), strlen($basePath)));
+        $relDir = $item->isDir() ? $rel.'/' : $rel;
+        foreach($excludes as $rx){ if(preg_match($rx, $relDir)) continue 2; }
+        $destino = $backupDir.str_replace('/', DIRECTORY_SEPARATOR, $rel);
+        if($item->isDir()){ if(!is_dir($destino)) @mkdir($destino, 0775, true); continue; }
+        if(!is_dir(dirname($destino))) @mkdir(dirname($destino), 0775, true);
+        if(!@copy($item->getPathname(), $destino)) throw new ExtractionException('Backup: falha ao copiar '.$rel);
+        $arquivos++; $bytes += (int)$item->getSize();
+    }
+    logAtualizacao('Backup total concluído: '.$arquivos.' arquivo(s), '.round($bytes / 1048576, 1).' MB em '.$backupDir);
+    return [$arquivos, $bytes];
+}
 function copiarRecursivo(string $src, string $dst): void {
     if(is_dir($src)) { if(!is_dir($dst)) @mkdir($dst,0775,true); $it=opendir($src); if($it){ while(($e=readdir($it))!==false){ if($e==='.'||$e==='..') continue; copiarRecursivo($src.DIRECTORY_SEPARATOR.$e,$dst.DIRECTORY_SEPARATOR.$e); } closedir($it);} }
     else { @copy($src,$dst); }
@@ -671,7 +712,40 @@ function hookAfterAll(array &$context): void {
 // ----------------------------
 // MAIN
 // ----------------------------
+/**
+ * req-197: a atualização pelo CLI roda com a trava de deploy do ambiente. O processo do bootstrap pega a
+ * trava e passa o token ao filho (`--lock-token`), que a adota; quem pegou é quem libera (no fim, no
+ * erro ou na exceção). Simulação (`--dry-run`) e ajuda não travam.
+ */
 function main_update(array $argv): int {
+    $opts = parseArgsUpdate($argv);
+    if(isset($opts['help']) || !empty($opts['dry-run'])) return main_update_executar($argv);
+    $stagingRoot = isset($opts['staging-root']) ? trim((string)$opts['staging-root'], "\"' ") : null;
+    if(!atualizacoes_trava_carregar($stagingRoot)){
+        logAtualizacao('Trava de deploy indisponível (biblioteca ausente): seguindo sem trava','WARNING');
+        return main_update_executar($argv);
+    }
+    $arquivo = atualizacoes_trava_arquivo();
+    $token = isset($opts['lock-token']) ? trim((string)$opts['lock-token'], "\"' ") : '';
+    $atual = deploy_lock_read($arquivo);
+    if($token !== '' && $atual && hash_equals((string)($atual['token'] ?? ''), $token)){
+        $GLOBALS['C2F_DEPLOY_LOCK_TOKEN'] = $token; // adotada do processo pai do bootstrap
+        return main_update_executar($argv);
+    }
+    $r = deploy_lock_acquire($arquivo, ['owner' => 'update-system', 'detail' => 'CLI']);
+    if(!$r['ok']){
+        $msg = 'Outro deploy está em execução neste ambiente: '.deploy_lock_describe($r['holder'] ?? null);
+        logAtualizacao($msg, 'ERROR', true);
+        echo "ERRO TRAVA: ".$msg."\n";
+        return EXIT_LOCKED;
+    }
+    if(!empty($r['stale'])) logAtualizacao('Trava vencida assumida: '.deploy_lock_describe($r['stale']), 'WARNING');
+    $GLOBALS['C2F_DEPLOY_LOCK_TOKEN'] = $r['token'];
+    try { return main_update_executar($argv); }
+    finally { deploy_lock_release($arquivo, $r['token']); }
+}
+
+function main_update_executar(array $argv): int {
     global $CONTEXT, $BASE_PATH, $LOGS_DIR;
     try {
         $opts=parseArgsUpdate($argv); if(isset($opts['help'])) { help(); return EXIT_OK; }
@@ -744,8 +818,10 @@ function main_update(array $argv): int {
             // Reexecuta nova versão com flags internas para pular bootstrap e reutilizar staging
             $userArgs = reconstruirArgs($argv);
             // Garante que não exista antiga flag bootstrap
-            $userArgs = array_values(array_filter($userArgs, fn($a)=>strpos($a,'--bootstrap-done')!==0));
+            $userArgs = array_values(array_filter($userArgs, fn($a)=>strpos($a,'--bootstrap-done')!==0 && strpos($a,'--lock-token')!==0));
             $userArgs[]='--bootstrap-done=1';
+            // req-197: o filho adota a trava deste processo (quem libera é este processo, no fim).
+            if(!empty($GLOBALS['C2F_DEPLOY_LOCK_TOKEN'])) $userArgs[]='--lock-token='.$GLOBALS['C2F_DEPLOY_LOCK_TOKEN'];
             $userArgs[]='--skip-download'; // pular download na fase 2
             $userArgs[]='--staging-dir='.escapeshellarg($staging);
             $userArgs[]='--staging-root='.escapeshellarg($realRoot);
@@ -841,8 +917,8 @@ function main_update(array $argv): int {
             logAtualizacao('Pastas protegidas (excludes overwrite): contents/, logs/, backups/, temp/, autenticacoes/','DEBUG');
             if(!empty($opts['backup']) && !$dry){
                 $backupDir = $BASE_PATH.'backups'.DIRECTORY_SEPARATOR.'atualizacoes'.DIRECTORY_SEPARATOR.'full'.DIRECTORY_SEPARATOR.date('Ymd-His').DIRECTORY_SEPARATOR;
-                backupTotal($BASE_PATH,$backupDir,$excludes);
-                $CONTEXT['backups'][]=['full_backup'=>$backupDir];
+                [$bkArquivos, $bkBytes] = backupTotal($BASE_PATH,$backupDir,$excludes);
+                $CONTEXT['backups'][]=['full_backup'=>$backupDir,'files'=>$bkArquivos,'bytes'=>$bkBytes];
             }
             // Antes do deploy capturamos (se existir) o template .env dentro do staging para evitar perdê-lo
             // pois o moverConteudoStaging usa rename sempre que possível e esvazia o staging.
@@ -924,20 +1000,10 @@ function main_update(array $argv): int {
             executarAtualizacaoBanco($opts);
             if(!empty($execId)) persist_parcial_execucao($execId,$CONTEXT);
             hookAfterDb($CONTEXT);
-            // Após concluir atualização do banco os arquivos fonte em gestor/db (migrations + data JSON)
-            // não são mais necessários em produção. Eles virão novamente no próximo artefato.
-            // Removemos para reduzir superfície e evitar divergências manuais.
-            if(!$dry){
-                $dbDir = $BASE_PATH.'db'.DIRECTORY_SEPARATOR;
-                if (is_dir($dbDir)) {
-                    logAtualizacao('Removendo pasta db pós-atualização (origem de dados já aplicada ao banco)');
-                    removeDirectoryRecursive($dbDir);
-                } else {
-                    logAtualizacao('Pasta db já inexistente (nada a remover)','DEBUG');
-                }
-            } else {
-                logAtualizacao('Dry-run: preservando pasta db (não removida)');
-            }
+            // req-197: `db/` fica (como no fluxo web). `db/migrations` tem dois donos (core e projeto) e o
+            // manifesto da req-194 (`db/.c2f-migrations-<dono>.json`) mora aqui: apagar a pasta levava as
+            // migrações do projeto e fazia toda atualização contar como a primeira. As migrações
+            // obsoletas já saem pela limpeza por dono (req-194).
         }
 
         hookAfterAll($CONTEXT);
@@ -971,7 +1037,8 @@ function main_update(array $argv): int {
     catch (Throwable $t){ logErroCtx('Fatal: '.$t->getMessage()); echo "ERRO FATAL: ".$t->getMessage()."\n"; return EXIT_GENERIC; }
 }
 
-if(PHP_SAPI==='cli') exit(main_update($argv));
+// Testes carregam as funções sem executar a atualização (req-197).
+if(PHP_SAPI==='cli' && !defined('ATUALIZACOES_SISTEMA_SEM_EXECUCAO')) exit(main_update($argv));
 
 // -------------------------------------------------------------
 // Execução Web Incremental (AJAX) - Fase 1.1
@@ -1007,7 +1074,30 @@ function saveWebState(string $sid, array $state): void {
 function gerarSessionId(): string { return bin2hex(random_bytes(8)); }
 
 // Inicia sessão (step bootstrap simplificado)
+/**
+ * req-197: a atualização web por etapas roda com a trava de deploy. `start` pega a trava e guarda o
+ * token na sessão; `finalize` e `cancel` liberam; `start` que falha libera na hora. Simulação não trava.
+ */
 function webStart(array $req): array {
+    if(!empty($req['dry_run']) || !atualizacoes_trava_carregar()) return webStartExecutar($req);
+    $arquivo = atualizacoes_trava_arquivo();
+    $r = deploy_lock_acquire($arquivo, ['owner' => 'update-system', 'detail' => 'web']);
+    if(!$r['ok']) return ['error' => 'Outro deploy está em execução neste ambiente: '.deploy_lock_describe($r['holder'] ?? null), 'locked' => true];
+    if(!empty($r['stale'])) logAtualizacao('WebStart: trava vencida assumida: '.deploy_lock_describe($r['stale']), 'WARNING');
+    try { $res = webStartExecutar($req); }
+    catch(Throwable $e){ deploy_lock_release($arquivo, $r['token']); throw $e; }
+    if(!empty($res['error']) || empty($res['sid'])){ deploy_lock_release($arquivo, $r['token']); return $res; }
+    $st = loadWebState($res['sid']);
+    if($st){ $st['lock_token'] = $r['token']; saveWebState($res['sid'], $st); }
+    return $res;
+}
+/** Libera a trava guardada na sessão web (fim ou cancelamento). */
+function webLiberarTrava(string $sid): void {
+    $st = loadWebState($sid);
+    if(!$st || empty($st['lock_token']) || !atualizacoes_trava_carregar()) return;
+    deploy_lock_release(atualizacoes_trava_arquivo(), (string)$st['lock_token']);
+}
+function webStartExecutar(array $req): array {
     global $CONTEXT, $TEMP_DIR, $BASE_PATH, $LOGS_DIR;
     $sid = gerarSessionId();
     $CONTEXT['session_id']=$sid;
@@ -1281,9 +1371,9 @@ if(PHP_SAPI!=='cli') {
                 case 'start': jsonResponse(webStart($_REQUEST)); break;
                 case 'deploy': jsonResponse(webDeployFiles($_REQUEST['sid']??'')); break;
                 case 'db': jsonResponse(webDatabase($_REQUEST['sid']??'')); break;
-                case 'finalize': jsonResponse(webFinalize($_REQUEST['sid']??'')); break;
+                case 'finalize': $r = webFinalize($_REQUEST['sid']??''); webLiberarTrava($_REQUEST['sid']??''); jsonResponse($r); break;
                 case 'status': jsonResponse(webStatus($_REQUEST['sid']??'')); break;
-                case 'cancel': jsonResponse(webCancel($_REQUEST['sid']??'')); break;
+                case 'cancel': $r = webCancel($_REQUEST['sid']??''); webLiberarTrava($_REQUEST['sid']??''); jsonResponse($r); break;
                 default: jsonResponse(['error'=>'Ação desconhecida']);
             }
         } catch(Throwable $e){ jsonResponse(['error'=>$e->getMessage()]); }
