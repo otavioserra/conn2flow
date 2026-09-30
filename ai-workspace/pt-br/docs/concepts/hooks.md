@@ -10,7 +10,7 @@ sources:
   - gestor/bibliotecas/interface.php
   - gestor/gestor.php
   - gestor/cron.php
-verified_at: 0ccf7099
+verified_at: ce12b5a0
 ---
 
 # Hooks: actions e filters

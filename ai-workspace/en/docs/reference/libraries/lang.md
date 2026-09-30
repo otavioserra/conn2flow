@@ -7,7 +7,7 @@ order: 210
 sources:
   - gestor/bibliotecas/lang.php
   - gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php
-verified_at: c267f123
+verified_at: ce12b5a0
 ---
 
 # `lang.php` library

@@ -13,7 +13,7 @@ sources:
   - gestor/db/migrations/20260930210000_create_atualizacoes_choques_table.php
   - gestor/db/migrations/20260930220000_add_resolucao_fields_to_atualizacoes_choques.php
   - gestor/bibliotecas/atualizacoes-choques.php
-verified_at: ca4337fc
+verified_at: ce12b5a0
 ---
 
 # admin-atualizacoes module

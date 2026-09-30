@@ -6,7 +6,7 @@ section: reference
 order: 365
 sources:
   - gestor/bibliotecas/atualizacoes-choques.php
-verified_at: b371b53d
+verified_at: ce12b5a0
 ---
 
 # `atualizacoes-choques.php` library

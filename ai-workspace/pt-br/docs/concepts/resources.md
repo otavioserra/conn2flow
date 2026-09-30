@@ -12,7 +12,7 @@ sources:
   - cli/src/Commands/CssRebuildCommand.php
   - gestor/controladores/agents/arquitetura/atualizacao-versoes-assets.php
   - gestor/bibliotecas/gestor.php
-verified_at: ea442bea
+verified_at: ce12b5a0
 ---
 
 # Sistema de recursos
