@@ -357,8 +357,14 @@ function stripe_criar_assinatura($params = Array()){
         $dados['default_payment_method'] = $params['payment_method_id'];
     }
     // Cupom de desconto: a duração (uma vez, N meses, para sempre) vem do próprio coupon do Stripe.
+    // Com itens avulsos (req-195), o desconto vai no ITEM do plano: no nível da assinatura o Stripe
+    // o aplicaria também aos itens avulsos, que já chegam com o desconto deles calculado.
     if(!empty($params['coupon_id'])){
-        $dados['discounts'] = Array(Array('coupon' => (string)$params['coupon_id']));
+        if(!empty($params['add_invoice_items'])){
+            $dados['items'][0]['discounts'] = Array(Array('coupon' => (string)$params['coupon_id']));
+        } else {
+            $dados['discounts'] = Array(Array('coupon' => (string)$params['coupon_id']));
+        }
     }
 
     // Itens avulsos na primeira fatura (req-195): com eles, mesmo uma assinatura em período de teste

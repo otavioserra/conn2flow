@@ -34,6 +34,14 @@ final class StripeAssinaturaItensAvulsosTest extends TestCase
         ], $GLOBALS['stripe_payload']['add_invoice_items']);
     }
 
+    public function testComItensOCupomVaiSoNoItemDoPlano(): void
+    {
+        stripe_criar_assinatura_teste(['customer_id' => 'cus_1', 'price_id' => 'price_1', 'coupon_id' => 'c2f_off',
+            'add_invoice_items' => [['product' => 'prod_loja', 'amount' => 57.4, 'currency' => 'BRL']]]);
+        self::assertArrayNotHasKey('discounts', $GLOBALS['stripe_payload']);
+        self::assertSame([['coupon' => 'c2f_off']], $GLOBALS['stripe_payload']['items'][0]['discounts']);
+    }
+
     public function testItemInvalidoOuZeradoEIgnorado(): void
     {
         stripe_criar_assinatura_teste(['customer_id' => 'cus_1', 'price_id' => 'price_1', 'add_invoice_items' => [
