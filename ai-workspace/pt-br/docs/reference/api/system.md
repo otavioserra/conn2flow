@@ -24,4 +24,6 @@ Para disparar de fora (host-manager, CLI) sem manter uma requisição aberta por
 - **`action=runs`**: as 20 execuções mais recentes com o estado.
 - **`POST /_api/system/rollback`**: `{"snapshot":"exec-<id>","com_banco":false}`, o mesmo rollback de [`/_api/project/rollback`](project.md).
 
+A atualização **por etapas** (`start` … `finalize`, a do painel) também verifica e volta no `finalize` e aceita `no_health`, `no_rollback`, `health_url` e `health_ip` no `start`. Como cada etapa passa pelo próprio Gestor, uma entrega que quebre o `gestor.php` impede as etapas seguintes; para esse caso, use `action=run` (fora do servidor web) ou o rollback manual.
+
 O servidor precisa de `proc_open` e de um PHP de linha de comando: procura `php<versão>` e `php` na pasta dos binários do PHP, ou o caminho em `ATUALIZACOES_PHP_CLI` no `.env`. Os arquivos da execução ficam em `temp/atualizacoes/runs/` (`<run>.json`, `.log`, `.exit`). Pelo CLI de desenvolvimento: [`c2f update:core`](../cli/update.md).

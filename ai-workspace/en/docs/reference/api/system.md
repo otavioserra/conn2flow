@@ -24,4 +24,6 @@ To trigger from outside (host-manager, CLI) without holding a request open for m
 - **`action=runs`**: the 20 most recent runs with their state.
 - **`POST /_api/system/rollback`**: `{"snapshot":"exec-<id>","com_banco":false}`, the same rollback as [`/_api/project/rollback`](project.md).
 
+The **step** update (`start` … `finalize`, the panel one) also checks and restores in `finalize` and accepts `no_health`, `no_rollback`, `health_url` and `health_ip` on `start`. Since every step goes through the Gestor itself, a delivery that breaks `gestor.php` stops the following steps; for that case use `action=run` (outside the web server) or manual rollback.
+
 The server needs `proc_open` and a command-line PHP: it looks for `php<version>` and `php` in PHP's binary folder, or the path in `ATUALIZACOES_PHP_CLI` in `.env`. Run files live in `temp/atualizacoes/runs/` (`<run>.json`, `.log`, `.exit`). From the development CLI: [`c2f update:core`](../cli/update.md).

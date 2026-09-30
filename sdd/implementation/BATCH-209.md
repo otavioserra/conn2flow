@@ -14,6 +14,7 @@ Execução da parte do core da [req-201](../human-requests/req-201.md). O consum
 | `action=run-status` (`run=<id>`), `action=runs` | estado: `running`, `success`, `rolled_back` (código 6), `locked` (8), `error`; snapshot, verificação, fim do log |
 | `/_api/system/rollback` | o mesmo `api_project_rollback()` (aceita `exec-<id>`) |
 | `c2f update:core <projeto>` | dispara pela API, com as opções, e `--wait` acompanha até o fim |
+| Atualização por etapas (painel, `start…finalize`) | `no_health`, `no_rollback`, `health_url`, `health_ip`; posição do log guardada no `start`; verificação e volta automática no `finalize` |
 
 ## Validação
 
@@ -30,6 +31,7 @@ Execução da parte do core da [req-201](../human-requests/req-201.md). O consum
 | `update:core --runs` | lista das execuções com estado, código e snapshot |
 | `POST /_api/system/rollback` `{"snapshot":"exec-18"}` | 200 (execução sem arquivos a voltar: 0 restaurados) |
 | Opção `wipe` e `health_url` com `&` | 400 com a lista das opções aceitas |
+| Atualização por etapas pela API (`start` → `deploy` → `db` → `finalize`) com artefato que quebra só as páginas (fora de `/_api/`) | `finalize` devolve `saude` com "HTTP 500" e `rollback` com 2 arquivos (snapshot `exec-22`); raiz em 200 depois da janela do OPcache |
 
 ### Achados corrigidos
 - **`open_basedir` do HestiaCP:** abrir `/dev/null` como descritor do `proc_open` falha no PHP-FPM; o disparo usa pipes.
@@ -40,5 +42,5 @@ Execução da parte do core da [req-201](../human-requests/req-201.md). O consum
 
 ### Pendências
 - **Lado privado (fora do core):** o CLI em massa e o consumo pelo host-manager ficam no `conn2flow-site`, em requisição de lá (decisão do Humano de 2026-09-30). Esse repositório tem trabalho do agente do host-manager em andamento; a requisição de lá é aberta quando o Humano indicar.
-- A atualização por etapas do painel (`start/deploy/db/finalize`) grava snapshot e dump, mas a verificação com volta automática continua só no caminho completo (CLI e `action=run`).
+- **Limite da atualização por etapas** (painel e `start/deploy/db/finalize`): agora verifica e volta no `finalize`, mas cada etapa é uma requisição que passa pelo próprio Gestor. Se a entrega quebrar o `gestor.php` (ou o caminho da API), as etapas seguintes não rodam e a volta não acontece; nesse caso vale o rollback manual (`update:rollback` pelo SSH). O caminho robusto é o `action=run` / CLI, que roda fora do servidor web.
 - Homologação humana.

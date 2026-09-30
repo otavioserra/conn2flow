@@ -321,9 +321,12 @@ function admin_atualizacoes_ajax_update(){
                     'wipe'=>'wipe', // nova flag: envia --wipe ao backend
                     'clean_temp'=>'clean_temp',
                     'csrf_capable'=>'csrf_capable',
+                    'no_health'=>'no_health', // req-201: verificação e volta automática no finalize
+                    'no_rollback'=>'no_rollback',
                 ];
                 $extras=[]; foreach($extraFlagsMap as $k=>$flag){ if(!empty($params[$k])) $extras[$flag]=1; }
                 if(!empty($params['tables'])) $extras['tables']=$params['tables'];
+                foreach(['health_url','health_ip'] as $k){ if(!empty($params[$k])) $extras[$k]=(string)$params[$k]; }
                 if(!empty($params['logs_retention_days'])) $extras['logs_retention_days']=(int)$params['logs_retention_days'];
                 $domain = trim((string)($params['domain'] ?? ''));
                 $resp = admin_atualizacoes_call_system(array_filter(array_merge([

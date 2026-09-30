@@ -780,7 +780,8 @@ function api_system_update() {
         $param_keys = [
             'domain', 'tag', 'only_files', 'only_db', 'dry_run', 'local',
             'debug', 'no_db', 'force_all', 'log_diff', 'backup', 'no_verify',
-            'download_only', 'skip_download', 'tables', 'clean_temp', 'logs_retention_days'
+            'download_only', 'skip_download', 'tables', 'clean_temp', 'logs_retention_days',
+            'no_health', 'no_rollback', 'health_url', 'health_ip', // req-201
         ];
         foreach ($param_keys as $key) {
             $val = $_POST[$key] ?? $_REQUEST[$key] ?? null;

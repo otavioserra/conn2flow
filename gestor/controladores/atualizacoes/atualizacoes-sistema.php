@@ -1321,6 +1321,11 @@ function webStartExecutar(array $req): array {
         'csrf-capable'=>!empty($req['csrf_capable'])?1:null,
         'tables'=>!empty($req['tables'])?$req['tables']:null,
         'logs-retention-days'=>!empty($req['logs_retention_days'])?(int)$req['logs_retention_days']:null,
+        // req-201: verificação e volta automática também no caminho por etapas.
+        'no-health'=>!empty($req['no_health'])?1:null,
+        'no-rollback'=>!empty($req['no_rollback'])?1:null,
+        'health-url'=>(!empty($req['health_url']) && preg_match('#^https?://[A-Za-z0-9.:/_%\[\]-]+$#', (string)$req['health_url'])) ? (string)$req['health_url'] : null,
+        'health-ip'=>(!empty($req['health_ip']) && filter_var($req['health_ip'], FILTER_VALIDATE_IP)) ? (string)$req['health_ip'] : null,
     ];
     // Limpa nulls
     $opts = array_filter($opts,fn($v)=>$v!==null && $v!==false);
@@ -1391,6 +1396,7 @@ function webStartExecutar(array $req): array {
         'errors'=>[],
         'stats'=>[],
         'finished'=>false,
+        'saude_offset'=>saudeLogOffset($BASE_PATH), // req-201: fatais novos contam a partir daqui
     ];
     saveWebState($sid,$state);
     return ['sid'=>$sid,'exec_id'=>$execId,'next'=>'deploy_files','release_tag'=>$CONTEXT['release_tag'],'checksum'=>$CONTEXT['checksum']];
@@ -1522,12 +1528,34 @@ function webFinalize(string $sid): array { global $CONTEXT, $LOGS_DIR, $TEMP_DIR
         // Limpeza staging (se ainda existir)
         if(!empty($CONTEXT['staging_dir']) && is_dir($CONTEXT['staging_dir'])) removeDirectoryRecursive($CONTEXT['staging_dir']);
     } catch(Throwable $e){ logAtualizacao('WebFinalize: falha limpeza staging '.$e->getMessage(),'WARNING'); }
+    // req-201: verificação depois da atualização por etapas, como no CLI; falhou, os arquivos voltam do snapshot.
+    global $BASE_PATH;
+    $saude = null; $rollback = null; $codigo = 0; $erroFinal = null;
+    $opts = $st['opts'] ?? [];
+    if(empty($opts['dry-run']) && empty($opts['download-only']) && empty($opts['no-health']) && !empty($st['snapshot_dir'])){
+        $saude = saudeVerificar($BASE_PATH, (int)($st['saude_offset'] ?? 0), (string)($opts['domain'] ?? ''), array_filter(['url' => (string)($opts['health-url'] ?? ''), 'ip' => (string)($opts['health-ip'] ?? '')]));
+        foreach($saude['avisos'] as $aviso) logAtualizacao($aviso, 'WARNING', true);
+        if($saude['ok']) logAtualizacao('Verificação pós-atualização OK'.($saude['http'] ? ' (HTTP '.$saude['http'].')' : ''), 'INFO', true);
+        else {
+            logAtualizacao('Verificação pós-atualização FALHOU: '.implode(' | ', $saude['motivos']), 'ERROR', true);
+            if(empty($opts['no-rollback']) && atualizacoes_manifesto_carregar()){
+                $r = instalacao_snapshot_restaurar($BASE_PATH, $st['snapshot_dir']);
+                $rollback = ['restaurados' => $r['restaurados'] ?? 0, 'removidos_novos' => $r['removidos_novos'] ?? 0, 'falhas' => $r['falhas'] ?? [],
+                    'snapshot' => basename(rtrim($st['snapshot_dir'], '/\\'))];
+                logAtualizacao('Rollback automático dos arquivos: '.$rollback['restaurados'].' restaurado(s), '.$rollback['removidos_novos'].' novo(s) removido(s). Banco não revertido; para reverter: --rollback='.$rollback['snapshot'].' --com-banco', 'ERROR', true);
+                $codigo = EXIT_ROLLBACK;
+                $erroFinal = 'Verificação pós-atualização falhou: '.implode(' | ', $saude['motivos']);
+            }
+        }
+    }
     $sessionResetPending = !empty($st['session_reset_pending']);
     $st['finished']=true;
     $st['session_reset_pending']=false;
     $st['progress']['finalize']=['done'=>true,'ts'=>time()];
+    if($saude !== null) $st['saude'] = $saude;
+    if($rollback !== null) $st['rollback'] = $rollback;
     saveWebState($sid,$st);
-    if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,0,null);
+    if(!empty($st['exec_id'])) persist_final_execucao((int)$st['exec_id'],$CONTEXT,$codigo,$erroFinal);
     logAtualizacao('WebFinalize: concluído');
 
     // O POST de finalize já foi validado. Agora é seguro invalidar os caches de
@@ -1553,7 +1581,7 @@ function webFinalize(string $sid): array { global $CONTEXT, $LOGS_DIR, $TEMP_DIR
         }
     }
 
-    return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'finished'=>true]; }
+    return ['sid'=>$sid,'exec_id'=>$st['exec_id'],'finished'=>true,'saude'=>$saude,'rollback'=>$rollback]; }
 
 function webStatus(string $sid): array { $st=loadWebState($sid); if(!$st) return ['error'=>'Sessão inválida'];
     // Recarregar flags da sessão (inclui debug)
