@@ -9,7 +9,7 @@ sources:
   - cli/src/Commands/ManagerReleaseCommand.php
   - cli/src/Commands/ManagerSyncFilesCommand.php
   - cli/src/Commands/ManagerUpdateAllCommand.php
-verified_at: b371b53d
+verified_at: c8db1447
 ---
 
 # CLI: Comandos manager

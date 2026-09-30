@@ -7,7 +7,7 @@ sources:
   - gestor/controladores/api/api.php
   - cli/c2f.php
   - gestor/gestor.php
-verified_at: b371b53d
+verified_at: c8db1447
 ---
 
 # Visão do Conn2Flow

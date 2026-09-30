@@ -6,7 +6,7 @@ section: reference
 order: 367
 sources:
   - gestor/bibliotecas/atualizacoes-execucao.php
-verified_at: cd1e6d7f
+verified_at: c8db1447
 ---
 
 # Biblioteca `atualizacoes-execucao.php`

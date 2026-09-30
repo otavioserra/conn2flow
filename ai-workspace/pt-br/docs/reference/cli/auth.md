@@ -6,7 +6,7 @@ order: 40
 sources:
   - cli/src/Console/Application.php
   - cli/src/Commands/AuthCookieCommand.php
-verified_at: b371b53d
+verified_at: c8db1447
 ---
 
 # CLI: Autenticação

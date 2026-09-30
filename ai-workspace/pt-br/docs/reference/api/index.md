@@ -4,7 +4,7 @@ description: "Rotas HTTP do Core, autenticação, respostas e famílias de endpo
 section: reference
 sources:
   - gestor/controladores/api/api.php
-verified_at: b371b53d
+verified_at: c8db1447
 ---
 
 # API HTTP

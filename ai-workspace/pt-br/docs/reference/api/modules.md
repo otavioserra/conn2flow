@@ -4,7 +4,7 @@ description: "Despacho autenticado para hooks de módulos."
 section: reference
 sources:
   - gestor/controladores/api/api.php
-verified_at: b371b53d
+verified_at: c8db1447
 ---
 
 # API de módulos
