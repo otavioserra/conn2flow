@@ -4,6 +4,7 @@ description: "Bootstrap, package integrity, application, and web stages."
 section: concepts
 order: 110
 sources:
+  - gestor/controladores/atualizacoes/atualizacoes-recursos-retirada.php
   - gestor/bibliotecas/instalacao-manifesto.php
   - gestor/modulos/admin-atualizacoes/admin-atualizacoes.php
   - gestor/controladores/atualizacoes/atualizacoes-migracoes.php
@@ -31,6 +32,13 @@ After the database step, `db/` stays in place, in both CLI and web (req-197): th
 - **removes** what the core stopped delivering when it is intact; when it was edited, it becomes a `retirado-editado` clash.
 
 The first delivery, without a manifest, behaves as before and records the baseline. Clashes are stored in `installation/choques/` and, after the database stage, in the `atualizacoes_choques` table (the same clash still pending does not become another row on every update); the "Delivery clashes" section of `admin-atualizacoes` lists them with the diff, and the detail page holds the per-file decision: overwrite, keep or merge (req-199; also through the API and `c2f update:conflicts` / `update:resolve`). "Keep" becomes a rule for later deliveries of the same file, and a layer delivering the same content as before creates no clash. `installation/` is a protected folder.
+
+**Data that leaves (req-199 / BATCH-207).** The database sync also removes what the owner stopped delivering:
+- every delivery records, per owner (`core` or the project id), the natural key of each delivered record in `installation/manifests/recursos-<owner>.json`;
+- on the next delivery, what left the same owner's list leaves the database: `status='D'` when the table has status, otherwise the record is deleted;
+- a record edited online (`user_modified=1`) does not leave: it becomes a record clash (`db:<table>?<key>`), and "overwrite" accepts the removal;
+- only natural-key tables take part (pages, layouts, components, variables, templates…). The core only removes records without `project`, and a project only its own. What was created in the panel never entered a list, so it never leaves;
+- an owner's first delivery to a table only records the list. `--dry-run` only simulates; `--no-resource-removal` (in `atualizacoes-banco-de-dados.php`) turns it off. The imperative `deletar` list in `schema-metadata.json` still covers one-off cases.
 
 **Snapshot, check and rollback (req-198).** Before applying, the update keeps in `backups/atualizacoes/snapshots/exec-<id>/`:
 - only the files that will be overwritten or removed, the list of new ones and the manifests;

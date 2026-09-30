@@ -20,12 +20,13 @@ Connects the pure engine of [`instalacao-manifesto.php`](instalacao-manifesto.md
 - `atualizacoes_choques_obter($id)` returns one row with the diff.
 - `atualizacoes_choques_detalhe($base, $id)` joins the row and both versions (live and new); a binary file comes in base64.
 - `atualizacoes_choques_resolver($base, $id, $acao, $mesclado, $quem)` applies the decision through the engine and records `resolucao`, `resolvido_em` and `resolvido_por` on the row and on the other pending rows of the same file and layer (earlier versions of the same clash). An already resolved clash is refused.
+- `atualizacoes_choques_resolver_registro($choque, $acao)` resolves a **record** clash (`db:<table>?<key>`, from declarative data removal, BATCH-207): "overwrite" accepts the removal (`status='D'` or deleted) and "keep" leaves the record.
 
 ## Functions
 
 <!-- c2f:extract:start -->
 
-Reference generated from `gestor/bibliotecas/atualizacoes-choques.php` by `c2f docs:extract` — 5 functions. Do not edit inside this block.
+Reference generated from `gestor/bibliotecas/atualizacoes-choques.php` by `c2f docs:extract` — 6 functions. Do not edit inside this block.
 
 - `atualizacoes_choques_disponivel(): bool` — [line 13](../../../../../gestor/bibliotecas/atualizacoes-choques.php#L13)
   A tabela existe (a migração pode não ter rodado ainda).
@@ -39,7 +40,10 @@ Reference generated from `gestor/bibliotecas/atualizacoes-choques.php` by `c2f d
 - `atualizacoes_choques_detalhe(string $base, int $id): ?array` — [line 56](../../../../../gestor/bibliotecas/atualizacoes-choques.php#L56)
   Detalhe para quem decide: a linha, as duas versões (no ar e nova) e o diff. Binário vai em base64.
   Returns: ['choque' => linha, 'no_ar' => string|null, 'nova' => string|null, 'binario' => bool, 'codificacao' => 'texto'|'base64']
-- `atualizacoes_choques_resolver(string $base, int $id, string $acao, ?string $mesclado, string $quem): array` — [line 71](../../../../../gestor/bibliotecas/atualizacoes-choques.php#L71)
+- `atualizacoes_choques_resolver_registro(array $c, string $acao): array` — [line 72](../../../../../gestor/bibliotecas/atualizacoes-choques.php#L72)
+  req-199 / BATCH-207: choque de **registro** (`db:<tabela>?<chave>`), de uma retirada declarativa em que o registro foi editado online. `sobrescrever` aceita a retirada (`status='D'` quando a tabela tem status, senão sai); `manter` deixa o registro (o manifesto do dono já não o lista, então não volta a chocar).
+  Returns: ['ok' => bool, 'erro' => string, 'acao' => string]
+- `atualizacoes_choques_resolver(string $base, int $id, string $acao, ?string $mesclado, string $quem): array` — [line 102](../../../../../gestor/bibliotecas/atualizacoes-choques.php#L102)
   Aplica a decisão (motor) e registra: a linha e as outras pendentes do mesmo arquivo e camada (versões anteriores do mesmo choque) recebem a resolução, a data e quem decidiu.
   Returns: ['ok' => bool, 'erro' => string, 'acao' => string, 'resolvidos' => int]
 

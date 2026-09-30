@@ -20,6 +20,7 @@
  * --force-all       : Força atualização de todas as tabelas, ignorando checksums anteriores.
  * --tables=lista    : Sincroniza apenas as tabelas especificadas (ex: --tables=variaveis,paginas).
  * --orphans-mode=op : Define tratamento de órfãos: ignore (default), export ou log.
+ * --no-resource-removal : Não retira do banco o que o dono deixou de entregar (req-199 / BATCH-207).
  * --skip-migrate    : Pula execução das migrações Phinx (útil para ambiente já migrado).
  * --backup          : Realiza backup das tabelas antes de atualizar (em backups/atualizacoes/).
  * --reverse         : Exporta dados do banco para arquivos *Data.json (modo reverso).
@@ -57,6 +58,7 @@ require_once $BASE_PATH_DB . 'bibliotecas/banco.php';
 require_once $BASE_PATH_DB . 'bibliotecas/gestor.php';
 require_once $BASE_PATH_DB . 'bibliotecas/hooks.php';
 require_once $BASE_PATH_DB . 'controladores/atualizacoes/atualizacoes-hooks.php';
+if (is_file($BASE_PATH_DB . 'controladores/atualizacoes/atualizacoes-recursos-retirada.php')) require_once $BASE_PATH_DB . 'controladores/atualizacoes/atualizacoes-recursos-retirada.php'; // req-199 / BATCH-207
 
 // Gestor 
 global $_GESTOR;
@@ -1171,6 +1173,8 @@ function comparacaoDados(): array {
         if (!$registros) { log_unificado(tr('_compare_no_changes',['tabela'=>$tabela]), $LOG_FILE_DB); continue; }
         log_unificado(tr('_executing_table',['tabela'=>$tabela]), $LOG_FILE_DB);
         $resultado = sincronizarTabela($pdo, $tabela, $registros, !empty($CLI_OPTS['log-diff']), !empty($CLI_OPTS['dry-run']));
+        // req-199 / BATCH-207: o que o dono entregou antes e deixou de entregar sai do banco (editado online vira choque).
+        if (function_exists('recursos_retirada_passada')) $resultado['retirada'] = recursos_retirada_passada($pdo, $tabela, $registros);
         log_unificado(tr('_compare_summary', ['tabela'=>$tabela,'ins'=>$resultado['inserted'],'upd'=>$resultado['updated'],'same'=>$resultado['same']]), $LOG_FILE_DB);
         $resumo[$tabela]=$resultado;
     }

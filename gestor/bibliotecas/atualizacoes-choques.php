@@ -63,6 +63,37 @@ function atualizacoes_choques_detalhe(string $base, int $id): ?array {
 }
 
 /**
+ * req-199 / BATCH-207: choque de **registro** (`db:<tabela>?<chave>`), de uma retirada declarativa em que o
+ * registro foi editado online. `sobrescrever` aceita a retirada (`status='D'` quando a tabela tem status,
+ * senão sai); `manter` deixa o registro (o manifesto do dono já não o lista, então não volta a chocar).
+ *
+ * @return array ['ok' => bool, 'erro' => string, 'acao' => string]
+ */
+function atualizacoes_choques_resolver_registro(array $c, string $acao): array {
+    if (!in_array($acao, instalacao_choque_acoes($c), true)) return ['ok' => false, 'erro' => 'decisão "' . $acao . '" não vale para este choque', 'acao' => $acao];
+    if ($acao === 'manter') return ['ok' => true, 'erro' => '', 'acao' => $acao];
+    $u = parse_url((string)$c['caminho']);
+    $tabela = (string)($u['path'] ?? '');
+    parse_str((string)($u['query'] ?? ''), $chave);
+    if (($u['scheme'] ?? '') !== 'db' || !preg_match('/^[a-zA-Z0-9_]+$/', $tabela) || !$chave) return ['ok' => false, 'erro' => 'registro inválido: ' . $c['caminho'], 'acao' => $acao];
+    $cols = [];
+    $res = banco_query('SHOW COLUMNS FROM `' . $tabela . '`');
+    if ($res) while ($l = banco_fetch_assoc($res)) $cols[$l['Field']] = true;
+    $conds = [];
+    foreach ($chave as $col => $v) {
+        if ($col === 'language' && !isset($cols['language']) && isset($cols['linguagem_codigo'])) $col = 'linguagem_codigo';
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', (string)$col) || !isset($cols[$col])) continue;
+        $conds[] = '`' . $col . "`='" . banco_escape_field((string)$v) . "'";
+    }
+    if (!$conds) return ['ok' => false, 'erro' => 'chave do registro sem colunas válidas', 'acao' => $acao];
+    $where = implode(' AND ', $conds);
+    $ok = isset($cols['status'])
+        ? banco_query('UPDATE `' . $tabela . "` SET `status`='D' WHERE " . $where)
+        : banco_query('DELETE FROM `' . $tabela . '` WHERE ' . $where);
+    return $ok ? ['ok' => true, 'erro' => '', 'acao' => $acao] : ['ok' => false, 'erro' => 'falha ao retirar o registro', 'acao' => $acao];
+}
+
+/**
  * Aplica a decisão (motor) e registra: a linha e as outras pendentes do mesmo arquivo e camada (versões
  * anteriores do mesmo choque) recebem a resolução, a data e quem decidiu.
  *
@@ -72,7 +103,7 @@ function atualizacoes_choques_resolver(string $base, int $id, string $acao, ?str
     $c = atualizacoes_choques_obter($id);
     if (!$c) return ['ok' => false, 'erro' => 'choque não encontrado', 'acao' => $acao, 'resolvidos' => 0];
     if ($c['resolucao']) return ['ok' => false, 'erro' => 'choque já resolvido (' . $c['resolucao'] . ')', 'acao' => $acao, 'resolvidos' => 0];
-    $r = instalacao_choque_resolver($base, $c, $acao, $mesclado);
+    $r = ($c['tipo'] ?? '') === 'registro' ? atualizacoes_choques_resolver_registro($c, $acao) : instalacao_choque_resolver($base, $c, $acao, $mesclado);
     if (!$r['ok']) return ['ok' => false, 'erro' => $r['erro'], 'acao' => $acao, 'resolvidos' => 0];
     $e = function ($v) { return banco_escape_field((string)$v); };
     banco_query("UPDATE atualizacoes_choques SET resolucao='" . $e($acao) . "', resolvido_em=NOW(), resolvido_por='" . $e(substr($quem, 0, 150)) . "'"

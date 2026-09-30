@@ -4,6 +4,7 @@ description: "Bootstrap, integridade do pacote, aplicação e etapas web."
 section: concepts
 order: 110
 sources:
+  - gestor/controladores/atualizacoes/atualizacoes-recursos-retirada.php
   - gestor/bibliotecas/instalacao-manifesto.php
   - gestor/modulos/admin-atualizacoes/admin-atualizacoes.php
   - gestor/controladores/atualizacoes/atualizacoes-migracoes.php
@@ -31,6 +32,13 @@ Depois do banco, `db/` fica no lugar, no CLI e no web (req-197): a pasta tem as 
 - **retira** o que o core deixou de entregar, se estiver intacto; editado, vira choque `retirado-editado`.
 
 A primeira entrega, sem manifesto, se comporta como antes e grava a linha de base. Os choques ficam em `installation/choques/` e, depois da etapa de banco, na tabela `atualizacoes_choques` (o mesmo choque ainda pendente não vira outra linha a cada atualização); a aba "Choques das entregas" do `admin-atualizacoes` mostra a lista e o diff, e no detalhe fica a decisão por arquivo: sobrescrever, manter ou mesclar (req-199; também pela API e por `c2f update:conflicts` / `update:resolve`). "Manter" vira regra para as próximas entregas do mesmo arquivo, e a camada que entrega o mesmo conteúdo de antes não gera choque. `installation/` é pasta protegida.
+
+**Dados que saem (req-199 / BATCH-207).** A sincronização do banco também retira o que o dono deixou de entregar:
+- cada entrega grava, por dono (`core` ou o id do projeto), a chave natural de cada registro entregue, em `installation/manifests/recursos-<dono>.json`;
+- na entrega seguinte, o que saiu da lista do mesmo dono sai do banco: `status='D'` quando a tabela tem status, senão o registro é apagado;
+- registro editado online (`user_modified=1`) não sai: vira choque de registro (`db:<tabela>?<chave>`), e "sobrescrever" aceita a retirada;
+- valem só as tabelas de chave natural (páginas, layouts, componentes, variáveis, templates…). O core só retira registros sem `project`, e o projeto só os dele. O que foi criado no painel nunca entrou numa lista, então nunca sai;
+- a primeira entrega de um dono numa tabela só grava a lista. `--dry-run` só simula; `--no-resource-removal` (no `atualizacoes-banco-de-dados.php`) desliga. A lista imperativa `deletar` do `schema-metadata.json` continua para casos pontuais.
 
 **Snapshot, verificação e rollback (req-198).** Antes de aplicar, a atualização guarda em `backups/atualizacoes/snapshots/exec-<id>/`:
 - só os arquivos que vão ser sobrescritos ou removidos, a lista dos novos e os manifestos;
