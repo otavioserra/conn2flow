@@ -133,7 +133,7 @@ Quando uma entrega vai sobrescrever um arquivo que está **diferente** no ar (o 
 
 **Achados do ciclo do e-commerce para somar ao F:**
 - **Página Tailwind nova sai sem CSS na primeira rodada do `project:update-all`:** o `*.precompiled.css` é gerado depois de o `PaginasData.json` ser montado, e a página vai para o banco com `css_precompiled` vazio. Precisou de uma segunda rodada nas REQ-078, 079 e 080 do site. Rever a ordem dentro da etapa de recursos, junto com a ordem banco → arquivos (achado 6).
-- **Trava do OneDrive no `rename` do Tailwind** ("arquivo em uso"): falha transitória, que se resolve repetindo. Um novo tentativa automática curta na substituição atômica evitaria rodar o pipeline inteiro de novo.
+- **Trava do OneDrive no `rename` do Tailwind** ("arquivo em uso"): falha transitória, que se resolve repetindo. Uma nova tentativa automática curta na substituição atômica evitaria rodar o pipeline inteiro de novo.
 
 **Fora do escopo do BL-028, mas vale uma requisição pequena no core:** o `banco_select` usa a expressão inteira como chave do resultado (`'COUNT(*) AS n'` vira a chave `'COUNT(*) AS n'`, não `n`). No site isso anulava, sem erro, dois limites de segurança (pedidos e CEP por IP) e a nota das avaliações. O core já contorna com `reset()` nos seus widgets. Proposta: o `banco_select` passar a usar o alias quando houver `AS`, mantendo também a chave antiga, para não quebrar quem já lê pela expressão.
 
