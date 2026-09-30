@@ -6,7 +6,7 @@ sources:
   - .vscode/tasks.json
   - cli/src/Console/Application.php
   - cli/src/Commands/ModuleCreateCommand.php
-verified_at: 100adc3a
+verified_at: b371b53d
 ---
 
 # Use o Conn2Flow Dev Tools no VS Code

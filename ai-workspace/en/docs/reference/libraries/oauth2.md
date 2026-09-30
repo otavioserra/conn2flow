@@ -8,7 +8,7 @@ sources:
   - gestor/bibliotecas/oauth2.php
   - gestor/controladores/api/api.php
   - gestor/controladores/api/api-auth.php
-verified_at: 100adc3a
+verified_at: b371b53d
 ---
 
 # `oauth2.php` library

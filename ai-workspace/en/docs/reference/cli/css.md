@@ -7,7 +7,7 @@ sources:
   - cli/src/Console/Application.php
   - cli/src/Commands/CssAuditCommand.php
   - cli/src/Commands/CssRebuildCommand.php
-verified_at: 253e8e04
+verified_at: b371b53d
 ---
 
 # CLI: CSS

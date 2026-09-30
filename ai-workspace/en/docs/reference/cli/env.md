@@ -6,7 +6,7 @@ sources:
   - cli/src/Console/Application.php
   - cli/src/Commands/EnvSetCommand.php
   - cli/src/Commands/EnvStatusCommand.php
-verified_at: 253e8e04
+verified_at: b371b53d
 ---
 
 # CLI: Commands env

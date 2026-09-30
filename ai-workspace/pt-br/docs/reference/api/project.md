@@ -6,7 +6,7 @@ sources:
   - gestor/bibliotecas/instalacao-manifesto.php
   - ai-workspace/en/scripts/projects/project-file-manifest.php
   - gestor/controladores/api/api.php
-verified_at: 100adc3a
+verified_at: b371b53d
 ---
 
 # API de projetos

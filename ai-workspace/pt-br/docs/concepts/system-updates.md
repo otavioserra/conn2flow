@@ -9,7 +9,7 @@ sources:
   - gestor/controladores/atualizacoes/atualizacoes-migracoes.php
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php
-verified_at: 100adc3a
+verified_at: b371b53d
 ---
 
 # Atualizações do sistema
