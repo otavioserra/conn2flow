@@ -1610,6 +1610,34 @@
         "checksum": "{\"html\":\"839f0ad72ee1fb7559f79aa1fd0b2f53\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"839f0ad72ee1fb7559f79aa1fd0b2f53\"}"
     },
     {
+        "nome": "Mapeamento de Layout por Perfil",
+        "id": "layout-profile-mapping",
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "html": "<div class=\"field\">\n    <div class=\"ui toggle checkbox\">\n        <input type=\"checkbox\" name=\"mapear_layouts_perfis\" #mapping-checked#>\n        <label>#mapping-toggle-label#<\/label>\n    <\/div>\n<\/div>\n<div class=\"layout-profile-fields\" #mapping-hidden#>\n    <div class=\"layout-profile-rows\">#mapping-rows#<\/div>\n    <button type=\"button\" class=\"ui button layout-profile-add\">#mapping-add-label#<\/button>\n    <template class=\"layout-profile-template\">#mapping-template#<\/template>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"f8cffe2ecdc3cc62e4f65e1ff95bc09d\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"f8cffe2ecdc3cc62e4f65e1ff95bc09d\"}"
+    },
+    {
+        "nome": "Linha de Layout por Perfil",
+        "id": "layout-profile-row",
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "html": "<div class=\"three fields layout-profile-row\">\n    <div class=\"field\">\n        <label>#mapping-layout-label#<\/label>\n        <span>#select-layout-profile-layout-#row-index##<\/span>\n    <\/div>\n    <div class=\"field\">\n        <label>#mapping-profile-label#<\/label>\n        <span>#select-layout-profile-profile-#row-index##<\/span>\n    <\/div>\n    <div class=\"field\">\n        <label>&nbsp;<\/label>\n        <button type=\"button\" class=\"ui button layout-profile-remove\">#mapping-remove-label#<\/button>\n    <\/div>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"846642cefd8a44d86588e9eb438cf997\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"846642cefd8a44d86588e9eb438cf997\"}"
+    },
+    {
         "nome": "Page or System List",
         "id": "lista-pagina-ou-sistema",
         "language": "en",
@@ -1622,6 +1650,34 @@
         "versao": 1,
         "file_version": "1.5",
         "checksum": "{\"html\":\"d0dae208d0c9c46f4041e52bb5e503df\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"d0dae208d0c9c46f4041e52bb5e503df\"}"
+    },
+    {
+        "nome": "Profile Layout Mapping",
+        "id": "layout-profile-mapping",
+        "language": "en",
+        "modulo": "admin-paginas",
+        "html": "<div class=\"field\">\n    <div class=\"ui toggle checkbox\">\n        <input type=\"checkbox\" name=\"mapear_layouts_perfis\" #mapping-checked#>\n        <label>#mapping-toggle-label#<\/label>\n    <\/div>\n<\/div>\n<div class=\"layout-profile-fields\" #mapping-hidden#>\n    <div class=\"layout-profile-rows\">#mapping-rows#<\/div>\n    <button type=\"button\" class=\"ui button layout-profile-add\">#mapping-add-label#<\/button>\n    <template class=\"layout-profile-template\">#mapping-template#<\/template>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"f8cffe2ecdc3cc62e4f65e1ff95bc09d\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"f8cffe2ecdc3cc62e4f65e1ff95bc09d\"}"
+    },
+    {
+        "nome": "Profile Layout Row",
+        "id": "layout-profile-row",
+        "language": "en",
+        "modulo": "admin-paginas",
+        "html": "<div class=\"three fields layout-profile-row\">\n    <div class=\"field\">\n        <label>#mapping-layout-label#<\/label>\n        <span>#select-layout-profile-layout-#row-index##<\/span>\n    <\/div>\n    <div class=\"field\">\n        <label>#mapping-profile-label#<\/label>\n        <span>#select-layout-profile-profile-#row-index##<\/span>\n    <\/div>\n    <div class=\"field\">\n        <label>&nbsp;<\/label>\n        <button type=\"button\" class=\"ui button layout-profile-remove\">#mapping-remove-label#<\/button>\n    <\/div>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"846642cefd8a44d86588e9eb438cf997\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"846642cefd8a44d86588e9eb438cf997\"}"
     },
     {
         "nome": "Plugins - Exec",
@@ -2114,6 +2170,34 @@
         "checksum": "{\"html\":\"fb692fb83eec39c7ba846c44cd447104\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"fb692fb83eec39c7ba846c44cd447104\"}"
     },
     {
+        "nome": "Mapeamento de Layout por Perfil",
+        "id": "layout-profile-mapping",
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "html": "<div class=\"field\">\n    <div class=\"ui toggle checkbox\">\n        <input type=\"checkbox\" name=\"mapear_layouts_perfis\" #mapping-checked#>\n        <label>#mapping-toggle-label#<\/label>\n    <\/div>\n<\/div>\n<div class=\"layout-profile-fields\" #mapping-hidden#>\n    <div class=\"layout-profile-rows\">#mapping-rows#<\/div>\n    <button type=\"button\" class=\"ui button layout-profile-add\">#mapping-add-label#<\/button>\n    <template class=\"layout-profile-template\">#mapping-template#<\/template>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"f8cffe2ecdc3cc62e4f65e1ff95bc09d\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"f8cffe2ecdc3cc62e4f65e1ff95bc09d\"}"
+    },
+    {
+        "nome": "Linha de Layout por Perfil",
+        "id": "layout-profile-row",
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "html": "<div class=\"three fields layout-profile-row\">\n    <div class=\"field\">\n        <label>#mapping-layout-label#<\/label>\n        <span>#select-layout-profile-layout-#row-index##<\/span>\n    <\/div>\n    <div class=\"field\">\n        <label>#mapping-profile-label#<\/label>\n        <span>#select-layout-profile-profile-#row-index##<\/span>\n    <\/div>\n    <div class=\"field\">\n        <label>&nbsp;<\/label>\n        <button type=\"button\" class=\"ui button layout-profile-remove\">#mapping-remove-label#<\/button>\n    <\/div>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"846642cefd8a44d86588e9eb438cf997\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"846642cefd8a44d86588e9eb438cf997\"}"
+    },
+    {
         "nome": "Publisher Fields",
         "id": "publisher-fields",
         "language": "en",
@@ -2126,5 +2210,61 @@
         "versao": 1,
         "file_version": "1.1",
         "checksum": "{\"html\":\"419ac2e6defd07927ee860235b2c624e\",\"css\":\"9acffdf2939d187ad3826b68f6b31004\",\"css_precompiled\":\"\",\"combined\":\"7286a21c0b55e2ddba8178e451f0567b\"}"
+    },
+    {
+        "nome": "Profile Layout Mapping",
+        "id": "layout-profile-mapping",
+        "language": "en",
+        "modulo": "publisher-pages",
+        "html": "<div class=\"field\">\n    <div class=\"ui toggle checkbox\">\n        <input type=\"checkbox\" name=\"mapear_layouts_perfis\" #mapping-checked#>\n        <label>#mapping-toggle-label#<\/label>\n    <\/div>\n<\/div>\n<div class=\"layout-profile-fields\" #mapping-hidden#>\n    <div class=\"layout-profile-rows\">#mapping-rows#<\/div>\n    <button type=\"button\" class=\"ui button layout-profile-add\">#mapping-add-label#<\/button>\n    <template class=\"layout-profile-template\">#mapping-template#<\/template>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"f8cffe2ecdc3cc62e4f65e1ff95bc09d\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"f8cffe2ecdc3cc62e4f65e1ff95bc09d\"}"
+    },
+    {
+        "nome": "Profile Layout Row",
+        "id": "layout-profile-row",
+        "language": "en",
+        "modulo": "publisher-pages",
+        "html": "<div class=\"three fields layout-profile-row\">\n    <div class=\"field\">\n        <label>#mapping-layout-label#<\/label>\n        <span>#select-layout-profile-layout-#row-index##<\/span>\n    <\/div>\n    <div class=\"field\">\n        <label>#mapping-profile-label#<\/label>\n        <span>#select-layout-profile-profile-#row-index##<\/span>\n    <\/div>\n    <div class=\"field\">\n        <label>&nbsp;<\/label>\n        <button type=\"button\" class=\"ui button layout-profile-remove\">#mapping-remove-label#<\/button>\n    <\/div>\n<\/div>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"846642cefd8a44d86588e9eb438cf997\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"846642cefd8a44d86588e9eb438cf997\"}"
+    },
+    {
+        "nome": "Busca da página inicial",
+        "id": "home-page-autocomplete",
+        "language": "pt-br",
+        "modulo": "usuarios-perfis",
+        "html": "<div class=\"ui fluid icon input home-page-search\" style=\"position: relative;\">\n    <input type=\"text\" id=\"pagina-inicial-busca\" value=\"#home-page-selected-label#\" placeholder=\"#home-page-search-placeholder#\" autocomplete=\"off\" role=\"combobox\" aria-autocomplete=\"list\" aria-expanded=\"false\" aria-controls=\"pagina-inicial-suggestions\">\n    <i class=\"search icon\"><\/i>\n    <div id=\"pagina-inicial-suggestions\" class=\"ui vertical menu\" data-no-results=\"#home-page-no-results#\" hidden style=\"position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; max-height: 250px; overflow-y: auto; margin: 0;\"><\/div>\n<\/div>\n<input type=\"hidden\" name=\"pagina_inicial\" value=\"#home-page-selected-value#\">\n<div class=\"ui tiny grey text\">#home-page-default-help#<\/div>\n<button type=\"button\" class=\"ui basic mini button home-page-clear\" #home-page-clear-hidden# aria-label=\"#home-page-clear-label#\">#home-page-clear-label#<\/button>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"4ae1567f9ade1a7606a50492e840e1da\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"4ae1567f9ade1a7606a50492e840e1da\"}"
+    },
+    {
+        "nome": "Home page search",
+        "id": "home-page-autocomplete",
+        "language": "en",
+        "modulo": "usuarios-perfis",
+        "html": "<div class=\"ui fluid icon input home-page-search\" style=\"position: relative;\">\n    <input type=\"text\" id=\"pagina-inicial-busca\" value=\"#home-page-selected-label#\" placeholder=\"#home-page-search-placeholder#\" autocomplete=\"off\" role=\"combobox\" aria-autocomplete=\"list\" aria-expanded=\"false\" aria-controls=\"pagina-inicial-suggestions\">\n    <i class=\"search icon\"><\/i>\n    <div id=\"pagina-inicial-suggestions\" class=\"ui vertical menu\" data-no-results=\"#home-page-no-results#\" hidden style=\"position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; max-height: 250px; overflow-y: auto; margin: 0;\"><\/div>\n<\/div>\n<input type=\"hidden\" name=\"pagina_inicial\" value=\"#home-page-selected-value#\">\n<div class=\"ui tiny grey text\">#home-page-default-help#<\/div>\n<button type=\"button\" class=\"ui basic mini button home-page-clear\" #home-page-clear-hidden# aria-label=\"#home-page-clear-label#\">#home-page-clear-label#<\/button>\n",
+        "css": null,
+        "css_precompiled": null,
+        "framework_css": "fomantic-ui",
+        "status": "A",
+        "versao": 1,
+        "file_version": "1.1",
+        "checksum": "{\"html\":\"4ae1567f9ade1a7606a50492e840e1da\",\"css\":\"\",\"css_precompiled\":\"\",\"combined\":\"4ae1567f9ade1a7606a50492e840e1da\"}"
     }
 ]

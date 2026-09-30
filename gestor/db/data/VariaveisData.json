@@ -7544,6 +7544,42 @@
     {
         "language": "pt-br",
         "modulo": "admin-paginas",
+        "id": "profile-mapping-toggle",
+        "valor": "Mapear layouts por perfil de usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "profile-mapping-profile",
+        "valor": "Perfil de Usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "profile-mapping-add",
+        "valor": "Adicionar mapeamento",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
+        "id": "profile-mapping-remove",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-paginas",
         "id": "form-name-label",
         "valor": "Nome da Página",
         "tipo": "string",
@@ -7798,6 +7834,42 @@
         "modulo": "admin-paginas",
         "id": "lista-tipo-label",
         "valor": "Tipo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "profile-mapping-toggle",
+        "valor": "Map layouts by user profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "profile-mapping-profile",
+        "valor": "User profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "profile-mapping-add",
+        "valor": "Add mapping",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-paginas",
+        "id": "profile-mapping-remove",
+        "valor": "Remove",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -17192,6 +17264,42 @@
     {
         "language": "pt-br",
         "modulo": "publisher-pages",
+        "id": "profile-mapping-toggle",
+        "valor": "Mapear layouts por perfil de usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "profile-mapping-profile",
+        "valor": "Perfil de Usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "profile-mapping-add",
+        "valor": "Adicionar mapeamento",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "profile-mapping-remove",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
         "id": "form-name-label",
         "valor": "Nome da Página",
         "tipo": "string",
@@ -17653,6 +17761,42 @@
         "modulo": "publisher-pages",
         "id": "historico-caminho-movido",
         "valor": "Caminho (Mover)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "profile-mapping-toggle",
+        "valor": "Map layouts by user profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "profile-mapping-profile",
+        "valor": "User profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "profile-mapping-add",
+        "valor": "Add mapping",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "profile-mapping-remove",
+        "valor": "Remove",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -18956,6 +19100,60 @@
     {
         "language": "pt-br",
         "modulo": "usuarios-perfis",
+        "id": "access-tab-label",
+        "valor": "Acesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-label",
+        "valor": "Página Inicial pós-login",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-placeholder",
+        "valor": "Padrão do sistema (\/dashboard)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-search-placeholder",
+        "valor": "Digite nome, ID ou rota da página...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-clear-label",
+        "valor": "Limpar página inicial",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-no-results",
+        "valor": "Nenhuma página encontrada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "usuarios-perfis",
         "id": "form-name-label",
         "valor": "Nome",
         "tipo": "string",
@@ -19030,6 +19228,60 @@
         "modulo": "usuarios-perfis",
         "id": "form-default-label",
         "valor": "Padrão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "usuarios-perfis",
+        "id": "access-tab-label",
+        "valor": "Access",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-label",
+        "valor": "Home page after login",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-placeholder",
+        "valor": "System default (\/dashboard)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-search-placeholder",
+        "valor": "Type a page name, ID or route...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-clear-label",
+        "valor": "Clear home page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "usuarios-perfis",
+        "id": "home-page-no-results",
+        "valor": "No pages found",
         "tipo": "string",
         "grupo": null,
         "descricao": null

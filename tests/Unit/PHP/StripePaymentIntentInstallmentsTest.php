@@ -18,10 +18,10 @@ final class StripePaymentIntentInstallmentsTest extends TestCase
         self::assertSame(1, preg_match('/function stripe_criar_payment_intent\(.*?\n}\n/s', $fonte, $m));
         $codigo = str_replace(
             ['function stripe_criar_payment_intent(', 'stripe_requisicao(', 'stripe_valor_menor_unidade('],
-            ['function stripe_criar_payment_intent_teste(', 'stripe_requisicao_teste(', 'stripe_valor_menor_unidade_teste('],
+            ['function stripe_criar_payment_intent_teste(', 'stripe_requisicao_payment_intent_teste(', 'stripe_valor_menor_unidade_teste('],
             $m[0]
         );
-        eval('function stripe_requisicao_teste($params){ $GLOBALS["stripe_payment_intent_request"] = $params; return ["http_code" => 200, "data" => ["id" => "pi_1", "client_secret" => "pi_secret", "status" => "requires_payment_method"]]; }');
+        eval('function stripe_requisicao_payment_intent_teste($params){ $GLOBALS["stripe_payment_intent_request"] = $params; return ["http_code" => 200, "data" => ["id" => "pi_1", "client_secret" => "pi_secret", "status" => "requires_payment_method"]]; }');
         eval('function stripe_valor_menor_unidade_teste($valor, $moeda = "BRL"){ return (int) round((float) $valor * 100); }');
         eval($codigo);
     }

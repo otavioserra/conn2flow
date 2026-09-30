@@ -2681,6 +2681,18 @@ function gestor_roteador_csrf_token(){
 	exit;
 }
 
+function gestor_roteador_layout_perfil($layoutPadrao, $mapeamento, $perfil){
+	if(!$perfil || !$mapeamento) return $layoutPadrao;
+	$layouts = is_array($mapeamento) ? $mapeamento : json_decode((string)$mapeamento, true);
+	if(!is_array($layouts)) return $layoutPadrao;
+	foreach($layouts as $layoutId => $perfilId){
+		if(is_string($layoutId) && $layoutId !== '' && is_scalar($perfilId) && (string)$perfilId === (string)$perfil){
+			return $layoutId;
+		}
+	}
+	return $layoutPadrao;
+}
+
 function gestor_roteador(){
 	global $_GESTOR;
 	global $_INDEX;
@@ -2771,6 +2783,7 @@ function gestor_roteador(){
 	} else {
 		$campos = Array(
 			'layout_id',
+			'layouts_users_profiles',
 			'html',
 			'html_extra_head',
 			'css',
@@ -3085,6 +3098,15 @@ function gestor_roteador(){
 			
 			// ===== Incluir um layout específico, ou padrão ou nenhum.
 			
+			if(!empty($paginas[0]['layouts_users_profiles'])){
+				$usuarioLayout = gestor_usuario();
+				$perfilLayout = !empty($usuarioLayout['id_usuarios_perfis']) && $usuarioLayout['id_usuarios_perfis'] !== '0'
+					? ($usuarioLayout['perfil_slug'] ?? null) : null;
+				$paginas[0]['layout_id'] = gestor_roteador_layout_perfil(
+					$paginas[0]['layout_id'], $paginas[0]['layouts_users_profiles'], $perfilLayout
+				);
+			}
+
 			if(isset($_GESTOR['layout'])){
 				$layout = (isset($_GESTOR['layout']['html']) ? $_GESTOR['layout']['html'] : '');
 				$layout_css = (isset($_GESTOR['layout']['css']) ? $_GESTOR['layout']['css'] : '');

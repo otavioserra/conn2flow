@@ -28,7 +28,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-187 | complete | Docs do core — conceitos, novidades e limpeza do legado, onda 5 (req-183) | [BATCH-187.md](archive/BATCH-187.md) | Agente em outra infraestrutura. Sem pipeline. |
 | BATCH-188 | complete | Publicação do SDD do core e dono do pipeline das docs, onda 6 (req-184) | [BATCH-188.md](archive/BATCH-188.md) | Agente em outra infraestrutura. Pipeline só depois do BATCH-184 `complete`. |
 | BATCH-189 | complete | Ajustes de navegação e referência nas docs online (req-185) | [BATCH-189.md](archive/BATCH-189.md) | Agente em paralelo. Menu centralizado, anterior/próximo com rótulo do menu, descrição das funções, sem link de edição. Sem pipeline. |
-| BATCH-190 | complete | Módulo `documentation` no conn2flow-site (req-186) | [BATCH-190.md](BATCH-190.md) | docs:build com módulo dono e status; tela `/documentation/`; migração das páginas; Lab 8/8; site `583acb0`. |
+| BATCH-190 | complete | Módulo `documentation` no conn2flow-site (req-186) | [BATCH-190.md](archive/BATCH-190.md) | docs:build com módulo dono e status; tela `/documentation/`; migração das páginas; Lab 8/8; site `583acb0`. |
 | BATCH-191 | complete | Correções simples da reescrita das docs e do deploy (req-187) | [BATCH-191.md](BATCH-191.md) | `auth:cookie` SSH no Windows, variável global com preferência de módulo, plano em `admin-atualizacoes`, bibliotecas fantasmas. Achados complexos em BL-018 a BL-024. |
 | BATCH-192 | complete | Ajustes das docs online, sitemap no deploy e exclusão de órfãs (req-188) | [BATCH-192.md](BATCH-192.md) | Rota com ponto (whats-new 404), expandir/recolher tudo, arquivo do SDD publicado, resumo sem Markdown, sitemap no `/_api/project/update`, 17 órfãs excluídas pela lista `deletar`. |
 | BATCH-193 | complete | Segurança do `interface`: listagem sem SQL injection e excluir/status com CSRF (req-189) | [BATCH-193.md](BATCH-193.md) | A1 e A2 da req-181; teste com entrada maliciosa; Lab por `project:sync-core`. |
@@ -38,6 +38,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-198 | complete | Hotfix: migrações obsoletas no ambiente em execução (req-194) | [BATCH-198.md](BATCH-198.md) | Limpeza por dono (core/projeto) no deploy por API, na atualização do sistema e no pipeline rsync; choques só registrados. Épico no BL-028. |
 | BATCH-199 | complete | Itens avulsos na primeira fatura da assinatura Stripe (req-195) | [BATCH-199.md](BATCH-199.md) | `add_invoice_items` para o caixa central (REQ-071 do conn2flow-site): produtos e frete com a assinatura numa cobrança só. |
 | BATCH-197 | completed | Ativação opcional de parcelamento no PaymentIntent Stripe (req-193) | [BATCH-197.md](BATCH-197.md) | Extensão compartilhada para a REQ-072 do conn2flow-site; teste focado, lint e diff-check aprovados. |
+| BATCH-200 | complete | Página inicial e layout por perfil (req-196) | [BATCH-200.md](BATCH-200.md) | Migração MariaDB, pipeline `conn2flow-site-local`, Playwright, PHPUnit 1.289/1.289 e Vitest 455/455 validados; ver limite do login interativo no relatório. |
 
 ## Regra operacional
 

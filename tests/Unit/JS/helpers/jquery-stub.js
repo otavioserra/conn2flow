@@ -36,6 +36,15 @@ export function installJQueryStub({ ajax } = {}) {
       return new JQueryCollection(selector ? kids.filter((el) => el.matches(selector)) : kids);
     }
 
+    closest(selector) {
+      return new JQueryCollection(this.elements.map((el) => el.closest(selector)));
+    }
+
+    next(selector) {
+      return new JQueryCollection(this.elements.map((el) => el.nextElementSibling)
+        .filter((el) => el && (!selector || el.matches(selector))));
+    }
+
     not(selector) {
       return new JQueryCollection(this.elements.filter((el) => !(el.nodeType === 1 && el.matches(selector))));
     }
@@ -79,6 +88,12 @@ export function installJQueryStub({ ajax } = {}) {
     attr(name, value) {
       if (value === undefined) return this.elements[0]?.getAttribute(name);
       this.elements.forEach((el) => el.setAttribute(name, value));
+      return this;
+    }
+
+    prop(name, value) {
+      if (value === undefined) return this.elements[0]?.[name];
+      this.elements.forEach((el) => { el[name] = value; });
       return this;
     }
 
@@ -186,14 +201,16 @@ export function installJQueryStub({ ajax } = {}) {
     return target;
   };
 
-  document.addEventListener('click', (event) => {
-    delegated
-      .filter((item) => item.eventName === 'click')
-      .forEach((item) => {
-        const target = event.target.closest(item.selector);
-        if (target) item.handler.call(target, event);
-      });
-  });
+  for (const eventName of ['click', 'change', 'input', 'keydown']) {
+    document.addEventListener(eventName, (event) => {
+      delegated
+        .filter((item) => item.eventName === eventName)
+        .forEach((item) => {
+          const target = event.target.closest(item.selector);
+          if (target) item.handler.call(target, event);
+        });
+    });
+  }
 
   globalThis.$ = $;
   globalThis.jQuery = $;

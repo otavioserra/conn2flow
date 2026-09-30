@@ -1,5 +1,20 @@
 ﻿# Validation Checklist
 
+## BATCH-200 — Página inicial e layout por perfil (req-196)
+
+- [x] Migração Phinx aplicada e revertida no MariaDB 11.8.8 isolado; colunas `pagina_inicial` VARCHAR NULL e `layouts_users_profiles` LONGTEXT NULL, com registros legados preservados.
+- [x] Perfil grava apenas rotas ativas; login valida a rota novamente e conserva fallback `dashboard/`.
+- [x] CRUDs aceitam apenas pares de layout e perfil existentes no idioma corrente e exigem layout padrão ativo ao ligar o toggle; roteador aplica o par compatível e conserva o fallback.
+- [x] `resources:sync`: exit 0, 2.924 recursos, incluindo dez componentes bilíngues; manifests legados omitem o campo, preservando mapeamentos criados no Gestor.
+- [x] Biblioteca registrada no bootstrap e incluída por `gestor_incluir_biblioteca`; HTML em componentes de recursos; selects de Layout e Perfil gerados por `interface_formulario_campos` com Fomantic-UI; página inicial buscada por AJAX (mínimo de 2 caracteres, máximo de 20 resultados).
+- [x] PHPUnit: 1.289 testes, 10.152 asserções, exit 0 com `OPENSSL_CONF` válido; `Req196LayoutPorPerfilTest`: 6 testes, 16 asserções, inclusive sincronização SQL e renderização de componentes.
+- [x] Vitest: 34 arquivos, 455 testes, exit 0; autocomplete AJAX, toggle e repetidor dos dois CRUDs exercitados no DOM; sintaxe PHP/JS aprovada.
+- [x] MariaDB 11.8 isolado: 11 verificações dos validadores Layout/Perfil, campo de acesso e destino de login passaram com registros ativos, inativos e de outro idioma.
+- [x] `project:update-all conn2flow-site-local`: oito estágios, exit 0; `assets:minify --verificar` e `git diff --check`: exit 0.
+- [x] Playwright no Lab: três formulários HTTP 200 sem erros de console; busca AJAX retornou oito sugestões para `dash`; perfil salvo e recarregado com `dashboard/`; `publisher-pages` gravou JSON; toggle desligado no `admin-paginas` gravou `NULL`.
+- [x] Rota temporária autenticada usou layout 3D mapeado e visitante usou layout padrão. Os dois registros de página, o vínculo de publicação e o perfil de teste foram removidos em transação.
+- [x] Destino de login válido e fallback exercitados por testes PHP em banco isolado. Não houve login interativo com usuário temporário; a sessão administrativa do Lab foi obtida por `auth:cookie`.
+
 ## BATCH-197 — Ativação de parcelamento no PaymentIntent Stripe (req-193)
 
 - [x] Payload legado sem `payment_method_options` quando a opção não é informada.

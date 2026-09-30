@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.0.2",
     "bibliotecas": [
         "interface",
         "html",
@@ -45,11 +45,12 @@
                 {
                     "name": "Usuários Perfis - Adicionar",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.1",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "7c4ceb5911b832310b04ccdc267707a4",
+                        "html": "c66b56c065c6f2f6ff33f32192a32b55",
                         "css": "",
-                        "combined": "7c4ceb5911b832310b04ccdc267707a4"
+                        "css_precompiled": "",
+                        "combined": "c66b56c065c6f2f6ff33f32192a32b55"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "usuarios-perfis/adicionar/",
@@ -59,11 +60,12 @@
                 {
                     "name": "Usuários Perfis - Editar",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.1",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "886ad1f0a721251fceb0b87516dbf9eb",
+                        "html": "7ae1be12673d52f96f2262281f1b2067",
                         "css": "",
-                        "combined": "886ad1f0a721251fceb0b87516dbf9eb"
+                        "css_precompiled": "",
+                        "combined": "7ae1be12673d52f96f2262281f1b2067"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "usuarios-perfis/editar/",
@@ -71,7 +73,50 @@
                     "option": "editar"
                 }
             ],
+            "components": [
+                {
+                    "name": "Busca da página inicial",
+                    "id": "home-page-autocomplete",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4ae1567f9ade1a7606a50492e840e1da",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "4ae1567f9ade1a7606a50492e840e1da"
+                    }
+                }
+            ],
             "variables": [
+                {
+                    "id": "access-tab-label",
+                    "value": "Acesso",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-label",
+                    "value": "Página Inicial pós-login",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-placeholder",
+                    "value": "Padrão do sistema (/dashboard)",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-search-placeholder",
+                    "value": "Digite nome, ID ou rota da página...",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-clear-label",
+                    "value": "Limpar página inicial",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-no-results",
+                    "value": "Nenhuma página encontrada",
+                    "type": "string"
+                },
                 {
                     "id": "form-name-label",
                     "value": "Nome",
@@ -140,11 +185,12 @@
                 {
                     "name": "User Profiles - Add",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.1",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "7c4ceb5911b832310b04ccdc267707a4",
+                        "html": "bf8f069066624d84fa945aa61a1acd04",
                         "css": "",
-                        "combined": "7c4ceb5911b832310b04ccdc267707a4"
+                        "css_precompiled": "",
+                        "combined": "bf8f069066624d84fa945aa61a1acd04"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "usuarios-perfis/adicionar/",
@@ -154,11 +200,12 @@
                 {
                     "name": "User Profiles - Edit",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.1",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "886ad1f0a721251fceb0b87516dbf9eb",
+                        "html": "daaa3ce6cf7ceda34ac13ef557ea490c",
                         "css": "",
-                        "combined": "886ad1f0a721251fceb0b87516dbf9eb"
+                        "css_precompiled": "",
+                        "combined": "daaa3ce6cf7ceda34ac13ef557ea490c"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "usuarios-perfis/editar/",
@@ -166,8 +213,50 @@
                     "option": "editar"
                 }
             ],
-            "components": [],
+            "components": [
+                {
+                    "name": "Home page search",
+                    "id": "home-page-autocomplete",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "4ae1567f9ade1a7606a50492e840e1da",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "4ae1567f9ade1a7606a50492e840e1da"
+                    }
+                }
+            ],
             "variables": [
+                {
+                    "id": "access-tab-label",
+                    "value": "Access",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-label",
+                    "value": "Home page after login",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-placeholder",
+                    "value": "System default (/dashboard)",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-search-placeholder",
+                    "value": "Type a page name, ID or route...",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-clear-label",
+                    "value": "Clear home page",
+                    "type": "string"
+                },
+                {
+                    "id": "home-page-no-results",
+                    "value": "No pages found",
+                    "type": "string"
+                },
                 {
                     "id": "form-name-label",
                     "value": "Name",
@@ -216,5 +305,5 @@
             ]
         }
     },
-    "asset_version": "9fc736ff48c82dce"
+    "asset_version": "27a9cb1e6ce0ea18"
 }

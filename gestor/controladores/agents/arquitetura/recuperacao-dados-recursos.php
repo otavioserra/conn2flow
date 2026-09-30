@@ -248,6 +248,9 @@ function rdr_metadata_path(array $cfg, string $lang): ?string {
  * Mantém o registro enxuto para versionamento limpo no Git.
  */
 function rdr_sanear(array $meta, array $cfg, string $lang): array {
+    if ($cfg['nome'] === 'paginas' && empty($meta['layouts_users_profiles'])) {
+        unset($meta['layouts_users_profiles']);
+    }
     // Colunas de controle de build/banco.
     unset($meta['versao'], $meta['checksum'], $meta['user_modified'], $meta['project']);
     // PK auto-increment declarada no contrato.
@@ -289,6 +292,13 @@ function rdr_descompilar_registro(array $rec, array $cfg, string $lang): array {
 
     $meta = $rec;
     $files = [];
+
+    if ($cfg['nome'] === 'paginas' && isset($meta['layouts_users_profiles']) && is_string($meta['layouts_users_profiles'])) {
+        $mapeamento = json_decode($meta['layouts_users_profiles'], true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($mapeamento)) {
+            $meta['layouts_users_profiles'] = (object)$mapeamento;
+        }
+    }
 
     foreach ($fieldTypes as $campo => $tipo) {
         if (!is_string($tipo)) continue;

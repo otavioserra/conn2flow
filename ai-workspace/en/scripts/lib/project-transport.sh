@@ -263,7 +263,13 @@ project_transport_run_rsync() {
   if _pt_truthy "$PT_RSYNC_CYGWIN"; then
     for index in "${!command[@]}"; do
       argument="${command[$index]}"
-      if [[ "$argument" =~ ^/([a-zA-Z])(/.*)?$ ]] && [ -e "$argument" ]; then
+      if [[ "$argument" =~ ^([a-zA-Z]):(/.*)?$ ]]; then
+        drive="${BASH_REMATCH[1],,}"
+        suffix="${BASH_REMATCH[2]:-}"
+        if [ -e "/$drive$suffix" ]; then
+          command[$index]="/cygdrive/$drive$suffix"
+        fi
+      elif [[ "$argument" =~ ^/([a-zA-Z])(/.*)?$ ]] && [ -e "$argument" ]; then
         drive="${BASH_REMATCH[1],,}"
         suffix="${BASH_REMATCH[2]:-}"
         command[$index]="/cygdrive/$drive$suffix"
