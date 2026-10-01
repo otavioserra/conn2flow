@@ -15,8 +15,16 @@
         "data_modificacao": "data_modificacao",
         "config": {
             "strategy": "natural_key",
-            "natural_key_columns": ["id"],
-            "preserve_on_user_modified": ["senha", "email", "nome", "usuario", "status"],
+            "natural_key_columns": [
+                "id"
+            ],
+            "preserve_on_user_modified": [
+                "senha",
+                "email",
+                "nome",
+                "usuario",
+                "status"
+            ],
             "insert_only": true
         },
         "deletar": []

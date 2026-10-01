@@ -110,7 +110,10 @@
             "id_numerico": "id_modulos",
             "config": {
                 "strategy": "natural_key",
-                "natural_key_columns": ["language", "id"],
+                "natural_key_columns": [
+                    "language",
+                    "id"
+                ],
                 "preserve_on_user_modified": [],
                 "insert_only": false,
                 "sync_resources": true,
@@ -124,7 +127,10 @@
             "id_numerico": "id_modulos_grupos",
             "config": {
                 "strategy": "natural_key",
-                "natural_key_columns": ["language", "id"],
+                "natural_key_columns": [
+                    "language",
+                    "id"
+                ],
                 "preserve_on_user_modified": [],
                 "insert_only": false,
                 "sync_resources": true,
@@ -138,7 +144,11 @@
             "id_numerico": "id_modulos_operacoes",
             "config": {
                 "strategy": "natural_key",
-                "natural_key_columns": ["language", "modulo_id", "id"],
+                "natural_key_columns": [
+                    "language",
+                    "modulo_id",
+                    "id"
+                ],
                 "preserve_on_user_modified": [],
                 "insert_only": false,
                 "sync_resources": true,
@@ -152,8 +162,16 @@
             "id_numerico": "id_usuarios",
             "config": {
                 "strategy": "natural_key",
-                "natural_key_columns": ["id"],
-                "preserve_on_user_modified": ["senha", "email", "nome", "usuario", "status"],
+                "natural_key_columns": [
+                    "id"
+                ],
+                "preserve_on_user_modified": [
+                    "senha",
+                    "email",
+                    "nome",
+                    "usuario",
+                    "status"
+                ],
                 "insert_only": true,
                 "sync_resources": true,
                 "language_agnostic": true,
@@ -167,7 +185,10 @@
             "id_numerico": "id_usuarios_perfis",
             "config": {
                 "strategy": "natural_key",
-                "natural_key_columns": ["language", "id"],
+                "natural_key_columns": [
+                    "language",
+                    "id"
+                ],
                 "preserve_on_user_modified": [],
                 "insert_only": false,
                 "sync_resources": true,
@@ -181,7 +202,9 @@
             "id_numerico": "id_categorias",
             "config": {
                 "strategy": "natural_key",
-                "natural_key_columns": ["id"],
+                "natural_key_columns": [
+                    "id"
+                ],
                 "preserve_on_user_modified": [],
                 "insert_only": false,
                 "sync_resources": true,

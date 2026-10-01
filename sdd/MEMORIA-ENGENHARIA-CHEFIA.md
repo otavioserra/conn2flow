@@ -16,8 +16,8 @@
 ## Convenções de Código
 
 - **Fluxo de Versionamento (Commits & Pushes)**:
-  - **REGRA CRÍTICA**: Nunca realizar commits (`git commit`) ou envios (`git push`) de forma autônoma ou automática sob nenhuma circunstância.
-  - Sempre aguardar a autorização/solicitação explícita do Engenheiro Chefe Humano antes de executar comandos que alterem o histórico remoto do Git.
+  - **REGRA CRÍTICA**: Nunca realizar commits (`git commit`) ou envios (`git push`) de forma autônoma sem solicitação do usuário.
+  - **Execução Direta sob Comando Explícito**: Quando o Engenheiro Chefe Humano solicitar explicitamente commit e push (ex: "faça o commit e o push", "commit push", "commita e sobe"), o agente DEVE executar os comandos diretamente no terminal via `run_command` (listando sempre os caminhos de arquivos específicos no `git add`, criando o commit descritivo e executando o `git push`), verificando o resultado em tempo real para confirmar a entrega, em vez de apenas sugerir o comando em texto.
 
 - **Geração de Mensagens de Commit, Tags e Notas de Release**:
   - **REGRA CRÍTICA**: Ao propor textos para commits ou notas de tags que serão repassados pelo usuário como argumentos para scripts no terminal, **sempre use aspas simples** para destacar termos internamente (ex: `'Adicionar todos os campos'`). Isso evita conflitos com as aspas duplas delimitadoras do comando e previne a quebra do parsing no Bash/PowerShell, impedindo commits truncados ou com nomes genéricos (como "todos").
