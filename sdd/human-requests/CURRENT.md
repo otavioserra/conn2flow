@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-206.md](req-206.md) (BATCH-214 `complete`, 2026-10-01, homologação humana pendente): correções do deploy de projeto depois da req-202/203 — `insert_only` em chave natural (admin sobrescrito pela semente) e compilador em modo projeto usando só as sementes do projeto.
   - [req-203.md](req-203.md) (BATCH-211 `complete`, 2026-10-01): Segregação de Recursos Globais vs Multilíngues — seeds na raiz, contrato `language_agnostic`, compilador validado em diretório temporário com dados reais e duplicatas por idioma removidas.
   - [req-202.md](req-202.md) (BATCH-210 `complete`, 2026-10-01): Autoria 100% em resources (fim dos 8 arquivos estáticos em `gestor/db/data/`), contrato declarativo em `tables_config.json`, compilação determinística e suporte a compilação granular/seletiva (`--only`, `--skip-css`, `--resource`) com otimização de cache Tailwind.
   - [req-204.md](req-204.md) (BATCH-212 `in-review`, 2026-10-01, revisão humana pendente): parte do core da REQ-085 do `conn2flow-site` — mapa de layout indexado por perfil (o mesmo layout para vários perfis), página compilada com todos os layouts mapeados, editor HTML com preview por layout e captura cumulativa, popup da página inicial e `action=version` na API de sistema.
@@ -31,4 +32,4 @@
 - **Intakes Históricos Arquivados**:
   - Requisições anteriores (req-001 a req-178) arquivadas em [archive/](archive/).
 
-- **Status**: BATCH-211/REQ-203 implementado e validado; nenhum deploy executado.
+- **Status**: BATCH-214/REQ-206 implementado e validado no Lab (`conn2flow-site-local`); req-202 a req-206 commitadas na `main`.

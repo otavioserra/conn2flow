@@ -16,6 +16,14 @@
 
 ## Tarefas recentes
 
+### 2026-10-01 — BATCH-214 (req-206): deploy de projeto depois da req-202/203
+
+- **`insert_only` precisa ser tratado nos dois ramos de `sincronizarTabela()`** (PK e chave natural). Mudar a estratégia de uma tabela no contrato muda o ramo; conferir que as proteções existem no ramo novo.
+- **`SKIP_NO_CHECKSUM_CHANGE` esconde o caminho de sincronização.** Para provar uma regra de uma tabela no Lab: `bash ai-workspace/en/scripts/dev-environment/updates-manager-database.sh --project <id> --tables <tabela> --force-all`.
+- **O compilador e o sincronizador declaram `main()` e `dataFileNameFromTable()`.** Teste que carrega o compilador usa `RunTestsInSeparateProcesses` + `PreserveGlobalState(false)` e faz o `require` no `setUp()`, nunca no topo do arquivo nem em `setUpBeforeClass()` (os dois rodam no processo da suíte).
+- **O pipeline de projeto roda o sincronizador sem `--backup`** e o log trunca valores: uma linha sobrescrita não tem volta. Fotografar a tabela antes de validar regra de dados no Lab.
+- **`git checkout -- <arquivo>` em árvore compartilhada apaga alteração sem commit de qualquer lote**, não só a própria edição. Desfazer com edição inversa.
+
 ### 2026-10-01 — BATCH-210 (req-202): sementes declarativas e compilação seletiva
 
 - A configuração de tabela no descritor `gestor/modulos/usuarios/usuarios.json` prevalece sobre `tables_config.json` ao gerar schema; mantenha as regras de preservação alinhadas nos dois lugares.

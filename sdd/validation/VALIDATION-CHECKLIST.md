@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-214 — Deploy de projeto depois da req-202/203 (req-206)
+
+- [x] `insert_only` vale em chave natural: a semente não altera usuário existente e ainda insere o que falta.
+- [x] Compilador em modo projeto não grava dados do core no `db/data` do projeto.
+- [x] `jsonWrite()` não regrava conteúdo igual; `db/data` copiado por conteúdo nos dois scripts de sincronização.
+- [x] PHPUnit 1380 testes, 1 falha de fim de linha do ambiente (anterior ao lote); Vitest 461/461.
+- [x] Lab: `project:update-all` sem alteração em módulos, permissões e usuários; `--tables usuarios --force-all` registra `SKIP_UPDATE_INSERT_ONLY`.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-214](../implementation/BATCH-214.md).
+
 ## BATCH-211 — Segregação de recursos globais vs multilíngues (req-203)
 
 - [x] Os quatro seeds globais foram movidos da pasta de idioma para a raiz sem perda: 1 usuário, 37 vínculos perfil-módulo, 3 vínculos perfil-operação e 1 categoria; sem cópias em `pt-br/` ou `en/`.

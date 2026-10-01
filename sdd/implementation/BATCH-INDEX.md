@@ -52,6 +52,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-211 | complete | Segregação de Recursos Globais vs Multilíngues (sementes sem idioma na raiz de `gestor/resources/`) (req-203) | [BATCH-211.md](BATCH-211.md) | Seeds e mapa ajustados; pipeline completo exercitado em diretório temporário com fontes reais (1/37/3/1 registros), sem duplicações ou coluna `language`; checkout protegido de regravação dos Data.json preexistentes. |
 | BATCH-212 | in-review | Layout por perfil 1:N, compilação e editor multi-layout, popup da página inicial e versão pela API (req-204) | [BATCH-212.md](BATCH-212.md) | Parte do core da REQ-085 do conn2flow-site; worktree `conn2flow-req203`, branch `feat/req-204`; validado no Lab. |
 | BATCH-213 | in-review | README (en e pt-br) e descrição do GitHub: plataforma PHP e AMS (req-205) | [BATCH-213.md](BATCH-213.md) | Worktree `conn2flow-readme`, branch `feat/req-205`; sem alteração de código. |
+| BATCH-214 | complete | Deploy de projeto depois da req-202/203: `insert_only` em chave natural e sementes do projeto (req-206) | [BATCH-214.md](BATCH-214.md) | Admin do Lab era sobrescrito pela semente; módulos e permissões do projeto eram retirados. Validado no Lab com consulta antes e depois. |
 
 ## Regra operacional
 
