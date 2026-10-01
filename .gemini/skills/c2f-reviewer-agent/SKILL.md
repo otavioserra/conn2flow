@@ -6,6 +6,12 @@ user-invocable: true
 
 # Revisor Técnico & Auditor de Qualidade (`c2f-reviewer-agent`)
 
+## Evidências de runtime com Chrome DevTools MCP
+
+Ao revisar mudanças de frontend/AJAX, confronte o diff e os testes com a reprodução no ambiente local isolado de `c2f-agent-visual-inspection`. Exija URL/viewport, ação reproduzida, snapshot e screenshot para layout/modais; para AJAX, console com stack traces disponíveis e requisição/resposta por ID, método e status conforme `c2f-javascript-ajax`.
+
+Registre em `review-YYY.md` o resultado esperado/observado, presença de CSRF sem seu valor, envelope JSON, ausência de erros novos e comportamento de loading/foco/fechamento. Inclua caminhos das evidências sanitizadas e a versão do servidor. Separe testes de infraestrutura MCP de validação funcional de telas: um handshake ou screenshot de teste não homologa os módulos do Gestor. Se uma ferramenta ou sessão não estiver disponível, use o CLI automatizado existente e registre exatamente o alcance comprovado.
+
 # ⚡ Gatilho Obrigatório
 - **TRIGGER**: Iniciar qualquer sessão ou chat onde o agente atua no papel de **Revisor Técnico**, **Auditor de Qualidade** ou **Inspetor de Lote SDD**.
 - **APLICA-SE A**: Revisão independente de diffs de código (`git diff`), validação de segurança (CSRF, escape SQL), auditoria de paridade de skills (`c2f ai:sync`), auditoria de CSS órfão (`c2f css:audit`) e homologação de lotes em `sdd/validation/`.

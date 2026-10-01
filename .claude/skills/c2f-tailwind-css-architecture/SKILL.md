@@ -6,6 +6,14 @@ user-invocable: false
 
 # Governança e Arquitetura do Tailwind CSS v4 no Conn2Flow e Projetos
 
+## Diagnóstico de CSS em runtime com Chrome DevTools MCP
+
+Após sincronizar pelo pipeline, siga `c2f-agent-visual-inspection`: capture screenshot e snapshot em desktop/mobile e após alternar estados dinâmicos. Meça o nó com `evaluate_script` (`getComputedStyle`, `getBoundingClientRect`) e correlacione classes reais, breakpoint, display, posição e overflow com o CSS entregue pelo SQL.
+
+Quando `get_css_styles` estiver no catálogo da sessão, use-o para examinar regras correspondentes e estilos computados. Compare regras sobrescritas, especificidade, ordem e contexto flex/grid; uma declaração aplicada pode ser inativa por incompatibilidade de contexto. Não trate o indicador visual de estilos inativos do DevTools como uma ferramenta MCP garantida. Sem essa ferramenta, combine medições e inspeção das folhas carregadas, registrando a limitação.
+
+Correlacione com `c2f css:audit --url=<rota>` e reconstrua derivados pelo `c2f css:rebuild` autorizado. Não use alterações transitórias no DOM/CSS nem updates diretos em `css_compiled` como solução final; valide novamente o recurso sincronizado.
+
 # ⚡ Gatilho Obrigatório
 - **TRIGGER**: Criar, alterar, migrar ou debugar qualquer layout, página, componente ou template com classes do Tailwind CSS v4.
 - **SKIP APENAS SE**: Tarefas puramente de backend em PHP ou APIs sem renderização visual.

@@ -1,1 +1,5 @@
 approval_policy = "on-request"
+
+[mcp_servers.chrome-devtools]
+command = "npx"
+args = ["-y", "chrome-devtools-mcp@latest", "--allow-unrestricted-paths"]

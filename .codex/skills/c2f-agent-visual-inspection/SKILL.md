@@ -35,7 +35,7 @@ graph LR
 ```bash
 ./c2f env:set development --project=<projectID>
 ```
-*Habilita leitura direta de recursos em disco (`resources/`) e relaxamento seguro de cookies em conexões HTTP locais.*
+*Ativa as flags de desenvolvimento e o relaxamento de cookies em conexões HTTP locais. HTML/CSS continuam vindo do SQL; `resources/` é a semente de autoria que deve ser sincronizada pelo pipeline.*
 
 #### Passo 3: Geração do Cookie Jar Server-Side
 ```bash
@@ -126,4 +126,18 @@ Em ambientes de homologação/Lab onde o agente possui credenciais de leitura de
 1. **EXCLUSIVO PARA AMBIENTE LOCAL DE TESTES**: NUNCA execute inspeção, auth ou scraping automatizado em URLs de produção.
 2. **Registro no SDD**: As evidências de inspeção (JSON do `page:inspect` e screenshots) DEVEM ser registradas diretamente no `VALIDATION-CHECKLIST.md` do repositório em vez de marcar "pendente do operador".
 3. **Tear Down Obrigatório**: SEMPRE finalize restaurando o ambiente com `c2f env:set production --project=<projectID>`.
+
+## Inspeção ativa com Chrome DevTools MCP
+
+Use `chrome-devtools` quando a validação exigir interação em uma página viva. Preserve `c2f page:inspect` como alternativa automatizada quando o MCP não estiver disponível. O runtime serve HTML/CSS do SQL: sincronize pelo pipeline oficial antes de inspecionar; o modo development não dispensa a sincronização do banco.
+
+- Na matriz `conn2flow-ai-workspace`, execute `scripts/mcp/launch-devtools-chrome.ps1 -Headless` (padrão) ou `-Visible`. O perfil é `%TEMP%\conn2flow-chrome-sandbox`, separado do Chrome pessoal. Para usar essa instância, acrescente `--browser-url=http://127.0.0.1:9222` aos argumentos MCP; a configuração canônica sem esse argumento inicia outro navegador próprio. Use Node LTS compatível com o pacote instalado (1.10.1 exige Node 20.19+ ou 22.12+).
+- Selecione a página com `list_pages`/`select_page` e use `navigate_page` apenas na URL local de teste. A sessão criada por `c2f auth:cookie` não é transferida automaticamente ao MCP: autentique o sandbox pelo fluxo de teste ou injete o jar por CDP/Playwright no contexto isolado, preservando `HttpOnly`, domínio e path. Nunca copie cookies do navegador pessoal nem os imprima nas evidências.
+- Obtenha `take_snapshot` antes de `click`, `fill` ou `press_key`; ele representa a árvore de acessibilidade e fornece UIDs, não o DOM HTML completo. Refaça o snapshot após alterações dinâmicas e aguarde o estado esperado com `wait_for`.
+- Colete `take_screenshot` antes/depois da interação e em viewports desktop/mobile com `resize_page`. Verifique alinhamento, overflow, legibilidade e estado dos controles. Snapshot isolado não comprova o layout visual.
+- Para medir DOM real, use `evaluate_script` somente para leitura: `getBoundingClientRect()`, `getComputedStyle()` e `getAnimations()`, retornando valores serializáveis. Registre seletor, existência do nó, dimensões, display, opacity e overflow. Se a sessão usa `--no-javascript-evaluation`, essas medições ficam indisponíveis; registre a limitação e use screenshot/snapshot ou o CLI disponível.
+- Em modais, valide abertura, overlay, foco, scroll e fechamento por botão/Escape, incluindo reabertura sem duplicação. Em previews, confira carregamento e dimensões do iframe; respeite cross-origin e não tente contornar CSP. Em editores Quill, confira `.ql-container`, `.ql-toolbar` e sincronização do input oculto após edição no ambiente de teste.
+- Inspecione console/rede conforme `c2f-javascript-ajax`; registre URL, viewport, ação, resultado esperado/observado e caminhos das capturas no checklist. Masque tokens/cookies e encerre apenas o PID sandbox criado, sem fechar sessões pessoais.
+
+Consulte o schema das ferramentas exposto pela versão instalada, incluindo `pageId` quando exigido. Referência: [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md).
 

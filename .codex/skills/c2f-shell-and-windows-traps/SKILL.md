@@ -6,6 +6,14 @@ user-invocable: false
 
 # Armadilhas de Shell, Windows e Git Bash no Ambiente Conn2Flow
 
+## Chrome DevTools MCP: perfil e processos no Windows
+
+- Use o lançador da matriz `conn2flow-ai-workspace/scripts/mcp/launch-devtools-chrome.ps1` com `-Headless` (padrão) ou `-Visible`. Ele mantém o perfil em `%TEMP%\conn2flow-chrome-sandbox`, CDP loopback e porta 9222; nunca reutilize o perfil pessoal, copie credenciais/histórico ou acrescente `--no-sandbox`.
+- Para conectar o MCP ao lançador, acrescente `--browser-url=http://127.0.0.1:9222` na sessão. Sem essa opção o servidor inicia seu próprio Chrome. Verifique `/json/version` antes de tentar conectar; porta ocupada não comprova que a instância pertence ao sandbox.
+- Em erro de porta/perfil em uso, consulte `Get-NetTCPConnection -LocalPort 9222 -State Listen` e `Get-CimInstance Win32_Process` pelo PID/propriedade `CommandLine`. Encerre apenas processos cuja linha de comando aponta para o sandbox ou o PID retornado pelo lançador. Nunca use `Stop-Process -Name chrome` ou `taskkill /IM chrome.exe`.
+- Caminhos com espaços exigem aspas no argumento `--user-data-dir`. Não apague o perfil enquanto houver processo proprietário; qualquer limpeza deve verificar caminho absoluto dentro de TEMP e recusar junctions/symlinks. O lançador não faz remoção recursiva automática.
+- Antes de usar `npx ...@latest`, confira requisitos de Node do pacote. A versão 1.10.1 exige `^20.19.0 || ^22.12.0 || >=23`; Node 20.14 falha antes do handshake. Node 22 temporário via `npm exec --yes --package=node@22 --package=chrome-devtools-mcp@latest -- chrome-devtools-mcp --help` permite diagnosticar sem alterar o Node global; configure um runtime compatível no PATH do cliente para uso persistente.
+
 # ⚡ Gatilho Obrigatório
 - **TRIGGER**: Executar comandos Docker (`docker exec`), cURL com upload/POST, scripts Python/Node que geram arquivos, ou chamadas POST para formulários do Gestor no ambiente Windows/Git Bash.
 - **SKIP APENAS SE**: Tarefas puramente de leitura de código ou edição de arquivos sem execução de shell.

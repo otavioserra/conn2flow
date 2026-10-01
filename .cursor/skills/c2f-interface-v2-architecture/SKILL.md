@@ -6,6 +6,12 @@ user-invocable: false
 
 # Arquitetura de Interface V2 (`gestor/bibliotecas/interface.php`)
 
+## Validação de componentes vivos com Chrome DevTools MCP
+
+Prepare o sandbox local conforme `c2f-agent-visual-inspection`. Use `take_snapshot` para localizar controles e UIDs atualizados, abra dropdowns/abas/modais com `click` ou teclado e aguarde o estado dinâmico esperado. Valide seleção, foco, fechamento por Escape, loading e reabertura sem handlers ou nós duplicados.
+
+Com `resize_page` e `take_screenshot`, confira desktop/mobile, overlay, scroll, dimensões e ordem dos controles. Use medições de DOM somente de leitura para detectar conteúdo cortado ou invisível. Teste Fomantic/Semantic e variantes Tailwind conforme o framework real da tela, incluindo ícones Lucide. Colete console/rede pelo roteiro de `c2f-javascript-ajax` quando a interação carrega dados; não dispare exclusões reais apenas para validar um modal.
+
 # ⚡ Gatilho Obrigatório
 - **TRIGGER**: Desenvolver ou refatorar interfaces administrativas, formulários complexos, modais de confirmação ou listas dinâmicas do Gestor.
 - **SKIP APENAS SE**: Endpoints de API headless (JSON puro) sem renderização de interface visual.

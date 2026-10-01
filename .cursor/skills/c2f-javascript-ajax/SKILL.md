@@ -298,3 +298,15 @@ document.addEventListener('submit', function(e) {
 3. **Backend DEVE usar `interface_ajax_iniciar()` e `interface_ajax_finalizar()`**: Garante headers JSON corretos, limpeza de buffers e envelope padronizado.
 4. **Trate o erro 401 (Unauthorized)**: Redirecione imediatamente para `signin/` em caso de sessão expirada.
 5. **Version Bump Obrigatório**: Ao alterar qualquer script JavaScript em `resources/`, incremente a versão (`versao: "X.Y.Z"`) no `<id>.json` ou no manifest do módulo antes de executar `c2f resources:sync` para invalidar o cache do navegador.
+
+## Depuração de tráfego assíncrono com Chrome DevTools MCP
+
+Em uma sessão local isolada preparada conforme `c2f-agent-visual-inspection`, reproduza a ação real da interface antes de avaliar console e rede. Consulte o schema negociado pelo servidor instalado; não suponha que os parâmetros sejam idênticos entre versões.
+
+1. Colete `list_console_messages` antes/depois da ação. Use `get_console_message` pelo ID para detalhar erros e stack traces disponíveis; registre arquivo, linha e frames relevantes, incluindo source maps quando resolvidos. Um console sem erros não comprova que o AJAX funcionou.
+2. Use `list_network_requests` para localizar `fetch`/XHR da ação, incluindo `/_ajax/`, `/_api/` e rotas do módulo. Correlacione ID, método, URL e sequência; examine cada falha com `get_network_request`, verificando status HTTP, headers, payload e corpo da resposta.
+3. No Gestor, confira `ajax=sim`, `opcao` e `ajaxOpcao` onde o contrato da rota os exige. Em métodos mutáveis de mesma origem, verifique presença de `X-CSRF-Token` injetado pelo `global.js` e sessão válida. O campo `ajax=sim` não elimina a proteção CSRF; não desative a proteção para corrigir um 403. Não exponha valores de token, Authorization, Cookie ou Set-Cookie nos registros.
+4. Diferencie 401 (sessão/`X-Gestor-Auth-Redirect`), 403 (autorização/CSRF), 500 (backend) e HTTP 200 com HTML de login, warnings PHP ou JSON inválido. Confira Content-Type e envelope JSON esperado pela rota, além de liberar loading/dimmer após sucesso e falha.
+5. Para multipart, confira campos e boundary gerado pelo navegador; não fixe manualmente Content-Type em `FormData`. Registre latência observada e pedidos duplicados após cliques repetidos. Verifique resultado no DOM com novo snapshot/screenshot.
+
+Prefira observar a requisição original. Reenviar mutações como `fetch()` pode duplicar gravações/pagamentos e exige escopo de teste autorizado. Evidências devem conter IDs e dados sanitizados, nunca dumps integrais de headers sensíveis. Referência: [ferramentas oficiais](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md).
