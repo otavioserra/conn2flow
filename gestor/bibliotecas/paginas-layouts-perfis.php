@@ -33,7 +33,9 @@ function paginas_layouts_perfis_json($dados){
             'extra' => "WHERE id='".banco_escape_field($layout)."' AND status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'"]);
         $perfilValido = banco_select(['unico' => true, 'tabela' => 'usuarios_perfis', 'campos' => ['id'],
             'extra' => "WHERE id='".banco_escape_field($perfil)."' AND status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'"]);
-        if($layoutValido && $perfilValido) $mapa[$layout] = $perfil;
+        // Indexado por perfil: o mesmo layout pode servir a vários perfis. Perfil repetido no
+        // formulário fica com a primeira linha.
+        if($layoutValido && $perfilValido && !isset($mapa[$perfil])) $mapa[$perfil] = $layout;
     }
     return $mapa ? json_encode($mapa, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : null;
 }
@@ -72,8 +74,7 @@ function paginas_layouts_perfis_linha($modulo, $indice, $layout, $perfil){
 }
 
 function paginas_layouts_perfis_formulario($pagina, $json, $modulo){
-    $mapa = is_array($json) ? $json : json_decode((string)$json, true);
-    if(!is_array($mapa)) $mapa = [];
+    $mapa = gestor_layouts_perfis_mapa($json);
     $componente = gestor_componente(['id' => 'layout-profile-mapping', 'modulo' => $modulo]);
     $componente = modelo_var_troca_tudo($componente, '#mapping-checked#', $mapa ? 'checked' : '');
     $componente = modelo_var_troca_tudo($componente, '#mapping-hidden#', $mapa ? '' : 'hidden');
@@ -86,9 +87,8 @@ function paginas_layouts_perfis_formulario($pagina, $json, $modulo){
     }
     $linhas = '';
     $indice = 0;
-    foreach($mapa as $layout => $perfil){
-        if(!is_scalar($layout) || !is_scalar($perfil)) continue;
-        $linhas .= paginas_layouts_perfis_linha($modulo, $indice++, (string)$layout, (string)$perfil);
+    foreach($mapa as $perfil => $layout){
+        $linhas .= paginas_layouts_perfis_linha($modulo, $indice++, $layout, (string)$perfil);
     }
     $componente = modelo_var_troca_tudo($componente, '#mapping-rows#', $linhas);
     $componente = modelo_var_troca_tudo($componente, '#mapping-template#', paginas_layouts_perfis_linha($modulo, 'template', '', ''));

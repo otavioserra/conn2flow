@@ -301,6 +301,68 @@ function gestor_css_precompiled_ordenar($styles){
 }
 
 /**
+ * Mapa `perfil => layout` de uma página (coluna `paginas.layouts_users_profiles`).
+ *
+ * A chave é o perfil porque um perfil só pode ver UM layout, e o mesmo layout serve a vários perfis.
+ * Com o layout na chave (formato da req-196), mapear o mesmo layout a um segundo perfil apagava o
+ * primeiro. Função PURA: aceita o JSON do banco ou o array já decodificado.
+ *
+ * @param mixed $mapeamento
+ * @return array<string,string>
+ */
+function gestor_layouts_perfis_mapa($mapeamento){
+	if(is_string($mapeamento)) $mapeamento = json_decode($mapeamento, true);
+	if(is_object($mapeamento)) $mapeamento = (array)$mapeamento;
+	if(!is_array($mapeamento)) return Array();
+
+	$mapa = Array();
+	foreach($mapeamento as $perfil => $layout){
+		if(!is_scalar($layout)) continue;
+		$perfil = trim((string)$perfil);
+		$layout = trim((string)$layout);
+		if($perfil === '' || $layout === '') continue;
+		$mapa[$perfil] = $layout;
+	}
+
+	return $mapa;
+}
+
+/**
+ * Marcador gravado no início do CSS derivado de uma página compilada com mais de um layout.
+ *
+ * Diz ao runtime quais layouts aquele CSS já contém. Sem ele não há como distinguir "compilado com
+ * o layout alternativo" de "compilado só com o padrão", e o descarte do sidecar do layout (modo
+ * bundle) deixaria o layout alternativo sem estilo.
+ *
+ * @param array $layouts Ids dos layouts compilados junto.
+ * @return string Comentário CSS, ou string vazia quando não há layout.
+ */
+function gestor_css_layouts_marcador($layouts){
+	$ids = Array();
+	foreach((array)$layouts as $layout){
+		$layout = is_scalar($layout) ? trim((string)$layout) : '';
+		if($layout !== '' && preg_match('/^[A-Za-z0-9_-]+$/', $layout)) $ids[$layout] = true;
+	}
+	if(!$ids) return '';
+	$ids = array_keys($ids);
+	sort($ids, SORT_STRING);
+
+	return '/*! c2f-layouts:'.implode(',', $ids).' */';
+}
+
+/**
+ * Layouts cobertos por um CSS derivado, lidos do marcador de gestor_css_layouts_marcador().
+ *
+ * @param string $css
+ * @return array Lista de ids; vazia quando o CSS não foi compilado com layouts.
+ */
+function gestor_css_layouts_cobertos($css){
+	if(!is_string($css) || !preg_match('/\/\*! c2f-layouts:([A-Za-z0-9_,-]+) \*\//', substr($css, 0, 2048), $match)) return Array();
+
+	return array_values(array_filter(explode(',', $match[1]), 'strlen'));
+}
+
+/**
  * Inclui recursos de página (CSS, CSS compilado e HTML extra head) no pipeline global.
  * Controla duplicidades via hash MD5 para evitar inclusão redundante quando múltiplos
  * blocos do mesmo widget/componente são inseridos na mesma página (req-028 / DEC-041).

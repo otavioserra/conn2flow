@@ -214,6 +214,63 @@ describe('html-editor.js — captura do CSS compilado (req-117)', () => {
     expect(css).not.toContain('--color-x'); // tokens do tema não são regravados
   });
 
+  // ===== Layout por perfil: só o que TODOS os layouts entregam fica fora (req-204) ================
+
+  it('regra que falta num layout alternativo é gravada, mesmo presente no layout visualizado', () => {
+    folha({ 'data-c2f-tailwind-role': 'baseline', 'data-c2f-baseline-layout': 'admin' }, [
+      new CSSLayerBlockRule('theme', [regraTheme(':root', { '--color-x': 'red', '--color-y': 'blue' })]),
+      new CSSLayerBlockRule('base', [regra('*', 'box-sizing: border-box;')]),
+      new CSSLayerBlockRule('utilities', [regra('.flex', 'display: flex;'), regra('.grid', 'display: grid;')])
+    ]);
+    folha({ 'data-c2f-baseline-alt': 'portal', media: 'not all' }, [
+      new CSSLayerBlockRule('theme', [regraTheme(':root', { '--color-x': 'red' })]),
+      new CSSLayerBlockRule('base', [regra('*', 'box-sizing: border-box;')]),
+      new CSSLayerBlockRule('utilities', [regra('.flex', 'display: flex;')])
+    ]);
+    folha({}, [
+      new CSSLayerStatementRule(['theme', 'base', 'components', 'utilities']),
+      new CSSLayerBlockRule('theme', [regraTheme(':root', { '--color-x': 'red', '--color-y': 'blue' })]),
+      new CSSLayerBlockRule('base', [regra('*', 'box-sizing: border-box;')]),
+      new CSSLayerBlockRule('utilities', [regra('.flex', 'display: flex;'), regra('.grid', 'display: grid;')])
+    ]);
+    document.body.innerHTML = '<div class="flex grid">Oi</div>';
+
+    const resultado = api.extract(document);
+    expect(resultado.layouts).toEqual(['admin', 'portal']);
+    expect(resultado.css).toContain('.grid');          // só o layout visualizado entrega
+    expect(resultado.css).not.toContain('.flex');      // os dois entregam
+    expect(resultado.css).toContain('--color-y');      // token que o alternativo não tem
+    expect(resultado.css).not.toContain('--color-x');
+    expect(resultado.css).not.toContain('box-sizing'); // Preflight vem dos dois
+  });
+
+  it('layout alternativo sem Preflight faz a camada base ser gravada', () => {
+    folha({ 'data-c2f-tailwind-role': 'baseline', 'data-c2f-baseline-layout': 'admin' }, [
+      new CSSLayerBlockRule('base', [regra('*', 'box-sizing: border-box;')]),
+      new CSSLayerBlockRule('utilities', [regra('.flex', 'display: flex;')])
+    ]);
+    folha({ 'data-c2f-baseline-alt': 'portal', media: 'not all' }, [
+      new CSSLayerBlockRule('utilities', [regra('.flex', 'display: flex;')])
+    ]);
+    folha({}, saidaTailwind([regra('.flex', 'display: flex;')]));
+    document.body.innerHTML = '<div class="flex">Oi</div>';
+
+    expect(api.extract(document).css).toContain('box-sizing');
+  });
+
+  it('sem folha alternativa, a captura segue como antes e não lista layouts', () => {
+    folha({ 'data-tailwind-role': 'layout-precompiled' }, [
+      new CSSLayerBlockRule('utilities', [regra('.flex', 'display: flex;')])
+    ]);
+    folha({}, saidaTailwind([regra('.flex', 'display: flex;'), regra('.grid', 'display: grid;')]));
+    document.body.innerHTML = '<div class="flex grid">Oi</div>';
+
+    const resultado = api.extract(document);
+    expect(resultado.layouts).toEqual([]);
+    expect(resultado.css).toContain('.grid');
+    expect(resultado.css).not.toContain('.flex');
+  });
+
   // ===== @layer theme: delta por DECLARAÇÃO ======================================================
   //
   // Regressão medida em 2026-08-17, reportada na homologação: "durante a edição fica perfeito, ao

@@ -2683,14 +2683,8 @@ function gestor_roteador_csrf_token(){
 
 function gestor_roteador_layout_perfil($layoutPadrao, $mapeamento, $perfil){
 	if(!$perfil || !$mapeamento) return $layoutPadrao;
-	$layouts = is_array($mapeamento) ? $mapeamento : json_decode((string)$mapeamento, true);
-	if(!is_array($layouts)) return $layoutPadrao;
-	foreach($layouts as $layoutId => $perfilId){
-		if(is_string($layoutId) && $layoutId !== '' && is_scalar($perfilId) && (string)$perfilId === (string)$perfil){
-			return $layoutId;
-		}
-	}
-	return $layoutPadrao;
+	$mapa = gestor_layouts_perfis_mapa($mapeamento);
+	return $mapa[(string)$perfil] ?? $layoutPadrao;
 }
 
 function gestor_roteador(){
@@ -3102,9 +3096,20 @@ function gestor_roteador(){
 				$usuarioLayout = gestor_usuario();
 				$perfilLayout = !empty($usuarioLayout['id_usuarios_perfis']) && $usuarioLayout['id_usuarios_perfis'] !== '0'
 					? ($usuarioLayout['perfil_slug'] ?? null) : null;
+				$layoutPadrao = $paginas[0]['layout_id'];
 				$paginas[0]['layout_id'] = gestor_roteador_layout_perfil(
-					$paginas[0]['layout_id'], $paginas[0]['layouts_users_profiles'], $perfilLayout
+					$layoutPadrao, $paginas[0]['layouts_users_profiles'], $perfilLayout
 				);
+
+				// O CSS derivado da página diz com quais layouts foi compilado. Layout coberto: o
+				// CSS da página vale sozinho, como bundle. Layout trocado e fora da lista (mapeamento
+				// gravado e ainda não recompilado): o sidecar do layout precisa entrar, senão ele
+				// fica sem estilo nenhum.
+				if(in_array((string)$paginas[0]['layout_id'], gestor_css_layouts_cobertos((string)$css_precompiled), true)){
+					$_GESTOR['tailwind-page-bundle'] = true;
+				} else if((string)$paginas[0]['layout_id'] !== (string)$layoutPadrao){
+					$_GESTOR['tailwind-page-bundle'] = false;
+				}
 			}
 
 			if(isset($_GESTOR['layout'])){
