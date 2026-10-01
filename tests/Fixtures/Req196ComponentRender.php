@@ -37,6 +37,11 @@ $biblioteca = (string)file_get_contents($root . '/gestor/bibliotecas/paginas-lay
 if (preg_match('/<(?:div|select|option|button|label|input)\b/i', $biblioteca)) {
     throw new RuntimeException('Visual markup must live in components');
 }
+$gestorLib = (string)file_get_contents($root . '/gestor/bibliotecas/gestor.php');
+if (!preg_match('/function gestor_layouts_perfis_mapa\([^)]*\)\{.*?^\}/ms', $gestorLib, $funcao)) {
+    throw new RuntimeException('Profile layout map reader missing');
+}
+eval($funcao[0]);
 require $root . '/gestor/bibliotecas/paginas-layouts-perfis.php';
 
 foreach (['admin-paginas', 'publisher-pages'] as $modulo) {
@@ -46,11 +51,13 @@ foreach (['admin-paginas', 'publisher-pages'] as $modulo) {
             'modulo-id' => $modulo,
             'modulo#' . $modulo => ['tabela' => ['id' => 'id', 'status' => 'status']],
         ];
-        $html = paginas_layouts_perfis_formulario('#layout-profile-mapping#', '{"portal":"cliente"}', $modulo);
-        if (substr_count($html, '<select') !== 4
+        // req-204: mapa indexado por perfil; dois perfis no mesmo layout rendem duas linhas.
+        $html = paginas_layouts_perfis_formulario('#layout-profile-mapping#', '{"cliente":"portal","equipe":"portal"}', $modulo);
+        if (substr_count($html, '<select') !== 6
             || !str_contains($html, 'class="ui search clearable dropdown"')
-            || !str_contains($html, '<option value="portal" selected>')
+            || substr_count($html, '<option value="portal" selected>') !== 2
             || !str_contains($html, '<option value="cliente" selected>')
+            || !str_contains($html, '<option value="equipe" selected>')
             || str_contains($html, '#mapping-') || str_contains($html, '#select-')) {
             throw new RuntimeException('Invalid component render: ' . $modulo . ' ' . $idioma);
         }

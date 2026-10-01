@@ -5878,6 +5878,90 @@ $(document).ready(function () {
         return layers;
     }
 
+    // Layout por perfil: a página pode ser servida sob mais de um layout, e cada um entrega uma
+    // cascata diferente. O editor põe a cascata de cada layout NÃO visualizado numa folha
+    // `data-c2f-baseline-alt` com `media="not all"` (não pinta, mas as regras continuam legíveis).
+    // Só o que TODAS as cascatas entregam pode ficar fora do `css_compiled`: uma regra que falta em
+    // um único layout tem de ser gravada, senão a página perde o estilo justamente sob ele.
+    function alternativeBaselineStyles(doc) {
+        if (!doc || !doc.querySelectorAll) return [];
+        return doc.querySelectorAll('style[data-c2f-baseline-alt]');
+    }
+
+    function collectSignaturesOf(style) {
+        const signatures = new Set();
+        const rules = cssSafeRules(style);
+        if (rules) collectRuleSignatures(rules, signatures, '');
+        return signatures;
+    }
+
+    function collectLayersOf(style) {
+        const layers = {};
+        const rules = cssSafeRules(style) || [];
+        for (let r = 0; r < rules.length; r++) {
+            if (!cssRuleIsLayerBlock(rules[r])) continue;
+            const nome = cssRuleLayerName(rules[r]);
+            if (nome && rules[r].cssRules && rules[r].cssRules.length) layers[nome] = true;
+        }
+        return layers;
+    }
+
+    function collectThemeTokensOf(style) {
+        const mapa = {};
+        const rules = cssSafeRules(style) || [];
+        for (let r = 0; r < rules.length; r++) {
+            if (!cssRuleIsLayerBlock(rules[r]) || cssRuleLayerName(rules[r]) !== 'theme') continue;
+            const filhas = rules[r].cssRules || [];
+            for (let f = 0; f < filhas.length; f++) {
+                const regra = filhas[f];
+                if (regra.type !== 1 || !regra.selectorText || !regra.style) continue;
+                const alvo = mapa[regra.selectorText] || (mapa[regra.selectorText] = {});
+                for (let p = 0; p < regra.style.length; p++) alvo[regra.style[p]] = true;
+            }
+        }
+        return mapa;
+    }
+
+    // Baseline COMUM a todos os layouts: o do layout visualizado, reduzido ao que cada alternativo
+    // também entrega. Sem folha alternativa no documento devolve o baseline como está.
+    function commonBaseline(doc) {
+        const comum = {
+            signatures: collectBaselineSignatures(doc),
+            layers: collectBaselineLayers(doc),
+            tokens: collectBaselineThemeTokens(doc)
+        };
+        const alternativos = alternativeBaselineStyles(doc);
+
+        for (let index = 0; index < alternativos.length; index++) {
+            const assinaturas = collectSignaturesOf(alternativos[index]);
+            comum.signatures.forEach(assinatura => { if (!assinaturas.has(assinatura)) comum.signatures.delete(assinatura); });
+
+            const camadas = collectLayersOf(alternativos[index]);
+            Object.keys(comum.layers).forEach(nome => { if (!camadas[nome]) delete comum.layers[nome]; });
+
+            const tokens = collectThemeTokensOf(alternativos[index]);
+            Object.keys(comum.tokens).forEach(seletor => {
+                if (!tokens[seletor]) { delete comum.tokens[seletor]; return; }
+                Object.keys(comum.tokens[seletor]).forEach(token => { if (!tokens[seletor][token]) delete comum.tokens[seletor][token]; });
+            });
+        }
+
+        return comum;
+    }
+
+    // Layouts cuja cascata entrou na captura: o visualizado e os alternativos presentes no documento.
+    function baselineLayouts(doc) {
+        const ids = [];
+        const ativo = doc && doc.querySelector ? doc.querySelector('style[data-c2f-baseline-layout]') : null;
+        if (ativo && ativo.getAttribute('data-c2f-baseline-layout')) ids.push(ativo.getAttribute('data-c2f-baseline-layout'));
+        const alternativos = alternativeBaselineStyles(doc);
+        for (let index = 0; index < alternativos.length; index++) {
+            const id = alternativos[index].getAttribute('data-c2f-baseline-alt');
+            if (id && ids.indexOf(id) === -1) ids.push(id);
+        }
+        return ids.sort();
+    }
+
     const TAILWIND_FOUNDATION_LAYERS = ['base'];
 
     // Tokens de `@theme` já declarados na cascata pré-compilada, por seletor.
@@ -5994,16 +6078,13 @@ $(document).ready(function () {
         const temClasses = !!(doc.body && doc.body.querySelectorAll('[class]').length > 0);
         if (temClasses && !cssRulesHaveUtilities(rules)) return { ready: false, motivo: 'sem-utilities', css: '' };
 
+        const comum = commonBaseline(doc);
+
         return {
             ready: true,
             motivo: 'ok',
-            css: filterRulesAgainstBaseline(
-                rules,
-                collectBaselineSignatures(doc),
-                '',
-                collectBaselineLayers(doc),
-                collectBaselineThemeTokens(doc)
-            ).trim()
+            layouts: baselineLayouts(doc),
+            css: filterRulesAgainstBaseline(rules, comum.signatures, '', comum.layers, comum.tokens).trim()
         };
     }
 
@@ -6017,6 +6098,8 @@ $(document).ready(function () {
         collectBaselineSignatures: collectBaselineSignatures,
         collectBaselineLayers: collectBaselineLayers,
         collectBaselineThemeTokens: collectBaselineThemeTokens,
+        commonBaseline: commonBaseline,
+        baselineLayouts: baselineLayouts,
         filterThemeRule: filterThemeRule,
         filterRules: filterRulesAgainstBaseline,
         extract: extractCompiledCss

@@ -216,9 +216,38 @@ if (!is_dir($tempDir)) {
  */
 function regenerarFontesDeclaradas(string $gestorPath, string $tabela, string $id, string $lang, string $modulo): array
 {
+    $declarado = regenerarMetadado($gestorPath, $tabela, $id, $lang, $modulo);
+    if ($declarado === null) {
+        return [];  // conteúdo criado só no banco não tem metadado — e não precisa ter
+    }
+
+    $fontes = [];
+    foreach ((array)($declarado['metadata']['tailwind_sources'] ?? []) as $source) {
+        if (!is_string($source) || trim($source) === '') {
+            continue;
+        }
+        $candidato = realpath($declarado['dir'] . DIRECTORY_SEPARATOR . $source);
+        // Fora da raiz do gestor a fonte é recusada, como no build offline.
+        if ($candidato !== false && is_file($candidato) && strpos($candidato, $gestorPath) === 0) {
+            $fontes[] = $candidato;
+        }
+    }
+
+    sort($fontes, SORT_STRING);
+
+    return array_values(array_unique($fontes));
+}
+
+/**
+ * Metadado declarado do recurso (`<id>.json` ao lado do HTML ou a entrada no manifesto do módulo).
+ *
+ * @return array{metadata:array<string,mixed>, dir:string}|null
+ */
+function regenerarMetadado(string $gestorPath, string $tabela, string $id, string $lang, string $modulo): ?array
+{
     $tipos = ['paginas' => 'pages', 'layouts' => 'layouts', 'componentes' => 'components', 'templates' => 'templates'];
     if (!isset($tipos[$tabela]) || $id === '' || $lang === '') {
-        return [];
+        return null;
     }
 
     $base = $modulo !== ''
@@ -267,25 +296,31 @@ function regenerarFontesDeclaradas(string $gestorPath, string $tabela, string $i
         }
     }
 
-    if (!is_array($metadata)) {
-        return [];  // conteúdo criado só no banco não tem metadado — e não precisa ter
+    return is_array($metadata) ? ['metadata' => $metadata, 'dir' => $dir] : null;
+}
+
+/**
+ * Componentes e templates que a página declara em `tailwind_dependencies` (mais os modais de sistema).
+ *
+ * Só entram na compilação multi-layout: ali o CSS da página vale sozinho, como bundle, e o que o
+ * layout padrão puxa por componente (menu, modais) precisa estar junto. O layout em si não vem
+ * daqui — vem do banco, que é o HTML servido.
+ *
+ * @return list<string> Caminhos absolutos existentes.
+ */
+function regenerarDependenciasDeclaradas(string $gestorPath, string $id, string $lang, string $modulo): array
+{
+    $declarado = regenerarMetadado($gestorPath, 'paginas', $id, $lang, $modulo);
+    $metadata = $declarado['metadata'] ?? ['id' => $id];
+    unset($metadata['tailwind_bundle']);
+
+    try {
+        return tailwind_recursos_dependencies($metadata, $modulo !== '' ? 'module' : 'global', $modulo !== '' ? $modulo : null, $lang, 'pages');
+    } catch (Throwable $e) {
+        // Dependência declarada e ausente nesta instalação: a compilação segue com o que existe.
+        printf("  AVISO  %-12s %-40s %s\n", 'paginas', substr($id, 0, 40), $e->getMessage());
+        return [];
     }
-
-    $fontes = [];
-    foreach ((array)($metadata['tailwind_sources'] ?? []) as $source) {
-        if (!is_string($source) || trim($source) === '') {
-            continue;
-        }
-        $candidato = realpath($dir . DIRECTORY_SEPARATOR . $source);
-        // Fora da raiz do gestor a fonte é recusada, como no build offline.
-        if ($candidato !== false && is_file($candidato) && strpos($candidato, $gestorPath) === 0) {
-            $fontes[] = $candidato;
-        }
-    }
-
-    sort($fontes, SORT_STRING);
-
-    return array_values(array_unique($fontes));
 }
 
 /**
@@ -391,10 +426,12 @@ function regenerarCompilar(
 
 $tabelas = $soTipo !== '' ? [$soTipo] : ['layouts', 'componentes', 'templates', 'paginas'];
 $cssLayouts = [];
+$htmlLayouts = [];
 
-if ($res = $conexao->query("SELECT id, language, css_precompiled FROM layouts WHERE status!='D'")) {
+if ($res = $conexao->query("SELECT id, language, html, css_precompiled FROM layouts WHERE status!='D'")) {
     while ($linha = $res->fetch_assoc()) {
         $cssLayouts[$linha['id'] . '|' . $linha['language']] = (string)($linha['css_precompiled'] ?? '');
+        $htmlLayouts[$linha['id'] . '|' . $linha['language']] = (string)($linha['html'] ?? '');
     }
 }
 
@@ -414,8 +451,10 @@ foreach ($tabelas as $tabela) {
     $temFramework = regenerarTemColuna($conexao, $tabela, 'framework_css');
 
     $temModulo = regenerarTemColuna($conexao, $tabela, 'modulo');
+    $temMapaLayouts = $tabela === 'paginas' && regenerarTemColuna($conexao, $tabela, 'layouts_users_profiles');
 
     $campos = 'id, language, html, css, css_precompiled'
+        . ($temMapaLayouts ? ', layouts_users_profiles' : '')
         . ($temHash ? ', css_source_hash' : '')
         . ($temLayout ? ', layout_id' : '')
         . ($temFramework ? ', framework_css' : '')
@@ -441,8 +480,13 @@ foreach ($tabelas as $tabela) {
     // tela sem estilo — em silêncio, com o comando reportando sucesso.
     //
     // `--todos` continua alcançando o acervo inteiro, para auditoria e recuperação.
+    //
+    // Página com layout por perfil entra sempre: o build offline compila contra os layouts do
+    // manifesto, e o mapeamento gravado pelo painel só existe no banco.
     if (!$todos && regenerarTemColuna($conexao, $tabela, 'user_modified')) {
-        $where .= " AND user_modified=1";
+        $where .= $temMapaLayouts
+            ? " AND (user_modified=1 OR (layouts_users_profiles IS NOT NULL AND layouts_users_profiles!=''))"
+            : " AND user_modified=1";
     }
 
     $res = $conexao->query("SELECT {$campos} FROM `{$tabela}` WHERE {$where}");
@@ -473,6 +517,25 @@ foreach ($tabelas as $tabela) {
         $baseline = $layoutId !== '' ? ($cssLayouts[$layoutId . '|' . $lang] ?? '') : '';
         $cssAutoral = (string)($linha['css'] ?? '');
 
+        // Layout por perfil: a página é compilada junto com o layout padrão e com cada layout
+        // alternativo mapeado, num CSS só. Compilada isolada, as classes do layout alternativo
+        // ficam sem regra e a ordem entre `hidden` e `lg:flex` se perde na concatenação.
+        $layoutsDaPagina = [];
+        if ($temMapaLayouts) {
+            $alternativos = array_values(array_unique(gestor_layouts_perfis_mapa($linha['layouts_users_profiles'] ?? '')));
+            if ($alternativos) {
+                foreach (array_merge([$layoutId], $alternativos) as $candidato) {
+                    if ($candidato !== '' && trim($htmlLayouts[$candidato . '|' . $lang] ?? '') !== '') {
+                        $layoutsDaPagina[$candidato] = $htmlLayouts[$candidato . '|' . $lang];
+                    }
+                }
+            }
+        }
+        $marcadorLayouts = gestor_css_layouts_marcador(array_keys($layoutsDaPagina));
+        if ($layoutsDaPagina) {
+            $baseline .= "\x1e" . implode("\x1e", $layoutsDaPagina);
+        }
+
         // req-156: a versao do compilador entra na procedencia — derivado gerado por outra major
         // do Tailwind e stale, ainda que HTML, CSS e baseline nao tenham mudado.
         $entradas = [
@@ -482,8 +545,9 @@ foreach ($tabelas as $tabela) {
             'compilador' => gestor_css_compilador_versao(),
         ];
         $assinaturaGravada = $temHash ? (string)($linha['css_source_hash'] ?? '') : '';
+        $marcadorVigente = gestor_css_layouts_marcador(gestor_css_layouts_cobertos((string)($linha['css_precompiled'] ?? '')));
 
-        if (!$todos && gestor_css_procedencia_valida($assinaturaGravada, $entradas)) {
+        if (!$todos && $marcadorVigente === $marcadorLayouts && gestor_css_procedencia_valida($assinaturaGravada, $entradas)) {
             $stats['ja_coerentes']++;
             continue;
         }
@@ -505,10 +569,21 @@ foreach ($tabelas as $tabela) {
             $temModulo ? (string)($linha['modulo'] ?? '') : ''
         );
 
+        if ($layoutsDaPagina) {
+            $htmlFonte .= "\n<!-- layouts -->\n" . implode("\n", $layoutsDaPagina);
+            $fontesExtras = array_values(array_unique(array_merge($fontesExtras, regenerarDependenciasDeclaradas(
+                $gestorPath,
+                (string)($linha['id'] ?? ''),
+                $lang,
+                $temModulo ? (string)($linha['modulo'] ?? '') : ''
+            ))));
+        }
+
         $compilado = regenerarCompilar(
             $htmlFonte,
             $cssAutoral,
-            $tabela === 'layouts',
+            // Com os layouts dentro, o CSS da página vale sozinho e precisa de theme/base/preflight.
+            $tabela === 'layouts' || $layoutsDaPagina !== [],
             $comando,
             $centralInput,
             $tempDir,
@@ -519,6 +594,10 @@ foreach ($tabelas as $tabela) {
             $stats['erros']++;
             printf("  ERRO   %-12s %-40s %s\n", $tabela, substr((string)$linha['id'], 0, 40), $compilado['erro']);
             continue;
+        }
+
+        if ($marcadorLayouts !== '') {
+            $compilado['css'] = $marcadorLayouts . "\n" . $compilado['css'];
         }
 
         $descobertasAntes = count(gestor_css_classes_descobertas($html, $baseline . "\n" . (string)($linha['css_precompiled'] ?? '') . "\n" . $cssAutoral));

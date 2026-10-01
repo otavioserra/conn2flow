@@ -16,6 +16,15 @@
 
 ## Tarefas recentes
 
+### 2026-10-01 — BATCH-212 (req-204): layout por perfil 1:N e compilação multi-layout
+
+- **Página bundle descarta o CSS do layout no runtime.** Sob um layout trocado por perfil, o que vale é o CSS da própria página: ele precisa ter sido compilado com esse layout. O carimbo `/*! c2f-layouts:a,b */` no início do `css_precompiled` diz quais; sem o layout no carimbo, o roteador mantém o sidecar do layout.
+- **A sincronização regrava `css_precompiled` a partir do disco** mesmo em página `user_modified`, e zera a procedência: a página mapeada é recompilada pelo `css:rebuild` a cada pipeline. O carimbo entra na decisão de "já coerente".
+- **Captura do `css_compiled` no editor é delta contra o baseline.** Com mais de um layout, o baseline tem de ser a interseção das cascatas; folha com `media="not all"` não pinta e continua legível por `sheet.cssRules`.
+- **Árvore compartilhada com outro lote em andamento não serve de origem para pipeline.** A req-202 no meio do caminho foi levada ao Lab por um `project:update-all` e sobrescreveu usuário, módulos e permissões. Worktree limpa: `environment.json` copiado, junção de `node_modules` e `vendor`, shebangs em LF.
+- **Numeração de requisição colide em árvore compartilhada**: arquivo `req-XXX.md` sem commit pode ser sobrescrito por outro agente. Reservar com commit e push, como manda o fluxo.
+- **Alerta de tamanho**: este arquivo passou de 200 linhas; a poda é obrigatória aos 300.
+
 ### 2026-09-30 — BATCH-202/203 (req-198): manifesto por camada, choques, snapshot e rollback
 
 - **Tenant isolado para testar atualização do sistema:** `project-test` → `c2f-teste.local` (usuário Hestia `c2ftest`) no Lab. Artefato montado da worktree sem composer, enviado para `conn2flow-github/` do tenant e aplicado com `atualizacoes-sistema.php --local-artifact --domain=c2f-teste.local` como `c2ftest`.

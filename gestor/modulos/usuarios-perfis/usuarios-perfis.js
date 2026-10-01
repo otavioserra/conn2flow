@@ -9,8 +9,15 @@ $(document).ready(function(){
 	var $homeSuggestions = $('#pagina-inicial-suggestions');
 	var $homeClear = $('.home-page-clear');
 
+	// O `display` do Fomantic (`.ui.menu`, `.ui.button`) vence o atributo `hidden`; a regra
+	// `[hidden]{display:none!important}` do componente devolve o efeito a ele.
+	function setHomeHidden($element, hidden){
+		$element.prop('hidden', hidden);
+	}
+
 	function hideHomeSuggestions(){
-		$homeSuggestions.prop('hidden', true).empty();
+		setHomeHidden($homeSuggestions, true);
+		$homeSuggestions.empty();
 		$homeInput.attr('aria-expanded', 'false');
 	}
 
@@ -31,14 +38,14 @@ $(document).ready(function(){
 				$homeSuggestions.append(item);
 			});
 		}
-		$homeSuggestions.prop('hidden', false);
+		setHomeHidden($homeSuggestions, false);
 		$homeInput.attr('aria-expanded', 'true');
 	}
 
 	$(document).on('input', '#pagina-inicial-busca', function(){
 		var query = ($(this).val() || '').trim();
 		$homeValue.val('');
-		$homeClear.prop('hidden', true);
+		setHomeHidden($homeClear, true);
 		homeSearchSequence++;
 		if(homeSearchTimer) clearTimeout(homeSearchTimer);
 		if(homeSearchRequest) homeSearchRequest.abort();
@@ -69,13 +76,13 @@ $(document).ready(function(){
 	$(document).on('click', '#pagina-inicial-suggestions .item[data-value]', function(){
 		$homeValue.val($(this).attr('data-value'));
 		$homeInput.val($(this).text());
-		$homeClear.prop('hidden', false);
+		setHomeHidden($homeClear, false);
 		hideHomeSuggestions();
 	});
 	$(document).on('click', '.home-page-clear', function(){
 		$homeValue.val('');
 		$homeInput.val('');
-		$homeClear.prop('hidden', true);
+		setHomeHidden($homeClear, true);
 		hideHomeSuggestions();
 	});
 	$(document).on('click', function(event){

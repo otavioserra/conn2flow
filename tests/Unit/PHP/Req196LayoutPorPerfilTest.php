@@ -18,14 +18,14 @@ final class Req196LayoutPorPerfilTest extends TestCase
 
     public function testLayoutDoPerfilSubstituiOPadrao(): void
     {
-        $mapa = '{"layout-cliente":"cliente","layout-equipe":"equipe"}';
+        $mapa = '{"cliente":"layout-cliente","equipe":"layout-equipe"}';
         self::assertSame('layout-cliente', gestor_roteador_layout_perfil('layout-base', $mapa, 'cliente'));
         self::assertSame('layout-equipe', gestor_roteador_layout_perfil('layout-base', $mapa, 'equipe'));
     }
 
     public function testVisitantePerfilSemMapeamentoEJsonInvalidoUsamFallback(): void
     {
-        $mapa = '{"layout-cliente":"cliente"}';
+        $mapa = '{"cliente":"layout-cliente"}';
         self::assertSame('layout-base', gestor_roteador_layout_perfil('layout-base', $mapa, null));
         self::assertSame('layout-base', gestor_roteador_layout_perfil('layout-base', $mapa, 'admin'));
         self::assertSame('layout-base', gestor_roteador_layout_perfil('layout-base', '{invalid', 'cliente'));

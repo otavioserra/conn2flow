@@ -48,6 +48,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-208 | complete | Recuperação de arquivos: inventário pelos manifestos e descida pelo motor de choques (req-200) | [BATCH-208.md](BATCH-208.md) | Worktree `conn2flow-req200`, branch `feat/req-200`; tenant ainda sem a rota nova. |
 | BATCH-205 | complete | Atualização segura, fase 3a: motor de choques — decisão por arquivo no painel, na API e no CLI (req-199) | [BATCH-205.md](BATCH-205.md) | Sobrescrever, manter (regra) e mesclar validados no tenant pelos três caminhos. Homologação humana pendente. |
 | BATCH-204 | complete | Atualização segura, fase 2c: snapshot, verificação e rollback no deploy por API; `c2f update:rollback` (req-198) | [BATCH-204.md](BATCH-204.md) | Deploy por API com volta automática, `/_api/project/rollback` e `c2f update:rollback` validados no tenant. Homologação humana pendente. |
+| BATCH-212 | in-review | Layout por perfil 1:N, compilação e editor multi-layout, popup da página inicial e versão pela API (req-204) | [BATCH-212.md](BATCH-212.md) | Parte do core da REQ-085 do conn2flow-site; worktree `conn2flow-req203`, branch `feat/req-204`; validado no Lab. |
 
 ## Regra operacional
 

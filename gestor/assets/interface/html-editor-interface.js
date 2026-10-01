@@ -629,6 +629,7 @@ $(document).ready(function () {
         // req-160: só faz sentido guardar o salvamento onde existe editor de HTML.
         htmlEditorInterceptarSubmitParaGerarCss();
         htmlEditorObservarTrocaDeLayout();
+        htmlEditorObservarLayoutsPorPerfil();
     }
 
     var codemirror_html_extra_head = document.getElementsByClassName("codemirror-html-extra-head");
@@ -1146,12 +1147,35 @@ $(document).ready(function () {
         const overlaySessao = (baseline && initialBaseline && baseline.startsWith(initialBaseline))
             ? baseline.slice(initialBaseline.length)
             : (baseline === initialBaseline ? '' : baseline);
-        const baselineRuntime = overlaySessao ? initialBaseline : baseline;
+        let baselineRuntime = overlaySessao ? initialBaseline : baseline;
+        let layoutAutoralAtivo = layoutAutoral;
+
+        // Layout por perfil: o layout visualizado pode ser um dos alternativos, e os demais entram
+        // como folhas `media="not all"` — não pintam, mas a captura as lê para gravar só o que é
+        // comum a todos (ver `commonBaseline()` no motor).
+        const layouts = htmlEditorLayoutsDaPagina();
+        const cacheLayouts = window.htmlEditorLayoutsCss || {};
+        const recurso = htmlEditorDecodeBase64(editorConfig.cssPrecompiledRecursoBase64 || '');
+        const padrao = layouts[0] || '';
+        const ativo = htmlEditorLayoutVisualizado();
+        let alternativos = '';
+
+        if (layouts.length > 1) {
+            if (ativo !== padrao && cacheLayouts[ativo]) {
+                baselineRuntime = htmlEditorCssPrecompiledConcatenar(cacheLayouts[ativo].precompiled, recurso);
+                layoutAutoralAtivo = cacheLayouts[ativo].autoral || '';
+            }
+            layouts.forEach(function (layoutId) {
+                if (layoutId === ativo || !cacheLayouts[layoutId]) return;
+                alternativos += `<style media="not all" data-c2f-baseline-alt="${layoutId}">${escapeStyleEnd(htmlEditorCssPrecompiledConcatenar(cacheLayouts[layoutId].precompiled, recurso))}</style>`;
+            });
+        }
 
         return `<!-- Tailwind browser usa o mesmo tema do build offline -->
-            ${baselineRuntime ? `<style data-c2f-tailwind-role="baseline">${escapeStyleEnd(baselineRuntime)}</style>` : ''}
+            ${baselineRuntime ? `<style data-c2f-tailwind-role="baseline" data-c2f-baseline-layout="${ativo}">${escapeStyleEnd(baselineRuntime)}</style>` : ''}
+            ${alternativos}
             ${overlaySessao.trim() ? `<style data-c2f-css-role="session-overlay">${escapeStyleEnd(overlaySessao)}</style>` : ''}
-            ${layoutAutoral.trim() ? `<style data-c2f-css-role="layout-authored">${escapeStyleEnd(layoutAutoral)}</style>` : ''}
+            ${layoutAutoralAtivo.trim() ? `<style data-c2f-css-role="layout-authored">${escapeStyleEnd(layoutAutoralAtivo)}</style>` : ''}
             ${contract ? `<style type="text/tailwindcss" data-c2f-tailwind-role="browser-contract">${escapeStyleEnd(contract)}</style>` : ''}
             <script src="${htmlEditorAssetUrl('tailwindcss-browser', 'dist/index.global.js')}"><\/script>
             ${projectJavascript}`;
@@ -1776,12 +1800,137 @@ $(document).ready(function () {
                     window.htmlEditorCssPrecompiled = novoBaseline;
                     editorConfig.cssPrecompiledBase64 = htmlEditorEncodeBase64(novoBaseline);
 
+                    // O padrão mudou: o preview volta para ele e a lista de layouts é relida.
+                    window.htmlEditorPreviewLayout = String(layoutId);
+                    (window.htmlEditorLayoutsCss || (window.htmlEditorLayoutsCss = {}))[String(layoutId)] = {
+                        precompiled: dados.data.precompiled || '', autoral: dados.data.autoral || ''
+                    };
+
                     // Remonta a visualização já sob o layout novo.
-                    try { previewHtml(); } catch (error) { /* editor ainda montando */ }
+                    htmlEditorSincronizarLayouts();
                 },
                 error: function () { /* mantém a cascata anterior: melhor que zerar */ }
             });
         });
+    }
+
+    // ===== Layout por perfil: a mesma página sob mais de um layout.
+    //
+    // O formulário guarda o layout padrão (`select[name="layout"]`) e, com o mapeamento ligado, um
+    // layout por perfil (`layout_profile_layout[]`). O editor precisa das duas coisas que cada um
+    // muda: a cascata vista no preview e a cascata contra a qual o `css_compiled` é filtrado.
+
+    // Layouts que a página pode receber, sem repetição: o padrão primeiro, depois os mapeados.
+    function htmlEditorLayoutsDaPagina() {
+        const layouts = [];
+        const incluir = function (valor) {
+            valor = String(valor || '').trim();
+            if (valor !== '' && /^[A-Za-z0-9_-]+$/.test(valor) && layouts.indexOf(valor) === -1) layouts.push(valor);
+        };
+
+        incluir($('select[name="layout"]').val());
+        if (!layouts.length) return layouts;
+
+        if ($('input[name="mapear_layouts_perfis"]').prop('checked')) {
+            $('.layout-profile-rows select[name="layout_profile_layout[]"]').each(function () { incluir($(this).val()); });
+        }
+
+        return layouts;
+    }
+
+    // Layout sob o qual o preview está montado. Escolha que saiu da lista volta para o padrão.
+    function htmlEditorLayoutVisualizado() {
+        const layouts = htmlEditorLayoutsDaPagina();
+        const escolhido = window.htmlEditorPreviewLayout;
+        return (typeof escolhido === 'string' && layouts.indexOf(escolhido) !== -1) ? escolhido : (layouts[0] || '');
+    }
+
+    // CSS de cada layout da página, buscado uma vez. `aoConcluir` roda com tudo em mãos — ou com o
+    // que foi possível buscar: um layout sem resposta não pode travar o preview nem o salvamento.
+    function htmlEditorCarregarLayoutsCss(aoConcluir) {
+        const cache = window.htmlEditorLayoutsCss || (window.htmlEditorLayoutsCss = {});
+        const layouts = htmlEditorLayoutsDaPagina();
+        const faltando = layouts.length > 1 ? layouts.filter(function (layoutId) { return !cache[layoutId]; }) : [];
+        let pendentes = faltando.length;
+        const concluir = function () { if (typeof aoConcluir === 'function') aoConcluir(); };
+
+        if (!pendentes) { concluir(); return; }
+
+        faltando.forEach(function (layoutId) {
+            $.ajax({
+                type: 'POST',
+                url: moduloUrl(),
+                data: {
+                    opcao: gestor.moduloOpcao,
+                    ajax: 'sim',
+                    ajaxOpcao: 'html-editor-layout-css',
+                    ajaxRegistroId: (('moduloRegistroId' in gestor) ? gestor.moduloRegistroId : false),
+                    params: { layout_id: layoutId }
+                },
+                dataType: 'json',
+                success: function (dados) {
+                    if (dados && dados.status === 'Ok' && dados.data) {
+                        cache[layoutId] = { precompiled: dados.data.precompiled || '', autoral: dados.data.autoral || '' };
+                    }
+                },
+                complete: function () { if (--pendentes === 0) concluir(); }
+            });
+        });
+    }
+
+    // Seletor "Visualizar como", no topo do editor. Só aparece com mais de um layout na página.
+    function htmlEditorAtualizarSeletorDeLayout() {
+        const menu = $('.html-editor-component .menuContainerPagina').first();
+        if (!menu.length) return;
+
+        const layouts = htmlEditorLayoutsDaPagina();
+        let caixa = menu.find('.c2f-layout-preview');
+
+        if (layouts.length < 2) { caixa.remove(); return; }
+
+        if (!caixa.length) {
+            caixa = $('<div class="right menu c2f-layout-preview"><div class="item"><label></label><select class="c2f-layout-preview-select"></select></div></div>');
+            caixa.find('label').css('margin-right', '0.5em').text((gestor.html_editor || {}).layoutPreviewLabel || '');
+            menu.append(caixa);
+        }
+
+        const seletor = caixa.find('select');
+        const ativo = htmlEditorLayoutVisualizado();
+        seletor.empty();
+        layouts.forEach(function (layoutId) {
+            const nome = $('select[name="layout"] option').filter(function () { return this.value === layoutId; }).first().text().trim();
+            seletor.append($('<option></option>').val(layoutId).text(nome || layoutId));
+        });
+        seletor.val(ativo);
+    }
+
+    // Recarrega o que depende da lista de layouts e remonta o preview.
+    function htmlEditorSincronizarLayouts() {
+        htmlEditorCarregarLayoutsCss(function () {
+            htmlEditorAtualizarSeletorDeLayout();
+            try { previewHtml(); } catch (error) { /* editor ainda montando */ }
+        });
+    }
+
+    function htmlEditorObservarLayoutsPorPerfil() {
+        if ($(document).data('c2fLayoutsPerfilBound')) return;
+        $(document).data('c2fLayoutsPerfilBound', true);
+
+        $(document).on('change', '.c2f-layout-preview-select', function () {
+            window.htmlEditorPreviewLayout = String($(this).val() || '');
+            htmlEditorSincronizarLayouts();
+        });
+
+        // Linha incluída, removida ou trocada, e o próprio interruptor do mapeamento. O `setTimeout`
+        // deixa o módulo terminar de mexer no DOM antes da releitura.
+        $(document).on('change', 'input[name="mapear_layouts_perfis"], select[name="layout_profile_layout[]"]', function () {
+            setTimeout(htmlEditorSincronizarLayouts, 0);
+        });
+        $(document).on('click', '.layout-profile-add, .layout-profile-remove', function () {
+            setTimeout(htmlEditorSincronizarLayouts, 0);
+        });
+
+        if (htmlEditorLayoutsDaPagina().length > 1) htmlEditorSincronizarLayouts();
     }
 
     // Espelha `html_editor_css_precompiled_concatenar()` do PHP: o layout vem primeiro.
@@ -1828,6 +1977,11 @@ $(document).ready(function () {
         try { compiled = CodeMirrorCssCompiled.getDoc().getValue(); } catch (error) { return false; }
 
         if (!compiled.trim()) return true;
+
+        // Layout por perfil: o CSS só vale se foi capturado contra TODOS os layouts da página. O
+        // operador não precisa ter passado por nenhum deles no seletor — o salvamento cobre.
+        const layouts = htmlEditorLayoutsDaPagina();
+        if (layouts.length > 1 && window.htmlEditorCssCompiledLayouts !== layouts.slice().sort().join(',')) return true;
 
         // Havendo CSS, ele precisa ser DESTE HTML. `htmlEditorCssCompiledOrigem` é gravada pela
         // captura; quando ela é nula (página recém-aberta, CSS vindo do banco) o valor do banco é
@@ -1876,15 +2030,37 @@ $(document).ready(function () {
                 $(formulario).trigger('submit');
             };
 
-            try {
-                // A troca de aba é o que monta o iframe — é ela que dispara a compilação.
-                $('.menuContainerPagina .item[data-tab="visualizacao-pagina"]').trigger('click');
-                previewHtml();
-                updateCSSCompiled($('#iframe-visualizacao-pagina'), false, reenviar);
-            } catch (error) {
-                console.warn('Nao foi possivel gerar o CSS antes do salvamento:', error);
-                reenviar();
-            }
+            const gerar = () => {
+                try {
+                    // A troca de aba é o que monta o iframe — é ela que dispara a compilação.
+                    $('.menuContainerPagina .item[data-tab="visualizacao-pagina"]').trigger('click');
+                    const iframe = $('#iframe-visualizacao-pagina');
+
+                    if (htmlEditorLayoutsDaPagina().length > 1) {
+                        // Com mais de um layout a captura tem de ler o documento NOVO, que traz a
+                        // cascata de cada um: espera o iframe recarregar em vez de ler o que já está lá.
+                        let disparado = false;
+                        const capturar = () => {
+                            if (disparado) return;
+                            disparado = true;
+                            updateCSSCompiled(iframe, false, reenviar);
+                        };
+                        iframe.one('load', capturar);
+                        setTimeout(capturar, 6000);
+                        previewHtml();
+                        return;
+                    }
+
+                    previewHtml();
+                    updateCSSCompiled(iframe, false, reenviar);
+                } catch (error) {
+                    console.warn('Nao foi possivel gerar o CSS antes do salvamento:', error);
+                    reenviar();
+                }
+            };
+
+            // O CSS dos layouts mapeados é buscado aqui se ainda não estiver em mãos.
+            htmlEditorCarregarLayoutsCss(gerar);
         }, true);
     }
 
@@ -1931,6 +2107,7 @@ $(document).ready(function () {
                 // no save, se o CSS ainda corresponde ao conteúdo — sem ela só se sabe que existe
                 // algum CSS, não se ele é o certo.
                 window.htmlEditorCssCompiledOrigem = htmlEditorHtmlAtual();
+                window.htmlEditorCssCompiledLayouts = (resultado.layouts || []).join(',');
                 avisar(true);
                 return;
             }

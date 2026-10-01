@@ -763,13 +763,15 @@ function api_system_update() {
     $corpo = api_corpo_requisicao();
     $action = $_POST['action'] ?? $_REQUEST['action'] ?? ($corpo['action'] ?? null);
     if (!$action) {
-        api_response_error('Parâmetro "action" é obrigatório. Ações válidas: run, run-status, runs, start, deploy, db, finalize, status, cancel', 400);
+        api_response_error('Parâmetro "action" é obrigatório. Ações válidas: run, run-status, runs, version, start, deploy, db, finalize, status, cancel', 400);
     }
 
     // req-201 / BATCH-209: atualização completa em segundo plano (o atualizador do CLI).
     if ($action === 'run') api_system_run($corpo);
     if ($action === 'run-status') api_system_run_status((string)($corpo['run'] ?? ''));
     if ($action === 'runs') api_system_runs();
+    // Versão instalada: quem orquestra uma frota precisa saber de onde cada instalação parte.
+    if ($action === 'version') api_response_success(['versao' => (string)($_GESTOR['versao'] ?? '')], 'Versão instalada');
 
     $valid_actions = ['start', 'deploy', 'db', 'finalize', 'status', 'cancel'];
     if (!in_array($action, $valid_actions)) {
