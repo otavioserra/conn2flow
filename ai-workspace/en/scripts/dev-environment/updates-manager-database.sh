@@ -34,16 +34,18 @@ PROJECT_TARGET=""
 FORCE_ALL=false
 TABLES=""
 HOOKS_ONLY=false
+CORE_RESOURCES=false
 EXECUTION_MODE="docker"
 PATH_DOCKER=""
 PATH_HOST=""
 
 usage() {
-  echo "Usage: $0 [--project|-p PROJECT_ID] [--tables TABLE_A,TABLE_B] [--force-all] [--hooks-only]"
+  echo "Usage: $0 [--project|-p PROJECT_ID] [--core-resources] [--tables TABLE_A,TABLE_B] [--force-all] [--hooks-only]"
   echo "  --project, -p    Project identifier"
   echo "  --tables         Restrict synchronization to a comma-separated table list"
   echo "  --force-all      Force all data tables even when manager_updates checksums match"
   echo "  --hooks-only     Synchronize only hook registrations"
+  echo "  --core-resources Keep core ownership; use --project only to resolve the target"
   echo "  --help, -h       Show this help"
 }
 
@@ -59,6 +61,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --hooks-only)
       HOOKS_ONLY=true
+      shift
+      ;;
+    --core-resources)
+      CORE_RESOURCES=true
       shift
       ;;
     --tables)
@@ -233,9 +239,13 @@ fi
 # O caminho remoto nunca teve o defeito — `api.php` monta `CLI_OPTS['project']` a partir do
 # cabeçalho `X-Project-ID`. Era uma assimetria entre os dois deploys do MESMO projeto.
 if [ -n "$PROJECT_TARGET" ]; then
-  # O identificador já foi validado antes de ser interpolado em jq ou repassado ao PHP.
-  PHP_ARGS+=("--project=$PROJECT_TARGET")
-  log "Project deploy: resources will be overwritten and marked with '$PROJECT_TARGET'"
+  if [ "$CORE_RESOURCES" = false ]; then
+    # O identificador já foi validado antes de ser interpolado em jq ou repassado ao PHP.
+    PHP_ARGS+=("--project=$PROJECT_TARGET")
+    log "Project deploy: resources will be overwritten and marked with '$PROJECT_TARGET'"
+  else
+    log "Core seeds: target resolved via project; resource ownership remains core"
+  fi
 fi
 
 if [ "$EXECUTION_MODE" = "host" ] && ! command -v php >/dev/null 2>&1; then

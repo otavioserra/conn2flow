@@ -158,7 +158,10 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         // 2. Sync DB
         $output->section("2/8 Atualizando Banco de Dados ({$project})");
         $dbCmd = new ProjectSyncDbCommand($this->rootPath);
-        $code = $dbCmd->execute($input, $output);
+        // Neste ponto os Data.json enviados são do core. O projeto identifica o destino,
+        // mas não pode virar dono desses recursos nem substituir seu manifesto de retirada.
+        $coreDbInput = new Input(['c2f', 'project:sync-db', $project, '--core-resources']);
+        $code = $dbCmd->execute($coreDbInput, $output);
         if ($code !== 0) return $code;
 
         // 3. Sync Resources

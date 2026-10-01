@@ -26,7 +26,7 @@ final class ProjectSyncDbCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f project:sync-db <projectID>\n\nRuns updates-manager-database.sh --project <projectID>";
+        return "Usage: c2f project:sync-db <projectID> [--core-resources]\n\nRuns updates-manager-database.sh --project <projectID>. --core-resources keeps core ownership when synchronizing core seeds into the project target.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -45,6 +45,7 @@ final class ProjectSyncDbCommand extends BaseProcessCommand
             return 1;
         }
 
-        return $this->runShell("bash " . escapeshellarg($script) . " --project " . escapeshellarg($project), $output);
+        $ownerFlag = $input->hasOption('core-resources') ? ' --core-resources' : '';
+        return $this->runShell("bash " . escapeshellarg($script) . " --project " . escapeshellarg($project) . $ownerFlag, $output);
     }
 }
