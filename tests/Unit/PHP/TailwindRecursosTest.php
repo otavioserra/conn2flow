@@ -181,6 +181,158 @@ final class TailwindRecursosTest extends TestCase
         self::assertFalse(tailwind_recursos_output_valido($directory . DIRECTORY_SEPARATOR . 'missing.css'));
     }
 
+    public function testFiltroPorResourceSelecionaTodosOsIdiomasDoId(): void
+    {
+        $resources = [
+            ['key' => 'pages|home|pt-br', 'id' => 'home', 'language' => 'pt-br'],
+            ['key' => 'pages|home|en', 'id' => 'home', 'language' => 'en'],
+            ['key' => 'components|footer|pt-br', 'id' => 'footer', 'language' => 'pt-br'],
+        ];
+
+        self::assertSame(
+            ['pages|home|pt-br', 'pages|home|en'],
+            array_column(tailwind_recursos_filtrar_resource($resources, 'home'), 'key')
+        );
+    }
+
+    public function testFiltroPorResourceRejeitaIdInexistente(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('recurso não encontrado');
+
+        tailwind_recursos_filtrar_resource([], 'ausente');
+    }
+
+    public function testFiltroPorResourceRejeitaIdAmbiguoEntreTipos(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('--resource é ambíguo');
+
+        tailwind_recursos_filtrar_resource([
+            ['id' => 'home', 'module' => '', 'type' => 'pages'],
+            ['id' => 'home', 'module' => '', 'type' => 'components'],
+        ], 'home');
+    }
+
+    // Único caso que precisa do compilador de recursos. Ele declara funções de mesmo nome que o
+    // sincronizador de banco, então é carregado em processo próprio e não no da suíte.
+    #[PHPUnit\Framework\Attributes\RunInSeparateProcess]
+    #[PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
+    public function testCacheTailwindEvitaBuildNoHitEPreservaManifestEmBuildParcial(): void
+    {
+        require_once CONN2FLOW_GESTOR_ROOT . '/controladores/agents/arquitetura/atualizacao-dados-recursos.php';
+
+        $root = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'c2f-tailwind-cache-' . bin2hex(random_bytes(6));
+        $gestor = $root . DIRECTORY_SEPARATOR . 'gestor' . DIRECTORY_SEPARATOR;
+        $resourcesDirectory = $gestor . 'resources' . DIRECTORY_SEPARATOR;
+        $logPath = $root . DIRECTORY_SEPARATOR . 'tailwind.log';
+        $fakeCommandPath = $root . DIRECTORY_SEPARATOR . 'fake-tailwind.php';
+        $directories = [
+            $resourcesDirectory . 'en' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'home',
+            $resourcesDirectory . 'en' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'footer',
+            $resourcesDirectory . 'pt-br' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'home',
+            $gestor . 'assets' . DIRECTORY_SEPARATOR . 'tailwindcss',
+            $gestor . '.tailwind-build' . DIRECTORY_SEPARATOR . 'inputs',
+        ];
+        foreach ($directories as $directory) {
+            if (!is_dir($directory)) mkdir($directory, 0777, true);
+        }
+
+        $map = [
+            'languages' => [
+                'en' => ['data' => ['components' => 'components.json']],
+                'pt-br' => ['data' => ['components' => 'components.json']],
+            ],
+        ];
+        file_put_contents($resourcesDirectory . 'en' . DIRECTORY_SEPARATOR . 'components.json', json_encode([
+            ['id' => 'home', 'framework_css' => 'tailwindcss'],
+            ['id' => 'footer', 'framework_css' => 'tailwindcss'],
+        ], JSON_THROW_ON_ERROR));
+        file_put_contents($resourcesDirectory . 'pt-br' . DIRECTORY_SEPARATOR . 'components.json', json_encode([
+            ['id' => 'home', 'framework_css' => 'tailwindcss'],
+        ], JSON_THROW_ON_ERROR));
+        file_put_contents($gestor . 'assets' . DIRECTORY_SEPARATOR . 'tailwindcss' . DIRECTORY_SEPARATOR . 'system-input.css', "@import \"tailwindcss\";\n");
+        $htmlPaths = [
+            $resourcesDirectory . 'en' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'home' . DIRECTORY_SEPARATOR . 'home.html',
+            $resourcesDirectory . 'en' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'footer' . DIRECTORY_SEPARATOR . 'footer.html',
+            $resourcesDirectory . 'pt-br' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'home' . DIRECTORY_SEPARATOR . 'home.html',
+        ];
+        foreach ($htmlPaths as $htmlPath) file_put_contents($htmlPath, '<div class="flex"></div>');
+        file_put_contents($fakeCommandPath, <<<'PHP'
+<?php
+$logPath = $argv[1];
+$arguments = array_slice($argv, 2);
+if (in_array('--help', $arguments, true)) {
+    file_put_contents($logPath, "help\n", FILE_APPEND);
+    echo "tailwindcss v4.3.3\n";
+    exit(0);
+}
+file_put_contents($logPath, "build\n", FILE_APPEND);
+$inputIndex = array_search('-i', $arguments, true);
+$outputIndex = array_search('-o', $arguments, true);
+if ($inputIndex === false || $outputIndex === false) exit(2);
+$inputPath = $arguments[$inputIndex + 1];
+$input = (string)file_get_contents($inputPath);
+preg_match_all('/@source\s+"([^"]+)"/', $input, $matches);
+$sourceContent = $input;
+foreach ($matches[1] as $source) {
+    $path = realpath(dirname($inputPath) . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $source));
+    if ($path !== false && is_file($path)) $sourceContent .= file_get_contents($path);
+}
+file_put_contents($arguments[$outputIndex + 1], '.built{--source-hash:' . hash('sha256', $sourceContent) . '}');
+PHP);
+
+        $globals = ['GESTOR_DIR', 'RESOURCES_DIR', 'MODULES_DIR', 'SYSTEM_PATH', 'LOG_FILE', 'CLI_ARGS', 'isProjectMode'];
+        $previous = [];
+        foreach ($globals as $name) $previous[$name] = $GLOBALS[$name] ?? null;
+        $GLOBALS['GESTOR_DIR'] = $gestor;
+        $GLOBALS['RESOURCES_DIR'] = $resourcesDirectory;
+        $GLOBALS['MODULES_DIR'] = $gestor . 'modulos' . DIRECTORY_SEPARATOR;
+        $GLOBALS['SYSTEM_PATH'] = $root . DIRECTORY_SEPARATOR;
+        $GLOBALS['LOG_FILE'] = 'req202-tailwind-cache-test';
+        $GLOBALS['isProjectMode'] = false;
+        $GLOBALS['CLI_ARGS'] = [
+            'tailwind-command-json' => json_encode([PHP_BINARY, $fakeCommandPath, $logPath], JSON_THROW_ON_ERROR),
+        ];
+
+        try {
+            $initial = tailwind_recursos_compilar($map);
+            self::assertSame(3, $initial['compiled']);
+            self::assertSame(['help', 'build', 'build', 'build'], file($logPath, FILE_IGNORE_NEW_LINES));
+
+            $GLOBALS['CLI_ARGS']['resource'] = 'home';
+            unlink($logPath);
+            $cached = tailwind_recursos_compilar($map);
+            self::assertSame(2, $cached['cached']);
+            self::assertSame(0, $cached['compiled']);
+            self::assertSame(['help'], file($logPath, FILE_IGNORE_NEW_LINES));
+
+            $homeEnOutput = $resourcesDirectory . 'en' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'home' . DIRECTORY_SEPARATOR . 'home.precompiled.css';
+            $oldOutputHash = hash_file('sha256', $homeEnOutput);
+            file_put_contents($htmlPaths[0], '<div class="flex grid"></div>');
+            unlink($logPath);
+            $GLOBALS['CLI_ARGS'] = [
+                'tailwind-command-json' => json_encode([PHP_BINARY, $fakeCommandPath, $logPath], JSON_THROW_ON_ERROR),
+                'resource' => 'home',
+            ];
+            $miss = tailwind_recursos_compilar($map);
+            self::assertSame(1, $miss['cached']);
+            self::assertSame(1, $miss['compiled']);
+            self::assertNotSame($oldOutputHash, hash_file('sha256', $homeEnOutput));
+            self::assertSame(['help', 'build'], file($logPath, FILE_IGNORE_NEW_LINES));
+
+            $manifest = json_decode((string)file_get_contents($resourcesDirectory . '.tailwind-build-manifest.json'), true, 512, JSON_THROW_ON_ERROR);
+            self::assertCount(3, $manifest['resources']);
+            self::assertFileExists($resourcesDirectory . 'en' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'footer' . DIRECTORY_SEPARATOR . 'footer.precompiled.css');
+        } finally {
+            foreach ($globals as $name) {
+                if ($previous[$name] === null) unset($GLOBALS[$name]);
+                else $GLOBALS[$name] = $previous[$name];
+            }
+            $this->removeTemporaryDirectory($root);
+        }
+    }
+
     public function testResolveDependenciasSemanticasDaToolbarSomenteNoBuild(): void
     {
         global $GESTOR_DIR;
@@ -346,5 +498,18 @@ final class TailwindRecursosTest extends TestCase
         self::assertStringNotContainsString('<div id="c2f-toolbar-menu"', $php);
         self::assertStringNotContainsString("'Modules'", $php);
         self::assertStringNotContainsString("'Módulos'", $php);
+    }
+
+    private function removeTemporaryDirectory(string $directory): void
+    {
+        if (!is_dir($directory)) return;
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($iterator as $item) {
+            $item->isDir() ? rmdir($item->getPathname()) : unlink($item->getPathname());
+        }
+        rmdir($directory);
     }
 }

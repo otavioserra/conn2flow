@@ -229,6 +229,15 @@ run_project_rsync() {
 
 run_project_rsync "$ORIGEM" "$DESTINO" "${RSYNC_EXCLUDES[@]}"
 
+# req-206: project data files are compared by content, never by date. The core step leaves its own
+# copies of the same file names in the target; with `rsync -u`, a newer core file stayed there and
+# the project database step then ran on core data, retiring the project's modules and permissions.
+if [ -d "$ORIGEM/db/data" ]; then
+  PROJECT_DATA_CMD=(rsync -avc --relative "${PT_RSYNC_OPTS[@]}" "$ORIGEM/./db/data/" "$DESTINO/")
+  log "Synchronizing project db/data by content: ${PROJECT_DATA_CMD[*]}"
+  project_transport_run_rsync "${PROJECT_DATA_CMD[@]}"
+fi
+
 project_transport_finalize || exit 1
 
 # req-194: obsolete project migrations are removed on the target (see clean_project_migrations).

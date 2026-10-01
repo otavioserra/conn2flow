@@ -1,0 +1,14 @@
+[
+    {
+        "perfil": "administradores",
+        "operacao": "acesso-administrador-a-api"
+    },
+    {
+        "perfil": "administradores",
+        "operacao": "modificar-permissao-da-pagina"
+    },
+    {
+        "perfil": "administradores",
+        "operacao": "modificar-permissao-do-publicador-da-pagina"
+    }
+]

@@ -849,6 +849,15 @@ function sincronizarTabela(PDO $pdo, string $tabela, array $registros, bool $log
             $diff=[]; $oldVals=[];
             $forced = ($temForcar && (isset($forcedNaturais[$k]) || $isForced($exist))); // atualização forçada
 
+            // Tabela insert-only: o registro que já existe nunca é atualizado, como no modo PK.
+            // Sem isto, a semente de `usuarios` regravava login, e-mail e senha do administrador
+            // de cada instalação a cada deploy (req-206).
+            if ($insertOnly) {
+                if ($debug) log_unificado("SKIP_UPDATE_INSERT_ONLY tabela=$tabela chave=$k", $GLOBALS['LOG_FILE_DB']);
+                $same++;
+                continue;
+            }
+
             // Proteção de projeto para tabelas específicas (ignorada sob atualização forçada)
             if ($temPreserve && !$forced) {
                 if (!$project && !empty($exist['project'])) {

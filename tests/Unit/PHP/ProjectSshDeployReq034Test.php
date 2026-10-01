@@ -185,9 +185,9 @@ final class ProjectSshDeployReq034Test extends TestCase
             . DIRECTORY_SEPARATOR . 'sync-core-to-project.sh'
         );
         self::assertSame(
-            3,
+            4,
             substr_count($syncCore, 'project_transport_run_rsync "${'),
-            'as tres chamadas rsync do sync do core devem usar o helper protegido'
+            'as quatro chamadas rsync do sync do core devem usar o helper protegido'
         );
 
         $syncProjeto = self::conteudo(

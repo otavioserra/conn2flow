@@ -16,6 +16,19 @@
 
 ## Tarefas recentes
 
+### 2026-10-01 — BATCH-210 (req-202): sementes declarativas e compilação seletiva
+
+- A configuração de tabela no descritor `gestor/modulos/usuarios/usuarios.json` prevalece sobre `tables_config.json` ao gerar schema; mantenha as regras de preservação alinhadas nos dois lugares.
+- `resources:sync --only=... --skip-css --no-origin-update --no-assets` grava apenas os Data.json selecionados e pula Tailwind; a publicação opcional de `dist/` ainda pode avisar sem `PUBLIC_PATH`, sem invalidar a sincronização.
+- Builds `--resource=<id>` precisam reter entradas e sidecars não selecionados no `.tailwind-build-manifest.json`; validar hit, mudança de HTML e miss com runner isolado.
+- `tailwind_recursos_compilar()` ainda consulta `--help` para validar a versão em cache hit, mas não executa build CSS quando o fingerprint e o output hash correspondem.
+
+### 2026-10-01 — BATCH-211 (req-203): recursos globais sem idioma
+
+- `language_agnostic: true` faz a coleta dinâmica usar uma única origem na raiz de `gestor/resources/`; registros não devem receber nem manter uma coluna `language` sintetizada.
+- Para validar `resources:sync` sem sobrescrever `gestor/db/data/*.json` já alterados no checkout, execute `main()` em teste com `RESOURCES_DIR`, `DB_DATA_DIR`, `GESTOR_DIR` e `MODULES_DIR` temporários, usando os contratos e seeds reais como entrada.
+- As duas definições repetidas de `usuarios_perfis_modulos` e `usuarios_perfis_modulos_operacoes` em `tables_config.json` eram chaves JSON duplicadas; consolide-as antes de confiar no valor interpretado pelo PHP.
+
 ### 2026-09-30 — BATCH-202/203 (req-198): manifesto por camada, choques, snapshot e rollback
 
 - **Tenant isolado para testar atualização do sistema:** `project-test` → `c2f-teste.local` (usuário Hestia `c2ftest`) no Lab. Artefato montado da worktree sem composer, enviado para `conn2flow-github/` do tenant e aplicado com `atualizacoes-sistema.php --local-artifact --domain=c2f-teste.local` como `c2ftest`.

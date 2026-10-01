@@ -1,12 +1,14 @@
 [
     {
-        "modulo_id": "admin-paginas",
-        "nome": "Modificar Permissão da Página",
-        "id": "modificar-permissao-da-pagina",
-        "operacao": "permissao-pagina",
+        "modulo_id": "admin-environment",
+        "nome": "Admin API Access",
+        "id": "acesso-administrador-a-api",
+        "operacao": "acesso-api",
         "status": "A",
-        "versao": " 1",
-        "language": "pt-br"
+        "language": "en",
+        "versao": 2,
+        "checksum": "defb26a4e7e78e386e835266ff77dba2",
+        "user_modified": 0
     },
     {
         "modulo_id": "admin-paginas",
@@ -14,17 +16,10 @@
         "id": "modificar-permissao-da-pagina",
         "operacao": "permissao-pagina",
         "status": "A",
-        "versao": " 1",
-        "language": "en"
-    },
-    {
-        "modulo_id": "publisher-pages",
-        "nome": "Modificar Permissão do Publicador da Página",
-        "id": "modificar-permissao-do-publicador-da-pagina",
-        "operacao": "permissao-pagina",
-        "status": "A",
-        "versao": " 1",
-        "language": "pt-br"
+        "language": "en",
+        "versao": 2,
+        "checksum": "b31297610923bb8b62fd8f34c775b6f1",
+        "user_modified": 0
     },
     {
         "modulo_id": "publisher-pages",
@@ -32,8 +27,10 @@
         "id": "modificar-permissao-do-publicador-da-pagina",
         "operacao": "permissao-pagina",
         "status": "A",
-        "versao": " 1",
-        "language": "en"
+        "language": "en",
+        "versao": 2,
+        "checksum": "9845c1af4744bb55e54bc197d6e83083",
+        "user_modified": 0
     },
     {
         "modulo_id": "admin-environment",
@@ -41,16 +38,31 @@
         "id": "acesso-administrador-a-api",
         "operacao": "acesso-api",
         "status": "A",
-        "versao": " 1",
-        "language": "pt-br"
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "bdce6b246bf7b9452b22451d7778f161",
+        "user_modified": 0
     },
     {
-        "modulo_id": "admin-environment",
-        "nome": "Admin API Access",
-        "id": "acesso-administrador-a-api",
-        "operacao": "acesso-api",
+        "modulo_id": "admin-paginas",
+        "nome": "Modificar Permissão da Página",
+        "id": "modificar-permissao-da-pagina",
+        "operacao": "permissao-pagina",
         "status": "A",
-        "versao": " 1",
-        "language": "en"
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "803195df7b7ac58fd75f3b495b4df39f",
+        "user_modified": 0
+    },
+    {
+        "modulo_id": "publisher-pages",
+        "nome": "Modificar Permissão do Publicador da Página",
+        "id": "modificar-permissao-do-publicador-da-pagina",
+        "operacao": "permissao-pagina",
+        "status": "A",
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "c255d4e65f432af2f63cb6ae8ad7360c",
+        "user_modified": 0
     }
 ]

@@ -1,0 +1,51 @@
+[
+    {
+        "nome": "AI Assistants Administration",
+        "id": "administracao-assistentes-ia",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Communication Administration",
+        "id": "administracao-comunicacao",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Manager Administration",
+        "id": "administracao-gestor",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "System Administration",
+        "id": "administracao-sistema",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Users Administration",
+        "id": "administracao-usuarios",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Libraries",
+        "id": "bibliotecas",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "General",
+        "id": "geral",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    }
+]

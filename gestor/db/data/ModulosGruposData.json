@@ -1,128 +1,156 @@
 [
     {
-        "nome": "Bibliotecas",
-        "id": "bibliotecas",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "pt-br"
-    },
-    {
-        "nome": "Libraries",
-        "id": "bibliotecas",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "en"
-    },
-    {
-        "nome": "Administração Gestor",
-        "id": "administracao-gestor",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "pt-br"
-    },
-    {
-        "nome": "Manager Administration",
-        "id": "administracao-gestor",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "en"
-    },
-    {
-        "nome": "Geral",
-        "id": "geral",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "pt-br"
-    },
-    {
-        "nome": "General",
-        "id": "geral",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "en"
-    },
-    {
-        "nome": "Administração Usuários",
-        "id": "administracao-usuarios",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "pt-br"
-    },
-    {
-        "nome": "Users Administration",
-        "id": "administracao-usuarios",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "en"
-    },
-    {
-        "nome": "Administração Sistema",
-        "id": "administracao-sistema",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "pt-br"
-    },
-    {
-        "nome": "System Administration",
-        "id": "administracao-sistema",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "en"
-    },
-    {
-        "nome": "Administração Assistentes IA",
-        "id": "administracao-assistentes-ia",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "pt-br"
-    },
-    {
         "nome": "AI Assistants Administration",
         "id": "administracao-assistentes-ia",
         "host": null,
         "status": "A",
-        "versao": "1",
         "ordemMenu": null,
-        "language": "en"
-    },
-    {
-        "nome": "Administração Comunicação",
-        "id": "administracao-comunicacao",
-        "host": null,
-        "status": "A",
-        "versao": "1",
-        "ordemMenu": null,
-        "language": "pt-br"
+        "language": "en",
+        "versao": 2,
+        "checksum": "e874bfd339b6413bf38c266afcc2ba12",
+        "user_modified": 0
     },
     {
         "nome": "Communication Administration",
         "id": "administracao-comunicacao",
         "host": null,
         "status": "A",
-        "versao": "1",
         "ordemMenu": null,
-        "language": "en"
+        "language": "en",
+        "versao": 2,
+        "checksum": "fabb998285cb141c0758afed7738a8ce",
+        "user_modified": 0
+    },
+    {
+        "nome": "Manager Administration",
+        "id": "administracao-gestor",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "en",
+        "versao": 2,
+        "checksum": "00d71005ec6fb9e627a5fe371e14638c",
+        "user_modified": 0
+    },
+    {
+        "nome": "System Administration",
+        "id": "administracao-sistema",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "en",
+        "versao": 2,
+        "checksum": "556f7d164109dc5087715fab04d5160b",
+        "user_modified": 0
+    },
+    {
+        "nome": "Users Administration",
+        "id": "administracao-usuarios",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "en",
+        "versao": 2,
+        "checksum": "efd86f75677fd0bb8430a55a54ff3a65",
+        "user_modified": 0
+    },
+    {
+        "nome": "Libraries",
+        "id": "bibliotecas",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "en",
+        "versao": 2,
+        "checksum": "958c447d55d7295ec8c2c75823ac9c93",
+        "user_modified": 0
+    },
+    {
+        "nome": "General",
+        "id": "geral",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "en",
+        "versao": 2,
+        "checksum": "ba0b063fb1cf068123c712491f01696c",
+        "user_modified": 0
+    },
+    {
+        "nome": "Administração Assistentes IA",
+        "id": "administracao-assistentes-ia",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "4e04faba4306049a20e53dbfd1b2b83c",
+        "user_modified": 0
+    },
+    {
+        "nome": "Administração Comunicação",
+        "id": "administracao-comunicacao",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "0bb7eeec183f528522fb9992cfb0fc92",
+        "user_modified": 0
+    },
+    {
+        "nome": "Administração Gestor",
+        "id": "administracao-gestor",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "7531da2096cbf3c4ac1ff29a1af84f82",
+        "user_modified": 0
+    },
+    {
+        "nome": "Administração Sistema",
+        "id": "administracao-sistema",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "432982a12e535c95b8e80f7fd1a88b6b",
+        "user_modified": 0
+    },
+    {
+        "nome": "Administração Usuários",
+        "id": "administracao-usuarios",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "990ae68161274238383154407b156959",
+        "user_modified": 0
+    },
+    {
+        "nome": "Bibliotecas",
+        "id": "bibliotecas",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "e4feb720fd9b22ffd378380b129d7387",
+        "user_modified": 0
+    },
+    {
+        "nome": "Geral",
+        "id": "geral",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null,
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "e45f8a3091a6fbaea928fec5d9aacc12",
+        "user_modified": 0
     }
 ]

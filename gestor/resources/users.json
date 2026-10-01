@@ -12,9 +12,6 @@
         "status": "A",
         "email_confirmado": null,
         "gestor": null,
-        "gestor_perfil": null,
-        "versao": 3,
-        "checksum": "4f7c41a6d8c09cc5d2ec58da2dfa2fb8",
-        "user_modified": 0
+        "gestor_perfil": null
     }
 ]

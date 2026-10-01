@@ -61,23 +61,23 @@
                 {
                     "name": "Mapeamento de Layout por Perfil",
                     "id": "layout-profile-mapping",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "f8cffe2ecdc3cc62e4f65e1ff95bc09d",
+                        "html": "cf89db77e7edf56efd09ee7d04690050",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f8cffe2ecdc3cc62e4f65e1ff95bc09d"
+                        "combined": "cf89db77e7edf56efd09ee7d04690050"
                     }
                 },
                 {
                     "name": "Linha de Layout por Perfil",
                     "id": "layout-profile-row",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "846642cefd8a44d86588e9eb438cf997",
+                        "html": "b8531e8e33763abd8826abf93ea5320f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "846642cefd8a44d86588e9eb438cf997"
+                        "combined": "b8531e8e33763abd8826abf93ea5320f"
                     }
                 }
             ],
@@ -100,12 +100,12 @@
                 {
                     "name": "Publicador Páginas - Editar",
                     "id": "publisher-pages-editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "39557b80cbf02e8c7aa7317ee6b87e0b",
+                        "html": "e27d8c6f260538b35371042bfdf5f0a6",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
                         "css_precompiled": "",
-                        "combined": "90da31f64e0f6878540076082626cc50"
+                        "combined": "669a72630e4a7365b5311913019471eb"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages/editar/",
@@ -115,12 +115,12 @@
                 {
                     "name": "Publicador Páginas - Adicionar",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "5a5a96e0a3d85bce0fbe0739b44b0fc1",
+                        "html": "1398e2d6d361e2541cdccb18bdca565d",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
                         "css_precompiled": "",
-                        "combined": "5eed0bd8fb52e0b3bf74678aae988007"
+                        "combined": "8d426055037a377d791b8e9ad5a57844"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages/adicionar/",
@@ -130,12 +130,12 @@
                 {
                     "name": "Publisher Pages - Clone",
                     "id": "publisher-pages-clonar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "666e6b5d0a208f61228a097d385d3753",
+                        "html": "afc6867b1e5ab2b8c64ea62792e53239",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
                         "css_precompiled": "",
-                        "combined": "e4035a3fc864568347f6fa7924519440"
+                        "combined": "d23e2b202f2a8d3f9832787e45c79f20"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages/clonar/",
@@ -451,23 +451,23 @@
                 {
                     "name": "Profile Layout Mapping",
                     "id": "layout-profile-mapping",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "f8cffe2ecdc3cc62e4f65e1ff95bc09d",
+                        "html": "cf89db77e7edf56efd09ee7d04690050",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f8cffe2ecdc3cc62e4f65e1ff95bc09d"
+                        "combined": "cf89db77e7edf56efd09ee7d04690050"
                     }
                 },
                 {
                     "name": "Profile Layout Row",
                     "id": "layout-profile-row",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "846642cefd8a44d86588e9eb438cf997",
+                        "html": "b8531e8e33763abd8826abf93ea5320f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "846642cefd8a44d86588e9eb438cf997"
+                        "combined": "b8531e8e33763abd8826abf93ea5320f"
                     }
                 }
             ],
@@ -490,12 +490,12 @@
                 {
                     "name": "Publisher Pages - Edit",
                     "id": "publisher-pages-editar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "497ab3fd39dc155b0848dd148bd75303",
+                        "html": "b91f1b27fdb57a0ccca0fbd131fea482",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
                         "css_precompiled": "",
-                        "combined": "ae04eda4fd6c10475dc6eaef5d36d2f2"
+                        "combined": "fa3a5f6213aa6941fc651f72739bb7e3"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages/editar/",
@@ -505,12 +505,12 @@
                 {
                     "name": "Publisher Pages - Add",
                     "id": "publisher-pages-adicionar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "da9203601750fb4d5b99dbcddbe79080",
+                        "html": "9b49e13b2d964d5c0a67b471b8c92f32",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
                         "css_precompiled": "",
-                        "combined": "16fb9f9e027c378033c1d71b4379e6ef"
+                        "combined": "d65fedacfc052e21d068c88f96ec8a65"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages/adicionar/",
@@ -520,12 +520,12 @@
                 {
                     "name": "Publisher Pages - Clone",
                     "id": "publisher-pages-clonar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "bba6ed6df607e8c190d28ec30d0a02a9",
+                        "html": "54dc1e47181c9db96f100dc94fe1dce3",
                         "css": "4be99a79d5ce6040bcb32ec4c26c27e9",
                         "css_precompiled": "",
-                        "combined": "0eba30e3efd10d470c81ae8d7f0ed5df"
+                        "combined": "d92561a76750a5f55065aaa22b2aed1a"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "publisher-pages/clonar/",
@@ -817,5 +817,5 @@
             ]
         }
     },
-    "asset_version": "6cabfd4ffc1b9102"
+    "asset_version": "db3795f9d56f8f1f"
 }

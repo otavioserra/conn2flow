@@ -152,6 +152,20 @@ RUNTIME_CONTRACT_CMD=(
 log "Synchronizing atomic runtime contract: gestor.php + bibliotecas/gestor.php"
 project_transport_run_rsync "${RUNTIME_CONTRACT_CMD[@]}"
 
+# req-206: the same goes for the core data files. The core database step that follows must read
+# the core's `db/data`, not a project copy left by a previous run with a newer date.
+CORE_DATA_CMD=(
+  rsync
+  -avc
+  --relative
+  "${PT_RSYNC_OPTS[@]}"
+  "$CORE_SOURCE/./db/data/"
+  "$TARGET_PATH/"
+)
+
+log "Synchronizing core db/data by content"
+project_transport_run_rsync "${CORE_DATA_CMD[@]}"
+
 # Instalações SSH e o projeto mestre precisam do console na própria raiz do
 # Gestor. O sync principal parte de gestor/, portanto o launcher e cli/ que
 # vivem na raiz do Core precisam de uma etapa explícita (REQ-053).

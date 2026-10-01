@@ -1,0 +1,51 @@
+[
+    {
+        "nome": "Administração Assistentes IA",
+        "id": "administracao-assistentes-ia",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Administração Comunicação",
+        "id": "administracao-comunicacao",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Administração Gestor",
+        "id": "administracao-gestor",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Administração Sistema",
+        "id": "administracao-sistema",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Administração Usuários",
+        "id": "administracao-usuarios",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Bibliotecas",
+        "id": "bibliotecas",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    },
+    {
+        "nome": "Geral",
+        "id": "geral",
+        "host": null,
+        "status": "A",
+        "ordemMenu": null
+    }
+]

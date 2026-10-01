@@ -5,9 +5,6 @@
         "nome": "Site",
         "id": "site",
         "plugin": null,
-        "status": "A",
-        "versao": 3,
-        "checksum": "aa1d6e00c2587e9ac386be5f4f25672f",
-        "user_modified": 0
+        "status": "A"
     }
 ]

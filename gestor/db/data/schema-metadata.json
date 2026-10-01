@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-09-30T15:44:36-03:00",
+    "generated_at": "2026-10-01T17:26:43-03:00",
     "tables": {
         "alvos_ia": {
             "nome": "alvos_ia",
@@ -265,9 +265,17 @@
             "id": "id",
             "id_numerico": "id_usuarios",
             "data_file": "UsuariosData.json",
-            "strategy": "pk",
-            "natural_key_columns": [],
-            "preserve_on_user_modified": [],
+            "strategy": "natural_key",
+            "natural_key_columns": [
+                "id"
+            ],
+            "preserve_on_user_modified": [
+                "senha",
+                "email",
+                "nome",
+                "usuario",
+                "status"
+            ],
             "insert_only": true,
             "source": "module:usuarios"
         },

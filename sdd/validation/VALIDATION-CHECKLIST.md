@@ -1,5 +1,24 @@
 # Validation Checklist
 
+## BATCH-211 — Segregação de recursos globais vs multilíngues (req-203)
+
+- [x] Os quatro seeds globais foram movidos da pasta de idioma para a raiz sem perda: 1 usuário, 37 vínculos perfil-módulo, 3 vínculos perfil-operação e 1 categoria; sem cópias em `pt-br/` ou `en/`.
+- [x] `resources.map.php` mantém os recursos multilíngues; os quatro contratos têm `language_agnostic: true` e preservam as chaves naturais.
+- [x] A regressão compila os registros reais uma única vez, confere payload integral e ausência de `language`, e grava os quatro Data.json em pasta temporária.
+- [x] `main()` completou as oito etapas com `--only`, `--skip-css`, `--no-origin-update` e `--no-assets` no fixture temporário; contagens 1/37/3/1, sem duplicações.
+- [x] Testes relacionados: 7 testes/68 asserções, exit 0 (duas depreciações do PHPUnit); `php -l`, JSON parse e `git diff --check` aprovados. Avisos Git apenas de conversão LF/CRLF.
+- [x] Os Data.json locais já modificados não foram sobrescritos; não houve deploy. A CLI não foi executada diretamente contra o checkout, pois isso regravaria esses artefatos preexistentes.
+
+## BATCH-210 — Autoria em resources e compilação seletiva (req-202)
+
+- [x] As 16 sementes (`pt-br`/`en`) foram comparadas aos oito Data.json legados; `resources.map.php` cobre os oito recursos.
+- [x] `tables_config.json` declara as oito tabelas e chaves naturais; a configuração efetiva de `usuarios` é `insert_only` e preserva `senha`, `email`, `nome`, `usuario` e `status`.
+- [x] `php cli/c2f.php resources:sync --only=modulos,modulos_grupos,modulos_operacoes,usuarios,usuarios_perfis,usuarios_perfis_modulos,usuarios_perfis_modulos_operacoes,categorias --skip-css --no-origin-update --no-assets`: exit 0; oito Data.json válidos/ordenados e `schema-metadata.json` coerente, sem órfãos.
+- [x] `--only` seleciona e rejeita alvos desconhecidos; `--skip-css` pulou o passo Tailwind na compilação real; `--resource=home` selecionou os dois idiomas, repassado pela CLI.
+- [x] Teste com runner Tailwind simulado: build inicial de três recursos, hit sem build, miss após mudança no HTML recompilando só `home/en`; manifest e sidecar de `footer/en` preservados.
+- [x] PHPUnit focado: 26 testes, 133 asserções; PHP lint e `git diff --check` aprovados. O diff-check emitiu apenas avisos de conversão LF/CRLF do worktree.
+- [x] Nenhum deploy remoto/produção executado. O subpasso opcional de publicação em `dist/` avisou que `PUBLIC_PATH`/DocumentRoot não está configurado; sincronização de Data.json concluiu com sucesso.
+
 ## BATCH-208 — Recuperação de arquivos do servidor (req-200)
 
 - [x] Inventário unitário: projeto editado, core ausente, precedência, arquivo fora do manifesto, filtros e pastas privadas.

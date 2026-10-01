@@ -1,0 +1,23 @@
+[
+    {
+        "modulo_id": "admin-environment",
+        "nome": "Admin API Access",
+        "id": "acesso-administrador-a-api",
+        "operacao": "acesso-api",
+        "status": "A"
+    },
+    {
+        "modulo_id": "admin-paginas",
+        "nome": "Modify Page Permission",
+        "id": "modificar-permissao-da-pagina",
+        "operacao": "permissao-pagina",
+        "status": "A"
+    },
+    {
+        "modulo_id": "publisher-pages",
+        "nome": "Modify Page Publisher Permission",
+        "id": "modificar-permissao-do-publicador-da-pagina",
+        "operacao": "permissao-pagina",
+        "status": "A"
+    }
+]

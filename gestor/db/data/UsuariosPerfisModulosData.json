@@ -1,150 +1,298 @@
 [
     {
         "perfil": "administradores",
-        "modulo": "dashboard"
+        "modulo": "admin-arquivos",
+        "status": "A",
+        "versao": 3,
+        "checksum": "46640e7df75cbd55e5fd4333b745469f",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "usuarios-perfis"
+        "modulo": "admin-atualizacoes",
+        "status": "A",
+        "versao": 3,
+        "checksum": "9b6fb40be1951940c7748552d53308c9",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "modulos"
+        "modulo": "admin-categorias",
+        "status": "A",
+        "versao": 3,
+        "checksum": "bcbedd2b6c192d2adb5be9b34c327359",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "modulos-grupos"
+        "modulo": "admin-componentes",
+        "status": "A",
+        "versao": 3,
+        "checksum": "e4b38c15bf8bb9e5677123f534449e7b",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "usuarios"
+        "modulo": "admin-cron",
+        "status": "A",
+        "versao": 3,
+        "checksum": "25af23274633797767c6a905c1180859",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-layouts"
+        "modulo": "admin-environment",
+        "status": "A",
+        "versao": 3,
+        "checksum": "d295cfdfa3b02a5db83a68e236c5d848",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-paginas"
+        "modulo": "admin-hosts",
+        "status": "A",
+        "versao": 3,
+        "checksum": "f324a97321090d959d67177ff30c72a7",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "perfil-usuario"
+        "modulo": "admin-ia",
+        "status": "A",
+        "versao": 3,
+        "checksum": "f507785f61d762c6e614395b1b9f2743",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-arquivos"
+        "modulo": "admin-layouts",
+        "status": "A",
+        "versao": 3,
+        "checksum": "b3ed8f741ddef628351b30470c3191af",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-categorias"
+        "modulo": "admin-modos-ia",
+        "status": "A",
+        "versao": 3,
+        "checksum": "49ed98e329a67a6e7ce249a10ad4894e",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-templates"
+        "modulo": "admin-paginas",
+        "status": "A",
+        "versao": 3,
+        "checksum": "e84f11efd840869ae1ea9345ba0583f1",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "modulos-operacoes"
+        "modulo": "admin-plugins",
+        "status": "A",
+        "versao": 3,
+        "checksum": "5e60680b2c7a7317630f288111e47d84",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "usuarios-planos"
+        "modulo": "admin-prompts-ia",
+        "status": "A",
+        "versao": 3,
+        "checksum": "30e8bc774dc59b042339736169f0dd23",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-componentes"
+        "modulo": "admin-templates",
+        "status": "A",
+        "versao": 3,
+        "checksum": "8963b627806e750495a188dbccf9511d",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-hosts"
+        "modulo": "contatos",
+        "status": "A",
+        "versao": 3,
+        "checksum": "8456974db90172fc4c9a370cda37e9f3",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "usuarios-hospedeiro-perfis-admin"
+        "modulo": "dashboard",
+        "status": "A",
+        "versao": 3,
+        "checksum": "82a4c251f0bf3710ae08a310da9b4513",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-atualizacoes"
+        "modulo": "forms",
+        "status": "A",
+        "versao": 3,
+        "checksum": "54bd746d9870ee80bbb23c9351cdfa3d",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-plugins"
+        "modulo": "forms-search",
+        "status": "A",
+        "versao": 3,
+        "checksum": "5676b8c5f3368b79e7717827b989e528",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-environment"
+        "modulo": "forms-submissions",
+        "status": "A",
+        "versao": 3,
+        "checksum": "f8d3838c78e493e56c0312dec097a7ea",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "variables"
+        "modulo": "galleries",
+        "status": "A",
+        "versao": 3,
+        "checksum": "c10d4e7861af94a15376993eab22460a",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-ia"
+        "modulo": "menus",
+        "status": "A",
+        "versao": 3,
+        "checksum": "a479c76a7dc9d0894532f179c22c8e4b",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-prompts-ia"
+        "modulo": "modulos",
+        "status": "A",
+        "versao": 3,
+        "checksum": "7172141a70806779a4b1201d508a7da2",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-modos-ia"
+        "modulo": "modulos-grupos",
+        "status": "A",
+        "versao": 3,
+        "checksum": "f0f939d68103ae503ab7ba8a9b0d559b",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "admin-cron"
+        "modulo": "modulos-operacoes",
+        "status": "A",
+        "versao": 3,
+        "checksum": "75e38165feda5b1d3784e069e5af55c6",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "publisher"
+        "modulo": "pages-index",
+        "status": "A",
+        "versao": 3,
+        "checksum": "c0d36afc639fc46d430d4c1eb7d02c88",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "publisher-pages"
+        "modulo": "perfil-usuario",
+        "status": "A",
+        "versao": 3,
+        "checksum": "a893ead33e831943375a0b078ff0851a",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "publisher-highlights"
+        "modulo": "publisher",
+        "status": "A",
+        "versao": 3,
+        "checksum": "cd1aa505ceb2e314106a40d05f94eac1",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "menus"
+        "modulo": "publisher-highlights",
+        "status": "A",
+        "versao": 3,
+        "checksum": "dbbee36a7b15150b70d8f21bfb8b6f5b",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "galleries"
+        "modulo": "publisher-index",
+        "status": "A",
+        "versao": 3,
+        "checksum": "7f01c5af287d17364c37f75964bab1c9",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "publisher-index"
+        "modulo": "publisher-pages",
+        "status": "A",
+        "versao": 3,
+        "checksum": "b56cfb648f2602a482101fb028db8592",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "forms"
+        "modulo": "usuarios",
+        "status": "A",
+        "versao": 3,
+        "checksum": "e08416035bae6516a0d6b2e31bc1fac4",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "forms-submissions"
+        "modulo": "usuarios-hospedeiro-perfis-admin",
+        "status": "A",
+        "versao": 3,
+        "checksum": "e7dcb5c61de6192569308e9010f6ea38",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "pages-index"
+        "modulo": "usuarios-perfis",
+        "status": "A",
+        "versao": 3,
+        "checksum": "da96b7c33af6081be24c0662441263a2",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "forms-search"
+        "modulo": "usuarios-planos",
+        "status": "A",
+        "versao": 3,
+        "checksum": "1a31238e567e7a219385fb52ef2db323",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "modulo": "contatos"
+        "modulo": "variables",
+        "status": "A",
+        "versao": 3,
+        "checksum": "f436f02ebb00306d77ab3570ff8857f2",
+        "user_modified": 0
     },
     {
         "perfil": "consumidores",
-        "modulo": "dashboard"
+        "modulo": "dashboard",
+        "status": "A",
+        "versao": 3,
+        "checksum": "9be1281ab0050a48ab715ea960261845",
+        "user_modified": 0
     },
     {
         "perfil": "consumidores",
-        "modulo": "perfil-usuario"
+        "modulo": "perfil-usuario",
+        "status": "A",
+        "versao": 3,
+        "checksum": "b0e1371651d03cb17ce40976c0f7316f",
+        "user_modified": 0
     }
 ]

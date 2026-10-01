@@ -1,34 +1,42 @@
 [
     {
-        "nome": "Administradores",
-        "id": "administradores",
-        "padrao": null,
-        "status": "A",
-        "versao": "1",
-        "language": "pt-br"
-    },
-    {
         "nome": "Administrators",
         "id": "administradores",
         "padrao": null,
         "status": "A",
-        "versao": "1",
-        "language": "en"
-    },
-    {
-        "nome": "Consumidores",
-        "id": "consumidores",
-        "padrao": true,
-        "status": "A",
-        "versao": "1",
-        "language": "pt-br"
+        "language": "en",
+        "versao": 2,
+        "checksum": "9b8a11821419259f2cf21605af46db2e",
+        "user_modified": 0
     },
     {
         "nome": "Consumers",
         "id": "consumidores",
         "padrao": true,
         "status": "A",
-        "versao": "1",
-        "language": "en"
+        "language": "en",
+        "versao": 2,
+        "checksum": "af0f697e79631b456121f88a9a7df0cc",
+        "user_modified": 0
+    },
+    {
+        "nome": "Administradores",
+        "id": "administradores",
+        "padrao": null,
+        "status": "A",
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "23204766c8401462466308279929ff35",
+        "user_modified": 0
+    },
+    {
+        "nome": "Consumidores",
+        "id": "consumidores",
+        "padrao": true,
+        "status": "A",
+        "language": "pt-br",
+        "versao": 2,
+        "checksum": "cc377587e10123a159e7222b287a47fa",
+        "user_modified": 0
     }
 ]

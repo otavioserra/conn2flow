@@ -14,9 +14,9 @@
         "data_criacao": "data_criacao",
         "data_modificacao": "data_modificacao",
         "config": {
-            "strategy": "pk",
-            "natural_key_columns": [],
-            "preserve_on_user_modified": [],
+            "strategy": "natural_key",
+            "natural_key_columns": ["id"],
+            "preserve_on_user_modified": ["senha", "email", "nome", "usuario", "status"],
             "insert_only": true
         },
         "deletar": []

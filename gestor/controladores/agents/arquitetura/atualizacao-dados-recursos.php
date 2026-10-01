@@ -209,7 +209,11 @@ function jsonWrite(string $path, array $data): bool {
     global $LOG_FILE;
     $dir = dirname($path);
     ensureDir($dir, $LOG_FILE);
-    return file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) !== false;
+    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    // Conteúdo igual não é regravado: a data do arquivo passa a dizer quando o dado mudou de fato,
+    // e é por data que o `rsync -u` do pipeline decide o que sobe.
+    if (is_file($path) && file_get_contents($path) === $json) return true;
+    return file_put_contents($path, $json) !== false;
 }
 
 /**
@@ -933,6 +937,7 @@ function coletarRecursos(array $existentes, array $map): array {
     // dos módulos. Cada tabela com sync_resources=true tem seus registros lidos (inline/arquivo),
     // convertidos via field_types (json/file:ext) e acumulados em dynamicTablesData[tabela][].
     $dynamicTablesData = [];
+    $dynamicTableNaturalKeys = [];
     // Não sobrescrever os Data.json gerados pelo pipeline fixo acima.
     $reservadas = [
         'layouts'=>true,'paginas'=>true,'componentes'=>true,'templates'=>true,'variaveis'=>true,
@@ -945,11 +950,25 @@ function coletarRecursos(array $existentes, array $map): array {
     foreach (coletarConfigsTabelas() as [$cfg, $src]) {
         if (empty($cfg['sync_resources'])) continue;
         $tabelaNome = $cfg['nome'];
+        if (!dataTargetSelected($tabelaNome)) continue;
         if (isset($reservadas[$tabelaNome])) {
             log_disco_local("DYNAMIC_SKIP_RESERVADA tabela=$tabelaNome src=$src", $LOG_FILE);
             continue;
         }
+        // Tabela declarada pelo contrato GLOBAL do core, compilando um projeto: as linhas do projeto
+        // são do projeto. Ler as sementes do core aqui gravava os dados do core por cima do
+        // `db/data` do projeto, e o deploy retirava módulos e permissões do projeto (req-206).
+        // O projeto semeia a tabela pelos próprios recursos; sem semente, o Data.json dele fica
+        // como está (arquivo de autoria direta, como sempre foi).
+        if (!empty($GLOBALS['CLI_ARGS']['project-path']) && $src === 'core:tables_config.json') {
+            $cfg['base_dir'] = rtrim($RESOURCES_DIR, DIRECTORY_SEPARATOR);
+            if (!sementesDinamicasExistem($cfg, $languages)) {
+                log_disco_local("DYNAMIC_SKIP_PROJETO_SEM_SEMENTE tabela=$tabelaNome src=$src", $LOG_FILE);
+                continue;
+            }
+        }
         $fieldTypes = (isset($cfg['field_types']) && is_array($cfg['field_types'])) ? $cfg['field_types'] : [];
+        $dynamicTableNaturalKeys[$tabelaNome] = $cfg['natural_key_columns'] ?? [];
         // Coluna identificadora lógica: tabelas customizadas podem usar outra coluna (ex.: page_id).
         $idCol = (isset($cfg['id']) && is_string($cfg['id']) && $cfg['id'] !== '') ? $cfg['id'] : 'id';
 
@@ -958,24 +977,23 @@ function coletarRecursos(array $existentes, array $map): array {
             $listaExist = jsonRead($DB_DATA_DIR . dataFileNameFromTable($tabelaNome)) ?? [];
             $idx = [];
             foreach ($listaExist as $er) {
-                if (!is_array($er) || !isset($er[$idCol])) continue;
-                $mod = $er['module'] ?? ($er['modulo'] ?? '');
+                if (!is_array($er)) continue;
                 $lng = $er['language'] ?? ($er['linguagem_codigo'] ?? '');
-                $idx[$lng.'|'.$mod.'|'.$er[$idCol]] = $er;
+                $key = dynamicTableRecordKey($er, $cfg, (string)$lng);
+                if ($key !== null) $idx[$key] = $er;
             }
             $existDinamicoCache[$tabelaNome] = $idx;
         }
         $existIdx = $existDinamicoCache[$tabelaNome];
 
-        foreach ($languages as $lang) {
+        $languagesToRead = !empty($cfg['language_agnostic']) ? [''] : $languages;
+        foreach ($languagesToRead as $lang) {
             foreach (lerMetadadosDinamicos($cfg, $lang) as $rec) {
                 if (!is_array($rec)) continue;
-                $id = $rec[$idCol] ?? null;
-                if ($id === null || $id === '') continue;
                 $registro = processarRegistroDinamico($rec, $cfg, $lang);
+                $kExist = dynamicTableRecordKey($registro, $cfg, $lang);
+                if ($kExist === null) continue;
                 $checksum = checksumRegistroDinamico($registro, $fieldTypes);
-                $mod = $registro['module'] ?? ($registro['modulo'] ?? '');
-                $kExist = $lang.'|'.$mod.'|'.$id;
                 $versao = 1;
                 if (isset($existIdx[$kExist])) {
                     $old = $existIdx[$kExist];
@@ -989,6 +1007,9 @@ function coletarRecursos(array $existentes, array $map): array {
             }
         }
         log_disco_local("DYNAMIC_COLLECTED tabela=$tabelaNome qtd=".count($dynamicTablesData[$tabelaNome] ?? [])." src=$src", $LOG_FILE);
+    }
+    foreach ($dynamicTablesData as $tabela => $linhas) {
+        $dynamicTablesData[$tabela] = ordenarRegistrosPorChaveNatural($linhas, $dynamicTableNaturalKeys[$tabela] ?? []);
     }
 
     log_disco_local(__t('_collected_summary', [
@@ -1019,19 +1040,19 @@ function coletarRecursos(array $existentes, array $map): array {
  */
 function atualizarDados(array $dadosExistentes, array $recursos): void {
     global $DB_DATA_DIR, $GESTOR_DIR, $LOG_FILE;
-    jsonWrite($DB_DATA_DIR.'LayoutsData.json', $recursos['layoutsData']);
-    jsonWrite($DB_DATA_DIR.'PaginasData.json', $recursos['pagesData']);
-    jsonWrite($DB_DATA_DIR.'ComponentesData.json', $recursos['componentsData']);
-    jsonWrite($DB_DATA_DIR.'TemplatesData.json', $recursos['templatesData']);
-    jsonWrite($DB_DATA_DIR.'VariaveisData.json', $recursos['variablesData']);
-    jsonWrite($DB_DATA_DIR.'PromptsIaData.json', $recursos['promptsData']);
-    jsonWrite($DB_DATA_DIR.'AlvosIaData.json', $recursos['targetsData']);
-    jsonWrite($DB_DATA_DIR.'FormsData.json', $recursos['formsData']);
-    jsonWrite($DB_DATA_DIR.'ModosIaData.json', $recursos['modesData']);
+    foreach ([
+        'layouts' => ['LayoutsData.json', 'layoutsData'], 'paginas' => ['PaginasData.json', 'pagesData'],
+        'componentes' => ['ComponentesData.json', 'componentsData'], 'templates' => ['TemplatesData.json', 'templatesData'],
+        'variaveis' => ['VariaveisData.json', 'variablesData'], 'prompts_ia' => ['PromptsIaData.json', 'promptsData'],
+        'alvos_ia' => ['AlvosIaData.json', 'targetsData'], 'forms' => ['FormsData.json', 'formsData'],
+        'modos_ia' => ['ModosIaData.json', 'modesData'],
+    ] as $target => [$file, $key]) {
+        if (dataTargetSelected($target)) jsonWrite($DB_DATA_DIR . $file, $recursos[$key] ?? []);
+    }
     // req-066 (BATCH-066): tabela global `widgets` (categorias/tipos de widget do sistema).
-    jsonWrite($DB_DATA_DIR.'WidgetsData.json', $recursos['widgetsData'] ?? []);
+    if (dataTargetSelected('widgets')) jsonWrite($DB_DATA_DIR.'WidgetsData.json', $recursos['widgetsData'] ?? []);
     // req-032 (BATCH-026): tabela global `cron_tarefas` (rotinas automáticas declaradas nos módulos).
-    jsonWrite($DB_DATA_DIR.'CronTarefasData.json', $recursos['cronTarefasData'] ?? []);
+    if (dataTargetSelected('cron_tarefas')) jsonWrite($DB_DATA_DIR.'CronTarefasData.json', $recursos['cronTarefasData'] ?? []);
     // Tabelas dinâmicas (sync_resources): gera [PascalCase]Data.json para cada tabela coletada.
     foreach (($recursos['dynamicTablesData'] ?? []) as $tabela => $linhas) {
         if (!is_string($tabela) || !preg_match('/^[a-z0-9_]+$/', $tabela)) {
@@ -1044,13 +1065,19 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
     }
     $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
     ensureDir($orphDir, $LOG_FILE);
-    foreach (['Layouts','Paginas','Componentes','Templates','Variaveis','PromptsIa','AlvosIa','ModosIa','Forms','Widgets'] as $T) {
+    $orphanTypes = [
+        'layouts' => 'Layouts', 'paginas' => 'Paginas', 'componentes' => 'Componentes', 'templates' => 'Templates',
+        'variaveis' => 'Variaveis', 'prompts_ia' => 'PromptsIa', 'alvos_ia' => 'AlvosIa', 'modos_ia' => 'ModosIa',
+        'forms' => 'Forms', 'widgets' => 'Widgets',
+    ];
+    foreach ($orphanTypes as $target => $T) {
+        if (!dataTargetSelected($target)) continue;
         $k = strtolower($T);
         jsonWrite($orphDir.$T.'Data.json', $recursos['orphans'][$k] ?? []);
     }
     // req-032 (BATCH-026): a chave de órfãos de cron é 'cron_tarefas' e não sobrevive ao
     // strtolower() do laço acima, que assume PascalCase sem separador.
-    jsonWrite($orphDir.'CronTarefasData.json', $recursos['orphans']['cron_tarefas'] ?? []);
+    if (dataTargetSelected('cron_tarefas')) jsonWrite($orphDir.'CronTarefasData.json', $recursos['orphans']['cron_tarefas'] ?? []);
     log_disco_local('Dados persistidos + órfãos.', $LOG_FILE);
 }
 
@@ -1124,6 +1151,81 @@ function dataFileNameFromTable(string $tabela): string {
     return $pascal . 'Data.json';
 }
 
+function dynamicTableRecordKey(array $record, array $config, string $language): ?string {
+    $naturalKeyColumns = (array)($config['natural_key_columns'] ?? []);
+    if ($naturalKeyColumns) {
+        $key = [];
+        foreach ($naturalKeyColumns as $column) {
+            if (array_key_exists($column, $record)) $key[$column] = $record[$column];
+            elseif ($column === 'language') $key[$column] = $language;
+            else return null;
+        }
+        $encoded = json_encode($key, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        return is_string($encoded) ? $encoded : null;
+    }
+
+    $idColumn = (isset($config['id']) && is_string($config['id']) && $config['id'] !== '') ? $config['id'] : 'id';
+    $id = $record[$idColumn] ?? null;
+    if ($id === null || $id === '') return null;
+    $module = $record['module'] ?? ($record['modulo'] ?? '');
+    return $language . '|' . $module . '|' . $id;
+}
+
+function normalizarAlvosOnly(): ?array {
+    $value = $GLOBALS['CLI_ARGS']['only'] ?? null;
+    if ($value === null) return null;
+    if (!is_string($value) || trim($value) === '') throw new RuntimeException('--only exige ao menos um alvo.');
+
+    $aliases = [
+        'pages' => 'paginas', 'page' => 'paginas', 'components' => 'componentes', 'component' => 'componentes',
+        'variables' => 'variaveis', 'variable' => 'variaveis', 'prompts' => 'prompts_ia', 'ai_prompts' => 'prompts_ia',
+        'ai_modes' => 'modos_ia', 'targets' => 'alvos_ia', 'forms' => 'forms', 'widgets' => 'widgets',
+        'modules' => 'modulos', 'module_groups' => 'modulos_grupos', 'module_operations' => 'modulos_operacoes',
+        'users' => 'usuarios', 'user_profiles' => 'usuarios_perfis',
+        'user_profiles_modules' => 'usuarios_perfis_modulos',
+        'user_profiles_modules_operations' => 'usuarios_perfis_modulos_operacoes', 'categories' => 'categorias',
+    ];
+    $targets = [];
+    foreach (explode(',', $value) as $target) {
+        $target = strtolower(trim($target));
+        if ($target === '') throw new RuntimeException('--only contém um alvo vazio.');
+        $targets[] = $aliases[$target] ?? $target;
+    }
+    return array_values(array_unique($targets));
+}
+
+function dataTargetSelected(string $target): bool {
+    $targets = normalizarAlvosOnly();
+    return $targets === null || in_array($target, $targets, true);
+}
+
+function validarAlvosOnly(?array $targets): void {
+    if ($targets === null) return;
+    $valid = ['layouts', 'paginas', 'componentes', 'templates', 'variaveis', 'prompts_ia', 'modos_ia', 'alvos_ia', 'forms', 'widgets', 'cron_tarefas'];
+    foreach (coletarConfigsTabelas() as [$config]) $valid[] = $config['nome'];
+    $invalid = array_values(array_diff($targets, array_unique($valid)));
+    if ($invalid) throw new RuntimeException('--only contém alvo desconhecido: ' . implode(', ', $invalid));
+}
+
+function ordenarRegistrosPorChaveNatural(array $records, array $keyColumns): array {
+    if (!$keyColumns) return array_values($records);
+    $indexed = [];
+    foreach (array_values($records) as $index => $record) $indexed[] = ['index' => $index, 'record' => $record];
+    usort($indexed, static function (array $left, array $right) use ($keyColumns): int {
+        foreach ($keyColumns as $column) {
+            $leftValue = $left['record'][$column] ?? null;
+            $rightValue = $right['record'][$column] ?? null;
+            if ($leftValue === $rightValue) continue;
+            if ($leftValue === null) return -1;
+            if ($rightValue === null) return 1;
+            $comparison = strcmp((string)$leftValue, (string)$rightValue);
+            if ($comparison !== 0) return $comparison;
+        }
+        return $left['index'] <=> $right['index'];
+    });
+    return array_values(array_map(static fn(array $item): array => $item['record'], $indexed));
+}
+
 /**
  * Lê a lista de registros (metadados) de uma tabela dinâmica (sync_resources) para um idioma.
  * Resolve a origem conforme a configuração:
@@ -1131,23 +1233,45 @@ function dataFileNameFromTable(string $tabela): string {
  *      * módulo: <base_dir>/<lang>/<resources_dir|tabela>/<metadata_file>
  *      * global: <base_dir>/<lang>/<metadata_file> (ou .../<resources_dir>/<metadata_file> se resources_dir for explícito)
  *  - metadata_file ausente: registros inline em <inline>.resources.<lang>.<tabela_nome>
+ *  - language_agnostic: metadados globais na raiz do base_dir, sem escopo por idioma
  * Retorna sempre uma lista (array de registros) — vazia quando não há nada a coletar.
  */
+function caminhoMetadadosDinamicos(array $cfg, string $lang): ?string {
+    $tabela = $cfg['nome'];
+    $metaFile = $cfg['metadata_file'] ?? null;
+    $baseDir = $cfg['base_dir'] ?? null;
+    if (!$metaFile || !is_string($baseDir) || $baseDir === '') return null;
+    $resDirExplicit = $cfg['resources_dir'] ?? null;
+    if (!empty($cfg['language_agnostic'])) {
+        if (($cfg['scope'] ?? null) === 'module') {
+            return $baseDir . DIRECTORY_SEPARATOR . ($resDirExplicit ?? $tabela) . DIRECTORY_SEPARATOR . $metaFile;
+        }
+        return $baseDir . ($resDirExplicit ? DIRECTORY_SEPARATOR . $resDirExplicit : '') . DIRECTORY_SEPARATOR . $metaFile;
+    }
+    if (($cfg['scope'] ?? null) === 'module') {
+        return $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . ($resDirExplicit ?? $tabela) . DIRECTORY_SEPARATOR . $metaFile;
+    }
+    return $resDirExplicit
+        ? $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $resDirExplicit . DIRECTORY_SEPARATOR . $metaFile
+        : $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $metaFile;
+}
+
+/** Existe arquivo de semente da tabela em `base_dir`, em algum idioma (ou na raiz, se global)? */
+function sementesDinamicasExistem(array $cfg, array $languages): bool {
+    foreach (!empty($cfg['language_agnostic']) ? [''] : $languages as $lang) {
+        $path = caminhoMetadadosDinamicos($cfg, (string)$lang);
+        if ($path !== null && is_file($path)) return true;
+    }
+    return false;
+}
+
 function lerMetadadosDinamicos(array $cfg, string $lang): array {
     $tabela = $cfg['nome'];
     $metaFile = $cfg['metadata_file'] ?? null;
     $baseDir = $cfg['base_dir'] ?? null;
     if ($metaFile && is_string($baseDir) && $baseDir !== '') {
-        $resDirExplicit = $cfg['resources_dir'] ?? null;
-        if (($cfg['scope'] ?? null) === 'module') {
-            $resDir = $resDirExplicit ?? $tabela;
-            $path = $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $resDir . DIRECTORY_SEPARATOR . $metaFile;
-        } else { // global
-            $path = $resDirExplicit
-                ? $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $resDirExplicit . DIRECTORY_SEPARATOR . $metaFile
-                : $baseDir . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $metaFile;
-        }
-        $lista = jsonRead($path);
+        $path = caminhoMetadadosDinamicos($cfg, $lang);
+        $lista = jsonRead((string)$path);
         return is_array($lista) ? array_values($lista) : [];
     }
     // Inline: resources -> lang -> tabela_nome
@@ -1202,7 +1326,11 @@ function processarRegistroDinamico(array $rec, array $cfg, string $lang): array 
     }
 
     // Colunas padronizadas (a coluna real de idioma/módulo é filtrada pelo atualizador via SHOW COLUMNS).
-    if (!array_key_exists('language', $registro)) $registro['language'] = $lang;
+    if (!empty($cfg['language_agnostic'])) {
+        unset($registro['language']);
+    } elseif (!array_key_exists('language', $registro)) {
+        $registro['language'] = $lang;
+    }
     $cols = is_array($cfg['natural_key_columns'] ?? null) ? $cfg['natural_key_columns'] : [];
     if (($cfg['scope'] ?? null) === 'module' && !empty($cfg['modulo'])) {
         if (in_array('module', $cols, true) && !array_key_exists('module', $registro)) $registro['module'] = $cfg['modulo'];
@@ -1240,8 +1368,8 @@ function checksumRegistroDinamico(array $registro, array $fieldTypes): string {
  *
  * Retorna SEMPRE uma lista (array de 0+ entradas normalizadas), uma por configuração válida.
  * Cada entrada carrega os campos do contrato (estratégia/chave natural/preserve/insert_only) e
- * também as diretivas de sincronização declarativa de recursos (sync_resources/resources_dir/
- * metadata_file/field_types) e as listas agregadas por tabela (deletar/forcar_atualizacao).
+ * também as diretivas de sincronização declarativa de recursos (sync_resources/language_agnostic/
+ * resources_dir/metadata_file/field_types) e as listas agregadas por tabela (deletar/forcar_atualizacao).
  *
  * O nome da tabela de cada entrada vem de config.tabela_nome (quando presente) ou do nome do
  * bloco ("tabela"."nome"). As listas deletar/forcar_atualizacao podem ser declaradas dentro de
@@ -1293,6 +1421,7 @@ function normalizarConfigTabela(array $meta): array {
             'insert_only' => !empty($config['insert_only']),
             // Diretivas de sincronização declarativa de recursos (build-time; não vão ao contrato).
             'sync_resources' => !empty($config['sync_resources']),
+            'language_agnostic' => !empty($config['language_agnostic']),
             'resources_dir' => $resourcesDir,
             'metadata_file' => $metadataFile,
             'field_types' => $fieldTypes,
@@ -1523,6 +1652,8 @@ function main(): int {
 
         $started = cliProgressStep(1, 8, 'Carregando o mapa de recursos');
         $map = carregarMapeamentoGlobal();
+        $onlyTargets = normalizarAlvosOnly();
+        validarAlvosOnly($onlyTargets);
         cliProgressDone(1, 8, 'Mapa de recursos carregado', $started);
 
         $started = cliProgressStep(2, 8, 'Atualizando metadados de origem');
@@ -1538,7 +1669,12 @@ function main(): int {
         cliProgressDone(2, 8, 'Metadados de origem processados', $started);
 
         $started = cliProgressStep(3, 8, 'Compilando Tailwind por recurso');
-        $tailwindStats = tailwind_recursos_compilar($map);
+        if (isset($GLOBALS['CLI_ARGS']['skip-css'])) {
+            $tailwindStats = ['enabled' => false];
+            cliProgress('       Etapa ignorada por --skip-css.');
+        } else {
+            $tailwindStats = tailwind_recursos_compilar($map);
+        }
         cliProgressDone(3, 8, 'Tailwind por recurso processado', $started);
 
         $started = cliProgressStep(4, 8, 'Carregando dados existentes');

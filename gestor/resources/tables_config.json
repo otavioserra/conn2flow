@@ -31,7 +31,10 @@
                     "modulo"
                 ],
                 "preserve_on_user_modified": [],
-                "insert_only": false
+                "insert_only": false,
+                "sync_resources": true,
+                "language_agnostic": true,
+                "metadata_file": "user_profiles_modules.json"
             },
             "deletar": []
         },
@@ -46,7 +49,10 @@
                     "operacao"
                 ],
                 "preserve_on_user_modified": [],
-                "insert_only": false
+                "insert_only": false,
+                "sync_resources": true,
+                "language_agnostic": true,
+                "metadata_file": "user_profiles_modules_operations.json"
             },
             "deletar": []
         },
@@ -95,6 +101,92 @@
                     "parametros"
                 ],
                 "insert_only": false
+            },
+            "deletar": []
+        },
+        "modulos": {
+            "nome": "modulos",
+            "id": "id",
+            "id_numerico": "id_modulos",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": ["language", "id"],
+                "preserve_on_user_modified": [],
+                "insert_only": false,
+                "sync_resources": true,
+                "metadata_file": "modules.json"
+            },
+            "deletar": []
+        },
+        "modulos_grupos": {
+            "nome": "modulos_grupos",
+            "id": "id",
+            "id_numerico": "id_modulos_grupos",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": ["language", "id"],
+                "preserve_on_user_modified": [],
+                "insert_only": false,
+                "sync_resources": true,
+                "metadata_file": "module_groups.json"
+            },
+            "deletar": []
+        },
+        "modulos_operacoes": {
+            "nome": "modulos_operacoes",
+            "id": "id",
+            "id_numerico": "id_modulos_operacoes",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": ["language", "modulo_id", "id"],
+                "preserve_on_user_modified": [],
+                "insert_only": false,
+                "sync_resources": true,
+                "metadata_file": "module_operations.json"
+            },
+            "deletar": []
+        },
+        "usuarios": {
+            "nome": "usuarios",
+            "id": "id",
+            "id_numerico": "id_usuarios",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": ["id"],
+                "preserve_on_user_modified": ["senha", "email", "nome", "usuario", "status"],
+                "insert_only": true,
+                "sync_resources": true,
+                "language_agnostic": true,
+                "metadata_file": "users.json"
+            },
+            "deletar": []
+        },
+        "usuarios_perfis": {
+            "nome": "usuarios_perfis",
+            "id": "id",
+            "id_numerico": "id_usuarios_perfis",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": ["language", "id"],
+                "preserve_on_user_modified": [],
+                "insert_only": false,
+                "sync_resources": true,
+                "metadata_file": "user_profiles.json"
+            },
+            "deletar": []
+        },
+        "categorias": {
+            "nome": "categorias",
+            "id": "id",
+            "id_numerico": "id_categorias",
+            "config": {
+                "strategy": "natural_key",
+                "natural_key_columns": ["id"],
+                "preserve_on_user_modified": [],
+                "insert_only": false,
+                "sync_resources": true,
+                "language_agnostic": true,
+                "metadata_file": "categories.json"
             },
             "deletar": []
         }

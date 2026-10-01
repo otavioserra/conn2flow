@@ -155,23 +155,23 @@
                 {
                     "name": "Mapeamento de Layout por Perfil",
                     "id": "layout-profile-mapping",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "f8cffe2ecdc3cc62e4f65e1ff95bc09d",
+                        "html": "cf89db77e7edf56efd09ee7d04690050",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f8cffe2ecdc3cc62e4f65e1ff95bc09d"
+                        "combined": "cf89db77e7edf56efd09ee7d04690050"
                     }
                 },
                 {
                     "name": "Linha de Layout por Perfil",
                     "id": "layout-profile-row",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "846642cefd8a44d86588e9eb438cf997",
+                        "html": "b8531e8e33763abd8826abf93ea5320f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "846642cefd8a44d86588e9eb438cf997"
+                        "combined": "b8531e8e33763abd8826abf93ea5320f"
                     }
                 }
             ],
@@ -194,12 +194,12 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.27",
+                    "version": "1.28",
                     "checksum": {
-                        "html": "0d67a92f978092cd0309e3d026deea67",
+                        "html": "cb11ed29e0d8c1efec298a6a26686741",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
                         "css_precompiled": "",
-                        "combined": "a7e46f6b8ecf48de78a467ad72c9ae4b"
+                        "combined": "9ae4f8b7795714e840a44f5faf8bb33f"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/editar/",
@@ -209,12 +209,12 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.25",
+                    "version": "1.26",
                     "checksum": {
-                        "html": "5b46df8fa445b0c19f892f049e4cd028",
+                        "html": "33dcb61f4503ebcd3cc1a15b1c15a967",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
                         "css_precompiled": "",
-                        "combined": "133443218380bec4c8f4040c4fd845dc"
+                        "combined": "b28c0ec91edb93bc4efaed23899c5119"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/adicionar/",
@@ -224,12 +224,12 @@
                 {
                     "name": "Admin Páginas - Clonar",
                     "id": "admin-paginas-clonar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "5177c722340fa466e39915c02d79fb18",
+                        "html": "f0205c03d36111c1f886afc308431575",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
                         "css_precompiled": "",
-                        "combined": "116a950799e5d70c3766bbaffe7e67a6"
+                        "combined": "56e0c70d2efddf756dfc2f5400b66000"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/clonar/",
@@ -520,12 +520,12 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.22",
+                    "version": "1.23",
                     "checksum": {
-                        "html": "63ce5786a974e064feb00d8a8aa43fa1",
+                        "html": "6de24b9b5f145e3ed022ec1bdf714552",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
                         "css_precompiled": "",
-                        "combined": "63273b5001144f005da1cbf9751fa1fb"
+                        "combined": "e20d46d6ac465bd2ff3154c9822c2930"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/editar/",
@@ -535,12 +535,12 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.23",
+                    "version": "1.24",
                     "checksum": {
-                        "html": "e28b56f551b827cf7c2199f0aba85948",
+                        "html": "38c8bd64f9ced2e7b6c8c165aebc2efa",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
                         "css_precompiled": "",
-                        "combined": "972ba450d507f3f145de5160e6722406"
+                        "combined": "af6f943a0a050213e03d38c49ce3f47b"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/adicionar/",
@@ -550,12 +550,12 @@
                 {
                     "name": "Admin Pages - Clone",
                     "id": "admin-paginas-clonar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "d374bb78d62a9dc0b8f148fee3014a07",
+                        "html": "f0af84dc543fee61b87ef73816d53f35",
                         "css": "14e7439759ad508b0915cc266b0d22e9",
                         "css_precompiled": "",
-                        "combined": "862bf38a18d1af599ff9e170b4fc40b1"
+                        "combined": "757de455a86c91c4011b7794e839da7c"
                     },
                     "layout": "layout-administrativo-do-gestor",
                     "path": "admin-paginas/clonar/",
@@ -577,23 +577,23 @@
                 {
                     "name": "Profile Layout Mapping",
                     "id": "layout-profile-mapping",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "f8cffe2ecdc3cc62e4f65e1ff95bc09d",
+                        "html": "cf89db77e7edf56efd09ee7d04690050",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f8cffe2ecdc3cc62e4f65e1ff95bc09d"
+                        "combined": "cf89db77e7edf56efd09ee7d04690050"
                     }
                 },
                 {
                     "name": "Profile Layout Row",
                     "id": "layout-profile-row",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "846642cefd8a44d86588e9eb438cf997",
+                        "html": "b8531e8e33763abd8826abf93ea5320f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "846642cefd8a44d86588e9eb438cf997"
+                        "combined": "b8531e8e33763abd8826abf93ea5320f"
                     }
                 }
             ],
@@ -766,5 +766,5 @@
             ]
         }
     },
-    "asset_version": "0787671bc5ae1f17"
+    "asset_version": "95192181806698a7"
 }

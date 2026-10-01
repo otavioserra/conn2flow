@@ -1,14 +1,26 @@
 [
     {
         "perfil": "administradores",
-        "operacao": "modificar-permissao-da-pagina"
+        "operacao": "acesso-administrador-a-api",
+        "status": "A",
+        "versao": 3,
+        "checksum": "0107b01a1bdeff962c75d3cb74c7e760",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "operacao": "modificar-permissao-do-publicador-da-pagina"
+        "operacao": "modificar-permissao-da-pagina",
+        "status": "A",
+        "versao": 3,
+        "checksum": "208b6cbc86daa211f4e30b1eacc8e870",
+        "user_modified": 0
     },
     {
         "perfil": "administradores",
-        "operacao": "acesso-administrador-a-api"
+        "operacao": "modificar-permissao-do-publicador-da-pagina",
+        "status": "A",
+        "versao": 3,
+        "checksum": "9206802a1c5b29023072dcda047a1916",
+        "user_modified": 0
     }
 ]

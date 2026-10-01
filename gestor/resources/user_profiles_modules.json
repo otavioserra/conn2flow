@@ -1,0 +1,150 @@
+[
+    {
+        "perfil": "administradores",
+        "modulo": "admin-arquivos"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-atualizacoes"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-categorias"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-componentes"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-cron"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-environment"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-hosts"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-ia"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-layouts"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-modos-ia"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-paginas"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-plugins"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-prompts-ia"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "admin-templates"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "contatos"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "dashboard"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "forms"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "forms-search"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "forms-submissions"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "galleries"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "menus"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "modulos"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "modulos-grupos"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "modulos-operacoes"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "pages-index"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "perfil-usuario"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "publisher"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "publisher-highlights"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "publisher-index"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "publisher-pages"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "usuarios"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "usuarios-hospedeiro-perfis-admin"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "usuarios-perfis"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "usuarios-planos"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "variables"
+    },
+    {
+        "perfil": "consumidores",
+        "modulo": "dashboard"
+    },
+    {
+        "perfil": "consumidores",
+        "modulo": "perfil-usuario"
+    }
+]

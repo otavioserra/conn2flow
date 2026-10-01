@@ -1,0 +1,14 @@
+[
+    {
+        "nome": "Administradores",
+        "id": "administradores",
+        "padrao": null,
+        "status": "A"
+    },
+    {
+        "nome": "Consumidores",
+        "id": "consumidores",
+        "padrao": true,
+        "status": "A"
+    }
+]

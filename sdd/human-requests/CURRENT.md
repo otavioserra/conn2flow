@@ -1,13 +1,15 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-203.md](req-203.md) (BATCH-211 `complete`, 2026-10-01): Segregação de Recursos Globais vs Multilíngues — seeds na raiz, contrato `language_agnostic`, compilador validado em diretório temporário com dados reais e duplicatas por idioma removidas.
+  - [req-202.md](req-202.md) (BATCH-210 `complete`, 2026-10-01): Autoria 100% em resources (fim dos 8 arquivos estáticos em `gestor/db/data/`), contrato declarativo em `tables_config.json`, compilação determinística e suporte a compilação granular/seletiva (`--only`, `--skip-css`, `--resource`) com otimização de cache Tailwind.
   - [req-201.md](req-201.md) (BATCH-209 `complete`, 2026-09-30, homologação humana pendente): Atualização do sistema por API em segundo plano (`action=run`, `run-status`, `runs`, `/_api/system/rollback`) e `c2f update:core`. Falta a requisição do `conn2flow-site` (CLI em massa e host-manager).
   - [req-200.md](req-200.md) (BATCH-208 `complete`, 2026-09-30, feita por agente executor e revisada/mesclada; homologação humana pendente): Recuperação de arquivos do ambiente em execução — inventário no servidor pelos manifestos e descida pelo motor de choques.
   - [req-198.md](req-198.md) (BATCH-202/203 `complete`, 2026-09-30, homologação humana pendente; BATCH-204 `complete`: o mesmo pacote no deploy por API, `/_api/project/rollback` e `c2f update:rollback`): Atualização segura, fase 2 — manifesto por camada, precedência `projeto > plugin > core`, registro de choques, snapshot seletivo, verificação pós-atualização e rollback. Validada no tenant isolado `project-test`.
   - [req-199.md](req-199.md) (BATCH-205, BATCH-206 e BATCH-207 `complete`, 2026-09-30; homologação humana pendente): Atualização segura, fase 3 — motor de choques comum a subir e descer (decisão por arquivo no painel, na API e no CLI; extensão do VS Code no 206), exclusão declarativa de dados (207).
   - [req-197.md](req-197.md) (BATCH-201 `complete`, 2026-09-30, homologação humana pendente): Atualização segura, fase 1 — trava de deploy, `backupTotal()`, `db:check-migrations`, CLI/web sem apagar `db/`, tentativa automática no Tailwind. Promovida do [BL-028](../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md).
   - [req-196.md](req-196.md) (BATCH-200 `complete`, 2026-09-30): Página inicial por perfil de usuário em usuarios-perfis e mapeamento dinâmico de layout por perfil em paginas (demanda do portal do cliente no `conn2flow-site`).
-  - [req-193.md](req-193.md) (BATCH-197 `in-progress`): Ativar parcelamento de cartão somente quando solicitado ao criar PaymentIntent avulso; extensão compartilhada para a REQ-072 do `conn2flow-site`.
+  - [req-193.md](req-193.md) (BATCH-197 `completed`): Ativar parcelamento de cartão somente quando solicitado ao criar PaymentIntent avulso; extensão compartilhada para a REQ-072 do `conn2flow-site`.
   - [req-195.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-195.md) (BATCH-199 `complete`, 2026-09-29): `stripe_criar_assinatura()` aceita `add_invoice_items` (caixa central, REQ-071 do site). Ver [BATCH-199.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-199.md).
   - [req-194.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-194.md) (BATCH-198 `complete`, 2026-09-29): Hotfix — migrações obsoletas removidas no ambiente em execução, por dono (core/projeto), nos três caminhos de entrega; choques só registrados. Épico de atualização segura no [BL-028](../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md). Ver [BATCH-198.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-198.md).
   - [req-192.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/human-requests/req-192.md) (BATCH-196 `complete`, 2026-09-29): `stripe_criar_assinatura()` aceita `coupon_id` (cupons nas assinaturas, REQ-069 do site). Ver [BATCH-196.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/BATCH-196.md).
@@ -27,4 +29,4 @@
 - **Intakes Históricos Arquivados**:
   - Requisições anteriores (req-001 a req-178) arquivadas em [archive/](archive/).
 
-- **Status**: Documentação e auditoria concluídas; BATCH-197 implementa a extensão Stripe compartilhada solicitada pelo `conn2flow-site`.
+- **Status**: BATCH-211/REQ-203 implementado e validado; nenhum deploy executado.

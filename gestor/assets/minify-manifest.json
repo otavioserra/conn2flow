@@ -70,9 +70,9 @@
         "minificado": 1296
     },
     "gestor/assets/interface/html-editor-interface.js": {
-        "sha1": "3cc2c29be950c382c238a201bd1ea9d8bedca8be",
-        "origem": 156429,
-        "minificado": 60136
+        "sha1": "915b1b5408f6ecfe936721f00d97f97a33c33abb",
+        "origem": 165526,
+        "minificado": 63278
     },
     "gestor/assets/interface/html-editor-modules.js": {
         "sha1": "7c5934089d8e0b3279282539f010b461ec4dcea6",
@@ -85,9 +85,9 @@
         "minificado": 12197
     },
     "gestor/assets/interface/html-editor.js": {
-        "sha1": "a58dfa1b8a2f0664542040af3a7fd372e1f02685",
-        "origem": 353502,
-        "minificado": 187911
+        "sha1": "c1568df86e11f6fd7cb3faa71893ba5722ec56e6",
+        "origem": 357600,
+        "minificado": 189401
     },
     "gestor/assets/interface/ia.js": {
         "sha1": "1d842ac569c32dcd8d7e090849c68b1519bc1d47",
@@ -130,8 +130,8 @@
         "minificado": 24338
     },
     "gestor/modulos/admin-atualizacoes/admin-atualizacoes.js": {
-        "sha1": "4ef4c0fd6921ee2a74c7468ead1226df7682f2d5",
-        "origem": 15512,
+        "sha1": "291a53fb1ea42450393f6f5190344765029d71c5",
+        "origem": 15784,
         "minificado": 7826
     },
     "gestor/modulos/admin-categorias/admin-categorias.js": {
@@ -170,8 +170,8 @@
         "minificado": 501
     },
     "gestor/modulos/admin-paginas/admin-paginas.js": {
-        "sha1": "9f028b82d088f6fea591279d2106bd71803af2fc",
-        "origem": 7684,
+        "sha1": "edb394b83d03e450b2a294c2c1e2798e559f55af",
+        "origem": 7917,
         "minificado": 4343
     },
     "gestor/modulos/admin-plugins/admin-plugins.js": {
@@ -300,8 +300,8 @@
         "minificado": 1868
     },
     "gestor/modulos/publisher-pages/publisher-pages.js": {
-        "sha1": "861a6395421b20fcc433c3c38858d408a6cb8745",
-        "origem": 18561,
+        "sha1": "bb9eae49d84186e17c030c5c6f78b974469f6822",
+        "origem": 19191,
         "minificado": 9932
     },
     "gestor/modulos/publisher/publisher.js": {
@@ -310,9 +310,9 @@
         "minificado": 11719
     },
     "gestor/modulos/usuarios-perfis/usuarios-perfis.js": {
-        "sha1": "3cde6cf35d2d73b229b23a522a4b19048aad7cb3",
-        "origem": 3612,
-        "minificado": 2171
+        "sha1": "483bc4e73f8d584b3568142b5aa76653a8bd1338",
+        "origem": 3994,
+        "minificado": 2148
     },
     "gestor/modulos/usuarios/usuarios.js": {
         "sha1": "5383d63ad3c2f28727ee5cf5252d8b2e9e079950",

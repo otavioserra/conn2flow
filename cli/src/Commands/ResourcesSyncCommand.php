@@ -39,7 +39,12 @@ final class ResourcesSyncCommand implements CommandInterface
                "Executes the full pipeline of resource compilation, scanning layouts, pages, components,\n" .
                "variables, AI modes, and forms, verifying checksums and updating gestor/db/data/*Data.json.\n\n" .
                "Options:\n" .
-               "  --force       Force rebuild of precompiled CSS and assets cache.";
+               "  --only=<target>  Compile only the selected data target.\n" .
+               "  --skip-css       Skip Tailwind CSS compilation.\n" .
+               "  --resource=<id>  Compile Tailwind for one resource.\n" .
+               "  --no-origin-update  Leave resource source metadata unchanged.\n" .
+               "  --no-assets         Leave asset version metadata unchanged.\n" .
+               "  --force          Force rebuild of precompiled CSS and assets cache.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -55,6 +60,17 @@ final class ResourcesSyncCommand implements CommandInterface
         }
 
         $cmd = [PHP_BINARY, $scriptPath];
+        foreach ([
+            'only' => 'only', 'skip-css' => 'skip-css', 'resource' => 'resource', 'force' => 'tailwind-force',
+            'no-origin-update' => 'no-origin-update', 'no-assets' => 'no-assets',
+        ] as $inputOption => $scriptOption) {
+            if (!$input->hasOption($inputOption)) {
+                continue;
+            }
+
+            $value = $input->getOption($inputOption);
+            $cmd[] = is_string($value) ? '--' . $scriptOption . '=' . $value : '--' . $scriptOption;
+        }
 
         $process = proc_open($cmd, [
             0 => ['pipe', 'r'],

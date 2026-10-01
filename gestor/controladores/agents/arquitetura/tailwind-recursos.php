@@ -11,6 +11,11 @@ declare(strict_types=1);
 
 const TAILWIND_RECURSOS_MANIFEST_VERSION = 1;
 
+// Leitura do mapa de layout por perfil e do marcador de layouts cobertos: as mesmas funções do runtime.
+if (!function_exists('gestor_layouts_perfis_mapa')) {
+    require_once __DIR__ . '/../../../bibliotecas/gestor.php';
+}
+
 function tailwind_recursos_normalizar_path(string $path): string
 {
     return str_replace('\\', '/', $path);
@@ -274,6 +279,39 @@ function tailwind_recursos_modais_de_sistema(): array
     ];
 }
 
+/**
+ * Layouts com que uma página de layout por perfil é compilada: o padrão e cada alternativo
+ * declarado em `layouts_users_profiles` (`perfil => layout`).
+ *
+ * Layout que não existe nesta árvore fica de fora sem erro: a página de um módulo do núcleo pode
+ * ser mapeada para um layout que só o projeto tem, e esse par é compilado pelo `css:rebuild`, que
+ * lê os layouts do banco.
+ *
+ * @return array<string,string> id do layout => caminho do HTML. Vazio quando não há mapeamento.
+ */
+function tailwind_recursos_layouts_da_pagina(array $metadata, ?string $module, string $language): array
+{
+    $alternativos = array_values(array_unique(gestor_layouts_perfis_mapa($metadata['layouts_users_profiles'] ?? null)));
+    if ($alternativos === []) return [];
+
+    $layoutLanguage = is_string($metadata['tailwind_layout_language'] ?? null) && $metadata['tailwind_layout_language'] !== ''
+        ? $metadata['tailwind_layout_language'] : $language;
+    $encontrados = [];
+    foreach (array_merge([(string)($metadata['layout'] ?? '')], $alternativos) as $layoutId) {
+        if ($layoutId === '' || isset($encontrados[$layoutId])) continue;
+        $dependency = ['type' => 'layouts', 'id' => $layoutId, 'language' => $layoutLanguage];
+        foreach ($module !== null ? [$dependency + ['module' => $module], $dependency + ['scope' => 'global']] : [$dependency + ['scope' => 'global']] as $candidate) {
+            $path = tailwind_recursos_dependency_path($candidate);
+            if ($path !== null && is_file($path)) {
+                $encontrados[$layoutId] = realpath($path) ?: $path;
+                break;
+            }
+        }
+    }
+
+    return $encontrados;
+}
+
 function tailwind_recursos_dependencies(array $metadata, string $scope, ?string $module, string $language, string $type): array
 {
     global $GESTOR_DIR;
@@ -431,9 +469,11 @@ function tailwind_recursos_descriptor(array $metadata, string $scope, ?string $m
 
     $paths = resourcePaths($base, $language, $type, $id, $baseIsResourcesDir);
     if (!is_file($paths['html'])) return null;
+    $layoutsDaPagina = $type === 'pages' ? tailwind_recursos_layouts_da_pagina($metadata, $module, $language) : [];
     $sources = array_merge(
         tailwind_recursos_sources($metadata, $paths['dir']),
-        tailwind_recursos_dependencies($metadata, $scope, $module, $language, $type)
+        tailwind_recursos_dependencies($metadata, $scope, $module, $language, $type),
+        array_values($layoutsDaPagina)
     );
     sort($sources, SORT_STRING);
     $sources = array_values(array_unique($sources));
@@ -456,6 +496,8 @@ function tailwind_recursos_descriptor(array $metadata, string $scope, ?string $m
         'layout' => $type === 'layouts',
         'layout_id' => (string)($metadata['layout'] ?? ''), // F3: liga a página ao layout que a serve.
         'bundle' => $bundle,
+        // Layout por perfil: a página compila com todos os layouts que pode receber e carimba quais.
+        'layouts_cobertos' => array_keys($layoutsDaPagina),
         'html' => $paths['html'],
         'css' => $paths['css'], // F1: CSS autoral do recurso, conferido contra os tokens da saída.
         'output' => $paths['css_precompiled'],
@@ -590,7 +632,7 @@ function tailwind_recursos_input_temporario(array $resource, string $centralInpu
     $central = tailwind_recursos_css_string(tailwind_recursos_relativo($tempDir, $centralInput));
     // Layouts e bundles canônicos precisam carregar theme/base/preflight. Recursos
     // isolados importam apenas utilities porque recebem essas camadas do layout.
-    $lines = ($resource['layout'] || !empty($resource['bundle']))
+    $lines = ($resource['layout'] || !empty($resource['bundle']) || !empty($resource['layouts_cobertos']))
         ? ['@import "' . $central . '";']
         : ['@reference "' . $central . '";', '@import "tailwindcss/utilities.css" layer(utilities) source(none);'];
 
@@ -610,7 +652,7 @@ function tailwind_recursos_fingerprint(array $resource, string $centralHash, str
     foreach (array_merge([$resource['html']], $resource['sources']) as $source) {
         $sourceHashes[tailwind_recursos_normalizar_path($source)] = hash_file('sha256', $source) ?: '';
     }
-    return hash('sha256', json_encode([
+    $entradas = [
         'manifest_version' => TAILWIND_RECURSOS_MANIFEST_VERSION,
         'central' => $centralHash,
         'tailwind' => $version,
@@ -619,7 +661,11 @@ function tailwind_recursos_fingerprint(array $resource, string $centralHash, str
         'sources' => $sourceHashes,
         'safelist' => $resource['safelist'],
         'minify' => true,
-    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    ];
+    // Só entra quando existe, para o fingerprint dos demais recursos não mudar.
+    if (!empty($resource['layouts_cobertos'])) $entradas['layouts_cobertos'] = $resource['layouts_cobertos'];
+
+    return hash('sha256', json_encode($entradas, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
 function tailwind_recursos_output_valido(string $path): bool
@@ -780,6 +826,32 @@ function tailwind_recursos_html_usa_tailwind(string $html): bool
 /**
  * @return array{enabled:bool,discovered:int,compiled:int,cached:int,removed:int,failed:int,resources_with_sources:int,additional_sources:int,version:string,browser_contract:?string,warnings:int}
  */
+function tailwind_recursos_filtrar_resource(array $resources, ?string $resourceId): array
+{
+    if ($resourceId === null) return $resources;
+    $resourceId = trim($resourceId);
+    if ($resourceId === '') throw new RuntimeException('--resource exige um id.');
+
+    $selected = array_values(array_filter(
+        $resources,
+        static fn(array $resource): bool => (string)($resource['id'] ?? '') === $resourceId
+    ));
+    if (!$selected) throw new RuntimeException('Tailwind: recurso não encontrado: ' . $resourceId);
+
+    $identities = [];
+    foreach ($selected as $resource) {
+        $identity = implode('|', [
+            (string)($resource['module'] ?? ''),
+            (string)($resource['type'] ?? ''),
+            (string)($resource['id'] ?? ''),
+        ]);
+        $identities[$identity] = true;
+    }
+    if (count($identities) > 1) throw new RuntimeException('--resource é ambíguo: ' . $resourceId);
+
+    return $selected;
+}
+
 function tailwind_recursos_compilar(array $map): array
 {
     global $GESTOR_DIR, $RESOURCES_DIR, $LOG_FILE;
@@ -798,13 +870,21 @@ function tailwind_recursos_compilar(array $map): array
     ];
     $args = $GLOBALS['CLI_ARGS'] ?? [];
 
+    if (isset($args['skip-css'])) {
+        cliProgress('       Tailwind por recurso: ignorado por --skip-css.', false);
+        return $stats;
+    }
+
     $centralInput = tailwind_recursos_input_central();
     if ($centralInput === null || isset($args['no-tailwind'])) {
         cliProgress('       Tailwind por recurso: ignorado (sem input ou --no-tailwind).', false);
         return $stats;
     }
 
-    $resources = tailwind_recursos_descobrir($map);
+    $allResources = tailwind_recursos_descobrir($map);
+    $resourceOption = $args['resource'] ?? null;
+    if ($resourceOption !== null && !is_string($resourceOption)) throw new RuntimeException('--resource exige um id.');
+    $resources = tailwind_recursos_filtrar_resource($allResources, $resourceOption);
     $stats['enabled'] = true;
     $stats['discovered'] = count($resources);
     $sourceStats = tailwind_recursos_estatisticas_fontes($resources);
@@ -817,7 +897,7 @@ function tailwind_recursos_compilar(array $map): array
     $manifestPath = $RESOURCES_DIR . '.tailwind-build-manifest.json';
     $oldManifest = jsonRead($manifestPath) ?? [];
     $oldEntries = is_array($oldManifest['resources'] ?? null) ? $oldManifest['resources'] : [];
-    $newEntries = [];
+    $newEntries = $resourceOption !== null ? $oldEntries : [];
 
     $command = null;
     $version = 'import-only';
@@ -880,6 +960,8 @@ function tailwind_recursos_compilar(array $map): array
             $compiled = (string)file_get_contents($tempOutput);
             @unlink($tempOutput);
             if (trim($compiled) === '') throw new RuntimeException("Tailwind gerou saída vazia para {$label}");
+            $marcador = gestor_css_layouts_marcador($resource['layouts_cobertos'] ?? []);
+            if ($marcador !== '') $compiled = $marcador . "\n" . $compiled;
             tailwind_recursos_atomic_write($resource['output'], $compiled);
             $stats['compiled']++;
 
@@ -917,6 +999,7 @@ function tailwind_recursos_compilar(array $map): array
     }
 
     foreach ($oldEntries as $key => $entry) {
+        if ($resourceOption !== null) break;
         if (isset($newEntries[$key]) || !is_array($entry)) continue;
         $relative = $entry['output'] ?? null;
         if (is_string($relative) && $relative !== '') {
@@ -943,7 +1026,7 @@ function tailwind_recursos_compilar(array $map): array
     // duas pontas — o CSS que gerou para o layout e a declaração da página —, então é aqui que o
     // aviso cabe. Roda depois de tudo compilado, para ler o sidecar final de cada layout.
     $layoutsSensiveis = [];
-    foreach ($resources as $recurso) {
+    foreach ($allResources as $recurso) {
         if (!$recurso['layout'] || !tailwind_recursos_output_valido($recurso['output'])) continue;
         if (tailwind_recursos_layout_display_sensivel((string)file_get_contents($recurso['output']))) {
             $layoutsSensiveis[$recurso['language'].'|'.$recurso['id']] = true;
@@ -951,7 +1034,7 @@ function tailwind_recursos_compilar(array $map): array
     }
 
     if ($layoutsSensiveis) {
-        foreach ($resources as $recurso) {
+        foreach ($allResources as $recurso) {
             if ($recurso['type'] !== 'pages' || !empty($recurso['bundle'])) continue;
             $layoutId = (string)($recurso['layout_id'] ?? '');
             if ($layoutId === '') continue;
