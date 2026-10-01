@@ -60,9 +60,13 @@ O processo é uma regra do projeto, não uma garantia imposta pelo runtime PHP. 
 **Instalar num servidor** (PHP 8.1+, MySQL ou MariaDB, Apache ou Nginx):
 
 ```bash
-curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.1.2/instalador.zip
+# Localiza o último lançamento do instalador, seja qual for a versão
+TAG=$(curl -s "https://api.github.com/repos/otavioserra/conn2flow/releases?per_page=100"   | grep -o '"tag_name": *"instalador-v[^"]*"' | head -1 | cut -d'"' -f4)
+curl -L -o instalador.zip "https://github.com/otavioserra/conn2flow/releases/download/$TAG/instalador.zip"
 unzip instalador.zip -d /caminho/da/raiz-web
 ```
+
+Prefere um botão? A página [Comece a construir](https://conn2flow.com/comece-a-construir/) sempre aponta para o último instalador.
 
 Abra o site no navegador e siga os quatro passos: requisitos, banco de dados, caminhos e chaves, conta de administrador. Detalhes no [guia de instalação](ai-workspace/pt-br/docs/guides/installation.md).
 

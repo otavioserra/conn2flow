@@ -60,9 +60,13 @@ The process is a rule of the project, not a guarantee enforced by the PHP runtim
 **Install on a server** (PHP 8.1+, MySQL or MariaDB, Apache or Nginx):
 
 ```bash
-curl -L -o instalador.zip https://github.com/otavioserra/conn2flow/releases/download/instalador-v2.1.2/instalador.zip
+# Finds the latest installer release, whatever its version
+TAG=$(curl -s "https://api.github.com/repos/otavioserra/conn2flow/releases?per_page=100"   | grep -o '"tag_name": *"instalador-v[^"]*"' | head -1 | cut -d'"' -f4)
+curl -L -o instalador.zip "https://github.com/otavioserra/conn2flow/releases/download/$TAG/instalador.zip"
 unzip instalador.zip -d /path/to/webroot
 ```
+
+Prefer a button? The [Start building](https://conn2flow.com/en/comece-a-construir/) page always links to the latest installer.
 
 Open the site in the browser and follow the four steps: requirements, database, paths and keys, administrator account. Details in the [installation guide](ai-workspace/en/docs/guides/installation.md).
 
