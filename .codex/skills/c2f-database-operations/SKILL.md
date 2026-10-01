@@ -188,3 +188,24 @@ Em colisões de timestamp entre migrações criadas por agentes concorrentes, a 
 
 > [!WARNING]
 > O erro `Duplicate migration` é **fatal** — o Phinx interrompe toda a execução de migrações, impedindo que migrações subsequentes sejam aplicadas. A limpeza manual é obrigatória.
+
+---
+
+## 5. Sincronização de dados no deploy: o que protege e o que apaga
+
+O deploy não é só `INSERT`/`UPDATE`: o sincronizador aplica regras do contrato `schema-metadata.json`, e errar uma delas altera dados reais de uma instalação.
+
+| Regra | Efeito |
+| --- | --- |
+| `insert_only: true` | O registro que já existe nunca é atualizado. É o que protege `usuarios`: sem isso, a semente regrava login, e-mail e senha do administrador |
+| `preserve_on_user_modified` | Campos listados não são sobrescritos quando `user_modified=1` |
+| `strategy` (`pk` ou `natural_key`) | Define o ramo de `sincronizarTabela()`. Toda proteção precisa existir nos dois |
+| Retirada por dono | O que o dono deixou de entregar vira `status='D'`; o que volta é reativado pelo manifesto |
+
+### Regras de trabalho
+
+- **Semente não é dado de instalação.** O que a semente cria é o estado inicial. Tudo o que o operador muda depois tem de sobreviver a um deploy.
+- **Log de sincronização não pode trazer segredo.** Coluna de senha, token ou chave é mascarada antes de ir para o log.
+- **Fotografe antes.** Consulta de leitura das tabelas de identidade e permissão antes e depois de validar uma regra de dados num ambiente; `diff` dos dois resultados.
+- **Teste os dois ramos.** Regra nova no sincronizador tem teste com `strategy: pk` e com `strategy: natural_key`.
+- **MariaDB e MySQL divergem**: `CAST(... AS JSON)` quebra no MariaDB; `JSON_QUERY` não existe no MySQL. Use `JSON_EXTRACT(x, '$')` e teste nos dois.

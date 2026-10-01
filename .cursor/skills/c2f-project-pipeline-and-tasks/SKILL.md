@@ -33,11 +33,11 @@ user-invocable: false
 3. **Files**: Atualização de arquivos físicos e permissões.
 4. **Database & CSS Rebuild**: Upsert no Banco SQL + Migrações Phinx + **Reconstrução Final de CSS (`c2f css:rebuild`)**.
 
-### Pipeline Mandatório para Projetos (6 etapas):
+### Pipeline Mandatório para Projetos (8 etapas; ver Regra #8):
 ```bash
 ./c2f project:update-all <projectID>
 ```
-**Sequência Canônica de 6 Etapas**:
+**Sequência resumida** (a lista completa de 8 etapas está na Regra #8):
 1. **Core**: Atualização dos componentes base do Core.
 2. **Database (Pré)**: Validação e preparação do estado inicial do banco.
 3. **Resources**: Compilação de recursos (`c2f resources:sync`).
@@ -96,7 +96,7 @@ As tarefas definidas em `.vscode/tasks.json` são atalhos visuais para os comand
 | VS Code Task | Comando CLI Equivalente | Descrição |
 |---|---|---|
 | 🗃️ Projects - Sync Core → ID | `c2f project:sync-core <id>` | Sincroniza o Core para o espelho do projeto |
-| 🗃️ Projects - Update All → ID | `c2f project:update-all <id>` | Pipeline de 6 etapas: Core → DB → Resources → Files → DB → CSS Rebuild |
+| 🗃️ Projects - Update All → ID | `c2f project:update-all <id>` | Pipeline de 8 etapas: Core → DB → Resources → Files → DB → CSS Rebuild → JS → dist |
 | 🚀 Projects - Deploy Project → ID | `c2f project:deploy <id>` | Deploy do projeto para o servidor de destino |
 | 📦 Manager - Update All | `c2f manager:update-all` | Pipeline de 4 etapas: Core → Resources → Files → DB + CSS Rebuild |
 | 🎨 Tailwind - Sync Resources | `c2f resources:sync` | Compila recursos e gera `*Data.json` |
@@ -171,3 +171,57 @@ ssh usuario@host "tail -50 /path/to/conn2flow-gestor/logs/php-error.log"
 
 > [!TIP]
 > Se o estouro persistir, considere aumentar o `memory_limit` no `.htaccess` ou `php.ini` do servidor, ou otimizar as queries de sincronização para usar cursores em vez de `fetchAll`.
+
+---
+
+## 🧭 Regra #8: O pipeline de projeto tem 8 etapas (correção da contagem)
+
+A Regra #1 descreve seis etapas; o `c2f project:update-all <id>` executa **oito**. Use esta lista ao ler o log:
+
+1. Sincronizando Core
+2. Atualizando Banco de Dados (dados do core)
+3. Sincronizando Recursos (compilação do projeto: Tailwind por recurso e `*Data.json`)
+4. Sincronizando Arquivos
+5. Validação Final do Banco (dados do projeto)
+6. Regenerando CSS derivado
+7. Minificando JavaScript de autoria
+8. Publicando assets estáticos em `dist/`
+
+Para rodar só a compilação do projeto: `c2f project:sync-resources <id>`.
+
+---
+
+## 🔎 Regra #9: Saída 0 não prova que o conteúdo chegou
+
+Caso real (2026-10-01): pipeline com saída 0, `publisher_pages` com 76 atualizações e `paginas` com zero. A gravação do `PaginasData.json` tinha falhado em silêncio (arquivo bloqueado numa pasta sincronizada). O core passou a interromper a compilação nesse caso, mas a conferência continua obrigatória.
+
+Depois de publicar uma mudança de conteúdo, confira **três pontos**, nesta ordem:
+
+1. **O dado compilado**: `grep` do texto novo em `gestor/db/data/PaginasData.json` do projeto. O arquivo de recurso (`resources/.../pagina.html`) estar certo não basta.
+2. **O log do banco**: a linha `SYNC_FIM tabela=<tabela> +i ~u =s` da etapa 5. `~0` numa tabela que você alterou é sinal de problema.
+3. **A página no ar**: o texto novo na resposta HTTP. Teste que compara só o título não percebe um corpo antigo.
+
+`SKIP_NO_CHECKSUM_CHANGE tabela=<t>` significa que a tabela nem foi comparada. Para exercitar uma regra de sincronização que mudou:
+
+```bash
+bash ai-workspace/en/scripts/dev-environment/updates-manager-database.sh --project <id> --tables <tabela> --force-all
+```
+
+---
+
+## 🚦 Regra #10: Um deploy por vez no mesmo ambiente
+
+O pipeline por SSH não tem trava. Dois agentes publicando no mesmo ambiente geram respostas 500/503 passageiras e validações falsas.
+
+- Antes de publicar e antes de validar, confira se o ambiente está ocioso: data de modificação do log `logs/atualizacoes-bd-<data>.log` e da pasta `resources/` no destino. Menos de dois minutos: espere.
+- Falha 500/503 intermitente numa rota que respondia 200 é, antes de tudo, sinal de deploy concorrente. Repita com o ambiente ocioso antes de investigar o código.
+- Árvore compartilhada com lote de outro agente em andamento não é origem de pipeline: o trabalho inacabado dele vai junto. Use uma worktree limpa (`scripts/git/create-agent-worktree`), com `dev-environment/data/environment.json` copiado.
+
+---
+
+## 🧱 Regra #11: Regras de dados do sincronizador
+
+- `insert_only` vale para as estratégias `pk` e `natural_key`. Ao mudar a estratégia de uma tabela no contrato, confira que as proteções existem no ramo novo de `sincronizarTabela()`.
+- **Retirada por dono**: o que o dono deixa de entregar recebe `status='D'` (ou é apagado, se a tabela não tem `status`). O que volta a ser entregue é reativado pelo manifesto de retirados. Uma entrega com fonte incompleta desativa registros de verdade: nunca publique a partir de fonte pela metade.
+- **Compilação de projeto usa as sementes do projeto.** Tabela declarada pelo core sem semente no projeto é pulada (`DYNAMIC_SKIP_PROJETO_SEM_SEMENTE`).
+- O pipeline de projeto roda **sem backup** das tabelas. Antes de validar regra de dados num ambiente, fotografe as tabelas envolvidas (uma consulta de leitura salva em arquivo) e compare depois.

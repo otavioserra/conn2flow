@@ -61,3 +61,17 @@ Ao iniciar, leia deterministamente:
 ### 5. Finalização de Lote
 - Ao concluir as tarefas do lote, preencha a seção de evidências e métricas no `sdd/implementation/batch-YYY.md` e marque os critérios cumpridos em `sdd/validation/VALIDATION-CHECKLIST.md`.
 - Avise o Engenheiro Humano para que o lote seja submetido ao Revisor Técnico.
+
+---
+
+## ✍️ Texto para leitor de fora (páginas, novidades, README)
+
+Página pública, notícia e README não são relatório de lote.
+
+- **Abra pelo problema** que o leitor reconhece, depois diga o que mudou.
+- **Sem vocabulário interno**: nada de "Lab", "relatório do lote", "homologação pendente", "payload", "runtime", "contrato". Diga "ambiente de teste", "validado", "pedido enviado".
+- **Só o que o código e o relatório do lote sustentam.** Número, prazo e benefício não se inventam. Limite real fica; ressalva genérica sai.
+- **Sem nome de pessoa, cliente, servidor ou projeto privado.** Relatórios do core citam projetos privados em medições: a medição só entra se valer sem o nome.
+- **Não remova o que o autor humano escreveu** sem dizer. Reclassifique, mantenha inteiro e liste no relatório o que foi mantido sem conferência.
+- **Conteúdo repetitivo sai de um gerador** com fonte versionada (`news/`, `site-pages/`), nunca de edição manual do arquivo gerado. O gerador tem `--check`.
+- **Endereço e data publicados não mudam** numa revisão: só título e corpo.

@@ -121,3 +121,47 @@ Se a tarefa apontar para `sdd/human-requests/*.md` ou para a pasta `sdd/human-re
 
 - Toda anotação de restrição técnica em memória deve carregar a data de registro (`YYYY-MM-DD`).
 - O código-fonte real, as configurações vigentes (`settings.json`, `.env`), os schemas e os arquivos normativos (`sdd/SPEC.md`, `sdd/0X-*.md`) possuem **autoridade absoluta** sobre anotações de memórias passadas. Se uma restrição mudar no projeto, a anotação antiga em memória deve ser invalidada e atualizada.
+
+---
+
+## 🧯 Árvore compartilhada: o que conferir antes de cada commit
+
+Outro agente pode trocar a branch da árvore e deixar arquivos em stage sem aviso. Antes de **todo** commit numa árvore que não é só sua:
+
+```bash
+git branch --show-current          # é a branch em que você pretende commitar?
+git diff --cached --name-only      # há stage que não é seu?
+```
+
+Se a branch não for a esperada, ou houver stage alheio, **não commite na árvore**. Monte o commit por índice separado, sem tocar nos arquivos nem na branch:
+
+```bash
+export GIT_INDEX_FILE="$TEMP/idx-meu-lote"
+git read-tree origin/main
+git add -- <caminho-1> <caminho-2>
+commit=$(git commit-tree "$(git write-tree)" -p origin/main -F mensagem.txt)
+unset GIT_INDEX_FILE
+git push origin "$commit:refs/heads/main"
+```
+
+Arquivo compartilhado (`pages.json`, índices do SDD) entra nesse commit como "versão da `main` mais as minhas entradas", nunca como a cópia da árvore, que carrega o trabalho do outro.
+
+### Proibido em árvore compartilhada
+
+- `git checkout -- <arquivo>` e `git restore <arquivo>`: apagam alteração sem commit de qualquer lote, não só a sua edição. Para desfazer a própria mudança, faça a edição inversa.
+- `git reset` que mova a branch, `git stash` e `git clean`.
+- `git add -N` e qualquer `git add` sem lista de caminhos.
+
+### Dois agentes no mesmo arquivo-fonte
+
+Quando dois lotes precisam escrever no mesmo arquivo de conteúdo, separe por arquivo (um canal, uma pasta) e deixe o gerador juntar. Quando não der, a ferramenta de edição relê o arquivo no instante de gravar e troca só os blocos que são seus.
+
+### Deixe um aviso onde o outro vai ler
+
+Coordenação entre agentes é escrita na requisição do outro lote (um bloco "Coordenação", com data e autor), não só dita no chat.
+
+---
+
+## 🧾 Antes de afirmar que algo é pré-existente
+
+Falha de teste "que já existia" precisa de prova: rode o mesmo teste sem a sua mudança, ou aponte o lote em que a falha foi registrada. Sem isso, ela é sua até prova em contrário.

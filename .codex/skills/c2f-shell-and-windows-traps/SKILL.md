@@ -327,3 +327,47 @@ with open(json_path, 'w', encoding='utf-8', newline='') as f:
 
 > [!WARNING]
 > O impacto é **estético mas destrutivo para o workflow**: centenas de linhas alteradas no diff dificultam a revisão do Auditor de Qualidade e escondem mudanças reais em meio ao ruído.
+
+---
+
+### 13. Heredoc com apóstrofo, crase ou barra invertida: escreva o arquivo, não o heredoc
+
+**Sintoma**: `unexpected EOF while looking for matching` ou um `assert` que falha porque `\\r\\n` virou outra coisa.
+
+Um script Python ou JavaScript com apóstrofos (`What's new`), crases ou `\r\n` dentro de um heredoc do Git Bash quebra de formas diferentes a cada caso, mesmo com o delimitador entre aspas.
+
+**Regra**: script com mais de umas dez linhas, ou com qualquer um desses caracteres, é gravado como arquivo pela ferramenta de escrita e depois executado. Heredoc só para trechos curtos e sem aspas.
+
+---
+
+### 14. Argumento que começa com `/` passado a `node` ou `curl`
+
+O Git Bash converte `/pro/` em `C:/Program Files/Git/pro/` também em argumentos de `node` e em URLs montadas com variável. Sintoma: `ERR_NAME_NOT_RESOLVED` num host como `conn2flow.localc`.
+
+```bash
+MSYS_NO_PATHCONV=1 node validar.cjs rotulo "/,/pro/,/en/"
+MSYS_NO_PATHCONV=1 curl -sk "https://host$rota"
+```
+
+`curl ... -o /dev/null` no Windows pode sair com código 23 mesmo com a resposta correta: confira o `%{http_code}`, não o código de saída.
+
+---
+
+### 15. Repositório dentro de pasta sincronizada (OneDrive)
+
+Arquivo grande regravado com frequência (um `*Data.json` de dezenas de MB) fica bloqueado por instantes pelo sincronizador. Sintomas: `OSError: [Errno 22]` no Python, `file_put_contents` devolvendo `false` no PHP.
+
+- Toda escrita de arquivo gerado confere o resultado e tenta de novo; nunca ignore o retorno.
+- Uma falha isolada de escrita que some na segunda tentativa é isso, não um defeito do seu código. Registre e siga.
+
+---
+
+### 16. Suíte PHP: rode no ambiente Linux
+
+O PHP do Windows falha em testes que dependem de OpenSSL (`openssl.cnf`) e de `pdo_sqlite`. A suíte de referência roda no ambiente de teste por SSH:
+
+```bash
+ssh usuario@lab 'cd /mnt/c/caminho/do/repo && php vendor/bin/phpunit --configuration phpunit.xml'
+```
+
+Checkout com fim de linha CRLF lido pelo Linux faz falhar testes que executam scripts `.sh` (`syntax error near unexpected token`). É falha do ambiente: registre como pré-existente, não como regressão. Shebang de script copiado para uma worktree precisa estar em LF.

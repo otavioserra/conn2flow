@@ -141,3 +141,34 @@ Use `chrome-devtools` quando a validação exigir interação em uma página viv
 
 Consulte o schema das ferramentas exposto pela versão instalada, incluindo `pageId` quando exigido. Referência: [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md).
 
+---
+
+## 🧪 Ambiente de teste por SSH (sem Docker): o ciclo que funciona
+
+O ciclo de cinco etapas acima nasceu para o espelho Docker. Num projeto com `deploy_mode: ssh` (o destino é uma VM), use:
+
+1. `./c2f project:update-all <id>` a partir do core: é o que leva código e conteúdo ao ambiente.
+2. `./c2f auth:cookie --project=<id>` (e `--user=<n>` para outro usuário) gera o jar pelo SSH.
+3. Para a barra de edição aparecer no Playwright, acrescente também o cookie de perfil ao contexto; só o de sessão não basta.
+4. `ignoreHTTPSErrors: true` no contexto: o certificado do ambiente de teste é local.
+
+Não troque o modo do ambiente para desenvolvimento só para inspecionar: a página servida do banco é o que o visitante vê.
+
+### O que toda validação de página deve conferir
+
+- HTTP 200 e ausência de erro de console (`pageerror` e `console.error`).
+- Sem rolagem horizontal: `document.documentElement.scrollWidth - window.innerWidth <= 0`, a 1280 e a 390 px.
+- Sem marcador cru no texto (`[[`, `]]@`, crase de Markdown, `**`).
+- **Classe sem regra**: elemento com classe de fundo (`bg-...`) cujo `backgroundColor` computado ficou transparente. É como aparece o CSS desatualizado.
+- **Conteúdo novo de fato**: compare um trecho do corpo, não só o título.
+- Links internos: colete os `href` da página e confira que todos respondem 200.
+
+Exclua o cabeçalho e o rodapé do site das conferências de classe: a gaveta do menu fica transparente quando fechada e gera falso positivo.
+
+### Validar com o ambiente ocioso
+
+Deploy de outro agente em andamento produz 500/503 passageiros. Veja a Regra #10 de `c2f-project-pipeline-and-tasks` antes de registrar uma falha.
+
+### Guarde os scripts
+
+Script de validação escrito durante o lote vai para `sdd/validation/` do repositório, com o JSON do resultado. Script que fica só na pasta temporária da sessão não pode ser repetido por ninguém.
