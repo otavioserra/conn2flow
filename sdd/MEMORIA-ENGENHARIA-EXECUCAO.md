@@ -22,6 +22,7 @@
 - **`SKIP_NO_CHECKSUM_CHANGE` esconde o caminho de sincronização.** Para provar uma regra de uma tabela no Lab: `bash ai-workspace/en/scripts/dev-environment/updates-manager-database.sh --project <id> --tables <tabela> --force-all`.
 - **O compilador e o sincronizador declaram `main()` e `dataFileNameFromTable()`.** Teste que carrega o compilador usa `RunTestsInSeparateProcesses` + `PreserveGlobalState(false)` e faz o `require` no `setUp()`, nunca no topo do arquivo nem em `setUpBeforeClass()` (os dois rodam no processo da suíte).
 - **O pipeline de projeto roda o sincronizador sem `--backup`** e o log trunca valores: uma linha sobrescrita não tem volta. Fotografar a tabela antes de validar regra de dados no Lab.
+- **`jsonWrite()` agora falha alto.** Escrita de `*Data.json` que não completa (arquivo bloqueado em pasta sincronizada) é tentada 5 vezes e depois derruba a compilação. Sintoma do defeito antigo: pipeline com saída 0, `publisher_pages` atualizado e `paginas` não. Para conferir se um conteúdo chegou: `grep` no `db/data/PaginasData.json` do projeto, não só no arquivo de recurso.
 - **`git checkout -- <arquivo>` em árvore compartilhada apaga alteração sem commit de qualquer lote**, não só a própria edição. Desfazer com edição inversa.
 
 ### 2026-10-01 — BATCH-210 (req-202): sementes declarativas e compilação seletiva

@@ -129,6 +129,36 @@ final class Req206ProjectSeedsTest extends TestCase
         self::assertGreaterThan($antes, filemtime($arquivo));
     }
 
+    public function testEscritaQueFalhaInterrompeACompilacao(): void
+    {
+        // Um diretório no lugar do arquivo: a escrita falha sempre, como num arquivo bloqueado.
+        $alvo = $this->root . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'BloqueadoData.json';
+        mkdir($alvo);
+        $GLOBALS['JSON_WRITE_TENTATIVAS'] = 2;
+
+        try {
+            jsonWrite($alvo, [['id' => 'a']]);
+            self::fail('a escrita que falhou passou em silêncio');
+        } catch (RuntimeException $e) {
+            self::assertStringContainsString('BloqueadoData.json', $e->getMessage());
+        } finally {
+            unset($GLOBALS['JSON_WRITE_TENTATIVAS']);
+            rmdir($alvo);
+        }
+    }
+
+    public function testEscritaComDadoQueNaoViraJsonNaoGravaArquivoVazio(): void
+    {
+        $arquivo = $this->root . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'InvalidoData.json';
+
+        try {
+            jsonWrite($arquivo, [['id' => "\xB1\x31"]]);
+            self::fail('dado inválido foi gravado');
+        } catch (RuntimeException $e) {
+            self::assertFileDoesNotExist($arquivo);
+        }
+    }
+
     public function testScriptsCopiamOsDadosPorConteudo(): void
     {
         $projeto = (string)file_get_contents(CONN2FLOW_ROOT . '/ai-workspace/en/scripts/projects/synchronize-project.sh');

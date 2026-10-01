@@ -32,6 +32,18 @@ Execução da [req-206](../human-requests/req-206.md). Corrige o que a [req-202]
 
 A primeira rodada do pipeline deste lote, feita antes da correção do `insert_only`, sobrescreveu de novo o administrador do Lab. Login e e-mail foram devolvidos a `contact@conn2flow.com`; a senha ficou sendo a da semente, porque o log do sincronizador trunca o hash anterior e não há backup. O sincronizador roda sem `--backup` no pipeline de projeto: vale avaliar ligar o backup de `usuarios` por padrão.
 
+## Complemento (2026-10-01): escrita de `*Data.json` que falha em silêncio
+
+Achado ao publicar a revisão das Novidades do `conn2flow-site`. `jsonWrite()` devolvia `false` quando a escrita falhava e nenhum chamador conferia. Numa compilação, a gravação do `PaginasData.json` do projeto (69 MB, numa pasta sincronizada) falhou por bloqueio momentâneo do arquivo. Os metadados de origem (`pages.json`) já tinham avançado versão e checksum; o pipeline terminou com saída 0, e 76 páginas ficaram com o conteúdo antigo no banco. A compilação seguinte gravou certo porque monta os dados a partir dos arquivos, mas nada avisava do intervalo.
+
+Correção em `jsonWrite()`:
+
+- confere o número de bytes gravados e tenta de novo (5 vezes, com espera crescente), registrando `JSON_WRITE_FALHA` no log;
+- esgotadas as tentativas, lança exceção: o compilador sai com 1 e o pipeline para;
+- dado que não vira JSON (`json_encode` falso) também lança exceção, em vez de gravar um arquivo vazio.
+
+Testes novos em `Req206ProjectSeedsTest`: escrita que falha interrompe; dado inválido não cria arquivo. PHPUnit: 1382 testes, a mesma falha de fim de linha do ambiente.
+
 ## Pendências
 
 - Homologação humana.

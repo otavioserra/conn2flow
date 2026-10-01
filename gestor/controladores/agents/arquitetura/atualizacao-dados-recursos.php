@@ -210,10 +210,29 @@ function jsonWrite(string $path, array $data): bool {
     $dir = dirname($path);
     ensureDir($dir, $LOG_FILE);
     $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    if ($json === false) {
+        throw new RuntimeException('jsonWrite: ' . json_last_error_msg() . ' em ' . $path);
+    }
     // Conteúdo igual não é regravado: a data do arquivo passa a dizer quando o dado mudou de fato,
     // e é por data que o `rsync -u` do pipeline decide o que sobe.
     if (is_file($path) && file_get_contents($path) === $json) return true;
-    return file_put_contents($path, $json) !== false;
+    // Uma escrita que falha não pode passar em silêncio: os metadados de origem já avançaram
+    // (versão e checksum), então a próxima compilação consideraria o recurso em dia e o dado antigo
+    // ficaria para sempre. Arquivo bloqueado por antivírus ou sincronizador de pasta costuma soltar
+    // em instantes, por isso as novas tentativas antes de desistir.
+    $bytes = strlen($json);
+    for ($tentativa = 1; $tentativa <= jsonWriteTentativas(); $tentativa++) {
+        $gravados = @file_put_contents($path, $json, LOCK_EX);
+        if ($gravados === $bytes) return true;
+        log_disco_local("JSON_WRITE_FALHA tentativa=$tentativa arquivo=$path gravados=" . var_export($gravados, true) . " esperados=$bytes", $LOG_FILE);
+        usleep(300000 * $tentativa);
+    }
+    throw new RuntimeException('jsonWrite: não foi possível gravar ' . $path);
+}
+
+/** Quantas vezes `jsonWrite()` tenta antes de falhar. */
+function jsonWriteTentativas(): int {
+    return max(1, (int)($GLOBALS['JSON_WRITE_TENTATIVAS'] ?? 5));
 }
 
 /**
