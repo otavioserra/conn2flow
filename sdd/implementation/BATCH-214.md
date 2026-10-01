@@ -44,6 +44,22 @@ Correção em `jsonWrite()`:
 
 Testes novos em `Req206ProjectSeedsTest`: escrita que falha interrompe; dado inválido não cria arquivo. PHPUnit: 1382 testes, a mesma falha de fim de linha do ambiente.
 
+## Complemento (2026-10-01): o que foi retirado não voltava
+
+Sobra do incidente da manhã, achada ao investigar o formulário de contato do `conn2flow-site` no Lab: os 16 formulários do projeto estavam com `status='D'` desde as 10:43, e todo deploy seguinte dizia `forms => +0 ~0 =16`.
+
+A retirada por dono (req-199 / BATCH-207) marca `status='D'` no que o dono deixou de entregar. Quando o dono volta a entregar, o registro só era reativado se o `*Data.json` trouxesse a coluna `status` — caso de `modulos`, que por isso se recuperou. `FormsData.json` não traz `status`: o sincronizador comparava os campos presentes, não via diferença e o registro ficava desativado para sempre.
+
+Correção em `atualizacoes-recursos-retirada.php`:
+
+- o manifesto do dono passa a guardar, em `retirados`, cada chave que a rotina marcou e o `status` que o registro tinha;
+- na entrega em que a chave volta, `recursos_retirada_reativar()` devolve o registro a esse `status` e tira a chave da lista;
+- só volta o que a própria rotina retirou, do mesmo dono. Registro desativado por outra via nunca entra na lista.
+
+Testes novos em `RecursosRetiradaTest`: volta ao status anterior; não toca no que a retirada não marcou, nem em outro dono, nem em simulação; o manifesto preserva a lista. PHPUnit: 1385 testes, a mesma falha de fim de linha do ambiente.
+
+No Lab, os 16 formulários foram reativados à mão (a lista de retirados não existia na hora do incidente). `/contacts/` voltou a mostrar o formulário.
+
 ## Pendências
 
 - Homologação humana.

@@ -11,6 +11,12 @@
  * Só tabelas de estratégia `natural_key` (a identidade é a mesma em qualquer instalação). A primeira
  * entrega de um dono numa tabela só grava a linha de base. A lista imperativa `deletar` do
  * `schema-metadata.json` continua valendo para casos pontuais.
+ *
+ * Reativação (req-206): o manifesto guarda também o que a retirada marcou, com o `status` que o registro
+ * tinha. Quando o dono volta a entregar a mesma chave, o registro retorna a esse `status`. Sem isso, uma
+ * retirada indevida só se desfazia nas tabelas cujo `*Data.json` traz a coluna `status`; nas demais
+ * (`forms`, por exemplo) o registro ficava `D` para sempre, com a entrega dizendo "sem alteração".
+ * Só volta o que ESTA rotina retirou: registro desativado por outra via nunca entrou na lista.
  */
 
 /**
@@ -31,9 +37,9 @@ function recursos_retirada_passada(PDO $pdo, string $tabela, array $registros): 
         if (function_exists('log_unificado')) log_unificado('RECURSOS_RETIRADA_ERRO tabela=' . $tabela . ' msg=' . $e->getMessage(), $GLOBALS['LOG_FILE_DB'] ?? 'atualizacoes-bd');
         return null;
     }
-    if ($r && function_exists('log_unificado') && ($r['saidos'] || $r['primeira'])) {
-        log_unificado(sprintf('RECURSOS_RETIRADA tabela=%s dono=%s primeira=%d saidos=%d marcados=%d removidos=%d choques=%d ausentes=%d simulados=%d',
-            $tabela, $projeto ?? 'core', $r['primeira'] ? 1 : 0, $r['saidos'], $r['marcados'], $r['retirados'], count($r['choques']), $r['ausentes'], $r['simulados']),
+    if ($r && function_exists('log_unificado') && ($r['saidos'] || $r['primeira'] || !empty($r['reativados']))) {
+        log_unificado(sprintf('RECURSOS_RETIRADA tabela=%s dono=%s primeira=%d saidos=%d marcados=%d removidos=%d choques=%d ausentes=%d simulados=%d reativados=%d',
+            $tabela, $projeto ?? 'core', $r['primeira'] ? 1 : 0, $r['saidos'], $r['marcados'], $r['retirados'], count($r['choques']), $r['ausentes'], $r['simulados'], (int)($r['reativados'] ?? 0)),
             $GLOBALS['LOG_FILE_DB'] ?? 'atualizacoes-bd');
     }
     return $r;
@@ -52,13 +58,24 @@ function recursos_retirada_manifesto_ler(string $base, string $dono): array {
     return is_array($d['tabelas'] ?? null) ? $d['tabelas'] : [];
 }
 
+/** O que a retirada marcou e ainda não voltou: `tabela → [chave → ['valores' => [...], 'status' => anterior]]`. */
+function recursos_retirada_marcados_ler(string $base, string $dono): array {
+    $f = recursos_retirada_manifesto_arquivo($base, $dono);
+    $d = is_file($f) ? json_decode((string)file_get_contents($f), true) : null;
+    return is_array($d['retirados'] ?? null) ? $d['retirados'] : [];
+}
+
 /** Grava o manifesto de recursos (atômico). */
-function recursos_retirada_manifesto_gravar(string $base, string $dono, array $tabelas): bool {
+function recursos_retirada_manifesto_gravar(string $base, string $dono, array $tabelas, ?array $retirados = null): bool {
     $f = recursos_retirada_manifesto_arquivo($base, $dono);
     if (!is_dir(dirname($f)) && !@mkdir(dirname($f), 0775, true) && !is_dir(dirname($f))) return false;
     ksort($tabelas);
+    // Chamador antigo não informa os retirados: mantém os que já estavam gravados.
+    if ($retirados === null) $retirados = recursos_retirada_marcados_ler($base, $dono);
+    $retirados = array_filter($retirados);
+    ksort($retirados);
     $tmp = $f . '.' . bin2hex(random_bytes(3)) . '.tmp';
-    if (@file_put_contents($tmp, json_encode(['dono' => $dono, 'gerado_em' => date('c'), 'tabelas' => $tabelas], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) === false) return false;
+    if (@file_put_contents($tmp, json_encode(['dono' => $dono, 'gerado_em' => date('c'), 'tabelas' => $tabelas, 'retirados' => $retirados], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) === false) return false;
     return @rename($tmp, $f);
 }
 
@@ -99,10 +116,11 @@ function recursos_retirada_planejar(array $anterior, array $atual): array {
  * @param array $itens `chave → [coluna → valor]` (de `recursos_retirada_planejar`).
  * @param array $colunasBanco Colunas reais da tabela (`coluna → true`).
  * @param string|null $projeto Id do projeto dono (null = core): só casa registros do mesmo dono.
- * @return array ['retirados' => n, 'marcados' => n, 'choques' => [..], 'ausentes' => n, 'simulados' => n]
+ * @return array ['retirados' => n, 'marcados' => n, 'choques' => [..], 'ausentes' => n, 'simulados' => n,
+ *                'marcados_chaves' => [chave => ['valores' => [...], 'status' => anterior]]]
  */
 function recursos_retirada_aplicar(PDO $pdo, string $tabela, array $itens, array $colunasBanco, ?string $projeto, bool $simular): array {
-    $res = ['retirados' => 0, 'marcados' => 0, 'choques' => [], 'ausentes' => 0, 'simulados' => 0];
+    $res = ['retirados' => 0, 'marcados' => 0, 'choques' => [], 'ausentes' => 0, 'simulados' => 0, 'marcados_chaves' => []];
     if (!preg_match('/^[a-zA-Z0-9_]+$/', $tabela) || !$itens) return $res;
     $temStatus = isset($colunasBanco['status']);
     $temUser = isset($colunasBanco['user_modified']);
@@ -139,10 +157,45 @@ function recursos_retirada_aplicar(PDO $pdo, string $tabela, array $itens, array
         if ($temStatus) {
             $u = $pdo->prepare("UPDATE `$tabela` SET `status` = 'D' WHERE $where");
             $u->execute($params); $res['marcados'] += $u->rowCount();
+            $res['marcados_chaves'][$chave] = ['valores' => (array)$valores, 'status' => (string)($linhas[0]['status'] ?? '') !== '' ? (string)$linhas[0]['status'] : 'A'];
         } else {
             $d = $pdo->prepare("DELETE FROM `$tabela` WHERE $where");
             $d->execute($params); $res['retirados'] += $d->rowCount();
         }
+    }
+    return $res;
+}
+
+/**
+ * Devolve ao `status` anterior os registros que a retirada marcou e que o dono voltou a entregar.
+ *
+ * @param array $itens `chave → ['valores' => [coluna → valor], 'status' => anterior]`.
+ * @return array ['reativados' => n, 'chaves' => [chave, ...]] (as chaves tratadas, para sair da lista)
+ */
+function recursos_retirada_reativar(PDO $pdo, string $tabela, array $itens, array $colunasBanco, ?string $projeto, bool $simular): array {
+    $res = ['reativados' => 0, 'chaves' => []];
+    if (!preg_match('/^[a-zA-Z0-9_]+$/', $tabela) || !$itens || !isset($colunasBanco['status'])) return $res;
+    foreach ($itens as $chave => $item) {
+        $conds = ["`status` = 'D'"]; $params = [];
+        foreach ((array)($item['valores'] ?? []) as $col => $v) {
+            if ($col === 'language' && !isset($colunasBanco['language']) && isset($colunasBanco['linguagem_codigo'])) $col = 'linguagem_codigo';
+            if (!preg_match('/^[a-zA-Z0-9_]+$/', (string)$col) || !isset($colunasBanco[$col])) continue;
+            if ($v === null) { $conds[] = "(`$col` IS NULL OR `$col` = '')"; continue; }
+            $p = 'k' . count($params);
+            $conds[] = "`$col` = :$p"; $params[$p] = $v;
+        }
+        if (count($conds) < 2) continue;
+        if (isset($colunasBanco['project'])) {
+            if ($projeto === null) $conds[] = "(`project` IS NULL OR `project` = '')";
+            else { $conds[] = '`project` = :__proj'; $params['__proj'] = $projeto; }
+        }
+        $res['chaves'][] = $chave;
+        if ($simular) continue;
+        $status = (string)($item['status'] ?? 'A');
+        if ($status === '' || $status === 'D') $status = 'A';
+        $u = $pdo->prepare("UPDATE `$tabela` SET `status` = :__status WHERE " . implode(' AND ', $conds));
+        $u->execute($params + ['__status' => $status]);
+        $res['reativados'] += $u->rowCount();
     }
     return $res;
 }
@@ -163,13 +216,22 @@ function recursos_retirada_tabela(PDO $pdo, string $base, string $tabela, array 
     $itens = $primeira ? [] : recursos_retirada_planejar((array)$manifesto[$tabela], $atual);
     $colunasBanco = [];
     foreach ($pdo->query("SHOW COLUMNS FROM `$tabela`")->fetchAll(PDO::FETCH_ASSOC) as $c) $colunasBanco[$c['Field']] = true;
-    $r = recursos_retirada_aplicar($pdo, $tabela, $itens, $colunasBanco, ($projeto !== null && $projeto !== '') ? $projeto : null, $simular);
+    $donoBanco = ($projeto !== null && $projeto !== '') ? $projeto : null;
+    $r = recursos_retirada_aplicar($pdo, $tabela, $itens, $colunasBanco, $donoBanco, $simular);
+    // O que esta rotina retirou antes e o dono voltou a entregar retorna ao status que tinha.
+    $marcados = recursos_retirada_marcados_ler($base, $dono);
+    $daTabela = (array)($marcados[$tabela] ?? []);
+    $volta = recursos_retirada_reativar($pdo, $tabela, array_intersect_key($daTabela, $atual), $colunasBanco, $donoBanco, $simular);
+    $r['reativados'] = $volta['reativados'];
     if (!$simular) {
+        foreach ($volta['chaves'] as $chave) unset($daTabela[$chave]);
+        $marcados[$tabela] = $daTabela + $r['marcados_chaves'];
         $manifesto[$tabela] = $atual;
-        recursos_retirada_manifesto_gravar($base, $dono, $manifesto);
+        recursos_retirada_manifesto_gravar($base, $dono, $manifesto, $marcados);
         if ($r['choques'] && function_exists('instalacao_choques_registrar')) {
             instalacao_choques_registrar($base, 'db-sync', $dono === 'core' ? 'core' : 'projeto', date('Ymd-His'), null, $r['choques']);
         }
     }
+    unset($r['marcados_chaves']);
     return $r + ['primeira' => $primeira, 'saidos' => count($itens)];
 }

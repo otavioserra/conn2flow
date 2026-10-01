@@ -107,4 +107,61 @@ final class RecursosRetiradaTest extends TestCase
         @unlink(recursos_retirada_manifesto_arquivo($base, 'site'));
         @rmdir($base . '/installation/manifests'); @rmdir($base . '/installation'); @rmdir($base);
     }
+
+    /** req-206: o que a retirada marcou volta ao status que tinha quando o dono entrega de novo. */
+    public function testOQueVoltaASerEntregueEReativado(): void
+    {
+        $pdo = $this->pdo();
+        $pdo->exec("UPDATE paginas SET status = 'I' WHERE id = 'home'");
+        $itens = recursos_retirada_chaves([['id' => 'antiga', 'language' => 'pt-br', 'modulo' => 'blog'], ['id' => 'home', 'language' => 'pt-br']], self::NK);
+        $r = recursos_retirada_aplicar($pdo, 'paginas', $itens, $this->colunas($pdo), null, false);
+        $this->assertSame(['antiga|pt-br|blog', 'home|pt-br|'], array_keys($r['marcados_chaves']));
+        $this->assertSame('I', $r['marcados_chaves']['home|pt-br|']['status'], 'Guarda o status que o registro tinha.');
+        $this->assertSame('D', $this->statusDe($pdo, 'antiga'));
+
+        $volta = recursos_retirada_reativar($pdo, 'paginas', $r['marcados_chaves'], $this->colunas($pdo), null, false);
+        $this->assertSame(2, $volta['reativados']);
+        $this->assertSame('A', $this->statusDe($pdo, 'antiga'));
+        $this->assertSame('I', $this->statusDe($pdo, 'home'), 'Volta ao status anterior, não a um status fixo.');
+    }
+
+    public function testReativacaoNaoTocaNoQueARetiradaNaoMarcou(): void
+    {
+        $pdo = $this->pdo();
+        // Desativado por outra via (painel, por exemplo): nunca entrou na lista de marcados.
+        $pdo->exec("UPDATE paginas SET status = 'D' WHERE id = 'criada-no-painel'");
+        $pdo->exec("UPDATE paginas SET status = 'D' WHERE id = 'do-projeto'");
+        $marcado = ['do-projeto|pt-br|' => ['valores' => ['id' => 'do-projeto', 'language' => 'pt-br', 'modulo' => null], 'status' => 'A']];
+
+        $outroDono = recursos_retirada_reativar($pdo, 'paginas', $marcado, $this->colunas($pdo), 'outro', false);
+        $this->assertSame(0, $outroDono['reativados'], 'Dono diferente não reativa.');
+        $simulado = recursos_retirada_reativar($pdo, 'paginas', $marcado, $this->colunas($pdo), 'site', true);
+        $this->assertSame(0, $simulado['reativados']);
+        $this->assertSame('D', $this->statusDe($pdo, 'do-projeto'), 'Simulação não muda nada.');
+
+        $dono = recursos_retirada_reativar($pdo, 'paginas', $marcado, $this->colunas($pdo), 'site', false);
+        $this->assertSame(1, $dono['reativados']);
+        $this->assertSame('A', $this->statusDe($pdo, 'do-projeto'));
+        $this->assertSame('D', $this->statusDe($pdo, 'criada-no-painel'));
+
+        $semStatus = $this->pdo(false);
+        $this->assertSame(0, recursos_retirada_reativar($semStatus, 'paginas', $marcado, $this->colunas($semStatus), 'site', false)['reativados']);
+    }
+
+    public function testManifestoGuardaOsRetiradosEOsPreservaEmGravacaoAntiga(): void
+    {
+        $base = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'c2f-rec-' . uniqid();
+        $marcados = ['forms' => ['form-contacts|pt-br|' => ['valores' => ['id' => 'form-contacts'], 'status' => 'A']]];
+        $this->assertSame([], recursos_retirada_marcados_ler($base, 'site'));
+        $this->assertTrue(recursos_retirada_manifesto_gravar($base, 'site', ['forms' => []], $marcados));
+        $this->assertSame($marcados, recursos_retirada_marcados_ler($base, 'site'));
+        // Gravação sem o quarto argumento (chamador antigo) não apaga a lista.
+        $this->assertTrue(recursos_retirada_manifesto_gravar($base, 'site', ['forms' => []]));
+        $this->assertSame($marcados, recursos_retirada_marcados_ler($base, 'site'));
+        // Tabela sem pendência some da lista.
+        $this->assertTrue(recursos_retirada_manifesto_gravar($base, 'site', ['forms' => []], ['forms' => []]));
+        $this->assertSame([], recursos_retirada_marcados_ler($base, 'site'));
+        @unlink(recursos_retirada_manifesto_arquivo($base, 'site'));
+        @rmdir($base . '/installation/manifests'); @rmdir($base . '/installation'); @rmdir($base);
+    }
 }
