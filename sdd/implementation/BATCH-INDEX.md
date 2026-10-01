@@ -49,6 +49,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-205 | complete | Atualização segura, fase 3a: motor de choques — decisão por arquivo no painel, na API e no CLI (req-199) | [BATCH-205.md](BATCH-205.md) | Sobrescrever, manter (regra) e mesclar validados no tenant pelos três caminhos. Homologação humana pendente. |
 | BATCH-204 | complete | Atualização segura, fase 2c: snapshot, verificação e rollback no deploy por API; `c2f update:rollback` (req-198) | [BATCH-204.md](BATCH-204.md) | Deploy por API com volta automática, `/_api/project/rollback` e `c2f update:rollback` validados no tenant. Homologação humana pendente. |
 | BATCH-212 | in-review | Layout por perfil 1:N, compilação e editor multi-layout, popup da página inicial e versão pela API (req-204) | [BATCH-212.md](BATCH-212.md) | Parte do core da REQ-085 do conn2flow-site; worktree `conn2flow-req203`, branch `feat/req-204`; validado no Lab. |
+| BATCH-213 | in-review | README (en e pt-br) e descrição do GitHub: plataforma PHP e AMS (req-205) | [BATCH-213.md](BATCH-213.md) | Worktree `conn2flow-readme`, branch `feat/req-205`; sem alteração de código. |
 
 ## Regra operacional
 

@@ -14,6 +14,15 @@
 
 Detalhes: [BATCH-212](../implementation/BATCH-212.md).
 
+## BATCH-213 — README e descrição do GitHub (req-205)
+
+- [x] `README.md` e `README-PT-BR.md` com a mesma estrutura; 39 links relativos em cada, todos existentes.
+- [x] `conn2flow.com/`, `/plataforma/` e `/pro/` respondem 200.
+- [x] Descrição, site e tópicos do repositório atualizados no GitHub.
+- [ ] Revisão humana do texto e mesclagem.
+
+Detalhes: [BATCH-213](../implementation/BATCH-213.md).
+
 ## BATCH-208 — Recuperação de arquivos do servidor (req-200)
 
 - [x] Inventário unitário: projeto editado, core ausente, precedência, arquivo fora do manifesto, filtros e pastas privadas.
