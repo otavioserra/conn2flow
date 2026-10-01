@@ -264,6 +264,11 @@
         "type": "string"
     },
     {
+        "id": "html-editor-layout-preview-label",
+        "value": "Visualizar como",
+        "type": "string"
+    },
+    {
         "id": "html-editor-select-all",
         "value": "Página Inteira",
         "type": "string"

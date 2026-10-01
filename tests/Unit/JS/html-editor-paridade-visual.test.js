@@ -6,7 +6,11 @@ const code = fs.readFileSync(sourcePath, 'utf8');
 
 const CONSTS =
   "const HTML_EDITOR_CHROME_LAYER = 'c2f-editor-chrome';" +
-  "const HTML_EDITOR_TAILWIND_LAYERS = ['properties','theme','base','components','utilities'];";
+  "const HTML_EDITOR_TAILWIND_LAYERS = ['properties','theme','base','components','utilities'];" +
+  // req-204: dublês da leitura do formulário. Sem `__layouts` a página tem um layout só.
+  "function htmlEditorLayoutsDaPagina() { return (typeof __layouts !== 'undefined') ? __layouts : []; }" +
+  "function htmlEditorLayoutVisualizado() { return (typeof __ativo !== 'undefined') ? __ativo : ''; }" +
+  "function htmlEditorCssPrecompiledConcatenar(l, r) { l = String(l || ''); r = String(r || ''); return l === '' ? r : (r === '' ? l : l + '|' + r); }";
 
 const MAPA = {
   'jquery': { 'jquery.min.js': '/vendor/jquery/3.7.1/jquery.min.js' },
@@ -325,5 +329,48 @@ describe('html-editor-interface.js — motor de captura no preview (req-160)', (
     // CSS vazio é legítimo em página sem utilities; exigir geração ali travaria um save correto.
     expect(bloco).toContain("frameworkCSS() !== 'tailwindcss'");
     expect(bloco).toContain('class');
+  });
+});
+
+// req-204: página com layout por perfil. O preview pinta UM layout, mas o documento carrega a
+// cascata de todos — é contra o que é comum a eles que a captura filtra o `css_compiled`.
+describe('html-editor-interface.js — layouts por perfil no preview (req-204)', () => {
+  function includes(ativo) {
+    return extrairFuncao(
+      'tailwindPreviewIncludes',
+      CONSTS +
+      'const __layouts = ["admin", "portal"]; const __ativo = ' + JSON.stringify(ativo) + ';' +
+      'const gestor = { html_editor: { cssPrecompiledBase64: "INICIAL", cssPrecompiledRecursoBase64: "RECURSO", layoutCssAutoralBase64: "AUTORAL", assetsUrls: ' + JSON.stringify(MAPA) + ' } };' +
+      'const window = { gestor, htmlEditorLayoutsCss: { admin: { precompiled: ".admin{}", autoral: ".a-autoral{}" }, portal: { precompiled: ".portal{}", autoral: ".p-autoral{}" } } };' +
+      'const htmlEditorDecodeBase64 = v => ({ INICIAL: ".admin{}|.pagina{}", RECURSO: ".pagina{}", AUTORAL: ".a-autoral{}" })[v] || "";' +
+      "function htmlEditorAssetUrl(b, a) { return (gestor.html_editor.assetsUrls[b] || {})[a] || ''; }"
+    )();
+  }
+
+  it('sob o layout padrão, o alternativo entra como folha que não pinta', () => {
+    const saida = includes('admin');
+
+    expect(saida).toContain('data-c2f-tailwind-role="baseline" data-c2f-baseline-layout="admin">.admin{}|.pagina{}</style>');
+    expect(saida).toContain('<style media="not all" data-c2f-baseline-alt="portal">.portal{}|.pagina{}</style>');
+    expect(saida).toContain('.a-autoral{}');
+    expect(saida).not.toContain('.p-autoral{}');
+  });
+
+  it('visualizando o alternativo, a cascata ativa e o autoral passam a ser os dele', () => {
+    const saida = includes('portal');
+
+    expect(saida).toContain('data-c2f-tailwind-role="baseline" data-c2f-baseline-layout="portal">.portal{}|.pagina{}</style>');
+    expect(saida).toContain('<style media="not all" data-c2f-baseline-alt="admin">.admin{}|.pagina{}</style>');
+    expect(saida).toContain('.p-autoral{}');
+    expect(saida).not.toContain('.a-autoral{}');
+  });
+
+  it('a folha alternativa não carrega marca de baseline aplicado', () => {
+    const saida = includes('admin');
+    const alternativa = saida.slice(saida.indexOf('<style media="not all"'));
+    const abertura = alternativa.slice(0, alternativa.indexOf('>') + 1);
+
+    expect(abertura).not.toContain('data-c2f-tailwind-role');
+    expect(abertura).not.toContain('data-tailwind-role');
   });
 });

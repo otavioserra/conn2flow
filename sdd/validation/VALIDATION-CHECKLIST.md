@@ -1,5 +1,19 @@
 # Validation Checklist
 
+## BATCH-212 — Layout por perfil 1:N e compilação multi-layout (req-204)
+
+- [x] Mapa `{perfil: layout}`: dois perfis no mesmo layout gravados e lidos; migração converte o formato antigo e não toca no novo.
+- [x] `css:rebuild` compila a página mapeada com o layout padrão e os alternativos, e carimba os layouts cobertos.
+- [x] Roteador usa o CSS da página sozinho só quando o layout em uso está no carimbo.
+- [x] Editor HTML: seletor de preview por layout; captura mantém a regra que falte em qualquer layout; salvamento refaz a captura quando o conjunto de layouts muda.
+- [x] Popup da página inicial fechado por padrão, aberto sob o campo, fechado ao clicar fora e ao escolher.
+- [x] `action=version` na API de sistema.
+- [x] Vitest 461/461; PHPUnit do lote 125/125; suíte completa com falhas só de fim de linha no ambiente.
+- [x] Lab: `/perfil-usuario/` sob os dois layouts a 1280 e 390 px sem classe sem regra.
+- [ ] Revisão humana e mesclagem.
+
+Detalhes: [BATCH-212](../implementation/BATCH-212.md).
+
 ## BATCH-208 — Recuperação de arquivos do servidor (req-200)
 
 - [x] Inventário unitário: projeto editado, core ausente, precedência, arquivo fora do manifesto, filtros e pastas privadas.

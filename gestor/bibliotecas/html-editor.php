@@ -933,6 +933,10 @@ function html_editor_componente($params = false){
 			'layout_id' => (isset($layout_id) ? $layout_id : ''),
 			'alvo' => $alvo,
 		))),
+		// Layout por perfil: o pré-compilado do recurso sozinho. A cascata de cada layout
+		// alternativo é `layout + recurso`, e o layout o editor busca por `html-editor-layout-css`.
+		'cssPrecompiledRecursoBase64' => base64_encode($alvo !== 'layouts' && isset($css_precompiled) ? (string)$css_precompiled : ''),
+		'layoutPreviewLabel' => gestor_variaveis(Array('id' => 'html-editor-layout-preview-label')),
 	]);
 
 	// ===== Modificações específicas por alvo
