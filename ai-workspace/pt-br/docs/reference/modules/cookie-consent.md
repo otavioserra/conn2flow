@@ -64,6 +64,17 @@ O controlador público expõe `window.c2fConsent` (`get`, `has`, `open`, `reset`
 
 Os modelos trazem CSS próprio, com classes `c2f-cc-` e cores em variáveis: o aviso tem a mesma aparência em qualquer página, com ou sem framework CSS.
 
+## Decisão lida no servidor
+
+Um módulo que grava cookie pelo PHP pergunta a decisão do visitante com a biblioteca `cookie-consent`:
+
+```php
+gestor_incluir_biblioteca('cookie-consent');
+if (cookie_consent_permitido('marketing')) { /* grava o cookie */ }
+```
+
+Sem decisão, só `necessary` é permitido. `cookie_consent_estado()` devolve `decided` e as categorias. O filtro `cookie-consent` / `permitido` (valor, categoria, estado) dá a um projeto a palavra final sobre uma categoria. A versão do aviso não é conferida no servidor.
+
 ## Limitações confirmadas
 
 > [!WARNING]

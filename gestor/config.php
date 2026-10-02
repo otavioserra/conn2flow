@@ -374,6 +374,7 @@ $_GESTOR['bibliotecas-dados'] = Array(
     'oauth' => Array('oauth.php'),
     'seguranca' => Array('seguranca.php'),
     'modulo-distribuido' => Array('modulo-distribuido.php'),
+    'cookie-consent' => Array('cookie-consent.php'),
     // req-032: executor e vocabulário das rotinas automáticas, compartilhados entre a engine
     // gestor/cron.php e o módulo administrativo admin-cron.
     'cron' => Array('cron.php'),

@@ -110,6 +110,22 @@ function api_module_distributed_db($slug, $corpo_cru) {
 
 	$resultado = modulo_distribuido_executar_local($payload, $pdo);
 
+	// req-214: rotinas locais do módulo no cliente. Depois de uma escrita vinda do Central, quem
+	// executa o módulo aqui é avisado (gancho `modulo-distribuido` / `db.escrita`) e mantém o que é
+	// do site do cliente — uma página pública, por exemplo — sem o Central no caminho. Falha de um
+	// ouvinte não muda a resposta da escrita, que já aconteceu.
+	if ($resultado['status'] === 'ok' && ($resultado['tipo'] ?? '') === 'write') {
+		try {
+			gestor_incluir_biblioteca('hooks');
+			if (function_exists('hook_do_action')) {
+				hook_do_action('modulo-distribuido', 'db.escrita', $slug,
+					modulo_distribuido_detectar_operacao($payload['sql']), modulo_distribuido_sql_tabelas($payload['sql']) ?: []);
+			}
+		} catch (\Throwable $e) {
+			error_log('MODULO-DISTRIBUIDO: local write listener failed');
+		}
+	}
+
 	// Resposta padronizada JSON (o executor já retorna status ok/error).
 	while (ob_get_level() > 0) { ob_end_clean(); }
 	http_response_code($resultado['status'] === 'ok' ? 200 : 400);

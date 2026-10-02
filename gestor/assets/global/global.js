@@ -773,6 +773,87 @@
 		url: assetUrl,
 		mapa: assetsUrlsMapa
 	};
+
+	// ===== req-214: menu lateral do painel com o módulo atual à vista.
+	//
+	// Vale para os dois layouts (Fomantic e Tailwind): o item do módulo da página fica marcado e o
+	// menu rola até ele parar no meio da área visível. O servidor marca o item com
+	// `aria-current="page"`; quando ele não marca (página de um módulo que não é o do item, menu de
+	// projeto sem a marca), o item é achado pelo endereço: o `href` que for o prefixo mais longo do
+	// caminho atual.
+	var MENU_REALCE = { fomantic: ['active'], tailwind: ['bg-slate-800', 'text-white'] };
+
+	function menuContextos() {
+		var contextos = [];
+		[['.menuComputerCont', 'fomantic'], ['#conn2flow-menu-principal', 'fomantic']].forEach(function (par) {
+			var el = document.querySelector(par[0]);
+			if (el) contextos.push({ rolagem: el, itens: el.querySelectorAll('a.item[href]'), tipo: par[1] });
+		});
+		var lateral = document.querySelector('[data-admin-sidebar]');
+		if (lateral) {
+			var nav = lateral.querySelector('nav') || lateral;
+			contextos.push({ rolagem: nav, itens: lateral.querySelectorAll('a[data-menu-item][href]'), tipo: 'tailwind' });
+		}
+		return contextos;
+	}
+
+	function menuCaminho(href) {
+		try {
+			var url = new URL(href, window.location.href);
+			if (url.origin !== window.location.origin) return null;
+			return url.pathname.replace(/\/+$/, '') + '/';
+		} catch (e) { return null; }
+	}
+
+	function menuItemAtual(itens) {
+		var i;
+		for (i = 0; i < itens.length; i++) {
+			if (itens[i].getAttribute('aria-current') === 'page') return itens[i];
+		}
+		var atual = menuCaminho(window.location.href);
+		var melhor = null;
+		var tamanho = 0;
+		for (i = 0; i < itens.length; i++) {
+			var caminho = menuCaminho(itens[i].getAttribute('href'));
+			// A raiz casaria com tudo: só vale um prefixo com pelo menos um segmento.
+			if (!caminho || caminho === '/' || atual.indexOf(caminho) !== 0) continue;
+			if (caminho.length > tamanho) { melhor = itens[i]; tamanho = caminho.length; }
+		}
+		return melhor;
+	}
+
+	function menuPosicionarAtual() {
+		var posicionado = false;
+		menuContextos().forEach(function (ctx) {
+			var item = menuItemAtual(ctx.itens);
+			if (!item) return;
+			if (item.getAttribute('aria-current') !== 'page') {
+				item.setAttribute('aria-current', 'page');
+				MENU_REALCE[ctx.tipo].forEach(function (classe) { item.classList.add(classe); });
+			}
+			var caixa = ctx.rolagem.getBoundingClientRect();
+			if (!caixa.height) return;
+			var alvo = item.getBoundingClientRect();
+			var destino = ctx.rolagem.scrollTop + (alvo.top - caixa.top) - (caixa.height - alvo.height) / 2;
+			ctx.rolagem.scrollTop = Math.max(0, Math.round(destino));
+			posicionado = true;
+		});
+		window.gestorMenuAtualPosicionado = posicionado;
+		return posicionado;
+	}
+
+	window.gestorMenuPosicionarAtual = menuPosicionarAtual;
+	// O menu é um acréscimo: em documento sem a API usual (os dublês dos testes, por exemplo) o
+	// resto do arquivo tem de carregar normalmente.
+	if (typeof document.querySelector === 'function' && typeof document.addEventListener === 'function') {
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', menuPosicionarAtual);
+		} else {
+			menuPosicionarAtual();
+		}
+		// Fontes e ícones mudam a altura dos itens depois do primeiro desenho.
+		if (typeof window.addEventListener === 'function') window.addEventListener('load', menuPosicionarAtual);
+	}
 })();
 
 $(document).ready(function () {
@@ -1044,7 +1125,9 @@ $(document).ready(function () {
 			sessionStorage.setItem(menuConfig.storageKeys.scroll, $(this).scrollTop());
 		});
 
-		if (sessionStorage.getItem(menuConfig.storageKeys.scroll)) {
+		// req-214: com o módulo atual no menu, quem manda na posição é ele; a rolagem guardada só
+		// vale em página que não é de nenhum item (o painel inicial, por exemplo).
+		if (!window.gestorMenuAtualPosicionado && sessionStorage.getItem(menuConfig.storageKeys.scroll)) {
 			$('.menuComputerCont').scrollTop(sessionStorage.getItem(menuConfig.storageKeys.scroll));
 		}
 
@@ -1052,7 +1135,7 @@ $(document).ready(function () {
 			sessionStorage.setItem(menuConfig.storageKeys.scrollMobile, $(this).scrollTop());
 		});
 
-		if (sessionStorage.getItem(menuConfig.storageKeys.scrollMobile)) {
+		if (!window.gestorMenuAtualPosicionado && sessionStorage.getItem(menuConfig.storageKeys.scrollMobile)) {
 			$('#conn2flow-menu-principal').scrollTop(sessionStorage.getItem(menuConfig.storageKeys.scrollMobile));
 		}
 	}

@@ -140,6 +140,44 @@ final class ModuloDistribuidoReq092Test extends TestCase
         self::assertLessThan(strpos($fonte, 'api_module_central_secret($slug);'), strpos($fonte, "api_response_error('distributed-installation-invalid', 403);"));
     }
 
+    /** req-214: o módulo pergunta se está rodando para uma instalação e qual é o site público dela. */
+    public function testModuleCanAskWhetherItRunsForAnInstallation(): void
+    {
+        global $_GESTOR, $_CONFIG;
+        $backup = [$_GESTOR['distributed-context'] ?? null, $_GESTOR['url-full'] ?? null, $_CONFIG['modulo-distribuido'] ?? null];
+        $_GESTOR['url-full'] = 'https://central.test/';
+        unset($_GESTOR['distributed-context']);
+
+        self::assertNull(modulo_distribuido_contexto());
+        self::assertSame('https://central.test/', modulo_distribuido_url_publica());
+
+        $_CONFIG['modulo-distribuido'] = ['installations' => ['app-um' => ['url' => 'https://cliente.test', 'secret' => 's', 'modules' => ['3d-catalog'], 'tables' => ['catalog_3d']]]];
+        $_GESTOR['distributed-context'] = ['app_id' => 'app-um', 'modulo' => '3d-catalog'];
+        self::assertSame('app-um', modulo_distribuido_contexto()['app_id']);
+        self::assertSame('https://cliente.test/', modulo_distribuido_url_publica());
+
+        // Instalação que deixou de valer: a URL pública volta a ser a desta instalação.
+        $_GESTOR['distributed-context'] = ['app_id' => 'app-que-saiu', 'modulo' => '3d-catalog'];
+        self::assertSame('https://central.test/', modulo_distribuido_url_publica());
+
+        [$ctx, $url, $cfg] = $backup;
+        if ($ctx === null) { unset($_GESTOR['distributed-context']); } else { $_GESTOR['distributed-context'] = $ctx; }
+        if ($url === null) { unset($_GESTOR['url-full']); } else { $_GESTOR['url-full'] = $url; }
+        if ($cfg === null) { unset($_CONFIG['modulo-distribuido']); } else { $_CONFIG['modulo-distribuido'] = $cfg; }
+    }
+
+    /** req-214: escrita vinda do Central avisa as rotinas locais do módulo no cliente. */
+    public function testDistributedWriteNotifiesLocalListeners(): void
+    {
+        $fonte = str_replace("\r\n", "\n", (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/controladores/api/api-module-distributed.php'));
+        $execucao = strpos($fonte, '$resultado = modulo_distribuido_executar_local($payload, $pdo);');
+        $gancho = strpos($fonte, "hook_do_action('modulo-distribuido', 'db.escrita'");
+
+        self::assertNotFalse($gancho);
+        self::assertGreaterThan($execucao, $gancho);
+        self::assertStringContainsString("(\$resultado['tipo'] ?? '') === 'write'", $fonte);
+    }
+
     /** req-213: `confirm()`, `alert()` e links em nova aba têm de funcionar dentro do módulo. */
     public function testIframeSandboxAllowsDialogsAndNewTabs(): void
     {

@@ -64,6 +64,17 @@ The public controller exposes `window.c2fConsent` (`get`, `has`, `open`, `reset`
 
 The models ship their own CSS, with `c2f-cc-` classes and colours in variables: the notice looks the same on any page, with or without a CSS framework.
 
+## Decision read on the server
+
+A module that sets a cookie from PHP asks for the visitor's decision with the `cookie-consent` library:
+
+```php
+gestor_incluir_biblioteca('cookie-consent');
+if (cookie_consent_permitido('marketing')) { /* set the cookie */ }
+```
+
+With no decision, only `necessary` is allowed. `cookie_consent_estado()` returns `decided` and the categories. The `cookie-consent` / `permitido` filter (value, category, state) gives a project the final word on a category. The notice version is not checked on the server.
+
 ## Confirmed limitations
 
 > [!WARNING]

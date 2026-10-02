@@ -368,6 +368,28 @@ function modulo_distribuido_central_rota() {
     header('Cache-Control: no-store');
 }
 
+/**
+ * req-214: the installation on whose behalf the central is running the current module, or null.
+ * A module that keeps a local side effect (a public page, a file) asks this before writing it at
+ * the central: under a distributed context that effect belongs to the customer's site.
+ */
+function modulo_distribuido_contexto() {
+    global $_GESTOR;
+    $dados = $_GESTOR['distributed-context'] ?? null;
+    return is_array($dados) ? $dados : null;
+}
+
+/** Public base URL of the site the current module is being managed for (the customer's, or this one). */
+function modulo_distribuido_url_publica() {
+    global $_GESTOR;
+    $dados = modulo_distribuido_contexto();
+    if ($dados) {
+        $instalacao = modulo_distribuido_instalacao($dados['app_id'] ?? '', $dados['modulo'] ?? '');
+        if ($instalacao) return $instalacao['url'] . '/';
+    }
+    return (string)($_GESTOR['url-full'] ?? '/');
+}
+
 /** Activate only around execution of the original authorized module. */
 function modulo_distribuido_modulo_iniciar($slug) {
     global $_GESTOR;

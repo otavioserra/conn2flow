@@ -408,7 +408,15 @@ function gestor_pagina_menu($params = false){
 		// não existe em Tailwind, onde o realce precisa vir de utilities.
 		$menuClasseAtiva = $menuTailwind ? ' bg-slate-800 text-white' : ' active';
 
-		$cel_aux = modelo_var_troca($cel_aux,"#class#",(isset($_GESTOR['modulo-id']) && $modulo['id'] == $_GESTOR['modulo-id'] ? $menuClasseAtiva : ''));
+		$menuItemAtual = (isset($_GESTOR['modulo-id']) && $modulo['id'] == $_GESTOR['modulo-id']);
+
+		$cel_aux = modelo_var_troca($cel_aux,"#class#",($menuItemAtual ? $menuClasseAtiva : ''));
+
+		// req-214: marca estável do item atual, igual nos dois frameworks. É por ela que o `global.js`
+		// rola o menu até o item; a classe de realce muda de um layout para o outro.
+		if($menuItemAtual){
+			$cel_aux = preg_replace('/<a\b/i', '<a aria-current="page"', $cel_aux, 1);
+		}
 		
 		// req-086: o vocabulário do ícone acompanha o framework do menu. A escolha é feita ANTES de
 		// decidir a célula porque é o ícone secundário RESOLVIDO que diz se há dois ícones a
