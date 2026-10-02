@@ -229,6 +229,14 @@ project_transport_resolve() {
   # escreve). `--rsync-path` eleva apenas o processo remoto do rsync.
   if _pt_truthy "$PT_SSH_SUDO"; then
     PT_RSYNC_OPTS+=(--rsync-path "sudo rsync")
+    # req-210: com `sudo rsync` o arquivo nasce como root e só o `chown` do fim da etapa devolvia a
+    # posse. Nesse intervalo o PHP-FPM do site não lia o `gestor.php` ("Permission denied") e toda
+    # requisição dava 500, antes de qualquer código do sistema rodar (inclusive a tela de
+    # manutenção). `--chown` faz o próprio rsync gravar já com o dono certo; o `chown` final
+    # continua, para o que foi criado por fora do rsync.
+    if [[ "$PT_SSH_CHOWN" =~ ^[a-zA-Z0-9._-]+(:[a-zA-Z0-9._-]+)?$ ]]; then
+      PT_RSYNC_OPTS+=(--chown="$PT_SSH_CHOWN")
+    fi
   fi
 
   return 0

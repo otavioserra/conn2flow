@@ -45,9 +45,9 @@
         "minificado": 1782
     },
     "gestor/assets/global/global.js": {
-        "sha1": "97cbfd72ef4c775b60597e11949fde182b047c57",
-        "origem": 41032,
-        "minificado": 16841
+        "sha1": "81b7b849490553fc497c43dfc68b4914f670bb2a",
+        "origem": 44975,
+        "minificado": 19039
     },
     "gestor/assets/interface-v2/interface-v2.js": {
         "sha1": "0456a69f98872f9a0ab47f238de57570518806f7",
@@ -70,9 +70,9 @@
         "minificado": 1296
     },
     "gestor/assets/interface/html-editor-interface.js": {
-        "sha1": "75406748aed8446e7a8537051e74c8dead34c82d",
-        "origem": 166025,
-        "minificado": 63336
+        "sha1": "f15527fa39777ab51167c1fa9345049069ba8ce7",
+        "origem": 167203,
+        "minificado": 63567
     },
     "gestor/assets/interface/html-editor-modules.js": {
         "sha1": "7c5934089d8e0b3279282539f010b461ec4dcea6",
@@ -293,21 +293,6 @@
         "sha1": "17636e4ec6db084e3fbfc62ac1effea99d88b601",
         "origem": 31081,
         "minificado": 15691
-    },
-    "gestor/modulos/presentations/presentations.js": {
-        "sha1": "bb13483ff13a2e5aab4fe6f8b585fdf73b94e459",
-        "origem": 16373,
-        "minificado": 8517
-    },
-    "gestor/modulos/presentations/presentations.slides.js": {
-        "sha1": "dafc06c003c371511a0f6b4b12173c19d18798d2",
-        "origem": 19387,
-        "minificado": 9526
-    },
-    "gestor/modulos/presentations/presentations.widget.js": {
-        "sha1": "3be910bae48e6a435ebc1f6f5cf598d6b391d5ad",
-        "origem": 18625,
-        "minificado": 8615
     },
     "gestor/modulos/publisher-highlights/publisher-highlights.js": {
         "sha1": "e92b3d190a91e867710c7f635b22fe1067e80143",

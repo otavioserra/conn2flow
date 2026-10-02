@@ -281,20 +281,6 @@
     },
     {
         "modulo_grupo_id": "administracao-gestor",
-        "nome": "Presentations",
-        "id": "presentations",
-        "titulo": "Presentations",
-        "icone": "tv",
-        "icone_tailwind": "presentation",
-        "icone2": null,
-        "icone2_tailwind": null,
-        "nao_menu_principal": null,
-        "plugin": null,
-        "host": null,
-        "status": "A"
-    },
-    {
-        "modulo_grupo_id": "administracao-gestor",
         "nome": "Cookie Consent",
         "id": "cookie-consent",
         "titulo": "Cookie Consent",

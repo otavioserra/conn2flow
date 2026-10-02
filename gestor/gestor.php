@@ -7,6 +7,14 @@ if (function_exists('mb_internal_encoding')) {
     mb_internal_encoding('UTF-8');
 }
 
+// =========================== Manutenção durante deploy (req-210)
+//
+// Antes da configuração, da sessão e do banco: durante um deploy qualquer um deles pode estar pela
+// metade. Com a manutenção ligada, a requisição recebe a tela de atualização (503) e para aqui.
+
+require_once(__DIR__ . '/bibliotecas/manutencao.php');
+manutencao_verificar(__DIR__);
+
 // =========================== Configuração Inicial
 
 require_once(__DIR__ . '/config.php');

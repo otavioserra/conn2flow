@@ -330,6 +330,16 @@ function api_project_update() {
         deploy_lock_release($trava_arquivo, $trava['token']);
     });
 
+    // req-210: enquanto o pacote é aplicado, o site responde com a tela de atualização em vez de
+    // erro. Esta rota (`_api/`) fica fora do bloqueio. O desligamento também vai num shutdown
+    // function, pelo mesmo motivo da trava; se o processo morrer, a validade do arquivo resolve.
+    require_once $_GESTOR['bibliotecas-path'] . 'manutencao.php';
+    $manutencao_base = rtrim($_GESTOR['ROOT_PATH'], '/\\');
+    manutencao_ligar($manutencao_base, ['owner' => 'api-project-update', 'detail' => (string)$project_id]);
+    register_shutdown_function(function () use ($manutencao_base) {
+        manutencao_desligar($manutencao_base);
+    });
+
     // req-198 / BATCH-204: posição do log de erros antes da entrega (a verificação procura fatais novos).
     require_once $_GESTOR['bibliotecas-path'] . 'instalacao-manifesto.php';
     $saude_offset = instalacao_saude_log_offset($_GESTOR['ROOT_PATH']);

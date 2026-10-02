@@ -126,20 +126,6 @@
         "versao": 4
     },
     {
-        "nome": "Apresentações",
-        "id": "presentations",
-        "language": "pt-br",
-        "status": "A",
-        "versao": 2
-    },
-    {
-        "nome": "Presentations",
-        "id": "presentations",
-        "language": "en",
-        "status": "A",
-        "versao": 2
-    },
-    {
         "nome": "Publicador",
         "id": "publisher",
         "language": "pt-br",

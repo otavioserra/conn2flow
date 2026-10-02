@@ -8,6 +8,7 @@ use Conn2Flow\Cli\Contracts\InputInterface;
 use Conn2Flow\Cli\Contracts\OutputInterface;
 use Conn2Flow\Cli\Console\Input;
 use Conn2Flow\Cli\Support\ProjectEnvironmentResolver;
+use Conn2Flow\Cli\Support\SshRemoteTransport;
 use Throwable;
 
 final class ProjectUpdateAllCommand extends BaseProcessCommand
@@ -29,7 +30,7 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto] [--no-wait] [--lock-wait=<minutes>]\n\n"
+        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto] [--no-wait] [--lock-wait=<minutes>] [--no-maintenance]\n\n"
             . "Executes the full 8-stage synchronization pipeline. A deploy_mode=ssh project marked "
             . "local=true receives remote confirmation automatically; production remains explicit.\n"
             . "req-197: checks migrations first (db:check-migrations) and runs under a deploy lock per target "
@@ -81,11 +82,65 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         if ($lock === null) {
             return 1;
         }
+        // req-210: enquanto as etapas trocam arquivos e sincronizam o banco, o destino responde com a
+        // tela de atualização em vez de erro 500. `--no-maintenance` mantém o comportamento antigo.
+        $manutencao = !$input->hasOption('no-maintenance') && $this->maintenance((string)$project, true, $output);
         try {
             return $this->runStages((string)$project, $contents, $confirmarRemoto, $input, $output);
         } finally {
+            if ($manutencao) {
+                $this->maintenance((string)$project, false, $output);
+            }
             deploy_lock_release($lock['file'], $lock['token']);
         }
+    }
+
+    /**
+     * Liga ou desliga a manutenção no Gestor de destino (`temp/maintenance.json`).
+     *
+     * Não é fatal: sem conseguir ligar, o pipeline segue como antes, só que sem a tela. A validade do
+     * arquivo (30 min) cobre o pipeline que morre antes de desligar.
+     */
+    private function maintenance(string $project, bool $on, OutputInterface $output): bool
+    {
+        try {
+            $resolved = (new ProjectEnvironmentResolver($this->rootPath))->resolve($project);
+        } catch (Throwable) {
+            return false;
+        }
+
+        $agora = time();
+        $json = (string)json_encode(['owner' => 'pipeline', 'detail' => 'project:update-all ' . $project, 'started_at' => $agora, 'expires_at' => $agora + 1800]);
+
+        if (is_array($resolved['ssh'] ?? null)) {
+            try {
+                $transport = new SshRemoteTransport($resolved['ssh'], is_array($resolved['config'] ?? null) ? $resolved['config'] : []);
+            } catch (Throwable) {
+                return false;
+            }
+            // O conteúdo vai em base64: no Windows o `escapeshellarg` do PHP troca aspas e `%` por
+            // espaço, e o JSON chegava ilegível ao destino (a manutenção era ignorada).
+            $shell = $on
+                ? 'mkdir -p temp && echo ' . base64_encode($json) . ' | base64 -d > temp/maintenance.json'
+                : 'rm -f temp/maintenance.json';
+            $code = $this->runShell($transport->buildRemoteCommand(['sh', '-c', $shell], $transport->remotePath()), $output);
+            $ok = $code === 0;
+        } else {
+            require_once $this->rootPath . '/gestor/bibliotecas/manutencao.php';
+            $base = (string)$resolved['gestorPath'];
+            $ok = $on ? manutencao_ligar($base, ['owner' => 'pipeline', 'detail' => 'project:update-all ' . $project], 1800) : manutencao_desligar($base);
+        }
+
+        if ($on) {
+            $ok ? $output->info('Manutenção ligada no destino: o site mostra a tela de atualização até o fim do pipeline.')
+                : $output->warning('Não foi possível ligar a manutenção no destino; o pipeline segue sem a tela de atualização.');
+        } elseif (!$ok) {
+            $output->warning('Não foi possível desligar a manutenção no destino. Ela vence sozinha em até 30 minutos; para desligar já, apague temp/maintenance.json no Gestor.');
+        } else {
+            $output->info('Manutenção desligada no destino.');
+        }
+
+        return $ok;
     }
 
     /**

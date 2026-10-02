@@ -85,6 +85,83 @@
 		}
 	}
 
+	// req-210: sistema em atualização. Durante um deploy, o backend responde 503 com o cabeçalho
+	// `X-C2F-Maintenance` e um JSON com os textos. Em vez de a ação falhar em silêncio, a página
+	// mostra um aviso por cima e consulta o próprio endereço até a atualização terminar; aí o aviso
+	// some e o usuário repete a ação. Os textos vêm da resposta: não há texto fixo aqui.
+	var manutencaoAviso = null;
+	var manutencaoTimer = null;
+
+	function manutencaoFechar() {
+		if (manutencaoTimer) { clearInterval(manutencaoTimer); manutencaoTimer = null; }
+		if (manutencaoAviso && manutencaoAviso.parentNode) manutencaoAviso.parentNode.removeChild(manutencaoAviso);
+		manutencaoAviso = null;
+	}
+
+	function manutencaoAvisar(dados) {
+		dados = dados || {};
+		if (manutencaoAviso || !document.body) return;
+
+		var fundo = document.createElement('div');
+		fundo.setAttribute('data-c2f-maintenance-notice', '');
+		fundo.setAttribute('role', 'alertdialog');
+		fundo.setAttribute('aria-modal', 'true');
+		fundo.style.cssText = 'position:fixed;inset:0;z-index:2147483600;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.6);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+		var caixa = document.createElement('div');
+		caixa.style.cssText = 'max-width:460px;padding:28px;border-radius:10px;background:#fff;color:#1b1c1d;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.3)';
+		var titulo = document.createElement('h2');
+		titulo.style.cssText = 'margin:0 0 10px;font-size:19px;line-height:1.3;color:#1b1c1d';
+		titulo.textContent = dados.title || '';
+		var texto = document.createElement('p');
+		texto.style.cssText = 'margin:0 0 20px;font-size:15px;line-height:1.5;color:#5b5f66';
+		texto.textContent = dados.text || dados.message || '';
+		var botao = document.createElement('button');
+		botao.type = 'button';
+		botao.style.cssText = 'padding:10px 22px;border:0;border-radius:6px;background:#2185d0;color:#fff;font-size:15px;cursor:pointer';
+		botao.textContent = dados.retry || 'OK';
+		// A logo vem embutida na resposta (`data:`): um arquivo do site também estaria em manutenção.
+		if (typeof dados.logo === 'string' && dados.logo.indexOf('data:image/') === 0) {
+			var logo = document.createElement('img');
+			logo.alt = '';
+			logo.src = dados.logo;
+			logo.style.cssText = 'display:block;max-width:160px;max-height:70px;margin:0 auto 18px';
+			caixa.appendChild(logo);
+		}
+		caixa.appendChild(titulo);
+		caixa.appendChild(texto);
+		caixa.appendChild(botao);
+		fundo.appendChild(caixa);
+		document.body.appendChild(fundo);
+		manutencaoAviso = fundo;
+
+		// Consulta o endereço atual; quando ele deixa de responder com a marca de manutenção, o aviso some.
+		var consultar = function () {
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', window.location.href, true);
+			xhr.setRequestHeader('X-C2F-Maintenance-Probe', '1');
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState !== 4 || xhr.status === 0) return;
+				if (!(xhr.status === 503 && xhr.getResponseHeader('X-C2F-Maintenance'))) manutencaoFechar();
+			};
+			xhr.send();
+		};
+		botao.addEventListener('click', consultar);
+		manutencaoTimer = setInterval(consultar, Math.max(3, parseInt(dados.retry_after, 10) || 8) * 1000);
+	}
+
+	function tratarManutencaoXhr(xhr) {
+		if (!xhr || xhr.status !== 503 || !xhr.getResponseHeader('X-C2F-Maintenance')) return;
+		var dados = xhr.responseJSON;
+		if (!dados) { try { dados = JSON.parse(xhr.responseText); } catch (error) { dados = {}; } }
+		manutencaoAvisar(dados);
+	}
+
+	function tratarManutencaoFetch(response) {
+		if (!response || response.status !== 503 || !response.headers.get('X-C2F-Maintenance')) return;
+		if (typeof response.clone !== 'function') { manutencaoAvisar({}); return; }
+		response.clone().json().then(manutencaoAvisar, function () { manutencaoAvisar({}); });
+	}
+
 	function tratarFalhaAutenticacaoXhr(xhr) {
 		if (!xhr || xhr.status !== 401) return;
 		var destino = xhr.getResponseHeader('X-Gestor-Auth-Redirect');
@@ -379,6 +456,7 @@
 		});
 		window.jQuery(document).ajaxError(function (event, xhr) {
 			tratarFalhaAutenticacaoXhr(xhr);
+			tratarManutencaoXhr(xhr);
 		});
 
 		// req-109: `$(form).submit()` percorre a propagação SIMULADA do jQuery, que não aciona
@@ -409,6 +487,7 @@
 	if (window.fetch) {
 		var fetchOriginal = window.fetch.bind(window);
 		var tratarRespostaFetch = function (response) {
+			tratarManutencaoFetch(response);
 			if (response.status === 401) {
 				var destino = response.headers.get('X-Gestor-Auth-Redirect');
 				if (destino) redirecionarParaLogin(destino);

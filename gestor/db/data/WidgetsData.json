@@ -132,28 +132,6 @@
         "user_modified": 0
     },
     {
-        "id": "presentations",
-        "name": "Apresentações",
-        "icon": "tv",
-        "tabela": "presentations",
-        "coluna_where": null,
-        "language": "pt-br",
-        "status": "A",
-        "versao": 1,
-        "user_modified": 0
-    },
-    {
-        "id": "presentations",
-        "name": "Presentations",
-        "icon": "tv",
-        "tabela": "presentations",
-        "coluna_where": null,
-        "language": "en",
-        "status": "A",
-        "versao": 1,
-        "user_modified": 0
-    },
-    {
         "id": "publisher-highlights",
         "name": "Destaques",
         "icon": "star",

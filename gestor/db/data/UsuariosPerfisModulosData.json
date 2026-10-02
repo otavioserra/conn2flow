@@ -217,14 +217,6 @@
     },
     {
         "perfil": "administradores",
-        "modulo": "presentations",
-        "status": "A",
-        "versao": 1,
-        "checksum": "279a560f0a7711342e35385fc4bd19d5",
-        "user_modified": 0
-    },
-    {
-        "perfil": "administradores",
         "modulo": "publisher",
         "status": "A",
         "versao": 3,

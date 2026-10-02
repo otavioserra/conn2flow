@@ -2663,28 +2663,6 @@
             "safelist": [],
             "built_at": "2026-10-01T15:51:28+00:00"
         },
-        "module|presentations|en|templates|presentations-deck": {
-            "fingerprint": "2f28fe46d5d74da2470e31550e71cee54c84db6e01d75218ef8f0c8fb7eae829",
-            "output_hash": "320b0e04539a45da52ba786226ba77b1892647a7aa882cba7e06b22ad07f00c8",
-            "output": "modulos/presentations/resources/en/templates/presentations-deck/presentations-deck.precompiled.css",
-            "tailwind_version": "4.3.3",
-            "sources": [
-                "modulos/presentations/resources/en/templates/presentations-deck/presentations-deck.html"
-            ],
-            "safelist": [],
-            "built_at": "2026-10-02T10:44:56+00:00"
-        },
-        "module|presentations|pt-br|templates|presentations-deck": {
-            "fingerprint": "e1a68eefca784e26706c21762be496a95a920a4921ca040d03d9357bbc679552",
-            "output_hash": "320b0e04539a45da52ba786226ba77b1892647a7aa882cba7e06b22ad07f00c8",
-            "output": "modulos/presentations/resources/pt-br/templates/presentations-deck/presentations-deck.precompiled.css",
-            "tailwind_version": "4.3.3",
-            "sources": [
-                "modulos/presentations/resources/pt-br/templates/presentations-deck/presentations-deck.html"
-            ],
-            "safelist": [],
-            "built_at": "2026-10-02T10:44:57+00:00"
-        },
         "module|publisher-highlights|en|templates|publisher-highlights-artigos-editorial": {
             "fingerprint": "8d9ab8b68dc034a42d8546cdc6cc74cefc00781406a80e9dfc81ddd1dee30072",
             "output_hash": "a68390b6ec2053d69691f82d547e373ffc29c33f46651c5fe17068455ea4507e",

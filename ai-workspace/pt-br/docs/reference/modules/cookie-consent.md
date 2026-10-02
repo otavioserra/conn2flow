@@ -10,7 +10,7 @@ sources:
   - gestor/modulos/cookie-consent/cookie-consent.widget.js
   - gestor/modulos/cookie-consent/cookie-consent.json
   - gestor/modulos/cookie-consent/resources
-  - gestor/db/migrations/20261002110000_create_presentations_and_cookie_consent_tables.php
+  - gestor/db/migrations/20261002110001_create_cookie_consent_table.php
 verified_at: ce9ba7ac
 ---
 

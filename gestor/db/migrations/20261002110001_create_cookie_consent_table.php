@@ -6,17 +6,15 @@ use Phinx\Db\Adapter\MysqlAdapter;
 use Phinx\Migration\AbstractMigration;
 
 /**
- * Tabelas dos widgets `presentations` (apresentações em slides) e `cookie-consent` (aviso e
- * preferências de cookies) — req-208 / BATCH-216.
+ * Tabela do widget `cookie-consent` (aviso e preferências de cookies) — req-208 / BATCH-216.
  *
  * Mesma estrutura de `galleries`: o registro guarda o HTML e o CSS do widget e as opções em
- * `fields_schema`. A coluna `project` já nasce aqui, porque as duas tabelas podem ser declaradas
- * como recurso de projeto (sync_resources) e a rotina de UPSERT marca nela o dono do registro.
+ * `fields_schema`. A coluna `project` já nasce aqui, porque a tabela pode ser declarada como
+ * recurso de projeto (sync_resources) e a rotina de UPSERT marca nela o dono do registro.
  */
-final class CreatePresentationsAndCookieConsentTables extends AbstractMigration
+final class CreateCookieConsentTable extends AbstractMigration
 {
     private const TABLES = [
-        'presentations' => 'id_presentations',
         'cookie_consent' => 'id_cookie_consent',
     ];
 

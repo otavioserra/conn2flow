@@ -243,7 +243,6 @@ function dashboard_gerar_svg_modulo($icon, $icon2 = null){
 		'chart line' => '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>',
 		// O nome do ícone no Fomantic é `chartline`, numa palavra só: `chart line` não desenha nada no menu.
 		'chartline' => '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>',
-		'tv' => '<rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline>',
 		'cookie bite' => '<circle cx="12" cy="12" r="10"></circle><circle cx="9" cy="9" r="1"></circle><circle cx="15" cy="14" r="1"></circle><circle cx="9" cy="15" r="1"></circle>',
 		// COMUNICAÇÃO
 		'envelope' => '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>',

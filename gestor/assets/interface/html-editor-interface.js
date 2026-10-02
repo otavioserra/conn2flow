@@ -2236,9 +2236,14 @@ $(document).ready(function () {
     // req-070 §1.2: a lista passa a ser parametrizada por módulo via gestor.html_editor.widget_js_include
     // (injetada pelo backend em html_editor_componente). Quando ausente, mantém o fallback com os 4
     // módulos do core para retrocompatibilidade.
-    const WIDGET_SCRIPT_MODULES = (gestor.html_editor && gestor.html_editor.widget_js_include)
-        ? gestor.html_editor.widget_js_include
-        : { 'galleries': true, 'publisher-index': true, 'menus': true, 'forms': true, 'presentations': true, 'cookie-consent': true };
+    // req-210: a lista de módulos com controlador vem do backend (`widget_js_modules`, pelo cadastro
+    // de widgets e pela existência do arquivo), para valer também para widget de projeto e de plugin.
+    // A lista fixa fica só como reserva para um backend que ainda não a envia.
+    const WIDGET_SCRIPT_MODULES = Object.assign({},
+        (gestor.html_editor && gestor.html_editor.widget_js_modules && Object.keys(gestor.html_editor.widget_js_modules).length)
+            ? gestor.html_editor.widget_js_modules
+            : { 'galleries': true, 'publisher-index': true, 'menus': true, 'forms': true, 'cookie-consent': true },
+        (gestor.html_editor && gestor.html_editor.widget_js_include) || {});
 
     // req-044 §3/§4: extrai as assinaturas de widgets (comentários e variáveis inline) presentes no
     // HTML do usuário, desduplicadas e na ordem de aparição. Espelha a detecção que o PHP faz no
@@ -2330,7 +2335,17 @@ $(document).ready(function () {
         return `<script src="${raiz}interface/pdf-viewer.js?v=${versao}"><\/script>\n`;
     }
 
+    // req-210: o que está entre os marcadores de um widget é mockup (ou uma renderização anterior) e o
+    // script do pré-visualizador o troca pelo widget renderizado. Só que o navegador começa a baixar
+    // as imagens do mockup assim que lê o documento, antes de o script rodar — e, com uma variável
+    // global no `src` (`@[[pagina#url-raiz]]@...`), pedia um endereço que não existe. O documento da
+    // prévia já sai com os marcadores vazios.
+    function esvaziarMarcadoresDeWidget(html) {
+        return String(html || '').replace(/(<!--\s*widgets#([\s\S]*?)\s*<\s*-->)[\s\S]*?(<!--\s*widgets#\2\s*>\s*-->)/gi, '$1$3');
+    }
+
     function previewHtmlConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui', extraParams = {}) {
+        htmlDoUsuario = esvaziarMarcadoresDeWidget(htmlDoUsuario);
         // req-040: script que renderiza os widgets (comentários) dentro do pré-visualizador.
         const widgetPreviewScript = `<script>(${widgetPreviewBootstrap.toString()})();<\/script>`;
         // req-160: o motor de captura precisa existir NESTE iframe.

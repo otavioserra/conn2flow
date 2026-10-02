@@ -149,10 +149,6 @@
     },
     {
         "perfil": "administradores",
-        "modulo": "presentations"
-    },
-    {
-        "perfil": "administradores",
         "modulo": "cookie-consent"
     }
 ]

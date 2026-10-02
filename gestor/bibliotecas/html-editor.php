@@ -916,6 +916,7 @@ function html_editor_componente($params = false){
 		'alvo' => $alvo,
 		'alvos_modelos' => isset($alvos_modelos)? $alvos_modelos : $alvo,
 		'widget_js_include' => isset($widget_js_include)? $widget_js_include : null,
+		'widget_js_modules' => html_editor_widget_js_modulos(),
 		'projectJavascriptTailwindcss' => isset($projectJavascriptTailwindcss)? $projectJavascriptTailwindcss : '',
 		'projectTailwindcssConfig' => isset($projectHtmlEditorTailwindcssConfig)? $projectHtmlEditorTailwindcssConfig : [],
 		'tailwindBrowserVersion' => html_editor_tailwind_browser_version(),
@@ -1302,13 +1303,60 @@ function html_editor_render_widget_signature($signature){
 	$sig = trim((string)$signature);
 	if($sig === '' || !preg_match('/^[a-zA-Z0-9_\-]+->[a-zA-Z0-9_\-]+\(.*\)$/', $sig)) return '';
 
+	$render = html_editor_widget_renderizar($sig);
+
+	return $render['css'].$render['html'];
+}
+
+/**
+ * Renderiza um widget como a página publicada o entrega, para as prévias do editor.
+ *
+ * No site, duas coisas acontecem fora do widget e faltavam aqui:
+ *  - o CSS autoral que ele registra (`gestor_pagina_recursos_incluir`) vai para o <head> da página;
+ *  - as variáveis globais do HTML dele (`@[[pagina#url-raiz]]@` no `src` de uma imagem) são
+ *    trocadas junto com as da página.
+ * Sem a primeira, widget com CSS próprio aparecia sem estilo; sem a segunda, a imagem pedia
+ * `/404#url-raiz]]@...`.
+ *
+ * @return array ['html' => string, 'css' => string] `css` são as tags <style> registradas na renderização.
+ */
+function html_editor_widget_renderizar($sig){
+	global $_GESTOR;
+
 	gestor_incluir_biblioteca('widgets');
 	$ajaxAnterior = isset($_GESTOR['ajax']) ? $_GESTOR['ajax'] : false;
 	$_GESTOR['ajax'] = false;
-	$out = widgets_get(Array('id' => $sig));
+	$cssAntes = isset($_GESTOR['css']) && is_array($_GESTOR['css']) ? count($_GESTOR['css']) : 0;
+	$html = widgets_get(Array('id' => $sig));
+	$css = isset($_GESTOR['css']) && is_array($_GESTOR['css']) ? implode('', array_slice($_GESTOR['css'], $cssAntes)) : '';
 	$_GESTOR['ajax'] = $ajaxAnterior;
 
-	return (string)$out;
+	return Array('html' => html_editor_resolver_variaveis((string)$html), 'css' => (string)$css);
+}
+
+/**
+ * Módulos que têm controlador público de widget (`<modulo>.widget.js`), pelo cadastro de widgets.
+ * A prévia do editor carrega o controlador dos widgets presentes na página; com uma lista fixa no
+ * JavaScript, widget de projeto ou de plugin ficava sem comportamento na prévia.
+ *
+ * @return array [modulo => true]
+ */
+function html_editor_widget_js_modulos(){
+	global $_GESTOR;
+
+	$modulos = Array();
+	$registros = banco_select(Array(
+		'tabela' => 'widgets',
+		'campos' => Array('id'),
+		'extra' => "WHERE status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'",
+	));
+	foreach($registros ?: Array() as $registro){
+		$id = (string)$registro['id'];
+		if(!preg_match('/^[a-z0-9][a-z0-9_-]*$/i', $id)) continue;
+		if(is_file($_GESTOR['modulos-path'].$id.'/'.$id.'.widget.js')) $modulos[$id] = true;
+	}
+
+	return $modulos;
 }
 
 // Resolve o valor renderizado de uma variável global pelo id. Retorna null quando desconhecida
@@ -1453,16 +1501,11 @@ function html_editor_ajax_widget_render(){
 
 	gestor_incluir_biblioteca('widgets');
 
-	// Renderizar em modo page-load (HTML estrutural completo do widget), não em modo AJAX.
-	$ajaxAnterior = isset($_GESTOR['ajax']) ? $_GESTOR['ajax'] : false;
-	$_GESTOR['ajax'] = false;
-	// O CSS autoral que o widget registra ao renderizar (`gestor_pagina_recursos_incluir`) vai junto:
-	// no site ele entra no <head> da página; no iframe da prévia não há quem o coloque lá, e widget
-	// com CSS próprio (apresentação, aviso de cookies) aparecia sem estilo.
-	$cssAntes = isset($_GESTOR['css']) && is_array($_GESTOR['css']) ? count($_GESTOR['css']) : 0;
-	$html = widgets_get(Array('id' => $signature));
-	$css = isset($_GESTOR['css']) && is_array($_GESTOR['css']) ? implode('', array_slice($_GESTOR['css'], $cssAntes)) : '';
-	$_GESTOR['ajax'] = $ajaxAnterior;
+	// Renderizar em modo page-load (HTML estrutural completo do widget), não em modo AJAX, com o
+	// CSS autoral e as variáveis globais resolvidas, como na página publicada.
+	$render = html_editor_widget_renderizar($signature);
+	$html = $render['html'];
+	$css = $render['css'];
 
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
