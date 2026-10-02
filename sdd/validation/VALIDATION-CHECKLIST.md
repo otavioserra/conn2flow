@@ -1,9 +1,20 @@
 # Validation Checklist
 
-## BATCH-217 — Quadro de slides, prévia de widgets, toque na galeria (req-209)
+## BATCH-218 — Tela de atualização no deploy e prévia de widgets completa (req-210)
 
-- [x] Quadro de slides: incluir (HTML e imagem), editar, duplicar, mover, excluir; gravar e reabrir pelo painel.
-- [x] Visualização do editor HTML da apresentação mostra os slides.
+- [x] Manutenção ligada: 503 com a tela e a logo, JSON para AJAX, CLI e `_api/` isentos.
+- [x] Tela volta sozinha ao endereço pedido; página já aberta mostra e retira o aviso.
+- [x] Manutenção vencida ou ilegível não bloqueia.
+- [x] Deploy do pipeline de projeto sem nenhum 500 (sondagem a cada segundo).
+- [x] Prévia do editor: controlador de widget de projeto carregado; nenhuma imagem com variável sem resolver.
+- [x] Módulo de apresentações retirado do core.
+- [ ] Manutenção no deploy por API exercitada num ambiente.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-218](../implementation/BATCH-218.md).
+
+## BATCH-217 — Prévia de widgets no editor, toque na galeria (req-209)
+
 - [x] Prévia do editor de páginas mostra o widget com CSS e controlador.
 - [x] Galeria: toque nos dois tipos de trilho.
 - [x] Docs em inglês com layout próprio; ícones válidos.
@@ -12,13 +23,11 @@
 
 Detalhes: [BATCH-217](../implementation/BATCH-217.md).
 
-## BATCH-216 — Módulos `presentations` e `cookie-consent` (req-208)
+## BATCH-216 — Módulo `cookie-consent` (req-208)
 
-- [x] Apresentação: slides por `data-slide`, controles conforme as opções, teclado, endereço `#slide-N`, escala e impressão.
-- [x] Cookies: aviso sem decisão, recusa com o mesmo peso do aceite, revogação, script por categoria, Consent Mode v2.
+- [x] Aviso sem decisão, recusa com o mesmo peso do aceite, revogação, script por categoria, Consent Mode v2.
 - [x] Saída escapada; endereço da política restrito; nenhum marcador sobrando.
-- [x] Painel: listagem, edição, pré-visualização e adição dos dois módulos abrem sem erro.
-- [x] 12 testes novos; suíte com a única falha anterior ao lote.
+- [x] Painel: listagem, edição, pré-visualização e adição abrem sem erro.
 - [ ] Gravação pelo formulário do painel exercitada no navegador.
 - [ ] Revisão humana.
 

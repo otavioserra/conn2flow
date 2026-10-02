@@ -1,6 +1,6 @@
 # BATCH-208 — Recuperação de arquivos do servidor (req-200)
 
-Execução da [req-200](../human-requests/req-200.md) na worktree `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req200`, branch `feat/req-200`.
+Execução da [req-200](../../human-requests/archive/req-200.md) na worktree `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req200`, branch `feat/req-200`.
 
 **Status:** `complete` (implementado pelo agente executor; revisado, mesclado no `main` e homologado no tenant pelo agente da req-198/199 em 2026-09-30; homologação humana pendente).
 

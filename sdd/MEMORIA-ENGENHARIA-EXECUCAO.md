@@ -16,25 +16,30 @@
 
 ## Tarefas recentes
 
-### 2026-10-02 — BATCH-217 (req-209): quadro de slides, prévia de widgets e toque
+### 2026-10-02 — BATCH-218 (req-210): manutenção no deploy, retirada de módulo e Lab compartilhado
 
-- **Propriedade CSS com variável não resolvida**: `--x: [[height]]px` é aceito, mas `height: var(--x, 600px)` vira inválido e cai no valor inicial, não no fallback. Modelo cru no editor precisa de regra própria.
+- **500 no deploy por SSH tinha duas causas**: sistema pela metade e `gestor.php` ilegível entre o `sudo rsync` (arquivo nasce `root`) e o `chown` do fim da etapa. `rsync --chown` fecha a segunda; a manutenção (`temp/maintenance.json`) cobre a primeira. Diagnóstico: `nginx/domains/<site>.error.log` no destino.
+- **`escapeshellarg` no Windows troca `"` e `%` por espaço.** Conteúdo com aspas vai para o destino em base64.
+- **Renomear migração mantendo a versão** deixa a cópia antiga no destino e o Phinx recusa ("Duplicate migration"): o `rsync` não apaga. Migração renomeada recebe versão nova.
+- **Módulo que sai do core** deixa `.min.js` no destino, e o `arquivo-estatico` serve o minificado quando ele existe. Remover as sobras no destino.
+- **Dois agentes publicando no mesmo Lab se desfazem**: o `rsync -u` não repõe arquivo que o outro entregou com data mais nova, e a retirada por dono marca `status='D'` no que a árvore de quem publica não entrega (componentes novos do outro lote foram retirados assim). Antes de publicar: `git worktree list` no core e no projeto, e as notas `*COORDENACAO-LAB*` do projeto. Com outro lote em validação, não rodar o pipeline; no máximo entregar arquivo que o outro não alterou.
+- **Sondar o deploy**: laço de `curl` a cada segundo na página e no cabeçalho `X-C2F-Maintenance`, contando os códigos.
+
+### 2026-10-02 — BATCH-217 (req-209): prévia de widgets e toque
+
 - **Prévia do editor de páginas**: o widget chega por AJAX (`html-editor-widget-render`). CSS autoral vai junto na resposta; controlador público precisa iniciar o que chega depois da carga (`MutationObserver`).
-- **`WIDGET_SCRIPT_MODULES`** em `html-editor-interface.js` é a lista dos módulos cujo `widget.js` entra na prévia. Módulo novo com controlador público entra ali.
 - **Fomantic**: o ícone é `chartline`; `chart line` não desenha nada. Conferir o nome em `assets/vendor/fomantic-ui/*/semantic.min.css`. O dashboard desenha o SVG pelo mesmo nome (`dashboard_gerar_svg_modulo`).
 - **Excluir e status pelo painel** agem por GET com `_csrf_token` na URL.
 - **JS extra de módulo**: `<modulo>.<tipo>.js` é servido em `<modulo>/<tipo>.js` (`gestor_pagina_javascript_incluir(['tipo' => …])`).
-- **`docs:build`**: `layout` aceita mapa por idioma; `tailwind_sources` na configuração entra em toda página de docs, mas multiplica o CSS do cabeçalho por página: no `conn2flow-site` o `PaginasData.json` foi de 67 MB a 167 MB e a opção foi desligada lá. Trocar o layout das docs recompila todas as páginas (5 a 10 min no Lab).
+- **`docs:build`**: `layout` aceita mapa por idioma; `tailwind_sources` na configuração entra em toda página de docs, mas multiplica o CSS do cabeçalho por página: num projeto o `PaginasData.json` foi de 67 MB a 167 MB e a opção foi desligada lá. Trocar o layout das docs recompila todas as páginas (5 a 10 min no Lab).
 
-### 2026-10-02 — BATCH-216 (req-208): módulos `presentations` e `cookie-consent`
+### 2026-10-02 — BATCH-216 (req-208): módulo `cookie-consent`
 
 - **Módulo de widget novo sem tocar no `html-editor.php`**: `alvo` e `alvos_modelos` com o id do módulo e `widget_js_include`; o alvo desconhecido cai no caminho padrão do editor.
 - **Tag do controlador público para a pré-visualização**: `gestor_pagina_javascript_incluir(['tipo' => 'widget', 'modulo_id' => …], false, true)` devolve a tag sem incluí-la na página.
-- **Contar marcação por regex pega comentário**: `<!-- cada <section data-slide> -->` contava como slide. Tirar os comentários antes.
 - **Ícone do módulo**: `icone` é Fomantic, `icone_tailwind` é Lucide.
 - **Teste com contagem fixa**: `Req203LanguageAgnosticResourcesTest` conta as linhas de `user_profiles_modules.json`; módulo novo pede ajuste.
 - **`resources:sync` no core termina com erro de `dist/` e saída 0** quando não há `PUBLIC_PATH`: é aviso, os recursos foram compilados.
-- **Gerador dos dois módulos**: fora do repositório (scratchpad da sessão); os arquivos gerados são a fonte daqui em diante.
 
 ### 2026-10-01 — BATCH-214 (req-206): deploy de projeto depois da req-202/203
 
