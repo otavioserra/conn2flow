@@ -1068,42 +1068,34 @@ $(document).ready(function () {
         return `<style data-c2f-css-role="layer-order">@layer ${ordem};</style>`;
     }
 
-    // req-156: includes de framework do EDITOR VISUAL (`editorHtmlVisual`).
+    // req-156 / req-212: includes de framework do EDITOR VISUAL (`editorHtmlVisual`).
     //
-    // Difere do preview por uma razão de produto: o editor injeta a própria interface DENTRO do
-    // iframe (`#html-editor-modal` é um modal Fomantic, e `html-editor.js` chama `.modal()` sobre
-    // ele). Simplesmente remover a folha, como o preview faz, deixaria o modal de edição de texto,
-    // imagem e código sem estilo. A folha precisa ficar — mas parar de reger o conteúdo.
+    // No documento Tailwind a folha do Fomantic NÃO entra. Medido em Chromium sobre a página real:
     //
-    // Medido em Chromium sobre a página real, contra o preview: são DUAS contaminações distintas, e
-    // cada uma exige um mecanismo próprio.
+    //   - sem camada, ela vence as utilities (título 72px -> 24px, peso 900 -> 700, texto do CTA
+    //     branco -> rgb(65,131,196)) e redefine a unidade `rem` (`html{font-size:14px}`: toda medida
+    //     do Tailwind encolhe por 14/16);
+    //   - dentro de uma camada abaixo das do Tailwind (a saída da req-156), o conteúdo fica certo,
+    //     mas o reset do Tailwind (`*{margin:0;padding:0;border:0 solid}`, camada `base`) passa a
+    //     vencer o Fomantic: o modal "Editar Elemento" saía sem espaçamento nem borda.
     //
-    //   1. CONFLITO DE CASCATA. Folha sem camada vence utilities em `@layer`, independentemente da
-    //      ordem: título 72px -> 24px, peso 900 -> 700, texto do CTA branco -> rgb(65,131,196).
-    //      Resolvido importando o Fomantic dentro de `@layer c2f-editor-chrome`.
-    //
-    //   2. UNIDADE `rem` REDEFINIDA. O Fomantic declara `html{font-size:14px}`. O Tailwind v4
-    //      dimensiona espaçamento, tipografia e raio em `rem`, então TODA medida encolhe por
-    //      exatamente 14/16 = 0,875: 72->63px, 128->112px, 48->42px, 16->14px. Nenhuma camada
-    //      corrige isso, porque não existe regra do Tailwind concorrendo por `html { font-size }` —
-    //      a do Fomantic vence por ausência de disputa. É preciso restaurar a raiz explicitamente.
-    //
-    // O reset fica FORA de camada de propósito: assim vence o Fomantic sem depender de ordem, e
-    // ainda perde para o CSS autoral do usuário, que é injetado depois e também sem camada.
+    // A interface do editor dentro do iframe não depende de folha de framework: sem o
+    // `#html-editor-modal` do Fomantic no documento, o `html-editor.js` monta o modal portátil, de
+    // estilos próprios, que o editor ao vivo da página pública já usa (`ensureFallbackModal`).
     function htmlEditorVisualFrameworkIncludes(framework) {
         const scripts = htmlEditorBaseScripts();
-        const fomanticCss = htmlEditorAssetUrl('fomantic-ui', 'semantic.min.css');
 
         if (framework !== 'tailwindcss') {
-            return `<link rel="stylesheet" href="${fomanticCss}">
+            return `<link rel="stylesheet" href="${htmlEditorAssetUrl('fomantic-ui', 'semantic.min.css')}">
             ${scripts}`;
         }
 
-        // `@import ... layer()` em vez de inlinar a folha: 1,7 MB por abertura do editor custaria
-        // mais que o problema que resolve, e o arquivo já vem do disco do próprio projeto.
-        return `<style data-c2f-css-role="editor-chrome">@import url("${fomanticCss}") layer(${HTML_EDITOR_CHROME_LAYER});</style>
-            <style data-c2f-css-role="editor-rem-reset">html{font-size:16px}</style>
-            ${scripts}`;
+        return scripts;
+    }
+
+    // req-212: o modal Fomantic só acompanha o documento que carrega a folha do Fomantic.
+    function htmlEditorVisualModalHtml(framework, modalHtml) {
+        return framework === 'tailwindcss' ? '' : modalHtml;
     }
 
     function tailwindPreviewIncludes() {
@@ -1184,7 +1176,9 @@ $(document).ready(function () {
     // Função para gerar o conteúdo da página do editor HTML visual.
     function editorHtmlVisualConteudo(htmlDoUsuario, cssDoUsuario, framework = 'fomantic-ui') {
         // Incluir o script e variáveis do editor HTML
-        const { htmlEditorModalHtml, htmlEditorVars, htmlEditorScriptPath } = window.HtmlEditorHelper.variablesEnvironment();
+        const ambiente = window.HtmlEditorHelper.variablesEnvironment();
+        const { htmlEditorVars, htmlEditorScriptPath } = ambiente;
+        const htmlEditorModalHtml = htmlEditorVisualModalHtml(framework, ambiente.htmlEditorModalHtml);
 
         // Incluir o CSS do usuário, se existir
         if (cssDoUsuario && cssDoUsuario.length > 0) {
@@ -1381,7 +1375,8 @@ $(document).ready(function () {
                         var imagepickConfig = html_editor.imagepick;
                         
                         // Handler para o botão de seleção de imagem
-                        $('._html-editor-imagepick-btn').on('click', function(e) {
+                        // O botão do modal portátil (req-212) é atendido pelo próprio motor.
+                        $('._html-editor-imagepick-btn').not('[data-c2f-he-own-pick]').on('click', function(e) {
                             e.preventDefault();
                             
                             // Comunicar com o pai para abrir o modal de seleção

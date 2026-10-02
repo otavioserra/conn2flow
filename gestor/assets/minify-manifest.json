@@ -70,9 +70,9 @@
         "minificado": 1296
     },
     "gestor/assets/interface/html-editor-interface.js": {
-        "sha1": "f15527fa39777ab51167c1fa9345049069ba8ce7",
-        "origem": 167203,
-        "minificado": 63567
+        "sha1": "57b561d23e6fe78fca405206b7e59a6c69201763",
+        "origem": 166627,
+        "minificado": 63560
     },
     "gestor/assets/interface/html-editor-modules.js": {
         "sha1": "7c5934089d8e0b3279282539f010b461ec4dcea6",
@@ -85,9 +85,9 @@
         "minificado": 12197
     },
     "gestor/assets/interface/html-editor.js": {
-        "sha1": "c1568df86e11f6fd7cb3faa71893ba5722ec56e6",
-        "origem": 357600,
-        "minificado": 189401
+        "sha1": "e8efa1645a40badecc730bdb4e17e9f798591d49",
+        "origem": 359114,
+        "minificado": 189979
     },
     "gestor/assets/interface/ia.js": {
         "sha1": "1d842ac569c32dcd8d7e090849c68b1519bc1d47",

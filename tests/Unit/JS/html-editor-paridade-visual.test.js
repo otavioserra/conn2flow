@@ -48,26 +48,22 @@ function extrairFuncao(nome, dependencias = '') {
 // Medido em Chromium sobre a página real, contra o preview: o Fomantic sem camada levava o título
 // de 72px para 24px, o peso de 900 para 700 e o texto do CTA de branco para rgb(65,131,196).
 describe('html-editor-interface.js — paridade visual do editor visual (req-156)', () => {
-  it('não deixa a folha do Fomantic sem camada no iframe Tailwind do editor visual', () => {
+  // req-212: rebaixada para uma camada, a folha perdia para o reset do Tailwind e o modal de edição
+  // saía sem espaçamento nem borda. No documento Tailwind ela não entra; o modal é o portátil.
+  it('não carrega a folha do Fomantic no iframe Tailwind do editor visual, nem em camada', () => {
     const includes = extrairFuncao('htmlEditorVisualFrameworkIncludes', AMBIENTE);
     const saida = includes('tailwindcss');
 
-    // A folha PRECISA continuar no documento: `#html-editor-modal` é um modal Fomantic, e
-    // `html-editor.js` chama `.modal()` sobre ele. O que não pode é ela reger o conteúdo.
-    expect(saida).toContain('semantic.min.css');
-    expect(saida).toContain('layer(c2f-editor-chrome)');
-    expect(saida).not.toMatch(/<link[^>]+semantic\.min\.css/);
+    expect(saida).not.toContain('semantic.min.css');
+    expect(saida).not.toContain('@import');
+    expect(saida).toContain('jquery.min.js');
   });
 
-  // `html{font-size:14px}` do Fomantic encolhe TODA medida `rem` do Tailwind por 14/16 = 0,875:
-  // 72->63px, 128->112px, 48->42px. Nenhuma camada corrige, porque o Tailwind não tem regra
-  // concorrendo por `html { font-size }` — a do Fomantic vence por ausência de disputa.
-  it('restaura a unidade rem que o Fomantic redefine, fora de camada', () => {
-    const includes = extrairFuncao('htmlEditorVisualFrameworkIncludes', AMBIENTE);
-    const saida = includes('tailwindcss');
+  it('só leva o modal Fomantic para o documento que carrega a folha do Fomantic', () => {
+    const modal = extrairFuncao('htmlEditorVisualModalHtml');
 
-    expect(saida).toContain('html{font-size:16px}');
-    expect(saida).not.toMatch(/@layer[^{]*\{[^}]*html\{font-size:16px\}/);
+    expect(modal('tailwindcss', '<div id="html-editor-modal"></div>')).toBe('');
+    expect(modal('fomantic-ui', '<div id="html-editor-modal"></div>')).toBe('<div id="html-editor-modal"></div>');
   });
 
   it('mantém o Fomantic regendo normalmente quando o framework é fomantic-ui', () => {
@@ -75,8 +71,7 @@ describe('html-editor-interface.js — paridade visual do editor visual (req-156
     const saida = includes('fomantic-ui');
 
     expect(saida).toMatch(/<link[^>]+semantic\.min\.css/);
-    expect(saida).not.toContain('layer(c2f-editor-chrome)');
-    expect(saida).not.toContain('html{font-size:16px}');
+    expect(saida).not.toContain('@import');
   });
 
   it('declara a ordem das camadas com o chrome do editor antes das do Tailwind', () => {

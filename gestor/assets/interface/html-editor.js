@@ -2873,7 +2873,7 @@ $(document).ready(function () {
                 // Item 3: input + botão do selecionador de imagens do servidor (admin-arquivos).
                 '<div style="display:flex;gap:6px;align-items:stretch;">' +
                 '<input id="element-src" type="text" style="flex:1 1 auto;min-width:0;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:14px sans-serif;">' +
-                '<button type="button" class="_html-editor-imagepick-btn" title="' + this.t('Selecionar imagem do servidor', 'Select image from server') + '" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;cursor:pointer;">' + this.svgIcon('folder open') + '</button>' +
+                '<button type="button" class="_html-editor-imagepick-btn" data-c2f-he-own-pick title="' + this.t('Selecionar imagem do servidor', 'Select image from server') + '" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;cursor:pointer;">' + this.svgIcon('folder open') + '</button>' +
                 '</div>' +
                 '</div>' +
                 '<div id="code-field" style="display:none;">' +
@@ -2897,7 +2897,18 @@ $(document).ready(function () {
             const btn = modal.querySelector('._html-editor-imagepick-btn');
             if (btn) {
                 // Alvo = input #element-src do modal de edição de imagem.
-                btn.addEventListener('click', (e) => { e.preventDefault(); this.imagePickerTarget = null; this.openLiveImagePicker(); });
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.imagePickerTarget = null;
+                    // req-212: no editor visual do painel (iframe, sem `raiz`) o seletor de arquivos
+                    // mora na janela pai, que devolve a escolha por `html-editor-imagepick-selected`.
+                    const cfg = (typeof html_editor !== 'undefined' && html_editor.imagepick) ? html_editor.imagepick : null;
+                    if (!this.raiz && cfg && window.parent !== window) {
+                        try { window.parent.postMessage(JSON.stringify({ action: 'html-editor-imagepick-open', config: cfg }), '*'); } catch (erro) { /* noop */ }
+                        return;
+                    }
+                    this.openLiveImagePicker();
+                });
             }
             if (this._liveImagePickBound) return;
             this._liveImagePickBound = true;
@@ -3726,6 +3737,7 @@ $(document).ready(function () {
                 case 'code': {
                     if (codeField) {
                         codeField.style.display = 'block';
+                        this.ensureModalCodeMirror(codeArea);
                         const formatted = this.formatHtml(element.outerHTML);
                         if (window.CodeMirrorHtmlEditor) {
                             window.CodeMirrorHtmlEditor.setValue(formatted);
@@ -3755,6 +3767,22 @@ $(document).ready(function () {
             this.observeModalResize();
             this.syncModalFieldSizes();
             if (this.editingType === 'code') setTimeout(() => this.syncModalFieldSizes(), 120);
+        }
+
+        // req-212: o modal portátil nasce com o motor, depois do `ready` em que o documento do editor
+        // visual procura o `#element-code`. Quem abre o campo de código garante o CodeMirror.
+        ensureModalCodeMirror(codeArea) {
+            if (window.CodeMirrorHtmlEditor || !window.CodeMirror || !codeArea) return;
+            window.CodeMirrorHtmlEditor = window.CodeMirror.fromTextArea(codeArea, {
+                lineNumbers: true,
+                lineWrapping: true,
+                styleActiveLine: true,
+                matchBrackets: true,
+                mode: 'htmlmixed',
+                htmlMode: true,
+                indentUnit: 4,
+                theme: 'tomorrow-night-bright'
+            });
         }
 
         // Ao redimensionar a caixa do modal (`.c2f-he-modal-box`, resize:both), os campos internos

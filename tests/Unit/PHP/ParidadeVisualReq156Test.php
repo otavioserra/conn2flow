@@ -168,15 +168,33 @@ final class ParidadeVisualReq156Test extends TestCase
 
     // ===== Isolamento do chrome do editor =====
 
-    public function testEditorVisualIsolaOFomanticEmCamadaERestauraAUnidadeRem(): void
+    /**
+     * req-212: no documento Tailwind a folha do Fomantic não entra, nem em camada. Rebaixada, ela
+     * perdia para o reset do Tailwind e o modal de edição saía sem espaçamento nem borda.
+     */
+    public function testEditorVisualTailwindNaoCarregaAFolhaDoFomanticNemOModalDele(): void
     {
         $js = self::ler('gestor/assets/interface/html-editor-interface.js');
         $inicio = strpos($js, 'function htmlEditorVisualFrameworkIncludes(');
         self::assertNotFalse($inicio);
-        $bloco = substr($js, $inicio, 1400);
+        $bloco = substr($js, $inicio, 500);
 
-        self::assertStringContainsString('layer(${HTML_EDITOR_CHROME_LAYER})', $bloco);
-        self::assertStringContainsString('html{font-size:16px}', $bloco);
+        self::assertStringNotContainsString('layer(', $bloco);
+        self::assertStringNotContainsString('@import', $bloco);
+        self::assertStringContainsString("framework !== 'tailwindcss'", $bloco);
+        self::assertStringContainsString("return framework === 'tailwindcss' ? '' : modalHtml;", $js);
+        self::assertStringContainsString('htmlEditorVisualModalHtml(framework, ambiente.htmlEditorModalHtml)', $js);
+    }
+
+    /** req-212: o modal portátil precisa do seletor de arquivos da janela pai e do CodeMirror. */
+    public function testModalPortatilAtendeOEditorVisualDoPainel(): void
+    {
+        $motor = self::ler('gestor/assets/interface/html-editor.js');
+
+        self::assertStringContainsString('data-c2f-he-own-pick', $motor);
+        self::assertStringContainsString("action: 'html-editor-imagepick-open'", $motor);
+        self::assertStringContainsString('ensureModalCodeMirror(codeArea)', $motor);
+        self::assertStringContainsString(".not('[data-c2f-he-own-pick]')", self::ler('gestor/assets/interface/html-editor-interface.js'));
     }
 
     public function testEditorVisualNaoInjetaMaisAFolhaSemCamada(): void
