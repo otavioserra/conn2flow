@@ -2823,6 +2823,18 @@ function gestor_componentes_incluir_pagina($params = false){
  *
  * @return bool
  */
+/** Distributed iframe cookies are host-only and partitioned by the embedding site. */
+function gestor_cookie_emitir($nome, $valor, array $opcoes) {
+	global $_GESTOR;
+	if (empty($_GESTOR['distributed-cookie'])) return setcookie($nome, $valor, $opcoes);
+	if (!gestor_cookie_is_secure()) return false;
+	$cookie = rawurlencode($nome) . '=' . rawurlencode($valor) . '; Path=/_distributed/; Secure; SameSite=None; Partitioned';
+	if (!empty($opcoes['httponly'])) $cookie .= '; HttpOnly';
+	if (!empty($opcoes['expires'])) $cookie .= '; Expires=' . gmdate('D, d M Y H:i:s', (int)$opcoes['expires']) . ' GMT';
+	header('Set-Cookie: ' . $cookie, false);
+	return true;
+}
+
 function gestor_cookie_is_secure(): bool
 {
 	global $_GESTOR;
@@ -2853,7 +2865,7 @@ function gestor_sessao_iniciar(){
 		gestor_incluir_biblioteca('seguranca');
 		$sessionId = seguranca_token_aleatorio(32);
 		
-		setcookie($_CONFIG['session-authname'], $sessionId, [
+		gestor_cookie_emitir($_CONFIG['session-authname'], $sessionId, [
 			'expires' => time() + $_CONFIG['session-lifetime'],
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
@@ -2984,7 +2996,7 @@ function gestor_sessao_del(){
 		"WHERE id_sessoes='".$id_sessoes."'"
 	);
 	
-	setcookie($_CONFIG['session-authname'], "", [
+	gestor_cookie_emitir($_CONFIG['session-authname'], "", [
 		'expires' => time() - 3600,
 		'path' => '/',
 		'domain' => $_SERVER['SERVER_NAME'],

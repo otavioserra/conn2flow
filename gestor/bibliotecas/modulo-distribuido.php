@@ -300,7 +300,7 @@ function modulo_distribuido_enviar(array $payload, array $config) {
 	$secret   = isset($config['secret']) ? (string)$config['secret'] : '';
 	$acao     = isset($config['acao']) ? (string)$config['acao'] : 'db';
 
-	if ($endpoint === '' || $slug === '') {
+	if ($endpoint === '' || $slug === '' || $secret === '') {
 		return ['status' => 'error', 'message' => 'Configuração distribuída incompleta (endpoint/slug).'];
 	}
 
@@ -319,10 +319,15 @@ function modulo_distribuido_enviar(array $payload, array $config) {
 	}
 
 	// Transporte injetável para testes (evita rede real).
+	try {
 	if (isset($config['transporte']) && is_callable($config['transporte'])) {
 		$bruto = call_user_func($config['transporte'], $url, $corpo, $headers);
 	} else {
 		$bruto = modulo_distribuido_http_post($url, $corpo, $headers, $config['timeout'] ?? 15);
+	}
+	} catch (\Throwable $e) {
+		error_log('MODULO-DISTRIBUIDO: transport failure');
+		$bruto = false;
 	}
 
 	if ($bruto === false || $bruto === null || $bruto === '') {
@@ -331,7 +336,7 @@ function modulo_distribuido_enviar(array $payload, array $config) {
 
 	$resposta = json_decode((string)$bruto, true);
 	if (!is_array($resposta)) {
-		return ['status' => 'error', 'message' => 'Resposta distribuída inválida (JSON).', 'raw' => substr((string)$bruto, 0, 500)];
+		return ['status' => 'error', 'message' => 'Resposta distribuída inválida (JSON).'];
 	}
 	return $resposta;
 }
@@ -351,14 +356,17 @@ function modulo_distribuido_http_post($url, $corpo, array $headers, $timeout = 1
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $corpo);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_TIMEOUT, (int)$timeout);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, (int)$timeout);
+	curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+	curl_setopt($ch, CURLOPT_TIMEOUT, max(1, min(30, (int)$timeout)));
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(1, min(5, (int)$timeout)));
 	$resposta = curl_exec($ch);
+	$status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 	if ($resposta === false) {
 		error_log('MODULO-DISTRIBUIDO: falha cURL para ' . $url . ': ' . curl_error($ch));
 	}
 	curl_close($ch);
-	return $resposta;
+	return $status >= 200 && $status < 300 ? $resposta : false;
 }
 
 /**
@@ -447,6 +455,7 @@ function modulo_distribuido_executar_local(array $payload, PDO $pdo) {
 		}
 
 		$affected = $pdo->exec($sql);
+		if ($affected === false) return ['status' => 'error', 'code' => 'distributed-db-failed'];
 		$insertId = 0;
 		if ($operacao === 'insert') {
 			$insertId = (int)$pdo->lastInsertId();
@@ -458,7 +467,8 @@ function modulo_distribuido_executar_local(array $payload, PDO $pdo) {
 			'insert_id'     => $insertId,
 		];
 	} catch (\Throwable $e) {
-		return ['status' => 'error', 'message' => 'Erro na execução local: ' . $e->getMessage()];
+		error_log('MODULO-DISTRIBUIDO: local database execution failed');
+		return ['status' => 'error', 'code' => 'distributed-db-failed'];
 	}
 }
 
@@ -473,13 +483,38 @@ function modulo_distribuido_executar_local(array $payload, PDO $pdo) {
  * @return bool true se aparenta ser uma instrução única e segura.
  */
 function modulo_distribuido_sql_segura($sql) {
-	$sql = (string)$sql;
-	// Remove literais de string (aspas simples e duplas) para não confundir o ';'.
-	$sem_literais = preg_replace('/\'(?:\\\\.|[^\'\\\\])*\'/s', "''", $sql);
-	$sem_literais = preg_replace('/"(?:\\\\.|[^"\\\\])*"/s', '""', $sem_literais);
-	$sem_literais = rtrim(trim($sem_literais), ';');
-	// Após remover o ';' final opcional, não pode restar mais nenhum ';'.
-	return strpos($sem_literais, ';') === false;
+	if (strpos((string)$sql, "\0") !== false) return false;
+	$sql = trim((string)$sql);
+	if ($sql === '' || strlen($sql) > 1048576 || strpos($sql, "\0") !== false) return false;
+	$normalizado = '';
+	$tamanho = strlen($sql);
+	for ($i = 0; $i < $tamanho; $i++) {
+		$c = $sql[$i];
+		if ($c === "'" || $c === '"' || $c === '`') {
+			$aspas = $c;
+			$fechado = false;
+			for ($i++; $i < $tamanho; $i++) {
+				if ($sql[$i] === '\\' && $aspas !== '`') { $i++; continue; }
+				if ($sql[$i] !== $aspas) continue;
+				if (($sql[$i + 1] ?? '') === $aspas) { $i++; continue; }
+				$fechado = true;
+				break;
+			}
+			if (!$fechado) return false;
+			$normalizado .= ' literal ';
+			continue;
+		}
+		// Reject comments, including executable MySQL comments, instead of stripping them.
+		if ($c === '#' || substr($sql, $i, 2) === '--' || substr($sql, $i, 2) === '/*') return false;
+		if ($c === ';') {
+			if (trim(substr($sql, $i + 1)) !== '') return false;
+			break;
+		}
+		$normalizado .= $c;
+	}
+	if (!preg_match('/^\s*(SELECT|INSERT|UPDATE|DELETE)\b/i', $normalizado)) return false;
+	// A signed CRUD channel must not expose files, server variables or other schemas.
+	return !preg_match('/\b(INTO\s+(OUTFILE|DUMPFILE)|LOAD_FILE|SLEEP|BENCHMARK|INFORMATION_SCHEMA|MYSQL|PERFORMANCE_SCHEMA|SYS)\b|@@/i', $normalizado);
 }
 
 // =========================== Roteamento da API distribuída
@@ -612,6 +647,7 @@ function modulo_distribuido_middleware_permissao(array $config, $token, $slug = 
 	$payload = [
 		'versao'    => 1,
 		'token'     => (string)$token,
+		'app_id'    => modulo_distribuido_config_get('modulo-distribuido.app-id', ''),
 		'modulo'    => $slug,
 		'timestamp' => time(),
 		'nonce'     => bin2hex(random_bytes(8)),
@@ -682,36 +718,18 @@ function modulo_distribuido_guardiao(array $config, array $opcoes = []) {
 }
 
 /**
- * Autentica (ativa) o usuário no central e retorna os tokens — fluxo de login distribuído.
- *
- * Envia usuario/senha ao endpoint 'signin' do central (assinado por HMAC) e devolve os
- * dados de token quando as credenciais são válidas. O ambiente distribuído guarda o
- * access_token retornado (ex.: em sessão) para as requisições subsequentes.
+ * Compatibilidade com callers antigos: o login por credenciais neste canal foi desativado.
+ * O fluxo vigente usa perfil-usuario e a troca de código de uso único.
  *
  * @param array  $config  Config do canal para o central (endpoint, secret, slug, transporte).
  * @param string $usuario Login do usuário.
  * @param string $senha   Senha em texto plano.
  *
- * @return array|false Dados dos tokens (access_token, refresh_token, ...) ou false.
+ * @return false
  */
 function modulo_distribuido_signin(array $config, $usuario, $senha) {
-	$payload = [
-		'versao'    => 1,
-		'usuario'   => (string)$usuario,
-		'senha'     => (string)$senha,
-		'timestamp' => time(),
-		'nonce'     => bin2hex(random_bytes(8)),
-	];
-
-	$cfg = array_merge($config, ['acao' => 'signin']);
-	$resposta = modulo_distribuido_enviar($payload, $cfg);
-
-	// api_response_success embrulha os dados em {status:'success', data:{access_token:...}}.
-	$dados = $resposta['data'] ?? $resposta;
-	if (is_array($dados) && !empty($dados['access_token'])) {
-		return $dados;
-	}
-	return false;
+    // Legacy callers cannot bypass the official sign-in and its second factor.
+    return false;
 }
 
 // =========================== Middleware central (autoridade de permissão)
@@ -740,7 +758,7 @@ function modulo_distribuido_middleware_central($token, $slug, array $opcoes = []
 			return null;
 		}
 		$dados = ((string)$tk !== '') ? oauth2_validar_token(['token' => (string)$tk]) : false;
-		if (!is_array($dados) || empty($dados)) {
+		if (!is_array($dados) || empty($dados) || ($dados['scope'] ?? '') !== 'distributed') {
 			return null;
 		}
 		return $dados['sub'] ?? ($dados['id_usuarios'] ?? null);
@@ -782,12 +800,11 @@ function modulo_distribuido_montar_url_iframe($endpoint_central, $slug, array $o
 	if (!empty($opcoes['opcao'])) {
 		$params['opcao'] = $opcoes['opcao'];
 	}
-	if (!empty($opcoes['token'])) {
-		$params['token'] = $opcoes['token'];
-	}
+	// OAuth credentials are exchanged server-to-server; never put them in iframe URLs.
 	if (!empty($opcoes['params']) && is_array($opcoes['params'])) {
 		$params = array_merge($params, $opcoes['params']);
 	}
+	unset($params['token'], $params['access_token'], $params['refresh_token']);
 
 	$query = http_build_query($params);
 	return $base . '/' . rawurlencode($modulo) . '/' . ($query !== '' ? '?' . $query : '');
@@ -990,8 +1007,23 @@ function modulo_distribuido_com_canal(callable $operacao, array $config) {
  *
  * @return string Token ou string vazia.
  */
-function modulo_distribuido_token_sessao($chave) {
+function modulo_distribuido_token_sessao($chave, $slug = null) {
 	if (function_exists('gestor_sessao_variavel')) {
+		$bundle = gestor_sessao_variavel($chave . '-bundle');
+		if (is_array($bundle)) {
+			if (($bundle['expires_at'] ?? 0) > time() + 30) return (string)($bundle['access_token'] ?? '');
+			if (!$slug || empty($bundle['refresh_token'])) return '';
+			$config = modulo_distribuido_canal_distribuido([], ['slug' => $slug]);
+			$resposta = modulo_distribuido_enviar(['modulo' => $slug, 'app_id' => modulo_distribuido_config_get('modulo-distribuido.app-id'),
+				'refresh_token' => $bundle['refresh_token'], 'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))],
+				array_merge($config, ['acao' => 'refresh']));
+			$envelope = $resposta['data'] ?? [];
+			$body = isset($envelope['body']) ? base64_decode($envelope['body'], true) : false;
+			$tokens = $body === false ? false : modulo_distribuido_validar_envelope($body, $envelope['signature'] ?? '', $config['secret'], $slug);
+			if (!$tokens || empty($tokens['access_token'])) return '';
+			modulo_distribuido_persistir_token($chave, $tokens);
+			return $tokens['access_token'];
+		}
 		$token = gestor_sessao_variavel($chave);
 		if (is_string($token)) {
 			return $token;
@@ -1019,6 +1051,8 @@ function modulo_distribuido_persistir_token($chave, array $tokens, $persistir = 
 	}
 	if (function_exists('gestor_sessao_variavel')) {
 		if (!empty($tokens['access_token'])) {
+			$tokens['expires_at'] = time() + (int)($tokens['expires_in'] ?? 0);
+			gestor_sessao_variavel($chave . '-bundle', $tokens);
 			gestor_sessao_variavel($chave, $tokens['access_token']);
 		}
 		if (!empty($tokens['refresh_token'])) {
@@ -1038,45 +1072,11 @@ function modulo_distribuido_persistir_token($chave, array $tokens, $persistir = 
  *
  * @return array Mapa chave => texto.
  */
-function modulo_distribuido_textos($lang = null, array $overrides = []) {
-	global $_GESTOR;
-	$lang = $lang ?: ($_GESTOR['linguagem-codigo'] ?? 'pt-br');
-
-	$dicionario = [
-		'pt-br' => [
-			'c2f-md-login-title'     => 'Ativar acesso',
-			'c2f-md-login-subtitle'  => 'Entre com suas credenciais para ativar este módulo neste site.',
-			'c2f-md-login-user'      => 'Usuário',
-			'c2f-md-login-pass'      => 'Senha',
-			'c2f-md-login-submit'    => 'Ativar e entrar',
-			'c2f-md-login-error'     => '',
-			'c2f-md-signin-action'   => '',
-			'c2f-md-noperm-title'    => 'Sem permissão de acesso',
-			'c2f-md-noperm-message'  => 'Seu usuário não tem permissão para acessar este módulo. Atualize o perfil de acesso ou entre em contato com o suporte caso já possua o plano correto.',
-			'c2f-md-noperm-support'  => 'Falar com o suporte',
-			'c2f-md-support-url'     => '#',
-			'c2f-md-iframe-title'    => 'Painel administrativo',
-			'c2f-md-login-invalido'  => 'Usuário ou senha inválidos.',
-		],
-		'en' => [
-			'c2f-md-login-title'     => 'Activate access',
-			'c2f-md-login-subtitle'  => 'Sign in with your credentials to activate this module on this site.',
-			'c2f-md-login-user'      => 'User',
-			'c2f-md-login-pass'      => 'Password',
-			'c2f-md-login-submit'    => 'Activate and sign in',
-			'c2f-md-login-error'     => '',
-			'c2f-md-signin-action'   => '',
-			'c2f-md-noperm-title'    => 'No access permission',
-			'c2f-md-noperm-message'  => 'Your user does not have permission to access this module. Update your access profile or contact support if you already have the correct plan.',
-			'c2f-md-noperm-support'  => 'Contact support',
-			'c2f-md-support-url'     => '#',
-			'c2f-md-iframe-title'    => 'Administrative panel',
-			'c2f-md-login-invalido'  => 'Invalid user or password.',
-		],
-	];
-
-	$textos = $dicionario[$lang] ?? $dicionario['pt-br'];
-	return array_merge($textos, $overrides);
+function modulo_distribuido_textos($lang = null, array $overrides = [], $resolver = null) {
+    $resolver = $resolver ?? function ($id) { return (string)gestor_variaveis(['id' => $id]); };
+    $textos = [];
+    foreach (['c2f-md-iframe-title', 'c2f-md-login-error', 'c2f-md-login-invalido', 'c2f-md-login-pass', 'c2f-md-login-submit', 'c2f-md-login-subtitle', 'c2f-md-login-title', 'c2f-md-login-user', 'c2f-md-noperm-message', 'c2f-md-noperm-support', 'c2f-md-noperm-title', 'c2f-md-signin-action', 'c2f-md-support-url', 'c2f-md-unavailable'] as $id) $textos[$id] = (string)$resolver($id);
+    return array_merge($textos, $overrides);
 }
 
 /**
@@ -1175,24 +1175,10 @@ function modulo_distribuido_render_estado($estado, $iframe_url = null) {
 function modulo_distribuido_app(array $config, array $opcoes = []) {
 	global $_GESTOR;
 
-	$chave = $opcoes['token-chave'] ?? (($config['slug'] ?? 'modulo') . '-token');
+	$chave = $opcoes['token-chave'] ?? 'modulo-distribuido-token';
 	$lang = $opcoes['lang'] ?? null;
 
-	// ===== Captura do submit de login/ativação (POST do form do componente).
-	// Autentica no central, guarda o access_token na sessão e o usa na mesma requisição.
-	$erro_login = '';
-	if (isset($_REQUEST['c2f-md-signin']) && isset($_REQUEST['usuario'], $_REQUEST['senha'])) {
-		$tokens = modulo_distribuido_signin($config, (string)$_REQUEST['usuario'], (string)$_REQUEST['senha']);
-		if (is_array($tokens) && !empty($tokens['access_token'])) {
-			$opcoes['token'] = $tokens['access_token'];
-			modulo_distribuido_persistir_token($chave, $tokens, $opcoes['persistir-token'] ?? null);
-		} else {
-			$textosErro = modulo_distribuido_textos($lang);
-			$erro_login = $opcoes['erro-login'] ?? $textosErro['c2f-md-login-invalido'];
-		}
-	}
-
-	$token = $opcoes['token'] ?? modulo_distribuido_token_sessao($chave);
+	$token = $opcoes['token'] ?? modulo_distribuido_token_sessao($chave, $config['slug'] ?? null);
 
 	$guarda = modulo_distribuido_guardiao($config, [
 		'token'         => $token,
@@ -1201,13 +1187,12 @@ function modulo_distribuido_app(array $config, array $opcoes = []) {
 		'params-iframe' => $opcoes['params-iframe'] ?? [],
 	]);
 	$estado = $guarda['estado'];
-
-	// Textos (i18n) com override do módulo; mensagem de erro de login quando houver.
-	$overridesTexto = $opcoes['textos'] ?? [];
-	if ($erro_login !== '') {
-		$overridesTexto['c2f-md-login-error'] = $erro_login;
+	if ($estado === 'login' && !isset($opcoes['html'])) {
+		$url = modulo_distribuido_login_url($config, implode('/', $_GESTOR['caminho'] ?? [$config['slug']]) . '/');
+		if ($url) gestor_redirecionar($url, '', true);
 	}
-	$textos = modulo_distribuido_textos($lang, $overridesTexto);
+
+	$textos = modulo_distribuido_textos($lang, $opcoes['textos'] ?? []);
 
 	// HTML do componente global (override direto em testes; senão via gestor_componente).
 	$componente_id = $opcoes['componente'] ?? 'modulo-distribuido-app';
@@ -1235,3 +1220,5 @@ function modulo_distribuido_app(array $config, array $opcoes = []) {
 	$guarda['html'] = $html;
 	return $guarda;
 }
+
+require_once __DIR__ . '/modulo-distribuido-protocolo.php';

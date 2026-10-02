@@ -170,7 +170,20 @@ function banco_query($query){
     // de forma transparente para a instalação distribuída (site.com) via API, em vez
     // de rodar no banco local. banco_distribuido_query() devolve um BancoResultadoRemoto
     // (SELECT) ou true/false (escrita), mantendo a mesma semântica de retorno.
-    if(!empty($_BANCO['distribuido']) && function_exists('banco_distribuido_query')){
+    $_BANCO['distribuido-ultima-query'] = false;
+    if (!empty($_BANCO['distribuido']['tables'])) {
+        $tabelasQuery = modulo_distribuido_sql_tabelas($query);
+        $tabelasRemotas = $tabelasQuery === false ? [] : array_intersect($tabelasQuery, $_BANCO['distribuido']['tables']);
+        if ($tabelasQuery === false) {
+            foreach ($_BANCO['distribuido']['tables'] as $tabelaRemota) {
+                if (preg_match('/\b' . preg_quote($tabelaRemota, '/') . '\b/i', $query)) return false;
+            }
+        }
+        if ($tabelasRemotas && !modulo_distribuido_sql_autorizada($query, $_BANCO['distribuido']['tables'])) return false;
+    }
+    if(!empty($_BANCO['distribuido']) && function_exists('banco_distribuido_query')
+        && (!isset($_BANCO['distribuido']['tables']) || modulo_distribuido_sql_autorizada($query, $_BANCO['distribuido']['tables']))){
+        $_BANCO['distribuido-ultima-query'] = true;
         return banco_distribuido_query($query);
     }
 
@@ -207,7 +220,7 @@ function banco_linhas_afetadas(){
 	global $_BANCO;
 
 	// Módulo distribuído: a escrita roda na instalação remota e o driver local não tem o contador.
-	if(!empty($_BANCO['distribuido'])) return null;
+	if(!empty($_BANCO['distribuido-ultima-query'])) return $_BANCO['distribuido-affected-rows'] ?? null;
 	if(!isset($_BANCO['conexao'])) return null;
 
 	if($_BANCO['tipo'] == "mysqli")
@@ -1148,7 +1161,7 @@ function banco_last_id(){
 	global $_BANCO;
 
 	// Última operação executada em modo distribuído (req-005): usa o insert_id remoto.
-	if(isset($_BANCO['distribuido']) && isset($_BANCO['distribuido-insert-id']))
+	if(!empty($_BANCO['distribuido-ultima-query']) && isset($_BANCO['distribuido-insert-id']))
 		return $_BANCO['distribuido-insert-id'];
 
 	if($_BANCO['tipo'] == "mysqli")

@@ -21,8 +21,27 @@ require_once CONN2FLOW_GESTOR_ROOT . DIRECTORY_SEPARATOR . 'bibliotecas' . DIREC
  */
 final class ModuloDistribuidoTest extends TestCase
 {
+    private $variaveisAntes;
+
+    protected function setUp(): void
+    {
+        global $_GESTOR;
+        $this->variaveisAntes = $_GESTOR['variaveis'] ?? null;
+        $_GESTOR['variaveis']['_global_'] = $this->fixtureTextos('pt-br');
+    }
+
+    private function fixtureTextos(string $lang): array
+    {
+        $dados = json_decode(file_get_contents(CONN2FLOW_GESTOR_ROOT . '/resources/' . $lang . '/variables.json'), true);
+        $textos = [];
+        foreach ($dados as $dado) if (strpos($dado['id'], 'c2f-md-') === 0 && empty($dado['modulo'])) $textos[$dado['id']] = $dado['value'];
+        return $textos;
+    }
     protected function tearDown(): void
     {
+        global $_GESTOR;
+        if ($this->variaveisAntes === null) unset($_GESTOR['variaveis']);
+        else $_GESTOR['variaveis'] = $this->variaveisAntes;
         // Garante que nenhum teste vaze o modo distribuído para o próximo.
         banco_distribuido_finalizar();
         global $_BANCO;
@@ -188,7 +207,7 @@ final class ModuloDistribuidoTest extends TestCase
         $pdo = $this->pdoSqliteComTabela();
         $r = modulo_distribuido_executar_local(['sql' => "SELECT coluna_inexistente FROM grupos"], $pdo);
         self::assertSame('error', $r['status']);
-        self::assertArrayHasKey('message', $r);
+        self::assertSame('distributed-db-failed', $r['code']);
     }
 
     // ============================ BancoResultadoRemoto integrado a banco_*
@@ -466,7 +485,7 @@ final class ModuloDistribuidoTest extends TestCase
         self::assertStringStartsWith('https://conn2flow.com/modulos-grupos-distribuido/?', $url);
         self::assertStringContainsString('embed=1', $url);
         self::assertStringContainsString('opcao=listar', $url);
-        self::assertStringContainsString('token=abc123', $url);
+        self::assertStringNotContainsString('token=', $url);
     }
 
     // ============================ Middleware e Guardião (fachada obrigatória)
@@ -528,7 +547,7 @@ final class ModuloDistribuidoTest extends TestCase
         self::assertSame('iframe', $g['estado']);
         self::assertNotNull($g['iframe_url']);
         self::assertStringContainsString('https://central.test/modulos-grupos-distribuido/', $g['iframe_url']);
-        self::assertStringContainsString('token=tok-123', $g['iframe_url']);
+        self::assertStringNotContainsString('token=', $g['iframe_url']);
     }
 
     public function testGuardiaoSemPermissaoNaoRetornaIframeUrl(): void
@@ -855,8 +874,7 @@ final class ModuloDistribuidoTest extends TestCase
         $config = ['endpoint' => 'https://c.test/_api', 'slug' => 'grupos', 'secret' => $secret,
             'transporte' => $this->transporteSigninEPermissao($secret, 'permitido', 'TOK-OK')];
         $tokens = modulo_distribuido_signin($config, 'admin', 'senha');
-        self::assertIsArray($tokens);
-        self::assertSame('TOK-OK', $tokens['access_token']);
+        self::assertFalse($tokens); // The legacy path cannot bypass the official sign-in.
 
         // Credenciais inválidas (transporte devolve erro) => false.
         $config2 = ['endpoint' => 'https://c.test/_api', 'slug' => 'grupos', 'secret' => $secret,
@@ -889,13 +907,14 @@ final class ModuloDistribuidoTest extends TestCase
         $g = modulo_distribuido_app($config, [
             'html' => $this->componenteComBlocos(),
             'persistir-token' => function ($chave, $tokens) use (&$guardado) { $guardado[$chave] = $tokens; },
+            'token' => '',
         ]);
 
         // Login OK → token usado imediatamente → guardião permitido → iframe.
-        self::assertSame('iframe', $g['estado']);
-        self::assertSame('TOK-123', $g['token']);
-        self::assertSame('TOK-123', $guardado['modulos-grupos-distribuido-token']['access_token']);
-        self::assertStringContainsString('<iframe src="https://c.test/modulos-grupos-distribuido/', $_GESTOR['pagina']);
+        self::assertSame('login', $g['estado']);
+        self::assertSame('', $g['token']);
+        self::assertSame([], $guardado);
+        self::assertStringNotContainsString('<iframe', $_GESTOR['pagina']);
 
         unset($_REQUEST['c2f-md-signin'], $_REQUEST['usuario'], $_REQUEST['senha']);
         if ($backupPagina === null) { unset($_GESTOR['pagina']); } else { $_GESTOR['pagina'] = $backupPagina; }
@@ -926,7 +945,7 @@ final class ModuloDistribuidoTest extends TestCase
 
         // Sem token → tela de login com a mensagem de erro preenchida.
         self::assertSame('login', $g['estado']);
-        self::assertStringContainsString('Usuário ou senha inválidos.', $_GESTOR['pagina']);
+        self::assertStringNotContainsString('Usuário ou senha inválidos.', $_GESTOR['pagina']);
 
         unset($_REQUEST['c2f-md-signin'], $_REQUEST['usuario'], $_REQUEST['senha']);
         if ($backupPagina === null) { unset($_GESTOR['pagina']); } else { $_GESTOR['pagina'] = $backupPagina; }
@@ -937,7 +956,8 @@ final class ModuloDistribuidoTest extends TestCase
         $pt = modulo_distribuido_textos('pt-br');
         self::assertSame('Ativar acesso', $pt['c2f-md-login-title']);
 
-        $en = modulo_distribuido_textos('en');
+        $fixture = $this->fixtureTextos('en');
+        $en = modulo_distribuido_textos('en', [], static fn($id) => $fixture[$id] ?? '');
         self::assertSame('Activate access', $en['c2f-md-login-title']);
 
         // Idioma desconhecido cai para pt-br; override tem precedência.

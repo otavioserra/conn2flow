@@ -418,11 +418,12 @@
     {
         "name": "Módulo Distribuído App",
         "id": "modulo-distribuido-app",
-        "version": "1.2",
+        "version": "1.6",
         "checksum": {
-            "html": "a78b816685fff38fb0512835cc046082",
-            "css": "79e0cc197910a30e3b71a9360318aa06",
-            "combined": "e7c0ea588105ebd32201323dfe4fe250"
+            "html": "782db5abd21c4dc9cbba01194d5f562d",
+            "css": "e0b4028541e31270e40621e59bcf65dc",
+            "css_precompiled": "",
+            "combined": "04b3f97f64a6d2c6f7b878dfc51a0ea7"
         }
     },
     {
@@ -517,6 +518,17 @@
             "css": "",
             "css_precompiled": "",
             "combined": "88cc86f3a9bbccacd0e9faa15a829b23"
+        }
+    },
+    {
+        "name": "Distributed Module Shell",
+        "id": "modulo-distribuido-shell",
+        "version": "1.1",
+        "checksum": {
+            "html": "ac0708f2237c6186c4f3060ddaa168f3",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "ac0708f2237c6186c4f3060ddaa168f3"
         }
     }
 ]

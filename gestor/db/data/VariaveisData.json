@@ -1017,6 +1017,132 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-login-title",
+        "valor": "Ativar acesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-login-subtitle",
+        "valor": "Entre com suas credenciais para ativar este módulo neste site.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-login-user",
+        "valor": "Usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-login-pass",
+        "valor": "Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-login-submit",
+        "valor": "Ativar e entrar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-login-error",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-signin-action",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-noperm-title",
+        "valor": "Sem permissão de acesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-noperm-message",
+        "valor": "Seu usuário não tem permissão para acessar este módulo. Atualize o perfil de acesso ou entre em contato com o suporte caso já possua o plano correto.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-noperm-support",
+        "valor": "Falar com o suporte",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-support-url",
+        "valor": "#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-iframe-title",
+        "valor": "Painel administrativo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-login-invalido",
+        "valor": "Usuário ou senha inválidos.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "c2f-md-unavailable",
+        "valor": "O serviço está temporariamente indisponível. Tente novamente em alguns instantes.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -2029,6 +2155,132 @@
         "modulo": null,
         "id": "html-editor-seo-meta-keywords-placeholder",
         "valor": "Comma separated. Ex: photography, session, studio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-login-title",
+        "valor": "Activate access",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-login-subtitle",
+        "valor": "Sign in with your credentials to activate this module on this site.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-login-user",
+        "valor": "User",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-login-pass",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-login-submit",
+        "valor": "Activate and sign in",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-login-error",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-signin-action",
+        "valor": "",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-noperm-title",
+        "valor": "No access permission",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-noperm-message",
+        "valor": "Your user does not have permission to access this module. Update your access profile or contact support if you already have the correct plan.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-noperm-support",
+        "valor": "Contact support",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-support-url",
+        "valor": "#",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-iframe-title",
+        "valor": "Administrative panel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-login-invalido",
+        "valor": "Invalid user or password.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "c2f-md-unavailable",
+        "valor": "The service is temporarily unavailable. Please try again shortly.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

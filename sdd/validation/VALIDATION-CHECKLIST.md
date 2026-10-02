@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-086 — REQ-092, infraestrutura distribuída (lote conjunto)
+
+- [x] Sign-in nativo, contexto de instalação e hook declarado depois do login completo.
+- [x] Troca/ticket de uso único, HMAC timing-safe, validade, nonces e rotação OAuth2.
+- [x] Bridge automática no módulo original; allowlist, SQL sem empilhamento e PDO dedicado.
+- [x] Regressão do bootstrap: página inicial HTTP 200 no E2E.
+- [x] PHPUnit: 1413 testes, 11214 asserções, zero erros/falhas; 4 skips e deprecações existentes.
+- [x] E2E real do módulo original de cupons com persistência remota, renovação, 1280/390 e zero erros JS/HTTP.
+- [ ] Revisão técnica/humana e integração na branch principal.
+
+[Relatório do core](../implementation/modulos-distribuidos/batch-086-infraestrutura-login-padrao-bridge-e-lab.md); evidências completas no lote correspondente do site.
+
 ## BATCH-217 — Quadro de slides, prévia de widgets, toque na galeria (req-209)
 
 - [x] Quadro de slides: incluir (HTML e imagem), editar, duplicar, mover, excluir; gravar e reabrir pelo painel.

@@ -1238,6 +1238,7 @@ function gestor_pagina_ultimas_operacoes(){
  * (gestor_dashboard_toolbar) usem exatamente o mesmo gate.
  */
 function gestor_dashboard_toolbar_ativo(){
+	if (!empty($GLOBALS['_GESTOR']['distributed-context'])) return false;
 	global $_GESTOR;
 
 	if(isset($_GESTOR['dashboard-toolbar-ativo'])) return $_GESTOR['dashboard-toolbar-ativo'];
@@ -1531,7 +1532,7 @@ function gestor_cookie_verificacao($exigirSessao = false){
 	$cookieId = seguranca_token_aleatorio(32);
 
 	if(!headers_sent()){
-		setcookie($_CONFIG['cookie-verify'], $cookieId, [
+		gestor_cookie_emitir($_CONFIG['cookie-verify'], $cookieId, [
 			'expires' => '0',
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
@@ -1776,7 +1777,7 @@ function gestor_permissao_token_processar(){
 	
 	// ===== Caso não valide, deletar cookie e retornar 'false'.
 	
-	setcookie($_CONFIG['cookie-authname'], "", [
+	gestor_cookie_emitir($_CONFIG['cookie-authname'], "", [
 		'expires' => time() - 3600,
 		'path' => '/',
 		'domain' => $_SERVER['SERVER_NAME'],
@@ -2954,7 +2955,9 @@ function gestor_roteador(){
 			}
 
 			if(is_file($module_path)){
-				require_once($module_path);
+				$canalDistribuido = modulo_distribuido_modulo_iniciar($modulo);
+				try { require_once($module_path); }
+				finally { if ($canalDistribuido) banco_distribuido_finalizar(); }
 			}
 
 			// ===== Incluir controladores de widgets na requisição AJAX.
@@ -2988,7 +2991,9 @@ function gestor_roteador(){
 				}
 
 				if(is_file($module_path)){
-					require_once($module_path);
+					$canalDistribuido = modulo_distribuido_modulo_iniciar($modulo);
+					try { require_once($module_path); }
+					finally { if ($canalDistribuido) banco_distribuido_finalizar(); }
 				}
 				
 				gestor_redirecionar_raiz();
@@ -3083,7 +3088,9 @@ function gestor_roteador(){
 			}
 
 			if(is_file($module_path)){
-				require_once($module_path);
+				$canalDistribuido = modulo_distribuido_modulo_iniciar($modulo);
+				try { require_once($module_path); }
+				finally { if ($canalDistribuido) banco_distribuido_finalizar(); }
 			}
 
 			// ===== Incluir componentes na página.
@@ -3323,6 +3330,8 @@ function gestor_config(){
 		}
 		
 		// req-188: caminho terminado em barra é página, nunca arquivo. Sem isto, `docs/whats-new/2.10/`
+		gestor_incluir_biblioteca('modulo-distribuido');
+		modulo_distribuido_prefixo_normalizar();
 		// tinha a "extensão" `10` e ia para o servidor de estáticos (404); `2.10.0/` escapava só porque
 		// a extensão `0` é falsa no PHP.
 		$_GESTOR['caminho-extensao'] = substr($_GESTOR['caminho-total'], -1) === '/'
@@ -3459,12 +3468,17 @@ function gestor_csrf_resposta_invalida(){
 
 function gestor_start(){
 	gestor_cabecalhos_seguranca();
+	gestor_incluir_biblioteca('modulo-distribuido');
 	gestor_config();
+	modulo_distribuido_cookie_contexto();
 	gestor_sessao_iniciar();
+	gestor_incluir_biblioteca('modulo-distribuido');
+	modulo_distribuido_central_rota();
 	gestor_incluir_biblioteca('seguranca');
 	if(!seguranca_csrf_requisicao_validar()){
 		gestor_csrf_resposta_invalida();
 	}
+	modulo_distribuido_proxy_rota();
 	gestor_roteador();
 }
 

@@ -5,8 +5,9 @@
  * Roda no mesmo core, na instalação central. Atende as requisições que a instalação
  * distribuída (site.com) emite para o canal `_api/modulo-distribuido/{slug}/{acao}`
  * relacionadas à AUTENTICAÇÃO/ATIVAÇÃO:
- *  - acao 'signin' : valida credenciais do usuário (via autenticacao.php) e devolve
- *                    os tokens de acesso e de renovação (OAuth2) para o distribuído.
+ *  - acao 'exchange': troca o código de uso único emitido pelo login padrão.
+ *  - acao 'iframe-ticket': autoriza a abertura do módulo original no iframe.
+ *  - acao 'signin': desativada (HTTP 410); o login usa perfil-usuario.
  *  - acao 'refresh': renova os tokens a partir de um refresh token válido.
  *
  * Também expõe helpers usados pelos MÓDULOS CENTRAIS para montar a configuração do
@@ -36,10 +37,12 @@ function api_module_central_handle(array $rota) {
 	// Corpo cru para validação de assinatura do canal.
 	$corpo_cru = file_get_contents('php://input');
 	$assinatura = $_SERVER['HTTP_X_C2F_SIGNATURE'] ?? '';
-	$secret = api_module_central_secret($slug);
+	$payload = json_decode((string)$corpo_cru, true);
+	$instalacao = is_array($payload) ? modulo_distribuido_instalacao($payload['app_id'] ?? '', $slug) : false;
+	$secret = $instalacao ? $instalacao['secret'] : api_module_central_secret($slug);
 
 	// A assinatura HMAC do canal autentica a instalação distribuída chamadora.
-	if ($secret === '' || !modulo_distribuido_verificar_assinatura($corpo_cru, $assinatura, $secret)) {
+	if ($secret === '' || !modulo_distribuido_validar_envelope($corpo_cru, $assinatura, $secret, $slug)) {
 		api_response_error('Assinatura HMAC inválida.', 401);
 	}
 
@@ -49,12 +52,37 @@ function api_module_central_handle(array $rota) {
 	}
 
 	switch ($acao) {
+		case 'exchange':
+			if (!$instalacao) api_response_error('distributed-installation-invalid', 403);
+			$registro = modulo_distribuido_registro_consumir($payload['code'] ?? '', 'login', $secret);
+			if (!$registro || ($registro['contexto']['app_id'] ?? '') !== $payload['app_id']
+				|| ($registro['contexto']['modulo'] ?? '') !== $slug
+				|| !is_string($payload['state'] ?? null)
+				|| !hash_equals($registro['contexto']['state'], $payload['state'])) api_response_error('distributed-exchange-invalid', 401);
+			$dados = array_merge($registro['tokens'], ['modulo' => $slug, 'state' => $payload['state'],
+				'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))]);
+			$body = json_encode($dados, JSON_UNESCAPED_SLASHES);
+			api_response_success(['body' => base64_encode($body), 'signature' => modulo_distribuido_assinar($body, $secret)]);
+			break;
+		case 'iframe-ticket':
+			if (!$instalacao) api_response_error('distributed-installation-invalid', 403);
+			gestor_incluir_biblioteca('oauth2');
+			gestor_incluir_biblioteca('autenticacao');
+			$permissao = modulo_distribuido_middleware_central($payload['token'] ?? '', $slug);
+			$route = $payload['route'] ?? '';
+			if ($permissao['estado'] !== 'permitido' || !is_string($route)
+				|| !preg_match('~^' . preg_quote($slug, '~') . '/[a-zA-Z0-9_/-]*$~D', $route)
+				|| strpos($route, '//') !== false) api_response_error('distributed-route-denied', 403);
+			$ticket = modulo_distribuido_registro_emitir('iframe', ['id_usuarios' => $permissao['id_usuarios'],
+				'app_id' => $payload['app_id'], 'modulo' => $slug, 'route' => $route, 'token' => $payload['token']], $secret, 60);
+			api_response_success(['ticket' => $ticket]);
+			break;
 		case 'signin':
 			api_module_central_signin($payload, $slug);
 			break;
 
 		case 'refresh':
-			api_module_central_refresh($payload);
+			api_module_central_refresh($payload, $secret, $slug);
 			break;
 
 		case 'permissao':
@@ -67,42 +95,10 @@ function api_module_central_handle(array $rota) {
 }
 
 /**
- * Autentica o usuário do módulo distribuído e devolve os tokens (acesso + renovação).
- *
- * Autenticação = IDENTIDADE: o token é emitido para QUALQUER usuário válido no sistema,
- * independentemente de permissão a este ou àquele módulo. O controle de permissão por
- * módulo NÃO ocorre aqui — é aplicado como middleware por requisição (endpoint 'permissao'
- * + api_module_central_permissao), permitindo mostrar a página de "sem permissão" no
- * ambiente distribuído sem impedir o login.
- *
- * @param array  $payload Deve conter 'usuario' e 'senha'.
- * @param string $slug    Slug do módulo alvo (da rota) — mantido por assinatura, não bloqueia.
- *
- * @return void
+ * Tombstone do endpoint legado. A autenticação ocorre no login padrão do perfil-usuario.
  */
 function api_module_central_signin(array $payload, $slug = '') {
-	$usuario = isset($payload['usuario']) ? (string)$payload['usuario'] : '';
-	$senha   = isset($payload['senha']) ? (string)$payload['senha'] : '';
-
-	if ($usuario === '' || $senha === '') {
-		api_response_error('Usuário e senha são obrigatórios.', 400);
-	}
-
-	gestor_incluir_biblioteca('autenticacao');
-
-	// Validação de credenciais (identidade).
-	$validacao = autenticacao_distribuido_validar_credenciais($usuario, $senha);
-	if (!$validacao['valido']) {
-		api_response_error($validacao['mensagem'] ?? 'Credenciais inválidas.', 401);
-	}
-
-	// Emissão dos tokens de acesso e renovação (sempre que o usuário é válido).
-	$tokens = autenticacao_distribuido_gerar_tokens($validacao['id_usuarios']);
-	if (!$tokens) {
-		api_response_error('Falha ao gerar tokens de acesso.', 500);
-	}
-
-	api_response_success($tokens, 'Autenticação distribuída bem-sucedida');
+	api_response_error('distributed-official-signin-required', 410);
 }
 
 /**
@@ -149,19 +145,37 @@ function api_module_central_permissao(array $payload, $slug = '') {
  *
  * @return void
  */
-function api_module_central_refresh(array $payload) {
+function api_module_central_refresh(array $payload, $secret, $slug) {
+	global $_GESTOR;
 	$refresh = isset($payload['refresh_token']) ? (string)$payload['refresh_token'] : '';
 	if ($refresh === '') {
 		api_response_error('refresh_token é obrigatório.', 400);
 	}
 
 	gestor_incluir_biblioteca('oauth2');
-	$novos = oauth2_renovar_token(['refresh_token' => $refresh]);
+	gestor_incluir_biblioteca('autenticacao');
+	$publicKey = @file_get_contents($_GESTOR['openssl-path'] . 'publica.key');
+	$claims = $publicKey ? autenticacao_validar_jwt_chave_publica(['token' => $refresh,
+		'chavePublica' => $publicKey, 'retornarPayloadCompleto' => true]) : false;
+	if (!$claims || ($claims['token_type'] ?? '') !== 'refresh' || ($claims['scope'] ?? '') !== 'distributed') {
+		api_response_error('distributed-refresh-scope-invalid', 401);
+	}
+	try {
+		$stmt = modulo_distribuido_pdo()->prepare('INSERT INTO distributed_exchanges (id,kind,payload,expires_at,consumed) VALUES (?,?,?,?,1)');
+		$stmt->execute([hash_hmac('sha256', 'refresh:' . $refresh, $secret), 'refresh', '', (int)$claims['exp']]);
+	} catch (\Throwable $e) {
+		api_response_error('distributed-refresh-used', 401);
+	}
+	$novos = oauth2_renovar_token(['refresh_token' => $refresh, 'scope' => 'distributed']);
 	if (!$novos) {
 		api_response_error('Refresh token inválido ou expirado.', 401);
 	}
 
-	api_response_success($novos, 'Tokens renovados com sucesso');
+	$novos['modulo'] = $slug;
+	$novos['timestamp'] = time();
+	$novos['nonce'] = bin2hex(random_bytes(16));
+	$body = json_encode($novos, JSON_UNESCAPED_SLASHES);
+	api_response_success(['body' => base64_encode($body), 'signature' => modulo_distribuido_assinar($body, $secret)]);
 }
 
 /**

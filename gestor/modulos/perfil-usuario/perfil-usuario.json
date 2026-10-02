@@ -1,5 +1,5 @@
 {
-    "versao": "1.7.2",
+    "versao": "1.7.3",
     "bibliotecas": [
         "interface",
         "html",
@@ -1823,6 +1823,17 @@
                         "css_precompiled": "",
                         "combined": "deaab732b308719b1f11eb1efe5d3b2a"
                     }
+                },
+                {
+                    "name": "Distributed Login Context",
+                    "id": "perfil-usuario-distribuido-contexto",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "0336b5df220e110d897957621f3716c2",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "0336b5df220e110d897957621f3716c2"
+                    }
                 }
             ]
         },
@@ -2398,6 +2409,17 @@
                         "css": "",
                         "css_precompiled": "",
                         "combined": "deaab732b308719b1f11eb1efe5d3b2a"
+                    }
+                },
+                {
+                    "name": "Distributed Login Context",
+                    "id": "perfil-usuario-distribuido-contexto",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "0336b5df220e110d897957621f3716c2",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "0336b5df220e110d897957621f3716c2"
                     }
                 }
             ],
@@ -3635,5 +3657,20 @@
             ]
         }
     },
-    "asset_version": "389bb3f15969eb05"
+    "asset_version": "389bb3f15969eb05",
+    "hooks": {
+        "controllers": {
+            "perfil-usuario": "perfil-usuario.hooks.php"
+        },
+        "actions": {
+            "perfil-usuario": {
+                "login.distribuido": {
+                    "callback": "perfil_usuario_distribuido_login_hook",
+                    "prioridade": 5,
+                    "habilitado": 1
+                }
+            }
+        },
+        "filters": []
+    }
 }

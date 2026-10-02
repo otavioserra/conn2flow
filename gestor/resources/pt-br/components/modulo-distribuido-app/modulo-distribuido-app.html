@@ -11,14 +11,7 @@
 			<h2 class="c2f-md-title">#c2f-md-login-title#</h2>
 			<p class="c2f-md-text">#c2f-md-login-subtitle#</p>
 			<div class="c2f-md-error">#c2f-md-login-error#</div>
-			<form class="c2f-md-form" method="post" action="#c2f-md-signin-action#" data-c2f-md-form="signin">
-				<label class="c2f-md-label" for="c2f-md-user">#c2f-md-login-user#</label>
-				<input class="c2f-md-input" type="text" id="c2f-md-user" name="usuario" autocomplete="username" required>
-				<label class="c2f-md-label" for="c2f-md-pass">#c2f-md-login-pass#</label>
-				<input class="c2f-md-input" type="password" id="c2f-md-pass" name="senha" autocomplete="current-password" required>
-				<input type="hidden" name="c2f-md-signin" value="1">
-				<button class="c2f-md-btn c2f-md-btn-primary" type="submit">#c2f-md-login-submit#</button>
-			</form>
+			<a class="c2f-md-btn c2f-md-btn-primary" href="#c2f-md-signin-action#">#c2f-md-login-submit#</a>
 		</div>
 	</div>
 	<!-- login > -->
@@ -36,7 +29,7 @@
 
 	<!-- iframe < -->
 	<div class="c2f-md-screen c2f-md-iframe-screen">
-		<iframe class="c2f-md-iframe" src="#iframe-src#" title="#c2f-md-iframe-title#" loading="lazy"></iframe>
+		<iframe class="c2f-md-iframe" src="#iframe-src#" title="#c2f-md-iframe-title#" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-forms allow-same-origin allow-downloads"></iframe>
 	</div>
 	<!-- iframe > -->
 

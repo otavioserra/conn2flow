@@ -592,5 +592,75 @@
         "id": "html-editor-seo-meta-keywords-placeholder",
         "value": "Comma separated. Ex: photography, session, studio",
         "type": "string"
+    },
+    {
+        "id": "c2f-md-login-title",
+        "value": "Activate access",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-subtitle",
+        "value": "Sign in with your credentials to activate this module on this site.",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-user",
+        "value": "User",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-pass",
+        "value": "Password",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-submit",
+        "value": "Activate and sign in",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-error",
+        "value": "",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-signin-action",
+        "value": "",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-noperm-title",
+        "value": "No access permission",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-noperm-message",
+        "value": "Your user does not have permission to access this module. Update your access profile or contact support if you already have the correct plan.",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-noperm-support",
+        "value": "Contact support",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-support-url",
+        "value": "#",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-iframe-title",
+        "value": "Administrative panel",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-invalido",
+        "value": "Invalid user or password.",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-unavailable",
+        "value": "The service is temporarily unavailable. Please try again shortly.",
+        "type": "string"
     }
 ]
