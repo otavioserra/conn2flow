@@ -42,6 +42,12 @@ CONTROLS (conditional blocks; the engine keeps or removes them according to the 
 
 The `dot-item` block is repeated once per slide. Do not write the dots by hand or number the slides: counting is automatic.
 
+IMAGE SLIDE:
+A slide that is just an image uses `data-slide-type="image"` and an `<img class="c2f-slide-image" data-fit="contain">` (or `data-fit="cover"` to fill the slide, possibly cropping). The model CSS handles the size.
+
+SLIDE TITLE:
+`data-title="..."` on the section names the slide in the slide board of the panel. It does not show in the presentation.
+
 JUMPING BETWEEN SLIDES:
 For a button or link inside a slide to lead to another one, use `data-c2f-deck-goto="N"`, with N starting at zero. Do not use `onclick` or global functions.
 

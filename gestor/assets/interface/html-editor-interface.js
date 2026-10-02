@@ -2217,7 +2217,11 @@ $(document).ready(function () {
                         jq.ajax({
                             type: 'POST', url: url, dataType: 'json', data: data,
                             headers: csrf ? { 'X-CSRF-Token': csrf } : {},
-                            success: function (resp) { if (resp && resp.status === 'Ok' && resp.data) boxEl.innerHTML = resp.data.html || ''; },
+                            success: function (resp) {
+                                if (!resp || resp.status !== 'Ok' || !resp.data) return;
+                                // O CSS autoral do widget vem junto e fica dentro da caixa do widget: some com ela.
+                                boxEl.innerHTML = (resp.data.css || '') + (resp.data.html || '');
+                            },
                             error: function () { }
                         });
                     }
@@ -2234,7 +2238,7 @@ $(document).ready(function () {
     // módulos do core para retrocompatibilidade.
     const WIDGET_SCRIPT_MODULES = (gestor.html_editor && gestor.html_editor.widget_js_include)
         ? gestor.html_editor.widget_js_include
-        : { 'galleries': true, 'publisher-index': true, 'menus': true, 'forms': true };
+        : { 'galleries': true, 'publisher-index': true, 'menus': true, 'forms': true, 'presentations': true, 'cookie-consent': true };
 
     // req-044 §3/§4: extrai as assinaturas de widgets (comentários e variáveis inline) presentes no
     // HTML do usuário, desduplicadas e na ordem de aparição. Espelha a detecção que o PHP faz no
@@ -2251,7 +2255,9 @@ $(document).ready(function () {
         };
         let m;
         // const reComentario = /<!--\s*widgets#([\s\S]+?)\s*<\s*-->/gi;
-        const reComentario = /<!--\s*widgets#([\s\S]*?)\s*<\s*-->([\s\S]?)<!--\s*widgets#\1\s*>\s-->/gi;
+        // O miolo do marcador pode ser vazio ou um mockup inteiro. Aceitando no máximo um caractere ali,
+        // widget com mockup não era detectado e o controlador dele não entrava na prévia.
+        const reComentario = /<!--\s*widgets#([\s\S]*?)\s*<\s*-->([\s\S]*?)<!--\s*widgets#\1\s*>\s*-->/gi;
         while ((m = reComentario.exec(html)) !== null) push(m[1]);
         const reVariavel = /@?\[\[widgets#([\s\S]+?)\]\]@?/gi;
         while ((m = reVariavel.exec(html)) !== null) push(m[1]);

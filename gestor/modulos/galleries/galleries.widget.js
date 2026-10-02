@@ -106,6 +106,74 @@ $(document).ready(function () {
         // Pausa o auto-play enquanto o cursor está sobre a galeria.
         $gallery.on('mouseenter', stopAutoplay).on('mouseleave', restartAutoplay);
 
+        // ===== Toque (req-209)
+        //
+        // Dois casos, conforme o modelo:
+        //  - trilho com rolagem horizontal própria (`overflow-x: auto|scroll`, os modelos do core): o
+        //    navegador já desliza com o dedo. Faltava acompanhar: depois de um deslize, o slide atual, o
+        //    pontinho e as setas continuavam no slide antigo, e o auto-play puxava a galeria de volta.
+        //  - trilho sem rolagem (`overflow: hidden`, comum em modelo de projeto): o dedo não fazia nada.
+        //    O deslize horizontal passa a chamar anterior/próximo.
+        var wrapperEl = $wrapper.get(0);
+        var overflowX = window.getComputedStyle ? window.getComputedStyle(wrapperEl).overflowX : '';
+        var rolagemNativa = (overflowX === 'auto' || overflowX === 'scroll');
+        var tocando = false;
+
+        function slideMaisProximo() {
+            var pos = $wrapper.scrollLeft();
+            var melhor = 0;
+            var distancia = Infinity;
+            for (var i = 0; i < total; i++) {
+                var d = Math.abs(slideOffset(i) - pos);
+                if (d < distancia) { distancia = d; melhor = i; }
+            }
+            return melhor;
+        }
+
+        if (rolagemNativa) {
+            var sincronia = null;
+            $wrapper.on('scroll', function () {
+                if (sincronia) clearTimeout(sincronia);
+                sincronia = setTimeout(function () {
+                    // Durante a animação das setas o destino já é conhecido: só o deslize do dedo muda o atual.
+                    if ($wrapper.is(':animated')) return;
+                    var indice = slideMaisProximo();
+                    if (indice !== current) {
+                        current = indice;
+                        setActiveDot(indice);
+                    }
+                }, 120);
+            });
+            wrapperEl.addEventListener('touchstart', function () { tocando = true; stopAutoplay(); }, { passive: true });
+            wrapperEl.addEventListener('touchend', function () { tocando = false; restartAutoplay(); }, { passive: true });
+            wrapperEl.addEventListener('touchcancel', function () { tocando = false; restartAutoplay(); }, { passive: true });
+        } else {
+            var inicioX = 0;
+            var inicioY = 0;
+            // A rolagem vertical da página continua com o navegador; o gesto horizontal fica com a galeria.
+            wrapperEl.style.touchAction = 'pan-y';
+            wrapperEl.addEventListener('touchstart', function (e) {
+                if (e.touches.length !== 1) return;
+                tocando = true;
+                inicioX = e.touches[0].clientX;
+                inicioY = e.touches[0].clientY;
+                stopAutoplay();
+            }, { passive: true });
+            wrapperEl.addEventListener('touchend', function (e) {
+                if (!tocando) return;
+                tocando = false;
+                var toque = e.changedTouches[0];
+                var dx = toque.clientX - inicioX;
+                var dy = toque.clientY - inicioY;
+                // Deslize: mais de 40 px na horizontal e mais horizontal que vertical.
+                if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                    if (dx < 0) next(); else prev();
+                }
+                restartAutoplay();
+            }, { passive: true });
+            wrapperEl.addEventListener('touchcancel', function () { tocando = false; restartAutoplay(); }, { passive: true });
+        }
+
         // Estado inicial (sem animação) e início do auto-play.
         goTo(0, false);
         startAutoplay();

@@ -16,7 +16,7 @@
         "data_criacao": "data_criacao",
         "data_modificacao": "data_modificacao"
     },
-    "asset_version": "2bd70e2a46fcd97c",
+    "asset_version": "ed57bf001dfa6592",
     "resources": {
         "pt-br": {
             "widgets": [
@@ -51,12 +51,12 @@
                     "id": "presentations-deck",
                     "target": "presentations",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "39eee5c19f3fbb6daa3b9e84e48d93cc",
-                        "css": "e7ad9460132d06a2bea5e82c5fc708c9",
+                        "css": "63dc9cc6d56d78f6a59ff3a87ed2ddeb",
                         "css_precompiled": "",
-                        "combined": "cb74646a725e26c6c2604df7282fcda2"
+                        "combined": "7bd863e7c0ae5632729a3945b2b05bd6"
                     }
                 }
             ],
@@ -84,12 +84,12 @@
                     "path": "presentations/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "686cb937f67d760ea7e0940ea9f910fc",
-                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "html": "fc86c72274c9245f19de6993c846f1cb",
+                        "css": "e874cfbc945e1e34fb35aa4d266edba3",
                         "css_precompiled": "",
-                        "combined": "5905498d5d4815b2fb7839afc3fb4908"
+                        "combined": "861ee0613390617f01ac9d7d874b568e"
                     }
                 },
                 {
@@ -99,12 +99,12 @@
                     "path": "presentations/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "be26af0d8062ccd977f667d294008124",
-                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "html": "e0436e0fdb7fad1f041600b6dd44c761",
+                        "css": "e874cfbc945e1e34fb35aa4d266edba3",
                         "css_precompiled": "",
-                        "combined": "98994923eded40d36da2751be7194f00"
+                        "combined": "fcda21fd8b5e882f6d33477ea5cda293"
                     }
                 },
                 {
@@ -114,12 +114,12 @@
                     "path": "presentations/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "5c9299861bd585cf74493bc3dbcdb4a4",
-                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "html": "8d3bfc4c0c59f5db7653d66bc4e55880",
+                        "css": "e874cfbc945e1e34fb35aa4d266edba3",
                         "css_precompiled": "",
-                        "combined": "7db5519d111e6e88d83884d4d50797b9"
+                        "combined": "80482049f7589309346a882c1052105e"
                     }
                 }
             ],
@@ -188,6 +188,151 @@
                     "id": "js-list-remove",
                     "value": "Remover",
                     "type": "string"
+                },
+                {
+                    "id": "js-slide-untitled",
+                    "value": "Slide sem título",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-type-html",
+                    "value": "HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-type-image",
+                    "value": "Imagem",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-edit",
+                    "value": "Editar",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-duplicate",
+                    "value": "Duplicar",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-delete",
+                    "value": "Excluir",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-delete-confirm",
+                    "value": "Clique de novo para excluir",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-move-left",
+                    "value": "Mover para antes",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-move-right",
+                    "value": "Mover para depois",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-new-title",
+                    "value": "Novo slide",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-new-heading",
+                    "value": "Título do slide",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-new-text",
+                    "value": "Texto do slide.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-modal-title",
+                    "value": "Editar slide",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-title",
+                    "value": "Título (aparece só no painel)",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-classes",
+                    "value": "Classes da seção",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-html",
+                    "value": "HTML do slide",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-image",
+                    "value": "Imagem",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-alt",
+                    "value": "Texto alternativo",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-fit",
+                    "value": "Ajuste da imagem",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-fit-contain",
+                    "value": "Inteira, sem cortar",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-fit-cover",
+                    "value": "Preencher o slide, pode cortar",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-change-image",
+                    "value": "Trocar imagem",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-save",
+                    "value": "Aplicar",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-cancel",
+                    "value": "Cancelar",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-count",
+                    "value": "%n slide(s)",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-empty",
+                    "value": "Nenhum slide. Adicione um slide em HTML ou de imagem.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-not-image",
+                    "value": "O arquivo selecionado não é uma imagem.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-no-stage",
+                    "value": "O HTML não tem o palco (data-c2f-deck-stage). Escolha um modelo antes de adicionar slides.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-modal-unavailable",
+                    "value": "O gerenciador de arquivos não está disponível nesta tela.",
+                    "type": "string"
                 }
             ]
         },
@@ -224,12 +369,12 @@
                     "id": "presentations-deck",
                     "target": "presentations",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "c839b9b92418127c52da97bddc0d2ed2",
-                        "css": "470e0d511a2889e837b8f8aa58715119",
+                        "css": "71cec68aa1c9bc7fc7626283bd60e9c8",
                         "css_precompiled": "",
-                        "combined": "76ba2fe2b94d9e91ab0b117dcd9dc6e4"
+                        "combined": "5bd6b37b846349353a8abbad8a51a8e1"
                     }
                 }
             ],
@@ -257,12 +402,12 @@
                     "path": "presentations/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "056bd1be8a8322b7f076e0717b87547f",
-                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "html": "22e45ace1d0bdaf9077411d574b30d1e",
+                        "css": "e874cfbc945e1e34fb35aa4d266edba3",
                         "css_precompiled": "",
-                        "combined": "1ce70969f9850ef80c0ed28c06d4bef9"
+                        "combined": "38a12cfee671cc7f2abb5b41c3a4a736"
                     }
                 },
                 {
@@ -272,12 +417,12 @@
                     "path": "presentations/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "509bc03e94e11060c439d42dbbb96cc6",
-                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "html": "6fb49eb3e4f898166a09472fd2b78763",
+                        "css": "e874cfbc945e1e34fb35aa4d266edba3",
                         "css_precompiled": "",
-                        "combined": "7390d974a532f13235d8433005e8fde6"
+                        "combined": "758d0975afcfd860f61d8cfec331a60f"
                     }
                 },
                 {
@@ -287,12 +432,12 @@
                     "path": "presentations/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "e117a20e3a85afb8df291e0479357123",
-                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "html": "c7d9b2eaa4caf8aa4afe67ebad16bd51",
+                        "css": "e874cfbc945e1e34fb35aa4d266edba3",
                         "css_precompiled": "",
-                        "combined": "9f77ff6bbaf3e69826c05ebc186cdd5a"
+                        "combined": "7f9a33fe0c79ef5a5aff77fed315e39c"
                     }
                 }
             ],
@@ -360,6 +505,151 @@
                 {
                     "id": "js-list-remove",
                     "value": "Remove",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-untitled",
+                    "value": "Untitled slide",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-type-html",
+                    "value": "HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-type-image",
+                    "value": "Image",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-edit",
+                    "value": "Edit",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-duplicate",
+                    "value": "Duplicate",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-delete",
+                    "value": "Delete",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-delete-confirm",
+                    "value": "Click again to delete",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-move-left",
+                    "value": "Move earlier",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-move-right",
+                    "value": "Move later",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-new-title",
+                    "value": "New slide",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-new-heading",
+                    "value": "Slide title",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-new-text",
+                    "value": "Slide text.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-modal-title",
+                    "value": "Edit slide",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-title",
+                    "value": "Title (shown only in the panel)",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-classes",
+                    "value": "Section classes",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-html",
+                    "value": "Slide HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-image",
+                    "value": "Image",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-alt",
+                    "value": "Alternative text",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-field-fit",
+                    "value": "Image fit",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-fit-contain",
+                    "value": "Whole image, no cropping",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-fit-cover",
+                    "value": "Fill the slide, may crop",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-change-image",
+                    "value": "Change image",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-save",
+                    "value": "Apply",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-cancel",
+                    "value": "Cancel",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-count",
+                    "value": "%n slide(s)",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-empty",
+                    "value": "No slides. Add an HTML slide or an image slide.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-not-image",
+                    "value": "The selected file is not an image.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-no-stage",
+                    "value": "The HTML has no stage (data-c2f-deck-stage). Pick a model before adding slides.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slide-modal-unavailable",
+                    "value": "The file manager is not available on this screen.",
                     "type": "string"
                 }
             ]

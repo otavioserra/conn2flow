@@ -241,6 +241,10 @@ function dashboard_gerar_svg_modulo($icon, $icon2 = null){
 		'dashboard' => '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>',
 		'chart bar' => '<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>',
 		'chart line' => '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>',
+		// O nome do ícone no Fomantic é `chartline`, numa palavra só: `chart line` não desenha nada no menu.
+		'chartline' => '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>',
+		'tv' => '<rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline>',
+		'cookie bite' => '<circle cx="12" cy="12" r="10"></circle><circle cx="9" cy="9" r="1"></circle><circle cx="15" cy="14" r="1"></circle><circle cx="9" cy="15" r="1"></circle>',
 		// COMUNICAÇÃO
 		'envelope' => '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>',
 		'bell' => '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>',

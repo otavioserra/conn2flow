@@ -42,6 +42,12 @@ CONTROLES (blocos condicionais; o motor mantém ou remove conforme as opções):
 
 O bloco `dot-item` é repetido uma vez por slide. Não escreva os pontos à mão nem numere os slides: a contagem é automática.
 
+SLIDE DE IMAGEM:
+Um slide que é só uma imagem usa `data-slide-type="image"` e uma `<img class="c2f-slide-image" data-fit="contain">` (ou `data-fit="cover"` para preencher o slide, podendo cortar). O CSS do modelo cuida do tamanho.
+
+TÍTULO DO SLIDE:
+`data-title="..."` na seção dá nome ao slide no quadro de slides do painel. Não aparece na apresentação.
+
 SALTO ENTRE SLIDES:
 Para um botão ou link dentro de um slide levar a outro, use `data-c2f-deck-goto="N"`, com N começando em zero. Não use `onclick` nem funções globais.
 

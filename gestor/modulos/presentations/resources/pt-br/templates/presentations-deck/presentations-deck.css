@@ -161,6 +161,18 @@ html.c2f-deck-lock body {
     color: rgba(255, 255, 255, 0.6);
 }
 
+/* Slide de imagem */
+.c2f-deck [data-slide][data-slide-type="image"] { align-items: center; justify-content: center; padding: 0; background: #000; }
+.c2f-deck .c2f-slide-image { width: 100%; height: 100%; max-width: none; object-fit: contain; }
+.c2f-deck .c2f-slide-image[data-fit="cover"] { object-fit: cover; }
+
+/* No editor o modelo aparece cru, com as opções ainda como variáveis: os slides ficam empilhados, para editar um a um. */
+.c2f-deck:not([data-mode="fullscreen"]):not([data-mode="embedded"]) { height: auto; overflow: visible; }
+.c2f-deck:not([data-mode="fullscreen"]):not([data-mode="embedded"]) .c2f-deck-stage { position: static; width: auto; height: auto; }
+.c2f-deck:not([data-mode="fullscreen"]):not([data-mode="embedded"]) [data-slide] { position: relative; display: flex; min-height: 560px; border-bottom: 2px dashed rgba(255, 255, 255, 0.25); }
+.c2f-deck:not([data-mode="fullscreen"]):not([data-mode="embedded"]) .c2f-deck-nav { position: static; width: max-content; margin: 16px auto; transform: none; }
+.c2f-deck:not([data-mode="fullscreen"]):not([data-mode="embedded"]) .c2f-deck-progress { position: static; }
+
 @media (prefers-reduced-motion: reduce) {
     .c2f-anim-fade,
     .c2f-anim-slide-up,

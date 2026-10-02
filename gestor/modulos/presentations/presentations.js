@@ -230,7 +230,10 @@ $(document).ready(function () {
         }
     });
 
-    window.updatedCodeMirrorHtml = function () { schedulePreview(false); };
+    window.updatedCodeMirrorHtml = function () {
+        schedulePreview(false);
+        $(document).trigger('c2f:widget-html-changed');
+    };
 
     $('.ui.form').on('submit', function () {
         lerTudo();

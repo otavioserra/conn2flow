@@ -271,4 +271,16 @@
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
     else iniciar();
+
+    // Aviso que chega depois da carga (prévia do editor de páginas, conteúdo trazido por AJAX).
+    if (typeof MutationObserver !== 'undefined') {
+        var agendado = null;
+        var observar = function () {
+            new MutationObserver(function () {
+                if (raiz || agendado) return;
+                agendado = setTimeout(function () { agendado = null; iniciar(); }, 50);
+            }).observe(document.body, { childList: true, subtree: true });
+        };
+        if (document.body) observar(); else document.addEventListener('DOMContentLoaded', observar);
+    }
 })();

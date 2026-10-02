@@ -123,6 +123,85 @@ final class PresentationsAndCookieConsentReq208Test extends TestCase
         self::assertStringNotContainsString('onclick', $html);
     }
 
+    public function testModeloTemEstadoDeEdicaoESlideDeImagem(): void
+    {
+        // req-209: no editor o modelo aparece cru, com `data-mode="[[mode]]"`. Sem regra para esse
+        // estado, a altura caía a zero e a visualização do editor ficava em branco.
+        foreach (['pt-br', 'en'] as $lang) {
+            $css = self::modelo('presentations', 'presentations-deck', $lang, 'css');
+            self::assertStringContainsString('.c2f-deck:not([data-mode="fullscreen"]):not([data-mode="embedded"]) [data-slide]', $css, $lang);
+            self::assertStringContainsString('[data-slide][data-slide-type="image"]', $css, $lang);
+            self::assertStringContainsString('.c2f-slide-image[data-fit="cover"]', $css, $lang);
+        }
+
+        $js = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/modulos/presentations/presentations.widget.js');
+        // O controlador não inicia o modelo cru e inicia a apresentação que chega depois da carga.
+        self::assertStringContainsString("modo !== 'fullscreen' && modo !== 'embedded'", $js);
+        self::assertStringContainsString('MutationObserver', $js);
+        self::assertStringContainsString('hashchange', $js);
+    }
+
+    public function testQuadroDeSlidesEstaLigadoNasTresTelas(): void
+    {
+        $quadro = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/modulos/presentations/presentations.slides.js');
+        foreach (['data-slide', 'data-slide-type', 'data-c2f-deck-stage', 'c2f-slide-image', 'data-fit', 'c2f:widget-html-changed'] as $marca) {
+            self::assertStringContainsString($marca, $quadro, $marca);
+        }
+
+        $json = json_decode((string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/modulos/presentations/presentations.json'), true);
+        preg_match_all("/t\\('(js-slide-[a-z-]+)'/", $quadro, $usados);
+        foreach (['pt-br', 'en'] as $lang) {
+            $ids = array_column($json['resources'][$lang]['variables'], 'id');
+            // Todo texto que o quadro pede existe nos dois idiomas.
+            foreach (array_unique($usados[1]) as $id) {
+                self::assertContains($id, $ids, $lang . '/' . $id);
+            }
+            foreach (['adicionar', 'editar', 'clonar'] as $tela) {
+                $html = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/modulos/presentations/resources/' . $lang . '/pages/presentations-' . $tela . '/presentations-' . $tela . '.html');
+                foreach (['id="slides-board"', 'id="btn-slide-add-html"', 'id="btn-slide-add-image"', 'id="slides-count"', 'id="slides-board-message"'] as $marca) {
+                    self::assertStringContainsString($marca, $html, $lang . '/' . $tela . '/' . $marca);
+                }
+            }
+        }
+        self::assertGreaterThan(20, count(array_unique($usados[1])));
+
+        $php = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/modulos/presentations/presentations.php');
+        self::assertStringContainsString("'tipo' => 'slides'", $php);
+        self::assertStringContainsString("assets_externos_incluir('sortablejs')", $php);
+    }
+
+    public function testPreviaDoEditorRecebeCssEControladorDosWidgets(): void
+    {
+        // req-209: widget com CSS próprio aparecia sem estilo na prévia do editor de páginas, e widget
+        // com mockup dentro do marcador não tinha o controlador carregado.
+        $php = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/html-editor.php');
+        self::assertStringContainsString("'css' => (string)\$css,", $php);
+
+        $js = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/assets/interface/html-editor-interface.js');
+        self::assertStringContainsString("(resp.data.css || '') + (resp.data.html || '')", $js);
+        self::assertStringContainsString("'presentations': true, 'cookie-consent': true", $js);
+
+        // A mesma expressão do editor: marcador vazio e marcador com mockup.
+        preg_match('#const reComentario = (/.+/)gi;#', $js, $m);
+        self::assertNotEmpty($m);
+        $re = '~' . str_replace('~', '\\~', trim($m[1], '/')) . '~i';
+        $sig = 'presentations->render({"grupo_slug": "x"})';
+        self::assertSame(1, preg_match($re, '<!-- widgets#' . $sig . ' < --><!-- widgets#' . $sig . ' > -->'));
+        self::assertSame(1, preg_match($re, "<!-- widgets#" . $sig . " < -->\n<div>mockup</div>\n<!-- widgets#" . $sig . " > -->"));
+    }
+
+    public function testGaleriaTrataToqueNosDoisTiposDeTrilho(): void
+    {
+        $js = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/modulos/galleries/galleries.widget.js');
+        foreach (['overflowX', "touchAction = 'pan-y'", 'touchstart', 'touchend', 'slideMaisProximo'] as $marca) {
+            self::assertStringContainsString($marca, $js, $marca);
+        }
+        // Os modelos de carrossel e slider do core têm trilho com rolagem própria: é o caso da sincronia.
+        foreach (['galleries-carousel', 'galleries-slider'] as $modelo) {
+            self::assertStringContainsString('overflow-x-auto', self::modelo('galleries', $modelo, 'pt-br', 'html'), $modelo);
+        }
+    }
+
     // ----- cookie-consent
 
     public function testCategoriasInvalidasCaemNasDeFabrica(): void

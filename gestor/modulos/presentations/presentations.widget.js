@@ -355,6 +355,10 @@
     function iniciar() {
         Array.prototype.forEach.call(document.querySelectorAll('[data-c2f-deck]'), function (root) {
             if (root.c2fDeck) return;
+            // Modelo cru, com as opções ainda como variáveis (editor HTML): não é uma apresentação
+            // renderizada. O CSS do modelo mostra os slides empilhados e nada é iniciado.
+            var modo = root.getAttribute('data-mode');
+            if (modo !== 'fullscreen' && modo !== 'embedded') return;
             var deck = new Deck(root);
             root.c2fDeck = deck;
             decks.push(deck);
@@ -403,4 +407,16 @@
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
     else iniciar();
+
+    // Apresentação que chega depois da carga (prévia do editor de páginas, conteúdo trazido por AJAX).
+    if (typeof MutationObserver !== 'undefined') {
+        var agendado = null;
+        var observar = function () {
+            new MutationObserver(function () {
+                if (agendado) return;
+                agendado = setTimeout(function () { agendado = null; iniciar(); }, 50);
+            }).observe(document.body, { childList: true, subtree: true });
+        };
+        if (document.body) observar(); else document.addEventListener('DOMContentLoaded', observar);
+    }
 })();

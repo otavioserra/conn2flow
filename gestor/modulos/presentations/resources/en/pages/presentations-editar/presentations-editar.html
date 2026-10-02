@@ -57,6 +57,21 @@
     </div>
 </div>
 
+<h4 class="ui dividing header">Slides</h4>
+
+<div class="ui label" style="margin: 0 0 12px; display: block; line-height: 1.5;">
+    <i class="clone outline icon"></i>
+    Each card is a slide of the deck. Drag by the <i class="grip vertical icon"></i> or use the arrows to reorder; edit, duplicate or delete from the card. An image slide opens the file manager and accepts several images in a row. The content lives in the deck HTML: what you change here shows up in the editor and vice versa.
+</div>
+
+<button type="button" class="ui primary button" id="btn-slide-add-html"><i class="plus icon"></i> HTML slide</button>
+<button type="button" class="ui blue button" id="btn-slide-add-image"><i class="image icon"></i> Image slide</button>
+<span class="ui basic label" id="slides-count"></span>
+
+<div class="ui negative message hidden" id="slides-board-message"></div>
+
+<div id="slides-board" class="c2f-slides-board"></div>
+
 <div class="widget-content-tabs">
 <div class="ui top attached tabular menu menuConteudoWidget">
     <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Preview</a>

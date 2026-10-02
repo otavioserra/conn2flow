@@ -70,9 +70,9 @@
         "minificado": 1296
     },
     "gestor/assets/interface/html-editor-interface.js": {
-        "sha1": "915b1b5408f6ecfe936721f00d97f97a33c33abb",
-        "origem": 165526,
-        "minificado": 63278
+        "sha1": "75406748aed8446e7a8537051e74c8dead34c82d",
+        "origem": 166025,
+        "minificado": 63336
     },
     "gestor/assets/interface/html-editor-modules.js": {
         "sha1": "7c5934089d8e0b3279282539f010b461ec4dcea6",
@@ -200,9 +200,9 @@
         "minificado": 8471
     },
     "gestor/modulos/cookie-consent/cookie-consent.widget.js": {
-        "sha1": "1226339a8bd927e4d9feb8d409a841d1caa68b8c",
-        "origem": 11470,
-        "minificado": 5441
+        "sha1": "80c1bb7c4a545cb671b70b6fde1dbd325d3f49bc",
+        "origem": 12062,
+        "minificado": 5705
     },
     "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
         "sha1": "29cfd666ffac20ffcefeda8655f38b832406cc86",
@@ -250,9 +250,9 @@
         "minificado": 30061
     },
     "gestor/modulos/galleries/galleries.widget.js": {
-        "sha1": "11c8895c0536afaf5551a18b2d2255e109dfb295",
-        "origem": 4767,
-        "minificado": 1668
+        "sha1": "ccd82ea2c77c636501c056cd87fb9692853e3df1",
+        "origem": 8264,
+        "minificado": 2667
     },
     "gestor/modulos/menus/menus.js": {
         "sha1": "04c35c0683e82c3a36e05df1fdd2f448471d16f2",
@@ -295,14 +295,19 @@
         "minificado": 15691
     },
     "gestor/modulos/presentations/presentations.js": {
-        "sha1": "f3a177d9719b768f27262c5ce15f3f751d60e20b",
-        "origem": 16305,
-        "minificado": 8470
+        "sha1": "bb13483ff13a2e5aab4fe6f8b585fdf73b94e459",
+        "origem": 16373,
+        "minificado": 8517
+    },
+    "gestor/modulos/presentations/presentations.slides.js": {
+        "sha1": "dafc06c003c371511a0f6b4b12173c19d18798d2",
+        "origem": 19387,
+        "minificado": 9526
     },
     "gestor/modulos/presentations/presentations.widget.js": {
-        "sha1": "faa2043658de150fec06b4cd06d3142e90a45baa",
-        "origem": 17708,
-        "minificado": 8282
+        "sha1": "3be910bae48e6a435ebc1f6f5cf598d6b391d5ad",
+        "origem": 18625,
+        "minificado": 8615
     },
     "gestor/modulos/publisher-highlights/publisher-highlights.js": {
         "sha1": "e92b3d190a91e867710c7f635b22fe1067e80143",

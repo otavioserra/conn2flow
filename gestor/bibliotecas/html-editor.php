@@ -1456,7 +1456,12 @@ function html_editor_ajax_widget_render(){
 	// Renderizar em modo page-load (HTML estrutural completo do widget), não em modo AJAX.
 	$ajaxAnterior = isset($_GESTOR['ajax']) ? $_GESTOR['ajax'] : false;
 	$_GESTOR['ajax'] = false;
+	// O CSS autoral que o widget registra ao renderizar (`gestor_pagina_recursos_incluir`) vai junto:
+	// no site ele entra no <head> da página; no iframe da prévia não há quem o coloque lá, e widget
+	// com CSS próprio (apresentação, aviso de cookies) aparecia sem estilo.
+	$cssAntes = isset($_GESTOR['css']) && is_array($_GESTOR['css']) ? count($_GESTOR['css']) : 0;
 	$html = widgets_get(Array('id' => $signature));
+	$css = isset($_GESTOR['css']) && is_array($_GESTOR['css']) ? implode('', array_slice($_GESTOR['css'], $cssAntes)) : '';
 	$_GESTOR['ajax'] = $ajaxAnterior;
 
 	$_GESTOR['ajax-json'] = Array(
@@ -1464,6 +1469,7 @@ function html_editor_ajax_widget_render(){
 		'data' => Array(
 			'signature' => $signature,
 			'html' => (string)$html,
+			'css' => (string)$css,
 		),
 	);
 }

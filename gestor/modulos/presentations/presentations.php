@@ -84,7 +84,26 @@ function presentations_prepare_editor_page($schema, $html = '', $css = '', $css_
 
 	presentations_template_options($schema['template_id'] ?? '', $has_custom_code);
 
+	// Quadro de slides (req-209): seletor de imagens do gerenciador de arquivos, como no `galleries`,
+	// e arrastar para reordenar.
+	interface_componentes_incluir(Array(
+		'componente' => Array(
+			'modal-iframe',
+			'modal-alerta',
+		)
+	));
+	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
+		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
+	}
+	assets_externos_incluir('sortablejs');
+	gestor_pagina_javascript_incluir(['tipo' => 'slides', 'modulo_id' => 'presentations', 'versao' => presentations_get_version()]);
+
 	gestor_js_variavel_incluir('presentationsAdmin', [
+		'imagepick' => [
+			'url' => $_GESTOR['url-full'].'admin-arquivos/?paginaIframe=sim',
+			'head' => gestor_variaveis(['modulo' => 'interface', 'id' => 'widget-image-modal-head']),
+			'cancel' => gestor_variaveis(['modulo' => 'interface', 'id' => 'widget-image-modal-cancel']),
+		],
 		'schema' => $schema,
 		'widgetScript' => (string)gestor_pagina_javascript_incluir(['tipo' => 'widget', 'modulo_id' => 'presentations', 'versao' => presentations_get_version()], false, true),
 		'textos' => gestor_variaveis(['modulo' => $_GESTOR['modulo-id'], 'conjunto' => true, 'padrao' => 'js-']),
