@@ -1,6 +1,6 @@
 # BATCH-205: Atualização segura, fase 3a — motor de choques: decisão por arquivo (req-199)
 
-Execução da [req-199](../../human-requests/req-199.md), proposta G do [BL-028](../../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md), primeira parte: o motor comum e três das quatro portas (painel, API, CLI). A extensão do VS Code fica no BATCH-206; a exclusão declarativa de dados (proposta C) no BATCH-207.
+Execução da [req-199](../../human-requests/archive/req-199.md), proposta G do [BL-028](../../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md), primeira parte: o motor comum e três das quatro portas (painel, API, CLI). A extensão do VS Code fica no BATCH-206; a exclusão declarativa de dados (proposta C) no BATCH-207.
 
 **Status**: `complete` (implementado e validado no tenant isolado; homologação humana pendente).
 **Worktree**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-bl028`, branch `feat/req-197`.

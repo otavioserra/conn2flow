@@ -11,7 +11,7 @@ sources:
   - gestor/modulos/presentations/presentations.json
   - gestor/modulos/presentations/resources
   - gestor/db/migrations/20261002110000_create_presentations_and_cookie_consent_tables.php
-verified_at: 268f7e75
+verified_at: ce9ba7ac
 ---
 
 # Módulo `presentations`
@@ -31,6 +31,23 @@ Abra `presentations/adicionar/`, dê um nome, escolha o modelo `presentations-de
 ```
 
 Não escreva `display` na seção (nem a classe `flex`): o CSS do modelo mostra só o slide ativo, já como flex.
+
+### Quadro de slides
+
+A seção "Slides" da tela mostra um cartão por slide e reescreve o HTML do deck a cada operação:
+
+| Ação | O que faz |
+|---|---|
+| Slide em HTML | Inclui uma seção de exemplo depois do último slide |
+| Slide de imagem | Abre o gerenciador de arquivos; cada imagem escolhida vira um slide, e o gerenciador fica aberto para escolher várias |
+| Editar | Título do cartão (`data-title`), classes da seção e o HTML do slide; no slide de imagem, a imagem, o texto alternativo e o ajuste (inteira ou preenchendo) |
+| Duplicar | Copia o slide logo depois dele |
+| Mover | Arraste pelo cartão ou use as setas |
+| Excluir | Pede dois cliques |
+
+O conteúdo continua sendo o HTML do deck: o que o quadro muda aparece no editor, e o que o editor, a IA ou a troca de modelo mudam aparece no quadro. Slide de imagem é `<section data-slide data-slide-type="image">` com um `<img class="c2f-slide-image" data-fit="contain|cover">`.
+
+Na visualização do editor HTML o modelo aparece cru, com as opções ainda como variáveis: os slides ficam empilhados, um abaixo do outro, para editar. A aba de pré-visualização mostra a apresentação funcionando.
 
 Para um botão levar a outro slide, use `data-c2f-deck-goto="N"`, com N começando em zero.
 

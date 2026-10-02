@@ -16,6 +16,16 @@
 
 ## Tarefas recentes
 
+### 2026-10-02 — BATCH-217 (req-209): quadro de slides, prévia de widgets e toque
+
+- **Propriedade CSS com variável não resolvida**: `--x: [[height]]px` é aceito, mas `height: var(--x, 600px)` vira inválido e cai no valor inicial, não no fallback. Modelo cru no editor precisa de regra própria.
+- **Prévia do editor de páginas**: o widget chega por AJAX (`html-editor-widget-render`). CSS autoral vai junto na resposta; controlador público precisa iniciar o que chega depois da carga (`MutationObserver`).
+- **`WIDGET_SCRIPT_MODULES`** em `html-editor-interface.js` é a lista dos módulos cujo `widget.js` entra na prévia. Módulo novo com controlador público entra ali.
+- **Fomantic**: o ícone é `chartline`; `chart line` não desenha nada. Conferir o nome em `assets/vendor/fomantic-ui/*/semantic.min.css`. O dashboard desenha o SVG pelo mesmo nome (`dashboard_gerar_svg_modulo`).
+- **Excluir e status pelo painel** agem por GET com `_csrf_token` na URL.
+- **JS extra de módulo**: `<modulo>.<tipo>.js` é servido em `<modulo>/<tipo>.js` (`gestor_pagina_javascript_incluir(['tipo' => …])`).
+- **`docs:build`**: `layout` aceita mapa por idioma; `tailwind_sources` na configuração entra em toda página de docs. A primeira publicação depois disso recompila todas (10 min no Lab).
+
 ### 2026-10-02 — BATCH-216 (req-208): módulos `presentations` e `cookie-consent`
 
 - **Módulo de widget novo sem tocar no `html-editor.php`**: `alvo` e `alvos_modelos` com o id do módulo e `widget_js_include`; o alvo desconhecido cai no caminho padrão do editor.

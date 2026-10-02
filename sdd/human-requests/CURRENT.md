@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-209.md](req-209.md) (BATCH-217 `in-review`, 2026-10-02): quadro de slides (CRUD, HTML ou imagem), prévia de widgets no editor (CSS, controlador, marcador com mockup), toque na galeria, ícones e `docs:build` com layout por idioma.
   - [req-208.md](req-208.md) (BATCH-216 `in-review`, 2026-10-02): módulos `presentations` (apresentações em slides) e `cookie-consent` (aviso e preferências de cookies), com CRUD, modelos, modo de IA, widget e controlador público.
   - [req-207.md](req-207.md) (BATCH-215 `in-review`, 2026-10-02): docs — referência de funções das bibliotecas em cartões com filtro e índice; docs de atualização, recursos e deploy atualizadas com a req-206; README com o Dev Tools.
   - [req-206.md](req-206.md) (BATCH-214 `complete`, 2026-10-01, homologação humana pendente): correções do deploy de projeto depois da req-202/203 — `insert_only` em chave natural (admin sobrescrito pela semente) e compilador em modo projeto usando só as sementes do projeto.
@@ -11,7 +12,7 @@
   - [req-201.md](req-201.md) (BATCH-209 `complete`, 2026-09-30, homologação humana pendente): Atualização do sistema por API em segundo plano (`action=run`, `run-status`, `runs`, `/_api/system/rollback`) e `c2f update:core`. Falta a requisição do `conn2flow-site` (CLI em massa e host-manager).
   - [req-200.md](req-200.md) (BATCH-208 `complete`, 2026-09-30, feita por agente executor e revisada/mesclada; homologação humana pendente): Recuperação de arquivos do ambiente em execução — inventário no servidor pelos manifestos e descida pelo motor de choques.
   - [req-198.md](archive/req-198.md) (BATCH-202/203 `complete`, 2026-09-30, homologação humana pendente; BATCH-204 `complete`: o mesmo pacote no deploy por API, `/_api/project/rollback` e `c2f update:rollback`): Atualização segura, fase 2 — manifesto por camada, precedência `projeto > plugin > core`, registro de choques, snapshot seletivo, verificação pós-atualização e rollback. Validada no tenant isolado `project-test`.
-  - [req-199.md](req-199.md) (BATCH-205, BATCH-206 e BATCH-207 `complete`, 2026-09-30; homologação humana pendente): Atualização segura, fase 3 — motor de choques comum a subir e descer (decisão por arquivo no painel, na API e no CLI; extensão do VS Code no 206), exclusão declarativa de dados (207).
+  - [req-199.md](archive/req-199.md) (BATCH-205, BATCH-206 e BATCH-207 `complete`, 2026-09-30; homologação humana pendente): Atualização segura, fase 3 — motor de choques comum a subir e descer (decisão por arquivo no painel, na API e no CLI; extensão do VS Code no 206), exclusão declarativa de dados (207).
   - [req-197.md](archive/req-197.md) (BATCH-201 `complete`, 2026-09-30, homologação humana pendente): Atualização segura, fase 1 — trava de deploy, `backupTotal()`, `db:check-migrations`, CLI/web sem apagar `db/`, tentativa automática no Tailwind. Promovida do [BL-028](../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md).
   - [req-196.md](archive/req-196.md) (BATCH-200 `complete`, 2026-09-30): Página inicial por perfil de usuário em usuarios-perfis e mapeamento dinâmico de layout por perfil em paginas (demanda do portal do cliente no `conn2flow-site`).
   - [req-193.md](archive/req-193.md) (BATCH-197 `completed`): Ativar parcelamento de cartão somente quando solicitado ao criar PaymentIntent avulso; extensão compartilhada para a REQ-072 do `conn2flow-site`.
@@ -34,4 +35,4 @@
 - **Intakes Históricos Arquivados**:
   - Requisições anteriores (req-001 a req-178) arquivadas em [archive/](archive/).
 
-- **Status**: BATCH-216/REQ-208 implementado e validado no Lab (`conn2flow-site-local`).
+- **Status**: BATCH-217/REQ-209 implementado e validado no Lab (`conn2flow-site-local`).

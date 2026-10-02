@@ -1,6 +1,6 @@
 # BATCH-207: Atualização segura, fase 3c — exclusão declarativa de dados (req-199)
 
-Execução da proposta C do [BL-028](../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md) na [req-199](../human-requests/req-199.md).
+Execução da proposta C do [BL-028](../../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md) na [req-199](../../human-requests/archive/req-199.md).
 
 **Status**: `complete` (implementado e validado no tenant isolado; homologação humana pendente).
 **Worktree**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-bl028`, branch `feat/req-197`.

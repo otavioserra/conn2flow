@@ -11,7 +11,7 @@ sources:
   - gestor/modulos/galleries/galleries.json
   - gestor/modulos/galleries/resources
   - gestor/db/migrations/20260701120000_create_galleries_table.php
-verified_at: 7bf08fe1
+verified_at: ce9ba7ac
 ---
 
 # Módulo `galleries`
@@ -32,7 +32,7 @@ As rotas são idênticas nos dois idiomas; o registro é selecionado pelo idioma
 
 ## Referência técnica
 
-O controlador despacha `listar`, `adicionar`, `editar`, `clonar`; a interface compartilhada cuida de status e exclusão. AJAX administrativo: `template-load`, `widget-preview`, `pages-search` e `pages-fetch`. O JS do painel mantém a seleção, ordenação e opções; o JS público implementa setas, indicadores, autoplay e loop. O JSON não declara hooks nem `hooks.api`.
+O controlador despacha `listar`, `adicionar`, `editar`, `clonar`; a interface compartilhada cuida de status e exclusão. AJAX administrativo: `template-load`, `widget-preview`, `pages-search` e `pages-fetch`. O JS do painel mantém a seleção, ordenação e opções; o JS público implementa setas, indicadores, autoplay, loop e toque. No toque há dois casos: trilho com rolagem horizontal própria (`overflow-x: auto`, os modelos de carrossel e slider do core) desliza pelo navegador, e o controlador acompanha o slide à vista para o indicador, as setas e o autoplay; trilho sem rolagem (`overflow: hidden`) recebe o gesto de deslizar, com a rolagem vertical da página preservada. O JSON não declara hooks nem `hooks.api`.
 
 `galleries` contém `id_galleries` numérico, `id` até 100, `name` até 255, JSON `fields_schema`, `html` e `css_compiled` MEDIUMTEXT, `css` TEXT, `html_extra_head`, `plugin`, `language`, `status`, `versao`, datas e flags de atualização. `(id, language)` é único. Não há `publisher_id` na tabela: vínculos com publicadores são opções dos itens.
 

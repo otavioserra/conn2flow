@@ -11,7 +11,7 @@ sources:
   - gestor/modulos/galleries/galleries.json
   - gestor/modulos/galleries/resources
   - gestor/db/migrations/20260701120000_create_galleries_table.php
-verified_at: 7bf08fe1
+verified_at: ce9ba7ac
 ---
 
 # `galleries` module
@@ -32,7 +32,7 @@ Routes are identical in both languages; the current language selects the record.
 
 ## Technical reference
 
-The controller dispatches `listar`, `adicionar`, `editar`, and `clonar`; the shared interface handles status and deletion. Admin AJAX: `template-load`, `widget-preview`, `pages-search`, and `pages-fetch`. Admin JS maintains selection, order, and options; public JS implements arrows, dots, autoplay, and loop. The JSON declares no hooks or `hooks.api`.
+The controller dispatches `listar`, `adicionar`, `editar`, and `clonar`; the shared interface handles status and deletion. Admin AJAX: `template-load`, `widget-preview`, `pages-search`, and `pages-fetch`. Admin JS maintains selection, order, and options; public JS implements arrows, dots, autoplay, and loop and touch. Touch has two cases: a track with its own horizontal scrolling (`overflow-x: auto`, the core carousel and slider models) slides through the browser, and the controller follows the slide in view for the indicator, the arrows and autoplay; a track without scrolling (`overflow: hidden`) gets the swipe gesture, with the vertical page scroll preserved. The JSON declares no hooks or `hooks.api`.
 
 `galleries` contains numeric `id_galleries`, `id` up to 100, `name` up to 255, JSON `fields_schema`, MEDIUMTEXT `html` and `css_compiled`, TEXT `css`, `html_extra_head`, `plugin`, `language`, `status`, `versao`, timestamps, and update flags. `(id, language)` is unique. There is no `publisher_id` column: publisher links are per-item options.
 

@@ -11,7 +11,7 @@ sources:
   - gestor/modulos/cookie-consent/cookie-consent.json
   - gestor/modulos/cookie-consent/resources
   - gestor/db/migrations/20261002110000_create_presentations_and_cookie_consent_tables.php
-verified_at: 268f7e75
+verified_at: ce9ba7ac
 ---
 
 # Módulo `cookie-consent`

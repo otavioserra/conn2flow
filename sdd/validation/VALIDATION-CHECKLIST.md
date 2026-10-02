@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-217 — Quadro de slides, prévia de widgets, toque na galeria (req-209)
+
+- [x] Quadro de slides: incluir (HTML e imagem), editar, duplicar, mover, excluir; gravar e reabrir pelo painel.
+- [x] Visualização do editor HTML da apresentação mostra os slides.
+- [x] Prévia do editor de páginas mostra o widget com CSS e controlador.
+- [x] Galeria: toque nos dois tipos de trilho.
+- [x] Docs em inglês com layout próprio; ícones válidos.
+- [ ] Toque em aparelho real.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-217](../implementation/BATCH-217.md).
+
 ## BATCH-216 — Módulos `presentations` e `cookie-consent` (req-208)
 
 - [x] Apresentação: slides por `data-slide`, controles conforme as opções, teclado, endereço `#slide-N`, escala e impressão.

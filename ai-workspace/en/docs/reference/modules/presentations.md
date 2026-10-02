@@ -11,7 +11,7 @@ sources:
   - gestor/modulos/presentations/presentations.json
   - gestor/modulos/presentations/resources
   - gestor/db/migrations/20261002110000_create_presentations_and_cookie_consent_tables.php
-verified_at: 268f7e75
+verified_at: ce9ba7ac
 ---
 
 # `presentations` module
@@ -31,6 +31,23 @@ Open `presentations/adicionar/`, give it a name, pick the `presentations-deck` m
 ```
 
 Do not set `display` on the section (nor the `flex` class): the model CSS shows only the active slide, already as flex.
+
+### Slide board
+
+The "Slides" section of the screen shows one card per slide and rewrites the deck HTML on each operation:
+
+| Action | What it does |
+|---|---|
+| HTML slide | Adds a sample section after the last slide |
+| Image slide | Opens the file manager; each image picked becomes a slide, and the manager stays open to pick several |
+| Edit | Card title (`data-title`), section classes and the slide HTML; on an image slide, the image, the alternative text and the fit (whole or filling) |
+| Duplicate | Copies the slide right after it |
+| Move | Drag the card or use the arrows |
+| Delete | Asks for two clicks |
+
+The content is still the deck HTML: what the board changes shows up in the editor, and what the editor, the AI or a model change does shows up in the board. An image slide is `<section data-slide data-slide-type="image">` with an `<img class="c2f-slide-image" data-fit="contain|cover">`.
+
+In the HTML editor view the model shows up raw, with the options still as variables: slides are stacked, one below the other, for editing. The preview tab shows the presentation working.
 
 For a button to lead to another slide, use `data-c2f-deck-goto="N"`, with N starting at zero.
 
