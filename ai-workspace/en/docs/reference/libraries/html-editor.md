@@ -151,40 +151,40 @@ Reference generated from `gestor/bibliotecas/html-editor.php` by `c2f docs:extra
   - `$params['publisherPage']`: controles específicos do publisher page.
   - `$params['css_precompiled']`: CSS Tailwind offline do PRÓPRIO recurso.
   - `$params['layout_id']`: layout da página, quando houver (req-117). Serve para montar o
-- `html_editor_include($params = false)` — [line 1109](../../../../../gestor/bibliotecas/html-editor.php#L1109)
+- `html_editor_include($params = false)` — [line 1113](../../../../../gestor/bibliotecas/html-editor.php#L1113)
   Incluir o editor HTML visual.
   Parameters:
   - `$params['js_vars']`: variáveis JS a serem incluídas.
-- `html_editor_ajax_interface(array $params = false)` — [line 1198](../../../../../gestor/bibliotecas/html-editor.php#L1198)
+- `html_editor_ajax_interface(array $params = false)` — [line 1202](../../../../../gestor/bibliotecas/html-editor.php#L1202)
   AJAX Interface.
   Parameters:
   - `$params`: Parâmetros da função.
-- `html_editor_ajax_layout_css()` — [line 1229](../../../../../gestor/bibliotecas/html-editor.php#L1229)
+- `html_editor_ajax_layout_css()` — [line 1233](../../../../../gestor/bibliotecas/html-editor.php#L1233)
   CSS do layout escolhido no formulário (req-160).
-- `html_editor_var_pattern()` — [line 1282](../../../../../gestor/bibliotecas/html-editor.php#L1282)
+- `html_editor_var_pattern()` — [line 1286](../../../../../gestor/bibliotecas/html-editor.php#L1286)
   ============================================================================ req-093 (BATCH-093) — Renderização de variáveis/widgets como caixas no Editor HTML Visual CLÁSSICO e no preview, espelhando a Editbar (Dashboard Site Toolbar).
-- `html_editor_var_box($marker, $rendered, $tipo)` — [line 1288](../../../../../gestor/bibliotecas/html-editor.php#L1288)
-- `html_editor_render_widget_signature($signature)` — [line 1295](../../../../../gestor/bibliotecas/html-editor.php#L1295)
-- `html_editor_resolver_var($id)` — [line 1313](../../../../../gestor/bibliotecas/html-editor.php#L1313)
-- `html_editor_boxes_widgets($html)` — [line 1339](../../../../../gestor/bibliotecas/html-editor.php#L1339)
-- `html_editor_resolver_variaveis($html)` — [line 1355](../../../../../gestor/bibliotecas/html-editor.php#L1355)
-- `html_editor_boxes_variaveis($html)` — [line 1366](../../../../../gestor/bibliotecas/html-editor.php#L1366)
-- `html_editor_ajax_render_vars()` — [line 1411](../../../../../gestor/bibliotecas/html-editor.php#L1411)
+- `html_editor_var_box($marker, $rendered, $tipo)` — [line 1292](../../../../../gestor/bibliotecas/html-editor.php#L1292)
+- `html_editor_render_widget_signature($signature)` — [line 1299](../../../../../gestor/bibliotecas/html-editor.php#L1299)
+- `html_editor_resolver_var($id)` — [line 1317](../../../../../gestor/bibliotecas/html-editor.php#L1317)
+- `html_editor_boxes_widgets($html)` — [line 1343](../../../../../gestor/bibliotecas/html-editor.php#L1343)
+- `html_editor_resolver_variaveis($html)` — [line 1359](../../../../../gestor/bibliotecas/html-editor.php#L1359)
+- `html_editor_boxes_variaveis($html)` — [line 1370](../../../../../gestor/bibliotecas/html-editor.php#L1370)
+- `html_editor_ajax_render_vars()` — [line 1415](../../../../../gestor/bibliotecas/html-editor.php#L1415)
   AJAX — Recebe o HTML do editor (CodeMirror) e devolve duas versões renderizadas (req-093): - `boxes`:  variáveis globais em caixas (`.c2f-var-box` + `data-c2f-marker`) + widgets renderizados entre comentários — para carregar no EDITOR VISUAL (átomos reversíveis no save). - `values`: variáveis globais resolvidas para valor puro (sem caixas) — para o PREVIEW iframe. As variáveis LOCAIS/de simulação (desconhecidas do backend) são preservadas para o frontend resolver.
-- `html_editor_ajax_widget_render()` — [line 1435](../../../../../gestor/bibliotecas/html-editor.php#L1435)
+- `html_editor_ajax_widget_render()` — [line 1439](../../../../../gestor/bibliotecas/html-editor.php#L1439)
   AJAX Widget Render.
-- `html_editor_ajax_widget_types()` — [line 1475](../../../../../gestor/bibliotecas/html-editor.php#L1475)
+- `html_editor_ajax_widget_types()` — [line 1479](../../../../../gestor/bibliotecas/html-editor.php#L1479)
   AJAX Widget Types.
-- `html_editor_ajax_widgets_list()` — [line 1511](../../../../../gestor/bibliotecas/html-editor.php#L1511)
+- `html_editor_ajax_widgets_list()` — [line 1515](../../../../../gestor/bibliotecas/html-editor.php#L1515)
   AJAX Widgets List.
-- `html_editor_widgets_buscar(array $params = array()): array` — [line 1593](../../../../../gestor/bibliotecas/html-editor.php#L1593)
+- `html_editor_widgets_buscar(array $params = array()): array` — [line 1597](../../../../../gestor/bibliotecas/html-editor.php#L1597)
   Busca paginada de itens de widget para o painel "+" do Live Editor (BATCH-081 §6).
   Parameters:
   - `$params`: { module?:string, busca?:string, pagina?:int, limite?:int }
   Returns: Estrutura de resposta pronta para `$_GESTOR['ajax-json']`.
-- `html_editor_ajax_templates_load()` — [line 1666](../../../../../gestor/bibliotecas/html-editor.php#L1666)
+- `html_editor_ajax_templates_load()` — [line 1670](../../../../../gestor/bibliotecas/html-editor.php#L1670)
   AJAX Templates.
-- `html_editor_ajax_ia_requests()` — [line 1785](../../../../../gestor/bibliotecas/html-editor.php#L1785)
+- `html_editor_ajax_ia_requests()` — [line 1789](../../../../../gestor/bibliotecas/html-editor.php#L1789)
   AJAX IA Requests.
 
 <!-- c2f:extract:end -->

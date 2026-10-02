@@ -399,13 +399,28 @@ final class DocsBuilder
     {
         $labels = $this->labels($lang);
         $body = preg_replace('/\A\s*#\s+[^\n]*\n/', '', $doc['body'], 1) ?? $doc['body'];
+        // req-207: o bloco gerado pelo docs:extract não passa pelo Markdown. No site ele vira filtro,
+        // índice e um cartão por função; o Markdown continua sendo a forma lida no GitHub e no editor.
+        $funcoes = '';
+        $marcador = 'C2FFUNCTIONREFERENCEBLOCK';
+        $bloco = LibraryReference::current($body);
+        $markdown = $body;
+        if ($bloco !== null) {
+            $funcoes = FunctionReferenceHtml::render($bloco, $lang, function (string $href) use ($lang, $rel, $docs): string {
+                return $this->resolveLink($lang, $rel, $href, $docs) ?? '#';
+            });
+            $markdown = str_replace($bloco, "\n\n" . $marcador . "\n\n", str_replace("\r\n", "\n", $body));
+        }
         // Os marcadores do bloco gerado são para o docs:extract; no site o safe mode os exibiria como texto.
         $body = str_replace([LibraryReference::START, LibraryReference::END], '', $body);
 
         $renderer = new MarkdownRenderer((array)($labels['callouts'] ?? []), function (string $href) use ($lang, $rel, $docs): ?string {
             return $this->resolveLink($lang, $rel, $href, $docs);
         });
-        $rendered = $renderer->render($body);
+        $rendered = $renderer->render($markdown);
+        if ($bloco !== null) {
+            $rendered['html'] = preg_replace('#<p[^>]*>\s*' . $marcador . '\s*</p>#', str_replace(['\\', '$'], ['\\\\', '\\$'], $funcoes), $rendered['html'], 1) ?? $rendered['html'];
+        }
 
         $idx = array_search($rel, $nav, true);
         $prev = $idx !== false && $idx > 0 ? $nav[$idx - 1] : null;

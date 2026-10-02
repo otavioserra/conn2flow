@@ -113,80 +113,80 @@ Reference generated from `gestor/bibliotecas/stripe.php` by `c2f docs:extract` �
   Parameters:
   - `$params`: ['customer_id' => obrig, 'price_id' => obrig, 'referencia' => opc,
   Returns: ['id','status','client_secret','secret_type' => 'payment'|'setup','subscription_data'] ou false.
-- `stripe_consultar_assinatura(array $params = Array()): array|false` — [line 436](../../../../../gestor/bibliotecas/stripe.php#L436)
+- `stripe_consultar_assinatura(array $params = Array()): array|false` — [line 442](../../../../../gestor/bibliotecas/stripe.php#L442)
   Consulta uma assinatura.
   Parameters:
   - `$params`: ['subscription_id' => obrig, 'expand' => array opcional]
-- `stripe_definir_metodo_padrao_assinatura(array $params = Array()): array|false` — [line 463](../../../../../gestor/bibliotecas/stripe.php#L463)
+- `stripe_definir_metodo_padrao_assinatura(array $params = Array()): array|false` — [line 469](../../../../../gestor/bibliotecas/stripe.php#L469)
   Fixa o método de pagamento padrão de uma assinatura.
   Parameters:
   - `$params`: ['subscription_id' => obrig, 'payment_method_id' => obrig]
   Returns: Assinatura atualizada ou false.
-- `stripe_cancelar_assinatura($params = Array())` — [line 476](../../../../../gestor/bibliotecas/stripe.php#L476)
+- `stripe_cancelar_assinatura($params = Array())` — [line 482](../../../../../gestor/bibliotecas/stripe.php#L482)
   Cancela definitivamente uma assinatura.
-- `stripe_troca_preco_payload(array $sub, array $params = Array()): array|false` — [line 503](../../../../../gestor/bibliotecas/stripe.php#L503)
+- `stripe_troca_preco_payload(array $sub, array $params = Array()): array|false` — [line 509](../../../../../gestor/bibliotecas/stripe.php#L509)
   Monta o corpo da troca de preço de uma assinatura, resolvendo `trial_end` contra a assinatura em curso. Separada da requisição para ser verificável sem rede.
   Parameters:
   - `$sub`: Assinatura consultada (precisa de items.data[0].id).
   - `$params`: Mesmos parâmetros de stripe_trocar_preco_assinatura.
   Returns: Corpo da requisição ou false quando a assinatura não tem item de preço.
-- `stripe_trocar_preco_assinatura(array $params = Array()): array|false` — [line 538](../../../../../gestor/bibliotecas/stripe.php#L538)
+- `stripe_trocar_preco_assinatura(array $params = Array()): array|false` — [line 544](../../../../../gestor/bibliotecas/stripe.php#L544)
   Troca o preço de uma assinatura ativa (upgrade/downgrade) com proration nativa.
   Parameters:
   - `$params`: ['subscription_id' => obrig, 'price_id' => obrig,
   Returns: Assinatura atualizada ou false.
-- `stripe_suspender_assinatura($params = Array())` — [line 557](../../../../../gestor/bibliotecas/stripe.php#L557)
+- `stripe_suspender_assinatura($params = Array())` — [line 563](../../../../../gestor/bibliotecas/stripe.php#L563)
   Suspende a cobrança (pause_collection) mantendo a assinatura viva.
-- `stripe_ativar_assinatura($params = Array())` — [line 576](../../../../../gestor/bibliotecas/stripe.php#L576)
+- `stripe_ativar_assinatura($params = Array())` — [line 582](../../../../../gestor/bibliotecas/stripe.php#L582)
   Reativa uma assinatura pausada ou com cancelamento agendado. Não ressuscita uma assinatura que já alcançou o estado terminal `canceled`.
-- `stripe_reembolsar(array $params = Array()): array|false` — [line 612](../../../../../gestor/bibliotecas/stripe.php#L612)
+- `stripe_reembolsar(array $params = Array()): array|false` — [line 618](../../../../../gestor/bibliotecas/stripe.php#L618)
   Reembolsa um pagamento.
   Parameters:
   - `$params`: ['payment_intent_id' => ou 'charge_id', 'valor' => decimal opc (total se ausente), 'moeda' => opc]
-- `stripe_criar_produto(array $params = Array()): array|false` — [line 638](../../../../../gestor/bibliotecas/stripe.php#L638)
+- `stripe_criar_produto(array $params = Array()): array|false` — [line 644](../../../../../gestor/bibliotecas/stripe.php#L644)
   Cria um produto no catálogo (`POST /v1/products`).
   Parameters:
   - `$params`: ['nome' => obrig, 'descricao' => opc, 'imagens' => array de URLs opc,
   Returns: Produto criado (`prod_...`) ou false.
-- `stripe_produto_payload(array $params = Array()): array` — [line 670](../../../../../gestor/bibliotecas/stripe.php#L670)
+- `stripe_produto_payload(array $params = Array()): array` — [line 676](../../../../../gestor/bibliotecas/stripe.php#L676)
   Monta o corpo de uma atualização de produto.
   Parameters:
   - `$params`: Mesmos campos de `stripe_atualizar_produto`.
   Returns: Corpo pronto para `http_build_query`.
-- `stripe_atualizar_produto(array $params = Array()): array|false` — [line 697](../../../../../gestor/bibliotecas/stripe.php#L697)
+- `stripe_atualizar_produto(array $params = Array()): array|false` — [line 703](../../../../../gestor/bibliotecas/stripe.php#L703)
   Atualiza um produto existente (`POST /v1/products/{id}`).
   Parameters:
   - `$params`: ['product_id' => obrig, 'nome' => opc, 'descricao' => opc,
   Returns: Produto atualizado ou false.
-- `stripe_consultar_produto($params = Array())` — [line 712](../../../../../gestor/bibliotecas/stripe.php#L712)
-- `stripe_listar_produtos(array $params = Array()): array|false` — [line 725](../../../../../gestor/bibliotecas/stripe.php#L725)
+- `stripe_consultar_produto($params = Array())` — [line 718](../../../../../gestor/bibliotecas/stripe.php#L718)
+- `stripe_listar_produtos(array $params = Array()): array|false` — [line 731](../../../../../gestor/bibliotecas/stripe.php#L731)
   Lista produtos da conta (`GET /v1/products`).
   Parameters:
   - `$params`: ['limite' => 1..100 (padrão 100), 'ativo' => bool opc, 'starting_after' => opc]
   Returns: ['data' => array de produtos, 'has_more' => bool] ou false.
-- `stripe_arquivar_produto($params = Array())` — [line 740](../../../../../gestor/bibliotecas/stripe.php#L740)
+- `stripe_arquivar_produto($params = Array())` — [line 746](../../../../../gestor/bibliotecas/stripe.php#L746)
   Arquiva um produto (o Stripe não permite exclusão de produto com preços associados).
-- `stripe_criar_preco(array $params = Array()): array|false` — [line 757](../../../../../gestor/bibliotecas/stripe.php#L757)
+- `stripe_criar_preco(array $params = Array()): array|false` — [line 763](../../../../../gestor/bibliotecas/stripe.php#L763)
   Cria um preço (`POST /v1/prices`).
   Parameters:
   - `$params`: ['product_id' => obrig, 'valor' => decimal obrig, 'moeda' => 'BRL',
   Returns: Preço criado (`price_...`) ou false.
-- `stripe_consultar_preco($params = Array())` — [line 788](../../../../../gestor/bibliotecas/stripe.php#L788)
-- `stripe_listar_precos(array $params = Array()): array|false` — [line 806](../../../../../gestor/bibliotecas/stripe.php#L806)
+- `stripe_consultar_preco($params = Array())` — [line 794](../../../../../gestor/bibliotecas/stripe.php#L794)
+- `stripe_listar_precos(array $params = Array()): array|false` — [line 812](../../../../../gestor/bibliotecas/stripe.php#L812)
   Lista preços da conta (`GET /v1/prices`).
   Parameters:
   - `$params`: ['product_id' => opc (filtra por produto), 'limite' => 1..100,
   Returns: ['data' => array de preços, 'has_more' => bool] ou false.
-- `stripe_arquivar_preco($params = Array())` — [line 823](../../../../../gestor/bibliotecas/stripe.php#L823)
+- `stripe_arquivar_preco($params = Array())` — [line 829](../../../../../gestor/bibliotecas/stripe.php#L829)
   Arquiva um preço (`active=false`). Preço em uso por assinatura viva continua cobrando.
-- `stripe_validar_webhook(array $params = Array()): array|false` — [line 843](../../../../../gestor/bibliotecas/stripe.php#L843)
+- `stripe_validar_webhook(array $params = Array()): array|false` — [line 849](../../../../../gestor/bibliotecas/stripe.php#L849)
   Valida a assinatura de um webhook (`Stripe-Signature`) por HMAC-SHA256.
   Parameters:
   - `$params`: ['payload' => corpo cru, 'signature_header' => header, 'tolerancia' => seg (300)]
   Returns: Evento decodificado ou false.
-- `stripe_testar_conexao()` — [line 883](../../../../../gestor/bibliotecas/stripe.php#L883)
+- `stripe_testar_conexao()` — [line 889](../../../../../gestor/bibliotecas/stripe.php#L889)
   Testa a conexão com as credenciais atuais (GET /v1/balance).
-- `stripe_traduzir_status($status)` — [line 888](../../../../../gestor/bibliotecas/stripe.php#L888)
-- `stripe_info()` — [line 906](../../../../../gestor/bibliotecas/stripe.php#L906)
+- `stripe_traduzir_status($status)` — [line 894](../../../../../gestor/bibliotecas/stripe.php#L894)
+- `stripe_info()` — [line 912](../../../../../gestor/bibliotecas/stripe.php#L912)
 
 <!-- c2f:extract:end -->
