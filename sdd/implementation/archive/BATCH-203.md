@@ -1,6 +1,6 @@
 # BATCH-203: Atualização segura, fase 2b — snapshot seletivo, verificação e rollback (req-198)
 
-Execução da [req-198](../human-requests/req-198.md), item D do [BL-028](../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md). Continua o [BATCH-202](BATCH-202.md), na mesma worktree e no mesmo tenant isolado.
+Execução da [req-198](../../human-requests/archive/req-198.md), item D do [BL-028](../../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md). Continua o [BATCH-202](BATCH-202.md), na mesma worktree e no mesmo tenant isolado.
 
 **Status**: `complete` (implementado e validado no tenant isolado; homologação humana pendente).
 **Worktree**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-bl028`, branch `feat/req-197`.

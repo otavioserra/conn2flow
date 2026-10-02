@@ -1,6 +1,6 @@
 # BATCH-202: Atualização segura, fase 2a — manifesto por camada, precedência e choques (req-198)
 
-Execução da [req-198](../human-requests/req-198.md), itens A e B.1 do [BL-028](../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md).
+Execução da [req-198](../../human-requests/archive/req-198.md), itens A e B.1 do [BL-028](../../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md).
 
 **Status**: `complete` (implementado e validado no tenant isolado; homologação humana pendente).
 **Worktree**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-bl028`, branch `feat/req-197`.

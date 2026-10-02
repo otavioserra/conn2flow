@@ -1,6 +1,6 @@
 # BATCH-192: Ajustes das docs online, sitemap no deploy e exclusão de órfãs
 
-Execução da [req-188](../human-requests/req-188.md).
+Execução da [req-188](../../human-requests/archive/req-188.md).
 
 **Status**: `complete`.
 

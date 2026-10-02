@@ -1,6 +1,6 @@
 # BATCH-196: Cupom de desconto na criação de assinatura do Stripe (req-192)
 
-Execução da [req-192](../human-requests/req-192.md).
+Execução da [req-192](../../human-requests/archive/req-192.md).
 
 **Status**: `complete`.
 

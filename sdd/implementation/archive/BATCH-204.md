@@ -1,6 +1,6 @@
 # BATCH-204: Atualização segura, fase 2c — snapshot, verificação e rollback no deploy por API; `c2f update:rollback` (req-198)
 
-Execução do acréscimo do Humano à [req-198](../human-requests/req-198.md) em 2026-09-30 ("inclui aí também na API"). Continua o [BATCH-203](BATCH-203.md), na mesma worktree e no mesmo tenant isolado.
+Execução do acréscimo do Humano à [req-198](../../human-requests/archive/req-198.md) em 2026-09-30 ("inclui aí também na API"). Continua o [BATCH-203](BATCH-203.md), na mesma worktree e no mesmo tenant isolado.
 
 **Status**: `complete` (implementado e validado no tenant isolado; homologação humana pendente).
 **Worktree**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-bl028`, branch `feat/req-197`.

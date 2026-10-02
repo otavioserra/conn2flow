@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-216 — Módulos `presentations` e `cookie-consent` (req-208)
+
+- [x] Apresentação: slides por `data-slide`, controles conforme as opções, teclado, endereço `#slide-N`, escala e impressão.
+- [x] Cookies: aviso sem decisão, recusa com o mesmo peso do aceite, revogação, script por categoria, Consent Mode v2.
+- [x] Saída escapada; endereço da política restrito; nenhum marcador sobrando.
+- [x] Painel: listagem, edição, pré-visualização e adição dos dois módulos abrem sem erro.
+- [x] 12 testes novos; suíte com a única falha anterior ao lote.
+- [ ] Gravação pelo formulário do painel exercitada no navegador.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-216](../implementation/BATCH-216.md).
+
 ## BATCH-215 — Docs: referência de funções em cartões (req-207)
 
 - [x] Cada função com âncora, assinatura copiável, parâmetros com tipo e link para a linha no repositório.

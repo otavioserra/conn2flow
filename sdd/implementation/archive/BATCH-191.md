@@ -1,6 +1,6 @@
 # BATCH-191: Correções simples da reescrita das docs e do deploy da req-186
 
-Execução da [req-187](../human-requests/req-187.md).
+Execução da [req-187](../../human-requests/archive/req-187.md).
 
 **Status**: `complete`.
 

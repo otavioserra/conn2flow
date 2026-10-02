@@ -2,7 +2,7 @@
 
 **Repositório**: `conn2flow` — `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow`  
 **Status**: `implemented-validated`  
-**Intake**: [req-196](../human-requests/req-196.md)
+**Intake**: [req-196](../../human-requests/archive/req-196.md)
 
 ## Live Todo List
 

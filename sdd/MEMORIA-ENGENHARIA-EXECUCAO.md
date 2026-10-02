@@ -16,6 +16,16 @@
 
 ## Tarefas recentes
 
+### 2026-10-02 — BATCH-216 (req-208): módulos `presentations` e `cookie-consent`
+
+- **Módulo de widget novo sem tocar no `html-editor.php`**: `alvo` e `alvos_modelos` com o id do módulo e `widget_js_include`; o alvo desconhecido cai no caminho padrão do editor.
+- **Tag do controlador público para a pré-visualização**: `gestor_pagina_javascript_incluir(['tipo' => 'widget', 'modulo_id' => …], false, true)` devolve a tag sem incluí-la na página.
+- **Contar marcação por regex pega comentário**: `<!-- cada <section data-slide> -->` contava como slide. Tirar os comentários antes.
+- **Ícone do módulo**: `icone` é Fomantic, `icone_tailwind` é Lucide.
+- **Teste com contagem fixa**: `Req203LanguageAgnosticResourcesTest` conta as linhas de `user_profiles_modules.json`; módulo novo pede ajuste.
+- **`resources:sync` no core termina com erro de `dist/` e saída 0** quando não há `PUBLIC_PATH`: é aviso, os recursos foram compilados.
+- **Gerador dos dois módulos**: fora do repositório (scratchpad da sessão); os arquivos gerados são a fonte daqui em diante.
+
 ### 2026-10-01 — BATCH-214 (req-206): deploy de projeto depois da req-202/203
 
 - **`insert_only` precisa ser tratado nos dois ramos de `sincronizarTabela()`** (PK e chave natural). Mudar a estratégia de uma tabela no contrato muda o ramo; conferir que as proteções existem no ramo novo.

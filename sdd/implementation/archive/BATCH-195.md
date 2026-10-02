@@ -1,6 +1,6 @@
 # BATCH-195: Sitemap sem o fluxo de compra e deploy por API sem estouro de memória (req-191)
 
-Execução da [req-191](../human-requests/req-191.md).
+Execução da [req-191](../../human-requests/archive/req-191.md).
 
 **Status**: `complete`.
 

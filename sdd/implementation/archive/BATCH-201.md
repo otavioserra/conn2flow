@@ -1,6 +1,6 @@
 # BATCH-201: Atualização segura, fase 1 (req-197)
 
-Execução da [req-197](../human-requests/req-197.md), fase 1 do [BL-028](../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md).
+Execução da [req-197](../../human-requests/archive/req-197.md), fase 1 do [BL-028](../../backlog/BL-028-atualizacao-segura-choques-backup-rollback.md).
 
 **Status**: `complete` (implementado e validado; homologação humana pendente).
 **Worktree**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-bl028`, branch `feat/req-197`. É separada do diretório principal do core, onde outro agente trabalha na req-196 (layout por perfil) e mexe em `atualizacoes-banco-de-dados.php` e `atualizacao-dados-recursos.php`; este lote não toca esses dois arquivos.

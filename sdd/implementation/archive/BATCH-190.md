@@ -22,7 +22,7 @@ Execução da [req-186](../../human-requests/archive/req-186.md).
 
 ## Commits
 
-- Core: `bd1b184d` (docs:build com módulo dono e status), `615170b7` (guia e referência), `7c480e5e` (correções achadas no deploy, ver [BATCH-191](../BATCH-191.md)).
+- Core: `bd1b184d` (docs:build com módulo dono e status), `615170b7` (guia e referência), `7c480e5e` (correções achadas no deploy, ver [BATCH-191](BATCH-191.md)).
 - Site (`feat/req-055`): **pendente**. Arquivos: `gestor/modulos/documentation/`, a migração, os templates movidos, `docs.config.json` removido, `resources/*/templates.json`, `db/data/*`, páginas e publicações regeneradas, `assets/docs/llms*.txt`.
 
 ## Validação
@@ -34,4 +34,4 @@ Execução da [req-186](../../human-requests/archive/req-186.md).
   - banco: 184 páginas de docs em pt-br e 136 em en, todas com `modulo='documentation'` e `user_modified=0`; página `documentation` nos dois idiomas; módulo e permissão aplicados; templates `docs-*` presentes;
   - `/documentation/` (autenticado) 200, sem erros de console: 320 páginas geradas, 305 publicações, 5 páginas de entrada, 26 avisos, commit `615170b7` com link, 169 arquivos alterados, 184 páginas no banco (pt-br), 0 editadas;
   - `/en/documentation/` 200, título "Documentation", 136 páginas.
-- Achados no deploy e corrigidos no [BATCH-191](../BATCH-191.md): `auth:cookie` por SSH quebrado a partir do Windows, e o título da tela mostrando "Checkout" (variável de outro módulo).
+- Achados no deploy e corrigidos no [BATCH-191](BATCH-191.md): `auth:cookie` por SSH quebrado a partir do Windows, e o título da tela mostrando "Checkout" (variável de outro módulo).

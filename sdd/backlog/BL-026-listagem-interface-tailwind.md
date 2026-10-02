@@ -9,7 +9,7 @@
 
 ## Contexto
 
-1. Desde a [req-190](../human-requests/req-190.md), incluir, editar e os botões do `interface` têm variante Tailwind. A listagem não: ela depende do DataTables com o tema do Fomantic e do `interface.js` legado (tooltips, dropdowns, modais do Fomantic).
+1. Desde a [req-190](../human-requests/archive/req-190.md), incluir, editar e os botões do `interface` têm variante Tailwind. A listagem não: ela depende do DataTables com o tema do Fomantic e do `interface.js` legado (tooltips, dropdowns, modais do Fomantic).
 2. Um módulo com as telas de formulário em Tailwind precisa manter a página da listagem em `layout-administrativo-do-gestor`; o painel fica com dois visuais.
 
 ## Proposta (rascunho)

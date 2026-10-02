@@ -1,6 +1,6 @@
 # BATCH-194: Formulários do `interface` em Tailwind — inclusão, botões e exclusão
 
-Execução da [req-190](../human-requests/req-190.md).
+Execução da [req-190](../../human-requests/archive/req-190.md).
 
 **Status**: `complete`.
 

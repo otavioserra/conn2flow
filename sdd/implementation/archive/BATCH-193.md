@@ -1,6 +1,6 @@
 # BATCH-193: Segurança do `interface` — listagem sem SQL injection e excluir/status com CSRF
 
-Execução da [req-189](../human-requests/req-189.md) (itens A1 e A2 da req-181).
+Execução da [req-189](../../human-requests/archive/req-189.md) (itens A1 e A2 da req-181).
 
 **Status**: `complete`.
 

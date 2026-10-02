@@ -1,6 +1,6 @@
 # BATCH-199: Itens avulsos na primeira fatura da assinatura Stripe (req-195)
 
-Execução da [req-195](../human-requests/req-195.md).
+Execução da [req-195](../../human-requests/archive/req-195.md).
 
 **Status**: `complete`.
 
