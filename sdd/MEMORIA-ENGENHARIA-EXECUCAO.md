@@ -16,6 +16,14 @@
 
 ## Tarefas recentes
 
+### 2026-10-02 — BATCH-221 (req-213): módulos distribuídos, melhorias
+
+- **Função chamada por gancho carrega as próprias bibliotecas.** O `HookManager` só registra o erro do callback em modo de desenvolvimento; fora dele, função indefinida dentro do gancho some e o fluxo segue como se o gancho não existisse (login distribuído com segundo fator ia para o painel).
+- **`project:verify <id>`** compara por hash o código do destino com a origem e roda ao fim do `project:update-all` (`--no-verify` pula; `--strict` devolve 1). É o que substitui a comparação manual depois de deploys cruzados.
+- **Cadastro de instalações distribuídas é do projeto**: o core lê o provedor em `$_CONFIG['modulo-distribuido']['installations-provider']` (`array`, `false` = desativada, `null` = desconhecida, cai no `.env`).
+- **cURL com handle estático** reaproveita conexão e TLS entre chamadas da mesma requisição: 31,9 ms para 4,6 ms por consulta remota no Lab.
+- **Teste que usa classe do CLI** precisa dos `require_once` de `cli/src/Contracts` e do comando: o autoload do PHPUnit não cobre `cli/`.
+
 ### 2026-10-02 — BATCH-220 (req-212): modal do editor visual
 
 - **Folha de framework do painel não entra no iframe do editor visual Tailwind, nem em camada.** Abaixo das camadas do Tailwind ela perde para o reset (`base`); acima, volta a reger o conteúdo. A interface do motor dentro do iframe tem de trazer os próprios estilos (inline ou no `<style>` do motor).
@@ -210,83 +218,9 @@
 - `publisher-index` não filtra por valor de campo; o Core não tem lib de Markdown nem dependência de runtime no `composer.json`.
 - Plano completo: `conn2flow-ai-workspace/sdd/backlog/FEAT-014-*.md` (+ `ARCH-007` para atualização de kits).
 
-### 2026-09-25 — BATCH-180 (req-175): renovação silenciosa de CSRF
-
-- **O token CSRF não tem TTL: é variável de sessão.** O cookie de sessão vence `SESSION_LIFETIME`
-  (10800 s) após a CRIAÇÃO e nunca é renovado; a linha em `sessoes` é varrida por inatividade
-  (1/51 requisições). Para reproduzir: `SESSION_LIFETIME=120` ou apagar o cookie no DevTools.
-- **`$.ajax` se cobre pelo envelope do XHR.** Ouvintes de CAPTURA no próprio XHR disparam antes do
-  `onload` do jQuery (ordem at-target do DOM): seguram o 403, renovam e reabrem o mesmo objeto.
-  O reenvio vai numa macrotask (`setTimeout 0`) — microtask reabriria o XHR entre `readystatechange`
-  e `load` da resposta original.
-- **403 sem marca não é CSRF.** `X-Gestor-Csrf-Error` sai nos dois ramos (JSON e HTML) porque
-  `fetch`/XHR sem `Accept: application/json` recebem a página HTML; ACL nunca entra em retry.
-- **Não existe `global/global.json`.** Cache-bust de `gestor/assets/*` = `assets:minify` + owner em
-  `asset-versions.json`, regenerável sozinho por `php gestor/controladores/agents/arquitetura/atualizacao-versoes-assets.php`.
-- `seguranca.php` não entra no bootstrap do PHPUnit: teste que o usa faz `require_once` explícito.
-
-### 2026-09-22 — BATCH-178 (req-173): o que o roteador esquece e o que o widget desenha sem querer
-
-- **`paginas_301` responde 301 de verdade** (`gestor_roteador_erro()` chama `http_response_code()`);
-  o que se perdia era a query string, porque a chamada do ramo 301 não passava `'querystring' => true`.
-  Medir antes de acusar: o BL-016 nasceu afirmando 302 e estava errado.
-- **Função que termina em `header()` + `exit` é inverificável.** A montagem da URL saiu para
-  `gestor_redirecionar_montar_url()` só por isso; a regra de `?` x `&` passou a ter teste.
-- **Os blocos-modelo dos templates de forms nunca foram usados.** `forms_widget_options_html()` e
-  `forms_widget_wrap_password()` procuram `option-choice`/`password-toggle` DENTRO do bloco `item`
-  (é o item que chega a `forms_widget_render_field()`), e nos templates do core eles estão FORA.
-  O widget sempre caiu nos modelos embutidos no PHP; o bloco do fim do arquivo só vazava para a tela.
-- **Limpeza de marcador tem de ser cirúrgica**: remover bloco desconhecido inteiro apagaria markup do
-  autor do template. Só os três blocos conhecidos saem inteiros; dos demais sai o comentário.
-- **A suíte no Windows falha em `CoreHelpersTest`** por `openssl.cnf` ausente (PHP 8.5 + OpenSSL 3.5),
-  independentemente do lote. Rodar no Lab (Linux, PHP 8.5.10) dá 1202/1202; não perseguir esse erro.
-- **`git diff --check` reclama de linha só com TAB**, e o estilo do `bibliotecas/gestor.php` usa TAB em
-  linha em branco. Em código novo, linha em branco vazia.
-
-### 2026-09-15 — BATCH-168 (req-163): XHR com CSRF e site restrito
-
-- **`gestor_usuario_perfil()` lê o cookie `authprofile`, que NÃO é assinado** — nunca use para autorizar; `gestor_usuario()` vem do JWT validado.
-- **`$.ajax` passa pelo envelope de `XMLHttpRequest.prototype`**: registre os cabeçalhos em `setRequestHeader` ou o token do prefilter duplica.
-- **PHP 8.5 do host (WinGet) sem `pdo_sqlite`/`OPENSSL_CONF`**: 16 erros falsos. Rode com `PHP_INI_SCAN_DIR=<ini temporário>` + `OPENSSL_CONF=<php>\extras\ssl\openssl.cnf`, sem editar o `php.ini`.
-- **`executionOrder="depends,defects"` alterna verde/2 falhas** em `ForcarAtualizacaoTest` (`static $meta` de `schemaMetadata()` congelado por `ProjectIdentityPassthroughTest`). Pré-existente; compare com `--order-by=default` e `--exclude-filter` antes de culpar o lote.
-- **`./c2f assets:minify` via Git Bash falha no `exec` do `npx`**; `php cli/c2f.php assets:minify` funciona.
-
-### 2026-09-18 — BATCH-174 (req-169): controle de acessos e suíte no ambiente `lab`
-
-- **Proteção antiabuso precisa distinguir erro humano de robô.** `formulario_acesso_falha()` era
-  chamada igual em validação de campo e em reCAPTCHA reprovado, então digitação errada queimava a
-  mesma cota de envios válidos. O parâmetro `origem` separa os dois tetos, com padrão `abuso` para
-  não alterar chamadores fora do núcleo.
-- **Mensagem de bloqueio sem prazo gera suporte.** `autenticacao_acesso_verificar()` passou a
-  devolver `tempo_bloqueio` e as telas substituem `#bloqueio_liberacao#` pela data e hora. Projetos
-  com tela de login própria precisam adotar o marcador para exibir o prazo.
-- **A suíte do núcleo deve rodar no `lab`, não no PHP do Windows.** O host Windows falha em
-  `CoreHelpersTest::testCriptografiaBasicaComChavesRsa` por ausência de `openssl.cnf` e exige
-  habilitar `pdo_sqlite`/`sqlite3` no php.ini. No `lab` (WSL Ubuntu com PHP 8.5 do HestiaCP), o
-  repositório é visível em `/mnt/c/...` e, após `apt-get install php8.5-sqlite3`, a suíte fecha
-  limpa: 1181 testes, 7828 asserções, 0 erros. Use o `lab` como ambiente de referência para
-  validação PHP; divergência ali é do código, divergência só no Windows é do ambiente.
-
-### 2026-09-18 — BATCH-175 (req-170) e correções do smoke test
-
-- **Marcador que depende de variável precisa ser trocado no fim do pipeline.**
-  `gestor_pagina_variaveis()` roda depois do controlador do módulo, então trocar um marcador enquanto
-  o módulo monta a página não alcança texto que só será injetado adiante. `pagina-marcadores-finais`,
-  aplicado em `gestor_pagina_ultimas_operacoes()`, resolve para as duas origens (componente e
-  variável). Vale para qualquer módulo com o mesmo problema.
-- **Em `perfil-usuario`, `pagina_celula($nome,false,true)` REMOVE a célula.** O ramo
-  `if($acesso['permitido'])` é o do acesso liberado, não o do bloqueio. Código novo que dependa do
-  estado de bloqueio vai no `else` — ou fora do `if`.
-- **Texto de tela pode estar em três lugares.** Componente do núcleo, página do módulo e variável. O
-  que um projeto renderiza depende de ele ter tela própria. Alterar só o componente não alcança quem
-  usa a variável; conferir no banco do projeto (`variaveis`, com `user_modified`) antes de dar como
-  entregue.
-- **Cache estático + reordenação do PHPUnit produz falha fantasma.** Teste que escreve o próprio
-  contrato precisa forçar a releitura; senão o primeiro a chamar fixa o estado para a classe toda e o
-  resultado passa a depender da rodada anterior. Validar sempre com DUAS execuções seguidas, sem
-  apagar `.phpunit.result.cache`.
-
 ### Histórico anterior
+
+BATCH-168, BATCH-174, BATCH-175, BATCH-178 e BATCH-180 (2026-09-15 a 2026-09-25: CSRF em XHR e renovação silenciosa, controle de acessos, suíte no ambiente `lab`, roteador e widgets) foram podados em 2026-10-02 por limite de tamanho. O registro integral está nos relatórios desses lotes em `sdd/implementation/` (ou `archive/`) e na versão `97a6bc9e` deste arquivo.
 
 BATCH-144 (autoria x derivado no CSS; runtime serve do banco, disco só com `DEVELOPMENT_ENV`) e
 BATCH-146/147 (cópias congeladas de widget, alvo do CLI e assets locais) foram podados por limite

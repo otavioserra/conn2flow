@@ -1,5 +1,18 @@
 # Validation Checklist
 
+## BATCH-221 — Módulos distribuídos: melhorias da revisão (req-213)
+
+- [x] `confirm()` e nova aba dentro do iframe, em três motores.
+- [x] Provedor de instalações: ativa, desativada, desconhecida e falha.
+- [x] Custo por consulta medido antes e depois.
+- [x] Sobras do login antigo fora do código.
+- [x] `project:verify` no fim do pipeline, listando divergências reais.
+- [x] Login distribuído com segundo fator ponta a ponta.
+- [x] Memória de execução podada (obrigatória em 300 linhas): 296 linhas / 32 KB para 231 linhas, cinco lotes de setembro movidos para o histórico.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-221](../implementation/BATCH-221.md).
+
 ## BATCH-220 — Modal de edição do editor visual no documento Tailwind (req-212)
 
 - [x] Modal íntegro nos modos texto, código e imagem; salvar aplica.
