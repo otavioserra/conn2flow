@@ -226,11 +226,12 @@ final class DocsBuilder
             }
 
             // ===== pages.json + pages/<id>/<id>.html
-            [$json, $removed] = $this->merge($resDir . '/pages.json', 'id', array_map(function (array $p, string $id): array {
+            $layout = $this->layoutFor($lang);
+            [$json, $removed] = $this->merge($resDir . '/pages.json', 'id', array_map(function (array $p, string $id) use ($layout): array {
                 $entry = [
                     'name' => $p['name'],
                     'id' => $id,
-                    'layout' => (string)$this->config['layout'],
+                    'layout' => $layout,
                     'path' => $p['path'],
                     'type' => 'page',
                     'framework_css' => (string)($this->config['framework_css'] ?? 'tailwindcss'),
@@ -242,6 +243,14 @@ final class DocsBuilder
                 }
                 if ($p['publisher_id'] !== null) {
                     $entry['publisher_id'] = $p['publisher_id'];
+                }
+                // HTML que o layout injeta por widget (cabeçalho, rodapé) entra no CSS da página. Sem isso,
+                // uma utility da página pode vencer a variante responsiva do cabeçalho, que está em outro arquivo.
+                $fontes = $this->config['tailwind_sources'] ?? [];
+                if (is_array($fontes) && $fontes !== []) {
+                    $entry['tailwind_bundle'] = true;
+                    $entry['tailwind_sources'] = array_values($fontes);
+                    $entry['tailwind_sources_reason'] = (string)($this->config['tailwind_sources_reason'] ?? 'Include the HTML rendered by layout widgets in the page CSS.');
                 }
 
                 return $entry;
@@ -757,6 +766,25 @@ final class DocsBuilder
     }
 
     /** Módulo dono das docs no projeto (`module` da configuração), ou vazio. */
+    /**
+     * Layout das páginas de docs num idioma. `layout` aceita um id só, para projeto em que o layout
+     * tem o mesmo id em todos os idiomas, ou um mapa `{"pt-br": "...", "en": "..."}`. Página que aponta
+     * para um layout que não existe no idioma dela é servida sem cabeçalho nem rodapé.
+     */
+    public function layoutFor(string $lang): string
+    {
+        $layout = $this->config['layout'] ?? '';
+        if (is_array($layout)) {
+            if (!isset($layout[$lang]) || trim((string)$layout[$lang]) === '') {
+                throw new \RuntimeException("docs.layout não define o layout do idioma '$lang'.");
+            }
+
+            return (string)$layout[$lang];
+        }
+
+        return (string)$layout;
+    }
+
     private function module(): string
     {
         $modulo = (string)($this->config['module'] ?? '');

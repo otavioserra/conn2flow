@@ -244,6 +244,50 @@ final class DocsBuildReq178Test extends TestCase
         mkdir($this->tmp . '/site/resources/pt-br/pages/docs-velha', 0777, true);
     }
 
+    public function testLayoutPodeSerUmIdOuUmMapaPorIdioma(): void
+    {
+        $cfg = $this->config();
+        $builder = new DocsBuilder(new DocsTree($this->tmp . '/core'), $this->tmp . '/site', $cfg);
+        self::assertSame('lay', $builder->layoutFor('pt-br'));
+        self::assertSame('lay', $builder->layoutFor('en'));
+
+        // Projeto em que o layout tem id diferente em cada idioma: sem o mapa, a página em inglês
+        // apontava para um layout que só existe em português e saía sem cabeçalho nem rodapé.
+        $cfg['layout'] = ['pt-br' => 'layout-site', 'en' => 'site-layout'];
+        $builder = new DocsBuilder(new DocsTree($this->tmp . '/core'), $this->tmp . '/site', $cfg);
+        self::assertSame('layout-site', $builder->layoutFor('pt-br'));
+        self::assertSame('site-layout', $builder->layoutFor('en'));
+
+        $this->expectException(\RuntimeException::class);
+        $builder->layoutFor('es');
+    }
+
+    public function testFontesDoTailwindEntramNaEntradaDaPaginaSoQuandoConfiguradas(): void
+    {
+        $this->project();
+        $ler = static function (array $plan): array {
+            foreach ($plan['write'] as $caminho => $conteudo) {
+                if (str_ends_with(str_replace('\\', '/', $caminho), '/pt-br/pages.json')) {
+                    return array_values(array_filter(json_decode($conteudo, true), static fn (array $p): bool => str_starts_with($p['id'], 'docs')));
+                }
+            }
+
+            return [];
+        };
+
+        $semFontes = $ler((new DocsBuilder(new DocsTree($this->tmp . '/core'), $this->tmp . '/site', $this->config()))->plan());
+        self::assertNotEmpty($semFontes);
+        self::assertArrayNotHasKey('tailwind_sources', $semFontes[0]);
+
+        $cfg = $this->config();
+        $cfg['tailwind_sources'] = ['../../menus/topo/topo.html'];
+        $comFontes = $ler((new DocsBuilder(new DocsTree($this->tmp . '/core'), $this->tmp . '/site', $cfg))->plan());
+        foreach ($comFontes as $pagina) {
+            self::assertTrue($pagina['tailwind_bundle'], $pagina['id']);
+            self::assertSame(['../../menus/topo/topo.html'], $pagina['tailwind_sources'], $pagina['id']);
+        }
+    }
+
     /** @return array<string, mixed> */
     private function config(): array
     {
