@@ -351,7 +351,14 @@ function modulo_distribuido_http_post($url, $corpo, array $headers, $timeout = 1
 	if (!function_exists('curl_init')) {
 		return false;
 	}
-	$ch = curl_init();
+	// req-213: um módulo original faz dezenas de consultas por tela, todas para o mesmo host. O
+	// handle reaproveitado mantém a conexão (e o TLS) aberta entre elas dentro da requisição.
+	static $ch = null;
+	if ($ch === null) {
+		$ch = curl_init();
+	} else {
+		curl_reset($ch);
+	}
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $corpo);
@@ -365,8 +372,10 @@ function modulo_distribuido_http_post($url, $corpo, array $headers, $timeout = 1
 	$status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 	if ($resposta === false) {
 		error_log('MODULO-DISTRIBUIDO: falha cURL para ' . $url . ': ' . curl_error($ch));
+		// Conexão quebrada não volta ao reaproveitamento.
+		curl_close($ch);
+		$ch = null;
 	}
-	curl_close($ch);
 	return $status >= 200 && $status < 300 ? $resposta : false;
 }
 
@@ -720,21 +729,6 @@ function modulo_distribuido_guardiao(array $config, array $opcoes = []) {
 	];
 }
 
-/**
- * Compatibilidade com callers antigos: o login por credenciais neste canal foi desativado.
- * O fluxo vigente usa perfil-usuario e a troca de código de uso único.
- *
- * @param array  $config  Config do canal para o central (endpoint, secret, slug, transporte).
- * @param string $usuario Login do usuário.
- * @param string $senha   Senha em texto plano.
- *
- * @return false
- */
-function modulo_distribuido_signin(array $config, $usuario, $senha) {
-    // Legacy callers cannot bypass the official sign-in and its second factor.
-    return false;
-}
-
 // =========================== Middleware central (autoridade de permissão)
 
 /**
@@ -1078,7 +1072,7 @@ function modulo_distribuido_persistir_token($chave, array $tokens, $persistir = 
 function modulo_distribuido_textos($lang = null, array $overrides = [], $resolver = null) {
     $resolver = $resolver ?? function ($id) { return (string)gestor_variaveis(['id' => $id]); };
     $textos = [];
-    foreach (['c2f-md-iframe-title', 'c2f-md-login-error', 'c2f-md-login-invalido', 'c2f-md-login-pass', 'c2f-md-login-submit', 'c2f-md-login-subtitle', 'c2f-md-login-title', 'c2f-md-login-user', 'c2f-md-noperm-message', 'c2f-md-noperm-support', 'c2f-md-noperm-title', 'c2f-md-signin-action', 'c2f-md-support-url', 'c2f-md-unavailable'] as $id) $textos[$id] = (string)$resolver($id);
+    foreach (['c2f-md-iframe-title', 'c2f-md-login-error', 'c2f-md-login-submit', 'c2f-md-login-subtitle', 'c2f-md-login-title', 'c2f-md-noperm-message', 'c2f-md-noperm-support', 'c2f-md-noperm-title', 'c2f-md-signin-action', 'c2f-md-support-url', 'c2f-md-unavailable'] as $id) $textos[$id] = (string)$resolver($id);
     return array_merge($textos, $overrides);
 }
 

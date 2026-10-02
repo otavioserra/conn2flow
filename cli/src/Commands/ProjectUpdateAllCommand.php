@@ -30,11 +30,12 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
 
     public function getHelp(): string
     {
-        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto] [--no-wait] [--lock-wait=<minutes>] [--no-maintenance]\n\n"
+        return "Usage: c2f project:update-all <projectID> [--contents=Sim|Não] [--confirmar-remoto] [--no-wait] [--lock-wait=<minutes>] [--no-maintenance] [--no-verify]\n\n"
             . "Executes the full 8-stage synchronization pipeline. A deploy_mode=ssh project marked "
             . "local=true receives remote confirmation automatically; production remains explicit.\n"
             . "req-197: checks migrations first (db:check-migrations) and runs under a deploy lock per target "
-            . "(SSH host+path or local folder, in GIT/.c2f-deploy-locks/). A second pipeline waits for the lock (default 30 min); --no-wait fails at once.";
+            . "(SSH host+path or local folder, in GIT/.c2f-deploy-locks/). A second pipeline waits for the lock (default 30 min); --no-wait fails at once.\n"
+            . "req-213: ends with project:verify, which lists target files that differ from the source or exist only at the target.";
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -306,6 +307,13 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
                 'A publicação de assets não completou. O projeto segue funcionando: as URLs caem no '
                 . 'controlador arquivo-estatico, apenas sem a entrega direta pelo servidor web.'
             );
+        }
+
+        // req-213: o `rsync -u` não repõe arquivo mais novo no destino e nunca apaga. A conferência só
+        // lê e avisa; não muda o resultado do pipeline. `--no-verify` pula.
+        if (!$input->hasOption('no-verify')) {
+            $output->section("Conferência por hash ({$project})");
+            (new ProjectVerifyCommand($this->rootPath))->execute(new Input(['project:verify', '--project=' . $project]), $output);
         }
 
         $output->success("Full update pipeline for project '{$project}' completed successfully!");

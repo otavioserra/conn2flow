@@ -53,6 +53,7 @@ use Conn2Flow\Cli\Commands\ProjectSyncHooksCommand;
 use Conn2Flow\Cli\Commands\ProjectSyncResourcesCommand;
 use Conn2Flow\Cli\Commands\ProjectUpdateAllCommand;
 use Conn2Flow\Cli\Commands\ProjectUpdateSystemCommand;
+use Conn2Flow\Cli\Commands\ProjectVerifyCommand;
 use Conn2Flow\Cli\Commands\CssAuditCommand;
 use Conn2Flow\Cli\Commands\AssetsFontsCommand;
 use Conn2Flow\Cli\Commands\AssetsMinifyCommand;
@@ -127,6 +128,7 @@ final class Application
         $this->register(new ProjectSyncDbCommand($this->rootPath));
         $this->register(new ProjectSyncHooksCommand($this->rootPath));
         $this->register(new ProjectUpdateAllCommand($this->rootPath));
+        $this->register(new ProjectVerifyCommand($this->rootPath));
         $this->register(new ProjectDeployCommand($this->rootPath));
         $this->register(new ProjectRecoverCommand($this->rootPath));
         $this->register(new ProjectRecoverFilesCommand($this->rootPath));

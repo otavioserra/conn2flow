@@ -7,7 +7,6 @@
  * relacionadas à AUTENTICAÇÃO/ATIVAÇÃO:
  *  - acao 'exchange': troca o código de uso único emitido pelo login padrão.
  *  - acao 'iframe-ticket': autoriza a abertura do módulo original no iframe.
- *  - acao 'signin': desativada (HTTP 410); o login usa perfil-usuario.
  *  - acao 'refresh': renova os tokens a partir de um refresh token válido.
  *
  * Também expõe helpers usados pelos MÓDULOS CENTRAIS para montar a configuração do
@@ -39,6 +38,11 @@ function api_module_central_handle(array $rota) {
 	$assinatura = $_SERVER['HTTP_X_C2F_SIGNATURE'] ?? '';
 	$payload = json_decode((string)$corpo_cru, true);
 	$instalacao = is_array($payload) ? modulo_distribuido_instalacao($payload['app_id'] ?? '', $slug) : false;
+	// req-213: quem se identifica por `app_id` é julgado pelo cadastro. Instalação desconhecida,
+	// desativada ou sem o módulo não cai no segredo global legado.
+	if (is_array($payload) && isset($payload['app_id']) && $payload['app_id'] !== '' && !$instalacao) {
+		api_response_error('distributed-installation-invalid', 403);
+	}
 	$secret = $instalacao ? $instalacao['secret'] : api_module_central_secret($slug);
 
 	// A assinatura HMAC do canal autentica a instalação distribuída chamadora.
@@ -77,10 +81,6 @@ function api_module_central_handle(array $rota) {
 				'app_id' => $payload['app_id'], 'modulo' => $slug, 'route' => $route, 'token' => $payload['token']], $secret, 60);
 			api_response_success(['ticket' => $ticket]);
 			break;
-		case 'signin':
-			api_module_central_signin($payload, $slug);
-			break;
-
 		case 'refresh':
 			api_module_central_refresh($payload, $secret, $slug);
 			break;
@@ -92,13 +92,6 @@ function api_module_central_handle(array $rota) {
 		default:
 			api_response_error('Ação central não suportada: ' . $acao, 404);
 	}
-}
-
-/**
- * Tombstone do endpoint legado. A autenticação ocorre no login padrão do perfil-usuario.
- */
-function api_module_central_signin(array $payload, $slug = '') {
-	api_response_error('distributed-official-signin-required', 410);
 }
 
 /**

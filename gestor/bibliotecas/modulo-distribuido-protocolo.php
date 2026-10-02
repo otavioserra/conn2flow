@@ -60,18 +60,42 @@ function modulo_distribuido_validar_envelope($corpo, $assinatura, $secret, $slug
         $pdo = $pdo ?? modulo_distribuido_pdo();
         $stmt = $pdo->prepare('INSERT INTO distributed_exchanges (id,kind,payload,expires_at,consumed) VALUES (?,?,?,?,1)');
         $stmt->execute([hash_hmac('sha256', 'nonce:' . $dados['nonce'], $secret), 'nonce', '', time() + 240]);
-        // Each row is bounded by its validity window; no persistent replay cache growth.
-        $stmt = $pdo->prepare('DELETE FROM distributed_exchanges WHERE expires_at<?');
-        $stmt->execute([time() - 240]);
+        // Each row is bounded by its validity window; no persistent replay cache growth. req-213: the
+        // sweep is sampled, so a screen with dozens of queries pays one write per query, not two.
+        if (random_int(1, 25) === 1) {
+            $stmt = $pdo->prepare('DELETE FROM distributed_exchanges WHERE expires_at<?');
+            $stmt->execute([time() - 240]);
+        }
         return $dados;
     } catch (\Throwable $e) {
         return false;
     }
 }
 
+/**
+ * Installation registered at the central, by app_id. req-213: a project may keep the registry
+ * outside the .env (a table with per-installation secrets) and declare the reader in
+ * `$_CONFIG['modulo-distribuido']['installations-provider']`: callable(string $app): ?array with the
+ * same keys of an .env entry (url, secret, modules, tables). A provider that knows the app_id is the
+ * authority, even to say it is disabled (false); null falls back to the .env.
+ */
 function modulo_distribuido_instalacao($app, $slug) {
-    $instalacoes = modulo_distribuido_config_get('modulo-distribuido.installations', []);
-    $instalacao = is_string($app) ? ($instalacoes[$app] ?? null) : null;
+    if (!is_string($app) || $app === '') return false;
+    $instalacao = null;
+    $provedor = modulo_distribuido_config_get('modulo-distribuido.installations-provider', null);
+    if (is_callable($provedor)) {
+        try {
+            $instalacao = call_user_func($provedor, $app);
+        } catch (\Throwable $e) {
+            error_log('MODULO-DISTRIBUIDO: installations provider failed');
+            return false;
+        }
+        if ($instalacao === false) return false;
+    }
+    if ($instalacao === null) {
+        $instalacoes = modulo_distribuido_config_get('modulo-distribuido.installations', []);
+        $instalacao = $instalacoes[$app] ?? null;
+    }
     if (!is_array($instalacao) || empty($instalacao['secret']) || empty($instalacao['url'])
         || !in_array($slug, $instalacao['modules'] ?? [], true)) return false;
     $url = parse_url($instalacao['url']);
@@ -126,6 +150,10 @@ function modulo_distribuido_login_sucesso($id_usuarios) {
         gestor_sessao_variavel_del('distributed-login');
         return;
     }
+    // req-213: the second-factor and social sign-in paths reach this hook without the library that
+    // issues the tokens. The hook manager swallows the error, and the user landed on the central
+    // dashboard instead of returning to the installation.
+    gestor_incluir_biblioteca('autenticacao');
     $tokens = autenticacao_distribuido_gerar_tokens($id_usuarios);
     if (!$tokens) modulo_distribuido_indisponivel();
     $codigo = modulo_distribuido_registro_emitir('login', ['tokens' => $tokens, 'contexto' => $dados], $instalacao['secret']);

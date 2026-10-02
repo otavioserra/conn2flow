@@ -868,18 +868,21 @@ final class ModuloDistribuidoTest extends TestCase
             . '</div>';
     }
 
-    public function testSigninRetornaTokensComCredenciaisValidas(): void
+    /** req-213: a tela de login própria saiu; nada dela pode sobrar no código. */
+    public function testSobrasDoLoginPorCredenciaisForamRemovidas(): void
     {
-        $secret = 'signin-secret';
-        $config = ['endpoint' => 'https://c.test/_api', 'slug' => 'grupos', 'secret' => $secret,
-            'transporte' => $this->transporteSigninEPermissao($secret, 'permitido', 'TOK-OK')];
-        $tokens = modulo_distribuido_signin($config, 'admin', 'senha');
-        self::assertFalse($tokens); // The legacy path cannot bypass the official sign-in.
-
-        // Credenciais inválidas (transporte devolve erro) => false.
-        $config2 = ['endpoint' => 'https://c.test/_api', 'slug' => 'grupos', 'secret' => $secret,
-            'transporte' => $this->transporteSigninEPermissao($secret, 'permitido', '')];
-        self::assertFalse(modulo_distribuido_signin($config2, 'admin', 'errada'));
+        self::assertFalse(function_exists('modulo_distribuido_signin'));
+        $raiz = CONN2FLOW_GESTOR_ROOT;
+        self::assertStringNotContainsString('autenticacao_distribuido_validar_credenciais', file_get_contents($raiz . '/bibliotecas/autenticacao.php'));
+        $central = file_get_contents($raiz . '/controladores/api/api-module-central.php');
+        self::assertStringNotContainsString("case 'signin'", $central);
+        self::assertStringNotContainsString('api_module_central_signin', $central);
+        foreach (['pt-br', 'en'] as $lang) {
+            $variaveis = file_get_contents($raiz . '/resources/' . $lang . '/variables.json');
+            foreach (['c2f-md-login-user', 'c2f-md-login-pass', 'c2f-md-login-invalido'] as $id) {
+                self::assertStringNotContainsString('"' . $id . '"', $variaveis, $lang . ' ' . $id);
+            }
+        }
     }
 
     public function testAppFluxoLoginAutenticaEUsaTokenNaMesmaRequisicao(): void

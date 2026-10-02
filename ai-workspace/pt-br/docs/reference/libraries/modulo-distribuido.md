@@ -51,7 +51,7 @@ Autenticação, variáveis e o resto da requisição continuam no banco local do
 ## Login, permissão e tela
 
 O distribuído não decide acesso: pergunta ao central.
-- `modulo_distribuido_signin()` manda usuário e senha ao central e recebe os tokens (OAuth2 do central); `modulo_distribuido_token_sessao()` e `modulo_distribuido_persistir_token()` guardam o token na sessão.
+- O login é o do `perfil-usuario` do central: sem token, o host distribuído manda o navegador para `/signin/` do central com um contexto assinado; depois do login completo (inclusive segundo fator) o gancho `login.distribuido` devolve um código de uso único, trocado entre servidores pelos tokens (ação `exchange`). `modulo_distribuido_token_sessao()` e `modulo_distribuido_persistir_token()` guardam e renovam os tokens na sessão. Não existe login por usuário e senha neste canal.
 - `modulo_distribuido_guardiao()` (no distribuído) consulta o central, onde `modulo_distribuido_middleware_central()` valida o token e a permissão do usuário no módulo e responde `nao-autenticado`, `sem-permissao` ou autorizado. Qualquer falha resolve para o estado mais restritivo.
 - `modulo_distribuido_estado_renderizacao()` traduz isso em `login`, `sem-permissao` ou `iframe`; `modulo_distribuido_montar_url_iframe()` monta a URL da tela do central.
 - `modulo_distribuido_app()` faz tudo numa chamada: token, guardião e a tela do estado, trocando `#modulo-distribuido-app#` na página pelo componente `modulo-distribuido-app` (`modulo_distribuido_render_estado()`, `modulo_distribuido_render_componente()`, `modulo_distribuido_textos()`).
@@ -157,7 +157,7 @@ Referência gerada a partir de `gestor/bibliotecas/modulo-distribuido.php` por `
   Middleware de permissão (lado distribuído): consulta o central e devolve o estado.
   Parâmetros:
   - `$config`: Config do canal (endpoint, slug, secret, transporte).
-  - `$token`: Access token do usuário (obtido no signin).
+  - `$token`: Access token do usuário (obtido na troca do código de login).
   - `$slug`: Slug do módulo alvo (default: $config['slug']).
   Retorno: ['estado' => 'login'|'sem-permissao'|'iframe', 'resposta' => array].
 - `modulo_distribuido_guardiao(array $config, array $opcoes = []): array` — [linha 658](../../../../../gestor/bibliotecas/modulo-distribuido.php#L658)
@@ -166,7 +166,6 @@ Referência gerada a partir de `gestor/bibliotecas/modulo-distribuido.php` por `
   - `$config`: Config do canal (endpoint, slug, secret, transporte, central-url).
   - `$opcoes`: 'token', 'central-url', 'opcao', 'params-iframe', 'slug'.
   Retorno: {
-- `modulo_distribuido_signin(array $config, string $usuario, string $senha): array|false` — [linha 697](../../../../../gestor/bibliotecas/modulo-distribuido.php#L697)
   Autentica (ativa) o usuário no central e retorna os tokens — fluxo de login distribuído.
   Parâmetros:
   - `$config`: Config do canal para o central (endpoint, secret, slug, transporte).
@@ -260,3 +259,14 @@ Referência gerada a partir de `gestor/bibliotecas/modulo-distribuido.php` por `
   Retorno: Resultado do guardião + 'html' (componente renderizado).
 
 <!-- c2f:extract:end -->
+
+## Cadastro de instalações no central
+
+O central reconhece cada instalação distribuída pelo `app_id`. A leitura é de `modulo_distribuido_instalacao($app, $slug)`, que devolve `url`, `secret`, `modules` e `tables`, ou `false`.
+
+- Sem mais nada, o cadastro é a variável `MODULO_DISTRIBUIDO_INSTALLATIONS` do `.env` (JSON por `app_id`).
+- Um projeto pode manter o cadastro fora do `.env` e declarar o leitor em `$_CONFIG['modulo-distribuido']['installations-provider']`: `callable(string $app): array|false|null`. `array` é a instalação; `false` diz que ela existe e está desativada (o `.env` não é consultado); `null` diz que o provedor não a conhece, e o `.env` responde. Falha do provedor recusa a instalação.
+
+## Custo por consulta
+
+Cada consulta do módulo original que alcança uma tabela da instalação vira uma chamada HTTP assinada. A conexão é reaproveitada dentro da requisição (`modulo_distribuido_http_post()` mantém o handle do cURL), e a faxina dos nonces vencidos no banco do cliente é amostrada, de modo que cada consulta custa uma gravação lá, não duas.

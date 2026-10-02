@@ -418,12 +418,12 @@
     {
         "name": "Módulo Distribuído App",
         "id": "modulo-distribuido-app",
-        "version": "1.7",
+        "version": "1.8",
         "checksum": {
-            "html": "3696f7b1ec9669de97d08a13a4b019ac",
+            "html": "af6b7cf37555b69bf981269a37156e56",
             "css": "67af4382cf63db52cfecc9419e41616e",
             "css_precompiled": "",
-            "combined": "fcb4fec6107a5e1235a680dfa0db8f57"
+            "combined": "328ad80bec06c36991e9394b38a13427"
         }
     },
     {

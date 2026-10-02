@@ -604,16 +604,6 @@
         "type": "string"
     },
     {
-        "id": "c2f-md-login-user",
-        "value": "Usuário",
-        "type": "string"
-    },
-    {
-        "id": "c2f-md-login-pass",
-        "value": "Senha",
-        "type": "string"
-    },
-    {
         "id": "c2f-md-login-submit",
         "value": "Ativar e entrar",
         "type": "string"
@@ -651,11 +641,6 @@
     {
         "id": "c2f-md-iframe-title",
         "value": "Painel administrativo",
-        "type": "string"
-    },
-    {
-        "id": "c2f-md-login-invalido",
-        "value": "Usuário ou senha inválidos.",
         "type": "string"
     },
     {

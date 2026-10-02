@@ -604,16 +604,6 @@
         "type": "string"
     },
     {
-        "id": "c2f-md-login-user",
-        "value": "User",
-        "type": "string"
-    },
-    {
-        "id": "c2f-md-login-pass",
-        "value": "Password",
-        "type": "string"
-    },
-    {
         "id": "c2f-md-login-submit",
         "value": "Activate and sign in",
         "type": "string"
@@ -651,11 +641,6 @@
     {
         "id": "c2f-md-iframe-title",
         "value": "Administrative panel",
-        "type": "string"
-    },
-    {
-        "id": "c2f-md-login-invalido",
-        "value": "Invalid user or password.",
         "type": "string"
     },
     {

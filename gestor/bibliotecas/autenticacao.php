@@ -1314,47 +1314,6 @@ function autenticacao_decriptar_chave_privada($params = false){
 // =========================== Autenticação de Módulos Distribuídos (req-005)
 
 /**
- * Valida as credenciais de um usuário para ativação/login do canal distribuído.
- *
- * Espelha a mesma verificação de credenciais do fluxo web (perfil_usuario_signin):
- * busca o usuário por login e confere a senha com password_verify, exigindo status 'A'.
- * Diferente do fluxo web, NÃO faz redirect/echo — retorna um resultado estruturado,
- * adequado para ser consumido pela API central que devolve os tokens ao distribuído.
- *
- * @param string $usuario Login do usuário.
- * @param string $senha   Senha em texto plano.
- *
- * @return array ['valido' => bool, 'id_usuarios' => int|null, 'mensagem' => string|null]
- */
-function autenticacao_distribuido_validar_credenciais($usuario, $senha){
-	if(!is_string($usuario) || $usuario === '' || !is_string($senha) || $senha === ''){
-		return ['valido' => false, 'id_usuarios' => null, 'mensagem' => 'Usuário e senha são obrigatórios.'];
-	}
-
-	$usuario_escapado = banco_escape_field($usuario);
-
-	$usuarios = banco_select_name(
-		banco_campos_virgulas(Array('id_usuarios','senha','status')),
-		"usuarios",
-		"WHERE usuario='".$usuario_escapado."' AND status!='D'"
-	);
-
-	if(!$usuarios || !isset($usuarios[0]['senha'])){
-		return ['valido' => false, 'id_usuarios' => null, 'mensagem' => 'Usuário ou senha inválidos.'];
-	}
-
-	if(!password_verify($senha, $usuarios[0]['senha'])){
-		return ['valido' => false, 'id_usuarios' => null, 'mensagem' => 'Usuário ou senha inválidos.'];
-	}
-
-	if(($usuarios[0]['status'] ?? '') !== 'A'){
-		return ['valido' => false, 'id_usuarios' => null, 'mensagem' => 'Usuário inativo.'];
-	}
-
-	return ['valido' => true, 'id_usuarios' => (int)$usuarios[0]['id_usuarios'], 'mensagem' => null];
-}
-
-/**
  * Gera os tokens de acesso e renovação (OAuth2) para o canal distribuído.
  *
  * Reaproveita a infraestrutura OAuth2 já usada pela API do sistema, com escopo

@@ -51,7 +51,7 @@ Authentication, variables and the rest of the request stay in the central's loca
 ## Login, permission and screen
 
 The distributed side does not decide access: it asks the central.
-- `modulo_distribuido_signin()` sends username and password to the central and gets the tokens (the central's OAuth2); `modulo_distribuido_token_sessao()` and `modulo_distribuido_persistir_token()` keep the token in the session.
+- Sign-in is the central's `perfil-usuario`: without a token, the distributed host sends the browser to the central's `/signin/` with a signed context; after the complete sign-in (second factor included) the `login.distribuido` hook returns a single-use code, exchanged server to server for the tokens (`exchange` action). `modulo_distribuido_token_sessao()` and `modulo_distribuido_persistir_token()` keep and renew the tokens in the session. There is no username and password sign-in on this channel.
 - `modulo_distribuido_guardiao()` (distributed side) asks the central, where `modulo_distribuido_middleware_central()` validates the token and the user's permission on the module and answers `nao-autenticado`, `sem-permissao` or authorized. Any failure resolves to the most restrictive state.
 - `modulo_distribuido_estado_renderizacao()` translates that into `login`, `sem-permissao` or `iframe`; `modulo_distribuido_montar_url_iframe()` builds the URL of the central screen.
 - `modulo_distribuido_app()` does it all in one call: token, guardian and the state screen, replacing `#modulo-distribuido-app#` on the page with the `modulo-distribuido-app` component (`modulo_distribuido_render_estado()`, `modulo_distribuido_render_componente()`, `modulo_distribuido_textos()`).
@@ -157,7 +157,7 @@ Reference generated from `gestor/bibliotecas/modulo-distribuido.php` by `c2f doc
   Middleware de permissão (lado distribuído): consulta o central e devolve o estado.
   Parameters:
   - `$config`: Config do canal (endpoint, slug, secret, transporte).
-  - `$token`: Access token do usuário (obtido no signin).
+  - `$token`: Access token do usuário (obtido na troca do código de login).
   - `$slug`: Slug do módulo alvo (default: $config['slug']).
   Returns: ['estado' => 'login'|'sem-permissao'|'iframe', 'resposta' => array].
 - `modulo_distribuido_guardiao(array $config, array $opcoes = []): array` — [line 658](../../../../../gestor/bibliotecas/modulo-distribuido.php#L658)
@@ -166,7 +166,6 @@ Reference generated from `gestor/bibliotecas/modulo-distribuido.php` by `c2f doc
   - `$config`: Config do canal (endpoint, slug, secret, transporte, central-url).
   - `$opcoes`: 'token', 'central-url', 'opcao', 'params-iframe', 'slug'.
   Returns: {
-- `modulo_distribuido_signin(array $config, string $usuario, string $senha): array|false` — [line 697](../../../../../gestor/bibliotecas/modulo-distribuido.php#L697)
   Autentica (ativa) o usuário no central e retorna os tokens — fluxo de login distribuído.
   Parameters:
   - `$config`: Config do canal para o central (endpoint, secret, slug, transporte).
@@ -260,3 +259,14 @@ Reference generated from `gestor/bibliotecas/modulo-distribuido.php` by `c2f doc
   Returns: Resultado do guardião + 'html' (componente renderizado).
 
 <!-- c2f:extract:end -->
+
+## Installation registry at the central
+
+The central recognizes each distributed installation by its `app_id`. The reader is `modulo_distribuido_instalacao($app, $slug)`, which returns `url`, `secret`, `modules` and `tables`, or `false`.
+
+- By default the registry is the `MODULO_DISTRIBUIDO_INSTALLATIONS` variable of the `.env` (JSON keyed by `app_id`).
+- A project may keep the registry outside the `.env` and declare the reader in `$_CONFIG['modulo-distribuido']['installations-provider']`: `callable(string $app): array|false|null`. `array` is the installation; `false` says it exists and is disabled (the `.env` is not consulted); `null` says the provider does not know it, and the `.env` answers. A provider failure refuses the installation.
+
+## Cost per query
+
+Each query of the original module that reaches a table of the installation becomes a signed HTTP call. The connection is reused within the request (`modulo_distribuido_http_post()` keeps the cURL handle), and the sweep of expired nonces in the client's database is sampled, so each query costs one write there, not two.

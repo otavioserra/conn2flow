@@ -1520,7 +1520,7 @@ function api_handle_modulo($modulo_id, $action) {
  *
  * Rota: api[/v1]/modulo-distribuido/{slug}/{acao}. A ação determina o lado:
  *  - 'db' / 'ping'          => lado DISTRIBUÍDO (executa a operação no banco local).
- *  - 'signin' / 'refresh'   => lado CENTRAL (autenticação/ativação, devolve tokens).
+ *  - 'exchange' / 'refresh' / 'iframe-ticket' / 'permissao' => lado CENTRAL (troca do código de login, renovação, ticket do iframe, permissão).
  *
  * A autenticação do canal é feita por assinatura HMAC (verificada em cada handler),
  * dispensando o OAuth para as operações máquina-a-máquina entre central e distribuído.
@@ -1540,7 +1540,7 @@ function api_handle_modulo_distribuido() {
     $acao = $rota['acao'];
 
     // Ações de autenticação/ativação e o middleware de permissão são atendidos pelo central.
-    if (in_array($acao, ['signin', 'refresh', 'ativar', 'permissao', 'exchange', 'iframe-ticket'], true)) {
+    if (in_array($acao, ['refresh', 'permissao', 'exchange', 'iframe-ticket'], true)) {
         require_once $_GESTOR['ROOT_PATH'] . 'controladores/api/api-module-central.php';
         api_module_central_handle($rota);
         return;

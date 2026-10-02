@@ -1037,24 +1037,6 @@
     {
         "language": "pt-br",
         "modulo": null,
-        "id": "c2f-md-login-user",
-        "valor": "Usuário",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": null,
-        "id": "c2f-md-login-pass",
-        "valor": "Senha",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": null,
         "id": "c2f-md-login-submit",
         "valor": "Ativar e entrar",
         "tipo": "string",
@@ -1120,15 +1102,6 @@
         "modulo": null,
         "id": "c2f-md-iframe-title",
         "valor": "Painel administrativo",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": null,
-        "id": "c2f-md-login-invalido",
-        "valor": "Usuário ou senha inválidos.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -2180,24 +2153,6 @@
     {
         "language": "en",
         "modulo": null,
-        "id": "c2f-md-login-user",
-        "valor": "User",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": null,
-        "id": "c2f-md-login-pass",
-        "valor": "Password",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": null,
         "id": "c2f-md-login-submit",
         "valor": "Activate and sign in",
         "tipo": "string",
@@ -2263,15 +2218,6 @@
         "modulo": null,
         "id": "c2f-md-iframe-title",
         "valor": "Administrative panel",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": null,
-        "id": "c2f-md-login-invalido",
-        "valor": "Invalid user or password.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

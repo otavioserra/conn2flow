@@ -93,6 +93,80 @@ final class ModuloDistribuidoReq092Test extends TestCase
         }
     }
 
+    /** req-213: o cadastro de instalações pode morar fora do .env; quem o lê é a autoridade. */
+    public function testInstallationsProviderIsTheAuthorityAndEnvIsTheFallback(): void
+    {
+        global $_CONFIG;
+        $backup = $_CONFIG['modulo-distribuido'] ?? null;
+        $doEnv = ['url' => 'https://env.test', 'secret' => 'env-secret', 'modules' => ['coupons'], 'tables' => ['coupons']];
+        $_CONFIG['modulo-distribuido'] = ['installations' => ['app-env' => $doEnv, 'app-off' => $doEnv]];
+
+        // Sem provedor: o .env responde como antes.
+        self::assertSame('env-secret', modulo_distribuido_instalacao('app-env', 'coupons')['secret']);
+
+        $_CONFIG['modulo-distribuido']['installations-provider'] = function ($app) {
+            if ($app === 'app-db') return ['url' => 'https://db.test/', 'secret' => 'db-secret', 'modules' => ['coupons'], 'tables' => ['coupons']];
+            if ($app === 'app-off') return false;      // conhecida e desativada
+            if ($app === 'app-erro') throw new RuntimeException('falha de leitura');
+            return null;                                // desconhecida: cai no .env
+        };
+        $doBanco = modulo_distribuido_instalacao('app-db', 'coupons');
+        self::assertSame('db-secret', $doBanco['secret']);
+        self::assertSame('https://db.test', $doBanco['url']);
+        self::assertFalse(modulo_distribuido_instalacao('app-db', 'orders'));       // módulo fora da lista
+        self::assertFalse(modulo_distribuido_instalacao('app-off', 'coupons'));     // desativada vence o .env
+        self::assertFalse(modulo_distribuido_instalacao('app-erro', 'coupons'));    // falha do provedor fecha
+        self::assertSame('env-secret', modulo_distribuido_instalacao('app-env', 'coupons')['secret']);
+        self::assertFalse(modulo_distribuido_instalacao('', 'coupons'));
+
+        if ($backup === null) { unset($_CONFIG['modulo-distribuido']); } else { $_CONFIG['modulo-distribuido'] = $backup; }
+    }
+
+    /** req-213: o gancho do login tem de carregar a biblioteca que emite os tokens (2FA e login social). */
+    public function testLoginHookLoadsTheTokenLibraryItself(): void
+    {
+        $fonte = file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/modulo-distribuido-protocolo.php');
+        $inicio = strpos($fonte, 'function modulo_distribuido_login_sucesso(');
+        $bloco = substr(str_replace("\r\n", "\n", $fonte), $inicio, 1200);
+
+        self::assertLessThan(strpos($bloco, 'autenticacao_distribuido_gerar_tokens('), strpos($bloco, "gestor_incluir_biblioteca('autenticacao')"));
+    }
+
+    /** req-213: `app_id` sem instalação válida não cai no segredo global legado. */
+    public function testCentralApiRefusesUnknownOrDisabledAppIdBeforeTheLegacySecret(): void
+    {
+        $fonte = file_get_contents(CONN2FLOW_GESTOR_ROOT . '/controladores/api/api-module-central.php');
+
+        self::assertLessThan(strpos($fonte, 'api_module_central_secret($slug);'), strpos($fonte, "api_response_error('distributed-installation-invalid', 403);"));
+    }
+
+    /** req-213: `confirm()`, `alert()` e links em nova aba têm de funcionar dentro do módulo. */
+    public function testIframeSandboxAllowsDialogsAndNewTabs(): void
+    {
+        foreach (['pt-br', 'en'] as $lang) {
+            $html = file_get_contents(CONN2FLOW_GESTOR_ROOT . '/resources/' . $lang . '/components/modulo-distribuido-app/modulo-distribuido-app.html');
+            preg_match('/sandbox="([^"]*)"/', $html, $m);
+            $permissoes = explode(' ', $m[1] ?? '');
+            foreach (['allow-scripts', 'allow-forms', 'allow-same-origin', 'allow-modals', 'allow-popups', 'allow-popups-to-escape-sandbox'] as $p) {
+                self::assertContains($p, $permissoes, $lang . ' ' . $p);
+            }
+            self::assertNotContains('allow-top-navigation', $permissoes, $lang);
+        }
+    }
+
+    /** req-213: a faxina dos nonces vencidos é amostrada; a recusa de repetição não depende dela. */
+    public function testReplayIsRejectedRegardlessOfTheSampledSweep(): void
+    {
+        $pdo = $this->pdo();
+        for ($i = 0; $i < 60; $i++) {
+            $body = json_encode(['modulo' => 'products', 'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))]);
+            $signature = modulo_distribuido_assinar($body, 'secret');
+            self::assertIsArray(modulo_distribuido_validar_envelope($body, $signature, 'secret', 'products', $pdo));
+            self::assertFalse(modulo_distribuido_validar_envelope($body, $signature, 'secret', 'products', $pdo));
+        }
+        self::assertSame(60, (int)$pdo->query('SELECT COUNT(*) FROM distributed_exchanges')->fetchColumn());
+    }
+
     public function testSqlChannelRejectsExecutableCommentsAndStacking(): void
     {
         foreach (["SELECT 1; SELECT 2", "SELECT 1;;", "SELECT 1 /*! INTO OUTFILE '/tmp/x' */",

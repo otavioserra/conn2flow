@@ -59,7 +59,6 @@ In `perfil-usuario`, the status decides the CAPTCHA: with reCAPTCHA, it is only 
 ## Distributed channel
 
 Used by the central side of the [distributed architecture](modulo-distribuido.md):
-- `autenticacao_distribuido_validar_credenciais($user, $password)`: `password_verify` against `usuarios`, requires an active status;
 - `autenticacao_distribuido_gerar_tokens($id_usuarios)`: [OAuth2](oauth2.md) tokens with the `distributed` scope;
 - `autenticacao_distribuido_verificar_permissao_modulo()`: the user's profile has the target module;
 - `autenticacao_distribuido_token_ativo()`: the channel access token is valid.
@@ -166,7 +165,6 @@ Reference generated from `gestor/bibliotecas/autenticacao.php` by `c2f docs:extr
   Parameters:
   - `$params`: Parâmetros (criptografia, chavePrivada, chavePrivadaSenha obrigatórios).
   Returns: Valor decriptado ou false em erro.
-- `autenticacao_distribuido_validar_credenciais(string $usuario, string $senha): array` — [line 1329](../../../../../gestor/bibliotecas/autenticacao.php#L1329)
   Valida as credenciais de um usuário para ativação/login do canal distribuído.
   Parameters:
   - `$usuario`: Login do usuário.
