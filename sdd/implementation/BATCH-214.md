@@ -1,6 +1,6 @@
 # BATCH-214: deploy de projeto depois da req-202/203 (req-206)
 
-Execução da [req-206](../human-requests/req-206.md). Corrige o que a [req-202](../human-requests/req-202.md) e a [req-203](../human-requests/req-203.md) quebravam no deploy de projeto.
+Execução da [req-206](../human-requests/req-206.md). Corrige o que a [req-202](../human-requests/archive/req-202.md) e a [req-203](../human-requests/req-203.md) quebravam no deploy de projeto.
 
 **Status**: `complete` (validado no Lab; homologação humana pendente).
 

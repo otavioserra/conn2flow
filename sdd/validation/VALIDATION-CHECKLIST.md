@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-220 — Modal de edição do editor visual no documento Tailwind (req-212)
+
+- [x] Modal íntegro nos modos texto, código e imagem; salvar aplica.
+- [x] Seletor de arquivos abre na janela do painel, uma vez, e devolve a escolha.
+- [x] Documento do editor sem folha do Fomantic; raiz de 16px.
+- [x] Demais elementos gráficos do editor abertos e conferidos.
+- [ ] Editor visual de layout aberto no navegador.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-220](../implementation/BATCH-220.md).
+
 ## BATCH-219 — Infraestrutura comum para módulos distribuídos (req-211)
 
 - [x] Login oficial, código de uso único, troca entre servidores, tokens fora de URL e do navegador.

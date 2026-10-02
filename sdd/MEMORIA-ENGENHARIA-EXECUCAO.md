@@ -16,6 +16,13 @@
 
 ## Tarefas recentes
 
+### 2026-10-02 — BATCH-220 (req-212): modal do editor visual
+
+- **Folha de framework do painel não entra no iframe do editor visual Tailwind, nem em camada.** Abaixo das camadas do Tailwind ela perde para o reset (`base`); acima, volta a reger o conteúdo. A interface do motor dentro do iframe tem de trazer os próprios estilos (inline ou no `<style>` do motor).
+- **Modal de edição**: sem `#html-editor-modal` no documento, o motor cria o portátil (`ensureFallbackModal`). No iframe do painel (sem `raiz`) o botão de imagem fala com a janela pai; na página pública usa o seletor ao vivo.
+- **Dirigir o editor no Playwright**: `iframe#iframe-preview` → `window.htmlEditor.selectElement(el)` e `.editSelected()`; clicar no elemento seleciona o filho e a barra pode não aparecer. `document.querySelector('img')` acha imagens da própria interface do editor: usar `section img`.
+- **Editor ao vivo**: `window.postMessage({type:'c2f-toolbar:edit-start', page_id}, origin)`, com o `page_id` do `src` do `#c2f-site-toolbar`.
+
 ### 2026-10-02 — BATCH-219 (req-211): módulos distribuídos, revisão e integração
 
 - **Allowlist de tabelas por regex não segura SQL**: `FROM (t)`, `JOIN (t)`, `STRAIGHT_JOIN t`, `(TABLE t)`, `{OJ t}` e vírgula depois de `JOIN ... ON` nomeiam tabela sem o formato `FROM nome`. `modulo_distribuido_sql_tabelas()` percorre tokens e recusa o que não reconhece. Ao mexer nela, rodar os casos de `ModuloDistribuidoReq092Test`.
