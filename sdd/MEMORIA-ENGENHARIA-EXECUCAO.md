@@ -24,7 +24,7 @@
 - **Fomantic**: o ícone é `chartline`; `chart line` não desenha nada. Conferir o nome em `assets/vendor/fomantic-ui/*/semantic.min.css`. O dashboard desenha o SVG pelo mesmo nome (`dashboard_gerar_svg_modulo`).
 - **Excluir e status pelo painel** agem por GET com `_csrf_token` na URL.
 - **JS extra de módulo**: `<modulo>.<tipo>.js` é servido em `<modulo>/<tipo>.js` (`gestor_pagina_javascript_incluir(['tipo' => …])`).
-- **`docs:build`**: `layout` aceita mapa por idioma; `tailwind_sources` na configuração entra em toda página de docs. A primeira publicação depois disso recompila todas (10 min no Lab).
+- **`docs:build`**: `layout` aceita mapa por idioma; `tailwind_sources` na configuração entra em toda página de docs, mas multiplica o CSS do cabeçalho por página: no `conn2flow-site` o `PaginasData.json` foi de 67 MB a 167 MB e a opção foi desligada lá. Trocar o layout das docs recompila todas as páginas (5 a 10 min no Lab).
 
 ### 2026-10-02 — BATCH-216 (req-208): módulos `presentations` e `cookie-consent`
 
