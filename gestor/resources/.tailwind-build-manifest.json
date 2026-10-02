@@ -1115,6 +1115,50 @@
             "safelist": [],
             "built_at": "2026-09-29T17:12:26+00:00"
         },
+        "module|cookie-consent|en|templates|cookie-consent-card": {
+            "fingerprint": "ef623a644e11dca687a2549e25a2a6bead00b5586ca1a5188d96f1b7aeec7b83",
+            "output_hash": "f898f2d9148634d7059af3963da8cf9c6941229e64f175aaeefe26b7d17fa86e",
+            "output": "modulos/cookie-consent/resources/en/templates/cookie-consent-card/cookie-consent-card.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/cookie-consent/resources/en/templates/cookie-consent-card/cookie-consent-card.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-02T10:44:56+00:00"
+        },
+        "module|cookie-consent|en|templates|cookie-consent-card-light": {
+            "fingerprint": "33732237f81506e8daa8f4c3054407ccf72872a8ff427919f410cfc9f81171f9",
+            "output_hash": "f898f2d9148634d7059af3963da8cf9c6941229e64f175aaeefe26b7d17fa86e",
+            "output": "modulos/cookie-consent/resources/en/templates/cookie-consent-card-light/cookie-consent-card-light.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/cookie-consent/resources/en/templates/cookie-consent-card-light/cookie-consent-card-light.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-02T10:44:56+00:00"
+        },
+        "module|cookie-consent|pt-br|templates|cookie-consent-card": {
+            "fingerprint": "b2f7b04d5a61352d93427f2cfcb35e681cc7904730cc0445c58febb4444bb192",
+            "output_hash": "f898f2d9148634d7059af3963da8cf9c6941229e64f175aaeefe26b7d17fa86e",
+            "output": "modulos/cookie-consent/resources/pt-br/templates/cookie-consent-card/cookie-consent-card.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/cookie-consent/resources/pt-br/templates/cookie-consent-card/cookie-consent-card.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-02T10:44:56+00:00"
+        },
+        "module|cookie-consent|pt-br|templates|cookie-consent-card-light": {
+            "fingerprint": "653c3e209c7fb1b00e5cd1689f41995caa81e0677686c4c023b44e30d9436371",
+            "output_hash": "f898f2d9148634d7059af3963da8cf9c6941229e64f175aaeefe26b7d17fa86e",
+            "output": "modulos/cookie-consent/resources/pt-br/templates/cookie-consent-card-light/cookie-consent-card-light.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/cookie-consent/resources/pt-br/templates/cookie-consent-card-light/cookie-consent-card-light.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-02T10:44:56+00:00"
+        },
         "module|dashboard|en|components|dashboard-site-toolbar-menu": {
             "fingerprint": "a4f3f4a62513a3e2435c8a35f559558946e0b43e1512da8cbbfa76b1d4a7b184",
             "output_hash": "92aaf90a4a4803f27b963729a9c65d64437f390d7115d5dc9aa63b024eb1b4eb",
@@ -2618,6 +2662,28 @@
             ],
             "safelist": [],
             "built_at": "2026-10-01T15:51:28+00:00"
+        },
+        "module|presentations|en|templates|presentations-deck": {
+            "fingerprint": "2f28fe46d5d74da2470e31550e71cee54c84db6e01d75218ef8f0c8fb7eae829",
+            "output_hash": "320b0e04539a45da52ba786226ba77b1892647a7aa882cba7e06b22ad07f00c8",
+            "output": "modulos/presentations/resources/en/templates/presentations-deck/presentations-deck.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/presentations/resources/en/templates/presentations-deck/presentations-deck.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-02T10:44:56+00:00"
+        },
+        "module|presentations|pt-br|templates|presentations-deck": {
+            "fingerprint": "e1a68eefca784e26706c21762be496a95a920a4921ca040d03d9357bbc679552",
+            "output_hash": "320b0e04539a45da52ba786226ba77b1892647a7aa882cba7e06b22ad07f00c8",
+            "output": "modulos/presentations/resources/pt-br/templates/presentations-deck/presentations-deck.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/presentations/resources/pt-br/templates/presentations-deck/presentations-deck.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-02T10:44:57+00:00"
         },
         "module|publisher-highlights|en|templates|publisher-highlights-artigos-editorial": {
             "fingerprint": "8d9ab8b68dc034a42d8546cdc6cc74cefc00781406a80e9dfc81ddd1dee30072",

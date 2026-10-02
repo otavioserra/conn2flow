@@ -1,0 +1,96 @@
+<input type="hidden" name="fields_schema">
+
+<div class="field">
+    <label>Nome da apresentação</label>
+    <input type="text" name="name" placeholder="Ex: Apresentação institucional">
+</div>
+
+<div class="ui info icon message">
+    <i class="info circle icon"></i>
+    <div class="content">
+        <div class="header">Cópia fiel do registro de origem</div>
+        <p>O HTML, o CSS e as opções do original já estão carregados abaixo. Depois de salvar, o original continua como está.</p>
+    </div>
+</div>
+
+<h4 class="ui dividing header">Opções</h4>
+
+<div class="three fields">
+        <div class="field"><label>Exibição</label><select class="ui dropdown" data-schema-key="mode"><option value="fullscreen">Janela inteira</option><option value="embedded">Embutida na página</option></select></div>
+        <div class="field"><label>Altura quando embutida (px)</label><input type="number" min="200" step="10" data-schema-key="height"></div>
+        <div class="field"><label>Transição</label><select class="ui dropdown" data-schema-key="transition"><option value="random">Sorteada a cada slide</option><option value="fade">Esmaecer</option><option value="zoom">Zoom</option><option value="slide-up">Subir</option><option value="slide-horizontal">Deslizar para o lado</option></select></div>
+</div>
+<div class="inline fields">
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="loop"><label>Voltar ao início depois do último</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="keyboard"><label>Teclado</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="touch"><label>Deslize no toque</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="hash"><label>Slide atual no endereço (#slide-3)</label></div></div>
+</div>
+<div class="inline fields">
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_arrows"><label>Setas</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_dots"><label>Pontos</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_counter"><label>Contador</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_progress"><label>Barra de progresso</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_fullscreen"><label>Botão de tela cheia</label></div></div>
+</div>
+<div class="two fields">
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="autoplay"><label>Avançar sozinho</label></div></div>
+        <div class="field"><label>Tempo por slide (ms)</label><input type="number" min="1000" step="500" data-schema-key="autoplay_speed"></div>
+</div>
+
+<h4 class="ui dividing header">Modelo visual</h4>
+
+<div class="field">
+    <label>Modelo (recurso)</label>
+    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+        <option value="">#template_placeholder_option#</option>
+        #template_id_options#
+    </select>
+    <div class="ui label" style="margin: 8px 0; display: block;">
+        <i class="exchange icon"></i>
+        Ao escolher um modelo, o HTML e o CSS dele entram no editor abaixo. A partir daí o que vale é o conteúdo do editor, salvo neste registro.
+    </div>
+</div>
+
+<div class="ui icon message info">
+    <i class="tv icon"></i>
+    <div class="content">
+        <div class="header">Cada seção é um slide</div>
+        <p>No editor, cada <code>&lt;section data-slide&gt;</code> é um slide: copie uma seção para criar outro. Pontos, setas, contador, barra de progresso, teclado, toque e impressão saem do widget, conforme as opções acima. Para pular para um slide de dentro do conteúdo, use <code>data-c2f-deck-goto="0"</code> num botão ou link (a contagem começa em zero).</p>
+    </div>
+</div>
+
+<div class="widget-content-tabs">
+<div class="ui top attached tabular menu menuConteudoWidget">
+    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Pré-visualização</a>
+    <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
+    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Código do widget</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+    <div style="position: relative;">
+        <iframe id="iframe-widget-preview" style="width:100%;height:640px;border:1px solid #ccc;"></iframe>
+        <div class="ui dimmer hep-preview-dimmer"><div class="ui loader"></div></div>
+    </div>
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-editor">
+    #html-editor#
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-widget">
+    <div class="ui icon message info">
+        <i class="cubes icon"></i>
+        <div class="content">
+            <div class="header">Bloco do widget</div>
+            <p>Cole o trecho abaixo na página que vai mostrar a apresentação. No modo de janela inteira, ela cobre a página; no modo embutido, ocupa a altura definida nas opções.</p>
+        </div>
+    </div>
+    <div class="field" style="margin-top:1rem;">
+        <label>Variável do widget</label>
+        <div class="ui action input">
+            <input type="text" id="hep-widget-val" readonly>
+            <button type="button" id="btn-copy-widget-val" class="ui teal button"><i class="copy icon"></i> Copiar</button>
+        </div>
+    </div>
+    <h4 class="ui header" style="margin-top:1rem;">Código HTML</h4>
+    <div style="border:1px solid #ccc;"><textarea id="hep-widget-code" name="hep-widget-code"></textarea></div>
+</div>
+</div>

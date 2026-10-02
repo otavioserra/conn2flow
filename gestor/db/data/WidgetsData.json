@@ -1,5 +1,27 @@
 [
     {
+        "id": "cookie-consent",
+        "name": "Consentimento de Cookies",
+        "icon": "cookie bite",
+        "tabela": "cookie_consent",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "cookie-consent",
+        "name": "Cookie Consent",
+        "icon": "cookie bite",
+        "tabela": "cookie_consent",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
         "id": "forms",
         "name": "Formulários",
         "icon": "clipboard list",
@@ -103,6 +125,28 @@
         "name": "Pages Index",
         "icon": "list",
         "tabela": "pages_index",
+        "coluna_where": null,
+        "language": "en",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "presentations",
+        "name": "Apresentações",
+        "icon": "tv",
+        "tabela": "presentations",
+        "coluna_where": null,
+        "language": "pt-br",
+        "status": "A",
+        "versao": 1,
+        "user_modified": 0
+    },
+    {
+        "id": "presentations",
+        "name": "Presentations",
+        "icon": "tv",
+        "tabela": "presentations",
         "coluna_where": null,
         "language": "en",
         "status": "A",

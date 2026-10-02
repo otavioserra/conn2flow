@@ -1,0 +1,368 @@
+{
+    "versao": "1.0.0",
+    "bibliotecas": [
+        "interface",
+        "html",
+        "html-editor"
+    ],
+    "id_numerico": "id_presentations",
+    "tabela": {
+        "nome": "presentations",
+        "nome_especifico": "name",
+        "id": "id",
+        "id_numerico": "id_presentations",
+        "status": "status",
+        "versao": "versao",
+        "data_criacao": "data_criacao",
+        "data_modificacao": "data_modificacao"
+    },
+    "asset_version": "2bd70e2a46fcd97c",
+    "resources": {
+        "pt-br": {
+            "widgets": [
+                {
+                    "id": "presentations",
+                    "name": "Apresentações",
+                    "icon": "tv",
+                    "tabela": "presentations"
+                }
+            ],
+            "ai_prompts_targets": [
+                {
+                    "id": "presentations",
+                    "name": "Apresentações"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "presentations",
+                    "name": "Apresentações",
+                    "target": "presentations",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Apresentação - Deck escuro",
+                    "id": "presentations-deck",
+                    "target": "presentations",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "39eee5c19f3fbb6daa3b9e84e48d93cc",
+                        "css": "e7ad9460132d06a2bea5e82c5fc708c9",
+                        "css_precompiled": "",
+                        "combined": "cb74646a725e26c6c2604df7282fcda2"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Apresentações - Listar",
+                    "id": "presentations",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "presentations/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "2c743ba52ab77e891020a3cf4f27be4c",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "2c743ba52ab77e891020a3cf4f27be4c"
+                    }
+                },
+                {
+                    "name": "Apresentações - Adicionar",
+                    "id": "presentations-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "presentations/adicionar/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "686cb937f67d760ea7e0940ea9f910fc",
+                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "css_precompiled": "",
+                        "combined": "5905498d5d4815b2fb7839afc3fb4908"
+                    }
+                },
+                {
+                    "name": "Apresentações - Editar",
+                    "id": "presentations-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "presentations/editar/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "be26af0d8062ccd977f667d294008124",
+                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "css_precompiled": "",
+                        "combined": "98994923eded40d36da2751be7194f00"
+                    }
+                },
+                {
+                    "name": "Apresentações - Clonar",
+                    "id": "presentations-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "presentations/clonar/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "5c9299861bd585cf74493bc3dbcdb4a4",
+                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "css_precompiled": "",
+                        "combined": "7db5519d111e6e88d83884d4d50797b9"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Opções",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css_compiled-label",
+                    "value": "CSS compilado",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html_extra_head-label",
+                    "value": "HTML extra do head",
+                    "type": "string"
+                },
+                {
+                    "id": "template-modified-suffix",
+                    "value": "(Modificado)",
+                    "type": "string"
+                },
+                {
+                    "id": "error-template-not-found",
+                    "value": "Modelo não encontrado.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-copied",
+                    "value": "Copiado!",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slug-placeholder",
+                    "value": "[slug-do-registro]",
+                    "type": "string"
+                },
+                {
+                    "id": "js-list-up",
+                    "value": "Subir",
+                    "type": "string"
+                },
+                {
+                    "id": "js-list-down",
+                    "value": "Descer",
+                    "type": "string"
+                },
+                {
+                    "id": "js-list-remove",
+                    "value": "Remover",
+                    "type": "string"
+                }
+            ]
+        },
+        "en": {
+            "widgets": [
+                {
+                    "id": "presentations",
+                    "name": "Presentations",
+                    "icon": "tv",
+                    "tabela": "presentations"
+                }
+            ],
+            "ai_prompts_targets": [
+                {
+                    "id": "presentations",
+                    "name": "Presentations"
+                }
+            ],
+            "ai_modes": [
+                {
+                    "id": "presentations",
+                    "name": "Presentations",
+                    "target": "presentations",
+                    "default": true,
+                    "version": "1.0",
+                    "checksum": {
+                        "md": ""
+                    }
+                }
+            ],
+            "templates": [
+                {
+                    "name": "Presentation - Dark deck",
+                    "id": "presentations-deck",
+                    "target": "presentations",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "c839b9b92418127c52da97bddc0d2ed2",
+                        "css": "470e0d511a2889e837b8f8aa58715119",
+                        "css_precompiled": "",
+                        "combined": "76ba2fe2b94d9e91ab0b117dcd9dc6e4"
+                    }
+                }
+            ],
+            "pages": [
+                {
+                    "name": "Presentations - List",
+                    "id": "presentations",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "presentations/",
+                    "type": "system",
+                    "option": "listar",
+                    "root": true,
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "af63351570eafe7f1335f54a23707a66",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "af63351570eafe7f1335f54a23707a66"
+                    }
+                },
+                {
+                    "name": "Presentations - Add",
+                    "id": "presentations-adicionar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "presentations/adicionar/",
+                    "type": "system",
+                    "option": "adicionar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "056bd1be8a8322b7f076e0717b87547f",
+                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "css_precompiled": "",
+                        "combined": "1ce70969f9850ef80c0ed28c06d4bef9"
+                    }
+                },
+                {
+                    "name": "Presentations - Edit",
+                    "id": "presentations-editar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "presentations/editar/",
+                    "type": "system",
+                    "option": "editar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "509bc03e94e11060c439d42dbbb96cc6",
+                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "css_precompiled": "",
+                        "combined": "7390d974a532f13235d8433005e8fde6"
+                    }
+                },
+                {
+                    "name": "Presentations - Clone",
+                    "id": "presentations-clonar",
+                    "layout": "layout-administrativo-do-gestor",
+                    "path": "presentations/clonar/",
+                    "type": "system",
+                    "option": "clonar",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "e117a20e3a85afb8df291e0479357123",
+                        "css": "9c14fb059424aafee55762085cadb17f",
+                        "css_precompiled": "",
+                        "combined": "9f77ff6bbaf3e69826c05ebc186cdd5a"
+                    }
+                }
+            ],
+            "variables": [
+                {
+                    "id": "form-name-label",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "form-fields_schema-label",
+                    "value": "Options",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html-label",
+                    "value": "HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css-label",
+                    "value": "CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-css_compiled-label",
+                    "value": "Compiled CSS",
+                    "type": "string"
+                },
+                {
+                    "id": "form-html_extra_head-label",
+                    "value": "Extra head HTML",
+                    "type": "string"
+                },
+                {
+                    "id": "template-modified-suffix",
+                    "value": "(Modified)",
+                    "type": "string"
+                },
+                {
+                    "id": "error-template-not-found",
+                    "value": "Model not found.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-copied",
+                    "value": "Copied!",
+                    "type": "string"
+                },
+                {
+                    "id": "js-slug-placeholder",
+                    "value": "[record-slug]",
+                    "type": "string"
+                },
+                {
+                    "id": "js-list-up",
+                    "value": "Move up",
+                    "type": "string"
+                },
+                {
+                    "id": "js-list-down",
+                    "value": "Move down",
+                    "type": "string"
+                },
+                {
+                    "id": "js-list-remove",
+                    "value": "Remove",
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}

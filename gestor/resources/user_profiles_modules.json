@@ -146,5 +146,13 @@
     {
         "perfil": "consumidores",
         "modulo": "perfil-usuario"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "presentations"
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "cookie-consent"
     }
 ]

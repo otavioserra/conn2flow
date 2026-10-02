@@ -1,0 +1,63 @@
+<div class="c2f-cc" id="cookie-consent" data-c2f-cookie-consent data-id="1" data-title="cookie-consent-card-light"
+    data-version="@[[version]]@" data-expiry-days="@[[expiry_days]]@" data-consent-mode="@[[consent_mode]]@"
+    data-position="@[[position]]@" data-floating-position="@[[floating_position]]@" data-preview="@[[preview]]@">
+
+    <!-- Notice: shown while the visitor has not decided. -->
+    <section class="c2f-cc-banner" data-cc-banner role="region" aria-label="@[[text#title]]@" hidden>
+        <h2 class="c2f-cc-title">@[[text#title]]@</h2>
+        <p class="c2f-cc-text">@[[text#message]]@
+            <!-- policy-link < --><a class="c2f-cc-link" href="@[[policy_url]]@">@[[text#policy_label]]@</a><!-- policy-link > -->
+            <!-- terms-link < --><a class="c2f-cc-link" href="@[[terms_url]]@">@[[text#terms_label]]@</a><!-- terms-link > -->
+        </p>
+        <div class="c2f-cc-actions">
+            <button type="button" class="c2f-cc-btn c2f-cc-btn-primary" data-cc-accept>@[[text#accept_all]]@</button>
+            <button type="button" class="c2f-cc-btn c2f-cc-btn-primary" data-cc-reject>@[[text#reject_all]]@</button>
+            <button type="button" class="c2f-cc-btn c2f-cc-btn-ghost" data-cc-customize>@[[text#customize]]@</button>
+        </div>
+    </section>
+
+    <!-- Preferences card: one switch per category. -->
+    <div class="c2f-cc-overlay" data-cc-panel hidden>
+        <div class="c2f-cc-panel" role="dialog" aria-modal="true" aria-labelledby="c2f-cc-panel-title">
+            <header class="c2f-cc-panel-head">
+                <h2 class="c2f-cc-title" id="c2f-cc-panel-title">@[[text#preferences_title]]@</h2>
+                <button type="button" class="c2f-cc-close" data-cc-close aria-label="@[[text#close]]@">&times;</button>
+            </header>
+            <div class="c2f-cc-panel-body">
+                <p class="c2f-cc-text">@[[text#preferences_intro]]@
+                    <!-- policy-link < --><a class="c2f-cc-link" href="@[[policy_url]]@">@[[text#policy_label]]@</a><!-- policy-link > -->
+                    <!-- terms-link < --><a class="c2f-cc-link" href="@[[terms_url]]@">@[[text#terms_label]]@</a><!-- terms-link > -->
+                </p>
+                <ul class="c2f-cc-categories">
+                    <!-- category-item < -->
+                    <li class="c2f-cc-category">
+                        <div class="c2f-cc-category-text">
+                            <label class="c2f-cc-category-name" for="c2f-cc-cat-@[[category#id]]@">@[[category#name]]@</label>
+                            <p class="c2f-cc-category-desc">@[[category#description]]@</p>
+                            <!-- category-required < --><span class="c2f-cc-badge">@[[text#always_active]]@</span><!-- category-required > -->
+                        </div>
+                        <span class="c2f-cc-switch">
+                            <input type="checkbox" id="c2f-cc-cat-@[[category#id]]@" data-cc-category="@[[category#id]]@" @[[category#checked]]@ @[[category#disabled]]@>
+                            <span class="c2f-cc-switch-track" aria-hidden="true"></span>
+                        </span>
+                    </li>
+                    <!-- category-item > -->
+                </ul>
+            </div>
+            <footer class="c2f-cc-actions c2f-cc-panel-foot">
+                <button type="button" class="c2f-cc-btn c2f-cc-btn-ghost" data-cc-reject>@[[text#reject_all]]@</button>
+                <button type="button" class="c2f-cc-btn c2f-cc-btn-ghost" data-cc-accept>@[[text#accept_all]]@</button>
+                <button type="button" class="c2f-cc-btn c2f-cc-btn-primary" data-cc-save>@[[text#save]]@</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- floating-button < -->
+    <button type="button" class="c2f-cc-floating" data-cc-open aria-label="@[[text#floating_label]]@" title="@[[text#floating_label]]@" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3a9 9 0 1 0 9 9 4 4 0 0 1-4-4 4 4 0 0 1-5-5z"></path>
+            <path d="M9 10h.01M14 14h.01M9.5 15.5h.01"></path>
+        </svg>
+    </button>
+    <!-- floating-button > -->
+</div>

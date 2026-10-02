@@ -121,6 +121,14 @@
     },
     {
         "perfil": "administradores",
+        "modulo": "cookie-consent",
+        "status": "A",
+        "versao": 1,
+        "checksum": "6f8b3d7d809ef89a906f7dfa1edcdc19",
+        "user_modified": 0
+    },
+    {
+        "perfil": "administradores",
         "modulo": "dashboard",
         "status": "A",
         "versao": 3,
@@ -205,6 +213,14 @@
         "status": "A",
         "versao": 3,
         "checksum": "a893ead33e831943375a0b078ff0851a",
+        "user_modified": 0
+    },
+    {
+        "perfil": "administradores",
+        "modulo": "presentations",
+        "status": "A",
+        "versao": 1,
+        "checksum": "279a560f0a7711342e35385fc4bd19d5",
         "user_modified": 0
     },
     {

@@ -1,0 +1,93 @@
+<input type="hidden" name="fields_schema">
+
+<div class="field">
+    <label>Presentation name</label>
+    <input type="text" name="name" placeholder="E.g.: Company presentation">
+</div>
+
+<h4 class="ui dividing header">Options</h4>
+
+<div class="three fields">
+        <div class="field"><label>Display</label><select class="ui dropdown" data-schema-key="mode"><option value="fullscreen">Whole window</option><option value="embedded">Embedded in the page</option></select></div>
+        <div class="field"><label>Height when embedded (px)</label><input type="number" min="200" step="10" data-schema-key="height"></div>
+        <div class="field"><label>Transition</label><select class="ui dropdown" data-schema-key="transition"><option value="random">Random on each slide</option><option value="fade">Fade</option><option value="zoom">Zoom</option><option value="slide-up">Slide up</option><option value="slide-horizontal">Slide sideways</option></select></div>
+</div>
+<div class="inline fields">
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="loop"><label>Loop back after the last one</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="keyboard"><label>Keyboard</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="touch"><label>Touch swipe</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="hash"><label>Current slide in the address (#slide-3)</label></div></div>
+</div>
+<div class="inline fields">
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_arrows"><label>Arrows</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_dots"><label>Dots</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_counter"><label>Counter</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_progress"><label>Progress bar</label></div></div>
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_fullscreen"><label>Fullscreen button</label></div></div>
+</div>
+<div class="two fields">
+        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="autoplay"><label>Advance on its own</label></div></div>
+        <div class="field"><label>Time per slide (ms)</label><input type="number" min="1000" step="500" data-schema-key="autoplay_speed"></div>
+</div>
+
+<h4 class="ui dividing header">Visual model</h4>
+
+<div class="field">
+    <label>Model (resource)</label>
+    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+        <option value="">#template_placeholder_option#</option>
+        #template_id_options#
+    </select>
+    <div class="ui label" style="margin: 8px 0; display: block;">
+        <i class="exchange icon"></i>
+        When you pick a model, its HTML and CSS go into the editor below. From then on what counts is the editor content, saved in this record.
+    </div>
+</div>
+
+<a class="ui button blue" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=presentations"
+    data-tooltip="Opens the model form with this target already chosen" data-position="top center" data-inverted="">
+    <i class="plus icon"></i> Add new model
+</a>
+
+<div class="ui icon message info">
+    <i class="tv icon"></i>
+    <div class="content">
+        <div class="header">Each section is a slide</div>
+        <p>In the editor, each <code>&lt;section data-slide&gt;</code> is a slide: copy a section to create another. Dots, arrows, counter, progress bar, keyboard, touch and printing come from the widget, according to the options above. To jump to a slide from inside the content, use <code>data-c2f-deck-goto="0"</code> on a button or link (counting starts at zero).</p>
+    </div>
+</div>
+
+<div class="widget-content-tabs">
+<div class="ui top attached tabular menu menuConteudoWidget">
+    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Preview</a>
+    <a class="item" data-tab="hep-editor"><i class="code icon"></i> HTML editor</a>
+    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Widget code</a>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+    <div style="position: relative;">
+        <iframe id="iframe-widget-preview" style="width:100%;height:640px;border:1px solid #ccc;"></iframe>
+        <div class="ui dimmer hep-preview-dimmer"><div class="ui loader"></div></div>
+    </div>
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-editor">
+    #html-editor#
+</div>
+<div class="ui bottom attached tab segment" data-tab="hep-widget">
+    <div class="ui icon message info">
+        <i class="cubes icon"></i>
+        <div class="content">
+            <div class="header">Widget block</div>
+            <p>Paste the snippet below into the page that will show the presentation. In whole-window mode it covers the page; in embedded mode it takes the height set in the options.</p>
+        </div>
+    </div>
+    <div class="field" style="margin-top:1rem;">
+        <label>Widget variable</label>
+        <div class="ui action input">
+            <input type="text" id="hep-widget-val" readonly>
+            <button type="button" id="btn-copy-widget-val" class="ui teal button"><i class="copy icon"></i> Copy</button>
+        </div>
+    </div>
+    <h4 class="ui header" style="margin-top:1rem;">HTML code</h4>
+    <div style="border:1px solid #ccc;"><textarea id="hep-widget-code" name="hep-widget-code"></textarea></div>
+</div>
+</div>

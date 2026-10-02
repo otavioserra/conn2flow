@@ -280,6 +280,34 @@
         "status": "A"
     },
     {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Apresentações",
+        "id": "presentations",
+        "titulo": "Apresentações",
+        "icone": "tv",
+        "icone_tailwind": "presentation",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A"
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Consentimento de Cookies",
+        "id": "cookie-consent",
+        "titulo": "Consentimento de Cookies",
+        "icone": "cookie bite",
+        "icone_tailwind": "cookie",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A"
+    },
+    {
         "modulo_grupo_id": "bibliotecas",
         "nome": "Interface",
         "id": "interface",

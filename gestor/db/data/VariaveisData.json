@@ -9289,6 +9289,618 @@
     },
     {
         "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "form-name-label",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "form-fields_schema-label",
+        "valor": "Opções",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "form-html-label",
+        "valor": "HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "form-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "form-css_compiled-label",
+        "valor": "CSS compilado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "form-html_extra_head-label",
+        "valor": "HTML extra do head",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "template-modified-suffix",
+        "valor": "(Modificado)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "error-template-not-found",
+        "valor": "Modelo não encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "js-copied",
+        "valor": "Copiado!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "js-slug-placeholder",
+        "valor": "[slug-do-registro]",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "js-list-up",
+        "valor": "Subir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "js-list-down",
+        "valor": "Descer",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "js-list-remove",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-title",
+        "valor": "Sua privacidade",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-message",
+        "valor": "Usamos cookies necessários para o site funcionar e, com a sua permissão, cookies para medir o uso e melhorar a sua experiência. Você escolhe o que aceita e pode mudar de ideia quando quiser.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-accept-all",
+        "valor": "Aceitar todos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-reject-all",
+        "valor": "Recusar opcionais",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-customize",
+        "valor": "Personalizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-preferences-title",
+        "valor": "Preferências de privacidade",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-preferences-intro",
+        "valor": "Escolha as categorias de cookies que você permite. As necessárias ficam sempre ativas, porque sem elas o site não funciona.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-save",
+        "valor": "Salvar escolhas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-always-active",
+        "valor": "Sempre ativa",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-policy-label",
+        "valor": "Política de Privacidade",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-terms-label",
+        "valor": "Termos de Uso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-floating-label",
+        "valor": "Preferências de cookies",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-text-close",
+        "valor": "Fechar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-category-necessary-name",
+        "valor": "Necessários",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-category-necessary-description",
+        "valor": "Mantêm o site funcionando: sessão, segurança, idioma e a sua própria escolha de cookies.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-category-preferences-name",
+        "valor": "Preferências",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-category-preferences-description",
+        "valor": "Lembram escolhas que você fez, como opções de exibição.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-category-analytics-name",
+        "valor": "Estatísticas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-category-analytics-description",
+        "valor": "Medem como o site é usado, para sabermos o que melhorar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-category-marketing-name",
+        "valor": "Marketing",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "cookie-consent",
+        "id": "default-category-marketing-description",
+        "valor": "Permitem medir campanhas e mostrar anúncios mais relevantes em outros sites.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "form-fields_schema-label",
+        "valor": "Options",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "form-html-label",
+        "valor": "HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "form-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "form-css_compiled-label",
+        "valor": "Compiled CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "form-html_extra_head-label",
+        "valor": "Extra head HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "template-modified-suffix",
+        "valor": "(Modified)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "error-template-not-found",
+        "valor": "Model not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "js-copied",
+        "valor": "Copied!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "js-slug-placeholder",
+        "valor": "[record-slug]",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "js-list-up",
+        "valor": "Move up",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "js-list-down",
+        "valor": "Move down",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "js-list-remove",
+        "valor": "Remove",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-title",
+        "valor": "Your privacy",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-message",
+        "valor": "We use cookies that are necessary for the site to work and, with your permission, cookies to measure usage and improve your experience. You choose what to accept and can change your mind at any time.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-accept-all",
+        "valor": "Accept all",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-reject-all",
+        "valor": "Reject optional",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-customize",
+        "valor": "Customize",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-preferences-title",
+        "valor": "Privacy preferences",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-preferences-intro",
+        "valor": "Choose the cookie categories you allow. The necessary ones are always active, because the site does not work without them.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-save",
+        "valor": "Save choices",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-always-active",
+        "valor": "Always active",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-policy-label",
+        "valor": "Privacy Policy",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-terms-label",
+        "valor": "Terms of Use",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-floating-label",
+        "valor": "Cookie preferences",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-text-close",
+        "valor": "Close",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-category-necessary-name",
+        "valor": "Necessary",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-category-necessary-description",
+        "valor": "Keep the site working: session, security, language and your own cookie choice.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-category-preferences-name",
+        "valor": "Preferences",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-category-preferences-description",
+        "valor": "Remember choices you made, such as display options.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-category-analytics-name",
+        "valor": "Statistics",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-category-analytics-description",
+        "valor": "Measure how the site is used, so we know what to improve.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-category-marketing-name",
+        "valor": "Marketing",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "cookie-consent",
+        "id": "default-category-marketing-description",
+        "valor": "Allow campaigns to be measured and more relevant ads to be shown on other sites.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
         "modulo": "dashboard",
         "id": "logout-grup",
         "valor": "Sair",
@@ -17458,6 +18070,240 @@
         "tipo": "string",
         "grupo": null,
         "descricao": "Classes utilitarias do painel (req-118\/119\/120). Editavel por instancia; o compilador Tailwind le este JSON via tailwind_sources."
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "form-name-label",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "form-fields_schema-label",
+        "valor": "Opções",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "form-html-label",
+        "valor": "HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "form-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "form-css_compiled-label",
+        "valor": "CSS compilado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "form-html_extra_head-label",
+        "valor": "HTML extra do head",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "template-modified-suffix",
+        "valor": "(Modificado)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "error-template-not-found",
+        "valor": "Modelo não encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "js-copied",
+        "valor": "Copiado!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "js-slug-placeholder",
+        "valor": "[slug-do-registro]",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "js-list-up",
+        "valor": "Subir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "js-list-down",
+        "valor": "Descer",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "presentations",
+        "id": "js-list-remove",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "form-name-label",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "form-fields_schema-label",
+        "valor": "Options",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "form-html-label",
+        "valor": "HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "form-css-label",
+        "valor": "CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "form-css_compiled-label",
+        "valor": "Compiled CSS",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "form-html_extra_head-label",
+        "valor": "Extra head HTML",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "template-modified-suffix",
+        "valor": "(Modified)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "error-template-not-found",
+        "valor": "Model not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "js-copied",
+        "valor": "Copied!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "js-slug-placeholder",
+        "valor": "[record-slug]",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "js-list-up",
+        "valor": "Move up",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "js-list-down",
+        "valor": "Move down",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "presentations",
+        "id": "js-list-remove",
+        "valor": "Remove",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
     },
     {
         "language": "pt-br",

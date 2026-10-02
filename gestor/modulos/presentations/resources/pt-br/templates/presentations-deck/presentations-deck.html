@@ -1,0 +1,76 @@
+<div class="c2f-deck" data-c2f-deck data-id="1" data-title="presentation-deck" data-mode="@[[mode]]@"
+    data-transition="@[[transition]]@" data-loop="@[[loop]]@" data-keyboard="@[[keyboard]]@" data-touch="@[[touch]]@"
+    data-hash="@[[hash]]@" data-autoplay="@[[autoplay]]@" data-speed="@[[autoplay_speed]]@"
+    data-preview="@[[preview]]@" style="--c2f-deck-height: @[[height]]@px;">
+
+    <div class="c2f-deck-stage" data-c2f-deck-stage>
+
+        <!-- Cada <section data-slide> é um slide. Copie uma seção para criar outro. -->
+        <section data-slide class="flex-col items-center justify-center text-center p-6 md:p-12">
+            <div class="w-full max-w-5xl mx-auto flex flex-col items-center">
+                <span class="inline-flex items-center px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-semibold tracking-wide text-cyan-300">Apresentação</span>
+                <h1 class="mt-8 text-5xl md:text-7xl font-black leading-tight text-white">Título da apresentação</h1>
+                <p class="mt-6 max-w-3xl text-xl md:text-2xl text-gray-300">Uma frase que diz a quem assiste o que vai ver.</p>
+            </div>
+        </section>
+
+        <section data-slide class="flex-col items-center justify-center p-6 md:p-12">
+            <div class="w-full max-w-5xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-black text-white">Três pontos</h2>
+                <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+                        <h3 class="text-xl font-bold text-cyan-300">Primeiro</h3>
+                        <p class="mt-2 text-gray-300">O que muda para quem usa.</p>
+                    </div>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+                        <h3 class="text-xl font-bold text-cyan-300">Segundo</h3>
+                        <p class="mt-2 text-gray-300">Como funciona, em uma frase.</p>
+                    </div>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+                        <h3 class="text-xl font-bold text-cyan-300">Terceiro</h3>
+                        <p class="mt-2 text-gray-300">O que fazer em seguida.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section data-slide class="flex-col items-center justify-center text-center p-6 md:p-12">
+            <div class="w-full max-w-4xl mx-auto flex flex-col items-center">
+                <h2 class="text-4xl md:text-6xl font-black text-white">Obrigado</h2>
+                <p class="mt-6 text-xl text-gray-300">Contato, endereço ou próximo passo.</p>
+                <button type="button" data-c2f-deck-goto="0" class="mt-10 inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 text-white font-semibold hover:border-cyan-300">Voltar ao início</button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- controls-progress < -->
+    <div class="c2f-deck-progress" aria-hidden="true"><span data-c2f-deck-progress></span></div>
+    <!-- controls-progress > -->
+
+    <nav class="c2f-deck-nav" aria-label="Navegação da apresentação">
+        <!-- controls-arrows < -->
+        <button type="button" class="c2f-deck-btn" data-c2f-deck-prev aria-label="Slide anterior">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <!-- controls-arrows > -->
+        <!-- controls-dots < -->
+        <div class="c2f-deck-dots">
+            <!-- dot-item < --><button type="button" class="c2f-deck-dot" data-c2f-deck-dot="@[[dot#index]]@" aria-label="Ir para o slide @[[dot#number]]@"></button><!-- dot-item > -->
+        </div>
+        <!-- controls-dots > -->
+        <!-- controls-counter < -->
+        <span class="c2f-deck-counter"><span data-c2f-deck-current>1</span> / @[[total]]@</span>
+        <!-- controls-counter > -->
+        <!-- controls-arrows < -->
+        <button type="button" class="c2f-deck-btn" data-c2f-deck-next aria-label="Próximo slide">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+        </button>
+        <!-- controls-arrows > -->
+        <!-- controls-fullscreen < -->
+        <button type="button" class="c2f-deck-btn" data-c2f-deck-fullscreen aria-label="Tela cheia">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"></path></svg>
+        </button>
+        <!-- controls-fullscreen > -->
+    </nav>
+</div>

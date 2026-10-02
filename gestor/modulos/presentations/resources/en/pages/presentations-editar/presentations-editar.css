@@ -1,0 +1,10 @@
+.hidden{
+    display: none !important;
+}
+#hep-widget-val{
+    height: 36px;
+}
+[data-schema-list] textarea,
+[data-schema-list] input[type="text"]{
+    width: 100%;
+}

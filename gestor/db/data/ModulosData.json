@@ -252,6 +252,24 @@
         "user_modified": 0
     },
     {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Cookie Consent",
+        "id": "cookie-consent",
+        "titulo": "Cookie Consent",
+        "icone": "cookie bite",
+        "icone_tailwind": "cookie",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "language": "en",
+        "versao": 1,
+        "checksum": "6b9a1f7cc9fd29cd3734f3e8634f3c08",
+        "user_modified": 0
+    },
+    {
         "modulo_grupo_id": "geral",
         "nome": "Dashboard",
         "id": "dashboard",
@@ -483,6 +501,24 @@
         "language": "en",
         "versao": 2,
         "checksum": "fb6fdea8285ea02b75244180b09a9a65",
+        "user_modified": 0
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Presentations",
+        "id": "presentations",
+        "titulo": "Presentations",
+        "icone": "tv",
+        "icone_tailwind": "presentation",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "language": "en",
+        "versao": 1,
+        "checksum": "5ff3f0a3ecdcdfaaf52a97e69ca5852b",
         "user_modified": 0
     },
     {
@@ -864,6 +900,24 @@
         "user_modified": 0
     },
     {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Consentimento de Cookies",
+        "id": "cookie-consent",
+        "titulo": "Consentimento de Cookies",
+        "icone": "cookie bite",
+        "icone_tailwind": "cookie",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "language": "pt-br",
+        "versao": 1,
+        "checksum": "3ba7e0da90b89992e907f6c918216e64",
+        "user_modified": 0
+    },
+    {
         "modulo_grupo_id": "geral",
         "nome": "Dashboard",
         "id": "dashboard",
@@ -1095,6 +1149,24 @@
         "language": "pt-br",
         "versao": 2,
         "checksum": "e518bd506d37ea12c3aeb885330f6d94",
+        "user_modified": 0
+    },
+    {
+        "modulo_grupo_id": "administracao-gestor",
+        "nome": "Apresentações",
+        "id": "presentations",
+        "titulo": "Apresentações",
+        "icone": "tv",
+        "icone_tailwind": "presentation",
+        "icone2": null,
+        "icone2_tailwind": null,
+        "nao_menu_principal": null,
+        "plugin": null,
+        "host": null,
+        "status": "A",
+        "language": "pt-br",
+        "versao": 1,
+        "checksum": "0b3b02365b16bf0eacf7ad16130fa983",
         "user_modified": 0
     },
     {

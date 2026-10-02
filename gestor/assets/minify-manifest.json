@@ -194,6 +194,16 @@
         "origem": 37,
         "minificado": 32
     },
+    "gestor/modulos/cookie-consent/cookie-consent.js": {
+        "sha1": "e71b87f7e1ad4843de0b801d52e3c7d4860d5da3",
+        "origem": 16308,
+        "minificado": 8471
+    },
+    "gestor/modulos/cookie-consent/cookie-consent.widget.js": {
+        "sha1": "1226339a8bd927e4d9feb8d409a841d1caa68b8c",
+        "origem": 11470,
+        "minificado": 5441
+    },
     "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
         "sha1": "29cfd666ffac20ffcefeda8655f38b832406cc86",
         "origem": 17198,
@@ -283,6 +293,16 @@
         "sha1": "17636e4ec6db084e3fbfc62ac1effea99d88b601",
         "origem": 31081,
         "minificado": 15691
+    },
+    "gestor/modulos/presentations/presentations.js": {
+        "sha1": "f3a177d9719b768f27262c5ce15f3f751d60e20b",
+        "origem": 16305,
+        "minificado": 8470
+    },
+    "gestor/modulos/presentations/presentations.widget.js": {
+        "sha1": "faa2043658de150fec06b4cd06d3142e90a45baa",
+        "origem": 17708,
+        "minificado": 8282
     },
     "gestor/modulos/publisher-highlights/publisher-highlights.js": {
         "sha1": "e92b3d190a91e867710c7f635b22fe1067e80143",
