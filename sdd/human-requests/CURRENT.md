@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-215.md](req-215.md) (BATCH-223 `in-progress`, 2026-10-02): módulos distribuídos — rotina local pedida pelo Central pelo canal assinado (parte do core da REQ-096 do site).
   - [req-214.md](req-214.md) (BATCH-222 `in-review`, 2026-10-02): menus laterais do painel com o módulo atual marcado e no meio, nos dois layouts; decisão de cookies lida no servidor (`cookie_consent_permitido`); apoio à execução dos módulos no cliente (contexto distribuído e gancho `db.escrita`).
   - [req-213.md](req-213.md) (BATCH-221 `in-review`, 2026-10-02): melhorias dos módulos distribuídos (REQ-094 do site): sandbox do iframe, provedor de instalações, conexão reaproveitada, sobras do login antigo removidas, `project:verify` no pipeline; corrigido o login distribuído com segundo fator.
   - [req-212.md](req-212.md) (BATCH-220 `in-review`, 2026-10-02): modal de edição do editor visual sem estilo no documento Tailwind; passa a usar o modal portátil do motor, sem a folha do Fomantic no iframe. Demais elementos gráficos varridos.
