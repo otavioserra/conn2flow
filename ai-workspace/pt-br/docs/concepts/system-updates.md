@@ -10,7 +10,7 @@ sources:
   - gestor/controladores/atualizacoes/atualizacoes-migracoes.php
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php
-verified_at: d9be181d
+verified_at: 554efe72
 ---
 
 # Atualizações do sistema
@@ -38,6 +38,7 @@ A primeira entrega, sem manifesto, se comporta como antes e grava a linha de bas
 - na entrega seguinte, o que saiu da lista do mesmo dono sai do banco: `status='D'` quando a tabela tem status, senão o registro é apagado;
 - registro editado online (`user_modified=1`) não sai: vira choque de registro (`db:<tabela>?<chave>`), e "sobrescrever" aceita a retirada;
 - valem só as tabelas de chave natural (páginas, layouts, componentes, variáveis, templates…). O core só retira registros sem `project`, e o projeto só os dele. O que foi criado no painel nunca entrou numa lista, então nunca sai;
+- o que a retirada marcou volta sozinho: o manifesto guarda, em `retirados`, cada chave marcada e o `status` que o registro tinha. Quando o mesmo dono volta a entregar a chave, o registro retorna a esse `status`. Só volta o que a própria rotina retirou; registro desativado por outra via nunca entra na lista;
 - a primeira entrega de um dono numa tabela só grava a lista. `--dry-run` só simula; `--no-resource-removal` (no `atualizacoes-banco-de-dados.php`) desliga. A lista imperativa `deletar` do `schema-metadata.json` continua para casos pontuais.
 
 **Descida de arquivos (req-200).** `/_api/project/files` compara disco e manifestos e permite baixar divergências. `c2f project:recover-files` usa o mesmo motor de três decisões quando o arquivo do projeto também mudou no repositório local; uma cópia baixada serve como versão nova e as decisões são registradas em `temp/recover-files/.../relatorio.json`. Arquivos do core e plugins ficam disponíveis para análise, sem serem aplicados ao projeto local.

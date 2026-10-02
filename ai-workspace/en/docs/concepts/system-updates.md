@@ -10,7 +10,7 @@ sources:
   - gestor/controladores/atualizacoes/atualizacoes-migracoes.php
   - gestor/controladores/atualizacoes/atualizacoes-sistema.php
   - gestor/controladores/atualizacoes/atualizacoes-banco-de-dados.php
-verified_at: d9be181d
+verified_at: 554efe72
 ---
 
 # System updates
@@ -38,6 +38,7 @@ The first delivery, without a manifest, behaves as before and records the baseli
 - on the next delivery, what left the same owner's list leaves the database: `status='D'` when the table has status, otherwise the record is deleted;
 - a record edited online (`user_modified=1`) does not leave: it becomes a record clash (`db:<table>?<key>`), and "overwrite" accepts the removal;
 - only natural-key tables take part (pages, layouts, components, variables, templates…). The core only removes records without `project`, and a project only its own. What was created in the panel never entered a list, so it never leaves;
+- what the removal marked comes back on its own: the manifest keeps, under `retirados`, each marked key and the `status` the record had. When the same owner delivers the key again, the record returns to that `status`. Only what this routine removed comes back; a record disabled some other way never enters the list;
 - an owner's first delivery to a table only records the list. `--dry-run` only simulates; `--no-resource-removal` (in `atualizacoes-banco-de-dados.php`) turns it off. The imperative `deletar` list in `schema-metadata.json` still covers one-off cases.
 
 **File recovery (req-200).** `/_api/project/files` compares disk contents with the manifests and downloads differences. `c2f project:recover-files` uses the same three-action clash engine when a project file also changed in the local repository. The downloaded copy is the new version and decisions are recorded in `temp/recover-files/.../relatorio.json`. Core and plugin files are available for inspection without being applied to the local project.

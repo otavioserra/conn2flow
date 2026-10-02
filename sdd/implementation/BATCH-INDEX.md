@@ -53,6 +53,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-212 | in-review | Layout por perfil 1:N, compilação e editor multi-layout, popup da página inicial e versão pela API (req-204) | [BATCH-212.md](BATCH-212.md) | Parte do core da REQ-085 do conn2flow-site; worktree `conn2flow-req203`, branch `feat/req-204`; validado no Lab. |
 | BATCH-213 | in-review | README (en e pt-br) e descrição do GitHub: plataforma PHP e AMS (req-205) | [BATCH-213.md](BATCH-213.md) | Worktree `conn2flow-readme`, branch `feat/req-205`; sem alteração de código. |
 | BATCH-214 | complete | Deploy de projeto depois da req-202/203: `insert_only` em chave natural e sementes do projeto (req-206) | [BATCH-214.md](BATCH-214.md) | Admin do Lab era sobrescrito pela semente; módulos e permissões do projeto eram retirados. Validado no Lab com consulta antes e depois. |
+| BATCH-215 | in-review | Docs: referência de funções em cartões com filtro e índice; docs atualizadas com a req-206 (req-207) | [BATCH-215.md](BATCH-215.md) | `FunctionReferenceHtml` no `docs:build`; Markdown das docs inalterado. Validado no Lab (14/14). |
 
 ## Regra operacional
 

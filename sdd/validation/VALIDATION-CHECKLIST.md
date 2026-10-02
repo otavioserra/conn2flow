@@ -1,5 +1,15 @@
 # Validation Checklist
 
+## BATCH-215 — Docs: referência de funções em cartões (req-207)
+
+- [x] Cada função com âncora, assinatura copiável, parâmetros com tipo e link para a linha no repositório.
+- [x] Filtro reduz cartões e índice; número de cartões igual ao de funções do bloco.
+- [x] Testes das docs: 32, todos passam; `docs:audit` com 0 erros.
+- [x] Lab: biblioteca `banco` nos dois idiomas, a 1280 e 390 px (14/14).
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-215](../implementation/BATCH-215.md).
+
 ## BATCH-214 — Deploy de projeto depois da req-202/203 (req-206)
 
 - [x] `insert_only` vale em chave natural: a semente não altera usuário existente e ainda insere o que falta.

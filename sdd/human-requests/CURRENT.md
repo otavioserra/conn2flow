@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-207.md](req-207.md) (BATCH-215 `in-review`, 2026-10-02): docs — referência de funções das bibliotecas em cartões com filtro e índice; docs de atualização, recursos e deploy atualizadas com a req-206; README com o Dev Tools.
   - [req-206.md](req-206.md) (BATCH-214 `complete`, 2026-10-01, homologação humana pendente): correções do deploy de projeto depois da req-202/203 — `insert_only` em chave natural (admin sobrescrito pela semente) e compilador em modo projeto usando só as sementes do projeto.
   - [req-203.md](req-203.md) (BATCH-211 `complete`, 2026-10-01): Segregação de Recursos Globais vs Multilíngues — seeds na raiz, contrato `language_agnostic`, compilador validado em diretório temporário com dados reais e duplicatas por idioma removidas.
   - [req-202.md](req-202.md) (BATCH-210 `complete`, 2026-10-01): Autoria 100% em resources (fim dos 8 arquivos estáticos em `gestor/db/data/`), contrato declarativo em `tables_config.json`, compilação determinística e suporte a compilação granular/seletiva (`--only`, `--skip-css`, `--resource`) com otimização de cache Tailwind.
@@ -32,4 +33,4 @@
 - **Intakes Históricos Arquivados**:
   - Requisições anteriores (req-001 a req-178) arquivadas em [archive/](archive/).
 
-- **Status**: BATCH-214/REQ-206 implementado e validado no Lab (`conn2flow-site-local`); req-202 a req-206 commitadas na `main`.
+- **Status**: BATCH-215/REQ-207 implementado e validado no Lab (`conn2flow-site-local`).

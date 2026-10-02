@@ -10,7 +10,7 @@ sources:
   - gestor/bibliotecas/cron.php
   - gestor/bibliotecas/sitemap.php
   - gestor/bibliotecas/comunicacao.php
-verified_at: b1a69317
+verified_at: 554efe72
 ---
 
 # Atualize e publique um projeto
@@ -20,6 +20,20 @@ O projeto é identificado por `<id>` nas configurações de desenvolvimento. Con
 A etapa CSS pode falhar e emitir aviso sem abortar o retorno final do pipeline; confira `php cli/c2f.php css:audit --project=<id>` e os logs. A publicação de assets também pode avisar e seguir com entrega pelo controlador PHP. Não interprete a mensagem final sozinha como validação de CSS e assets.
 
 `php cli/c2f.php project:deploy <id>` chama `deploy-project-v2.sh`, que empacota e envia pela [API de projeto](../reference/api/project.md). `project:recover` faz o fluxo inverso para os dados locais. Os comandos de sincronização por etapa estão na [CLI de projetos](../reference/cli/project.md).
+
+## Confira que o conteúdo chegou
+
+A mensagem final de sucesso diz que as etapas terminaram, não que a página mudou. Depois de publicar uma alteração de conteúdo, confira três pontos:
+
+1. **O dado compilado.** O texto novo aparece no `gestor/db/data/PaginasData.json` do projeto. O arquivo do recurso estar certo não basta.
+2. **O log do banco.** Na etapa de validação final, a linha `SYNC_FIM tabela=<tabela> +i ~u =s` mostra inserções, atualizações e registros sem mudança. `~0` numa tabela que você alterou pede investigação. `SKIP_NO_CHECKSUM_CHANGE` significa que a tabela nem foi comparada; `--tables=<tabela> --force-all` no atualizador força a comparação.
+3. **A página no ar.** O texto novo na resposta HTTP.
+
+> [!WARNING]
+> O pipeline por SSH não tem trava: dois deploys ao mesmo tempo no mesmo ambiente produzem respostas 500 e 503 passageiras e validações falsas. Publique e valide com o ambiente ocioso.
+
+> [!CAUTION]
+> Publicar a partir de uma fonte incompleta desativa registros de verdade: o que o dono deixa de entregar recebe `status='D'`. Veja [atualizações do sistema](../concepts/system-updates.md).
 
 ## Pós-deploy
 

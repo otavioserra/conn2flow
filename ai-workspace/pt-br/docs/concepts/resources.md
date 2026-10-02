@@ -12,7 +12,7 @@ sources:
   - cli/src/Commands/CssRebuildCommand.php
   - gestor/controladores/agents/arquitetura/atualizacao-versoes-assets.php
   - gestor/bibliotecas/gestor.php
-verified_at: ce12b5a0
+verified_at: 554efe72
 ---
 
 # Sistema de recursos
@@ -101,11 +101,15 @@ O compilador rejeita duplicados e os grava em `gestor/db/orphans/<Tipo>Data.json
 O atualizador compara cada `*Data.json` com a tabela e só processa as tabelas cujo arquivo mudou desde a última execução. As regras de cada tabela vêm de `schema-metadata.json`, gerado pelo compilador a partir de `tables_config.json`, do bloco `tabela` dos módulos e do `project_tables_config.json`:
 
 - **`strategy`**: `natural_key` (casa pelas colunas de `natural_key_columns`, como `language, modulo, id`) ou `pk`.
-- **`insert_only`**: só insere, nunca atualiza (é o caso de `usuarios`).
+- **`insert_only`**: só insere, nunca atualiza (é o caso de `usuarios`). Vale nas duas estratégias: é o que impede a semente de regravar login, e-mail e senha do administrador de uma instalação.
 - **`preserve_on_user_modified`**: campos protegidos quando o registro tem `user_modified=1`, ou seja, foi editado pelo painel. Em `paginas`: `nome, layout_id, caminho, framework_css, sem_permissao, html, css, css_compiled`.
 - **`deletar`** e **`forcar_atualizacao`**: listas de registros a remover ou a sobrescrever ignorando as proteções (e voltando `user_modified` a 0).
 
 Quando um campo protegido difere, o valor novo do sistema **não se perde**: vai para a coluna espelho (`html_updated`, `css_updated`; em variáveis, `value_updated`) e o registro recebe `system_updated=1`. Hoje nenhuma tela do painel lê essas colunas: a versão do sistema fica guardada, mas aplicá-la é manual (ou por `forcar_atualizacao`).
+
+**Sementes de sistema num projeto.** As tabelas que o `tables_config.json` do core semeia (módulos, grupos, operações, perfis, permissões, usuários, categorias) são lidas, na compilação de um projeto, das sementes **do projeto**. Sem semente no projeto, a tabela é pulada (`DYNAMIC_SKIP_PROJETO_SEM_SEMENTE` no log): os dados do core chegam ao banco pela sincronização do core, não pelo `db/data` do projeto.
+
+**Escrita que falha interrompe.** Se o compilador não consegue gravar um `*Data.json` (arquivo bloqueado, por exemplo), ele tenta de novo e, persistindo a falha, encerra com erro. Seguir em frente deixaria o banco com o conteúdo antigo, porque a versão e o checksum do recurso já teriam avançado nos arquivos de origem.
 
 **Projetos.** No deploy de um projeto (`--project=<id>`), os registros tocados recebem `project=<id>`. Uma atualização posterior do **core** não sobrescreve registros de projeto, a não ser campos não protegidos de registros editados pelo usuário, e nunca troca o `css_precompiled` deles.
 
