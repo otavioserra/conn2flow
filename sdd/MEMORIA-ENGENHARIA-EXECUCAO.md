@@ -16,6 +16,13 @@
 
 ## Tarefas recentes
 
+### 2026-10-02 — BATCH-219 (req-211): módulos distribuídos, revisão e integração
+
+- **Allowlist de tabelas por regex não segura SQL**: `FROM (t)`, `JOIN (t)`, `STRAIGHT_JOIN t`, `(TABLE t)`, `{OJ t}` e vírgula depois de `JOIN ... ON` nomeiam tabela sem o formato `FROM nome`. `modulo_distribuido_sql_tabelas()` percorre tokens e recusa o que não reconhece. Ao mexer nela, rodar os casos de `ModuloDistribuidoReq092Test`.
+- **`gestor_start()` chama o protocolo distribuído em toda requisição** (`prefixo_normalizar`, `cookie_contexto`, `central_rota`, `proxy_rota`). Sem `MODULO_DISTRIBUIDO_*` no `.env`, todas retornam cedo.
+- **Lab**: tenant `distribuido-conn2flow.local` (usuário Hestia `distribuido`, banco `distribuido_db`), projeto `conn2flow-site-distribuido-lab` no `environment.json`. Segredos em `/root/conn2flow-req092-lab.json` no Lab. Roteiros em `conn2flow-site/sdd/validation/modulos-distribuidos/`.
+- **Worktree nova com `core.autocrlf`** mostra milhares de arquivos como modificados sem diferença real (`git diff --ignore-cr-at-eol` vazio). Não é trabalho pendente.
+
 ### 2026-10-02 — BATCH-218 (req-210): manutenção no deploy, retirada de módulo e Lab compartilhado
 
 - **500 no deploy por SSH tinha duas causas**: sistema pela metade e `gestor.php` ilegível entre o `sudo rsync` (arquivo nasce `root`) e o `chown` do fim da etapa. `rsync --chown` fecha a segunda; a manutenção (`temp/maintenance.json`) cobre a primeira. Diagnóstico: `nginx/domains/<site>.error.log` no destino.

@@ -140,6 +140,11 @@ function api_rate_limit_check($endpoint = 'default') {
 
     $maxRequests = (int)($_CONFIG['api']['rate-limit-max'] ?? 100);
     $window = (int)($_CONFIG['api']['rate-limit-window'] ?? 3600);
+    // One original CRUD request can issue dozens of signed database calls.
+    if ($endpoint === 'modulo-distribuido') {
+        $maxRequests = max(1, (int)($_CONFIG['modulo-distribuido']['rate-limit-max'] ?? 1000));
+        $window = max(60, (int)($_CONFIG['modulo-distribuido']['rate-limit-window'] ?? 60));
+    }
     $windowStart = intdiv(time(), $window) * $window;
     $route = strtoupper((string)($_SERVER['REQUEST_METHOD'] ?? 'GET')) . ':' . (string)$endpoint;
     $subject = api_rate_limit_subject();
@@ -1535,7 +1540,7 @@ function api_handle_modulo_distribuido() {
     $acao = $rota['acao'];
 
     // Ações de autenticação/ativação e o middleware de permissão são atendidos pelo central.
-    if (in_array($acao, ['signin', 'refresh', 'ativar', 'permissao'], true)) {
+    if (in_array($acao, ['signin', 'refresh', 'ativar', 'permissao', 'exchange', 'iframe-ticket'], true)) {
         require_once $_GESTOR['ROOT_PATH'] . 'controladores/api/api-module-central.php';
         api_module_central_handle($rota);
         return;

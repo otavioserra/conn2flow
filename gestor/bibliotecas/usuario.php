@@ -202,7 +202,7 @@ function usuario_gerar_token_autorizacao($params = false){
 		));
 		
 		// ===== Define cookie seguro no navegador de autenticação
-		setcookie($_CONFIG['cookie-authname'], $token, [
+		gestor_cookie_emitir($_CONFIG['cookie-authname'], $token, [
 			'expires' => $expiration,
 			'path' => '/',
 			'domain' => $_SERVER['SERVER_NAME'],
@@ -226,7 +226,7 @@ function usuario_gerar_token_autorizacao($params = false){
 		
 		if(isset($perfil_usuario)){
 			// ===== Define cookie seguro no navegador do perfil do usuário
-			setcookie($_CONFIG['cookie-authprofile'], hash('sha256', $perfil_usuario), [
+			gestor_cookie_emitir($_CONFIG['cookie-authprofile'], hash('sha256', $perfil_usuario), [
 				'expires' => $expiration,
 				'path' => '/',
 				'domain' => $_SERVER['SERVER_NAME'],

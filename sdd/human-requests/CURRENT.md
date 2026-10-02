@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-211.md](req-211.md) (BATCH-219 `in-review`, 2026-10-02): infraestrutura comum para módulos distribuídos (parte do core da REQ-092 do site): login oficial com gancho, ponte de banco por tabela, canal assinado; allowlist de tabelas corrigida na revisão.
   - [req-210.md](req-210.md) (BATCH-218 `in-review`, 2026-10-02): tela de atualização durante o deploy (manutenção), `rsync --chown`, prévia de widgets completa no editor e retirada do módulo de apresentações do core.
   - [req-209.md](req-209.md) (BATCH-217 `in-review`, 2026-10-02): prévia de widgets no editor (CSS, controlador, marcador com mockup), toque na galeria, ícones e `docs:build` com layout por idioma.
   - [req-208.md](req-208.md) (BATCH-216 `in-review`, 2026-10-02): módulo `cookie-consent` (aviso e preferências de cookies), com CRUD, modelos, modo de IA, widget e controlador público.
@@ -10,7 +11,7 @@
   - [req-202.md](req-202.md) (BATCH-210 `complete`, 2026-10-01): Autoria 100% em resources (fim dos 8 arquivos estáticos em `gestor/db/data/`), contrato declarativo em `tables_config.json`, compilação determinística e suporte a compilação granular/seletiva (`--only`, `--skip-css`, `--resource`) com otimização de cache Tailwind.
   - [req-204.md](req-204.md) (BATCH-212 `in-review`, 2026-10-01, revisão humana pendente): parte do core da REQ-085 do `conn2flow-site` — mapa de layout indexado por perfil (o mesmo layout para vários perfis), página compilada com todos os layouts mapeados, editor HTML com preview por layout e captura cumulativa, popup da página inicial e `action=version` na API de sistema.
   - [req-205.md](req-205.md) (BATCH-213 `in-review`, 2026-10-01, revisão humana pendente): README em inglês e português e descrição do GitHub reescritos — Conn2Flow como plataforma PHP e Agent Management System, com links para o site e só para docs que existem.
-  - [req-201.md](req-201.md) (BATCH-209 `complete`, 2026-09-30, homologação humana pendente): Atualização do sistema por API em segundo plano (`action=run`, `run-status`, `runs`, `/_api/system/rollback`) e `c2f update:core`. Falta a requisição do `conn2flow-site` (CLI em massa e host-manager).
+  - [req-201.md](archive/req-201.md) (BATCH-209 `complete`, 2026-09-30, homologação humana pendente): Atualização do sistema por API em segundo plano (`action=run`, `run-status`, `runs`, `/_api/system/rollback`) e `c2f update:core`. Falta a requisição do `conn2flow-site` (CLI em massa e host-manager).
   - [req-200.md](archive/req-200.md) (BATCH-208 `complete`, 2026-09-30, feita por agente executor e revisada/mesclada; homologação humana pendente): Recuperação de arquivos do ambiente em execução — inventário no servidor pelos manifestos e descida pelo motor de choques.
   - [req-198.md](archive/req-198.md) (BATCH-202/203 `complete`, 2026-09-30, homologação humana pendente; BATCH-204 `complete`: o mesmo pacote no deploy por API, `/_api/project/rollback` e `c2f update:rollback`): Atualização segura, fase 2 — manifesto por camada, precedência `projeto > plugin > core`, registro de choques, snapshot seletivo, verificação pós-atualização e rollback. Validada no tenant isolado `project-test`.
   - [req-199.md](archive/req-199.md) (BATCH-205, BATCH-206 e BATCH-207 `complete`, 2026-09-30; homologação humana pendente): Atualização segura, fase 3 — motor de choques comum a subir e descer (decisão por arquivo no painel, na API e no CLI; extensão do VS Code no 206), exclusão declarativa de dados (207).
@@ -36,4 +37,4 @@
 - **Intakes Históricos Arquivados**:
   - Requisições anteriores (req-001 a req-178) arquivadas em [archive/](archive/).
 
-- **Status**: BATCH-218/REQ-210 implementado e validado no Lab.
+- **Status**: BATCH-219/REQ-211 integrado na `main` e validado no Lab.

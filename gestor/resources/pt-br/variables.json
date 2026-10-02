@@ -592,5 +592,75 @@
         "id": "html-editor-seo-meta-keywords-placeholder",
         "value": "Separadas por vírgula. Ex: fotografia, ensaio, estúdio",
         "type": "string"
+    },
+    {
+        "id": "c2f-md-login-title",
+        "value": "Ativar acesso",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-subtitle",
+        "value": "Entre com suas credenciais para ativar este módulo neste site.",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-user",
+        "value": "Usuário",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-pass",
+        "value": "Senha",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-submit",
+        "value": "Ativar e entrar",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-error",
+        "value": "",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-signin-action",
+        "value": "",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-noperm-title",
+        "value": "Sem permissão de acesso",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-noperm-message",
+        "value": "Seu usuário não tem permissão para acessar este módulo. Atualize o perfil de acesso ou entre em contato com o suporte caso já possua o plano correto.",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-noperm-support",
+        "value": "Falar com o suporte",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-support-url",
+        "value": "#",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-iframe-title",
+        "value": "Painel administrativo",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-login-invalido",
+        "value": "Usuário ou senha inválidos.",
+        "type": "string"
+    },
+    {
+        "id": "c2f-md-unavailable",
+        "value": "O serviço está temporariamente indisponível. Tente novamente em alguns instantes.",
+        "type": "string"
     }
 ]

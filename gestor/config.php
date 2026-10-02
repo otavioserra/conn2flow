@@ -242,6 +242,13 @@ $_CONFIG = [
     // central-url : URL base do central (usada pelo distribuído p/ o Iframe e o middleware).
     // endpoint    : endpoint da API do distribuído (usado pelo central p/ o canal de banco).
     'modulo-distribuido' => [
+        'rate-limit-max' => max(1, (int)($_ENV['MODULO_DISTRIBUIDO_RATE_LIMIT_MAX'] ?? 1000)),
+        'rate-limit-window' => max(60, (int)($_ENV['MODULO_DISTRIBUIDO_RATE_LIMIT_WINDOW'] ?? 60)),
+        'app-id'      => $_ENV['MODULO_DISTRIBUIDO_APP_ID'] ?? '',
+        'url'         => $_ENV['MODULO_DISTRIBUIDO_URL'] ?? '',
+        'modules'     => json_decode($_ENV['MODULO_DISTRIBUIDO_MODULES'] ?? '[]', true) ?: [],
+        'tables'      => json_decode($_ENV['MODULO_DISTRIBUIDO_TABLES'] ?? '[]', true) ?: [],
+        'installations' => json_decode($_ENV['MODULO_DISTRIBUIDO_INSTALLATIONS'] ?? '{}', true) ?: [],
         'secret'      => $_ENV['MODULO_DISTRIBUIDO_SECRET'] ?? '',
         'central-url' => $_ENV['MODULO_DISTRIBUIDO_CENTRAL_URL'] ?? '',
         'endpoint'    => $_ENV['MODULO_DISTRIBUIDO_ENDPOINT'] ?? '',

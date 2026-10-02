@@ -64,7 +64,7 @@ function api_module_distributed_handle(array $rota) {
 	if ($secret === '') {
 		api_response_error('Canal distribuído não configurado (segredo ausente).', 500);
 	}
-	if (!modulo_distribuido_verificar_assinatura($corpo_cru, $assinatura, $secret)) {
+	if (!modulo_distribuido_validar_envelope($corpo_cru, $assinatura, $secret, $slug)) {
 		api_response_error('Assinatura HMAC inválida.', 401);
 	}
 
@@ -97,6 +97,10 @@ function api_module_distributed_db($slug, $corpo_cru) {
 	if (!is_array($payload) || !isset($payload['sql'])) {
 		api_response_error('Payload distribuído inválido.', 400);
 	}
+	if (!in_array($slug, modulo_distribuido_config_get('modulo-distribuido.modules', []), true)
+		|| !modulo_distribuido_sql_autorizada($payload['sql'], modulo_distribuido_config_get('modulo-distribuido.tables', []))) {
+		api_response_error('distributed-table-denied', 403);
+	}
 
 	// Conexão PDO com o banco local (mesmo helper usado pelo pipeline de atualização).
 	$pdo = api_module_distributed_pdo();
@@ -122,24 +126,11 @@ function api_module_distributed_db($slug, $corpo_cru) {
 function api_module_distributed_pdo() {
 	global $_GESTOR, $_BANCO;
 
-	if (function_exists('db')) {
-		try {
-			return db();
-		} catch (\Throwable $e) {
-			error_log('MODULO-DISTRIBUIDO: db() falhou: ' . $e->getMessage());
-		}
-	}
-
-	// Fallback: monta PDO a partir de $_BANCO diretamente.
+	// Dedicated local connection disables multi-statements and emulated prepares.
 	try {
-		$host = $_BANCO['host'] ?? 'localhost';
-		$nome = $_BANCO['nome'] ?? '';
-		$user = $_BANCO['usuario'] ?? '';
-		$pass = $_BANCO['senha'] ?? '';
-		$dsn = "mysql:host={$host};dbname={$nome};charset=utf8mb4";
-		return new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+		return modulo_distribuido_pdo();
 	} catch (\Throwable $e) {
-		error_log('MODULO-DISTRIBUIDO: fallback PDO falhou: ' . $e->getMessage());
+		error_log('MODULO-DISTRIBUIDO: local PDO connection failed');
 		return null;
 	}
 }

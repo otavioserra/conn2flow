@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-219 — Infraestrutura comum para módulos distribuídos (req-211)
+
+- [x] Login oficial, código de uso único, troca entre servidores, tokens fora de URL e do navegador.
+- [x] Envelope: repetição, validade e assinatura inválida recusadas.
+- [x] Allowlist de tabelas: 16 formas de fuga recusadas, formas legítimas aceitas.
+- [x] CRUD de `coupons` ponta a ponta no Lab; suíte PHPUnit completa.
+- [ ] Segundo fator, outros navegadores e os outros 26 módulos.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-219](../implementation/BATCH-219.md).
+
 ## BATCH-218 — Tela de atualização no deploy e prévia de widgets completa (req-210)
 
 - [x] Manutenção ligada: 503 com a tela e a logo, JSON para AJAX, CLI e `_api/` isentos.

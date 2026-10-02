@@ -158,7 +158,8 @@ function oauth2_gerar_token_client_credentials($params = false){
         'pubID' => $refresh_pubID,
         'exp' => $refresh_token_expiration,
         'iat' => time(),
-        'token_type' => 'refresh'
+        'token_type' => 'refresh',
+        'scope' => isset($scope) ? $scope : 'read'
     );
 
     // ===== Gerar refresh_token

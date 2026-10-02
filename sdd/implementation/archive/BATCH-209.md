@@ -1,6 +1,6 @@
 # BATCH-209: Atualização do sistema por API, em segundo plano, com opções, verificação e rollback (req-201)
 
-Execução da parte do core da [req-201](../human-requests/req-201.md). O consumo pelo host-manager e o CLI em massa ficam no `conn2flow-site` (privado), em requisição de lá.
+Execução da parte do core da [req-201](../../human-requests/archive/req-201.md). O consumo pelo host-manager e o CLI em massa ficam no `conn2flow-site` (privado), em requisição de lá.
 
 **Status**: `complete` (implementado e validado no tenant isolado; homologação humana pendente).
 **Worktree**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-bl028`, branch `feat/req-197`.

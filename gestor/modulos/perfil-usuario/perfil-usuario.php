@@ -1994,6 +1994,16 @@ function perfil_usuario_oauth_authenticate_2fa(){
 function perfil_usuario_signin(){
 	global $_GESTOR;
 	global $_CONFIG;
+	gestor_incluir_biblioteca('modulo-distribuido');
+	$contextoDistribuido = modulo_distribuido_login_contexto();
+	if ($contextoDistribuido) {
+		$camposContexto = gestor_componente(['id' => 'perfil-usuario-distribuido-contexto', 'modulo' => 'perfil-usuario']);
+		foreach (['contexto', 'app_id', 'distribuido_url', 'modulo'] as $campo) {
+			$camposContexto = str_replace('#distributed-' . $campo . '#',
+				htmlspecialchars($contextoDistribuido[$campo], ENT_QUOTES, 'UTF-8'), $camposContexto);
+		}
+		$_GESTOR['pagina'] = preg_replace('/(<form\b[^>]*>)/i', '$1' . $camposContexto, $_GESTOR['pagina'], 1);
+	}
 	
 	// ===== Verificar a permissão do acesso.
 	
@@ -2198,6 +2208,10 @@ function perfil_usuario_signin(){
 		}
 		
 		// ===== Se o usuário for válido, redirecionar para o local pretendido se houver, senão para dashboard.
+		if (!$captchaV2Exigido && !$user_invalid) {
+			hook_do_action('perfil-usuario', 'login.sucesso', (int)$id_usuarios);
+			hook_do_action('perfil-usuario', 'login.distribuido', (int)$id_usuarios);
+		}
 		
 		if(!$captchaV2Exigido){
 			if(existe(gestor_sessao_variavel("redirecionar-local"))){
@@ -2346,6 +2360,8 @@ function perfil_usuario_finalizar_login($id_usuarios, $permanecerLogado){
 
 	gestor_incluir_biblioteca('seguranca');
 	seguranca_sessao_registrar();
+	hook_do_action('perfil-usuario', 'login.sucesso', $id_usuarios);
+	hook_do_action('perfil-usuario', 'login.distribuido', $id_usuarios);
 
 	if(existe(gestor_sessao_variavel('redirecionar-local'))){
 		gestor_redirecionar();
