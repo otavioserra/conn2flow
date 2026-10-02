@@ -5,7 +5,7 @@
 * **Para**: agente executor
 * **Projeto**: `conn2flow-ai-workspace` (extensão em `vscode-extension/`)
 * **Caminho raiz**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-ai-workspace`
-* **Requisição de origem**: core [req-199](../human-requests/req-199.md), lote `BATCH-206`. No `conn2flow-ai-workspace`, a requisição própria já está aberta: **`req-061`** (lote `BATCH-063`), apontando para este handoff; e seguir o SDD daquele repositório (`CLAUDE.md` de lá, `CURRENT.md`, `BATCH-INDEX.md`, memórias).
+* **Requisição de origem**: core [req-199](../human-requests/archive/req-199.md), lote `BATCH-206`. No `conn2flow-ai-workspace`, a requisição própria já está aberta: **`req-061`** (lote `BATCH-063`), apontando para este handoff; e seguir o SDD daquele repositório (`CLAUDE.md` de lá, `CURRENT.md`, `BATCH-INDEX.md`, memórias).
 
 ## Objetivo
 
