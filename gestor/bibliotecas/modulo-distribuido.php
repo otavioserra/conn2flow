@@ -242,6 +242,7 @@ function modulo_distribuido_detectar_operacao($sql) {
 	// Remove comentários de linha iniciais simples para não confundir a detecção.
 	$limpo = preg_replace('/^\s*(--[^\n]*\n)+/', '', $limpo);
 	if (preg_match('/^\s*select\b/i', $limpo)) return 'select';
+	if (preg_match('/^\s*show\s+columns\s+from\b/i', $limpo)) return 'select';
 	if (preg_match('/^\s*insert\b/i', $limpo)) return 'insert';
 	if (preg_match('/^\s*update\b/i', $limpo)) return 'update';
 	if (preg_match('/^\s*delete\b/i', $limpo)) return 'delete';
@@ -512,6 +513,8 @@ function modulo_distribuido_sql_segura($sql) {
 		}
 		$normalizado .= $c;
 	}
+	// Native CRUD helpers inspect column metadata; no other SHOW form is allowed.
+	if (preg_match('/^SHOW\s+COLUMNS\s+FROM\s+(?:`[a-zA-Z_][a-zA-Z0-9_]*`|[a-zA-Z_][a-zA-Z0-9_]*)\s*;?$/iD', $sql)) return true;
 	if (!preg_match('/^\s*(SELECT|INSERT|UPDATE|DELETE)\b/i', $normalizado)) return false;
 	// A signed CRUD channel must not expose files, server variables or other schemas.
 	return !preg_match('/\b(INTO\s+(OUTFILE|DUMPFILE)|LOAD_FILE|SLEEP|BENCHMARK|INFORMATION_SCHEMA|MYSQL|PERFORMANCE_SCHEMA|SYS)\b|@@/i', $normalizado);

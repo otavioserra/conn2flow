@@ -68,6 +68,16 @@ final class ModuloDistribuidoReq092Test extends TestCase
         }
     }
 
+    public function testColumnMetadataUsesTheReadChannelAndPreservesTheTableBoundary(): void
+    {
+        self::assertSame('select', modulo_distribuido_detectar_operacao('SHOW COLUMNS FROM coupons'));
+        self::assertTrue(modulo_distribuido_sql_autorizada('SHOW COLUMNS FROM `coupons`;', ['coupons']));
+        self::assertFalse(modulo_distribuido_sql_autorizada('SHOW COLUMNS FROM usuarios', ['coupons']));
+        self::assertFalse(modulo_distribuido_sql_segura('SHOW COLUMNS FROM other.coupons'));
+        self::assertFalse(modulo_distribuido_sql_segura('SHOW TABLES'));
+        self::assertFalse(modulo_distribuido_sql_segura('SHOW COLUMNS FROM coupons; SELECT * FROM usuarios'));
+    }
+
     public function testTransportExceptionsAndInvalidBodiesFailClosed(): void
     {
         $config = ['endpoint' => 'https://central.test/_api', 'slug' => 'products', 'secret' => 'test-only',

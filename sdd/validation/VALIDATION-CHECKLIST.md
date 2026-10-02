@@ -6,7 +6,7 @@
 - [x] Troca/ticket de uso único, HMAC timing-safe, validade, nonces e rotação OAuth2.
 - [x] Bridge automática no módulo original; allowlist, SQL sem empilhamento e PDO dedicado.
 - [x] Regressão do bootstrap: página inicial HTTP 200 no E2E.
-- [x] PHPUnit: 1413 testes, 11214 asserções, zero erros/falhas; 4 skips e deprecações existentes.
+- [x] PHPUnit: 1414 testes, 11220 asserções, zero erros/falhas; 4 skips e deprecações existentes.
 - [x] E2E real do módulo original de cupons com persistência remota, renovação, 1280/390 e zero erros JS/HTTP.
 - [ ] Revisão técnica/humana e integração na branch principal.
 

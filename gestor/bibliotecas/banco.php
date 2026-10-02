@@ -1283,6 +1283,7 @@ function banco_total_rows($tabela,$extra = null){
  * @return array Array com informações de cada coluna.
  */
 function banco_campos_nomes($tabela){
+	$campos = [];
 	$rows = banco_sql("SHOW COLUMNS FROM ".$tabela);
 
 	// Processa resultados removendo chaves numéricas
