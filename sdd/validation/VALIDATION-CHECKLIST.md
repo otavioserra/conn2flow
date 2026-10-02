@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-222 — Menus do painel e apoio à execução no cliente (req-214)
+
+- [x] Item do módulo marcado e no meio do menu, nos dois layouts, em 14 páginas e duas alturas: 61/61.
+- [x] Rolagem guardada não tira o item atual do lugar.
+- [x] Decisão de cookies lida no servidor; biblioteca registrada no mapa do core.
+- [x] Gancho `db.escrita` no cliente; contexto distribuído consultável pelo módulo.
+- [ ] Menu de celular do layout Fomantic.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-222](../implementation/BATCH-222.md).
+
 ## BATCH-221 — Módulos distribuídos: melhorias da revisão (req-213)
 
 - [x] `confirm()` e nova aba dentro do iframe, em três motores.
@@ -120,7 +131,7 @@ Detalhes: [BATCH-214](../implementation/BATCH-214.md).
 - [x] Lab: `/perfil-usuario/` sob os dois layouts a 1280 e 390 px sem classe sem regra.
 - [ ] Revisão humana e mesclagem.
 
-Detalhes: [BATCH-212](../implementation/BATCH-212.md).
+Detalhes: [BATCH-212](../implementation/archive/BATCH-212.md).
 
 ## BATCH-213 — README e descrição do GitHub (req-205)
 

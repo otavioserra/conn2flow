@@ -16,6 +16,14 @@
 
 ## Tarefas recentes
 
+### 2026-10-02 — BATCH-222 (req-214): menus do painel, consentimento e execução no cliente
+
+- **Biblioteca nova só carrega se estiver em `$_GESTOR['bibliotecas-dados']` (`config.php`)**. `gestor_incluir_biblioteca()` com nome desconhecido só gera aviso no log; teste com inclusão simulada não pega.
+- **Código novo no `global.js` roda em documento simulado nos testes** (`vm.runInNewContext` com `window` e `document` de mentira): conferir a existência da API antes de usar.
+- **Rodar a suíte em ordem aleatória** (`--order-by=random`) antes de fechar: acha dependência de estado entre testes (gerenciador de ganchos carregado por outro teste).
+- **Menu do painel**: item atual por `aria-current="page"` (servidor) ou pelo prefixo mais longo do endereço (script); `window.gestorMenuPosicionarAtual()`.
+- **Execução dos módulos no cliente**: o core dá `modulo_distribuido_contexto()`, `modulo_distribuido_url_publica()` e o gancho `modulo-distribuido` / `db.escrita`; o empacotador e as rotinas locais são do projeto.
+
 ### 2026-10-02 — BATCH-221 (req-213): módulos distribuídos, melhorias
 
 - **Função chamada por gancho carrega as próprias bibliotecas.** O `HookManager` só registra o erro do callback em modo de desenvolvimento; fora dele, função indefinida dentro do gancho some e o fluxo segue como se o gancho não existisse (login distribuído com segundo fator ia para o painel).

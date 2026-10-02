@@ -1,6 +1,6 @@
 # BATCH-212: Layout por perfil 1:N, compilação multi-layout, editor multi-layout, popup da página inicial e versão pela API (req-204)
 
-Parte do core da REQ-085 do `conn2flow-site` (lote irmão: BATCH-079 de lá). Intake: [req-204](../human-requests/req-204.md).
+Parte do core da REQ-085 do `conn2flow-site` (lote irmão: BATCH-079 de lá). Intake: [req-204](../../human-requests/archive/req-204.md).
 
 **Status**: `in-review` (implementado e validado no Lab pelo projeto `conn2flow-site-local`; revisão humana pendente).
 **Worktree**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req203`, branch `feat/req-204`.
