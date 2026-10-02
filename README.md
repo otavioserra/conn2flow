@@ -117,6 +117,7 @@ Full index: [ai-workspace/en/docs/](ai-workspace/en/docs/index.md).
 - **[conn2flow.com](https://conn2flow.com/)** — the project site, built on Conn2Flow itself. See the [platform overview](https://conn2flow.com/plataforma/).
 - **[Conn2Flow Pro](https://conn2flow.com/pro/)** — managed hosting and plans for those who want the platform without running the servers.
 - **[Conn2Flow AI Workspace](https://github.com/otavioserra/conn2flow-ai-workspace)** — the framework that carries the skills and the governance to every repository built on the core.
+- **[Conn2Flow Dev Tools](https://marketplace.visualstudio.com/items?itemName=conn2flow.conn2flow-tools)** — the VS Code extension: a panel to pick the SDD scope and the target project, run the pipeline, rebuild CSS, publish releases and read diagnostics, without leaving the editor. [Guide](ai-workspace/en/docs/guides/dev-tools-vscode.md).
 - **[Conn2Flow Nexus](https://github.com/otavioserra/conn2flow-nexus)** — an AI gateway in development. It is a direction, not a dependency: nothing in this repository requires it.
 
 ## Status

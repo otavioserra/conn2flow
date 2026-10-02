@@ -117,6 +117,7 @@ A documentação é Markdown, versionada com o código, conferida contra ele e g
 - **[conn2flow.com](https://conn2flow.com/)** — o site do projeto, feito com o próprio Conn2Flow. Veja a [visão geral da plataforma](https://conn2flow.com/plataforma/).
 - **[Conn2Flow Pro](https://conn2flow.com/pro/)** — hospedagem gerenciada e planos para quem quer a plataforma sem cuidar dos servidores.
 - **[Conn2Flow AI Workspace](https://github.com/otavioserra/conn2flow-ai-workspace)** — o framework que leva as skills e a governança a cada repositório construído sobre o núcleo.
+- **[Conn2Flow Dev Tools](https://marketplace.visualstudio.com/items?itemName=conn2flow.conn2flow-tools)** — a extensão do VS Code: um painel para escolher o escopo do SDD e o projeto alvo, rodar o pipeline, reconstruir o CSS, publicar lançamentos e ler diagnósticos, sem sair do editor. [Guia](ai-workspace/pt-br/docs/guides/dev-tools-vscode.md).
 - **[Conn2Flow Nexus](https://github.com/otavioserra/conn2flow-nexus)** — um gateway de IA em desenvolvimento. É uma direção, não uma dependência: nada neste repositório exige o Nexus.
 
 ## Situação
