@@ -467,3 +467,10 @@ Ao transformar os três modais de sistema injetados em runtime (`interface-alert
    - **Dependência automática** injetada pelo framework é marcada como `opcional: true` e **degrada em silêncio**: quem a inseriu foi o sistema e não o autor da página. Em ambientes/idiomas onde o componente ainda não existe ou não foi sincronizado (ex: ausência de variantes `en`), a compilação segue sem abortar a esteira.
 3. **Guarda de sincronia na suíte de testes**: teste unitário compara o mapa de injeção em runtime de `interface_componentes_incluir()` com a lista de modais automáticos do compilador, impedindo que um novo modal de sistema nasça sem estilo no Tailwind.
 
+## DEC-129 - 2026-10-03 - accepted
+
+- Contexto: req-215 (parte do core da REQ-096 do `conn2flow-site`). Na arquitetura "painel no Central, execução no cliente", o painel precisa de efeitos que só existem no site do cliente.
+- Decisão: o canal assinado ganha a ação `rotina`. O Central pede uma rotina por nome; o cliente só executa o que o manifesto da cópia de execução declarou em `routines`. Tabelas do core continuam fora do canal de banco: o painel do Central as usa para se desenhar.
+- Decisão: cópia de execução (`scope: distributed-execution`) só age quando o módulo (ou um de `active_with`) está contratado no `.env` da instalação.
+- Consequência: regra de negócio de cada efeito fica no projeto (no `conn2flow-site`, a biblioteca `site-local`); o core só transporta e confere.
+

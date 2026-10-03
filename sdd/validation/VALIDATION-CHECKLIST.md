@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-223 — Módulos distribuídos: rotina local pedida pelo Central (req-215)
+
+- [x] CA-1: rotina declarada roda no cliente e o retorno chega ao Central; não declarada, de outro módulo, de módulo sem cópia, assinatura inválida e repetição recusadas.
+- [x] CA-2: fora de contexto distribuído nada muda.
+- [x] CA-3: testes de unidade do protocolo; suíte sem regressão.
+- [x] Cópia de execução não contratada fica inerte (página, widget, gancho, tarefa, webhook).
+- [x] Parâmetros do endereço chegam ao iframe, limpos.
+- [ ] Retorno de autorização de terceiros com aplicativo real.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-223](../implementation/BATCH-223.md).
+
 ## BATCH-222 — Menus do painel e apoio à execução no cliente (req-214)
 
 - [x] Item do módulo marcado e no meio do menu, nos dois layouts, em 14 páginas e duas alturas: 61/61.
@@ -140,7 +152,7 @@ Detalhes: [BATCH-212](../implementation/archive/BATCH-212.md).
 - [x] Descrição, site e tópicos do repositório atualizados no GitHub.
 - [ ] Revisão humana do texto e mesclagem.
 
-Detalhes: [BATCH-213](../implementation/BATCH-213.md).
+Detalhes: [BATCH-213](../implementation/archive/BATCH-213.md).
 
 ## BATCH-208 — Recuperação de arquivos do servidor (req-200)
 

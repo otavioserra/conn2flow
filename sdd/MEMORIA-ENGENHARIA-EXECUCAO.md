@@ -236,3 +236,10 @@ de tamanho. O registro integral vive em `sdd/implementation/BATCH-144.md`, `BATC
 `BATCH-147.md`.
 
 BATCH-155 a BATCH-167 (2026-09-02 e 2026-09-03: SSH e bootstrap do CLI, checksum e fim de linha, paridade visual do Tailwind, fila de scripts, worker que se matava, sessão e cgroup) foram movidos, na íntegra, para [archive/MEMORIA-ENGENHARIA-EXECUCAO-2026-09-02-03.md](archive/MEMORIA-ENGENHARIA-EXECUCAO-2026-09-02-03.md).
+
+### req-215 / BATCH-223 — rotina local e cópia de execução contratada (2026-10-03)
+
+- **Ação `rotina` do canal**: `modulo_distribuido_rotina($nome, $args)` no Central (null fora de contexto); o cliente só executa o declarado em `routines` do manifesto da cópia. Teste: `ModuloDistribuidoRotinaReq215Test`.
+- **`modulo_distribuido_execucao_ativa($modulo)`** é a trava de contratação usada no roteador, widgets, ganchos, cron e gateways; cópia com `panel: false` não é interceptada pelo proxy.
+- **Parâmetros do endereço seguem ao iframe** por `modulo_distribuido_consulta_canonica()` nas duas pontas (campo `query` do ticket).
+- **`modulo_distribuido_http_post` devolve false para resposta não 2xx**: recusa do cliente chega ao Central como falha de transporte.

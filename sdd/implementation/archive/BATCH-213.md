@@ -1,6 +1,6 @@
 # BATCH-213: README (en e pt-br) e descrição do GitHub — plataforma PHP e AMS (req-205)
 
-Execução da [req-205](../human-requests/req-205.md).
+Execução da [req-205](../../human-requests/archive/req-205.md).
 
 **Status**: `in-review` (escrito e conferido; revisão humana pendente).
 **Worktree**: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-readme`, branch `feat/req-205`.
