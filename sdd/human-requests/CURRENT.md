@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-218.md](req-218.md) (BATCH-226 `in-progress`, 2026-10-03): módulos distribuídos — imagens estáticas do layout (logo do portal) dentro do prefixo do painel voltam ao próprio endereço.
   - [req-217.md](req-217.md) (BATCH-225 `in-review`, 2026-10-03): módulos distribuídos — confirmação de origem (retorno ao endereço cadastrado) e chave de sessão de 15 minutos no canal.
   - [req-216.md](req-216.md) (BATCH-224 `in-review`, 2026-10-03): módulos distribuídos — catálogo local no cliente, estado da conta pelo canal e painel só de visualização (parte do core da REQ-097 do site).
   - [req-215.md](req-215.md) (BATCH-223 `in-review`, 2026-10-03): módulos distribuídos — rotina local pedida pelo Central pelo canal assinado, cópia de execução só quando contratada, parâmetros do endereço no iframe (parte do core da REQ-096 do site).
