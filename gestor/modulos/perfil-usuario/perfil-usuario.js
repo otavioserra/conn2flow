@@ -341,6 +341,12 @@ $(document).ready(function(){
 		var dicionario = (window.gestor && gestor.perfilUsuario) ? gestor.perfilUsuario : {};
 		return (dicionario && dicionario[id]) ? dicionario[id] : padrao;
 	}
+	// req-219: confirmação no diálogo do painel (c2fControles); o nativo só sem a biblioteca.
+	function confirmar(mensagem) {
+		if (window.c2fControles) return window.c2fControles.dialogo.confirmar(mensagem, { perigo: true });
+		return Promise.resolve(window.confirm(mensagem));
+	}
+
 
 	// ===================================================================================
 	// Mensagens
@@ -644,8 +650,8 @@ $(document).ready(function(){
 		var alvo = '#sessoes-msg';
 
 		Array.prototype.forEach.call(raiz.querySelectorAll('.btn-sessao-revogar'), function (botao) {
-			botao.addEventListener('click', function () {
-				if (!window.confirm(texto('sessions-revoke-confirm', 'Deseja revogar esta sessão?'))) return;
+			botao.addEventListener('click', async function () {
+				if (!(await confirmar(texto('sessions-revoke-confirm', 'Deseja revogar esta sessão?')))) return;
 
 				var pubID = botao.getAttribute('data-pubid');
 
@@ -670,8 +676,8 @@ $(document).ready(function(){
 		var revogarOutras = document.getElementById('btn-sessoes-revogar-outras');
 
 		if (revogarOutras) {
-			revogarOutras.addEventListener('click', function () {
-				if (!window.confirm(texto('sessions-revoke-others-confirm', 'Deseja encerrar todas as outras sessões?'))) return;
+			revogarOutras.addEventListener('click', async function () {
+				if (!(await confirmar(texto('sessions-revoke-others-confirm', 'Deseja encerrar todas as outras sessões?')))) return;
 
 				enviar({ ajaxOpcao: 'sessoes-revogar-outras' }, alvo).then(function (json) {
 					if (!json) return;
@@ -790,8 +796,8 @@ $(document).ready(function(){
 		});
 
 		Array.prototype.forEach.call(raiz.querySelectorAll('.btn-api-token-revogar'), function (botao) {
-			botao.addEventListener('click', function () {
-				if (!window.confirm(texto('api-tokens-revoke-confirm', 'Deseja revogar esta chave?'))) return;
+			botao.addEventListener('click', async function () {
+				if (!(await confirmar(texto('api-tokens-revoke-confirm', 'Deseja revogar esta chave?')))) return;
 
 				var id = botao.getAttribute('data-id');
 

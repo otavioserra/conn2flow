@@ -41,7 +41,8 @@ function carregarAplicarCsrf({ gestor: gestorFake, jq, alerta }) {
   const src = extrairFuncao(CODIGO, 'function htmlEditorAplicarCsrfNoFormulario(')
     + '\n' + extrairFuncao(CODIGO, 'function htmlEditorIdiomaIngles(');
   // eslint-disable-next-line no-new-func
-  return new Function('gestor', '$', 'alert', src + '\nreturn htmlEditorAplicarCsrfNoFormulario;')(gestorFake, jq, alerta);
+  // req-219: o aviso sai pelo diálogo do painel (`dialogo().alerta`), não pelo alert nativo.
+  return new Function('gestor', '$', 'dialogo', src + '\nreturn htmlEditorAplicarCsrfNoFormulario;')(gestorFake, jq, () => ({ alerta }));
 }
 
 describe('html-editor-interface.js — URL do módulo (req-109 §7)', () => {

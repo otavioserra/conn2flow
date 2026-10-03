@@ -1183,6 +1183,11 @@ function interface_assets_incluir(){
 
 	$versao = $_GESTOR['biblioteca-interface']['versao'];
 
+	// req-219: controles do painel (diálogos, select, chave, abas) em toda página, com a ponte da API do
+	// Fomantic quando ele não está na página.
+	gestor_incluir_biblioteca('controles');
+	if(function_exists('controles_incluir')) controles_incluir();
+
 	if(gestor_framework_css_atual()['modo'] === 'tailwindcss'){
 		$asset = recursos_tag_js('interface/interface-tailwind.js', $versao);
 

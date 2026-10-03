@@ -647,5 +647,55 @@
         "id": "c2f-md-unavailable",
         "value": "The service is temporarily unavailable. Please try again shortly.",
         "type": "string"
+    },
+    {
+        "id": "controles-ok",
+        "value": "OK",
+        "type": "string"
+    },
+    {
+        "id": "controles-cancelar",
+        "value": "Cancel",
+        "type": "string"
+    },
+    {
+        "id": "controles-buscar",
+        "value": "Search…",
+        "type": "string"
+    },
+    {
+        "id": "controles-sem-resultado",
+        "value": "No results",
+        "type": "string"
+    },
+    {
+        "id": "controles-carregando",
+        "value": "Loading…",
+        "type": "string"
+    },
+    {
+        "id": "controles-fechar",
+        "value": "Close",
+        "type": "string"
+    },
+    {
+        "id": "controles-selecione",
+        "value": "Select…",
+        "type": "string"
+    },
+    {
+        "id": "controles-confirmar",
+        "value": "Confirm",
+        "type": "string"
+    },
+    {
+        "id": "controles-remover",
+        "value": "Remove",
+        "type": "string"
+    },
+    {
+        "id": "controles-atencao",
+        "value": "Attention",
+        "type": "string"
     }
 ]

@@ -15,6 +15,21 @@ $(document).ready(function () {
      * Comunicação com a janela pai (html-editor-visual-controls.js) via postMessage,
      * namespace de ações `c2f-he:*`.
      */
+
+    // req-219: diálogos do painel (`c2fControles`, da página ou da janela do painel que contém este iframe)
+    // no lugar de alert/confirm/prompt nativos; o nativo só sobra onde a biblioteca não foi carregada
+    // (barra de edição em página pública).
+    function c2fDialogo() {
+        let c = window.c2fControles;
+        try { if (!c && window.parent && window.parent !== window) c = window.parent.c2fControles; } catch (e) { /* outra origem */ }
+        if (c) return c.dialogo;
+        return {
+            alerta: (m) => { window.alert(m); return Promise.resolve(); },
+            confirmar: (m) => Promise.resolve(window.confirm(m)),
+            perguntar: (m, v) => Promise.resolve(window.prompt(m, v))
+        };
+    }
+
     class HtmlEditor {
         constructor(options) {
             // ===== Estado
@@ -2381,8 +2396,9 @@ $(document).ready(function () {
             const cfg = (typeof html_editor !== 'undefined' && html_editor.imagepick) ? html_editor.imagepick : null;
             if (!cfg) {
                 const atual = this.currentBackgroundImageUrl(this.selectedElement) || '';
-                const url = window.prompt('URL da imagem de fundo:', atual);
-                if (url !== null && url.trim() !== '') this.applyBackgroundImage(url.trim());
+                c2fDialogo().perguntar(this.t('URL da imagem de fundo:', 'Background image URL:'), atual).then((url) => {
+                    if (url !== null && url.trim() !== '') this.applyBackgroundImage(url.trim());
+                });
                 return;
             }
             this.imagePickerTarget = 'background';
@@ -2767,10 +2783,12 @@ $(document).ready(function () {
         deleteSelected() {
             const el = this.selectedElement;
             if (!el || !el.parentNode) return;
-            if (!window.confirm('Deseja realmente excluir este elemento?')) return;
-            el.parentNode.removeChild(el);
-            this.clearSelection();
-            this.afterDomMutation();
+            c2fDialogo().confirmar(this.t('Deseja realmente excluir este elemento?', 'Delete this element?'), { perigo: true }).then((sim) => {
+                if (!sim || !el.parentNode) return;
+                el.parentNode.removeChild(el);
+                this.clearSelection();
+                this.afterDomMutation();
+            });
         }
 
         editSelected() {
@@ -2791,9 +2809,12 @@ $(document).ready(function () {
 
         editWidgetWrapper(wrapper) {
             const slugAtual = wrapper.getAttribute('data-widget-slug') || '';
-            const novo = window.prompt('Slug do widget (registro do banco):', slugAtual);
-            if (novo === null) return;
-            const slug = novo.trim();
+            c2fDialogo().perguntar(this.t('Slug do widget (registro do banco):', 'Widget slug (database record):'), slugAtual).then((novo) => {
+                if (novo !== null) this.applyWidgetSlug(wrapper, novo.trim());
+            });
+        }
+
+        applyWidgetSlug(wrapper, slug) {
             const type = wrapper.getAttribute('data-widget-type') || '';
             // req-044 §1: gera um NOVO id exclusivo e copia os metadados anteriores do mapa,
             // evitando conflito caso o widget editado seja clone de outro na tela.
@@ -2935,7 +2956,7 @@ $(document).ready(function () {
                     }
                     this.closeLiveImagePicker();
                 } else {
-                    window.alert(this.t('O arquivo selecionado não é uma imagem.', 'The selected file is not an image.'));
+                    c2fDialogo().alerta(this.t('O arquivo selecionado não é uma imagem.', 'The selected file is not an image.'));
                 }
             });
         }
@@ -2944,8 +2965,9 @@ $(document).ready(function () {
             const raiz = this.raiz || '';
             if (!raiz) { // sem raiz não há gerenciador — fallback ao input manual (prompt).
                 const src = document.getElementById('element-src');
-                const url = window.prompt(this.t('URL da imagem:', 'Image URL:'), (src && src.value) || '');
-                if (url !== null && src) src.value = url.trim();
+                c2fDialogo().perguntar(this.t('URL da imagem:', 'Image URL:'), (src && src.value) || '').then((url) => {
+                    if (url !== null && src) src.value = url.trim();
+                });
                 return;
             }
             this.openFilePickerOverlay(raiz);
@@ -3055,7 +3077,7 @@ $(document).ready(function () {
         // ===== Modelos de Sessão =====
 
         openTemplatesPanel() {
-            if (!this.selectedElement) { window.alert(this.t('Selecione um elemento na página primeiro.', 'Select an element on the page first.')); return; }
+            if (!this.selectedElement) { c2fDialogo().alerta(this.t('Selecione um elemento na página primeiro.', 'Select an element on the page first.')); return; }
             this.injectLivePanelStyles();
             this.buildTemplatesPanel();
             this._tplRelation = this._tplRelation || 'after';
@@ -3204,7 +3226,7 @@ $(document).ready(function () {
         // ===== Assistente IA =====
 
         openAiPanel() {
-            if (!this.selectedElement) { window.alert(this.t('Selecione um elemento na página primeiro.', 'Select an element on the page first.')); return; }
+            if (!this.selectedElement) { c2fDialogo().alerta(this.t('Selecione um elemento na página primeiro.', 'Select an element on the page first.')); return; }
             this.injectLivePanelStyles();
             this.buildAiPanel();
             const painel = document.getElementById('c2f-ai-panel');
@@ -3409,9 +3431,12 @@ $(document).ready(function () {
         }
 
         aiPromptNew() {
-            const nome = window.prompt(this.t('Nome do novo prompt:', 'New prompt name:'));
-            if (nome === null) return;
-            const nm = String(nome).trim();
+            c2fDialogo().perguntar(this.t('Nome do novo prompt:', 'New prompt name:'), '').then((nome) => {
+                if (nome !== null) this.aiPromptCreate(String(nome).trim());
+            });
+        }
+
+        aiPromptCreate(nm) {
             const st = this.aiStatusEl();
             if (!nm) { if (st) st.textContent = this.t('Informe um nome para o prompt.', 'Enter a name for the prompt.'); return; }
             this.aiPromptCrud('site-toolbar-ia-prompt-new', { target: 'paginas', nome: nm, prompt: this.aiGetInstruction() }, (json) => {
@@ -3443,13 +3468,15 @@ $(document).ready(function () {
             const id = sel ? sel.value : '';
             const st = this.aiStatusEl();
             if (!id) { if (st) st.textContent = this.t('Selecione um prompt salvo para excluir.', 'Select a saved prompt to delete.'); return; }
-            if (!window.confirm(this.t('Excluir o prompt selecionado?', 'Delete the selected prompt?'))) return;
-            this.aiPromptCrud('site-toolbar-ia-prompt-del', { target: 'paginas', prompt_id: id }, (json) => {
-                if (json && json.status === 'Ok') {
-                    Array.prototype.slice.call(sel.options).forEach((o) => { if (o.value === id) o.remove(); });
-                    sel.value = '';
-                    if (st) st.textContent = this.t('Prompt excluído.', 'Prompt deleted.');
-                } else if (st) { st.textContent = (json && (json.message || json.msg)) || this.t('Falha ao excluir o prompt.', 'Failed to delete the prompt.'); }
+            c2fDialogo().confirmar(this.t('Excluir o prompt selecionado?', 'Delete the selected prompt?'), { perigo: true }).then((sim) => {
+                if (!sim) return;
+                this.aiPromptCrud('site-toolbar-ia-prompt-del', { target: 'paginas', prompt_id: id }, (json) => {
+                    if (json && json.status === 'Ok') {
+                        Array.prototype.slice.call(sel.options).forEach((o) => { if (o.value === id) o.remove(); });
+                        sel.value = '';
+                        if (st) st.textContent = this.t('Prompt excluído.', 'Prompt deleted.');
+                    } else if (st) { st.textContent = (json && (json.message || json.msg)) || this.t('Falha ao excluir o prompt.', 'Failed to delete the prompt.'); }
+                });
             });
         }
 
@@ -5398,8 +5425,9 @@ $(document).ready(function () {
             const raiz = this.pickerRaiz();
             const input = document.querySelector('#c2f-he-embed-modal #c2f-he-embed-src');
             if (!raiz) {
-                const url = window.prompt(this.t('URL do arquivo:', 'File URL:'), (input && input.value) || '');
-                if (url !== null && input) { input.value = url.trim(); this.syncEmbedEngineAvailability(); }
+                c2fDialogo().perguntar(this.t('URL do arquivo:', 'File URL:'), (input && input.value) || '').then((url) => {
+                    if (url !== null && input) { input.value = url.trim(); this.syncEmbedEngineAvailability(); }
+                });
                 return;
             }
             this.imagePickerTarget = 'embed';

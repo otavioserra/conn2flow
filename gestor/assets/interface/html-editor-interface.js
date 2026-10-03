@@ -12,6 +12,16 @@ $(document).ready(function () {
 
     window.htmlEditorModuloUrl = moduloUrl; // exposta para teste e para os painéis do editor.
 
+    // req-219: diálogos do painel (`c2fControles`) no lugar de alert/confirm nativos; o nativo só sobra
+    // onde a biblioteca não foi carregada.
+    function dialogo() {
+        if (window.c2fControles) return window.c2fControles.dialogo;
+        return {
+            alerta: function (m) { window.alert(m); return Promise.resolve(); },
+            confirmar: function (m) { return Promise.resolve(window.confirm(m)); }
+        };
+    }
+
     // ===== Ajax Default
 
     var ajaxDefault = {
@@ -518,7 +528,7 @@ $(document).ready(function () {
     }
 
     function msg_erro_mostrar(mensagem) {
-        alert('Erro: ' + mensagem);
+        dialogo().alerta(mensagem);
     }
 
     function msg_erro_resetar() {
@@ -1720,7 +1730,7 @@ $(document).ready(function () {
 
         if (!token) {
             const emIngles = htmlEditorIdiomaIngles();
-            alert(emIngles
+            dialogo().alerta(emIngles
                 ? 'Your session expired and the security token is no longer available. Open a new tab, sign in again and copy your changes before saving.'
                 : 'Sua sessão expirou e o token de segurança não está mais disponível. Abra outra aba, entre novamente e copie suas alterações antes de salvar.');
             return false;
@@ -2687,22 +2697,25 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
     $(document.body).on('mouseup tap', '.remove-all-variables', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
-        if (!confirm('Tem certeza que deseja remover TODAS as variáveis do template?')) return false;
+        dialogo().confirmar('Tem certeza que deseja remover TODAS as variáveis do template?', { perigo: true }).then(function (sim) {
+            if (!sim) return;
 
-        let html = CodeMirrorHtml.getDoc().getValue();
+            let html = CodeMirrorHtml.getDoc().getValue();
 
-        // Regex para todas as variáveis (sensível ao alvo)
-        const regex = regexVariaveisGlobal();
+            // Regex para todas as variáveis (sensível ao alvo)
+            const regex = regexVariaveisGlobal();
 
-        html = html.replace(regex, ' ');
-        html = cleanCodeString(html);
+            html = html.replace(regex, ' ');
+            html = cleanCodeString(html);
 
-        CodeMirrorHtml.getDoc().setValue(html);
+            CodeMirrorHtml.getDoc().setValue(html);
 
-        publisherVariablesSearch();
-        contentPageTabChange('visualizacao-pagina');
+            publisherVariablesSearch();
+            contentPageTabChange('visualizacao-pagina');
 
-        msg_sucesso_mostrar('Todas as variáveis foram removidas do template!');
+            msg_sucesso_mostrar('Todas as variáveis foram removidas do template!');
+        });
+        return false;
     });
 
     $(document.body).on('mouseup tap', '.copy-to-clipboard', function (e) {
@@ -3188,7 +3201,8 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
 
         if (!sectionId || sectionId.length === 0) return false;
 
-        if (confirm('Tem certeza que deseja deletar permanentemente esta sessão?')) {
+        dialogo().confirmar('Tem certeza que deseja deletar permanentemente esta sessão?', { perigo: true }).then(function (sim) {
+            if (!sim) return;
             let html = CodeMirrorHtml.getDoc().getValue();
 
             // Remover a sessão do HTML
@@ -3207,7 +3221,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
             if (autoPreview) {
                 contentPageTabChange('visualizacao-pagina');
             }
-        }
+        });
     });
 
     // Funcao generica para mover sessao

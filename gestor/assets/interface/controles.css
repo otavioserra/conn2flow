@@ -1,0 +1,108 @@
+/*
+ * Controles do painel (req-219): select, chave, abas, diálogos, avisos, dica e carregando.
+ * CSS próprio, sem framework (prefixo `c2fc-`), para valer igual nas páginas Fomantic, Tailwind e híbridas:
+ * classes geradas pelo JavaScript não passam pela compilação do Tailwind.
+ * Paleta do painel Tailwind: slate para texto e bordas, sky para ação.
+ */
+.c2fc-oculto { display: none !important; }
+
+/* ---------- diálogos (alerta, confirmar, perguntar) — mesma cara do modal do painel */
+.c2fc-overlay { position: fixed; inset: 0; z-index: 100020; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, .6); }
+.c2fc-dialogo { width: 100%; max-width: 28rem; background: #fff; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,.2); color: #334155; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; outline: none; }
+.c2fc-dialogo-titulo { margin: 0; padding: 12px 20px; border-bottom: 1px solid #e2e8f0; font-size: 16px; font-weight: 600; color: #0f172a; }
+.c2fc-dialogo-corpo { padding: 16px 20px; }
+.c2fc-dialogo-corpo p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.c2fc-dialogo-acoes { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid #e2e8f0; }
+.c2fc-botao { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 8px; padding: 8px 16px; font: 500 14px/1.2 inherit; cursor: pointer; }
+.c2fc-botao:hover { background: #f1f5f9; }
+.c2fc-botao:focus-visible, .c2fc-entrada:focus-visible, .c2fc-select-gatilho:focus-visible, .c2fc-aba:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+.c2fc-botao-primario { border-color: #0284c7; background: #0284c7; color: #fff; }
+.c2fc-botao-primario:hover { background: #0369a1; }
+.c2fc-botao-perigo { border-color: #dc2626; background: #dc2626; color: #fff; }
+.c2fc-botao-perigo:hover { background: #b91c1c; }
+.c2fc-entrada { width: 100%; box-sizing: border-box; margin-top: 10px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; font: 14px/1.4 inherit; color: #0f172a; background: #fff; }
+
+/* ---------- campos (controles_campo no PHP) */
+.c2fc-campo { display: flex; flex-direction: column; gap: 4px; }
+.c2fc-campo-rotulo { display: block; font-size: 14px; font-weight: 500; color: #334155; }
+.c2fc-campo-obrigatorio { color: #dc2626; }
+.c2fc-campo-entrada { display: block; width: 100%; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; padding: 8px 12px; font: 14px/1.4 inherit; color: #0f172a; }
+.c2fc-campo-entrada::placeholder { color: #94a3b8; }
+.c2fc-campo-entrada:focus { outline: none; border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,.25); }
+.c2fc-campo-entrada:disabled, .c2fc-campo-entrada[readonly] { background: #f1f5f9; color: #64748b; }
+.c2fc-campo-entrada[aria-invalid="true"] { border-color: #dc2626; }
+.c2fc-campo-ajuda { margin: 0; font-size: 12px; color: #64748b; }
+.c2fc-campo-erro { margin: 0; font-size: 12px; color: #dc2626; }
+.c2fc-chave-rotulo { font-size: 14px; color: #334155; }
+.c2fc-botao-fantasma { border-color: transparent; background: transparent; color: #475569; }
+.c2fc-botao-fantasma:hover { background: #f1f5f9; }
+.c2fc-botao:disabled { opacity: .5; cursor: not-allowed; }
+a.c2fc-botao { text-decoration: none; }
+.c2fc-icone { width: 16px; height: 16px; }
+
+/* ---------- avisos rápidos */
+.c2fc-avisos { position: fixed; right: 16px; bottom: 16px; z-index: 100030; display: flex; flex-direction: column; gap: 8px; max-width: min(380px, calc(100vw - 32px)); }
+.c2fc-aviso { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 10px; background: #0f172a; color: #f8fafc; box-shadow: 0 10px 15px -3px rgba(0,0,0,.25); font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.c2fc-aviso-sucesso { background: #166534; }
+.c2fc-aviso-erro { background: #991b1b; }
+.c2fc-aviso-alerta { background: #92400e; }
+.c2fc-aviso button { margin-left: auto; background: none; border: 0; color: inherit; font-size: 18px; line-height: 1; cursor: pointer; opacity: .8; }
+
+/* ---------- select */
+.c2fc-select { position: relative; display: block; width: 100%; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.c2fc-select select.c2fc-nativo { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.c2fc-select-gatilho { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; width: 100%; min-height: 38px; box-sizing: border-box; padding: 6px 34px 6px 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #0f172a; text-align: left; cursor: pointer; position: relative; }
+.c2fc-select-gatilho::after { content: ""; position: absolute; right: 12px; top: 50%; width: 8px; height: 8px; border-right: 2px solid #64748b; border-bottom: 2px solid #64748b; transform: translateY(-70%) rotate(45deg); }
+.c2fc-select-aberto .c2fc-select-gatilho { border-color: #0284c7; }
+.c2fc-select-desabilitado .c2fc-select-gatilho { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
+.c2fc-select-vazio { color: #94a3b8; }
+.c2fc-ficha { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 12px; }
+.c2fc-ficha button { border: 0; background: none; color: inherit; cursor: pointer; padding: 0; font-size: 14px; line-height: 1; }
+.c2fc-select-painel { position: absolute; z-index: 100015; left: 0; right: 0; top: calc(100% + 4px); background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,.15); overflow: hidden; }
+.c2fc-select-painel.c2fc-acima { top: auto; bottom: calc(100% + 4px); }
+.c2fc-select-busca { display: block; width: 100%; box-sizing: border-box; border: 0; border-bottom: 1px solid #e2e8f0; padding: 8px 10px; font: 14px/1.4 inherit; outline: none; }
+.c2fc-select-lista { list-style: none; margin: 0; padding: 4px 0; max-height: 260px; overflow-y: auto; }
+.c2fc-select-opcao { padding: 7px 12px; cursor: pointer; color: #0f172a; overflow-wrap: anywhere; }
+.c2fc-select-opcao[aria-selected="true"] { background: #e0f2fe; color: #075985; font-weight: 600; }
+.c2fc-select-opcao.c2fc-ativa { background: #f1f5f9; }
+.c2fc-select-opcao[aria-disabled="true"] { color: #94a3b8; cursor: not-allowed; }
+.c2fc-select-grupo { padding: 6px 12px 2px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #64748b; }
+.c2fc-select-nada { padding: 10px 12px; color: #64748b; }
+
+/* ---------- chave liga/desliga (checkbox nativo) */
+.c2fc-chave { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+.c2fc-chave input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.c2fc-chave-trilho { position: relative; width: 40px; height: 22px; flex: none; border-radius: 999px; background: #cbd5e1; transition: background .15s; }
+.c2fc-chave-trilho::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: transform .15s; }
+.c2fc-chave input:checked + .c2fc-chave-trilho { background: #0284c7; }
+.c2fc-chave input:checked + .c2fc-chave-trilho::after { transform: translateX(18px); }
+.c2fc-chave input:focus-visible + .c2fc-chave-trilho { outline: 2px solid #0284c7; outline-offset: 2px; }
+.c2fc-chave input:disabled + .c2fc-chave-trilho { opacity: .5; }
+
+/* ---------- abas */
+.c2fc-abas-lista { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #e2e8f0; margin-bottom: 12px; }
+.c2fc-aba { border: 0; border-bottom: 2px solid transparent; background: none; padding: 8px 14px; font: 500 14px/1.2 inherit; color: #475569; cursor: pointer; margin-bottom: -1px; }
+.c2fc-aba[aria-selected="true"] { border-bottom-color: #0284c7; color: #0369a1; }
+
+/* ---------- dica (tooltip) */
+[data-c2f-dica] { position: relative; }
+[data-c2f-dica]:hover::after, [data-c2f-dica]:focus-visible::after { content: attr(data-c2f-dica); position: absolute; z-index: 100025; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); width: max-content; max-width: 260px; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: #f8fafc; font: 12px/1.35 system-ui, sans-serif; white-space: normal; pointer-events: none; }
+
+/* ---------- carregando (sobre um elemento ou a página) */
+.c2fc-carregando-alvo { position: relative; }
+.c2fc-carregando { position: absolute; inset: 0; z-index: 100012; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.7); border-radius: inherit; }
+.c2fc-carregando.c2fc-pagina { position: fixed; background: rgba(15, 23, 42, .35); }
+.c2fc-giro { width: 32px; height: 32px; border: 3px solid #bae6fd; border-top-color: #0284c7; border-radius: 50%; animation: c2fc-giro .8s linear infinite; }
+@keyframes c2fc-giro { to { transform: rotate(360deg); } }
+
+/* ---------- ponte Fomantic (só quando o Fomantic não está na página) */
+.c2fc-ponte-modal { position: relative; width: 100%; max-width: 56rem; max-height: calc(100vh - 32px); overflow: auto; background: #fff; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,.2); color: #334155; }
+.c2fc-ponte-modal > .header { padding: 12px 20px; border-bottom: 1px solid #e2e8f0; font-size: 16px; font-weight: 600; color: #0f172a; }
+.c2fc-ponte-modal > .content, .c2fc-ponte-modal > .scrolling.content { padding: 16px 20px; }
+.c2fc-ponte-modal > .actions { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid #e2e8f0; }
+.c2fc-ponte-modal > .close { position: absolute; top: 10px; right: 14px; cursor: pointer; }
+.ui.dimmer.c2fc-ponte-dimmer { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(255,255,255,.7); z-index: 100011; }
+.ui.dimmer.c2fc-ponte-dimmer.active { display: flex; }
+.ui.tab.c2fc-ponte-tab { display: none; }
+.ui.tab.c2fc-ponte-tab.active { display: block; }
+.ui.checkbox.c2fc-ponte-checkbox { display: inline-flex; align-items: center; gap: 8px; }

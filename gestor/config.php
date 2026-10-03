@@ -344,6 +344,8 @@ $_GESTOR['bibliotecas-dados'] = Array(
 	'modelo' => Array('modelo.php'),
 	'hooks' => Array('hooks.php'),
 	'interface' => Array('interface.php'),
+	// req-219: controles do painel sem framework (select, chave, abas, diálogos, avisos, ponte Fomantic).
+	'controles' => Array('controles.php'),
 	'html' => Array('html.php'),
 	'usuario' => Array('usuario.php'),
 	'comunicacao' => Array('comunicacao.php'),
