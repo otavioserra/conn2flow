@@ -861,6 +861,13 @@ function banco_distribuido_query($sql) {
 
 	$config = isset($_BANCO['distribuido']) && is_array($_BANCO['distribuido']) ? $_BANCO['distribuido'] : [];
 
+	// req-216: read-only panel (account suspended): nothing but reads leaves for the customer's site,
+	// whatever the screen tries.
+	if (!empty($config['somente-leitura']) && !modulo_distribuido_operacao_leitura(modulo_distribuido_detectar_operacao($sql))) {
+		error_log('MODULO-DISTRIBUIDO: write refused, read-only panel');
+		return false;
+	}
+
 	$payload = modulo_distribuido_montar_payload($sql, [
 		'modulo'    => $config['slug'] ?? ($_GESTOR['modulo-id'] ?? null),
 		'linguagem' => $_GESTOR['linguagem-codigo'] ?? null,

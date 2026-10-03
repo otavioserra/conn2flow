@@ -231,7 +231,8 @@ PHP);
         $inicio = strpos($fonte, 'function api_module_distributed_rotina(');
         self::assertNotFalse($inicio);
         $corpo = substr($fonte, $inicio, 1400);
-        self::assertStringContainsString("modulo_distribuido_config_get('modulo-distribuido.modules'", $corpo);
+        // req-216: a lista vem do catálogo do pacote (ou do `.env`, quando houver).
+        self::assertStringContainsString('modulo_distribuido_modulos_locais()', $corpo);
         self::assertStringContainsString("case 'rotina':", $fonte);
         // A assinatura é conferida antes de qualquer ação, inclusive esta.
         self::assertLessThan(strpos($fonte, "case 'rotina':"), strpos($fonte, 'modulo_distribuido_validar_envelope('));

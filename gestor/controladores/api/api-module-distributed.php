@@ -102,8 +102,8 @@ function api_module_distributed_db($slug, $corpo_cru) {
 	if (!is_array($payload) || !isset($payload['sql'])) {
 		api_response_error('Payload distribuído inválido.', 400);
 	}
-	if (!in_array($slug, modulo_distribuido_config_get('modulo-distribuido.modules', []), true)
-		|| !modulo_distribuido_sql_autorizada($payload['sql'], modulo_distribuido_config_get('modulo-distribuido.tables', []))) {
+	if (!in_array($slug, modulo_distribuido_modulos_locais(), true)
+		|| !modulo_distribuido_sql_autorizada($payload['sql'], modulo_distribuido_tabelas_locais())) {
 		api_response_error('distributed-table-denied', 403);
 	}
 
@@ -157,7 +157,7 @@ function api_module_distributed_rotina($slug, $corpo_cru) {
 	if (!is_array($payload) || !is_string($payload['rotina'] ?? null)) {
 		api_response_error('Payload distribuído inválido.', 400);
 	}
-	if (!in_array($slug, modulo_distribuido_config_get('modulo-distribuido.modules', []), true)) {
+	if (!in_array($slug, modulo_distribuido_modulos_locais(), true)) {
 		api_response_error('routine-denied', 403);
 	}
 

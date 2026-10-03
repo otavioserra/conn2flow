@@ -3113,6 +3113,8 @@ function gestor_roteador(){
 				$canalDistribuido = modulo_distribuido_modulo_iniciar($modulo);
 				try { require_once($module_path); }
 				finally { if ($canalDistribuido) banco_distribuido_finalizar(); }
+				// req-216: aviso de carência ou de modo de visualização no topo do painel distribuído.
+				if ($canalDistribuido) modulo_distribuido_aviso_conta();
 			}
 
 			// ===== Incluir componentes na página.

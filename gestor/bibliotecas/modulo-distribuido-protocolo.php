@@ -79,6 +79,9 @@ function modulo_distribuido_validar_envelope($corpo, $assinatura, $secret, $slug
  * same keys of an .env entry (url, secret, modules, tables). A provider that knows the app_id is the
  * authority, even to say it is disabled (false); null falls back to the .env.
  */
+/** req-216: reserved channel slug for account-level actions (no module behind it). */
+const MODULO_DISTRIBUIDO_SLUG_CONTA = '_conta';
+
 function modulo_distribuido_instalacao($app, $slug) {
     if (!is_string($app) || $app === '') return false;
     $instalacao = null;
@@ -97,7 +100,7 @@ function modulo_distribuido_instalacao($app, $slug) {
         $instalacao = $instalacoes[$app] ?? null;
     }
     if (!is_array($instalacao) || empty($instalacao['secret']) || empty($instalacao['url'])
-        || !in_array($slug, $instalacao['modules'] ?? [], true)) return false;
+        || ($slug !== MODULO_DISTRIBUIDO_SLUG_CONTA && !in_array($slug, $instalacao['modules'] ?? [], true))) return false;
     $url = parse_url($instalacao['url']);
     if (!$url || ($url['scheme'] ?? '') !== 'https' || empty($url['host'])
         || isset($url['user']) || isset($url['pass']) || isset($url['query']) || isset($url['fragment'])) return false;
@@ -186,10 +189,161 @@ function modulo_distribuido_consulta_canonica($parametros, $limite = 2000) {
     return strlen($consulta) <= $limite ? $consulta : '';
 }
 
+/**
+ * req-216: the distributed catalog that ships with this installation's package
+ * (`project/distributed-modules.json`: `modules` with a panel at the central, `tables` the channel may
+ * reach). Every customer receives the full package; who may open a panel is decided by the central,
+ * by the user's profile. The `.env` lists stay optional and win when present.
+ *
+ * @return array{modules: string[], tables: string[]}
+ */
+function modulo_distribuido_catalogo_local() {
+    global $_GESTOR;
+    static $cache = [];
+    $arquivo = (string)($_GESTOR['ROOT_PATH'] ?? '') . 'project/distributed-modules.json';
+    if (isset($cache[$arquivo])) return $cache[$arquivo];
+    $dados = is_file($arquivo) ? json_decode((string)file_get_contents($arquivo), true) : null;
+    $limpa = static function ($lista) {
+        return array_values(array_filter((array)$lista, static function ($v) { return is_string($v) && preg_match('/^[a-z0-9_-]{1,64}$/D', $v); }));
+    };
+    return $cache[$arquivo] = ['modules' => $limpa($dados['modules'] ?? []), 'tables' => $limpa($dados['tables'] ?? [])];
+}
+
+/** req-216: modules with a panel at the central, as this installation knows them. */
+function modulo_distribuido_modulos_locais() {
+    $env = (array)modulo_distribuido_config_get('modulo-distribuido.modules', []);
+    if ($env) return array_values($env);
+    // Só um site de cliente (com `app-id`) é host distribuído: o Central também guarda o catálogo,
+    // para o cadastro das instalações, e não pode tratar os próprios módulos como de outro site.
+    if ((string)modulo_distribuido_config_get('modulo-distribuido.app-id', '') === '') return [];
+    return modulo_distribuido_catalogo_local()['modules'];
+}
+
+/** req-216: business tables the central channel may reach in this installation. */
+function modulo_distribuido_tabelas_locais() {
+    $env = (array)modulo_distribuido_config_get('modulo-distribuido.tables', []);
+    if ($env) return array_values($env);
+    // Só um site de cliente (com `app-id`) é host distribuído: o Central também guarda o catálogo,
+    // para o cadastro das instalações, e não pode tratar os próprios módulos como de outro site.
+    if ((string)modulo_distribuido_config_get('modulo-distribuido.app-id', '') === '') return [];
+    return modulo_distribuido_catalogo_local()['tables'];
+}
+
+const MODULO_DISTRIBUIDO_ESTADOS = ['ativo', 'carencia', 'suspenso', 'encerrado'];
+const MODULO_DISTRIBUIDO_CONTA_TTL = 600;
+
+/**
+ * req-216 (central): the account behind an installation, as the project decides it.
+ *
+ * `$_CONFIG['modulo-distribuido']['account-provider']`: callable(string $app): array with
+ * `estado` (ativo | carencia | suspenso | encerrado), `modulos` (modules of the owner's plan, or
+ * null for all), `destino` (absolute URL where a user without access is sent: the project's
+ * subscription screen) and `mensagem`. No provider, or a provider that fails: active, all modules.
+ * Billing never lives in the core.
+ */
+function modulo_distribuido_conta($app) {
+    $padrao = ['estado' => 'ativo', 'modulos' => null, 'destino' => null, 'mensagem' => ''];
+    $provedor = modulo_distribuido_config_get('modulo-distribuido.account-provider', null);
+    if (!is_string($app) || $app === '' || !is_callable($provedor)) return $padrao;
+    try {
+        $conta = call_user_func($provedor, $app);
+    } catch (\Throwable $e) {
+        error_log('MODULO-DISTRIBUIDO: account provider failed');
+        return $padrao;
+    }
+    if (!is_array($conta)) return $padrao;
+    $estado = in_array($conta['estado'] ?? null, MODULO_DISTRIBUIDO_ESTADOS, true) ? $conta['estado'] : 'ativo';
+    $modulos = isset($conta['modulos']) && is_array($conta['modulos']) ? array_values(array_filter($conta['modulos'], 'is_string')) : null;
+    $destino = is_string($conta['destino'] ?? null) && preg_match('#^https?://#i', $conta['destino']) ? $conta['destino'] : null;
+    return ['estado' => $estado, 'modulos' => $modulos, 'destino' => $destino, 'mensagem' => mb_substr((string)($conta['mensagem'] ?? ''), 0, 300)];
+}
+
+/**
+ * req-216 (customer): the account state and the plan's modules, asked to the central over the
+ * signed channel and kept here. Refreshed at most every MODULO_DISTRIBUIDO_CONTA_TTL seconds; when
+ * the central does not answer, the last known state stays. A module that has been in the plan once
+ * stays in `ativados`: unpaid bills take the panel away, never the running site.
+ *
+ * @param array $opcoes 'forcar' => true ignores the cache; 'transporte' and 'pdo' for tests.
+ * @return array{estado: string, modulos: string[], ativados: string[], destino: ?string, atualizado_em: int, conhecido: bool}
+ */
+function modulo_distribuido_conta_local(array $opcoes = []) {
+    static $memoria = null;
+    if ($memoria !== null && empty($opcoes['forcar'])) return $memoria;
+
+    $vazio = ['estado' => 'ativo', 'modulos' => [], 'ativados' => [], 'destino' => null, 'atualizado_em' => 0, 'valido_ate' => 0, 'conhecido' => false];
+    $app = (string)modulo_distribuido_config_get('modulo-distribuido.app-id', '');
+    $secret = (string)modulo_distribuido_config_get('modulo-distribuido.secret', '');
+    if ($app === '' || $secret === '') return $memoria = $vazio;
+
+    try { $pdo = $opcoes['pdo'] ?? modulo_distribuido_pdo(); } catch (\Throwable $e) { return $memoria = $vazio; }
+    // Mesmo tamanho dos demais identificadores da tabela (64); o `kind` separa do resto.
+    $id = hash('sha256', 'conta|' . $app);
+    $guardado = null;
+    try {
+        $stmt = $pdo->prepare('SELECT payload FROM distributed_exchanges WHERE id=? AND kind=?');
+        $stmt->execute([$id, 'conta']);
+        $guardado = json_decode((string)$stmt->fetchColumn(), true);
+    } catch (\Throwable $e) {
+        $guardado = null;
+    }
+    $atual = is_array($guardado) ? array_merge($vazio, $guardado) : $vazio;
+    if (empty($opcoes['forcar']) && $atual['conhecido'] && $atual['valido_ate'] > time()) return $memoria = $atual;
+
+    $config = modulo_distribuido_canal_distribuido([], ['slug' => MODULO_DISTRIBUIDO_SLUG_CONTA]);
+    if (isset($opcoes['transporte'])) $config['transporte'] = $opcoes['transporte'];
+    $config['timeout'] = 5;
+    $payload = ['modulo' => MODULO_DISTRIBUIDO_SLUG_CONTA, 'app_id' => $app, 'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))];
+    $resposta = modulo_distribuido_enviar($payload, array_merge($config, ['acao' => 'estado']));
+    $envelope = $resposta['data'] ?? [];
+    $corpo = isset($envelope['body']) ? base64_decode((string)$envelope['body'], true) : false;
+    $dados = $corpo === false ? false : modulo_distribuido_validar_envelope($corpo, $envelope['signature'] ?? '', $secret, MODULO_DISTRIBUIDO_SLUG_CONTA, $pdo);
+
+    if (is_array($dados) && in_array($dados['estado'] ?? null, MODULO_DISTRIBUIDO_ESTADOS, true)) {
+        $modulos = array_values(array_filter((array)($dados['modulos'] ?? []), 'is_string'));
+        $atual = [
+            'estado' => $dados['estado'],
+            'modulos' => $modulos,
+            'ativados' => array_values(array_unique(array_merge((array)$atual['ativados'], $modulos))),
+            'destino' => is_string($dados['destino'] ?? null) ? $dados['destino'] : null,
+            'atualizado_em' => time(),
+            'valido_ate' => time() + MODULO_DISTRIBUIDO_CONTA_TTL,
+            'conhecido' => true,
+        ];
+    } else {
+        // The central did not answer (or answered something unsigned): keep the last known state
+        // and try again in a minute, so a slow central does not slow every page down.
+        $atual['valido_ate'] = time() + 60;
+        if (!$atual['conhecido']) {
+            $env = (array)modulo_distribuido_config_get('modulo-distribuido.modules', []);
+            $atual['modulos'] = $atual['ativados'] = array_values($env);
+        }
+    }
+    try {
+        $stmt = $pdo->prepare('REPLACE INTO distributed_exchanges (id,kind,payload,expires_at,consumed) VALUES (?,?,?,?,1)');
+        // The sweep of expired exchanges must never take this row: it carries the activated modules.
+        $stmt->execute([$id, 'conta', json_encode($atual), time() + 315360000]);
+    } catch (\Throwable $e) {
+        error_log('MODULO-DISTRIBUIDO: account cache not written');
+    }
+    return $memoria = $atual;
+}
+
+/** req-216: account state of this installation (`ativo` where nothing says otherwise). */
+function modulo_distribuido_conta_estado() {
+    $conta = modulo_distribuido_conta_local();
+    return in_array($conta['estado'], MODULO_DISTRIBUIDO_ESTADOS, true) ? $conta['estado'] : 'ativo';
+}
+
+/** req-216: may this site take a new sale (order, subscription)? Not when the account is suspended or closed. */
+function modulo_distribuido_aceita_venda_nova() {
+    return !in_array(modulo_distribuido_conta_estado(), ['suspenso', 'encerrado'], true);
+}
+
 /** Middleware for the distributed overlay, before the local page/permission router. */
 function modulo_distribuido_proxy_rota() {
     global $_GESTOR;
-    $modulos = modulo_distribuido_config_get('modulo-distribuido.modules', []);
+    $modulos = modulo_distribuido_modulos_locais();
     $caminho = $_GESTOR['caminho'] ?? [];
     $slug = $caminho[0] ?? '';
     if ($slug === '_distributed' && ($caminho[1] ?? '') === 'callback') {
@@ -226,6 +380,13 @@ function modulo_distribuido_proxy_rota() {
         gestor_redirecionar($url, '', true);
     }
     if ($guarda['estado'] !== 'iframe') {
+        // req-216: without access (profile, unpaid or closed account) the user goes where the central
+        // says: the project's subscription screen, where plans, payment and cancellation live.
+        $destino = $guarda['resposta']['data']['destino'] ?? null;
+        if (is_string($destino) && preg_match('#^https?://#i', $destino)) {
+            header('Cache-Control: no-store');
+            gestor_redirecionar($destino, '', true);
+        }
         http_response_code(403);
         echo modulo_distribuido_shell('sem-permissao');
         exit;
@@ -426,9 +587,88 @@ function modulo_distribuido_modulo_iniciar($slug) {
     gestor_incluir_biblioteca('autenticacao');
     $permissao = modulo_distribuido_middleware_central($dados['token'], $slug);
     if (!$instalacao || $permissao['estado'] !== 'permitido' || $permissao['id_usuarios'] !== $dados['id_usuarios']) { http_response_code(403); exit; }
+    // req-216: a closed account leaves the panel for the subscription screen; a suspended one sees,
+    // but does not change.
+    $conta = modulo_distribuido_conta($dados['app_id']);
+    if ($conta['estado'] === 'encerrado') modulo_distribuido_sair_para($conta['destino']);
+    $somenteLeitura = $conta['estado'] === 'suspenso';
+    $_GESTOR['distributed-account'] = $conta;
+    if ($somenteLeitura && modulo_distribuido_pedido_de_escrita()) {
+        modulo_distribuido_recusar_escrita($conta);
+    }
     banco_distribuido_iniciar(['slug' => $slug, 'endpoint' => $instalacao['url'] . '/_api',
-        'secret' => $instalacao['secret'], 'tables' => $instalacao['tables'] ?? []]);
+        'secret' => $instalacao['secret'], 'tables' => $instalacao['tables'] ?? [], 'somente-leitura' => $somenteLeitura]);
     return true;
+}
+
+/**
+ * req-216: does this panel request change something? A form post or an option that writes through a
+ * link (delete, status, clone). AJAX posts are reads most of the time (lists, searches); the ones that
+ * write are refused by the channel itself.
+ */
+function modulo_distribuido_pedido_de_escrita() {
+    global $_GESTOR;
+    if (in_array((string)($_GESTOR['opcao'] ?? ''), ['excluir', 'status', 'clonar'], true)) return true;
+    return ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && empty($_GESTOR['ajax']);
+}
+
+/**
+ * req-216: an address outside the iframe context, written so that the panel's own rewriting of
+ * central addresses (which sends them through `/_distributed/run/<id>/`) does not reach it. The
+ * browser decodes `&#47;` back to `/`.
+ */
+function modulo_distribuido_href_externo($url) {
+    return str_replace('://', ':&#47;&#47;', htmlspecialchars((string)$url, ENT_QUOTES, 'UTF-8'));
+}
+
+/** req-216: answer a write while the panel is read-only, in the shape the request expects. */
+function modulo_distribuido_recusar_escrita(array $conta) {
+    global $_GESTOR;
+    $texto = $conta['mensagem'] !== '' ? $conta['mensagem'] : 'Painel em modo de visualização: regularize a assinatura para alterar.';
+    if (!empty($_GESTOR['ajax'])) {
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode(['status' => 'error', 'message' => $texto, 'read_only' => true], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    http_response_code(403);
+    header('Cache-Control: no-store');
+    $link = $conta['destino'] ? '<p><a href="' . modulo_distribuido_href_externo($conta['destino']) . '" target="_top">Minha assinatura</a></p>' : '';
+    echo '<!doctype html><meta charset="utf-8"><title>Somente visualização</title><body style="font-family:sans-serif;padding:2rem">'
+        . '<p>' . htmlspecialchars($texto, ENT_QUOTES, 'UTF-8') . '</p>' . $link . '<p><a href="javascript:history.back()">Voltar</a></p></body>';
+    exit;
+}
+
+/** req-216: leave the iframe for the given address (top window), or answer 403 without one. */
+function modulo_distribuido_sair_para($destino) {
+    global $_GESTOR;
+    header('Cache-Control: no-store');
+    if (!is_string($destino) || !preg_match('#^https?://#i', $destino)) { http_response_code(403); exit; }
+    if (!empty($_GESTOR['ajax'])) {
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode(['status' => 'error', 'redirect' => $destino], JSON_UNESCAPED_SLASHES);
+        exit;
+    }
+    // `json_encode` sem JSON_UNESCAPED_SLASHES escreve `\/`: a reescrita de endereços não o alcança.
+    echo '<!doctype html><meta charset="utf-8"><script>window.top.location.href=' . json_encode($destino, JSON_HEX_TAG) . ';</script>'
+        . '<a href="' . modulo_distribuido_href_externo($destino) . '" target="_top">Minha assinatura</a>';
+    exit;
+}
+
+/**
+ * req-216: notice at the top of the panel when the account is in grace or read-only. Called after the
+ * module ran, while the page is still in `$_GESTOR['pagina']`.
+ */
+function modulo_distribuido_aviso_conta() {
+    global $_GESTOR;
+    $conta = $_GESTOR['distributed-account'] ?? null;
+    if (!is_array($conta) || !in_array($conta['estado'], ['carencia', 'suspenso'], true) || !empty($_GESTOR['ajax'])) return;
+    $texto = $conta['mensagem'] !== '' ? $conta['mensagem']
+        : ($conta['estado'] === 'suspenso' ? 'Assinatura suspensa: o painel está em modo de visualização.' : 'Há um pagamento pendente na sua assinatura.');
+    $link = $conta['destino'] ? ' <a href="' . modulo_distribuido_href_externo($conta['destino']) . '" target="_top" style="color:inherit;font-weight:600;text-decoration:underline">Minha assinatura</a>' : '';
+    $aviso = '<div data-c2f-conta="' . $conta['estado'] . '" role="status" style="position:sticky;top:0;z-index:9999;padding:.6rem 1rem;background:'
+        . ($conta['estado'] === 'suspenso' ? '#fef3c7;color:#78350f' : '#e0f2fe;color:#0c4a6e') . ';font:14px/1.4 sans-serif">'
+        . htmlspecialchars($texto, ENT_QUOTES, 'UTF-8') . $link . '</div>';
+    $_GESTOR['pagina'] = $aviso . (string)($_GESTOR['pagina'] ?? '');
 }
 
 /**
@@ -452,9 +692,11 @@ function modulo_distribuido_execucao_ativa($modulo, $plugin = null): bool {
     $arquivo = $raiz . $modulo . '/' . $modulo . '.json';
     $manifesto = is_file($arquivo) ? json_decode((string)file_get_contents($arquivo), true) : null;
     if (!is_array($manifesto) || ($manifesto['scope'] ?? '') !== 'distributed-execution') return $cache[$chave] = true;
-    $contratados = (array)modulo_distribuido_config_get('modulo-distribuido.modules', []);
+    // req-216: active when the module (or one of `active_with`) is in the owner's plan, or has been.
+    $conta = modulo_distribuido_conta_local();
+    $habilitados = array_merge((array)$conta['modulos'], (array)$conta['ativados'], (array)modulo_distribuido_config_get('modulo-distribuido.modules', []));
     $chaves = array_merge([$modulo], array_filter((array)($manifesto['active_with'] ?? []), 'is_string'));
-    return $cache[$chave] = (bool)array_intersect($chaves, $contratados);
+    return $cache[$chave] = (bool)array_intersect($chaves, $habilitados);
 }
 
 /**
@@ -471,10 +713,14 @@ function modulo_distribuido_execucao_ativa($modulo, $plugin = null): bool {
  * @return array|null null outside a distributed context (the caller keeps its local behaviour);
  *                    ['ok' => true, 'retorno' => mixed] or ['ok' => false, 'erro' => string].
  */
-function modulo_distribuido_rotina($nome, array $args = []) {
+function modulo_distribuido_rotina($nome, array $args = [], array $opcoes = []) {
     global $_BANCO, $_GESTOR;
     if (!function_exists('banco_distribuido_ativo') || !banco_distribuido_ativo()) return null;
     $config = $_BANCO['distribuido'];
+    // req-216: a read-only panel (account suspended) may only ask for routines that read.
+    if (!empty($config['somente-leitura']) && empty($opcoes['leitura'])) {
+        return ['ok' => false, 'erro' => 'read-only'];
+    }
     $usuario = function_exists('gestor_usuario') ? gestor_usuario() : null;
     $payload = [
         'versao' => 1,

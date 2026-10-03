@@ -56,6 +56,16 @@ function api_module_central_handle(array $rota) {
 	}
 
 	switch ($acao) {
+		case 'estado':
+			// req-216: account state and the plan's modules, signed for the customer's site.
+			if (!$instalacao || $slug !== MODULO_DISTRIBUIDO_SLUG_CONTA) api_response_error('distributed-installation-invalid', 403);
+			$conta = modulo_distribuido_conta($payload['app_id']);
+			$catalogo = modulo_distribuido_catalogo_local()['modules'];
+			$dados = ['estado' => $conta['estado'], 'modulos' => $conta['modulos'] ?? $catalogo, 'destino' => $conta['destino'],
+				'modulo' => $slug, 'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))];
+			$body = json_encode($dados, JSON_UNESCAPED_SLASHES);
+			api_response_success(['body' => base64_encode($body), 'signature' => modulo_distribuido_assinar($body, $secret)]);
+			break;
 		case 'exchange':
 			if (!$instalacao) api_response_error('distributed-installation-invalid', 403);
 			$registro = modulo_distribuido_registro_consumir($payload['code'] ?? '', 'login', $secret);
@@ -126,6 +136,13 @@ function api_module_central_permissao(array $payload, $slug = '') {
 
 	// A autoridade de decisão é o middleware central (avalia token + permissão).
 	$resultado = modulo_distribuido_middleware_central($token, $modulo_alvo);
+
+	// req-216: conta encerrada fecha o painel; sem permissão ou encerrada, o usuário vai para a tela de
+	// assinatura do projeto (o destino vem do provedor da conta).
+	$conta = modulo_distribuido_conta($payload['app_id'] ?? '');
+	if ($resultado['estado'] === 'permitido' && $conta['estado'] === 'encerrado') $resultado['estado'] = 'sem-permissao';
+	if ($resultado['estado'] === 'sem-permissao' && $conta['destino']) $resultado['destino'] = $conta['destino'];
+	$resultado['conta'] = $conta['estado'];
 
 	$mensagens = [
 		'permitido'       => 'Acesso autorizado',
