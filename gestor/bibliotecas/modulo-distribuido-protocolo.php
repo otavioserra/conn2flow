@@ -481,6 +481,9 @@ function modulo_distribuido_sql_autorizada($sql, array $tabelas) {
 }
 
 /** Route names in the prefix isolate concurrent browser tabs without changing modules. */
+/** Static folders served outside the PHP tree; under the iframe prefix they go back to their own address. */
+const MODULO_DISTRIBUIDO_PASTAS_ESTATICAS = ['vendor', 'favicon', 'images'];
+
 function modulo_distribuido_prefixo_normalizar() {
     global $_GESTOR;
     $caminho = $_GESTOR['caminho'] ?? [];
@@ -494,12 +497,21 @@ function modulo_distribuido_prefixo_normalizar() {
     $barra = substr($_GESTOR['caminho-total'] ?? '', -1) === '/' ? '/' : '';
     $_GESTOR['caminho-total'] = implode('/', $_GESTOR['caminho']) . $barra;
     // Public vendor assets may be served by the web server outside the PHP tree.
-    // Keep their canonical origin so relative font URLs reach the same handler.
-    if (($_GESTOR['caminho'][0] ?? '') === 'vendor'
+    // Keep their canonical origin so relative font URLs reach the same handler. req-218: the same for the
+    // static images the layouts point to with `url-raiz` (the portal logo under `favicon/`, `images/`).
+    if (in_array($_GESTOR['caminho'][0] ?? '', MODULO_DISTRIBUIDO_PASTAS_ESTATICAS, true)
         && !in_array('..', $_GESTOR['caminho'], true)
         && in_array(strtolower(pathinfo($_GESTOR['caminho-total'], PATHINFO_EXTENSION)),
             ['css', 'js', 'woff', 'woff2', 'ttf', 'eot', 'svg', 'png', 'jpg', 'jpeg', 'gif', 'webp'], true)) {
-        header('Location: ' . rtrim($_GESTOR['url-raiz'], '/') . '/' . implode('/', array_map('rawurlencode', $_GESTOR['caminho'])));
+        // The router lowercases `caminho`; the file name keeps its case in the original address.
+        $original = (string)parse_url((string)($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
+        $prefixo = '/_distributed/run/' . $id . '/';
+        $destino = strpos($original, $prefixo) !== false ? str_replace($prefixo, '/', $original) : '';
+        // Never another host: one leading slash, no scheme.
+        if ($destino === '' || $destino[0] !== '/' || strpos($destino, '//') === 0 || strpos($destino, '\\') !== false) {
+            $destino = rtrim($_GESTOR['url-raiz'], '/') . '/' . implode('/', array_map('rawurlencode', $_GESTOR['caminho']));
+        }
+        header('Location: ' . $destino);
         exit;
     }
     foreach (['url-raiz', 'url-full', 'url-full-http'] as $chave) {
