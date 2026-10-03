@@ -474,3 +474,10 @@ Ao transformar os três modais de sistema injetados em runtime (`interface-alert
 - Decisão: cópia de execução (`scope: distributed-execution`) só age quando o módulo (ou um de `active_with`) está contratado no `.env` da instalação.
 - Consequência: regra de negócio de cada efeito fica no projeto (no `conn2flow-site`, a biblioteca `site-local`); o core só transporta e confere.
 
+## DEC-130 - 2026-10-03 - accepted
+
+- Contexto: req-216 (parte do core da REQ-097 do `conn2flow-site`). O Engenheiro Chefe definiu que o acesso aos módulos distribuídos vem do perfil do usuário no Central, sem lista por cliente, e que a inadimplência tem quatro estados.
+- Decisão: o cliente lê o catálogo do próprio pacote (`project/distributed-modules.json`); a lista do `.env` fica opcional.
+- Decisão: o canal ganha a ação `estado`. O projeto fornece o estado (`account-provider`); o core transporta, assina, guarda no cliente e aplica: carência com aviso, suspenso só de visualização (garantido no canal), encerrado fora do painel.
+- Decisão: módulo que já executou no cliente continua executando, para não derrubar pós-venda.
+- Consequência: a regra de cobrança fica no projeto; o core não conhece assinatura nem plano.

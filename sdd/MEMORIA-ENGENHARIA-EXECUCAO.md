@@ -243,3 +243,9 @@ BATCH-155 a BATCH-167 (2026-09-02 e 2026-09-03: SSH e bootstrap do CLI, checksum
 - **`modulo_distribuido_execucao_ativa($modulo)`** é a trava de contratação usada no roteador, widgets, ganchos, cron e gateways; cópia com `panel: false` não é interceptada pelo proxy.
 - **Parâmetros do endereço seguem ao iframe** por `modulo_distribuido_consulta_canonica()` nas duas pontas (campo `query` do ticket).
 - **`modulo_distribuido_http_post` devolve false para resposta não 2xx**: recusa do cliente chega ao Central como falha de transporte.
+
+### req-216 / BATCH-224 — catálogo local e estado da conta (2026-10-03)
+
+- **Catálogo local**: sem `MODULO_DISTRIBUIDO_MODULES`/`TABLES` no `.env`, valem os de `project/distributed-modules.json`. Sem `app-id` a lista é vazia (senão o Central proxia os próprios módulos e o iframe mostra só a moldura).
+- **Estado da conta**: `$_CONFIG['modulo-distribuido']['account-provider']`; no cliente, cache em `distributed_exchanges` com id `hash('sha256','conta|'.$app)` (a coluna `id` tem 64 caracteres: prefixo estoura e a linha não grava). Teste: `ModuloDistribuidoContaReq216Test`.
+- **Suspenso**: `banco_distribuido_iniciar([... 'somente-leitura' => true])` e `modulo_distribuido_rotina(..., ['leitura' => true])`; link externo dentro do HTML do painel com `:&#47;&#47;` (`modulo_distribuido_href_externo()`) para o reescritor do proxy não prefixar.

@@ -1,7 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-216.md](req-216.md) (BATCH-224 `in-progress`, 2026-10-03): módulos distribuídos — catálogo local no cliente, estado da conta pelo canal e painel só de visualização (parte do core da REQ-097 do site).
+  - [req-216.md](req-216.md) (BATCH-224 `in-review`, 2026-10-03): módulos distribuídos — catálogo local no cliente, estado da conta pelo canal e painel só de visualização (parte do core da REQ-097 do site).
   - [req-215.md](req-215.md) (BATCH-223 `in-review`, 2026-10-03): módulos distribuídos — rotina local pedida pelo Central pelo canal assinado, cópia de execução só quando contratada, parâmetros do endereço no iframe (parte do core da REQ-096 do site).
   - [req-214.md](req-214.md) (BATCH-222 `in-review`, 2026-10-02): menus laterais do painel com o módulo atual marcado e no meio, nos dois layouts; decisão de cookies lida no servidor (`cookie_consent_permitido`); apoio à execução dos módulos no cliente (contexto distribuído e gancho `db.escrita`).
   - [req-213.md](req-213.md) (BATCH-221 `in-review`, 2026-10-02): melhorias dos módulos distribuídos (REQ-094 do site): sandbox do iframe, provedor de instalações, conexão reaproveitada, sobras do login antigo removidas, `project:verify` no pipeline; corrigido o login distribuído com segundo fator.
@@ -11,7 +11,7 @@
   - [req-209.md](req-209.md) (BATCH-217 `in-review`, 2026-10-02): prévia de widgets no editor (CSS, controlador, marcador com mockup), toque na galeria, ícones e `docs:build` com layout por idioma.
   - [req-208.md](req-208.md) (BATCH-216 `in-review`, 2026-10-02): módulo `cookie-consent` (aviso e preferências de cookies), com CRUD, modelos, modo de IA, widget e controlador público.
   - [req-207.md](req-207.md) (BATCH-215 `in-review`, 2026-10-02): docs — referência de funções das bibliotecas em cartões com filtro e índice; docs de atualização, recursos e deploy atualizadas com a req-206; README com o Dev Tools.
-  - [req-206.md](req-206.md) (BATCH-214 `complete`, 2026-10-01, homologação humana pendente): correções do deploy de projeto depois da req-202/203 — `insert_only` em chave natural (admin sobrescrito pela semente) e compilador em modo projeto usando só as sementes do projeto.
+  - [req-206.md](archive/req-206.md) (BATCH-214 `complete`, 2026-10-01, homologação humana pendente): correções do deploy de projeto depois da req-202/203 — `insert_only` em chave natural (admin sobrescrito pela semente) e compilador em modo projeto usando só as sementes do projeto.
   - [req-203.md](archive/req-203.md) (BATCH-211 `complete`, 2026-10-01): Segregação de Recursos Globais vs Multilíngues — seeds na raiz, contrato `language_agnostic`, compilador validado em diretório temporário com dados reais e duplicatas por idioma removidas.
   - [req-202.md](archive/req-202.md) (BATCH-210 `complete`, 2026-10-01): Autoria 100% em resources (fim dos 8 arquivos estáticos em `gestor/db/data/`), contrato declarativo em `tables_config.json`, compilação determinística e suporte a compilação granular/seletiva (`--only`, `--skip-css`, `--resource`) com otimização de cache Tailwind.
   - [req-204.md](archive/req-204.md) (BATCH-212 `in-review`, 2026-10-01, revisão humana pendente): parte do core da REQ-085 do `conn2flow-site` — mapa de layout indexado por perfil (o mesmo layout para vários perfis), página compilada com todos os layouts mapeados, editor HTML com preview por layout e captura cumulativa, popup da página inicial e `action=version` na API de sistema.

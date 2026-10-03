@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-224 — Módulos distribuídos: catálogo local e estado da conta (req-216)
+
+- [x] CA-1: cliente sem lista no `.env` usa o catálogo do pacote; Central sem `app-id` não proxia os próprios módulos.
+- [x] CA-2: estado vindo do provedor do projeto, assinado, guardado no cliente; Central fora do ar mantém o último.
+- [x] CA-3: conta suspensa: canal recusa escrita e rotina que não é de leitura; formulário recebe "somente visualização".
+- [x] CA-4: conta encerrada e perfil sem o módulo saem para o destino do projeto.
+- [x] CA-5: testes de unidade; suíte sem regressão; E2E do site 18/18.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-224](../implementation/BATCH-224.md).
+
 ## BATCH-223 — Módulos distribuídos: rotina local pedida pelo Central (req-215)
 
 - [x] CA-1: rotina declarada roda no cliente e o retorno chega ao Central; não declarada, de outro módulo, de módulo sem cópia, assinatura inválida e repetição recusadas.
@@ -110,7 +121,7 @@ Detalhes: [BATCH-215](../implementation/BATCH-215.md).
 - [x] Lab: `project:update-all` sem alteração em módulos, permissões e usuários; `--tables usuarios --force-all` registra `SKIP_UPDATE_INSERT_ONLY`.
 - [ ] Homologação humana.
 
-Detalhes: [BATCH-214](../implementation/BATCH-214.md).
+Detalhes: [BATCH-214](../implementation/archive/BATCH-214.md).
 
 ## BATCH-211 — Segregação de recursos globais vs multilíngues (req-203)
 
