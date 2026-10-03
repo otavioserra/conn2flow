@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-219.md](req-219.md) (BATCH-227 `in-progress`, 2026-10-03): painel em Tailwind — biblioteca de controles (select, chave, abas, diálogos, avisos, ponte para a API do Fomantic) e migração do `admin-paginas` com o editor HTML; promove BL-012 e BL-026.
   - [req-218.md](req-218.md) (BATCH-226 `in-review`, 2026-10-03): módulos distribuídos — imagens estáticas do layout (logo do portal) dentro do prefixo do painel voltam ao próprio endereço.
   - [req-217.md](req-217.md) (BATCH-225 `in-review`, 2026-10-03): módulos distribuídos — confirmação de origem (retorno ao endereço cadastrado) e chave de sessão de 15 minutos no canal.
   - [req-216.md](req-216.md) (BATCH-224 `in-review`, 2026-10-03): módulos distribuídos — catálogo local no cliente, estado da conta pelo canal e painel só de visualização (parte do core da REQ-097 do site).
