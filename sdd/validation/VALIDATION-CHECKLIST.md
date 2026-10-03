@@ -1,5 +1,15 @@
 # Validation Checklist
 
+## BATCH-225 — Módulos distribuídos: confirmação de origem e chave de sessão (req-217)
+
+- [x] CA-1: com o segredo, mas fora do endereço cadastrado, nenhuma sessão abre nas duas direções (unidade e Lab, 6/6).
+- [x] CA-2: requisição sem sessão, com sessão vencida, forjada, de outra instalação ou assinada com o segredo é recusada.
+- [x] CA-3: roteiros dos módulos distribuídos no Lab passam com a confirmação ligada (req092, req094 a req098).
+- [x] CA-4: `confirmacao-origem` desligada volta ao canal anterior.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-225](../implementation/BATCH-225.md).
+
 ## BATCH-224 — Módulos distribuídos: catálogo local e estado da conta (req-216)
 
 - [x] CA-1: cliente sem lista no `.env` usa o catálogo do pacote; Central sem `app-id` não proxia os próprios módulos.
@@ -110,7 +120,7 @@ Detalhes: [BATCH-216](../implementation/BATCH-216.md).
 - [x] Lab: biblioteca `banco` nos dois idiomas, a 1280 e 390 px (14/14).
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-215](../implementation/BATCH-215.md).
+Detalhes: [BATCH-215](../implementation/archive/BATCH-215.md).
 
 ## BATCH-214 — Deploy de projeto depois da req-202/203 (req-206)
 

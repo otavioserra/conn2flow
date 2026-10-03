@@ -1,6 +1,6 @@
 # BATCH-215: docs — referência de funções em cartões (req-207)
 
-Execução da [req-207](../human-requests/req-207.md).
+Execução da [req-207](../../human-requests/archive/req-207.md).
 
 **Status**: `in-review` (validado no Lab com o `conn2flow-site-local`; revisão humana pendente).
 

@@ -249,3 +249,11 @@ BATCH-155 a BATCH-167 (2026-09-02 e 2026-09-03: SSH e bootstrap do CLI, checksum
 - **Catálogo local**: sem `MODULO_DISTRIBUIDO_MODULES`/`TABLES` no `.env`, valem os de `project/distributed-modules.json`. Sem `app-id` a lista é vazia (senão o Central proxia os próprios módulos e o iframe mostra só a moldura).
 - **Estado da conta**: `$_CONFIG['modulo-distribuido']['account-provider']`; no cliente, cache em `distributed_exchanges` com id `hash('sha256','conta|'.$app)` (a coluna `id` tem 64 caracteres: prefixo estoura e a linha não grava). Teste: `ModuloDistribuidoContaReq216Test`.
 - **Suspenso**: `banco_distribuido_iniciar([... 'somente-leitura' => true])` e `modulo_distribuido_rotina(..., ['leitura' => true])`; link externo dentro do HTML do painel com `:&#47;&#47;` (`modulo_distribuido_href_externo()`) para o reescritor do proxy não prefixar.
+
+### req-217 / BATCH-225 — confirmação de origem e chave de sessão (2026-10-03)
+
+- **Todo envio passa por `modulo_distribuido_enviar`**: com `confirmacao-origem` ligada (padrão do `config.php`), ele obtém a sessão (`modulo_distribuido_sessao_saida`, memória por conexão em `WeakMap` + linha `sessao-saida`) e assina com a chave dela. Configuração de canal precisa de `peer` (o `app_id` no Central; `central` no cliente).
+- **Receptor**: `modulo_distribuido_receber()`; `abrir`/`confirmar` vão ao lado Central quando a instalação não tem `app-id` (roteamento em `api.php`).
+- **Retomada**: 401 (`http_post` guarda o status em `$GLOBALS['_MODULO_DISTRIBUIDO_HTTP_STATUS']`) reabre a sessão e repete uma vez; o 401 vem antes de executar qualquer coisa.
+- **Precisa de dois workers PHP**: `abrir` espera o `confirmar` do outro lado chegar ao próprio servidor. Servidor PHP embutido (um processo) trava.
+- Teste: `ModuloDistribuidoOrigemReq217Test` (duas pontas em SQLite e um atacante).

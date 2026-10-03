@@ -481,3 +481,10 @@ Ao transformar os três modais de sistema injetados em runtime (`interface-alert
 - Decisão: o canal ganha a ação `estado`. O projeto fornece o estado (`account-provider`); o core transporta, assina, guarda no cliente e aplica: carência com aviso, suspenso só de visualização (garantido no canal), encerrado fora do painel.
 - Decisão: módulo que já executou no cliente continua executando, para não derrubar pós-venda.
 - Consequência: a regra de cobrança fica no projeto; o core não conhece assinatura nem plano.
+
+## DEC-131 - 2026-10-03 - accepted
+
+- Contexto: req-217, pedido do Engenheiro Chefe: mesmo com a chave do canal vazada, o host precisa ser identificado.
+- Decisão: o segredo da instalação só abre sessão (`abrir`). Quem recebe confirma a origem ligando para o endereço que ele tem cadastrado (`confirmar`) e só então entrega uma chave de sessão aleatória de 15 minutos; requisições comuns são assinadas com ela (`X-C2F-Session`).
+- Decisão: o endereço de retorno nunca vem da requisição: `central-url` no cliente, `url` do cadastro no Central.
+- Consequência: Central e sites precisam ser publicados juntos; `MODULO_DISTRIBUIDO_ORIGIN_CHECK=false` volta ao canal anterior durante a transição. Próximo passo proposto: chaves assimétricas (Ed25519).

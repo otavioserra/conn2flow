@@ -53,7 +53,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-212 | in-review | Layout por perfil 1:N, compilação e editor multi-layout, popup da página inicial e versão pela API (req-204) | [BATCH-212.md](archive/BATCH-212.md) | Parte do core da REQ-085 do conn2flow-site; worktree `conn2flow-req203`, branch `feat/req-204`; validado no Lab. |
 | BATCH-213 | in-review | README (en e pt-br) e descrição do GitHub: plataforma PHP e AMS (req-205) | [BATCH-213.md](archive/BATCH-213.md) | Worktree `conn2flow-readme`, branch `feat/req-205`; sem alteração de código. |
 | BATCH-214 | complete | Deploy de projeto depois da req-202/203: `insert_only` em chave natural e sementes do projeto (req-206) | [BATCH-214.md](archive/BATCH-214.md) | Admin do Lab era sobrescrito pela semente; módulos e permissões do projeto eram retirados. Validado no Lab com consulta antes e depois. |
-| BATCH-215 | in-review | Docs: referência de funções em cartões com filtro e índice; docs atualizadas com a req-206 (req-207) | [BATCH-215.md](BATCH-215.md) | `FunctionReferenceHtml` no `docs:build`; Markdown das docs inalterado. Validado no Lab (14/14). |
+| BATCH-215 | in-review | Docs: referência de funções em cartões com filtro e índice; docs atualizadas com a req-206 (req-207) | [BATCH-215.md](archive/BATCH-215.md) | `FunctionReferenceHtml` no `docs:build`; Markdown das docs inalterado. Validado no Lab (14/14). |
 | BATCH-216 | in-review | Módulo `cookie-consent`: CRUD, modelos, modo de IA, widget e controlador público (req-208) | [BATCH-216.md](BATCH-216.md) | CRUD declarativo; aviso com CSS próprio. Validado no Lab. |
 | BATCH-217 | in-review | Prévia de widgets no editor, toque na galeria e ícones (req-209) | [BATCH-217.md](BATCH-217.md) | CSS e controlador do widget na prévia; toque nos dois tipos de trilho. Validado no Lab. |
 | BATCH-218 | in-review | Tela de atualização no deploy, prévia de widgets completa e retirada do módulo de apresentações (req-210) | [BATCH-218.md](BATCH-218.md) | Manutenção por arquivo com validade; `rsync --chown`; nenhum 500 no deploy do Lab. |
@@ -63,6 +63,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-222 | in-review | Menus do painel com o módulo atual à vista; consentimento de cookies no servidor; apoio à execução no cliente (req-214) | [BATCH-222.md](BATCH-222.md) | 61/61 nos dois layouts; `cookie_consent_permitido`; gancho `db.escrita`. |
 | BATCH-223 | in-review | Módulos distribuídos: rotina local pedida pelo Central, cópia de execução só quando contratada, parâmetros do endereço no iframe (req-215) | [BATCH-223.md](BATCH-223.md) | 16 testes novos; suíte 1.449 (1 falha anterior); E2E da REQ-096 do site 54/54 e 37/37. |
 | BATCH-224 | in-review | Módulos distribuídos: catálogo local, estado da conta pelo canal e painel só de visualização (req-216; REQ-097 do site) | [BATCH-224.md](BATCH-224.md) | 9 testes novos; suíte 1.458 (1 falha anterior); E2E dos estados no site 18/18. |
+| BATCH-225 | in-review | Módulos distribuídos: confirmação de origem e chave de sessão no canal (req-217; REQ-098 do site) | [BATCH-225.md](BATCH-225.md) | 8 testes novos; suíte 1.466 (1 falha anterior); ataque com o segredo roubado no Lab 6/6 recusado. |
 
 ## Regra operacional
 
