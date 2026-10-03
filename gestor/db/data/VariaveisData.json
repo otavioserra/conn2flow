@@ -1116,6 +1116,96 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-ok",
+        "valor": "OK",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-cancelar",
+        "valor": "Cancelar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-buscar",
+        "valor": "Buscar…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-sem-resultado",
+        "valor": "Nenhum resultado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-carregando",
+        "valor": "Carregando…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-fechar",
+        "valor": "Fechar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-selecione",
+        "valor": "Selecione…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-confirmar",
+        "valor": "Confirmar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-remover",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "controles-atencao",
+        "valor": "Atenção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -2227,6 +2317,96 @@
         "modulo": null,
         "id": "c2f-md-unavailable",
         "valor": "The service is temporarily unavailable. Please try again shortly.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-ok",
+        "valor": "OK",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-cancelar",
+        "valor": "Cancel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-buscar",
+        "valor": "Search…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-sem-resultado",
+        "valor": "No results",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-carregando",
+        "valor": "Loading…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-fechar",
+        "valor": "Close",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-selecione",
+        "valor": "Select…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-confirmar",
+        "valor": "Confirm",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-remover",
+        "valor": "Remove",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "controles-atencao",
+        "valor": "Attention",
         "tipo": "string",
         "grupo": null,
         "descricao": null
