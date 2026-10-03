@@ -1,6 +1,6 @@
 # BATCH-216: módulo `cookie-consent` (req-208)
 
-Execução da [req-208](../human-requests/req-208.md).
+Execução da [req-208](../../human-requests/archive/req-208.md).
 
 **Status**: `in-review` (validado no Lab; revisão humana pendente).
 
@@ -39,4 +39,4 @@ Execução da [req-208](../human-requests/req-208.md).
 
 ## Nota
 
-Este lote criou também um módulo de apresentações em slides, que não é do core e foi retirado na [req-210](../human-requests/req-210.md). A migração original criava as duas tabelas; a atual (`20261002110001`) cria só a `cookie_consent`.
+Este lote criou também um módulo de apresentações em slides, que não é do core e foi retirado na [req-210](../../human-requests/req-210.md). A migração original criava as duas tabelas; a atual (`20261002110001`) cria só a `cookie_consent`.

@@ -257,3 +257,7 @@ BATCH-155 a BATCH-167 (2026-09-02 e 2026-09-03: SSH e bootstrap do CLI, checksum
 - **Retomada**: 401 (`http_post` guarda o status em `$GLOBALS['_MODULO_DISTRIBUIDO_HTTP_STATUS']`) reabre a sessão e repete uma vez; o 401 vem antes de executar qualquer coisa.
 - **Precisa de dois workers PHP**: `abrir` espera o `confirmar` do outro lado chegar ao próprio servidor. Servidor PHP embutido (um processo) trava.
 - Teste: `ModuloDistribuidoOrigemReq217Test` (duas pontas em SQLite e um atacante).
+
+### req-218 / BATCH-226 — imagens do layout no painel distribuído (2026-10-03)
+
+- **O roteador passa `caminho` para minúsculas**: para montar um endereço com o nome original do arquivo, use `$_SERVER['REQUEST_URI']`. Redirecionamento das pastas estáticas (`MODULO_DISTRIBUIDO_PASTAS_ESTATICAS`) usa o endereço original sem o prefixo e cai no `caminho` se o destino não for do mesmo host.

@@ -1,5 +1,13 @@
 # Validation Checklist
 
+## BATCH-226 — Módulos distribuídos: imagens do layout dentro do painel (req-218)
+
+- [x] CA-1: a logo do portal carrega dentro do painel distribuído (302 → 200; nenhum 404 em `favicon/` no roteiro da REQ-099 do site).
+- [x] CA-2: rota de módulo dentro do prefixo mantém o prefixo; destino sempre do mesmo host; 3 testes.
+- [ ] Revisão humana.
+
+Detalhes: [BATCH-226](../implementation/BATCH-226.md).
+
 ## BATCH-225 — Módulos distribuídos: confirmação de origem e chave de sessão (req-217)
 
 - [x] CA-1: com o segredo, mas fora do endereço cadastrado, nenhuma sessão abre nas duas direções (unidade e Lab, 6/6).
@@ -110,7 +118,7 @@ Detalhes: [BATCH-217](../implementation/BATCH-217.md).
 - [ ] Gravação pelo formulário do painel exercitada no navegador.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-216](../implementation/BATCH-216.md).
+Detalhes: [BATCH-216](../implementation/archive/BATCH-216.md).
 
 ## BATCH-215 — Docs: referência de funções em cartões (req-207)
 

@@ -1,7 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-218.md](req-218.md) (BATCH-226 `in-progress`, 2026-10-03): módulos distribuídos — imagens estáticas do layout (logo do portal) dentro do prefixo do painel voltam ao próprio endereço.
+  - [req-218.md](req-218.md) (BATCH-226 `in-review`, 2026-10-03): módulos distribuídos — imagens estáticas do layout (logo do portal) dentro do prefixo do painel voltam ao próprio endereço.
   - [req-217.md](req-217.md) (BATCH-225 `in-review`, 2026-10-03): módulos distribuídos — confirmação de origem (retorno ao endereço cadastrado) e chave de sessão de 15 minutos no canal.
   - [req-216.md](req-216.md) (BATCH-224 `in-review`, 2026-10-03): módulos distribuídos — catálogo local no cliente, estado da conta pelo canal e painel só de visualização (parte do core da REQ-097 do site).
   - [req-215.md](req-215.md) (BATCH-223 `in-review`, 2026-10-03): módulos distribuídos — rotina local pedida pelo Central pelo canal assinado, cópia de execução só quando contratada, parâmetros do endereço no iframe (parte do core da REQ-096 do site).
@@ -11,7 +11,7 @@
   - [req-211.md](req-211.md) (BATCH-219 `in-review`, 2026-10-02): infraestrutura comum para módulos distribuídos (parte do core da REQ-092 do site): login oficial com gancho, ponte de banco por tabela, canal assinado; allowlist de tabelas corrigida na revisão.
   - [req-210.md](req-210.md) (BATCH-218 `in-review`, 2026-10-02): tela de atualização durante o deploy (manutenção), `rsync --chown`, prévia de widgets completa no editor e retirada do módulo de apresentações do core.
   - [req-209.md](req-209.md) (BATCH-217 `in-review`, 2026-10-02): prévia de widgets no editor (CSS, controlador, marcador com mockup), toque na galeria, ícones e `docs:build` com layout por idioma.
-  - [req-208.md](req-208.md) (BATCH-216 `in-review`, 2026-10-02): módulo `cookie-consent` (aviso e preferências de cookies), com CRUD, modelos, modo de IA, widget e controlador público.
+  - [req-208.md](archive/req-208.md) (BATCH-216 `in-review`, 2026-10-02): módulo `cookie-consent` (aviso e preferências de cookies), com CRUD, modelos, modo de IA, widget e controlador público.
   - [req-207.md](archive/req-207.md) (BATCH-215 `in-review`, 2026-10-02): docs — referência de funções das bibliotecas em cartões com filtro e índice; docs de atualização, recursos e deploy atualizadas com a req-206; README com o Dev Tools.
   - [req-206.md](archive/req-206.md) (BATCH-214 `complete`, 2026-10-01, homologação humana pendente): correções do deploy de projeto depois da req-202/203 — `insert_only` em chave natural (admin sobrescrito pela semente) e compilador em modo projeto usando só as sementes do projeto.
   - [req-203.md](archive/req-203.md) (BATCH-211 `complete`, 2026-10-01): Segregação de Recursos Globais vs Multilíngues — seeds na raiz, contrato `language_agnostic`, compilador validado em diretório temporário com dados reais e duplicatas por idioma removidas.
