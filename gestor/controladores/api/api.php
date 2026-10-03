@@ -1519,7 +1519,7 @@ function api_handle_modulo($modulo_id, $action) {
  * Despacha as requisições do canal de módulos distribuídos.
  *
  * Rota: api[/v1]/modulo-distribuido/{slug}/{acao}. A ação determina o lado:
- *  - 'db' / 'ping'          => lado DISTRIBUÍDO (executa a operação no banco local).
+ *  - 'db' / 'ping' / 'rotina' => lado DISTRIBUÍDO (executa no banco local; 'rotina' roda uma rotina local do módulo).
  *  - 'exchange' / 'refresh' / 'iframe-ticket' / 'permissao' => lado CENTRAL (troca do código de login, renovação, ticket do iframe, permissão).
  *
  * A autenticação do canal é feita por assinatura HMAC (verificada em cada handler),
@@ -1546,7 +1546,7 @@ function api_handle_modulo_distribuido() {
         return;
     }
 
-    // Demais ações (db, ping) são atendidas pelo lado distribuído (executa no banco local).
+    // Demais ações (db, ping, rotina) são atendidas pelo lado distribuído (executa no banco local).
     require_once $_GESTOR['ROOT_PATH'] . 'controladores/api/api-module-distributed.php';
     api_module_distributed_handle($rota);
 }

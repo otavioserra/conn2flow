@@ -164,6 +164,16 @@ function cron_callback_preparar($tarefa){
 function cron_tarefa_executar($tarefa){
 	$inicio = microtime(true);
 
+	// req-215: tarefa de cópia de execução de módulo que esta instalação não contratou não roda, e
+	// isso não é erro: todo host distribuído recebe as tarefas de todos os módulos.
+	$moduloTarefa = isset($tarefa['modulo']) ? trim((string)$tarefa['modulo']) : '';
+	if($moduloTarefa !== ''){
+		if(!function_exists('modulo_distribuido_execucao_ativa') && function_exists('gestor_incluir_biblioteca')) gestor_incluir_biblioteca('modulo-distribuido');
+		if(function_exists('modulo_distribuido_execucao_ativa') && !modulo_distribuido_execucao_ativa($moduloTarefa)){
+			return Array('status' => 'aviso', 'duracao' => 0, 'log' => 'Modulo nao contratado nesta instalacao: '.$moduloTarefa);
+		}
+	}
+
 	$erro = cron_callback_preparar($tarefa);
 	if($erro !== null){
 		return Array('status' => 'erro', 'duracao' => (int)round((microtime(true)-$inicio)*1000), 'log' => $erro);

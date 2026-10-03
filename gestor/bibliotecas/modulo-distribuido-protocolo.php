@@ -165,6 +165,27 @@ function modulo_distribuido_login_sucesso($id_usuarios) {
         'code' => $codigo, 'state' => $dados['state'], 'modulo' => $dados['modulo']]), '', true);
 }
 
+/**
+ * req-215: query string of a panel address at the customer's site, in canonical form, or ''.
+ *
+ * A deep link into a panel (`orders/details/?id=...`) and the return of an authorization at a third
+ * party (`.../callback/?code=...&state=...`) arrive at the customer's site and continue inside the
+ * iframe. Only plain `GET` parameters travel: the router's own parameter and anything that is not a
+ * scalar are left out, and the result is rebuilt, never copied from the raw request.
+ */
+function modulo_distribuido_consulta_canonica($parametros, $limite = 2000) {
+    if (!is_array($parametros)) return '';
+    $limpos = [];
+    foreach ($parametros as $chave => $valor) {
+        if (!is_string($chave) || !preg_match('/^[a-zA-Z][a-zA-Z0-9_.-]{0,63}$/D', $chave)) continue;
+        if (stripos($chave, '_gestor') === 0 || stripos($chave, 'ajax') === 0) continue;
+        if (!is_scalar($valor)) continue;
+        $limpos[$chave] = (string)$valor;
+    }
+    $consulta = http_build_query($limpos, '', '&', PHP_QUERY_RFC3986);
+    return strlen($consulta) <= $limite ? $consulta : '';
+}
+
 /** Middleware for the distributed overlay, before the local page/permission router. */
 function modulo_distribuido_proxy_rota() {
     global $_GESTOR;
@@ -191,12 +212,16 @@ function modulo_distribuido_proxy_rota() {
         gestor_redirecionar($pendente['retorno']);
     }
     if (!in_array($slug, $modulos, true)) return false;
+    // req-215: a module whose execution copy declares it has no panel is served by this site itself.
+    $copia = modulo_distribuido_resolver_manifesto(($_GESTOR['modulos-path'] ?? '') . $slug . '/' . $slug . '.json');
+    if (is_array($copia) && ($copia['scope'] ?? '') === 'distributed-execution' && ($copia['panel'] ?? true) === false) return false;
     $config = modulo_distribuido_canal_distribuido([], ['slug' => $slug]);
     $token = modulo_distribuido_token_sessao('modulo-distribuido-token', $slug);
     $guarda = modulo_distribuido_guardiao($config, ['token' => $token]);
     if (($guarda['resposta']['status'] ?? '') === 'error') modulo_distribuido_indisponivel();
+    $consulta = (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET') ? modulo_distribuido_consulta_canonica($_GET) : '';
     if ($guarda['estado'] === 'login') {
-        $url = modulo_distribuido_login_url($config, implode('/', $caminho) . '/');
+        $url = modulo_distribuido_login_url($config, implode('/', $caminho) . '/' . ($consulta !== '' ? '?' . $consulta : ''));
         if (!$url) modulo_distribuido_indisponivel();
         gestor_redirecionar($url, '', true);
     }
@@ -206,7 +231,7 @@ function modulo_distribuido_proxy_rota() {
         exit;
     }
     $resposta = modulo_distribuido_enviar(['modulo' => $slug, 'app_id' => modulo_distribuido_config_get('modulo-distribuido.app-id'),
-        'token' => $token, 'route' => implode('/', $caminho) . '/', 'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))],
+        'token' => $token, 'route' => implode('/', $caminho) . '/', 'query' => $consulta, 'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))],
         array_merge($config, ['acao' => 'iframe-ticket']));
     $ticket = $resposta['data']['ticket'] ?? '';
     if (!preg_match('/^[a-f0-9]{64}$/D', (string)$ticket)) modulo_distribuido_indisponivel();
@@ -352,7 +377,8 @@ function modulo_distribuido_central_rota() {
         gestor_sessao_variavel('distributed-context-' . $id, $dados);
         header('Referrer-Policy: no-referrer');
         header('Cache-Control: no-store');
-        gestor_redirecionar('_distributed/run/' . $id . '/' . $dados['route']);
+        $consulta = is_string($dados['query'] ?? null) ? $dados['query'] : '';
+        gestor_redirecionar('_distributed/run/' . $id . '/' . $dados['route'] . ($consulta !== '' ? '?' . $consulta : ''));
     }
     if (empty($_GESTOR['distributed-context-id'])) return;
     $dados = gestor_sessao_variavel('distributed-context-' . $_GESTOR['distributed-context-id']);
@@ -403,4 +429,144 @@ function modulo_distribuido_modulo_iniciar($slug) {
     banco_distribuido_iniciar(['slug' => $slug, 'endpoint' => $instalacao['url'] . '/_api',
         'secret' => $instalacao['secret'], 'tables' => $instalacao['tables'] ?? []]);
     return true;
+}
+
+/**
+ * req-215: at the customer's site, the execution copy of a module only acts when the installation
+ * contracted it.
+ *
+ * Every distributed host receives the same overlay, with the execution copy of every module. What
+ * tells one customer from another is the list of contracted modules in its `.env`. A copy
+ * (`"scope": "distributed-execution"` in its manifest) is active when the module is in that list, or
+ * when one of the modules in its `active_with` is: the storefront has no panel of its own and comes
+ * with the products, for example. Any other module is always active.
+ */
+function modulo_distribuido_execucao_ativa($modulo, $plugin = null): bool {
+    global $_GESTOR;
+    static $cache = [];
+    if (!is_string($modulo) || $modulo === '' || !empty($plugin)) return true;
+    $raiz = (string)($_GESTOR['modulos-path'] ?? '');
+    $chave = $raiz . '|' . $modulo;
+    if (isset($cache[$chave])) return $cache[$chave];
+    if (!preg_match('/^[a-z0-9][a-z0-9_-]*$/iD', $modulo)) return $cache[$chave] = true;
+    $arquivo = $raiz . $modulo . '/' . $modulo . '.json';
+    $manifesto = is_file($arquivo) ? json_decode((string)file_get_contents($arquivo), true) : null;
+    if (!is_array($manifesto) || ($manifesto['scope'] ?? '') !== 'distributed-execution') return $cache[$chave] = true;
+    $contratados = (array)modulo_distribuido_config_get('modulo-distribuido.modules', []);
+    $chaves = array_merge([$modulo], array_filter((array)($manifesto['active_with'] ?? []), 'is_string'));
+    return $cache[$chave] = (bool)array_intersect($chaves, $contratados);
+}
+
+/**
+ * req-215: asks the customer's site to run a local routine of the module being managed.
+ *
+ * The panel runs at the central, but some effects only exist at the customer's site: an e-mail sent
+ * with the site's identity, a public page, a refund with the local credential. The module declares
+ * those routines in the manifest of its execution copy (`routines`); here the central asks for one
+ * by name, over the signed channel, and receives what it returned.
+ *
+ * @param string $nome Routine name, as declared at the customer's site.
+ * @param array  $args Positional arguments; they travel as JSON.
+ *
+ * @return array|null null outside a distributed context (the caller keeps its local behaviour);
+ *                    ['ok' => true, 'retorno' => mixed] or ['ok' => false, 'erro' => string].
+ */
+function modulo_distribuido_rotina($nome, array $args = []) {
+    global $_BANCO, $_GESTOR;
+    if (!function_exists('banco_distribuido_ativo') || !banco_distribuido_ativo()) return null;
+    $config = $_BANCO['distribuido'];
+    $usuario = function_exists('gestor_usuario') ? gestor_usuario() : null;
+    $payload = [
+        'versao' => 1,
+        'modulo' => $config['slug'] ?? '',
+        'rotina' => (string)$nome,
+        'args' => array_values($args),
+        'linguagem' => $_GESTOR['linguagem-codigo'] ?? null,
+        'usuario' => is_array($usuario) ? ['id' => (int)($usuario['id_usuarios'] ?? 0), 'nome' => (string)($usuario['nome'] ?? '')] : null,
+        'timestamp' => time(),
+        'nonce' => bin2hex(random_bytes(16)),
+    ];
+    $resposta = modulo_distribuido_enviar($payload, array_merge($config, ['acao' => 'rotina', 'timeout' => 30]));
+    if (($resposta['status'] ?? '') !== 'ok') {
+        return ['ok' => false, 'erro' => is_string($resposta['message'] ?? null) ? $resposta['message'] : 'routine-failed'];
+    }
+    return ['ok' => true, 'retorno' => $resposta['retorno'] ?? null];
+}
+
+/**
+ * req-215: the routine a module's execution copy declares under that name, or null.
+ *
+ * Manifest: `"routines": {"<name>": {"function": "...", "file": "<file in the module folder>",
+ * "libraries": ["<library id>", ...]}}`. Only what is declared may run: the name asked by the central
+ * never becomes a function name by itself.
+ *
+ * @return array{function: string, file: ?string, libraries: string[]}|null
+ */
+function modulo_distribuido_rotina_resolver(array $manifesto, $nome) {
+    if (!is_string($nome) || !preg_match('/^[a-z0-9][a-z0-9._-]{0,79}$/D', $nome)) return null;
+    $rotina = $manifesto['routines'][$nome] ?? null;
+    if (!is_array($rotina)) return null;
+    $funcao = $rotina['function'] ?? null;
+    if (!is_string($funcao) || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]{0,119}$/D', $funcao)) return null;
+    $arquivo = $rotina['file'] ?? null;
+    if ($arquivo !== null && (!is_string($arquivo) || !preg_match('/^[a-z0-9][a-z0-9._-]{0,119}\.php$/D', $arquivo))) return null;
+    $bibliotecas = [];
+    foreach ((array)($rotina['libraries'] ?? []) as $biblioteca) {
+        if (!is_string($biblioteca) || !preg_match('/^[a-z0-9][a-z0-9-]{0,79}$/D', $biblioteca)) return null;
+        $bibliotecas[] = $biblioteca;
+    }
+    return ['function' => $funcao, 'file' => $arquivo, 'libraries' => $bibliotecas];
+}
+
+/**
+ * req-215: runs, at the customer's site, the routine the central asked for.
+ *
+ * @param string $slug        Module being managed (already authenticated by the envelope).
+ * @param array  $payload     Decoded body: `rotina`, `args`, `linguagem`, `usuario`.
+ * @param string $modulosPath Folder of the modules of this installation.
+ *
+ * @return array Response ready for json_encode: {status: ok, retorno} or {status: error, message}.
+ */
+function modulo_distribuido_rotina_executar($slug, array $payload, $modulosPath) {
+    global $_GESTOR;
+    $args = $payload['args'] ?? [];
+    if (!is_array($args)) return ['status' => 'error', 'message' => 'routine-invalid'];
+
+    $pasta = rtrim((string)$modulosPath, '/\\') . '/' . $slug . '/';
+    $manifesto = modulo_distribuido_resolver_manifesto($pasta . $slug . '.json');
+    $rotina = is_array($manifesto) ? modulo_distribuido_rotina_resolver($manifesto, $payload['rotina'] ?? null) : null;
+    if (!$rotina) return ['status' => 'error', 'message' => 'routine-denied'];
+
+    $linguagem = $payload['linguagem'] ?? null;
+    if (is_string($linguagem) && preg_match('/^[a-z]{2}(-[a-z]{2})?$/D', $linguagem)
+        && (empty($_GESTOR['languages']) || in_array($linguagem, (array)$_GESTOR['languages'], true))) {
+        $_GESTOR['linguagem-codigo'] = $linguagem;
+    }
+    // Who asked, for the routine that wants to record it. It is the central's operator, not a local user.
+    $usuario = is_array($payload['usuario'] ?? null) ? $payload['usuario'] : [];
+    $_GESTOR['distributed-routine'] = ['modulo' => $slug, 'rotina' => $payload['rotina'],
+        'usuario' => ['id' => (int)($usuario['id'] ?? 0), 'nome' => mb_substr((string)($usuario['nome'] ?? ''), 0, 200)]];
+
+    ob_start();
+    try {
+        foreach ($rotina['libraries'] as $biblioteca) {
+            if (function_exists('gestor_incluir_biblioteca')) gestor_incluir_biblioteca($biblioteca);
+        }
+        if ($rotina['file'] !== null) {
+            if (!is_file($pasta . $rotina['file'])) return ['status' => 'error', 'message' => 'routine-denied'];
+            require_once $pasta . $rotina['file'];
+        }
+        if (!function_exists($rotina['function'])) return ['status' => 'error', 'message' => 'routine-denied'];
+        $retorno = call_user_func_array($rotina['function'], array_values($args));
+    } catch (\Throwable $e) {
+        // The reason stays in the customer's log; the central only learns that it failed.
+        error_log('MODULO-DISTRIBUIDO: routine ' . $slug . '/' . $payload['rotina'] . ' failed: ' . get_class($e) . ' at ' . basename($e->getFile()) . ':' . $e->getLine());
+        return ['status' => 'error', 'message' => 'routine-failed'];
+    } finally {
+        ob_end_clean();
+        unset($_GESTOR['distributed-routine']);
+    }
+
+    if (json_encode($retorno, JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR) === false) $retorno = null;
+    return ['status' => 'ok', 'retorno' => $retorno];
 }

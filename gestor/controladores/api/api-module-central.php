@@ -77,8 +77,14 @@ function api_module_central_handle(array $rota) {
 			if ($permissao['estado'] !== 'permitido' || !is_string($route)
 				|| !preg_match('~^' . preg_quote($slug, '~') . '/[a-zA-Z0-9_/-]*$~D', $route)
 				|| strpos($route, '//') !== false) api_response_error('distributed-route-denied', 403);
+			// req-215: os parâmetros do endereço seguem para o iframe, reconstruídos aqui e não copiados.
+			$query = '';
+			if (is_string($payload['query'] ?? null) && $payload['query'] !== '') {
+				parse_str($payload['query'], $parametros);
+				$query = modulo_distribuido_consulta_canonica($parametros);
+			}
 			$ticket = modulo_distribuido_registro_emitir('iframe', ['id_usuarios' => $permissao['id_usuarios'],
-				'app_id' => $payload['app_id'], 'modulo' => $slug, 'route' => $route, 'token' => $payload['token']], $secret, 60);
+				'app_id' => $payload['app_id'], 'modulo' => $slug, 'route' => $route, 'query' => $query, 'token' => $payload['token']], $secret, 60);
 			api_response_success(['ticket' => $ticket]);
 			break;
 		case 'refresh':

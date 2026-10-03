@@ -7,7 +7,8 @@
  * `_api/modulo-distribuido/{slug}/{acao}` e:
  *  - valida a assinatura HMAC do corpo (X-C2F-Signature);
  *  - executa localmente a instrução SQL empacotada (acao 'db') no banco do cliente;
- *  - responde 'ping' (acao 'ping') para verificação de conectividade do canal.
+ *  - responde 'ping' (acao 'ping') para verificação de conectividade do canal;
+ *  - executa uma rotina local declarada pelo módulo de execução (acao 'rotina', req-215).
  *
  * Este arquivo é auxiliar de controladores/api/api.php e não deve ser acessado direto.
  * As funções de execução/segurança vivem na biblioteca bibliotecas/modulo-distribuido.php.
@@ -77,6 +78,10 @@ function api_module_distributed_handle(array $rota) {
 			api_module_distributed_db($slug, $corpo_cru);
 			break;
 
+		case 'rotina':
+			api_module_distributed_rotina($slug, $corpo_cru);
+			break;
+
 		default:
 			api_response_error('Ação distribuída não suportada: ' . $acao, 404);
 	}
@@ -131,6 +136,40 @@ function api_module_distributed_db($slug, $corpo_cru) {
 	http_response_code($resultado['status'] === 'ok' ? 200 : 400);
 	header('Content-Type: application/json; charset=UTF-8');
 	echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
+	exit;
+}
+
+/**
+ * req-215: executa, neste site, a rotina local que o painel do Central pediu.
+ *
+ * Só roda rotina que o módulo de execução declarou no próprio manifesto (`routines`), e só para
+ * módulo que esta instalação contratou. O retorno da função volta como JSON.
+ *
+ * @param string $slug      Slug do módulo distribuído.
+ * @param string $corpo_cru Corpo cru JSON já validado por HMAC.
+ *
+ * @return void
+ */
+function api_module_distributed_rotina($slug, $corpo_cru) {
+	global $_GESTOR;
+
+	$payload = json_decode((string)$corpo_cru, true);
+	if (!is_array($payload) || !is_string($payload['rotina'] ?? null)) {
+		api_response_error('Payload distribuído inválido.', 400);
+	}
+	if (!in_array($slug, modulo_distribuido_config_get('modulo-distribuido.modules', []), true)) {
+		api_response_error('routine-denied', 403);
+	}
+
+	gestor_incluir_biblioteca('banco');
+	gestor_incluir_biblioteca('hooks');
+	$resultado = modulo_distribuido_rotina_executar($slug, $payload, $_GESTOR['modulos-path']);
+
+	while (ob_get_level() > 0) { ob_end_clean(); }
+	http_response_code($resultado['status'] === 'ok' ? 200 : ($resultado['message'] === 'routine-denied' ? 403 : 400));
+	header('Content-Type: application/json; charset=UTF-8');
+	header('Cache-Control: no-store');
+	echo json_encode($resultado, JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR);
 	exit;
 }
 

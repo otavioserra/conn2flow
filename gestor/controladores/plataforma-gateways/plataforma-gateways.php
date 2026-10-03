@@ -875,6 +875,11 @@ function plataforma_gateways_disparar_hook($gateway, $action, $data = Array(), $
     if ($modulos) {
         foreach ($modulos as $modulo) {
             $modulo_id = $modulo['id'];
+
+            // req-215: cópia de execução de módulo que esta instalação não contratou não recebe o evento.
+            if (function_exists('modulo_distribuido_execucao_ativa') && !modulo_distribuido_execucao_ativa($modulo_id, $modulo['plugin'] ?? null)) {
+                continue;
+            }
             
             // Carregar hook a partir do JSON do módulo
             $funcao = plataforma_gateways_carregar_hook($modulo_id, $modulo['plugin'] ?? null, 'plataforma_gateways');

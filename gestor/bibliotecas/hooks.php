@@ -193,6 +193,12 @@ class HookManager {
         }
 
         foreach ($rows as $row) {
+            // req-215: a module's execution copy that this installation did not contract stays silent.
+            if (empty($row['projeto']) && function_exists('modulo_distribuido_execucao_ativa')
+                && !modulo_distribuido_execucao_ativa($row['modulo'] ?? '', $row['plugin'] ?? null)) {
+                continue;
+            }
+
             $controllerFile = $this->resolveControllerFile($row);
 
             if ($controllerFile !== null) {

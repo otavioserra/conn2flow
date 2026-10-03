@@ -2869,6 +2869,12 @@ function gestor_roteador(){
 		gestor_site_toolbar_backup_aplicar($paginas);
 	}
 
+	// ===== req-215: página de cópia de execução de módulo que esta instalação não contratou não existe aqui.
+	if (isset($paginas) && function_exists('modulo_distribuido_execucao_ativa')
+		&& !modulo_distribuido_execucao_ativa($paginas[0]['modulo'] ?? '', $paginas[0]['plugin'] ?? null)) {
+		unset($paginas);
+	}
+
 	// ===== Verificar se a página existe. Se sim, montar a página, executar módulo se houver e imprimir. Senão gerar erro 404 ou redirecionar para página 404.
 
 	if(isset($paginas)){

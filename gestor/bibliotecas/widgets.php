@@ -81,6 +81,11 @@ function widgets_get($params = false){
 				$paramsArray['html'] = $html;
 			}
 
+			// req-215: widget de cópia de execução de módulo que esta instalação não contratou não renderiza.
+			if(function_exists('modulo_distribuido_execucao_ativa') && !modulo_distribuido_execucao_ativa($module)){
+				return '';
+			}
+
 			// incluir o arquivo do widget do módulo se existir
 			$widgetFile = $_GESTOR['modulos-path'] . $module . '/' . $module . '.widget.php';
 			if(file_exists($widgetFile)){
