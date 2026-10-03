@@ -1539,8 +1539,11 @@ function api_handle_modulo_distribuido() {
 
     $acao = $rota['acao'];
 
-    // Ações de autenticação/ativação e o middleware de permissão são atendidos pelo central.
-    if (in_array($acao, ['refresh', 'permissao', 'exchange', 'iframe-ticket', 'estado'], true)) {
+    // Ações de autenticação/ativação e o middleware de permissão são atendidos pelo central. req-217:
+    // `abrir` e `confirmar` existem dos dois lados; quem tem `app-id` é um site de cliente.
+    $abertura = in_array($acao, ['abrir', 'confirmar'], true);
+    $cliente = (string)modulo_distribuido_config_get('modulo-distribuido.app-id', '') !== '';
+    if (in_array($acao, ['refresh', 'permissao', 'exchange', 'iframe-ticket', 'estado'], true) || ($abertura && !$cliente)) {
         require_once $_GESTOR['ROOT_PATH'] . 'controladores/api/api-module-central.php';
         api_module_central_handle($rota);
         return;

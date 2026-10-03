@@ -65,8 +65,23 @@ function api_module_distributed_handle(array $rota) {
 	if ($secret === '') {
 		api_response_error('Canal distribuído não configurado (segredo ausente).', 500);
 	}
-	if (!modulo_distribuido_validar_envelope($corpo_cru, $assinatura, $secret, $slug)) {
-		api_response_error('Assinatura HMAC inválida.', 401);
+	// req-217: o Central pede sessão; este site liga de volta para o Central que ele tem configurado e
+	// pergunta se o pedido é dele. `confirmar` responde aos desafios que este site criou.
+	if (in_array($acao, MODULO_DISTRIBUIDO_ACOES_ABERTURA, true)) {
+		$dados = $slug === MODULO_DISTRIBUIDO_SLUG_CONTA ? modulo_distribuido_validar_envelope($corpo_cru, $assinatura, $secret, $slug) : false;
+		if (!$dados) api_response_error('Assinatura HMAC inválida.', 401);
+		if ($acao === 'confirmar') {
+			api_response_success(modulo_distribuido_confirmar_origem($dados, $secret, 'central'));
+		}
+		$sessao = modulo_distribuido_sessao_conceder($dados, $secret, 'central',
+			modulo_distribuido_canal_distribuido([], ['slug' => MODULO_DISTRIBUIDO_SLUG_CONTA]));
+		if (!$sessao) api_response_error('distributed-origin-unconfirmed', 401);
+		api_response_success($sessao);
+	}
+
+	$sessao = $_SERVER['HTTP_X_C2F_SESSION'] ?? '';
+	if (!modulo_distribuido_receber($corpo_cru, $assinatura, $sessao, $secret, $slug, 'central')) {
+		api_response_error($sessao !== '' ? 'distributed-session-invalid' : (modulo_distribuido_origem_ativa() ? 'distributed-session-required' : 'Assinatura HMAC inválida.'), 401);
 	}
 
 	switch ($acao) {

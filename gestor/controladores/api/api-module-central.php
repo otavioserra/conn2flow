@@ -45,9 +45,26 @@ function api_module_central_handle(array $rota) {
 	}
 	$secret = $instalacao ? $instalacao['secret'] : api_module_central_secret($slug);
 
-	// A assinatura HMAC do canal autentica a instalação distribuída chamadora.
-	if ($secret === '' || !modulo_distribuido_validar_envelope($corpo_cru, $assinatura, $secret, $slug)) {
-		api_response_error('Assinatura HMAC inválida.', 401);
+	// req-217: abrir sessão (o Central liga de volta para o endereço cadastrado da instalação) e
+	// confirmar um desafio que o próprio Central criou. Só para instalação cadastrada.
+	if (in_array($acao, MODULO_DISTRIBUIDO_ACOES_ABERTURA, true)) {
+		if (!$instalacao || $slug !== MODULO_DISTRIBUIDO_SLUG_CONTA) api_response_error('distributed-installation-invalid', 403);
+		$dados = modulo_distribuido_validar_envelope($corpo_cru, $assinatura, $secret, $slug);
+		if (!$dados) api_response_error('Assinatura HMAC inválida.', 401);
+		if ($acao === 'confirmar') {
+			api_response_success(modulo_distribuido_confirmar_origem($dados, $secret, $payload['app_id']));
+		}
+		$sessao = modulo_distribuido_sessao_conceder($dados, $secret, $payload['app_id'],
+			['endpoint' => $instalacao['url'] . '/_api', 'secret' => $secret, 'peer' => $payload['app_id']]);
+		if (!$sessao) api_response_error('distributed-origin-unconfirmed', 401);
+		api_response_success($sessao);
+	}
+
+	// A assinatura HMAC do canal autentica a instalação distribuída chamadora (req-217: com a chave da
+	// sessão aberta pela confirmação de origem).
+	$sessao = $_SERVER['HTTP_X_C2F_SESSION'] ?? '';
+	if ($secret === '' || !modulo_distribuido_receber($corpo_cru, $assinatura, $sessao, $secret, $slug, $instalacao ? $payload['app_id'] : '')) {
+		api_response_error($sessao !== '' ? 'distributed-session-invalid' : (modulo_distribuido_origem_ativa() ? 'distributed-session-required' : 'Assinatura HMAC inválida.'), 401);
 	}
 
 	$payload = json_decode((string)$corpo_cru, true);

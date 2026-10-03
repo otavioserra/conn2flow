@@ -252,6 +252,9 @@ $_CONFIG = [
         'secret'      => $_ENV['MODULO_DISTRIBUIDO_SECRET'] ?? '',
         'central-url' => $_ENV['MODULO_DISTRIBUIDO_CENTRAL_URL'] ?? '',
         'endpoint'    => $_ENV['MODULO_DISTRIBUIDO_ENDPOINT'] ?? '',
+        // req-217: confirmação de origem (o outro lado liga de volta para o endereço cadastrado) e chave
+        // de sessão. `false` só durante uma publicação em que um dos lados ainda tem o core antigo.
+        'confirmacao-origem' => filter_var($_ENV['MODULO_DISTRIBUIDO_ORIGIN_CHECK'] ?? 'true', FILTER_VALIDATE_BOOLEAN),
     ],
 
     // Controle de Acessos

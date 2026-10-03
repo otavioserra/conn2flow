@@ -596,7 +596,7 @@ function modulo_distribuido_modulo_iniciar($slug) {
     if ($somenteLeitura && modulo_distribuido_pedido_de_escrita()) {
         modulo_distribuido_recusar_escrita($conta);
     }
-    banco_distribuido_iniciar(['slug' => $slug, 'endpoint' => $instalacao['url'] . '/_api',
+    banco_distribuido_iniciar(['slug' => $slug, 'endpoint' => $instalacao['url'] . '/_api', 'peer' => $dados['app_id'],
         'secret' => $instalacao['secret'], 'tables' => $instalacao['tables'] ?? [], 'somente-leitura' => $somenteLeitura]);
     return true;
 }
@@ -815,4 +815,189 @@ function modulo_distribuido_rotina_executar($slug, array $payload, $modulosPath)
 
     if (json_encode($retorno, JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR) === false) $retorno = null;
     return ['status' => 'ok', 'retorno' => $retorno];
+}
+
+// =========================== req-217: origin confirmation and session keys
+//
+// The installation secret alone no longer talks over the channel. Whoever wants to talk (A) creates a
+// single-use challenge and asks to open a session (`abrir`). The receiver (B) does not trust the request:
+// it calls back the address *it* has registered for A (`central-url` at the customer; the registry `url`
+// at the central) and asks whether the challenge is A's (`confirmar`). Only with A's "yes" B hands out a
+// random session key, valid for 15 minutes, and every ordinary request is signed with it. A stolen secret,
+// used from anywhere but the registered address, opens nothing.
+
+const MODULO_DISTRIBUIDO_SESSAO_TTL = 900;
+const MODULO_DISTRIBUIDO_ACOES_ABERTURA = ['abrir', 'confirmar'];
+
+/** req-217: is the origin confirmation required here? `config.php` turns it on; absent means the old channel. */
+function modulo_distribuido_origem_ativa(): bool {
+    return modulo_distribuido_config_get('modulo-distribuido.confirmacao-origem', false) === true;
+}
+
+function modulo_distribuido_cifrar(array $dados, $chave, $aad) {
+    $iv = random_bytes(12);
+    $tag = '';
+    $cifrado = openssl_encrypt(json_encode($dados, JSON_THROW_ON_ERROR), 'aes-256-gcm', hash('sha256', (string)$chave, true),
+        OPENSSL_RAW_DATA, $iv, $tag, $aad);
+    return $cifrado === false ? false : base64_encode($iv . $tag . $cifrado);
+}
+
+function modulo_distribuido_decifrar($bruto, $chave, $aad) {
+    $bytes = base64_decode((string)$bruto, true);
+    if ($bytes === false || strlen($bytes) < 28) return false;
+    $json = openssl_decrypt(substr($bytes, 28), 'aes-256-gcm', hash('sha256', (string)$chave, true),
+        OPENSSL_RAW_DATA, substr($bytes, 0, 12), substr($bytes, 12, 16), $aad);
+    $dados = $json === false ? null : json_decode($json, true);
+    return is_array($dados) ? $dados : false;
+}
+
+/** Signed answer of the opening actions, in the shape the other side validates. */
+function modulo_distribuido_envelope_assinado(array $dados, $secret) {
+    $body = json_encode($dados + ['modulo' => MODULO_DISTRIBUIDO_SLUG_CONTA, 'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))],
+        JSON_UNESCAPED_SLASHES);
+    return ['body' => base64_encode($body), 'signature' => modulo_distribuido_assinar($body, $secret)];
+}
+
+/** Opens the envelope another side answered (`data.body` + `data.signature`), or false. */
+function modulo_distribuido_envelope_resposta($resposta, $secret, $pdo) {
+    $envelope = is_array($resposta) ? ($resposta['data'] ?? []) : [];
+    $corpo = is_array($envelope) && isset($envelope['body']) ? base64_decode((string)$envelope['body'], true) : false;
+    return $corpo === false ? false : modulo_distribuido_validar_envelope($corpo, $envelope['signature'] ?? '', $secret, MODULO_DISTRIBUIDO_SLUG_CONTA, $pdo);
+}
+
+/**
+ * req-217 (sender): the session to talk to `$config['endpoint']`, from memory, from the table, or opened now.
+ *
+ * @param array $config Channel config: endpoint, secret, peer (who is on the other side: an app_id, or
+ *                      'central'), optionally transporte and pdo.
+ * @return array|false ['sessao' => hex, 'chave' => base64, 'expira' => int, 'nova' => bool]
+ */
+function modulo_distribuido_sessao_saida(array $config, $renovar = false) {
+    static $porConexao = null;
+    $porConexao = $porConexao ?? new \WeakMap();
+    $secret = (string)($config['secret'] ?? '');
+    $endpoint = rtrim((string)($config['endpoint'] ?? ''), '/');
+    if ($secret === '' || $endpoint === '') return false;
+    try { $pdo = $config['pdo'] ?? modulo_distribuido_pdo(); } catch (\Throwable $e) { return false; }
+    // A new secret means a new session; the id never reveals the secret.
+    $id = hash('sha256', 'sessao-saida|' . $endpoint . '|' . hash('sha256', $secret));
+    // Memory per connection (it goes away with it), so a page with dozens of queries reads the table once.
+    $memoria = $porConexao[$pdo] ?? [];
+    $chaveMemoria = $id;
+    if (!$renovar) {
+        if (isset($memoria[$chaveMemoria]) && $memoria[$chaveMemoria]['expira'] > time() + 30) return ['nova' => false] + $memoria[$chaveMemoria];
+        try {
+            $stmt = $pdo->prepare('SELECT payload FROM distributed_exchanges WHERE id=? AND kind=? AND expires_at>?');
+            $stmt->execute([$id, 'sessao-saida', time() + 30]);
+            $guardada = modulo_distribuido_decifrar($stmt->fetchColumn(), $secret, 'sessao-saida');
+        } catch (\Throwable $e) {
+            $guardada = false;
+        }
+        if (is_array($guardada) && ($guardada['expira'] ?? 0) > time() + 30) {
+            $memoria[$chaveMemoria] = $guardada;
+            $porConexao[$pdo] = $memoria;
+            return ['nova' => false] + $guardada;
+        }
+    }
+    unset($memoria[$chaveMemoria]);
+    $porConexao[$pdo] = $memoria;
+    $sessao = modulo_distribuido_sessao_abrir($config, $pdo);
+    if (!$sessao) return false;
+    try {
+        $stmt = $pdo->prepare('REPLACE INTO distributed_exchanges (id,kind,payload,expires_at,consumed) VALUES (?,?,?,?,1)');
+        $stmt->execute([$id, 'sessao-saida', modulo_distribuido_cifrar($sessao, $secret, 'sessao-saida'), $sessao['expira']]);
+    } catch (\Throwable $e) {
+        error_log('MODULO-DISTRIBUIDO: session not stored');
+    }
+    $memoria[$chaveMemoria] = $sessao;
+    $porConexao[$pdo] = $memoria;
+    return ['nova' => true] + $sessao;
+}
+
+/** req-217 (sender): challenge, `abrir`, and the session key the other side handed out after confirming. */
+function modulo_distribuido_sessao_abrir(array $config, $pdo) {
+    $secret = (string)$config['secret'];
+    $peer = (string)($config['peer'] ?? '');
+    $desafio = modulo_distribuido_registro_emitir('origem', ['peer' => $peer], $secret, 60, $pdo);
+    if (!$desafio) return false;
+    $payload = ['modulo' => MODULO_DISTRIBUIDO_SLUG_CONTA, 'desafio' => $desafio, 'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))];
+    $app = (string)modulo_distribuido_config_get('modulo-distribuido.app-id', '');
+    if ($app !== '') $payload['app_id'] = $app;
+    $resposta = modulo_distribuido_enviar($payload, array_merge($config, ['slug' => MODULO_DISTRIBUIDO_SLUG_CONTA, 'acao' => 'abrir', 'timeout' => 10]));
+    $dados = modulo_distribuido_envelope_resposta($resposta, $secret, $pdo);
+    if (!is_array($dados) || !is_string($dados['desafio'] ?? null) || !hash_equals($desafio, $dados['desafio'])
+        || !is_string($dados['sessao'] ?? null) || !preg_match('/^[a-f0-9]{64}$/D', $dados['sessao'])) return false;
+    $segredo = modulo_distribuido_decifrar($dados['chave'] ?? '', $secret . '|' . $desafio, 'sessao-chave');
+    $chave = is_array($segredo) ? base64_decode((string)($segredo['chave'] ?? ''), true) : false;
+    if ($chave === false || strlen($chave) !== 32) return false;
+    return ['sessao' => $dados['sessao'], 'chave' => base64_encode($chave),
+        'expira' => min((int)($dados['expira'] ?? 0), time() + MODULO_DISTRIBUIDO_SESSAO_TTL)];
+}
+
+/**
+ * req-217 (receiver of `abrir`): asks the caller, at the address registered here, whether the challenge
+ * is its own; only then creates the session.
+ *
+ * @param array  $dados   Envelope already validated with the installation secret.
+ * @param string $peer    Who the caller is for this side: its app_id at the central, 'central' at the customer.
+ * @param array  $retorno Channel config to the caller's *registered* address (endpoint, secret, transporte).
+ * @return array|false Signed envelope with the session for the caller.
+ */
+function modulo_distribuido_sessao_conceder(array $dados, $secret, $peer, array $retorno, $pdo = null) {
+    $desafio = $dados['desafio'] ?? null;
+    if (!is_string($desafio) || !preg_match('/^[a-f0-9]{64}$/D', $desafio) || $secret === '' || empty($retorno['endpoint'])) return false;
+    $pdo = $pdo ?? modulo_distribuido_pdo();
+    $pergunta = ['modulo' => MODULO_DISTRIBUIDO_SLUG_CONTA, 'desafio' => $desafio, 'timestamp' => time(), 'nonce' => bin2hex(random_bytes(16))];
+    $app = (string)modulo_distribuido_config_get('modulo-distribuido.app-id', '');
+    if ($app !== '') $pergunta['app_id'] = $app;
+    $resposta = modulo_distribuido_enviar($pergunta, array_merge($retorno,
+        ['slug' => MODULO_DISTRIBUIDO_SLUG_CONTA, 'acao' => 'confirmar', 'secret' => $secret, 'timeout' => 10]));
+    $confirmacao = modulo_distribuido_envelope_resposta($resposta, $secret, $pdo);
+    if (!is_array($confirmacao) || ($confirmacao['confirmado'] ?? false) !== true
+        || !hash_equals($desafio, (string)($confirmacao['desafio'] ?? ''))) {
+        error_log('MODULO-DISTRIBUIDO: origin not confirmed for ' . ($peer !== '' ? $peer : 'unknown peer'));
+        return false;
+    }
+    $sessao = bin2hex(random_bytes(32));
+    $chave = random_bytes(32);
+    $expira = time() + MODULO_DISTRIBUIDO_SESSAO_TTL;
+    $stmt = $pdo->prepare('INSERT INTO distributed_exchanges (id,kind,payload,expires_at,consumed) VALUES (?,?,?,?,0)');
+    $stmt->execute([hash_hmac('sha256', 'sessao:' . $sessao, $secret), 'sessao',
+        modulo_distribuido_cifrar(['chave' => base64_encode($chave), 'peer' => (string)$peer], $secret, 'sessao'), $expira]);
+    return modulo_distribuido_envelope_assinado(['sessao' => $sessao, 'expira' => $expira, 'desafio' => $desafio,
+        // Only who created the challenge can read the key, even if the answer is seen on the way.
+        'chave' => modulo_distribuido_cifrar(['chave' => base64_encode($chave)], $secret . '|' . $desafio, 'sessao-chave')], $secret);
+}
+
+/** req-217 (receiver of `confirmar`): "yes, that challenge is mine", once, and only for whom it was made. */
+function modulo_distribuido_confirmar_origem(array $dados, $secret, $peer, $pdo = null) {
+    $desafio = is_string($dados['desafio'] ?? null) ? $dados['desafio'] : '';
+    $registro = modulo_distribuido_registro_consumir($desafio, 'origem', $secret, $pdo);
+    $confirmado = is_array($registro) && hash_equals((string)($registro['peer'] ?? ''), (string)$peer);
+    return modulo_distribuido_envelope_assinado(['confirmado' => $confirmado, 'desafio' => $desafio], $secret);
+}
+
+/**
+ * req-217 (receiver of an ordinary request): validated body, or false.
+ *
+ * With a session header the body must be signed with that session's key, and the session must belong to
+ * `$peer`. Without it, only the old channel (origin confirmation off) accepts the installation secret.
+ */
+function modulo_distribuido_receber($corpo, $assinatura, $sessao, $secret, $slug, $peer, $pdo = null) {
+    if (!is_string($sessao) || $sessao === '') {
+        return modulo_distribuido_origem_ativa() ? false : modulo_distribuido_validar_envelope($corpo, $assinatura, $secret, $slug, $pdo);
+    }
+    if (!preg_match('/^[a-f0-9]{64}$/D', $sessao) || !is_string($secret) || $secret === '') return false;
+    try {
+        $pdo = $pdo ?? modulo_distribuido_pdo();
+        $stmt = $pdo->prepare('SELECT payload FROM distributed_exchanges WHERE id=? AND kind=? AND expires_at>=?');
+        $stmt->execute([hash_hmac('sha256', 'sessao:' . $sessao, $secret), 'sessao', time()]);
+        $registro = modulo_distribuido_decifrar($stmt->fetchColumn(), $secret, 'sessao');
+    } catch (\Throwable $e) {
+        return false;
+    }
+    if (!is_array($registro) || !hash_equals((string)($registro['peer'] ?? ''), (string)$peer)) return false;
+    $chave = base64_decode((string)($registro['chave'] ?? ''), true);
+    if ($chave === false || strlen($chave) !== 32) return false;
+    return modulo_distribuido_validar_envelope($corpo, $assinatura, $chave, $slug, $pdo);
 }

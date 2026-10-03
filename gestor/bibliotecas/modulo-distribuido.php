@@ -305,30 +305,54 @@ function modulo_distribuido_enviar(array $payload, array $config) {
 		return ['status' => 'error', 'message' => 'Configuração distribuída incompleta (endpoint/slug).'];
 	}
 
-	$corpo = json_encode($payload, JSON_UNESCAPED_UNICODE);
-	$assinatura = modulo_distribuido_assinar($corpo, $secret);
+	// req-217: fora da abertura, a requisição vai assinada com a chave de uma sessão confirmada.
+	$sessao = null;
+	if (modulo_distribuido_origem_ativa() && !in_array($acao, MODULO_DISTRIBUIDO_ACOES_ABERTURA, true)) {
+		$sessao = modulo_distribuido_sessao_saida($config);
+		if (!$sessao) {
+			return ['status' => 'error', 'message' => 'distributed-origin-unconfirmed'];
+		}
+	}
 
+	$corpo = json_encode($payload, JSON_UNESCAPED_UNICODE);
 	$url = $endpoint . '/modulo-distribuido/' . rawurlencode($slug) . '/' . rawurlencode($acao);
 
-	$headers = [
-		'Content-Type: application/json',
-		'X-C2F-Signature: ' . $assinatura,
-		'X-C2F-Modulo: ' . $slug,
-	];
-	if (!empty($config['token'])) {
-		$headers[] = 'Authorization: Bearer ' . $config['token'];
-	}
+	for ($tentativa = 0; ; $tentativa++) {
+		$headers = [
+			'Content-Type: application/json',
+			'X-C2F-Signature: ' . modulo_distribuido_assinar($corpo, $sessao ? base64_decode($sessao['chave']) : $secret),
+			'X-C2F-Modulo: ' . $slug,
+		];
+		if ($sessao) {
+			$headers[] = 'X-C2F-Session: ' . $sessao['sessao'];
+		}
+		if (!empty($config['token'])) {
+			$headers[] = 'Authorization: Bearer ' . $config['token'];
+		}
 
-	// Transporte injetável para testes (evita rede real).
-	try {
-	if (isset($config['transporte']) && is_callable($config['transporte'])) {
-		$bruto = call_user_func($config['transporte'], $url, $corpo, $headers);
-	} else {
-		$bruto = modulo_distribuido_http_post($url, $corpo, $headers, $config['timeout'] ?? 15);
-	}
-	} catch (\Throwable $e) {
-		error_log('MODULO-DISTRIBUIDO: transport failure');
-		$bruto = false;
+		// Transporte injetável para testes (evita rede real).
+		$GLOBALS['_MODULO_DISTRIBUIDO_HTTP_STATUS'] = 0;
+		try {
+		if (isset($config['transporte']) && is_callable($config['transporte'])) {
+			$bruto = call_user_func($config['transporte'], $url, $corpo, $headers);
+		} else {
+			$bruto = modulo_distribuido_http_post($url, $corpo, $headers, $config['timeout'] ?? 15);
+		}
+		} catch (\Throwable $e) {
+			error_log('MODULO-DISTRIBUIDO: transport failure');
+			$bruto = false;
+		}
+
+		// req-217: a sessão guardada pode ter sido esquecida do outro lado (vencida, segredo trocado). O 401
+		// vem antes de qualquer execução, então reabrir e repetir uma vez não repete efeito nenhum.
+		$recusada = (int)($GLOBALS['_MODULO_DISTRIBUIDO_HTTP_STATUS'] ?? 0) === 401
+			|| (is_string($bruto) && strlen($bruto) < 2048 && (json_decode($bruto, true)['message'] ?? null) === 'distributed-session-invalid');
+		if ($sessao && $recusada && $tentativa === 0 && empty($sessao['nova'])) {
+			$sessao = modulo_distribuido_sessao_saida($config, true);
+			if (!$sessao) return ['status' => 'error', 'message' => 'distributed-origin-unconfirmed'];
+			continue;
+		}
+		break;
 	}
 
 	if ($bruto === false || $bruto === null || $bruto === '') {
@@ -370,6 +394,8 @@ function modulo_distribuido_http_post($url, $corpo, array $headers, $timeout = 1
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(1, min(5, (int)$timeout)));
 	$resposta = curl_exec($ch);
 	$status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+	// req-217: quem chamou distingue a recusa da sessão (401) de uma falha qualquer.
+	$GLOBALS['_MODULO_DISTRIBUIDO_HTTP_STATUS'] = $status;
 	if ($resposta === false) {
 		error_log('MODULO-DISTRIBUIDO: falha cURL para ' . $url . ': ' . curl_error($ch));
 		// Conexão quebrada não volta ao reaproveitamento.
@@ -980,6 +1006,8 @@ function modulo_distribuido_canal_distribuido(array $modulo_config, array $overr
 		'central-url' => (string)$central_url,
 		'endpoint'    => rtrim((string)$central_url, '/') . '/_api',
 		'secret'      => (string)$secret,
+		// req-217: para o Central, este site é a instalação `app-id`; para cá, o outro lado é o Central.
+		'peer'        => 'central',
 	];
 	if (isset($overrides['transporte']) && is_callable($overrides['transporte'])) {
 		$config['transporte'] = $overrides['transporte'];
