@@ -1,23 +1,29 @@
-<header data-admin-topbar class="sticky top-0 z-20 flex h-16 min-w-0 items-center gap-2 border-b border-slate-200 bg-white/95 px-3 shadow-sm backdrop-blur-sm sm:gap-3 sm:px-4"
-    data-topbar-state="#topbar-state#" data-msg-error="@[[topbar-save-error]]@" data-msg-unavailable="@[[topbar-unavailable]]@" data-msg-saved="@[[topbar-saved]]@">
+<header data-admin-topbar
+    class="sticky top-0 z-20 flex h-16 min-w-0 items-center gap-2 border-b border-slate-200 bg-white/95 px-3 shadow-sm backdrop-blur-sm sm:gap-3 sm:px-4"
+    data-topbar-state="#topbar-state#" data-msg-error="@[[topbar-save-error]]@"
+    data-msg-unavailable="@[[topbar-unavailable]]@" data-msg-saved="@[[topbar-saved]]@">
     <div class="flex min-w-0 shrink-0 items-center gap-2">
         <button type="button" data-admin-abrir aria-label="@[[topbar-open-menu]]@"
+            data-c2f-dica="@[[topbar-open-menu]]@" data-c2f-dica-pos="bottom"
             class="inline-flex size-9 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600 lg:hidden">
             <i data-lucide="menu" class="size-4" aria-hidden="true"></i>
         </button>
-        <a href="@[[pagina#url-raiz]]@dashboard/" aria-label="@[[topbar-dashboard]]@" class="inline-flex min-w-0 items-center rounded-lg focus-visible:ring-2 focus-visible:ring-sky-600">
-            <img src="@[[pagina#url-raiz]]@images/logo-principal.png" alt="Conn2Flow" class="h-8 w-auto max-w-[110px] sm:max-w-[160px]">
+        <a href="@[[pagina#url-raiz]]@dashboard/" aria-label="@[[topbar-dashboard]]@"
+            class="inline-flex min-w-0 items-center rounded-lg focus-visible:ring-2 focus-visible:ring-sky-600">
+            <img src="@[[pagina#url-raiz]]@images/logo-principal.png" alt="Conn2Flow" class="h-11 w-auto max-w-[190px]">
         </a>
     </div>
-    <nav aria-label="@[[topbar-favorites]]@" class="flex min-w-0 flex-1 items-center justify-end gap-1 sm:justify-start">
+    <nav aria-label="@[[topbar-favorites]]@"
+        class="flex min-w-0 flex-1 items-center justify-end gap-1 sm:justify-start">
         <div data-topbar-shortcuts class="flex min-w-0 items-center gap-1"></div>
         <div class="relative" data-topbar-disclosure>
             <button type="button" data-topbar-toggle="topbar-more" aria-controls="topbar-more" aria-expanded="false"
-                aria-label="@[[topbar-more]]@" data-c2f-dica="@[[topbar-more]]@"
+                aria-label="@[[topbar-more]]@" data-c2f-dica="@[[topbar-more]]@" data-c2f-dica-pos="bottom"
                 class="inline-flex size-9 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600">
                 <i data-lucide="ellipsis" class="size-4" aria-hidden="true"></i>
             </button>
-            <div id="topbar-more" hidden class="absolute right-0 top-full z-30 mt-2 w-64 max-w-[calc(100vw-24px)] rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
+            <div id="topbar-more" hidden
+                class="absolute right-0 top-full z-30 mt-2 w-64 max-w-[calc(100vw-24px)] rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
                 <p class="px-2 py-2 text-xs font-semibold text-slate-500">@[[topbar-favorites]]@</p>
                 <div data-topbar-overflow></div>
                 <p data-topbar-empty class="px-2 py-2 text-sm text-slate-500">@[[topbar-empty]]@</p>
@@ -26,7 +32,8 @@
                     class="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600">
                     <i data-lucide="star" class="size-4" aria-hidden="true"></i><span></span>
                 </button>
-                <button type="button" data-topbar-customize class="flex w-full items-center gap-2 rounded-lg border-t border-slate-200 px-2 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600">
+                <button type="button" data-topbar-customize
+                    class="flex w-full items-center gap-2 rounded-lg border-t border-slate-200 px-2 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600">
                     <i data-lucide="settings-2" class="size-4" aria-hidden="true"></i>@[[topbar-customize]]@
                 </button>
             </div>
@@ -34,52 +41,90 @@
     </nav>
     <div class="relative min-w-0 shrink-0" data-topbar-disclosure>
         <button type="button" data-topbar-toggle="topbar-profile" aria-controls="topbar-profile" aria-expanded="false"
-            aria-label="@[[topbar-user-menu]]@" class="flex max-w-[200px] items-center gap-2 rounded-lg p-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600">
-            <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-slate-800 text-white"><i data-lucide="user" class="size-4" aria-hidden="true"></i></span>
+            aria-label="@[[topbar-user-menu]]@" data-c2f-dica="@[[topbar-user-menu]]@" data-c2f-dica-pos="bottom"
+            class="flex max-w-[200px] items-center gap-2 rounded-lg p-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600">
+            <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-slate-800 text-white"><i
+                    data-lucide="user" class="size-4" aria-hidden="true"></i></span>
             <span class="hidden min-w-0 truncate xl:inline">#topbar-nome#</span>
             <i data-lucide="chevron-down" class="size-4" aria-hidden="true"></i>
         </button>
-        <div id="topbar-profile" hidden class="absolute right-0 top-full z-30 mt-2 w-72 max-w-[calc(100vw-24px)] rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
+        <div id="topbar-profile" hidden
+            class="absolute right-0 top-full z-30 mt-2 w-80 max-w-[calc(100vw-24px)] rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
             <div class="border-b border-slate-200 px-3 py-3">
                 <p class="break-words text-sm font-semibold text-slate-900">#topbar-nome#</p>
                 <p class="break-all text-xs text-slate-500">#topbar-email#</p>
-                <span class="mt-2 inline-flex max-w-full break-words rounded-lg bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">#topbar-perfil#</span>
+                <span
+                    class="mt-2 inline-flex max-w-full break-words rounded-lg bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">#topbar-perfil#</span>
             </div>
-            <a href="@[[pagina#url-raiz]]@perfil-usuario/" class="mt-1 flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i data-lucide="user-round" class="size-4" aria-hidden="true"></i>@[[topbar-my-profile]]@</a>
-            <a href="@[[pagina#url-raiz]]@perfil-usuario/#seguranca" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i data-lucide="shield-check" class="size-4" aria-hidden="true"></i>@[[topbar-security]]@</a>
+            <a href="@[[pagina#url-raiz]]@perfil-usuario/"
+                class="mt-1 flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i
+                    data-lucide="user-round" class="size-4" aria-hidden="true"></i>@[[topbar-my-profile]]@</a>
+            <a href="@[[pagina#url-raiz]]@perfil-usuario/#seguranca"
+                class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i
+                    data-lucide="shield-check" class="size-4" aria-hidden="true"></i>@[[topbar-security]]@</a>
             <div class="px-3 py-2">
-                <label for="topbar-language" class="mb-1 flex items-center gap-2 text-xs font-medium text-slate-500"><i data-lucide="languages" class="size-4" aria-hidden="true"></i>@[[topbar-language]]@</label>
-                <select id="topbar-language" class="w-full rounded-lg border border-slate-200 bg-white px-2 py-2 text-sm text-slate-700 focus-visible:ring-2 focus-visible:ring-sky-600">
+                <label for="topbar-content-width"
+                    class="mb-1 flex items-center gap-2 text-xs font-medium text-slate-500"><i
+                        data-lucide="move-horizontal" class="size-4"
+                        aria-hidden="true"></i>@[[topbar-content-width]]@</label>
+                <select id="topbar-content-width" data-topbar-content-width
+                    class="mb-3 w-full rounded-lg border border-slate-200 bg-white px-2 py-2 text-sm text-slate-700 focus-visible:ring-2 focus-visible:ring-sky-600">
+                    <option value="normal">@[[topbar-width-normal]]@</option>
+                    <option value="expanded">@[[topbar-width-expanded]]@</option>
+                    <option value="full">@[[topbar-width-full]]@</option>
+                </select>
+                <label for="topbar-language" class="mb-1 flex items-center gap-2 text-xs font-medium text-slate-500"><i
+                        data-lucide="languages" class="size-4" aria-hidden="true"></i>@[[topbar-language]]@</label>
+                <select id="topbar-language"
+                    class="w-full rounded-lg border border-slate-200 bg-white px-2 py-2 text-sm text-slate-700 focus-visible:ring-2 focus-visible:ring-sky-600">
                     <option value="pt-br">@[[topbar-portuguese]]@</option>
                     <option value="en">@[[topbar-english]]@</option>
                 </select>
             </div>
-            <a href="@[[pagina#url-raiz]]@signout/" class="flex items-center gap-2 rounded-lg border-t border-slate-200 px-3 py-2 text-sm text-red-700 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-red-600"><i data-lucide="log-out" class="size-4" aria-hidden="true"></i>@[[topbar-signout]]@</a>
+            <a href="@[[pagina#url-raiz]]@signout/"
+                class="flex items-center gap-2 rounded-lg border-t border-slate-200 px-3 py-2 text-sm text-red-700 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-red-600"><i
+                    data-lucide="log-out" class="size-4" aria-hidden="true"></i>@[[topbar-signout]]@</a>
         </div>
     </div>
     <p data-topbar-status role="status" aria-live="polite" class="sr-only"></p>
-    <p data-topbar-error role="alert" hidden class="absolute right-3 top-full mt-2 max-w-[calc(100vw-24px)] rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 shadow-sm"></p>
+    <p data-topbar-error role="alert" hidden
+        class="absolute right-3 top-full mt-2 max-w-[calc(100vw-24px)] rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 shadow-sm">
+    </p>
     <template data-topbar-link-template>
-        <a class="inline-flex size-9 shrink-0 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i data-lucide="star" class="size-4" aria-hidden="true"></i><span class="sr-only"></span></a>
+        <a
+            class="inline-flex size-9 shrink-0 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i
+                data-lucide="star" class="size-4" aria-hidden="true"></i><span class="sr-only"></span></a>
     </template>
     <template data-topbar-overflow-template>
-        <a class="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i data-lucide="star" class="size-4 shrink-0" aria-hidden="true"></i><span class="truncate"></span></a>
+        <a
+            class="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i
+                data-lucide="star" class="size-4 shrink-0" aria-hidden="true"></i><span class="truncate"></span></a>
     </template>
     <template data-topbar-choice-template>
-        <label class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-3 text-sm text-slate-700 hover:bg-slate-50"><input type="checkbox" class="size-4 shrink-0 accent-sky-600"><i data-lucide="star" class="size-4 shrink-0" aria-hidden="true"></i><span class="min-w-0 break-words"></span></label>
+        <label
+            class="flex min-w-0 cursor-pointer items-start gap-2 rounded-lg border border-slate-100 px-3 py-3 text-sm text-slate-700 hover:bg-slate-50"><input
+                type="checkbox" class="mt-0.5 size-4 shrink-0 accent-sky-600"><i data-lucide="star"
+                class="mt-0.5 size-4 shrink-0" aria-hidden="true"></i><span
+                class="min-w-0 flex-1 break-words"></span></label>
     </template>
 </header>
-<dialog id="topbar-customize" aria-labelledby="topbar-customize-title" class="m-auto w-full max-w-md rounded-xl border border-slate-200 bg-white p-0 text-slate-800 shadow-xl backdrop:bg-slate-900/50">
+<dialog id="topbar-customize" aria-labelledby="topbar-customize-title" data-label-reorder="@[[topbar-reorder]]@"
+    class="m-auto w-full max-w-lg rounded-xl border border-slate-200 bg-white p-0 text-slate-800 shadow-xl backdrop:bg-slate-900/50">
     <div class="flex items-center justify-between gap-3 border-b border-slate-200 p-4">
         <h2 id="topbar-customize-title" class="text-base font-semibold">@[[topbar-customize]]@</h2>
-        <button type="button" data-topbar-dialog-close aria-label="@[[topbar-close]]@" class="inline-flex size-9 items-center justify-center rounded-lg hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i data-lucide="x" class="size-4" aria-hidden="true"></i></button>
+        <button type="button" data-topbar-dialog-close aria-label="@[[topbar-close]]@"
+            class="inline-flex size-9 items-center justify-center rounded-lg hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-600"><i
+                data-lucide="x" class="size-4" aria-hidden="true"></i></button>
     </div>
     <div class="p-4">
         <p class="mb-3 text-sm text-slate-500">@[[topbar-customize-help]]@</p>
+        <h3 class="mb-2 text-sm font-semibold text-slate-700">@[[topbar-active-favorites]]@</h3>
+        <div data-topbar-favorite-order class="mb-4 max-h-48 space-y-2 overflow-y-auto"></div>
         <label for="topbar-search" class="sr-only">@[[topbar-search]]@</label>
-        <input id="topbar-search" type="search" placeholder="@[[topbar-search]]@" class="mb-3 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-sky-600">
+        <input id="topbar-search" type="search" placeholder="@[[topbar-search]]@"
+            class="mb-3 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-sky-600">
         <p data-topbar-dialog-status role="status" aria-live="polite" class="mb-2 text-sm text-slate-600"></p>
-        <div data-topbar-choices class="max-h-[50vh] overflow-y-auto"></div>
+        <div data-topbar-choices class="max-h-[50vh] space-y-2 overflow-y-auto"></div>
         <p data-topbar-no-results hidden class="py-3 text-sm text-slate-500">@[[topbar-no-results]]@</p>
     </div>
 </dialog>

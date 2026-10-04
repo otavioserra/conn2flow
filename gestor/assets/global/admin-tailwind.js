@@ -95,11 +95,11 @@
         // esquerda. Com o menu recolhido ela deixaria de novo uma faixa vazia — agora nos dois lados,
         // porque o `mx-auto` centraliza a coluna. O `maxWidth` inline vence a utility sem depender da
         // ordem em que o Tailwind emitiu `max-w-7xl` e `max-w-none`.
-        var larguraLeituraPadrao = principal ? principal.style.maxWidth : '';
-
         function aplicarLarguraConteudo(expandido) {
             if (!principal) return;
-            principal.style.maxWidth = expandido ? 'none' : larguraLeituraPadrao;
+            var larguras = { normal: '80rem', expanded: '100rem', full: 'none' };
+            var preferencia = principal.getAttribute('data-admin-max-width') || 'normal';
+            principal.style.maxWidth = expandido ? 'none' : (larguras[preferencia] || larguras.normal);
         }
 
         var store = armazenamento();

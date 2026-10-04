@@ -777,6 +777,16 @@
         "type": "string"
     },
     {
+        "id": "topbar-active-favorites",
+        "value": "Atalhos ativos",
+        "type": "string"
+    },
+    {
+        "id": "topbar-reorder",
+        "value": "Reordenar atalho",
+        "type": "string"
+    },
+    {
         "id": "topbar-user-menu",
         "value": "Menu do usuário",
         "type": "string"
@@ -789,6 +799,26 @@
     {
         "id": "topbar-security",
         "value": "Segurança e Senha",
+        "type": "string"
+    },
+    {
+        "id": "topbar-content-width",
+        "value": "Largura do conteúdo",
+        "type": "string"
+    },
+    {
+        "id": "topbar-width-normal",
+        "value": "Padrão (1280px)",
+        "type": "string"
+    },
+    {
+        "id": "topbar-width-expanded",
+        "value": "Expandido (1600px)",
+        "type": "string"
+    },
+    {
+        "id": "topbar-width-full",
+        "value": "Total (100%)",
         "type": "string"
     },
     {

@@ -777,6 +777,16 @@
         "type": "string"
     },
     {
+        "id": "topbar-active-favorites",
+        "value": "Active shortcuts",
+        "type": "string"
+    },
+    {
+        "id": "topbar-reorder",
+        "value": "Reorder shortcut",
+        "type": "string"
+    },
+    {
         "id": "topbar-user-menu",
         "value": "User menu",
         "type": "string"
@@ -789,6 +799,26 @@
     {
         "id": "topbar-security",
         "value": "Security and Password",
+        "type": "string"
+    },
+    {
+        "id": "topbar-content-width",
+        "value": "Content width",
+        "type": "string"
+    },
+    {
+        "id": "topbar-width-normal",
+        "value": "Default (1280px)",
+        "type": "string"
+    },
+    {
+        "id": "topbar-width-expanded",
+        "value": "Expanded (1600px)",
+        "type": "string"
+    },
+    {
+        "id": "topbar-width-full",
+        "value": "Full width (100%)",
         "type": "string"
     },
     {

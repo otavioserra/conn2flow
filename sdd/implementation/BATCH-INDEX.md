@@ -78,6 +78,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-237 | complete | Topbar administrativa: perfil, idioma e favoritos por usuário (req-228) | [BATCH-237.md](BATCH-237.md) | Menu de perfil, idioma e favoritos persistentes no SQL. Integrado em `main`. |
 | BATCH-238 | complete | Biblioteca de Estado e Acesso Controlado a Variáveis Globais (req-229) | [BATCH-238.md](BATCH-238.md) | Fachada `gestor_get/set/has/contexto`, classe `GestorState`, proteção de chaves críticas e 100% de retrocompatibilidade com `$_GESTOR`. Integrado em `main`. |
 | BATCH-239 | in-review | Integração Oficial da V3.0 e Rota Canônica das Capas (req-230) | [BATCH-239.md](BATCH-239.md) | Mesclagem sequencial das branches 226/228/229, rota canônica das capas (/modulos/covers/), resolução de 404 local e homologação integrada. |
+| BATCH-241 | superseded | Refinamento da UI V3.0 — Dashboard, Widgets, Topbar e Largura do Painel (req-232) | [req-232.md](../human-requests/req-232.md) | Superado pelo BATCH-242 devido a regressões na geometria e redimensionamento de widgets. |
+| BATCH-242 | in-progress | Correção Estrutural da UI V3.0 — Widgets, Capas, Topbar e Largura Útil (req-233) | [BATCH-242.md](BATCH-242.md) | Grid 12 colunas min-h-[220px], resize com snap proporcional, seletor de widget no card, capas 9rem/12rem, topbar w-80 e largura útil do painel. |
 
 ## Regra operacional
 

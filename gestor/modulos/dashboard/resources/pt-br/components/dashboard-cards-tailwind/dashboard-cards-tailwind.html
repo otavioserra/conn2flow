@@ -1,4 +1,4 @@
-<!-- req-224 / req-226: Painel inicial V3.0 com Abas, Seletor P/M/G e Grid Flexível de Widgets -->
+<!-- req-224 / req-226 / req-233: Painel inicial V3.0 com Abas, Seletor P/M/G, Capas 9rem/12rem e Grid de 12 Colunas de Widgets -->
 <div id="dashboard-cards-container" class="dashboard-cards-segment space-y-6">
     <!-- update-notification < -->
     <div id="dashboard-update-notification" class="dashboard-update-message relative flex items-start gap-3 rounded-xl border border-sky-200 bg-sky-50 px-4 py-4 pr-10 text-sm text-sky-900" style="display: none;">
@@ -68,7 +68,7 @@
             <!-- card < -->
             <div class="dashboard-module-card group #modulo-has-image-class# flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md" data-module-id="#modulo-id#" data-module-order="#modulo-order#">
                 <div class="dashboard-card-header relative flex items-center justify-center overflow-hidden bg-slate-50 transition-colors">
-                    <div class="dashboard-card-drag-handle absolute top-2 left-2 z-10 cursor-grab rounded p-1 text-slate-400 hover:bg-white hover:text-slate-700 shadow-sm" aria-hidden="true" data-c2f-dica="@[[cards-tooltip-drag]]@">
+                    <div class="dashboard-card-drag-handle absolute top-2.5 left-2.5 z-10 cursor-grab rounded-md bg-white/85 p-1 text-slate-500 shadow-sm backdrop-blur-sm transition-colors hover:bg-white hover:text-slate-800" aria-hidden="true" data-c2f-dica="@[[cards-tooltip-drag]]@">
                         <i data-lucide="grip-vertical" class="size-4"></i>
                     </div>
                     <div class="dashboard-card-cover-wrapper w-full h-full flex items-center justify-center overflow-hidden">
@@ -133,8 +133,14 @@
             </div>
         </div>
 
-        <div id="dashboard-widgets-grid" class="dashboard-widgets-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            <!-- Widgets renderizados dinamicamente pelo JS -->
+        <div id="dashboard-widgets-grid" class="dashboard-widgets-grid grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-12 gap-6"
+            data-label-switch="@[[widgets-label-switch]]@"
+            data-label-active="@[[widgets-label-active]]@"
+            data-label-available="@[[widgets-label-available]]@"
+            data-label-add="@[[widgets-label-add]]@"
+            data-label-select="@[[widgets-label-select]]@"
+            data-label-resize="@[[widgets-label-resize]]@">
+            <!-- Widgets renderizados dinamicamente pelo JS em malha canônica de 12 colunas -->
         </div>
 
         <div id="dashboard-widgets-empty" class="hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 p-12 text-center">

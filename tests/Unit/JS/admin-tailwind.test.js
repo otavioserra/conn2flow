@@ -206,7 +206,7 @@ describe('Layout administrativo Tailwind — runtime do menu (req-118)', () => {
       const principal = document.querySelector('[data-admin-main]');
 
       expect(conteudo.style.marginLeft).toBe('260px');
-      expect(principal.style.maxWidth).toBe('');
+      expect(principal.style.maxWidth).toBe('80rem');
 
       document.querySelector('[data-admin-abrir]').dispatchEvent(new window.Event('click', { bubbles: true }));
 
@@ -216,7 +216,7 @@ describe('Layout administrativo Tailwind — runtime do menu (req-118)', () => {
       document.querySelector('[data-admin-abrir]').dispatchEvent(new window.Event('click', { bubbles: true }));
 
       expect(conteudo.style.marginLeft).toBe('260px');
-      expect(principal.style.maxWidth).toBe('');
+      expect(principal.style.maxWidth).toBe('80rem');
     });
   });
 

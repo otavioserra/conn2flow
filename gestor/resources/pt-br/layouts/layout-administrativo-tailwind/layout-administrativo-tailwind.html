@@ -58,7 +58,8 @@
         <div data-admin-conteudo class="flex min-h-screen flex-col transition-[margin] duration-200 lg:ml-[260px]">
             @[[admin-topbar]]@
 
-            <main data-admin-main class="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
+            <main data-admin-main data-admin-max-width="normal" style="max-width:80rem"
+                class="mx-auto w-full flex-1 px-4 py-6">
                 @[[pagina#corpo]]@
             </main>
         </div>

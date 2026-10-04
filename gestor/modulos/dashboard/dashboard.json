@@ -21,11 +21,12 @@
                 {
                     "name": "Layout Administrativo do Gestor 3D",
                     "id": "layout-administrativo-do-gestor-3d",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "86084a069e5c75e5e778d42ae3b34e1c",
-                        "css": "0dfc4de68dbab3be4fd7f0d2d8d0e592",
-                        "combined": "d9ea93644fcb2122b1db023586b35d76"
+                        "html": "dd83937b3aa5839604b59cc608e61790",
+                        "css": "7fce855351b881a5599c9f59c7e75b92",
+                        "css_precompiled": "",
+                        "combined": "b3ff3c6f6727bffdbf0ca9d6f27825eb"
                     }
                 }
             ],
@@ -37,11 +38,12 @@
                     "path": "dashboard-3d/",
                     "type": "system",
                     "option": "dashboard-3d",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "4b9007d100e66b5313a6279e63cd0770",
+                        "html": "ddeaf1e853e67db15a3ac6b54bcf4f77",
                         "css": "",
-                        "combined": "4b9007d100e66b5313a6279e63cd0770"
+                        "css_precompiled": "",
+                        "combined": "ddeaf1e853e67db15a3ac6b54bcf4f77"
                     }
                 },
                 {
@@ -52,11 +54,12 @@
                     "type": "system",
                     "option": "inicio",
                     "root": true,
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "c19d30a48ea2e80f18c4243d0067cad2",
+                        "html": "c6cd1e15f2399303c611a324f9e6bd05",
                         "css": "",
-                        "combined": "c19d30a48ea2e80f18c4243d0067cad2"
+                        "css_precompiled": "",
+                        "combined": "c6cd1e15f2399303c611a324f9e6bd05"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -100,11 +103,12 @@
                     "path": "dashboard-testes/",
                     "type": "system",
                     "option": "listar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "cf8d79dae48be6e8f5399b9c6ca4d71c",
+                        "html": "b67e53ae2f70f150c2341f00e7279778",
                         "css": "",
-                        "combined": "cf8d79dae48be6e8f5399b9c6ca4d71c"
+                        "css_precompiled": "",
+                        "combined": "b67e53ae2f70f150c2341f00e7279778"
                     }
                 },
                 {
@@ -135,12 +139,12 @@
                         }
                     ],
                     "tailwind_dependencies_reason": "REQ-115: bundle canônico da toolbar inclui o layout declarado na página e os componentes montados dinamicamente pelo PHP.",
-                    "version": "1.21",
+                    "version": "1.22",
                     "checksum": {
-                        "html": "45ba457bf99ebf35f51ecc78cbe166b0",
+                        "html": "e9bc80a7642341213b2ba4cda2cb37cc",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "45ba457bf99ebf35f51ecc78cbe166b0"
+                        "combined": "e9bc80a7642341213b2ba4cda2cb37cc"
                     }
                 }
             ],
@@ -169,60 +173,60 @@
                     "name": "Menu da Toolbar do Site",
                     "id": "dashboard-site-toolbar-menu",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "a136078e764e67ba868a70235db4d70b",
+                        "html": "e89e278371d4196e94b4100d909b933b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "a136078e764e67ba868a70235db4d70b"
+                        "combined": "e89e278371d4196e94b4100d909b933b"
                     }
                 },
                 {
                     "name": "Item do Menu da Toolbar do Site",
                     "id": "dashboard-site-toolbar-menu-item",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "f748da9165bd0b6022d103902cd27466",
+                        "html": "476f33eebb7f9f57911c7427ab2ddaa4",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f748da9165bd0b6022d103902cd27466"
+                        "combined": "476f33eebb7f9f57911c7427ab2ddaa4"
                     }
                 },
                 {
                     "name": "Grupo do Menu da Toolbar do Site",
                     "id": "dashboard-site-toolbar-menu-group",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "ff7012d9f2cef0dcc5665f975c55d8e6",
+                        "html": "71ebbf3a2f2ac4f9b596e88ef24f3c0d",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ff7012d9f2cef0dcc5665f975c55d8e6"
+                        "combined": "71ebbf3a2f2ac4f9b596e88ef24f3c0d"
                     }
                 },
                 {
                     "name": "Estado Vazio do Menu da Toolbar do Site",
                     "id": "dashboard-site-toolbar-menu-empty",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "09109307e3bea00e20e899acbdd92c8c",
+                        "html": "e128634c96066a08cf3187d86e240aca",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "09109307e3bea00e20e899acbdd92c8c"
+                        "combined": "e128634c96066a08cf3187d86e240aca"
                     }
                 },
                 {
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "3a91496db8ba7cce38dac1f53db6bf6c",
-                        "css": "dca4e004c7cb3414eabee09df6356f9d",
+                        "html": "3a36b906b101979032a6ea393060c249",
+                        "css": "592f1e169a475179b072714104a9ad1b",
                         "css_precompiled": "",
-                        "combined": "455c42f34a3bde5bfd336ffde703a7a7"
+                        "combined": "9ae41e688de5da1b31b3d735c0be1370"
                     }
                 }
             ],
@@ -466,6 +470,36 @@
                     "id": "widgets-btn-fechar",
                     "value": "Fechar",
                     "type": "string"
+                },
+                {
+                    "id": "widgets-label-switch",
+                    "value": "Trocar widget",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-active",
+                    "value": "Ativo no painel",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-available",
+                    "value": "Disponível",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-add",
+                    "value": "Adicionar",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-select",
+                    "value": "Selecionar",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-resize",
+                    "value": "Redimensionar widget",
+                    "type": "string"
                 }
             ]
         },
@@ -474,11 +508,12 @@
                 {
                     "name": "Layout Administrativo do Gestor 3D",
                     "id": "layout-administrativo-do-gestor-3d",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "7819d72480d2ffb568171f018c819f7b",
+                        "html": "bc8ba8d55fd900340b8aaaa8db4872e9",
                         "css": "7fce855351b881a5599c9f59c7e75b92",
-                        "combined": "acbbbae9dbcec10f9badac8b023b5a77"
+                        "css_precompiled": "",
+                        "combined": "d40229d7fcb35fb694b96d3bd8be61ba"
                     }
                 }
             ],
@@ -505,11 +540,12 @@
                     "type": "system",
                     "root": true,
                     "option": "inicio",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "c19d30a48ea2e80f18c4243d0067cad2",
+                        "html": "c6cd1e15f2399303c611a324f9e6bd05",
                         "css": "",
-                        "combined": "c19d30a48ea2e80f18c4243d0067cad2"
+                        "css_precompiled": "",
+                        "combined": "c6cd1e15f2399303c611a324f9e6bd05"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -553,11 +589,12 @@
                     "path": "dashboard-testes/",
                     "type": "system",
                     "option": "listar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "003ea280632102497e37f9ec148286d7",
+                        "html": "a057072bce15eaa9544cd24c38ddbffe",
                         "css": "",
-                        "combined": "003ea280632102497e37f9ec148286d7"
+                        "css_precompiled": "",
+                        "combined": "a057072bce15eaa9544cd24c38ddbffe"
                     }
                 },
                 {
@@ -588,12 +625,12 @@
                         }
                     ],
                     "tailwind_dependencies_reason": "REQ-115: canonical toolbar bundle includes the page layout and the components assembled dynamically by PHP.",
-                    "version": "1.21",
+                    "version": "1.22",
                     "checksum": {
-                        "html": "e27efee896de81b423b8134aac61b553",
+                        "html": "3342bdbed2b18a37928d0cb1d54667ee",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e27efee896de81b423b8134aac61b553"
+                        "combined": "3342bdbed2b18a37928d0cb1d54667ee"
                     }
                 }
             ],
@@ -622,60 +659,60 @@
                     "name": "Site Toolbar Menu",
                     "id": "dashboard-site-toolbar-menu",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "a136078e764e67ba868a70235db4d70b",
+                        "html": "e89e278371d4196e94b4100d909b933b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "a136078e764e67ba868a70235db4d70b"
+                        "combined": "e89e278371d4196e94b4100d909b933b"
                     }
                 },
                 {
                     "name": "Site Toolbar Menu Item",
                     "id": "dashboard-site-toolbar-menu-item",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "f748da9165bd0b6022d103902cd27466",
+                        "html": "476f33eebb7f9f57911c7427ab2ddaa4",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f748da9165bd0b6022d103902cd27466"
+                        "combined": "476f33eebb7f9f57911c7427ab2ddaa4"
                     }
                 },
                 {
                     "name": "Site Toolbar Menu Group",
                     "id": "dashboard-site-toolbar-menu-group",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "ff7012d9f2cef0dcc5665f975c55d8e6",
+                        "html": "71ebbf3a2f2ac4f9b596e88ef24f3c0d",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ff7012d9f2cef0dcc5665f975c55d8e6"
+                        "combined": "71ebbf3a2f2ac4f9b596e88ef24f3c0d"
                     }
                 },
                 {
                     "name": "Site Toolbar Menu Empty State",
                     "id": "dashboard-site-toolbar-menu-empty",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "09109307e3bea00e20e899acbdd92c8c",
+                        "html": "e128634c96066a08cf3187d86e240aca",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "09109307e3bea00e20e899acbdd92c8c"
+                        "combined": "e128634c96066a08cf3187d86e240aca"
                     }
                 },
                 {
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "d977b4130eec87f0f72068f1c92582d7",
-                        "css": "dca4e004c7cb3414eabee09df6356f9d",
+                        "html": "3a36b906b101979032a6ea393060c249",
+                        "css": "592f1e169a475179b072714104a9ad1b",
                         "css_precompiled": "",
-                        "combined": "ae8160ad6075cdc3728ed2161c6c3f54"
+                        "combined": "9ae41e688de5da1b31b3d735c0be1370"
                     }
                 }
             ],
@@ -919,9 +956,39 @@
                     "id": "widgets-btn-fechar",
                     "value": "Close",
                     "type": "string"
+                },
+                {
+                    "id": "widgets-label-switch",
+                    "value": "Switch widget",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-active",
+                    "value": "Active on dashboard",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-available",
+                    "value": "Available",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-add",
+                    "value": "Add",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-select",
+                    "value": "Select",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-label-resize",
+                    "value": "Resize widget",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "d6d4ac215a696805"
+    "asset_version": "135c2e5eb2b0faf7"
 }
