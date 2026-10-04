@@ -679,12 +679,12 @@
         "name": "Interface List Tailwind",
         "id": "interface-listar-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "20c2a845e32162c4fa55995fd304c5a9",
+            "html": "e023064c647925363bed170614345a50",
             "css": "",
             "css_precompiled": "",
-            "combined": "20c2a845e32162c4fa55995fd304c5a9"
+            "combined": "e023064c647925363bed170614345a50"
         }
     }
 ]
