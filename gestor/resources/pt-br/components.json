@@ -605,6 +605,18 @@
         }
     },
     {
+        "name": "Interface Formulário Visualização Tailwind",
+        "id": "interface-formulario-visualizacao-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.0",
+        "checksum": {
+            "html": "",
+            "css": "",
+            "css_precompiled": "",
+            "combined": ""
+        }
+    },
+    {
         "name": "Interface Formulário Inclusão Tailwind",
         "id": "interface-formulario-inclusao-tailwind",
         "framework_css": "tailwindcss",
