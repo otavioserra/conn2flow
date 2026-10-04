@@ -341,3 +341,16 @@ Para manter o checklist de validaÃ§Ãµes leve e eficiente (teto de 25 blocos 
 - **[validation-094-110.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/validation/archive/validation-094-110.md)** (BATCH-094 a BATCH-110)
 - **[validation-111-134.md](archive/validation-111-134.md)** (17 blocos históricos entre BATCH-111 e BATCH-134; ordem documental preservada)
 - **[validation-136-173.md](archive/validation-136-173.md)** (BATCH-136 a BATCH-173)
+
+## BATCH-228 — Listagem Tailwind (req-220)
+
+- [x] CA-1: piloto sem assets Fomantic/DataTables; layout/menu Tailwind usam Lucide.
+- [x] CA-2: cadastro, edição, clonagem, busca, ordenação, paginação, status e exclusão conferidos em desktop e 390 px; sem overflow da página.
+- [x] CA-3: admin-paginas/admin-layouts continuam listando com DataTables.
+- [x] CA-4: PHPUnit completo 1.475 testes/11.720 asserções (Linux com LF); focado final 44/591; Vitest 483 testes; Playwright 21 verificações e zero erros de console.
+- [x] Pipeline oficial project-test concluído, banco sincronizado e 458 arquivos conferidos por hash. Publicação direta de dist falhou por caminho Windows no rsync; fallback estático validado.
+- [x] Dados antes/depois: 7 grupos ativos, registros de teste removidos. Sintaxe PHP/JS e git diff --check aprovados.
+- [x] Review técnico do slice sem finding bloqueante; mudanças alheias mantidas fora do diff.
+- [ ] Revisão independente e consolidação pela req-219/humano.
+
+Evidências: [BATCH-228](../implementation/BATCH-228.md), [roteiro](req220-browser.cjs), [resultados](req220-browser-results.json). Runtime inspecionado em pt-br; en compilado e verificado por unidade. Depreciações/pulados e problemas iniciais de CRLF registrados no lote.

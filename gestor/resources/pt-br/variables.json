@@ -697,5 +697,53 @@
         "id": "controles-atencao",
         "value": "Atenção",
         "type": "string"
+    },
+    {
+        "id": "list-tailwind-search",
+        "value": "Buscar",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-length",
+        "value": "Registros por página",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-previous",
+        "value": "Anterior",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-next",
+        "value": "Próxima",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-empty",
+        "value": "Nenhum registro encontrado.",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-loading",
+        "value": "Carregando registros…",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-error",
+        "value": "Não foi possível carregar os registros. Tente buscar novamente.",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-summary",
+        "value": "{inicio}–{fim} de {total} registros",
+        "type": "string",
+        "modulo": "interface"
     }
 ]

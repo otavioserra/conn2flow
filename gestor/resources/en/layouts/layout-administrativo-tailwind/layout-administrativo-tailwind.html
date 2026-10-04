@@ -9,22 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="@[[pagina#url-raiz]]@favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="@[[pagina#url-raiz]]@favicon/favicon-16x16.png">
     <link rel="manifest" href="@[[pagina#url-raiz]]@favicon/site.webmanifest">
-    <!--
-        Only the Fomantic ICON stylesheet, not the framework. It draws the STRUCTURAL icons hardcoded
-        in this layout (open/close menu, site shortcut, 3D dashboard, version badge): those are fixed
-        and never come from the module registry. Layout CSS stays 100% Tailwind.
-    -->
-    <link rel="stylesheet" type="text/css" media="all"
-        href="@[[pagina#url-raiz]]@vendor/fomantic-icon/2.9.4/components/icon.min.css">
-    <!--
-        req-124 F2: module icons are a different story. `gestor_pagina_menu_icone()` hands a Tailwind
-        menu the contents of `modulos.icone_tailwind`, which is Lucide vocabulary — and the two
-        catalogs do not translate. Without Lucide loaded the component wrote `class="blocks icon"`
-        against the Fomantic sheet and the icon vanished silently on 19 of the 33 menu modules (the
-        survivors were only the names that happen to exist in both catalogs: `user`, `home`,
-        `search`…). `defer` guarantees it runs before the DOMContentLoaded that boots
-        `admin-tailwind.js`, which calls `lucide.createIcons()`.
-    -->
+    <!-- REQ-220: structural and module icons use Lucide, without Fomantic assets. -->
     <script defer src="@[[pagina#url-raiz]]@vendor/lucide/0.544.0/lucide.min.js"></script>
     <!-- pagina#css -->
     <!-- pagina#js -->
@@ -42,16 +27,16 @@
                 <div class="flex items-center gap-1">
                     <a href="@[[pagina#url-raiz]]@" title="Go to site"
                         class="inline-flex size-9 items-center justify-center rounded-lg bg-emerald-600 text-white transition-colors hover:bg-emerald-700">
-                        <i class="external alternate icon"></i>
+                        <i data-lucide="external-link" aria-hidden="true" class="size-4"></i>
                     </a>
                     <button type="button" data-admin-dashboard3d title="Dashboard 3D"
                         class="inline-flex size-9 items-center justify-center rounded-lg bg-sky-600 text-white transition-colors hover:bg-sky-700">
-                        <i class="cube icon"></i>
+                        <i data-lucide="box" aria-hidden="true" class="size-4"></i>
                     </button>
                 </div>
                 <button type="button" data-admin-fechar title="Close menu"
                     class="inline-flex size-9 items-center justify-center rounded-lg bg-slate-800 text-slate-300 transition-colors hover:bg-slate-700 hover:text-white">
-                    <i class="times icon"></i>
+                    <i data-lucide="x" aria-hidden="true" class="size-4"></i>
                 </button>
             </div>
 
@@ -60,7 +45,7 @@
             <div class="border-t border-slate-800 px-3 py-3">
                 <span
                     class="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300">
-                    <i class="certificate icon text-amber-400"></i> Gestor v@[[gestor#versao]]@
+                    <i data-lucide="badge-check" aria-hidden="true" class="size-4 text-amber-400"></i> Gestor v@[[gestor#versao]]@
                 </span>
             </div>
 
@@ -75,7 +60,7 @@
                 <div class="flex items-center gap-3">
                     <button type="button" data-admin-abrir title="Open menu"
                         class="inline-flex size-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50 lg:hidden">
-                        <i class="bars icon"></i>
+                        <i data-lucide="menu" aria-hidden="true" class="size-4"></i>
                     </button>
                     <a href="@[[pagina#url-raiz]]@dashboard/" class="inline-flex items-center">
                         <img src="@[[pagina#url-raiz]]@images/logo-principal.png" alt="Conn2Flow"
@@ -85,7 +70,7 @@
                 <div class="flex items-center gap-2">
                     <span
                         class="inline-flex size-8 items-center justify-center rounded-full bg-slate-800 text-xs font-semibold text-white"
-                        aria-hidden="true"><i class="user icon"></i></span>
+                        aria-hidden="true"><i data-lucide="user" aria-hidden="true" class="size-4"></i></span>
                     <span class="hidden text-sm font-medium text-slate-700 sm:inline">@[[usuario#nome]]@</span>
                 </div>
             </header>

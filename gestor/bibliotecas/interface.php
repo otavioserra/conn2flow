@@ -5153,6 +5153,7 @@ function interface_listar_ajax($params = false){
 	$banco = $interface['banco'];
 	$tabela = $interface['tabela'];
 	$procurar = '';
+	$jsonObj = Array('data' => Array(), 'recordsTotal' => (int)$interface['totalRegistros'], 'recordsFiltered' => 0);
 
 	// ===== Request variables
 	
@@ -5171,7 +5172,7 @@ function interface_listar_ajax($params = false){
 			$start = '0';
 		}
 		
-		$interface['registroInicial'] = ($start != '0' ? ltrim($start, "0") : $start);
+		$interface['registroInicial'] = !empty($interface['tailwind']) ? max(0, (int)$start) : ($start != '0' ? ltrim($start, "0") : $start);
 	}
 	
 	if(isset($_REQUEST['length'])){
@@ -5180,7 +5181,7 @@ function interface_listar_ajax($params = false){
 			$length = '25';
 		}
 		
-		$interface['registrosPorPagina'] = $length;
+		$interface['registrosPorPagina'] = !empty($interface['tailwind']) ? max(1, min(100, (int)$length)) : $length;
 	}
 	
 	// req-189 (A1): colunas, ordenação e busca vêm SÓ da configuração da listagem guardada na sessão
@@ -5264,6 +5265,7 @@ function interface_listar_ajax($params = false){
 	}
 	
 	// ===== Popular registros no JSON
+	$jsonObj['recordsFiltered'] = strlen($procurar) > 0 ? count($pre_tabela_bd ?: Array()) : (int)$interface['totalRegistros'];
 	
 	if($tabela_bd){
 		if(strlen($procurar) > 0){
@@ -5627,6 +5629,12 @@ function interface_listar_iniciar($params = false){
 
 function interface_listar_finalizar($params = false){
 	global $_GESTOR;
+
+	if(interface_componente_variante('interface-listar') === 'interface-listar-tailwind'){
+		require_once __DIR__.'/interface-listar-tailwind.php';
+		interface_listar_tailwind_finalizar($params);
+		return;
+	}
 	
 	if($params)foreach($params as $var => $val)$$var = $val;
 	

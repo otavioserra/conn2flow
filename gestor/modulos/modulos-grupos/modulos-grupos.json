@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.0.1",
     "bibliotecas": [
         "interface",
         "html"
@@ -30,62 +30,207 @@
                 {
                     "name": "Módulos Grupos",
                     "id": "modulos-grupos",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-grupos/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-220: componentes da interface e menu administrativo renderizados pelo servidor no piloto Tailwind."
                 },
                 {
                     "name": "Módulos Grupos - Adicionar",
                     "id": "modulos-grupos-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-grupos/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.2",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "d6960e18960aacc5a06125ba93ef652c",
+                        "html": "02928d6f9dbfd5c5cf00ef55d3217a61",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d6960e18960aacc5a06125ba93ef652c"
-                    }
+                        "combined": "02928d6f9dbfd5c5cf00ef55d3217a61"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-220: componentes da interface e menu administrativo renderizados pelo servidor no piloto Tailwind."
                 },
                 {
                     "name": "Módulos Grupos - Editar",
                     "id": "modulos-grupos-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-grupos/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "8dd2f3ce05977a4244ae98cd6f7c3cfa",
+                        "html": "40c453ee38af6b0a7607a22dc989fe77",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "8dd2f3ce05977a4244ae98cd6f7c3cfa"
-                    }
+                        "combined": "40c453ee38af6b0a7607a22dc989fe77"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-220: componentes da interface e menu administrativo renderizados pelo servidor no piloto Tailwind."
                 },
                 {
                     "name": "Módulos Grupos - Clonar",
                     "id": "modulos-grupos-clonar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-grupos/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.2",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "f29098082c3daa318905e2e3731144c3",
+                        "html": "b4856f53895a328184d6c74d56b840f5",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f29098082c3daa318905e2e3731144c3"
-                    }
+                        "combined": "b4856f53895a328184d6c74d56b840f5"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-220: componentes da interface e menu administrativo renderizados pelo servidor no piloto Tailwind."
                 }
             ],
             "components": [],
@@ -133,62 +278,207 @@
                 {
                     "name": "Module Groups",
                     "id": "modulos-grupos",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-grupos/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-220: componentes da interface e menu administrativo renderizados pelo servidor no piloto Tailwind."
                 },
                 {
                     "name": "Module Groups - Add",
                     "id": "modulos-grupos-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-grupos/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.2",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "d6960e18960aacc5a06125ba93ef652c",
+                        "html": "02928d6f9dbfd5c5cf00ef55d3217a61",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d6960e18960aacc5a06125ba93ef652c"
-                    }
+                        "combined": "02928d6f9dbfd5c5cf00ef55d3217a61"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-220: componentes da interface e menu administrativo renderizados pelo servidor no piloto Tailwind."
                 },
                 {
                     "name": "Module Groups - Edit",
                     "id": "modulos-grupos-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-grupos/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "8dd2f3ce05977a4244ae98cd6f7c3cfa",
+                        "html": "40c453ee38af6b0a7607a22dc989fe77",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "8dd2f3ce05977a4244ae98cd6f7c3cfa"
-                    }
+                        "combined": "40c453ee38af6b0a7607a22dc989fe77"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-220: componentes da interface e menu administrativo renderizados pelo servidor no piloto Tailwind."
                 },
                 {
                     "name": "Module Groups - Clone",
                     "id": "modulos-grupos-clonar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-grupos/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.2",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "f29098082c3daa318905e2e3731144c3",
+                        "html": "b4856f53895a328184d6c74d56b840f5",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f29098082c3daa318905e2e3731144c3"
-                    }
+                        "combined": "b4856f53895a328184d6c74d56b840f5"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-220: componentes da interface e menu administrativo renderizados pelo servidor no piloto Tailwind."
                 }
             ],
             "components": [],

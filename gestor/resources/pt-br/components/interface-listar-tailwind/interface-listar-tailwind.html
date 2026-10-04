@@ -1,0 +1,37 @@
+<section data-id="1" data-title="listagem" class="min-w-0 space-y-5" data-c2f-listar data-vazia="#vazia#" data-carregando="#carregando#" data-erro="#erro#" data-resumo="#resumo#" data-opcoes="#opcoes#" data-status="#status#" data-titulo-excluir="#titulo-excluir#" data-mensagem-excluir="#mensagem-excluir#" data-cancelar="#cancelar#" data-confirmar="#confirmar#">
+    <h1 class="text-2xl font-semibold text-slate-900">#titulo#</h1>
+    <div class="flex flex-wrap justify-end gap-2">#botoes#</div>
+    <div class="min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        #cabecalho#
+        <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+            <label class="flex min-w-0 flex-1 flex-col gap-1 text-sm font-medium text-slate-700">#busca#
+                <input type="search" data-lista-busca class="w-full min-w-0 rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none" />
+            </label>
+            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">#quantidade#
+                <select data-lista-quantidade class="rounded-lg border border-slate-300 px-3 py-2">
+                    <option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option>
+                </select>
+            </label>
+        </div>
+        <p data-lista-mensagem role="status" aria-live="polite" class="mb-3 text-sm text-slate-600"></p>
+        <div class="max-w-full overflow-x-auto">
+            <table data-lista-tabela class="w-full border-collapse text-left text-sm">
+                <thead class="border-b border-slate-200 bg-slate-50 text-slate-700"><tr data-lista-colunas></tr></thead>
+                <tbody data-lista-linhas class="divide-y divide-slate-200"></tbody>
+            </table>
+        </div>
+        <nav class="mt-4 flex flex-wrap items-center justify-between gap-3" aria-label="#quantidade#">
+            <span data-lista-resumo class="text-sm text-slate-600" aria-live="polite"></span>
+            <div class="flex gap-2">
+                <button type="button" data-lista-anterior class="rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-40">#anterior#</button>
+                <button type="button" data-lista-proxima class="rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-40">#proxima#</button>
+            </div>
+        </nav>
+    </div>
+    <template data-lista-th><table><thead><tr><th scope="col" class="px-3 py-3"><button type="button" class="flex items-center gap-1 text-left font-semibold disabled:cursor-default"><span></span><span data-lista-direcao aria-hidden="true"></span></button></th></tr></thead></table></template>
+    <template data-lista-td><table><tbody><tr><td class="max-w-xs break-words px-3 py-3"></td></tr></tbody></table></template>
+    <template data-lista-acoes><div class="flex flex-wrap gap-1"></div></template>
+    <template data-lista-acao><a class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 text-blue-700 hover:bg-slate-100 focus:outline-2 focus:outline-blue-500"></a></template>
+    <template data-lista-excluir><button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-red-200 text-red-700 hover:bg-red-50 focus:outline-2 focus:outline-red-500"></button></template>
+    <template data-lista-status><span class="inline-flex rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-700"></span></template>
+</section>

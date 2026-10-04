@@ -440,12 +440,12 @@
         "name": "Main System Menu Tailwind",
         "id": "menu-principal-sistema-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.5",
+        "version": "1.10",
         "checksum": {
-            "html": "95e8d2e246524e26d081b7a2caa3a0d9",
+            "html": "f81472f04f5ab88ef19f3ff9a724765a",
             "css": "",
             "css_precompiled": "",
-            "combined": "95e8d2e246524e26d081b7a2caa3a0d9"
+            "combined": "f81472f04f5ab88ef19f3ff9a724765a"
         }
     },
     {
@@ -529,6 +529,18 @@
             "css": "",
             "css_precompiled": "",
             "combined": "e824a7913b768d949d736f503163d3b3"
+        }
+    },
+    {
+        "name": "Interface List Tailwind",
+        "id": "interface-listar-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "a990f17927aea09f7b88b6200f410dca",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "a990f17927aea09f7b88b6200f410dca"
         }
     }
 ]

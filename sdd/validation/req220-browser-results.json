@@ -1,0 +1,173 @@
+{
+  "results": [
+    {
+      "name": "dados-antes",
+      "ok": true,
+      "activeGroups": 7
+    },
+    {
+      "name": "lista-desktop",
+      "ok": true,
+      "width": 1280,
+      "overflow": 0,
+      "assets": [
+        "/vendor/lucide/0.544.0/lucide.min.js",
+        "/interface/controles.css",
+        "/vendor/jquery/3.7.1/jquery.min.js",
+        "/global/global.js",
+        "/interface/controles.js",
+        "/interface/interface-tailwind.js",
+        "/interface/interface-listar-tailwind.js",
+        "/global/admin-tailwind.js"
+      ]
+    },
+    {
+      "name": "lista-mobile",
+      "ok": true,
+      "width": 390,
+      "overflow": 0,
+      "assets": [
+        "/vendor/lucide/0.544.0/lucide.min.js",
+        "/interface/controles.css",
+        "/vendor/jquery/3.7.1/jquery.min.js",
+        "/global/global.js",
+        "/interface/controles.js",
+        "/interface/interface-tailwind.js",
+        "/interface/interface-listar-tailwind.js",
+        "/global/admin-tailwind.js"
+      ]
+    },
+    {
+      "name": "busca-vazia",
+      "ok": true
+    },
+    {
+      "name": "adicionar",
+      "ok": true,
+      "created": 4
+    },
+    {
+      "name": "editar-mobile",
+      "ok": true,
+      "width": 390,
+      "overflow": 0,
+      "assets": [
+        "/vendor/lucide/0.544.0/lucide.min.js",
+        "/interface/controles.css",
+        "/vendor/jquery/3.7.1/jquery.min.js",
+        "/global/global.js",
+        "/interface/controles.js",
+        "/interface/interface-tailwind.js",
+        "/modulos-grupos/js.js",
+        "/global/admin-tailwind.js"
+      ]
+    },
+    {
+      "name": "editar",
+      "ok": true
+    },
+    {
+      "name": "clonar-mobile",
+      "ok": true,
+      "width": 390,
+      "overflow": 0,
+      "assets": [
+        "/vendor/lucide/0.544.0/lucide.min.js",
+        "/interface/controles.css",
+        "/vendor/jquery/3.7.1/jquery.min.js",
+        "/global/global.js",
+        "/interface/controles.js",
+        "/interface/interface-tailwind.js",
+        "/modulos-grupos/js.js",
+        "/global/admin-tailwind.js"
+      ]
+    },
+    {
+      "name": "clonar",
+      "ok": true
+    },
+    {
+      "name": "paginacao",
+      "ok": true
+    },
+    {
+      "name": "busca",
+      "ok": true
+    },
+    {
+      "name": "ordenacao",
+      "ok": true
+    },
+    {
+      "name": "lista-mobile-acoes",
+      "ok": true,
+      "width": 390,
+      "overflow": 0,
+      "assets": [
+        "/vendor/lucide/0.544.0/lucide.min.js",
+        "/interface/controles.css",
+        "/vendor/jquery/3.7.1/jquery.min.js",
+        "/global/global.js",
+        "/interface/controles.js",
+        "/interface/interface-tailwind.js",
+        "/interface/interface-listar-tailwind.js",
+        "/global/admin-tailwind.js"
+      ]
+    },
+    {
+      "name": "desativar",
+      "ok": true
+    },
+    {
+      "name": "ativar",
+      "ok": true
+    },
+    {
+      "name": "confirmacao-mobile",
+      "ok": true,
+      "width": 390,
+      "overflow": 0,
+      "assets": [
+        "/vendor/lucide/0.544.0/lucide.min.js",
+        "/interface/controles.css",
+        "/vendor/jquery/3.7.1/jquery.min.js",
+        "/global/global.js",
+        "/interface/controles.js",
+        "/interface/interface-tailwind.js",
+        "/interface/interface-listar-tailwind.js",
+        "/global/admin-tailwind.js"
+      ]
+    },
+    {
+      "name": "cancelar-exclusao",
+      "ok": true
+    },
+    {
+      "name": "excluir",
+      "ok": true
+    },
+    {
+      "name": "legado-admin-paginas",
+      "ok": true
+    },
+    {
+      "name": "legado-admin-layouts",
+      "ok": true
+    },
+    {
+      "name": "dados-depois",
+      "ok": true,
+      "activeGroups": 7,
+      "removedPreviousTests": 0
+    }
+  ],
+  "screenshots": [
+    "sdd/validation/assets/req220/lista-desktop.png",
+    "sdd/validation/assets/req220/lista-mobile.png",
+    "sdd/validation/assets/req220/editar-mobile.png",
+    "sdd/validation/assets/req220/clonar-mobile.png",
+    "sdd/validation/assets/req220/lista-mobile-acoes.png",
+    "sdd/validation/assets/req220/confirmacao-mobile.png"
+  ],
+  "errors": []
+}

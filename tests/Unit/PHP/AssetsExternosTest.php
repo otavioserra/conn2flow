@@ -196,7 +196,6 @@ final class AssetsExternosTest extends TestCase
         $registro = assets_externos_registro();
 
         $esperados = [
-            'fomantic-icon' => 'vendor/fomantic-icon/' . $registro['fomantic-icon']['versao'] . '/',
             'lucide' => 'vendor/lucide/' . $registro['lucide']['versao'] . '/',
         ];
 
