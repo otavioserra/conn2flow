@@ -87,6 +87,402 @@ function gestor_modulo_asset_version($modulo){
 	return gestor_asset_version();
 }
 
+// ===========================================================================================
+// req-229: GestorState — Camada de Estado Controlado e Ponte OOP (Linha 3.1)
+// ===========================================================================================
+
+/**
+ * GestorState
+ *
+ * Gerencia o acesso controlado, validação e proteção do estado global da aplicação ($_GESTOR).
+ * Serve como base arquitetural para a futura migração de classes e injeção de dependência na Linha 3.1,
+ * mantendo 100% de retrocompatibilidade com manipulações procedurais legadas sobre $_GESTOR.
+ */
+class GestorState {
+
+	/**
+	 * Instância Singleton.
+	 */
+	private static ?GestorState $instance = null;
+
+	/**
+	 * Chaves críticas protegidas (somente leitura após inicialização do kernel).
+	 * @var array<string, bool>
+	 */
+	private static array $chavesProtegidas = [
+		'raiz-absoluta'    => true,
+		'url-raiz'         => true,
+		'linguagem-codigo' => true,
+		'versao-num'       => true,
+	];
+
+	/**
+	 * Histórico de alertas/auditoria de mutações bloqueadas.
+	 * @var array<int, array<string, mixed>>
+	 */
+	private static array $auditoria = [];
+
+	/**
+	 * Construtor privado para padrão Singleton.
+	 */
+	private function __construct() {}
+
+	/**
+	 * Retorna a instância única do GestorState.
+	 */
+	public static function getInstance(): self {
+		if (self::$instance === null) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+
+	/**
+	 * Recupera um valor do estado global com suporte a fallback e notação pontuada.
+	 *
+	 * @param string $chave Chave simples ou notação pontuada (ex: 'usuario-id' ou 'banco.conexao.host').
+	 * @param mixed $padrao Valor padrão caso a chave não seja encontrada.
+	 * @return mixed
+	 */
+	public static function get(string $chave, mixed $padrao = null): mixed {
+		global $_GESTOR;
+
+		if ($chave === '') {
+			return $padrao;
+		}
+
+		// 1. Verificação direta no nível raiz (prioridade O(1) e retrocompatibilidade direta)
+		if (is_array($_GESTOR) && array_key_exists($chave, $_GESTOR)) {
+			return $_GESTOR[$chave];
+		}
+
+		// 2. Se contém notação pontuada, percorre os níveis aninhados
+		if (str_contains($chave, '.')) {
+			$segmentos = explode('.', $chave);
+			$atual = $_GESTOR;
+
+			foreach ($segmentos as $segmento) {
+				if (is_array($atual) && array_key_exists($segmento, $atual)) {
+					$atual = $atual[$segmento];
+				} else {
+					return $padrao;
+				}
+			}
+
+			return $atual;
+		}
+
+		return $padrao;
+	}
+
+	/**
+	 * Define ou atualiza um valor no estado global de forma segura e controlada.
+	 * Se a chave for protegida/read-only, emite alerta no log e bloqueia mutação acidental.
+	 *
+	 * @param string $chave Chave simples ou notação pontuada.
+	 * @param mixed $valor Valor a ser armazenado.
+	 * @return bool True se salvo com sucesso, false se bloqueado por proteção ou chave inválida.
+	 */
+	public static function set(string $chave, mixed $valor): bool {
+		global $_GESTOR;
+
+		if ($chave === '') {
+			return false;
+		}
+
+		// Verifica se a chave ou o segmento raiz da notação pontuada é protegido
+		$raizChave = str_contains($chave, '.') ? explode('.', $chave, 2)[0] : $chave;
+
+		if (self::isProtegida($raizChave)) {
+			self::registrarAlertaProtecao($chave, $valor);
+			return false;
+		}
+
+		if (!is_array($_GESTOR)) {
+			$_GESTOR = [];
+		}
+
+		// Se contém notação pontuada, cria/percorre a estrutura aninhada
+		if (str_contains($chave, '.')) {
+			$segmentos = explode('.', $chave);
+			$ponteiro = &$_GESTOR;
+
+			$total = count($segmentos);
+			for ($i = 0; $i < $total; $i++) {
+				$seg = $segmentos[$i];
+				if ($i === $total - 1) {
+					$ponteiro[$seg] = $valor;
+				} else {
+					if (!isset($ponteiro[$seg]) || !is_array($ponteiro[$seg])) {
+						$ponteiro[$seg] = [];
+					}
+					$ponteiro = &$ponteiro[$seg];
+				}
+			}
+			return true;
+		}
+
+		$_GESTOR[$chave] = $valor;
+		return true;
+	}
+
+	/**
+	 * Verifica a existência de uma chave no estado global (suporta notação pontuada).
+	 *
+	 * @param string $chave
+	 * @return bool
+	 */
+	public static function has(string $chave): bool {
+		global $_GESTOR;
+
+		if ($chave === '' || !is_array($_GESTOR)) {
+			return false;
+		}
+
+		// Verificação direta
+		if (array_key_exists($chave, $_GESTOR)) {
+			return true;
+		}
+
+		// Verificação com notação pontuada
+		if (str_contains($chave, '.')) {
+			$segmentos = explode('.', $chave);
+			$atual = $_GESTOR;
+
+			foreach ($segmentos as $segmento) {
+				if (is_array($atual) && array_key_exists($segmento, $atual)) {
+					$atual = $atual[$segmento];
+				} else {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Retorna uma fatia de contexto delimitada (ex.: dados do módulo ativo ou usuário ativo).
+	 *
+	 * @param string $escopo Escopo desejado ('modulo', 'usuario', 'sistema', etc.).
+	 * @return array
+	 */
+	public static function contexto(string $escopo): array {
+		global $_GESTOR;
+
+		if ($escopo === '' || !is_array($_GESTOR)) {
+			return [];
+		}
+
+		$resultado = [];
+
+		switch ($escopo) {
+			case 'modulo':
+				$moduloId = $_GESTOR['modulo-id'] ?? $_GESTOR['modulo'] ?? null;
+				if (is_string($moduloId) && $moduloId !== '') {
+					$resultado['id'] = $moduloId;
+					if (isset($_GESTOR['modulo#' . $moduloId]) && is_array($_GESTOR['modulo#' . $moduloId])) {
+						$resultado['dados'] = $_GESTOR['modulo#' . $moduloId];
+					}
+				}
+				if (isset($_GESTOR['opcao'])) $resultado['opcao'] = $_GESTOR['opcao'];
+				if (isset($_GESTOR['tipo'])) $resultado['tipo'] = $_GESTOR['tipo'];
+				if (isset($_GESTOR['caminho'])) $resultado['caminho'] = $_GESTOR['caminho'];
+				if (isset($_GESTOR['modulo-dados']) && is_array($_GESTOR['modulo-dados']) && !isset($resultado['dados'])) {
+					$resultado['dados'] = $_GESTOR['modulo-dados'];
+				}
+				if (isset($_GESTOR['modulo']) && is_array($_GESTOR['modulo'])) {
+					$resultado = array_merge($_GESTOR['modulo'], $resultado);
+				}
+				break;
+
+			case 'usuario':
+				if (isset($_GESTOR['usuario-id'])) $resultado['id'] = $_GESTOR['usuario-id'];
+				if (isset($_GESTOR['usuario-nome'])) $resultado['nome'] = $_GESTOR['usuario-nome'];
+				if (isset($_GESTOR['usuario-perfil-id'])) $resultado['perfil_id'] = $_GESTOR['usuario-perfil-id'];
+				if (isset($_GESTOR['usuario-perfil'])) $resultado['perfil'] = $_GESTOR['usuario-perfil'];
+				if (isset($_GESTOR['usuario-token-id'])) $resultado['token_id'] = $_GESTOR['usuario-token-id'];
+				if (isset($_GESTOR['usuario-dados']) && is_array($_GESTOR['usuario-dados'])) {
+					$resultado['dados'] = $_GESTOR['usuario-dados'];
+				}
+				if (isset($_GESTOR['usuario']) && is_array($_GESTOR['usuario'])) {
+					$resultado = array_merge($_GESTOR['usuario'], $resultado);
+				}
+				break;
+
+			case 'sistema':
+			case 'core':
+				if (isset($_GESTOR['versao-num'])) $resultado['versao_num'] = $_GESTOR['versao-num'];
+				if (isset($_GESTOR['versao'])) $resultado['versao'] = $_GESTOR['versao'];
+				if (isset($_GESTOR['raiz-absoluta'])) $resultado['raiz_absoluta'] = $_GESTOR['raiz-absoluta'];
+				if (isset($_GESTOR['ROOT_PATH'])) $resultado['root_path'] = $_GESTOR['ROOT_PATH'];
+				if (isset($_GESTOR['url-raiz'])) $resultado['url_raiz'] = $_GESTOR['url-raiz'];
+				if (isset($_GESTOR['linguagem-codigo'])) $resultado['linguagem'] = $_GESTOR['linguagem-codigo'];
+				break;
+
+			default:
+				// Se existe uma chave exata no $_GESTOR com array associativo
+				if (isset($_GESTOR[$escopo]) && is_array($_GESTOR[$escopo])) {
+					$resultado = $_GESTOR[$escopo];
+				} else {
+					// Busca chaves prefixadas pelo escopo (ex: 'meu-escopo-*' ou 'meu-escopo.*')
+					$prefixoHifen = $escopo . '-';
+					$prefixoPonto = $escopo . '.';
+					$prefixoUnderline = $escopo . '_';
+
+					foreach ($_GESTOR as $k => $v) {
+						if (!is_string($k)) continue;
+						if (str_starts_with($k, $prefixoHifen)) {
+							$subchave = substr($k, strlen($prefixoHifen));
+							$resultado[$subchave] = $v;
+						} elseif (str_starts_with($k, $prefixoPonto)) {
+							$subchave = substr($k, strlen($prefixoPonto));
+							$resultado[$subchave] = $v;
+						} elseif (str_starts_with($k, $prefixoUnderline)) {
+							$subchave = substr($k, strlen($prefixoUnderline));
+							$resultado[$subchave] = $v;
+						}
+					}
+				}
+				break;
+		}
+
+		return $resultado;
+	}
+
+	/**
+	 * Verifica se uma chave está protegida contra mutação acidental.
+	 */
+	public static function isProtegida(string $chave): bool {
+		return !empty(self::$chavesProtegidas[$chave]);
+	}
+
+	/**
+	 * Adiciona chave(s) à allowlist de chaves somente-leitura.
+	 */
+	public static function proteger(string ...$chaves): void {
+		foreach ($chaves as $ch) {
+			if ($ch !== '') {
+				self::$chavesProtegidas[$ch] = true;
+			}
+		}
+	}
+
+	/**
+	 * Remove proteção de uma chave (útil para testes ou operações internas autorizadas).
+	 */
+	public static function desproteger(string ...$chaves): void {
+		foreach ($chaves as $ch) {
+			unset(self::$chavesProtegidas[$ch]);
+		}
+	}
+
+	/**
+	 * Retorna a lista de todas as chaves protegidas.
+	 * @return list<string>
+	 */
+	public static function getChavesProtegidas(): array {
+		return array_keys(self::$chavesProtegidas);
+	}
+
+	/**
+	 * Retorna o histórico de auditoria de tentativas bloqueadas.
+	 * @return array<int, array<string, mixed>>
+	 */
+	public static function getAuditoria(): array {
+		return self::$auditoria;
+	}
+
+	/**
+	 * Limpa o histórico de auditoria.
+	 */
+	public static function limparAuditoria(): void {
+		self::$auditoria = [];
+	}
+
+	/**
+	 * Redefine o estado de proteção e auditoria para os padrões originais (essencial para testes).
+	 */
+	public static function reset(): void {
+		self::$chavesProtegidas = [
+			'raiz-absoluta'    => true,
+			'url-raiz'         => true,
+			'linguagem-codigo' => true,
+			'versao-num'       => true,
+		];
+		self::$auditoria = [];
+	}
+
+	/**
+	 * Registra log e auditoria para tentativas de sobrescrever chave protegida.
+	 */
+	private static function registrarAlertaProtecao(string $chave, mixed $valor): void {
+		$mensagem = "Tentativa de sobrescrever chave protegida '{$chave}' via gestor_set() bloqueada.";
+
+		self::$auditoria[] = [
+			'timestamp' => microtime(true),
+			'chave'     => $chave,
+			'valor'     => $valor,
+			'mensagem'  => $mensagem,
+		];
+
+		if (function_exists('log_disco')) {
+			log_disco($mensagem, 'gestor');
+		} else {
+			error_log('[conn2flow] ' . $mensagem);
+		}
+	}
+}
+
+// ===========================================================================================
+// Fachada Procedural Pública (Ponte de Transição)
+// ===========================================================================================
+
+/**
+ * Recupera um valor de configuração/estado do sistema com suporte a fallback e notação pontuada.
+ * Exemplo: gestor_get('usuario-id') ou gestor_get('banco.conexao.host', 'localhost')
+ *
+ * @param string $chave Chave simples ou caminho delimitado por pontos.
+ * @param mixed $padrao Valor padrão retornado se a chave não existir.
+ * @return mixed
+ */
+function gestor_get(string $chave, mixed $padrao = null): mixed {
+	return GestorState::get($chave, $padrao);
+}
+
+/**
+ * Define ou atualiza um valor no estado global de forma segura e controlada.
+ * Se a chave for protegida/read-only, emite alerta no log e bloqueia mutação acidental.
+ *
+ * @param string $chave Chave simples ou caminho delimitado por pontos.
+ * @param mixed $valor Valor a ser definido.
+ * @return bool True em caso de sucesso, false se bloqueado ou inválido.
+ */
+function gestor_set(string $chave, mixed $valor): bool {
+	return GestorState::set($chave, $valor);
+}
+
+/**
+ * Verifica a existência de uma chave no estado global.
+ *
+ * @param string $chave Chave simples ou caminho delimitado por pontos.
+ * @return bool
+ */
+function gestor_has(string $chave): bool {
+	return GestorState::has($chave);
+}
+
+/**
+ * Retorna uma fatia de contexto delimitada (ex.: dados do módulo ativo ou usuário ativo).
+ *
+ * @param string $escopo Identificador do escopo ('modulo', 'usuario', 'sistema', etc.).
+ * @return array
+ */
+function gestor_contexto(string $escopo): array {
+	return GestorState::contexto($escopo);
+}
+
 // =========================== Funções do Gestor
 
 /**

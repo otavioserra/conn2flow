@@ -72,6 +72,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-231 | in-progress | Menus, galerias, formulários e consentimento de cookies em Tailwind (req-222) | [req-222.md](../human-requests/req-222.md) | Agente paralelo, worktree `conn2flow-req222`; variante de visualização entregue pela req-219 (`aff98f83`). |
 | BATCH-232 | ready-for-intake | Módulos de administração em Tailwind (req-223) | [req-223.md](../human-requests/req-223.md) | Inclui o widget `configuracao_administracao` (variables, admin-environment, modulos-variaveis). |
 | BATCH-233 | in-review | Usuários, perfis, módulos, operações e painel inicial em Tailwind (req-224) | [BATCH-233.md](BATCH-233.md) | Agente da req-219; navegador 40/40 no roteiro da req-219. |
+| BATCH-238 | in-review | Biblioteca de Estado e Acesso Controlado a Variáveis Globais (req-229) | [BATCH-238.md](BATCH-238.md) | Fachada `gestor_get/set/has/contexto`, classe `GestorState`, proteção de chaves críticas e 100% de retrocompatibilidade com `$_GESTOR`. |
 
 ## Regra operacional
 
