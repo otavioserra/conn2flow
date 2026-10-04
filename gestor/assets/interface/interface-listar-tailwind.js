@@ -2,6 +2,17 @@
 (function (global) {
     'use strict';
 
+    // Clique simples: só esta coluna (asc, depois desc). Com Ctrl/⌘/Shift: soma a coluna às outras;
+    // na que já está na lista, asc → desc → sai.
+    function proximaOrdem(ordem, indice, somar) {
+        var atual = ordem.find(function (o) { return Number(o[0]) === indice; });
+        if (!somar) return [[indice, atual && atual[1] === 'asc' ? 'desc' : 'asc']];
+        if (!atual) return ordem.concat([[indice, 'asc']]);
+        if (atual[1] === 'asc') return ordem.map(function (o) { return Number(o[0]) === indice ? [indice, 'desc'] : o; });
+        var resto = ordem.filter(function (o) { return Number(o[0]) !== indice; });
+        return resto.length ? resto : [[indice, 'asc']];
+    }
+
     function iniciar(raiz, config) {
         if (!raiz || raiz.c2fLista) return raiz && raiz.c2fLista;
         var estado = { inicio: Number(config.displayStart) || 0, quantidade: Number(config.pageLength) || 25,
@@ -141,12 +152,20 @@
             q('[data-lista-resumo]').textContent = mensagens.resumo
                 .replace('{inicio}', estado.total ? estado.inicio + 1 : 0)
                 .replace('{fim}', Math.min(estado.inicio + dados.data.length, estado.total)).replace('{total}', estado.total);
-            colunas.forEach(function (item, i) {
-                var ordem = estado.ordem.find(function (o) { return Number(o[0]) === item.indice; });
-                cabecalho.children[i].setAttribute('aria-sort', ordem ? (ordem[1] === 'asc' ? 'ascending' : 'descending') : 'none');
-                cabecalho.children[i].querySelector('[data-lista-direcao]').textContent = ordem ? (ordem[1] === 'asc' ? '↑' : '↓') : '';
-            });
+            desenharOrdem();
             if (global.lucide) global.lucide.createIcons({ root: raiz });
+        }
+
+        // Seta e, com mais de uma coluna, a prioridade (↑1, ↓2…). Coluna sem ordem fica vazia; o CSS mostra
+        // uma seta fraca no hover para indicar que dá para ordenar por ela.
+        function desenharOrdem() {
+            colunas.forEach(function (item, i) {
+                var posicao = estado.ordem.findIndex(function (o) { return Number(o[0]) === item.indice; });
+                var ordem = posicao >= 0 ? estado.ordem[posicao] : null;
+                cabecalho.children[i].setAttribute('aria-sort', ordem ? (ordem[1] === 'asc' ? 'ascending' : 'descending') : 'none');
+                cabecalho.children[i].querySelector('[data-lista-direcao]').textContent = ordem
+                    ? (ordem[1] === 'asc' ? '↑' : '↓') + (estado.ordem.length > 1 ? String(posicao + 1) : '') : '';
+            });
         }
 
         async function carregar() {
@@ -190,10 +209,9 @@
             var th = clonar('th'), botao = th.querySelector('button');
             botao.querySelector('span').textContent = item.indice === 0 ? mensagens.opcoes : item.coluna.name;
             botao.disabled = item.coluna.orderable === false;
-            botao.addEventListener('click', function () {
-                var atual = estado.ordem.find(function (o) { return Number(o[0]) === item.indice; });
-                estado.ordem = [[item.indice, atual && atual[1] === 'asc' ? 'desc' : 'asc']];
-                estado.inicio = 0; carregar();
+            botao.addEventListener('click', function (evento) {
+                estado.ordem = proximaOrdem(estado.ordem, item.indice, evento.ctrlKey || evento.metaKey || evento.shiftKey);
+                estado.inicio = 0; desenharOrdem(); carregar();
             });
             cabecalho.appendChild(th);
         });
@@ -212,7 +230,7 @@
         return raiz.c2fLista;
     }
 
-    global.c2fListaTailwind = { iniciar: iniciar };
+    global.c2fListaTailwind = { iniciar: iniciar, proximaOrdem: proximaOrdem };
     function boot() {
         var config = global.gestor && global.gestor.interface && global.gestor.interface.lista;
         if (config) iniciar(document.querySelector('[data-c2f-listar]'), config);

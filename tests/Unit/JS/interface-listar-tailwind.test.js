@@ -160,4 +160,28 @@ describe('Listagem Tailwind (req-220)', () => {
     expect(editar.getAttribute('data-position')).toBe('top left');
     expect(editar.hasAttribute('title')).toBe(false);
   });
+
+  it('ordem: clique simples troca a coluna; com Ctrl soma, alterna e tira', () => {
+    const p = window.c2fListaTailwind.proximaOrdem;
+    expect(p([[1, 'asc']], 2, false)).toEqual([[2, 'asc']]);
+    expect(p([[1, 'asc']], 1, false)).toEqual([[1, 'desc']]);
+    expect(p([[1, 'asc']], 2, true)).toEqual([[1, 'asc'], [2, 'asc']]);
+    expect(p([[1, 'asc'], [2, 'asc']], 2, true)).toEqual([[1, 'asc'], [2, 'desc']]);
+    expect(p([[1, 'asc'], [2, 'desc']], 2, true)).toEqual([[1, 'asc']]);
+    expect(p([[1, 'desc']], 1, true)).toEqual([[1, 'asc']]);
+  });
+
+  it('Ctrl+clique envia duas ordenações e mostra a prioridade no cabeçalho', async () => {
+    montar(); await pronto();
+    const botoes = raiz.querySelectorAll('[data-lista-colunas] th button');
+    botoes[2].dispatchEvent(new MouseEvent('click', { bubbles: true, ctrlKey: true }));
+    await vi.waitFor(() => expect(window.fetch).toHaveBeenCalledTimes(2));
+    await pronto();
+    const body = window.fetch.mock.calls[1][1].body;
+    expect(body.get('order[0][column]')).toBe('1');
+    expect(body.get('order[1][column]')).toBe('2');
+    expect(body.get('order[1][dir]')).toBe('asc');
+    expect(botoes[1].querySelector('[data-lista-direcao]').textContent).toBe('↑1');
+    expect(botoes[2].querySelector('[data-lista-direcao]').textContent).toBe('↑2');
+  });
 });
