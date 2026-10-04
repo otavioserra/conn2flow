@@ -24,6 +24,28 @@ Muitas funções são **puras**, sem estado global: foram extraídas do roteador
 - `gestor_modulos_dados($modulo_id)` lê e decodifica `gestor/modulos/<id>/<id>.json`. Devolve `null` quando o arquivo não existe, sem emitir *warning*.
 - `gestor_js_variavel_incluir($variavel, $valor)` publica um valor para o JavaScript da página em `$_GESTOR['javascript-vars']`, que o roteador serializa como objeto global. Se a variável já existe e os dois valores são arrays, faz `array_merge_recursive`; senão, sobrescreve.
 
+## Estado do Sistema e Variáveis Globais (GestorState)
+
+A camada de controle de estado (`GestorState`) oferece acesso padronizado e seguro ao estado global do sistema (`$_GESTOR`), com suporte a fallback, notação pontuada e proteção de chaves críticas:
+
+- `gestor_get(string $chave, mixed $padrao = null): mixed` — Recupera valor do estado global. Suporta notação pontuada (ex: `gestor_get('banco.conexao.host', 'localhost')`).
+- `gestor_set(string $chave, mixed $valor): bool` — Define ou atualiza valor de forma segura. Bloqueia tentativas de mutação acidental em chaves críticas do sistema.
+- `gestor_has(string $chave): bool` — Verifica existência da chave no estado global (suporta notação pontuada).
+- `gestor_contexto(string $escopo): array` — Extrai fatia delimitada de contexto (`modulo`, `usuario`, `sistema`, etc.).
+
+### Chaves protegidas do Core
+- `raiz-absoluta`, `url-raiz`, `linguagem-codigo`, `versao-num`.
+- Tentativas de alteração via `gestor_set()` são barradas com log de auditoria.
+
+### API OOP da Classe GestorState
+- `GestorState::get($chave, $padrao)`
+- `GestorState::set($chave, $valor)`
+- `GestorState::has($chave)`
+- `GestorState::contexto($escopo)`
+- `GestorState::proteger(...$chaves)` / `GestorState::desproteger(...$chaves)`
+- `GestorState::isProtegida($chave)` / `GestorState::getChavesProtegidas()`
+- `GestorState::getAuditoria()` / `GestorState::reset()`
+
 ## Bibliotecas
 
 `gestor_incluir_bibliotecas()` e `gestor_incluir_biblioteca($nome)` carregam bibliotecas pelo nome lógico. Veja [Bibliotecas do Gestor](index.md).

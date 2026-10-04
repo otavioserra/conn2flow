@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-238 — Biblioteca de Estado e Acesso Controlado a Variáveis Globais (req-229)
+
+- [x] CA-1 (Funções Implementadas): `gestor_get()`, `gestor_set()`, `gestor_has()` e `gestor_contexto()` criadas e testadas.
+- [x] CA-2 (Retrocompatibilidade Integral 100%): Nenhuma alteração quebra códigos legados que ainda utilizam `$_GESTOR['chave']` diretamente.
+- [x] CA-3 (Proteção de Chaves do Core): Tentativas de alteração em chaves do sistema protegidas são barradas ou registradas com aviso.
+- [x] CA-4 (Suíte de Testes no PHPUnit): Testes unitários cobrindo leitura, escrita, fallbacks e integridade do estado global (28 testes, 93 asserções, 100% passing).
+- [x] CA-5 (Documentação Técnica): Guia em `ai-workspace/` (pt-br e en) e atualização da skill `c2f-global-variables` orientando novos desenvolvimentos a utilizarem a nova API.
+- [ ] Revisão humana / homologação do Arquiteto.
+
+Detalhes: [BATCH-238](../implementation/BATCH-238.md).
+
 ## BATCH-229 — Módulos do editor, listagens e correções da revisão (req-219)
 
 - [x] `admin-layouts` e `admin-componentes` (listar, adicionar, editar) e a listagem do `admin-paginas` no layout Tailwind; salvar sem 403.

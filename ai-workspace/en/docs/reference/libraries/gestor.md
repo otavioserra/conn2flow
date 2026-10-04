@@ -24,6 +24,28 @@ Many functions are **pure**, with no global state: they were extracted from the 
 - `gestor_modulos_dados($modulo_id)` reads and decodes `gestor/modulos/<id>/<id>.json`. It returns `null` when the file does not exist, without emitting a warning.
 - `gestor_js_variavel_incluir($variavel, $valor)` publishes a value to the page's JavaScript in `$_GESTOR['javascript-vars']`, which the router serializes as a global object. When the variable already exists and both values are arrays, it runs `array_merge_recursive`; otherwise it overwrites.
 
+## System State and Global Variables (GestorState)
+
+The state access layer (`GestorState`) provides standardized and safe access to the system's global state (`$_GESTOR`), with fallback support, dot notation and critical key protection:
+
+- `gestor_get(string $chave, mixed $padrao = null): mixed` — Retrieves value from global state. Supports dot notation (e.g. `gestor_get('banco.conexao.host', 'localhost')`).
+- `gestor_set(string $chave, mixed $valor): bool` — Sets or updates value safely. Blocks accidental mutations of critical system keys.
+- `gestor_has(string $chave): bool` — Checks key existence in global state (supports dot notation).
+- `gestor_contexto(string $escopo): array` — Extracts delimited context slice (`modulo`, `usuario`, `sistema`, etc.).
+
+### Protected Core Keys
+- `raiz-absoluta`, `url-raiz`, `linguagem-codigo`, `versao-num`.
+- Modification attempts via `gestor_set()` are blocked and logged for auditing.
+
+### OOP API of GestorState Class
+- `GestorState::get($chave, $padrao)`
+- `GestorState::set($chave, $valor)`
+- `GestorState::has($chave)`
+- `GestorState::contexto($escopo)`
+- `GestorState::proteger(...$chaves)` / `GestorState::desproteger(...$chaves)`
+- `GestorState::isProtegida($chave)` / `GestorState::getChavesProtegidas()`
+- `GestorState::getAuditoria()` / `GestorState::reset()`
+
 ## Libraries
 
 `gestor_incluir_bibliotecas()` and `gestor_incluir_biblioteca($name)` load libraries by logical name. See [Gestor libraries](index.md).

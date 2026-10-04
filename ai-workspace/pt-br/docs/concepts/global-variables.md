@@ -112,6 +112,27 @@ Um projeto pode acrescentar ou sobrescrever chaves em `config-project.php` (na r
 | Resposta AJAX | `ajax-json` (o módulo preenche, e o roteador devolve como JSON) |
 | Caches | `variaveis[<modulo>]`, `paginas-variaveis`, `schema-tabelas`, `schema-campos`, `bibliotecas-inseridas`, `dashboard-toolbar-ativo`, `permissao-token-resultado`, `requisicao-crawler` |
 
+## Acesso Controlado: `gestor_get()`, `gestor_set()`, `gestor_has()` e `gestor_contexto()`
+
+A partir da **req-229 (BATCH-238)**, como preparação arquitetural para a refatoração orientada a objetos da **Linha 3.1**, novos desenvolvimentos devem priorizar as funções de acesso controlado da camada `GestorState` em vez de manipular `$_GESTOR` de forma indiscriminada:
+
+- `gestor_get(string $chave, mixed $padrao = null): mixed`: Leitura com fallback e suporte a notação pontuada (ex.: `gestor_get('banco.conexao.host', 'localhost')`).
+- `gestor_set(string $chave, mixed $valor): bool`: Escrita segura com validação. Protege chaves críticas do Core contra mutação acidental.
+- `gestor_has(string $chave): bool`: Verificação determinística de existência (suporta notação pontuada).
+- `gestor_contexto(string $escopo): array`: Extração de fatias delimitadas de contexto (`modulo`, `usuario`, `sistema`, etc.).
+
+### Chaves protegidas do Core (Imutáveis após boot)
+As seguintes chaves não podem ser sobrescritas acidentalmente via `gestor_set()`:
+- `raiz-absoluta`
+- `url-raiz`
+- `linguagem-codigo`
+- `versao-num`
+
+Tentativas de sobrescrita disparam alerta nos logs do sistema e retornam `false`.
+
+### 100% de Retrocompatibilidade
+O array `$_GESTOR` continua existindo como armazenamento subjacente. Códigos legados existentes que lêem ou escrevem em `$_GESTOR['chave']` continuam funcionando sem qualquer alteração.
+
 ## Veja também
 
 - [Ciclo de uma requisição](request-lifecycle.md): em que momento cada chave é preenchida.

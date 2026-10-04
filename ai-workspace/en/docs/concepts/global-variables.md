@@ -112,6 +112,27 @@ A project can add or override keys in `config-project.php` (at the Gestor root),
 | AJAX response | `ajax-json` (the module fills it, and the router returns it as JSON) |
 | Caches | `variaveis[<module>]`, `paginas-variaveis`, `schema-tabelas`, `schema-campos`, `bibliotecas-inseridas`, `dashboard-toolbar-ativo`, `permissao-token-resultado`, `requisicao-crawler` |
 
+## Controlled Access: `gestor_get()`, `gestor_set()`, `gestor_has()` and `gestor_contexto()`
+
+Starting from **req-229 (BATCH-238)**, as an architectural foundation for the Line 3.1 OOP refactoring, new developments should prioritize controlled access functions via `GestorState` instead of direct global mutations:
+
+- `gestor_get(string $chave, mixed $padrao = null): mixed`: Read with fallback and dot notation support (e.g. `gestor_get('banco.conexao.host', 'localhost')`).
+- `gestor_set(string $chave, mixed $valor): bool`: Safe write with validation. Protects critical core keys from accidental mutation.
+- `gestor_has(string $chave): bool`: Deterministic existence check (supports dot notation).
+- `gestor_contexto(string $escopo): array`: Delimited context slices (`modulo`, `usuario`, `sistema`, etc.).
+
+### Protected Core Keys (Read-only after boot)
+The following keys cannot be accidentally overwritten via `gestor_set()`:
+- `raiz-absoluta`
+- `url-raiz`
+- `linguagem-codigo`
+- `versao-num`
+
+Overwrite attempts trigger a system log alert and return `false`.
+
+### 100% Backwards Compatibility
+The `$_GESTOR` superglobal array continues to exist as the underlying state storage. Existing legacy code that reads or writes directly to `$_GESTOR['key']` remains fully functional.
+
 ## See also
 
 - [Request lifecycle](request-lifecycle.md): when each key is filled.

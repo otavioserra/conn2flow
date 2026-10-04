@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-229.md](req-229.md) (BATCH-238 `in-review`, 2026-10-04, branch `feat/req-229`): Biblioteca de Estado e Acesso Controlado a Variáveis Globais (Ponte para Refatoração OOP).
   - [req-225.md](req-225.md) (BATCH-234 `ready-for-intake`, 2026-10-04): conferência final — todo módulo Tailwind (core e site) com os recursos da UI nova da req-219; roda depois das frentes.
   - [req-224.md](req-224.md) (BATCH-233 `in-review`, 2026-10-04, agente da req-219; navegador 40/40): usuários, perfis, módulos e painel inicial em Tailwind (fatia 6 da req-219).
   - [req-223.md](req-223.md) (BATCH-232 `ready-for-intake`, 2026-10-04, agente paralelo): módulos de administração em Tailwind (fatia 6 da req-219).
