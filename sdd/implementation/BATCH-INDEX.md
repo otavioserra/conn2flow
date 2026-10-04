@@ -72,9 +72,12 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-231 | in-progress | Menus, galerias, formulários e consentimento de cookies em Tailwind (req-222) | [req-222.md](../human-requests/req-222.md) | Agente paralelo, worktree `conn2flow-req222`; variante de visualização entregue pela req-219 (`aff98f83`). |
 | BATCH-232 | ready-for-intake | Módulos de administração em Tailwind (req-223) | [req-223.md](../human-requests/req-223.md) | Inclui o widget `configuracao_administracao` (variables, admin-environment, modulos-variaveis). |
 | BATCH-233 | in-review | Usuários, perfis, módulos, operações e painel inicial em Tailwind (req-224) | [BATCH-233.md](BATCH-233.md) | Agente da req-219; navegador 40/40 no roteiro da req-219. |
-| BATCH-238 | in-review | Biblioteca de Estado e Acesso Controlado a Variáveis Globais (req-229) | [BATCH-238.md](BATCH-238.md) | Fachada `gestor_get/set/has/contexto`, classe `GestorState`, proteção de chaves críticas e 100% de retrocompatibilidade com `$_GESTOR`. |
-
-| BATCH-237 | in-review | Topbar administrativa: perfil, idioma e favoritos por usuário (req-228) | [BATCH-237.md](BATCH-237.md) | Worktree `conn2flow-req228`, branch `feat/req-228`; navegador 60/60, 28 testes focados; sem alteração de formulários/listagens. |
+| BATCH-234 | in-progress | Conferência final da UI Tailwind (req-225), preparação | [BATCH-234.md](BATCH-234.md) | Inventário preliminar 236 páginas/idiomas; teste de deriva vermelho (2 auditorias). Ajustes finais aguardam req-222/223 e REQ-100/101 do site. Sem pipeline. |
+| BATCH-235 | complete | Dashboard V3.0 — Grid Interativo P/M/G e Widgets (req-226) | [BATCH-235.md](BATCH-235.md) | Seletor P/M/G, abas, widgets flexíveis, links canônicos de docs e persistência no banco. Integrado em `main`. |
+| BATCH-236 | complete | Capas de módulos em WebP 1024x1024 isométrica 3D (req-227) | [BATCH-236.md](BATCH-236.md) | 37 WebP 1024x1024 (< 98 KB); catálogo com miniaturas, renderer 2D/3D e rota canônica. Integrado em `main`. |
+| BATCH-237 | complete | Topbar administrativa: perfil, idioma e favoritos por usuário (req-228) | [BATCH-237.md](BATCH-237.md) | Menu de perfil, idioma e favoritos persistentes no SQL. Integrado em `main`. |
+| BATCH-238 | complete | Biblioteca de Estado e Acesso Controlado a Variáveis Globais (req-229) | [BATCH-238.md](BATCH-238.md) | Fachada `gestor_get/set/has/contexto`, classe `GestorState`, proteção de chaves críticas e 100% de retrocompatibilidade com `$_GESTOR`. Integrado em `main`. |
+| BATCH-239 | in-review | Integração Oficial da V3.0 e Rota Canônica das Capas (req-230) | [BATCH-239.md](BATCH-239.md) | Mesclagem sequencial das branches 226/228/229, rota canônica das capas (/modulos/covers/), resolução de 404 local e homologação integrada. |
 
 ## Regra operacional
 

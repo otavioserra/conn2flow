@@ -1,0 +1,20 @@
+{
+  "scope": "isolated local fixture; real assets and PHP renderer, not authenticated dashboard or A-Frame GPU scene",
+  "results": [
+    {
+      "width": 1440,
+      "count": 37,
+      "decoded": true,
+      "slots": true,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "count": 37,
+      "decoded": true,
+      "slots": true,
+      "overflow": false
+    }
+  ],
+  "errors": []
+}

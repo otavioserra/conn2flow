@@ -2,6 +2,8 @@
 
 global $_GESTOR;
 
+require_once __DIR__.'/dashboard-covers.php';
+
 $_GESTOR['modulo-id']							=	'dashboard';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/dashboard.json'), true);
 
@@ -559,19 +561,23 @@ function dashboard_modulo_visual_e_atalhos($modulo, $modulo_link){
 	$gestor_raiz = $_GESTOR['gestor-raiz'] ?? (rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/') . '/gestor/');
 	$modulo_dir = rtrim($gestor_raiz, '/') . '/modulos/' . $modulo_id . '/';
 	
-	$candidatos = Array(
-		'cover.webp',
-		'cover.png',
-		'cover.jpg',
-		'thumbnail.webp',
-		'thumbnail.png',
-	);
+	// req-227 / req-230: Busca canônica de capa do módulo em WebP
+	$imagem_url = dashboard_capa_modulo_url($modulo_id, $_GESTOR['url-raiz']);
 	
-	$imagem_url = '';
-	foreach($candidatos as $arq){
-		if(file_exists($modulo_dir . $arq)){
-			$imagem_url = $_GESTOR['url-raiz'] . 'modulos/' . $modulo_id . '/' . $arq;
-			break;
+	if($imagem_url === ''){
+		$candidatos = Array(
+			'cover.webp',
+			'cover.png',
+			'cover.jpg',
+			'thumbnail.webp',
+			'thumbnail.png',
+		);
+		
+		foreach($candidatos as $arq){
+			if(file_exists($modulo_dir . $arq)){
+				$imagem_url = $_GESTOR['url-raiz'] . 'modulos/' . $modulo_id . '/' . $arq;
+				break;
+			}
 		}
 	}
 	
@@ -950,6 +956,9 @@ function dashboard_cards(){
 		
 		// SVG do módulo
 		$svg = dashboard_gerar_svg_modulo($modulo['icone'], $modulo['icone2']);
+		if(!empty($visual['imagem_url'])){
+			$svg = dashboard_capa_modulo_svg($visual['imagem_url']);
+		}
 		$cel_aux = modelo_var_troca($cel_aux, "#modulo-svg#", $svg);
 		
 		// Link do módulo
@@ -1218,6 +1227,7 @@ function dashboard_3d(){
 				'grupoNome' => $grupo_nome,
 				'icon' => $modulo['icone'],
 				'icon2' => $modulo['icone2'],
+				'thumbnail' => dashboard_capa_modulo_url($modulo['id'], $_GESTOR['url-raiz']),
 				'link' => $link,
 				'descricao' => $descricao,
 				'acoes' => $acoes,
@@ -1229,6 +1239,7 @@ function dashboard_3d(){
 	}
 	
 	// ===== Montar JSON final
+	$_GESTOR['javascript-vars']['dashboard_asset_version'] = $_GESTOR['modulo#dashboard']['versao'] ?? '1.0.0';
 	
 	$dashboard_data = array(
 		'modules' => $modules_data,

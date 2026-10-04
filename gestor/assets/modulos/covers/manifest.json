@@ -1,0 +1,152 @@
+{
+  "version": "1.0.0",
+  "requests": [
+    "req-227",
+    "site/req-102"
+  ],
+  "date": "2026-10-04",
+  "generator": "built-in image_gen",
+  "max_bytes_exclusive": 120000,
+  "assets": [
+    {
+      "id": "dashboard",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/dashboard.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 83164,
+      "quality": 90,
+      "sha256": "bc1da4afd1a7c4303aaba75c7d29cd2ed0810cae4064f427ac8f0deb14e6cb19"
+    },
+    {
+      "id": "admin-paginas",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-paginas.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 81450,
+      "quality": 90,
+      "sha256": "b7cf5d459e388e028eda7d8d3bfa490be973b282e42de64ee66e9a6de27b20ff"
+    },
+    {
+      "id": "admin-templates",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-templates.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 90274,
+      "quality": 90,
+      "sha256": "4cdcdfe12406f9b26bb9de91357f96a6cdc0c5e3b845ff27de4eefb6829b2564"
+    },
+    {
+      "id": "admin-componentes",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-componentes.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 93430,
+      "quality": 90,
+      "sha256": "d067076decc33b831fb692ead6f01ba53b9c93584e4feb06e17d46f4886987e9"
+    },
+    {
+      "id": "menus",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/menus.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 89588,
+      "quality": 90,
+      "sha256": "1f883116319a71cbb9eef0b0a79481976e5f477f1e68ec66e57486bbcaff94ee"
+    },
+    {
+      "id": "forms",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/forms.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 69230,
+      "quality": 90,
+      "sha256": "14a674d559b468dc4f6e57f28fd4ab017d06143ae21e292fdd6ff97ab37d64b9"
+    },
+    {
+      "id": "forms-submissions",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/forms-submissions.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 79806,
+      "quality": 90,
+      "sha256": "2dcfd619d18dfbfd8521ddc3ce83830d41965760470ba06719104e9e755aa6bd"
+    },
+    {
+      "id": "usuarios",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/usuarios.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 83084,
+      "quality": 90,
+      "sha256": "be8c010bc1dc1b9c7713fea402745ee189bebc32a14797b7d121c2c606b5d8ec"
+    },
+    {
+      "id": "usuarios-perfis",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/usuarios-perfis.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 89984,
+      "quality": 90,
+      "sha256": "52987f57d5677085dc1fc1227e5fe084fde972707260cbf59568191cd5741a59"
+    },
+    {
+      "id": "admin-arquivos",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-arquivos.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 68570,
+      "quality": 90,
+      "sha256": "781d01c4a28f09570fa97d3e42ccf24395556d8515faffa2da7fbb24e7b43ba5"
+    },
+    {
+      "id": "galleries",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/galleries.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 88972,
+      "quality": 90,
+      "sha256": "305e68138e7ac5f01b8a06872a76bbca3b9ac22f0d168c454f89ef2be5afe806"
+    },
+    {
+      "id": "admin-ia",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-ia.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 79382,
+      "quality": 90,
+      "sha256": "5fa915d6430b4f6be83ce0596f7b27f8af466517fb5a54be8c9d4dd3772a4b4e"
+    },
+    {
+      "id": "admin-prompts-ia",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-prompts-ia.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 82702,
+      "quality": 90,
+      "sha256": "4ade015f944d753c4558e1b2f65f81bd91db15e1f7e02e2bd4905ad157e9a4b5"
+    },
+    {
+      "id": "admin-cron",
+      "repository": "conn2flow",
+      "path": "gestor/assets/modulos/covers/admin-cron.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 78494,
+      "quality": 90,
+      "sha256": "ff6bc10991855ceecc1b8cfec71fd5fe616a5b4144d58fce4e1d8578dcc26766"
+    }
+  ]
+}
