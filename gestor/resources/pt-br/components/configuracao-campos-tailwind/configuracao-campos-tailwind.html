@@ -1,0 +1,60 @@
+<!-- string < --><input type="text" name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
+    value="#value-valor#"
+    class="campo string w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" /><!-- string > -->
+<!-- text < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
+    class="campo text min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- text > -->
+<!-- number < --><input type="number" name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
+    value="#value-valor#"
+    class="campo number w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" /><!-- number > -->
+<!-- quantidade < --><input type="text" name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
+    value="#value-valor#"
+    class="campo quantidade w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" /><!-- quantidade > -->
+<!-- dinheiro < --><input type="text" name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
+    value="#value-valor#"
+    class="campo dinheiro w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700" /><!-- dinheiro > -->
+<!-- bool < -->
+<div class="campo bool flex items-center gap-2">
+    <input type="checkbox" name="valor-#value-num#" value="1" checked
+        class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+    <label></label>
+</div><!-- bool > -->
+<!-- editor-texto < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
+    class="campo editor-texto min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- editor-texto > -->
+<!-- css < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
+    class="campo css min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- css > -->
+<!-- js < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
+    class="campo js min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- js > -->
+<!-- html < --><textarea name="valor-#value-num#" placeholder="@[[form-value-placeholder]]@"
+    class="campo html min-h-24 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#value-valor#</textarea><!-- html > -->
+<!-- datas-multiplas < -->
+<div class="calendar-multiple campo datas-multiplas space-y-2 rounded border border-slate-200 p-3">
+    <div class="calendar-dates flex flex-wrap gap-2"></div>
+    <input type="date"
+        class="calendarMultipleInput w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+        aria-label="@[[variable-type-data-label]]@">
+    <template class="calendar-date-template">
+        <span class="date-value inline-flex items-center gap-1 rounded bg-slate-100 px-2 py-1 text-sm text-slate-800">
+            <span class="date-label"></span>
+            <button type="button"
+                class="date-delete inline-flex h-6 w-6 items-center justify-center rounded text-slate-600 hover:bg-slate-200"
+                aria-label="@[[variavel-delete-btn]]@" title="@[[variavel-delete-btn]]@"><span
+                    aria-hidden="true">&times;</span></button>
+        </span>
+    </template>
+    <input type="hidden" name="valor-#value-num#" value="#value-valor#" class="calendar-dates-input">
+</div>
+<!-- datas-multiplas > -->
+<!-- data-hora < -->
+<div class="calendar campo data-hora">
+    <input type="datetime-local" step="60" aria-label="@[[variable-type-data-hora-label]]@"
+        class="calendarInputDisplay w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+    <input type="hidden" name="valor-#value-num#" value="#value-valor#" class="calendarInput">
+</div>
+<!-- data-hora > -->
+<!-- data < -->
+<div class="calendar campo data">
+    <input type="date" aria-label="@[[variable-type-data-label]]@"
+        class="calendarInputDisplay w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+    <input type="hidden" name="valor-#value-num#" value="#value-valor#" class="calendarInput">
+</div>
+<!-- data > -->

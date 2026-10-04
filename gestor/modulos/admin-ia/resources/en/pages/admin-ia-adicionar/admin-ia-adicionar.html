@@ -1,55 +1,45 @@
-<!-- Admin IA - Add Server -->
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1><i class="plus icon"></i> Add AI Server</h1>
-
-            <div class="ui segment">
-                <form id="form-servidor-ia" class="ui form">
-                    <div class="field required">
-                        <label>Server Name</label>
-                        <input type="text" name="nome" placeholder="Ex: Gemini Production" required>
-                    </div>
-
-                    <div class="field required">
-                        <label>Server Type</label>
-                        <select name="tipo" class="ui dropdown" required>
-                            <option value="gemini" checked>Google Gemini</option>
-                        </select>
-                    </div>
-
-                    <div class="field">
-                        <label>Default</label>
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" name="padrao">
-                            <label>&nbsp;</label>
-                        </div>
-                    </div>
-
-                    <div class="field required">
-                        <label>API Key</label>
-                        <input type="password" name="chave_api" placeholder="Paste your API key here" required>
-                        <small class="text-muted">The key will be encrypted and stored securely</small>
-                    </div>
-
-                    <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="testar_conexao" checked>
-                            <label>Test connection after saving</label>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <button type="submit" class="ui button primary">
-                            <i class="save icon"></i> Save Server
-                        </button>
-                        <a href="@[[pagina#url-raiz]]@admin-ia/listar/" class="ui button">
-                            <i class="arrow left icon"></i> Back
-                        </a>
-                    </div>
-                </form>
-            </div>
+<section class="mx-auto max-w-3xl space-y-6 p-4">
+    <h1 class="flex items-center gap-2 text-xl font-semibold"><i data-lucide="plus"
+            class="size-5"></i>@[[ui-add-title]]@</h1>
+    <div id="admin-ia-mensagens" class="hidden" aria-hidden="true" data-confirm-delete="@[[ui-confirm-delete]]@"
+        data-error-communication="@[[ui-error-communication]]@" data-error-history="@[[ui-error-history]]@"
+        data-error-test-communication="@[[ui-error-test-communication]]@" data-error-generic="@[[ui-error-generic]]@"
+        data-history-empty="@[[ui-history-empty]]@"></div>
+    <form id="form-servidor-ia" class="space-y-5 rounded border border-slate-200 p-4">
+        <div class="space-y-1">
+            <label class="c2fc-campo-rotulo" for="admin-ia-nome">@[[ui-name]]@</label>
+            <input id="admin-ia-nome" class="c2fc-campo-entrada w-full" type="text" name="nome"
+                placeholder="@[[ui-name-placeholder]]@" required>
         </div>
-    </div>
-</div>
+        <div class="space-y-1">
+            <label class="c2fc-campo-rotulo" for="admin-ia-tipo">@[[ui-type]]@</label>
+            <select id="admin-ia-tipo" class="c2fc-campo-entrada w-full" name="tipo" data-c2f-select="1" required>
+                <option value="gemini" selected>@[[ui-provider-gemini]]@</option>
+            </select>
+        </div>
+        <label class="c2fc-chave">
+            <input type="checkbox" name="padrao">
+            <span class="c2fc-chave-trilho"></span>
+            <span class="c2fc-chave-rotulo">@[[ui-default]]@</span>
+        </label>
+        <div class="space-y-1">
+            <label class="c2fc-campo-rotulo" for="admin-ia-chave">@[[ui-api-key]]@</label>
+            <input id="admin-ia-chave" class="c2fc-campo-entrada w-full" type="password" name="chave_api"
+                placeholder="@[[ui-api-key-placeholder]]@" required>
+            <p class="text-sm text-slate-600">@[[ui-api-key-hint]]@</p>
+        </div>
+        <label class="c2fc-chave">
+            <input type="checkbox" name="testar_conexao" checked>
+            <span class="c2fc-chave-trilho"></span>
+            <span class="c2fc-chave-rotulo">@[[ui-test-after-save]]@</span>
+        </label>
+        <div class="flex flex-wrap gap-3">
+            <button type="submit"
+                class="js-submit inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i
+                    data-lucide="save" class="size-4"></i>@[[ui-save]]@</button>
+            <a href="@[[pagina#url-raiz]]@admin-ia/listar/"
+                class="inline-flex items-center gap-2 rounded border border-slate-300 px-4 py-2"><i
+                    data-lucide="arrow-left" class="size-4"></i>@[[ui-back]]@</a>
+        </div>
+    </form>
+</section>

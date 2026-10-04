@@ -299,12 +299,17 @@ function admin_plugins_editar(){
 		// Definir classes CSS para tabs ativas
 		$origem_tipo = isset($retorno_bd['origem_tipo']) ? $retorno_bd['origem_tipo'] : 'arquivo';
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#origem_tipo#',$origem_tipo);
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#arquivo_active#',($origem_tipo == 'arquivo' ? 'active' : ''));
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#publico_active#',($origem_tipo == 'github_publico' ? 'active' : ''));
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#privado_active#',($origem_tipo == 'github_privado' ? 'active' : ''));
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#arquivo_segment#',($origem_tipo == 'arquivo' ? 'active' : ''));
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#publico_segment#',($origem_tipo == 'github_publico' ? 'active' : ''));
-		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#privado_segment#',($origem_tipo == 'github_privado' ? 'active' : ''));
+		$origens = ['arquivo' => 'arquivo', 'github_publico' => 'publico', 'github_privado' => 'privado'];
+		$origemSelecionada = $origens[$origem_tipo] ?? 'arquivo';
+		foreach ($origens as $tipo => $aba) {
+			$ativa = $aba === $origemSelecionada;
+			$classesAba = $ativa
+				? 'border-b-2 border-sky-700 px-3 py-2 text-sm font-medium text-sky-800'
+				: 'border-b-2 border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900';
+			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#'.$aba.'_active#',$classesAba);
+			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#'.$aba.'_aria#',($ativa ? 'true' : 'false'));
+			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#'.$aba.'_segment#',($ativa ? '' : 'hidden'));
+		}
 		
 		// Substituir valores dos campos de origem
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#repo_publico_url#',(isset($retorno_bd['origem_referencia']) && $retorno_bd['origem_tipo'] == 'github_publico' ? 'https://github.com/' . $retorno_bd['origem_referencia'] : ''));
@@ -440,21 +445,18 @@ function admin_plugins_executar(){
 
 	$plugin_data = $retorno_bd;
 	
-	// ===== Inclusão do CodeMirror
-
-	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
-		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
-	}
-	assets_externos_incluir('codemirror');
-
 	// ===== Incluir Módulo JS
 	
 	gestor_pagina_javascript_incluir();
 	
 	// ===== Incluir componente de execução
 	
+	$componenteId = function_exists('interface_componente_variante')
+		? interface_componente_variante('plugins-exec')
+		: 'plugins-exec';
+
 	$comp = gestor_componente([
-		'id' => 'plugins-exec',
+		'id' => $componenteId,
 		'modulo' => $_GESTOR['modulo-id'],
 	]);
 
@@ -1481,25 +1483,25 @@ function admin_plugins_teste(){
 						$resultado = admin_plugins_descobrir_ultima_tag_plugin($repo_url);
 
 						$resultado_descoberta = '
-						<div class="ui success message">
-							<div class="header">Descoberta realizada com sucesso!</div>
-							<ul class="list">
-								<li><strong>Tag:</strong> ' . $resultado['tag'] . '</li>
-								<li><strong>Data de publicação:</strong> ' . $resultado['published_at'] . '</li>
-								<li><strong>URL do Download:</strong> ' . $resultado['download_url'] . '</li>
+						<div class="rounded border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+							<p class="font-semibold">Descoberta realizada com sucesso!</p>
+							<ul class="mt-2 space-y-1">
+								<li><strong>Tag:</strong> ' . htmlspecialchars((string)$resultado['tag'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>
+								<li><strong>Data de publicação:</strong> ' . htmlspecialchars((string)$resultado['published_at'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>
+								<li><strong>URL do Download:</strong> ' . htmlspecialchars((string)$resultado['download_url'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>
 							</ul>
 						</div>';
 					} catch (Exception $e) {
 						$resultado_descoberta = '
-						<div class="ui error message">
-							<div class="header">Erro na descoberta</div>
-							<p>' . $e->getMessage() . '</p>
+						<div class="rounded border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">
+							<p class="font-semibold">Erro na descoberta</p>
+							<p>' . htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</p>
 						</div>';
 					}
 				} else {
 					$resultado_descoberta = '
-					<div class="ui warning message">
-						<div class="header">URL do repositório é obrigatória</div>
+					<div class="rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+						<p class="font-semibold">URL do repositório é obrigatória</p>
 					</div>';
 				}
 				break;
@@ -1520,11 +1522,11 @@ function admin_plugins_teste(){
 						$file_size_mb = round($file_size / 1024 / 1024, 2);
 
 						$resultado_download = '
-						<div class="ui success message">
-							<div class="header">Download realizado com sucesso!</div>
-							<ul class="list">
-								<li><strong>URL:</strong> ' . $zip_url . '</li>
-								<li><strong>Caminho do arquivo:</strong> ' . $downloaded_path . '</li>
+						<div class="rounded border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+							<p class="font-semibold">Download realizado com sucesso!</p>
+							<ul class="mt-2 space-y-1">
+								<li><strong>URL:</strong> ' . htmlspecialchars((string)$zip_url, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>
+								<li><strong>Caminho do arquivo:</strong> ' . htmlspecialchars((string)$downloaded_path, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>
 								<li><strong>Tamanho:</strong> ' . $file_size_mb . ' MB</li>
 							</ul>
 						</div>';
@@ -1535,15 +1537,15 @@ function admin_plugins_teste(){
 
 					} catch (Exception $e) {
 						$resultado_download = '
-						<div class="ui error message">
-							<div class="header">Erro no download</div>
-							<p>' . $e->getMessage() . '</p>
+						<div class="rounded border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">
+							<p class="font-semibold">Erro no download</p>
+							<p>' . htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</p>
 						</div>';
 					}
 				} else {
 					$resultado_download = '
-					<div class="ui warning message">
-						<div class="header">URL do ZIP é obrigatória</div>
+					<div class="rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+						<p class="font-semibold">URL do ZIP é obrigatória</p>
 					</div>';
 				}
 				break;
@@ -1561,33 +1563,33 @@ function admin_plugins_teste(){
 
 						if($resultado === false){
 							$resultado_processamento = '
-							<div class="ui error message">
-								<div class="header">Erro no processamento</div>
+							<div class="rounded border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">
+								<p class="font-semibold">Erro no processamento</p>
 								<p>Verifique os logs para mais detalhes.</p>
 							</div>';
 						} else {
 							$resultado_processamento = '
-							<div class="ui success message">
-								<div class="header">Processamento realizado com sucesso!</div>
-								<ul class="list">
-									<li><strong>Tipo de origem:</strong> ' . $resultado['origem_tipo'] . '</li>
-									<li><strong>Referência:</strong> ' . $resultado['origem_referencia'] . '</li>
-									<li><strong>Branch/Tag:</strong> ' . ($resultado['origem_branch_tag'] ?: 'N/A') . '</li>
-									<li><strong>Arquivo:</strong> ' . ($resultado['arquivo_path'] ?: 'N/A') . '</li>
+							<div class="rounded border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+								<p class="font-semibold">Processamento realizado com sucesso!</p>
+								<ul class="mt-2 space-y-1">
+									<li><strong>Tipo de origem:</strong> ' . htmlspecialchars((string)$resultado['origem_tipo'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>
+									<li><strong>Referência:</strong> ' . htmlspecialchars((string)$resultado['origem_referencia'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>
+									<li><strong>Branch/Tag:</strong> ' . htmlspecialchars((string)($resultado['origem_branch_tag'] ?: 'N/A'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>
+									<li><strong>Arquivo:</strong> ' . htmlspecialchars((string)($resultado['arquivo_path'] ?: 'N/A'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>
 								</ul>
 							</div>';
 						}
 					} catch (Exception $e) {
 						$resultado_processamento = '
-						<div class="ui error message">
-							<div class="header">Erro no processamento</div>
-							<p>' . $e->getMessage() . '</p>
+						<div class="rounded border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">
+							<p class="font-semibold">Erro no processamento</p>
+							<p>' . htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</p>
 						</div>';
 					}
 				} else {
 					$resultado_processamento = '
-					<div class="ui warning message">
-						<div class="header">URL de origem é obrigatória</div>
+					<div class="rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+						<p class="font-semibold">URL de origem é obrigatória</p>
 					</div>';
 				}
 				break;
@@ -1665,6 +1667,7 @@ function admin_plugins_start(){
 		
 		interface_ajax_finalizar();
 	} else {
+		$_GESTOR['tailwind-page-bundle'] = true;
 		admin_plugins_interfaces_padroes();
 		
 		interface_iniciar();

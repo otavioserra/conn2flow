@@ -1,6 +1,41 @@
+function adminIaMensagem(id) {
+    var mensagens = document.getElementById('admin-ia-mensagens');
+    return mensagens ? mensagens.getAttribute('data-' + id) || '' : '';
+}
+
+function adminIaToast(config) {
+    if (!window.c2fControles) return;
+
+    var classe = String(config && config.class || '');
+    var tipo = /error|red|negative/.test(classe) ? 'erro' : (/success|green|positive/.test(classe) ? 'sucesso' : (/warning|orange|yellow/.test(classe) ? 'alerta' : 'info'));
+    window.c2fControles.aviso(config && config.message || '', tipo);
+}
+
+function adminIaHistoricoRenderizar(lista, template, historico, mensagemVazia) {
+    lista.replaceChildren();
+    if (!Array.isArray(historico) || historico.length === 0) {
+        lista.textContent = mensagemVazia;
+        return;
+    }
+
+    historico.forEach(function (teste) {
+        var item = template.content.firstElementChild.cloneNode(true);
+        var sucesso = teste.sucesso === true || teste.sucesso === 1 || teste.sucesso === '1';
+        item.querySelector('[data-history-success]').classList.toggle('hidden', !sucesso);
+        item.querySelector('[data-history-error]').classList.toggle('hidden', sucesso);
+        item.querySelector('[data-history-date]').textContent = teste.data || '';
+        item.querySelector('[data-history-response]').textContent = teste.tempo_resposta || '';
+        item.querySelector('[data-history-error-detail]').classList.toggle('hidden', !teste.mensagem_erro);
+        item.querySelector('[data-history-error-message]').textContent = teste.mensagem_erro || '';
+        lista.appendChild(item);
+    });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { adminIaHistoricoRenderizar: adminIaHistoricoRenderizar };
+}
+
 $(document).ready(function () {
-    // ===== Fomantic UI =====
-    $('.ui.dropdown').dropdown();
 
     // ===== Página Listar =====
     $('.testar-conexao').click(function () {
@@ -19,21 +54,21 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             beforeSend: function () {
-                button.addClass('loading').prop('disabled', true);
+                button.prop('disabled', true).attr('aria-busy', 'true');
                 $('#gestor-listener').trigger('carregar_abrir');
             },
             success: function (dados) {
-                button.removeClass('loading').prop('disabled', false);
+                button.prop('disabled', false).removeAttr('aria-busy');
 
                 switch (dados.status) {
                     case 'success':
-                        $.toast({
+                        adminIaToast({
                             class: 'success',
                             message: dados.message
                         });
                         break;
                     case 'error':
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: dados.message
                         });
@@ -45,14 +80,14 @@ $(document).ready(function () {
                 $('#gestor-listener').trigger('carregar_fechar');
             },
             error: function (txt) {
-                button.removeClass('loading').prop('disabled', false);
+                button.prop('disabled', false).removeAttr('aria-busy');
 
                 switch (txt.status) {
                     case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
                     default:
                         console.log('ERROR AJAX - testar_conexao - Dados:');
                         console.log(txt);
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: 'Erro na comunicação com o servidor'
                         });
@@ -78,15 +113,15 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             beforeSend: function () {
-                button.addClass('loading').prop('disabled', true);
+                button.prop('disabled', true).attr('aria-busy', 'true');
                 $('#gestor-listener').trigger('carregar_abrir');
             },
             success: function (dados) {
-                button.removeClass('loading').prop('disabled', false);
+                button.prop('disabled', false).removeAttr('aria-busy');
 
                 switch (dados.status) {
                     case 'success':
-                        $.toast({
+                        adminIaToast({
                             class: 'success',
                             message: dados.message
                         });
@@ -96,7 +131,7 @@ $(document).ready(function () {
                         }, 1500);
                         break;
                     case 'error':
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: dados.message
                         });
@@ -108,14 +143,14 @@ $(document).ready(function () {
                 $('#gestor-listener').trigger('carregar_fechar');
             },
             error: function (txt) {
-                button.removeClass('loading').prop('disabled', false);
+                button.prop('disabled', false).removeAttr('aria-busy');
 
                 switch (txt.status) {
                     case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
                     default:
                         console.log('ERROR AJAX - ativar - Dados:');
                         console.log(txt);
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: 'Erro na comunicação com o servidor'
                         });
@@ -142,15 +177,15 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             beforeSend: function () {
-                button.addClass('loading').prop('disabled', true);
+                button.prop('disabled', true).attr('aria-busy', 'true');
                 $('#gestor-listener').trigger('carregar_abrir');
             },
             success: function (dados) {
-                button.removeClass('loading').prop('disabled', false);
+                button.prop('disabled', false).removeAttr('aria-busy');
 
                 switch (dados.status) {
                     case 'success':
-                        $.toast({
+                        adminIaToast({
                             class: 'success',
                             message: dados.message
                         });
@@ -160,7 +195,7 @@ $(document).ready(function () {
                         }, 1500);
                         break;
                     case 'error':
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: dados.message
                         });
@@ -172,14 +207,14 @@ $(document).ready(function () {
                 $('#gestor-listener').trigger('carregar_fechar');
             },
             error: function (txt) {
-                button.removeClass('loading').prop('disabled', false);
+                button.prop('disabled', false).removeAttr('aria-busy');
 
                 switch (txt.status) {
                     case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
                     default:
                         console.log('ERROR AJAX - ativar - Dados:');
                         console.log(txt);
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: 'Erro na comunicação com o servidor'
                         });
@@ -194,67 +229,66 @@ $(document).ready(function () {
         var id = $(this).data('id');
         var button = $(this);
 
-        // Confirmação antes de excluir
-        if (!confirm('Tem certeza que deseja excluir este servidor IA? Esta ação não pode ser desfeita.')) {
-            return;
-        }
+        window.c2fControles.dialogo.confirmar(adminIaMensagem('confirm-delete'), { perigo: true }).then(function (confirmado) {
+            if (!confirmado) return;
 
-        var data = {
-            ajax: 'sim',
-            ajaxOpcao: 'excluir',
-            id: id
-        };
+            var data = {
+                ajax: 'sim',
+                ajaxOpcao: 'excluir',
+                id: id
+            };
 
-        $.ajax({
-            type: 'POST',
-            url: gestor.raiz + gestor.moduloCaminho + '/',
-            data: data,
-            dataType: 'json',
-            beforeSend: function () {
-                button.addClass('loading').prop('disabled', true);
-                $('#gestor-listener').trigger('carregar_abrir');
-            },
-            success: function (dados) {
-                button.removeClass('loading').prop('disabled', false);
+            $.ajax({
+                type: 'POST',
+                url: gestor.raiz + gestor.moduloCaminho + '/',
+                data: data,
+                dataType: 'json',
+                beforeSend: function () {
+                    button.prop('disabled', true).attr('aria-busy', 'true');
+                    $('#gestor-listener').trigger('carregar_abrir');
+                },
+                success: function (dados) {
+                    button.prop('disabled', false).removeAttr('aria-busy');
 
-                switch (dados.status) {
-                    case 'success':
-                        $.toast({
-                            class: 'success',
-                            message: dados.message
-                        });
-                        // Redirecionar para a página de listagem após 1.5 segundos
-                        setTimeout(function () {
-                            window.location.href = gestor.raiz + 'admin-ia/listar/';
-                        }, 1500);
-                        break;
-                    case 'error':
-                        $.toast({
-                            class: 'error',
-                            message: dados.message
-                        });
-                        break;
-                    default:
-                        console.log('ERROR - excluir - ' + dados.status);
+                    switch (dados.status) {
+                        case 'success':
+                            adminIaToast({
+                                class: 'success',
+                                message: dados.message
+                            });
+                            // Redirecionar para a página de listagem após 1.5 segundos
+                            setTimeout(function () {
+                                window.location.href = gestor.raiz + 'admin-ia/listar/';
+                            }, 1500);
+                            break;
+                        case 'error':
+                            adminIaToast({
+                                class: 'error',
+                                message: dados.message
+                            });
+                            break;
+                        default:
+                            console.log('ERROR - excluir - ' + dados.status);
+                    }
+
+                    $('#gestor-listener').trigger('carregar_fechar');
+                },
+                error: function (txt) {
+                    button.prop('disabled', false).removeAttr('aria-busy');
+
+                    switch (txt.status) {
+                        case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
+                        default:
+                            console.log('ERROR AJAX - excluir - Dados:');
+                            console.log(txt);
+                            adminIaToast({
+                                class: 'error',
+                                message: 'Erro na comunicação com o servidor'
+                            });
+                            $('#gestor-listener').trigger('carregar_fechar');
+                    }
                 }
-
-                $('#gestor-listener').trigger('carregar_fechar');
-            },
-            error: function (txt) {
-                button.removeClass('loading').prop('disabled', false);
-
-                switch (txt.status) {
-                    case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
-                    default:
-                        console.log('ERROR AJAX - excluir - Dados:');
-                        console.log(txt);
-                        $.toast({
-                            class: 'error',
-                            message: 'Erro na comunicação com o servidor'
-                        });
-                        $('#gestor-listener').trigger('carregar_fechar');
-                }
-            }
+            });
         });
     });
 
@@ -280,15 +314,15 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             beforeSend: function () {
-                $('.ui.button.primary').addClass('loading').prop('disabled', true);
+                $('.js-submit').prop('disabled', true).attr('aria-busy', 'true');
                 $('#gestor-listener').trigger('carregar_abrir');
             },
             success: function (dados) {
-                $('.ui.button.primary').removeClass('loading').prop('disabled', false);
+                $('.js-submit').prop('disabled', false).removeAttr('aria-busy');
 
                 switch (dados.status) {
                     case 'success':
-                        $.toast({
+                        adminIaToast({
                             class: 'success',
                             message: dados.message
                         });
@@ -305,7 +339,7 @@ $(document).ready(function () {
                         }
                         break;
                     case 'error':
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: dados.message
                         });
@@ -317,14 +351,14 @@ $(document).ready(function () {
                 $('#gestor-listener').trigger('carregar_fechar');
             },
             error: function (txt) {
-                $('.ui.button.primary').removeClass('loading').prop('disabled', false);
+                $('.js-submit').prop('disabled', false).removeAttr('aria-busy');
 
                 switch (txt.status) {
                     case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
                     default:
                         console.log('ERROR AJAX - salvar - Dados:');
                         console.log(txt);
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: 'Erro na comunicação com o servidor'
                         });
@@ -353,7 +387,7 @@ $(document).ready(function () {
             nome: formData.find(item => item.name === 'nome').value,
             tipo: formData.find(item => item.name === 'tipo').value,
             chave_api: formData.find(item => item.name === 'chave_api').value,
-            padrao: formData.find(item => item.name === 'padrao').value ? 'on' : 'off'
+            padrao: formData.find(item => item.name === 'padrao') ? 'on' : 'off'
         };
 
         $.ajax({
@@ -362,15 +396,15 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             beforeSend: function () {
-                $('.ui.button.primary').addClass('loading').prop('disabled', true);
+                $('.js-submit').prop('disabled', true).attr('aria-busy', 'true');
                 $('#gestor-listener').trigger('carregar_abrir');
             },
             success: function (dados) {
-                $('.ui.button.primary').removeClass('loading').prop('disabled', false);
+                $('.js-submit').prop('disabled', false).removeAttr('aria-busy');
 
                 switch (dados.status) {
                     case 'success':
-                        $.toast({
+                        adminIaToast({
                             class: 'success',
                             message: dados.message
                         });
@@ -383,7 +417,7 @@ $(document).ready(function () {
                         }
                         break;
                     case 'error':
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: dados.message
                         });
@@ -395,14 +429,14 @@ $(document).ready(function () {
                 $('#gestor-listener').trigger('carregar_fechar');
             },
             error: function (txt) {
-                $('.ui.button.primary').removeClass('loading').prop('disabled', false);
+                $('.js-submit').prop('disabled', false).removeAttr('aria-busy');
 
                 switch (txt.status) {
                     case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
                     default:
                         console.log('ERROR AJAX - editar - Dados:');
                         console.log(txt);
-                        $.toast({
+                        adminIaToast({
                             class: 'error',
                             message: 'Erro na comunicação com o servidor'
                         });
@@ -434,13 +468,13 @@ $(document).ready(function () {
             success: function (dados) {
                 switch (dados.status) {
                     case 'success':
-                        $.toast({
+                        adminIaToast({
                             class: 'success',
                             message: 'Conexão testada: ' + dados.message
                         });
                         break;
                     case 'error':
-                        $.toast({
+                        adminIaToast({
                             class: 'warning',
                             message: 'Erro no teste de conexão: ' + dados.message
                         });
@@ -457,7 +491,7 @@ $(document).ready(function () {
                     default:
                         console.log('ERROR AJAX - testar_conexao_atual - Dados:');
                         console.log(txt);
-                        $.toast({
+                        adminIaToast({
                             class: 'warning',
                             message: 'Erro na comunicação para teste de conexão'
                         });
@@ -485,13 +519,13 @@ $(document).ready(function () {
             success: function (dados) {
                 switch (dados.status) {
                     case 'success':
-                        $.toast({
+                        adminIaToast({
                             class: 'success',
                             message: 'Conexão testada: ' + dados.message
                         });
                         break;
                     case 'error':
-                        $.toast({
+                        adminIaToast({
                             class: 'warning',
                             message: 'Servidor salvo, mas erro no teste: ' + dados.message
                         });
@@ -512,7 +546,7 @@ $(document).ready(function () {
                     default:
                         console.log('ERROR AJAX - testar_conexao_apos_salvar - Dados:');
                         console.log(txt);
-                        $.toast({
+                        adminIaToast({
                             class: 'warning',
                             message: 'Servidor salvo, mas erro na comunicação para teste'
                         });
@@ -527,6 +561,9 @@ $(document).ready(function () {
 
     function carregarHistoricoTestes() {
         var id = $('input[name="id"]').val();
+        var lista = document.getElementById('historico-testes');
+        var template = document.getElementById('admin-ia-history-template');
+        if (!lista || !template) return;
 
         var data = {
             ajax: 'sim',
@@ -540,48 +577,22 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             beforeSend: function () {
-                $('#historico-testes').html('<p class="text-muted"><i class="spinner loading icon"></i> Carregando histórico...</p>');
+                lista.setAttribute('aria-busy', 'true');
             },
             success: function (dados) {
+                lista.removeAttribute('aria-busy');
                 if (dados.status === 'success') {
-                    if (dados.historico.length > 0) {
-                        var html = '<div class="ui relaxed divided list">';
-
-                        dados.historico.forEach(function (teste) {
-                            var statusIcon = teste.sucesso ?
-                                '<i class="check circle green icon"></i>' :
-                                '<i class="times circle red icon"></i>';
-
-                            var statusText = teste.sucesso ? 'Sucesso' : 'Erro';
-                            var statusClass = teste.sucesso ? 'positive' : 'negative';
-
-                            var erroInfo = teste.mensagem_erro ?
-                                '<br><small class="text-muted">Erro: ' + teste.mensagem_erro + '</small>' : '';
-
-                            html += '<div class="item">' +
-                                '<div class="content">' +
-                                '<div class="header">' + statusIcon + ' ' + statusText + ' - ' + teste.data + '</div>' +
-                                '<div class="description">' +
-                                'Tempo de resposta: ' + teste.tempo_resposta +
-                                erroInfo +
-                                '</div>' +
-                                '</div>' +
-                                '</div>';
-                        });
-
-                        html += '</div>';
-                        $('#historico-testes').html(html);
-                    } else {
-                        $('#historico-testes').html('<p class="text-muted">Nenhum teste realizado ainda.</p>');
-                    }
+                    adminIaHistoricoRenderizar(lista, template, dados.historico, adminIaMensagem('history-empty'));
                 } else {
-                    $('#historico-testes').html('<p class="text-red">Erro ao carregar histórico: ' + dados.message + '</p>');
+                    lista.replaceChildren();
+                    lista.textContent = adminIaMensagem('error-history') + (dados.message ? ' ' + dados.message : '');
                 }
             },
             error: function (txt) {
+                lista.removeAttribute('aria-busy');
                 console.log('ERROR AJAX - historico_testes - Dados:');
                 console.log(txt);
-                $('#historico-testes').html('<p class="text-red">Erro na comunicação com o servidor</p>');
+                lista.textContent = adminIaMensagem('error-history');
             }
         });
     }
@@ -609,22 +620,22 @@ function salvarModelosGlobais() {
         data: data,
         dataType: 'json',
         beforeSend: function () {
-            btn.addClass('loading').prop('disabled', true);
+            btn.prop('disabled', true).attr('aria-busy', 'true');
         },
         success: function (dados) {
-            btn.removeClass('loading').prop('disabled', false);
+            btn.prop('disabled', false).removeAttr('aria-busy');
             if (dados.status === 'success') {
-                $.toast({ class: 'success', message: dados.message });
+                adminIaToast({ class: 'success', message: dados.message });
             } else {
-                $.toast({ class: 'error', message: dados.message || 'Erro desconhecido' });
+                adminIaToast({ class: 'error', message: dados.message || 'Erro desconhecido' });
             }
         },
         error: function (txt) {
-            btn.removeClass('loading').prop('disabled', false);
+            btn.prop('disabled', false).removeAttr('aria-busy');
             if (txt.status === 401 && txt.responseJSON && txt.responseJSON.redirect) {
                 window.open(gestor.raiz + txt.responseJSON.redirect, '_self');
             } else {
-                $.toast({ class: 'error', message: 'Erro na comunicação com o servidor' });
+                adminIaToast({ class: 'error', message: 'Erro na comunicação com o servidor' });
             }
         }
     });

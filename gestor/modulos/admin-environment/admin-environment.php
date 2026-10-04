@@ -267,10 +267,10 @@ function admin_environment_perfil_badge($perfilId, $perfilNome){
     $perfilId = (string)$perfilId;
     $rotulo = $perfilNome !== '' ? htmlspecialchars((string)$perfilNome, ENT_QUOTES, 'UTF-8').' ' : '';
 
-    return '<a class="ui blue label site-restricted-profile" data-id="'.htmlspecialchars($perfilId, ENT_QUOTES, 'UTF-8').'">'
-        . $rotulo.'<span class="detail">#'.htmlspecialchars($perfilId, ENT_QUOTES, 'UTF-8').'</span>'
-        . '<i class="delete icon site-restricted-profile-remove"></i>'
-        . '</a>';
+    return '<span class="site-restricted-profile inline-flex items-center gap-1 rounded bg-sky-100 px-2 py-1 text-sm text-sky-900" data-id="'.htmlspecialchars($perfilId, ENT_QUOTES, 'UTF-8').'">'
+        . $rotulo.'<span class="text-xs">#'.htmlspecialchars($perfilId, ENT_QUOTES, 'UTF-8').'</span>'
+        . '<a href="#" class="site-restricted-profile-remove ml-1 cursor-pointer"><i class="delete icon" aria-hidden="true"></i></a>'
+        . '</span>';
 }
 
 // ===== Interfaces Principais
@@ -364,13 +364,13 @@ function admin_environment_raiz(){
             $perfilId = (string)$perfil['id_usuarios_perfis'];
             $perfilNome = isset($perfil['nome']) && $perfil['nome'] !== '' ? $perfil['nome'] : $perfil['id'];
             $checked = in_array($perfilId, $perfisPermitidos, true) ? ' checked' : '';
-            $apiProfilesHtml .= '<div class="field"><div class="ui checkbox">'
+            $apiProfilesHtml .= '<label class="flex items-center gap-2">'
                 . '<input type="checkbox" class="auth-api-profile" name="auth_api_allowed_profiles[]" value="'.htmlspecialchars($perfilId, ENT_QUOTES).'"'.$checked.'>'
-                . '<label>'.htmlspecialchars($perfilNome).' <small class="ui grey text">#'.htmlspecialchars($perfilId).'</small></label>'
-                . '</div></div>';
+                . '<span>'.htmlspecialchars($perfilNome).' <small class="text-xs text-slate-600">#'.htmlspecialchars($perfilId).'</small></span>'
+                . '</label>';
         }
     } else {
-        $apiProfilesHtml = '<div class="ui warning message">Nenhum perfil ativo encontrado.</div>';
+        $apiProfilesHtml = '<div class="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">Nenhum perfil ativo encontrado.</div>';
     }
     $dados['auth-api-profiles'] = $apiProfilesHtml;
 
@@ -404,13 +404,6 @@ function admin_environment_raiz(){
         $languageOptions .= '<option value="' . $lang . '"' . $selected . '>' . $label . '</option>';
     }
     $dados['language-options'] = $languageOptions;
-
-    // ===== Inclusão do CodeMirror
-
-	if(!function_exists('assets_externos_incluir') && !empty($_GESTOR['bibliotecas-path'])){
-		require_once($_GESTOR['bibliotecas-path'].'assets-externos.php');
-	}
-	assets_externos_incluir('codemirror');
 
     // ===== Inclusão Módulo JS
 	
@@ -903,6 +896,7 @@ function admin_environment_start(){
     } else {
         admin_environment_interfaces_padroes();
 
+        $_GESTOR['tailwind-page-bundle'] = true;
         interface_iniciar();
 
         switch($_GESTOR['opcao']){

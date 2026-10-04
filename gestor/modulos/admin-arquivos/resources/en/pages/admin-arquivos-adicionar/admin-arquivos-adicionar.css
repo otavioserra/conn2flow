@@ -68,7 +68,7 @@ input[type="file"] {
     text-align: center;
 }
 
-.c2f-upload-thumb .ui.image {
+.c2f-upload-image {
     display: inline-block;
     margin: 0 auto;
     object-fit: cover;
@@ -87,6 +87,8 @@ input[type="file"] {
 
 .c2f-upload-details {
     margin: 0 0 8px !important;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .c2f-upload-details td {
@@ -99,35 +101,75 @@ input[type="file"] {
     white-space: nowrap;
 }
 
-.c2f-upload-buttons .button {
+.c2f-upload-buttons button {
     margin: 0 2px 4px;
+}
+
+.c2f-progress {
+    height: 16px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e2e8f0;
+}
+
+.c2f-progress .bar {
+    width: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #0e7490;
+    transition: width .15s ease;
+}
+
+.c2f-progress .progress {
+    display: block;
+    overflow: hidden;
+    padding-right: 6px;
+    color: #fff;
+    font-size: .7rem;
+    line-height: 16px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.c2f-progress-error .bar {
+    background: #be123c;
+}
+
+.c2f-progress-indeterminate .bar {
+    width: 36%;
+    animation: c2f-upload-progress 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes c2f-upload-progress {
+    from { transform: translateX(0); }
+    to { transform: translateX(180%); }
 }
 
 /* --- XL: 1 por linha, thumb grande à esquerda, corpo à direita --- */
 #files-cont.preview-xl .c2f-upload-cel { width: 100%; flex-direction: row; gap: 16px; align-items: flex-start; }
 #files-cont.preview-xl .c2f-upload-thumb { flex: 0 0 340px; }
-#files-cont.preview-xl .c2f-upload-thumb .ui.image { width: 100%; height: auto; max-height: 420px; }
+#files-cont.preview-xl .c2f-upload-image { width: 100%; height: auto; max-height: 420px; }
 #files-cont.preview-xl .c2f-upload-body { flex: 1; }
 
 /* --- L: 2 por linha, thumb média à esquerda --- */
 #files-cont.preview-l .c2f-upload-cel { width: calc(50% - 12px); flex-direction: row; gap: 14px; align-items: flex-start; }
 #files-cont.preview-l .c2f-upload-thumb { flex: 0 0 190px; }
-#files-cont.preview-l .c2f-upload-thumb .ui.image { width: 190px; height: 190px; }
+#files-cont.preview-l .c2f-upload-image { width: 190px; height: 190px; }
 #files-cont.preview-l .c2f-upload-body { flex: 1; }
 
 /* --- M: ~4 por linha, vertical, detalhes reduzidos (só tamanho) --- */
 #files-cont.preview-m .c2f-upload-cel { width: calc(25% - 12px); }
-#files-cont.preview-m .c2f-upload-thumb .ui.image { width: 100%; height: 160px; }
+#files-cont.preview-m .c2f-upload-image { width: 100%; height: 160px; }
 #files-cont.preview-m .c2f-upload-details tr:nth-child(1),
 #files-cont.preview-m .c2f-upload-details tr:nth-child(3) { display: none; }
-#files-cont.preview-m .c2f-upload-buttons .button { font-size: .85rem; }
+#files-cont.preview-m .c2f-upload-buttons button { font-size: .85rem; }
 
 /* --- S: ~6 por linha, mínimo: thumb + nome + botões (sem tabela de detalhes) --- */
 #files-cont.preview-s .c2f-upload-cel { width: calc(16.66% - 12px); padding: 8px !important; }
-#files-cont.preview-s .c2f-upload-thumb .ui.image { width: 100%; height: 100px; }
+#files-cont.preview-s .c2f-upload-image { width: 100%; height: 100px; }
 #files-cont.preview-s .c2f-upload-details { display: none; }
 #files-cont.preview-s .c2f-upload-name { font-size: .82em; margin: 6px 0 2px; }
-#files-cont.preview-s .c2f-upload-buttons .button { font-size: .72rem; padding: .5em .7em; margin: 0 1px 3px; }
+#files-cont.preview-s .c2f-upload-buttons button { font-size: .72rem; padding: .5em .7em; margin: 0 1px 3px; }
 
 /* Responsividade */
 @media only screen and (max-width: 991px) {
@@ -140,8 +182,8 @@ input[type="file"] {
     #files-cont.preview-xl .c2f-upload-cel { width: 100%; flex-direction: column; }
     #files-cont.preview-l .c2f-upload-thumb,
     #files-cont.preview-xl .c2f-upload-thumb { flex: none; }
-    #files-cont.preview-l .c2f-upload-thumb .ui.image,
-    #files-cont.preview-xl .c2f-upload-thumb .ui.image { width: 100%; height: auto; }
+    #files-cont.preview-l .c2f-upload-image,
+    #files-cont.preview-xl .c2f-upload-image { width: 100%; height: auto; }
     #files-cont.preview-m .c2f-upload-cel,
     #files-cont.preview-s .c2f-upload-cel { width: calc(50% - 12px); }
 }

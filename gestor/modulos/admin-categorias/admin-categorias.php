@@ -770,7 +770,7 @@ function admin_categorias_interfaces_padroes(){
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-parent-label')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
-								'valor_senao_existe' => '<span class="ui info text">'.gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-parent-empy')).'</span>',
+								'valor_senao_existe' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-name-parent-empy')),
 								'tabela' => Array(
 									'nome' => 'categorias',
 									'campo_trocar' => 'nome',
@@ -862,6 +862,8 @@ function admin_categorias_start(){
 		
 		interface_ajax_finalizar();
 	} else {
+		$_GESTOR['tailwind-page-bundle'] = true;
+		
 		admin_categorias_interfaces_padroes();
 		
 		interface_iniciar();

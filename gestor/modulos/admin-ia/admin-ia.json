@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.0",
+    "versao": "1.2.0",
     "bibliotecas": [
         "interface",
         "html",
@@ -23,12 +23,46 @@
                 {
                     "name": "Admin IA - Listar",
                     "id": "admin-ia-listar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-ia/listar/",
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.13",
+                    "version": "1.14",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "4b67e70a9a585543398bb2cd4a20ca78",
                         "css": "",
@@ -38,12 +72,36 @@
                 {
                     "name": "Admin IA - Adicionar",
                     "id": "admin-ia-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.12",
+                    "version": "1.13",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "787e9254ce70098a6147add2ae951898",
                         "css": "",
@@ -53,12 +111,36 @@
                 {
                     "name": "Admin IA - Editar",
                     "id": "admin-ia-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-ia/editar/",
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.16",
+                    "version": "1.17",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "f720734db6ec32e919ae7beea2894042",
                         "css": "",
@@ -93,6 +175,256 @@
                     "id": "requests-error-message",
                     "value": "Erro ao processar a requisição de IA.",
                     "type": "string"
+                },
+                {
+                    "id": "ui-list-title",
+                    "value": "Servidores de IA",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-add",
+                    "value": "Adicionar servidor",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-name",
+                    "value": "Nome",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-type",
+                    "value": "Tipo",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-default",
+                    "value": "Padrão",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-last-test",
+                    "value": "Último teste",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-actions",
+                    "value": "Ações",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-provider-gemini",
+                    "value": "Google Gemini",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-active",
+                    "value": "Ativo",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-inactive",
+                    "value": "Inativo",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-edit",
+                    "value": "Editar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-test",
+                    "value": "Testar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-delete",
+                    "value": "Excluir",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-empty-title",
+                    "value": "Nenhum servidor configurado",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-add-first",
+                    "value": "Adicionar primeiro servidor",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-add-title",
+                    "value": "Adicionar servidor IA",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-edit-title",
+                    "value": "Editar servidor IA",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-name",
+                    "value": "Nome do servidor",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-name-placeholder",
+                    "value": "Ex: Gemini Produção",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-type",
+                    "value": "Tipo de servidor",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-default",
+                    "value": "Padrão",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key",
+                    "value": "Chave API",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key-placeholder",
+                    "value": "Cole sua chave API aqui",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key-hint",
+                    "value": "A chave será criptografada e armazenada com segurança.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key-edit-placeholder",
+                    "value": "Deixe em branco para manter a atual",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key-edit-hint",
+                    "value": "Digite uma nova chave para alterar ou deixe em branco para manter a atual.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-test-after-save",
+                    "value": "Testar conexão após salvar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-save",
+                    "value": "Salvar servidor",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-update",
+                    "value": "Atualizar servidor",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-back",
+                    "value": "Voltar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-test-connection",
+                    "value": "Testar conexão",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-activate",
+                    "value": "Ativar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-deactivate",
+                    "value": "Desativar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-history-title",
+                    "value": "Histórico de testes",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-history-loading",
+                    "value": "Carregando histórico...",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-history-empty",
+                    "value": "Nenhum teste realizado ainda.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-models-title",
+                    "value": "Modelos disponíveis globalmente",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-models-description",
+                    "value": "Selecione quais modelos de IA ficam disponíveis para todos os usuários. Modelos desativados aqui não aparecerão no seletor, a menos que habilitados individualmente por usuário.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-save-models",
+                    "value": "Salvar configuração de modelos",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-success",
+                    "value": "Sucesso",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error",
+                    "value": "Erro",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-response-time",
+                    "value": "Tempo de resposta",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-prefix",
+                    "value": "Erro:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-confirm-delete",
+                    "value": "Tem certeza que deseja excluir este servidor de IA? Esta ação não pode ser desfeita.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-communication",
+                    "value": "Erro na comunicação com o servidor.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-history",
+                    "value": "Erro ao carregar o histórico.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-test-communication",
+                    "value": "Erro na comunicação durante o teste de conexão.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-generic",
+                    "value": "Erro desconhecido.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-models-empty",
+                    "value": "Nenhum modelo disponível.",
+                    "type": "string"
                 }
             ]
         },
@@ -102,12 +434,46 @@
                 {
                     "name": "Admin AI - List",
                     "id": "admin-ia-listar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-ia/listar/",
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.14",
+                    "version": "1.15",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "59c7db67bb4af406f2476e54ea47152f",
                         "css": "",
@@ -117,12 +483,36 @@
                 {
                     "name": "Admin AI - Add",
                     "id": "admin-ia-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.13",
+                    "version": "1.14",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "8a8921038641a9bcab1d3020e39e579a",
                         "css": "",
@@ -132,12 +522,36 @@
                 {
                     "name": "Admin AI - Edit",
                     "id": "admin-ia-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-ia/editar/",
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.15",
+                    "version": "1.16",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "44238f4cdf0da21ae1a54060de4e7b1c",
                         "css": "",
@@ -171,6 +585,256 @@
                 {
                     "id": "requests-error-message",
                     "value": "Error processing AI request.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-list-title",
+                    "value": "AI servers",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-add",
+                    "value": "Add server",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-name",
+                    "value": "Name",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-type",
+                    "value": "Type",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-default",
+                    "value": "Default",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-status",
+                    "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-last-test",
+                    "value": "Last test",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-col-actions",
+                    "value": "Actions",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-provider-gemini",
+                    "value": "Google Gemini",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-active",
+                    "value": "Active",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-inactive",
+                    "value": "Inactive",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-edit",
+                    "value": "Edit",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-test",
+                    "value": "Test",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-delete",
+                    "value": "Delete",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-empty-title",
+                    "value": "No AI server configured",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-add-first",
+                    "value": "Add the first server",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-add-title",
+                    "value": "Add AI server",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-edit-title",
+                    "value": "Edit AI server",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-name",
+                    "value": "Server name",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-name-placeholder",
+                    "value": "e.g. Gemini Production",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-type",
+                    "value": "Server type",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-default",
+                    "value": "Default",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key",
+                    "value": "API key",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key-placeholder",
+                    "value": "Paste your API key here",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key-hint",
+                    "value": "The key will be encrypted and stored securely.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key-edit-placeholder",
+                    "value": "Leave blank to keep the current key",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-api-key-edit-hint",
+                    "value": "Enter a new key to change it, or leave blank to keep the current key.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-test-after-save",
+                    "value": "Test connection after saving",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-save",
+                    "value": "Save server",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-update",
+                    "value": "Update server",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-back",
+                    "value": "Back",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-test-connection",
+                    "value": "Test connection",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-activate",
+                    "value": "Activate",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-deactivate",
+                    "value": "Deactivate",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-history-title",
+                    "value": "Test history",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-history-loading",
+                    "value": "Loading test history...",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-history-empty",
+                    "value": "No tests have been run yet.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-models-title",
+                    "value": "Globally available models",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-models-description",
+                    "value": "Select which AI models are available to all users. Models disabled here will not appear in the model selector unless enabled individually by a user.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-save-models",
+                    "value": "Save model configuration",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-success",
+                    "value": "Success",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error",
+                    "value": "Error",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-response-time",
+                    "value": "Response time",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-prefix",
+                    "value": "Error:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-confirm-delete",
+                    "value": "Are you sure you want to delete this AI server? This action cannot be undone.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-communication",
+                    "value": "Communication error with the server.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-history",
+                    "value": "Error loading test history.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-test-communication",
+                    "value": "Communication error while testing the connection.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-error-generic",
+                    "value": "Unknown error.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-models-empty",
+                    "value": "No models available.",
                     "type": "string"
                 }
             ]

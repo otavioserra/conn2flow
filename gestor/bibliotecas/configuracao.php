@@ -279,14 +279,21 @@ function configuracao_administracao($params = false){
 		
 		// ===== Carregar template do widget de configuração
 		
+		$widgetComponenteId = interface_componente_variante('configuracao-widget');
+		$classeOculta = $widgetComponenteId === 'configuracao-widget-tailwind' ? 'hidden' : 'escondido';
 		$widget = gestor_componente(Array(
-			'id' => 'configuracao-widget',
+			'id' => $widgetComponenteId,
 		));
+		$widget = modelo_var_troca(
+			$widget,
+			'#configuracao-delete-message#',
+			htmlspecialchars(gestor_variaveis(Array('modulo' => 'interface', 'id' => 'delete-confirm-menssage')), ENT_QUOTES, 'UTF-8')
+		);
 		
 		// ===== Carregar template dos campos de formulário
 		
 		$campos = gestor_componente(Array(
-			'id' => 'configuracao-campos',
+			'id' => interface_componente_variante('configuracao-campos'),
 		));
 		
 		// ===== Buscar variáveis do módulo no banco de dados
@@ -345,7 +352,7 @@ function configuracao_administracao($params = false){
 					
 					html_adicionar_classe(Array(
 						'consulta' => 'variavelDescricaoCont',
-						'classe' => 'escondido',
+						'classe' => $classeOculta,
 					));
 					
 					$cel_aux = html_finalizar();
@@ -362,7 +369,7 @@ function configuracao_administracao($params = false){
 					
 					html_adicionar_classe(Array(
 						'consulta' => 'variavelGrupoCont',
-						'classe' => 'escondido',
+						'classe' => $classeOculta,
 					));
 					
 					$cel_aux = html_finalizar();
@@ -428,7 +435,7 @@ function configuracao_administracao($params = false){
 			
 			html_adicionar_classe(Array(
 				'consulta' => 'componenteAdicionarBaixo',
-				'classe' => 'escondido',
+				'classe' => $classeOculta,
 			));
 			
 			$widget = html_finalizar();

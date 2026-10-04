@@ -1,13 +1,9 @@
 $(document).ready(function () {
 
-    $('.ui.dropdown')
-        .dropdown()
-        ;
-
     var $captchaProvider = $('#captcha_provider');
     var $turnstileMode = $('#turnstile_mode');
-    $captchaProvider.dropdown('set selected', $captchaProvider.attr('data-current') || 'none');
-    $turnstileMode.dropdown('set selected', $turnstileMode.attr('data-current') || 'managed');
+    $captchaProvider.val($captchaProvider.attr('data-current') || 'none');
+    $turnstileMode.val($turnstileMode.attr('data-current') || 'managed');
     function alternarCaptcha() {
         var provider = $captchaProvider.val();
         $('#google-recaptcha-section').toggleClass('hidden', provider !== 'google-recaptcha');
@@ -34,7 +30,7 @@ $(document).ready(function () {
                         dataType: 'json',
                         data: { ajax: 'sim', ajaxOpcao: 'testar-turnstile', turnstile_token: token, turnstile_secret_key: secret },
                         success: function (result) {
-                            window.alert(result.message || '');
+                            showMessage(result.status === 'success' ? 'success' : 'error', result.message || '');
                         }
                     });
                 }
@@ -51,101 +47,48 @@ $(document).ready(function () {
         }
     });
 
-    // Codmirror para logs de tests de envio de emails em modo debug
+    var tabActive = localStorage.getItem(gestor.moduloId + 'tabActive') || 'site';
+    function selecionarAba(tabPath) {
+        var $tab = $('.admin-environment-tab[data-tab="' + tabPath + '"]');
+        if (!$tab.length) return;
 
-    var codemirrors_instances = new Array();
-
-    var codemirror_logs = document.getElementsByClassName("codemirror-logs");
-
-    if (codemirror_logs.length > 0) {
-        for (var i = 0; i < codemirror_logs.length; i++) {
-            var CodeMirrorLogs = CodeMirror.fromTextArea(codemirror_logs[i], {
-                lineNumbers: true,
-                lineWrapping: true,
-                styleActiveLine: true,
-                matchBrackets: true,
-                mode: "xml",
-                indentUnit: 4,
-                theme: "tomorrow-night-bright",
-                extraKeys: {
-                    "F11": function (cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    },
-                    "Esc": function (cm) {
-                        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                    }
-                }
-            });
-
-            CodeMirrorLogs.setSize('100%', 500);
-            codemirrors_instances.push(CodeMirrorLogs);
-        }
+        $('.admin-environment-tab').each(function () {
+            var ativa = $(this).is($tab);
+            $(this)
+                .toggleClass('border-sky-700 bg-sky-50 text-sky-900', ativa)
+                .toggleClass('border-transparent text-slate-600', !ativa)
+                .attr('aria-selected', ativa ? 'true' : 'false');
+        });
+        $('.admin-environment-panel').each(function () {
+            $(this).toggleClass('hidden', $(this).attr('data-tab') !== tabPath);
+        });
+        localStorage.setItem(gestor.moduloId + 'tabActive', tabPath);
     }
 
-    // Inicializar tabs do Fomantic-UI
-
-    var tabActive = localStorage.getItem(gestor.moduloId + 'tabActive');
-    if (tabActive !== null) {
-        $('.menu .item').tab('change tab', tabActive);
-    }
-
-    $('.menu .item').tab({
-        onLoad: function (tabPath, parameterArray, historyEvent) {
-            localStorage.setItem(gestor.moduloId + 'tabActive', tabPath);
-        }
+    $('.admin-environment-tab').on('click', function (evento) {
+        evento.preventDefault();
+        selecionarAba($(this).attr('data-tab'));
     });
+    selecionarAba(tabActive);
 
     function showOauthSection(selector) {
-        $(selector)
-            .removeClass('hidden')
-            .find('.ui.info.message')
-            .addClass('visible')
-            .show();
+        $(selector).removeClass('hidden');
     }
 
-    $('#auth-google-section, #auth-meta-section')
-        .find('.ui.info.message')
-        .addClass('visible');
+    $('input[type="checkbox"]:not(.auth-api-profile)').each(function () {
+        $(this).val(this.checked ? 'true' : 'false');
+    }).on('change', function () {
+        var ativo = this.checked;
+        var id = $(this).attr('id');
+        $(this).val(ativo ? 'true' : 'false');
 
-    // Checkbox toggle para valores booleanos
-    $('.ui.checkbox').checkbox({
-        onChecked: function () {
-            $(this).val('true');
-
-            // Mostrar seção V2 quando V3 é ativado
-            if ($(this).attr('id') === 'usuario_recaptcha_active') {
-                $('#recaptcha-v2-section').removeClass('hidden');
-            }
-
-            // Mostrar credenciais OAuth quando o método social é ativado
-            if ($(this).attr('id') === 'auth_method_google_active') {
-                showOauthSection('#auth-google-section');
-            }
-            if ($(this).attr('id') === 'auth_method_meta_active') {
-                showOauthSection('#auth-meta-section');
-            }
-        },
-        onUnchecked: function () {
-            $(this).val('false');
-
-            if ($(this).attr('id') === 'testar-email-debug' && !$('.debug-logs').hasClass('hidden')) {
-                $('.debug-logs').addClass('hidden');
-            }
-
-            // Ocultar seção V2 e desativar V2 quando V3 é desativado
-            if ($(this).attr('id') === 'usuario_recaptcha_active') {
-                $('#recaptcha-v2-section').addClass('hidden');
-                $('#usuario_recaptcha_v2_active').parent().checkbox('uncheck');
-            }
-
-            // Ocultar credenciais OAuth quando o método social é desativado
-            if ($(this).attr('id') === 'auth_method_google_active') {
-                $('#auth-google-section').addClass('hidden');
-            }
-            if ($(this).attr('id') === 'auth_method_meta_active') {
-                $('#auth-meta-section').addClass('hidden');
-            }
+        if (id === 'usuario_recaptcha_active') {
+            $('#recaptcha-v2-section').toggleClass('hidden', !ativo);
+            if (!ativo) $('#usuario_recaptcha_v2_active').prop('checked', false).trigger('change');
         }
+        if (id === 'auth_method_google_active') $('#auth-google-section').toggleClass('hidden', !ativo);
+        if (id === 'auth_method_meta_active') $('#auth-meta-section').toggleClass('hidden', !ativo);
+        if (id === 'testar-email-debug' && !ativo) $('.debug-logs').addClass('hidden');
     });
 
     // req-163: Acesso Restrito ao Site — autocomplete de perfis e badges removíveis.
@@ -180,17 +123,17 @@ $(document).ready(function () {
         if (restritoLista().indexOf(String(perfil.id)) !== -1) return;
 
         $restritoTags.append(
-            '<a class="ui blue label site-restricted-profile" data-id="' + restritoEscapar(perfil.id) + '">'
+            '<span class="site-restricted-profile inline-flex items-center gap-1 rounded bg-sky-100 px-2 py-1 text-sm text-sky-900" data-id="' + restritoEscapar(perfil.id) + '">'
             + (perfil.nome ? restritoEscapar(perfil.nome) + ' ' : '')
-            + '<span class="detail">#' + restritoEscapar(perfil.id) + '</span>'
-            + '<i class="delete icon site-restricted-profile-remove"></i>'
-            + '</a>'
+            + '<span class="text-xs">#' + restritoEscapar(perfil.id) + '</span>'
+            + '<a href="#" class="site-restricted-profile-remove ml-1 cursor-pointer"><i class="delete icon" aria-hidden="true"></i></a>'
+            + '</span>'
         );
         restritoSincronizar();
     }
 
     function restritoFecharResultados() {
-        $restritoResultados.hide().empty();
+        $restritoResultados.addClass('hidden').empty();
     }
 
     function restritoRenderizar(perfis) {
@@ -202,17 +145,17 @@ $(document).ready(function () {
         $restritoResultados.empty();
 
         if (!disponiveis.length) {
-            $restritoResultados.append('<div class="ui grey text" style="padding:8px;">' + restritoEscapar($restritoResultados.attr('data-sem-resultados')) + '</div>');
+            $restritoResultados.append('<div class="px-2 py-2 text-sm text-slate-600">' + restritoEscapar($restritoResultados.attr('data-sem-resultados')) + '</div>');
         } else {
             disponiveis.forEach(function (perfil) {
-                $('<div class="site-restricted-profile-resultado" style="padding:8px;cursor:pointer;border-radius:4px;"></div>')
-                    .html(restritoEscapar(perfil.nome) + ' <small class="ui grey text">' + restritoEscapar(perfil.slug) + ' #' + restritoEscapar(perfil.id) + '</small>')
+                $('<div class="site-restricted-profile-resultado cursor-pointer rounded px-2 py-2 hover:bg-slate-50"></div>')
+                    .html(restritoEscapar(perfil.nome) + ' <small class="text-xs text-slate-600">' + restritoEscapar(perfil.slug) + ' #' + restritoEscapar(perfil.id) + '</small>')
                     .data('perfil', perfil)
                     .appendTo($restritoResultados);
             });
         }
 
-        $restritoResultados.show();
+        $restritoResultados.removeClass('hidden');
     }
 
     function restritoBuscar() {
@@ -270,12 +213,6 @@ $(document).ready(function () {
         restritoFecharResultados();
     });
 
-    $restritoResultados.on('mouseenter', '.site-restricted-profile-resultado', function () {
-        $(this).css('background', 'rgba(0,0,0,.05)');
-    }).on('mouseleave', '.site-restricted-profile-resultado', function () {
-        $(this).css('background', '');
-    });
-
     $restritoBusca.on('blur', function () {
         setTimeout(restritoFecharResultados, 150);
     });
@@ -296,58 +233,58 @@ $(document).ready(function () {
             html_sanitize: $('#html_sanitize').val(),
             html_sanitize_js: $('#html_sanitize_js').val(),
             // req-111 (CR-001): tokens adicionais de robô, complementares à lista embutida do core.
-            crawler_tokens_extra_ativo: $('#crawler_tokens_extra_ativo').parent().checkbox('is checked') ? 'true' : 'false',
+            crawler_tokens_extra_ativo: $('#crawler_tokens_extra_ativo').is(':checked') ? 'true' : 'false',
             crawler_tokens_extra: $('#crawler_tokens_extra').val(),
             // req-163: Acesso Restrito ao Site.
-            site_restricted_access: $('#site_restricted_access').parent().checkbox('is checked') ? 'true' : 'false',
+            site_restricted_access: $('#site_restricted_access').is(':checked') ? 'true' : 'false',
             site_restricted_profiles: $('#site_restricted_profiles').val(),
-            usuario_recaptcha_active: $('#usuario_recaptcha_active').parent().checkbox('is checked') ? 'true' : 'false',
+            usuario_recaptcha_active: $('#usuario_recaptcha_active').is(':checked') ? 'true' : 'false',
             captcha_provider: $captchaProvider.val(),
             turnstile_site_key: $('#turnstile_site_key').val(),
             turnstile_secret_key: $('#turnstile_secret_key').val(),
             turnstile_mode: $turnstileMode.val(),
             usuario_recaptcha_site: $('#usuario_recaptcha_site').val(),
             usuario_recaptcha_server: $('#usuario_recaptcha_server').val(),
-            usuario_recaptcha_v2_active: $('#usuario_recaptcha_v2_active').parent().checkbox('is checked') ? 'true' : 'false',
+            usuario_recaptcha_v2_active: $('#usuario_recaptcha_v2_active').is(':checked') ? 'true' : 'false',
             usuario_recaptcha_v2_site: $('#usuario_recaptcha_v2_site').val(),
             usuario_recaptcha_v2_server: $('#usuario_recaptcha_v2_server').val(),
-            email_active: $('#email_active').parent().checkbox('is checked') ? 'true' : 'false',
+            email_active: $('#email_active').is(':checked') ? 'true' : 'false',
             email_host: $('#email_host').val(),
             email_user: $('#email_user').val(),
             email_pass: $('#email_pass').val(),
-            email_secure: $('#email_secure').parent().checkbox('is checked') ? 'true' : 'false',
+            email_secure: $('#email_secure').is(':checked') ? 'true' : 'false',
             email_port: $('#email_port').val(),
             email_from: $('#email_from').val(),
             email_from_name: $('#email_from_name').val(),
             email_reply_to: $('#email_reply_to').val(),
             email_reply_to_name: $('#email_reply_to_name').val(),
             language_default: $('#language_default').val(),
-            language_widget_active: $('#language_widget_active').parent().checkbox('is checked') ? 'true' : 'false',
-            language_auto_detect: $('#language_auto_detect').parent().checkbox('is checked') ? 'true' : 'false',
+            language_widget_active: $('#language_widget_active').is(':checked') ? 'true' : 'false',
+            language_auto_detect: $('#language_auto_detect').is(':checked') ? 'true' : 'false',
             paypal_default: $('#paypal_default').val(),
             paypal_client_id: $('#paypal_client_id').val(),
             paypal_secret: $('#paypal_secret').val(),
             paypal_mode: $('#paypal_mode').val(),
             paypal_webhook_id: $('#paypal_webhook_id').val(),
-            auth_method_password_active: $('#auth_method_password_active').parent().checkbox('is checked') ? 'true' : 'false',
-            auth_method_google_active: $('#auth_method_google_active').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_method_password_active: $('#auth_method_password_active').is(':checked') ? 'true' : 'false',
+            auth_method_google_active: $('#auth_method_google_active').is(':checked') ? 'true' : 'false',
             oauth_google_client_id: $('#oauth_google_client_id').val(),
             oauth_google_client_secret: $('#oauth_google_client_secret').val(),
-            auth_method_meta_active: $('#auth_method_meta_active').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_method_meta_active: $('#auth_method_meta_active').is(':checked') ? 'true' : 'false',
             oauth_meta_app_id: $('#oauth_meta_app_id').val(),
             oauth_meta_app_secret: $('#oauth_meta_app_secret').val(),
-            auth_method_email_active: $('#auth_method_email_active').parent().checkbox('is checked') ? 'true' : 'false',
-            auth_2fa_required: $('#auth_2fa_required').parent().checkbox('is checked') ? 'true' : 'false',
-            auth_2fa_method_app: $('#auth_2fa_method_app').parent().checkbox('is checked') ? 'true' : 'false',
-            auth_2fa_method_email: $('#auth_2fa_method_email').parent().checkbox('is checked') ? 'true' : 'false',
+            auth_method_email_active: $('#auth_method_email_active').is(':checked') ? 'true' : 'false',
+            auth_2fa_required: $('#auth_2fa_required').is(':checked') ? 'true' : 'false',
+            auth_2fa_method_app: $('#auth_2fa_method_app').is(':checked') ? 'true' : 'false',
+            auth_2fa_method_email: $('#auth_2fa_method_email').is(':checked') ? 'true' : 'false',
             auth_jwt_rotation_days: $('#auth_jwt_rotation_days').val(),
             auth_jwt_grace_hours: $('#auth_jwt_grace_hours').val(),
             auth_api_allowed_profiles: $('.auth-api-profile:checked').map(function () { return $(this).val(); }).get().join(','),
-            auth_api_method_password_active: $('#auth_api_method_password_active').parent().checkbox('is checked') ? 'true' : 'false',
-            auth_api_method_email_active: $('#auth_api_method_email_active').parent().checkbox('is checked') ? 'true' : 'false',
-            auth_api_2fa_required: $('#auth_api_2fa_required').parent().checkbox('is checked') ? 'true' : 'false',
-            auth_api_2fa_method_app: $('#auth_api_2fa_method_app').parent().checkbox('is checked') ? 'true' : 'false',
-            auth_api_2fa_method_email: $('#auth_api_2fa_method_email').parent().checkbox('is checked') ? 'true' : 'false'
+            auth_api_method_password_active: $('#auth_api_method_password_active').is(':checked') ? 'true' : 'false',
+            auth_api_method_email_active: $('#auth_api_method_email_active').is(':checked') ? 'true' : 'false',
+            auth_api_2fa_required: $('#auth_api_2fa_required').is(':checked') ? 'true' : 'false',
+            auth_api_2fa_method_app: $('#auth_api_2fa_method_app').is(':checked') ? 'true' : 'false',
+            auth_api_2fa_method_email: $('#auth_api_2fa_method_email').is(':checked') ? 'true' : 'false'
         };
 
         $.ajax({
@@ -637,11 +574,11 @@ $(document).ready(function () {
         var data = {
             ajax: 'sim',
             ajaxOpcao: 'testar-email',
-            email_debug: $('#testar-email-debug').parent().checkbox('is checked') ? 'true' : 'false',
+            email_debug: $('#testar-email-debug').is(':checked') ? 'true' : 'false',
             email_host: $('#email_host').val(),
             email_user: $('#email_user').val(),
             email_pass: $('#email_pass').val(),
-            email_secure: $('#email_secure').parent().checkbox('is checked') ? 'true' : 'false',
+            email_secure: $('#email_secure').is(':checked') ? 'true' : 'false',
             email_port: $('#email_port').val(),
             email_from: $('#email_from').val(),
             email_from_name: $('#email_from_name').val(),
@@ -682,12 +619,9 @@ $(document).ready(function () {
                 switch (txt.status) {
                     case 401: window.open(gestor.raiz + (txt.responseJSON.redirect ? txt.responseJSON.redirect : "signin/"), "_self"); break;
                     default:
-                        if ($('#testar-email-debug').parent().checkbox('is checked')) {
+                        if ($('#testar-email-debug').is(':checked')) {
                             $('.debug-logs').removeClass('hidden');
-                            if (codemirrors_instances.length > 0) {
-                                codemirrors_instances[0].getDoc().setValue(txt.responseText);
-                                codemirrors_instances[0].refresh();
-                            }
+                            $('.debug-logs-output').text(txt.responseText);
                         } else {
                             console.log('ERROR AJAX - testar-email - Dados:');
                             console.log(txt);
@@ -818,9 +752,11 @@ $(document).ready(function () {
     // Função para mostrar mensagens
     function showMessage(type, message) {
         var $message = $('#status-message');
-        var className = type === 'success' ? 'ui positive message' : 'ui negative message';
+        var className = type === 'success'
+            ? 'rounded border border-emerald-300 bg-emerald-50 p-3 text-sm text-emerald-900'
+            : 'rounded border border-rose-300 bg-rose-50 p-3 text-sm text-rose-900';
 
-        $message.removeClass().addClass(className).html('<i class="' + (type === 'success' ? 'check' : 'times') + ' icon"></i> ' + message).show();
+        $message.removeClass().addClass(className).text(message).show();
 
         // Auto-hide after 5 seconds
         setTimeout(function () {

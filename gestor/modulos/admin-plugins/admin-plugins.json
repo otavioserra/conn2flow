@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.1.0",
     "bibliotecas": [
         "interface",
         "html"
@@ -20,12 +20,46 @@
                 {
                     "name": "Admin Plugins",
                     "id": "admin-plugins",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "",
                         "css": "",
@@ -35,11 +69,35 @@
                 {
                     "name": "Admin Plugins - Adicionar",
                     "id": "admin-plugins-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.5",
+                    "version": "1.6",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "837287aff77dd4902c69b07fdca23894",
                         "css": "",
@@ -49,11 +107,35 @@
                 {
                     "name": "Admin Plugins - Editar",
                     "id": "admin-plugins-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.6",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "87d7a12ec912c2d6346bff70e85c65ca",
                         "css": "",
@@ -63,11 +145,30 @@
                 {
                     "name": "Admin Plugins - Executar",
                     "id": "admin-plugins-executar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/executar/",
                     "type": "system",
                     "option": "executar",
-                    "version": "1.4",
+                    "version": "1.5",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "plugins-exec-tailwind",
+                            "scope": "module"
+                        }
+                    ],
                     "checksum": {
                         "html": "e04a892a2fe7a463149b40a00fbb3960",
                         "css": "",
@@ -77,11 +178,24 @@
                 {
                     "name": "Admin Plugins - Teste",
                     "id": "admin-plugins-teste",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/teste/",
                     "type": "system",
                     "option": "teste",
-                    "version": "1.5",
+                    "version": "1.6",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-plugins.php"
+                    ],
+                    "tailwind_sources_reason": "O controlador monta cards de resultado com utilitários Tailwind para os testes de descoberta, download e processamento de origem.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "8a072b8b1f9310d5da2366b4cde743ad",
                         "css": "",
@@ -98,6 +212,16 @@
                         "html": "23671934cd24d3fba1fae2dde6a044cb",
                         "css": "",
                         "combined": "23671934cd24d3fba1fae2dde6a044cb"
+                    }
+                },
+                {
+                    "name": "Plugins - Exec Tailwind",
+                    "id": "plugins-exec-tailwind",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 }
             ],
@@ -156,6 +280,171 @@
                     "id": "metadata-last-update",
                     "value": "Última Atualização",
                     "type": "string"
+                },
+                {
+                    "id": "ui-plugin-source",
+                    "value": "Origem do Plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-source-zip",
+                    "value": "Arquivo ZIP",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-source-public",
+                    "value": "Repositório Público",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-source-private",
+                    "value": "Repositório Privado",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-file-zip-label",
+                    "value": "Arquivo ZIP do Plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-file-zip-help",
+                    "value": "Selecione o arquivo .zip contendo o plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-repo-url-label",
+                    "value": "URL do Repositório GitHub",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-repo-latest-help",
+                    "value": "Informe a URL do repositório GitHub. O sistema irá automaticamente descobrir a última versão de release do plugin.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-auth-token-label",
+                    "value": "Token de Autenticação",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-auth-token-placeholder",
+                    "value": "Seu token de acesso",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-private-repo-help",
+                    "value": "Para repositórios privados, forneça um token de acesso válido. O sistema irá automaticamente descobrir a última versão de release.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-page-title",
+                    "value": "Executar Plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-page-description",
+                    "value": "Execute ações de instalação, atualização ou reprocessamento",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-info",
+                    "value": "Informações do Plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-actions",
+                    "value": "Ações Disponíveis",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-install",
+                    "value": "Instalar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-update",
+                    "value": "Atualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-reprocess",
+                    "value": "Reprocessar",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-log",
+                    "value": "Log de Execução",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-progress",
+                    "value": "Progresso",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-back",
+                    "value": "Voltar para Edição",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-active",
+                    "value": "Ativo",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-inactive",
+                    "value": "Inativo",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-unknown",
+                    "value": "Desconhecido",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-action-running",
+                    "value": "Ação já em andamento:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-action-starting",
+                    "value": "Iniciando ação:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-action-error",
+                    "value": "Erro na ação",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-unknown-error",
+                    "value": "Erro desconhecido",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-action-success",
+                    "value": "executada com sucesso",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-output",
+                    "value": "Saída:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-detail",
+                    "value": "Log detalhado:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-communication-error",
+                    "value": "Falha na comunicação para ação:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-last-update",
+                    "value": "Última atualização:",
+                    "type": "string"
                 }
             ]
         },
@@ -165,12 +454,46 @@
                 {
                     "name": "Admin Plugins",
                     "id": "admin-plugins",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "",
                         "css": "",
@@ -180,11 +503,35 @@
                 {
                     "name": "Admin Plugins - Add",
                     "id": "admin-plugins-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.7",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "60f120c7de069e8a7c610d03abe599fe",
                         "css": "",
@@ -194,11 +541,35 @@
                 {
                     "name": "Admin Plugins - Edit",
                     "id": "admin-plugins-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "0bdcd5958a7cc461b89fd8f08def1a99",
                         "css": "",
@@ -208,11 +579,30 @@
                 {
                     "name": "Admin Plugins - Execute",
                     "id": "admin-plugins-executar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/executar/",
                     "type": "system",
                     "option": "executar",
-                    "version": "1.4",
+                    "version": "1.5",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "plugins-exec-tailwind",
+                            "scope": "module"
+                        }
+                    ],
                     "checksum": {
                         "html": "1bd712d3141cec128e97ad7ecc86615d",
                         "css": "",
@@ -222,11 +612,24 @@
                 {
                     "name": "Admin Plugins - Test",
                     "id": "admin-plugins-teste",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-plugins/teste/",
                     "type": "system",
                     "option": "teste",
-                    "version": "1.5",
+                    "version": "1.6",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-plugins.php"
+                    ],
+                    "tailwind_sources_reason": "The controller assembles result cards with Tailwind utilities for release discovery, download, and source processing tests.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "a13313078bc873ce64e79a612fdf894a",
                         "css": "",
@@ -243,6 +646,16 @@
                         "html": "fdadfd1f10966eac979356e355d7746d",
                         "css": "",
                         "combined": "fdadfd1f10966eac979356e355d7746d"
+                    }
+                },
+                {
+                    "name": "Plugins - Exec Tailwind",
+                    "id": "plugins-exec-tailwind",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "combined": ""
                     }
                 }
             ],
@@ -301,9 +714,174 @@
                     "id": "metadata-last-update",
                     "value": "Last Update",
                     "type": "string"
+                },
+                {
+                    "id": "ui-plugin-source",
+                    "value": "Plugin Source",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-source-zip",
+                    "value": "ZIP File",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-source-public",
+                    "value": "Public Repository",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-source-private",
+                    "value": "Private Repository",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-file-zip-label",
+                    "value": "Plugin ZIP File",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-file-zip-help",
+                    "value": "Select the .zip file containing the plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-repo-url-label",
+                    "value": "GitHub Repository URL",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-repo-latest-help",
+                    "value": "Enter the GitHub repository URL. The system will automatically discover the latest release version of the plugin.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-auth-token-label",
+                    "value": "Authentication Token",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-auth-token-placeholder",
+                    "value": "Your access token",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-private-repo-help",
+                    "value": "For private repositories, provide a valid access token. The system will automatically discover the latest release version.",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-page-title",
+                    "value": "Execute Plugin",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-page-description",
+                    "value": "Execute installation, update or reprocessing actions",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-info",
+                    "value": "Plugin Information",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-actions",
+                    "value": "Available Actions",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-install",
+                    "value": "Install",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-update",
+                    "value": "Update",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-reprocess",
+                    "value": "Reprocess",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-log",
+                    "value": "Execution Log",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-progress",
+                    "value": "Progress",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-exec-back",
+                    "value": "Back to Edit",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-active",
+                    "value": "Active",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-inactive",
+                    "value": "Inactive",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-status-unknown",
+                    "value": "Unknown",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-action-running",
+                    "value": "Action already in progress:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-action-starting",
+                    "value": "Starting action:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-action-error",
+                    "value": "Action error",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-unknown-error",
+                    "value": "Unknown error",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-action-success",
+                    "value": "executed successfully",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-output",
+                    "value": "Output:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-detail",
+                    "value": "Detailed log:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-communication-error",
+                    "value": "Communication failure for action:",
+                    "type": "string"
+                },
+                {
+                    "id": "ui-log-last-update",
+                    "value": "Last update:",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "a7a1fa3afaca7f77"
+    "asset_version": "a7a1fa3afaca7f78"
 }

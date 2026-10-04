@@ -57,6 +57,17 @@ Evidências: [BATCH-237](../implementation/BATCH-237.md), [roteiro](req228-brows
 - [x] CA-5: [BATCH-231](../implementation/BATCH-231.md), [métricas](evidence-req222.json), roteiro/capturas em `conn2flow-site/sdd/validation/core/evidence-req222/` e item humano no site.
 - [ ] Revisão humana conjunta; nenhum deploy de produção.
 
+## BATCH-232 — Módulos de administração em Tailwind (req-223)
+
+- [x] Widget compartilhado `configuracao_administracao` e campos Tailwind pt-br/en; originais legados preservados.
+- [x] `variables` e `modulos-variaveis` usam layout/bundle Tailwind e dependências globais declaradas.
+- [x] Selects nativos e fallback Fomantic cobertos por Vitest (5/5); PHPUnit focado 13/13, 463 asserções.
+- [x] Vitest completo 507/507; transformação Node validou templates, manifests, tokens e minificados.
+- [ ] CSS sync/build, inspeção no Lab e viewport de 390 px: não executados por restrição explícita.
+- [ ] Suíte PHPUnit completa limpa: 1.523 testes, 4 erros ambientais (OpenSSL/Stripe) e 1 falha LF/CRLF em `CssRegeneracaoTest`.
+- [x] Roteiro humano adicionado ao [PENDENCIAS-HUMANAS.md do site](../../../conn2flow-site/sdd/PENDENCIAS-HUMANAS.md).
+
+Detalhes: [BATCH-232](../implementation/BATCH-232.md).
 
 ## BATCH-229 — Módulos do editor, listagens e correções da revisão (req-219)
 
@@ -155,16 +166,11 @@ Detalhes: [BATCH-221](../implementation/archive/BATCH-221.md).
 
 Detalhes: [BATCH-220](../implementation/archive/BATCH-220.md).
 
-## BATCH-219 — Infraestrutura comum para módulos distribuídos (req-211)
+## Validações arquivadas
 
-- [x] Login oficial, código de uso único, troca entre servidores, tokens fora de URL e do navegador.
-- [x] Envelope: repetição, validade e assinatura inválida recusadas.
-- [x] Allowlist de tabelas: 16 formas de fuga recusadas, formas legítimas aceitas.
-- [x] CRUD de `coupons` ponta a ponta no Lab; suíte PHPUnit completa.
-- [ ] Segundo fator, outros navegadores e os outros 26 módulos.
-- [ ] Revisão humana.
-
-Detalhes: [BATCH-219](../implementation/archive/BATCH-219.md).
+| Batch | Resumo | Evidências |
+| --- | --- | --- |
+| BATCH-219 | Infraestrutura comum para módulos distribuídos (req-211) | [Arquivo](archive/BATCH-219.md) |
 
 ## BATCH-218 — Tela de atualização no deploy e prévia de widgets completa (req-210)
 

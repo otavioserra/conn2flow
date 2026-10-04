@@ -1,76 +1,102 @@
 <!-- Admin Environment - Environment Settings -->
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1><i class="cogs icon"></i> Admin Environment</h1>
+<div class="admin-environment mx-auto max-w-6xl space-y-5 px-4 py-5">
+    <div class="space-y-5">
+        <div class="space-y-5">
+            <h1 class="text-2xl font-semibold text-slate-900"><i class="cogs icon"></i> Admin Environment</h1>
             <p>Manage environment settings through the .env file</p>
 
-            <div class="ui top attached tabular menu">
-                <a class="item active" data-tab="site" data-tooltip="General site settings like name and identity" data-position="bottom center">
+            <div class="admin-environment-tabs flex flex-wrap gap-2 border-b border-slate-200" role="tablist">
+                <button type="button"
+                    class="admin-environment-tab rounded-t border border-sky-700 bg-sky-50 px-3 py-2 text-sm font-medium text-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    role="tab" aria-selected="true" data-tab="site"
+                    data-tooltip="General site settings like name and identity" data-position="bottom center">
                     <i class="globe icon"></i> Site Settings
-                </a>
-                <a class="item" data-tab="usuario" data-tooltip="User security settings including reCAPTCHA protection" data-position="bottom center">
+                </button>
+                <button type="button"
+                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    role="tab" aria-selected="false" data-tab="usuario"
+                    data-tooltip="User security settings including reCAPTCHA protection" data-position="bottom center">
                     <i class="user icon"></i> User Settings
-                </a>
-                <a class="item" data-tab="email" data-tooltip="SMTP email configuration for sending system emails" data-position="bottom center">
+                </button>
+                <button type="button"
+                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    role="tab" aria-selected="false" data-tab="email"
+                    data-tooltip="SMTP email configuration for sending system emails" data-position="bottom center">
                     <i class="mail icon"></i> Email Settings
-                </a>
-                <a class="item" data-tab="linguagem" data-tooltip="Language preferences and automatic detection settings" data-position="bottom center">
+                </button>
+                <button type="button"
+                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    role="tab" aria-selected="false" data-tab="linguagem"
+                    data-tooltip="Language preferences and automatic detection settings" data-position="bottom center">
                     <i class="language icon"></i> Language Settings
-                </a>
-                <a class="item" data-tab="paypal" data-tooltip="PayPal REST API credentials and integration settings" data-position="bottom center">
+                </button>
+                <button type="button"
+                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    role="tab" aria-selected="false" data-tab="paypal"
+                    data-tooltip="PayPal REST API credentials and integration settings" data-position="bottom center">
                     <i class="paypal icon"></i> PayPal
-                </a>
-                <a class="item" data-tab="api" data-tooltip="Security for API key generation" data-position="bottom center">
+                </button>
+                <button type="button"
+                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    role="tab" aria-selected="false" data-tab="api" data-tooltip="Security for API key generation"
+                    data-position="bottom center">
                     <i class="key icon"></i> API
-                </a>
+                </button>
             </div>
 
             <!-- Tab: Site Settings -->
-            <div class="ui bottom attached tab segment active" data-tab="site">
-                <h3><i class="globe icon"></i> Site Settings</h3>
-                <p class="ui grey text">Configure the basic identity of your site. The site name is used in emails, page titles and system references.</p>
+            <div class="admin-environment-panel active space-y-6 rounded border border-slate-200 bg-white p-4"
+                role="tabpanel" data-tab="site">
+                <h3 class="text-lg font-semibold text-slate-900"><i class="globe icon"></i> Site Settings</h3>
+                <p class="text-sm text-slate-600">Configure the basic identity of your site. The site name is used in
+                    emails, page titles and system references.</p>
 
-                <form class="ui form" id="form-site" autocomplete="off">
-                    <div class="field">
-                        <label>Site Name</label>
-                        <input type="text" id="site_name" name="site_name"
-                            value="#site-name#" placeholder="Ex: My Website">
+                <form class="space-y-4" id="form-site" autocomplete="off">
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">Site Name</label>
+                        <input type="text" id="site_name" name="site_name" value="#site-name#"
+                            placeholder="Ex: My Website"
+                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                     </div>
 
                     <!-- ===== Restricted Site Access (req-163) ===== -->
-                    <h4 class="ui dividing header"><i class="lock icon"></i> Restricted Site Access</h4>
-                    <p class="ui grey text">Use it on development, testing, staging or private sites. With
+                    <h4
+                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
+                        <i class="lock icon"></i> Restricted Site Access</h4>
+                    <p class="text-sm text-slate-600">Use it on development, testing, staging or private sites. With
                         restricted access enabled, every page requires sign in, public pages included, and
                         the whole site is flagged so search engines do not index it
                         (<code>noindex, nofollow</code>). Sign in screens, APIs, payment webhooks and static
                         files keep working.</p>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="site_restricted_access" name="site_restricted_access"
-                                #site-restricted-access-checked#>
-                            <label>Enable restricted site access</label>
+                                #site-restricted-access-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Enable restricted site access</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <label>Authorized user profiles</label>
-                        <div class="site-restricted-profiles-busca" style="position:relative;">
-                            <div class="ui fluid icon input">
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">Authorized user profiles</label>
+                        <div class="site-restricted-profiles-busca relative">
+                            <div class="flex items-center gap-2">
                                 <input type="text" id="site_restricted_profiles_busca"
-                                    placeholder="Type the profile name to search and add" autocomplete="off">
+                                    placeholder="Type the profile name to search and add" autocomplete="off"
+                                    class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                                 <i class="search icon"></i>
                             </div>
-                            <div id="site-restricted-profiles-resultados" class="ui segment"
-                                data-sem-resultados="No profile found."
-                                style="display:none;position:absolute;left:0;right:0;z-index:20;margin-top:4px;padding:4px;max-height:260px;overflow:auto;"></div>
+                            <div id="site-restricted-profiles-resultados"
+                                class="hidden absolute left-0 right-0 z-20 mt-1 max-h-64 overflow-auto rounded border border-slate-200 bg-white p-1 shadow-lg"
+                                data-sem-resultados="No profile found."></div>
                         </div>
                         <input type="hidden" id="site_restricted_profiles" name="site_restricted_profiles"
                             value="#site-restricted-profiles#">
-                        <div id="site-restricted-profiles-tags" style="margin-top:10px;">#site-restricted-profiles-badges#</div>
-                        <div class="ui small grey text" style="margin-top:6px;">
+                        <div id="site-restricted-profiles-tags" class="mt-2 flex flex-wrap gap-2">
+                            #site-restricted-profiles-badges#</div>
+                        <div class="text-xs text-slate-600" style="margin-top:6px;">
                             Click the <b>x</b> on a profile to remove it. With an empty list, any signed in user
                             has access. Your own profile must be in the list to save, so you do not lock
                             yourself out of this screen.
@@ -78,373 +104,473 @@
                     </div>
 
                     <!-- ===== Bots and Crawlers (req-111) ===== -->
-                    <h4 class="ui dividing header"><i class="robot icon"></i> Bots and Crawlers</h4>
-                    <p class="ui grey text">The system already recognizes the most common bots with no
+                    <h4
+                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
+                        <i class="robot icon"></i> Bots and Crawlers</h4>
+                    <p class="text-sm text-slate-600">The system already recognizes the most common bots with no
                         configuration at all. Enable this option only if your site gets heavy traffic from a
                         specific bot that is not in the list below yet.</p>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="crawler_tokens_extra_ativo" name="crawler_tokens_extra_ativo"
-                                #crawler-tokens-extra-ativo-checked#>
-                            <label>Enable additional bot tokens</label>
+                                #crawler-tokens-extra-ativo-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Enable additional bot tokens</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <label>Additional tokens</label>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">Additional tokens</label>
                         <textarea id="crawler_tokens_extra" name="crawler_tokens_extra" rows="3"
-                            placeholder="One per line, or comma separated. Ex: mybot, other-bot">#crawler-tokens-extra#</textarea>
-                        <div class="ui small grey text" style="margin-top:6px;">
+                            placeholder="One per line, or comma separated. Ex: mybot, other-bot"
+                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#crawler-tokens-extra#</textarea>
+                        <div class="text-xs text-slate-600" style="margin-top:6px;">
                             Matching is done by User-Agent substring, case insensitive.
                         </div>
                     </div>
 
-                    <div class="field">
-                        <label>Already recognized by the system (read only)</label>
-                        <div class="ui small message" style="word-break:break-word;">#crawler-tokens-padrao#</div>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">Already recognized by the system (read
+                            only)</label>
+                        <div class="break-words rounded border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700"
+                            style="word-break:break-word;">#crawler-tokens-padrao#</div>
                     </div>
                 </form>
             </div>
 
             <!-- Tab: User Settings -->
-            <div class="ui bottom attached tab segment" data-tab="usuario">
-                <h3><i class="user icon"></i> User Settings</h3>
-                <p class="ui grey text">Manage user authentication security. Enable reCAPTCHA to protect login and registration forms against bots and automated attacks.</p>
+            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+                role="tabpanel" data-tab="usuario">
+                <h3 class="text-lg font-semibold text-slate-900"><i class="user icon"></i> User Settings</h3>
+                <p class="text-sm text-slate-600">Manage user authentication security. Enable reCAPTCHA to protect login
+                    and registration forms against bots and automated attacks.</p>
 
-                <form class="ui form" id="form-usuario" autocomplete="off">
+                <form class="space-y-4" id="form-usuario" autocomplete="off">
 
                     <!-- ===== Login Methods (req-030) ===== -->
-                    <h4 class="ui dividing header"><i class="sign-in icon"></i> Login Methods</h4>
+                    <h4
+                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
+                        <i class="sign-in icon"></i> Login Methods</h4>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_method_password_active" name="auth_method_password_active"
-                                #auth-method-password-active-checked#>
-                            <label>Allow Username/Password login</label>
+                                #auth-method-password-active-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Allow Username/Password login</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_method_google_active" name="auth_method_google_active"
-                                #auth-method-google-active-checked#>
-                            <label>Enable Google login</label>
+                                #auth-method-google-active-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Enable Google login</label>
                         </div>
                     </div>
 
                     <div id="auth-google-section" class="#auth-google-section-class#">
-                        <div class="ui info message">
-                            <p>To configure: Open the <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>, create a project, go to "OAuth consent screen", then "Credentials" -> "Create credentials" -> "OAuth client ID" (Web application). Add the redirect URI below under "Authorized redirect URIs".</p>
+                        <div class="config-notice rounded border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900">
+                            <p>To configure: Open the <a href="https://console.cloud.google.com/" target="_blank"
+                                    rel="noopener noreferrer">Google Cloud Console</a>, create a project, go to "OAuth
+                                consent screen", then "Credentials" -> "Create credentials" -> "OAuth client ID" (Web
+                                application). Add the redirect URI below under "Authorized redirect URIs".</p>
                         </div>
-                        <div class="field">
-                            <label>Google Client ID</label>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Google Client ID</label>
                             <input type="text" id="oauth_google_client_id" name="oauth_google_client_id"
-                                value="#oauth-google-client-id#" placeholder="Ex: 1234567890-abc.apps.googleusercontent.com">
+                                value="#oauth-google-client-id#"
+                                placeholder="Ex: 1234567890-abc.apps.googleusercontent.com"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="field">
-                            <label>Google Client Secret</label>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Google Client Secret</label>
                             <input type="password" id="oauth_google_client_secret" name="oauth_google_client_secret"
-                                value="#oauth-google-client-secret#" placeholder="Enter the Client Secret">
+                                value="#oauth-google-client-secret#" placeholder="Enter the Client Secret"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="field">
-                            <label>Redirect URI (Google)</label>
-                            <input type="text" id="oauth_google_redirect_uri" value="#oauth-google-redirect-uri#" readonly>
-                            <small class="ui grey text">Register this exact URI in the Google Cloud Console.</small>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Redirect URI (Google)</label>
+                            <input type="text" id="oauth_google_redirect_uri" value="#oauth-google-redirect-uri#"
+                                readonly
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            <small class="text-sm text-slate-600">Register this exact URI in the Google Cloud
+                                Console.</small>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_method_meta_active" name="auth_method_meta_active"
-                                #auth-method-meta-active-checked#>
-                            <label>Enable Facebook/Meta login</label>
+                                #auth-method-meta-active-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Enable Facebook/Meta login</label>
                         </div>
                     </div>
 
                     <div id="auth-meta-section" class="#auth-meta-section-class#">
-                        <div class="ui info message">
-                            <p>To configure: Open <a href="https://developers.facebook.com/" target="_blank" rel="noopener noreferrer">Meta for Developers</a>, create a "Consumer" app, add the "Facebook Login" product, go to "Facebook Login Settings" and add the redirect URI below under "Valid OAuth Redirect URIs".</p>
+                        <div class="config-notice rounded border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900">
+                            <p>To configure: Open <a href="https://developers.facebook.com/" target="_blank"
+                                    rel="noopener noreferrer">Meta for Developers</a>, create a "Consumer" app, add the
+                                "Facebook Login" product, go to "Facebook Login Settings" and add the redirect URI below
+                                under "Valid OAuth Redirect URIs".</p>
                         </div>
-                        <div class="field">
-                            <label>Meta App ID</label>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Meta App ID</label>
                             <input type="text" id="oauth_meta_app_id" name="oauth_meta_app_id"
-                                value="#oauth-meta-app-id#" placeholder="Enter the App ID">
+                                value="#oauth-meta-app-id#" placeholder="Enter the App ID"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="field">
-                            <label>Meta App Secret</label>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Meta App Secret</label>
                             <input type="password" id="oauth_meta_app_secret" name="oauth_meta_app_secret"
-                                value="#oauth-meta-app-secret#" placeholder="Enter the App Secret">
+                                value="#oauth-meta-app-secret#" placeholder="Enter the App Secret"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="field">
-                            <label>Redirect URI (Meta)</label>
-                            <input type="text" id="oauth_meta_redirect_uri" value="#oauth-meta-redirect-uri#" readonly>
-                            <small class="ui grey text">Register this exact URI in the Meta Apps dashboard.</small>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Redirect URI (Meta)</label>
+                            <input type="text" id="oauth_meta_redirect_uri" value="#oauth-meta-redirect-uri#" readonly
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            <small class="text-sm text-slate-600">Register this exact URI in the Meta Apps
+                                dashboard.</small>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_method_email_active" name="auth_method_email_active"
-                                #auth-method-email-active-checked#>
-                            <label>Enable passwordless login via Email Code</label>
+                                #auth-method-email-active-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Enable passwordless login via Email
+                                Code</label>
                         </div>
-                        <small class="ui grey text">Allows users to authenticate with their registered email and a 6-digit access code.</small>
+                        <small class="text-sm text-slate-600">Allows users to authenticate with their registered email
+                            and a 6-digit access code.</small>
                     </div>
 
                     <!-- ===== Two-Factor Authentication (2FA) ===== -->
-                    <h4 class="ui dividing header"><i class="lock icon"></i> Two-Factor Authentication (2FA)</h4>
+                    <h4
+                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
+                        <i class="lock icon"></i> Two-Factor Authentication (2FA)</h4>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_2fa_required" name="auth_2fa_required"
-                                #auth-2fa-required-checked#>
-                            <label>Require 2FA for all panel users</label>
+                                #auth-2fa-required-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Require 2FA for all panel users</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_2fa_method_app" name="auth_2fa_method_app"
-                                #auth-2fa-method-app-checked#>
-                            <label>Allow Authenticator App (TOTP)</label>
+                                #auth-2fa-method-app-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Allow Authenticator App (TOTP)</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_2fa_method_email" name="auth_2fa_method_email"
-                                #auth-2fa-method-email-checked#>
-                            <label>Allow Email code</label>
+                                #auth-2fa-method-email-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Allow Email code</label>
                         </div>
                     </div>
 
                     <!-- ===== JWT Keys ===== -->
-                    <h4 class="ui dividing header"><i class="key icon"></i> JWT Keys</h4>
+                    <h4
+                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
+                        <i class="key icon"></i> JWT Keys</h4>
 
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Active key expiration (days)</label>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Active key expiration (days)</label>
                             <input type="number" id="auth_jwt_rotation_days" name="auth_jwt_rotation_days"
-                                value="#auth-jwt-rotation-days#" placeholder="30">
+                                value="#auth-jwt-rotation-days#" placeholder="30"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="field">
-                            <label>Grace period (hours)</label>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Grace period (hours)</label>
                             <input type="number" id="auth_jwt_grace_hours" name="auth_jwt_grace_hours"
-                                value="#auth-jwt-grace-hours#" placeholder="24">
+                                value="#auth-jwt-grace-hours#" placeholder="24"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
-                    <div class="field">
-                        <button type="button" class="ui orange button" id="btn-rotacionar-jwt">
+                    <div class="space-y-1.5">
+                        <button type="button"
+                            class="rounded bg-amber-700 px-3 py-2 text-sm font-semibold text-white hover:bg-amber-800 disabled:opacity-50"
+                            id="btn-rotacionar-jwt">
                             <i class="sync icon"></i> Rotate JWT Keys
                         </button>
                     </div>
 
-                    <div class="field">
-                        <label>@[[captcha-provider-label]]@</label>
-                        <select id="captcha_provider" name="captcha_provider" class="ui dropdown" data-current="#captcha-provider#">
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">@[[captcha-provider-label]]@</label>
+                        <select id="captcha_provider" name="captcha_provider"
+                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                            data-current="#captcha-provider#">
                             <option value="none">@[[captcha-provider-none]]@</option>
                             <option value="google-recaptcha">@[[captcha-provider-google]]@</option>
                             <option value="cloudflare-turnstile">@[[captcha-provider-turnstile]]@</option>
                         </select>
                     </div>
                     <div id="turnstile-section" class="hidden">
-                        <div class="field"><label>@[[turnstile-site-label]]@</label><input type="text" id="turnstile_site_key" value="#turnstile-site-key#"></div>
-                        <div class="field"><label>@[[turnstile-secret-label]]@</label><input type="password" id="turnstile_secret_key" value="#turnstile-secret-key#"></div>
-                        <div class="field"><label>@[[turnstile-mode-label]]@</label><select id="turnstile_mode" class="ui dropdown" data-current="#turnstile-mode#"><option value="managed">@[[turnstile-mode-managed]]@</option><option value="non-interactive">@[[turnstile-mode-non-interactive]]@</option><option value="invisible">@[[turnstile-mode-invisible]]@</option></select></div>
-                        <button type="button" class="ui blue button" id="btn-testar-turnstile">@[[turnstile-test-label]]@</button>
+                        <div class="space-y-1.5"><label
+                                class="text-sm font-medium text-slate-700">@[[turnstile-site-label]]@</label><input
+                                type="text" id="turnstile_site_key" value="#turnstile-site-key#"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                        </div>
+                        <div class="space-y-1.5"><label
+                                class="text-sm font-medium text-slate-700">@[[turnstile-secret-label]]@</label><input
+                                type="password" id="turnstile_secret_key" value="#turnstile-secret-key#"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                        </div>
+                        <div class="space-y-1.5"><label
+                                class="text-sm font-medium text-slate-700">@[[turnstile-mode-label]]@</label><select
+                                id="turnstile_mode"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                                data-current="#turnstile-mode#">
+                                <option value="managed">@[[turnstile-mode-managed]]@</option>
+                                <option value="non-interactive">@[[turnstile-mode-non-interactive]]@</option>
+                                <option value="invisible">@[[turnstile-mode-invisible]]@</option>
+                            </select></div>
+                        <button type="button"
+                            class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                            id="btn-testar-turnstile">@[[turnstile-test-label]]@</button>
                         <div id="turnstile-test-widget"></div>
                     </div>
                     <div id="google-recaptcha-section" class="hidden">
-                    <!-- ===== reCAPTCHA Protection ===== -->
-                    <h4 class="ui dividing header"><i class="shield icon"></i> reCAPTCHA Protection</h4>
+                        <!-- ===== reCAPTCHA Protection ===== -->
+                        <h4
+                            class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
+                            <i class="shield icon"></i> reCAPTCHA Protection</h4>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" id="usuario_recaptcha_active" name="usuario_recaptcha_active"
-                                #usuario-recaptcha-active-checked#>
-                            <label>Enable Google reCAPTCHA v3</label>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>reCAPTCHA Site Key</label>
-                        <input type="text" id="usuario_recaptcha_site" name="usuario_recaptcha_site"
-                            value="#usuario-recaptcha-site#" placeholder="Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI">
-                    </div>
-
-                    <div class="field">
-                        <label>reCAPTCHA Server Key</label>
-                        <input type="password" id="usuario_recaptcha_server" name="usuario_recaptcha_server"
-                            value="#usuario-recaptcha-server#"
-                            placeholder="Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe">
-                    </div>
-
-                    <div class="field">
-                        <button type="button" class="ui blue button" id="btn-testar-recaptcha">
-                            <i class="shield icon"></i> Test reCAPTCHA V3
-                        </button>
-                    </div>
-
-                    <!-- reCAPTCHA V2 Section - Visible only when V3 is active -->
-                    <div id="recaptcha-v2-section" class="#recaptcha-v2-section-class#">
-                        <div class="ui divider"></div>
-                        <h4><i class="shield alternate icon"></i> reCAPTCHA V2 (Checkbox)</h4>
-
-                        <div class="field">
-                            <div class="ui toggle checkbox">
-                                <input type="checkbox" id="usuario_recaptcha_v2_active"
-                                    name="usuario_recaptcha_v2_active" #usuario-recaptcha-v2-active-checked#>
-                                <label>Enable Google reCAPTCHA v2</label>
+                        <div class="space-y-1.5">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="usuario_recaptcha_active" name="usuario_recaptcha_active"
+                                    #usuario-recaptcha-active-checked#
+                                    class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                                <label class="text-sm font-medium text-slate-700">Enable Google reCAPTCHA v3</label>
                             </div>
                         </div>
 
-                        <div class="field">
-                            <label>reCAPTCHA V2 Site Key</label>
-                            <input type="text" id="usuario_recaptcha_v2_site" name="usuario_recaptcha_v2_site"
-                                value="#usuario-recaptcha-v2-site#"
-                                placeholder="Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">reCAPTCHA Site Key</label>
+                            <input type="text" id="usuario_recaptcha_site" name="usuario_recaptcha_site"
+                                value="#usuario-recaptcha-site#"
+                                placeholder="Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="field">
-                            <label>reCAPTCHA V2 Server Key</label>
-                            <input type="password" id="usuario_recaptcha_v2_server"
-                                name="usuario_recaptcha_v2_server" value="#usuario-recaptcha-v2-server#"
-                                placeholder="Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">reCAPTCHA Server Key</label>
+                            <input type="password" id="usuario_recaptcha_server" name="usuario_recaptcha_server"
+                                value="#usuario-recaptcha-server#"
+                                placeholder="Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="field">
-                            <button type="button" class="ui blue button" id="btn-testar-recaptcha-v2">
-                                <i class="shield alternate icon"></i> Test reCAPTCHA V2
+                        <div class="space-y-1.5">
+                            <button type="button"
+                                class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                                id="btn-testar-recaptcha">
+                                <i class="shield icon"></i> Test reCAPTCHA V3
                             </button>
                         </div>
 
-                        <div class="field hidden" id="recaptcha-v2-container-wrapper">
-                            <div id="recaptcha-v2-widget"></div>
+                        <!-- reCAPTCHA V2 Section - Visible only when V3 is active -->
+                        <div id="recaptcha-v2-section" class="#recaptcha-v2-section-class#">
+                            <div class="my-4 border-t border-slate-200"></div>
+                            <h4 class="text-base font-semibold text-slate-900"><i class="shield alternate icon"></i>
+                                reCAPTCHA V2 (Checkbox)</h4>
+
+                            <div class="space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="usuario_recaptcha_v2_active"
+                                        name="usuario_recaptcha_v2_active" #usuario-recaptcha-v2-active-checked#
+                                        class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                                    <label class="text-sm font-medium text-slate-700">Enable Google reCAPTCHA v2</label>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-700">reCAPTCHA V2 Site Key</label>
+                                <input type="text" id="usuario_recaptcha_v2_site" name="usuario_recaptcha_v2_site"
+                                    value="#usuario-recaptcha-v2-site#"
+                                    placeholder="Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                                    class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="text-sm font-medium text-slate-700">reCAPTCHA V2 Server Key</label>
+                                <input type="password" id="usuario_recaptcha_v2_server"
+                                    name="usuario_recaptcha_v2_server" value="#usuario-recaptcha-v2-server#"
+                                    placeholder="Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+                                    class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <button type="button"
+                                    class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                                    id="btn-testar-recaptcha-v2">
+                                    <i class="shield alternate icon"></i> Test reCAPTCHA V2
+                                </button>
+                            </div>
+
+                            <div class="hidden space-y-1.5" id="recaptcha-v2-container-wrapper">
+                                <div id="recaptcha-v2-widget"></div>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </form>
             </div>
 
             <!-- Tab: Email Settings -->
-            <div class="ui bottom attached tab segment" data-tab="email">
-                <h3><i class="mail icon"></i> Email Settings</h3>
-                <p class="ui grey text">Configure the SMTP server for sending system emails such as notifications, password resets and contact form responses.</p>
+            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+                role="tabpanel" data-tab="email">
+                <h3 class="text-lg font-semibold text-slate-900"><i class="mail icon"></i> Email Settings</h3>
+                <p class="text-sm text-slate-600">Configure the SMTP server for sending system emails such as
+                    notifications, password resets and contact form responses.</p>
 
-                <form class="ui form" id="form-email" autocomplete="off">
-                    <div class="field">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" id="email_active" name="email_active" #email-active-checked#>
-                            <label>Enable email sending</label>
+                <form class="space-y-4" id="form-email" autocomplete="off">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="email_active" name="email_active" #email-active-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Enable email sending</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <label>SMTP Host</label>
-                            <input type="text" id="email_host" name="email_host" value="#email-host#"
-                                placeholder="Ex: smtp.gmail.com">
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">SMTP Host</label>
+                        <input type="text" id="email_host" name="email_host" value="#email-host#"
+                            placeholder="Ex: smtp.gmail.com"
+                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                     </div>
 
-                    <div class="field">
-                        <label>SMTP User</label>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">SMTP User</label>
                         <input type="text" id="email_user" name="email_user" value="#email-user#"
-                            placeholder="Ex: your-email@gmail.com">
+                            placeholder="Ex: your-email@gmail.com"
+                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                     </div>
 
-                    <div class="field">
-                        <label>SMTP Password</label>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">SMTP Password</label>
                         <input type="password" id="email_pass" name="email_pass" value="#email-pass#"
-                            placeholder="Enter password">
+                            placeholder="Enter password"
+                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                     </div>
 
-                    <div class="two fields">
-                        <div class="field">
-                            <div class="ui toggle checkbox">
-                                <input type="checkbox" id="email_secure" name="email_secure" #email-secure-checked#>
-                                <label>Secure Connection (SSL/TLS)</label>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div class="space-y-1.5">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="email_secure" name="email_secure" #email-secure-checked#
+                                    class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                                <label class="text-sm font-medium text-slate-700">Secure Connection (SSL/TLS)</label>
                             </div>
                         </div>
 
-                        <div class="field">
-                            <label>SMTP Port</label>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">SMTP Port</label>
                             <input type="number" id="email_port" name="email_port" value="#email-port#"
-                                placeholder="587">
+                                placeholder="587"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
-                    <div class="two fields">
-                        <div class="field">
-                            <label>From Email</label>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">From Email</label>
                             <input type="email" id="email_from" name="email_from" value="#email-from#"
-                                placeholder="Ex: noreply@yourdomain.com">
+                                placeholder="Ex: noreply@yourdomain.com"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="field">
-                            <label>From Name</label>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">From Name</label>
                             <input type="text" id="email_from_name" name="email_from_name" value="#email-from-name#"
-                                placeholder="Ex: Conn2Flow System">
+                                placeholder="Ex: Conn2Flow System"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Reply-To Email</label>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Reply-To Email</label>
                             <input type="email" id="email_reply_to" name="email_reply_to" value="#email-reply-to#"
-                                placeholder="Ex: support@yourdomain.com">
+                                placeholder="Ex: support@yourdomain.com"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="field">
-                            <label>Reply-To Name</label>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Reply-To Name</label>
                             <input type="text" id="email_reply_to_name" name="email_reply_to_name"
-                                value="#email-reply-to-name#" placeholder="Ex: Support">
+                                value="#email-reply-to-name#" placeholder="Ex: Support"
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
-                    <div class="field">
-                        <button type="button" class="ui blue button" id="btn-testar-email">
+                    <div class="space-y-1.5">
+                        <button type="button"
+                            class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                            id="btn-testar-email">
                             <i class="send icon"></i> Send Test Email
                         </button>
 
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" id="testar-email-debug" name="testar-email-debug">
-                            <label>Debug Mode</label>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="testar-email-debug" name="testar-email-debug"
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Debug Mode</label>
                         </div>
                     </div>
 
-                    <div class="field hidden debug-logs">
-                        <label>Debug Output</label>
-                        <textarea class="codemirror-logs" name="logs"> </textarea>
+                    <div class="hidden space-y-1.5 debug-logs">
+                        <label class="text-sm font-medium text-slate-700">Debug Output</label>
+                        <pre class="debug-logs-output max-h-96 w-full overflow-auto whitespace-pre-wrap rounded border border-slate-200 bg-slate-950 p-3 font-mono text-xs text-slate-100"
+                            aria-live="polite"></pre>
                     </div>
                 </form>
             </div>
 
             <!-- Tab: Language Settings -->
-            <div class="ui bottom attached tab segment" data-tab="linguagem">
-                <h3><i class="language icon"></i> Language Settings</h3>
-                <p class="ui grey text">Configure the default language, language selection widget and automatic browser language detection for visitors.</p>
+            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+                role="tabpanel" data-tab="linguagem">
+                <h3 class="text-lg font-semibold text-slate-900"><i class="language icon"></i> Language Settings</h3>
+                <p class="text-sm text-slate-600">Configure the default language, language selection widget and
+                    automatic browser language detection for visitors.</p>
 
-                <form class="ui form" id="form-linguagem" autocomplete="off">
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                <form class="space-y-4" id="form-linguagem" autocomplete="off">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="language_widget_active" name="language_widget_active"
-                                #language-widget-active-checked#>
-                            <label>Enable Language Selection Widget</label>
+                                #language-widget-active-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Enable Language Selection Widget</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="language_auto_detect" name="language_auto_detect"
-                                #language-auto-detect-checked#>
-                            <label>Enable Automatic Language Detection</label>
+                                #language-auto-detect-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Enable Automatic Language
+                                Detection</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <label>System Default Language</label>
-                        <select class="ui dropdown" id="language_default" name="language_default">
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">System Default Language</label>
+                        <select
+                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                            id="language_default" name="language_default">
                             #language-options#
                         </select>
                     </div>
@@ -452,56 +578,72 @@
             </div>
 
             <!-- Tab: PayPal Settings -->
-            <div class="ui bottom attached tab segment" data-tab="paypal">
-                <h3><i class="paypal icon"></i> PayPal Integration</h3>
-                <p class="ui grey text">Configure your PayPal REST API credentials and integration mode. Use <strong>Standard</strong> to use credentials from this panel, or <strong>Gateway</strong> to use credentials managed by the Payment Gateways module.</p>
+            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+                role="tabpanel" data-tab="paypal">
+                <h3 class="text-lg font-semibold text-slate-900"><i class="paypal icon"></i> PayPal Integration</h3>
+                <p class="text-sm text-slate-600">Configure your PayPal REST API credentials and integration mode. Use
+                    <strong>Standard</strong> to use credentials from this panel, or <strong>Gateway</strong> to use
+                    credentials managed by the Payment Gateways module.</p>
 
-                <form class="ui form" id="form-paypal" autocomplete="off">
-                    <div class="field">
-                        <label>Integration Mode</label>
-                        <select class="ui dropdown" id="paypal_default" name="paypal_default">
-                            <option value="padrao" #paypal-default-padrao-selected#>Standard (credentials from .env)</option>
-                            <option value="gateway" #paypal-default-gateway-selected#>Gateway (credentials from database)</option>
+                <form class="space-y-4" id="form-paypal" autocomplete="off">
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium text-slate-700">Integration Mode</label>
+                        <select
+                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                            id="paypal_default" name="paypal_default">
+                            <option value="padrao" #paypal-default-padrao-selected#>Standard (credentials from .env)
+                            </option>
+                            <option value="gateway" #paypal-default-gateway-selected#>Gateway (credentials from
+                                database)</option>
                         </select>
                     </div>
 
-                    <div class="ui divider"></div>
+                    <div class="my-4 border-t border-slate-200"></div>
 
                     <div id="paypal-padrao-section">
-                        <h4><i class="key icon"></i> API Credentials</h4>
-                        <p class="ui grey small text">Enter your PayPal REST API credentials. You can find them at <a href="https://developer.paypal.com/dashboard/applications" target="_blank">PayPal Developer Dashboard</a>.</p>
+                        <h4 class="text-base font-semibold text-slate-900"><i class="key icon"></i> API Credentials</h4>
+                        <p class="text-xs text-slate-600">Enter your PayPal REST API credentials. You can find them at
+                            <a href="https://developer.paypal.com/dashboard/applications" target="_blank">PayPal
+                                Developer Dashboard</a>.</p>
 
-                        <div class="field">
-                            <label>Environment</label>
-                            <select class="ui dropdown" id="paypal_mode" name="paypal_mode">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Environment</label>
+                            <select
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                                id="paypal_mode" name="paypal_mode">
                                 <option value="sandbox" #paypal-mode-sandbox-selected#>Sandbox (Testing)</option>
                                 <option value="live" #paypal-mode-live-selected#>Live (Production)</option>
                             </select>
                         </div>
 
-                        <div class="field">
-                            <label>Client ID</label>
-                            <input type="text" id="paypal_client_id" name="paypal_client_id"
-                                value="#paypal-client-id#" placeholder="Ex: AaBbCcDdEeFf...">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Client ID</label>
+                            <input type="text" id="paypal_client_id" name="paypal_client_id" value="#paypal-client-id#"
+                                placeholder="Ex: AaBbCcDdEeFf..."
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="field">
-                            <label>Secret</label>
-                            <input type="password" id="paypal_secret" name="paypal_secret"
-                                value="#paypal-secret#" placeholder="Ex: EeFfGgHhIiJj...">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Secret</label>
+                            <input type="password" id="paypal_secret" name="paypal_secret" value="#paypal-secret#"
+                                placeholder="Ex: EeFfGgHhIiJj..."
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="field">
-                            <label>Webhook ID</label>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700">Webhook ID</label>
                             <input type="text" id="paypal_webhook_id" name="paypal_webhook_id"
-                                value="#paypal-webhook-id#" placeholder="Ex: 5GP028458E...">
+                                value="#paypal-webhook-id#" placeholder="Ex: 5GP028458E..."
+                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
-                    <div class="ui divider"></div>
+                    <div class="my-4 border-t border-slate-200"></div>
 
-                    <div class="field">
-                        <button type="button" class="ui blue button" id="btn-testar-paypal">
+                    <div class="space-y-1.5">
+                        <button type="button"
+                            class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                            id="btn-testar-paypal">
                             <i class="paypal icon"></i> Test Connection
                         </button>
                     </div>
@@ -509,74 +651,92 @@
             </div>
 
             <!-- Tab: API -->
-            <div class="ui bottom attached tab segment" data-tab="api">
-                <h3><i class="key icon"></i> API</h3>
-                <p class="ui grey text">Configure who can generate API keys, which authentication methods are accepted, and when two-factor verification is required.</p>
+            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+                role="tabpanel" data-tab="api">
+                <h3 class="text-lg font-semibold text-slate-900"><i class="key icon"></i> API</h3>
+                <p class="text-sm text-slate-600">Configure who can generate API keys, which authentication methods are
+                    accepted, and when two-factor verification is required.</p>
 
-                <form class="ui form" id="form-api" autocomplete="off">
-                    <h4 class="ui dividing header"><i class="users icon"></i> Authorized Profiles</h4>
-                    <div class="grouped fields">
+                <form class="space-y-4" id="form-api" autocomplete="off">
+                    <h4
+                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
+                        <i class="users icon"></i> Authorized Profiles</h4>
+                    <div class="space-y-2">
                         #auth-api-profiles#
                     </div>
 
-                    <h4 class="ui dividing header"><i class="sign-in icon"></i> Authentication Methods</h4>
-                    <div class="field">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" id="auth_api_method_password_active" name="auth_api_method_password_active"
-                                #auth-api-method-password-active-checked#>
-                            <label>Allow password authentication</label>
+                    <h4
+                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
+                        <i class="sign-in icon"></i> Authentication Methods</h4>
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="auth_api_method_password_active"
+                                name="auth_api_method_password_active" #auth-api-method-password-active-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Allow password authentication</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_api_method_email_active" name="auth_api_method_email_active"
-                                #auth-api-method-email-active-checked#>
-                            <label>Allow email code authentication</label>
+                                #auth-api-method-email-active-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Allow email code authentication</label>
                         </div>
                     </div>
 
-                    <h4 class="ui dividing header"><i class="lock icon"></i> 2FA for API Keys</h4>
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <h4
+                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
+                        <i class="lock icon"></i> 2FA for API Keys</h4>
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_api_2fa_required" name="auth_api_2fa_required"
-                                #auth-api-2fa-required-checked#>
-                            <label>Require 2FA before issuing API tokens</label>
+                                #auth-api-2fa-required-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Require 2FA before issuing API
+                                tokens</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_api_2fa_method_app" name="auth_api_2fa_method_app"
-                                #auth-api-2fa-method-app-checked#>
-                            <label>Allow Authenticator App (TOTP)</label>
+                                #auth-api-2fa-method-app-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Allow Authenticator App (TOTP)</label>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <div class="ui toggle checkbox">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_api_2fa_method_email" name="auth_api_2fa_method_email"
-                                #auth-api-2fa-method-email-checked#>
-                            <label>Allow Email code</label>
+                                #auth-api-2fa-method-email-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
+                            <label class="text-sm font-medium text-slate-700">Allow Email code</label>
                         </div>
                     </div>
                 </form>
             </div>
 
             <!-- Action Buttons -->
-            <div class="ui divider"></div>
+            <div class="my-4 border-t border-slate-200"></div>
 
-            <div class="field">
-                <button type="button" class="ui primary button" id="btn-salvar">
+            <div class="space-y-1.5">
+                <button type="button"
+                    class="rounded bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                    id="btn-salvar">
                     <i class="save icon"></i> Save Settings
                 </button>
-                <button type="button" class="ui grey button" onclick="location.reload()">
+                <button type="button"
+                    class="rounded border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                    onclick="location.reload()">
                     <i class="refresh icon"></i> Reload
                 </button>
             </div>
 
             <!-- Status Messages -->
-            <div id="status-message" style="display: none;"></div>
+            <div id="status-message" class="hidden rounded border p-3 text-sm" role="status" aria-live="polite"></div>
         </div>
     </div>
 </div>
