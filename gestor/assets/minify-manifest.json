@@ -55,9 +55,9 @@
         "minificado": 13929
     },
     "gestor/assets/interface/controles.js": {
-        "sha1": "40808c6af0a10aaf22e0260ca726c45fb36b0f00",
-        "origem": 52443,
-        "minificado": 27645
+        "sha1": "6f3f1b1e0bddfb0bbd9288d939b8a32dde8a4810",
+        "origem": 54912,
+        "minificado": 28808
     },
     "gestor/assets/interface/editor-texto.js": {
         "sha1": "3a4a2787e357221082a3ec7566bc939804c7a12c",
@@ -90,9 +90,9 @@
         "minificado": 12197
     },
     "gestor/assets/interface/html-editor.js": {
-        "sha1": "476a61b0809ded446f90946747df08575b253018",
-        "origem": 360456,
-        "minificado": 190514
+        "sha1": "b4392d12eb8c0dbcffb946918d87f2c222c55e1d",
+        "origem": 361250,
+        "minificado": 190783
     },
     "gestor/assets/interface/ia.js": {
         "sha1": "1d842ac569c32dcd8d7e090849c68b1519bc1d47",
@@ -100,14 +100,14 @@
         "minificado": 8496
     },
     "gestor/assets/interface/interface-listar-tailwind.js": {
-        "sha1": "6d40948c4412a2aee1c0fd3835a452344e18d42b",
-        "origem": 10818,
-        "minificado": 5544
+        "sha1": "5fd948cd6293d39144c3497d6627fe47774c3547",
+        "origem": 13933,
+        "minificado": 6705
     },
     "gestor/assets/interface/interface-tailwind.js": {
-        "sha1": "4d1253bb064c317bd5974a74fb975459cc7f376a",
-        "origem": 14388,
-        "minificado": 5192
+        "sha1": "4423bab3d11fd7b540ee4a3383461717de62a697",
+        "origem": 16480,
+        "minificado": 6228
     },
     "gestor/assets/interface/interface.js": {
         "sha1": "2be8c0874088c5b7c630db38e6dbfb118db2e3b1",
@@ -335,9 +335,9 @@
         "minificado": 2148
     },
     "gestor/modulos/usuarios/usuarios.js": {
-        "sha1": "5383d63ad3c2f28727ee5cf5252d8b2e9e079950",
-        "origem": 1903,
-        "minificado": 1051
+        "sha1": "2f99065fbfeb7a65a06a61d6a6986ad078ba8cb5",
+        "origem": 2347,
+        "minificado": 1337
     },
     "gestor/modulos/variables/variables.js": {
         "sha1": "3f816e758a15075aa01cdc189e031ab21dbb1d0f",

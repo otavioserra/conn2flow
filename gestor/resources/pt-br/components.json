@@ -340,12 +340,12 @@
         "name": "IA Prompt Tailwind",
         "id": "ia-prompt-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "ab7375c98696dcea735076bab4323aef",
+            "html": "6d46e39e246a11153a01370486eeef3d",
             "css": "",
             "css_precompiled": "",
-            "combined": "ab7375c98696dcea735076bab4323aef"
+            "combined": "6d46e39e246a11153a01370486eeef3d"
         }
     },
     {
@@ -385,12 +385,12 @@
         "name": "HTML Editor Tailwind",
         "id": "html-editor-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "f2e464396894ffa32415d4ba8190bcec",
+            "html": "4da33f62605e9274bcf3ea8991e21b57",
             "css": "1fb7d1b67165d5f5578c4130c5dcd1ef",
             "css_precompiled": "",
-            "combined": "cfc8dcfbe792e2c84e24530e6dc6c4ed"
+            "combined": "27fd52d07ac5ac478bc5870121ba5e94"
         }
     },
     {
@@ -429,12 +429,12 @@
         "name": "HTML Editor Página Modificação Tailwind",
         "id": "html-editor-page-modification-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "74673c848eae6c0cabe4bb86597e96a6",
+            "html": "de32393e66aecd98fb3bc5de1f7affbc",
             "css": "",
             "css_precompiled": "",
-            "combined": "74673c848eae6c0cabe4bb86597e96a6"
+            "combined": "de32393e66aecd98fb3bc5de1f7affbc"
         }
     },
     {
@@ -451,12 +451,12 @@
         "name": "HTML Editor Visual Modal Tailwind",
         "id": "html-editor-visual-modal-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "b0393e1ff5bee0b67de7803adb31b416",
+            "html": "39d703d6073a43abeeb250a36020d362",
             "css": "",
             "css_precompiled": "",
-            "combined": "b0393e1ff5bee0b67de7803adb31b416"
+            "combined": "39d703d6073a43abeeb250a36020d362"
         }
     },
     {
@@ -474,12 +474,12 @@
         "name": "HTML Editor Modelos Tailwind",
         "id": "html-editor-modelos-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "c26c72e3cd12e5764f5e01b760a1db5c",
+            "html": "d898aa0b2e5376bfb1c275fdd9cbecaa",
             "css": "",
             "css_precompiled": "",
-            "combined": "c26c72e3cd12e5764f5e01b760a1db5c"
+            "combined": "d898aa0b2e5376bfb1c275fdd9cbecaa"
         }
     },
     {
@@ -596,24 +596,24 @@
         "name": "Interface Formulário Edição Tailwind",
         "id": "interface-formulario-edicao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "937545150ad62644cb139ed14e9ec8e1",
+            "html": "ff2b2c7346fd6e32ce3c354eb37b1a32",
             "css": "",
             "css_precompiled": "",
-            "combined": "937545150ad62644cb139ed14e9ec8e1"
+            "combined": "ff2b2c7346fd6e32ce3c354eb37b1a32"
         }
     },
     {
         "name": "Interface Formulário Inclusão Tailwind",
         "id": "interface-formulario-inclusao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "bf18e34ffdf1c3d6dbdb9fe20666aa07",
+            "html": "006f371798f666360fbe55adc561bdfa",
             "css": "",
             "css_precompiled": "",
-            "combined": "bf18e34ffdf1c3d6dbdb9fe20666aa07"
+            "combined": "006f371798f666360fbe55adc561bdfa"
         }
     },
     {
@@ -679,48 +679,48 @@
         "name": "Interface Listar Tailwind",
         "id": "interface-listar-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.3",
+        "version": "1.5",
         "checksum": {
-            "html": "e023064c647925363bed170614345a50",
+            "html": "b3232b9cae4083015ffcc211b4841919",
             "css": "",
             "css_precompiled": "",
-            "combined": "e023064c647925363bed170614345a50"
+            "combined": "b3232b9cae4083015ffcc211b4841919"
         }
     },
     {
         "name": "html-editor-publisher-controls-tailwind",
         "id": "html-editor-publisher-controls-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "4f9e4ee9cd6871ab2e15b39281bb7b1d",
+            "html": "e2d1cdd4bdad343a94276e7e87f2cb42",
             "css": "097ec5c27861a47999bb0c573d748cbb",
             "css_precompiled": "",
-            "combined": "f7f3512942e2c82a987a90017d549dde"
+            "combined": "4b8b7bdb2c1d361e66abc80bf0321603"
         }
     },
     {
         "name": "html-editor-publisher-simulation-tailwind",
         "id": "html-editor-publisher-simulation-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "465b5cb1f36283cf1ddc43dc0889973d",
+            "html": "7c054fc98d60acef5ac2fe111d9230c1",
             "css": "",
             "css_precompiled": "",
-            "combined": "465b5cb1f36283cf1ddc43dc0889973d"
+            "combined": "7c054fc98d60acef5ac2fe111d9230c1"
         }
     },
     {
         "name": "html-editor-publisher-highlights-simulation-tailwind",
         "id": "html-editor-publisher-highlights-simulation-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "1476d361e76cde680ee0f3b0dfee69cf",
+            "html": "f916a3ebac581fb8a28bd620c1f0b1f3",
             "css": "",
             "css_precompiled": "",
-            "combined": "1476d361e76cde680ee0f3b0dfee69cf"
+            "combined": "f916a3ebac581fb8a28bd620c1f0b1f3"
         }
     }
 ]

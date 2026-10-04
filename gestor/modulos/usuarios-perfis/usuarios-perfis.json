@@ -37,7 +37,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "usuarios-perfis/",
+                    "path": "usuarios-perfis\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -85,15 +85,15 @@
                 {
                     "name": "Usuários Perfis - Adicionar",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "e0eeb1a9156d30202a6c1326095bb04b",
+                        "html": "5a0a709f6b90b28f190c537c344f1c9b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e0eeb1a9156d30202a6c1326095bb04b"
+                        "combined": "5a0a709f6b90b28f190c537c344f1c9b"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "usuarios-perfis/adicionar/",
+                    "path": "usuarios-perfis\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
@@ -139,15 +139,15 @@
                 {
                     "name": "Usuários Perfis - Editar",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "89eceaedfa0b2710fee7f126ed7079e9",
+                        "html": "ecd15548d814822df29cd1560c8045f4",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "89eceaedfa0b2710fee7f126ed7079e9"
+                        "combined": "ecd15548d814822df29cd1560c8045f4"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "usuarios-perfis/editar/",
+                    "path": "usuarios-perfis\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
@@ -207,12 +207,12 @@
                     "name": "Autocomplete Página Inicial Tailwind",
                     "id": "home-page-autocomplete-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "",
+                        "html": "ded508536089a4ab06ae0c5da61d67b8",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "ded508536089a4ab06ae0c5da61d67b8"
                     }
                 }
             ],
@@ -229,7 +229,7 @@
                 },
                 {
                     "id": "home-page-placeholder",
-                    "value": "Padrão do sistema (/dashboard)",
+                    "value": "Padrão do sistema (\/dashboard)",
                     "type": "string"
                 },
                 {
@@ -307,7 +307,7 @@
                         "combined": ""
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "usuarios-perfis/",
+                    "path": "usuarios-perfis\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -355,15 +355,15 @@
                 {
                     "name": "User Profiles - Add",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "bb763b6ab1f4228793d5ebc0c140ca54",
+                        "html": "5a0a709f6b90b28f190c537c344f1c9b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "bb763b6ab1f4228793d5ebc0c140ca54"
+                        "combined": "5a0a709f6b90b28f190c537c344f1c9b"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "usuarios-perfis/adicionar/",
+                    "path": "usuarios-perfis\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
@@ -409,15 +409,15 @@
                 {
                     "name": "User Profiles - Edit",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "17a126d19fb56d110a70934ffdc407de",
+                        "html": "ecd15548d814822df29cd1560c8045f4",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "17a126d19fb56d110a70934ffdc407de"
+                        "combined": "ecd15548d814822df29cd1560c8045f4"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "usuarios-perfis/editar/",
+                    "path": "usuarios-perfis\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
@@ -477,12 +477,12 @@
                     "name": "Home Page Autocomplete Tailwind",
                     "id": "home-page-autocomplete-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "",
+                        "html": "ded508536089a4ab06ae0c5da61d67b8",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "ded508536089a4ab06ae0c5da61d67b8"
                     }
                 }
             ],
@@ -499,7 +499,7 @@
                 },
                 {
                     "id": "home-page-placeholder",
-                    "value": "System default (/dashboard)",
+                    "value": "System default (\/dashboard)",
                     "type": "string"
                 },
                 {
