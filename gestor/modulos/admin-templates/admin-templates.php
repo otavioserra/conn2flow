@@ -55,6 +55,7 @@ function admin_templates_alvo_ia($template_id = null){
 
 function admin_templates_adicionar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true; // req-219: página Tailwind com bundle
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -220,6 +221,7 @@ function admin_templates_adicionar(){
 
 function admin_templates_editar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true; // req-219: página Tailwind com bundle
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -602,6 +604,7 @@ function admin_templates_editar(){
 
 function admin_templates_clonar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true; // req-219: página Tailwind com bundle
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -836,6 +839,7 @@ function admin_templates_interfaces_padroes(){
 	
 	switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true; // req-219: listagem Tailwind
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],
