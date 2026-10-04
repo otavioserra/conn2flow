@@ -4641,7 +4641,7 @@ function interface_visualizar_finalizar($params = false){
 	// ===== Formulário de visualização
 	
 	$pagina = gestor_componente(Array(
-		'id' => 'interface-formulario-visualizacao',
+		'id' => interface_componente_variante('interface-formulario-visualizacao'),
 	));
 	
 	// ===== Popular toda as variáveis do layout.

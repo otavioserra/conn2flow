@@ -1,56 +1,52 @@
-<div class="field">
-    <label>#form-name-label#</label>
-    <input type="text" name="template-nome" placeholder="#form-name-placeholder#" value="#template-nome#">
-</div>
-<div class="field">
-    <label>#form-thumbnail-label#</label>
-    <span>#imagepick-thumbnail#</span>
-</div>
-<div class="two fields">
-    <div class="field">
-        <label>#form-target-label#</label>
-        <span>#select-target#</span>
-    </div>
-    <div class="field">
-        <label>#form-framework-css-label#</label>
-        <span>#select-framework-css#</span>
-    </div>
-</div>
-<div class="field">
-    <label>Publicador Vinculado</label>
-    <span>
-        <!-- publisher-has-link < -->
-        <h3 class="ui header">
-            <i class="bullhorn icon"></i>
-            <div class="content">
-                #publisher-name#
-            </div>
-        </h3>
-        <a class="ui button brown" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#"
-            data-tooltip="Clique para editar o publicador" data-position="top left" data-inverted="">
-            <i class="edit icon"></i>
-            Editar Publicador
-        </a>
-        <!-- publisher-has-link > -->
-        <!-- publisher-no-link < -->
-        <div class="ui icon message visible info">
-            <i class="info circle icon"></i>
-            <div class="content">
-                <div class="header">
-                    Nenhum Publicador Vinculado
-                </div>
-                <p>Este registro não está vinculado a nenhum publicador.</p>
-                <br>
-                <a class="ui button blue" href="@[[pagina#url-raiz]]@publisher/adicionar">
-                    <i class="plus icon"></i>
-                    Criar Novo Publicador
-                </a>
-            </div>
+<!-- req-219: página em Tailwind (layout-administrativo-tailwind), padrão da biblioteca de controles
+     (c2fc-campo, c2fc-botao); os selects vêm do interface com `data-c2f-select`. -->
+<div class="space-y-6">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="template-nome">#form-name-label#</label>
+            <input type="text" id="template-nome" name="template-nome" class="c2fc-campo-entrada" placeholder="#form-name-placeholder#" value="#template-nome#">
         </div>
-        <!-- publisher-no-link > -->
-    </span>
-</div>
-<div class="field">
-    <label>#form-template-content-label#</label>
-    #html-editor#
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="target">#form-target-label#</label>
+            <span>#select-target#</span>
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="framework-css">#form-framework-css-label#</label>
+            <span>#select-framework-css#</span>
+        </div>
+    </div>
+    <div class="c2fc-campo">
+        <span class="c2fc-campo-rotulo">#form-thumbnail-label#</span>
+        <span>#imagepick-thumbnail#</span>
+    </div>
+    <div class="c2fc-campo">
+        <span class="c2fc-campo-rotulo">Publicador Vinculado</span>
+        <div>
+            <!-- publisher-has-link < -->
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="flex items-center gap-2 text-base font-semibold text-slate-900"><i data-lucide="megaphone" class="size-5"></i>#publisher-name#</span>
+                <a class="c2fc-botao c2fc-botao-pequeno" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#" data-c2f-dica="Clique para editar o publicador" data-c2f-dica-pos="top left">
+                    <i data-lucide="pencil" class="size-4"></i>
+                    Editar Publicador
+                </a>
+            </div><!-- publisher-has-link > -->
+            <!-- publisher-no-link < -->
+            <div class="flex items-start gap-3 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
+                <i data-lucide="info" class="mt-0.5 size-5 shrink-0"></i>
+                <div class="space-y-2">
+                    <p class="font-semibold">Nenhum Publicador Vinculado</p>
+                    <p>Este registro não está vinculado a nenhum publicador.</p>
+                    <a class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno" href="@[[pagina#url-raiz]]@publisher/adicionar">
+                        <i data-lucide="plus" class="size-4"></i>
+                        Criar Novo Publicador
+                    </a>
+                </div>
+            </div>
+            <!-- publisher-no-link > -->
+        </div>
+    </div>
+    <div class="c2fc-campo">
+        <span class="c2fc-campo-rotulo">#form-template-content-label#</span>
+        #html-editor#
+    </div>
 </div>

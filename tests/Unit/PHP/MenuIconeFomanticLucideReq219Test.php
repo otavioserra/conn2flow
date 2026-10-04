@@ -44,4 +44,10 @@ final class MenuIconeFomanticLucideReq219Test extends TestCase
         self::assertSame('chart bar', gestor_pagina_menu_icone(['icone' => 'chart bar'], 'icone', false), 'menu Fomantic segue com o nome dele');
         self::assertSame('', gestor_pagina_menu_icone(['icone2' => 'bottom right corner list'], 'icone2', true), 'ícone ancorado não herda');
     }
+
+    public function testItemSairDoMenuTailwindTemOAtributoLucide(): void
+    {
+        $fonte = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/gestor.php');
+        self::assertStringContainsString("\"#icon-lucide#\",(\$menuTailwind ? gestor_pagina_menu_icone_lucide_atributo('log-out') : '')", $fonte);
+    }
 }

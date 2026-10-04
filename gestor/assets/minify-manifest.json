@@ -55,9 +55,9 @@
         "minificado": 13929
     },
     "gestor/assets/interface/controles.js": {
-        "sha1": "40808c6af0a10aaf22e0260ca726c45fb36b0f00",
-        "origem": 52443,
-        "minificado": 27645
+        "sha1": "6f3f1b1e0bddfb0bbd9288d939b8a32dde8a4810",
+        "origem": 54912,
+        "minificado": 28808
     },
     "gestor/assets/interface/editor-texto.js": {
         "sha1": "3a4a2787e357221082a3ec7566bc939804c7a12c",
@@ -90,9 +90,9 @@
         "minificado": 12197
     },
     "gestor/assets/interface/html-editor.js": {
-        "sha1": "476a61b0809ded446f90946747df08575b253018",
-        "origem": 360456,
-        "minificado": 190514
+        "sha1": "b4392d12eb8c0dbcffb946918d87f2c222c55e1d",
+        "origem": 361250,
+        "minificado": 190783
     },
     "gestor/assets/interface/ia.js": {
         "sha1": "1d842ac569c32dcd8d7e090849c68b1519bc1d47",
@@ -100,14 +100,14 @@
         "minificado": 8496
     },
     "gestor/assets/interface/interface-listar-tailwind.js": {
-        "sha1": "6d40948c4412a2aee1c0fd3835a452344e18d42b",
-        "origem": 10818,
-        "minificado": 5544
+        "sha1": "5fd948cd6293d39144c3497d6627fe47774c3547",
+        "origem": 13933,
+        "minificado": 6705
     },
     "gestor/assets/interface/interface-tailwind.js": {
-        "sha1": "4d1253bb064c317bd5974a74fb975459cc7f376a",
-        "origem": 14388,
-        "minificado": 5192
+        "sha1": "4423bab3d11fd7b540ee4a3383461717de62a697",
+        "origem": 16480,
+        "minificado": 6228
     },
     "gestor/assets/interface/interface.js": {
         "sha1": "2be8c0874088c5b7c630db38e6dbfb118db2e3b1",
@@ -290,9 +290,9 @@
         "minificado": 154
     },
     "gestor/modulos/pages-index/pages-index.js": {
-        "sha1": "d11fcc17f1a7409834ecef7f43a290f5998d65b3",
-        "origem": 46498,
-        "minificado": 18236
+        "sha1": "2e447076f049a4c006a3b69e4632bbf55b70ab62",
+        "origem": 46571,
+        "minificado": 18309
     },
     "gestor/modulos/pages-index/pages-index.widget.js": {
         "sha1": "34aea3be934be9fd1b8bb3f7f2ef3b8dcbb559c2",
@@ -305,14 +305,14 @@
         "minificado": 15817
     },
     "gestor/modulos/publisher-highlights/publisher-highlights.js": {
-        "sha1": "e92b3d190a91e867710c7f635b22fe1067e80143",
-        "origem": 41888,
-        "minificado": 16219
+        "sha1": "36844d46c1c48330b7c2d1452ac98ce733307ce5",
+        "origem": 42413,
+        "minificado": 16744
     },
     "gestor/modulos/publisher-index/publisher-index.js": {
-        "sha1": "1d3be1a176164296719492d6b757eac4c1025021",
-        "origem": 45812,
-        "minificado": 18141
+        "sha1": "6661de268a5506d38d5300f568b87e6e8f441c11",
+        "origem": 45885,
+        "minificado": 18214
     },
     "gestor/modulos/publisher-index/publisher-index.widget.js": {
         "sha1": "4e3ebac05a848645699b78ccc0a090095a8ac397",
@@ -320,14 +320,14 @@
         "minificado": 1868
     },
     "gestor/modulos/publisher-pages/publisher-pages.js": {
-        "sha1": "bb9eae49d84186e17c030c5c6f78b974469f6822",
-        "origem": 19191,
-        "minificado": 9932
+        "sha1": "28a496b66bcfc89970e65281b5213c250851cfc5",
+        "origem": 19431,
+        "minificado": 10123
     },
     "gestor/modulos/publisher/publisher.js": {
-        "sha1": "77dff0767e201b82dac5a60ee37e47d8d0542abc",
-        "origem": 26556,
-        "minificado": 11719
+        "sha1": "5c7207068ae45c020a7d7a9ca0c7d0a3b6ade192",
+        "origem": 30283,
+        "minificado": 13294
     },
     "gestor/modulos/usuarios-perfis/usuarios-perfis.js": {
         "sha1": "483bc4e73f8d584b3568142b5aa76653a8bd1338",
@@ -335,9 +335,9 @@
         "minificado": 2148
     },
     "gestor/modulos/usuarios/usuarios.js": {
-        "sha1": "5383d63ad3c2f28727ee5cf5252d8b2e9e079950",
-        "origem": 1903,
-        "minificado": 1051
+        "sha1": "2f99065fbfeb7a65a06a61d6a6986ad078ba8cb5",
+        "origem": 2347,
+        "minificado": 1337
     },
     "gestor/modulos/variables/variables.js": {
         "sha1": "3f816e758a15075aa01cdc189e031ab21dbb1d0f",

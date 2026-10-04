@@ -35,6 +35,7 @@ final class HtmlEditorTailwindReq219Test extends TestCase
         'ia-sem-servidor' => [],
         'interface-iframe-modal' => ['iframePagina', 'header', 'cancel', 'iframe-container', 'dimmer'],
         'interface-backup-dropdown' => ['backupDropdown'],
+        'interface-formulario-visualizacao' => [],
         'widget-imagem' => ['_gestor-widgetImage-cont', 'widgetImage-image', 'widgetImage-nome', 'widgetImage-data', 'widgetImage-tipo',
             '_gestor-widgetImage-btn-add', '_gestor-widgetImage-btn-del', '_gestor-widgetImage-file-id', '_gestor-widgetImage-file-caminho'],
     ];
@@ -150,6 +151,7 @@ final class HtmlEditorTailwindReq219Test extends TestCase
                 self::assertTrue($pagina['tailwind_bundle']);
                 $deps = array_column($pagina['tailwind_dependencies'], 'id');
                 foreach (array_keys(self::COMPONENTES) as $id) {
+                    if ($id === 'interface-formulario-visualizacao') continue; // tela visualizar não existe no admin-paginas
                     self::assertContains($id . '-tailwind', $deps, $lingua . '/' . $opcao . ': utilities de ' . $id . '-tailwind no bundle');
                 }
 

@@ -1,3 +1,62 @@
+function c2fPublisherFieldSearch(element, options) {
+    if (element.c2fSearchCleanup) element.c2fSearchCleanup();
+    const input = element.querySelector('.field-template');
+    const results = element.querySelector('.results');
+    const controller = new AbortController();
+    const signal = controller.signal;
+    element.c2fSearchCleanup = () => controller.abort();
+    function close() { results.replaceChildren(); results.hidden = true; }
+    function render() {
+        results.replaceChildren();
+        const query = input.value.toLowerCase();
+        const matches = options.source.filter(result => result.title.toLowerCase().includes(query));
+        matches.forEach(result => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'c2fc-botao';
+            button.textContent = result.title;
+            button.addEventListener('click', () => {
+                input.value = result.title;
+                close();
+                options.onSelect.call(element, result);
+            });
+            results.append(button);
+        });
+        if (!matches.length) results.textContent = options.error.noResults;
+        results.hidden = false;
+    }
+    input.addEventListener('input', render, { signal });
+    input.addEventListener('focus', render, { signal });
+    input.addEventListener('keydown', event => {
+        if (event.key === 'Escape') close();
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            if (results.hidden) render();
+            const buttons = results.querySelectorAll('button');
+            if (buttons.length) {
+                event.preventDefault();
+                buttons[event.key === 'ArrowDown' ? 0 : buttons.length - 1].focus();
+            }
+        }
+    }, { signal });
+    results.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            input.focus();
+            close();
+            return;
+        }
+        if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+        const buttons = Array.from(results.querySelectorAll('button'));
+        const index = buttons.indexOf(document.activeElement);
+        if (index < 0) return;
+        event.preventDefault();
+        const direction = event.key === 'ArrowDown' ? 1 : -1;
+        buttons[(index + direction + buttons.length) % buttons.length].focus();
+    }, { signal });
+    document.addEventListener('click', event => { if (!element.contains(event.target)) close(); }, { signal });
+    close();
+}
+
 $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length > 0 || $('#_gestor-interface-insert-dados').length > 0) {
         // Inicializar gestor.template se não existir
@@ -273,7 +332,11 @@ $(document).ready(function () {
         var addFieldBtn = $('#add-field-btn');
         var hiddenInput = $('input[name="fields_schema"]');
         var fieldIDCounter = 0;
-        var initialTemplateMap = (typeof publisher_initial_schema !== 'undefined' && publisher_initial_schema.template_map) ? publisher_initial_schema.template_map : [];
+        var initialSchema = (typeof publisher_initial_schema !== 'undefined' && publisher_initial_schema) || {};
+        var initialTemplateMap = Array.isArray(initialSchema.template_map)
+            ? initialSchema.template_map.filter(function (entry) { return entry && typeof entry === 'object'; }) : [];
+        var initialFields = Array.isArray(initialSchema.fields)
+            ? initialSchema.fields.filter(function (field) { return field && typeof field === 'object'; }) : [];
 
         function addFieldRow(data = {}) {
             fieldIDCounter++;
@@ -322,23 +385,24 @@ $(document).ready(function () {
             }
 
             schemaContainer.append(rowClone);
+            if (window.lucide) window.lucide.createIcons();
 
             // Inicializar dropdowns, search e checkbox.
 
-            $('.ui.form.interfaceFormPadrao').form('add rule', fieldID, formLabelRules);
+            $('.interfaceFormPadrao').form('add rule', fieldID, formLabelRules);
 
-            rowClone.find('.dropdownTemplate').removeClass('dropdownTemplate').addClass('ui dropdown');
+            rowClone.find('.dropdownTemplate').removeClass('dropdownTemplate').addClass('dropdown');
 
             if (template_field_id) {
-                rowClone.find('.ui.dropdown').addClass('disabled');
+                rowClone.find('.dropdown').addClass('disabled').prop('disabled', true);
             }
 
-            rowClone.find('.ui.dropdown').dropdown({
+            rowClone.find('.dropdown').dropdown({
                 onChange: function (value, text, $choice) {
                     recalculateFieldSets();
                 }
             });
-            rowClone.find('.ui.checkbox').checkbox();
+            rowClone.find('.checkbox').checkbox();
 
             // Atualizar searches e recalcular
             recalculateFieldSets();
@@ -347,21 +411,20 @@ $(document).ready(function () {
 
         function updateFieldLists() {
             // Campos Disponíveis: mostrar nome do campo do template
-            $('#available-fields-list').html(gestor.template.fieldSets.available.map(f => `<div class="item"><kbd class="ui label">[[publisher#${f.type}#${f.id}]]</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-template').text()}</div>`);
+            $('#available-fields-list').html(gestor.template.fieldSets.available.map(f => `<div class="item"><kbd class="c2fc-selo">[[publisher#${f.type}#${f.id}]]</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-template').text()}</div>`);
             // Campos Ausentes: mostrar variável do publisher sem vinculação
-            $('#missing-fields-list').html(gestor.template.fieldSets.missing.map(pf => `<div class="item"><kbd class="ui label">[[publisher#${pf.type}#${pf.id}]]</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-publisher').text()}</div>`);
+            $('#missing-fields-list').html(gestor.template.fieldSets.missing.map(pf => `<div class="item"><kbd class="c2fc-selo">[[publisher#${pf.type}#${pf.id}]]</kbd></div>`).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-publisher').text()}</div>`);
             // Campos Vinculados: mostrar variável do template => publisher
             $('#linked-fields-list').html(gestor.template.fieldSets.linked.map(pf => {
-                return `<div class="item"><kbd class="ui teal label">[[publisher#${pf.type}#${pf.id}]]</kbd></div>`;
+                return `<div class="item"><kbd class="c2fc-selo c2fc-selo-ativo">[[publisher#${pf.type}#${pf.id}]]</kbd></div>`;
             }).join('') || `<div class="item" style="color:#999">${$('#template-skeletons .msg-nenhum-campo-vinculado').text()}</div>`);
         }
 
         function updateFieldTemplateSearches() {
             const container = $('#fields-schema-container');
 
-            container.find('.field-template').closest('.ui.search').each(function () {
-                $(this).search('destroy');
-                $(this).search({
+            container.find('.field-template').closest('.search').each(function () {
+                c2fPublisherFieldSearch(this, {
                     minCharacters: 0,
                     cache: false,
                     error: {
@@ -380,7 +443,7 @@ $(document).ready(function () {
                         // Atualizar o tipo do campo com o tipo do template selecionado
                         const templateField = gestor.template.currentTemplateFields.find(tf => tf.id === result.value);
                         if (templateField) {
-                            $(this).closest('.field-row').find('.field-type').addClass('disabled');
+                            $(this).closest('.field-row').find('.field-type').addClass('disabled').prop('disabled', true);
                             $(this).closest('.field-row').find('.field-type').dropdown('refresh');
                             $(this).closest('.field-row').find('.field-type').dropdown('set selected', templateField.type);
                         }
@@ -395,12 +458,13 @@ $(document).ready(function () {
 
                     var parentRow = $(this).closest('.field-row');
                     parentRow.find('.field-template-id').val('');
+                    parentRow.find('.field-template').val('');
                     // Voltar a usar Label para ID
                     var label = parentRow.find('.field-label').val();
                     var slug = formatar_slug(label || parentRow.attr('data-id'));
                     parentRow.find('.field-id').val(slug);
                     parentRow.find('.field-id-display').text(slug).removeClass('teal');
-                    parentRow.find('.field-type').removeClass('disabled');
+                    parentRow.find('.field-type').removeClass('disabled').prop('disabled', false);
                     parentRow.find('.field-type').dropdown('refresh');
                     recalculateFieldSets();
                 });
@@ -508,8 +572,9 @@ $(document).ready(function () {
             const row = $(this).closest('.field-row');
 
             const fieldID = row.find('.field-label').attr('name');
-            $('.ui.form.interfaceFormPadrao').form('remove fields', fieldID);
+            $('.interfaceFormPadrao').form('remove fields', fieldID);
 
+            row.find('.search').each(function () { if (this.c2fSearchCleanup) this.c2fSearchCleanup(); });
             row.remove();
             recalculateFieldSets();
             updateFieldOrderButtons();
@@ -538,11 +603,11 @@ $(document).ready(function () {
         });
 
         // Load Initial Data
-        if (typeof publisher_initial_schema !== 'undefined' && Array.isArray(publisher_initial_schema.fields)) {
+        if (initialFields.length) {
             // Wait for DOM slightly or just run
-            publisher_initial_schema.fields.forEach(function (field) {
+            initialFields.forEach(function (field) {
                 // Verificar se está mapeado no template_map
-                var isMapped = publisher_initial_schema.template_map.some(tm => tm.id === field.id && tm.linked_template);
+                var isMapped = initialTemplateMap.some(tm => tm.id === field.id && tm.linked_template);
                 if (isMapped) {
                     field.template_field_id = field.id; // Como ID é compartilhado
                 }
@@ -554,7 +619,7 @@ $(document).ready(function () {
 
         // Intercept Form Submit
         // We use a general listener on the form submit
-        $('.ui.form').on('submit', function () {
+        $('.interfaceFormPadrao').on('submit', function () {
             var schema = {
                 fields: [],
                 template_map: []

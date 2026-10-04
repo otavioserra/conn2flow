@@ -19566,6 +19566,24 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-error",
+        "valor": "Não foi possível mover a publicação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-connection",
+        "valor": "Erro de conexão ao mover a publicação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "publisher-pages",
         "id": "profile-mapping-toggle",
@@ -20065,6 +20083,24 @@
         "modulo": "publisher-pages",
         "id": "historico-caminho-movido",
         "valor": "Path (Move)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-error",
+        "valor": "Unable to move the publication.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "publisher-pages",
+        "id": "form-move-error-connection",
+        "valor": "Connection error while moving the publication.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

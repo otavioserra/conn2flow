@@ -1,0 +1,50 @@
+<!-- req-219: variante Tailwind da tela visualizar do interface (pedido da req-222). Mesmos marcadores da
+     interface-formulario-visualizacao; o <template> leva as classes dos botões ao CSS pré-compilado. -->
+<h1 class="mb-4 text-2xl font-semibold text-slate-900">#titulo#</h1>
+<!-- botoes < -->
+<div class="mb-4 flex flex-wrap justify-end gap-2">
+    #botoes#
+</div><!-- botoes > -->
+<!-- meta-dados < -->
+<div class="mb-6 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+    <table class="w-full min-w-max text-left text-sm">
+        <thead class="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+            <tr>
+                <!-- cel-th < -->
+                <th class="border-b border-slate-200 px-4 py-2">#meta-titulo#</th>
+                <!-- cel-th > -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- cel-td < -->
+                <td class="px-4 py-2 text-slate-800">#meta-dado#</td>
+                <!-- cel-td > -->
+            </tr>
+        </tbody>
+    </table>
+</div><!-- meta-dados > -->
+<div id="_gestor-interface-visualizar-dados" class="space-y-6">#page#</div>
+<!-- historico < -->
+<div data-c2f-historico class="mt-6 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+    <table class="w-full min-w-max text-left text-sm">
+        <thead class="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+            <tr>
+                <th class="border-b border-slate-200 px-4 py-2">Change History</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="px-4 py-2 text-slate-800">#historico#</td>
+            </tr>
+        </tbody>
+    </table>
+</div><!-- historico > -->
+<template data-c2f-botoes>
+    <!-- Paleta de interface_botao_tailwind_classes() / interface_botoes_html(): os botões do cabeçalho e
+         do rodapé são montados em PHP, e é daqui que as utilities chegam ao CSS pré-compilado. -->
+    <a class="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors border-sky-600 bg-sky-600 text-white hover:bg-sky-700"><i class="size-4"></i></a>
+    <a class="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors border-emerald-600 bg-emerald-600 text-white hover:bg-emerald-700"></a>
+    <a class="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors border-red-600 bg-red-600 text-white hover:bg-red-700"></a>
+    <a class="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors border-slate-300 bg-white text-slate-700 hover:bg-slate-50"></a>
+</template>

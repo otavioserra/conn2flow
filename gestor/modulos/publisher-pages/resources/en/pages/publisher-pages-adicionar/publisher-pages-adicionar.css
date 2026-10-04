@@ -1,9 +1,7 @@
 .CodeMirror{
     border: 1px solid #ccc;
 }
-.hidden{
-    display: none !important;
-}
+
 .publisher-fields-header{
     margin-top: 10px !important;
 }

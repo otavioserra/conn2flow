@@ -30,7 +30,9 @@ function html_editor_publisher_controls($params = false){
 
 	// ===== HTML Editor Publisher Controles
     $html_editor_publisher_controls = gestor_componente(Array(
-		'id' => 'html-editor-publisher-controls',
+		'id' => function_exists('interface_componente_variante')
+			? interface_componente_variante('html-editor-publisher-controls')
+			: 'html-editor-publisher-controls',
 	));
 
 	$alvo_atual = isset($alvo) ? $alvo : 'publisher';
@@ -809,7 +811,9 @@ function html_editor_componente($params = false){
 				: 'html-editor-publisher-simulation';
 
 			$html_editor_publisher_simulation = gestor_componente(Array(
-				'id' => $simulation_component_id,
+				'id' => function_exists('interface_componente_variante')
+					? interface_componente_variante($simulation_component_id)
+					: $simulation_component_id,
 			));
 
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);

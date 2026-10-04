@@ -279,7 +279,7 @@ $(document).ready(function () {
 
     // Interceptar submit para serializar o schema
 
-    $('.ui.form').on('submit', function () {
+    $('form').on('submit', function () {
         // Garantir consistência com o estado dos inputs
         schema.rule = $('#rule').val() || 'latest';
         // req-041 §2.1: count é vestigial (sem input no CRUD); mantém um valor seguro no schema.
@@ -407,10 +407,10 @@ $(document).ready(function () {
             return !(v.id in (schema.variable_mapping || {}));
         });
         if (visible.length === 0) {
-            $list.append('<div class="ui basic mini label">' + getMsg('msg-nenhum-campo-template', 'Nenhuma variável do modelo') + '</div>');
+            $list.append('<div class="c2fc-selo">' + getMsg('msg-nenhum-campo-template', 'Nenhuma variável do modelo') + '</div>');
         } else {
             visible.forEach(function (v) {
-                var $btn = $('<div class="ui basic small button item-var" data-var="' + v.id + '" style="margin-bottom:6px;margin-right:6px;"></div>')
+                var $btn = $('<div class="c2fc-botao c2fc-botao-pequeno item-var" data-var="' + v.id + '" style="margin-bottom:6px;margin-right:6px;"></div>')
                     .text('[[item#' + v.id + ']]');
                 $list.append($btn);
             });
@@ -423,7 +423,7 @@ $(document).ready(function () {
         var $list = $('#missing-fields-list').empty();
 
         if (availablePublisherFields.length === 0) {
-            $list.append('<div class="ui basic mini label">' + getMsg('msg-nenhum-campo-publisher', 'Nenhum campo do publicador') + '</div>');
+            $list.append('<div class="c2fc-selo">' + getMsg('msg-nenhum-campo-publisher', 'Nenhum campo do publicador') + '</div>');
             return;
         }
 
@@ -443,22 +443,22 @@ $(document).ready(function () {
 
         function appendButtons(fields, color) {
             fields.forEach(function (f) {
-                var $btn = $('<div class="ui basic small button publisher-field ' + color + '" data-field="' + f.id + '" style="margin-bottom:6px;margin-right:6px;"></div>')
+                var $btn = $('<div class="c2fc-botao c2fc-botao-pequeno publisher-field ' + color + '" data-field="' + f.id + '" style="margin-bottom:6px;margin-right:6px;"></div>')
                     .text(f.name + ' (' + f.id + ')');
                 $list.append($btn);
             });
         }
 
         if (defaults.length > 0) {
-            $list.append('<h6 class="ui sub header" style="margin-top:6px;">' + getMsg('msg-campos-padroes', 'Campos Padrões') + '</h6>');
+            $list.append('<h6 class="c2fc-campo-rotulo" style="margin-top:6px;">' + getMsg('msg-campos-padroes', 'Campos Padrões') + '</h6>');
             appendButtons(defaults, 'grey');
         }
         if (dynamics.length > 0) {
-            $list.append('<h6 class="ui sub header" style="margin-top:10px;">' + getMsg('msg-campos-dinamicos', 'Campos Dinâmicos') + '</h6>');
+            $list.append('<h6 class="c2fc-campo-rotulo" style="margin-top:10px;">' + getMsg('msg-campos-dinamicos', 'Campos Dinâmicos') + '</h6>');
             appendButtons(dynamics, 'teal');
         }
         if (defaults.length === 0 && dynamics.length === 0) {
-            $list.append('<div class="ui basic mini label">' + getMsg('msg-todos-campos-vinculados', 'Todos os campos do publicador já estão vinculados') + '</div>');
+            $list.append('<div class="c2fc-selo">' + getMsg('msg-todos-campos-vinculados', 'Todos os campos do publicador já estão vinculados') + '</div>');
         }
     }
 
@@ -466,13 +466,13 @@ $(document).ready(function () {
         var $list = $('#linked-fields-list').empty();
         var keys = Object.keys(schema.variable_mapping || {});
         if (keys.length === 0) {
-            $list.append('<div class="ui basic mini label">' + getMsg('msg-nenhum-campo-vinculado', 'Nenhuma variável vinculada') + '</div>');
+            $list.append('<div class="c2fc-selo">' + getMsg('msg-nenhum-campo-vinculado', 'Nenhuma variável vinculada') + '</div>');
             return;
         }
         keys.forEach(function (varName) {
             var fieldName = schema.variable_mapping[varName];
-            var $row = $('<div class="ui label" style="margin:2px 4px;display:inline-block;"></div>')
-                .html('[[item#' + varName + ']] <i class="exchange icon"></i> <span class="ui teal label">' + fieldName + '</span> <i class="delete icon" data-unlink="' + varName + '"></i>');
+            var $row = $('<div class="c2fc-selo" style="margin:2px 4px;display:inline-block;"></div>')
+                .html('[[item#' + varName + ']] <span aria-hidden="true">↔</span> <span class="c2fc-selo c2fc-selo-ativo">' + fieldName + '</span> <button type="button" class="c2fc-botao c2fc-botao-icone delete icon" data-unlink="' + varName + '">×</button>');
             $list.append($row);
         });
     }
@@ -484,14 +484,14 @@ $(document).ready(function () {
 
     $(document).on('click', '.item-var', function () {
         itemVar = $(this).data('var');
-        $('.item-var').removeClass('blue').addClass('basic');
-        $(this).removeClass('basic').addClass('blue');
+        $('.item-var').removeClass('c2fc-botao-primario');
+        $(this).addClass('c2fc-botao-primario');
     });
 
     $(document).on('click', '.publisher-field', function () {
         pubVar = $(this).data('field');
-        $('.publisher-field').removeClass('blue').addClass('basic');
-        $(this).removeClass('basic').addClass('blue');
+        $('.publisher-field').removeClass('c2fc-botao-primario');
+        $(this).addClass('c2fc-botao-primario');
     });
 
     $(document).on('click', '.publisher-field,.item-var', function () {
@@ -724,12 +724,12 @@ $(document).ready(function () {
 
     // Monta uma tag (Fomantic UI Label) com handle de arraste e botão de remover.
     function buildSelectedLabel(slug, name) {
-        var $label = $('<div class="ui label teal drag-label" style="cursor: grab; display: inline-flex; align-items: center; user-select: none;"></div>')
+        var $label = $('<div class="c2fc-selo c2fc-selo-ativo drag-label" style="cursor: grab; display: inline-flex; align-items: center; user-select: none;"></div>')
             .attr('data-id', slug);
-        $label.append('<i class="grip vertical icon" style="margin-right: 6px; opacity: 0.6;"></i>');
+        $label.append('<span aria-hidden="true" style="margin-right: 6px; opacity: 0.6;">⠿</span>');
         // Usar text node para o nome — evita injeção de HTML vindo do nome da publicação.
         $label.append(document.createTextNode(name || slug));
-        $label.append('<i class="delete icon remove-tag-btn" style="margin-left: 8px; cursor: pointer;"></i>');
+        $label.append('<button type="button" class="c2fc-botao c2fc-botao-icone remove-tag-btn" style="margin-left: 8px;">×</button>');
         return $label;
     }
 
