@@ -147,6 +147,15 @@ describe('Listagem Tailwind (req-220)', () => {
     expect(td.querySelector('img')).toBeNull();
   });
 
+  it('req-219: rótulo colorido mantém só a cor da paleta', async () => {
+    window.fetch.mockResolvedValue(response([{ _gestor_acoes_id: '1', nome: 'x', status: 'A',
+      formatado: '<div class="ui green basic label">Ok</div><span class="c2fc-rotulo c2fc-cor-violet" style="x">Stripe</span><span class="c2fc-rotulo c2fc-cor-xyz">Sem cor</span>' }], 1));
+    montar(); await pronto();
+    const rotulos = raiz.querySelectorAll('tbody td')[2].querySelectorAll('span');
+    expect(Array.from(rotulos).map((r) => r.className)).toEqual(['c2fc-rotulo c2fc-cor-green', 'c2fc-rotulo c2fc-cor-violet', 'c2fc-rotulo']);
+    expect(rotulos[1].hasAttribute('style')).toBe(false);
+  });
+
   it('req-219: ações com a cor da opção, botão menor e dica da biblioteca no lugar do title', async () => {
     const c = config();
     c.opcoes.editar.cor = 'basic blue';

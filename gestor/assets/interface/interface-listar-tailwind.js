@@ -75,9 +75,11 @@
                                 novo.className = 'c2fc-rotulo';
                             }
                         } catch (e) { novo = null; }
-                    } else if (/ label /.test(classes)) {
+                    } else if (/ (label|c2fc-rotulo) /.test(classes)) {
+                        // a cor passa só se for da paleta (`ui green label` ou `c2fc-rotulo c2fc-cor-green`)
+                        var cor = (classes.match(/ (?:c2fc-cor-)?(red|orange|yellow|olive|green|teal|blue|violet|purple|pink|brown|grey|black) /) || [])[1];
                         novo = document.createElement('span');
-                        novo.className = 'c2fc-rotulo';
+                        novo.className = 'c2fc-rotulo' + (cor ? ' c2fc-cor-' + cor : '');
                     } else if (/ text /.test(classes)) {
                         novo = document.createElement('span');
                         novo.className = 'c2fc-texto-suave';
