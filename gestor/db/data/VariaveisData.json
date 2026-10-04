@@ -1278,6 +1278,204 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-favorites",
+        "valor": "Favoritos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-more",
+        "valor": "Mais atalhos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-empty",
+        "valor": "Seus atalhos aparecerão aqui.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-add-current",
+        "valor": "Favoritar tela atual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-remove-current",
+        "valor": "Remover tela dos favoritos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-customize",
+        "valor": "Personalizar atalhos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-user-menu",
+        "valor": "Menu do usuário",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-my-profile",
+        "valor": "Meu Perfil",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-security",
+        "valor": "Segurança e Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-language",
+        "valor": "Idioma da Interface",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-portuguese",
+        "valor": "Português (PT-BR)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-english",
+        "valor": "Inglês (EN)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-signout",
+        "valor": "Sair \/ Encerrar Sessão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-close",
+        "valor": "Fechar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-customize-help",
+        "valor": "Selecione as telas que deseja acessar rapidamente. As alterações são salvas na sua conta.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-search",
+        "valor": "Buscar telas e ações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-no-results",
+        "valor": "Nenhuma tela encontrada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-save-error",
+        "valor": "Não foi possível salvar os atalhos. Tente novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-unavailable",
+        "valor": "A personalização de atalhos está indisponível. Atualize o sistema para habilitá-la.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-saved",
+        "valor": "Atalhos salvos.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-open-menu",
+        "valor": "Abrir menu",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-dashboard",
+        "valor": "Painel inicial",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -2551,6 +2749,204 @@
         "modulo": "interface",
         "id": "list-tailwind-summary",
         "valor": "{inicio}–{fim} of {total} records",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-favorites",
+        "valor": "Favorites",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-more",
+        "valor": "More shortcuts",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-empty",
+        "valor": "Your shortcuts will appear here.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-add-current",
+        "valor": "Favorite current screen",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-remove-current",
+        "valor": "Remove current screen from favorites",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-customize",
+        "valor": "Customize shortcuts",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-user-menu",
+        "valor": "User menu",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-my-profile",
+        "valor": "My Profile",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-security",
+        "valor": "Security and Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-language",
+        "valor": "Interface Language",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-portuguese",
+        "valor": "Portuguese (PT-BR)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-english",
+        "valor": "English (EN)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-signout",
+        "valor": "Sign Out \/ End Session",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-close",
+        "valor": "Close",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-customize-help",
+        "valor": "Select the screens you want to access quickly. Changes are saved to your account.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-search",
+        "valor": "Search screens and actions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-no-results",
+        "valor": "No screens found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-save-error",
+        "valor": "Could not save shortcuts. Please try again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-unavailable",
+        "valor": "Shortcut customization is unavailable. Update the system to enable it.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-saved",
+        "valor": "Shortcuts saved.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-open-menu",
+        "valor": "Open menu",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-dashboard",
+        "valor": "Dashboard",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -10656,6 +11052,204 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "dashboard-tab-modulos",
+        "valor": "Módulos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "dashboard-tab-widgets",
+        "valor": "Widgets & Métricas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "density-selector-label",
+        "valor": "Seletor de densidade de visualização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "density-p-label",
+        "valor": "P",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "density-m-label",
+        "valor": "M",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "density-g-label",
+        "valor": "G",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "density-p-tooltip",
+        "valor": "Visualização Compacta (P)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "density-m-tooltip",
+        "valor": "Visualização Padrão (M)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "density-g-tooltip",
+        "valor": "Visualização Operacional Expandida (G)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-docs-em-breve",
+        "valor": "Documentação em breve",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-manual-em-breve",
+        "valor": "Manual do usuário em breve",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "cards-btn-novo-registro",
+        "valor": "Novo Registro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-tab-title",
+        "valor": "Painel Operacional de Widgets",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-tab-subtitle",
+        "valor": "Personalize suas métricas, atalhos rápidos e mini-aplicações.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-btn-add",
+        "valor": "Adicionar Widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-btn-reset",
+        "valor": "Restaurar Padrão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-btn-reset-tooltip",
+        "valor": "Restaura os widgets para a configuração inicial",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-empty-title",
+        "valor": "Nenhum widget adicionado ainda",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-empty-desc",
+        "valor": "Clique no botão acima para adicionar widgets e personalizar seu painel operacional.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-modal-title",
+        "valor": "Catálogo de Widgets do Sistema",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-modal-desc",
+        "valor": "Selecione um widget abaixo para incluir no seu painel operacional:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-btn-fechar",
+        "valor": "Fechar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "dashboard",
         "id": "logout-grup",
@@ -10885,6 +11479,204 @@
         "modulo": "dashboard",
         "id": "cards-tooltip-manual",
         "valor": "View user manual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "dashboard-tab-modulos",
+        "valor": "Modules",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "dashboard-tab-widgets",
+        "valor": "Widgets & Metrics",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "density-selector-label",
+        "valor": "View density selector",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "density-p-label",
+        "valor": "S",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "density-m-label",
+        "valor": "M",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "density-g-label",
+        "valor": "L",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "density-p-tooltip",
+        "valor": "Compact View (S)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "density-m-tooltip",
+        "valor": "Default View (M)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "density-g-tooltip",
+        "valor": "Expanded Operational View (L)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-docs-em-breve",
+        "valor": "Documentation coming soon",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "cards-tooltip-manual-em-breve",
+        "valor": "User manual coming soon",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "cards-btn-novo-registro",
+        "valor": "New Entry",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-tab-title",
+        "valor": "Operational Widgets Panel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-tab-subtitle",
+        "valor": "Customize your metrics, quick shortcuts, and mini-apps.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-btn-add",
+        "valor": "Add Widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-btn-reset",
+        "valor": "Reset to Default",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-btn-reset-tooltip",
+        "valor": "Reset widgets to initial configuration",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-empty-title",
+        "valor": "No widgets added yet",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-empty-desc",
+        "valor": "Click the button above to add widgets and customize your operational panel.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-modal-title",
+        "valor": "System Widgets Catalog",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-modal-desc",
+        "valor": "Select a widget below to add to your operational panel:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-btn-fechar",
+        "valor": "Close",
         "tipo": "string",
         "grupo": null,
         "descricao": null
