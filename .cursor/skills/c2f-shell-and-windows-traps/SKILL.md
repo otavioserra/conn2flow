@@ -21,7 +21,7 @@ user-invocable: false
 
 ---
 
-## ⛔ As 11 Armadilhas Críticas
+## ⛔ As 17 Armadilhas Críticas
 
 ### 1. Conversão Automática de Caminhos no Git Bash (MSYS Path Conversion)
 
@@ -371,3 +371,31 @@ ssh usuario@lab 'cd /mnt/c/caminho/do/repo && php vendor/bin/phpunit --configura
 ```
 
 Checkout com fim de linha CRLF lido pelo Linux faz falhar testes que executam scripts `.sh` (`syntax error near unexpected token`). É falha do ambiente: registre como pré-existente, não como regressão. Shebang de script copiado para uma worktree precisa estar em LF.
+
+---
+
+### 17. Desaparecimento de `npx` e Cache Volátil do NPM no Windows
+
+**Problema**: No Windows/Git Bash, invocar `npx tailwindcss` ou `npx terser` pode falhar intermitentemente ou desaparecer durante compilações contínuas, disparando erros como `npx: command not found`, `npm ERR! code ENOENT` ou travamentos por resolução e download de pacotes em cache volátil de `%LOCALAPPDATA%\npm-cache`.
+
+**Causa Raiz**:
+1. O comando `npx` tenta verificar e consultar registros remotos ou temporários quando invocado genericamente, sujeitando o build a timeouts de rede ou locks de arquivo pelo antivírus/OneDrive.
+2. Problemas de resolução de caminhos no PATH do Windows fazem executáveis `npx` globais divergirem das versões fixadas no repositório.
+
+**Solução Obrigatória**:
+1. **Uso Estrito dos Binários Locais**: Sempre invoque diretamente os binários instalados no repositório em `node_modules/.bin/`:
+```cmd
+# No Windows / PowerShell / CMD:
+.\node_modules\.bin\tailwindcss.cmd -i input.css -o output.css --minify
+.\node_modules\.bin\terser.cmd script.js -o script.min.js
+```
+```bash
+# No Git Bash / sh:
+./node_modules/.bin/tailwindcss -i input.css -o output.css --minify
+./node_modules/.bin/terser script.js -o script.min.js
+```
+2. **Nos scripts e pipelines PHP/CLI**: O framework e ferramentas devem referenciar diretamente o caminho relativo para `node_modules/.bin/tailwindcss.cmd` (no Windows) ou `node_modules/.bin/tailwindcss` (no Linux/Docker), sem intermediar chamadas através de `npx`.
+
+> [!CAUTION]
+> NUNCA use `npx tailwindcss` ou `npx terser` em scripts automatizados de compilação ou rotinas repetitivas de build. Dependa estritamente das dependências locais em `node_modules/.bin/`.
+

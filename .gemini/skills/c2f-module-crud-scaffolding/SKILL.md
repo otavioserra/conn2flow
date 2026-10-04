@@ -11,45 +11,48 @@ user-invocable: false
 
 ---
 
-﻿---
-name: c2f-module-crud-scaffolding
-description: "Use ao criar, estruturar, desenvolver ou refatorar modulos administrativos e rotinas CRUD no Conn2Flow, seguindo o padrao canonico de gestor/modulos/modulos-grupos/."
-user-invocable: false
----
+# Scaffolding Canônico de Módulos CRUD no Conn2Flow
 
-# Scaffolding CanÃ´nico de MÃ³dulos CRUD no Conn2Flow
-
-Consulte e aplique este guia arquitetural sempre que for criar ou refatorar um mÃ³dulo administrativo no Conn2Flow. O mÃ³dulo canÃ´nico de referÃªncia Ã© `gestor/modulos/modulos-grupos/`.
+Consulte e aplique este guia arquitetural sempre que for criar ou refatorar um módulo administrativo no Conn2Flow. O módulo canônico de referência é `gestor/modulos/modulos-grupos/`.
 
 ---
 
-## 1. Estrutura PadrÃ£o de DiretÃ³rios e Arquivos
+## 1. Estrutura Padrão de Diretórios e Arquivos
 
-Todo mÃ³dulo administrativo deve residir em `gestor/modulos/<modulo-id>/` ou `modulos/<modulo-id>/` com a seguinte composiÃ§Ã£o obrigatÃ³ria:
+Todo módulo administrativo deve residir em `gestor/modulos/<modulo-id>/` ou `modulos/<modulo-id>/` com a seguinte composição obrigatória:
 
 ```
 modulos/<modulo-id>/
-â”œâ”€â”€ <modulo-id>.php         # Controller principal e dispatcher de ciclo de vida
-â”œâ”€â”€ <modulo-id>.json        # Schema declarativo: bibliotecas, tabela, natural_key e recursos
-â”œâ”€â”€ <modulo-id>.js          # Script JavaScript carregado pelo mÃ³dulo no frontend
-â””â”€â”€ resources/
-    â”œâ”€â”€ pt-br/
-    â”‚   â”œâ”€â”€ pages/
-    â”‚   â”‚   â”œâ”€â”€ <modulo-id>/                     # Tela de listagem (opcao=listar)
-    â”‚   â”‚   â”œâ”€â”€ <modulo-id>-adicionar/           # Tela de inserÃ§Ã£o (opcao=adicionar)
-    â”‚   â”‚   â”œâ”€â”€ <modulo-id>-editar/              # Tela de ediÃ§Ã£o (opcao=editar)
-    â”‚   â”‚   â””â”€â”€ <modulo-id>-clonar/              # Tela de clonagem (opcao=clonar)
-    â”‚   â””â”€â”€ variables.json                       # VariÃ¡veis e labels multilÃ­ngues pt-br
-    â””â”€â”€ en/
-        â”œâ”€â”€ pages/ ...
-        â””â”€â”€ variables.json                       # VariÃ¡veis e labels multilÃ­ngues en
+├── <modulo-id>.php         # Controller principal e dispatcher de ciclo de vida
+├── <modulo-id>.json        # Schema declarativo: bibliotecas, tabela, natural_key e recursos
+├── <modulo-id>.js          # Script JavaScript carregado pelo módulo no frontend
+├── cover.webp              # [Obrigatório] Capa 3D conceitual gerada via c2f-module-visual-assets
+└── resources/
+    ├── pt-br/
+    │   ├── pages/
+    │   │   ├── <modulo-id>/                     # Tela de listagem (opcao=listar)
+    │   │   ├── <modulo-id>-adicionar/           # Tela de inserção (opcao=adicionar)
+    │   │   ├── <modulo-id>-editar/              # Tela de edição (opcao=editar)
+    │   │   └── <modulo-id>-clonar/              # Tela de clonagem (opcao=clonar)
+    │   └── variables.json                       # Variáveis e labels multilíngues pt-br
+    └── en/
+        ├── pages/ ...
+        └── variables.json                       # Variáveis e labels multilíngues en
 ```
+
+### 1.1 Identidade Visual e Capa Obrigatória (`c2f-module-visual-assets`)
+
+Todo novo módulo administrativo DEVE nascer com sua capa conceitual 3D padronizada, seguindo rigorosamente as diretrizes da skill `c2f-module-visual-assets`:
+- **Padrão Estético**: 3D isométrico, fundo azul meia-noite profundo, acentos ciano/violeta, vidro fosco e cerâmica suave (Design System V3.0). Sem texto, números ou logotipos.
+- **Formato e Resolução**: WebP 1024×1024 px (proporção 1:1), qualidade 90, método 6, peso máximo < 120 KB (alvo: 60 KB a 95 KB).
+- **Armazenamento Canônico**: Arquivo `gestor/assets/modulos/covers/<modulo-id>.webp` (e opcionalmente espelhado na raiz do módulo como `modulos/<modulo-id>/cover.webp`).
+- **Registro Obrigatório no Manifesto**: Toda nova capa deve ser cadastrada em `gestor/assets/modulos/covers/manifest.json` com `id`, `width`, `height`, `bytes` e hash `sha256` antes da homologação do módulo.
 
 ---
 
 ## 2. Schema Declarativo (`<modulo-id>.json`)
 
-O arquivo JSON define dependÃªncias de bibliotecas, mapeamento ORM/tabela e metadados de recursos:
+O arquivo JSON define dependências de bibliotecas, mapeamento ORM/tabela e metadados de recursos:
 
 ```json
 {
@@ -82,7 +85,7 @@ O arquivo JSON define dependÃªncias de bibliotecas, mapeamento ORM/tabela e me
             "layouts": [],
             "pages": [
                 {
-                    "name": "Meu MÃ³dulo",
+                    "name": "Meu Módulo",
                     "id": "meu-modulo",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "meu-modulo/",
@@ -91,7 +94,7 @@ O arquivo JSON define dependÃªncias de bibliotecas, mapeamento ORM/tabela e me
                     "root": true
                 },
                 {
-                    "name": "Meu MÃ³dulo - Adicionar",
+                    "name": "Meu Módulo - Adicionar",
                     "id": "meu-modulo-adicionar",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "meu-modulo/adicionar/",
@@ -99,7 +102,7 @@ O arquivo JSON define dependÃªncias de bibliotecas, mapeamento ORM/tabela e me
                     "option": "adicionar"
                 },
                 {
-                    "name": "Meu MÃ³dulo - Editar",
+                    "name": "Meu Módulo - Editar",
                     "id": "meu-modulo-editar",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "meu-modulo/editar/",
@@ -107,7 +110,7 @@ O arquivo JSON define dependÃªncias de bibliotecas, mapeamento ORM/tabela e me
                     "option": "editar"
                 },
                 {
-                    "name": "Meu MÃ³dulo - Clonar",
+                    "name": "Meu Módulo - Clonar",
                     "id": "meu-modulo-clonar",
                     "layout": "layout-administrativo-do-gestor",
                     "path": "meu-modulo/clonar/",
@@ -132,7 +135,7 @@ O arquivo JSON define dependÃªncias de bibliotecas, mapeamento ORM/tabela e me
 
 ## 3. Anatomia do Controller PHP (`<modulo-id>.php`)
 
-### 3.1. InicializaÃ§Ã£o e Carregamento
+### 3.1. Inicialização e Carregamento
 ```php
 <?php
 
@@ -142,7 +145,7 @@ $_GESTOR['modulo-id']                      = 'meu-modulo';
 $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR__ . '/meu-modulo.json'), true);
 ```
 
-### 3.2. FunÃ§Ã£o `_adicionar()`
+### 3.2. Função `_adicionar()`
 ```php
 function meu_modulo_adicionar(){
     global $_GESTOR;
@@ -153,7 +156,7 @@ function meu_modulo_adicionar(){
     if(isset($_GESTOR['adicionar-banco'])){
         $usuario = gestor_usuario();
         
-        // ValidaÃ§Ã£o obrigatÃ³ria
+        // Validação obrigatória
         interface_validacao_campos_obrigatorios(Array(
             'campos' => Array(
                 Array(
@@ -164,7 +167,7 @@ function meu_modulo_adicionar(){
             )
         ));
         
-        // GeraÃ§Ã£o da Chave Natural
+        // Geração da Chave Natural
         $id = banco_identificador(Array(
             'id' => banco_escape_field($_REQUEST["nome"]),
             'tabela' => Array(
@@ -183,7 +186,7 @@ function meu_modulo_adicionar(){
         $campos[] = Array("nome", banco_escape_field($_REQUEST["nome"]), $campo_sem_aspas_simples);
         $campos[] = Array("id", $id, $campo_sem_aspas_simples);
         
-        // Campos de Controle PadrÃ£o
+        // Campos de Controle Padrão
         $campos[] = Array('language', $_GESTOR['linguagem-codigo'], $campo_sem_aspas_simples);
         $campos[] = Array($modulo['tabela']['status'], 'A', $campo_sem_aspas_simples);
         $campos[] = Array($modulo['tabela']['versao'], '1', $campo_sem_aspas_simples);
@@ -195,7 +198,7 @@ function meu_modulo_adicionar(){
         gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.$id);
     }
     
-    // 2. InclusÃ£o de JS e ValidaÃ§Ãµes no Frontend
+    // 2. Inclusão de JS e Validações no Frontend
     gestor_pagina_javascript_incluir();
     
     $_GESTOR['interface']['adicionar']['finalizar'] = Array(
@@ -212,7 +215,7 @@ function meu_modulo_adicionar(){
 }
 ```
 
-### 3.3. FunÃ§Ã£o `_editar()`
+### 3.3. Função `_editar()`
 ```php
 function meu_modulo_editar(){
     global $_GESTOR;
@@ -230,7 +233,7 @@ function meu_modulo_editar(){
     $camposBancoEditar = array_merge($camposBanco, $camposBancoPadrao);
     $camposBancoAntes = $camposBanco;
     
-    // 1. Gravar AtualizaÃ§Ãµes no Banco
+    // 1. Gravar Atualizações no Banco
     if(isset($_GESTOR['atualizar-banco'])){
         // Snapshot de dados anteriores
         if(!banco_select_campos_antes_iniciar(
@@ -245,7 +248,7 @@ function meu_modulo_editar(){
             gestor_redirecionar_raiz();
         }
         
-        // ValidaÃ§Ã£o obrigatÃ³ria
+        // Validação obrigatória
         interface_validacao_campos_obrigatorios(Array(
             'campos' => Array(
                 Array(
@@ -262,7 +265,7 @@ function meu_modulo_editar(){
         );
         $alteracoes = [];
         
-        // ComparaÃ§Ã£o e AtualizaÃ§Ã£o de Campos
+        // Comparação e Atualização de Campos
         if(banco_select_campos_antes('nome') != (isset($_REQUEST['nome']) ? $_REQUEST['nome'] : NULL)){
             $editar['dados'][] = "nome='" . banco_escape_field($_REQUEST['nome']) . "'";
             if(!isset($_REQUEST['_gestor-nao-alterar-id'])){ $alterar_id = true; }
@@ -286,7 +289,7 @@ function meu_modulo_editar(){
             $_GESTOR['modulo-registro-id'] = $id_novo;
         }
         
-        // Executar Update e Salvar HistÃ³rico
+        // Executar Update e Salvar Histórico
         if(isset($editar['dados'])){
             $editar['dados'][] = $modulo['tabela']['versao']." = ".$modulo['tabela']['versao']." + 1";
             $editar['dados'][] = $modulo['tabela']['data_modificacao']."=NOW()";
@@ -298,7 +301,7 @@ function meu_modulo_editar(){
         gestor_redirecionar($_GESTOR['modulo-id'].'/editar/?'.$modulo['tabela']['id'].'='.(isset($id_novo) ? $id_novo : $id));
     }
     
-    // 2. RenderizaÃ§Ã£o da Interface
+    // 2. Renderização da Interface
     gestor_pagina_javascript_incluir();
     
     $retorno_bd = banco_select_editar(
@@ -345,10 +348,10 @@ function meu_modulo_editar(){
 }
 ```
 
-### 3.4. FunÃ§Ã£o `_clonar()`
-Segue a mesma lÃ³gica de `_adicionar()`, recuperando os valores do registro original via `banco_select_editar()` e populando os campos no formulÃ¡rio.
+### 3.4. Função `_clonar()`
+Segue a mesma lógica de `_adicionar()`, recuperando os valores do registro original via `banco_select_editar()` e populando os campos no formulário.
 
-### 3.5. FunÃ§Ã£o `_interfaces_padroes()` (ConfiguraÃ§Ã£o da Listagem)
+### 3.5. Função `_interfaces_padroes()` (Configuração da Listagem)
 ```php
 function meu_modulo_interfaces_padroes(){
     global $_GESTOR;
@@ -424,9 +427,9 @@ meu_modulo_start();
 
 ---
 
-## 4. Regras MandatÃ³rias de Engenharia
+## 4. Regras Mandatórias de Engenharia
 
-1. **PROIBIDO Hardcode de Textos**: Todo e qualquer rÃ³tulo, tÃ­tulo, tooltip ou mensagem de alerta deve vir de `gestor_variaveis(...)` (ver `c2f-variables-system`).
-2. **PROIBIDO Arquivos EstÃ¡ticos Soltos**: Todas as telas devem residir no sistema de recursos em `resources/<lang>/pages/` (ver `c2f-resources-system`).
+1. **PROIBIDO Hardcode de Textos**: Todo e qualquer rótulo, título, tooltip ou mensagem de alerta deve vir de `gestor_variaveis(...)` (ver `c2f-variables-system`).
+2. **PROIBIDO Arquivos Estáticos Soltos**: Todas as telas devem residir no sistema de recursos em `resources/<lang>/pages/` (ver `c2f-resources-system`).
 3. **Sempre Usar Chave Natural**: Gerar slugs e IDs com `banco_identificador()` garantindo unicidade por idioma (`language = $_GESTOR['linguagem-codigo']`).
-4. **Sempre Usar Snapshot de EdiÃ§Ã£o**: Toda gravaÃ§Ã£o de ediÃ§Ã£o DEVE iniciar com `banco_select_campos_antes_iniciar()` e registrar o log de alteraÃ§Ãµes com `interface_historico_incluir()`.
+4. **Sempre Usar Snapshot de Edição**: Toda gravação de edição DEVE iniciar com `banco_select_campos_antes_iniciar()` e registrar o log de alterações com `interface_historico_incluir()`.

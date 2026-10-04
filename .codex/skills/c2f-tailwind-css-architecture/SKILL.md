@@ -22,7 +22,7 @@ Correlacione com `c2f css:audit --url=<rota>` e reconstrua derivados pelo `c2f c
 ---
 
 ## ⛔ Regras Invioláveis
-1. **NUNCA execute comandos CLI manuais do Tailwind** (`npx tailwindcss`, etc.). Use sempre `./c2f resources:sync` (ou `php atualizacao-dados-recursos.php`).
+1. **NUNCA execute comandos manuais via `npx`** (`npx tailwindcss`, etc.). Use sempre `./c2f resources:sync` (ou `php atualizacao-dados-recursos.php`). Quando a invocação direta for estritamente necessária em depuração local, use **exclusivamente os binários locais em `node_modules/.bin/tailwindcss.cmd` e `node_modules/.bin/terser.cmd`** (Armadilha 17: proibição absoluta de `npx`).
 2. **Todo HTML/CSS visual deve residir no Sistema de Recursos**: `resources/<idioma>/<tipo>/<id>/<id>.html` e `<id>.json`.
 3. **Metadados JSON**: Todo recurso Tailwind DEVE declarar `"framework_css": "tailwindcss"` em seu arquivo de metadados `<id>.json`.
 4. **Templates Dinâmicos em Runtime (Finding F2)**: Declare dependências de templates dinâmicos no array `"tailwind_dependencies": ["id-1", "id-2"]` do JSON do recurso pai.
@@ -117,4 +117,12 @@ Para bibliotecas do Core que geram HTML com classes Tailwind, encapsule a paleta
 
 > [!CAUTION]
 > Sem o registro de `tailwind_sources`, classes utilitárias usadas exclusivamente em PHP/JS são **eliminadas do CSS compilado** no build. O erro é silencioso — a página renderiza sem as classes, causando quebra visual sem mensagem de erro.
+
+---
+
+## ⚙️ Resolução de Binários Locais e Migração Modular (`node_modules/.bin/`)
+
+Para garantir imunidade ao cache volátil do NPM e evitar falhas de PATH no Windows (Armadilha 17):
+- Todo pipeline ou script que invoca o compilador Tailwind ou minificador Terser deve referenciar diretamente os binários locais em `node_modules/.bin/tailwindcss.cmd` (Windows) ou `node_modules/.bin/tailwindcss` (Linux/macOS), sem intermediar chamadas via `npx`.
+- Ao migrar módulos administrativos de Fomantic-UI para Tailwind, consulte e aplique a skill canônica `c2f-tailwind-module-migration`, respeitando a ordem de bundles (`$_GESTOR['tailwind-page-bundle'] = true`), as variantes `-tailwind` em `interface_componente_variante()` e as classes utilitárias isoladas no HTML de recurso.
 
