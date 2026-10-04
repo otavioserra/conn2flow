@@ -1,6 +1,6 @@
 # BATCH-219: infraestrutura comum para módulos distribuídos (req-211)
 
-Execução da [req-211](../human-requests/archive/req-211.md). Implementado na branch `feat/req-092` por outro executor e integrado na `main` depois de revisão independente; relatório completo, provisionamento do Lab e evidências no `conn2flow-site` (`sdd/implementation/modulos-distribuidos/batch-086-infraestrutura-login-padrao-bridge-e-lab.md`).
+Execução da [req-211](../../human-requests/archive/req-211.md). Implementado na branch `feat/req-092` por outro executor e integrado na `main` depois de revisão independente; relatório completo, provisionamento do Lab e evidências no `conn2flow-site` (`sdd/implementation/modulos-distribuidos/batch-086-infraestrutura-login-padrao-bridge-e-lab.md`).
 
 **Status**: `in-review` (validado no Lab; revisão humana pendente).
 

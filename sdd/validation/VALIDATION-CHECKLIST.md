@@ -1,5 +1,15 @@
 # Validation Checklist
 
+## BATCH-229 — Módulos do editor, listagens e correções da revisão (req-219)
+
+- [x] `admin-layouts` e `admin-componentes` (listar, adicionar, editar) e a listagem do `admin-paginas` no layout Tailwind; salvar sem 403.
+- [x] Achados do Engenheiro Chefe: backup do editor, SEO com imagepick, cache da primeira carga (minificação antes da cópia). Barra de rolagem das docs não reproduzida (pedido de print).
+- [x] Integração da req-220 conferida no Lab (listagem do `modulos-grupos`).
+- [x] PHPUnit 1.505 (1 falha anterior), Vitest 484/484, navegador 31/31.
+- [ ] Revisão humana (no fim do programa).
+
+Detalhes: [BATCH-229](../implementation/BATCH-229.md).
+
 ## BATCH-227 — Painel em Tailwind: controles, diálogos, editor HTML e `admin-paginas` (req-219)
 
 - [x] CA-1: controles sem Fomantic, com teclado (select com busca, múltiplo e AJAX; chave; abas; diálogos; avisos) — Vitest 13 testes; 390 px sem rolagem no `admin-paginas`.
@@ -96,7 +106,7 @@ Detalhes: [BATCH-220](../implementation/BATCH-220.md).
 - [ ] Segundo fator, outros navegadores e os outros 26 módulos.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-219](../implementation/BATCH-219.md).
+Detalhes: [BATCH-219](../implementation/archive/BATCH-219.md).
 
 ## BATCH-218 — Tela de atualização no deploy e prévia de widgets completa (req-210)
 
@@ -109,7 +119,7 @@ Detalhes: [BATCH-219](../implementation/BATCH-219.md).
 - [ ] Manutenção no deploy por API exercitada num ambiente.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-218](../implementation/BATCH-218.md).
+Detalhes: [BATCH-218](../implementation/archive/BATCH-218.md).
 
 ## BATCH-217 — Prévia de widgets no editor, toque na galeria (req-209)
 

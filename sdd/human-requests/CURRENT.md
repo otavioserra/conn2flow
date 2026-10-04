@@ -5,7 +5,7 @@
   - [req-223.md](req-223.md) (BATCH-232 `ready-for-intake`, 2026-10-04, agente paralelo): módulos de administração em Tailwind (fatia 6 da req-219).
   - [req-222.md](req-222.md) (BATCH-231 `ready-for-intake`, 2026-10-04, agente paralelo): menus, galerias, formulários e consentimento de cookies em Tailwind (fatia 6 da req-219).
   - [req-221.md](req-221.md) (BATCH-230 `ready-for-intake`, 2026-10-04, agente paralelo): família publisher em Tailwind (fatia 6 da req-219).
-  - [req-220.md](req-220.md) (BATCH-228 `in-progress`, 2026-10-04, agente paralelo): listagem do `interface` em Tailwind sem DataTables (fatia 5 da req-219, BL-026); piloto `modulos-grupos`.
+  - [req-220.md](req-220.md) (BATCH-228 `in-review`, 2026-10-04, agente paralelo; integrado em `main`): listagem do `interface` em Tailwind sem DataTables (fatia 5 da req-219, BL-026); piloto `modulos-grupos`.
   - [req-219.md](req-219.md) (BATCH-227 `in-review`, 2026-10-04): painel em Tailwind — biblioteca de controles com ponte para a API do Fomantic, diálogos no lugar dos nativos, editor HTML e `admin-paginas` (adicionar/editar/clonar) no layout Tailwind; navegador 18/18. Fatia 5 na req-220; fatia 6: BATCH-229 (`admin-layouts`, `admin-componentes`, `admin-templates`, este agente) e req-221 a req-224 (agentes paralelos).
   - [req-218.md](req-218.md) (BATCH-226 `in-review`, 2026-10-03): módulos distribuídos — imagens estáticas do layout (logo do portal) dentro do prefixo do painel voltam ao próprio endereço.
   - [req-217.md](req-217.md) (BATCH-225 `in-review`, 2026-10-03): módulos distribuídos — confirmação de origem (retorno ao endereço cadastrado) e chave de sessão de 15 minutos no canal.

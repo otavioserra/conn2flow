@@ -272,3 +272,11 @@ BATCH-155 a BATCH-167 (2026-09-02 e 2026-09-03: SSH e bootstrap do CLI, checksum
 - Hooks de projeto injetam marcação Fomantic (ex.: "Workspace Social" do site): `controles.css` esconde `.ui.modal`/`.ui.dimmer` sem `.active`.
 - E2E: o iframe de pré-visualização carrega o framework da página editada (Fomantic no Lab); filtrar `request.frame() === page.mainFrame()`. Fixture do Req196 avalia `interface_formulario_campos` sem o gestor: guardar chamadas novas com `function_exists`.
 - Pipeline: ainda é preciso rodar `project:update-all` duas vezes quando muda JS (minificação depois da cópia).
+
+### req-219 / BATCH-229 — fatia 6, integração da req-220 e revisão (2026-10-04)
+
+- Pipeline: minificação é a etapa 1 de `project:update-all` e `manager:update-all`. A ordem antiga (depois da cópia) deixava o `.min.js` velho sob o hash novo do `asset-versions.json`; o navegador cacheava o velho. Uma rodada basta agora.
+- `interface_status_selo($status)` substitui a mensagem de status escrita à mão; `interface-listar-tailwind` tem `id="_gestor-interface-listar"` para os JS de módulo.
+- Comentário em recurso NÃO pode citar placeholder (`#x#`, `@[[x]]@`): `modelo_var_troca` pega a primeira ocorrência, que fica dentro do comentário (SEO quebrou assim). Teste de contrato cobre.
+- Frentes paralelas: worktree própria por agente, trava do Lab com `mkdir ../.c2f-lab-lock` (skill `c2f-tailwind-module-migration`). Ao integrar branch de outro agente, o conflito típico é só `asset-versions.json` (pega um lado e o pipeline regenera).
+- O editor reabre na última aba usada (`localStorage`): roteiro de navegador precisa voltar à aba antes de clicar em botão dela.
