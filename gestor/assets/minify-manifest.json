@@ -338,5 +338,10 @@
         "sha1": "3f816e758a15075aa01cdc189e031ab21dbb1d0f",
         "origem": 252,
         "minificado": 151
+    },
+    "gestor/assets/interface/interface-listar-tailwind.js": {
+        "sha1": "c25c02fa259c01fef5d35dd1124c4e63ceb82a05",
+        "origem": 10642,
+        "minificado": 5544
     }
 }

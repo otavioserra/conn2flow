@@ -1,0 +1,176 @@
+/** Listagem do painel (req-220): servidor pagina/ordena/busca; sem jQuery/DataTables. */
+(function (global) {
+    'use strict';
+
+    function iniciar(raiz, config) {
+        if (!raiz || raiz.c2fLista) return raiz && raiz.c2fLista;
+        var estado = { inicio: Number(config.displayStart) || 0, quantidade: Number(config.pageLength) || 25,
+            ordem: config.order || [], busca: '', total: 0, sequencia: 0, carregando: false };
+        var mensagens = raiz.dataset;
+        var timer, abortar;
+        function q(seletor) { return raiz.querySelector(seletor); }
+        function clonar(tipo) {
+            var conteudo = q('template[data-lista-' + tipo + ']').content;
+            return (conteudo.querySelector('th, td') || conteudo.firstElementChild).cloneNode(true);
+        }
+        var anterior = q('[data-lista-anterior]'), proxima = q('[data-lista-proxima]');
+        var corpo = q('[data-lista-linhas]'), cabecalho = q('[data-lista-colunas]');
+        var colunas = config.columns.map(function (coluna, i) { return { coluna: coluna, indice: i }; })
+            .filter(function (item) { return item.coluna.visible !== false && (item.indice !== 0 || Object.keys(config.opcoes || {}).length); });
+
+        function urlAcao(opcao, id) {
+            var base = new URL(config.url, new URL(global.gestor.raiz, global.location.href));
+            var url = new URL(opcao.url || '', base);
+            if (url.origin !== global.location.origin || !/^https?:$/.test(url.protocol)) return null;
+            url.searchParams.set(config.id, id);
+            if (!opcao.url) url.searchParams.set('opcao', opcao.opcao);
+            if (opcao.opcao === 'status') url.searchParams.set('status', opcao.status_mudar);
+            if (opcao.opcao === 'excluir' || opcao.opcao === 'status') {
+                var token = (document.querySelector('meta[name="csrf-token"]') || {}).content || global.gestor.csrfToken;
+                if (!token) return null;
+                url.searchParams.set('_csrf_token', token);
+            }
+            return url.href;
+        }
+
+        function acoes(linha) {
+            var grupo = clonar('acoes');
+            Object.keys(config.opcoes || {}).forEach(function (chave) {
+                var opcao = config.opcoes[chave];
+                if (opcao.opcao === 'status' && opcao.status_atual !== linha[config.status]) return;
+                var excluir = opcao.opcao === 'excluir', botao = clonar(excluir ? 'excluir' : 'acao');
+                var url = urlAcao(opcao, linha[config.acoesId]);
+                if (!url) return;
+                botao.title = opcao.tooltip || '';
+                botao.setAttribute('aria-label', opcao.tooltip || '');
+                botao.dataset.listaAcao = chave;
+                var icone = document.createElement('i');
+                icone.setAttribute('data-lucide', opcao.lucide || 'circle');
+                icone.setAttribute('aria-hidden', 'true');
+                botao.appendChild(icone);
+                if (!excluir) botao.href = url;
+                else botao.addEventListener('click', async function () {
+                    if (botao.disabled) return;
+                    botao.disabled = true;
+                    try {
+                        var sim = await global.c2fControles.dialogo.confirmar(mensagens.mensagemExcluir,
+                            { perigo: true, titulo: mensagens.tituloExcluir, ok: mensagens.confirmar, cancelar: mensagens.cancelar });
+                        if (sim) {
+                            // Token lido novamente depois do diálogo (pode ter sido renovado).
+                            var destino = urlAcao(opcao, linha[config.acoesId]);
+                            if (destino) global.location.assign(destino);
+                        }
+                    } finally { botao.disabled = false; }
+                });
+                grupo.appendChild(botao);
+            });
+            return grupo;
+        }
+
+        function atualizarPaginacao() {
+            anterior.disabled = estado.carregando || estado.inicio === 0;
+            proxima.disabled = estado.carregando || estado.inicio + estado.quantidade >= estado.total;
+        }
+
+        function renderizar(dados) {
+            estado.total = Number(dados.recordsFiltered) || 0;
+            corpo.replaceChildren();
+            (dados.data || []).forEach(function (linha) {
+                var tr = document.createElement('tr');
+                colunas.forEach(function (item) {
+                    var td = clonar('td');
+                    if (item.indice === 0) td.appendChild(acoes(linha));
+                    else {
+                        var valor = linha[item.coluna.data];
+                        // Formatadores legados podem envolver rótulos em HTML. A listagem nova exibe
+                        // seu texto, sem interpretar atributos/eventos ou HTML de dados do usuário.
+                        if (item.coluna.html) {
+                            var fragmento = document.createElement('template');
+                            fragmento.innerHTML = String(valor == null ? '' : valor);
+                            td.textContent = fragmento.content.textContent;
+                        } else td.textContent = valor == null ? '' : String(valor);
+                    }
+                    tr.appendChild(td);
+                });
+                corpo.appendChild(tr);
+            });
+            q('[data-lista-mensagem]').textContent = dados.data.length ? '' : mensagens.vazia;
+            q('[data-lista-resumo]').textContent = mensagens.resumo
+                .replace('{inicio}', estado.total ? estado.inicio + 1 : 0)
+                .replace('{fim}', Math.min(estado.inicio + dados.data.length, estado.total)).replace('{total}', estado.total);
+            colunas.forEach(function (item, i) {
+                var ordem = estado.ordem.find(function (o) { return Number(o[0]) === item.indice; });
+                cabecalho.children[i].setAttribute('aria-sort', ordem ? (ordem[1] === 'asc' ? 'ascending' : 'descending') : 'none');
+                cabecalho.children[i].querySelector('[data-lista-direcao]').textContent = ordem ? (ordem[1] === 'asc' ? '↑' : '↓') : '';
+            });
+            if (global.lucide) global.lucide.createIcons({ root: raiz });
+        }
+
+        async function carregar() {
+            var sequencia = ++estado.sequencia;
+            if (abortar) abortar.abort();
+            abortar = new AbortController();
+            estado.carregando = true;
+            raiz.setAttribute('aria-busy', 'true');
+            atualizarPaginacao();
+            q('[data-lista-mensagem]').textContent = mensagens.carregando;
+            var params = new URLSearchParams({ ajax: 'sim', opcao: 'listar', ajaxOpcao: 'listar', draw: sequencia,
+                start: estado.inicio, length: estado.quantidade, 'search[value]': estado.busca });
+            estado.ordem.forEach(function (ordem, i) {
+                params.set('order[' + i + '][column]', ordem[0]);
+                params.set('order[' + i + '][dir]', ordem[1]);
+            });
+            try {
+                var resposta = await global.fetch(new URL(config.url, new URL(global.gestor.raiz, global.location.href)).href,
+                    { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: params, signal: abortar.signal });
+                if (sequencia !== estado.sequencia) return;
+                if (resposta.status === 401) { global.location.assign(new URL('signin/', new URL(global.gestor.raiz, global.location.href)).href); return; }
+                if (!resposta.ok) throw new Error('http');
+                var dados = await resposta.json();
+                if (sequencia !== estado.sequencia) return;
+                // Listagem usa o envelope DataTables do endpoint existente, não `status: Ok`.
+                if (!dados || !Array.isArray(dados.data) || !Number.isFinite(Number(dados.recordsFiltered))) throw new Error('response');
+                if (estado.inicio > 0 && estado.inicio >= Number(dados.recordsFiltered)) { estado.inicio = 0; return carregar(); }
+                renderizar(dados);
+            } catch (erro) {
+                if (sequencia === estado.sequencia && erro.name !== 'AbortError') q('[data-lista-mensagem]').textContent = mensagens.erro;
+            } finally {
+                if (sequencia === estado.sequencia) {
+                    estado.carregando = false;
+                    raiz.setAttribute('aria-busy', 'false');
+                    atualizarPaginacao();
+                }
+            }
+        }
+
+        colunas.forEach(function (item) {
+            var th = clonar('th'), botao = th.querySelector('button');
+            botao.querySelector('span').textContent = item.indice === 0 ? mensagens.opcoes : item.coluna.name;
+            botao.disabled = item.coluna.orderable === false;
+            botao.addEventListener('click', function () {
+                var atual = estado.ordem.find(function (o) { return Number(o[0]) === item.indice; });
+                estado.ordem = [[item.indice, atual && atual[1] === 'asc' ? 'desc' : 'asc']];
+                estado.inicio = 0; carregar();
+            });
+            cabecalho.appendChild(th);
+        });
+        function buscar() { clearTimeout(timer); estado.busca = q('[data-lista-busca]').value; estado.inicio = 0; carregar(); }
+        q('[data-lista-busca]').addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(buscar, 300); });
+        q('[data-lista-busca]').addEventListener('keydown', function (evento) { if (evento.key === 'Enter') { evento.preventDefault(); buscar(); } });
+        q('[data-lista-quantidade]').value = String(estado.quantidade);
+        q('[data-lista-quantidade]').addEventListener('change', function () { estado.quantidade = Number(this.value); estado.inicio = 0; carregar(); });
+        anterior.addEventListener('click', function () { estado.inicio = Math.max(0, estado.inicio - estado.quantidade); carregar(); });
+        proxima.addEventListener('click', function () { estado.inicio += estado.quantidade; carregar(); });
+        raiz.c2fLista = { carregar: carregar, estado: estado };
+        carregar();
+        return raiz.c2fLista;
+    }
+
+    global.c2fListaTailwind = { iniciar: iniciar };
+    function boot() {
+        var config = global.gestor && global.gestor.interface && global.gestor.interface.lista;
+        if (config) iniciar(document.querySelector('[data-c2f-listar]'), config);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+})(window);

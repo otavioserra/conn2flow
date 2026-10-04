@@ -697,5 +697,53 @@
         "id": "controles-atencao",
         "value": "Attention",
         "type": "string"
+    },
+    {
+        "id": "list-tailwind-search",
+        "value": "Search",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-length",
+        "value": "Rows per page",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-previous",
+        "value": "Previous",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-next",
+        "value": "Next",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-empty",
+        "value": "No records found.",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-loading",
+        "value": "Loading records…",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-error",
+        "value": "Unable to load records. Try searching again.",
+        "type": "string",
+        "modulo": "interface"
+    },
+    {
+        "id": "list-tailwind-summary",
+        "value": "{inicio}–{fim} of {total} records",
+        "type": "string",
+        "modulo": "interface"
     }
 ]
