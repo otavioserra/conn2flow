@@ -478,6 +478,222 @@ function dashboard_gerar_descricao_modulo($modulo_id, $linguagem = 'pt-br'){
 }
 
 /**
+ * req-226 (CA-1): Resolve links canônicos de documentação pública ou interna do módulo.
+ *
+ * @param array $modulo Dados do módulo
+ * @return array Metadados de docs e manual
+ */
+function dashboard_modulo_documentacao($modulo){
+	global $_GESTOR;
+	
+	$modulo_id = $modulo['id'];
+	$lang = $_GESTOR['linguagem-codigo'] ?? 'pt-br';
+	
+	$caminho_doc_ref = ($_GESTOR['ROOT_PATH'] ?? '') . 'ai-workspace/' . $lang . '/docs/reference/modules/' . $modulo_id . '.md';
+	$is_core_doc = file_exists($caminho_doc_ref);
+	
+	if(!$is_core_doc && isset($_GESTOR['gestor-raiz'])){
+		$caminho_doc_alt = dirname($_GESTOR['gestor-raiz']) . '/ai-workspace/' . $lang . '/docs/reference/modules/' . $modulo_id . '.md';
+		$is_core_doc = file_exists($caminho_doc_alt);
+	}
+	
+	$tooltip_docs_breve = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'cards-tooltip-docs-em-breve'));
+	$tooltip_manual_breve = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'cards-tooltip-manual-em-breve'));
+	$tooltip_docs_ok = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'cards-tooltip-docs'));
+	$tooltip_manual_ok = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'cards-tooltip-manual'));
+	
+	$res = Array(
+		'docs_link' => '#',
+		'docs_classe' => 'opacity-40 cursor-not-allowed pointer-events-none',
+		'docs_tooltip' => $tooltip_docs_breve ?: 'Documentação em breve',
+		'manual_link' => '#',
+		'manual_classe' => 'opacity-40 cursor-not-allowed pointer-events-none',
+		'manual_tooltip' => $tooltip_manual_breve ?: 'Manual em breve',
+	);
+	
+	if($is_core_doc || empty($modulo['plugin'])){
+		// Módulos Core / Oficiais apontam para rotas públicas canônicas
+		$res['docs_link'] = 'https://conn2flow.com/docs/reference/modules/' . $modulo_id . '/';
+		$res['docs_classe'] = '';
+		$res['docs_tooltip'] = $tooltip_docs_ok ?: 'Ver documentação';
+		
+		$res['manual_link'] = 'https://conn2flow.com/docs/manual/modules/' . $modulo_id . '/';
+		$res['manual_classe'] = '';
+		$res['manual_tooltip'] = $tooltip_manual_ok ?: 'Ver manual do usuário';
+	} else {
+		// Módulos Customizados / Privados do Host
+		$modulo_json_path = ($_GESTOR['gestor-raiz'] ?? '') . 'modulos/' . $modulo_id . '/' . $modulo_id . '.json';
+		$tem_doc_interna = false;
+		if(file_exists($modulo_json_path)){
+			$modulo_config = json_decode(file_get_contents($modulo_json_path), true);
+			if(!empty($modulo_config['documentacao']) || !empty($modulo_config['docs'])){
+				$tem_doc_interna = true;
+			}
+		}
+		
+		if($tem_doc_interna){
+			$res['docs_link'] = $_GESTOR['url-raiz'] . 'documentation/' . $modulo_id . '/';
+			$res['docs_classe'] = '';
+			$res['docs_tooltip'] = $tooltip_docs_ok ?: 'Ver documentação';
+			
+			$res['manual_link'] = $_GESTOR['url-raiz'] . 'documentation/' . $modulo_id . '/manual/';
+			$res['manual_classe'] = '';
+			$res['manual_tooltip'] = $tooltip_manual_ok ?: 'Ver manual do usuário';
+		}
+	}
+	
+	return $res;
+}
+
+/**
+ * req-226 (CA-5): Localiza imagem/cover referencial ou thumbnail do módulo.
+ *
+ * @param array $modulo Dados do módulo
+ * @param string $modulo_link Link principal do módulo
+ * @return array Cover, SVG fallback e atalhos contextuais
+ */
+function dashboard_modulo_visual_e_atalhos($modulo, $modulo_link){
+	global $_GESTOR;
+	
+	$modulo_id = $modulo['id'];
+	$gestor_raiz = $_GESTOR['gestor-raiz'] ?? (rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/') . '/gestor/');
+	$modulo_dir = rtrim($gestor_raiz, '/') . '/modulos/' . $modulo_id . '/';
+	
+	$candidatos = Array(
+		'cover.webp',
+		'cover.png',
+		'cover.jpg',
+		'thumbnail.webp',
+		'thumbnail.png',
+	);
+	
+	$imagem_url = '';
+	foreach($candidatos as $arq){
+		if(file_exists($modulo_dir . $arq)){
+			$imagem_url = $_GESTOR['url-raiz'] . 'modulos/' . $modulo_id . '/' . $arq;
+			break;
+		}
+	}
+	
+	$pode_adicionar = false;
+	$modulo_json_path = $modulo_dir . $modulo_id . '.json';
+	if(file_exists($modulo_json_path)){
+		$modulo_cfg = json_decode(file_get_contents($modulo_json_path), true);
+		if(isset($modulo_cfg['cover']) && !$imagem_url){
+			$imagem_url = $_GESTOR['url-raiz'] . ltrim($modulo_cfg['cover'], '/');
+		}
+		if(isset($modulo_cfg['resources'][$_GESTOR['linguagem-codigo']]['pages'])){
+			foreach($modulo_cfg['resources'][$_GESTOR['linguagem-codigo']]['pages'] as $page){
+				if(isset($page['option']) && $page['option'] === 'adicionar'){
+					$pode_adicionar = true;
+					break;
+				}
+			}
+		}
+	}
+	
+	// Tag de imagem ou bloco vazio
+	$imagem_tag = '';
+	if($imagem_url !== ''){
+		$imagem_tag = '<img src="' . htmlspecialchars($imagem_url, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($modulo['nome'], ENT_QUOTES, 'UTF-8') . '" class="dashboard-module-cover h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />';
+	}
+	
+	// Atalho contextual para adicionar no tamanho G
+	$atalho_adicionar = '';
+	if($pode_adicionar && $modulo_link !== '#' && !str_ends_with($modulo_link, 'dashboard/')){
+		$rotulo_novo = gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'], 'id' => 'cards-btn-novo-registro'));
+		$atalho_adicionar = '<a class="dashboard-shortcut-add c2fc-botao c2fc-botao-pequeno c2fc-botao-sucesso" href="' . rtrim($modulo_link, '/') . '/adicionar/">' .
+			'<i data-lucide="plus" class="size-3.5"></i> ' . ($rotulo_novo ?: 'Novo Registro') .
+			'</a>';
+	}
+	
+	return Array(
+		'imagem_url' => $imagem_url,
+		'imagem_tag' => $imagem_tag,
+		'tem_imagem' => ($imagem_url !== ''),
+		'atalho_adicionar' => $atalho_adicionar,
+	);
+}
+
+/**
+ * req-226: Obtém preferências do usuário salvas no banco (usuarios_preferencias).
+ *
+ * @param string $chave Identificador da preferência
+ * @param mixed $padrao Valor padrão
+ * @return mixed
+ */
+function dashboard_preferencias_obter($chave, $padrao = null){
+	global $_GESTOR;
+	
+	$usuario_id = $_GESTOR['usuario-id'] ?? null;
+	if(!$usuario_id) return $padrao;
+	
+	try {
+		$registro = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_preferencias',
+			'campos' => Array('valor'),
+			'extra' => "WHERE id_usuarios='".banco_escape_field($usuario_id)."' AND chave='".banco_escape_field($chave)."'"
+		));
+		
+		if($registro && isset($registro['valor'])){
+			$dec = json_decode($registro['valor'], true);
+			return (json_last_error() === JSON_ERROR_NONE) ? $dec : $registro['valor'];
+		}
+	} catch (\Throwable $e) {
+		// Tabela ainda ausente ou erro não bloqueante
+	}
+	
+	return $padrao;
+}
+
+/**
+ * req-226: Salva preferência do usuário no banco (usuarios_preferencias).
+ *
+ * @param string $chave Identificador da preferência
+ * @param mixed $valor Valor a ser gravado (escalar ou array)
+ * @return bool
+ */
+function dashboard_preferencias_salvar($chave, $valor){
+	global $_GESTOR;
+	
+	$usuario_id = $_GESTOR['usuario-id'] ?? null;
+	if(!$usuario_id) return false;
+	
+	$valor_str = is_array($valor) || is_object($valor) ? json_encode($valor, JSON_UNESCAPED_UNICODE) : (string)$valor;
+	
+	try {
+		$existe = banco_select(Array(
+			'unico' => true,
+			'tabela' => 'usuarios_preferencias',
+			'campos' => Array('id_usuarios_preferencias'),
+			'extra' => "WHERE id_usuarios='".banco_escape_field($usuario_id)."' AND chave='".banco_escape_field($chave)."'"
+		));
+		
+		if($existe){
+			banco_update(
+				banco_campos_virgulas(Array(
+					"valor='".banco_escape_field($valor_str)."'",
+					"data_modificacao=NOW()"
+				)),
+				'usuarios_preferencias',
+				"WHERE id_usuarios_preferencias='".banco_escape_field($existe['id_usuarios_preferencias'])."'"
+			);
+		} else {
+			banco_insert_name(Array(
+				Array('id_usuarios', $usuario_id, true),
+				Array('chave', $chave),
+				Array('valor', $valor_str),
+			), 'usuarios_preferencias');
+		}
+		return true;
+	} catch (\Throwable $e) {
+		error_log('dashboard_preferencias_salvar: ' . $e->getMessage());
+		return false;
+	}
+}
+
+/**
  * Gera os cards do dashboard com base nos módulos e permissões do usuário.
  */
 function dashboard_cards(){
@@ -636,17 +852,20 @@ function dashboard_cards(){
 		));
 	}
 	
+	// ===== Carregar preferências salvas do usuário no backend (req-226)
+	$densidade_salva = dashboard_preferencias_obter('dashboard_densidade', 'm');
+	if(!in_array($densidade_salva, Array('p', 'm', 'g'))){
+		$densidade_salva = 'm';
+	}
+	$aba_ativa_salva = dashboard_preferencias_obter('dashboard_aba_ativa', 'dashboard-tab-modulos');
+	$widgets_salvos = dashboard_preferencias_obter('dashboard_widgets_layout', Array());
+	$ordem_salva = dashboard_preferencias_obter('dashboard_cards_order', null);
+
 	// ===== Gerar cards dos módulos
 	
 	$cards_html = '';
 	$cards_order = array();
 	$order_index = 0;
-	
-	// URL base para documentação
-	$docs_base_url = 'https://github.com/otavioserra/conn2flow/blob/main/ai-workspace/' . $_GESTOR['linguagem-codigo'] . '/docs/modulos/';
-	
-	// URL base para manual do usuário
-	$manual_base_url = 'https://github.com/otavioserra/conn2flow/blob/main/ai-workspace/' . $_GESTOR['linguagem-codigo'] . '/docs/manual/modulos/';
 	
 	if($modulos)
 	foreach($modulos as $modulo){
@@ -688,6 +907,22 @@ function dashboard_cards(){
 			continue;
 		}
 		
+		// Link principal do módulo
+		$modulo_link = $_GESTOR['url-raiz'].'dashboard/';
+		if($paginas)
+		foreach($paginas as $pagina){
+			if($modulo['id'] == $pagina['modulo']){
+				$modulo_link = $_GESTOR['url-raiz'].$pagina['caminho'];
+				break;
+			}
+		}
+		
+		// Metadados visuais, cover e atalhos rápidos contextuais (CA-5 / G)
+		$visual = dashboard_modulo_visual_e_atalhos($modulo, $modulo_link);
+		
+		// Resolução canônica de links de documentação e manual (CA-1)
+		$doc_links = dashboard_modulo_documentacao($modulo);
+		
 		// Montar o card
 		$cel_aux = $cel['card'];
 		
@@ -718,27 +953,20 @@ function dashboard_cards(){
 		$cel_aux = modelo_var_troca($cel_aux, "#modulo-svg#", $svg);
 		
 		// Link do módulo
-		$pagina_found = false;
-		if($paginas)
-		foreach($paginas as $pagina){
-			if($modulo['id'] == $pagina['modulo']){
-				$cel_aux = modelo_var_troca_tudo($cel_aux, "#modulo-link#", $_GESTOR['url-raiz'].$pagina['caminho']);
-				$pagina_found = true;
-				break;
-			}
-		}
+		$cel_aux = modelo_var_troca_tudo($cel_aux, "#modulo-link#", $modulo_link);
 		
-		if(!$pagina_found){
-			$cel_aux = modelo_var_troca_tudo($cel_aux, "#modulo-link#", $_GESTOR['url-raiz'].'dashboard/');
-		}
+		// Documentação e Manual Canônicos (CA-1)
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-docs-link#", $doc_links['docs_link']);
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-docs-classe#", $doc_links['docs_classe']);
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-docs-tooltip#", $doc_links['docs_tooltip']);
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-manual-link#", $doc_links['manual_link']);
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-manual-classe#", $doc_links['manual_classe']);
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-manual-tooltip#", $doc_links['manual_tooltip']);
 		
-		// Link da documentação
-		$docs_link = $docs_base_url . $modulo['id'] . '.md';
-		$cel_aux = modelo_var_troca($cel_aux, "#modulo-docs-link#", $docs_link);
-		
-		// Link do manual do usuário
-		$manual_link = $manual_base_url . $modulo['id'] . '.md';
-		$cel_aux = modelo_var_troca($cel_aux, "#modulo-manual-link#", $manual_link);
+		// Imagem referencial / Cover / Fallback (CA-5)
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-imagem-tag#", $visual['imagem_tag']);
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-has-image-class#", $visual['tem_imagem'] ? 'has-cover' : 'no-cover');
+		$cel_aux = modelo_var_troca($cel_aux, "#modulo-atalho-adicionar#", $visual['atalho_adicionar']);
 		
 		$cards_html .= $cel_aux;
 		$cards_order[] = $modulo['id'];
@@ -755,9 +983,15 @@ function dashboard_cards(){
 	$componente = modelo_var_troca($componente, '<!-- cards-container -->', $container);
 	$componente = modelo_var_troca($componente, "#titulo#", $_GESTOR['pagina#titulo']);
 	
-	// ===== Passar ordem dos cards para o JavaScript
+	// ===== Passar ordem e preferências persistidas para o JavaScript (req-226)
 	
 	$_GESTOR['javascript-vars']['dashboard_cards_order'] = $cards_order;
+	$_GESTOR['javascript-vars']['dashboard_user_prefs'] = Array(
+		'densidade' => $densidade_salva,
+		'aba_ativa' => $aba_ativa_salva,
+		'widgets_layout' => $widgets_salvos ?: Array(),
+		'cards_order' => $ordem_salva ?: $cards_order,
+	);
 	
 	// ===== Inserir componente na página
 	
@@ -777,12 +1011,6 @@ function dashboard_3d(){
 		'modulo' => $_GESTOR['modulo-id'],
 	));
 
-	// URL base para documentação
-	$docs_base_url = 'https://github.com/otavioserra/conn2flow/blob/main/ai-workspace/' . $_GESTOR['linguagem-codigo'] . '/docs/modulos/';
-	
-	// URL base para manual do usuário
-	$manual_base_url = 'https://github.com/otavioserra/conn2flow/blob/main/ai-workspace/' . $_GESTOR['linguagem-codigo'] . '/docs/manual/modulos/';
-	
 	// ===== Obter usuário e permissões
 	$usuario = gestor_usuario();
 	
@@ -978,11 +1206,10 @@ function dashboard_3d(){
 				}
 			}
 
-			// Link da documentação
-			$docs_link = $docs_base_url . $modulo['id'] . '.md';
-			
-			// Link do manual do usuário
-			$manual_link = $manual_base_url . $modulo['id'] . '.md';
+			// Links canônicos de documentação e manual (req-226 CA-1)
+			$doc_links = dashboard_modulo_documentacao($modulo);
+			$docs_link = $doc_links['docs_link'];
+			$manual_link = $doc_links['manual_link'];
 			
 			$modules_data[] = array(
 				'id' => $modulo['id'],
@@ -2841,6 +3068,90 @@ function dashboard_ajax_site_toolbar_page_config_save(){
 	);
 }
 
+/**
+ * req-226 (CA-2, CA-4): Endpoint AJAX para salvar preferências de densidade, abas e widgets.
+ */
+function dashboard_ajax_preferencia_salvar(){
+	global $_GESTOR;
+	
+	$chave = isset($_REQUEST['chave']) ? trim((string)$_REQUEST['chave']) : '';
+	$valor = $_REQUEST['valor'] ?? null;
+	
+	if($chave === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Chave de preferência não informada.');
+		return;
+	}
+	
+	if(is_string($valor) && $valor !== ''){
+		$dec = json_decode($valor, true);
+		if(json_last_error() === JSON_ERROR_NONE){
+			$valor = $dec;
+		}
+	}
+	
+	$ok = dashboard_preferencias_salvar($chave, $valor);
+	
+	$_GESTOR['ajax-json'] = Array(
+		'status' => $ok ? 'Ok' : 'error',
+		'message' => $ok ? 'Preferência salva com sucesso.' : 'Erro ao persistir preferência no banco de dados.'
+	);
+}
+
+/**
+ * req-226 (CA-4): Retorna catálogo de widgets ativos do sistema para inserção no painel.
+ */
+function dashboard_ajax_widgets_catalogo(){
+	global $_GESTOR;
+	
+	$lang = $_GESTOR['linguagem-codigo'] ?? 'pt-br';
+	
+	try {
+		$widgets = banco_select(Array(
+			'tabela' => 'widgets',
+			'campos' => Array('id', 'name', 'icon', 'tabela'),
+			'extra' => "WHERE status='A' AND language='".banco_escape_field($lang)."' ORDER BY name ASC"
+		));
+		
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'Ok',
+			'data' => $widgets ?: Array()
+		);
+	} catch (\Throwable $e) {
+		$_GESTOR['ajax-json'] = Array(
+			'status' => 'error',
+			'message' => 'Erro ao consultar catálogo de widgets: ' . $e->getMessage()
+		);
+	}
+}
+
+/**
+ * req-226 (CA-4): Renderiza um widget dinamicamente para o painel de widgets do dashboard.
+ */
+function dashboard_ajax_widget_render(){
+	global $_GESTOR;
+	
+	$widget_id = isset($_REQUEST['widget_id']) ? trim((string)$_REQUEST['widget_id']) : '';
+	if($widget_id === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Widget não informado.');
+		return;
+	}
+	
+	gestor_incluir_biblioteca('widgets');
+	
+	$html = '';
+	if(function_exists('widgets_get')){
+		$html = (string)widgets_get(Array('id' => $widget_id));
+	}
+	
+	$_GESTOR['ajax-json'] = Array(
+		'status' => 'Ok',
+		'data' => Array(
+			'widget_id' => $widget_id,
+			'html' => $html
+		)
+	);
+}
+
 function dashboard_start(){
 	global $_GESTOR;
 	
@@ -2849,21 +3160,17 @@ function dashboard_start(){
 	if($_GESTOR['ajax']){
 		interface_ajax_iniciar();
 
-		// Defensivo: garante que o corpo do POST esteja em `$_REQUEST` (lido pelos handlers e libs
-		// reusadas ia.php/html-editor.php) mesmo se algum ambiente configurar `request_order` sem
-		// "P". NOTA: não era isto que causava o "302 → home" do save (este servidor usa o fallback
-		// variables_order=EGPCS, que já inclui POST) — a causa era o redirect do histórico; ver
-		// `id_numerico_manual` em dashboard_ajax_site_toolbar_save/salvar_layout.
+		// Defensivo: garante que o corpo do POST esteja em `$_REQUEST`
 		if(!empty($_POST)){
 			$_REQUEST = array_merge($_REQUEST, $_POST);
 		}
 
-		// NÃO gatear por gestor_dashboard_toolbar_ativo(): o gate é FALSE na própria página do
-		// toolbar (guard anti-recursão) e a checagem de permissão já é feita DENTRO de cada handler
-		// (gestor_acesso('editar','admin-paginas')). O gate aqui quebrava o render do toolbar
-		// (placeholders sem troca + JS do iframe não injetado).
 		switch($_GESTOR['ajax-opcao']){
-			//case 'opcao': dashboard_ajax_opcao(); break;
+			// req-226: Persistência de preferências do usuário e painel operacional de widgets
+			case 'salvar-preferencias': dashboard_ajax_preferencia_salvar(); break;
+			case 'widgets-catalogo': dashboard_ajax_widgets_catalogo(); break;
+			case 'widget-render': dashboard_ajax_widget_render(); break;
+			// Toolbar e legado
 			case 'site-toolbar-render': dashboard_ajax_site_toolbar_render(); break;
 			case 'site-toolbar-widget-types': dashboard_ajax_site_toolbar_widget_types(); break;
 			case 'site-toolbar-widgets-list': dashboard_ajax_site_toolbar_widgets_list(); break;

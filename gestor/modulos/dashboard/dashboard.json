@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.22",
+    "versao": "1.0.23",
     "bibliotecas": [
         "interface",
         "html"
@@ -52,7 +52,7 @@
                     "type": "system",
                     "option": "inicio",
                     "root": true,
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
                         "html": "c19d30a48ea2e80f18c4243d0067cad2",
                         "css": "",
@@ -217,12 +217,12 @@
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "b82612ebb384fb75142b3d0a6ea1b609",
-                        "css": "0e324392a2b394734af8262b8c968267",
+                        "html": "db72bda81d9451d4e9dd998bc2923983",
+                        "css": "aab774ae86072f22803baed4e8da2b0b",
                         "css_precompiled": "",
-                        "combined": "9b87f05bcb7fb040063ae1101df059c4"
+                        "combined": "f8aa14fd2a08ecc62228243e67f1457b"
                     }
                 }
             ],
@@ -356,6 +356,116 @@
                     "id": "cards-tooltip-manual",
                     "value": "Ver manual do usuário",
                     "type": "string"
+                },
+                {
+                    "id": "dashboard-tab-modulos",
+                    "value": "Módulos",
+                    "type": "string"
+                },
+                {
+                    "id": "dashboard-tab-widgets",
+                    "value": "Widgets & Métricas",
+                    "type": "string"
+                },
+                {
+                    "id": "density-selector-label",
+                    "value": "Seletor de densidade de visualização",
+                    "type": "string"
+                },
+                {
+                    "id": "density-p-label",
+                    "value": "P",
+                    "type": "string"
+                },
+                {
+                    "id": "density-m-label",
+                    "value": "M",
+                    "type": "string"
+                },
+                {
+                    "id": "density-g-label",
+                    "value": "G",
+                    "type": "string"
+                },
+                {
+                    "id": "density-p-tooltip",
+                    "value": "Visualização Compacta (P)",
+                    "type": "string"
+                },
+                {
+                    "id": "density-m-tooltip",
+                    "value": "Visualização Padrão (M)",
+                    "type": "string"
+                },
+                {
+                    "id": "density-g-tooltip",
+                    "value": "Visualização Operacional Expandida (G)",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-docs-em-breve",
+                    "value": "Documentação em breve",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-manual-em-breve",
+                    "value": "Manual do usuário em breve",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-btn-novo-registro",
+                    "value": "Novo Registro",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-tab-title",
+                    "value": "Painel Operacional de Widgets",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-tab-subtitle",
+                    "value": "Personalize suas métricas, atalhos rápidos e mini-aplicações.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-add",
+                    "value": "Adicionar Widget",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-reset",
+                    "value": "Restaurar Padrão",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-reset-tooltip",
+                    "value": "Restaura os widgets para a configuração inicial",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-empty-title",
+                    "value": "Nenhum widget adicionado ainda",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-empty-desc",
+                    "value": "Clique no botão acima para adicionar widgets e personalizar seu painel operacional.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-modal-title",
+                    "value": "Catálogo de Widgets do Sistema",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-modal-desc",
+                    "value": "Selecione um widget abaixo para incluir no seu painel operacional:",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-fechar",
+                    "value": "Fechar",
+                    "type": "string"
                 }
             ]
         },
@@ -395,7 +505,7 @@
                     "type": "system",
                     "root": true,
                     "option": "inicio",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
                         "html": "c19d30a48ea2e80f18c4243d0067cad2",
                         "css": "",
@@ -560,12 +670,12 @@
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "b82612ebb384fb75142b3d0a6ea1b609",
-                        "css": "0e324392a2b394734af8262b8c968267",
+                        "html": "0117951582de8f2ee401553f6e6a5e10",
+                        "css": "aab774ae86072f22803baed4e8da2b0b",
                         "css_precompiled": "",
-                        "combined": "9b87f05bcb7fb040063ae1101df059c4"
+                        "combined": "ed017128c0c8235338e5fa6f776199db"
                     }
                 }
             ],
@@ -698,6 +808,116 @@
                 {
                     "id": "cards-tooltip-manual",
                     "value": "View user manual",
+                    "type": "string"
+                },
+                {
+                    "id": "dashboard-tab-modulos",
+                    "value": "Modules",
+                    "type": "string"
+                },
+                {
+                    "id": "dashboard-tab-widgets",
+                    "value": "Widgets & Metrics",
+                    "type": "string"
+                },
+                {
+                    "id": "density-selector-label",
+                    "value": "View density selector",
+                    "type": "string"
+                },
+                {
+                    "id": "density-p-label",
+                    "value": "S",
+                    "type": "string"
+                },
+                {
+                    "id": "density-m-label",
+                    "value": "M",
+                    "type": "string"
+                },
+                {
+                    "id": "density-g-label",
+                    "value": "L",
+                    "type": "string"
+                },
+                {
+                    "id": "density-p-tooltip",
+                    "value": "Compact View (S)",
+                    "type": "string"
+                },
+                {
+                    "id": "density-m-tooltip",
+                    "value": "Default View (M)",
+                    "type": "string"
+                },
+                {
+                    "id": "density-g-tooltip",
+                    "value": "Expanded Operational View (L)",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-docs-em-breve",
+                    "value": "Documentation coming soon",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-tooltip-manual-em-breve",
+                    "value": "User manual coming soon",
+                    "type": "string"
+                },
+                {
+                    "id": "cards-btn-novo-registro",
+                    "value": "New Entry",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-tab-title",
+                    "value": "Operational Widgets Panel",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-tab-subtitle",
+                    "value": "Customize your metrics, quick shortcuts, and mini-apps.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-add",
+                    "value": "Add Widget",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-reset",
+                    "value": "Reset to Default",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-reset-tooltip",
+                    "value": "Reset widgets to initial configuration",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-empty-title",
+                    "value": "No widgets added yet",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-empty-desc",
+                    "value": "Click the button above to add widgets and customize your operational panel.",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-modal-title",
+                    "value": "System Widgets Catalog",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-modal-desc",
+                    "value": "Select a widget below to add to your operational panel:",
+                    "type": "string"
+                },
+                {
+                    "id": "widgets-btn-fechar",
+                    "value": "Close",
                     "type": "string"
                 }
             ]
