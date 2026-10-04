@@ -21,6 +21,7 @@ function publisher_normalize_array($array) {
 
 function publisher_adicionar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -142,7 +143,7 @@ function publisher_adicionar(){
 		if($templates_linked_publisher && is_array($templates_linked_publisher))
 		foreach($templates_linked_publisher as $linked){
 			if($template['id'] == $linked['t.id']){
-				$template['nome'] = '<kbd class="ui basic label">' . $template['nome'] . '</kbd><kbd class="ui teal icon label"><i class="exchange alternate small icon"></i></kbd><kbd class="ui basic label">' . $linked['p.name'] . '</kbd>';
+				$template['nome'] = '<kbd class="c2fc-selo">' . $template['nome'] . '</kbd><kbd class="c2fc-selo c2fc-selo-ativo"><i data-lucide="arrow-left-right" class="size-4"></i></kbd><kbd class="c2fc-selo">' . $linked['p.name'] . '</kbd>';
 				$disabled = ' disabled';
 				$countTemplatesLinked++;
 				break;
@@ -219,6 +220,7 @@ function publisher_adicionar(){
 
 function publisher_editar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -479,7 +481,7 @@ function publisher_editar(){
 			if($templates_linked_publisher && is_array($templates_linked_publisher))
 			foreach($templates_linked_publisher as $linked){
 				if($template['id'] == $linked['t.id']){
-					$template['nome'] = '<kbd class="ui basic label">' . $template['nome'] . '</kbd><kbd class="ui teal icon label"><i class="exchange alternate small icon"></i></kbd><kbd class="ui basic label">' . $linked['p.name'] . '</kbd>';
+					$template['nome'] = '<kbd class="c2fc-selo">' . $template['nome'] . '</kbd><kbd class="c2fc-selo c2fc-selo-ativo"><i data-lucide="arrow-left-right" class="size-4"></i></kbd><kbd class="c2fc-selo">' . $linked['p.name'] . '</kbd>';
 					$disabled = ' disabled';
 					$countTemplatesLinked++;
 					break;
@@ -627,6 +629,7 @@ function publisher_editar(){
 
 function publisher_clonar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -808,7 +811,7 @@ function publisher_clonar(){
 			if($templates_linked_publisher && is_array($templates_linked_publisher))
 			foreach($templates_linked_publisher as $linked){
 				if($template['id'] == $linked['t.id']){
-					$template['nome'] = '<kbd class="ui basic label">' . $template['nome'] . '</kbd><kbd class="ui teal icon label"><i class="exchange alternate small icon"></i></kbd><kbd class="ui basic label">' . $linked['p.name'] . '</kbd>';
+					$template['nome'] = '<kbd class="c2fc-selo">' . $template['nome'] . '</kbd><kbd class="c2fc-selo c2fc-selo-ativo"><i data-lucide="arrow-left-right" class="size-4"></i></kbd><kbd class="c2fc-selo">' . $linked['p.name'] . '</kbd>';
 					$disabled = ' disabled';
 					$countTemplatesLinked++;
 					break;
@@ -911,6 +914,7 @@ function publisher_interfaces_padroes(){
 
     switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true;
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],
@@ -935,7 +939,7 @@ function publisher_interfaces_padroes(){
 							'nome' => gestor_variaveis(Array('modulo' => 'admin-templates','id' => 'form-name-placeholder')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
-								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
+								'valor_senao_existe' => '<span class="text-slate-500">N/A</span>',
 								'tabela' => Array(
 									'nome' => 'templates',
 									'campo_trocar' => 'nome',

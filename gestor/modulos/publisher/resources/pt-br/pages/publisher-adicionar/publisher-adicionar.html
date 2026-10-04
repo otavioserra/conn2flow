@@ -1,74 +1,74 @@
-<div class="field">
-    <label>Nome do Tipo de Publicação</label>
-    <input type="text" name="name" placeholder="Ex: Notícias">
+<div class="field c2fc-campo min-w-0 mb-4">
+    <label class="c2fc-campo-rotulo">Nome do Tipo de Publicação</label>
+    <input class="c2fc-campo-entrada" type="text" name="name" placeholder="Ex: Notícias">
 </div>
 
-<div class="field">
-    <label><span>Caminho Pré-fixo</span>
-        <div class="ui label">
-            <i class="file alternate outline icon"></i>
+<div class="field c2fc-campo min-w-0 mb-4">
+    <label class="c2fc-campo-rotulo"><span>Caminho Pré-fixo</span>
+        <div class="label c2fc-selo bg-slate-100 text-slate-700 break-all">
+            <i data-lucide="file-text" class="size-4 inline-block file alternate outline icon"></i>
             Caminho pré preenchido quando criar uma publicação. Exemplo: 'noticias/' - criando publicação de nome
             'teste-publicacao', gera
             caminho
             final 'noticias/teste-publicacao/'.
         </div>
     </label>
-    <input type="text" name="path_prefix" placeholder="Ex: noticias/">
+    <input class="c2fc-campo-entrada" type="text" name="path_prefix" placeholder="Ex: noticias/">
 </div>
 
-<div class="field">
-    <label>Modelo (Recurso)</label>
-    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+<div class="field c2fc-campo min-w-0 mb-4">
+    <label class="c2fc-campo-rotulo">Modelo (Recurso)</label>
+    <select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown relative min-w-0" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
     <!-- templates-alguns-linkados-msg < -->
-    <div class="ui icon message visible info">
-        <i class="bell icon"></i>
+    <div class="icon message visible info rounded-lg border border-sky-200 bg-sky-50 p-4 my-4">
+        <i data-lucide="bell" class="size-4 inline-block bell icon"></i>
         <div class="content">
-            <div class="header">Modelos Vinculados ao Publicador</div>
+            <div class="header font-semibold text-slate-800 my-4">Modelos Vinculados ao Publicador</div>
             <p>Foram encontrados alguns modelos vinculados a alguns registros publicador no selecionador acima e
-                marcados assim: <kbd class="ui basic label">Modelo</kbd><kbd class="ui teal icon label"><i
+                marcados assim: <kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Modelo</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
                         class="exchange alternate small icon"></i></kbd><kbd
-                    class="ui basic label">Publicador</kbd>.<br>Só
+                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publicador</kbd>.<br>Só
                 é permitido um modelo ser vinculado a um único registro de publicador.</p>
         </div>
     </div>
     <!-- templates-alguns-linkados-msg > -->
     <!-- templates-todos-linkados-msg < -->
-    <div class="ui icon message visible negative">
-        <i class="ban icon"></i>
+    <div class="icon message visible negative rounded-lg border border-sky-200 bg-sky-50 p-4 my-4">
+        <i data-lucide="ban" class="size-4 inline-block ban icon"></i>
         <div class="content">
-            <div class="header">Modelos Vinculados ao Publicador</div>
+            <div class="header font-semibold text-slate-800 my-4">Modelos Vinculados ao Publicador</div>
             <p>Todos os modelos encontrados estão vinculados a um registro de publicador no selecionador acima e
-                marcados assim: <kbd class="ui basic label">Modelo</kbd><kbd class="ui teal icon label"><i
+                marcados assim: <kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Modelo</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
                         class="exchange alternate small icon"></i></kbd><kbd
-                    class="ui basic label">Publicador</kbd>.<br>Só
+                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publicador</kbd>.<br>Só
                 é permitido um modelo ser vinculado a um único registro de publicador.</p>
-            <div class="ui list">
+            <div class="list">
                 <div class="item">
-                    <i class="chevron right icon"></i>
+                    <i data-lucide="chevron-right" class="size-4 inline-block chevron right icon"></i>
                     <div class="content">
                         Você pode adicionar um novo
                         modelo clicando no botão abaixo <b>Adicionar Novo Modelo</b>. Lá no módulo de modelos,
-                        você poderá escolher um modelo pronto em: <span class="ui breadcrumb">
+                        você poderá escolher um modelo pronto em: <span class="breadcrumb">
                             <div class="section"><b>Conteúdo do Modelo</b></div>
-                            <i class="right angle icon divider"></i>
+                            <i data-lucide="chevron-right" class="size-4 inline-block right angle icon divider"></i>
                             <div class="section"><b>Modelos</b></div>
                         </span>
                     </div>
                 </div>
                 <div class="item">
-                    <i class="chevron right icon"></i>
+                    <i data-lucide="chevron-right" class="size-4 inline-block chevron right icon"></i>
                     <div class="content">
                         Você pode clonar um modelo existente. Acesse a listagem dos
                         modelos clicando <a href="@[[pagina#url-raiz]]@admin-templates/">aqui</a>, escolha um
-                        modelo e clique no botão: <kbd class="ui teal icon label"><i class="clone icon"></i></kbd>
+                        modelo e clique no botão: <kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i data-lucide="copy" class="size-4 inline-block clone icon"></i></kbd>
                         para criar um novo modelo clonado.
                     </div>
                 </div>
                 <div class="item">
-                    <i class="chevron right icon"></i>
+                    <i data-lucide="chevron-right" class="size-4 inline-block chevron right icon"></i>
                     <div class="content">
                         Então, depois de criar um novo registro, ou clonar um existente, você pode
                         retornar aqui para dar prosseguimento.
@@ -80,53 +80,53 @@
     <!-- templates-todos-linkados-msg > -->
 </div>
 
-<a class="ui button blue" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=publisher"
-    data-tooltip="Clique para adicionar um novo modelo" data-position="top center" data-inverted="">
-    <i class="plus icon"></i> Adicionar Novo Modelo
+<a class="button blue c2fc-botao c2fc-botao-primario" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=publisher"
+    data-c2f-dica="Clique para adicionar um novo modelo" data-position="top center" data-inverted="">
+    <i data-lucide="plus" class="size-4 inline-block plus icon"></i> Adicionar Novo Modelo
 </a>
 
-<a class="ui button brown hidden" id="edit-template"
+<a class="button brown hidden c2fc-botao c2fc-botao-primario" id="edit-template"
     href="@[[pagina#url-raiz]]@admin-templates/editar/?id=noticias-imagem-destaque"
-    data-tooltip="Clique para editar este modelo" data-position="top center" data-inverted="">
-    <i class="edit icon"></i> Editar Modelo
+    data-c2f-dica="Clique para editar este modelo" data-position="top center" data-inverted="">
+    <i data-lucide="pencil" class="size-4 inline-block edit icon"></i> Editar Modelo
 </a>
 
-<a class="ui button teal hidden" id="clone-template"
+<a class="button teal hidden c2fc-botao c2fc-botao-primario" id="clone-template"
     href="@[[pagina#url-raiz]]@admin-templates/clonar/?id=noticias-imagem-destaque"
-    data-tooltip="Clique para clonar este modelo" data-position="top center" data-inverted="">
-    <i class="clone icon"></i> Clonar Modelo
+    data-c2f-dica="Clique para clonar este modelo" data-position="top center" data-inverted="">
+    <i data-lucide="copy" class="size-4 inline-block clone icon"></i> Clonar Modelo
 </a>
 
-<div class="ui segment basic fitted hidden template-options-wrapper">
+<div class="segment basic fitted hidden template-options-wrapper relative rounded-lg border border-slate-200 p-4 my-4">
 
-    <div class="ui medium dimmer template-loading">
-        <div class="ui text loader">Carregando modelo...</div>
+    <div class="medium dimmer template-loading c2fc-cobertura">
+        <div class="text loader">Carregando modelo...</div>
     </div>
 
-    <div class="ui negative message hidden" id="error-message">
-        <div class="header">Erro!</div>
+    <div class="negative message hidden rounded-lg border border-sky-200 bg-sky-50 p-4 my-4" id="error-message">
+        <div class="header font-semibold text-slate-800 my-4">Erro!</div>
         <p id="error-message-content"></p>
     </div>
 
     <div class="hidden template-options-subwrapper">
-        <h4 class="ui dividing header">Vinculação de Campos: <kbd class="ui label">Modelo</kbd><kbd
-                class="ui teal icon label"><i class="exchange alternate icon"></i></kbd><kbd
-                class="ui label">Publicador</kbd></h4>
-        <div class="ui segment template-link-publisher-fields">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="sixteen wide column">
-                        <div class="ui grid template-fields-list">
-                            <div class="four wide column">
+        <h4 class="dividing header font-semibold text-slate-800 my-4">Vinculação de Campos: <kbd class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Modelo</kbd><kbd
+                class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i data-lucide="arrow-left-right" class="size-4 inline-block exchange alternate icon"></i></kbd><kbd
+                class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Publicador</kbd></h4>
+        <div class="segment template-link-publisher-fields relative rounded-lg border border-slate-200 p-4 my-4">
+            <div class="min-w-0">
+                <div class="row min-w-0">
+                    <div class="sixteen wide column min-w-0">
+                        <div class="template-fields-list grid grid-cols-1 gap-4 md:grid-cols-3">
+                            <div class="four wide column min-w-0">
                                 <h5>Campos Modelo</h5>
                                 <div id="available-fields-list"></div>
                             </div>
-                            <div class="four wide column">
+                            <div class="four wide column min-w-0">
                                 <h5>Campos Publicador</h5>
                                 <div id="missing-fields-list"></div>
                             </div>
-                            <div class="eight wide column">
-                                <h5>Campos Vinculados: Modelo <kbd class="ui teal icon label"><i
+                            <div class="eight wide column min-w-0">
+                                <h5>Campos Vinculados: Modelo <kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
                                             class="exchange alternate icon"></i></kbd> Publicador</h5>
                                 <div id="linked-fields-list"></div>
                             </div>
@@ -139,18 +139,18 @@
 
 </div>
 
-<h4 class="ui dividing header">Campos Personalizados (Schema)</h4>
+<h4 class="dividing header font-semibold text-slate-800 my-4">Campos Personalizados (Schema)</h4>
 <input type="hidden" name="fields_schema">
 <div id="fields-schema-container"></div>
 
-<div id="add-field-btn" class="ui button green" data-tooltip="Clique para adicionar um novo campo"
+<div id="add-field-btn" class="button green c2fc-botao c2fc-botao-primario" data-c2f-dica="Clique para adicionar um novo campo"
     data-position="top center" data-inverted="">
-    <i class="plus icon"></i> Adicionar Campo
+    <i data-lucide="plus" class="size-4 inline-block plus icon"></i> Adicionar Campo
 </div>
 
-<div id="add-all-fields-btn" class="ui button teal hidden" data-tooltip="Clique para adicionar todos os campos do modelo"
+<div id="add-all-fields-btn" class="button teal hidden c2fc-botao c2fc-botao-primario" data-c2f-dica="Clique para adicionar todos os campos do modelo"
     data-position="top center" data-inverted="">
-    <i class="exchange alternate icon"></i> Adicionar todos os campos
+    <i data-lucide="arrow-left-right" class="size-4 inline-block exchange alternate icon"></i> Adicionar todos os campos
 </div>
 
 <!-- Skeletons para elementos dinâmicos -->
@@ -165,59 +165,59 @@
     <span class="msg-nenhum-resultado-dropdown" style="display:none">Nenhum resultado encontrado</span>
     <span class="msg-sem-resultados" style="display:none">Sem Resultados</span>
 
-    <div class="field-row-skeleton ui segment field-row" data-id="" style="margin-bottom: 10px;">
-        <div class="fields">
-            <div class="four wide field">
-                <label>Label</label>
-                <input type="text" class="field-label" placeholder="Ex: Título" data-validate="skip">
+    <div class="field-row-skeleton segment field-row relative rounded-lg border border-slate-200 p-4 my-4" data-id="" style="margin-bottom: 10px;">
+        <div class="fields grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="four wide field c2fc-campo min-w-0 mb-4">
+                <label class="c2fc-campo-rotulo">Label</label>
+                <input type="text" class="c2fc-campo-entrada field-label" placeholder="Ex: Título" data-validate="skip">
             </div>
-            <div class="five wide field">
-                <label>Campo Modelo</label>
-                <div class="ui search">
-                    <div class="ui icon input">
-                        <input class="prompt field-template" type="text" placeholder="Buscar campo do modelo..."
+            <div class="five wide field c2fc-campo min-w-0 mb-4">
+                <label class="c2fc-campo-rotulo">Campo Modelo</label>
+                <div class="search relative min-w-0">
+                    <div class="icon input relative flex items-center gap-2 min-w-0">
+                        <input class="c2fc-campo-entrada prompt field-template" type="text" placeholder="Buscar campo do modelo..."
                             data-validate="skip">
-                        <i class="search icon"></i>
-                        <i class="remove icon"></i>
+                        <i data-lucide="search" class="size-4 inline-block search icon relative min-w-0"></i>
+                        <i data-lucide="x" class="size-4 inline-block remove icon"></i>
                     </div>
-                    <div class="results"></div>
+                    <div class="results absolute z-20 w-full rounded-lg border bg-white shadow-lg"></div>
                 </div>
                 <input type="hidden" class="field-template-id" data-validate="skip">
             </div>
-            <div class="four wide field">
-                <label>Tipo</label>
-                <select class="dropdownTemplate field-type" data-validate="skip">
+            <div class="four wide field c2fc-campo min-w-0 mb-4">
+                <label class="c2fc-campo-rotulo">Tipo</label>
+                <select class="c2fc-campo-entrada dropdownTemplate field-type" data-validate="skip">
                     <option value="text">Texto Curto</option>
                     <option value="textarea">Texto Longo</option>
                     <option value="html">HTML (Rich Text)</option>
                     <option value="image">Imagem</option>
                 </select>
             </div>
-            <div class="one wide field">
-                <label>Obrigatório</label>
-                <div class="ui checkbox">
+            <div class="one wide field c2fc-campo min-w-0 mb-4">
+                <label class="c2fc-campo-rotulo">Obrigatório</label>
+                <div class="checkbox">
                     <input type="checkbox" class="field-mandatory" data-validate="skip">
-                    <label>Sim</label>
+                    <label class="c2fc-campo-rotulo">Sim</label>
                 </div>
             </div>
-            <div class="two wide field">
-                <div class="ui icon right floated red button remove-field-btn" data-tooltip="Remover este campo"
-                    data-position="top center" data-inverted=""><i class="trash icon"></i></div>
-                <div class="ui icon right floated button move-down-btn hidden" data-tooltip="Mover para baixo"
-                    data-position="top center" data-inverted=""><i class="arrow down icon"></i></div>
-                <div class="ui icon right floated button move-up-btn hidden" data-tooltip="Mover para cima"
-                    data-position="top center" data-inverted=""><i class="arrow up icon"></i></div>
+            <div class="two wide field c2fc-campo min-w-0 mb-4">
+                <div class="icon right floated red button remove-field-btn c2fc-botao c2fc-botao-perigo" data-c2f-dica="Remover este campo"
+                    data-position="top center" data-inverted=""><i data-lucide="trash-2" class="size-4 inline-block trash icon"></i></div>
+                <div class="icon right floated button move-down-btn hidden c2fc-botao c2fc-botao-primario" data-c2f-dica="Mover para baixo"
+                    data-position="top center" data-inverted=""><i data-lucide="arrow-down" class="size-4 inline-block arrow down icon"></i></div>
+                <div class="icon right floated button move-up-btn hidden c2fc-botao c2fc-botao-primario" data-c2f-dica="Mover para cima"
+                    data-position="top center" data-inverted=""><i data-lucide="arrow-up" class="size-4 inline-block arrow up icon"></i></div>
             </div>
         </div>
-        <div class="fields">
-            <div class="ten wide field">
-                <label>Descrição</label>
-                <input type="text" class="field-description" placeholder="Ex: descreva o título da página."
+        <div class="fields grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="ten wide field c2fc-campo min-w-0 mb-4">
+                <label class="c2fc-campo-rotulo">Descrição</label>
+                <input type="text" class="c2fc-campo-entrada field-description" placeholder="Ex: descreva o título da página."
                     data-validate="skip" />
             </div>
-            <div class="six wide field">
-                <label>Identificador</label>
-                <div class="ui label field-id-display">N / A</div>
+            <div class="six wide field c2fc-campo min-w-0 mb-4">
+                <label class="c2fc-campo-rotulo">Identificador</label>
+                <div class="label field-id-display c2fc-selo bg-slate-100 text-slate-700 break-all">N / A</div>
                 <input type="hidden" class="field-id" data-validate="skip">
             </div>
         </div>

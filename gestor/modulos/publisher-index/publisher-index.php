@@ -79,6 +79,7 @@ function publisher_index_publisher_by_slug($publisher_id){
 
 function publisher_index_adicionar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -233,6 +234,7 @@ function publisher_index_adicionar(){
 
 function publisher_index_editar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -624,6 +626,7 @@ function publisher_index_editar(){
 
 function publisher_index_clonar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -858,6 +861,7 @@ function publisher_index_interfaces_padroes(){
 
     switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true;
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],
@@ -882,7 +886,7 @@ function publisher_index_interfaces_padroes(){
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher_id-label')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
-								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
+								'valor_senao_existe' => '<span class="c2fc-campo-ajuda">N/A</span>',
 								'tabela' => Array(
 									'nome' => 'publisher',
 									'campo_trocar' => 'name',
