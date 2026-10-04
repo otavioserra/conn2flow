@@ -68,7 +68,10 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-227 | in-review | Painel em Tailwind: biblioteca de controles, diálogos, editor HTML e `admin-paginas` (req-219, fatias 1 a 4) | [BATCH-227.md](BATCH-227.md) | `controles.js` sem framework com ponte para a API do Fomantic; 11 variantes do editor; `admin-paginas` adicionar/editar/clonar no layout Tailwind. Navegador 18/18; suíte 1.498 (1 falha anterior); Vitest 474/474. |
 | BATCH-228 | in-review | Listagem do `interface` em Tailwind sem DataTables, piloto `modulos-grupos` (req-220, fatia 5 da req-219) | [BATCH-228.md](BATCH-228.md) | Agente paralelo; integrado em `main` (`467d979d`) e conferido no Lab pelo roteiro da req-219. |
 | BATCH-229 | in-review | Módulos do editor, listagens e correções da revisão (req-219, fatia 6) | [BATCH-229.md](BATCH-229.md) | `admin-layouts`, `admin-componentes`, listagem do `admin-paginas`, `interface_status_selo`, backup e minificação antes da cópia no pipeline. Navegador 31/31. |
-| BATCH-230 a BATCH-233 | ready-for-intake | Fatia 6 da req-219 com agentes paralelos (req-221 publisher, req-222 menus/galerias/formulários/cookies, req-223 administração, req-224 usuários e módulos) | [req-221.md](../human-requests/req-221.md) | Skill `c2f-tailwind-module-migration`; trava do Lab em `../.c2f-lab-lock`. |
+| BATCH-230 | in-review | Família publisher em Tailwind (req-221, fatia 6) | [BATCH-230.md](BATCH-230.md) | Agente paralelo; integrado em `main` (`83d80088`) com o Workspace Social do site (`c451f195`). |
+| BATCH-231 | in-progress | Menus, galerias, formulários e consentimento de cookies em Tailwind (req-222) | [req-222.md](../human-requests/req-222.md) | Agente paralelo, worktree `conn2flow-req222`; variante de visualização entregue pela req-219 (`aff98f83`). |
+| BATCH-232 | ready-for-intake | Módulos de administração em Tailwind (req-223) | [req-223.md](../human-requests/req-223.md) | Inclui o widget `configuracao_administracao` (variables, admin-environment, modulos-variaveis). |
+| BATCH-233 | in-review | Usuários, perfis, módulos, operações e painel inicial em Tailwind (req-224) | [req-224.md](../human-requests/req-224.md) | Agente da req-219; navegador 40/40 no roteiro da req-219. |
 
 ## Regra operacional
 
