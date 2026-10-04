@@ -8,7 +8,7 @@
   - [req-228.md](req-228.md) (BATCH-237 `complete`, 2026-10-04; integrado em `main`): Topbar administrativa com perfil, segurança, idioma e favoritos persistentes no SQL.
   - [req-227.md](req-227.md) (BATCH-236 `complete`, 2026-10-04; integrado em `main`): 37 capas de módulos em WebP 1024x1024 isométrica 3D e rota canônica.
   - [req-226.md](req-226.md) (BATCH-235 `complete`, 2026-10-04; integrado em `main`): Dashboard V3.0 (seletor P/M/G, abas, widgets e links canônicos de docs).
-  - [req-225.md](req-225.md) (BATCH-234 `ready-for-intake`, 2026-10-04): conferência final — todo módulo Tailwind (core e site) com os recursos da UI nova da req-219; roda depois das frentes.
+  - [req-225.md](req-225.md) (BATCH-234 `in-review`, 2026-10-04, branch `feat/req-225`): conferência integrada concluída; 376 páginas/idiomas verdes, 8 entradas do piloto excluídas pelo humano; REQ-100/101 do site homologadas no Lab.
   - [req-224.md](req-224.md) (BATCH-233 `in-review`, 2026-10-04, agente da req-219; navegador 40/40): usuários, perfis, módulos e painel inicial em Tailwind (fatia 6 da req-219).
   - [req-223.md](req-223.md) (BATCH-232 `ready-for-intake`, 2026-10-04, agente paralelo): módulos de administração em Tailwind (fatia 6 da req-219).
   - [req-222.md](req-222.md) (BATCH-231 `in-progress`, 2026-10-04, agente paralelo): menus, galerias, formulários e consentimento de cookies em Tailwind (fatia 6 da req-219).

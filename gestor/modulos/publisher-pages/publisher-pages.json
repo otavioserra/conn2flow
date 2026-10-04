@@ -51,11 +51,12 @@
                 {
                     "name": "Lista Página ou Sistema ou Publisher",
                     "id": "lista-pagina-ou-sistema-ou-publisher",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "fb692fb83eec39c7ba846c44cd447104",
+                        "html": "bb2b58d00045a34e3dcc3498e621f588",
                         "css": "",
-                        "combined": "fb692fb83eec39c7ba846c44cd447104"
+                        "css_precompiled": "",
+                        "combined": "bb2b58d00045a34e3dcc3498e621f588"
                     }
                 },
                 {
@@ -133,12 +134,12 @@
                 {
                     "name": "Publicador Páginas",
                     "id": "publisher-pages",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "68b329da9893e34099c7d8ad5cb9c940",
+                        "html": "81051bcc2cf1bedf378224b0a93e2877",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "68b329da9893e34099c7d8ad5cb9c940"
+                        "combined": "81051bcc2cf1bedf378224b0a93e2877"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "publisher-pages\/",
@@ -983,12 +984,12 @@
                 {
                     "name": "Publisher Pages",
                     "id": "publisher-pages",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "68b329da9893e34099c7d8ad5cb9c940",
+                        "html": "81051bcc2cf1bedf378224b0a93e2877",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "68b329da9893e34099c7d8ad5cb9c940"
+                        "combined": "81051bcc2cf1bedf378224b0a93e2877"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "publisher-pages\/",

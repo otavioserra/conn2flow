@@ -1,0 +1,2 @@
+/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
+@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-font-weight:initial}}}@layer utilities{.flex{display:flex}.min-w-0{min-width:0}.items-start{align-items:flex-start}.gap-3{gap:calc(var(--spacing,.25rem) * 3)}.font-semibold{--tw-font-weight:var(--font-weight-semibold,600);font-weight:var(--font-weight-semibold,600)}}@property --tw-font-weight{syntax:"*";inherits:false}

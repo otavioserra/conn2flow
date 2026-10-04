@@ -3,71 +3,76 @@
         "name": "404 - Página Não Encontrada",
         "id": "404-pagina-nao-encontrada",
         "layout": "layout-pagina-sem-permissao",
-        "path": "404/",
+        "path": "404\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "ee70befa061dea94472dbfc017b9e996",
+            "html": "b2eba34fbd33750287623a2ebc97ea91",
             "css": "",
-            "combined": "ee70befa061dea94472dbfc017b9e996"
+            "css_precompiled": "",
+            "combined": "b2eba34fbd33750287623a2ebc97ea91"
         }
     },
     {
         "name": "Página Raiz do Sistema",
         "id": "pagina-raiz-do-sistema",
         "layout": "layout-pagina-sem-permissao",
-        "path": "/",
+        "path": "\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "d56e60c53f59564951210b0d2dc6d7c7",
+            "html": "e5ff59260d3c23ea1ea4d8892293f688",
             "css": "",
-            "combined": "d56e60c53f59564951210b0d2dc6d7c7"
+            "css_precompiled": "",
+            "combined": "e5ff59260d3c23ea1ea4d8892293f688"
         }
     },
     {
         "name": "Cookies Devem Estar Ativados no Seu Navegador",
         "id": "cookies-devem-estar-ativados-no-seu-navegador",
         "layout": "layout-pagina-sem-permissao",
-        "path": "cookies-is-mandatory/",
+        "path": "cookies-is-mandatory\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "fd3b2522d023d539b43cc506e178c54b",
+            "html": "6a6bcdbc0f0c0cb3435707ccc276ab3c",
             "css": "",
-            "combined": "fd3b2522d023d539b43cc506e178c54b"
+            "css_precompiled": "",
+            "combined": "6a6bcdbc0f0c0cb3435707ccc276ab3c"
         }
     },
     {
         "name": "Página de Impressão",
         "id": "pagina-de-impressao",
         "layout": "layout-impressao",
-        "path": "pagina-de-impressao/",
+        "path": "pagina-de-impressao\/",
         "type": "system",
         "option": "impressao",
         "without_permission": true,
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
             "html": "",
-            "css": "607e0f6e68e7a2c218542aa428379085",
-            "combined": "607e0f6e68e7a2c218542aa428379085"
+            "css": "6f08edd9ae603692713a90a1bd40ec1d",
+            "css_precompiled": "",
+            "combined": "6f08edd9ae603692713a90a1bd40ec1d"
         }
     },
     {
         "name": "Instalação Concluída",
         "id": "instalacao-sucesso",
         "layout": "layout-pagina-sem-permissao",
-        "path": "instalacao-sucesso/",
+        "path": "instalacao-sucesso\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "7c11257dbc730a0971d5876f9e0e983b",
-            "css": "d66e854af0c522ca96e846dc7add5a36",
-            "combined": "790aca5c2c8168c8cabc8237fbd029a1"
+            "html": "b2bda12279f723fb9e7677eb570199e3",
+            "css": "510b8d6751bcc9a0fb89897e852bb90a",
+            "css_precompiled": "",
+            "combined": "e7a8bac60abd603db1cb84ebf1de0aeb"
         }
     }
 ]

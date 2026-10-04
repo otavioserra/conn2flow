@@ -14,13 +14,13 @@ if(!defined('INTERFACE_COLUNA_ACOES')) define('INTERFACE_COLUNA_ACOES', '_gestor
  * 
  * @package Conn2Flow
  * @subpackage Bibliotecas
- * @version 1.1.5
+ * @version 1.1.6
  */
 
 global $_GESTOR;
 
 $_GESTOR['biblioteca-interface']							=	Array(
-	'versao' => gestor_asset_version('interface', '1.1.5'),
+	'versao' => gestor_asset_version('interface', '1.1.6'),
 );
 
 // ===== Funções formatação
@@ -4088,7 +4088,7 @@ function interface_adicionar_incomum_finalizar($params = false){
 		// cor - String - Obrigatório - Cor do botão.
 	
 	$pagina = gestor_componente(Array(
-		'id' => 'interface-formulario-inclusao-incomum',
+		'id' => interface_componente_variante('interface-formulario-inclusao-incomum'),
 	));
 	
 	$pagina = modelo_var_troca($pagina,"#titulo#",$_GESTOR['pagina#titulo']);
@@ -4230,7 +4230,7 @@ function interface_editar_incomum_finalizar($params = false){
 	// ===== Formulário de edição
 	
 	$pagina = gestor_componente(Array(
-		'id' => 'interface-formulario-edicao-incomum',
+		'id' => interface_componente_variante('interface-formulario-edicao-incomum'),
 	));
 	
 	// ===== Remover não alterar id
@@ -4775,7 +4775,7 @@ function interface_config_finalizar($params = false){
 	// ===== Formulário de edição
 	
 	$pagina = gestor_componente(Array(
-		'id' => 'interface-formulario-configuracoes',
+		'id' => interface_componente_variante('interface-formulario-configuracoes'),
 	));
 	
 	// ===== Popular toda as variáveis do layout.

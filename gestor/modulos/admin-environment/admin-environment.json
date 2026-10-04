@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.4",
+    "versao": "1.0.6",
     "bibliotecas": [
         "interface",
         "html"
@@ -17,12 +17,12 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.29",
+                    "version": "1.32",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-environment.php",
-                        "../../../../admin-environment.js"
+                        "..\/..\/..\/..\/admin-environment.php",
+                        "..\/..\/..\/..\/admin-environment.js"
                     ],
                     "tailwind_sources_reason": "The controller and client render profile badges, results and configuration controls.",
                     "tailwind_dependencies": [
@@ -33,21 +33,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "471a7dc1eb45bf7139392b1f1968df7c",
-                        "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
+                        "html": "8e696f8ceb8c32c52fc108cbc6a69c78",
+                        "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
                         "css_precompiled": "",
-                        "combined": "5b74bcb45858ecbf0cfc339071373867"
-                    }
+                        "combined": "83b3db51c2d72edea41c3e3277cd8bc9"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [],
@@ -270,12 +271,12 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.31",
+                    "version": "1.34",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-environment.php",
-                        "../../../../admin-environment.js"
+                        "..\/..\/..\/..\/admin-environment.php",
+                        "..\/..\/..\/..\/admin-environment.js"
                     ],
                     "tailwind_sources_reason": "The controller and client render profile badges, results and configuration controls.",
                     "tailwind_dependencies": [
@@ -286,21 +287,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "3ae3911aff7caa3ef09bdca1081c770d",
-                        "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
+                        "html": "71fb2d620d9ce15280035018562ebe8b",
+                        "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
                         "css_precompiled": "",
-                        "combined": "30341bf7fe846169cad1063e274dadda"
-                    }
+                        "combined": "b02a6772255ae2bcc13d05b1106110b4"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [],
@@ -513,5 +515,5 @@
             ]
         }
     },
-    "asset_version": "7fd4e69bd53dd3e6"
+    "asset_version": "dcf2077410f2c3df"
 }

@@ -73,18 +73,31 @@ if (PHP_SAPI === 'cli' && realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE
     $core = $argv[2] ?? dirname(__DIR__, 2);
     $site = $argv[1] ?? dirname($core) . '/conn2flow-site';
     $rows = array_merge(Req225Inventory::scan($core, 'core'), Req225Inventory::scan($site, 'site'));
+    $runtimeFile = $argv[3] ?? null;
+    if ($runtimeFile !== null) {
+        $runtime = json_decode((string)file_get_contents($runtimeFile), true, 512, JSON_THROW_ON_ERROR);
+        foreach ($rows as &$row) {
+            foreach ($runtime['pages'] ?? [] as $page) {
+                if ([$page['project'], $page['id'], $page['language']] !== [$row['project'], $row['id'], $row['language']]) continue;
+                $row['runtime'] = $page['runtime'];
+                if (isset($page['reason'])) $row['runtime_reason'] = $page['reason'];
+                break;
+            }
+        }
+        unset($row);
+    }
     $json = json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n";
-    $md = "# req-225 — Inventário preliminar de autoria\n\n";
+    $md = "# req-225 — Inventário de autoria e homologação\n\n";
     $md .= "Snapshot das árvores locais, incluindo alterações ainda sem commit. Uma linha por página/idioma. Não representa o SQL publicado.\n\n";
-    $md .= "Contagens de classes são indícios, não aprovação visual. Campos, selects, chaves, botões, dicas, diálogos e listagem gerados por PHP/JS ou componentes precisam de conferência no navegador. Todas as linhas têm runtime pendente.\n\n";
-    $md .= "Regenerar: `php sdd/validation/req225-inventory.php [raiz-do-site]`.\n\n";
+    $md .= "Contagens de classes são indícios, não aprovação visual. Runtime só é preenchido quando um relatório do navegador é fornecido. `excluded` identifica o piloto antigo `modulos-grupos-distribuido`, excluído por orientação humana em 2026-10-04.\n\n";
+    $md .= "Regenerar: `php sdd/validation/req225-inventory.php [raiz-do-site] [raiz-do-core] [relatorio-runtime.json]`.\n\n";
     $md .= "| Projeto | Página/idioma | Inputs/selects/textarea | Campo/chave | Botão/ação | Dicas/diálogos | Lista/bundle | Divergências estáticas | Runtime |\n|---|---|---|---|---|---|---|---|---|\n";
     foreach ($rows as $row) {
         $c = $row['counts'];
         $md .= '| ' . $row['project'] . ' | `' . $row['id'] . '/' . $row['language'] . '` | ' . $c['input'] . '/' . $c['select'] . '/' . $c['textarea'];
         $md .= ' | ' . $row['fields'] . '/' . $row['switches'] . ' | ' . $row['buttons'] . '/' . $row['actions'];
         $md .= ' | ' . $row['tips'] . '/' . $row['dialogs'] . ' | ' . (int)$row['list'] . '/' . (int)$row['bundle'];
-        $md .= ' | ' . count($row['violations']) . ' | pendente |' . "\n";
+        $md .= ' | ' . count($row['violations']) . ' | ' . $row['runtime'] . ' |' . "\n";
     }
     foreach (['req225-inventory.json' => $json, 'req225-inventory.md' => $md] as $file => $body) {
         if (file_put_contents(__DIR__ . '/' . $file, $body) === false) throw new RuntimeException('Cannot write ' . $file);

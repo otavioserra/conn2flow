@@ -7,10 +7,10 @@
         <h2 class="text-base font-semibold text-slate-800">Teste de Descoberta de Release</h2>
         <form class="space-y-3" method="post" action="?pagina=admin-plugins-teste">
             <label class="block space-y-1 text-sm font-medium text-slate-700">URL do Repositório GitHub<input
-                    class="block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="url"
+                    class="c2fc-campo-entrada block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="url"
                     name="teste_repo_url" placeholder="https://github.com/usuario/repo"
                     value="https://github.com/octocat/Hello-World" required></label>
-            <button class="rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" type="submit"
+            <button class="c2fc-botao c2fc-botao-primario rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" type="submit"
                 name="acao" value="testar_descoberta">Testar Descoberta</button>
         </form>
         #resultado_descoberta#
@@ -19,13 +19,13 @@
         <h2 class="text-base font-semibold text-slate-800">Teste de Download de Release</h2>
         <form class="space-y-3" method="post" action="?pagina=admin-plugins-teste">
             <label class="block space-y-1 text-sm font-medium text-slate-700">URL do ZIP para Download<input
-                    class="block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="url"
+                    class="c2fc-campo-entrada block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="url"
                     name="teste_zip_url" placeholder="https://github.com/usuario/repo/releases/download/tag/plugin.zip"
                     required></label>
             <label class="block space-y-1 text-sm font-medium text-slate-700">Token de Autenticação (opcional)<input
-                    class="block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="password"
+                    class="c2fc-campo-entrada block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="password"
                     name="teste_token" placeholder="Token do GitHub (para repositórios privados)"></label>
-            <button class="rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" type="submit"
+            <button class="c2fc-botao c2fc-botao-primario rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" type="submit"
                 name="acao" value="testar_download">Testar Download</button>
         </form>
         #resultado_download#
@@ -34,10 +34,10 @@
         <h2 class="text-base font-semibold text-slate-800">Teste de Processamento de Origem</h2>
         <form class="space-y-3" method="post" action="?pagina=admin-plugins-teste">
             <label class="block space-y-1 text-sm font-medium text-slate-700">URL de Origem<input
-                    class="block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="url"
+                    class="c2fc-campo-entrada block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="url"
                     name="teste_origem_url" placeholder="URL direta ou URL do repositório"
                     value="https://github.com/octocat/Hello-World" required></label>
-            <button class="rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" type="submit"
+            <button class="c2fc-botao c2fc-botao-primario rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" type="submit"
                 name="acao" value="testar_processamento">Testar Processamento</button>
         </form>
         #resultado_processamento#

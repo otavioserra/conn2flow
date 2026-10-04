@@ -3119,6 +3119,9 @@ function gestor_roteador(){
 			$_GESTOR['pagina#titulo'] = $nome;
 			$_GESTOR['pagina#framework_css'] = $framework_css;
 			$_GESTOR['pagina#id'] = $id;
+			// O módulo precisa conhecer o layout antes de montar seus componentes e ativar o bundle.
+			// A seleção por perfil abaixo atualiza novamente esse identificador, quando aplicável.
+			$_GESTOR['layout#id'] = $paginas[0]['layout_id'];
 
 			// req-086: bundle canônico do Tailwind declarado por PROJETO.
 			//

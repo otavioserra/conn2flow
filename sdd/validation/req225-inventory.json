@@ -1,6 +1,422 @@
 [
     {
         "project": "core",
+        "module": "admin-arquivos",
+        "language": "en",
+        "id": "admin-arquivos",
+        "path": "admin-arquivos/",
+        "source": "gestor/modulos/admin-arquivos/resources/en/pages/admin-arquivos/admin-arquivos.html",
+        "option": "listar-arquivos",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 10,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 20,
+        "actions": 0,
+        "tips": 4,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-arquivos",
+        "language": "pt-br",
+        "id": "admin-arquivos",
+        "path": "admin-arquivos/",
+        "source": "gestor/modulos/admin-arquivos/resources/pt-br/pages/admin-arquivos/admin-arquivos.html",
+        "option": "listar-arquivos",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 10,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 20,
+        "actions": 0,
+        "tips": 4,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-arquivos",
+        "language": "en",
+        "id": "admin-arquivos-adicionar",
+        "path": "admin-arquivos/adicionar/",
+        "source": "gestor/modulos/admin-arquivos/resources/en/pages/admin-arquivos-adicionar/admin-arquivos-adicionar.html",
+        "option": "upload",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 0,
+            "button": 10,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 20,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-arquivos",
+        "language": "pt-br",
+        "id": "admin-arquivos-adicionar",
+        "path": "admin-arquivos/adicionar/",
+        "source": "gestor/modulos/admin-arquivos/resources/pt-br/pages/admin-arquivos-adicionar/admin-arquivos-adicionar.html",
+        "option": "upload",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 0,
+            "button": 10,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 20,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-atualizacoes",
+        "language": "en",
+        "id": "admin-atualizacoes",
+        "path": "admin-atualizacoes/",
+        "source": "gestor/modulos/admin-atualizacoes/resources/en/pages/admin-atualizacoes/admin-atualizacoes.html",
+        "option": "listar-atualizacoes",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-atualizacoes",
+        "language": "pt-br",
+        "id": "admin-atualizacoes",
+        "path": "admin-atualizacoes/",
+        "source": "gestor/modulos/admin-atualizacoes/resources/pt-br/pages/admin-atualizacoes/admin-atualizacoes.html",
+        "option": "listar-atualizacoes",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-atualizacoes",
+        "language": "en",
+        "id": "admin-atualizacoes-detalhe",
+        "path": "admin-atualizacoes/detalhe/",
+        "source": "gestor/modulos/admin-atualizacoes/resources/en/pages/admin-atualizacoes-detalhe/admin-atualizacoes-detalhe.html",
+        "option": "detalhe-atualizacao",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-atualizacoes",
+        "language": "pt-br",
+        "id": "admin-atualizacoes-detalhe",
+        "path": "admin-atualizacoes/detalhe/",
+        "source": "gestor/modulos/admin-atualizacoes/resources/pt-br/pages/admin-atualizacoes-detalhe/admin-atualizacoes-detalhe.html",
+        "option": "detalhe-atualizacao",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-categorias",
+        "language": "en",
+        "id": "admin-categorias",
+        "path": "admin-categorias/",
+        "source": "gestor/modulos/admin-categorias/resources/en/pages/admin-categorias/admin-categorias.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-categorias",
+        "language": "pt-br",
+        "id": "admin-categorias",
+        "path": "admin-categorias/",
+        "source": "gestor/modulos/admin-categorias/resources/pt-br/pages/admin-categorias/admin-categorias.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-categorias",
+        "language": "en",
+        "id": "admin-categorias-adicionar",
+        "path": "admin-categorias/adicionar/",
+        "source": "gestor/modulos/admin-categorias/resources/en/pages/admin-categorias-adicionar/admin-categorias-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-categorias",
+        "language": "pt-br",
+        "id": "admin-categorias-adicionar",
+        "path": "admin-categorias/adicionar/",
+        "source": "gestor/modulos/admin-categorias/resources/pt-br/pages/admin-categorias-adicionar/admin-categorias-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-categorias",
+        "language": "en",
+        "id": "admin-categorias-adicionar-filho",
+        "path": "admin-categorias/adicionar-filho/",
+        "source": "gestor/modulos/admin-categorias/resources/en/pages/admin-categorias-adicionar-filho/admin-categorias-adicionar-filho.html",
+        "option": "adicionar-filho",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-categorias",
+        "language": "pt-br",
+        "id": "admin-categorias-adicionar-filho",
+        "path": "admin-categorias/adicionar-filho/",
+        "source": "gestor/modulos/admin-categorias/resources/pt-br/pages/admin-categorias-adicionar-filho/admin-categorias-adicionar-filho.html",
+        "option": "adicionar-filho",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-categorias",
+        "language": "en",
+        "id": "admin-categorias-editar",
+        "path": "admin-categorias/editar/",
+        "source": "gestor/modulos/admin-categorias/resources/en/pages/admin-categorias-editar/admin-categorias-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-categorias",
+        "language": "pt-br",
+        "id": "admin-categorias-editar",
+        "path": "admin-categorias/editar/",
+        "source": "gestor/modulos/admin-categorias/resources/pt-br/pages/admin-categorias-editar/admin-categorias-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
         "module": "admin-componentes",
         "language": "en",
         "id": "admin-componentes",
@@ -23,7 +439,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -49,7 +465,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -75,7 +491,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -101,7 +517,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -127,7 +543,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -153,7 +569,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -179,7 +595,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -205,7 +621,215 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-environment",
+        "language": "en",
+        "id": "admin-environment",
+        "path": "admin-environment/",
+        "source": "gestor/modulos/admin-environment/resources/en/pages/admin-environment/admin-environment.html",
+        "option": "raiz",
+        "generated": false,
+        "counts": {
+            "input": 49,
+            "select": 5,
+            "button": 14,
+            "textarea": 1
+        },
+        "fields": 97,
+        "switches": 63,
+        "buttons": 14,
+        "actions": 0,
+        "tips": 6,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-environment",
+        "language": "pt-br",
+        "id": "admin-environment",
+        "path": "admin-environment/",
+        "source": "gestor/modulos/admin-environment/resources/pt-br/pages/admin-environment/admin-environment.html",
+        "option": "raiz",
+        "generated": false,
+        "counts": {
+            "input": 49,
+            "select": 7,
+            "button": 14,
+            "textarea": 1
+        },
+        "fields": 103,
+        "switches": 63,
+        "buttons": 14,
+        "actions": 0,
+        "tips": 6,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-ia",
+        "language": "en",
+        "id": "admin-ia-adicionar",
+        "path": "admin-ia/adicionar/",
+        "source": "gestor/modulos/admin-ia/resources/en/pages/admin-ia-adicionar/admin-ia-adicionar.html",
+        "option": "adicionar-servidor",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 1,
+            "button": 1,
+            "textarea": 0
+        },
+        "fields": 9,
+        "switches": 6,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-ia",
+        "language": "pt-br",
+        "id": "admin-ia-adicionar",
+        "path": "admin-ia/adicionar/",
+        "source": "gestor/modulos/admin-ia/resources/pt-br/pages/admin-ia-adicionar/admin-ia-adicionar.html",
+        "option": "adicionar-servidor",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 1,
+            "button": 1,
+            "textarea": 0
+        },
+        "fields": 9,
+        "switches": 6,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-ia",
+        "language": "en",
+        "id": "admin-ia-editar",
+        "path": "admin-ia/editar/",
+        "source": "gestor/modulos/admin-ia/resources/en/pages/admin-ia-editar/admin-ia-editar.html",
+        "option": "editar-servidor",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 1,
+            "button": 5,
+            "textarea": 0
+        },
+        "fields": 9,
+        "switches": 6,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-ia",
+        "language": "pt-br",
+        "id": "admin-ia-editar",
+        "path": "admin-ia/editar/",
+        "source": "gestor/modulos/admin-ia/resources/pt-br/pages/admin-ia-editar/admin-ia-editar.html",
+        "option": "editar-servidor",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 1,
+            "button": 5,
+            "textarea": 0
+        },
+        "fields": 9,
+        "switches": 6,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-ia",
+        "language": "en",
+        "id": "admin-ia-listar",
+        "path": "admin-ia/listar/",
+        "source": "gestor/modulos/admin-ia/resources/en/pages/admin-ia-listar/admin-ia-listar.html",
+        "option": "listar-servidores",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 2,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 6,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-ia",
+        "language": "pt-br",
+        "id": "admin-ia-listar",
+        "path": "admin-ia/listar/",
+        "source": "gestor/modulos/admin-ia/resources/pt-br/pages/admin-ia-listar/admin-ia-listar.html",
+        "option": "listar-servidores",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 2,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 6,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -231,7 +855,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -257,7 +881,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -283,7 +907,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -309,7 +933,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -335,7 +959,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -361,7 +985,163 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-modos-ia",
+        "language": "en",
+        "id": "admin-modos-ia-adicionar",
+        "path": "admin-modos-ia/adicionar/",
+        "source": "gestor/modulos/admin-modos-ia/resources/en/pages/admin-modos-ia-adicionar/admin-modos-ia-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 8,
+        "switches": 3,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-modos-ia",
+        "language": "pt-br",
+        "id": "admin-modos-ia-adicionar",
+        "path": "admin-modos-ia/adicionar/",
+        "source": "gestor/modulos/admin-modos-ia/resources/pt-br/pages/admin-modos-ia-adicionar/admin-modos-ia-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 8,
+        "switches": 3,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-modos-ia",
+        "language": "en",
+        "id": "admin-modos-ia-editar",
+        "path": "admin-modos-ia/editar/",
+        "source": "gestor/modulos/admin-modos-ia/resources/en/pages/admin-modos-ia-editar/admin-modos-ia-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 8,
+        "switches": 3,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-modos-ia",
+        "language": "pt-br",
+        "id": "admin-modos-ia-editar",
+        "path": "admin-modos-ia/editar/",
+        "source": "gestor/modulos/admin-modos-ia/resources/pt-br/pages/admin-modos-ia-editar/admin-modos-ia-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 8,
+        "switches": 3,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-modos-ia",
+        "language": "en",
+        "id": "admin-modos-ia-listar",
+        "path": "admin-modos-ia/",
+        "source": "gestor/modulos/admin-modos-ia/resources/en/pages/admin-modos-ia-listar/admin-modos-ia-listar.html",
+        "option": "listar",
+        "generated": true,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-modos-ia",
+        "language": "pt-br",
+        "id": "admin-modos-ia-listar",
+        "path": "admin-modos-ia/",
+        "source": "gestor/modulos/admin-modos-ia/resources/pt-br/pages/admin-modos-ia-listar/admin-modos-ia-listar.html",
+        "option": "listar",
+        "generated": true,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -387,7 +1167,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -413,7 +1193,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -439,7 +1219,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -465,7 +1245,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -491,7 +1271,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -517,7 +1297,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -543,7 +1323,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -569,7 +1349,423 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "en",
+        "id": "admin-plugins",
+        "path": "admin-plugins/",
+        "source": "gestor/modulos/admin-plugins/resources/en/pages/admin-plugins/admin-plugins.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "pt-br",
+        "id": "admin-plugins",
+        "path": "admin-plugins/",
+        "source": "gestor/modulos/admin-plugins/resources/pt-br/pages/admin-plugins/admin-plugins.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "en",
+        "id": "admin-plugins-adicionar",
+        "path": "admin-plugins/adicionar/",
+        "source": "gestor/modulos/admin-plugins/resources/en/pages/admin-plugins-adicionar/admin-plugins-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 6,
+            "select": 0,
+            "button": 3,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "pt-br",
+        "id": "admin-plugins-adicionar",
+        "path": "admin-plugins/adicionar/",
+        "source": "gestor/modulos/admin-plugins/resources/pt-br/pages/admin-plugins-adicionar/admin-plugins-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 6,
+            "select": 0,
+            "button": 3,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "en",
+        "id": "admin-plugins-editar",
+        "path": "admin-plugins/editar/",
+        "source": "gestor/modulos/admin-plugins/resources/en/pages/admin-plugins-editar/admin-plugins-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 6,
+            "select": 0,
+            "button": 3,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "pt-br",
+        "id": "admin-plugins-editar",
+        "path": "admin-plugins/editar/",
+        "source": "gestor/modulos/admin-plugins/resources/pt-br/pages/admin-plugins-editar/admin-plugins-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 6,
+            "select": 0,
+            "button": 3,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "en",
+        "id": "admin-plugins-executar",
+        "path": "admin-plugins/executar/",
+        "source": "gestor/modulos/admin-plugins/resources/en/pages/admin-plugins-executar/admin-plugins-executar.html",
+        "option": "executar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "pt-br",
+        "id": "admin-plugins-executar",
+        "path": "admin-plugins/executar/",
+        "source": "gestor/modulos/admin-plugins/resources/pt-br/pages/admin-plugins-executar/admin-plugins-executar.html",
+        "option": "executar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "en",
+        "id": "admin-plugins-teste",
+        "path": "admin-plugins/teste/",
+        "source": "gestor/modulos/admin-plugins/resources/en/pages/admin-plugins-teste/admin-plugins-teste.html",
+        "option": "teste",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 3,
+            "textarea": 0
+        },
+        "fields": 4,
+        "switches": 0,
+        "buttons": 6,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-plugins",
+        "language": "pt-br",
+        "id": "admin-plugins-teste",
+        "path": "admin-plugins/teste/",
+        "source": "gestor/modulos/admin-plugins/resources/pt-br/pages/admin-plugins-teste/admin-plugins-teste.html",
+        "option": "teste",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 3,
+            "textarea": 0
+        },
+        "fields": 4,
+        "switches": 0,
+        "buttons": 6,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-prompts-ia",
+        "language": "en",
+        "id": "admin-prompts-ia-adicionar",
+        "path": "admin-prompts-ia/adicionar/",
+        "source": "gestor/modulos/admin-prompts-ia/resources/en/pages/admin-prompts-ia-adicionar/admin-prompts-ia-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 8,
+        "switches": 3,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-prompts-ia",
+        "language": "pt-br",
+        "id": "admin-prompts-ia-adicionar",
+        "path": "admin-prompts-ia/adicionar/",
+        "source": "gestor/modulos/admin-prompts-ia/resources/pt-br/pages/admin-prompts-ia-adicionar/admin-prompts-ia-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 8,
+        "switches": 3,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-prompts-ia",
+        "language": "en",
+        "id": "admin-prompts-ia-editar",
+        "path": "admin-prompts-ia/editar/",
+        "source": "gestor/modulos/admin-prompts-ia/resources/en/pages/admin-prompts-ia-editar/admin-prompts-ia-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 8,
+        "switches": 3,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-prompts-ia",
+        "language": "pt-br",
+        "id": "admin-prompts-ia-editar",
+        "path": "admin-prompts-ia/editar/",
+        "source": "gestor/modulos/admin-prompts-ia/resources/pt-br/pages/admin-prompts-ia-editar/admin-prompts-ia-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 8,
+        "switches": 3,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-prompts-ia",
+        "language": "en",
+        "id": "admin-prompts-ia-listar",
+        "path": "admin-prompts-ia/",
+        "source": "gestor/modulos/admin-prompts-ia/resources/en/pages/admin-prompts-ia-listar/admin-prompts-ia-listar.html",
+        "option": "listar",
+        "generated": true,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "admin-prompts-ia",
+        "language": "pt-br",
+        "id": "admin-prompts-ia-listar",
+        "path": "admin-prompts-ia/",
+        "source": "gestor/modulos/admin-prompts-ia/resources/pt-br/pages/admin-prompts-ia-listar/admin-prompts-ia-listar.html",
+        "option": "listar",
+        "generated": true,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -595,7 +1791,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -621,7 +1817,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -647,7 +1843,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -673,7 +1869,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -699,7 +1895,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -725,7 +1921,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -751,7 +1947,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -777,7 +1973,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -803,7 +1999,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -829,7 +2025,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -855,7 +2051,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -881,7 +2077,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -907,7 +2103,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -933,7 +2129,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -959,7 +2155,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -985,7 +2181,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1011,7 +2207,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1037,7 +2233,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1063,7 +2259,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1089,7 +2285,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1115,7 +2311,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1141,7 +2337,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1167,7 +2363,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1193,7 +2389,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1219,7 +2415,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1245,7 +2441,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1271,7 +2467,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1297,7 +2493,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1323,7 +2519,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1349,7 +2545,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1375,7 +2571,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1401,7 +2597,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1427,7 +2623,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1453,7 +2649,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1479,7 +2675,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1505,7 +2701,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1531,7 +2727,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1557,7 +2753,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1583,7 +2779,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1609,7 +2805,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1635,7 +2831,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1661,7 +2857,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1687,7 +2883,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1713,7 +2909,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1739,7 +2935,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1765,7 +2961,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1791,7 +2987,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1817,7 +3013,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1843,7 +3039,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1869,7 +3065,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1895,7 +3091,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1921,7 +3117,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1938,7 +3134,7 @@
             "button": 5,
             "textarea": 1
         },
-        "fields": 48,
+        "fields": 49,
         "switches": 0,
         "buttons": 15,
         "actions": 0,
@@ -1947,7 +3143,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1964,7 +3160,7 @@
             "button": 5,
             "textarea": 1
         },
-        "fields": 48,
+        "fields": 49,
         "switches": 0,
         "buttons": 15,
         "actions": 0,
@@ -1973,7 +3169,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -1990,7 +3186,7 @@
             "button": 5,
             "textarea": 1
         },
-        "fields": 48,
+        "fields": 49,
         "switches": 0,
         "buttons": 13,
         "actions": 0,
@@ -1999,7 +3195,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2016,7 +3212,7 @@
             "button": 5,
             "textarea": 1
         },
-        "fields": 48,
+        "fields": 49,
         "switches": 0,
         "buttons": 13,
         "actions": 0,
@@ -2025,7 +3221,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2042,7 +3238,7 @@
             "button": 5,
             "textarea": 1
         },
-        "fields": 48,
+        "fields": 49,
         "switches": 0,
         "buttons": 15,
         "actions": 0,
@@ -2051,7 +3247,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2068,7 +3264,7 @@
             "button": 5,
             "textarea": 1
         },
-        "fields": 48,
+        "fields": 49,
         "switches": 0,
         "buttons": 15,
         "actions": 0,
@@ -2077,7 +3273,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2103,7 +3299,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2129,7 +3325,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2155,7 +3351,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2181,7 +3377,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2207,7 +3403,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2233,7 +3429,59 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "modulos",
+        "language": "en",
+        "id": "modulos-variaveis",
+        "path": "modulos/variaveis/",
+        "source": "gestor/modulos/modulos/resources/en/pages/modulos-variaveis/modulos-variaveis.html",
+        "option": "variaveis",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "modulos",
+        "language": "pt-br",
+        "id": "modulos-variaveis",
+        "path": "modulos/variaveis/",
+        "source": "gestor/modulos/modulos/resources/pt-br/pages/modulos-variaveis/modulos-variaveis.html",
+        "option": "variaveis",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2259,7 +3507,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2285,7 +3533,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2302,7 +3550,7 @@
             "button": 0,
             "textarea": 0
         },
-        "fields": 0,
+        "fields": 9,
         "switches": 0,
         "buttons": 0,
         "actions": 0,
@@ -2311,7 +3559,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2328,7 +3576,7 @@
             "button": 0,
             "textarea": 0
         },
-        "fields": 0,
+        "fields": 9,
         "switches": 0,
         "buttons": 0,
         "actions": 0,
@@ -2337,7 +3585,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2354,7 +3602,7 @@
             "button": 0,
             "textarea": 0
         },
-        "fields": 0,
+        "fields": 9,
         "switches": 0,
         "buttons": 0,
         "actions": 0,
@@ -2363,7 +3611,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2380,7 +3628,7 @@
             "button": 0,
             "textarea": 0
         },
-        "fields": 0,
+        "fields": 9,
         "switches": 0,
         "buttons": 0,
         "actions": 0,
@@ -2389,7 +3637,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2406,7 +3654,7 @@
             "button": 0,
             "textarea": 0
         },
-        "fields": 0,
+        "fields": 9,
         "switches": 0,
         "buttons": 0,
         "actions": 0,
@@ -2415,7 +3663,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2432,7 +3680,7 @@
             "button": 0,
             "textarea": 0
         },
-        "fields": 0,
+        "fields": 9,
         "switches": 0,
         "buttons": 0,
         "actions": 0,
@@ -2441,7 +3689,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2467,7 +3715,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2493,7 +3741,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2519,7 +3767,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2545,7 +3793,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2571,7 +3819,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2597,7 +3845,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2623,7 +3871,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2649,7 +3897,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2675,7 +3923,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2701,7 +3949,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2727,7 +3975,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2753,7 +4001,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2779,7 +4027,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2805,7 +4053,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2831,7 +4079,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2857,7 +4105,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2883,7 +4131,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2909,7 +4157,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2935,7 +4183,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2961,7 +4209,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -2987,7 +4235,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3013,7 +4261,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3039,7 +4287,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3065,7 +4313,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3091,7 +4339,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3117,7 +4365,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3143,7 +4391,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3169,7 +4417,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3195,7 +4443,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3221,7 +4469,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3247,7 +4495,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3273,7 +4521,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3299,7 +4547,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3325,7 +4573,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3351,7 +4599,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3377,7 +4625,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3403,7 +4651,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3429,7 +4677,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3455,7 +4703,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3481,7 +4729,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3507,7 +4755,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3533,7 +4781,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3559,7 +4807,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3585,7 +4833,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3611,7 +4859,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3637,7 +4885,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3663,7 +4911,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3689,7 +4937,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3715,7 +4963,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3741,7 +4989,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3767,7 +5015,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3793,7 +5041,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3819,7 +5067,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3845,7 +5093,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3871,7 +5119,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3897,7 +5145,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3923,7 +5171,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3949,7 +5197,7 @@
         "bundle": true,
         "list": true,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -3975,7 +5223,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -4001,7 +5249,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -4027,7 +5275,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "core",
@@ -4053,7 +5301,735 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "variables",
+        "language": "en",
+        "id": "variables",
+        "path": "variables/",
+        "source": "gestor/modulos/variables/resources/en/pages/variables/variables.html",
+        "option": "variables",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "core",
+        "module": "variables",
+        "language": "pt-br",
+        "id": "variables",
+        "path": "variables/",
+        "source": "gestor/modulos/variables/resources/pt-br/pages/variables/variables.html",
+        "option": "variables",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog",
+        "language": "en",
+        "id": "3d-catalog-adicionar",
+        "path": "3d-catalog/adicionar/",
+        "source": "gestor/modulos/3d-catalog/resources/en/pages/3d-catalog-adicionar/3d-catalog-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 6,
+            "select": 0,
+            "button": 2,
+            "textarea": 1
+        },
+        "fields": 10,
+        "switches": 0,
+        "buttons": 5,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog",
+        "language": "pt-br",
+        "id": "3d-catalog-adicionar",
+        "path": "3d-catalog/adicionar/",
+        "source": "gestor/modulos/3d-catalog/resources/pt-br/pages/3d-catalog-adicionar/3d-catalog-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 6,
+            "select": 0,
+            "button": 2,
+            "textarea": 1
+        },
+        "fields": 10,
+        "switches": 0,
+        "buttons": 5,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog",
+        "language": "en",
+        "id": "3d-catalog-clonar",
+        "path": "3d-catalog/clonar/",
+        "source": "gestor/modulos/3d-catalog/resources/en/pages/3d-catalog-clonar/3d-catalog-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 0,
+            "button": 3,
+            "textarea": 3
+        },
+        "fields": 12,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 6,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog",
+        "language": "pt-br",
+        "id": "3d-catalog-clonar",
+        "path": "3d-catalog/clonar/",
+        "source": "gestor/modulos/3d-catalog/resources/pt-br/pages/3d-catalog-clonar/3d-catalog-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 0,
+            "button": 3,
+            "textarea": 3
+        },
+        "fields": 12,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 6,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog",
+        "language": "en",
+        "id": "3d-catalog-editar",
+        "path": "3d-catalog/editar/",
+        "source": "gestor/modulos/3d-catalog/resources/en/pages/3d-catalog-editar/3d-catalog-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 8,
+            "select": 0,
+            "button": 3,
+            "textarea": 3
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 6,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog",
+        "language": "pt-br",
+        "id": "3d-catalog-editar",
+        "path": "3d-catalog/editar/",
+        "source": "gestor/modulos/3d-catalog/resources/pt-br/pages/3d-catalog-editar/3d-catalog-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 8,
+            "select": 0,
+            "button": 3,
+            "textarea": 3
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 6,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog",
+        "language": "en",
+        "id": "3d-catalog-list",
+        "path": "3d-catalog/",
+        "source": "gestor/modulos/3d-catalog/resources/en/pages/3d-catalog-list/3d-catalog-list.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog",
+        "language": "pt-br",
+        "id": "3d-catalog-list",
+        "path": "3d-catalog/",
+        "source": "gestor/modulos/3d-catalog/resources/pt-br/pages/3d-catalog-list/3d-catalog-list.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-groups",
+        "language": "en",
+        "id": "3d-catalog-groups-adicionar",
+        "path": "3d-catalog-groups/adicionar/",
+        "source": "gestor/modulos/3d-catalog-groups/resources/en/pages/3d-catalog-groups-adicionar/3d-catalog-groups-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 0,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 3,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-groups",
+        "language": "pt-br",
+        "id": "3d-catalog-groups-adicionar",
+        "path": "3d-catalog-groups/adicionar/",
+        "source": "gestor/modulos/3d-catalog-groups/resources/pt-br/pages/3d-catalog-groups-adicionar/3d-catalog-groups-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 0,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 3,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-groups",
+        "language": "en",
+        "id": "3d-catalog-groups-clonar",
+        "path": "3d-catalog-groups/clonar/",
+        "source": "gestor/modulos/3d-catalog-groups/resources/en/pages/3d-catalog-groups-clonar/3d-catalog-groups-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 0,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 3,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-groups",
+        "language": "pt-br",
+        "id": "3d-catalog-groups-clonar",
+        "path": "3d-catalog-groups/clonar/",
+        "source": "gestor/modulos/3d-catalog-groups/resources/pt-br/pages/3d-catalog-groups-clonar/3d-catalog-groups-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 0,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 3,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-groups",
+        "language": "en",
+        "id": "3d-catalog-groups-editar",
+        "path": "3d-catalog-groups/editar/",
+        "source": "gestor/modulos/3d-catalog-groups/resources/en/pages/3d-catalog-groups-editar/3d-catalog-groups-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 0,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 3,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-groups",
+        "language": "pt-br",
+        "id": "3d-catalog-groups-editar",
+        "path": "3d-catalog-groups/editar/",
+        "source": "gestor/modulos/3d-catalog-groups/resources/pt-br/pages/3d-catalog-groups-editar/3d-catalog-groups-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 0,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 3,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-groups",
+        "language": "en",
+        "id": "3d-catalog-groups-list",
+        "path": "3d-catalog-groups/",
+        "source": "gestor/modulos/3d-catalog-groups/resources/en/pages/3d-catalog-groups-list/3d-catalog-groups-list.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-groups",
+        "language": "pt-br",
+        "id": "3d-catalog-groups-list",
+        "path": "3d-catalog-groups/",
+        "source": "gestor/modulos/3d-catalog-groups/resources/pt-br/pages/3d-catalog-groups-list/3d-catalog-groups-list.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-items",
+        "language": "en",
+        "id": "3d-catalog-items-adicionar",
+        "path": "3d-catalog-items/adicionar/",
+        "source": "gestor/modulos/3d-catalog-items/resources/en/pages/3d-catalog-items-adicionar/3d-catalog-items-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 3,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 36,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-items",
+        "language": "pt-br",
+        "id": "3d-catalog-items-adicionar",
+        "path": "3d-catalog-items/adicionar/",
+        "source": "gestor/modulos/3d-catalog-items/resources/pt-br/pages/3d-catalog-items-adicionar/3d-catalog-items-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 3,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 36,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-items",
+        "language": "en",
+        "id": "3d-catalog-items-clonar",
+        "path": "3d-catalog-items/clonar/",
+        "source": "gestor/modulos/3d-catalog-items/resources/en/pages/3d-catalog-items-clonar/3d-catalog-items-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 3,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 36,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-items",
+        "language": "pt-br",
+        "id": "3d-catalog-items-clonar",
+        "path": "3d-catalog-items/clonar/",
+        "source": "gestor/modulos/3d-catalog-items/resources/pt-br/pages/3d-catalog-items-clonar/3d-catalog-items-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 3,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 36,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-items",
+        "language": "en",
+        "id": "3d-catalog-items-editar",
+        "path": "3d-catalog-items/editar/",
+        "source": "gestor/modulos/3d-catalog-items/resources/en/pages/3d-catalog-items-editar/3d-catalog-items-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 3,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 36,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-items",
+        "language": "pt-br",
+        "id": "3d-catalog-items-editar",
+        "path": "3d-catalog-items/editar/",
+        "source": "gestor/modulos/3d-catalog-items/resources/pt-br/pages/3d-catalog-items-editar/3d-catalog-items-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 3,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 36,
+        "switches": 0,
+        "buttons": 9,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-items",
+        "language": "en",
+        "id": "3d-catalog-items-list",
+        "path": "3d-catalog-items/",
+        "source": "gestor/modulos/3d-catalog-items/resources/en/pages/3d-catalog-items-list/3d-catalog-items-list.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "3d-catalog-items",
+        "language": "pt-br",
+        "id": "3d-catalog-items-list",
+        "path": "3d-catalog-items/",
+        "source": "gestor/modulos/3d-catalog-items/resources/pt-br/pages/3d-catalog-items-list/3d-catalog-items-list.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "affiliates",
+        "language": "en",
+        "id": "affiliates",
+        "path": "affiliates/",
+        "source": "gestor/modulos/affiliates/resources/en/pages/affiliates/affiliates.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "affiliates",
+        "language": "pt-br",
+        "id": "affiliates",
+        "path": "affiliates/",
+        "source": "gestor/modulos/affiliates/resources/pt-br/pages/affiliates/affiliates.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4079,7 +6055,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4105,7 +6081,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4131,7 +6107,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4157,7 +6133,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4183,7 +6159,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4209,7 +6185,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4235,7 +6211,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4261,7 +6237,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4278,7 +6254,7 @@
             "button": 1,
             "textarea": 0
         },
-        "fields": 28,
+        "fields": 31,
         "switches": 27,
         "buttons": 3,
         "actions": 0,
@@ -4287,7 +6263,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4304,7 +6280,7 @@
             "button": 1,
             "textarea": 0
         },
-        "fields": 28,
+        "fields": 31,
         "switches": 27,
         "buttons": 3,
         "actions": 0,
@@ -4313,7 +6289,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4339,7 +6315,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4365,7 +6341,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4382,7 +6358,7 @@
             "button": 19,
             "textarea": 0
         },
-        "fields": 25,
+        "fields": 27,
         "switches": 2,
         "buttons": 23,
         "actions": 0,
@@ -4391,7 +6367,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4408,7 +6384,7 @@
             "button": 19,
             "textarea": 0
         },
-        "fields": 25,
+        "fields": 27,
         "switches": 2,
         "buttons": 23,
         "actions": 0,
@@ -4417,7 +6393,59 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "coupons",
+        "language": "en",
+        "id": "coupons",
+        "path": "coupons/",
+        "source": "gestor/modulos/coupons/resources/en/pages/coupons/coupons.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "coupons",
+        "language": "pt-br",
+        "id": "coupons",
+        "path": "coupons/",
+        "source": "gestor/modulos/coupons/resources/pt-br/pages/coupons/coupons.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4434,7 +6462,7 @@
             "button": 0,
             "textarea": 1
         },
-        "fields": 54,
+        "fields": 56,
         "switches": 3,
         "buttons": 0,
         "actions": 0,
@@ -4443,7 +6471,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4460,7 +6488,7 @@
             "button": 0,
             "textarea": 1
         },
-        "fields": 54,
+        "fields": 56,
         "switches": 3,
         "buttons": 0,
         "actions": 0,
@@ -4469,7 +6497,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4486,7 +6514,7 @@
             "button": 0,
             "textarea": 1
         },
-        "fields": 54,
+        "fields": 56,
         "switches": 3,
         "buttons": 0,
         "actions": 0,
@@ -4495,7 +6523,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4512,7 +6540,7 @@
             "button": 0,
             "textarea": 1
         },
-        "fields": 54,
+        "fields": 56,
         "switches": 3,
         "buttons": 0,
         "actions": 0,
@@ -4521,7 +6549,899 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "documentation",
+        "language": "en",
+        "id": "documentation",
+        "path": "documentation/",
+        "source": "gestor/modulos/documentation/resources/en/pages/documentation/documentation.html",
+        "option": "status",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "documentation",
+        "language": "pt-br",
+        "id": "documentation",
+        "path": "documentation/",
+        "source": "gestor/modulos/documentation/resources/pt-br/pages/documentation/documentation.html",
+        "option": "status",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "gateways-pagamentos",
+        "language": "en",
+        "id": "gateways-pagamentos",
+        "path": "gateways-pagamentos/",
+        "source": "gestor/modulos/gateways-pagamentos/resources/en/pages/gateways-pagamentos/gateways-pagamentos.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "gateways-pagamentos",
+        "language": "pt-br",
+        "id": "gateways-pagamentos",
+        "path": "gateways-pagamentos/",
+        "source": "gestor/modulos/gateways-pagamentos/resources/pt-br/pages/gateways-pagamentos/gateways-pagamentos.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "gateways-pagamentos",
+        "language": "en",
+        "id": "gateways-pagamentos-adicionar",
+        "path": "gateways-pagamentos/adicionar/",
+        "source": "gestor/modulos/gateways-pagamentos/resources/en/pages/gateways-pagamentos-adicionar/gateways-pagamentos-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 0,
+            "button": 2,
+            "textarea": 1
+        },
+        "fields": 26,
+        "switches": 3,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "gateways-pagamentos",
+        "language": "pt-br",
+        "id": "gateways-pagamentos-adicionar",
+        "path": "gateways-pagamentos/adicionar/",
+        "source": "gestor/modulos/gateways-pagamentos/resources/pt-br/pages/gateways-pagamentos-adicionar/gateways-pagamentos-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 0,
+            "button": 2,
+            "textarea": 1
+        },
+        "fields": 26,
+        "switches": 3,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "gateways-pagamentos",
+        "language": "en",
+        "id": "gateways-pagamentos-editar",
+        "path": "gateways-pagamentos/editar/",
+        "source": "gestor/modulos/gateways-pagamentos/resources/en/pages/gateways-pagamentos-editar/gateways-pagamentos-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 0,
+            "button": 2,
+            "textarea": 1
+        },
+        "fields": 27,
+        "switches": 3,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "gateways-pagamentos",
+        "language": "pt-br",
+        "id": "gateways-pagamentos-editar",
+        "path": "gateways-pagamentos/editar/",
+        "source": "gestor/modulos/gateways-pagamentos/resources/pt-br/pages/gateways-pagamentos-editar/gateways-pagamentos-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 0,
+            "button": 2,
+            "textarea": 1
+        },
+        "fields": 27,
+        "switches": 3,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "en",
+        "id": "host-manager-admin",
+        "path": "host-manager/",
+        "source": "gestor/modulos/host-manager/resources/en/pages/host-manager-admin/host-manager-admin.html",
+        "option": "admin",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 5,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 20,
+        "actions": 0,
+        "tips": 4,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "pt-br",
+        "id": "host-manager-admin",
+        "path": "host-manager/",
+        "source": "gestor/modulos/host-manager/resources/pt-br/pages/host-manager-admin/host-manager-admin.html",
+        "option": "admin",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 5,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 20,
+        "actions": 0,
+        "tips": 4,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "en",
+        "id": "host-manager-admin-cpanel",
+        "path": "host-manager/hestiacp/",
+        "source": "gestor/modulos/host-manager/resources/en/pages/host-manager-admin-cpanel/host-manager-admin-cpanel.html",
+        "option": "admin-cpanel",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 5,
+            "button": 12,
+            "textarea": 0
+        },
+        "fields": 43,
+        "switches": 0,
+        "buttons": 21,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "pt-br",
+        "id": "host-manager-admin-cpanel",
+        "path": "host-manager/hestiacp/",
+        "source": "gestor/modulos/host-manager/resources/pt-br/pages/host-manager-admin-cpanel/host-manager-admin-cpanel.html",
+        "option": "admin-cpanel",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 5,
+            "button": 12,
+            "textarea": 0
+        },
+        "fields": 43,
+        "switches": 0,
+        "buttons": 21,
+        "actions": 0,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "en",
+        "id": "host-manager-admin-distribuido",
+        "path": "host-manager/distribuido/",
+        "source": "gestor/modulos/host-manager/resources/en/pages/host-manager-admin-distribuido/host-manager-admin-distribuido.html",
+        "option": "admin-distribuido",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 0,
+            "button": 6,
+            "textarea": 1
+        },
+        "fields": 15,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "pt-br",
+        "id": "host-manager-admin-distribuido",
+        "path": "host-manager/distribuido/",
+        "source": "gestor/modulos/host-manager/resources/pt-br/pages/host-manager-admin-distribuido/host-manager-admin-distribuido.html",
+        "option": "admin-distribuido",
+        "generated": false,
+        "counts": {
+            "input": 5,
+            "select": 0,
+            "button": 6,
+            "textarea": 1
+        },
+        "fields": 15,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "en",
+        "id": "host-manager-admin-logs",
+        "path": "host-manager/logs/",
+        "source": "gestor/modulos/host-manager/resources/en/pages/host-manager-admin-logs/host-manager-admin-logs.html",
+        "option": "admin-logs",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 6,
+            "button": 12,
+            "textarea": 2
+        },
+        "fields": 29,
+        "switches": 0,
+        "buttons": 19,
+        "actions": 1,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "pt-br",
+        "id": "host-manager-admin-logs",
+        "path": "host-manager/logs/",
+        "source": "gestor/modulos/host-manager/resources/pt-br/pages/host-manager-admin-logs/host-manager-admin-logs.html",
+        "option": "admin-logs",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 6,
+            "button": 12,
+            "textarea": 2
+        },
+        "fields": 29,
+        "switches": 0,
+        "buttons": 19,
+        "actions": 1,
+        "tips": 2,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "en",
+        "id": "host-manager-admin-planos",
+        "path": "host-manager/planos/",
+        "source": "gestor/modulos/host-manager/resources/en/pages/host-manager-admin-planos/host-manager-admin-planos.html",
+        "option": "admin-planos",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 10,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 20,
+        "actions": 2,
+        "tips": 4,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "pt-br",
+        "id": "host-manager-admin-planos",
+        "path": "host-manager/planos/",
+        "source": "gestor/modulos/host-manager/resources/pt-br/pages/host-manager-admin-planos/host-manager-admin-planos.html",
+        "option": "admin-planos",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 10,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 20,
+        "actions": 2,
+        "tips": 4,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "en",
+        "id": "host-manager-admin-updates",
+        "path": "host-manager/updates/",
+        "source": "gestor/modulos/host-manager/resources/en/pages/host-manager-admin-updates/host-manager-admin-updates.html",
+        "option": "admin-updates",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 2,
+            "button": 8,
+            "textarea": 0
+        },
+        "fields": 16,
+        "switches": 0,
+        "buttons": 11,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "pt-br",
+        "id": "host-manager-admin-updates",
+        "path": "host-manager/updates/",
+        "source": "gestor/modulos/host-manager/resources/pt-br/pages/host-manager-admin-updates/host-manager-admin-updates.html",
+        "option": "admin-updates",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 2,
+            "button": 8,
+            "textarea": 0
+        },
+        "fields": 16,
+        "switches": 0,
+        "buttons": 11,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "en",
+        "id": "host-manager-admin-usuarios",
+        "path": "host-manager/usuarios/",
+        "source": "gestor/modulos/host-manager/resources/en/pages/host-manager-admin-usuarios/host-manager-admin-usuarios.html",
+        "option": "admin-usuarios",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 5,
+            "button": 20,
+            "textarea": 1
+        },
+        "fields": 35,
+        "switches": 0,
+        "buttons": 19,
+        "actions": 8,
+        "tips": 16,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "host-manager",
+        "language": "pt-br",
+        "id": "host-manager-admin-usuarios",
+        "path": "host-manager/usuarios/",
+        "source": "gestor/modulos/host-manager/resources/pt-br/pages/host-manager-admin-usuarios/host-manager-admin-usuarios.html",
+        "option": "admin-usuarios",
+        "generated": false,
+        "counts": {
+            "input": 7,
+            "select": 5,
+            "button": 20,
+            "textarea": 1
+        },
+        "fields": 35,
+        "switches": 0,
+        "buttons": 19,
+        "actions": 8,
+        "tips": 16,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "marketplace-admin",
+        "language": "en",
+        "id": "marketplace-admin",
+        "path": "marketplace-admin/",
+        "source": "gestor/modulos/marketplace-admin/resources/en/pages/marketplace-admin/marketplace-admin.html",
+        "option": "painel",
+        "generated": false,
+        "counts": {
+            "input": 10,
+            "select": 4,
+            "button": 1,
+            "textarea": 2
+        },
+        "fields": 39,
+        "switches": 6,
+        "buttons": 3,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "marketplace-admin",
+        "language": "pt-br",
+        "id": "marketplace-admin",
+        "path": "marketplace-admin/",
+        "source": "gestor/modulos/marketplace-admin/resources/pt-br/pages/marketplace-admin/marketplace-admin.html",
+        "option": "painel",
+        "generated": false,
+        "counts": {
+            "input": 10,
+            "select": 4,
+            "button": 1,
+            "textarea": 2
+        },
+        "fields": 39,
+        "switches": 6,
+        "buttons": 3,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "modulos-grupos-distribuido",
+        "language": "en",
+        "id": "modulos-grupos-distribuido",
+        "path": "modulos-grupos-distribuido/",
+        "source": "gestor/modulos/modulos-grupos-distribuido/resources/en/pages/modulos-grupos-distribuido/modulos-grupos-distribuido.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "excluded",
+        "runtime_reason": "Piloto antigo excluído da homologação por orientação humana em 2026-10-04."
+    },
+    {
+        "project": "site",
+        "module": "modulos-grupos-distribuido",
+        "language": "pt-br",
+        "id": "modulos-grupos-distribuido",
+        "path": "modulos-grupos-distribuido/",
+        "source": "gestor/modulos/modulos-grupos-distribuido/resources/pt-br/pages/modulos-grupos-distribuido/modulos-grupos-distribuido.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "excluded",
+        "runtime_reason": "Piloto antigo excluído da homologação por orientação humana em 2026-10-04."
+    },
+    {
+        "project": "site",
+        "module": "modulos-grupos-distribuido",
+        "language": "en",
+        "id": "modulos-grupos-distribuido-adicionar",
+        "path": "modulos-grupos-distribuido/adicionar/",
+        "source": "gestor/modulos/modulos-grupos-distribuido/resources/en/pages/modulos-grupos-distribuido-adicionar/modulos-grupos-distribuido-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 2,
+        "buttons": 1,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "excluded",
+        "runtime_reason": "Piloto antigo excluído da homologação por orientação humana em 2026-10-04."
+    },
+    {
+        "project": "site",
+        "module": "modulos-grupos-distribuido",
+        "language": "pt-br",
+        "id": "modulos-grupos-distribuido-adicionar",
+        "path": "modulos-grupos-distribuido/adicionar/",
+        "source": "gestor/modulos/modulos-grupos-distribuido/resources/pt-br/pages/modulos-grupos-distribuido-adicionar/modulos-grupos-distribuido-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 2,
+        "buttons": 1,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "excluded",
+        "runtime_reason": "Piloto antigo excluído da homologação por orientação humana em 2026-10-04."
+    },
+    {
+        "project": "site",
+        "module": "modulos-grupos-distribuido",
+        "language": "en",
+        "id": "modulos-grupos-distribuido-clonar",
+        "path": "modulos-grupos-distribuido/clonar/",
+        "source": "gestor/modulos/modulos-grupos-distribuido/resources/en/pages/modulos-grupos-distribuido-clonar/modulos-grupos-distribuido-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 2,
+        "buttons": 1,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "excluded",
+        "runtime_reason": "Piloto antigo excluído da homologação por orientação humana em 2026-10-04."
+    },
+    {
+        "project": "site",
+        "module": "modulos-grupos-distribuido",
+        "language": "pt-br",
+        "id": "modulos-grupos-distribuido-clonar",
+        "path": "modulos-grupos-distribuido/clonar/",
+        "source": "gestor/modulos/modulos-grupos-distribuido/resources/pt-br/pages/modulos-grupos-distribuido-clonar/modulos-grupos-distribuido-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 2,
+        "buttons": 1,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "excluded",
+        "runtime_reason": "Piloto antigo excluído da homologação por orientação humana em 2026-10-04."
+    },
+    {
+        "project": "site",
+        "module": "modulos-grupos-distribuido",
+        "language": "en",
+        "id": "modulos-grupos-distribuido-editar",
+        "path": "modulos-grupos-distribuido/editar/",
+        "source": "gestor/modulos/modulos-grupos-distribuido/resources/en/pages/modulos-grupos-distribuido-editar/modulos-grupos-distribuido-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 2,
+        "buttons": 1,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "excluded",
+        "runtime_reason": "Piloto antigo excluído da homologação por orientação humana em 2026-10-04."
+    },
+    {
+        "project": "site",
+        "module": "modulos-grupos-distribuido",
+        "language": "pt-br",
+        "id": "modulos-grupos-distribuido-editar",
+        "path": "modulos-grupos-distribuido/editar/",
+        "source": "gestor/modulos/modulos-grupos-distribuido/resources/pt-br/pages/modulos-grupos-distribuido-editar/modulos-grupos-distribuido-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 6,
+        "switches": 2,
+        "buttons": 1,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "excluded",
+        "runtime_reason": "Piloto antigo excluído da homologação por orientação humana em 2026-10-04."
+    },
+    {
+        "project": "site",
+        "module": "orders",
+        "language": "en",
+        "id": "orders",
+        "path": "orders/",
+        "source": "gestor/modulos/orders/resources/en/pages/orders/orders.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "orders",
+        "language": "pt-br",
+        "id": "orders",
+        "path": "orders/",
+        "source": "gestor/modulos/orders/resources/pt-br/pages/orders/orders.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4547,7 +7467,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4573,7 +7493,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4590,7 +7510,7 @@
             "button": 6,
             "textarea": 1
         },
-        "fields": 5,
+        "fields": 7,
         "switches": 0,
         "buttons": 10,
         "actions": 0,
@@ -4599,7 +7519,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4616,7 +7536,7 @@
             "button": 6,
             "textarea": 1
         },
-        "fields": 5,
+        "fields": 7,
         "switches": 0,
         "buttons": 10,
         "actions": 0,
@@ -4625,7 +7545,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4651,7 +7571,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4677,7 +7597,215 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "presentations",
+        "language": "en",
+        "id": "presentations",
+        "path": "presentations/",
+        "source": "gestor/modulos/presentations/resources/en/pages/presentations/presentations.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "presentations",
+        "language": "pt-br",
+        "id": "presentations",
+        "path": "presentations/",
+        "source": "gestor/modulos/presentations/resources/pt-br/pages/presentations/presentations.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "presentations",
+        "language": "en",
+        "id": "presentations-adicionar",
+        "path": "presentations/adicionar/",
+        "source": "gestor/modulos/presentations/resources/en/pages/presentations-adicionar/presentations-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 4,
+            "button": 5,
+            "textarea": 1
+        },
+        "fields": 25,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 1,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "presentations",
+        "language": "pt-br",
+        "id": "presentations-adicionar",
+        "path": "presentations/adicionar/",
+        "source": "gestor/modulos/presentations/resources/pt-br/pages/presentations-adicionar/presentations-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 4,
+            "button": 5,
+            "textarea": 1
+        },
+        "fields": 25,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 1,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "presentations",
+        "language": "en",
+        "id": "presentations-clonar",
+        "path": "presentations/clonar/",
+        "source": "gestor/modulos/presentations/resources/en/pages/presentations-clonar/presentations-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 4,
+            "button": 5,
+            "textarea": 1
+        },
+        "fields": 25,
+        "switches": 0,
+        "buttons": 6,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "presentations",
+        "language": "pt-br",
+        "id": "presentations-clonar",
+        "path": "presentations/clonar/",
+        "source": "gestor/modulos/presentations/resources/pt-br/pages/presentations-clonar/presentations-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 4,
+            "button": 5,
+            "textarea": 1
+        },
+        "fields": 25,
+        "switches": 0,
+        "buttons": 6,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "presentations",
+        "language": "en",
+        "id": "presentations-editar",
+        "path": "presentations/editar/",
+        "source": "gestor/modulos/presentations/resources/en/pages/presentations-editar/presentations-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 4,
+            "button": 5,
+            "textarea": 1
+        },
+        "fields": 25,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 1,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "presentations",
+        "language": "pt-br",
+        "id": "presentations-editar",
+        "path": "presentations/editar/",
+        "source": "gestor/modulos/presentations/resources/pt-br/pages/presentations-editar/presentations-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 4,
+            "button": 5,
+            "textarea": 1
+        },
+        "fields": 25,
+        "switches": 0,
+        "buttons": 8,
+        "actions": 0,
+        "tips": 1,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4703,7 +7831,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4729,7 +7857,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4755,7 +7883,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4781,7 +7909,59 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "product-types",
+        "language": "en",
+        "id": "product-types",
+        "path": "product-types/",
+        "source": "gestor/modulos/product-types/resources/en/pages/product-types/product-types.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "product-types",
+        "language": "pt-br",
+        "id": "product-types",
+        "path": "product-types/",
+        "source": "gestor/modulos/product-types/resources/pt-br/pages/product-types/product-types.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4807,7 +7987,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4833,7 +8013,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4859,7 +8039,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4885,7 +8065,59 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products",
+        "language": "en",
+        "id": "products",
+        "path": "products/",
+        "source": "gestor/modulos/products/resources/en/pages/products/products.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products",
+        "language": "pt-br",
+        "id": "products",
+        "path": "products/",
+        "source": "gestor/modulos/products/resources/pt-br/pages/products/products.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4902,7 +8134,7 @@
             "button": 0,
             "textarea": 2
         },
-        "fields": 74,
+        "fields": 82,
         "switches": 4,
         "buttons": 0,
         "actions": 0,
@@ -4911,7 +8143,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4928,7 +8160,7 @@
             "button": 0,
             "textarea": 2
         },
-        "fields": 74,
+        "fields": 82,
         "switches": 4,
         "buttons": 0,
         "actions": 0,
@@ -4937,7 +8169,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4954,7 +8186,7 @@
             "button": 0,
             "textarea": 2
         },
-        "fields": 74,
+        "fields": 82,
         "switches": 4,
         "buttons": 0,
         "actions": 0,
@@ -4963,7 +8195,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -4980,7 +8212,7 @@
             "button": 0,
             "textarea": 2
         },
-        "fields": 74,
+        "fields": 82,
         "switches": 4,
         "buttons": 0,
         "actions": 0,
@@ -4989,7 +8221,59 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products",
+        "language": "en",
+        "id": "products-page",
+        "path": "products/page/",
+        "source": "gestor/modulos/products/resources/en/pages/products-page/products-page.html",
+        "option": "page",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 0,
+            "button": 1,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 1,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products",
+        "language": "pt-br",
+        "id": "products-page",
+        "path": "products/page/",
+        "source": "gestor/modulos/products/resources/pt-br/pages/products-page/products-page.html",
+        "option": "page",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 0,
+            "button": 1,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 1,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -5006,8 +8290,8 @@
             "button": 3,
             "textarea": 1
         },
-        "fields": 0,
-        "switches": 0,
+        "fields": 7,
+        "switches": 4,
         "buttons": 6,
         "actions": 0,
         "tips": 0,
@@ -5015,7 +8299,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -5032,8 +8316,8 @@
             "button": 3,
             "textarea": 1
         },
-        "fields": 0,
-        "switches": 0,
+        "fields": 7,
+        "switches": 4,
         "buttons": 6,
         "actions": 0,
         "tips": 0,
@@ -5041,7 +8325,319 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products-index",
+        "language": "en",
+        "id": "products-index",
+        "path": "products-index/",
+        "source": "gestor/modulos/products-index/resources/en/pages/products-index/products-index.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products-index",
+        "language": "pt-br",
+        "id": "products-index",
+        "path": "products-index/",
+        "source": "gestor/modulos/products-index/resources/pt-br/pages/products-index/products-index.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products-index",
+        "language": "en",
+        "id": "products-index-adicionar",
+        "path": "products-index/adicionar/",
+        "source": "gestor/modulos/products-index/resources/en/pages/products-index-adicionar/products-index-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 4,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 32,
+        "switches": 12,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products-index",
+        "language": "pt-br",
+        "id": "products-index-adicionar",
+        "path": "products-index/adicionar/",
+        "source": "gestor/modulos/products-index/resources/pt-br/pages/products-index-adicionar/products-index-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 4,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 32,
+        "switches": 12,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products-index",
+        "language": "en",
+        "id": "products-index-clonar",
+        "path": "products-index/clonar/",
+        "source": "gestor/modulos/products-index/resources/en/pages/products-index-clonar/products-index-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 4,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 32,
+        "switches": 12,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products-index",
+        "language": "pt-br",
+        "id": "products-index-clonar",
+        "path": "products-index/clonar/",
+        "source": "gestor/modulos/products-index/resources/pt-br/pages/products-index-clonar/products-index-clonar.html",
+        "option": "clonar",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 4,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 32,
+        "switches": 12,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products-index",
+        "language": "en",
+        "id": "products-index-editar",
+        "path": "products-index/editar/",
+        "source": "gestor/modulos/products-index/resources/en/pages/products-index-editar/products-index-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 4,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 32,
+        "switches": 12,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "products-index",
+        "language": "pt-br",
+        "id": "products-index-editar",
+        "path": "products-index/editar/",
+        "source": "gestor/modulos/products-index/resources/pt-br/pages/products-index-editar/products-index-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 4,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 32,
+        "switches": 12,
+        "buttons": 4,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "publisher-social-media",
+        "language": "en",
+        "id": "publisher-social-media",
+        "path": "publisher-social-media/",
+        "source": "gestor/modulos/publisher-social-media/resources/en/pages/publisher-social-media/publisher-social-media.html",
+        "option": "painel",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "publisher-social-media",
+        "language": "pt-br",
+        "id": "publisher-social-media",
+        "path": "publisher-social-media/",
+        "source": "gestor/modulos/publisher-social-media/resources/pt-br/pages/publisher-social-media/publisher-social-media.html",
+        "option": "painel",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "publisher-social-media",
+        "language": "en",
+        "id": "publisher-social-media-configuracoes",
+        "path": "publisher-social-media/configuracoes/",
+        "source": "gestor/modulos/publisher-social-media/resources/en/pages/publisher-social-media-configuracoes/publisher-social-media-configuracoes.html",
+        "option": "configuracoes",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 1,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 1,
+        "buttons": 3,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "publisher-social-media",
+        "language": "pt-br",
+        "id": "publisher-social-media-configuracoes",
+        "path": "publisher-social-media/configuracoes/",
+        "source": "gestor/modulos/publisher-social-media/resources/pt-br/pages/publisher-social-media-configuracoes/publisher-social-media-configuracoes.html",
+        "option": "configuracoes",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 1,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 1,
+        "buttons": 3,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -5067,7 +8663,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -5093,7 +8689,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -5119,7 +8715,7 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
     },
     {
         "project": "site",
@@ -5145,6 +8741,1254 @@
         "bundle": true,
         "list": false,
         "violations": [],
-        "runtime": "pending"
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-apps",
+        "language": "en",
+        "id": "social-apps",
+        "path": "social-apps/",
+        "source": "gestor/modulos/social-apps/resources/en/pages/social-apps/social-apps.html",
+        "option": "listar",
+        "generated": true,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-apps",
+        "language": "pt-br",
+        "id": "social-apps",
+        "path": "social-apps/",
+        "source": "gestor/modulos/social-apps/resources/pt-br/pages/social-apps/social-apps.html",
+        "option": "listar",
+        "generated": true,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-apps",
+        "language": "en",
+        "id": "social-apps-adicionar",
+        "path": "social-apps/adicionar/",
+        "source": "gestor/modulos/social-apps/resources/en/pages/social-apps-adicionar/social-apps-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 6,
+            "select": 1,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 28,
+        "switches": 3,
+        "buttons": 3,
+        "actions": 0,
+        "tips": 1,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-apps",
+        "language": "pt-br",
+        "id": "social-apps-adicionar",
+        "path": "social-apps/adicionar/",
+        "source": "gestor/modulos/social-apps/resources/pt-br/pages/social-apps-adicionar/social-apps-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 6,
+            "select": 1,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 28,
+        "switches": 3,
+        "buttons": 3,
+        "actions": 0,
+        "tips": 1,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-apps",
+        "language": "en",
+        "id": "social-apps-editar",
+        "path": "social-apps/editar/",
+        "source": "gestor/modulos/social-apps/resources/en/pages/social-apps-editar/social-apps-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 0,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 35,
+        "switches": 3,
+        "buttons": 7,
+        "actions": 1,
+        "tips": 3,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-apps",
+        "language": "pt-br",
+        "id": "social-apps-editar",
+        "path": "social-apps/editar/",
+        "source": "gestor/modulos/social-apps/resources/pt-br/pages/social-apps-editar/social-apps-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 9,
+            "select": 0,
+            "button": 3,
+            "textarea": 1
+        },
+        "fields": 35,
+        "switches": 3,
+        "buttons": 7,
+        "actions": 1,
+        "tips": 3,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-connections",
+        "language": "en",
+        "id": "social-connections",
+        "path": "social-connections/",
+        "source": "gestor/modulos/social-connections/resources/en/pages/social-connections/social-connections.html",
+        "option": "listar",
+        "generated": true,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-connections",
+        "language": "pt-br",
+        "id": "social-connections",
+        "path": "social-connections/",
+        "source": "gestor/modulos/social-connections/resources/pt-br/pages/social-connections/social-connections.html",
+        "option": "listar",
+        "generated": true,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": true,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-connections",
+        "language": "en",
+        "id": "social-connections-adicionar",
+        "path": "social-connections/adicionar/",
+        "source": "gestor/modulos/social-connections/resources/en/pages/social-connections-adicionar/social-connections-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 2,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 13,
+        "switches": 3,
+        "buttons": 1,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-connections",
+        "language": "pt-br",
+        "id": "social-connections-adicionar",
+        "path": "social-connections/adicionar/",
+        "source": "gestor/modulos/social-connections/resources/pt-br/pages/social-connections-adicionar/social-connections-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 2,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 13,
+        "switches": 3,
+        "buttons": 1,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-connections",
+        "language": "en",
+        "id": "social-connections-editar",
+        "path": "social-connections/editar/",
+        "source": "gestor/modulos/social-connections/resources/en/pages/social-connections-editar/social-connections-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 3,
+            "select": 1,
+            "button": 4,
+            "textarea": 0
+        },
+        "fields": 11,
+        "switches": 3,
+        "buttons": 8,
+        "actions": 1,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "social-connections",
+        "language": "pt-br",
+        "id": "social-connections-editar",
+        "path": "social-connections/editar/",
+        "source": "gestor/modulos/social-connections/resources/pt-br/pages/social-connections-editar/social-connections-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 3,
+            "select": 1,
+            "button": 4,
+            "textarea": 0
+        },
+        "fields": 11,
+        "switches": 3,
+        "buttons": 8,
+        "actions": 1,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "stripe-products",
+        "language": "en",
+        "id": "stripe-products",
+        "path": "stripe-products/",
+        "source": "gestor/modulos/stripe-products/resources/en/pages/stripe-products/stripe-products.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 1,
+            "button": 3,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 5,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "stripe-products",
+        "language": "pt-br",
+        "id": "stripe-products",
+        "path": "stripe-products/",
+        "source": "gestor/modulos/stripe-products/resources/pt-br/pages/stripe-products/stripe-products.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 1,
+            "select": 1,
+            "button": 3,
+            "textarea": 0
+        },
+        "fields": 3,
+        "switches": 0,
+        "buttons": 5,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "stripe-products",
+        "language": "en",
+        "id": "stripe-products-adicionar",
+        "path": "stripe-products/adicionar/",
+        "source": "gestor/modulos/stripe-products/resources/en/pages/stripe-products-adicionar/stripe-products-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 8,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 40,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "stripe-products",
+        "language": "pt-br",
+        "id": "stripe-products-adicionar",
+        "path": "stripe-products/adicionar/",
+        "source": "gestor/modulos/stripe-products/resources/pt-br/pages/stripe-products-adicionar/stripe-products-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 8,
+            "select": 0,
+            "button": 0,
+            "textarea": 1
+        },
+        "fields": 40,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "stripe-products",
+        "language": "en",
+        "id": "stripe-products-editar",
+        "path": "stripe-products/editar/",
+        "source": "gestor/modulos/stripe-products/resources/en/pages/stripe-products-editar/stripe-products-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 12,
+            "select": 0,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 54,
+        "switches": 0,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "stripe-products",
+        "language": "pt-br",
+        "id": "stripe-products-editar",
+        "path": "stripe-products/editar/",
+        "source": "gestor/modulos/stripe-products/resources/pt-br/pages/stripe-products-editar/stripe-products-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 12,
+            "select": 0,
+            "button": 1,
+            "textarea": 1
+        },
+        "fields": 54,
+        "switches": 0,
+        "buttons": 2,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions",
+        "language": "en",
+        "id": "subscription-list",
+        "path": "subscriptions/",
+        "source": "gestor/modulos/subscriptions/resources/en/pages/subscription-list/subscription-list.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions",
+        "language": "pt-br",
+        "id": "subscription-list",
+        "path": "subscriptions/",
+        "source": "gestor/modulos/subscriptions/resources/pt-br/pages/subscription-list/subscription-list.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions",
+        "language": "en",
+        "id": "subscription-view",
+        "path": "subscriptions/view/",
+        "source": "gestor/modulos/subscriptions/resources/en/pages/subscription-view/subscription-view.html",
+        "option": "visualizar",
+        "generated": false,
+        "counts": {
+            "input": 3,
+            "select": 2,
+            "button": 6,
+            "textarea": 3
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 12,
+        "actions": 0,
+        "tips": 5,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions",
+        "language": "pt-br",
+        "id": "subscription-view",
+        "path": "subscriptions/view/",
+        "source": "gestor/modulos/subscriptions/resources/pt-br/pages/subscription-view/subscription-view.html",
+        "option": "visualizar",
+        "generated": false,
+        "counts": {
+            "input": 3,
+            "select": 2,
+            "button": 6,
+            "textarea": 3
+        },
+        "fields": 18,
+        "switches": 0,
+        "buttons": 12,
+        "actions": 0,
+        "tips": 5,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-config",
+        "language": "en",
+        "id": "subscriptions-config",
+        "path": "subscriptions-config/",
+        "source": "gestor/modulos/subscriptions-config/resources/en/pages/subscriptions-config/subscriptions-config.html",
+        "option": "config",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 15,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-config",
+        "language": "pt-br",
+        "id": "subscriptions-config",
+        "path": "subscriptions-config/",
+        "source": "gestor/modulos/subscriptions-config/resources/pt-br/pages/subscriptions-config/subscriptions-config.html",
+        "option": "config",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 15,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-plans",
+        "language": "en",
+        "id": "subscriptions-plans",
+        "path": "subscriptions-plans/",
+        "source": "gestor/modulos/subscriptions-plans/resources/en/pages/subscriptions-plans/subscriptions-plans.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-plans",
+        "language": "pt-br",
+        "id": "subscriptions-plans",
+        "path": "subscriptions-plans/",
+        "source": "gestor/modulos/subscriptions-plans/resources/pt-br/pages/subscriptions-plans/subscriptions-plans.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-plans",
+        "language": "en",
+        "id": "subscriptions-plans-adicionar",
+        "path": "subscriptions-plans/adicionar/",
+        "source": "gestor/modulos/subscriptions-plans/resources/en/pages/subscriptions-plans-adicionar/subscriptions-plans-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 6,
+            "button": 5,
+            "textarea": 2
+        },
+        "fields": 63,
+        "switches": 9,
+        "buttons": 10,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-plans",
+        "language": "pt-br",
+        "id": "subscriptions-plans-adicionar",
+        "path": "subscriptions-plans/adicionar/",
+        "source": "gestor/modulos/subscriptions-plans/resources/pt-br/pages/subscriptions-plans-adicionar/subscriptions-plans-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 6,
+            "button": 5,
+            "textarea": 2
+        },
+        "fields": 63,
+        "switches": 9,
+        "buttons": 10,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-plans",
+        "language": "en",
+        "id": "subscriptions-plans-editar",
+        "path": "subscriptions-plans/editar/",
+        "source": "gestor/modulos/subscriptions-plans/resources/en/pages/subscriptions-plans-editar/subscriptions-plans-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 6,
+            "button": 5,
+            "textarea": 2
+        },
+        "fields": 63,
+        "switches": 9,
+        "buttons": 10,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-plans",
+        "language": "pt-br",
+        "id": "subscriptions-plans-editar",
+        "path": "subscriptions-plans/editar/",
+        "source": "gestor/modulos/subscriptions-plans/resources/pt-br/pages/subscriptions-plans-editar/subscriptions-plans-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 15,
+            "select": 6,
+            "button": 5,
+            "textarea": 2
+        },
+        "fields": 63,
+        "switches": 9,
+        "buttons": 10,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-stages",
+        "language": "en",
+        "id": "subscriptions-service-stages",
+        "path": "subscriptions-service-stages/",
+        "source": "gestor/modulos/subscriptions-service-stages/resources/en/pages/subscriptions-service-stages/subscriptions-service-stages.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-stages",
+        "language": "pt-br",
+        "id": "subscriptions-service-stages",
+        "path": "subscriptions-service-stages/",
+        "source": "gestor/modulos/subscriptions-service-stages/resources/pt-br/pages/subscriptions-service-stages/subscriptions-service-stages.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-stages",
+        "language": "en",
+        "id": "subscriptions-service-stages-adicionar",
+        "path": "subscriptions-service-stages/adicionar/",
+        "source": "gestor/modulos/subscriptions-service-stages/resources/en/pages/subscriptions-service-stages-adicionar/subscriptions-service-stages-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 16,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-stages",
+        "language": "pt-br",
+        "id": "subscriptions-service-stages-adicionar",
+        "path": "subscriptions-service-stages/adicionar/",
+        "source": "gestor/modulos/subscriptions-service-stages/resources/pt-br/pages/subscriptions-service-stages-adicionar/subscriptions-service-stages-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 16,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-stages",
+        "language": "en",
+        "id": "subscriptions-service-stages-editar",
+        "path": "subscriptions-service-stages/editar/",
+        "source": "gestor/modulos/subscriptions-service-stages/resources/en/pages/subscriptions-service-stages-editar/subscriptions-service-stages-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 16,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-stages",
+        "language": "pt-br",
+        "id": "subscriptions-service-stages-editar",
+        "path": "subscriptions-service-stages/editar/",
+        "source": "gestor/modulos/subscriptions-service-stages/resources/pt-br/pages/subscriptions-service-stages-editar/subscriptions-service-stages-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 16,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-types",
+        "language": "en",
+        "id": "subscriptions-service-types",
+        "path": "subscriptions-service-types/",
+        "source": "gestor/modulos/subscriptions-service-types/resources/en/pages/subscriptions-service-types/subscriptions-service-types.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-types",
+        "language": "pt-br",
+        "id": "subscriptions-service-types",
+        "path": "subscriptions-service-types/",
+        "source": "gestor/modulos/subscriptions-service-types/resources/pt-br/pages/subscriptions-service-types/subscriptions-service-types.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-types",
+        "language": "en",
+        "id": "subscriptions-service-types-adicionar",
+        "path": "subscriptions-service-types/adicionar/",
+        "source": "gestor/modulos/subscriptions-service-types/resources/en/pages/subscriptions-service-types-adicionar/subscriptions-service-types-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 10,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-types",
+        "language": "pt-br",
+        "id": "subscriptions-service-types-adicionar",
+        "path": "subscriptions-service-types/adicionar/",
+        "source": "gestor/modulos/subscriptions-service-types/resources/pt-br/pages/subscriptions-service-types-adicionar/subscriptions-service-types-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 10,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-types",
+        "language": "en",
+        "id": "subscriptions-service-types-editar",
+        "path": "subscriptions-service-types/editar/",
+        "source": "gestor/modulos/subscriptions-service-types/resources/en/pages/subscriptions-service-types-editar/subscriptions-service-types-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 10,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-service-types",
+        "language": "pt-br",
+        "id": "subscriptions-service-types-editar",
+        "path": "subscriptions-service-types/editar/",
+        "source": "gestor/modulos/subscriptions-service-types/resources/pt-br/pages/subscriptions-service-types-editar/subscriptions-service-types-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 2,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 10,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-status",
+        "language": "en",
+        "id": "subscriptions-status",
+        "path": "subscriptions-status/",
+        "source": "gestor/modulos/subscriptions-status/resources/en/pages/subscriptions-status/subscriptions-status.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-status",
+        "language": "pt-br",
+        "id": "subscriptions-status",
+        "path": "subscriptions-status/",
+        "source": "gestor/modulos/subscriptions-status/resources/pt-br/pages/subscriptions-status/subscriptions-status.html",
+        "option": "listar",
+        "generated": false,
+        "counts": {
+            "input": 0,
+            "select": 0,
+            "button": 0,
+            "textarea": 0
+        },
+        "fields": 0,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-status",
+        "language": "en",
+        "id": "subscriptions-status-adicionar",
+        "path": "subscriptions-status/adicionar/",
+        "source": "gestor/modulos/subscriptions-status/resources/en/pages/subscriptions-status-adicionar/subscriptions-status-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 0,
+            "textarea": 2
+        },
+        "fields": 27,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-status",
+        "language": "pt-br",
+        "id": "subscriptions-status-adicionar",
+        "path": "subscriptions-status/adicionar/",
+        "source": "gestor/modulos/subscriptions-status/resources/pt-br/pages/subscriptions-status-adicionar/subscriptions-status-adicionar.html",
+        "option": "adicionar",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 0,
+            "textarea": 2
+        },
+        "fields": 27,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-status",
+        "language": "en",
+        "id": "subscriptions-status-editar",
+        "path": "subscriptions-status/editar/",
+        "source": "gestor/modulos/subscriptions-status/resources/en/pages/subscriptions-status-editar/subscriptions-status-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 0,
+            "textarea": 2
+        },
+        "fields": 27,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
+    },
+    {
+        "project": "site",
+        "module": "subscriptions-status",
+        "language": "pt-br",
+        "id": "subscriptions-status-editar",
+        "path": "subscriptions-status/editar/",
+        "source": "gestor/modulos/subscriptions-status/resources/pt-br/pages/subscriptions-status-editar/subscriptions-status-editar.html",
+        "option": "editar",
+        "generated": false,
+        "counts": {
+            "input": 4,
+            "select": 0,
+            "button": 0,
+            "textarea": 2
+        },
+        "fields": 27,
+        "switches": 0,
+        "buttons": 0,
+        "actions": 0,
+        "tips": 0,
+        "dialogs": 0,
+        "bundle": true,
+        "list": false,
+        "violations": [],
+        "runtime": "passed"
     }
 ]

@@ -40,8 +40,50 @@ function carregar({ comJquery = true, comFomantic = false } = {}) {
 const espera = () => new Promise((r) => setTimeout(r, 0));
 
 beforeEach(() => {
+  window.c2fControles?.observadorIcones?.disconnect();
+  delete window.lucide;
   document.body.innerHTML = '';
   window.gestor = { controlesTextos: { ok: 'OK', cancelar: 'Cancelar', buscar: 'Buscar…', semResultado: 'Nenhum resultado' } };
+});
+
+describe('ícones sem fonte Fomantic', () => {
+  function lucide() {
+    window.lucide = {
+      icons: { CircleCheck: 'check', CircleHelp: 'help', ArrowLeft: 'left', LoaderCircle: 'loader' },
+      createElement: vi.fn(shape => {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('data-shape', shape);
+        return svg;
+      })
+    };
+  }
+  it('mantém hooks de clique, direção e conteúdo próprio; repete sem duplicar o SVG', () => {
+    const c = carregar(); lucide();
+    document.body.innerHTML = '<i class="check circle green icon" data-action="ok"></i><i class="arrow left icon"></i><i class="delete icon">×</i>';
+    c.renderizarIcones(document); c.renderizarIcones(document);
+    expect(document.querySelector('[data-action="ok"]').classList.contains('icon')).toBe(true);
+    expect(document.querySelector('[data-action="ok"] svg').getAttribute('data-shape')).toBe('check');
+    expect(document.querySelector('.arrow svg').getAttribute('data-shape')).toBe('left');
+    expect(document.querySelector('.delete').textContent).toBe('×');
+    expect(document.querySelectorAll('svg')).toHaveLength(2);
+    expect(window.lucide.createElement).toHaveBeenCalledTimes(2);
+  });
+  it('desenha inserções posteriores e troca o desenho quando a classe muda', async () => {
+    const c = carregar(); lucide();
+    document.dispatchEvent(new Event('DOMContentLoaded'));
+    const icon = document.createElement('i'); icon.className = 'spinner loading icon';
+    document.body.append(icon); await espera();
+    expect(icon.querySelector('svg')?.getAttribute('data-shape')).toBe('loader');
+    icon.className = 'check circle icon'; await espera();
+    expect(icon.querySelector('svg')?.getAttribute('data-shape')).toBe('check');
+    c.observadorIcones?.disconnect();
+  });
+  it('preserva o desenho original quando o Fomantic está ativo', () => {
+    const c = carregar({ comFomantic: true }); lucide();
+    document.body.innerHTML = '<i class="check icon"></i>';
+    c.renderizarIcones(document);
+    expect(window.lucide.createElement).not.toHaveBeenCalled();
+  });
 });
 
 describe('diálogos', () => {

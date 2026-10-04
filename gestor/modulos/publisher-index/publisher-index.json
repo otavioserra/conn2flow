@@ -50,11 +50,12 @@
                     "id": "publisher-index-lista",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "d52238325fe90b2fc164b378a6d62649",
+                        "html": "8219b2edc0e6adcc302ea78df815e461",
                         "css": "",
-                        "combined": "d52238325fe90b2fc164b378a6d62649"
+                        "css_precompiled": "",
+                        "combined": "8219b2edc0e6adcc302ea78df815e461"
                     }
                 },
                 {
@@ -62,11 +63,12 @@
                     "id": "publisher-index-grid",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "29ddfc002cce4a5b745766bfb59d9ec8",
+                        "html": "2e58f857e38017c1e0c1eafab94eb740",
                         "css": "",
-                        "combined": "29ddfc002cce4a5b745766bfb59d9ec8"
+                        "css_precompiled": "",
+                        "combined": "2e58f857e38017c1e0c1eafab94eb740"
                     }
                 },
                 {
@@ -74,11 +76,12 @@
                     "id": "publisher-index-timeline",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "1faece2aa842bdbfac45aa8f7ae128a6",
+                        "html": "4d95aef292c74305c0f54a863e17ef7a",
                         "css": "",
-                        "combined": "1faece2aa842bdbfac45aa8f7ae128a6"
+                        "css_precompiled": "",
+                        "combined": "4d95aef292c74305c0f54a863e17ef7a"
                     }
                 },
                 {
@@ -86,11 +89,12 @@
                     "id": "publisher-index-agenda",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "4da8cf176017af91f386489a49484dee",
+                        "html": "ae370a5910a1caa53c48dd5bebb85f5e",
                         "css": "",
-                        "combined": "4da8cf176017af91f386489a49484dee"
+                        "css_precompiled": "",
+                        "combined": "ae370a5910a1caa53c48dd5bebb85f5e"
                     }
                 },
                 {
@@ -98,11 +102,12 @@
                     "id": "publisher-index-grid-imagem",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "651e9b67df4f7aee0b0f8a444ccc5c9b",
+                        "html": "180175e3bcfee3a7f5d4ec1e1765fabb",
                         "css": "",
-                        "combined": "651e9b67df4f7aee0b0f8a444ccc5c9b"
+                        "css_precompiled": "",
+                        "combined": "180175e3bcfee3a7f5d4ec1e1765fabb"
                     }
                 },
                 {
@@ -110,11 +115,12 @@
                     "id": "publisher-index-lista-imagem",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "dedd66ef369673981164627678af8839",
+                        "html": "6e190b0be44df0c0d5ba84fb22f767dd",
                         "css": "",
-                        "combined": "dedd66ef369673981164627678af8839"
+                        "css_precompiled": "",
+                        "combined": "6e190b0be44df0c0d5ba84fb22f767dd"
                     }
                 }
             ],
@@ -603,11 +609,12 @@
                     "id": "publisher-index-lista",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "e0595bb4cc568772a1b87ac5d9511ea3",
+                        "html": "d7dda8ab009255ce0bd1ec59a8291e67",
                         "css": "",
-                        "combined": "e0595bb4cc568772a1b87ac5d9511ea3"
+                        "css_precompiled": "",
+                        "combined": "d7dda8ab009255ce0bd1ec59a8291e67"
                     }
                 },
                 {
@@ -615,11 +622,12 @@
                     "id": "publisher-index-grid",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "e4da08a663ae31c844a335687ab9bd17",
+                        "html": "2306ed562960a85474a3e7f347a23f04",
                         "css": "",
-                        "combined": "e4da08a663ae31c844a335687ab9bd17"
+                        "css_precompiled": "",
+                        "combined": "2306ed562960a85474a3e7f347a23f04"
                     }
                 },
                 {
@@ -627,11 +635,12 @@
                     "id": "publisher-index-timeline",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "b3ac7aff793d189675d747693e934124",
+                        "html": "758386c9c95f6895f02f1c7616b9ef47",
                         "css": "",
-                        "combined": "b3ac7aff793d189675d747693e934124"
+                        "css_precompiled": "",
+                        "combined": "758386c9c95f6895f02f1c7616b9ef47"
                     }
                 },
                 {
@@ -639,11 +648,12 @@
                     "id": "publisher-index-agenda",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "9b9680b6d92b37faf2a1af8c32c0cd3e",
+                        "html": "4c9f71504715322f4aea3bddfe9b7f01",
                         "css": "",
-                        "combined": "9b9680b6d92b37faf2a1af8c32c0cd3e"
+                        "css_precompiled": "",
+                        "combined": "4c9f71504715322f4aea3bddfe9b7f01"
                     }
                 },
                 {
@@ -651,11 +661,12 @@
                     "id": "publisher-index-grid-imagem",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "04ede763251031de0b5457403ad5d947",
+                        "html": "05789f5a75482f717c57a9c7c3c1f42c",
                         "css": "",
-                        "combined": "04ede763251031de0b5457403ad5d947"
+                        "css_precompiled": "",
+                        "combined": "05789f5a75482f717c57a9c7c3c1f42c"
                     }
                 },
                 {
@@ -663,11 +674,12 @@
                     "id": "publisher-index-lista-imagem",
                     "target": "publisher-index",
                     "framework_css": "tailwindcss",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "567f47873e77b1a57ef22baeb383dad7",
+                        "html": "baecc349bd3f93bad7f0c43aca74dbc2",
                         "css": "",
-                        "combined": "567f47873e77b1a57ef22baeb383dad7"
+                        "css_precompiled": "",
+                        "combined": "baecc349bd3f93bad7f0c43aca74dbc2"
                     }
                 }
             ],
@@ -1124,5 +1136,5 @@
             ]
         }
     },
-    "asset_version": "b86293685ed612fc"
+    "asset_version": "002e1c57e81a76d9"
 }

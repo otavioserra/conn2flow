@@ -2,7 +2,11 @@
    O tamanho selecionado reorganiza o cartão inteiro (thumb, detalhes e botões),
    espelhando os modos de visualização da listagem. */
 
-input[type="file"] {
+.c2f-dropzone input[type="file"] {
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
     opacity: 0;
     z-index: -1;
     position: absolute;

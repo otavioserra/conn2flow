@@ -2,83 +2,90 @@
     {
         "name": "Manager Administrative Layout",
         "id": "layout-administrativo-do-gestor",
-        "version": "1.31",
+        "version": "1.32",
         "checksum": {
-            "html": "40b3578719b187cff109649850a30c72",
-            "css": "89f43d4fba51d6c62ae5d8df3e780d6b",
-            "combined": "599682e859085267f6fecba570a08933"
+            "html": "535bb0e399123e3260219c3433749fbe",
+            "css": "71cad75e4bb95e933f8c11d7b8985e95",
+            "css_precompiled": "",
+            "combined": "67a81098937cbdc72ffdc436e0cdac95"
         }
     },
     {
         "name": "Page Without Permission Layout",
         "id": "layout-pagina-sem-permissao",
-        "version": "1.6",
+        "version": "1.7",
         "checksum": {
-            "html": "5946a268a33af707a37a4bce348742a9",
-            "css": "4952e5053d5eebf5a31bf1a8c6812a98",
-            "combined": "5d65eeb110dd78ff34adecf384d5a72f"
+            "html": "3e9b5d31529f5cf413472576b1f5e981",
+            "css": "8007e6c7dc0c4b826b1c0392a4dbf671",
+            "css_precompiled": "",
+            "combined": "3fd0fcb2fe46a2f0157916eeec362cfb"
         }
     },
     {
         "name": "Emails Layout",
         "id": "layout-emails",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "b9246cdd3db37c3e1e558b3fc846c368",
-            "css": "9454a802af5d3febf83ff9c503544b36",
-            "combined": "c332742920e013627280ff66b3180c84"
+            "html": "f743895944e00181febbefdd49eb7e50",
+            "css": "fc98eb0f2b970c15499298cbaa499bee",
+            "css_precompiled": "",
+            "combined": "f12d1f1470f467f6f8e5b78cb2fd27e3"
         }
     },
     {
         "name": "Iframes Layout",
         "id": "layout-iframes",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "0bf6b9ed25e76568e4accab429285052",
+            "html": "8bffae94e9a3b69f12522c2b68384b8e",
             "css": "",
-            "combined": "0bf6b9ed25e76568e4accab429285052"
+            "css_precompiled": "",
+            "combined": "8bffae94e9a3b69f12522c2b68384b8e"
         }
     },
     {
         "name": "Simple Page Layout",
         "id": "layout-pagina-simples",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "77250fa98d29779c3cd2414cd8c28c8f",
+            "html": "5d5efc9849f45c5a257ee4e6fff49d16",
             "css": "",
-            "combined": "77250fa98d29779c3cd2414cd8c28c8f"
+            "css_precompiled": "",
+            "combined": "5d5efc9849f45c5a257ee4e6fff49d16"
         }
     },
     {
         "name": "Default Page Layout",
         "id": "layout-pagina-padrao",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "1fbd07c6e0ada1b0a129ddce0ca07f58",
-            "css": "b37dfd1ae99d8fbc8fec01de439345aa",
-            "combined": "d4119c403f683ec16c948fb479f8e980"
+            "html": "18e37a0e6ece66b3e17e0537e961f78c",
+            "css": "4d4cad94393a040c501f6d712cbfb244",
+            "css_precompiled": "",
+            "combined": "6ac31ec91fd8ca3527bf9b468cc0853c"
         }
     },
     {
         "name": "Print Layout",
         "id": "layout-impressao",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "929243be3d2f1b611e572978c2a98367",
-            "css": "3cb92b2858b7f058956f6b632a804f6a",
-            "combined": "8f215768f26c873c7f5db3998ec26fea"
+            "html": "5c30e632aab04e02ff45a22bd45659ab",
+            "css": "5c332c9422840d4658a492a7a8d5e6a8",
+            "css_precompiled": "",
+            "combined": "770e4275e606ac0aae383d46f21c117e"
         }
     },
     {
         "name": "Minimal Tailwind Iframe Layout",
         "id": "layout-iframe-tailwindcss",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "2ed0fc6c4f008669f44eb2d2a97b3828",
+            "html": "cd3afc06550032cb5c1cf367a8820552",
             "css": "",
             "css_precompiled": "",
-            "combined": "2ed0fc6c4f008669f44eb2d2a97b3828"
+            "combined": "cd3afc06550032cb5c1cf367a8820552"
         }
     },
     {
@@ -120,27 +127,47 @@
                 "type": "components",
                 "id": "admin-topbar-tailwind",
                 "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "widget-imagem-tailwind",
+                "scope": "global"
+            },
+            {
+                "id": "interface-formulario-inclusao-incomum-tailwind",
+                "type": "components",
+                "scope": "global"
+            },
+            {
+                "id": "interface-formulario-edicao-incomum-tailwind",
+                "type": "components",
+                "scope": "global"
+            },
+            {
+                "id": "interface-listar-arquivos-sem-registros-tailwind",
+                "type": "components",
+                "scope": "global"
             }
         ],
         "tailwind_dependencies_reason": "REQ-118: o menu e os componentes da interface administrativa sao montados em runtime pelo PHP e nao possuem sidecar proprio na cascata; sem declara-los, o layout compila sem as utilities deles.",
-        "version": "1.16",
+        "version": "1.20",
         "checksum": {
-            "html": "4177e9cb4c84d4e40700be9b974530f8",
+            "html": "63bd47376ccb2bfc141688e9efe879f8",
             "css": "52af81ce0bc8c533317b894d901ff9cf",
             "css_precompiled": "",
-            "combined": "3eb52699a1762dc39d5b23957ef79153"
+            "combined": "5dcdaf2e965679ff0fcd70ff3bb9d2e3"
         }
     },
     {
         "name": "Public Page Layout Tailwind",
         "id": "layout-pagina-sem-permissao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "2bf8a2011588b35ff3e95daa09bccc3c",
-            "css": "deb00b61e70192c06a8ed89803eb711c",
+            "html": "481e4b76f4a0363666cf143fc0c13104",
+            "css": "59d0a20f7c4da41e6abdb1bc74ab100b",
             "css_precompiled": "",
-            "combined": "dade7209ac649ce2b4458e8fc4a48457"
+            "combined": "dfbf10340ab853c55b2e9f982d09d69f"
         }
     }
 ]

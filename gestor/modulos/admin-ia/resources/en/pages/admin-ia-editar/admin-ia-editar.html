@@ -7,12 +7,12 @@
         data-history-empty="@[[ui-history-empty]]@"></div>
     <form id="form-servidor-ia-edit" class="space-y-5 rounded border border-slate-200 p-4">
         <input type="hidden" name="id" value="[[id]]">
-        <div class="space-y-1">
+        <div class="c2fc-campo space-y-1">
             <label class="c2fc-campo-rotulo" for="admin-ia-nome">@[[ui-name]]@</label>
             <input id="admin-ia-nome" class="c2fc-campo-entrada w-full" type="text" name="nome" value="[[nome]]"
                 placeholder="@[[ui-name-placeholder]]@" required>
         </div>
-        <div class="space-y-1">
+        <div class="c2fc-campo space-y-1">
             <label class="c2fc-campo-rotulo" for="admin-ia-tipo">@[[ui-type]]@</label>
             <select id="admin-ia-tipo" class="c2fc-campo-entrada w-full" name="tipo" data-c2f-select="1" required>
                 <option value="gemini" selected>@[[ui-provider-gemini]]@</option>
@@ -23,7 +23,7 @@
             <span class="c2fc-chave-trilho"></span>
             <span class="c2fc-chave-rotulo">@[[ui-default]]@</span>
         </label>
-        <div class="space-y-1">
+        <div class="c2fc-campo space-y-1">
             <label class="c2fc-campo-rotulo" for="admin-ia-chave">@[[ui-api-key]]@</label>
             <input id="admin-ia-chave" class="c2fc-campo-entrada w-full" type="password" name="chave_api"
                 value="[[chave-api]]" placeholder="@[[ui-api-key-edit-placeholder]]@">
@@ -36,16 +36,16 @@
         </label>
         <div class="flex flex-wrap gap-3">
             <button type="submit"
-                class="js-submit inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i
+                class="c2fc-botao c2fc-botao-primario js-submit inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i
                     data-lucide="save" class="size-4"></i>@[[ui-update]]@</button>
             <button type="button"
-                class="testar-conexao inline-flex items-center gap-2 rounded border border-sky-700 px-4 py-2 text-sky-800"
+                class="c2fc-botao c2fc-botao-primario testar-conexao inline-flex items-center gap-2 rounded border border-sky-700 px-4 py-2 text-sky-800"
                 data-id="[[id]]"><i data-lucide="plug-zap" class="size-4"></i>@[[ui-test-connection]]@</button>
             <!-- ativar-cel < --><button type="button"
-                class="ativar-conexao inline-flex items-center gap-2 rounded border border-emerald-700 px-4 py-2 text-emerald-800"
+                class="c2fc-botao c2fc-botao-sucesso ativar-conexao inline-flex items-center gap-2 rounded border border-emerald-700 px-4 py-2 text-emerald-800"
                 data-id="[[id]]"><i data-lucide="eye" class="size-4"></i>@[[ui-activate]]@</button><!-- ativar-cel > -->
             <!-- desativar-cel < --><button type="button"
-                class="desativar-conexao inline-flex items-center gap-2 rounded border border-amber-700 px-4 py-2 text-amber-800"
+                class="c2fc-botao desativar-conexao inline-flex items-center gap-2 rounded border border-amber-700 px-4 py-2 text-amber-800"
                 data-id="[[id]]"><i data-lucide="eye-off"
                     class="size-4"></i>@[[ui-deactivate]]@</button><!-- desativar-cel > -->
             <a href="@[[pagina#url-raiz]]@admin-ia/listar/"
@@ -77,7 +77,7 @@
                 class="size-5"></i>@[[ui-models-title]]@</h2>
         <p class="text-sm text-slate-600">@[[ui-models-description]]@</p>
         <div id="form-global-models" class="space-y-2">[[global_models_checkboxes]]</div>
-        <button type="button" class="inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"
+        <button type="button" class="c2fc-botao c2fc-botao-primario inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"
             id="btn-save-global-models" onclick="salvarModelosGlobais()"><i data-lucide="save"
                 class="size-4"></i>@[[ui-save-models]]@</button>
     </section>

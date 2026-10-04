@@ -6,11 +6,12 @@
         "path": "404\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "6c644be04d6ba9320f7ebc2fff7b8af6",
+            "html": "02932e1b744825630f682ac06f0acbbd",
             "css": "",
-            "combined": "6c644be04d6ba9320f7ebc2fff7b8af6"
+            "css_precompiled": "",
+            "combined": "02932e1b744825630f682ac06f0acbbd"
         }
     },
     {
@@ -20,11 +21,12 @@
         "path": "\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "973224b40744bd096516207f4d0c3927",
+            "html": "57290f9d714c6273f83764fa3594de3a",
             "css": "",
-            "combined": "973224b40744bd096516207f4d0c3927"
+            "css_precompiled": "",
+            "combined": "57290f9d714c6273f83764fa3594de3a"
         }
     },
     {
@@ -34,11 +36,12 @@
         "path": "cookies-is-mandatory\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "c03f2e935909d370c11a119664f705fa",
+            "html": "7fa3de7466b03d3bb4d97020424905bd",
             "css": "",
-            "combined": "c03f2e935909d370c11a119664f705fa"
+            "css_precompiled": "",
+            "combined": "7fa3de7466b03d3bb4d97020424905bd"
         }
     },
     {
@@ -49,11 +52,12 @@
         "type": "system",
         "option": "impressao",
         "without_permission": true,
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
             "html": "",
-            "css": "607e0f6e68e7a2c218542aa428379085",
-            "combined": "607e0f6e68e7a2c218542aa428379085"
+            "css": "6f08edd9ae603692713a90a1bd40ec1d",
+            "css_precompiled": "",
+            "combined": "6f08edd9ae603692713a90a1bd40ec1d"
         }
     },
     {
@@ -63,11 +67,12 @@
         "path": "instalacao-sucesso\/",
         "type": "page",
         "without_permission": true,
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "9dab414883633527c6784c45313e6122",
-            "css": "d66e854af0c522ca96e846dc7add5a36",
-            "combined": "a834e949b7b94858ef45347fb5b4ff75"
+            "html": "50060ddee1fea3c7ef9b0fbd786d5ae6",
+            "css": "510b8d6751bcc9a0fb89897e852bb90a",
+            "css_precompiled": "",
+            "combined": "69f034525f793812ecb6c1bdaa32b664"
         }
     }
 ]

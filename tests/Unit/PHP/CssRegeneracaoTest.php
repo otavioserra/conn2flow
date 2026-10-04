@@ -173,7 +173,7 @@ final class CssRegeneracaoTest extends TestCase
     {
         $cli = dirname(CONN2FLOW_GESTOR_ROOT) . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR
             . 'src' . DIRECTORY_SEPARATOR . 'Commands' . DIRECTORY_SEPARATOR . 'CssRebuildCommand.php';
-        $codigo = (string)file_get_contents($cli);
+        $codigo = str_replace("\r\n", "\n", (string)file_get_contents($cli));
 
         self::assertStringContainsString("\$coreGestorPath = \$this->rootPath", $codigo);
         self::assertStringContainsString("? \$coreGestorPath\n            : \$this->rootPath", $codigo);

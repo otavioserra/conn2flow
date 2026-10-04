@@ -197,7 +197,10 @@ final class ProjectSshPublicPathReq050Test extends TestCase
 
         self::assertStringStartsWith('rsync -az ', $comando);
         self::assertStringContainsString('-o BatchMode=yes', $comando);
-        self::assertStringContainsString('C:/repo/temp/assets-publish/projeto/dist/', $comando);
+        self::assertStringContainsString(
+            (DIRECTORY_SEPARATOR === '\\' ? '/cygdrive/c/' : 'C:/') . 'repo/temp/assets-publish/projeto/dist/',
+            $comando
+        );
         self::assertStringContainsString('deploy@192.0.2.10:/home/tenant/web/exemplo.local/public_html/dist/', $comando);
 
         // Sem --clean o rsync não apaga: o docroot pode conter arquivos que não são nossos.

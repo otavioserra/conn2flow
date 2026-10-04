@@ -920,6 +920,89 @@
     }
     global.c2fControles.marcarDataChecked = marcarDataChecked;
 
-    function preparar() { ponte(global.jQuery); marcarDataChecked(document); iniciar(document); imagemSeletor(); }
+    // Preserva os hooks `.icon` dos módulos, mas desenha SVG com o Lucide do layout.
+    // Assim o painel e seus editores dispensam a fonte de ícones do Fomantic.
+    var iconesLegados = {
+        'check circle': 'CircleCheck', 'check circle outline': 'CircleCheck',
+        'times circle': 'CircleX', 'times circle outline': 'CircleX',
+        'info circle': 'Info', 'question circle': 'CircleHelp',
+        'exclamation triangle': 'TriangleAlert', 'exclamation circle': 'CircleAlert',
+        'clock outline': 'Clock', 'calendar alternate': 'Calendar',
+        'file alternate': 'FileText', 'file alternate outline': 'FileText',
+        'folder open': 'FolderOpen', 'folder outline': 'Folder',
+        'cloud upload': 'CloudUpload', 'cloud download': 'CloudDownload',
+        'sync alternate': 'RefreshCw', 'external alternate': 'ExternalLink',
+        'arrow left': 'ArrowLeft', 'arrow right': 'ArrowRight',
+        'arrow up': 'ArrowUp', 'arrow down': 'ArrowDown',
+        'chevron left': 'ChevronLeft', 'chevron right': 'ChevronRight',
+        'chevron up': 'ChevronUp', 'chevron down': 'ChevronDown',
+        'angle left': 'ChevronLeft', 'angle right': 'ChevronRight',
+        'angle up': 'ChevronUp', 'angle down': 'ChevronDown',
+        'ellipsis horizontal': 'Ellipsis', 'ellipsis vertical': 'EllipsisVertical',
+        'credit card': 'CreditCard', 'shopping cart': 'ShoppingCart',
+        'user plus': 'UserPlus', 'user circle': 'CircleUser',
+        'long arrow alternate right': 'ArrowRight', 'redo alternate': 'Redo',
+        'undo alternate': 'Undo', 'paper plane': 'Send', 'map marker alternate': 'MapPin',
+        'database': 'Database', 'server': 'Server', 'globe': 'Globe', 'world': 'Globe',
+        'spinner': 'LoaderCircle', 'circle notch': 'LoaderCircle', 'sync': 'RefreshCw',
+        'check': 'Check', 'close': 'X', 'times': 'X', 'delete': 'X',
+        'plus': 'Plus', 'minus': 'Minus', 'edit': 'Pencil', 'pencil': 'Pencil',
+        'trash': 'Trash2', 'trash alternate': 'Trash2', 'copy': 'Copy', 'clone': 'Copy',
+        'save': 'Save', 'search': 'Search', 'filter': 'Filter', 'download': 'Download',
+        'upload': 'Upload', 'image': 'Image', 'images': 'Images', 'video': 'Video',
+        'file': 'File', 'folder': 'Folder', 'code': 'Code', 'cog': 'Settings',
+        'settings': 'Settings', 'wrench': 'Wrench', 'tools': 'Wrench',
+        'user': 'User', 'users': 'Users', 'lock': 'Lock', 'unlock': 'LockOpen',
+        'key': 'Key', 'shield': 'Shield', 'eye': 'Eye', 'eye slash': 'EyeOff',
+        'mail': 'Mail', 'envelope': 'Mail', 'phone': 'Phone', 'calendar': 'Calendar',
+        'clock': 'Clock', 'home': 'House', 'building': 'Building', 'linkify': 'Link',
+        'link': 'Link', 'unlink': 'Unlink', 'tag': 'Tag', 'tags': 'Tags',
+        'list': 'List', 'table': 'Table', 'grid layout': 'Grid2X2',
+        'chart line': 'ChartLine', 'chart bar': 'ChartColumn', 'chart pie': 'ChartPie',
+        'dollar sign': 'DollarSign', 'money bill alternate': 'Banknote',
+        'receipt': 'Receipt', 'box': 'Box', 'boxes': 'Boxes', 'cube': 'Box',
+        'play': 'Play', 'pause': 'Pause', 'stop': 'Square', 'power off': 'Power',
+        'bell': 'Bell', 'star': 'Star', 'heart': 'Heart', 'comment': 'MessageCircle',
+        'comments': 'MessagesSquare', 'terminal': 'Terminal', 'hdd': 'HardDrive'
+    };
+    function renderizarIcones(raiz) {
+        if (!global.c2fControles.ponteAtiva || !global.lucide || !global.lucide.createElement) return;
+        var candidatos = Array.prototype.slice.call((raiz || document).querySelectorAll('i.icon'));
+        if (raiz && raiz.matches && raiz.matches('i.icon')) candidatos.unshift(raiz);
+        candidatos.forEach(function (icone) {
+            if (icone.hasAttribute('data-lucide')) return;
+            // Ícones com conteúdo próprio (por exemplo o × de remover variável) já estão desenhados.
+            if (icone.textContent.trim()) return;
+            var tokens = Array.prototype.slice.call(icone.classList).filter(function (c) {
+                return !/^(icon|loading|outline|fitted|disabled|inverted|circular|bordered|rotated|flipped|small|tiny|large|big|huge|massive|red|green|blue|grey|gray|orange|yellow|teal|purple|pink|brown|black|white|c2fc-icone-ponte)$/.test(c);
+            });
+            var nome = iconesLegados[tokens.join(' ')] || iconesLegados[tokens[0]] || 'CircleHelp';
+            if (icone.dataset.c2fcIcone === nome && icone.querySelector('svg')) return;
+            var desenho = global.lucide.icons[nome] || global.lucide.icons.CircleHelp;
+            if (!desenho) return;
+            var svg = global.lucide.createElement(desenho);
+            svg.setAttribute('aria-hidden', 'true');
+            svg.setAttribute('width', '16'); svg.setAttribute('height', '16');
+            icone.replaceChildren(svg);
+            icone.dataset.c2fcIcone = nome;
+            icone.classList.add('c2fc-icone-ponte');
+        });
+    }
+    global.c2fControles.renderizarIcones = renderizarIcones;
+    function preparar() {
+        ponte(global.jQuery); marcarDataChecked(document); iniciar(document); imagemSeletor();
+        renderizarIcones(document);
+        if (global.c2fControles.ponteAtiva && global.MutationObserver && !global.c2fControles.observadorIcones) {
+            global.c2fControles.observadorIcones = new MutationObserver(function (mutacoes) {
+                mutacoes.forEach(function (mutacao) {
+                    if (mutacao.type === 'attributes') renderizarIcones(mutacao.target);
+                    Array.prototype.forEach.call(mutacao.addedNodes, function (no) {
+                        if (no.nodeType === 1 && no.tagName !== 'svg' && no.namespaceURI !== 'http://www.w3.org/2000/svg') renderizarIcones(no);
+                    });
+                });
+            });
+            global.c2fControles.observadorIcones.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        }
+    }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', preparar); else preparar();
 })(window);

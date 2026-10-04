@@ -77,6 +77,13 @@ input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled), label
 .c2fc-grupo > .c2fc-botao:last-child { border-radius: 0 8px 8px 0; }
 a.c2fc-botao { text-decoration: none; }
 .c2fc-icone { width: 16px; height: 16px; }
+.c2fc-icone-ponte { display: inline-flex; width: 1em; height: 1em; margin-right: .25em; vertical-align: -.125em; }
+.c2fc-icone-ponte svg { width: 100%; height: 100%; }
+.c2fc-icone-ponte.loading svg { animation: c2fc-icone-girar 1s linear infinite; }
+.c2fc-icone-ponte.green { color: #16a34a; }
+.c2fc-icone-ponte.red { color: #dc2626; }
+@keyframes c2fc-icone-girar { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .c2fc-icone-ponte.loading svg { animation: none; } }
 
 /* ---------- ações por linha da listagem (cores do `cor` de cada opção, como no Fomantic) */
 .c2fc-acoes { display: flex; flex-wrap: nowrap; gap: 4px; }
@@ -195,7 +202,7 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
 .c2fc-select-nada { padding: 10px 12px; color: #64748b; }
 
 /* ---------- chave liga/desliga (checkbox nativo) */
-.c2fc-chave { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+.c2fc-chave { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
 .c2fc-chave input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .c2fc-chave-trilho { position: relative; width: 40px; height: 22px; flex: none; border-radius: 999px; background: #cbd5e1; transition: background .15s; }
 .c2fc-chave-trilho::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: transform .15s; }

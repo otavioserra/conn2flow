@@ -12,15 +12,15 @@ Evidências: [BATCH-239](../implementation/BATCH-239.md).
 
 ## BATCH-234 — Conferência final da UI Tailwind (req-225)
 
-- [x] Preparação: dependências conferidas, [inventário preliminar](req225-inventory.md) com 236 páginas/idiomas e [detalhes das divergências](req225-inventory.json).
-- [x] Detector contra deriva provado com fixtures: 1 teste/8 asserções; sintaxe PHP aprovada. Auditoria completa focada: 3 testes/12 asserções, 2 falhas e 3 depreciações PHPUnit.
-- [ ] CA-1: inventário final de todas as páginas sem pendências, incluindo controles/componentes gerados.
-- [ ] CA-2: todas as telas no navegador do Lab, sem Fomantic, overflow a 390 px ou erro de script.
-- [ ] CA-3: teste PHPUnit de deriva verde (atualmente detecta 2 ocorrências no core e 493 no site).
-- [ ] CA-4: roteiro humano final no arquivão do site, com todas as telas.
-- [ ] Integração das frentes dependentes, correções em branch isolada, pipeline e revisão final.
+- [x] CA-1: [inventário final](req225-inventory.md), 384 páginas/idiomas, sem divergências estáticas ou pendências; oito entradas do piloto antigo excluídas por autorização humana.
+- [x] CA-2: [matriz no Lab](req225-matrix-evidence/results.json), 376 entradas aprovadas em pt-br/en e 1366/390 px, sem assets Fomantic, overflow do documento ou erros de script. Apresentações e gateways repetidos após as últimas correções.
+- [x] CA-3: detector PHPUnit: seis testes / 881 asserções; `CONN2FLOW_SITE_ROOT` aponta à worktree integrada do site.
+- [x] CA-4: roteiro completo registrado em `conn2flow-site/sdd/PENDENCIAS-HUMANAS.md`, item 15, com inventário por tela e recortes autorizados.
+- [x] Frentes integradas, Tailwind/CLI 4.3.3 fixados; pipeline oficial sequencial concluído e 763 arquivos de código conferidos por hash.
+- [x] PHPUnit: 1.569 testes / 16.453 asserções, sem falhas; quatro skips e depreciações (4 PHP, 3 PHPUnit). Vitest: 526 testes em 42 arquivos.
+- [x] Site: REQ-100 123/123, REQ-101 101/101, REQ-219 40/40; foco, modais e capturas da req-225 aprovados. Revisão técnica do executor registrada.
 
-Evidências e limites: [BATCH-234](../implementation/BATCH-234.md). Preparação em 2026-10-04; fontes das árvores locais, sem validação SQL/browser ou alteração do produto. A ordem da req-225 exige conclusão das frentes anteriores antes da conferência final.
+Evidências e limites: [BATCH-234](../implementation/BATCH-234.md), [revisão](../reviews/REVIEW-2026-10-04-BATCH-234.md). Estado `in-review`, aprovação humana não presumida. `modulos-grupos-distribuido` excluído; `arquivos` do site continua na REQ-103. Não houve pagamentos reais, alteração de hosts ou deploy de produção.
 
 ## BATCH-238 — Biblioteca de Estado e Acesso Controlado a Variáveis Globais (req-229)
 

@@ -14,7 +14,7 @@ final class StripePaymentIntentInstallmentsTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         if (function_exists('stripe_criar_payment_intent_teste')) return;
-        $fonte = (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/stripe.php');
+        $fonte = str_replace("\r\n", "\n", (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/stripe.php'));
         self::assertSame(1, preg_match('/function stripe_criar_payment_intent\(.*?\n}\n/s', $fonte, $m));
         $codigo = str_replace(
             ['function stripe_criar_payment_intent(', 'stripe_requisicao(', 'stripe_valor_menor_unidade('],

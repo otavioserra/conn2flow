@@ -1,0 +1,30 @@
+<h1 class="mb-4 text-2xl font-semibold text-slate-900">#titulo#</h1>
+<!-- botoes < -->
+<div class="mb-4 flex flex-wrap justify-end gap-2">
+    #botoes#
+</div><!-- botoes > -->
+<form id="#form-id#" action="#form-action#" method="post" name="#form-name#" enctype="multipart/form-data"
+    data-c2f-form="tailwind" class="interfaceFormPadrao space-y-6">
+    <div id="_gestor-interface-insert-dados">#form-page#</div>
+    <input id="_gestor-adicionar" name="_gestor-adicionar" type="hidden" value="1">
+    <input id="opcao" name="opcao" type="hidden" value="#form-opcao#">
+    <div data-c2f-form-erros class="hidden rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+    </div>
+    <div class="flex flex-wrap items-center justify-center gap-2 border-t border-slate-200 pt-4">
+        <!-- botao-padrao < -->
+        <button id="_gestor-interface-insert-button" type="submit" data-c2f-dica="#form-button-title#"
+            class="c2fc-botao c2fc-botao-sucesso">#form-button-value#</button>
+        <!-- botao-padrao > -->
+        <!-- botoes-rodape < -->
+        #botoes-rodape#
+        <!-- botoes-rodape > -->
+    </div>
+</form>
+<template data-c2f-botoes>
+    <!-- Paleta de interface_botao_tailwind_classes() / interface_botoes_html(): os botões do cabeçalho e
+         do rodapé são montados em PHP, e é daqui que as utilities chegam ao CSS pré-compilado. -->
+    <a class="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors border-sky-600 bg-sky-600 text-white hover:bg-sky-700"><i class="size-4"></i></a>
+    <a class="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors border-emerald-600 bg-emerald-600 text-white hover:bg-emerald-700"></a>
+    <a class="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors border-red-600 bg-red-600 text-white hover:bg-red-700"></a>
+    <a class="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors border-slate-300 bg-white text-slate-700 hover:bg-slate-50"></a>
+</template>

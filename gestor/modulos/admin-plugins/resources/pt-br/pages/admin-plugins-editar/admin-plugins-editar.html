@@ -1,7 +1,7 @@
 <div class="space-y-4" data-admin-plugins-source data-plugin-source-initial="#origem_tipo#">
-    <div class="space-y-1">
-        <label>@[[form-name-label]]@</label>
-        <input class="w-full rounded border border-slate-300 px-3 py-2" type="text" name="nome"
+    <div class="c2fc-campo space-y-1">
+        <label class="c2fc-campo-rotulo">@[[form-name-label]]@</label>
+        <input class="c2fc-campo-entrada w-full rounded border border-slate-300 px-3 py-2" type="text" name="nome"
             placeholder="@[[form-name-placeholder]]@" value="#nome#">
     </div>
 
@@ -10,11 +10,11 @@
     <div class="space-y-2">
         <p class="text-sm font-medium text-slate-700">@[[ui-plugin-source]]@</p>
         <div class="flex flex-wrap gap-2 border-b border-slate-200" role="tablist" aria-label="@[[ui-plugin-source]]@">
-            <button class="#arquivo_active#" type="button" role="tab" aria-selected="#arquivo_aria#"
+            <button class="c2fc-aba #arquivo_active#" type="button" role="tab" aria-selected="#arquivo_aria#"
                 data-plugin-source-tab="arquivo">@[[ui-source-zip]]@</button>
-            <button class="#publico_active#" type="button" role="tab" aria-selected="#publico_aria#"
+            <button class="c2fc-aba #publico_active#" type="button" role="tab" aria-selected="#publico_aria#"
                 data-plugin-source-tab="publico">@[[ui-source-public]]@</button>
-            <button class="#privado_active#" type="button" role="tab" aria-selected="#privado_aria#"
+            <button class="c2fc-aba #privado_active#" type="button" role="tab" aria-selected="#privado_aria#"
                 data-plugin-source-tab="privado">@[[ui-source-private]]@</button>
         </div>
 
@@ -26,17 +26,17 @@
         </section>
         <section class="#publico_segment# space-y-4 py-3" role="tabpanel" data-plugin-source-panel="publico">
             <label class="block space-y-1 text-sm font-medium text-slate-700"><span>@[[ui-repo-url-label]]@</span><input
-                    class="w-full rounded border border-slate-300 px-3 py-2" type="url" name="repo_publico_url"
+                    class="c2fc-campo-entrada w-full rounded border border-slate-300 px-3 py-2" type="url" name="repo_publico_url"
                     placeholder="https://github.com/usuario/repo" value="#repo_publico_url#"><span
                     class="text-xs font-normal text-slate-600">@[[ui-repo-latest-help]]@</span></label>
         </section>
         <section class="#privado_segment# space-y-4 py-3" role="tabpanel" data-plugin-source-panel="privado">
             <label class="block space-y-1 text-sm font-medium text-slate-700"><span>@[[ui-repo-url-label]]@</span><input
-                    class="w-full rounded border border-slate-300 px-3 py-2" type="url" name="repo_privado_url"
+                    class="c2fc-campo-entrada w-full rounded border border-slate-300 px-3 py-2" type="url" name="repo_privado_url"
                     placeholder="https://github.com/usuario/repo" value="#repo_privado_url#"></label>
             <label
                 class="block space-y-1 text-sm font-medium text-slate-700"><span>@[[ui-auth-token-label]]@</span><input
-                    class="w-full rounded border border-slate-300 px-3 py-2" type="password" name="repo_privado_token"
+                    class="c2fc-campo-entrada w-full rounded border border-slate-300 px-3 py-2" type="password" name="repo_privado_token"
                     placeholder="@[[ui-auth-token-placeholder]]@" value="#repo_privado_token#"></label>
             <p class="text-xs text-slate-600">@[[ui-private-repo-help]]@</p>
         </section>

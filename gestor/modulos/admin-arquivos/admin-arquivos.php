@@ -488,7 +488,7 @@ function admin_arquivos_listar_arquivos(){
 
 	// ===== Estados vazios
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#without-results-cont#",gestor_componente(Array(
-		'id' => 'interface-listar-arquivos-sem-registros',
+		'id' => interface_componente_variante('interface-listar-arquivos-sem-registros'),
 	)));
 
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],"#paginaIframe#",($_GESTOR['paginaIframe'] ? '?paginaIframe=sim' : ''));
@@ -523,7 +523,7 @@ function admin_arquivos_listar_arquivos(){
 				'tipo' => 'select',
 				'id' => 'order',
 				'nome' => 'ordenar',
-				'menu' => true,
+				'menu' => gestor_framework_css_atual()['modo'] !== 'tailwindcss' ? true : null,
 				'procurar' => true,
 				'fluid' => true,
 				'valor_selecionado' => 'alphabetical-asc',

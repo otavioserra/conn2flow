@@ -64,7 +64,8 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Prompts IA - Adicionar",
@@ -73,7 +74,7 @@
                     "path": "admin-prompts-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -89,10 +90,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "92adca37350da0f9566a9619ef16e318",
+                        "html": "9148c035cef28085af666bae093c07ac",
                         "css": "",
-                        "combined": "92adca37350da0f9566a9619ef16e318"
-                    }
+                        "css_precompiled": "",
+                        "combined": "9148c035cef28085af666bae093c07ac"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Prompts IA - Editar",
@@ -101,7 +104,7 @@
                     "path": "admin-prompts-ia/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -117,10 +120,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "c2114766117c6f5fde9c02e0b02514ff",
+                        "html": "e59d819f19edb4cbdafcf520502fc2a9",
                         "css": "",
-                        "combined": "c2114766117c6f5fde9c02e0b02514ff"
-                    }
+                        "css_precompiled": "",
+                        "combined": "e59d819f19edb4cbdafcf520502fc2a9"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [],
@@ -211,7 +216,8 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin AI Prompts - Add",
@@ -220,7 +226,7 @@
                     "path": "admin-prompts-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -236,10 +242,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "92adca37350da0f9566a9619ef16e318",
+                        "html": "9148c035cef28085af666bae093c07ac",
                         "css": "",
-                        "combined": "92adca37350da0f9566a9619ef16e318"
-                    }
+                        "css_precompiled": "",
+                        "combined": "9148c035cef28085af666bae093c07ac"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin AI Prompts - Edit",
@@ -248,7 +256,7 @@
                     "path": "admin-prompts-ia/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -264,10 +272,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "c2114766117c6f5fde9c02e0b02514ff",
+                        "html": "e59d819f19edb4cbdafcf520502fc2a9",
                         "css": "",
-                        "combined": "c2114766117c6f5fde9c02e0b02514ff"
-                    }
+                        "css_precompiled": "",
+                        "combined": "e59d819f19edb4cbdafcf520502fc2a9"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [],
@@ -320,5 +330,5 @@
             ]
         }
     },
-    "asset_version": "98934b00544e886a"
+    "asset_version": "e5fc6280e775c4e4"
 }

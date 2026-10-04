@@ -50,11 +50,12 @@
                     "id": "publisher-highlights-noticias-lista-simples",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "945416de52739565b4f07f7c32384b04",
+                        "html": "d5bfdf41bd9ed443d9109874c94211a4",
                         "css": "",
-                        "combined": "945416de52739565b4f07f7c32384b04"
+                        "css_precompiled": "",
+                        "combined": "d5bfdf41bd9ed443d9109874c94211a4"
                     }
                 },
                 {
@@ -62,11 +63,12 @@
                     "id": "publisher-highlights-noticias-grid-cards",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "04487b4f8e45f282337ab0a203348f86",
+                        "html": "281fb507d4bf338f84abc5c7d3d2d140",
                         "css": "",
-                        "combined": "04487b4f8e45f282337ab0a203348f86"
+                        "css_precompiled": "",
+                        "combined": "281fb507d4bf338f84abc5c7d3d2d140"
                     }
                 },
                 {
@@ -74,11 +76,12 @@
                     "id": "publisher-highlights-artigos-editorial",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "34e72aa4a664fdb9f8dc52364027cc0f",
+                        "html": "8b8bcdf29625b941b78dcce1dc688363",
                         "css": "",
-                        "combined": "34e72aa4a664fdb9f8dc52364027cc0f"
+                        "css_precompiled": "",
+                        "combined": "8b8bcdf29625b941b78dcce1dc688363"
                     }
                 },
                 {
@@ -86,11 +89,12 @@
                     "id": "publisher-highlights-lives-video-destaque",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "062457e3b06c4d02dce4a0e2d50565f9",
+                        "html": "270c9f51dcfd8f295f50ae4a47a4beed",
                         "css": "",
-                        "combined": "062457e3b06c4d02dce4a0e2d50565f9"
+                        "css_precompiled": "",
+                        "combined": "270c9f51dcfd8f295f50ae4a47a4beed"
                     }
                 },
                 {
@@ -98,11 +102,12 @@
                     "id": "publisher-highlights-notas-mosaico",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "6a717167d06629372f147786411f9c5e",
+                        "html": "d66f7eb2fa59f1d5fd65540c909254c3",
                         "css": "",
-                        "combined": "6a717167d06629372f147786411f9c5e"
+                        "css_precompiled": "",
+                        "combined": "d66f7eb2fa59f1d5fd65540c909254c3"
                     }
                 },
                 {
@@ -110,11 +115,12 @@
                     "id": "publisher-highlights-principal-carousel",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "c372f4785ff5557be941ebd8d3b24bba",
+                        "html": "1311d3387a12282ad969e038592d6755",
                         "css": "",
-                        "combined": "c372f4785ff5557be941ebd8d3b24bba"
+                        "css_precompiled": "",
+                        "combined": "1311d3387a12282ad969e038592d6755"
                     }
                 }
             ],
@@ -123,7 +129,7 @@
                     "name": "Publicador Destaques - Listar",
                     "id": "publisher-highlights",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-highlights/",
+                    "path": "publisher-highlights\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -169,7 +175,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-highlights.php"
+                        "..\/..\/..\/..\/publisher-highlights.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -177,7 +183,7 @@
                     "name": "Publicador Destaques - Adicionar",
                     "id": "publisher-highlights-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-highlights/adicionar/",
+                    "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.17",
@@ -293,7 +299,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-highlights.php"
+                        "..\/..\/..\/..\/publisher-highlights.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -301,7 +307,7 @@
                     "name": "Publicador Destaques - Editar",
                     "id": "publisher-highlights-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-highlights/editar/",
+                    "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.17",
@@ -412,7 +418,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-highlights.php"
+                        "..\/..\/..\/..\/publisher-highlights.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -420,7 +426,7 @@
                     "name": "Publicador Destaques - Clonar",
                     "id": "publisher-highlights-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-highlights/clonar/",
+                    "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.15",
@@ -536,7 +542,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-highlights.php"
+                        "..\/..\/..\/..\/publisher-highlights.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 }
@@ -632,11 +638,12 @@
                     "id": "publisher-highlights-noticias-lista-simples",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "5141866e1f250c5d1880c7ac7d677cbc",
+                        "html": "d02f8e52c3e9e25788019733811c8132",
                         "css": "",
-                        "combined": "5141866e1f250c5d1880c7ac7d677cbc"
+                        "css_precompiled": "",
+                        "combined": "d02f8e52c3e9e25788019733811c8132"
                     }
                 },
                 {
@@ -644,11 +651,12 @@
                     "id": "publisher-highlights-noticias-grid-cards",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "aff641d4e9c37e954e7776592469c472",
+                        "html": "08df1c068452cae3cf8fbf431649e9a8",
                         "css": "",
-                        "combined": "aff641d4e9c37e954e7776592469c472"
+                        "css_precompiled": "",
+                        "combined": "08df1c068452cae3cf8fbf431649e9a8"
                     }
                 },
                 {
@@ -656,11 +664,12 @@
                     "id": "publisher-highlights-artigos-editorial",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "a13f73187ee900cb10053f9d5189674e",
+                        "html": "86e14bf26e478a7e8b8a256867775a49",
                         "css": "",
-                        "combined": "a13f73187ee900cb10053f9d5189674e"
+                        "css_precompiled": "",
+                        "combined": "86e14bf26e478a7e8b8a256867775a49"
                     }
                 },
                 {
@@ -668,11 +677,12 @@
                     "id": "publisher-highlights-lives-video-destaque",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "de32807096a864eba5f78ad855b5f828",
+                        "html": "65aa6d4571ece966af79d861c1fadfe2",
                         "css": "",
-                        "combined": "de32807096a864eba5f78ad855b5f828"
+                        "css_precompiled": "",
+                        "combined": "65aa6d4571ece966af79d861c1fadfe2"
                     }
                 },
                 {
@@ -680,11 +690,12 @@
                     "id": "publisher-highlights-notas-mosaico",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "e407e26bdf5edae790b1b9ebcdae5967",
+                        "html": "f252d5ad27cf29114835779b1bb60361",
                         "css": "",
-                        "combined": "e407e26bdf5edae790b1b9ebcdae5967"
+                        "css_precompiled": "",
+                        "combined": "f252d5ad27cf29114835779b1bb60361"
                     }
                 },
                 {
@@ -692,11 +703,12 @@
                     "id": "publisher-highlights-destaque-principal-carousel",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "bac23bfa2702af5ab20b583f7ce4e091",
+                        "html": "dba6e59a26b0f1696f2d0a9f21a356f3",
                         "css": "",
-                        "combined": "bac23bfa2702af5ab20b583f7ce4e091"
+                        "css_precompiled": "",
+                        "combined": "dba6e59a26b0f1696f2d0a9f21a356f3"
                     }
                 }
             ],
@@ -705,7 +717,7 @@
                     "name": "Publisher Highlights - List",
                     "id": "publisher-highlights",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-highlights/",
+                    "path": "publisher-highlights\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -751,7 +763,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-highlights.php"
+                        "..\/..\/..\/..\/publisher-highlights.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -759,7 +771,7 @@
                     "name": "Publisher Highlights - Add",
                     "id": "publisher-highlights-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-highlights/adicionar/",
+                    "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.15",
@@ -875,7 +887,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-highlights.php"
+                        "..\/..\/..\/..\/publisher-highlights.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -883,7 +895,7 @@
                     "name": "Publisher Highlights - Edit",
                     "id": "publisher-highlights-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-highlights/editar/",
+                    "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "version": "1.15",
@@ -994,7 +1006,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-highlights.php"
+                        "..\/..\/..\/..\/publisher-highlights.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 },
@@ -1002,7 +1014,7 @@
                     "name": "Publisher Highlights - Clone",
                     "id": "publisher-highlights-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-highlights/clonar/",
+                    "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "version": "1.15",
@@ -1118,7 +1130,7 @@
                     ],
                     "tailwind_dependencies_reason": "req-221: controles, formulários e editor compostos em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-highlights.php"
+                        "..\/..\/..\/..\/publisher-highlights.php"
                     ],
                     "tailwind_sources_reason": "req-221: metadados e selos de status montados pelo módulo."
                 }

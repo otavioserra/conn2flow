@@ -231,14 +231,14 @@ $(document).ready(function () {
 				'  <div class="c2f-check"><input type="checkbox" class="c2f-sel" aria-label="' + adminArquivosEsc(p.nome) + '"></div>' +
 				'  <div class="c2f-thumb c2f-folder-open"><i class="folder icon huge text-amber-500"></i></div>' +
 				'  <div class="c2f-meta">' +
-				'    <div class="c2f-name" title="' + adminArquivosEsc(p.nome) + '">' + adminArquivosEsc(p.nome) + '</div>' +
+				'    <div class="c2f-name" data-c2f-dica="' + adminArquivosEsc(p.nome) + '">' + adminArquivosEsc(p.nome) + '</div>' +
 				'    <div class="c2f-sub c2f-col-date">' + adminArquivosEsc(p.data) + '</div>' +
 				'    <div class="c2f-sub c2f-col-type">' + t('col-type') + ': —</div>' +
 				'    <div class="c2f-sub c2f-col-size">—</div>' +
 				'  </div>' +
 				'  <div class="c2f-actions">' +
-				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
-				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
+				'    <button class="c2fc-botao rounded border bg-white p-1 c2f-rename" data-c2f-dica="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
+				'    <button class="c2fc-botao rounded border bg-white p-1 text-rose-700 c2f-del" data-c2f-dica="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
 				'  </div>' +
 				'</div>';
 		}
@@ -247,23 +247,23 @@ $(document).ready(function () {
 			var cam = adminArquivosEsc(a.caminho);
 			var img = a.imgSrc || iconePadrao[a.tipo] || iconePadrao.file;
 			var acaoSelecionar = cfg.paginaIframe
-				? '<button class="rounded border bg-white p-1 text-sky-700 c2f-select" title="' + adminArquivosEsc(t('list-button-select')) + '"><i class="check icon"></i></button>'
-				: '<button class="rounded border bg-white p-1 c2f-copy" title="' + adminArquivosEsc(t('list-button-copy')) + '"><i class="linkify icon"></i></button>';
+				? '<button class="c2fc-botao rounded border bg-white p-1 text-sky-700 c2f-select" data-c2f-dica="' + adminArquivosEsc(t('list-button-select')) + '"><i class="check icon"></i></button>'
+				: '<button class="c2fc-botao rounded border bg-white p-1 c2f-copy" data-c2f-dica="' + adminArquivosEsc(t('list-button-copy')) + '"><i class="linkify icon"></i></button>';
 			return '' +
 				'<div class="c2f-item c2f-file" data-tipo="arquivo" data-caminho="' + cam + '" data-nome="' + adminArquivosEsc(a.nome) + '"' +
 				'     data-url="' + adminArquivosEsc(a.url) + '" data-mime="' + adminArquivosEsc(a.mime) + '" data-tipoarq="' + adminArquivosEsc(a.tipo) + '">' +
 				'  <div class="c2f-check"><input type="checkbox" class="c2f-sel" aria-label="' + adminArquivosEsc(a.nome) + '"></div>' +
 				'  <div class="c2f-thumb"><img class="c2f-img" data-caminho="' + cam + '" src="' + adminArquivosEsc(img) + '" alt="' + adminArquivosEsc(a.nome) + '"></div>' +
 				'  <div class="c2f-meta">' +
-				'    <div class="c2f-name" title="' + adminArquivosEsc(a.nome) + '">' + adminArquivosEsc(a.nome) + '</div>' +
+				'    <div class="c2f-name" data-c2f-dica="' + adminArquivosEsc(a.nome) + '">' + adminArquivosEsc(a.nome) + '</div>' +
 				'    <div class="c2f-sub c2f-col-date">' + adminArquivosEsc(a.data) + '</div>' +
 				'    <div class="c2f-sub c2f-col-type">' + adminArquivosEsc(a.tipo) + '</div>' +
 				'    <div class="c2f-sub c2f-col-size">' + adminArquivosEsc(a.sizeFmt) + '</div>' +
 				'  </div>' +
 				'  <div class="c2f-actions">' +
 				acaoSelecionar +
-				'    <button class="rounded border bg-white p-1 c2f-rename" title="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
-				'    <button class="rounded border bg-white p-1 text-rose-700 c2f-del" title="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
+				'    <button class="c2fc-botao rounded border bg-white p-1 c2f-rename" data-c2f-dica="' + adminArquivosEsc(t('folder-rename')) + '"><i class="edit icon"></i></button>' +
+				'    <button class="c2fc-botao rounded border bg-white p-1 text-rose-700 c2f-del" data-c2f-dica="' + adminArquivosEsc(t('list-button-del')) + '"><i class="trash icon"></i></button>' +
 				'  </div>' +
 				'</div>';
 		}
@@ -454,22 +454,22 @@ $(document).ready(function () {
 			// copiar URL, além de renomear e excluir.
 			var acoes = '';
 			if (cfg.paginaIframe) {
-				acoes += '<button class="rounded bg-sky-700 px-3 py-2 text-white c2f-gal-select"><i class="check icon"></i> ' + adminArquivosEsc(t('list-button-select')) + '</button>';
+				acoes += '<button class="c2fc-botao rounded bg-sky-700 px-3 py-2 text-white c2f-gal-select"><i class="check icon"></i> ' + adminArquivosEsc(t('list-button-select')) + '</button>';
 			} else {
-				acoes += '<button class="rounded border px-3 py-2 c2f-gal-copy"><i class="linkify icon"></i> ' + adminArquivosEsc(t('list-button-copy')) + '</button>';
+				acoes += '<button class="c2fc-botao rounded border px-3 py-2 c2f-gal-copy"><i class="linkify icon"></i> ' + adminArquivosEsc(t('list-button-copy')) + '</button>';
 			}
 			acoes += '<a class="rounded border px-3 py-2 c2f-gal-open" target="_blank" rel="noopener"><i class="external alternate icon"></i> ' + adminArquivosEsc(t('open-new-tab')) + '</a>';
-			acoes += '<button class="rounded border px-3 py-2 c2f-gal-rename"><i class="edit icon"></i> ' + adminArquivosEsc(t('folder-rename')) + '</button>';
-			acoes += '<button class="rounded bg-rose-700 px-3 py-2 text-white c2f-gal-del"><i class="trash icon"></i> ' + adminArquivosEsc(t('list-button-del')) + '</button>';
+			acoes += '<button class="c2fc-botao rounded border px-3 py-2 c2f-gal-rename"><i class="edit icon"></i> ' + adminArquivosEsc(t('folder-rename')) + '</button>';
+			acoes += '<button class="c2fc-botao rounded bg-rose-700 px-3 py-2 text-white c2f-gal-del"><i class="trash icon"></i> ' + adminArquivosEsc(t('list-button-del')) + '</button>';
 
 			var html =
 				'<dialog class="c2f-gallery-modal" id="c2f-gallery-modal">' +
-				'  <button type="button" class="c2f-gallery-close" aria-label="' + adminArquivosEsc(window.c2fControles.texto('fechar')) + '">×</button>' +
+				'  <button type="button" class="c2fc-botao c2f-gallery-close" aria-label="' + adminArquivosEsc(window.c2fControles.texto('fechar')) + '">×</button>' +
 				'  <div class="c2f-gallery-header"><span class="c2f-gallery-name"></span> <span class="c2f-gallery-counter"></span></div>' +
 				'  <div class="content c2f-gallery-content">' +
-				'    <button class="rounded border p-2 c2f-gallery-prev" aria-label="Previous"><i class="chevron left icon"></i></button>' +
+				'    <button class="c2fc-botao rounded border p-2 c2f-gallery-prev" aria-label="Previous"><i class="chevron left icon"></i></button>' +
 				'    <div class="c2f-gallery-stage"><img class="c2f-gallery-img" src=""></div>' +
-				'    <button class="rounded border p-2 c2f-gallery-next" aria-label="Next"><i class="chevron right icon"></i></button>' +
+				'    <button class="c2fc-botao rounded border p-2 c2f-gallery-next" aria-label="Next"><i class="chevron right icon"></i></button>' +
 				'  </div>' +
 				'  <div class="c2f-gallery-strip"></div>' +
 				'  <div class="c2f-gallery-actions">' + acoes + '</div>' +

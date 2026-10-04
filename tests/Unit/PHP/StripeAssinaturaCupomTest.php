@@ -14,7 +14,7 @@ final class StripeAssinaturaCupomTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         if (function_exists('stripe_criar_assinatura_teste')) return;
-        $fonte = (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/stripe.php');
+        $fonte = str_replace("\r\n", "\n", (string) file_get_contents(CONN2FLOW_GESTOR_ROOT . '/bibliotecas/stripe.php'));
         self::assertSame(1, preg_match('/function stripe_criar_assinatura\(.*?\n}\n/s', $fonte, $m));
         $codigo = str_replace(['function stripe_criar_assinatura(', 'stripe_requisicao('], ['function stripe_criar_assinatura_teste(', 'stripe_requisicao_teste('], $m[0]);
         eval('function stripe_requisicao_teste($p){ $GLOBALS["stripe_payload"] = $p["data"]; return ["http_code" => 200, "data" => ["id" => "sub_1", "status" => "incomplete", "latest_invoice" => ["payment_intent" => ["client_secret" => "pi_secret"]]]]; }');

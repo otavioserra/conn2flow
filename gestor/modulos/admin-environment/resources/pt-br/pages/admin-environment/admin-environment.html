@@ -8,41 +8,41 @@
 
             <div class="admin-environment-tabs flex flex-wrap gap-2 border-b border-slate-200" role="tablist">
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-sky-700 bg-sky-50 px-3 py-2 text-sm font-medium text-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="c2fc-aba admin-environment-tab rounded-t border border-sky-700 bg-sky-50 px-3 py-2 text-sm font-medium text-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
                     role="tab" aria-selected="true" data-tab="site"
                     data-tooltip="Configurações gerais do site como nome e identidade" data-position="bottom center">
                     <i class="globe icon"></i> Configurações do Site
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="c2fc-aba admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
                     role="tab" aria-selected="false" data-tab="usuario"
                     data-tooltip="Configurações de segurança do usuário incluindo proteção reCAPTCHA"
                     data-position="bottom center">
                     <i class="user icon"></i> Configurações de Usuário
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="c2fc-aba admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
                     role="tab" aria-selected="false" data-tab="email"
                     data-tooltip="Configuração de email SMTP para envio de emails do sistema"
                     data-position="bottom center">
                     <i class="mail icon"></i> Configurações de Email
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="c2fc-aba admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
                     role="tab" aria-selected="false" data-tab="linguagem"
                     data-tooltip="Preferências de idioma e detecção automática para visitantes"
                     data-position="bottom center">
                     <i class="language icon"></i> Configurações de Linguagem
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="c2fc-aba admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
                     role="tab" aria-selected="false" data-tab="paypal"
                     data-tooltip="Credenciais da API REST do PayPal e configurações de integração"
                     data-position="bottom center">
                     <i class="paypal icon"></i> PayPal
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="c2fc-aba admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
                     role="tab" aria-selected="false" data-tab="api"
                     data-tooltip="Segurança para geração de chaves de API" data-position="bottom center">
                     <i class="key icon"></i> API
@@ -58,11 +58,11 @@
                     títulos de páginas e referências do sistema.</p>
 
                 <form class="space-y-4" id="form-site" autocomplete="off">
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">Nome do Site</label>
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Nome do Site</label>
                         <input type="text" id="site_name" name="site_name" value="#site-name#"
                             placeholder="Ex: Meu Website"
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                     </div>
 
                     <!-- ===== Acesso Restrito ao Site (req-163) ===== -->
@@ -76,21 +76,18 @@
                         de pagamento e os arquivos estáticos continuam funcionando.</p>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="site_restricted_access" name="site_restricted_access"
+                        <label class="c2fc-chave"><input type="checkbox" id="site_restricted_access" name="site_restricted_access"
                                 #site-restricted-access-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Ativar acesso restrito ao site</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Ativar acesso restrito ao site</span></label>
                     </div>
 
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">Perfis de usuário autorizados</label>
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Perfis de usuário autorizados</label>
                         <div class="site-restricted-profiles-busca relative">
                             <div class="flex items-center gap-2">
                                 <input type="text" id="site_restricted_profiles_busca"
                                     placeholder="Digite o nome do perfil para buscar e adicionar" autocomplete="off"
-                                    class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                    class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                                 <i class="search icon"></i>
                             </div>
                             <div id="site-restricted-profiles-resultados"
@@ -120,7 +117,7 @@
                     <div class="space-y-1.5">
                         <label class="text-sm font-medium text-slate-700">Modo de limpeza</label>
                         <select id="html_sanitize" name="html_sanitize"
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                             <option value="auto" #html-sanitize-auto-selected#>Automático — limpa em produção, mantém
                                 legível no ambiente de desenvolvimento</option>
                             <option value="on" #html-sanitize-on-selected#>Sempre ativo — inclusive no ambiente local,
@@ -134,10 +131,10 @@
                         </div>
                     </div>
 
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">JavaScript embutido na página</label>
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">JavaScript embutido na página</label>
                         <select id="html_sanitize_js" name="html_sanitize_js"
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                             <option value="auto" #html-sanitize-js-auto-selected#>Limpar junto — remove comentários e
                                 indentação do JavaScript embutido</option>
                             <option value="off" #html-sanitize-js-off-selected#>Não tocar no JavaScript</option>
@@ -162,26 +159,23 @@
                         específico que ainda não esteja na lista abaixo.</p>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="crawler_tokens_extra_ativo" name="crawler_tokens_extra_ativo"
+                        <label class="c2fc-chave"><input type="checkbox" id="crawler_tokens_extra_ativo" name="crawler_tokens_extra_ativo"
                                 #crawler-tokens-extra-ativo-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Ativar tokens adicionais de robô</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Ativar tokens adicionais de robô</span></label>
                     </div>
 
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">Tokens adicionais</label>
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Tokens adicionais</label>
                         <textarea id="crawler_tokens_extra" name="crawler_tokens_extra" rows="3"
                             placeholder="Um por linha, ou separados por vírgula. Ex: meurobo, outro-bot"
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#crawler-tokens-extra#</textarea>
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">#crawler-tokens-extra#</textarea>
                         <div class="text-xs text-slate-600" style="margin-top:6px;">
                             A comparação é por trecho do User-Agent, sem diferenciar maiúsculas de minúsculas.
                         </div>
                     </div>
 
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">Já reconhecidos pelo sistema (somente
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Já reconhecidos pelo sistema (somente
                             leitura)</label>
                         <div class="break-words rounded border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700"
                             style="word-break:break-word;">#crawler-tokens-padrao#</div>
@@ -205,21 +199,15 @@
                         <i class="sign-in icon"></i> Métodos de Login</h4>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_method_password_active" name="auth_method_password_active"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_method_password_active" name="auth_method_password_active"
                                 #auth-method-password-active-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Permitir login por Usuário/Senha</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Permitir login por Usuário/Senha</span></label>
                     </div>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_method_google_active" name="auth_method_google_active"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_method_google_active" name="auth_method_google_active"
                                 #auth-method-google-active-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Habilitar login com Google</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Habilitar login com Google</span></label>
                     </div>
 
                     <div id="auth-google-section" class="#auth-google-section-class#">
@@ -235,31 +223,28 @@
                             <input type="text" id="oauth_google_client_id" name="oauth_google_client_id"
                                 value="#oauth-google-client-id#"
                                 placeholder="Ex: 1234567890-abc.apps.googleusercontent.com"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Google Client Secret</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Google Client Secret</label>
                             <input type="password" id="oauth_google_client_secret" name="oauth_google_client_secret"
                                 value="#oauth-google-client-secret#" placeholder="Digite o Client Secret"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">URI de Redirecionamento (Google)</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">URI de Redirecionamento (Google)</label>
                             <input type="text" id="oauth_google_redirect_uri" value="#oauth-google-redirect-uri#"
                                 readonly
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                             <small class="text-sm text-slate-600">Cadastre esta URI exatamente assim no Google Cloud
                                 Console.</small>
                         </div>
                     </div>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_method_meta_active" name="auth_method_meta_active"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_method_meta_active" name="auth_method_meta_active"
                                 #auth-method-meta-active-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Habilitar login com Facebook/Meta</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Habilitar login com Facebook/Meta</span></label>
                     </div>
 
                     <div id="auth-meta-section" class="#auth-meta-section-class#">
@@ -270,35 +255,32 @@
                                 "Configurações do Login do Facebook" e insira a URI de redirecionamento abaixo em "URIs
                                 de redirecionamento do OAuth válidas".</p>
                         </div>
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Meta App ID</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Meta App ID</label>
                             <input type="text" id="oauth_meta_app_id" name="oauth_meta_app_id"
                                 value="#oauth-meta-app-id#" placeholder="Digite o App ID"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Meta App Secret</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Meta App Secret</label>
                             <input type="password" id="oauth_meta_app_secret" name="oauth_meta_app_secret"
                                 value="#oauth-meta-app-secret#" placeholder="Digite o App Secret"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">URI de Redirecionamento (Meta)</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">URI de Redirecionamento (Meta)</label>
                             <input type="text" id="oauth_meta_redirect_uri" value="#oauth-meta-redirect-uri#" readonly
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                             <small class="text-sm text-slate-600">Cadastre esta URI exatamente assim no painel de Apps
                                 da Meta.</small>
                         </div>
                     </div>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_method_email_active" name="auth_method_email_active"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_method_email_active" name="auth_method_email_active"
                                 #auth-method-email-active-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Habilitar login sem senha via Código por
-                                E-mail</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Habilitar login sem senha via Código por
+                                E-mail</span></label>
                         <small class="text-sm text-slate-600">Permite que usuários se autentiquem informando o e-mail
                             cadastrado e recebendo um código de acesso de 6 dígitos.</small>
                     </div>
@@ -309,32 +291,23 @@
                         <i class="lock icon"></i> Autenticação de Dois Fatores (2FA)</h4>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_2fa_required" name="auth_2fa_required"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_2fa_required" name="auth_2fa_required"
                                 #auth-2fa-required-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Exigir 2FA obrigatório para todos os
-                                usuários do painel</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Exigir 2FA obrigatório para todos os
+                                usuários do painel</span></label>
                     </div>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_2fa_method_app" name="auth_2fa_method_app"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_2fa_method_app" name="auth_2fa_method_app"
                                 #auth-2fa-method-app-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Permitir Aplicativo Autenticador
-                                (TOTP)</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Permitir Aplicativo Autenticador
+                                (TOTP)</span></label>
                     </div>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_2fa_method_email" name="auth_2fa_method_email"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_2fa_method_email" name="auth_2fa_method_email"
                                 #auth-2fa-method-email-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Permitir código por E-mail</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Permitir código por E-mail</span></label>
                     </div>
 
                     <!-- ===== Rotação de Chaves JWT ===== -->
@@ -343,32 +316,32 @@
                         <i class="key icon"></i> Chaves JWT</h4>
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Expiração da chave ativa (dias)</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Expiração da chave ativa (dias)</label>
                             <input type="number" id="auth_jwt_rotation_days" name="auth_jwt_rotation_days"
                                 value="#auth-jwt-rotation-days#" placeholder="30"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Período de carência (horas)</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Período de carência (horas)</label>
                             <input type="number" id="auth_jwt_grace_hours" name="auth_jwt_grace_hours"
                                 value="#auth-jwt-grace-hours#" placeholder="24"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
                     <div class="space-y-1.5">
                         <button type="button"
-                            class="rounded bg-amber-700 px-3 py-2 text-sm font-semibold text-white hover:bg-amber-800 disabled:opacity-50"
+                            class="c2fc-botao rounded bg-amber-700 px-3 py-2 text-sm font-semibold text-white hover:bg-amber-800 disabled:opacity-50"
                             id="btn-rotacionar-jwt">
                             <i class="sync icon"></i> Rotacionar Chaves JWT
                         </button>
                     </div>
 
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">@[[captcha-provider-label]]@</label>
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">@[[captcha-provider-label]]@</label>
                         <select id="captcha_provider" name="captcha_provider"
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
                             data-current="#captcha-provider#">
                             <option value="none">@[[captcha-provider-none]]@</option>
                             <option value="google-recaptcha">@[[captcha-provider-google]]@</option>
@@ -376,27 +349,27 @@
                         </select>
                     </div>
                     <div id="turnstile-section" class="hidden">
-                        <div class="space-y-1.5"><label
-                                class="text-sm font-medium text-slate-700">@[[turnstile-site-label]]@</label><input
+                        <div class="c2fc-campo space-y-1.5"><label
+                                class="c2fc-campo-rotulo text-sm font-medium text-slate-700">@[[turnstile-site-label]]@</label><input
                                 type="text" id="turnstile_site_key" value="#turnstile-site-key#"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="space-y-1.5"><label
-                                class="text-sm font-medium text-slate-700">@[[turnstile-secret-label]]@</label><input
+                        <div class="c2fc-campo space-y-1.5"><label
+                                class="c2fc-campo-rotulo text-sm font-medium text-slate-700">@[[turnstile-secret-label]]@</label><input
                                 type="password" id="turnstile_secret_key" value="#turnstile-secret-key#"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
-                        <div class="space-y-1.5"><label
-                                class="text-sm font-medium text-slate-700">@[[turnstile-mode-label]]@</label><select
+                        <div class="c2fc-campo space-y-1.5"><label
+                                class="c2fc-campo-rotulo text-sm font-medium text-slate-700">@[[turnstile-mode-label]]@</label><select
                                 id="turnstile_mode"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
                                 data-current="#turnstile-mode#">
                                 <option value="managed">@[[turnstile-mode-managed]]@</option>
                                 <option value="non-interactive">@[[turnstile-mode-non-interactive]]@</option>
                                 <option value="invisible">@[[turnstile-mode-invisible]]@</option>
                             </select></div>
                         <button type="button"
-                            class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                            class="c2fc-botao c2fc-botao-primario rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                             id="btn-testar-turnstile">@[[turnstile-test-label]]@</button>
                         <div id="turnstile-test-widget"></div>
                     </div>
@@ -407,33 +380,30 @@
                             <i class="shield icon"></i> Proteção reCAPTCHA</h4>
 
                         <div class="space-y-1.5">
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" id="usuario_recaptcha_active" name="usuario_recaptcha_active"
+                            <label class="c2fc-chave"><input type="checkbox" id="usuario_recaptcha_active" name="usuario_recaptcha_active"
                                     #usuario-recaptcha-active-checked#
-                                    class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                                <label class="text-sm font-medium text-slate-700">Ativar Google reCAPTCHA v3</label>
-                            </div>
+                                    class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Ativar Google reCAPTCHA v3</span></label>
                         </div>
 
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Site Key do reCAPTCHA</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Site Key do reCAPTCHA</label>
                             <input type="text" id="usuario_recaptcha_site" name="usuario_recaptcha_site"
                                 value="#usuario-recaptcha-site#"
                                 placeholder="Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Server Key do reCAPTCHA</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Server Key do reCAPTCHA</label>
                             <input type="password" id="usuario_recaptcha_server" name="usuario_recaptcha_server"
                                 value="#usuario-recaptcha-server#"
                                 placeholder="Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
                         <div class="space-y-1.5">
                             <button type="button"
-                                class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                                class="c2fc-botao c2fc-botao-primario rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                                 id="btn-testar-recaptcha">
                                 <i class="shield icon"></i> Testar reCAPTCHA V3
                             </button>
@@ -446,33 +416,30 @@
                                 reCAPTCHA V2 (Checkbox)</h4>
 
                             <div class="space-y-1.5">
-                                <div class="flex items-center gap-2">
-                                    <input type="checkbox" id="usuario_recaptcha_v2_active"
+                                <label class="c2fc-chave"><input type="checkbox" id="usuario_recaptcha_v2_active"
                                         name="usuario_recaptcha_v2_active" #usuario-recaptcha-v2-active-checked#
-                                        class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                                    <label class="text-sm font-medium text-slate-700">Ativar Google reCAPTCHA v2</label>
-                                </div>
+                                        class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Ativar Google reCAPTCHA v2</span></label>
                             </div>
 
-                            <div class="space-y-1.5">
-                                <label class="text-sm font-medium text-slate-700">Site Key do reCAPTCHA V2</label>
+                            <div class="c2fc-campo space-y-1.5">
+                                <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Site Key do reCAPTCHA V2</label>
                                 <input type="text" id="usuario_recaptcha_v2_site" name="usuario_recaptcha_v2_site"
                                     value="#usuario-recaptcha-v2-site#"
                                     placeholder="Ex: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                                    class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                    class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                             </div>
 
-                            <div class="space-y-1.5">
-                                <label class="text-sm font-medium text-slate-700">Server Key do reCAPTCHA V2</label>
+                            <div class="c2fc-campo space-y-1.5">
+                                <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Server Key do reCAPTCHA V2</label>
                                 <input type="password" id="usuario_recaptcha_v2_server"
                                     name="usuario_recaptcha_v2_server" value="#usuario-recaptcha-v2-server#"
                                     placeholder="Ex: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
-                                    class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                    class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                             </div>
 
                             <div class="space-y-1.5">
                                 <button type="button"
-                                    class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                                    class="c2fc-botao c2fc-botao-primario rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                                     id="btn-testar-recaptcha-v2">
                                     <i class="shield alternate icon"></i> Testar reCAPTCHA V2
                                 </button>
@@ -496,99 +463,90 @@
 
                 <form class="space-y-4" id="form-email" autocomplete="off">
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="email_active" name="email_active" #email-active-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Ativar envio de emails</label>
-                        </div>
+                        <label class="c2fc-chave"><input type="checkbox" id="email_active" name="email_active" #email-active-checked#
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Ativar envio de emails</span></label>
                     </div>
 
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">Host SMTP</label>
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Host SMTP</label>
                         <input type="text" id="email_host" name="email_host" value="#email-host#"
                             placeholder="Ex: smtp.gmail.com"
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                     </div>
 
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">Usuário SMTP</label>
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Usuário SMTP</label>
                         <input type="text" id="email_user" name="email_user" value="#email-user#"
                             placeholder="Ex: seu-email@gmail.com"
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                     </div>
 
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">Senha SMTP</label>
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Senha SMTP</label>
                         <input type="password" id="email_pass" name="email_pass" value="#email-pass#"
                             placeholder="Digite a senha"
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div class="space-y-1.5">
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" id="email_secure" name="email_secure" #email-secure-checked#
-                                    class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                                <label class="text-sm font-medium text-slate-700">Conexão Segura (SSL/TLS)</label>
-                            </div>
+                            <label class="c2fc-chave"><input type="checkbox" id="email_secure" name="email_secure" #email-secure-checked#
+                                    class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Conexão Segura (SSL/TLS)</span></label>
                         </div>
 
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Porta SMTP</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Porta SMTP</label>
                             <input type="number" id="email_port" name="email_port" value="#email-port#"
                                 placeholder="587"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Email Remetente</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Email Remetente</label>
                             <input type="email" id="email_from" name="email_from" value="#email-from#"
                                 placeholder="Ex: noreply@seudominio.com"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Nome do Remetente</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Nome do Remetente</label>
                             <input type="text" id="email_from_name" name="email_from_name" value="#email-from-name#"
                                 placeholder="Ex: Sistema Conn2Flow"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Email para Resposta</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Email para Resposta</label>
                             <input type="email" id="email_reply_to" name="email_reply_to" value="#email-reply-to#"
                                 placeholder="Ex: suporte@seudominio.com"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Nome para Resposta</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Nome para Resposta</label>
                             <input type="text" id="email_reply_to_name" name="email_reply_to_name"
                                 value="#email-reply-to-name#" placeholder="Ex: Suporte"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
                     <div class="space-y-1.5">
                         <button type="button"
-                            class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                            class="c2fc-botao c2fc-botao-primario rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                             id="btn-testar-email">
                             <i class="send icon"></i> Enviar Email de Teste
                         </button>
 
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="testar-email-debug" name="testar-email-debug"
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Modo Debug</label>
-                        </div>
+                        <label class="c2fc-chave"><input type="checkbox" id="testar-email-debug" name="testar-email-debug"
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Modo Debug</span></label>
                     </div>
 
-                    <div class="hidden space-y-1.5 debug-logs">
-                        <label class="text-sm font-medium text-slate-700">Retorno do Debug</label>
+                    <div class="c2fc-campo hidden space-y-1.5 debug-logs">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Retorno do Debug</label>
                         <pre class="debug-logs-output max-h-96 w-full overflow-auto whitespace-pre-wrap rounded border border-slate-200 bg-slate-950 p-3 font-mono text-xs text-slate-100"
                             aria-live="polite"></pre>
                     </div>
@@ -606,29 +564,23 @@
 
                 <form class="space-y-4" id="form-linguagem" autocomplete="off">
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="language_widget_active" name="language_widget_active"
+                        <label class="c2fc-chave"><input type="checkbox" id="language_widget_active" name="language_widget_active"
                                 #language-widget-active-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Ativar Widget de Seleção de
-                                Linguagem</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Ativar Widget de Seleção de
+                                Linguagem</span></label>
                     </div>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="language_auto_detect" name="language_auto_detect"
+                        <label class="c2fc-chave"><input type="checkbox" id="language_auto_detect" name="language_auto_detect"
                                 #language-auto-detect-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Ativar Detecção Automática de
-                                Linguagem</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Ativar Detecção Automática de
+                                Linguagem</span></label>
                     </div>
 
                     <div class="space-y-1.5">
                         <label class="text-sm font-medium text-slate-700">Idioma Padrão do Sistema</label>
                         <select
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
                             id="language_default" name="language_default">
                             #language-options#
                         </select>
@@ -647,10 +599,10 @@
                 </p>
 
                 <form class="space-y-4" id="form-paypal" autocomplete="off">
-                    <div class="space-y-1.5">
-                        <label class="text-sm font-medium text-slate-700">Modo de Integração</label>
+                    <div class="c2fc-campo space-y-1.5">
+                        <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Modo de Integração</label>
                         <select
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                            class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
                             id="paypal_default" name="paypal_default">
                             <option value="padrao" #paypal-default-padrao-selected#>Padrão (credenciais do .env)
                             </option>
@@ -668,35 +620,35 @@
                             encontrá-las no <a href="https://developer.paypal.com/dashboard/applications"
                                 target="_blank">Painel de Desenvolvedor PayPal</a>.</p>
 
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Ambiente</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Ambiente</label>
                             <select
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
                                 id="paypal_mode" name="paypal_mode">
                                 <option value="sandbox" #paypal-mode-sandbox-selected#>Sandbox (Testes)</option>
                                 <option value="live" #paypal-mode-live-selected#>Live (Produção)</option>
                             </select>
                         </div>
 
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Client ID</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Client ID</label>
                             <input type="text" id="paypal_client_id" name="paypal_client_id" value="#paypal-client-id#"
                                 placeholder="Ex: AaBbCcDdEeFf..."
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Secret</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Secret</label>
                             <input type="password" id="paypal_secret" name="paypal_secret" value="#paypal-secret#"
                                 placeholder="Ex: EeFfGgHhIiJj..."
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
 
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium text-slate-700">Webhook ID</label>
+                        <div class="c2fc-campo space-y-1.5">
+                            <label class="c2fc-campo-rotulo text-sm font-medium text-slate-700">Webhook ID</label>
                             <input type="text" id="paypal_webhook_id" name="paypal_webhook_id"
                                 value="#paypal-webhook-id#" placeholder="Ex: 5GP028458E..."
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
+                                class="c2fc-campo-entrada w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
                         </div>
                     </div>
 
@@ -704,7 +656,7 @@
 
                     <div class="space-y-1.5">
                         <button type="button"
-                            class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                            class="c2fc-botao c2fc-botao-primario rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                             id="btn-testar-paypal">
                             <i class="paypal icon"></i> Testar Conexão
                         </button>
@@ -731,54 +683,39 @@
                         class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
                         <i class="sign-in icon"></i> Métodos de Autenticação</h4>
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_api_method_password_active"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_api_method_password_active"
                                 name="auth_api_method_password_active" #auth-api-method-password-active-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Permitir autenticação por senha</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Permitir autenticação por senha</span></label>
                     </div>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_api_method_email_active" name="auth_api_method_email_active"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_api_method_email_active" name="auth_api_method_email_active"
                                 #auth-api-method-email-active-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Permitir autenticação por código de
-                                e-mail</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Permitir autenticação por código de
+                                e-mail</span></label>
                     </div>
 
                     <h4
                         class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
                         <i class="lock icon"></i> 2FA para Chaves de API</h4>
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_api_2fa_required" name="auth_api_2fa_required"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_api_2fa_required" name="auth_api_2fa_required"
                                 #auth-api-2fa-required-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Exigir 2FA para emissão de tokens de
-                                API</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Exigir 2FA para emissão de tokens de
+                                API</span></label>
                     </div>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_api_2fa_method_app" name="auth_api_2fa_method_app"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_api_2fa_method_app" name="auth_api_2fa_method_app"
                                 #auth-api-2fa-method-app-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Permitir Aplicativo Autenticador
-                                (TOTP)</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Permitir Aplicativo Autenticador
+                                (TOTP)</span></label>
                     </div>
 
                     <div class="space-y-1.5">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="auth_api_2fa_method_email" name="auth_api_2fa_method_email"
+                        <label class="c2fc-chave"><input type="checkbox" id="auth_api_2fa_method_email" name="auth_api_2fa_method_email"
                                 #auth-api-2fa-method-email-checked#
-                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600">
-                            <label class="text-sm font-medium text-slate-700">Permitir código por E-mail</label>
-                        </div>
+                                class="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-600"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">Permitir código por E-mail</span></label>
                     </div>
                 </form>
             </div>
@@ -788,12 +725,12 @@
 
             <div class="space-y-1.5">
                 <button type="button"
-                    class="rounded bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                    class="c2fc-botao c2fc-botao-primario rounded bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                     id="btn-salvar">
                     <i class="save icon"></i> Salvar Configurações
                 </button>
                 <button type="button"
-                    class="rounded border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                    class="c2fc-botao rounded border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                     onclick="location.reload()">
                     <i class="refresh icon"></i> Recarregar
                 </button>

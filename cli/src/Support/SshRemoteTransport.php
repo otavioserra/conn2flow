@@ -133,6 +133,10 @@ final class SshRemoteTransport
     public function buildRsyncCommand(string $localDirectory, string $remoteDirectory, bool $delete = false): string
     {
         $local = rtrim(str_replace('\\', '/', $localDirectory), '/') . '/';
+        // O rsync Cygwin do Windows interpreta `C:` como host remoto; a origem é local.
+        if (DIRECTORY_SEPARATOR === '\\' && preg_match('~^([a-zA-Z]):(/.*)$~', $local, $drive)) {
+            $local = '/cygdrive/' . strtolower($drive[1]) . $drive[2];
+        }
         $remote = $this->requireAbsolutePath($remoteDirectory, 'remote directory') . '/';
 
         $options = ['-az'];
@@ -141,7 +145,22 @@ final class SshRemoteTransport
         }
 
         $options[] = '-e';
-        $options[] = escapeshellarg('ssh ' . implode(' ', $this->sshOptions()));
+        $sshBinary = 'ssh';
+        $sshOptions = $this->sshOptions();
+        if (DIRECTORY_SEPARATOR === '\\') {
+            // cwRsync e o SSH do Git Bash usam runtimes incompatíveis entre si.
+            $chocolatey = getenv('ChocolateyInstall');
+            $bundled = str_replace('\\', '/', ($chocolatey ?: 'C:/ProgramData/chocolatey') . '/lib/rsync/tools/bin/ssh.exe');
+            if (is_file($bundled)) {
+                $sshBinary = '"' . $bundled . '"';
+                $profile = getenv('USERPROFILE');
+                if ($profile && is_file($profile . '/.ssh/known_hosts')) {
+                    $sshOptions[] = '-o';
+                    $sshOptions[] = '"UserKnownHostsFile=' . str_replace('\\', '/', $profile) . '/.ssh/known_hosts"';
+                }
+            }
+        }
+        $options[] = escapeshellarg($sshBinary . ' ' . implode(' ', $sshOptions));
 
         if ($this->sudo) {
             // O usuário SSH normalmente não é o dono do docroot: elevar apenas o rsync remoto

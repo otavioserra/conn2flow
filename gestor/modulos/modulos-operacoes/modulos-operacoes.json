@@ -31,7 +31,7 @@
                     "name": "Módulos Operações",
                     "id": "modulos-operacoes",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos-operacoes\/",
+                    "path": "modulos-operacoes/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -86,15 +86,15 @@
                     "name": "Módulos Operações - Adicionar",
                     "id": "modulos-operacoes-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos-operacoes\/adicionar\/",
+                    "path": "modulos-operacoes/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "ebc8b6cf1448df9b2a1e8edd3aba6882",
+                        "html": "28ec456fd0ec34c699266c2c0ceb0d63",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ebc8b6cf1448df9b2a1e8edd3aba6882"
+                        "combined": "28ec456fd0ec34c699266c2c0ceb0d63"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -136,15 +136,15 @@
                     "name": "Módulos Operações - Editar",
                     "id": "modulos-operacoes-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos-operacoes\/editar\/",
+                    "path": "modulos-operacoes/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "30af1769795b91210295e7319bb2c83c",
+                        "html": "a18fc3ba78cf7ddcfcbc63a2b50f9b1a",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "30af1769795b91210295e7319bb2c83c"
+                        "combined": "a18fc3ba78cf7ddcfcbc63a2b50f9b1a"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -224,7 +224,7 @@
                     "name": "Module Operations",
                     "id": "modulos-operacoes",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos-operacoes\/",
+                    "path": "modulos-operacoes/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -279,15 +279,15 @@
                     "name": "Module Operations - Add",
                     "id": "modulos-operacoes-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos-operacoes\/adicionar\/",
+                    "path": "modulos-operacoes/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "ebc8b6cf1448df9b2a1e8edd3aba6882",
+                        "html": "28ec456fd0ec34c699266c2c0ceb0d63",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ebc8b6cf1448df9b2a1e8edd3aba6882"
+                        "combined": "28ec456fd0ec34c699266c2c0ceb0d63"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -329,15 +329,15 @@
                     "name": "Module Operations - Edit",
                     "id": "modulos-operacoes-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "modulos-operacoes\/editar\/",
+                    "path": "modulos-operacoes/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "30af1769795b91210295e7319bb2c83c",
+                        "html": "a18fc3ba78cf7ddcfcbc63a2b50f9b1a",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "30af1769795b91210295e7319bb2c83c"
+                        "combined": "a18fc3ba78cf7ddcfcbc63a2b50f9b1a"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -411,5 +411,5 @@
             ]
         }
     },
-    "asset_version": "b6cfb8dd6b6a474f"
+    "asset_version": "ecd8063f27ae1e4b"
 }

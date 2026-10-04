@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.0",
+    "versao": "1.2.2",
     "bibliotecas": [
         "interface",
         "html",
@@ -12,8 +12,8 @@
     },
     "apis": {
         "gemini": {
-            "urlGenerateContent": "https://generativelanguage.googleapis.com/v1beta/{MODEL}:generateContent?key={API_KEY}",
-            "defaultModel": "models/gemini-3-flash-preview"
+            "urlGenerateContent": "https:\/\/generativelanguage.googleapis.com\/v1beta\/{MODEL}:generateContent?key={API_KEY}",
+            "defaultModel": "models\/gemini-3-flash-preview"
         }
     },
     "resources": {
@@ -24,11 +24,11 @@
                     "name": "Admin IA - Listar",
                     "id": "admin-ia-listar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia/listar/",
+                    "path": "admin-ia\/listar\/",
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.14",
+                    "version": "1.17",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -54,30 +54,32 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "4b67e70a9a585543398bb2cd4a20ca78",
+                        "html": "3d83790f47718690574e424b2c855dec",
                         "css": "",
-                        "combined": "4b67e70a9a585543398bb2cd4a20ca78"
-                    }
+                        "css_precompiled": "",
+                        "combined": "3d83790f47718690574e424b2c855dec"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin IA - Adicionar",
                     "id": "admin-ia-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia/adicionar/",
+                    "path": "admin-ia\/adicionar\/",
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.13",
+                    "version": "1.16",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -93,30 +95,32 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "787e9254ce70098a6147add2ae951898",
+                        "html": "d52b797ab351059c1707bf550873a78c",
                         "css": "",
-                        "combined": "787e9254ce70098a6147add2ae951898"
-                    }
+                        "css_precompiled": "",
+                        "combined": "d52b797ab351059c1707bf550873a78c"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin IA - Editar",
                     "id": "admin-ia-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia/editar/",
+                    "path": "admin-ia\/editar\/",
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.17",
+                    "version": "1.20",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -132,20 +136,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "f720734db6ec32e919ae7beea2894042",
+                        "html": "bb55045cbf7f9256f16bfe88f8432caa",
                         "css": "",
-                        "combined": "f720734db6ec32e919ae7beea2894042"
-                    }
+                        "css_precompiled": "",
+                        "combined": "bb55045cbf7f9256f16bfe88f8432caa"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [
@@ -435,11 +441,11 @@
                     "name": "Admin AI - List",
                     "id": "admin-ia-listar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia/listar/",
+                    "path": "admin-ia\/listar\/",
                     "type": "system",
                     "option": "listar-servidores",
                     "root": true,
-                    "version": "1.15",
+                    "version": "1.18",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -465,30 +471,32 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "59c7db67bb4af406f2476e54ea47152f",
+                        "html": "3d83790f47718690574e424b2c855dec",
                         "css": "",
-                        "combined": "59c7db67bb4af406f2476e54ea47152f"
-                    }
+                        "css_precompiled": "",
+                        "combined": "3d83790f47718690574e424b2c855dec"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin AI - Add",
                     "id": "admin-ia-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia/adicionar/",
+                    "path": "admin-ia\/adicionar\/",
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.14",
+                    "version": "1.17",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -504,30 +512,32 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "8a8921038641a9bcab1d3020e39e579a",
+                        "html": "d52b797ab351059c1707bf550873a78c",
                         "css": "",
-                        "combined": "8a8921038641a9bcab1d3020e39e579a"
-                    }
+                        "css_precompiled": "",
+                        "combined": "d52b797ab351059c1707bf550873a78c"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin AI - Edit",
                     "id": "admin-ia-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-ia/editar/",
+                    "path": "admin-ia\/editar\/",
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.16",
+                    "version": "1.19",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -543,20 +553,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "44238f4cdf0da21ae1a54060de4e7b1c",
+                        "html": "bb55045cbf7f9256f16bfe88f8432caa",
                         "css": "",
-                        "combined": "44238f4cdf0da21ae1a54060de4e7b1c"
-                    }
+                        "css_precompiled": "",
+                        "combined": "bb55045cbf7f9256f16bfe88f8432caa"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [
@@ -840,5 +852,5 @@
             ]
         }
     },
-    "asset_version": "a5aa088f1a9f0128"
+    "asset_version": "40257f122039180c"
 }

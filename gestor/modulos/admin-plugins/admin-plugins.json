@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.0",
+    "versao": "1.1.2",
     "bibliotecas": [
         "interface",
         "html"
@@ -21,7 +21,7 @@
                     "name": "Admin Plugins",
                     "id": "admin-plugins",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/",
+                    "path": "admin-plugins\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -51,12 +51,12 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
@@ -64,16 +64,17 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Plugins - Adicionar",
                     "id": "admin-plugins-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/adicionar/",
+                    "path": "admin-plugins\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -89,29 +90,31 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "837287aff77dd4902c69b07fdca23894",
+                        "html": "890c8470c2530ead6e4ee29234809bd1",
                         "css": "",
-                        "combined": "837287aff77dd4902c69b07fdca23894"
-                    }
+                        "css_precompiled": "",
+                        "combined": "890c8470c2530ead6e4ee29234809bd1"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Plugins - Editar",
                     "id": "admin-plugins-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/editar/",
+                    "path": "admin-plugins\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -127,29 +130,31 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "87d7a12ec912c2d6346bff70e85c65ca",
+                        "html": "0549b7924f14db740181835436ca7fde",
                         "css": "",
-                        "combined": "87d7a12ec912c2d6346bff70e85c65ca"
-                    }
+                        "css_precompiled": "",
+                        "combined": "0549b7924f14db740181835436ca7fde"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Plugins - Executar",
                     "id": "admin-plugins-executar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/executar/",
+                    "path": "admin-plugins\/executar\/",
                     "type": "system",
                     "option": "executar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -160,7 +165,7 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         },
                         {
@@ -170,23 +175,25 @@
                         }
                     ],
                     "checksum": {
-                        "html": "e04a892a2fe7a463149b40a00fbb3960",
+                        "html": "139403348f5593c0651c775e7c5673ab",
                         "css": "",
-                        "combined": "e04a892a2fe7a463149b40a00fbb3960"
-                    }
+                        "css_precompiled": "",
+                        "combined": "139403348f5593c0651c775e7c5673ab"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Plugins - Teste",
                     "id": "admin-plugins-teste",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/teste/",
+                    "path": "admin-plugins\/teste\/",
                     "type": "system",
                     "option": "teste",
-                    "version": "1.6",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-plugins.php"
+                        "..\/..\/..\/..\/admin-plugins.php"
                     ],
                     "tailwind_sources_reason": "O controlador monta cards de resultado com utilitários Tailwind para os testes de descoberta, download e processamento de origem.",
                     "tailwind_dependencies": [
@@ -197,31 +204,35 @@
                         }
                     ],
                     "checksum": {
-                        "html": "8a072b8b1f9310d5da2366b4cde743ad",
+                        "html": "5ecc2414dcec72c163014f8b8366b1d2",
                         "css": "",
-                        "combined": "8a072b8b1f9310d5da2366b4cde743ad"
-                    }
+                        "css_precompiled": "",
+                        "combined": "5ecc2414dcec72c163014f8b8366b1d2"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [
                 {
                     "name": "Plugins - Exec",
                     "id": "plugins-exec",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "23671934cd24d3fba1fae2dde6a044cb",
+                        "html": "f6508ffae8dc0b4970eacb81034f1e51",
                         "css": "",
-                        "combined": "23671934cd24d3fba1fae2dde6a044cb"
+                        "css_precompiled": "",
+                        "combined": "f6508ffae8dc0b4970eacb81034f1e51"
                     }
                 },
                 {
                     "name": "Plugins - Exec Tailwind",
                     "id": "plugins-exec-tailwind",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "",
+                        "html": "9340bda0a67ac711f151c967bd8648bd",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "9340bda0a67ac711f151c967bd8648bd"
                     }
                 }
             ],
@@ -253,7 +264,7 @@
                 },
                 {
                     "id": "metadata-origin-branch-tag",
-                    "value": "Branch/Tag",
+                    "value": "Branch\/Tag",
                     "type": "string"
                 },
                 {
@@ -455,7 +466,7 @@
                     "name": "Admin Plugins",
                     "id": "admin-plugins",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/",
+                    "path": "admin-plugins\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -485,12 +496,12 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
@@ -498,16 +509,17 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Plugins - Add",
                     "id": "admin-plugins-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/adicionar/",
+                    "path": "admin-plugins\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.7",
+                    "version": "1.10",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -523,29 +535,31 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "60f120c7de069e8a7c610d03abe599fe",
+                        "html": "f5fcd0215cd82606fae75cbf2aa1e0ae",
                         "css": "",
-                        "combined": "60f120c7de069e8a7c610d03abe599fe"
-                    }
+                        "css_precompiled": "",
+                        "combined": "f5fcd0215cd82606fae75cbf2aa1e0ae"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Plugins - Edit",
                     "id": "admin-plugins-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/editar/",
+                    "path": "admin-plugins\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.7",
+                    "version": "1.10",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -561,29 +575,31 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "0bdcd5958a7cc461b89fd8f08def1a99",
+                        "html": "a9476832dfa1152107d08c79cb4eea09",
                         "css": "",
-                        "combined": "0bdcd5958a7cc461b89fd8f08def1a99"
-                    }
+                        "css_precompiled": "",
+                        "combined": "a9476832dfa1152107d08c79cb4eea09"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Plugins - Execute",
                     "id": "admin-plugins-executar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/executar/",
+                    "path": "admin-plugins\/executar\/",
                     "type": "system",
                     "option": "executar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -594,7 +610,7 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         },
                         {
@@ -604,23 +620,25 @@
                         }
                     ],
                     "checksum": {
-                        "html": "1bd712d3141cec128e97ad7ecc86615d",
+                        "html": "139403348f5593c0651c775e7c5673ab",
                         "css": "",
-                        "combined": "1bd712d3141cec128e97ad7ecc86615d"
-                    }
+                        "css_precompiled": "",
+                        "combined": "139403348f5593c0651c775e7c5673ab"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Plugins - Test",
                     "id": "admin-plugins-teste",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins/teste/",
+                    "path": "admin-plugins\/teste\/",
                     "type": "system",
                     "option": "teste",
-                    "version": "1.6",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-plugins.php"
+                        "..\/..\/..\/..\/admin-plugins.php"
                     ],
                     "tailwind_sources_reason": "The controller assembles result cards with Tailwind utilities for release discovery, download, and source processing tests.",
                     "tailwind_dependencies": [
@@ -631,31 +649,35 @@
                         }
                     ],
                     "checksum": {
-                        "html": "a13313078bc873ce64e79a612fdf894a",
+                        "html": "98999945d3489e36fa0b3f5b6fa28516",
                         "css": "",
-                        "combined": "a13313078bc873ce64e79a612fdf894a"
-                    }
+                        "css_precompiled": "",
+                        "combined": "98999945d3489e36fa0b3f5b6fa28516"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [
                 {
                     "name": "Plugins - Exec",
                     "id": "plugins-exec",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "fdadfd1f10966eac979356e355d7746d",
+                        "html": "f0edb8cef077fc6cccee9c325388c215",
                         "css": "",
-                        "combined": "fdadfd1f10966eac979356e355d7746d"
+                        "css_precompiled": "",
+                        "combined": "f0edb8cef077fc6cccee9c325388c215"
                     }
                 },
                 {
                     "name": "Plugins - Exec Tailwind",
                     "id": "plugins-exec-tailwind",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "",
+                        "html": "9340bda0a67ac711f151c967bd8648bd",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "9340bda0a67ac711f151c967bd8648bd"
                     }
                 }
             ],
@@ -687,7 +709,7 @@
                 },
                 {
                     "id": "metadata-origin-branch-tag",
-                    "value": "Branch/Tag",
+                    "value": "Branch\/Tag",
                     "type": "string"
                 },
                 {
@@ -883,5 +905,5 @@
             ]
         }
     },
-    "asset_version": "a7a1fa3afaca7f78"
+    "asset_version": "3c21d660f3493933"
 }

@@ -1,51 +1,60 @@
 # BATCH-234 — Conferência da UI Tailwind (req-225)
 
-**Status:** `in-progress`. **Data:** 2026-10-04. **Autonomia:** `autonomo_monitorado`.
+**Estado:** `in-review`. **Data:** 2026-10-04. **Autonomia:** `autonomo_monitorado`.
 **Intake:** [req-225](../human-requests/req-225.md).
-**Core:** `conn2flow`, autoria isolada em `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req225`, branch `feat/req-225`.
-**Site:** `conn2flow-site`, autoria isolada em `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-site-req225`, branch `feat/req-225`.
+**Core:** `conn2flow`, `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow-req225`, branch `feat/req-225`.
+**Site:** `conn2flow-site`, `C:/Users/otavi/OneDrive/Documentos/GIT/conn2flow-site-req225`, branch `feat/req-225`.
 
-## Implementação
+## Implementação integrada
 
-- `admin-cron` e `perfil-usuario`: campos com rótulo e foco da biblioteca, chaves, botões e dicas; componentes de segurança/API do perfil também ajustados. Confirmação de exclusão do cron usa o diálogo assíncrono; modais restauram o foco e controlam Tab/Escape.
-- `analytics-manager`, `sales-reports`, `shipping-methods` e `product-reviews`: controles padronizados em pt-br/en, bundles declarados; confirmação assíncrona no analytics. Nomes, IDs, placeholders e ganchos preservados.
-- Integração do core `main` e da entrega `feat/req-222`. As seis páginas de galerias dessa entrega ainda tinham 18 `title` em botões; convertidos para `data-c2f-dica`, com versões incrementadas.
-- Guard PHPUnit de deriva contra `class="ui …"` e `title` em botão; inventário reproduzível em [req225-inventory.php](../validation/req225-inventory.php).
-- O build de bundles de projetos não encontrava layouts/componentes herdados do core. Resolver ajustado para procurar primeiro o projeto e depois o core quando `--project-path` está ativo, mantendo a validação das raízes permitidas. Teste cobre fallback, prioridade do projeto, isolamento fora do modo projeto e rejeição de traversal no idioma.
+O humano autorizou assumir a continuação de REQ-100/101 do site, consolidar as frentes anteriores e fazer commit/push em 2026-10-04. As alterações da req-223 foram consolidadas em `15c93b10` e as correções/revisão da req-224 em `e5dc99d3`, integradas nesta branch; as memórias das outras worktrees foram preservadas.
+
+- Campos, botões, chaves e dicas padronizados em pt-br/en no cron, perfil e telas administrativas do core/site. Diálogos assíncronos preservam Tab/Escape e restauração de foco. Campos dinâmicos de produtos seguem a mesma biblioteca.
+- Ícones legados preservam seus hooks e recebem SVG Lucide, inclusive após alterações dinâmicas; a fonte Fomantic deixou de ser carregada nos editores e módulos migrados.
+- Formulários de configurações, inclusão/edição especiais e estado vazio de arquivos têm variantes Tailwind. Documentação de parâmetros do catálogo 3D também tem variante administrativa.
+- O compilador resolve dependências primeiro no projeto e depois no core, somente em modo projeto e dentro das raízes permitidas. Bundles incluem dependências do layout, como barra superior, menu e seletor de imagens.
+- O runtime disponibiliza o identificador do layout antes de executar o módulo. Isso permite ativar o bundle da página e evita estilos individuais sobrescrevendo as utilities responsivas.
+- As chaves posicionam o input oculto dentro do próprio rótulo, evitando overflow do documento quando estão em tabelas com scroll interno.
+- O manifesto de products declara a biblioteca html-editor para o despacho AJAX do editor de página. Gateways preservam os marcadores `<span>#select-...#</span>` exigidos pelo contrato de interface; quatro selects são conferidos no navegador, com os segredos mascarados. Botões dinâmicos de apresentações usam dicas e aria-label da biblioteca.
+- Listagens AJAX de subscriptions-service-types/stages/status seguem o envelope de `interface`; controllers sem arquivo JS deixam de pedir um asset inexistente. A listagem de social-connections passou ao layout novo.
+- Tailwind e CLI fixados em `4.3.3`, com lockfiles e derivados regenerados. Node instalado pelo humano: `24.21.0`; no PowerShell os testes usam Node diretamente ou npm.cmd.
+- Transporte rsync do Windows usa caminho Cygwin para a origem e o SSH compatível do cwRsync. Launcher `c2f` preserva LF por atributo Git. Pipelines anteriores concluíram publicação dos assets e comparação de 763 arquivos de código; pipeline final concluído, manutenção desligada.
+- Script de download das docs aceita links SVG e falha de resolução em srcdoc sem interromper os demais scripts. Templates pt-br/en corrigidos e derivados regenerados pelo `docs:build` oficial.
 
 ## Checklist vivo
 
-- [x] Briefing, dependências e inventário preliminar das árvores compartilhadas.
-- [x] Worktrees isoladas; core atual e req-222 integrados.
-- [x] Ajustar os dois módulos conhecidos do core e quatro módulos nativos do site.
-- [x] Testes direcionados de PHP/JS e detector de deriva.
-- [x] Ajustar telas Tailwind já existentes de afiliados, cupons, pedidos e produtos, incluindo campos dinâmicos e dicas do editor de tipos.
-- [x] Pipeline completo `project:update-all project-test`, sequencial, incluindo CSS final.
-- [ ] Browser desktop/390 px, modais, foco, assets e console; inspecionar screenshots.
-- [ ] Inventário final com todas as frentes integradas e nenhuma pendência.
-- [ ] Pendências humanas no arquivo do site, revisão e consolidação das branches.
+- [x] Integração das frentes do core e REQ-100/101 do site em worktrees isoladas.
+- [x] Correções, metadados/versionamento, compilação oficial e testes direcionados.
+- [x] PHPUnit completo: 1.569 testes / 16.453 asserções; 4 skips e depreciações registradas.
+- [x] Vitest completo: 526 testes; controles após última mudança: 17 testes.
+- [x] Treze mocks independentes do site; Workspace Social: 9 JS e 3 PHP / 92 asserções.
+- [x] Pipeline final após as correções da matriz e regeneração das docs.
+- [x] Matriz final de todas as páginas pt-br/en, 1366/390 px, assets e console.
+- [x] REQ-100/101, interações da req-219 e foco/modais da req-225 no navegador.
+- [x] Inventário final, screenshots inspecionados, roteiro humano e revisão.
+- [x] Limpeza das fixtures e teardown; seleção explícita dos caminhos para consolidação.
 
-## Evidências até esta rodada
+## Evidências reproduzíveis
 
-- PHP do cron/perfil: 225 testes, 1.561 asserções; verde.
-- PHP req-222 + detector/core após correção das dicas: 6 testes, 575 asserções; verde. Guard do site executado com `CONN2FLOW_SITE_ROOT` apontando à worktree isolada: 1 teste, 2 asserções; verde.
-- JS cron/perfil: 34 testes; verde com Node 22 (Vite da baseline exige Node mais novo que o host).
-- Mocks independentes do site: sales-reports, analytics-manager (91 verificações) e product-reviews passaram; sintaxe dos quatro controllers e analytics JS válida.
-- `TailwindRecursosTest`: 22 testes, 127 asserções; verde. PHPUnit informa 3 depreciações; não são falhas.
-- Tentativas iniciais do pipeline falharam por Bash do Windows, comando Tailwind, resolução do layout e dependências npm ausentes na worktree do site. Causas corrigidas; manutenção foi desligada automaticamente em cada falha. A nova execução está compilando 992 recursos do site. Nenhum deploy de produção.
+- [Inventário](../validation/req225-inventory.md), [JSON](../validation/req225-inventory.json) e [gerador](../validation/req225-inventory.php): 384 páginas/idiomas, sem divergências estáticas. Runtime final: 376 aprovadas e oito excluídas por autorização humana, sem pendências.
+- [Matriz de navegador](../validation/req225-matrix-browser.cjs) e [resultados](../validation/req225-matrix-evidence/results.json): 384 entradas consolidadas: 376 `passed`, oito `excluded`, nenhuma falha. A rodada completa encontrou quatro dicas nativas em páginas de apresentações; após a correção, apresentações e gateways foram novamente percorridos, preservando no relatório os demais resultados aprovados.
+- [Foco e modais](../validation/req225-browser.cjs), com [resultados/capturas](../validation/req225-evidence/results.json): sete rotas em desktop/mobile e quatro modais, todas as verificações aprovadas; capturas inspecionadas pelo executor.
+- Preparar dados somente no tenant isolado: `python sdd/validation/req225-lab-fixtures.py prepare`; ao terminar, `python sdd/validation/req225-lab-fixtures.py cleanup`. O script PHP recusa outro docroot/banco e não imprime credenciais. A matriz recebe somente identificadores no arquivo ignorado `temp/req225-fixtures.json`.
+- Site: relatórios BATCH-094/095 e roteiros `sdd/validation/painel-tailwind/req100-e2e.cjs`, `req101-e2e.cjs`, `sdd/validation/core/req219-controles-e2e.cjs`.
 
-## Limites e dependências
+## Validação final e revisão
 
-A req-223 tem implementação não commitada em outra worktree, com proibição explícita de build/deploy naquela execução; não foi incorporada nem declarada entregue. REQ-100/101 do site têm alterações concorrentes nas árvores compartilhadas; a worktree isolada usa apenas a baseline commitada e os ajustes deste lote. Portanto a cobertura atual não comprova CA-1/CA-2 de todas as frentes. Não declarar conclusão final enquanto essa integração e a matriz inteira de navegador estiverem abertas.
+- PHPUnit: 1.569 testes / 16.453 asserções, sem falhas; quatro skips, quatro depreciações PHP e três PHPUnit. Comando: `CONN2FLOW_SITE_ROOT=<worktree-site> php vendor/phpunit/phpunit/phpunit`.
+- Detector de deriva: seis testes / 881 asserções, usando a worktree integrada do site em `CONN2FLOW_SITE_ROOT`. Sem essa variável, a worktree irmã compartilhada ainda contém migrações não consolidadas e não representa esta entrega.
+- Vitest: 526 testes em 42 arquivos; controles: 17. `node node_modules/vitest/vitest.mjs run`.
+- Site: REQ-100 123/123; REQ-101 101/101; REQ-219 40/40 (backup real e salvamento somente em página descartável). PHP apresentações 42/42 e mock de parcelas dos gateways aprovados após as últimas correções. Regressão de links SVG das docs aprovada em pt-br/en.
+- Capturas do cron, modal mobile, Host Manager, catálogo 3D e gateways inspecionadas. Sem overflow do documento a 390 px; tabelas extensas usam scroll interno.
+- [Revisão do executor](../reviews/REVIEW-2026-10-04-BATCH-234.md), sem findings abertos no escopo homologado. O roteiro solicitado em CA-4 foi registrado no site; aprovação humana não é declarada.
 
-## Validação da rodada isolada
+## Limites autorizados
 
-- Inventário regenerado: 198 páginas/idiomas, zero divergências estáticas de markup/bundle na baseline isolada.
-- PHPUnit direcionado integrado: 254 testes e 2.267 asserções, sem falhas; depois o teste adicional do bundle elevou `TailwindRecursosTest` a 23 testes/131 asserções.
-- JS cron/perfil: 56 testes em quatro arquivos, sem falhas.
-- Mocks afiliados: 10 testes + 28 verificações, sem falhas; cupons, sales-reports e product-reviews passaram; analytics-manager passou em 91 verificações.
-- Browser: sete rotas em 1366/390 px passaram. Corpo publicado, biblioteca, ausência de assets Fomantic, overflow zero e console sem erros; campos com foco/rótulo destacados; modais de cron/analytics e restauração de foco do cron. [Resultados](../validation/req225-evidence/results.json); screenshots no mesmo diretório, incluindo `admin-cron-390.png`, inspecionado visualmente.
-- Falhas descobertas e corrigidas: a exclusão de assets globais do projeto não contemplava o layout administrativo Tailwind (CSS antigo com MIME HTML); bundles incluíam o HTML do layout mas omitiam as dependências dele (logo da barra superior excedia 390 px). A nova compilação inclui as dependências declaradas no layout e o projeto exclui JS/CSS público do painel.
-- `project:update-all project-test` terminou com exit 0 e conferência de 763 arquivos de código. A publicação opcional de assets em `dist` falhou no rsync do Windows (`C:` interpretado como origem remota); o controlador estático funcionou no browser. Esse aviso não deve ser ocultado nem tratado como publicação direta bem-sucedida.
+Encerramento do Lab: 39 registros descartáveis removidos, incluindo a página E2E da req-219 e seus backups/histórico. O comando `env:set` resolve um `.env` local e não encontrou esse arquivo nesta worktree SSH; a configuração do tenant foi conferida diretamente, sem expor credenciais: `DEVELOPMENT_ENV=false`, mantido durante os testes. A manutenção foi desligada pelo pipeline. A entrega é pelas branches `feat/req-225` do core/site, preservando o trabalho concorrente no main compartilhado.
 
-O [inventário atual](../validation/req225-inventory.md) é uma fotografia da autoria, não do SQL. A matriz inteira ainda requer integração das frentes. O humano autorizou assumir a continuação de REQ-100/101 e consolidar a req-223 em 2026-10-04, além de commit/push; o fechamento conjunto continua nesta execução. Sem alterações normativas em SPEC e sem limpeza das memórias SDD.
+`modulos-grupos-distribuido` é um piloto antigo. O humano confirmou: "É um piloto antigo; pode ficar fora desta homologação." As oito entradas ficam como `excluded`, com motivo explícito; seu canal distribuído não foi homologado.
+
+O módulo `arquivos` do site foi separado pelo coordenador anterior na REQ-103, por calendário, progresso e contrato do seletor em iframe. Continua nessa frente e não é declarado migrado pelo BATCH-095. Host Manager é validado em leitura; não foram executadas ações de instalação/atualização de hosts nem pagamentos reais. Nenhum deploy de produção, alteração normativa de SPEC ou poda das memórias SDD.

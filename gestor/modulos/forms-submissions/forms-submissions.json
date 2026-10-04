@@ -44,7 +44,7 @@
                     "name": "Formulários Envios - Listar",
                     "id": "forms-submissions-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions\/",
+                    "path": "forms-submissions/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -94,15 +94,15 @@
                     "name": "Formulários Envios - Visualizar",
                     "id": "forms-submissions-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions\/view\/",
+                    "path": "forms-submissions/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "cc546f21111bedeb526b21529ddf26b1",
+                        "html": "6264947b8c2709690a41e3f72472ee6d",
                         "css": "c3797221205fafd1b7b1bd464732293f",
                         "css_precompiled": "",
-                        "combined": "ced7217e2843a12c2581f7d3315dfdc4"
+                        "combined": "42979447d0d582bbad7a382eb1f49da2"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -159,7 +159,7 @@
                     "name": "Formulários Envios - Processar",
                     "id": "forms-submissions-process",
                     "layout": "layout-pagina-simples",
-                    "path": "forms-submissions-process\/",
+                    "path": "forms-submissions-process/",
                     "type": "system",
                     "option": "forms-process",
                     "without_permission": true,
@@ -307,7 +307,7 @@
                     "name": "Forms Submissions - List",
                     "id": "forms-submissions-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions\/",
+                    "path": "forms-submissions/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -357,15 +357,15 @@
                     "name": "Forms Submissions - View",
                     "id": "forms-submissions-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions\/view\/",
+                    "path": "forms-submissions/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "50cdeeebbb6f722493d3131ff9b72f6b",
+                        "html": "82d1dc650245077a7e6d75b1c24d355f",
                         "css": "c3797221205fafd1b7b1bd464732293f",
                         "css_precompiled": "",
-                        "combined": "7f3eea14bf3ce8b9ee426722a434707e"
+                        "combined": "64b4799d0f6fe773ba6a988c1be5ffdd"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -422,7 +422,7 @@
                     "name": "Forms Submissions - Process",
                     "id": "forms-submissions-process",
                     "layout": "layout-pagina-simples",
-                    "path": "forms-submissions-process\/",
+                    "path": "forms-submissions-process/",
                     "type": "system",
                     "option": "forms-process",
                     "without_permission": true,
@@ -543,5 +543,5 @@
             ]
         }
     },
-    "asset_version": "ede706162a36a5bf"
+    "asset_version": "5cd1e1b820be662f"
 }

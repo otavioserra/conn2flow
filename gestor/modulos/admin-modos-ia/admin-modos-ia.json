@@ -64,7 +64,8 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Modos IA - Adicionar",
@@ -73,7 +74,7 @@
                     "path": "admin-modos-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -89,10 +90,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "70ee08a2fd86b252995dbde2a49c63e8",
+                        "html": "5af66045ede436612546160df21d7128",
                         "css": "",
-                        "combined": "70ee08a2fd86b252995dbde2a49c63e8"
-                    }
+                        "css_precompiled": "",
+                        "combined": "5af66045ede436612546160df21d7128"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Modos IA - Editar",
@@ -101,7 +104,7 @@
                     "path": "admin-modos-ia/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -117,10 +120,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "98f3a3f2a04095da176e48eda64ff466",
+                        "html": "2b96d2a1066cc68b04b6fea7c3c5d972",
                         "css": "",
-                        "combined": "98f3a3f2a04095da176e48eda64ff466"
-                    }
+                        "css_precompiled": "",
+                        "combined": "2b96d2a1066cc68b04b6fea7c3c5d972"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [],
@@ -212,7 +217,8 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin AI Modos - Add",
@@ -221,7 +227,7 @@
                     "path": "admin-modos-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -237,10 +243,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "70ee08a2fd86b252995dbde2a49c63e8",
+                        "html": "5af66045ede436612546160df21d7128",
                         "css": "",
-                        "combined": "70ee08a2fd86b252995dbde2a49c63e8"
-                    }
+                        "css_precompiled": "",
+                        "combined": "5af66045ede436612546160df21d7128"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin AI Modos - Edit",
@@ -249,7 +257,7 @@
                     "path": "admin-modos-ia/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -265,10 +273,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "98f3a3f2a04095da176e48eda64ff466",
+                        "html": "2b96d2a1066cc68b04b6fea7c3c5d972",
                         "css": "",
-                        "combined": "98f3a3f2a04095da176e48eda64ff466"
-                    }
+                        "css_precompiled": "",
+                        "combined": "2b96d2a1066cc68b04b6fea7c3c5d972"
+                    },
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 }
             ],
             "components": [],
@@ -321,5 +331,5 @@
             ]
         }
     },
-    "asset_version": "9f8125e93b755514"
+    "asset_version": "c0626952ee9fa861"
 }

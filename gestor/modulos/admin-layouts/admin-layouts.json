@@ -115,7 +115,7 @@
                     "name": "Admin Layouts",
                     "id": "admin-layouts",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-layouts\/",
+                    "path": "admin-layouts/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -170,15 +170,15 @@
                     "name": "Admin Layouts - Editar",
                     "id": "admin-layouts-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-layouts\/editar\/",
+                    "path": "admin-layouts/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "642a0c66bd76923fa3886c2ce66ea554",
-                        "css": "0c16f753baf4b943069b235d62bbcf49",
+                        "html": "39b11fd419796050746dfaf520aaa538",
+                        "css": "315580b047f2c60f71a3daf196f6c350",
                         "css_precompiled": "",
-                        "combined": "a3692ab2725ad1bdf8f6fcdfa2dae1de"
+                        "combined": "ea3ebabeb5f622a13126deda680c6efb"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -280,15 +280,15 @@
                     "name": "Admin Layouts - Adicionar",
                     "id": "admin-layouts-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-layouts\/adicionar\/",
+                    "path": "admin-layouts/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "597c7cf4b563aa05e7ea328abecacd2c",
-                        "css": "0c16f753baf4b943069b235d62bbcf49",
+                        "html": "58f6d220b3ca5ba3247617ac895137ba",
+                        "css": "315580b047f2c60f71a3daf196f6c350",
                         "css_precompiled": "",
-                        "combined": "314c31706855afa99dd2abae63451e7e"
+                        "combined": "87031a60cabbe8e4391cab6e0cd5875f"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -391,11 +391,12 @@
                 {
                     "nome": "Modal Layout",
                     "id": "modal-layout",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "a67b32353b2471c080e7d8c0996fb700",
+                        "html": "4aa7451af32a9fbaaf8d10baf08b847d",
                         "css": "",
-                        "combined": "a67b32353b2471c080e7d8c0996fb700"
+                        "css_precompiled": "",
+                        "combined": "4aa7451af32a9fbaaf8d10baf08b847d"
                     }
                 }
             ],
@@ -575,7 +576,7 @@
                     "name": "Admin Layouts",
                     "id": "admin-layouts",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-layouts\/",
+                    "path": "admin-layouts/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -630,15 +631,15 @@
                     "name": "Admin Layouts - Edit",
                     "id": "admin-layouts-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-layouts\/editar\/",
+                    "path": "admin-layouts/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "642a0c66bd76923fa3886c2ce66ea554",
-                        "css": "0c16f753baf4b943069b235d62bbcf49",
+                        "html": "39b11fd419796050746dfaf520aaa538",
+                        "css": "315580b047f2c60f71a3daf196f6c350",
                         "css_precompiled": "",
-                        "combined": "a3692ab2725ad1bdf8f6fcdfa2dae1de"
+                        "combined": "ea3ebabeb5f622a13126deda680c6efb"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -740,15 +741,15 @@
                     "name": "Admin Layouts - Add",
                     "id": "admin-layouts-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-layouts\/adicionar\/",
+                    "path": "admin-layouts/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "597c7cf4b563aa05e7ea328abecacd2c",
-                        "css": "0c16f753baf4b943069b235d62bbcf49",
+                        "html": "58f6d220b3ca5ba3247617ac895137ba",
+                        "css": "315580b047f2c60f71a3daf196f6c350",
                         "css_precompiled": "",
-                        "combined": "314c31706855afa99dd2abae63451e7e"
+                        "combined": "87031a60cabbe8e4391cab6e0cd5875f"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -851,11 +852,12 @@
                 {
                     "name": "Layout Modal",
                     "id": "modal-layout",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "a67b32353b2471c080e7d8c0996fb700",
+                        "html": "4aa7451af32a9fbaaf8d10baf08b847d",
                         "css": "",
-                        "combined": "a67b32353b2471c080e7d8c0996fb700"
+                        "css_precompiled": "",
+                        "combined": "4aa7451af32a9fbaaf8d10baf08b847d"
                     }
                 }
             ],
@@ -963,5 +965,5 @@
             ]
         }
     },
-    "asset_version": "3d5c43a3acc6505d"
+    "asset_version": "a5f17fa972af8ab2"
 }

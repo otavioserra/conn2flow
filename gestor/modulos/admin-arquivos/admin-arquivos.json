@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.9",
+    "versao": "1.1.12",
     "bibliotecas": [
         "interface",
         "html",
@@ -36,7 +36,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.17",
+                    "version": "1.20",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -60,11 +60,13 @@
                         }
                     ],
                     "checksum": {
-                        "html": "6c62f332f08ba17ad7f6b2b07bf86469",
-                        "css": "f3b1f04418fd7979ad9ecbf3e5285634",
+                        "html": "07d2dfdc0af3e9b49382c25ebcb55feb",
+                        "css": "72beb37b687aac50b99c0db2a2bef95c",
                         "css_precompiled": "",
-                        "combined": "b9e7053986224069572f522056f7a218"
-                    }
+                        "combined": "73301d30515b18cfd3f2b92526059bc1"
+                    },
+                    "tailwind_sources_reason": "req-225: incluir as utilidades emitidas pelas fontes PHP/JavaScript declaradas neste recurso.",
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Arquivos - Adicionar",
@@ -73,7 +75,7 @@
                     "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.6",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -92,10 +94,13 @@
                         }
                     ],
                     "checksum": {
-                        "html": "0a378bbc2501de51816ef6f545904f1e",
-                        "css": "d31d76fb8265d4e421328464d29c85c6",
-                        "combined": "3d597003978f8d5ea86bd9ef662f93ed"
-                    }
+                        "html": "30161f4fc0b028d4545b2e3d624e95b7",
+                        "css": "910bc3cfbc49b862d02cdd5a456fd363",
+                        "css_precompiled": "",
+                        "combined": "25ddce7b5e658a658a5f0d54d18f8d1f"
+                    },
+                    "tailwind_sources_reason": "req-225: incluir as utilidades emitidas pelas fontes PHP/JavaScript declaradas neste recurso.",
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Emissão teste",
@@ -116,11 +121,12 @@
                 {
                     "name": "Arquivos Lista",
                     "id": "arquivos-lista",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "194dd3e01babbb9da63521ece47f08a7",
+                        "html": "7fb861d588aebb98b48ff04511e06943",
                         "css": "",
-                        "combined": "194dd3e01babbb9da63521ece47f08a7"
+                        "css_precompiled": "",
+                        "combined": "7fb861d588aebb98b48ff04511e06943"
                     }
                 }
             ],
@@ -553,7 +559,7 @@
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.17",
+                    "version": "1.20",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -577,11 +583,13 @@
                         }
                     ],
                     "checksum": {
-                        "html": "6c62f332f08ba17ad7f6b2b07bf86469",
-                        "css": "f3b1f04418fd7979ad9ecbf3e5285634",
+                        "html": "c9fd4100133057444db7264a205f77e5",
+                        "css": "72beb37b687aac50b99c0db2a2bef95c",
                         "css_precompiled": "",
-                        "combined": "b9e7053986224069572f522056f7a218"
-                    }
+                        "combined": "308eca67e47dcfcc26cc6143d42cd396"
+                    },
+                    "tailwind_sources_reason": "req-225: incluir as utilidades emitidas pelas fontes PHP/JavaScript declaradas neste recurso.",
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Admin Files - Add",
@@ -590,7 +598,7 @@
                     "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.6",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -609,10 +617,13 @@
                         }
                     ],
                     "checksum": {
-                        "html": "0a378bbc2501de51816ef6f545904f1e",
-                        "css": "d31d76fb8265d4e421328464d29c85c6",
-                        "combined": "3d597003978f8d5ea86bd9ef662f93ed"
-                    }
+                        "html": "30161f4fc0b028d4545b2e3d624e95b7",
+                        "css": "910bc3cfbc49b862d02cdd5a456fd363",
+                        "css_precompiled": "",
+                        "combined": "25ddce7b5e658a658a5f0d54d18f8d1f"
+                    },
+                    "tailwind_sources_reason": "req-225: incluir as utilidades emitidas pelas fontes PHP/JavaScript declaradas neste recurso.",
+                    "tailwind_dependencies_reason": "req-225: compilar os componentes declarados que a interface monta em runtime."
                 },
                 {
                     "name": "Test Emission",
@@ -633,11 +644,12 @@
                 {
                     "name": "Files List",
                     "id": "arquivos-lista",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "194dd3e01babbb9da63521ece47f08a7",
+                        "html": "7fb861d588aebb98b48ff04511e06943",
                         "css": "",
-                        "combined": "194dd3e01babbb9da63521ece47f08a7"
+                        "css_precompiled": "",
+                        "combined": "7fb861d588aebb98b48ff04511e06943"
                     }
                 }
             ],
@@ -1060,5 +1072,5 @@
             ]
         }
     },
-    "asset_version": "7f187d29ee05bb05"
+    "asset_version": "71a3ebf23e11c50b"
 }

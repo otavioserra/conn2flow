@@ -23,6 +23,8 @@ function cookies() {
 }
 async function proxy() {
   const server = http.createServer((req, res) => { res.writeHead(502); res.end(); });
+  server.req225Sockets = new Set();
+  server.on('connection', socket => { server.req225Sockets.add(socket); socket.on('close', () => server.req225Sockets.delete(socket)); });
   server.on('connect', (req, client, head) => {
     const [host, port] = req.url.split(':');
     const upstream = net.connect(Number(port) || 443, host === new URL(BASE).hostname ? '127.0.0.1' : host, () => {
@@ -30,6 +32,8 @@ async function proxy() {
       if (head.length) upstream.write(head);
       upstream.pipe(client); client.pipe(upstream);
     });
+    server.req225Sockets.add(upstream);
+    upstream.on('close', () => server.req225Sockets.delete(upstream));
     const close = () => { upstream.destroy(); client.destroy(); };
     upstream.on('error', close); client.on('error', close);
   });
@@ -110,7 +114,9 @@ async function proxy() {
     await context.close();
   } finally {
     fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify(report, null, 2));
-    if (browser) await browser.close(); server.close();
+    if (browser) await browser.close();
+    server.close();
+    server.req225Sockets.forEach(socket => socket.destroy());
   }
   if (report.checks.some(x => !x.ok) || report.errors.length) process.exitCode = 1;
 })().catch(error => { console.error(error.message); process.exitCode = 1; });
