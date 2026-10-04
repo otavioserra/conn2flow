@@ -130,41 +130,41 @@
         "id": "publisher",
         "language": "pt-br",
         "status": "A",
-        "versao": 4
+        "versao": 5
     },
     {
         "nome": "Publisher",
         "id": "publisher",
         "language": "en",
         "status": "A",
-        "versao": 4
+        "versao": 5
     },
     {
         "nome": "Publicador Destaques",
         "id": "publisher-highlights",
         "language": "pt-br",
         "status": "A",
-        "versao": 13
+        "versao": 14
     },
     {
         "nome": "Publisher Highlights",
         "id": "publisher-highlights",
         "language": "en",
         "status": "A",
-        "versao": 13
+        "versao": 14
     },
     {
         "nome": "Publicador Índice",
         "id": "publisher-index",
         "language": "pt-br",
         "status": "A",
-        "versao": 8
+        "versao": 9
     },
     {
         "nome": "Publisher Index",
         "id": "publisher-index",
         "language": "en",
         "status": "A",
-        "versao": 9
+        "versao": 10
     }
 ]

@@ -1,5 +1,27 @@
 # Validation Checklist
 
+## BATCH-239 — Integração Oficial da V3.0 e Rota Canônica das Capas (req-230)
+
+- [x] CA-1 (Capas 200 OK): Todas as capas dos módulos carregam com sucesso (HTTP 200 OK) no Dashboard sem erro 404 (validado via curl e `req227-covers-test.php` 13/13).
+- [x] CA-2 (Branches Integradas): Frentes `feat/req-226`, `req-227`, `feat/req-228` e `feat/req-229` consolidadas na branch `main`.
+- [x] CA-3 (Navegação & UI Fluida): Topbar com perfil e favoritos, abas do dashboard, seletor P/M/G e cartões integrados sem conflitos de estilização ou quebra de layout.
+- [x] CA-4 (Suíte de Testes Aprovada): `GestorStateTest` (28/28), `LayoutAdministrativoTailwindTest` (15/15), `PainelTailwindReq224Test` (2/2), `TailwindRecursosTest` (21/21), `req228-topbar-test.php` (28/28) e `req227-cards-test.cjs` (6/6) com 100% de sucesso.
+- [x] CA-5 (Limpeza de Worktrees): Worktrees prontas para desalocação segura após confirmação da mesclagem.
+
+Evidências: [BATCH-239](../implementation/BATCH-239.md).
+
+## BATCH-234 — Conferência final da UI Tailwind (req-225)
+
+- [x] Preparação: dependências conferidas, [inventário preliminar](req225-inventory.md) com 236 páginas/idiomas e [detalhes das divergências](req225-inventory.json).
+- [x] Detector contra deriva provado com fixtures: 1 teste/8 asserções; sintaxe PHP aprovada. Auditoria completa focada: 3 testes/12 asserções, 2 falhas e 3 depreciações PHPUnit.
+- [ ] CA-1: inventário final de todas as páginas sem pendências, incluindo controles/componentes gerados.
+- [ ] CA-2: todas as telas no navegador do Lab, sem Fomantic, overflow a 390 px ou erro de script.
+- [ ] CA-3: teste PHPUnit de deriva verde (atualmente detecta 2 ocorrências no core e 493 no site).
+- [ ] CA-4: roteiro humano final no arquivão do site, com todas as telas.
+- [ ] Integração das frentes dependentes, correções em branch isolada, pipeline e revisão final.
+
+Evidências e limites: [BATCH-234](../implementation/BATCH-234.md). Preparação em 2026-10-04; fontes das árvores locais, sem validação SQL/browser ou alteração do produto. A ordem da req-225 exige conclusão das frentes anteriores antes da conferência final.
+
 ## BATCH-238 — Biblioteca de Estado e Acesso Controlado a Variáveis Globais (req-229)
 
 - [x] CA-1 (Funções Implementadas): `gestor_get()`, `gestor_set()`, `gestor_has()` e `gestor_contexto()` criadas e testadas.

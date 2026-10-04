@@ -1,7 +1,13 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-229.md](req-229.md) (BATCH-238 `in-review`, 2026-10-04, branch `feat/req-229`): Biblioteca de Estado e Acesso Controlado a Variáveis Globais (Ponte para Refatoração OOP).
+  - [req-232.md](req-232.md) (BATCH-241 `ready-for-intake`, 2026-10-04, branch `feat/req-232`): Refinamento de UI V3.0 — grade livre de widgets (drag & resize nos cantos), seleção e troca ativa de widgets no card, catálogo evidente, proporções dos cards/capas (+35% altura em M), topbar (perfil w-80, dicas bottom, atalhos sem sobreposição com reordenação) e largura útil dinâmica do painel.
+  - [req-231.md](req-231.md) (BATCH-240 `planned`, 2026-10-04): Fechamento oficial da Versão 3.0.0, changelog consolidador e version bumps dos metadados após estabilização da req-232 e dependências.
+  - [req-230.md](req-230.md) (BATCH-239 `complete`, 2026-10-04, integrado em `main`): Integração Oficial da V3.0 — consolidação das branches (req-226, req-227, req-228, req-229), ajuste canônico de rota das capas (/modulos/covers/) e homologação E2E.
+  - [req-229.md](req-229.md) (BATCH-238 `complete`, 2026-10-04; integrado em `main`): Biblioteca de Estado e Acesso Controlado a Variáveis Globais (Ponte para Refatoração OOP).
+  - [req-228.md](req-228.md) (BATCH-237 `complete`, 2026-10-04; integrado em `main`): Topbar administrativa com perfil, segurança, idioma e favoritos persistentes no SQL.
+  - [req-227.md](req-227.md) (BATCH-236 `complete`, 2026-10-04; integrado em `main`): 37 capas de módulos em WebP 1024x1024 isométrica 3D e rota canônica.
+  - [req-226.md](req-226.md) (BATCH-235 `complete`, 2026-10-04; integrado em `main`): Dashboard V3.0 (seletor P/M/G, abas, widgets e links canônicos de docs).
   - [req-225.md](req-225.md) (BATCH-234 `ready-for-intake`, 2026-10-04): conferência final — todo módulo Tailwind (core e site) com os recursos da UI nova da req-219; roda depois das frentes.
   - [req-224.md](req-224.md) (BATCH-233 `in-review`, 2026-10-04, agente da req-219; navegador 40/40): usuários, perfis, módulos e painel inicial em Tailwind (fatia 6 da req-219).
   - [req-223.md](req-223.md) (BATCH-232 `ready-for-intake`, 2026-10-04, agente paralelo): módulos de administração em Tailwind (fatia 6 da req-219).

@@ -6,6 +6,22 @@
  */
 .c2fc-oculto { display: none !important; }
 
+/* ---------- cursor de clique: o preflight do Tailwind deixa <button> com cursor padrão */
+button:not(:disabled):not(.disabled), [role="button"]:not([aria-disabled="true"]), [role="tab"], summary, select:not(:disabled),
+input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled), label[for], [data-tab], .ui.button:not(.disabled) { cursor: pointer; }
+
+/* ---------- listagem (req-220): cabeçalho ordenável ocupa a célula toda, com fundo no hover; linha destacada */
+#_gestor-interface-listar thead th:has(> button) { padding: 0; }
+#_gestor-interface-listar thead th > button { width: 100%; padding: 12px; border-radius: 0; transition: background-color .15s, color .15s; }
+#_gestor-interface-listar thead th > button:not(:disabled):hover { background: #e0f2fe; color: #0369a1; }
+#_gestor-interface-listar thead th > button:not(:disabled):focus-visible { outline: 2px solid #0284c7; outline-offset: -2px; }
+#_gestor-interface-listar thead th[aria-sort="ascending"] > button, #_gestor-interface-listar thead th[aria-sort="descending"] > button { background: #f0f9ff; color: #0369a1; }
+#_gestor-interface-listar tbody td { transition: background-color .12s; }
+/* coluna sob o cursor (até 12 colunas), depois a linha, depois a célula: o destaque fica mais forte no cruzamento */
+#_gestor-interface-listar table:has(tbody td:nth-child(1):hover) :is(td, th):nth-child(1), #_gestor-interface-listar table:has(tbody td:nth-child(2):hover) :is(td, th):nth-child(2), #_gestor-interface-listar table:has(tbody td:nth-child(3):hover) :is(td, th):nth-child(3), #_gestor-interface-listar table:has(tbody td:nth-child(4):hover) :is(td, th):nth-child(4), #_gestor-interface-listar table:has(tbody td:nth-child(5):hover) :is(td, th):nth-child(5), #_gestor-interface-listar table:has(tbody td:nth-child(6):hover) :is(td, th):nth-child(6), #_gestor-interface-listar table:has(tbody td:nth-child(7):hover) :is(td, th):nth-child(7), #_gestor-interface-listar table:has(tbody td:nth-child(8):hover) :is(td, th):nth-child(8), #_gestor-interface-listar table:has(tbody td:nth-child(9):hover) :is(td, th):nth-child(9), #_gestor-interface-listar table:has(tbody td:nth-child(10):hover) :is(td, th):nth-child(10), #_gestor-interface-listar table:has(tbody td:nth-child(11):hover) :is(td, th):nth-child(11), #_gestor-interface-listar table:has(tbody td:nth-child(12):hover) :is(td, th):nth-child(12) { background: #f0f9ff; }
+#_gestor-interface-listar tbody tr:hover > td { background: #e0f2fe; }
+#_gestor-interface-listar tbody tr:hover > td:hover { background: #bae6fd; }
+
 /* ---------- diálogos (alerta, confirmar, perguntar) — mesma cara do modal do painel */
 .c2fc-overlay { position: fixed; inset: 0; z-index: 100020; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, .6); }
 .c2fc-dialogo { width: 100%; max-width: 28rem; background: #fff; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,.2); color: #334155; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; outline: none; }
@@ -13,13 +29,14 @@
 .c2fc-dialogo-corpo { padding: 16px 20px; }
 .c2fc-dialogo-corpo p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .c2fc-dialogo-acoes { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid #e2e8f0; }
-.c2fc-botao { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 8px; padding: 8px 16px; font: 500 14px/1.2 inherit; cursor: pointer; }
-.c2fc-botao:hover { background: #f1f5f9; }
+.c2fc-botao { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 8px; padding: 8px 16px; font: 500 14px/1.2 inherit; cursor: pointer; box-shadow: 0 1px 2px rgba(15,23,42,.06); transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s, transform .15s; }
+.c2fc-botao:hover { background: #f1f5f9; border-color: #94a3b8; box-shadow: 0 4px 10px -3px rgba(15,23,42,.2); transform: translateY(-1px); }
+.c2fc-botao:active { transform: translateY(0); box-shadow: 0 1px 2px rgba(15,23,42,.12); }
 .c2fc-botao:focus-visible, .c2fc-entrada:focus-visible, .c2fc-select-gatilho:focus-visible, .c2fc-aba:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
 .c2fc-botao-primario { border-color: #0284c7; background: #0284c7; color: #fff; }
-.c2fc-botao-primario:hover { background: #0369a1; }
+.c2fc-botao-primario:hover { background: #0369a1; border-color: #0369a1; }
 .c2fc-botao-perigo { border-color: #dc2626; background: #dc2626; color: #fff; }
-.c2fc-botao-perigo:hover { background: #b91c1c; }
+.c2fc-botao-perigo:hover { background: #b91c1c; border-color: #b91c1c; }
 .c2fc-entrada { width: 100%; box-sizing: border-box; margin-top: 10px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; font: 14px/1.4 inherit; color: #0f172a; background: #fff; }
 
 /* ---------- campos (controles_campo no PHP) */
@@ -37,8 +54,13 @@
 .c2fc-campo-erro { margin: 0; font-size: 12px; color: #dc2626; }
 .c2fc-chave-rotulo { font-size: 14px; color: #334155; }
 .c2fc-botao-fantasma { border-color: transparent; background: transparent; color: #475569; }
-.c2fc-botao-fantasma:hover { background: #f1f5f9; }
+.c2fc-botao-fantasma:hover { background: #f1f5f9; border-color: transparent; box-shadow: none; transform: none; }
 .c2fc-botao:disabled, .c2fc-botao.disabled { opacity: .5; cursor: not-allowed; pointer-events: none; }
+/* `loading` é o estado que o JS legado (Fomantic) liga no botão durante o AJAX */
+.c2fc-botao.loading { position: relative; color: transparent !important; pointer-events: none; }
+.c2fc-botao.loading > * { visibility: hidden; }
+.c2fc-botao.loading::after { content: ""; position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 2px solid rgba(100,116,139,.35); border-top-color: #334155; border-radius: 50%; animation: c2fc-giro .8s linear infinite; }
+.c2fc-botao-primario.loading::after, .c2fc-botao-perigo.loading::after, .c2fc-botao-sucesso.loading::after { border-color: rgba(255,255,255,.45); border-top-color: #fff; }
 .c2fc-botao-sucesso { border-color: #059669; background: #059669; color: #fff; }
 .c2fc-botao-sucesso:hover { background: #047857; }
 .c2fc-botao-pequeno { padding: 5px 10px; font-size: 13px; }
@@ -55,25 +77,29 @@ a.c2fc-botao { text-decoration: none; }
 
 /* ---------- ações por linha da listagem (cores do `cor` de cada opção, como no Fomantic) */
 .c2fc-acoes { display: flex; flex-wrap: nowrap; gap: 4px; }
-.c2fc-acao { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex: none; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #475569; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; }
+/* ações (ícone) da listagem e de telas: tom claro da cor em repouso; cor cheia, texto branco e leve elevação no hover */
+.c2fc-acao { --c2fc-forte: #475569; --c2fc-claro: #f1f5f9; --c2fc-borda: #cbd5e1; --c2fc-texto: #334155; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex: none; border: 1px solid var(--c2fc-borda); border-radius: 8px; background: var(--c2fc-claro); color: var(--c2fc-texto); cursor: pointer; box-shadow: 0 1px 2px rgba(15,23,42,.06); transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s, transform .15s; }
 .c2fc-acao svg, .c2fc-acao i { width: 16px; height: 16px; }
-.c2fc-acao:hover { background: #f1f5f9; }
+.c2fc-acao:hover { background: var(--c2fc-forte); border-color: var(--c2fc-forte); color: #fff; box-shadow: 0 4px 10px -2px rgba(15,23,42,.25); transform: translateY(-1px); }
+.c2fc-acao:active { transform: translateY(0); box-shadow: 0 1px 2px rgba(15,23,42,.15); }
 .c2fc-acao:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
-.c2fc-acao:disabled { opacity: .5; cursor: not-allowed; }
-.c2fc-cor-blue { border-color: #93c5fd; color: #1d4ed8; } .c2fc-cor-blue:hover { background: #eff6ff; }
-.c2fc-cor-teal { border-color: #5eead4; color: #0f766e; } .c2fc-cor-teal:hover { background: #f0fdfa; }
-.c2fc-cor-green { border-color: #86efac; color: #15803d; } .c2fc-cor-green:hover { background: #f0fdf4; }
-.c2fc-cor-olive { border-color: #bef264; color: #4d7c0f; } .c2fc-cor-olive:hover { background: #f7fee7; }
-.c2fc-cor-yellow { border-color: #fde047; color: #a16207; } .c2fc-cor-yellow:hover { background: #fefce8; }
-.c2fc-cor-orange { border-color: #fdba74; color: #c2410c; } .c2fc-cor-orange:hover { background: #fff7ed; }
-.c2fc-cor-brown { border-color: #d6b38a; color: #92400e; } .c2fc-cor-brown:hover { background: #fdf6ec; }
-.c2fc-cor-red { border-color: #fca5a5; color: #b91c1c; } .c2fc-cor-red:hover { background: #fef2f2; }
-.c2fc-cor-pink { border-color: #f9a8d4; color: #be185d; } .c2fc-cor-pink:hover { background: #fdf2f8; }
-.c2fc-cor-violet, .c2fc-cor-purple { border-color: #c4b5fd; color: #6d28d9; } .c2fc-cor-violet:hover, .c2fc-cor-purple:hover { background: #f5f3ff; }
-.c2fc-cor-grey, .c2fc-cor-black { border-color: #cbd5e1; color: #334155; }
+.c2fc-acao:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+/* paleta compartilhada por .c2fc-acao e .c2fc-rotulo (nomes de cor do Fomantic) */
+.c2fc-cor-blue { --c2fc-forte: #2563eb; --c2fc-claro: #eff6ff; --c2fc-borda: #93c5fd; --c2fc-texto: #1d4ed8; border-color: #93c5fd; color: #1d4ed8; }
+.c2fc-cor-teal { --c2fc-forte: #0d9488; --c2fc-claro: #f0fdfa; --c2fc-borda: #5eead4; --c2fc-texto: #0f766e; border-color: #5eead4; color: #0f766e; }
+.c2fc-cor-green { --c2fc-forte: #16a34a; --c2fc-claro: #f0fdf4; --c2fc-borda: #86efac; --c2fc-texto: #15803d; border-color: #86efac; color: #15803d; }
+.c2fc-cor-olive { --c2fc-forte: #65a30d; --c2fc-claro: #f7fee7; --c2fc-borda: #bef264; --c2fc-texto: #4d7c0f; border-color: #bef264; color: #4d7c0f; }
+.c2fc-cor-yellow { --c2fc-forte: #ca8a04; --c2fc-claro: #fefce8; --c2fc-borda: #fde047; --c2fc-texto: #a16207; border-color: #fde047; color: #a16207; }
+.c2fc-cor-orange { --c2fc-forte: #ea580c; --c2fc-claro: #fff7ed; --c2fc-borda: #fdba74; --c2fc-texto: #c2410c; border-color: #fdba74; color: #c2410c; }
+.c2fc-cor-brown { --c2fc-forte: #a16207; --c2fc-claro: #fdf6ec; --c2fc-borda: #d6b38a; --c2fc-texto: #92400e; border-color: #d6b38a; color: #92400e; }
+.c2fc-cor-red { --c2fc-forte: #dc2626; --c2fc-claro: #fef2f2; --c2fc-borda: #fca5a5; --c2fc-texto: #b91c1c; border-color: #fca5a5; color: #b91c1c; }
+.c2fc-cor-pink { --c2fc-forte: #db2777; --c2fc-claro: #fdf2f8; --c2fc-borda: #f9a8d4; --c2fc-texto: #be185d; border-color: #f9a8d4; color: #be185d; }
+.c2fc-cor-violet, .c2fc-cor-purple { --c2fc-forte: #7c3aed; --c2fc-claro: #f5f3ff; --c2fc-borda: #c4b5fd; --c2fc-texto: #6d28d9; border-color: #c4b5fd; color: #6d28d9; }
+.c2fc-cor-grey, .c2fc-cor-black { --c2fc-forte: #475569; --c2fc-claro: #f1f5f9; --c2fc-borda: #cbd5e1; --c2fc-texto: #334155; border-color: #cbd5e1; color: #334155; }
 /* rótulo-link vindo de formatador (ex.: caminho da página no admin-paginas) */
 .c2fc-rotulo { display: inline-flex; align-items: center; max-width: 100%; padding: 2px 8px; border: 1px solid #e2e8f0; border-radius: 6px; background: #f8fafc; color: #334155; font-size: 12px; font-weight: 500; overflow-wrap: anywhere; }
 a.c2fc-rotulo { color: #0369a1; text-decoration: none; }
+.c2fc-rotulo[class*="c2fc-cor-"] { border-color: var(--c2fc-borda); background: var(--c2fc-claro); color: var(--c2fc-texto); }
 a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoration: underline; }
 .c2fc-texto-suave { color: #94a3b8; }
 
@@ -93,6 +119,37 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
 [data-c2f-historico] #_gestor-interface-edit-historico-mais { display: inline-flex; margin: 8px auto 0; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #334155; padding: 6px 14px; font: 500 13px/1.2 inherit; cursor: pointer; }
 [data-c2f-historico] #_gestor-interface-edit-historico-mais:hover { background: #f1f5f9; }
 [data-c2f-historico] .ui.grid > .column { text-align: center; }
+
+/* ---------- blocos para HTML montado por JS (o Tailwind não compila classe escrita em JS) */
+.c2fc-nota { border: 1px solid #bae6fd; border-radius: 8px; background: #f0f9ff; color: #075985; padding: 10px 14px; font-size: 14px; line-height: 1.45; }
+.c2fc-nota-sucesso { border-color: #bbf7d0; background: #f0fdf4; color: #166534; }
+.c2fc-nota-erro { border-color: #fecaca; background: #fef2f2; color: #991b1b; }
+.c2fc-nota-alerta { border-color: #fde68a; background: #fffbeb; color: #92400e; }
+.c2fc-cartao { border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; padding: 16px; box-shadow: 0 1px 2px rgba(15,23,42,.05); }
+.c2fc-cartao + .c2fc-cartao { margin-top: 12px; }
+.c2fc-cartao > * + * { margin-top: 8px; }
+.c2fc-cartao-titulo { margin: 0; font-size: 15px; font-weight: 600; color: #0f172a; }
+.c2fc-cartao-titulo a { color: #0369a1; text-decoration: none; }
+.c2fc-cartao-titulo a:hover { text-decoration: underline; }
+.c2fc-texto { margin: 0; font-size: 14px; color: #475569; overflow-wrap: anywhere; }
+.c2fc-tabela-caixa { max-width: 100%; overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
+.c2fc-tabela { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
+.c2fc-tabela th { background: #f8fafc; color: #475569; font-size: 12px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid #e2e8f0; white-space: nowrap; }
+.c2fc-tabela td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; color: #1e293b; vertical-align: top; }
+.c2fc-tabela tr:last-child td { border-bottom: 0; }
+.c2fc-tabela a { color: #0369a1; }
+.c2fc-lista { list-style: none; margin: 0; padding: 0; }
+.c2fc-lista > li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #1e293b; }
+.c2fc-lista > li:last-child { border-bottom: 0; }
+.c2fc-lista a { color: #0369a1; font-weight: 600; text-decoration: none; }
+.c2fc-lista a:hover { text-decoration: underline; }
+.c2fc-lista small { color: #64748b; }
+.c2fc-ponto { display: inline-block; flex: none; width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; }
+.c2fc-ponto-ativo { background: #16a34a; }
+.c2fc-numeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.c2fc-numero { border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; padding: 12px; text-align: center; }
+.c2fc-numero-valor { font-size: 24px; font-weight: 600; color: #0f172a; line-height: 1.2; }
+.c2fc-numero-rotulo { margin-top: 2px; font-size: 12px; letter-spacing: .02em; text-transform: uppercase; color: #64748b; }
 
 /* ---------- selo de status (interface_status_selo no PHP) */
 .c2fc-selo { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 12px; font-size: 12px; font-weight: 600; line-height: 1.2; }
@@ -187,6 +244,7 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
 .c2fc-ponte-modal > .actions { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid #e2e8f0; }
 .c2fc-ponte-modal > .close { position: absolute; top: 10px; right: 14px; cursor: pointer; }
 .c2fc-ponte-modal.tiny { max-width: 28rem; }
+.c2fc-ponte-modal.small { max-width: 40rem; }
 .c2fc-ponte-modal.large { max-width: 72rem; }
 .c2fc-ponte-modal.fullscreen { max-width: none; width: calc(100vw - 32px); height: calc(100vh - 32px); display: flex !important; flex-direction: column; }
 .c2fc-ponte-modal.fullscreen > .content, .c2fc-ponte-modal.fullscreen > .scrolling.content { flex: 1; overflow: auto; }

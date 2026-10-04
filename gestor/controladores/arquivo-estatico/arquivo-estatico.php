@@ -550,6 +550,11 @@ function arquivo_estatico_start(){
 		}
 		
 		$fileResolvido = arquivo_estatico_resolver_autorizado($file, $basesAutorizadas);
+		if($fileResolvido === false && str_starts_with($caminhoTotal, 'assets/')){
+			$caminhoSemAssets = substr($caminhoTotal, 7);
+			$fileTentativa = $_GESTOR['assets-path'].$caminhoSemAssets;
+			$fileResolvido = arquivo_estatico_resolver_autorizado($fileTentativa, $basesAutorizadas);
+		}
 		if($fileResolvido !== false){
 			// A escolha do derivado acontece DEPOIS da autorização, sobre o caminho já validado: o
 			// containment continua sendo decidido num lugar só.

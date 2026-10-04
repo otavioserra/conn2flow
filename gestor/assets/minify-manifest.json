@@ -10,9 +10,9 @@
         "minificado": 5491
     },
     "gestor/assets/dashboard/dashboard-3d-cards.js": {
-        "sha1": "d6bde171b7897f99326a380780e093d2e39e0eb2",
-        "origem": 19653,
-        "minificado": 6182
+        "sha1": "26ff034179636c27c9fdc8f01cc7c2c3d625a000",
+        "origem": 20094,
+        "minificado": 6113
     },
     "gestor/assets/dashboard/dashboard-3d-config.js": {
         "sha1": "2390ef329893be4e3339e25603abdce032846ac5",
@@ -38,6 +38,11 @@
         "sha1": "304dd85165ef2139449e6c882eda21506980b8cb",
         "origem": 16449,
         "minificado": 4754
+    },
+    "gestor/assets/global/admin-topbar.js": {
+        "sha1": "d9708192f233d0dbacf27a6ee6307918a8606b3b",
+        "origem": 10647,
+        "minificado": 5975
     },
     "gestor/assets/global/admin.js": {
         "sha1": "e19154482a728143aa064ba28293cb6ab00b8316",
@@ -220,9 +225,9 @@
         "minificado": 5440
     },
     "gestor/modulos/dashboard/dashboard.js": {
-        "sha1": "22a39993979feeeda18dbb98162ca1918d1297f9",
-        "origem": 19992,
-        "minificado": 7309
+        "sha1": "c2c5da908d5b656208ebcba037df23ffcafad051",
+        "origem": 38142,
+        "minificado": 17122
     },
     "gestor/modulos/dashboard/dashboard.toolbar.js": {
         "sha1": "c8567429196deaa5ac916212eeda56284ec97141",
@@ -343,10 +348,5 @@
         "sha1": "3f816e758a15075aa01cdc189e031ab21dbb1d0f",
         "origem": 252,
         "minificado": 151
-    },
-    "gestor/assets/global/admin-topbar.js": {
-        "sha1": "a9e32861262719b4392f07bf4c59b96872ee396c",
-        "origem": 10467,
-        "minificado": 5975
     }
 }

@@ -289,13 +289,15 @@
                     card.appendChild(cardBorder);
 
                     // Imagem destaque (thumbnail) - se configurado
-                    if (CONFIG.cards.thumbnail && CONFIG.cards.thumbnail.enabled) {
+                    var hasThumbnail = CONFIG.cards.thumbnail &&
+                        (module.thumbnail || CONFIG.cards.thumbnail.enabled);
+                    if (hasThumbnail) {
                         var thumbnailUrl = module.thumbnail ||
                             (CONFIG.cards.thumbnail.defaultUrl + module.id);
 
                         var thumbnail = document.createElement('a-plane');
                         thumbnail.setAttribute('position', '0 ' + CONFIG.cards.thumbnail.yOffset + ' 0.05');
-                        thumbnail.setAttribute('width', CONFIG.cards.thumbnail.width);
+                        thumbnail.setAttribute('width', module.thumbnail ? CONFIG.cards.thumbnail.height : CONFIG.cards.thumbnail.width);
                         thumbnail.setAttribute('height', CONFIG.cards.thumbnail.height);
                         thumbnail.setAttribute('material',
                             'src: url(' + thumbnailUrl + '); ' +
@@ -308,7 +310,7 @@
 
                     // Ícone (posição ajustada se tiver thumbnail)
                     var iconEmoji = self.getModuleIcon(module.icon);
-                    var iconY = CONFIG.cards.thumbnail && CONFIG.cards.thumbnail.enabled ? -0.25 : 0.35;
+                    var iconY = hasThumbnail ? -0.25 : 0.35;
                     var iconText = document.createElement('a-entity');
                     iconText.setAttribute('position', '-0.7 ' + iconY + ' 0.05');
                     iconText.setAttribute('troika-text',
@@ -322,7 +324,7 @@
                     card.appendChild(iconText);
 
                     // Nome do módulo (centralizado no card) - com limite de caracteres do config
-                    var nameY = CONFIG.cards.thumbnail && CONFIG.cards.thumbnail.enabled ? -0.25 : 0.35;
+                    var nameY = hasThumbnail ? -0.25 : 0.35;
                     var formattedName = self.formatTitle(moduleName);
                     var titleMaxWidth = CONFIG.cards.text ? CONFIG.cards.text.titleMaxWidth : 1.8;
                     var nameText = document.createElement('a-entity');
@@ -339,7 +341,7 @@
                     card.appendChild(nameText);
 
                     // Descrição - com limite de caracteres do config
-                    var descY = CONFIG.cards.thumbnail && CONFIG.cards.thumbnail.enabled ? -0.5 : -0.1;
+                    var descY = hasThumbnail ? -0.5 : -0.1;
                     var formattedDesc = self.formatDescription(moduleDesc);
                     var descMaxWidth = CONFIG.cards.text ? CONFIG.cards.text.descriptionMaxWidth : 2.0;
                     var descText = document.createElement('a-entity');
