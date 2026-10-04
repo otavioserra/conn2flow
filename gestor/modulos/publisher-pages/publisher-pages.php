@@ -207,6 +207,7 @@ function publisher_pages_html_inclusao_resolver($html_enviado, $html_template){
 
 function publisher_pages_adicionar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -506,7 +507,7 @@ function publisher_pages_adicionar(){
 
 				if($fields){
 					$publisher_fields = gestor_componente(Array(
-						'id' => 'publisher-fields',
+						'id' => interface_componente_variante('publisher-fields'),
 						'modulo' => $_GESTOR['modulo-id'],
 					));
 
@@ -770,6 +771,7 @@ function publisher_pages_adicionar(){
 
 function publisher_pages_editar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -1321,7 +1323,7 @@ function publisher_pages_editar(){
 
 						// Componente de fields do publisher
 						$publisher_fields = gestor_componente(Array(
-							'id' => 'publisher-fields',
+							'id' => interface_componente_variante('publisher-fields'),
 							'modulo' => $_GESTOR['modulo-id'],
 						));
 
@@ -1654,6 +1656,7 @@ function publisher_pages_editar(){
 
 function publisher_pages_clonar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -2033,7 +2036,7 @@ function publisher_pages_clonar(){
 
 						// Componente de fields do publisher
 						$publisher_fields = gestor_componente(Array(
-							'id' => 'publisher-fields',
+							'id' => interface_componente_variante('publisher-fields'),
 							'modulo' => $_GESTOR['modulo-id'],
 						));
 
@@ -2352,7 +2355,7 @@ function publisher_pages_listar_cabecalho(){
 	$checked = ' checked="checked"';
 
 	$componente_cabecalho = gestor_componente(Array(
-		'id' => 'lista-pagina-ou-sistema-ou-publisher',
+		'id' => interface_componente_variante('lista-pagina-ou-sistema-ou-publisher'),
 		'modulo' => $_GESTOR['modulo-id'],
 	));
 
@@ -2440,6 +2443,7 @@ function publisher_pages_interfaces_padroes(){
 
 	switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true;
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],
@@ -2486,7 +2490,7 @@ function publisher_pages_interfaces_padroes(){
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'form-publisher-label')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
-								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
+								'valor_senao_existe' => '<span class="c2fc-campo-ajuda">N/A</span>',
 								'tabela' => Array(
 									'nome' => 'publisher',
 									'campo_trocar' => 'name',
@@ -2500,7 +2504,7 @@ function publisher_pages_interfaces_padroes(){
 							'nome' => gestor_variaveis(Array('modulo' => 'modulos','id' => 'module-name')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
-								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
+								'valor_senao_existe' => '<span class="c2fc-campo-ajuda">N/A</span>',
 								'tabela' => Array(
 									'nome' => 'modulos',
 									'campo_trocar' => 'nome',
@@ -2514,7 +2518,7 @@ function publisher_pages_interfaces_padroes(){
 							'nome' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-url-path')),
 							'formatar' => Array(
 								'id' => 'encapsular',
-								'capsula' => '<a href="'.$_GESTOR['url-raiz'].'#caminho#" class="ui basic label">#caminho#</a>',
+								'capsula' => '<a href="'.$_GESTOR['url-raiz'].'#caminho#" class="c2fc-selo">#caminho#</a>',
 								'variavel' => '#caminho#',
 							),
 						),

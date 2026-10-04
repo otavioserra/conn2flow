@@ -375,3 +375,16 @@ Para manter o checklist de validaÃ§Ãµes leve e eficiente (teto de 25 blocos 
 - [ ] Revisão independente e consolidação pela req-219/humano.
 
 Evidências: [BATCH-228](../implementation/BATCH-228.md), [roteiro](req220-browser.cjs), [resultados](req220-browser-results.json). Runtime inspecionado em pt-br; en compilado e verificado por unidade. Depreciações/pulados e problemas iniciais de CRLF registrados no lote.
+
+## BATCH-230 — Família Publisher em Tailwind (req-221)
+
+- [x] CA-1: cinco módulos e três variantes do editor, pt-br/en; documento do painel sem Fomantic.
+- [x] CA-2: listar/adicionar/editar/clonar, selects, switches, abas, campos/vínculos, curadoria, salvar e recarregar; desktop/390 px sem overflow. Workspace Social carregado e reaberto nas duas larguras.
+- [x] CA-3: sem alert/confirm/prompt nativos nas telas migradas.
+- [x] CA-4: PHPUnit completo 1.515/14.094; Vitest completo 495; contratos core 10/1.543; site PHP 3/92 e JS 9; Playwright 439 verificações sem falhas.
+- [x] CA-5: relatório BATCH-230 e roteiro humano no PENDENCIAS-HUMANAS.md do site.
+- [x] Pipeline oficial sequencial, CSS final reconstruído, manutenção desligada e fixture própria removida pela UI.
+- [x] Review de contratos/dependências/CSRF e git diff --check; artefatos fora do escopo invertidos antes dos commits.
+- [ ] Revisão independente, teste humano e consolidação pela req-219.
+
+Evidências e limitações: [BATCH-230](../implementation/BATCH-230.md). Roteiro/resultados no site em `sdd/validation/core/req221-publisher-e2e.cjs` e `evidence-req221/`. Runtime pt-br; en compilado e verificado por contratos. JS compartilhados mais recentes da req-219 preservados; controle legado admin-templates e cadastro ausente de sua simulação original descritos no lote.

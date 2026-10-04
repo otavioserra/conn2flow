@@ -1,99 +1,99 @@
-<div class="field">
-    <label>#form-publisher-label#</label>
+<div class="c2fc-campo">
+    <label class="c2fc-campo-rotulo">#form-publisher-label#</label>
     <span>#select-publisher#</span>
 </div>
 
 <!-- publisher-options < -->
-<a class="ui button brown" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#"
-    data-tooltip="Clique para editar o publicador" data-position="top left" data-inverted="">
-    <i class="edit icon"></i>
+<a class="c2fc-botao c2fc-botao-primario" href="@[[pagina#url-raiz]]@publisher/editar/#publisher-id#"
+    data-c2f-dica="Clique para editar o publicador" data-position="top left" data-inverted="">
+    <i data-lucide="pencil" class="size-4 shrink-0"></i>
     Editar Publicador
 </a><!-- publisher-options > -->
 
-<h4 class="ui horizontal divider header publisher-fields-header">
-    <i class="file image outline icon"></i>
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold publisher-fields-header">
+    <i data-lucide="image" class="size-4 shrink-0"></i>
     Campos da Página
 </h4>
 
-<div class="field">
-    <label>#form-name-label#</label>
-    <input type="text" name="pagina-nome" placeholder="#form-name-placeholder#">
+<div class="c2fc-campo">
+    <label class="c2fc-campo-rotulo">#form-name-label#</label>
+    <input type="text" name="pagina-nome" placeholder="#form-name-placeholder#" class="c2fc-campo-entrada">
 </div>
-<div class="field">
-    <label>#form-path-label#</label>
-    <input type="text" name="paginaCaminho" placeholder="#form-path-placeholder#" value="#caminho#">
+<div class="c2fc-campo">
+    <label class="c2fc-campo-rotulo">#form-path-label#</label>
+    <input type="text" name="paginaCaminho" placeholder="#form-path-placeholder#" value="#caminho#" class="c2fc-campo-entrada">
 </div>
-<div class="two fields">
-    <div class="field">
-        <label>#form-layout-label#</label>
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">#form-layout-label#</label>
         <span>#select-layout#</span>
     </div>
-    <div class="field">
-        <label>#form-framework-css-label#</label>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">#form-framework-css-label#</label>
         <span>#select-framework-css#</span>
     </div>
 </div>
 #layout-profile-mapping#
-<div class="two fields">
-    <div class="field">
-        <label>#form-type-label#</label>
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">#form-type-label#</label>
         <span>#select-type#</span>
     </div>
     <!-- permissao-pagina < -->
-    <div class="field">
-        <label>#form-permission-label#</label>
-        <div class="ui toggle checkbox">
-            <input type="checkbox" name="sem_permissao" data-checked="#sem_permissao#">
-            <label>&nbsp;</label>
-        </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">#form-permission-label#</label>
+        <label class="c2fc-chave checkbox">
+            <input type="checkbox" name="sem_permissao" #sem_permissao#><span class="c2fc-chave-trilho"></span>
+            <span class="c2fc-chave-rotulo">&nbsp;</span>
+        </label>
     </div><!-- permissao-pagina > -->
 </div>
 <!-- agendamento-datas < -->
-<h4 class="ui dividing header">Agendamento e datas</h4>
-<div class="two fields">
-    <div class="field">
-        <label>Publicar a partir de</label>
-        <input type="datetime-local" name="data_publicacao_inicio">
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Agendamento e datas</h4>
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Publicar a partir de</label>
+        <input type="datetime-local" name="data_publicacao_inicio" class="c2fc-campo-entrada">
     </div>
-    <div class="field">
-        <label>Despublicar em</label>
-        <input type="datetime-local" name="data_publicacao_fim">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Despublicar em</label>
+        <input type="datetime-local" name="data_publicacao_fim" class="c2fc-campo-entrada">
     </div>
 </div>
-<div class="two fields">
-    <div class="field">
-        <label>Data de criação</label>
-        <input type="datetime-local" name="data_criacao">
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Data de criação</label>
+        <input type="datetime-local" name="data_criacao" class="c2fc-campo-entrada">
     </div>
-    <div class="field">
-        <label>Data de modificação</label>
-        <input type="datetime-local" name="data_modificacao">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Data de modificação</label>
+        <input type="datetime-local" name="data_modificacao" class="c2fc-campo-entrada">
     </div>
 </div>
 <!-- agendamento-datas > -->
-<div class="three fields hidden pagina-modulos-container">
-    <div class="field">
-        <label>#form-module-label#</label>
+<div class="grid grid-cols-1 gap-4 md:grid-cols-3 hidden pagina-modulos-container">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">#form-module-label#</label>
         <span>#select-module#</span>
     </div>
-    <div class="field">
-        <label>#form-option-label#</label>
-        <input type="text" name="pagina-opcao" placeholder="#form-option-placeholder#" value="#opcao#">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">#form-option-label#</label>
+        <input type="text" name="pagina-opcao" placeholder="#form-option-placeholder#" value="#opcao#" class="c2fc-campo-entrada">
     </div>
-    <div class="field">
-        <label>#form-root-label#</label>
-        <div class="ui toggle checkbox">
-            <input type="checkbox" name="raiz" data-checked="#raiz#">
-            <label>&nbsp;</label>
-        </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">#form-root-label#</label>
+        <label class="c2fc-chave checkbox">
+            <input type="checkbox" name="raiz" #raiz#><span class="c2fc-chave-trilho"></span>
+            <span class="c2fc-chave-rotulo">&nbsp;</span>
+        </label>
     </div>
 </div>
 
 <!-- publisher-fields-container < -->
 <div class="publisher-fields-container">
 
-    <h4 class="ui horizontal divider header publisher-fields-header">
-        <i class="file alternate outline icon"></i>
+    <h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold publisher-fields-header">
+        <i data-lucide="file-text" class="size-4 shrink-0"></i>
         Campos do Publicador
     </h4>
 
@@ -101,10 +101,10 @@
 
     <input type="hidden" name="publisher_fields_schema" value='#publisher-fields-schema#'>
 
-    <div class="ui divider"></div>
+    <div class="my-4 border-t border-slate-200"></div>
 </div><!-- publisher-fields-container > -->
 
-<div class="field">
-    <label>#form-page-content-label#</label>
+<div class="c2fc-campo">
+    <label class="c2fc-campo-rotulo">#form-page-content-label#</label>
     #html-editor#
 </div>

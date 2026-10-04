@@ -686,5 +686,41 @@
             "css_precompiled": "",
             "combined": "e023064c647925363bed170614345a50"
         }
+    },
+    {
+        "name": "html-editor-publisher-controls-tailwind",
+        "id": "html-editor-publisher-controls-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "89db65a78816e5857c7ba11f4c61f01a",
+            "css": "097ec5c27861a47999bb0c573d748cbb",
+            "css_precompiled": "",
+            "combined": "3004186270fe672229b683e651239ddb"
+        }
+    },
+    {
+        "name": "html-editor-publisher-simulation-tailwind",
+        "id": "html-editor-publisher-simulation-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "e1c0b0c428ece84817a9a12971ceafd5",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "e1c0b0c428ece84817a9a12971ceafd5"
+        }
+    },
+    {
+        "name": "html-editor-publisher-highlights-simulation-tailwind",
+        "id": "html-editor-publisher-highlights-simulation-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "f3900bfe4a298dc3a8585896eb6ab4cc",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "f3900bfe4a298dc3a8585896eb6ab4cc"
+        }
     }
 ]

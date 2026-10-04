@@ -1,0 +1,538 @@
+{
+  "modulos/publisher/resources/en/pages/publisher/publisher.html": {
+    "/\\sid=\"([^\"#]+)\"/": [],
+    "/\\sname=\"([^\"]+)\"/": [],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  },
+  "modulos/publisher/resources/en/pages/publisher-adicionar/publisher-adicionar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-all-fields-btn",
+      "add-field-btn",
+      "add-new-template",
+      "available-fields-list",
+      "clone-template",
+      "edit-template",
+      "error-message",
+      "error-message-content",
+      "fields-schema-container",
+      "linked-fields-list",
+      "missing-fields-list",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "fields_schema",
+      "name",
+      "path_prefix",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": [
+      "templates-alguns-linkados-msg <",
+      "templates-alguns-linkados-msg >",
+      "templates-todos-linkados-msg <",
+      "templates-todos-linkados-msg >"
+    ]
+  },
+  "modulos/publisher/resources/en/pages/publisher-clonar/publisher-clonar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-all-fields-btn",
+      "add-field-btn",
+      "add-new-template",
+      "available-fields-list",
+      "clone-template",
+      "edit-template",
+      "error-message",
+      "error-message-content",
+      "fields-schema-container",
+      "linked-fields-list",
+      "missing-fields-list",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "fields_schema",
+      "name",
+      "path_prefix",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#path_prefix#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": [
+      "templates-alguns-linkados-msg <",
+      "templates-alguns-linkados-msg >",
+      "templates-todos-linkados-msg <",
+      "templates-todos-linkados-msg >"
+    ]
+  },
+  "modulos/publisher/resources/en/pages/publisher-editar/publisher-editar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-all-fields-btn",
+      "add-field-btn",
+      "add-new-template",
+      "available-fields-list",
+      "clone-template",
+      "edit-template",
+      "error-message",
+      "error-message-content",
+      "fields-schema-container",
+      "linked-fields-list",
+      "missing-fields-list",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "fields_schema",
+      "name",
+      "path_prefix",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#name#",
+      "#path_prefix#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": [
+      "templates-alguns-linkados-msg <",
+      "templates-alguns-linkados-msg >",
+      "templates-todos-linkados-msg <",
+      "templates-todos-linkados-msg >"
+    ]
+  },
+  "modulos/publisher/resources/pt-br/pages/publisher/publisher.html": {
+    "/\\sid=\"([^\"#]+)\"/": [],
+    "/\\sname=\"([^\"]+)\"/": [],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  },
+  "modulos/publisher/resources/pt-br/pages/publisher-adicionar/publisher-adicionar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-all-fields-btn",
+      "add-field-btn",
+      "add-new-template",
+      "available-fields-list",
+      "clone-template",
+      "edit-template",
+      "error-message",
+      "error-message-content",
+      "fields-schema-container",
+      "linked-fields-list",
+      "missing-fields-list",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "fields_schema",
+      "name",
+      "path_prefix",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": [
+      "templates-alguns-linkados-msg <",
+      "templates-alguns-linkados-msg >",
+      "templates-todos-linkados-msg <",
+      "templates-todos-linkados-msg >"
+    ]
+  },
+  "modulos/publisher/resources/pt-br/pages/publisher-clonar/publisher-clonar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-all-fields-btn",
+      "add-field-btn",
+      "add-new-template",
+      "available-fields-list",
+      "clone-template",
+      "edit-template",
+      "error-message",
+      "error-message-content",
+      "fields-schema-container",
+      "linked-fields-list",
+      "missing-fields-list",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "fields_schema",
+      "name",
+      "path_prefix",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#path_prefix#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": [
+      "templates-alguns-linkados-msg <",
+      "templates-alguns-linkados-msg >",
+      "templates-todos-linkados-msg <",
+      "templates-todos-linkados-msg >"
+    ]
+  },
+  "modulos/publisher/resources/pt-br/pages/publisher-editar/publisher-editar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-all-fields-btn",
+      "add-field-btn",
+      "add-new-template",
+      "available-fields-list",
+      "clone-template",
+      "edit-template",
+      "error-message",
+      "error-message-content",
+      "fields-schema-container",
+      "linked-fields-list",
+      "missing-fields-list",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "fields_schema",
+      "name",
+      "path_prefix",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#name#",
+      "#path_prefix#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": [
+      "templates-alguns-linkados-msg <",
+      "templates-alguns-linkados-msg >",
+      "templates-todos-linkados-msg <",
+      "templates-todos-linkados-msg >"
+    ]
+  },
+  "modulos/publisher-highlights/resources/en/pages/publisher-highlights/publisher-highlights.html": {
+    "/\\sid=\"([^\"#]+)\"/": [],
+    "/\\sname=\"([^\"]+)\"/": [],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  },
+  "modulos/publisher-highlights/resources/en/pages/publisher-highlights-adicionar/publisher-highlights-adicionar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-new-template",
+      "available-fields-list",
+      "btn-copy-widget-val",
+      "count",
+      "error-message",
+      "error-message-content",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-publisher-highlights-preview",
+      "linked-fields-list",
+      "manual-items-wrapper",
+      "manual_search_input",
+      "missing-fields-list",
+      "order-by-wrapper",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "search-suggestions-dropdown",
+      "selected-labels-container",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "count",
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#html-editor#",
+      "#publisher_id_options#",
+      "#publisher_placeholder_option#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  },
+  "modulos/publisher-highlights/resources/en/pages/publisher-highlights-clonar/publisher-highlights-clonar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "available-fields-list",
+      "btn-copy-widget-val",
+      "count",
+      "error-message",
+      "error-message-content",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-publisher-highlights-preview",
+      "linked-fields-list",
+      "manual-items-wrapper",
+      "manual_search_input",
+      "missing-fields-list",
+      "order-by-wrapper",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "search-suggestions-dropdown",
+      "selected-labels-container",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "count",
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#html-editor#",
+      "#publisher_id_options#",
+      "#publisher_placeholder_option#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  },
+  "modulos/publisher-highlights/resources/en/pages/publisher-highlights-editar/publisher-highlights-editar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-new-template",
+      "available-fields-list",
+      "btn-copy-widget-val",
+      "count",
+      "error-message",
+      "error-message-content",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-publisher-highlights-preview",
+      "linked-fields-list",
+      "manual-items-wrapper",
+      "manual_search_input",
+      "missing-fields-list",
+      "order-by-wrapper",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "search-suggestions-dropdown",
+      "selected-labels-container",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "count",
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#html-editor#",
+      "#name#",
+      "#publisher_id_options#",
+      "#publisher_placeholder_option#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  },
+  "modulos/publisher-highlights/resources/pt-br/pages/publisher-highlights/publisher-highlights.html": {
+    "/\\sid=\"([^\"#]+)\"/": [],
+    "/\\sname=\"([^\"]+)\"/": [],
+    "/\\sdata-tab=\"([^\"]+)\"/": [],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  },
+  "modulos/publisher-highlights/resources/pt-br/pages/publisher-highlights-adicionar/publisher-highlights-adicionar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-new-template",
+      "available-fields-list",
+      "btn-copy-widget-val",
+      "count",
+      "error-message",
+      "error-message-content",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-publisher-highlights-preview",
+      "linked-fields-list",
+      "manual-items-wrapper",
+      "manual_search_input",
+      "missing-fields-list",
+      "order-by-wrapper",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "search-suggestions-dropdown",
+      "selected-labels-container",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "count",
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#html-editor#",
+      "#publisher_id_options#",
+      "#publisher_placeholder_option#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  },
+  "modulos/publisher-highlights/resources/pt-br/pages/publisher-highlights-clonar/publisher-highlights-clonar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "available-fields-list",
+      "btn-copy-widget-val",
+      "count",
+      "error-message",
+      "error-message-content",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-publisher-highlights-preview",
+      "linked-fields-list",
+      "manual-items-wrapper",
+      "manual_search_input",
+      "missing-fields-list",
+      "order-by-wrapper",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "search-suggestions-dropdown",
+      "selected-labels-container",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "count",
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#html-editor#",
+      "#publisher_id_options#",
+      "#publisher_placeholder_option#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  },
+  "modulos/publisher-highlights/resources/pt-br/pages/publisher-highlights-editar/publisher-highlights-editar.html": {
+    "/\\sid=\"([^\"#]+)\"/": [
+      "add-new-template",
+      "available-fields-list",
+      "btn-copy-widget-val",
+      "count",
+      "error-message",
+      "error-message-content",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-publisher-highlights-preview",
+      "linked-fields-list",
+      "manual-items-wrapper",
+      "manual_search_input",
+      "missing-fields-list",
+      "order-by-wrapper",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "search-suggestions-dropdown",
+      "selected-labels-container",
+      "template-skeletons",
+      "template_id"
+    ],
+    "/\\sname=\"([^\"]+)\"/": [
+      "count",
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "order_by",
+      "publisher_id",
+      "rule",
+      "template_id"
+    ],
+    "/\\sdata-tab=\"([^\"]+)\"/": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "/(#[a-z][\\w-]*#|@\\[\\[[^\\]]+\\]\\]@)/": [
+      "#html-editor#",
+      "#name#",
+      "#publisher_id_options#",
+      "#publisher_placeholder_option#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ],
+    "/<!--\\s*([\\w-]+\\s*[<>]|[\\w-]+-componente)\\s*-->/": []
+  }
+}

@@ -1,38 +1,38 @@
-<div class="field">
-    <label>Highlights Block Name</label>
-    <input type="text" name="name" placeholder="E.g.: Homepage Highlights - News (copy)">
+<div class="c2fc-campo">
+    <label class="c2fc-campo-rotulo">Highlights Block Name</label>
+    <input type="text" name="name" placeholder="E.g.: Homepage Highlights - News (copy)" class="c2fc-campo-entrada">
 </div>
 
-<div class="field">
-    <label>Source Publisher</label>
-    <select id="publisher_id" class="ui search clearable dropdown publisherDropdown" name="publisher_id">
+<div class="c2fc-campo">
+    <label class="c2fc-campo-rotulo">Source Publisher</label>
+    <select id="publisher_id" class="c2fc-campo-entrada dropdown publisherDropdown" name="publisher_id">
         <option value="">#publisher_placeholder_option#</option>
         #publisher_id_options#
     </select>
 </div>
 
-<div class="ui info icon message">
-    <i class="info circle icon"></i>
-    <div class="content">
-        <div class="header">Exact Copy of the Source Block</div>
+<div class="c2fc-aviso message">
+    <i data-lucide="info" class="size-4 shrink-0"></i>
+    <div class="content c2fc-dialogo-corpo">
+        <div class="header c2fc-dialogo-titulo">Exact Copy of the Source Block</div>
         <p>The original block's HTML and CSS are already loaded into the editor below. Adjust the rules, template,
             and mapping as needed. After saving, the original record remains unchanged.</p>
     </div>
 </div>
 
-<h4 class="ui dividing header">Curation Rule</h4>
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Curation Rule</h4>
 
-<div class="fields">
-    <div class="eight wide field">
-        <label>Content Selection Rule</label>
-        <select id="rule" class="ui dropdown" name="rule">
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Content Selection Rule</label>
+        <select id="rule" class="c2fc-campo-entrada dropdown" name="rule">
             <option value="latest">Automatic (latest publications)</option>
             <option value="manual">Manual (item-by-item curation)</option>
         </select>
     </div>
-    <div class="eight wide field" id="order-by-wrapper">
-        <label>Sort Order</label>
-        <select id="order_by" class="ui dropdown" name="order_by">
+    <div class="c2fc-campo" id="order-by-wrapper">
+        <label class="c2fc-campo-rotulo">Sort Order</label>
+        <select id="order_by" class="c2fc-campo-entrada dropdown" name="order_by">
             <option value="date_desc">By date (newest first)</option>
             <option value="date_asc">By date (oldest first)</option>
             <option value="title_asc">Alphabetical (A-Z)</option>
@@ -41,100 +41,100 @@
     </div>
 </div>
 
-<div class="field" id="manual-items-wrapper" style="display:none;">
-    <label>Selected items (order)</label>
-    <div class="ui label" style="margin: 8px 0; display: block;">
-        <i class="hand pointer icon"></i>
+<div class="c2fc-campo" id="manual-items-wrapper" style="display:none;">
+    <label class="c2fc-campo-rotulo">Selected items (order)</label>
+    <div class="c2fc-selo" style="margin: 8px 0; display: block;">
+        <i data-lucide="mouse-pointer" class="size-4 shrink-0"></i>
         Search and select the active publications of the chosen publisher below. The insertion order is
         preserved on render — drag the tags to reorder. To remove an item, click the &laquo;x&raquo; next to it.
     </div>
     <!-- req-014: Ajax search autocomplete + reorderable tags (replaces the multiple dropdown) -->
-    <div class="ui fluid icon input search-autocomplete-wrapper" style="position: relative;">
-        <input type="text" id="manual_search_input" placeholder="Type to search publications..." autocomplete="off">
-        <i class="search icon"></i>
+    <div class="flex flex-wrap gap-2 search-autocomplete-wrapper" style="position: relative;">
+        <input type="text" id="manual_search_input" placeholder="Type to search publications..." autocomplete="off" class="c2fc-campo-entrada">
+        <i data-lucide="search" class="size-4 shrink-0"></i>
 
         <!-- Floating suggestions list (Autocomplete Dropdown) -->
-        <div id="search-suggestions-dropdown" class="ui vertical menu"
+        <div id="search-suggestions-dropdown" class="rounded-lg border border-slate-200 bg-white vertical"
             style="display: none; position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.15); margin: 0 !important;">
         </div>
     </div>
 
     <!-- Selected tags container (reorderable via Sortable.js) -->
-    <div id="selected-labels-container" class="ui segment sortable-labels-container"
+    <div id="selected-labels-container" class="rounded-lg border border-slate-200 p-4 min-w-0 sortable-labels-container"
         style="margin-top: 12px; min-height: 50px; padding: 10px; border: 1px dashed #ccc; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: #fafafa;">
         <!-- Labels inserted dynamically by JS -->
     </div>
 </div>
 
-<h4 class="ui dividing header">Index Display Controls</h4>
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Index Display Controls</h4>
 
-<div class="fields">
-    <div class="five wide field">
-        <label>Items per page</label>
-        <input type="number" id="items_per_page" min="0" value="10">
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Items per page</label>
+        <input type="number" id="items_per_page" min="0" value="10" class="c2fc-campo-entrada">
     </div>
-    <div class="eleven wide field">
-        <label>Interactive controls on the published site</label>
-        <div class="inline fields" style="margin-top: 4px;">
-            <div class="field">
-                <div class="ui toggle checkbox"><input type="checkbox" id="show_search_input" checked><label>Search
-                        bar</label></div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Interactive controls on the published site</label>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2" style="margin-top: 4px;">
+            <div class="c2fc-campo">
+                <label class="c2fc-chave checkbox"><input type="checkbox" id="show_search_input" checked><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Search
+                        bar</span></label>
             </div>
-            <div class="field">
-                <div class="ui toggle checkbox"><input type="checkbox" id="show_sorting_select"
-                        checked><label>Sorting</label></div>
+            <div class="c2fc-campo">
+                <label class="c2fc-chave checkbox"><input type="checkbox" id="show_sorting_select"
+                        checked><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Sorting</span></label>
             </div>
-            <div class="field">
-                <div class="ui toggle checkbox"><input type="checkbox" id="show_load_more_btn" checked><label>"Load
-                        more" button</label></div>
+            <div class="c2fc-campo">
+                <label class="c2fc-chave checkbox"><input type="checkbox" id="show_load_more_btn" checked><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">"Load
+                        more" button</span></label>
             </div>
-            <div class="field">
-                <div class="ui toggle checkbox"><input type="checkbox" id="show_metrics" checked><label>Show pagination
-                        metrics</label></div>
+            <div class="c2fc-campo">
+                <label class="c2fc-chave checkbox"><input type="checkbox" id="show_metrics" checked><span class="c2fc-chave-trilho"></span><span class="c2fc-chave-rotulo">Show pagination
+                        metrics</span></label>
             </div>
         </div>
     </div>
 </div>
 
-<h4 class="ui dividing header">Highlight Visual Template</h4>
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Highlight Visual Template</h4>
 
-<div class="field">
-    <label>Template (Resource)</label>
-    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+<div class="c2fc-campo">
+    <label class="c2fc-campo-rotulo">Template (Resource)</label>
+    <select id="template_id" class="c2fc-campo-entrada dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
 </div>
 
-<h4 class="ui dividing header">Variable Mapping <kbd class="ui label">[[item#...]]</kbd>
-    <kbd class="ui teal icon label"><i class="exchange alternate icon"></i></kbd>
-    <kbd class="ui label">Publisher Fields</kbd>
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Variable Mapping <kbd class="c2fc-selo">[[item#...]]</kbd>
+    <kbd class="c2fc-selo"><i data-lucide="arrow-left-right" class="size-4 shrink-0"></i></kbd>
+    <kbd class="c2fc-selo">Publisher Fields</kbd>
 </h4>
 
-<div class="ui segment template-options-wrapper" style="display:none;">
-    <div class="ui medium dimmer template-loading">
-        <div class="ui text loader">Loading data...</div>
+<div class="rounded-lg border border-slate-200 p-4 min-w-0 template-options-wrapper" style="display:none;">
+    <div class="c2fc-cobertura ui dimmer template-loading">
+        <div class="c2fc-giro">Loading data...</div>
     </div>
 
-    <div class="ui negative message hidden" id="error-message">
-        <div class="header">Error!</div>
+    <div class="c2fc-aviso message c2fc-aviso-erro negative hidden" id="error-message">
+        <div class="header c2fc-dialogo-titulo">Error!</div>
         <p id="error-message-content"></p>
     </div>
 
-    <div class="ui grid">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div class="row">
-            <div class="sixteen wide column">
-                <div class="ui grid template-fields-list">
-                    <div class="five wide column">
-                        <h5>Template Variables <kbd class="ui label">[[item#...]]</kbd></h5>
+            <div class="min-w-0">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-3 template-fields-list">
+                    <div class="min-w-0">
+                        <h5>Template Variables <kbd class="c2fc-selo">[[item#...]]</kbd></h5>
                         <div id="available-fields-list"></div>
                     </div>
-                    <div class="five wide column">
+                    <div class="min-w-0">
                         <h5>Publisher Fields</h5>
                         <div id="missing-fields-list"></div>
                     </div>
-                    <div class="six wide column">
-                        <h5>Linked: Variable <kbd class="ui teal icon label"><i
+                    <div class="min-w-0">
+                        <h5>Linked: Variable <kbd class="c2fc-selo"><i
                                     class="exchange alternate icon"></i></kbd> Field</h5>
                         <div id="linked-fields-list"></div>
                     </div>
@@ -146,47 +146,47 @@
 
 <input type="hidden" name="fields_schema">
 
-<h4 class="ui dividing header">Highlight Content</h4>
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Highlight Content</h4>
 
-<div class="ui top attached tabular menu menuConteudoDestaque">
-    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Preview</a>
-    <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
-    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Widget Code</a>
+<div class="c2fc-abas-lista menuConteudoDestaque">
+    <a class="active item" data-tab="hep-preview"><i data-lucide="eye" class="size-4 shrink-0"></i> Preview</a>
+    <a class="item" data-tab="hep-editor"><i data-lucide="code" class="size-4 shrink-0"></i> Editor HTML</a>
+    <a class="item" data-tab="hep-widget"><i data-lucide="boxes" class="size-4 shrink-0"></i> Widget Code</a>
 </div>
-<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+<div class="c2fc-painel-aba tab active" data-tab="hep-preview">
     <div style="position: relative;">
         <iframe id="iframe-publisher-index-preview" style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
-        <div class="ui dimmer hep-preview-dimmer">
-            <div class="ui loader"></div>
+        <div class="c2fc-cobertura ui dimmer hep-preview-dimmer">
+            <div class="c2fc-giro"></div>
         </div>
     </div>
 </div>
-<div class="ui bottom attached tab segment" data-tab="hep-editor">
+<div class="c2fc-painel-aba tab hidden" data-tab="hep-editor">
     #html-editor#
 </div>
-<div class="ui bottom attached tab segment" data-tab="hep-widget">
-    <div class="ui icon message info">
-        <i class="cubes icon"></i>
-        <div class="content">
-            <div class="header">Wrapped widget block</div>
+<div class="c2fc-painel-aba tab hidden" data-tab="hep-widget">
+    <div class="c2fc-aviso message">
+        <i data-lucide="boxes" class="size-4 shrink-0"></i>
+        <div class="content c2fc-dialogo-corpo">
+            <div class="header c2fc-dialogo-titulo">Wrapped widget block</div>
             <p>Copy the snippet below and paste it into any physical site page to inject this
                 highlights block. The <code>&lt;!-- widgets#publisher-index-&gt;render(...) --&gt;</code>
                 comment acts as the wrapper: the gestor engine recognizes it and replaces it
                 with the HTML rendered using the real publications at request time.</p>
         </div>
     </div>
-    <div class="field" style="margin-top:1rem;">
-        <label>Widget Variable</label>
-        <div class="ui action input">
-            <input type="text" id="hep-widget-val" readonly>
-            <button type="button" id="btn-copy-widget-val" class="ui teal button">
-                <i class="copy icon"></i> Copy
+    <div class="c2fc-campo" style="margin-top:1rem;">
+        <label class="c2fc-campo-rotulo">Widget Variable</label>
+        <div class="flex flex-wrap gap-2 action">
+            <input type="text" id="hep-widget-val" readonly class="c2fc-campo-entrada">
+            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario">
+                <i data-lucide="copy" class="size-4 shrink-0"></i> Copy
             </button>
         </div>
     </div>
-    <h4 class="ui header" style="margin-top:1rem;">HTML Code</h4>
+    <h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold" style="margin-top:1rem;">HTML Code</h4>
     <div style="border:1px solid #ccc;">
-        <textarea id="hep-widget-code" name="hep-widget-code"></textarea>
+        <textarea id="hep-widget-code" name="hep-widget-code" class="c2fc-campo-entrada"></textarea>
     </div>
 </div>
 

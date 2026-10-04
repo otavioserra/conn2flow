@@ -60,6 +60,7 @@ function pages_index_campos_disponiveis(){
 
 function pages_index_adicionar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -180,6 +181,7 @@ function pages_index_adicionar(){
 
 function pages_index_editar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -516,6 +518,7 @@ function pages_index_editar(){
 
 function pages_index_clonar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -701,6 +704,7 @@ function pages_index_interfaces_padroes(){
 
     switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true;
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],
