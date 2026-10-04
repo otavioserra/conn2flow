@@ -1,0 +1,93 @@
+{
+  "request": "req-222",
+  "batch": "BATCH-231",
+  "core_branch": "feat/req-222",
+  "worktree": "C:\\Users\\otavi\\OneDrive\\Documentos\\GIT\\conn2flow-req222",
+  "php_full": {
+    "tests": 1526,
+    "assertions": 14957,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4,
+    "deprecations": 7,
+    "note": "CRLF normalized locally in c2f, project-transport.sh, CssRebuildCommand.php and stripe.php; no source changes in these files"
+  },
+  "php_contract": {
+    "tests": 4,
+    "assertions": 565,
+    "failures": 0,
+    "phpunit_deprecations": 3
+  },
+  "vitest": {
+    "files": 39,
+    "tests": 509,
+    "failed": 0
+  },
+  "baseline_contract": {
+    "ref": "cb4bb169^",
+    "test": "testAllAdministrativePagesUseTailwindBundles",
+    "expected_failures": 1,
+    "observed_failures": 1,
+    "actual_layout": "layout-administrativo-do-gestor",
+    "expected_layout": "layout-administrativo-tailwind"
+  },
+  "playwright": {
+    "checks": 372,
+    "passed": 369,
+    "failed": 3,
+    "routes": 30,
+    "viewports": [
+      1366,
+      390
+    ],
+    "report": "conn2flow-site/sdd/validation/core/evidence-req222/report.json",
+    "findings": [
+      {
+        "name": "galleries-add: no script/console errors",
+        "ok": false,
+        "details": [
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()"
+        ]
+      },
+      {
+        "name": "galleries-edit: no script/console errors",
+        "ok": false,
+        "details": [
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()"
+        ]
+      },
+      {
+        "name": "galleries-clone: no script/console errors",
+        "ok": false,
+        "details": [
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()"
+        ]
+      }
+    ]
+  },
+  "pipeline": {
+    "project": "conn2flow-site-local",
+    "final_runs": [
+      6,
+      7
+    ],
+    "css_rebuild": "success",
+    "maintenance_after": "off",
+    "destination_newer_preserved": [
+      "bibliotecas/formulario.php",
+      "bibliotecas/hooks.php",
+      "controladores/atualizacoes/atualizacoes-hooks.php",
+      "modulos/admin-paginas/admin-paginas.php"
+    ]
+  },
+  "review": {
+    "scope": "only six modules, two simulations, two html-editor.php lines, generated records and batch evidence",
+    "shared_editor_template_unchanged": true,
+    "gallery_editor_placeholder_404_forwarded_to": "req-219",
+    "production_deploy": false
+  }
+}

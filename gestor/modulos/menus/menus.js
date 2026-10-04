@@ -657,7 +657,7 @@ $(document).ready(function () {
         if (schema.availability !== 'condicional') return;
 
         var pt = isPtBr();
-        var $panel = $('<div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 segment"></div>');
+        var $panel = $('<div class="menu-panel segment"></div>');
         var $actions = $('<div style="margin-bottom:12px;"></div>');
         $actions.append($('<button type="button" class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno small teal button" id="btn-add-condition"></button>')
             .html('<i data-lucide="plus" class="c2fc-icone icon"></i> ' + (pt ? 'Adicionar Condição' : 'Add Condition')));
@@ -668,16 +668,16 @@ $(document).ready(function () {
             + '<option value="publico">' + (pt ? 'Público' : 'Public') + '</option>'
             + '<option value="logado">' + (pt ? 'Logado' : 'Logged in') + '</option>'
             + '<option value="perfil_usuario">' + (pt ? 'Perfil de usuário' : 'User profile') + '</option>';
-        $form.append('<div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields">'
-            + '<div class="c2fc-campo min-w-0 mb-4 field"><label>' + (pt ? 'Tipo' : 'Type') + '</label><select id="condition_type" class="c2fc-campo-entrada dropdown">' + options + '</select></div>'
-            + '<div class="c2fc-campo min-w-0 mb-4 field"><label>Slug</label><input type="text" id="condition_slug" autocomplete="off"></div>'
+        $form.append('<div class="menu-panel-grid two fields">'
+            + '<div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">' + (pt ? 'Tipo' : 'Type') + '</label><select id="condition_type" class="c2fc-campo-entrada dropdown">' + options + '</select></div>'
+            + '<div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Slug</label><input class="c2fc-campo-entrada" type="text" id="condition_slug" autocomplete="off"></div>'
             + '</div>');
         $form.append('<div id="condition-profile-wrapper" style="display:none;">'
-            + '<div class="c2fc-campo min-w-0 mb-4 field"><label>' + (pt ? 'Perfis permitidos' : 'Allowed profiles') + '</label>'
-            + '<div class="flex items-center gap-2 min-w-0 fluid icon input" style="position: relative;">'
-            + '<input type="text" id="condition_profile_search" placeholder="' + (pt ? 'Digite para buscar perfis...' : 'Type to search profiles...') + '" autocomplete="off">'
+            + '<div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">' + (pt ? 'Perfis permitidos' : 'Allowed profiles') + '</label>'
+            + '<div class="menu-profile-input fluid icon input" style="position: relative;">'
+            + '<input class="c2fc-campo-entrada" type="text" id="condition_profile_search" placeholder="' + (pt ? 'Digite para buscar perfis...' : 'Type to search profiles...') + '" autocomplete="off">'
             + '<i data-lucide="search" class="c2fc-icone icon"></i>'
-            + '<div id="condition-profile-suggestions" class="rounded-lg border border-slate-200 bg-white shadow-lg vertical menu" style="display:none; position:absolute; top:100%; left:0; width:100%; z-index:1000; max-height:250px; overflow-y:auto; box-shadow:0 4px 6px rgba(0,0,0,0.15); margin:0 !important;"></div>'
+            + '<div id="condition-profile-suggestions" class="menu-profile-results vertical menu" style="display:none; position:absolute; top:100%; left:0; width:100%; z-index:1000; max-height:250px; overflow-y:auto; box-shadow:0 4px 6px rgba(0,0,0,0.15); margin:0 !important;"></div>'
             + '</div>'
             + '<div id="condition-profile-tags" style="margin-top:8px;"></div>'
             + '</div></div>');
@@ -688,7 +688,7 @@ $(document).ready(function () {
         $panel.append($form);
 
         if (schema.conditions.length > 0) {
-            var $tabs = $('<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 pointing secondary menu menu-condition-tabs"></div>');
+            var $tabs = $('<div class="menu-condition-tabs pointing secondary menu"></div>');
             schema.conditions.forEach(function (cond) {
                 var $tab = $('<a class="c2fc-aba item"></a>')
                     .attr('data-slug', cond.slug)
@@ -710,7 +710,7 @@ $(document).ready(function () {
             $panel.append($tabs);
         } else {
             $('#menu-item-builder-wrapper').hide();
-            $panel.append($('<div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 message"></div>').text(
+            $panel.append($('<div class="menu-panel-notice message"></div>').text(
                 pt ? 'Adicione uma condição para montar a árvore de itens correspondente.' : 'Add a condition to build its menu tree.'
             ));
         }
@@ -1118,7 +1118,7 @@ $(document).ready(function () {
     }
 
     // Seletor de tipo + campos condicionais
-    // req-018 item 2: o `#item_type` voltou a ser um <select> nativo (sem conversão Fomantic),
+    // req-018 item 2: o `#item_type` voltou a ser um <select class="c2fc-campo-entrada"> nativo (sem conversão Fomantic),
     // com listener `change` direto. Lemos o valor via `.val()`, com 'pagina' como rede de segurança.
     function currentItemType() {
         return ($itemType.val() || $('#item_type').val() || 'pagina');
@@ -1366,14 +1366,14 @@ $(document).ready(function () {
         if (idx < 0) return;
         var it = treeItems[idx];
 
-        var $panel = $('<div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 menu-tree-edit-panel segment"></div>')
+        var $panel = $('<div class="menu-panel menu-tree-edit-panel segment"></div>')
             .attr('data-id', id)
             .css('margin-left', (it.depth * STEP + 24) + 'px');
 
         function addField(labelText, cls, value) {
             var $f = $('<div class="c2fc-campo min-w-0 mb-4 field" style="margin-bottom:8px;"></div>');
             $f.append($('<label style="font-size:12px;"></label>').text(labelText));
-            $f.append($('<input type="text">').addClass(cls).val(value || ''));
+            $f.append($('<input class="c2fc-campo-entrada" type="text">').addClass(cls).val(value || ''));
             return $f;
         }
 

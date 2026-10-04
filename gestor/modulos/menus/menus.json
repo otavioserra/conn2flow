@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.5",
+    "versao": "1.0.7",
     "bibliotecas": [
         "interface",
         "html",
@@ -123,15 +123,16 @@
                     "name": "Menus - Listar",
                     "id": "menus",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus/",
+                    "path": "menus\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "",
-                        "css": "",
-                        "combined": ""
+                        "css": "0ab5edf722fd198e6e5baa536596cb3c",
+                        "css_precompiled": "",
+                        "combined": "0ab5edf722fd198e6e5baa536596cb3c"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -167,25 +168,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../menus.js",
-                        "../../../../menus.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Menus - Adicionar",
                     "id": "menus-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus/adicionar/",
+                    "path": "menus\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.11",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "c73ad39bfc20650a892ae2b1d35e1e94",
-                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
-                        "combined": "fca4f7f4d608da7dd281a8155cee463d"
+                        "html": "0217eda952c36a67197533670e6de463",
+                        "css": "d6f739c0062b7d23529faed169cf836f",
+                        "css_precompiled": "",
+                        "combined": "2e267dde5ddef4eaf6be104452a54a4e"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -286,25 +283,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../menus.js",
-                        "../../../../menus.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Menus - Editar",
                     "id": "menus-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus/editar/",
+                    "path": "menus\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.11",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "2df35b4723b42af01a40878fa32542d8",
-                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
-                        "combined": "adbcfca2f49786711d4ea6fa7fe242d7"
+                        "html": "bae9cf41a20de42dfad8bbdd86939e79",
+                        "css": "d6f739c0062b7d23529faed169cf836f",
+                        "css_precompiled": "",
+                        "combined": "430b2d0100f8173657fa17066fd21240"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -405,25 +398,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../menus.js",
-                        "../../../../menus.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Menus - Clonar",
                     "id": "menus-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus/clonar/",
+                    "path": "menus\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.11",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "a4957e57afb46afffe5218561467de68",
-                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
-                        "combined": "5756228d799548634c5dae836ab4dba6"
+                        "html": "26eadd0140fe2f68124fddf271c3d83c",
+                        "css": "d6f739c0062b7d23529faed169cf836f",
+                        "css_precompiled": "",
+                        "combined": "eca8a1125b3758e3a86da7196657f353"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -524,12 +513,7 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../menus.js",
-                        "../../../../menus.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 }
             ],
             "variables": [
@@ -555,7 +539,7 @@
                 },
                 {
                     "id": "js-row-drag",
-                    "value": "Arraste para ordenar/aninhar",
+                    "value": "Arraste para ordenar\/aninhar",
                     "type": "string"
                 },
                 {
@@ -691,15 +675,16 @@
                     "name": "Menus - List",
                     "id": "menus",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus/",
+                    "path": "menus\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "",
-                        "css": "",
-                        "combined": ""
+                        "css": "0ab5edf722fd198e6e5baa536596cb3c",
+                        "css_precompiled": "",
+                        "combined": "0ab5edf722fd198e6e5baa536596cb3c"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -735,25 +720,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../menus.js",
-                        "../../../../menus.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Menus - Add",
                     "id": "menus-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus/adicionar/",
+                    "path": "menus\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.11",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "c96be0f5572c00202a6f3098fe6f69f1",
-                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
-                        "combined": "863fd6eb5afa1d071aed712e7bf63657"
+                        "html": "49df9480b7e22474792a173beac16fc6",
+                        "css": "d6f739c0062b7d23529faed169cf836f",
+                        "css_precompiled": "",
+                        "combined": "c92cdb7101bdb9296e6b2c6e04fa5232"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -854,25 +835,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../menus.js",
-                        "../../../../menus.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Menus - Edit",
                     "id": "menus-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus/editar/",
+                    "path": "menus\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.11",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "5ca33c0d9ec8b59161611f23f4b8b6c3",
-                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
-                        "combined": "cd85d68ce563f45e84e982d30c98e5f1"
+                        "html": "86776f077c8531373e2f21147c570607",
+                        "css": "d6f739c0062b7d23529faed169cf836f",
+                        "css_precompiled": "",
+                        "combined": "4ced964d2f47663325cb3553e7cdf2c3"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -973,25 +950,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../menus.js",
-                        "../../../../menus.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Menus - Clone",
                     "id": "menus-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus/clonar/",
+                    "path": "menus\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.11",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "c9042334bf29d3cc56c5cb0fa9eff360",
-                        "css": "2c43c28d0bbba949e9d1a48a59d04b00",
-                        "combined": "47615b6c5e3c21b1180ff14fe753f636"
+                        "html": "048a73136d2ac0c3bfbe094fe0f72ceb",
+                        "css": "d6f739c0062b7d23529faed169cf836f",
+                        "css_precompiled": "",
+                        "combined": "10afe683fa982f04c03caeb41a8539a4"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1092,12 +1065,7 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../menus.js",
-                        "../../../../menus.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 }
             ],
             "variables": [
@@ -1123,7 +1091,7 @@
                 },
                 {
                     "id": "js-row-drag",
-                    "value": "Drag to order/nest",
+                    "value": "Drag to order\/nest",
                     "type": "string"
                 },
                 {
@@ -1154,5 +1122,5 @@
             ]
         }
     },
-    "asset_version": "bbf32e04e2bac96d"
+    "asset_version": "64dca6c1815319ff"
 }

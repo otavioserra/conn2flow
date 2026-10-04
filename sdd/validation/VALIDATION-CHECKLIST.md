@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-231 — Menus, galerias, formulários e cookies (req-222)
+
+- [x] CA-1: páginas administrativas pt-br/en no layout Tailwind, sem assets Fomantic no documento principal.
+- [x] CA-2: salvar/recarregar sem 403; selects, chaves, abas, editor, picker/upload e modais; schemas persistidos; 390 px sem overflow.
+- [x] CA-3: nenhum diálogo nativo nos seis scripts.
+- [x] CA-4 (testes): contrato 4/565, Vitest 509/509 e PHPUnit completo 1526 sem falhas/erros; contrato falsificado no manifesto anterior.
+- [x] CA-4 (navegador executado): 369/372 verificações, 30 navegações e capturas desktop/mobile; controle Fomantic preservado.
+- [ ] Prévia de Variáveis do editor compartilhado: três verificações de console falham por imagem com placeholder cru/404; pedido registrado na req-219. Não declarar rodada integralmente verde.
+- [x] CA-5: [BATCH-231](../implementation/BATCH-231.md), [métricas](evidence-req222.json), roteiro/capturas em `conn2flow-site/sdd/validation/core/evidence-req222/` e item humano no site.
+- [ ] Revisão humana conjunta; nenhum deploy de produção.
+
+
 ## BATCH-229 — Módulos do editor, listagens e correções da revisão (req-219)
 
 - [x] `admin-layouts` e `admin-componentes` (listar, adicionar, editar) e a listagem do `admin-paginas` no layout Tailwind; salvar sem 403.

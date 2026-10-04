@@ -5,7 +5,7 @@
 .req222-page { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
 .req222-page table { max-width: 100%; }
 .req222-page select, .req222-page input, .req222-page textarea { max-width: 100%; }
-.req222-page .c2fc-chave { flex-wrap: wrap; }
+.req222-page .c2fc-chave { flex-wrap: wrap; position: relative; }
 .req222-page .c2fc-chave > label { cursor: pointer; }
 .req222-page .menu-tree-row { max-width: 100%; box-sizing: border-box; }
 .req222-page .menu-tree-type { flex-shrink: 1; }

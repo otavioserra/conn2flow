@@ -608,12 +608,12 @@
         "name": "Interface View Form Tailwind",
         "id": "interface-formulario-visualizacao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.0",
+        "version": "1.1",
         "checksum": {
-            "html": "",
+            "html": "417a667d8d95b8c65baa8581052c7c69",
             "css": "",
             "css_precompiled": "",
-            "combined": ""
+            "combined": "417a667d8d95b8c65baa8581052c7c69"
         }
     },
     {
@@ -738,13 +738,25 @@
     {
         "name": "html-editor-menus-simulation Tailwind",
         "id": "html-editor-menus-simulation-tailwind",
-        "version": "1.0",
-        "framework_css": "tailwindcss"
+        "version": "1.1",
+        "framework_css": "tailwindcss",
+        "checksum": {
+            "html": "f1c1fffe64564c217cf0b20d72abdefc",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "f1c1fffe64564c217cf0b20d72abdefc"
+        }
     },
     {
         "name": "html-editor-galleries-simulation Tailwind",
         "id": "html-editor-galleries-simulation-tailwind",
-        "version": "1.0",
-        "framework_css": "tailwindcss"
+        "version": "1.1",
+        "framework_css": "tailwindcss",
+        "checksum": {
+            "html": "b476a08049bb1ec6a4faa5099f94cc62",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "b476a08049bb1ec6a4faa5099f94cc62"
+        }
     }
 ]

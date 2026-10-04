@@ -544,11 +544,11 @@ $(document).ready(function () {
 
         var it = items[idx];
         var $modal = $('<div class="hidden ui small modal gallery-item-settings-modal"></div>');
-        $modal.append($('<div class="text-lg font-semibold text-slate-800 my-4 header"></div>').text(galleryUiText('settings-title')));
+        $modal.append($('<div class="header"></div>').text(galleryUiText('settings-title')));
 
         var $content = $('<div class="content"></div>');
         var $form = $('<div class="gallery-item gallery-settings-form"></div>').attr('data-id', it.id);
-        var $caption = $('<input type="text" class="gallery-item-caption">')
+        var $caption = $('<input type="text" class="c2fc-campo-entrada gallery-item-caption">')
             .attr('placeholder', galleryUiText('caption-placeholder'))
             .val(it.legenda || '');
         $form.append(fieldWrap(galleryUiText('caption-label'), $caption));
@@ -595,7 +595,7 @@ $(document).ready(function () {
     }
 
     function buildSelect(cls, pairs, selected) {
-        var $sel = $('<select></select>').addClass(cls);
+        var $sel = $('<select class="c2fc-campo-entrada"></select>').addClass(cls);
         pairs.forEach(function (p) {
             var $opt = $('<option></option>').attr('value', p[0]).text(p[1]);
             if (String(p[0]) === String(selected)) $opt.prop('selected', true);
@@ -605,7 +605,7 @@ $(document).ready(function () {
     }
 
     function buildDataSelect(cls, list, selected, placeholderTxt) {
-        var $sel = $('<select></select>').addClass(cls);
+        var $sel = $('<select class="c2fc-campo-entrada"></select>').addClass(cls);
         $sel.append($('<option value=""></option>').text(placeholderTxt));
         (list || []).forEach(function (o) {
             var val = (o.id !== undefined) ? o.id : (o.value !== undefined ? o.value : '');
@@ -620,7 +620,7 @@ $(document).ready(function () {
     function fieldWrap(labelTxt, $control, fieldClass) {
         var $f = $('<div class="gallery-link-field"></div>');
         if (fieldClass) $f.addClass(fieldClass);
-        $f.append($('<label></label>').text(labelTxt));
+        $f.append($('<label class="c2fc-campo-rotulo"></label>').text(labelTxt));
         $f.append($control);
         return $f;
     }
@@ -657,11 +657,11 @@ $(document).ready(function () {
         $fields.append(buildPageAutocompleteField(it));
 
         $fields.append(fieldWrap('URL',
-            $('<input type="text" class="gallery-link-url">').attr('placeholder', 'https://...').val(it.link_url || ''),
+            $('<input type="text" class="c2fc-campo-entrada gallery-link-url">').attr('placeholder', 'https://...').val(it.link_url || ''),
             'gallery-link-row-url'));
 
         $fields.append(fieldWrap(isPtBr() ? 'Classe CSS' : 'CSS class',
-            $('<input type="text" class="gallery-link-css">').attr('placeholder', isPtBr() ? 'ex: minha-classe' : 'e.g. my-class').val(it.link_css_classes || ''),
+            $('<input type="text" class="c2fc-campo-entrada gallery-link-css">').attr('placeholder', isPtBr() ? 'ex: minha-classe' : 'e.g. my-class').val(it.link_css_classes || ''),
             'gallery-link-row-css'));
 
         $fields.append(fieldWrap(isPtBr() ? 'Abrir em' : 'Open in',
@@ -704,7 +704,7 @@ $(document).ready(function () {
         var typeName = 'gallery_page_search_type_' + it.id;
 
         var $f = $('<div class="gallery-link-field gallery-link-row-page"></div>');
-        $f.append($('<label></label>').text(pt ? 'Página' : 'Page'));
+        $f.append($('<label class="c2fc-campo-rotulo"></label>').text(pt ? 'Página' : 'Page'));
 
         // Filtro de tipo de página (Página / Sistema / Ambos), isolado por `name` único.
         var typeOptions = [
@@ -714,8 +714,8 @@ $(document).ready(function () {
         ];
         var $filter = $('<div class="gallery-page-type-filter"></div>');
         typeOptions.forEach(function (opt, i) {
-            var $lbl = $('<label></label>');
-            var $radio = $('<input type="radio" class="gallery-page-type-radio">')
+            var $lbl = $('<label class="c2fc-campo-rotulo"></label>');
+            var $radio = $('<input type="radio" class="c2fc-campo-entrada gallery-page-type-radio">')
                 .attr('name', typeName).attr('value', opt[0]).attr('data-id', it.id);
             if (i === 0) $radio.prop('checked', true);
             $lbl.append($radio).append(document.createTextNode(' ' + opt[1]));
@@ -725,13 +725,13 @@ $(document).ready(function () {
 
         // Input de busca + lista flutuante de sugestões + hidden com o slug selecionado.
         var $wrap = $('<div class="gallery-page-search-wrapper"></div>');
-        var $input = $('<input type="text" class="gallery-item-link-search">')
+        var $input = $('<input type="text" class="c2fc-campo-entrada gallery-item-link-search">')
             .attr('data-id', it.id)
             .attr('autocomplete', 'off')
             .attr('placeholder', pt ? 'Buscar página...' : 'Search page...');
         var $sugg = $('<div class="gallery-item-link-suggestions"></div>')
             .attr('data-id', it.id).css('display', 'none');
-        var $hidden = $('<input type="hidden" class="gallery-link-page-id">').val(it.link_page_id || '');
+        var $hidden = $('<input type="hidden" class="c2fc-campo-entrada gallery-link-page-id">').val(it.link_page_id || '');
 
         $wrap.append($input).append($sugg).append($hidden);
         $f.append($wrap);

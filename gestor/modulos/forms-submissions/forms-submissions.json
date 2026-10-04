@@ -44,7 +44,7 @@
                     "name": "Formulários Envios - Listar",
                     "id": "forms-submissions-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions/",
+                    "path": "forms-submissions\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -88,25 +88,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms-submissions.js",
-                        "../../../../forms-submissions.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Formulários Envios - Visualizar",
                     "id": "forms-submissions-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions/view/",
+                    "path": "forms-submissions\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.4",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "a204f1de4355f4083268ec26b6834e3c",
-                        "css": "",
-                        "combined": "a204f1de4355f4083268ec26b6834e3c"
+                        "html": "cc546f21111bedeb526b21529ddf26b1",
+                        "css": "c3797221205fafd1b7b1bd464732293f",
+                        "css_precompiled": "",
+                        "combined": "ced7217e2843a12c2581f7d3315dfdc4"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -157,18 +153,13 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms-submissions.js",
-                        "../../../../forms-submissions.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Formulários Envios - Processar",
                     "id": "forms-submissions-process",
                     "layout": "layout-pagina-simples",
-                    "path": "forms-submissions-process/",
+                    "path": "forms-submissions-process\/",
                     "type": "system",
                     "option": "forms-process",
                     "without_permission": true,
@@ -316,7 +307,7 @@
                     "name": "Forms Submissions - List",
                     "id": "forms-submissions-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions/",
+                    "path": "forms-submissions\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -360,25 +351,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms-submissions.js",
-                        "../../../../forms-submissions.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Forms Submissions - View",
                     "id": "forms-submissions-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms-submissions/view/",
+                    "path": "forms-submissions\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.4",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "1b28eced4e880b6828f8adbb5ed4a6cf",
-                        "css": "",
-                        "combined": "1b28eced4e880b6828f8adbb5ed4a6cf"
+                        "html": "50cdeeebbb6f722493d3131ff9b72f6b",
+                        "css": "c3797221205fafd1b7b1bd464732293f",
+                        "css_precompiled": "",
+                        "combined": "7f3eea14bf3ce8b9ee426722a434707e"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -429,18 +416,13 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms-submissions.js",
-                        "../../../../forms-submissions.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Forms Submissions - Process",
                     "id": "forms-submissions-process",
                     "layout": "layout-pagina-simples",
-                    "path": "forms-submissions-process/",
+                    "path": "forms-submissions-process\/",
                     "type": "system",
                     "option": "forms-process",
                     "without_permission": true,
@@ -561,5 +543,5 @@
             ]
         }
     },
-    "asset_version": "f1ec595610390c9f"
+    "asset_version": "ede706162a36a5bf"
 }

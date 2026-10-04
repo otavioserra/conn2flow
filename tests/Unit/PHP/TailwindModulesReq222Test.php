@@ -23,12 +23,13 @@ final class TailwindModulesReq222Test extends TestCase
                     self::assertSame('layout-administrativo-tailwind', $page['layout'], $module . '/' . $page['id']);
                     self::assertSame('tailwindcss', $page['framework_css']);
                     self::assertTrue($page['tailwind_bundle']);
+                    self::assertArrayNotHasKey('tailwind_sources', $page, 'Builder styles belong to authored resources');
                     $dependencies = array_column($page['tailwind_dependencies'], 'id');
                     self::assertContains('menu-principal-sistema-tailwind', $dependencies);
                     if ($page['option'] === 'listar') self::assertContains('interface-listar-tailwind', $dependencies);
                     $html = (string)file_get_contents($base . '/resources/' . $language . '/pages/' . $page['id'] . '/' . $page['id'] . '.html');
                     self::assertStringNotContainsString('class="ui ', $html);
-                    foreach ($page['tailwind_sources'] as $source) {
+                    foreach (($page['tailwind_sources'] ?? []) as $source) {
                         self::assertFileExists($base . '/resources/' . $language . '/pages/' . $page['id'] . '/' . $source);
                     }
                 }

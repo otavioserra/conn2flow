@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.2",
+    "versao": "1.1.3",
     "bibliotecas": [
         "interface",
         "html",
@@ -79,11 +79,11 @@
                     "redirects": {
                         "success": {
                             "type": "url",
-                            "path": "your-page/success/"
+                            "path": "your-page\/success\/"
                         },
                         "error": {
                             "type": "url",
-                            "path": "your-page/error/"
+                            "path": "your-page\/error\/"
                         }
                     },
                     "fields": [
@@ -135,8 +135,14 @@
                 {
                     "id": "forms-info-definition-tailwind",
                     "name": "Formulário Definições Informações Tailwind",
-                    "version": "1.0",
-                    "framework_css": "tailwindcss"
+                    "version": "1.1",
+                    "framework_css": "tailwindcss",
+                    "checksum": {
+                        "html": "27294e564de954bc848490e5b343e7f0",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "27294e564de954bc848490e5b343e7f0"
+                    }
                 }
             ],
             "templates": [
@@ -211,7 +217,7 @@
                     "name": "Formulários Listar",
                     "id": "forms-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/",
+                    "path": "forms\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -255,25 +261,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Formulários Visualizar",
                     "id": "forms-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/view/",
+                    "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.11",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "3dbdc176cdc7b3b133495589fcb996bd",
-                        "css": "",
-                        "combined": "3dbdc176cdc7b3b133495589fcb996bd"
+                        "html": "d56cd29623778034deda0c86d4f2bd36",
+                        "css": "39c704e4c0804714fca60ff0a898f19d",
+                        "css_precompiled": "",
+                        "combined": "59f0ccaedda9d006f74fedf368d75f18"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -330,25 +332,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Formulários Adicionar",
                     "id": "forms-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/adicionar/",
+                    "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.12",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "f6b07cf23c4a69686d989c59a1e1f385",
-                        "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "7146190c4fe26b966efa017d7f7edd76"
+                        "html": "ada83fbd83a19b3dc8dc87090eafc046",
+                        "css": "fa9f7f111381eb489db9dc5872b62b15",
+                        "css_precompiled": "",
+                        "combined": "0c1a991e53d3f72b073ea116436475f7"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -450,25 +448,21 @@
                             "modulo": "forms"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Formulários Editar",
                     "id": "forms-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/editar/",
+                    "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.10",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "9ec559b392ab542f7e3824472ca51c63",
-                        "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "a9b71be991556a9ab0a1cd0e69cc42cf"
+                        "html": "4c77e24593f7fe3e2800d90e6ab17081",
+                        "css": "fa9f7f111381eb489db9dc5872b62b15",
+                        "css_precompiled": "",
+                        "combined": "2fa5005a80817ac214d15070c7ee718f"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -570,25 +564,21 @@
                             "modulo": "forms"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Formulários Clonar",
                     "id": "forms-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/clonar/",
+                    "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.9",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "185a9237aa5f73cf0f2442190b8cc006",
-                        "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "8d6026e11af3496728c62e6e924b234e"
+                        "html": "cb7c2f5db96933c7d7629745159d12f7",
+                        "css": "fa9f7f111381eb489db9dc5872b62b15",
+                        "css_precompiled": "",
+                        "combined": "7981b3739900ef67bdf28b21f27ba650"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -690,18 +680,13 @@
                             "modulo": "forms"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Forms Test Email Page",
                     "id": "forms-test-email-page",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "forms/test-email-page/",
+                    "path": "forms\/test-email-page\/",
                     "type": "system",
                     "option": "test-email-page",
                     "framework_css": "tailwindcss",
@@ -859,11 +844,11 @@
                     "redirects": {
                         "success": {
                             "type": "url",
-                            "path": "your-page/success/"
+                            "path": "your-page\/success\/"
                         },
                         "error": {
                             "type": "url",
-                            "path": "your-page/error/"
+                            "path": "your-page\/error\/"
                         }
                     },
                     "fields": [
@@ -915,8 +900,14 @@
                 {
                     "id": "forms-info-definition-tailwind",
                     "name": "Forms Info Definition Tailwind",
-                    "version": "1.0",
-                    "framework_css": "tailwindcss"
+                    "version": "1.1",
+                    "framework_css": "tailwindcss",
+                    "checksum": {
+                        "html": "87d691316869f441537da711b4ff385e",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "87d691316869f441537da711b4ff385e"
+                    }
                 }
             ],
             "templates": [
@@ -991,7 +982,7 @@
                     "name": "Forms List",
                     "id": "forms-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/",
+                    "path": "forms\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -1035,25 +1026,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Forms View",
                     "id": "forms-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/view/",
+                    "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.14",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "a62362020eafb15e85002e9a752419a1",
-                        "css": "",
-                        "combined": "a62362020eafb15e85002e9a752419a1"
+                        "html": "c63fc169099316bfa808b04dd47e8f98",
+                        "css": "39c704e4c0804714fca60ff0a898f19d",
+                        "css_precompiled": "",
+                        "combined": "e743ff010c2a39eb9bce578df647ff20"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1110,25 +1097,21 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Forms Add",
                     "id": "forms-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/adicionar/",
+                    "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.14",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "fd0a564bf934fa4beb9b9e419835e8fb",
-                        "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "2a6e5edada0d8dc8d94dd01ecf88661f"
+                        "html": "03f609e845e0da6fe1522eb2ec2f3b51",
+                        "css": "fa9f7f111381eb489db9dc5872b62b15",
+                        "css_precompiled": "",
+                        "combined": "2f3cd7f6a901aa2fec80808d2890a27b"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1230,25 +1213,21 @@
                             "modulo": "forms"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Forms Edit",
                     "id": "forms-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/editar/",
+                    "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.12",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "96793c1d186a8936e67f2c6ee51ce85b",
-                        "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "e742955bbcd3c06f9ce6501e679b8c33"
+                        "html": "d59371cbe15987dddfc22f86f80be572",
+                        "css": "fa9f7f111381eb489db9dc5872b62b15",
+                        "css_precompiled": "",
+                        "combined": "056e82a3a844f04bdc51bd8292cc1bed"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1350,25 +1329,21 @@
                             "modulo": "forms"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Forms Clone",
                     "id": "forms-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/clonar/",
+                    "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.11",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "4f23fc8e7ac221a660d42b301c98faff",
-                        "css": "aa43d6aa4dec695c666f726474800b97",
-                        "combined": "acc1e2deaf6240721e5d65a27fb692bf"
+                        "html": "1e95127abc60d1214cc38de895525889",
+                        "css": "fa9f7f111381eb489db9dc5872b62b15",
+                        "css_precompiled": "",
+                        "combined": "87321e1c0187ca253d3526822119b78b"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1470,18 +1445,13 @@
                             "modulo": "forms"
                         }
                     ],
-                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
-                    "tailwind_sources": [
-                        "../../../../forms.js",
-                        "../../../../forms.php"
-                    ],
-                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Forms Test Email Page",
                     "id": "forms-test-email-page",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "forms/test-email-page/",
+                    "path": "forms\/test-email-page\/",
                     "type": "system",
                     "option": "test-email-page",
                     "framework_css": "tailwindcss",
@@ -1592,5 +1562,5 @@
             ]
         }
     },
-    "asset_version": "408e937de58de836"
+    "asset_version": "b0508677dca7a114"
 }

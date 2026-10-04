@@ -608,12 +608,12 @@
         "name": "Interface Formulário Visualização Tailwind",
         "id": "interface-formulario-visualizacao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.0",
+        "version": "1.1",
         "checksum": {
-            "html": "",
+            "html": "80334508d48b8c28f77b98a39e218614",
             "css": "",
             "css_precompiled": "",
-            "combined": ""
+            "combined": "80334508d48b8c28f77b98a39e218614"
         }
     },
     {
@@ -738,13 +738,25 @@
     {
         "name": "html-editor-menus-simulation Tailwind",
         "id": "html-editor-menus-simulation-tailwind",
-        "version": "1.0",
-        "framework_css": "tailwindcss"
+        "version": "1.1",
+        "framework_css": "tailwindcss",
+        "checksum": {
+            "html": "546042b57f7784801d2e93abf91142b3",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "546042b57f7784801d2e93abf91142b3"
+        }
     },
     {
         "name": "html-editor-galleries-simulation Tailwind",
         "id": "html-editor-galleries-simulation-tailwind",
-        "version": "1.0",
-        "framework_css": "tailwindcss"
+        "version": "1.1",
+        "framework_css": "tailwindcss",
+        "checksum": {
+            "html": "eef0b521d042871a4806698485513fa4",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "eef0b521d042871a4806698485513fa4"
+        }
     }
 ]

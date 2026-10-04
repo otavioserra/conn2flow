@@ -15,7 +15,7 @@
 .req222-page { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
 .req222-page table { max-width: 100%; }
 .req222-page select, .req222-page input, .req222-page textarea { max-width: 100%; }
-.req222-page .c2fc-chave { flex-wrap: wrap; }
+.req222-page .c2fc-chave { flex-wrap: wrap; position: relative; }
 .req222-page .c2fc-chave > label { cursor: pointer; }
 .req222-page .menu-tree-row { max-width: 100%; box-sizing: border-box; }
 .req222-page .menu-tree-type { flex-shrink: 1; }
@@ -25,3 +25,11 @@
 .req222-page .tab:not(.active) { display: none; }
 .req222-page .tab.active { display: block; }
 .req222-page .c2fc-aba.active { color: #0369a1; background: #e0f2fe; }
+
+.req222-page .menu-panel { border: 1px solid #e2e8f0; border-radius: 12px; background: white; padding: 16px; margin: 16px 0; min-width: 0; }
+.req222-page .menu-panel-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin: 16px 0; }
+.req222-page .menu-profile-input { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.req222-page .menu-profile-results { border: 1px solid #e2e8f0; border-radius: 8px; background: white; }
+.req222-page .menu-condition-tabs { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid #e2e8f0; padding: 8px 0; }
+.req222-page .menu-panel-notice { border: 1px solid #bae6fd; border-radius: 8px; background: #f0f9ff; color: #075985; padding: 16px; margin: 16px 0; }
+@media (min-width: 768px) { .req222-page .menu-panel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
