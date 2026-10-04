@@ -33,12 +33,12 @@
         </div>
         <div class="flex flex-wrap gap-2">
             <button type="button" id="cron-btn-sync"
-                class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-400 disabled:cursor-not-allowed disabled:opacity-60">
+                class="c2fc-botao">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 6.7 3L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-6.7-3L3 16" /><path d="M3 21v-5h5" /></svg>
                 @[[button-sync-modules]]@
             </button>
             <button type="button" id="cron-btn-new"
-                class="inline-flex items-center gap-2 rounded-lg bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                class="c2fc-botao c2fc-botao-primario">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
                 @[[button-new-task]]@
             </button>
@@ -68,28 +68,28 @@
 
     <section class="mb-4 grid grid-cols-1 gap-3 md:grid-cols-3">
         <div class="md:col-span-1">
-            <label for="cron-filtro-busca" class="sr-only">@[[filter-search-placeholder]]@</label>
-            <input type="search" id="cron-filtro-busca" placeholder="@[[filter-search-placeholder]]@"
-                class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500">
+            <div class="c2fc-campo"><label for="cron-filtro-busca" class="c2fc-campo-rotulo">@[[filter-search-placeholder]]@</label>
+<input type="search" id="cron-filtro-busca" placeholder="@[[filter-search-placeholder]]@"
+                class="c2fc-campo-entrada"></div>
         </div>
         <div>
-            <label for="cron-filtro-frequencia" class="sr-only">@[[filter-frequency-label]]@</label>
-            <select id="cron-filtro-frequencia"
-                class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500">
+            <div class="c2fc-campo"><label for="cron-filtro-frequencia" class="c2fc-campo-rotulo">@[[filter-frequency-label]]@</label>
+<select id="cron-filtro-frequencia"
+                class="c2fc-campo-entrada">
                 <option value="">@[[filter-frequency-all]]@</option>
                 <option value="minutario">@[[freq-minutario]]@</option>
                 <option value="horario">@[[freq-horario]]@</option>
                 <option value="diario">@[[freq-diario]]@</option>
                 <option value="mensal">@[[freq-mensal]]@</option>
                 <option value="customizado">@[[freq-customizado]]@</option>
-            </select>
+            </select></div>
         </div>
         <div>
-            <label for="cron-filtro-modulo" class="sr-only">@[[filter-module-label]]@</label>
-            <select id="cron-filtro-modulo"
-                class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500">
+            <div class="c2fc-campo"><label for="cron-filtro-modulo" class="c2fc-campo-rotulo">@[[filter-module-label]]@</label>
+<select id="cron-filtro-modulo"
+                class="c2fc-campo-entrada">
                 <option value="">@[[filter-module-all]]@</option>
-            </select>
+            </select></div>
         </div>
     </section>
 
@@ -115,7 +115,7 @@
         <div class="max-h-full w-full max-w-2xl overflow-y-auto rounded-xl bg-white shadow-xl">
             <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
                 <h2 id="cron-modal-titulo" class="text-base font-semibold text-slate-900">@[[modal-new-title]]@</h2>
-                <button type="button" id="cron-modal-fechar" class="rounded p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400" aria-label="@[[button-close]]@">
+                <button type="button" id="cron-modal-fechar" class="c2fc-botao" aria-label="@[[button-close]]@">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
                 </button>
             </div>
@@ -125,74 +125,71 @@
 
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
-                        <label for="cron-form-id" class="block text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[form-id-label]]@</label>
-                        <input type="text" id="cron-form-id" name="id" required
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 disabled:bg-slate-100 disabled:text-slate-500">
+                        <div class="c2fc-campo"><label for="cron-form-id" class="c2fc-campo-rotulo">@[[form-id-label]]@</label>
+<input type="text" id="cron-form-id" name="id" required
+                            class="c2fc-campo-entrada"></div>
                         <p class="mt-1 text-xs text-slate-400">@[[form-id-hint]]@</p>
                     </div>
                     <div>
-                        <label for="cron-form-nome" class="block text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[form-name-label]]@</label>
-                        <input type="text" id="cron-form-nome" name="nome" required
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 disabled:bg-slate-100 disabled:text-slate-500">
+                        <div class="c2fc-campo"><label for="cron-form-nome" class="c2fc-campo-rotulo">@[[form-name-label]]@</label>
+<input type="text" id="cron-form-nome" name="nome" required
+                            class="c2fc-campo-entrada"></div>
                     </div>
                 </div>
 
                 <div>
-                    <label for="cron-form-descricao" class="block text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[form-description-label]]@</label>
-                    <textarea id="cron-form-descricao" name="descricao" rows="2"
-                        class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 disabled:bg-slate-100 disabled:text-slate-500"></textarea>
+                    <div class="c2fc-campo"><label for="cron-form-descricao" class="c2fc-campo-rotulo">@[[form-description-label]]@</label>
+<textarea id="cron-form-descricao" name="descricao" rows="2"
+                        class="c2fc-campo-entrada"></textarea></div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
-                        <label for="cron-form-frequencia" class="block text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[form-frequency-label]]@</label>
-                        <select id="cron-form-frequencia" name="frequencia"
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500">
+                        <div class="c2fc-campo"><label for="cron-form-frequencia" class="c2fc-campo-rotulo">@[[form-frequency-label]]@</label>
+<select id="cron-form-frequencia" name="frequencia"
+                            class="c2fc-campo-entrada">
                             <option value="minutario">@[[freq-minutario]]@</option>
                             <option value="horario">@[[freq-horario]]@</option>
                             <option value="diario">@[[freq-diario]]@</option>
                             <option value="mensal">@[[freq-mensal]]@</option>
                             <option value="customizado">@[[freq-customizado]]@</option>
-                        </select>
+                        </select></div>
                     </div>
                     <div>
-                        <label for="cron-form-expressao" class="block text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[form-cron-expression-label]]@</label>
-                        <input type="text" id="cron-form-expressao" name="expressao_cron"
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500">
+                        <div class="c2fc-campo"><label for="cron-form-expressao" class="c2fc-campo-rotulo">@[[form-cron-expression-label]]@</label>
+<input type="text" id="cron-form-expressao" name="expressao_cron"
+                            class="c2fc-campo-entrada"></div>
                         <p class="mt-1 text-xs text-slate-400">@[[form-cron-expression-hint]]@</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
-                        <label for="cron-form-callback" class="block text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[form-callback-label]]@</label>
-                        <input type="text" id="cron-form-callback" name="funcao_callback" required
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 disabled:bg-slate-100 disabled:text-slate-500">
+                        <div class="c2fc-campo"><label for="cron-form-callback" class="c2fc-campo-rotulo">@[[form-callback-label]]@</label>
+<input type="text" id="cron-form-callback" name="funcao_callback" required
+                            class="c2fc-campo-entrada"></div>
                     </div>
                     <div>
-                        <label for="cron-form-modulo" class="block text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[form-module-label]]@</label>
-                        <input type="text" id="cron-form-modulo" name="modulo"
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 disabled:bg-slate-100 disabled:text-slate-500">
+                        <div class="c2fc-campo"><label for="cron-form-modulo" class="c2fc-campo-rotulo">@[[form-module-label]]@</label>
+<input type="text" id="cron-form-modulo" name="modulo"
+                            class="c2fc-campo-entrada"></div>
                     </div>
                 </div>
 
                 <div>
-                    <label for="cron-form-parametros" class="block text-xs font-semibold tracking-wide text-slate-500 uppercase">@[[form-parameters-label]]@</label>
-                    <textarea id="cron-form-parametros" name="parametros" rows="3"
-                        class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-sm shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"></textarea>
+                    <div class="c2fc-campo"><label for="cron-form-parametros" class="c2fc-campo-rotulo">@[[form-parameters-label]]@</label>
+<textarea id="cron-form-parametros" name="parametros" rows="3"
+                        class="c2fc-campo-entrada"></textarea></div>
                 </div>
 
-                <label class="flex items-center gap-2 text-sm text-slate-700">
-                    <input type="checkbox" id="cron-form-ativo" name="ativo" checked
-                        class="size-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
-                    @[[form-active-label]]@
-                </label>
+                <label class="c2fc-chave"><input type="checkbox" id="cron-form-ativo" name="ativo" checked
+                        class="size-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"><span class="c2fc-chave-trilho" aria-hidden="true"></span><span class="c2fc-chave-rotulo">@[[form-active-label]]@</span></label>
 
                 <div class="flex justify-end gap-2 border-t border-slate-200 pt-4">
                     <button type="button" id="cron-form-cancelar"
-                        class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-400">@[[button-cancel]]@</button>
+                        class="c2fc-botao">@[[button-cancel]]@</button>
                     <button type="submit" id="cron-form-salvar"
-                        class="rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 disabled:cursor-not-allowed disabled:opacity-60">@[[button-save]]@</button>
+                        class="c2fc-botao c2fc-botao-primario">@[[button-save]]@</button>
                 </div>
             </form>
         </div>
@@ -203,7 +200,7 @@
         <div class="flex h-full w-full max-w-lg flex-col bg-white shadow-xl">
             <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
                 <h2 id="cron-logs-titulo" class="text-base font-semibold text-slate-900">@[[logs-title]]@</h2>
-                <button type="button" id="cron-logs-fechar" class="rounded p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400" aria-label="@[[button-close]]@">
+                <button type="button" id="cron-logs-fechar" class="c2fc-botao" aria-label="@[[button-close]]@">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
                 </button>
             </div>

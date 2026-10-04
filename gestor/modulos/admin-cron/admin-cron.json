@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.0.1",
     "bibliotecas": [
         "interface",
         "html",
@@ -25,18 +25,19 @@
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "6a4af6df04b77f8693400757bc7858df",
+                        "html": "",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6a4af6df04b77f8693400757bc7858df"
+                        "combined": ""
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../admin-cron.js"
                     ],
-                    "tailwind_sources_reason": "REQ-032: as etiquetas de status e de frequência das linhas são montadas em runtime pelo admin-cron.js a partir do JSON do backend; sem escanear o script, o precompiled sai sem as utilities dessas etiquetas."
+                    "tailwind_sources_reason": "REQ-032: as etiquetas de status e de frequência das linhas são montadas em runtime pelo admin-cron.js a partir do JSON do backend; sem escanear o script, o precompiled sai sem as utilities dessas etiquetas.",
+                    "tailwind_bundle": true
                 }
             ],
             "variables": [
@@ -467,18 +468,19 @@
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "6a4af6df04b77f8693400757bc7858df",
+                        "html": "",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6a4af6df04b77f8693400757bc7858df"
+                        "combined": ""
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
                         "../../../../admin-cron.js"
                     ],
-                    "tailwind_sources_reason": "REQ-032: status and frequency badges are built at runtime by admin-cron.js from the backend JSON; without scanning the script the precompiled bundle misses those utilities."
+                    "tailwind_sources_reason": "REQ-032: status and frequency badges are built at runtime by admin-cron.js from the backend JSON; without scanning the script the precompiled bundle misses those utilities.",
+                    "tailwind_bundle": true
                 }
             ],
             "variables": [

@@ -69,19 +69,19 @@
         <div id="formulario-alteracoes" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <h3 class="mb-3 text-sm font-semibold text-slate-700">@[[form-changes-label]]@</h3>
             <div class="flex flex-wrap gap-2">
-                <a class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
+                <a class="c2fc-botao"
                     href="@[[pagina#url-raiz]]@perfil-usuario/?mudar-nome=sim#formulario-alteracoes">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><rect width="18" height="14" x="3" y="5" rx="2" /><circle cx="9" cy="11" r="2" /><path d="M15 10h3M15 14h3M6 16c.6-1.2 1.7-2 3-2s2.4.8 3 2" /></svg> @[[button-change-name]]@
                 </a>
-                <a class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
+                <a class="c2fc-botao"
                     href="@[[pagina#url-raiz]]@perfil-usuario/?mudar-email=sim#formulario-alteracoes">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg> @[[button-change-email]]@
                 </a>
-                <a class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
+                <a class="c2fc-botao"
                     href="@[[pagina#url-raiz]]@perfil-usuario/?mudar-usuario=sim#formulario-alteracoes">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" /><circle cx="7.5" cy="7.5" r=".5" fill="currentColor" /></svg> @[[button-change-user]]@
                 </a>
-                <a class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
+                <a class="c2fc-botao"
                     href="@[[pagina#url-raiz]]@perfil-usuario/?mudar-senha=sim#formulario-alteracoes">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4" /><path d="m21 2-9.6 9.6" /><circle cx="7.5" cy="15.5" r="5.5" /></svg> @[[button-change-password]]@
                 </a>
@@ -90,35 +90,35 @@
 
         <!-- nome-campos < -->
         <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <label class="mb-1 block text-sm font-semibold text-slate-700" for="perfil-campo-nome">@[[form-name-label]]@</label>
-            <input id="perfil-campo-nome" type="text" name="nome" placeholder="@[[form-name-placeholder]]@" value="#nome#"
-                class="block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!">
+            <div class="c2fc-campo"><label class="c2fc-campo-rotulo" for="perfil-campo-nome">@[[form-name-label]]@</label>
+<input id="perfil-campo-nome" type="text" name="nome" placeholder="@[[form-name-placeholder]]@" value="#nome#"
+                class="c2fc-campo-entrada"></div>
             <input type="hidden" name="mudar-nome-banco" value="1">
         </div><!-- nome-campos > -->
 
         <!-- email-campos < -->
         <div class="grid grid-cols-1 gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-2">
             <div>
-                <label class="mb-1 block text-sm font-semibold text-slate-700" for="perfil-campo-email">@[[form-email-label]]@</label>
-                <input id="perfil-campo-email" type="email" name="email" placeholder="@[[form-email-placeholder]]@"
+                <div class="c2fc-campo"><label class="c2fc-campo-rotulo" for="perfil-campo-email">@[[form-email-label]]@</label>
+<input id="perfil-campo-email" type="email" name="email" placeholder="@[[form-email-placeholder]]@"
                     value="#email#"
-                    class="block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!">
+                    class="c2fc-campo-entrada"></div>
             </div>
             <div>
-                <label class="mb-1 block text-sm font-semibold text-slate-700" for="perfil-campo-email-2">@[[form-email-2-label]]@</label>
-                <input id="perfil-campo-email-2" type="email" name="email-2" placeholder="@[[form-email-2-placeholder]]@"
+                <div class="c2fc-campo"><label class="c2fc-campo-rotulo" for="perfil-campo-email-2">@[[form-email-2-label]]@</label>
+<input id="perfil-campo-email-2" type="email" name="email-2" placeholder="@[[form-email-2-placeholder]]@"
                     value="#email#"
-                    class="block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!">
+                    class="c2fc-campo-entrada"></div>
             </div>
             <input type="hidden" name="mudar-email-banco" value="1">
         </div><!-- email-campos > -->
 
         <!-- usuario-campos < -->
         <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <label class="mb-1 block text-sm font-semibold text-slate-700" for="perfil-campo-usuario">@[[form-user-label]]@</label>
-            <input id="perfil-campo-usuario" type="text" name="usuario" placeholder="@[[form-user-placeholder]]@"
+            <div class="c2fc-campo"><label class="c2fc-campo-rotulo" for="perfil-campo-usuario">@[[form-user-label]]@</label>
+<input id="perfil-campo-usuario" type="text" name="usuario" placeholder="@[[form-user-placeholder]]@"
                 value="#usuario#"
-                class="block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!">
+                class="c2fc-campo-entrada"></div>
             <input type="hidden" name="mudar-usuario-banco" value="1">
         </div><!-- usuario-campos > -->
 
@@ -126,16 +126,16 @@
         <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm" data-perfil-senha-bloco>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                    <label class="mb-1 block text-sm font-semibold text-slate-700" for="perfil-campo-senha">@[[form-password-label]]@</label>
-                    <input id="perfil-campo-senha" type="password" name="senha" placeholder="@[[form-password-placeholder]]@"
+                    <div class="c2fc-campo"><label class="c2fc-campo-rotulo" for="perfil-campo-senha">@[[form-password-label]]@</label>
+<input id="perfil-campo-senha" type="password" name="senha" placeholder="@[[form-password-placeholder]]@"
                         autocomplete="new-password" data-perfil-senha
-                        class="block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!">
+                        class="c2fc-campo-entrada"></div>
                 </div>
                 <div>
-                    <label class="mb-1 block text-sm font-semibold text-slate-700" for="perfil-campo-senha-2">@[[form-password-2-label]]@</label>
-                    <input id="perfil-campo-senha-2" type="password" name="senha-2"
+                    <div class="c2fc-campo"><label class="c2fc-campo-rotulo" for="perfil-campo-senha-2">@[[form-password-2-label]]@</label>
+<input id="perfil-campo-senha-2" type="password" name="senha-2"
                         placeholder="@[[form-password-2-placeholder]]@" autocomplete="new-password"
-                        class="block! w-full! rounded-lg! border! border-slate-300! bg-white! px-3! py-2! text-sm! text-slate-900! shadow-none!">
+                        class="c2fc-campo-entrada"></div>
                 </div>
             </div>
             <div class="mt-3">

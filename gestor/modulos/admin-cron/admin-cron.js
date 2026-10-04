@@ -27,6 +27,23 @@
 
     // ===== Estado
 
+    var focoAnterior = new WeakMap();
+
+    function abrirPainel(painelDialogo) {
+        focoAnterior.set(painelDialogo, document.activeElement);
+        painelDialogo.classList.remove('hidden');
+        painelDialogo.classList.add('flex');
+        var primeiro = painelDialogo.querySelector('button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled)');
+        if (primeiro) primeiro.focus();
+    }
+
+    function fecharPainel(painelDialogo) {
+        painelDialogo.classList.add('hidden');
+        painelDialogo.classList.remove('flex');
+        var anterior = focoAnterior.get(painelDialogo);
+        if (anterior && anterior.isConnected) anterior.focus();
+    }
+
     var estado = {
         tarefas: [],
         modulos: [],
@@ -288,8 +305,9 @@
      * página e produz o recarregamento involuntário corrigido no BATCH-024.
      */
     function botaoHtml(acao, id, rotulo) {
+        var cor = acao === 'delete' ? ' c2fc-botao-perigo' : (acao === 'run' ? ' c2fc-botao-primario' : '');
         return '<button type="button" data-acao="' + acao + '" data-id="' + escapar(id) + '" ' +
-            'class="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400">' +
+            'data-c2f-dica="' + escapar(rotulo) + '" class="c2fc-botao' + cor + '">' +
             escapar(rotulo) + '</button>';
     }
 
@@ -341,14 +359,12 @@
         campos.callback.disabled = deModulo;
         campos.modulo.disabled = deModulo;
 
-        el.modal.classList.remove('hidden');
-        el.modal.classList.add('flex');
+        abrirPainel(el.modal);
     }
 
     function fecharModal() {
         estado.editando = null;
-        el.modal.classList.add('hidden');
-        el.modal.classList.remove('flex');
+        fecharPainel(el.modal);
     }
 
     function abrirLogs(tarefa) {
@@ -358,13 +374,11 @@
         el.logsStatus.textContent = tarefa.ultimo_status ? rotuloStatus(tarefa.ultimo_status) : rotulos.msgNeverRun;
         el.logsSaida.textContent = tarefa.ultimo_log || rotulos.msgLogsEmpty;
 
-        el.logs.classList.remove('hidden');
-        el.logs.classList.add('flex');
+        abrirPainel(el.logs);
     }
 
     function fecharLogs() {
-        el.logs.classList.add('hidden');
-        el.logs.classList.remove('flex');
+        fecharPainel(el.logs);
     }
 
     // ===== Ações
@@ -400,9 +414,10 @@
                 abrirLogs(tarefa);
                 break;
             case 'delete':
-                if (window.confirm(rotulos.msgConfirmDelete)) {
-                    comBloqueio(botao, chamar('excluir', { id: id }));
-                }
+                botao.disabled = true;
+                window.c2fControles.dialogo.confirmar(rotulos.msgConfirmDelete).then(function (confirmado) {
+                    if (confirmado) return comBloqueio(botao, chamar('excluir', { id: id }));
+                }).catch(tratarErro).finally(function () { botao.disabled = false; });
                 break;
         }
     }
@@ -506,6 +521,19 @@
     }
 
     document.addEventListener('keydown', function (evento) {
+        if (document.querySelector('[data-c2fc-dialogo]')) return;
+        if (evento.key === 'Tab') {
+            var aberto = [el.logs, el.modal].find(function (dialogo) { return dialogo && !dialogo.classList.contains('hidden'); });
+            if (!aberto) return;
+            var focaveis = Array.from(aberto.querySelectorAll('button:not(:disabled), input:not(:disabled):not([type="hidden"]), select:not(:disabled), textarea:not(:disabled)'));
+            var primeiro = focaveis[0];
+            var ultimo = focaveis[focaveis.length - 1];
+            if ((evento.shiftKey && document.activeElement === primeiro) || (!evento.shiftKey && document.activeElement === ultimo)) {
+                evento.preventDefault();
+                (evento.shiftKey ? ultimo : primeiro).focus();
+            }
+            return;
+        }
         if (evento.key !== 'Escape') return;
         if (!el.modal.classList.contains('hidden')) fecharModal();
         if (!el.logs.classList.contains('hidden')) fecharLogs();

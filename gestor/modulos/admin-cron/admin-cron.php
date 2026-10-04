@@ -181,6 +181,7 @@ function admin_cron_validar($dados){
 
 function admin_cron_painel(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	gestor_pagina_javascript_incluir();
 

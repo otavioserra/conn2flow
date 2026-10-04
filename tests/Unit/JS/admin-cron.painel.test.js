@@ -210,4 +210,47 @@ describe('admin-cron.js — inicialização do painel', () => {
     fingirDocumentoCarregando('complete');
     expect(() => avaliarScript()).not.toThrow();
   });
+
+  it('confirma a exclusão pela nova UI e só envia depois da aprovação', async () => {
+    document.body.innerHTML = htmlDoPainel();
+    const manual = { ...TAREFAS[0], id: 'manual', origem: 'manual' };
+    document.getElementById('admin-cron-painel').dataset.cronTarefas = JSON.stringify([manual]);
+    fingirDocumentoCarregando('complete');
+    let responder;
+    window.c2fControles = { dialogo: { confirmar: vi.fn(() => new Promise(resolve => { responder = resolve; })) } };
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => ({ status: 'Ok', tarefas: [] }) });
+    vi.stubGlobal('fetch', fetchMock);
+    avaliarScript();
+    const excluir = document.querySelector('button[data-acao="delete"]');
+    excluir.click();
+    expect(window.c2fControles.dialogo.confirmar).toHaveBeenCalledWith('Confirma a exclusão?');
+    expect(fetchMock).not.toHaveBeenCalled();
+    responder(false);
+    await vi.waitFor(() => expect(excluir.disabled).toBe(false));
+    expect(fetchMock).not.toHaveBeenCalled();
+    excluir.click();
+    responder(true);
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    const body = fetchMock.mock.calls[0][1].body;
+    expect(body.get('ajax')).toBe('sim');
+    expect(body.get('ajaxOpcao')).toBe('excluir');
+    expect(body.get('id')).toBe('manual');
+  });
+
+  it('prende o foco no modal e o devolve ao botão ao fechar com Escape', () => {
+    document.body.innerHTML = htmlDoPainel();
+    fingirDocumentoCarregando('complete');
+    avaliarScript();
+    const novo = document.getElementById('cron-btn-new');
+    novo.focus();
+    novo.click();
+    const primeiro = document.getElementById('cron-modal-fechar');
+    const ultimo = document.getElementById('cron-form-salvar');
+    expect(document.activeElement).toBe(primeiro);
+    ultimo.focus();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true }));
+    expect(document.activeElement).toBe(primeiro);
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(document.activeElement).toBe(novo);
+  });
 });

@@ -13,11 +13,11 @@
 <!-- 2fa-ativo < -->
 <p class="@[[classe-etiqueta]]@ bg-emerald-50 text-emerald-700">@[[security-2fa-active]]@ #tipo#</p>
 <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-    <div>
+    <div class="c2fc-campo">
         <label class="@[[classe-rotulo]]@" for="seg-2fa-senha">@[[security-password-label]]@</label>
         <input type="password" id="seg-2fa-senha" autocomplete="current-password" class="@[[classe-campo]]@">
     </div>
-    <div>
+    <div class="c2fc-campo">
         <label class="@[[classe-rotulo]]@" for="seg-2fa-codigo">@[[security-2fa-code-label]]@</label>
         <input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" class="@[[classe-campo]]@">
     </div>
@@ -36,7 +36,7 @@
 </a><!-- 2fa-inativo > -->
 <!-- 2fa-configurar < -->
 <p class="@[[classe-ajuda]]@">@[[security-2fa-inactive-help]]@</p>
-<div class="mt-4">
+<div class="c2fc-campo mt-4">
     <label class="@[[classe-rotulo]]@" for="seg-2fa-metodo">@[[security-2fa-method-label]]@</label>
     <select id="seg-2fa-metodo" class="@[[classe-campo]]@">#opcoes#</select>
 </div>
@@ -54,7 +54,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg> @[[security-2fa-send-email]]@
     </button>
 </div><!-- email > -->
-<div class="mt-4">
+<div class="c2fc-campo mt-4">
     <label class="@[[classe-rotulo]]@" for="seg-2fa-codigo">@[[security-2fa-code-label]]@</label>
     <input type="text" id="seg-2fa-codigo" maxlength="6" inputmode="numeric" class="@[[classe-campo]]@">
 </div>
