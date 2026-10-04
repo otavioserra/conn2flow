@@ -40,6 +40,11 @@ final class PainelTailwindReq224Test extends TestCase
                     $pagina = $porId[$id];
                     self::assertSame('layout-administrativo-tailwind', $pagina['layout'], "$lingua/$id");
                     self::assertTrue($pagina['tailwind_bundle'] ?? false, "$lingua/$id");
+                    if ($modulo === 'dashboard' && $id === 'dashboard') {
+                        self::assertContains('../../../../dashboard.php', $pagina['tailwind_sources'] ?? [], "$lingua/$id");
+                        self::assertNotEmpty($pagina['tailwind_sources_reason'] ?? '', "$lingua/$id");
+                        self::assertFileExists($base . '/dashboard.php');
+                    }
                     $deps = array_column($pagina['tailwind_dependencies'], 'id');
                     if ($opcao === 'listar') self::assertContains('interface-listar-tailwind', $deps, "$lingua/$id");
                     $html = (string)file_get_contents($base . '/resources/' . $lingua . '/pages/' . $id . '/' . $id . '.html');
