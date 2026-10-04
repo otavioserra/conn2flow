@@ -34,7 +34,7 @@
                     "name": "Dashboard 3D",
                     "id": "dashboard-3d",
                     "layout": "layout-administrativo-do-gestor-3d",
-                    "path": "dashboard-3d\/",
+                    "path": "dashboard-3d/",
                     "type": "system",
                     "option": "dashboard-3d",
                     "version": "1.3",
@@ -48,7 +48,7 @@
                     "name": "Dashboard",
                     "id": "dashboard",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "dashboard\/",
+                    "path": "dashboard/",
                     "type": "system",
                     "option": "inicio",
                     "root": true,
@@ -97,7 +97,7 @@
                     "name": "Dashboard Testes",
                     "id": "dashboard-testes",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "dashboard-testes\/",
+                    "path": "dashboard-testes/",
                     "type": "system",
                     "option": "listar",
                     "version": "1.1",
@@ -111,7 +111,7 @@
                     "name": "Dashboard Site Toolbar",
                     "id": "dashboard-site-toolbar",
                     "layout": "layout-iframe-tailwindcss",
-                    "path": "dashboard-site-toolbar\/",
+                    "path": "dashboard-site-toolbar/",
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
@@ -217,12 +217,12 @@
                     "name": "Cards do Painel Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "db72bda81d9451d4e9dd998bc2923983",
-                        "css": "aab774ae86072f22803baed4e8da2b0b",
+                        "html": "3a91496db8ba7cce38dac1f53db6bf6c",
+                        "css": "dca4e004c7cb3414eabee09df6356f9d",
                         "css_precompiled": "",
-                        "combined": "f8aa14fd2a08ecc62228243e67f1457b"
+                        "combined": "455c42f34a3bde5bfd336ffde703a7a7"
                     }
                 }
             ],
@@ -284,7 +284,7 @@
                 },
                 {
                     "id": "toast-update-button-negative-message",
-                    "value": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#<\/b>.",
+                    "value": "O sistema armazenará sua escolha. Se mudar de ideia acesse: <b>#url#</b>.",
                     "type": "string"
                 },
                 {
@@ -487,7 +487,7 @@
                     "name": "Dashboard 3D",
                     "id": "dashboard-3d",
                     "layout": "layout-administrativo-do-gestor-3d",
-                    "path": "dashboard-3d\/",
+                    "path": "dashboard-3d/",
                     "type": "system",
                     "option": "dashboard-3d",
                     "version": "1.2",
@@ -501,7 +501,7 @@
                     "name": "Dashboard",
                     "id": "dashboard",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "dashboard\/",
+                    "path": "dashboard/",
                     "type": "system",
                     "root": true,
                     "option": "inicio",
@@ -550,7 +550,7 @@
                     "name": "Dashboard Tests",
                     "id": "dashboard-testes",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "dashboard-testes\/",
+                    "path": "dashboard-testes/",
                     "type": "system",
                     "option": "listar",
                     "version": "1.2",
@@ -564,7 +564,7 @@
                     "name": "Dashboard Site Toolbar",
                     "id": "dashboard-site-toolbar",
                     "layout": "layout-iframe-tailwindcss",
-                    "path": "dashboard-site-toolbar\/",
+                    "path": "dashboard-site-toolbar/",
                     "type": "system",
                     "option": "dashboard-site-toolbar",
                     "framework_css": "tailwindcss",
@@ -670,12 +670,12 @@
                     "name": "Dashboard Cards Tailwind",
                     "id": "dashboard-cards-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "0117951582de8f2ee401553f6e6a5e10",
-                        "css": "aab774ae86072f22803baed4e8da2b0b",
+                        "html": "d977b4130eec87f0f72068f1c92582d7",
+                        "css": "dca4e004c7cb3414eabee09df6356f9d",
                         "css_precompiled": "",
-                        "combined": "ed017128c0c8235338e5fa6f776199db"
+                        "combined": "ae8160ad6075cdc3728ed2161c6c3f54"
                     }
                 }
             ],
@@ -737,7 +737,7 @@
                 },
                 {
                     "id": "toast-update-button-negative-message",
-                    "value": "The system will store your choice. If you change your mind, access: <b>#url#<\/b>.",
+                    "value": "The system will store your choice. If you change your mind, access: <b>#url#</b>.",
                     "type": "string"
                 },
                 {
@@ -923,5 +923,5 @@
             ]
         }
     },
-    "asset_version": "2aabf1ea99a92d03"
+    "asset_version": "d6d4ac215a696805"
 }

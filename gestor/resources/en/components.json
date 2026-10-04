@@ -608,12 +608,12 @@
         "name": "Interface View Form Tailwind",
         "id": "interface-formulario-visualizacao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.0",
+        "version": "1.1",
         "checksum": {
-            "html": "",
+            "html": "07cb7b5442030b39fd905f83d30aaddb",
             "css": "",
             "css_precompiled": "",
-            "combined": ""
+            "combined": "07cb7b5442030b39fd905f83d30aaddb"
         }
     },
     {
@@ -739,12 +739,12 @@
         "name": "Administrative topbar Tailwind",
         "id": "admin-topbar-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "87e0a68b623351705f4542834125694b",
+            "html": "800f4115ae762d72c2499b42822c8f3a",
             "css": "",
             "css_precompiled": "",
-            "combined": "87e0a68b623351705f4542834125694b"
+            "combined": "800f4115ae762d72c2499b42822c8f3a"
         }
     }
 ]
