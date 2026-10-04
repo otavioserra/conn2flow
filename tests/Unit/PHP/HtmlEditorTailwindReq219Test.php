@@ -140,7 +140,7 @@ final class HtmlEditorTailwindReq219Test extends TestCase
         $modulo = CONN2FLOW_GESTOR_ROOT . '/modulos/admin-paginas';
         $json = json_decode(self::ler($modulo . '/admin-paginas.json'), true);
         // Sem o flag do runtime, os sidecars dos componentes entram depois do bundle e invertem as responsivas.
-        self::assertSame(3, substr_count(self::ler($modulo . '/admin-paginas.php'), "\$_GESTOR['tailwind-page-bundle'] = true;"));
+        self::assertSame(4, substr_count(self::ler($modulo . '/admin-paginas.php'), "\$_GESTOR['tailwind-page-bundle'] = true;"));
         foreach (['pt-br', 'en'] as $lingua) {
             $paginas = array_column($json['resources'][$lingua]['pages'], null, 'id');
             foreach (['editar', 'adicionar', 'clonar'] as $opcao) {
@@ -164,6 +164,38 @@ final class HtmlEditorTailwindReq219Test extends TestCase
                 $css = self::ler($modulo . '/resources/' . $lingua . '/pages/admin-paginas-' . $opcao . '/admin-paginas-' . $opcao . '.css');
                 self::assertDoesNotMatchRegularExpression('/\.hidden\s*\{[^}]*!important/', $css);
             }
+        }
+    }
+
+    /** BATCH-229: módulos do editor (layouts e componentes) e as listagens raiz, já com a listagem da req-220. */
+    public function testModulosDoEditorEListagensEmTailwind(): void
+    {
+        $esperado = [
+            'admin-layouts' => ['admin-layouts', 'admin-layouts-adicionar', 'admin-layouts-editar'],
+            'admin-componentes' => ['admin-componentes', 'admin-componentes-adicionar', 'admin-componentes-editar'],
+            'admin-paginas' => ['admin-paginas'],
+        ];
+        foreach ($esperado as $modulo => $ids) {
+            $base = CONN2FLOW_GESTOR_ROOT . '/modulos/' . $modulo;
+            $json = json_decode(self::ler($base . '/' . $modulo . '.json'), true);
+            foreach (['pt-br', 'en'] as $lingua) {
+                $paginas = array_column($json['resources'][$lingua]['pages'], null, 'id');
+                foreach ($ids as $id) {
+                    $pagina = $paginas[$id];
+                    self::assertSame('layout-administrativo-tailwind', $pagina['layout'], $lingua . '/' . $id);
+                    self::assertTrue($pagina['tailwind_bundle'] ?? false, $lingua . '/' . $id);
+                    $deps = array_column($pagina['tailwind_dependencies'], 'id');
+                    self::assertContains($id === $modulo ? 'interface-listar-tailwind' : 'html-editor-tailwind', $deps, $lingua . '/' . $id);
+                    $html = self::ler($base . '/resources/' . $lingua . '/pages/' . $id . '/' . $id . '.html');
+                    self::assertStringNotContainsString('class="ui ', $html, $lingua . '/' . $id);
+                }
+            }
+            // adicionar/editar e a listagem ligam o bundle no runtime
+            self::assertGreaterThanOrEqual(count($ids) === 1 ? 4 : 3, substr_count(self::ler($base . '/' . $modulo . '.php'), "\$_GESTOR['tailwind-page-bundle'] = true;"), $modulo);
+        }
+        // A listagem Tailwind guarda o id que os JS dos módulos usam para ligar os filtros da lista.
+        foreach (['pt-br', 'en'] as $lingua) {
+            self::assertStringContainsString('id="_gestor-interface-listar"', self::ler(self::recursos() . '/' . $lingua . '/components/interface-listar-tailwind/interface-listar-tailwind.html'));
         }
     }
 

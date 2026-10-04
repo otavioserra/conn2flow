@@ -1264,7 +1264,7 @@ function admin_paginas_listar_cabecalho(){
 	$checked = ' checked="checked"';
 
 	$componente_cabecalho = gestor_componente(Array(
-		'id' => 'lista-pagina-ou-sistema',
+		'id' => interface_componente_variante('lista-pagina-ou-sistema'),
 		'modulo' => $_GESTOR['modulo-id'],
 	));
 
@@ -1325,6 +1325,7 @@ function admin_paginas_interfaces_padroes(){
 
 	switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true; // req-219: listagem Tailwind com bundle
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],

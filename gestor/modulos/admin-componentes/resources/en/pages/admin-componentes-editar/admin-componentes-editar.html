@@ -1,13 +1,19 @@
-<div class="field">
-    <label>#form-name-label#</label>
-    <input type="text" name="nome" placeholder="#form-name-placeholder#" value="#nome#">
+<!-- req-219: página em Tailwind (layout-administrativo-tailwind). Campos no padrão da biblioteca de
+     controles (c2fc-campo); os selects vêm do interface com `data-c2f-select`. -->
+<div class="space-y-6">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="nome">#form-name-label#</label>
+            <input type="text" id="nome" name="nome" class="c2fc-campo-entrada" placeholder="#form-name-placeholder#" value="#nome#">
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="module">#form-module-label#</label>
+            <span>#select-module#</span>
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="framework-css">#form-framework-css-label#</label>
+            <span>#select-framework-css#</span>
+        </div>
+    </div>
+    #html-editor#
 </div>
-<div class="field">
-    <label>#form-module-label#</label>
-    <span>#select-module#</span>
-</div>
-<div class="field">
-    <label>#form-framework-css-label#</label>
-    <span>#select-framework-css#</span>
-</div>
-#html-editor#

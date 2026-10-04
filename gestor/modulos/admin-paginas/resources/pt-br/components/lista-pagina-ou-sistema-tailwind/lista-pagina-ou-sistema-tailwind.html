@@ -1,0 +1,27 @@
+<!-- req-219: variante Tailwind do filtro da listagem. `ui radio checkbox` e `gestorModule` são ganchos do
+     admin-paginas.js (a ponte de controles responde pelo `.checkbox()` e pelo `.dropdown()`). -->
+<div class="mb-4 flex flex-wrap items-end gap-x-6 gap-y-3">
+    <fieldset class="flex flex-wrap items-center gap-4">
+        <legend class="c2fc-campo-rotulo mb-1">#tipo#</legend>
+        <label class="ui radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Clique para mostrar tipo Página">
+            <input type="radio" name="tipo" tabindex="1" value="pagina" #checked_pagina#>
+            <span>#pagina#</span>
+        </label>
+        <label class="ui radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Clique para mostrar tipo Sistema">
+            <input type="radio" name="tipo" tabindex="2" value="sistema" #checked_sistema#>
+            <span>#sistema#</span>
+        </label>
+        <label class="ui radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Clique para mostrar ambos">
+            <input type="radio" name="tipo" tabindex="0" value="ambos" #checked_ambos#>
+            <span>#ambos#</span>
+        </label>
+    </fieldset>
+    <!-- modulos-cel < -->
+    <div class="c2fc-campo w-full sm:w-72" data-c2f-dica="Clique para filtrar o módulo e mostrar apenas páginas do módulo selecionado">
+        <label class="c2fc-campo-rotulo" for="module">Módulo</label>
+        <select id="module" class="ui search clearable dropdown gestorModule c2fc-campo-entrada" name="module" data-c2f-select="1" data-c2f-busca="1">
+            <option value="">Selecione um módulo</option>
+            <!-- modulos-opcoes -->
+        </select>
+    </div><!-- modulos-cel > -->
+</div>

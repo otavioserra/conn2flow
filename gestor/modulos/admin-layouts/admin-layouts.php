@@ -7,6 +7,8 @@ $_GESTOR['modulo#'.$_GESTOR['modulo-id']] = json_decode(file_get_contents(__DIR_
 
 function admin_layouts_adicionar(){
 	global $_GESTOR;
+	// req-219: página Tailwind com bundle; sem o flag, os sidecars invertem as responsivas.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -134,6 +136,8 @@ function admin_layouts_adicionar(){
 
 function admin_layouts_editar(){
 	global $_GESTOR;
+	// req-219: página Tailwind com bundle; sem o flag, os sidecars invertem as responsivas.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -423,6 +427,7 @@ function admin_layouts_interfaces_padroes(){
 	
 	switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true; // req-219: listagem Tailwind com bundle
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],

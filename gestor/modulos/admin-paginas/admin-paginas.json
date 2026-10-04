@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.6",
+    "versao": "1.2.7",
     "bibliotecas": [
         "interface",
         "html",
@@ -197,23 +197,79 @@
                         "css_precompiled": "",
                         "combined": "260ad9cf2c1a4b0e983aad51cc8e2753"
                     }
+                },
+                {
+                    "name": "Lista Página ou Sistema Tailwind",
+                    "id": "lista-pagina-ou-sistema-tailwind",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "72ea9ba34f3b73d0afb55d28f12d48d1",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "72ea9ba34f3b73d0afb55d28f12d48d1"
+                    }
                 }
             ],
             "pages": [
                 {
                     "name": "Admin Páginas",
                     "id": "admin-paginas",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "68b329da9893e34099c7d8ad5cb9c940",
                         "css": "",
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "admin-paginas\/",
                     "type": "system",
                     "option": "listar",
-                    "root": true
+                    "root": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "lista-pagina-ou-sistema-tailwind"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-219: listagem Tailwind (req-220) e filtro de tipo\/módulo montados em runtime."
                 },
                 {
                     "name": "Admin Páginas - Editar",
@@ -226,13 +282,13 @@
                         "combined": "d555c009253c789c46f11e3ddcb61b6d"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas/editar/",
+                    "path": "admin-paginas\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-paginas.php"
+                        "..\/..\/..\/..\/admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -348,13 +404,13 @@
                         "combined": "a4dd81d40cd8497adc52a6153d6426f6"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas/adicionar/",
+                    "path": "admin-paginas\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-paginas.php"
+                        "..\/..\/..\/..\/admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -470,13 +526,13 @@
                         "combined": "5a8fb043f83e43759a7ba28e1a9a6bfc"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas/clonar/",
+                    "path": "admin-paginas\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-paginas.php"
+                        "..\/..\/..\/..\/admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -690,7 +746,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "Sem Permissão / Acesso Público",
+                    "value": "Sem Permissão \/ Acesso Público",
                     "type": "string"
                 },
                 {
@@ -705,7 +761,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "pelo menos uma '/' no final",
+                    "value": "pelo menos uma '\/' no final",
                     "type": "string"
                 },
                 {
@@ -850,17 +906,61 @@
                 {
                     "name": "Admin Pages",
                     "id": "admin-paginas",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "68b329da9893e34099c7d8ad5cb9c940",
                         "css": "",
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-paginas/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "admin-paginas\/",
                     "type": "system",
                     "option": "listar",
-                    "root": true
+                    "root": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "lista-pagina-ou-sistema-tailwind"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-219: listagem Tailwind (req-220) e filtro de tipo\/módulo montados em runtime."
                 },
                 {
                     "name": "Admin Pages - Edit",
@@ -873,13 +973,13 @@
                         "combined": "9f6510e9dbfdb17d32545a5bc7b4b21b"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas/editar/",
+                    "path": "admin-paginas\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-paginas.php"
+                        "..\/..\/..\/..\/admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -995,13 +1095,13 @@
                         "combined": "b3e46fc8b7c7974af0a58b6fa3bbed42"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas/adicionar/",
+                    "path": "admin-paginas\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-paginas.php"
+                        "..\/..\/..\/..\/admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -1117,13 +1217,13 @@
                         "combined": "ce2f47e485a5993ff586cd04502a2f27"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-paginas/clonar/",
+                    "path": "admin-paginas\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "../../../../admin-paginas.php"
+                        "..\/..\/..\/..\/admin-paginas.php"
                     ],
                     "tailwind_sources_reason": "req-219: o PHP do módulo monta o selo de status dos metadados com utilities do Tailwind.",
                     "tailwind_dependencies": [
@@ -1285,6 +1385,18 @@
                         "css_precompiled": "",
                         "combined": "260ad9cf2c1a4b0e983aad51cc8e2753"
                     }
+                },
+                {
+                    "name": "Page or System List Tailwind",
+                    "id": "lista-pagina-ou-sistema-tailwind",
+                    "framework_css": "tailwindcss",
+                    "version": "1.1",
+                    "checksum": {
+                        "html": "fc5b634caa9981900c29552df0011d9f",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": "fc5b634caa9981900c29552df0011d9f"
+                    }
                 }
             ],
             "variables": [
@@ -1395,7 +1507,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "No Permission / Public Access",
+                    "value": "No Permission \/ Public Access",
                     "type": "string"
                 },
                 {
@@ -1410,7 +1522,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "at least one '/' at the end",
+                    "value": "at least one '\/' at the end",
                     "type": "string"
                 },
                 {
