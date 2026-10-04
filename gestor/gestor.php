@@ -2972,6 +2972,16 @@ function gestor_roteador(){
 
 		// ===== Montar a página de acordo com o tipo de requisição (AJAX ou normal).
 		if($_GESTOR['ajax']){
+			// Ação do cabeçalho: passa pela sessão, permissão da página e CSRF do roteador.
+			// Interceptar antes do módulo impede que a gravação execute ações do formulário atual.
+			if(strpos((string)$_GESTOR['ajax-opcao'], 'admin-topbar-') === 0){
+				gestor_incluir_biblioteca('admin-topbar');
+				admin_topbar_ajax();
+				header('Content-Type: application/json; charset=UTF-8');
+				header('Cache-Control: no-store');
+				echo json_encode($_GESTOR['ajax-json']);
+				exit;
+			}
 			// ===== Definir opção da página.
 			if(!$_GESTOR['opcao']) $_GESTOR['opcao'] = $paginas[0]['opcao'];
 			
@@ -3297,6 +3307,12 @@ function gestor_roteador(){
 			gestor_pagina_quill();
 
 			// ===== Inclusão de bibliotecas globais de uma página
+
+			// REQ-228: montar antes dos assets e variáveis; só layouts com o marcador participam.
+			if(strpos($_GESTOR['pagina'], '@[[admin-topbar]]@') !== false){
+				gestor_incluir_biblioteca('admin-topbar');
+				$_GESTOR['pagina'] = str_replace('@[[admin-topbar]]@', admin_topbar_renderizar(), $_GESTOR['pagina']);
+			}
 
 			gestor_pagina_css();
 			gestor_pagina_extra_head_e_javascript();

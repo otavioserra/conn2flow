@@ -339,6 +339,7 @@ $_GESTOR['pagina#contato-url']					=	'contato/'; // Página de contatos relativo
 // ===== Definição e inclusão de todas as bibliotecas necessárias para o funcionamento do gestor
 
 $_GESTOR['bibliotecas-dados'] = Array(
+	'admin-topbar' => Array('admin-topbar.php'),
 	'banco' => Array('banco.php'),
 	'gestor' => Array('gestor.php'),
 	'modelo' => Array('modelo.php'),

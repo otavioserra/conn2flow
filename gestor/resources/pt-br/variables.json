@@ -745,5 +745,115 @@
         "value": "{inicio}–{fim} de {total} registros",
         "type": "string",
         "modulo": "interface"
+    },
+    {
+        "id": "topbar-favorites",
+        "value": "Favoritos",
+        "type": "string"
+    },
+    {
+        "id": "topbar-more",
+        "value": "Mais atalhos",
+        "type": "string"
+    },
+    {
+        "id": "topbar-empty",
+        "value": "Seus atalhos aparecerão aqui.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-add-current",
+        "value": "Favoritar tela atual",
+        "type": "string"
+    },
+    {
+        "id": "topbar-remove-current",
+        "value": "Remover tela dos favoritos",
+        "type": "string"
+    },
+    {
+        "id": "topbar-customize",
+        "value": "Personalizar atalhos",
+        "type": "string"
+    },
+    {
+        "id": "topbar-user-menu",
+        "value": "Menu do usuário",
+        "type": "string"
+    },
+    {
+        "id": "topbar-my-profile",
+        "value": "Meu Perfil",
+        "type": "string"
+    },
+    {
+        "id": "topbar-security",
+        "value": "Segurança e Senha",
+        "type": "string"
+    },
+    {
+        "id": "topbar-language",
+        "value": "Idioma da Interface",
+        "type": "string"
+    },
+    {
+        "id": "topbar-portuguese",
+        "value": "Português (PT-BR)",
+        "type": "string"
+    },
+    {
+        "id": "topbar-english",
+        "value": "Inglês (EN)",
+        "type": "string"
+    },
+    {
+        "id": "topbar-signout",
+        "value": "Sair / Encerrar Sessão",
+        "type": "string"
+    },
+    {
+        "id": "topbar-close",
+        "value": "Fechar",
+        "type": "string"
+    },
+    {
+        "id": "topbar-customize-help",
+        "value": "Selecione as telas que deseja acessar rapidamente. As alterações são salvas na sua conta.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-search",
+        "value": "Buscar telas e ações",
+        "type": "string"
+    },
+    {
+        "id": "topbar-no-results",
+        "value": "Nenhuma tela encontrada.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-save-error",
+        "value": "Não foi possível salvar os atalhos. Tente novamente.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-unavailable",
+        "value": "A personalização de atalhos está indisponível. Atualize o sistema para habilitá-la.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-saved",
+        "value": "Atalhos salvos.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-open-menu",
+        "value": "Abrir menu",
+        "type": "string"
+    },
+    {
+        "id": "topbar-dashboard",
+        "value": "Painel inicial",
+        "type": "string"
     }
 ]

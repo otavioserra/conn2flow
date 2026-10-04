@@ -73,6 +73,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-232 | ready-for-intake | Módulos de administração em Tailwind (req-223) | [req-223.md](../human-requests/req-223.md) | Inclui o widget `configuracao_administracao` (variables, admin-environment, modulos-variaveis). |
 | BATCH-233 | in-review | Usuários, perfis, módulos, operações e painel inicial em Tailwind (req-224) | [BATCH-233.md](BATCH-233.md) | Agente da req-219; navegador 40/40 no roteiro da req-219. |
 
+| BATCH-237 | in-review | Topbar administrativa: perfil, idioma e favoritos por usuário (req-228) | [BATCH-237.md](BATCH-237.md) | Worktree `conn2flow-req228`, branch `feat/req-228`; navegador 60/60, 28 testes focados; sem alteração de formulários/listagens. |
+
 ## Regra operacional
 
 Não abra um novo batch funcional sem atualizar este índice. Se o escopo mudar de forma normativa, registre primeiro a mudança em `sdd/change-requests/`.

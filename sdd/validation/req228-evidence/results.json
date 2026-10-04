@@ -1,0 +1,543 @@
+{
+  "checks": [
+    {
+      "name": "authenticated Tailwind screen",
+      "ok": true,
+      "data": {
+        "url": "https://c2f-teste.local:8443/modulos-grupos/",
+        "status": 200
+      }
+    },
+    {
+      "name": "SQL migration available",
+      "ok": true
+    },
+    {
+      "name": "catalog includes current screen",
+      "ok": true,
+      "data": {
+        "current": "modulos-grupos",
+        "count": 50
+      }
+    },
+    {
+      "name": "ArrowDown opens and focuses profile link",
+      "ok": true
+    },
+    {
+      "name": "Escape closes and returns focus",
+      "ok": true
+    },
+    {
+      "name": "click outside closes",
+      "ok": true
+    },
+    {
+      "name": "Tab reaches profile link",
+      "ok": true
+    },
+    {
+      "name": "customization dialog and focus",
+      "ok": true
+    },
+    {
+      "name": "search no results",
+      "ok": true
+    },
+    {
+      "name": "dialog Escape returns focus",
+      "ok": true
+    },
+    {
+      "name": "save failure is visible and preserves favorite state",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-categorias true saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-categorias-adicionar true saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-componentes true saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-componentes-adicionar true saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-layouts true saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-layouts-adicionar true saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-templates true saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-templates-adicionar true saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorites restored after reload",
+      "ok": true
+    },
+    {
+      "name": "favorites restored in a second browser context",
+      "ok": true
+    },
+    {
+      "name": "favorite link opens its screen",
+      "ok": true
+    },
+    {
+      "name": "no horizontal overflow at 1366",
+      "ok": true,
+      "data": {
+        "width": 1366,
+        "overflow": 0,
+        "bar": {
+          "x": 260,
+          "y": 0,
+          "width": 1106,
+          "height": 64,
+          "top": 0,
+          "right": 1366,
+          "bottom": 64,
+          "left": 260
+        },
+        "toolbar": null,
+        "visible": 6,
+        "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+      }
+    },
+    {
+      "name": "responsive favorites at 1366",
+      "ok": true,
+      "data": 6
+    },
+    {
+      "name": "overflow dropdown fits at 1366",
+      "ok": true,
+      "data": {
+        "x": 382.984375,
+        "y": 57.5,
+        "width": 256,
+        "height": 195
+      }
+    },
+    {
+      "name": "profile dropdown fits at 1366",
+      "ok": true,
+      "data": {
+        "x": 1062,
+        "y": 61.5,
+        "width": 288,
+        "height": 299
+      }
+    },
+    {
+      "name": "no horizontal overflow at 1024",
+      "ok": true,
+      "data": {
+        "width": 1024,
+        "overflow": 0,
+        "bar": {
+          "x": 260,
+          "y": 0,
+          "width": 764,
+          "height": 64,
+          "top": 0,
+          "right": 1024,
+          "bottom": 64,
+          "left": 260
+        },
+        "toolbar": null,
+        "visible": 4,
+        "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+      }
+    },
+    {
+      "name": "responsive favorites at 1024",
+      "ok": true,
+      "data": 4
+    },
+    {
+      "name": "overflow dropdown fits at 1024",
+      "ok": true,
+      "data": {
+        "x": 42.984375,
+        "y": 57.5,
+        "width": 256,
+        "height": 267
+      }
+    },
+    {
+      "name": "profile dropdown fits at 1024",
+      "ok": true,
+      "data": {
+        "x": 720,
+        "y": 61.5,
+        "width": 288,
+        "height": 299
+      }
+    },
+    {
+      "name": "no horizontal overflow at 768",
+      "ok": true,
+      "data": {
+        "width": 768,
+        "overflow": 0,
+        "bar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 64,
+          "top": 0,
+          "right": 768,
+          "bottom": 64,
+          "left": 0
+        },
+        "toolbar": null,
+        "visible": 4,
+        "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+      }
+    },
+    {
+      "name": "responsive favorites at 768",
+      "ok": true,
+      "data": 4
+    },
+    {
+      "name": "overflow dropdown fits at 768",
+      "ok": true,
+      "data": {
+        "x": 86.984375,
+        "y": 57.5,
+        "width": 256,
+        "height": 267
+      }
+    },
+    {
+      "name": "profile dropdown fits at 768",
+      "ok": true,
+      "data": {
+        "x": 464,
+        "y": 61.5,
+        "width": 288,
+        "height": 299
+      }
+    },
+    {
+      "name": "no horizontal overflow at 390",
+      "ok": true,
+      "data": {
+        "width": 390,
+        "overflow": 0,
+        "bar": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 64,
+          "top": 0,
+          "right": 390,
+          "bottom": 64,
+          "left": 0
+        },
+        "toolbar": null,
+        "visible": 0,
+        "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+      }
+    },
+    {
+      "name": "responsive favorites at 390",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "overflow dropdown fits at 390",
+      "ok": true,
+      "data": {
+        "x": 12,
+        "y": 72,
+        "width": 366,
+        "height": 411
+      }
+    },
+    {
+      "name": "profile dropdown fits at 390",
+      "ok": true,
+      "data": {
+        "x": 90,
+        "y": 61.5,
+        "width": 288,
+        "height": 299
+      }
+    },
+    {
+      "name": "no horizontal overflow at 320",
+      "ok": true,
+      "data": {
+        "width": 320,
+        "overflow": 0,
+        "bar": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 64,
+          "top": 0,
+          "right": 320,
+          "bottom": 64,
+          "left": 0
+        },
+        "toolbar": null,
+        "visible": 0,
+        "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+      }
+    },
+    {
+      "name": "responsive favorites at 320",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "overflow dropdown fits at 320",
+      "ok": true,
+      "data": {
+        "x": 12,
+        "y": 72,
+        "width": 296,
+        "height": 411
+      }
+    },
+    {
+      "name": "profile dropdown fits at 320",
+      "ok": true,
+      "data": {
+        "x": 20,
+        "y": 61.5,
+        "width": 288,
+        "height": 299
+      }
+    },
+    {
+      "name": "current screen toggle persists",
+      "ok": true
+    },
+    {
+      "name": "English translated profile and language",
+      "ok": true
+    },
+    {
+      "name": "security link opens security tab",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-categorias false saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-categorias-adicionar false saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-componentes false saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-componentes-adicionar false saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-layouts false saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-layouts-adicionar false saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-templates false saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite admin-templates-adicionar false saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "favorite modulos-grupos false saves with CSRF",
+      "ok": true
+    },
+    {
+      "name": "CSRF missing token refused",
+      "ok": true,
+      "data": 403
+    },
+    {
+      "name": "editbar actually present",
+      "ok": true
+    },
+    {
+      "name": "editbar coexistence 1366",
+      "ok": true,
+      "data": {
+        "bar": {
+          "x": 260,
+          "y": 30,
+          "width": 1106,
+          "height": 64,
+          "top": 30,
+          "right": 1366,
+          "bottom": 94,
+          "left": 260
+        },
+        "toolbar": {
+          "x": 0,
+          "y": 0,
+          "width": 1366,
+          "height": 30,
+          "top": 0,
+          "right": 1366,
+          "bottom": 30,
+          "left": 0
+        },
+        "overflow": 0
+      }
+    },
+    {
+      "name": "editbar coexistence 390",
+      "ok": true,
+      "data": {
+        "bar": {
+          "x": 0,
+          "y": 30,
+          "width": 390,
+          "height": 64,
+          "top": 30,
+          "right": 390,
+          "bottom": 94,
+          "left": 0
+        },
+        "toolbar": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 30,
+          "top": 0,
+          "right": 390,
+          "bottom": 30,
+          "left": 0
+        },
+        "overflow": 0
+      }
+    },
+    {
+      "name": "signout ends the session",
+      "ok": true
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "data": []
+    }
+  ],
+  "errors": [],
+  "expectedConsoleErrors": [
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+    "Failed to load resource: the server responded with a status of 403 ()"
+  ],
+  "measurements": [
+    {
+      "width": 1366,
+      "overflow": 0,
+      "bar": {
+        "x": 260,
+        "y": 0,
+        "width": 1106,
+        "height": 64,
+        "top": 0,
+        "right": 1366,
+        "bottom": 64,
+        "left": 260
+      },
+      "toolbar": null,
+      "visible": 6,
+      "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+    },
+    {
+      "width": 1024,
+      "overflow": 0,
+      "bar": {
+        "x": 260,
+        "y": 0,
+        "width": 764,
+        "height": 64,
+        "top": 0,
+        "right": 1024,
+        "bottom": 64,
+        "left": 260
+      },
+      "toolbar": null,
+      "visible": 4,
+      "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+    },
+    {
+      "width": 768,
+      "overflow": 0,
+      "bar": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 64,
+        "top": 0,
+        "right": 768,
+        "bottom": 64,
+        "left": 0
+      },
+      "toolbar": null,
+      "visible": 4,
+      "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+    },
+    {
+      "width": 390,
+      "overflow": 0,
+      "bar": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 64,
+        "top": 0,
+        "right": 390,
+        "bottom": 64,
+        "left": 0
+      },
+      "toolbar": null,
+      "visible": 0,
+      "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+    },
+    {
+      "width": 320,
+      "overflow": 0,
+      "bar": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 64,
+        "top": 0,
+        "right": 320,
+        "bottom": 64,
+        "left": 0
+      },
+      "toolbar": null,
+      "visible": 0,
+      "background": "oklab(0.999994 0.0000455678 0.0000200868 / 0.95)"
+    }
+  ],
+  "initialFavorites": []
+}
