@@ -99,10 +99,15 @@
         "origem": 18290,
         "minificado": 8496
     },
+    "gestor/assets/interface/interface-listar-tailwind.js": {
+        "sha1": "6d40948c4412a2aee1c0fd3835a452344e18d42b",
+        "origem": 10818,
+        "minificado": 5544
+    },
     "gestor/assets/interface/interface-tailwind.js": {
-        "sha1": "91c5e8a792461c5fde05d0e3d68c1c82ddd04c40",
-        "origem": 12482,
-        "minificado": 4303
+        "sha1": "4d1253bb064c317bd5974a74fb975459cc7f376a",
+        "origem": 14388,
+        "minificado": 5192
     },
     "gestor/assets/interface/interface.js": {
         "sha1": "2be8c0874088c5b7c630db38e6dbfb118db2e3b1",
@@ -338,10 +343,5 @@
         "sha1": "3f816e758a15075aa01cdc189e031ab21dbb1d0f",
         "origem": 252,
         "minificado": 151
-    },
-    "gestor/assets/interface/interface-listar-tailwind.js": {
-        "sha1": "c25c02fa259c01fef5d35dd1124c4e63ceb82a05",
-        "origem": 10642,
-        "minificado": 5544
     }
 }

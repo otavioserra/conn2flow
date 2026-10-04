@@ -1206,6 +1206,78 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "list-tailwind-search",
+        "valor": "Buscar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "list-tailwind-length",
+        "valor": "Registros por página",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "list-tailwind-previous",
+        "valor": "Anterior",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "list-tailwind-next",
+        "valor": "Próxima",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "list-tailwind-empty",
+        "valor": "Nenhum registro encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "list-tailwind-loading",
+        "valor": "Carregando registros…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "list-tailwind-error",
+        "valor": "Não foi possível carregar os registros. Tente buscar novamente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "list-tailwind-summary",
+        "valor": "{inicio}–{fim} de {total} registros",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "configuracao",
         "id": "variable-type-string-label",
@@ -2407,6 +2479,78 @@
         "modulo": null,
         "id": "controles-atencao",
         "valor": "Attention",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "list-tailwind-search",
+        "valor": "Search",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "list-tailwind-length",
+        "valor": "Rows per page",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "list-tailwind-previous",
+        "valor": "Previous",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "list-tailwind-next",
+        "valor": "Next",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "list-tailwind-empty",
+        "valor": "No records found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "list-tailwind-loading",
+        "valor": "Loading records…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "list-tailwind-error",
+        "valor": "Unable to load records. Try searching again.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "list-tailwind-summary",
+        "valor": "{inicio}–{fim} of {total} records",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -21073,150 +21217,6 @@
         "modulo": "variables",
         "id": "form-module-label",
         "valor": "Module",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "interface",
-        "id": "list-tailwind-search",
-        "valor": "Buscar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "interface",
-        "id": "list-tailwind-length",
-        "valor": "Registros por página",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "interface",
-        "id": "list-tailwind-previous",
-        "valor": "Anterior",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "interface",
-        "id": "list-tailwind-next",
-        "valor": "Próxima",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "interface",
-        "id": "list-tailwind-empty",
-        "valor": "Nenhum registro encontrado.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "interface",
-        "id": "list-tailwind-loading",
-        "valor": "Carregando registros…",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "interface",
-        "id": "list-tailwind-error",
-        "valor": "Não foi possível carregar os registros. Tente buscar novamente.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "interface",
-        "id": "list-tailwind-summary",
-        "valor": "{inicio}–{fim} de {total} registros",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "interface",
-        "id": "list-tailwind-search",
-        "valor": "Search",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "interface",
-        "id": "list-tailwind-length",
-        "valor": "Rows per page",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "interface",
-        "id": "list-tailwind-previous",
-        "valor": "Previous",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "interface",
-        "id": "list-tailwind-next",
-        "valor": "Next",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "interface",
-        "id": "list-tailwind-empty",
-        "valor": "No records found.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "interface",
-        "id": "list-tailwind-loading",
-        "valor": "Loading records…",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "interface",
-        "id": "list-tailwind-error",
-        "valor": "Unable to load records. Try searching again.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "interface",
-        "id": "list-tailwind-summary",
-        "valor": "{inicio}–{fim} of {total} records",
         "tipo": "string",
         "grupo": null,
         "descricao": null
