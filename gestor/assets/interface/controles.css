@@ -14,6 +14,9 @@ input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled), label
 #_gestor-interface-listar thead th:has(> button) { padding: 0; }
 #_gestor-interface-listar thead th > button { width: 100%; padding: 12px; border-radius: 0; transition: background-color .15s, color .15s; }
 #_gestor-interface-listar thead th > button:not(:disabled):hover { background: #e0f2fe; color: #0369a1; }
+/* coluna ainda sem ordem: seta fraca no hover avisando que dá para ordenar (Ctrl+clique soma colunas) */
+#_gestor-interface-listar thead th[aria-sort="none"] > button:not(:disabled):hover [data-lista-direcao]:empty::after { content: "↑"; opacity: .4; }
+#_gestor-interface-listar thead th > button [data-lista-direcao] { min-width: 1.5em; font-variant-numeric: tabular-nums; }
 #_gestor-interface-listar thead th > button:not(:disabled):focus-visible { outline: 2px solid #0284c7; outline-offset: -2px; }
 #_gestor-interface-listar thead th[aria-sort="ascending"] > button, #_gestor-interface-listar thead th[aria-sort="descending"] > button { background: #f0f9ff; color: #0369a1; }
 #_gestor-interface-listar tbody td { transition: background-color .12s; }
