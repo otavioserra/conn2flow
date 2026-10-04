@@ -805,6 +805,8 @@
             };
         }
         global.c2fControles.ponteAtiva = true;
+        // Sem o Fomantic, as dicas `data-tooltip`/`data-position` dele passam a ser desenhadas por controles.css.
+        document.documentElement.classList.add('c2fc-sem-fomantic');
     }
 
     // =========================================================================== campo imagepick

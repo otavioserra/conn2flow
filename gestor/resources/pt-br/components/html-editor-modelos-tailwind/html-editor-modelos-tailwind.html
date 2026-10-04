@@ -5,7 +5,7 @@
     <div class="relative mb-4">
         <i data-lucide="search" class="modelos-search-icon pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate-400"></i>
         <input type="text" id="modelos-search-input" class="c2fc-campo-entrada pr-9! pl-9!" placeholder="Buscar modelos..." autocomplete="off" aria-label="Buscar modelos">
-        <button type="button" class="modelos-search-clear hidden absolute top-1/2 right-2 -translate-y-1/2 rounded p-1 text-slate-400 hover:text-slate-700" title="Limpar busca" aria-label="Limpar busca">
+        <button type="button" class="modelos-search-clear hidden absolute top-1/2 right-2 -translate-y-1/2 rounded p-1 text-slate-400 hover:text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Limpar busca" aria-label="Limpar busca">
             <i data-lucide="circle-x" class="size-4"></i>
         </button>
     </div>
@@ -57,7 +57,7 @@
         </div>
         <div class="border-t border-slate-200 px-4 py-3">
             <button type="button" class="modeloSelecionar c2fc-botao c2fc-botao-primario w-full justify-center" data-modelo-id="{{id}}"
-                data-c2f-dica="Clique para selecionar este modelo">
+                data-c2f-dica-pos="top left" data-c2f-dica="Clique para selecionar este modelo">
                 Selecionar Modelo
             </button>
         </div>

@@ -58,7 +58,46 @@ function gestor_pagina_menu_icone($modulo, $campo, $tailwind){
 		return $especifico;
 	}
 
-	return $campo === 'icone' ? $legado : '';
+	return $campo === 'icone' ? gestor_pagina_menu_icone_fomantic_lucide($legado) : '';
+}
+
+/**
+ * Traduz um nome de ícone do Fomantic para o Lucide no menu Tailwind (req-219).
+ *
+ * Módulo sem `icone_tailwind` caía no `icone` legado, e um nome do Fomantic com espaço ("chart bar",
+ * achado no `sales-reports` do conn2flow-site) não é nome do Lucide: o ícone sumia do menu. Nome que já
+ * é do Lucide passa direto; os nomes de menu mais comuns vêm da tabela; o resto perde os modificadores
+ * do Fomantic (`outline`, `alternate`) e vira kebab-case, o que acerta nomes simples (`receipt`, `box`).
+ *
+ * @param string $nome Nome do ícone no vocabulário do Fomantic (ou já do Lucide).
+ *
+ * @return string Nome provável no Lucide.
+ */
+function gestor_pagina_menu_icone_fomantic_lucide($nome){
+	$nome = strtolower(trim((string)$nome));
+	if($nome === '' || preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $nome)) return $nome;
+	$mapa = Array(
+		'chart bar' => 'chart-column', 'chart bar outline' => 'chart-column', 'chart line' => 'chart-line', 'chart pie' => 'chart-pie',
+		'chart area' => 'chart-area', 'credit card' => 'credit-card', 'credit card outline' => 'credit-card', 'shopping cart' => 'shopping-cart',
+		'shopping bag' => 'shopping-bag', 'money bill' => 'banknote', 'money bill alternate' => 'banknote', 'dollar sign' => 'dollar-sign',
+		'file alternate' => 'file-text', 'file alternate outline' => 'file-text', 'file outline' => 'file', 'folder open' => 'folder-open',
+		'images outline' => 'images', 'image outline' => 'image', 'th' => 'layout-grid', 'th large' => 'layout-grid', 'th list' => 'list',
+		'list alternate' => 'list', 'list ul' => 'list', 'cog' => 'settings', 'cogs' => 'settings', 'bars' => 'menu', 'cube' => 'box', 'cubes' => 'boxes',
+		'puzzle piece' => 'puzzle', 'sitemap' => 'network', 'envelope' => 'mail', 'envelope outline' => 'mail', 'calendar alternate' => 'calendar',
+		'calendar alternate outline' => 'calendar', 'clock outline' => 'clock', 'shield alternate' => 'shield', 'user shield' => 'shield-user',
+		'user circle' => 'circle-user', 'address book' => 'book-user', 'id card' => 'id-card', 'robot' => 'bot', 'magic' => 'wand-sparkles',
+		'bullhorn' => 'megaphone', 'comments' => 'messages-square', 'comment' => 'message-square', 'paint brush' => 'paintbrush',
+		'edit' => 'pencil', 'edit outline' => 'pencil', 'language' => 'languages', 'home' => 'house', 'ticket alternate' => 'ticket',
+		'tags' => 'tags', 'handshake outline' => 'handshake', 'star outline' => 'star', 'heart outline' => 'heart', 'bell outline' => 'bell',
+		'external alternate' => 'external-link', 'sync' => 'refresh-cw', 'sync alternate' => 'refresh-cw', 'history' => 'history',
+		'trash alternate' => 'trash-2', 'eye slash' => 'eye-off', 'sign in alternate' => 'log-in', 'sign out alternate' => 'log-out',
+		'cloud upload alternate' => 'cloud-upload', 'cloud download alternate' => 'cloud-download', 'globe americas' => 'globe',
+		'question circle' => 'circle-help', 'info circle' => 'info', 'exclamation triangle' => 'triangle-alert', 'check circle' => 'circle-check',
+	);
+	if(isset($mapa[$nome])) return $mapa[$nome];
+	$simples = trim(preg_replace('/\s+/', ' ', preg_replace('/\b(outline|alternate|icon)\b/', '', $nome)));
+	if(isset($mapa[$simples])) return $mapa[$simples];
+	return str_replace(' ', '-', $simples);
 }
 
 

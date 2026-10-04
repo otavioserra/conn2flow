@@ -3278,13 +3278,13 @@ function interface_botoes_html($botoes){
 
 			if($id === 'excluir'){
 				$botoes_html .= '
-		<button type="button" class="excluir '.$classes.'" data-href="'.$url.'" title="'.$tooltip.'" data-id="'.$id.'">'.$conteudo.'</button>';
+		<button type="button" class="excluir '.$classes.'" data-href="'.$url.'" data-c2f-dica="'.$tooltip.'" data-c2f-dica-pos="bottom center" data-id="'.$id.'">'.$conteudo.'</button>';
 			} else if(isset($botao['callback'])){
 				$botoes_html .= '
-		<button type="button" class="'.$botao['callback'].' '.$classes.'" title="'.$tooltip.'" data-id="'.$id.'">'.$conteudo.'</button>';
+		<button type="button" class="'.$botao['callback'].' '.$classes.'" data-c2f-dica="'.$tooltip.'" data-c2f-dica-pos="bottom center" data-id="'.$id.'">'.$conteudo.'</button>';
 			} else {
 				$botoes_html .= '
-		<a class="'.$classes.'" href="'.$url.'" title="'.$tooltip.'" data-id="'.$id.'"'.$target.'>'.$conteudo.'</a>';
+		<a class="'.$classes.'" href="'.$url.'" data-c2f-dica="'.$tooltip.'" data-c2f-dica-pos="bottom center" data-id="'.$id.'"'.$target.'>'.$conteudo.'</a>';
 			}
 			continue;
 		}

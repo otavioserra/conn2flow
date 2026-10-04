@@ -85,8 +85,10 @@ final class InterfaceBotoesTailwindTest extends TestCase
 
         $html = interface_botoes_cabecalho(['botoes' => $this->botoes()]);
 
-        self::assertStringContainsString('title="Incluir &quot;novo&quot;"', $html);
-        self::assertStringContainsString('title=""', $html);
+        // req-219: dica da biblioteca (data-c2f-dica), não o title nativo
+        self::assertStringContainsString('data-c2f-dica="Incluir &quot;novo&quot;"', $html);
+        self::assertStringContainsString('data-c2f-dica=""', $html);
+        self::assertStringNotContainsString(' title=', $html);
     }
 
     public function testIconeSemTraducaoSaiSoComRotulo(): void

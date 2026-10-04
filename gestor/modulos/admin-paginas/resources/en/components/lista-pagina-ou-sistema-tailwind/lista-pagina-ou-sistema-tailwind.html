@@ -3,21 +3,21 @@
 <div class="mb-4 flex flex-wrap items-end gap-x-6 gap-y-3">
     <fieldset class="flex flex-wrap items-center gap-4">
         <legend class="c2fc-campo-rotulo mb-1">#tipo#</legend>
-        <label class="ui radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Click to show Page type">
+        <label class="ui radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Click to show Page type">
             <input type="radio" name="tipo" tabindex="1" value="pagina" #checked_pagina#>
             <span>#pagina#</span>
         </label>
-        <label class="ui radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Click to show System type">
+        <label class="ui radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Click to show System type">
             <input type="radio" name="tipo" tabindex="2" value="sistema" #checked_sistema#>
             <span>#sistema#</span>
         </label>
-        <label class="ui radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica="Click to show both">
+        <label class="ui radio checkbox inline-flex items-center gap-2 text-sm text-slate-700" data-c2f-dica-pos="top left" data-c2f-dica="Click to show both">
             <input type="radio" name="tipo" tabindex="0" value="ambos" #checked_ambos#>
             <span>#ambos#</span>
         </label>
     </fieldset>
     <!-- modulos-cel < -->
-    <div class="c2fc-campo w-full sm:w-72" data-c2f-dica="Click to filter the module and show only pages from the selected module">
+    <div class="c2fc-campo w-full sm:w-72" data-c2f-dica-pos="top left" data-c2f-dica="Click to filter the module and show only pages from the selected module">
         <label class="c2fc-campo-rotulo" for="module">Module</label>
         <select id="module" class="ui search clearable dropdown gestorModule c2fc-campo-entrada" name="module" data-c2f-select="1" data-c2f-busca="1">
             <option value="">Select a module</option>

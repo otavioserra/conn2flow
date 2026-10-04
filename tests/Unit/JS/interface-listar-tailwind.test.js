@@ -131,4 +131,33 @@ describe('Listagem Tailwind (req-220)', () => {
     expect(lista.estado.inicio).toBe(0);
     expect(window.fetch.mock.lastCall[1].body.get('start')).toBe('0');
   });
+
+  it('req-219: formatador vira rótulo-link só para o mesmo site; externo e atributos perigosos não passam', async () => {
+    window.fetch.mockResolvedValue(response([{ _gestor_acoes_id: '1', nome: 'x', status: 'A',
+      formatado: '<a href="/docs/" class="ui basic label" onclick="alert(1)">docs/</a> <a href="https://mal.example/">fora</a> <span class="ui info text">N/A</span><img src=x onerror=alert(1)>' }], 1));
+    montar(); await pronto();
+    const td = raiz.querySelectorAll('tbody td')[2];
+    const links = td.querySelectorAll('a');
+    expect(links.length).toBe(1);
+    expect(links[0].className).toBe('c2fc-rotulo');
+    expect(links[0].getAttribute('href')).toBe(new URL('/docs/', location.href).href);
+    expect(links[0].hasAttribute('onclick')).toBe(false);
+    expect(td.textContent).toContain('fora');
+    expect(td.querySelector('.c2fc-texto-suave').textContent).toBe('N/A');
+    expect(td.querySelector('img')).toBeNull();
+  });
+
+  it('req-219: ações com a cor da opção, botão menor e dica da biblioteca no lugar do title', async () => {
+    const c = config();
+    c.opcoes.editar.cor = 'basic blue';
+    c.opcoes.desativar.cor = 'basic green';
+    window.c2fListaTailwind.iniciar(raiz, c); await pronto();
+    const editar = raiz.querySelector('[data-lista-acao="editar"]');
+    expect(editar.className).toBe('c2fc-acao c2fc-cor-blue');
+    expect(raiz.querySelector('[data-lista-acao="desativar"]').className).toBe('c2fc-acao c2fc-cor-green');
+    expect(raiz.querySelector('[data-lista-acao="excluir"]').className).toBe('c2fc-acao c2fc-cor-red');
+    expect(editar.getAttribute('data-tooltip')).toBe('Editar');
+    expect(editar.getAttribute('data-position')).toBe('top left');
+    expect(editar.hasAttribute('title')).toBe(false);
+  });
 });

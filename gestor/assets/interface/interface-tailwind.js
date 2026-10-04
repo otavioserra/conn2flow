@@ -128,6 +128,40 @@
         });
     }
 
+    // req-219: "carregar mais" do histórico de alterações. Mesmo contrato do legado: POST
+    // `historico-mais-resultados` com a página seguinte; o HTML volta antes da linha do botão.
+    function ligarHistorico() {
+        var paginaAtual = 0;
+        document.addEventListener('click', function (evento) {
+            var botao = evento.target.closest ? evento.target.closest('#_gestor-interface-edit-historico-mais') : null;
+            if (!botao || botao.disabled) return;
+            evento.preventDefault();
+            paginaAtual++;
+            var corpo = new URLSearchParams();
+            corpo.set('opcao', (window.gestor && gestor.moduloOpcao) || '');
+            corpo.set('ajax', 'sim');
+            corpo.set('ajaxOpcao', 'historico-mais-resultados');
+            corpo.set('ajaxRegistroId', (window.gestor && gestor.moduloRegistroId) || '');
+            corpo.set('pagina', String(paginaAtual));
+            corpo.set('id', (window.gestor && gestor.interface && gestor.interface.id) || '');
+            var token = (window.gestor && gestor.csrfToken) || '';
+            if (token) corpo.set('_csrf_token', token);
+            botao.disabled = true;
+            carregarAbrir();
+            fetch(gestor.raiz + gestor.moduloId + '/', { method: 'POST', credentials: 'same-origin', headers: token ? { 'X-CSRF-Token': token } : {}, body: corpo })
+                .then(function (r) { return r.json(); })
+                .then(function (dados) {
+                    if (!dados || dados.status !== 'Ok') return;
+                    var linha = botao.parentNode && botao.parentNode.parentNode;
+                    if (linha) linha.insertAdjacentHTML('beforebegin', dados.pagina || '');
+                    var total = parseInt((gestor.interface && gestor.interface.totalPaginas) || '0', 10);
+                    if (paginaAtual >= total - 1) botao.style.display = 'none';
+                })
+                .catch(function () { paginaAtual--; })
+                .then(function () { botao.disabled = false; carregarFechar(); });
+        });
+    }
+
     function ligarModais() {
         var modais = document.querySelectorAll('[data-c2f-modal]');
 
@@ -316,6 +350,7 @@
         ligarFormularios();
         ligarExclusao();
         ligarBackup();
+        ligarHistorico();
 
         // O modal de Área Restrita nasce no HTML quando a autorização provisória expirou; abri-lo é
         // o que efetivamente bloqueia a tela.

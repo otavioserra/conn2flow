@@ -4,33 +4,33 @@
      vanilla da biblioteca de controles (gestor/assets/interface/controles.js). -->
 <div class="html-editor-component">
     <div class="menuContainerPagina c2fc-abas-lista c2fc-anexa" role="tablist">
-        <a class="item c2fc-aba active" data-tab="visualizacao-pagina" title="@[[html-editor-form-page-view-tooltip]]@"><i data-lucide="eye" class="size-4"></i>@[[html-editor-form-page-view-label]]@</a>
-        <a class="item c2fc-aba" data-tab="modelos" title="@[[html-editor-form-templates-tooltip]]@"><i data-lucide="layout-template" class="size-4"></i>@[[html-editor-form-templates-label]]@</a>
-        <a class="item c2fc-aba" data-tab="assistente-ia" title="@[[html-editor-form-ai-assistent-tooltip]]@"><i data-lucide="sparkles" class="size-4"></i>@[[html-editor-form-ai-assistent-label]]@</a>
-        <a class="item c2fc-aba" data-tab="visualizacao-codigo" title="@[[html-editor-form-page-code-tooltip]]@"><i data-lucide="code" class="size-4"></i>@[[html-editor-form-page-code-label]]@</a>
+        <a class="item c2fc-aba active" data-tab="visualizacao-pagina" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-form-page-view-tooltip]]@"><i data-lucide="eye" class="size-4"></i>@[[html-editor-form-page-view-label]]@</a>
+        <a class="item c2fc-aba" data-tab="modelos" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-form-templates-tooltip]]@"><i data-lucide="layout-template" class="size-4"></i>@[[html-editor-form-templates-label]]@</a>
+        <a class="item c2fc-aba" data-tab="assistente-ia" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-form-ai-assistent-tooltip]]@"><i data-lucide="sparkles" class="size-4"></i>@[[html-editor-form-ai-assistent-label]]@</a>
+        <a class="item c2fc-aba" data-tab="visualizacao-codigo" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-form-page-code-tooltip]]@"><i data-lucide="code" class="size-4"></i>@[[html-editor-form-page-code-label]]@</a>
         <!-- seo-html-editor-menu < -->
-        <a class="item c2fc-aba" data-tab="seo-compartilhamento" title="@[[html-editor-seo-menu-tooltip]]@"><i data-lucide="share-2" class="size-4"></i>@[[html-editor-seo-menu-label]]@</a><!-- seo-html-editor-menu > -->
+        <a class="item c2fc-aba" data-tab="seo-compartilhamento" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-seo-menu-tooltip]]@"><i data-lucide="share-2" class="size-4"></i>@[[html-editor-seo-menu-label]]@</a><!-- seo-html-editor-menu > -->
         <!-- publisher-html-editor-variables-menu < -->
-        <a class="item c2fc-aba" data-tab="publisher-variables" title="@[[html-editor-publisher-variables-menu-tooltip]]@"><i data-lucide="variable" class="size-4"></i>@[[html-editor-publisher-variables-menu-label]]@</a><!-- publisher-html-editor-variables-menu > -->
+        <a class="item c2fc-aba" data-tab="publisher-variables" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-publisher-variables-menu-tooltip]]@"><i data-lucide="variable" class="size-4"></i>@[[html-editor-publisher-variables-menu-label]]@</a><!-- publisher-html-editor-variables-menu > -->
     </div>
     <div class="tab active containerPagina c2fc-painel-aba" data-tab="visualizacao-pagina">
         <div class="mb-3 flex flex-wrap items-center gap-2">
-            <button type="button" class="editorHtmlVisual c2fc-botao c2fc-botao-primario" data-c2f-dica="@[[html-editor-form-page-visual-editor-tooltip]]@">
+            <button type="button" class="editorHtmlVisual c2fc-botao c2fc-botao-primario" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-form-page-visual-editor-tooltip]]@">
                 <i data-lucide="pencil" class="size-4"></i>
                 @[[html-editor-form-page-visual-editor-label]]@
             </button>
             <!-- publisher-html-editor-btns < -->
             <div class="c2fc-grupo">
-                <button type="button" class="publisherVariablesOrSimulation c2fc-botao active" data-id="variables" data-c2f-dica="@[[html-editor-publisher-variables-tooltip]]@">
+                <button type="button" class="publisherVariablesOrSimulation c2fc-botao active" data-id="variables" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-publisher-variables-tooltip]]@">
                     <i data-lucide="braces" class="size-4"></i>
                     @[[html-editor-publisher-variables-btn]]@
                 </button>
-                <button type="button" class="publisherVariablesOrSimulation c2fc-botao" data-id="simulation" data-c2f-dica="@[[html-editor-publisher-simulation-tooltip]]@">
+                <button type="button" class="publisherVariablesOrSimulation c2fc-botao" data-id="simulation" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-publisher-simulation-tooltip]]@">
                     <i data-lucide="file-text" class="size-4"></i>
                     @[[html-editor-publisher-simulation-btn]]@
                 </button>
             </div>
-            <div class="w-44" data-c2f-dica="Change Simulation Style">
+            <div class="w-44" data-c2f-dica-pos="top left" data-c2f-dica="Change Simulation Style">
                 <select class="ui dropdown publisher-design-mode-simulation c2fc-campo-entrada" data-c2f-select="1" aria-label="Data Style">
                     <option value="sophisticated" selected>Sophisticated</option>
                     <option value="simple">Simple</option>
@@ -39,11 +39,11 @@
             <!-- publisher-html-editor-btns > -->
             <!-- publisher-page-html-editor-btns < -->
             <div class="c2fc-grupo">
-                <button type="button" class="publisherVariablesOrValues c2fc-botao active" data-id="values" data-c2f-dica="@[[html-editor-publisher-page-values-tooltip]]@">
+                <button type="button" class="publisherVariablesOrValues c2fc-botao active" data-id="values" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-publisher-page-values-tooltip]]@">
                     <i data-lucide="file-text" class="size-4"></i>
                     @[[html-editor-publisher-page-values-btn]]@
                 </button>
-                <button type="button" class="publisherVariablesOrValues c2fc-botao" data-id="variables" data-c2f-dica="@[[html-editor-publisher-page-variables-tooltip]]@">
+                <button type="button" class="publisherVariablesOrValues c2fc-botao" data-id="variables" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-publisher-page-variables-tooltip]]@">
                     <i data-lucide="braces" class="size-4"></i>
                     @[[html-editor-publisher-page-variables-btn]]@
                 </button>
@@ -66,10 +66,10 @@
     </div>
     <div class="tab hidden containerPagina c2fc-painel-aba" data-tab="visualizacao-codigo">
         <div class="menuPaginas c2fc-abas-lista c2fc-anexa" role="tablist">
-            <a class="item c2fc-aba active" data-tab="codigo-html" title="@[[html-editor-form-html-tooltip]]@">@[[html-editor-form-html-label]]@</a>
-            <!-- html-extra-head-menu < --><a class="item c2fc-aba" data-tab="html-extra-head" title="@[[html-editor-form-html-extra-head-tooltip]]@">@[[html-editor-form-html-extra-head-label]]@</a><!-- html-extra-head-menu > -->
-            <a class="item c2fc-aba" data-tab="css" title="@[[html-editor-form-css-tooltip]]@">@[[html-editor-form-css-label]]@</a>
-            <a class="item c2fc-aba" data-tab="css-compiled" title="@[[html-editor-form-css-compiled-tooltip]]@">@[[html-editor-form-css-compiled-label]]@</a>
+            <a class="item c2fc-aba active" data-tab="codigo-html" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-form-html-tooltip]]@">@[[html-editor-form-html-label]]@</a>
+            <!-- html-extra-head-menu < --><a class="item c2fc-aba" data-tab="html-extra-head" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-form-html-extra-head-tooltip]]@">@[[html-editor-form-html-extra-head-label]]@</a><!-- html-extra-head-menu > -->
+            <a class="item c2fc-aba" data-tab="css" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-form-css-tooltip]]@">@[[html-editor-form-css-label]]@</a>
+            <a class="item c2fc-aba" data-tab="css-compiled" data-c2f-dica-pos="top left" data-c2f-dica="@[[html-editor-form-css-compiled-tooltip]]@">@[[html-editor-form-css-compiled-label]]@</a>
         </div>
         <div class="tab active c2fc-painel-aba" data-tab="codigo-html">#pagina-html-backup# <textarea
                 class="codemirror-html" name="html">#pagina-html#</textarea>

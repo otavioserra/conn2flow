@@ -28,6 +28,8 @@
 .c2fc-campo-obrigatorio { color: #dc2626; }
 .c2fc-campo-entrada { display: block; width: 100%; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; padding: 8px 12px; font: 14px/1.4 inherit; color: #0f172a; }
 .c2fc-campo-entrada::placeholder { color: #94a3b8; }
+.c2fc-campo-entrada:hover:not(:disabled):not(:focus), .c2fc-select-gatilho:hover, .c2fc-campo:hover > .c2fc-campo-entrada:not(:disabled):not(:focus) { border-color: #94a3b8; }
+.c2fc-campo:focus-within > .c2fc-campo-rotulo { color: #0369a1; }
 .c2fc-campo-entrada:focus { outline: none; border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,.25); }
 .c2fc-campo-entrada:disabled, .c2fc-campo-entrada[readonly] { background: #f1f5f9; color: #64748b; }
 .c2fc-campo-entrada[aria-invalid="true"] { border-color: #dc2626; }
@@ -50,6 +52,47 @@
 .c2fc-grupo > .c2fc-botao:last-child { border-radius: 0 8px 8px 0; }
 a.c2fc-botao { text-decoration: none; }
 .c2fc-icone { width: 16px; height: 16px; }
+
+/* ---------- ações por linha da listagem (cores do `cor` de cada opção, como no Fomantic) */
+.c2fc-acoes { display: flex; flex-wrap: nowrap; gap: 4px; }
+.c2fc-acao { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex: none; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #475569; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; }
+.c2fc-acao svg, .c2fc-acao i { width: 16px; height: 16px; }
+.c2fc-acao:hover { background: #f1f5f9; }
+.c2fc-acao:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+.c2fc-acao:disabled { opacity: .5; cursor: not-allowed; }
+.c2fc-cor-blue { border-color: #93c5fd; color: #1d4ed8; } .c2fc-cor-blue:hover { background: #eff6ff; }
+.c2fc-cor-teal { border-color: #5eead4; color: #0f766e; } .c2fc-cor-teal:hover { background: #f0fdfa; }
+.c2fc-cor-green { border-color: #86efac; color: #15803d; } .c2fc-cor-green:hover { background: #f0fdf4; }
+.c2fc-cor-olive { border-color: #bef264; color: #4d7c0f; } .c2fc-cor-olive:hover { background: #f7fee7; }
+.c2fc-cor-yellow { border-color: #fde047; color: #a16207; } .c2fc-cor-yellow:hover { background: #fefce8; }
+.c2fc-cor-orange { border-color: #fdba74; color: #c2410c; } .c2fc-cor-orange:hover { background: #fff7ed; }
+.c2fc-cor-brown { border-color: #d6b38a; color: #92400e; } .c2fc-cor-brown:hover { background: #fdf6ec; }
+.c2fc-cor-red { border-color: #fca5a5; color: #b91c1c; } .c2fc-cor-red:hover { background: #fef2f2; }
+.c2fc-cor-pink { border-color: #f9a8d4; color: #be185d; } .c2fc-cor-pink:hover { background: #fdf2f8; }
+.c2fc-cor-violet, .c2fc-cor-purple { border-color: #c4b5fd; color: #6d28d9; } .c2fc-cor-violet:hover, .c2fc-cor-purple:hover { background: #f5f3ff; }
+.c2fc-cor-grey, .c2fc-cor-black { border-color: #cbd5e1; color: #334155; }
+/* rótulo-link vindo de formatador (ex.: caminho da página no admin-paginas) */
+.c2fc-rotulo { display: inline-flex; align-items: center; max-width: 100%; padding: 2px 8px; border: 1px solid #e2e8f0; border-radius: 6px; background: #f8fafc; color: #334155; font-size: 12px; font-weight: 500; overflow-wrap: anywhere; }
+a.c2fc-rotulo { color: #0369a1; text-decoration: none; }
+a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoration: underline; }
+.c2fc-texto-suave { color: #94a3b8; }
+
+/* ---------- histórico de alterações (formulário de edição Tailwind)
+   O PHP do interface monta a lista com a marcação do Fomantic (`item` > ícone + `content` > `header` +
+   `description`). Sem o CSS dele, cada parte caía numa linha; aqui ícone, data/autor e alterações ficam
+   numa linha só, como antes. */
+[data-c2f-historico] .list > .item { display: flex; align-items: baseline; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+[data-c2f-historico] .list > .item:last-child { border-bottom: 0; }
+[data-c2f-historico] .list > .item > i.icon { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: #e0f2fe; color: #0284c7; font: 700 11px/1 system-ui, sans-serif !important; font-style: normal; transform: translateY(2px); }
+[data-c2f-historico] .list > .item > i.icon::before { content: "i" !important; font-family: system-ui, sans-serif !important; }
+[data-c2f-historico] .list > .item > .content { display: block; min-width: 0; }
+[data-c2f-historico] .list > .item > .content > .header { display: inline; font-weight: 600; color: #0f172a; }
+[data-c2f-historico] .list > .item > .content > .header::after { content: " — "; font-weight: 400; color: #94a3b8; }
+[data-c2f-historico] .list > .item > .content > .description { display: inline; color: #475569; }
+[data-c2f-historico] .first-letter-uppercase::first-letter { text-transform: uppercase; }
+[data-c2f-historico] #_gestor-interface-edit-historico-mais { display: inline-flex; margin: 8px auto 0; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #334155; padding: 6px 14px; font: 500 13px/1.2 inherit; cursor: pointer; }
+[data-c2f-historico] #_gestor-interface-edit-historico-mais:hover { background: #f1f5f9; }
+[data-c2f-historico] .ui.grid > .column { text-align: center; }
 
 /* ---------- selo de status (interface_status_selo no PHP) */
 .c2fc-selo { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 12px; font-size: 12px; font-weight: 600; line-height: 1.2; }
@@ -105,10 +148,27 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
 .c2fc-painel-aba { padding: 16px; border: 1px solid #e2e8f0; border-top: 0; border-radius: 0 0 12px 12px; background: #fff; }
 .c2fc-abas-lista.c2fc-anexa { margin-bottom: 0; }
 
-/* ---------- dica (tooltip) */
-[data-c2f-dica] { position: relative; }
-[data-c2f-dica]:hover::after, [data-c2f-dica]:focus-visible::after { content: attr(data-c2f-dica); position: absolute; z-index: 100025; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); width: max-content; max-width: 260px; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: #f8fafc; font: 12px/1.35 system-ui, sans-serif; white-space: normal; pointer-events: none; }
-
+/* ---------- dica (tooltip)
+   `data-c2f-dica` + `data-c2f-dica-pos`, ou, sem o Fomantic na página (`html.c2fc-sem-fomantic`, ligado
+   pela ponte), o próprio `data-tooltip` + `data-position` do Fomantic: os módulos migrados mantêm os
+   atributos e as posições de antes ("top left", "bottom center", "right center"…). */
+[data-c2f-dica], .c2fc-sem-fomantic [data-tooltip] { position: relative; }
+[data-c2f-dica]:hover::after, [data-c2f-dica]:focus-visible::after,
+.c2fc-sem-fomantic [data-tooltip]:hover::after, .c2fc-sem-fomantic [data-tooltip]:focus-visible::after {
+    content: attr(data-c2f-dica); position: absolute; z-index: 100025; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+    width: max-content; max-width: 260px; padding: 6px 8px; border-radius: 6px; background: #0f172a; color: #f8fafc;
+    font: 500 12px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-align: left; white-space: normal; pointer-events: none;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,.2); text-transform: none; letter-spacing: normal;
+}
+.c2fc-sem-fomantic [data-tooltip]:hover::after, .c2fc-sem-fomantic [data-tooltip]:focus-visible::after { content: attr(data-tooltip); }
+/* posições: alinhamento horizontal */
+[data-c2f-dica-pos~="left"]:hover::after, .c2fc-sem-fomantic [data-tooltip][data-position~="left"]:not([data-position^="left"]):hover::after { left: 0; transform: none; }
+[data-c2f-dica-pos~="right"]:hover::after, .c2fc-sem-fomantic [data-tooltip][data-position~="right"]:not([data-position^="right"]):hover::after { left: auto; right: 0; transform: none; }
+/* posições: embaixo */
+[data-c2f-dica-pos^="bottom"]:hover::after, .c2fc-sem-fomantic [data-tooltip][data-position^="bottom"]:hover::after { bottom: auto; top: calc(100% + 6px); }
+/* posições: ao lado ("left center" / "right center") */
+[data-c2f-dica-pos^="left"]:hover::after, .c2fc-sem-fomantic [data-tooltip][data-position^="left"]:hover::after { bottom: auto; top: 50%; left: auto; right: calc(100% + 6px); transform: translateY(-50%); }
+[data-c2f-dica-pos^="right"]:hover::after, .c2fc-sem-fomantic [data-tooltip][data-position^="right"]:hover::after { bottom: auto; top: 50%; left: calc(100% + 6px); right: auto; transform: translateY(-50%); }
 /* ---------- carregando (sobre um elemento ou a página) */
 .c2fc-carregando-alvo { position: relative; }
 .c2fc-carregando { position: absolute; inset: 0; z-index: 100012; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.7); border-radius: inherit; }

@@ -103,6 +103,16 @@ $(document).ready(function () {
             // para escopar seleção/varredura/inserção ao conteúdo (sem tocar layout/toolbar).
             this.contentRoot = (options && options.contentRoot) || document.body;
 
+            // req-219: <style>/<script> de nível de cima que vieram no HTML do usuário são conteúdo e
+            // voltam no save. Antes eram todos descartados e a página perdia, por exemplo, a rolagem
+            // estilizada do menu das docs só por abrir o editor visual e voltar. Os injetados depois
+            // (widget em execução, UI do editor) não estão neste conjunto e continuam fora.
+            this.userTopAssets = new WeakSet();
+            Array.prototype.forEach.call(this.contentRoot.children, (el) => {
+                const tag = el.tagName.toLowerCase();
+                if ((tag === 'style' || tag === 'script') && !(el.id && el.id.indexOf('html-editor-') === 0)) this.userTopAssets.add(el);
+            });
+
             // BATCH-079 item 3: raiz do gestor p/ o image-picker autônomo do modal no live editor
             // (monta um iframe → admin-arquivos). No admin fica vazio (o fluxo do modal-iframe é o
             // do html-editor-interface.js); no live editor é passado por dashboard.toolbar.js.
@@ -5620,7 +5630,7 @@ $(document).ready(function () {
                 if (node.matches && node.matches('.ui.dimmer.modals')) return false;
                 const tag = node.tagName.toLowerCase();
                 if (tag === 'datalist' && node.id === 'html-editor-tw-classes') return false;
-                if (tag === 'script' || tag === 'style') return false;
+                if (tag === 'script' || tag === 'style') return !!(this.userTopAssets && this.userTopAssets.has(node));
                 return true;
             }
             // Comentários e textos: conteúdo do usuário.

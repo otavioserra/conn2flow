@@ -33,6 +33,50 @@
             return url.href;
         }
 
+        // req-219: a cor de cada opção (`cor` no PHP, vocabulário do Fomantic: "basic blue", "red"…) vira
+        // classe `c2fc-cor-*` de controles.css; excluir sem cor declarada fica vermelho.
+        var CORES = ['blue', 'teal', 'green', 'olive', 'yellow', 'orange', 'brown', 'red', 'pink', 'violet', 'purple', 'grey', 'black'];
+        function corDe(opcao, excluir) {
+            var palavras = String(opcao.cor || '').toLowerCase().split(/\s+/);
+            var cor = CORES.filter(function (c) { return palavras.indexOf(c) !== -1; })[0];
+            return cor || (excluir ? 'red' : 'blue');
+        }
+
+        // req-219: HTML de formatador declarado no servidor (ex.: `encapsular` do caminho no admin-paginas).
+        // Nada de atributos ou eventos do HTML recebido: só o texto, links para o mesmo site (rótulo-link) e
+        // rótulos/textos do Fomantic (`ui label`, `ui … text`) traduzidos para classes da biblioteca.
+        function celulaSegura(destino, html) {
+            var modelo = document.createElement('template');
+            modelo.innerHTML = String(html == null ? '' : html);
+            (function copiar(origem, alvo) {
+                Array.prototype.forEach.call(origem.childNodes, function (no) {
+                    if (no.nodeType === 3) { alvo.appendChild(document.createTextNode(no.nodeValue)); return; }
+                    if (no.nodeType !== 1) return;
+                    var tag = no.tagName.toLowerCase();
+                    var classes = ' ' + (no.getAttribute('class') || '') + ' ';
+                    var novo = null;
+                    if (tag === 'a') {
+                        try {
+                            var url = new URL(no.getAttribute('href') || '', global.location.href);
+                            if (url.origin === global.location.origin && /^https?:$/.test(url.protocol)) {
+                                novo = document.createElement('a');
+                                novo.href = url.href;
+                                novo.className = 'c2fc-rotulo';
+                            }
+                        } catch (e) { novo = null; }
+                    } else if (/ label /.test(classes)) {
+                        novo = document.createElement('span');
+                        novo.className = 'c2fc-rotulo';
+                    } else if (/ text /.test(classes)) {
+                        novo = document.createElement('span');
+                        novo.className = 'c2fc-texto-suave';
+                    }
+                    if (novo) { novo.textContent = no.textContent; alvo.appendChild(novo); }
+                    else copiar(no, alvo);
+                });
+            })(modelo.content, destino);
+        }
+
         function acoes(linha) {
             var grupo = clonar('acoes');
             Object.keys(config.opcoes || {}).forEach(function (chave) {
@@ -41,7 +85,9 @@
                 var excluir = opcao.opcao === 'excluir', botao = clonar(excluir ? 'excluir' : 'acao');
                 var url = urlAcao(opcao, linha[config.acoesId]);
                 if (!url) return;
-                botao.title = opcao.tooltip || '';
+                botao.className = 'c2fc-acao c2fc-cor-' + corDe(opcao, excluir);
+                // dica da biblioteca (data-tooltip + posição, como no Fomantic), não o title nativo
+                if (opcao.tooltip) { botao.setAttribute('data-tooltip', opcao.tooltip); botao.setAttribute('data-position', 'top left'); }
                 botao.setAttribute('aria-label', opcao.tooltip || '');
                 botao.dataset.listaAcao = chave;
                 var icone = document.createElement('i');
@@ -84,11 +130,8 @@
                         var valor = linha[item.coluna.data];
                         // Formatadores legados podem envolver rótulos em HTML. A listagem nova exibe
                         // seu texto, sem interpretar atributos/eventos ou HTML de dados do usuário.
-                        if (item.coluna.html) {
-                            var fragmento = document.createElement('template');
-                            fragmento.innerHTML = String(valor == null ? '' : valor);
-                            td.textContent = fragmento.content.textContent;
-                        } else td.textContent = valor == null ? '' : String(valor);
+                        if (item.coluna.html) celulaSegura(td, valor);
+                        else td.textContent = valor == null ? '' : String(valor);
                     }
                     tr.appendChild(td);
                 });
@@ -158,6 +201,9 @@
         q('[data-lista-busca]').addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(buscar, 300); });
         q('[data-lista-busca]').addEventListener('keydown', function (evento) { if (evento.key === 'Enter') { evento.preventDefault(); buscar(); } });
         q('[data-lista-quantidade]').value = String(estado.quantidade);
+        // o select de quantidade pode já ter virado controle da biblioteca: relê o valor nativo
+        var ctlQuantidade = global.c2fControles && typeof global.c2fControles.de === 'function' && global.c2fControles.de(q('[data-lista-quantidade]'));
+        if (ctlQuantidade) ctlQuantidade.atualizar();
         q('[data-lista-quantidade]').addEventListener('change', function () { estado.quantidade = Number(this.value); estado.inicio = 0; carregar(); });
         anterior.addEventListener('click', function () { estado.inicio = Math.max(0, estado.inicio - estado.quantidade); carregar(); });
         proxima.addEventListener('click', function () { estado.inicio += estado.quantidade; carregar(); });
