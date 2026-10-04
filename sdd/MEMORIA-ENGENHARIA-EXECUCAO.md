@@ -261,3 +261,14 @@ BATCH-155 a BATCH-167 (2026-09-02 e 2026-09-03: SSH e bootstrap do CLI, checksum
 ### req-218 / BATCH-226 — imagens do layout no painel distribuído (2026-10-03)
 
 - **O roteador passa `caminho` para minúsculas**: para montar um endereço com o nome original do arquivo, use `$_SERVER['REQUEST_URI']`. Redirecionamento das pastas estáticas (`MODULO_DISTRIBUIDO_PASTAS_ESTATICAS`) usa o endereço original sem o prefixo e cai no `caminho` se o destino não for do mesmo host.
+
+### req-219 / BATCH-227 — painel em Tailwind: controles, editor HTML e admin-paginas (2026-10-04)
+
+- Padrão (DEC-132): variante `<id>-tailwind` que guarda os ganchos do JS + ponte vanilla em `controles.js` (só entra sem `$.fn.dropdown`). `HtmlEditorTailwindReq219Test` compara variante e original (marcadores, ids, nomes, `data-tab`, placeholders, classes-gancho).
+- Ponte: `tab` precisa chamar `onLoad` (o editor atualiza o CodeMirror nele) e ativar por grupo de irmãos (abas aninhadas); modal vai para o `body` (o do editor mora em pai `.hidden`); `ia.js` exige `.form()`.
+- Página Tailwind com componentes montados em runtime: `tailwind_bundle` no JSON **e** `$_GESTOR['tailwind-page-bundle'] = true` no PHP da opção. Sem o flag, os 15 sidecars entram depois e `grid-cols-1` vence `md:grid-cols-2`.
+- CSS de página com `.hidden{display:none !important}` vence a aba ativa da ponte; não usar em página Tailwind.
+- `$.formSubmitNormal` e `interface.js` não existem na página Tailwind: enviar por `form.requestSubmit()` (passa pela validação do `interface-tailwind.js`). Seletores `.ui.form`/`.x.button` quebram na variante.
+- Hooks de projeto injetam marcação Fomantic (ex.: "Workspace Social" do site): `controles.css` esconde `.ui.modal`/`.ui.dimmer` sem `.active`.
+- E2E: o iframe de pré-visualização carrega o framework da página editada (Fomantic no Lab); filtrar `request.frame() === page.mainFrame()`. Fixture do Req196 avalia `interface_formulario_campos` sem o gestor: guardar chamadas novas com `function_exists`.
+- Pipeline: ainda é preciso rodar `project:update-all` duas vezes quando muda JS (minificação depois da cópia).

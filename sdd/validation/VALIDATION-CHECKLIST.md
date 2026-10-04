@@ -1,5 +1,16 @@
 # Validation Checklist
 
+## BATCH-227 — Painel em Tailwind: controles, diálogos, editor HTML e `admin-paginas` (req-219)
+
+- [x] CA-1: controles sem Fomantic, com teclado (select com busca, múltiplo e AJAX; chave; abas; diálogos; avisos) — Vitest 13 testes; 390 px sem rolagem no `admin-paginas`.
+- [x] CA-2: no layout Fomantic nada muda (`admin-layouts/editar`: ponte desligada, editor na variante antiga, sem erro).
+- [x] CA-3: nenhum `alert`/`confirm`/`prompt` nativo no editor e no `admin-paginas`.
+- [x] CA-4: `admin-paginas` adicionar/editar/clonar no layout Tailwind, sem JS nem CSS do Fomantic no painel, editor gravando (salvar sem 403).
+- [x] CA-5: PHPUnit 1.498 (1 falha anterior, CRLF), Vitest 474/474, navegador 18/18 (`conn2flow-site/sdd/validation/core/req219-controles-e2e.cjs`).
+- [ ] Revisão humana (abrir uma página no Lab, editar no visual e salvar).
+
+Detalhes: [BATCH-227](../implementation/BATCH-227.md).
+
 ## BATCH-226 — Módulos distribuídos: imagens do layout dentro do painel (req-218)
 
 - [x] CA-1: a logo do portal carrega dentro do painel distribuído (302 → 200; nenhum 404 em `favicon/` no roteiro da REQ-099 do site).
@@ -108,7 +119,7 @@ Detalhes: [BATCH-218](../implementation/BATCH-218.md).
 - [ ] Toque em aparelho real.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-217](../implementation/BATCH-217.md).
+Detalhes: [BATCH-217](../implementation/archive/BATCH-217.md).
 
 ## BATCH-216 — Módulo `cookie-consent` (req-208)
 

@@ -2,7 +2,7 @@
 
 - **Intakes Ativos / Planejados**:
   - [req-220.md](req-220.md) (BATCH-228 `in-progress`, 2026-10-04, agente paralelo): listagem do `interface` em Tailwind sem DataTables (fatia 5 da req-219, BL-026); piloto `modulos-grupos`.
-  - [req-219.md](req-219.md) (BATCH-227 `in-progress`, 2026-10-03): painel em Tailwind — biblioteca de controles (select, chave, abas, diálogos, avisos, ponte para a API do Fomantic) e migração do `admin-paginas` com o editor HTML; promove BL-012 e BL-026.
+  - [req-219.md](req-219.md) (BATCH-227 `in-review`, 2026-10-04): painel em Tailwind — biblioteca de controles com ponte para a API do Fomantic, diálogos no lugar dos nativos, editor HTML e `admin-paginas` (adicionar/editar/clonar) no layout Tailwind; navegador 18/18. Fatia 5 na req-220; fatia 6 a abrir.
   - [req-218.md](req-218.md) (BATCH-226 `in-review`, 2026-10-03): módulos distribuídos — imagens estáticas do layout (logo do portal) dentro do prefixo do painel voltam ao próprio endereço.
   - [req-217.md](req-217.md) (BATCH-225 `in-review`, 2026-10-03): módulos distribuídos — confirmação de origem (retorno ao endereço cadastrado) e chave de sessão de 15 minutos no canal.
   - [req-216.md](req-216.md) (BATCH-224 `in-review`, 2026-10-03): módulos distribuídos — catálogo local no cliente, estado da conta pelo canal e painel só de visualização (parte do core da REQ-097 do site).
@@ -11,8 +11,8 @@
   - [req-213.md](req-213.md) (BATCH-221 `in-review`, 2026-10-02): melhorias dos módulos distribuídos (REQ-094 do site): sandbox do iframe, provedor de instalações, conexão reaproveitada, sobras do login antigo removidas, `project:verify` no pipeline; corrigido o login distribuído com segundo fator.
   - [req-212.md](req-212.md) (BATCH-220 `in-review`, 2026-10-02): modal de edição do editor visual sem estilo no documento Tailwind; passa a usar o modal portátil do motor, sem a folha do Fomantic no iframe. Demais elementos gráficos varridos.
   - [req-211.md](req-211.md) (BATCH-219 `in-review`, 2026-10-02): infraestrutura comum para módulos distribuídos (parte do core da REQ-092 do site): login oficial com gancho, ponte de banco por tabela, canal assinado; allowlist de tabelas corrigida na revisão.
-  - [req-210.md](req-210.md) (BATCH-218 `in-review`, 2026-10-02): tela de atualização durante o deploy (manutenção), `rsync --chown`, prévia de widgets completa no editor e retirada do módulo de apresentações do core.
-  - [req-209.md](req-209.md) (BATCH-217 `in-review`, 2026-10-02): prévia de widgets no editor (CSS, controlador, marcador com mockup), toque na galeria, ícones e `docs:build` com layout por idioma.
+  - [req-210.md](archive/req-210.md) (BATCH-218 `in-review`, 2026-10-02): tela de atualização durante o deploy (manutenção), `rsync --chown`, prévia de widgets completa no editor e retirada do módulo de apresentações do core.
+  - [req-209.md](archive/req-209.md) (BATCH-217 `in-review`, 2026-10-02): prévia de widgets no editor (CSS, controlador, marcador com mockup), toque na galeria, ícones e `docs:build` com layout por idioma.
   - [req-208.md](archive/req-208.md) (BATCH-216 `in-review`, 2026-10-02): módulo `cookie-consent` (aviso e preferências de cookies), com CRUD, modelos, modo de IA, widget e controlador público.
   - [req-207.md](archive/req-207.md) (BATCH-215 `in-review`, 2026-10-02): docs — referência de funções das bibliotecas em cartões com filtro e índice; docs de atualização, recursos e deploy atualizadas com a req-206; README com o Dev Tools.
   - [req-206.md](archive/req-206.md) (BATCH-214 `complete`, 2026-10-01, homologação humana pendente): correções do deploy de projeto depois da req-202/203 — `insert_only` em chave natural (admin sobrescrito pela semente) e compilador em modo projeto usando só as sementes do projeto.

@@ -131,6 +131,7 @@ Para manter o arquivo corrente leve, as decisões `DEC-001` a `DEC-030` foram mo
 | DEC-126 | 2026-08-29 | accepted | O `css:rebuild` regenera apenas recursos editados online (`user_modified=1`) (BATCH-149). |
 | DEC-127 | 2026-08-29 | accepted | Assets locais também no layout administrativo Tailwind, com guarda de versão (BATCH-149). |
 | DEC-128 | 2026-08-30 | accepted | Dependências Tailwind de sistema: declarada falha alto, automática degrada em silêncio (BATCH-150). |
+| DEC-132 | 2026-10-04 | accepted | Painel em Tailwind por variantes que guardam os ganchos do JS e ponte vanilla para a API do Fomantic (BATCH-227). |
 
 ---
 
@@ -488,3 +489,12 @@ Ao transformar os três modais de sistema injetados em runtime (`interface-alert
 - Decisão: o segredo da instalação só abre sessão (`abrir`). Quem recebe confirma a origem ligando para o endereço que ele tem cadastrado (`confirmar`) e só então entrega uma chave de sessão aleatória de 15 minutos; requisições comuns são assinadas com ela (`X-C2F-Session`).
 - Decisão: o endereço de retorno nunca vem da requisição: `central-url` no cliente, `url` do cadastro no Central.
 - Consequência: Central e sites precisam ser publicados juntos; `MODULO_DISTRIBUIDO_ORIGIN_CHECK=false` volta ao canal anterior durante a transição. Próximo passo proposto: chaves assimétricas (Ed25519).
+
+## DEC-132 - 2026-10-04 - accepted
+
+- Contexto: req-219. O editor HTML tem cerca de 10 mil linhas de JavaScript sobre a API do Fomantic (`dropdown`, `modal`, `tab`…) e o Engenheiro Chefe pediu o painel em Tailwind, sem jQuery onde der.
+- Decisão: a troca é por variante de componente (`<id>-tailwind`, escolhida por `interface_componente_variante()`), que guarda marcadores, ids, nomes, `data-tab` e as classes-gancho do JS. As classes `ui …` restantes são só ganchos, sem CSS na página. Um teste compara cada variante com a original.
+- Decisão: onde o Fomantic não está, a biblioteca de controles (`controles.js`, sem framework) responde pela API do Fomantic usada no core (ponte). O JS legado passa a vanilla aos poucos, sem quebrar as duas variantes no meio do caminho.
+- Decisão: estilo de elemento gerado por PHP ou JS vai em classe `c2fc-*` própria (`controles.css`); utilities do Tailwind só no HTML dos recursos, que é o que o compilador enxerga.
+- Decisão: página Tailwind com o editor usa bundle (`tailwind_bundle` + `$_GESTOR['tailwind-page-bundle'] = true`); sem o flag, os sidecars dos componentes invertem as responsivas.
+- Consequência: cada módulo migra trocando layout e páginas e ganhando as variantes que faltam; a fatia 6 segue esse caminho por grupo de módulos.

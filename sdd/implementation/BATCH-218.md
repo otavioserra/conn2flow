@@ -1,6 +1,6 @@
 # BATCH-218: tela de atualização durante o deploy, prévia de widgets completa e retirada do módulo de apresentações (req-210)
 
-Execução da [req-210](../human-requests/req-210.md).
+Execução da [req-210](../human-requests/archive/req-210.md).
 
 **Status**: `in-review` (validado no Lab; revisão humana pendente).
 

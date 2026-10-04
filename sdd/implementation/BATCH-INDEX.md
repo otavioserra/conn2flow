@@ -55,7 +55,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-214 | complete | Deploy de projeto depois da req-202/203: `insert_only` em chave natural e sementes do projeto (req-206) | [BATCH-214.md](archive/BATCH-214.md) | Admin do Lab era sobrescrito pela semente; módulos e permissões do projeto eram retirados. Validado no Lab com consulta antes e depois. |
 | BATCH-215 | in-review | Docs: referência de funções em cartões com filtro e índice; docs atualizadas com a req-206 (req-207) | [BATCH-215.md](archive/BATCH-215.md) | `FunctionReferenceHtml` no `docs:build`; Markdown das docs inalterado. Validado no Lab (14/14). |
 | BATCH-216 | in-review | Módulo `cookie-consent`: CRUD, modelos, modo de IA, widget e controlador público (req-208) | [BATCH-216.md](archive/BATCH-216.md) | CRUD declarativo; aviso com CSS próprio. Validado no Lab. |
-| BATCH-217 | in-review | Prévia de widgets no editor, toque na galeria e ícones (req-209) | [BATCH-217.md](BATCH-217.md) | CSS e controlador do widget na prévia; toque nos dois tipos de trilho. Validado no Lab. |
+| BATCH-217 | in-review | Prévia de widgets no editor, toque na galeria e ícones (req-209) | [BATCH-217.md](archive/BATCH-217.md) | CSS e controlador do widget na prévia; toque nos dois tipos de trilho. Validado no Lab. |
 | BATCH-218 | in-review | Tela de atualização no deploy, prévia de widgets completa e retirada do módulo de apresentações (req-210) | [BATCH-218.md](BATCH-218.md) | Manutenção por arquivo com validade; `rsync --chown`; nenhum 500 no deploy do Lab. |
 | BATCH-219 | in-review | Infraestrutura comum para módulos distribuídos (req-211; REQ-092 do site) | [BATCH-219.md](BATCH-219.md) | Login oficial com gancho, ponte de banco por tabela, canal assinado. Allowlist de tabelas corrigida na revisão. |
 | BATCH-220 | in-review | Modal de edição do editor visual no documento Tailwind (req-212) | [BATCH-220.md](BATCH-220.md) | Sem folha do Fomantic no iframe Tailwind; modal portátil do motor. Varredura dos demais elementos sem achado. |
@@ -65,6 +65,8 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-224 | in-review | Módulos distribuídos: catálogo local, estado da conta pelo canal e painel só de visualização (req-216; REQ-097 do site) | [BATCH-224.md](BATCH-224.md) | 9 testes novos; suíte 1.458 (1 falha anterior); E2E dos estados no site 18/18. |
 | BATCH-225 | in-review | Módulos distribuídos: confirmação de origem e chave de sessão no canal (req-217; REQ-098 do site) | [BATCH-225.md](BATCH-225.md) | 8 testes novos; suíte 1.466 (1 falha anterior); ataque com o segredo roubado no Lab 6/6 recusado. |
 | BATCH-226 | in-review | Módulos distribuídos: imagens do layout dentro do painel (req-218; REQ-099 do site) | [BATCH-226.md](BATCH-226.md) | 3 testes novos; suíte 1.469 (1 falha anterior); logo 302 → 200 no Lab. |
+| BATCH-227 | in-review | Painel em Tailwind: biblioteca de controles, diálogos, editor HTML e `admin-paginas` (req-219, fatias 1 a 4) | [BATCH-227.md](BATCH-227.md) | `controles.js` sem framework com ponte para a API do Fomantic; 11 variantes do editor; `admin-paginas` adicionar/editar/clonar no layout Tailwind. Navegador 18/18; suíte 1.498 (1 falha anterior); Vitest 474/474. |
+| BATCH-228 | in-progress | Listagem do `interface` em Tailwind sem DataTables, piloto `modulos-grupos` (req-220, fatia 5 da req-219) | [req-220.md](../human-requests/req-220.md) | Agente paralelo na worktree `conn2flow-req220`. |
 
 ## Regra operacional
 

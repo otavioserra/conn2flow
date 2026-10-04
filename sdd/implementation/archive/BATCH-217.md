@@ -1,6 +1,6 @@
 # BATCH-217: prévia de widgets no editor, toque na galeria e ícones (req-209)
 
-Execução da [req-209](../human-requests/req-209.md).
+Execução da [req-209](../../human-requests/archive/req-209.md).
 
 **Status**: `in-review` (validado no Lab; revisão humana pendente).
 
