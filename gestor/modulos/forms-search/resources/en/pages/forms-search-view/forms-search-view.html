@@ -1,59 +1,61 @@
-<table class="ui definition table">
+<div class="req222-page space-y-4">
+<div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 definition table">
     <thead>
         <tr>
-            <th></th>
-            <th><i class="info circle icon"></i> Basic Information</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top"></th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top"><i data-lucide="info" class="size-4 shrink-0 icon "></i> Basic Information</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Form ID</td>
-            <td>
-                <div class="ui basic label">#id#</div>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">Form ID</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">
+                <div class="c2fc-rotulo basic label">#id#</div>
             </td>
         </tr>
         <tr>
-            <td class="two wide">Name</td>
-            <td>#name#</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top two wide">Name</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">#name#</td>
         </tr>
         <tr>
-            <td>Description</td>
-            <td>#description#</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">Description</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">#description#</td>
         </tr>
         <tr>
-            <td>Module</td>
-            <td>#module#</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">Module</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">#module#</td>
         </tr>
     </tbody>
-</table>
+</table></div>
 
-<table class="ui table">
+<div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 table">
     <thead>
         <tr>
-            <th><i class="code icon"></i> Fields Schema</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top"><i data-lucide="code" class="size-4 shrink-0 icon "></i> Fields Schema</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">
 
                 <div class="fields-schema-component">
-                    <div class="ui top attached tabular menu menuForms">
-                        <a class="active item" data-tab="data"
-                            data-tooltip="Click to open the field schema data in JSON format" data-position="top left"
+                    <div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuForms">
+                        <a class="c2fc-aba active item" data-tab="data"
+                            data-c2f-dica="Click to open the field schema data in JSON format" data-position="top left"
                             data-inverted="">Data</a>
-                        <a class="item" data-tab="info"
-                            data-tooltip="Click to open the available form options information in JSON format"
+                        <a class="c2fc-aba item" data-tab="info"
+                            data-c2f-dica="Click to open the available form options information in JSON format"
                             data-position="top left" data-inverted="">Information</a>
                     </div>
-                    <div class="ui bottom attached tab segment containerForms" data-tab="data">
-                        <textarea class="codemirror-json">#fields_schema#</textarea>
+                    <div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment containerForms" data-tab="data">
+                        <textarea class="c2fc-campo-entrada codemirror-json">#fields_schema#</textarea>
                     </div>
-                    <div class="ui bottom attached tab segment containerForms" data-tab="info">
+                    <div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment containerForms" data-tab="info">
                         #forms-search-info-definition#
                     </div>
                 </div>
             </td>
         </tr>
     </tbody>
-</table>
+</table></div>
+</div>

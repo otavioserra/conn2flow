@@ -152,6 +152,7 @@ function galleries_link_listas_setup(){
 
 function galleries_adicionar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -297,6 +298,7 @@ function galleries_adicionar(){
 
 function galleries_editar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -638,6 +640,7 @@ function galleries_editar(){
 
 function galleries_clonar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -828,6 +831,7 @@ function galleries_interfaces_padroes(){
 
     switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true;
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],

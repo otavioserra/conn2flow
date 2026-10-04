@@ -22048,5 +22048,833 @@
         "tipo": "string",
         "grupo": null,
         "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-text",
+        "valor": "Texto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-email",
+        "valor": "E-mail",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-tel",
+        "valor": "Telefone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-number",
+        "valor": "Número",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-password",
+        "valor": "Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-date",
+        "valor": "Data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-hidden",
+        "valor": "Oculto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-textarea",
+        "valor": "Texto longo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-select",
+        "valor": "Seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-radio",
+        "valor": "Opção única",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-checkbox",
+        "valor": "Caixa de seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-remove-label",
+        "valor": "Remover campo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-text",
+        "valor": "Text",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-email",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-tel",
+        "valor": "Phone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-number",
+        "valor": "Number",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-password",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-date",
+        "valor": "Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-hidden",
+        "valor": "Hidden",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-textarea",
+        "valor": "Textarea",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-select",
+        "valor": "Select",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-radio",
+        "valor": "Radio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-checkbox",
+        "valor": "Checkbox",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-remove-label",
+        "valor": "Remove field",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-text",
+        "valor": "Texto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-email",
+        "valor": "E-mail",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-tel",
+        "valor": "Telefone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-number",
+        "valor": "Número",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-password",
+        "valor": "Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-date",
+        "valor": "Data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-hidden",
+        "valor": "Oculto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-textarea",
+        "valor": "Texto longo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-select",
+        "valor": "Seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-radio",
+        "valor": "Opção única",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-checkbox",
+        "valor": "Caixa de seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-remove-label",
+        "valor": "Remover campo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-text",
+        "valor": "Text",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-email",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-tel",
+        "valor": "Phone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-number",
+        "valor": "Number",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-password",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-date",
+        "valor": "Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-hidden",
+        "valor": "Hidden",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-textarea",
+        "valor": "Textarea",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-select",
+        "valor": "Select",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-radio",
+        "valor": "Radio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-checkbox",
+        "valor": "Checkbox",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-remove-label",
+        "valor": "Remove field",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-id-missing",
+        "valor": "Identificador do envio nÃ£o encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-status-error",
+        "valor": "Erro ao atualizar o status.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-communication-error",
+        "valor": "Erro ao comunicar com o servidor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-email-missing",
+        "valor": "E-mail do destinatÃ¡rio nÃ£o encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-reply-confirm",
+        "valor": "Enviar resposta para {email}?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-reply-error",
+        "valor": "Erro ao enviar a resposta.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-reply-sent",
+        "valor": "Enviado!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "not-applicable-label",
+        "valor": "NÃ£o se aplica",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-id-missing",
+        "valor": "Submission ID not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-status-error",
+        "valor": "Error updating status.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-communication-error",
+        "valor": "Error communicating with server.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-email-missing",
+        "valor": "Recipient email not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-reply-confirm",
+        "valor": "Send reply to {email}?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-reply-error",
+        "valor": "Error sending reply.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-reply-sent",
+        "valor": "Sent!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "not-applicable-label",
+        "valor": "Not applicable",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-drag",
+        "valor": "Arraste para reordenar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-edit",
+        "valor": "Editar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-remove",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-empty-label",
+        "valor": "(sem rótulo)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-no-publisher",
+        "valor": "(sem publicador)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-publisher",
+        "valor": "Publicador: {name} (limite: {count})",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-drag",
+        "valor": "Drag to reorder",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-edit",
+        "valor": "Edit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-remove",
+        "valor": "Remove",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-empty-label",
+        "valor": "(no label)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-no-publisher",
+        "valor": "(no publisher)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-publisher",
+        "valor": "Publisher: {name} (limit: {count})",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-drag",
+        "valor": "Arraste para ordenar\/aninhar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-edit",
+        "valor": "Editar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-remove",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-empty-label",
+        "valor": "(sem rótulo)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-no-publisher",
+        "valor": "(sem publicador)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-publisher",
+        "valor": "Publicador: {name} (limite: {count})",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-drag",
+        "valor": "Drag to order\/nest",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-edit",
+        "valor": "Edit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-remove",
+        "valor": "Remove",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-empty-label",
+        "valor": "(no label)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-no-publisher",
+        "valor": "(no publisher)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-publisher",
+        "valor": "Publisher: {name} (limit: {count})",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
     }
 ]

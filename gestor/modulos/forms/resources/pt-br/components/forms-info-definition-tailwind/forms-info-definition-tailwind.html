@@ -1,0 +1,234 @@
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2 two column">
+    <div class="min-w-0 column">
+        <div class="text-lg font-semibold text-slate-800 my-4 header">
+            <i data-lucide="book-open" class="size-4 shrink-0 icon "></i>
+            <div class="content">
+                JSON de Todos os Parâmetros
+            </div>
+        </div>
+        <textarea class="c2fc-campo-entrada codemirror-json-info">#form_info#</textarea>
+    </div>
+    <div class="min-w-0 column">
+        <div class="text-lg font-semibold text-slate-800 my-4 header">
+            <i data-lucide="book-open" class="size-4 shrink-0 icon "></i>
+            <div class="content">
+                Documentação dos Parâmetros
+            </div>
+        </div>
+        <div class="styled fluid accordion">
+            <!-- Propriedades Básicas -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3" open><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Propriedades Básicas
+            </summary>
+            <div class="active content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>São utilizados
+                    para identificar o formulário.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>name </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Nome descritivo do formulário</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>id </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Identificador único do formulário</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>description </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Descrição opcional do formulário</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Propriedades Básicas -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Campos Nome e Email (Obrigatórios)
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Identificador
+                    dos campos de nome e email no "fields" para serem utilizados na comunicação
+                    por email.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>field_name </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Identificador do campo de nome no "fields"</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>field_email </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Identificador do campo de email no "fields"</div>
+                    </div>
+                </div>
+            </div></details>
+            <!-- Controle de Acesso -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Controle de Acesso (Opcional)
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Os controles de
+                    acesso são feitos por padrão, mas podem ser configurados conforme
+                    necessário por formulário.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="circle" class="size-4 shrink-0 icon "></i><code>access_max_simple</code></div>
+                        <div class="c2fc-rotulo label">Máximo de envios simples por IP (sem CAPTCHA)
+                        </div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="circle" class="size-4 shrink-0 icon "></i><code>access_max</code></div>
+                        <div class="c2fc-rotulo label">Máximo total de envios por IP antes de bloqueio
+                            por 24 horas</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="circle" class="size-4 shrink-0 icon "></i><code>force_recaptcha</code></div>
+                        <div class="c2fc-rotulo label">Força uso de reCAPTCHA v3 sempre</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Configuração de Email -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Configuração de Email (Opcional)
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>A configuração
+                    de email já é feita automaticamente no módulo Ambiente Config /
+                    Configurações de Email. Mas pode ser personalizada por formulário.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i><code>email.recipients </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Destinatários separados por ";"</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i><code>email.reply_to </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Email para resposta</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i><code>email.subject </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Assunto do email</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i><code>email.template </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">ID do componente de template de email</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Redirecionamentos -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Redirecionamentos
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>URLs de
+                    redirecionamento quando houver sucesso num formulário. Se houver fracasso,
+                    volte ao mesmo formulário. Ou para raiz do site.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i><code>redirects.success.type </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Tipo: "url" de acesso que será utilizado para
+                            redirecionamento de sucesso</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i><code>redirects.success.path </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Caminho para redirecionamento de sucesso</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i><code>redirects.error.type </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Tipo: "url" de acesso que será utilizado para
+                            redirecionamento de erro</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i><code>redirects.error.path </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Caminho para redirecionamento de erro</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Campos do Formulário -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Campos do Formulário
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Pode incluir
+                    quantos campos quiser em cada formulário, mas deve seguir a configuração
+                    padrão abaixo.</div>
+                <h5>Propriedades dos Campos:</h5>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>name </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Nome do campo (identificador único)</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>label </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Rótulo exibido para o usuário</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>type </code><i
+                                data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Tipo do campo (text, email, textarea.)</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="circle" class="size-4 shrink-0 icon "></i><code>required</code></div>
+                        <div class="c2fc-rotulo label">Campo obrigatório</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Funções da Biblioteca -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Funções da Biblioteca
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Sequência da
+                    execução das funções na biblioteca formulários para ter uma ideia de como
+                    funciona cada configuração acima.</div>
+                <h5>formulario_controlador():</h5>
+                <div class="bulleted list">
+                    <div class="c2fc-aba item">Prepara e configura formulários no frontend</div>
+                    <div class="c2fc-aba item">Carrega componentes HTML e JavaScript</div>
+                    <div class="c2fc-aba item">Configura validações client-side</div>
+                    <div class="c2fc-aba item">Gerencia permissões de acesso</div>
+                    <div class="c2fc-aba item">Integra reCAPTCHA v2/v3</div>
+                    <div class="c2fc-aba item">Processa schema de campos e opções</div>
+                </div>
+                <h5>formulario_processador():</h5>
+                <div class="bulleted list">
+                    <div class="c2fc-aba item">Processa envios de formulários no backend</div>
+                    <div class="c2fc-aba item">Valida dados e CAPTCHA</div>
+                    <div class="c2fc-aba item">Aplica rate limiting e anti-spam</div>
+                    <div class="c2fc-aba item">Salva dados em forms_submissions</div>
+                    <div class="c2fc-aba item">Envia emails de notificação</div>
+                    <div class="c2fc-aba item">Gerencia redirecionamentos pós-envio</div>
+                </div>
+            </div></details>
+        </div>
+    </div>
+</div>

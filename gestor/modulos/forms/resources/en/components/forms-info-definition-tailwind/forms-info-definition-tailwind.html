@@ -1,0 +1,194 @@
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2 two column">
+    <div class="min-w-0 column">
+        <div class="text-lg font-semibold text-slate-800 my-4 header">
+            <i data-lucide="book-open" class="size-4 shrink-0 icon "></i>
+            <div class="content">
+                JSON of All Parameters
+            </div>
+        </div>
+        <textarea class="c2fc-campo-entrada codemirror-json-info">#form_info#</textarea>
+    </div>
+    <div class="min-w-0 column">
+        <div class="text-lg font-semibold text-slate-800 my-4 header">
+            <i data-lucide="book-open" class="size-4 shrink-0 icon "></i>
+            <div class="content">
+                Parameters Documentation
+            </div>
+        </div>
+        <div class="styled fluid accordion">
+            <!-- Basic Properties -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3" open><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Basic Properties
+            </summary>
+            <div class="active content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Used to identify the form.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>name </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Descriptive form name</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>id </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Unique form identifier</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>description </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Optional form description</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Name and Email Fields (Required) -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Name and Email Fields (Required)
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Identifier of name and email fields in "fields" to be used in email communication.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>field_name </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Identifier of the name field in "fields"</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>field_email </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Identifier of the email field in "fields"</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Access Control -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Access Control (Optional)
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Access controls are done by default, but can be configured as needed per form.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="circle" class="size-4 shrink-0 icon "></i><code>access_max_simple</code></div>
+                        <div class="c2fc-rotulo label">Maximum simple submissions per IP (without CAPTCHA)</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="circle" class="size-4 shrink-0 icon "></i><code>access_max</code></div>
+                        <div class="c2fc-rotulo label">Maximum total submissions per IP before 24-hour block</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="circle" class="size-4 shrink-0 icon "></i><code>force_recaptcha</code></div>
+                        <div class="c2fc-rotulo label">Force use of reCAPTCHA v3 always</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Email Configuration -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Email Configuration (Optional)
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Email configuration is already done automatically in the Environment Config / Email Settings module. But it can be customized per form.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>email.recipients </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Recipients separated by ";"</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>email.reply_to </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Reply-to email</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>email.subject </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Email subject</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>email.template </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">ID of email template component</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Redirects -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Redirects
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Redirect URLs when there is success in a form. If there is failure, return to the same form. Or to the site root.</div>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>redirects.success.type </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Type: "url" access that will be used for success redirect</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>redirects.success.path </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Path for success redirect</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>redirects.error.type </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Type: "url" access that will be used for error redirect</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>redirects.error.path </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Path for error redirect</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Form Fields -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Form Fields
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>You can include as many fields as you want in each form, but must follow the standard configuration below.</div>
+                <h5>Field Properties:</h5>
+                <div class="list">
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>name </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Field name (unique identifier)</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>label </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Label displayed to the user</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="quote" class="size-4 shrink-0 icon "></i><code>type </code><i data-lucide="quote" class="size-4 shrink-0 icon "></i></div>
+                        <div class="c2fc-rotulo label">Field type (text, email, textarea.)</div>
+                    </div>
+                    <div class="c2fc-aba item">
+                        <div class="c2fc-rotulo teal tag label"><i data-lucide="circle" class="size-4 shrink-0 icon "></i><code>required</code></div>
+                        <div class="c2fc-rotulo label">Required field</div>
+                    </div>
+                </div>
+            </div></details>
+
+            <!-- Library Functions -->
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+                <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+                Library Functions
+            </summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Sequence of execution of functions in the forms library to understand how each configuration above works.</div>
+                <h5>formulario_controlador():</h5>
+                <div class="bulleted list">
+                    <div class="c2fc-aba item">Prepares and configures forms on frontend</div>
+                    <div class="c2fc-aba item">Loads HTML and JavaScript components</div>
+                    <div class="c2fc-aba item">Configures client-side validations</div>
+                    <div class="c2fc-aba item">Manages access permissions</div>
+                    <div class="c2fc-aba item">Integrates reCAPTCHA v2/v3</div>
+                    <div class="c2fc-aba item">Processes field schema and options</div>
+                </div>
+                <h5>formulario_processador():</h5>
+                <div class="bulleted list">
+                    <div class="c2fc-aba item">Processes form submissions on backend</div>
+                    <div class="c2fc-aba item">Validates data and CAPTCHA</div>
+                    <div class="c2fc-aba item">Applies rate limiting and anti-spam</div>
+                    <div class="c2fc-aba item">Saves data in forms_submissions</div>
+                    <div class="c2fc-aba item">Sends notification emails</div>
+                    <div class="c2fc-aba item">Manages post-submission redirects</div>
+                </div>
+            </div></details>
+        </div>
+    </div>
+</div>

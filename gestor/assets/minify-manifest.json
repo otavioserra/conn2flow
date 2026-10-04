@@ -210,13 +210,13 @@
         "minificado": 32
     },
     "gestor/modulos/cookie-consent/cookie-consent.js": {
-        "sha1": "e71b87f7e1ad4843de0b801d52e3c7d4860d5da3",
-        "origem": 16308,
-        "minificado": 8471
+        "sha1": "e314904c9a53484218ba0dadcabc86119cc2c973",
+        "origem": 16629,
+        "minificado": 8631
     },
     "gestor/modulos/cookie-consent/cookie-consent.widget.js": {
-        "sha1": "80c1bb7c4a545cb671b70b6fde1dbd325d3f49bc",
-        "origem": 12062,
+        "sha1": "5866666522cbb55c557914579e5b6849b83dc738",
+        "origem": 12348,
         "minificado": 5705
     },
     "gestor/modulos/dashboard/dashboard.iframe-toolbar.js": {
@@ -235,48 +235,48 @@
         "minificado": 45434
     },
     "gestor/modulos/forms-search/forms-search.js": {
-        "sha1": "57adad2c4810242008cb543ea9e90a0f9181a216",
-        "origem": 20012,
-        "minificado": 10794
+        "sha1": "c5e04c069308be571c29ce93d05c926dc1f696ca",
+        "origem": 19383,
+        "minificado": 10226
     },
     "gestor/modulos/forms-search/forms-search.widget.js": {
-        "sha1": "90879e74583c0c7f358828b856e6275318babf91",
-        "origem": 11868,
+        "sha1": "16c6f16bacb6d2e8f7563ca49d21dbcb9c568ed7",
+        "origem": 12146,
         "minificado": 6133
     },
     "gestor/modulos/forms-submissions/forms-submissions.js": {
-        "sha1": "b7c162a143a9412c7d065508fdd52b8bf2338e10",
-        "origem": 4529,
-        "minificado": 1996
+        "sha1": "bf91f177207927e3da78b82ba83b26e7a1f6d294",
+        "origem": 3617,
+        "minificado": 2104
     },
     "gestor/modulos/forms/forms.js": {
-        "sha1": "6ecf1adc4f4353f98a54affc704f57d706ac8c98",
-        "origem": 23165,
-        "minificado": 13279
+        "sha1": "6bef5e1493984456f870fa7a1801fac2aaeb4298",
+        "origem": 22568,
+        "minificado": 12743
     },
     "gestor/modulos/forms/forms.widget.js": {
-        "sha1": "b50ad5f0de5a5009157bcdc53d5dfbaddf3ff046",
-        "origem": 6417,
+        "sha1": "bec505cabd12bb1c65d61cdf55dfbd50c79bbaf3",
+        "origem": 6569,
         "minificado": 1451
     },
     "gestor/modulos/galleries/galleries.js": {
-        "sha1": "0744a662b09a94a8ba6fb3ec915edfe162d68a0b",
-        "origem": 59835,
-        "minificado": 30061
+        "sha1": "94f0f1c176b9bce39e6c1cbd23ed08001c3738a2",
+        "origem": 59717,
+        "minificado": 30040
     },
     "gestor/modulos/galleries/galleries.widget.js": {
-        "sha1": "ccd82ea2c77c636501c056cd87fb9692853e3df1",
-        "origem": 8264,
+        "sha1": "7832022bf3513315e01a4f7903af13520b014e14",
+        "origem": 8445,
         "minificado": 2667
     },
     "gestor/modulos/menus/menus.js": {
-        "sha1": "04c35c0683e82c3a36e05df1fdd2f448471d16f2",
-        "origem": 72944,
-        "minificado": 33857
+        "sha1": "0bb9070788753fbc609f84a9ea4aa6937ce59854",
+        "origem": 73387,
+        "minificado": 34428
     },
     "gestor/modulos/menus/menus.widget.js": {
-        "sha1": "8233484948f3387cf6a11cf7a05926ae4870ab11",
-        "origem": 1908,
+        "sha1": "5819203174caccfa94c81fe81beb32a2b4227945",
+        "origem": 1949,
         "minificado": 733
     },
     "gestor/modulos/modulos-grupos/modulos-grupos.js": {

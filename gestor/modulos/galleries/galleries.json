@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.6",
+    "versao": "1.0.9",
     "bibliotecas": [
         "interface",
         "html",
@@ -115,62 +115,398 @@
                 {
                     "name": "Galerias - Listar",
                     "id": "galleries",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "galleries\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "0ee56ba8af0b1a739481a412e611939b",
-                        "css": "",
-                        "combined": "0ee56ba8af0b1a739481a412e611939b"
-                    }
+                        "html": "a55c2a82119f42bba2971e227d280046",
+                        "css": "39c704e4c0804714fca60ff0a898f19d",
+                        "css_precompiled": "",
+                        "combined": "6a09f41f2e4b810a17b38ea987e610bc"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Galerias - Adicionar",
                     "id": "galleries-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/adicionar/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.8",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "e1877284a8f27e8e938c77933c8fc041",
-                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "html": "8d74d71d3e50e9a3935cc11fa36d72ef",
+                        "css": "a1fa152e7460783709e45963fae03edc",
                         "css_precompiled": "",
-                        "combined": "d63decd8d047c9a15d5896cb3760bbd8"
-                    }
+                        "combined": "4d612d28f30562b943e40eb8a4952042"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-galleries-simulation-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Galerias - Editar",
                     "id": "galleries-editar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/editar/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.8",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "aeb0e33f56e5e470803c0196ea95f934",
-                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "html": "27aa63effac5f3e2c20592d9206f5187",
+                        "css": "a1fa152e7460783709e45963fae03edc",
                         "css_precompiled": "",
-                        "combined": "7c8bcaab37cecbc0407b7f5497e2a04b"
-                    }
+                        "combined": "fe370f8ebf50954bd040102a4b9d74c5"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-galleries-simulation-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Galerias - Clonar",
                     "id": "galleries-clonar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/clonar/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.8",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "0a196510c3c4b63f1be3ecbb06239041",
-                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "html": "f78d53b16c79e8a0c08004e5bc53ef73",
+                        "css": "a1fa152e7460783709e45963fae03edc",
                         "css_precompiled": "",
-                        "combined": "4060f396a7bd6f8c60e92425d415f81d"
-                    }
+                        "combined": "116ed07792e962af6bcee51c26f7980e"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-galleries-simulation-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 }
             ],
             "variables": [
@@ -241,12 +577,42 @@
                 },
                 {
                     "id": "image-position-top",
-                    "value": "Topo / Acima",
+                    "value": "Topo \/ Acima",
                     "type": "string"
                 },
                 {
                     "id": "image-position-bottom",
-                    "value": "Fundo / Abaixo",
+                    "value": "Fundo \/ Abaixo",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-drag",
+                    "value": "Arraste para reordenar",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-edit",
+                    "value": "Editar",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-remove",
+                    "value": "Remover",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-empty-label",
+                    "value": "(sem rótulo)",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-no-publisher",
+                    "value": "(sem publicador)",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-publisher",
+                    "value": "Publicador: {name} (limite: {count})",
                     "type": "string"
                 }
             ]
@@ -349,62 +715,398 @@
                 {
                     "name": "Galleries - List",
                     "id": "galleries",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "galleries\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "4a83a5a4e2a220f814c50ae4dd0b0121",
-                        "css": "",
-                        "combined": "4a83a5a4e2a220f814c50ae4dd0b0121"
-                    }
+                        "html": "38450f05da429ddf3599db0845d74c36",
+                        "css": "39c704e4c0804714fca60ff0a898f19d",
+                        "css_precompiled": "",
+                        "combined": "1769b20f7e7d057c417b1912fbe6513d"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Galleries - Add",
                     "id": "galleries-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/adicionar/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "galleries\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.8",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "042562436ee0e1775125a6d7f8ea7e76",
-                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "html": "4273a47928dcaf6e1590b3b52cab2323",
+                        "css": "a1fa152e7460783709e45963fae03edc",
                         "css_precompiled": "",
-                        "combined": "1aba221078c75b31e01ec246216079a6"
-                    }
+                        "combined": "142ff425efd68e04c4502882227bcefc"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-galleries-simulation-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Galleries - Edit",
                     "id": "galleries-editar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/editar/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "galleries\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.8",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "c971cdefe666c374bb1f6dd267b00591",
-                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "html": "367f6f677cd9a425de0cda39822bade9",
+                        "css": "a1fa152e7460783709e45963fae03edc",
                         "css_precompiled": "",
-                        "combined": "b66b38111e6e493f5c5831be8cdacb9f"
-                    }
+                        "combined": "f0891ce948a0f2493545a922b67e3aa9"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-galleries-simulation-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 },
                 {
                     "name": "Galleries - Clone",
                     "id": "galleries-clonar",
-                    "layout": "layout-administrativo-do-gestor",
-                    "path": "galleries/clonar/",
+                    "layout": "layout-administrativo-tailwind",
+                    "path": "galleries\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.8",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "b5f5b6e09d4caf1da341fa55b1fa58a0",
-                        "css": "fb3b456403af0d7159676657a5f9d534",
+                        "html": "c0173fadaba04352bfd7a9cdbcf31c6f",
+                        "css": "a1fa152e7460783709e45963fae03edc",
                         "css_precompiled": "",
-                        "combined": "72d7e88dd0873a88fc8186e9f064b790"
-                    }
+                        "combined": "11ab5f8e7d555396a4587d02b7a82468"
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-galleries-simulation-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página."
                 }
             ],
             "variables": [
@@ -482,9 +1184,39 @@
                     "id": "image-position-bottom",
                     "value": "Bottom",
                     "type": "string"
+                },
+                {
+                    "id": "js-row-drag",
+                    "value": "Drag to reorder",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-edit",
+                    "value": "Edit",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-remove",
+                    "value": "Remove",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-empty-label",
+                    "value": "(no label)",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-no-publisher",
+                    "value": "(no publisher)",
+                    "type": "string"
+                },
+                {
+                    "id": "js-row-publisher",
+                    "value": "Publisher: {name} (limit: {count})",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "d7fdc825989f27e6"
+    "asset_version": "a3d6cb0d15b6bfd9"
 }

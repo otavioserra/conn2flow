@@ -828,7 +828,7 @@ function html_editor_componente($params = false){
 			// componente de simulação próprio (árvore mockada de itens) e variáveis fixas
 			// [[item#X]] declaradas em `menus_variaveis_template()` e recebidas em $target_variables.
 			$html_editor_publisher_simulation = gestor_componente(Array(
-				'id' => 'html-editor-menus-simulation',
+				'id' => (function_exists('interface_componente_variante') ? interface_componente_variante('html-editor-menus-simulation') : 'html-editor-menus-simulation'),
 			));
 
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);
@@ -842,7 +842,7 @@ function html_editor_componente($params = false){
 			// simulação próprio (lista mockada de imagens Picsum) e variáveis fixas [[item#X]]
 			// declaradas em `galleries_variaveis_template()` e recebidas em $target_variables.
 			$html_editor_publisher_simulation = gestor_componente(Array(
-				'id' => 'html-editor-galleries-simulation',
+				'id' => (function_exists('interface_componente_variante') ? interface_componente_variante('html-editor-galleries-simulation') : 'html-editor-galleries-simulation'),
 			));
 
 			$html_editor = modelo_var_troca($html_editor,'#html-editor-publisher-simulation#',$html_editor_publisher_simulation);

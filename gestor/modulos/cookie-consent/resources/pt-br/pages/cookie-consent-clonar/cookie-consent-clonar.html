@@ -1,127 +1,136 @@
+<div class="req222-page space-y-4">
+<template id="cookie-list-actions"><table><tbody><tr><td>
+ <button type="button" class="c2fc-botao c2fc-botao-icone" data-list-up aria-label="@[[js-list-up]]@"><i data-lucide="arrow-up" class="c2fc-icone"></i></button>
+ <button type="button" class="c2fc-botao c2fc-botao-icone" data-list-down aria-label="@[[js-list-down]]@"><i data-lucide="arrow-down" class="c2fc-icone"></i></button>
+ <button type="button" class="c2fc-botao c2fc-botao-icone c2fc-botao-perigo" data-list-remove aria-label="@[[js-list-remove]]@"><i data-lucide="trash-2" class="c2fc-icone"></i></button>
+</td></tr></tbody></table></template>
+
 <input type="hidden" name="fields_schema">
 
-<div class="field">
-    <label>Nome do aviso</label>
-    <input type="text" name="name" placeholder="Ex: Aviso de cookies do site">
+<div class="c2fc-campo min-w-0 mb-4 field">
+    <label class="c2fc-campo-rotulo">Nome do aviso</label>
+    <input class="c2fc-campo-entrada" type="text" name="name" placeholder="Ex: Aviso de cookies do site">
 </div>
 
-<div class="ui info icon message">
-    <i class="info circle icon"></i>
+<div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 info icon message">
+    <i data-lucide="info" class="size-4 shrink-0 icon "></i>
     <div class="content">
-        <div class="header">Cópia fiel do registro de origem</div>
+        <div class="text-lg font-semibold text-slate-800 my-4 header">Cópia fiel do registro de origem</div>
         <p>O HTML, o CSS e as opções do original já estão carregados abaixo. Depois de salvar, o original continua como está.</p>
     </div>
 </div>
 
-<h4 class="ui dividing header">Opções</h4>
+<h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Opções</h4>
 
 <div class="widget-options-tabs">
-<div class="ui top attached tabular menu menuOpcoesWidget">
-    <a class="active item" data-tab="cc-general"><i class="settings icon"></i> Geral</a>
-    <a class="item" data-tab="cc-categories"><i class="list icon"></i> Categorias</a>
-    <a class="item" data-tab="cc-texts"><i class="font icon"></i> Textos</a>
+<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuOpcoesWidget">
+    <a class="c2fc-aba active item" data-tab="cc-general"><i data-lucide="settings" class="size-4 shrink-0 icon "></i> Geral</a>
+    <a class="c2fc-aba item" data-tab="cc-categories"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Categorias</a>
+    <a class="c2fc-aba item" data-tab="cc-texts"><i data-lucide="circle" class="size-4 shrink-0 icon "></i> Textos</a>
 </div>
-<div class="ui bottom attached active tab segment" data-tab="cc-general">
-    <div class="three fields">
-        <div class="field"><label>Versão do aviso</label><input type="text" data-schema-key="version" placeholder="1"></div>
-        <div class="field"><label>Validade da decisão (dias)</label><input type="number" min="1" step="1" data-schema-key="expiry_days"></div>
-        <div class="field"><label>Posição do aviso</label><select class="ui dropdown" data-schema-key="position"><option value="bottom-left">Canto inferior esquerdo</option><option value="bottom-right">Canto inferior direito</option><option value="bottom">Faixa inferior</option><option value="center">Centro</option></select></div>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="cc-general">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3 my-4 three fields">
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Versão do aviso</label><input class="c2fc-campo-entrada" type="text" data-schema-key="version" placeholder="1"></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Validade da decisão (dias)</label><input class="c2fc-campo-entrada" type="number" min="1" step="1" data-schema-key="expiry_days"></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Posição do aviso</label><select data-c2f-select class="c2fc-campo-entrada dropdown" data-schema-key="position"><option value="bottom-left">Canto inferior esquerdo</option><option value="bottom-right">Canto inferior direito</option><option value="bottom">Faixa inferior</option><option value="center">Centro</option></select></div>
     </div>
-    <div class="ui label" style="margin: 0 0 12px; display: block;">
-        <i class="redo icon"></i>
+    <div class="c2fc-rotulo label" style="margin: 0 0 12px; display: block;">
+        <i data-lucide="circle" class="size-4 shrink-0 icon "></i>
         Trocar a versão faz o aviso voltar para quem já tinha decidido. Troque quando mudar as categorias ou a política.
     </div>
-    <div class="two fields">
-        <div class="field"><label>Endereço da Política de Privacidade</label><input type="text" data-schema-key="policy_url" placeholder="privacidade/"></div>
-        <div class="field"><label>Endereço dos Termos de Uso</label><input type="text" data-schema-key="terms_url" placeholder="termos/"></div>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields">
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Endereço da Política de Privacidade</label><input class="c2fc-campo-entrada" type="text" data-schema-key="policy_url" placeholder="privacidade/"></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Endereço dos Termos de Uso</label><input class="c2fc-campo-entrada" type="text" data-schema-key="terms_url" placeholder="termos/"></div>
     </div>
-    <div class="three fields">
-        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_floating_button"><label>Botão que reabre as preferências</label></div></div>
-        <div class="field"><label>Lado do botão</label><select class="ui dropdown" data-schema-key="floating_position"><option value="left">Esquerda</option><option value="right">Direita</option></select></div>
-        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="consent_mode"><label>Enviar sinais do Google Consent Mode v2</label></div></div>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3 my-4 three fields">
+        <div class="c2fc-campo min-w-0 mb-4 field"><div class="c2fc-chave checkbox"><input type="checkbox" data-schema-key="show_floating_button"><span class="c2fc-chave-trilho" aria-hidden="true"></span><label class="c2fc-campo-rotulo">Botão que reabre as preferências</label></div></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Lado do botão</label><select data-c2f-select class="c2fc-campo-entrada dropdown" data-schema-key="floating_position"><option value="left">Esquerda</option><option value="right">Direita</option></select></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><div class="c2fc-chave checkbox"><input type="checkbox" data-schema-key="consent_mode"><span class="c2fc-chave-trilho" aria-hidden="true"></span><label class="c2fc-campo-rotulo">Enviar sinais do Google Consent Mode v2</label></div></div>
     </div>
 </div>
-<div class="ui bottom attached tab segment" data-tab="cc-categories">
-    <div class="ui label" style="margin: 0 0 12px; display: block;">
-        <i class="info circle icon"></i>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="cc-categories">
+    <div class="c2fc-rotulo label" style="margin: 0 0 12px; display: block;">
+        <i data-lucide="info" class="size-4 shrink-0 icon "></i>
         O identificador é o que a página usa para liberar um script: <code>&lt;script type="text/plain" data-cookie-category="analytics"&gt;</code>. Categoria obrigatória vem ligada e o visitante não pode desligar. Os sinais do Google usam os identificadores <code>analytics</code>, <code>marketing</code> e <code>preferences</code>.
     </div>
-    <table class="ui celled compact table" data-schema-list="categories" data-columns='[{"key": "id", "type": "text"}, {"key": "name", "type": "text"}, {"key": "description", "type": "textarea"}, {"key": "required", "type": "checkbox"}]'>
-        <thead><tr><th style="width:150px;">Identificador</th><th style="width:200px;">Nome</th><th>Descrição</th><th style="width:100px;">Obrigatória</th><th style="width:140px;"></th></tr></thead>
+    <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled compact table" data-schema-list="categories" data-columns='[{"key": "id", "type": "text"}, {"key": "name", "type": "text"}, {"key": "description", "type": "textarea"}, {"key": "required", "type": "checkbox"}]'>
+        <thead><tr><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:150px;">Identificador</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:200px;">Nome</th><th class="border-b border-slate-200 px-3 py-2 align-top">Descrição</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:100px;">Obrigatória</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:140px;"></th></tr></thead>
         <tbody></tbody>
-    </table>
-    <button type="button" class="ui primary button" data-schema-list-add="categories"><i class="plus icon"></i> Categoria</button>
+    </table></div>
+    <button type="button" class="c2fc-botao c2fc-botao-primario primary button" data-schema-list-add="categories"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Categoria</button>
 </div>
-<div class="ui bottom attached tab segment" data-tab="cc-texts">
-        <div class="field"><label>Título do aviso</label><input type="text" data-schema-key="texts.title" placeholder=""></div>
-        <div class="field"><label>Mensagem do aviso</label><textarea rows="2" data-schema-key="texts.message"></textarea></div>
-        <div class="field"><label>Botão aceitar todos</label><input type="text" data-schema-key="texts.accept_all" placeholder=""></div>
-        <div class="field"><label>Botão recusar</label><input type="text" data-schema-key="texts.reject_all" placeholder=""></div>
-        <div class="field"><label>Botão personalizar</label><input type="text" data-schema-key="texts.customize" placeholder=""></div>
-        <div class="field"><label>Título do cartão</label><input type="text" data-schema-key="texts.preferences_title" placeholder=""></div>
-        <div class="field"><label>Introdução do cartão</label><textarea rows="2" data-schema-key="texts.preferences_intro"></textarea></div>
-        <div class="field"><label>Botão salvar escolhas</label><input type="text" data-schema-key="texts.save" placeholder=""></div>
-        <div class="field"><label>Selo da categoria obrigatória</label><input type="text" data-schema-key="texts.always_active" placeholder=""></div>
-        <div class="field"><label>Texto do link da política</label><input type="text" data-schema-key="texts.policy_label" placeholder=""></div>
-        <div class="field"><label>Texto do link dos termos</label><input type="text" data-schema-key="texts.terms_label" placeholder=""></div>
-        <div class="field"><label>Rótulo do botão que reabre</label><input type="text" data-schema-key="texts.floating_label" placeholder=""></div>
-        <div class="field"><label>Rótulo de fechar</label><input type="text" data-schema-key="texts.close" placeholder=""></div>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="cc-texts">
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Título do aviso</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.title" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Mensagem do aviso</label><textarea class="c2fc-campo-entrada" rows="2" data-schema-key="texts.message"></textarea></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Botão aceitar todos</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.accept_all" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Botão recusar</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.reject_all" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Botão personalizar</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.customize" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Título do cartão</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.preferences_title" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Introdução do cartão</label><textarea class="c2fc-campo-entrada" rows="2" data-schema-key="texts.preferences_intro"></textarea></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Botão salvar escolhas</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.save" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Selo da categoria obrigatória</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.always_active" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Texto do link da política</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.policy_label" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Texto do link dos termos</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.terms_label" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Rótulo do botão que reabre</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.floating_label" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Rótulo de fechar</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.close" placeholder=""></div>
 </div>
 </div>
 
-<h4 class="ui dividing header">Modelo visual</h4>
+<h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Modelo visual</h4>
 
-<div class="field">
-    <label>Modelo (recurso)</label>
-    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+<div class="c2fc-campo min-w-0 mb-4 field">
+    <label class="c2fc-campo-rotulo">Modelo (recurso)</label>
+    <select data-c2f-select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
-    <div class="ui label" style="margin: 8px 0; display: block;">
-        <i class="exchange icon"></i>
+    <div class="c2fc-rotulo label" style="margin: 8px 0; display: block;">
+        <i data-lucide="repeat" class="size-4 shrink-0 icon "></i>
         Ao escolher um modelo, o HTML e o CSS dele entram no editor abaixo. A partir daí o que vale é o conteúdo do editor, salvo neste registro.
     </div>
 </div>
 
-<div class="ui icon message info">
-    <i class="cookie bite icon"></i>
+<div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
+    <i data-lucide="circle" class="size-4 shrink-0 icon "></i>
     <div class="content">
-        <div class="header">Três peças no mesmo modelo</div>
+        <div class="text-lg font-semibold text-slate-800 my-4 header">Três peças no mesmo modelo</div>
         <p>O modelo desenha o aviso, o cartão de preferências e o botão que reabre o cartão. As categorias e os textos vêm das opções acima. Qualquer elemento com <code>data-cookie-consent-open</code>, ou um link para <code>#cookie-consent</code>, também abre o cartão: use no rodapé.</p>
     </div>
 </div>
 
 <div class="widget-content-tabs">
-<div class="ui top attached tabular menu menuConteudoWidget">
-    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Pré-visualização</a>
-    <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
-    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Código do widget</a>
+<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuConteudoWidget">
+    <a class="c2fc-aba active item" data-tab="hep-preview"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Pré-visualização</a>
+    <a class="c2fc-aba item" data-tab="hep-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> Editor HTML</a>
+    <a class="c2fc-aba item" data-tab="hep-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Código do widget</a>
 </div>
-<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="hep-preview">
     <div style="position: relative;">
         <iframe id="iframe-widget-preview" style="width:100%;height:720px;border:1px solid #ccc;"></iframe>
-        <div class="ui dimmer hep-preview-dimmer"><div class="ui loader"></div></div>
+        <div class="c2fc-cobertura ui dimmer hep-preview-dimmer"><div class="c2fc-giro loader"></div></div>
     </div>
 </div>
-<div class="ui bottom attached tab segment" data-tab="hep-editor">
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-editor">
     #html-editor#
 </div>
-<div class="ui bottom attached tab segment" data-tab="hep-widget">
-    <div class="ui icon message info">
-        <i class="cubes icon"></i>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-widget">
+    <div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
+        <i data-lucide="blocks" class="size-4 shrink-0 icon "></i>
         <div class="content">
-            <div class="header">Bloco do widget</div>
+            <div class="text-lg font-semibold text-slate-800 my-4 header">Bloco do widget</div>
             <p>Cole o trecho abaixo no layout do site, uma vez só, para o aviso valer em todas as páginas.</p>
         </div>
     </div>
-    <div class="field" style="margin-top:1rem;">
-        <label>Variável do widget</label>
-        <div class="ui action input">
-            <input type="text" id="hep-widget-val" readonly>
-            <button type="button" id="btn-copy-widget-val" class="ui teal button"><i class="copy icon"></i> Copiar</button>
+    <div class="c2fc-campo min-w-0 mb-4 field" style="margin-top:1rem;">
+        <label class="c2fc-campo-rotulo">Variável do widget</label>
+        <div class="flex items-center gap-2 min-w-0 action input">
+            <input class="c2fc-campo-entrada" type="text" id="hep-widget-val" readonly>
+            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario teal button"><i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copiar</button>
         </div>
     </div>
-    <h4 class="ui header" style="margin-top:1rem;">Código HTML</h4>
-    <div style="border:1px solid #ccc;"><textarea id="hep-widget-code" name="hep-widget-code"></textarea></div>
+    <h4 class="text-lg font-semibold text-slate-800 my-4 header" style="margin-top:1rem;">Código HTML</h4>
+    <div style="border:1px solid #ccc;"><textarea class="c2fc-campo-entrada" id="hep-widget-code" name="hep-widget-code"></textarea></div>
 </div>
+</div>
+
 </div>

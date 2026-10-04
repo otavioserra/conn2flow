@@ -1,6 +1,14 @@
 $(document).ready(function () {
+    if ($('#_gestor-interface-visualizar-dados').length) $('.menuForms .item').tab();
     if ($('#_gestor-interface-edit-dados').length === 0 && $('#_gestor-interface-insert-dados').length === 0) return;
 
+
+    document.addEventListener('click', function (event) {
+        var track = event.target.closest('.req222-page .c2fc-chave-trilho');
+        if (!track || track.parentElement.tagName === 'LABEL') return;
+        var input = track.parentElement.querySelector('input[type="checkbox"]');
+        if (input && !input.disabled) input.click();
+    });
     var schema = (typeof forms_search_initial_schema !== 'undefined' && forms_search_initial_schema) ? forms_search_initial_schema : {};
     schema.fields = Array.isArray(schema.fields) ? schema.fields : [];
 
@@ -43,8 +51,8 @@ $(document).ready(function () {
 
     contentFormsTabHandler();
 
-    $('.ui.checkbox').checkbox();
-    $('.ui.dropdown').dropdown();
+    $('.checkbox').checkbox();
+    $('.dropdown').dropdown();
 
     hydrateSchema();
     renderFields();
@@ -124,7 +132,7 @@ $(document).ready(function () {
 
     window.updatedCodeMirrorHtml = function () { schedulePreview(false); };
 
-    $('.ui.form').on('submit', function () {
+    $('form').on('submit', function () {
         updateSchemaFromInputs();
         updateFieldsFromTable();
         var tid = $('#template_id').val() || '';
@@ -163,6 +171,7 @@ $(document).ready(function () {
     }
 
     function renderFields() {
+        if (window.lucide) setTimeout(function () { window.lucide.createIcons(); }, 0);
         var $tbody = $('#forms-search-fields-table tbody');
         $tbody.empty();
 
@@ -170,37 +179,30 @@ $(document).ready(function () {
             $tbody.append(buildFieldRow(field, idx));
         });
 
-        $tbody.find('.ui.checkbox').checkbox();
-        $tbody.find('.ui.dropdown').dropdown();
+        $tbody.find('.checkbox').checkbox();
+        $tbody.find('.dropdown').dropdown();
         ensureSortable();
         syncHiddenSchema();
     }
 
     function buildFieldRow(field, idx) {
-        var type = field.type || 'text';
-        var required = field.required ? ' checked' : '';
-        var options = Array.isArray(field.options) ? field.options.join('\n') : (field.options || '');
-        var optionsStyle = typeUsesOptions(type) ? '' : ' style="display:none;"';
-        var placeholder = optionsPlaceholder(type);
-        var row = ''
-            + '<tr data-index="' + idx + '">'
-            + '<td class="center aligned"><i class="grip vertical icon forms-search-field-handle"></i></td>'
-            + '<td><input type="text" class="forms-search-field-label" value="' + escapeAttr(field.label || '') + '"></td>'
-            + '<td><input type="text" class="forms-search-field-name" value="' + escapeAttr(field.name || '') + '"></td>'
-            + '<td><select class="forms-search-field-type ui dropdown">'
-            + option('text', 'Text', type) + option('email', 'E-mail', type) + option('tel', 'Phone', type) + option('number', 'Number', type) + option('password', 'Password', type) + option('date', 'Date', type) + option('url', 'URL', type) + option('hidden', 'Hidden', type) + option('textarea', 'Textarea', type) + option('select', 'Select', type) + option('radio', 'Radio', type) + option('checkbox', 'Checkbox', type)
-            + '</select></td>'
-            + '<td><input type="text" class="forms-search-field-placeholder" value="' + escapeAttr(field.placeholder || '') + '"></td>'
-            + '<td><textarea class="forms-search-field-options" rows="2" placeholder="' + escapeAttr(placeholder) + '"' + optionsStyle + '>' + escapeHtml(options) + '</textarea></td>'
-            + '<td class="center aligned"><div class="ui checkbox"><input type="checkbox" class="forms-search-field-required"' + required + '><label></label></div></td>'
-            + '<td class="center aligned"><button type="button" class="ui icon red basic button forms-search-field-remove"><i class="trash icon"></i></button></td>'
-            + '</tr>';
+        var template = document.querySelector('#field-row-template');
+        var row = template.content.querySelector('tr').cloneNode(true);
+        row.dataset.index = idx;
+        ['label', 'name', 'type', 'placeholder'].forEach(function (key) {
+            row.querySelector('.forms-search-field-' + key).value = field[key] || (key === 'type' ? 'text' : '');
+        });
+        var options = row.querySelector('.forms-search-field-options');
+        options.value = Array.isArray(field.options) ? field.options.join('\n') : (field.options || '');
+        options.placeholder = optionsPlaceholder(field.type || 'text');
+        options.style.display = typeUsesOptions(field.type || 'text') ? '' : 'none';
+        row.querySelector('.forms-search-field-required').checked = !!field.required;
         return row;
     }
 
     function fieldTypeValue($select) {
         var dropdownValue = '';
-        if ($select.hasClass('ui') && typeof $select.dropdown === 'function') {
+        if ($select.hasClass('dropdown') && typeof $select.dropdown === 'function') {
             dropdownValue = $select.dropdown('get value');
         }
         return dropdownValue || $select.val() || 'text';
@@ -441,7 +443,7 @@ $(document).ready(function () {
         function feedback() {
             var original = $btn.data('original-html');
             if (typeof original === 'undefined') { original = $btn.html(); $btn.data('original-html', original); }
-            $btn.html('<i class="check icon"></i> ' + (isPtBr() ? 'Copiado!' : 'Copied!'));
+            $btn.html('<i data-lucide="check" class="c2fc-icone icon"></i> ' + (isPtBr() ? 'Copiado!' : 'Copied!'));
             setTimeout(function () { $btn.html(original); }, 1500);
         }
         if (navigator.clipboard && navigator.clipboard.writeText) {

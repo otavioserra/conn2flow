@@ -1,6 +1,14 @@
 $(document).ready(function () {
+    if ($('#_gestor-interface-visualizar-dados').length) $('.menuForms .item').tab();
     if ($('#_gestor-interface-edit-dados').length === 0 && $('#_gestor-interface-insert-dados').length === 0) return;
 
+
+    document.addEventListener('click', function (event) {
+        var track = event.target.closest('.req222-page .c2fc-chave-trilho');
+        if (!track || track.parentElement.tagName === 'LABEL') return;
+        var input = track.parentElement.querySelector('input[type="checkbox"]');
+        if (input && !input.disabled) input.click();
+    });
     var schema = (typeof forms_initial_schema !== 'undefined' && forms_initial_schema) ? forms_initial_schema : {};
     schema.email = schema.email || {};
     schema.redirects = schema.redirects || {};
@@ -53,8 +61,8 @@ $(document).ready(function () {
 
     contentFormsTabHandler();
 
-    $('.ui.checkbox').checkbox();
-    $('.ui.dropdown').dropdown();
+    $('.checkbox').checkbox();
+    $('.dropdown').dropdown();
 
     hydrateSchema();
     renderFields();
@@ -134,7 +142,7 @@ $(document).ready(function () {
 
     window.updatedCodeMirrorHtml = function () { schedulePreview(false); };
 
-    $('.ui.form').on('submit', function () {
+    $('form').on('submit', function () {
         updateSchemaFromInputs();
         updateFieldsFromTable();
         var tid = $('#template_id').val() || '';
@@ -156,7 +164,7 @@ $(document).ready(function () {
         $('#form_action').val(schema.form_action || '');
         $('#access_max_simple').val(schema.access_max_simple || '');
         $('#access_max').val(schema.access_max || '');
-        $('#force_recaptcha').prop('checked', !!schema.force_recaptcha).closest('.ui.checkbox').checkbox(schema.force_recaptcha ? 'check' : 'uncheck');
+        $('#force_recaptcha').prop('checked', !!schema.force_recaptcha).closest('.checkbox').checkbox(schema.force_recaptcha ? 'check' : 'uncheck');
         $('#email_recipients').val(schema.email.recipients || '');
         $('#email_reply_to').val(schema.email.reply_to || '');
         $('#email_reply_to_name').val(schema.email.reply_to_name || '');
@@ -197,6 +205,7 @@ $(document).ready(function () {
     }
 
     function renderFields() {
+        if (window.lucide) setTimeout(function () { window.lucide.createIcons(); }, 0);
         var $tbody = $('#forms-fields-table tbody');
         $tbody.empty();
 
@@ -204,37 +213,30 @@ $(document).ready(function () {
             $tbody.append(buildFieldRow(field, idx));
         });
 
-        $tbody.find('.ui.checkbox').checkbox();
-        $tbody.find('.ui.dropdown').dropdown();
+        $tbody.find('.checkbox').checkbox();
+        $tbody.find('.dropdown').dropdown();
         ensureSortable();
         syncHiddenSchema();
     }
 
     function buildFieldRow(field, idx) {
-        var type = field.type || 'text';
-        var required = field.required ? ' checked' : '';
-        var options = Array.isArray(field.options) ? field.options.join('\n') : (field.options || '');
-        var optionsStyle = typeUsesOptions(type) ? '' : ' style="display:none;"';
-        var placeholder = optionsPlaceholder(type);
-        var row = ''
-            + '<tr data-index="' + idx + '">'
-            + '<td class="center aligned"><i class="grip vertical icon forms-field-handle"></i></td>'
-            + '<td><input type="text" class="forms-field-label" value="' + escapeAttr(field.label || '') + '"></td>'
-            + '<td><input type="text" class="forms-field-name" value="' + escapeAttr(field.name || '') + '"></td>'
-            + '<td><select class="forms-field-type ui dropdown">'
-            + option('text', 'Text', type) + option('email', 'E-mail', type) + option('tel', 'Phone', type) + option('number', 'Number', type) + option('password', 'Password', type) + option('date', 'Date', type) + option('url', 'URL', type) + option('hidden', 'Hidden', type) + option('textarea', 'Textarea', type) + option('select', 'Select', type) + option('radio', 'Radio', type) + option('checkbox', 'Checkbox', type)
-            + '</select></td>'
-            + '<td><input type="text" class="forms-field-placeholder" value="' + escapeAttr(field.placeholder || '') + '"></td>'
-            + '<td><textarea class="forms-field-options" rows="2" placeholder="' + escapeAttr(placeholder) + '"' + optionsStyle + '>' + escapeHtml(options) + '</textarea></td>'
-            + '<td class="center aligned"><div class="ui checkbox"><input type="checkbox" class="forms-field-required"' + required + '><label></label></div></td>'
-            + '<td class="center aligned"><button type="button" class="ui icon red basic button forms-field-remove"><i class="trash icon"></i></button></td>'
-            + '</tr>';
+        var template = document.querySelector('#field-row-template');
+        var row = template.content.querySelector('tr').cloneNode(true);
+        row.dataset.index = idx;
+        ['label', 'name', 'type', 'placeholder'].forEach(function (key) {
+            row.querySelector('.forms-field-' + key).value = field[key] || (key === 'type' ? 'text' : '');
+        });
+        var options = row.querySelector('.forms-field-options');
+        options.value = Array.isArray(field.options) ? field.options.join('\n') : (field.options || '');
+        options.placeholder = optionsPlaceholder(field.type || 'text');
+        options.style.display = typeUsesOptions(field.type || 'text') ? '' : 'none';
+        row.querySelector('.forms-field-required').checked = !!field.required;
         return row;
     }
 
     function fieldTypeValue($select) {
         var dropdownValue = '';
-        if ($select.hasClass('ui') && typeof $select.dropdown === 'function') {
+        if ($select.hasClass('dropdown') && typeof $select.dropdown === 'function') {
             dropdownValue = $select.dropdown('get value');
         }
         return dropdownValue || $select.val() || 'text';
@@ -520,7 +522,7 @@ $(document).ready(function () {
         function feedback() {
             var original = $btn.data('original-html');
             if (typeof original === 'undefined') { original = $btn.html(); $btn.data('original-html', original); }
-            $btn.html('<i class="check icon"></i> ' + (isPtBr() ? 'Copiado!' : 'Copied!'));
+            $btn.html('<i data-lucide="check" class="c2fc-icone icon"></i> ' + (isPtBr() ? 'Copiado!' : 'Copied!'));
             setTimeout(function () { $btn.html(original); }, 1500);
         }
         if (navigator.clipboard && navigator.clipboard.writeText) {
