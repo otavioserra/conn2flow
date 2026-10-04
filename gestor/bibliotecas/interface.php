@@ -1246,6 +1246,25 @@ function interface_componente_canonico($id){
 }
 
 /**
+ * Selo de status (ativo/inativo) dos metadados da tela de edição (req-219).
+ *
+ * Era a mesma mensagem do Fomantic escrita à mão em cada módulo. No modo Tailwind sai como selo
+ * `c2fc-selo` (classe de `controles.css`: HTML montado no PHP não passa pela compilação do Tailwind).
+ *
+ * @param string $status 'A' (ativo) ou 'I' (inativo); outro valor devolve string vazia.
+ *
+ * @return string HTML do selo.
+ */
+function interface_status_selo($status){
+	if($status !== 'A' && $status !== 'I') return '';
+	$texto = gestor_variaveis(Array('modulo' => 'interface','id' => ($status === 'A' ? 'field-status-active' : 'field-status-inactive')));
+	if(function_exists('gestor_framework_css_atual') && gestor_framework_css_atual()['modo'] === 'tailwindcss'){
+		return '<span class="c2fc-selo c2fc-selo-'.($status === 'A' ? 'ativo' : 'inativo').'">'.$texto.'</span>';
+	}
+	return '<div class="ui center aligned '.($status === 'A' ? 'green' : 'brown').' message"><b>'.$texto.'</b></div>';
+}
+
+/**
  * Marca componentes para inclusão na interface.
  *
  * Registra um ou mais componentes para serem incluídos posteriormente

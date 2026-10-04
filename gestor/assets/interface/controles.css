@@ -51,6 +51,11 @@
 a.c2fc-botao { text-decoration: none; }
 .c2fc-icone { width: 16px; height: 16px; }
 
+/* ---------- selo de status (interface_status_selo no PHP) */
+.c2fc-selo { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 12px; font-size: 12px; font-weight: 600; line-height: 1.2; }
+.c2fc-selo-ativo { background: #ecfdf5; color: #047857; }
+.c2fc-selo-inativo { background: #fffbeb; color: #92400e; }
+
 /* ---------- avisos rápidos */
 .c2fc-avisos { position: fixed; right: 16px; bottom: 16px; z-index: 100030; display: flex; flex-direction: column; gap: 8px; max-width: min(380px, calc(100vw - 32px)); }
 .c2fc-aviso { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 10px; background: #0f172a; color: #f8fafc; box-shadow: 0 10px 15px -3px rgba(0,0,0,.25); font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }

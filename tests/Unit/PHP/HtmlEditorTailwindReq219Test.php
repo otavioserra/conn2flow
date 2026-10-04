@@ -101,6 +101,12 @@ final class HtmlEditorTailwindReq219Test extends TestCase
             self::assertSame([], array_values($sumiram), $tipo . ' que sumiram na variante');
         }
 
+        // Placeholder citado em comentário é trocado ali dentro (a troca pega a primeira ocorrência).
+        preg_match_all('/<!--(?!\s*[\w-]+\s*[<>]\s*-->)(?!\s*[\w-]+-componente\s*-->)(.*?)-->/s', $htmlVariante, $comentarios);
+        foreach ($comentarios[1] as $comentario) {
+            self::assertDoesNotMatchRegularExpression('/#[a-z][\w-]*#|@\[\[/', $comentario, 'placeholder dentro de comentário da variante');
+        }
+
         preg_match_all('/\sclass="([^"]*)"/', $htmlVariante, $m);
         $classes = preg_split('/\s+/', implode(' ', $m[1]));
         foreach ($ganchos as $gancho) {

@@ -172,7 +172,7 @@ function forms_search_meta_dados($retorno_bd, $modulo) {
 	if (isset($retorno_bd[$modulo['tabela']['data_criacao']])) $metaDados[] = ['titulo' => gestor_variaveis(['modulo' => 'interface','id' => 'field-date-start']), 'dado' => interface_formatar_dado(['dado' => $retorno_bd[$modulo['tabela']['data_criacao']], 'formato' => 'dataHora'])];
 	if (isset($retorno_bd[$modulo['tabela']['data_modificacao']])) $metaDados[] = ['titulo' => gestor_variaveis(['modulo' => 'interface','id' => 'field-date-modification']), 'dado' => interface_formatar_dado(['dado' => $retorno_bd[$modulo['tabela']['data_modificacao']], 'formato' => 'dataHora'])];
 	if (isset($retorno_bd[$modulo['tabela']['versao']])) $metaDados[] = ['titulo' => gestor_variaveis(['modulo' => 'interface','id' => 'field-version']), 'dado' => $retorno_bd[$modulo['tabela']['versao']]];
-	if (isset($retorno_bd[$modulo['tabela']['status']])) $metaDados[] = ['titulo' => gestor_variaveis(['modulo' => 'interface','id' => 'field-status']), 'dado' => ($retorno_bd[$modulo['tabela']['status']] == 'A' ? '<div class="ui center aligned green message"><b>'.gestor_variaveis(['modulo' => 'interface','id' => 'field-status-active']).'</b></div>' : '').($retorno_bd[$modulo['tabela']['status']] == 'I' ? '<div class="ui center aligned brown message"><b>'.gestor_variaveis(['modulo' => 'interface','id' => 'field-status-inactive']).'</b></div>' : '')];
+	if (isset($retorno_bd[$modulo['tabela']['status']])) $metaDados[] = ['titulo' => gestor_variaveis(['modulo' => 'interface','id' => 'field-status']), 'dado' => interface_status_selo((string)$retorno_bd[$modulo['tabela']['status']])];
 	return $metaDados;
 }
 

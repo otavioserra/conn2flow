@@ -697,8 +697,8 @@ function admin_paginas_editar(){
 		if(isset($retorno_bd[$modulo['tabela']['data_criacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_criacao']], 'formato' => 'dataHora'))); }
 		if(isset($retorno_bd[$modulo['tabela']['data_modificacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_modificacao']], 'formato' => 'dataHora'))); }
 		if(isset($retorno_bd[$modulo['tabela']['versao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-version')),'dado' => $retorno_bd[$modulo['tabela']['versao']]); }
-		// req-219: as páginas de edição são Tailwind; o selo de status usa utilities (no bundle via tailwind_sources).
-		if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => ($retorno_bd[$modulo['tabela']['status']] == 'A' ? '<span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-active')).'</span>' : '').($retorno_bd[$modulo['tabela']['status']] == 'I' ? '<span class="inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-inactive')).'</span>' : '')); }
+		// req-219: selo de status pelo ajudante do interface (Fomantic ou Tailwind conforme a página).
+		if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => interface_status_selo((string)$retorno_bd[$modulo['tabela']['status']])); }
 	} else {
 		gestor_redirecionar_raiz();
 	}
