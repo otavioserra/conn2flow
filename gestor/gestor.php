@@ -594,6 +594,8 @@ function gestor_pagina_menu($params = false){
 		// req-086: o item de saída não vem da tabela `modulos`, então o vocabulário do ícone é
 		// escolhido aqui pelo mesmo critério dos demais itens.
 		$cel_icon = modelo_var_troca($cel_icon,"#icon#",($menuTailwind ? 'log-out' : 'sign out alternate'));
+		// req-219: o menu Tailwind desenha pelo atributo data-lucide (req-125); sem ele o "Sair" ficava sem ícone.
+		$cel_icon = modelo_var_troca($cel_icon,"#icon-lucide#",($menuTailwind ? gestor_pagina_menu_icone_lucide_atributo('log-out') : ''));
 
 		$cel_aux = modelo_var_troca($cel_aux,"<!-- icon -->",$cel_icon);
 
@@ -3154,6 +3156,14 @@ function gestor_roteador(){
 				finally { if ($canalDistribuido) banco_distribuido_finalizar(); }
 				// req-216: aviso de carência ou de modo de visualização no topo do painel distribuído.
 				if ($canalDistribuido) modulo_distribuido_aviso_conta();
+			}
+
+			// req-219: toda página do painel Tailwind usa a biblioteca de controles (campos, botões, dicas, ponte).
+			// Ela entrava só pelo fluxo do `interface` (interface_iniciar/finalizar); telas que não passam por
+			// ele, como o painel inicial (dashboard), ficavam sem o CSS e sem a ponte.
+			if(strpos((string)($paginas[0]['layout_id'] ?? ''), 'layout-administrativo-tailwind') === 0 && empty($_GESTOR['paginaIframe'])){
+				gestor_incluir_biblioteca('controles');
+				if(function_exists('controles_incluir')) controles_incluir();
 			}
 
 			// ===== Incluir componentes na página.
