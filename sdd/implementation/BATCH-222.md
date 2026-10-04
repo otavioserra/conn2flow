@@ -1,6 +1,6 @@
 # BATCH-222: menus do painel com o módulo atual à vista e apoio do core à execução no cliente (req-214)
 
-Execução da [req-214](../human-requests/req-214.md). Relacionado à REQ-095 do `conn2flow-site`, onde está o relatório da execução dos módulos no cliente (`sdd/implementation/modulos-distribuidos/batch-089-execucao-no-cliente-catalogo-3d-e-ajustes.md`).
+Execução da [req-214](../human-requests/archive/req-214.md). Relacionado à REQ-095 do `conn2flow-site`, onde está o relatório da execução dos módulos no cliente (`sdd/implementation/modulos-distribuidos/batch-089-execucao-no-cliente-catalogo-3d-e-ajustes.md`).
 
 **Status**: `in-review` (validado no Lab; revisão humana pendente).
 

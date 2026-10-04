@@ -1,0 +1,39 @@
+---
+name: c2f-tailwind-module-migration
+description: "LEIA ANTES de migrar um módulo do painel do Fomantic-UI para Tailwind (programa da req-219). Se não ler: o JS legado quebra só na página Tailwind, sem erro no PHP, e as responsivas se invertem."
+user-invocable: false
+---
+
+# Migração de módulo do painel para Tailwind (req-219, DEC-132)
+
+# ⚡ Gatilho Obrigatório
+- **TRIGGER**: trocar páginas de um módulo do `layout-administrativo-do-gestor` para o `layout-administrativo-tailwind`, criar variante `-tailwind` de componente ou mexer na biblioteca de controles.
+- **SKIP APENAS SE**: o módulo já está todo em Tailwind e a mudança não toca HTML, JS de tela nem componentes.
+- **CONSEQUÊNCIA DE IGNORAR**: botão sem ação, aba que não troca, modal aberto no rodapé, `grid-cols-1` vencendo `md:grid-cols-2`, salvar com 403.
+
+## Referência viva
+
+- Implementação completa: `admin-paginas` (commits `7cf44d27` e `435fd83c`, relatório `sdd/implementation/BATCH-227.md`).
+- Módulo Tailwind nativo: `perfil-usuario`.
+- Biblioteca: cabeçalhos de `gestor/assets/interface/controles.js` e `gestor/bibliotecas/controles.php`.
+- Contrato testado: `tests/Unit/PHP/HtmlEditorTailwindReq219Test.php`. Roteiro de navegador modelo: `conn2flow-site/sdd/validation/core/req219-controles-e2e.cjs`.
+
+## Passo a passo por módulo
+
+1. **Metadados** (`<modulo>.json`, pt-br e en), em cada página migrada: `layout: layout-administrativo-tailwind`, `framework_css: tailwindcss`, `tailwind_bundle: true`, `tailwind_dependencies` (os globais do painel — `menu-principal-sistema-tailwind`, `interface-formulario-edicao-tailwind` ou `-inclusao-tailwind`, `interface-carregando/alerta/delecao-modal-tailwind`, `interface-formulario-autorizacao-provisoria-tailwind` — mais toda variante montada em runtime) e `tailwind_sources` para PHP/JS que escrevem utilities. Suba `version` da página e `versao` do módulo.
+2. **PHP da opção**: `$_GESTOR['tailwind-page-bundle'] = true;` no começo da função da opção. Sem isso os sidecars dos componentes entram depois do bundle e as responsivas se invertem.
+3. **HTML da página**: campos no padrão `c2fc-campo` / `c2fc-campo-rotulo` / `c2fc-campo-entrada`, grade com `grid grid-cols-1 gap-4 md:grid-cols-2`, chave com `c2fc-chave` (checkbox nativo + `c2fc-chave-trilho`), aviso em caixa `rounded-lg border … bg-sky-50`. Mantenha `name`, `id`, placeholders `#…#`, variáveis `@[[…]]@` e marcadores `<!-- x < -->` exatamente. `data-checked="#x#"` vira o atributo direto `#x#` (o PHP troca por `checked`). O selo de status e outras peças escritas no PHP do módulo também mudam.
+4. **Componentes do módulo** montados em runtime: crie `<id>-tailwind` e escolha com `interface_componente_variante('<id>')` (guarde com `function_exists` em biblioteca que roda sem o `interface`). Registre no JSON do módulo (ou em `resources/<lang>/components.json` se for global) com `framework_css: tailwindcss`.
+5. **JS do módulo**: continua funcionando pela ponte (`dropdown`, `checkbox`, `tab`, `modal`, `dimmer`, `popup`, `form`, `transition`). Troque só o que depende de classe visual: seletores `.ui.form`, `.x.button`, `.closest('.field')`, `$.formSubmitNormal` (use `form.requestSubmit()`), `alert/confirm/prompt` (use `c2fControles.dialogo`). Código novo é JavaScript puro.
+6. **Modais na variante** nascem com `hidden`, guardam `header/content/actions` e os ganchos `approve`/`cancel`/`deny`; a ponte os leva ao `body`. Cobertura de carregamento: `ui dimmer c2fc-cobertura` (o JS legado liga `.active`).
+7. **Listagem** (página raiz do módulo): só migra depois da listagem Tailwind da req-220 (BATCH-228) estar em `main`; até lá a raiz fica no layout Fomantic.
+
+## Regras da casa
+
+- Utility do Tailwind só no HTML de recurso (é o que o compilador vê). Elemento criado por JS/PHP genérico usa classe `c2fc-*` em `controles.css`.
+- Ícones: Lucide (`<i data-lucide="nome" class="size-4">`); dentro de `<template>` não renderiza.
+- Tooltips: `data-c2f-dica` (o `data-tooltip` é CSS do Fomantic).
+- Não mexa em `controles.js`/`controles.css`/`controles.php`, `interface.php` nem `html-editor.php` fora do seu escopo: peça no relatório ao dono da req-219.
+- Validação mínima: teste PHP de contrato (variante x original, metadados, HTML sem `class="ui `), Vitest se mexer em JS, roteiro Playwright no Lab (sem asset do Fomantic no documento principal — `request.frame() === page.mainFrame()` —, salvar sem 403, 390 px sem rolagem, nenhum `.ui.modal` visível solto) e o mesmo módulo Fomantic de controle sem mudança.
+- Lab compartilhado: trave com `mkdir C:/Users/otavi/OneDrive/Documentos/GIT/.c2f-lab-lock` (falhou = outro agente usando; espere), faça `git merge origin/main` na sua branch antes do `project:update-all conn2flow-site-local` (rode 2 vezes quando mudar JS) e do roteiro, e libere com `rmdir` ao terminar.
+- Pendência humana vai para `conn2flow-site/sdd/PENDENCIAS-HUMANAS.md`, item do roteiro único da req-219.
