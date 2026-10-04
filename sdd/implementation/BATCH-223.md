@@ -1,6 +1,6 @@
 # BATCH-223: módulos distribuídos — rotina local pedida pelo Central (req-215)
 
-Execução da [req-215](../human-requests/req-215.md). Parte do core da REQ-096 do `conn2flow-site`, onde está o relatório da execução no cliente dos módulos restantes (`sdd/implementation/modulos-distribuidos/batch-090-execucao-no-cliente-dos-modulos-restantes.md`).
+Execução da [req-215](../human-requests/archive/req-215.md). Parte do core da REQ-096 do `conn2flow-site`, onde está o relatório da execução no cliente dos módulos restantes (`sdd/implementation/modulos-distribuidos/batch-090-execucao-no-cliente-dos-modulos-restantes.md`).
 
 **Status**: `in-review` (validado no Lab; revisão humana pendente).
 

@@ -1,7 +1,8 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
-  - [req-224.md](req-224.md) (BATCH-233 `ready-for-intake`, 2026-10-04, agente paralelo): usuários, perfis, módulos e painel inicial em Tailwind (fatia 6 da req-219).
+  - [req-225.md](req-225.md) (BATCH-234 `ready-for-intake`, 2026-10-04): conferência final — todo módulo Tailwind (core e site) com os recursos da UI nova da req-219; roda depois das frentes.
+  - [req-224.md](req-224.md) (BATCH-233 `in-progress`, 2026-10-04, agente da req-219, ordem invertida): usuários, perfis, módulos e painel inicial em Tailwind (fatia 6 da req-219).
   - [req-223.md](req-223.md) (BATCH-232 `ready-for-intake`, 2026-10-04, agente paralelo): módulos de administração em Tailwind (fatia 6 da req-219).
   - [req-222.md](req-222.md) (BATCH-231 `ready-for-intake`, 2026-10-04, agente paralelo): menus, galerias, formulários e consentimento de cookies em Tailwind (fatia 6 da req-219).
   - [req-221.md](req-221.md) (BATCH-230 `ready-for-intake`, 2026-10-04, agente paralelo): família publisher em Tailwind (fatia 6 da req-219).
@@ -10,7 +11,7 @@
   - [req-218.md](req-218.md) (BATCH-226 `in-review`, 2026-10-03): módulos distribuídos — imagens estáticas do layout (logo do portal) dentro do prefixo do painel voltam ao próprio endereço.
   - [req-217.md](req-217.md) (BATCH-225 `in-review`, 2026-10-03): módulos distribuídos — confirmação de origem (retorno ao endereço cadastrado) e chave de sessão de 15 minutos no canal.
   - [req-216.md](req-216.md) (BATCH-224 `in-review`, 2026-10-03): módulos distribuídos — catálogo local no cliente, estado da conta pelo canal e painel só de visualização (parte do core da REQ-097 do site).
-  - [req-215.md](req-215.md) (BATCH-223 `in-review`, 2026-10-03): módulos distribuídos — rotina local pedida pelo Central pelo canal assinado, cópia de execução só quando contratada, parâmetros do endereço no iframe (parte do core da REQ-096 do site).
+  - [req-215.md](archive/req-215.md) (BATCH-223 `in-review`, 2026-10-03): módulos distribuídos — rotina local pedida pelo Central pelo canal assinado, cópia de execução só quando contratada, parâmetros do endereço no iframe (parte do core da REQ-096 do site).
   - [req-214.md](archive/req-214.md) (BATCH-222 `in-review`, 2026-10-02): menus laterais do painel com o módulo atual marcado e no meio, nos dois layouts; decisão de cookies lida no servidor (`cookie_consent_permitido`); apoio à execução dos módulos no cliente (contexto distribuído e gancho `db.escrita`).
   - [req-213.md](archive/req-213.md) (BATCH-221 `in-review`, 2026-10-02): melhorias dos módulos distribuídos (REQ-094 do site): sandbox do iframe, provedor de instalações, conexão reaproveitada, sobras do login antigo removidas, `project:verify` no pipeline; corrigido o login distribuído com segundo fator.
   - [req-212.md](archive/req-212.md) (BATCH-220 `in-review`, 2026-10-02): modal de edição do editor visual sem estilo no documento Tailwind; passa a usar o modal portátil do motor, sem a folha do Fomantic no iframe. Demais elementos gráficos varridos.
