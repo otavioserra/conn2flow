@@ -318,11 +318,12 @@ $(document).ready(function () {
 		}
 
 		/**
-		 * Salva a ordem dos cards no localStorage
+		 * Salva a ordem dos cards no localStorage e sincroniza com o backend (req-226)
 		 * @param {Array} order Array com IDs dos módulos
 		 */
 		function saveOrder(order) {
 			setLocalStorage(storageKey, order, storageExpireMinutes);
+			dashboardSalvarPreferenciaBackend('dashboard_cards_order', order);
 		}
 
 		/**
@@ -643,6 +644,500 @@ $(document).ready(function () {
 	initDashboardSearch();
 
 	// ===== Dashboard Search > =====
+
+	// ===== Sincronização de Preferências no Backend (req-226) < =====
+
+	/**
+	 * Envia preferência do usuário para persistência no backend via AJAX
+	 * @param {string} chave - Nome da preferência
+	 * @param {*} valor - Valor da preferência
+	 * @returns {Promise}
+	 */
+	function dashboardSalvarPreferenciaBackend(chave, valor) {
+		var params = new URLSearchParams({
+			opcao: 'inicio',
+			ajax: 'sim',
+			ajaxOpcao: 'salvar-preferencias',
+			chave: chave,
+			valor: typeof valor === 'object' && valor !== null ? JSON.stringify(valor) : valor
+		});
+
+		var baseUrl = (typeof gestor !== 'undefined' && gestor.raiz ? gestor.raiz : '/') + 'dashboard/';
+
+		return fetch(baseUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: params
+		})
+		.then(function (res) { return res.json(); })
+		.catch(function (err) {
+			console.warn('Dashboard: Erro ao salvar preferência "' + chave + '" no backend:', err);
+		});
+	}
+
+	// ===== Sincronização de Preferências no Backend > =====
+
+	// ===== Seletor de Densidade de Módulos P / M / G (req-226 CA-2) < =====
+
+	function initDashboardDensity() {
+		var selectorContainer = document.getElementById('dashboard-density-selector');
+		var cardsContainer = document.getElementById('dashboard-sortable-cards');
+
+		if (!selectorContainer || !cardsContainer) {
+			return;
+		}
+
+		var storageKey = 'dashboard_density';
+		var defaultDensity = 'm';
+
+		// Prioridade: preferência do backend > localStorage > padrão 'm'
+		var savedDensity = defaultDensity;
+		if (typeof gestor !== 'undefined' && gestor.dashboard_user_prefs && gestor.dashboard_user_prefs.densidade) {
+			savedDensity = gestor.dashboard_user_prefs.densidade;
+		} else {
+			var localSaved = getLocalStorage(storageKey);
+			if (localSaved && ['p', 'm', 'g'].indexOf(localSaved) !== -1) {
+				savedDensity = localSaved;
+			}
+		}
+
+		function applyDensity(density, persist) {
+			if (['p', 'm', 'g'].indexOf(density) === -1) {
+				density = 'm';
+			}
+
+			// Atualiza classes do container de cartões
+			cardsContainer.classList.remove('density-p', 'density-m', 'density-g');
+			cardsContainer.classList.add('density-' + density);
+
+			// Atualiza botões no seletor
+			var buttons = selectorContainer.querySelectorAll('.dashboard-density-btn');
+			buttons.forEach(function (btn) {
+				var btnDensity = btn.getAttribute('data-density');
+				if (btnDensity === density) {
+					btn.classList.add('active', 'bg-white', 'text-sky-700', 'shadow-sm');
+					btn.classList.remove('text-slate-600');
+				} else {
+					btn.classList.remove('active', 'bg-white', 'text-sky-700', 'shadow-sm');
+					btn.classList.add('text-slate-600');
+				}
+			});
+
+			if (persist) {
+				setLocalStorage(storageKey, density, 43200); // 30 dias
+				dashboardSalvarPreferenciaBackend('dashboard_densidade', density);
+			}
+
+			// Recria ícones Lucide caso necessário
+			if (typeof lucide !== 'undefined' && lucide.createIcons) {
+				lucide.createIcons();
+			}
+		}
+
+		// Event listener para cliques nos botões de densidade
+		selectorContainer.addEventListener('click', function (e) {
+			var btn = e.target.closest('.dashboard-density-btn');
+			if (!btn) return;
+
+			var density = btn.getAttribute('data-density');
+			if (density) {
+				applyDensity(density, true);
+			}
+		});
+
+		// Aplica a densidade inicial
+		applyDensity(savedDensity, false);
+	}
+
+	initDashboardDensity();
+
+	// ===== Seletor de Densidade de Módulos > =====
+
+	// ===== Sistema de Abas do Dashboard (req-226 CA-3) < =====
+
+	function initDashboardTabs() {
+		var tabButtons = document.querySelectorAll('.dashboard-tab-trigger');
+		var tabPanels = document.querySelectorAll('.dashboard-tab-panel');
+
+		if (!tabButtons.length || !tabPanels.length) {
+			return;
+		}
+
+		var storageKey = 'dashboard_active_tab';
+		var defaultTab = 'dashboard-tab-modulos';
+
+		// Lê preferência do backend ou localStorage
+		var activeTabId = defaultTab;
+		if (typeof gestor !== 'undefined' && gestor.dashboard_user_prefs && gestor.dashboard_user_prefs.aba_ativa) {
+			activeTabId = gestor.dashboard_user_prefs.aba_ativa;
+		} else {
+			var localTab = getLocalStorage(storageKey);
+			if (localTab && document.getElementById(localTab)) {
+				activeTabId = localTab;
+			}
+		}
+
+		function switchTab(targetId, persist) {
+			var targetPanel = document.getElementById(targetId);
+			if (!targetPanel) return;
+
+			tabButtons.forEach(function (btn) {
+				var target = btn.getAttribute('data-tab-target');
+				if (target === targetId) {
+					btn.classList.add('active', 'border-sky-600', 'text-sky-600');
+					btn.classList.remove('border-transparent', 'text-slate-500');
+					btn.setAttribute('aria-selected', 'true');
+				} else {
+					btn.classList.remove('active', 'border-sky-600', 'text-sky-600');
+					btn.classList.add('border-transparent', 'text-slate-500');
+					btn.setAttribute('aria-selected', 'false');
+				}
+			});
+
+			tabPanels.forEach(function (panel) {
+				if (panel.id === targetId) {
+					panel.classList.remove('hidden');
+				} else {
+					panel.classList.add('hidden');
+				}
+			});
+
+			if (persist) {
+				setLocalStorage(storageKey, targetId, 43200);
+				dashboardSalvarPreferenciaBackend('dashboard_aba_ativa', targetId);
+			}
+
+			if (typeof lucide !== 'undefined' && lucide.createIcons) {
+				lucide.createIcons();
+			}
+		}
+
+		tabButtons.forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				var targetId = this.getAttribute('data-tab-target');
+				if (targetId) {
+					switchTab(targetId, true);
+				}
+			});
+		});
+
+		// Aplica a aba inicial
+		switchTab(activeTabId, false);
+	}
+
+	initDashboardTabs();
+
+	// ===== Sistema de Abas do Dashboard > =====
+
+	// ===== Grid Flexível de Widgets (req-226 CA-4) < =====
+
+	function initDashboardWidgets() {
+		var widgetsGrid = document.getElementById('dashboard-widgets-grid');
+		var emptyState = document.getElementById('dashboard-widgets-empty');
+		var addBtn = document.getElementById('dashboard-btn-add-widget');
+		var resetBtn = document.getElementById('dashboard-btn-reset-widgets');
+		var modal = document.getElementById('dashboard-widgets-modal');
+		var modalList = document.getElementById('dashboard-widgets-modal-list');
+
+		if (!widgetsGrid) {
+			return;
+		}
+
+		var storageKey = 'dashboard_widgets_layout';
+		var widgetsList = [];
+
+		// Carrega widgets salvos do backend ou localStorage
+		if (typeof gestor !== 'undefined' && gestor.dashboard_user_prefs && Array.isArray(gestor.dashboard_user_prefs.widgets_layout) && gestor.dashboard_user_prefs.widgets_layout.length > 0) {
+			widgetsList = gestor.dashboard_user_prefs.widgets_layout;
+		} else {
+			var localSaved = getLocalStorage(storageKey);
+			if (localSaved && Array.isArray(localSaved)) {
+				widgetsList = localSaved;
+			}
+		}
+
+		function saveWidgetsLayout() {
+			setLocalStorage(storageKey, widgetsList, 43200);
+			dashboardSalvarPreferenciaBackend('dashboard_widgets_layout', widgetsList);
+		}
+
+		function renderWidgetsGrid() {
+			if (!widgetsList.length) {
+				widgetsGrid.innerHTML = '';
+				if (emptyState) emptyState.classList.remove('hidden');
+				return;
+			}
+
+			if (emptyState) emptyState.classList.add('hidden');
+			widgetsGrid.innerHTML = '';
+
+			widgetsList.forEach(function (widget, index) {
+				var colSpan = widget.width || 'col-span-1';
+				var card = document.createElement('div');
+				card.className = 'dashboard-widget-card ' + colSpan + ' flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden';
+				card.setAttribute('data-widget-id', widget.id);
+				card.setAttribute('data-widget-index', index);
+
+				card.innerHTML = 
+					'<div class="dashboard-widget-card-header flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2.5">' +
+						'<div class="flex items-center gap-2">' +
+							'<div class="dashboard-widget-drag-handle cursor-grab text-slate-400 hover:text-slate-600" aria-label="Arraste para mover">' +
+								'<i data-lucide="grip-vertical" class="size-4"></i>' +
+							'</div>' +
+							'<span class="font-semibold text-sm text-slate-800">' + (widget.name || widget.id) + '</span>' +
+						'</div>' +
+						'<div class="flex items-center gap-1">' +
+							'<select class="dashboard-widget-width-select rounded border border-slate-200 bg-white px-2 py-0.5 text-xs text-slate-600 hover:border-slate-300" title="Largura">' +
+								'<option value="col-span-1"' + (colSpan === 'col-span-1' ? ' selected' : '') + '>1 Col</option>' +
+								'<option value="col-span-2"' + (colSpan === 'col-span-2' ? ' selected' : '') + '>2 Cols</option>' +
+								'<option value="col-span-full"' + (colSpan === 'col-span-full' ? ' selected' : '') + '>Full</option>' +
+							'</select>' +
+							'<button type="button" class="dashboard-widget-remove-btn rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors" title="Remover widget">' +
+								'<i data-lucide="x" class="size-4"></i>' +
+							'</button>' +
+						'</div>' +
+					'</div>' +
+					'<div class="dashboard-widget-card-body p-4 min-h-32 flex flex-col justify-center items-center text-slate-500 text-sm" id="widget-body-' + widget.id + '-' + index + '">' +
+						'<i data-lucide="loader" class="size-5 animate-spin text-sky-600 mb-2"></i>' +
+						'<span>Carregando widget...</span>' +
+					'</div>';
+
+				widgetsGrid.appendChild(card);
+
+				// Carrega conteúdo dinâmico do widget via AJAX
+				loadWidgetContent(widget.id, 'widget-body-' + widget.id + '-' + index);
+			});
+
+			if (typeof lucide !== 'undefined' && lucide.createIcons) {
+				lucide.createIcons();
+			}
+
+			initWidgetsSortable();
+		}
+
+		function loadWidgetContent(widgetId, containerId) {
+			var params = new URLSearchParams({
+				opcao: 'inicio',
+				ajax: 'sim',
+				ajaxOpcao: 'widget-render',
+				widget_id: widgetId
+			});
+
+			var baseUrl = (typeof gestor !== 'undefined' && gestor.raiz ? gestor.raiz : '/') + 'dashboard/';
+
+			fetch(baseUrl, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: params
+			})
+			.then(function (res) { return res.json(); })
+			.then(function (json) {
+				var container = document.getElementById(containerId);
+				if (!container) return;
+
+				if (json && json.status === 'Ok' && json.data && json.data.html) {
+					container.innerHTML = json.data.html;
+				} else {
+					container.innerHTML = 
+						'<div class="text-center py-4 text-slate-400">' +
+							'<i data-lucide="layout" class="size-6 mx-auto mb-1"></i>' +
+							'<p class="text-xs">Widget operacional ativo</p>' +
+						'</div>';
+				}
+				if (typeof lucide !== 'undefined' && lucide.createIcons) {
+					lucide.createIcons();
+				}
+			})
+			.catch(function () {
+				var container = document.getElementById(containerId);
+				if (container) {
+					container.innerHTML = '<span class="text-xs text-slate-400">Widget ativo</span>';
+				}
+			});
+		}
+
+		function initWidgetsSortable() {
+			if (typeof Sortable === 'undefined') return;
+
+			new Sortable(widgetsGrid, {
+				animation: 200,
+				handle: '.dashboard-widget-drag-handle',
+				ghostClass: 'sortable-ghost',
+				chosenClass: 'sortable-chosen',
+				dragClass: 'sortable-drag',
+				onEnd: function () {
+					var reordered = [];
+					var cards = widgetsGrid.querySelectorAll('.dashboard-widget-card');
+					cards.forEach(function (card) {
+						var wid = card.getAttribute('data-widget-id');
+						var wmatch = widgetsList.find(function (w) { return w.id === wid; });
+						if (wmatch) {
+							reordered.push(wmatch);
+						}
+					});
+					if (reordered.length === widgetsList.length) {
+						widgetsList = reordered;
+						saveWidgetsLayout();
+					}
+				}
+			});
+		}
+
+		// Ações de cada card (redimensionar e remover via delegação)
+		widgetsGrid.addEventListener('change', function (e) {
+			if (e.target.matches('.dashboard-widget-width-select')) {
+				var card = e.target.closest('.dashboard-widget-card');
+				if (!card) return;
+				var wid = card.getAttribute('data-widget-id');
+				var newWidth = e.target.value;
+
+				card.classList.remove('col-span-1', 'col-span-2', 'col-span-full');
+				card.classList.add(newWidth);
+
+				var item = widgetsList.find(function (w) { return w.id === wid; });
+				if (item) {
+					item.width = newWidth;
+					saveWidgetsLayout();
+				}
+			}
+		});
+
+		widgetsGrid.addEventListener('click', function (e) {
+			var removeBtn = e.target.closest('.dashboard-widget-remove-btn');
+			if (removeBtn) {
+				var card = removeBtn.closest('.dashboard-widget-card');
+				if (!card) return;
+				var wid = card.getAttribute('data-widget-id');
+
+				widgetsList = widgetsList.filter(function (w) { return w.id !== wid; });
+				saveWidgetsLayout();
+				renderWidgetsGrid();
+			}
+		});
+
+		// Modal de catálogo de widgets
+		function openCatalogModal() {
+			if (!modal) return;
+			modal.classList.remove('hidden');
+
+			if (modalList) {
+				modalList.innerHTML = 
+					'<div class="text-center py-8 text-sm text-slate-500">' +
+						'<i data-lucide="loader" class="size-6 animate-spin mx-auto text-sky-600 mb-2"></i>' +
+						'Carregando catálogo de widgets...' +
+					'</div>';
+				if (typeof lucide !== 'undefined' && lucide.createIcons) {
+					lucide.createIcons();
+				}
+			}
+
+			var params = new URLSearchParams({
+				opcao: 'inicio',
+				ajax: 'sim',
+				ajaxOpcao: 'widgets-catalogo'
+			});
+
+			var baseUrl = (typeof gestor !== 'undefined' && gestor.raiz ? gestor.raiz : '/') + 'dashboard/';
+
+			fetch(baseUrl, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: params
+			})
+			.then(function (res) { return res.json(); })
+			.then(function (json) {
+				if (!modalList) return;
+				modalList.innerHTML = '';
+
+				if (json && json.status === 'Ok' && Array.isArray(json.data) && json.data.length > 0) {
+					json.data.forEach(function (widget) {
+						var isAdded = widgetsList.some(function (w) { return w.id === widget.id; });
+						var item = document.createElement('div');
+						item.className = 'flex items-center justify-between rounded-lg border border-slate-200 p-3 hover:bg-slate-50 transition-colors';
+						item.innerHTML = 
+							'<div class="flex items-center gap-3">' +
+								'<div class="flex size-9 items-center justify-center rounded-lg bg-sky-50 text-sky-600">' +
+									'<i data-lucide="puzzle" class="size-5"></i>' +
+								'</div>' +
+								'<div>' +
+									'<p class="text-sm font-semibold text-slate-900">' + (widget.name || widget.id) + '</p>' +
+									'<p class="text-xs text-slate-500 font-mono">' + widget.id + '</p>' +
+								'</div>' +
+							'</div>' +
+							'<div>' +
+								(isAdded
+									? '<span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full"><i data-lucide="check" class="size-3.5"></i> Adicionado</span>'
+									: '<button type="button" class="dashboard-catalog-add-btn c2fc-botao c2fc-botao-primario c2fc-botao-pequeno" data-widget-id="' + widget.id + '" data-widget-name="' + (widget.name || widget.id) + '"><i data-lucide="plus" class="size-3.5"></i> Adicionar</button>'
+								) +
+							'</div>';
+						modalList.appendChild(item);
+					});
+				} else {
+					modalList.innerHTML = '<p class="text-center py-6 text-sm text-slate-500">Nenhum widget registrado no sistema.</p>';
+				}
+
+				if (typeof lucide !== 'undefined' && lucide.createIcons) {
+					lucide.createIcons();
+				}
+			})
+			.catch(function () {
+				if (modalList) {
+					modalList.innerHTML = '<p class="text-center py-6 text-sm text-red-500">Erro ao carregar widgets.</p>';
+				}
+			});
+		}
+
+		function closeCatalogModal() {
+			if (modal) modal.classList.add('hidden');
+		}
+
+		if (addBtn) addBtn.addEventListener('click', openCatalogModal);
+		document.querySelectorAll('.dashboard-btn-open-catalog').forEach(function (btn) {
+			btn.addEventListener('click', openCatalogModal);
+		});
+		document.querySelectorAll('.dashboard-widgets-modal-close').forEach(function (btn) {
+			btn.addEventListener('click', closeCatalogModal);
+		});
+
+		// Adiciona widget a partir do catálogo
+		if (modalList) {
+			modalList.addEventListener('click', function (e) {
+				var btn = e.target.closest('.dashboard-catalog-add-btn');
+				if (!btn) return;
+
+				var wid = btn.getAttribute('data-widget-id');
+				var wname = btn.getAttribute('data-widget-name');
+
+				if (wid && !widgetsList.some(function (w) { return w.id === wid; })) {
+					widgetsList.push({
+						id: wid,
+						name: wname,
+						width: 'col-span-1'
+					});
+					saveWidgetsLayout();
+					renderWidgetsGrid();
+					closeCatalogModal();
+				}
+			});
+		}
+
+		// Resetar widgets
+		if (resetBtn) {
+			resetBtn.addEventListener('click', function (e) {
+				e.preventDefault();
+				widgetsList = [];
+				saveWidgetsLayout();
+				renderWidgetsGrid();
+			});
+		}
+
+		// Renderiza estado inicial
+		renderWidgetsGrid();
+	}
+
+	initDashboardWidgets();
+
+	// ===== Grid Flexível de Widgets > =====
 
 	// ===== Dashboard 3D < =====
 
