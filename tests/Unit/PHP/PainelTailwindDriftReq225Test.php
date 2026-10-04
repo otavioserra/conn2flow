@@ -12,6 +12,7 @@ final class PainelTailwindDriftReq225Test extends TestCase
         foreach ([
             '<div class="ui form">', "<div class='ui form'>",
             '<button title="Edit">', "<button\n title='Edit'>", '<button title=Edit>',
+            '<button data-label="a > b" title="Edit">',
         ] as $html) {
             self::assertNotEmpty(Req225Inventory::markupViolations($html), $html);
         }

@@ -29,12 +29,12 @@
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "dbba30a59280a86bf4b45be75eff2f14",
+                        "html": "b515d3d66a39b62882f944862df9e97b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "dbba30a59280a86bf4b45be75eff2f14"
+                        "combined": "b515d3d66a39b62882f944862df9e97b"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -63,12 +63,12 @@
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "fa5767d524ce2a49f2c0106d1eeeb7f7",
+                        "html": "8a9c9f347c067a2fdc15fea31d44dbbf",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "fa5767d524ce2a49f2c0106d1eeeb7f7"
+                        "combined": "8a9c9f347c067a2fdc15fea31d44dbbf"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -92,12 +92,12 @@
                 {
                     "name": "Acessar Sistema",
                     "id": "acessar-sistema",
-                    "version": "1.9",
+                    "version": "1.10",
                     "checksum": {
-                        "html": "d2592b32665ff4b33d6510d034ec8f47",
+                        "html": "2c7d6d5bb2494894f274b849cb936b63",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d2592b32665ff4b33d6510d034ec8f47"
+                        "combined": "2c7d6d5bb2494894f274b849cb936b63"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signin/",
@@ -126,17 +126,17 @@
                 {
                     "name": "Verificação em Duas Etapas",
                     "id": "signin-2fa",
-                    "version": "1.6",
+                    "version": "1.7",
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signin-2fa/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
                     "checksum": {
-                        "html": "f6951b38e360c6c6eab3f08773c11d83",
+                        "html": "94df8380d7b74e6f6a369f8f99343055",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f6951b38e360c6c6eab3f08773c11d83"
+                        "combined": "94df8380d7b74e6f6a369f8f99343055"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -160,17 +160,17 @@
                 {
                     "name": "Login Social",
                     "id": "social-login",
-                    "version": "1.4",
+                    "version": "1.5",
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "social-login/",
                     "type": "system",
                     "option": "social-login",
                     "without_permission": true,
                     "checksum": {
-                        "html": "b2021f9033f98b8d6f70758ab1b2f66b",
+                        "html": "7f998c2cf1378f8f01ef3d069d2d8142",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b2021f9033f98b8d6f70758ab1b2f66b"
+                        "combined": "7f998c2cf1378f8f01ef3d069d2d8142"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -183,17 +183,17 @@
                 {
                     "name": "Callback OAuth",
                     "id": "oauth-callback",
-                    "version": "1.4",
+                    "version": "1.5",
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "oauth-callback/",
                     "type": "system",
                     "option": "oauth-callback",
                     "without_permission": true,
                     "checksum": {
-                        "html": "b3d5404c1188e3f6befa8f207acec4ef",
+                        "html": "6757e52879be3ddfd89de8ab2aa51e16",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b3d5404c1188e3f6befa8f207acec4ef"
+                        "combined": "6757e52879be3ddfd89de8ab2aa51e16"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -206,12 +206,12 @@
                 {
                     "name": "Sair Sistema",
                     "id": "sair-sistema",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "b71983ce204302b4366e57456d905c63",
+                        "html": "16a4b79d30f8ae1142ee60337f42779f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b71983ce204302b4366e57456d905c63"
+                        "combined": "16a4b79d30f8ae1142ee60337f42779f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signout/",
@@ -228,12 +228,12 @@
                 {
                     "name": "Perfil Usuário",
                     "id": "perfil-usuario",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "",
+                        "html": "0c66e51baeb858c488cfa07c5154c61c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "0c66e51baeb858c488cfa07c5154c61c"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "perfil-usuario/",
@@ -297,12 +297,12 @@
                 {
                     "name": "Área Restrita",
                     "id": "Area-restrita",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "",
+                        "html": "3ed9aa88851ada09d0b519f5297c8405",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "3ed9aa88851ada09d0b519f5297c8405"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "restrict-area/",
@@ -347,12 +347,12 @@
                 {
                     "name": "Validar Usuário",
                     "id": "validar-usuario",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "9ba20f61d477c5fb45deab801fa124b7",
+                        "html": "8124fd888a2f4165095c2c3c3cbdd023",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "9ba20f61d477c5fb45deab801fa124b7"
+                        "combined": "8124fd888a2f4165095c2c3c3cbdd023"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "validate-user/",
@@ -370,12 +370,12 @@
                 {
                     "name": "Esqueceu a Senha",
                     "id": "esqueceu-a-senha",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "934c9664b2191b611802068a5ef1ad1f",
+                        "html": "82175e0711820c76f7b8cf806d2e42ff",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "934c9664b2191b611802068a5ef1ad1f"
+                        "combined": "82175e0711820c76f7b8cf806d2e42ff"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "forgot-password/",
@@ -393,12 +393,12 @@
                 {
                     "name": "Esqueceu a Senha Email Enviado",
                     "id": "esqueceu-a-senha-email-enviado",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "e3d5fa7195fab699d07d67477c77d8ec",
+                        "html": "490734e943fdf8e594b556717de82f0a",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e3d5fa7195fab699d07d67477c77d8ec"
+                        "combined": "490734e943fdf8e594b556717de82f0a"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "forgot-password-confirmation/",
@@ -416,12 +416,12 @@
                 {
                     "name": "Redefinir Senha",
                     "id": "redefinir-senha",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "fbe4975d6a9a33f36c1d61ce34b7a829",
+                        "html": "aa5360cc3272f659e9e6ee8a5666347c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "fbe4975d6a9a33f36c1d61ce34b7a829"
+                        "combined": "aa5360cc3272f659e9e6ee8a5666347c"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "redefine-password/",
@@ -439,12 +439,12 @@
                 {
                     "name": "Redefinir Senha Confirmação",
                     "id": "redefinir-senha-confirmacao",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "6d2f1c071b80097960f7c693cda737dc",
+                        "html": "8ff2243ed6b0e20eb7a15d60af1aca6f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6d2f1c071b80097960f7c693cda737dc"
+                        "combined": "8ff2243ed6b0e20eb7a15d60af1aca6f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "redefine-password-confirmation/",
@@ -462,12 +462,12 @@
                 {
                     "name": "Cadastrar no Sistema",
                     "id": "cadastrar-no-sistema",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "dc4a733fa2cec94e5d71b6354b1472bd",
+                        "html": "e21fb46961b55775fc93bca77dd89e0c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "dc4a733fa2cec94e5d71b6354b1472bd"
+                        "combined": "e21fb46961b55775fc93bca77dd89e0c"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signup/",
@@ -485,12 +485,12 @@
                 {
                     "name": "Confirmação de Email",
                     "id": "confirmacao-de-email",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "48dbb4ff3f7fe5140279674749e682b0",
+                        "html": "72572bffdf0c05bf794345c10e1add23",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "48dbb4ff3f7fe5140279674749e682b0"
+                        "combined": "72572bffdf0c05bf794345c10e1add23"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "email-confirmation/",
@@ -1748,12 +1748,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "",
+                        "html": "08780e99e3b84f8ab289b0b85c7e8e37",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "08780e99e3b84f8ab289b0b85c7e8e37"
                     }
                 },
                 {
@@ -1765,12 +1765,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "668e857f688b292743ff479ef68fd4af",
+                        "html": "18e632ad6643248f7001f76fc5668e5b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "668e857f688b292743ff479ef68fd4af"
+                        "combined": "18e632ad6643248f7001f76fc5668e5b"
                     }
                 },
                 {
@@ -1782,12 +1782,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "",
+                        "html": "6435d3748a747b3a9e48aee7d655e2d2",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "6435d3748a747b3a9e48aee7d655e2d2"
                     }
                 },
                 {
@@ -1799,12 +1799,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "e6e1838b3bd68f1cac00d6e60190a4b9",
+                        "html": "22df547dc7d652a8d5f6652c944560ac",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e6e1838b3bd68f1cac00d6e60190a4b9"
+                        "combined": "22df547dc7d652a8d5f6652c944560ac"
                     }
                 },
                 {
@@ -1816,12 +1816,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "deaab732b308719b1f11eb1efe5d3b2a",
+                        "html": "602ab5a5dbf22fc307553704d9aad022",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "deaab732b308719b1f11eb1efe5d3b2a"
+                        "combined": "602ab5a5dbf22fc307553704d9aad022"
                     }
                 },
                 {
@@ -1848,12 +1848,12 @@
                     "type": "system",
                     "option": "oauth-authenticate",
                     "without_permission": true,
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "dbba30a59280a86bf4b45be75eff2f14",
+                        "html": "b515d3d66a39b62882f944862df9e97b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "dbba30a59280a86bf4b45be75eff2f14"
+                        "combined": "b515d3d66a39b62882f944862df9e97b"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -1882,12 +1882,12 @@
                     "type": "system",
                     "option": "oauth-authenticate-2fa",
                     "without_permission": true,
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "fa5767d524ce2a49f2c0106d1eeeb7f7",
+                        "html": "8a9c9f347c067a2fdc15fea31d44dbbf",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "fa5767d524ce2a49f2c0106d1eeeb7f7"
+                        "combined": "8a9c9f347c067a2fdc15fea31d44dbbf"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -1911,12 +1911,12 @@
                 {
                     "name": "Access System",
                     "id": "acessar-sistema",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "d2592b32665ff4b33d6510d034ec8f47",
+                        "html": "2c7d6d5bb2494894f274b849cb936b63",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d2592b32665ff4b33d6510d034ec8f47"
+                        "combined": "2c7d6d5bb2494894f274b849cb936b63"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signin/",
@@ -1945,17 +1945,17 @@
                 {
                     "name": "Two-Step Verification",
                     "id": "signin-2fa",
-                    "version": "1.6",
+                    "version": "1.7",
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signin-2fa/",
                     "type": "system",
                     "option": "signin-2fa",
                     "without_permission": true,
                     "checksum": {
-                        "html": "f6951b38e360c6c6eab3f08773c11d83",
+                        "html": "94df8380d7b74e6f6a369f8f99343055",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f6951b38e360c6c6eab3f08773c11d83"
+                        "combined": "94df8380d7b74e6f6a369f8f99343055"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -1979,17 +1979,17 @@
                 {
                     "name": "Social Login",
                     "id": "social-login",
-                    "version": "1.4",
+                    "version": "1.5",
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "social-login/",
                     "type": "system",
                     "option": "social-login",
                     "without_permission": true,
                     "checksum": {
-                        "html": "b2021f9033f98b8d6f70758ab1b2f66b",
+                        "html": "7f998c2cf1378f8f01ef3d069d2d8142",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b2021f9033f98b8d6f70758ab1b2f66b"
+                        "combined": "7f998c2cf1378f8f01ef3d069d2d8142"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -2002,17 +2002,17 @@
                 {
                     "name": "OAuth Callback",
                     "id": "oauth-callback",
-                    "version": "1.4",
+                    "version": "1.5",
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "oauth-callback/",
                     "type": "system",
                     "option": "oauth-callback",
                     "without_permission": true,
                     "checksum": {
-                        "html": "b3d5404c1188e3f6befa8f207acec4ef",
+                        "html": "6757e52879be3ddfd89de8ab2aa51e16",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b3d5404c1188e3f6befa8f207acec4ef"
+                        "combined": "6757e52879be3ddfd89de8ab2aa51e16"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -2025,12 +2025,12 @@
                 {
                     "name": "Logout System",
                     "id": "sair-sistema",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "b71983ce204302b4366e57456d905c63",
+                        "html": "16a4b79d30f8ae1142ee60337f42779f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "b71983ce204302b4366e57456d905c63"
+                        "combined": "16a4b79d30f8ae1142ee60337f42779f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signout/",
@@ -2047,12 +2047,12 @@
                 {
                     "name": "User Profile",
                     "id": "perfil-usuario",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
-                        "html": "",
+                        "html": "0c66e51baeb858c488cfa07c5154c61c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "0c66e51baeb858c488cfa07c5154c61c"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "perfil-usuario/",
@@ -2116,12 +2116,12 @@
                 {
                     "name": "Restricted Area",
                     "id": "Area-restrita",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "",
+                        "html": "3ed9aa88851ada09d0b519f5297c8405",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "3ed9aa88851ada09d0b519f5297c8405"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "restrict-area/",
@@ -2166,12 +2166,12 @@
                 {
                     "name": "Validate User",
                     "id": "validar-usuario",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "9ba20f61d477c5fb45deab801fa124b7",
+                        "html": "8124fd888a2f4165095c2c3c3cbdd023",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "9ba20f61d477c5fb45deab801fa124b7"
+                        "combined": "8124fd888a2f4165095c2c3c3cbdd023"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "validate-user/",
@@ -2189,12 +2189,12 @@
                 {
                     "name": "Forgot Password",
                     "id": "esqueceu-a-senha",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "934c9664b2191b611802068a5ef1ad1f",
+                        "html": "82175e0711820c76f7b8cf806d2e42ff",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "934c9664b2191b611802068a5ef1ad1f"
+                        "combined": "82175e0711820c76f7b8cf806d2e42ff"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "forgot-password/",
@@ -2212,12 +2212,12 @@
                 {
                     "name": "Forgot Password Email Sent",
                     "id": "esqueceu-a-senha-email-enviado",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "e3d5fa7195fab699d07d67477c77d8ec",
+                        "html": "490734e943fdf8e594b556717de82f0a",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e3d5fa7195fab699d07d67477c77d8ec"
+                        "combined": "490734e943fdf8e594b556717de82f0a"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "forgot-password-confirmation/",
@@ -2235,12 +2235,12 @@
                 {
                     "name": "Reset Password",
                     "id": "redefinir-senha",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "fbe4975d6a9a33f36c1d61ce34b7a829",
+                        "html": "aa5360cc3272f659e9e6ee8a5666347c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "fbe4975d6a9a33f36c1d61ce34b7a829"
+                        "combined": "aa5360cc3272f659e9e6ee8a5666347c"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "redefine-password/",
@@ -2258,12 +2258,12 @@
                 {
                     "name": "Reset Password Confirmation",
                     "id": "redefinir-senha-confirmacao",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "6d2f1c071b80097960f7c693cda737dc",
+                        "html": "8ff2243ed6b0e20eb7a15d60af1aca6f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6d2f1c071b80097960f7c693cda737dc"
+                        "combined": "8ff2243ed6b0e20eb7a15d60af1aca6f"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "redefine-password-confirmation/",
@@ -2281,12 +2281,12 @@
                 {
                     "name": "Register in System",
                     "id": "cadastrar-no-sistema",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "dc4a733fa2cec94e5d71b6354b1472bd",
+                        "html": "e21fb46961b55775fc93bca77dd89e0c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "dc4a733fa2cec94e5d71b6354b1472bd"
+                        "combined": "e21fb46961b55775fc93bca77dd89e0c"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "signup/",
@@ -2304,12 +2304,12 @@
                 {
                     "name": "Email Confirmation",
                     "id": "confirmacao-de-email",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "48dbb4ff3f7fe5140279674749e682b0",
+                        "html": "72572bffdf0c05bf794345c10e1add23",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "48dbb4ff3f7fe5140279674749e682b0"
+                        "combined": "72572bffdf0c05bf794345c10e1add23"
                     },
                     "layout": "layout-pagina-sem-permissao-tailwind",
                     "path": "email-confirmation/",
@@ -2335,12 +2335,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "",
+                        "html": "08780e99e3b84f8ab289b0b85c7e8e37",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "08780e99e3b84f8ab289b0b85c7e8e37"
                     }
                 },
                 {
@@ -2352,12 +2352,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "668e857f688b292743ff479ef68fd4af",
+                        "html": "18e632ad6643248f7001f76fc5668e5b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "668e857f688b292743ff479ef68fd4af"
+                        "combined": "18e632ad6643248f7001f76fc5668e5b"
                     }
                 },
                 {
@@ -2369,12 +2369,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "",
+                        "html": "6435d3748a747b3a9e48aee7d655e2d2",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "6435d3748a747b3a9e48aee7d655e2d2"
                     }
                 },
                 {
@@ -2386,12 +2386,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.2",
+                    "version": "1.3",
                     "checksum": {
-                        "html": "e6e1838b3bd68f1cac00d6e60190a4b9",
+                        "html": "22df547dc7d652a8d5f6652c944560ac",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e6e1838b3bd68f1cac00d6e60190a4b9"
+                        "combined": "22df547dc7d652a8d5f6652c944560ac"
                     }
                 },
                 {
@@ -2403,12 +2403,12 @@
                         "../../../../perfil-usuario.js"
                     ],
                     "tailwind_sources_reason": "REQ-118/120: as classes do componente vivem nas variaveis do sistema e no runtime que as aplica (perfil-usuario.js, req-124 F6).",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
-                        "html": "deaab732b308719b1f11eb1efe5d3b2a",
+                        "html": "602ab5a5dbf22fc307553704d9aad022",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "deaab732b308719b1f11eb1efe5d3b2a"
+                        "combined": "602ab5a5dbf22fc307553704d9aad022"
                     }
                 },
                 {
@@ -3657,7 +3657,7 @@
             ]
         }
     },
-    "asset_version": "527cb1340253d911",
+    "asset_version": "84d6607e99af0248",
     "hooks": {
         "controllers": {
             "perfil-usuario": "perfil-usuario.hooks.php"

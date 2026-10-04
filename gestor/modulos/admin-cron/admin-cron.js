@@ -415,7 +415,7 @@
                 break;
             case 'delete':
                 botao.disabled = true;
-                window.c2fControles.dialogo.confirmar(rotulos.msgConfirmDelete).then(function (confirmado) {
+                window.c2fControles.dialogo.confirmar(rotulos.msgConfirmDelete, { perigo: true }).then(function (confirmado) {
                     if (confirmado) return comBloqueio(botao, chamar('excluir', { id: id }));
                 }).catch(tratarErro).finally(function () { botao.disabled = false; });
                 break;

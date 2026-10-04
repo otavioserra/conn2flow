@@ -343,8 +343,31 @@ function tailwind_recursos_dependencies(array $metadata, string $scope, ?string 
             : null;
         if ($moduleCandidate !== null && is_file($moduleCandidate)) {
             $dependencies[] = $layoutDependency + ['module' => $module];
+            $layoutPath = $moduleCandidate;
+            $moduleDir = dirname($layoutPath, 5);
+            $layoutManifest = $moduleDir . DIRECTORY_SEPARATOR . basename($moduleDir) . '.json';
         } else {
             $dependencies[] = $layoutDependency + ['scope' => 'global'];
+            $layoutPath = tailwind_recursos_dependency_path($layoutDependency + ['scope' => 'global']);
+            $layoutManifest = $layoutPath === null ? null : dirname($layoutPath, 3) . DIRECTORY_SEPARATOR . 'layouts.json';
+        }
+        // O bundle substitui o CSS do layout, portanto precisa também das dependências
+        // declaradas nele (menu, barra superior e formulários montados pelo PHP).
+        if ($layoutManifest !== null && is_file($layoutManifest)) {
+            $layoutItems = json_decode((string)file_get_contents($layoutManifest), true, 512, JSON_THROW_ON_ERROR);
+            if ($moduleCandidate !== null) $layoutItems = $layoutItems['resources'][$layoutLanguage]['layouts'] ?? [];
+            foreach ($layoutItems as $layoutItem) {
+                if (($layoutItem['id'] ?? null) !== $layoutId) continue;
+                foreach ((array)($layoutItem['tailwind_dependencies'] ?? []) as $dependency) {
+                    if (!is_array($dependency)) throw new RuntimeException('Dependência do layout inválida.');
+                    $dependency += ['language' => $layoutLanguage];
+                    if (!array_key_exists('module', $dependency) && ($dependency['scope'] ?? null) !== 'global') {
+                        $dependency['module'] = $moduleCandidate !== null ? $module : null;
+                    }
+                    $dependencies[] = $dependency;
+                }
+                break;
+            }
         }
     }
 
@@ -396,7 +419,12 @@ function tailwind_recursos_dependencies(array $metadata, string $scope, ?string 
             $id = (string)($dependency['id'] ?? '(sem id)');
             throw new RuntimeException("Dependência Tailwind do Gestor não encontrada: {$id}");
         }
-        if (!tailwind_recursos_path_dentro($candidate, $GESTOR_DIR)) {
+        $candidate = realpath($candidate) ?: $candidate;
+        $inside = false;
+        foreach (tailwind_recursos_dependency_roots() as $root) {
+            if (tailwind_recursos_path_dentro($candidate, realpath($root) ?: $root)) $inside = true;
+        }
+        if (!$inside) {
             throw new RuntimeException("Dependência Tailwind fora da raiz permitida: {$candidate}");
         }
         $resolved[] = realpath($candidate) ?: $candidate;
@@ -404,6 +432,17 @@ function tailwind_recursos_dependencies(array $metadata, string $scope, ?string 
 
     sort($resolved, SORT_STRING);
     return array_values(array_unique($resolved));
+}
+
+/** Projeto tem precedência; dependências do núcleo continuam disponíveis no build do projeto. */
+function tailwind_recursos_dependency_roots(): array
+{
+    global $GESTOR_DIR, $SYSTEM_PATH;
+    $roots = [$GESTOR_DIR];
+    if (!empty($GLOBALS['CLI_ARGS']['project-path']) && !empty($SYSTEM_PATH)) {
+        $roots[] = rtrim($SYSTEM_PATH, '/\\') . DIRECTORY_SEPARATOR . 'gestor';
+    }
+    return array_values(array_unique($roots));
 }
 
 function tailwind_recursos_dependency_path(array $dependency): ?string
@@ -416,7 +455,8 @@ function tailwind_recursos_dependency_path(array $dependency): ?string
     $language = $dependency['language'] ?? null;
     if (!is_string($type) || !in_array($type, $allowedTypes, true)
         || !is_string($id) || $id === '' || str_contains($id, '/') || str_contains($id, '\\')
-        || !is_string($language) || $language === '') {
+        || !is_string($language) || $language === '' || str_contains($language, '/') || str_contains($language, '\\')
+        || $language === '.' || $language === '..') {
         return null;
     }
 
@@ -426,12 +466,15 @@ function tailwind_recursos_dependency_path(array $dependency): ?string
         return null;
     }
 
-    $base = $module === null
-        ? $GESTOR_DIR . DIRECTORY_SEPARATOR . 'resources'
-        : $GESTOR_DIR . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'resources';
-
-    return $base . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $type
-        . DIRECTORY_SEPARATOR . $id . DIRECTORY_SEPARATOR . $id . '.html';
+    foreach (tailwind_recursos_dependency_roots() as $root) {
+        $base = $module === null
+            ? $root . DIRECTORY_SEPARATOR . 'resources'
+            : $root . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'resources';
+        $path = $base . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $type
+            . DIRECTORY_SEPARATOR . $id . DIRECTORY_SEPARATOR . $id . '.html';
+        if (is_file($path)) return $path;
+    }
+    return null;
 }
 
 /**

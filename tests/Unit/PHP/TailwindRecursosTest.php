@@ -500,6 +500,61 @@ PHP);
         self::assertStringNotContainsString("'Módulos'", $php);
     }
 
+    public function testProjectBundleUsesCoreLayoutAndHonorsProjectOverride(): void
+    {
+        $root = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'req225-' . bin2hex(random_bytes(6));
+        $keys = ['GESTOR_DIR', 'SYSTEM_PATH', 'CLI_ARGS'];
+        $saved = [];
+        foreach ($keys as $key) $saved[$key] = [array_key_exists($key, $GLOBALS), $GLOBALS[$key] ?? null];
+        $core = $root . '/core/gestor';
+        $project = $root . '/project';
+        $relative = '/resources/pt-br/layouts/painel/painel.html';
+        mkdir(dirname($core . $relative), 0777, true);
+        mkdir($project);
+        file_put_contents($core . $relative, '<main>core</main>');
+        $GLOBALS['GESTOR_DIR'] = $project;
+        $GLOBALS['SYSTEM_PATH'] = $root . '/core/';
+        $GLOBALS['CLI_ARGS'] = ['project-path' => $project];
+        $metadata = ['id' => 'pagina', 'layout' => 'painel', 'tailwind_bundle' => true];
+        try {
+            self::assertSame([realpath($core . $relative)], tailwind_recursos_dependencies($metadata, 'module', 'teste', 'pt-br', 'pages'));
+            mkdir(dirname($project . $relative), 0777, true);
+            file_put_contents($project . $relative, '<main>projeto</main>');
+            self::assertSame([realpath($project . $relative)], tailwind_recursos_dependencies($metadata, 'module', 'teste', 'pt-br', 'pages'));
+            self::assertNull(tailwind_recursos_dependency_path(['scope' => 'global', 'type' => 'layouts', 'id' => 'painel', 'language' => '../pt-br']));
+            unlink($project . $relative);
+            $GLOBALS['CLI_ARGS'] = [];
+            $this->expectException(RuntimeException::class);
+            $this->expectExceptionMessage('não encontrada');
+            tailwind_recursos_dependencies($metadata, 'module', 'teste', 'pt-br', 'pages');
+        } finally {
+            foreach ($saved as $key => [$exists, $value]) {
+                if ($exists) $GLOBALS[$key] = $value;
+                else unset($GLOBALS[$key]);
+            }
+            $this->removeTemporaryDirectory($root);
+        }
+    }
+
+    public function testAdministrativeBundleIncludesTopbarAndMenuFromLayout(): void
+    {
+        $previous = $GLOBALS['GESTOR_DIR'] ?? null;
+        $GLOBALS['GESTOR_DIR'] = dirname(__DIR__, 3) . '/gestor';
+        try {
+            $resolved = tailwind_recursos_dependencies([
+                'id' => 'painel', 'layout' => 'layout-administrativo-tailwind', 'tailwind_bundle' => true,
+            ], 'module', 'admin-cron', 'pt-br', 'pages');
+            $ids = array_map(fn($file) => basename($file, '.html'), $resolved);
+            self::assertContains('admin-topbar-tailwind', $ids);
+            self::assertContains('menu-principal-sistema-tailwind', $ids);
+            self::assertContains('interface-formulario-edicao-tailwind', $ids);
+            self::assertSame(count($resolved), count(array_unique($resolved)));
+        } finally {
+            if ($previous === null) unset($GLOBALS['GESTOR_DIR']);
+            else $GLOBALS['GESTOR_DIR'] = $previous;
+        }
+    }
+
     private function removeTemporaryDirectory(string $directory): void
     {
         if (!is_dir($directory)) return;

@@ -1,0 +1,733 @@
+{
+  "checks": [
+    {
+      "name": "admin-cron-1366: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/admin-cron/",
+        "found": 1
+      }
+    },
+    {
+      "name": "admin-cron-1366: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "admin-cron-1366: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-cron-1366: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "admin-cron-1366: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-cron-1366: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "admin-cron-1366: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "admin-cron-1366: cron modal opens",
+      "ok": true
+    },
+    {
+      "name": "admin-cron-1366: modal field uses library",
+      "ok": true
+    },
+    {
+      "name": "admin-cron-1366: cron modal closes",
+      "ok": true
+    },
+    {
+      "name": "admin-cron-1366: focus restored",
+      "ok": true
+    },
+    {
+      "name": "perfil-usuario-1366: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/perfil-usuario/",
+        "found": 1
+      }
+    },
+    {
+      "name": "perfil-usuario-1366: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "perfil-usuario-1366: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "perfil-usuario-1366: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "perfil-usuario-1366: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "perfil-usuario-1366: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "perfil-usuario-1366: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "analytics-manager-1366: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/analytics-manager/",
+        "found": 1
+      }
+    },
+    {
+      "name": "analytics-manager-1366: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "analytics-manager-1366: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "analytics-manager-1366: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "analytics-manager-1366: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "analytics-manager-1366: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "analytics-manager-1366: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "analytics-manager-1366: analytics dialog opens",
+      "ok": true
+    },
+    {
+      "name": "analytics-manager-1366: dialog fields use library",
+      "ok": true
+    },
+    {
+      "name": "sales-reports-1366: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/sales-reports/",
+        "found": 1
+      }
+    },
+    {
+      "name": "sales-reports-1366: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "sales-reports-1366: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "sales-reports-1366: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "sales-reports-1366: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "sales-reports-1366: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "sales-reports-1366: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "shipping-methods-1366: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/shipping-methods/",
+        "found": 1
+      }
+    },
+    {
+      "name": "shipping-methods-1366: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "shipping-methods-1366: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "shipping-methods-1366: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "shipping-methods-1366: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "shipping-methods-1366: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "shipping-methods-1366: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "product-reviews-1366: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/product-reviews/",
+        "found": 1
+      }
+    },
+    {
+      "name": "product-reviews-1366: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "product-reviews-1366: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "product-reviews-1366: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "product-reviews-1366: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "product-reviews-1366: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "product-reviews-1366: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "product-reviews-settings-1366: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/product-reviews/settings/",
+        "found": 1
+      }
+    },
+    {
+      "name": "product-reviews-settings-1366: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "product-reviews-settings-1366: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "product-reviews-settings-1366: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "product-reviews-settings-1366: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-cron-390: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/admin-cron/",
+        "found": 1
+      }
+    },
+    {
+      "name": "admin-cron-390: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "admin-cron-390: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-cron-390: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "admin-cron-390: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-cron-390: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "admin-cron-390: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "admin-cron-390: cron modal opens",
+      "ok": true
+    },
+    {
+      "name": "admin-cron-390: modal field uses library",
+      "ok": true
+    },
+    {
+      "name": "admin-cron-390: cron modal closes",
+      "ok": true
+    },
+    {
+      "name": "admin-cron-390: focus restored",
+      "ok": true
+    },
+    {
+      "name": "perfil-usuario-390: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/perfil-usuario/",
+        "found": 1
+      }
+    },
+    {
+      "name": "perfil-usuario-390: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "perfil-usuario-390: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "perfil-usuario-390: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "perfil-usuario-390: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "perfil-usuario-390: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "perfil-usuario-390: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "analytics-manager-390: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/analytics-manager/",
+        "found": 1
+      }
+    },
+    {
+      "name": "analytics-manager-390: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "analytics-manager-390: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "analytics-manager-390: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "analytics-manager-390: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "analytics-manager-390: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "analytics-manager-390: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "analytics-manager-390: analytics dialog opens",
+      "ok": true
+    },
+    {
+      "name": "analytics-manager-390: dialog fields use library",
+      "ok": true
+    },
+    {
+      "name": "sales-reports-390: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/sales-reports/",
+        "found": 1
+      }
+    },
+    {
+      "name": "sales-reports-390: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "sales-reports-390: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "sales-reports-390: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "sales-reports-390: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "sales-reports-390: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "sales-reports-390: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "shipping-methods-390: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/shipping-methods/",
+        "found": 1
+      }
+    },
+    {
+      "name": "shipping-methods-390: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "shipping-methods-390: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "shipping-methods-390: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "shipping-methods-390: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "shipping-methods-390: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "shipping-methods-390: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "product-reviews-390: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/product-reviews/",
+        "found": 1
+      }
+    },
+    {
+      "name": "product-reviews-390: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "product-reviews-390: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "product-reviews-390: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "product-reviews-390: no script/console error",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "product-reviews-390: standard field focus",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "product-reviews-390: highlighted field label",
+      "ok": true,
+      "data": {
+        "border": "rgb(14, 165, 233)",
+        "shadow": "rgba(14, 165, 233, 0.25) 0px 0px 0px 3px",
+        "label": "rgb(3, 105, 161)"
+      }
+    },
+    {
+      "name": "product-reviews-settings-390: published body",
+      "ok": true,
+      "data": {
+        "status": 200,
+        "finalPath": "/product-reviews/settings/",
+        "found": 1
+      }
+    },
+    {
+      "name": "product-reviews-settings-390: controls loaded",
+      "ok": true
+    },
+    {
+      "name": "product-reviews-settings-390: no Fomantic asset",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "product-reviews-settings-390: no horizontal page scroll",
+      "ok": true,
+      "data": 0
+    },
+    {
+      "name": "product-reviews-settings-390: no script/console error",
+      "ok": true,
+      "data": []
+    }
+  ],
+  "pages": [
+    {
+      "route": "admin-cron/",
+      "width": 1366,
+      "screenshot": "admin-cron-1366.png"
+    },
+    {
+      "route": "perfil-usuario/?mudar-nome=sim",
+      "width": 1366,
+      "screenshot": "perfil-usuario-1366.png"
+    },
+    {
+      "route": "analytics-manager/",
+      "width": 1366,
+      "screenshot": "analytics-manager-1366.png"
+    },
+    {
+      "route": "sales-reports/",
+      "width": 1366,
+      "screenshot": "sales-reports-1366.png"
+    },
+    {
+      "route": "shipping-methods/",
+      "width": 1366,
+      "screenshot": "shipping-methods-1366.png"
+    },
+    {
+      "route": "product-reviews/",
+      "width": 1366,
+      "screenshot": "product-reviews-1366.png"
+    },
+    {
+      "route": "product-reviews/settings/",
+      "width": 1366,
+      "screenshot": "product-reviews-settings-1366.png"
+    },
+    {
+      "route": "admin-cron/",
+      "width": 390,
+      "screenshot": "admin-cron-390.png"
+    },
+    {
+      "route": "perfil-usuario/?mudar-nome=sim",
+      "width": 390,
+      "screenshot": "perfil-usuario-390.png"
+    },
+    {
+      "route": "analytics-manager/",
+      "width": 390,
+      "screenshot": "analytics-manager-390.png"
+    },
+    {
+      "route": "sales-reports/",
+      "width": 390,
+      "screenshot": "sales-reports-390.png"
+    },
+    {
+      "route": "shipping-methods/",
+      "width": 390,
+      "screenshot": "shipping-methods-390.png"
+    },
+    {
+      "route": "product-reviews/",
+      "width": 390,
+      "screenshot": "product-reviews-390.png"
+    },
+    {
+      "route": "product-reviews/settings/",
+      "width": 390,
+      "screenshot": "product-reviews-settings-390.png"
+    }
+  ],
+  "errors": []
+}

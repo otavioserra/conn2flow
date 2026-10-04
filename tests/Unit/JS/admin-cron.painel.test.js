@@ -223,7 +223,7 @@ describe('admin-cron.js — inicialização do painel', () => {
     avaliarScript();
     const excluir = document.querySelector('button[data-acao="delete"]');
     excluir.click();
-    expect(window.c2fControles.dialogo.confirmar).toHaveBeenCalledWith('Confirma a exclusão?');
+    expect(window.c2fControles.dialogo.confirmar).toHaveBeenCalledWith('Confirma a exclusão?', { perigo: true });
     expect(fetchMock).not.toHaveBeenCalled();
     responder(false);
     await vi.waitFor(() => expect(excluir.disabled).toBe(false));

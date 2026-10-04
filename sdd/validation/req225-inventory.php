@@ -8,7 +8,7 @@ final class Req225Inventory
     {
         // Comments and script bodies are not rendered markup.
         $html = preg_replace('~<!--.*?-->|<script\b[^>]*>.*?</script>~si', '', $html);
-        preg_match_all('~<[a-z][^>]*>~i', $html, $tags);
+        preg_match_all('~<[a-z](?:"[^"]*"|\'[^\']*\'|[^\'">])*>~i', $html, $tags);
         $issues = [];
         foreach ($tags[0] as $tag) {
             if (preg_match('~\sclass\s*=\s*(["\'])(.*?)\1~si', $tag, $class)

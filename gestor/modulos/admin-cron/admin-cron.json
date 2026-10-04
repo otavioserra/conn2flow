@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.1",
+    "versao": "1.0.2",
     "bibliotecas": [
         "interface",
         "html",
@@ -25,12 +25,12 @@
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "",
+                        "html": "5439ee8f0f6764c323f423ea83721e04",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "5439ee8f0f6764c323f423ea83721e04"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -468,12 +468,12 @@
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "",
+                        "html": "5439ee8f0f6764c323f423ea83721e04",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": ""
+                        "combined": "5439ee8f0f6764c323f423ea83721e04"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -902,5 +902,5 @@
             ]
         }
     },
-    "asset_version": "9792fb3f9e62e42c"
+    "asset_version": "50fa9a6a01ceaee0"
 }
