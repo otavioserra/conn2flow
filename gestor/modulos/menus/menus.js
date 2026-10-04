@@ -18,6 +18,13 @@
 $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length === 0 && $('#_gestor-interface-insert-dados').length === 0) return;
 
+
+    document.addEventListener('click', function (event) {
+        var track = event.target.closest('.req222-page .c2fc-chave-trilho');
+        if (!track || track.parentElement.tagName === 'LABEL') return;
+        var input = track.parentElement.querySelector('input[type="checkbox"]');
+        if (input && !input.disabled) input.click();
+    });
     var STEP = 24; // px de recuo horizontal por nível de aninhamento
 
     // ===== Estilos do editor de árvore (injetados uma única vez)
@@ -156,7 +163,7 @@ $(document).ready(function () {
     hydrateAvailabilityField();
 
     // Componentes Fomantic do construtor de itens.
-    $('.ui.radio.checkbox').checkbox();
+    $('.radio.checkbox').checkbox();
     toggleItemTypeFields();
 
     var startTid = $template.val();
@@ -346,7 +353,7 @@ $(document).ready(function () {
     });
 
     // Interceptar submit para serializar a árvore.
-    $('.ui.form').on('submit', function () {
+    $('form').on('submit', function () {
         // Limpa o sufixo "-modificado" do input nativo para gravar o template_id limpo no banco.
         var $tempInput = $('#template_id');
         var val = $tempInput.val() || '';
@@ -579,11 +586,11 @@ $(document).ready(function () {
         $tags.empty();
         conditionProfileSelection.forEach(function (profile) {
             var label = profile.name || profile.slug || profile.id;
-            var $tag = $('<span class="ui label condition-profile-tag"></span>')
+            var $tag = $('<span class="c2fc-rotulo label condition-profile-tag"></span>')
                 .attr('data-id', profile.id)
                 .text(label);
             $tag.append(' ');
-            $tag.append('<i class="delete icon condition-profile-remove" style="cursor:pointer;"></i>');
+            $tag.append('<i data-lucide="x" class="c2fc-icone icon condition-profile-remove" style="cursor:pointer;"></i>');
             $tags.append($tag);
         });
     }
@@ -602,13 +609,13 @@ $(document).ready(function () {
 
         var rows = (results || []).filter(function (r) { return r && r.value; });
         if (rows.length === 0) {
-            $dropdown.append($('<div class="item" style="padding: 8px 12px; color: #999;"></div>').text(
+            $dropdown.append($('<div class="c2fc-aba item" style="padding: 8px 12px; color: #999;"></div>').text(
                 isPtBr() ? 'Nenhum perfil encontrado' : 'No profiles found.'
             ));
         } else {
             rows.forEach(function (r) {
                 var label = r.name || r.text || r.value;
-                var $item = $('<div class="item" style="padding: 8px 12px; cursor: pointer;"></div>')
+                var $item = $('<div class="c2fc-aba item" style="padding: 8px 12px; cursor: pointer;"></div>')
                     .attr('data-id', r.value)
                     .attr('data-slug', r.slug || '')
                     .attr('data-name', label)
@@ -650,40 +657,40 @@ $(document).ready(function () {
         if (schema.availability !== 'condicional') return;
 
         var pt = isPtBr();
-        var $panel = $('<div class="ui segment"></div>');
+        var $panel = $('<div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 segment"></div>');
         var $actions = $('<div style="margin-bottom:12px;"></div>');
-        $actions.append($('<button type="button" class="ui small teal button" id="btn-add-condition"></button>')
-            .html('<i class="plus icon"></i> ' + (pt ? 'Adicionar Condição' : 'Add Condition')));
+        $actions.append($('<button type="button" class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno small teal button" id="btn-add-condition"></button>')
+            .html('<i data-lucide="plus" class="c2fc-icone icon"></i> ' + (pt ? 'Adicionar Condição' : 'Add Condition')));
         $panel.append($actions);
 
-        var $form = $('<div id="menu-condition-form" class="ui form" style="display:none; margin-bottom:12px;"></div>');
+        var $form = $('<div id="menu-condition-form" class="form" style="display:none; margin-bottom:12px;"></div>');
         var options = ''
             + '<option value="publico">' + (pt ? 'Público' : 'Public') + '</option>'
             + '<option value="logado">' + (pt ? 'Logado' : 'Logged in') + '</option>'
             + '<option value="perfil_usuario">' + (pt ? 'Perfil de usuário' : 'User profile') + '</option>';
-        $form.append('<div class="two fields">'
-            + '<div class="field"><label>' + (pt ? 'Tipo' : 'Type') + '</label><select id="condition_type" class="ui dropdown">' + options + '</select></div>'
-            + '<div class="field"><label>Slug</label><input type="text" id="condition_slug" autocomplete="off"></div>'
+        $form.append('<div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields">'
+            + '<div class="c2fc-campo min-w-0 mb-4 field"><label>' + (pt ? 'Tipo' : 'Type') + '</label><select id="condition_type" class="c2fc-campo-entrada dropdown">' + options + '</select></div>'
+            + '<div class="c2fc-campo min-w-0 mb-4 field"><label>Slug</label><input type="text" id="condition_slug" autocomplete="off"></div>'
             + '</div>');
         $form.append('<div id="condition-profile-wrapper" style="display:none;">'
-            + '<div class="field"><label>' + (pt ? 'Perfis permitidos' : 'Allowed profiles') + '</label>'
-            + '<div class="ui fluid icon input" style="position: relative;">'
+            + '<div class="c2fc-campo min-w-0 mb-4 field"><label>' + (pt ? 'Perfis permitidos' : 'Allowed profiles') + '</label>'
+            + '<div class="flex items-center gap-2 min-w-0 fluid icon input" style="position: relative;">'
             + '<input type="text" id="condition_profile_search" placeholder="' + (pt ? 'Digite para buscar perfis...' : 'Type to search profiles...') + '" autocomplete="off">'
-            + '<i class="search icon"></i>'
-            + '<div id="condition-profile-suggestions" class="ui vertical menu" style="display:none; position:absolute; top:100%; left:0; width:100%; z-index:1000; max-height:250px; overflow-y:auto; box-shadow:0 4px 6px rgba(0,0,0,0.15); margin:0 !important;"></div>'
+            + '<i data-lucide="search" class="c2fc-icone icon"></i>'
+            + '<div id="condition-profile-suggestions" class="rounded-lg border border-slate-200 bg-white shadow-lg vertical menu" style="display:none; position:absolute; top:100%; left:0; width:100%; z-index:1000; max-height:250px; overflow-y:auto; box-shadow:0 4px 6px rgba(0,0,0,0.15); margin:0 !important;"></div>'
             + '</div>'
             + '<div id="condition-profile-tags" style="margin-top:8px;"></div>'
             + '</div></div>');
-        $form.append('<button type="button" class="ui mini primary button" id="btn-confirm-condition">'
+        $form.append('<button type="button" class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno mini primary button" id="btn-confirm-condition">'
             + (pt ? 'Adicionar' : 'Add') + '</button> '
-            + '<button type="button" class="ui mini button" id="btn-cancel-condition">'
+            + '<button type="button" class="c2fc-botao c2fc-botao-pequeno mini button" id="btn-cancel-condition">'
             + (pt ? 'Cancelar' : 'Cancel') + '</button>');
         $panel.append($form);
 
         if (schema.conditions.length > 0) {
-            var $tabs = $('<div class="ui pointing secondary menu menu-condition-tabs"></div>');
+            var $tabs = $('<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 pointing secondary menu menu-condition-tabs"></div>');
             schema.conditions.forEach(function (cond) {
-                var $tab = $('<a class="item"></a>')
+                var $tab = $('<a class="c2fc-aba item"></a>')
                     .attr('data-slug', cond.slug)
                     .toggleClass('active', cond.slug === activeMenuKey);
                 if (cond.type === 'perfil_usuario') {
@@ -697,13 +704,13 @@ $(document).ready(function () {
                 }
                 $tab.append($('<span></span>').text(conditionTabText(cond)));
                 $tab.append(' ');
-                $tab.append($('<i class="trash alternate outline icon menu-condition-delete" title="' + (pt ? 'Excluir' : 'Delete') + '"></i>'));
+                $tab.append($('<i data-lucide="trash-2" class="c2fc-icone icon menu-condition-delete" title="' + (pt ? 'Excluir' : 'Delete') + '"></i>'));
                 $tabs.append($tab);
             });
             $panel.append($tabs);
         } else {
             $('#menu-item-builder-wrapper').hide();
-            $panel.append($('<div class="ui message"></div>').text(
+            $panel.append($('<div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 message"></div>').text(
                 pt ? 'Adicione uma condição para montar a árvore de itens correspondente.' : 'Add a condition to build its menu tree.'
             ));
         }
@@ -1042,41 +1049,26 @@ $(document).ready(function () {
     function treeRowEl(id) { return $('#menu-tree .menu-tree-row[data-id="' + id + '"]'); }
 
     function buildTreeRow(it) {
-        var $row = $('<div class="menu-tree-row"></div>')
-            .attr('data-id', it.id)
-            .css('margin-left', (it.depth * STEP) + 'px');
-
-        if (selectedRowId === it.id) $row.addClass('selected');
-
-        $row.append('<i class="bars icon menu-tree-handle" title="' + (isPtBr() ? 'Arraste para ordenar/aninhar' : 'Drag to order/nest') + '"></i>');
-        $row.append('<i class="' + typeIcon(it.type) + ' icon"></i>');
-
-        if (it.type === 'separador') {
-            // req-019: exibe o rótulo do separador quando houver; senão, o marcador genérico.
-            var sepText = it.label ? it.label : ('— ' + typeName(it.type) + ' —');
-            $row.append($('<span class="menu-tree-label sep"></span>').text(sepText));
-        } else if (it.type === 'publicador') {
-            // req-018: barra do nó publicador indica o publicador e o limite de filhos dinâmicos.
-            var pubName = it.publisher_name || it.publisher_id || (isPtBr() ? '(sem publicador)' : '(no publisher)');
-            var limite = (parseInt(it.count, 10) > 0) ? parseInt(it.count, 10) : 5;
-            var pubText = (isPtBr() ? 'Publicador: ' : 'Publisher: ') + pubName
-                + (isPtBr() ? ' (limite: ' : ' (limit: ') + limite + ')';
-            $row.append($('<span class="menu-tree-label"></span>').text(pubText));
-        } else {
-            var labelText = it.label || it.page_id || (isPtBr() ? '(sem rótulo)' : '(no label)');
-            $row.append($('<span class="menu-tree-label"></span>').text(labelText));
-        }
-
-        $row.append($('<span class="ui mini label menu-tree-type"></span>').text(typeName(it.type)));
-
-        // req-019: o separador também é editável (para definir o rótulo opcional).
-        $row.append('<i class="edit icon menu-tree-edit" title="' + (isPtBr() ? 'Editar' : 'Edit') + '"></i>');
-        $row.append('<i class="trash alternate icon menu-tree-delete" title="' + (isPtBr() ? 'Remover' : 'Remove') + '"></i>');
-
-        return $row;
+        var template = document.querySelector('#menu-row-template');
+        var row = template.content.firstElementChild.cloneNode(true);
+        row.dataset.id = it.id;
+        row.style.marginLeft = (it.depth * STEP) + 'px';
+        row.classList.toggle('selected', selectedRowId === it.id);
+        var icons = { pagina: 'file', 'link-custom': 'link', cabecalho: 'heading', 'link-action': 'mouse-pointer', publicador: 'newspaper', separador: 'minus' };
+        row.querySelector('[data-menu-type-icon]').setAttribute('data-lucide', icons[it.type] || 'file');
+        var label = it.label || it.page_id || template.dataset.emptyLabel;
+        if (it.type === 'separador') label = it.label || ('— ' + typeName(it.type) + ' —');
+        if (it.type === 'publicador') label = template.dataset.publisher
+            .replace('{name}', it.publisher_name || it.publisher_id || template.dataset.noPublisher)
+            .replace('{count}', parseInt(it.count, 10) > 0 ? parseInt(it.count, 10) : 5);
+        row.querySelector('.menu-tree-label').textContent = label;
+        row.querySelector('.menu-tree-label').classList.toggle('sep', it.type === 'separador');
+        row.querySelector('.menu-tree-type').textContent = typeName(it.type);
+        return row;
     }
 
     function renderTree() {
+        if (window.lucide) setTimeout(function () { window.lucide.createIcons(); }, 0);
         var $tree = $('#menu-tree');
         if ($tree.length === 0) return;
 
@@ -1215,10 +1207,10 @@ $(document).ready(function () {
         var rows = (results || []).filter(function (r) { return r && r.value; });
 
         if (rows.length === 0) {
-            $dropdown.append($('<div class="item" style="padding: 8px 12px; color: #999;"></div>').text(manualNoResultsMsg()));
+            $dropdown.append($('<div class="c2fc-aba item" style="padding: 8px 12px; color: #999;"></div>').text(manualNoResultsMsg()));
         } else {
             rows.forEach(function (r) {
-                var $item = $('<div class="item" style="padding: 8px 12px; cursor: pointer;"></div>')
+                var $item = $('<div class="c2fc-aba item" style="padding: 8px 12px; cursor: pointer;"></div>')
                     .attr('data-id', r.value)
                     .attr('data-name', r.name || r.value)
                     .attr('data-url', r.url || '')
@@ -1374,21 +1366,21 @@ $(document).ready(function () {
         if (idx < 0) return;
         var it = treeItems[idx];
 
-        var $panel = $('<div class="menu-tree-edit-panel ui segment"></div>')
+        var $panel = $('<div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 menu-tree-edit-panel segment"></div>')
             .attr('data-id', id)
             .css('margin-left', (it.depth * STEP + 24) + 'px');
 
         function addField(labelText, cls, value) {
-            var $f = $('<div class="field" style="margin-bottom:8px;"></div>');
+            var $f = $('<div class="c2fc-campo min-w-0 mb-4 field" style="margin-bottom:8px;"></div>');
             $f.append($('<label style="font-size:12px;"></label>').text(labelText));
             $f.append($('<input type="text">').addClass(cls).val(value || ''));
             return $f;
         }
 
         function addSelectField(labelText, cls, optionsHtml, value) {
-            var $f = $('<div class="field" style="margin-bottom:8px;"></div>');
+            var $f = $('<div class="c2fc-campo min-w-0 mb-4 field" style="margin-bottom:8px;"></div>');
             $f.append($('<label style="font-size:12px;"></label>').text(labelText));
-            var $sel = $('<select class="ui fluid dropdown" style="display:block;"></select>').addClass(cls).html(optionsHtml);
+            var $sel = $('<select class="c2fc-campo-entrada fluid dropdown" style="display:block;"></select>').addClass(cls).html(optionsHtml);
             $sel.val(value || '');
             $f.append($sel);
             return $f;
@@ -1414,8 +1406,8 @@ $(document).ready(function () {
         if (it.type === 'link-action' || it.type === 'publicador') $panel.append(addField(isPtBr() ? 'Classes CSS' : 'CSS classes', 'edit-css', it.css_classes));
 
         var $btns = $('<div style="margin-top:6px;"></div>');
-        $btns.append($('<button type="button" class="ui mini primary button menu-tree-save"></button>').text(isPtBr() ? 'Salvar' : 'Save'));
-        $btns.append($('<button type="button" class="ui mini button menu-tree-cancel"></button>').text(isPtBr() ? 'Cancelar' : 'Cancel'));
+        $btns.append($('<button type="button" class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno mini primary button menu-tree-save"></button>').text(isPtBr() ? 'Salvar' : 'Save'));
+        $btns.append($('<button type="button" class="c2fc-botao c2fc-botao-pequeno mini button menu-tree-cancel"></button>').text(isPtBr() ? 'Cancelar' : 'Cancel'));
         $panel.append($btns);
 
         treeRowEl(id).after($panel);
@@ -1632,7 +1624,7 @@ $(document).ready(function () {
             if (!$btn || !$btn.length) return;
             var original = $btn.data('original-html');
             if (typeof original === 'undefined') { original = $btn.html(); $btn.data('original-html', original); }
-            $btn.html('<i class="check icon"></i> ' + (isPtBr() ? 'Copiado!' : 'Copied!'));
+            $btn.html('<i data-lucide="check" class="c2fc-icone icon"></i> ' + (isPtBr() ? 'Copiado!' : 'Copied!'));
             setTimeout(function () { $btn.html(original); }, 1500);
         }
         if (navigator.clipboard && navigator.clipboard.writeText) {

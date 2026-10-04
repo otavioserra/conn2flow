@@ -28,6 +28,7 @@ function forms_submissions_get_status_label($statusId){
 
 function forms_submissions_visualizar(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 	global $_CONFIG;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
@@ -141,21 +142,20 @@ function forms_submissions_visualizar(){
 		$emailStatusBadge = '';
 		if($emailStatus === 'email-sent'){
 			$labelText = gestor_variaveis(['id' => 'sent-label', 'modulo' => $_GESTOR['modulo-id']]);
-			$emailStatusBadge = '<div class="ui green label"><i class="check icon"></i> '.$labelText.'</div>';
+			$emailStatusBadge = '<div class="c2fc-selo c2fc-selo-ativo">'.$labelText.'</div>';
 		} elseif($emailStatus === 'email-not-sent'){
 			$labelText = gestor_variaveis(['id' => 'not-sent-label', 'modulo' => $_GESTOR['modulo-id']]);
-			$emailStatusBadge = '<div class="ui red label"><i class="times icon"></i> '.$labelText.'</div>';
+			$emailStatusBadge = '<div class="c2fc-selo c2fc-selo-inativo">'.$labelText.'</div>';
 		} else {
-			$emailStatusBadge = '<div class="ui grey label">N/A</div>';
+			$emailStatusBadge = '<div class="c2fc-rotulo">'.gestor_variaveis(['id' => 'not-applicable-label', 'modulo' => $_GESTOR['modulo-id']]).'</div>';
 		}
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#email_status_badge#',$emailStatusBadge);
 		
 		// ===== Gerar badge de form_status atual
 		
 		$formStatusLabel = forms_submissions_get_status_label($form_status);
-		$formStatusColor = 'blue';
-		if($form_status === 'responded') $formStatusColor = 'green';
-		$formStatusBadge = '<div class="ui '.$formStatusColor.' label">'.$formStatusLabel.'</div>';
+		$formStatusColor = $form_status === 'responded' ? 'c2fc-selo-ativo' : 'c2fc-selo-inativo';
+		$formStatusBadge = '<div data-submission-status class="c2fc-selo '.$formStatusColor.'">'.$formStatusLabel.'</div>';
 		$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#form_status_badge#',$formStatusBadge);
 		
 		// ===== Processar opções de form_status (células do select)
@@ -228,10 +228,10 @@ function forms_submissions_visualizar(){
 				if(isset($resp['status'])){
 					if($resp['status'] === 'sent'){
 						$sentLabel = gestor_variaveis(['id' => 'sent-label', 'modulo' => $_GESTOR['modulo-id']]);
-						$respStatusLabel = '<div class="ui mini green label"><i class="check icon"></i> '.$sentLabel.'</div>';
+						$respStatusLabel = '<div class="c2fc-selo c2fc-selo-ativo">'.$sentLabel.'</div>';
 					} else {
 						$failLabel = gestor_variaveis(['id' => 'failed-label', 'modulo' => $_GESTOR['modulo-id']]);
-						$respStatusLabel = '<div class="ui mini red label"><i class="times icon"></i> '.$failLabel.'</div>';
+						$respStatusLabel = '<div class="c2fc-selo c2fc-selo-inativo">'.$failLabel.'</div>';
 					}
 				}
 				
@@ -304,6 +304,7 @@ function forms_submissions_interfaces_padroes(){
 
 	switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true;
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],
@@ -328,7 +329,7 @@ function forms_submissions_interfaces_padroes(){
 							'nome' => gestor_variaveis(['id' => 'table-column-form', 'modulo' => $_GESTOR['modulo-id']]),
 							'formatar' => Array(
 								'id' => 'encapsular',
-								'capsula' => '<div class="ui basic label">#id#</div>',
+								'capsula' => '<div class="c2fc-rotulo">#id#</div>',
 								'variavel' => '#id#',
 							),
 						),

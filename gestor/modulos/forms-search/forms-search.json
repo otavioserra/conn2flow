@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.0",
+    "versao": "1.1.1",
     "bibliotecas": [
         "interface",
         "html",
@@ -101,6 +101,12 @@
                         "css": "",
                         "combined": "e623f9c680e21d5d9895ef82cddf7e90"
                     }
+                },
+                {
+                    "id": "forms-search-info-definition-tailwind",
+                    "name": "Formulário Definições Informações Tailwind",
+                    "version": "1.0",
+                    "framework_css": "tailwindcss"
                 }
             ],
             "templates": [
@@ -174,73 +180,492 @@
                 {
                     "name": "Formulários Listar",
                     "id": "forms-search-list",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Formulários Visualizar",
                     "id": "forms-search-view",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
                         "html": "9d78df67183fc363bf48cd602e4e09e4",
                         "css": "",
                         "combined": "9d78df67183fc363bf48cd602e4e09e4"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "forms-search-info-definition-tailwind",
+                            "scope": "module",
+                            "modulo": "forms-search"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-visualizacao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Formulários Adicionar",
                     "id": "forms-search-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
                         "html": "feb953e83781cc2136f5a70e5ff3c1b0",
                         "css": "aa43d6aa4dec695c666f726474800b97",
                         "combined": "3cd281eeb7ff3782181f41b7732086c8"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "forms-search-info-definition-tailwind",
+                            "scope": "module",
+                            "modulo": "forms-search"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Formulários Editar",
                     "id": "forms-search-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
                         "html": "7b9bd87ababd83d48a6d067e7ee9b64d",
                         "css": "aa43d6aa4dec695c666f726474800b97",
                         "combined": "a71bc3a74eb53b9ec9f5b8d17c8af9ae"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "forms-search-info-definition-tailwind",
+                            "scope": "module",
+                            "modulo": "forms-search"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Formulários Clonar",
                     "id": "forms-search-clonar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
                         "html": "e6b88e35966739cdde20cb8425d29f3e",
                         "css": "aa43d6aa4dec695c666f726474800b97",
                         "combined": "0f27606b1a3956086ad6f3537a2fa150"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "forms-search-info-definition-tailwind",
+                            "scope": "module",
+                            "modulo": "forms-search"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 }
             ],
             "variables": [
@@ -272,6 +697,71 @@
                 {
                     "id": "form-description-label",
                     "value": "Descrição",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-text",
+                    "value": "Texto",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-email",
+                    "value": "E-mail",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-tel",
+                    "value": "Telefone",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-number",
+                    "value": "Número",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-password",
+                    "value": "Senha",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-date",
+                    "value": "Data",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-url",
+                    "value": "URL",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-hidden",
+                    "value": "Oculto",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-textarea",
+                    "value": "Texto longo",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-select",
+                    "value": "Seleção",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-radio",
+                    "value": "Opção única",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-checkbox",
+                    "value": "Caixa de seleção",
+                    "type": "string"
+                },
+                {
+                    "id": "field-remove-label",
+                    "value": "Remover campo",
                     "type": "string"
                 }
             ]
@@ -346,6 +836,12 @@
                         "css": "",
                         "combined": "93b2356516d8ef140ad869775924e56d"
                     }
+                },
+                {
+                    "id": "forms-search-info-definition-tailwind",
+                    "name": "Forms Info Definition Tailwind",
+                    "version": "1.0",
+                    "framework_css": "tailwindcss"
                 }
             ],
             "templates": [
@@ -419,73 +915,492 @@
                 {
                     "name": "Forms List",
                     "id": "forms-search-list",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Forms View",
                     "id": "forms-search-view",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
                         "html": "08418961498fe8037d93d3cd32be5351",
                         "css": "",
                         "combined": "08418961498fe8037d93d3cd32be5351"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "forms-search-info-definition-tailwind",
+                            "scope": "module",
+                            "modulo": "forms-search"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-visualizacao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Forms Add",
                     "id": "forms-search-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
                         "html": "814b1e840477be7dd7a7cfb96cd5e966",
                         "css": "aa43d6aa4dec695c666f726474800b97",
                         "combined": "a2590d43725ad025e419178784834a76"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "forms-search-info-definition-tailwind",
+                            "scope": "module",
+                            "modulo": "forms-search"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Forms Edit",
                     "id": "forms-search-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
                         "html": "849dac0222572a84050f5d10ce7077f8",
                         "css": "aa43d6aa4dec695c666f726474800b97",
                         "combined": "5c51448407a14bf652f19498be2e04bb"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "forms-search-info-definition-tailwind",
+                            "scope": "module",
+                            "modulo": "forms-search"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Forms Clone",
                     "id": "forms-search-clonar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-search/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
                         "html": "70e0b0ba751dacfa6ae4af65776ddacc",
                         "css": "aa43d6aa4dec695c666f726474800b97",
                         "combined": "6f056c9780a67c68d0d9c66411fd5ef4"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-visual-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-page-modification-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-seo-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "html-editor-modelos-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-prompt-modais-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "ia-sem-servidor-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "forms-search-info-definition-tailwind",
+                            "scope": "module",
+                            "modulo": "forms-search"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-search.js",
+                        "../../../../forms-search.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 }
             ],
             "variables": [
@@ -517,6 +1432,71 @@
                 {
                     "id": "form-description-label",
                     "value": "Description",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-text",
+                    "value": "Text",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-email",
+                    "value": "Email",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-tel",
+                    "value": "Phone",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-number",
+                    "value": "Number",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-password",
+                    "value": "Password",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-date",
+                    "value": "Date",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-url",
+                    "value": "URL",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-hidden",
+                    "value": "Hidden",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-textarea",
+                    "value": "Textarea",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-select",
+                    "value": "Select",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-radio",
+                    "value": "Radio",
+                    "type": "string"
+                },
+                {
+                    "id": "field-type-checkbox",
+                    "value": "Checkbox",
+                    "type": "string"
+                },
+                {
+                    "id": "field-remove-label",
+                    "value": "Remove field",
                     "type": "string"
                 }
             ]

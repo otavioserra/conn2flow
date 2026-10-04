@@ -47,7 +47,14 @@ $(document).ready(function () {
 
     (function injectGalleryStyles() {
         if (document.getElementById('galleries-styles')) return;
-        var css = ''
+
+    document.addEventListener('click', function (event) {
+        var track = event.target.closest('.req222-page .c2fc-chave-trilho');
+        if (!track || track.parentElement.tagName === 'LABEL') return;
+        var input = track.parentElement.querySelector('input[type="checkbox"]');
+        if (input && !input.disabled) input.click();
+    });
+    var css = ''
             + '#gallery-items{margin-top:12px;display:flex;flex-direction:column;gap:8px;}'
             + '.gallery-item{display:flex;align-items:center;gap:12px;padding:8px 10px;background:#fff;'
             + 'border:1px solid #e0e0e0;border-radius:4px;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;}'
@@ -306,7 +313,7 @@ $(document).ready(function () {
 
     // req-019: hidratar os controles de exibição e ativar os checkboxes Fomantic + listeners.
     hydrateGalleryControls();
-    $('.ui.checkbox').checkbox();
+    $('.checkbox').checkbox();
     $(document).on('change', '#gallery-show-arrows, #gallery-show-dots, #gallery-autoplay, #gallery-loop', function () { serializeAndPreview(); });
     $(document).on('input change', '#gallery-autoplay-speed', function () { serializeAndPreview(); });
     $(document).on('input change', '#gallery-height, #gallery-margin-lateral', function () { serializeAndPreview(); });
@@ -344,7 +351,7 @@ $(document).ready(function () {
     });
 
     // Interceptar submit para serializar a lista de imagens.
-    $('.ui.form').on('submit', function () {
+    $('form').on('submit', function () {
         // Limpa o sufixo "-modificado" do input nativo para gravar o template_id limpo no banco.
         var $tempInput = $('#template_id');
         var val = $tempInput.val() || '';
@@ -363,13 +370,13 @@ $(document).ready(function () {
     $(document).on('mouseup tap', '#btn-select-images', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
-        var $modal = $('.ui.modal.iframePagina');
+        var $modal = $('.modal.iframePagina');
         if ($modal.length === 0) { msg_erro_mostrar(isPtBr() ? 'Modal do gerenciador indisponível.' : 'File manager modal unavailable.'); return; }
 
         if (!imagepickStarted) {
             imagepickStarted = true;
             if (imagepick.head) $modal.find('.header').html(imagepick.head);
-            if (imagepick.cancel) $modal.find('.cancel.button').html(imagepick.cancel);
+            if (imagepick.cancel) $modal.find('.cancel').html(imagepick.cancel);
         }
 
         var iframe = $modal.find('iframe').get(0);
@@ -501,6 +508,7 @@ $(document).ready(function () {
     }
 
     function renderItems() {
+        if (window.lucide) setTimeout(function () { window.lucide.createIcons(); }, 0);
         var $list = $('#gallery-items');
         if ($list.length === 0) return;
 
@@ -517,32 +525,17 @@ $(document).ready(function () {
     }
 
     function buildItemRow(it) {
-        var $row = $('<div class="gallery-item"></div>').attr('data-id', it.id);
-
-        var $thumb = $('<img class="gallery-item-thumb">').attr('alt', it.nome || '');
-        if (it.imgSrc) $thumb.attr('src', it.imgSrc);
-        $thumb.css('object-position', galleriesNormalizarImagePosition($('#gallery-image-position').val() || schema.image_position));
-        $row.append($thumb);
-
-        var $actions = $('<div class="gallery-item-actions"></div>');
-        $actions.append($('<button type="button" class="ui mini icon button gallery-item-handle"><i class="bars icon"></i></button>')
-            .attr('title', isPtBr() ? 'Arraste para reordenar' : 'Drag to reorder'));
-        $actions.append($('<button type="button" class="ui mini icon blue button gallery-item-settings"><i class="cog icon"></i></button>')
-            .attr('title', galleryUiText('settings-tooltip')));
-        $actions.append($('<button type="button" class="ui mini icon red button gallery-item-remove"><i class="trash alternate icon"></i></button>')
-            .attr('title', isPtBr() ? 'Remover' : 'Remove'));
-        var $body = $('<div class="gallery-item-body"></div>');
-        $body.append($('<div class="gallery-item-name"></div>').text(it.nome || it.caminho || ''));
-
-        var $caption = $('<input type="text" class="gallery-item-caption">')
-            .attr('placeholder', isPtBr() ? 'Legenda (opcional)' : 'Caption (optional)')
-            .val(it.legenda || '');
-        $body.append($caption);
-        $body.append(buildLinkPanel(it));
-        $row.append($body);
-        $row.append($actions);
-
-        return $row;
+        var row = document.querySelector('#gallery-row-template').content.firstElementChild.cloneNode(true);
+        row.dataset.id = it.id;
+        var image = row.querySelector('.gallery-item-thumb');
+        image.alt = it.nome || '';
+        if (it.imgSrc) image.src = it.imgSrc;
+        image.style.objectPosition = galleriesNormalizarImagePosition(document.querySelector('#gallery-image-position').value || schema.image_position);
+        row.querySelector('.gallery-item-name').textContent = it.nome || it.caminho || '';
+        row.querySelector('.gallery-item-caption').value = it.legenda || '';
+        var links = buildLinkPanel(it);
+        if (links && links[0]) row.querySelector('.gallery-item-body').appendChild(links[0]);
+        return row;
     }
 
     function openItemSettings(itemId) {
@@ -550,8 +543,8 @@ $(document).ready(function () {
         if (idx < 0) return;
 
         var it = items[idx];
-        var $modal = $('<div class="ui small modal gallery-item-settings-modal"></div>');
-        $modal.append($('<div class="header"></div>').text(galleryUiText('settings-title')));
+        var $modal = $('<div class="hidden ui small modal gallery-item-settings-modal"></div>');
+        $modal.append($('<div class="text-lg font-semibold text-slate-800 my-4 header"></div>').text(galleryUiText('settings-title')));
 
         var $content = $('<div class="content"></div>');
         var $form = $('<div class="gallery-item gallery-settings-form"></div>').attr('data-id', it.id);
@@ -566,7 +559,7 @@ $(document).ready(function () {
         $modal.append($content);
 
         var $actions = $('<div class="actions"></div>');
-        $actions.append($('<button type="button" class="ui primary approve button"></button>')
+        $actions.append($('<button type="button" class="c2fc-botao c2fc-botao-primario primary approve button"></button>')
             .text(galleryUiText('settings-close')));
         $modal.append($actions);
         $('body').append($modal);
@@ -651,7 +644,7 @@ $(document).ready(function () {
         var selectTxt = isPtBr() ? '— selecione —' : '— select —';
 
         var $toggle = $('<span class="gallery-item-link-toggle"></span>')
-            .html('<i class="linkify icon"></i>' + (isPtBr() ? 'Configurar Link' : 'Configure Link'));
+            .html('<i data-lucide="link" class="c2fc-icone icon"></i>' + (isPtBr() ? 'Configurar Link' : 'Configure Link'));
 
         var hasLink = it.link_type && it.link_type !== 'nenhum';
         var $fields = $('<div class="gallery-item-link-fields"></div>').css('display', hasLink ? 'block' : 'none');
@@ -1198,7 +1191,7 @@ $(document).ready(function () {
             if (!$btn || !$btn.length) return;
             var original = $btn.data('original-html');
             if (typeof original === 'undefined') { original = $btn.html(); $btn.data('original-html', original); }
-            $btn.html('<i class="check icon"></i> ' + (isPtBr() ? 'Copiado!' : 'Copied!'));
+            $btn.html('<i data-lucide="check" class="c2fc-icone icon"></i> ' + (isPtBr() ? 'Copiado!' : 'Copied!'));
             setTimeout(function () { $btn.html(original); }, 1500);
         }
         if (navigator.clipboard && navigator.clipboard.writeText) {

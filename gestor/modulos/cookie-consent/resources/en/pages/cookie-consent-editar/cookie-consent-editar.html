@@ -1,124 +1,133 @@
+<div class="req222-page space-y-4">
+<template id="cookie-list-actions"><table><tbody><tr><td>
+ <button type="button" class="c2fc-botao c2fc-botao-icone" data-list-up aria-label="@[[js-list-up]]@"><i data-lucide="arrow-up" class="c2fc-icone"></i></button>
+ <button type="button" class="c2fc-botao c2fc-botao-icone" data-list-down aria-label="@[[js-list-down]]@"><i data-lucide="arrow-down" class="c2fc-icone"></i></button>
+ <button type="button" class="c2fc-botao c2fc-botao-icone c2fc-botao-perigo" data-list-remove aria-label="@[[js-list-remove]]@"><i data-lucide="trash-2" class="c2fc-icone"></i></button>
+</td></tr></tbody></table></template>
+
 <input type="hidden" name="fields_schema">
 
-<div class="field">
-    <label>Notice name</label>
-    <input type="text" name="name" value="#name#" placeholder="E.g.: Site cookie notice">
+<div class="c2fc-campo min-w-0 mb-4 field">
+    <label class="c2fc-campo-rotulo">Notice name</label>
+    <input class="c2fc-campo-entrada" type="text" name="name" value="#name#" placeholder="E.g.: Site cookie notice">
 </div>
 
-<h4 class="ui dividing header">Options</h4>
+<h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Options</h4>
 
 <div class="widget-options-tabs">
-<div class="ui top attached tabular menu menuOpcoesWidget">
-    <a class="active item" data-tab="cc-general"><i class="settings icon"></i> General</a>
-    <a class="item" data-tab="cc-categories"><i class="list icon"></i> Categories</a>
-    <a class="item" data-tab="cc-texts"><i class="font icon"></i> Texts</a>
+<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuOpcoesWidget">
+    <a class="c2fc-aba active item" data-tab="cc-general"><i data-lucide="settings" class="size-4 shrink-0 icon "></i> General</a>
+    <a class="c2fc-aba item" data-tab="cc-categories"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Categories</a>
+    <a class="c2fc-aba item" data-tab="cc-texts"><i data-lucide="circle" class="size-4 shrink-0 icon "></i> Texts</a>
 </div>
-<div class="ui bottom attached active tab segment" data-tab="cc-general">
-    <div class="three fields">
-        <div class="field"><label>Notice version</label><input type="text" data-schema-key="version" placeholder="1"></div>
-        <div class="field"><label>Decision validity (days)</label><input type="number" min="1" step="1" data-schema-key="expiry_days"></div>
-        <div class="field"><label>Notice position</label><select class="ui dropdown" data-schema-key="position"><option value="bottom-left">Bottom left</option><option value="bottom-right">Bottom right</option><option value="bottom">Bottom strip</option><option value="center">Center</option></select></div>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="cc-general">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3 my-4 three fields">
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Notice version</label><input class="c2fc-campo-entrada" type="text" data-schema-key="version" placeholder="1"></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Decision validity (days)</label><input class="c2fc-campo-entrada" type="number" min="1" step="1" data-schema-key="expiry_days"></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Notice position</label><select data-c2f-select class="c2fc-campo-entrada dropdown" data-schema-key="position"><option value="bottom-left">Bottom left</option><option value="bottom-right">Bottom right</option><option value="bottom">Bottom strip</option><option value="center">Center</option></select></div>
     </div>
-    <div class="ui label" style="margin: 0 0 12px; display: block;">
-        <i class="redo icon"></i>
+    <div class="c2fc-rotulo label" style="margin: 0 0 12px; display: block;">
+        <i data-lucide="circle" class="size-4 shrink-0 icon "></i>
         Changing the version brings the notice back for those who had already decided. Change it when the categories or the policy change.
     </div>
-    <div class="two fields">
-        <div class="field"><label>Privacy Policy address</label><input type="text" data-schema-key="policy_url" placeholder="privacy/"></div>
-        <div class="field"><label>Terms of Use address</label><input type="text" data-schema-key="terms_url" placeholder="terms/"></div>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields">
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Privacy Policy address</label><input class="c2fc-campo-entrada" type="text" data-schema-key="policy_url" placeholder="privacy/"></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Terms of Use address</label><input class="c2fc-campo-entrada" type="text" data-schema-key="terms_url" placeholder="terms/"></div>
     </div>
-    <div class="three fields">
-        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="show_floating_button"><label>Button that reopens the preferences</label></div></div>
-        <div class="field"><label>Button side</label><select class="ui dropdown" data-schema-key="floating_position"><option value="left">Left</option><option value="right">Right</option></select></div>
-        <div class="field"><div class="ui checkbox"><input type="checkbox" data-schema-key="consent_mode"><label>Send Google Consent Mode v2 signals</label></div></div>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3 my-4 three fields">
+        <div class="c2fc-campo min-w-0 mb-4 field"><div class="c2fc-chave checkbox"><input type="checkbox" data-schema-key="show_floating_button"><span class="c2fc-chave-trilho" aria-hidden="true"></span><label class="c2fc-campo-rotulo">Button that reopens the preferences</label></div></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Button side</label><select data-c2f-select class="c2fc-campo-entrada dropdown" data-schema-key="floating_position"><option value="left">Left</option><option value="right">Right</option></select></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><div class="c2fc-chave checkbox"><input type="checkbox" data-schema-key="consent_mode"><span class="c2fc-chave-trilho" aria-hidden="true"></span><label class="c2fc-campo-rotulo">Send Google Consent Mode v2 signals</label></div></div>
     </div>
 </div>
-<div class="ui bottom attached tab segment" data-tab="cc-categories">
-    <div class="ui label" style="margin: 0 0 12px; display: block;">
-        <i class="info circle icon"></i>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="cc-categories">
+    <div class="c2fc-rotulo label" style="margin: 0 0 12px; display: block;">
+        <i data-lucide="info" class="size-4 shrink-0 icon "></i>
         The identifier is what the page uses to release a script: <code>&lt;script type="text/plain" data-cookie-category="analytics"&gt;</code>. A required category comes switched on and the visitor cannot switch it off. The Google signals use the identifiers <code>analytics</code>, <code>marketing</code> and <code>preferences</code>.
     </div>
-    <table class="ui celled compact table" data-schema-list="categories" data-columns='[{"key": "id", "type": "text"}, {"key": "name", "type": "text"}, {"key": "description", "type": "textarea"}, {"key": "required", "type": "checkbox"}]'>
-        <thead><tr><th style="width:150px;">Identifier</th><th style="width:200px;">Name</th><th>Description</th><th style="width:100px;">Required</th><th style="width:140px;"></th></tr></thead>
+    <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled compact table" data-schema-list="categories" data-columns='[{"key": "id", "type": "text"}, {"key": "name", "type": "text"}, {"key": "description", "type": "textarea"}, {"key": "required", "type": "checkbox"}]'>
+        <thead><tr><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:150px;">Identifier</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:200px;">Name</th><th class="border-b border-slate-200 px-3 py-2 align-top">Description</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:100px;">Required</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:140px;"></th></tr></thead>
         <tbody></tbody>
-    </table>
-    <button type="button" class="ui primary button" data-schema-list-add="categories"><i class="plus icon"></i> Category</button>
+    </table></div>
+    <button type="button" class="c2fc-botao c2fc-botao-primario primary button" data-schema-list-add="categories"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Category</button>
 </div>
-<div class="ui bottom attached tab segment" data-tab="cc-texts">
-        <div class="field"><label>Notice title</label><input type="text" data-schema-key="texts.title" placeholder=""></div>
-        <div class="field"><label>Notice message</label><textarea rows="2" data-schema-key="texts.message"></textarea></div>
-        <div class="field"><label>Accept all button</label><input type="text" data-schema-key="texts.accept_all" placeholder=""></div>
-        <div class="field"><label>Reject button</label><input type="text" data-schema-key="texts.reject_all" placeholder=""></div>
-        <div class="field"><label>Customize button</label><input type="text" data-schema-key="texts.customize" placeholder=""></div>
-        <div class="field"><label>Card title</label><input type="text" data-schema-key="texts.preferences_title" placeholder=""></div>
-        <div class="field"><label>Card introduction</label><textarea rows="2" data-schema-key="texts.preferences_intro"></textarea></div>
-        <div class="field"><label>Save choices button</label><input type="text" data-schema-key="texts.save" placeholder=""></div>
-        <div class="field"><label>Required category badge</label><input type="text" data-schema-key="texts.always_active" placeholder=""></div>
-        <div class="field"><label>Policy link text</label><input type="text" data-schema-key="texts.policy_label" placeholder=""></div>
-        <div class="field"><label>Terms link text</label><input type="text" data-schema-key="texts.terms_label" placeholder=""></div>
-        <div class="field"><label>Reopen button label</label><input type="text" data-schema-key="texts.floating_label" placeholder=""></div>
-        <div class="field"><label>Close label</label><input type="text" data-schema-key="texts.close" placeholder=""></div>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="cc-texts">
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Notice title</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.title" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Notice message</label><textarea class="c2fc-campo-entrada" rows="2" data-schema-key="texts.message"></textarea></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Accept all button</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.accept_all" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Reject button</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.reject_all" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Customize button</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.customize" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Card title</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.preferences_title" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Card introduction</label><textarea class="c2fc-campo-entrada" rows="2" data-schema-key="texts.preferences_intro"></textarea></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Save choices button</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.save" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Required category badge</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.always_active" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Policy link text</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.policy_label" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Terms link text</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.terms_label" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Reopen button label</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.floating_label" placeholder=""></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Close label</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.close" placeholder=""></div>
 </div>
 </div>
 
-<h4 class="ui dividing header">Visual model</h4>
+<h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Visual model</h4>
 
-<div class="field">
-    <label>Model (resource)</label>
-    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+<div class="c2fc-campo min-w-0 mb-4 field">
+    <label class="c2fc-campo-rotulo">Model (resource)</label>
+    <select data-c2f-select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
-    <div class="ui label" style="margin: 8px 0; display: block;">
-        <i class="exchange icon"></i>
+    <div class="c2fc-rotulo label" style="margin: 8px 0; display: block;">
+        <i data-lucide="repeat" class="size-4 shrink-0 icon "></i>
         When you pick a model, its HTML and CSS go into the editor below. From then on what counts is the editor content, saved in this record.
     </div>
 </div>
 
-<a class="ui button blue" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=cookie-consent"
-    data-tooltip="Opens the model form with this target already chosen" data-position="top center" data-inverted="">
-    <i class="plus icon"></i> Add new model
+<a class="c2fc-botao c2fc-botao-primario button blue" id="add-new-template" href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=cookie-consent"
+    data-c2f-dica="Opens the model form with this target already chosen" data-position="top center" data-inverted="">
+    <i data-lucide="plus" class="size-4 shrink-0 icon "></i> Add new model
 </a>
 
-<div class="ui icon message info">
-    <i class="cookie bite icon"></i>
+<div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
+    <i data-lucide="circle" class="size-4 shrink-0 icon "></i>
     <div class="content">
-        <div class="header">Three pieces in the same model</div>
+        <div class="text-lg font-semibold text-slate-800 my-4 header">Three pieces in the same model</div>
         <p>The model draws the notice, the preferences card and the button that reopens the card. Categories and texts come from the options above. Any element with <code>data-cookie-consent-open</code>, or a link to <code>#cookie-consent</code>, also opens the card: use it in the footer.</p>
     </div>
 </div>
 
 <div class="widget-content-tabs">
-<div class="ui top attached tabular menu menuConteudoWidget">
-    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Preview</a>
-    <a class="item" data-tab="hep-editor"><i class="code icon"></i> HTML editor</a>
-    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Widget code</a>
+<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuConteudoWidget">
+    <a class="c2fc-aba active item" data-tab="hep-preview"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Preview</a>
+    <a class="c2fc-aba item" data-tab="hep-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> HTML editor</a>
+    <a class="c2fc-aba item" data-tab="hep-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Widget code</a>
 </div>
-<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="hep-preview">
     <div style="position: relative;">
         <iframe id="iframe-widget-preview" style="width:100%;height:720px;border:1px solid #ccc;"></iframe>
-        <div class="ui dimmer hep-preview-dimmer"><div class="ui loader"></div></div>
+        <div class="c2fc-cobertura ui dimmer hep-preview-dimmer"><div class="c2fc-giro loader"></div></div>
     </div>
 </div>
-<div class="ui bottom attached tab segment" data-tab="hep-editor">
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-editor">
     #html-editor#
 </div>
-<div class="ui bottom attached tab segment" data-tab="hep-widget">
-    <div class="ui icon message info">
-        <i class="cubes icon"></i>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-widget">
+    <div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
+        <i data-lucide="blocks" class="size-4 shrink-0 icon "></i>
         <div class="content">
-            <div class="header">Widget block</div>
+            <div class="text-lg font-semibold text-slate-800 my-4 header">Widget block</div>
             <p>Paste the snippet below into the site layout, once only, so the notice applies to every page.</p>
         </div>
     </div>
-    <div class="field" style="margin-top:1rem;">
-        <label>Widget variable</label>
-        <div class="ui action input">
-            <input type="text" id="hep-widget-val" readonly>
-            <button type="button" id="btn-copy-widget-val" class="ui teal button"><i class="copy icon"></i> Copy</button>
+    <div class="c2fc-campo min-w-0 mb-4 field" style="margin-top:1rem;">
+        <label class="c2fc-campo-rotulo">Widget variable</label>
+        <div class="flex items-center gap-2 min-w-0 action input">
+            <input class="c2fc-campo-entrada" type="text" id="hep-widget-val" readonly>
+            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario teal button"><i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copy</button>
         </div>
     </div>
-    <h4 class="ui header" style="margin-top:1rem;">HTML code</h4>
-    <div style="border:1px solid #ccc;"><textarea id="hep-widget-code" name="hep-widget-code"></textarea></div>
+    <h4 class="text-lg font-semibold text-slate-800 my-4 header" style="margin-top:1rem;">HTML code</h4>
+    <div style="border:1px solid #ccc;"><textarea class="c2fc-campo-entrada" id="hep-widget-code" name="hep-widget-code"></textarea></div>
 </div>
+</div>
+
 </div>

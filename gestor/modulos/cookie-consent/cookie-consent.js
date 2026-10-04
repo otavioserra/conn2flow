@@ -9,6 +9,13 @@
 $(document).ready(function () {
     if ($('#_gestor-interface-edit-dados').length === 0 && $('#_gestor-interface-insert-dados').length === 0) return;
 
+
+    document.addEventListener('click', function (event) {
+        var track = event.target.closest('.req222-page .c2fc-chave-trilho');
+        if (!track || track.parentElement.tagName === 'LABEL') return;
+        var input = track.parentElement.querySelector('input[type="checkbox"]');
+        if (input && !input.disabled) input.click();
+    });
     var cfg = (typeof gestor !== 'undefined' && gestor.cookieConsentAdmin) ? gestor.cookieConsentAdmin : {};
     var schema = (cfg.schema && typeof cfg.schema === 'object') ? cfg.schema : {};
     var textos = cfg.textos || {};
@@ -86,41 +93,45 @@ $(document).ready(function () {
     }
 
     function celula(coluna, valor) {
-        var $td = $('<td></td>');
-        var $campo;
+        var cell = document.createElement('td');
+        var input = document.createElement(coluna.type === 'textarea' ? 'textarea' : 'input');
+        input.dataset.listColumn = coluna.key;
         if (coluna.type === 'checkbox') {
-            $campo = $('<input type="checkbox">').prop('checked', valor === true || valor === 'true' || valor === 1 || valor === '1');
-            $td.addClass('center aligned');
-        } else if (coluna.type === 'textarea') {
-            $campo = $('<textarea rows="2"></textarea>').val(valor || '');
+            var label = document.createElement('label');
+            label.className = 'c2fc-chave';
+            input.type = 'checkbox';
+            input.checked = valor === true || valor === 'true' || valor === 1 || valor === '1';
+            var track = document.createElement('span');
+            track.className = 'c2fc-chave-trilho';
+            track.setAttribute('aria-hidden', 'true');
+            label.append(input, track);
+            cell.appendChild(label);
         } else {
-            $campo = $('<input type="text">').val(valor || '');
+            input.className = 'c2fc-campo-entrada';
+            if (coluna.type === 'textarea') input.rows = 2;
+            else input.type = 'text';
+            input.value = valor || '';
+            cell.appendChild(input);
         }
-        $campo.attr('data-list-column', coluna.key);
-        return $td.append($campo);
+        return cell;
     }
 
     function desenharListas() {
-        $('[data-schema-list]').each(function () {
-            var $tabela = $(this);
-            var colunas = colunasDaLista($tabela);
-            var itens = lerCaminho($tabela.attr('data-schema-list'));
-            var $corpo = $tabela.find('tbody').empty();
-            if (!Array.isArray(itens)) itens = [];
-
-            itens.forEach(function (item) {
-                var $linha = $('<tr></tr>');
-                colunas.forEach(function (coluna) { $linha.append(celula(coluna, item ? item[coluna.key] : '')); });
-                $linha.append(
-                    $('<td class="center aligned collapsing"></td>').append(
-                        $('<button type="button" class="ui icon basic button" data-list-up></button>').attr('title', texto('js-list-up')).append('<i class="arrow up icon"></i>'),
-                        $('<button type="button" class="ui icon basic button" data-list-down></button>').attr('title', texto('js-list-down')).append('<i class="arrow down icon"></i>'),
-                        $('<button type="button" class="ui icon red basic button" data-list-remove></button>').attr('title', texto('js-list-remove')).append('<i class="trash icon"></i>')
-                    )
-                );
-                $corpo.append($linha);
+        document.querySelectorAll('[data-schema-list]').forEach(function (table) {
+            var columns = colunasDaLista($(table));
+            var items = lerCaminho(table.dataset.schemaList);
+            var body = table.querySelector('tbody');
+            body.replaceChildren();
+            if (!Array.isArray(items)) items = [];
+            items.forEach(function (item) {
+                var row = document.createElement('tr');
+                columns.forEach(function (column) { row.appendChild(celula(column, item ? item[column.key] : '')); });
+                var actions = document.querySelector('#cookie-list-actions').content.querySelector('td').cloneNode(true);
+                row.appendChild(actions);
+                body.appendChild(row);
             });
         });
+        if (window.lucide) window.lucide.createIcons();
     }
 
     function lerListas() {
@@ -198,8 +209,8 @@ $(document).ready(function () {
     // Os campos recebem o valor antes de virar componente: o dropdown lê a opção marcada ao iniciar.
     preencherCampos();
     desenharListas();
-    $('.ui.checkbox').checkbox();
-    $('.ui.dropdown').dropdown();
+    $('.checkbox').checkbox();
+    $('.dropdown').dropdown();
 
     if (schema.template_id) {
         var modId = schema.template_id + '-modificado';
@@ -232,7 +243,7 @@ $(document).ready(function () {
 
     window.updatedCodeMirrorHtml = function () { schedulePreview(false); };
 
-    $('.ui.form').on('submit', function () {
+    $('form').on('submit', function () {
         lerTudo();
         var tid = $('#template_id').val() || '';
         if (tid.endsWith('-modificado')) $('#template_id').val(tid.substring(0, tid.length - 11));
@@ -375,7 +386,7 @@ $(document).ready(function () {
         function feedback() {
             var original = $btn.data('original-html');
             if (typeof original === 'undefined') { original = $btn.html(); $btn.data('original-html', original); }
-            $btn.html('<i class="check icon"></i> ' + texto('js-copied'));
+            $btn.html('<i data-lucide="check" class="c2fc-icone icon"></i> ' + texto('js-copied'));
             setTimeout(function () { $btn.html(original); }, 1500);
         }
         if (navigator.clipboard && navigator.clipboard.writeText) {

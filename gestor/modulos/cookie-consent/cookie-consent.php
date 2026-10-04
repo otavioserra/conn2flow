@@ -234,6 +234,7 @@ function cookie_consent_novo_identificador($modulo, $id_valor = null) {
 
 function cookie_consent_adicionar() {
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -256,6 +257,7 @@ function cookie_consent_adicionar() {
 
 function cookie_consent_editar() {
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	$id = $_GESTOR['modulo-registro-id'];
@@ -362,6 +364,7 @@ function cookie_consent_editar() {
 
 function cookie_consent_clonar() {
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	$id = $_GESTOR['modulo-registro-id'];
@@ -408,6 +411,7 @@ function cookie_consent_interfaces_padroes() {
 
 	switch ($_GESTOR['opcao']) {
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true;
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = [
 				'banco' => [
 					'nome' => $modulo['tabela']['nome'],

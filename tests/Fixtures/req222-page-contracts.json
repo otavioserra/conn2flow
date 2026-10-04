@@ -1,0 +1,1513 @@
+{
+  "gestor/modulos/menus/resources/en/pages/menus-adicionar/menus-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-add-item",
+      "btn-add-item-wrapper",
+      "btn-copy-widget-val",
+      "custom-css",
+      "custom-label",
+      "custom-target",
+      "custom-url",
+      "error-message",
+      "error-message-content",
+      "field-custom-css",
+      "field-custom-label",
+      "field-custom-target",
+      "field-custom-url",
+      "field-publisher-wrapper",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-menus-preview",
+      "item_publisher_count",
+      "item_publisher_id",
+      "item_publisher_order_by",
+      "item_type",
+      "manual-search-wrapper",
+      "manual_search_input",
+      "menu-availability",
+      "menu-item-builder-wrapper",
+      "menu-tree",
+      "menu_availability",
+      "page-type-filter-wrapper",
+      "search-suggestions-dropdown",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "page_search_type",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#publisher_id_options#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ]
+  },
+  "gestor/modulos/menus/resources/en/pages/menus-clonar/menus-clonar.html": {
+    "markers": [],
+    "ids": [
+      "btn-add-item",
+      "btn-add-item-wrapper",
+      "btn-copy-widget-val",
+      "custom-css",
+      "custom-label",
+      "custom-target",
+      "custom-url",
+      "error-message",
+      "error-message-content",
+      "field-custom-css",
+      "field-custom-label",
+      "field-custom-target",
+      "field-custom-url",
+      "field-publisher-wrapper",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-menus-preview",
+      "item_publisher_count",
+      "item_publisher_id",
+      "item_publisher_order_by",
+      "item_type",
+      "manual-search-wrapper",
+      "manual_search_input",
+      "menu-availability",
+      "menu-item-builder-wrapper",
+      "menu-tree",
+      "menu_availability",
+      "page-type-filter-wrapper",
+      "search-suggestions-dropdown",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "page_search_type",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#publisher_id_options#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/menus/resources/en/pages/menus-editar/menus-editar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-add-item",
+      "btn-add-item-wrapper",
+      "btn-copy-widget-val",
+      "custom-css",
+      "custom-label",
+      "custom-target",
+      "custom-url",
+      "error-message",
+      "error-message-content",
+      "field-custom-css",
+      "field-custom-label",
+      "field-custom-target",
+      "field-custom-url",
+      "field-publisher-wrapper",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-menus-preview",
+      "item_publisher_count",
+      "item_publisher_id",
+      "item_publisher_order_by",
+      "item_type",
+      "manual-search-wrapper",
+      "manual_search_input",
+      "menu-availability",
+      "menu-item-builder-wrapper",
+      "menu-tree",
+      "menu_availability",
+      "page-type-filter-wrapper",
+      "search-suggestions-dropdown",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "page_search_type",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#name#",
+      "#publisher_id_options#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ]
+  },
+  "gestor/modulos/menus/resources/pt-br/pages/menus-adicionar/menus-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-add-item",
+      "btn-add-item-wrapper",
+      "btn-copy-widget-val",
+      "custom-css",
+      "custom-label",
+      "custom-target",
+      "custom-url",
+      "error-message",
+      "error-message-content",
+      "field-custom-css",
+      "field-custom-label",
+      "field-custom-target",
+      "field-custom-url",
+      "field-publisher-wrapper",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-menus-preview",
+      "item_publisher_count",
+      "item_publisher_id",
+      "item_publisher_order_by",
+      "item_type",
+      "manual-search-wrapper",
+      "manual_search_input",
+      "menu-availability",
+      "menu-item-builder-wrapper",
+      "menu-tree",
+      "menu_availability",
+      "page-type-filter-wrapper",
+      "search-suggestions-dropdown",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "page_search_type",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#publisher_id_options#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ]
+  },
+  "gestor/modulos/menus/resources/pt-br/pages/menus-clonar/menus-clonar.html": {
+    "markers": [],
+    "ids": [
+      "btn-add-item",
+      "btn-add-item-wrapper",
+      "btn-copy-widget-val",
+      "custom-css",
+      "custom-label",
+      "custom-target",
+      "custom-url",
+      "error-message",
+      "error-message-content",
+      "field-custom-css",
+      "field-custom-label",
+      "field-custom-target",
+      "field-custom-url",
+      "field-publisher-wrapper",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-menus-preview",
+      "item_publisher_count",
+      "item_publisher_id",
+      "item_publisher_order_by",
+      "item_type",
+      "manual-search-wrapper",
+      "manual_search_input",
+      "menu-availability",
+      "menu-item-builder-wrapper",
+      "menu-tree",
+      "menu_availability",
+      "page-type-filter-wrapper",
+      "search-suggestions-dropdown",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "page_search_type",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#publisher_id_options#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/menus/resources/pt-br/pages/menus-editar/menus-editar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-add-item",
+      "btn-add-item-wrapper",
+      "btn-copy-widget-val",
+      "custom-css",
+      "custom-label",
+      "custom-target",
+      "custom-url",
+      "error-message",
+      "error-message-content",
+      "field-custom-css",
+      "field-custom-label",
+      "field-custom-target",
+      "field-custom-url",
+      "field-publisher-wrapper",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-menus-preview",
+      "item_publisher_count",
+      "item_publisher_id",
+      "item_publisher_order_by",
+      "item_type",
+      "manual-search-wrapper",
+      "manual_search_input",
+      "menu-availability",
+      "menu-item-builder-wrapper",
+      "menu-tree",
+      "menu_availability",
+      "page-type-filter-wrapper",
+      "search-suggestions-dropdown",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "page_search_type",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#name#",
+      "#publisher_id_options#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ]
+  },
+  "gestor/modulos/galleries/resources/en/pages/galleries/galleries.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [],
+    "placeholders": []
+  },
+  "gestor/modulos/galleries/resources/en/pages/galleries-adicionar/galleries-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-copy-widget-val",
+      "btn-select-images",
+      "c2f-gallery-views",
+      "error-message",
+      "error-message-content",
+      "gallery-autoplay",
+      "gallery-autoplay-speed",
+      "gallery-height",
+      "gallery-image-position",
+      "gallery-items",
+      "gallery-loop",
+      "gallery-margin-lateral",
+      "gallery-show-arrows",
+      "gallery-show-dots",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-galleries-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[image-position-bottom]]@",
+      "@[[image-position-center]]@",
+      "@[[image-position-label]]@",
+      "@[[image-position-top]]@",
+      "@[[item-caption-label]]@",
+      "@[[item-caption-placeholder]]@",
+      "@[[item-settings-close]]@",
+      "@[[item-settings-title]]@",
+      "@[[item-settings-tooltip]]@",
+      "@[[pagina#url-raiz]]@",
+      "@[[view-large-title]]@",
+      "@[[view-medium-title]]@",
+      "@[[view-small-title]]@"
+    ]
+  },
+  "gestor/modulos/galleries/resources/en/pages/galleries-clonar/galleries-clonar.html": {
+    "markers": [],
+    "ids": [
+      "btn-copy-widget-val",
+      "btn-select-images",
+      "c2f-gallery-views",
+      "error-message",
+      "error-message-content",
+      "gallery-autoplay",
+      "gallery-autoplay-speed",
+      "gallery-height",
+      "gallery-image-position",
+      "gallery-items",
+      "gallery-loop",
+      "gallery-margin-lateral",
+      "gallery-show-arrows",
+      "gallery-show-dots",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-galleries-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[image-position-bottom]]@",
+      "@[[image-position-center]]@",
+      "@[[image-position-label]]@",
+      "@[[image-position-top]]@",
+      "@[[item-caption-label]]@",
+      "@[[item-caption-placeholder]]@",
+      "@[[item-settings-close]]@",
+      "@[[item-settings-title]]@",
+      "@[[item-settings-tooltip]]@",
+      "@[[view-large-title]]@",
+      "@[[view-medium-title]]@",
+      "@[[view-small-title]]@"
+    ]
+  },
+  "gestor/modulos/galleries/resources/en/pages/galleries-editar/galleries-editar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-copy-widget-val",
+      "btn-select-images",
+      "c2f-gallery-views",
+      "error-message",
+      "error-message-content",
+      "gallery-autoplay",
+      "gallery-autoplay-speed",
+      "gallery-height",
+      "gallery-image-position",
+      "gallery-items",
+      "gallery-loop",
+      "gallery-margin-lateral",
+      "gallery-show-arrows",
+      "gallery-show-dots",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-galleries-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#name#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[image-position-bottom]]@",
+      "@[[image-position-center]]@",
+      "@[[image-position-label]]@",
+      "@[[image-position-top]]@",
+      "@[[item-caption-label]]@",
+      "@[[item-caption-placeholder]]@",
+      "@[[item-settings-close]]@",
+      "@[[item-settings-title]]@",
+      "@[[item-settings-tooltip]]@",
+      "@[[pagina#url-raiz]]@",
+      "@[[view-large-title]]@",
+      "@[[view-medium-title]]@",
+      "@[[view-small-title]]@"
+    ]
+  },
+  "gestor/modulos/galleries/resources/pt-br/pages/galleries/galleries.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [],
+    "placeholders": []
+  },
+  "gestor/modulos/galleries/resources/pt-br/pages/galleries-adicionar/galleries-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-copy-widget-val",
+      "btn-select-images",
+      "c2f-gallery-views",
+      "error-message",
+      "error-message-content",
+      "gallery-autoplay",
+      "gallery-autoplay-speed",
+      "gallery-height",
+      "gallery-image-position",
+      "gallery-items",
+      "gallery-loop",
+      "gallery-margin-lateral",
+      "gallery-show-arrows",
+      "gallery-show-dots",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-galleries-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[image-position-bottom]]@",
+      "@[[image-position-center]]@",
+      "@[[image-position-label]]@",
+      "@[[image-position-top]]@",
+      "@[[item-caption-label]]@",
+      "@[[item-caption-placeholder]]@",
+      "@[[item-settings-close]]@",
+      "@[[item-settings-title]]@",
+      "@[[item-settings-tooltip]]@",
+      "@[[pagina#url-raiz]]@",
+      "@[[view-large-title]]@",
+      "@[[view-medium-title]]@",
+      "@[[view-small-title]]@"
+    ]
+  },
+  "gestor/modulos/galleries/resources/pt-br/pages/galleries-clonar/galleries-clonar.html": {
+    "markers": [],
+    "ids": [
+      "btn-copy-widget-val",
+      "btn-select-images",
+      "c2f-gallery-views",
+      "error-message",
+      "error-message-content",
+      "gallery-autoplay",
+      "gallery-autoplay-speed",
+      "gallery-height",
+      "gallery-image-position",
+      "gallery-items",
+      "gallery-loop",
+      "gallery-margin-lateral",
+      "gallery-show-arrows",
+      "gallery-show-dots",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-galleries-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[image-position-bottom]]@",
+      "@[[image-position-center]]@",
+      "@[[image-position-label]]@",
+      "@[[image-position-top]]@",
+      "@[[item-caption-label]]@",
+      "@[[item-caption-placeholder]]@",
+      "@[[item-settings-close]]@",
+      "@[[item-settings-title]]@",
+      "@[[item-settings-tooltip]]@",
+      "@[[view-large-title]]@",
+      "@[[view-medium-title]]@",
+      "@[[view-small-title]]@"
+    ]
+  },
+  "gestor/modulos/galleries/resources/pt-br/pages/galleries-editar/galleries-editar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-copy-widget-val",
+      "btn-select-images",
+      "c2f-gallery-views",
+      "error-message",
+      "error-message-content",
+      "gallery-autoplay",
+      "gallery-autoplay-speed",
+      "gallery-height",
+      "gallery-image-position",
+      "gallery-items",
+      "gallery-loop",
+      "gallery-margin-lateral",
+      "gallery-show-arrows",
+      "gallery-show-dots",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-galleries-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#name#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[image-position-bottom]]@",
+      "@[[image-position-center]]@",
+      "@[[image-position-label]]@",
+      "@[[image-position-top]]@",
+      "@[[item-caption-label]]@",
+      "@[[item-caption-placeholder]]@",
+      "@[[item-settings-close]]@",
+      "@[[item-settings-title]]@",
+      "@[[item-settings-tooltip]]@",
+      "@[[pagina#url-raiz]]@",
+      "@[[view-large-title]]@",
+      "@[[view-medium-title]]@",
+      "@[[view-small-title]]@"
+    ]
+  },
+  "gestor/modulos/forms/resources/en/pages/forms-adicionar/forms-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "access_max",
+      "access_max_simple",
+      "btn-add-form-field",
+      "btn-copy-forms-widget-val",
+      "email_message_component",
+      "email_recipients",
+      "email_reply_to",
+      "email_reply_to_name",
+      "email_subject",
+      "force_recaptcha",
+      "form_action",
+      "forms-fields-table",
+      "forms-widget-code",
+      "forms-widget-val",
+      "iframe-forms-preview",
+      "redirect_error_path",
+      "redirect_success_path",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-editor",
+      "forms-email",
+      "forms-fields",
+      "forms-general",
+      "forms-preview",
+      "forms-redirects",
+      "forms-widget"
+    ],
+    "placeholders": [
+      "#form-module-label#",
+      "#html-editor#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms/resources/en/pages/forms-clonar/forms-clonar.html": {
+    "markers": [],
+    "ids": [
+      "access_max",
+      "access_max_simple",
+      "btn-add-form-field",
+      "btn-copy-forms-widget-val",
+      "email_message_component",
+      "email_recipients",
+      "email_reply_to",
+      "email_reply_to_name",
+      "email_subject",
+      "force_recaptcha",
+      "form_action",
+      "forms-fields-table",
+      "forms-widget-code",
+      "forms-widget-val",
+      "iframe-forms-preview",
+      "redirect_error_path",
+      "redirect_success_path",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-editor",
+      "forms-email",
+      "forms-fields",
+      "forms-general",
+      "forms-preview",
+      "forms-redirects",
+      "forms-widget"
+    ],
+    "placeholders": [
+      "#description#",
+      "#form-module-label#",
+      "#html-editor#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms/resources/en/pages/forms-editar/forms-editar.html": {
+    "markers": [],
+    "ids": [
+      "access_max",
+      "access_max_simple",
+      "btn-add-form-field",
+      "btn-copy-forms-widget-val",
+      "email_message_component",
+      "email_recipients",
+      "email_reply_to",
+      "email_reply_to_name",
+      "email_subject",
+      "force_recaptcha",
+      "form_action",
+      "forms-fields-table",
+      "forms-widget-code",
+      "forms-widget-val",
+      "iframe-forms-preview",
+      "redirect_error_path",
+      "redirect_success_path",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-editor",
+      "forms-email",
+      "forms-fields",
+      "forms-general",
+      "forms-preview",
+      "forms-redirects",
+      "forms-widget"
+    ],
+    "placeholders": [
+      "#description#",
+      "#form-module-label#",
+      "#html-editor#",
+      "#name#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms/resources/en/pages/forms-test-email-page/forms-test-email-page.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [],
+    "placeholders": [
+      "#test-email-page#"
+    ]
+  },
+  "gestor/modulos/forms/resources/en/pages/forms-view/forms-view.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [
+      "data",
+      "info"
+    ],
+    "placeholders": [
+      "#description#",
+      "#fields_schema#",
+      "#forms-info-definition#",
+      "#id#",
+      "#module#",
+      "#name#"
+    ]
+  },
+  "gestor/modulos/forms/resources/pt-br/pages/forms-adicionar/forms-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "access_max",
+      "access_max_simple",
+      "btn-add-form-field",
+      "btn-copy-forms-widget-val",
+      "email_message_component",
+      "email_recipients",
+      "email_reply_to",
+      "email_reply_to_name",
+      "email_subject",
+      "force_recaptcha",
+      "form_action",
+      "forms-fields-table",
+      "forms-widget-code",
+      "forms-widget-val",
+      "iframe-forms-preview",
+      "redirect_error_path",
+      "redirect_success_path",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-editor",
+      "forms-email",
+      "forms-fields",
+      "forms-general",
+      "forms-preview",
+      "forms-redirects",
+      "forms-widget"
+    ],
+    "placeholders": [
+      "#form-module-label#",
+      "#html-editor#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms/resources/pt-br/pages/forms-clonar/forms-clonar.html": {
+    "markers": [],
+    "ids": [
+      "access_max",
+      "access_max_simple",
+      "btn-add-form-field",
+      "btn-copy-forms-widget-val",
+      "email_message_component",
+      "email_recipients",
+      "email_reply_to",
+      "email_reply_to_name",
+      "email_subject",
+      "force_recaptcha",
+      "form_action",
+      "forms-fields-table",
+      "forms-widget-code",
+      "forms-widget-val",
+      "iframe-forms-preview",
+      "redirect_error_path",
+      "redirect_success_path",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-editor",
+      "forms-email",
+      "forms-fields",
+      "forms-general",
+      "forms-preview",
+      "forms-redirects",
+      "forms-widget"
+    ],
+    "placeholders": [
+      "#description#",
+      "#form-module-label#",
+      "#html-editor#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms/resources/pt-br/pages/forms-editar/forms-editar.html": {
+    "markers": [],
+    "ids": [
+      "access_max",
+      "access_max_simple",
+      "btn-add-form-field",
+      "btn-copy-forms-widget-val",
+      "email_message_component",
+      "email_recipients",
+      "email_reply_to",
+      "email_reply_to_name",
+      "email_subject",
+      "force_recaptcha",
+      "form_action",
+      "forms-fields-table",
+      "forms-widget-code",
+      "forms-widget-val",
+      "iframe-forms-preview",
+      "redirect_error_path",
+      "redirect_success_path",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-editor",
+      "forms-email",
+      "forms-fields",
+      "forms-general",
+      "forms-preview",
+      "forms-redirects",
+      "forms-widget"
+    ],
+    "placeholders": [
+      "#description#",
+      "#form-module-label#",
+      "#html-editor#",
+      "#name#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms/resources/pt-br/pages/forms-test-email-page/forms-test-email-page.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [],
+    "placeholders": [
+      "#test-email-page#"
+    ]
+  },
+  "gestor/modulos/forms/resources/pt-br/pages/forms-view/forms-view.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [
+      "data",
+      "info"
+    ],
+    "placeholders": [
+      "#description#",
+      "#fields_schema#",
+      "#forms-info-definition#",
+      "#id#",
+      "#module#",
+      "#name#"
+    ]
+  },
+  "gestor/modulos/forms-search/resources/en/pages/forms-search-adicionar/forms-search-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "btn-add-form-field",
+      "btn-copy-forms-search-widget-val",
+      "form_action",
+      "forms-search-fields-table",
+      "forms-search-widget-code",
+      "forms-search-widget-val",
+      "iframe-forms-search-preview",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-search-editor",
+      "forms-search-fields",
+      "forms-search-general",
+      "forms-search-preview",
+      "forms-search-widget"
+    ],
+    "placeholders": [
+      "#form-module-label#",
+      "#html-editor#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms-search/resources/en/pages/forms-search-clonar/forms-search-clonar.html": {
+    "markers": [],
+    "ids": [
+      "btn-add-form-field",
+      "btn-copy-forms-search-widget-val",
+      "form_action",
+      "forms-search-fields-table",
+      "forms-search-widget-code",
+      "forms-search-widget-val",
+      "iframe-forms-search-preview",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-search-editor",
+      "forms-search-fields",
+      "forms-search-general",
+      "forms-search-preview",
+      "forms-search-widget"
+    ],
+    "placeholders": [
+      "#description#",
+      "#form-module-label#",
+      "#html-editor#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms-search/resources/en/pages/forms-search-editar/forms-search-editar.html": {
+    "markers": [],
+    "ids": [
+      "btn-add-form-field",
+      "btn-copy-forms-search-widget-val",
+      "form_action",
+      "forms-search-fields-table",
+      "forms-search-widget-code",
+      "forms-search-widget-val",
+      "iframe-forms-search-preview",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-search-editor",
+      "forms-search-fields",
+      "forms-search-general",
+      "forms-search-preview",
+      "forms-search-widget"
+    ],
+    "placeholders": [
+      "#description#",
+      "#form-module-label#",
+      "#html-editor#",
+      "#name#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms-search/resources/en/pages/forms-search-view/forms-search-view.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [
+      "data",
+      "info"
+    ],
+    "placeholders": [
+      "#description#",
+      "#fields_schema#",
+      "#forms-search-info-definition#",
+      "#id#",
+      "#module#",
+      "#name#"
+    ]
+  },
+  "gestor/modulos/forms-search/resources/pt-br/pages/forms-search-adicionar/forms-search-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "btn-add-form-field",
+      "btn-copy-forms-search-widget-val",
+      "form_action",
+      "forms-search-fields-table",
+      "forms-search-widget-code",
+      "forms-search-widget-val",
+      "iframe-forms-search-preview",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-search-editor",
+      "forms-search-fields",
+      "forms-search-general",
+      "forms-search-preview",
+      "forms-search-widget"
+    ],
+    "placeholders": [
+      "#form-module-label#",
+      "#html-editor#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms-search/resources/pt-br/pages/forms-search-clonar/forms-search-clonar.html": {
+    "markers": [],
+    "ids": [
+      "btn-add-form-field",
+      "btn-copy-forms-search-widget-val",
+      "form_action",
+      "forms-search-fields-table",
+      "forms-search-widget-code",
+      "forms-search-widget-val",
+      "iframe-forms-search-preview",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-search-editor",
+      "forms-search-fields",
+      "forms-search-general",
+      "forms-search-preview",
+      "forms-search-widget"
+    ],
+    "placeholders": [
+      "#description#",
+      "#form-module-label#",
+      "#html-editor#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms-search/resources/pt-br/pages/forms-search-editar/forms-search-editar.html": {
+    "markers": [],
+    "ids": [
+      "btn-add-form-field",
+      "btn-copy-forms-search-widget-val",
+      "form_action",
+      "forms-search-fields-table",
+      "forms-search-widget-code",
+      "forms-search-widget-val",
+      "iframe-forms-search-preview",
+      "template_id"
+    ],
+    "names": [
+      "description",
+      "fields_schema",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "forms-search-editor",
+      "forms-search-fields",
+      "forms-search-general",
+      "forms-search-preview",
+      "forms-search-widget"
+    ],
+    "placeholders": [
+      "#description#",
+      "#form-module-label#",
+      "#html-editor#",
+      "#name#",
+      "#select-module#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/forms-search/resources/pt-br/pages/forms-search-view/forms-search-view.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [
+      "data",
+      "info"
+    ],
+    "placeholders": [
+      "#description#",
+      "#fields_schema#",
+      "#forms-search-info-definition#",
+      "#id#",
+      "#module#",
+      "#name#"
+    ]
+  },
+  "gestor/modulos/forms-submissions/resources/en/pages/forms-submissions-view/forms-submissions-view.html": {
+    "markers": [
+      "cel <",
+      "cel >",
+      "reply_section <",
+      "reply_section >",
+      "response <",
+      "response >",
+      "response_history <",
+      "response_history >",
+      "status_option <",
+      "status_option >"
+    ],
+    "ids": [
+      "btn-save-status",
+      "btn-send-reply",
+      "form-reply",
+      "form-status-select",
+      "reply-message",
+      "reply-to-email"
+    ],
+    "names": [],
+    "tabs": [],
+    "placeholders": [
+      "#email_status_badge#",
+      "#field_label#",
+      "#field_value#",
+      "#fields_values#",
+      "#form_id#",
+      "#form_status_badge#",
+      "#id#",
+      "#name#",
+      "#reply_email#",
+      "#response_date#",
+      "#response_message#",
+      "#response_status#",
+      "#status_id#",
+      "#status_name#",
+      "#status_selected#"
+    ]
+  },
+  "gestor/modulos/forms-submissions/resources/pt-br/pages/forms-submissions-process/forms-submissions-process.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [],
+    "placeholders": []
+  },
+  "gestor/modulos/forms-submissions/resources/pt-br/pages/forms-submissions-view/forms-submissions-view.html": {
+    "markers": [
+      "cel <",
+      "cel >",
+      "reply_section <",
+      "reply_section >",
+      "response <",
+      "response >",
+      "response_history <",
+      "response_history >",
+      "status_option <",
+      "status_option >"
+    ],
+    "ids": [
+      "btn-save-status",
+      "btn-send-reply",
+      "form-reply",
+      "form-status-select",
+      "reply-message",
+      "reply-to-email"
+    ],
+    "names": [],
+    "tabs": [],
+    "placeholders": [
+      "#email_status_badge#",
+      "#field_label#",
+      "#field_value#",
+      "#fields_values#",
+      "#form_id#",
+      "#form_status_badge#",
+      "#id#",
+      "#name#",
+      "#reply_email#",
+      "#response_date#",
+      "#response_message#",
+      "#response_status#",
+      "#status_id#",
+      "#status_name#",
+      "#status_selected#"
+    ]
+  },
+  "gestor/modulos/cookie-consent/resources/en/pages/cookie-consent/cookie-consent.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [],
+    "placeholders": []
+  },
+  "gestor/modulos/cookie-consent/resources/en/pages/cookie-consent-adicionar/cookie-consent-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-copy-widget-val",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-widget-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "cc-categories",
+      "cc-general",
+      "cc-texts",
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ]
+  },
+  "gestor/modulos/cookie-consent/resources/en/pages/cookie-consent-clonar/cookie-consent-clonar.html": {
+    "markers": [],
+    "ids": [
+      "btn-copy-widget-val",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-widget-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "cc-categories",
+      "cc-general",
+      "cc-texts",
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/cookie-consent/resources/en/pages/cookie-consent-editar/cookie-consent-editar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-copy-widget-val",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-widget-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "cc-categories",
+      "cc-general",
+      "cc-texts",
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#name#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ]
+  },
+  "gestor/modulos/cookie-consent/resources/pt-br/pages/cookie-consent/cookie-consent.html": {
+    "markers": [],
+    "ids": [],
+    "names": [],
+    "tabs": [],
+    "placeholders": []
+  },
+  "gestor/modulos/cookie-consent/resources/pt-br/pages/cookie-consent-adicionar/cookie-consent-adicionar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-copy-widget-val",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-widget-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "cc-categories",
+      "cc-general",
+      "cc-texts",
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ]
+  },
+  "gestor/modulos/cookie-consent/resources/pt-br/pages/cookie-consent-clonar/cookie-consent-clonar.html": {
+    "markers": [],
+    "ids": [
+      "btn-copy-widget-val",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-widget-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "cc-categories",
+      "cc-general",
+      "cc-texts",
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#template_id_options#",
+      "#template_placeholder_option#"
+    ]
+  },
+  "gestor/modulos/cookie-consent/resources/pt-br/pages/cookie-consent-editar/cookie-consent-editar.html": {
+    "markers": [],
+    "ids": [
+      "add-new-template",
+      "btn-copy-widget-val",
+      "hep-widget-code",
+      "hep-widget-val",
+      "iframe-widget-preview",
+      "template_id"
+    ],
+    "names": [
+      "fields_schema",
+      "hep-widget-code",
+      "name",
+      "template_id"
+    ],
+    "tabs": [
+      "cc-categories",
+      "cc-general",
+      "cc-texts",
+      "hep-editor",
+      "hep-preview",
+      "hep-widget"
+    ],
+    "placeholders": [
+      "#html-editor#",
+      "#name#",
+      "#template_id_options#",
+      "#template_placeholder_option#",
+      "@[[pagina#url-raiz]]@"
+    ]
+  }
+}

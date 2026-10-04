@@ -1,9 +1,7 @@
 .template-options-wrapper{
     min-height: 100px;
 }
-.hidden{
-    display: none !important;
-}
+
 .template-fields-list .item{
     margin-bottom: 5px;
 }
@@ -13,3 +11,18 @@
 #hep-widget-val{
     height: 36px;
 }
+
+/* Controls and dynamic builder content, scoped to the module page. */
+.req222-page { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.req222-page table { max-width: 100%; }
+.req222-page select, .req222-page input, .req222-page textarea { max-width: 100%; }
+.req222-page .c2fc-chave { flex-wrap: wrap; }
+.req222-page .c2fc-chave > label { cursor: pointer; }
+.req222-page .menu-tree-row { max-width: 100%; box-sizing: border-box; }
+.req222-page .menu-tree-type { flex-shrink: 1; }
+.req222-page .gallery-toolbar { display: flex; flex-wrap: wrap; gap: 12px; }
+.req222-page .forms-field-handle, .req222-page .forms-search-field-handle { cursor: grab; touch-action: none; }
+.req222-page #forms-fields-table, .req222-page #forms-search-fields-table { min-width: 850px; }
+.req222-page .tab:not(.active) { display: none; }
+.req222-page .tab.active { display: block; }
+.req222-page .c2fc-aba.active { color: #0369a1; background: #e0f2fe; }

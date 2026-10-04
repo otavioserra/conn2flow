@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.0.1",
     "bibliotecas": [
         "interface",
         "html"
@@ -43,31 +43,126 @@
                 {
                     "name": "Formulários Envios - Listar",
                     "id": "forms-submissions-list",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-submissions/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-submissions.js",
+                        "../../../../forms-submissions.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Formulários Envios - Visualizar",
                     "id": "forms-submissions-view",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-submissions/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
                         "html": "a204f1de4355f4083268ec26b6834e3c",
                         "css": "",
                         "combined": "a204f1de4355f4083268ec26b6834e3c"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-visualizacao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-submissions.js",
+                        "../../../../forms-submissions.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Formulários Envios - Processar",
@@ -150,6 +245,46 @@
                     "id": "table-column-status",
                     "value": "Status",
                     "type": "string"
+                },
+                {
+                    "id": "js-id-missing",
+                    "value": "Identificador do envio nÃ£o encontrado.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-status-error",
+                    "value": "Erro ao atualizar o status.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-communication-error",
+                    "value": "Erro ao comunicar com o servidor.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-email-missing",
+                    "value": "E-mail do destinatÃ¡rio nÃ£o encontrado.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-reply-confirm",
+                    "value": "Enviar resposta para {email}?",
+                    "type": "string"
+                },
+                {
+                    "id": "js-reply-error",
+                    "value": "Erro ao enviar a resposta.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-reply-sent",
+                    "value": "Enviado!",
+                    "type": "string"
+                },
+                {
+                    "id": "not-applicable-label",
+                    "value": "NÃ£o se aplica",
+                    "type": "string"
                 }
             ]
         },
@@ -180,31 +315,126 @@
                 {
                     "name": "Forms Submissions - List",
                     "id": "forms-submissions-list",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-submissions/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-submissions.js",
+                        "../../../../forms-submissions.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Forms Submissions - View",
                     "id": "forms-submissions-view",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "forms-submissions/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
                         "html": "1b28eced4e880b6828f8adbb5ed4a6cf",
                         "css": "",
                         "combined": "1b28eced4e880b6828f8adbb5ed4a6cf"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-iframe-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-visualizacao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-222: controles, interface e editor montados no servidor precisam integrar o bundle da página.",
+                    "tailwind_sources": [
+                        "../../../../forms-submissions.js",
+                        "../../../../forms-submissions.php"
+                    ],
+                    "tailwind_sources_reason": "req-222: marcação dinâmica herdada dos construtores e selos do módulo; controles novos usam classes c2fc."
                 },
                 {
                     "name": "Forms Submissions - Process",
@@ -286,6 +516,46 @@
                 {
                     "id": "table-column-status",
                     "value": "Status",
+                    "type": "string"
+                },
+                {
+                    "id": "js-id-missing",
+                    "value": "Submission ID not found.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-status-error",
+                    "value": "Error updating status.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-communication-error",
+                    "value": "Error communicating with server.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-email-missing",
+                    "value": "Recipient email not found.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-reply-confirm",
+                    "value": "Send reply to {email}?",
+                    "type": "string"
+                },
+                {
+                    "id": "js-reply-error",
+                    "value": "Error sending reply.",
+                    "type": "string"
+                },
+                {
+                    "id": "js-reply-sent",
+                    "value": "Sent!",
+                    "type": "string"
+                },
+                {
+                    "id": "not-applicable-label",
+                    "value": "Not applicable",
                     "type": "string"
                 }
             ]

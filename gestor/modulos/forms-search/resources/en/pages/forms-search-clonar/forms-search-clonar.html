@@ -1,37 +1,64 @@
+<div class="req222-page space-y-4">
+<template id="field-row-template"><table><tbody>
+  <tr>
+    <td><i data-lucide="grip-vertical" class="c2fc-icone forms-search-field-handle"></i></td>
+    <td><input type="text" class="c2fc-campo-entrada forms-search-field-label"></td>
+    <td><input type="text" class="c2fc-campo-entrada forms-search-field-name"></td>
+    <td><select class="c2fc-campo-entrada forms-search-field-type dropdown"><option value="text">@[[field-type-text]]@</option>
+<option value="email">@[[field-type-email]]@</option>
+<option value="tel">@[[field-type-tel]]@</option>
+<option value="number">@[[field-type-number]]@</option>
+<option value="password">@[[field-type-password]]@</option>
+<option value="date">@[[field-type-date]]@</option>
+<option value="url">@[[field-type-url]]@</option>
+<option value="hidden">@[[field-type-hidden]]@</option>
+<option value="textarea">@[[field-type-textarea]]@</option>
+<option value="select">@[[field-type-select]]@</option>
+<option value="radio">@[[field-type-radio]]@</option>
+<option value="checkbox">@[[field-type-checkbox]]@</option></select></td>
+    <td><input type="text" class="c2fc-campo-entrada forms-search-field-placeholder"></td>
+    <td><textarea rows="2" class="c2fc-campo-entrada forms-search-field-options"></textarea></td>
+    <td><label class="c2fc-chave checkbox"><input type="checkbox" class="forms-search-field-required"><span class="c2fc-chave-trilho" aria-hidden="true"></span></label></td>
+    <td><button type="button" class="c2fc-botao c2fc-botao-perigo c2fc-botao-icone forms-search-field-remove" aria-label="@[[field-remove-label]]@"><i data-lucide="trash-2" class="c2fc-icone"></i></button></td>
+  </tr>
+</tbody></table></template>
+
 <input type="hidden" name="fields_schema">
 
 <div class="forms-search-main-tabs">
-<div class="ui top attached tabular menu menuForms">
-    <a class="active item" data-tab="forms-search-general"><i class="settings icon"></i> General</a>
-    <a class="item" data-tab="forms-search-fields"><i class="list icon"></i> Extra Fields</a>
+<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuForms">
+    <a class="c2fc-aba active item" data-tab="forms-search-general"><i data-lucide="settings" class="size-4 shrink-0 icon "></i> General</a>
+    <a class="c2fc-aba item" data-tab="forms-search-fields"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Extra Fields</a>
 </div>
 
-<div class="ui bottom attached active tab segment" data-tab="forms-search-general">
-    <div class="field"><label>Name</label><input type="text" name="name" placeholder="Ex: Form Name"></div>
-    <div class="field"><label>Description</label><input type="text" name="description" placeholder="Ex: Form Description" value="#description#"></div>
-    <div class="field"><label>#form-module-label#</label><span>#select-module#</span></div>
-    <div class="field"><label>Action</label><input type="text" id="form_action" placeholder="pages-index-search/"></div>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="forms-search-general">
+    <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Name</label><input class="c2fc-campo-entrada" type="text" name="name" placeholder="Ex: Form Name"></div>
+    <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Description</label><input class="c2fc-campo-entrada" type="text" name="description" placeholder="Ex: Form Description" value="#description#"></div>
+    <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">#form-module-label#</label><span>#select-module#</span></div>
+    <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Action</label><input class="c2fc-campo-entrada" type="text" id="form_action" placeholder="pages-index-search/"></div>
 </div>
 
-<div class="ui bottom attached tab segment" data-tab="forms-search-fields">
-    <div class="ui info message">The required <code>search</code> field is included automatically. Add only optional filters here.</div>
-    <button type="button" class="ui primary button" id="btn-add-form-field"><i class="plus icon"></i> Field</button>
-    <table class="ui celled compact table" id="forms-search-fields-table">
-        <thead><tr><th style="width:40px;"></th><th>Label</th><th>Name</th><th>Type</th><th>Placeholder</th><th>Options</th><th style="width:90px;">Required</th><th style="width:60px;"></th></tr></thead>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="forms-search-fields">
+    <div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 info message">The required <code>search</code> field is included automatically. Add only optional filters here.</div>
+    <button type="button" class="c2fc-botao c2fc-botao-primario primary button" id="btn-add-form-field"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Field</button>
+    <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled compact table" id="forms-search-fields-table">
+        <thead><tr><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:40px;"></th><th class="border-b border-slate-200 px-3 py-2 align-top">Label</th><th class="border-b border-slate-200 px-3 py-2 align-top">Name</th><th class="border-b border-slate-200 px-3 py-2 align-top">Type</th><th class="border-b border-slate-200 px-3 py-2 align-top">Placeholder</th><th class="border-b border-slate-200 px-3 py-2 align-top">Options</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:90px;">Required</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:60px;"></th></tr></thead>
         <tbody></tbody>
-    </table>
+    </table></div>
 </div>
 </div>
 
-<h4 class="ui dividing header">Form Content</h4>
+<h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Form Content</h4>
 
-<div class="field"><label>Template</label><select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id"><option value="">#template_placeholder_option#</option>#template_id_options#</select></div>
+<div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Template</label><select data-c2f-select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown" name="template_id"><option value="">#template_placeholder_option#</option>#template_id_options#</select></div>
 
 <div class="forms-search-content-tabs">
-<div class="ui top attached tabular menu menuConteudoForm"><a class="active item" data-tab="forms-search-preview"><i class="eye icon"></i> Preview</a><a class="item" data-tab="forms-search-editor"><i class="code icon"></i> HTML Editor</a><a class="item" data-tab="forms-search-widget"><i class="cubes icon"></i> Widget Code</a></div>
-<div class="ui bottom attached active tab segment" data-tab="forms-search-preview"><div style="position:relative;"><iframe id="iframe-forms-search-preview" style="width:100%;height:700px;border:1px solid #ccc;"></iframe><div class="ui dimmer forms-search-preview-dimmer"><div class="ui loader"></div></div></div></div>
-<div class="ui bottom attached tab segment" data-tab="forms-search-editor">
+<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuConteudoForm"><a class="c2fc-aba active item" data-tab="forms-search-preview"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Preview</a><a class="c2fc-aba item" data-tab="forms-search-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> HTML Editor</a><a class="c2fc-aba item" data-tab="forms-search-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Widget Code</a></div>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="forms-search-preview"><div style="position:relative;"><iframe id="iframe-forms-search-preview" style="width:100%;height:700px;border:1px solid #ccc;"></iframe><div class="c2fc-cobertura ui dimmer forms-search-preview-dimmer"><div class="c2fc-giro loader"></div></div></div></div>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="forms-search-editor">
     #html-editor#
 </div>
-<div class="ui bottom attached tab segment" data-tab="forms-search-widget"><div class="field"><label>Widget Variable</label><div class="ui action input"><input type="text" id="forms-search-widget-val" readonly><button type="button" id="btn-copy-forms-search-widget-val" class="ui teal button"><i class="copy icon"></i> Copy</button></div></div><h4 class="ui header">HTML Code</h4><div style="border:1px solid #ccc;"><textarea id="forms-search-widget-code"></textarea></div></div>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="forms-search-widget"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Widget Variable</label><div class="flex items-center gap-2 min-w-0 action input"><input class="c2fc-campo-entrada" type="text" id="forms-search-widget-val" readonly><button type="button" id="btn-copy-forms-search-widget-val" class="c2fc-botao c2fc-botao-primario teal button"><i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copy</button></div></div><h4 class="text-lg font-semibold text-slate-800 my-4 header">HTML Code</h4><div style="border:1px solid #ccc;"><textarea class="c2fc-campo-entrada" id="forms-search-widget-code"></textarea></div></div>
+</div>
+
 </div>
