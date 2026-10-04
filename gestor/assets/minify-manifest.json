@@ -55,9 +55,9 @@
         "minificado": 13929
     },
     "gestor/assets/interface/controles.js": {
-        "sha1": "d303ef756117cf62d9feb0c3c8dc314aac7c5839",
-        "origem": 44054,
-        "minificado": 23756
+        "sha1": "40808c6af0a10aaf22e0260ca726c45fb36b0f00",
+        "origem": 52443,
+        "minificado": 27645
     },
     "gestor/assets/interface/editor-texto.js": {
         "sha1": "3a4a2787e357221082a3ec7566bc939804c7a12c",
@@ -75,9 +75,9 @@
         "minificado": 1296
     },
     "gestor/assets/interface/html-editor-interface.js": {
-        "sha1": "20a72822dba9c0fd3f547eef1718aa102fb323b2",
-        "origem": 167306,
-        "minificado": 63841
+        "sha1": "fb9ef308e409a5a69d8b017c0e5a5860db9dddd9",
+        "origem": 168187,
+        "minificado": 64039
     },
     "gestor/assets/interface/html-editor-modules.js": {
         "sha1": "7c5934089d8e0b3279282539f010b461ec4dcea6",
@@ -175,9 +175,9 @@
         "minificado": 501
     },
     "gestor/modulos/admin-paginas/admin-paginas.js": {
-        "sha1": "edb394b83d03e450b2a294c2c1e2798e559f55af",
-        "origem": 7917,
-        "minificado": 4343
+        "sha1": "6af955985c8f856f2ad104d71adfc6dfebac26d1",
+        "origem": 8023,
+        "minificado": 4356
     },
     "gestor/modulos/admin-plugins/admin-plugins.js": {
         "sha1": "ffc760f1899ed488edd46d11e7c4bc3a5c643b7c",

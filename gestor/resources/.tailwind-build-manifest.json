@@ -28,6 +28,105 @@
             "safelist": [],
             "built_at": "2026-09-29T17:12:03+00:00"
         },
+        "global||en|components|html-editor-modal-tailwind": {
+            "fingerprint": "91d1a166a33e4b4ef53c78f15ee48f8da8cf48ca660a176781a5cc0a2fcaad83",
+            "output_hash": "d182622ca578d95c2de322c2bab2b1bd3cfe3a8236c74ae7d15a5bf623fd8424",
+            "output": "resources//en/components/html-editor-modal-tailwind/html-editor-modal-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/html-editor-modal-tailwind/html-editor-modal-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:25+00:00"
+        },
+        "global||en|components|html-editor-modelos-tailwind": {
+            "fingerprint": "6aab438b14d21776ca91015ff6d6e59daf7abc8c73398cb2f777e8555b485edc",
+            "output_hash": "df661504f6d6e14620af6f81f9304929b61dc785e60abde5774c548191a31ae8",
+            "output": "resources//en/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:25+00:00"
+        },
+        "global||en|components|html-editor-page-modification-tailwind": {
+            "fingerprint": "b4e7b48230efcd20fda1187db164a6958f47ace8995a1c4d4a11e123d707a38f",
+            "output_hash": "a5265b4aeae5c3943ed66a9d3f6816286e90bf39579dc4b7dcce0cc6de272c39",
+            "output": "resources//en/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:25+00:00"
+        },
+        "global||en|components|html-editor-seo-tailwind": {
+            "fingerprint": "8b1ada0801938974aa724b2953bf89f51a51bda20a4d672a18ab12449f41968c",
+            "output_hash": "e9e817931fb9ebe91fba727ca9a7f64ebeb83761449ed6f757270c7a1cb453a7",
+            "output": "resources//en/components/html-editor-seo-tailwind/html-editor-seo-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/html-editor-seo-tailwind/html-editor-seo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:26+00:00"
+        },
+        "global||en|components|html-editor-tailwind": {
+            "fingerprint": "4c18266de08f56f7ed8af284e4736398b1970ced792c35b4e1cbb937759c4764",
+            "output_hash": "23b44cd6c6ec11b0f0346ae63de04a51db219711aeda7bcadabcae5765493f79",
+            "output": "resources//en/components/html-editor-tailwind/html-editor-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/html-editor-tailwind/html-editor-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:26+00:00"
+        },
+        "global||en|components|html-editor-visual-modal-tailwind": {
+            "fingerprint": "2ed52ea4a2421c4ceca0fdf8ea39affe00b99d2584f46720406c6c7ad31d5ae4",
+            "output_hash": "232f456ba297910b70d281e983836cd1e6f92ec0e78685f9c41a08190f2dcbd9",
+            "output": "resources//en/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:26+00:00"
+        },
+        "global||en|components|ia-prompt-modais-tailwind": {
+            "fingerprint": "fc5b67e395f2172ea83e6a448e8d3f60ad1e54c24cf32d91061e2e6e94b3ea2a",
+            "output_hash": "1b9c40a37d9bf39732fa95f3a62391cd30e8da6539ef9f4c36657f9216284f24",
+            "output": "resources//en/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:26+00:00"
+        },
+        "global||en|components|ia-prompt-tailwind": {
+            "fingerprint": "6962667ed7a75ee5ee65d9ef76bba13c91044f279b617e0c2c3ae7a0909cc24c",
+            "output_hash": "75d7fa89d5acae0024b3fe3aade9fc5ce635fbdf10b9ee448a38e4b29995b804",
+            "output": "resources//en/components/ia-prompt-tailwind/ia-prompt-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/ia-prompt-tailwind/ia-prompt-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:26+00:00"
+        },
+        "global||en|components|ia-sem-servidor-tailwind": {
+            "fingerprint": "f90d4452547c48432c938b99d7a003ee31b1ec89254c5e01bbe9a61173db984e",
+            "output_hash": "2df51aac84d2fb8050e75509b6636bd204006bb2b7a22490b39345f388d14d99",
+            "output": "resources//en/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:27+00:00"
+        },
         "global||en|components|interface-alerta-modal-tailwind": {
             "fingerprint": "493f4bad8543b4271ba0b1fb9ec2b5a2caba13d7205a2489692ca637d0a2a088",
             "output_hash": "d59de931f5db050b4e0414b0ebd21fb6385de6d3356d663770cbbca082e1fb2d",
@@ -94,6 +193,17 @@
             "safelist": [],
             "built_at": "2026-09-29T17:12:04+00:00"
         },
+        "global||en|components|interface-iframe-modal-tailwind": {
+            "fingerprint": "1f0dc78b984e253853050ae687da253836c658cfd3d9fd63d9bc7cb31eea87d3",
+            "output_hash": "d00001029208745de4f983a7962e02b1d11d263b86e4b9cec9a986321c190a70",
+            "output": "resources//en/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:27+00:00"
+        },
         "global||en|components|menu-principal-sistema-tailwind": {
             "fingerprint": "787b154d15e3dc8306e09f36be9a424609ef6320e8a2c799d6a9d30517b74bb4",
             "output_hash": "d6cb5490cbb8de8b54c7beae99e210affa8f001aab4c17d54f7b09608a84bd79",
@@ -104,6 +214,17 @@
             ],
             "safelist": [],
             "built_at": "2026-09-29T17:12:05+00:00"
+        },
+        "global||en|components|widget-imagem-tailwind": {
+            "fingerprint": "580a74b7fb5dd0a33748c40c6dbb72d41458561b2a2f15538d7ac8342453ac4a",
+            "output_hash": "fe295edc6aa2b44fab4d67376ae2458c2807401723600904f00f86713aaca061",
+            "output": "resources//en/components/widget-imagem-tailwind/widget-imagem-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//en/components/widget-imagem-tailwind/widget-imagem-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:27+00:00"
         },
         "global||en|layouts|layout-administrativo-tailwind": {
             "fingerprint": "02c8f491cac1db95ac7b96fc16277d826f526c496a9c45c0a00068ea3721faec",
@@ -562,6 +683,105 @@
             "safelist": [],
             "built_at": "2026-09-29T17:12:15+00:00"
         },
+        "global||pt-br|components|html-editor-modal-tailwind": {
+            "fingerprint": "eddb88d435e7f13447b94061acf9fa8931653f8e1f465418e444a9f0b239d902",
+            "output_hash": "d182622ca578d95c2de322c2bab2b1bd3cfe3a8236c74ae7d15a5bf623fd8424",
+            "output": "resources//pt-br/components/html-editor-modal-tailwind/html-editor-modal-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/html-editor-modal-tailwind/html-editor-modal-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:27+00:00"
+        },
+        "global||pt-br|components|html-editor-modelos-tailwind": {
+            "fingerprint": "4a5ca664008eb4403889ebaf7963cf3fc9de6c15ea912e3b29e034b1365e2e22",
+            "output_hash": "df661504f6d6e14620af6f81f9304929b61dc785e60abde5774c548191a31ae8",
+            "output": "resources//pt-br/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:27+00:00"
+        },
+        "global||pt-br|components|html-editor-page-modification-tailwind": {
+            "fingerprint": "21449221172b006a02a6d2ed279504c5c1f59045a31fe12b50d07ffb1774f2b4",
+            "output_hash": "a5265b4aeae5c3943ed66a9d3f6816286e90bf39579dc4b7dcce0cc6de272c39",
+            "output": "resources//pt-br/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:28+00:00"
+        },
+        "global||pt-br|components|html-editor-seo-tailwind": {
+            "fingerprint": "72bc3d7813a2d8d261b84081ef590879757e4e7f6de7c4fc247b5cc0ed1bde80",
+            "output_hash": "e9e817931fb9ebe91fba727ca9a7f64ebeb83761449ed6f757270c7a1cb453a7",
+            "output": "resources//pt-br/components/html-editor-seo-tailwind/html-editor-seo-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/html-editor-seo-tailwind/html-editor-seo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:28+00:00"
+        },
+        "global||pt-br|components|html-editor-tailwind": {
+            "fingerprint": "7318449f3154bc7920aaee9bfcf7b8af44ddd6fe8b59e5ebf7766750190ec911",
+            "output_hash": "23b44cd6c6ec11b0f0346ae63de04a51db219711aeda7bcadabcae5765493f79",
+            "output": "resources//pt-br/components/html-editor-tailwind/html-editor-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/html-editor-tailwind/html-editor-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:28+00:00"
+        },
+        "global||pt-br|components|html-editor-visual-modal-tailwind": {
+            "fingerprint": "f7e7e7e30217febd4a3681f62983015e86ed9e45bc6c2b740d39ecccc79510d0",
+            "output_hash": "232f456ba297910b70d281e983836cd1e6f92ec0e78685f9c41a08190f2dcbd9",
+            "output": "resources//pt-br/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:28+00:00"
+        },
+        "global||pt-br|components|ia-prompt-modais-tailwind": {
+            "fingerprint": "fcbaeaa3b6fed89abe28845810f118a8cdfabef78870da8a5bfb59d7bf4ef15e",
+            "output_hash": "1b9c40a37d9bf39732fa95f3a62391cd30e8da6539ef9f4c36657f9216284f24",
+            "output": "resources//pt-br/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:29+00:00"
+        },
+        "global||pt-br|components|ia-prompt-tailwind": {
+            "fingerprint": "7f382e2db74518c7af0c173bcace8e61c2c31c2b43c11e5d9729c246e972d9b3",
+            "output_hash": "75d7fa89d5acae0024b3fe3aade9fc5ce635fbdf10b9ee448a38e4b29995b804",
+            "output": "resources//pt-br/components/ia-prompt-tailwind/ia-prompt-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/ia-prompt-tailwind/ia-prompt-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:29+00:00"
+        },
+        "global||pt-br|components|ia-sem-servidor-tailwind": {
+            "fingerprint": "d965b8fd9bc8828c52d6b51dc4a3c16c7dda8af7d1e7886fc9d213455a5a8888",
+            "output_hash": "2df51aac84d2fb8050e75509b6636bd204006bb2b7a22490b39345f388d14d99",
+            "output": "resources//pt-br/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:29+00:00"
+        },
         "global||pt-br|components|interface-alerta-modal-tailwind": {
             "fingerprint": "bf0cd96a94a5cd0e1d8e742ca28aac397a7a55a128e3c4e61c106fa0d7ef103b",
             "output_hash": "d59de931f5db050b4e0414b0ebd21fb6385de6d3356d663770cbbca082e1fb2d",
@@ -628,6 +848,17 @@
             "safelist": [],
             "built_at": "2026-09-29T17:12:16+00:00"
         },
+        "global||pt-br|components|interface-iframe-modal-tailwind": {
+            "fingerprint": "4a96f84774e3c6ce376e821ce571f19d74fd6c74fb9814bcddc327bb9cf22550",
+            "output_hash": "d00001029208745de4f983a7962e02b1d11d263b86e4b9cec9a986321c190a70",
+            "output": "resources//pt-br/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:29+00:00"
+        },
         "global||pt-br|components|menu-principal-sistema-tailwind": {
             "fingerprint": "58d7ee4c65eb1f296e2b02f37bc32c430a9d7329af2f3d0fb992e70e1dda004b",
             "output_hash": "d6cb5490cbb8de8b54c7beae99e210affa8f001aab4c17d54f7b09608a84bd79",
@@ -638,6 +869,17 @@
             ],
             "safelist": [],
             "built_at": "2026-09-29T17:12:16+00:00"
+        },
+        "global||pt-br|components|widget-imagem-tailwind": {
+            "fingerprint": "38397fd45791464ab4de28f57a91237a146542ccf7058e4477e8f9e7d9fb83da",
+            "output_hash": "fe295edc6aa2b44fab4d67376ae2458c2807401723600904f00f86713aaca061",
+            "output": "resources//pt-br/components/widget-imagem-tailwind/widget-imagem-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "resources//pt-br/components/widget-imagem-tailwind/widget-imagem-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:29+00:00"
         },
         "global||pt-br|layouts|layout-administrativo-tailwind": {
             "fingerprint": "71982d32dc5aab4e1fb370f8995c481639bbdd133ea8324f42832fc39eef2625",
@@ -1103,6 +1345,242 @@
             ],
             "safelist": [],
             "built_at": "2026-09-29T17:12:26+00:00"
+        },
+        "module|admin-paginas|en|components|layout-profile-mapping-tailwind": {
+            "fingerprint": "bf35dbbf3d1234d9403c52c2fa6150e06f9919400af72037f126bb4c00505560",
+            "output_hash": "ec49850226e31df664bbb37cb16214f83118871c226752da479edc92974179a8",
+            "output": "modulos/admin-paginas/resources/en/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/en/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:30+00:00"
+        },
+        "module|admin-paginas|en|components|layout-profile-row-tailwind": {
+            "fingerprint": "617bc45ed967ff302f32fff3c6b9c779020cf106bfdfad1e811e98323cbf7024",
+            "output_hash": "cdd1f28c748a06b249afe07e92b8016af84e39524edbb1832f5c1ee2fede2519",
+            "output": "modulos/admin-paginas/resources/en/components/layout-profile-row-tailwind/layout-profile-row-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/en/components/layout-profile-row-tailwind/layout-profile-row-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:30+00:00"
+        },
+        "module|admin-paginas|en|pages|admin-paginas-adicionar": {
+            "fingerprint": "e90e72b8ab9984e19b24d1ad0b4a6dbd6544149fd6d4e37e013fa181d9618a9f",
+            "output_hash": "6e91b9984ff2cb3d2298ee16e456f52c8e59921b72044ae4b83911b990da9f4c",
+            "output": "modulos/admin-paginas/resources/en/pages/admin-paginas-adicionar/admin-paginas-adicionar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/en/pages/admin-paginas-adicionar/admin-paginas-adicionar.html",
+                "modulos/admin-paginas/admin-paginas.php",
+                "modulos/admin-paginas/resources/en/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.html",
+                "modulos/admin-paginas/resources/en/components/layout-profile-row-tailwind/layout-profile-row-tailwind.html",
+                "resources/en/components/html-editor-modal-tailwind/html-editor-modal-tailwind.html",
+                "resources/en/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.html",
+                "resources/en/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.html",
+                "resources/en/components/html-editor-seo-tailwind/html-editor-seo-tailwind.html",
+                "resources/en/components/html-editor-tailwind/html-editor-tailwind.html",
+                "resources/en/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.html",
+                "resources/en/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.html",
+                "resources/en/components/ia-prompt-tailwind/ia-prompt-tailwind.html",
+                "resources/en/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.html",
+                "resources/en/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/en/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/en/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/en/components/interface-formulario-inclusao-tailwind/interface-formulario-inclusao-tailwind.html",
+                "resources/en/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.html",
+                "resources/en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/en/components/widget-imagem-tailwind/widget-imagem-tailwind.html",
+                "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:25:23+00:00"
+        },
+        "module|admin-paginas|en|pages|admin-paginas-clonar": {
+            "fingerprint": "10f1dc310e5e32fd4dd3d763bb3ce5cf9d9fe6669be470a51fe0da0ea2049786",
+            "output_hash": "aeffe66c073d8dab451dad39be45e461e7bc1a8285c48c2ca0f6fe30e066f812",
+            "output": "modulos/admin-paginas/resources/en/pages/admin-paginas-clonar/admin-paginas-clonar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/en/pages/admin-paginas-clonar/admin-paginas-clonar.html",
+                "modulos/admin-paginas/admin-paginas.php",
+                "modulos/admin-paginas/resources/en/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.html",
+                "modulos/admin-paginas/resources/en/components/layout-profile-row-tailwind/layout-profile-row-tailwind.html",
+                "resources/en/components/html-editor-modal-tailwind/html-editor-modal-tailwind.html",
+                "resources/en/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.html",
+                "resources/en/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.html",
+                "resources/en/components/html-editor-seo-tailwind/html-editor-seo-tailwind.html",
+                "resources/en/components/html-editor-tailwind/html-editor-tailwind.html",
+                "resources/en/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.html",
+                "resources/en/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.html",
+                "resources/en/components/ia-prompt-tailwind/ia-prompt-tailwind.html",
+                "resources/en/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.html",
+                "resources/en/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/en/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/en/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/en/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html",
+                "resources/en/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.html",
+                "resources/en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/en/components/widget-imagem-tailwind/widget-imagem-tailwind.html",
+                "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:25:23+00:00"
+        },
+        "module|admin-paginas|en|pages|admin-paginas-editar": {
+            "fingerprint": "bf51ed25bd33ee08e4ce7b32dd1cd6234e4c695815dc70df181b61b4cbfcf078",
+            "output_hash": "494e7a5db69c012a801d1121a929b23a0e55c44aefca798b55af05501dfa60e7",
+            "output": "modulos/admin-paginas/resources/en/pages/admin-paginas-editar/admin-paginas-editar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/en/pages/admin-paginas-editar/admin-paginas-editar.html",
+                "modulos/admin-paginas/admin-paginas.php",
+                "modulos/admin-paginas/resources/en/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.html",
+                "modulos/admin-paginas/resources/en/components/layout-profile-row-tailwind/layout-profile-row-tailwind.html",
+                "resources/en/components/html-editor-modal-tailwind/html-editor-modal-tailwind.html",
+                "resources/en/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.html",
+                "resources/en/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.html",
+                "resources/en/components/html-editor-seo-tailwind/html-editor-seo-tailwind.html",
+                "resources/en/components/html-editor-tailwind/html-editor-tailwind.html",
+                "resources/en/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.html",
+                "resources/en/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.html",
+                "resources/en/components/ia-prompt-tailwind/ia-prompt-tailwind.html",
+                "resources/en/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.html",
+                "resources/en/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/en/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/en/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/en/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/en/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html",
+                "resources/en/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.html",
+                "resources/en/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/en/components/widget-imagem-tailwind/widget-imagem-tailwind.html",
+                "resources/en/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:25:23+00:00"
+        },
+        "module|admin-paginas|pt-br|components|layout-profile-mapping-tailwind": {
+            "fingerprint": "4ab582d3face972b8478bc1dc57ad5cdb69603c0bf84b54ecd27f209a2ff6e05",
+            "output_hash": "ec49850226e31df664bbb37cb16214f83118871c226752da479edc92974179a8",
+            "output": "modulos/admin-paginas/resources/pt-br/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/pt-br/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:31+00:00"
+        },
+        "module|admin-paginas|pt-br|components|layout-profile-row-tailwind": {
+            "fingerprint": "027c9fd02993ef95cc6a721def44ad2d48439083f44b91df460c6710ca25a457",
+            "output_hash": "cdd1f28c748a06b249afe07e92b8016af84e39524edbb1832f5c1ee2fede2519",
+            "output": "modulos/admin-paginas/resources/pt-br/components/layout-profile-row-tailwind/layout-profile-row-tailwind.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/pt-br/components/layout-profile-row-tailwind/layout-profile-row-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:17:31+00:00"
+        },
+        "module|admin-paginas|pt-br|pages|admin-paginas-adicionar": {
+            "fingerprint": "4fbd59f1c0cbcedcc91d84ab3ffbcab5e46aac9f641b84a8c67427222cc64ff3",
+            "output_hash": "6f9e91bccb992439186a513f27b2cb86e9c675fb36618cc3566f0f1d85276dc1",
+            "output": "modulos/admin-paginas/resources/pt-br/pages/admin-paginas-adicionar/admin-paginas-adicionar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/pt-br/pages/admin-paginas-adicionar/admin-paginas-adicionar.html",
+                "modulos/admin-paginas/admin-paginas.php",
+                "modulos/admin-paginas/resources/pt-br/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.html",
+                "modulos/admin-paginas/resources/pt-br/components/layout-profile-row-tailwind/layout-profile-row-tailwind.html",
+                "resources/pt-br/components/html-editor-modal-tailwind/html-editor-modal-tailwind.html",
+                "resources/pt-br/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.html",
+                "resources/pt-br/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.html",
+                "resources/pt-br/components/html-editor-seo-tailwind/html-editor-seo-tailwind.html",
+                "resources/pt-br/components/html-editor-tailwind/html-editor-tailwind.html",
+                "resources/pt-br/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.html",
+                "resources/pt-br/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.html",
+                "resources/pt-br/components/ia-prompt-tailwind/ia-prompt-tailwind.html",
+                "resources/pt-br/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.html",
+                "resources/pt-br/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/pt-br/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/pt-br/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/pt-br/components/interface-formulario-inclusao-tailwind/interface-formulario-inclusao-tailwind.html",
+                "resources/pt-br/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.html",
+                "resources/pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/pt-br/components/widget-imagem-tailwind/widget-imagem-tailwind.html",
+                "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:25:24+00:00"
+        },
+        "module|admin-paginas|pt-br|pages|admin-paginas-clonar": {
+            "fingerprint": "f364e5e4aff72b973da2d3bc756f7250e4a6be95d1d2f67bdbb800a71ea84337",
+            "output_hash": "535197f085d63ea4058c7f368f0238fe0325c1d673477d2c665d4bd9e02cab9c",
+            "output": "modulos/admin-paginas/resources/pt-br/pages/admin-paginas-clonar/admin-paginas-clonar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/pt-br/pages/admin-paginas-clonar/admin-paginas-clonar.html",
+                "modulos/admin-paginas/admin-paginas.php",
+                "modulos/admin-paginas/resources/pt-br/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.html",
+                "modulos/admin-paginas/resources/pt-br/components/layout-profile-row-tailwind/layout-profile-row-tailwind.html",
+                "resources/pt-br/components/html-editor-modal-tailwind/html-editor-modal-tailwind.html",
+                "resources/pt-br/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.html",
+                "resources/pt-br/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.html",
+                "resources/pt-br/components/html-editor-seo-tailwind/html-editor-seo-tailwind.html",
+                "resources/pt-br/components/html-editor-tailwind/html-editor-tailwind.html",
+                "resources/pt-br/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.html",
+                "resources/pt-br/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.html",
+                "resources/pt-br/components/ia-prompt-tailwind/ia-prompt-tailwind.html",
+                "resources/pt-br/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.html",
+                "resources/pt-br/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/pt-br/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/pt-br/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/pt-br/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html",
+                "resources/pt-br/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.html",
+                "resources/pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/pt-br/components/widget-imagem-tailwind/widget-imagem-tailwind.html",
+                "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:25:24+00:00"
+        },
+        "module|admin-paginas|pt-br|pages|admin-paginas-editar": {
+            "fingerprint": "a1b2446fb4c39386a76785cd5f5da16efa042200d13a5c62778539e24bc8baf9",
+            "output_hash": "6ef6c22c38603c7d7b659b66d9700ffd001188ea41d4bbe6db2eec91296f0419",
+            "output": "modulos/admin-paginas/resources/pt-br/pages/admin-paginas-editar/admin-paginas-editar.precompiled.css",
+            "tailwind_version": "4.3.3",
+            "sources": [
+                "modulos/admin-paginas/resources/pt-br/pages/admin-paginas-editar/admin-paginas-editar.html",
+                "modulos/admin-paginas/admin-paginas.php",
+                "modulos/admin-paginas/resources/pt-br/components/layout-profile-mapping-tailwind/layout-profile-mapping-tailwind.html",
+                "modulos/admin-paginas/resources/pt-br/components/layout-profile-row-tailwind/layout-profile-row-tailwind.html",
+                "resources/pt-br/components/html-editor-modal-tailwind/html-editor-modal-tailwind.html",
+                "resources/pt-br/components/html-editor-modelos-tailwind/html-editor-modelos-tailwind.html",
+                "resources/pt-br/components/html-editor-page-modification-tailwind/html-editor-page-modification-tailwind.html",
+                "resources/pt-br/components/html-editor-seo-tailwind/html-editor-seo-tailwind.html",
+                "resources/pt-br/components/html-editor-tailwind/html-editor-tailwind.html",
+                "resources/pt-br/components/html-editor-visual-modal-tailwind/html-editor-visual-modal-tailwind.html",
+                "resources/pt-br/components/ia-prompt-modais-tailwind/ia-prompt-modais-tailwind.html",
+                "resources/pt-br/components/ia-prompt-tailwind/ia-prompt-tailwind.html",
+                "resources/pt-br/components/ia-sem-servidor-tailwind/ia-sem-servidor-tailwind.html",
+                "resources/pt-br/components/interface-alerta-modal-tailwind/interface-alerta-modal-tailwind.html",
+                "resources/pt-br/components/interface-carregando-modal-tailwind/interface-carregando-modal-tailwind.html",
+                "resources/pt-br/components/interface-delecao-modal-tailwind/interface-delecao-modal-tailwind.html",
+                "resources/pt-br/components/interface-formulario-autorizacao-provisoria-tailwind/interface-formulario-autorizacao-provisoria-tailwind.html",
+                "resources/pt-br/components/interface-formulario-edicao-tailwind/interface-formulario-edicao-tailwind.html",
+                "resources/pt-br/components/interface-iframe-modal-tailwind/interface-iframe-modal-tailwind.html",
+                "resources/pt-br/components/menu-principal-sistema-tailwind/menu-principal-sistema-tailwind.html",
+                "resources/pt-br/components/widget-imagem-tailwind/widget-imagem-tailwind.html",
+                "resources/pt-br/layouts/layout-administrativo-tailwind/layout-administrativo-tailwind.html"
+            ],
+            "safelist": [],
+            "built_at": "2026-10-04T09:25:24+00:00"
         },
         "module|contatos|pt-br|components|base-email": {
             "fingerprint": "adbf6e2f36195922f58636fa1c9f6c626eea1c67669cbf639a1dd2b2f9637e83",
