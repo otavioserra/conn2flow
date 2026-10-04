@@ -40,9 +40,14 @@ function paginas_layouts_perfis_json($dados){
     return $mapa ? json_encode($mapa, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : null;
 }
 
+// req-219: variante Tailwind do componente quando a página é Tailwind (o interface pode não estar carregado).
+function paginas_layouts_perfis_variante($id){
+    return function_exists('interface_componente_variante') ? interface_componente_variante($id) : $id;
+}
+
 function paginas_layouts_perfis_linha($modulo, $indice, $layout, $perfil){
     global $_GESTOR;
-    $linha = gestor_componente(['id' => 'layout-profile-row', 'modulo' => $modulo]);
+    $linha = gestor_componente(['id' => paginas_layouts_perfis_variante('layout-profile-row'), 'modulo' => $modulo]);
     $linha = modelo_var_troca_tudo($linha, '#row-index#', (string)$indice);
     foreach([
         '#mapping-layout-label#' => 'form-layout-label',
@@ -75,7 +80,7 @@ function paginas_layouts_perfis_linha($modulo, $indice, $layout, $perfil){
 
 function paginas_layouts_perfis_formulario($pagina, $json, $modulo){
     $mapa = gestor_layouts_perfis_mapa($json);
-    $componente = gestor_componente(['id' => 'layout-profile-mapping', 'modulo' => $modulo]);
+    $componente = gestor_componente(['id' => paginas_layouts_perfis_variante('layout-profile-mapping'), 'modulo' => $modulo]);
     $componente = modelo_var_troca_tudo($componente, '#mapping-checked#', $mapa ? 'checked' : '');
     $componente = modelo_var_troca_tudo($componente, '#mapping-hidden#', $mapa ? '' : 'hidden');
     foreach([

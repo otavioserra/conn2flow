@@ -1,0 +1,34 @@
+<!-- req-219: variante Tailwind dos modais de prompt da IA (ponte de modais e de formulário da biblioteca de controles). -->
+<div class="ui mini tiny modal ai-prompt-save-modal hidden">
+    <button type="button" class="close icon text-xl leading-none text-slate-400 hover:text-slate-700" aria-label="Fechar">&times;</button>
+    <div class="header">
+        Criar Novo Prompt
+    </div>
+    <div class="content">
+        <form class="ai-prompt-save-form" onsubmit="return false;">
+            <div class="c2fc-campo">
+                <label class="c2fc-campo-rotulo">Nome</label>
+                <input type="text" name="prompt-nome" class="c2fc-campo-entrada" placeholder="Nome do prompt..." data-validate="name">
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <button type="button" class="deny c2fc-botao">Cancelar</button>
+        <button type="button" class="approve c2fc-botao c2fc-botao-sucesso">Enviar</button>
+    </div>
+</div>
+<div class="ui mini tiny modal confirm ai-prompt-del-modal hidden">
+    <div class="header">Remover Prompt</div>
+    <div class="content">
+        <p>Tem certeza que deseja remover este prompt?</p>
+    </div>
+    <div class="actions">
+        <button type="button" class="deny c2fc-botao">
+            Cancelar
+        </button>
+        <button type="button" class="approve c2fc-botao c2fc-botao-perigo">
+            Confirmar
+            <i data-lucide="trash-2" class="size-4"></i>
+        </button>
+    </div>
+</div>

@@ -11,6 +11,9 @@ gestor_incluir_biblioteca('formato');
 
 function admin_paginas_adicionar(){
 	global $_GESTOR;
+	// req-219: página Tailwind com bundle (layout + página + componentes do editor num CSS só). Sem o
+	// flag, os sidecars dos componentes entram depois e `grid-cols-1` vence `md:grid-cols-2`.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -294,6 +297,9 @@ function admin_paginas_adicionar(){
 
 function admin_paginas_editar(){
 	global $_GESTOR;
+	// req-219: página Tailwind com bundle (layout + página + componentes do editor num CSS só). Sem o
+	// flag, os sidecars dos componentes entram depois e `grid-cols-1` vence `md:grid-cols-2`.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -691,7 +697,8 @@ function admin_paginas_editar(){
 		if(isset($retorno_bd[$modulo['tabela']['data_criacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-start')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_criacao']], 'formato' => 'dataHora'))); }
 		if(isset($retorno_bd[$modulo['tabela']['data_modificacao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-date-modification')),'dado' => interface_formatar_dado(Array('dado' => $retorno_bd[$modulo['tabela']['data_modificacao']], 'formato' => 'dataHora'))); }
 		if(isset($retorno_bd[$modulo['tabela']['versao']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-version')),'dado' => $retorno_bd[$modulo['tabela']['versao']]); }
-		if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => ($retorno_bd[$modulo['tabela']['status']] == 'A' ? '<div class="ui center aligned green message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-active')).'</b></div>' : '').($retorno_bd[$modulo['tabela']['status']] == 'I' ? '<div class="ui center aligned brown message"><b>'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-inactive')).'</b></div>' : '')); }
+		// req-219: as páginas de edição são Tailwind; o selo de status usa utilities (no bundle via tailwind_sources).
+		if(isset($retorno_bd[$modulo['tabela']['status']])){ $metaDados[] = Array('titulo' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status')),'dado' => ($retorno_bd[$modulo['tabela']['status']] == 'A' ? '<span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-active')).'</span>' : '').($retorno_bd[$modulo['tabela']['status']] == 'I' ? '<span class="inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-status-inactive')).'</span>' : '')); }
 	} else {
 		gestor_redirecionar_raiz();
 	}
@@ -846,6 +853,9 @@ function admin_paginas_editar(){
 
 function admin_paginas_clonar(){
 	global $_GESTOR;
+	// req-219: página Tailwind com bundle (layout + página + componentes do editor num CSS só). Sem o
+	// flag, os sidecars dos componentes entram depois e `grid-cols-1` vence `md:grid-cols-2`.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	

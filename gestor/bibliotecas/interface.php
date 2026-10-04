@@ -1323,7 +1323,7 @@ function interface_componentes($params = false){
 						case 'modal-carregamento': $componentes_layouts_ids[] = interface_componente_variante('interface-carregando-modal'); break;
 						case 'modal-delecao': $componentes_layouts_ids[] = interface_componente_variante('interface-delecao-modal'); break;
 						case 'modal-alerta': $componentes_layouts_ids[] = interface_componente_variante('interface-alerta-modal'); break;
-						case 'modal-iframe': $componentes_layouts_ids[] = 'interface-iframe-modal'; break;
+						case 'modal-iframe': $componentes_layouts_ids[] = interface_componente_variante('interface-iframe-modal'); break;
 					}
 				}
 			}
@@ -1478,7 +1478,12 @@ function interface_formulario_campos($params = false){
 						$campo_saida .= "		".'<input type="hidden" name="'.$campo['nome'].'"#selectedValue#>'."\n";
 						$campo_saida .= "		".'<i class="dropdown icon"></i>'."\n";
 					} else {
-						$campo_saida = "	".'<select id="'.$campo['id'].'" class="ui '.(isset($campo['disabled']) ? 'disabled ':'').(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').'dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').'" name="'.$campo['nome'].'"'.(isset($campo['multiple']) ? ' multiple':'').'>'."\n";
+						// req-219: em página Tailwind o mesmo <select> vai para a biblioteca de controles
+						// (`data-c2f-select`); as classes `ui … dropdown` ficam só como gancho dos JS dos módulos.
+						$selectControles = (function_exists('gestor_framework_css_atual') && gestor_framework_css_atual()['modo'] === 'tailwindcss')
+							? ' data-c2f-select="1"'.(isset($campo['procurar']) ? ' data-c2f-busca="1"' : '').(isset($campo['disabled']) ? ' disabled' : '')
+							: '';
+						$campo_saida = "	".'<select id="'.$campo['id'].'" class="ui '.(isset($campo['disabled']) ? 'disabled ':'').(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').'dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').($selectControles !== '' ? ' c2fc-campo-entrada' : '').'" name="'.$campo['nome'].'"'.(isset($campo['multiple']) ? ' multiple':'').$selectControles.'>'."\n";
 					}
 					
 					if(isset($campo['placeholder'])){
@@ -1660,7 +1665,7 @@ function interface_formulario_campos($params = false){
 					// ===== Ler o layout do image pick
 					
 					$imagepick = gestor_componente(Array(
-						'id' => 'widget-imagem',
+						'id' => interface_componente_variante('widget-imagem'),
 						'modulosExtra' => Array(
 							'interface',
 						),
@@ -1872,7 +1877,7 @@ function interface_formulario_campos($params = false){
 					// ===== Ler o layout do image pick
 					
 					$imagepick = gestor_componente(Array(
-						'id' => 'widget-imagem',
+						'id' => interface_componente_variante('widget-imagem'),
 						'modulosExtra' => Array(
 							'interface',
 						),

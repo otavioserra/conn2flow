@@ -220,6 +220,31 @@ describe('ponte Fomantic', () => {
     expect(document.querySelector('.ui.tab[data-tab="codigo"]').classList.contains('active')).toBe(false);
   });
 
+  it('tab: grupos aninhados não se desligam, onLoad na troca e na inicialização (como o editor HTML usa)', () => {
+    carregar();
+    document.body.innerHTML = '<div class="menu externo"><a class="item active" data-tab="pagina">P</a><a class="item" data-tab="codigo">C</a></div>'
+      + '<div><div class="tab active" data-tab="pagina">p</div><div class="tab" data-tab="codigo">'
+      + '<div class="menu interno"><a class="item active" data-tab="html">H</a><a class="item" data-tab="css">S</a></div>'
+      + '<div><div class="tab active" data-tab="html">h</div><div class="tab" data-tab="css">s</div></div></div></div>';
+    const $ = window.jQuery;
+    const carregadas = [];
+    $('.externo .item').tab('change tab', 'codigo');
+    $('.externo .item').tab({ onLoad: (nome) => carregadas.push('externo:' + nome) });
+    $('.interno .item').tab({ onLoad: (nome) => carregadas.push('interno:' + nome) });
+    expect(carregadas).toEqual(['externo:codigo', 'interno:html']);
+    document.querySelector('.item[data-tab="css"]').click();
+    const ativo = (n) => document.querySelector('.tab[data-tab="' + n + '"]').classList.contains('active');
+    expect(ativo('css')).toBe(true);
+    expect(ativo('html')).toBe(false);
+    expect(ativo('codigo')).toBe(true);
+    expect(ativo('pagina')).toBe(false);
+    expect(carregadas[2]).toBe('interno:css');
+    $('.externo .item').tab('change tab', 'pagina');
+    expect(ativo('pagina')).toBe(true);
+    expect(ativo('css')).toBe(true);
+    expect(carregadas[3]).toBe('externo:pagina');
+  });
+
   it('modal: show/hide, onApprove que devolve false mantém aberto', () => {
     carregar();
     document.body.innerHTML = '<div class="ui modal m"><div class="header">T</div><div class="content">x</div><div class="actions"><button class="ui approve button">OK</button><button class="ui deny button">Não</button></div></div>';

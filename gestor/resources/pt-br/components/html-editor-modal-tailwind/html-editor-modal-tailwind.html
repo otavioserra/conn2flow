@@ -1,0 +1,75 @@
+<!-- req-219: variante Tailwind do modal de edição de elemento. Ids, `_html-editor-imagepick-*`, `cancel` e
+     `approve` são ganchos do html-editor.js e da ponte de modais; `hidden` segura o modal até a ponte montá-lo. -->
+<div class="ui modal large hidden" id="html-editor-modal">
+    <div class="header flex items-center gap-2">
+        <i data-lucide="pencil" class="size-4"></i>
+        Editar Elemento
+    </div>
+    <div class="content">
+        <div class="space-y-4">
+            <div class="c2fc-campo" id="text-field">
+                <label class="c2fc-campo-rotulo" for="element-text">Conteúdo HTML:</label>
+                <textarea id="element-text" rows="12" class="c2fc-campo-entrada font-mono"
+                    placeholder="Digite o conteúdo HTML... (suporta &lt;strong&gt;, &lt;em&gt;, etc.)"></textarea>
+            </div>
+            <div class="c2fc-campo" id="image-field" style="display: none;">
+                <label class="c2fc-campo-rotulo" for="element-src">URL da Imagem:</label>
+                <div class="flex gap-2">
+                    <input type="text" id="element-src" class="c2fc-campo-entrada" placeholder="https://exemplo.com/imagem.jpg">
+                    <button class="_html-editor-imagepick-btn c2fc-botao c2fc-botao-icone" type="button"
+                        data-c2f-dica="Selecionar imagem do servidor" aria-label="Selecionar imagem do servidor">
+                        <i data-lucide="folder-open" class="size-4"></i>
+                    </button>
+                </div>
+                <div class="_html-editor-imagepick-preview mt-2 rounded-lg border border-slate-200 p-3" style="display: none;">
+                    <div class="flex flex-col gap-4 sm:flex-row">
+                        <div class="w-full overflow-hidden rounded sm:w-1/3">
+                            <img class="_html-editor-imagepick-image aspect-4/3 h-auto w-full object-cover" src="" alt="">
+                        </div>
+                        <div class="flex-1 space-y-2 text-sm text-slate-700">
+                            <p class="flex items-center gap-2 font-semibold text-slate-900">
+                                <i data-lucide="image" class="size-4"></i>
+                                Preview da Imagem
+                            </p>
+                            <p class="_html-editor-imagepick-nome flex items-center gap-2">
+                                <i data-lucide="file" class="size-4"></i>
+                                <span class="content"></span>
+                            </p>
+                            <p class="_html-editor-imagepick-tipo flex items-center gap-2">
+                                <i data-lucide="info" class="size-4"></i>
+                                <span class="content"></span>
+                            </p>
+                            <button class="_html-editor-imagepick-clear c2fc-botao c2fc-botao-perigo c2fc-botao-pequeno" type="button">
+                                <i data-lucide="trash-2" class="size-4"></i>
+                                Limpar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="c2fc-campo" id="code-field" style="display: none;">
+                <label class="c2fc-campo-rotulo flex items-center gap-2">
+                    <i data-lucide="code" class="size-4"></i>
+                    Código HTML:
+                </label>
+                <div id="element-code-container" class="overflow-hidden rounded border border-slate-300">
+                    <textarea id="element-code" class="codemirror-html-editor"></textarea>
+                </div>
+                <p class="mt-2 flex items-center gap-2 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-800">
+                    <i data-lucide="info" class="size-4"></i>
+                    Você está editando o código HTML completo deste elemento.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <button type="button" class="cancel c2fc-botao">
+            <i data-lucide="x" class="size-4"></i>
+            Cancelar
+        </button>
+        <button type="button" class="approve c2fc-botao c2fc-botao-primario">
+            <i data-lucide="check" class="size-4"></i>
+            Salvar
+        </button>
+    </div>
+</div>

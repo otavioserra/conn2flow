@@ -1,0 +1,13 @@
+<!-- req-219: variante Tailwind. `mapear_layouts_perfis`, `layout-profile-*` e o <template> são o contrato do admin-paginas.js. -->
+<div class="c2fc-campo">
+    <label class="c2fc-chave">
+        <input type="checkbox" name="mapear_layouts_perfis" #mapping-checked#>
+        <span class="c2fc-chave-trilho" aria-hidden="true"></span>
+        <span class="c2fc-chave-rotulo">#mapping-toggle-label#</span>
+    </label>
+</div>
+<div class="layout-profile-fields space-y-3" #mapping-hidden#>
+    <div class="layout-profile-rows space-y-3">#mapping-rows#</div>
+    <button type="button" class="layout-profile-add c2fc-botao c2fc-botao-pequeno"><i data-lucide="plus" class="size-4"></i>#mapping-add-label#</button>
+    <template class="layout-profile-template">#mapping-template#</template>
+</div>

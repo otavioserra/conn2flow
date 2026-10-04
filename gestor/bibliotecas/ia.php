@@ -46,7 +46,7 @@ function ia_renderizar_prompt($params = false){
 	if(!$servidores){
 		// Carregar componente
 		$ia_sem_servidor = gestor_componente(Array(
-			'id' => 'ia-sem-servidor',
+			'id' => interface_componente_variante('ia-sem-servidor'),
 		));
 
 		gestor_js_variavel_incluir('ai',[
@@ -193,9 +193,23 @@ function ia_renderizar_prompt($params = false){
 		$select_model = '<div class="item" data-value="">'.$without_model.'</div>';
 	}
 
+	// req-219: a variante Tailwind usa um <select> nativo (biblioteca de controles), não a div do Fomantic.
+	if(gestor_framework_css_atual()['modo'] === 'tailwindcss'){
+		$select_model = '';
+		$selected_model = '';
+		if($modelosData && isset($modelosData['models']) && is_array($modelosData['models'])){
+			foreach($modelosData['models'] as $modelo){
+				$rotulo = (string)($modelo['displayName'] ?? $modelo['name']).(!empty($modelo['description']) ? ' — '.$modelo['description'] : '');
+				$select_model .= '<option value="'.htmlspecialchars((string)$modelo['name'], ENT_QUOTES, 'UTF-8').'"'.($modelo['name'] === $modelo_padrao ? ' selected' : '').'>'.htmlspecialchars($rotulo, ENT_QUOTES, 'UTF-8').'</option>';
+			}
+		} else {
+			$select_model = '<option value="">'.htmlspecialchars((string)$without_model, ENT_QUOTES, 'UTF-8').'</option>';
+		}
+	}
+
 	// Incluir os componentes na página
 
-	gestor_componentes_incluir([ 'id' => 'ia-prompt-modais']);
+	gestor_componentes_incluir([ 'id' => interface_componente_variante('ia-prompt-modais')]);
 
 	// Definir títulos
 
@@ -221,7 +235,7 @@ function ia_renderizar_prompt($params = false){
 
 	// Carregar componente
 	$ia_prompt = gestor_componente(Array(
-		'id' => 'ia-prompt',
+		'id' => interface_componente_variante('ia-prompt'),
 	));
 
 	// Alterar variáveis no componente

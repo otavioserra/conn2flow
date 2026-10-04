@@ -170,6 +170,18 @@
         }
     },
     {
+        "name": "Interface Iframe Modal Tailwind",
+        "id": "interface-iframe-modal-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "0e465b3e4e06463c41f6be33e818066e",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "0e465b3e4e06463c41f6be33e818066e"
+        }
+    },
+    {
         "name": "Widget Imagem",
         "id": "widget-imagem",
         "version": "1.3",
@@ -177,6 +189,18 @@
             "html": "2a5bcc1bef0cf237c1c6c68dea8c4fc0",
             "css": "ba0557b0e23e65afcce0a8da039e4a9b",
             "combined": "a5fb5159f4d72e07013009b953fd8bcc"
+        }
+    },
+    {
+        "name": "Widget Imagem Tailwind",
+        "id": "widget-imagem-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "22429c7136692b2510fa120db2948c30",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "22429c7136692b2510fa120db2948c30"
         }
     },
     {
@@ -301,6 +325,18 @@
         }
     },
     {
+        "name": "IA Prompt Tailwind",
+        "id": "ia-prompt-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "ab7375c98696dcea735076bab4323aef",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "ab7375c98696dcea735076bab4323aef"
+        }
+    },
+    {
         "name": "IA Prompt Modais",
         "id": "ia-prompt-modais",
         "version": "1.9",
@@ -308,6 +344,18 @@
             "html": "c5026485208f332d8d445395c5b5f8f8",
             "css": "",
             "combined": "c5026485208f332d8d445395c5b5f8f8"
+        }
+    },
+    {
+        "name": "IA Prompt Modais Tailwind",
+        "id": "ia-prompt-modais-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "3de3409d4293a3ffe2022f8a4fa6bb99",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "3de3409d4293a3ffe2022f8a4fa6bb99"
         }
     },
     {
@@ -322,6 +370,18 @@
         }
     },
     {
+        "name": "HTML Editor Tailwind",
+        "id": "html-editor-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "f2e464396894ffa32415d4ba8190bcec",
+            "css": "1fb7d1b67165d5f5578c4130c5dcd1ef",
+            "css_precompiled": "",
+            "combined": "cfc8dcfbe792e2c84e24530e6dc6c4ed"
+        }
+    },
+    {
         "name": "HTML Editor Modal",
         "id": "html-editor-modal",
         "version": "1.4",
@@ -329,6 +389,18 @@
             "html": "a785d83ca2276ad226eec95432e21609",
             "css": "",
             "combined": "a785d83ca2276ad226eec95432e21609"
+        }
+    },
+    {
+        "name": "HTML Editor Modal Tailwind",
+        "id": "html-editor-modal-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "fe568e302ce16d5e2b565867800b4b2f",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "fe568e302ce16d5e2b565867800b4b2f"
         }
     },
     {
@@ -342,6 +414,18 @@
         }
     },
     {
+        "name": "HTML Editor Página Modificação Tailwind",
+        "id": "html-editor-page-modification-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "74673c848eae6c0cabe4bb86597e96a6",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "74673c848eae6c0cabe4bb86597e96a6"
+        }
+    },
+    {
         "name": "HTML Editor Visual Modal",
         "id": "html-editor-visual-modal",
         "version": "1.5",
@@ -349,6 +433,18 @@
             "html": "a0a69952a1afe38c6d8cc2cdfb3fc86e",
             "css": "",
             "combined": "a0a69952a1afe38c6d8cc2cdfb3fc86e"
+        }
+    },
+    {
+        "name": "HTML Editor Visual Modal Tailwind",
+        "id": "html-editor-visual-modal-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "b0393e1ff5bee0b67de7803adb31b416",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "b0393e1ff5bee0b67de7803adb31b416"
         }
     },
     {
@@ -360,6 +456,18 @@
             "css": "dea9254a7fff284b390256e4fbc84984",
             "css_precompiled": "",
             "combined": "440cf3d2088190477e20114b4197b18d"
+        }
+    },
+    {
+        "name": "HTML Editor Modelos Tailwind",
+        "id": "html-editor-modelos-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "c26c72e3cd12e5764f5e01b760a1db5c",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "c26c72e3cd12e5764f5e01b760a1db5c"
         }
     },
     {
@@ -390,6 +498,18 @@
             "html": "e9cea13934578a964a0d23e53a7ebdd1",
             "css": "",
             "combined": "e9cea13934578a964a0d23e53a7ebdd1"
+        }
+    },
+    {
+        "name": "IA Sem Servidor Tailwind",
+        "id": "ia-sem-servidor-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "2e5e5da632769d7eff36ab8c05d1d2ab",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "2e5e5da632769d7eff36ab8c05d1d2ab"
         }
     },
     {
@@ -434,6 +554,18 @@
             "html": "02d78f3b83dc41dea01b22d9d1e45ae8",
             "css": "",
             "combined": "02d78f3b83dc41dea01b22d9d1e45ae8"
+        }
+    },
+    {
+        "name": "HTML Editor SEO Tailwind",
+        "id": "html-editor-seo-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "7a27379198c170733b856b057b06bfb0",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "7a27379198c170733b856b057b06bfb0"
         }
     },
     {

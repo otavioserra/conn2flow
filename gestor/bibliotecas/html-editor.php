@@ -785,7 +785,7 @@ function html_editor_componente($params = false){
 	// ===== HTML Editor Componente
 
 	$html_editor = gestor_componente(Array(
-		'id' => 'html-editor',
+		'id' => interface_componente_variante('html-editor'),
 	));
 
 
@@ -871,7 +871,7 @@ function html_editor_componente($params = false){
 
 	if(isset($seo) && is_array($seo)){
 		$html_editor_seo = gestor_componente(Array(
-			'id' => 'html-editor-seo',
+			'id' => interface_componente_variante('html-editor-seo'),
 		));
 
 		$html_editor_seo = modelo_var_troca($html_editor_seo,'#og-titulo#',htmlspecialchars((string)($seo['og_titulo'] ?? ''), ENT_QUOTES, 'UTF-8'));
@@ -953,7 +953,7 @@ function html_editor_componente($params = false){
 	// ===== Pré-Visualização
 
 	$modalPagina = gestor_componente(Array(
-		'id' => 'html-editor-visual-modal',
+		'id' => interface_componente_variante('html-editor-visual-modal'),
 	));
 
 	$modalPagina = modelo_var_troca($modalPagina,'#title#',gestor_variaveis(Array('id' => 'html-editor-modal-title-preview')));
@@ -975,7 +975,7 @@ function html_editor_componente($params = false){
 	// ===== Modelos de Páginas
 
 	$modelosPaginas = gestor_componente(Array(
-		'id' => 'html-editor-modelos',
+		'id' => interface_componente_variante('html-editor-modelos'),
 	));
 
 	$html_editor = modelo_var_troca($html_editor,'<!-- modelos-componente -->',$modelosPaginas);
@@ -994,7 +994,7 @@ function html_editor_componente($params = false){
 	// ===== Modificações de página
 
 	$html_editor_page_modification = gestor_componente(Array(
-		'id' => 'html-editor-page-modification',
+		'id' => interface_componente_variante('html-editor-page-modification'),
 	));
 
 	$selectPaginaConteudo = [
@@ -1177,7 +1177,7 @@ function html_editor_include($params = false){
     // Incluir componentes do HTML Editor
 
     $html_editor_modal = gestor_componente(Array(
-		'id' => 'html-editor-modal'
+		'id' => interface_componente_variante('html-editor-modal')
 	));
 
     // Incluir modal-iframe para o ImagePick

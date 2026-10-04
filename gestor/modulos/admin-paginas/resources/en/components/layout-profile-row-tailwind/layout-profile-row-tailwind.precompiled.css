@@ -1,0 +1,2 @@
+/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
+@layer utilities{.grid{display:grid}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.items-end{align-items:flex-end}.gap-4{gap:calc(var(--spacing,.25rem) * 4)}@media (min-width:48rem){.md\:grid-cols-\[1fr_1fr_auto\]{grid-template-columns:1fr 1fr auto}}}

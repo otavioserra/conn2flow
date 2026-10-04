@@ -1,0 +1,87 @@
+<!-- req-219: variante Tailwind. `ui dropdown page-modification-*`, `ui checkbox`, `ui labels/label`,
+     `delete icon` e `page-modification-*` são ganchos do html-editor-interface.js; select, checkbox e o modal
+     de renomear rodam pela ponte vanilla da biblioteca de controles. -->
+<div class="menuMode page-modification-wrapper mb-4 grid grid-cols-1 gap-4 md:grid-cols-12">
+    <div class="c2fc-campo md:col-span-5">
+        <label class="c2fc-campo-rotulo">Page Modification Target:</label>
+        <select class="ui dropdown page-modification-target-select c2fc-campo-entrada" data-c2f-select="1">
+            #select-modification-page#
+        </select>
+    </div>
+    <div class="c2fc-campo hidden page-modification-container md:col-span-4">
+        <label class="c2fc-campo-rotulo">Target Section:</label>
+        <select class="ui dropdown page-modification-section-select c2fc-campo-entrada" data-c2f-select="1">
+
+        </select>
+    </div>
+    <div class="hidden page-modification-container space-y-2 md:col-span-3">
+        <fieldset class="space-y-1">
+            <legend class="c2fc-campo-rotulo">Section Option</legend>
+            <label class="page-modification-section-options flex items-center gap-2 text-sm text-slate-700">
+                <input type="radio" name="page-modification-section-option" value="new-before">
+                <span>Add New Before</span>
+            </label>
+            <label class="page-modification-section-options flex items-center gap-2 text-sm text-slate-700">
+                <input type="radio" name="page-modification-section-option" value="target" checked="checked">
+                <span>Change Target Section</span>
+            </label>
+            <label class="page-modification-section-options flex items-center gap-2 text-sm text-slate-700">
+                <input type="radio" name="page-modification-section-option" value="new-after">
+                <span>Add New After</span>
+            </label>
+        </fieldset>
+        <div class="flex flex-wrap gap-1">
+            <button type="button" class="page-modification-section-rename c2fc-botao c2fc-botao-pequeno c2fc-botao-icone"
+                data-c2f-dica="Click to rename the target section" aria-label="Rename the target section">
+                <i data-lucide="pencil" class="size-4"></i>
+            </button>
+            <button type="button" class="page-modification-section-up c2fc-botao c2fc-botao-pequeno c2fc-botao-icone"
+                data-c2f-dica="Move section up" aria-label="Move section up">
+                <i data-lucide="arrow-up" class="size-4"></i>
+            </button>
+            <button type="button" class="page-modification-section-down c2fc-botao c2fc-botao-pequeno c2fc-botao-icone"
+                data-c2f-dica="Move section down" aria-label="Move section down">
+                <i data-lucide="arrow-down" class="size-4"></i>
+            </button>
+            <button type="button" class="page-modification-section-delete c2fc-botao c2fc-botao-perigo c2fc-botao-pequeno c2fc-botao-icone"
+                data-c2f-dica="Click to delete the target section" aria-label="Delete the target section">
+                <i data-lucide="trash-2" class="size-4"></i>
+            </button>
+        </div>
+        <div class="ui checkbox page-modification-auto-preview">
+            <label class="c2fc-chave">
+                <input type="checkbox" name="page-modification-auto-preview">
+                <span class="c2fc-chave-trilho" aria-hidden="true"></span>
+                <span class="c2fc-chave-rotulo">Automatically preview</span>
+            </label>
+        </div>
+    </div>
+</div>
+<div class="page-modification-section-modal page-modification-wrapper">
+    <div class="ui tiny modal page-modification-rename-modal hidden">
+        <div class="header">Rename Section</div>
+        <div class="content">
+            <div class="c2fc-campo">
+                <label class="c2fc-campo-rotulo">New Name:</label>
+                <input type="text" name="new-session-name" class="c2fc-campo-entrada" placeholder="Enter the new section name">
+            </div>
+        </div>
+        <div class="actions">
+            <button type="button" class="cancel c2fc-botao">Cancel</button>
+            <button type="button" class="approve c2fc-botao c2fc-botao-primario">Save</button>
+        </div>
+    </div>
+</div>
+<!-- publisher < -->
+<div class="publisher hidden page-modification-publisher page-modification-wrapper mb-4">
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo">Publisher Variables:</label>
+        <div class="ui labels flex flex-wrap gap-2">
+            <span class="ui label inline-flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1 text-sm text-teal-800">
+                #name#
+                <span class="detail text-xs text-teal-600">#type#</span>
+                <i class="delete icon cursor-pointer font-bold not-italic" data-index="#index#" aria-label="Remove">&times;</i>
+            </span>
+        </div>
+    </div>
+</div><!-- publisher > -->

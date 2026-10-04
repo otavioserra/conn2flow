@@ -1,6 +1,7 @@
 $(document).ready(function () {
 	$(document).on('change', 'input[name="mapear_layouts_perfis"]', function () {
-		$(this).closest('.field').next('.layout-profile-fields').prop('hidden', !this.checked);
+		// req-219: `.c2fc-campo` é o invólucro da variante Tailwind (`.field` na do Fomantic).
+		$(this).closest('.field, .c2fc-campo').next('.layout-profile-fields').prop('hidden', !this.checked);
 	});
 	$(document).on('click', '.layout-profile-add', function () {
 		var fields = $(this).closest('.layout-profile-fields');

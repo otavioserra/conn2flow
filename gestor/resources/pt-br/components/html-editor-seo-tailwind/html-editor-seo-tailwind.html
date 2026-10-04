@@ -1,0 +1,33 @@
+<!-- req-219: variante Tailwind da aba SEO & Compartilhamento. Nomes e classes `c2f-seo-*` são o contrato do
+     formulário e do JS; `<span>#imagepick-featured-image#</span>` é trocado pelo campo imagepick do interface. -->
+<div class="html-editor-seo space-y-4">
+    <div class="rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
+        <p class="font-semibold">@[[html-editor-seo-hint-title]]@</p>
+        <p>@[[html-editor-seo-hint-text]]@</p>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo" for="c2f-seo-og-titulo">@[[html-editor-seo-og-title-label]]@</label>
+        <input type="text" id="c2f-seo-og-titulo" name="og_titulo" maxlength="255" class="c2f-seo-og-titulo c2fc-campo-entrada"
+            placeholder="@[[html-editor-seo-og-title-placeholder]]@" value="#og-titulo#">
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo" for="c2f-seo-og-descricao">@[[html-editor-seo-og-description-label]]@</label>
+        <textarea id="c2f-seo-og-descricao" name="og_descricao" rows="3" class="c2f-seo-og-descricao c2fc-campo-entrada"
+            placeholder="@[[html-editor-seo-og-description-placeholder]]@">#og-descricao#</textarea>
+    </div>
+    <div class="c2fc-campo">
+        <span class="c2fc-campo-rotulo">@[[html-editor-seo-featured-image-label]]@</span>
+        <span>#imagepick-featured-image#</span>
+    </div>
+    <h4 class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">@[[html-editor-seo-search-header]]@</h4>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo" for="c2f-seo-meta-descricao">@[[html-editor-seo-meta-description-label]]@</label>
+        <textarea id="c2f-seo-meta-descricao" name="meta_descricao" rows="3" class="c2f-seo-meta-descricao c2fc-campo-entrada"
+            placeholder="@[[html-editor-seo-meta-description-placeholder]]@">#meta-descricao#</textarea>
+    </div>
+    <div class="c2fc-campo">
+        <label class="c2fc-campo-rotulo" for="c2f-seo-meta-keywords">@[[html-editor-seo-meta-keywords-label]]@</label>
+        <input type="text" id="c2f-seo-meta-keywords" name="meta_keywords" maxlength="500" class="c2f-seo-meta-keywords c2fc-campo-entrada"
+            placeholder="@[[html-editor-seo-meta-keywords-placeholder]]@" value="#meta-keywords#">
+    </div>
+</div>

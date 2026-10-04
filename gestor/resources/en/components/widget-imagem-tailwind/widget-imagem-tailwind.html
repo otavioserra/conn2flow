@@ -1,0 +1,22 @@
+<!-- req-219: variante Tailwind do campo imagepick. `_gestor-widgetImage-*` e `widgetImage-*` são o contrato
+     com o JS (controles.js liga o seletor quando o interface.js legado não está na página). -->
+<div class="_gestor-widgetImage-cont flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-3 sm:flex-row" id="#cont-id#">
+    <div class="fileImageParent w-full shrink-0 overflow-hidden rounded-lg bg-slate-100 sm:w-40">
+        <div class="fileImage">
+            <img src="#img-src#" class="widgetImage-image aspect-4/3 h-auto w-full object-cover" alt="">
+        </div>
+    </div>
+    <div class="min-w-0 flex-1 space-y-2 text-sm text-slate-700">
+        <p class="widgetImage-nome font-semibold break-all text-slate-900">#nome#</p>
+        <p class="widgetImage-data flex items-center gap-2"><i class="icon" data-lucide="calendar" aria-hidden="true"></i><span class="widgetImage-valor">#data#</span></p>
+        <p class="widgetImage-tipo flex items-center gap-2"><i class="icon" data-lucide="info" aria-hidden="true"></i><span class="widgetImage-valor">#tipo#</span></p>
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="_gestor-widgetImage-btn-add c2fc-botao c2fc-botao-primario c2fc-botao-pequeno"
+                data-c2f-dica="@[[widget-image-button-add-tooltip]]@">@[[widget-image-button-add]]@</button>
+            <button type="button" class="_gestor-widgetImage-btn-del c2fc-botao c2fc-botao-perigo c2fc-botao-pequeno"
+                data-c2f-dica="@[[widget-image-button-del-tooltip]]@">@[[widget-image-button-del]]@</button>
+        </div>
+    </div>
+    <input type="hidden" value="#file-id#" name="#campo-nome#" class="_gestor-widgetImage-file-id">
+    <input type="hidden" value="#file-caminho#" name="#campo-nome#-caminho" class="_gestor-widgetImage-file-caminho">
+</div>

@@ -1,0 +1,21 @@
+<!-- req-219: variante Tailwind do aviso de assistente de IA sem servidor configurado. -->
+<div class="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-900">
+    <i data-lucide="server" class="mt-0.5 size-6 shrink-0"></i>
+    <div class="space-y-2">
+        <p class="text-base font-semibold">
+            Nenhum Servidor de IA Disponível
+        </p>
+        <p>Para utilizar os recursos de Inteligência Artificial, é necessário configurar uma conexão com um servidor de
+            IA.</p>
+        <div class="flex flex-wrap gap-2">
+            <a class="c2fc-botao c2fc-botao-primario" href="@[[pagina#url-raiz]]@admin-ia/adicionar/">
+                <i data-lucide="plus" class="size-4"></i>
+                Nova Conexão
+            </a>
+            <a class="c2fc-botao" href="@[[pagina#url-raiz]]@admin-ia/listar/">
+                <i data-lucide="list" class="size-4"></i>
+                Gerenciar Servidores
+            </a>
+        </div>
+    </div>
+</div>

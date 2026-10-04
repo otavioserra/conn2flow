@@ -206,7 +206,7 @@ $(document).ready(function () {
     function toggleActiveButton(obj = null) {
         if (typeof obj !== 'object' || obj === null) return false;
         if (!obj.hasClass('active')) {
-            obj.parent().find('.button').removeClass('active');
+            obj.parent().find('.button, .c2fc-botao').removeClass('active'); // req-219: .c2fc-botao na variante Tailwind
             obj.addClass('active');
 
             return true;
@@ -1631,7 +1631,8 @@ $(document).ready(function () {
     }
 
     // Botões da Pré-visualização.
-    $(document.body).on('mouseup tap', '.editorHtmlVisual.button', function (e) {
+    // req-219: sem `.button` no seletor, para valer também na variante Tailwind (botão `c2fc-botao`).
+    $(document.body).on('mouseup tap', '.editorHtmlVisual', function (e) {
         if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
         editorHtmlVisual();
@@ -1713,15 +1714,26 @@ $(document).ready(function () {
         // então o token é anexado aqui, explicitamente, antes de `$.formSubmitNormal()`.
         if (!htmlEditorAplicarCsrfNoFormulario()) return;
 
-        $.formSubmitNormal();
+        htmlEditorEnviarFormulario();
     });
+
+    // req-219: na página Tailwind não há o `interface.js` legado (nem `$.formSubmitNormal`). O envio
+    // nativo por `requestSubmit` dispara o `submit`, que o `interface-tailwind.js` valida e o
+    // CodeMirror usa para gravar os textareas.
+    function htmlEditorEnviarFormulario() {
+        if (typeof $.formSubmitNormal === 'function') { $.formSubmitNormal(); return; }
+        const formulario = document.querySelector('form.interfaceFormPadrao');
+        if (!formulario) return;
+        if (typeof formulario.requestSubmit === 'function') formulario.requestSubmit(); else formulario.submit();
+    }
 
     // req-109 §8: anexa o token CSRF ao formulário padrão do gestor e avisa o usuário de forma
     // amigável quando ele não existe. Sem isto o backend responde 403 com o JSON cru
     // `{"status":"error","message":"Token CSRF inválido ou ausente."}`, que o navegador exibe na
     // tela inteira — o trabalho do editor parece perdido, embora só falte o token.
     function htmlEditorAplicarCsrfNoFormulario() {
-        const $form = $('.ui.form.interfaceFormPadrao');
+        // req-219: `form.` (e não `.ui.form`) para achar também o formulário da variante Tailwind.
+        const $form = $('form.interfaceFormPadrao');
         if (!$form.length) return true;
 
         const token = (typeof gestor !== 'undefined' && gestor.csrfToken)
@@ -3500,7 +3512,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
             }
 
             modal.find('.header').html(config.modal.head);
-            modal.find('.cancel.button').html(config.modal.cancel);
+            modal.find('.cancel').html(config.modal.cancel);
 
             // Limpar e configurar o iframe
             const iframe = modal.find('iframe');

@@ -1,0 +1,17 @@
+<!-- req-219: variante Tailwind do modal com iframe (seletor de imagem e templates). `ui modal iframePagina`,
+     `header`, `cancel`, `iframe-container` e `ui dimmer` são ganchos do JS; a ponte de modais monta o modal. -->
+<div class="ui overlay fullscreen modal iframePagina hidden">
+    <button type="button" class="close icon text-xl leading-none text-slate-400 hover:text-slate-700" aria-label="Fechar">&times;</button>
+    <div class="header">Head</div>
+    <div class="content">
+        <div class="iframe-container h-full">
+            <iframe class="block h-[calc(100vh-200px)] w-full rounded-lg border border-slate-200"></iframe>
+        </div>
+    </div>
+    <div class="actions">
+        <button type="button" class="cancel c2fc-botao">Cancel</button>
+    </div>
+    <div class="ui dimmer c2fc-cobertura">
+        <div class="c2fc-giro"></div>
+    </div>
+</div>

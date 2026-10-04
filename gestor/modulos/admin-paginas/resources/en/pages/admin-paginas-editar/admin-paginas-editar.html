@@ -1,80 +1,84 @@
-<div class="ui blue message"> @[[form-url-label]]@: <b>
-        <a href="#url#">#url#</a>
-    </b>. </div>
-<div class="field">
-    <label>#form-name-label#</label>
-    <input type="text" name="pagina-nome" placeholder="#form-name-placeholder#" value="#pagina-nome#">
-</div>
-<div class="field">
-    <label>#form-path-label#</label>
-    <input type="text" name="paginaCaminho" placeholder="#form-path-placeholder#" value="#caminho#">
-</div>
-<div class="two fields">
-    <div class="field">
-        <label>#form-layout-label#</label>
-        <span>#select-layout#</span>
-    </div>
-    <div class="field">
-        <label>#form-framework-css-label#</label>
-        <span>#select-framework-css#</span>
-    </div>
-</div>
-#layout-profile-mapping#
-<div class="two fields">
-    <div class="field">
-        <label>#form-type-label#</label>
-        <span>#select-type#</span>
-    </div>
-    <!-- permissao-pagina < -->
-    <div class="field">
-        <label>#form-permission-label#</label>
-        <div class="ui toggle checkbox">
-            <input type="checkbox" name="sem_permissao" data-checked="#sem_permissao#">
-            <label>&nbsp;</label>
+<!-- req-219: página em Tailwind (layout-administrativo-tailwind). Campos no padrão da biblioteca de
+     controles (c2fc-campo); os selects vêm do interface com `data-c2f-select`. -->
+<div class="space-y-6">
+    <div class="rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800"> @[[form-url-label]]@: <b>
+            <a class="break-all underline" href="#url#">#url#</a>
+        </b>. </div>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="pagina-nome">#form-name-label#</label>
+            <input type="text" id="pagina-nome" name="pagina-nome" class="c2fc-campo-entrada" placeholder="#form-name-placeholder#" value="#pagina-nome#">
         </div>
-    </div><!-- permissao-pagina > -->
-</div>
-<!-- agendamento-datas < -->
-<h4 class="ui dividing header">Scheduling and dates</h4>
-<div class="two fields">
-    <div class="field">
-        <label>Publish from</label>
-        <input type="datetime-local" name="data_publicacao_inicio">
-    </div>
-    <div class="field">
-        <label>Unpublish at</label>
-        <input type="datetime-local" name="data_publicacao_fim">
-    </div>
-</div>
-<div class="two fields">
-    <div class="field">
-        <label>Creation date</label>
-        <input type="datetime-local" name="data_criacao">
-    </div>
-    <div class="field">
-        <label>Modification date</label>
-        <input type="datetime-local" name="data_modificacao">
-    </div>
-</div>
-<!-- agendamento-datas > -->
-<div class="three fields hidden pagina-modulos-container">
-    <div class="field">
-        <label>#form-module-label#</label>
-        <span>#select-module#</span>
-    </div>
-    <div class="field">
-        <label>#form-option-label#</label>
-        <input type="text" name="pagina-opcao" placeholder="#form-option-placeholder#" value="#opcao#">
-    </div>
-    <div class="field">
-        <label>#form-root-label#</label>
-        <div class="ui toggle checkbox">
-            <input type="checkbox" name="raiz" data-checked="#raiz#">
-            <label>&nbsp;</label>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="pagina-caminho">#form-path-label#</label>
+            <input type="text" id="pagina-caminho" name="paginaCaminho" class="c2fc-campo-entrada" placeholder="#form-path-placeholder#" value="#caminho#">
         </div>
     </div>
-</div>
-<div class="field">
-    <label>#form-page-content-label#</label>
-    #html-editor#
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="layout">#form-layout-label#</label>
+            <span>#select-layout#</span>
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="framework-css">#form-framework-css-label#</label>
+            <span>#select-framework-css#</span>
+        </div>
+    </div>
+    #layout-profile-mapping#
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="type">#form-type-label#</label>
+            <span>#select-type#</span>
+        </div>
+        <!-- permissao-pagina < -->
+        <div class="c2fc-campo">
+            <span class="c2fc-campo-rotulo">#form-permission-label#</span>
+            <label class="c2fc-chave mt-2">
+            <input type="checkbox" name="sem_permissao" #sem_permissao#>
+            <span class="c2fc-chave-trilho" aria-hidden="true"></span>
+        </label>
+        </div><!-- permissao-pagina > -->
+    </div>
+    <!-- agendamento-datas < -->
+    <h4 class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">Scheduling and dates</h4>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="data_publicacao_inicio">Publish from</label>
+            <input type="datetime-local" id="data_publicacao_inicio" name="data_publicacao_inicio" class="c2fc-campo-entrada">
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="data_publicacao_fim">Unpublish at</label>
+            <input type="datetime-local" id="data_publicacao_fim" name="data_publicacao_fim" class="c2fc-campo-entrada">
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="data_criacao">Creation date</label>
+            <input type="datetime-local" id="data_criacao" name="data_criacao" class="c2fc-campo-entrada">
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="data_modificacao">Modification date</label>
+            <input type="datetime-local" id="data_modificacao" name="data_modificacao" class="c2fc-campo-entrada">
+        </div>
+    </div>
+    <!-- agendamento-datas > -->
+    <div class="pagina-modulos-container hidden grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="module">#form-module-label#</label>
+            <span>#select-module#</span>
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="pagina-opcao">#form-option-label#</label>
+            <input type="text" id="pagina-opcao" name="pagina-opcao" class="c2fc-campo-entrada" placeholder="#form-option-placeholder#" value="#opcao#">
+        </div>
+        <div class="c2fc-campo">
+            <span class="c2fc-campo-rotulo">#form-root-label#</span>
+            <label class="c2fc-chave mt-2">
+            <input type="checkbox" name="raiz" #raiz#>
+            <span class="c2fc-chave-trilho" aria-hidden="true"></span>
+        </label>
+        </div>
+    </div>
+    <div class="c2fc-campo">
+        <span class="c2fc-campo-rotulo">#form-page-content-label#</span>
+        #html-editor#
+    </div>
 </div>

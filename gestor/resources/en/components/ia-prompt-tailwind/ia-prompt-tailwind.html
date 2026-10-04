@@ -1,0 +1,79 @@
+<!-- req-219: variante Tailwind do assistente de IA. `ai-*`, `AIMenu`, `item/tab`, `ui ai-model-select`,
+     `ui negative message`, `close icon` e `dimmer` são ganchos do ia.js; abas e selects rodam pela ponte
+     vanilla da biblioteca de controles. -->
+<div class="ai-conteiner relative rounded-xl border border-slate-200 bg-white p-4">
+    <div class="AIMenu c2fc-abas-lista c2fc-anexa" role="tablist">
+        <a class="item c2fc-aba active" data-tab="prompt" title="@[[ia-form-prompt-tooltip]]@"><i data-lucide="list" class="size-4"></i>@[[ia-form-prompt-label]]@</a>
+        <a class="item c2fc-aba" data-tab="mode" title="@[[ia-form-mode-tooltip]]@"><i data-lucide="bot" class="size-4"></i>@[[ia-form-mode-label]]@</a>
+        <a class="item c2fc-aba" data-tab="config" title="@[[ia-form-config-tooltip]]@"><i data-lucide="server" class="size-4"></i>@[[ia-form-config-label]]@</a>
+    </div>
+    <div class="tab active c2fc-painel-aba space-y-4" data-tab="prompt">
+        <div class="menuMode grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="c2fc-campo">
+                <label class="c2fc-campo-rotulo">Select Model:</label>
+                <select class="ui dropdown ai-prompt-select c2fc-campo-entrada" data-c2f-select="1">
+                    #select-prompt#
+                </select>
+            </div>
+            <div class="c2fc-campo">
+                <span class="c2fc-campo-rotulo">Options:</span>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" class="ai-prompt-clear c2fc-botao c2fc-botao-pequeno disabled"><i data-lucide="clipboard" class="size-4"></i>Clear</button>
+                    <button type="button" class="ai-prompt-edit c2fc-botao c2fc-botao-primario c2fc-botao-pequeno disabled"><i data-lucide="save" class="size-4"></i>Save Current</button>
+                    <button type="button" class="ai-prompt-del c2fc-botao c2fc-botao-perigo c2fc-botao-pequeno disabled"><i data-lucide="circle-x" class="size-4"></i>Delete Current</button>
+                    <button type="button" class="ai-prompt-new c2fc-botao c2fc-botao-sucesso c2fc-botao-pequeno"><i data-lucide="copy" class="size-4"></i>Create New</button>
+                </div>
+            </div>
+        </div>
+        <!-- prompt-extra-controls -->
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo">Description of your need:</label>
+            <textarea rows="6" placeholder="Describe what you need..." class="ai-prompt-textarea c2fc-campo-entrada"></textarea>
+        </div>
+    </div>
+    <div class="tab hidden c2fc-painel-aba space-y-4" data-tab="mode">
+        <div class="menuMode grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="c2fc-campo">
+                <label class="c2fc-campo-rotulo">Select Mode:</label>
+                <select class="ui dropdown ai-mode-select c2fc-campo-entrada" data-c2f-select="1">
+                    #select-mode#
+                </select>
+            </div>
+        </div>
+        <textarea rows="6" class="ai-mode-textarea c2fc-campo-entrada">#modo-padrao#</textarea>
+    </div>
+    <div class="tab hidden c2fc-painel-aba space-y-4" data-tab="config">
+        <div class="menuMode grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="c2fc-campo">
+                <label class="c2fc-campo-rotulo">AI Connection:</label>
+                <select class="ui dropdown ai-connection-select c2fc-campo-entrada" data-c2f-select="1">
+                    #select-connection#
+                </select>
+            </div>
+            <div class="c2fc-campo">
+                <label class="c2fc-campo-rotulo">AI Model:</label>
+                <select class="ui ai-model-select c2fc-campo-entrada" data-c2f-select="1">
+                    #select-model#
+                </select>
+            </div>
+        </div>
+        <div class="c2fc-campo hidden ai-return-raw">
+            <label class="c2fc-campo-rotulo">Complete Returned Data:</label>
+            <textarea rows="6" class="ai-return-textarea c2fc-campo-entrada"></textarea>
+        </div>
+    </div>
+    <div class="ui negative message hidden relative mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 pr-10 text-sm text-red-700" role="alert">
+        <button type="button" class="close icon absolute top-2 right-3 text-lg leading-none text-red-500 hover:text-red-800" aria-label="Close">&times;</button>
+        <p class="font-semibold">Request Error</p>
+        <span class="ai-error-message"></span>
+    </div>
+    <div class="mt-4 text-center">
+        <button type="button" class="ai-send-prompt c2fc-botao c2fc-botao-primario"><i data-lucide="sparkles" class="size-4"></i>Process Request</button>
+    </div>
+    <div class="ui dimmer c2fc-cobertura rounded-xl">
+        <div class="flex flex-col items-center gap-2 text-sm text-slate-700">
+            <div class="c2fc-giro"></div>
+            Processing request...
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<!-- req-219: variante Tailwind dos modelos de página. Ids, `modelos-*`, `modelo-card` e `modeloSelecionar`
+     são ganchos do html-editor-interface.js. -->
+<div class="modelos-container">
+    <div class="menu-pagina-conteudo" data-id="modelos"></div>
+    <div class="relative mb-4">
+        <i data-lucide="search" class="modelos-search-icon pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate-400"></i>
+        <input type="text" id="modelos-search-input" class="c2fc-campo-entrada pr-9! pl-9!" placeholder="Search templates..." autocomplete="off" aria-label="Search templates">
+        <button type="button" class="modelos-search-clear hidden absolute top-1/2 right-2 -translate-y-1/2 rounded p-1 text-slate-400 hover:text-slate-700" title="Clear search" aria-label="Clear search">
+            <i data-lucide="circle-x" class="size-4"></i>
+        </button>
+    </div>
+    <div class="modelos-cards grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" id="modelos-cards">
+        <!-- Modelos serão carregados dinamicamente aqui -->
+    </div>
+    <div class="py-6 text-center" id="modelos-no-results" style="display: none;">
+        <div class="inline-flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm text-slate-700">
+            <i data-lucide="search" class="mt-0.5 size-5 text-slate-400"></i>
+            <div>
+                <p class="font-semibold text-slate-900">No templates found</p>
+                <p>No templates match your search.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6 text-center" id="modelos-loading" style="display: none;">
+        <div class="c2fc-giro mx-auto"></div>
+        <p class="mt-2 text-sm text-slate-600">Loading templates...</p>
+    </div>
+
+    <div class="py-6 text-center" id="modelos-empty" style="display: none;">
+        <div class="inline-flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm text-slate-700">
+            <i data-lucide="file" class="mt-0.5 size-5 text-slate-400"></i>
+            <div>
+                <p class="font-semibold text-slate-900">No templates found</p>
+                <p>There are no page templates available at the moment.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6 text-center" id="modelos-load-more" style="display: none;">
+        <button type="button" class="c2fc-botao c2fc-botao-primario" id="btn-load-more">
+            <i data-lucide="plus" class="size-4"></i>
+            Load More Templates
+        </button>
+    </div>
+</div>
+<template id="modelo-card-template">
+    <div class="card modelo-card flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm" data-modelo-id="{{id}}">
+        <div class="aspect-4/3 overflow-hidden bg-slate-100">
+            <img class="h-full w-full object-cover" src="{{thumbnail}}" alt="{{nome}}">
+        </div>
+        <div class="flex-1 px-4 py-3">
+            <p class="font-semibold text-slate-900">{{nome}}</p>
+            <p class="text-xs text-slate-500">
+                <span>{{target}}</span> • <span>{{language}}</span>
+            </p>
+        </div>
+        <div class="border-t border-slate-200 px-4 py-3">
+            <button type="button" class="modeloSelecionar c2fc-botao c2fc-botao-primario w-full justify-center" data-modelo-id="{{id}}"
+                data-c2f-dica="Click to select this template">
+                Select Template
+            </button>
+        </div>
+    </div>
+</template>

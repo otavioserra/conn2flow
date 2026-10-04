@@ -640,29 +640,47 @@
             return retorno !== undefined ? retorno : this;
         };
 
+        // Abas: cada grupo é o conjunto de irmãos (itens no mesmo menu, painéis no mesmo pai), para
+        // que abas aninhadas (o editor tem o grupo do código dentro de um painel) não se desliguem.
+        function irmaosComAba(no) {
+            return no && no.parentNode ? Array.prototype.filter.call(no.parentNode.children, function (c) { return c.hasAttribute('data-tab'); }) : [];
+        }
+        function abaAtivar(nome, raiz) {
+            raiz = raiz || document;
+            var seletor = '[data-tab="' + String(nome).replace(/["\\]/g, '\\$&') + '"]';
+            var item = raiz.querySelector('.item' + seletor) || document.querySelector('.item' + seletor);
+            var painel = raiz.querySelector('.tab' + seletor) || document.querySelector('.tab' + seletor);
+            irmaosComAba(item).forEach(function (i) { i.classList.toggle('active', i === item); });
+            irmaosComAba(painel).forEach(function (p) { if (p.classList.contains('tab')) { p.classList.add('c2fc-ponte-tab'); p.classList.toggle('active', p === painel); } });
+            var configuracao = (item && item.c2fPonteTab) || {};
+            if (configuracao.onLoad) configuracao.onLoad.call(painel, nome, [], false);
+            if (configuracao.onVisible) configuracao.onVisible.call(painel, nome);
+        }
+
         $.fn.tab = function (comando, aba) {
-            var configuracao = typeof comando === 'object' ? comando : {};
-            function ativar(nome, contexto) {
-                var raiz = contexto || document;
-                Array.prototype.forEach.call(raiz.querySelectorAll('.item[data-tab]'), function (i) { i.classList.toggle('active', i.getAttribute('data-tab') === nome); });
-                Array.prototype.forEach.call(raiz.querySelectorAll('.ui.tab[data-tab]'), function (p) { p.classList.add('c2fc-ponte-tab'); p.classList.toggle('active', p.getAttribute('data-tab') === nome); });
-                if (configuracao.onVisible) configuracao.onVisible.call(null, nome);
-            }
-            if (comando === 'change tab') { ativar(aba); return this; }
+            if (comando === 'change tab') { abaAtivar(aba, null); return this; }
+            var configuracao = typeof comando === 'object' && comando ? comando : {};
+            var ativo = null;
             this.each(function () {
                 var item = this;
-                Array.prototype.forEach.call(document.querySelectorAll('.ui.tab[data-tab]'), function (p) { p.classList.add('c2fc-ponte-tab'); });
-                if (item.c2fPonteTab) return;
-                item.c2fPonteTab = true;
-                item.addEventListener('click', function (ev) { ev.preventDefault(); ativar(item.getAttribute('data-tab'), configuracao.context ? $(configuracao.context)[0] : null); });
+                var painel = document.querySelector('.tab[data-tab="' + item.getAttribute('data-tab') + '"]');
+                irmaosComAba(painel).forEach(function (p) { if (p.classList.contains('tab')) p.classList.add('c2fc-ponte-tab'); });
+                if (item.classList.contains('active')) ativo = item;
+                var novo = !item.c2fPonteTab;
+                item.c2fPonteTab = configuracao;
+                if (!novo) return;
+                item.addEventListener('click', function (ev) { ev.preventDefault(); abaAtivar(item.getAttribute('data-tab'), item.c2fPonteTab.context ? $(item.c2fPonteTab.context)[0] : null); });
             });
+            // Como o Fomantic, a inicialização carrega a aba que já está ativa.
+            if (ativo && (configuracao.onLoad || configuracao.onVisible)) abaAtivar(ativo.getAttribute('data-tab'), null);
             return this;
         };
 
         function prepararModal(modal) {
             if (modal.c2fPonte) return modal.c2fPonte;
             var fundo = el('div', { 'class': 'c2fc-overlay c2fc-oculto', 'data-c2fc-ponte-modal': true });
-            modal.parentNode.insertBefore(fundo, modal);
+            // Como o Fomantic, o modal vai para o body: no editor ele mora dentro de um pai escondido.
+            document.body.appendChild(fundo);
             fundo.appendChild(modal);
             modal.classList.add('c2fc-ponte-modal');
             modal.style.display = 'block';
@@ -724,6 +742,58 @@
             return this;
         };
 
+        // Formulário: só o que os módulos usam do Fomantic (regras de vazio, valores, reset), com erro inline.
+        function formCampo(form, id) {
+            return form.querySelector('[data-validate="' + id + '"]') || form.querySelector('#' + id) || form.querySelector('[name="' + id + '"]');
+        }
+        function formValidar(form) {
+            var estado = form.c2fPonteForm || { campos: {} };
+            var valido = true;
+            Array.prototype.forEach.call(form.querySelectorAll('.c2fc-ponte-form-erro'), function (e) { e.remove(); });
+            Object.keys(estado.campos).forEach(function (chave) {
+                var campo = estado.campos[chave];
+                var entrada = formCampo(form, campo.identifier || chave);
+                if (!entrada) return;
+                (campo.rules || []).some(function (regra) {
+                    var vazio = String(entrada.value || '').trim() === '';
+                    if ((regra.type === 'empty' || regra.type === 'notEmpty') && vazio) {
+                        valido = false;
+                        entrada.setAttribute('aria-invalid', 'true');
+                        var erro = el('p', { 'class': 'c2fc-campo-erro c2fc-ponte-form-erro', role: 'alert' });
+                        erro.textContent = regra.prompt || texto('atencao');
+                        entrada.insertAdjacentElement('afterend', erro);
+                        return true;
+                    }
+                    entrada.removeAttribute('aria-invalid');
+                    return false;
+                });
+            });
+            estado.valido = valido;
+            form.c2fPonteForm = estado;
+            return valido;
+        }
+        if (!$.fn.form) $.fn.form = function (comando, chave, valor) {
+            var retorno;
+            this.each(function () {
+                var form = this;
+                if (!form.c2fPonteForm) form.c2fPonteForm = { campos: {}, valido: true };
+                if (comando && typeof comando === 'object') { form.c2fPonteForm.campos = comando.fields || {}; return; }
+                switch (comando) {
+                    case 'validate form': retorno = formValidar(form); break;
+                    case 'is valid': retorno = formValidar(form); break;
+                    case 'get value': { var c = formCampo(form, chave); retorno = c ? c.value : undefined; break; }
+                    case 'get values': retorno = {}; Array.prototype.forEach.call(form.querySelectorAll('[name]'), function (c) { retorno[c.name] = c.value; }); break;
+                    case 'set value': { var d = formCampo(form, chave); if (d) d.value = valor; break; }
+                    case 'reset': case 'clear':
+                        if (typeof form.reset === 'function') form.reset();
+                        Array.prototype.forEach.call(form.querySelectorAll('.c2fc-ponte-form-erro'), function (e) { e.remove(); });
+                        break;
+                    default: break;
+                }
+            });
+            return retorno !== undefined ? retorno : this;
+        };
+
         $.fn.search = function () { return this; };
         if (!$.fn.transition) {
             $.fn.transition = function (animacao) {
@@ -737,9 +807,82 @@
         global.c2fControles.ponteAtiva = true;
     }
 
+    // =========================================================================== campo imagepick
+    // O campo de imagem do interface (`widget-imagem`) era ligado pelo `interface.js` legado, que não vai
+    // às páginas Tailwind. Mesmo contrato: `gestor.interface.imagepick`, modal `.iframePagina` com o
+    // admin-arquivos e a resposta por `postMessage`. Só liga com a ponte ativa (sem o legado na página).
+
+    function imagemValor(caixa, seletor, valor) {
+        var alvo = caixa.querySelector(seletor);
+        if (!alvo) return;
+        var span = alvo.querySelector('.widgetImage-valor');
+        if (span) { span.textContent = valor; return; }
+        var icone = alvo.querySelector('.icon');
+        if (icone && icone.nextSibling) icone.nextSibling.remove();
+        alvo.appendChild(document.createTextNode(valor));
+    }
+
+    function imagemPreencher(caixa, dados) {
+        var id = caixa.querySelector('input._gestor-widgetImage-file-id');
+        var caminho = caixa.querySelector('input._gestor-widgetImage-file-caminho');
+        var img = caixa.querySelector('.widgetImage-image');
+        var nome = caixa.querySelector('.widgetImage-nome');
+        if (id) id.value = dados.fileId !== undefined ? dados.fileId : dados.id;
+        if (caminho) caminho.value = dados.caminho || '';
+        if (img) img.setAttribute('src', dados.imgSrc || '');
+        if (nome) nome.textContent = dados.nome || '';
+        imagemValor(caixa, '.widgetImage-data', dados.data || '');
+        imagemValor(caixa, '.widgetImage-tipo', dados.tipo || '');
+    }
+
+    function imagemSeletor() {
+        var $ = global.jQuery;
+        var config = global.gestor && global.gestor.interface && global.gestor.interface.imagepick;
+        if (!global.c2fControles.ponteAtiva || !$ || !config || global.c2fControles.imagemLigada || !document.querySelector('._gestor-widgetImage-cont')) return;
+        global.c2fControles.imagemLigada = true;
+        var atual = null;
+        document.addEventListener('click', function (ev) {
+            var adicionar = ev.target.closest('._gestor-widgetImage-btn-add');
+            var remover = ev.target.closest('._gestor-widgetImage-btn-del');
+            if (remover) { ev.preventDefault(); imagemPreencher(remover.closest('._gestor-widgetImage-cont'), config.padroes || {}); return; }
+            if (!adicionar) return;
+            ev.preventDefault();
+            var modal = document.querySelector('.ui.modal.iframePagina');
+            if (!modal) return;
+            atual = adicionar.closest('._gestor-widgetImage-cont');
+            var cabeca = modal.querySelector('.header');
+            var cancelar = modal.querySelector('.cancel');
+            if (cabeca && config.modal) cabeca.textContent = config.modal.head || '';
+            if (cancelar && config.modal) cancelar.textContent = config.modal.cancel || '';
+            var quadro = modal.querySelector('iframe');
+            var $modal = $(modal);
+            $modal.dimmer('show');
+            quadro.onload = function () { $modal.dimmer('hide'); };
+            quadro.setAttribute('src', config.modal ? config.modal.url : 'about:blank');
+            $modal.modal('show');
+        });
+        global.addEventListener('message', function (ev) {
+            if (!atual || ev.origin !== global.location.origin) return;
+            var dados;
+            try {
+                var msg = JSON.parse(ev.data);
+                if (msg.moduloId !== 'admin-arquivos' && msg.moduloId !== 'arquivos') return;
+                dados = JSON.parse(decodeURI(msg.data));
+            } catch (e) { return; }
+            if (!/^image\//.test(String(dados.tipo || ''))) {
+                dialogo('alerta', (config.alertas && config.alertas.naoImagem) || texto('atencao'));
+                return;
+            }
+            imagemPreencher(atual, dados);
+            atual = null;
+            $('.ui.modal.iframePagina').modal('hide');
+        });
+    }
+    global.c2fControles.imagemPreencher = imagemPreencher;
+
     // A ponte entra já (para quem chama `$.fn.dropdown` no próprio `ready`) e de novo no carregamento.
     // Com o Fomantic, que carrega antes deste arquivo, `$.fn.dropdown` existe e a ponte não entra.
     ponte(global.jQuery);
-    function preparar() { ponte(global.jQuery); iniciar(document); }
+    function preparar() { ponte(global.jQuery); iniciar(document); imagemSeletor(); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', preparar); else preparar();
 })(window);

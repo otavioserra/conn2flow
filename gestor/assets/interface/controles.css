@@ -36,7 +36,18 @@
 .c2fc-chave-rotulo { font-size: 14px; color: #334155; }
 .c2fc-botao-fantasma { border-color: transparent; background: transparent; color: #475569; }
 .c2fc-botao-fantasma:hover { background: #f1f5f9; }
-.c2fc-botao:disabled { opacity: .5; cursor: not-allowed; }
+.c2fc-botao:disabled, .c2fc-botao.disabled { opacity: .5; cursor: not-allowed; pointer-events: none; }
+.c2fc-botao-sucesso { border-color: #059669; background: #059669; color: #fff; }
+.c2fc-botao-sucesso:hover { background: #047857; }
+.c2fc-botao-pequeno { padding: 5px 10px; font-size: 13px; }
+.c2fc-botao-icone { padding: 8px; }
+.c2fc-botao-pequeno.c2fc-botao-icone { padding: 5px; }
+/* `.active` é o estado que o JS legado do editor liga (tela, variáveis/simulação). */
+.c2fc-botao.active { border-color: #0284c7; background: #e0f2fe; color: #075985; }
+.c2fc-grupo { display: inline-flex; flex-wrap: wrap; }
+.c2fc-grupo > .c2fc-botao { border-radius: 0; margin-left: -1px; }
+.c2fc-grupo > .c2fc-botao:first-child { border-radius: 8px 0 0 8px; margin-left: 0; }
+.c2fc-grupo > .c2fc-botao:last-child { border-radius: 0 8px 8px 0; }
 a.c2fc-botao { text-decoration: none; }
 .c2fc-icone { width: 16px; height: 16px; }
 
@@ -54,6 +65,8 @@ a.c2fc-botao { text-decoration: none; }
 .c2fc-select-gatilho { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; width: 100%; min-height: 38px; box-sizing: border-box; padding: 6px 34px 6px 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #0f172a; text-align: left; cursor: pointer; position: relative; }
 .c2fc-select-gatilho::after { content: ""; position: absolute; right: 12px; top: 50%; width: 8px; height: 8px; border-right: 2px solid #64748b; border-bottom: 2px solid #64748b; transform: translateY(-70%) rotate(45deg); }
 .c2fc-select-aberto .c2fc-select-gatilho { border-color: #0284c7; }
+/* o JS legado desabilita pondo a classe `disabled` no <select> (era o `.ui.dropdown.disabled` do Fomantic) */
+.c2fc-select:has(> select.disabled) .c2fc-select-gatilho { pointer-events: none; opacity: .6; }
 .c2fc-select-desabilitado .c2fc-select-gatilho { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
 .c2fc-select-vazio { color: #94a3b8; }
 .c2fc-ficha { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 12px; }
@@ -82,7 +95,10 @@ a.c2fc-botao { text-decoration: none; }
 /* ---------- abas */
 .c2fc-abas-lista { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #e2e8f0; margin-bottom: 12px; }
 .c2fc-aba { border: 0; border-bottom: 2px solid transparent; background: none; padding: 8px 14px; font: 500 14px/1.2 inherit; color: #475569; cursor: pointer; margin-bottom: -1px; }
-.c2fc-aba[aria-selected="true"] { border-bottom-color: #0284c7; color: #0369a1; }
+.c2fc-aba[aria-selected="true"], .c2fc-aba.active { border-bottom-color: #0284c7; color: #0369a1; }
+a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+.c2fc-painel-aba { padding: 16px; border: 1px solid #e2e8f0; border-top: 0; border-radius: 0 0 12px 12px; background: #fff; }
+.c2fc-abas-lista.c2fc-anexa { margin-bottom: 0; }
 
 /* ---------- dica (tooltip) */
 [data-c2f-dica] { position: relative; }
@@ -101,8 +117,22 @@ a.c2fc-botao { text-decoration: none; }
 .c2fc-ponte-modal > .content, .c2fc-ponte-modal > .scrolling.content { padding: 16px 20px; }
 .c2fc-ponte-modal > .actions { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid #e2e8f0; }
 .c2fc-ponte-modal > .close { position: absolute; top: 10px; right: 14px; cursor: pointer; }
+.c2fc-ponte-modal.tiny { max-width: 28rem; }
+.c2fc-ponte-modal.large { max-width: 72rem; }
+.c2fc-ponte-modal.fullscreen { max-width: none; width: calc(100vw - 32px); height: calc(100vh - 32px); display: flex !important; flex-direction: column; }
+.c2fc-ponte-modal.fullscreen > .content, .c2fc-ponte-modal.fullscreen > .scrolling.content { flex: 1; overflow: auto; }
 .ui.dimmer.c2fc-ponte-dimmer { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(255,255,255,.7); z-index: 100011; }
 .ui.dimmer.c2fc-ponte-dimmer.active { display: flex; }
-.ui.tab.c2fc-ponte-tab { display: none; }
-.ui.tab.c2fc-ponte-tab.active { display: block; }
+.tab.c2fc-ponte-tab { display: none; }
+.tab.c2fc-ponte-tab.active { display: block; }
 .ui.checkbox.c2fc-ponte-checkbox { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Marcação Fomantic que hooks e projetos ainda injetam em página Tailwind (ex.: modal "Workspace Social"
+   do conn2flow-site no admin-paginas): o mesmo padrão do Fomantic, só aparece ativa. Igual nas páginas
+   Fomantic, onde a regra deles já é esta. */
+.ui.modal:not(.c2fc-ponte-modal):not(.active) { display: none; }
+.ui.dimmer:not(.active):not(.c2fc-cobertura):not(.c2fc-ponte-dimmer) { display: none; }
+
+/* ---------- cobertura de carregamento das variantes Tailwind (o JS legado liga e desliga `.active`) */
+.c2fc-cobertura { position: absolute; inset: 0; z-index: 10; display: none; align-items: center; justify-content: center; background: rgba(255,255,255,.7); }
+.c2fc-cobertura.active { display: flex; }

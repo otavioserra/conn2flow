@@ -90,7 +90,7 @@ describe('html-editor-interface.js — CSRF no salvamento (req-109 §8)', () => 
           }
         };
       }
-      if (seletor === '.ui.form.interfaceFormPadrao') {
+      if (seletor === 'form.interfaceFormPadrao') {
         return {
           length: form ? 1 : 0,
           __el: form,
