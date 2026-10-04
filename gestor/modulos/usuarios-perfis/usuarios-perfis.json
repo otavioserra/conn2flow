@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.2",
+    "versao": "1.0.3",
     "bibliotecas": [
         "interface",
         "html",
@@ -30,47 +30,165 @@
                 {
                     "name": "Usuários Perfis",
                     "id": "usuarios-perfis",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
                     },
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/",
                     "type": "system",
                     "option": "listar",
-                    "root": true
+                    "root": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 },
                 {
                     "name": "Usuários Perfis - Adicionar",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
                         "html": "e0eeb1a9156d30202a6c1326095bb04b",
                         "css": "",
                         "css_precompiled": "",
                         "combined": "e0eeb1a9156d30202a6c1326095bb04b"
                     },
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/adicionar/",
                     "type": "system",
-                    "option": "adicionar"
+                    "option": "adicionar",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "home-page-autocomplete-tailwind"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 },
                 {
                     "name": "Usuários Perfis - Editar",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
                         "html": "89eceaedfa0b2710fee7f126ed7079e9",
                         "css": "",
                         "css_precompiled": "",
                         "combined": "89eceaedfa0b2710fee7f126ed7079e9"
                     },
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/editar/",
                     "type": "system",
-                    "option": "editar"
+                    "option": "editar",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "home-page-autocomplete-tailwind"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 }
             ],
             "components": [
@@ -83,6 +201,18 @@
                         "css": "",
                         "css_precompiled": "",
                         "combined": "74d9342ad398b7c3fd89a4943fa88d59"
+                    }
+                },
+                {
+                    "name": "Autocomplete Página Inicial Tailwind",
+                    "id": "home-page-autocomplete-tailwind",
+                    "framework_css": "tailwindcss",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": ""
                     }
                 }
             ],
@@ -170,47 +300,165 @@
                 {
                     "name": "User Profiles",
                     "id": "usuarios-perfis",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
                     },
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/",
                     "type": "system",
                     "option": "listar",
-                    "root": true
+                    "root": true,
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 },
                 {
                     "name": "User Profiles - Add",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
                         "html": "bb763b6ab1f4228793d5ebc0c140ca54",
                         "css": "",
                         "css_precompiled": "",
                         "combined": "bb763b6ab1f4228793d5ebc0c140ca54"
                     },
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/adicionar/",
                     "type": "system",
-                    "option": "adicionar"
+                    "option": "adicionar",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "home-page-autocomplete-tailwind"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 },
                 {
                     "name": "User Profiles - Edit",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
                         "html": "17a126d19fb56d110a70934ffdc407de",
                         "css": "",
                         "css_precompiled": "",
                         "combined": "17a126d19fb56d110a70934ffdc407de"
                     },
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis/editar/",
                     "type": "system",
-                    "option": "editar"
+                    "option": "editar",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "home-page-autocomplete-tailwind"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 }
             ],
             "components": [
@@ -223,6 +471,18 @@
                         "css": "",
                         "css_precompiled": "",
                         "combined": "74d9342ad398b7c3fd89a4943fa88d59"
+                    }
+                },
+                {
+                    "name": "Home Page Autocomplete Tailwind",
+                    "id": "home-page-autocomplete-tailwind",
+                    "framework_css": "tailwindcss",
+                    "version": "1.0",
+                    "checksum": {
+                        "html": "",
+                        "css": "",
+                        "css_precompiled": "",
+                        "combined": ""
                     }
                 }
             ],

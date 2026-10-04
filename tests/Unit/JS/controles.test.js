@@ -245,6 +245,23 @@ describe('ponte Fomantic', () => {
     expect(carregadas[3]).toBe('externo:pagina');
   });
 
+  it('req-224: toast vira aviso com ações; data-checked="checked" marca o checkbox; sem Fomantic liga a classe das dicas', async () => {
+    carregar();
+    document.body.innerHTML = '<input type="checkbox" name="a" data-checked="checked"><input type="checkbox" name="b" data-checked="">';
+    window.c2fControles.marcarDataChecked(document);
+    expect(document.querySelector('[name="a"]').checked).toBe(true);
+    expect(document.querySelector('[name="b"]').checked).toBe(false);
+    expect(document.documentElement.classList.contains('c2fc-sem-fomantic')).toBe(true);
+    const $ = window.jQuery;
+    const cliques = [];
+    $('body').toast({ title: 'Atualização', message: 'Nova <b>versão</b>', class: 'success', actions: [{ text: 'Atualizar', click: () => cliques.push('sim') }] });
+    const aviso = document.querySelector('.c2fc-aviso.c2fc-aviso-sucesso');
+    expect(aviso.textContent).toContain('Atualização — Nova versão');
+    aviso.querySelector('.c2fc-aviso-acao').click();
+    expect(cliques).toEqual(['sim']);
+    expect(document.querySelector('.c2fc-aviso.c2fc-aviso-sucesso')).toBeNull();
+  });
+
   it('modal: show/hide, onApprove que devolve false mantém aberto', () => {
     carregar();
     document.body.innerHTML = '<div class="ui modal m"><div class="header">T</div><div class="content">x</div><div class="actions"><button class="ui approve button">OK</button><button class="ui deny button">Não</button></div></div>';

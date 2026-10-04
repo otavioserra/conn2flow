@@ -1,71 +1,61 @@
-<div class="field">
-    <label>#form-name-label#</label>
-    <input type="text" name="nome" placeholder="#form-name-placeholder#" value="#nome#">
-</div>
-<div class="field">
-    <label>@[[form-default-label]]@</label>
-    <div class="ui toggle checkbox">
-        <input type="checkbox" name="padrao" data-checked="#padrao-checked#">
-        <label>&nbsp;</label>
-    </div>
-</div>
-<div class="ui top attached tabular menu profile-tabs">
-    <a class="active item" data-tab="profile-modules">#modules-name#</a>
-    <a class="item" data-tab="profile-access">@[[access-tab-label]]@</a>
-</div>
-<div class="ui bottom attached active tab segment" data-tab="profile-modules">
-<div class="ui dividing tiny header">#modules-name#</div>
-<!-- grupo < -->
-<div class="ui segment">
-    <div class="ui grid">
-        <div class="column">
-            <div class="ui left floated small header">#module-grup-name#</div>
-            <button class="ui right floated button selectAll" type="button">
-                <i class="check circle outline icon"></i>#module-select-all# </button>
-            <button class="ui right floated button unselectAll" type="button">
-                <i class="circle outline icon"></i> #module-unselect-all# </button>
+<!-- req-224: página em Tailwind (layout-administrativo-tailwind), padrão da biblioteca de controles da
+     req-219 (c2fc-campo); os selects vêm do interface com `data-c2f-select`. -->
+<div class="space-y-6">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="nome">#form-name-label#</label>
+            <input type="text" id="nome" name="nome" class="c2fc-campo-entrada" placeholder="#form-name-placeholder#" value="#nome#">
+        </div>
+        <div class="c2fc-campo">
+            <span class="c2fc-campo-rotulo">@[[form-default-label]]@</span>
+            <label class="c2fc-chave mt-1"><input type="checkbox" name="padrao" data-checked="#padrao-checked#"><span class="c2fc-chave-trilho" aria-hidden="true"></span></label>
         </div>
     </div>
-    <div class="ui divided items">
-        <div class="item">
-            <div class="content">
-                <div class="ui cards">
+    <div>
+        <div class="profile-tabs c2fc-abas-lista c2fc-anexa" role="tablist">
+            <a class="item c2fc-aba active" data-tab="profile-modules">#modules-name#</a>
+            <a class="item c2fc-aba" data-tab="profile-access">@[[access-tab-label]]@</a>
+        </div>
+        <div class="tab active c2fc-painel-aba space-y-4" data-tab="profile-modules">
+            <h4 class="border-b border-slate-200 pb-2 text-sm font-semibold text-slate-900">#modules-name#</h4>
+            <!-- grupo < -->
+            <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <div class="mb-3">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h5 class="mr-auto text-base font-semibold text-slate-900">#module-grup-name#</h5>
+                        <button class="selectAll c2fc-botao c2fc-botao-pequeno" type="button"><i data-lucide="circle-check" class="size-4"></i>#module-select-all# </button>
+                        <button class="unselectAll c2fc-botao c2fc-botao-pequeno" type="button"><i data-lucide="circle" class="size-4"></i> #module-unselect-all# </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     <!-- items < -->
-                    <div class="ui raised card">
-                        <div class="content">
-                            <div class="ui small header">#module-label#</div>
-                            <div class="ui toggle checkbox">
-                                <input type="checkbox" name="modulo-#num#" data-checked="#checked#" value="#id#">
-                                <label>&nbsp;</label>
-                            </div>
+                    <div class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-sm font-semibold text-slate-800">#module-label#</span>
+                            <label class="c2fc-chave"><input type="checkbox" name="modulo-#num#" data-checked="#checked#" value="#id#"><span class="c2fc-chave-trilho" aria-hidden="true"></span></label>
                         </div>
                         <!-- operacoes < -->
-                        <div class="extra content">
-                            <div class="ui basic segment">
-                                <div class="ui tiny header">#operacoes-nome#</div>
-                                <div class="ui relaxed divided list">
-                                    <!-- operacoes-items < -->
-                                    <div class="item">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" name="operacao-#operacao-num#" data-checked="#operacao-checked#" value="#operacao-id#">
-                                            <label>#operacao-label#</label>
-                                        </div>
-                                    </div><!-- operacoes-items > -->
-                                </div>
+                        <div class="mt-3 border-t border-slate-200 pt-2">
+                            <p class="mb-1 text-xs font-semibold tracking-wide text-slate-500 uppercase">#operacoes-nome#</p>
+                            <div class="space-y-1">
+                                <!-- operacoes-items < -->
+                                <label class="flex items-center gap-2 text-sm text-slate-700">
+                                    <input type="checkbox" name="operacao-#operacao-num#" data-checked="#operacao-checked#" value="#operacao-id#" class="size-4 rounded border-slate-300">
+                                    <span>#operacao-label#</span>
+                                </label><!-- operacoes-items > -->
                             </div>
                         </div><!-- operacoes > -->
                     </div>
                     <!-- items > -->
                 </div>
             </div>
+            <!-- grupo > -->
         </div>
-    </div>
-</div>
-<!-- grupo > -->
-</div>
-<div class="ui bottom attached tab segment" data-tab="profile-access">
-    <div class="field">
-        <label>@[[home-page-label]]@</label>
-        #home-page-autocomplete#
+        <div class="tab hidden c2fc-painel-aba" data-tab="profile-access">
+            <div class="c2fc-campo">
+                <span class="c2fc-campo-rotulo">@[[home-page-label]]@</span>
+                #home-page-autocomplete#
+            </div>
+        </div>
     </div>
 </div>

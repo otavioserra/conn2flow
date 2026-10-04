@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.0",
+    "versao": "1.0.1",
     "bibliotecas": [
         "interface",
         "html"
@@ -30,45 +30,155 @@
                 {
                     "name": "Módulos Operações",
                     "id": "modulos-operacoes",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-operacoes/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 },
                 {
                     "name": "Módulos Operações - Adicionar",
                     "id": "modulos-operacoes-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-operacoes/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "e69634998ed937fe89cab5d0bc5912be",
                         "css": "",
                         "combined": "e69634998ed937fe89cab5d0bc5912be"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 },
                 {
                     "name": "Módulos Operações - Editar",
                     "id": "modulos-operacoes-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-operacoes/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "225a0ca6b6f949986285b32d7fa180f2",
                         "css": "",
                         "combined": "225a0ca6b6f949986285b32d7fa180f2"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 }
             ],
             "components": [],
@@ -111,45 +221,155 @@
                 {
                     "name": "Module Operations",
                     "id": "modulos-operacoes",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-operacoes/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-listar-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 },
                 {
                     "name": "Module Operations - Add",
                     "id": "modulos-operacoes-adicionar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-operacoes/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "e69634998ed937fe89cab5d0bc5912be",
                         "css": "",
                         "combined": "e69634998ed937fe89cab5d0bc5912be"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 },
                 {
                     "name": "Module Operations - Edit",
                     "id": "modulos-operacoes-editar",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "modulos-operacoes/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.1",
+                    "version": "1.2",
                     "checksum": {
                         "html": "225a0ca6b6f949986285b32d7fa180f2",
                         "css": "",
                         "combined": "225a0ca6b6f949986285b32d7fa180f2"
-                    }
+                    },
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-delecao-modal-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-autorizacao-provisoria-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-formulario-edicao-tailwind",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "req-224: painel Tailwind (req-219); componentes montados em runtime entram no bundle."
                 }
             ],
             "components": [],

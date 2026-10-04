@@ -482,6 +482,8 @@ function dashboard_gerar_descricao_modulo($modulo_id, $linguagem = 'pt-br'){
  */
 function dashboard_cards(){
 	global $_GESTOR;
+	// req-224: página Tailwind com bundle; sem o flag, os sidecars invertem as responsivas.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	// ===== Campos padrões
 	
@@ -490,7 +492,7 @@ function dashboard_cards(){
 	// ===== Obter o componente dashboard-cards
 	
 	$componente = gestor_componente(Array(
-		'id' => 'dashboard-cards',
+		'id' => (function_exists('interface_componente_variante') ? interface_componente_variante('dashboard-cards') : 'dashboard-cards'),
 		'modulo' => $_GESTOR['modulo-id'],
 	));
 	

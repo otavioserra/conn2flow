@@ -1,0 +1,89 @@
+<!-- req-224: variante Tailwind dos cartões do painel inicial. Ids e classes `dashboard-*`, `close icon`,
+     `category` são os ganchos do dashboard.js (busca, ordenação por arrastar, aviso de atualização). -->
+<div id="dashboard-cards-container" class="dashboard-cards-segment space-y-6">
+    <!-- update-notification < -->
+    <div id="dashboard-update-notification" class="dashboard-update-message relative flex items-start gap-3 rounded-xl border border-sky-200 bg-sky-50 px-4 py-4 pr-10 text-sm text-sky-900" style="display: none;">
+        <i data-lucide="refresh-cw" class="mt-0.5 size-5 shrink-0"></i>
+        <button type="button" class="close icon absolute top-2 right-3 text-lg leading-none text-sky-500 hover:text-sky-800" aria-label="@[[update-notification-btn-later]]@">&times;</button>
+        <div class="space-y-2">
+            <p class="font-semibold">@[[update-notification-title]]@</p>
+            <p>@[[update-notification-message]]@</p>
+            <div class="dashboard-update-actions flex flex-wrap gap-2">
+                <a class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno" href="@[[pagina#url-raiz]]@admin-atualizacoes/">
+                    <i data-lucide="download" class="size-4"></i> @[[update-notification-btn-update]]@
+                </a>
+                <button type="button" class="dashboard-update-dismiss c2fc-botao c2fc-botao-pequeno" data-dismiss="update-notification">
+                    <i data-lucide="clock" class="size-4"></i> @[[update-notification-btn-later]]@
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- update-notification > -->
+
+    <!-- header-with-search < -->
+    <div class="dashboard-header-row flex flex-wrap items-center justify-between gap-4">
+        <h1 class="dashboard-cards-title text-2xl font-semibold text-slate-900">#titulo#</h1>
+        <div class="dashboard-search-container flex w-full gap-2 sm:w-80">
+            <input type="text" id="dashboard-search-input" class="c2fc-campo-entrada" placeholder="@[[search-placeholder]]@" aria-label="@[[search-placeholder]]@">
+            <button type="button" id="dashboard-search-reset" class="c2fc-botao c2fc-botao-icone" data-c2f-dica="@[[search-reset-tooltip]]@" data-c2f-dica-pos="top right" aria-label="@[[search-reset-tooltip]]@">
+                <i data-lucide="x" class="size-4"></i>
+            </button>
+        </div>
+    </div>
+    <!-- header-with-search > -->
+
+    <!-- cards-container < -->
+    <div id="dashboard-sortable-cards" class="dashboard-sortable-cards grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <!-- card < -->
+        <div class="dashboard-module-card flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm" data-module-id="#modulo-id#" data-module-order="#modulo-order#">
+            <div class="dashboard-card-header relative flex items-center justify-center bg-slate-50 px-4 py-4">
+                <div class="dashboard-card-drag-handle absolute top-2 left-2 cursor-grab rounded p-1 text-orange-500 hover:bg-orange-50" aria-hidden="true">
+                    <i data-lucide="grip-vertical" class="size-4"></i>
+                </div>
+                <!-- svg < -->
+                <div class="dashboard-card-svg h-20 w-20">
+                    #modulo-svg#
+                </div>
+                <!-- svg > -->
+            </div>
+            <div class="flex-1 space-y-1 px-4 py-3">
+                <a class="dashboard-card-title block font-semibold text-slate-900 hover:text-sky-700" href="#modulo-link#">#modulo-nome#</a>
+                <div class="dashboard-card-meta text-xs text-slate-500">
+                    <span class="category">#modulo-grupo#</span>
+                </div>
+                <div class="dashboard-card-description text-sm text-slate-600">
+                    #modulo-descricao#
+                </div>
+            </div>
+            <div class="dashboard-card-actions flex items-center justify-between gap-2 border-t border-slate-200 px-4 py-3">
+                <a class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno" href="#modulo-link#" data-c2f-dica="@[[cards-tooltip-acessar]]@" data-c2f-dica-pos="top left">
+                    <i data-lucide="arrow-right" class="size-4"></i> @[[cards-btn-acessar]]@
+                </a>
+                <div class="dashboard-card-actions-right flex gap-1">
+                    <a class="dashboard-btn-manual c2fc-acao c2fc-cor-teal" href="#modulo-manual-link#" target="_blank" data-c2f-dica="@[[cards-tooltip-manual]]@" aria-label="@[[cards-tooltip-manual]]@">
+                        <i data-lucide="info" class="size-4"></i>
+                    </a>
+                    <a class="dashboard-btn-docs c2fc-acao c2fc-cor-brown" href="#modulo-docs-link#" target="_blank" data-c2f-dica="@[[cards-tooltip-docs]]@" data-c2f-dica-pos="top right" aria-label="@[[cards-tooltip-docs]]@">
+                        <i data-lucide="book-open" class="size-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- card > -->
+    </div>
+    <!-- cards-container > -->
+
+    <!-- logout-section < -->
+    <div class="dashboard-cards-divider flex items-center gap-3 text-sm text-slate-500">
+        <span class="h-px flex-1 bg-slate-200"></span>
+        <i data-lucide="log-out" class="size-4"></i> @[[logout-grup]]@
+        <span class="h-px flex-1 bg-slate-200"></span>
+    </div>
+    <div class="dashboard-logout-segment text-center">
+        <a class="c2fc-botao c2fc-botao-perigo" href="@[[pagina#url-raiz]]@signout/">
+            <i data-lucide="log-out" class="size-4"></i>
+            @[[logout-label]]@
+        </a>
+    </div>
+    <!-- logout-section > -->
+</div>

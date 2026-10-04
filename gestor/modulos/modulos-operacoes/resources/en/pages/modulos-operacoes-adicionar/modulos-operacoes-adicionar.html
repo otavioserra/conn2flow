@@ -1,12 +1,18 @@
-<div class="field">
-    <label>#form-name-label#</label>
-    <input type="text" name="nome" placeholder="#form-name-placeholder#">
-</div>
-<div class="field">
-    <label>#form-module-label#</label>
-    <span>#select-module#</span>
-</div>
-<div class="field">
-    <label>#form-operation-label#</label>
-    <input type="text" name="operacao" placeholder="#form-operation-placeholder#">
+<!-- req-224: página em Tailwind (layout-administrativo-tailwind), padrão da biblioteca de controles da
+     req-219 (c2fc-campo); os selects vêm do interface com `data-c2f-select`. -->
+<div class="space-y-6">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="nome">#form-name-label#</label>
+            <input type="text" id="nome" name="nome" class="c2fc-campo-entrada" placeholder="#form-name-placeholder#">
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="module">#form-module-label#</label>
+            <span>#select-module#</span>
+        </div>
+        <div class="c2fc-campo">
+            <label class="c2fc-campo-rotulo" for="operacao">#form-operation-label#</label>
+            <input type="text" id="operacao" name="operacao" class="c2fc-campo-entrada" placeholder="#form-operation-placeholder#">
+        </div>
+    </div>
 </div>

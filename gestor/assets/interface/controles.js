@@ -794,6 +794,29 @@
             return retorno !== undefined ? retorno : this;
         };
 
+        // Toast: o aviso da biblioteca, com título, classe (success/error/warning) e ações com clique.
+        if (!$.fn.toast) $.fn.toast = function (cfg) {
+            cfg = cfg || {};
+            var classe = String(cfg['class'] || '');
+            var tipo = /error|red|negative/.test(classe) ? 'erro' : (/success|green|positive/.test(classe) ? 'sucesso' : (/warning|orange|yellow/.test(classe) ? 'alerta' : 'info'));
+            var tempo = cfg.displayTime === 0 || cfg.displayTime === '0' ? 0 : (cfg.displayTime === 'auto' || cfg.displayTime === undefined ? undefined : parseInt(cfg.displayTime, 10));
+            if (cfg.actions && cfg.actions.length && tempo === undefined) tempo = 0;
+            var mensagem = (cfg.title ? cfg.title + ' — ' : '') + String(cfg.message || '').replace(/<[^>]*>/g, '');
+            var fechar = aviso(mensagem, tipo, tempo);
+            var itens = document.querySelectorAll('.c2fc-avisos .c2fc-aviso');
+            var item = itens[itens.length - 1];
+            (cfg.actions || []).forEach(function (acao) {
+                if (!item) return;
+                var botao = el('button', { type: 'button', 'class': 'c2fc-aviso-acao', text: String(acao.text || '').replace(/<[^>]*>/g, '') });
+                botao.addEventListener('click', function () {
+                    var manter = typeof acao.click === 'function' ? acao.click.call(botao) === false : false;
+                    if (!manter) fechar();
+                });
+                item.insertBefore(botao, item.lastChild);
+            });
+            return this;
+        };
+
         $.fn.search = function () { return this; };
         if (!$.fn.transition) {
             $.fn.transition = function (animacao) {
@@ -885,6 +908,18 @@
     // A ponte entra já (para quem chama `$.fn.dropdown` no próprio `ready`) e de novo no carregamento.
     // Com o Fomantic, que carrega antes deste arquivo, `$.fn.dropdown` existe e a ponte não entra.
     ponte(global.jQuery);
-    function preparar() { ponte(global.jQuery); iniciar(document); imagemSeletor(); }
+    // req-219: o `interface.js` legado marcava os checkboxes de `data-checked="checked"` (o PHP troca o
+    // marcador por "checked" ou vazio). Na página Tailwind ele não existe; a biblioteca faz o mesmo.
+    function marcarDataChecked(raiz) {
+        if (!global.c2fControles.ponteAtiva) return;
+        Array.prototype.forEach.call((raiz || document).querySelectorAll('input[data-checked]'), function (input) {
+            if (input.c2fDataChecked) return;
+            input.c2fDataChecked = true;
+            if (input.getAttribute('data-checked') === 'checked') input.checked = true;
+        });
+    }
+    global.c2fControles.marcarDataChecked = marcarDataChecked;
+
+    function preparar() { ponte(global.jQuery); marcarDataChecked(document); iniciar(document); imagemSeletor(); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', preparar); else preparar();
 })(window);

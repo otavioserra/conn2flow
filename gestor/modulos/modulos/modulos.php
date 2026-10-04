@@ -406,6 +406,8 @@ function modulos_variaveis(){
 
 function modulos_adicionar(){
 	global $_GESTOR;
+	// req-224: página Tailwind com bundle; sem o flag, os sidecars invertem as responsivas.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -548,6 +550,8 @@ function modulos_adicionar(){
 
 function modulos_editar(){
 	global $_GESTOR;
+	// req-224: página Tailwind com bundle; sem o flag, os sidecars invertem as responsivas.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -882,6 +886,7 @@ function modulos_interfaces_padroes(){
 	
 	switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true; // req-224: listagem Tailwind com bundle
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],

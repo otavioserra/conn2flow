@@ -1,0 +1,14 @@
+<!-- req-224: variante Tailwind do autocomplete da página inicial. Ids, `home-page-*` e `item` são os ganchos do
+     usuarios-perfis.js. -->
+<style>.home-page-search [hidden],.home-page-clear[hidden]{display:none!important}
+#pagina-inicial-suggestions .item{padding:7px 12px;cursor:pointer;color:#0f172a}
+#pagina-inicial-suggestions .item:hover{background:#f1f5f9}
+#pagina-inicial-suggestions .item.disabled{color:#94a3b8;cursor:default}</style>
+<div class="home-page-search relative">
+    <input type="text" id="pagina-inicial-busca" class="c2fc-campo-entrada pl-9!" value="#home-page-selected-label#" placeholder="#home-page-search-placeholder#" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pagina-inicial-suggestions">
+    <i data-lucide="search" class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate-400"></i>
+    <div id="pagina-inicial-suggestions" class="absolute top-full right-0 left-0 z-50 mt-1 max-h-64 overflow-y-auto rounded-lg border border-slate-300 bg-white py-1 shadow-lg" data-no-results="#home-page-no-results#" hidden></div>
+</div>
+<input type="hidden" name="pagina_inicial" value="#home-page-selected-value#">
+<p class="c2fc-campo-ajuda">#home-page-default-help#</p>
+<div><button type="button" class="home-page-clear c2fc-botao c2fc-botao-pequeno" #home-page-clear-hidden# aria-label="#home-page-clear-label#">#home-page-clear-label#</button></div>

@@ -1,0 +1,11 @@
+/* req-224: estados que o dashboard.js liga nos cartões (busca, SortableJS, arraste). */
+.dashboard-module-card.search-hidden { display: none !important; }
+.dashboard-no-results { grid-column: 1 / -1; padding: 3em 1em; text-align: center; color: #64748b; }
+.dashboard-card-svg svg { width: 100%; height: 100%; }
+.sortable-ghost { opacity: .7; background: #f0f9ff !important; border: 2px dashed #0284c7 !important; }
+.sortable-chosen { box-shadow: 0 12px 35px rgba(0,0,0,.18) !important; }
+.sortable-drag { opacity: 1 !important; cursor: grabbing !important; }
+.is-dragging, .is-dragging * { user-select: none !important; -webkit-user-select: none !important; }
+.dashboard-card-drag-handle { user-select: none; -webkit-user-select: none; }
+.dashboard-module-card.card-dropped { animation: c2f-dash-drop .3s ease-out; }
+@keyframes c2f-dash-drop { from { transform: scale(.97); } to { transform: none; } }

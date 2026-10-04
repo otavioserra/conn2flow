@@ -33,7 +33,7 @@ function usuarios_perfis_componente_pagina_inicial($selecionado = ''){
             "WHERE caminho='".banco_escape_field($selecionado)."' AND status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' LIMIT 1");
         if($paginas) $rotulo = usuarios_perfis_rotulo_pagina($paginas[0]);
     }
-    $componente = gestor_componente(Array('id' => 'home-page-autocomplete', 'modulo' => $_GESTOR['modulo-id']));
+    $componente = gestor_componente(Array('id' => (function_exists('interface_componente_variante') ? interface_componente_variante('home-page-autocomplete') : 'home-page-autocomplete'), 'modulo' => $_GESTOR['modulo-id']));
     $valores = Array(
         '#home-page-selected-label#' => $rotulo,
         '#home-page-selected-value#' => $selecionado,
@@ -69,6 +69,8 @@ function usuarios_perfis_ajax_buscar_pagina_inicial(){
 
 function usuarios_perfis_adicionar(){
 	global $_GESTOR;
+	// req-224: página Tailwind com bundle; sem o flag, os sidecars invertem as responsivas.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -411,6 +413,8 @@ function usuarios_perfis_adicionar(){
 
 function usuarios_perfis_editar(){
 	global $_GESTOR;
+	// req-224: página Tailwind com bundle; sem o flag, os sidecars invertem as responsivas.
+	$_GESTOR['tailwind-page-bundle'] = true;
 	
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	
@@ -1294,6 +1298,7 @@ function usuarios_perfis_interfaces_padroes(){
 	
 	switch($_GESTOR['opcao']){
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true; // req-224: listagem Tailwind com bundle
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = Array(
 				'banco' => Array(
 					'nome' => $modulo['tabela']['nome'],

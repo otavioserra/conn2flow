@@ -1,6 +1,16 @@
 $(document).ready(function(){
 	
 	if($('#_gestor-interface-edit-dados').length > 0 || $('#_gestor-interface-insert-dados').length > 0){
+		// req-224: na página Tailwind não há o interface.js legado, que definia este atraso de digitação.
+		if(typeof $.input_delay_to_change !== 'function'){
+			$.input_delay_to_change = function(p){
+				clearTimeout(gestor.input_delay_timer);
+				gestor.input_delay_timer = setTimeout(function(){
+					$(p.trigger_selector).trigger(p.trigger_event, [p.value, gestor.input_delay_params]);
+				}, gestor.input_delay_timeout || 400);
+			};
+		}
+
 		// ===== Campo Nome
 		
 		function formatar_nome(nome,trim=true){
