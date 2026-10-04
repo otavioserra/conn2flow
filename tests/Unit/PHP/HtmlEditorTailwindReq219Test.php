@@ -34,6 +34,7 @@ final class HtmlEditorTailwindReq219Test extends TestCase
         'ia-prompt-modais' => ['ai-prompt-save-modal', 'ai-prompt-save-form', 'ai-prompt-del-modal', 'deny', 'approve', 'actions'],
         'ia-sem-servidor' => [],
         'interface-iframe-modal' => ['iframePagina', 'header', 'cancel', 'iframe-container', 'dimmer'],
+        'interface-backup-dropdown' => ['backupDropdown'],
         'widget-imagem' => ['_gestor-widgetImage-cont', 'widgetImage-image', 'widgetImage-nome', 'widgetImage-data', 'widgetImage-tipo',
             '_gestor-widgetImage-btn-add', '_gestor-widgetImage-btn-del', '_gestor-widgetImage-file-id', '_gestor-widgetImage-file-caminho'],
     ];
@@ -44,6 +45,8 @@ final class HtmlEditorTailwindReq219Test extends TestCase
         'ia-prompt' => ['#selected-model#'],
         // O separador "ou" entre botões é do Fomantic (`.or`); a variante usa grupo de botões colados.
         'html-editor' => ['@[[html-editor-publisher-or-btn]]@'],
+        // Select nativo: sem ícone e sem o rótulo de versão atual (a primeira opção já é a versão atual).
+        'interface-backup-dropdown' => ['#versao-atual-icon#', '#versao-atual-label#', '#versao-atual-description#', '#icon#'],
     ];
 
     private static function recursos(): string

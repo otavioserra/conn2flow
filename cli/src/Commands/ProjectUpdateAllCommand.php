@@ -20,7 +20,7 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
 
     public function getDescription(): string
     {
-        return 'Run complete sequential project synchronization: Core -> DB -> Resources -> Files -> DB -> CSS rebuild -> JS minify.';
+        return 'Run complete sequential project synchronization: JS minify -> Core -> DB -> Resources -> Files -> DB -> CSS rebuild -> publish.';
     }
 
     public function getAliases(): array
@@ -196,8 +196,28 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
 
     private function runStages(string $project, mixed $contents, bool $confirmarRemoto, InputInterface $input, OutputInterface $output): int
     {
-        // 1. Sync Core -> ID
-        $output->section("1/8 Sincronizando Core -> {$project}");
+        // 1. Minificação do JavaScript de autoria (req-145), ANTES de qualquer cópia (req-219).
+        //
+        // Era a etapa 7, depois do sync de core e de arquivos: o destino recebia o `.min.js` antigo junto
+        // com o `asset-versions.json` novo, o navegador guardava o arquivo velho sob a URL da versão nova
+        // e só um Ctrl+F5 resolvia (achado do Engenheiro Chefe). Minificar primeiro deixa a cópia e o
+        // hash de versão, calculado na etapa de recursos, sobre o arquivo novo.
+        //
+        // O derivado minificado é recalculável a partir do fonte, como `css_precompiled`. Fica no
+        // pipeline pelo mesmo motivo da etapa anterior: fora dele viraria "alguém precisa lembrar",
+        // e um derivado velho serviria código antigo com cara de novo. Sem `terser` a etapa apenas
+        // avisa — o sistema volta a servir o arquivo de autoria, maior porém correto.
+        $output->section('1/8 Minificando JavaScript de autoria');
+        $minCmd = new AssetsMinifyCommand($this->rootPath);
+        $code = $minCmd->execute(new Input([]), $output);
+        if ($code !== 0) {
+            $output->warning(
+                'A minificação não completou. O sistema continua servindo o JavaScript de autoria.'
+            );
+        }
+
+        // 2. Sync Core -> ID
+        $output->section("2/8 Sincronizando Core -> {$project}");
         $coreCmd = new ProjectSyncCoreCommand($this->rootPath);
         $code = $coreCmd->execute($input, $output);
         if ($code !== 0) return $code;
@@ -211,8 +231,8 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
             $this->runShell(sprintf('bash %s --project %s --migrations-only', escapeshellarg($script), escapeshellarg($project)), $output);
         }
 
-        // 2. Sync DB
-        $output->section("2/8 Atualizando Banco de Dados ({$project})");
+        // 3. Sync DB
+        $output->section("3/8 Atualizando Banco de Dados ({$project})");
         $dbCmd = new ProjectSyncDbCommand($this->rootPath);
         // Neste ponto os Data.json enviados são do core. O projeto identifica o destino,
         // mas não pode virar dono desses recursos nem substituir seu manifesto de retirada.
@@ -220,20 +240,20 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         $code = $dbCmd->execute($coreDbInput, $output);
         if ($code !== 0) return $code;
 
-        // 3. Sync Resources
-        $output->section("3/8 Sincronizando Recursos ({$project})");
+        // 4. Sync Resources
+        $output->section("4/8 Sincronizando Recursos ({$project})");
         $resCmd = new ProjectSyncResourcesCommand($this->rootPath);
         $code = $resCmd->execute($input, $output);
         if ($code !== 0) return $code;
 
-        // 4. Sync Files
-        $output->section("4/8 Sincronizando Arquivos ({$project})");
+        // 5. Sync Files
+        $output->section("5/8 Sincronizando Arquivos ({$project})");
         $filesCmd = new ProjectSyncFilesCommand($this->rootPath);
         $code = $filesCmd->execute($input, $output);
         if ($code !== 0) return $code;
 
-        // 5. Final DB sync
-        $output->section("5/8 Validação Final do Banco ({$project})");
+        // 6. Final DB sync
+        $output->section("6/8 Validação Final do Banco ({$project})");
         $code = $dbCmd->execute($input, $output);
         if ($code !== 0) return $code;
 
@@ -247,7 +267,7 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
         // Deixar esta etapa fora do pipeline seria transformá-la em "alguém precisa lembrar de
         // rodar", que é exatamente a classe de falha que o req-141 existe para eliminar. Ela é
         // condicionada: sem Tailwind CLI ou sem a coluna de procedência, apenas avisa e segue.
-        $output->section("6/8 Regenerando CSS derivado ({$project})");
+        $output->section("7/8 Regenerando CSS derivado ({$project})");
 
         // O projeto chega a este comando como ARGUMENTO (`c2f project:update-all transformamp-local`),
         // mas o `css:rebuild` o lê como OPÇÃO (`--project=`). Repassar o mesmo `$input` fazia a etapa
@@ -267,21 +287,6 @@ final class ProjectUpdateAllCommand extends BaseProcessCommand
                 . "Rode 'c2f css:audit --project={$project}' para ver o que ficou stale."
             );
             // Não aborta: as etapas essenciais já foram aplicadas e o aviso acima é o sinal.
-        }
-
-        // 7. Minificação do JavaScript de autoria (req-145).
-        //
-        // O derivado minificado é recalculável a partir do fonte, como `css_precompiled`. Fica no
-        // pipeline pelo mesmo motivo da etapa anterior: fora dele viraria "alguém precisa lembrar",
-        // e um derivado velho serviria código antigo com cara de novo. Sem `terser` a etapa apenas
-        // avisa — o sistema volta a servir o arquivo de autoria, maior porém correto.
-        $output->section('7/8 Minificando JavaScript de autoria');
-        $minCmd = new AssetsMinifyCommand($this->rootPath);
-        $code = $minCmd->execute(new Input([]), $output);
-        if ($code !== 0) {
-            $output->warning(
-                'A minificação não completou. O sistema continua servindo o JavaScript de autoria.'
-            );
         }
 
         // 8. Publicação dos assets em `public_html/dist/` (req-028).

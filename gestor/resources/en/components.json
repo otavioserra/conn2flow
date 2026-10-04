@@ -264,6 +264,18 @@
         }
     },
     {
+        "name": "Interface Backup Dropdown Tailwind",
+        "id": "interface-backup-dropdown-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "8d805dadbf3a3dc260a3ad3acc4c0c67",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "8d805dadbf3a3dc260a3ad3acc4c0c67"
+        }
+    },
+    {
         "name": "Password Reset Email Layout",
         "id": "layout-email-senha-redefinida",
         "version": "1.4",
@@ -560,24 +572,24 @@
         "name": "HTML Editor SEO Tailwind",
         "id": "html-editor-seo-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "7a27379198c170733b856b057b06bfb0",
+            "html": "081ff7cac85fbcaa64d40ffe1524f07f",
             "css": "",
             "css_precompiled": "",
-            "combined": "7a27379198c170733b856b057b06bfb0"
+            "combined": "081ff7cac85fbcaa64d40ffe1524f07f"
         }
     },
     {
         "name": "Main System Menu Tailwind",
         "id": "menu-principal-sistema-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.10",
+        "version": "1.11",
         "checksum": {
-            "html": "f81472f04f5ab88ef19f3ff9a724765a",
+            "html": "79f560179773d9230adc01d32d803ec5",
             "css": "",
             "css_precompiled": "",
-            "combined": "f81472f04f5ab88ef19f3ff9a724765a"
+            "combined": "79f560179773d9230adc01d32d803ec5"
         }
     },
     {
@@ -667,12 +679,12 @@
         "name": "Interface List Tailwind",
         "id": "interface-listar-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "a990f17927aea09f7b88b6200f410dca",
+            "html": "20c2a845e32162c4fa55995fd304c5a9",
             "css": "",
             "css_precompiled": "",
-            "combined": "a990f17927aea09f7b88b6200f410dca"
+            "combined": "20c2a845e32162c4fa55995fd304c5a9"
         }
     }
 ]

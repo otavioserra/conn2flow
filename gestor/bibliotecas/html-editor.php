@@ -774,6 +774,13 @@ function html_editor_componente($params = false){
 	}
 	assets_externos_incluir('codemirror');
 
+	// req-219/220: o layout Tailwind não traz mais a folha de ícones do Fomantic, mas o painel "+" do
+	// editor visual (html-editor-visual-controls.js) e as categorias de widgets ainda desenham ícone pelo
+	// nome do Fomantic. Só a folha de ícones, só onde o editor aparece em página Tailwind.
+	if(function_exists('gestor_framework_css_atual') && gestor_framework_css_atual()['modo'] === 'tailwindcss'){
+		assets_externos_incluir('fomantic-icon');
+	}
+
 	// ===== Inclusão Componentes
 
 	interface_componentes_incluir(Array(

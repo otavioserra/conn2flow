@@ -34,8 +34,24 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
     {
         $output->title('Conn2Flow — Full Manager Update Pipeline');
 
-        // 1. Resources
-        $output->section('1/6 Sincronizando Recursos (Data.json)');
+        // 1. Minificação do JavaScript de autoria (req-145), ANTES dos recursos e da cópia (req-219):
+        // minificada depois, a cópia levava o `.min.js` antigo sob o hash de versão novo.
+        //
+        // O derivado minificado é recalculável a partir do fonte, como `css_precompiled`. Fica no
+        // pipeline pelo mesmo motivo da etapa anterior: fora dele viraria "alguém precisa lembrar",
+        // e um derivado velho serviria código antigo com cara de novo. Sem `terser` a etapa apenas
+        // avisa — o sistema volta a servir o arquivo de autoria, maior porém correto.
+        $output->section('1/6 Minificando JavaScript de autoria');
+        $minCmd = new AssetsMinifyCommand($this->rootPath);
+        $code = $minCmd->execute($input, $output);
+        if ($code !== 0) {
+            $output->warning(
+                'A minificação não completou. O sistema continua servindo o JavaScript de autoria.'
+            );
+        }
+
+        // 2. Resources
+        $output->section('2/6 Sincronizando Recursos (Data.json)');
         $resCmd = new ResourcesSyncCommand($this->rootPath);
         $code = $resCmd->execute($input, $output);
         if ($code !== 0) {
@@ -43,8 +59,8 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
             return $code;
         }
 
-        // 2. Files
-        $output->section('2/6 Sincronizando Arquivos com Ambiente de Testes');
+        // 3. Files
+        $output->section('3/6 Sincronizando Arquivos com Ambiente de Testes');
         $filesCmd = new ManagerSyncFilesCommand($this->rootPath);
         $code = $filesCmd->execute($input, $output);
         if ($code !== 0) {
@@ -52,8 +68,8 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
             return $code;
         }
 
-        // 3. Database
-        $output->section('3/6 Sincronizando Banco de Dados');
+        // 4. Database
+        $output->section('4/6 Sincronizando Banco de Dados');
         $dbCmd = new DbUpdateCommand($this->rootPath);
         $code = $dbCmd->execute($input, $output);
         if ($code !== 0) {
@@ -61,13 +77,13 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
             return $code;
         }
 
-        // 4. Regeneração do CSS derivado (req-141 / CR-002).
+        // 5. Regeneração do CSS derivado (req-141 / CR-002).
         //
-        // A etapa 3 preserva a autoria de quem editou pelo gestor (`user_modified`) e sobrescreve o
+        // A etapa 4 preserva a autoria de quem editou pelo gestor (`user_modified`) e sobrescreve o
         // CSS derivado com o que veio do disco: o registro fica com HTML de uma origem e CSS de
         // outra. Regenerar aqui fecha o ciclo no mesmo comando, em vez de depender de alguém
         // lembrar de rodar depois.
-        $output->section('4/6 Regenerando CSS derivado');
+        $output->section('5/6 Regenerando CSS derivado');
         $cssCmd = new CssRebuildCommand($this->rootPath);
         $code = $cssCmd->execute($input, $output);
         if ($code !== 0) {
@@ -77,21 +93,6 @@ final class ManagerUpdateAllCommand extends BaseProcessCommand
                 . "Rode 'c2f css:audit' para ver o que ficou stale."
             );
             // Não aborta: as etapas essenciais já foram aplicadas e o aviso acima é o sinal.
-        }
-
-        // 5. Minificação do JavaScript de autoria (req-145).
-        //
-        // O derivado minificado é recalculável a partir do fonte, como `css_precompiled`. Fica no
-        // pipeline pelo mesmo motivo da etapa anterior: fora dele viraria "alguém precisa lembrar",
-        // e um derivado velho serviria código antigo com cara de novo. Sem `terser` a etapa apenas
-        // avisa — o sistema volta a servir o arquivo de autoria, maior porém correto.
-        $output->section('5/6 Minificando JavaScript de autoria');
-        $minCmd = new AssetsMinifyCommand($this->rootPath);
-        $code = $minCmd->execute($input, $output);
-        if ($code !== 0) {
-            $output->warning(
-                'A minificação não completou. O sistema continua servindo o JavaScript de autoria.'
-            );
         }
 
         // 6. Publicação dos assets em `public_html/dist/` (req-028).

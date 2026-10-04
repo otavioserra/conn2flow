@@ -1,0 +1,2 @@
+/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
+@layer utilities{.mb-3{margin-bottom:calc(var(--spacing,.25rem) * 3)}.flex{display:flex}.w-full{width:100%}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.gap-2{gap:calc(var(--spacing,.25rem) * 2)}@media (min-width:40rem){.sm\:w-96{width:calc(var(--spacing,.25rem) * 96)}}}

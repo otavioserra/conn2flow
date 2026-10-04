@@ -1,0 +1,11 @@
+<!-- req-219: variante Tailwind do select de backup. `backupDropdown` e os data-* são o contrato com o
+     interface-tailwind.js (troca de versão por AJAX); a primeira opção é a versão atual. -->
+<div class="mb-3 flex flex-wrap items-center gap-2">
+    <span class="c2fc-campo-rotulo">Backup:</span>
+    <div class="w-full sm:w-96">
+        <select class="backupDropdown c2fc-campo-entrada" data-c2f-select="1" aria-label="Backup" data-id="#id-numerico#"
+            data-campo="#campo#" data-campo-form="#campo_form#" data-callback="#callback#">
+            <!-- item < --><option value="#id#">#data# — #versao#</option><!-- item > -->
+        </select>
+    </div>
+</div>

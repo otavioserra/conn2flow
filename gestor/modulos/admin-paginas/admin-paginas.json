@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.5",
+    "versao": "1.2.6",
     "bibliotecas": [
         "interface",
         "html",
@@ -218,7 +218,7 @@
                 {
                     "name": "Admin Páginas - Editar",
                     "id": "admin-paginas-editar",
-                    "version": "1.30",
+                    "version": "1.31",
                     "checksum": {
                         "html": "c8af51ddbc3c6447ffb30c3914db544d",
                         "css": "229da3850028443c57c26cc9638f4fb9",
@@ -323,6 +323,11 @@
                         },
                         {
                             "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
                             "id": "layout-profile-mapping-tailwind"
                         },
                         {
@@ -335,7 +340,7 @@
                 {
                     "name": "Admin Páginas - Adicionar",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.28",
+                    "version": "1.29",
                     "checksum": {
                         "html": "fe900172aa886cf8f61cfe66a6b360ba",
                         "css": "229da3850028443c57c26cc9638f4fb9",
@@ -440,6 +445,11 @@
                         },
                         {
                             "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
                             "id": "layout-profile-mapping-tailwind"
                         },
                         {
@@ -452,7 +462,7 @@
                 {
                     "name": "Admin Páginas - Clonar",
                     "id": "admin-paginas-clonar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
                         "html": "049b011c7e37927e0f8bfa5e79fe190c",
                         "css": "229da3850028443c57c26cc9638f4fb9",
@@ -553,6 +563,11 @@
                         {
                             "type": "components",
                             "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
                             "scope": "global"
                         },
                         {
@@ -850,7 +865,7 @@
                 {
                     "name": "Admin Pages - Edit",
                     "id": "admin-paginas-editar",
-                    "version": "1.25",
+                    "version": "1.26",
                     "checksum": {
                         "html": "038311e7d65853da5589770947d52a4f",
                         "css": "229da3850028443c57c26cc9638f4fb9",
@@ -955,6 +970,11 @@
                         },
                         {
                             "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
                             "id": "layout-profile-mapping-tailwind"
                         },
                         {
@@ -967,7 +987,7 @@
                 {
                     "name": "Admin Pages - Add",
                     "id": "admin-paginas-adicionar",
-                    "version": "1.26",
+                    "version": "1.27",
                     "checksum": {
                         "html": "58c5efbd052fd18a7e09bc13b3f4175b",
                         "css": "229da3850028443c57c26cc9638f4fb9",
@@ -1072,6 +1092,11 @@
                         },
                         {
                             "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
                             "id": "layout-profile-mapping-tailwind"
                         },
                         {
@@ -1084,7 +1109,7 @@
                 {
                     "name": "Admin Pages - Clone",
                     "id": "admin-paginas-clonar",
-                    "version": "1.10",
+                    "version": "1.11",
                     "checksum": {
                         "html": "26b6756d8f7f9cbf2ee2f14454bc20cc",
                         "css": "229da3850028443c57c26cc9638f4fb9",
@@ -1185,6 +1210,11 @@
                         {
                             "type": "components",
                             "id": "widget-imagem-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-backup-dropdown-tailwind",
                             "scope": "global"
                         },
                         {

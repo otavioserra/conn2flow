@@ -264,6 +264,18 @@
         }
     },
     {
+        "name": "Interface Backup Dropdown Tailwind",
+        "id": "interface-backup-dropdown-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.1",
+        "checksum": {
+            "html": "8d805dadbf3a3dc260a3ad3acc4c0c67",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "8d805dadbf3a3dc260a3ad3acc4c0c67"
+        }
+    },
+    {
         "name": "Layout Email Senha Redefinida",
         "id": "layout-email-senha-redefinida",
         "version": "1.3",
@@ -560,24 +572,24 @@
         "name": "HTML Editor SEO Tailwind",
         "id": "html-editor-seo-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "7a27379198c170733b856b057b06bfb0",
+            "html": "081ff7cac85fbcaa64d40ffe1524f07f",
             "css": "",
             "css_precompiled": "",
-            "combined": "7a27379198c170733b856b057b06bfb0"
+            "combined": "081ff7cac85fbcaa64d40ffe1524f07f"
         }
     },
     {
         "name": "Menu Principal Sistema Tailwind",
         "id": "menu-principal-sistema-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.11",
+        "version": "1.12",
         "checksum": {
-            "html": "f5707577df82e3834f4c2c48b71f2c33",
+            "html": "66c34cade262025bc785e99f356c105f",
             "css": "",
             "css_precompiled": "",
-            "combined": "f5707577df82e3834f4c2c48b71f2c33"
+            "combined": "66c34cade262025bc785e99f356c105f"
         }
     },
     {
@@ -667,12 +679,12 @@
         "name": "Interface Listar Tailwind",
         "id": "interface-listar-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.1",
+        "version": "1.2",
         "checksum": {
-            "html": "a990f17927aea09f7b88b6200f410dca",
+            "html": "20c2a845e32162c4fa55995fd304c5a9",
             "css": "",
             "css_precompiled": "",
-            "combined": "a990f17927aea09f7b88b6200f410dca"
+            "combined": "20c2a845e32162c4fa55995fd304c5a9"
         }
     }
 ]

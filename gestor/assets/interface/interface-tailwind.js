@@ -96,6 +96,38 @@
         });
     }
 
+    // req-219: troca de versão pelo select de backup (`interface-backup-dropdown-tailwind`). Mesmo contrato
+    // do legado: POST `backup-campos-mudou` e o valor volta pelo evento `callback` no `#gestor-listener`,
+    // que o editor HTML escuta por jQuery.
+    function ligarBackup() {
+        document.addEventListener('change', function (evento) {
+            var select = evento.target;
+            if (!select || !select.matches || !select.matches('select.backupDropdown')) return;
+            var corpo = new URLSearchParams();
+            corpo.set('opcao', 'editar');
+            corpo.set('ajax', 'sim');
+            corpo.set('ajaxOpcao', 'backup-campos-mudou');
+            corpo.set('ajaxRegistroId', (window.gestor && gestor.moduloRegistroId) || '');
+            corpo.set('campo', select.getAttribute('data-campo') || '');
+            corpo.set('id_numerico', select.getAttribute('data-id') || '');
+            corpo.set('id', select.value);
+            var token = (window.gestor && gestor.csrfToken) || '';
+            if (token) corpo.set('_csrf_token', token);
+            var callback = select.getAttribute('data-callback');
+            var campoForm = select.getAttribute('data-campo-form');
+            carregarAbrir();
+            fetch((window.gestor ? gestor.raiz + gestor.moduloId : '') + '/', {
+                method: 'POST', credentials: 'same-origin',
+                headers: token ? { 'X-CSRF-Token': token } : {},
+                body: corpo
+            }).then(function (r) { return r.json(); }).then(function (dados) {
+                if (dados && dados.status === 'Ok' && callback && window.jQuery) {
+                    window.jQuery('#gestor-listener').trigger(callback, { valor: dados.valor, campo: campoForm });
+                }
+            }).catch(function () { /* mantém o conteúdo atual */ }).then(carregarFechar);
+        });
+    }
+
     function ligarModais() {
         var modais = document.querySelectorAll('[data-c2f-modal]');
 
@@ -283,6 +315,7 @@
         ligarModais();
         ligarFormularios();
         ligarExclusao();
+        ligarBackup();
 
         // O modal de Área Restrita nasce no HTML quando a autorização provisória expirou; abri-lo é
         // o que efetivamente bloqueia a tela.

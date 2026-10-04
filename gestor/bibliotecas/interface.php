@@ -3081,7 +3081,7 @@ function interface_backup_campo_select($params = false){
 		
 		if($backup_campos){
 			$dropdown = gestor_componente(Array(
-				'id' => 'interface-backup-dropdown',
+				'id' => interface_componente_variante('interface-backup-dropdown'),
 			));
 			
 			$cel_nome = 'item'; $cel[$cel_nome] = modelo_tag_val($dropdown,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->'); $dropdown = modelo_tag_in($dropdown,'<!-- '.$cel_nome.' < -->','<!-- '.$cel_nome.' > -->','<!-- '.$cel_nome.' -->');
