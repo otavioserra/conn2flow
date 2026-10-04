@@ -77,3 +77,22 @@ body.c2f-toolbar-ativa #c2f-admin-shell [data-admin-conteudo] {
     width: 1rem;
     height: 1rem;
 }
+
+/* REQ-228: six desktop shortcuts, four at medium widths, overflow menu on mobile. */
+[data-topbar-index] { display: none; }
+[data-topbar-overflow] { max-height: 40vh; overflow-y: auto; }
+[data-topbar-index]:nth-child(n+7) { display: none; }
+@media (min-width: 768px) {
+    [data-topbar-index]:nth-child(-n+4) { display: inline-flex; }
+    [data-topbar-overflow-index]:nth-child(-n+4) { display: none; }
+}
+@media (min-width: 1280px) {
+    [data-topbar-index]:nth-child(-n+6) { display: inline-flex; }
+    [data-topbar-overflow-index]:nth-child(-n+6) { display: none; }
+}
+#topbar-customize { max-width: min(28rem, calc(100vw - 24px)); max-height: calc(100dvh - 32px); }
+[data-admin-topbar] [data-topbar-disclosure] > div { max-height: calc(100dvh - 110px); overflow-y: auto; }
+@media (max-width: 767px) {
+    #topbar-more { position: fixed; left: 12px; right: 12px; top: 64px; width: auto; }
+    body.c2f-toolbar-ativa #topbar-more { top: 94px; }
+}

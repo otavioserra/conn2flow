@@ -734,5 +734,17 @@
             "css_precompiled": "",
             "combined": "59fe42dab201477e9a0012f366b0b223"
         }
+    },
+    {
+        "name": "Administrative topbar Tailwind",
+        "id": "admin-topbar-tailwind",
+        "framework_css": "tailwindcss",
+        "version": "1.2",
+        "checksum": {
+            "html": "87e0a68b623351705f4542834125694b",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "87e0a68b623351705f4542834125694b"
+        }
     }
 ]

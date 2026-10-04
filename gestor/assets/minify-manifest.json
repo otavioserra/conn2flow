@@ -343,5 +343,10 @@
         "sha1": "3f816e758a15075aa01cdc189e031ab21dbb1d0f",
         "origem": 252,
         "minificado": 151
+    },
+    "gestor/assets/global/admin-topbar.js": {
+        "sha1": "a9e32861262719b4392f07bf4c59b96872ee396c",
+        "origem": 10467,
+        "minificado": 5975
     }
 }

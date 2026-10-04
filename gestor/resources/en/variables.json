@@ -745,5 +745,115 @@
         "value": "{inicio}–{fim} of {total} records",
         "type": "string",
         "modulo": "interface"
+    },
+    {
+        "id": "topbar-favorites",
+        "value": "Favorites",
+        "type": "string"
+    },
+    {
+        "id": "topbar-more",
+        "value": "More shortcuts",
+        "type": "string"
+    },
+    {
+        "id": "topbar-empty",
+        "value": "Your shortcuts will appear here.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-add-current",
+        "value": "Favorite current screen",
+        "type": "string"
+    },
+    {
+        "id": "topbar-remove-current",
+        "value": "Remove current screen from favorites",
+        "type": "string"
+    },
+    {
+        "id": "topbar-customize",
+        "value": "Customize shortcuts",
+        "type": "string"
+    },
+    {
+        "id": "topbar-user-menu",
+        "value": "User menu",
+        "type": "string"
+    },
+    {
+        "id": "topbar-my-profile",
+        "value": "My Profile",
+        "type": "string"
+    },
+    {
+        "id": "topbar-security",
+        "value": "Security and Password",
+        "type": "string"
+    },
+    {
+        "id": "topbar-language",
+        "value": "Interface Language",
+        "type": "string"
+    },
+    {
+        "id": "topbar-portuguese",
+        "value": "Portuguese (PT-BR)",
+        "type": "string"
+    },
+    {
+        "id": "topbar-english",
+        "value": "English (EN)",
+        "type": "string"
+    },
+    {
+        "id": "topbar-signout",
+        "value": "Sign Out / End Session",
+        "type": "string"
+    },
+    {
+        "id": "topbar-close",
+        "value": "Close",
+        "type": "string"
+    },
+    {
+        "id": "topbar-customize-help",
+        "value": "Select the screens you want to access quickly. Changes are saved to your account.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-search",
+        "value": "Search screens and actions",
+        "type": "string"
+    },
+    {
+        "id": "topbar-no-results",
+        "value": "No screens found.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-save-error",
+        "value": "Could not save shortcuts. Please try again.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-unavailable",
+        "value": "Shortcut customization is unavailable. Update the system to enable it.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-saved",
+        "value": "Shortcuts saved.",
+        "type": "string"
+    },
+    {
+        "id": "topbar-open-menu",
+        "value": "Open menu",
+        "type": "string"
+    },
+    {
+        "id": "topbar-dashboard",
+        "value": "Dashboard",
+        "type": "string"
     }
 ]

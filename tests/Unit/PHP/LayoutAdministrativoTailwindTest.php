@@ -25,7 +25,13 @@ final class LayoutAdministrativoTailwindTest extends TestCase
 
         self::assertFileExists($caminho, "Recurso ausente: {$lang}/{$tipo}/{$id}.{$ext}");
 
-        return (string)file_get_contents($caminho);
+        $conteudo = (string)file_get_contents($caminho);
+        // REQ-228: o cabeçalho agora é um recurso composto pelo runtime, com dependência declarada.
+        if($tipo === 'layouts' && $id === 'layout-administrativo-tailwind' && $ext === 'html'){
+            self::assertStringContainsString('@[[admin-topbar]]@', $conteudo);
+            $conteudo = str_replace('@[[admin-topbar]]@', self::recurso($lang, 'components', 'admin-topbar-tailwind'), $conteudo);
+        }
+        return $conteudo;
     }
 
     /** @return array<string,array{0:string}> */

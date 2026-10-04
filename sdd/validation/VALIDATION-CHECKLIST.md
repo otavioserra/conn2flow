@@ -11,6 +11,20 @@
 
 Detalhes: [BATCH-238](../implementation/BATCH-238.md).
 
+## BATCH-237 — Topbar administrativa (req-228)
+
+- [x] CA-1: menu acessível por clique/teclado, Escape, clique fora, nome/e-mail/perfil; perfil, segurança, PT-BR/EN e logout exercitados no navegador.
+- [x] CA-2: personalização com busca, adicionar/remover e favoritar tela atual; clique no atalho abre a tela correspondente.
+- [x] CA-3: favoritos persistidos por conta no SQL, restaurados após reload e em contexto de navegador separado; idempotência e isolamento de contas nos testes focados.
+- [x] CA-4: editbar real e topbar coexistem em 1366 e 390 px; topo da topbar abaixo da editbar, sem overflow.
+- [x] CA-5: 1366/1024/768/390/320 px sem overflow; seis/quatro/zero atalhos diretos, menu de atalhos e perfil contidos na tela.
+- [x] 28 testes focados; PHPUnit 112 testes / 530 assertions (três depreciações informadas); Vitest 83/83; navegador 60/60. Falha 503 simulada conserva estado e exibe erro; CSRF sem token retorna 403. Sem erro inesperado de página/console.
+- [x] Compilação e pipeline local `project-test`: migração aplicada, SQL e CSS atualizados, 462 arquivos conferidos por hash. Publicação direta `dist/` falhou no rsync do Windows; entrega pelo controlador de arquivos validada.
+- [x] Preferências de teste restauradas; sessão encerrada pelo roteiro; nenhum modo de ambiente alterado.
+- [ ] Revisão técnica/humana e integração da branch `feat/req-228`.
+
+Evidências: [BATCH-237](../implementation/BATCH-237.md), [roteiro](req228-browser.cjs), [resultado](req228-evidence/results.json), [perfil mobile](req228-evidence/profile-390.png), [editbar desktop](req228-evidence/editbar-1366.png).
+
 ## BATCH-229 — Módulos do editor, listagens e correções da revisão (req-219)
 
 - [x] `admin-layouts` e `admin-componentes` (listar, adicionar, editar) e a listagem do `admin-paginas` no layout Tailwind; salvar sem 403.

@@ -115,15 +115,20 @@
                 "type": "components",
                 "id": "interface-formulario-autorizacao-provisoria-tailwind",
                 "scope": "global"
+            },
+            {
+                "type": "components",
+                "id": "admin-topbar-tailwind",
+                "scope": "global"
             }
         ],
         "tailwind_dependencies_reason": "REQ-118: o menu e os componentes da interface administrativa sao montados em runtime pelo PHP e nao possuem sidecar proprio na cascata; sem declara-los, o layout compila sem as utilities deles.",
-        "version": "1.12",
+        "version": "1.15",
         "checksum": {
-            "html": "ea35759c7e426b55d320588432d75e1d",
-            "css": "ee5dc55d61ab40e9ea2714f64be33c87",
+            "html": "efca305f5315e025a0578e009ad9c215",
+            "css": "3ab58a06c119f63dd8063a52e0838aed",
             "css_precompiled": "",
-            "combined": "aacbd2bd038c7b140b482c7a9d285e0d"
+            "combined": "5de8541f1b7c210b6f1e1b84c2a75a58"
         }
     },
     {
