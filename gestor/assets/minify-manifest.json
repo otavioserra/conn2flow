@@ -1,8 +1,8 @@
 {
     "gestor/assets/configuracao/configuracao.js": {
-        "sha1": "49e26c3afb4cc1b9523939961f14b0bca2bf8d0e",
-        "origem": 30638,
-        "minificado": 16328
+        "sha1": "1b57ed01cf3d04b26018131157e6626bfe4919f8",
+        "origem": 36392,
+        "minificado": 19339
     },
     "gestor/assets/dashboard/dashboard-3d-camera.js": {
         "sha1": "7062c0e48afc24439bf6565639b524472886abef",
@@ -140,9 +140,9 @@
         "minificado": 24338
     },
     "gestor/modulos/admin-atualizacoes/admin-atualizacoes.js": {
-        "sha1": "291a53fb1ea42450393f6f5190344765029d71c5",
-        "origem": 15784,
-        "minificado": 7826
+        "sha1": "286f26f8a325935b88dcbcb9c211d1a500bab2be",
+        "origem": 13804,
+        "minificado": 7165
     },
     "gestor/modulos/admin-categorias/admin-categorias.js": {
         "sha1": "f6957c044858adcf40146f30a2f632b2742e76c1",
@@ -185,9 +185,9 @@
         "minificado": 4356
     },
     "gestor/modulos/admin-plugins/admin-plugins.js": {
-        "sha1": "ffc760f1899ed488edd46d11e7c4bc3a5c643b7c",
-        "origem": 4683,
-        "minificado": 2595
+        "sha1": "cd0cc053690db9b06287040354a91fe6e05d2397",
+        "origem": 5682,
+        "minificado": 3583
     },
     "gestor/modulos/admin-prompts-ia/admin-prompts-ia.js": {
         "sha1": "d4d3cb187dfa9279dee0adb958445891ddd16f73",
@@ -285,9 +285,9 @@
         "minificado": 120
     },
     "gestor/modulos/modulos/modulos.js": {
-        "sha1": "ed0f82633ef4aea98d9ed6edce01c659e2d480b0",
-        "origem": 183,
-        "minificado": 154
+        "sha1": "eca978d07f8957734e3f7c154c1ed1d5910a7ac4",
+        "origem": 268,
+        "minificado": 214
     },
     "gestor/modulos/pages-index/pages-index.js": {
         "sha1": "2e447076f049a4c006a3b69e4632bbf55b70ab62",
@@ -340,8 +340,8 @@
         "minificado": 1337
     },
     "gestor/modulos/variables/variables.js": {
-        "sha1": "3f816e758a15075aa01cdc189e031ab21dbb1d0f",
-        "origem": 252,
-        "minificado": 151
+        "sha1": "a8145a9939ec9e3a2f96a67d6dd5c0e78a042c3d",
+        "origem": 504,
+        "minificado": 249
     }
 }

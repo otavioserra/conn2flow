@@ -1,88 +1,68 @@
-<!-- Admin IA - Listar Servidores -->
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1><i class="robot icon"></i> Servidores de IA</h1>
-                <a href="@[[pagina#url-raiz]]@admin-ia/adicionar/" class="ui button primary">
-                    <i class="plus icon"></i> Adicionar Servidor
-                </a>
-            </div>
-
-            <div class="ui segment">
-                <!-- com-servidores < -->
-                <table class="ui table selectable">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Tipo</th>
-                            <th>Padrão</th>
-                            <th>Status</th>
-                            <th>Último Teste</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- servidores < -->
-                        <tr>
-                            <td>#nome#</td>
-                            <td>
-                                <!-- tipo-gemini < -->
-                                <i class="google icon"></i> Google Gemini
-                                <!-- tipo-gemini > -->
-                                <!-- tipo-outro < -->
-                                #tipo#
-                                <!-- tipo-outro > -->
-                            </td>
-                            <td>
-                                #padrao#
-                            </td>
-                            <td>
-                                <!-- status-ativo < -->
-                                <div class="ui green label">Ativo</div>
-                                <!-- status-ativo > -->
-                                <!-- status-inativo < -->
-                                <div class="ui red label">Inativo</div>
-                                <!-- status-inativo > -->
-                            </td>
-                            <td>
-                                #data-criacao#
-                            </td>
-                            <td>
-                                <div class="ui buttons">
-                                    <a href="@[[pagina#url-raiz]]@admin-ia/editar/?id=#id#" class="ui button small">
-                                        <i class="edit icon"></i> Editar
-                                    </a>
-                                    <button class="ui button small blue testar-conexao" data-id="#id#">
-                                        <i class="plug icon"></i> Testar
-                                    </button>
-                                    <button class="ui button small red excluir-servidor" data-id="#id#">
-                                        <i class="trash icon"></i> Excluir
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- servidores > -->
-                    </tbody>
-                </table><!-- com-servidores > -->
-
-                <!-- sem-servidores < -->
-                <div class="ui placeholder segment">
-                    <div class="ui icon header">
-                        <i class="robot icon"></i>
-                        Nenhum servidor configurado
-                    </div>
-                    <div class="inline">
-                        <div class="ui primary button">
-                            <a href="@[[pagina#url-raiz]]@admin-ia/adicionar/" style="color: white;">
-                                <i class="plus icon"></i> Adicionar Primeiro Servidor
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- sem-servidores > -->
-            </div>
-        </div>
+<section class="space-y-6 p-4">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <h1 class="flex items-center gap-2 text-xl font-semibold"><i data-lucide="bot"
+                class="size-5"></i>@[[ui-list-title]]@</h1>
+        <a href="@[[pagina#url-raiz]]@admin-ia/adicionar/"
+            class="inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i data-lucide="plus"
+                class="size-4"></i>@[[ui-add]]@</a>
     </div>
-</div>
+    <div id="admin-ia-mensagens" class="hidden" aria-hidden="true" data-confirm-delete="@[[ui-confirm-delete]]@"
+        data-error-communication="@[[ui-error-communication]]@" data-error-history="@[[ui-error-history]]@"
+        data-error-test-communication="@[[ui-error-test-communication]]@" data-error-generic="@[[ui-error-generic]]@"
+        data-history-empty="@[[ui-history-empty]]@"></div>
+    <!-- com-servidores < -->
+    <div class="overflow-x-auto rounded border border-slate-200">
+        <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+            <thead class="bg-slate-50">
+                <tr>
+                    <th class="px-3 py-2 font-semibold">@[[ui-col-name]]@</th>
+                    <th class="px-3 py-2 font-semibold">@[[ui-col-type]]@</th>
+                    <th class="px-3 py-2 font-semibold">@[[ui-col-default]]@</th>
+                    <th class="px-3 py-2 font-semibold">@[[ui-col-status]]@</th>
+                    <th class="px-3 py-2 font-semibold">@[[ui-col-last-test]]@</th>
+                    <th class="px-3 py-2 font-semibold">@[[ui-col-actions]]@</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+                <!-- servidores < -->
+                <tr>
+                    <td class="px-3 py-2">#nome#</td>
+                    <td class="px-3 py-2">
+                        <!-- tipo-gemini < -->@[[ui-provider-gemini]]@<!-- tipo-gemini > --><!-- tipo-outro < -->#tipo#<!-- tipo-outro > -->
+                    </td>
+                    <td class="px-3 py-2">#padrao#</td>
+                    <td class="px-3 py-2">
+                        <!-- status-ativo < --><span
+                            class="rounded bg-emerald-100 px-2 py-1 text-emerald-800">@[[ui-status-active]]@</span><!-- status-ativo > -->
+                        <!-- status-inativo < --><span
+                            class="rounded bg-rose-100 px-2 py-1 text-rose-800">@[[ui-status-inactive]]@</span><!-- status-inativo > -->
+                    </td>
+                    <td class="px-3 py-2">#data-criacao#</td>
+                    <td class="px-3 py-2">
+                        <div class="flex flex-wrap gap-2">
+                            <a href="@[[pagina#url-raiz]]@admin-ia/editar/?id=#id#"
+                                class="inline-flex items-center gap-1 rounded border border-slate-300 px-2 py-1"><i
+                                    data-lucide="pencil" class="size-4"></i>@[[ui-edit]]@</a>
+                            <button type="button"
+                                class="inline-flex items-center gap-1 rounded border border-sky-700 px-2 py-1 text-sky-800 testar-conexao"
+                                data-id="#id#"><i data-lucide="plug-zap" class="size-4"></i>@[[ui-test]]@</button>
+                            <button type="button"
+                                class="inline-flex items-center gap-1 rounded border border-rose-700 px-2 py-1 text-rose-800 excluir-servidor"
+                                data-id="#id#"><i data-lucide="trash-2" class="size-4"></i>@[[ui-delete]]@</button>
+                        </div>
+                    </td>
+                </tr>
+                <!-- servidores > -->
+            </tbody>
+        </table>
+    </div><!-- com-servidores > -->
+    <!-- sem-servidores < -->
+    <div class="rounded border border-slate-200 p-6 text-center">
+        <i data-lucide="bot" class="mx-auto mb-3 size-8 text-slate-500"></i>
+        <p class="mb-4 font-medium">@[[ui-empty-title]]@</p>
+        <a href="@[[pagina#url-raiz]]@admin-ia/adicionar/"
+            class="inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i data-lucide="plus"
+                class="size-4"></i>@[[ui-add-first]]@</a>
+    </div>
+    <!-- sem-servidores > -->
+</section>

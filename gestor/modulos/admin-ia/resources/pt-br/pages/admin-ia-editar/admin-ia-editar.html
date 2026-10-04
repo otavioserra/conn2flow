@@ -1,92 +1,84 @@
-<!-- Admin IA - Editar Servidor -->
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1><i class="edit icon"></i> Editar Servidor IA</h1>
-
-            <div class="ui segment">
-                <form id="form-servidor-ia-edit" class="ui form">
-                    <input type="hidden" name="id" value="[[id]]">
-
-                    <div class="field required">
-                        <label>Nome do Servidor</label>
-                        <input type="text" name="nome" value="[[nome]]" placeholder="Ex: Gemini Produção" required>
-                    </div>
-
-                    <div class="field required">
-                        <label>Tipo de Servidor</label>
-                        <select name="tipo" class="ui dropdown" required>
-                            <option value="gemini" selected>Google Gemini</option>
-                        </select>
-                    </div>
-
-                    <div class="field">
-                        <label>Padrão</label>
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" name="padrao" [[padrao]]>
-                            <label>&nbsp;</label>
-                        </div>
-                    </div>
-
-                    <div class="field required">
-                        <label>Chave API</label>
-                        <input type="password" name="chave_api" value="[[chave-api]]"
-                            placeholder="Deixe em branco para manter a atual" required>
-                        <small class="text-muted">Digite uma nova chave para alterar, ou deixe *** para manter a
-                            atual</small>
-                    </div>
-
-                    <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="testar_conexao" checked>
-                            <label>Testar conexão após salvar</label>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <button type="submit" class="ui button primary">
-                            <i class="save icon"></i> Atualizar Servidor
-                        </button>
-                        <button type="button" class="ui button blue testar-conexao" data-id="[[id]]">
-                            <i class="plug icon"></i> Testar Conexão
-                        </button>
-                        <!-- ativar-cel < --><button type="button" class="ui button green ativar-conexao"
-                            data-id="[[id]]">
-                            <i class="eye icon"></i> Ativar
-                        </button><!-- ativar-cel > -->
-                        <!-- desativar-cel < --><button type="button" class="ui button brown desativar-conexao"
-                            data-id="[[id]]">
-                            <i class="eye slash icon"></i> Desativar
-                        </button><!-- desativar-cel > -->
-                        <a href="@[[pagina#url-raiz]]@admin-ia/listar/" class="ui button">
-                            <i class="arrow left icon"></i> Voltar
-                        </a>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Histórico de Testes -->
-            <div class="ui segment">
-                <h3><i class="history icon"></i> Histórico de Testes</h3>
-                <div id="historico-testes">
-                    <div class="ui active inline loader"></div> Carregando...
-                </div>
-            </div>
-
-            <!-- Modelos Disponíveis Globalmente -->
-            <div class="ui segment">
-                <h3><i class="microchip icon"></i> Modelos Disponíveis Globalmente</h3>
-                <p class="text-muted">Selecione quais modelos de IA ficam disponíveis para todos os usuários. Modelos desativados aqui não aparecerão no seletor de modelos, a menos que habilitados individualmente por usuário.</p>
-                <div class="ui form" id="form-global-models">
-                    [[global_models_checkboxes]]
-                </div>
-                <div style="margin-top: 1em;">
-                    <button type="button" class="ui blue button" id="btn-save-global-models" onclick="salvarModelosGlobais()">
-                        <i class="save icon"></i> Salvar Configuração de Modelos
-                    </button>
-                </div>
-            </div>
+<section class="mx-auto max-w-4xl space-y-6 p-4">
+    <h1 class="flex items-center gap-2 text-xl font-semibold"><i data-lucide="pencil"
+            class="size-5"></i>@[[ui-edit-title]]@</h1>
+    <div id="admin-ia-mensagens" class="hidden" aria-hidden="true" data-confirm-delete="@[[ui-confirm-delete]]@"
+        data-error-communication="@[[ui-error-communication]]@" data-error-history="@[[ui-error-history]]@"
+        data-error-test-communication="@[[ui-error-test-communication]]@" data-error-generic="@[[ui-error-generic]]@"
+        data-history-empty="@[[ui-history-empty]]@"></div>
+    <form id="form-servidor-ia-edit" class="space-y-5 rounded border border-slate-200 p-4">
+        <input type="hidden" name="id" value="[[id]]">
+        <div class="space-y-1">
+            <label class="c2fc-campo-rotulo" for="admin-ia-nome">@[[ui-name]]@</label>
+            <input id="admin-ia-nome" class="c2fc-campo-entrada w-full" type="text" name="nome" value="[[nome]]"
+                placeholder="@[[ui-name-placeholder]]@" required>
         </div>
-    </div>
-</div>
+        <div class="space-y-1">
+            <label class="c2fc-campo-rotulo" for="admin-ia-tipo">@[[ui-type]]@</label>
+            <select id="admin-ia-tipo" class="c2fc-campo-entrada w-full" name="tipo" data-c2f-select="1" required>
+                <option value="gemini" selected>@[[ui-provider-gemini]]@</option>
+            </select>
+        </div>
+        <label class="c2fc-chave">
+            <input type="checkbox" name="padrao" [[padrao]]>
+            <span class="c2fc-chave-trilho"></span>
+            <span class="c2fc-chave-rotulo">@[[ui-default]]@</span>
+        </label>
+        <div class="space-y-1">
+            <label class="c2fc-campo-rotulo" for="admin-ia-chave">@[[ui-api-key]]@</label>
+            <input id="admin-ia-chave" class="c2fc-campo-entrada w-full" type="password" name="chave_api"
+                value="[[chave-api]]" placeholder="@[[ui-api-key-edit-placeholder]]@">
+            <p class="text-sm text-slate-600">@[[ui-api-key-edit-hint]]@</p>
+        </div>
+        <label class="c2fc-chave">
+            <input type="checkbox" name="testar_conexao" checked>
+            <span class="c2fc-chave-trilho"></span>
+            <span class="c2fc-chave-rotulo">@[[ui-test-after-save]]@</span>
+        </label>
+        <div class="flex flex-wrap gap-3">
+            <button type="submit"
+                class="js-submit inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i
+                    data-lucide="save" class="size-4"></i>@[[ui-update]]@</button>
+            <button type="button"
+                class="testar-conexao inline-flex items-center gap-2 rounded border border-sky-700 px-4 py-2 text-sky-800"
+                data-id="[[id]]"><i data-lucide="plug-zap" class="size-4"></i>@[[ui-test-connection]]@</button>
+            <!-- ativar-cel < --><button type="button"
+                class="ativar-conexao inline-flex items-center gap-2 rounded border border-emerald-700 px-4 py-2 text-emerald-800"
+                data-id="[[id]]"><i data-lucide="eye" class="size-4"></i>@[[ui-activate]]@</button><!-- ativar-cel > -->
+            <!-- desativar-cel < --><button type="button"
+                class="desativar-conexao inline-flex items-center gap-2 rounded border border-amber-700 px-4 py-2 text-amber-800"
+                data-id="[[id]]"><i data-lucide="eye-off"
+                    class="size-4"></i>@[[ui-deactivate]]@</button><!-- desativar-cel > -->
+            <a href="@[[pagina#url-raiz]]@admin-ia/listar/"
+                class="inline-flex items-center gap-2 rounded border border-slate-300 px-4 py-2"><i
+                    data-lucide="arrow-left" class="size-4"></i>@[[ui-back]]@</a>
+        </div>
+    </form>
+    <section class="space-y-3 rounded border border-slate-200 p-4">
+        <h2 class="flex items-center gap-2 text-lg font-semibold"><i data-lucide="history"
+                class="size-5"></i>@[[ui-history-title]]@</h2>
+        <div id="historico-testes" class="space-y-3">
+            <p data-history-loading class="text-sm text-slate-600">@[[ui-history-loading]]@</p>
+        </div>
+    </section>
+    <template id="admin-ia-history-template">
+        <article class="space-y-2 rounded border border-slate-200 p-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <span data-history-success class="hidden font-medium text-emerald-700">@[[ui-success]]@</span>
+                <span data-history-error class="hidden font-medium text-rose-700">@[[ui-error]]@</span>
+                <time data-history-date class="text-sm text-slate-600"></time>
+            </div>
+            <p><span>@[[ui-response-time]]@:</span> <strong data-history-response></strong></p>
+            <p data-history-error-detail class="hidden text-sm text-rose-700"><span>@[[ui-error-prefix]]@</span> <span
+                    data-history-error-message></span></p>
+        </article>
+    </template>
+    <section class="space-y-3 rounded border border-slate-200 p-4">
+        <h2 class="flex items-center gap-2 text-lg font-semibold"><i data-lucide="cpu"
+                class="size-5"></i>@[[ui-models-title]]@</h2>
+        <p class="text-sm text-slate-600">@[[ui-models-description]]@</p>
+        <div id="form-global-models" class="space-y-2">[[global_models_checkboxes]]</div>
+        <button type="button" class="inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"
+            id="btn-save-global-models" onclick="salvarModelosGlobais()"><i data-lucide="save"
+                class="size-4"></i>@[[ui-save-models]]@</button>
+    </section>
+</section>

@@ -1,90 +1,54 @@
-<div class="ui container">
-    <h2 class="ui header">
-        <i class="flask icon"></i>
-        <div class="content">
-            Test of Automatic Discovery System
-            <div class="sub header">Test the automatic plugin release discovery functions</div>
-        </div>
-    </h2>
-
-    <div class="ui segment">
-        <h3 class="ui header">
-            <i class="search icon"></i>
-            Release Discovery Test
-        </h3>
-
-        <form class="ui form" method="post" action="?pagina=admin-plugins-teste">
-            <div class="field">
-                <label>GitHub Repository URL</label>
-                <input type="text" name="teste_repo_url" placeholder="https://github.com/usuario/repo"
-                    value="https://github.com/octocat/Hello-World">
-            </div>
-
-            <button class="ui primary button" type="submit" name="acao" value="testar_descoberta">
-                <i class="search icon"></i>
-                Test Discovery
-            </button>
+<main class="space-y-6">
+    <header>
+        <h1 class="text-xl font-semibold text-slate-900">Test of Automatic Discovery System</h1>
+        <p class="mt-1 text-sm text-slate-600">Test the automatic plugin release discovery functions</p>
+    </header>
+    <section class="space-y-4 border-t border-slate-200 pt-4">
+        <h2 class="text-base font-semibold text-slate-800">Release Discovery Test</h2>
+        <form class="space-y-3" method="post" action="?pagina=admin-plugins-teste">
+            <label class="block space-y-1 text-sm font-medium text-slate-700">GitHub Repository URL<input
+                    class="block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="url"
+                    name="teste_repo_url" placeholder="https://github.com/usuario/repo"
+                    value="https://github.com/octocat/Hello-World" required></label>
+            <button class="rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" type="submit"
+                name="acao" value="testar_descoberta">Test Discovery</button>
         </form>
-
         #resultado_descoberta#
-    </div>
-
-    <div class="ui segment">
-        <h3 class="ui header">
-            <i class="download icon"></i>
-            Release Download Test
-        </h3>
-
-        <form class="ui form" method="post" action="?pagina=admin-plugins-teste">
-            <div class="field">
-                <label>ZIP URL for Download</label>
-                <input type="text" name="teste_zip_url"
-                    placeholder="https://github.com/usuario/repo/releases/download/tag/plugin.zip">
-            </div>
-
-            <div class="field">
-                <label>Authentication Token (optional)</label>
-                <input type="password" name="teste_token" placeholder="GitHub Token (for private repositories)">
-            </div>
-
-            <button class="ui primary button" type="submit" name="acao" value="testar_download">
-                <i class="download icon"></i>
-                Test Download
-            </button>
+    </section>
+    <section class="space-y-4 border-t border-slate-200 pt-4">
+        <h2 class="text-base font-semibold text-slate-800">Release Download Test</h2>
+        <form class="space-y-3" method="post" action="?pagina=admin-plugins-teste">
+            <label class="block space-y-1 text-sm font-medium text-slate-700">ZIP URL for Download<input
+                    class="block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="url"
+                    name="teste_zip_url" placeholder="https://github.com/usuario/repo/releases/download/tag/plugin.zip"
+                    required></label>
+            <label class="block space-y-1 text-sm font-medium text-slate-700">Authentication Token (optional)<input
+                    class="block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="password"
+                    name="teste_token" placeholder="GitHub Token (for private repositories)"></label>
+            <button class="rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" type="submit"
+                name="acao" value="testar_download">Test Download</button>
         </form>
-
         #resultado_download#
-    </div>
-
-    <div class="ui segment">
-        <h3 class="ui header">
-            <i class="cogs icon"></i>
-            Source Processing Test
-        </h3>
-
-        <form class="ui form" method="post" action="?pagina=admin-plugins-teste">
-            <div class="field">
-                <label>Source URL</label>
-                <input type="text" name="teste_origem_url" placeholder="Direct URL or repository URL"
-                    value="https://github.com/octocat/Hello-World">
-            </div>
-
-            <button class="ui primary button" type="submit" name="acao" value="testar_processamento">
-                <i class="cogs icon"></i>
-                Test Processing
-            </button>
+    </section>
+    <section class="space-y-4 border-t border-slate-200 pt-4">
+        <h2 class="text-base font-semibold text-slate-800">Source Processing Test</h2>
+        <form class="space-y-3" method="post" action="?pagina=admin-plugins-teste">
+            <label class="block space-y-1 text-sm font-medium text-slate-700">Source URL<input
+                    class="block w-full rounded border border-slate-300 px-3 py-2 font-normal" type="url"
+                    name="teste_origem_url" placeholder="Direct URL or repository URL"
+                    value="https://github.com/octocat/Hello-World" required></label>
+            <button class="rounded bg-sky-700 px-3 py-2 text-sm font-medium text-white hover:bg-sky-800" type="submit"
+                name="acao" value="testar_processamento">Test Processing</button>
         </form>
-
         #resultado_processamento#
-    </div>
-
-    <div class="ui info message">
-        <div class="header">About the Tests</div>
-        <ul class="list">
+    </section>
+    <aside class="rounded border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950">
+        <h2 class="font-semibold">About the Tests</h2>
+        <ul class="mt-2 list-disc space-y-1 pl-5">
             <li><strong>Release Discovery:</strong> Tests the function that automatically searches for the latest plugin
                 tag in a GitHub repository</li>
             <li><strong>Release Download:</strong> Tests downloading a ZIP file from GitHub release</li>
             <li><strong>Source Processing:</strong> Tests the complete logic of processing a source URL</li>
         </ul>
-    </div>
-</div>
+    </aside>
+</main>

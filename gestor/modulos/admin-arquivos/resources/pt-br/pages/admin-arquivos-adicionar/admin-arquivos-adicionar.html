@@ -2,55 +2,58 @@
 <a class="botaoVoltar" href="#url#">
     <i class="arrow circle left big link icon"></i>
 </a><!-- botao-voltar > -->
-<h1 class="ui header">@[[pagina#titulo]]@</h1>
+<h1 class="text-xl font-semibold text-slate-900">@[[pagina#titulo]]@</h1>
 
-<div class="ui large header">@[[add-files-options-header]]@</div>
+<h2 class="mt-4 text-lg font-semibold">@[[add-files-options-header]]@</h2>
 
-<div class="ui stackable grid">
-    <div class="sixteen wide column">
-        <div class="ui segment c2f-destination">
-            <div class="ui medium header">@[[destination-folder]]@</div>
-            <div class="ui large label c2f-dest-label"><i class="folder open icon"></i> <span
-                    id="c2f-dest-path">/</span></div>
-            <div class="ui teal message">@[[destination-hint]]@</div>
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+    <div class="lg:col-span-12">
+        <div class="rounded border border-slate-200 p-4 c2f-destination">
+            <div class="mb-2 font-medium">@[[destination-folder]]@</div>
+            <div class="inline-flex items-center gap-2 rounded bg-slate-100 px-3 py-2 c2f-dest-label"><i
+                    class="folder open icon"></i> <span id="c2f-dest-path">/</span></div>
+            <div class="mt-3 rounded bg-sky-50 p-3">@[[destination-hint]]@</div>
         </div>
     </div>
 
-    <div class="six wide column">
-        <div class="ui medium header">@[[add-files-label]]@</div>
+    <div class="lg:col-span-5">
+        <div class="mb-2 font-medium">@[[add-files-label]]@</div>
         <div id="c2f-dropzone" class="c2f-dropzone">
             <i class="cloud upload alternate big icon"></i>
             <p>@[[dropzone-hint]]@</p>
             <input id="fileupload" type="file" name="files[]" multiple="">
-            <label for="fileupload" class="ui button positive">@[[add-button-label]]@</label>
+            <label for="fileupload"
+                class="inline-flex cursor-pointer rounded bg-emerald-700 px-3 py-2 text-white">@[[add-button-label]]@</label>
         </div>
     </div>
 
-    <div class="ten wide column">
-        <div class="ui medium header">@[[add-categories-label]]@</div>
-        <div class="ui teal message">@[[add-categories-info]]@</div>
+    <div class="lg:col-span-7">
+        <div class="mb-2 font-medium">@[[add-categories-label]]@</div>
+        <div class="mb-3 rounded bg-sky-50 p-3">@[[add-categories-info]]@</div>
         <span>#select-categories#</span>
     </div>
 
-    <div class="six wide column">
+    <div class="lg:col-span-5">
         <div class="fileButtonsAll hidden">
-            <div class="ui medium header">@[[add-buttons-header]]@</div>
-            <button class="ui positive button fileSendAll">@[[add-file-buton-all-send]]@</button>
-            <button class="ui negative button fileCancelAll">@[[add-file-buton-all-cancel]]@</button>
+            <div class="mb-2 font-medium">@[[add-buttons-header]]@</div>
+            <button
+                class="rounded bg-emerald-700 px-3 py-2 text-white fileSendAll">@[[add-file-buton-all-send]]@</button>
+            <button
+                class="rounded bg-rose-700 px-3 py-2 text-white fileCancelAll">@[[add-file-buton-all-cancel]]@</button>
         </div>
     </div>
-    <div class="ten wide column">
+    <div class="lg:col-span-7">
         <div class="fileWaitAll hidden">
-            <div class="ui medium header">@[[add-status-header]]@</div>
-            <div class="ui blue filling indeterminate progress">
+            <div class="mb-2 font-medium">@[[add-status-header]]@</div>
+            <div class="c2f-progress c2f-progress-indeterminate">
                 <div class="bar">
                     <div class="progress">@[[add-file-progress-waiting]]@</div>
                 </div>
             </div>
         </div>
         <div class="fileProgressAll hidden">
-            <div class="ui medium header">@[[add-status-header]]@</div>
-            <div class="ui indicating progress" data-percent="0">
+            <div class="mb-2 font-medium">@[[add-status-header]]@</div>
+            <div class="c2f-progress" data-percent="0">
                 <div class="bar">
                     <div class="progress"></div>
                 </div>
@@ -60,27 +63,26 @@
     </div>
 </div>
 
-<div class="ui large header hidden filesHeader">
+<h2 class="hidden text-lg font-semibold filesHeader">
     @[[add-files-header]]@
-    <div class="ui right floated buttons c2f-preview-sizes">
+    <div class="ml-auto inline-flex items-center gap-1 c2f-preview-sizes">
         <span class="c2f-preview-size-label">@[[preview-size]]@:</span>
-        <button class="ui mini icon button c2f-preview-size" data-size="s"><i class="small square icon"></i></button>
-        <button class="ui mini icon button c2f-preview-size active" data-size="m"><i
-                class="square icon"></i></button>
-        <button class="ui mini icon button c2f-preview-size" data-size="l"><i class="large square icon"></i></button>
-        <button class="ui mini icon button c2f-preview-size" data-size="xl"><i class="th large icon"></i></button>
+        <button class="rounded border p-1 c2f-preview-size" data-size="s"><i class="small square icon"></i></button>
+        <button class="active rounded border p-1 c2f-preview-size" data-size="m"><i class="square icon"></i></button>
+        <button class="rounded border p-1 c2f-preview-size" data-size="l"><i class="large square icon"></i></button>
+        <button class="rounded border p-1 c2f-preview-size" data-size="xl"><i class="th large icon"></i></button>
     </div>
-</div>
+</h2>
 <div id="files-cont"></div>
 
 <!-- files-cel < -->
-<div class="ui segment c2f-upload-cel">
+<div class="rounded border border-slate-200 p-3 c2f-upload-cel">
     <div class="c2f-upload-thumb">
-        <img class="ui image" id="#file-img-id#" src="#file-img-src#">
+        <img class="c2f-upload-image" id="#file-img-id#" src="#file-img-src#">
     </div>
     <div class="c2f-upload-body">
         <div class="c2f-upload-name">#file-name#</div>
-        <table class="ui very basic compact table c2f-upload-details">
+        <table class="c2f-upload-details">
             <tbody>
                 <tr>
                     <td>@[[add-file-last-modified]]@</td>
@@ -98,34 +100,35 @@
         </table>
         <div class="c2f-upload-controls">
             <div class="fileWait">
-                <div class="ui blue filling indeterminate progress">
+                <div class="c2f-progress c2f-progress-indeterminate">
                     <div class="bar">
                         <div class="progress">@[[add-file-progress-waiting]]@</div>
                     </div>
                 </div>
             </div>
             <div class="fileProgress hidden">
-                <div class="ui indicating progress" data-percent="0">
+                <div class="c2f-progress" data-percent="0">
                     <div class="bar">
                         <div class="progress"></div>
                     </div>
                     <div class="label">@[[add-file-progress]]@</div>
                 </div>
             </div>
-            <div class="ui container center aligned c2f-upload-buttons">
-                <button class="ui positive button fileSend">@[[add-file-buton-send]]@</button>
-                <button class="ui negative button fileCancel">@[[add-file-buton-cancel]]@</button>
+            <div class="flex flex-wrap justify-center gap-2 c2f-upload-buttons">
+                <button class="rounded bg-emerald-700 px-3 py-2 text-white fileSend">@[[add-file-buton-send]]@</button>
+                <button class="rounded bg-rose-700 px-3 py-2 text-white fileCancel">@[[add-file-buton-cancel]]@</button>
                 <div class="fileDone hidden">
                     <!-- btn-select < -->
-                    <button class="ui blue button fileSelect">@[[add-files-select]]@</button><!-- btn-select > -->
+                    <button
+                        class="rounded bg-sky-700 px-3 py-2 text-white fileSelect">@[[add-files-select]]@</button><!-- btn-select > -->
                     <!-- btn-copy < -->
                     <button
-                        class="ui blue button fileCopyClipboard">@[[add-files-copy-clipboard]]@</button><!-- btn-copy > -->
+                        class="rounded bg-sky-700 px-3 py-2 text-white fileCopyClipboard">@[[add-files-copy-clipboard]]@</button><!-- btn-copy > -->
                 </div>
             </div>
             <div class="fileError hidden">
-                <div class="ui negative message">
-                    <div class="header"> @[[add-file-progress-error-head]]@ </div>
+                <div class="rounded border border-rose-300 bg-rose-50 p-3">
+                    <div class="font-semibold"> @[[add-file-progress-error-head]]@ </div>
                     <p class="fileErrorBody">erro</p>
                 </div>
             </div>

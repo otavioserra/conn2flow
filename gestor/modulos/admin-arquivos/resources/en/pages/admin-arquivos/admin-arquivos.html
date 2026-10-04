@@ -1,99 +1,96 @@
-<h1 class="ui header">@[[pagina#titulo]]@</h1>
+<h1 class="text-xl font-semibold text-slate-900">@[[pagina#titulo]]@</h1>
 
 <div id="c2f-files-app" class="c2f-files-app">
 
-    <div class="ui stackable grid c2f-toolbar">
-        <div class="ten wide middle aligned column">
-            <div class="ui breadcrumb c2f-breadcrumb" id="c2f-breadcrumb"></div>
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-12 c2f-toolbar">
+        <div class="flex items-center lg:col-span-10">
+            <div class="c2f-breadcrumb" id="c2f-breadcrumb"></div>
         </div>
-        <div class="six wide right aligned middle aligned column">
-            <div class="ui icon buttons c2f-views">
-                <button class="ui button c2f-view-btn" data-view="large" data-content="@[[view-large]]@"><i
-                        class="th large icon"></i></button>
-                <button class="ui button c2f-view-btn" data-view="medium" data-content="@[[view-medium]]@"><i
-                        class="th icon"></i></button>
-                <button class="ui button c2f-view-btn" data-view="small" data-content="@[[view-small]]@"><i
-                        class="grid layout icon"></i></button>
-                <button class="ui button c2f-view-btn" data-view="list" data-content="@[[view-list]]@"><i
+        <div class="flex items-center justify-end lg:col-span-2">
+            <div class="flex gap-1 c2f-views">
+                <button class="c2f-view-btn rounded border px-2 py-1" data-view="large"
+                    data-content="@[[view-large]]@"><i class="th large icon"></i></button>
+                <button class="c2f-view-btn rounded border px-2 py-1" data-view="medium"
+                    data-content="@[[view-medium]]@"><i class="th icon"></i></button>
+                <button class="c2f-view-btn rounded border px-2 py-1" data-view="small"
+                    data-content="@[[view-small]]@"><i class="grid layout icon"></i></button>
+                <button class="c2f-view-btn rounded border px-2 py-1" data-view="list" data-content="@[[view-list]]@"><i
                         class="list icon"></i></button>
             </div>
         </div>
     </div>
 
-    <div class="ui fluid icon input c2f-search-box">
-        <input type="text" id="c2f-search" placeholder="@[[search-files-placeholder]]@" autocomplete="off">
+    <div class="relative c2f-search-box">
+        <input class="w-full rounded border border-slate-300 py-2 pl-9 pr-9" type="text" id="c2f-search"
+            placeholder="@[[search-files-placeholder]]@" autocomplete="off">
         <i class="search icon c2f-search-icon"></i>
         <i class="times circle link icon c2f-search-clear hidden"></i>
     </div>
 
     <!-- normal-tools < -->
-    <div class="ui basic segment c2f-folder-tools">
-        <a class="ui button positive" href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/adicionar/#paginaIframe#"
-            data-id="adicionar">
+    <div class="flex flex-wrap items-center gap-2 c2f-folder-tools">
+        <a class="inline-flex items-center gap-2 rounded bg-emerald-700 px-3 py-2 text-white"
+            href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/adicionar/#paginaIframe#" data-id="adicionar">
             <i class="upload icon"></i> @[[add-button-label]]@
         </a>
-        <button class="ui button" id="c2f-new-folder"><i class="folder plus icon"></i> @[[folder-new]]@</button>
-        <div class="ui right floated checkbox c2f-select-all-box">
-            <input type="checkbox" id="c2f-select-all"><label>@[[select-all]]@</label>
-        </div>
+        <button class="inline-flex items-center gap-2 rounded border px-3 py-2" id="c2f-new-folder"><i
+                class="folder plus icon"></i> @[[folder-new]]@</button>
+        <label class="ml-auto inline-flex items-center gap-2 c2f-select-all-box">
+            <input type="checkbox" id="c2f-select-all">@[[select-all]]@
+        </label>
     </div>
     <!-- normal-tools > -->
 
-    <div class="ui yellow message hidden c2f-selection-bar" id="c2f-selection-bar">
+    <div class="hidden items-center justify-between rounded border border-amber-300 bg-amber-50 p-3 c2f-selection-bar"
+        id="c2f-selection-bar">
         <span><b id="c2f-selection-count">0</b> @[[selected-count-label]]@</span>
         <div class="c2f-selection-actions">
-            <button class="ui mini primary button hidden" id="c2f-pick-selected"><i class="check icon"></i>
+            <button class="hidden rounded bg-sky-700 px-3 py-1 text-white" id="c2f-pick-selected"><i
+                    class="check icon"></i>
                 @[[pick-selected]]@</button>
-            <button class="ui mini red button" id="c2f-delete-selected"><i class="trash icon"></i>
+            <button class="rounded bg-rose-700 px-3 py-1 text-white" id="c2f-delete-selected"><i class="trash icon"></i>
                 @[[delete-selected]]@</button>
         </div>
     </div>
 
-    <div class="ui styled fluid accordion c2f-filter-accordion">
-        <div class="title"><i class="dropdown icon"></i> @[[filter-label]]@</div>
-        <div class="content">
-            <div class="ui teal message">@[[filter-info]]@</div>
-            <div class="ui stackable grid">
-                <div class="eight wide column">
-                    <div class="ui medium header">@[[date-label]]@</div>
-                    <div class="ui form">
-                        <div class="two fields">
-                            <div class="field">
-                                <div class="ui calendar inverted" id="rangestart">
-                                    <div class="ui input left icon">
-                                        <i class="calendar icon"></i>
-                                        <input type="text" placeholder="@[[date-start-label]]@">
-                                    </div>
-                                </div>
+    <details class="rounded border border-slate-200 p-3 c2f-filter-accordion">
+        <summary class="cursor-pointer font-medium">@[[filter-label]]@</summary>
+        <div class="pt-3">
+            <div class="mb-3 rounded bg-sky-50 p-3">@[[filter-info]]@</div>
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-4">
+                <div class="lg:col-span-2">
+                    <div class="mb-2 font-medium">@[[date-label]]@</div>
+                    <div>
+                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div>
+                                <input class="w-full rounded border border-slate-300 px-3 py-2" type="month"
+                                    id="rangestart" aria-label="@[[date-start-label]]@">
                             </div>
-                            <div class="field">
-                                <div class="ui calendar inverted" id="rangeend">
-                                    <div class="ui input left icon">
-                                        <i class="calendar icon"></i>
-                                        <input type="text" placeholder="@[[date-end-label]]@">
-                                    </div>
-                                </div>
+                            <div>
+                                <input class="w-full rounded border border-slate-300 px-3 py-2" type="month"
+                                    id="rangeend" aria-label="@[[date-end-label]]@">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="four wide column">
-                    <div class="ui medium header">@[[categories-label]]@</div>
+                <div>
+                    <div class="mb-2 font-medium">@[[categories-label]]@</div>
                     <span>#select-categories#</span>
                 </div>
-                <div class="four wide column">
-                    <div class="ui medium header">@[[order-label]]@</div>
+                <div>
+                    <div class="mb-2 font-medium">@[[order-label]]@</div>
                     <span>#select-order#</span>
                 </div>
-                <div class="sixteen wide column">
-                    <button class="ui positive button" id="c2f-filter">@[[filter-button]]@</button>
-                    <button class="ui button" id="c2f-clear">@[[clear-button]]@</button>
+                <div class="flex gap-2 lg:col-span-4">
+                    <button class="rounded bg-emerald-700 px-3 py-2 text-white"
+                        id="c2f-filter">@[[filter-button]]@</button>
+                    <button class="rounded border px-3 py-2" id="c2f-clear">@[[clear-button]]@</button>
                 </div>
             </div>
         </div>
-    </div>
+    </details>
 
-    <div class="ui small info message hidden c2f-thumbs-bar" id="c2f-thumbs-bar">
+    <div class="hidden rounded bg-sky-50 p-3 c2f-thumbs-bar" id="c2f-thumbs-bar">
         <i class="notched circle loading icon"></i> @[[thumbs-processing]]@
     </div>
 
@@ -101,8 +98,8 @@
 
     <div class="hidden" id="c2f-empty">#without-results-cont#</div>
 
-    <div class="ui basic center aligned segment hidden" id="c2f-more">
-        <button class="ui blue button">@[[more-results-button]]@</button>
+    <div class="hidden text-center" id="c2f-more">
+        <button class="rounded bg-sky-700 px-3 py-2 text-white">@[[more-results-button]]@</button>
     </div>
 
 </div>

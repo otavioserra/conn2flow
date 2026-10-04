@@ -445,6 +445,7 @@ function admin_arquivos_i18n(){
 
 function admin_arquivos_listar_arquivos(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -542,6 +543,7 @@ function admin_arquivos_listar_arquivos(){
 
 function admin_arquivos_upload(){
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	// ===== Inclusão Interface (para o picker de categorias e modais)
 	$_GESTOR['css'][] = '<link rel="stylesheet" type="text/css" media="all" href="'.$_GESTOR['url-raiz'].'interface/interface.css?v='.$_GESTOR['biblioteca-interface']['versao'].'" />';

@@ -1,8 +1,46 @@
+function adminPluginsOrigemSelecionar(source, tab) {
+	if (!['arquivo', 'publico', 'privado'].includes(tab)) return;
+
+	source.querySelectorAll('[data-plugin-source-tab]').forEach(button => {
+		const active = button.getAttribute('data-plugin-source-tab') === tab;
+		button.classList.toggle('border-sky-700', active);
+		button.classList.toggle('text-sky-800', active);
+		button.classList.toggle('border-transparent', !active);
+		button.classList.toggle('text-slate-600', !active);
+		button.setAttribute('aria-selected', active ? 'true' : 'false');
+	});
+
+	source.querySelectorAll('[data-plugin-source-panel]').forEach(panel => {
+		const active = panel.getAttribute('data-plugin-source-panel') === tab;
+		panel.hidden = !active;
+		panel.classList.toggle('hidden', !active);
+	});
+
+	const selectedInput = source.querySelector('#origem_selecionada');
+	if (selectedInput) selectedInput.value = tab;
+}
+
+function adminPluginsOrigemInicializar(source) {
+	const selected = source.getAttribute('data-plugin-source-initial');
+	const initialTab = selected === 'github_publico' ? 'publico' : selected === 'github_privado' ? 'privado' : 'arquivo';
+
+	source.addEventListener('click', event => {
+		const button = event.target.closest('[data-plugin-source-tab]');
+		if (button && source.contains(button)) {
+			adminPluginsOrigemSelecionar(source, button.getAttribute('data-plugin-source-tab'));
+		}
+	});
+
+	adminPluginsOrigemSelecionar(source, initialTab);
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = { adminPluginsOrigemInicializar };
+}
+
 $(document).ready(function () {
 
-	if ($('#_gestor-interface-edit-dados').length > 0 || $('#_gestor-interface-insert-dados').length > 0) {
-
-	}
+	document.querySelectorAll('[data-admin-plugins-source]').forEach(adminPluginsOrigemInicializar);
 
 	// Plugin Execution Interface
 	function adminPluginsExecMain() {
@@ -13,72 +51,24 @@ $(document).ready(function () {
 		const pluginId = root.find('#plugin-id-display').text();
 		let currentAction = null;
 
-		let liveCm = null;
-		let liveBufferInitialized = false;
-
-		function initLiveCmIfNeeded() {
-			if (liveCm) return;
-			const ta = document.getElementById('plugin-log-textarea');
-			if (!ta || typeof CodeMirror === 'undefined') return;
-			try {
-				liveCm = CodeMirror.fromTextArea(ta, {
-					lineNumbers: true,
-					lineWrapping: true,
-					styleActiveLine: true,
-					readOnly: true,
-					theme: 'tomorrow-night-bright',
-					mode: { name: 'javascript', json: false }
-				});
-				liveCm.setSize('100%', 400);
-			} catch (e) { /* fail silent */ }
-		}
-
 		function log(msg) {
 			const now = new Date().toLocaleTimeString();
-			initLiveCmIfNeeded();
-
-			if (liveCm) {
-				const doc = liveCm.getDoc();
-				const lineText = now + ' - ' + msg;
-				if (!liveBufferInitialized && doc.lineCount() <= 1 && doc.getLine(0).trim() === '') {
-					doc.setValue(lineText + '\n');
-					liveBufferInitialized = true;
-				} else {
-					const lastLine = doc.lastLine();
-					const lastCh = doc.getLine(lastLine).length;
-					doc.replaceRange('\n' + lineText, { line: lastLine, ch: lastCh });
-				}
-				const info = liveCm.getScrollInfo();
-				liveCm.scrollTo(null, info.height);
-			} else {
-				const pre = $('.fallback-log');
-				if (pre.length) {
-					pre.show();
-					pre.append(document.createTextNode(now + ' - ' + msg + "\n"));
-				}
-			}
+			const output = root.find('#plugin-log-output');
+			output.removeClass('hidden').append(document.createTextNode(now + ' - ' + msg + '\n'));
+			output.scrollTop(output[0].scrollHeight);
 		}
 
 		function setProgress(percent) {
-			const bar = $('#plugin-progress-bar');
+			const bar = root.find('#plugin-progress-bar');
 			if (bar.length) {
-				if (!bar.data('inited')) {
-					bar.progress({ percent: percent });
-					bar.data('inited', 1);
-					bar.show();
-				} else {
-					bar.progress('set percent', percent);
-				}
+				const value = Math.max(0, Math.min(100, Number(percent) || 0));
+				bar.removeClass('hidden').attr('aria-valuenow', value);
+				bar.find('[data-progress-fill]').css('width', value + '%');
 			}
 		}
 
 		function setLoading(on) {
-			const buttons = root.find('.ui.button');
-			if (on) {
-				buttons.addClass('loading disabled');
-			} else {
-				buttons.removeClass('loading disabled');
-			}
+			root.find('button[data-action]').prop('disabled', on).attr('aria-busy', on ? 'true' : 'false');
 		}
 
 		function ajax(params) {
@@ -103,12 +93,12 @@ $(document).ready(function () {
 
 		function executeAction(action) {
 			if (currentAction) {
-				log('Ação já em andamento: ' + currentAction);
+				log(root.attr('data-log-action-running') + ' ' + currentAction);
 				return;
 			}
 
 			currentAction = action;
-			log('Iniciando ação: ' + action);
+			log(root.attr('data-log-action-starting') + ' ' + action);
 			setLoading(true);
 			setProgress(10);
 
@@ -118,21 +108,21 @@ $(document).ready(function () {
 			}).done(resp => {
 				setLoading(false);
 				if (resp.status !== 'ok') {
-					log('Erro na ação ' + action + ': ' + (resp.erro || 'Erro desconhecido'));
+					log(root.attr('data-log-action-error') + ' ' + action + ': ' + (resp.erro || root.attr('data-log-unknown-error')));
 					setProgress(0);
 					currentAction = null;
 					return;
 				}
 
 				const data = resp.data;
-				log('Ação ' + action + ' executada com sucesso');
+				log('Ação ' + action + ' ' + root.attr('data-log-action-success'));
 
 				if (data.saida) {
-					log('Saída: ' + data.saida);
+					log(root.attr('data-log-output') + ' ' + data.saida);
 				}
 
 				if (data.log) {
-					log('Log detalhado: ' + data.log);
+					log(root.attr('data-log-detail') + ' ' + data.log);
 				}
 
 				setProgress(100);
@@ -145,7 +135,7 @@ $(document).ready(function () {
 
 			}).fail(() => {
 				setLoading(false);
-				log('Falha na comunicação para ação: ' + action);
+				log(root.attr('data-log-communication-error') + ' ' + action);
 				setProgress(0);
 				currentAction = null;
 			});
@@ -159,16 +149,16 @@ $(document).ready(function () {
 				if (resp.status === 'ok' && resp.data) {
 					const data = resp.data;
 					const statusEl = $('#plugin-status-display');
-					statusEl.removeClass('red green yellow blue');
+					statusEl.removeClass('bg-red-100 text-red-800 bg-emerald-100 text-emerald-800 bg-amber-100 text-amber-900 bg-slate-100 text-slate-700');
 
 					switch (data.status) {
-						case 'A': statusEl.addClass('green').text('Ativo'); break;
-						case 'I': statusEl.addClass('yellow').text('Inativo'); break;
-						default: statusEl.addClass('grey').text('Desconhecido'); break;
+						case 'A': statusEl.addClass('bg-emerald-100 text-emerald-800').text(root.attr('data-status-active')); break;
+						case 'I': statusEl.addClass('bg-amber-100 text-amber-900').text(root.attr('data-status-inactive')); break;
+						default: statusEl.addClass('bg-slate-100 text-slate-700').text(root.attr('data-status-unknown')); break;
 					}
 
 					if (data.ultima_atualizacao) {
-						log('Última atualização: ' + data.ultima_atualizacao);
+						log(root.attr('data-log-last-update') + ' ' + data.ultima_atualizacao);
 					}
 				}
 			});

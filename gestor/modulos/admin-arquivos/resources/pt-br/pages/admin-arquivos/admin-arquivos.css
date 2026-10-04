@@ -37,7 +37,7 @@
     gap: 6px;
 }
 
-.c2f-selection-bar .c2f-selection-actions .button.hidden {
+.c2f-selection-bar .c2f-selection-actions button.hidden {
     display: none !important;
 }
 
@@ -246,48 +246,48 @@
     opacity: 1;
 }
 
-.view-medium .c2f-item:hover .c2f-actions .button,
-.view-medium .c2f-item:focus-within .c2f-actions .button,
-.view-small .c2f-item:hover .c2f-actions .button,
-.view-small .c2f-item:focus-within .c2f-actions .button {
+.view-medium .c2f-item:hover .c2f-actions button,
+.view-medium .c2f-item:focus-within .c2f-actions button,
+.view-small .c2f-item:hover .c2f-actions button,
+.view-small .c2f-item:focus-within .c2f-actions button {
     pointer-events: auto;
 }
 
 /* Contraste dos botões sobre o fundo escuro do overlay. */
-.view-medium .c2f-actions .button,
-.view-small .c2f-actions .button {
+.view-medium .c2f-actions button,
+.view-small .c2f-actions button {
     margin: 0;
     background: rgba(255, 255, 255, .92);
     color: rgba(0, 0, 0, .8);
     box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
 }
 
-.view-medium .c2f-actions .button:hover,
-.view-small .c2f-actions .button:hover {
+.view-medium .c2f-actions button:hover,
+.view-small .c2f-actions button:hover {
     background: #fff;
     color: rgba(0, 0, 0, .95);
 }
 
-.view-medium .c2f-actions .red.button,
-.view-small .c2f-actions .red.button {
+.view-medium .c2f-actions .c2f-del,
+.view-small .c2f-actions .c2f-del {
     background: #db2828;
     color: #fff;
 }
 
-.view-medium .c2f-actions .red.button:hover,
-.view-small .c2f-actions .red.button:hover {
+.view-medium .c2f-actions .c2f-del:hover,
+.view-small .c2f-actions .c2f-del:hover {
     background: #d01919;
     color: #fff;
 }
 
-.view-medium .c2f-actions .blue.button,
-.view-small .c2f-actions .blue.button {
+.view-medium .c2f-actions .c2f-select,
+.view-small .c2f-actions .c2f-select {
     background: #2185d0;
     color: #fff;
 }
 
-.view-medium .c2f-actions .blue.button:hover,
-.view-small .c2f-actions .blue.button:hover {
+.view-medium .c2f-actions .c2f-select:hover,
+.view-small .c2f-actions .c2f-select:hover {
     background: #1678c2;
     color: #fff;
 }
@@ -360,7 +360,41 @@
 
 /* ===== Galeria de imagens (modal) ===== */
 
-.c2f-gallery-content.content {
+.c2f-gallery-modal {
+    position: relative;
+    width: min(96vw, 1200px);
+    max-width: none;
+    max-height: 90vh;
+    border: 0;
+    border-radius: 6px;
+    padding: 16px;
+    color: #f8fafc;
+    background: #101113;
+}
+
+.c2f-gallery-modal::backdrop {
+    background: rgba(0, 0, 0, .72);
+}
+
+.c2f-gallery-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #475569;
+    border-radius: 4px;
+    color: #fff;
+    background: #1e293b;
+}
+
+.c2f-gallery-header {
+    margin: 0 44px 12px 0;
+    font-weight: 600;
+}
+
+.c2f-gallery-content {
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -414,4 +448,23 @@
 .c2f-gallery-strip img.active {
     opacity: 1;
     border-color: #2185d0;
+}
+
+.c2f-gallery-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding-top: 12px;
+}
+
+@media (max-width: 640px) {
+    .c2f-gallery-content {
+        min-height: 50vh;
+    }
+
+    .c2f-gallery-prev,
+    .c2f-gallery-next {
+        margin: 0 2px !important;
+    }
 }

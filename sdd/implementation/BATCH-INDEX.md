@@ -70,7 +70,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-229 | in-review | Módulos do editor, listagens e correções da revisão (req-219, fatia 6) | [BATCH-229.md](BATCH-229.md) | `admin-layouts`, `admin-componentes`, listagem do `admin-paginas`, `interface_status_selo`, backup e minificação antes da cópia no pipeline. Navegador 31/31. |
 | BATCH-230 | in-review | Família publisher em Tailwind (req-221, fatia 6) | [BATCH-230.md](BATCH-230.md) | Agente paralelo; integrado em `main` (`83d80088`) com o Workspace Social do site (`c451f195`). |
 | BATCH-231 | in-progress | Menus, galerias, formulários e consentimento de cookies em Tailwind (req-222) | [req-222.md](../human-requests/req-222.md) | Agente paralelo, worktree `conn2flow-req222`; variante de visualização entregue pela req-219 (`aff98f83`). |
-| BATCH-232 | ready-for-intake | Módulos de administração em Tailwind (req-223) | [req-223.md](../human-requests/req-223.md) | Inclui o widget `configuracao_administracao` (variables, admin-environment, modulos-variaveis). |
+| BATCH-232 | in-progress | Módulos de administração em Tailwind (req-223) | [BATCH-232.md](BATCH-232.md) | Worktree `conn2flow-req223`, branch `feat/req-223`; inclui `configuracao_administracao`, `variables` e `modulos-variaveis`. |
 | BATCH-233 | in-review | Usuários, perfis, módulos, operações e painel inicial em Tailwind (req-224) | [req-224.md](../human-requests/req-224.md) | Agente da req-219; navegador 40/40 no roteiro da req-219. |
 
 ## Regra operacional

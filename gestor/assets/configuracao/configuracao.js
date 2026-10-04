@@ -2,7 +2,126 @@ $(document).ready(function () {
 
 	var eventDates = [];
 
+	function configuracao_widget_tailwind() {
+		return $('#_gestor-configuracao-administracao').hasClass('configuracao-widget-tailwind');
+	}
+
+	function configuracao_classe_oculta() {
+		return configuracao_widget_tailwind() ? 'hidden' : 'escondido';
+	}
+
+	function configuracao_tipo_select(obj, valor) {
+		var $tipo = obj.find('.tipo');
+		if ($tipo.is('[data-c2f-select]')) {
+			if (valor !== undefined) $tipo.val(valor);
+			$tipo.on('change', function () {
+				configuracao_administracao_alterar_tipo(obj, $(this).val());
+			});
+		} else {
+			$tipo.dropdown();
+			if (valor !== undefined) $tipo.dropdown('set selected', valor);
+			$tipo.dropdown({
+				onChange: function (value) {
+					configuracao_administracao_alterar_tipo(obj, value);
+				}
+			});
+		}
+	}
+
+	function configuracao_data_para_input(valor, tipo) {
+		if (!valor) return '';
+		if (tipo === 'data') {
+			var dataPartes = valor.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+\d{2}:\d{2})?$/);
+			return dataPartes ? dataPartes[3] + '-' + dataPartes[2] + '-' + dataPartes[1] : valor;
+		}
+
+		var dataHoraPartes = valor.match(/^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})$/);
+		if (dataHoraPartes) return dataHoraPartes[3] + '-' + dataHoraPartes[2] + '-' + dataHoraPartes[1] + 'T' + dataHoraPartes[4] + ':' + dataHoraPartes[5];
+
+		var dataPartes = valor.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+		return dataPartes ? dataPartes[3] + '-' + dataPartes[2] + '-' + dataPartes[1] + 'T00:00' : valor;
+	}
+
+	function configuracao_data_para_valor(valor, tipo) {
+		if (!valor) return '';
+		if (tipo === 'data') {
+			var dataPartes = valor.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+			return dataPartes ? dataPartes[3] + '/' + dataPartes[2] + '/' + dataPartes[1] : valor;
+		}
+
+		var dataHoraPartes = valor.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+		return dataHoraPartes
+			? dataHoraPartes[3] + '/' + dataHoraPartes[2] + '/' + dataHoraPartes[1] + ' ' + dataHoraPartes[4] + ':' + dataHoraPartes[5]
+			: valor;
+	}
+
+	function configuracao_datas_renderizar(campo) {
+		var lista = campo.find('.calendar-dates').empty();
+		var template = campo.find('.calendar-date-template').get(0);
+		var valores = campo.find('.calendar-dates-input').val();
+		if (!template || !template.content || !valores) return;
+
+		valores.split('|').filter(Boolean).forEach(function (valor) {
+			var item = template.content.firstElementChild.cloneNode(true);
+			$(item).attr('data-value', valor).find('.date-label').text(valor);
+			lista.append(item);
+		});
+	}
+
+	function configuracao_tipos_plugins_tailwind(obj) {
+		var contexto = obj || $('.variavelCont');
+		if ($.fn.mask) {
+			contexto.find('.dinheiro').mask('#.##0,00', { reverse: true });
+			contexto.find('.quantidade').mask('#.##0', { reverse: true });
+		}
+
+		contexto.find('.data').each(function () {
+			var campo = $(this);
+			var valor = campo.find('.calendarInput');
+			var exibicao = campo.find('.calendarInputDisplay');
+			exibicao.val(configuracao_data_para_input(valor.val(), 'data'));
+			exibicao.off('change.configuracaoTailwind').on('change.configuracaoTailwind', function () {
+				valor.val(configuracao_data_para_valor(this.value, 'data'));
+			});
+		});
+		contexto.find('.data-hora').each(function () {
+			var campo = $(this);
+			var valor = campo.find('.calendarInput');
+			var exibicao = campo.find('.calendarInputDisplay');
+			exibicao.val(configuracao_data_para_input(valor.val(), 'data-hora'));
+			exibicao.off('change.configuracaoTailwind').on('change.configuracaoTailwind', function () {
+				valor.val(configuracao_data_para_valor(this.value, 'data-hora'));
+			});
+		});
+		contexto.find('.datas-multiplas').each(function () {
+			var campo = $(this);
+			configuracao_datas_renderizar(campo);
+			campo.find('.calendarMultipleInput').off('change.configuracaoTailwind').on('change.configuracaoTailwind', function () {
+				var valor = configuracao_data_para_valor(this.value, 'data');
+				if (!valor) return;
+
+				var campoDatas = campo.find('.calendar-dates-input');
+				var valores = campoDatas.val() ? campoDatas.val().split('|').filter(Boolean) : [];
+				if (!valores.includes(valor)) valores.push(valor);
+				campoDatas.val(valores.join('|'));
+				configuracao_datas_renderizar(campo);
+				this.value = '';
+			});
+		});
+
+		if (window.EditorTexto) {
+			contexto.find('textarea.editor-texto').each(function () {
+				window.EditorTexto.iniciar('textarea.editor-texto', this.parentElement, { altura: '450px' });
+			});
+		}
+	}
+
 	function configuracao_tipos_plugins(obj = null) {
+		if (configuracao_widget_tailwind()) {
+			configuracao_tipos_plugins_tailwind(obj);
+			return;
+		}
+
 		// ===== Editor de texto (req-142).
 		//
 		// O editor era o TinyMCE, licenciado e carregado do `cdn.tiny.cloud` com a chave de API
@@ -403,12 +522,12 @@ $(document).ready(function () {
 		// ===== Caso o total de variáveis seja zero, remover o botão adicionar abaixo.
 
 		if (gestor.configuracao.totalItens <= 0) {
-			$('.componenteAdicionarBaixo').addClass('escondido');
+			$('.componenteAdicionarBaixo').addClass(configuracao_classe_oculta());
 		}
 
 		// ===== Reiniciar o formulário.
 
-		$.formReiniciar();
+		if (typeof $.formReiniciar === 'function') $.formReiniciar();
 	}
 
 	function configuracao_administracao_variavel_adicionar(abaixo) {
@@ -455,8 +574,9 @@ $(document).ready(function () {
 
 		// ===== Incluir o botão adicionar abaixo caso o mesmo esteja escondido.
 
-		if ($('.componenteAdicionarBaixo').hasClass('escondido')) {
-			$('.componenteAdicionarBaixo').removeClass('escondido');
+		var classeOculta = configuracao_classe_oculta();
+		if ($('.componenteAdicionarBaixo').hasClass(classeOculta)) {
+			$('.componenteAdicionarBaixo').removeClass(classeOculta);
 		}
 
 		// ===== Atualizar o total de variáveis e itens.
@@ -477,17 +597,13 @@ $(document).ready(function () {
 			configuracao_administracao_variavel_remover();
 		});
 
-		adicionar.find('.ui.dropdown').dropdown({
-			onChange: function (value, text) {
-				configuracao_administracao_alterar_tipo(adicionar, value);
-			}
-		});
+		configuracao_tipo_select(adicionar);
 
 		configuracao_tipos_plugins(adicionar);
 
 		// ===== Reiniciar o formulário.
 
-		$.formReiniciar();
+		if (typeof $.formReiniciar === 'function') $.formReiniciar();
 	}
 
 	function configuracao_administracao_variavel_editar(obj) {
@@ -521,8 +637,7 @@ $(document).ready(function () {
 			case 'css':
 			case 'html':
 				var myInstance = valorObj.data('CodeMirrorInstance');
-
-				valor = myInstance.getValue();
+				valor = myInstance ? myInstance.getValue() : valorObj.val();
 				break;
 			case 'datas-multiplas':
 				valor = valorObj.find('input.calendar-dates-input').val();
@@ -644,19 +759,13 @@ $(document).ready(function () {
 			configuracao_tipos_plugins(variavelCont);
 		});
 
-		editar.find('.ui.dropdown').dropdown();
-		editar.find('.ui.dropdown').dropdown('set selected', variavelTipo);
-		editar.find('.ui.dropdown').dropdown({
-			onChange: function (value, text) {
-				configuracao_administracao_alterar_tipo(editar, value);
-			}
-		});
+		configuracao_tipo_select(editar, variavelTipo);
 
 		configuracao_tipos_plugins(editar);
 
 		// ===== Reiniciar o formulário.
 
-		$.formReiniciar();
+		if (typeof $.formReiniciar === 'function') $.formReiniciar();
 	}
 
 	function configuracao_administracao_iniciar() {
@@ -705,6 +814,19 @@ $(document).ready(function () {
 			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
 
 			var obj = $(this);
+			if (configuracao_widget_tailwind()) {
+				if (!window.c2fControles || !window.c2fControles.dialogo) return false;
+
+				window.c2fControles.dialogo.confirmar(
+					$('#_gestor-configuracao-administracao').attr('data-confirm-delete'),
+					{ perigo: true }
+				).then(function (confirmado) {
+					if (!confirmado) return;
+					obj.parents('.variavelCont').remove();
+					configuracao_administracao_variavel_remover();
+				});
+				return false;
+			}
 
 			$('.ui.modal.confirm').modal({
 				onApprove: function () {
@@ -733,6 +855,7 @@ $(document).ready(function () {
 
 		$(document.body).on('mouseup tap', '.date-value', function (e) {
 			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			if (configuracao_widget_tailwind()) return false;
 
 			var parentCont = $(this).parents('.calendar-dates');
 			var thisDate = this;
@@ -768,6 +891,18 @@ $(document).ready(function () {
 
 		$(document.body).on('mouseup tap', '.date-delete', function (e) {
 			if (e.which != 1 && e.which != 0 && e.which != undefined) return false;
+			if (configuracao_widget_tailwind()) {
+				var campoDatas = $(this).closest('.datas-multiplas');
+				var itemData = $(this).closest('.date-value');
+				var valorData = itemData.attr('data-value');
+				var valoresData = (campoDatas.find('.calendar-dates-input').val() || '').split('|').filter(Boolean);
+				campoDatas.find('.calendar-dates-input').val(valoresData.filter(function (valor) {
+					return valor !== valorData;
+				}).join('|'));
+				itemData.remove();
+				e.stopPropagation();
+				return false;
+			}
 
 			var parentCont = $(this).parents('.calendar-dates');
 			var datesInput = $(this).parents('.datas-multiplas').find('.calendar-dates-input');
@@ -914,15 +1049,22 @@ $(document).ready(function () {
 				case 'css':
 				case 'html':
 					var myInstance = valorObj.data('CodeMirrorInstance');
-
-					myInstance.getDoc().setValue(valorPadrao);
+					if (myInstance) {
+						myInstance.getDoc().setValue(valorPadrao);
+					} else {
+						valorObj.val(valorPadrao);
+					}
 					break;
 				case 'datas-multiplas':
 					valorObj.find('input.calendar-dates-input').val(valorPadrao);
+					if (configuracao_widget_tailwind()) configuracao_datas_renderizar(valorObj);
 					break;
 				case 'data-hora':
 				case 'data':
 					valorObj.find('input.calendarInput').val(valorPadrao);
+					if (configuracao_widget_tailwind()) {
+						valorObj.find('input.calendarInputDisplay').val(configuracao_data_para_input(valorPadrao, variavelTipo));
+					}
 					break;
 				default:
 					valorObj.val(valorPadrao);

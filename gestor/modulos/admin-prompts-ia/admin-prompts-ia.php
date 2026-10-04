@@ -455,7 +455,7 @@ function admin_prompts_ia_interfaces_padroes(){
 							'nome' => gestor_variaveis(Array('modulo' => $_GESTOR['modulo-id'],'id' => 'field-target')),
 							'formatar' => Array(
 								'id' => 'outraTabela',
-								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
+								'valor_senao_existe' => 'N/A',
 								'tabela' => Array(
 									'nome' => 'alvos_ia',
 									'campo_trocar' => 'nome',
@@ -474,11 +474,11 @@ function admin_prompts_ia_interfaces_padroes(){
 								'valores' => [
 									[
 										'valor' => '1',
-										'texto' => '<span class="ui green text">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-label')).'</span>'
+										'texto' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-positive-label'))
 									],
 									[
 										'valor' => '0',
-										'texto' => '<span class="ui red text">'.gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-label')).'</span>'
+										'texto' => gestor_variaveis(Array('modulo' => 'interface','id' => 'field-negative-label'))
 									]
 								],
 							)
@@ -595,6 +595,7 @@ function admin_prompts_ia_start(){
 		
 		interface_ajax_finalizar();
 	} else {
+		$_GESTOR['tailwind-page-bundle'] = true;
 		admin_prompts_ia_interfaces_padroes();
 
 		interface_iniciar();

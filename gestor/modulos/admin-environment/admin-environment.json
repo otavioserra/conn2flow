@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.3",
+    "versao": "1.0.4",
     "bibliotecas": [
         "interface",
         "html"
@@ -12,12 +12,36 @@
                 {
                     "name": "Admin Environment",
                     "id": "admin-environment",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-environment\/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.28",
+                    "version": "1.29",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-environment.php",
+                        "../../../../admin-environment.js"
+                    ],
+                    "tailwind_sources_reason": "The controller and client render profile badges, results and configuration controls.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "471a7dc1eb45bf7139392b1f1968df7c",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
@@ -241,12 +265,36 @@
                 {
                     "name": "Admin Environment",
                     "id": "admin-environment",
-                    "layout": "layout-administrativo-do-gestor",
+                    "layout": "layout-administrativo-tailwind",
                     "path": "admin-environment\/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.30",
+                    "version": "1.31",
+                    "framework_css": "tailwindcss",
+                    "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "../../../../admin-environment.php",
+                        "../../../../admin-environment.js"
+                    ],
+                    "tailwind_sources_reason": "The controller and client render profile badges, results and configuration controls.",
+                    "tailwind_dependencies": [
+                        {
+                            "type": "components",
+                            "id": "menu-principal-sistema-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-alerta-tailwind",
+                            "scope": "global"
+                        },
+                        {
+                            "type": "components",
+                            "id": "interface-carregando-tailwind",
+                            "scope": "global"
+                        }
+                    ],
                     "checksum": {
                         "html": "3ae3911aff7caa3ef09bdca1081c770d",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
