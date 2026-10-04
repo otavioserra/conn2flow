@@ -1,6 +1,6 @@
 # BATCH-221: módulos distribuídos, melhorias da revisão (req-213)
 
-Execução da [req-213](../human-requests/archive/req-213.md), parte do core da REQ-094 do `conn2flow-site`. Relatório completo, medições e E2E no site (`sdd/implementation/modulos-distribuidos/batch-088-nove-melhorias-da-revisao.md`).
+Execução da [req-213](../../human-requests/archive/req-213.md), parte do core da REQ-094 do `conn2flow-site`. Relatório completo, medições e E2E no site (`sdd/implementation/modulos-distribuidos/batch-088-nove-melhorias-da-revisao.md`).
 
 **Status**: `in-review` (validado no Lab; revisão humana pendente).
 

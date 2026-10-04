@@ -84,7 +84,7 @@ Detalhes: [BATCH-222](../implementation/BATCH-222.md).
 - [x] Memória de execução podada (obrigatória em 300 linhas): 296 linhas / 32 KB para 231 linhas, cinco lotes de setembro movidos para o histórico.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-221](../implementation/BATCH-221.md).
+Detalhes: [BATCH-221](../implementation/archive/BATCH-221.md).
 
 ## BATCH-220 — Modal de edição do editor visual no documento Tailwind (req-212)
 
@@ -95,7 +95,7 @@ Detalhes: [BATCH-221](../implementation/BATCH-221.md).
 - [ ] Editor visual de layout aberto no navegador.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-220](../implementation/BATCH-220.md).
+Detalhes: [BATCH-220](../implementation/archive/BATCH-220.md).
 
 ## BATCH-219 — Infraestrutura comum para módulos distribuídos (req-211)
 

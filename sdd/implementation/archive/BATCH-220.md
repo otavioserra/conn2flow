@@ -1,6 +1,6 @@
 # BATCH-220: modal de edição do editor visual no documento Tailwind (req-212)
 
-Execução da [req-212](../human-requests/archive/req-212.md).
+Execução da [req-212](../../human-requests/archive/req-212.md).
 
 **Status**: `in-review` (validado no Lab; revisão humana pendente).
 
