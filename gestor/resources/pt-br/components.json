@@ -746,5 +746,29 @@
             "css_precompiled": "",
             "combined": "800f4115ae762d72c2499b42822c8f3a"
         }
+    },
+    {
+        "name": "html-editor-menus-simulation Tailwind",
+        "id": "html-editor-menus-simulation-tailwind",
+        "version": "1.1",
+        "framework_css": "tailwindcss",
+        "checksum": {
+            "html": "546042b57f7784801d2e93abf91142b3",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "546042b57f7784801d2e93abf91142b3"
+        }
+    },
+    {
+        "name": "html-editor-galleries-simulation Tailwind",
+        "id": "html-editor-galleries-simulation-tailwind",
+        "version": "1.1",
+        "framework_css": "tailwindcss",
+        "checksum": {
+            "html": "eef0b521d042871a4806698485513fa4",
+            "css": "",
+            "css_precompiled": "",
+            "combined": "eef0b521d042871a4806698485513fa4"
+        }
     }
 ]

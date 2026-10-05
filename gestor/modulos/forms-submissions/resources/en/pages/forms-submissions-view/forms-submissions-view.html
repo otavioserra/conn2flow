@@ -1,119 +1,121 @@
+<div class="req222-page space-y-4" data-js-id-missing="@[[js-id-missing]]@" data-js-status-error="@[[js-status-error]]@" data-js-communication-error="@[[js-communication-error]]@" data-js-email-missing="@[[js-email-missing]]@" data-js-reply-confirm="@[[js-reply-confirm]]@" data-js-reply-error="@[[js-reply-error]]@" data-js-reply-sent="@[[js-reply-sent]]@" data-not-applicable-label="@[[not-applicable-label]]@">
 <!-- ===== Basic Information ===== -->
-<table class="ui definition table">
+<div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 definition table">
     <thead>
         <tr>
-            <th></th>
-            <th><i class="info circle icon"></i> Basic Information</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top"></th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top"><i data-lucide="info" class="size-4 shrink-0 icon "></i> Basic Information</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td class="three wide">Name</td>
-            <td><strong>#name#</strong></td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top three wide">Name</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top"><strong>#name#</strong></td>
         </tr>
         <tr>
-            <td>Submission ID</td>
-            <td><code>#id#</code></td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">Submission ID</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top"><code>#id#</code></td>
         </tr>
         <tr>
-            <td>Form</td>
-            <td><div class="ui basic label">#form_id#</div></td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">Form</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top"><div class="c2fc-rotulo basic label">#form_id#</div></td>
         </tr>
         <tr>
-            <td>Email Status</td>
-            <td>#email_status_badge#</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">Email Status</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">#email_status_badge#</td>
         </tr>
         <tr>
-            <td>Contact Status</td>
-            <td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">Contact Status</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">
                 <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                     #form_status_badge#
-                    <select id="form-status-select" class="ui dropdown" style="min-width: 160px;">
+                    <select id="form-status-select" class="c2fc-campo-entrada dropdown" style="min-width: 160px;">
                         <!-- status_option < -->
                         <option value="#status_id#" #status_selected#>#status_name#</option>
                         <!-- status_option > -->
                     </select>
-                    <button id="btn-save-status" class="ui mini blue labeled icon button">
-                        <i class="save icon"></i> Save
+                    <button id="btn-save-status" class="c2fc-botao c2fc-botao-primario c2fc-botao-icone c2fc-botao-pequeno mini blue labeled icon button">
+                        <i data-lucide="save" class="size-4 shrink-0 icon "></i> Save
                     </button>
                 </div>
             </td>
         </tr>
     </tbody>
-</table>
+</table></div>
 
 <!-- ===== Submitted Fields ===== -->
-<table class="ui celled table">
+<div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled table">
     <thead>
         <tr>
-            <th colspan="2"><i class="list alternate outline icon"></i> Submitted Fields</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top" colspan="2"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Submitted Fields</th>
         </tr>
     </thead>
     <tbody>
         <!-- cel < -->
         <tr>
-            <td class="three wide"><strong>#field_label#</strong></td>
-            <td>#field_value#</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top three wide"><strong>#field_label#</strong></td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">#field_value#</td>
         </tr>
         <!-- cel > -->
     </tbody>
-</table>
+</table></div>
 
 <!-- ===== Response History ===== -->
 <!-- response_history < -->
-<table class="ui celled table">
+<div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled table">
     <thead>
         <tr>
-            <th colspan="3"><i class="history icon"></i> Response History</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top" colspan="3"><i data-lucide="history" class="size-4 shrink-0 icon "></i> Response History</th>
         </tr>
         <tr>
-            <th class="three wide">Date</th>
-            <th>Message</th>
-            <th class="two wide center aligned">Status</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top three wide">Date</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top">Message</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top two wide center aligned">Status</th>
         </tr>
     </thead>
     <tbody>
         <!-- response < -->
         <tr>
-            <td class="three wide">#response_date#</td>
-            <td>#response_message#</td>
-            <td class="two wide center aligned">#response_status#</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top three wide">#response_date#</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top">#response_message#</td>
+            <td class="border-b border-slate-200 px-3 py-2 align-top two wide center aligned">#response_status#</td>
         </tr>
         <!-- response > -->
     </tbody>
-</table>
+</table></div>
 <!-- response_history > -->
 
 <!-- ===== Reply Section ===== -->
 <!-- reply_section < -->
-<div class="ui blue segment">
-    <h4 class="ui dividing header"><i class="reply icon"></i> Reply to Contact</h4>
-    <div class="ui form" id="form-reply">
-        <div class="field">
-            <label>Recipient</label>
-            <div class="ui left icon input fluid">
-                <i class="envelope icon"></i>
-                <input type="text" id="reply-to-email" value="#reply_email#" readonly>
+<div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 blue segment">
+    <h4 class="text-lg font-semibold text-slate-800 my-4 dividing header"><i data-lucide="reply" class="size-4 shrink-0 icon "></i> Reply to Contact</h4>
+    <div class="form" id="form-reply">
+        <div class="c2fc-campo min-w-0 mb-4 field">
+            <label class="c2fc-campo-rotulo">Recipient</label>
+            <div class="flex items-center gap-2 min-w-0 left icon input fluid">
+                <i data-lucide="mail" class="size-4 shrink-0 icon "></i>
+                <input class="c2fc-campo-entrada" type="text" id="reply-to-email" value="#reply_email#" readonly>
             </div>
         </div>
-        <div class="field">
-            <label>Message</label>
-            <textarea id="reply-message" rows="8" placeholder="Type your reply here..."></textarea>
+        <div class="c2fc-campo min-w-0 mb-4 field">
+            <label class="c2fc-campo-rotulo">Message</label>
+            <textarea class="c2fc-campo-entrada" id="reply-message" rows="8" placeholder="Type your reply here..."></textarea>
         </div>
-        <button id="btn-send-reply" class="ui blue labeled icon button">
-            <i class="paper plane icon"></i> Send Reply
+        <button id="btn-send-reply" class="c2fc-botao c2fc-botao-primario c2fc-botao-icone blue labeled icon button">
+            <i data-lucide="send" class="size-4 shrink-0 icon "></i> Send Reply
         </button>
     </div>
 </div>
 <!-- reply_section > -->
 
 <!-- ===== Raw JSON Data ===== -->
-<div class="ui styled fluid accordion">
-    <div class="title">
-        <i class="dropdown icon"></i>
-        <i class="code icon"></i> Raw JSON Data
-    </div>
+<div class="styled fluid accordion">
+    <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
+        <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
+        <i data-lucide="code" class="size-4 shrink-0 icon "></i> Raw JSON Data
+    </summary>
     <div class="content">
-        <div class="ui segment"><textarea class="codemirror-json">#fields_values#</textarea></div>
-    </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 segment"><textarea class="c2fc-campo-entrada codemirror-json">#fields_values#</textarea></div>
+    </div></details>
+</div>
 </div>

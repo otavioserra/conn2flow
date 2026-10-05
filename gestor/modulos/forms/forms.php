@@ -265,6 +265,7 @@ function forms_interface_finalizar($opcao, $id = null, $metaDados = [], $status_
 
 function forms_adicionar() {
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 
@@ -310,6 +311,7 @@ function forms_adicionar() {
 
 function forms_editar() {
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	$id = $_GESTOR['modulo-registro-id'];
@@ -461,6 +463,7 @@ function forms_editar() {
 
 function forms_clonar() {
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	$id = $_GESTOR['modulo-registro-id'];
@@ -529,6 +532,7 @@ function forms_clonar() {
 
 function forms_visualizar() {
 	global $_GESTOR;
+	$_GESTOR['tailwind-page-bundle'] = true;
 
 	$modulo = $_GESTOR['modulo#'.$_GESTOR['modulo-id']];
 	$id = $_GESTOR['modulo-registro-id'];
@@ -550,7 +554,7 @@ function forms_visualizar() {
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#module#', $retorno_bd['module'] ?? '');
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#description#', $retorno_bd['description'] ?? '');
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#fields_schema#', $fields_schema);
-	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#forms-info-definition#', gestor_componente(['id' => 'forms-info-definition', 'modulo' => $_GESTOR['modulo-id']]));
+	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#forms-info-definition#', gestor_componente(['id' => interface_componente_variante('forms-info-definition'), 'modulo' => $_GESTOR['modulo-id']]));
 	$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'], '#form_info#', json_encode($modulo['resources'][$_GESTOR['linguagem-codigo']]['form_info'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 	gestor_pagina_javascript_incluir();
@@ -582,6 +586,7 @@ function forms_interfaces_padroes() {
 
 	switch ($_GESTOR['opcao']) {
 		case 'listar':
+			$_GESTOR['tailwind-page-bundle'] = true;
 			$_GESTOR['interface'][$_GESTOR['opcao']]['finalizar'] = [
 				'banco' => [
 					'nome' => $modulo['tabela']['nome'],
@@ -599,7 +604,7 @@ function forms_interfaces_padroes() {
 							'nome' => gestor_variaveis(['modulo' => 'modulos','id' => 'module-name']),
 							'formatar' => [
 								'id' => 'outraTabela',
-								'valor_senao_existe' => '<span class="ui info text">N/A</span>',
+								'valor_senao_existe' => '<span class="c2fc-texto-suave">N/A</span>',
 								'tabela' => [
 									'nome' => 'modulos',
 									'campo_trocar' => 'nome',

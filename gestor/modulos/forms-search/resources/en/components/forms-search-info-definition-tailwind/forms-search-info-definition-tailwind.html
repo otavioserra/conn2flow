@@ -1,0 +1,44 @@
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2 two column">
+    <div class="min-w-0 column">
+        <div class="text-lg font-semibold text-slate-800 my-4 header"><i data-lucide="book-open" class="size-4 shrink-0 icon "></i><div class="content">JSON of All Parameters</div></div>
+        <textarea class="c2fc-campo-entrada codemirror-json-info">#form_info#</textarea>
+    </div>
+    <div class="min-w-0 column">
+        <div class="text-lg font-semibold text-slate-800 my-4 header"><i data-lucide="book-open" class="size-4 shrink-0 icon "></i><div class="content">Parameter Documentation</div></div>
+        <div class="styled fluid accordion">
+            <details class="rounded-lg border border-slate-200 p-3 my-3" open><summary class="cursor-pointer font-semibold"><i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>Basic Properties</summary>
+            <div class="active content">
+                <div class="list">
+                    <div class="c2fc-aba item"><div class="c2fc-rotulo teal tag label"><code>name</code></div><div class="c2fc-rotulo label">Descriptive search-form name</div></div>
+                    <div class="c2fc-aba item"><div class="c2fc-rotulo teal tag label"><code>id</code></div><div class="c2fc-rotulo label">Unique widget identifier</div></div>
+                    <div class="c2fc-aba item"><div class="c2fc-rotulo teal tag label"><code>description</code></div><div class="c2fc-rotulo label">Optional description</div></div>
+                </div>
+            </div></details>
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold"><i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>GET Action</summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i>Full submission uses GET and keeps the term in the <code>search</code> parameter.</div>
+                <div class="list"><div class="c2fc-aba item"><div class="c2fc-rotulo teal tag label"><code>form_action</code></div><div class="c2fc-rotulo label">Results page; an empty value falls back to <code>pages-index-search/</code></div></div></div>
+            </div></details>
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold"><i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>Search and Autocomplete</summary>
+            <div class="content">
+                <div class="bulleted list">
+                    <div class="c2fc-aba item">The <code>name="search"</code> input is intrinsic and required.</div>
+                    <div class="c2fc-aba item">Autocomplete starts at 3 characters with a 300 ms debounce.</div>
+                    <div class="c2fc-aba item">Results use batches of 30, keyboard navigation, and a local cache.</div>
+                    <div class="c2fc-aba item">Templates use the <code>input-search</code> and <code>results-box</code> cells.</div>
+                </div>
+            </div></details>
+            <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold"><i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>Extra Fields</summary>
+            <div class="content">
+                <div class="c2fc-rotulo label large basic blue"><i data-lucide="info" class="size-4 shrink-0 icon "></i><code>fields</code> contains optional additional filters only; never add the search field there.</div>
+                <div class="list">
+                    <div class="c2fc-aba item"><div class="c2fc-rotulo teal tag label"><code>name</code></div><div class="c2fc-rotulo label">Technical filter name</div></div>
+                    <div class="c2fc-aba item"><div class="c2fc-rotulo teal tag label"><code>label</code></div><div class="c2fc-rotulo label">Visible label</div></div>
+                    <div class="c2fc-aba item"><div class="c2fc-rotulo teal tag label"><code>type</code></div><div class="c2fc-rotulo label">Field type</div></div>
+                    <div class="c2fc-aba item"><div class="c2fc-rotulo teal tag label"><code>required</code></div><div class="c2fc-rotulo label">Whether the extra filter is required</div></div>
+                    <div class="c2fc-aba item"><div class="c2fc-rotulo teal tag label"><code>options</code></div><div class="c2fc-rotulo label">Type-specific options or limits</div></div>
+                </div>
+            </div></details>
+        </div>
+    </div>
+</div>

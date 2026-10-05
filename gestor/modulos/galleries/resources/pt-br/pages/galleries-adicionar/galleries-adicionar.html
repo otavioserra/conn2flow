@@ -1,55 +1,68 @@
-<div class="field">
-    <label>Nome da Galeria</label>
-    <input type="text" name="name" placeholder="Ex: Galeria da Página Inicial">
+<div class="req222-page space-y-4">
+<template id="gallery-row-template">
+ <div class="gallery-item">
+  <img class="gallery-item-thumb">
+  <div class="gallery-item-body"><div class="gallery-item-name"></div><input type="text" class="c2fc-campo-entrada gallery-item-caption" placeholder="@[[item-caption-placeholder]]@"></div>
+  <div class="gallery-item-actions">
+   <button type="button" class="c2fc-botao c2fc-botao-icone gallery-item-handle" aria-label="@[[js-row-drag]]@"><i data-lucide="grip-vertical" class="c2fc-icone"></i></button>
+   <button type="button" class="c2fc-botao c2fc-botao-icone c2fc-botao-primario gallery-item-settings" aria-label="@[[item-settings-tooltip]]@"><i data-lucide="settings" class="c2fc-icone"></i></button>
+   <button type="button" class="c2fc-botao c2fc-botao-icone c2fc-botao-perigo gallery-item-remove" aria-label="@[[js-row-remove]]@"><i data-lucide="trash-2" class="c2fc-icone"></i></button>
+  </div>
+ </div>
+</template>
+
+<div class="c2fc-campo min-w-0 mb-4 field">
+    <label class="c2fc-campo-rotulo">Nome da Galeria</label>
+    <input class="c2fc-campo-entrada" type="text" name="name" placeholder="Ex: Galeria da Página Inicial">
 </div>
 
-<h4 class="ui dividing header">Modelo Visual de Galeria</h4>
+<h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Modelo Visual de Galeria</h4>
 
-<div class="field">
-    <label>Modelo (Recurso)</label>
-    <select id="template_id" class="ui search clearable dropdown templateDropdown" name="template_id">
+<div class="c2fc-campo min-w-0 mb-4 field">
+    <label class="c2fc-campo-rotulo">Modelo (Recurso)</label>
+    <select data-c2f-select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
-    <div class="ui label" style="margin: 8px 0; display: block;">
-        <i class="exchange icon"></i>
+    <div class="c2fc-rotulo label" style="margin: 8px 0; display: block;">
+        <i data-lucide="repeat" class="size-4 shrink-0 icon "></i>
         Ao selecionar um modelo, o HTML e o CSS dele serão carregados no editor abaixo. Você pode
         editar livremente a partir daí — o que vale para a renderização é sempre o conteúdo do
         editor (salvo no banco de dados).
     </div>
 </div>
 
-<a class="ui button blue" id="add-new-template"
+<a class="c2fc-botao c2fc-botao-primario button blue" id="add-new-template"
     href="@[[pagina#url-raiz]]@admin-templates/adicionar/?target=galleries"
-    data-tooltip="Clique para adicionar um novo modelo de galeria" data-position="top center" data-inverted="">
-    <i class="plus icon"></i> Adicionar Novo Modelo
+    data-c2f-dica="Clique para adicionar um novo modelo de galeria" data-position="top center" data-inverted="">
+    <i data-lucide="plus" class="size-4 shrink-0 icon "></i> Adicionar Novo Modelo
 </a>
 
-<div class="ui negative message hidden" id="error-message">
-    <div class="header">Erro!</div>
+<div class="rounded-lg border border-red-200 bg-red-50 text-red-800 p-4 my-4 negative message hidden" id="error-message">
+    <div class="text-lg font-semibold text-slate-800 my-4 header">Erro!</div>
     <p id="error-message-content"></p>
 </div>
 
-<h4 class="ui dividing header">Imagens da Galeria</h4>
+<h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Imagens da Galeria</h4>
 
-<div class="ui label" style="margin: 8px 0; display: block;">
-    <i class="images icon"></i>
+<div class="c2fc-rotulo label" style="margin: 8px 0; display: block;">
+    <i data-lucide="images" class="size-4 shrink-0 icon "></i>
     Clique em "Selecionar Imagens do Servidor" para abrir o gerenciador de arquivos. Selecione
     várias imagens em sequência — o gerenciador permanece aberto. Cada imagem aparece abaixo com
-    legenda editável; arraste pelo <i class="bars icon"></i> para reordenar.
+    legenda editável; arraste pelo <i data-lucide="grip-vertical" class="size-4 shrink-0 icon "></i> para reordenar.
 </div>
 
-<div class="ui segment gallery-toolbar">
-    <button type="button" class="ui blue button" id="btn-select-images">
-        <i class="folder open icon"></i> Selecionar Imagens do Servidor
+<div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 segment gallery-toolbar">
+    <button type="button" class="c2fc-botao c2fc-botao-primario blue button" id="btn-select-images">
+        <i data-lucide="folder-open" class="size-4 shrink-0 icon "></i> Selecionar Imagens do Servidor
     </button>
-    <div class="ui mini icon buttons c2f-gallery-views" id="c2f-gallery-views">
-        <button type="button" class="ui button active" data-view="large" title="@[[view-large-title]]@"><i
-                class="th large icon"></i></button>
-        <button type="button" class="ui button" data-view="medium" title="@[[view-medium-title]]@"><i
-                class="th icon"></i></button>
-        <button type="button" class="ui button" data-view="small" title="@[[view-small-title]]@"><i
-                class="grid layout icon"></i></button>
+    <div class="c2fc-grupo mini icon buttons c2f-gallery-views" id="c2f-gallery-views">
+        <button type="button" class="c2fc-botao button active" data-view="large" title="@[[view-large-title]]@"><i
+                data-lucide="layout-grid" class="size-4 shrink-0 icon "></i></button>
+        <button type="button" class="c2fc-botao button" data-view="medium" title="@[[view-medium-title]]@"><i
+                data-lucide="grid-2x2" class="size-4 shrink-0 icon "></i></button>
+        <button type="button" class="c2fc-botao button" data-view="small" title="@[[view-small-title]]@"><i
+                data-lucide="grid-3x3" class="size-4 shrink-0 icon "></i></button>
     </div>
 </div>
 
@@ -58,52 +71,52 @@
     data-settings-tooltip="@[[item-settings-tooltip]]@" data-settings-close="@[[item-settings-close]]@"
     data-caption-placeholder="@[[item-caption-placeholder]]@" data-caption-label="@[[item-caption-label]]@"></div>
 
-<h4 class="ui dividing header">Controles de Exibição</h4>
+<h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Controles de Exibição</h4>
 
-<div class="ui segment">
-    <div class="inline fields">
-        <div class="field">
-            <div class="ui checkbox">
-                <input type="checkbox" id="gallery-show-arrows" checked>
-                <label>Exibir setas</label>
+<div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 segment">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 inline fields">
+        <div class="c2fc-campo min-w-0 mb-4 field">
+            <div class="c2fc-chave checkbox">
+                <input type="checkbox" id="gallery-show-arrows" checked><span class="c2fc-chave-trilho" aria-hidden="true"></span>
+                <label class="c2fc-campo-rotulo">Exibir setas</label>
             </div>
         </div>
-        <div class="field">
-            <div class="ui checkbox">
-                <input type="checkbox" id="gallery-show-dots" checked>
-                <label>Exibir pontinhos</label>
+        <div class="c2fc-campo min-w-0 mb-4 field">
+            <div class="c2fc-chave checkbox">
+                <input type="checkbox" id="gallery-show-dots" checked><span class="c2fc-chave-trilho" aria-hidden="true"></span>
+                <label class="c2fc-campo-rotulo">Exibir pontinhos</label>
             </div>
         </div>
-        <div class="field">
-            <div class="ui checkbox">
-                <input type="checkbox" id="gallery-loop" checked>
-                <label>Loop infinito</label>
+        <div class="c2fc-campo min-w-0 mb-4 field">
+            <div class="c2fc-chave checkbox">
+                <input type="checkbox" id="gallery-loop" checked><span class="c2fc-chave-trilho" aria-hidden="true"></span>
+                <label class="c2fc-campo-rotulo">Loop infinito</label>
             </div>
         </div>
-        <div class="field">
-            <div class="ui checkbox">
-                <input type="checkbox" id="gallery-autoplay">
-                <label>Slide automático</label>
+        <div class="c2fc-campo min-w-0 mb-4 field">
+            <div class="c2fc-chave checkbox">
+                <input type="checkbox" id="gallery-autoplay"><span class="c2fc-chave-trilho" aria-hidden="true"></span>
+                <label class="c2fc-campo-rotulo">Slide automático</label>
             </div>
         </div>
     </div>
-    <div class="field" style="max-width: 260px; margin-top: 10px;">
-        <label>Tempo de transição (ms)</label>
-        <input type="number" id="gallery-autoplay-speed" min="500" step="100" value="3000">
+    <div class="c2fc-campo min-w-0 mb-4 field" style="max-width: 260px; margin-top: 10px;">
+        <label class="c2fc-campo-rotulo">Tempo de transição (ms)</label>
+        <input class="c2fc-campo-entrada" type="number" id="gallery-autoplay-speed" min="500" step="100" value="3000">
     </div>
-    <div class="two fields" style="margin-top: 10px; max-width: 540px;">
-        <div class="field">
-            <label>Altura do container (px)</label>
-            <input type="number" id="gallery-height" min="0" step="10" value="300">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields" style="margin-top: 10px; max-width: 540px;">
+        <div class="c2fc-campo min-w-0 mb-4 field">
+            <label class="c2fc-campo-rotulo">Altura do container (px)</label>
+            <input class="c2fc-campo-entrada" type="number" id="gallery-height" min="0" step="10" value="300">
         </div>
-        <div class="field">
-            <label>Margem lateral (px)</label>
-            <input type="number" id="gallery-margin-lateral" min="0" step="1" value="0">
+        <div class="c2fc-campo min-w-0 mb-4 field">
+            <label class="c2fc-campo-rotulo">Margem lateral (px)</label>
+            <input class="c2fc-campo-entrada" type="number" id="gallery-margin-lateral" min="0" step="1" value="0">
         </div>
     </div>
-    <div class="field" style="max-width: 260px; margin-top: 10px;">
-        <label>@[[image-position-label]]@</label>
-        <select id="gallery-image-position" class="ui dropdown">
+    <div class="c2fc-campo min-w-0 mb-4 field" style="max-width: 260px; margin-top: 10px;">
+        <label class="c2fc-campo-rotulo">@[[image-position-label]]@</label>
+        <select data-c2f-select id="gallery-image-position" class="c2fc-campo-entrada dropdown">
             <option value="center">@[[image-position-center]]@</option>
             <option value="top">@[[image-position-top]]@</option>
             <option value="bottom">@[[image-position-bottom]]@</option>
@@ -113,10 +126,10 @@
 
 <input type="hidden" name="fields_schema">
 
-<h4 class="ui dividing header">Conteúdo da Galeria</h4>
+<h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Conteúdo da Galeria</h4>
 
-<div class="ui icon message visible info">
-    <i class="info circle icon"></i>
+<div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message visible info">
+    <i data-lucide="info" class="size-4 shrink-0 icon "></i>
     <div class="content">
         <p>O HTML abaixo é o template renderizado no site. Use o bloco
             <code>&lt;!-- item &lt; --&gt; ... &lt;!-- item &gt; --&gt;</code> para cada imagem e
@@ -127,45 +140,47 @@
     </div>
 </div>
 
-<div class="ui top attached tabular menu menuConteudoGaleria">
-    <a class="active item" data-tab="hep-preview"><i class="eye icon"></i> Pré-Visualização</a>
-    <a class="item" data-tab="hep-editor"><i class="code icon"></i> Editor HTML</a>
-    <a class="item" data-tab="hep-widget"><i class="cubes icon"></i> Código do Widget</a>
+<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuConteudoGaleria">
+    <a class="c2fc-aba active item" data-tab="hep-preview"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Pré-Visualização</a>
+    <a class="c2fc-aba item" data-tab="hep-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> Editor HTML</a>
+    <a class="c2fc-aba item" data-tab="hep-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Código do Widget</a>
 </div>
-<div class="ui bottom attached active tab segment" data-tab="hep-preview">
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="hep-preview">
     <div style="position: relative;">
         <iframe id="iframe-galleries-preview"
             style="width:100%;height:900px;border:1px solid #ccc;"></iframe>
-        <div class="ui dimmer hep-preview-dimmer">
-            <div class="ui loader"></div>
+        <div class="c2fc-cobertura ui dimmer hep-preview-dimmer">
+            <div class="c2fc-giro loader"></div>
         </div>
     </div>
 </div>
-<div class="ui bottom attached tab segment" data-tab="hep-editor">
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-editor">
     #html-editor#
 </div>
-<div class="ui bottom attached tab segment" data-tab="hep-widget">
-    <div class="ui icon message info">
-        <i class="cubes icon"></i>
+<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-widget">
+    <div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
+        <i data-lucide="blocks" class="size-4 shrink-0 icon "></i>
         <div class="content">
-            <div class="header">Bloco envelopado do widget</div>
+            <div class="text-lg font-semibold text-slate-800 my-4 header">Bloco envelopado do widget</div>
             <p>Copie o trecho abaixo e cole em qualquer página física do site para injetar esta
                 galeria. O comentário <code>&lt;!-- widgets#galleries-&gt;render(...) --&gt;</code>
                 serve como wrapper: o motor do gestor reconhece e substitui pelo HTML renderizado
                 com as imagens reais no momento da requisição.</p>
         </div>
     </div>
-    <div class="field" style="margin-top:1rem;">
-        <label>Variável do Widget</label>
-        <div class="ui action input">
-            <input type="text" id="hep-widget-val" readonly>
-            <button type="button" id="btn-copy-widget-val" class="ui teal button">
-                <i class="copy icon"></i> Copiar
+    <div class="c2fc-campo min-w-0 mb-4 field" style="margin-top:1rem;">
+        <label class="c2fc-campo-rotulo">Variável do Widget</label>
+        <div class="flex items-center gap-2 min-w-0 action input">
+            <input class="c2fc-campo-entrada" type="text" id="hep-widget-val" readonly>
+            <button type="button" id="btn-copy-widget-val" class="c2fc-botao c2fc-botao-primario teal button">
+                <i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copiar
             </button>
         </div>
     </div>
-    <h4 class="ui header" style="margin-top:1rem;">Código HTML</h4>
+    <h4 class="text-lg font-semibold text-slate-800 my-4 header" style="margin-top:1rem;">Código HTML</h4>
     <div style="border:1px solid #ccc;">
-        <textarea id="hep-widget-code" name="hep-widget-code"></textarea>
+        <textarea class="c2fc-campo-entrada" id="hep-widget-code" name="hep-widget-code"></textarea>
     </div>
+</div>
+
 </div>
