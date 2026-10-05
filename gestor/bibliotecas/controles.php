@@ -50,7 +50,7 @@ function controles_select(array $params){
 	$multiplo = !empty($params['multiplo']);
 	$valores = array_map('strval', (array)($params['valor'] ?? Array()));
 	$atributos = Array('data-c2f-select' => '1', 'name' => $nome . ($multiplo && $nome !== '' && substr($nome, -2) !== '[]' ? '[]' : ''),
-		'class' => trim('c2fc-campo-entrada ' . ($params['classe'] ?? '')));
+		'class' => trim('c2fc-campo-selecao ' . ($params['classe'] ?? '')));
 	if(!empty($params['id'])) $atributos['id'] = (string)$params['id'];
 	if($multiplo) $atributos['multiple'] = 'multiple';
 	if(!empty($params['busca'])) $atributos['data-c2f-busca'] = '1';

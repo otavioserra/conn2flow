@@ -318,3 +318,11 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
 .publisher-highlights-editor .menuContainerPagina { margin-bottom: 0; }
 .publisher-highlights-editor .containerPagina { border-top-left-radius: 0; border-top-right-radius: 0; }
 [data-schema-list="categories"] th, [data-schema-list="categories"] td { padding: 8px; vertical-align: top; min-width: 120px; }
+/* REQ-240: estados do select nativo padronizado e variantes do alerta. */
+.c2fc-campo-selecao { box-sizing: border-box; line-height: 1.4; font-family: inherit; }
+.c2fc-campo-selecao:hover:not(:disabled):not(:focus) { border-color: #94a3b8; }
+.c2fc-campo-selecao:focus { outline: none; border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,.25); }
+.c2fc-campo-selecao:disabled { background: #f1f5f9; color: #64748b; }
+.c2fc-campo-selecao[aria-invalid="true"] { border-color: #dc2626; }
+.c2fc-alerta-sucesso { border-color: #bbf7d0; background: #f0fdf4; color: #166534; }
+.c2fc-alerta-aviso { border-color: #fde68a; background: #fffbeb; color: #92400e; }

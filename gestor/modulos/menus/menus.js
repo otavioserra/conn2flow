@@ -669,7 +669,7 @@ $(document).ready(function () {
             + '<option value="logado">' + (pt ? 'Logado' : 'Logged in') + '</option>'
             + '<option value="perfil_usuario">' + (pt ? 'Perfil de usuário' : 'User profile') + '</option>';
         $form.append('<div class="menu-panel-grid two fields">'
-            + '<div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">' + (pt ? 'Tipo' : 'Type') + '</label><select id="condition_type" class="c2fc-campo-entrada dropdown">' + options + '</select></div>'
+            + '<div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">' + (pt ? 'Tipo' : 'Type') + '</label><select id="condition_type" class="c2fc-campo-selecao dropdown">' + options + '</select></div>'
             + '<div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Slug</label><input class="c2fc-campo-entrada" type="text" id="condition_slug" autocomplete="off"></div>'
             + '</div>');
         $form.append('<div id="condition-profile-wrapper" style="display:none;">'
@@ -1118,7 +1118,7 @@ $(document).ready(function () {
     }
 
     // Seletor de tipo + campos condicionais
-    // req-018 item 2: o `#item_type` voltou a ser um <select class="c2fc-campo-entrada"> nativo (sem conversão Fomantic),
+    // req-018 item 2: o `#item_type` voltou a ser um <select class="c2fc-campo-selecao"> nativo (sem conversão Fomantic),
     // com listener `change` direto. Lemos o valor via `.val()`, com 'pagina' como rede de segurança.
     function currentItemType() {
         return ($itemType.val() || $('#item_type').val() || 'pagina');
@@ -1380,7 +1380,7 @@ $(document).ready(function () {
         function addSelectField(labelText, cls, optionsHtml, value) {
             var $f = $('<div class="c2fc-campo min-w-0 mb-4 field" style="margin-bottom:8px;"></div>');
             $f.append($('<label style="font-size:12px;"></label>').text(labelText));
-            var $sel = $('<select class="c2fc-campo-entrada fluid dropdown" style="display:block;"></select>').addClass(cls).html(optionsHtml);
+            var $sel = $('<select class="c2fc-campo-selecao fluid dropdown" style="display:block;"></select>').addClass(cls).html(optionsHtml);
             $sel.val(value || '');
             $f.append($sel);
             return $f;

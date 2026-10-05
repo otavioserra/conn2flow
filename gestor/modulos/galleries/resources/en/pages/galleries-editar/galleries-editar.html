@@ -20,7 +20,7 @@
 
 <div class="c2fc-campo min-w-0 mb-4 field">
     <label class="c2fc-campo-rotulo">Template (Resource)</label>
-    <select data-c2f-select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown" name="template_id">
+    <select data-c2f-select id="template_id" class="c2fc-campo-selecao search clearable dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
@@ -38,7 +38,7 @@
     <i data-lucide="plus" class="size-4 shrink-0 icon "></i> Add New Template
 </a>
 
-<div class="rounded-lg border border-red-200 bg-red-50 text-red-800 p-4 my-4 negative message hidden" id="error-message">
+<div class="c2fc-alerta c2fc-alerta-erro my-4 negative message hidden" id="error-message">
     <div class="text-lg font-semibold text-slate-800 my-4 header">Error!</div>
     <p id="error-message-content"></p>
 </div>
@@ -116,7 +116,7 @@
     </div>
     <div class="c2fc-campo min-w-0 mb-4 field" style="max-width: 260px; margin-top: 10px;">
         <label class="c2fc-campo-rotulo">@[[image-position-label]]@</label>
-        <select data-c2f-select id="gallery-image-position" class="c2fc-campo-entrada dropdown">
+        <select data-c2f-select id="gallery-image-position" class="c2fc-campo-selecao dropdown">
             <option value="center">@[[image-position-center]]@</option>
             <option value="top">@[[image-position-top]]@</option>
             <option value="bottom">@[[image-position-bottom]]@</option>
@@ -128,7 +128,7 @@
 
 <h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Gallery content</h4>
 
-<div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message visible info">
+<div class="c2fc-alerta c2fc-alerta-info my-4 icon message visible info">
     <i data-lucide="info" class="size-4 shrink-0 icon "></i>
     <div class="content">
         <p>The HTML below is the template rendered on the site. Use the
@@ -158,7 +158,7 @@
     #html-editor#
 </div>
 <div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="hep-widget">
-    <div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
+    <div class="c2fc-alerta c2fc-alerta-info my-4 icon message info">
         <i data-lucide="blocks" class="size-4 shrink-0 icon "></i>
         <div class="content">
             <div class="text-lg font-semibold text-slate-800 my-4 header">Wrapped widget block</div>

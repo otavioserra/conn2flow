@@ -4,7 +4,7 @@
     <td><i data-lucide="grip-vertical" class="c2fc-icone forms-search-field-handle"></i></td>
     <td><input type="text" class="c2fc-campo-entrada forms-search-field-label"></td>
     <td><input type="text" class="c2fc-campo-entrada forms-search-field-name"></td>
-    <td><select class="c2fc-campo-entrada forms-search-field-type dropdown"><option value="text">@[[field-type-text]]@</option>
+    <td><select class="c2fc-campo-selecao forms-search-field-type dropdown"><option value="text">@[[field-type-text]]@</option>
 <option value="email">@[[field-type-email]]@</option>
 <option value="tel">@[[field-type-tel]]@</option>
 <option value="number">@[[field-type-number]]@</option>
@@ -51,7 +51,7 @@
 </div>
 
 <div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-search-fields">
-    <div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 info message">O campo de busca <code>search</code> é obrigatório e incluído automaticamente. Cadastre aqui apenas filtros adicionais.</div>
+    <div class="c2fc-alerta c2fc-alerta-info my-4 info message">O campo de busca <code>search</code> é obrigatório e incluído automaticamente. Cadastre aqui apenas filtros adicionais.</div>
     <button type="button" class="c2fc-botao c2fc-botao-primario primary button" id="btn-add-form-field"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Campo</button>
     <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled compact table" id="forms-search-fields-table">
         <thead>
@@ -75,7 +75,7 @@
 
 <div class="c2fc-campo min-w-0 mb-4 field">
     <label class="c2fc-campo-rotulo">Modelo</label>
-    <select data-c2f-select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown" name="template_id">
+    <select data-c2f-select id="template_id" class="c2fc-campo-selecao search clearable dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>

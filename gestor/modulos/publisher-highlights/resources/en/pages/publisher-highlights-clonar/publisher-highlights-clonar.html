@@ -5,13 +5,13 @@
 
 <div class="field c2fc-campo min-w-0 mb-4">
     <label class="c2fc-campo-rotulo">Publicador de Origem</label>
-    <select id="publisher_id" class="c2fc-campo-entrada search clearable dropdown publisherDropdown relative min-w-0" name="publisher_id">
+    <select id="publisher_id" class="c2fc-campo-selecao search clearable dropdown publisherDropdown relative min-w-0" name="publisher_id">
         <option value="">#publisher_placeholder_option#</option>
         #publisher_id_options#
     </select>
 </div>
 
-<div class="info icon message rounded-lg border border-sky-200 bg-sky-50 p-4 my-4">
+<div class="c2fc-alerta c2fc-alerta-info info icon message my-4">
     <i data-lucide="info" class="size-4 inline-block info circle icon"></i>
     <div class="content">
         <div class="header font-semibold text-slate-800 my-4">Clone fiel do bloco de origem</div>
@@ -25,7 +25,7 @@
 <div class="fields grid grid-cols-1 gap-4 md:grid-cols-2">
     <div class="six wide field c2fc-campo min-w-0 mb-4">
         <label class="c2fc-campo-rotulo">Regra de Alimentação</label>
-        <select id="rule" class="c2fc-campo-entrada dropdown" name="rule">
+        <select id="rule" class="c2fc-campo-selecao dropdown" name="rule">
             <option value="latest">Automática (últimas publicações)</option>
             <option value="manual">Manual (curadoria por item)</option>
         </select>
@@ -36,7 +36,7 @@
     </div>
     <div class="six wide field c2fc-campo min-w-0 mb-4" id="order-by-wrapper">
         <label class="c2fc-campo-rotulo">Ordenação</label>
-        <select id="order_by" class="c2fc-campo-entrada dropdown" name="order_by">
+        <select id="order_by" class="c2fc-campo-selecao dropdown" name="order_by">
             <option value="date_desc">Por data (mais recentes primeiro)</option>
             <option value="date_asc">Por data (mais antigas primeiro)</option>
             <option value="title_asc">Alfabética (A-Z)</option>
@@ -72,7 +72,7 @@
 
 <div class="field c2fc-campo min-w-0 mb-4">
     <label class="c2fc-campo-rotulo">Modelo (Recurso)</label>
-    <select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown relative min-w-0" name="template_id">
+    <select id="template_id" class="c2fc-campo-selecao search clearable dropdown templateDropdown relative min-w-0" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
@@ -88,7 +88,7 @@
         <div class="text loader">Carregando dados...</div>
     </div>
 
-    <div class="negative message hidden rounded-lg border border-sky-200 bg-sky-50 p-4 my-4" id="error-message">
+    <div class="c2fc-alerta c2fc-alerta-erro negative message hidden my-4" id="error-message">
         <div class="header font-semibold text-slate-800 my-4">Erro!</div>
         <p id="error-message-content"></p>
     </div>
@@ -136,7 +136,7 @@
     <div class="publisher-highlights-editor">#html-editor#</div>
 </div>
 <div class="bottom attached tab segment c2fc-aba-painel rounded-lg border border-slate-200 p-4" data-tab="hep-widget">
-    <div class="icon message info rounded-lg border border-sky-200 bg-sky-50 p-4 my-4">
+    <div class="c2fc-alerta c2fc-alerta-info icon message info my-4">
         <i data-lucide="blocks" class="size-4 inline-block cubes icon"></i>
         <div class="content">
             <div class="header font-semibold text-slate-800 my-4">Wrapped widget block</div>

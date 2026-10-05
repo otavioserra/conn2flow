@@ -595,7 +595,7 @@ $(document).ready(function () {
     }
 
     function buildSelect(cls, pairs, selected) {
-        var $sel = $('<select class="c2fc-campo-entrada"></select>').addClass(cls);
+        var $sel = $('<select class="c2fc-campo-selecao"></select>').addClass(cls);
         pairs.forEach(function (p) {
             var $opt = $('<option></option>').attr('value', p[0]).text(p[1]);
             if (String(p[0]) === String(selected)) $opt.prop('selected', true);
@@ -605,7 +605,7 @@ $(document).ready(function () {
     }
 
     function buildDataSelect(cls, list, selected, placeholderTxt) {
-        var $sel = $('<select class="c2fc-campo-entrada"></select>').addClass(cls);
+        var $sel = $('<select class="c2fc-campo-selecao"></select>').addClass(cls);
         $sel.append($('<option value=""></option>').text(placeholderTxt));
         (list || []).forEach(function (o) {
             var val = (o.id !== undefined) ? o.id : (o.value !== undefined ? o.value : '');

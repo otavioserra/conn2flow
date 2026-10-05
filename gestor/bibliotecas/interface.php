@@ -1507,7 +1507,7 @@ function interface_formulario_campos($params = false){
 						$selectControles = (function_exists('gestor_framework_css_atual') && gestor_framework_css_atual()['modo'] === 'tailwindcss')
 							? ' data-c2f-select="1"'.(isset($campo['procurar']) ? ' data-c2f-busca="1"' : '').(isset($campo['disabled']) ? ' disabled' : '')
 							: '';
-						$campo_saida = "	".'<select id="'.$campo['id'].'" class="ui '.(isset($campo['disabled']) ? 'disabled ':'').(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').'dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').($selectControles !== '' ? ' c2fc-campo-entrada' : '').'" name="'.$campo['nome'].'"'.(isset($campo['multiple']) ? ' multiple':'').$selectControles.'>'."\n";
+						$campo_saida = "	".'<select id="'.$campo['id'].'" class="ui '.(isset($campo['disabled']) ? 'disabled ':'').(isset($campo['fluid']) ? 'fluid ':'').(isset($campo['procurar']) ? 'search ':'').(isset($campo['limpar']) ? 'clearable ':'').'dropdown'.(isset($campo['selectClass']) ? ' '.$campo['selectClass'] : '').($selectControles !== '' ? ' c2fc-campo-selecao' : '').'" name="'.$campo['nome'].'"'.(isset($campo['multiple']) ? ' multiple':'').$selectControles.'>'."\n";
 					}
 					
 					if(isset($campo['placeholder'])){

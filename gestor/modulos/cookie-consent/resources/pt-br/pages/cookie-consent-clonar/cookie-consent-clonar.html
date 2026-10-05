@@ -12,7 +12,7 @@
     <input class="c2fc-campo-entrada" type="text" name="name" placeholder="Ex: Aviso de cookies do site">
 </div>
 
-<div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 info icon message">
+<div class="c2fc-alerta c2fc-alerta-info my-4 info icon message">
     <i data-lucide="info" class="size-4 shrink-0 icon "></i>
     <div class="content">
         <div class="text-lg font-semibold text-slate-800 my-4 header">Cópia fiel do registro de origem</div>
@@ -32,7 +32,7 @@
     <div class="grid grid-cols-1 gap-4 md:grid-cols-3 my-4 three fields">
         <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Versão do aviso</label><input class="c2fc-campo-entrada" type="text" data-schema-key="version" placeholder="1"></div>
         <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Validade da decisão (dias)</label><input class="c2fc-campo-entrada" type="number" min="1" step="1" data-schema-key="expiry_days"></div>
-        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Posição do aviso</label><select data-c2f-select class="c2fc-campo-entrada dropdown" data-schema-key="position"><option value="bottom-left">Canto inferior esquerdo</option><option value="bottom-right">Canto inferior direito</option><option value="bottom">Faixa inferior</option><option value="center">Centro</option></select></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Posição do aviso</label><select data-c2f-select class="c2fc-campo-selecao dropdown" data-schema-key="position"><option value="bottom-left">Canto inferior esquerdo</option><option value="bottom-right">Canto inferior direito</option><option value="bottom">Faixa inferior</option><option value="center">Centro</option></select></div>
     </div>
     <div class="c2fc-rotulo label" style="margin: 0 0 12px; display: block;">
         <i data-lucide="info" class="size-4 shrink-0 icon "></i>
@@ -44,7 +44,7 @@
     </div>
     <div class="grid grid-cols-1 gap-4 md:grid-cols-3 my-4 three fields">
         <div class="c2fc-campo min-w-0 mb-4 field"><div class="c2fc-chave checkbox"><input type="checkbox" data-schema-key="show_floating_button"><span class="c2fc-chave-trilho" aria-hidden="true"></span><label class="c2fc-campo-rotulo">Botão que reabre as preferências</label></div></div>
-        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Lado do botão</label><select data-c2f-select class="c2fc-campo-entrada dropdown" data-schema-key="floating_position"><option value="left">Esquerda</option><option value="right">Direita</option></select></div>
+        <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Lado do botão</label><select data-c2f-select class="c2fc-campo-selecao dropdown" data-schema-key="floating_position"><option value="left">Esquerda</option><option value="right">Direita</option></select></div>
         <div class="c2fc-campo min-w-0 mb-4 field"><div class="c2fc-chave checkbox"><input type="checkbox" data-schema-key="consent_mode"><span class="c2fc-chave-trilho" aria-hidden="true"></span><label class="c2fc-campo-rotulo">Enviar sinais do Google Consent Mode v2</label></div></div>
     </div>
 </div>
@@ -80,7 +80,7 @@
 
 <div class="c2fc-campo min-w-0 mb-4 field">
     <label class="c2fc-campo-rotulo">Modelo (recurso)</label>
-    <select data-c2f-select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown" name="template_id">
+    <select data-c2f-select id="template_id" class="c2fc-campo-selecao search clearable dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
@@ -90,7 +90,7 @@
     </div>
 </div>
 
-<div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
+<div class="c2fc-alerta c2fc-alerta-info my-4 icon message info">
     <i data-lucide="info" class="size-4 shrink-0 icon "></i>
     <div class="content">
         <div class="text-lg font-semibold text-slate-800 my-4 header">Três peças no mesmo modelo</div>
@@ -114,7 +114,7 @@
     #html-editor#
 </div>
 <div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-widget">
-    <div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
+    <div class="c2fc-alerta c2fc-alerta-info my-4 icon message info">
         <i data-lucide="blocks" class="size-4 shrink-0 icon "></i>
         <div class="content">
             <div class="text-lg font-semibold text-slate-800 my-4 header">Bloco do widget</div>

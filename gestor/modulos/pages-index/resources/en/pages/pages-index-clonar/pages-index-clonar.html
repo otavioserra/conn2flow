@@ -3,7 +3,7 @@
     <input type="text" name="name" placeholder="Ex: Destaques da Home - Notícias (cópia)" class="c2fc-campo-entrada">
 </div>
 
-<div class="c2fc-aviso message">
+<div class="c2fc-alerta c2fc-alerta-info message">
     <i data-lucide="info" class="size-4 shrink-0"></i>
     <div class="content c2fc-dialogo-corpo">
         <div class="header c2fc-dialogo-titulo">Clone fiel do bloco de origem</div>
@@ -17,7 +17,7 @@
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <div class="c2fc-campo" id="order-by-wrapper">
         <label class="c2fc-campo-rotulo">Ordenação</label>
-        <select id="order_by" class="c2fc-campo-entrada dropdown" name="order_by">
+        <select id="order_by" class="c2fc-campo-selecao dropdown" name="order_by">
             <option value="date_desc">Por data (mais recentes primeiro)</option>
             <option value="date_asc">Por data (mais antigas primeiro)</option>
             <option value="title_asc">Alfabética (A-Z)</option>
@@ -85,7 +85,7 @@
 
 <div class="c2fc-campo">
     <label class="c2fc-campo-rotulo">Modelo (Recurso)</label>
-    <select id="template_id" class="c2fc-campo-entrada dropdown templateDropdown" name="template_id">
+    <select id="template_id" class="c2fc-campo-selecao dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
@@ -101,7 +101,7 @@
         <div class="c2fc-giro">Carregando dados...</div>
     </div>
 
-    <div class="c2fc-aviso message c2fc-aviso-erro negative hidden" id="error-message">
+    <div class="c2fc-alerta c2fc-alerta-erro message negative hidden" id="error-message">
         <div class="header c2fc-dialogo-titulo">Erro!</div>
         <p id="error-message-content"></p>
     </div>
@@ -149,7 +149,7 @@
     #html-editor#
 </div>
 <div class="c2fc-painel-aba tab hidden" data-tab="hep-widget">
-    <div class="c2fc-aviso message">
+    <div class="c2fc-alerta c2fc-alerta-info message">
         <i data-lucide="boxes" class="size-4 shrink-0"></i>
         <div class="content c2fc-dialogo-corpo">
             <div class="header c2fc-dialogo-titulo">Wrapped widget block</div>

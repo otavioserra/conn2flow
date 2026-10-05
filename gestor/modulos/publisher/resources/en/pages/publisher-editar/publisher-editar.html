@@ -17,7 +17,7 @@
 
 <div class="field c2fc-campo min-w-0 mb-4">
     <label class="c2fc-campo-rotulo">Template (Resource)</label>
-    <select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown relative min-w-0" name="template_id">
+    <select id="template_id" class="c2fc-campo-selecao search clearable dropdown templateDropdown relative min-w-0" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
@@ -36,7 +36,7 @@
     </div>
     <!-- templates-alguns-linkados-msg > -->
     <!-- templates-todos-linkados-msg < -->
-    <div class="icon message visible negative rounded-lg border border-sky-200 bg-sky-50 p-4 my-4">
+    <div class="c2fc-alerta c2fc-alerta-erro icon message visible negative my-4">
         <i data-lucide="ban" class="size-4 inline-block ban icon"></i>
         <div class="content">
             <div class="header font-semibold text-slate-800 my-4">Templates Linked to Publisher</div>
@@ -102,7 +102,7 @@
         <div class="text loader">Loading template...</div>
     </div>
 
-    <div class="negative message hidden rounded-lg border border-sky-200 bg-sky-50 p-4 my-4" id="error-message">
+    <div class="c2fc-alerta c2fc-alerta-erro negative message hidden my-4" id="error-message">
         <div class="header font-semibold text-slate-800 my-4">Error!</div>
         <p id="error-message-content"></p>
     </div>
@@ -185,7 +185,7 @@
             </div>
             <div class="four wide field c2fc-campo min-w-0 mb-4">
                 <label class="c2fc-campo-rotulo">Type</label>
-                <select class="c2fc-campo-entrada dropdownTemplate field-type" data-validate="skip">
+                <select class="c2fc-campo-selecao dropdownTemplate field-type" data-validate="skip">
                     <option value="text">Short Text</option>
                     <option value="textarea">Long Text</option>
                     <option value="html">HTML (Rich Text)</option>
