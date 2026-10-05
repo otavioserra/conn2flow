@@ -36,7 +36,46 @@
                     "tailwind_sources": [
                         "../../../../admin-cron.js"
                     ],
-                    "tailwind_sources_reason": "REQ-032: as etiquetas de status e de frequência das linhas são montadas em runtime pelo admin-cron.js a partir do JSON do backend; sem escanear o script, o precompiled sai sem as utilities dessas etiquetas."
+                    "tailwind_sources_reason": "REQ-032: as etiquetas de status e de frequência das linhas são montadas em runtime pelo admin-cron.js a partir do JSON do backend; sem escanear o script, o precompiled sai sem as utilities dessas etiquetas.",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "id": "menu-principal-sistema-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-listar-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-formulario-edicao-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-carregando-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-alerta-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-delecao-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-225/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
                 }
             ],
             "variables": [
@@ -478,7 +517,46 @@
                     "tailwind_sources": [
                         "../../../../admin-cron.js"
                     ],
-                    "tailwind_sources_reason": "REQ-032: status and frequency badges are built at runtime by admin-cron.js from the backend JSON; without scanning the script the precompiled bundle misses those utilities."
+                    "tailwind_sources_reason": "REQ-032: status and frequency badges are built at runtime by admin-cron.js from the backend JSON; without scanning the script the precompiled bundle misses those utilities.",
+                    "tailwind_bundle": true,
+                    "tailwind_dependencies": [
+                        {
+                            "id": "menu-principal-sistema-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-listar-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-formulario-inclusao-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-formulario-edicao-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-carregando-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-alerta-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        },
+                        {
+                            "id": "interface-delecao-modal-tailwind",
+                            "type": "components",
+                            "scope": "global"
+                        }
+                    ],
+                    "tailwind_dependencies_reason": "REQ-225/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
                 }
             ],
             "variables": [

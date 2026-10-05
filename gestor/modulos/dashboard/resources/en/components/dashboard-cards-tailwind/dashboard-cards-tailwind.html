@@ -19,9 +19,36 @@
     </div>
     <!-- update-notification > -->
 
+
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <h1 class="dashboard-cards-title text-2xl font-semibold text-slate-900">#titulo#</h1>
+        <details id="dashboard-options" class="relative">
+            <summary class="c2fc-botao cursor-pointer"><i data-lucide="sliders-horizontal" class="size-4"></i> @[[dashboard-options-label]]@</summary>
+            <div class="dashboard-options-menu absolute right-0 z-40 mt-2 w-64 max-w-full space-y-3 rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
+                <button type="button" id="dashboard-edit-mode" class="c2fc-botao w-full" aria-pressed="false">@[[dashboard-edit-mode-label]]@</button>
+                <button type="button" id="dashboard-btn-add-widget" class="c2fc-botao w-full">@[[widgets-btn-add]]@</button>
+                <button type="button" id="dashboard-btn-reset-widgets" class="c2fc-botao w-full">@[[widgets-btn-reset-tooltip]]@</button>
+                <p class="text-sm text-slate-600">@[[density-selector-label]]@</p>
+                <!-- density-selector < -->
+                <div id="dashboard-density-selector" class="inline-flex rounded-lg border border-slate-200 bg-slate-100 p-1 text-slate-600 shadow-inner" role="group" aria-label="@[[density-selector-label]]@">
+                    <button type="button" class="dashboard-density-btn rounded-md px-2.5 py-1 text-xs font-semibold transition-all hover:text-slate-900" data-density="p" data-c2f-dica="@[[density-p-tooltip]]@" aria-label="@[[density-p-tooltip]]@">
+                        @[[density-p-label]]@
+                    </button>
+                    <button type="button" class="dashboard-density-btn active rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-sky-700 shadow-sm transition-all" data-density="m" data-c2f-dica="@[[density-m-tooltip]]@" aria-label="@[[density-m-tooltip]]@">
+                        @[[density-m-label]]@
+                    </button>
+                    <button type="button" class="dashboard-density-btn rounded-md px-2.5 py-1 text-xs font-semibold transition-all hover:text-slate-900" data-density="g" data-c2f-dica="@[[density-g-tooltip]]@" aria-label="@[[density-g-tooltip]]@">
+                        @[[density-g-label]]@
+                    </button>
+                </div>
+                <!-- density-selector > -->
+            </div>
+        </details>
+    </div>
+
     <!-- dashboard-tabs < -->
     <div class="dashboard-tabs-container border-b border-slate-200">
-        <nav class="-mb-px flex space-x-6" aria-label="Abas do Dashboard">
+        <nav class="-mb-px flex space-x-6" aria-label="@[[dashboard-tabs-label]]@">
             <button type="button" id="dashboard-tab-btn-modulos" class="dashboard-tab-trigger active flex items-center gap-2 border-b-2 border-sky-600 py-3 px-1 text-sm font-semibold text-sky-600 transition-colors" data-tab-target="dashboard-tab-modulos" aria-selected="true">
                 <i data-lucide="layout-grid" class="size-4"></i>
                 <span>@[[dashboard-tab-modulos]]@</span>
@@ -38,21 +65,7 @@
     <div id="dashboard-tab-modulos" class="dashboard-tab-panel space-y-6">
         <!-- header-with-search < -->
         <div class="dashboard-header-row flex flex-wrap items-center justify-between gap-4">
-            <h1 class="dashboard-cards-title text-2xl font-semibold text-slate-900">#titulo#</h1>
             <div class="flex flex-wrap items-center gap-3">
-                <!-- density-selector < -->
-                <div id="dashboard-density-selector" class="inline-flex rounded-lg border border-slate-200 bg-slate-100 p-1 text-slate-600 shadow-inner" role="group" aria-label="@[[density-selector-label]]@">
-                    <button type="button" class="dashboard-density-btn rounded-md px-2.5 py-1 text-xs font-semibold transition-all hover:text-slate-900" data-density="p" data-c2f-dica="@[[density-p-tooltip]]@" aria-label="@[[density-p-tooltip]]@">
-                        @[[density-p-label]]@
-                    </button>
-                    <button type="button" class="dashboard-density-btn active rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-sky-700 shadow-sm transition-all" data-density="m" data-c2f-dica="@[[density-m-tooltip]]@" aria-label="@[[density-m-tooltip]]@">
-                        @[[density-m-label]]@
-                    </button>
-                    <button type="button" class="dashboard-density-btn rounded-md px-2.5 py-1 text-xs font-semibold transition-all hover:text-slate-900" data-density="g" data-c2f-dica="@[[density-g-tooltip]]@" aria-label="@[[density-g-tooltip]]@">
-                        @[[density-g-label]]@
-                    </button>
-                </div>
-                <!-- density-selector > -->
                 <div id="dashboard-search-container" class="dashboard-search-container flex w-full gap-2 sm:w-72">
                     <input type="text" id="dashboard-search-input" class="c2fc-campo-entrada" placeholder="@[[search-placeholder]]@" aria-label="@[[search-placeholder]]@">
                     <button type="button" id="dashboard-search-reset" class="c2fc-botao c2fc-botao-icone" data-c2f-dica="@[[search-reset-tooltip]]@" data-c2f-dica-pos="top right" aria-label="@[[search-reset-tooltip]]@">
@@ -66,12 +79,12 @@
         <!-- cards-container < -->
         <div id="dashboard-sortable-cards" class="dashboard-sortable-cards density-m grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             <!-- card < -->
-            <div class="dashboard-module-card group #modulo-has-image-class# flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md" data-module-id="#modulo-id#" data-module-order="#modulo-order#">
-                <div class="dashboard-card-header relative overflow-hidden bg-slate-50 transition-colors" style="position: relative !important; overflow: hidden !important; width: 100% !important;">
-                    <div class="dashboard-card-drag-handle absolute top-2.5 left-2.5 z-20 cursor-grab rounded-md bg-white/85 p-1 text-slate-500 shadow-sm backdrop-blur-sm transition-colors hover:bg-white hover:text-slate-800" aria-hidden="true" data-c2f-dica="@[[cards-tooltip-drag]]@" data-c2f-dica-pos="bottom right" style="position: absolute !important; top: 0.625rem !important; left: 0.625rem !important; z-index: 20 !important; width: 2rem !important; height: 2rem !important; display: flex !important; align-items: center !important; justify-content: center !important;">
+            <div class="dashboard-module-card group #modulo-has-image-class# flex flex-col overflow-visible rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md" data-module-id="#modulo-id#" data-module-order="#modulo-order#">
+                <div class="dashboard-card-header relative overflow-visible rounded-t-xl bg-slate-50 transition-colors" style="position: relative !important; overflow: visible !important; width: 100% !important;">
+                    <div class="dashboard-card-drag-handle absolute top-2.5 left-2.5 z-20 cursor-grab rounded-md bg-white/85 p-1 text-slate-500 shadow-sm backdrop-blur-sm transition-colors hover:bg-white hover:text-slate-800" aria-hidden="true" data-c2f-dica="@[[cards-tooltip-drag]]@" data-c2f-dica-pos="bottom left" style="position: absolute !important; top: 0.625rem !important; left: 0.625rem !important; z-index: 20 !important; width: 2rem !important; height: 2rem !important; display: flex !important; align-items: center !important; justify-content: center !important;">
                         <i data-lucide="grip-vertical" class="size-4"></i>
                     </div>
-                    <div class="dashboard-card-cover-wrapper" style="position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; overflow: hidden !important;">
+                    <div class="dashboard-card-cover-wrapper rounded-t-xl" style="position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; overflow: hidden !important;">
                         #modulo-imagem-tag#
                     </div>
                     <!-- svg < -->
@@ -116,30 +129,21 @@
 
     <!-- tab-content-widgets < -->
     <div id="dashboard-tab-widgets" class="dashboard-tab-panel space-y-6 hidden">
-        <div class="dashboard-widgets-header flex flex-wrap items-center justify-between gap-4">
-            <div>
-                <h2 class="text-2xl font-semibold text-slate-900">@[[widgets-tab-title]]@</h2>
-                <p class="text-sm text-slate-500">@[[widgets-tab-subtitle]]@</p>
-            </div>
-            <div class="flex flex-wrap items-center gap-2">
-                <button type="button" id="dashboard-btn-add-widget" class="c2fc-botao c2fc-botao-primario">
-                    <i data-lucide="plus" class="size-4"></i>
-                    <span>@[[widgets-btn-add]]@</span>
-                </button>
-                <button type="button" id="dashboard-btn-reset-widgets" class="c2fc-botao c2fc-botao-pequeno text-slate-600" data-c2f-dica="@[[widgets-btn-reset-tooltip]]@" aria-label="@[[widgets-btn-reset-tooltip]]@">
-                    <i data-lucide="rotate-ccw" class="size-4"></i>
-                    <span>@[[widgets-btn-reset]]@</span>
-                </button>
-            </div>
-        </div>
-
         <div id="dashboard-widgets-grid" class="dashboard-widgets-grid grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-12 gap-6"
             data-label-switch="@[[widgets-label-switch]]@"
             data-label-active="@[[widgets-label-active]]@"
             data-label-available="@[[widgets-label-available]]@"
             data-label-add="@[[widgets-label-add]]@"
             data-label-select="@[[widgets-label-select]]@"
-            data-label-resize="@[[widgets-label-resize]]@">
+            data-label-resize="@[[widgets-label-resize]]@"
+            data-label-type="@[[widgets-label-type]]@"
+            data-label-record="@[[widgets-label-record]]@"
+            data-label-loading="@[[widgets-label-loading]]@"
+            data-label-error="@[[widgets-label-error]]@"
+            data-label-empty="@[[widgets-label-empty]]@"
+            data-label-remove="@[[widgets-label-remove]]@"
+            data-label-drag="@[[cards-tooltip-drag]]@"
+            data-label-more="@[[widgets-label-more]]@">
             <!-- Widgets renderizados dinamicamente pelo JS em malha canônica de 12 colunas -->
         </div>
 
@@ -173,7 +177,7 @@
                 <div id="dashboard-widgets-modal-list" class="max-h-96 space-y-2 overflow-y-auto pr-1">
                     <div class="text-center py-8 text-sm text-slate-500">
                         <i data-lucide="loader" class="size-6 animate-spin mx-auto text-sky-600 mb-2"></i>
-                        Carregando widgets disponíveis...
+                        @[[widgets-label-loading]]@
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-10-04T15:31:49-03:00",
+    "generated_at": "2026-10-05T08:06:36-03:00",
     "tables": {
         "alvos_ia": {
             "nome": "alvos_ia",
@@ -13,7 +13,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "global:tables_config.json"
+            "source": "global:tables_config.json",
+            "partitioned": false,
+            "total_parts": 1
         },
         "categorias": {
             "nome": "categorias",
@@ -24,7 +26,9 @@
             "natural_key_columns": [],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "module:admin-categorias"
+            "source": "module:admin-categorias",
+            "partitioned": false,
+            "total_parts": 1
         },
         "componentes": {
             "nome": "componentes",
@@ -46,7 +50,9 @@
                 "css_compiled"
             ],
             "insert_only": false,
-            "source": "module:admin-componentes"
+            "source": "module:admin-componentes",
+            "partitioned": false,
+            "total_parts": 1
         },
         "cron_tarefas": {
             "nome": "cron_tarefas",
@@ -63,7 +69,9 @@
                 "parametros"
             ],
             "insert_only": false,
-            "source": "global:tables_config.json"
+            "source": "global:tables_config.json",
+            "partitioned": false,
+            "total_parts": 1
         },
         "forms": {
             "nome": "forms",
@@ -81,7 +89,9 @@
                 "fields_schema"
             ],
             "insert_only": false,
-            "source": "module:forms"
+            "source": "module:forms",
+            "partitioned": false,
+            "total_parts": 1
         },
         "forms_search": {
             "nome": "forms_search",
@@ -99,7 +109,9 @@
                 "fields_schema"
             ],
             "insert_only": false,
-            "source": "module:forms-search"
+            "source": "module:forms-search",
+            "partitioned": false,
+            "total_parts": 1
         },
         "layouts": {
             "nome": "layouts",
@@ -120,7 +132,9 @@
                 "css_compiled"
             ],
             "insert_only": false,
-            "source": "module:admin-layouts"
+            "source": "module:admin-layouts",
+            "partitioned": false,
+            "total_parts": 1
         },
         "modos_ia": {
             "nome": "modos_ia",
@@ -134,7 +148,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "module:admin-modos-ia"
+            "source": "module:admin-modos-ia",
+            "partitioned": false,
+            "total_parts": 1
         },
         "modulos": {
             "nome": "modulos",
@@ -148,7 +164,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "module:modulos"
+            "source": "module:modulos",
+            "partitioned": false,
+            "total_parts": 1
         },
         "modulos_grupos": {
             "nome": "modulos_grupos",
@@ -162,7 +180,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "module:modulos-grupos"
+            "source": "module:modulos-grupos",
+            "partitioned": false,
+            "total_parts": 1
         },
         "modulos_operacoes": {
             "nome": "modulos_operacoes",
@@ -176,7 +196,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "module:modulos-operacoes"
+            "source": "module:modulos-operacoes",
+            "partitioned": false,
+            "total_parts": 1
         },
         "pages_index": {
             "nome": "pages_index",
@@ -197,7 +219,9 @@
                 "css"
             ],
             "insert_only": false,
-            "source": "module:pages-index"
+            "source": "module:pages-index",
+            "partitioned": false,
+            "total_parts": 1
         },
         "paginas": {
             "nome": "paginas",
@@ -222,7 +246,9 @@
                 "css_compiled"
             ],
             "insert_only": false,
-            "source": "module:admin-paginas"
+            "source": "module:admin-paginas",
+            "partitioned": false,
+            "total_parts": 1
         },
         "prompts_ia": {
             "nome": "prompts_ia",
@@ -236,7 +262,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "module:admin-prompts-ia"
+            "source": "module:admin-prompts-ia",
+            "partitioned": false,
+            "total_parts": 1
         },
         "templates": {
             "nome": "templates",
@@ -258,7 +286,9 @@
                 "css_compiled"
             ],
             "insert_only": false,
-            "source": "module:admin-templates"
+            "source": "module:admin-templates",
+            "partitioned": false,
+            "total_parts": 1
         },
         "usuarios": {
             "nome": "usuarios",
@@ -277,7 +307,9 @@
                 "status"
             ],
             "insert_only": true,
-            "source": "module:usuarios"
+            "source": "module:usuarios",
+            "partitioned": false,
+            "total_parts": 1
         },
         "usuarios_perfis": {
             "nome": "usuarios_perfis",
@@ -291,7 +323,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "module:usuarios-perfis"
+            "source": "module:usuarios-perfis",
+            "partitioned": false,
+            "total_parts": 1
         },
         "usuarios_perfis_modulos": {
             "nome": "usuarios_perfis_modulos",
@@ -305,7 +339,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "global:tables_config.json"
+            "source": "global:tables_config.json",
+            "partitioned": false,
+            "total_parts": 1
         },
         "usuarios_perfis_modulos_operacoes": {
             "nome": "usuarios_perfis_modulos_operacoes",
@@ -319,7 +355,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "global:tables_config.json"
+            "source": "global:tables_config.json",
+            "partitioned": false,
+            "total_parts": 1
         },
         "variaveis": {
             "nome": "variaveis",
@@ -337,7 +375,9 @@
                 "valor"
             ],
             "insert_only": false,
-            "source": "global:tables_config.json"
+            "source": "global:tables_config.json",
+            "partitioned": false,
+            "total_parts": 1
         },
         "widgets": {
             "nome": "widgets",
@@ -351,7 +391,9 @@
             ],
             "preserve_on_user_modified": [],
             "insert_only": false,
-            "source": "global:tables_config.json"
+            "source": "global:tables_config.json",
+            "partitioned": false,
+            "total_parts": 1
         }
     },
     "deletar": [],

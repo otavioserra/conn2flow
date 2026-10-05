@@ -957,7 +957,7 @@ function dashboard_cards(){
 		// SVG do módulo
 		$svg = dashboard_gerar_svg_modulo($modulo['icone'], $modulo['icone2']);
 		if(!empty($visual['imagem_url'])){
-			$svg = dashboard_capa_modulo_svg($visual['imagem_url']);
+			$svg = '';
 		}
 		$cel_aux = modelo_var_troca($cel_aux, "#modulo-svg#", $svg);
 		
@@ -3138,27 +3138,75 @@ function dashboard_ajax_widgets_catalogo(){
 /**
  * req-226 (CA-4): Renderiza um widget dinamicamente para o painel de widgets do dashboard.
  */
-function dashboard_ajax_widget_render(){
-	global $_GESTOR;
-	
-	$widget_id = isset($_REQUEST['widget_id']) ? trim((string)$_REQUEST['widget_id']) : '';
-	if($widget_id === ''){
-		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => 'Widget não informado.');
+function dashboard_widget_definicao($widget_id){
+	$lang = gestor_get('linguagem-codigo', 'pt-br');
+	if(!preg_match('/^[a-zA-Z0-9_-]+$/', $widget_id)) return null;
+	$def = banco_select(Array(
+		'unico' => true, 'tabela' => 'widgets',
+		'campos' => Array('id', 'tabela', 'coluna_where'),
+		'extra' => "WHERE id='".banco_escape_field($widget_id)."' AND language='".banco_escape_field($lang)."' AND status='A' LIMIT 1"
+	));
+	if(!$def || !preg_match('/^[a-zA-Z0-9_]+$/', $def['tabela'] ?? '')) return null;
+	return $def;
+}
+
+function dashboard_ajax_widgets_registros(){
+	$widget_id = trim((string)($_REQUEST['widget_id'] ?? ''));
+	if(!dashboard_widget_definicao($widget_id)){
+		gestor_set('ajax-json', Array('status' => 'Ok', 'data' => Array('items' => Array(), 'tem_mais' => false)));
 		return;
 	}
-	
-	gestor_incluir_biblioteca('widgets');
-	
-	$html = '';
-	if(function_exists('widgets_get')){
-		$html = (string)widgets_get(Array('id' => $widget_id));
+	gestor_incluir_biblioteca('html-editor');
+	gestor_set('ajax-json', html_editor_widgets_buscar(Array(
+		'module' => $widget_id, 'pagina' => max(1, (int)($_REQUEST['pagina'] ?? 1)), 'limite' => 20
+	)));
+}
+
+function dashboard_ajax_widget_render(){
+	global $_GESTOR;
+	$widget_id = isset($_REQUEST['widget_id']) ? trim((string)$_REQUEST['widget_id']) : '';
+	$registro_id = trim((string)($_REQUEST['registro_id'] ?? ''));
+	$def = dashboard_widget_definicao($widget_id);
+	if(!$def || $registro_id === ''){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-label-error')));
+		return;
 	}
-	
+	$where = "WHERE id='".banco_escape_field($registro_id)."' AND status='A' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."'";
+	$coluna = trim((string)($def['coluna_where'] ?? ''));
+	if($coluna !== ''){
+		if(!preg_match('/^[a-zA-Z0-9_]+$/', $coluna)){
+			$_GESTOR['ajax-json'] = Array('status' => 'error');
+			return;
+		}
+		$where .= " AND ".$coluna."='".banco_escape_field($widget_id)."'";
+	}
+	$registro = banco_select(Array('unico' => true, 'tabela' => $def['tabela'], 'campos' => Array('id'), 'extra' => $where.' LIMIT 1'));
+	if(!$registro){
+		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-label-error')));
+		return;
+	}
+	gestor_incluir_biblioteca('html-editor');
+	$metadata = gestor_modulos_dados($widget_id) ?: Array();
+	$signature = $widget_id.'->render('.json_encode(Array('grupo_slug' => $registro['id'], 'id' => $registro['id']), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES).')';
+	$jsAntes = count($_GESTOR['javascript-fim'] ?? Array());
+	$previousWidget = gestor_get('modulo-id#widget');
+	$previousMetadata = gestor_get('modulo#widget#'.$widget_id);
+	gestor_set('modulo-id#widget', $widget_id);
+	gestor_set('modulo#widget#'.$widget_id, $metadata);
+	try {
+		$render = html_editor_widget_renderizar($signature);
+	} finally {
+		gestor_set('modulo-id#widget', $previousWidget);
+		gestor_set('modulo#widget#'.$widget_id, $previousMetadata);
+	}
 	$_GESTOR['ajax-json'] = Array(
 		'status' => 'Ok',
 		'data' => Array(
 			'widget_id' => $widget_id,
-			'html' => $html
+			'registro_id' => $registro['id'],
+			'html' => $render['html'],
+			'css' => $render['css'],
+			'scripts' => implode('', array_slice($_GESTOR['javascript-fim'] ?? Array(), $jsAntes))
 		)
 	);
 }
@@ -3180,6 +3228,7 @@ function dashboard_start(){
 			// req-226: Persistência de preferências do usuário e painel operacional de widgets
 			case 'salvar-preferencias': dashboard_ajax_preferencia_salvar(); break;
 			case 'widgets-catalogo': dashboard_ajax_widgets_catalogo(); break;
+			case 'widgets-registros': dashboard_ajax_widgets_registros(); break;
 			case 'widget-render': dashboard_ajax_widget_render(); break;
 			// Toolbar e legado
 			case 'site-toolbar-render': dashboard_ajax_site_toolbar_render(); break;

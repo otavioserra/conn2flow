@@ -832,554 +832,161 @@ $(document).ready(function () {
 	// ===== Grid Flexível de Widgets (req-226 / req-233) < =====
 
 	function initDashboardWidgets() {
-		var widgetsGrid = document.getElementById('dashboard-widgets-grid');
-		var emptyState = document.getElementById('dashboard-widgets-empty');
-		var addBtn = document.getElementById('dashboard-btn-add-widget');
-		var resetBtn = document.getElementById('dashboard-btn-reset-widgets');
+		var grid = document.getElementById('dashboard-widgets-grid');
+		if (!grid) return;
 		var modal = document.getElementById('dashboard-widgets-modal');
-		var modalList = document.getElementById('dashboard-widgets-modal-list');
-
-		if (!widgetsGrid) {
-			return;
-		}
-
-		var storageKey = 'dashboard_widgets_layout';
-		var widgetsList = [];
-		var catalogCache = null;
-		var activeSwitchMenu = null;
-		var replacementTargetId = null;
-
-		var labels = {
-			switchWidget: widgetsGrid.getAttribute('data-label-switch') || 'Trocar widget',
-			active: widgetsGrid.getAttribute('data-label-active') || 'Ativo no painel',
-			available: widgetsGrid.getAttribute('data-label-available') || 'Disponível',
-			add: widgetsGrid.getAttribute('data-label-add') || 'Adicionar',
-			select: widgetsGrid.getAttribute('data-label-select') || 'Selecionar',
-			resize: widgetsGrid.getAttribute('data-label-resize') || 'Redimensionar widget'
-		};
-
-		function escapeWidgetText(value) {
-			return String(value == null ? '' : value).replace(/[&<>"']/g, function (character) {
-				return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character];
-			});
-		}
-
-		// Carrega widgets salvos do backend ou localStorage
-		if (typeof gestor !== 'undefined' && gestor.dashboard_user_prefs && Array.isArray(gestor.dashboard_user_prefs.widgets_layout) && gestor.dashboard_user_prefs.widgets_layout.length > 0) {
-			widgetsList = gestor.dashboard_user_prefs.widgets_layout;
-		} else {
-			var localSaved = getLocalStorage(storageKey);
-			if (localSaved && Array.isArray(localSaved)) {
-				widgetsList = localSaved;
-			}
-		}
-
-		// Normaliza dimensões dos widgets (snap em 4, 6, 8, 12 colunas e altura 1x ou 2x)
-		widgetsList = widgetsList.map(function (w) {
-			var widthCols = 4;
-			if (typeof w.width === 'string') {
-				if (w.width === 'col-span-full' || w.width === 'col-span-12') widthCols = 12;
-				else if (w.width === 'col-span-2' || w.width === 'col-span-6') widthCols = 6;
-				else if (w.width === 'col-span-8') widthCols = 8;
-				else widthCols = 4;
-			} else if (typeof w.width === 'number') {
-				if (w.width >= 10) widthCols = 12;
-				else if (w.width >= 7) widthCols = 8;
-				else if (w.width >= 5) widthCols = 6;
-				else widthCols = 4;
-			}
-			var heightUnits = (Number(w.height) === 2) ? 2 : 1;
-			return {
-				id: w.id,
-				name: w.name,
-				width: widthCols,
-				height: heightUnits
-			};
+		var list = document.getElementById('dashboard-widgets-modal-list');
+		var empty = document.getElementById('dashboard-widgets-empty');
+		var editButton = document.getElementById('dashboard-edit-mode');
+		var labels = {};
+		['type', 'record', 'loading', 'error', 'empty', 'remove', 'drag', 'more', 'resize', 'switch', 'select'].forEach(function (key) {
+			labels[key] = grid.getAttribute('data-label-' + key) || '';
 		});
-
-		function saveWidgetsLayout() {
-			setLocalStorage(storageKey, widgetsList, 43200);
-			dashboardSalvarPreferenciaBackend('dashboard_widgets_layout', widgetsList);
-		}
-
-		function applyWidgetGeometry(card, widget) {
-			var cols = [4, 6, 8, 12].indexOf(Number(widget.width)) !== -1 ? Number(widget.width) : 4;
-			var h = (Number(widget.height) === 2) ? 2 : 1;
-
-			card.classList.remove('col-span-4', 'col-span-6', 'col-span-8', 'col-span-12', 'h-1x', 'h-2x');
-			card.classList.add('col-span-' + cols, 'h-' + h + 'x');
-			card.setAttribute('data-widget-cols', cols);
-			card.setAttribute('data-widget-height', h);
-		}
-
-		function closeSwitchMenu() {
-			if (activeSwitchMenu) {
-				activeSwitchMenu.remove();
-				activeSwitchMenu = null;
-			}
-		}
-
-		document.addEventListener('click', function (e) {
-			if (activeSwitchMenu && !e.target.closest('.dashboard-widget-switch-menu') && !e.target.closest('.dashboard-widget-switch-btn')) {
-				closeSwitchMenu();
-			}
+		var stored = typeof gestor !== 'undefined' && gestor.dashboard_user_prefs ? gestor.dashboard_user_prefs.widgets_layout : null;
+		var widgets = Array.isArray(stored) ? stored : (getLocalStorage('dashboard_widgets_layout') || []);
+		if (!Array.isArray(widgets)) widgets = [];
+		widgets = widgets.map(function (w, index) {
+			var width = Number(w.width);
+			if (![4, 6, 8, 12].includes(width)) width = /full|12/.test(w.width) ? 12 : (/8/.test(w.width) ? 8 : (/2|6/.test(w.width) ? 6 : 4));
+			return Object.assign({}, w, {width: width, height: Number(w.height) === 2 ? 2 : 1, instance_id: w.instance_id || 'saved-' + index, registro_id: w.registro_id || '', params: w.params || {}});
 		});
-
-		function renderWidgetsGrid() {
-			closeSwitchMenu();
-			if (!widgetsList.length) {
-				widgetsGrid.innerHTML = '';
-				if (emptyState) emptyState.classList.remove('hidden');
-				return;
+		var editing = false;
+		try { editing = sessionStorage.getItem('dashboard_widgets_editing') === 'true'; } catch (_) {}
+		var target = null, selectedType = null, generation = 0, resize = null, returnFocus = null;
+		function escape(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) { return {'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]; }); }
+		function request(action, data) {
+			var params = new URLSearchParams({opcao: 'inicio', ajax: 'sim', ajaxOpcao: action});
+			Object.keys(data || {}).forEach(function (key) { params.set(key, typeof data[key] === 'object' ? JSON.stringify(data[key]) : data[key]); });
+			return fetch((typeof gestor !== 'undefined' && gestor.raiz ? gestor.raiz : '/') + 'dashboard/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:params})
+				.then(function (response) { if (!response.ok) throw Error(labels.error); return response.json(); })
+				.then(function (json) { if (!json || json.status !== 'Ok') throw Error(labels.error); return json.data; });
+		}
+		function save() { setLocalStorage('dashboard_widgets_layout', widgets, 43200); dashboardSalvarPreferenciaBackend('dashboard_widgets_layout', widgets); }
+		function geometry(card, widget) {
+			card.setAttribute('data-widget-cols', widget.width);
+			card.setAttribute('data-widget-height', widget.height);
+		}
+		function setEditing(value) {
+			if (!value && resize) {
+				geometry(resize.card, resize.widget);
+				resize.card.classList.remove('is-resizing');
+				if (resize.handle.hasPointerCapture(resize.pointer)) resize.handle.releasePointerCapture(resize.pointer);
+				resize = null;
 			}
-
-			if (emptyState) emptyState.classList.add('hidden');
-			widgetsGrid.innerHTML = '';
-
-			widgetsList.forEach(function (widget, index) {
+			editing = value;
+			grid.classList.toggle('is-editing', editing);
+			if (editButton) editButton.setAttribute('aria-pressed', String(editing));
+			if (grid._dashboardSortable) grid._dashboardSortable.option('disabled', !editing);
+			try { sessionStorage.setItem('dashboard_widgets_editing', String(editing)); } catch (_) {}
+		}
+		if (editButton) editButton.addEventListener('click', function () { setEditing(!editing); });
+		function render() {
+			if (grid._dashboardSortable) { grid._dashboardSortable.destroy(); grid._dashboardSortable = null; }
+			grid.innerHTML = '';
+			if (empty) empty.classList.toggle('hidden', widgets.length > 0);
+			widgets.forEach(function (widget) {
 				var card = document.createElement('div');
-				card.className = 'dashboard-widget-card relative flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm overflow-visible transition-shadow hover:shadow-md';
-				card.setAttribute('data-widget-id', widget.id);
-				card.setAttribute('data-widget-index', index);
-				applyWidgetGeometry(card, widget);
-
-				card.innerHTML =
-					'<div class="dashboard-widget-card-header flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2.5 rounded-t-xl">' +
-						'<div class="flex items-center gap-2 min-w-0 flex-1 mr-2">' +
-							'<div class="dashboard-widget-drag-handle cursor-grab text-slate-400 hover:text-slate-600 shrink-0" aria-label="Arraste para mover" title="Arraste para mover">' +
-								'<i data-lucide="grip-vertical" class="size-4"></i>' +
-							'</div>' +
-							'<span class="dashboard-widget-title font-semibold text-sm text-slate-800 truncate" title="' + escapeWidgetText(widget.name || widget.id) + '">' + escapeWidgetText(widget.name || widget.id) + '</span>' +
-						'</div>' +
-						'<div class="flex items-center gap-1.5 shrink-0 relative">' +
-							'<button type="button" class="dashboard-widget-switch-btn inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-600 shadow-sm hover:bg-slate-50 hover:text-sky-600 hover:border-sky-300 transition-colors" title="' + escapeWidgetText(labels.switchWidget) + '" aria-label="' + escapeWidgetText(labels.switchWidget) + '">' +
-								'<i data-lucide="arrow-left-right" class="size-3.5 text-sky-600"></i>' +
-								'<span class="hidden sm:inline">' + escapeWidgetText(labels.switchWidget) + '</span>' +
-							'</button>' +
-							'<button type="button" class="dashboard-widget-remove-btn rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600 transition-colors" title="Remover widget" aria-label="Remover widget">' +
-								'<i data-lucide="x" class="size-4"></i>' +
-							'</button>' +
-						'</div>' +
-					'</div>' +
-					'<div class="dashboard-widget-card-body flex-1 p-4 flex flex-col justify-center items-center text-slate-500 text-sm overflow-hidden" id="widget-body-' + escapeWidgetText(widget.id) + '-' + index + '">' +
-						'<i data-lucide="loader" class="size-5 animate-spin text-sky-600 mb-2"></i>' +
-						'<span>Carregando widget...</span>' +
-					'</div>' +
-					'<button type="button" class="dashboard-widget-resize-handle" aria-label="' + escapeWidgetText(labels.resize) + '" title="' + escapeWidgetText(labels.resize) + '">' +
-						'<i data-lucide="move-diagonal-2" class="size-3.5"></i>' +
-					'</button>';
-
-				widgetsGrid.appendChild(card);
-
-				// Carrega conteúdo dinâmico do widget via AJAX
-				loadWidgetContent(widget.id, 'widget-body-' + widget.id + '-' + index);
-			});
-
-			if (typeof lucide !== 'undefined' && lucide.createIcons) {
-				lucide.createIcons();
-			}
-
-			initWidgetsSortable();
-		}
-
-		function loadWidgetContent(widgetId, containerId) {
-			var params = new URLSearchParams({
-				opcao: 'inicio',
-				ajax: 'sim',
-				ajaxOpcao: 'widget-render',
-				widget_id: widgetId
-			});
-
-			var baseUrl = (typeof gestor !== 'undefined' && gestor.raiz ? gestor.raiz : '/') + 'dashboard/';
-
-			fetch(baseUrl, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				body: params
-			})
-			.then(function (res) { return res.json(); })
-			.then(function (json) {
-				var container = document.getElementById(containerId);
-				if (!container) return;
-
-				if (json && json.status === 'Ok' && json.data && json.data.html) {
-					container.innerHTML = json.data.html;
-				} else {
-					container.innerHTML = 
-						'<div class="text-center py-4 text-slate-400">' +
-							'<i data-lucide="layout" class="size-6 mx-auto mb-1"></i>' +
-							'<p class="text-xs">Widget operacional ativo</p>' +
-						'</div>';
-				}
-				if (typeof lucide !== 'undefined' && lucide.createIcons) {
-					lucide.createIcons();
-				}
-			})
-			.catch(function () {
-				var container = document.getElementById(containerId);
-				if (container) {
-					container.innerHTML = '<span class="text-xs text-slate-400">Widget ativo</span>';
-				}
-			});
-		}
-
-		function initWidgetsSortable() {
-			if (typeof Sortable === 'undefined') return;
-
-			if (widgetsGrid._dashboardSortable) widgetsGrid._dashboardSortable.destroy();
-			widgetsGrid._dashboardSortable = new Sortable(widgetsGrid, {
-				animation: 200,
-				handle: '.dashboard-widget-drag-handle',
-				ghostClass: 'sortable-ghost',
-				chosenClass: 'sortable-chosen',
-				dragClass: 'sortable-drag',
-				onEnd: function () {
-					var reordered = [];
-					var cards = widgetsGrid.querySelectorAll('.dashboard-widget-card');
-					cards.forEach(function (card) {
-						var wid = card.getAttribute('data-widget-id');
-						var wmatch = widgetsList.find(function (w) { return w.id === wid; });
-						if (wmatch) {
-							reordered.push(wmatch);
-						}
-					});
-					if (reordered.length === widgetsList.length) {
-						widgetsList = reordered;
-						saveWidgetsLayout();
-					}
-				}
-			});
-		}
-
-		// Carregar catálogo de widgets com cache
-		function fetchCatalog(callback) {
-			if (catalogCache) {
-				callback(catalogCache);
-				return;
-			}
-			var params = new URLSearchParams({
-				opcao: 'inicio',
-				ajax: 'sim',
-				ajaxOpcao: 'widgets-catalogo'
-			});
-			var baseUrl = (typeof gestor !== 'undefined' && gestor.raiz ? gestor.raiz : '/') + 'dashboard/';
-			fetch(baseUrl, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				body: params
-			})
-			.then(function (res) { return res.json(); })
-			.then(function (json) {
-				if (json && json.status === 'Ok' && Array.isArray(json.data)) {
-					catalogCache = json.data;
-				} else {
-					catalogCache = [];
-				}
-				callback(catalogCache);
-			})
-			.catch(function () {
-				catalogCache = [];
-				callback(catalogCache);
-			});
-		}
-
-		// Trocar widget de um bloco
-		function replaceWidget(targetWidgetId, newWidgetId, newWidgetName) {
-			var targetIndex = widgetsList.findIndex(function (w) { return w.id === targetWidgetId; });
-			if (targetIndex === -1) return;
-
-			widgetsList[targetIndex].id = newWidgetId;
-			widgetsList[targetIndex].name = newWidgetName;
-			saveWidgetsLayout();
-
-			var card = widgetsGrid.querySelector('.dashboard-widget-card[data-widget-id="' + targetWidgetId + '"]');
-			if (card) {
-				card.setAttribute('data-widget-id', newWidgetId);
-				var titleEl = card.querySelector('.dashboard-widget-title');
-				if (titleEl) {
-					titleEl.textContent = newWidgetName;
-					titleEl.setAttribute('title', newWidgetName);
-				}
-				var bodyEl = card.querySelector('.dashboard-widget-card-body');
-				if (bodyEl) {
-					var bodyId = 'widget-body-' + newWidgetId + '-' + targetIndex;
-					bodyEl.id = bodyId;
-					bodyEl.innerHTML = '<i data-lucide="loader" class="size-5 animate-spin text-sky-600 mb-2"></i><span>Carregando widget...</span>';
-					if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
-					loadWidgetContent(newWidgetId, bodyId);
-				}
-			} else {
-				renderWidgetsGrid();
-			}
-		}
-
-		// Abre menu suspenso rápido para trocar o widget do card
-		function openSwitchDropdown(card, switchBtn) {
-			closeSwitchMenu();
-			var currentWidgetId = card.getAttribute('data-widget-id');
-			var menu = document.createElement('div');
-			menu.className = 'dashboard-widget-switch-menu';
-			menu.innerHTML = '<div class="py-2 text-center text-xs text-slate-500"><i data-lucide="loader" class="size-4 animate-spin mx-auto text-sky-600 mb-1"></i> Carregando...</div>';
-			switchBtn.parentElement.appendChild(menu);
-			activeSwitchMenu = menu;
-			if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
-
-			fetchCatalog(function (catalog) {
-				if (!activeSwitchMenu || activeSwitchMenu !== menu) return;
-				menu.innerHTML = '';
-				if (!catalog || !catalog.length) {
-					menu.innerHTML = '<p class="py-2 text-center text-xs text-slate-500">Nenhum widget disponível.</p>';
-					return;
-				}
-				var headerEl = document.createElement('div');
-				headerEl.className = 'px-2 py-1 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 mb-1';
-				headerEl.textContent = labels.switchWidget;
-				menu.appendChild(headerEl);
-
-				catalog.forEach(function (widget) {
-					var isCurrent = (widget.id === currentWidgetId);
-					var item = document.createElement('button');
-					item.type = 'button';
-					item.className = 'dashboard-widget-switch-item' + (isCurrent ? ' active' : '');
-					item.innerHTML =
-						'<i data-lucide="puzzle" class="size-4 shrink-0 ' + (isCurrent ? 'text-sky-600' : 'text-slate-400') + '"></i>' +
-						'<span class="truncate flex-1">' + escapeWidgetText(widget.name || widget.id) + '</span>' +
-						(isCurrent ? '<i data-lucide="check" class="size-3.5 text-sky-600 shrink-0"></i>' : '');
-
-					item.addEventListener('click', function (ev) {
-						ev.stopPropagation();
-						closeSwitchMenu();
-						if (!isCurrent) {
-							replaceWidget(currentWidgetId, widget.id, widget.name || widget.id);
-						}
-					});
-					menu.appendChild(item);
+				card.className = 'dashboard-widget-card rounded-xl border border-slate-200 bg-white shadow-sm';
+				card.dataset.widgetInstance = widget.instance_id;
+				card.dataset.widgetId = widget.id;
+				geometry(card, widget);
+				card.innerHTML = '<div class="dashboard-widget-card-header flex min-w-0 items-center gap-2 border-b border-slate-100 px-4 py-3">' +
+					'<button type="button" class="dashboard-widget-drag-handle c2fc-botao c2fc-botao-icone" aria-label="'+escape(labels.drag)+'"><i data-lucide="grip-vertical" class="size-4"></i></button>' +
+					'<span class="dashboard-widget-title min-w-0 flex-1 truncate font-semibold">'+escape(widget.name || widget.id)+'</span>' +
+					'<button type="button" class="dashboard-widget-switch-btn c2fc-botao c2fc-botao-icone" aria-label="'+escape(labels.switch)+'"><i data-lucide="settings-2" class="size-4"></i></button>' +
+					'<button type="button" class="dashboard-widget-remove-btn c2fc-botao c2fc-botao-icone" aria-label="'+escape(labels.remove)+'"><i data-lucide="x" class="size-4"></i></button></div>' +
+					'<div class="dashboard-widget-card-body min-w-0 flex-1 overflow-auto p-4">'+escape(labels.loading)+'</div>';
+				['nw','ne','sw','se'].forEach(function (corner) {
+					var handle = document.createElement('button'); handle.type = 'button'; handle.className = 'dashboard-widget-resize-handle'; handle.dataset.corner = corner; handle.setAttribute('aria-label', labels.resize); handle.innerHTML = '<i data-lucide="move-diagonal-2" class="size-3.5"></i>'; card.appendChild(handle);
 				});
-
-				if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+				grid.appendChild(card);
+				var body = card.querySelector('.dashboard-widget-card-body');
+				request('widget-render', {widget_id:widget.id, registro_id:widget.registro_id, instance_id:widget.instance_id, params:widget.params}).then(function (data) {
+					if (!card.isConnected) return;
+					var frame = document.createElement('iframe');
+					frame.className = 'dashboard-widget-frame';
+					frame.title = widget.name || widget.id;
+					frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+					var jquery = document.querySelector('script[src*="jquery"]');
+					frame.srcdoc = '<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><base href="'+escape(location.origin + ((typeof gestor !== 'undefined' && gestor.raiz) || '/'))+'">'+(data.css || '')+'<style>html,body{margin:0;max-width:100%;overflow-x:hidden}body{font-family:system-ui,sans-serif}</style>'+(jquery ? jquery.outerHTML : '')+'</head><body>'+(data.html || escape(labels.empty))+(data.scripts || '')+'</body></html>';
+					body.replaceChildren(frame);
+					icons();
+				}).catch(function () { if (card.isConnected) body.textContent = labels.error; });
 			});
+			if (typeof Sortable !== 'undefined') grid._dashboardSortable = new Sortable(grid, {animation:200, disabled:!editing, handle:'.dashboard-widget-drag-handle', onEnd:function () {
+				widgets = Array.from(grid.children).map(function (card) { return widgets.find(function (w) { return w.instance_id === card.dataset.widgetInstance; }); }); save();
+			}});
+			setEditing(editing); icons();
 		}
-
-		// Redimensionamento Suave com Snap (pointerdown, pointermove, pointerup, pointercancel)
-		var resizeState = null;
-
-		widgetsGrid.addEventListener('pointerdown', function (e) {
-			var handle = e.target.closest('.dashboard-widget-resize-handle');
-			if (!handle || (e.pointerType === 'mouse' && e.button !== 0)) return;
-
-			var card = handle.closest('.dashboard-widget-card');
-			var widget = card && widgetsList.find(function (item) { return item.id === card.getAttribute('data-widget-id'); });
-			if (!card || !widget) return;
-
-			e.preventDefault();
-			var rect = card.getBoundingClientRect();
-			var gridRect = widgetsGrid.getBoundingClientRect();
-			var gridWidth = gridRect.width || 1;
-
-			resizeState = {
-				handle: handle,
-				pointerId: e.pointerId,
-				card: card,
-				widget: widget,
-				startX: e.clientX,
-				startY: e.clientY,
-				startCols: Number(card.getAttribute('data-widget-cols')) || 4,
-				startHeight: Number(card.getAttribute('data-widget-height')) || 1,
-				startWidthPx: rect.width,
-				startHeightPx: rect.height,
-				gridWidth: gridWidth
-			};
-
-			card.classList.add('is-resizing');
-			handle.setPointerCapture(e.pointerId);
-		});
-
-		widgetsGrid.addEventListener('pointermove', function (e) {
-			if (!resizeState || resizeState.pointerId !== e.pointerId) return;
-
-			var deltaX = e.clientX - resizeState.startX;
-			var deltaY = e.clientY - resizeState.startY;
-			var currentPxWidth = resizeState.startWidthPx + deltaX;
-			var currentPxHeight = resizeState.startHeightPx + deltaY;
-
-			// Snap de colunas (4, 6, 8, 12)
-			var colFraction = (currentPxWidth / resizeState.gridWidth) * 12;
-			var targetCols = 4;
-			if (colFraction >= 10) {
-				targetCols = 12;
-			} else if (colFraction >= 7) {
-				targetCols = 8;
-			} else if (colFraction >= 5) {
-				targetCols = 6;
-			} else {
-				targetCols = 4;
-			}
-
-			// Snap de altura (1x = 220px, 2x = 460px; limiar em 340px)
-			var targetHeight = (currentPxHeight >= 340) ? 2 : 1;
-
-			if (targetCols !== resizeState.tempCols || targetHeight !== resizeState.tempHeight) {
-				resizeState.tempCols = targetCols;
-				resizeState.tempHeight = targetHeight;
-				applyWidgetGeometry(resizeState.card, { width: targetCols, height: targetHeight });
+		function icons() { if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons(); }
+		function close() { generation++; if (modal) modal.classList.add('hidden'); target = null; selectedType = null; if (returnFocus && returnFocus.isConnected) returnFocus.focus(); }
+		function showRecords(type, page, append) {
+			selectedType = type;
+			var current = ++generation;
+			if (!append) list.innerHTML = '<p class="text-sm font-semibold">'+escape(labels.record)+'</p><p>'+escape(labels.loading)+'</p>';
+			request('widgets-registros', {widget_id:type.id, pagina:page}).then(function (data) {
+				if (current !== generation) return;
+				if (!append) list.innerHTML = '<button type="button" class="dashboard-widget-types c2fc-botao">'+escape(labels.type)+'</button><p class="text-sm font-semibold">'+escape(labels.record)+' — '+escape(type.name)+'</p>';
+				(data.items || []).forEach(function (record) {
+					var button = document.createElement('button'); button.type='button'; button.className='c2fc-botao w-full'; button.textContent=record.nome || record.id;
+					button.addEventListener('click', function () {
+						var config = {id:type.id, name:(type.name || type.id) + ' / ' + (record.nome || record.id), registro_id:record.id, params:{grupo_slug:record.id}};
+						var old = widgets.find(function (w) { return w.instance_id === target; });
+						if (old) Object.assign(old, config); else widgets.push(Object.assign(config,{instance_id:'widget-'+Date.now()+'-'+Math.random().toString(36).slice(2),width:4,height:1}));
+						save(); render(); close();
+					}); list.appendChild(button);
+				});
+				if (!(data.items || []).length && !append) { var p=document.createElement('p');p.textContent=labels.empty;list.appendChild(p); }
+				if (data.tem_mais) { var more=document.createElement('button');more.type='button';more.className='c2fc-botao';more.textContent=labels.more;more.addEventListener('click',function(){more.remove();showRecords(type,page+1,true);});list.appendChild(more); }
+			}).catch(function () { if (current === generation) list.textContent=labels.error; });
+		}
+		function showTypes() {
+			var current = ++generation;
+			list.textContent = labels.loading;
+			request('widgets-catalogo').then(function (types) {
+				if (current !== generation) return;
+				list.innerHTML = '<p class="text-sm font-semibold">'+escape(labels.type)+'</p>';
+				types.forEach(function (type) { var button=document.createElement('button');button.type='button';button.className='c2fc-botao w-full';button.textContent=type.name || type.id;button.addEventListener('click',function(){showRecords(type,1,false);});list.appendChild(button); });
+				if (!types.length) list.textContent=labels.empty;
+			}).catch(function () { if (current === generation) list.textContent=labels.error; });
+		}
+		function open(instance) { if (!modal || !list) return; returnFocus=document.activeElement;target=instance || null;modal.classList.remove('hidden');showTypes();modal.querySelector('.dashboard-widgets-modal-close').focus(); }
+		if (list) list.addEventListener('click',function(e){if(e.target.closest('.dashboard-widget-types'))showTypes();});
+		document.querySelectorAll('#dashboard-btn-add-widget, .dashboard-btn-open-catalog').forEach(function(b){b.addEventListener('click',function(){open(null);});});
+		document.querySelectorAll('.dashboard-widgets-modal-close').forEach(function(b){b.addEventListener('click',close);});
+		if (modal) modal.addEventListener('click',function(e){if(e.target===modal)close();});
+		document.addEventListener('keydown',function(e){
+			if(e.key==='Escape'){close();var options=document.getElementById('dashboard-options');if(options)options.open=false;}
+			if(e.key==='Tab' && modal && !modal.classList.contains('hidden')){
+				var buttons=Array.from(modal.querySelectorAll('button:not([disabled])'));var first=buttons[0],last=buttons[buttons.length-1];
+				if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
 			}
 		});
-
-		function finishWidgetResize(e) {
-			if (!resizeState || (e && resizeState.pointerId !== e.pointerId)) return;
-			resizeState.card.classList.remove('is-resizing');
-			if (e && resizeState.handle.hasPointerCapture(e.pointerId)) {
-				resizeState.handle.releasePointerCapture(e.pointerId);
-			}
-
-			if (resizeState.tempCols != null) {
-				resizeState.widget.width = resizeState.tempCols;
-			}
-			if (resizeState.tempHeight != null) {
-				resizeState.widget.height = resizeState.tempHeight;
-			}
-			saveWidgetsLayout();
-			resizeState = null;
-		}
-
-		widgetsGrid.addEventListener('pointerup', finishWidgetResize);
-		widgetsGrid.addEventListener('pointercancel', finishWidgetResize);
-
-		// Delegação de cliques em botões do grid
-		widgetsGrid.addEventListener('click', function (e) {
-			var switchBtn = e.target.closest('.dashboard-widget-switch-btn');
-			if (switchBtn) {
-				var switchCard = switchBtn.closest('.dashboard-widget-card');
-				if (switchCard) openSwitchDropdown(switchCard, switchBtn);
-				return;
-			}
-
-			var removeBtn = e.target.closest('.dashboard-widget-remove-btn');
-			if (removeBtn) {
-				var card = removeBtn.closest('.dashboard-widget-card');
-				if (!card) return;
-				var wid = card.getAttribute('data-widget-id');
-				widgetsList = widgetsList.filter(function (w) { return w.id !== wid; });
-				saveWidgetsLayout();
-				renderWidgetsGrid();
-			}
+		document.addEventListener('click',function(e){var options=document.getElementById('dashboard-options');if(options && !options.contains(e.target))options.open=false;});
+		grid.addEventListener('click',function(e){
+			if(!editing)return;var card=e.target.closest('.dashboard-widget-card');if(!card)return;
+			if(e.target.closest('.dashboard-widget-switch-btn'))open(card.dataset.widgetInstance);
+			if(e.target.closest('.dashboard-widget-remove-btn')){widgets=widgets.filter(function(w){return w.instance_id!==card.dataset.widgetInstance;});save();render();}
 		});
-
-		// Modal de catálogo de widgets
-		function openCatalogModal(widgetId) {
-			if (!modal) return;
-			replacementTargetId = widgetId || null;
-			modal.classList.remove('hidden');
-
-			if (modalList) {
-				modalList.innerHTML =
-					'<div class="text-center py-8 text-sm text-slate-500">' +
-						'<i data-lucide="loader" class="size-6 animate-spin mx-auto text-sky-600 mb-2"></i>' +
-						'Carregando catálogo de widgets...' +
-					'</div>';
-				if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
-			}
-
-			fetchCatalog(function (catalog) {
-				if (!modalList) return;
-				modalList.innerHTML = '';
-
-				if (catalog && catalog.length > 0) {
-					catalog.forEach(function (widget) {
-						var isAdded = widgetsList.some(function (w) { return w.id === widget.id; });
-						var isTarget = replacementTargetId && replacementTargetId === widget.id;
-						var item = document.createElement('div');
-						item.className = 'flex items-center justify-between rounded-lg border border-slate-200 p-3 hover:bg-slate-50 transition-colors';
-						item.innerHTML =
-							'<div class="flex items-center gap-3">' +
-								'<div class="flex size-9 items-center justify-center rounded-lg bg-sky-50 text-sky-600">' +
-									'<i data-lucide="puzzle" class="size-5"></i>' +
-								'</div>' +
-								'<div>' +
-									'<p class="text-sm font-semibold text-slate-900">' + escapeWidgetText(widget.name || widget.id) + '</p>' +
-									'<p class="text-xs text-slate-500 font-mono">' + escapeWidgetText(widget.id) + '</p>' +
-								'</div>' +
-							'</div>' +
-							'<div>' +
-								(replacementTargetId
-									? (isTarget
-										? '<span class="inline-flex items-center gap-1 text-xs font-semibold text-sky-700 bg-sky-50 px-2.5 py-1 rounded-full"><i data-lucide="check" class="size-3.5"></i> ' + escapeWidgetText(labels.active) + '</span>'
-										: '<button type="button" class="dashboard-catalog-select-btn c2fc-botao c2fc-botao-primario c2fc-botao-pequeno" data-widget-id="' + escapeWidgetText(widget.id) + '" data-widget-name="' + escapeWidgetText(widget.name || widget.id) + '"><i data-lucide="arrow-left-right" class="size-3.5"></i> ' + escapeWidgetText(labels.select) + '</button>'
-									)
-									: (isAdded
-										? '<span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full"><i data-lucide="check" class="size-3.5"></i> ' + escapeWidgetText(labels.active) + '</span>'
-										: '<button type="button" class="dashboard-catalog-add-btn c2fc-botao c2fc-botao-primario c2fc-botao-pequeno" data-widget-id="' + escapeWidgetText(widget.id) + '" data-widget-name="' + escapeWidgetText(widget.name || widget.id) + '"><i data-lucide="plus" class="size-3.5"></i> ' + escapeWidgetText(labels.add) + '</button>'
-									)
-								) +
-							'</div>';
-						modalList.appendChild(item);
-					});
-				} else {
-					modalList.innerHTML = '<p class="text-center py-6 text-sm text-slate-500">Nenhum widget registrado no sistema.</p>';
-				}
-
-				if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
-			});
-		}
-
-		function closeCatalogModal() {
-			if (modal) modal.classList.add('hidden');
-			replacementTargetId = null;
-		}
-
-		if (addBtn) addBtn.addEventListener('click', function () { openCatalogModal(null); });
-		document.querySelectorAll('.dashboard-btn-open-catalog').forEach(function (btn) {
-			btn.addEventListener('click', function () { openCatalogModal(null); });
+		var resetButton=document.getElementById('dashboard-btn-reset-widgets');
+		if(resetButton)resetButton.addEventListener('click',function(){widgets=[];save();render();});
+		grid.addEventListener('pointerdown',function(e){
+			var handle=e.target.closest('.dashboard-widget-resize-handle');if(!editing || !handle)return;
+			var card=handle.closest('.dashboard-widget-card'),widget=widgets.find(function(w){return w.instance_id===card.dataset.widgetInstance;});
+			var columns=grid.getBoundingClientRect().width,rect=card.getBoundingClientRect();
+			resize={handle:handle,card:card,widget:widget,pointer:e.pointerId,x:e.clientX,y:e.clientY,width:rect.width,height:rect.height,gridWidth:columns,corner:handle.dataset.corner};
+			card.classList.add('is-resizing');handle.setPointerCapture(e.pointerId);e.preventDefault();
 		});
-		document.querySelectorAll('.dashboard-widgets-modal-close').forEach(function (btn) {
-			btn.addEventListener('click', closeCatalogModal);
+		grid.addEventListener('pointermove',function(e){
+			if(!resize || resize.pointer!==e.pointerId)return;
+			var dx=(e.clientX-resize.x)*(resize.corner.includes('w')?-1:1),dy=(e.clientY-resize.y)*(resize.corner.includes('n')?-1:1);
+			var fraction=((resize.width+dx)/resize.gridWidth)*12;
+			resize.cols=[4,6,8,12].reduce(function(a,b){return Math.abs(b-fraction)<Math.abs(a-fraction)?b:a;});resize.rows=resize.height+dy>340?2:1;
+			geometry(resize.card,{width:resize.cols,height:resize.rows});
 		});
-
-		// Adiciona ou substitui widget a partir do catálogo modal
-		if (modalList) {
-			modalList.addEventListener('click', function (e) {
-				var addBtnClick = e.target.closest('.dashboard-catalog-add-btn');
-				var selectBtnClick = e.target.closest('.dashboard-catalog-select-btn');
-
-				if (selectBtnClick && replacementTargetId) {
-					var targetId = replacementTargetId;
-					var newId = selectBtnClick.getAttribute('data-widget-id');
-					var newName = selectBtnClick.getAttribute('data-widget-name');
-					replaceWidget(targetId, newId, newName);
-					closeCatalogModal();
-					return;
-				}
-
-				if (addBtnClick) {
-					var wid = addBtnClick.getAttribute('data-widget-id');
-					var wname = addBtnClick.getAttribute('data-widget-name');
-					if (wid && !widgetsList.some(function (w) { return w.id === wid; })) {
-						widgetsList.push({
-							id: wid,
-							name: wname,
-							width: 4,
-							height: 1
-						});
-						saveWidgetsLayout();
-						renderWidgetsGrid();
-						closeCatalogModal();
-					}
-				}
-			});
-		}
-
-		// Resetar widgets
-		if (resetBtn) {
-			resetBtn.addEventListener('click', function (e) {
-				e.preventDefault();
-				widgetsList = [];
-				saveWidgetsLayout();
-				renderWidgetsGrid();
-			});
-		}
-
-		// Renderiza estado inicial
-		renderWidgetsGrid();
+		function finish(e){if(!resize || resize.pointer!==e.pointerId)return;resize.card.classList.remove('is-resizing');if(resize.handle.hasPointerCapture(e.pointerId))resize.handle.releasePointerCapture(e.pointerId);if(resize.cols){resize.widget.width=resize.cols;resize.widget.height=resize.rows;save();}resize=null;}
+		grid.addEventListener('pointerup',finish);grid.addEventListener('pointercancel',finish);
+		render();
 	}
 
 	initDashboardWidgets();

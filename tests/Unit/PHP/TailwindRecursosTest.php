@@ -20,6 +20,28 @@ final class TailwindRecursosTest extends TestCase
     private array $temporaryFiles = [];
     private array $temporaryDirectories = [];
 
+    public function testProjectGlobalDependencyFallsBackToCoreWithoutCopyingResources(): void
+    {
+        $oldRoot = $GLOBALS['GESTOR_DIR'] ?? null;
+        $oldSystem = $GLOBALS['SYSTEM_PATH'] ?? null;
+        try {
+            $GLOBALS['GESTOR_DIR'] = sys_get_temp_dir() . '/c2f-no-global-resources';
+            $GLOBALS['SYSTEM_PATH'] = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR;
+            $dependency = ['type' => 'components', 'id' => 'interface-alerta-modal-tailwind', 'scope' => 'global', 'language' => 'pt-br'];
+            $path = tailwind_recursos_dependency_path($dependency);
+            self::assertFileExists($path);
+            self::assertTrue(tailwind_recursos_path_dentro($path, $GLOBALS['SYSTEM_PATH'] . 'gestor'));
+            $dependency['scope'] = 'module';
+            $dependency['module'] = 'private-module';
+            self::assertFileDoesNotExist(tailwind_recursos_dependency_path($dependency));
+            $dependency['id'] = '../interface-alerta-modal-tailwind';
+            self::assertNull(tailwind_recursos_dependency_path($dependency));
+        } finally {
+            $GLOBALS['GESTOR_DIR'] = $oldRoot;
+            $GLOBALS['SYSTEM_PATH'] = $oldSystem;
+        }
+    }
+
     protected function tearDown(): void
     {
         foreach (array_reverse($this->temporaryFiles) as $file) {

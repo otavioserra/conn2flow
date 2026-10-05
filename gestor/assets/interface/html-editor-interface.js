@@ -2760,14 +2760,14 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
 
     // Validar se existe o template no HTML, se sim, guardar e remover do DOM.
     let publisherVariableTemplate = '';
-    const publisherContainer = $('.page-modification-publisher .ui.labels');
-    if (publisherContainer.find('.ui.label').length > 0) {
-        publisherVariableTemplate = publisherContainer.find('.ui.label')[0].outerHTML;
+    const publisherContainer = $('.page-modification-publisher .labels');
+    if (publisherContainer.find('.label').length > 0) {
+        publisherVariableTemplate = publisherContainer.find('.label')[0].outerHTML;
         publisherContainer.empty();
     }
 
     function updatePublisherVariablesUI() {
-        var container = $('.page-modification-publisher .ui.labels');
+        var container = $('.page-modification-publisher .labels');
         container.empty();
 
         if (gestor.html_editor.publisher_variables && gestor.html_editor.publisher_variables.length > 0) {
@@ -3357,7 +3357,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         switch (alvo) {
             case 'publisher':
                 gestor.html_editor.publisher_variables = [];
-                $('.page-modification-publisher .ui.labels').empty();
+                $('.page-modification-publisher .labels').empty();
                 $('.page-modification-publisher').addClass('hidden');
                 break;
         }

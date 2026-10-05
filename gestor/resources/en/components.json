@@ -310,24 +310,24 @@
         "name": "Configuration - Fields Tailwind",
         "id": "configuracao-campos-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.0",
+        "version": "1.1",
         "checksum": {
-            "html": "",
+            "html": "1be8de57599c6061897db3f10f7e795f",
             "css": "",
             "css_precompiled": "",
-            "combined": ""
+            "combined": "1be8de57599c6061897db3f10f7e795f"
         }
     },
     {
         "name": "Configuration - Widget Tailwind",
         "id": "configuracao-widget-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.0",
+        "version": "1.1",
         "checksum": {
-            "html": "",
+            "html": "3f53ea1e8f6a3e01af8c121dae67638e",
             "css": "",
             "css_precompiled": "",
-            "combined": ""
+            "combined": "3f53ea1e8f6a3e01af8c121dae67638e"
         }
     },
     {
@@ -453,12 +453,12 @@
         "name": "HTML Editor Page Modification Tailwind",
         "id": "html-editor-page-modification-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.2",
+        "version": "1.3",
         "checksum": {
-            "html": "56efe6c9c781677c8b386c8c70b255d1",
+            "html": "34ed95cfacbcdbbc0bc39b8943c9aa94",
             "css": "",
             "css_precompiled": "",
-            "combined": "56efe6c9c781677c8b386c8c70b255d1"
+            "combined": "34ed95cfacbcdbbc0bc39b8943c9aa94"
         }
     },
     {
@@ -763,36 +763,36 @@
         "name": "Administrative topbar Tailwind",
         "id": "admin-topbar-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "800f4115ae762d72c2499b42822c8f3a",
+            "html": "631fcf2b7447b62f3dae84a0eba4dcf9",
             "css": "",
             "css_precompiled": "",
-            "combined": "800f4115ae762d72c2499b42822c8f3a"
+            "combined": "631fcf2b7447b62f3dae84a0eba4dcf9"
         }
     },
     {
         "name": "html-editor-menus-simulation Tailwind",
         "id": "html-editor-menus-simulation-tailwind",
-        "version": "1.1",
+        "version": "1.2",
         "framework_css": "tailwindcss",
         "checksum": {
-            "html": "f1c1fffe64564c217cf0b20d72abdefc",
+            "html": "e23653ea783df7f6dd78f7c1ee9dc8f6",
             "css": "",
             "css_precompiled": "",
-            "combined": "f1c1fffe64564c217cf0b20d72abdefc"
+            "combined": "e23653ea783df7f6dd78f7c1ee9dc8f6"
         }
     },
     {
         "name": "html-editor-galleries-simulation Tailwind",
         "id": "html-editor-galleries-simulation-tailwind",
-        "version": "1.1",
+        "version": "1.2",
         "framework_css": "tailwindcss",
         "checksum": {
-            "html": "b476a08049bb1ec6a4faa5099f94cc62",
+            "html": "36055c65e7f5b46cac70771f8e95d5e7",
             "css": "",
             "css_precompiled": "",
-            "combined": "b476a08049bb1ec6a4faa5099f94cc62"
+            "combined": "36055c65e7f5b46cac70771f8e95d5e7"
         }
     }
 ]

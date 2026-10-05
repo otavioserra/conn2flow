@@ -21,16 +21,16 @@ final class DashboardCoversReq233Test extends TestCase
                 . DIRECTORY_SEPARATOR . 'dashboard-cards-tailwind.html';
             $html = (string)file_get_contents($htmlPath);
 
-            // Alturas das capas conforme req-233 CA-4: 9rem em M e 12rem em G
+            // Alturas das capas conforme req-236: 11rem em M e 14.5rem em G
             self::assertMatchesRegularExpression(
-                '/#dashboard-sortable-cards\.density-m \.dashboard-card-header\s*\{\s*height:\s*9rem/s',
+                '/#dashboard-sortable-cards\.density-m \.dashboard-card-header\s*\{\s*height:\s*11rem/s',
                 $css,
-                "Densidade M deve ter altura de 9rem (144px) em {$language}."
+                "Densidade M deve ter altura de 11rem (176px) em {$language}."
             );
             self::assertMatchesRegularExpression(
-                '/#dashboard-sortable-cards\.density-g \.dashboard-card-header\s*\{\s*height:\s*12rem/s',
+                '/#dashboard-sortable-cards\.density-g \.dashboard-card-header\s*\{\s*height:\s*14\.5rem/s',
                 $css,
-                "Densidade G deve ter altura de 12rem (192px) em {$language}."
+                "Densidade G deve ter altura de 14.5rem (232px) em {$language}."
             );
 
             // Enquadramento de cover

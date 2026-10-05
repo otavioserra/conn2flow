@@ -57,7 +57,8 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Categorias - Adicionar",
@@ -66,7 +67,7 @@
                     "path": "admin-categorias/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -82,10 +83,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "26d51b73e6f66aca1ec7ccc951074be9",
+                        "html": "e72ef21a1148674515d3242b6d70f19d",
                         "css": "",
-                        "combined": "26d51b73e6f66aca1ec7ccc951074be9"
-                    }
+                        "css_precompiled": "",
+                        "combined": "e72ef21a1148674515d3242b6d70f19d"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Categorias - Editar",
@@ -94,7 +97,7 @@
                     "path": "admin-categorias/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -110,10 +113,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "09eaa76323c04d08fafb7aafe45a8e24",
+                        "html": "e63e73bde282f5a5e7bc9959b53bf4d0",
                         "css": "",
-                        "combined": "09eaa76323c04d08fafb7aafe45a8e24"
-                    }
+                        "css_precompiled": "",
+                        "combined": "e63e73bde282f5a5e7bc9959b53bf4d0"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Categorias - Adicionar Filho",
@@ -122,7 +127,7 @@
                     "path": "admin-categorias/adicionar-filho/",
                     "type": "system",
                     "option": "adicionar-filho",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -138,10 +143,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "a077ab99e801977830ffe957c68ef3ed",
+                        "html": "e17428332e8319d9947fa9069d96406f",
                         "css": "",
-                        "combined": "a077ab99e801977830ffe957c68ef3ed"
-                    }
+                        "css_precompiled": "",
+                        "combined": "e17428332e8319d9947fa9069d96406f"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
             ],
             "components": [
@@ -269,7 +276,8 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Categories - Add",
@@ -278,7 +286,7 @@
                     "path": "admin-categorias/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -294,10 +302,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "26d51b73e6f66aca1ec7ccc951074be9",
+                        "html": "e72ef21a1148674515d3242b6d70f19d",
                         "css": "",
-                        "combined": "26d51b73e6f66aca1ec7ccc951074be9"
-                    }
+                        "css_precompiled": "",
+                        "combined": "e72ef21a1148674515d3242b6d70f19d"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Categories - Edit",
@@ -306,7 +316,7 @@
                     "path": "admin-categorias/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -322,10 +332,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "09eaa76323c04d08fafb7aafe45a8e24",
+                        "html": "e63e73bde282f5a5e7bc9959b53bf4d0",
                         "css": "",
-                        "combined": "09eaa76323c04d08fafb7aafe45a8e24"
-                    }
+                        "css_precompiled": "",
+                        "combined": "e63e73bde282f5a5e7bc9959b53bf4d0"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Categories - Add Child",
@@ -334,7 +346,7 @@
                     "path": "admin-categorias/adicionar-filho/",
                     "type": "system",
                     "option": "adicionar-filho",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -350,10 +362,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "a077ab99e801977830ffe957c68ef3ed",
+                        "html": "e17428332e8319d9947fa9069d96406f",
                         "css": "",
-                        "combined": "a077ab99e801977830ffe957c68ef3ed"
-                    }
+                        "css_precompiled": "",
+                        "combined": "e17428332e8319d9947fa9069d96406f"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
             ],
             "components": [
@@ -447,5 +461,5 @@
             ]
         }
     },
-    "asset_version": "418cc1ab27d7a051"
+    "asset_version": "ee32c1a95819b9dd"
 }

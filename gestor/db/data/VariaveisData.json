@@ -1334,6 +1334,24 @@
     {
         "language": "pt-br",
         "modulo": null,
+        "id": "topbar-active-favorites",
+        "valor": "Atalhos ativos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-reorder",
+        "valor": "Reordenar atalho",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
         "id": "topbar-user-menu",
         "valor": "Menu do usuário",
         "tipo": "string",
@@ -1354,6 +1372,42 @@
         "modulo": null,
         "id": "topbar-security",
         "valor": "Segurança e Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-content-width",
+        "valor": "Largura do conteúdo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-width-normal",
+        "valor": "Padrão (1280px)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-width-expanded",
+        "valor": "Expandido (1600px)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": null,
+        "id": "topbar-width-full",
+        "valor": "Total (100%)",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -2810,6 +2864,24 @@
     {
         "language": "en",
         "modulo": null,
+        "id": "topbar-active-favorites",
+        "valor": "Active shortcuts",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-reorder",
+        "valor": "Reorder shortcut",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
         "id": "topbar-user-menu",
         "valor": "User menu",
         "tipo": "string",
@@ -2830,6 +2902,42 @@
         "modulo": null,
         "id": "topbar-security",
         "valor": "Security and Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-content-width",
+        "valor": "Content width",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-width-normal",
+        "valor": "Default (1280px)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-width-expanded",
+        "valor": "Expanded (1600px)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": null,
+        "id": "topbar-width-full",
+        "valor": "Full width (100%)",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4736,6 +4844,78 @@
     {
         "language": "pt-br",
         "modulo": "admin-atualizacoes",
+        "id": "updates-mode-guide",
+        "valor": "1) Escolha o modo, 2) ajuste as opções e 3) inicie.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-none",
+        "valor": "Nenhum modo selecionado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-wipe-confirm",
+        "valor": "A opção --wipe removerá arquivos não protegidos. Deseja continuar?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-tables-placeholder",
+        "valor": "paginas,variaveis",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-logs-retention-placeholder",
+        "valor": "14",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-tag-placeholder",
+        "valor": "gestor-v1.14.0",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-domain-label",
+        "valor": "Domínio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-domain-placeholder",
+        "valor": "localhost",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
         "id": "updates-clash-title",
         "valor": "Choques das entregas",
         "tipo": "string",
@@ -5341,6 +5521,78 @@
         "modulo": "admin-atualizacoes",
         "id": "updates-advanced-options",
         "valor": "Advanced Options",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-guide",
+        "valor": "1) Choose a mode, 2) adjust the options, and 3) start.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-none",
+        "valor": "No mode selected",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-wipe-confirm",
+        "valor": "The --wipe option will remove non-protected files. Are you sure you want to continue?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-tables-placeholder",
+        "valor": "pages,variables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-logs-retention-placeholder",
+        "valor": "14",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-tag-placeholder",
+        "valor": "gestor-v1.14.0",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-domain-label",
+        "valor": "Domain",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-domain-placeholder",
+        "valor": "localhost",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -8577,6 +8829,456 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-list-title",
+        "valor": "Servidores de IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-add",
+        "valor": "Adicionar servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-col-name",
+        "valor": "Nome",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-col-type",
+        "valor": "Tipo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-col-default",
+        "valor": "Padrão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-col-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-col-last-test",
+        "valor": "Último teste",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-col-actions",
+        "valor": "Ações",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-provider-gemini",
+        "valor": "Google Gemini",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-status-active",
+        "valor": "Ativo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-status-inactive",
+        "valor": "Inativo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-edit",
+        "valor": "Editar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-test",
+        "valor": "Testar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-delete",
+        "valor": "Excluir",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-empty-title",
+        "valor": "Nenhum servidor configurado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-add-first",
+        "valor": "Adicionar primeiro servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-add-title",
+        "valor": "Adicionar servidor IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-edit-title",
+        "valor": "Editar servidor IA",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-name",
+        "valor": "Nome do servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-name-placeholder",
+        "valor": "Ex: Gemini Produção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-type",
+        "valor": "Tipo de servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-default",
+        "valor": "Padrão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-api-key",
+        "valor": "Chave API",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-api-key-placeholder",
+        "valor": "Cole sua chave API aqui",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-api-key-hint",
+        "valor": "A chave será criptografada e armazenada com segurança.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-api-key-edit-placeholder",
+        "valor": "Deixe em branco para manter a atual",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-api-key-edit-hint",
+        "valor": "Digite uma nova chave para alterar ou deixe em branco para manter a atual.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-test-after-save",
+        "valor": "Testar conexão após salvar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-save",
+        "valor": "Salvar servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-update",
+        "valor": "Atualizar servidor",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-back",
+        "valor": "Voltar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-test-connection",
+        "valor": "Testar conexão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-activate",
+        "valor": "Ativar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-deactivate",
+        "valor": "Desativar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-history-title",
+        "valor": "Histórico de testes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-history-loading",
+        "valor": "Carregando histórico...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-history-empty",
+        "valor": "Nenhum teste realizado ainda.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-models-title",
+        "valor": "Modelos disponíveis globalmente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-models-description",
+        "valor": "Selecione quais modelos de IA ficam disponíveis para todos os usuários. Modelos desativados aqui não aparecerão no seletor, a menos que habilitados individualmente por usuário.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-save-models",
+        "valor": "Salvar configuração de modelos",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-success",
+        "valor": "Sucesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-error",
+        "valor": "Erro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-response-time",
+        "valor": "Tempo de resposta",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-error-prefix",
+        "valor": "Erro:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-confirm-delete",
+        "valor": "Tem certeza que deseja excluir este servidor de IA? Esta ação não pode ser desfeita.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-error-communication",
+        "valor": "Erro na comunicação com o servidor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-error-history",
+        "valor": "Erro ao carregar o histórico.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-error-test-communication",
+        "valor": "Erro na comunicação durante o teste de conexão.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-error-generic",
+        "valor": "Erro desconhecido.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-ia",
+        "id": "ui-models-empty",
+        "valor": "Nenhum modelo disponível.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-ia",
         "id": "tipos-servidor-ia",
@@ -8599,6 +9301,456 @@
         "modulo": "admin-ia",
         "id": "requests-error-message",
         "valor": "Error processing AI request.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-list-title",
+        "valor": "AI servers",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-add",
+        "valor": "Add server",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-col-name",
+        "valor": "Name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-col-type",
+        "valor": "Type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-col-default",
+        "valor": "Default",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-col-status",
+        "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-col-last-test",
+        "valor": "Last test",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-col-actions",
+        "valor": "Actions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-provider-gemini",
+        "valor": "Google Gemini",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-status-active",
+        "valor": "Active",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-status-inactive",
+        "valor": "Inactive",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-edit",
+        "valor": "Edit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-test",
+        "valor": "Test",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-delete",
+        "valor": "Delete",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-empty-title",
+        "valor": "No AI server configured",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-add-first",
+        "valor": "Add the first server",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-add-title",
+        "valor": "Add AI server",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-edit-title",
+        "valor": "Edit AI server",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-name",
+        "valor": "Server name",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-name-placeholder",
+        "valor": "e.g. Gemini Production",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-type",
+        "valor": "Server type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-default",
+        "valor": "Default",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-api-key",
+        "valor": "API key",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-api-key-placeholder",
+        "valor": "Paste your API key here",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-api-key-hint",
+        "valor": "The key will be encrypted and stored securely.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-api-key-edit-placeholder",
+        "valor": "Leave blank to keep the current key",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-api-key-edit-hint",
+        "valor": "Enter a new key to change it, or leave blank to keep the current key.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-test-after-save",
+        "valor": "Test connection after saving",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-save",
+        "valor": "Save server",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-update",
+        "valor": "Update server",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-back",
+        "valor": "Back",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-test-connection",
+        "valor": "Test connection",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-activate",
+        "valor": "Activate",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-deactivate",
+        "valor": "Deactivate",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-history-title",
+        "valor": "Test history",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-history-loading",
+        "valor": "Loading test history...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-history-empty",
+        "valor": "No tests have been run yet.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-models-title",
+        "valor": "Globally available models",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-models-description",
+        "valor": "Select which AI models are available to all users. Models disabled here will not appear in the model selector unless enabled individually by a user.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-save-models",
+        "valor": "Save model configuration",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-success",
+        "valor": "Success",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-error",
+        "valor": "Error",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-response-time",
+        "valor": "Response time",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-error-prefix",
+        "valor": "Error:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-confirm-delete",
+        "valor": "Are you sure you want to delete this AI server? This action cannot be undone.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-error-communication",
+        "valor": "Communication error with the server.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-error-history",
+        "valor": "Error loading test history.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-error-test-communication",
+        "valor": "Communication error while testing the connection.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-error-generic",
+        "valor": "Unknown error.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-ia",
+        "id": "ui-models-empty",
+        "valor": "No models available.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -9819,6 +10971,303 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-plugin-source",
+        "valor": "Origem do Plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-source-zip",
+        "valor": "Arquivo ZIP",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-source-public",
+        "valor": "Repositório Público",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-source-private",
+        "valor": "Repositório Privado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-file-zip-label",
+        "valor": "Arquivo ZIP do Plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-file-zip-help",
+        "valor": "Selecione o arquivo .zip contendo o plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-repo-url-label",
+        "valor": "URL do Repositório GitHub",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-repo-latest-help",
+        "valor": "Informe a URL do repositório GitHub. O sistema irá automaticamente descobrir a última versão de release do plugin.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-auth-token-label",
+        "valor": "Token de Autenticação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-auth-token-placeholder",
+        "valor": "Seu token de acesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-private-repo-help",
+        "valor": "Para repositórios privados, forneça um token de acesso válido. O sistema irá automaticamente descobrir a última versão de release.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-page-title",
+        "valor": "Executar Plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-page-description",
+        "valor": "Execute ações de instalação, atualização ou reprocessamento",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-info",
+        "valor": "Informações do Plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-actions",
+        "valor": "Ações Disponíveis",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-install",
+        "valor": "Instalar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-update",
+        "valor": "Atualizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-reprocess",
+        "valor": "Reprocessar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-log",
+        "valor": "Log de Execução",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-progress",
+        "valor": "Progresso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-back",
+        "valor": "Voltar para Edição",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-status-active",
+        "valor": "Ativo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-status-inactive",
+        "valor": "Inativo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-status-unknown",
+        "valor": "Desconhecido",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-log-action-running",
+        "valor": "Ação já em andamento:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-log-action-starting",
+        "valor": "Iniciando ação:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-log-action-error",
+        "valor": "Erro na ação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-log-unknown-error",
+        "valor": "Erro desconhecido",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-log-action-success",
+        "valor": "executada com sucesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-log-output",
+        "valor": "Saída:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-log-detail",
+        "valor": "Log detalhado:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-log-communication-error",
+        "valor": "Falha na comunicação para ação:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-plugins",
+        "id": "ui-log-last-update",
+        "valor": "Última atualização:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-plugins",
         "id": "form-name-label",
@@ -9913,6 +11362,303 @@
         "modulo": "admin-plugins",
         "id": "metadata-last-update",
         "valor": "Last Update",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-plugin-source",
+        "valor": "Plugin Source",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-source-zip",
+        "valor": "ZIP File",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-source-public",
+        "valor": "Public Repository",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-source-private",
+        "valor": "Private Repository",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-file-zip-label",
+        "valor": "Plugin ZIP File",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-file-zip-help",
+        "valor": "Select the .zip file containing the plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-repo-url-label",
+        "valor": "GitHub Repository URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-repo-latest-help",
+        "valor": "Enter the GitHub repository URL. The system will automatically discover the latest release version of the plugin.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-auth-token-label",
+        "valor": "Authentication Token",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-auth-token-placeholder",
+        "valor": "Your access token",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-private-repo-help",
+        "valor": "For private repositories, provide a valid access token. The system will automatically discover the latest release version.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-page-title",
+        "valor": "Execute Plugin",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-page-description",
+        "valor": "Execute installation, update or reprocessing actions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-info",
+        "valor": "Plugin Information",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-actions",
+        "valor": "Available Actions",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-install",
+        "valor": "Install",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-update",
+        "valor": "Update",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-reprocess",
+        "valor": "Reprocess",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-log",
+        "valor": "Execution Log",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-progress",
+        "valor": "Progress",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-exec-back",
+        "valor": "Back to Edit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-status-active",
+        "valor": "Active",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-status-inactive",
+        "valor": "Inactive",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-status-unknown",
+        "valor": "Unknown",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-log-action-running",
+        "valor": "Action already in progress:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-log-action-starting",
+        "valor": "Starting action:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-log-action-error",
+        "valor": "Action error",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-log-unknown-error",
+        "valor": "Unknown error",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-log-action-success",
+        "valor": "executed successfully",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-log-output",
+        "valor": "Output:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-log-detail",
+        "valor": "Detailed log:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-log-communication-error",
+        "valor": "Communication failure for action:",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-plugins",
+        "id": "ui-log-last-update",
+        "valor": "Last update:",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -11250,6 +12996,150 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-switch",
+        "valor": "Trocar widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-active",
+        "valor": "Ativo no painel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-available",
+        "valor": "Disponível",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-add",
+        "valor": "Adicionar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-select",
+        "valor": "Selecionar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-resize",
+        "valor": "Redimensionar widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "dashboard-options-label",
+        "valor": "Opções",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "dashboard-edit-mode-label",
+        "valor": "Modo de Edição",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "dashboard-tabs-label",
+        "valor": "Abas do painel",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-type",
+        "valor": "1. Tipo de Widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-record",
+        "valor": "2. Registro \/ Instância Alvo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-loading",
+        "valor": "Carregando widgets…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-error",
+        "valor": "Não foi possível carregar o widget.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-empty",
+        "valor": "Nenhum registro disponível.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-remove",
+        "valor": "Remover widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-label-more",
+        "valor": "Carregar mais",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "dashboard",
         "id": "logout-grup",
@@ -11682,6 +13572,150 @@
         "descricao": null
     },
     {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-switch",
+        "valor": "Switch widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-active",
+        "valor": "Active on dashboard",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-available",
+        "valor": "Available",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-add",
+        "valor": "Add",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-select",
+        "valor": "Select",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-resize",
+        "valor": "Resize widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "dashboard-options-label",
+        "valor": "Options",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "dashboard-edit-mode-label",
+        "valor": "Edit mode",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "dashboard-tabs-label",
+        "valor": "Dashboard tabs",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-type",
+        "valor": "1. Widget type",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-record",
+        "valor": "2. Target record \/ instance",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-loading",
+        "valor": "Loading widgets…",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-error",
+        "valor": "Could not load the widget.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-empty",
+        "valor": "No records available.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-remove",
+        "valor": "Remove widget",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-label-more",
+        "valor": "Load more",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "pt-br",
         "modulo": "forms",
         "id": "form-name-label",
@@ -11731,6 +13765,123 @@
         "modulo": "forms",
         "id": "form-description-label",
         "valor": "Descrição",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-text",
+        "valor": "Texto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-email",
+        "valor": "E-mail",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-tel",
+        "valor": "Telefone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-number",
+        "valor": "Número",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-password",
+        "valor": "Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-date",
+        "valor": "Data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-hidden",
+        "valor": "Oculto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-textarea",
+        "valor": "Texto longo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-select",
+        "valor": "Seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-radio",
+        "valor": "Opção única",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-type-checkbox",
+        "valor": "Caixa de seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms",
+        "id": "field-remove-label",
+        "valor": "Remover campo",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -11790,6 +13941,123 @@
         "descricao": null
     },
     {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-text",
+        "valor": "Text",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-email",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-tel",
+        "valor": "Phone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-number",
+        "valor": "Number",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-password",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-date",
+        "valor": "Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-hidden",
+        "valor": "Hidden",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-textarea",
+        "valor": "Textarea",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-select",
+        "valor": "Select",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-radio",
+        "valor": "Radio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-type-checkbox",
+        "valor": "Checkbox",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms",
+        "id": "field-remove-label",
+        "valor": "Remove field",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "pt-br",
         "modulo": "forms-search",
         "id": "form-name-label",
@@ -11844,6 +14112,123 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-text",
+        "valor": "Texto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-email",
+        "valor": "E-mail",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-tel",
+        "valor": "Telefone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-number",
+        "valor": "Número",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-password",
+        "valor": "Senha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-date",
+        "valor": "Data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-hidden",
+        "valor": "Oculto",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-textarea",
+        "valor": "Texto longo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-select",
+        "valor": "Seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-radio",
+        "valor": "Opção única",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-type-checkbox",
+        "valor": "Caixa de seleção",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-search",
+        "id": "field-remove-label",
+        "valor": "Remover campo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "forms-search",
         "id": "form-name-label",
@@ -11893,6 +14278,123 @@
         "modulo": "forms-search",
         "id": "form-description-label",
         "valor": "Description",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-text",
+        "valor": "Text",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-email",
+        "valor": "Email",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-tel",
+        "valor": "Phone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-number",
+        "valor": "Number",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-password",
+        "valor": "Password",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-date",
+        "valor": "Date",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-url",
+        "valor": "URL",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-hidden",
+        "valor": "Hidden",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-textarea",
+        "valor": "Textarea",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-select",
+        "valor": "Select",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-radio",
+        "valor": "Radio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-type-checkbox",
+        "valor": "Checkbox",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-search",
+        "id": "field-remove-label",
+        "valor": "Remove field",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -12015,6 +14517,78 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-id-missing",
+        "valor": "Identificador do envio nÃ£o encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-status-error",
+        "valor": "Erro ao atualizar o status.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-communication-error",
+        "valor": "Erro ao comunicar com o servidor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-email-missing",
+        "valor": "E-mail do destinatÃ¡rio nÃ£o encontrado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-reply-confirm",
+        "valor": "Enviar resposta para {email}?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-reply-error",
+        "valor": "Erro ao enviar a resposta.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "js-reply-sent",
+        "valor": "Enviado!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "not-applicable-label",
+        "valor": "NÃ£o se aplica",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "forms-submissions",
         "id": "error-msg-missing-fields",
@@ -12127,6 +14701,78 @@
         "modulo": "forms-submissions",
         "id": "table-column-status",
         "valor": "Status",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-id-missing",
+        "valor": "Submission ID not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-status-error",
+        "valor": "Error updating status.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-communication-error",
+        "valor": "Error communicating with server.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-email-missing",
+        "valor": "Recipient email not found.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-reply-confirm",
+        "valor": "Send reply to {email}?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-reply-error",
+        "valor": "Error sending reply.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "js-reply-sent",
+        "valor": "Sent!",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "not-applicable-label",
+        "valor": "Not applicable",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -12267,6 +14913,60 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-drag",
+        "valor": "Arraste para reordenar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-edit",
+        "valor": "Editar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-remove",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-empty-label",
+        "valor": "(sem rótulo)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-no-publisher",
+        "valor": "(sem publicador)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "galleries",
+        "id": "js-row-publisher",
+        "valor": "Publicador: {name} (limite: {count})",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "galleries",
         "id": "form-name-label",
@@ -12397,6 +15097,60 @@
         "modulo": "galleries",
         "id": "image-position-bottom",
         "valor": "Bottom",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-drag",
+        "valor": "Drag to reorder",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-edit",
+        "valor": "Edit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-remove",
+        "valor": "Remove",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-empty-label",
+        "valor": "(no label)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-no-publisher",
+        "valor": "(no publisher)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "galleries",
+        "id": "js-row-publisher",
+        "valor": "Publisher: {name} (limit: {count})",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -14076,6 +16830,60 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-drag",
+        "valor": "Arraste para ordenar\/aninhar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-edit",
+        "valor": "Editar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-remove",
+        "valor": "Remover",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-empty-label",
+        "valor": "(sem rótulo)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-no-publisher",
+        "valor": "(sem publicador)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "menus",
+        "id": "js-row-publisher",
+        "valor": "Publicador: {name} (limite: {count})",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "menus",
         "id": "form-name-label",
@@ -14107,6 +16915,60 @@
         "modulo": "menus",
         "id": "form-selected_items-label",
         "valor": "Selected items (ordered)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-drag",
+        "valor": "Drag to order\/nest",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-edit",
+        "valor": "Edit",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-remove",
+        "valor": "Remove",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-empty-label",
+        "valor": "(no label)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-no-publisher",
+        "valor": "(no publisher)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "menus",
+        "id": "js-row-publisher",
+        "valor": "Publisher: {name} (limit: {count})",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -22045,834 +24907,6 @@
         "modulo": "variables",
         "id": "form-module-label",
         "valor": "Module",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-text",
-        "valor": "Texto",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-email",
-        "valor": "E-mail",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-tel",
-        "valor": "Telefone",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-number",
-        "valor": "Número",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-password",
-        "valor": "Senha",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-date",
-        "valor": "Data",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-url",
-        "valor": "URL",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-hidden",
-        "valor": "Oculto",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-textarea",
-        "valor": "Texto longo",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-select",
-        "valor": "Seleção",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-radio",
-        "valor": "Opção única",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-type-checkbox",
-        "valor": "Caixa de seleção",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms",
-        "id": "field-remove-label",
-        "valor": "Remover campo",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-text",
-        "valor": "Text",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-email",
-        "valor": "Email",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-tel",
-        "valor": "Phone",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-number",
-        "valor": "Number",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-password",
-        "valor": "Password",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-date",
-        "valor": "Date",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-url",
-        "valor": "URL",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-hidden",
-        "valor": "Hidden",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-textarea",
-        "valor": "Textarea",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-select",
-        "valor": "Select",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-radio",
-        "valor": "Radio",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-type-checkbox",
-        "valor": "Checkbox",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms",
-        "id": "field-remove-label",
-        "valor": "Remove field",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-text",
-        "valor": "Texto",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-email",
-        "valor": "E-mail",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-tel",
-        "valor": "Telefone",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-number",
-        "valor": "Número",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-password",
-        "valor": "Senha",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-date",
-        "valor": "Data",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-url",
-        "valor": "URL",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-hidden",
-        "valor": "Oculto",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-textarea",
-        "valor": "Texto longo",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-select",
-        "valor": "Seleção",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-radio",
-        "valor": "Opção única",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-type-checkbox",
-        "valor": "Caixa de seleção",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-search",
-        "id": "field-remove-label",
-        "valor": "Remover campo",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-text",
-        "valor": "Text",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-email",
-        "valor": "Email",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-tel",
-        "valor": "Phone",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-number",
-        "valor": "Number",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-password",
-        "valor": "Password",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-date",
-        "valor": "Date",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-url",
-        "valor": "URL",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-hidden",
-        "valor": "Hidden",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-textarea",
-        "valor": "Textarea",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-select",
-        "valor": "Select",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-radio",
-        "valor": "Radio",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-type-checkbox",
-        "valor": "Checkbox",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-search",
-        "id": "field-remove-label",
-        "valor": "Remove field",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-submissions",
-        "id": "js-id-missing",
-        "valor": "Identificador do envio nÃ£o encontrado.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-submissions",
-        "id": "js-status-error",
-        "valor": "Erro ao atualizar o status.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-submissions",
-        "id": "js-communication-error",
-        "valor": "Erro ao comunicar com o servidor.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-submissions",
-        "id": "js-email-missing",
-        "valor": "E-mail do destinatÃ¡rio nÃ£o encontrado.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-submissions",
-        "id": "js-reply-confirm",
-        "valor": "Enviar resposta para {email}?",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-submissions",
-        "id": "js-reply-error",
-        "valor": "Erro ao enviar a resposta.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-submissions",
-        "id": "js-reply-sent",
-        "valor": "Enviado!",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "forms-submissions",
-        "id": "not-applicable-label",
-        "valor": "NÃ£o se aplica",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-submissions",
-        "id": "js-id-missing",
-        "valor": "Submission ID not found.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-submissions",
-        "id": "js-status-error",
-        "valor": "Error updating status.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-submissions",
-        "id": "js-communication-error",
-        "valor": "Error communicating with server.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-submissions",
-        "id": "js-email-missing",
-        "valor": "Recipient email not found.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-submissions",
-        "id": "js-reply-confirm",
-        "valor": "Send reply to {email}?",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-submissions",
-        "id": "js-reply-error",
-        "valor": "Error sending reply.",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-submissions",
-        "id": "js-reply-sent",
-        "valor": "Sent!",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "forms-submissions",
-        "id": "not-applicable-label",
-        "valor": "Not applicable",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "galleries",
-        "id": "js-row-drag",
-        "valor": "Arraste para reordenar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "galleries",
-        "id": "js-row-edit",
-        "valor": "Editar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "galleries",
-        "id": "js-row-remove",
-        "valor": "Remover",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "galleries",
-        "id": "js-row-empty-label",
-        "valor": "(sem rótulo)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "galleries",
-        "id": "js-row-no-publisher",
-        "valor": "(sem publicador)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "galleries",
-        "id": "js-row-publisher",
-        "valor": "Publicador: {name} (limite: {count})",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "galleries",
-        "id": "js-row-drag",
-        "valor": "Drag to reorder",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "galleries",
-        "id": "js-row-edit",
-        "valor": "Edit",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "galleries",
-        "id": "js-row-remove",
-        "valor": "Remove",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "galleries",
-        "id": "js-row-empty-label",
-        "valor": "(no label)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "galleries",
-        "id": "js-row-no-publisher",
-        "valor": "(no publisher)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "galleries",
-        "id": "js-row-publisher",
-        "valor": "Publisher: {name} (limit: {count})",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "menus",
-        "id": "js-row-drag",
-        "valor": "Arraste para ordenar\/aninhar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "menus",
-        "id": "js-row-edit",
-        "valor": "Editar",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "menus",
-        "id": "js-row-remove",
-        "valor": "Remover",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "menus",
-        "id": "js-row-empty-label",
-        "valor": "(sem rótulo)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "menus",
-        "id": "js-row-no-publisher",
-        "valor": "(sem publicador)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "pt-br",
-        "modulo": "menus",
-        "id": "js-row-publisher",
-        "valor": "Publicador: {name} (limite: {count})",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "menus",
-        "id": "js-row-drag",
-        "valor": "Drag to order\/nest",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "menus",
-        "id": "js-row-edit",
-        "valor": "Edit",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "menus",
-        "id": "js-row-remove",
-        "valor": "Remove",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "menus",
-        "id": "js-row-empty-label",
-        "valor": "(no label)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "menus",
-        "id": "js-row-no-publisher",
-        "valor": "(no publisher)",
-        "tipo": "string",
-        "grupo": null,
-        "descricao": null
-    },
-    {
-        "language": "en",
-        "modulo": "menus",
-        "id": "js-row-publisher",
-        "valor": "Publisher: {name} (limit: {count})",
         "tipo": "string",
         "grupo": null,
         "descricao": null

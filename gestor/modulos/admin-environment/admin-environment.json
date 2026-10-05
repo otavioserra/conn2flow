@@ -13,11 +13,11 @@
                     "name": "Admin Environment",
                     "id": "admin-environment",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-environment\/",
+                    "path": "admin-environment/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.29",
+                    "version": "1.30",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -33,21 +33,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "471a7dc1eb45bf7139392b1f1968df7c",
+                        "html": "be96918e8b388b48bd7c2b42bccbedc5",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "5b74bcb45858ecbf0cfc339071373867"
-                    }
+                        "combined": "bb268a0e82a71572a25c494aa4c329a8"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
             ],
             "components": [],
@@ -184,7 +185,7 @@
                 },
                 {
                     "id": "recaptcha-error-invalid-response",
-                    "value": "Token and\/or Server Key (secret) is invalid.",
+                    "value": "Token and/or Server Key (secret) is invalid.",
                     "type": "string"
                 },
                 {
@@ -266,11 +267,11 @@
                     "name": "Admin Environment",
                     "id": "admin-environment",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-environment\/",
+                    "path": "admin-environment/",
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.31",
+                    "version": "1.32",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -286,21 +287,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "3ae3911aff7caa3ef09bdca1081c770d",
+                        "html": "0a7a9046642f2e6c4c20ec806e89c9f1",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "30341bf7fe846169cad1063e274dadda"
-                    }
+                        "combined": "404e06c04201c202aea285503c300b54"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
             ],
             "components": [],
@@ -437,7 +439,7 @@
                 },
                 {
                     "id": "recaptcha-error-invalid-response",
-                    "value": "Token e\/ou Server Key (secret) de resposta é inválido.",
+                    "value": "Token e/ou Server Key (secret) de resposta é inválido.",
                     "type": "string"
                 },
                 {
@@ -513,5 +515,5 @@
             ]
         }
     },
-    "asset_version": "7fd4e69bd53dd3e6"
+    "asset_version": "dcf2077410f2c3df"
 }

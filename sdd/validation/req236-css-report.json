@@ -1,0 +1,34 @@
+{
+  "command": "php cli/c2f.php css:audit --project=conn2flow-site-local --json",
+  "tables": {
+    "paginas": {
+      "resources": 1226,
+      "stale": 1222,
+      "without_rules": 485,
+      "legacy_markup": 0
+    },
+    "layouts": {
+      "resources": 16,
+      "stale": 15,
+      "without_rules": 4,
+      "legacy_markup": 0
+    },
+    "componentes": {
+      "resources": 115,
+      "stale": 115,
+      "without_rules": 95,
+      "legacy_markup": 160
+    },
+    "templates": {
+      "resources": 228,
+      "stale": 228,
+      "without_rules": 90,
+      "legacy_markup": 2
+    }
+  },
+  "administrative_pages": {
+    "count": 316,
+    "legacy_markup": []
+  },
+  "limitations": "Auditoria SQL Tailwind: resíduos visuais excluem selects usados como ganchos da ponte. Classes sem regra e procedência stale incluem recursos públicos, templates e marcadores; não equivalem a classes Fomantic. HTML gerado por PHP/JS exige roteiro de navegador."
+}

@@ -871,7 +871,9 @@ function interface_historico($params = false){
 		$user_primeiro_nome = '';
 		
 		if(!$_GESTOR['ajax']){
-			$historico_linha = '<div class="ui middle aligned divided list">';
+			$historico_linha = function_exists('gestor_framework_css_atual') && gestor_framework_css_atual()['modo'] === 'tailwindcss'
+				? '<div class="c2fc-lista-historico">'
+				: '<div class="ui middle aligned divided list">';
 		} else {
 			$historico_linha = '';
 		}

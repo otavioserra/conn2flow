@@ -67,6 +67,15 @@
 
     function desenharIcones() {
         if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            var nomes = {'external alternate':'external-link','external':'external-link','check circle':'circle-check','times circle':'circle-x','info circle':'info','question circle':'circle-help','exclamation triangle':'triangle-alert','arrow alternate circle up':'circle-arrow-up','shopping cart':'shopping-cart','delete':'trash-2','dropdown':'chevron-down','font':'type','spinner':'loader-circle','undo':'undo-2','setting':'settings'};
+            document.querySelectorAll('i.icon:not([data-lucide])').forEach(function (icone) {
+                var nome = Array.from(icone.classList).filter(function (c) { return !['icon','loading','small','large','big','fitted','inverted'].includes(c); }).join(' ');
+                nome = nomes[nome] || nome;
+                if (!LUCIDE_NOME.test(nome)) nome = 'circle';
+                icone.setAttribute('data-lucide', nome);
+                icone.setAttribute('width', '16');
+                icone.setAttribute('height', '16');
+            });
             sanearIcones(document);
             window.lucide.createIcons();
             return true;
@@ -79,6 +88,12 @@
         if (!shell) return;
 
         if (!desenharIcones()) window.addEventListener('load', desenharIcones);
+        var redrawPending = false;
+        new MutationObserver(function (mutations) {
+            if (redrawPending || !mutations.some(function (m) { return Array.from(m.addedNodes).some(function (n) { return n.nodeType === 1 && n.tagName !== 'svg' && n.tagName !== 'SVG' && (n.matches('i.icon, i[data-lucide]') || n.querySelector('i.icon, i[data-lucide]')); }); })) return;
+            redrawPending = true;
+            requestAnimationFrame(function () { redrawPending = false; desenharIcones(); });
+        }).observe(shell, {childList: true, subtree: true});
 
         var sidebar = shell.querySelector('[data-admin-sidebar]');
         var conteudo = shell.querySelector('[data-admin-conteudo]');

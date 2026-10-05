@@ -123,12 +123,12 @@
             }
         ],
         "tailwind_dependencies_reason": "REQ-118: o menu e os componentes da interface administrativa sao montados em runtime pelo PHP e nao possuem sidecar proprio na cascata; sem declara-los, o layout compila sem as utilities deles.",
-        "version": "1.16",
+        "version": "1.17",
         "checksum": {
-            "html": "efca305f5315e025a0578e009ad9c215",
+            "html": "38c3ea67ef0536330cb70058932ba2d1",
             "css": "52af81ce0bc8c533317b894d901ff9cf",
             "css_precompiled": "",
-            "combined": "2ba41e23fdb8b156e9ae7731663250cb"
+            "combined": "e17457226f48ac72dd3a24f452b5221e"
         }
     },
     {

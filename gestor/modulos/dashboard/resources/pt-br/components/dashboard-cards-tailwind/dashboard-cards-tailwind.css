@@ -78,7 +78,7 @@
 
 /* Densidade M (Médio / Padrão - req-233 CA-4: 9rem / 144px) */
 #dashboard-sortable-cards.density-m .dashboard-card-header {
-    height: 9rem !important;
+    height: 11rem !important;
 }
 #dashboard-sortable-cards.density-m .dashboard-card-svg {
     width: 4rem;
@@ -99,7 +99,7 @@
     }
 }
 #dashboard-sortable-cards.density-g .dashboard-card-header {
-    height: 12rem !important;
+    height: 14.5rem !important;
 }
 #dashboard-sortable-cards.density-g .dashboard-card-svg {
     width: 5.5rem;
@@ -284,3 +284,19 @@
     color: #0284c7;
     font-weight: 600;
 }
+
+/* req-236: tooltip stays above adjacent cards and expands into the cover. */
+.dashboard-module-card:has(.dashboard-card-drag-handle:hover),
+.dashboard-module-card:has(.dashboard-card-drag-handle:focus-visible) { position: relative; z-index: 100030; }
+.dashboard-card-drag-handle::after { left: 0 !important; right: auto !important; transform: none !important; min-width: max-content; z-index: 100030 !important; }
+.dashboard-module-card.has-cover .dashboard-card-svg { display: none !important; }
+#dashboard-widgets-grid:not(.is-editing) .dashboard-widget-drag-handle,
+#dashboard-widgets-grid:not(.is-editing) .dashboard-widget-resize-handle,
+#dashboard-widgets-grid:not(.is-editing) .dashboard-widget-switch-btn,
+#dashboard-widgets-grid:not(.is-editing) .dashboard-widget-remove-btn { display: none !important; }
+.dashboard-widget-resize-handle[data-corner="nw"] { top: 4px; left: 4px; bottom: auto; right: auto; }
+.dashboard-widget-resize-handle[data-corner="ne"] { top: 4px; right: 4px; bottom: auto; cursor: nesw-resize; }
+.dashboard-widget-resize-handle[data-corner="sw"] { bottom: 4px; left: 4px; right: auto; cursor: nesw-resize; }
+.dashboard-options-menu { max-width: calc(100vw - 2rem); }
+.dashboard-widget-card-body { display: flex; min-height: 0; }
+.dashboard-widget-frame { width: 100%; height: 100%; min-height: 150px; border: 0; flex: 1; }

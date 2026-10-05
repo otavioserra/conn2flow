@@ -85,4 +85,6 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 ## Regra operacional
 
+REQ-236: [BATCH-245](BATCH-245.md), in-review — integração sequencial REQ-222/223/224, Dashboard V3.1 e homologação conjunta com o Site REQ-101.
+
 Não abra um novo batch funcional sem atualizar este índice. Se o escopo mudar de forma normativa, registre primeiro a mudança em `sdd/change-requests/`.

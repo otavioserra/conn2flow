@@ -123,7 +123,7 @@
                     "name": "Menus - Listar",
                     "id": "menus",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus\/",
+                    "path": "menus/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -174,15 +174,15 @@
                     "name": "Menus - Adicionar",
                     "id": "menus-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus\/adicionar\/",
+                    "path": "menus/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "0217eda952c36a67197533670e6de463",
+                        "html": "9c7d3c60e526438281e1bb229627a9d7",
                         "css": "d6f739c0062b7d23529faed169cf836f",
                         "css_precompiled": "",
-                        "combined": "2e267dde5ddef4eaf6be104452a54a4e"
+                        "combined": "a274d7e8f5c86780435c58fe3bb591ff"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -289,15 +289,15 @@
                     "name": "Menus - Editar",
                     "id": "menus-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus\/editar\/",
+                    "path": "menus/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "bae9cf41a20de42dfad8bbdd86939e79",
+                        "html": "4da10914202358f33b07248c7b8ed8d6",
                         "css": "d6f739c0062b7d23529faed169cf836f",
                         "css_precompiled": "",
-                        "combined": "430b2d0100f8173657fa17066fd21240"
+                        "combined": "5756a08d0fa286cf574eb2db910e396a"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -404,15 +404,15 @@
                     "name": "Menus - Clonar",
                     "id": "menus-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus\/clonar\/",
+                    "path": "menus/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "26eadd0140fe2f68124fddf271c3d83c",
+                        "html": "44749e5d2af4a0ba4c0246347c6104a9",
                         "css": "d6f739c0062b7d23529faed169cf836f",
                         "css_precompiled": "",
-                        "combined": "eca8a1125b3758e3a86da7196657f353"
+                        "combined": "1c8d431ed081e999e398a80e0914fab0"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -539,7 +539,7 @@
                 },
                 {
                     "id": "js-row-drag",
-                    "value": "Arraste para ordenar\/aninhar",
+                    "value": "Arraste para ordenar/aninhar",
                     "type": "string"
                 },
                 {
@@ -675,7 +675,7 @@
                     "name": "Menus - List",
                     "id": "menus",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus\/",
+                    "path": "menus/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -726,15 +726,15 @@
                     "name": "Menus - Add",
                     "id": "menus-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus\/adicionar\/",
+                    "path": "menus/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "49df9480b7e22474792a173beac16fc6",
+                        "html": "cd0f382845e49f48b8680b87670683ce",
                         "css": "d6f739c0062b7d23529faed169cf836f",
                         "css_precompiled": "",
-                        "combined": "c92cdb7101bdb9296e6b2c6e04fa5232"
+                        "combined": "c1849722bd3f1e0a8716f98432e71090"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -841,15 +841,15 @@
                     "name": "Menus - Edit",
                     "id": "menus-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus\/editar\/",
+                    "path": "menus/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "86776f077c8531373e2f21147c570607",
+                        "html": "04691176353929469750dafbc2bc5a88",
                         "css": "d6f739c0062b7d23529faed169cf836f",
                         "css_precompiled": "",
-                        "combined": "4ced964d2f47663325cb3553e7cdf2c3"
+                        "combined": "1a7e737aec266d18f048484dcab7a94f"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -956,15 +956,15 @@
                     "name": "Menus - Clone",
                     "id": "menus-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "menus\/clonar\/",
+                    "path": "menus/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "048a73136d2ac0c3bfbe094fe0f72ceb",
+                        "html": "9e7f88bf4dd106cdca8b2950479c763f",
                         "css": "d6f739c0062b7d23529faed169cf836f",
                         "css_precompiled": "",
-                        "combined": "10afe683fa982f04c03caeb41a8539a4"
+                        "combined": "e3440b5c8f62cecb952d18fa94d27ff9"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1091,7 +1091,7 @@
                 },
                 {
                     "id": "js-row-drag",
-                    "value": "Drag to order\/nest",
+                    "value": "Drag to order/nest",
                     "type": "string"
                 },
                 {
@@ -1122,5 +1122,5 @@
             ]
         }
     },
-    "asset_version": "64dca6c1815319ff"
+    "asset_version": "398352b2c68335b6"
 }

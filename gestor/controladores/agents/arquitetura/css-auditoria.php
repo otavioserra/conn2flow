@@ -287,6 +287,12 @@ foreach ($tabelas as $tabela) {
         $itens[] = [
             'id' => (string)($linha['id'] ?? ''),
             'language' => $lang,
+            'layout_id' => $layoutId,
+            // REQ-225/236: separar resíduos visuais dos ganchos de selects da ponte.
+            'residuos_fomantic' => preg_match_all(
+                '~<(?!select\b)[a-z][^>]*\sclass=["\']ui(?:\s|["\'])[^>]*>~i',
+                preg_replace('~<!--.*?-->|<script\b[^>]*>.*?</script>~si', '', $html)
+            ),
             'usadas' => count($usadas),
             'descobertas' => count($descobertas),
             'exemplos' => array_slice($descobertas, 0, 8),

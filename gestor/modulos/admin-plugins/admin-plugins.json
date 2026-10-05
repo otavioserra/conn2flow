@@ -51,12 +51,12 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
@@ -64,7 +64,8 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Plugins - Adicionar",
@@ -73,7 +74,7 @@
                     "path": "admin-plugins/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -89,20 +90,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "837287aff77dd4902c69b07fdca23894",
+                        "html": "5bdcce2d8a34c8b3859047337b60d3ca",
                         "css": "",
-                        "combined": "837287aff77dd4902c69b07fdca23894"
-                    }
+                        "css_precompiled": "",
+                        "combined": "5bdcce2d8a34c8b3859047337b60d3ca"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Plugins - Editar",
@@ -111,7 +114,7 @@
                     "path": "admin-plugins/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -127,20 +130,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "87d7a12ec912c2d6346bff70e85c65ca",
+                        "html": "ad181874e6a7869e7caa43fcf8ea28e0",
                         "css": "",
-                        "combined": "87d7a12ec912c2d6346bff70e85c65ca"
-                    }
+                        "css_precompiled": "",
+                        "combined": "ad181874e6a7869e7caa43fcf8ea28e0"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Plugins - Executar",
@@ -149,7 +154,7 @@
                     "path": "admin-plugins/executar/",
                     "type": "system",
                     "option": "executar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -160,7 +165,7 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         },
                         {
@@ -170,10 +175,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "e04a892a2fe7a463149b40a00fbb3960",
+                        "html": "139403348f5593c0651c775e7c5673ab",
                         "css": "",
-                        "combined": "e04a892a2fe7a463149b40a00fbb3960"
-                    }
+                        "css_precompiled": "",
+                        "combined": "139403348f5593c0651c775e7c5673ab"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Plugins - Teste",
@@ -182,7 +189,7 @@
                     "path": "admin-plugins/teste/",
                     "type": "system",
                     "option": "teste",
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -197,10 +204,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "8a072b8b1f9310d5da2366b4cde743ad",
+                        "html": "2d0467e4d38fef59d9f1e96cdde79c4b",
                         "css": "",
-                        "combined": "8a072b8b1f9310d5da2366b4cde743ad"
-                    }
+                        "css_precompiled": "",
+                        "combined": "2d0467e4d38fef59d9f1e96cdde79c4b"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
             ],
             "components": [
@@ -217,11 +226,12 @@
                 {
                     "name": "Plugins - Exec Tailwind",
                     "id": "plugins-exec-tailwind",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "",
+                        "html": "9340bda0a67ac711f151c967bd8648bd",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "9340bda0a67ac711f151c967bd8648bd"
                     }
                 }
             ],
@@ -485,12 +495,12 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
@@ -498,7 +508,8 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Plugins - Add",
@@ -507,7 +518,7 @@
                     "path": "admin-plugins/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -523,20 +534,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "60f120c7de069e8a7c610d03abe599fe",
+                        "html": "e47c5d4d28a985d79c4d0051be9913a1",
                         "css": "",
-                        "combined": "60f120c7de069e8a7c610d03abe599fe"
-                    }
+                        "css_precompiled": "",
+                        "combined": "e47c5d4d28a985d79c4d0051be9913a1"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Plugins - Edit",
@@ -545,7 +558,7 @@
                     "path": "admin-plugins/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -561,20 +574,22 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-alerta-tailwind",
+                            "id": "interface-alerta-modal-tailwind",
                             "scope": "global"
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         }
                     ],
                     "checksum": {
-                        "html": "0bdcd5958a7cc461b89fd8f08def1a99",
+                        "html": "62b27b658028fb184bd82bccde17f853",
                         "css": "",
-                        "combined": "0bdcd5958a7cc461b89fd8f08def1a99"
-                    }
+                        "css_precompiled": "",
+                        "combined": "62b27b658028fb184bd82bccde17f853"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Plugins - Execute",
@@ -583,7 +598,7 @@
                     "path": "admin-plugins/executar/",
                     "type": "system",
                     "option": "executar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -594,7 +609,7 @@
                         },
                         {
                             "type": "components",
-                            "id": "interface-carregando-tailwind",
+                            "id": "interface-carregando-modal-tailwind",
                             "scope": "global"
                         },
                         {
@@ -604,10 +619,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "1bd712d3141cec128e97ad7ecc86615d",
+                        "html": "139403348f5593c0651c775e7c5673ab",
                         "css": "",
-                        "combined": "1bd712d3141cec128e97ad7ecc86615d"
-                    }
+                        "css_precompiled": "",
+                        "combined": "139403348f5593c0651c775e7c5673ab"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Plugins - Test",
@@ -616,7 +633,7 @@
                     "path": "admin-plugins/teste/",
                     "type": "system",
                     "option": "teste",
-                    "version": "1.6",
+                    "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -631,10 +648,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "a13313078bc873ce64e79a612fdf894a",
+                        "html": "664b5f6b4c298edda911e81c154fd39b",
                         "css": "",
-                        "combined": "a13313078bc873ce64e79a612fdf894a"
-                    }
+                        "css_precompiled": "",
+                        "combined": "664b5f6b4c298edda911e81c154fd39b"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
             ],
             "components": [
@@ -651,11 +670,12 @@
                 {
                     "name": "Plugins - Exec Tailwind",
                     "id": "plugins-exec-tailwind",
-                    "version": "1.0",
+                    "version": "1.1",
                     "checksum": {
-                        "html": "",
+                        "html": "9340bda0a67ac711f151c967bd8648bd",
                         "css": "",
-                        "combined": ""
+                        "css_precompiled": "",
+                        "combined": "9340bda0a67ac711f151c967bd8648bd"
                     }
                 }
             ],
@@ -883,5 +903,5 @@
             ]
         }
     },
-    "asset_version": "a7a1fa3afaca7f78"
+    "asset_version": "3c21d660f3493933"
 }

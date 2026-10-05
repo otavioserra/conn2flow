@@ -470,3 +470,17 @@ Evidências: [BATCH-228](../implementation/BATCH-228.md), [roteiro](req220-brows
 - [ ] Revisão independente, teste humano e consolidação pela req-219.
 
 Evidências e limitações: [BATCH-230](../implementation/BATCH-230.md). Roteiro/resultados no site em `sdd/validation/core/req221-publisher-e2e.cjs` e `evidence-req221/`. Runtime pt-br; en compilado e verificado por contratos. JS compartilhados mais recentes da req-219 preservados; controle legado admin-templates e cadastro ausente de sua simulação original descritos no lote.
+
+## BATCH-245 / REQ-236 — integração homologada no Lab
+
+- [x] Integrações Core REQ-222/223/224 sequenciais e preservação do stash/checkouts anteriores.
+- [x] Dashboard V3.1: título/abas/Opções, tooltip, capa única M/G, edição, resize e seleção tipo/registro persistida.
+- [x] Core Vitest 529/529; PHPUnit 1.594 testes / 15.795 assertions sem falhas/erros, quatro skipped e deprecações registradas.
+- [x] Site Vitest 9/9; PHPUnit cinco testes / 462 assertions.
+- [x] Navegador Site 88/88 e Dashboard 17/17; 390px; seis fixtures removidas e preferências restauradas.
+- [x] Pipeline oficial completo sequencial, manutenção desligada; configuração local temporária restaurada.
+- [x] Inventário 386 páginas/idiomas sem violações; SQL 316 páginas administrativas sem resíduos visuais. Resíduos globais de componentes/templates e stale documentados.
+- [x] Revisão findings-first, controles negativos de instâncias/ícones e diff sem erros de whitespace.
+- [ ] Revisão humana e consolidação final.
+
+Relatório: [BATCH-245](../implementation/BATCH-245.md). Runtime pt-br; contratos bilíngues; OAuth e operações externas reais não exercitados.

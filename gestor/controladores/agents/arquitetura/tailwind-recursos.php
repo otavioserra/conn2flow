@@ -396,7 +396,10 @@ function tailwind_recursos_dependencies(array $metadata, string $scope, ?string 
             $id = (string)($dependency['id'] ?? '(sem id)');
             throw new RuntimeException("Dependência Tailwind do Gestor não encontrada: {$id}");
         }
-        if (!tailwind_recursos_path_dentro($candidate, $GESTOR_DIR)) {
+        $coreRoot = isset($GLOBALS['SYSTEM_PATH']) ? $GLOBALS['SYSTEM_PATH'] . 'gestor' : null;
+        $coreDependency = ($dependency['scope'] ?? null) === 'global'
+            && $coreRoot !== null && tailwind_recursos_path_dentro($candidate, $coreRoot);
+        if (!tailwind_recursos_path_dentro($candidate, $GESTOR_DIR) && !$coreDependency) {
             throw new RuntimeException("Dependência Tailwind fora da raiz permitida: {$candidate}");
         }
         $resolved[] = realpath($candidate) ?: $candidate;
@@ -430,8 +433,16 @@ function tailwind_recursos_dependency_path(array $dependency): ?string
         ? $GESTOR_DIR . DIRECTORY_SEPARATOR . 'resources'
         : $GESTOR_DIR . DIRECTORY_SEPARATOR . 'modulos' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'resources';
 
-    return $base . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $type
+    $relative = DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $type
         . DIRECTORY_SEPARATOR . $id . DIRECTORY_SEPARATOR . $id . '.html';
+    $candidate = $base . $relative;
+    // Projetos usam os componentes globais do Core sem duplicar sua autoria.
+    if (!is_file($candidate) && ($dependency['scope'] ?? null) === 'global'
+        && isset($GLOBALS['SYSTEM_PATH'])) {
+        $core = $GLOBALS['SYSTEM_PATH'] . 'gestor' . DIRECTORY_SEPARATOR . 'resources' . $relative;
+        if (is_file($core)) return $core;
+    }
+    return $candidate;
 }
 
 /**

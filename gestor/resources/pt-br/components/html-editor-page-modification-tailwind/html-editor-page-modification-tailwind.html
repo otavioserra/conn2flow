@@ -4,13 +4,13 @@
 <div class="menuMode page-modification-wrapper mb-4 grid grid-cols-1 gap-4 md:grid-cols-12">
     <div class="c2fc-campo md:col-span-5">
         <label class="c2fc-campo-rotulo">Alvo da Modificação da Página:</label>
-        <select class="ui dropdown page-modification-target-select c2fc-campo-entrada" data-c2f-select="1">
+        <select class="dropdown page-modification-target-select c2fc-campo-entrada" data-c2f-select="1">
             #select-modification-page#
         </select>
     </div>
     <div class="c2fc-campo hidden page-modification-container md:col-span-4">
         <label class="c2fc-campo-rotulo">Sessão Alvo:</label>
-        <select class="ui dropdown page-modification-section-select c2fc-campo-entrada" data-c2f-select="1">
+        <select class="dropdown page-modification-section-select c2fc-campo-entrada" data-c2f-select="1">
 
         </select>
     </div>
@@ -48,7 +48,7 @@
                 <i data-lucide="trash-2" class="size-4"></i>
             </button>
         </div>
-        <div class="ui checkbox page-modification-auto-preview">
+        <div class="page-modification-auto-preview">
             <label class="c2fc-chave">
                 <input type="checkbox" name="page-modification-auto-preview">
                 <span class="c2fc-chave-trilho" aria-hidden="true"></span>
@@ -58,7 +58,7 @@
     </div>
 </div>
 <div class="page-modification-section-modal page-modification-wrapper">
-    <div class="ui tiny modal page-modification-rename-modal hidden">
+    <div class="tiny modal page-modification-rename-modal hidden">
         <div class="header">Renomear Sessão</div>
         <div class="content">
             <div class="c2fc-campo">
@@ -76,8 +76,8 @@
 <div class="publisher hidden page-modification-publisher page-modification-wrapper mb-4">
     <div class="c2fc-campo">
         <label class="c2fc-campo-rotulo">Variáveis do Publisher:</label>
-        <div class="ui labels flex flex-wrap gap-2">
-            <span class="ui label inline-flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1 text-sm text-teal-800">
+        <div class="labels flex flex-wrap gap-2">
+            <span class="label inline-flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1 text-sm text-teal-800">
                 #name#
                 <span class="detail text-xs text-teal-600">#type#</span>
                 <i class="delete icon cursor-pointer font-bold not-italic" data-index="#index#" aria-label="Remover">&times;</i>

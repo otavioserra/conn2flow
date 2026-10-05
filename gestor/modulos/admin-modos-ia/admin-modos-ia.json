@@ -31,7 +31,7 @@
                     "name": "Admin Modos IA - Listar",
                     "id": "admin-modos-ia-listar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-modos-ia/",
+                    "path": "admin-modos-ia\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -64,16 +64,17 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Modos IA - Adicionar",
                     "id": "admin-modos-ia-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-modos-ia/adicionar/",
+                    "path": "admin-modos-ia\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -89,19 +90,21 @@
                         }
                     ],
                     "checksum": {
-                        "html": "70ee08a2fd86b252995dbde2a49c63e8",
+                        "html": "5af66045ede436612546160df21d7128",
                         "css": "",
-                        "combined": "70ee08a2fd86b252995dbde2a49c63e8"
-                    }
+                        "css_precompiled": "",
+                        "combined": "5af66045ede436612546160df21d7128"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin Modos IA - Editar",
                     "id": "admin-modos-ia-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-modos-ia/editar/",
+                    "path": "admin-modos-ia\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -117,10 +120,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "98f3a3f2a04095da176e48eda64ff466",
+                        "html": "2b96d2a1066cc68b04b6fea7c3c5d972",
                         "css": "",
-                        "combined": "98f3a3f2a04095da176e48eda64ff466"
-                    }
+                        "css_precompiled": "",
+                        "combined": "2b96d2a1066cc68b04b6fea7c3c5d972"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
             ],
             "components": [],
@@ -179,7 +184,7 @@
                     "name": "Admin AI Modos - List",
                     "id": "admin-modos-ia-listar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-modos-ia/",
+                    "path": "admin-modos-ia\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -212,16 +217,17 @@
                         "html": "",
                         "css": "",
                         "combined": ""
-                    }
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin AI Modos - Add",
                     "id": "admin-modos-ia-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-modos-ia/adicionar/",
+                    "path": "admin-modos-ia\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -237,19 +243,21 @@
                         }
                     ],
                     "checksum": {
-                        "html": "70ee08a2fd86b252995dbde2a49c63e8",
+                        "html": "5af66045ede436612546160df21d7128",
                         "css": "",
-                        "combined": "70ee08a2fd86b252995dbde2a49c63e8"
-                    }
+                        "css_precompiled": "",
+                        "combined": "5af66045ede436612546160df21d7128"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
                 {
                     "name": "Admin AI Modos - Edit",
                     "id": "admin-modos-ia-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-modos-ia/editar/",
+                    "path": "admin-modos-ia\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -265,10 +273,12 @@
                         }
                     ],
                     "checksum": {
-                        "html": "98f3a3f2a04095da176e48eda64ff466",
+                        "html": "2b96d2a1066cc68b04b6fea7c3c5d972",
                         "css": "",
-                        "combined": "98f3a3f2a04095da176e48eda64ff466"
-                    }
+                        "css_precompiled": "",
+                        "combined": "2b96d2a1066cc68b04b6fea7c3c5d972"
+                    },
+                    "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
             ],
             "components": [],

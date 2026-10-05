@@ -14,13 +14,13 @@ final class DashboardWidgetsReq233Test extends TestCase
         // Validações do JavaScript (resize com snap e seletor evidente)
         self::assertStringContainsString('dashboard-widget-resize-handle', $script);
         self::assertStringContainsString('dashboard-widget-switch-btn', $script);
-        self::assertStringContainsString('dashboard-widget-switch-menu', $script);
-        self::assertStringContainsString('replaceWidget', $script);
+        self::assertStringContainsString('widgets-registros', $script);
+        self::assertStringContainsString('instance_id', $script);
         self::assertStringContainsString('pointerdown', $script);
         self::assertStringContainsString('pointermove', $script);
         self::assertStringContainsString('pointerup', $script);
-        self::assertStringContainsString('targetCols', $script);
-        self::assertStringContainsString('targetHeight', $script);
+        self::assertStringContainsString('resize.cols', $script);
+        self::assertStringContainsString('resize.rows', $script);
         self::assertStringNotContainsString('gridAutoRows', $script, 'Cálculo de linhas por gridAutoRows proibido pela req-233.');
 
         foreach (['pt-br', 'en'] as $language) {
