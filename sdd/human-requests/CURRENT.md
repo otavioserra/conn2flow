@@ -1,6 +1,7 @@
 # Current Human Request
 
 - **Intakes Ativos / Planejados**:
+  - [req-234.md](req-234.md) (BATCH-243 `ready-for-implementation`, 2026-10-05, branch `feat/req-234`): Fracionamento Determinístico de Arquivos de Dados Grandes (`*Data.json`) e Leitor Unificado de Tabelas Particionadas — limite por parte de 80 MiB, manifesto por tabela (`.manifest.json`), escrita atômica, leitor compartilhado (`gestor/bibliotecas/db-data.php`), proteção de sincronização no banco contra exclusões indevidas e suporte em recuperação/ZIP.
   - [req-233.md](req-233.md) (BATCH-242 `in-progress`, 2026-10-04, branch `feat/req-233`): Correção Estrutural da UI V3.0 — geometria funcional da grade de widgets (malha de 12 colunas, altura mínima 220px, drag & resize nos cantos sem saltos), seletor direto e evidente no card para trocar qual widget roda no bloco, capas de módulos 40% maiores em M (9rem / 144px), topbar (perfil w-80, dicas bottom, favoritos sem texto sobreposto) e controle de largura do painel.
   - [req-232.md](req-232.md) (BATCH-241 `superseded`, 2026-10-04): Lote preliminar com apontamentos e regressões no dimensionamento de widgets superado pela req-233.
   - [req-231.md](req-231.md) (BATCH-240 `planned`, 2026-10-04): Fechamento oficial da Versão 3.0.0, changelog consolidador e version bumps dos metadados após estabilização da req-233 e dependências.
