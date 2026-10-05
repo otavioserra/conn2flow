@@ -120,7 +120,7 @@ $(document).ready(function () {
             + '.iframe-resize-indicator{position:absolute;top:6px;left:50%;transform:translateX(-50%);'
             + 'background:rgba(17,24,39,0.85);color:#fff;font-size:12px;padding:2px 8px;border-radius:10px;'
             + 'z-index:6;pointer-events:none;font-family:monospace;}'
-            + '.html-editor-add-panel{position:fixed;z-index:10000;min-width:260px;max-width:320px;'
+            + '.html-editor-add-panel{position:fixed;z-index:100050;min-width:260px;max-width:320px;'
             + 'max-height:70vh;overflow-y:auto;background:#fff;border:1px solid #d4d4d5;border-radius:6px;'
             + 'box-shadow:0 2px 12px rgba(0,0,0,0.2);padding:0.75rem;display:none;}'
             + '.html-editor-add-panel .he-add-title{font-weight:bold;color:#767676;text-transform:uppercase;'
@@ -136,7 +136,7 @@ $(document).ready(function () {
             + '.html-editor-add-panel .he-add-widget-group.open .he-add-widget-list{display:block;}'
             + '.html-editor-add-panel .he-add-empty{color:#999;font-size:12px;padding:0.25rem 0.5rem;}'
             // req-106: painel de opções de exibição (mesma moldura do painel de inclusão).
-            + '.html-editor-view-options-panel{position:fixed;z-index:10000;min-width:280px;max-width:340px;'
+            + '.html-editor-view-options-panel{position:fixed;z-index:100050;min-width:280px;max-width:340px;'
             + 'background:#fff;border:1px solid #d4d4d5;border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,0.2);'
             + 'padding:0.75rem;display:none;}'
             + '.html-editor-view-options-panel .he-view-title{font-weight:bold;color:#767676;'

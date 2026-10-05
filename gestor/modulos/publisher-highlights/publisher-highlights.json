@@ -1,5 +1,5 @@
 {
-    "versao": "1.0.1",
+    "versao": "1.0.2",
     "bibliotecas": [
         "interface",
         "html",
@@ -186,12 +186,12 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "9d2226deb530da238769c338a6b7ad82",
+                        "html": "802b4cde88523dfbfc0339bd60b92291",
                         "css": "e27a01bf2d174276d86c94c782f319e3",
                         "css_precompiled": "",
-                        "combined": "bd85f557d2aeaebdce2ba1320bbe91bb"
+                        "combined": "a2e4406ec076670647962a4db9fdc954"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -310,12 +310,12 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "878b23ac8fd49eabf4d907e251875310",
+                        "html": "acbb9cc2ec1a84d57b5e89b1ed9fb371",
                         "css": "e27a01bf2d174276d86c94c782f319e3",
                         "css_precompiled": "",
-                        "combined": "2376e5afd4b5744c0b2393966530f002"
+                        "combined": "346df90d33efa46131ae2b92a66f6315"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -429,12 +429,12 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "ef4e81ea709765d1f8ac8eaa2172cd81",
+                        "html": "d6d055e8b9a2616d21a3882142e57912",
                         "css": "e27a01bf2d174276d86c94c782f319e3",
                         "css_precompiled": "",
-                        "combined": "321b8e0f0a2e2997e4965993358f86c9"
+                        "combined": "d63a8df952d1c6b68a807d4f3aa1aee9"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -774,12 +774,12 @@
                     "path": "publisher-highlights\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "f017bd615aae95ff9f371be176e89702",
+                        "html": "c530e78f41766b9f0feb7fc52a404928",
                         "css": "e27a01bf2d174276d86c94c782f319e3",
                         "css_precompiled": "",
-                        "combined": "f21222b9ab4ba5a5bd2c7347f609a889"
+                        "combined": "f0e31fb51d5f9b22a6d41620a4d932a7"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -898,12 +898,12 @@
                     "path": "publisher-highlights\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "38e128fd79e3d56b99900c72adba9c15",
+                        "html": "ef7ed3fc798908670a731848fc076199",
                         "css": "e27a01bf2d174276d86c94c782f319e3",
                         "css_precompiled": "",
-                        "combined": "bfd0cba0a460491b66522b1efb5257bc"
+                        "combined": "817c5b0c72d0cfc4d38169abcf737fc2"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1017,12 +1017,12 @@
                     "path": "publisher-highlights\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "7050465f15397d1fe5cbea5c55a58cb8",
+                        "html": "3a8fe942ce4c51567963408ef786cc89",
                         "css": "e27a01bf2d174276d86c94c782f319e3",
                         "css_precompiled": "",
-                        "combined": "be563c3c1351a6063b6ed9b89e268ffb"
+                        "combined": "10929cf5d33aed43d28cdf7755b7df42"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,

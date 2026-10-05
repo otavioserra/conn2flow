@@ -1,5 +1,5 @@
 {
-    "versao": "1.4.2",
+    "versao": "1.4.4",
     "resources": {
         "pt-br": {
             "variables": [
@@ -450,12 +450,17 @@
                 },
                 {
                     "id": "file-mime-type-unknown",
-                    "value": "indefinido/indefinido",
+                    "value": "indefinido\/indefinido",
                     "type": "string"
                 },
                 {
                     "id": "alert-csrf-action-invalid",
                     "value": "Ação recusada: o link não tem o token de segurança da sua sessão. Use os botões do painel.",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-url-label",
+                    "value": "URL da imagem",
                     "type": "string"
                 }
             ]
@@ -912,12 +917,17 @@
                 },
                 {
                     "id": "file-mime-type-unknown",
-                    "value": "unknown/unknown",
+                    "value": "unknown\/unknown",
                     "type": "string"
                 },
                 {
                     "id": "alert-csrf-action-invalid",
                     "value": "Action refused: the link lacks your session security token. Use the panel buttons.",
+                    "type": "string"
+                },
+                {
+                    "id": "widget-image-url-label",
+                    "value": "Image URL",
                     "type": "string"
                 }
             ]

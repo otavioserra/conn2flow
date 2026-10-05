@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.10",
+    "versao": "1.1.11",
     "bibliotecas": [
         "interface",
         "html",
@@ -32,15 +32,15 @@
                     "name": "Admin Arquivos",
                     "id": "admin-arquivos",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-arquivos\/",
+                    "path": "admin-arquivos/",
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.18",
+                    "version": "1.19",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-arquivos.js"
+                        "../../../../admin-arquivos.js"
                     ],
                     "tailwind_dependencies": [
                         {
@@ -60,10 +60,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "c272a6553a9753345501e5a72516530f",
+                        "html": "d3115b5e369510be762ee0f715c2b64c",
                         "css": "72beb37b687aac50b99c0db2a2bef95c",
                         "css_precompiled": "",
-                        "combined": "a724e9baa6006321490a840a29950280"
+                        "combined": "beca89f8837ab2d94d759963781de829"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -72,14 +72,14 @@
                     "name": "Admin Arquivos - Adicionar",
                     "id": "admin-arquivos-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-arquivos\/adicionar\/",
+                    "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.9",
+                    "version": "1.11",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-arquivos.js"
+                        "../../../../admin-arquivos.js"
                     ],
                     "tailwind_dependencies": [
                         {
@@ -94,10 +94,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "9f3965ead141b22745268afa604a9a8b",
+                        "html": "8cb09dbd9d5dba4840137853587325cb",
                         "css": "fa8df32a8182cda760ee37825aa92933",
                         "css_precompiled": "",
-                        "combined": "06ddf3a5e7f5a342df6bb1e1112838a2"
+                        "combined": "42bba88b7c17f28745e322462851aaa4"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -106,7 +106,7 @@
                     "name": "Emissão teste",
                     "id": "emissao-teste",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos\/emissao-teste\/",
+                    "path": "admin-arquivos/emissao-teste/",
                     "type": "system",
                     "without_permission": true,
                     "version": "1.0",
@@ -293,7 +293,7 @@
                 },
                 {
                     "id": "filter-info",
-                    "value": "Selecione um período e\/ou uma ou mais categoria(s) caso queira filtrar o resultado por esses dados. Depois, clique no botão <b>Filtrar<\/b> para ver os resultados.",
+                    "value": "Selecione um período e/ou uma ou mais categoria(s) caso queira filtrar o resultado por esses dados. Depois, clique no botão <b>Filtrar</b> para ver os resultados.",
                     "type": "string"
                 },
                 {
@@ -555,15 +555,15 @@
                     "name": "Admin Files",
                     "id": "admin-arquivos",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-arquivos\/",
+                    "path": "admin-arquivos/",
                     "type": "system",
                     "option": "listar-arquivos",
                     "root": true,
-                    "version": "1.18",
+                    "version": "1.19",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-arquivos.js"
+                        "../../../../admin-arquivos.js"
                     ],
                     "tailwind_dependencies": [
                         {
@@ -583,10 +583,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "813b03aff69a17c3806b325c90fd18a8",
+                        "html": "1dec04b290ba8f2f22356a345c9d0582",
                         "css": "72beb37b687aac50b99c0db2a2bef95c",
                         "css_precompiled": "",
-                        "combined": "2b80c35aa94c7cca08742550bc321fe9"
+                        "combined": "a59011c297ee7d9cd990a2172121e374"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -595,14 +595,14 @@
                     "name": "Admin Files - Add",
                     "id": "admin-arquivos-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-arquivos\/adicionar\/",
+                    "path": "admin-arquivos/adicionar/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.9",
+                    "version": "1.11",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-arquivos.js"
+                        "../../../../admin-arquivos.js"
                     ],
                     "tailwind_dependencies": [
                         {
@@ -617,10 +617,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "9f3965ead141b22745268afa604a9a8b",
+                        "html": "8cb09dbd9d5dba4840137853587325cb",
                         "css": "fa8df32a8182cda760ee37825aa92933",
                         "css_precompiled": "",
-                        "combined": "06ddf3a5e7f5a342df6bb1e1112838a2"
+                        "combined": "42bba88b7c17f28745e322462851aaa4"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -629,7 +629,7 @@
                     "name": "Test Emission",
                     "id": "emissao-teste",
                     "layout": "layout-administrativo-do-gestor",
-                    "path": "admin-arquivos\/emissao-teste\/",
+                    "path": "admin-arquivos/emissao-teste/",
                     "type": "system",
                     "without_permission": true,
                     "version": "1.0",
@@ -816,7 +816,7 @@
                 },
                 {
                     "id": "filter-info",
-                    "value": "Select a period and\/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter<\/b> button to see the results.",
+                    "value": "Select a period and/or one or more categories if you want to filter the result by this data. Then, click the <b>Filter</b> button to see the results.",
                     "type": "string"
                 },
                 {
@@ -1072,5 +1072,5 @@
             ]
         }
     },
-    "asset_version": "d2fd05df5c3fed0e"
+    "asset_version": "e684bae48531b625"
 }

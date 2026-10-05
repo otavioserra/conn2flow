@@ -23,14 +23,14 @@
         #template_id_options#
     </select>
     <!-- templates-alguns-linkados-msg < -->
-    <div class="icon message visible info rounded-lg border border-sky-200 bg-sky-50 p-4 my-4">
+    <div class="c2fc-alerta c2fc-alerta-info icon message visible info rounded-lg border border-sky-200 bg-sky-50 p-4 my-4">
         <i data-lucide="bell" class="size-4 inline-block bell icon"></i>
         <div class="content">
             <div class="header font-semibold text-slate-800 my-4">Modelos Vinculados ao Publicador</div>
             <p>Foram encontrados alguns modelos vinculados a alguns registros publicador no selecionador acima e
-                marcados assim: <kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Modelo</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
-                        class="exchange alternate small icon"></i></kbd><kbd
-                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publicador</kbd>.<br>Só
+                marcados assim: <span class="publisher-link-preview"><kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Modelo</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
+                        data-lucide="arrow-right" class="size-4"></i></kbd><kbd
+                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publicador</kbd></span>.<br>Só
                 é permitido um modelo ser vinculado a um único registro de publicador.</p>
         </div>
     </div>
@@ -41,9 +41,9 @@
         <div class="content">
             <div class="header font-semibold text-slate-800 my-4">Modelos Vinculados ao Publicador</div>
             <p>Todos os modelos encontrados estão vinculados a um registro de publicador no selecionador acima e
-                marcados assim: <kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Modelo</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
-                        class="exchange alternate small icon"></i></kbd><kbd
-                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publicador</kbd>.<br>Só
+                marcados assim: <span class="publisher-link-preview"><kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Modelo</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
+                        data-lucide="arrow-right" class="size-4"></i></kbd><kbd
+                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publicador</kbd></span>.<br>Só
                 é permitido um modelo ser vinculado a um único registro de publicador.</p>
             <div class="list">
                 <div class="item">
@@ -85,13 +85,13 @@
     <i data-lucide="plus" class="size-4 inline-block plus icon"></i> Adicionar Novo Modelo
 </a>
 
-<a class="button brown hidden c2fc-botao c2fc-botao-primario" id="edit-template"
+<a class="button brown hidden c2fc-botao c2fc-botao-editar" id="edit-template"
     href="@[[pagina#url-raiz]]@admin-templates/editar/?id=noticias-imagem-destaque"
     data-c2f-dica="Clique para editar este modelo" data-position="top center" data-inverted="">
     <i data-lucide="pencil" class="size-4 inline-block edit icon"></i> Editar Modelo
 </a>
 
-<a class="button teal hidden c2fc-botao c2fc-botao-primario" id="clone-template"
+<a class="button teal hidden c2fc-botao c2fc-botao-clonar" id="clone-template"
     href="@[[pagina#url-raiz]]@admin-templates/clonar/?id=noticias-imagem-destaque"
     data-c2f-dica="Clique para clonar este modelo" data-position="top center" data-inverted="">
     <i data-lucide="copy" class="size-4 inline-block clone icon"></i> Clonar Modelo
@@ -109,14 +109,14 @@
     </div>
 
     <div class="hidden template-options-subwrapper">
-        <h4 class="dividing header font-semibold text-slate-800 my-4">Vinculação de Campos: <kbd class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Modelo</kbd><kbd
+        <h4 class="dividing header font-semibold text-slate-800 my-4">Vinculação de Campos: <span class="publisher-link-preview"><kbd class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Modelo</kbd><kbd
                 class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i data-lucide="arrow-left-right" class="size-4 inline-block exchange alternate icon"></i></kbd><kbd
-                class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Publicador</kbd></h4>
+                class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Publicador</kbd></span></h4>
         <div class="segment template-link-publisher-fields relative rounded-lg border border-slate-200 p-4 my-4">
             <div class="min-w-0">
                 <div class="row min-w-0">
                     <div class="sixteen wide column min-w-0">
-                        <div class="template-fields-list grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <div class="template-fields-list grid grid-cols-1 gap-3">
                             <div class="four wide column min-w-0">
                                 <h5>Campos Modelo</h5>
                                 <div id="available-fields-list"></div>
@@ -148,7 +148,7 @@
     <i data-lucide="plus" class="size-4 inline-block plus icon"></i> Adicionar Campo
 </div>
 
-<div id="add-all-fields-btn" class="button teal hidden c2fc-botao c2fc-botao-primario" data-c2f-dica="Clique para adicionar todos os campos do modelo"
+<div id="add-all-fields-btn" class="button teal hidden c2fc-botao c2fc-botao-clonar" data-c2f-dica="Clique para adicionar todos os campos do modelo"
     data-position="top center" data-inverted="">
     <i data-lucide="arrow-left-right" class="size-4 inline-block exchange alternate icon"></i> Adicionar todos os campos
 </div>
@@ -165,7 +165,7 @@
     <span class="msg-nenhum-resultado-dropdown" style="display:none">Nenhum resultado encontrado</span>
     <span class="msg-sem-resultados" style="display:none">Sem Resultados</span>
 
-    <div class="field-row-skeleton segment field-row relative rounded-lg border border-slate-200 p-4 my-4" data-id="" style="margin-bottom: 10px;">
+    <div class="field-row-skeleton segment field-row relative rounded-lg border border-slate-200 bg-white p-3 my-2" data-id="" style="margin-bottom: 10px;">
         <div class="fields grid grid-cols-1 gap-4 md:grid-cols-2">
             <div class="four wide field c2fc-campo min-w-0 mb-4">
                 <label class="c2fc-campo-rotulo">Label</label>
@@ -201,11 +201,11 @@
                 </div>
             </div>
             <div class="two wide field c2fc-campo min-w-0 mb-4">
-                <div class="icon right floated red button remove-field-btn c2fc-botao c2fc-botao-perigo" data-c2f-dica="Remover este campo"
+                <div class="icon right floated red button remove-field-btn c2fc-botao c2fc-botao-perigo c2fc-botao-icone c2fc-botao-pequeno" data-c2f-dica="Remover este campo"
                     data-position="top center" data-inverted=""><i data-lucide="trash-2" class="size-4 inline-block trash icon"></i></div>
-                <div class="icon right floated button move-down-btn hidden c2fc-botao c2fc-botao-primario" data-c2f-dica="Mover para baixo"
+                <div class="icon right floated button move-down-btn hidden c2fc-botao c2fc-botao-icone c2fc-botao-pequeno" data-c2f-dica="Mover para baixo"
                     data-position="top center" data-inverted=""><i data-lucide="arrow-down" class="size-4 inline-block arrow down icon"></i></div>
-                <div class="icon right floated button move-up-btn hidden c2fc-botao c2fc-botao-primario" data-c2f-dica="Mover para cima"
+                <div class="icon right floated button move-up-btn hidden c2fc-botao c2fc-botao-icone c2fc-botao-pequeno" data-c2f-dica="Mover para cima"
                     data-position="top center" data-inverted=""><i data-lucide="arrow-up" class="size-4 inline-block arrow up icon"></i></div>
             </div>
         </div>

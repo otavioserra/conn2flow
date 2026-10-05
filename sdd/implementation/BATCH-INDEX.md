@@ -13,6 +13,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 
 | Batch | Status | Escopo | Alvo de validação | Observações |
 | --- | --- | --- | --- | --- |
+| BATCH-248 | in-review | Refinamentos da auditoria humana Core/Site (REQ-239 / Site REQ-105) | [BATCH-248.md](BATCH-248.md) | Interface monetária/imagem, Dashboard P/G, editor, Publisher/admin e hashes LF. Core Vitest 541/PHPUnit 1.599; Site 13/10; Lab e submissões reais aprovados, homologação/consolidação pendentes. |
 | BATCH-000 a BATCH-017 | complete | Batches históricos arquivados | Ver arquivo histórico [batches-000-017.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/archive/batches-000-017.md) | Os detalhes de implementação e validações dos primeiros 18 lotes foram arquivados para manter a eficiência do contexto de IA. |
 | BATCH-018 a BATCH-053 | complete | Batches históricos arquivados | Ver arquivo histórico [batches-018-053.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/archive/batches-018-053.md) | Os detalhes de implementação e escopo dos lotes 18 a 53 foram arquivados para manter a eficiência do contexto de IA. |
 | BATCH-054 a BATCH-093 | complete | Batches históricos arquivados | Ver arquivo histórico [batches-054-093.md](file:///c:/Users/otavi/OneDrive/Documentos/GIT/conn2flow/sdd/implementation/archive/batches-054-093.md) | Os detalhes de implementação e escopo dos lotes 54 a 93 foram arquivados para manter a eficiência do contexto de IA. |

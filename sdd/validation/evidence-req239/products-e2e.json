@@ -1,0 +1,142 @@
+{
+  "prefix": "req239-e2e-1791235526638",
+  "checks": [
+    {
+      "name": "Configured shipping methods exist",
+      "ok": true,
+      "detail": [
+        "2"
+      ]
+    },
+    {
+      "name": "Fixture ownership",
+      "ok": true,
+      "detail": "req239-e2e-1791235526638-local"
+    },
+    {
+      "name": "Masked price persisted",
+      "ok": true,
+      "detail": "R$ 1.234,56"
+    },
+    {
+      "name": "Quill HTML persisted",
+      "ok": true
+    },
+    {
+      "name": "Image URL persisted",
+      "ok": true
+    },
+    {
+      "name": "Promotion dates persisted",
+      "ok": true
+    },
+    {
+      "name": "Shipping selection persisted",
+      "ok": true
+    },
+    {
+      "name": "Public product link",
+      "ok": true,
+      "detail": "/store/req239-e2e-1791235526638-local/"
+    },
+    {
+      "name": "Variant action icons",
+      "ok": true
+    },
+    {
+      "name": "Variant price and dates persisted",
+      "ok": true,
+      "detail": {
+        "price": "R$ 250,00",
+        "start": "2030-01-01T10:00",
+        "sku": "REQ239-E2E-1791235526638"
+      }
+    },
+    {
+      "name": "Dynamic variant currency mask",
+      "ok": true
+    },
+    {
+      "name": "Editor template has no leaked comment",
+      "ok": true
+    },
+    {
+      "name": "Product editor variable tokens intact",
+      "ok": true,
+      "detail": [
+        "@[[product#name]]@",
+        "@[[product#short_description]]@",
+        "@[[product#description]]@",
+        "@[[product#price]]@",
+        "@[[product#original_price]]@",
+        "@[[product#image]]@",
+        "@[[product#product_type]]@",
+        "@[[product#url]]@",
+        "@[[product#id]]@",
+        "@[[product#customer_email]]@",
+        "@[[product#customer_name]]@",
+        "@[[product#email_readonly]]@",
+        "@[[product#json_ld]]@"
+      ]
+    },
+    {
+      "name": "Models AJAX succeeds",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "payload": "Ok"
+      }
+    },
+    {
+      "name": "Models loading terminates",
+      "ok": true,
+      "detail": {
+        "display": "grid",
+        "parents": [
+          {
+            "class": "modelos-container",
+            "display": "block"
+          },
+          {
+            "class": "tab hidden containerPagina c2fc-painel-aba c2fc-ponte-tab active",
+            "display": "block"
+          },
+          {
+            "class": "tab hidden containerPagina c2fc-painel-aba c2fc-ponte-tab active",
+            "display": "block"
+          }
+        ],
+        "modelCount": 0
+      }
+    },
+    {
+      "name": "Models loading terminates after HTTP failure",
+      "ok": true
+    },
+    {
+      "name": "Fixture ownership",
+      "ok": true,
+      "detail": "req239-e2e-1791235526638-stripe"
+    },
+    {
+      "name": "Backend inherits catalog price and currency",
+      "ok": true,
+      "detail": {
+        "price": "297.00",
+        "expectedPrice": "297.00",
+        "expectedCurrency": "USD"
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "id": "req239-e2e-1791235526638-stripe",
+      "removed": true
+    },
+    {
+      "id": "req239-e2e-1791235526638-local",
+      "removed": true
+    }
+  ],
+  "exit": 0
+}

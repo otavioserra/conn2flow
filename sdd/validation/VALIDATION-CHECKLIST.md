@@ -509,3 +509,15 @@ Evidências e limitações: [BATCH-230](../implementation/archive/BATCH-230.md).
 - [ ] Revisão humana e consolidação final.
 
 Relatório: [BATCH-245](../implementation/BATCH-245.md). Runtime pt-br; contratos bilíngues; OAuth e operações externas reais não exercitados.
+
+## BATCH-248 / REQ-239 — refinamentos da auditoria humana
+
+- [x] Dashboard P/G, editor de páginas, família Publisher e módulos administrativos refinados.
+- [x] Interface: máscara monetária e imagem URL/admin-arquivos; cache Tailwind normaliza HTML/CSS/JS para LF, incluindo saída e entrada central.
+- [x] Core Vitest 541; PHPUnit 1.599 testes / 15.872 asserções, sem falhas (5 skips, 4 deprecações PHP e 3 PHPUnit).
+- [x] Site Vitest 13; PHPUnit 10 testes / 1.386 asserções; controles negativos cache/promoção reproduzidos.
+- [x] Lab desktop/390px, submissões reais products/variações e herança Stripe autoritativa; dois produtos próprios removidos.
+- [x] Pipeline oficial sequencial concluído, manutenção desligada; 778 hashes normalizados sem diferenças/sobras.
+- [x] Cookie tabs com c2fc-abas-lista c2fc-anexa / c2fc-painel-aba em pt-br/en; recado do agente REQ-240/106 incorporado e trabalho paralelo preservado.
+- [x] Revisão técnica, PHP lint e diff-check aprovados; evidências e limites no [BATCH-248](../implementation/BATCH-248.md).
+- [ ] Homologação humana e consolidação Git.

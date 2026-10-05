@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.8",
+    "versao": "1.2.9",
     "bibliotecas": [
         "interface",
         "html",
@@ -129,7 +129,7 @@
                     "name": "Publicador Índice - Listar",
                     "id": "publisher-index",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-index/",
+                    "path": "publisher-index\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -184,15 +184,15 @@
                     "name": "Publicador Índice - Adicionar",
                     "id": "publisher-index-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-index/adicionar/",
+                    "path": "publisher-index\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "06b061fd5b2080ea1488178c53802f11",
+                        "html": "df488fdf244ef11717d53844ebc8219c",
                         "css": "8845ceddcf5692dad90ad872e76763b4",
                         "css_precompiled": "",
-                        "combined": "a15052b60426f1b6c1df0a09d94f0b6a"
+                        "combined": "0f29e4583d8ce4bf854483a7cb808836"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -290,7 +290,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-index.php"
+                        "..\/..\/..\/..\/publisher-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -298,15 +298,15 @@
                     "name": "Publicador Índice - Editar",
                     "id": "publisher-index-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-index/editar/",
+                    "path": "publisher-index\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "e744daa9e41e0ab8b5326c346381d621",
+                        "html": "d54c86d84b63d2fb15a906fb235e83d5",
                         "css": "8845ceddcf5692dad90ad872e76763b4",
                         "css_precompiled": "",
-                        "combined": "509564ececed8fac61e91c2aa8be2dfe"
+                        "combined": "23f7afe15f1201f4891f2a87db006b43"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -404,7 +404,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-index.php"
+                        "..\/..\/..\/..\/publisher-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -412,15 +412,15 @@
                     "name": "Publicador Índice - Clonar",
                     "id": "publisher-index-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-index/clonar/",
+                    "path": "publisher-index\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "430acbef78b93d33467858d20d51642b",
+                        "html": "6eef4312764fe22d7384a8b1d2a54962",
                         "css": "8845ceddcf5692dad90ad872e76763b4",
                         "css_precompiled": "",
-                        "combined": "dc04ac43862b6839da0427ec872680e5"
+                        "combined": "ee3a8d6256aba27b494812b5ecc38367"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -518,7 +518,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-index.php"
+                        "..\/..\/..\/..\/publisher-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 }
@@ -688,7 +688,7 @@
                     "name": "Publisher Index - List",
                     "id": "publisher-index",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-index/",
+                    "path": "publisher-index\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -743,15 +743,15 @@
                     "name": "Publisher Index - Add",
                     "id": "publisher-index-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-index/adicionar/",
+                    "path": "publisher-index\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "1bd16fb82ecc033efec6293e57c4b73e",
+                        "html": "d6719bcb7984bf742cdea6abb60cc335",
                         "css": "8845ceddcf5692dad90ad872e76763b4",
                         "css_precompiled": "",
-                        "combined": "d681207624a9ccf3316717f307867ff0"
+                        "combined": "2214c3ff0e9c05dc8ec860f9d13d94f3"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -849,7 +849,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-index.php"
+                        "..\/..\/..\/..\/publisher-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -857,15 +857,15 @@
                     "name": "Publisher Index - Edit",
                     "id": "publisher-index-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-index/editar/",
+                    "path": "publisher-index\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "b5ac9905bd6d699b007c36a73eb16098",
+                        "html": "68ed2bad6f4157ea44c5ac4c58a6deed",
                         "css": "8845ceddcf5692dad90ad872e76763b4",
                         "css_precompiled": "",
-                        "combined": "217930c3d5843ad62a52443253f992e4"
+                        "combined": "b29a501dbe19fbf6e22b22621520c789"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -963,7 +963,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-index.php"
+                        "..\/..\/..\/..\/publisher-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -971,15 +971,15 @@
                     "name": "Publisher Index - Clone",
                     "id": "publisher-index-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-index/clonar/",
+                    "path": "publisher-index\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "5cbcdd03e98acea5b1e34c89945eb61d",
+                        "html": "52acd50bae37ed5456ebc35aea23d025",
                         "css": "8845ceddcf5692dad90ad872e76763b4",
                         "css_precompiled": "",
-                        "combined": "586916a722c8bbc2e0b8b91a51f975a9"
+                        "combined": "4353a1d0f4f90fc1295c681e7a651dee"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1077,7 +1077,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-index.php"
+                        "..\/..\/..\/..\/publisher-index.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 }

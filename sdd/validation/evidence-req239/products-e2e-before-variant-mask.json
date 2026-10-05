@@ -1,0 +1,63 @@
+{
+  "prefix": "req239-e2e-1791234270601",
+  "checks": [
+    {
+      "name": "Configured shipping methods exist",
+      "ok": true,
+      "detail": [
+        "2"
+      ]
+    },
+    {
+      "name": "Fixture ownership",
+      "ok": true,
+      "detail": "req239-e2e-1791234270601-local"
+    },
+    {
+      "name": "Masked price persisted",
+      "ok": true,
+      "detail": "R$ 1.234,56"
+    },
+    {
+      "name": "Quill HTML persisted",
+      "ok": true
+    },
+    {
+      "name": "Image URL persisted",
+      "ok": true
+    },
+    {
+      "name": "Promotion dates persisted",
+      "ok": true
+    },
+    {
+      "name": "Shipping selection persisted",
+      "ok": true
+    },
+    {
+      "name": "Public product link",
+      "ok": true,
+      "detail": "/store/req239-e2e-1791234270601-local/"
+    },
+    {
+      "name": "Variant action icons",
+      "ok": true
+    },
+    {
+      "name": "Variant price and dates persisted",
+      "ok": false,
+      "detail": {
+        "price": "25000.00",
+        "start": "2030-01-01T10:00",
+        "sku": "REQ239-E2E-1791234270601"
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "id": "req239-e2e-1791234270601-local",
+      "removed": true
+    }
+  ],
+  "exit": 1
+}

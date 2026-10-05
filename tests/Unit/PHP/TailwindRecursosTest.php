@@ -20,6 +20,41 @@ final class TailwindRecursosTest extends TestCase
     private array $temporaryFiles = [];
     private array $temporaryDirectories = [];
 
+    public function testFingerprintIgnoraQuebrasDeLinhaMasDetectaMudancaDeConteudo(): void
+    {
+        $directory = sys_get_temp_dir() . '/c2f-lf-' . bin2hex(random_bytes(6));
+        mkdir($directory);
+        $this->temporaryDirectories[] = $directory;
+        $contents = ['html' => "<div>\nconteúdo\n</div>\n", 'css' => ".card {\ncolor: red;\n}\n", 'js' => "function card() {\nreturn true;\n}\n"];
+        foreach ($contents as $extension => $content) {
+            $file = $directory . '/source.' . $extension;
+            $this->temporaryFiles[] = $file;
+            file_put_contents($file, $content);
+        }
+        $resource = ['html' => $directory . '/source.html', 'sources' => [$directory . '/source.js'], 'layout' => false, 'safelist' => []];
+        $fingerprint = tailwind_recursos_fingerprint($resource, tailwind_recursos_hash_arquivo($directory . '/source.css'), '4.3.3');
+        foreach (["\r\n", "\r"] as $newline) {
+            foreach ($contents as $extension => $content) {
+                file_put_contents($directory . '/source.' . $extension, str_replace("\n", $newline, $content));
+                self::assertSame(hash('sha256', $content), tailwind_recursos_hash_arquivo($directory . '/source.' . $extension));
+            }
+            self::assertSame($fingerprint, tailwind_recursos_fingerprint($resource, tailwind_recursos_hash_arquivo($directory . '/source.css'), '4.3.3'));
+        }
+        foreach ($contents as $extension => $content) {
+            file_put_contents($directory . '/source.' . $extension, $content . 'changed');
+            self::assertNotSame($fingerprint, tailwind_recursos_fingerprint($resource, tailwind_recursos_hash_arquivo($directory . '/source.css'), '4.3.3'));
+            file_put_contents($directory . '/source.' . $extension, $content);
+        }
+    }
+
+    public function testHashBinarioPreservaBytes(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'c2f-binary-');
+        $this->temporaryFiles[] = $file;
+        file_put_contents($file, "\0\r\n\xff\r");
+        self::assertSame(hash_file('sha256', $file), tailwind_recursos_hash_arquivo($file));
+    }
+
     public function testProjectGlobalDependencyFallsBackToCoreWithoutCopyingResources(): void
     {
         $oldRoot = $GLOBALS['GESTOR_DIR'] ?? null;
@@ -279,7 +314,7 @@ final class TailwindRecursosTest extends TestCase
             $resourcesDirectory . 'en' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'footer' . DIRECTORY_SEPARATOR . 'footer.html',
             $resourcesDirectory . 'pt-br' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'home' . DIRECTORY_SEPARATOR . 'home.html',
         ];
-        foreach ($htmlPaths as $htmlPath) file_put_contents($htmlPath, '<div class="flex"></div>');
+        foreach ($htmlPaths as $htmlPath) file_put_contents($htmlPath, "<div class=\"flex\">\n</div>\n");
         file_put_contents($fakeCommandPath, <<<'PHP'
 <?php
 $logPath = $argv[1];
@@ -301,7 +336,7 @@ foreach ($matches[1] as $source) {
     $path = realpath(dirname($inputPath) . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $source));
     if ($path !== false && is_file($path)) $sourceContent .= file_get_contents($path);
 }
-file_put_contents($arguments[$outputIndex + 1], '.built{--source-hash:' . hash('sha256', $sourceContent) . '}');
+file_put_contents($arguments[$outputIndex + 1], '.built{--source-hash:' . hash('sha256', $sourceContent) . "}\n");
 PHP);
 
         $globals = ['GESTOR_DIR', 'RESOURCES_DIR', 'MODULES_DIR', 'SYSTEM_PATH', 'LOG_FILE', 'CLI_ARGS', 'isProjectMode'];
@@ -327,6 +362,19 @@ PHP);
             $cached = tailwind_recursos_compilar($map);
             self::assertSame(2, $cached['cached']);
             self::assertSame(0, $cached['compiled']);
+            self::assertSame(['help'], file($logPath, FILE_IGNORE_NEW_LINES));
+
+            // REQ-239 CA-5.3: conversão de checkout não recompila fontes nem saídas.
+            $centralPath = $gestor . 'assets/tailwindcss/system-input.css';
+            foreach (array_merge($htmlPaths, [$centralPath]) as $textPath) {
+                file_put_contents($textPath, str_replace("\n", "\r\n", file_get_contents($textPath)));
+            }
+            $homeEnOutput = $resourcesDirectory . 'en/components/home/home.precompiled.css';
+            file_put_contents($homeEnOutput, str_replace("\n", "\r\n", file_get_contents($homeEnOutput)));
+            unlink($logPath);
+            $converted = tailwind_recursos_compilar($map);
+            self::assertSame(2, $converted['cached']);
+            self::assertSame(0, $converted['compiled']);
             self::assertSame(['help'], file($logPath, FILE_IGNORE_NEW_LINES));
 
             $homeEnOutput = $resourcesDirectory . 'en' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'home' . DIRECTORY_SEPARATOR . 'home.precompiled.css';

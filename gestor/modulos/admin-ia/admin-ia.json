@@ -1,5 +1,5 @@
 {
-    "versao": "1.2.1",
+    "versao": "1.2.2",
     "bibliotecas": [
         "interface",
         "html",
@@ -120,7 +120,7 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.20",
+                    "version": "1.21",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -146,10 +146,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "60d158ab017a0bd03a0024a5077a289a",
+                        "html": "005299220cf0ff596cb3e64a97bfb58b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "60d158ab017a0bd03a0024a5077a289a"
+                        "combined": "005299220cf0ff596cb3e64a97bfb58b"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -537,7 +537,7 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.19",
+                    "version": "1.20",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -563,10 +563,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "60d158ab017a0bd03a0024a5077a289a",
+                        "html": "005299220cf0ff596cb3e64a97bfb58b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "60d158ab017a0bd03a0024a5077a289a"
+                        "combined": "005299220cf0ff596cb3e64a97bfb58b"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }

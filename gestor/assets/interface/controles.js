@@ -543,6 +543,8 @@
         /** Div de dropdown do Fomantic (input escondido + .menu .item) vira um <select> nativo equivalente. */
         function selectDoDiv(div) {
             if (div.c2fPonteSelect) return div.c2fPonteSelect;
+            var existente = div.querySelector('select');
+            if (existente) { div.c2fPonteSelect = existente; return existente; }
             var oculto = null;
             var padrao = null;
             Array.prototype.forEach.call(div.children, function (c) {
@@ -854,6 +856,8 @@
         var nome = caixa.querySelector('.widgetImage-nome');
         if (id) id.value = dados.fileId !== undefined ? dados.fileId : dados.id;
         if (caminho) caminho.value = dados.caminho || '';
+        var url = caixa.querySelector('[data-c2f-imagem-url]');
+        if (url) url.value = dados.caminho || '';
         if (img) img.setAttribute('src', dados.imgSrc || '');
         if (nome) nome.textContent = dados.nome || '';
         imagemValor(caixa, '.widgetImage-data', dados.data || '');
@@ -866,6 +870,12 @@
         if (!global.c2fControles.ponteAtiva || !$ || !config || global.c2fControles.imagemLigada || !document.querySelector('._gestor-widgetImage-cont')) return;
         global.c2fControles.imagemLigada = true;
         var atual = null;
+        document.addEventListener('input', function (ev) {
+            if (!ev.target.matches('[data-c2f-imagem-url]')) return;
+            var url = ev.target.value.trim();
+            if (url && !/^(https?:\/\/|\/|[^:]+$)/i.test(url)) return;
+            imagemPreencher(ev.target.closest('._gestor-widgetImage-cont'), { fileId: '-1', caminho: url, imgSrc: url });
+        });
         document.addEventListener('click', function (ev) {
             var adicionar = ev.target.closest('._gestor-widgetImage-btn-add');
             var remover = ev.target.closest('._gestor-widgetImage-btn-del');
@@ -887,11 +897,12 @@
             $modal.modal('show');
         });
         global.addEventListener('message', function (ev) {
-            if (!atual || ev.origin !== global.location.origin) return;
+            var quadro = document.querySelector('.ui.modal.iframePagina iframe');
+            if (!atual || ev.origin !== global.location.origin || !quadro || ev.source !== quadro.contentWindow) return;
             var dados;
             try {
                 var msg = JSON.parse(ev.data);
-                if (msg.moduloId !== 'admin-arquivos' && msg.moduloId !== 'arquivos') return;
+                if (msg.moduloId !== 'admin-arquivos') return;
                 dados = JSON.parse(decodeURI(msg.data));
             } catch (e) { return; }
             if (!/^image\//.test(String(dados.tipo || ''))) {

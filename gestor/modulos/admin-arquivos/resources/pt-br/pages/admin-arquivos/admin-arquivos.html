@@ -4,16 +4,16 @@
 
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-12 c2f-toolbar">
         <div class="flex items-center lg:col-span-10">
-            <div class="c2f-breadcrumb" id="c2f-breadcrumb"></div>
+            <div class="c2f-breadcrumb flex flex-wrap items-center gap-1.5 text-sm" id="c2f-breadcrumb"></div>
         </div>
         <div class="flex items-center justify-end lg:col-span-2">
             <div class="flex gap-1 c2f-views">
                 <button class="c2f-view-btn rounded border px-2 py-1" data-view="large"
-                    data-content="@[[view-large]]@"><i class="th large icon"></i></button>
+                    data-content="@[[view-large]]@"><i data-lucide="layout-grid" class="size-4" aria-hidden="true"></i></button>
                 <button class="c2f-view-btn rounded border px-2 py-1" data-view="medium"
-                    data-content="@[[view-medium]]@"><i class="th icon"></i></button>
+                    data-content="@[[view-medium]]@"><i data-lucide="grid-2x2" class="size-4" aria-hidden="true"></i></button>
                 <button class="c2f-view-btn rounded border px-2 py-1" data-view="small"
-                    data-content="@[[view-small]]@"><i class="grid layout icon"></i></button>
+                    data-content="@[[view-small]]@"><i data-lucide="grid-3x3" class="size-4" aria-hidden="true"></i></button>
                 <button class="c2f-view-btn rounded border px-2 py-1" data-view="list" data-content="@[[view-list]]@"><i
                         class="list icon"></i></button>
             </div>
@@ -21,7 +21,7 @@
     </div>
 
     <div class="relative c2f-search-box">
-        <input class="w-full rounded border border-slate-300 py-2 pl-9 pr-9" type="text" id="c2f-search"
+        <input class="w-full rounded border border-slate-300 bg-white py-2 pl-9 pr-9" type="text" id="c2f-search"
             placeholder="@[[search-files-placeholder]]@" autocomplete="off">
         <i class="search icon c2f-search-icon"></i>
         <i class="times circle link icon c2f-search-clear hidden"></i>
@@ -31,9 +31,9 @@
     <div class="flex flex-wrap items-center gap-2 c2f-folder-tools">
         <a class="inline-flex items-center gap-2 rounded bg-emerald-700 px-3 py-2 text-white"
             href="@[[pagina#url-raiz]]@@[[pagina#modulo-id]]@/adicionar/#paginaIframe#" data-id="adicionar">
-            <i class="upload icon"></i> @[[add-button-label]]@
+            <i data-lucide="upload" class="size-4" aria-hidden="true"></i> @[[add-button-label]]@
         </a>
-        <button class="inline-flex items-center gap-2 rounded border px-3 py-2" id="c2f-new-folder"><i
+        <button class="inline-flex items-center gap-2 rounded border border-slate-300 bg-white px-3 py-2" id="c2f-new-folder"><i
                 class="folder plus icon"></i> @[[folder-new]]@</button>
         <label class="ml-auto inline-flex items-center gap-2 c2f-select-all-box">
             <input type="checkbox" id="c2f-select-all"><label>@[[select-all]]@</label>
@@ -48,7 +48,7 @@
             <button class="hidden rounded bg-sky-700 px-3 py-1 text-white" id="c2f-pick-selected"><i
                     class="check icon"></i>
                 @[[pick-selected]]@</button>
-            <button class="rounded bg-rose-700 px-3 py-1 text-white" id="c2f-delete-selected"><i class="trash icon"></i>
+            <button class="rounded bg-rose-700 px-3 py-1 text-white" id="c2f-delete-selected"><i data-lucide="trash-2" class="size-4" aria-hidden="true"></i>
                 @[[delete-selected]]@</button>
         </div>
     </div>
@@ -84,14 +84,14 @@
                 <div class="flex gap-2 lg:col-span-4">
                     <button class="rounded bg-emerald-700 px-3 py-2 text-white"
                         id="c2f-filter">@[[filter-button]]@</button>
-                    <button class="rounded border px-3 py-2" id="c2f-clear">@[[clear-button]]@</button>
+                    <button class="rounded border border-slate-300 bg-white px-3 py-2" id="c2f-clear">@[[clear-button]]@</button>
                 </div>
             </div>
         </div>
     </details>
 
     <div class="hidden rounded bg-sky-50 p-3 c2f-thumbs-bar" id="c2f-thumbs-bar">
-        <i class="notched circle loading icon"></i> @[[thumbs-processing]]@
+        <i data-lucide="info" class="size-4" aria-hidden="true"></i> @[[thumbs-processing]]@
     </div>
 
     <div class="c2f-files-list" id="c2f-files-list"></div>

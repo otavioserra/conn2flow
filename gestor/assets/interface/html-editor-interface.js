@@ -257,7 +257,14 @@ $(document).ready(function () {
 
         const framework_css = frameworkCSS();
 
-        const ajax = ajaxDefault;
+        const ajax = Object.assign({}, ajaxDefault, { data: Object.assign({}, ajaxDefault.data) });
+        ajax.timeout = 30000;
+        ajax.complete = function () {
+            modelos_carregando = false;
+            $('#modelos-loading').hide();
+            $('#modelos-cards').show();
+            loadDimmer(false);
+        };
         ajax.ajaxOpcao = 'html-editor-templates-load';
         ajax.data.ajaxOpcao = ajax.ajaxOpcao;
         ajax.data.params = {
@@ -496,8 +503,8 @@ $(document).ready(function () {
         if (tipo_modificacao == 'sessao') {
             // Alterar a ordem do menu de sessões conforme opção selecionada
             setTimeout(() => {
-                const select = $('.ui.dropdown.page-modification-section-select');
-                const options = select.find('select option');
+                const select = $('.dropdown.page-modification-section-select');
+                const options = select.filter('select').add(select.find('select')).find('option');
                 let index = 0;
 
                 switch (sessao_opcao) {
@@ -2902,15 +2909,16 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
             }
         }
 
-        const select = $('.ui.dropdown.page-modification-section-select');
+        const select = $('.dropdown.page-modification-section-select');
         const currentValue = select.dropdown('get value');
 
-        select.find('select').find('option').remove();
+        select.filter('select').add(select.find('select')).find('option').remove();
 
         if (sessoes.length > 0) {
+            select.parent().removeClass('disabled');
             sessoes.forEach(function (sessao) {
                 const option = $('<option></option>').attr('value', sessao.id).text(sessao.nome);
-                select.find('select').append(option);
+                select.filter('select').add(select.find('select')).append(option);
             });
 
             select.dropdown('refresh');
@@ -2932,11 +2940,11 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         }
     }
 
-    $('.ui.dropdown.page-modification-section-select').dropdown({
+    $('.dropdown.page-modification-section-select').dropdown({
         onChange: function (value, text, $selectedItem) {
             // Update buttons state based on new selection
-            const select = $('.ui.dropdown.page-modification-section-select');
-            const options = select.find('select option');
+            const select = $('.dropdown.page-modification-section-select');
+            const options = select.filter('select').add(select.find('select')).find('option');
             let index = 0;
 
             options.each(function (i) {
@@ -2960,7 +2968,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
 
                 if (params.add_after) {
                     setTimeout(function () {
-                        $('.ui.dropdown.page-modification-target-select').dropdown('set selected', 'sessao', true);
+                        $('.dropdown.page-modification-target-select').dropdown('set selected', 'sessao', true);
 
                         const checkbox = $('input[name="page-modification-section-option"][value="new-after"]').parent();
                         checkbox.checkbox('check');
@@ -2970,7 +2978,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
                 if (params.alertar) $('#gestor-listener').trigger('alerta', { msg: 'Não foram detectadas sessões. Crie uma página nova e adicione sessões para utilizar esse recurso.' });
                 $('.page-modification-container').addClass('hidden');
                 setTimeout(function () {
-                    $('.ui.dropdown.page-modification-target-select').dropdown('set selected', 'tudo', true);
+                    $('.dropdown.page-modification-target-select').dropdown('set selected', 'tudo', true);
                 });
             }
         } else {
@@ -2979,13 +2987,13 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
     }
 
     function tipoModificationPage() {
-        const tipo_modificacao = $('.ui.dropdown.page-modification-target-select').dropdown('get value');
+        const tipo_modificacao = $('.dropdown.page-modification-target-select').dropdown('get value');
 
         return tipo_modificacao ?? 'tudo';
     }
 
     function pageSessionID() {
-        const sectionId = $('.ui.dropdown.page-modification-section-select').dropdown('get value');
+        const sectionId = $('.dropdown.page-modification-section-select').dropdown('get value');
         return sectionId ?? null;
     }
 
@@ -3128,7 +3136,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
             const idMatch = alvoTag.match(/data-id=["']([^"']+)["']/i);
             if (idMatch) {
                 const alvoId = idMatch[1];
-                $('.ui.dropdown.page-modification-section-select').dropdown('set selected', alvoId, true);
+                $('.dropdown.page-modification-section-select').dropdown('set selected', alvoId, true);
                 // Remover o atributo data-menu-alvo
                 const htmlSemAlvo = htmlAtual.replace(/ data-menu-alvo="true"/gi, '');
                 CodeMirrorHtml.getDoc().setValue(htmlSemAlvo);
@@ -3297,7 +3305,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
             menuDeSessoes();
 
             // Manter selecao
-            $('.ui.dropdown.page-modification-section-select').dropdown('set selected', sectionId);
+            $('.dropdown.page-modification-section-select').dropdown('set selected', sectionId);
 
             const autoPreview = $('.page-modification-auto-preview').checkbox('is checked');
             if (autoPreview) {
@@ -3318,7 +3326,7 @@ ${htmlSkeleton.split('\n').map(line => line.trim()).join('\n')}
         moverSessao('down');
     });
 
-    $('.ui.dropdown.page-modification-target-select')
+    $('.dropdown.page-modification-target-select')
         .dropdown({
             onChange: function (value, text, $selectedItem) {
                 menuPages(value, { alertar: true });

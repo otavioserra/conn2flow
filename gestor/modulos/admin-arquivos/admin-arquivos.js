@@ -208,7 +208,7 @@ $(document).ready(function () {
 			for (var i = 0; i < itens.length; i++) {
 				var it = itens[i];
 				var nome = it.raiz ? t('breadcrumb-root') : it.nome;
-				if (i > 0) html += '<i class="right angle icon divider"></i>';
+				if (i > 0) html += '<span aria-hidden="true">/</span>';
 				if (i === itens.length - 1) {
 					html += '<div class="active section">' + adminArquivosEsc(nome) + '</div>';
 				} else {

@@ -962,7 +962,7 @@ function interface_historico($params = false){
 					'formato' => 'dataHora',
 				));
 				
-				$historico_linha .= (!$first_loop ? '.</div></div></div>':'') . '<div class="item"><i class="info circle blue icon"></i><div class="content"><div class="header">' . $data . ' - '.$autor.'</div><div class="description first-letter-uppercase">';
+				$historico_linha .= (!$first_loop ? '.</div></div></div>':'') . '<div class="item"><i data-lucide="info" class="size-4 text-sky-600"></i><div class="content"><div class="header">' . $data . ' - '.$autor.'</div><div class="description first-letter-uppercase">';
 				
 				$change_item = true;
 				$first_loop = false;
@@ -1191,6 +1191,7 @@ function interface_assets_incluir(){
 	// Fomantic quando ele não está na página.
 	gestor_incluir_biblioteca('controles');
 	if(function_exists('controles_incluir')) controles_incluir();
+	$_GESTOR['javascript'][] = recursos_tag_js('interface/campo-moeda.js', $versao);
 
 	if(gestor_framework_css_atual()['modo'] === 'tailwindcss'){
 		$asset = recursos_tag_js('interface/interface-tailwind.js', $versao);
@@ -1733,7 +1734,16 @@ function interface_formulario_campos($params = false){
 						unset($campo['id_arquivos']);
 					}
 
-					if(isset($campo['id_arquivos'])){
+					if (!empty($campo['caminho']) && preg_match('#^https?://#i', $campo['caminho'])) {
+						$fileId = '-1';
+						$caminho = $campo['caminho'];
+						$imgSrc = $caminho;
+						$nome = $imagepickJS['padroes']['nome'];
+						$data = $imagepickJS['padroes']['data'];
+						$tipo = $imagepickJS['padroes']['tipo'];
+						$found = true;
+					}
+					if(isset($campo['id_arquivos']) && !$found){
 						$id_arquivos = $campo['id_arquivos'];
 
 						$arquivos = banco_select_name
@@ -1781,7 +1791,7 @@ function interface_formulario_campos($params = false){
 							))
 							,
 							"arquivos",
-							"WHERE caminho='".$campo['caminho']."'"
+							"WHERE caminho='".banco_escape_field($campo['caminho'])."'"
 						);
 						
 						if($arquivos){
@@ -1863,11 +1873,11 @@ function interface_formulario_campos($params = false){
 					$imagepick = modelo_var_troca_tudo($imagepick,"#campo-nome#",$campo['nome']);
 					
 					$imagepick = modelo_var_troca_tudo($imagepick,"#file-id#",$fileId);
-					$imagepick = modelo_var_troca_tudo($imagepick,"#file-caminho#",$caminho);
+					$imagepick = modelo_var_troca_tudo($imagepick,"#file-caminho#",htmlspecialchars((string)$caminho, ENT_QUOTES, 'UTF-8'));
 					$imagepick = modelo_var_troca($imagepick,"#nome#",$nome);
 					$imagepick = modelo_var_troca($imagepick,"#tipo#",$tipo);
 					$imagepick = modelo_var_troca($imagepick,"#data#",$data);
-					$imagepick = modelo_var_troca($imagepick,"#img-src#",$imgSrc);
+					$imagepick = modelo_var_troca($imagepick,"#img-src#",htmlspecialchars((string)$imgSrc, ENT_QUOTES, 'UTF-8'));
 					
 					// ===== Incluir o imagepick na página
 					
