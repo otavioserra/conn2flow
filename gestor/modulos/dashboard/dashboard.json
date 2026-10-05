@@ -63,6 +63,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/dashboard.php"
+                    ],
+                    "tailwind_sources_reason": "req-224: inclui no scan do bundle os cartões gerados pelo renderer PHP do dashboard.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
@@ -549,6 +553,10 @@
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
+                    "tailwind_sources": [
+                        "..\/..\/..\/..\/dashboard.php"
+                    ],
+                    "tailwind_sources_reason": "req-224: inclui no scan do bundle os cartões gerados pelo renderer PHP do dashboard.",
                     "tailwind_dependencies": [
                         {
                             "type": "components",
