@@ -213,12 +213,12 @@
         "name": "Image Widget Tailwind",
         "id": "widget-imagem-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.3",
+        "version": "1.5",
         "checksum": {
-            "html": "22429c7136692b2510fa120db2948c30",
+            "html": "d091feab3a0f43a4bbfc23a8170659da",
             "css": "",
             "css_precompiled": "",
-            "combined": "22429c7136692b2510fa120db2948c30"
+            "combined": "d091feab3a0f43a4bbfc23a8170659da"
         }
     },
     {
@@ -655,36 +655,36 @@
         "name": "Interface Edit Form Tailwind",
         "id": "interface-formulario-edicao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.7",
+        "version": "1.8",
         "checksum": {
-            "html": "b70e3c66fb448ce1b97f557cd81ac005",
+            "html": "18697f051d39bfd6d7189962c5982990",
             "css": "",
             "css_precompiled": "",
-            "combined": "b70e3c66fb448ce1b97f557cd81ac005"
+            "combined": "18697f051d39bfd6d7189962c5982990"
         }
     },
     {
         "name": "Interface View Form Tailwind",
         "id": "interface-formulario-visualizacao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "ae5b7299656f7b9d632ffc99bd6e257a",
+            "html": "bc1c589bd5eedd10359a9a74b05ed7da",
             "css": "",
             "css_precompiled": "",
-            "combined": "ae5b7299656f7b9d632ffc99bd6e257a"
+            "combined": "bc1c589bd5eedd10359a9a74b05ed7da"
         }
     },
     {
         "name": "Inclusion Form Interface Tailwind",
         "id": "interface-formulario-inclusao-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.5",
+        "version": "1.6",
         "checksum": {
-            "html": "ab211ee4576cb20c954111028a79a437",
+            "html": "b1ba5e1af251b557798a8454b6855c6d",
             "css": "",
             "css_precompiled": "",
-            "combined": "ab211ee4576cb20c954111028a79a437"
+            "combined": "b1ba5e1af251b557798a8454b6855c6d"
         }
     },
     {
@@ -750,12 +750,12 @@
         "name": "Interface List Tailwind",
         "id": "interface-listar-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.8",
+        "version": "1.9",
         "checksum": {
-            "html": "745650db171e35c542f5e1ac5f8b5311",
+            "html": "f4828e780bd1ad9f5458d34981d50cb9",
             "css": "",
             "css_precompiled": "",
-            "combined": "745650db171e35c542f5e1ac5f8b5311"
+            "combined": "f4828e780bd1ad9f5458d34981d50cb9"
         }
     },
     {

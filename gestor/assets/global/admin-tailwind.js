@@ -67,10 +67,16 @@
 
     function desenharIcones() {
         if (window.lucide && typeof window.lucide.createIcons === 'function') {
-            var nomes = {'external alternate':'external-link','external':'external-link','check circle':'circle-check','times circle':'circle-x','info circle':'info','question circle':'circle-help','exclamation triangle':'triangle-alert','arrow alternate circle up':'circle-arrow-up','shopping cart':'shopping-cart','delete':'trash-2','dropdown':'chevron-down','font':'type','spinner':'loader-circle','undo':'undo-2','setting':'settings'};
+            var nomes = {'external alternate':'external-link','external':'external-link','check circle':'circle-check','times circle':'circle-x','info circle':'info','question circle':'circle-help','exclamation triangle':'triangle-alert','arrow alternate circle up':'circle-arrow-up','shopping cart':'shopping-cart','delete':'trash-2','dropdown':'chevron-down','font':'type','spinner':'loader-circle','undo':'undo-2','setting':'settings', 'th large':'layout-grid', 'th':'grid-2x2', 'grid layout':'grid-3x3', 'folder plus':'folder-plus', 'folder open':'folder-open', 'folder':'folder', 'edit outline':'pencil', 'edit':'pencil', 'trash alternate':'trash-2', 'trash':'trash-2', 'power off':'power-off', 'right angle':'chevron-right', 'exchange alternate':'arrow-left-right', 'clone':'copy', 'plus circle':'circle-plus', 'object group outline':'group', 'hand pointer':'mouse-pointer', 'square outline':'square', 'window maximize outline':'panels-top-left', 'volume up':'volume-2', 'file pdf outline':'file-text', 'linkify':'link'};
             document.querySelectorAll('i.icon:not([data-lucide])').forEach(function (icone) {
-                var nome = Array.from(icone.classList).filter(function (c) { return !['icon','loading','small','large','big','fitted','inverted'].includes(c); }).join(' ');
-                nome = nomes[nome] || nome;
+                var classes = Array.from(icone.classList);
+                var correspondencia = Object.keys(nomes).sort(function (a, b) { return b.length - a.length; }).find(function (key) {
+                    return key.split(' ').every(function (part) { return classes.includes(part); });
+                });
+                var nome = correspondencia ? nomes[correspondencia] : classes.filter(function (c) {
+                    return !['icon','loading','small','large','big','huge','fitted','inverted','blue','red','green','teal','yellow','grey','link','divider','outline'].includes(c)
+                        && !/^(text-|c2f-|size-)/.test(c);
+                }).join(' ');
                 if (!LUCIDE_NOME.test(nome)) nome = 'circle';
                 icone.setAttribute('data-lucide', nome);
                 icone.setAttribute('width', '16');

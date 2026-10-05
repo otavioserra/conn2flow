@@ -1,0 +1,600 @@
+{
+  "checks": [
+    {
+      "name": "dashboard/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/dashboard/"
+      }
+    },
+    {
+      "name": "dashboard/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "dashboard/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "dashboard/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "Dashboard P icon and legible name",
+      "ok": true,
+      "detail": {
+        "icon": true,
+        "name": "Admin Arquivos",
+        "header": 36
+      }
+    },
+    {
+      "name": "Dashboard P drag handle does not obscure icon",
+      "ok": true
+    },
+    {
+      "name": "Dashboard G cover position",
+      "ok": true,
+      "detail": "50% 15%"
+    },
+    {
+      "name": "admin-paginas/adicionar/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/admin-paginas/adicionar/"
+      }
+    },
+    {
+      "name": "admin-paginas/adicionar/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "admin-paginas/adicionar/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "admin-paginas/adicionar/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "Editor loads sections for active target",
+      "ok": true,
+      "detail": [
+        "req239-a",
+        "req239-b"
+      ]
+    },
+    {
+      "name": "Visual editor add panel opens above iframe",
+      "ok": true
+    },
+    {
+      "name": "publisher/adicionar/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/publisher/adicionar/"
+      }
+    },
+    {
+      "name": "publisher/adicionar/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher/adicionar/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher/adicionar/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "Publisher linked model preview stays on one line",
+      "ok": true
+    },
+    {
+      "name": "Publisher field uses compact horizontal controls",
+      "ok": true
+    },
+    {
+      "name": "publisher-highlights/adicionar/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/publisher-highlights/adicionar/"
+      }
+    },
+    {
+      "name": "publisher-highlights/adicionar/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher-highlights/adicionar/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher-highlights/adicionar/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "publisher-index/adicionar/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/publisher-index/adicionar/"
+      }
+    },
+    {
+      "name": "publisher-index/adicionar/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher-index/adicionar/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher-index/adicionar/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "publisher-pages/adicionar/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/publisher-pages/adicionar/"
+      }
+    },
+    {
+      "name": "publisher-pages/adicionar/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher-pages/adicionar/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher-pages/adicionar/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "publisher-pages/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/publisher-pages/"
+      }
+    },
+    {
+      "name": "publisher-pages/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher-pages/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "publisher-pages/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "Publisher page type native radio",
+      "ok": true
+    },
+    {
+      "name": "Publisher type filter changes route",
+      "ok": true
+    },
+    {
+      "name": "variables/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/variables/"
+      }
+    },
+    {
+      "name": "variables/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "variables/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "variables/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "Module picker replaces placeholder",
+      "ok": true
+    },
+    {
+      "name": "admin-ia/adicionar/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/admin-ia/adicionar/"
+      }
+    },
+    {
+      "name": "admin-ia/adicionar/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "admin-ia/adicionar/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "admin-ia/adicionar/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "AI connection edit fixture available",
+      "ok": true
+    },
+    {
+      "name": "AI history and global models use solid white cards",
+      "ok": true,
+      "detail": [
+        {
+          "background": "rgb(255, 255, 255)",
+          "border": "1px"
+        },
+        {
+          "background": "rgb(255, 255, 255)",
+          "border": "1px"
+        }
+      ]
+    },
+    {
+      "name": "admin-prompts-ia/adicionar/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/admin-prompts-ia/adicionar/"
+      }
+    },
+    {
+      "name": "admin-prompts-ia/adicionar/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "admin-prompts-ia/adicionar/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "admin-prompts-ia/adicionar/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "admin-arquivos/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/admin-arquivos/"
+      }
+    },
+    {
+      "name": "admin-arquivos/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "admin-arquivos/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "admin-arquivos/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "cookie-consent/adicionar/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/cookie-consent/adicionar/"
+      }
+    },
+    {
+      "name": "cookie-consent/adicionar/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "cookie-consent/adicionar/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "cookie-consent/adicionar/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "Cookie tabs use attached canonical layout",
+      "ok": true
+    },
+    {
+      "name": "Cookie category tab opens canonical panel",
+      "ok": true
+    },
+    {
+      "name": "products/add/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/products/add/"
+      }
+    },
+    {
+      "name": "products/add/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "products/add/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "products/add/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "products/add/ Quill",
+      "ok": true
+    },
+    {
+      "name": "products/add/ currency mask",
+      "ok": true,
+      "detail": "R$ 1.234,56"
+    },
+    {
+      "name": "products/add/ Image URL and folder",
+      "ok": true
+    },
+    {
+      "name": "products/add/ Image preview preserves room for controls",
+      "ok": true,
+      "detail": {
+        "preview": 160,
+        "details": 407
+      }
+    },
+    {
+      "name": "products/add/ Image URL synchronizes",
+      "ok": true
+    },
+    {
+      "name": "products/add/ File modal modern route",
+      "ok": true
+    },
+    {
+      "name": "Physical shipping selector",
+      "ok": true
+    },
+    {
+      "name": "Stripe catalog available",
+      "ok": true,
+      "detail": 5
+    },
+    {
+      "name": "Stripe inherited price locks fields",
+      "ok": true
+    },
+    {
+      "name": "Local origin unlocks fields",
+      "ok": true
+    },
+    {
+      "name": "stripe-products/adicionar/ authenticated",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "url": "https://conn2flow.local/stripe-products/adicionar/"
+      }
+    },
+    {
+      "name": "stripe-products/adicionar/ no JS errors",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "stripe-products/adicionar/ resolved fields",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "stripe-products/adicionar/ mobile geometry",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "stripe-products/adicionar/ Quill",
+      "ok": true
+    },
+    {
+      "name": "stripe-products/adicionar/ currency mask",
+      "ok": true,
+      "detail": "R$ 1.234,56"
+    },
+    {
+      "name": "stripe-products/adicionar/ Image URL and folder",
+      "ok": true
+    },
+    {
+      "name": "stripe-products/adicionar/ Image preview preserves room for controls",
+      "ok": true,
+      "detail": {
+        "preview": 160,
+        "details": 1048
+      }
+    },
+    {
+      "name": "stripe-products/adicionar/ Image URL synchronizes",
+      "ok": true
+    },
+    {
+      "name": "stripe-products/adicionar/ File modal modern route",
+      "ok": true
+    }
+  ],
+  "pages": [
+    {
+      "route": "dashboard/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "admin-paginas/adicionar/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "publisher/adicionar/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "publisher-highlights/adicionar/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "publisher-index/adicionar/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "publisher-pages/adicionar/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "publisher-pages/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "variables/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "admin-ia/adicionar/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "admin-prompts-ia/adicionar/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "admin-arquivos/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "cookie-consent/adicionar/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "products/add/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    },
+    {
+      "route": "stripe-products/adicionar/",
+      "metrics": {
+        "overflow": 0,
+        "unresolved": []
+      },
+      "overflow": 0
+    }
+  ],
+  "skipped": [
+    {
+      "name": "Page history visual row",
+      "reason": "Nenhuma ocorrência de histórico nas páginas existentes consultadas; estrutura PHP/CSS revisada.",
+      "candidates": 16
+    }
+  ],
+  "finished_at": "2026-10-05T21:31:08.069Z",
+  "failed": 0
+}

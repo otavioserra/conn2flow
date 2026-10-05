@@ -15,19 +15,19 @@
 <h4 class="text-lg font-semibold text-slate-800 my-4 dividing header">Opções</h4>
 
 <div class="widget-options-tabs">
-<div class="flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuOpcoesWidget">
-    <a class="c2fc-aba active item" data-tab="cc-general"><i data-lucide="settings" class="size-4 shrink-0 icon "></i> Geral</a>
+<div class="c2fc-abas-lista c2fc-anexa top attached tabular menu menuOpcoesWidget">
+    <a class="c2fc-aba active item" data-tab="cc-general"><i data-lucide="info" class="size-4 shrink-0 icon "></i> Geral</a>
     <a class="c2fc-aba item" data-tab="cc-categories"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Categorias</a>
-    <a class="c2fc-aba item" data-tab="cc-texts"><i data-lucide="circle" class="size-4 shrink-0 icon "></i> Textos</a>
+    <a class="c2fc-aba item" data-tab="cc-texts"><i data-lucide="info" class="size-4 shrink-0 icon "></i> Textos</a>
 </div>
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="cc-general">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="cc-general">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-3 my-4 three fields">
         <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Versão do aviso</label><input class="c2fc-campo-entrada" type="text" data-schema-key="version" placeholder="1"></div>
         <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Validade da decisão (dias)</label><input class="c2fc-campo-entrada" type="number" min="1" step="1" data-schema-key="expiry_days"></div>
         <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Posição do aviso</label><select data-c2f-select class="c2fc-campo-entrada dropdown" data-schema-key="position"><option value="bottom-left">Canto inferior esquerdo</option><option value="bottom-right">Canto inferior direito</option><option value="bottom">Faixa inferior</option><option value="center">Centro</option></select></div>
     </div>
     <div class="c2fc-rotulo label" style="margin: 0 0 12px; display: block;">
-        <i data-lucide="circle" class="size-4 shrink-0 icon "></i>
+        <i data-lucide="info" class="size-4 shrink-0 icon "></i>
         Trocar a versão faz o aviso voltar para quem já tinha decidido. Troque quando mudar as categorias ou a política.
     </div>
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields">
@@ -40,18 +40,18 @@
         <div class="c2fc-campo min-w-0 mb-4 field"><div class="c2fc-chave checkbox"><input type="checkbox" data-schema-key="consent_mode"><span class="c2fc-chave-trilho" aria-hidden="true"></span><label class="c2fc-campo-rotulo">Enviar sinais do Google Consent Mode v2</label></div></div>
     </div>
 </div>
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="cc-categories">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="cc-categories">
     <div class="c2fc-rotulo label" style="margin: 0 0 12px; display: block;">
         <i data-lucide="info" class="size-4 shrink-0 icon "></i>
         O identificador é o que a página usa para liberar um script: <code>&lt;script type="text/plain" data-cookie-category="analytics"&gt;</code>. Categoria obrigatória vem ligada e o visitante não pode desligar. Os sinais do Google usam os identificadores <code>analytics</code>, <code>marketing</code> e <code>preferences</code>.
     </div>
-    <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled compact table" data-schema-list="categories" data-columns='[{"key": "id", "type": "text"}, {"key": "name", "type": "text"}, {"key": "description", "type": "textarea"}, {"key": "required", "type": "checkbox"}]'>
+    <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-separate border-spacing-2 my-4 table" data-schema-list="categories" data-columns='[{"key": "id", "type": "text"}, {"key": "name", "type": "text"}, {"key": "description", "type": "textarea"}, {"key": "required", "type": "checkbox"}]'>
         <thead><tr><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:150px;">Identificador</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:200px;">Nome</th><th class="border-b border-slate-200 px-3 py-2 align-top">Descrição</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:100px;">Obrigatória</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:140px;"></th></tr></thead>
         <tbody></tbody>
     </table></div>
     <button type="button" class="c2fc-botao c2fc-botao-primario primary button" data-schema-list-add="categories"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Categoria</button>
 </div>
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="cc-texts">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="cc-texts">
         <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Título do aviso</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.title" placeholder=""></div>
         <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Mensagem do aviso</label><textarea class="c2fc-campo-entrada" rows="2" data-schema-key="texts.message"></textarea></div>
         <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Botão aceitar todos</label><input class="c2fc-campo-entrada" type="text" data-schema-key="texts.accept_all" placeholder=""></div>
@@ -88,7 +88,7 @@
 </a>
 
 <div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
-    <i data-lucide="circle" class="size-4 shrink-0 icon "></i>
+    <i data-lucide="info" class="size-4 shrink-0 icon "></i>
     <div class="content">
         <div class="text-lg font-semibold text-slate-800 my-4 header">Três peças no mesmo modelo</div>
         <p>O modelo desenha o aviso, o cartão de preferências e o botão que reabre o cartão. As categorias e os textos vêm das opções acima. Qualquer elemento com <code>data-cookie-consent-open</code>, ou um link para <code>#cookie-consent</code>, também abre o cartão: use no rodapé.</p>
@@ -101,16 +101,16 @@
     <a class="c2fc-aba item" data-tab="hep-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> Editor HTML</a>
     <a class="c2fc-aba item" data-tab="hep-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Código do widget</a>
 </div>
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="hep-preview">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="hep-preview">
     <div style="position: relative;">
         <iframe id="iframe-widget-preview" style="width:100%;height:720px;border:1px solid #ccc;"></iframe>
         <div class="c2fc-cobertura ui dimmer hep-preview-dimmer"><div class="c2fc-giro loader"></div></div>
     </div>
 </div>
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-editor">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-editor">
     #html-editor#
 </div>
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-widget">
+<div class="c2fc-painel-aba rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="hep-widget">
     <div class="rounded-lg border border-sky-200 bg-sky-50 text-sky-800 p-4 my-4 icon message info">
         <i data-lucide="blocks" class="size-4 shrink-0 icon "></i>
         <div class="content">

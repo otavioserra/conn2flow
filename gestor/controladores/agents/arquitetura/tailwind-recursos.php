@@ -657,11 +657,22 @@ function tailwind_recursos_input_temporario(array $resource, string $centralInpu
     return implode("\n", $lines) . "\n";
 }
 
+/** Hash canônico de texto, independente das quebras de linha do checkout. */
+function tailwind_recursos_hash_arquivo(string $path): string
+{
+    if (!in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), ['html', 'css', 'js'], true)) {
+        return hash_file('sha256', $path) ?: '';
+    }
+    $conteudo = file_get_contents($path);
+    if ($conteudo === false) return '';
+    return hash('sha256', str_replace(["\r\n", "\r"], "\n", $conteudo));
+}
+
 function tailwind_recursos_fingerprint(array $resource, string $centralHash, string $version): string
 {
     $sourceHashes = [];
     foreach (array_merge([$resource['html']], $resource['sources']) as $source) {
-        $sourceHashes[tailwind_recursos_normalizar_path($source)] = hash_file('sha256', $source) ?: '';
+        $sourceHashes[tailwind_recursos_normalizar_path($source)] = tailwind_recursos_hash_arquivo($source);
     }
     $entradas = [
         'manifest_version' => TAILWIND_RECURSOS_MANIFEST_VERSION,
@@ -901,7 +912,7 @@ function tailwind_recursos_compilar(array $map): array
     $sourceStats = tailwind_recursos_estatisticas_fontes($resources);
     $stats['resources_with_sources'] = $sourceStats['resources_with_sources'];
     $stats['additional_sources'] = $sourceStats['additional_sources'];
-    $centralHash = hash_file('sha256', $centralInput) ?: '';
+    $centralHash = tailwind_recursos_hash_arquivo($centralInput);
     $contract = tailwind_recursos_browser_contract($centralInput);
     $stats['browser_contract'] = $contract['path'];
 
@@ -930,7 +941,7 @@ function tailwind_recursos_compilar(array $map): array
         $fingerprint = tailwind_recursos_fingerprint($resource, $centralHash, $version);
         $old = $oldEntries[$resource['key']] ?? null;
         if (!$force && is_array($old) && ($old['fingerprint'] ?? '') === $fingerprint && tailwind_recursos_output_valido($resource['output'])) {
-            $outputHash = hash_file('sha256', $resource['output']) ?: '';
+            $outputHash = tailwind_recursos_hash_arquivo($resource['output']);
             if (($old['output_hash'] ?? '') === $outputHash) {
                 $stats['cached']++;
                 $newEntries[$resource['key']] = $old;
@@ -1000,7 +1011,7 @@ function tailwind_recursos_compilar(array $map): array
 
         $newEntries[$resource['key']] = [
             'fingerprint' => $resource['fingerprint'],
-            'output_hash' => hash_file('sha256', $resource['output']) ?: '',
+            'output_hash' => tailwind_recursos_hash_arquivo($resource['output']),
             'output' => tailwind_recursos_normalizar_path(tailwind_recursos_relativo($GESTOR_DIR, $resource['output'])),
             'tailwind_version' => $version,
             'sources' => array_map(fn($v) => tailwind_recursos_normalizar_path(tailwind_recursos_relativo($GESTOR_DIR, $v)), array_merge([$resource['html']], $resource['sources'])),

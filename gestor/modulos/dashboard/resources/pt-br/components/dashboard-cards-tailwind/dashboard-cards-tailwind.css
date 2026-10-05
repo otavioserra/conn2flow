@@ -313,3 +313,12 @@
 .dashboard-edit-thumb { width: 1rem; height: 1rem; background: white; border-radius: 50%; transition: transform .2s; }
 #dashboard-edit-mode[aria-checked="true"] .dashboard-edit-track { background: #0284c7; }
 #dashboard-edit-mode[aria-checked="true"] .dashboard-edit-thumb { transform: translateX(1.1rem); }
+
+/* REQ-239: contexto legível no compacto e enquadramento da capa operacional. */
+#dashboard-sortable-cards.density-p .dashboard-card-header { width: 2.25rem !important; flex: 0 0 2.25rem; }
+#dashboard-sortable-cards.density-p .dashboard-module-card { background: #f8fafccc; }
+#dashboard-sortable-cards.density-p .dashboard-card-cover-wrapper { display: none !important; }
+#dashboard-sortable-cards.density-p .dashboard-card-svg { display: flex !important; }
+#dashboard-sortable-cards.density-p .dashboard-card-svg svg { width: 1.5rem; height: 1.5rem; }
+#dashboard-sortable-cards.density-p .dashboard-card-title { font-size: .75rem; font-weight: 600; color: #1e293b; }
+#dashboard-sortable-cards.density-g .dashboard-module-cover { height: 100% !important; object-position: center 15% !important; }

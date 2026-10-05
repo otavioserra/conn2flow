@@ -16101,6 +16101,15 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "interface",
+        "id": "widget-image-url-label",
+        "valor": "URL da imagem",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "interface",
         "id": "field-positive-value",
@@ -16915,6 +16924,15 @@
         "modulo": "interface",
         "id": "alert-csrf-action-invalid",
         "valor": "Action refused: the link lacks your session security token. Use the panel buttons.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "interface",
+        "id": "widget-image-url-label",
+        "valor": "Image URL",
         "tipo": "string",
         "grupo": null,
         "descricao": null

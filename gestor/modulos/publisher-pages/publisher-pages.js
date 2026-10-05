@@ -600,14 +600,8 @@ $(document).ready(function () {
 	}
 
 	if ($('#_gestor-interface-listar').length > 0) {
-		$('.radio.checkbox').checkbox({
-			onChange: function () {
-				const tipo = $(this).val();
-
-				var currentUrl = window.location.href;
-				var newUrl = updateQueryStringParameter(currentUrl, 'tipo', tipo);
-				window.location.href = newUrl;
-			}
+		$('input[type="radio"][name="tipo"]').on('change', function () {
+			if (this.checked) window.location.href = updateQueryStringParameter(window.location.href, 'tipo', this.value);
 		});
 
 		$('.gestorModule')

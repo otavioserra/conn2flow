@@ -5,12 +5,12 @@
 
 <div class="c2fc-campo">
     <label class="c2fc-campo-rotulo"><span>Source Publisher</span>
-        <div class="c2fc-selo">
+        <div class="c2fc-selo bg-sky-50 text-sky-800">
             <i data-lucide="bookmark" class="size-4 shrink-0"></i>
             Choose which publisher will populate this highlights block (e.g.: News, Articles, Live Streams, Notes).
         </div>
     </label>
-    <select id="publisher_id" class="c2fc-campo-entrada dropdown publisherDropdown" name="publisher_id">
+    <select data-c2f-select="1" id="publisher_id" class="c2fc-campo-selecao dropdown publisherDropdown" name="publisher_id">
         <option value="">#publisher_placeholder_option#</option>
         #publisher_id_options#
     </select>
@@ -21,14 +21,14 @@
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <div class="c2fc-campo">
         <label class="c2fc-campo-rotulo">Content Selection Rule</label>
-        <select id="rule" class="c2fc-campo-entrada dropdown" name="rule">
+        <select data-c2f-select="1" id="rule" class="c2fc-campo-selecao dropdown" name="rule">
             <option value="latest">Automatic (latest publications)</option>
             <option value="manual">Manual (item-by-item curation)</option>
         </select>
     </div>
     <div class="c2fc-campo" id="order-by-wrapper">
         <label class="c2fc-campo-rotulo">Sort Order</label>
-        <select id="order_by" class="c2fc-campo-entrada dropdown" name="order_by">
+        <select data-c2f-select="1" id="order_by" class="c2fc-campo-selecao dropdown" name="order_by">
             <option value="date_desc">By date (newest first)</option>
             <option value="date_asc">By date (oldest first)</option>
             <option value="title_asc">Alphabetical (A-Z)</option>
@@ -39,7 +39,7 @@
 
 <div class="c2fc-campo" id="manual-items-wrapper" style="display:none;">
     <label class="c2fc-campo-rotulo">Selected items (order)</label>
-    <div class="c2fc-selo" style="margin: 8px 0; display: block;">
+    <div class="c2fc-selo bg-sky-50 text-sky-800" style="margin: 8px 0; display: block;">
         <i data-lucide="mouse-pointer" class="size-4 shrink-0"></i>
         Search and select the active publications of the chosen publisher below. The insertion order is
         preserved on render — drag the tags to reorder. To remove an item, click the &laquo;x&raquo; next to it.
@@ -96,11 +96,11 @@
 
 <div class="c2fc-campo">
     <label class="c2fc-campo-rotulo">Template (Resource)</label>
-    <select id="template_id" class="c2fc-campo-entrada dropdown templateDropdown" name="template_id">
+    <select data-c2f-select="1" id="template_id" class="c2fc-campo-selecao dropdown templateDropdown" name="template_id">
         <option value="">#template_placeholder_option#</option>
         #template_id_options#
     </select>
-    <div class="c2fc-selo" style="margin: 8px 0; display: block;">
+    <div class="c2fc-selo bg-sky-50 text-sky-800" style="margin: 8px 0; display: block;">
         <i data-lucide="arrow-left-right" class="size-4 shrink-0"></i>
         When you select a template, its HTML and CSS will be loaded into the editor below. You can
         edit them freely from there — the editor content (saved in the database) is always used for
@@ -114,9 +114,9 @@
     <i data-lucide="plus" class="size-4 shrink-0"></i> Add New Template
 </a>
 
-<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Variable Mapping <kbd class="c2fc-selo">[[item#...]]</kbd>
-    <kbd class="c2fc-selo"><i data-lucide="arrow-left-right" class="size-4 shrink-0"></i></kbd>
-    <kbd class="c2fc-selo">Publisher Fields</kbd>
+<h4 class="mt-6 mb-3 border-b border-slate-200 pb-2 font-semibold">Variable Mapping <kbd class="c2fc-selo bg-sky-50 text-sky-800">[[item#...]]</kbd>
+    <kbd class="c2fc-selo bg-sky-50 text-sky-800"><i data-lucide="arrow-left-right" class="size-4 shrink-0"></i></kbd>
+    <kbd class="c2fc-selo bg-sky-50 text-sky-800">Publisher Fields</kbd>
 </h4>
 
 <div class="rounded-lg border border-slate-200 p-4 min-w-0 template-options-wrapper" style="display:none;">
@@ -134,7 +134,7 @@
             <div class="min-w-0">
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-3 template-fields-list">
                     <div class="min-w-0">
-                        <h5>Template Variables <kbd class="c2fc-selo">[[item#...]]</kbd></h5>
+                        <h5>Template Variables <kbd class="c2fc-selo bg-sky-50 text-sky-800">[[item#...]]</kbd></h5>
                         <div id="available-fields-list"></div>
                     </div>
                     <div class="min-w-0">
@@ -142,7 +142,7 @@
                         <div id="missing-fields-list"></div>
                     </div>
                     <div class="min-w-0">
-                        <h5>Linked: Variable <kbd class="c2fc-selo"><i
+                        <h5>Linked: Variable <kbd class="c2fc-selo bg-sky-50 text-sky-800"><i
                                     class="exchange alternate icon"></i></kbd> Field</h5>
                         <div id="linked-fields-list"></div>
                     </div>

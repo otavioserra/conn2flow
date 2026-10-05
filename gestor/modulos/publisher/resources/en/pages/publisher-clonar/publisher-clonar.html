@@ -22,14 +22,14 @@
         #template_id_options#
     </select>
     <!-- templates-alguns-linkados-msg < -->
-    <div class="icon message visible info rounded-lg border border-sky-200 bg-sky-50 p-4 my-4">
+    <div class="c2fc-alerta c2fc-alerta-info icon message visible info rounded-lg border border-sky-200 bg-sky-50 p-4 my-4">
         <i data-lucide="bell" class="size-4 inline-block bell icon"></i>
         <div class="content">
             <div class="header font-semibold text-slate-800 my-4">Templates Linked to Publisher</div>
             <p>Some templates were found linked to some publisher records in the selector above and marked like this:
-                <kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Template</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
-                        class="exchange alternate small icon"></i></kbd><kbd
-                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publisher</kbd>.<br>A template is only allowed to be linked to a single
+                <span class="publisher-link-preview"><kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Template</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
+                        data-lucide="arrow-right" class="size-4"></i></kbd><kbd
+                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publisher</kbd></span>.<br>A template is only allowed to be linked to a single
                 publisher record.
             </p>
         </div>
@@ -41,9 +41,9 @@
         <div class="content">
             <div class="header font-semibold text-slate-800 my-4">Templates Linked to Publisher</div>
             <p>All templates found are linked to a publisher record in the selector above and marked like this:
-                <kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Template</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
-                        class="exchange alternate small icon"></i></kbd><kbd
-                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publisher</kbd>.<br>A template is only allowed to be linked to a single
+                <span class="publisher-link-preview"><kbd class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Template</kbd><kbd class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i
+                        data-lucide="arrow-right" class="size-4"></i></kbd><kbd
+                    class="basic label c2fc-selo bg-slate-100 text-slate-700 break-all">Publisher</kbd></span>.<br>A template is only allowed to be linked to a single
                 publisher record.
             </p>
             <div class="list">
@@ -84,13 +84,13 @@
     <i data-lucide="plus" class="size-4 inline-block plus icon"></i> Add New Template
 </a>
 
-<a class="button brown hidden c2fc-botao c2fc-botao-primario" id="edit-template"
+<a class="button brown hidden c2fc-botao c2fc-botao-editar" id="edit-template"
     href="@[[pagina#url-raiz]]@admin-templates/editar/?id=noticias-imagem-destaque"
     data-c2f-dica="Click to edit this template" data-position="top center" data-inverted="">
     <i data-lucide="pencil" class="size-4 inline-block edit icon"></i> Edit Template
 </a>
 
-<a class="button teal hidden c2fc-botao c2fc-botao-primario" id="clone-template"
+<a class="button teal hidden c2fc-botao c2fc-botao-clonar" id="clone-template"
     href="@[[pagina#url-raiz]]@admin-templates/clonar/?id=noticias-imagem-destaque"
     data-c2f-dica="Click to clone this template" data-position="top center" data-inverted="">
     <i data-lucide="copy" class="size-4 inline-block clone icon"></i> Clone Template
@@ -108,14 +108,14 @@
     </div>
 
     <div class="hidden template-options-subwrapper">
-        <h4 class="dividing header font-semibold text-slate-800 my-4">Field Linking: <kbd class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Template</kbd><kbd
+        <h4 class="dividing header font-semibold text-slate-800 my-4">Field Linking: <span class="publisher-link-preview"><kbd class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Template</kbd><kbd
                 class="teal icon label c2fc-selo bg-slate-100 text-slate-700 break-all"><i data-lucide="arrow-left-right" class="size-4 inline-block exchange alternate icon"></i></kbd><kbd
-                class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Publisher</kbd></h4>
+                class="label c2fc-selo bg-slate-100 text-slate-700 break-all">Publisher</kbd></span></h4>
         <div class="segment template-link-publisher-fields relative rounded-lg border border-slate-200 p-4 my-4">
             <div class="min-w-0">
                 <div class="row min-w-0">
                     <div class="sixteen wide column min-w-0">
-                        <div class="template-fields-list grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <div class="template-fields-list grid grid-cols-1 gap-3">
                             <div class="four wide column min-w-0">
                                 <h5>Template Fields</h5>
                                 <div id="available-fields-list"></div>
@@ -147,7 +147,7 @@
     <i data-lucide="plus" class="size-4 inline-block plus icon"></i> Add Field
 </div>
 
-<div id="add-all-fields-btn" class="button teal hidden c2fc-botao c2fc-botao-primario" data-c2f-dica="Click to add all template fields"
+<div id="add-all-fields-btn" class="button teal hidden c2fc-botao c2fc-botao-clonar" data-c2f-dica="Click to add all template fields"
     data-position="top center" data-inverted="">
     <i data-lucide="arrow-left-right" class="size-4 inline-block exchange alternate icon"></i> Add all fields
 </div>
@@ -164,7 +164,7 @@
     <span class="msg-nenhum-resultado-dropdown" style="display:none">No results found</span>
     <span class="msg-sem-resultados" style="display:none">No Results</span>
 
-    <div class="field-row-skeleton segment field-row relative rounded-lg border border-slate-200 p-4 my-4" data-id="" style="margin-bottom: 10px;">
+    <div class="field-row-skeleton segment field-row relative rounded-lg border border-slate-200 bg-white p-3 my-2" data-id="" style="margin-bottom: 10px;">
         <div class="fields grid grid-cols-1 gap-4 md:grid-cols-2">
             <div class="four wide field c2fc-campo min-w-0 mb-4">
                 <label class="c2fc-campo-rotulo">Label</label>

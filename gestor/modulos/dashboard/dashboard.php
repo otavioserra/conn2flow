@@ -947,9 +947,6 @@ function dashboard_cards(){
 		
 		// SVG do módulo
 		$svg = dashboard_gerar_svg_modulo($modulo['icone'], $modulo['icone2']);
-		if(!empty($visual['imagem_url'])){
-			$svg = '';
-		}
 		$cel_aux = modelo_var_troca($cel_aux, "#modulo-svg#", $svg);
 		
 		// Link do módulo

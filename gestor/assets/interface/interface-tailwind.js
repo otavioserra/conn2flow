@@ -298,10 +298,12 @@
             return;
         }
 
-        caixa.innerHTML = '<ul class="list-disc space-y-1 pl-5">'
+        caixa.classList.add('c2fc-alerta', 'c2fc-alerta-erro');
+        caixa.innerHTML = '<i data-lucide="circle-alert" class="size-5" aria-hidden="true"></i><ul class="space-y-1">'
             + erros.map(function (erro) { return '<li>' + erro + '</li>'; }).join('')
             + '</ul>';
         caixa.classList.remove('hidden');
+        if (window.lucide) window.lucide.createIcons({ root: caixa });
     }
 
     function ligarFormularios() {

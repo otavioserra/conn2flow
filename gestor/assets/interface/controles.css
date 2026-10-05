@@ -110,11 +110,11 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
    O PHP do interface monta a lista com a marcação do Fomantic (`item` > ícone + `content` > `header` +
    `description`). Sem o CSS dele, cada parte caía numa linha; aqui ícone, data/autor e alterações ficam
    numa linha só, como antes. */
-[data-c2f-historico] .list > .item { display: flex; align-items: baseline; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+[data-c2f-historico] .list > .item { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
 [data-c2f-historico] .list > .item:last-child { border-bottom: 0; }
 [data-c2f-historico] .list > .item > i.icon { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: #e0f2fe; color: #0284c7; font: 700 11px/1 system-ui, sans-serif !important; font-style: normal; transform: translateY(2px); }
 [data-c2f-historico] .list > .item > i.icon::before { content: "i" !important; font-family: system-ui, sans-serif !important; }
-[data-c2f-historico] .list > .item > .content { display: block; min-width: 0; }
+[data-c2f-historico] .list > .item > .content { display: flex; flex-flow: row nowrap; align-items: center; gap: 12px; min-width: 0; }
 [data-c2f-historico] .list > .item > .content > .header { display: inline; font-weight: 600; color: #0f172a; }
 [data-c2f-historico] .list > .item > .content > .header::after { content: " — "; font-weight: 400; color: #94a3b8; }
 [data-c2f-historico] .list > .item > .content > .description { display: inline; color: #475569; }
@@ -270,3 +270,51 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
 .c2fc-aba { display: inline-flex; align-items: center; gap: 6px; }
 .c2fc-aba:hover { color: #334155; }
 .c2fc-aba svg { width: 16px; height: 16px; }
+
+/* REQ-239: controles compartilhados e toolbar acima do iframe. */
+.c2fc-botao.hidden, .c2fc-alerta.hidden { display: none; }
+.c2fc-botao-editar { border-color: #0d9488; background: #0d9488; color: #fff; }
+.c2fc-botao-editar:hover { border-color: #0f766e; background: #0f766e; }
+.c2fc-botao-clonar { border-color: #4f46e5; background: #4f46e5; color: #fff; }
+.c2fc-botao-clonar:hover { border-color: #4338ca; background: #4338ca; }
+.c2fc-alerta { display: flex; align-items: flex-start; gap: 12px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 16px; }
+.c2fc-alerta-info { border-color: #bae6fd; background: #f0f9ff; color: #075985; }
+.c2fc-alerta-erro { border-color: #fecaca; background: #fef2f2; color: #991b1b; }
+.c2fc-alerta > svg { flex: 0 0 16px; margin-top: 2px; }
+.c2fc-alerta > .content { flex: 1; min-width: 0; }
+.c2fc-alerta .header { margin: 0 0 4px; font-weight: 600; }
+.c2fc-alerta kbd { display: inline; padding: 2px 4px; white-space: nowrap; }
+.publisher-link-preview { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.publisher-link-preview svg { display: inline-block; vertical-align: middle; }
+.c2fc-campo-rotulo svg { border: 0; outline: 0; }
+._gestor-widgetImage-cont { display: flex; flex-direction: column; gap: 16px; }
+._gestor-widgetImage-cont > .fileImageParent { width: 100%; max-height: 160px; flex-shrink: 0; }
+._gestor-widgetImage-cont > .fileImageParent img { max-height: 160px; max-width: 100%; width: auto; height: auto; object-fit: contain; }
+._gestor-widgetImage-cont > .fileImageParent + div { flex: 1; min-width: 0; }
+@media (min-width: 640px) {
+    ._gestor-widgetImage-cont { flex-direction: row; }
+    ._gestor-widgetImage-cont > .fileImageParent { width: 160px; }
+}
+.editor-texto-container.ql-container { height: auto; min-height: 150px; }
+.editor-texto-container .ql-editor { min-height: 150px; max-height: 480px; }
+.c2fc-campo-selecao, .c2fc-campo-moeda { width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; padding: 8px 12px; color: #0f172a; font-size: 14px; }
+.html-editor-visual-topbar { position: relative; z-index: 50; overflow: visible !important; }
+.html-editor-add-panel, .html-editor-view-options-panel, .c2fc-select-painel, [data-c2f-dica]::after { z-index: 100050 !important; }
+.previsualizar .html-editor-visual-topbar [data-c2f-dica]::after { top: calc(100% + 6px); bottom: auto; }
+[data-c2f-historico] .item, [data-c2f-historico] .content { display: flex; flex-flow: row nowrap; align-items: center; gap: 12px; font-size: 14px; color: #475569; }
+[data-c2f-historico] .item { padding: 8px 0; }
+[data-c2f-historico] .header { white-space: nowrap; }
+[data-c2f-historico] .item > svg { flex: 0 0 16px; color: #0284c7; }
+.c2f-breadcrumb .c2f-crumb { color: #0369a1; cursor: pointer; }
+.c2f-search-box input, .c2f-filter-accordion { background: #fff; border-color: #cbd5e1; }
+.template-fields-list #linked-fields-list > *, .template-link-publisher-fields .field-row { min-width: 0; }
+.field-row .fields { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
+.field-row .fields > .field { flex: 1 1 140px; margin-bottom: 0; }
+.field-row .fields > .two.wide { flex: 0 0 auto; display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.field-row .remove-field-btn, .field-row .move-up-btn, .field-row .move-down-btn { width: 28px; height: 28px; padding: 4px; }
+.template-fields-list .label, .template-link-publisher-fields .label { display: inline-flex; align-items: center; gap: 6px; }
+.field-row .icon:not(.button), .c2fc-campo-rotulo .icon { border: 0; }
+.publisher-type-choice { display: flex; align-items: center; gap: 8px; }
+.publisher-highlights-editor .menuContainerPagina { margin-bottom: 0; }
+.publisher-highlights-editor .containerPagina { border-top-left-radius: 0; border-top-right-radius: 0; }
+[data-schema-list="categories"] th, [data-schema-list="categories"] td { padding: 8px; vertical-align: top; min-width: 120px; }
