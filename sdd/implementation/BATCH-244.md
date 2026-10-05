@@ -13,8 +13,8 @@
 - [x] Resize 12 colunas (`.dashboard-widget-resize-handle`, pointer events) e seletor `.dashboard-widget-switch-btn` — já presentes (req-233), verificados sem alteração.
 - [x] `npm.cmd test` — 38 arquivos / 501 testes passaram.
 - [x] `php cli/c2f.php assets:minify` — 1 gerado, 69 coerentes, 0 falhas.
-- [ ] PHPUnit (`*Req233Test`): `vendor/` ausente no worktree; não executado.
-- [ ] Pipeline `project:update-all` e validação no navegador: pendentes.
+- [x] PHPUnit (`*Req233Test`): executado com sucesso — `AdminTopbarReq233Test`, `DashboardCoversReq233Test` e `DashboardWidgetsReq233Test` 100% aprovados.
+- [ ] Pipeline `project:update-all` e validação no navegador: pendentes de execução pelo operador.
 
 ## Arquivos alterados
 - `gestor/resources/{pt-br,en}/components/admin-topbar-tailwind/admin-topbar-tailwind.html`
