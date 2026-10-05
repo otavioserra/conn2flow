@@ -16,6 +16,8 @@
 
 global $_GESTOR;
 
+require_once __DIR__ . '/db-data.php';
+
 // req-028: todos os geradores de tag <script>/<link> resolvem a URL por `recursos_url()`.
 // O `config.php` já carrega a biblioteca no fluxo normal; o guard cobre as entradas que
 // montam o $_GESTOR por conta própria (CLI de pipeline e bootstrap de testes).

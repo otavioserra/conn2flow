@@ -1,5 +1,21 @@
 # Validation Checklist
 
+## BATCH-243 — Tabelas JSON particionadas (req-234)
+
+- [x] Biblioteca `db-data.php` com as quatro funções requeridas e carregamento pelo bootstrap/entradas CLI.
+- [x] Round-trip estrito com registros completos, Unicode, floats e limite padrão real de 80 MiB.
+- [x] Ausência, corrupção de um byte/hash e manifesto inválido abortam com `RuntimeException`; manifesto inválido não recorre a monolítico antigo.
+- [x] Crescimento, redução de partes e retorno a monolítico/array vazio limpam arquivos obsoletos.
+- [x] Falha ao gravar a segunda parte temporária preserva a tabela publicada e limpa os temporários já gravados.
+- [x] Comparação SQL recebe todas as partes; nenhuma retirada falsa; parte ausente aborta antes de mudanças SQL. SQLite em memória com adaptação apenas de descoberta de colunas MySQL.
+- [x] Compilador escreve partes, relê versão/checksum e publica `partitioned`/`total_parts`; sincronizador de plugins também compara o conjunto completo.
+- [x] Exportação reversa → ZIP → extração → recuperação de HTML/metadados preserva todos os registros.
+- [x] Checksums detectam mudanças além da primeira parte e ignoram alterações do timestamp de geração.
+- [x] PHPUnit focado aprovado; `php -l` e `git diff --check` limpos.
+- [x] Suíte geral comparada com checkout limpo de `3e2ad2e9`: mesmos 3 erros de Stripe e 2 falhas de CRLF.
+
+Evidências, comandos e limites: [BATCH-243](../implementation/BATCH-243.md). Banco principal e arquivos de outros lotes preservados; validação com fixtures temporárias, sem deploy de instalação.
+
 ## BATCH-239 — Integração Oficial da V3.0 e Rota Canônica das Capas (req-230)
 
 - [x] CA-1 (Capas 200 OK): Todas as capas dos módulos carregam com sucesso (HTTP 200 OK) no Dashboard sem erro 404 (validado via curl e `req227-covers-test.php` 13/13).

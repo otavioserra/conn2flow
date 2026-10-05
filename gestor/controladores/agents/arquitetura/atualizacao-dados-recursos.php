@@ -49,6 +49,7 @@ global $SYSTEM_PATH, $BASE_PATH, $GESTOR_DIR, $RESOURCES_DIR, $MODULES_DIR, $DB_
 $SYSTEM_PATH = realpath(__DIR__ . '/../../../../') . DIRECTORY_SEPARATOR; // raiz do repositório
 
 require_once $SYSTEM_PATH . 'gestor/bibliotecas/lang.php';
+require_once $SYSTEM_PATH . 'gestor/bibliotecas/db-data.php';
 // req-032: vocabulario de frequencias e derivacao da expressao cron. A biblioteca e a fonte
 // unica compartilhada com a engine gestor/cron.php e com o painel admin-cron; suas funcoes de
 // execucao dependem de banco, mas nenhuma delas e chamada nesta compilacao.
@@ -473,7 +474,7 @@ function carregarDadosExistentes(): array {
     ];
     $exist = [];
     foreach ($arquivos as $tipo => $file) {
-        $lista = jsonRead($file) ?? [];
+        $lista = db_data_read_table($tipo, $DB_DATA_DIR);
         $exist[$tipo] = [];
         foreach ($lista as $r) {
             switch ($tipo) {
@@ -750,7 +751,7 @@ function coletarRecursos(array $existentes, array $map): array {
     // req-032 (BATCH-026): índice das tarefas de cron já compiladas, para reusar `versao` quando
     // o checksum da declaração não mudou (mesmo contrato dos demais recursos).
     $cronExistente = [];
-    foreach ((jsonRead($DB_DATA_DIR.'CronTarefasData.json') ?? []) as $cr) {
+    foreach (db_data_read_table('cron_tarefas', $DB_DATA_DIR) as $cr) {
         if (is_array($cr) && isset($cr['id'])) $cronExistente[(string)$cr['id']] = $cr;
     }
 
@@ -993,7 +994,7 @@ function coletarRecursos(array $existentes, array $map): array {
 
         // Índice dos dados existentes (para reuso de versao quando o checksum não muda).
         if (!array_key_exists($tabelaNome, $existDinamicoCache)) {
-            $listaExist = jsonRead($DB_DATA_DIR . dataFileNameFromTable($tabelaNome)) ?? [];
+            $listaExist = db_data_read_table($tabelaNome, $DB_DATA_DIR);
             $idx = [];
             foreach ($listaExist as $er) {
                 if (!is_array($er)) continue;
@@ -1066,12 +1067,12 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
         'alvos_ia' => ['AlvosIaData.json', 'targetsData'], 'forms' => ['FormsData.json', 'formsData'],
         'modos_ia' => ['ModosIaData.json', 'modesData'],
     ] as $target => [$file, $key]) {
-        if (dataTargetSelected($target)) jsonWrite($DB_DATA_DIR . $file, $recursos[$key] ?? []);
+        if (dataTargetSelected($target)) db_data_write_table($target, array_values($recursos[$key] ?? []), $DB_DATA_DIR);
     }
     // req-066 (BATCH-066): tabela global `widgets` (categorias/tipos de widget do sistema).
-    if (dataTargetSelected('widgets')) jsonWrite($DB_DATA_DIR.'WidgetsData.json', $recursos['widgetsData'] ?? []);
+    if (dataTargetSelected('widgets')) db_data_write_table('widgets', array_values($recursos['widgetsData'] ?? []), $DB_DATA_DIR);
     // req-032 (BATCH-026): tabela global `cron_tarefas` (rotinas automáticas declaradas nos módulos).
-    if (dataTargetSelected('cron_tarefas')) jsonWrite($DB_DATA_DIR.'CronTarefasData.json', $recursos['cronTarefasData'] ?? []);
+    if (dataTargetSelected('cron_tarefas')) db_data_write_table('cron_tarefas', array_values($recursos['cronTarefasData'] ?? []), $DB_DATA_DIR);
     // Tabelas dinâmicas (sync_resources): gera [PascalCase]Data.json para cada tabela coletada.
     foreach (($recursos['dynamicTablesData'] ?? []) as $tabela => $linhas) {
         if (!is_string($tabela) || !preg_match('/^[a-z0-9_]+$/', $tabela)) {
@@ -1079,7 +1080,7 @@ function atualizarDados(array $dadosExistentes, array $recursos): void {
             continue;
         }
         $fileName = dataFileNameFromTable($tabela);
-        jsonWrite($DB_DATA_DIR.$fileName, array_values((array)$linhas));
+        db_data_write_table($tabela, array_values((array)$linhas), $DB_DATA_DIR);
         log_disco_local("DYNAMIC_DATA_SAVED $fileName qtd=".count((array)$linhas), $LOG_FILE);
     }
     $orphDir = $GESTOR_DIR.'db'.DIRECTORY_SEPARATOR.'orphans'.DIRECTORY_SEPARATOR;
@@ -1583,6 +1584,9 @@ function gerarSchemaMetadata(): void {
             'insert_only' => $norm['insert_only'],
             'source' => $source,
         ];
+        $partition = db_data_table_manifest($nome, $DB_DATA_DIR);
+        $tables[$nome]['partitioned'] = $partition !== null;
+        $tables[$nome]['total_parts'] = $partition['total_parts'] ?? 1;
         if ($del) { $deletar[$nome] = array_merge($deletar[$nome] ?? [], $del); }
         if ($forc) { $forcar[$nome] = array_merge($forcar[$nome] ?? [], $forc); }
     }

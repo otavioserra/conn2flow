@@ -1138,27 +1138,26 @@ function executarDelecoes(PDO $pdo, bool $simulate = false): array {
     return $resumo;
 }
 
-function comparacaoDados(): array {
+function comparacaoDados(?PDO $connection = null): array {
     global $DB_DATA_DIR, $LOG_FILE_DB, $CLI_OPTS, $CHECKSUM_CHANGED_TABLES;
     log_unificado(tr('_compare_start'), $LOG_FILE_DB);
-    $arquivos = glob($DB_DATA_DIR . '*Data.json');
+    $tabelas = db_data_list_tables($DB_DATA_DIR);
     // Filtro --tables opcional
     if (!empty($CLI_OPTS['tables'])) {
         $filter = array_map('strtolower', array_map('trim', explode(',', $CLI_OPTS['tables'])));
-        $arquivos = array_values(array_filter($arquivos, function($f) use ($filter){
-            $t = tabelaFromDataFile($f); return in_array(strtolower($t), $filter, true);
-        }));
-        log_unificado(tr('_filter_tables',[ 'lista'=>implode(',', array_map(fn($f)=>tabelaFromDataFile($f), $arquivos))]), $LOG_FILE_DB);
+        $tabelas = array_values(array_filter($tabelas, fn($t) => in_array($t, $filter, true)));
+        log_unificado(tr('_filter_tables',[ 'lista'=>implode(',', $tabelas)]), $LOG_FILE_DB);
     }
-    $pdo = db();
+    // Preflight all selected tables before any SQL or withdrawal mutation.
+    foreach ($tabelas as $table) db_data_table_checksum($table, $DB_DATA_DIR);
+    $pdo = $connection ?? db();
     $resumo = [];
-    foreach ($arquivos as $file) {
-        $tabela = tabelaFromDataFile($file);
+    foreach ($tabelas as $tabela) {
         if (is_array($CHECKSUM_CHANGED_TABLES) && !in_array($tabela, $CHECKSUM_CHANGED_TABLES, true)) {
             log_unificado("SKIP_NO_CHECKSUM_CHANGE tabela=$tabela", $LOG_FILE_DB);
             continue;
         }
-        $registros = loadDataFile($file);
+        $registros = db_data_read_table($tabela, $DB_DATA_DIR);
         // Ajustes específicos pré-sincronização
         if ($tabela === 'paginas' && $registros) {
             foreach ($registros as &$r) {
@@ -1221,23 +1220,20 @@ function executarBackup(PDO $pdo, array $tabelas, string $dirBase): string {
 }
 
 /** Exporta dados do banco para arquivos *Data.json (modo reverso) */
-function reverseExport(PDO $pdo, array $tabelas, string $dataDir): void {
+function reverseExport(PDO $pdo, array $tabelas, string $dataDir, array $options = []): void {
     global $LOG_FILE_DB;
     log_unificado(tr('_reverse_start'), $LOG_FILE_DB);
     foreach ($tabelas as $t) {
         try {
             $rows = $pdo->query("SELECT * FROM `$t`")->fetchAll(PDO::FETCH_ASSOC);
             if (!$rows) { log_unificado(tr('_reverse_empty',[ 'tabela'=>$t ]), $LOG_FILE_DB); continue; }
-            $fileName = dataFileNameFromTable($t);
-            $dest = $dataDir . $fileName;
-            // backup antigo se existir
-            if (file_exists($dest)) {
-                @rename($dest, $dest . '.bak.' . date('Ymd-His'));
-            }
-            file_put_contents($dest, json_encode($rows, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+            $keys = naturalKeyColumns($t) ?: [pkPorTabela($t) ?? descobrirPK($t, $rows[0])];
+            $rows = db_data_order_rows($rows, $keys);
+            db_data_write_table($t, $rows, $dataDir, $options);
             log_unificado(tr('_reverse_table_done',[ 'tabela'=>$t, 'qtd'=>count($rows) ]), $LOG_FILE_DB);
         } catch (Throwable $e) {
             log_unificado(tr('_reverse_table_error',[ 'tabela'=>$t, 'msg'=>$e->getMessage() ]), $LOG_FILE_DB);
+            throw $e; // A recovery ZIP must never silently omit a failed table.
         }
     }
     log_unificado(tr('_reverse_complete'), $LOG_FILE_DB);
@@ -1289,9 +1285,7 @@ function main(): int {
         if (!empty($CLI_OPTS['reverse'])) {
             // Modo reverso exporta dados e encerra
             $pdo = db();
-            $arquivos = glob($DB_DATA_DIR . '*Data.json');
-            $tabelas = [];
-            foreach ($arquivos as $f) { $tabelas[] = tabelaFromDataFile($f); }
+            $tabelas = db_data_list_tables($DB_DATA_DIR);
             if (!empty($CLI_OPTS['tables'])) {
                 $filter = array_map('strtolower', array_map('trim', explode(',', $CLI_OPTS['tables'])));
                 $tabelas = array_values(array_filter($tabelas, fn($t)=>in_array(strtolower($t), $filter, true)));
@@ -1306,8 +1300,8 @@ function main(): int {
         // Cálculo de checksums (garante que migration criou manager_updates)
         $pdo = db();
         $checksums = [];
-        foreach (glob($DB_DATA_DIR . '*Data.json') as $f) {
-            $checksums[basename($f)] = md5_file($f) ?: '';
+        foreach (db_data_list_tables($DB_DATA_DIR) as $table) {
+            $checksums[db_data_base($table) . '.json'] = db_data_table_checksum($table, $DB_DATA_DIR);
         }
         $checksums['__sync_policy'] = DB_SYNC_POLICY_VERSION;
         $checksumsJson = json_encode($checksums, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
@@ -1337,9 +1331,7 @@ function main(): int {
         }
         // Backup opcional
         if (!empty($CLI_OPTS['backup'])) {
-            $arquivos = glob($DB_DATA_DIR . '*Data.json');
-            $tabelas = [];
-            foreach ($arquivos as $f) { $tabelas[] = tabelaFromDataFile($f); }
+            $tabelas = db_data_list_tables($DB_DATA_DIR);
             if (!empty($CLI_OPTS['tables'])) {
                 $filter = array_map('strtolower', array_map('trim', explode(',', $CLI_OPTS['tables'])));
                 $tabelas = array_values(array_filter($tabelas, fn($t)=>in_array(strtolower($t), $filter, true)));

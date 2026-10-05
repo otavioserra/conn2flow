@@ -119,9 +119,7 @@ function recuperacao_executar(array $args, ?string $outputDir = null): int {
             recuperacao_project_schema_metadata_tables()
         )));
         if (empty($tabelas)) {
-            foreach (glob($DB_DATA_DIR . '*Data.json') ?: [] as $f) {
-                $tabelas[] = tabelaFromDataFile($f);
-            }
+            $tabelas = db_data_list_tables($DB_DATA_DIR);
         }
     }
     $tabelas = array_values(array_filter(array_map(function ($t) {
