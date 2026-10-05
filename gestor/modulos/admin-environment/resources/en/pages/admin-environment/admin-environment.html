@@ -3,52 +3,52 @@
 <div class="admin-environment mx-auto max-w-6xl space-y-5 px-4 py-5">
     <div class="space-y-5">
         <div class="space-y-5">
-            <h1 class="text-2xl font-semibold text-slate-900"><i class="cogs icon"></i> Admin Environment</h1>
+            <h1 class="flex items-center gap-2 text-2xl font-semibold text-slate-900"><i data-lucide="settings" class="size-6 shrink-0"></i> Admin Environment</h1>
             <p>Manage environment settings through the .env file</p>
 
-            <div class="admin-environment-tabs flex flex-wrap gap-2 border-b border-slate-200" role="tablist">
+            <div class="admin-environment-tabs c2fc-abas-lista c2fc-anexa" role="tablist">
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-sky-700 bg-sky-50 px-3 py-2 text-sm font-medium text-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="admin-environment-tab c2fc-aba"
                     role="tab" aria-selected="true" data-tab="site"
                     data-tooltip="General site settings like name and identity" data-position="bottom center">
-                    <i class="globe icon"></i> Site Settings
+                    <i data-lucide="globe" class="size-4 shrink-0"></i> Site Settings
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="admin-environment-tab c2fc-aba"
                     role="tab" aria-selected="false" data-tab="usuario"
                     data-tooltip="User security settings including reCAPTCHA protection" data-position="bottom center">
-                    <i class="user icon"></i> User Settings
+                    <i data-lucide="user" class="size-4 shrink-0"></i> User Settings
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="admin-environment-tab c2fc-aba"
                     role="tab" aria-selected="false" data-tab="email"
                     data-tooltip="SMTP email configuration for sending system emails" data-position="bottom center">
-                    <i class="mail icon"></i> Email Settings
+                    <i data-lucide="mail" class="size-4 shrink-0"></i> Email Settings
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="admin-environment-tab c2fc-aba"
                     role="tab" aria-selected="false" data-tab="linguagem"
                     data-tooltip="Language preferences and automatic detection settings" data-position="bottom center">
-                    <i class="language icon"></i> Language Settings
+                    <i data-lucide="languages" class="size-4 shrink-0"></i> Language Settings
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="admin-environment-tab c2fc-aba"
                     role="tab" aria-selected="false" data-tab="paypal"
                     data-tooltip="PayPal REST API credentials and integration settings" data-position="bottom center">
-                    <i class="paypal icon"></i> PayPal
+                    <i data-lucide="credit-card" class="size-4 shrink-0"></i> PayPal
                 </button>
                 <button type="button"
-                    class="admin-environment-tab rounded-t border border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    class="admin-environment-tab c2fc-aba"
                     role="tab" aria-selected="false" data-tab="api" data-tooltip="Security for API key generation"
                     data-position="bottom center">
-                    <i class="key icon"></i> API
+                    <i data-lucide="key-round" class="size-4 shrink-0"></i> API
                 </button>
             </div>
 
             <!-- Tab: Site Settings -->
-            <div class="admin-environment-panel active space-y-6 rounded border border-slate-200 bg-white p-4"
+            <div class="admin-environment-panel active c2fc-painel-aba space-y-6"
                 role="tabpanel" data-tab="site">
-                <h3 class="text-lg font-semibold text-slate-900"><i class="globe icon"></i> Site Settings</h3>
+                <h3 class="flex items-center gap-2 text-lg font-semibold text-slate-900"><i data-lucide="globe" class="size-5 shrink-0"></i> Site Settings</h3>
                 <p class="text-sm text-slate-600">Configure the basic identity of your site. The site name is used in
                     emails, page titles and system references.</p>
 
@@ -62,8 +62,8 @@
 
                     <!-- ===== Restricted Site Access (req-163) ===== -->
                     <h4
-                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
-                        <i class="lock icon"></i> Restricted Site Access</h4>
+                        class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">
+                        <i data-lucide="lock" class="size-4 shrink-0"></i> Restricted Site Access</h4>
                     <p class="text-sm text-slate-600">Use it on development, testing, staging or private sites. With
                         restricted access enabled, every page requires sign in, public pages included, and
                         the whole site is flagged so search engines do not index it
@@ -86,7 +86,7 @@
                                 <input type="text" id="site_restricted_profiles_busca"
                                     placeholder="Type the profile name to search and add" autocomplete="off"
                                     class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700">
-                                <i class="search icon"></i>
+                                <i data-lucide="search" class="size-4 shrink-0 text-slate-400"></i>
                             </div>
                             <div id="site-restricted-profiles-resultados"
                                 class="hidden absolute left-0 right-0 z-20 mt-1 max-h-64 overflow-auto rounded border border-slate-200 bg-white p-1 shadow-lg"
@@ -105,8 +105,8 @@
 
                     <!-- ===== Bots and Crawlers (req-111) ===== -->
                     <h4
-                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
-                        <i class="robot icon"></i> Bots and Crawlers</h4>
+                        class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">
+                        <i data-lucide="bot" class="size-4 shrink-0"></i> Bots and Crawlers</h4>
                     <p class="text-sm text-slate-600">The system already recognizes the most common bots with no
                         configuration at all. Enable this option only if your site gets heavy traffic from a
                         specific bot that is not in the list below yet.</p>
@@ -140,9 +140,9 @@
             </div>
 
             <!-- Tab: User Settings -->
-            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+            <div class="admin-environment-panel hidden c2fc-painel-aba space-y-6"
                 role="tabpanel" data-tab="usuario">
-                <h3 class="text-lg font-semibold text-slate-900"><i class="user icon"></i> User Settings</h3>
+                <h3 class="flex items-center gap-2 text-lg font-semibold text-slate-900"><i data-lucide="user" class="size-5 shrink-0"></i> User Settings</h3>
                 <p class="text-sm text-slate-600">Manage user authentication security. Enable reCAPTCHA to protect login
                     and registration forms against bots and automated attacks.</p>
 
@@ -150,8 +150,8 @@
 
                     <!-- ===== Login Methods (req-030) ===== -->
                     <h4
-                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
-                        <i class="sign-in icon"></i> Login Methods</h4>
+                        class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">
+                        <i data-lucide="log-in" class="size-4 shrink-0"></i> Login Methods</h4>
 
                     <div class="space-y-1.5">
                         <div class="flex items-center gap-2">
@@ -252,8 +252,8 @@
 
                     <!-- ===== Two-Factor Authentication (2FA) ===== -->
                     <h4
-                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
-                        <i class="lock icon"></i> Two-Factor Authentication (2FA)</h4>
+                        class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">
+                        <i data-lucide="lock" class="size-4 shrink-0"></i> Two-Factor Authentication (2FA)</h4>
 
                     <div class="space-y-1.5">
                         <div class="flex items-center gap-2">
@@ -284,8 +284,8 @@
 
                     <!-- ===== JWT Keys ===== -->
                     <h4
-                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
-                        <i class="key icon"></i> JWT Keys</h4>
+                        class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">
+                        <i data-lucide="key-round" class="size-4 shrink-0"></i> JWT Keys</h4>
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div class="space-y-1.5">
@@ -304,9 +304,9 @@
 
                     <div class="space-y-1.5">
                         <button type="button"
-                            class="rounded bg-amber-700 px-3 py-2 text-sm font-semibold text-white hover:bg-amber-800 disabled:opacity-50"
+                            class="inline-flex items-center gap-2 rounded bg-amber-700 px-3 py-2 text-sm font-semibold text-white hover:bg-amber-800 disabled:opacity-50"
                             id="btn-rotacionar-jwt">
-                            <i class="sync icon"></i> Rotate JWT Keys
+                            <i data-lucide="refresh-cw" class="size-4 shrink-0"></i> Rotate JWT Keys
                         </button>
                     </div>
 
@@ -348,8 +348,8 @@
                     <div id="google-recaptcha-section" class="hidden">
                         <!-- ===== reCAPTCHA Protection ===== -->
                         <h4
-                            class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
-                            <i class="shield icon"></i> reCAPTCHA Protection</h4>
+                            class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">
+                            <i data-lucide="shield" class="size-4 shrink-0"></i> reCAPTCHA Protection</h4>
 
                         <div class="space-y-1.5">
                             <div class="flex items-center gap-2">
@@ -378,16 +378,16 @@
 
                         <div class="space-y-1.5">
                             <button type="button"
-                                class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                                class="inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                                 id="btn-testar-recaptcha">
-                                <i class="shield icon"></i> Test reCAPTCHA V3
+                                <i data-lucide="shield" class="size-4 shrink-0"></i> Test reCAPTCHA V3
                             </button>
                         </div>
 
                         <!-- reCAPTCHA V2 Section - Visible only when V3 is active -->
                         <div id="recaptcha-v2-section" class="#recaptcha-v2-section-class#">
                             <div class="my-4 border-t border-slate-200"></div>
-                            <h4 class="text-base font-semibold text-slate-900"><i class="shield alternate icon"></i>
+                            <h4 class="flex items-center gap-2 text-base font-semibold text-slate-900"><i data-lucide="shield-check" class="size-4 shrink-0"></i>
                                 reCAPTCHA V2 (Checkbox)</h4>
 
                             <div class="space-y-1.5">
@@ -417,9 +417,9 @@
 
                             <div class="space-y-1.5">
                                 <button type="button"
-                                    class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                                    class="inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                                     id="btn-testar-recaptcha-v2">
-                                    <i class="shield alternate icon"></i> Test reCAPTCHA V2
+                                    <i data-lucide="shield-check" class="size-4 shrink-0"></i> Test reCAPTCHA V2
                                 </button>
                             </div>
 
@@ -432,9 +432,9 @@
             </div>
 
             <!-- Tab: Email Settings -->
-            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+            <div class="admin-environment-panel hidden c2fc-painel-aba space-y-6"
                 role="tabpanel" data-tab="email">
-                <h3 class="text-lg font-semibold text-slate-900"><i class="mail icon"></i> Email Settings</h3>
+                <h3 class="flex items-center gap-2 text-lg font-semibold text-slate-900"><i data-lucide="mail" class="size-5 shrink-0"></i> Email Settings</h3>
                 <p class="text-sm text-slate-600">Configure the SMTP server for sending system emails such as
                     notifications, password resets and contact form responses.</p>
 
@@ -519,9 +519,9 @@
 
                     <div class="space-y-1.5">
                         <button type="button"
-                            class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                            class="inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                             id="btn-testar-email">
-                            <i class="send icon"></i> Send Test Email
+                            <i data-lucide="send" class="size-4 shrink-0"></i> Send Test Email
                         </button>
 
                         <div class="flex items-center gap-2">
@@ -540,9 +540,9 @@
             </div>
 
             <!-- Tab: Language Settings -->
-            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+            <div class="admin-environment-panel hidden c2fc-painel-aba space-y-6"
                 role="tabpanel" data-tab="linguagem">
-                <h3 class="text-lg font-semibold text-slate-900"><i class="language icon"></i> Language Settings</h3>
+                <h3 class="flex items-center gap-2 text-lg font-semibold text-slate-900"><i data-lucide="languages" class="size-5 shrink-0"></i> Language Settings</h3>
                 <p class="text-sm text-slate-600">Configure the default language, language selection widget and
                     automatic browser language detection for visitors.</p>
 
@@ -578,9 +578,9 @@
             </div>
 
             <!-- Tab: PayPal Settings -->
-            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+            <div class="admin-environment-panel hidden c2fc-painel-aba space-y-6"
                 role="tabpanel" data-tab="paypal">
-                <h3 class="text-lg font-semibold text-slate-900"><i class="paypal icon"></i> PayPal Integration</h3>
+                <h3 class="flex items-center gap-2 text-lg font-semibold text-slate-900"><i data-lucide="credit-card" class="size-5 shrink-0"></i> PayPal Integration</h3>
                 <p class="text-sm text-slate-600">Configure your PayPal REST API credentials and integration mode. Use
                     <strong>Standard</strong> to use credentials from this panel, or <strong>Gateway</strong> to use
                     credentials managed by the Payment Gateways module.</p>
@@ -601,7 +601,7 @@
                     <div class="my-4 border-t border-slate-200"></div>
 
                     <div id="paypal-padrao-section">
-                        <h4 class="text-base font-semibold text-slate-900"><i class="key icon"></i> API Credentials</h4>
+                        <h4 class="flex items-center gap-2 text-base font-semibold text-slate-900"><i data-lucide="key-round" class="size-4 shrink-0"></i> API Credentials</h4>
                         <p class="text-xs text-slate-600">Enter your PayPal REST API credentials. You can find them at
                             <a href="https://developer.paypal.com/dashboard/applications" target="_blank">PayPal
                                 Developer Dashboard</a>.</p>
@@ -642,32 +642,32 @@
 
                     <div class="space-y-1.5">
                         <button type="button"
-                            class="rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                            class="inline-flex items-center gap-2 rounded bg-sky-700 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                             id="btn-testar-paypal">
-                            <i class="paypal icon"></i> Test Connection
+                            <i data-lucide="credit-card" class="size-4 shrink-0"></i> Test Connection
                         </button>
                     </div>
                 </form>
             </div>
 
             <!-- Tab: API -->
-            <div class="admin-environment-panel hidden space-y-6 rounded border border-slate-200 bg-white p-4"
+            <div class="admin-environment-panel hidden c2fc-painel-aba space-y-6"
                 role="tabpanel" data-tab="api">
-                <h3 class="text-lg font-semibold text-slate-900"><i class="key icon"></i> API</h3>
+                <h3 class="flex items-center gap-2 text-lg font-semibold text-slate-900"><i data-lucide="key-round" class="size-5 shrink-0"></i> API</h3>
                 <p class="text-sm text-slate-600">Configure who can generate API keys, which authentication methods are
                     accepted, and when two-factor verification is required.</p>
 
                 <form class="space-y-4" id="form-api" autocomplete="off">
                     <h4
-                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
-                        <i class="users icon"></i> Authorized Profiles</h4>
+                        class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">
+                        <i data-lucide="users" class="size-4 shrink-0"></i> Authorized Profiles</h4>
                     <div class="space-y-2">
                         #auth-api-profiles#
                     </div>
 
                     <h4
-                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
-                        <i class="sign-in icon"></i> Authentication Methods</h4>
+                        class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">
+                        <i data-lucide="log-in" class="size-4 shrink-0"></i> Authentication Methods</h4>
                     <div class="space-y-1.5">
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_api_method_password_active"
@@ -687,8 +687,8 @@
                     </div>
 
                     <h4
-                        class="border-b border-slate-200 pb-2 text-base font-semibold text-slate-900 text-base font-semibold text-slate-900">
-                        <i class="lock icon"></i> 2FA for API Keys</h4>
+                        class="flex items-center gap-2 border-b border-slate-200 pb-2 text-base font-semibold text-slate-900">
+                        <i data-lucide="lock" class="size-4 shrink-0"></i> 2FA for API Keys</h4>
                     <div class="space-y-1.5">
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="auth_api_2fa_required" name="auth_api_2fa_required"
@@ -724,14 +724,14 @@
 
             <div class="space-y-1.5">
                 <button type="button"
-                    class="rounded bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
+                    class="inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-50"
                     id="btn-salvar">
-                    <i class="save icon"></i> Save Settings
+                    <i data-lucide="save" class="size-4 shrink-0"></i> Save Settings
                 </button>
                 <button type="button"
-                    class="rounded border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                    class="inline-flex items-center gap-2 rounded border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                     onclick="location.reload()">
-                    <i class="refresh icon"></i> Reload
+                    <i data-lucide="rotate-cw" class="size-4 shrink-0"></i> Reload
                 </button>
             </div>
 

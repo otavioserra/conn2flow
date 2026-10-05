@@ -1,55 +1,52 @@
 <div class="space-y-4" data-admin-plugins-source>
+    <input type="hidden" name="origem_selecionada" id="origem_selecionada" value="arquivo">
     <div class="space-y-1">
         <label>@[[form-name-label]]@</label>
         <input class="w-full rounded border border-slate-300 px-3 py-2" type="text" name="nome"
             placeholder="@[[form-name-placeholder]]@">
     </div>
-
-    <input type="hidden" name="origem_selecionada" id="origem_selecionada" value="arquivo">
-
     <div class="space-y-2">
         <p class="text-sm font-medium text-slate-700">@[[ui-plugin-source]]@</p>
-        <div class="flex flex-wrap gap-2 border-b border-slate-200" role="tablist" aria-label="@[[ui-plugin-source]]@">
-            <button class="border-b-2 border-sky-700 px-3 py-2 text-sm font-medium text-sky-800" type="button"
-                role="tab" aria-selected="true" data-plugin-source-tab="arquivo">@[[ui-source-zip]]@</button>
-            <button
-                class="border-b-2 border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
-                type="button" role="tab" aria-selected="false"
-                data-plugin-source-tab="publico">@[[ui-source-public]]@</button>
-            <button
-                class="border-b-2 border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
-                type="button" role="tab" aria-selected="false"
-                data-plugin-source-tab="privado">@[[ui-source-private]]@</button>
-        </div>
+        <div>
+            <div class="c2fc-abas-lista c2fc-anexa" role="tablist" aria-label="@[[ui-plugin-source]]@">
+                <button class="c2fc-aba" type="button" role="tab" aria-selected="true"
+                    data-plugin-source-tab="arquivo">@[[ui-source-zip]]@</button>
+                <button class="c2fc-aba" type="button" role="tab" aria-selected="false"
+                    data-plugin-source-tab="publico">@[[ui-source-public]]@</button>
+                <button class="c2fc-aba" type="button" role="tab" aria-selected="false"
+                    data-plugin-source-tab="privado">@[[ui-source-private]]@</button>
+            </div>
 
-        <section class="space-y-4 py-3" role="tabpanel" data-plugin-source-panel="arquivo">
-            <label class="block space-y-1 text-sm font-medium text-slate-700">
-                <span>@[[ui-file-zip-label]]@</span>
-                <input
-                    class="block w-full rounded border border-slate-300 px-3 py-2 text-sm file:mr-3 file:rounded file:border-0 file:bg-slate-100 file:px-3 file:py-2"
-                    type="file" name="arquivo_zip" accept=".zip">
-                <span class="text-xs font-normal text-slate-600">@[[ui-file-zip-help]]@</span>
-            </label>
-        </section>
-        <section class="hidden space-y-4 py-3" role="tabpanel" data-plugin-source-panel="publico" hidden>
-            <label class="block space-y-1 text-sm font-medium text-slate-700">
-                <span>@[[ui-repo-url-label]]@</span>
-                <input class="w-full rounded border border-slate-300 px-3 py-2" type="url" name="repo_publico_url"
-                    placeholder="https://github.com/usuario/repo">
-                <span class="text-xs font-normal text-slate-600">@[[ui-repo-latest-help]]@</span>
-            </label>
-        </section>
-        <section class="hidden space-y-4 py-3" role="tabpanel" data-plugin-source-panel="privado" hidden>
-            <label class="block space-y-1 text-sm font-medium text-slate-700">
-                <span>@[[ui-repo-url-label]]@</span>
-                <input class="w-full rounded border border-slate-300 px-3 py-2" type="url" name="repo_privado_url"
-                    placeholder="https://github.com/usuario/repo">
-            </label>
-            <label class="block space-y-1 text-sm font-medium text-slate-700">
-                <span>@[[ui-auth-token-label]]@</span>
-                <input class="w-full rounded border border-slate-300 px-3 py-2" type="password"
-                    name="repo_privado_token" placeholder="@[[ui-auth-token-placeholder]]@">
-            </label>
-            <p class="text-xs text-slate-600">@[[ui-private-repo-help]]@</p>
-        </section>
+            <section class="c2fc-painel-aba space-y-4" role="tabpanel" data-plugin-source-panel="arquivo">
+                <label class="block space-y-1 text-sm font-medium text-slate-700">
+                    <span>@[[ui-file-zip-label]]@</span>
+                    <input
+                        class="block w-full rounded border border-slate-300 px-3 py-2 text-sm file:mr-3 file:rounded file:border-0 file:bg-slate-100 file:px-3 file:py-2"
+                        type="file" name="arquivo_zip" accept=".zip">
+                    <span class="text-xs font-normal text-slate-600">@[[ui-file-zip-help]]@</span>
+                </label>
+            </section>
+            <section class="hidden c2fc-painel-aba space-y-4" role="tabpanel" data-plugin-source-panel="publico" hidden>
+                <label class="block space-y-1 text-sm font-medium text-slate-700">
+                    <span>@[[ui-repo-url-label]]@</span>
+                    <input class="w-full rounded border border-slate-300 px-3 py-2" type="url" name="repo_publico_url"
+                        placeholder="https://github.com/usuario/repo">
+                    <span class="text-xs font-normal text-slate-600">@[[ui-repo-latest-help]]@</span>
+                </label>
+            </section>
+            <section class="hidden c2fc-painel-aba space-y-4" role="tabpanel" data-plugin-source-panel="privado" hidden>
+                <label class="block space-y-1 text-sm font-medium text-slate-700">
+                    <span>@[[ui-repo-url-label]]@</span>
+                    <input class="w-full rounded border border-slate-300 px-3 py-2" type="url" name="repo_privado_url"
+                        placeholder="https://github.com/usuario/repo">
+                </label>
+                <label class="block space-y-1 text-sm font-medium text-slate-700">
+                    <span>@[[ui-auth-token-label]]@</span>
+                    <input class="w-full rounded border border-slate-300 px-3 py-2" type="password"
+                        name="repo_privado_token" placeholder="@[[ui-auth-token-placeholder]]@">
+                </label>
+                <p class="text-xs text-slate-600">@[[ui-private-repo-help]]@</p>
+            </section>
+        </div>
     </div>
+</div>

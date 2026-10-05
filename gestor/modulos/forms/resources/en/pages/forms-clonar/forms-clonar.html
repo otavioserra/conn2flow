@@ -26,14 +26,14 @@
 <input type="hidden" name="fields_schema">
 
 <div class="forms-main-tabs">
-<div class="c2fc-abas c2fc-abas-lista flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuForms">
+<div class="c2fc-abas c2fc-abas-lista c2fc-anexa top attached tabular menu menuForms">
     <a class="c2fc-aba active item" data-tab="forms-general"><i data-lucide="settings" class="size-4 shrink-0 icon "></i> General</a>
     <a class="c2fc-aba item" data-tab="forms-email"><i data-lucide="mail" class="size-4 shrink-0 icon "></i> E-mail</a>
     <a class="c2fc-aba item" data-tab="forms-redirects"><i data-lucide="share-2" class="size-4 shrink-0 icon "></i> Redirects</a>
     <a class="c2fc-aba item" data-tab="forms-fields"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Fields</a>
 </div>
 
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="forms-general">
+<div class="c2fc-painel-aba min-w-0 bottom attached active tab segment" data-tab="forms-general">
     <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Name</label><input class="c2fc-campo-entrada" type="text" name="name" placeholder="Ex: Form Name"></div>
     <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Description</label><input class="c2fc-campo-entrada" type="text" name="description" placeholder="Ex: Form Description" value="#description#"></div>
     <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">#form-module-label#</label><span>#select-module#</span></div>
@@ -41,17 +41,17 @@
     <div class="grid grid-cols-1 gap-4 md:grid-cols-3 my-4 three fields"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Simple limit</label><input class="c2fc-campo-entrada" type="number" id="access_max_simple" min="0"></div><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Total limit</label><input class="c2fc-campo-entrada" type="number" id="access_max" min="0"></div><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">reCAPTCHA</label><div class="c2fc-chave toggle checkbox"><input type="checkbox" id="force_recaptcha"><span class="c2fc-chave-trilho" aria-hidden="true"></span><label class="c2fc-campo-rotulo">Required</label></div></div></div>
 </div>
 
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="forms-email">
+<div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-email">
     <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Recipients</label><input class="c2fc-campo-entrada" type="text" id="email_recipients"></div>
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Reply-To</label><input class="c2fc-campo-entrada" type="email" id="email_reply_to"></div><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Sender name</label><input class="c2fc-campo-entrada" type="text" id="email_reply_to_name"></div></div>
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Subject</label><input class="c2fc-campo-entrada" type="text" id="email_subject"></div><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Message component</label><div class="sig-autocomplete" data-target="componentes" style="position:relative;"><div class="flex items-center gap-2 min-w-0 action input"><input type="text" class="c2fc-campo-entrada sig-search-input" autocomplete="off"><button type="button" class="c2fc-botao c2fc-botao-icone icon button sig-clear"><i data-lucide="x" class="size-4 shrink-0 icon "></i></button></div><input type="hidden" id="email_message_component" class="sig-hidden-value" value=""><div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 sig-results segment" style="display:none;position:absolute;z-index:10;width:100%;max-height:220px;overflow:auto;padding:0;margin-top:2px;"></div></div></div></div>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Subject</label><input class="c2fc-campo-entrada" type="text" id="email_subject"></div><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Message component</label><div class="sig-autocomplete" data-target="componentes" style="position:relative;"><div class="flex items-center gap-2 min-w-0 action input"><input type="text" class="c2fc-campo-entrada sig-search-input" autocomplete="off"><button type="button" class="c2fc-botao c2fc-botao-icone icon button sig-clear" data-c2f-dica="Clear" aria-label="Clear"><i data-lucide="x" class="size-4 shrink-0 icon "></i></button></div><input type="hidden" id="email_message_component" class="sig-hidden-value" value=""><div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 sig-results segment" style="display:none;position:absolute;z-index:10;width:100%;max-height:220px;overflow:auto;padding:0;margin-top:2px;"></div></div></div></div>
 </div>
 
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="forms-redirects">
+<div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-redirects">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 my-4 two fields"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Success</label><input class="c2fc-campo-entrada" type="text" id="redirect_success_path"></div><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Error</label><input class="c2fc-campo-entrada" type="text" id="redirect_error_path"></div></div>
 </div>
 
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="forms-fields">
+<div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-fields">
     <button type="button" class="c2fc-botao c2fc-botao-primario primary button" id="btn-add-form-field"><i data-lucide="plus" class="size-4 shrink-0 icon "></i> Field</button>
     <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled compact table" id="forms-fields-table">
         <thead><tr><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:40px;"></th><th class="border-b border-slate-200 px-3 py-2 align-top">Label</th><th class="border-b border-slate-200 px-3 py-2 align-top">Name</th><th class="border-b border-slate-200 px-3 py-2 align-top">Type</th><th class="border-b border-slate-200 px-3 py-2 align-top">Placeholder</th><th class="border-b border-slate-200 px-3 py-2 align-top">Options</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:90px;">Required</th><th class="border-b border-slate-200 px-3 py-2 align-top" style="width:60px;"></th></tr></thead>
@@ -65,12 +65,12 @@
 <div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Template</label><select data-c2f-select id="template_id" class="c2fc-campo-entrada search clearable dropdown templateDropdown" name="template_id"><option value="">#template_placeholder_option#</option>#template_id_options#</select></div>
 
 <div class="forms-content-tabs">
-<div class="c2fc-abas c2fc-abas-lista flex flex-wrap gap-2 border-b border-slate-200 py-2 top attached tabular menu menuConteudoForm"><a class="c2fc-aba active item" data-tab="forms-preview"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Preview</a><a class="c2fc-aba item" data-tab="forms-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> HTML Editor</a><a class="c2fc-aba item" data-tab="forms-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Widget Code</a></div>
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached active tab segment" data-tab="forms-preview"><div style="position:relative;"><iframe id="iframe-forms-preview" style="width:100%;height:700px;border:1px solid #ccc;"></iframe><div class="c2fc-cobertura ui dimmer forms-preview-dimmer"><div class="c2fc-giro loader"></div></div></div></div>
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="forms-editor">
+<div class="c2fc-abas c2fc-abas-lista c2fc-anexa top attached tabular menu menuConteudoForm"><a class="c2fc-aba active item" data-tab="forms-preview"><i data-lucide="eye" class="size-4 shrink-0 icon "></i> Preview</a><a class="c2fc-aba item" data-tab="forms-editor"><i data-lucide="code" class="size-4 shrink-0 icon "></i> HTML Editor</a><a class="c2fc-aba item" data-tab="forms-widget"><i data-lucide="blocks" class="size-4 shrink-0 icon "></i> Widget Code</a></div>
+<div class="c2fc-painel-aba min-w-0 bottom attached active tab segment" data-tab="forms-preview"><div style="position:relative;"><iframe id="iframe-forms-preview" style="width:100%;height:700px;border:1px solid #ccc;"></iframe><div class="c2fc-cobertura ui dimmer forms-preview-dimmer"><div class="c2fc-giro loader"></div></div></div></div>
+<div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-editor">
     #html-editor#
 </div>
-<div class="rounded-b-xl border border-slate-200 bg-white p-4 min-w-0 bottom attached tab segment" data-tab="forms-widget"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Widget Variable</label><div class="flex items-center gap-2 min-w-0 action input"><input class="c2fc-campo-entrada" type="text" id="forms-widget-val" readonly><button type="button" id="btn-copy-forms-widget-val" class="c2fc-botao c2fc-botao-primario teal button"><i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copy</button></div></div><h4 class="text-lg font-semibold text-slate-800 my-4 header">HTML Code</h4><div style="border:1px solid #ccc;"><textarea class="c2fc-campo-entrada" id="forms-widget-code"></textarea></div></div>
+<div class="c2fc-painel-aba min-w-0 bottom attached tab segment" data-tab="forms-widget"><div class="c2fc-campo min-w-0 mb-4 field"><label class="c2fc-campo-rotulo">Widget Variable</label><div class="flex items-center gap-2 min-w-0 action input"><input class="c2fc-campo-entrada" type="text" id="forms-widget-val" readonly><button type="button" id="btn-copy-forms-widget-val" class="c2fc-botao c2fc-botao-primario teal button"><i data-lucide="copy" class="size-4 shrink-0 icon "></i> Copy</button></div></div><h4 class="text-lg font-semibold text-slate-800 my-4 header">HTML Code</h4><div style="border:1px solid #ccc;"><textarea class="c2fc-campo-entrada" id="forms-widget-code"></textarea></div></div>
 </div>
 
 </div>

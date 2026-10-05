@@ -302,11 +302,8 @@ function admin_plugins_editar(){
 		$origens = ['arquivo' => 'arquivo', 'github_publico' => 'publico', 'github_privado' => 'privado'];
 		$origemSelecionada = $origens[$origem_tipo] ?? 'arquivo';
 		foreach ($origens as $tipo => $aba) {
+			// req-240: a aba ativa é desenhada pela folha c2fc-aba a partir de aria-selected.
 			$ativa = $aba === $origemSelecionada;
-			$classesAba = $ativa
-				? 'border-b-2 border-sky-700 px-3 py-2 text-sm font-medium text-sky-800'
-				: 'border-b-2 border-transparent px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900';
-			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#'.$aba.'_active#',$classesAba);
 			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#'.$aba.'_aria#',($ativa ? 'true' : 'false'));
 			$_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#'.$aba.'_segment#',($ativa ? '' : 'hidden'));
 		}

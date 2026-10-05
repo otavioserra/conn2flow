@@ -3,10 +3,7 @@ function adminPluginsOrigemSelecionar(source, tab) {
 
 	source.querySelectorAll('[data-plugin-source-tab]').forEach(button => {
 		const active = button.getAttribute('data-plugin-source-tab') === tab;
-		button.classList.toggle('border-sky-700', active);
-		button.classList.toggle('text-sky-800', active);
-		button.classList.toggle('border-transparent', !active);
-		button.classList.toggle('text-slate-600', !active);
+		// req-240: o estado ativo é da folha c2fc-aba, que lê aria-selected.
 		button.setAttribute('aria-selected', active ? 'true' : 'false');
 	});
 

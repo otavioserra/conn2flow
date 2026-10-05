@@ -53,11 +53,8 @@ $(document).ready(function () {
         if (!$tab.length) return;
 
         $('.admin-environment-tab').each(function () {
-            var ativa = $(this).is($tab);
-            $(this)
-                .toggleClass('border-sky-700 bg-sky-50 text-sky-900', ativa)
-                .toggleClass('border-transparent text-slate-600', !ativa)
-                .attr('aria-selected', ativa ? 'true' : 'false');
+            // req-240: o estado ativo é da folha c2fc-aba, que lê aria-selected.
+            $(this).attr('aria-selected', $(this).is($tab) ? 'true' : 'false');
         });
         $('.admin-environment-panel').each(function () {
             $(this).toggleClass('hidden', $(this).attr('data-tab') !== tabPath);

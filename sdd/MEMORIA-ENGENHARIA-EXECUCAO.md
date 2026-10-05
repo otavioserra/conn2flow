@@ -280,3 +280,12 @@ BATCH-155 a BATCH-167 (2026-09-02 e 2026-09-03: SSH e bootstrap do CLI, checksum
 - Comentário em recurso NÃO pode citar placeholder (`#x#`, `@[[x]]@`): `modelo_var_troca` pega a primeira ocorrência, que fica dentro do comentário (SEO quebrou assim). Teste de contrato cobre.
 - Frentes paralelas: worktree própria por agente, trava do Lab com `mkdir ../.c2f-lab-lock` (skill `c2f-tailwind-module-migration`). Ao integrar branch de outro agente, o conflito típico é só `asset-versions.json` (pega um lado e o pipeline regenera).
 - O editor reabre na última aba usada (`localStorage`): roteiro de navegador precisa voltar à aba antes de clicar em botão dela.
+
+### req-240 / BATCH-249 — harmonização global do painel Tailwind (2026-10-05, em andamento)
+
+- **"Círculo preto" é o ícone Lucide `circle` de fallback**, em três pontos: `interface-listar-tailwind.js` (`opcao.lucide || 'circle'`, alimentado por `interface_botao_tailwind_icone()`), `admin-tailwind.js` (nome Fomantic composto fora do mapa `nomes`) e `data-lucide="circle"` literal deixado pela conversão. Ícone novo em módulo: acrescentar a tradução ao mapa do `interface.php`; `IconesLucideReq240Test` acusa o que faltar e confere o nome no pacote embarcado.
+- **`.c2fc-abas` não tem regra CSS.** A folha de abas é `c2fc-abas-lista` (+ `c2fc-anexa` para colar no painel), `c2fc-aba` (ativa por `aria-selected="true"` ou `.active`) e `c2fc-painel-aba`. O gap entre barra e painel vinha do `margin-bottom: 12px` da lista somado a `py-2` na página.
+- **`ln -s` no Git Bash copia o diretório em vez de ligar** (copiou `node_modules` inteiro para a worktree). Junção: `New-Item -ItemType Junction` no PowerShell. O `vendor/` da raiz da árvore principal está vazio; o PHPUnit usado foi `../conn2flow-req234/vendor/bin/phpunit`.
+- **Suíte do site**: não há `phpunit.xml` na raiz; usar `--configuration sdd/validation/req238-phpunit.xml`.
+- **Separar autoria de derivado no `git status` de outro agente**: tirar `precompiled.css`, `.min.js`, `db/data/` e, nos JSON de módulo, as linhas de `version`/`checksum`. De 303 arquivos alterados, 52 eram autoria.
+- **Alerta de tamanho**: 290 linhas; a poda é obrigatória aos 300.
