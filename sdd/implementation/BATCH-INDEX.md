@@ -81,6 +81,7 @@ Este arquivo controla o estado dos batches do `conn2flow` no modelo SDD.
 | BATCH-241 | superseded | Refinamento da UI V3.0 — Dashboard, Widgets, Topbar e Largura do Painel (req-232) | [req-232.md](../human-requests/req-232.md) | Superado pelo BATCH-242 devido a regressões na geometria e redimensionamento de widgets. |
 | BATCH-242 | in-progress | Correção Estrutural da UI V3.0 — Widgets, Capas, Topbar e Largura Útil (req-233) | [BATCH-242.md](BATCH-242.md) | Grid 12 colunas min-h-[220px], resize com snap proporcional, seletor de widget no card, capas 9rem/12rem, topbar w-80 e largura útil do painel. |
 | BATCH-243 | ready-for-intake | Fracionamento Determinístico de Arquivos de Dados Grandes (`*Data.json`) e Leitor Unificado de Tabelas Particionadas (req-234) | [req-234.md](../human-requests/req-234.md) | Limite por parte de 80 MiB, manifesto por tabela (`.manifest.json`), escrita atômica, leitor compartilhado (`gestor/bibliotecas/db-data.php`), proteção de sincronização no banco contra exclusões indevidas e suporte em recuperação/ZIP. |
+| BATCH-244 | complete | Estabilização Visual e Operacional do Dashboard V3.0 (req-235) | [BATCH-244.md](BATCH-244.md) | Blindagem da logo da topbar, camadas absolutas e alça suspensa dos cards de módulos, alturas 9rem/12rem com cover 100%, malha de 12 colunas e resize de widgets. Integrado em `main` (`ed8b1890`). |
 
 ## Regra operacional
 
