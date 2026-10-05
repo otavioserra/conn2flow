@@ -76,15 +76,22 @@ function admin_atualizacoes_listar(): void {
 
     // Histórico (tabela)
     $historicoLinhas='';
+    $ultimaExecucao = '';
     if(function_exists('banco_query')){
         // Consulta últimos 15
         $sql = "SELECT id_atualizacoes_execucoes,started_at,finished_at,release_tag,modo,status,stats_removed,stats_copied,session_log_path,plan_json_path FROM atualizacoes_execucoes ORDER BY started_at DESC LIMIT 15";
         $res = @banco_query($sql);
         if($res){
             while($row = banco_fetch_assoc($res)){
-                $statusLabel = htmlspecialchars($row['status'] ?? '');
+                $statusLabel = htmlspecialchars(admin_atualizacoes_status_rotulo((string)($row['status'] ?? '')), ENT_QUOTES, 'UTF-8');
                 $cls = 'grey';
                 if($row['status']==='running') $cls='blue'; elseif($row['status']==='success') $cls='green'; elseif($row['status']==='error') $cls='red';
+                // req-240: a primeira linha é a execução mais recente e alimenta o resumo do topo.
+                if($ultimaExecucao === ''){
+                    $ultimaExecucao = htmlspecialchars((string)($row['started_at'] ?? ''), ENT_QUOTES, 'UTF-8')
+                        .(!empty($row['release_tag']) ? ' · '.htmlspecialchars((string)$row['release_tag'], ENT_QUOTES, 'UTF-8') : '')
+                        .' <span class="c2fc-rotulo c2fc-cor-'.$cls.'">'.$statusLabel.'</span>';
+                }
                 $acoes=[];
                 if(!empty($row['session_log_path']) && file_exists($row['session_log_path'])){
                     $baseLog = basename($row['session_log_path']);
@@ -99,9 +106,9 @@ function admin_atualizacoes_listar(): void {
                     .'<td>'.htmlspecialchars($row['release_tag']??'').'</td>'
                     .'<td>'.htmlspecialchars($row['modo']??'').'</td>'
                     .'<td><span class="c2fc-rotulo c2fc-cor-'.$cls.'">'.$statusLabel.'</span></td>'
-                    .'<td>'.htmlspecialchars($row['stats_removed']??'').'</td>'
-                    .'<td>'.htmlspecialchars($row['stats_copied']??'').'</td>'
-                    .'<td>'.htmlspecialchars($row['finished_at']??'').'</td>'
+                    .'<td class="hidden md:table-cell">'.htmlspecialchars($row['stats_removed']??'').'</td>'
+                    .'<td class="hidden md:table-cell">'.htmlspecialchars($row['stats_copied']??'').'</td>'
+                    .'<td class="hidden md:table-cell">'.htmlspecialchars($row['finished_at']??'').'</td>'
                     .'<td>'.implode(' ',$acoes).'</td>'
                 .'</tr>';
             }
@@ -116,7 +123,20 @@ function admin_atualizacoes_listar(): void {
     $comp = modelo_var_troca_tudo($comp,'#plano-link#',$planoLink);
     $comp = modelo_var_troca_tudo($comp,'#linhas#',$linhas);
     $comp = modelo_var_troca_tudo($comp,'#historico_linhas#',$historicoLinhas);
-    $comp .= admin_atualizacoes_choques_html(); // req-198
+
+    // req-240: resumo do topo e choques dentro da aba de registros. A variante antiga não tem os marcadores
+    // e continua recebendo a seção de choques ao final (req-198).
+    $v = function($id){ global $_GESTOR; return htmlspecialchars((string)gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>$id]), ENT_QUOTES, 'UTF-8'); };
+    $pendentes = admin_atualizacoes_choques_pendentes();
+    $comp = modelo_var_troca_tudo($comp,'#versao-atual#',htmlspecialchars((string)($_GESTOR['versao'] ?? '—'), ENT_QUOTES, 'UTF-8'));
+    $comp = modelo_var_troca_tudo($comp,'#ultima-execucao#',$ultimaExecucao !== '' ? $ultimaExecucao : $v('updates-summary-never'));
+    $comp = modelo_var_troca_tudo($comp,'#choques-pendentes#',$pendentes > 0 ? (string)$pendentes : $v('updates-summary-clashes-none'));
+    $comp = modelo_var_troca_tudo($comp,'#choques-selo#',$pendentes > 0 ? ' <span class="c2fc-rotulo c2fc-cor-orange">'.$pendentes.'</span>' : '');
+    if(strpos($comp,'#choques#') !== false){
+        $comp = modelo_var_troca_tudo($comp,'#choques#',admin_atualizacoes_choques_html(true));
+    } else {
+        $comp .= admin_atualizacoes_choques_html();
+    }
     $_GESTOR['pagina'] = modelo_var_troca_tudo($_GESTOR['pagina'],'#dynamic-content#',$comp);
     // Incluir JS do módulo
     if(function_exists('gestor_pagina_javascript_incluir')) gestor_pagina_javascript_incluir();
@@ -127,11 +147,15 @@ function admin_atualizacoes_listar(): void {
  * atualização do core preservou, edições no servidor e retiradas que não puderam acontecer. A decisão
  * (sobrescrever, manter, mesclar) fica no detalhe (req-199).
  */
-function admin_atualizacoes_choques_html(): string {
+function admin_atualizacoes_choques_html(bool $emAba = false): string {
     global $_GESTOR;
-    if(!function_exists('banco_query')) return '';
+    $vazio = function() use ($emAba){
+        global $_GESTOR;
+        return $emAba ? '<p class="text-sm text-slate-600">'.htmlspecialchars((string)gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>'updates-clash-empty']), ENT_QUOTES, 'UTF-8').'</p>' : '';
+    };
+    if(!function_exists('banco_query')) return $vazio();
     $existe = @banco_query("SHOW TABLES LIKE 'atualizacoes_choques'");
-    if(!$existe || !banco_num_rows($existe)) return '';
+    if(!$existe || !banco_num_rows($existe)) return $vazio();
     $v = function($id){ global $_GESTOR; return htmlspecialchars((string)gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>$id]), ENT_QUOTES, 'UTF-8'); };
     $e = function($t){ return htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8'); };
     $linhas = '';
@@ -150,12 +174,31 @@ function admin_atualizacoes_choques_html(): string {
             .'</tr>';
     }
     if($linhas === '') $linhas = '<tr><td colspan="8" class="c2fc-texto-suave">'.$v('updates-clash-empty').'</td></tr>';
-    return '<section class="space-y-3 rounded border border-slate-200 bg-white p-4" data-atualizacoes-choques><h2 class="text-base font-semibold text-slate-900">'.$v('updates-clash-title').'</h2>'
-        .'<p class="text-sm text-slate-600">'.$v('updates-clash-help').'</p>'
-        .'<div class="overflow-x-auto"><table class="min-w-full divide-y divide-slate-200 text-left text-sm [&_th]:px-3 [&_th]:py-2 [&_th]:font-medium [&_th]:text-slate-600 [&_td]:px-3 [&_td]:py-3 [&_td]:align-top"><thead><tr>'
+    $tabela = '<p class="text-sm text-slate-600">'.$v('updates-clash-help').'</p>'
+        .'<div class="overflow-x-auto"><table class="min-w-full divide-y divide-slate-200 text-left text-sm [&_th]:px-3 [&_th]:py-2 [&_td]:px-3 [&_td]:py-3 [&_td]:align-top"><thead class="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase"><tr>'
         .'<th>'.$v('updates-clash-col-date').'</th><th>'.$v('updates-clash-col-layer').'</th><th>'.$v('updates-clash-col-path').'</th>'
         .'<th>'.$v('updates-clash-col-reason').'</th><th>'.$v('updates-clash-col-owner').'</th><th>'.$v('updates-clash-col-version').'</th>'
-        .'<th>'.$v('updates-clash-col-resolution').'</th><th></th></tr></thead><tbody class="divide-y divide-slate-100">'.$linhas.'</tbody></table></div></section>';
+        .'<th>'.$v('updates-clash-col-resolution').'</th><th></th></tr></thead><tbody class="divide-y divide-slate-100">'.$linhas.'</tbody></table></div>';
+    if($emAba) return '<div class="space-y-3" data-atualizacoes-choques>'.$tabela.'</div>';
+    return '<section class="space-y-3 rounded border border-slate-200 bg-white p-4" data-atualizacoes-choques><h2 class="text-base font-semibold text-slate-900">'.$v('updates-clash-title').'</h2>'.$tabela.'</section>';
+}
+
+/** req-240: quantos choques ainda esperam decisão (0 quando a tabela não existe). */
+function admin_atualizacoes_choques_pendentes(): int {
+    if(!function_exists('banco_query')) return 0;
+    $existe = @banco_query("SHOW TABLES LIKE 'atualizacoes_choques'");
+    if(!$existe || !banco_num_rows($existe)) return 0;
+    $res = @banco_query("SELECT COUNT(*) AS total FROM atualizacoes_choques WHERE resolucao IS NULL OR resolucao=''");
+    $linha = $res ? banco_fetch_assoc($res) : null;
+    return (int)($linha['total'] ?? 0);
+}
+
+/** req-240: rótulo traduzido do status de uma execução; status desconhecido sai como veio do banco. */
+function admin_atualizacoes_status_rotulo(string $status): string {
+    global $_GESTOR;
+    if(!in_array($status, ['success','error','running'], true)) return $status;
+    $rotulo = (string)gestor_variaveis(['modulo'=>$_GESTOR['modulo-id'],'id'=>'updates-status-'.$status]);
+    return $rotulo !== '' ? $rotulo : $status;
 }
 
 /** req-198: detalhe de um choque (diff e onde está a versão nova); req-199: a decisão. */

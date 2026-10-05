@@ -4656,7 +4656,7 @@
         "language": "pt-br",
         "modulo": "admin-atualizacoes",
         "id": "updates-mode-full",
-        "valor": "Full",
+        "valor": "Completa",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4665,7 +4665,7 @@
         "language": "pt-br",
         "modulo": "admin-atualizacoes",
         "id": "updates-mode-files",
-        "valor": "Arquivos",
+        "valor": "Somente arquivos",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4674,7 +4674,7 @@
         "language": "pt-br",
         "modulo": "admin-atualizacoes",
         "id": "updates-mode-db",
-        "valor": "Banco",
+        "valor": "Somente banco",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -4854,7 +4854,7 @@
         "language": "pt-br",
         "modulo": "admin-atualizacoes",
         "id": "updates-mode-none",
-        "valor": "Nenhum modo selecionado",
+        "valor": "Nenhum modo selecionado.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5238,6 +5238,537 @@
         "descricao": null
     },
     {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-full-help",
+        "valor": "Arquivos do sistema e banco de dados. É o modo recomendado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-files-help",
+        "valor": "Só os arquivos do sistema; o banco de dados não é tocado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-db-help",
+        "valor": "Só migrações e dados do banco; os arquivos ficam como estão.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-selected",
+        "valor": "Modo selecionado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-running",
+        "valor": "em execução",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-finished",
+        "valor": "finalizado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-required",
+        "valor": "Escolha um modo antes de executar.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-run-confirm",
+        "valor": "Executar a atualização agora?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-step-mode",
+        "valor": "Escolha o que atualizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-step-options",
+        "valor": "Ajuste as opções",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-step-run",
+        "valor": "Execute",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-summary-version",
+        "valor": "Versão instalada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-summary-clashes",
+        "valor": "Choques pendentes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-summary-never",
+        "valor": "Nenhuma execução registrada",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-summary-clashes-none",
+        "valor": "Nenhum pendente",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-status-success",
+        "valor": "Sucesso",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-status-error",
+        "valor": "Erro",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-status-running",
+        "valor": "Em execução",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-safety",
+        "valor": "Segurança",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-package",
+        "valor": "Pacote da versão",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-database",
+        "valor": "Banco de dados",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-diagnostics",
+        "valor": "Diagnóstico e limpeza",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-danger",
+        "valor": "Zona de perigo",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-backup",
+        "valor": "Backup completo antes de atualizar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-backup-help",
+        "valor": "Copia a instalação antes de trocar os arquivos (exceto conteúdos, logs, backups, temporários e autenticações).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-health",
+        "valor": "Pular a verificação depois da atualização",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-health-help",
+        "valor": "Não confere se o site responde ao final. Sem verificação não há volta automática.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-rollback",
+        "valor": "Não voltar automaticamente em caso de falha",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-rollback-help",
+        "valor": "Mantém a versão nova mesmo que a verificação falhe.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-health-url",
+        "valor": "Endereço da verificação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-health-ip",
+        "valor": "IP da verificação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-health-help",
+        "valor": "Em branco, a verificação usa o endereço do próprio site.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-tag",
+        "valor": "Versão a instalar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-tag-help",
+        "valor": "Em branco, a mais recente.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-local",
+        "valor": "Usar o pacote local",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-local-help",
+        "valor": "Não baixa a versão; usa o artefato que já está no servidor.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-skip-download",
+        "valor": "Reaproveitar o pacote já baixado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-skip-download-help",
+        "valor": "Usa o arquivo que já está na pasta temporária.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-download-only",
+        "valor": "Somente baixar e planejar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-download-only-help",
+        "valor": "Baixa, extrai e gera o plano, sem aplicar nada.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-verify",
+        "valor": "Não conferir a integridade do pacote",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-verify-help",
+        "valor": "Desliga a conferência SHA-256 do pacote. Use só com origem confiável.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-db",
+        "valor": "Não atualizar o banco",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-db-help",
+        "valor": "Aplica os arquivos e deixa migrações e dados para depois.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-force-all",
+        "valor": "Regravar todos os registros",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-force-all-help",
+        "valor": "Atualiza todas as linhas, inclusive as que não mudaram.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-log-diff",
+        "valor": "Registrar as diferenças do banco no log",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-log-diff-help",
+        "valor": "Grava no log o detalhe de cada registro alterado.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-tables",
+        "valor": "Somente estas tabelas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-tables-help",
+        "valor": "Nomes separados por vírgula. Em branco, todas.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-dry-run",
+        "valor": "Simulação",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-dry-run-help",
+        "valor": "Mostra o que seria feito, sem alterar arquivos nem banco.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-debug",
+        "valor": "Log detalhado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-debug-help",
+        "valor": "Inclui as mensagens de depuração no log da execução.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-clean-temp",
+        "valor": "Limpar a pasta temporária ao final",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-clean-temp-help",
+        "valor": "Remove o pacote baixado e os arquivos de trabalho, mesmo em simulação.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-logs-retention",
+        "valor": "Dias de retenção dos logs",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-wipe",
+        "valor": "Apagar a instalação antes de aplicar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-wipe-help",
+        "valor": "Remove tudo, exceto as pastas protegidas, antes de copiar a versão nova. Arquivos próprios fora do pacote são perdidos.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
         "language": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-title",
@@ -5349,7 +5880,7 @@
         "language": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-mode-files",
-        "valor": "Files",
+        "valor": "Files only",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5358,7 +5889,7 @@
         "language": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-mode-db",
-        "valor": "Database",
+        "valor": "Database only",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5538,7 +6069,7 @@
         "language": "en",
         "modulo": "admin-atualizacoes",
         "id": "updates-mode-none",
-        "valor": "No mode selected",
+        "valor": "No mode selected.",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -5917,6 +6448,537 @@
         "modulo": "admin-atualizacoes",
         "id": "updates-clash-res-manter-regra",
         "valor": "Kept (rule)",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-full-help",
+        "valor": "System files and database. This is the recommended mode.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-files-help",
+        "valor": "System files only; the database is not touched.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-db-help",
+        "valor": "Migrations and database data only; files stay as they are.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-selected",
+        "valor": "Selected mode",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-running",
+        "valor": "running",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-finished",
+        "valor": "finished",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-mode-required",
+        "valor": "Choose a mode before running.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-run-confirm",
+        "valor": "Run the update now?",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-step-mode",
+        "valor": "Choose what to update",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-step-options",
+        "valor": "Adjust the options",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-step-run",
+        "valor": "Run",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-summary-version",
+        "valor": "Installed version",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-summary-clashes",
+        "valor": "Pending clashes",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-summary-never",
+        "valor": "No run recorded",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-summary-clashes-none",
+        "valor": "None pending",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-status-success",
+        "valor": "Success",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-status-error",
+        "valor": "Error",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-status-running",
+        "valor": "Running",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-safety",
+        "valor": "Safety",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-package",
+        "valor": "Release package",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-database",
+        "valor": "Database",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-diagnostics",
+        "valor": "Diagnostics and cleanup",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-group-danger",
+        "valor": "Danger zone",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-backup",
+        "valor": "Full backup before updating",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-backup-help",
+        "valor": "Copies the installation before replacing files (except contents, logs, backups, temp and authentication folders).",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-health",
+        "valor": "Skip the check after the update",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-health-help",
+        "valor": "Does not check whether the site responds at the end. Without the check there is no automatic rollback.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-rollback",
+        "valor": "Do not roll back automatically on failure",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-rollback-help",
+        "valor": "Keeps the new version even if the check fails.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-health-url",
+        "valor": "Check address",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-health-ip",
+        "valor": "Check IP",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-health-help",
+        "valor": "When blank, the check uses the address of the site itself.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-tag",
+        "valor": "Version to install",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-tag-help",
+        "valor": "When blank, the latest.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-local",
+        "valor": "Use the local package",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-local-help",
+        "valor": "Does not download the release; uses the artifact already on the server.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-skip-download",
+        "valor": "Reuse the package already downloaded",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-skip-download-help",
+        "valor": "Uses the file already in the temporary folder.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-download-only",
+        "valor": "Download and plan only",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-download-only-help",
+        "valor": "Downloads, extracts and builds the plan without applying anything.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-verify",
+        "valor": "Do not verify the package integrity",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-verify-help",
+        "valor": "Turns off the SHA-256 check of the package. Use only with a trusted source.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-db",
+        "valor": "Do not update the database",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-no-db-help",
+        "valor": "Applies the files and leaves migrations and data for later.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-force-all",
+        "valor": "Rewrite every record",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-force-all-help",
+        "valor": "Updates every row, including the unchanged ones.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-log-diff",
+        "valor": "Log database differences",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-log-diff-help",
+        "valor": "Writes the detail of each changed record to the log.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-tables",
+        "valor": "Only these tables",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-tables-help",
+        "valor": "Comma-separated names. When blank, all of them.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-dry-run",
+        "valor": "Dry run",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-dry-run-help",
+        "valor": "Shows what would be done without changing files or the database.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-debug",
+        "valor": "Detailed log",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-debug-help",
+        "valor": "Includes debug messages in the run log.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-clean-temp",
+        "valor": "Clean the temporary folder at the end",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-clean-temp-help",
+        "valor": "Removes the downloaded package and working files, even on a dry run.",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-logs-retention",
+        "valor": "Log retention days",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-wipe",
+        "valor": "Wipe the installation before applying",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "admin-atualizacoes",
+        "id": "updates-opt-wipe-help",
+        "valor": "Removes everything except the protected folders before copying the new version. Your own files outside the package are lost.",
         "tipo": "string",
         "grupo": null,
         "descricao": null

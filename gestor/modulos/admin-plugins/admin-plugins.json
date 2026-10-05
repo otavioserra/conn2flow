@@ -21,7 +21,7 @@
                     "name": "Admin Plugins",
                     "id": "admin-plugins",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/",
+                    "path": "admin-plugins/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -71,10 +71,10 @@
                     "name": "Admin Plugins - Adicionar",
                     "id": "admin-plugins-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/adicionar\/",
+                    "path": "admin-plugins/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -100,10 +100,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "5bdcce2d8a34c8b3859047337b60d3ca",
+                        "html": "1148392d30188fa1b73edfd2257b9b68",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5bdcce2d8a34c8b3859047337b60d3ca"
+                        "combined": "1148392d30188fa1b73edfd2257b9b68"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -111,10 +111,10 @@
                     "name": "Admin Plugins - Editar",
                     "id": "admin-plugins-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/editar\/",
+                    "path": "admin-plugins/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.7",
+                    "version": "1.8",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -140,10 +140,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "ad181874e6a7869e7caa43fcf8ea28e0",
+                        "html": "54c563af5791861a7458f4b2cd9cce35",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ad181874e6a7869e7caa43fcf8ea28e0"
+                        "combined": "54c563af5791861a7458f4b2cd9cce35"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -151,7 +151,7 @@
                     "name": "Admin Plugins - Executar",
                     "id": "admin-plugins-executar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/executar\/",
+                    "path": "admin-plugins/executar/",
                     "type": "system",
                     "option": "executar",
                     "version": "1.6",
@@ -186,14 +186,14 @@
                     "name": "Admin Plugins - Teste",
                     "id": "admin-plugins-teste",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/teste\/",
+                    "path": "admin-plugins/teste/",
                     "type": "system",
                     "option": "teste",
                     "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-plugins.php"
+                        "../../../../admin-plugins.php"
                     ],
                     "tailwind_sources_reason": "O controlador monta cards de resultado com utilitários Tailwind para os testes de descoberta, download e processamento de origem.",
                     "tailwind_dependencies": [
@@ -264,7 +264,7 @@
                 },
                 {
                     "id": "metadata-origin-branch-tag",
-                    "value": "Branch\/Tag",
+                    "value": "Branch/Tag",
                     "type": "string"
                 },
                 {
@@ -466,7 +466,7 @@
                     "name": "Admin Plugins",
                     "id": "admin-plugins",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/",
+                    "path": "admin-plugins/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -516,10 +516,10 @@
                     "name": "Admin Plugins - Add",
                     "id": "admin-plugins-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/adicionar\/",
+                    "path": "admin-plugins/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -545,10 +545,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "e47c5d4d28a985d79c4d0051be9913a1",
+                        "html": "1148392d30188fa1b73edfd2257b9b68",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e47c5d4d28a985d79c4d0051be9913a1"
+                        "combined": "1148392d30188fa1b73edfd2257b9b68"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -556,10 +556,10 @@
                     "name": "Admin Plugins - Edit",
                     "id": "admin-plugins-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/editar\/",
+                    "path": "admin-plugins/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -585,10 +585,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "62b27b658028fb184bd82bccde17f853",
+                        "html": "54c563af5791861a7458f4b2cd9cce35",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "62b27b658028fb184bd82bccde17f853"
+                        "combined": "54c563af5791861a7458f4b2cd9cce35"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -596,7 +596,7 @@
                     "name": "Admin Plugins - Execute",
                     "id": "admin-plugins-executar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/executar\/",
+                    "path": "admin-plugins/executar/",
                     "type": "system",
                     "option": "executar",
                     "version": "1.6",
@@ -631,14 +631,14 @@
                     "name": "Admin Plugins - Test",
                     "id": "admin-plugins-teste",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-plugins\/teste\/",
+                    "path": "admin-plugins/teste/",
                     "type": "system",
                     "option": "teste",
                     "version": "1.7",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-plugins.php"
+                        "../../../../admin-plugins.php"
                     ],
                     "tailwind_sources_reason": "The controller assembles result cards with Tailwind utilities for release discovery, download, and source processing tests.",
                     "tailwind_dependencies": [
@@ -709,7 +709,7 @@
                 },
                 {
                     "id": "metadata-origin-branch-tag",
-                    "value": "Branch\/Tag",
+                    "value": "Branch/Tag",
                     "type": "string"
                 },
                 {
@@ -905,5 +905,5 @@
             ]
         }
     },
-    "asset_version": "3c21d660f3493933"
+    "asset_version": "0291107cb88f7869"
 }

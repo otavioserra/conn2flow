@@ -79,11 +79,11 @@
                     "redirects": {
                         "success": {
                             "type": "url",
-                            "path": "your-page/success/"
+                            "path": "your-page\/success\/"
                         },
                         "error": {
                             "type": "url",
-                            "path": "your-page/error/"
+                            "path": "your-page\/error\/"
                         }
                     },
                     "fields": [
@@ -135,13 +135,13 @@
                 {
                     "id": "forms-info-definition-tailwind",
                     "name": "Formulário Definições Informações Tailwind",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "227f77a345483340a9f583117c024ba9",
+                        "html": "8977e0623c5dba2f4a395f084b96919c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "227f77a345483340a9f583117c024ba9"
+                        "combined": "8977e0623c5dba2f4a395f084b96919c"
                     }
                 }
             ],
@@ -217,7 +217,7 @@
                     "name": "Formulários Listar",
                     "id": "forms-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/",
+                    "path": "forms\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -267,15 +267,15 @@
                     "name": "Formulários Visualizar",
                     "id": "forms-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/view/",
+                    "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "79993112af825aa4277afef4774706c9",
+                        "html": "2a6159717366ae5f7a4b1bd484c3b379",
                         "css": "39c704e4c0804714fca60ff0a898f19d",
                         "css_precompiled": "",
-                        "combined": "cbdca9e9166f1e46c032c377ca0d4ac4"
+                        "combined": "301ed0a9a668affa942ebfe68cd184b9"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -338,15 +338,15 @@
                     "name": "Formulários Adicionar",
                     "id": "forms-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/adicionar/",
+                    "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "28d66dbaf7f053daff3cc5e1fcb2ef06",
+                        "html": "43147ddd0e4197681ca6360630f8a728",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "af635139ede44e89e94988d74a9d884d"
+                        "combined": "1b603a8e5c5787e1aad1983d22dd39ea"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -454,15 +454,15 @@
                     "name": "Formulários Editar",
                     "id": "forms-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/editar/",
+                    "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "8f8c738926064c162eaf27e07502c094",
+                        "html": "8bbb8721227e9e029bcf11a5fbf1b049",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "d10e1d76abd09bd5a449e5ca89abb8ea"
+                        "combined": "475b2ccd7f99f1d6eed1e436b3d314ae"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -570,15 +570,15 @@
                     "name": "Formulários Clonar",
                     "id": "forms-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/clonar/",
+                    "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "3ea48f30fc06fea2ee16833682366bf3",
+                        "html": "fed9cb3997c41eeeb939390973cb7753",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "3caf4fb12366443aa50407d97342532c"
+                        "combined": "8c8fc1202b0a30563864e1347286208f"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -686,7 +686,7 @@
                     "name": "Forms Test Email Page",
                     "id": "forms-test-email-page",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "forms/test-email-page/",
+                    "path": "forms\/test-email-page\/",
                     "type": "system",
                     "option": "test-email-page",
                     "framework_css": "tailwindcss",
@@ -844,11 +844,11 @@
                     "redirects": {
                         "success": {
                             "type": "url",
-                            "path": "your-page/success/"
+                            "path": "your-page\/success\/"
                         },
                         "error": {
                             "type": "url",
-                            "path": "your-page/error/"
+                            "path": "your-page\/error\/"
                         }
                     },
                     "fields": [
@@ -900,13 +900,13 @@
                 {
                     "id": "forms-info-definition-tailwind",
                     "name": "Forms Info Definition Tailwind",
-                    "version": "1.2",
+                    "version": "1.3",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "eed825c384b9f5dc10d5e1793e2ef689",
+                        "html": "6f76c2269442b997ce21704dd5bad155",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "eed825c384b9f5dc10d5e1793e2ef689"
+                        "combined": "6f76c2269442b997ce21704dd5bad155"
                     }
                 }
             ],
@@ -982,7 +982,7 @@
                     "name": "Forms List",
                     "id": "forms-list",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/",
+                    "path": "forms\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -1032,15 +1032,15 @@
                     "name": "Forms View",
                     "id": "forms-view",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/view/",
+                    "path": "forms\/view\/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.18",
+                    "version": "1.19",
                     "checksum": {
-                        "html": "7dc3a631c71c0b57c8c23eba1101d031",
+                        "html": "2d18f526d56b6a5951afb694a7c9249b",
                         "css": "39c704e4c0804714fca60ff0a898f19d",
                         "css_precompiled": "",
-                        "combined": "98f568d8c911928cf5a98862abb305d3"
+                        "combined": "12d511b43e4b77d81c6da18f2de32f52"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1103,15 +1103,15 @@
                     "name": "Forms Add",
                     "id": "forms-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/adicionar/",
+                    "path": "forms\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.18",
+                    "version": "1.19",
                     "checksum": {
-                        "html": "76704a229103ce4d3922096ed6fe0de2",
+                        "html": "1f5b78568c3e061ae99eab1d29b64fa8",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "770d574dc84dfa9bff1f69c8368f62be"
+                        "combined": "71cd7c600de89261d0a91700c083effc"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1219,15 +1219,15 @@
                     "name": "Forms Edit",
                     "id": "forms-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/editar/",
+                    "path": "forms\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "0e9395de20ca8f9c29259c4d7e068fef",
+                        "html": "cf78d7e3f91afed413248f03261af572",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "be690f216d06367a4152df3ad5ae0bd0"
+                        "combined": "0c574b033d438ef7e27026fa1b796818"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1335,15 +1335,15 @@
                     "name": "Forms Clone",
                     "id": "forms-clonar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "forms/clonar/",
+                    "path": "forms\/clonar\/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "493c09377dda9e49a6e3b2cd95a8c345",
+                        "html": "395c8fd11914c0d3da69934a641dfc2f",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "993f721223ca1408f6030a3b95b20b75"
+                        "combined": "ca21e723514a3d3b057e6298288e8897"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1451,7 +1451,7 @@
                     "name": "Forms Test Email Page",
                     "id": "forms-test-email-page",
                     "layout": "pagina-simples-tailwindcss",
-                    "path": "forms/test-email-page/",
+                    "path": "forms\/test-email-page\/",
                     "type": "system",
                     "option": "test-email-page",
                     "framework_css": "tailwindcss",

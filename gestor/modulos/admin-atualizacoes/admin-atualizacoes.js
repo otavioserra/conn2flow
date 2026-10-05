@@ -113,6 +113,9 @@ $(document).ready(function () {
             const domain = rootEl.find('#upd-domain, #upd-domain-d').first().val(); if (domain) out.domain = domain;
             const tables = rootEl.find('#upd-tables, #upd-tables-d').first().val(); if (tables) out.tables = tables;
             const logsRet = rootEl.find('#upd-logs-retention-days, #upd-logs-retention-days-d').first().val(); if (logsRet) out.logs_retention_days = logsRet;
+            // req-240: verificação pós-atualização (req-201) passa a ter controle na tela.
+            const healthUrl = String(rootEl.find('#upd-health-url').first().val() || '').trim(); if (healthUrl) out.health_url = healthUrl;
+            const healthIp = String(rootEl.find('#upd-health-ip').first().val() || '').trim(); if (healthIp) out.health_ip = healthIp;
             return out;
         }
         function doStart(modo) {
@@ -130,8 +133,8 @@ $(document).ready(function () {
                     const data = resp.data;
                     if (data.error) { log('Erro start: ' + data.error); return; }
                     currentSid = data.sid; currentExecId = data.exec_id || null; currentModo = modo;
-                    $('#atualizacoes-cancel-btn').show(); setProgress(10);
-                    $('#atualizacoes-mode-label').text(currentModo + ' (iniciado)');
+                    $('#atualizacoes-cancel-btn').removeClass('hidden'); setProgress(10);
+                    $('#atualizacoes-mode-label').text(rotuloModo(currentModo) + ' (' + (root[0].dataset.labelRunning || 'iniciado') + ')');
                     log('Sessão criada: ' + data.sid + ' exec_id=' + (currentExecId || '?') + ' tag=' + data.release_tag + ' modo=' + currentModo);
                     next(data.next);
                 }).fail(() => { setLoading(false); log('Falha comunicação start'); $('#atualizacoes-start-btn').prop('disabled', false); });
@@ -147,6 +150,19 @@ $(document).ready(function () {
                 }).catch(function () { startButton.prop('disabled', false); });
                 return;
             }
+            // req-240: execução que altera a instalação pede confirmação; simulação e só-download seguem direto.
+            const confirmacao = root[0].dataset.msgRunConfirm;
+            if (confirmacao && !adv.dry_run && !adv.download_only) {
+                startButton.prop('disabled', true);
+                window.c2fControles.dialogo.confirmar(confirmacao + ' (' + rotuloModo(modo) + ')').then(function (confirmado) {
+                    if (confirmado) iniciar();
+                    else {
+                        startButton.prop('disabled', false);
+                        log('Operação cancelada pelo usuário');
+                    }
+                }).catch(function () { startButton.prop('disabled', false); });
+                return;
+            }
             iniciar();
         }
         function doDeploy() { log('Deploy: executando arquivos + merge .env'); setLoading(true); ajax({ acao: 'deploy', sid: currentSid }).done(resp => { setLoading(false); if (resp.status !== 'ok') { log('Erro deploy: ' + (resp.erro || '')); return; } const data = resp.data; if (data.error) { log('Erro deploy: ' + data.error); return; } if (!currentExecId && data.exec_id) currentExecId = data.exec_id; log('Deploy concluído.'); next(data.next); }).fail(() => { setLoading(false); log('Falha deploy'); }); }
@@ -154,9 +170,9 @@ $(document).ready(function () {
         function concluirInterface() {
             if (polling) clearInterval(polling);
             polling = null;
-            $('#atualizacoes-cancel-btn').hide();
+            $('#atualizacoes-cancel-btn').addClass('hidden');
             log('Processo completo.');
-            $('#atualizacoes-mode-label').text((currentModo || selectedMode || '?') + ' (finalizado)');
+            $('#atualizacoes-mode-label').text(rotuloModo(currentModo || selectedMode || '?') + ' (' + (root[0].dataset.labelFinished || 'finalizado') + ')');
             $('#atualizacoes-start-btn').prop('disabled', false);
             setProgress(100);
         }
@@ -204,7 +220,7 @@ $(document).ready(function () {
             }, 3000);
         }
         // Cancelar (futuro: endpoint cancel). Exposto para uso
-        function cancelar() { if (!currentSid) return; log('Solicitando cancelamento...'); ajax({ acao: 'cancel', sid: currentSid }).done(resp => { if (resp.status === 'ok' && resp.data && resp.data.canceled) { log('Cancelado.'); if (polling) clearInterval(polling); $('#atualizacoes-cancel-btn').hide(); $('#atualizacoes-start-btn').prop('disabled', false); } else { log('Falha ao cancelar'); } }); }
+        function cancelar() { if (!currentSid) return; log('Solicitando cancelamento...'); ajax({ acao: 'cancel', sid: currentSid }).done(resp => { if (resp.status === 'ok' && resp.data && resp.data.canceled) { log('Cancelado.'); if (polling) clearInterval(polling); $('#atualizacoes-cancel-btn').addClass('hidden'); $('#atualizacoes-start-btn').prop('disabled', false); } else { log('Falha ao cancelar'); } }); }
         // Expor algumas funções para extensões futuras (opcional)
         window.adminAtualizacoes = {
             restart: () => { if (polling) clearInterval(polling); currentSid = null; currentExecId = null; statusBox.empty(); },
@@ -213,16 +229,23 @@ $(document).ready(function () {
             cancelar
         };
         let selectedMode = null;
+        // req-240: o nome do modo vem do rótulo traduzido do botão; sem ele, cai no identificador.
+        function rotuloModo(modo) {
+            const botao = root.find('.upd-mode-btn').filter(function () { return $(this).data('modo') === modo; }).first();
+            return String((botao.length && botao.attr('data-rotulo')) || modo);
+        }
         root.on('click', '.upd-mode-btn', function () {
             if (currentSid) { log('Sessão em andamento. Aguarde ou cancele.'); return; }
             root.find('.upd-mode-btn').attr('aria-pressed', 'false').removeAttr('data-selected');
             $(this).attr('aria-pressed', 'true').attr('data-selected', 'true');
             selectedMode = $(this).data('modo');
-            $('#atualizacoes-mode-label').text(selectedMode + ' (selecionado)');
+            const prefixo = root[0].dataset.labelSelected;
+            $('#atualizacoes-mode-label').text(prefixo ? prefixo + ': ' + rotuloModo(selectedMode) : selectedMode + ' (selecionado)');
+            $('#atualizacoes-start-btn').prop('disabled', false);
         });
         root.on('click', '#atualizacoes-start-btn', function () {
             if (currentSid) { log('Já existe sessão em andamento: ' + currentSid); return; }
-            if (!selectedMode) { log('Selecione um modo antes de iniciar.'); return; }
+            if (!selectedMode) { log(root[0].dataset.msgModeRequired || 'Selecione um modo antes de iniciar.'); return; }
             doStart(selectedMode);
         });
         root.on('click', '#atualizacoes-cancel-btn', function () { cancelar(); });

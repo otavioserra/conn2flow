@@ -313,7 +313,7 @@
                     <div class="space-y-1.5">
                         <label class="text-sm font-medium text-slate-700">@[[captcha-provider-label]]@</label>
                         <select id="captcha_provider" name="captcha_provider"
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                            class="c2fc-campo-selecao"
                             data-current="#captcha-provider#">
                             <option value="none">@[[captcha-provider-none]]@</option>
                             <option value="google-recaptcha">@[[captcha-provider-google]]@</option>
@@ -334,7 +334,7 @@
                         <div class="space-y-1.5"><label
                                 class="text-sm font-medium text-slate-700">@[[turnstile-mode-label]]@</label><select
                                 id="turnstile_mode"
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                                class="c2fc-campo-selecao"
                                 data-current="#turnstile-mode#">
                                 <option value="managed">@[[turnstile-mode-managed]]@</option>
                                 <option value="non-interactive">@[[turnstile-mode-non-interactive]]@</option>
@@ -569,7 +569,7 @@
                     <div class="space-y-1.5">
                         <label class="text-sm font-medium text-slate-700">System Default Language</label>
                         <select
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                            class="c2fc-campo-selecao"
                             id="language_default" name="language_default">
                             #language-options#
                         </select>
@@ -589,7 +589,7 @@
                     <div class="space-y-1.5">
                         <label class="text-sm font-medium text-slate-700">Integration Mode</label>
                         <select
-                            class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                            class="c2fc-campo-selecao"
                             id="paypal_default" name="paypal_default">
                             <option value="padrao" #paypal-default-padrao-selected#>Standard (credentials from .env)
                             </option>
@@ -609,7 +609,7 @@
                         <div class="space-y-1.5">
                             <label class="text-sm font-medium text-slate-700">Environment</label>
                             <select
-                                class="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-sky-700 focus:outline-none focus:ring-1 focus:ring-sky-700"
+                                class="c2fc-campo-selecao"
                                 id="paypal_mode" name="paypal_mode">
                                 <option value="sandbox" #paypal-mode-sandbox-selected#>Sandbox (Testing)</option>
                                 <option value="live" #paypal-mode-live-selected#>Live (Production)</option>

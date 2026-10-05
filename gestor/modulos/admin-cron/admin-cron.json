@@ -21,20 +21,20 @@
                     "name": "Rotinas Automáticas",
                     "id": "admin-cron",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-cron/",
+                    "path": "admin-cron\/",
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "6a4af6df04b77f8693400757bc7858df",
+                        "html": "824ca3860646397302ed5ff38e49735b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6a4af6df04b77f8693400757bc7858df"
+                        "combined": "824ca3860646397302ed5ff38e49735b"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../admin-cron.js"
+                        "..\/..\/..\/..\/admin-cron.js"
                     ],
                     "tailwind_sources_reason": "REQ-032: as etiquetas de status e de frequência das linhas são montadas em runtime pelo admin-cron.js a partir do JSON do backend; sem escanear o script, o precompiled sai sem as utilities dessas etiquetas.",
                     "tailwind_bundle": true,
@@ -75,7 +75,7 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-225/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
+                    "tailwind_dependencies_reason": "REQ-225\/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
                 }
             ],
             "variables": [
@@ -502,20 +502,20 @@
                     "name": "Scheduled Tasks",
                     "id": "admin-cron",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-cron/",
+                    "path": "admin-cron\/",
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "6a4af6df04b77f8693400757bc7858df",
+                        "html": "824ca3860646397302ed5ff38e49735b",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "6a4af6df04b77f8693400757bc7858df"
+                        "combined": "824ca3860646397302ed5ff38e49735b"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
-                        "../../../../admin-cron.js"
+                        "..\/..\/..\/..\/admin-cron.js"
                     ],
                     "tailwind_sources_reason": "REQ-032: status and frequency badges are built at runtime by admin-cron.js from the backend JSON; without scanning the script the precompiled bundle misses those utilities.",
                     "tailwind_bundle": true,
@@ -556,7 +556,7 @@
                             "scope": "global"
                         }
                     ],
-                    "tailwind_dependencies_reason": "REQ-225/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
+                    "tailwind_dependencies_reason": "REQ-225\/REQ-236: preservar a cascata responsiva do layout e dos componentes administrativos."
                 }
             ],
             "variables": [

@@ -291,12 +291,12 @@
         "name": "Interface Backup Dropdown Tailwind",
         "id": "interface-backup-dropdown-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.3",
+        "version": "1.4",
         "checksum": {
-            "html": "8d805dadbf3a3dc260a3ad3acc4c0c67",
+            "html": "55f9860e8995af0dc182e3d50949e79e",
             "css": "",
             "css_precompiled": "",
-            "combined": "8d805dadbf3a3dc260a3ad3acc4c0c67"
+            "combined": "55f9860e8995af0dc182e3d50949e79e"
         }
     },
     {
@@ -393,12 +393,12 @@
         "name": "IA Prompt Tailwind",
         "id": "ia-prompt-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "6d46e39e246a11153a01370486eeef3d",
+            "html": "b4c57d100e53b89836d84c32fc8dd1f4",
             "css": "",
             "css_precompiled": "",
-            "combined": "6d46e39e246a11153a01370486eeef3d"
+            "combined": "b4c57d100e53b89836d84c32fc8dd1f4"
         }
     },
     {
@@ -439,12 +439,12 @@
         "name": "HTML Editor Tailwind",
         "id": "html-editor-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "4da33f62605e9274bcf3ea8991e21b57",
+            "html": "e6ea1518ff03efcb9aa4d0b25543404f",
             "css": "1fb7d1b67165d5f5578c4130c5dcd1ef",
             "css_precompiled": "",
-            "combined": "27fd52d07ac5ac478bc5870121ba5e94"
+            "combined": "51ed23472abf62adf3df90ec46c42be1"
         }
     },
     {
@@ -485,12 +485,12 @@
         "name": "HTML Editor Página Modificação Tailwind",
         "id": "html-editor-page-modification-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.4",
+        "version": "1.5",
         "checksum": {
-            "html": "66988c03cd0a03866a91a738786be075",
+            "html": "4b84ddc33adec9abea4a09dc175cbba9",
             "css": "",
             "css_precompiled": "",
-            "combined": "66988c03cd0a03866a91a738786be075"
+            "combined": "4b84ddc33adec9abea4a09dc175cbba9"
         }
     },
     {
@@ -750,12 +750,12 @@
         "name": "Interface Listar Tailwind",
         "id": "interface-listar-tailwind",
         "framework_css": "tailwindcss",
-        "version": "1.9",
+        "version": "1.10",
         "checksum": {
-            "html": "f4828e780bd1ad9f5458d34981d50cb9",
+            "html": "f7197c0c699659f25096fc50c981dba4",
             "css": "",
             "css_precompiled": "",
-            "combined": "f4828e780bd1ad9f5458d34981d50cb9"
+            "combined": "f7197c0c699659f25096fc50c981dba4"
         }
     },
     {

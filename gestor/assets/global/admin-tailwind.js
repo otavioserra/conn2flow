@@ -48,6 +48,7 @@
     // demorar ou o script ser injetado async por um projeto derivado. Sem Lucide o menu perde só os
     // ícones, nunca a navegação.
     var LUCIDE_NOME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+    var LUCIDE_SEM_MARCA = {'tiktok': 'music-2'};
 
     // req-125 F4: segunda camada do saneamento. `gestor_pagina_menu_icone_lucide_atributo()` já não
     // emite `data-lucide` para nome que o Lucide não consegue endereçar, mas o menu não é a única
@@ -62,12 +63,14 @@
         for (var i = 0; i < alvos.length; i++) {
             var nome = alvos[i].getAttribute('data-lucide');
             if (!nome || !LUCIDE_NOME.test(nome.trim())) alvos[i].removeAttribute('data-lucide');
+            // req-240: marca sem pictograma no Lucide ganha um equivalente em vez de ficar invisível.
+            else if (LUCIDE_SEM_MARCA[nome.trim()]) alvos[i].setAttribute('data-lucide', LUCIDE_SEM_MARCA[nome.trim()]);
         }
     }
 
     function desenharIcones() {
         if (window.lucide && typeof window.lucide.createIcons === 'function') {
-            var nomes = {'external alternate':'external-link','external':'external-link','check circle':'circle-check','times circle':'circle-x','info circle':'info','question circle':'circle-help','exclamation triangle':'triangle-alert','arrow alternate circle up':'circle-arrow-up','shopping cart':'shopping-cart','delete':'trash-2','dropdown':'chevron-down','font':'type','spinner':'loader-circle','undo':'undo-2','setting':'settings', 'th large':'layout-grid', 'th':'grid-2x2', 'grid layout':'grid-3x3', 'folder plus':'folder-plus', 'folder open':'folder-open', 'folder':'folder', 'edit outline':'pencil', 'edit':'pencil', 'trash alternate':'trash-2', 'trash':'trash-2', 'power off':'power-off', 'right angle':'chevron-right', 'exchange alternate':'arrow-left-right', 'clone':'copy', 'plus circle':'circle-plus', 'object group outline':'group', 'hand pointer':'mouse-pointer', 'square outline':'square', 'window maximize outline':'panels-top-left', 'volume up':'volume-2', 'file pdf outline':'file-text', 'linkify':'link'};
+            var nomes = {'external alternate':'external-link','external':'external-link','check circle':'circle-check','times circle':'circle-x','info circle':'info','question circle':'circle-help','exclamation triangle':'triangle-alert','arrow alternate circle up':'circle-arrow-up','shopping cart':'shopping-cart','delete':'trash-2','dropdown':'chevron-down','font':'type','spinner':'loader-circle','undo':'undo-2','setting':'settings', 'th large':'layout-grid', 'th':'grid-2x2', 'grid layout':'grid-3x3', 'folder plus':'folder-plus', 'folder open':'folder-open', 'folder':'folder', 'edit outline':'pencil', 'edit':'pencil', 'trash alternate':'trash-2', 'trash':'trash-2', 'power off':'power-off', 'right angle':'chevron-right', 'exchange alternate':'arrow-left-right', 'clone':'copy', 'plus circle':'circle-plus', 'object group outline':'group', 'hand pointer':'mouse-pointer', 'square outline':'square', 'window maximize outline':'panels-top-left', 'volume up':'volume-2', 'file pdf outline':'file-text', 'linkify':'link','unlink':'unlink','add':'plus','times':'x','sort alphabet down':'arrow-down-a-z','sort alphabet up alternate':'arrow-up-z-a','sort amount down alternate':'arrow-down-narrow-wide','sort amount up':'arrow-up-wide-narrow','sort numeric down':'arrow-down-0-1','sort numeric up':'arrow-up-1-0','hand point left':'pointer','file alternate outline':'file-text','file alternate':'file-text','file image outline':'file-image','envelope open text':'mail-open','grip vertical':'grip-vertical','grip lines':'grip-horizontal','arrow left':'arrow-left','arrow right':'arrow-right','arrow up':'arrow-up','arrow down':'arrow-down','arrow circle left':'circle-arrow-left','folder outline':'folder','clone outline':'copy','cubes':'boxes','cube':'box','crosshairs':'crosshair','exchange':'arrow-left-right','mobile alternate':'smartphone','desktop':'monitor','cogs':'settings','cog':'settings','sync':'refresh-cw','refresh':'rotate-cw','sign-in':'log-in','robot':'bot','language':'languages','shield alternate':'shield-check','eye slash':'eye-off','circle notch':'loader-circle','notched circle':'loader-circle','cloud upload alternate':'cloud-upload'};
             document.querySelectorAll('i.icon:not([data-lucide])').forEach(function (icone) {
                 var classes = Array.from(icone.classList);
                 var correspondencia = Object.keys(nomes).sort(function (a, b) { return b.length - a.length; }).find(function (key) {

@@ -326,3 +326,8 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
 .c2fc-campo-selecao[aria-invalid="true"] { border-color: #dc2626; }
 .c2fc-alerta-sucesso { border-color: #bbf7d0; background: #f0fdf4; color: #166534; }
 .c2fc-alerta-aviso { border-color: #fde68a; background: #fffbeb; color: #92400e; }
+.c2fc-alerta { overflow-wrap: anywhere; }
+.c2fc-alerta > * { min-width: 0; }
+.c2fc-alerta:not(:has(> .content)) { display: block; }
+.c2fc-alerta:not(:has(> .content)) > svg { display: inline-block; vertical-align: -3px; margin-right: 6px; }
+.c2fc-alerta.hidden { display: none; }

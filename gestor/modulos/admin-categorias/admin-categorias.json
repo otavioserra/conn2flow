@@ -29,7 +29,7 @@
                     "name": "Admin Categorias",
                     "id": "admin-categorias",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-categorias/",
+                    "path": "admin-categorias\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -64,7 +64,7 @@
                     "name": "Admin Categorias - Adicionar",
                     "id": "admin-categorias-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-categorias/adicionar/",
+                    "path": "admin-categorias\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.3",
@@ -94,10 +94,10 @@
                     "name": "Admin Categorias - Editar",
                     "id": "admin-categorias-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-categorias/editar/",
+                    "path": "admin-categorias\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -113,10 +113,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "e63e73bde282f5a5e7bc9959b53bf4d0",
+                        "html": "a99923f0d5940bc8094cd5aba11c0138",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e63e73bde282f5a5e7bc9959b53bf4d0"
+                        "combined": "a99923f0d5940bc8094cd5aba11c0138"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -124,7 +124,7 @@
                     "name": "Admin Categorias - Adicionar Filho",
                     "id": "admin-categorias-adicionar-filho",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-categorias/adicionar-filho/",
+                    "path": "admin-categorias\/adicionar-filho\/",
                     "type": "system",
                     "option": "adicionar-filho",
                     "version": "1.3",
@@ -248,7 +248,7 @@
                     "name": "Admin Categories",
                     "id": "admin-categorias",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-categorias/",
+                    "path": "admin-categorias\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -283,7 +283,7 @@
                     "name": "Admin Categories - Add",
                     "id": "admin-categorias-adicionar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-categorias/adicionar/",
+                    "path": "admin-categorias\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "version": "1.3",
@@ -313,10 +313,10 @@
                     "name": "Admin Categories - Edit",
                     "id": "admin-categorias-editar",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-categorias/editar/",
+                    "path": "admin-categorias\/editar\/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.3",
+                    "version": "1.4",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -332,10 +332,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "e63e73bde282f5a5e7bc9959b53bf4d0",
+                        "html": "a99923f0d5940bc8094cd5aba11c0138",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e63e73bde282f5a5e7bc9959b53bf4d0"
+                        "combined": "a99923f0d5940bc8094cd5aba11c0138"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -343,7 +343,7 @@
                     "name": "Admin Categories - Add Child",
                     "id": "admin-categorias-adicionar-filho",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-categorias/adicionar-filho/",
+                    "path": "admin-categorias\/adicionar-filho\/",
                     "type": "system",
                     "option": "adicionar-filho",
                     "version": "1.3",

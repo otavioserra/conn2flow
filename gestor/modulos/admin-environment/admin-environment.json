@@ -17,7 +17,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.32",
+                    "version": "1.34",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -43,10 +43,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "be96918e8b388b48bd7c2b42bccbedc5",
+                        "html": "f227efe5c4299f718748ee399103cbc2",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "bb268a0e82a71572a25c494aa4c329a8"
+                        "combined": "4cadd4f60d0c0813875ffdf2d0c4cacf"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -271,7 +271,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.34",
+                    "version": "1.36",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -297,10 +297,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "0a7a9046642f2e6c4c20ec806e89c9f1",
+                        "html": "f5e73d005988d9573041bc2d5c48159d",
                         "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "404e06c04201c202aea285503c300b54"
+                        "combined": "6a3bad5bf8699bdb8dea21234cc694ce"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -515,5 +515,5 @@
             ]
         }
     },
-    "asset_version": "dcf2077410f2c3df"
+    "asset_version": "789adc417d574d41"
 }

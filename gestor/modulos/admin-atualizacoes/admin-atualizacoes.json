@@ -21,7 +21,7 @@
                     "name": "Admin Atualizações",
                     "id": "admin-atualizacoes",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-atualizacoes\/",
+                    "path": "admin-atualizacoes/",
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
@@ -29,8 +29,8 @@
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-atualizacoes.php",
-                        "..\/..\/..\/..\/admin-atualizacoes.js"
+                        "../../../../admin-atualizacoes.php",
+                        "../../../../admin-atualizacoes.js"
                     ],
                     "tailwind_sources_reason": "O controlador monta linhas e painéis de choques com utilitários Tailwind.",
                     "tailwind_dependencies": [
@@ -67,15 +67,15 @@
                     "name": "Admin Atualizações - Detalhe",
                     "id": "admin-atualizacoes-detalhe",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-atualizacoes\/detalhe\/",
+                    "path": "admin-atualizacoes/detalhe/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
                     "version": "1.4",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-atualizacoes.php",
-                        "..\/..\/..\/..\/admin-atualizacoes.js"
+                        "../../../../admin-atualizacoes.php",
+                        "../../../../admin-atualizacoes.js"
                     ],
                     "tailwind_sources_reason": "O controlador monta diffs e estados de choque com utilitários Tailwind.",
                     "tailwind_dependencies": [
@@ -135,13 +135,13 @@
                 {
                     "name": "Atualizações - Lista Tailwind",
                     "id": "atualizacoes-lista-tailwind",
-                    "version": "1.1",
+                    "version": "1.2",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "60f32de919126d8632a0c845611318ef",
+                        "html": "648e102c26e7bc32c49f1bcc45daf0a1",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "60f32de919126d8632a0c845611318ef"
+                        "combined": "648e102c26e7bc32c49f1bcc45daf0a1"
                     }
                 },
                 {
@@ -215,17 +215,17 @@
                 },
                 {
                     "id": "updates-mode-full",
-                    "value": "Full",
+                    "value": "Completa",
                     "type": "string"
                 },
                 {
                     "id": "updates-mode-files",
-                    "value": "Arquivos",
+                    "value": "Somente arquivos",
                     "type": "string"
                 },
                 {
                     "id": "updates-mode-db",
-                    "value": "Banco",
+                    "value": "Somente banco",
                     "type": "string"
                 },
                 {
@@ -325,7 +325,7 @@
                 },
                 {
                     "id": "updates-mode-none",
-                    "value": "Nenhum modo selecionado",
+                    "value": "Nenhum modo selecionado.",
                     "type": "string"
                 },
                 {
@@ -365,7 +365,7 @@
                 },
                 {
                     "id": "updates-clash-help",
-                    "value": "Arquivos que a atualização não sobrescreveu (sobrepostos pelo projeto ou por um plugin, ou editados no servidor) e retiradas que não puderam acontecer. A versão nova fica guardada em backups\/overrides\/.",
+                    "value": "Arquivos que a atualização não sobrescreveu (sobrepostos pelo projeto ou por um plugin, ou editados no servidor) e retiradas que não puderam acontecer. A versão nova fica guardada em backups/overrides/.",
                     "type": "string"
                 },
                 {
@@ -537,6 +537,301 @@
                     "id": "updates-clash-res-manter-regra",
                     "value": "Mantido (regra)",
                     "type": "string"
+                },
+                {
+                    "id": "updates-mode-full-help",
+                    "value": "Arquivos do sistema e banco de dados. É o modo recomendado.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-files-help",
+                    "value": "Só os arquivos do sistema; o banco de dados não é tocado.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-db-help",
+                    "value": "Só migrações e dados do banco; os arquivos ficam como estão.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-selected",
+                    "value": "Modo selecionado",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-running",
+                    "value": "em execução",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-finished",
+                    "value": "finalizado",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-required",
+                    "value": "Escolha um modo antes de executar.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-run-confirm",
+                    "value": "Executar a atualização agora?",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-step-mode",
+                    "value": "Escolha o que atualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-step-options",
+                    "value": "Ajuste as opções",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-step-run",
+                    "value": "Execute",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-summary-version",
+                    "value": "Versão instalada",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-summary-clashes",
+                    "value": "Choques pendentes",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-summary-never",
+                    "value": "Nenhuma execução registrada",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-summary-clashes-none",
+                    "value": "Nenhum pendente",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-status-success",
+                    "value": "Sucesso",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-status-error",
+                    "value": "Erro",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-status-running",
+                    "value": "Em execução",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-safety",
+                    "value": "Segurança",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-package",
+                    "value": "Pacote da versão",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-database",
+                    "value": "Banco de dados",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-diagnostics",
+                    "value": "Diagnóstico e limpeza",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-danger",
+                    "value": "Zona de perigo",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-backup",
+                    "value": "Backup completo antes de atualizar",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-backup-help",
+                    "value": "Copia a instalação antes de trocar os arquivos (exceto conteúdos, logs, backups, temporários e autenticações).",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-health",
+                    "value": "Pular a verificação depois da atualização",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-health-help",
+                    "value": "Não confere se o site responde ao final. Sem verificação não há volta automática.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-rollback",
+                    "value": "Não voltar automaticamente em caso de falha",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-rollback-help",
+                    "value": "Mantém a versão nova mesmo que a verificação falhe.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-health-url",
+                    "value": "Endereço da verificação",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-health-ip",
+                    "value": "IP da verificação",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-health-help",
+                    "value": "Em branco, a verificação usa o endereço do próprio site.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-tag",
+                    "value": "Versão a instalar",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-tag-help",
+                    "value": "Em branco, a mais recente.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-local",
+                    "value": "Usar o pacote local",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-local-help",
+                    "value": "Não baixa a versão; usa o artefato que já está no servidor.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-skip-download",
+                    "value": "Reaproveitar o pacote já baixado",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-skip-download-help",
+                    "value": "Usa o arquivo que já está na pasta temporária.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-download-only",
+                    "value": "Somente baixar e planejar",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-download-only-help",
+                    "value": "Baixa, extrai e gera o plano, sem aplicar nada.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-verify",
+                    "value": "Não conferir a integridade do pacote",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-verify-help",
+                    "value": "Desliga a conferência SHA-256 do pacote. Use só com origem confiável.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-db",
+                    "value": "Não atualizar o banco",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-db-help",
+                    "value": "Aplica os arquivos e deixa migrações e dados para depois.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-force-all",
+                    "value": "Regravar todos os registros",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-force-all-help",
+                    "value": "Atualiza todas as linhas, inclusive as que não mudaram.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-log-diff",
+                    "value": "Registrar as diferenças do banco no log",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-log-diff-help",
+                    "value": "Grava no log o detalhe de cada registro alterado.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-tables",
+                    "value": "Somente estas tabelas",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-tables-help",
+                    "value": "Nomes separados por vírgula. Em branco, todas.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-dry-run",
+                    "value": "Simulação",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-dry-run-help",
+                    "value": "Mostra o que seria feito, sem alterar arquivos nem banco.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-debug",
+                    "value": "Log detalhado",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-debug-help",
+                    "value": "Inclui as mensagens de depuração no log da execução.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-clean-temp",
+                    "value": "Limpar a pasta temporária ao final",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-clean-temp-help",
+                    "value": "Remove o pacote baixado e os arquivos de trabalho, mesmo em simulação.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-logs-retention",
+                    "value": "Dias de retenção dos logs",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-wipe",
+                    "value": "Apagar a instalação antes de aplicar",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-wipe-help",
+                    "value": "Remove tudo, exceto as pastas protegidas, antes de copiar a versão nova. Arquivos próprios fora do pacote são perdidos.",
+                    "type": "string"
                 }
             ]
         },
@@ -547,7 +842,7 @@
                     "name": "Admin Updates",
                     "id": "admin-atualizacoes",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-atualizacoes\/",
+                    "path": "admin-atualizacoes/",
                     "type": "system",
                     "option": "listar-atualizacoes",
                     "root": true,
@@ -555,8 +850,8 @@
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-atualizacoes.php",
-                        "..\/..\/..\/..\/admin-atualizacoes.js"
+                        "../../../../admin-atualizacoes.php",
+                        "../../../../admin-atualizacoes.js"
                     ],
                     "tailwind_sources_reason": "The controller assembles update-history rows and clash panels with Tailwind utilities.",
                     "tailwind_dependencies": [
@@ -593,15 +888,15 @@
                     "name": "Admin Updates - Detail",
                     "id": "admin-atualizacoes-detalhe",
                     "layout": "layout-administrativo-tailwind",
-                    "path": "admin-atualizacoes\/detalhe\/",
+                    "path": "admin-atualizacoes/detalhe/",
                     "type": "system",
                     "option": "detalhe-atualizacao",
                     "version": "1.4",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
-                        "..\/..\/..\/..\/admin-atualizacoes.php",
-                        "..\/..\/..\/..\/admin-atualizacoes.js"
+                        "../../../../admin-atualizacoes.php",
+                        "../../../../admin-atualizacoes.js"
                     ],
                     "tailwind_sources_reason": "The controller assembles clash details and decisions with Tailwind utilities.",
                     "tailwind_dependencies": [
@@ -661,13 +956,13 @@
                 {
                     "name": "Updates - List Tailwind",
                     "id": "atualizacoes-lista-tailwind",
-                    "version": "1.1",
+                    "version": "1.2",
                     "framework_css": "tailwindcss",
                     "checksum": {
-                        "html": "60f32de919126d8632a0c845611318ef",
+                        "html": "648e102c26e7bc32c49f1bcc45daf0a1",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "60f32de919126d8632a0c845611318ef"
+                        "combined": "648e102c26e7bc32c49f1bcc45daf0a1"
                     }
                 },
                 {
@@ -746,12 +1041,12 @@
                 },
                 {
                     "id": "updates-mode-files",
-                    "value": "Files",
+                    "value": "Files only",
                     "type": "string"
                 },
                 {
                     "id": "updates-mode-db",
-                    "value": "Database",
+                    "value": "Database only",
                     "type": "string"
                 },
                 {
@@ -851,7 +1146,7 @@
                 },
                 {
                     "id": "updates-mode-none",
-                    "value": "No mode selected",
+                    "value": "No mode selected.",
                     "type": "string"
                 },
                 {
@@ -891,7 +1186,7 @@
                 },
                 {
                     "id": "updates-clash-help",
-                    "value": "Files the update did not overwrite (overridden by the project or a plugin, or edited on the server) and removals that could not happen. The new version is kept under backups\/overrides\/.",
+                    "value": "Files the update did not overwrite (overridden by the project or a plugin, or edited on the server) and removals that could not happen. The new version is kept under backups/overrides/.",
                     "type": "string"
                 },
                 {
@@ -1063,9 +1358,304 @@
                     "id": "updates-clash-res-manter-regra",
                     "value": "Kept (rule)",
                     "type": "string"
+                },
+                {
+                    "id": "updates-mode-full-help",
+                    "value": "System files and database. This is the recommended mode.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-files-help",
+                    "value": "System files only; the database is not touched.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-db-help",
+                    "value": "Migrations and database data only; files stay as they are.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-selected",
+                    "value": "Selected mode",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-running",
+                    "value": "running",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-finished",
+                    "value": "finished",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-mode-required",
+                    "value": "Choose a mode before running.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-run-confirm",
+                    "value": "Run the update now?",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-step-mode",
+                    "value": "Choose what to update",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-step-options",
+                    "value": "Adjust the options",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-step-run",
+                    "value": "Run",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-summary-version",
+                    "value": "Installed version",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-summary-clashes",
+                    "value": "Pending clashes",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-summary-never",
+                    "value": "No run recorded",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-summary-clashes-none",
+                    "value": "None pending",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-status-success",
+                    "value": "Success",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-status-error",
+                    "value": "Error",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-status-running",
+                    "value": "Running",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-safety",
+                    "value": "Safety",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-package",
+                    "value": "Release package",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-database",
+                    "value": "Database",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-diagnostics",
+                    "value": "Diagnostics and cleanup",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-group-danger",
+                    "value": "Danger zone",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-backup",
+                    "value": "Full backup before updating",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-backup-help",
+                    "value": "Copies the installation before replacing files (except contents, logs, backups, temp and authentication folders).",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-health",
+                    "value": "Skip the check after the update",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-health-help",
+                    "value": "Does not check whether the site responds at the end. Without the check there is no automatic rollback.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-rollback",
+                    "value": "Do not roll back automatically on failure",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-rollback-help",
+                    "value": "Keeps the new version even if the check fails.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-health-url",
+                    "value": "Check address",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-health-ip",
+                    "value": "Check IP",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-health-help",
+                    "value": "When blank, the check uses the address of the site itself.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-tag",
+                    "value": "Version to install",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-tag-help",
+                    "value": "When blank, the latest.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-local",
+                    "value": "Use the local package",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-local-help",
+                    "value": "Does not download the release; uses the artifact already on the server.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-skip-download",
+                    "value": "Reuse the package already downloaded",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-skip-download-help",
+                    "value": "Uses the file already in the temporary folder.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-download-only",
+                    "value": "Download and plan only",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-download-only-help",
+                    "value": "Downloads, extracts and builds the plan without applying anything.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-verify",
+                    "value": "Do not verify the package integrity",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-verify-help",
+                    "value": "Turns off the SHA-256 check of the package. Use only with a trusted source.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-db",
+                    "value": "Do not update the database",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-no-db-help",
+                    "value": "Applies the files and leaves migrations and data for later.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-force-all",
+                    "value": "Rewrite every record",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-force-all-help",
+                    "value": "Updates every row, including the unchanged ones.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-log-diff",
+                    "value": "Log database differences",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-log-diff-help",
+                    "value": "Writes the detail of each changed record to the log.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-tables",
+                    "value": "Only these tables",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-tables-help",
+                    "value": "Comma-separated names. When blank, all of them.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-dry-run",
+                    "value": "Dry run",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-dry-run-help",
+                    "value": "Shows what would be done without changing files or the database.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-debug",
+                    "value": "Detailed log",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-debug-help",
+                    "value": "Includes debug messages in the run log.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-clean-temp",
+                    "value": "Clean the temporary folder at the end",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-clean-temp-help",
+                    "value": "Removes the downloaded package and working files, even on a dry run.",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-logs-retention",
+                    "value": "Log retention days",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-wipe",
+                    "value": "Wipe the installation before applying",
+                    "type": "string"
+                },
+                {
+                    "id": "updates-opt-wipe-help",
+                    "value": "Removes everything except the protected folders before copying the new version. Your own files outside the package are lost.",
+                    "type": "string"
                 }
             ]
         }
     },
-    "asset_version": "9fa7ac536ad82998"
+    "asset_version": "508390df9cc0945f"
 }

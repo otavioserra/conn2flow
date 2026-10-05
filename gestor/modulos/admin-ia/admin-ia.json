@@ -79,7 +79,7 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.16",
+                    "version": "1.17",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -105,10 +105,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "c69e78c800800428ecacafed6c51a040",
+                        "html": "daa554d4720b3b754209d5d1ccfa9020",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "c69e78c800800428ecacafed6c51a040"
+                        "combined": "daa554d4720b3b754209d5d1ccfa9020"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -120,7 +120,7 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.21",
+                    "version": "1.22",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -146,10 +146,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "005299220cf0ff596cb3e64a97bfb58b",
+                        "html": "b14822a170bbea8a5b5269b2e1179948",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "005299220cf0ff596cb3e64a97bfb58b"
+                        "combined": "b14822a170bbea8a5b5269b2e1179948"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -496,7 +496,7 @@
                     "type": "system",
                     "option": "adicionar-servidor",
                     "root": null,
-                    "version": "1.17",
+                    "version": "1.18",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -522,10 +522,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "c69e78c800800428ecacafed6c51a040",
+                        "html": "daa554d4720b3b754209d5d1ccfa9020",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "c69e78c800800428ecacafed6c51a040"
+                        "combined": "daa554d4720b3b754209d5d1ccfa9020"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -537,7 +537,7 @@
                     "type": "system",
                     "option": "editar-servidor",
                     "root": null,
-                    "version": "1.20",
+                    "version": "1.21",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -563,10 +563,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "005299220cf0ff596cb3e64a97bfb58b",
+                        "html": "b14822a170bbea8a5b5269b2e1179948",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "005299220cf0ff596cb3e64a97bfb58b"
+                        "combined": "b14822a170bbea8a5b5269b2e1179948"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }

@@ -96,12 +96,12 @@
                 {
                     "name": "Lista Página ou Sistema ou Publisher",
                     "id": "lista-pagina-ou-sistema-ou-publisher-tailwind",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "4bb1be5dbb2c6f8c68716285a4eb00e9",
+                        "html": "9dad81596ebddb63c18007e6276a603e",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "4bb1be5dbb2c6f8c68716285a4eb00e9"
+                        "combined": "9dad81596ebddb63c18007e6276a603e"
                     },
                     "framework_css": "tailwindcss"
                 },
@@ -142,7 +142,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-pages/",
+                    "path": "publisher-pages\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -206,15 +206,15 @@
                 {
                     "name": "Publicador Páginas - Editar",
                     "id": "publisher-pages-editar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "a79b9ae262349d540731448eb6c49909",
+                        "html": "ae12f1e90f4317cbe1ba3387d6bc1958",
                         "css": "623fe71782670f29b7e18628f5cb68b0",
                         "css_precompiled": "",
-                        "combined": "3599e33f2f208315b5a24fc05b301864"
+                        "combined": "5c5fbd1c4b9ac6bf07cdf3bb411205d7"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-pages/editar/",
+                    "path": "publisher-pages\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
@@ -329,7 +329,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-pages.php"
+                        "..\/..\/..\/..\/publisher-pages.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -344,7 +344,7 @@
                         "combined": "7f1f9f6096a62d518fd0ad7966d7f9ab"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-pages/adicionar/",
+                    "path": "publisher-pages\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
@@ -459,7 +459,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-pages.php"
+                        "..\/..\/..\/..\/publisher-pages.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -474,7 +474,7 @@
                         "combined": "d9390f8ca3bd5eae988d7f828c87ad6e"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-pages/clonar/",
+                    "path": "publisher-pages\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "framework_css": "tailwindcss",
@@ -589,7 +589,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-pages.php"
+                        "..\/..\/..\/..\/publisher-pages.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 }
@@ -702,7 +702,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "Sem Permissão / Acesso Público",
+                    "value": "Sem Permissão \/ Acesso Público",
                     "type": "string"
                 },
                 {
@@ -717,7 +717,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "pelo menos uma '/' no final",
+                    "value": "pelo menos uma '\/' no final",
                     "type": "string"
                 },
                 {
@@ -992,7 +992,7 @@
                         "combined": "68b329da9893e34099c7d8ad5cb9c940"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-pages/",
+                    "path": "publisher-pages\/",
                     "type": "system",
                     "option": "listar",
                     "root": true,
@@ -1056,15 +1056,15 @@
                 {
                     "name": "Publisher Pages - Edit",
                     "id": "publisher-pages-editar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "0b887b1fe7e01d0f5b654107123eee2e",
+                        "html": "29d1eb13c270884a27e0ed94624c75b4",
                         "css": "623fe71782670f29b7e18628f5cb68b0",
                         "css_precompiled": "",
-                        "combined": "95647b6a8a7d963fcbfbfd5dccd23157"
+                        "combined": "0a4b306826a72c05cc4e46f42c48ef5c"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-pages/editar/",
+                    "path": "publisher-pages\/editar\/",
                     "type": "system",
                     "option": "editar",
                     "framework_css": "tailwindcss",
@@ -1179,7 +1179,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-pages.php"
+                        "..\/..\/..\/..\/publisher-pages.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -1194,7 +1194,7 @@
                         "combined": "e89aae65501761c3dc9b55dded3e1332"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-pages/adicionar/",
+                    "path": "publisher-pages\/adicionar\/",
                     "type": "system",
                     "option": "adicionar",
                     "framework_css": "tailwindcss",
@@ -1309,7 +1309,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-pages.php"
+                        "..\/..\/..\/..\/publisher-pages.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 },
@@ -1324,7 +1324,7 @@
                         "combined": "bb81983b3de2ce5da15339fde44bce32"
                     },
                     "layout": "layout-administrativo-tailwind",
-                    "path": "publisher-pages/clonar/",
+                    "path": "publisher-pages\/clonar\/",
                     "type": "system",
                     "option": "clonar",
                     "framework_css": "tailwindcss",
@@ -1439,7 +1439,7 @@
                     ],
                     "tailwind_dependencies_reason": "REQ-221: componentes administrativos e editor montados em runtime.",
                     "tailwind_sources": [
-                        "../../../../publisher-pages.php"
+                        "..\/..\/..\/..\/publisher-pages.php"
                     ],
                     "tailwind_sources_reason": "REQ-221: metadados e selos de status renderizados pelo módulo."
                 }
@@ -1552,7 +1552,7 @@
                 },
                 {
                     "id": "form-permission-label",
-                    "value": "No Permission / Public Access",
+                    "value": "No Permission \/ Public Access",
                     "type": "string"
                 },
                 {
@@ -1567,7 +1567,7 @@
                 },
                 {
                     "id": "path-necessary-chars",
-                    "value": "at least one '/' at the end",
+                    "value": "at least one '\/' at the end",
                     "type": "string"
                 },
                 {

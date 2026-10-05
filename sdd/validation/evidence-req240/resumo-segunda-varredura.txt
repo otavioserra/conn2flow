@@ -1,0 +1,35 @@
+telas: 257 | 200 direto: 185 | redirecionadas (sem registro/id): 72
+
+## 00 erro de JavaScript — 4 ocorrência(s) em 4 tela(s)
+   dashboard=1, galleries=1, publisher=1, modulos-grupos-distribuido=1
+   - dashboard/ :: Failed to read the 'cookie' property from 'Document': The document is sandboxed and lacks the 'allow-same-origin' flag.
+   - galleries/editar/?id=e2e-req222-galleries :: console: Failed to load resource: the server responded with a status of 404 ()
+   - admin-templates/editar/?id=noticias-imagem-destaque :: console: Failed to load resource: the server responded with a status of 404 ()
+   - modulos-grupos-distribuido/ :: console: Failed to load resource: the server responded with a status of 500 ()
+
+## 00 marcador cru no texto — 19 ocorrência(s) em 19 tela(s)
+   galleries=2, menus=2, pages-index=2, publisher-index=2, gateways-pagamentos=2, products-index=2, subscriptions-plans=2, publisher=1, publisher-highlights=1, publisher-pages=1, product-types=1, social-connections=1
+   - galleries/editar/?id=e2e-req222-galleries :: [[item#img-src]] [[item#caminho]] [[item#nome]] [[item#legenda]]
+   - galleries/adicionar/ :: [[item#img-src]] [[item#caminho]] [[item#nome]] [[item#legenda]]
+   - menus/editar/?id=docs-sidebar :: [[pagina#url-raiz]] [[item#children]] [[item#label]] [[item#url]] [[item#slug]]
+   - menus/adicionar/ :: [[item#children]] [[item#label]] [[item#url]] [[item#slug]] [[item#css_classes]]
+
+## P1 botão só-ícone sem dica — 2 ocorrência(s) em 2 tela(s)
+   admin-arquivos=2
+   - admin-arquivos/ :: 4x c2f-view-btn rounded border px-2 py-1 active
+   - admin-arquivos/adicionar/ :: 1x botaoVoltar
+
+## P2 abas com gap até o painel — 1 ocorrência(s) em 1 tela(s)
+   marketplace-admin=1
+   - marketplace-admin/ :: 12px c2fc-abas-lista overflow-x-auto
+
+## P2 barra fora da folha c2fc-abas-lista — 1 ocorrência(s) em 1 tela(s)
+   perfil-usuario=1
+   - perfil-usuario/ :: mb-6 flex flex-wrap gap-1 border-b border-slate-200
+
+## P3 bloco principal sem cartão branco — 50 ocorrência(s) em 50 tela(s)
+   orders=3, admin-plugins=2, product-reviews=2, admin-categorias=1, admin-componentes=1, admin-layouts=1, admin-modos-ia=1, admin-paginas=1, admin-prompts-ia=1, admin-templates=1, cookie-consent=1, forms=1, forms-search=1, forms-submissions=1, galleries=1, menus=1, modulos=1, modulos-grupos=1, modulos-operacoes=1, pages-index=1, publisher=1, publisher-highlights=1, publisher-index=1, publisher-pages=1, usuarios=1, usuarios-perfis=1, 3d-catalog=1, 3d-catalog-groups=1, 3d-catalog-items=1, affiliates=1, coupons=1, gateways-pagamentos=1, modulos-grupos-distribuido=1, presentations=1, product-types=1, products=1, products-index=1, publisher-social-media=1, social-apps=1, social-connections=1, stripe-products=1, subscriptions=1, subscriptions-plans=1, subscriptions-service-stages=1, subscriptions-service-types=1, subscriptions-status=1
+   - admin-categorias/ :: transparente
+   - admin-componentes/ :: transparente
+   - admin-layouts/ :: transparente
+   - admin-modos-ia/ :: transparente

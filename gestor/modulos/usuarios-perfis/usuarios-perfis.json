@@ -85,12 +85,12 @@
                 {
                     "name": "Usuários Perfis - Adicionar",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "5a0a709f6b90b28f190c537c344f1c9b",
+                        "html": "de5ef2e4d935f7666a288b03bcc7a79e",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5a0a709f6b90b28f190c537c344f1c9b"
+                        "combined": "de5ef2e4d935f7666a288b03bcc7a79e"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis\/adicionar\/",
@@ -139,12 +139,12 @@
                 {
                     "name": "Usuários Perfis - Editar",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "ecd15548d814822df29cd1560c8045f4",
+                        "html": "7db367fc5f2ed395a99e4f96b47d1e6d",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ecd15548d814822df29cd1560c8045f4"
+                        "combined": "7db367fc5f2ed395a99e4f96b47d1e6d"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis\/editar\/",
@@ -355,12 +355,12 @@
                 {
                     "name": "User Profiles - Add",
                     "id": "usuarios-perfis-adicionar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "5a0a709f6b90b28f190c537c344f1c9b",
+                        "html": "de5ef2e4d935f7666a288b03bcc7a79e",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5a0a709f6b90b28f190c537c344f1c9b"
+                        "combined": "de5ef2e4d935f7666a288b03bcc7a79e"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis\/adicionar\/",
@@ -409,12 +409,12 @@
                 {
                     "name": "User Profiles - Edit",
                     "id": "usuarios-perfis-editar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "ecd15548d814822df29cd1560c8045f4",
+                        "html": "7db367fc5f2ed395a99e4f96b47d1e6d",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ecd15548d814822df29cd1560c8045f4"
+                        "combined": "7db367fc5f2ed395a99e4f96b47d1e6d"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "usuarios-perfis\/editar\/",

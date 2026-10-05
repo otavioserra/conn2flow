@@ -35,9 +35,9 @@
         "minificado": 12990
     },
     "gestor/assets/global/admin-tailwind.js": {
-        "sha1": "b1b319a877c8de36f928f9e4a7a7534b830f0e4f",
-        "origem": 19558,
-        "minificado": 6765
+        "sha1": "0a91932491f116a97ee1fd073a1de07eb0b8e52f",
+        "origem": 20969,
+        "minificado": 7948
     },
     "gestor/assets/global/admin-topbar.js": {
         "sha1": "7b7200a9fde87716adab8b8dfaff33ce2ab31498",
@@ -150,9 +150,9 @@
         "minificado": 23910
     },
     "gestor/modulos/admin-atualizacoes/admin-atualizacoes.js": {
-        "sha1": "0ac95b2444151d9993706dbdaf02558ca66c9adb",
-        "origem": 13848,
-        "minificado": 7165
+        "sha1": "4a940d3ff15388f7ea746e98bda46293f3a4c9a1",
+        "origem": 15736,
+        "minificado": 8037
     },
     "gestor/modulos/admin-componentes/admin-componentes.js": {
         "sha1": "8c3e0fdd7e1c17c1d0648aa36dcd11ea14e5d588",
@@ -165,9 +165,9 @@
         "minificado": 10369
     },
     "gestor/modulos/admin-environment/admin-environment.js": {
-        "sha1": "9e1f1aeb58119d29723520b3f18390024d722fd6",
-        "origem": 36048,
-        "minificado": 18289
+        "sha1": "65a0eed438125c92033612ee6f1083aebadc82f4",
+        "origem": 35930,
+        "minificado": 18174
     },
     "gestor/modulos/admin-ia/admin-ia.js": {
         "sha1": "93acadf9a4d7b973b0c8afaff795810cc720f30e",
@@ -190,9 +190,9 @@
         "minificado": 4356
     },
     "gestor/modulos/admin-plugins/admin-plugins.js": {
-        "sha1": "cd0cc053690db9b06287040354a91fe6e05d2397",
-        "origem": 5682,
-        "minificado": 3583
+        "sha1": "27c0818aab335fd350182f9572bd0024eaa5ea5b",
+        "origem": 5537,
+        "minificado": 3423
     },
     "gestor/modulos/admin-prompts-ia/admin-prompts-ia.js": {
         "sha1": "d4d3cb187dfa9279dee0adb958445891ddd16f73",
@@ -260,7 +260,7 @@
         "minificado": 1451
     },
     "gestor/modulos/galleries/galleries.js": {
-        "sha1": "94f0f1c176b9bce39e6c1cbd23ed08001c3738a2",
+        "sha1": "fc8b1ba231c9e2282772250dbcec5b1a9f8b1b0b",
         "origem": 59717,
         "minificado": 30040
     },
@@ -270,7 +270,7 @@
         "minificado": 2667
     },
     "gestor/modulos/menus/menus.js": {
-        "sha1": "0bb9070788753fbc609f84a9ea4aa6937ce59854",
+        "sha1": "30c6c00fd3e55047eb690bd113fdc1790e0eeb80",
         "origem": 73387,
         "minificado": 34428
     },

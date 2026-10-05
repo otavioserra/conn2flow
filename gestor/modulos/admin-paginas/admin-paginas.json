@@ -203,12 +203,12 @@
                     "name": "Lista Página ou Sistema Tailwind",
                     "id": "lista-pagina-ou-sistema-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "363b5bb76879294163e60cf7a1f1674d",
+                        "html": "144d75bcd33bb88254ebc318d102ae8e",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "363b5bb76879294163e60cf7a1f1674d"
+                        "combined": "144d75bcd33bb88254ebc318d102ae8e"
                     }
                 }
             ],
@@ -1394,12 +1394,12 @@
                     "name": "Page or System List Tailwind",
                     "id": "lista-pagina-ou-sistema-tailwind",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "5fbabc773b64e54c15d96ee5a3513c72",
+                        "html": "dc44bd9da09d2f153b8d99948f2d6157",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5fbabc773b64e54c15d96ee5a3513c72"
+                        "combined": "dc44bd9da09d2f153b8d99948f2d6157"
                     }
                 }
             ],

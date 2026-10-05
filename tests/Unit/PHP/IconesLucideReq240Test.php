@@ -85,6 +85,64 @@ final class IconesLucideReq240Test extends TestCase
         $this->assertSame([], $inexistentes, 'Nome que o Lucide não conhece deixa o ícone invisível.');
     }
 
+    /** @return iterable<string> HTML de páginas e componentes dos módulos e dos recursos globais */
+    private function recursosHtml(): iterable
+    {
+        foreach ([CONN2FLOW_GESTOR_ROOT . '/modulos', CONN2FLOW_GESTOR_ROOT . '/resources'] as $raiz) {
+            $arquivos = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($raiz, FilesystemIterator::SKIP_DOTS));
+            foreach ($arquivos as $arquivo) {
+                $caminho = str_replace('\\', '/', $arquivo->getPathname());
+                if (substr($caminho, -5) !== '.html') {
+                    continue;
+                }
+                if (strpos($caminho, '/pages/') === false && strpos($caminho, '/components/') === false) {
+                    continue;
+                }
+                yield $caminho;
+            }
+        }
+    }
+
+    public function testNenhumIconeCircleDeMarcadorDeLugarNosRecursos(): void
+    {
+        $com = [];
+        foreach ($this->recursosHtml() as $caminho) {
+            if (strpos((string)file_get_contents($caminho), 'data-lucide="circle"') !== false) {
+                $com[] = substr($caminho, strlen(CONN2FLOW_GESTOR_ROOT) + 1);
+            }
+        }
+
+        $this->assertSame([], $com, 'O ícone `circle` como marcador de lugar é o círculo preto da auditoria: use um ícone semântico.');
+    }
+
+    public function testSelectDoPainelUsaAClassePadronizada(): void
+    {
+        $com = [];
+        foreach ($this->recursosHtml() as $caminho) {
+            if (preg_match('/<select\b[^>]*class="[^"]*\bc2fc-campo-entrada\b/', (string)file_get_contents($caminho))) {
+                $com[] = substr($caminho, strlen(CONN2FLOW_GESTOR_ROOT) + 1);
+            }
+        }
+
+        $this->assertSame([], $com, 'Select do painel usa c2fc-campo-selecao, não a classe de campo de texto.');
+    }
+
+    public function testTodaPaginaDeModuloTemMarcacaoBalanceada(): void
+    {
+        $desbalanceadas = [];
+        foreach ($this->recursosHtml() as $caminho) {
+            if (strpos($caminho, '/modulos/') === false || strpos($caminho, '/pages/') === false) {
+                continue;
+            }
+            $html = (string)file_get_contents($caminho);
+            if (preg_match_all('/<div\b/', $html) !== preg_match_all('/<\/div>/', $html)) {
+                $desbalanceadas[] = substr($caminho, strlen(CONN2FLOW_GESTOR_ROOT) + 1);
+            }
+        }
+
+        $this->assertSame([], $desbalanceadas, 'Página com <div> sem fechar engole o que vem depois dela no formulário.');
+    }
+
     public function testIconeDesconhecidoContinuaVazio(): void
     {
         $this->assertSame('', interface_botao_tailwind_icone('icone que nao existe'));
