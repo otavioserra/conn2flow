@@ -601,7 +601,7 @@ function dashboard_modulo_visual_e_atalhos($modulo, $modulo_link){
 	// Tag de imagem ou bloco vazio
 	$imagem_tag = '';
 	if($imagem_url !== ''){
-		$imagem_tag = '<img src="' . htmlspecialchars($imagem_url, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($modulo['nome'], ENT_QUOTES, 'UTF-8') . '" class="dashboard-module-cover h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />';
+		$imagem_tag = '<img src="' . htmlspecialchars($imagem_url, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($modulo['nome'], ENT_QUOTES, 'UTF-8') . '" class="dashboard-module-cover h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" style="width: 100% !important; height: 100% !important; object-fit: cover !important; display: block !important;" loading="lazy" />';
 	}
 	
 	// Atalho contextual para adicionar no tamanho G
