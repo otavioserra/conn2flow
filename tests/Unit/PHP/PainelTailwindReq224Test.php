@@ -69,7 +69,7 @@ final class PainelTailwindReq224Test extends TestCase
         self::assertStringContainsString("interface_componente_variante('dashboard-cards')", $dash);
         foreach (['pt-br', 'en'] as $lingua) {
             $cards = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/modulos/dashboard/resources/' . $lingua . '/components/dashboard-cards-tailwind/dashboard-cards-tailwind.html');
-            foreach (['id="dashboard-sortable-cards"', 'dashboard-module-card', 'dashboard-card-drag-handle', 'id="dashboard-search-input"', 'id="dashboard-search-reset"', 'id="dashboard-update-notification"', 'dashboard-update-dismiss', 'close icon', 'class="category"', '<!-- card < -->', '<!-- svg < -->'] as $gancho) {
+            foreach (['id="dashboard-sortable-cards"', 'dashboard-module-card', 'dashboard-card-drag-handle', 'id="dashboard-search-input"', 'id="dashboard-search-reset"', 'id="dashboard-update-notification"', 'dashboard-update-dismiss', 'close icon', 'bg-sky-50 px-2.5 py-0.5', '<!-- card < -->', '<!-- svg < -->'] as $gancho) {
                 self::assertStringContainsString($gancho, $cards, "$lingua: $gancho");
             }
             $home = (string)file_get_contents(CONN2FLOW_GESTOR_ROOT . '/modulos/usuarios-perfis/resources/' . $lingua . '/components/home-page-autocomplete-tailwind/home-page-autocomplete-tailwind.html');

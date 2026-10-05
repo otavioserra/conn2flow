@@ -74,7 +74,7 @@
                     "path": "admin-modos-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -90,10 +90,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "5af66045ede436612546160df21d7128",
+                        "html": "5531e0974cbb6606b43187324425fac5",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5af66045ede436612546160df21d7128"
+                        "combined": "5531e0974cbb6606b43187324425fac5"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -104,7 +104,7 @@
                     "path": "admin-modos-ia/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -120,10 +120,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "2b96d2a1066cc68b04b6fea7c3c5d972",
+                        "html": "b33c35e14544bf4272107670a0844d41",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "2b96d2a1066cc68b04b6fea7c3c5d972"
+                        "combined": "b33c35e14544bf4272107670a0844d41"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -227,7 +227,7 @@
                     "path": "admin-modos-ia/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.8",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -243,10 +243,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "5af66045ede436612546160df21d7128",
+                        "html": "5531e0974cbb6606b43187324425fac5",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "5af66045ede436612546160df21d7128"
+                        "combined": "5531e0974cbb6606b43187324425fac5"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 },
@@ -257,7 +257,7 @@
                     "path": "admin-modos-ia/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.9",
+                    "version": "1.10",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_dependencies": [
@@ -273,10 +273,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "2b96d2a1066cc68b04b6fea7c3c5d972",
+                        "html": "b33c35e14544bf4272107670a0844d41",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "2b96d2a1066cc68b04b6fea7c3c5d972"
+                        "combined": "b33c35e14544bf4272107670a0844d41"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -331,5 +331,5 @@
             ]
         }
     },
-    "asset_version": "c0626952ee9fa861"
+    "asset_version": "9f8125e93b755514"
 }

@@ -5,7 +5,7 @@
 - Raiz de autoria: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow`
 - Worktree: `C:\Users\otavi\OneDrive\Documentos\GIT\conn2flow-req228`
 - Branch: `feat/req-228`
-- Intake: [req-228](../human-requests/req-228.md)
+- Intake: [req-228](../human-requests/archive/req-228.md)
 - Autonomia: `autonomo_monitorado`
 
 ## Escopo e tarefas

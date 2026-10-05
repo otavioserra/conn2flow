@@ -25,12 +25,12 @@
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "387ee81b1f9dd115a8d96c7ca2b92d72",
+                        "html": "6a4af6df04b77f8693400757bc7858df",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "387ee81b1f9dd115a8d96c7ca2b92d72"
+                        "combined": "6a4af6df04b77f8693400757bc7858df"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -506,12 +506,12 @@
                     "type": "system",
                     "option": "painel",
                     "root": true,
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "387ee81b1f9dd115a8d96c7ca2b92d72",
+                        "html": "6a4af6df04b77f8693400757bc7858df",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "387ee81b1f9dd115a8d96c7ca2b92d72"
+                        "combined": "6a4af6df04b77f8693400757bc7858df"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_sources": [
@@ -978,5 +978,5 @@
             ]
         }
     },
-    "asset_version": "43642fa715aa9d01"
+    "asset_version": "9792fb3f9e62e42c"
 }

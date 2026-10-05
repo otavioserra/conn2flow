@@ -1,11 +1,11 @@
 <section class="mx-auto max-w-4xl space-y-6 p-4">
-    <h1 class="flex items-center gap-2 text-xl font-semibold"><i data-lucide="pencil"
+    <h1 class="flex items-center gap-2 text-2xl font-bold text-slate-900"><i data-lucide="bot"
             class="size-5"></i>@[[ui-edit-title]]@</h1>
     <div id="admin-ia-mensagens" class="hidden" aria-hidden="true" data-confirm-delete="@[[ui-confirm-delete]]@"
         data-error-communication="@[[ui-error-communication]]@" data-error-history="@[[ui-error-history]]@"
         data-error-test-communication="@[[ui-error-test-communication]]@" data-error-generic="@[[ui-error-generic]]@"
         data-history-empty="@[[ui-history-empty]]@"></div>
-    <form id="form-servidor-ia-edit" class="space-y-5 rounded border border-slate-200 p-4">
+    <form id="form-servidor-ia-edit" class="space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <input type="hidden" name="id" value="[[id]]">
         <div class="space-y-1">
             <label class="c2fc-campo-rotulo" for="admin-ia-nome">@[[ui-name]]@</label>
@@ -36,20 +36,20 @@
         </label>
         <div class="flex flex-wrap gap-3">
             <button type="submit"
-                class="js-submit inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i
+                class="c2fc-botao js-submit inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i
                     data-lucide="save" class="size-4"></i>@[[ui-update]]@</button>
             <button type="button"
-                class="testar-conexao inline-flex items-center gap-2 rounded border border-sky-700 px-4 py-2 text-sky-800"
+                class="c2fc-botao testar-conexao inline-flex items-center gap-2 rounded border border-sky-700 px-4 py-2 text-sky-800"
                 data-id="[[id]]"><i data-lucide="plug-zap" class="size-4"></i>@[[ui-test-connection]]@</button>
             <!-- ativar-cel < --><button type="button"
-                class="ativar-conexao inline-flex items-center gap-2 rounded border border-emerald-700 px-4 py-2 text-emerald-800"
+                class="c2fc-botao ativar-conexao inline-flex items-center gap-2 rounded border border-emerald-700 px-4 py-2 text-emerald-800"
                 data-id="[[id]]"><i data-lucide="eye" class="size-4"></i>@[[ui-activate]]@</button><!-- ativar-cel > -->
             <!-- desativar-cel < --><button type="button"
-                class="desativar-conexao inline-flex items-center gap-2 rounded border border-amber-700 px-4 py-2 text-amber-800"
+                class="c2fc-botao desativar-conexao inline-flex items-center gap-2 rounded border border-amber-700 px-4 py-2 text-amber-800"
                 data-id="[[id]]"><i data-lucide="eye-off"
                     class="size-4"></i>@[[ui-deactivate]]@</button><!-- desativar-cel > -->
             <a href="@[[pagina#url-raiz]]@admin-ia/listar/"
-                class="inline-flex items-center gap-2 rounded border border-slate-300 px-4 py-2"><i
+                class="c2fc-botao inline-flex items-center gap-2 rounded border border-slate-300 px-4 py-2"><i
                     data-lucide="arrow-left" class="size-4"></i>@[[ui-back]]@</a>
         </div>
     </form>
@@ -77,7 +77,7 @@
                 class="size-5"></i>@[[ui-models-title]]@</h2>
         <p class="text-sm text-slate-600">@[[ui-models-description]]@</p>
         <div id="form-global-models" class="space-y-2">[[global_models_checkboxes]]</div>
-        <button type="button" class="inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"
+        <button type="button" class="c2fc-botao inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"
             id="btn-save-global-models" onclick="salvarModelosGlobais()"><i data-lucide="save"
                 class="size-4"></i>@[[ui-save-models]]@</button>
     </section>

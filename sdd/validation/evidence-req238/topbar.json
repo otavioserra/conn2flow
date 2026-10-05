@@ -1,0 +1,38 @@
+{
+  "checks": [
+    {
+      "name": "Shortcuts use icon, hidden accessible label and tooltip",
+      "ok": true
+    },
+    {
+      "name": "Profile aligned inside 1366px viewport",
+      "ok": true
+    },
+    {
+      "name": "Username remains visible at 1366px",
+      "ok": true
+    },
+    {
+      "name": "Profile aligned inside 390px viewport",
+      "ok": true
+    },
+    {
+      "name": "Username remains visible at 390px",
+      "ok": true
+    },
+    {
+      "name": "Private dashboard links social-connections",
+      "ok": true
+    },
+    {
+      "name": "Private dashboard links host-manager",
+      "ok": true
+    },
+    {
+      "name": "Private dashboard links 3d-catalog",
+      "ok": true
+    }
+  ],
+  "passed": 8,
+  "failed": 0
+}

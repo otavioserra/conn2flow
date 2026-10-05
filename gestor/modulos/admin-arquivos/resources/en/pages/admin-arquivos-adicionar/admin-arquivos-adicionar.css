@@ -6,6 +6,10 @@ input[type="file"] {
     opacity: 0;
     z-index: -1;
     position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
 }
 
 .hidden {

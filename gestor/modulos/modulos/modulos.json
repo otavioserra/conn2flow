@@ -84,12 +84,12 @@
                 {
                     "name": "Módulos - Adicionar",
                     "id": "modulos-adicionar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "746dc47f94ea24f7bb2200e56bb27445",
+                        "html": "1a5fa3c6ced32679591f378ee0bf82a8",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "746dc47f94ea24f7bb2200e56bb27445"
+                        "combined": "1a5fa3c6ced32679591f378ee0bf82a8"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "modulos\/adicionar\/",
@@ -134,12 +134,12 @@
                 {
                     "name": "Módulos - Editar",
                     "id": "modulos-editar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "df096df492bc98e8c9858f0ea3da05e7",
+                        "html": "84f5d89855ea84cd87a3ba671c8f84b5",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "df096df492bc98e8c9858f0ea3da05e7"
+                        "combined": "84f5d89855ea84cd87a3ba671c8f84b5"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "modulos\/editar\/",
@@ -184,12 +184,12 @@
                 {
                     "name": "Módulos - Variáveis",
                     "id": "modulos-variaveis",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
                         "html": "9fea2225d675c471d1b018a4ce48ce8c",
-                        "css": "44d19aa88ee9abed08f25ab4b7a93ae2",
+                        "css": "a67c7f7ada890bdeca6f064ce2ace341",
                         "css_precompiled": "",
-                        "combined": "3722e298e530a163e526407d3a5a9b9a"
+                        "combined": "596c0cac6384c3522a0eb20f5494a57b"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "modulos\/variaveis\/",
@@ -464,12 +464,12 @@
                 {
                     "name": "Modules - Add",
                     "id": "modulos-adicionar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "746dc47f94ea24f7bb2200e56bb27445",
+                        "html": "1a5fa3c6ced32679591f378ee0bf82a8",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "746dc47f94ea24f7bb2200e56bb27445"
+                        "combined": "1a5fa3c6ced32679591f378ee0bf82a8"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "modulos\/adicionar\/",
@@ -514,12 +514,12 @@
                 {
                     "name": "Modules - Edit",
                     "id": "modulos-editar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "df096df492bc98e8c9858f0ea3da05e7",
+                        "html": "84f5d89855ea84cd87a3ba671c8f84b5",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "df096df492bc98e8c9858f0ea3da05e7"
+                        "combined": "84f5d89855ea84cd87a3ba671c8f84b5"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "modulos\/editar\/",
@@ -564,12 +564,12 @@
                 {
                     "name": "Modules - Variables",
                     "id": "modulos-variaveis",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
                         "html": "4b1ab0f478ac56a5253f7a13e6088f1a",
-                        "css": "44d19aa88ee9abed08f25ab4b7a93ae2",
+                        "css": "a67c7f7ada890bdeca6f064ce2ace341",
                         "css_precompiled": "",
-                        "combined": "f98cffcfada4b241ecde56ec5b34597b"
+                        "combined": "3680849111bea8e4a9e4b2c9b9cfbc16"
                     },
                     "layout": "layout-administrativo-tailwind",
                     "path": "modulos\/variaveis\/",

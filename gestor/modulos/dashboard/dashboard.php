@@ -490,6 +490,8 @@ function dashboard_modulo_documentacao($modulo){
 	
 	$modulo_id = $modulo['id'];
 	$lang = $_GESTOR['linguagem-codigo'] ?? 'pt-br';
+	$core_modules = $_GESTOR['modulo#dashboard']['core_modules'] ?? Array();
+	$is_core_module = in_array($modulo_id, $core_modules, true);
 	
 	$caminho_doc_ref = ($_GESTOR['ROOT_PATH'] ?? '') . 'ai-workspace/' . $lang . '/docs/reference/modules/' . $modulo_id . '.md';
 	$is_core_doc = file_exists($caminho_doc_ref);
@@ -513,7 +515,7 @@ function dashboard_modulo_documentacao($modulo){
 		'manual_tooltip' => $tooltip_manual_breve ?: 'Manual em breve',
 	);
 	
-	if($is_core_doc || empty($modulo['plugin'])){
+	if($is_core_module || $is_core_doc){
 		// Módulos Core / Oficiais apontam para rotas públicas canônicas
 		$res['docs_link'] = 'https://conn2flow.com/docs/reference/modules/' . $modulo_id . '/';
 		$res['docs_classe'] = '';
@@ -523,25 +525,14 @@ function dashboard_modulo_documentacao($modulo){
 		$res['manual_classe'] = '';
 		$res['manual_tooltip'] = $tooltip_manual_ok ?: 'Ver manual do usuário';
 	} else {
-		// Módulos Customizados / Privados do Host
-		$modulo_json_path = ($_GESTOR['gestor-raiz'] ?? '') . 'modulos/' . $modulo_id . '/' . $modulo_id . '.json';
-		$tem_doc_interna = false;
-		if(file_exists($modulo_json_path)){
-			$modulo_config = json_decode(file_get_contents($modulo_json_path), true);
-			if(!empty($modulo_config['documentacao']) || !empty($modulo_config['docs'])){
-				$tem_doc_interna = true;
-			}
-		}
-		
-		if($tem_doc_interna){
+		// REQ-238: project modules may have no plugin marker; both actions use the panel guide.
 			$res['docs_link'] = $_GESTOR['url-raiz'] . 'documentation/' . $modulo_id . '/';
 			$res['docs_classe'] = '';
 			$res['docs_tooltip'] = $tooltip_docs_ok ?: 'Ver documentação';
 			
-			$res['manual_link'] = $_GESTOR['url-raiz'] . 'documentation/' . $modulo_id . '/manual/';
+			$res['manual_link'] = $_GESTOR['url-raiz'] . 'documentation/' . $modulo_id . '/';
 			$res['manual_classe'] = '';
 			$res['manual_tooltip'] = $tooltip_manual_ok ?: 'Ver manual do usuário';
-		}
 	}
 	
 	return $res;
@@ -3180,7 +3171,10 @@ function dashboard_ajax_widget_render(){
 		}
 		$where .= " AND ".$coluna."='".banco_escape_field($widget_id)."'";
 	}
-	$registro = banco_select(Array('unico' => true, 'tabela' => $def['tabela'], 'campos' => Array('id'), 'extra' => $where.' LIMIT 1'));
+	$camposRegistro = Array('id');
+	if(banco_campo_existe('fields_schema', $def['tabela'])) $camposRegistro[] = 'fields_schema';
+	if(banco_campo_existe('css_compiled', $def['tabela'])) $camposRegistro[] = 'css_compiled';
+	$registro = banco_select(Array('unico' => true, 'tabela' => $def['tabela'], 'campos' => $camposRegistro, 'extra' => $where.' LIMIT 1'));
 	if(!$registro){
 		$_GESTOR['ajax-json'] = Array('status' => 'error', 'message' => gestor_variaveis(Array('modulo' => 'dashboard', 'id' => 'widgets-label-error')));
 		return;
@@ -3189,12 +3183,32 @@ function dashboard_ajax_widget_render(){
 	$metadata = gestor_modulos_dados($widget_id) ?: Array();
 	$signature = $widget_id.'->render('.json_encode(Array('grupo_slug' => $registro['id'], 'id' => $registro['id']), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES).')';
 	$jsAntes = count($_GESTOR['javascript-fim'] ?? Array());
+	$precompiledAntes = count($_GESTOR['css-precompiled'] ?? Array());
+	$compiledAntes = count($_GESTOR['css-compiled'] ?? Array());
+	$headAntes = count($_GESTOR['html-extra-head'] ?? Array());
 	$previousWidget = gestor_get('modulo-id#widget');
 	$previousMetadata = gestor_get('modulo#widget#'.$widget_id);
 	gestor_set('modulo-id#widget', $widget_id);
 	gestor_set('modulo#widget#'.$widget_id, $metadata);
 	try {
 		$render = html_editor_widget_renderizar($signature);
+		$frameLayout = banco_select(Array('unico' => true, 'tabela' => 'layouts', 'campos' => Array('css_precompiled'),
+			'extra' => "WHERE id='layout-iframe-tailwindcss' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND status='A' LIMIT 1"));
+		$frameCss = !empty($frameLayout['css_precompiled']) ? '<style data-tailwind-role="layout-precompiled">'.$frameLayout['css_precompiled'].'</style>' : '';
+		// Seeded widgets may use a native template without an editor compilation.
+		// Carry that template's SQL styles into the isolated document as well.
+		$schema = json_decode($registro['fields_schema'] ?? '{}', true) ?: Array();
+		$templateCss = '';
+		if(empty($registro['css_compiled']) && !empty($schema['template_id'])){
+			$template = banco_select(Array('unico' => true, 'tabela' => 'templates', 'campos' => Array('css_precompiled'),
+				'extra' => "WHERE id='".banco_escape_field($schema['template_id'])."' AND target='".banco_escape_field($def['tabela'])."' AND language='".banco_escape_field($_GESTOR['linguagem-codigo'])."' AND status='A' LIMIT 1"));
+			if(!empty($template['css_precompiled'])) $templateCss = '<style data-tailwind-role="resource-precompiled">'.$template['css_precompiled'].'</style>';
+		}
+		$render['css'] = $frameCss.implode('', array_slice($_GESTOR['html-extra-head'] ?? Array(), $headAntes))
+			.implode('', array_slice($_GESTOR['css-precompiled'] ?? Array(), $precompiledAntes))
+			.$templateCss
+			.$render['css']
+			.implode('', array_slice($_GESTOR['css-compiled'] ?? Array(), $compiledAntes));
 	} finally {
 		gestor_set('modulo-id#widget', $previousWidget);
 		gestor_set('modulo#widget#'.$widget_id, $previousMetadata);

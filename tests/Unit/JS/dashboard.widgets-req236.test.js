@@ -15,12 +15,12 @@ function boot(layout=[], failRender=false){
   const data=action==='widgets-catalogo'?[{id:'menus',name:'Menus'}]:action==='widgets-registros'?{items:[{id:'main-menu',nome:'Main'}],tem_mais:false}:{html:'<p>Rendered</p>',css:''};
   return {ok:!(failRender && action==='widget-render'),json:async()=>({status:'Ok',data})};
  });
- function Sortable(){sortable=this;this.disabled=null;this.option=(_key,value)=>{this.disabled=value;};this.destroy=()=>{};}
+ function Sortable(_grid,options){sortable=this;this.options=options;this.disabled=null;this.option=(_key,value)=>{this.disabled=value;};this.destroy=()=>{};}
  new Function('document','gestor','fetch','getLocalStorage','setLocalStorage','dashboardSalvarPreferenciaBackend','Sortable','sessionStorage',init+'\ninitDashboardWidgets();')(document,gestor,fetch,()=>null,()=>{},(_key,value)=>{saved=structuredClone(value);},Sortable,sessionStorage);
 }
 beforeEach(()=>{
  saved=null;calls=[];sessionStorage.clear();
- document.body.innerHTML='<details id="dashboard-options"></details><button id="dashboard-edit-mode"></button><button id="dashboard-btn-add-widget"></button><button id="dashboard-btn-reset-widgets"></button><div id="dashboard-widgets-empty"></div><div id="dashboard-widgets-grid" data-label-type="Type" data-label-record="Record" data-label-loading="Loading" data-label-error="Error"></div><div id="dashboard-widgets-modal" class="hidden"><button class="dashboard-widgets-modal-close"></button><div id="dashboard-widgets-modal-list"></div></div>';
+ document.body.innerHTML='<details id="dashboard-options"></details><button id="dashboard-edit-mode" role="switch" data-label-on="Edit on" data-label-off="Edit off"><span data-edit-label></span></button><button id="dashboard-btn-add-widget"></button><button id="dashboard-btn-reset-widgets"></button><div id="dashboard-widgets-empty"></div><div id="dashboard-widgets-grid" data-label-type="Type" data-label-record="Record" data-label-loading="Loading" data-label-error="Error"></div><div id="dashboard-widgets-modal" class="hidden"><button class="dashboard-widgets-modal-close"></button><input id="dashboard-widget-search" type="search"><button id="dashboard-widget-reset-selection"></button><span id="dashboard-widget-selection"></span><div id="dashboard-widgets-modal-list"></div></div>';
 });
 describe('Dashboard widget instances (req-236)',()=>{
  it('starts in view mode and enables sorting only after edit toggle',()=>{
@@ -53,5 +53,40 @@ describe('Dashboard widget instances (req-236)',()=>{
  it('preserves the legacy eight-column width on reload',()=>{
   boot([{id:'menus',width:'col-span-8'}]);
   expect(document.querySelector('.dashboard-widget-card').getAttribute('data-widget-cols')).toBe('8');
+ });
+ it('opens the current record even beyond page one, filters immediately and resets without saving',async()=>{
+  boot([{id:'menus',name:'Menus / Footer',registro_id:'footer',instance_id:'current'}]);await settle();
+  document.getElementById('dashboard-edit-mode').click();document.querySelector('.dashboard-widget-switch-btn').click();await settle();
+  expect(document.querySelector('[data-widget-choice="footer"]').getAttribute('aria-pressed')).toBe('true');
+  const input=document.getElementById('dashboard-widget-search');input.value='footer';input.dispatchEvent(new Event('input'));
+  expect(document.querySelector('[data-widget-choice="main-menu"]').hidden).toBe(true);
+  document.getElementById('dashboard-widget-reset-selection').click();await settle();
+  expect(document.querySelector('[data-widget-choice="menus"]').getAttribute('aria-pressed')).toBe('false');
+  expect(saved).toBeNull();
+ });
+ it('retains pixel heights across reload, limits them and exposes one resize handle per instance',async()=>{
+  boot([{id:'menus',height_px:600,instance_id:'one'},{id:'menus',height_px:9999,instance_id:'two'}]);await settle();
+  const cards=document.querySelectorAll('.dashboard-widget-card');expect(cards[0].style.height).toBe('600px');expect(cards[1].style.height).toBe('780px');
+  expect(document.querySelectorAll('.dashboard-widget-resize-handle')).toHaveLength(2);
+  expect(document.querySelectorAll('iframe')[0].getAttribute('sandbox')).toBe('allow-scripts');
+ });
+ it('announces the edit state through the semantic switch',()=>{
+  boot();const button=document.getElementById('dashboard-edit-mode');expect(button.getAttribute('aria-checked')).toBe('false');
+  button.click();expect(button.getAttribute('aria-checked')).toBe('true');expect(button.textContent).toBe('Edit on');
+ });
+ it('shows the blueprint while dragging and clears it after sorting',()=>{
+  boot([{id:'menus',instance_id:'one'}]);document.getElementById('dashboard-edit-mode').click();
+  const grid=document.getElementById('dashboard-widgets-grid');sortable.options.onStart();expect(grid.classList.contains('is-interacting')).toBe(true);
+  sortable.options.onEnd();expect(grid.classList.contains('is-interacting')).toBe(false);expect(saved[0].instance_id).toBe('one');
+ });
+ it('cancels resize without saving and commits a 60px height step on pointerup',()=>{
+  boot([{id:'menus',instance_id:'one',width:4,height_px:240}]);document.getElementById('dashboard-edit-mode').click();
+  const grid=document.getElementById('dashboard-widgets-grid'),card=grid.firstElementChild,handle=card.querySelector('.dashboard-widget-resize-handle');
+  grid.getBoundingClientRect=()=>({width:1200});card.getBoundingClientRect=()=>({width:400,height:240});
+  handle.setPointerCapture=()=>{};handle.hasPointerCapture=()=>false;handle.releasePointerCapture=()=>{};
+  const event=(type,y)=>handle.dispatchEvent(new PointerEvent(type,{bubbles:true,pointerId:1,clientX:400,clientY:y}));
+  event('pointerdown',240);event('pointermove',300);expect(card.style.height).toBe('300px');expect(grid.classList.contains('is-interacting')).toBe(true);
+  event('pointercancel',300);expect(card.style.height).toBe('240px');expect(saved).toBeNull();expect(grid.classList.contains('is-interacting')).toBe(false);
+  event('pointerdown',240);event('pointermove',300);event('pointerup',300);expect(saved[0].height_px).toBe(300);
  });
 });

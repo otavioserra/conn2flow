@@ -649,7 +649,7 @@ Medido em navegador real (Playwright) em `/admin-paginas/`:
 
 ## BATCH-047 — Preflight do Instalador, Sonda HTTP Anti-Deadlock e Contrato CLI (req-045)
 
-> Evidências completas, decisões técnicas e tabelas de simulação em [batch-047.md](../implementation/batch-047.md).
+> Evidências completas, decisões técnicas e tabelas de simulação em batch-047.md (relatório histórico não localizado).
 
 ### 1. Checklist de Aceite Técnico
 

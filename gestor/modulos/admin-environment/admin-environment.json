@@ -17,7 +17,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.31",
+                    "version": "1.32",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -44,9 +44,9 @@
                     ],
                     "checksum": {
                         "html": "be96918e8b388b48bd7c2b42bccbedc5",
-                        "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
+                        "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "6071e498bcb42bae3ea9c00103abf457"
+                        "combined": "bb268a0e82a71572a25c494aa4c329a8"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }
@@ -271,7 +271,7 @@
                     "type": "system",
                     "option": "raiz",
                     "root": true,
-                    "version": "1.33",
+                    "version": "1.34",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -298,9 +298,9 @@
                     ],
                     "checksum": {
                         "html": "0a7a9046642f2e6c4c20ec806e89c9f1",
-                        "css": "2da516bd3fe2d7ca2b7381cd159bffd8",
+                        "css": "9d32f1b3b8fd5f1fcde7b0c4b7cbe58b",
                         "css_precompiled": "",
-                        "combined": "5aef5aff216aafa757454098edf02e0c"
+                        "combined": "404e06c04201c202aea285503c300b54"
                     },
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
                 }

@@ -50,12 +50,12 @@
                     "id": "publisher-highlights-noticias-lista-simples",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "d5bfdf41bd9ed443d9109874c94211a4",
+                        "html": "945416de52739565b4f07f7c32384b04",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d5bfdf41bd9ed443d9109874c94211a4"
+                        "combined": "945416de52739565b4f07f7c32384b04"
                     }
                 },
                 {
@@ -63,12 +63,12 @@
                     "id": "publisher-highlights-noticias-grid-cards",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "281fb507d4bf338f84abc5c7d3d2d140",
+                        "html": "04487b4f8e45f282337ab0a203348f86",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "281fb507d4bf338f84abc5c7d3d2d140"
+                        "combined": "04487b4f8e45f282337ab0a203348f86"
                     }
                 },
                 {
@@ -76,12 +76,12 @@
                     "id": "publisher-highlights-artigos-editorial",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "8b8bcdf29625b941b78dcce1dc688363",
+                        "html": "34e72aa4a664fdb9f8dc52364027cc0f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "8b8bcdf29625b941b78dcce1dc688363"
+                        "combined": "34e72aa4a664fdb9f8dc52364027cc0f"
                     }
                 },
                 {
@@ -89,12 +89,12 @@
                     "id": "publisher-highlights-lives-video-destaque",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "270c9f51dcfd8f295f50ae4a47a4beed",
+                        "html": "062457e3b06c4d02dce4a0e2d50565f9",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "270c9f51dcfd8f295f50ae4a47a4beed"
+                        "combined": "062457e3b06c4d02dce4a0e2d50565f9"
                     }
                 },
                 {
@@ -102,12 +102,12 @@
                     "id": "publisher-highlights-notas-mosaico",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "d66f7eb2fa59f1d5fd65540c909254c3",
+                        "html": "6a717167d06629372f147786411f9c5e",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d66f7eb2fa59f1d5fd65540c909254c3"
+                        "combined": "6a717167d06629372f147786411f9c5e"
                     }
                 },
                 {
@@ -115,12 +115,12 @@
                     "id": "publisher-highlights-principal-carousel",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "1311d3387a12282ad969e038592d6755",
+                        "html": "c372f4785ff5557be941ebd8d3b24bba",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "1311d3387a12282ad969e038592d6755"
+                        "combined": "c372f4785ff5557be941ebd8d3b24bba"
                     }
                 }
             ],
@@ -638,12 +638,12 @@
                     "id": "publisher-highlights-noticias-lista-simples",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "d02f8e52c3e9e25788019733811c8132",
+                        "html": "5141866e1f250c5d1880c7ac7d677cbc",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d02f8e52c3e9e25788019733811c8132"
+                        "combined": "5141866e1f250c5d1880c7ac7d677cbc"
                     }
                 },
                 {
@@ -651,12 +651,12 @@
                     "id": "publisher-highlights-noticias-grid-cards",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "08df1c068452cae3cf8fbf431649e9a8",
+                        "html": "aff641d4e9c37e954e7776592469c472",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "08df1c068452cae3cf8fbf431649e9a8"
+                        "combined": "aff641d4e9c37e954e7776592469c472"
                     }
                 },
                 {
@@ -664,12 +664,12 @@
                     "id": "publisher-highlights-artigos-editorial",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "86e14bf26e478a7e8b8a256867775a49",
+                        "html": "a13f73187ee900cb10053f9d5189674e",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "86e14bf26e478a7e8b8a256867775a49"
+                        "combined": "a13f73187ee900cb10053f9d5189674e"
                     }
                 },
                 {
@@ -677,12 +677,12 @@
                     "id": "publisher-highlights-lives-video-destaque",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "65aa6d4571ece966af79d861c1fadfe2",
+                        "html": "de32807096a864eba5f78ad855b5f828",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "65aa6d4571ece966af79d861c1fadfe2"
+                        "combined": "de32807096a864eba5f78ad855b5f828"
                     }
                 },
                 {
@@ -690,12 +690,12 @@
                     "id": "publisher-highlights-notas-mosaico",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "f252d5ad27cf29114835779b1bb60361",
+                        "html": "e407e26bdf5edae790b1b9ebcdae5967",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f252d5ad27cf29114835779b1bb60361"
+                        "combined": "e407e26bdf5edae790b1b9ebcdae5967"
                     }
                 },
                 {
@@ -703,12 +703,12 @@
                     "id": "publisher-highlights-destaque-principal-carousel",
                     "target": "publisher-highlights",
                     "framework_css": "tailwindcss",
-                    "version": "1.6",
+                    "version": "1.7",
                     "checksum": {
-                        "html": "dba6e59a26b0f1696f2d0a9f21a356f3",
+                        "html": "bac23bfa2702af5ab20b583f7ce4e091",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "dba6e59a26b0f1696f2d0a9f21a356f3"
+                        "combined": "bac23bfa2702af5ab20b583f7ce4e091"
                     }
                 }
             ],

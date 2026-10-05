@@ -216,12 +216,12 @@
                 {
                     "name": "Plugins - Exec",
                     "id": "plugins-exec",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "f6508ffae8dc0b4970eacb81034f1e51",
+                        "html": "23671934cd24d3fba1fae2dde6a044cb",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f6508ffae8dc0b4970eacb81034f1e51"
+                        "combined": "23671934cd24d3fba1fae2dde6a044cb"
                     }
                 },
                 {
@@ -661,12 +661,12 @@
                 {
                     "name": "Plugins - Exec",
                     "id": "plugins-exec",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "f0edb8cef077fc6cccee9c325388c215",
+                        "html": "fdadfd1f10966eac979356e355d7746d",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f0edb8cef077fc6cccee9c325388c215"
+                        "combined": "fdadfd1f10966eac979356e355d7746d"
                     }
                 },
                 {

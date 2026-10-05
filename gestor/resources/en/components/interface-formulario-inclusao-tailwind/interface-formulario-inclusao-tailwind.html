@@ -1,11 +1,11 @@
-<h1 class="mb-4 text-2xl font-semibold text-slate-900">#titulo#</h1>
+<h1 class="mb-4 text-2xl font-bold text-slate-900">#titulo#</h1>
 <!-- botoes < -->
 <div class="mb-4 flex flex-wrap justify-end gap-2">
     #botoes#
 </div><!-- botoes > -->
 <form id="#form-id#" action="#form-action#" method="post" name="#form-name#" enctype="multipart/form-data"
-    data-c2f-form="tailwind" class="interfaceFormPadrao space-y-6">
-    <div id="_gestor-interface-insert-dados">#form-page#</div>
+    data-c2f-form="tailwind" class="interfaceFormPadrao rounded-xl border border-slate-200 bg-white p-6 shadow-sm space-y-6">
+    <div id="_gestor-interface-insert-dados" class="min-w-0">#form-page#</div>
     <input id="_gestor-adicionar" name="_gestor-adicionar" type="hidden" value="1">
     <input id="opcao" name="opcao" type="hidden" value="#form-opcao#">
     <div data-c2f-form-erros class="hidden rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -13,7 +13,7 @@
     <div class="flex flex-wrap items-center justify-center gap-2 border-t border-slate-200 pt-4">
         <!-- botao-padrao < -->
         <button id="_gestor-interface-insert-button" type="submit" data-c2f-dica="#form-button-title#"
-            class="inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700">#form-button-value#</button>
+            class="c2fc-botao c2fc-botao-primario inline-flex items-center gap-2 rounded-lg border border-emerald-600 bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700">#form-button-value#</button>
         <!-- botao-padrao > -->
         <!-- botoes-rodape < -->
         #botoes-rodape#

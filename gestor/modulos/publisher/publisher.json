@@ -42,12 +42,12 @@
                     "target": "publisher",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/noticias-simples.webp",
-                    "version": "1.7",
+                    "version": "1.8",
                     "checksum": {
-                        "html": "d8b00d54ac83aa7a94fe2ae85488c24d",
+                        "html": "36bba1fb09a6219ef6ea4de55021bf87",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d8b00d54ac83aa7a94fe2ae85488c24d"
+                        "combined": "36bba1fb09a6219ef6ea4de55021bf87"
                     }
                 },
                 {
@@ -56,12 +56,12 @@
                     "target": "publisher",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/pt-br\/noticias-imagem-destaque.webp",
-                    "version": "1.8",
+                    "version": "1.9",
                     "checksum": {
-                        "html": "1d0090a001ac18d093dcdbb92c3348a0",
+                        "html": "2a811d1b95e7aeb7385d22e2320a17af",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "1d0090a001ac18d093dcdbb92c3348a0"
+                        "combined": "2a811d1b95e7aeb7385d22e2320a17af"
                     }
                 }
             ],
@@ -350,12 +350,12 @@
                     "target": "publisher",
                     "framework_css": "tailwindcss",
                     "thumbnail": "templates\/images\/en\/noticias-imagem-destaque.webp",
-                    "version": "1.11",
+                    "version": "1.12",
                     "checksum": {
-                        "html": "f83a8a5585ecd70ec3ef4337ac76fcbf",
+                        "html": "43c95946acd29e9a7b4f061dde19816e",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f83a8a5585ecd70ec3ef4337ac76fcbf"
+                        "combined": "43c95946acd29e9a7b4f061dde19816e"
                     }
                 }
             ],

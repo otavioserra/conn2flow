@@ -1,10 +1,12 @@
 <div class="req222-page space-y-4" data-js-id-missing="@[[js-id-missing]]@" data-js-status-error="@[[js-status-error]]@" data-js-communication-error="@[[js-communication-error]]@" data-js-email-missing="@[[js-email-missing]]@" data-js-reply-confirm="@[[js-reply-confirm]]@" data-js-reply-error="@[[js-reply-error]]@" data-js-reply-sent="@[[js-reply-sent]]@" data-not-applicable-label="@[[not-applicable-label]]@">
-<!-- ===== Informações Básicas ===== -->
+<div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+<div class="c2fc-abas" data-c2f-abas><div class="c2fc-abas-lista"><button type="button" class="c2fc-aba" data-c2f-aba="submission-data"><i data-lucide="list" class="size-4"></i>@[[ui-tab-data]]@</button><button type="button" class="c2fc-aba" data-c2f-aba="submission-replies"><i data-lucide="reply" class="size-4"></i>@[[ui-tab-replies]]@</button><button type="button" class="c2fc-aba" data-c2f-aba="submission-json"><i data-lucide="code" class="size-4"></i>@[[ui-tab-json]]@</button></div>
+<div data-c2f-painel="submission-data"><!-- ===== Informações Básicas ===== -->
 <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 definition table">
     <thead>
         <tr>
             <th class="border-b border-slate-200 px-3 py-2 align-top"></th>
-            <th class="border-b border-slate-200 px-3 py-2 align-top"><i data-lucide="info" class="size-4 shrink-0 icon "></i> Informações Básicas</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top"><i data-lucide="info" class="inline-block size-4 shrink-0 align-middle"></i> Informações Básicas</th>
         </tr>
     </thead>
     <tbody>
@@ -36,8 +38,8 @@
                         <option value="#status_id#" #status_selected#>#status_name#</option>
                         <!-- status_option > -->
                     </select>
-                    <button id="btn-save-status" class="c2fc-botao c2fc-botao-primario c2fc-botao-icone c2fc-botao-pequeno mini blue labeled icon button">
-                        <i data-lucide="save" class="size-4 shrink-0 icon "></i> Salvar
+                    <button id="btn-save-status" class="c2fc-botao c2fc-botao-primario c2fc-botao-pequeno mini blue labeled icon button">
+                        <i data-lucide="save" class="inline-block size-4 shrink-0 align-middle"></i> Salvar
                     </button>
                 </div>
             </td>
@@ -49,7 +51,7 @@
 <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled table">
     <thead>
         <tr>
-            <th class="border-b border-slate-200 px-3 py-2 align-top" colspan="2"><i data-lucide="list" class="size-4 shrink-0 icon "></i> Campos Enviados</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top" colspan="2"><i data-lucide="list" class="inline-block size-4 shrink-0 align-middle"></i> Campos Enviados</th>
         </tr>
     </thead>
     <tbody>
@@ -62,12 +64,13 @@
     </tbody>
 </table></div>
 
-<!-- ===== Histórico de Respostas ===== -->
+</div>
+<div data-c2f-painel="submission-replies" hidden><!-- ===== Histórico de Respostas ===== -->
 <!-- response_history < -->
 <div class="max-w-full overflow-x-auto"><table class="w-full text-sm text-left border-collapse my-4 celled table">
     <thead>
         <tr>
-            <th class="border-b border-slate-200 px-3 py-2 align-top" colspan="3"><i data-lucide="history" class="size-4 shrink-0 icon "></i> Histórico de Respostas</th>
+            <th class="border-b border-slate-200 px-3 py-2 align-top" colspan="3"><i data-lucide="history" class="inline-block size-4 shrink-0 align-middle"></i> Histórico de Respostas</th>
         </tr>
         <tr>
             <th class="border-b border-slate-200 px-3 py-2 align-top three wide">Data</th>
@@ -90,12 +93,12 @@
 <!-- ===== Seção de Resposta ===== -->
 <!-- reply_section < -->
 <div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 blue segment">
-    <h4 class="text-lg font-semibold text-slate-800 my-4 dividing header"><i data-lucide="reply" class="size-4 shrink-0 icon "></i> Responder ao Contato</h4>
+    <h4 class="flex items-center gap-2 text-lg font-semibold text-slate-800 my-4"><i data-lucide="reply" class="inline-block size-4 shrink-0 align-middle"></i> Responder ao Contato</h4>
     <div class="form" id="form-reply">
         <div class="c2fc-campo min-w-0 mb-4 field">
             <label class="c2fc-campo-rotulo">Destinatário</label>
             <div class="flex items-center gap-2 min-w-0 left icon input fluid">
-                <i data-lucide="mail" class="size-4 shrink-0 icon "></i>
+                <i data-lucide="mail" class="inline-block size-4 shrink-0 align-middle"></i>
                 <input class="c2fc-campo-entrada" type="text" id="reply-to-email" value="#reply_email#" readonly>
             </div>
         </div>
@@ -103,21 +106,23 @@
             <label class="c2fc-campo-rotulo">Mensagem</label>
             <textarea class="c2fc-campo-entrada" id="reply-message" rows="8" placeholder="Digite sua resposta aqui..."></textarea>
         </div>
-        <button id="btn-send-reply" class="c2fc-botao c2fc-botao-primario c2fc-botao-icone blue labeled icon button">
-            <i data-lucide="send" class="size-4 shrink-0 icon "></i> Enviar Resposta
+        <button id="btn-send-reply" class="c2fc-botao c2fc-botao-primario blue labeled icon button">
+            <i data-lucide="send" class="inline-block size-4 shrink-0 align-middle"></i> Enviar Resposta
         </button>
     </div>
 </div>
 <!-- reply_section > -->
 
-<!-- ===== Dados JSON Brutos ===== -->
+</div>
+<div data-c2f-painel="submission-json" hidden><!-- ===== Dados JSON Brutos ===== -->
 <div class="styled fluid accordion">
     <details class="rounded-lg border border-slate-200 p-3 my-3"><summary class="cursor-pointer font-semibold">
-        <i data-lucide="chevron-down" class="size-4 shrink-0 icon "></i>
-        <i data-lucide="code" class="size-4 shrink-0 icon "></i> Dados JSON Brutos
+        <i data-lucide="chevron-down" class="inline-block size-4 shrink-0 align-middle"></i>
+        <i data-lucide="code" class="inline-block size-4 shrink-0 align-middle"></i> Dados JSON Brutos
     </summary>
     <div class="content">
         <div class="rounded-xl border border-slate-200 bg-white p-4 my-4 min-w-0 segment"><textarea class="c2fc-campo-entrada codemirror-json">#fields_values#</textarea></div>
     </div></details>
 </div>
 </div>
+</div></div></div>

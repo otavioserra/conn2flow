@@ -113,23 +113,23 @@
                 {
                     "name": "Atualizações - Lista",
                     "id": "atualizacoes-lista",
-                    "version": "1.16",
+                    "version": "1.17",
                     "checksum": {
-                        "html": "40cb8238eb1499ccb9c466da5ccb880b",
+                        "html": "f0ef8db462abf5d6ad84004055c93a2d",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "40cb8238eb1499ccb9c466da5ccb880b"
+                        "combined": "f0ef8db462abf5d6ad84004055c93a2d"
                     }
                 },
                 {
                     "name": "Atualizações - Detalhe",
                     "id": "atualizacoes-detalhe-comp",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "2165f501c194d36a1b7944cf7901805b",
+                        "html": "d15a8a39cceb60aed8b27527b750cac2",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "2165f501c194d36a1b7944cf7901805b"
+                        "combined": "d15a8a39cceb60aed8b27527b750cac2"
                     }
                 },
                 {
@@ -639,23 +639,23 @@
                 {
                     "name": "Updates - List",
                     "id": "atualizacoes-lista",
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "be19a101f7138be7d79cae7af7cafe5b",
+                        "html": "314d1a3e3dfdc9625e3fcf29d67f7a08",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "be19a101f7138be7d79cae7af7cafe5b"
+                        "combined": "314d1a3e3dfdc9625e3fcf29d67f7a08"
                     }
                 },
                 {
                     "name": "Updates - Detail",
                     "id": "atualizacoes-detalhe-comp",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "2165f501c194d36a1b7944cf7901805b",
+                        "html": "d15a8a39cceb60aed8b27527b750cac2",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "2165f501c194d36a1b7944cf7901805b"
+                        "combined": "d15a8a39cceb60aed8b27527b750cac2"
                     }
                 },
                 {

@@ -154,9 +154,12 @@ project_transport_run_rsync "${RUNTIME_CONTRACT_CMD[@]}"
 
 # req-206: the same goes for the core data files. The core database step that follows must read
 # the core's `db/data`, not a project copy left by a previous run with a newer date.
+# REQ-238: remove stale project partitions/manifests before the core database stage.
+# The project stage subsequently restores its own generated seeds.
 CORE_DATA_CMD=(
   rsync
   -avc
+  --delete
   --relative
   "${PT_RSYNC_OPTS[@]}"
   "$CORE_SOURCE/./db/data/"

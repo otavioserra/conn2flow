@@ -2,7 +2,7 @@
 
 - **Status:** `in-review`
 - **Data:** 2026-10-04
-- **Requisição:** [req-227](../human-requests/req-227.md)
+- **Requisição:** [req-227](../human-requests/archive/req-227.md)
 - **Repositórios:** `conn2flow` e `conn2flow-site`, em `C:/Users/otavi/OneDrive/Documentos/GIT/`.
 
 ## Escopo
@@ -36,7 +36,7 @@ Vidro fosco e cerâmica arredondada sobre fundo azul profundo, acentos ciano e v
 - **CA-1:** galeria conjunta inspecionada: câmera isométrica, vidro fosco, azul profundo/ciano/violeta e luz suave consistentes nas 37 cenas. [Screenshot desktop](../validation/req227-evidence/catalog-1440.png).
 - **CA-2:** 37 WebP, 1024 × 1024, conteúdo distinto, decodificação íntegra. Maior: **97.452 bytes**; total: **2.991.526 bytes**. Core: 14 / 1.158.130 bytes; site: 23 / 1.833.396 bytes. Todos atendem ao limite com qualidade WebP **90**, método 6, sem reduzir a resolução final.
 - **CA-3:** assets em `gestor/assets/modulos/covers/` dos dois repositórios, com `manifest.json` (versão, dimensões, tamanho, SHA-256). `dashboard-covers.php` valida o identificador e confere a presença do arquivo; preserva o prefixo da URL e usa `filemtime` para invalidar cache. O renderer 2D mantém o slot SVG existente, com a imagem externa decorativa. O 3D recebe `thumbnail`, conserva proporção quadrada e reposiciona texto quando há capa. `dashboard.js` inclui a versão do módulo nas URLs dos scripts 3D. Versão do módulo: `1.0.23`.
-- **CA-4:** [catálogo com miniaturas](../validation/req227-catalog.md), [prompts e medições](../validation/req227-covers.json) e [galeria do site](../../../conn2flow-site/sdd/validation/req102-catalog.md).
+- **CA-4:** [catálogo com miniaturas](../validation/req227-catalog.md), [prompts e medições](../validation/req227-covers.json) e galeria do Site (catálogo histórico não localizado).
 
 ## Validação técnica
 

@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.3",
+    "versao": "1.1.4",
     "bibliotecas": [
         "interface",
         "html",
@@ -151,12 +151,12 @@
                     "id": "forms-contato-basico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "cd761b4b03e93eaf7554b2281c3f0ab6",
+                        "html": "6558ae285389a6c924fc47da2761a45c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "cd761b4b03e93eaf7554b2281c3f0ab6"
+                        "combined": "6558ae285389a6c924fc47da2761a45c"
                     }
                 },
                 {
@@ -164,12 +164,12 @@
                     "id": "forms-newsletter-newsletter",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "654fb412661aec1f7eed5b984d3c1628",
+                        "html": "abaff8075fe73ea59651fc0704f3ee27",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "654fb412661aec1f7eed5b984d3c1628"
+                        "combined": "abaff8075fe73ea59651fc0704f3ee27"
                     }
                 },
                 {
@@ -177,12 +177,12 @@
                     "id": "forms-registro-usuario",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "d4a6ff22dde11bc0c73c2c89440b2998",
+                        "html": "59b284421b35c9107e27a32641d9f2f8",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "d4a6ff22dde11bc0c73c2c89440b2998"
+                        "combined": "59b284421b35c9107e27a32641d9f2f8"
                     }
                 },
                 {
@@ -190,12 +190,12 @@
                     "id": "forms-pesquisa-satisfacao",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "c623739ce657233b31b892f85bb11d41",
+                        "html": "a1e0b81519818a26babcca86f67a7b78",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "c623739ce657233b31b892f85bb11d41"
+                        "combined": "a1e0b81519818a26babcca86f67a7b78"
                     }
                 },
                 {
@@ -203,12 +203,12 @@
                     "id": "forms-suporte-tecnico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "0c52fa96cdb4b9f31a00d3fefdcb1f3e",
+                        "html": "4e297360c0274cffe73b6a3c1e727a02",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "0c52fa96cdb4b9f31a00d3fefdcb1f3e"
+                        "combined": "4e297360c0274cffe73b6a3c1e727a02"
                     }
                 }
             ],
@@ -270,12 +270,12 @@
                     "path": "forms/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "9cd6d4ce0858d87d7082f523aa156224",
+                        "html": "79993112af825aa4277afef4774706c9",
                         "css": "39c704e4c0804714fca60ff0a898f19d",
                         "css_precompiled": "",
-                        "combined": "0c8a77b0545aa9f96c884cf1a0d54da0"
+                        "combined": "cbdca9e9166f1e46c032c377ca0d4ac4"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -341,12 +341,12 @@
                     "path": "forms/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "e858fd67d2f5eaacc2bf967a8be250ce",
+                        "html": "28d66dbaf7f053daff3cc5e1fcb2ef06",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "26f54223414d89b7dbf757648aeb6662"
+                        "combined": "af635139ede44e89e94988d74a9d884d"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -457,12 +457,12 @@
                     "path": "forms/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.13",
+                    "version": "1.14",
                     "checksum": {
-                        "html": "c5cdc8755d816b6ba83e04459bfb7306",
+                        "html": "8f8c738926064c162eaf27e07502c094",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "6f658186a9dda17e025508caa3358eeb"
+                        "combined": "d10e1d76abd09bd5a449e5ca89abb8ea"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -573,12 +573,12 @@
                     "path": "forms/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.12",
+                    "version": "1.13",
                     "checksum": {
-                        "html": "2da9bb88b9ba597ce408db6c1464f419",
+                        "html": "3ea48f30fc06fea2ee16833682366bf3",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "724ba7216ef53ef5dbad1afeec24512b"
+                        "combined": "3caf4fb12366443aa50407d97342532c"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -916,12 +916,12 @@
                     "id": "forms-contato-basico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "ec633a3a7ce9766fc44302151393084a",
+                        "html": "dc4437f0ff6309b28132ce4e2b50b8ac",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "ec633a3a7ce9766fc44302151393084a"
+                        "combined": "dc4437f0ff6309b28132ce4e2b50b8ac"
                     }
                 },
                 {
@@ -929,12 +929,12 @@
                     "id": "forms-newsletter-newsletter",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "0e4a4f035331527602248cd599468d95",
+                        "html": "4e168e306c8697b3cc8cf1482071c2f1",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "0e4a4f035331527602248cd599468d95"
+                        "combined": "4e168e306c8697b3cc8cf1482071c2f1"
                     }
                 },
                 {
@@ -942,12 +942,12 @@
                     "id": "forms-registro-usuario",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "e21332afbb5b5b0948bf987680e38e3b",
+                        "html": "95f3a70fc234fa14bfc139435e64de40",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "e21332afbb5b5b0948bf987680e38e3b"
+                        "combined": "95f3a70fc234fa14bfc139435e64de40"
                     }
                 },
                 {
@@ -955,12 +955,12 @@
                     "id": "forms-pesquisa-satisfacao",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "43688d34ed42731c2b4eab5d0b00d2af",
+                        "html": "c507f3e698453f40ce1fbbae6fb4881c",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "43688d34ed42731c2b4eab5d0b00d2af"
+                        "combined": "c507f3e698453f40ce1fbbae6fb4881c"
                     }
                 },
                 {
@@ -968,12 +968,12 @@
                     "id": "forms-suporte-tecnico",
                     "target": "forms",
                     "framework_css": "tailwindcss",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "f9c726d6a3c5fb1055d97d986a16e612",
+                        "html": "16b67573d441c301ef899efa83a30b5f",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f9c726d6a3c5fb1055d97d986a16e612"
+                        "combined": "16b67573d441c301ef899efa83a30b5f"
                     }
                 }
             ],
@@ -1035,12 +1035,12 @@
                     "path": "forms/view/",
                     "type": "system",
                     "option": "visualizar",
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "f02f198681bb660c145b3ed785bafb23",
+                        "html": "7dc3a631c71c0b57c8c23eba1101d031",
                         "css": "39c704e4c0804714fca60ff0a898f19d",
                         "css_precompiled": "",
-                        "combined": "fc8fb34c9541a47ef3bba88046c78691"
+                        "combined": "98f568d8c911928cf5a98862abb305d3"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1106,12 +1106,12 @@
                     "path": "forms/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.17",
+                    "version": "1.18",
                     "checksum": {
-                        "html": "388c45aeb3e8aea6511904a8369a393c",
+                        "html": "76704a229103ce4d3922096ed6fe0de2",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "d98108abae3ee93a5e569ee8cf617438"
+                        "combined": "770d574dc84dfa9bff1f69c8368f62be"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1222,12 +1222,12 @@
                     "path": "forms/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.15",
+                    "version": "1.16",
                     "checksum": {
-                        "html": "276f5938974d85895ca3087148cf95fd",
+                        "html": "0e9395de20ca8f9c29259c4d7e068fef",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "9ae2276b47bd0b9ec3c74d5f3ab4705d"
+                        "combined": "be690f216d06367a4152df3ad5ae0bd0"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1338,12 +1338,12 @@
                     "path": "forms/clonar/",
                     "type": "system",
                     "option": "clonar",
-                    "version": "1.14",
+                    "version": "1.15",
                     "checksum": {
-                        "html": "b8e755f5ae4bd2a97ca8b96b7df6570f",
+                        "html": "493c09377dda9e49a6e3b2cd95a8c345",
                         "css": "fa9f7f111381eb489db9dc5872b62b15",
                         "css_precompiled": "",
-                        "combined": "0829610d6c77599893008b8e24b53cad"
+                        "combined": "993f721223ca1408f6030a3b95b20b75"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -1562,5 +1562,5 @@
             ]
         }
     },
-    "asset_version": "74ace09b3812422d"
+    "asset_version": "5fe5d165ddfce1d8"
 }

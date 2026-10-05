@@ -1,5 +1,5 @@
 {
-    "versao": "1.1.9",
+    "versao": "1.1.10",
     "bibliotecas": [
         "interface",
         "html",
@@ -75,7 +75,7 @@
                     "path": "admin-arquivos\/adicionar\/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.7",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -94,10 +94,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "c48e2c1c1381485a81006c9ae9215175",
-                        "css": "dbde120fd5eb8cab01299574593bec15",
+                        "html": "9f3965ead141b22745268afa604a9a8b",
+                        "css": "fa8df32a8182cda760ee37825aa92933",
                         "css_precompiled": "",
-                        "combined": "c1369f6b1ce13661b908399d1e7ad226"
+                        "combined": "06ddf3a5e7f5a342df6bb1e1112838a2"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -121,12 +121,12 @@
                 {
                     "name": "Arquivos Lista",
                     "id": "arquivos-lista",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "7fb861d588aebb98b48ff04511e06943",
+                        "html": "194dd3e01babbb9da63521ece47f08a7",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "7fb861d588aebb98b48ff04511e06943"
+                        "combined": "194dd3e01babbb9da63521ece47f08a7"
                     }
                 }
             ],
@@ -598,7 +598,7 @@
                     "path": "admin-arquivos\/adicionar\/",
                     "type": "system",
                     "option": "upload",
-                    "version": "1.7",
+                    "version": "1.9",
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
                     "tailwind_sources": [
@@ -617,10 +617,10 @@
                         }
                     ],
                     "checksum": {
-                        "html": "c48e2c1c1381485a81006c9ae9215175",
-                        "css": "dbde120fd5eb8cab01299574593bec15",
+                        "html": "9f3965ead141b22745268afa604a9a8b",
+                        "css": "fa8df32a8182cda760ee37825aa92933",
                         "css_precompiled": "",
-                        "combined": "c1369f6b1ce13661b908399d1e7ad226"
+                        "combined": "06ddf3a5e7f5a342df6bb1e1112838a2"
                     },
                     "tailwind_sources_reason": "REQ-236: fontes dinâmicas declaradas pela migração do painel em Tailwind.",
                     "tailwind_dependencies_reason": "REQ-236: componentes globais e variantes montados dinamicamente na página administrativa."
@@ -644,12 +644,12 @@
                 {
                     "name": "Files List",
                     "id": "arquivos-lista",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "7fb861d588aebb98b48ff04511e06943",
+                        "html": "194dd3e01babbb9da63521ece47f08a7",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "7fb861d588aebb98b48ff04511e06943"
+                        "combined": "194dd3e01babbb9da63521ece47f08a7"
                     }
                 }
             ],

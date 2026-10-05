@@ -2,7 +2,7 @@
 
 - **Intakes Ativos / Planejados**:
   - [req-239.md](req-239.md) (BATCH-248 `ready-for-intake`, 2026-10-05, Core): Correções e Refinamentos Finos do Core decorrentes da Auditoria Humana da Fase 1 (Dashboard P/G, admin-paginas, família publisher, variáveis, admin-ia, admin-arquivos, cookie-consent).
-  - [req-238.md](req-238.md) (BATCH-247 `in-progress`, 2026-10-05, multi-repo): Harmonização do Design System, TopBar/Sidebar, Dashboard V3.3 e Conformidade Visual dos Módulos (em execução pelo agente paralelo).
+  - [req-238.md](req-238.md) (BATCH-247 `implemented-pending-homologation`, 2026-10-05, multi-repo): Harmonização do Design System, TopBar/Sidebar, Dashboard V3.3 e Conformidade Visual dos Módulos (implementada e validada no Lab; homologação humana pendente).
   - [req-237.md](req-237.md) (BATCH-246 `complete`, 2026-10-05, integrado em `main` `96cd4e5a` Core e `ff695bcc` Site): Master Operacional — Higiene de Merge no Site (`main`), Criação dos 26+ Assets Isométricos Faltantes, Refinamentos UX/UI do Dashboard V3.2 e Conclusão da REQ-100 (E-commerce e Assinaturas no Site).
   - [req-236.md](req-236.md) (BATCH-245 `complete`, 2026-10-05, integrado em `main` `f59fc499`): Consolidação Integrada das Frentes Tailwind do Core (req-222, req-223, req-224), Homologação da Auditoria Visual (req-225) e Disparo dos Módulos do Site (REQ-101) — unificação dos módulos de IA, formulários, galerias, menus, arquivos, categorias, atualizações, ambiente, plugins, variáveis, e conexões sociais.
   - [req-235.md](req-235.md) (BATCH-244 `complete`, 2026-10-05, integrado em `main`): Estabilização Visual e Operacional do Dashboard V3.0 — blindagem defensiva da logomarca da topbar, geometria em camadas absolutas dos cards de módulos (alça de arrasto suspensa com dica para dentro, cover 100% sem fatia quebrada, ícone SVG perfeitamente centralizado e alturas de 9rem em M e 12rem em G), malha canônica de 12 colunas para widgets com redimensionamento nos cantos e seletor evidente do widget ativo, e topbar com largura lateralizada (w-80).
@@ -11,7 +11,7 @@
   - [req-232.md](req-232.md) (BATCH-241 `superseded`, 2026-10-04): Lote preliminar com apontamentos e regressões no dimensionamento de widgets superado pela req-233.
   - [req-231.md](req-231.md) (BATCH-240 `planned`, 2026-10-04): Fechamento oficial da Versão 3.0.0, changelog consolidador e version bumps dos metadados após estabilização da req-233 e dependências.
   - [req-230.md](req-230.md) (BATCH-239 `complete`, 2026-10-04, integrado em `main`): Integração Oficial da V3.0 — consolidação das branches (req-226, req-227, req-228, req-229), ajuste canônico de rota das capas (/modulos/covers/) e homologação E2E.
-  - [req-229.md](req-229.md) (BATCH-238 `complete`, 2026-10-04; integrado em `main`): Biblioteca de Estado e Acesso Controlado a Variáveis Globais (Ponte para Refatoração OOP).
+  - [req-229.md](archive/req-229.md) (BATCH-238 `complete`, 2026-10-04; integrado em `main`): Biblioteca de Estado e Acesso Controlado a Variáveis Globais (Ponte para Refatoração OOP).
   - [req-228.md](archive/req-228.md) (BATCH-237 `complete`, 2026-10-04; integrado em `main`): Topbar administrativa com perfil, segurança, idioma e favoritos persistentes no SQL.
   - [req-227.md](archive/req-227.md) (BATCH-236 `complete`, 2026-10-04; integrado em `main`): 37 capas de módulos em WebP 1024x1024 isométrica 3D e rota canônica.
   - [req-226.md](archive/req-226.md) (BATCH-235 `complete`, 2026-10-04; integrado em `main`): Dashboard V3.0 (seletor P/M/G, abas, widgets e links canônicos de docs).

@@ -98,12 +98,12 @@
                     "path": "usuarios/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "20eafdb8d7ce825009eb7073163201cb",
+                        "html": "bc872b6db908b2d306b21d048cc46da3",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "20eafdb8d7ce825009eb7073163201cb"
+                        "combined": "bc872b6db908b2d306b21d048cc46da3"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -148,12 +148,12 @@
                     "path": "usuarios/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "7f819b9c2adf9795f6bee31c849adcac",
+                        "html": "230b7c8f9079f1a042011793d2807383",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "7f819b9c2adf9795f6bee31c849adcac"
+                        "combined": "230b7c8f9079f1a042011793d2807383"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -491,12 +491,12 @@
                     "path": "usuarios/adicionar/",
                     "type": "system",
                     "option": "adicionar",
-                    "version": "1.4",
+                    "version": "1.5",
                     "checksum": {
-                        "html": "20eafdb8d7ce825009eb7073163201cb",
+                        "html": "bc872b6db908b2d306b21d048cc46da3",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "20eafdb8d7ce825009eb7073163201cb"
+                        "combined": "bc872b6db908b2d306b21d048cc46da3"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -541,12 +541,12 @@
                     "path": "usuarios/editar/",
                     "type": "system",
                     "option": "editar",
-                    "version": "1.5",
+                    "version": "1.6",
                     "checksum": {
-                        "html": "f7f7a236f905297b78230fa467c2e393",
+                        "html": "40f735ea3cc37eafd282c82ccc7671c2",
                         "css": "",
                         "css_precompiled": "",
-                        "combined": "f7f7a236f905297b78230fa467c2e393"
+                        "combined": "40f735ea3cc37eafd282c82ccc7671c2"
                     },
                     "framework_css": "tailwindcss",
                     "tailwind_bundle": true,
@@ -820,5 +820,5 @@
             ]
         }
     },
-    "asset_version": "d510ca1dfa8f5ff7"
+    "asset_version": "a1eb213cd4127386"
 }

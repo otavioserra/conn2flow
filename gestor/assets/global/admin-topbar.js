@@ -17,6 +17,17 @@
         var toggles = Array.from(bar.querySelectorAll('[data-topbar-toggle]'));
         function icons() {
             if (window.lucide) window.lucide.createIcons();
+            var links = Array.from(document.querySelectorAll('[data-admin-sidebar] [data-menu-item]'));
+            var matching = links.filter(function (link) { return location.pathname.indexOf(new URL(link.href).pathname) === 0; })
+                .sort(function (a, b) { return new URL(b.href).pathname.length - new URL(a.href).pathname.length; });
+            if (matching.length) {
+                matching[0].setAttribute('aria-current', 'page');
+                var title = document.querySelector('[data-admin-main] h1');
+                var icon = matching[0].querySelector('svg');
+                if (title && icon && !title.querySelector('svg, [data-lucide]')) {
+                    title.prepend(icon.cloneNode(true));
+                }
+            }
         }
         function closeAll(focus) {
             toggles.forEach(function (button) {

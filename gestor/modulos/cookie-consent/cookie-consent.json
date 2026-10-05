@@ -16,7 +16,7 @@
         "data_criacao": "data_criacao",
         "data_modificacao": "data_modificacao"
     },
-    "asset_version": "99df702d9e4b8416",
+    "asset_version": "06795bef8adbd98c",
     "resources": {
         "pt-br": {
             "widgets": [
@@ -51,12 +51,12 @@
                     "id": "cookie-consent-card",
                     "target": "cookie-consent",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "b896b35f2de66b451f899cc2a1c16f3f",
-                        "css": "02206357eb72279e0cb90bb0c747669c",
+                        "html": "3d3908b1cb937a0c4e6e9d5c185d1459",
+                        "css": "764f5805201ed1f9da7477f5864a1a3b",
                         "css_precompiled": "",
-                        "combined": "c6ea4d3f40f1936e14bc3eb56b013518"
+                        "combined": "1897eeda4fb06b78c41b5ea1748543e4"
                     }
                 },
                 {
@@ -64,12 +64,12 @@
                     "id": "cookie-consent-card-light",
                     "target": "cookie-consent",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "72d692571f1bc1b072dcbca492dad211",
-                        "css": "e5d28a8faba66e34af65c29ff00f3b45",
+                        "html": "79415445753c03f9ddcd729623c433db",
+                        "css": "4880e3bd511b9eeb5d77bd1e546c1b61",
                         "css_precompiled": "",
-                        "combined": "1434d9d2f92f392e5341b7a460fe2404"
+                        "combined": "fa19b4dd6ac87128965417bd706bef18"
                     }
                 }
             ],
@@ -662,12 +662,12 @@
                     "id": "cookie-consent-card",
                     "target": "cookie-consent",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "ded27e8e2e03a5d5a6fb58972e7ab694",
-                        "css": "7303d1348f012b96a1bbfd51cfc766a2",
+                        "html": "50a6df4ae701879ae6cd608edce95fc3",
+                        "css": "c7819a13d56631db0a6c0544fd7a0ec8",
                         "css_precompiled": "",
-                        "combined": "6169a96ce57e7d54ae5abb8547a2def0"
+                        "combined": "18f2b24f4e29bd1aed153f14bf78399d"
                     }
                 },
                 {
@@ -675,12 +675,12 @@
                     "id": "cookie-consent-card-light",
                     "target": "cookie-consent",
                     "framework_css": "tailwindcss",
-                    "version": "1.3",
+                    "version": "1.4",
                     "checksum": {
-                        "html": "f17b836406072dbcab1ac1643bf2bc0d",
-                        "css": "a27fae3be4839bf7dc84ccd8bbda6d9a",
+                        "html": "7aa52b8ffa372a4ccae7e04b7a173ead",
+                        "css": "5e89119320ae97a458bd04c5ebe94c49",
                         "css_precompiled": "",
-                        "combined": "a0d4e4ab8b61a0498a36e65b7346f5fe"
+                        "combined": "2ecd916de57df819f6e4b89ef002a64e"
                     }
                 }
             ],

@@ -25,7 +25,7 @@
         <details id="dashboard-options" class="relative">
             <summary class="c2fc-botao cursor-pointer"><i data-lucide="sliders-horizontal" class="size-4"></i> @[[dashboard-options-label]]@</summary>
             <div class="dashboard-options-menu absolute right-0 z-40 mt-2 w-64 max-w-full space-y-3 rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
-                <button type="button" id="dashboard-edit-mode" class="c2fc-botao w-full" aria-pressed="false">@[[dashboard-edit-mode-label]]@</button>
+                <button type="button" id="dashboard-edit-mode" class="c2fc-botao w-full" role="switch" aria-checked="false" data-label-on="@[[dashboard-edit-mode-on]]@" data-label-off="@[[dashboard-edit-mode-off]]@"><span data-edit-label>@[[dashboard-edit-mode-off]]@</span><span class="dashboard-edit-track" aria-hidden="true"><span class="dashboard-edit-thumb"></span></span></button>
                 <button type="button" id="dashboard-btn-add-widget" class="c2fc-botao w-full">@[[widgets-btn-add]]@</button>
                 <button type="button" id="dashboard-btn-reset-widgets" class="c2fc-botao w-full">@[[widgets-btn-reset-tooltip]]@</button>
                 <p class="text-sm text-slate-600">@[[density-selector-label]]@</p>
@@ -98,7 +98,7 @@
                 <div class="dashboard-card-body flex-1 space-y-1.5 px-4 py-3">
                     <a class="dashboard-card-title block font-semibold text-slate-900 transition-colors hover:text-sky-700" href="#modulo-link#">#modulo-nome#</a>
                     <div class="dashboard-card-meta text-xs text-slate-500">
-                        <span class="category">#modulo-grupo#</span>
+                        <span class="inline-flex items-center rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-medium text-sky-700 border border-sky-200/80">#modulo-grupo#</span>
                     </div>
                     <div class="dashboard-card-description text-sm text-slate-600 line-clamp-2">
                         #modulo-descricao#
@@ -176,6 +176,9 @@
             </div>
             <div class="px-6 py-4">
                 <p class="text-sm text-slate-600 mb-4">@[[widgets-modal-desc]]@</p>
+                <label for="dashboard-widget-search" class="sr-only">@[[widgets-search]]@</label>
+                <input type="search" id="dashboard-widget-search" class="c2fc-campo-entrada w-full mb-3" placeholder="@[[widgets-search]]@">
+                <div class="mb-3 flex flex-wrap items-center gap-3"><span id="dashboard-widget-selection" class="text-sm font-semibold text-sky-700"></span><button type="button" id="dashboard-widget-reset-selection" class="c2fc-botao">@[[widgets-reset-selection]]@</button></div>
                 <div id="dashboard-widgets-modal-list" class="max-h-96 space-y-2 overflow-y-auto pr-1">
                     <div class="text-center py-8 text-sm text-slate-500">
                         <i data-lucide="loader" class="size-6 animate-spin mx-auto text-sky-600 mb-2"></i>

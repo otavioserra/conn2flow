@@ -1,0 +1,2303 @@
+{
+  "started_at": "2026-10-05T19:40:22.961Z",
+  "checks": [
+    {
+      "name": "dashboard/inicio authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "dashboard/inicio desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Dashboard",
+        "font": "24px",
+        "weight": "600",
+        "name": true,
+        "cards": 72
+      }
+    },
+    {
+      "name": "dashboard/inicio white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 72,
+        "title": "Dashboard"
+      }
+    },
+    {
+      "name": "dashboard/inicio profile width",
+      "ok": true,
+      "data": {
+        "x": 1034,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "dashboard/inicio 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "dashboard/inicio browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-ia/listar-servidores authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-ia/listar-servidores desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Servidores de IA",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "admin-ia/listar-servidores white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Servidores de IA"
+      }
+    },
+    {
+      "name": "admin-ia/listar-servidores profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-ia/listar-servidores 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-ia/listar-servidores browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-ia/adicionar-servidor authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-ia/adicionar-servidor desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Adicionar servidor IA",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "admin-ia/adicionar-servidor white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Adicionar servidor IA"
+      }
+    },
+    {
+      "name": "admin-ia/adicionar-servidor profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-ia/adicionar-servidor 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-ia/adicionar-servidor browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-modos-ia/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-modos-ia/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Modos IA - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "admin-modos-ia/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Admin Modos IA - Listar"
+      }
+    },
+    {
+      "name": "admin-modos-ia/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-modos-ia/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-modos-ia/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-modos-ia/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-modos-ia/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Modos IA - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "name": "admin-modos-ia/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 2,
+        "title": "Admin Modos IA - Adicionar"
+      }
+    },
+    {
+      "name": "admin-modos-ia/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-modos-ia/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-modos-ia/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-prompts-ia/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-prompts-ia/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Prompts IA - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "admin-prompts-ia/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Admin Prompts IA - Listar"
+      }
+    },
+    {
+      "name": "admin-prompts-ia/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-prompts-ia/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-prompts-ia/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-prompts-ia/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-prompts-ia/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Prompts IA - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "name": "admin-prompts-ia/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 2,
+        "title": "Admin Prompts IA - Adicionar"
+      }
+    },
+    {
+      "name": "admin-prompts-ia/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-prompts-ia/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-prompts-ia/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "forms/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "forms/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "forms/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Formulários Listar"
+      }
+    },
+    {
+      "name": "forms/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "forms/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "forms/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "forms/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "forms/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 13
+      }
+    },
+    {
+      "name": "forms/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 13,
+        "title": "Formulários Adicionar"
+      }
+    },
+    {
+      "name": "forms/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "forms/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "forms/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "forms-search/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "forms-search/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "forms-search/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Formulários Listar"
+      }
+    },
+    {
+      "name": "forms-search/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "forms-search/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "forms-search/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "forms-search/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "forms-search/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 10
+      }
+    },
+    {
+      "name": "forms-search/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 10,
+        "title": "Formulários Adicionar"
+      }
+    },
+    {
+      "name": "forms-search/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "forms-search/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "forms-search/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "forms-submissions/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "forms-submissions/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Envios - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "forms-submissions/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Formulários Envios - Listar"
+      }
+    },
+    {
+      "name": "forms-submissions/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "forms-submissions/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "forms-submissions/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "menus/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "menus/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Menus - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "menus/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Menus - Listar"
+      }
+    },
+    {
+      "name": "menus/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "menus/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "menus/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "menus/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "menus/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Menus - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 10
+      }
+    },
+    {
+      "name": "menus/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 10,
+        "title": "Menus - Adicionar"
+      }
+    },
+    {
+      "name": "menus/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "menus/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "menus/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "galleries/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "galleries/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Galerias - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "galleries/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Galerias - Listar"
+      }
+    },
+    {
+      "name": "galleries/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "galleries/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "galleries/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "galleries/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "galleries/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Galerias - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 10
+      }
+    },
+    {
+      "name": "galleries/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 10,
+        "title": "Galerias - Adicionar"
+      }
+    },
+    {
+      "name": "galleries/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "galleries/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "galleries/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-arquivos/listar-arquivos authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-arquivos/listar-arquivos desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Arquivos",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 45
+      }
+    },
+    {
+      "name": "admin-arquivos/listar-arquivos white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 45,
+        "title": "Admin Arquivos"
+      }
+    },
+    {
+      "name": "admin-arquivos/listar-arquivos profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-arquivos/listar-arquivos 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-arquivos/listar-arquivos browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-arquivos/upload authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-arquivos/upload desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Arquivos - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "name": "admin-arquivos/upload white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 2,
+        "title": "Admin Arquivos - Adicionar"
+      }
+    },
+    {
+      "name": "admin-arquivos/upload profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-arquivos/upload 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-arquivos/upload browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-categorias/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-categorias/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Categorias",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "admin-categorias/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Admin Categorias"
+      }
+    },
+    {
+      "name": "admin-categorias/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-categorias/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-categorias/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-categorias/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-categorias/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Categorias - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "admin-categorias/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Admin Categorias - Adicionar"
+      }
+    },
+    {
+      "name": "admin-categorias/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-categorias/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-categorias/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "admin-atualizacoes/listar-atualizacoes authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "admin-atualizacoes/listar-atualizacoes desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Atualizações do Sistema",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "name": "admin-atualizacoes/listar-atualizacoes white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 2,
+        "title": "Atualizações do Sistema"
+      }
+    },
+    {
+      "name": "admin-atualizacoes/listar-atualizacoes profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "admin-atualizacoes/listar-atualizacoes 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "admin-atualizacoes/listar-atualizacoes browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "cookie-consent/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "cookie-consent/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Consentimento de Cookies - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "cookie-consent/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Consentimento de Cookies - Listar"
+      }
+    },
+    {
+      "name": "cookie-consent/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "cookie-consent/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "cookie-consent/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "cookie-consent/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "cookie-consent/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Consentimento de Cookies - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 11
+      }
+    },
+    {
+      "name": "cookie-consent/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 11,
+        "title": "Consentimento de Cookies - Adicionar"
+      }
+    },
+    {
+      "name": "cookie-consent/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "cookie-consent/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "cookie-consent/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "usuarios/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "usuarios/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Usuários",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "usuarios/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Usuários"
+      }
+    },
+    {
+      "name": "usuarios/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "usuarios/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "usuarios/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "usuarios/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "usuarios/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Usuários - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "name": "usuarios/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 2,
+        "title": "Usuários - Adicionar"
+      }
+    },
+    {
+      "name": "usuarios/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "usuarios/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "usuarios/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "usuarios-perfis/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "usuarios-perfis/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Usuários Perfis",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "usuarios-perfis/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Usuários Perfis"
+      }
+    },
+    {
+      "name": "usuarios-perfis/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "usuarios-perfis/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "usuarios-perfis/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "usuarios-perfis/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "usuarios-perfis/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Usuários Perfis - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 9
+      }
+    },
+    {
+      "name": "usuarios-perfis/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 9,
+        "title": "Usuários Perfis - Adicionar"
+      }
+    },
+    {
+      "name": "usuarios-perfis/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1026,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "usuarios-perfis/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "usuarios-perfis/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "presentations/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "presentations/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Apresentações - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "presentations/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Apresentações - Listar"
+      }
+    },
+    {
+      "name": "presentations/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1018,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "presentations/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "presentations/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "presentations/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "presentations/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Apresentações - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 7
+      }
+    },
+    {
+      "name": "presentations/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 7,
+        "title": "Apresentações - Adicionar"
+      }
+    },
+    {
+      "name": "presentations/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "presentations/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "presentations/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "subscriptions/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "subscriptions/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Assinaturas - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "subscriptions/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Assinaturas - Listar"
+      }
+    },
+    {
+      "name": "subscriptions/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "subscriptions/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "subscriptions/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "subscriptions-config/config authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "subscriptions-config/config desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Configurações de Assinatura",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 7
+      }
+    },
+    {
+      "name": "subscriptions-config/config white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 7,
+        "title": "Configurações de Assinatura"
+      }
+    },
+    {
+      "name": "subscriptions-config/config profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "subscriptions-config/config 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "subscriptions-config/config browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "subscriptions-plans/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "subscriptions-plans/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Planos de Assinatura",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "subscriptions-plans/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Planos de Assinatura"
+      }
+    },
+    {
+      "name": "subscriptions-plans/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "subscriptions-plans/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "subscriptions-plans/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "subscriptions-plans/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "subscriptions-plans/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Planos de Assinatura - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 8
+      }
+    },
+    {
+      "name": "subscriptions-plans/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 8,
+        "title": "Planos de Assinatura - Adicionar"
+      }
+    },
+    {
+      "name": "subscriptions-plans/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "subscriptions-plans/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "subscriptions-plans/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "social-connections/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "social-connections/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Conexões Sociais",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "social-connections/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Conexões Sociais"
+      }
+    },
+    {
+      "name": "social-connections/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 378
+      }
+    },
+    {
+      "name": "social-connections/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "social-connections/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "social-connections/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "social-connections/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Conexões Sociais - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "social-connections/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Conexões Sociais - Adicionar"
+      }
+    },
+    {
+      "name": "social-connections/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "social-connections/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "social-connections/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "host-manager/admin authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "host-manager/admin desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Host Manager",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 10
+      }
+    },
+    {
+      "name": "host-manager/admin white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 10,
+        "title": "Host Manager"
+      }
+    },
+    {
+      "name": "host-manager/admin profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "host-manager/admin 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "host-manager/admin browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "3d-catalog/listar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "3d-catalog/listar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Catálogo 3D Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "3d-catalog/listar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Catálogo 3D Listar"
+      }
+    },
+    {
+      "name": "3d-catalog/listar profile width",
+      "ok": true,
+      "data": {
+        "x": 1018,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "3d-catalog/listar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "3d-catalog/listar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "3d-catalog/adicionar authenticated HTTP 200",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "3d-catalog/adicionar desktop geometry/profile/sidebar",
+      "ok": true,
+      "data": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Catálogo 3D Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "name": "3d-catalog/adicionar white surface/title",
+      "ok": true,
+      "data": {
+        "cards": 1,
+        "title": "Catálogo 3D Adicionar"
+      }
+    },
+    {
+      "name": "3d-catalog/adicionar profile width",
+      "ok": true,
+      "data": {
+        "x": 1030,
+        "y": 61.5,
+        "width": 320,
+        "height": 372
+      }
+    },
+    {
+      "name": "3d-catalog/adicionar 390px without overflow",
+      "ok": true
+    },
+    {
+      "name": "3d-catalog/adicionar browser errors",
+      "ok": true,
+      "data": []
+    },
+    {
+      "name": "Submission has three canonical tabs",
+      "ok": true
+    },
+    {
+      "name": "Submission tab 0 selects one panel",
+      "ok": true
+    },
+    {
+      "name": "Submission tab 1 selects one panel",
+      "ok": true
+    },
+    {
+      "name": "Submission tab 2 selects one panel",
+      "ok": true
+    },
+    {
+      "name": "Private guide presentations",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "Private guide subscriptions",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "Private guide subscriptions-config",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "Private guide subscriptions-plans",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "Private guide social-connections",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "Private guide host-manager",
+      "ok": true,
+      "data": 200
+    },
+    {
+      "name": "Private guide 3d-catalog",
+      "ok": true,
+      "data": 200
+    }
+  ],
+  "pages": [
+    {
+      "module": "dashboard",
+      "path": "dashboard/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Dashboard",
+        "font": "24px",
+        "weight": "600",
+        "name": true,
+        "cards": 72
+      }
+    },
+    {
+      "module": "admin-ia",
+      "path": "admin-ia/listar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Servidores de IA",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "admin-ia",
+      "path": "admin-ia/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Adicionar servidor IA",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "admin-modos-ia",
+      "path": "admin-modos-ia/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Modos IA - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "admin-modos-ia",
+      "path": "admin-modos-ia/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Modos IA - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "module": "admin-prompts-ia",
+      "path": "admin-prompts-ia/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Prompts IA - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "admin-prompts-ia",
+      "path": "admin-prompts-ia/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Prompts IA - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "module": "forms",
+      "path": "forms/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "forms",
+      "path": "forms/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 13
+      }
+    },
+    {
+      "module": "forms-search",
+      "path": "forms-search/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "forms-search",
+      "path": "forms-search/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 10
+      }
+    },
+    {
+      "module": "forms-submissions",
+      "path": "forms-submissions/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Formulários Envios - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "menus",
+      "path": "menus/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Menus - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "menus",
+      "path": "menus/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Menus - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 10
+      }
+    },
+    {
+      "module": "galleries",
+      "path": "galleries/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Galerias - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "galleries",
+      "path": "galleries/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Galerias - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 10
+      }
+    },
+    {
+      "module": "admin-arquivos",
+      "path": "admin-arquivos/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Arquivos",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 45
+      }
+    },
+    {
+      "module": "admin-arquivos",
+      "path": "admin-arquivos/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Arquivos - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "module": "admin-categorias",
+      "path": "admin-categorias/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Categorias",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "admin-categorias",
+      "path": "admin-categorias/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Admin Categorias - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "admin-atualizacoes",
+      "path": "admin-atualizacoes/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Atualizações do Sistema",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "module": "cookie-consent",
+      "path": "cookie-consent/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Consentimento de Cookies - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "cookie-consent",
+      "path": "cookie-consent/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Consentimento de Cookies - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 11
+      }
+    },
+    {
+      "module": "usuarios",
+      "path": "usuarios/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Usuários",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "usuarios",
+      "path": "usuarios/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Usuários - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 2
+      }
+    },
+    {
+      "module": "usuarios-perfis",
+      "path": "usuarios-perfis/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Usuários Perfis",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "usuarios-perfis",
+      "path": "usuarios-perfis/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Usuários Perfis - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 9
+      }
+    },
+    {
+      "module": "presentations",
+      "path": "presentations/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Apresentações - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "presentations",
+      "path": "presentations/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Apresentações - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 7
+      }
+    },
+    {
+      "module": "subscriptions",
+      "path": "subscriptions/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Assinaturas - Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "subscriptions-config",
+      "path": "subscriptions-config/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Configurações de Assinatura",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 7
+      }
+    },
+    {
+      "module": "subscriptions-plans",
+      "path": "subscriptions-plans/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Planos de Assinatura",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "subscriptions-plans",
+      "path": "subscriptions-plans/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Planos de Assinatura - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 8
+      }
+    },
+    {
+      "module": "social-connections",
+      "path": "social-connections/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Conexões Sociais",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "social-connections",
+      "path": "social-connections/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Conexões Sociais - Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "host-manager",
+      "path": "host-manager/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Host Manager",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 10
+      }
+    },
+    {
+      "module": "3d-catalog",
+      "path": "3d-catalog/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Catálogo 3D Listar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    },
+    {
+      "module": "3d-catalog",
+      "path": "3d-catalog/adicionar/",
+      "viewport": 1366,
+      "metrics": {
+        "overflow": 0,
+        "avatar": "32px",
+        "title": "Catálogo 3D Adicionar",
+        "font": "24px",
+        "weight": "500",
+        "name": true,
+        "cards": 1
+      }
+    }
+  ],
+  "finished_at": "2026-10-05T19:41:33.281Z",
+  "passed": 239,
+  "failed": 0
+}

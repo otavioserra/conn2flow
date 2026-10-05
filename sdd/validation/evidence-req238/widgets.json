@@ -1,0 +1,67 @@
+{
+  "checks": [
+    {
+      "name": "Semantic edit switch",
+      "ok": true
+    },
+    {
+      "name": "Catalog search hides unmatched types",
+      "ok": true
+    },
+    {
+      "name": "One bottom-right handle",
+      "ok": true
+    },
+    {
+      "name": "Isolated widget has content",
+      "ok": true
+    },
+    {
+      "name": "Widget compiled styles are carried into the iframe",
+      "ok": true
+    },
+    {
+      "name": "Widget scripts cannot access the parent document",
+      "ok": true
+    },
+    {
+      "name": "Blueprint is visible during resize",
+      "ok": true
+    },
+    {
+      "name": "Height grows gradually in 60px steps",
+      "ok": true,
+      "data": {
+        "before": 220,
+        "after": 360
+      }
+    },
+    {
+      "name": "Blueprint clears after resize",
+      "ok": true
+    },
+    {
+      "name": "Height persists across reload",
+      "ok": true
+    },
+    {
+      "name": "Current record preselected",
+      "ok": true
+    },
+    {
+      "name": "Reset clears current visual selection",
+      "ok": true
+    },
+    {
+      "name": "Widgets mobile without horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "Widgets have no page errors",
+      "ok": true,
+      "data": []
+    }
+  ],
+  "passed": 14,
+  "failed": 0
+}

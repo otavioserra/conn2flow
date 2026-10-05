@@ -1,9 +1,9 @@
 <section class="space-y-6 p-4">
     <div class="flex flex-wrap items-center justify-between gap-4">
-        <h1 class="flex items-center gap-2 text-xl font-semibold"><i data-lucide="bot"
+        <h1 class="flex items-center gap-2 text-2xl font-bold text-slate-900"><i data-lucide="bot"
                 class="size-5"></i>@[[ui-list-title]]@</h1>
         <a href="@[[pagina#url-raiz]]@admin-ia/adicionar/"
-            class="inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i data-lucide="plus"
+            class="c2fc-botao inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i data-lucide="plus"
                 class="size-4"></i>@[[ui-add]]@</a>
     </div>
     <div id="admin-ia-mensagens" class="hidden" aria-hidden="true" data-confirm-delete="@[[ui-confirm-delete]]@"
@@ -11,7 +11,7 @@
         data-error-test-communication="@[[ui-error-test-communication]]@" data-error-generic="@[[ui-error-generic]]@"
         data-history-empty="@[[ui-history-empty]]@"></div>
     <!-- com-servidores < -->
-    <div class="overflow-x-auto rounded border border-slate-200">
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
         <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
             <thead class="bg-slate-50">
                 <tr>
@@ -41,13 +41,13 @@
                     <td class="px-3 py-2">
                         <div class="flex flex-wrap gap-2">
                             <a href="@[[pagina#url-raiz]]@admin-ia/editar/?id=#id#"
-                                class="inline-flex items-center gap-1 rounded border border-slate-300 px-2 py-1"><i
+                                class="c2fc-botao inline-flex items-center gap-1 rounded border border-slate-300 px-2 py-1"><i
                                     data-lucide="pencil" class="size-4"></i>@[[ui-edit]]@</a>
                             <button type="button"
-                                class="inline-flex items-center gap-1 rounded border border-sky-700 px-2 py-1 text-sky-800 testar-conexao"
+                                class="c2fc-botao inline-flex items-center gap-1 rounded border border-sky-700 px-2 py-1 text-sky-800 testar-conexao"
                                 data-id="#id#"><i data-lucide="plug-zap" class="size-4"></i>@[[ui-test]]@</button>
                             <button type="button"
-                                class="inline-flex items-center gap-1 rounded border border-rose-700 px-2 py-1 text-rose-800 excluir-servidor"
+                                class="c2fc-botao inline-flex items-center gap-1 rounded border border-rose-700 px-2 py-1 text-rose-800 excluir-servidor"
                                 data-id="#id#"><i data-lucide="trash-2" class="size-4"></i>@[[ui-delete]]@</button>
                         </div>
                     </td>
@@ -57,11 +57,11 @@
         </table>
     </div><!-- com-servidores > -->
     <!-- sem-servidores < -->
-    <div class="rounded border border-slate-200 p-6 text-center">
+    <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm text-center">
         <i data-lucide="bot" class="mx-auto mb-3 size-8 text-slate-500"></i>
         <p class="mb-4 font-medium">@[[ui-empty-title]]@</p>
         <a href="@[[pagina#url-raiz]]@admin-ia/adicionar/"
-            class="inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i data-lucide="plus"
+            class="c2fc-botao inline-flex items-center gap-2 rounded bg-sky-700 px-4 py-2 text-white"><i data-lucide="plus"
                 class="size-4"></i>@[[ui-add-first]]@</a>
     </div>
     <!-- sem-servidores > -->

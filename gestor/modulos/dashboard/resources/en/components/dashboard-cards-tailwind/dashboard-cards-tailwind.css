@@ -294,9 +294,22 @@
 #dashboard-widgets-grid:not(.is-editing) .dashboard-widget-resize-handle,
 #dashboard-widgets-grid:not(.is-editing) .dashboard-widget-switch-btn,
 #dashboard-widgets-grid:not(.is-editing) .dashboard-widget-remove-btn { display: none !important; }
-.dashboard-widget-resize-handle[data-corner="nw"] { top: 4px; left: 4px; bottom: auto; right: auto; }
-.dashboard-widget-resize-handle[data-corner="ne"] { top: 4px; right: 4px; bottom: auto; cursor: nesw-resize; }
-.dashboard-widget-resize-handle[data-corner="sw"] { bottom: 4px; left: 4px; right: auto; cursor: nesw-resize; }
 .dashboard-options-menu { max-width: calc(100vw - 2rem); }
 .dashboard-widget-card-body { display: flex; min-height: 0; }
 .dashboard-widget-frame { width: 100%; height: 100%; min-height: 150px; border: 0; flex: 1; }
+
+/* REQ-238: a background blueprint never enters Sortable's child list. */
+#dashboard-widgets-grid { position: relative; isolation: isolate; }
+#dashboard-widgets-grid::before { content: ''; position: absolute; inset: -8px; pointer-events: none; z-index: -1; opacity: 0; border-radius: 12px; background-image: radial-gradient(#7dd3fc 1px, transparent 1px), repeating-linear-gradient(to right, transparent 0, transparent calc(100% / 12 - 1px), #bae6fd calc(100% / 12 - 1px), #bae6fd calc(100% / 12)); background-size: 12px 60px, 100% 100%; transition: opacity .2s ease; }
+#dashboard-widgets-grid.is-interacting::before { opacity: .7; }
+.dashboard-widget-card { min-width: 0; overflow: hidden; }
+.dashboard-widget-card.is-resizing iframe { pointer-events: none; }
+.dashboard-widget-frame { min-height: 0; }
+#dashboard-widgets-modal [data-widget-choice] { justify-content: flex-start; text-align: left; }
+#dashboard-widgets-modal [data-widget-choice][aria-pressed="true"] { border-color: #0284c7; background: #f0f9ff; color: #0284c7; }
+#dashboard-widgets-modal [data-widget-choice][hidden] { display: none; }
+#dashboard-edit-mode { display: flex; justify-content: space-between; gap: 1rem; }
+.dashboard-edit-track { display: inline-flex; align-items: center; flex-shrink: 0; width: 2.5rem; height: 1.4rem; padding: 3px; border-radius: 999px; background: #cbd5e1; transition: background .2s; }
+.dashboard-edit-thumb { width: 1rem; height: 1rem; background: white; border-radius: 50%; transition: transform .2s; }
+#dashboard-edit-mode[aria-checked="true"] .dashboard-edit-track { background: #0284c7; }
+#dashboard-edit-mode[aria-checked="true"] .dashboard-edit-thumb { transform: translateX(1.1rem); }

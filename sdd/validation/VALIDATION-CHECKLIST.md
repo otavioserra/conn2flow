@@ -1,5 +1,17 @@
 # Validation Checklist
 
+## BATCH-247 — REQ-238
+
+- [x] CA-A/B: perfil, atalhos e sidebar uniformes nos 22 módulos.
+- [x] CA-C1–C7: badges, resize, blueprint, seletor, isolamento, switch e docs privadas.
+- [x] CA-D1–D3: cards, títulos, abas funcionais e 38 telas desktop/390px.
+- [x] Core JS 537/PHP 1.597; Site JS 13/PHP 7 sem falhas; 261 checks de navegador.
+- [x] Pipeline Lab saída 0, manutenção desligada; 775 arquivos com conteúdo idêntico.
+- [x] Provas negativas, revisão, versões e evidências registradas.
+- [ ] Homologação humana.
+
+Detalhes: [BATCH-247](../implementation/BATCH-247.md) e [inventário](req238-validation.json).
+
 ## BATCH-246 — req-237
 
 - [x] Bases Core/Site preservadas e compilação oficial sequencial no Lab.
@@ -49,7 +61,7 @@ Evidências: [BATCH-239](../implementation/BATCH-239.md).
 - [ ] CA-4: roteiro humano final no arquivão do site, com todas as telas.
 - [ ] Integração das frentes dependentes, correções em branch isolada, pipeline e revisão final.
 
-Evidências e limites: [BATCH-234](../implementation/BATCH-234.md). Preparação em 2026-10-04; fontes das árvores locais, sem validação SQL/browser ou alteração do produto. A ordem da req-225 exige conclusão das frentes anteriores antes da conferência final.
+Evidências e limites: [BATCH-234](../implementation/archive/BATCH-234.md). Preparação em 2026-10-04; fontes das árvores locais, sem validação SQL/browser ou alteração do produto. A ordem da req-225 exige conclusão das frentes anteriores antes da conferência final.
 
 ## BATCH-238 — Biblioteca de Estado e Acesso Controlado a Variáveis Globais (req-229)
 
@@ -84,7 +96,7 @@ Evidências: [BATCH-237](../implementation/BATCH-237.md), [roteiro](req228-brows
 - [x] CA-4 (testes): contrato 4/565, Vitest 509/509 e PHPUnit completo 1526 sem falhas/erros; contrato falsificado no manifesto anterior.
 - [x] CA-4 (navegador executado): 369/372 verificações, 30 navegações e capturas desktop/mobile; controle Fomantic preservado.
 - [ ] Prévia de Variáveis do editor compartilhado: três verificações de console falham por imagem com placeholder cru/404; pedido registrado na req-219. Não declarar rodada integralmente verde.
-- [x] CA-5: [BATCH-231](../implementation/BATCH-231.md), [métricas](evidence-req222.json), roteiro/capturas em `conn2flow-site/sdd/validation/core/evidence-req222/` e item humano no site.
+- [x] CA-5: [BATCH-231](../implementation/archive/BATCH-231.md), [métricas](evidence-req222.json), roteiro/capturas em `conn2flow-site/sdd/validation/core/evidence-req222/` e item humano no site.
 - [ ] Revisão humana conjunta; nenhum deploy de produção.
 
 
@@ -98,7 +110,7 @@ Evidências: [BATCH-237](../implementation/BATCH-237.md), [roteiro](req228-brows
 - [ ] Suíte PHPUnit completa limpa: 1.523 testes, 4 erros ambientais (OpenSSL/Stripe) e 1 falha LF/CRLF em `CssRegeneracaoTest`.
 - [x] Roteiro humano adicionado ao [PENDENCIAS-HUMANAS.md do site](../../../conn2flow-site/sdd/PENDENCIAS-HUMANAS.md).
 
-Detalhes: [BATCH-232](../implementation/BATCH-232.md).
+Detalhes: [BATCH-232](../implementation/archive/BATCH-232.md).
 
 ## BATCH-229 — Módulos do editor, listagens e correções da revisão (req-219)
 
@@ -108,7 +120,7 @@ Detalhes: [BATCH-232](../implementation/BATCH-232.md).
 - [x] PHPUnit 1.505 (1 falha anterior), Vitest 484/484, navegador 31/31.
 - [ ] Revisão humana (no fim do programa).
 
-Detalhes: [BATCH-229](../implementation/BATCH-229.md).
+Detalhes: [BATCH-229](../implementation/archive/BATCH-229.md).
 
 ## BATCH-227 — Painel em Tailwind: controles, diálogos, editor HTML e `admin-paginas` (req-219)
 
@@ -119,7 +131,7 @@ Detalhes: [BATCH-229](../implementation/BATCH-229.md).
 - [x] CA-5: PHPUnit 1.498 (1 falha anterior, CRLF), Vitest 474/474, navegador 18/18 (`conn2flow-site/sdd/validation/core/req219-controles-e2e.cjs`).
 - [ ] Revisão humana (abrir uma página no Lab, editar no visual e salvar).
 
-Detalhes: [BATCH-227](../implementation/BATCH-227.md).
+Detalhes: [BATCH-227](../implementation/archive/BATCH-227.md).
 
 ## BATCH-226 — Módulos distribuídos: imagens do layout dentro do painel (req-218)
 
@@ -127,7 +139,7 @@ Detalhes: [BATCH-227](../implementation/BATCH-227.md).
 - [x] CA-2: rota de módulo dentro do prefixo mantém o prefixo; destino sempre do mesmo host; 3 testes.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-226](../implementation/BATCH-226.md).
+Detalhes: [BATCH-226](../implementation/archive/BATCH-226.md).
 
 ## BATCH-225 — Módulos distribuídos: confirmação de origem e chave de sessão (req-217)
 
@@ -137,7 +149,7 @@ Detalhes: [BATCH-226](../implementation/BATCH-226.md).
 - [x] CA-4: `confirmacao-origem` desligada volta ao canal anterior.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-225](../implementation/BATCH-225.md).
+Detalhes: [BATCH-225](../implementation/archive/BATCH-225.md).
 
 ## BATCH-224 — Módulos distribuídos: catálogo local e estado da conta (req-216)
 
@@ -148,7 +160,7 @@ Detalhes: [BATCH-225](../implementation/BATCH-225.md).
 - [x] CA-5: testes de unidade; suíte sem regressão; E2E do site 18/18.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-224](../implementation/BATCH-224.md).
+Detalhes: [BATCH-224](../implementation/archive/BATCH-224.md).
 
 ## BATCH-223 — Módulos distribuídos: rotina local pedida pelo Central (req-215)
 
@@ -160,7 +172,7 @@ Detalhes: [BATCH-224](../implementation/BATCH-224.md).
 - [ ] Retorno de autorização de terceiros com aplicativo real.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-223](../implementation/BATCH-223.md).
+Detalhes: [BATCH-223](../implementation/archive/BATCH-223.md).
 
 ## BATCH-222 — Menus do painel e apoio à execução no cliente (req-214)
 
@@ -171,7 +183,7 @@ Detalhes: [BATCH-223](../implementation/BATCH-223.md).
 - [ ] Menu de celular do layout Fomantic.
 - [ ] Revisão humana.
 
-Detalhes: [BATCH-222](../implementation/BATCH-222.md).
+Detalhes: [BATCH-222](../implementation/archive/BATCH-222.md).
 
 ## BATCH-221 — Módulos distribuídos: melhorias da revisão (req-213)
 
@@ -201,7 +213,7 @@ Detalhes: [BATCH-220](../implementation/archive/BATCH-220.md).
 
 | Batch | Resumo | Evidências |
 | --- | --- | --- |
-| BATCH-219 | Infraestrutura comum para módulos distribuídos (req-211) | [Arquivo](archive/BATCH-219.md) |
+| BATCH-219 | Infraestrutura comum para módulos distribuídos (req-211) | [Arquivo](../implementation/archive/BATCH-219.md) |
 
 ## BATCH-218 — Tela de atualização no deploy e prévia de widgets completa (req-210)
 
@@ -469,7 +481,7 @@ Para manter o checklist de validaÃ§Ãµes leve e eficiente (teto de 25 blocos 
 - [x] Review técnico do slice sem finding bloqueante; mudanças alheias mantidas fora do diff.
 - [ ] Revisão independente e consolidação pela req-219/humano.
 
-Evidências: [BATCH-228](../implementation/BATCH-228.md), [roteiro](req220-browser.cjs), [resultados](req220-browser-results.json). Runtime inspecionado em pt-br; en compilado e verificado por unidade. Depreciações/pulados e problemas iniciais de CRLF registrados no lote.
+Evidências: [BATCH-228](../implementation/archive/BATCH-228.md), [roteiro](req220-browser.cjs), [resultados](req220-browser-results.json). Runtime inspecionado em pt-br; en compilado e verificado por unidade. Depreciações/pulados e problemas iniciais de CRLF registrados no lote.
 
 ## BATCH-230 — Família Publisher em Tailwind (req-221)
 
@@ -482,7 +494,7 @@ Evidências: [BATCH-228](../implementation/BATCH-228.md), [roteiro](req220-brows
 - [x] Review de contratos/dependências/CSRF e git diff --check; artefatos fora do escopo invertidos antes dos commits.
 - [ ] Revisão independente, teste humano e consolidação pela req-219.
 
-Evidências e limitações: [BATCH-230](../implementation/BATCH-230.md). Roteiro/resultados no site em `sdd/validation/core/req221-publisher-e2e.cjs` e `evidence-req221/`. Runtime pt-br; en compilado e verificado por contratos. JS compartilhados mais recentes da req-219 preservados; controle legado admin-templates e cadastro ausente de sua simulação original descritos no lote.
+Evidências e limitações: [BATCH-230](../implementation/archive/BATCH-230.md). Roteiro/resultados no site em `sdd/validation/core/req221-publisher-e2e.cjs` e `evidence-req221/`. Runtime pt-br; en compilado e verificado por contratos. JS compartilhados mais recentes da req-219 preservados; controle legado admin-templates e cadastro ausente de sua simulação original descritos no lote.
 
 ## BATCH-245 / REQ-236 — integração homologada no Lab
 

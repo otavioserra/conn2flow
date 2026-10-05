@@ -13,7 +13,7 @@ input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled), label
 /* ---------- listagem (req-220): cabeçalho ordenável ocupa a célula toda, com fundo no hover; linha destacada */
 #_gestor-interface-listar thead th:has(> button) { padding: 0; }
 #_gestor-interface-listar thead th > button { width: 100%; padding: 12px; border-radius: 0; transition: background-color .15s, color .15s; }
-#_gestor-interface-listar thead th > button:not(:disabled):hover { background: #e0f2fe; color: #0369a1; }
+#_gestor-interface-listar thead th > button:not(:disabled):hover { background: #e0f2fe; color: #0284c7; }
 /* coluna ainda sem ordem: seta fraca no hover avisando que dá para ordenar (Ctrl+clique soma colunas) */
 #_gestor-interface-listar thead th[aria-sort="none"] > button:not(:disabled):hover [data-lista-direcao]:empty::after { content: "↑"; opacity: .4; }
 #_gestor-interface-listar thead th > button [data-lista-direcao] { min-width: 1.5em; font-variant-numeric: tabular-nums; }
@@ -206,7 +206,7 @@ a.c2fc-rotulo:hover { border-color: #7dd3fc; background: #f0f9ff; text-decoratio
 
 /* ---------- abas */
 .c2fc-abas-lista { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #e2e8f0; margin-bottom: 12px; }
-.c2fc-aba { border: 0; border-bottom: 2px solid transparent; background: none; padding: 8px 14px; font: 500 14px/1.2 inherit; color: #475569; cursor: pointer; margin-bottom: -1px; }
+.c2fc-aba { border: 0; border-bottom: 2px solid transparent; background: none; padding: 8px 14px; font-family: inherit; font-size: 14px; line-height: 1.2; font-weight: 600; color: #64748b; cursor: pointer; margin-bottom: -1px; }
 .c2fc-aba[aria-selected="true"], .c2fc-aba.active { border-bottom-color: #0284c7; color: #0369a1; }
 a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
 .c2fc-painel-aba { padding: 16px; border: 1px solid #e2e8f0; border-top: 0; border-radius: 0 0 12px 12px; background: #fff; }
@@ -266,3 +266,7 @@ a.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; text-decoratio
 /* ---------- cobertura de carregamento das variantes Tailwind (o JS legado liga e desliga `.active`) */
 .c2fc-cobertura { position: absolute; inset: 0; z-index: 10; display: none; align-items: center; justify-content: center; background: rgba(255,255,255,.7); }
 .c2fc-cobertura.active { display: flex; }
+
+.c2fc-aba { display: inline-flex; align-items: center; gap: 6px; }
+.c2fc-aba:hover { color: #334155; }
+.c2fc-aba svg { width: 16px; height: 16px; }

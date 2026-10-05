@@ -12566,6 +12566,42 @@
     {
         "language": "pt-br",
         "modulo": "dashboard",
+        "id": "dashboard-edit-mode-on",
+        "valor": "Modo de Edição: Ativado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "dashboard-edit-mode-off",
+        "valor": "Modo de Edição: Desativado",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-search",
+        "valor": "Buscar widget...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
+        "id": "widgets-reset-selection",
+        "valor": "Trocar \/ Resetar",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "dashboard",
         "id": "logout-grup",
         "valor": "Sair",
         "tipo": "string",
@@ -13135,6 +13171,42 @@
         "modulo": "dashboard",
         "id": "widgets-label-more",
         "valor": "Carregar mais",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "dashboard-edit-mode-on",
+        "valor": "Edit mode: On",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "dashboard-edit-mode-off",
+        "valor": "Edit mode: Off",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-search",
+        "valor": "Search widgets...",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "dashboard",
+        "id": "widgets-reset-selection",
+        "valor": "Change \/ Reset",
         "tipo": "string",
         "grupo": null,
         "descricao": null
@@ -14402,6 +14474,33 @@
     {
         "language": "pt-br",
         "modulo": "forms-submissions",
+        "id": "ui-tab-data",
+        "valor": "Dados do envio",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-replies",
+        "valor": "Respostas",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-json",
+        "valor": "Dados JSON",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "pt-br",
+        "modulo": "forms-submissions",
         "id": "error-msg-missing-fields",
         "valor": "Campos obrigatórios ausentes.",
         "tipo": "string",
@@ -14584,6 +14683,33 @@
         "modulo": "forms-submissions",
         "id": "not-applicable-label",
         "valor": "NÃ£o se aplica",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-data",
+        "valor": "Submission data",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-replies",
+        "valor": "Replies",
+        "tipo": "string",
+        "grupo": null,
+        "descricao": null
+    },
+    {
+        "language": "en",
+        "modulo": "forms-submissions",
+        "id": "ui-tab-json",
+        "valor": "JSON data",
         "tipo": "string",
         "grupo": null,
         "descricao": null
